@@ -1,6 +1,5 @@
 package main.test.libgdx;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -9,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import main.data.filesys.PathFinder;
 
 /**
  * Created by PC on 22.10.2016.
@@ -34,10 +34,9 @@ public class AnotherMenu implements Screen {
     float color4;
     boolean time_to_change_backgroud;
     Dark_Impact_Animation dark_impact_animation;
-    Menu menu;
-    Game game;
-    public AnotherMenu(Menu menu){
-        this.menu = menu;
+    BattleFieldScreen battleFieldScreen;
+    public AnotherMenu(BattleFieldScreen menu){
+        this.battleFieldScreen = menu;
     }
     @Override
     public void dispose() {
@@ -52,7 +51,9 @@ public class AnotherMenu implements Screen {
 
 //        path = new PathFinder();
 //        String localPath = path.
-        img = new Texture("D:\\MyRepository\\eidolons-battlecraft\\Dueling-Club\\target\\dependency\\img\\mini\\item\\mage armor.jpg");
+        PathFinder.init();
+        String path = PathFinder.getImagePath();
+        img = new Texture(path + "mini\\item\\mage armor.jpg");
         dark_impact_animation = new Dark_Impact_Animation();
         sprite = new Sprite(img);
 //        sprite.scale(0.05f);
@@ -102,7 +103,7 @@ public class AnotherMenu implements Screen {
 
         if (Gdx.input.isKeyPressed(Input.Keys.A)){
             if (timer_for_input_listen > 1){
-                menu.myGame.setScreen(new Menu(menu.myGame));
+                battleFieldScreen.myGame.setScreen(new BattleFieldScreen(battleFieldScreen.myGame));
                 timer_for_input_listen = 0;
             }
 
