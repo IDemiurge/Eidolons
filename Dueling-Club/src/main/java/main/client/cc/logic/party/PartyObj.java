@@ -195,8 +195,8 @@ public class PartyObj extends Obj {
 
     @Override
     public void afterEffects() {
-        resetBattleSpirit();
-        resetOrganization();
+        //resetBattleSpirit();
+        //resetOrganization();
 
         for (DC_HeroObj m : members) {
             m.setParam(PARAMS.ORGANIZATION,
