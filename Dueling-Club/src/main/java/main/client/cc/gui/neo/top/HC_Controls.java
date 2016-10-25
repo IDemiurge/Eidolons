@@ -196,8 +196,8 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
                 case FIGHT_ARCADE:
                     Weaver.inNewThread(new Runnable() {
                         public void run() {
-                            if (!alt && isNameGenTest()) {
                                 if (Launcher.DEV_MODE)
+                            if (!alt && isNameGenTest()) {
                                     testFightLaunch();
 
                                 // testNameGen();
@@ -329,7 +329,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
     }
 
     private boolean isNameGenTest() {
-        return true;
+        return false;
     }
 
     private void testNameGen() {

@@ -352,8 +352,11 @@ public class MainManager implements SequenceManager {
 
     public void exitToMainMenu() {
 
+       try{
         globalKeys.disable();
-        globalKeys.initMenuGlobalKeys();
+        globalKeys.initMenuGlobalKeys();}catch ( Exception e) {
+    e.printStackTrace();
+}
         Launcher.resetView(VIEWS.MENU);
         currentItem = MAIN_MENU_ITEMS.MAIN;
         refresh();
