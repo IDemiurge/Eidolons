@@ -3,6 +3,7 @@ package main.test.libgdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import main.data.filesys.PathFinder;
 
 import java.util.ArrayList;
 
@@ -13,11 +14,12 @@ public class Lightning_Animation {
         private static ArrayList<Texture> list_of_lightnings;
 
     public Lightning_Animation(){
-
+        PathFinder.init();
+        String path = PathFinder.getImagePath();
 
         list_of_lightnings = new ArrayList<>();
         for (int i = 1;i<18;i++){
-            Texture local_Texture = new Texture("D:\\MyRepository\\eidolons-battlecraft\\Dueling-Club\\target\\dependency\\img\\mini\\sprites\\impact\\electro impact\\e"+i+".jpg");
+            Texture local_Texture = new Texture(path + "mini\\sprites\\impact\\electro impact\\e"+i+".jpg");
             local_Texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
             list_of_lightnings.add(local_Texture);
         }
