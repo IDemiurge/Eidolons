@@ -4,6 +4,9 @@
 deploy
 C-Engine/target/*
 Dueling-Club/target/*
+resources/target/*
+Arcane-Tower/target/*
+Arcane-Vault/target/*
 *.class
 *.log
 *.log.*
