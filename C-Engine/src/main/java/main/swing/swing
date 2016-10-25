@@ -1,0 +1,40 @@
+What my system should take care of? 
+
+All aspects of graphical programming 
+
+
+Swing Worker
+Rendering
+Mouse Events
+Other listeners (window closed, ...)
+Layout - ? 
+Caching and repainting
+Custom painting
+
+How will this be done?
+G_Manager
+global services: resizing, 
+graphical map
+component list
+caching
+settings
+
+
+G_Comp 
+*has
+=> category (container, 
+=> interface (...
+
+*uses
+=>services 
+
+*aggregates
+=>java swing component
+
+ 
+
+Components extends Comp
+
+
+Where will this be used? ?!?!?!
+For Dialogs 

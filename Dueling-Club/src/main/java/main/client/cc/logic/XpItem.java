@@ -1,0 +1,43 @@
+package main.client.cc.logic;
+
+import main.content.PARAMS;
+import main.content.PROPS;
+import main.content.properties.G_PROPS;
+import main.content.properties.PROPERTY;
+import main.data.DataManager;
+import main.entity.type.ObjType;
+
+public class XpItem {
+
+    private ObjType type;
+    private PROPERTY prop;
+
+    public XpItem(String typeName) {
+        this.type = DataManager.getType(typeName);
+        switch (type.getOBJ_TYPE()) {
+            case ("skills"):
+                prop = PROPS.SKILLS;
+                break;
+            case ("spells"):
+                prop = PROPS.VERBATIM_SPELLS;
+                break;
+            case ("actions"):
+                prop = G_PROPS.ACTIVES;
+                break;
+        }
+    }
+
+    public PROPERTY getProperty() {
+        return this.prop;
+    }
+
+    public String getName() {
+        return type.getName();
+    }
+
+    public Integer getXpCost() {
+        // TODO Auto-generated method stub
+        return type.getIntParam(PARAMS.XP_COST);
+    }
+
+}

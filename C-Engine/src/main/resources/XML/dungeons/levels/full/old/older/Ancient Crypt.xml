@@ -1,0 +1,42 @@
+<Level><Custom_Props><Displayed_Name>Ancient Crypt</Displayed_Name>
+<Filler_Type>Bone Wall</Filler_Type>
+</Custom_Props><Custom_Params><Bf_Width>22</Bf_Width>
+<Bf_Height>15</Bf_Height>
+</Custom_Params><Wall_Objects>0-0=Bone Wall,0-1=Bone Wall,0-2=Bone Wall,0-3=Bone Wall,0-4=Bone Wall,0-5=Bone Wall,0-6=Bone Wall,0-7=Bone Wall,0-8=Bone Wall,0-9=Bone Wall,1-0=Bone Wall,0-10=Bone Wall,0-11=Bone Wall,1-5=Bone Wall,1-11=Bone Wall,2-0=Bone Wall,2-5=Bone Wall,2-7=Bone Wall,2-6=Bone Wall,2-9=Bone Wall,2-8=Bone Wall,2-11=Bone Wall,3-0=Bone Wall,3-5=Bone Wall,2-12=Bone Wall,2-13=Bone Wall,3-8=Bone Wall,3-9=Bone Wall,3-6=Bone Wall,3-7=Bone Wall,4-2=Bone Wall,3-12=Bone Wall,4-0=Bone Wall,4-1=Bone Wall,3-11=Bone Wall,4-5=Bone Wall,4-11=Bone Wall,5-0=Bone Wall,5-5=Bone Wall,5-4=Bone Wall,4-12=Bone Wall,5-9=Bone Wall,5-8=Bone Wall,5-7=Bone Wall,6-3=Bone Wall,6-2=Bone Wall,5-12=Bone Wall,5-11=Bone Wall,6-0=Bone Wall,5-10=Bone Wall,6-8=Bone Wall,6-9=Bone Wall,6-10=Bone Wall,7-0=Bone Wall,6-11=Bone Wall,6-4=Bone Wall,6-5=Bone Wall,6-7=Bone Wall,7-7=Bone Wall,7-8=Bone Wall,7-9=Bone Wall,6-12=Bone Wall,7-2=Bone Wall,7-3=Bone Wall,7-4=Bone Wall,7-5=Bone Wall,7-11=Bone Wall,7-10=Bone Wall,8-0=Bone Wall,7-12=Bone Wall,8-13=Bone Wall,8-12=Bone Wall,9-5=Bone Wall,9-4=Bone Wall,8-11=Bone Wall,8-10=Bone Wall,9-0=Bone Wall,9-12=Bone Wall,9-13=Bone Wall,9-10=Bone Wall,10-0=Bone Wall,9-11=Bone Wall,9-8=Bone Wall,9-6=Bone Wall,9-7=Bone Wall,10-10=Bone Wall,11-0=Bone Wall,10-8=Bone Wall,10-6=Bone Wall,10-7=Bone Wall,10-4=Bone Wall,10-5=Bone Wall,11-8=Bone Wall,11-7=Bone Wall,11-6=Bone Wall,11-5=Bone Wall,11-4=Bone Wall,12-7=Bone Wall,12-6=Bone Wall,12-5=Bone Wall,12-4=Bone Wall,12-0=Bone Wall,11-10=Bone Wall,13-7=Bone Wall,13-6=Bone Wall,13-8=Bone Wall,14-1=Bone Wall,13-11=Bone Wall,14-0=Bone Wall,13-10=Bone Wall,14-3=Bone Wall,13-13=Bone Wall,14-2=Bone Wall,12-8=Bone Wall,13-1=Bone Wall,13-0=Bone Wall,12-10=Bone Wall,13-3=Bone Wall,13-2=Bone Wall,13-5=Bone Wall,13-4=Bone Wall,14-13=Bone Wall,14-14=Bone Wall,15-8=Bone Wall,14-4=Bone Wall,13-14=Bone Wall,14-5=Bone Wall,14-6=Bone Wall,14-7=Bone Wall,14-8=Bone Wall,15-0=Bone Wall,14-10=Bone Wall,14-11=Bone Wall,17-0=Bone Wall,16-10=Bone Wall,16-8=Bone Wall,17-4=Bone Wall,17-3=Bone Wall,16-3=Bone Wall,15-13=Bone Wall,15-11=Bone Wall,16-0=Bone Wall,15-10=Bone Wall,16-4=Bone Wall,15-14=Bone Wall,18-4=Bone Wall,19-0=Bone Wall,18-10=Bone Wall,18-8=Bone Wall,18-9=Bone Wall,17-8=Bone Wall,18-3=Bone Wall,18-0=Bone Wall,17-10=Bone Wall,20-5=Bone Wall,20-4=Bone Wall,20-6=Bone Wall,20-1=Bone Wall,20-0=Bone Wall,19-10=Bone Wall,20-3=Bone Wall,20-2=Bone Wall,19-9=Bone Wall,19-8=Bone Wall,19-3=Bone Wall,19-4=Bone Wall,21-12=Bone Wall,21-13=Bone Wall,21-6=Bone Wall,21-2=Bone Wall,21-3=Bone Wall,21-4=Bone Wall,21-5=Bone Wall,20-8=Bone Wall,20-9=Bone Wall,21-0=Bone Wall,20-10=Bone Wall,21-1=Bone Wall,21-14=Bone Wall,</Wall_Objects>
+<Direction_Map>10-7=Fiery Skull(UP);9-6=Fiery Skull(RIGHT);11-6=Fiery Skull(LEFT);10-5=Fiery Skull(DOWN);8-3=Skull Torch(DOWN);12-3=Skull Torch(DOWN);</Direction_Map>
+<Plan><Dungeon_Type>Ancient Crypt</Dungeon_Type>
+<Zones><Zone__0765_X0-22845_Y0-15><Blocks><Entrance_Room-0><Block_Type>Room</Block_Type>
+<Room_Type>ENTRANCE_ROOM</Room_Type>
+<Coordinates>3-2;3-3;3-1;3-4;2-2;2-3;2-1;2-4;1-2;1-3;1-1;1-4;</Coordinates><Objects></Objects></Entrance_Room-0><Common_Room-1><Block_Type>Room</Block_Type>
+<Room_Type>COMMON_ROOM</Room_Type>
+<Coordinates>8-2;8-3;8-1;9-2;9-3;9-1;10-2;10-3;10-1;11-2;11-3;11-1;12-2;12-3;12-1;13-8;13-7;13-6;13-5;13-4;12-8;12-7;12-6;12-5;12-4;11-8;11-7;11-6;11-5;11-4;10-8;10-7;10-6;10-5;10-4;9-8;9-7;9-6;9-5;9-4;7-4;14-6;6-4;</Coordinates><Objects>6-4=Skull Pile,10-6=Occult Statue,10-3=Death Gateway,11-7=Skull Pile,10-7=Fiery Skull,9-6=Fiery Skull,11-6=Fiery Skull,10-5=Fiery Skull,9-7=Skull Pile,11-3=Death Crystal,9-3=Death Crystal,7-4=Dark Crystal,13-4=Dark Crystal,14-6=Cemetary Gate Blocked,8-3=Ruined Column,12-3=Ruined Column,12-4=Witchfire Brazier,8-3=Skull Torch,12-3=Skull Torch,11-5=Demon Statue,9-7=Burning Skull,11-7=Burning Skull,10-8=Dead Tree,9-4=Death Knight,11-4=Death Knight,11-8=Huorn,9-8=Ghoul,10-4=Eledari Dark Druid,12-5=Plague Servant,12-6=Husk,12-7=Husk,13-5=Zombie Beast,</Objects></Common_Room-1><Culdesac-2><Block_Type>Culdesac</Block_Type>
+<Coordinates>8-6;8-7;8-5;8-8;8-4;8-9;9-9;10-9;11-9;12-9;13-9;14-9;15-9;16-9;17-9;7-9;7-5;6-8;6-10;7-7;</Coordinates><Objects>7-9=Skull Pile,6-8=Skull Pile,14-9=Cemetary Gate,8-4=Witchfire Brazier,8-5=Death Adept,8-6=Zombie,8-7=Corpseborn,8-9=Malefic Shade,7-5=Poison Elemental,</Objects></Culdesac-2><Culdesac-3><Block_Type>Culdesac</Block_Type>
+<Coordinates>7-6;6-6;5-6;4-6;4-7;4-8;4-9;4-10;3-10;2-10;1-10;1-9;1-8;1-7;1-6;</Coordinates><Objects>6-6=Cemetary Gate Open,</Objects></Culdesac-3><Common_Room-4><Block_Type>Room</Block_Type>
+<Room_Type>COMMON_ROOM</Room_Type>
+<Coordinates>16-12;16-13;16-14;17-12;17-13;17-14;18-12;18-13;18-14;19-12;19-13;19-14;20-12;20-13;20-14;</Coordinates><Objects></Objects></Common_Room-4><Treasure_Room-5><Block_Type>Room</Block_Type>
+<Room_Type>TREASURE_ROOM</Room_Type>
+<Coordinates>3-14;3-13;4-14;4-13;5-14;5-13;6-14;6-13;7-14;7-13;</Coordinates><Objects></Objects></Treasure_Room-5><Common_Room-6><Block_Type>Room</Block_Type>
+<Room_Type>COMMON_ROOM</Room_Type>
+<Coordinates>19-6;19-5;19-7;18-6;18-5;18-7;17-6;17-5;17-7;16-6;16-5;16-7;15-6;15-5;15-7;</Coordinates><Objects></Objects></Common_Room-6><Treasure_Room-7><Block_Type>Room</Block_Type>
+<Room_Type>TREASURE_ROOM</Room_Type>
+<Coordinates>17-2;17-1;18-2;18-1;19-2;19-1;</Coordinates><Objects></Objects></Treasure_Room-7><Secret_Room-8><Block_Type>Room</Block_Type>
+<Room_Type>SECRET_ROOM</Room_Type>
+<Coordinates>5-3;5-2;5-1;</Coordinates><Objects></Objects></Secret_Room-8><Entrance_Room-9><Block_Type>Room</Block_Type>
+<Room_Type>ENTRANCE_ROOM</Room_Type>
+<Coordinates>10-14;10-13;10-12;10-11;11-14;11-13;11-12;11-11;12-14;12-13;12-12;12-11;</Coordinates><Objects></Objects></Entrance_Room-9><Secret_Room-10><Block_Type>Room</Block_Type>
+<Room_Type>SECRET_ROOM</Room_Type>
+<Coordinates>21-8;21-9;21-10;</Coordinates><Objects></Objects></Secret_Room-10><Secret_Room-11><Block_Type>Room</Block_Type>
+<Room_Type>SECRET_ROOM</Room_Type>
+<Coordinates>1-13;1-12;1-14;</Coordinates><Objects></Objects></Secret_Room-11><Corridor-12><Block_Type>Corridor</Block_Type>
+<Coordinates>7-1;6-1;</Coordinates><Objects></Objects></Corridor-12><Corridor-13><Block_Type>Corridor</Block_Type>
+<Coordinates>16-11;17-11;18-11;19-11;20-11;21-11;</Coordinates><Objects></Objects></Corridor-13><Corridor-14><Block_Type>Corridor</Block_Type>
+<Coordinates>20-7;21-7;</Coordinates><Objects></Objects></Corridor-14><Corridor-15><Block_Type>Corridor</Block_Type>
+<Coordinates>16-1;15-1;15-2;15-3;15-4;</Coordinates><Objects></Objects></Corridor-15><Corridor-16><Block_Type>Corridor</Block_Type>
+<Coordinates>9-14;8-14;</Coordinates><Objects></Objects></Corridor-16><Corridor-17><Block_Type>Corridor</Block_Type>
+<Coordinates>7-1;</Coordinates><Objects></Objects></Corridor-17><Corridor-18><Block_Type>Corridor</Block_Type>
+<Coordinates>15-12;14-12;13-12;</Coordinates><Objects></Objects></Corridor-18><Corridor-19><Block_Type>Corridor</Block_Type>
+<Coordinates>2-14;</Coordinates><Objects></Objects></Corridor-19><Corridor-20><Block_Type>Corridor</Block_Type>
+<Coordinates>16-2;</Coordinates><Objects></Objects></Corridor-20><Corridor-21><Block_Type>Corridor</Block_Type>
+<Coordinates>4-3;</Coordinates><Objects></Objects></Corridor-21><Corridor-22><Block_Type>Corridor</Block_Type>
+<Coordinates>4-4;</Coordinates><Objects></Objects></Corridor-22><Corridor-23><Block_Type>Corridor</Block_Type>
+<Coordinates>0-12;0-13;0-14;1-14;</Coordinates><Objects></Objects></Corridor-23></Blocks></Zone__0765_X0-22845_Y0-15></Zones></Plan></Level>

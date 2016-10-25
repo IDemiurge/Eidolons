@@ -1,0 +1,6 @@
+<ActiveAbility><SelectiveTargeting><RefCondition><STRING>SOURCE</STRING>
+<STRING>MATCH</STRING>
+<BOOLEAN>TRUE</BOOLEAN>
+</RefCondition><FORMULA>1</FORMULA>
+</SelectiveTargeting><Effects><DealDamageEffect><FORMULA>25+{SOURCE_SHADOW_MASTERY}*10</FORMULA>
+</DealDamageEffect></Effects></ActiveAbility>

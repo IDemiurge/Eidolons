@@ -1,0 +1,18 @@
+3820 - NEW ID for Mode Defend
+3821 - NEW ID for ConcentrateMode
+3823 - NEW ID for MeditateMode
+3824 - NEW ID for AlertMode
+3825 - NEW ID for Attack
+3822 - NEW ID for RestMode
+3826 - NEW ID for TurnAnticlockwise
+3828 - NEW ID for StdMove
+3827 - NEW ID for TurnClockwise
+3829 - NEW ID for Wait
+3830 - NEW ID for Sidestep Left
+3831 - NEW ID for Sidestep Right
+3832 - NEW ID for StdMoveBack
+3833 - NEW ID for Selective move
+3834 - NEW ID for SearchMode
+3836 - NEW ID for Use Inventory
+3837 - NEW ID for Sidestep Left
+3838 - NEW ID for Sidestep Right

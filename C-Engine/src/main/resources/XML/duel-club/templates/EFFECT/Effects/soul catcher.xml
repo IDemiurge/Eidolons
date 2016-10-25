@@ -1,0 +1,7 @@
+<Effects><ModifyCounterEffect><STRING>Soul_Counter</STRING>
+<MODVAL_TYPE>MODIFY_BY_CONST</MODVAL_TYPE>
+<STRING>min91^VAR765_{event_target_level}92</STRING>
+</ModifyCounterEffect><ModifyValueEffect><PARAM>C_Essence</PARAM>
+<MODVAL_TYPE>MODIFY_BY_CONST</MODVAL_TYPE>
+<STRING>{event_target_power}*^VAR</STRING>
+</ModifyValueEffect></Effects>

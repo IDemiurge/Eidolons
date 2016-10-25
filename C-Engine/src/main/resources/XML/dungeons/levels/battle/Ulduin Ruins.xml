@@ -1,0 +1,13 @@
+<Level><Custom_Props><Enemy_Spawn_Coordinates>7-3</Enemy_Spawn_Coordinates>
+<Party_Spawn_Coordinates>7-7</Party_Spawn_Coordinates>
+<Name>Ulduin Ruins</Name>
+<Dungeon_Subfolder>BATTLE</Dungeon_Subfolder>
+<Displayed_Name>Ulduin Ruins</Displayed_Name>
+<Workspace_Group>IMPLEMENT</Workspace_Group>
+</Custom_Props><Custom_Params><Bf_Width>15</Bf_Width>
+<Bf_Height>10</Bf_Height>
+</Custom_Params><Wall_Objects></Wall_Objects>
+<Direction_Map>6-9=Magic Circles(UP);5-2=Fiery Skull(DOWN);9-7=Rune Inscription(UP);9-2=Fiery Skull(DOWN);5-7=Ice Crust(UP);8-9=Glowing Glyph(UP);10-5=Icicles(LEFT);</Direction_Map>
+<Plan><Dungeon_Type>Snowcloud Peaks</Dungeon_Type>
+<Zones><Zone__0765_X-1-15845_Y-1-10><Blocks><Room-0><Block_Type>Room</Block_Type>
+<Coordinates>14-9;14-9;14-8;14-7;14-6;14-5;14-4;14-3;14-2;14-1;14-0;14-9;14-9;14-8;14-7;14-6;14-5;14-4;14-3;14-2;14-1;14-0;13-9;13-9;13-8;13-7;13-6;13-5;13-4;13-3;13-2;13-1;13-0;12-9;12-9;12-8;12-7;12-6;12-5;12-4;12-3;12-2;12-1;12-0;11-9;11-9;11-8;11-7;11-6;11-5;11-4;11-3;11-2;11-1;11-0;10-9;10-9;10-8;10-7;10-6;10-5;10-4;10-3;10-2;10-1;10-0;9-9;9-9;9-8;9-7;9-6;9-5;9-4;9-3;9-2;9-1;9-0;8-9;8-9;8-8;8-7;8-6;8-5;8-4;8-3;8-2;8-1;8-0;7-9;7-9;7-8;7-7;7-6;7-5;7-4;7-3;7-2;7-1;7-0;6-9;6-9;6-8;6-7;6-6;6-5;6-4;6-3;6-2;6-1;6-0;5-9;5-9;5-8;5-7;5-6;5-5;5-4;5-3;5-2;5-1;5-0;4-9;4-9;4-8;4-7;4-6;4-5;4-4;4-3;4-2;4-1;4-0;3-9;3-9;3-8;3-7;3-6;3-5;3-4;3-3;3-2;3-1;3-0;2-9;2-9;2-8;2-7;2-6;2-5;2-4;2-3;2-2;2-1;2-0;1-9;1-9;1-8;1-7;1-6;1-5;1-4;1-3;1-2;1-1;1-0;0-9;0-9;0-8;0-7;0-6;0-5;0-4;0-3;0-2;0-1;0-0;</Coordinates><Objects>2-3=Rune Column,2-5=Rune Column,2-7=Rune Column,3-5=Tombstone,4-3=Snowcovered Ruins,4-1=Wall of Skulls,4-6=Forgotten God,4-4=Titan Head,4-5=Offering Fire,5-0=Wall of Skulls,4-9=Focus Vault,4-9=Focus Vault,4-8=Crumbling Wall,5-2=Fiery Skull,5-2=Wall of Skulls,5-9=Crumbling Wall,5-9=Crumbling Wall,5-7=Ice Crust,5-7=Crumbling Wall,6-9=Magic Circles,6-9=Crumbling Wall,6-9=Magic Circles,6-9=Crumbling Wall,6-5=Ice Shell,6-5=Ruined Structure,7-5=Ruined Column,8-5=Snowcovered Ruins,9-2=Fiery Skull,9-2=Bone Wall,8-9=Glowing Glyph,8-9=Crumbling Wall,8-9=Glowing Glyph,8-9=Crumbling Wall,9-0=Bone Wall,10-1=Bone Wall,9-9=Crumbling Wall,9-9=Crumbling Wall,9-7=Rune Inscription,9-7=Crumbling Wall,10-8=Crumbling Wall,10-9=Essence Vault,10-9=Essence Vault,10-6=Broken Statue,10-4=Fallen Statue,10-5=Offering Fire,11-5=Tombstone,12-7=Rune Column,12-5=Rune Column,12-3=Rune Column,</Objects></Room-0></Blocks></Zone__0765_X-1-15845_Y-1-10></Zones></Plan></Level>

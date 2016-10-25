@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project Dueling-Club">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+        <jar destfile="X:/Dropbox/DC/DuelingClub.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="test.frontend.BattleFieldPrototype"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="X:/Dropbox/code/Dueling-Club/bin"/>
+            <fileset dir="X:/Dropbox/code/C-Engine/bin"/>
+        	 <fileset dir="X:/Dropbox/code/C-Engine/RES"/>
+            <zipfileset excludes="META-INF/*.SF" src="X:/Dropbox/code/C-Engine/lib/miglayout15-swing.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="X:/Dropbox/code/C-Engine/lib/log4j-1.2.16.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="X:/Dropbox/code/C-Engine/lib/jintellitype-1.3.8.jar"/>
+        </jar>
+    </target>
+</project>

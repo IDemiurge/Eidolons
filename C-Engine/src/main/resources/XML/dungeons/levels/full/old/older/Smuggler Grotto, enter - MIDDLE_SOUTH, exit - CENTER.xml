@@ -1,0 +1,49 @@
+<Level><Custom_Props></Custom_Props><Custom_Params><Bf_Width>0</Bf_Width>
+<Bf_Height>16</Bf_Height>
+</Custom_Params><Wall_Objects>0-0=Stone Wall,0-1=Stone Wall,0-2=Stone Wall,0-3=Stone Wall,0-4=Stone Wall,0-5=Stone Wall,0-6=Stone Wall,0-7=Stone Wall,0-8=Stone Wall,0-9=Stone Wall,0-10=Stone Wall,1-0=Stone Wall,0-11=Stone Wall,0-12=Stone Wall,0-13=Stone Wall,0-14=Stone Wall,0-15=Stone Wall,2-0=Stone Wall,1-13=Stone Wall,1-15=Stone Wall,1-14=Stone Wall,2-7=Stone Wall,2-6=Stone Wall,2-9=Stone Wall,2-8=Stone Wall,2-11=Stone Wall,3-0=Stone Wall,2-10=Stone Wall,2-14=Stone Wall,2-15=Stone Wall,2-12=Stone Wall,2-13=Stone Wall,4-2=Stone Wall,3-12=Stone Wall,3-13=Stone Wall,4-0=Stone Wall,4-1=Stone Wall,4-6=Stone Wall,4-7=Stone Wall,4-4=Stone Wall,3-14=Stone Wall,3-15=Stone Wall,5-1=Stone Wall,5-0=Stone Wall,4-10=Stone Wall,4-9=Stone Wall,4-8=Stone Wall,4-15=Stone Wall,4-13=Stone Wall,4-12=Stone Wall,5-2=Stone Wall,5-9=Stone Wall,5-8=Stone Wall,5-7=Stone Wall,5-6=Stone Wall,5-13=Stone Wall,5-12=Stone Wall,6-2=Stone Wall,6-1=Stone Wall,5-10=Stone Wall,6-0=Stone Wall,6-9=Stone Wall,6-10=Stone Wall,7-0=Stone Wall,7-1=Stone Wall,6-4=Stone Wall,5-15=Stone Wall,6-5=Stone Wall,7-9=Stone Wall,6-12=Stone Wall,7-2=Stone Wall,6-13=Stone Wall,7-4=Stone Wall,6-15=Stone Wall,7-5=Stone Wall,7-15=Stone Wall,8-5=Stone Wall,8-4=Stone Wall,7-10=Stone Wall,8-0=Stone Wall,8-13=Stone Wall,8-12=Stone Wall,8-15=Stone Wall,9-5=Stone Wall,8-14=Stone Wall,9-4=Stone Wall,8-9=Stone Wall,8-11=Stone Wall,8-10=Stone Wall,9-0=Stone Wall,10-0=Stone Wall,11-0=Stone Wall,10-10=Stone Wall,10-9=Stone Wall,9-14=Stone Wall,9-15=Stone Wall,11-9=Stone Wall,11-8=Stone Wall,11-7=Stone Wall,11-5=Stone Wall,10-15=Stone Wall,11-4=Stone Wall,10-14=Stone Wall,12-5=Stone Wall,11-15=Stone Wall,12-4=Stone Wall,11-14=Stone Wall,12-0=Stone Wall,11-10=Stone Wall,13-9=Stone Wall,14-1=Stone Wall,14-0=Stone Wall,13-10=Stone Wall,14-3=Stone Wall,14-2=Stone Wall,12-9=Stone Wall,13-1=Stone Wall,13-0=Stone Wall,12-10=Stone Wall,13-3=Stone Wall,13-2=Stone Wall,13-5=Stone Wall,12-15=Stone Wall,13-4=Stone Wall,12-14=Stone Wall,15-2=Stone Wall,14-12=Stone Wall,15-3=Stone Wall,15-4=Stone Wall,14-14=Stone Wall,15-5=Stone Wall,14-15=Stone Wall,15-9=Stone Wall,14-4=Stone Wall,13-14=Stone Wall,14-5=Stone Wall,13-15=Stone Wall,14-9=Stone Wall,15-0=Stone Wall,14-10=Stone Wall,15-1=Stone Wall,14-11=Stone Wall,17-1=Stone Wall,17-0=Stone Wall,16-9=Stone Wall,16-15=Stone Wall,16-3=Stone Wall,16-2=Stone Wall,16-1=Stone Wall,16-0=Stone Wall,16-5=Stone Wall,15-15=Stone Wall,16-4=Stone Wall,18-7=Stone Wall,18-4=Stone Wall,18-5=Stone Wall,17-15=Stone Wall,19-0=Stone Wall,18-10=Stone Wall,19-1=Stone Wall,18-11=Stone Wall,18-9=Stone Wall,17-7=Stone Wall,18-3=Stone Wall,18-0=Stone Wall,18-1=Stone Wall,19-15=Stone Wall,19-14=Stone Wall,20-7=Stone Wall,20-1=Stone Wall,20-0=Stone Wall,19-10=Stone Wall,19-7=Stone Wall,19-9=Stone Wall,18-12=Stone Wall,18-15=Stone Wall,21-7=Stone Wall,20-14=Stone Wall,20-15=Stone Wall,20-9=Stone Wall,21-0=Stone Wall,20-10=Stone Wall,21-1=Stone Wall,20-11=Stone Wall,</Wall_Objects>
+<Direction_Map>8-6=Candles(DOWN);7-7=Candles(RIGHT);8-8=Candles(UP);9-7=Candles(LEFT);</Direction_Map>
+<Plan><Dungeon_Type>Smuggler Grotto</Dungeon_Type>
+<Zones><Zone__0765_X0-22845_Y0-16><Blocks><Entrance_Room-0><Block_Type>Room</Block_Type>
+<Room_Type>ENTRANCE_ROOM</Room_Type>
+<Coordinates>3-5;3-4;3-3;3-2;3-1;2-5;2-3;2-2;2-1;1-5;1-3;1-2;1-1;4-6;</Coordinates><Objects></Objects></Entrance_Room-0><Common_Room-1><Block_Type>Room</Block_Type>
+<Room_Type>COMMON_ROOM</Room_Type>
+<Coordinates>8-3;9-3;9-2;10-3;11-3;11-2;11-1;12-3;12-2;12-1;9-1;7-2;7-1;7-4;9-4;12-4;11-4;</Coordinates><Objects></Objects></Common_Room-1><Culdesac-2><Block_Type>Culdesac</Block_Type>
+<Coordinates>3-6;3-7;3-8;3-9;3-10;4-11;5-11;6-11;7-11;7-12;7-13;7-14;6-14;5-14;4-14;4-10;4-9;5-10;2-7;4-7;2-9;</Coordinates><Objects>4-14=Stairs,</Objects></Culdesac-2><Common_Room-3><Block_Type>Room</Block_Type>
+<Room_Type>COMMON_ROOM</Room_Type>
+<Coordinates>12-7;12-6;12-8;13-7;13-6;13-8;14-7;14-6;14-8;15-7;15-6;15-8;16-7;16-6;16-8;11-7;</Coordinates><Objects></Objects></Common_Room-3><Secret_Room-4><Block_Type>Room</Block_Type>
+<Room_Type>SECRET_ROOM</Room_Type>
+<Coordinates>17-4;17-3;17-2;16-4;16-3;16-2;15-4;15-3;15-2;14-4;14-3;14-2;</Coordinates><Objects></Objects></Secret_Room-4><Secret_Room-5><Block_Type>Room</Block_Type>
+<Room_Type>SECRET_ROOM</Room_Type>
+<Coordinates>19-13;19-12;19-11;</Coordinates><Objects>19-11=Stairs,</Objects></Secret_Room-5><Entrance_Room-6><Block_Type>Room</Block_Type>
+<Room_Type>ENTRANCE_ROOM</Room_Type>
+<Coordinates>19-6;19-5;19-4;19-3;19-2;20-6;20-5;20-4;20-3;20-2;21-6;21-5;21-4;21-3;21-2;</Coordinates><Objects></Objects></Entrance_Room-6><Common_Room-7><Block_Type>Room</Block_Type>
+<Room_Type>COMMON_ROOM</Room_Type>
+<Coordinates>13-13;13-12;13-11;12-13;12-12;12-11;11-13;11-12;11-11;10-13;10-12;10-11;9-13;9-12;9-11;</Coordinates><Objects></Objects></Common_Room-7><Common_Room-8><Block_Type>Room</Block_Type>
+<Room_Type>COMMON_ROOM</Room_Type>
+<Coordinates>10-6;9-6;8-6;7-6;6-6;10-7;9-7;8-7;7-7;6-7;10-8;9-8;8-8;7-8;6-8;</Coordinates><Objects>8-7=Dragon Altar,6-6=Treasure Chest,6-7=Treasure Chest,6-8=Treasure Chest,8-6=Candles,7-7=Candles,8-8=Candles,9-7=Candles,</Objects></Common_Room-8><Secret_Room-9><Block_Type>Room</Block_Type>
+<Room_Type>SECRET_ROOM</Room_Type>
+<Coordinates>21-13;21-14;21-15;</Coordinates><Objects></Objects></Secret_Room-9><Secret_Room-10><Block_Type>Room</Block_Type>
+<Room_Type>SECRET_ROOM</Room_Type>
+<Coordinates>1-10;1-11;1-12;2-12;0-12;2-13;1-14;1-13;0-15;0-14;0-13;</Coordinates><Objects></Objects></Secret_Room-10><Entrance_Room-11><Block_Type>Room</Block_Type>
+<Room_Type>ENTRANCE_ROOM</Room_Type>
+<Coordinates>17-14;17-13;17-12;17-11;17-10;16-14;16-13;16-12;16-11;16-10;15-14;15-13;15-12;15-11;15-10;</Coordinates><Objects></Objects></Entrance_Room-11><Secret_Room-12><Block_Type>Room</Block_Type>
+<Room_Type>SECRET_ROOM</Room_Type>
+<Coordinates>21-9;21-10;21-11;</Coordinates><Objects></Objects></Secret_Room-12><Corridor-13><Block_Type>Corridor</Block_Type>
+<Coordinates></Coordinates><Objects></Objects></Corridor-13><Corridor-14><Block_Type>Corridor</Block_Type>
+<Coordinates>17-5;17-6;</Coordinates><Objects></Objects></Corridor-14><Corridor-15><Block_Type>Corridor</Block_Type>
+<Coordinates>20-12;21-12;</Coordinates><Objects></Objects></Corridor-15><Corridor-16><Block_Type>Corridor</Block_Type>
+<Coordinates>18-2;</Coordinates><Objects></Objects></Corridor-16><Corridor-17><Block_Type>Corridor</Block_Type>
+<Coordinates>17-9;17-8;</Coordinates><Objects></Objects></Corridor-17><Corridor-18><Block_Type>Corridor</Block_Type>
+<Coordinates>20-13;</Coordinates><Objects></Objects></Corridor-18><Corridor-19><Block_Type>Corridor</Block_Type>
+<Coordinates>18-6;</Coordinates><Objects></Objects></Corridor-19><Corridor-20><Block_Type>Corridor</Block_Type>
+<Coordinates></Coordinates><Objects></Objects></Corridor-20><Corridor-21><Block_Type>Corridor</Block_Type>
+<Coordinates>18-14;18-13;</Coordinates><Objects></Objects></Corridor-21><Corridor-22><Block_Type>Corridor</Block_Type>
+<Coordinates>7-3;6-3;5-3;4-3;5-2;5-1;</Coordinates><Objects></Objects></Corridor-22><Corridor-23><Block_Type>Corridor</Block_Type>
+<Coordinates>9-10;9-9;</Coordinates><Objects>9-9=Door,</Objects></Corridor-23><Corridor-24><Block_Type>Corridor</Block_Type>
+<Coordinates>21-8;20-8;19-8;18-8;</Coordinates><Objects></Objects></Corridor-24><Corridor-25><Block_Type>Corridor</Block_Type>
+<Coordinates>14-13;</Coordinates><Objects></Objects></Corridor-25><Corridor-26><Block_Type>Corridor</Block_Type>
+<Coordinates>5-4;</Coordinates><Objects></Objects></Corridor-26><Corridor-27><Block_Type>Corridor</Block_Type>
+<Coordinates>20-13;</Coordinates><Objects></Objects></Corridor-27><Corridor-28><Block_Type>Corridor</Block_Type>
+<Coordinates>1-9;1-7;</Coordinates><Objects></Objects></Corridor-28><Corridor-29><Block_Type>Corridor</Block_Type>
+<Coordinates>21-12;</Coordinates><Objects></Objects></Corridor-29><Corridor-30><Block_Type>Corridor</Block_Type>
+<Coordinates>1-9;</Coordinates><Objects></Objects></Corridor-30></Blocks></Zone__0765_X0-22845_Y0-16></Zones><Entrances>Middle South</Entrances><Exits>Center</Exits></Plan></Level>

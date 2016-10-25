@@ -1,0 +1,49 @@
+<Level><Custom_Props><Displayed_Name>Ashwood</Displayed_Name>
+<Name>Ashwood</Name>
+</Custom_Props><Custom_Params><Bf_Width>22</Bf_Width>
+<Bf_Height>15</Bf_Height>
+</Custom_Params><Wall_Objects>7-2=Dark Tree,7-6=Elder Tree,8-6=Giant Tree,7-7=Sleek Rock,8-7=Fallen Column,1-6=Runestone,1-7=Remains,2-6=Ruined Structure,2-5=Ruined Column,5-9=Arcane Crystal,15-9=Life Crystal,14-9=Old Tree,14-10=Shrub,16-9=Gnarled Tree,15-10=Mossy Rocks,10-10=Darkened Pond,11-10=Dark Tree,15-5=Desecrated Remains,10-4=Young Oak,11-4=Ancient Oak,9-4=Overgrown Fence,2-6=Burning Skull,4-9=Aether Sphere,5-8=Power Wards,4-10=Rocks,10-7=Obelisk,10-7=Skull Torch,14-4=Ruined Column,14-5=Ruined Structure,</Wall_Objects>
+<Direction_Map>2-6=Burning Skull(UP);</Direction_Map>
+<Plan><Dungeon_Type>Witch Grove</Dungeon_Type>
+<Zones><Zone__0765_X0-22845_Y0-15><Blocks><Entrance_Room-0><Block_Type>Room</Block_Type>
+<Room_Type>ENTRANCE_ROOM</Room_Type>
+<Coordinates>3-3;3-2;3-4;3-1;2-3;2-2;2-4;2-1;1-3;1-2;1-4;1-1;2-5;</Coordinates><Objects>1-3=Haunted Tree,2-2=Dead Tree,1-2=Darkened Pond,</Objects></Entrance_Room-0><Common_Room-1><Block_Type>Room</Block_Type>
+<Room_Type>COMMON_ROOM</Room_Type>
+<Coordinates>12-1;12-2;12-3;11-1;11-2;11-3;10-1;10-2;10-3;9-1;9-2;9-3;8-1;8-2;8-3;10-4;9-4;</Coordinates><Objects>8-2=Sleek Rock,10-4=Overgrown Fence,9-4=Young Oak,</Objects></Common_Room-1><Culdesac-2><Block_Type>Culdesac</Block_Type>
+<Coordinates>3-5;4-5;5-5;6-5;7-5;8-5;9-5;10-5;11-5;12-5;12-6;12-7;12-8;13-8;14-8;7-6;</Coordinates><Objects>7-5=Forest Crags,10-5=Mystic Pool,9-5=Overgrown Fence,11-5=Overgrown Fence,</Objects></Culdesac-2><Secret_Room-3><Block_Type>Room</Block_Type>
+<Room_Type>SECRET_ROOM</Room_Type>
+<Coordinates>3-13;3-12;3-11;</Coordinates><Objects></Objects></Secret_Room-3><Secret_Room-4><Block_Type>Room</Block_Type>
+<Room_Type>SECRET_ROOM</Room_Type>
+<Coordinates>1-12;1-11;1-10;</Coordinates><Objects></Objects></Secret_Room-4><Treasure_Room-5><Block_Type>Room</Block_Type>
+<Room_Type>TREASURE_ROOM</Room_Type>
+<Coordinates>18-14;18-13;17-14;17-13;16-14;16-13;</Coordinates><Objects></Objects></Treasure_Room-5><Entrance_Room-6><Block_Type>Room</Block_Type>
+<Room_Type>ENTRANCE_ROOM</Room_Type>
+<Coordinates>17-10;17-9;17-8;17-7;18-10;18-9;18-8;18-7;19-10;19-9;19-8;19-7;</Coordinates><Objects></Objects></Entrance_Room-6><Common_Room-7><Block_Type>Room</Block_Type>
+<Room_Type>COMMON_ROOM</Room_Type>
+<Coordinates>15-2;16-2;17-2;18-2;19-2;15-3;16-3;17-3;18-3;19-3;15-4;16-4;17-4;18-4;19-4;</Coordinates><Objects>15-4=Ruined Masonry,</Objects></Common_Room-7><Common_Room-8><Block_Type>Room</Block_Type>
+<Room_Type>COMMON_ROOM</Room_Type>
+<Coordinates>9-12;9-11;9-10;8-12;8-11;8-10;7-12;7-11;7-10;6-12;6-11;6-10;5-12;5-11;5-10;</Coordinates><Objects>9-10=Sleek Rock,5-10=Aether Font,6-10=Stalagmite,</Objects></Common_Room-8><Secret_Room-9><Block_Type>Room</Block_Type>
+<Room_Type>SECRET_ROOM</Room_Type>
+<Coordinates>5-3;5-2;5-1;</Coordinates><Objects>5-1=Witch Tree,</Objects></Secret_Room-9><Secret_Room-10><Block_Type>Room</Block_Type>
+<Room_Type>SECRET_ROOM</Room_Type>
+<Coordinates>20-14;21-14;20-13;21-13;20-12;21-12;</Coordinates><Objects></Objects></Secret_Room-10><Entrance_Room-11><Block_Type>Room</Block_Type>
+<Room_Type>ENTRANCE_ROOM</Room_Type>
+<Coordinates>13-14;12-14;11-14;13-13;12-13;11-13;13-12;12-12;11-12;13-11;12-11;11-11;14-10;</Coordinates><Objects></Objects></Entrance_Room-11><Secret_Room-12><Block_Type>Room</Block_Type>
+<Room_Type>SECRET_ROOM</Room_Type>
+<Coordinates>21-8;21-9;21-10;</Coordinates><Objects></Objects></Secret_Room-12><Corridor-13><Block_Type>Corridor</Block_Type>
+<Coordinates>4-1;</Coordinates><Objects></Objects></Corridor-13><Corridor-14><Block_Type>Corridor</Block_Type>
+<Coordinates>15-13;14-13;</Coordinates><Objects></Objects></Corridor-14><Corridor-15><Block_Type>Corridor</Block_Type>
+<Coordinates>19-11;19-12;</Coordinates><Objects></Objects></Corridor-15><Corridor-16><Block_Type>Corridor</Block_Type>
+<Coordinates>6-3;7-3;</Coordinates><Objects></Objects></Corridor-16><Corridor-17><Block_Type>Corridor</Block_Type>
+<Coordinates>13-1;14-1;14-2;</Coordinates><Objects></Objects></Corridor-17><Corridor-18><Block_Type>Corridor</Block_Type>
+<Coordinates>2-13;1-13;</Coordinates><Objects></Objects></Corridor-18><Corridor-19><Block_Type>Corridor</Block_Type>
+<Coordinates>1-13;</Coordinates><Objects></Objects></Corridor-19><Corridor-20><Block_Type>Corridor</Block_Type>
+<Coordinates>19-14;</Coordinates><Objects></Objects></Corridor-20><Corridor-21><Block_Type>Corridor</Block_Type>
+<Coordinates>16-10;16-11;16-12;</Coordinates><Objects></Objects></Corridor-21><Corridor-22><Block_Type>Corridor</Block_Type>
+<Coordinates>15-1;</Coordinates><Objects>15-1=Elder Tree,</Objects></Corridor-22><Corridor-23><Block_Type>Corridor</Block_Type>
+<Coordinates>10-11;</Coordinates><Objects>10-11=Dead Tree,</Objects></Corridor-23><Corridor-24><Block_Type>Corridor</Block_Type>
+<Coordinates>21-11;</Coordinates><Objects></Objects></Corridor-24><Corridor-25><Block_Type>Corridor</Block_Type>
+<Coordinates>10-12;</Coordinates><Objects></Objects></Corridor-25><Corridor-26><Block_Type>Corridor</Block_Type>
+<Coordinates>20-8;</Coordinates><Objects></Objects></Corridor-26><Corridor-27><Block_Type>Corridor</Block_Type>
+<Coordinates>2-13;</Coordinates><Objects></Objects></Corridor-27><Corridor-28><Block_Type>Corridor</Block_Type>
+<Coordinates>4-2;</Coordinates><Objects></Objects></Corridor-28></Blocks></Zone__0765_X0-22845_Y0-15></Zones></Plan></Level>

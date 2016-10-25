@@ -1,0 +1,9 @@
+<Level><Custom_Props><Displayed_Name>Iron Maze</Displayed_Name>
+<Filler_Type>Iron Wall</Filler_Type>
+<Workspace_Group>IMPLEMENT</Workspace_Group>
+<Name>Iron Maze</Name>
+</Custom_Props><Custom_Params><Bf_Width>23</Bf_Width>
+<Bf_Height>15</Bf_Height>
+</Custom_Params><Wall_Objects>11-13=Translocator,11-13=Translocator,11-13=Translocator,11-13=Translocator,11-13=Translocator,</Wall_Objects>
+<Plan><Dungeon_Type>Observatory</Dungeon_Type>
+<Zones><Zone__0765_X0-23845_Y0-15><Blocks></Blocks></Zone__0765_X0-23845_Y0-15></Zones></Plan></Level>

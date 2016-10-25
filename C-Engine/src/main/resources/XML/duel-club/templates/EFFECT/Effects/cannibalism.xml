@@ -1,0 +1,11 @@
+<Effects><ConditionalEffect><TemplateCondition><TARGETING_MODIFIERS>ONLY_LIVING</TARGETING_MODIFIERS>
+</TemplateCondition></ConditionalEffect><ModifyValueEffect><PARAM>C N Of Actions</PARAM>
+<MODVAL_TYPE>MODIFY_BY_CONST</MODVAL_TYPE>
+<STRING>-1</STRING>
+</ModifyValueEffect><ModifyValueEffect><PARAM>C Endurance</PARAM>
+<MODVAL_TYPE>MODIFY_BY_CONST</MODVAL_TYPE>
+<STRING>^VAR</STRING>
+</ModifyValueEffect><ModifyCounterEffect><STRING>undying counter</STRING>
+<MODVAL_TYPE>MODIFY_BY_CONST</MODVAL_TYPE>
+<STRING>^VAR</STRING>
+</ModifyCounterEffect></Effects>

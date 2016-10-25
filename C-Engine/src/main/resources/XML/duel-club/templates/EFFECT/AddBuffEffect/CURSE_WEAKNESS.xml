@@ -1,0 +1,6 @@
+<AddBuffEffect><STRING>Weakened</STRING>
+<ModifyValueEffect><PARAM>Base_damage</PARAM>
+<MODVAL_TYPE>MODIFY_BY_CONST</MODVAL_TYPE>
+<FORMULA>-^VAR</FORMULA>
+</ModifyValueEffect><FORMULA>max(5, ^VAR)</FORMULA>
+</AddBuffEffect>

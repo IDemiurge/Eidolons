@@ -1,0 +1,6 @@
+<AddBuffEffect><STRING>Illuminated</STRING>
+<Effects><AddStatusEffect><STATUS>ILLUMINATED</STATUS>
+</AddStatusEffect><ModifyValueEffect><PARAM>Concealment</PARAM>
+<MODVAL_TYPE>MODIFY_BY_CONST</MODVAL_TYPE>
+<STRING>-(^VAR)</STRING>
+</ModifyValueEffect></Effects></AddBuffEffect>

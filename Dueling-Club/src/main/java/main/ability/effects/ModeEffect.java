@@ -1,0 +1,256 @@
+package main.ability.effects;
+
+import main.ability.effects.oneshot.MicroEffect;
+import main.ability.effects.oneshot.common.ModifyPropertyEffect;
+import main.ability.effects.oneshot.common.ModifyValueEffect;
+import main.content.ContentManager;
+import main.content.PARAMS;
+import main.content.enums.MODE;
+import main.content.enums.ModeImpl;
+import main.content.enums.STD_MODES;
+import main.content.parameters.PARAMETER;
+import main.content.properties.G_PROPS;
+import main.content.properties.PROPERTY;
+import main.data.ability.AE_ConstrArgs;
+import main.data.ability.construct.VariableManager;
+import main.elements.conditions.Condition;
+import main.elements.conditions.RefCondition;
+import main.elements.conditions.StringComparison;
+import main.entity.Ref.KEYS;
+import main.entity.obj.top.DC_ActiveObj;
+import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.rules.mechanics.AlertRule;
+import main.rules.mechanics.InterruptRule;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
+import main.system.math.Formula;
+
+import java.util.Map;
+
+/**
+ * wait mode - set target initiative position?
+ * <p>
+ * how to modify Modes? I.e., a perk enables acting while Alert... ?
+ *
+ * @author JustMe
+ */
+public class ModeEffect extends MicroEffect {
+
+    private static final String PARAM_MOD = "param mod";
+    private static final String PARAM_BONUS = "param bonus";
+    private static final String TIME_FACTOR = "{TIME_FACTOR}";
+    protected boolean onActivateEffect;
+    protected boolean onDeactivateEffect;
+
+    private MODE mode;
+    private String prop = "{SOURCE_MODE}";
+    private AddBuffEffect addBuffEffect;
+    private STANDARD_EVENT_TYPE REMOVE_EVENT = STANDARD_EVENT_TYPE.ROUND_ENDS;
+    private ModifyPropertyEffect modPropEffect;
+    private boolean reinit = true;
+    private int timeModifier;
+
+    @AE_ConstrArgs(argNames = {"template", "name", "defenseMod", "disableCounter", "dispelOnHit",})
+    public ModeEffect(STD_MODES template, String name, Integer defenseMod, Boolean disableCounter,
+                      Boolean dispelOnHit) {
+        mode = new ModeImpl(template);
+        mode.setDefenseMod(defenseMod);
+        mode.setDisableCounter(disableCounter);
+        mode.setDispelOnHit(dispelOnHit);
+        if (mode.getBuffName() == null)
+            mode.setBuffName(name);
+        modPropEffect = new ModifyPropertyEffect(G_PROPS.MODE, MOD_PROP_TYPE.SET, template
+                .toString());
+
+    }
+
+    public ModeEffect(STD_MODES template) {
+        modPropEffect = new ModifyPropertyEffect(G_PROPS.MODE, MOD_PROP_TYPE.SET, template
+                .toString());
+
+        this.mode = template;
+    }
+
+    @Override
+    public boolean applyThis() {
+        if (reinit)
+            initBuffEffect();
+        timeModifier = getGame().getTurnManager().getTimeModifier();
+        main.system.auxiliary.LogMaster.log(1, getActiveObj() + "'s timeModifier= " + timeModifier);
+        if (mode.isDispelOnHit()) {
+            addDispelOnHitTrigger();
+        }
+        if (mode.isEndTurnEffect()) {
+            addEndTurnEffect();
+        }
+        if (mode.getDefenseMod() != 0) {
+            addDefModEffect();
+        }
+        addParamMods();
+        addParamBonuses();
+        addPropMods();
+
+        // if (mode.equals(STD_MODES.ALERT))
+        // addBuffEffect.addEffect(AlertRule.getWakeUpTriggerEffect());
+        if (addBuffEffect.getDuration() == null) {
+            if (mode.isContinuous())
+                addBuffEffect.setDuration(ContentManager.INFINITE_VALUE);
+            else
+                addBuffEffect.setDuration(1);
+
+        }
+        addBuffEffect.setIrresistible(true);
+        if (!mode.isContinuous())
+            addRemoveTrigger();
+        boolean result = addBuffEffect.apply(ref);
+        return result;
+    }
+
+    public synchronized AddBuffEffect getAddBuffEffect() {
+        if (addBuffEffect == null)
+            initBuffEffect();
+        return addBuffEffect;
+    }
+
+    public synchronized void setAddBuffEffect(AddBuffEffect addBuffEffect) {
+        this.addBuffEffect = addBuffEffect;
+    }
+
+    private void initBuffEffect() {
+        this.addBuffEffect = new AddBuffEffect(mode.getBuffName(), modPropEffect);
+        if (mode instanceof ModeImpl) {
+            addBuffEffect.addEffect(new SetCustomModeEffect(mode));
+        }
+    }
+
+    private void addPropMods() {
+        Map<PROPERTY, String> map = new RandomWizard<PROPERTY>().constructStringWeightMap(mode
+                .getPropsAdded(), PROPERTY.class);
+        for (PROPERTY param : map.keySet()) {
+            // addBuffEffect.addEffect(new ModifyValueEffect(param,
+            // MODVAL_TYPE.MODIFY_BY_PERCENT, ""+map.get(param)));
+        }
+    }
+
+    private void addParamBonuses() {
+        add(false, mode.getParameterBoni());
+    }
+
+    private void addParamMods() {
+        add(true, mode.getParameterMods());
+    }
+
+    private void add(boolean mod, String string) {
+        if (!StringMaster.isEmpty(string))
+            string += ";";
+        else
+            string = "";
+        // "Custom Parameters" of old...
+        for (String s : StringMaster.openContainer(ref.getSourceObj().getProperty(
+                G_PROPS.CUSTOM_PROPS))) {
+            if (StringMaster.contains(s, mode.getBuffName(), true, false))
+                if (StringMaster.contains(s, mod ? PARAM_MOD : PARAM_BONUS, true, false))
+                    string += VariableManager.removeVarPart(s) + ";";
+        }
+        Map<PARAMETER, Integer> map = new RandomWizard<PARAMETER>().constructWeightMap(string,
+                PARAMETER.class);
+        for (PARAMETER param : map.keySet())
+            if (param != null)
+                addBuffEffect.addEffect(new ModifyValueEffect(param, mod ? MOD.MODIFY_BY_PERCENT
+                        : MOD.MODIFY_BY_CONST, "" + map.get(param)));
+    }
+
+    private void addRemoveTrigger() {
+        REMOVE_EVENT = mode.getRemoveEvent();
+        if (REMOVE_EVENT == null)
+            return;
+        Condition c = null;
+        if (REMOVE_EVENT == STANDARD_EVENT_TYPE.UNIT_TURN_STARTED) {
+            c = new RefCondition(KEYS.EVENT_SOURCE, KEYS.MATCH);
+            // ++ remove disable actions?!
+        }
+        addBuffEffect.addEffect(new DelayedEffect(REMOVE_EVENT, new RemoveBuffEffect(addBuffEffect
+                .getBuffTypeName()), c));
+        // .apply(ref);
+    }
+
+    private void addDefModEffect() {
+        addBuffEffect.addEffect(new ModifyValueEffect(PARAMS.DEFENSE, MOD.MODIFY_BY_PERCENT, mode
+                .getDefenseMod()
+                + ""));
+    }
+
+    private void addDispelOnHitTrigger() {
+        Effects effects = new Effects(new RemoveBuffEffect(addBuffEffect.getBuffTypeName()));
+        if (!mode.equals(STD_MODES.ALERT))
+            effects.add(InterruptRule.getEffect());
+        else
+            effects.add(AlertRule.getInterruptEffect());
+
+        STANDARD_EVENT_TYPE event_type = STANDARD_EVENT_TYPE.UNIT_IS_DEALT_TOUGHNESS_DAMAGE; // TODO
+        Condition conditions = (mode.equals(STD_MODES.ALERT)) ? InterruptRule.getConditionsAlert()
+                : InterruptRule.getConditions();
+
+        addBuffEffect.addEffect(new DelayedEffect(event_type, effects, conditions));
+    }
+
+    private void addEndTurnEffect() {
+        Condition condition = new StringComparison(prop, mode.toString(), true);
+        if (mode == STD_MODES.DIVINATION) {
+            Effect effect = new DivinationEffect();
+            addBuffEffect.addEffect(new DelayedEffect(effect, condition));
+            return;
+        }
+        String formula = mode.getFormula();
+        if (ref.getActive() instanceof DC_ActiveObj) {
+            DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
+            if (activeObj.getParam(PARAMS.FORMULA).contains(StringMaster.MOD)) {
+                formula = StringMaster.wrapInParenthesis(formula) + "*"
+                        + activeObj.getParam(PARAMS.FORMULA) + "/100";
+            } else if (activeObj.getIntParam(PARAMS.FORMULA) != 0)
+                formula += "+" + activeObj.getIntParam(PARAMS.FORMULA);
+        }
+        ModifyValueEffect effect = new ModifyValueEffect(mode.getParameter(), MOD.MODIFY_BY_CONST,
+                new Formula("min(0, " + formula + ")"));
+        PARAMETER param = ContentManager.getPARAM(mode.getParameter());
+        effect.setParam(param);
+        effect.setMaxParam(ContentManager.getBaseParameterFromCurrent(param));
+        Formula appendedByModifier = new Formula(formula).getAppendedByModifier(timeModifier);
+        effect.setFormula(appendedByModifier);
+        addBuffEffect.addEffect(new DelayedEffect(effect, condition));
+        // new DelayedEffect(effect, condition).apply(ref);
+    }
+
+    public synchronized MODE getMode() {
+        return mode;
+    }
+
+    public synchronized void setMode(STD_MODES mode) {
+        this.mode = mode;
+    }
+
+    public boolean isOnActivateEffect() {
+        return onActivateEffect;
+    }
+
+    public boolean isOnDeactivateEffect() {
+        return onDeactivateEffect;
+    }
+
+    public String getProp() {
+        return prop;
+    }
+
+    public STANDARD_EVENT_TYPE getREMOVE_EVENT() {
+        return REMOVE_EVENT;
+    }
+
+    public ModifyPropertyEffect getModPropEffect() {
+        return modPropEffect;
+    }
+
+    public void setReinit(boolean b) {
+        reinit = b;
+    }
+
+}

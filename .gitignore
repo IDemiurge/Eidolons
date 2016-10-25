@@ -1,0 +1,13 @@
+*.jar
+*.iml
+.idea/*
+deploy
+C-Engine/target/*
+Dueling-Club/target/*
+*.class
+*.log
+*.log.*
+.idea
+.metadata/*
+generated
+/out

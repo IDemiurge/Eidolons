@@ -1,0 +1,22 @@
+build GUI
+
+tree view
+table view
+menu
+control panel
+
+layout? 
+in what way is G used? by Builders? yes, they would have just imperative ways of 
+using G classes. But what is the advantage over using standard classes? 
+Kind of more control and separation of concerns, more encapsulation and potential for
+future re-use. 
+Good.
+
+But let's use eXtreme - first write Builders
+
+
+
+data is taken from C engine, but it will be first made into Strings, then passed
+to G classes. 
+
+I decided that I will try to use G Engine, but I won't cross the line of reason

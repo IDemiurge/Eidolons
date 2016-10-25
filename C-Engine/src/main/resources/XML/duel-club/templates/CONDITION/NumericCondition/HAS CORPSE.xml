@@ -1,0 +1,4 @@
+<NumericCondition><FORMULA>{MATCH_N_OF_CORPSES}</FORMULA>
+<FORMULA>0</FORMULA>
+<BOOLEAN>false</BOOLEAN>
+</NumericCondition>

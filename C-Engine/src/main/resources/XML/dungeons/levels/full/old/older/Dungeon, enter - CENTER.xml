@@ -1,0 +1,38 @@
+<Level><Wall_Objects>10-2=Stone Wall;10-3=Stone Wall;10-1=Stone Wall;10-4=Stone Wall;11-4=Stone Wall;12-4=Stone Wall;13-4=Stone Wall;14-4=Stone Wall;15-4=Stone Wall;16-2=Stone Wall;16-3=Stone Wall;16-1=Stone Wall;16-4=Stone Wall;17-2=Stone Wall;17-3=Stone Wall;17-1=Stone Wall;17-4=Stone Wall;13-16=Stairs;12-11=Skull Torch;14-11=Skull Torch;11-6=Skull Torch;15-6=Skull Torch;13-11=Stone Door;17-7=Death Crystal;10-1=Stone Door;16-1=Stone Door;</Wall_Objects>
+<Plan><Dungeon_Type>Dungeon</Dungeon_Type>
+<Zones><Zone__0765_X0-28845_Y0-18><Blocks><Death_Room-0><Block_Type>Room</Block_Type>
+<Room_Type>DEATH_ROOM</Room_Type>
+<Coordinates>13-1;12-1;14-1;11-1;15-1;13-2;12-2;14-2;11-2;15-2;13-3;12-3;14-3;11-3;15-3;</Coordinates><Objects>11-2=Stone Wall,11-3=Stone Wall,11-1=Stone Wall,12-2=Stone Wall,12-3=Stone Wall,12-1=Stone Wall,13-2=Stone Wall,13-3=Stone Wall,13-1=Stone Wall,14-2=Stone Wall,14-3=Stone Wall,14-1=Stone Wall,15-2=Stone Wall,15-3=Stone Wall,15-1=Stone Wall,13-1=Shadow Gateway,12-2=Ruined Structure,13-2=Ruined Gateway,14-2=Ruined Structure,13-3=Warlock,11-3=Undead Minions,15-3=Undead Minions,</Objects></Death_Room-0><Culdesac-1><Block_Type>Culdesac</Block_Type>
+<Coordinates>11-0;10-0;9-0;8-0;7-0;7-1;7-2;7-3;7-4;7-5;7-6;7-7;7-8;6-8;5-8;4-8;3-8;2-8;</Coordinates><Objects>11-0=Gravestone,10-0=Gravestone,9-0=Gravestone,8-0=Stone Door,</Objects></Culdesac-1><Treasure_Room-2><Block_Type>Room</Block_Type>
+<Room_Type>TREASURE_ROOM</Room_Type>
+<Coordinates>23-1;23-2;24-1;24-2;25-1;25-2;26-1;26-2;</Coordinates><Objects></Objects></Treasure_Room-2><Common_Room-3><Block_Type>Room</Block_Type>
+<Room_Type>COMMON_ROOM</Room_Type>
+<Coordinates>19-13;20-13;21-13;22-13;23-13;24-13;25-13;26-13;19-12;20-12;21-12;22-12;23-12;24-12;25-12;26-12;19-11;20-11;21-11;22-11;23-11;24-11;25-11;26-11;19-10;20-10;21-10;22-10;23-10;24-10;25-10;26-10;</Coordinates><Objects></Objects></Common_Room-3><Common_Room-4><Block_Type>Room</Block_Type>
+<Room_Type>COMMON_ROOM</Room_Type>
+<Coordinates>8-14;7-14;6-14;5-14;4-14;3-14;2-14;1-14;8-15;7-15;6-15;5-15;4-15;3-15;2-15;1-15;8-16;7-16;6-16;5-16;4-16;3-16;2-16;1-16;8-17;7-17;6-17;5-17;4-17;3-17;2-17;1-17;</Coordinates><Objects></Objects></Common_Room-4><Secret_Room-5><Block_Type>Room</Block_Type>
+<Room_Type>SECRET_ROOM</Room_Type>
+<Coordinates>3-1;3-2;3-3;2-1;2-2;2-3;1-1;1-2;1-3;</Coordinates><Objects></Objects></Secret_Room-5><Common_Room-6><Block_Type>Room</Block_Type>
+<Room_Type>COMMON_ROOM</Room_Type>
+<Coordinates>19-7;20-7;21-7;22-7;23-7;24-7;25-7;26-7;19-6;20-6;21-6;22-6;23-6;24-6;25-6;26-6;19-5;20-5;21-5;22-5;23-5;24-5;25-5;26-5;19-4;20-4;21-4;22-4;23-4;24-4;25-4;26-4;</Coordinates><Objects></Objects></Common_Room-6><Common_Room-7><Block_Type>Room</Block_Type>
+<Room_Type>COMMON_ROOM</Room_Type>
+<Coordinates>10-12;10-13;10-14;10-15;11-12;11-13;11-14;11-15;12-12;12-13;12-14;12-15;13-12;13-13;13-14;13-15;14-12;14-13;14-14;14-15;15-12;15-13;15-14;15-15;16-12;16-13;16-14;16-15;17-12;17-13;17-14;17-15;</Coordinates><Objects>17-13=Stairs,17-14=Stairs,17-15=Stone Wall,17-13=Stone Wall,17-14=Stone Wall,11-14=Brazier,15-14=Brazier,12-12=Ruined Column,14-12=Ruined Column,13-13=Arcane Guardians,13-12=Apostates,</Objects></Common_Room-7><Treasure_Room-8><Block_Type>Room</Block_Type>
+<Room_Type>TREASURE_ROOM</Room_Type>
+<Coordinates>23-15;23-16;24-15;24-16;25-15;25-16;26-15;26-16;</Coordinates><Objects></Objects></Treasure_Room-8><Treasure_Room-9><Block_Type>Room</Block_Type>
+<Room_Type>TREASURE_ROOM</Room_Type>
+<Coordinates>3-5;2-5;4-5;1-5;5-5;3-6;2-6;4-6;1-6;5-6;</Coordinates><Objects></Objects></Treasure_Room-9><Common_Room-10><Block_Type>Room</Block_Type>
+<Room_Type>COMMON_ROOM</Room_Type>
+<Coordinates>16-8;16-9;16-7;16-10;15-8;15-9;15-7;15-10;14-8;14-9;14-7;14-10;13-8;13-9;13-7;13-10;12-8;12-9;12-7;12-10;11-8;11-9;11-7;11-10;10-8;10-9;10-7;10-10;9-8;9-9;9-7;9-10;</Coordinates><Objects>10-9=Brazier,16-9=Brazier,14-10=Marble Column,12-10=Marble Column,9-7=Death Crystal,13-8=Eldritch Order,12-8=Wraiths,</Objects></Common_Room-10><Corridor-11><Block_Type>Corridor</Block_Type>
+<Coordinates>19-14;20-14;21-14;22-14;23-14;</Coordinates><Objects>23-14=Stone Wall,22-14=Stone Wall,</Objects></Corridor-11><Corridor-12><Block_Type>Corridor</Block_Type>
+<Coordinates>8-13;8-12;8-11;8-10;</Coordinates><Objects></Objects></Corridor-12><Corridor-13><Block_Type>Corridor</Block_Type>
+<Coordinates>4-3;4-4;</Coordinates><Objects></Objects></Corridor-13><Corridor-14><Block_Type>Corridor</Block_Type>
+<Coordinates>10-16;10-17;9-17;</Coordinates><Objects>10-16=Stone Wall,10-17=Stone Wall,9-17=Stone Wall,</Objects></Corridor-14><Corridor-15><Block_Type>Corridor</Block_Type>
+<Coordinates>17-10;18-10;</Coordinates><Objects></Objects></Corridor-15><Corridor-16><Block_Type>Corridor</Block_Type>
+<Coordinates>19-3;19-2;19-1;19-0;20-0;21-0;22-0;22-1;</Coordinates><Objects></Objects></Corridor-16><Corridor-17><Block_Type>Corridor</Block_Type>
+<Coordinates>9-12;</Coordinates><Objects></Objects></Corridor-17><Corridor-18><Block_Type>Corridor</Block_Type>
+<Coordinates>15-0;16-0;17-0;18-0;</Coordinates><Objects>15-0=Gravestone,16-0=Gravestone,17-0=Gravestone,18-0=Stone Door,</Objects></Corridor-18><Corridor-19><Block_Type>Corridor</Block_Type>
+<Coordinates>14-0;</Coordinates><Objects>14-0=Stone Wall,</Objects></Corridor-19><Corridor-20><Block_Type>Corridor</Block_Type>
+<Coordinates>19-8;19-9;</Coordinates><Objects>19-9=Stone Wall,</Objects></Corridor-20><Corridor-21><Block_Type>Corridor</Block_Type>
+<Coordinates>22-1;</Coordinates><Objects></Objects></Corridor-21><Corridor-22><Block_Type>Corridor</Block_Type>
+<Coordinates>4-1;5-1;5-2;5-3;</Coordinates><Objects></Objects></Corridor-22><Corridor-23><Block_Type>Corridor</Block_Type>
+<Coordinates>4-4;</Coordinates><Objects></Objects></Corridor-23><Corridor-24><Block_Type>Corridor</Block_Type>
+<Coordinates>22-15;</Coordinates><Objects>22-15=Stone Wall,</Objects></Corridor-24></Blocks></Zone__0765_X0-28845_Y0-18></Zones><Entrances>Center</Entrances></Plan></Level>

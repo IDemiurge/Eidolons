@@ -1,0 +1,1 @@
+ENEMY_PARTY=Swordsman;Ballestero;Guardsman;Ballestero;,PLAYER_PARTY=Thief;Marauder;Fallen Knight;Mercenary Ranger;,PLAYER_UNITS=Thief(8-4);Marauder(6-4);Fallen Knight(7-4);Mercenary Ranger(7-5);,FIRST_DUNGEON=BATTLE\Mograve Keep.xml,ENEMIES=Swordsman(7-2);Ballestero(8-1);Guardsman(8-2);Ballestero(7-1);,
