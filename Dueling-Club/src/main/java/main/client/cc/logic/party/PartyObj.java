@@ -195,8 +195,11 @@ public class PartyObj extends Obj {
 
     @Override
     public void afterEffects() {
-        //resetBattleSpirit();
-        //resetOrganization();
+//        resetBattleSpirit();
+//        resetOrganization();
+// TODO [QUICK FIX]
+        setParam(PARAMS.ORGANIZATION, 100);
+        setParam(PARAMS.BATTLE_SPIRIT, 100);
 
         for (DC_HeroObj m : members) {
             m.setParam(PARAMS.ORGANIZATION,
@@ -256,12 +259,7 @@ public class PartyObj extends Obj {
         // return;
         // }
 
-        if (!Launcher.isRunning()) {
-            // TODO [QUICK FIX]
-            setParam(PARAMS.ORGANIZATION, 100);
-            setParam(PARAMS.BATTLE_SPIRIT, 100);
-            return;
-        }
+
 
         int principleClashes = 0;
         int sharedPrinciples = 0;
@@ -364,6 +362,7 @@ public class PartyObj extends Obj {
     }
 
     public void resetBattleSpirit() {
+
         initBattleSpirit();
         // is it otherwise constant?
         // perhaps it should grow or degradate over time?
