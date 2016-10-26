@@ -12,6 +12,7 @@ Arcane-Vault/target/*
 *.log.*
 .idea
 .metadata/*
+*/presets/last.xml
 generated
 /out
 resources/res
