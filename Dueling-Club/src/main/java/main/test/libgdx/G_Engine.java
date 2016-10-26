@@ -3,16 +3,7 @@ package main.test.libgdx;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import main.data.filesys.PathFinder;
-
-import java.util.Random;
 
 /**
  * Created by PC on 21.10.2016.
@@ -23,10 +14,10 @@ public class G_Engine extends Game {
 //    PathFinder path;
     @Override
     public void create() {
-        System.out.println("create");
-        Gdx.graphics.setTitle("lol");
-        setScreen(new Menu(this));
-        System.out.println("set new MENU");
+
+        Gdx.graphics.setTitle("G_Engine");
+        setScreen(new BattleFieldScreen(this));
+
 
     }
 

@@ -331,6 +331,7 @@ public class DC_Game extends MicroGame {
         mngr.setSbInitialized(true);
         turnManager.init();
         if (!battlefield.isInitialized())
+            // gui starts building while logic is getting ready TODO
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     try {
@@ -343,7 +344,7 @@ public class DC_Game extends MicroGame {
                 }
             });
         else
-            // ??? TODO
+            // when is this really called? TODO
             battlefield.init();
 
         if (isDebugMode())
