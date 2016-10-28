@@ -37,29 +37,52 @@ public class ClearShotCondition extends MicroCondition {
 
     }
 
-//    public boolean  checkClearShotNew(DC_Obj source, DC_Obj target){
-//        Coordinates[] toCheck= pavelsAlg(source.getX(), source.getY(),
-//                target.getX(), target.getY());
-//        for (Coordinates c: toCheck){
-//            if (isCoordinateBlockingForXandY(source, target, c))
-//                return false;
-//        }
-//        return true;
-//    }
-//    public boolean  isCoordinateBlockingForXandY(DC_Obj source, DC_Obj target, Coordinates c){
-////    if (geometricallyNotFitting(x, y, c)) return false;
-//
-//        int maxObjHeightOnCoordinate;
-//        int sourceHeight;
-//        int targetHeight;
-//
-//        if (sourceHeight<maxObjHeightOnCoordinate)
-//            return true;
-//        if (maxObjHeightOnCoordinate<targetHeight) //TODO range, approx 60 cm
-//            return false;
-//        return true;
-//    }
+    public boolean  checkClearShotNew(DC_Obj source, DC_Obj target){
+        Coordinates[] toCheck= pavelsAlg(source.getX(), source.getY(),
+                target.getX(), target.getY());
+        for (Coordinates c: toCheck){
+            if (isBlocking(source, target, c.x, c.y))
+                return false;
+        }
+        return true;
+    }
+    private Coordinates[] pavelsAlg(int x, int y, int x1, int y1) {
+        Coordinates[ ]   arrayToCheck   =new Coordinates [10];
+        new Coordinates(x,y);
 
+        return arrayToCheck;
+
+    }
+
+
+
+
+    private boolean isBlocking(DC_Obj source, DC_Obj target,
+                               int x_, int y_ ) {
+
+        Coordinates coordinates = new Coordinates(x_, y_);
+        List<DC_HeroObj> units = DC_Game.game.getObjectsOnCoordinate(coordinates);
+        if (units.isEmpty()) {
+
+            if (!isVision())
+                log("No unit at " + coordinates);
+            return false;
+        } else {
+            boolean obstructing = false;
+            for (DC_HeroObj unit : units) {
+                if (!isVision() || !unit.isTransparent())
+                    obstructing = unit.isObstructing(source, target);
+                if (obstructing) {
+                    log(obstructing + " by " + unit);
+                    break;
+                }
+            }
+            if (obstructing)
+                return true;
+        }
+
+        return checkWallObstruction(source, target, coordinates);
+    }
 
     @Override
     public boolean check() {
@@ -164,7 +187,8 @@ public class ClearShotCondition extends MicroCondition {
 	 * 
 	 */
 
-    public boolean checkClearShot(DC_Obj source, DC_Obj target, boolean mirrorRectangle) {
+    public boolean checkClearShot(DC_Obj source, DC_Obj target,
+                                  boolean mirrorRectangle) {
         int x = Math.abs(!mirrorRectangle ? source.getX() - target.getX() : source.getY()
                 - target.getY()); // greater dimension of final
         // rectangle
@@ -188,10 +212,27 @@ public class ClearShotCondition extends MicroCondition {
         log("Checking Clear Shot for " + source + " on " + target + "; mirrored = "
                 + mirrorRectangle + "; flippedX = " + flippedX + "; flippedY = " + flippedY);
         boolean toCheck = false;
-        for (int i = 1; i < x; i++)
-            // don't check source
+        for (int i = 1; i < x; i++)            // don't check source
             for (int j = 0; j <= y; j++) { // don't check target
-                toCheck = isToCheck(source, target, mirrorRectangle, flippedX, flippedY, array, toCheck, i, j);
+                int x_ = source.getX(); // greater mirrorRectangle ?
+                // source.getY() :
+                if (!mirrorRectangle)
+                    x_ = x_ + (flippedX ? -i : i);
+                else
+                    x_ = x_ + (flippedX ? -j : j);
+                int y_ = source.getY();// lesser mirrorRectangle ? source.getX()
+                if (!mirrorRectangle)
+                    y_ = y_ + (flippedY ? -j : j);
+                else
+                    y_ = y_ + (flippedY ? -i : i);
+
+                if ( isBlocking(source, target,
+                             x_, y_))
+                {
+                    toCheck =true;
+                    array[i][j]=true;
+                }else
+                    array[i][j]=false;
             }
         if (!toCheck)
             return true;
@@ -200,48 +241,7 @@ public class ClearShotCondition extends MicroCondition {
         return checkClearShot(x, y, array);
     }
 
-    private boolean isToCheck(DC_Obj source, DC_Obj target, boolean mirrorRectangle, boolean flippedX, boolean flippedY, Boolean[][] array, boolean toCheck, int i, int j) {
-        int x_ = source.getX(); // greater mirrorRectangle ?
-        // source.getY() :
-        if (!mirrorRectangle)
-            x_ = x_ + (flippedX ? -i : i);
-        else
-            x_ = x_ + (flippedX ? -j : j);
-        int y_ = source.getY();// lesser mirrorRectangle ? source.getX()
-        // :
-        if (!mirrorRectangle)
-            y_ = y_ + (flippedY ? -j : j);
-        else
-            y_ = y_ + (flippedY ? -i : i);
 
-        Coordinates coordinates = new Coordinates(x_, y_);
-        List<DC_HeroObj> units = DC_Game.game.getObjectsOnCoordinate(coordinates);
-        if (units.isEmpty()) {
-
-            if (!isVision())
-                log("No unit at " + coordinates);
-            array[i - 1][j] = false;
-        } else {
-            boolean obstructing = false;
-            for (DC_HeroObj unit : units) {
-                if (!isVision() || !unit.isTransparent())
-                    obstructing = unit.isObstructing(source, target);
-                if (obstructing) {
-                    log(obstructing + " by " + unit);
-                    break;
-                }
-            }
-            if (obstructing)
-                toCheck = true;
-            array[i - 1][j] = obstructing;
-        }
-        if (!array[i - 1][j])
-            if (checkWallObstruction(source, target, coordinates)) {
-                array[i - 1][j] = true;
-                toCheck = true;
-            }
-        return toCheck;
-    }
 
     private boolean checkWallObstruction(DC_Obj source, DC_Obj target, Coordinates coordinates) {
 
