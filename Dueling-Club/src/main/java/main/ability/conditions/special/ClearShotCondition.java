@@ -37,6 +37,30 @@ public class ClearShotCondition extends MicroCondition {
 
     }
 
+//    public boolean  checkClearShotNew(DC_Obj source, DC_Obj target){
+//        Coordinates[] toCheck= pavelsAlg(source.getX(), source.getY(),
+//                target.getX(), target.getY());
+//        for (Coordinates c: toCheck){
+//            if (isCoordinateBlockingForXandY(source, target, c))
+//                return false;
+//        }
+//        return true;
+//    }
+//    public boolean  isCoordinateBlockingForXandY(DC_Obj source, DC_Obj target, Coordinates c){
+////    if (geometricallyNotFitting(x, y, c)) return false;
+//
+//        int maxObjHeightOnCoordinate;
+//        int sourceHeight;
+//        int targetHeight;
+//
+//        if (sourceHeight<maxObjHeightOnCoordinate)
+//            return true;
+//        if (maxObjHeightOnCoordinate<targetHeight) //TODO range, approx 60 cm
+//            return false;
+//        return true;
+//    }
+
+
     @Override
     public boolean check() {
         // consider flying/non-obstructing!
@@ -167,51 +191,56 @@ public class ClearShotCondition extends MicroCondition {
         for (int i = 1; i < x; i++)
             // don't check source
             for (int j = 0; j <= y; j++) { // don't check target
-                int x_ = source.getX(); // greater mirrorRectangle ?
-                // source.getY() :
-                if (!mirrorRectangle)
-                    x_ = x_ + (flippedX ? -i : i);
-                else
-                    x_ = x_ + (flippedX ? -j : j);
-                int y_ = source.getY();// lesser mirrorRectangle ? source.getX()
-                // :
-                if (!mirrorRectangle)
-                    y_ = y_ + (flippedY ? -j : j);
-                else
-                    y_ = y_ + (flippedY ? -i : i);
-
-                Coordinates coordinates = new Coordinates(x_, y_);
-                List<DC_HeroObj> units = DC_Game.game.getObjectsOnCoordinate(coordinates);
-                if (units.isEmpty()) {
-
-                    if (!isVision())
-                        log("No unit at " + coordinates);
-                    array[i - 1][j] = false;
-                } else {
-                    boolean obstructing = false;
-                    for (DC_HeroObj unit : units) {
-                        if (!isVision() || !unit.isTransparent())
-                            obstructing = unit.isObstructing(source, target);
-                        if (obstructing) {
-                            log(obstructing + " by " + unit);
-                            break;
-                        }
-                    }
-                    if (obstructing)
-                        toCheck = true;
-                    array[i - 1][j] = obstructing;
-                }
-                if (!array[i - 1][j])
-                    if (checkWallObstruction(source, target, coordinates)) {
-                        array[i - 1][j] = true;
-                        toCheck = true;
-                    }
+                toCheck = isToCheck(source, target, mirrorRectangle, flippedX, flippedY, array, toCheck, i, j);
             }
         if (!toCheck)
             return true;
         log("Checking Clear Shot for " + source + " on " + target + "; obstruction array = "
                 + new ArrayMaster<Boolean>().get2dList(array));
         return checkClearShot(x, y, array);
+    }
+
+    private boolean isToCheck(DC_Obj source, DC_Obj target, boolean mirrorRectangle, boolean flippedX, boolean flippedY, Boolean[][] array, boolean toCheck, int i, int j) {
+        int x_ = source.getX(); // greater mirrorRectangle ?
+        // source.getY() :
+        if (!mirrorRectangle)
+            x_ = x_ + (flippedX ? -i : i);
+        else
+            x_ = x_ + (flippedX ? -j : j);
+        int y_ = source.getY();// lesser mirrorRectangle ? source.getX()
+        // :
+        if (!mirrorRectangle)
+            y_ = y_ + (flippedY ? -j : j);
+        else
+            y_ = y_ + (flippedY ? -i : i);
+
+        Coordinates coordinates = new Coordinates(x_, y_);
+        List<DC_HeroObj> units = DC_Game.game.getObjectsOnCoordinate(coordinates);
+        if (units.isEmpty()) {
+
+            if (!isVision())
+                log("No unit at " + coordinates);
+            array[i - 1][j] = false;
+        } else {
+            boolean obstructing = false;
+            for (DC_HeroObj unit : units) {
+                if (!isVision() || !unit.isTransparent())
+                    obstructing = unit.isObstructing(source, target);
+                if (obstructing) {
+                    log(obstructing + " by " + unit);
+                    break;
+                }
+            }
+            if (obstructing)
+                toCheck = true;
+            array[i - 1][j] = obstructing;
+        }
+        if (!array[i - 1][j])
+            if (checkWallObstruction(source, target, coordinates)) {
+                array[i - 1][j] = true;
+                toCheck = true;
+            }
+        return toCheck;
     }
 
     private boolean checkWallObstruction(DC_Obj source, DC_Obj target, Coordinates coordinates) {
@@ -388,7 +417,7 @@ public class ClearShotCondition extends MicroCondition {
         return true;
 
     }
-
+//
     public boolean checkClearShot(int dX, int dY, Boolean obstructionArray[][]) {
 
         double slope = new Double(dY) / dX;
@@ -401,7 +430,8 @@ public class ClearShotCondition extends MicroCondition {
             b = Math.floor(LineY(slope, k, x + 1));
 
             log("a= " + a + "; b= " + b);
-            if (obstructionArray[(int) x - 1][(int) a] && obstructionArray[(int) x - 1][(int) b]) {
+            if (obstructionArray[(int) x - 1][(int) a]
+                    && obstructionArray[(int) x - 1][(int) b]) {
                 // target.setBlockingCoordinate(new Coordinates(a, b));
 
                 return false;

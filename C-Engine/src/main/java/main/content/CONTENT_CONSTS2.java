@@ -542,7 +542,8 @@ public class CONTENT_CONSTS2 {
 
         APHOTIC,
 
-        VAMPIRIC(" Drains (10+{Mastery}/2)% of damage dealt into caster's Endurance.", 35, 25, " de", "passives;", "LifeStealSpell(10+{Mastery}/2)"),
+        VAMPIRIC(" Drains (10+{Mastery}/2)% of damage dealt into caster's Endurance.",
+                35, 25, " de", "passives;", "LifeStealSpell(10+{Mastery}/2)"),
         DEATH_CHILL(" Adds " + STD_CONSTS + "/10 Freeze counters.", 20, 15, " de", "passives;", getAddCounterSpecialEffect("Freeze,"
                 + STD_CONSTS + "/5")),
         SHOCK,

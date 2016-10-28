@@ -524,7 +524,7 @@ public class CharacterCreator {
 
         hero.getDeity().applyHeroBonuses(hero);
 
-        BattleCraft.chooseMasteryGroups(hero);
+//        BattleCraft.chooseMasteryGroups(hero);TODO
 
         DataManager.addType(hero.getType());
         // if (

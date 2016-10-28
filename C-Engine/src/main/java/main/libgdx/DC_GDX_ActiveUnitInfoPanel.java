@@ -9,7 +9,7 @@ package main.libgdx;
 public class DC_GDX_ActiveUnitInfoPanel extends DC_GDX_UnitInfoPanel {
     protected DC_GDX_ActivePanelUnitName unitName;
 
-    public DC_GDX_ActiveUnitInfoPanel(String imagePath) {
-        super(imagePath);
-    }
+//    public DC_GDX_ActiveUnitInfoPanel(String imagePath) {
+//        super(imagePath);
+//    }
 }

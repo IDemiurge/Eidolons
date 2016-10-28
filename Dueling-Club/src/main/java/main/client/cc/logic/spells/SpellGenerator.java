@@ -1,5 +1,6 @@
 package main.client.cc.logic.spells;
 
+import main.content.CONTENT_CONSTS;
 import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
 import main.content.CONTENT_CONSTS2.SPELL_UPGRADE;
 import main.content.OBJ_TYPES;
@@ -58,12 +59,13 @@ public class SpellGenerator {
 
     }
 
+//TODO support varargs! SPELL_UPGRADE...
     public static ObjType generateUpgradedVersion(ObjType t, SPELL_UPGRADE ug) {
         ObjType type = getNewType(t);
         SpellUpgradeMaster.applyUpgrade(type, ug);
         type.setImage(generateImagePath(type, ug));
         type.setGroup("Upgrade", false);
-        type.setProperty(G_PROPS.WORKSPACE_GROUP, WORKSPACE_GROUP.POLISH + ""); // TODO
+        type.setProperty(G_PROPS.WORKSPACE_GROUP, CONTENT_CONSTS.WORKSPACE_GROUP.POLISH + ""); // TODO
         DataManager.addType(type);
         return type;
     }

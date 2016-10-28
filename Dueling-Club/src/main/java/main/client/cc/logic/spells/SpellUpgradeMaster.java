@@ -1,15 +1,18 @@
 package main.client.cc.logic.spells;
 
+import main.content.CONTENT_CONSTS;
 import main.content.CONTENT_CONSTS2.SPELL_UPGRADE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.ValuePages;
 import main.content.parameters.PARAMETER;
 import main.content.properties.G_PROPS;
+import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_SpellObj;
+import main.entity.type.ObjType;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.GuiManager;
@@ -233,8 +236,15 @@ public class SpellUpgradeMaster {
         return true;
     }
 
-    public static void applyUpgrade(Entity type, SPELL_UPGRADE ug) {
+
+    public static void applyUpgrade(Entity type, SPELL_UPGRADE... ug) {
+for (SPELL_UPGRADE sub: ug){
+    applyUpgrade(type, sub);
+}
+    }
+        public static void applyUpgrade(Entity type, SPELL_UPGRADE ug) {
         if (ug.getAddPropMap() != null)
+
             for (String s : ug.getAddPropMap().keySet()) {
                 type.addProperty(s, ug.getAddPropMap().get(s));
             }
