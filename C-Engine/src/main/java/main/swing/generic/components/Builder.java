@@ -124,7 +124,7 @@ public abstract class Builder implements GameGUI {
 
     public void initCompMap() {
 
-        comps = new HashMap<JComponent, LayoutInfo>();
+        comps = new HashMap<>();
         int i = 0;
         for (JComponent c : compArray) {
             comps.put(c, new LayoutInfo(cInfoArray[i]));
@@ -134,7 +134,7 @@ public abstract class Builder implements GameGUI {
 
     public void initMap() {
 
-        builders = new HashMap<Builder, LayoutInfo>();
+        builders = new HashMap<>();
         int i = 0;
         for (Builder b : builderArray) {
             builders.put(b, new LayoutInfo(infoArray[i]));
@@ -180,22 +180,22 @@ public abstract class Builder implements GameGUI {
     @Override
     public void refresh() {
 
-        if (!isDirty())
-            return;
-        for (Refreshable r : compArray) {
-            try {
-                r.refresh();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        for (Refreshable r : builderArray) {
-            try {
-                r.refresh();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+//        if (!isDirty())
+//            return;
+//        for (Refreshable r : compArray) {
+//            try {
+//                r.refresh();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        for (Refreshable r : builderArray) {
+//            try {
+//                r.refresh();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
 
     }
 
