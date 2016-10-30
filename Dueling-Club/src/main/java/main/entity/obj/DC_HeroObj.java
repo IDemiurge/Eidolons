@@ -1116,6 +1116,7 @@ public class DC_HeroObj extends DC_UnitObj {
     }
 
     public List<DC_SpellObj> getSpells() {
+
         if (spells == null) {
             spells = new LinkedList<>();
         }

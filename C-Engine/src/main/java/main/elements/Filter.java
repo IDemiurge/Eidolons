@@ -13,6 +13,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
+import main.entity.obj.Active;
 import main.entity.obj.Obj;
 import main.game.Game;
 import main.system.auxiliary.StringMaster;
@@ -247,7 +248,6 @@ public class Filter<T extends Entity> extends ReferredElement {
 
     public List<T> filter(Collection<T> objects) {
         List<T> resultset = new LinkedList<T>();
-
         for (T obj : objects) {
             if (match(obj))
                 resultset.add(obj);
