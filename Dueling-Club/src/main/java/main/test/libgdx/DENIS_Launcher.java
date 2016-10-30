@@ -20,8 +20,11 @@ public class DENIS_Launcher implements ApplicationListener {
         lwjglApplicationConfiguration.title = "demo";
         lwjglApplicationConfiguration.useGL30 = true;
 
-        lwjglApplicationConfiguration.width = 1680;
-        lwjglApplicationConfiguration.height = 1050;
+/*        lwjglApplicationConfiguration.width = 1920;
+        lwjglApplicationConfiguration.height = 1080;*/
+
+        lwjglApplicationConfiguration.width = 1600;
+        lwjglApplicationConfiguration.height = 900;
         lwjglApplicationConfiguration.fullscreen = false;
 
         new LwjglApplication(new DENIS_Launcher(), lwjglApplicationConfiguration);

@@ -1,10 +1,12 @@
 package main.libgdx;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-import java.awt.*;
+import java.io.File;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,27 +14,26 @@ import java.awt.*;
  * Time: 23:50
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_ValueOrb extends Actor {
+public class DC_GDX_ValueOrb extends Group {
     private Texture backTexture;
-    private Texture topTexture;
+    private Image topTexture;
     private Color backColor;
     private Texture newBackTexture;
 
-    private int posX;
-    private int posY;
+    private final static String topImagePath = "UI\\components\\new\\orb 64.png";
+    private String imagePath;
 
-    private final static String topImagePath = "UI\\components\\new\\orb";
-
-    public DC_GDX_ValueOrb(Color backColor, int x, int y, String rootPath) {
+    public DC_GDX_ValueOrb(Color backColor, String imagePath) {
         this.backColor = backColor;
-        posX = x;
-        posY = y;
-        new Texture("");
+        this.imagePath = imagePath;
+
     }
 
-    public DC_GDX_ValueOrb init(){
-
-
+    public DC_GDX_ValueOrb init() {
+        topTexture = new Image(new Texture(imagePath + File.separator + topImagePath));
+        addActor(topTexture);
+        this.setWidth(topTexture.getWidth());
+        this.setHeight(topTexture.getHeight());
         return this;
     }
 
@@ -49,18 +50,15 @@ public class DC_GDX_ValueOrb extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        //super.draw(batch, parentAlpha);
-
-
-        batch.draw(backTexture,1,1);
+        super.draw(batch, parentAlpha);
     }
 
-    @Override
+    /*    @Override
     public void act(float delta) {
         if (newBackTexture != null) {
             backTexture = newBackTexture;
             newBackTexture = null;
         }
         super.act(delta);
-    }
+    }*/
 }

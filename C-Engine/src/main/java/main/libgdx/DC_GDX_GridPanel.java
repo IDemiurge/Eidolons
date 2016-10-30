@@ -14,10 +14,10 @@ import java.io.File;
  */
 public class DC_GDX_GridPanel extends Group {
     protected Image background;
-    protected Image emptyImage;
-    protected Image hiddenImage;
-    protected Image highlightImage;
-    protected Image unknownImage;
+    protected Texture emptyImage;
+    protected Texture hiddenImage;
+    protected Texture highlightImage;
+    protected Texture unknownImage;
 
     private static final String backgroundPath = "UI/custom/grid/GRID_BG_WIDE.png";
     private static final String emptyCellPath = "UI/cells/Empty Cell v3.png";
@@ -36,12 +36,12 @@ public class DC_GDX_GridPanel extends Group {
     }
 
     public DC_GDX_GridPanel init() {
-        emptyImage = new Image(new Texture(imagePath + File.separator + emptyCellPath));
-        hiddenImage = new Image(new Texture(imagePath + File.separator + hiddenCellPath));
-        background = new Image(new Texture(imagePath + File.separator + backgroundPath));
-        highlightImage = new Image(new Texture(imagePath + File.separator + highlightCellPath));
-        unknownImage = new Image(new Texture(imagePath + File.separator + unknownCellPath));
+        emptyImage = new Texture(imagePath + File.separator + emptyCellPath);
+        hiddenImage = new Texture(imagePath + File.separator + hiddenCellPath);
+        highlightImage = new Texture(imagePath + File.separator + highlightCellPath);
+        unknownImage = new Texture(imagePath + File.separator + unknownCellPath);
 
+        background = new Image(new Texture(imagePath + File.separator + backgroundPath));
         addActor(background);
 
         //emptyImage.setX();
