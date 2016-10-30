@@ -182,10 +182,10 @@ public class DC_Builder extends Builder {
         builderArray = new Builder[]{
 
         };
-        compArray = new G_Component[]{grid.getComp(),
+        compArray = new G_Component[]{grid.getComp()/*,
                 aup, ipHolder, uap, topPanel};
 
-        infoArray = new String[]{
+        infoArray = new String[]{*/
 
         };
 
