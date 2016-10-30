@@ -46,6 +46,14 @@
             <version>${libgdx.version}</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-box2d -->
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-box2d</artifactId>
+            <version>${libgdx.version}</version>
+        </dependency>
+
+
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-freetype-platform</artifactId>
