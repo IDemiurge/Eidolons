@@ -12,8 +12,8 @@ public class TestLauncher {
     public static int hei = 600;
     public static void main(String[] args) {
         LwjglApplicationConfiguration configuration = new LwjglApplicationConfiguration();
-        configuration.samples = 3;
-        configuration.resizable = false;
+//        configuration.samples = 3;
+//        configuration.resizable = false;
         configuration.width = wid;
         configuration.height = hei;
        app =  new LwjglApplication (new G_Engine(),configuration);
