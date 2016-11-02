@@ -5,8 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import main.data.filesys.PathFinder;
-import main.libgdx.DC_GDX_Background;
-import main.libgdx.DC_GDX_TopPanel;
+import main.libgdx.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,6 +17,10 @@ public class GameScreen implements Screen {
 
     private DC_GDX_Background background;
     private DC_GDX_TopPanel topPanel;
+    private DC_GDX_GridPanel gridPanel;
+    private DC_GDX_UnitInfoPanel unitInfoPanel;
+    private DC_GDX_ActiveUnitInfoPanel activeUnitInfoPanel;
+    private DC_GDX_ActionGroup actionGroup;
 
     private SpriteBatch batch;
 
@@ -30,6 +33,19 @@ public class GameScreen implements Screen {
         PathFinder.init();
         background = new DC_GDX_Background(PathFinder.getImagePath());
         topPanel = new DC_GDX_TopPanel(PathFinder.getImagePath()).init();
+        gridPanel = new DC_GDX_GridPanel(PathFinder.getImagePath(), 10, 10).init();
+
+        unitInfoPanel = new DC_GDX_UnitInfoPanel(PathFinder.getImagePath()).init();
+        unitInfoPanel.setX(Gdx.graphics.getWidth() - unitInfoPanel.getWidth());
+        unitInfoPanel.setY(Gdx.graphics.getHeight() - unitInfoPanel.getHeight());
+
+        activeUnitInfoPanel = new DC_GDX_ActiveUnitInfoPanel(PathFinder.getImagePath()).init();
+        activeUnitInfoPanel.setX(0);
+        activeUnitInfoPanel.setY(Gdx.graphics.getHeight() - activeUnitInfoPanel.getHeight());
+
+        actionGroup = new DC_GDX_ActionGroup(PathFinder.getImagePath()).init();
+        actionGroup.setY(10);
+        actionGroup.setX(Gdx.graphics.getWidth() / 2 - actionGroup.getWidth() / 2);
         return this;
     }
 
@@ -48,7 +64,10 @@ public class GameScreen implements Screen {
         batch.begin();
         background.draw(batch, 1);
         topPanel.draw(batch, 1);
-//        batch.draw(background);
+        gridPanel.draw(batch, 1);
+        unitInfoPanel.draw(batch, 1);
+        activeUnitInfoPanel.draw(batch, 1);
+        actionGroup.draw(batch, 1);
         batch.end();
 
         //batch.setTransformMatrix(MapView.isoTransform);

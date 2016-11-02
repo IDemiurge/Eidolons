@@ -148,6 +148,24 @@ public class BfGridComp {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                if (paintImage == null) return;
+/*                try {
+                    //paintImage.getData().
+                    DataBufferInt db = (DataBufferInt) paintImage.getData().getDataBuffer();
+                    int[] data = db.getData();
+                    byte[] tar = new byte[data.length * 4];
+                    for (int i = 0; i < data.length; i++) {
+                        int val = data[i];
+                        tar[i*4]= (byte) (val >> 24);
+                        tar[i*4+1]= (byte) (val >> 16);
+                        tar[i*4+2]= (byte) (val >> 8);
+                        tar[i*4+3]= (byte) val;
+                    }
+                    Gdx2DPixmap gdxPixmap = new Gdx2DPixmap(tar, 0, tar.length, GL30.GL_ALPHA8I);
+                    Pixmap p = new Pixmap(gdxPixmap);
+                } catch (IOException e) {
+                    int a = 10;
+                }*/
                 g.drawImage(paintImage, 0, 0, null);
                 if (!isLevelEditor())
                     game.getAnimationManager().drawAnimations(g);

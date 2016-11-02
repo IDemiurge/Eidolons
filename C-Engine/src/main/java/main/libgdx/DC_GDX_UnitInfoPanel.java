@@ -1,6 +1,5 @@
 package main.libgdx;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
 /**
@@ -11,14 +10,41 @@ import com.badlogic.gdx.scenes.scene2d.Group;
  */
 public class DC_GDX_UnitInfoPanel extends Group {
 
-    private DC_GDX_OrbPanel orbPanel;
-    private DC_GDX_PortraitPanel portraitPanel;
-    private DC_GDX_BuffPanel buffPanel;
+    protected DC_GDX_OrbPanel orbPanel;
+    protected DC_GDX_PortraitPanel portraitPanel;
+    protected DC_GDX_PagedPanel buffPanel;
+    protected DC_GDX_ItemPanel itemPanel;
 
+    protected String imagePath;
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
+    public DC_GDX_UnitInfoPanel(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public DC_GDX_UnitInfoPanel init() {
+        orbPanel = new DC_GDX_OrbPanel(false, imagePath).init();
+        orbPanel.setX(0);
+        addActor(orbPanel);
+
+        portraitPanel = new DC_GDX_PortraitPanel(imagePath).init();
+        portraitPanel.setX(orbPanel.getWidth());
+        addActor(portraitPanel);
+
+        orbPanel.setY(portraitPanel.getHeight() - orbPanel.getHeight());
+
+        buffPanel = new DC_GDX_PagedPanel(imagePath, 5, 1).init();
+        buffPanel.setX(orbPanel.getWidth() + portraitPanel.getWidth());
+        buffPanel.setY(portraitPanel.getHeight() - buffPanel.getHeight());
+        addActor(buffPanel);
+
+        itemPanel = new DC_GDX_ItemPanel(imagePath).init();
+        itemPanel.setX(buffPanel.getX());
+        itemPanel.setY(buffPanel.getY() - itemPanel.getHeight());
+        addActor(itemPanel);
+
+        setHeight(portraitPanel.getHeight());//set by bigger component
+        setWidth(orbPanel.getWidth() + portraitPanel.getWidth() + buffPanel.getWidth());
+        return this;
     }
 
     @Override
