@@ -195,8 +195,8 @@ public class DungeonMaster {
 
         if (getDEFAULT_DUNGEON() != null
                 || getDungeonPath() != null) {
-            if (!CoreEngine.isLevelEditor())
-                game.setSimulation(false);
+//            if (!CoreEngine.isLevelEditor())
+//                game.setSimulation(false);
 //            if (getDEFAULT_DUNGEON() != null) {
 //              TODO   ObjType t = DataManager.getType(getDEFAULT_DUNGEON(),  OBJ_TYPES. DUNGEONS);
 //                setDungeon(DungeonBuilder.loadDungeon(getDEFAULT_DUNGEON()));

@@ -12,7 +12,7 @@ public class G_Engine extends Game {
 //    PathFinder path;
     @Override
     public void create() {
-        setScreen(new LessonBox2d());
+//        setScreen(new LessonBox2d());
         Gdx.graphics.setTitle("G_Engine");
 
 //        setScreen(new BattleFieldScreen(this));
