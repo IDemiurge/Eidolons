@@ -50,9 +50,9 @@ public class FAST_DC {
     // "Cemetary";
     private static final boolean BEHAVIOR_TEST_ON = false;
 
-    public static String TEST_DUNGEON_LEVEL = "Test Labyrinth.xml";
-    public static String DEFAULT_DUNGEON = null;
-    public static Boolean FAST_MODE = true;
+    public static String DEFAULT_TEST_DUNGEON = "test\\Clearshot Test.xml";
+    public static String DEFAULT_DUNGEON = null     ;
+    public static Boolean FAST_MODE = false;
     public static Boolean factionLeaderRequired = false;
     // public static boolean PRESET_PARTY = false;
     public static int ENEMY_CODE = CODE.CHOOSE;

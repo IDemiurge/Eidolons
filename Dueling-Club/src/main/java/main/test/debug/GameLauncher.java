@@ -28,6 +28,7 @@ import main.system.auxiliary.secondary.WorkspaceMaster;
 import main.system.test.TestMasterContent;
 import main.test.Preset;
 import main.test.PresetMaster;
+import main.test.frontend.FAST_DC;
 
 import java.util.List;
 
@@ -54,6 +55,7 @@ public class GameLauncher {
     private Integer unitGroupLevel;
     private boolean factionLeaderRequired;
     private String dungeon;
+
     private Boolean FAST_MODE;
     private Boolean SUPER_FAST_MODE;
 
@@ -186,13 +188,20 @@ public class GameLauncher {
         VisionManager.setVisionHacked(VISION_HACK);
         DebugMaster.setOmnivisionOn(VISION_HACK);
 
-        if (PresetMaster.getPreset() == null)
-            if (BooleanMaster.isTrue(FAST_MODE) || SUPER_FAST_MODE) {
+        if (PresetMaster.getPreset() == null){
+            if (BooleanMaster.isTrue(FAST_MODE)  ) {
                 if (netGame == null && dungeon == null)
                     DungeonMaster.RANDOM_DUNGEON = true;
                 else
                     DungeonMaster.setDEFAULT_DUNGEON_LEVEL(dungeon);
             }
+
+        if (BooleanMaster.isTrue(getSUPER_FAST_MODE() )  ) {
+           PLAYER_PARTY=(FAST_DC.PLAYER_PARTY);
+            ENEMY_PARTY="";
+            game.setEnemyParty("");
+        }
+        }
         if (game.getArenaManager() != null)
             game.getArenaManager().getSpawnManager().init();
     }
@@ -437,6 +446,23 @@ public class GameLauncher {
         public final static int RANDOM = 1;
         public final static int CHOOSE = 2;
         public final static int NONE = 3;
+    }
+
+    public Boolean getFAST_MODE() {
+        return FAST_MODE;
+    }
+
+    public void setFAST_MODE(Boolean FAST_MODE) {
+        this.FAST_MODE = FAST_MODE;
+    }
+
+
+    public Boolean getSUPER_FAST_MODE() {
+        return SUPER_FAST_MODE;
+    }
+
+    public void setSUPER_FAST_MODE(Boolean SUPER_FAST_MODE) {
+        this.SUPER_FAST_MODE = SUPER_FAST_MODE;
     }
 
 }
