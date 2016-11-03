@@ -154,21 +154,21 @@ public class DrawMaster {
         if (isFramePaintZoom())
             if (!isMultiObj())
                 try {
-                    drawCellFrame(g);
+                    drawCellFrame(compGraphics);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
         if (!cellComp.isTerrain())
             try {
-                drawObjComps(g);
+                drawObjComps(compGraphics);
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         else {
             try {
-                drawTerrainObj(g);
+                drawTerrainObj(compGraphics);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -186,17 +186,17 @@ public class DrawMaster {
                 drawComponentOverlays(compGraphics);
 
         }
-        drawOverlayingObjects(g, cellComp);
+        drawOverlayingObjects(compGraphics, cellComp);
         // perhaps should work with Obj instead?
         if (isAnimationPaintZoom())
             if (cellComp.isAnimated())
                 try {
-                    drawAnimations(cellComp, g);
+                    drawAnimations(cellComp, compGraphics);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
         if (GRAPHICS_TEST_MODE) {
-            drawCI(topObj, g);
+            drawCI(topObj, compGraphics);
         }
 
         if (GRAPHICS_TEST_MODE || isEditorMode() || DC_Game.game.isDebugMode()) {
@@ -205,13 +205,13 @@ public class DrawMaster {
             if (grid == null)
                 grid = cellComp.getGame().getBattleField().getGrid().getGridComp();
             if (coordinates.x - grid.getOffsetX() == 0)
-                drawCoordinateMarkings(coordinates.y, g, false);
+                drawCoordinateMarkings(coordinates.y, compGraphics, false);
             if (coordinates.y - grid.getOffsetY() == 0)
-                drawCoordinateMarkings(coordinates.x, g, true);
+                drawCoordinateMarkings(coordinates.x, compGraphics, true);
 
             if (cellComp.isInfoSelected()) {
-                drawCoordinateMarkings(coordinates.x, g, true);
-                drawCoordinateMarkings(coordinates.y, g, false);
+                drawCoordinateMarkings(coordinates.x, compGraphics, true);
+                drawCoordinateMarkings(coordinates.y, compGraphics, false);
             }
         }
         if (isSightVisualsOn()) {
@@ -226,11 +226,11 @@ public class DrawMaster {
                     return;
             }
 
-            drawSightVisualsOnCell((Graphics2D) g, extended, cellComp.getObjects().size() > 0);
-            drawSightBlockInfo(cellComp, g, zoom);
+            drawSightVisualsOnCell((Graphics2D) compGraphics, extended, cellComp.getObjects().size() > 0);
+            drawSightBlockInfo(cellComp, compGraphics, zoom);
         }
 
-        drawSpecialOverlays(cellComp, g, zoom);
+        drawSpecialOverlays(cellComp, compGraphics, zoom);
     }
 
     private void drawSpecialOverlays(CellComp cellComp, Graphics g, int zoom2) {
