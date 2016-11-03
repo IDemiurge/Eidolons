@@ -13,6 +13,9 @@ public class DC_GDX_ActiveUnitInfoPanel extends DC_GDX_UnitInfoPanel {
 
     protected DC_GDX_QuickActionPagedPanel quickPanel;
 
+    private float minHeight = 0;
+    private float minWeight = 0;
+
     public DC_GDX_ActiveUnitInfoPanel(String imagePath) {
         super(imagePath);
     }
@@ -53,8 +56,17 @@ public class DC_GDX_ActiveUnitInfoPanel extends DC_GDX_UnitInfoPanel {
 
         orbPanel.setX(portraitPanel.getWidth() + itemPanel.getWidth());
         orbPanel.setY(getHeight() - orbPanel.getHeight());
-
+        minWeight = portraitPanel.getWidth();
+        minHeight = portraitPanel.getY();
         //orbPanel.invertOrbOrder();
         return this;
+    }
+
+    public float getMinHeight() {
+        return minHeight;
+    }
+
+    public float getMinWeight() {
+        return minWeight;
     }
 }

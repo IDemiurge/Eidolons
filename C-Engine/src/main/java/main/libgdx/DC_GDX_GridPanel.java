@@ -29,6 +29,8 @@ public class DC_GDX_GridPanel extends Group {
     private int lines;
     private int rows;
 
+    public DC_GDX_PagedPriorityPanel pagedPriorityPanel;
+
     public DC_GDX_GridPanel(String imagePath, int lines, int rows) {
         this.imagePath = imagePath;
         this.lines = lines;
@@ -44,9 +46,11 @@ public class DC_GDX_GridPanel extends Group {
         background = new Image(new Texture(imagePath + File.separator + backgroundPath));
         addActor(background);
 
-        //emptyImage.setX();
-        //emptyImage.setY();
 
+
+        pagedPriorityPanel = new DC_GDX_PagedPriorityPanel(imagePath, 1, 10).init();
+        pagedPriorityPanel.setX(background.getWidth());
+        addActor(pagedPriorityPanel);
         return this;
     }
 }

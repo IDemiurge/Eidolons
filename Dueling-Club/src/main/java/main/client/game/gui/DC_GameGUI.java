@@ -104,29 +104,24 @@ public class DC_GameGUI implements MouseListener {
     public void initGUI() {
         game.setGUI(this);
 
-
-        bfBuilder = (DC_Builder) game.getBattleField().getBuilder();
-        initMainPanel();
-        if (standalone)
-            initMainWindow();
-
-    }
-
-    private void initMainPanel() {
+        //init main panel
         setPanel(new G_Panel());
         getPanel().setIgnoreRepaint(true);
         getPanel().setOpaque(false);
 
-        initBattleField();
-    }
-
-    private void initBattleField() {
+        //init battlefield
         // WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
+        bfBuilder = game.getBattleField().getBuilder();
         bfComp = bfBuilder.getComp();
         ((G_Panel) bfComp).setPanelSize(GuiManager.DEF_DIMENSION);
         initBackground();
         getPanel().add(bfComp);
+
         setDefaultComponentZOrder();
+
+        if (standalone) {
+            initMainWindow();
+        }
 
     }
 

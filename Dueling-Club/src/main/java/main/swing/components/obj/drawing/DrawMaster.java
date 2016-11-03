@@ -17,12 +17,10 @@ import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
-import main.game.battlefield.DirectionMaster;
 import main.game.battlefield.XLine;
 import main.game.logic.dungeon.Dungeon;
 import main.game.player.Player;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
-import main.rules.mechanics.WatchRule;
 import main.swing.components.obj.BfGridComp;
 import main.swing.components.obj.BfMouseListener.INTERACTIVE_ELEMENT;
 import main.swing.components.obj.CellComp;
@@ -41,23 +39,18 @@ import main.system.graphics.MigMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 import main.system.images.ImageManager.STD_IMAGES;
-import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
 import main.system.text.SmartText;
-import main.test.debug.DebugMaster;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 
+import static main.swing.components.obj.drawing.DrawMasterStatic.*;
+
 public class DrawMaster {
-    public static boolean GRAPHICS_TEST_MODE = false;
-    public static boolean FULL_GRAPHICS_TEST_MODE = false;
-    private static Map<Obj, BufferedImage> objImageCache = new HashMap<Obj, BufferedImage>();
-    private static boolean sightVisualsOn = true;
-    BufferedImage bufferImage;
     /*
      * Multi-threaded? Multiple instances?
      *
@@ -66,213 +59,17 @@ public class DrawMaster {
      */
     private int offsetX;
     private int offsetY;
-    private boolean unitEmblemDrawn;
-    private BufferedImage emptyBufferImage;
     private CellComp cellComp;
-    private Graphics compGraphics;
     private int objSize;
     private Dimension compSize;
     private boolean emblemDrawn;
     private int zoom;
     private boolean stackedIconMode;
     private int overlayingSize;
-    private int width;
-    private int height;
-    private Integer stackOffsetX;
-    private Integer stackOffsetY;
     private int topObjX;
     private int topObjY;
     private BufferedImage infoObjImage;
-    private BufferedImage activeObjImage;
     private Map<Obj, Point> offsetMap;
-
-    public static boolean isEditorMode() {
-        return CoreEngine.isLevelEditor();
-    }
-
-    public static boolean checkWallTresspassed(Coordinates origin, Coordinates destination) {
-        // how did we do that ClearShotCondition?
-        // it just allows walking on the walled cells as long as you walk
-        // *alongside* it
-        // totally two-sided, so we just have Boolean3, yet there are also
-        // CORNERS...
-        // if contains null! then need to check the SIDES of other adjacent
-        // WALLS to know
-        // what if an alternative path is there via a broken section?
-        return false;
-
-    }
-
-    public static void drawWatchInfo(int zoom, Graphics g) {
-        DC_Obj info = DC_Game.game.getManager().getInfoObj();
-        if (info instanceof DC_HeroObj) {
-            List<DC_Obj> watchedObjects = WatchRule.getWatchersMap().get(info);
-            if (watchedObjects != null) {
-                drawWatchVisuals(watchedObjects, (DC_HeroObj) info, g, zoom, watchedObjects, false,
-                        true);
-                drawWatchVisuals(watchedObjects, (DC_HeroObj) info, g, zoom, watchedObjects, false,
-                        false);
-            }
-        } else {
-            DC_HeroObj active = DC_Game.game.getManager().getActiveObj();
-            if (active.isMine()) {
-                List<DC_Obj> watchedObjects = WatchRule.getWatchersMap().get(active);
-                if (watchedObjects != null) {
-                    drawWatchVisuals(watchedObjects, active, g, zoom, watchedObjects, true, true);
-                    drawWatchVisuals(watchedObjects, active, g, zoom, watchedObjects, true, false);
-                }
-            }
-        }
-    }
-
-    private static void drawWatchVisuals(List<DC_Obj> watchedObjects, DC_HeroObj watcher,
-                                         Graphics g, int zoom, List<DC_Obj> list, boolean active, boolean lines_images) {
-        int w = STD_IMAGES.WATCHER.getWidth() * zoom / 100;
-        int h = STD_IMAGES.WATCHER.getHeight() * zoom / 100;
-        Point p = getPointFromCoordinates(lines_images, w, h, watcher.getCoordinates(), watcher
-                .getFacing().getDirection(), zoom);
-        for (DC_Obj watched : watchedObjects) {
-            Point p2 = getPointFromCoordinates(lines_images, w, h, watched.getCoordinates(),
-                    DirectionMaster.rotate180(DirectionMaster
-                            .getRelativeDirection(watcher, watched)), zoom);
-            if (lines_images) {
-                g.setColor(watcher.isMine() ? ColorManager.CYAN : ColorManager.CRIMSON);
-                int offsetX = 0;
-                int offsetY = 0;
-                if (!watcher.getFacing().isVertical())
-                    offsetX = !watcher.getFacing().isCloserToZero() ? 3 : -3;
-                else
-                    offsetY = !watcher.getFacing().isCloserToZero() ? 3 : -3;
-                g.drawLine(p.x + offsetX, p.y + offsetY, p2.x, p2.y); // TODO
-                // punctir...
-                // visualize clear shot too?
-                // Painter.paintImagesInLine(g, new XLine(p, p2),
-                // STD_IMAGES.EYE.getImage(),
-                // 40 * zoom / 100);
-            } else {
-                Image image = STD_IMAGES.WATCHER.getImage();
-                drawImage(g, image, p.x, p.y);
-                image = STD_IMAGES.WATCHED.getImage();
-                drawImage(g, image, p2.x, p2.y);
-            }
-        }
-
-    }
-
-    private static Point getPointFromCoordinates(boolean lines_images, int w, int h,
-                                                 Coordinates coordinates, DIRECTION d, int zoom) {
-        Point p = DC_Game.game.getBattleField().getGrid().getGridComp().mapToPoint(coordinates);
-        int cellWidth = GuiManager.getCellWidth() * zoom / 100;
-        int cellHeight = GuiManager.getCellHeight() * zoom / 100;
-        int xOffset = cellWidth / 2 - (lines_images ? 0 : w / 2);
-        int yOffset = cellHeight / 2 - (lines_images ? 0 : h / 2);
-
-        if (d.isGrowX() != null) {
-            xOffset = (d.isGrowX()) ? cellWidth - w : 0;
-        }
-        if (d.isGrowY() != null) {
-            yOffset = (d.isGrowY()) ? cellHeight - h : 0;
-        }
-
-        return new Point(p.x + xOffset, p.y + yOffset);
-    }
-
-    public static void drawDiagonalJoints(int zoom, Graphics g, int offsetX, int offsetY, int w,
-                                          int h, Map<Coordinates, List<DIRECTION>> diagonalJoints) {
-        for (Coordinates c : diagonalJoints.keySet()) {
-            boolean darken = false;
-            DC_HeroObj obj = DC_Game.game.getUnitByCoordinate(c);
-            // TODO CHECK WALL
-            if (obj == null) {
-                obj = DC_Game.game.getUnitByCoordinate(c);
-                continue;
-            }
-            if (!CoreEngine.isLevelEditor())
-                if (!obj.isDetected())
-                    if (!DebugMaster.isOmnivisionOn())
-                        // obj.getPlayerVisionStatus(false) !=
-                        // UNIT_TO_PLAYER_VISION.DETECTED
-                        continue;
-            if (obj != null)
-                darken = obj.getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT;
-            String prefix = darken ? "dark" : "";
-            int x = w * (c.x - offsetX);
-            int y = h * (c.y - offsetY);
-            if (x < 0)
-                continue;
-            if (x > GuiManager.getBattleFieldWidth())
-                continue;
-
-            if (y < 0)
-                continue;
-            if (y > GuiManager.getBattleFieldHeight())
-                continue;
-            List<DIRECTION> list = diagonalJoints.get(c);
-
-            for (DIRECTION side : list) {
-                int x1 = x;
-                int y1 = y;
-                boolean flipped = false;
-                if (side == DIRECTION.DOWN_LEFT) {
-                    y1 += h;
-                } else if (side == DIRECTION.DOWN_RIGHT) {
-                    x1 += w;
-                    y1 += h;
-                    flipped = true;
-                } else if (side == DIRECTION.UP_LEFT) {
-                    flipped = true;
-                } else if (side == DIRECTION.UP_RIGHT) {
-                    x1 += w;
-                }
-                // if (list.indexOf(side) > 0) {
-                // flipped = !flipped;
-                // }
-                // get the corner for this side
-                // add offset if necessary
-
-                Image image = STD_IMAGES.WALL_CORNER_ALMOND.getPathPrefixedImage(prefix);
-
-                if (zoom != 100) {
-                    image = ImageManager.getSizedVersion(image, zoom, true);
-                }
-                if (flipped)
-                    image = ImageTransformer.flipHorizontally(ImageManager.getBufferedImage(image));
-                // TODO scale them!
-                drawImage(g, image, x1 - image.getWidth(null) / 2, y1 - image.getHeight(null) / 2);
-
-            }
-
-        }
-    }
-
-    public static void drawImageCentered(Graphics g, Image image, int w, int h) {
-        int y = (h - image.getHeight(null)) / 2;
-        int x = (w - image.getWidth(null)) / 2;
-        drawImage(g, image, x, y);
-    }
-
-    public static void drawImage(Graphics g, Image image, int x, int y) {
-        g.drawImage(image, x, y, null);
-    }
-
-    public static boolean isSightVisualsOn() {
-        if (isEditorMode())
-            return false;
-        return false;
-        // return sightVisualsOn;
-    }
-
-    public static void setSightVisualsOn(boolean sightVisualsOn) {
-        DrawMaster.sightVisualsOn = sightVisualsOn;
-    }
-
-    public static Map<Obj, BufferedImage> getObjImageCache() {
-        return objImageCache;
-    }
-
-    public static void setObjImageCache(Map<Obj, BufferedImage> objImageCache) {
-        DrawMaster.objImageCache = objImageCache;
-    }
 
     public boolean isStackedPaintZoom() {
         return zoom >= 50;
@@ -282,7 +79,7 @@ public class DrawMaster {
         return zoom >= 65;
     }
 
-    public int getMinOverlayingZoom() {
+    private int getMinOverlayingZoom() {
         return 65;
     }
 
@@ -320,40 +117,35 @@ public class DrawMaster {
 		 */
     }
 
-    public void draw(CellComp cellComp, Graphics g) {
-        draw(cellComp, g, 100, false);
-    }
-
-    public void draw(CellComp cellComp, Graphics g, int zoom, boolean editorMode) {
+    public void draw(CellComp cellComp, Graphics compGraphics, int zoom, boolean editorMode) {
         this.cellComp = cellComp;
-        this.compGraphics = g;
         this.zoom = zoom;
         initSizes();
-        Map<Rectangle, Object> mouseMap = new XLinkedMap<Rectangle, Object>();
+        Map<Rectangle, Object> mouseMap = new XLinkedMap<>();
         cellComp.setMouseMap(mouseMap);
         DC_HeroObj topObj = cellComp.getTopObj();
         if (isSingleObj()) {
             Image image = VisibilityMaster.getDisplayImageForUnit(topObj);
             if (image != null) {
-                g.drawImage(image, 0, 0, null);
+                compGraphics.drawImage(image, 0, 0, null);
                 if (topObj.isWall()) {
-                    drawWallOverlays(topObj, g, cellComp.getCoordinates());
+                    drawWallOverlays(topObj, compGraphics, cellComp.getCoordinates());
                 }
                 if (GRAPHICS_TEST_MODE) {
                     DC_Obj obj = cellComp.getTopObjOrCell();
-                    drawCI(obj, g);
+                    drawCI(obj, compGraphics);
 
                     if (FULL_GRAPHICS_TEST_MODE) {
-                        g.drawString("" + obj.getOutlineType(), 0, GuiManager.getCellHeight() - 40);
+                        compGraphics.drawString("" + obj.getOutlineType(), 0, GuiManager.getCellHeight() - 40);
 
                         String tooltip = VisibilityMaster.getTooltip(obj);
                         if (tooltip != null)
-                            g.drawString("" + tooltip, 0, GuiManager.getCellHeight() - 20);
+                            compGraphics.drawString("" + tooltip, 0, GuiManager.getCellHeight() - 20);
 
-                        drawSightBlockInfo(cellComp, g, zoom);
+                        drawSightBlockInfo(cellComp, compGraphics, zoom);
                     }
                 }
-                drawSpecialOverlays(cellComp, g, zoom);
+                drawSpecialOverlays(cellComp, compGraphics, zoom);
                 return;
             }
         }
@@ -404,8 +196,7 @@ public class DrawMaster {
                     e.printStackTrace();
                 }
         if (GRAPHICS_TEST_MODE) {
-            DC_Obj obj = topObj;
-            drawCI(obj, g);
+            drawCI(topObj, g);
         }
 
         if (GRAPHICS_TEST_MODE || isEditorMode() || DC_Game.game.isDebugMode()) {
@@ -673,14 +464,13 @@ public class DrawMaster {
                     // cellComp.getObjects().get(0).getVisibilityLevel()
                     // getVisibility(cellComp.getObjects().get(0))
             ).getImage();
-        } else {
-
         }
         g.drawImage(cellImage, 0, 0, null);
     }
 
     private int getStackOffsetX() {
         DC_HeroObj obj = cellComp.getTopObj();
+        Integer stackOffsetX;
         if (!obj.getFacing().isVertical() && obj.getFacing().isCloserToZero())
             stackOffsetX = getObjCount() * getXOffsetPerObj(getObjCount());
         else
@@ -690,6 +480,7 @@ public class DrawMaster {
 
     private int getStackOffsetY() {
         DC_HeroObj obj = cellComp.getTopObj();
+        Integer stackOffsetY;
         if (obj.getFacing().isVertical() && !obj.getFacing().isCloserToZero())
             stackOffsetY = getYOffsetPerObj(getObjCount());
         else
@@ -807,7 +598,6 @@ public class DrawMaster {
         Image image = VISUALS.SIGHT_CELL_IMAGE.getImage();
         image = ImageManager.getSizedVersion(image, zoom);
         drawImage(g, image, 0, 0);
-        DC_HeroObj watcher = cellComp.getGame().getManager().getActiveObj();
     }
 
     private void drawCellImage(Graphics g) {
@@ -1001,9 +791,9 @@ public class DrawMaster {
 
     }
 
-    public Map<Obj, Point> getOffsetMap() {
+    private Map<Obj, Point> getOffsetMap() {
         if (offsetMap == null)
-            offsetMap = new HashMap<Obj, Point>();
+            offsetMap = new HashMap<>();
         return offsetMap;
     }
 
@@ -1112,7 +902,7 @@ public class DrawMaster {
     }
 
     private void drawImageCentered(Graphics g, Image image) {
-        drawImageCentered(g, image, getCompWidth(), getCompHeight());
+        DrawMasterStatic.drawImageCentered(g, image, getCompWidth(), getCompHeight());
     }
 
     private Image getWallImageFromSide(DIRECTION side, String prefix) {
@@ -1189,6 +979,8 @@ public class DrawMaster {
                 offsetY = 0;
                 objSize = GuiManager.getCellHeight();
             }
+        int height;
+        int width;
         if (isFramePaintZoom()) {
             width = GuiManager.getCellWidth();
             height = GuiManager.getCellHeight();
@@ -1280,7 +1072,6 @@ public class DrawMaster {
 
                 drawPlayerEmblem(g, obj);
                 drawItems(g);
-                drawTraps(g, cellComp);
             }
         }
 
@@ -1296,7 +1087,7 @@ public class DrawMaster {
             if (!obj.isUnconscious())
                 if (DrawHelper.isFacingDrawn(cellComp, obj)
                         || (!obj.isBfObj() && DC_Game.game.isDebugMode())) {
-                    drawFacing(g, (DC_HeroObj) obj);
+                    drawFacing(g, obj);
                 }
         }
         // if (!isEditorMode())
@@ -1388,11 +1179,6 @@ public class DrawMaster {
         return (int) getOffsetMap().get(obj).getX();
     }
 
-    private void drawTraps(Graphics g, CellComp cellComp) {
-        // TODO TrapMaster.getTraps(c);
-
-    }
-
     private int getObjCompWidth() {
         return isSingleObj() ? getCompWidth() : objSize;
     }
@@ -1453,7 +1239,8 @@ public class DrawMaster {
     }
 
     private BufferedImage getObjDrawImage(DC_HeroObj obj, boolean drawOverlays) {
-        BufferedImage image = objImageCache.get(obj);
+        BufferedImage image;
+        //image = objImageCache.get(obj);
         // if (image != null)
         // return image;
         image = new BufferedImage(GuiManager.getFullObjSize(), GuiManager.getFullObjSize(),
@@ -1499,7 +1286,7 @@ public class DrawMaster {
                     drawObjectOverlays(g, obj);
 
                 } else if (obj.isActiveSelected()) {
-                    activeObjImage = new BufferedImage(GuiManager.getFullObjSize(), GuiManager
+                    BufferedImage activeObjImage = new BufferedImage(GuiManager.getFullObjSize(), GuiManager
                             .getFullObjSize(), BufferedImage.TYPE_INT_ARGB);
                     g = activeObjImage.getGraphics();
                     drawObjectOverlays(g, obj);
@@ -1572,7 +1359,7 @@ public class DrawMaster {
 
     }
 
-    protected void applyBeyondSight(BufferedImage image, DC_HeroObj obj) {
+    private void applyBeyondSight(BufferedImage image, DC_HeroObj obj) {
         if (obj.getActivePlayerVisionStatus() == UNIT_TO_PLAYER_VISION.DETECTED) {
             image.getGraphics().drawImage(BORDER.CONCEALED.getImage(), 0, 0, null);
         } else
@@ -1711,7 +1498,7 @@ public class DrawMaster {
     private void drawUnitEmblem(Graphics g, DC_HeroObj obj) {
         if (isEditorMode())
             return;
-        unitEmblemDrawn = true;
+        //boolean unitEmblemDrawn = true;
         int size = DrawHelper.UNIT_EMBLEM_SIZE_PERC; // * objSize / 100
         if (cellComp.isBfObj(obj))
             return;
@@ -1770,10 +1557,6 @@ public class DrawMaster {
 
     public boolean isStackedIconMode() {
         return stackedIconMode;
-    }
-
-    public void setStackedIconMode(boolean stackedIconMode) {
-        this.stackedIconMode = stackedIconMode;
     }
 
     public void setZoom(int zoom2) {

@@ -383,8 +383,9 @@ public class AnimationManager {
     public void damageDealt(int t_amount, int e_amount, Ref ref, DAMAGE_TYPE type, boolean lethal) {
         CellComp comp = getComp(ref.getTargetObj());
         if (lethal) {
-            comp.deadenIcon();
+            //comp.deadenIcon();
         }
+
         addTextOverlayCenter("-" + t_amount, ref, damageDelay, ColorManager.RED); // TODO
         // increase
         // for
@@ -455,7 +456,6 @@ public class AnimationManager {
 
                     @Override
                     public void run() {
-                        comp.setAnimated(true);
                         map.put(comp.getTopObjOrCell(), comp);
 
                         getGrid().refresh();
@@ -464,7 +464,6 @@ public class AnimationManager {
                         WaitMaster.WAIT(delay);
                         // main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
                         // comp + " de-animated");
-                        comp.setAnimated(false);
                         comp.removeAnimation();
                         comp.refresh();
                         //

@@ -103,7 +103,7 @@ public abstract class Entity implements OBJ {
             this.setOriginalOwner(owner);
             setProperty(G_PROPS.NAME, type.getName());
             setOriginalName(type.getName());
-            main.system.auxiliary.LogMaster.log(1, id + " - NEW ID for " + type.getName());
+            LogMaster.log(1, id + " - NEW ID for " + type.getName());
 
             setRef(ref);
             init();

@@ -354,6 +354,9 @@ public class DC_Game extends MicroGame {
         game.getGraveyardManager().init();
 
         getState().gameStarted(first);
+
+        // TODO: 30.10.2016 insert gui init here
+
         startGameLoop();
 
         if (hostClient != null)

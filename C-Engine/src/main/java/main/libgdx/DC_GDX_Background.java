@@ -1,6 +1,7 @@
 package main.libgdx;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 /**
@@ -9,14 +10,23 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  * Time: 16:34
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_Background extends Image {
+public class DC_GDX_Background extends Group {
 
-    private final static String imagePath = "big\\dungeon.jpg";
+//    private final static String backImagePath = "big\\dungeon.jpg";
+    private final static String backImagePath = "big\\big bf grid test2.jpg";
+
+    public Image backImage;
+
+    private String imagePath;
 
     public DC_GDX_Background(String path) {
-        super(new Texture(path+imagePath));
-        setX(0);
-        setY(0);
-        setScale(1,1);
+        imagePath = path;
+    }
+
+    public DC_GDX_Background init() {
+        backImage = new Image(new Texture(imagePath + backImagePath));
+        addActor(backImage);
+
+        return this;
     }
 }
