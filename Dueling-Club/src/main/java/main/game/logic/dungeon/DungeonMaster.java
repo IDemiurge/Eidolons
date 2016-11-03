@@ -25,6 +25,7 @@ import main.system.auxiliary.FileManager;
 import main.system.auxiliary.GuiManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.test.frontend.FAST_DC;
@@ -167,6 +168,10 @@ public class DungeonMaster {
 
     public void initDungeon() {
         ObjType type = null;
+        if (BooleanMaster.isTrue(FAST_DC.getGameLauncher().getSUPER_FAST_MODE())
+                ){
+            setDungeonPath(FAST_DC.DEFAULT_TEST_DUNGEON);
+        }
         if (CoreEngine.isArcaneVault()) {
             ObjType objType = new ObjType("Test Dungeon", OBJ_TYPES.DUNGEONS);
             objType.setParam(PARAMS.BF_WIDTH, 3);
@@ -186,22 +191,28 @@ public class DungeonMaster {
         }
         if (initialized)
             return;
-        if (game.isDebugMode())
-            if (RANDOM_DUNGEON) {
-                type = pickRandomDungeon();
-            } else if (type == null)
-                type = DataManager.getType(ListChooser.chooseType(OBJ_TYPES.DUNGEONS));
 
-        if (type != null) {
-            setDungeon(new Dungeon(type));
-            getDungeons().add(dungeon);
-            rootDungeon = getDungeon();
-        } else if (getDungeonPath() != null) {
-            if (!CoreEngine.isLevelEditor())
-                game.setSimulation(false);
-            setDungeon(DungeonBuilder.loadDungeon(getDungeonPath()));
+
+        if (getDEFAULT_DUNGEON() != null
+                || getDungeonPath() != null) {
+//            if (!CoreEngine.isLevelEditor())
+//                game.setSimulation(false);
+//            if (getDEFAULT_DUNGEON() != null) {
+//              TODO   ObjType t = DataManager.getType(getDEFAULT_DUNGEON(),  OBJ_TYPES. DUNGEONS);
+//                setDungeon(DungeonBuilder.loadDungeon(getDEFAULT_DUNGEON()));
+//            } else
+//                setDungeon(DungeonBuilder.loadDungeon(getDungeonPath()));
         }
-
+        else
+        {if (game.isDebugMode())
+                if (RANDOM_DUNGEON) {
+                    type = pickRandomDungeon();
+                } else if (type == null)
+                    type = DataManager.getType(ListChooser.chooseType(OBJ_TYPES.DUNGEONS));
+        setDungeon(new Dungeon(type));
+        getDungeons().add(dungeon);
+        rootDungeon = getDungeon();
+    }
         if (dungeon != null)
             initialized = true;
     }

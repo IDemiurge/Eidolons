@@ -62,6 +62,7 @@ public class PresetLauncher {
             case "Superfast":
                 FAST_DC.getGameLauncher().DUMMY_MODE = true;
                 FAST_DC.getGameLauncher().DUMMY_PP = true;
+                FAST_DC.getGameLauncher().setSUPER_FAST_MODE( true);
                 return false;
             case "Load":
                 // if (choosePreset()==null)

@@ -54,6 +54,8 @@ public class AnotherMenu implements Screen {
         PathFinder.init();
         String path = PathFinder.getImagePath();
         img = new Texture(path + "mini\\item\\mage armor.jpg");
+
+
         dark_impact_animation = new Dark_Impact_Animation();
         sprite = new Sprite(img);
 //        sprite.scale(0.05f);

@@ -624,6 +624,7 @@ public class DC_Game extends MicroGame {
     public synchronized String getPlayerParty() {
         if (getParty() != null)
             return getParty().getProperty(PROPS.MEMBERS);
+
         return playerParty;
     }
 

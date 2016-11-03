@@ -19,6 +19,7 @@ import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.DC_Game.GAME_MODES;
 import main.game.DC_Game.GAME_TYPE;
+import main.game.Game;
 import main.game.logic.macro.MacroManager;
 import main.game.meta.ArenaArcadeMaster;
 import main.swing.generic.components.G_Panel;
@@ -462,7 +463,7 @@ public class Launcher {
     }
 
     public static void launchHC(boolean arcadeMode, DC_HeroObj... heroes) {
-
+Game.game.setSimulation(true);
         if (!isDataInitialized()) {
             initFullData();
             // simulationInit();
