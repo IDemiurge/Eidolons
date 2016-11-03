@@ -1,6 +1,7 @@
 package main.test.libgdx.TestGameCreation.Understanding;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
@@ -21,6 +22,7 @@ public class myUnderstandingField implements Screen {
 
     static World world;
    static Stage stage;
+   static myLittleTestingGUI gui;
     testplay player;
     Box2DDebugRenderer deb;
     static boolean TimeToCreate = false;
@@ -30,6 +32,7 @@ public class myUnderstandingField implements Screen {
     public void show() {
         world = new World(new Vector2(0,-10),true);
         p = new Vector2();
+        gui = new myLittleTestingGUI();
         world.setContactListener(new MyContact());
         player = new testplay(world);
         deb = new Box2DDebugRenderer();
@@ -76,7 +79,10 @@ public class myUnderstandingField implements Screen {
                 super.touchUp(event, x, y, pointer, button);
             }
         });
-        Gdx.input.setInputProcessor(stage);
+        InputMultiplexer in = new InputMultiplexer();
+        in.addProcessor(stage);
+        in.addProcessor(gui);
+        Gdx.input.setInputProcessor(in);
     }
 
     @Override
@@ -91,6 +97,8 @@ public class myUnderstandingField implements Screen {
             stage.addActor(new HitBall(world));
             TimeToCreate = false;
         }
+        gui.act();
+        gui.draw();
         deb.render(world,stage.getCamera().combined);
 
 

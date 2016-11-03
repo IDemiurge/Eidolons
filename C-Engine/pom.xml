@@ -72,12 +72,20 @@
             <artifactId>box2dlights</artifactId>
             <version>1.4</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-tools -->
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-tools</artifactId>
+            <version>1.9.4</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-box2d-gwt -->
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-box2d-gwt</artifactId>
             <version>1.9.4</version>
         </dependency>
+
 
 
         <dependency>
