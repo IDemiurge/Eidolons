@@ -10,9 +10,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.*;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 
 /**
@@ -22,7 +21,7 @@ public class myUnderstandingField implements Screen {
 
     static World world;
    static Stage stage;
-   static myLittleTestingGUI gui;
+   static Object gui;
     testplay player;
     Box2DDebugRenderer deb;
     static boolean TimeToCreate = false;
@@ -32,7 +31,7 @@ public class myUnderstandingField implements Screen {
     public void show() {
         world = new World(new Vector2(0,-10),true);
         p = new Vector2();
-        gui = new myLittleTestingGUI();
+        gui = new Object();
         world.setContactListener(new MyContact());
         player = new testplay(world);
         deb = new Box2DDebugRenderer();
@@ -81,7 +80,7 @@ public class myUnderstandingField implements Screen {
         });
         InputMultiplexer in = new InputMultiplexer();
         in.addProcessor(stage);
-        in.addProcessor(gui);
+        //in.addProcessor(gui);
         Gdx.input.setInputProcessor(in);
     }
 
@@ -97,8 +96,8 @@ public class myUnderstandingField implements Screen {
             stage.addActor(new HitBall(world));
             TimeToCreate = false;
         }
-        gui.act();
-        gui.draw();
+        //gui.act();
+        //gui.draw();
         deb.render(world,stage.getCamera().combined);
 
 

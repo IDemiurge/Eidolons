@@ -2,11 +2,14 @@ package main.test.libgdx;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Rectangle;
 import main.data.filesys.PathFinder;
+import main.game.battlefield.Coordinates;
+
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,7 +22,7 @@ public class TestMeshRender implements ApplicationListener {
     static final int WIDTH = 480;
     static final int HEIGHT = 320;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException, IOException {
 /*
         Rectangle scissors = new Rectangle();
         Rectangle clipBounds = new Rectangle(x,y,w,h);
@@ -29,8 +32,76 @@ public class TestMeshRender implements ApplicationListener {
         spriteBatch.flush();
         ScissorStack.popScissors();
 */
-        TestMeshRender r = new TestMeshRender();
-        new LwjglApplication(r, "1", 480, 320);
+        final int mx = 150;
+        final int my = 150;
+
+
+        List<Coordinates> coordinates = new ArrayList<>();
+        Map<Integer, Coordinates> map = new HashMap<>(mx * my, 1f);
+        Map<String, Coordinates> smap = new HashMap<>(mx * my, 1f);
+        Coordinates[][] carr = new Coordinates[mx][my];
+
+        for (int i = 0; i < mx; i++) {
+            for (int j = 0; j < my; j++) {
+                coordinates.add(new Coordinates(i, j));
+                map.put(i << 16 | j, new Coordinates(i, j));
+                smap.put(i + "-" + j, new Coordinates(i, j));
+                carr[i][j] = new Coordinates(i, j);
+            }
+        }
+
+        long t = new Date().getTime();
+
+        for (int i = 0; i < mx; i++) {
+            for (int j = 0; j < my; j++) {
+                Coordinates c = new Coordinates(i, j);
+                for (Coordinates coordinate : coordinates) {
+                    if (coordinate.equals(c)) {
+                        c = null;
+                    }
+                }
+            }
+        }
+
+        System.out.println(new Date().getTime() - t);
+        t = new Date().getTime();
+
+
+        for (int i = 0; i < mx; i++) {
+            for (int j = 0; j < my; j++) {
+                if (map.containsKey(i << 16 | j)) {
+                    map.get(i << 16 | j);
+                }
+            }
+        }
+
+        System.out.println(new Date().getTime() - t);
+        t = new Date().getTime();
+
+        for (int i = 0; i < mx; i++) {
+            for (int j = 0; j < my; j++) {
+                if (smap.containsKey(i+"-"+j)) {
+                    smap.get(i+"-"+j);
+                }
+            }
+        }
+
+        System.out.println(new Date().getTime() - t);
+
+        t = new Date().getTime();
+
+        for (int i = 0; i < mx; i++) {
+            for (int j = 0; j < my; j++) {
+                carr[i][j] = null;
+            }
+        }
+
+        System.out.println(new Date().getTime() - t);
+
+        System.out.println(map.get(34 << 16 | 122));
+
+/*        TestMeshRender r = new TestMeshRender();
+        new LwjglApplication(r, "1", 480, 320);*/
     }
 
     private Texture cellTexture;
@@ -48,7 +119,7 @@ public class TestMeshRender implements ApplicationListener {
         };
 
         // статическая полигональная сетка с четырьмя вершинами и без индексов
-        Mesh mesh = new Mesh(true, 4, 6, VertexAttribute.Position(), VertexAttribute.  ColorUnpacked(), VertexAttribute.TexCoords(0));
+        Mesh mesh = new Mesh(true, 4, 6, VertexAttribute.Position(), VertexAttribute.ColorUnpacked(), VertexAttribute.TexCoords(0));
 //                new VertexAttribute(VertexAttributes.Usage.Position, 3, "attr_Position"),
 //                new VertexAttribute(VertexAttributes.Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE),
 //                new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, "attr_texCoords"));

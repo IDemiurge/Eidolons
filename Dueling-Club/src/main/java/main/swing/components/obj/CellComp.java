@@ -7,7 +7,6 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
-import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.drawing.DrawMaster;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.LogMaster;
@@ -30,7 +29,6 @@ public class CellComp {
     private int width;
     private int height;
     private int sizeFactor = 100;
-    private DC_BattleFieldGrid holder;
     private DC_Game game;
     private Image centerImage;
     private Coordinates coordinates;
@@ -40,20 +38,15 @@ public class CellComp {
     private List<DC_HeroObj> overlayingObjects;
     private BfGridComp grid;
 
-    public CellComp(DC_BattleFieldGrid holder, Coordinates coordinates) {
-        this(holder.getDungeon().getGame(), coordinates, holder.getGridComp());
-        this.holder = holder;
-    }
-
     public CellComp(DC_Game game, Coordinates coordinates, BfGridComp bfGridComp) {
         this.coordinates = coordinates;
         this.game = game;
-        if (!CoreEngine.isLevelEditor())
+        if (!CoreEngine.isLevelEditor()) {
             setTerrainObj(new DC_Cell(coordinates.x, coordinates.y, game, new Ref(), game
                     .getDungeon()));
-        initPanel();
-        resetSize();
+        }
         grid = bfGridComp;
+        initPanel();
     }
 
     public BfGridComp getGrid() {
@@ -61,12 +54,8 @@ public class CellComp {
     }
 
     private void resetSize() {
-        // if (width == 0)
-        if (holder != null)
-            width = holder.getGridComp().getCellWidth();
-        // if (height == 0)
-        if (holder != null)
-            height = holder.getGridComp().getCellHeight();
+        width = grid.getCellWidth();
+        height = grid.getCellHeight();
         panel.setPanelSize(new Dimension(width, height));
     }
 
@@ -82,11 +71,11 @@ public class CellComp {
                 }
                 String text = getToolTipText();
                 if (text != null) {
-                    main.system.auxiliary.LogMaster.log(1, toString() + " has tooltip: " + text);
+                    LogMaster.log(1, toString() + " has tooltip: " + text);
                 }
             }
         };
-        panel.setPanelSize(new Dimension(width, height));
+        resetSize();
         panel.setIgnoreRepaint(true);
     }
 
@@ -130,9 +119,7 @@ public class CellComp {
             }
         };
 
-        if (SwingUtilities.isEventDispatchThread()
-            // || CoreEngine.isLevelEditor()
-                ) {
+        if (SwingUtilities.isEventDispatchThread()) {
             drawJob.run();
         } else
             try {

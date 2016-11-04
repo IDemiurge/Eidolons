@@ -21,6 +21,7 @@ import main.swing.generic.components.G_Panel;
 import main.swing.generic.services.layout.LayoutInfo;
 import main.system.auxiliary.ColorManager;
 import main.system.auxiliary.GuiManager;
+import main.system.auxiliary.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
@@ -134,8 +135,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     private void resetComponents() {
         int offsetX = getOffsetX();
         int offsetY = getOffsetY();
-        main.system.auxiliary.LogMaster.log(0, "resetting grid comps with offsetX = " + offsetX
-                + ";offsetY =" + offsetY);
+        LogMaster.log(0, "resetting grid comps with offsetX = " + offsetX + ";offsetY =" + offsetY);
+
         for (int i = 0; i < getDisplayedCellsX(); i++) {
             for (int j = 0; j < getDisplayedCellsY(); j++) {
                 int x = i + getOffsetX();

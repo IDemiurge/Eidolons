@@ -20,7 +20,6 @@ import java.awt.*;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 //++ better animations! 
@@ -121,11 +120,7 @@ public class BfGridComp {
         for (int i = 0; i < getCellsX(); i++) {
             for (int j = 0; j < getCellsY(); j++) {
                 Coordinates coordinates = new Coordinates(i, j);
-
-                CellComp cell = isLevelEditor() ?
-                        new CellComp(game, coordinates, this) :
-                        new CellComp(holder, coordinates);
-
+                CellComp cell = new CellComp(game, coordinates, this);
                 getMap().put(coordinates, cell);
                 cells[i][j] = cell;
             }
@@ -349,8 +344,7 @@ public class BfGridComp {
                 CellComp cellComp = cells[i + getOffsetX()][j + getOffsetY()];
                 if (editMode) {
                     Coordinates c = new Coordinates(i + getOffsetX(), j + getOffsetY());
-                    List<DC_HeroObj> objects = getGame().getObjectsOnCoordinate(c);
-                    cellComp.setObjects(objects);
+                    cellComp.setObjects(getGame().getObjectsOnCoordinate(c));
                     cellComp.setOverlayingObjects(getGame().getOverlayingObjects(c));
                     cellComp.setSizeFactor(zoom);
                     cellComp.setWidth(getCellWidth());
