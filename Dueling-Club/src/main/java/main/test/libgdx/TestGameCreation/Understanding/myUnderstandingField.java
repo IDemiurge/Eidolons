@@ -10,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.*;
 
@@ -22,7 +21,7 @@ public class myUnderstandingField implements Screen {
 
     static World world;
    static Stage stage;
-   static myLittleTestingGUI gui;
+//   static myLittleTestingGUI gui;
     testplay player;
     Box2DDebugRenderer deb;
     static boolean TimeToCreate = false;
@@ -32,8 +31,9 @@ public class myUnderstandingField implements Screen {
     public void show() {
         world = new World(new Vector2(0,-10),true);
         p = new Vector2();
-        gui = new myLittleTestingGUI();
+
         world.setContactListener(new MyContact());
+//        gui = new myLittleTestingGUI();
         player = new testplay(world);
         deb = new Box2DDebugRenderer();
 //        camera = new OrthographicCamera(20,15);
@@ -79,9 +79,10 @@ public class myUnderstandingField implements Screen {
                 super.touchUp(event, x, y, pointer, button);
             }
         });
+
         InputMultiplexer in = new InputMultiplexer();
+//        in.addProcessor(gui);
         in.addProcessor(stage);
-        in.addProcessor(gui);
         Gdx.input.setInputProcessor(in);
     }
 
@@ -89,17 +90,24 @@ public class myUnderstandingField implements Screen {
     public void render(float v) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
 
-        world.step(1/60f,4,4);
-        stage.act();
+
+        if (GameScore.statement == Statements.PLAY){
+            world.step(1/60f,4,4);
+            stage.act(v);
+        }
+
         stage.draw();
+
+//        gui.act(v);
+//        gui.draw();
+
 
         if (TimeToCreate){
             stage.addActor(new HitBall(world));
             TimeToCreate = false;
         }
-        gui.act();
-        gui.draw();
         deb.render(world,stage.getCamera().combined);
+
 
 
     }

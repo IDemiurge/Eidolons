@@ -5,4 +5,5 @@ package main.test.libgdx.TestGameCreation.Understanding;
  */
 public class GameScore {
     public static int Score;
+    public static Statements statement = Statements.PLAY;
 }

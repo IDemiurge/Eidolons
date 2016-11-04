@@ -1,9 +1,13 @@
 package main.test.libgdx.TestGameCreation.Understanding;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import main.data.filesys.PathFinder;
+import main.game.battlefield.pathing.Path;
 import main.system.ai.logic.actions.Action;
 
 /**
@@ -15,6 +19,7 @@ public class Fon extends Actor {
     FixtureDef fDef;
     ChainShape shape;
     World world;
+    Sprite sprite;
     public Fon(World world) {
         this.world = world;
         bDef = new BodyDef();
@@ -27,6 +32,9 @@ public class Fon extends Actor {
         fDef = new FixtureDef();
         fDef.shape = shape;
         body.createFixture(fDef);
+        PathFinder.init();
+//        String q = PathFinder.getImagePath();
+//        sprite = new Sprite(new Texture());
     }
 
     @Override

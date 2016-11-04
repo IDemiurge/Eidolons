@@ -8,6 +8,7 @@ import com.badlogic.gdx.Game;
 public class GameLoopund extends Game {
     @Override
     public void create() {
+        ResHolder.load();
         setScreen(new myUnderstandingField());
     }
 }
