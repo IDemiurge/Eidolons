@@ -26,7 +26,8 @@ public class DC_GDX_ValueIcon extends Group {
         backImage = new Image(backTexture);
         iconImage = new Image(new Texture(imagePath));
 
-        iconImage.setY(15);
+        iconImage.setY(backImage.getHeight() / 2 - iconImage.getHeight() / 2);
+        iconImage.setX(iconImage.getWidth() * .15f);
 
         addActor(backImage);
         addActor(iconImage);

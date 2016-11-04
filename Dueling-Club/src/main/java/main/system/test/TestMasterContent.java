@@ -9,7 +9,7 @@ import main.entity.obj.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.entity.type.SpellType;
 import main.game.DC_Game;
-import main.swing.components.obj.drawing.DrawMaster;
+import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.WorkspaceMaster;
 import main.test.frontend.FAST_DC;
@@ -247,7 +247,7 @@ public class TestMasterContent {
 
     private static void addTestSpells(ObjType type, boolean last) {
         type.addProperty(PROPS.VERBATIM_SPELLS, "Blink", true);
-        if (DrawMaster.GRAPHICS_TEST_MODE) {
+        if (DrawMasterStatic.GRAPHICS_TEST_MODE) {
             type.addProperty(PROPS.VERBATIM_SPELLS, "Light", true);
             type.addProperty(PROPS.VERBATIM_SPELLS, "Haze", true);
         }

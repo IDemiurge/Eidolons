@@ -7,11 +7,8 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
-import main.game.logic.dungeon.Dungeon;
-import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.drawing.DrawMaster;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.GuiManager;
 import main.system.auxiliary.LogMaster;
 import main.system.launch.CoreEngine;
 import main.system.text.SmartText;
@@ -24,42 +21,32 @@ import java.util.*;
 import java.util.List;
 
 public class CellComp {
-    G_Panel panel;
-    List<DC_HeroObj> objects;// visible!
-    BufferedImage bufferImage;
-    BufferedImage paintImage;
+    private G_Panel panel;
+    private List<DC_HeroObj> objects;// visible!
+    private BufferedImage bufferImage;
+    private BufferedImage paintImage;
     private DC_Cell terrainObj;
     private int width;
     private int height;
     private int sizeFactor = 100;
-    private DC_BattleFieldGrid holder;
     private DC_Game game;
-    private Dungeon dungeon;
-    private BufferedImage emptyBufferImage;
     private Image centerImage;
     private Coordinates coordinates;
     private Map<SmartText, Point> animOverlayingStrings;
     private Map<Image, Point> animOverlayingImages;
-    private boolean animated;
     private Map<Rectangle, Object> mouseMap;
     private List<DC_HeroObj> overlayingObjects;
     private BfGridComp grid;
 
-    public CellComp(DC_BattleFieldGrid holder, Coordinates coordinates) {
-        this(holder.getDungeon().getGame(), coordinates, holder.getGridComp());
-        this.holder = holder;
-        dungeon = holder.getDungeon();
-    }
-
     public CellComp(DC_Game game, Coordinates coordinates, BfGridComp bfGridComp) {
         this.coordinates = coordinates;
         this.game = game;
-        if (!CoreEngine.isLevelEditor())
+        if (!CoreEngine.isLevelEditor()) {
             setTerrainObj(new DC_Cell(coordinates.x, coordinates.y, game, new Ref(), game
                     .getDungeon()));
-        initPanel();
-        resetSize();
+        }
         grid = bfGridComp;
+        initPanel();
     }
 
     public BfGridComp getGrid() {
@@ -67,12 +54,8 @@ public class CellComp {
     }
 
     private void resetSize() {
-        // if (width == 0)
-        if (holder != null)
-            width = holder.getGridComp().getCellWidth();
-        // if (height == 0)
-        if (holder != null)
-            height = holder.getGridComp().getCellHeight();
+        width = grid.getCellWidth();
+        height = grid.getCellHeight();
         panel.setPanelSize(new Dimension(width, height));
     }
 
@@ -80,7 +63,7 @@ public class CellComp {
         return coordinates;
     }
 
-    public void initPanel() {
+    private void initPanel() {
         panel = new G_Panel() {
             protected void paintComponent(Graphics g) {
                 if (bufferImage != null) {
@@ -88,11 +71,11 @@ public class CellComp {
                 }
                 String text = getToolTipText();
                 if (text != null) {
-                    main.system.auxiliary.LogMaster.log(1, toString() + " has tooltip: " + text);
+                    LogMaster.log(1, toString() + " has tooltip: " + text);
                 }
             }
         };
-        panel.setPanelSize(new Dimension(width, height));
+        resetSize();
         panel.setIgnoreRepaint(true);
     }
 
@@ -101,8 +84,7 @@ public class CellComp {
         if (isTerrain()) {
             return "comp " + getTerrainObj().getNameAndCoordinate();
         }
-        String s = "comp " + getTopObj().getNameAndCoordinate();
-        return s;
+        return "comp " + getTopObj().getNameAndCoordinate();
     }
 
     public void removeAnimation() {
@@ -117,45 +99,32 @@ public class CellComp {
         // getAnimOverlayingStrings().clear();
         // centerImage = null;
         resetSize();
-        emptyBufferImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-        bufferImage = emptyBufferImage;
+        bufferImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 
         final Graphics g = bufferImage.getGraphics();
         // Chronos.mark("drawing " + this);
         final CellComp cell = this;
-        if (SwingUtilities.isEventDispatchThread()
-            // || CoreEngine.isLevelEditor()
-                ) {
-            try {
-                new DrawMaster().draw(cell, g, sizeFactor, game.isSimulation());
-                g.dispose();
-                setPaintImage(bufferImage);
-            } catch (Exception e) {
-                e.printStackTrace();
-                main.system.auxiliary.LogMaster.log(1, toString() + " failed to draw!");
+
+        Runnable drawJob = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    new DrawMaster().draw(cell, g, sizeFactor, game.isSimulation());
+                    g.dispose();
+                    setPaintImage(bufferImage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    main.system.auxiliary.LogMaster.log(1, toString() + " failed to draw!");
+                }
             }
+        };
+
+        if (SwingUtilities.isEventDispatchThread()) {
+            drawJob.run();
         } else
             try {
-                SwingUtilities.invokeAndWait(new Runnable() {
-                    public void run() {
-                        try {
-                            new DrawMaster().draw(cell, g, sizeFactor, game.isSimulation());
-                            g.dispose();
-                            setPaintImage(bufferImage);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            main.system.auxiliary.LogMaster.log(1, toString() + " failed to draw!");
-                        }
-                        // Chronos.logTimeElapsedForMark("drawing " + this);
-                        // main.system.auxiliary.LogMaster.log(1, this +
-                        // " drawn");
-
-                        // panel.setToolTipText(ToolTipMaster.getObjTooltip(this));
-                    }
-                });
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+                SwingUtilities.invokeAndWait(drawJob);
+            } catch (InvocationTargetException | InterruptedException e) {
                 e.printStackTrace();
             }
 
@@ -234,16 +203,6 @@ public class CellComp {
         return getObjects().isEmpty();
     }
 
-    public int getOffsetPerObj() {
-        return (GuiManager.getObjSize() * ((100 - sizeFactor) / (objects.size() - 1))) / 100;
-    }
-
-    public void initSizeFactor() {
-        sizeFactor = 100;
-        if (objects.size() > 1)
-            sizeFactor = (int) (100 - Math.round(35 * Math.pow(objects.size(), 0.75)));
-    }
-
     public Image getCenterOverlayingImage() {
         return centerImage;
     }
@@ -265,18 +224,6 @@ public class CellComp {
         if (objects.isEmpty())
             return false;
         return getTopObjOrCell() == obj;
-    }
-
-    public Dimension getObjImageSize() {
-        return new Dimension(getObjImageWidth(), getObjImageHeight());
-    }
-
-    public int getObjImageHeight() {
-        return sizeFactor * GuiManager.getObjSize() / 100;
-    }
-
-    public int getObjImageWidth() {
-        return sizeFactor * GuiManager.getObjSize() / 100;
     }
 
     public G_Panel getPanel() {
@@ -325,22 +272,18 @@ public class CellComp {
                     }
                 });
 
-                main.system.auxiliary.LogMaster.log(LogMaster.GUI_DEBUG, objects + " after sort ");
+                LogMaster.log(LogMaster.GUI_DEBUG, objects + " after sort ");
             }
         // if (objects.equals(this.objects)){
 
         this.objects = objects;
     }
 
-    public BufferedImage getBufferImage() {
-        return bufferImage;
-    }
-
     public BufferedImage getPaintImage() {
         return paintImage;
     }
 
-    public void setPaintImage(BufferedImage paintImage) {
+    private void setPaintImage(BufferedImage paintImage) {
         this.paintImage = paintImage;
     }
 
@@ -360,12 +303,8 @@ public class CellComp {
         return terrainObj;
     }
 
-    public void setTerrainObj(DC_Cell terrainObj) {
+    private void setTerrainObj(DC_Cell terrainObj) {
         this.terrainObj = terrainObj;
-    }
-
-    public DC_BattleFieldGrid getHolder() {
-        return holder;
     }
 
     public void addAnimOverlayingString(Point p, SmartText text) {
@@ -391,22 +330,12 @@ public class CellComp {
         return getTopObjOrCell().isInfoSelected();
     }
 
-    public void deadenIcon() {
-        // TODO Auto-generated method stub
-
-    }
-
     public boolean isAnimated() {
         for (DC_HeroObj o : getObjects())
             if (o.isAnimated())
                 return true;
 
         return false;
-    }
-
-    public void setAnimated(boolean b) {
-        animated = b;
-
     }
 
     public Map<SmartText, Point> getAnimOverlayingStrings() {
@@ -417,7 +346,7 @@ public class CellComp {
 
     public Map<Image, Point> getAnimOverlayingImages() {
         if (animOverlayingImages == null)
-            animOverlayingImages = (new HashMap<Image, Point>());
+            animOverlayingImages = (new HashMap<>());
         return animOverlayingImages;
     }
 
@@ -430,10 +359,6 @@ public class CellComp {
 
     }
 
-    public int getSizeFactor() {
-        return sizeFactor;
-    }
-
     public void setSizeFactor(int sizeFactor) {
         this.sizeFactor = sizeFactor;
     }
@@ -442,7 +367,7 @@ public class CellComp {
         return game;
     }
 
-    public int getWidth() {
+    private int getWidth() {
         return width;
     }
 
@@ -450,7 +375,7 @@ public class CellComp {
         this.width = width;
     }
 
-    public int getHeight() {
+    private int getHeight() {
         return height;
     }
 

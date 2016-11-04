@@ -12,7 +12,7 @@ import main.game.DC_GameManager;
 import main.game.battlefield.Coordinates;
 import main.game.player.Player;
 import main.swing.components.obj.CellComp;
-import main.swing.components.obj.drawing.DrawMaster;
+import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.system.auxiliary.ListMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -102,14 +102,14 @@ public class LE_Simulation extends DC_Game {
 
 			@Override
 			public void deselectInfo() {
-				DrawMaster.getObjImageCache().remove(getSelectedEntity());
+				DrawMasterStatic.getObjImageCache().remove(getSelectedEntity());
 				if (infoObj != null)
 					infoObj.setInfoSelected(false);
 			}
 
 			public void infoSelect(Obj obj) {
 				obj.setInfoSelected(true);
-				DrawMaster.getObjImageCache().remove(obj);
+				DrawMasterStatic.getObjImageCache().remove(obj);
 				LevelEditor.getMainPanel().getInfoPanel().selectType(obj.getType());
 				LevelEditor.updateDynamicControls();
 			}

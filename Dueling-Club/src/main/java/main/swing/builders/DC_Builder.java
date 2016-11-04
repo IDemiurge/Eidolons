@@ -23,7 +23,6 @@ import main.swing.components.panels.page.DC_PagedUnitActionPanel;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;
 import main.swing.components.panels.secondary.ActionModePanel;
 import main.swing.generic.components.Builder;
-import main.swing.generic.components.G_Component;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.swing.generic.services.dialog.DialogPanel;
@@ -34,6 +33,7 @@ import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.test.libgdx.DENIS_Launcher;
 
 import javax.swing.*;
 import java.awt.*;
@@ -106,7 +106,7 @@ public class DC_Builder extends Builder {
         return cellSize;
     }
 
-    public static void setCellSize(int cellSize) {
+    private static void setCellSize(int cellSize) {
         DC_Builder.cellSize = cellSize;
     }
 
@@ -182,7 +182,13 @@ public class DC_Builder extends Builder {
         builderArray = new Builder[]{
 
         };
-        compArray = new G_Component[]{grid.getComp()/*,
+
+        //canvas.getCanvas().setSize(1600, 900);
+
+        JScrollPane jp = new JScrollPane(new DENIS_Launcher().getCanvas().getCanvas());
+        //jp.setBounds(0,0,100,100);
+
+        compArray = new JComponent[]{grid.getComp(),/*jp,*/ /*,
                 aup, ipHolder, uap, topPanel};
 
         infoArray = new String[]{*/
@@ -191,7 +197,8 @@ public class DC_Builder extends Builder {
 
         cInfoArray = new String[]{
                 getGridPos(),
-                "id aup, pos " + 0 + " 0",
+                "id aup, pos " + 0 + " 0,w 1680,h 1050",
+//                "id aup, pos " + 0 + " 0",
                 "id uip, pos bf.x2" + "-"
                         + (GuiManager.getSquareCellSize() + getInfoPanelOffsetX()) + " 0",
                 "id uap, pos bf.x bf.y2 ",
@@ -344,13 +351,13 @@ public class DC_Builder extends Builder {
         return smallSize;
     }
 
-    public DungeonsPanel getDungeonsPanel() {
+    private DungeonsPanel getDungeonsPanel() {
         if (dungeonsPanel == null)
             setDungeonsPanel(new DungeonsPanel(state.getGame()));
         return dungeonsPanel;
     }
 
-    public void setDungeonsPanel(DungeonsPanel dungeonsPanel) {
+    private void setDungeonsPanel(DungeonsPanel dungeonsPanel) {
         this.dungeonsPanel = dungeonsPanel;
     }
 
@@ -405,7 +412,7 @@ public class DC_Builder extends Builder {
         comp.repaint();
     }
 
-    protected void paintListOverlays(Graphics g) {
+    private void paintListOverlays(Graphics g) {
         // [OPTIMIZE] - why not set x/y for non-unit objects to their screen
         // coordinates?
         if (state.getManager().getInfoObj() instanceof DC_ActiveObj) {
@@ -487,7 +494,7 @@ public class DC_Builder extends Builder {
         return uip;
     }
 
-    public void setUip(DC_UnitInfoPanel uip) {
+    private void setUip(DC_UnitInfoPanel uip) {
         this.uip = uip;
     }
 
@@ -495,7 +502,7 @@ public class DC_Builder extends Builder {
         minimapDisplayed = !minimapDisplayed;
     }
 
-    public Map<Dungeon, Minimap> getMinimaps() {
+    private Map<Dungeon, Minimap> getMinimaps() {
         if (minimaps == null)
             minimaps = new HashMap<>();
         return minimaps;

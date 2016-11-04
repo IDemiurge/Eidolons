@@ -1,8 +1,6 @@
 package main.ability.conditions.special;
 
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
 import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref.KEYS;
 import main.entity.obj.DC_HeroObj;
@@ -13,9 +11,7 @@ import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;
 import main.game.battlefield.XLine;
 import main.system.auxiliary.ArrayMaster;
-import main.system.auxiliary.ListMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
-import main.system.math.DC_PositionMaster;
 import main.system.math.PositionMaster;
 
 import java.util.List;
@@ -86,7 +82,7 @@ public class ClearShotCondition extends MicroCondition {
 
     @Override
     public boolean check() {
-        // consider flying/non-obstructing!
+       /* // consider flying/non-obstructing!
 
         DC_Obj target = (DC_Obj) game.getObjectById(ref.getId(str2));
         if (target == null) {
@@ -145,7 +141,8 @@ public class ClearShotCondition extends MicroCondition {
         if (!toCheck)
             return true;
 
-        return checkClearShot(source, target);
+        return checkClearShot(source, target);*/
+       return true;
     }
 
 	/*
@@ -289,7 +286,7 @@ public class ClearShotCondition extends MicroCondition {
             DIRECTION d2 = DirectionMaster.getRelativeDirection(target.getCoordinates(), c);
             boolean left = false;
             if (source.getY() != c.y) {
-                left = new Float(Math.abs(source.getX() - c.x)) / Math.abs(source.getY() - c.y) < angle;
+                left = (float) Math.abs(source.getX() - c.x) / Math.abs(source.getY() - c.y) < angle;
 
             } else {
                 // by direction
@@ -342,7 +339,7 @@ public class ClearShotCondition extends MicroCondition {
                                 + " distance: " + distance);
                     if (target.isInfoSelected())
                         main.system.auxiliary.LogMaster.log(1, angle + " vs "
-                                + new Float(Math.abs(source.getX() - c.x))
+                                + (float) Math.abs(source.getX() - c.x)
                                 / Math.abs(source.getX() - c.y));
 
                 } // if (d.isGrowX() == !left)
@@ -397,7 +394,7 @@ public class ClearShotCondition extends MicroCondition {
     }
 
     private float getAngle(Coordinates source, Coordinates target) {
-        return new Float(Math.abs(source.getX() - target.getX()))
+        return (float) Math.abs(source.getX() - target.getX())
                 / Math.abs(source.getY() - target.getY());
     }
 
@@ -420,7 +417,7 @@ public class ClearShotCondition extends MicroCondition {
 //
     public boolean checkClearShot(int dX, int dY, Boolean obstructionArray[][]) {
 
-        double slope = new Double(dY) / dX;
+        double slope = (double) dY / dX;
         double k = 0.5 - slope / 2;
         double x = 1;
         double a, b;

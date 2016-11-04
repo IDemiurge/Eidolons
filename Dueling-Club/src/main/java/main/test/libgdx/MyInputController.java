@@ -1,6 +1,7 @@
 package main.test.libgdx;
 
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 
 /**
  * Created by PC on 25.10.2016.
@@ -9,9 +10,10 @@ public class MyInputController implements InputProcessor {
 
     float x_cam_pos;
     float y_cam_pos;
+    OrthographicCamera camera;
 
-    public MyInputController (){
-
+    public MyInputController (OrthographicCamera camera){
+        this.camera = camera;
     }
 
 
@@ -43,7 +45,7 @@ public class MyInputController implements InputProcessor {
             y_cam_pos = i1;
 
 
-        System.out.println( i + " || " + i1 + " || " + i2 + " || " + i3);
+//        System.out.println( i + " || " + i1 + " || " + i2 + " || " + i3);
 
         return false;
     }
@@ -56,10 +58,10 @@ public class MyInputController implements InputProcessor {
 
     @Override
     public boolean touchDragged(int i, int i1, int i2) {
-        System.out.println("i = " + i + " || i1 = " + i1 + " || i2 = "  + i2);
+//        System.out.println("i = " + i + " || i1 = " + i1 + " || i2 = "  + i2);
 
-            BattleFieldScreen.camera.position.x +=(x_cam_pos- i);
-            BattleFieldScreen.camera.position.y -=(y_cam_pos- i1);
+            camera.position.x +=(x_cam_pos- i);
+            camera.position.y -=(y_cam_pos- i1);
             x_cam_pos = i;
             y_cam_pos = i1;
 
@@ -73,6 +75,13 @@ public class MyInputController implements InputProcessor {
 
     @Override
     public boolean scrolled(int i) {
+        if (i == 1){
+            camera.zoom *= 2f;
+        }
+        if (i == -1){
+            camera.zoom /= 2f;
+        }
+        System.out.println(camera.zoom);
         return false;
     }
 

@@ -185,8 +185,6 @@ public class DC_Game extends MicroGame {
                     return false;
                 return super.add(e);
             }
-
-            ;
         };
 
         Game.game = this;
@@ -222,9 +220,7 @@ public class DC_Game extends MicroGame {
         logManager = new DC_LogManager(this);
         rules = new DC_Rules(this);
         initObjTypes();
-        if (CoreEngine.isLevelEditor() || (CoreEngine.isArcaneVault() && XML_Reader.isMacro())) {
-
-        } else {
+        if (!CoreEngine.isLevelEditor() && (!CoreEngine.isArcaneVault() || !XML_Reader.isMacro())) {
             ItemGenerator.init();
             SpellGenerator.init();
             ActionGenerator.init();
@@ -354,6 +350,9 @@ public class DC_Game extends MicroGame {
         game.getGraveyardManager().init();
 
         getState().gameStarted(first);
+
+        // TODO: 30.10.2016 insert gui init here
+
         startGameLoop();
 
         if (hostClient != null)
@@ -405,6 +404,7 @@ public class DC_Game extends MicroGame {
                     while (true)
                         try {
                             state.newRound();
+                            Thread.sleep(0);//release remains time quota
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -699,8 +699,9 @@ public class DC_Game extends MicroGame {
         if (z == null)
             z = getDungeon().getZ();
         XList<DC_HeroObj> list = new XList<>();
+
         for (DC_HeroObj unit : getUnits()) {
-            if (overlayingIncluded != null)
+            if (overlayingIncluded != null) {
                 if (overlayingIncluded) {
                     if (!unit.isOverlaying())
                         continue;
@@ -708,14 +709,19 @@ public class DC_Game extends MicroGame {
                     if (unit.isOverlaying())
                         continue;
                 }
+            }
 
-            if (!passableIncluded)
-                if (unit.isPassable())
+            if (!passableIncluded) {
+                if (unit.isPassable()) {
                     continue;
-            if (unit.getZ() != z)
+                }
+            }
+            if (unit.getZ() != z) {
                 continue;
-            if (unit.getCoordinates().equals(c))
+            }
+            if (unit.getCoordinates().equals(c)) {
                 list.add(unit);
+            }
         }
 
         // ObjComponent objComp = null;

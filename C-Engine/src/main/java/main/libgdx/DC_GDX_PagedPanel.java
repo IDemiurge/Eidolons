@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  */
 public class DC_GDX_PagedPanel extends Group {
     private Image pager1;
-    private Image pager2;
+    protected Image pager2;
 
     protected Image[] slots;
 

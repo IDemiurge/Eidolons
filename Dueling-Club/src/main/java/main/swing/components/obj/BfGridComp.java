@@ -10,10 +10,9 @@ import main.game.battlefield.VisionManager;
 import main.game.battlefield.XLine;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.drawing.DrawHelper;
-import main.swing.components.obj.drawing.DrawMaster;
+import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.GuiManager;
-import main.system.datatypes.DequeImpl;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 
@@ -21,7 +20,6 @@ import java.awt.*;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 //++ better animations! 
@@ -32,11 +30,11 @@ public class BfGridComp {
     private static Map<XLine, Image> underlayMap = new XLinkedMap<>();
     private static int stackedInfoObjSize;
     private static int stackedActiveObjSize;
-    CellComp[][] cells;
-    BufferedImage paintImage;
-    BufferedImage bufferImage;
-    G_Panel panel;
-    DC_Game game;
+    private CellComp[][] cells;
+    private BufferedImage paintImage;
+    private BufferedImage bufferImage;
+    private G_Panel panel;
+    private final DC_Game game;
     private Map<Coordinates, CellComp> map;
     private DC_BattleFieldGrid holder;
     private BfMouseListener bfMouseListener;
@@ -48,9 +46,7 @@ public class BfGridComp {
     private int offsetX = 0;
     private int offsetY = 0;
     private MouseListener customMouseListener;
-    private int zoomPerRotation = 5;
     private boolean dirty;
-    private boolean offsetIsNotReady;
     private int pixelOffsetY;
     private int pixelOffsetX;
 
@@ -73,19 +69,19 @@ public class BfGridComp {
         initPanel();
     }
 
-    public static Map<XLine, Image> getMap(boolean overOrUnder) {
+    private static Map<XLine, Image> getMap(boolean overOrUnder) {
         if (overOrUnder)
             return getOverlayMap();
         return getUnderlayMap();
     }
 
-    public static Coordinates getStackedHighlightRelativeCoordinates(boolean info) {
+    private static Coordinates getStackedHighlightRelativeCoordinates(boolean info) {
         if (info)
             return stackedHighlightRelativeCoordinates;
         return stackedActiveHighlightRelativeCoordinates;
     }
 
-    public static int getSelectedObjSize(boolean infoSelected) {
+    private static int getSelectedObjSize(boolean infoSelected) {
         return infoSelected ? stackedInfoObjSize : stackedActiveObjSize;
     }
 
@@ -115,57 +111,27 @@ public class BfGridComp {
         return overlayMap;
     }
 
-    public static void setOverlayMap(Map<XLine, Image> overlayMap) {
-        BfGridComp.overlayMap = overlayMap;
-    }
-
     public static Map<XLine, Image> getUnderlayMap() {
         return underlayMap;
     }
 
-    public static void setUnderlayMap(Map<XLine, Image> underlayMap) {
-        BfGridComp.underlayMap = underlayMap;
-    }
-
     private void initPanel() {
         cells = new CellComp[getCellsX()][getCellsY()];
-        for (int i = 0; i < getCellsX(); i++)
+        for (int i = 0; i < getCellsX(); i++) {
             for (int j = 0; j < getCellsY(); j++) {
                 Coordinates coordinates = new Coordinates(i, j);
-                if (isLevelEditor()) {
-                    cells[i][j] = new CellComp(game, coordinates, this);
-
-                } else
-                    cells[i][j] = new CellComp(holder, coordinates);
-                getMap().put(coordinates, cells[i][j]);
+                CellComp cell = new CellComp(game, coordinates, this);
+                getMap().put(coordinates, cell);
+                cells[i][j] = cell;
             }
+        }
 
         panel = new G_Panel() {
             protected void paintComponent(Graphics g) {
                 // Chronos
-                try {
-                    game.getAnimationManager().paintCalledOnBfGrid();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                game.getAnimationManager().paintCalledOnBfGrid();
+
                 if (paintImage == null) return;
-/*                try {
-                    //paintImage.getData().
-                    DataBufferInt db = (DataBufferInt) paintImage.getData().getDataBuffer();
-                    int[] data = db.getData();
-                    byte[] tar = new byte[data.length * 4];
-                    for (int i = 0; i < data.length; i++) {
-                        int val = data[i];
-                        tar[i*4]= (byte) (val >> 24);
-                        tar[i*4+1]= (byte) (val >> 16);
-                        tar[i*4+2]= (byte) (val >> 8);
-                        tar[i*4+3]= (byte) val;
-                    }
-                    Gdx2DPixmap gdxPixmap = new Gdx2DPixmap(tar, 0, tar.length, GL30.GL_ALPHA8I);
-                    Pixmap p = new Pixmap(gdxPixmap);
-                } catch (IOException e) {
-                    int a = 10;
-                }*/
                 g.drawImage(paintImage, 0, 0, null);
                 if (!isLevelEditor())
                     game.getAnimationManager().drawAnimations(g);
@@ -323,9 +289,14 @@ public class BfGridComp {
         return null;
     }
 
-    public void repaintComp(Coordinates c) {
-        // TODO Auto-generated method stub
-
+    public void refresh(int offsetX, int offsetY) {
+        setOffsetX(offsetX);
+        setOffsetY(offsetY);
+        try {
+            refresh();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void refresh() {
@@ -333,11 +304,9 @@ public class BfGridComp {
         if (isLevelEditor()) {
             getUnderlayMap().clear();
             getOverlayMap().clear();
-            Map<Coordinates, DC_HeroObj> wallMap = new HashMap<Coordinates, DC_HeroObj>();
+            Map<Coordinates, DC_HeroObj> wallMap = new HashMap<>();
 
-            DequeImpl<DC_HeroObj> units = new DequeImpl<>();
             for (Coordinates c : game.getUnitMap().keySet()) {
-                units.addAll(game.getUnitMap().get(c));
                 for (DC_HeroObj obj : game.getUnitMap().get(c))
                     if (obj.isWall()) {
                         wallMap.put(c, obj);
@@ -375,8 +344,7 @@ public class BfGridComp {
                 CellComp cellComp = cells[i + getOffsetX()][j + getOffsetY()];
                 if (editMode) {
                     Coordinates c = new Coordinates(i + getOffsetX(), j + getOffsetY());
-                    List<DC_HeroObj> objects = getGame().getObjectsOnCoordinate(c);
-                    cellComp.setObjects(objects);
+                    cellComp.setObjects(getGame().getObjectsOnCoordinate(c));
                     cellComp.setOverlayingObjects(getGame().getOverlayingObjects(c));
                     cellComp.setSizeFactor(zoom);
                     cellComp.setWidth(getCellWidth());
@@ -388,7 +356,7 @@ public class BfGridComp {
                 g.drawImage(compImage, getX(i), getY(j), null);
             }
 
-        DrawMaster.drawDiagonalJoints(zoom, g, getOffsetX(), getOffsetY(), getCellWidth(),
+        DrawMasterStatic.drawDiagonalJoints(zoom, g, getOffsetX(), getOffsetY(), getCellWidth(),
                 getCellHeight(), getGame().getBattleFieldManager().getDiagonalJoints());
 
         DC_HeroObj activeObj = getGame().getManager().getActiveObj();
@@ -407,7 +375,7 @@ public class BfGridComp {
 
         drawOverlays(g);
         if (!editMode)
-            DrawMaster.drawWatchInfo(zoom, g);
+            DrawMasterStatic.drawWatchInfo(zoom, g);
     }
 
     public void offset(int offset, boolean x) {
@@ -440,7 +408,7 @@ public class BfGridComp {
         return offsetX;
     }
 
-    public void setOffsetX(int offsetX) {
+    private void setOffsetX(int offsetX) {
         this.offsetX = offsetX;
     }
 
@@ -450,7 +418,7 @@ public class BfGridComp {
         return offsetY;
     }
 
-    public void setOffsetY(int offsetY) {
+    private void setOffsetY(int offsetY) {
         this.offsetY = offsetY;
     }
 
@@ -459,15 +427,15 @@ public class BfGridComp {
         // background?
     }
 
-    public int getBfCoordinateX(int x) {
+    private int getBfCoordinateX(int x) {
         return x / getCellWidth();
     }
 
-    public int getBfX(int x) {
+    private int getBfX(int x) {
         return x * getCellWidth();
     }
 
-    public int getBfY(int y) {
+    private int getBfY(int y) {
         return y * getCellHeight();
     }
 
@@ -477,7 +445,7 @@ public class BfGridComp {
         return GuiManager.getCellWidth() * zoom / 100;
     }
 
-    public int getBfCoordinateY(int y) {
+    private int getBfCoordinateY(int y) {
         return y / getCellHeight();
     }
 
@@ -487,7 +455,7 @@ public class BfGridComp {
         return GuiManager.getCellHeight() * zoom / 100;
     }
 
-    public int getY(int j) {
+    private int getY(int j) {
         return getCellHeight() * j + pixelOffsetY;
     }
 
@@ -495,17 +463,17 @@ public class BfGridComp {
         return new Point(getX(c.x - getOffsetX()), getY(c.y - getOffsetY()));
     }
 
-    public int getX(int i) {
+    private int getX(int i) {
         return getCellWidth() * i + pixelOffsetX;
     }
 
-    public int getHeight() {
+    private int getHeight() {
         if (height != null)
             return height;
         return GuiManager.getBF_CompDisplayedCellsY() * getCellHeight();
     }
 
-    public int getWidth() {
+    private int getWidth() {
         if (width != null)
             return width;
         return GuiManager.getBF_CompDisplayedCellsX() * getCellWidth();
@@ -529,22 +497,6 @@ public class BfGridComp {
                 + (getHeight() % getCellHeight() != 0 ? 1 : 0));
     }
 
-    public BufferedImage getPaintImage() {
-        return paintImage;
-    }
-
-    public void setPaintImage(BufferedImage paintImage) {
-        this.paintImage = paintImage;
-    }
-
-    public BufferedImage getBufferImage() {
-        return bufferImage;
-    }
-
-    public void setBufferImage(BufferedImage bufferImage) {
-        this.bufferImage = bufferImage;
-    }
-
     public CellComp[][] getCells() {
         return cells;
     }
@@ -555,12 +507,8 @@ public class BfGridComp {
 
     public Map<Coordinates, CellComp> getMap() {
         if (map == null)
-            map = new HashMap<Coordinates, CellComp>();
+            map = new HashMap<>();
         return map;
-    }
-
-    public void setMap(Map<Coordinates, CellComp> map) {
-        this.map = map;
     }
 
     public DC_Game getGame() {
@@ -583,10 +531,6 @@ public class BfGridComp {
         this.zoom = zoom;
     }
 
-    public void setCustomMouseListener(MouseListener mouseMaster) {
-        this.customMouseListener = mouseMaster;
-    }
-
     public Point mapToPoint(Coordinates c) {
         int x = getBfX(c.x - getOffsetX());
         int y = getBfY(c.y - getOffsetY());
@@ -607,6 +551,7 @@ public class BfGridComp {
     }
 
     public void zoom(int wheelRotation) {
+        int zoomPerRotation = 5;
         zoom += wheelRotation * zoomPerRotation;
         refresh();
         panel.repaint();
@@ -620,28 +565,6 @@ public class BfGridComp {
         this.dirty = dirty;
     }
 
-    public boolean isOffsetIsNotReady() {
-        return offsetIsNotReady;
+    private void setOffsetIsNotReady(boolean offsetIsNotReady) {
     }
-
-    public void setOffsetIsNotReady(boolean offsetIsNotReady) {
-        this.offsetIsNotReady = offsetIsNotReady;
-    }
-
-    public int getPixelOffsetY() {
-        return pixelOffsetY;
-    }
-
-    public void setPixelOffsetY(int pixelOffsetY) {
-        this.pixelOffsetY = pixelOffsetY;
-    }
-
-    public int getPixelOffsetX() {
-        return pixelOffsetX;
-    }
-
-    public void setPixelOffsetX(int pixelOffsetX) {
-        this.pixelOffsetX = pixelOffsetX;
-    }
-
 }

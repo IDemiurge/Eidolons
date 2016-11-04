@@ -21,6 +21,7 @@ import main.swing.generic.components.G_Panel;
 import main.swing.generic.services.layout.LayoutInfo;
 import main.system.auxiliary.ColorManager;
 import main.system.auxiliary.GuiManager;
+import main.system.auxiliary.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
@@ -58,7 +59,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     public DC_BattleFieldGrid(Dungeon dungeon) {
         this.dungeon = dungeon; // TODO
 
-        this.game = (DC_Game) dungeon.getGame();
+        this.game = dungeon.getGame();
         this.w = GuiManager.getBF_CompDisplayedCellsX();
         this.h = GuiManager.getBF_CompDisplayedCellsY();
         if (game.getDungeonMaster().isExtendedBattlefield()) {
@@ -106,21 +107,12 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         return "Grid for " + dungeon.getName() + "; Z=" + dungeon.getZ() + ";X=" + w + ";Y=" + h;
     }
 
-    public boolean isExtendedBattlefield() {
+    private boolean isExtendedBattlefield() {
         return game.getDungeonMaster().isExtendedBattlefield();
     }
 
     public void refresh() {
-        gridComp.setOffsetIsNotReady(true);
-        gridComp.setOffsetX(getOffsetX());
-        gridComp.setOffsetY(getOffsetY());
-        try {
-            gridComp.refresh();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            gridComp.setOffsetIsNotReady(false);
-        }
+        gridComp.refresh(getOffsetX(), getOffsetY());
         gridComp.getPanel().repaint();
     }
 
@@ -132,19 +124,19 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         gridComp.refresh();
     }
 
-    public int getDisplayedCellsX() {
+    private int getDisplayedCellsX() {
         return gridComp.getDisplayedCellsX();
     }
 
-    public int getDisplayedCellsY() {
+    private int getDisplayedCellsY() {
         return gridComp.getDisplayedCellsY();
     }
 
     private void resetComponents() {
         int offsetX = getOffsetX();
         int offsetY = getOffsetY();
-        main.system.auxiliary.LogMaster.log(0, "resetting grid comps with offsetX = " + offsetX
-                + ";offsetY =" + offsetY);
+        LogMaster.log(0, "resetting grid comps with offsetX = " + offsetX + ";offsetY =" + offsetY);
+
         for (int i = 0; i < getDisplayedCellsX(); i++) {
             for (int j = 0; j < getDisplayedCellsY(); j++) {
                 int x = i + getOffsetX();
@@ -166,11 +158,13 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
                 }
                 comp.setSizeFactor(gridComp.getZoom());
                 comp.setOverlayingObjects(overlayingObjects);
-                comp.setObjects(list);
+                if (list.size() != 0) {
+                    comp.setObjects(list);
+                }
                 comp.refresh();
             }
         }
-        ((G_Panel) comp).refresh();
+        comp.refresh();
     }
 
     public void resetZoom() {
@@ -207,7 +201,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
 
     }
 
-    public int getOffset(boolean x) {
+    private int getOffset(boolean x) {
         // 6*132 = 7* x ;
 
         if (!isExtendedBattlefield())
@@ -234,7 +228,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
 
     }
 
-    public int getCameraOffset(boolean x, int displayedCells) {
+    private int getCameraOffset(boolean x, int displayedCells) {
         if (cameraCenterObj != null)
             cameraCenterCoordinates = cameraCenterObj.getCoordinates();
         Coordinates coordinate = cameraCenterCoordinates;
@@ -257,11 +251,11 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         return offset;
     }
 
-    public int getFullCells(boolean x) {
+    private int getFullCells(boolean x) {
         return x ? GuiManager.getCurrentLevelCellsX() : GuiManager.getCurrentLevelCellsY();
     }
 
-    public int getDisplayedCells(boolean x) {
+    private int getDisplayedCells(boolean x) {
         return x ? GuiManager.getBF_CompDisplayedCellsX() : GuiManager.getBF_CompDisplayedCellsY();
     }
 
@@ -281,13 +275,11 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         return isWithinBounds(u.getCoordinates());
     }
 
-    public boolean isWithinBounds(Coordinates c) {
+    private boolean isWithinBounds(Coordinates c) {
         if (Math.abs(c.getX() - getOffsetX()) > GuiManager.getBF_CompDisplayedCellsX())
             return false;
-        if (Math.abs(c.getY() - getOffsetY()) > GuiManager.getBF_CompDisplayedCellsY())
-            return false;
+        return Math.abs(c.getY() - getOffsetY()) <= GuiManager.getBF_CompDisplayedCellsY();
 
-        return true;
     }
 
     public Boolean isOnEdgeX(Coordinates coordinates) {
@@ -380,7 +372,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
 
     }
 
-    public boolean noObstacles(int xy, int xy1, int xy2, Obj source, boolean x_y) {
+    private boolean noObstacles(int xy, int xy1, int xy2, Obj source, boolean x_y) {
 
         int max = xy2;
         int min = xy1;
@@ -600,7 +592,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         this.offsetCoordinate = offsetCoordinate;
     }
 
-    public Coordinates getNextOffsetCoordinate() {
+    private Coordinates getNextOffsetCoordinate() {
         return nextOffsetCoordinate;
     }
 
@@ -648,7 +640,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
 
     }
 
-    public DC_HeroObj getActiveObj() {
+    private DC_HeroObj getActiveObj() {
         if (activeObj == null) {
             if (PartyManager.getParty() != null)
                 setActiveObj(PartyManager.getParty().getLeader());
@@ -659,7 +651,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         return activeObj;
     }
 
-    public void setActiveObj(DC_HeroObj activeObj) {
+    private void setActiveObj(DC_HeroObj activeObj) {
         this.activeObj = activeObj;
     }
 

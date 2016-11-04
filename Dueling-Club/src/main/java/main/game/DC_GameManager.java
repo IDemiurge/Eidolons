@@ -30,7 +30,7 @@ import main.rules.action.ActionRule;
 import main.rules.mechanics.IlluminationRule;
 import main.rules.mechanics.UpkeepRule;
 import main.swing.builders.DC_Builder;
-import main.swing.components.obj.drawing.DrawMaster;
+import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.swing.components.panels.page.DC_PagedPriorityPanel;
 import main.system.auxiliary.*;
 import main.system.graphics.ANIM;
@@ -195,7 +195,7 @@ public class DC_GameManager extends GameManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        DrawMaster.getObjImageCache().clear();
+        DrawMasterStatic.getObjImageCache().clear();
         for (DC_HeroObj u : getGame().getUnits()) {
             u.setOutlineType(null);
         }
@@ -395,7 +395,7 @@ public class DC_GameManager extends GameManager {
         selectingInterrupted = false;
         setSelecting(true);
         for (Obj obj : selectingSet)
-            DrawMaster.getObjImageCache().remove(obj);
+            DrawMasterStatic.getObjImageCache().remove(obj);
         try {
             highlightsOff();
         } catch (Exception e) {

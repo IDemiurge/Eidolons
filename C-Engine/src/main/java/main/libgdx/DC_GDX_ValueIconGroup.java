@@ -40,17 +40,17 @@ public class DC_GDX_ValueIconGroup extends Group {
 
     public DC_GDX_ValueIconGroup init() {
         Texture t = new Texture(imagePath + backIcon);
-        resValue = new DC_GDX_ValueIcon(imagePath + resIcon, t);
-        spiritValue = new DC_GDX_ValueIcon(imagePath + spiritIcon, t);
-        enduranceValue = new DC_GDX_ValueIcon(imagePath + enduranceIcon, t);
+        resValue = new DC_GDX_ValueIcon(imagePath + resIcon, t).init();
+        spiritValue = new DC_GDX_ValueIcon(imagePath + spiritIcon, t).init();
+        enduranceValue = new DC_GDX_ValueIcon(imagePath + enduranceIcon, t).init();
 
-        damageValue = new DC_GDX_ValueIcon(imagePath + damageIcon, t);
-        armorValue = new DC_GDX_ValueIcon(imagePath + armorIcon, t);
-        offDamageValue = new DC_GDX_ValueIcon(imagePath + offDamageIcon, t);
+        damageValue = new DC_GDX_ValueIcon(imagePath + damageIcon, t).init();
+        armorValue = new DC_GDX_ValueIcon(imagePath + armorIcon, t).init();
+        offDamageValue = new DC_GDX_ValueIcon(imagePath + offDamageIcon, t).init();
 
-        attackValue = new DC_GDX_ValueIcon(imagePath + attackIcon, t);
-        defenceValue = new DC_GDX_ValueIcon(imagePath + defenceIcon, t);
-        offAttackValue = new DC_GDX_ValueIcon(imagePath + offAttackIcon, t);
+        attackValue = new DC_GDX_ValueIcon(imagePath + attackIcon, t).init();
+        defenceValue = new DC_GDX_ValueIcon(imagePath + defenceIcon, t).init();
+        offAttackValue = new DC_GDX_ValueIcon(imagePath + offAttackIcon, t).init();
 
         final int offset = 1;
 
@@ -92,6 +92,9 @@ public class DC_GDX_ValueIconGroup extends Group {
         addActor(attackValue);
         addActor(defenceValue);
         addActor(offAttackValue);
+
+        setHeight(attackValue.getHeight() * 3 + offset * 2);
+        setWidth(attackValue.getWidth() * 3 + offset * 2);
 
         return this;
     }

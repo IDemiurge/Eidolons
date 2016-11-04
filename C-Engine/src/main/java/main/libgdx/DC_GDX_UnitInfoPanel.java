@@ -28,6 +28,7 @@ public class DC_GDX_UnitInfoPanel extends Group {
 
         portraitPanel = new DC_GDX_PortraitPanel(imagePath).init();
         portraitPanel.setX(orbPanel.getWidth());
+        portraitPanel.setY(0);
         addActor(portraitPanel);
 
         orbPanel.setY(portraitPanel.getHeight() - orbPanel.getHeight());
