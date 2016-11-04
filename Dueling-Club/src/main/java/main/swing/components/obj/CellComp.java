@@ -272,7 +272,7 @@ public class CellComp {
                     }
                 });
 
-                main.system.auxiliary.LogMaster.log(LogMaster.GUI_DEBUG, objects + " after sort ");
+                LogMaster.log(LogMaster.GUI_DEBUG, objects + " after sort ");
             }
         // if (objects.equals(this.objects)){
 

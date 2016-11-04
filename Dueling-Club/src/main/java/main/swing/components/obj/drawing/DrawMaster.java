@@ -1559,8 +1559,8 @@ public class DrawMaster {
         return stackedIconMode;
     }
 
-    public void setZoom(int zoom2) {
-        zoom = zoom2;
+    public void setZoom(int zoom) {
+        this.zoom = zoom;
     }
 
 }

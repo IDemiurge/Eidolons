@@ -158,7 +158,9 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
                 }
                 comp.setSizeFactor(gridComp.getZoom());
                 comp.setOverlayingObjects(overlayingObjects);
-                comp.setObjects(list);
+                if (list.size() != 0) {
+                    comp.setObjects(list);
+                }
                 comp.refresh();
             }
         }

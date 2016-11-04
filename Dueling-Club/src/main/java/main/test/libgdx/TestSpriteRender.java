@@ -2,6 +2,7 @@ package main.test.libgdx;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL30;
@@ -11,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import main.data.filesys.PathFinder;
+
+import static com.badlogic.gdx.Gdx.input;
 
 /**
  * Created with IntelliJ IDEA.
@@ -64,7 +67,7 @@ public class TestSpriteRender implements ApplicationListener {
         sprite = new Sprite(cellTexture);
 
         cam = new OrthographicCamera();
-        cam.setToOrtho(false, 1600,900);
+        cam.setToOrtho(false, 1600, 900);
 
         glViewport = new Rectangle(0, 0, WIDTH, HEIGHT);
         spriteBatch = new SpriteBatch();
@@ -79,7 +82,19 @@ public class TestSpriteRender implements ApplicationListener {
     public void render() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
-
+        if (input.isKeyPressed(Input.Keys.LEFT)) {
+            cam.translate(-20, 0);
+        }
+        if (input.isKeyPressed(Input.Keys.RIGHT)) {
+            cam.translate(20, 0);
+        }
+        if (input.isKeyPressed(Input.Keys.UP)) {
+            cam.translate(0, 20);
+        }
+        if (input.isKeyPressed(Input.Keys.DOWN)) {
+            cam.translate(0, -20);
+        }
+        cam.update();
         spriteBatch.setProjectionMatrix(cam.combined);
         spriteBatch.begin();
         sprite.draw(spriteBatch, 1);
