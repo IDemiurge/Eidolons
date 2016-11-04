@@ -185,8 +185,6 @@ public class DC_Game extends MicroGame {
                     return false;
                 return super.add(e);
             }
-
-            ;
         };
 
         Game.game = this;
@@ -406,6 +404,7 @@ public class DC_Game extends MicroGame {
                     while (true)
                         try {
                             state.newRound();
+                            Thread.sleep(0);//release remains time quota
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

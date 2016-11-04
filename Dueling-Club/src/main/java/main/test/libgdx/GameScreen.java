@@ -1,10 +1,15 @@
 package main.test.libgdx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import main.data.filesys.PathFinder;
 import main.libgdx.*;
+
+import static com.badlogic.gdx.Gdx.input;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,8 +27,11 @@ public class GameScreen implements Screen {
     private DC_GDX_ActionGroup actionGroup;
 
     private SpriteBatch batch;
+    private OrthographicCamera cam;
 
     public GameScreen PostConstruct() {
+        cam = new OrthographicCamera();
+        cam.setToOrtho(false, 1600, 900);
 /*        GL30 gl = Gdx.graphics.getGL30();
         gl.glEnable(GL30.GL_BLEND);
         gl.glEnable(GL30.GL_TEXTURE_2D);
@@ -46,26 +54,47 @@ public class GameScreen implements Screen {
         actionGroup.setY(10);
         actionGroup.setX(Gdx.graphics.getWidth() / 2 - actionGroup.getWidth() / 2);
 
-        gridPanel.setY(actionGroup.getY()+actionGroup.getHeight());
-        gridPanel.setX(activeUnitInfoPanel.getMinWeight());
+        //gridPanel.setY(actionGroup.getY()+actionGroup.getHeight());
+        //gridPanel.setX(activeUnitInfoPanel.getMinWeight());
         return this;
     }
 
     @Override
     public void render(float delta) {
-
-/*        GL30 gl = Gdx.graphics.getGL30();
-        gl.glClear(GL30.GL_COLOR_BUFFER_BIT);*/
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
+        if (input.isKeyPressed(Input.Keys.LEFT)) {
+            cam.translate(-20, 0);
+        }
+        if (input.isKeyPressed(Input.Keys.RIGHT)) {
+            cam.translate(20, 0);
+        }
+        if (input.isKeyPressed(Input.Keys.UP)) {
+            cam.translate(0, 20);
+        }
+        if (input.isKeyPressed(Input.Keys.DOWN)) {
+            cam.translate(0, -20);
+        }
+        cam.update();
 
         batch.begin();
-        background.draw(batch, 1);
+        background.draw(batch,1);
+        batch.end();
+
+        SpriteBatch batch2 = new SpriteBatch();
+        batch2.setProjectionMatrix(cam.combined);
+        batch2.begin();
+        gridPanel.draw(batch2,1);
+        batch2.end();
+
+        batch.begin();
+        //background.draw(batch, 1);
         //gridPanel.draw(batch, 1);
         topPanel.draw(batch, 1);
         unitInfoPanel.draw(batch, 1);
         activeUnitInfoPanel.draw(batch, 1);
         actionGroup.draw(batch, 1);
         batch.end();
-        //batch.setTransformMatrix(MapView.isoTransform);
     }
 
     @Override

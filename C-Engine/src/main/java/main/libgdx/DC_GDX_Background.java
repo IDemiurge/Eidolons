@@ -12,8 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  */
 public class DC_GDX_Background extends Group {
 
-//    private final static String backImagePath = "big\\dungeon.jpg";
-    private final static String backImagePath = "big\\big bf grid test2.jpg";
+    private final static String backImagePath = "big\\dungeon.jpg";
+    //private final static String backImagePath = "big\\big bf grid test2.jpg";
 
     public Image backImage;
 
