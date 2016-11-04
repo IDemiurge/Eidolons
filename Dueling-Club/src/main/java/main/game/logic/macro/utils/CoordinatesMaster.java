@@ -175,15 +175,12 @@ public class CoordinatesMaster {
     }
 
     public static int[] getMinMaxCoordinates(String string) {
-        string = string.replace("_", "");
-        string = string.trim();
+        string = string.replace("_", "").trim();
         int[] array = new int[4];
         int i = 0;
         for (String s : string.split(";")) {
-            array[i] = StringMaster.getInteger(s.split("-")[0].substring(1));
-            i++;
-            array[i] = StringMaster.getInteger(s.split("-")[1]);
-            i++;
+            array[i++] = StringMaster.getInteger(s.split("-")[0].substring(1));
+            array[i++] = StringMaster.getInteger(s.split("-")[1]);
         }
         return array;
     }

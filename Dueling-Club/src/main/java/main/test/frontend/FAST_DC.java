@@ -31,6 +31,7 @@ import main.test.PresetLauncher;
 import main.test.PresetMaster;
 import main.test.debug.GameLauncher;
 import main.test.debug.GameLauncher.CODE;
+import main.test.libgdx.DENIS_Launcher;
 
 import javax.swing.*;
 import java.awt.*;
@@ -99,6 +100,7 @@ public class FAST_DC {
     private static NetGame netGame;
     private static int unitGroupLevel;
     private static GameLauncher gameLauncher;
+    private static DENIS_Launcher guiLauncher;
 
     public static boolean isRunning() {
         return running;
@@ -217,9 +219,7 @@ public class FAST_DC {
                     createGUI();
                 }
             });
-        } catch (InvocationTargetException e1) {
-            e1.printStackTrace();
-        } catch (InterruptedException e1) {
+        } catch (InvocationTargetException | InterruptedException e1) {
             e1.printStackTrace();
         }
         initKeyManager();

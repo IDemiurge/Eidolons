@@ -2,6 +2,7 @@ package main.test.libgdx;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
@@ -16,6 +17,16 @@ public class DENIS_Launcher implements ApplicationListener {
     Screen screen;
 
     public static void main(String[] args) {
+       new LwjglApplication(new DENIS_Launcher(), getConf());
+    }
+
+    public LwjglAWTCanvas getCanvas(){
+
+//        new LwjglApplication(new DENIS_Launcher(), lwjglApplicationConfiguration);
+        return new LwjglAWTCanvas(new DENIS_Launcher(), getConf());
+    }
+
+    private static LwjglApplicationConfiguration getConf(){
         LwjglApplicationConfiguration lwjglApplicationConfiguration = new LwjglApplicationConfiguration();
         lwjglApplicationConfiguration.title = "demo";
         lwjglApplicationConfiguration.useGL30 = true;
@@ -27,11 +38,13 @@ public class DENIS_Launcher implements ApplicationListener {
         lwjglApplicationConfiguration.height = 900;
         lwjglApplicationConfiguration.fullscreen = false;
 
-        new LwjglApplication(new DENIS_Launcher(), lwjglApplicationConfiguration);
+        return lwjglApplicationConfiguration;
     }
 
     @Override
     public void create() {
+/*        World world;
+        world = new World(new Vector2(0,-10),true);*/
          screen = new GameScreen().PostConstruct();
     }
 

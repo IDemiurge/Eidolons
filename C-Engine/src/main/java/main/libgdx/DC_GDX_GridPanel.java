@@ -1,8 +1,8 @@
 package main.libgdx;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.io.File;
 
@@ -12,8 +12,8 @@ import java.io.File;
  * Time: 15:57
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_GridPanel extends Group {
-    protected Image background;
+public class DC_GDX_GridPanel {
+    protected Sprite[][] background;
     protected Texture emptyImage;
     protected Texture hiddenImage;
     protected Texture highlightImage;
@@ -40,13 +40,24 @@ public class DC_GDX_GridPanel extends Group {
         hiddenImage = new Texture(imagePath + File.separator + hiddenCellPath);
         highlightImage = new Texture(imagePath + File.separator + highlightCellPath);
         unknownImage = new Texture(imagePath + File.separator + unknownCellPath);
-
-        background = new Image(new Texture(imagePath + File.separator + backgroundPath));
-        addActor(background);
-
-        //emptyImage.setX();
-        //emptyImage.setY();
+        background = new Sprite[lines][rows];
+        Texture backTexture = new Texture(imagePath + File.separator + backgroundPath);
+        for (int i = 0; i < lines; i++) {
+            for (int i1 = 0; i1 < rows; i1++) {
+                background[i][i1] = new Sprite(emptyImage);
+                background[i][i1].setX(i * emptyImage.getWidth());
+                background[i][i1].setY(i1 * emptyImage.getHeight());
+            }
+        }
 
         return this;
+    }
+
+    public void draw(SpriteBatch batch, float alpha) {
+        for (int i = 0; i < lines; i++) {
+            for (int i1 = 0; i1 < rows; i1++) {
+                background[i][i1].draw(batch, alpha);
+            }
+        }
     }
 }

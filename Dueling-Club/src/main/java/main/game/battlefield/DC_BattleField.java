@@ -12,7 +12,7 @@ import main.game.battlefield.map.DC_Map;
 import main.game.player.Player;
 import main.swing.builders.DC_Builder;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
-import main.swing.components.obj.drawing.DrawMaster;
+import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.system.auxiliary.Chronos;
 import main.system.auxiliary.LogMaster;
 import main.system.hotkey.DC_KeyManager;
@@ -154,7 +154,7 @@ public class DC_BattleField extends BattleField {
 
     @Override
     public void deselectInfoObj(Obj selectedObj, boolean b) {
-        DrawMaster.getObjImageCache().remove(selectedObj);
+        DrawMasterStatic.getObjImageCache().remove(selectedObj);
         selectedObj.setInfoSelected(false);
         this.setInfoSelectedObj(null);
     }

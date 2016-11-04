@@ -17,7 +17,7 @@ public abstract class Builder implements GameGUI {
 
     protected String[] infoArray = new String[0];
 
-    protected G_Component[] compArray = new G_Component[0];
+    protected JComponent[] compArray = new JComponent[0];
 
     protected String[] cInfoArray = new String[0];
 
@@ -93,7 +93,7 @@ public abstract class Builder implements GameGUI {
 
             if (keyListener != null)
                 builder.setKeyListener(keyListener);
-            JComponent newComp = null;
+            JComponent newComp;
             try {
                 newComp = builder.build();
             } catch (Exception e) {
@@ -122,7 +122,7 @@ public abstract class Builder implements GameGUI {
         }
     }
 
-    public void initCompMap() {
+    private void initCompMap() {
 
         comps = new HashMap<>();
         int i = 0;
@@ -211,11 +211,11 @@ public abstract class Builder implements GameGUI {
     public void dataChanged() {
         for (Builder b : builderArray)
             b.dataChanged();
-        for (G_Component c : compArray)
-            c.dataChanged();
+        //for (JComponent c : compArray)
+            //c.dataChanged();
     }
 
-    public KeyListener getKeyListener() {
+    private KeyListener getKeyListener() {
         return keyListener;
     }
 

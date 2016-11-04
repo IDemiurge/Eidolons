@@ -140,11 +140,7 @@ public class Coordinates {
         }
         if (arg0 instanceof Coordinates) {
             Coordinates c = (Coordinates) arg0;
-            if (c.x != x)
-                return false;
-            if (c.y != y)
-                return false;
-            return c.z == z;
+            return c.x == x && c.y == y && c.z == z;
         }
         return false;
     }

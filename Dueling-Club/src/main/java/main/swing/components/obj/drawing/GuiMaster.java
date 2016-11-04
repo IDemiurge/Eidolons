@@ -19,7 +19,7 @@ public class GuiMaster {
     public boolean buttonClicked(MouseEvent e, DYNAMIC_BUTTON type, Object arg) {
         switch (type) {
             case SIGHT_INFO:
-                DrawMaster.setSightVisualsOn(!DrawMaster.isSightVisualsOn());
+                DrawMasterStatic.setSightVisualsOn(!DrawMasterStatic.isSightVisualsOn());
                 return true;
         }
         return false;

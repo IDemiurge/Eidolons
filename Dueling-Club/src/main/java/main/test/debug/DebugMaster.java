@@ -41,7 +41,7 @@ import main.game.player.DC_Player;
 import main.game.player.Player;
 import main.rules.DC_ActionManager;
 import main.swing.builders.DC_Builder;
-import main.swing.components.obj.drawing.DrawMaster;
+import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -419,11 +419,11 @@ public class DebugMaster {
                 TestMasterContent.addTestActives(true, infoObj.getType(), true);
                 break;
             case TOGGLE_GRAPHICS_TEST:
-                DrawMaster.GRAPHICS_TEST_MODE = !DrawMaster.GRAPHICS_TEST_MODE;
-                if (DrawMaster.GRAPHICS_TEST_MODE)
-                    DrawMaster.FULL_GRAPHICS_TEST_MODE = DialogMaster.confirm("Full test on?");
+                DrawMasterStatic.GRAPHICS_TEST_MODE = !DrawMasterStatic.GRAPHICS_TEST_MODE;
+                if (DrawMasterStatic.GRAPHICS_TEST_MODE)
+                    DrawMasterStatic.FULL_GRAPHICS_TEST_MODE = DialogMaster.confirm("Full test on?");
                 else
-                    DrawMaster.FULL_GRAPHICS_TEST_MODE = false;
+                    DrawMasterStatic.FULL_GRAPHICS_TEST_MODE = false;
                 break;
             case TOGGLE_LOG: {
                 String e = ListChooser.chooseEnum(LOG_CHANNELS.class);

@@ -75,11 +75,7 @@ public abstract class BattleField {
                         }
                     }
                 });
-            } catch (Error e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (Error | InvocationTargetException | InterruptedException e) {
                 e.printStackTrace();
             }
 
