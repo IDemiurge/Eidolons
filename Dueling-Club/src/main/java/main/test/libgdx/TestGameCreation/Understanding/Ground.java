@@ -17,12 +17,12 @@ public class Ground extends Actor {
     public Ground(World world) {
         this.world = world;
         bDef = new BodyDef();
-        setBounds(0,0,15,2);
+        setBounds(0,0,20,2);
         bDef.position.set(getX(),getY());
         bDef.type = BodyDef.BodyType.StaticBody;
         body = world.createBody(bDef);
         shape = new PolygonShape();
-        shape.setAsBox(15,2);
+        shape.setAsBox(20,2);
         fDef = new FixtureDef();
         fDef.shape = shape;
         fDef.restitution = 1f;
