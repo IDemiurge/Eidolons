@@ -1,8 +1,8 @@
 package main.libgdx;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Group;
 
 import java.io.File;
 
@@ -12,8 +12,8 @@ import java.io.File;
  * Time: 15:57
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_GridPanel {
-    protected Sprite[][] background;
+public class DC_GDX_GridPanel extends Group {
+    protected GridCell[][] cells;
     protected Texture emptyImage;
     protected Texture hiddenImage;
     protected Texture highlightImage;
@@ -40,23 +40,23 @@ public class DC_GDX_GridPanel {
         hiddenImage = new Texture(imagePath + File.separator + hiddenCellPath);
         highlightImage = new Texture(imagePath + File.separator + highlightCellPath);
         unknownImage = new Texture(imagePath + File.separator + unknownCellPath);
-        background = new Sprite[lines][rows];
-//        Texture backTexture = new Texture(imagePath + File.separator + backgroundPath);
+        cells = new GridCell[lines][rows];
         for (int i = 0; i < lines; i++) {
             for (int i1 = 0; i1 < rows; i1++) {
-                background[i][i1] = new Sprite(emptyImage);
-                background[i][i1].setX(i * emptyImage.getWidth());
-                background[i][i1].setY(i1 * emptyImage.getHeight());
+                cells[i][i1] = new GridCell(imagePath, emptyImage);
+                cells[i][i1].setX(i * emptyImage.getWidth());
+                cells[i][i1].setY(i1 * emptyImage.getHeight());
             }
         }
 
         return this;
     }
 
-    public void draw(SpriteBatch batch, float alpha) {
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
         for (int i = 0; i < lines; i++) {
             for (int i1 = 0; i1 < rows; i1++) {
-                background[i][i1].draw(batch, alpha);
+                cells[i][i1].draw(batch, parentAlpha);
             }
         }
     }

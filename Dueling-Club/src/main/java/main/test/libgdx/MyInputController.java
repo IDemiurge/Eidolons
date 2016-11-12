@@ -60,8 +60,8 @@ public class MyInputController implements InputProcessor {
     public boolean touchDragged(int i, int i1, int i2) {
 //        System.out.println("i = " + i + " || i1 = " + i1 + " || i2 = "  + i2);
 
-            camera.position.x +=(x_cam_pos- i);
-            camera.position.y -=(y_cam_pos- i1);
+            camera.position.x +=(x_cam_pos- i)*camera.zoom;
+            camera.position.y -=(y_cam_pos- i1)*camera.zoom;
             x_cam_pos = i;
             y_cam_pos = i1;
 

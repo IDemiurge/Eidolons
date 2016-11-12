@@ -41,7 +41,7 @@ public class GameScreen implements Screen {
         PathFinder.init();
         background = new DC_GDX_Background(PathFinder.getImagePath()).init();
         topPanel = new DC_GDX_TopPanel(PathFinder.getImagePath()).init();
-        gridPanel = new DC_GDX_GridPanel(PathFinder.getImagePath(), 10, 10).init();
+        gridPanel = new DC_GDX_GridPanel(PathFinder.getImagePath(), 100, 100).init();
 
         unitInfoPanel = new DC_GDX_TargetUnitInfoPanel(PathFinder.getImagePath()).init();
         unitInfoPanel.setX(Gdx.graphics.getWidth() - unitInfoPanel.getWidth());
@@ -80,13 +80,13 @@ public class GameScreen implements Screen {
         cam.update();
 
         batch.begin();
-        background.draw(batch,1);
+        background.draw(batch, 1);
         batch.end();
 
         SpriteBatch batch2 = new SpriteBatch();
         batch2.setProjectionMatrix(cam.combined);
         batch2.begin();
-        gridPanel.draw(batch2,1);
+        gridPanel.draw(batch2, 1);
         batch2.end();
 
         batch.begin();
@@ -97,7 +97,12 @@ public class GameScreen implements Screen {
         activeUnitInfoPanel.draw(batch, 1);
         actionGroup.draw(batch, 1);
         batch.end();
+
+
+
+        actionGroup.hit(1, 1, true);
     }
+
 
     @Override
     public void resize(int width, int height) {
