@@ -11,6 +11,7 @@ public class MyInputController implements InputProcessor {
     float x_cam_pos;
     float y_cam_pos;
     OrthographicCamera camera;
+    boolean is_it_Left_Click = false;
 
     public MyInputController (OrthographicCamera camera){
         this.camera = camera;
@@ -40,18 +41,22 @@ public class MyInputController implements InputProcessor {
     @Override
     public boolean touchDown(int i, int i1, int i2, int i3) {
         // Условно у меня на ширину приложения пикселей приходится ширина камеры абстрактрых едениц
+            if (i3 ==0){
+                x_cam_pos = i;
+                y_cam_pos = i1;
+                is_it_Left_Click = true;
+            }
 
-            x_cam_pos = i;
-            y_cam_pos = i1;
 
 
-//        System.out.println( i + " || " + i1 + " || " + i2 + " || " + i3);
+        System.out.println( i + " || " + i1 + " || " + i2 + " || " + i3);
 
         return false;
     }
 
     @Override
     public boolean touchUp(int i, int i1, int i2, int i3) {
+        is_it_Left_Click = false;
 
         return false;
     }
@@ -59,11 +64,13 @@ public class MyInputController implements InputProcessor {
     @Override
     public boolean touchDragged(int i, int i1, int i2) {
 //        System.out.println("i = " + i + " || i1 = " + i1 + " || i2 = "  + i2);
-
-            camera.position.x +=(x_cam_pos- i)*camera.zoom;
-            camera.position.y -=(y_cam_pos- i1)*camera.zoom;
+        if (is_it_Left_Click){
+            camera.position.x +=(x_cam_pos- i);
+            camera.position.y -=(y_cam_pos- i1);
             x_cam_pos = i;
             y_cam_pos = i1;
+        }
+
 
         return false;
     }

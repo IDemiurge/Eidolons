@@ -20,6 +20,8 @@ public class testplay extends Actor {
     CircleShape shape;
 //    PolygonShape shape
     Sprite sprite;
+    float sizeX = 10;
+    float sizeY = 10;
 
     float radius =2;
 
@@ -36,7 +38,7 @@ public class testplay extends Actor {
         shape.setRadius(radius);
 //        setBounds(bDef.position.x,bDef.position.y,shape.getRadius()*2,shape.getRadius()*2);
        setPosition(0,0);
-        setSize(4,4);
+        setSize(radius*2,radius*2);
         fDef = new FixtureDef();
         fDef.density = 2;
         fDef.restitution = 1f;

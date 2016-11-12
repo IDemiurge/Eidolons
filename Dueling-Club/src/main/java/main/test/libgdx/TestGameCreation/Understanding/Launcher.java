@@ -9,8 +9,8 @@ import main.test.libgdx.TestGameCreation.GameLoop;
  */
 public class Launcher {
     static LwjglApplication app;
-    public static int wid = 600;
-    public static int hei = 800;
+    public static int wid = 800;
+    public static int hei = 600;
     public static void main(String[] args) {
         LwjglApplicationConfiguration configuration = new LwjglApplicationConfiguration();
 //        configuration.samples = 3;
