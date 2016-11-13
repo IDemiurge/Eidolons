@@ -15,7 +15,7 @@ public class G_Engine extends Game {
 //        setScreen(new LessonBox2d());
         Gdx.graphics.setTitle("G_Engine");
 
-//        setScreen(new BattleFieldScreen(this));
+        setScreen(new BattleFieldScreen(this));
 
 
 

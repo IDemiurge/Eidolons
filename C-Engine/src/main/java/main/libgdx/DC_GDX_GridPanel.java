@@ -41,7 +41,7 @@ public class DC_GDX_GridPanel {
         highlightImage = new Texture(imagePath + File.separator + highlightCellPath);
         unknownImage = new Texture(imagePath + File.separator + unknownCellPath);
         background = new Sprite[lines][rows];
-        Texture backTexture = new Texture(imagePath + File.separator + backgroundPath);
+//        Texture backTexture = new Texture(imagePath + File.separator + backgroundPath);
         for (int i = 0; i < lines; i++) {
             for (int i1 = 0; i1 < rows; i1++) {
                 background[i][i1] = new Sprite(emptyImage);

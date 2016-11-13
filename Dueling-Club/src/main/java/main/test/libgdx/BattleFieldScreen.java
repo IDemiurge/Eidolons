@@ -143,8 +143,8 @@ public class BattleFieldScreen implements Screen {
 //        sprite1.setBounds(shape_X,shape_Y,200,300);
         spriteForBack.setPosition(0,0);
 
-//        camera = new OrthographicCamera(camera_width,camera_height);
-//        camera.position.set(x_for_camera+camera_width/2,y_for_camera+camera_height/2,z_for_camera);
+        camera = new OrthographicCamera(camera_width,camera_height);
+        camera.position.set(x_for_camera+camera_width/2,y_for_camera+camera_height/2,z_for_camera);
         paralax = new Texture(s + "big\\New2\\Underworld.jpg");
         paralax1 = new Texture(s + "big\\New2\\Underworld.jpg");
         Image image = new Image(paralax);
@@ -173,7 +173,7 @@ public class BattleFieldScreen implements Screen {
         camspr = new Sprite(testTexture);
 
 
-        stage = new Stage(new ExtendViewport(camera_width,camera_height,new OrthographicCamera()));
+        stage = new Stage(new ExtendViewport(camera_width,camera_height,camera));
         stage.getCamera().viewportWidth = 800;
         stage.getCamera().viewportHeight = 600;
 //        stage.getCamera().position.add(0,0,0);
@@ -190,33 +190,33 @@ public class BattleFieldScreen implements Screen {
 
 
 
-//        controller = new MyInputController();
-//        Gdx.input.setInputProcessor(controller);
+        controller = new MyInputController(camera);
+        Gdx.input.setInputProcessor(controller);
 //        stage.setKeyboardFocus(actor);
-        Gdx.input.setInputProcessor(stage);
-        stage.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (actorBackground.isSelected()){
-                    x_cam_pos = x;
-                    y_cam_pos = y;
-                }
-                  return true;
-            }
-
-            @Override
-            public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                System.out.println(event + "| X: " + x + " | Y:" + y );
-                float posX = camact.getX() - (x-x_cam_pos)/2;
-
-                float posY = camact.getY() - (y-y_cam_pos)/2;
-
-                camact.setPosition(posX,posY);
-                x_cam_pos = x;
-                y_cam_pos = y;
-                super.touchDragged(event, x, y, pointer);
-            }
-        });
+//        Gdx.input.setInputProcessor(stage);
+//        stage.addListener(new InputListener(){
+//            @Override
+//            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+//                if (actorBackground.isSelected()){
+//                    x_cam_pos = x;
+//                    y_cam_pos = y;
+//                }
+//                  return true;
+//            }
+//
+//            @Override
+//            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+//                System.out.println(event + "| X: " + x + " | Y:" + y );
+//                float posX = camact.getX() - (x-x_cam_pos)/2;
+//
+//                float posY = camact.getY() - (y-y_cam_pos)/2;
+//
+//                camact.setPosition(posX,posY);
+//                x_cam_pos = x;
+//                y_cam_pos = y;
+//                super.touchDragged(event, x, y, pointer);
+//            }
+//        });
     }
 
     @Override
@@ -225,16 +225,15 @@ public class BattleFieldScreen implements Screen {
 //        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT );// method that deletes previous scene and make all pixels get Clear Color
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
 //        batch.setProjectionMatrix(stage.getCamera().combined);
-        batch.setProjectionMatrix(stage.getCamera().combined);
-
+        batch.setProjectionMatrix(camera.combined);
 
         time_for_input_listen += Gdx.graphics.getDeltaTime();
         time_Of_Each_FPS_delay += Gdx.graphics.getDeltaTime();
         time_Of_Each_FPS_delay1 += Gdx.graphics.getDeltaTime();
         time_for_alpha += Gdx.graphics.getDeltaTime();
         time_for_frame_alfa += Gdx.graphics.getDeltaTime();
-//        camera.update();
-//        batch.setProjectionMatrix(camera.combined);
+        camera.update();
+
 
 //        if (time_for_frame_alfa >=0.05){
 //            if (frame_alfa_flag){
@@ -297,7 +296,7 @@ public class BattleFieldScreen implements Screen {
 //                a.setX(stage.getCamera().position.x + stage.getCamera().viewportWidth/2);
 //            }
 //        }
-        stage.getCamera().position.set(new Vector2(camact.getX(),camact.getY()),0);
+//        stage.getCamera().position.set(new Vector2(camact.getX(),camact.getY()),0);
         stage.act(v);
         stage.draw();
 

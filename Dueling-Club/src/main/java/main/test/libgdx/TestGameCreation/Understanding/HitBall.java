@@ -23,7 +23,7 @@ public class HitBall extends Actor {
     public HitBall(World world){
         this.world = world;
         bDef = new BodyDef();
-        setBounds(10,15,radius*2,radius*2);
+        setBounds(10,10,radius*2,radius*2);
         bDef.position.set(getX(),getY());
         bDef.type = BodyDef.BodyType.DynamicBody;
         body = world.createBody(bDef);
@@ -31,8 +31,8 @@ public class HitBall extends Actor {
         shape.setRadius(radius);
         fDef = new FixtureDef();
         fDef.shape = shape;
-        fDef.density = 2f;
-        fDef.restitution = 1;
+        fDef.density = 10;
+        fDef.restitution = 1f;
         body.createFixture(fDef);
         body.setUserData("ball");
         PathFinder.init();

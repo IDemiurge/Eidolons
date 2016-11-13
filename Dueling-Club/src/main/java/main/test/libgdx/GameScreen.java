@@ -31,6 +31,7 @@ public class GameScreen implements Screen {
 
     public GameScreen PostConstruct() {
         cam = new OrthographicCamera();
+        MyInputController controller = new MyInputController(cam);
         cam.setToOrtho(false, 1600, 900);
 /*        GL30 gl = Gdx.graphics.getGL30();
         gl.glEnable(GL30.GL_BLEND);
@@ -56,6 +57,7 @@ public class GameScreen implements Screen {
 
         //gridPanel.setY(actionGroup.getY()+actionGroup.getHeight());
         //gridPanel.setX(activeUnitInfoPanel.getMinWeight());
+        Gdx.input.setInputProcessor(controller);
         return this;
     }
 
