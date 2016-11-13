@@ -188,10 +188,10 @@ public class DC_Builder extends Builder {
         JScrollPane jp = new JScrollPane(new DENIS_Launcher().getCanvas().getCanvas());
         //jp.setBounds(0,0,100,100);
 
-        compArray = new JComponent[]{grid.getComp(),/*jp,*/ /*,
+        compArray = new JComponent[]{grid.getComp(),/*jp,*/
                 aup, ipHolder, uap, topPanel};
 
-        infoArray = new String[]{*/
+        infoArray = new String[]{
 
         };
 

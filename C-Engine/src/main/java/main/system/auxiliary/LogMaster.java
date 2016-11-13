@@ -116,7 +116,7 @@ public class LogMaster {
     public static boolean EFFECT_PASSIVE_DEBUG_ON = !true;
     public static boolean MACRO_DYNAMICS_ON = true;
     public static boolean GENERATION_ON = false;
-    private static boolean off = true;
+    private static boolean off = false;
     private static int PRIORITY = 1;
 
     public static Logger getInstance() {
