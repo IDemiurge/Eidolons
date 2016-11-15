@@ -48,6 +48,12 @@
             <version>4.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-freetype</artifactId>
+            <version>1.9.4</version>
+        </dependency>
+
     </dependencies>
 
     <build>

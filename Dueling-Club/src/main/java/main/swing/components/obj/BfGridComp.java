@@ -8,6 +8,7 @@ import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.VisionManager;
 import main.game.battlefield.XLine;
+import main.libgdx.TempEventManager;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.drawing.DrawHelper;
 import main.swing.components.obj.drawing.DrawMasterStatic;
@@ -15,6 +16,7 @@ import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.GuiManager;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.awt.*;
 import java.awt.event.MouseListener;
@@ -125,6 +127,8 @@ public class BfGridComp {
                 cells[i][j] = cell;
             }
         }
+
+        TempEventManager.trigger("grid-created", new ImmutablePair<>(getCellsX(),getCellsY()));
 
         panel = new G_Panel() {
             protected void paintComponent(Graphics g) {
@@ -307,10 +311,12 @@ public class BfGridComp {
             Map<Coordinates, DC_HeroObj> wallMap = new HashMap<>();
 
             for (Coordinates c : game.getUnitMap().keySet()) {
-                for (DC_HeroObj obj : game.getUnitMap().get(c))
+                for (DC_HeroObj obj : game.getUnitMap().get(c)) {
                     if (obj.isWall()) {
                         wallMap.put(c, obj);
                     }
+                }
+
             }
             game.getBattleFieldManager().resetWallMap(wallMap);
         }

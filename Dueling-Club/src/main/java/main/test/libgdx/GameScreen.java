@@ -1,15 +1,15 @@
 package main.test.libgdx;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.data.filesys.PathFinder;
 import main.libgdx.*;
-
-import static com.badlogic.gdx.Gdx.input;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,7 +18,7 @@ import static com.badlogic.gdx.Gdx.input;
  * To change this template use File | Settings | File Templates.
  */
 public class GameScreen implements Screen {
-
+    private Stage bf;
     private DC_GDX_Background background;
     private DC_GDX_TopPanel topPanel;
     private DC_GDX_GridPanel gridPanel;
@@ -30,18 +30,30 @@ public class GameScreen implements Screen {
     private OrthographicCamera cam;
 
     public GameScreen PostConstruct() {
+        bf = new Stage();
         cam = new OrthographicCamera();
+        bf.getViewport().setCamera(cam);
         MyInputController controller = new MyInputController(cam);
         cam.setToOrtho(false, 1600, 900);
-/*        GL30 gl = Gdx.graphics.getGL30();
+        GL30 gl = Gdx.graphics.getGL30();
         gl.glEnable(GL30.GL_BLEND);
         gl.glEnable(GL30.GL_TEXTURE_2D);
-        gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);*/
+        gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
         batch = new SpriteBatch();
         PathFinder.init();
         background = new DC_GDX_Background(PathFinder.getImagePath()).init();
         topPanel = new DC_GDX_TopPanel(PathFinder.getImagePath()).init();
-        gridPanel = new DC_GDX_GridPanel(PathFinder.getImagePath(), 100, 100).init();
+
+
+        TempEventManager.bind("grid-created", new EventCallback() {
+            @Override
+            public void call(final Object obj) {
+                Pair<Integer,Integer> p = ((Pair<Integer, Integer>) obj);
+                gridPanel = new DC_GDX_GridPanel(PathFinder.getImagePath(), p.getLeft(), p.getRight()).init();
+                bf.addActor(gridPanel);
+            }
+        });
+
 
         unitInfoPanel = new DC_GDX_TargetUnitInfoPanel(PathFinder.getImagePath()).init();
         unitInfoPanel.setX(Gdx.graphics.getWidth() - unitInfoPanel.getWidth());
@@ -57,37 +69,26 @@ public class GameScreen implements Screen {
 
         //gridPanel.setY(actionGroup.getY()+actionGroup.getHeight());
         //gridPanel.setX(activeUnitInfoPanel.getMinWeight());
-        Gdx.input.setInputProcessor(controller);
+        InputMultiplexer multiplexer = new InputMultiplexer(controller, bf);
+        Gdx.input.setInputProcessor(multiplexer);
         return this;
     }
 
+
+
     @Override
     public void render(float delta) {
+        TempEventManager.processEvents();
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
-        if (input.isKeyPressed(Input.Keys.LEFT)) {
-            cam.translate(-20, 0);
-        }
-        if (input.isKeyPressed(Input.Keys.RIGHT)) {
-            cam.translate(20, 0);
-        }
-        if (input.isKeyPressed(Input.Keys.UP)) {
-            cam.translate(0, 20);
-        }
-        if (input.isKeyPressed(Input.Keys.DOWN)) {
-            cam.translate(0, -20);
-        }
         cam.update();
 
         batch.begin();
         background.draw(batch, 1);
         batch.end();
 
-        SpriteBatch batch2 = new SpriteBatch();
-        batch2.setProjectionMatrix(cam.combined);
-        batch2.begin();
-        gridPanel.draw(batch2, 1);
-        batch2.end();
+        bf.draw();
 
         batch.begin();
         //background.draw(batch, 1);
@@ -97,10 +98,6 @@ public class GameScreen implements Screen {
         activeUnitInfoPanel.draw(batch, 1);
         actionGroup.draw(batch, 1);
         batch.end();
-
-
-
-        actionGroup.hit(1, 1, true);
     }
 
 

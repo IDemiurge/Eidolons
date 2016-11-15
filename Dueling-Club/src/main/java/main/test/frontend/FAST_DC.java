@@ -202,6 +202,7 @@ public class FAST_DC {
 
             }
 
+        DENIS_Launcher.main(new String[]{});
         CoreEngine.setTEST_MODE(true);
         DC_Engine.init();
         Chronos.mark("GAME LAUNCHED");
@@ -211,7 +212,6 @@ public class FAST_DC {
         game = gameLauncher.initDC_Game();
         game.setHostClient(host_client);
         game.start(true);
-
         try {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override

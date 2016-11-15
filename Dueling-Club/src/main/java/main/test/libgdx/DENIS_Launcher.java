@@ -17,7 +17,8 @@ public class DENIS_Launcher implements ApplicationListener {
     Screen screen;
 
     public static void main(String[] args) {
-       new LwjglApplication(new DENIS_Launcher(), getConf());
+
+        new LwjglApplication(new DENIS_Launcher(), getConf());
     }
 
     public LwjglAWTCanvas getCanvas(){
