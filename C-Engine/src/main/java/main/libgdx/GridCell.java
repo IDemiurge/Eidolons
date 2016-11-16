@@ -1,7 +1,6 @@
 package main.libgdx;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -22,11 +21,8 @@ public class GridCell extends Group {
         this.gridY = gridY;
     }
 
-    TextureRegion tr;
-
     public GridCell init() {
         backTexture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        //tr = new TextureRegion(backTexture);
         backImage = new Image(backTexture);
         addActor(backImage);
         setWidth(backImage.getWidth());
@@ -39,6 +35,8 @@ public class GridCell extends Group {
         innerDrawable = cell;
         if (old != null) {
             removeActor(old);
+            old.dispose();
+            return;
         }
         if (innerDrawable != null) {
             addActor(innerDrawable);
@@ -46,6 +44,20 @@ public class GridCell extends Group {
         } else {
             addActor(backImage);
         }
+    }
+
+    public GridCell getInnerDrawable() {
+        return innerDrawable;
+    }
+
+    public void updateInnerDrawable(GridCell cell) {
+        addInnerDrawable(null);
+        addInnerDrawable(cell);
+    }
+
+    private void dispose() {
+        removeActor(backImage);
+        backImage = null;
     }
 
     @Override

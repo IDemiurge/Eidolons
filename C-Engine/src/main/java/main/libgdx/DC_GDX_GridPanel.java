@@ -38,6 +38,8 @@ public class DC_GDX_GridPanel extends Group {
     protected Texture cellBorderTexture;
     protected Image greenBorder;
     protected Image redBorder;
+    protected DequeImpl<MicroObj> units;
+    private Map<String, Texture> textureMap = new HashMap<>();
 
     private static final String backgroundPath = "UI/custom/grid/GRID_BG_WIDE.png";
     private static final String emptyCellPath = "UI/cells/Empty Cell v3.png";
@@ -56,6 +58,13 @@ public class DC_GDX_GridPanel extends Group {
         this.rows = rows;
     }
 
+    private Texture getOreCreate(String path) {
+        if (!textureMap.containsKey(path)) {
+            textureMap.put(path, new Texture(path));
+        }
+        return textureMap.get(path);
+    }
+
     public DC_GDX_GridPanel init() {
         emptyImage = new Texture(imagePath + File.separator + emptyCellPath);
         hiddenImage = new Texture(imagePath + File.separator + hiddenCellPath);
@@ -65,7 +74,7 @@ public class DC_GDX_GridPanel extends Group {
         cells = new GridCell[cols][rows];
 
         for (int x = 0; x < cols; x++) {
-            for (int y = 0; y < rows; y++) {
+            for (int y = rows - 1; y >= 0; y--) {
                 cells[x][y] = new GridCell(emptyImage, imagePath, x, y);
                 cells[x][y].setX(x * emptyImage.getWidth());
                 cells[x][y].setY(y * emptyImage.getHeight());
@@ -76,9 +85,10 @@ public class DC_GDX_GridPanel extends Group {
         TempEventManager.bind("create-units-model", new EventCallback() {
             @Override
             public void call(final Object obj) {
-                DequeImpl<MicroObj> list = (DequeImpl<MicroObj>) obj;
+                units = (DequeImpl<MicroObj>) obj;
+
                 Map<Coordinates, List<MicroObj>> map = new HashMap<>();
-                for (MicroObj object : list) {
+                for (MicroObj object : units) {
                     Coordinates c = object.getCoordinates();
                     if (!map.containsKey(c)) {
                         map.put(c, new ArrayList<MicroObj>());
@@ -89,10 +99,12 @@ public class DC_GDX_GridPanel extends Group {
 
                 for (Coordinates coordinates : map.keySet()) {
                     List<Texture> textures = new ArrayList<>();
+
                     for (Entity object : map.get(coordinates)) {
                         String path = imagePath + File.separator + object.getImagePath();
-                        textures.add(new Texture(path));
+                        textures.add(getOreCreate(path));
                     }
+
                     GridCellContainer cellContainer = new GridCellContainer(cellBorderTexture, imagePath, coordinates.getX(), coordinates.getY()).init();
                     cellContainer.setObjects(textures);
 
@@ -100,6 +112,10 @@ public class DC_GDX_GridPanel extends Group {
                 }
             }
         });
+        /*
+        LIGHT_EMISSION
+         ILLUMINATION
+           CONCEALMENT*/
 
         setHeight(cells[0][0].getHeight() * rows);
         setWidth(cells[0][0].getWidth() * cols);
@@ -112,7 +128,7 @@ public class DC_GDX_GridPanel extends Group {
         addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                GridCell cell = (GridCell) DC_GDX_GridPanel.super.hit(x, y, true);
+                GridCell cell = (GridCell) DC_GDX_GridPanel.super.hit(x, y, true);  //main.libgdx.DC_GDX_GridPanel cannot be cast to main.libgdx.GridCell
                 if (cell != null) {
                     greenBorder.setX(cell.getX() - 5);
                     greenBorder.setY(cell.getY() - 5);
