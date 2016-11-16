@@ -39,7 +39,6 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.ListMaster;
 import main.system.auxiliary.LogMaster;
 import main.system.math.PositionMaster;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.*;
 
@@ -179,7 +178,8 @@ public class DC_MovementManager implements MovementManager {
         action.getActive().activate(ref);
         action.getActive().actionComplete();
         Coordinates to = new Coordinates(unit.getX(), unit.getY());
-        TempEventManager.trigger("unitMove", new ImmutablePair<>(from, to));
+        TempEventManager.trigger("cell-update", from);
+        TempEventManager.trigger("cell-update", to);
     }
 
     @Deprecated

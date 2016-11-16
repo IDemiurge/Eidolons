@@ -60,6 +60,7 @@ public class GridCell extends Group {
         backImage = null;
     }
 
+
     @Override
     public Actor hit(float x, float y, boolean touchable) {
         if (touchable && getTouchable() != Touchable.enabled) return null;

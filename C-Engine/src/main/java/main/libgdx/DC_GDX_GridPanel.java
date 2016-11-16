@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.entity.Entity;
@@ -112,6 +114,40 @@ public class DC_GDX_GridPanel extends Group {
                 }
             }
         });
+
+        TempEventManager.bind("cell-update", new EventCallback() {
+            @Override
+            public void call(Object obj) {
+                Coordinates cords = (Coordinates) obj;
+
+                List<MicroObj> objList = new ArrayList<>();
+                for (MicroObj unit : units) {
+                    if (unit.getCoordinates() == cords) {
+                        objList.add(unit);
+                    }
+                }
+
+                List<Texture> textures = new ArrayList<>();
+                for (MicroObj microObj : objList) {
+                    String path = imagePath + File.separator + microObj.getImagePath();
+                    textures.add(getOreCreate(path));
+                }
+
+                GridCellContainer cellContainer = new GridCellContainer(cellBorderTexture, imagePath, cords.getX(), cords.getY()).init();
+                cellContainer.setObjects(textures);
+
+                if (cells[cords.getX()][cords.getY()].getInnerDrawable() != null) {
+                    cells[cords.getX()][cords.getY()].addInnerDrawable(cellContainer);
+                } else {
+                    cells[cords.getX()][cords.getY()].updateInnerDrawable(cellContainer);
+                }
+
+/*                physx.getUnit(unit).addXY(x,y);
+                MoveToAction moveToAction = Actions.moveTo(1,1,1);
+                moveToAction.
+                addAction(Actions.moveTo());*/
+            }
+        });
         /*
         LIGHT_EMISSION
          ILLUMINATION
@@ -141,6 +177,12 @@ public class DC_GDX_GridPanel extends Group {
 
 
         return this;
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        physx.getUnit(unit).setTransform(getX(),getY());
     }
 
     private Texture getColoredBorderTexture(Color c) {
