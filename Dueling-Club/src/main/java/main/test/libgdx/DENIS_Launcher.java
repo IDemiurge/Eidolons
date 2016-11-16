@@ -17,7 +17,8 @@ public class DENIS_Launcher implements ApplicationListener {
     Screen screen;
 
     public static void main(String[] args) {
-       new LwjglApplication(new DENIS_Launcher(), getConf());
+
+        new LwjglApplication(new DENIS_Launcher(), getConf());
     }
 
     public LwjglAWTCanvas getCanvas(){
@@ -27,24 +28,18 @@ public class DENIS_Launcher implements ApplicationListener {
     }
 
     private static LwjglApplicationConfiguration getConf(){
-        LwjglApplicationConfiguration lwjglApplicationConfiguration = new LwjglApplicationConfiguration();
-        lwjglApplicationConfiguration.title = "demo";
-        lwjglApplicationConfiguration.useGL30 = true;
+        LwjglApplicationConfiguration conf = new LwjglApplicationConfiguration();
+        conf.title = "demo";
+        conf.useGL30 = true;
 
-/*        lwjglApplicationConfiguration.width = 1920;
-        lwjglApplicationConfiguration.height = 1080;*/
-
-        lwjglApplicationConfiguration.width = 1600;
-        lwjglApplicationConfiguration.height = 900;
-        lwjglApplicationConfiguration.fullscreen = false;
-
-        return lwjglApplicationConfiguration;
+        conf.width = 1600;
+        conf.height = 900;
+        conf.fullscreen = false;
+        return conf;
     }
 
     @Override
     public void create() {
-/*        World world;
-        world = new World(new Vector2(0,-10),true);*/
          screen = new GameScreen().PostConstruct();
     }
 

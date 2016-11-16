@@ -33,7 +33,6 @@ import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
-import main.test.libgdx.DENIS_Launcher;
 
 import javax.swing.*;
 import java.awt.*;
@@ -183,22 +182,16 @@ public class DC_Builder extends Builder {
 
         };
 
-        //canvas.getCanvas().setSize(1600, 900);
-
-        JScrollPane jp = new JScrollPane(new DENIS_Launcher().getCanvas().getCanvas());
-        //jp.setBounds(0,0,100,100);
-
-        compArray = new JComponent[]{grid.getComp(),/*jp,*/ /*,
+        compArray = new JComponent[]{grid.getComp() ,
                 aup, ipHolder, uap, topPanel};
 
-        infoArray = new String[]{*/
+        infoArray = new String[]{
 
         };
 
         cInfoArray = new String[]{
                 getGridPos(),
-                "id aup, pos " + 0 + " 0,w 1680,h 1050",
-//                "id aup, pos " + 0 + " 0",
+                "id aup, pos " + 0 + " 0",
                 "id uip, pos bf.x2" + "-"
                         + (GuiManager.getSquareCellSize() + getInfoPanelOffsetX()) + " 0",
                 "id uap, pos bf.x bf.y2 ",

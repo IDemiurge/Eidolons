@@ -186,7 +186,7 @@ public class DC_Game extends MicroGame {
                 return super.add(e);
             }
         };
-
+        //TempEventManager.trigger("create-cell-object" + i + ":" + j, objects);
         Game.game = this;
         game = this;
 
@@ -990,7 +990,7 @@ public class DC_Game extends MicroGame {
 
     public Map<Coordinates, Map<DC_HeroObj, DIRECTION>> getDirectionMap() {
         if (directionMap == null)
-            directionMap = new HashMap<Coordinates, Map<DC_HeroObj, DIRECTION>>();
+            directionMap = new HashMap<>();
         return directionMap;
     }
 
@@ -1004,7 +1004,7 @@ public class DC_Game extends MicroGame {
 
     public Map<Coordinates, List<DC_HeroObj>> getUnitMap() {
         if (unitMap == null)
-            unitMap = new HashMap<Coordinates, List<DC_HeroObj>>();
+            unitMap = new HashMap<>();
         return unitMap;
     }
 
