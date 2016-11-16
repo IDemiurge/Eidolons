@@ -1,19 +1,19 @@
-package main.test.libgdx;
+package main.test.libgdx.prototype;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 /**
- * Created by PC on 25.10.2016.
+ * Created by PC on 08.11.2016.
  */
-public class MyInputController implements InputProcessor {
+public class PrototypeController implements InputProcessor {
 
     float x_cam_pos;
     float y_cam_pos;
     OrthographicCamera camera;
     boolean is_it_Left_Click = false;
 
-    public MyInputController (OrthographicCamera camera){
+    public PrototypeController (OrthographicCamera camera){
         this.camera = camera;
     }
 
@@ -41,15 +41,15 @@ public class MyInputController implements InputProcessor {
     @Override
     public boolean touchDown(int i, int i1, int i2, int i3) {
         // Условно у меня на ширину приложения пикселей приходится ширина камеры абстрактрых едениц
-            if (i3 ==0){
-                x_cam_pos = i;
-                y_cam_pos = i1;
-                is_it_Left_Click = true;
-            }
+        if (i3 ==0){
+            x_cam_pos = i;
+            y_cam_pos = i1;
+            is_it_Left_Click = true;
+        }
 
 
 
-        System.out.println( i + " || " + i1 + " || " + i2 + " || " + i3);
+//        System.out.println( i + " || " + i1 + " || " + i2 + " || " + i3);
 
         return false;
     }
@@ -65,8 +65,8 @@ public class MyInputController implements InputProcessor {
     public boolean touchDragged(int i, int i1, int i2) {
 //        System.out.println("i = " + i + " || i1 = " + i1 + " || i2 = "  + i2);
         if (is_it_Left_Click){
-            camera.position.x +=(x_cam_pos- i)*camera.zoom;
-            camera.position.y -=(y_cam_pos- i1)*camera.zoom;
+            camera.position.x +=((x_cam_pos- i)/50)*camera.zoom;
+            camera.position.y -=((y_cam_pos- i1)/50)*camera.zoom;
             x_cam_pos = i;
             y_cam_pos = i1;
         }
@@ -91,4 +91,5 @@ public class MyInputController implements InputProcessor {
         System.out.println(camera.zoom);
         return false;
     }
+
 }

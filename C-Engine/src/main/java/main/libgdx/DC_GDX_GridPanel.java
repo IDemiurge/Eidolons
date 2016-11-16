@@ -1,8 +1,12 @@
 package main.libgdx;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import java.io.File;
 
@@ -12,8 +16,10 @@ import java.io.File;
  * Time: 15:57
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_GridPanel {
-    protected Sprite[][] background;
+public class DC_GDX_GridPanel extends Group {
+
+//    protected Sprite[][] background;
+    protected Image[][] background;
     protected Texture emptyImage;
     protected Texture hiddenImage;
     protected Texture highlightImage;
@@ -40,24 +46,43 @@ public class DC_GDX_GridPanel {
         hiddenImage = new Texture(imagePath + File.separator + hiddenCellPath);
         highlightImage = new Texture(imagePath + File.separator + highlightCellPath);
         unknownImage = new Texture(imagePath + File.separator + unknownCellPath);
-        background = new Sprite[lines][rows];
+        background = new Image[lines][rows];
 //        Texture backTexture = new Texture(imagePath + File.separator + backgroundPath);
         for (int i = 0; i < lines; i++) {
             for (int i1 = 0; i1 < rows; i1++) {
-                background[i][i1] = new Sprite(emptyImage);
-                background[i][i1].setX(i * emptyImage.getWidth());
-                background[i][i1].setY(i1 * emptyImage.getHeight());
+//                background[i][i1] = new Sprite(emptyImage);
+//                background[i][i1].setX(i * emptyImage.getWidth());
+//                background[i][i1].setY(i1 * emptyImage.getHeight());
+                background[i][i1] = new Image(emptyImage);
+                background[i][i1].setBounds(i * 5,i1 * 5,5,5);
+                addActor(background[i][i1]);
+//                background[i][i1].setX(i * emptyImage.getWidth());
+//                background[i][i1].setY(i1 * emptyImage.getHeight());
             }
         }
+
+        setBounds(0,0,5*rows,5*lines);
 
         return this;
     }
 
-    public void draw(SpriteBatch batch, float alpha) {
-        for (int i = 0; i < lines; i++) {
-            for (int i1 = 0; i1 < rows; i1++) {
-                background[i][i1].draw(batch, alpha);
-            }
-        }
-    }
+//    public void draw(SpriteBatch batch, float alpha) {
+//        for (int i = 0; i < lines; i++) {
+//            for (int i1 = 0; i1 < rows; i1++) {
+//                background[i][i1].draw(batch, alpha);
+//
+//
+//            }
+//        }
+//    }
+
+//    @Override
+//    public void draw(Batch batch, float parentAlpha) {
+////        for (int i = 0; i < lines; i++) {
+////            for (int i1 = 0; i1 < rows; i1++) {
+////                background[i][i1].draw(batch,parentAlpha);
+////            }
+////        }
+//        super.draw(batch, parentAlpha);
+//    }
 }
