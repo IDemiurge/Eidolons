@@ -11,6 +11,7 @@ import javax.swing.*;
  * Time: 21:51
  * To change this template use File | Settings | File Templates.
  */
+@Deprecated
 public class TEST_JFRAME_LIBGDX_INTEGRATION extends JFrame {
 
 

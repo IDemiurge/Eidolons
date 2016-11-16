@@ -251,7 +251,7 @@ public class DC_ContentManager extends ContentManager {
         if (StringMaster.isEmpty(property))
             return getDefaultDeity();
         if (deities == null)
-            deities = new HashMap<String, Deity>();
+            deities = new HashMap<>();
         Deity deity = deities.get(property);
         if (deity != null)
             return deity;
