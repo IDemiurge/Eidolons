@@ -1,4 +1,4 @@
-package main.test.libgdx.TestGameCreation.Understanding;
+package main.test.libgdx.prototype;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -11,9 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 /**
- * Created by PC on 04.11.2016.
+ * Created by PC on 07.11.2016.
  */
-public class ResHolder  {
+public class Res_holder {
     static Skin skin, exit_button_skin;
     static Button.ButtonStyle buttonStyle;
     static TextureAtlas textureAtlas,exit_button_atlas;
@@ -35,7 +35,7 @@ public class ResHolder  {
 
         FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("D:\\NewRepos\\battlecraft\\resources\\res\\Fonts\\Starcraft.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.color = Color.CYAN;
+        parameter.color = Color.RED;
         parameter.borderWidth = 1.5f;
         parameter.borderColor = Color.GOLD;
         parameter.shadowColor = Color.DARK_GRAY;
@@ -61,5 +61,4 @@ public class ResHolder  {
         exit_button_font = gen.generateFont(exit_par);
         exit_button_style.font = exit_button_font;
     }
-
 }

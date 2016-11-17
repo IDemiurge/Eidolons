@@ -25,7 +25,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class myUnderstandingField implements Screen {
 
     static World world;
-   static Stage stage;
+    static Stage stage;
     static float View_Width = 20;
     static float View_Height = 15;
 
@@ -47,7 +47,7 @@ public class myUnderstandingField implements Screen {
         rayHandler.setBlur(true);
         rayHandler.setBlurNum(5);
         rayHandler.setGammaCorrection(true);
-        PointLight pointLight = new PointLight(rayHandler,150,Color.BLUE,10,10,10);
+        PointLight pointLight = new PointLight(rayHandler,150,Color.BLUE,20,10,10);
         ConeLight coneLight = new ConeLight(rayHandler,75,Color.RED,20,10,10,270,45);
         p = new Vector2();
         gui = new myLittleTestingGUI();
