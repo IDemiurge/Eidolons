@@ -4,13 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-<<<<<<< HEAD
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-=======
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -21,7 +14,6 @@ import main.entity.Entity;
 import main.entity.obj.MicroObj;
 import main.game.battlefield.Coordinates;
 import main.system.datatypes.DequeImpl;
->>>>>>> 7834fbc1d73e4654673df2aaf7a50ad2b8304701
 
 import java.io.File;
 import java.util.ArrayList;
@@ -38,13 +30,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * To change this template use File | Settings | File Templates.
  */
 public class DC_GDX_GridPanel extends Group {
-<<<<<<< HEAD
-
-//    protected Sprite[][] background;
-    protected Image[][] background;
-=======
     protected GridCell[][] cells;
->>>>>>> 7834fbc1d73e4654673df2aaf7a50ad2b8304701
     protected Texture emptyImage;
     protected Texture hiddenImage;
     protected Texture highlightImage;
@@ -84,24 +70,6 @@ public class DC_GDX_GridPanel extends Group {
         hiddenImage = new Texture(imagePath + File.separator + hiddenCellPath);
         highlightImage = new Texture(imagePath + File.separator + highlightCellPath);
         unknownImage = new Texture(imagePath + File.separator + unknownCellPath);
-<<<<<<< HEAD
-        background = new Image[lines][rows];
-//        Texture backTexture = new Texture(imagePath + File.separator + backgroundPath);
-        for (int i = 0; i < lines; i++) {
-            for (int i1 = 0; i1 < rows; i1++) {
-//                background[i][i1] = new Sprite(emptyImage);
-//                background[i][i1].setX(i * emptyImage.getWidth());
-//                background[i][i1].setY(i1 * emptyImage.getHeight());
-                background[i][i1] = new Image(emptyImage);
-                background[i][i1].setBounds(i * 5,i1 * 5,5,5);
-                addActor(background[i][i1]);
-//                background[i][i1].setX(i * emptyImage.getWidth());
-//                background[i][i1].setY(i1 * emptyImage.getHeight());
-            }
-        }
-
-        setBounds(0,0,5*rows,5*lines);
-=======
         cellBorderTexture = new Texture(imagePath + File.separator + cellBorderPath);
         cells = new GridCell[cols][rows];
 
@@ -209,32 +177,10 @@ public class DC_GDX_GridPanel extends Group {
             }
         });
 
->>>>>>> 7834fbc1d73e4654673df2aaf7a50ad2b8304701
 
         return this;
     }
 
-<<<<<<< HEAD
-//    public void draw(SpriteBatch batch, float alpha) {
-//        for (int i = 0; i < lines; i++) {
-//            for (int i1 = 0; i1 < rows; i1++) {
-//                background[i][i1].draw(batch, alpha);
-//
-//
-//            }
-//        }
-//    }
-
-//    @Override
-//    public void draw(Batch batch, float parentAlpha) {
-////        for (int i = 0; i < lines; i++) {
-////            for (int i1 = 0; i1 < rows; i1++) {
-////                background[i][i1].draw(batch,parentAlpha);
-////            }
-////        }
-//        super.draw(batch, parentAlpha);
-//    }
-=======
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -281,5 +227,4 @@ public class DC_GDX_GridPanel extends Group {
             greenBorder.draw(batch, parentAlpha);
         }
     }
->>>>>>> 7834fbc1d73e4654673df2aaf7a50ad2b8304701
 }
