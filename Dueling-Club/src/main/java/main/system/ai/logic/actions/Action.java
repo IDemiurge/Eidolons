@@ -12,6 +12,8 @@ import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.top.DC_ActiveObj;
+import main.game.battlefield.Coordinates;
+import main.libgdx.TempEventManager;
 import main.system.ObjUtilities;
 import main.system.ai.logic.target.TargetingMaster;
 import main.system.auxiliary.StringMaster;
@@ -142,12 +144,16 @@ public class Action {
 
         }
         boolean result = false;
-
-        if (getActive().isChanneling())
+        Coordinates from = new Coordinates(ref.getTargetObj().getCoordinates());
+        if (getActive().isChanneling()) {
             result = getActive().activate();
-        else
+        } else {
             result = getActive().activate(ref);
+        }
         getActive().actionComplete();
+        Coordinates to = new Coordinates(ref.getTargetObj().getCoordinates());
+        TempEventManager.trigger("cell-update", from);
+        TempEventManager.trigger("cell-update", to);
         return result;
     }
 

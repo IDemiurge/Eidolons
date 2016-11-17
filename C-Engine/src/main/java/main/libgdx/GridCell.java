@@ -22,7 +22,6 @@ public class GridCell extends Group {
     }
 
     public GridCell init() {
-        backTexture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         backImage = new Image(backTexture);
         addActor(backImage);
         setWidth(backImage.getWidth());
@@ -36,7 +35,6 @@ public class GridCell extends Group {
         if (old != null) {
             removeActor(old);
             old.dispose();
-            return;
         }
         if (innerDrawable != null) {
             addActor(innerDrawable);

@@ -120,7 +120,7 @@ public class DC_GDX_GridPanel extends Group {
 
                 List<MicroObj> objList = new ArrayList<>();
                 for (MicroObj unit : units) {
-                    if (unit.getCoordinates() == cords) {
+                    if (unit.getCoordinates().equals(cords)) {
                         objList.add(unit);
                     }
                 }
@@ -130,15 +130,19 @@ public class DC_GDX_GridPanel extends Group {
                     String path = imagePath + File.separator + microObj.getImagePath();
                     textures.add(getOreCreate(path));
                 }
-
-                GridCellContainer cellContainer = new GridCellContainer(cellBorderTexture, imagePath, cords.getX(), cords.getY()).init();
-                cellContainer.setObjects(textures);
-
-                if (cells[cords.getX()][cords.getY()].getInnerDrawable() != null) {
-                    cells[cords.getX()][cords.getY()].addInnerDrawable(cellContainer);
+                if (textures.size() == 0) {
+                    cells[cords.getX()][cords.getY()].addInnerDrawable(null);
                 } else {
-                    cells[cords.getX()][cords.getY()].updateInnerDrawable(cellContainer);
+                    GridCellContainer cellContainer = new GridCellContainer(cellBorderTexture, imagePath, cords.getX(), cords.getY()).init();
+                    cellContainer.setObjects(textures);
+
+                    if (cells[cords.getX()][cords.getY()].getInnerDrawable() != null) {
+                        cells[cords.getX()][cords.getY()].addInnerDrawable(cellContainer);
+                    } else {
+                        cells[cords.getX()][cords.getY()].updateInnerDrawable(cellContainer);
+                    }
                 }
+
 
 /*                physx.getUnit(unit).addXY(x,y);
                 MoveToAction moveToAction = Actions.moveTo(1,1,1);

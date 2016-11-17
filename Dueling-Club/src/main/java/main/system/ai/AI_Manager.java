@@ -101,7 +101,7 @@ public class AI_Manager {
                 if (action == null) {
                     game.getManager().freezeUnit(unit);
                     game.getManager().unitActionCompleted(null, true);
-                } else
+                } else {
                     try {
                         getAI(unit).setLastAction(action);
                         if (!executor.execute(action))
@@ -113,6 +113,7 @@ public class AI_Manager {
                         e2.printStackTrace();
                         // TODO block action, and try again!
                     }
+                }
             }
         }, unit.getName() + " AI Thread").start();
 

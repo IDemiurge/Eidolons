@@ -22,7 +22,6 @@ import main.game.battlefield.pathing.Path;
 import main.game.battlefield.pathing.PathingManager;
 import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
-import main.libgdx.TempEventManager;
 import main.rules.DC_ActionManager;
 import main.rules.mechanics.CollisionRule;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
@@ -145,7 +144,6 @@ public class DC_MovementManager implements MovementManager {
 
     public void moveTo(Coordinates coordinates) {
         DC_HeroObj unit = game.getManager().getActiveObj();
-        Coordinates from = new Coordinates(unit.getX(), unit.getY());
         List<ActionPath> paths = buildPath(unit, coordinates);
         if (paths == null) {
             Coordinates adjacentCoordinate = coordinates.getAdjacentCoordinate(DirectionMaster
@@ -177,9 +175,6 @@ public class DC_MovementManager implements MovementManager {
             ref.setTarget(game.getCellByCoordinate(coordinates).getId());
         action.getActive().activate(ref);
         action.getActive().actionComplete();
-        Coordinates to = new Coordinates(unit.getX(), unit.getY());
-        TempEventManager.trigger("cell-update", from);
-        TempEventManager.trigger("cell-update", to);
     }
 
     @Deprecated

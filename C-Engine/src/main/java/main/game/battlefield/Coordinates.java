@@ -75,6 +75,10 @@ public class Coordinates {
                 .getInteger(splitCoordinateString(s)[1].trim()));
     }
 
+    public Coordinates(Coordinates coordinates) {
+        this(coordinates.getX(), coordinates.getY());
+    }
+
     public static boolean withinBounds(int x, int y) {
         if (x < 0) {
             return false;
