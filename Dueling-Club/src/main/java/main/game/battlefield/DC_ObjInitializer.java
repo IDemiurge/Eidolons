@@ -29,6 +29,7 @@ import main.system.net.data.PartyData;
 import main.system.net.data.PartyData.PARTY_VALUES;
 import main.system.test.TestMasterContent;
 import main.test.frontend.FAST_DC;
+import org.apache.commons.lang3.time.StopWatch;
 
 import java.util.*;
 
@@ -197,19 +198,19 @@ public class DC_ObjInitializer {
 
     public static Map<Coordinates, MicroObj> processUnitDataStringToMap(Player owner,
                                                                         String objData, DC_Game game, boolean alt) {
-        if (objData == null)
+        if (objData == null || objData.equals(""))
             return null;
-        if (objData.equals(""))
-            return null;
-        List<String> items;
-        items = Arrays.asList(objData.split(getObjSeparator(alt)));
+
+        String[] items = objData.split(getObjSeparator(alt));
         Map<Coordinates, MicroObj> map = new HashMap<>();
         int i = 0;
         boolean first = true;
         boolean creeps = false;
         List<Coordinates> excludedCoordinates = new LinkedList<>();
         Boolean last = null;
-        for (String item : items) {
+
+        for (int indx = 0; indx < items.length; indx++) {
+            String item = items[indx];
             boolean excludeCoordinate = false;
             if (mapBlockMode) {
                 if (item.contains("%")) {
@@ -226,7 +227,7 @@ public class DC_ObjInitializer {
             try {
                 String typeName = getNameFromObjString(item, alt);
                 i++;
-                if (i == items.size())
+                if (i == items.length)
                     last = true;
                 int level = 0;
                 if (typeName.contains(UnitGroupMaster.TYPE_LEVEL_SEPARATOR)) {
@@ -238,6 +239,7 @@ public class DC_ObjInitializer {
                 if (level != 0)
                     type = new UnitLevelManager().getLeveledType(type, level);
                 // type = UnitGroupMaster.getLeveledType(type, owner, objData);
+
                 Coordinates c = null;
                 if (!item.contains("null="))
                     try {
@@ -280,7 +282,6 @@ public class DC_ObjInitializer {
                     }
 
                 }
-
                 if (mapBlockMode)
                     if (excludedCoordinates.contains(c))
                         continue;
@@ -306,6 +307,7 @@ public class DC_ObjInitializer {
                     }
                     // TODO ownership data ought to be in the Map Plan!
                 }
+
                 if (type == null)
                     continue;
                 if (data != null)
@@ -320,8 +322,10 @@ public class DC_ObjInitializer {
                         }
                 }
                 last = false;
+                //todo optimize create unit func it too slow
                 MicroObj unit = game.createUnit(type, c, owner);
                 DC_HeroObj hero = (DC_HeroObj) unit;
+
                 if (!game.isOffline()) {
                     if (!game.isHost())
                         hero.setFacing(hero.getGame().getArenaManager().getSpawnManager()
@@ -340,26 +344,28 @@ public class DC_ObjInitializer {
                         }
 
                 }
+
                 first = false;
                 if (map.containsKey(c)) {
                     ZCoordinates coordinates = new ZCoordinates(c.x, c.y, new Random().nextInt());
                     map.put(coordinates, unit);
-
-                } else
+                } else {
                     map.put(c, unit);
-                if (!CoreEngine.isLevelEditor())
-                    if (unit.getOBJ_TYPE_ENUM() != null)
-                        if (unit.getOBJ_TYPE_ENUM() == OBJ_TYPES.UNITS)
-                            // if (!owner.isMe() || game.isDebugMode()) TODO why
-                            // not?
-                            UnitMaster.train((DC_HeroObj) unit);
+                }
+
+                if (!CoreEngine.isLevelEditor() && unit.getOBJ_TYPE_ENUM() != null)
+                    if (unit.getOBJ_TYPE_ENUM() == OBJ_TYPES.UNITS){
+                        // if (!owner.isMe() || game.isDebugMode()) TODO why
+                        // not?
+                        //todo optimize train func it too slow
+                        UnitMaster.train((DC_HeroObj) unit);
+                    }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         // if (creeps)
         // PartyManager.addCreepParty(DataManager.convertToTypeList(list));
-
         return map;
     }
 

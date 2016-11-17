@@ -49,7 +49,7 @@ public class UnitTrainer {
         getHeroManager().update(trainee);
     }
 
-    public static boolean isDeterministicMode(DC_HeroObj trainee) {
+    private static boolean isDeterministicMode(DC_HeroObj trainee) {
         return trainee.getGame().isDummyMode();
 
     }
@@ -112,11 +112,15 @@ public class UnitTrainer {
                 ObjType.class, OBJ_TYPES.SKILLS);
 
         for (ObjType type : map.keySet()) {
+
             if (trainee.checkProperty(PROPS.SKILLS, type.getName()))
                 continue; // TODO ++ exceptions
+
             String reason = trainee.getGame().getRequirementsManager().check(trainee, type);
+
             if (reason != null)
                 continue;
+
             pool.put(type, map.get(type));
             // we really can't have weights here - must be more or less
             // sequential, since it'll be skill trees!
