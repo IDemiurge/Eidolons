@@ -30,7 +30,7 @@ public class PrototypeScreen implements Screen {
    Stage stage;
     float viewport_width = 20;
     float viewport_height = 15;
-    static RayHandler rayHandler;
+    RayHandler rayHandler;
     GUIStage guiStage;
     Box2DDebugRenderer debugRenderer;
     PrototypeController controller;
