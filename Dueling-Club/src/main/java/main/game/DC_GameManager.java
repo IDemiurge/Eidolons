@@ -825,19 +825,25 @@ public class DC_GameManager extends GameManager {
     @Override
     public MicroObj createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
         if (!CoreEngine.isArcaneVault())
-            if (!CoreEngine.isLevelEditor())
+            if (!CoreEngine.isLevelEditor()) {
                 if (!type.isGenerated()) {
                     type = new ObjType(type);
                     game.initType(type);
                 }
-        DC_HeroObj obj = null;
-        if (type.checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.ENTRANCE.toString()))
+            }
+        DC_HeroObj obj;
+        if (type.checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.ENTRANCE.toString())) {
             obj = new Entrance(x, y, type, getGame().getDungeon(), null);
-        else
+        } else {
             obj = new DC_HeroObj(type, x, y, owner, getGame(), ref);
+        }
+
         game.getState().addObject(obj);
-        if (CoreEngine.isLevelEditor())
+
+        if (CoreEngine.isLevelEditor()) {
             return obj;
+        }
+
         try {
             obj.toBase();
         } catch (Exception e) {
@@ -849,16 +855,17 @@ public class DC_GameManager extends GameManager {
             e.printStackTrace();
         }
         try {
-
             obj.afterEffects();
         } catch (Exception e) {
             e.printStackTrace();
         }
         // state.addObject(obj);
-        if (!game.isSimulation())
-            if (owner != null)
-                if (getGame().getBattleField() != null)
-                    getGame().getBattleField().createObj(obj);
+        if (!game.isSimulation() && owner != null) {
+            if (getGame().getBattleField() != null) {
+                getGame().getBattleField().createObj(obj);
+            }
+        }
+
         return obj;
 
     }
