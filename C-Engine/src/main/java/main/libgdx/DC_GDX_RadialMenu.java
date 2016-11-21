@@ -1,6 +1,8 @@
 package main.libgdx;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
@@ -8,65 +10,177 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DC_GDX_RadialMenu extends Group {
-    private List<MenuNode> menuNodes;
     private MenuNode curentNode;
 
-    public DC_GDX_RadialMenu(List<CreatorNode> nodes) {
-        MenuNode base = new MenuNode();
-        menuNodes = createChilds(base, nodes);
-        curentNode = base;
+    public DC_GDX_RadialMenu(Texture green, List<CreatorNode> nodes) {
+        curentNode = new MenuNode(new Image(green));
+        curentNode.childs = createChilds(curentNode, nodes);
+        setHeight(curentNode.getHeight());
+        setWidth(curentNode.getWidth());
 
-        calcPositons(base);
+        final DC_GDX_RadialMenu menu = this;
+        curentNode.action = new Runnable() {
+            @Override
+            public void run() {
+                menu.setVisible(false);
+            }
+        };
 
-        addActor(base);
+        updateCallbacks();
+        curentNode.drawChilds = true;
+        //addActor(curentNode);
     }
 
-    private void calcPositons(MenuNode node) {
-        if (node.parent != null) {
-            node.parent.setX(node.parent.getWidth() / 2);
-            node.parent.setY(node.parent.getHeight() / 2);
-        }
+    @Override
+    protected void positionChanged() {
+        curentNode.setX(getX());
+        curentNode.setY(getY());
+        updatePosition();
+    }
 
-        int step = 360 / node.childs.size();
+    private void setCurentNode(MenuNode node) {
+        removeActor(curentNode);
+        curentNode.drawChilds = false;
+        curentNode = node;
+        updatePosition();
+        updateCallbacks();
+        curentNode.drawChilds = true;
+        // addActor(curentNode);
+    }
+
+    private void updatePosition() {
+
+        int step = 360 / curentNode.childs.size();
         int pos;
-        int r = (int) (node.parent.getWidth() * 3);
-        for (int i = 0; i < node.childs.size(); i++) {
+        int r = (int) (curentNode.getWidth() * 3);
+
+        for (int i = 0; i < curentNode.childs.size(); i++) {
             pos = i * step;
-            int x = (int) (r * Math.sin(pos));
-            int y = (int) (r * Math.cos(pos));
-            node.childs.get(i).setX(x);
-            node.childs.get(i).setY(y);
+            int y = (int) (r * Math.sin(Math.toRadians(pos)));
+            int x = (int) (r * Math.cos(Math.toRadians(pos)));
+            curentNode.childs.get(i).setX(x + curentNode.getX());
+            curentNode.childs.get(i).setY(y + curentNode.getY());
         }
     }
 
-    private List<MenuNode> createChilds(MenuNode parent, List<CreatorNode> creatorNodes) {
+    private void updateCallbacks() {
+        if (curentNode.parent == null) {
+            curentNode.action = new Runnable() {
+                @Override
+                public void run() {
+                    setVisible(false);
+                }
+            };
+        } else {
+            curentNode.action = new Runnable() {
+                @Override
+                public void run() {
+                    setCurentNode(curentNode.parent);
+                }
+            };
+        }
+        for (final MenuNode child : curentNode.childs) {
+            if (child.childs.size() > 0) {
+                child.action = new Runnable() {
+                    @Override
+                    public void run() {
+                        setCurentNode(child);
+                    }
+                };
+            }
+        }
+    }
+
+    private List<MenuNode> createChilds(final MenuNode parent, final List<CreatorNode> creatorNodes) {
         List<MenuNode> menuNodes = new ArrayList<>();
         for (CreatorNode node : creatorNodes) {
-            MenuNode menuNode = new MenuNode();
-            menuNode.image = new Image(node.texture);
+            final MenuNode menuNode = new MenuNode(new Image(node.texture));
             menuNode.action = node.action;
-            menuNodes.add(menuNode);
             menuNode.parent = parent;
             if (node.action != null) {
                 menuNode.action = node.action;
             } else {
-                menuNode.childs = createChilds(menuNode, node.childNodes);
+                menuNode.setChilds(createChilds(menuNode, node.childNodes));
             }
+            menuNodes.add(menuNode);
+            //parent.addActor(menuNode);
         }
-
         return menuNodes;
     }
 
-    private class MenuNode extends Group {
-        public MenuNode parent = null;
-        public List<MenuNode> childs;
-        public Image image;
-        public Runnable action = null;
-
-
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        if (!isVisible()) return null;
+        return curentNode.hit(x, y, touchable);
     }
 
-    public class CreatorNode {
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        curentNode.draw(batch, parentAlpha);
+    }
+
+
+    public class MenuNode extends Group {
+        public MenuNode parent = null;
+        private List<MenuNode> childs = new ArrayList<>();
+        public Runnable action = null;
+        private boolean drawChilds = false;
+        private Image image;
+
+        public MenuNode(Image image) {
+//            addActor(image);
+            this.image = image;
+            setHeight(image.getHeight());
+            setWidth(image.getWidth());
+        }
+
+        @Override
+        public void setX(float x) {
+            super.setX(x);
+            image.setX(x);
+        }
+
+        @Override
+        public void setY(float y) {
+            super.setY(y);
+            image.setY(y);
+        }
+
+        public void setChilds(List<MenuNode> childs) {
+            this.childs = childs;
+            for (MenuNode child : childs) {
+                addActor(child);
+            }
+        }
+
+        @Override
+        public void draw(Batch batch, float parentAlpha) {
+            image.draw(batch, parentAlpha);
+            if (drawChilds) {
+                for (MenuNode child : childs) {
+                    child.draw(batch, parentAlpha);
+                }
+            }
+        }
+
+        @Override
+        public Actor hit(float x, float y, boolean touchable) {
+            Actor a = image.hit(x - image.getX(), y - image.getY(), touchable);
+            if (a != null) a = this;
+            if (a == null && drawChilds) {
+                for (MenuNode child : childs) {
+                    a = child.hit(x , y , touchable);
+                    if (a != null) {
+                        a = child;
+                        break;
+                    }
+                }
+            }
+            return a;
+        }
+    }
+
+    public static class CreatorNode {
         public Texture texture;
         public List<CreatorNode> childNodes;
         public Runnable action;
