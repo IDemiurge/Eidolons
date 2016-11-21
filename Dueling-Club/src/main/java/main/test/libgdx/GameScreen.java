@@ -70,7 +70,7 @@ public class GameScreen implements Screen {
         //gridPanel.setY(actionGroup.getY()+actionGroup.getHeight());
         //gridPanel.setX(activeUnitInfoPanel.getMinWeight());
         InputMultiplexer multiplexer = new InputMultiplexer(controller, bf);
-        Gdx.input.setInputProcessor(bf);
+        Gdx.input.setInputProcessor(multiplexer);
         return this;
     }
 

@@ -52,7 +52,7 @@ public class DC_GDX_RadialMenu extends Group {
 
         int step = 360 / curentNode.childs.size();
         int pos;
-        int r = (int) (curentNode.getWidth() * 3);
+        int r = (int) (curentNode.getWidth() * 1.5);
 
         for (int i = 0; i < curentNode.childs.size(); i++) {
             pos = i * step;
