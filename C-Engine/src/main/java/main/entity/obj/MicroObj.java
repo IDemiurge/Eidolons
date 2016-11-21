@@ -1,6 +1,8 @@
 package main.entity.obj;
 
+import main.content.CONTENT_CONSTS;
 import main.content.parameters.G_PARAMS;
+import main.content.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.Game;
@@ -15,6 +17,7 @@ public class MicroObj extends Obj {
     protected Coordinates coordinates;
     private Coordinates lastKnownCoordinates;
     private int z;
+    protected Boolean overlaying;
 
     public MicroObj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -88,6 +91,13 @@ public class MicroObj extends Obj {
     public void setX(int x) {
         this.x = x;
         setParam(G_PARAMS.POS_X, x, true);
+    }
+
+    public boolean isOverlaying() {
+        if (overlaying == null)
+            overlaying = checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + CONTENT_CONSTS.BF_OBJECT_TAGS.OVERLAYING)
+                    || checkProperty(G_PROPS.CLASSIFICATIONS, "" + CONTENT_CONSTS.CLASSIFICATIONS.ATTACHED);
+        return overlaying;
     }
 
     @Override

@@ -23,16 +23,18 @@ public class UnitMaster {
 
     public static void train(DC_HeroObj unit) {
         int perc = DEFAULT_XP_MOD;
-        if (unit.checkClassification(CLASSIFICATIONS.HUMANOID))
+
+        if (unit.checkClassification(CLASSIFICATIONS.HUMANOID)) {
             perc += HUMANOID_XP_MOD;
+        }
         unit.modifyParamByPercent(PARAMS.XP, perc);
 
         Integer spell_xp = unit.getIntParam(PARAMS.SPELL_XP_MOD);
-        if (spell_xp == 0)
-            if (UnitAnalyzer.checkIsCaster(unit)) {
-                spell_xp = getSpellXpPercentage(unit);
-                spell_xp = MathMaster.applyMod(DEFAULT_CASTER_XP_MOD, spell_xp);
-            }
+
+        if (spell_xp == 0 && UnitAnalyzer.checkIsCaster(unit)) {
+            spell_xp = getSpellXpPercentage(unit);
+            spell_xp = MathMaster.applyMod(DEFAULT_CASTER_XP_MOD, spell_xp);
+        }
 
         // DEFAULT_CASTER_XP_MOD;
         int spellXp = unit.getIntParam(PARAMS.XP) * (spell_xp) / 100;
@@ -40,6 +42,7 @@ public class UnitMaster {
 
         unit.setParam(PARAMS.XP, skillXp);
         try {
+            //// TODO: 17.11.2016 improve train func execution speed
             UnitTrainer.train(unit);
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,11 +54,13 @@ public class UnitMaster {
         }
 
         unit.modifyParameter(PARAMS.XP, spellXp);
+
         try {
             UnitLibrary.learnSpellsForUnit(unit);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         try {
             // adjust XP/Gold as per mods and default types...
             // monsters should probably get more...

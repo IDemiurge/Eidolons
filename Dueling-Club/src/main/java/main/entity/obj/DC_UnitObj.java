@@ -67,7 +67,6 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj {
     private ImageIcon emblem;
     private UnitAI unitAI;
     private DIRECTION direction;
-    private Boolean overlaying;
     private DC_ActiveObj preferredInstantAttack;
     private DC_ActiveObj preferredCounterAttack;
     private DC_ActiveObj preferredAttackOfOpportunity;
@@ -1109,13 +1108,6 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj {
     public boolean isBfObj() {
         // TODO would be cool to make petrified/frozen units appear this way too
         return getOBJ_TYPE_ENUM() == OBJ_TYPES.BF_OBJ;
-    }
-
-    public boolean isOverlaying() {
-        if (overlaying == null)
-            overlaying = checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BF_OBJECT_TAGS.OVERLAYING)
-                    || checkProperty(G_PROPS.CLASSIFICATIONS, "" + CLASSIFICATIONS.ATTACHED);
-        return overlaying;
     }
 
     public boolean isHuge() {

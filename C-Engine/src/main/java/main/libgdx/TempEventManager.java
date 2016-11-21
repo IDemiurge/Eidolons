@@ -18,12 +18,20 @@ public class TempEventManager {
     private static List<Runnable> eventQueue = new ArrayList<>();
     private static Lock lock = new ReentrantLock();
 
-    public static void bind(String name, EventCallback event) {
+    public static void bind(String name, final EventCallback event) {
         if (event != null) {
             if (eventMap.containsKey(name)) {
-                eventMap.remove(name);
+                final EventCallback old = eventMap.remove(name);
+                eventMap.put(name, new EventCallback() {
+                    @Override
+                    public void call(Object obj) {
+                        old.call(obj);
+                        event.call(obj);
+                    }
+                });
+            } else {
+                eventMap.put(name, event);
             }
-            eventMap.put(name, event);
         } else {
             if (eventMap.containsKey(name)) {
                 eventMap.remove(name);

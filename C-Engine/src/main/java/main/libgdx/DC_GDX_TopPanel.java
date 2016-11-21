@@ -32,8 +32,12 @@ public class DC_GDX_TopPanel extends Image {
     }
 
     public DC_GDX_TopPanel init() {
-        int h = Gdx.graphics.getHeight();
-        int w = Gdx.graphics.getWidth();
+//        int h = Gdx.graphics.getHeight();
+//        int w = Gdx.graphics.getWidth();
+
+          int h = 900;
+          int w = 1600;
+
         setAlign(Align.top);
         setX(w/2-(getWidth()/2));
         setY(h-getHeight());

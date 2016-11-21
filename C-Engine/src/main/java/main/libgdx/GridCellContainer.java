@@ -15,7 +15,6 @@ public class GridCellContainer extends GridCell {
     private final int maxH = 99;
     private final int offsetX = 18;
     private final int offsetY = 7;
-
     private List<Image> images;
 
     public GridCellContainer(Texture backTexture, String imagePath, int gridX, int gridY) {
