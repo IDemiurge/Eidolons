@@ -1669,6 +1669,10 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return getActionGroup() == ACTION_TYPE_GROUPS.MOVE;
     }
 
+    public boolean isTurn() {
+        return getActionGroup() == ACTION_TYPE_GROUPS.TURN;
+    }
+
     public boolean isMelee() {
         if (getIntParam(PARAMS.RANGE) > 1)
             return false;

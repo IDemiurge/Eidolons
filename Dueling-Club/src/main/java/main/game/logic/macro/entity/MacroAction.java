@@ -193,6 +193,16 @@ public class MacroAction extends MacroObj implements ActiveObj {
     }
 
     @Override
+    public boolean isMove() {
+        return false;
+    }
+
+    @Override
+    public boolean isTurn() {
+        return false;
+    }
+
+    @Override
     public void playCancelSound() {
         // TODO Auto-generated method stub
 

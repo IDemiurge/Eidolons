@@ -93,12 +93,18 @@ public class DC_GDX_RadialMenu extends Group {
 
     private List<MenuNode> createChilds(final MenuNode parent, final List<CreatorNode> creatorNodes) {
         List<MenuNode> menuNodes = new ArrayList<>();
-        for (CreatorNode node : creatorNodes) {
+        for (final CreatorNode node : creatorNodes) {
             final MenuNode menuNode = new MenuNode(new Image(node.texture));
-            menuNode.action = node.action;
             menuNode.parent = parent;
             if (node.action != null) {
-                menuNode.action = node.action;
+                final Runnable r = node.action;
+                menuNode.action = new Runnable() {
+                    @Override
+                    public void run() {
+                        r.run();
+                        curentNode.setVisible(false);
+                    }
+                };
             } else {
                 menuNode.setChilds(createChilds(menuNode, node.childNodes));
             }
