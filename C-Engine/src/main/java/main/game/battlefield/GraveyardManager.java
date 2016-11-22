@@ -23,10 +23,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GraveyardManager {
     private static final String RIP = "Here lie: ";
     private Map<ZCoordinates, Stack<Obj>> graveMap = new ConcurrentHashMap<ZCoordinates, Stack<Obj>>();
-    private BattleField battlefield;
+    private SwingBattleField battlefield;
     private List<Obj> removed = new LinkedList<>();
 
-    public GraveyardManager(BattleField battlefield) {
+    public GraveyardManager(SwingBattleField battlefield) {
         this.battlefield = battlefield;
     }
 

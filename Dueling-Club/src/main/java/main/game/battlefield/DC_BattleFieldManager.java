@@ -22,7 +22,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
     private Map<Coordinates, List<DIRECTION>> wallMap = new HashMap<>();
     private Map<Coordinates, List<DIRECTION>> diagonalJoints = new HashMap<>();
 
-    public DC_BattleFieldManager(DC_Game game, BattleField battlefield) {
+    public DC_BattleFieldManager(DC_Game game, SwingBattleField battlefield) {
         super(game, battlefield);
         this.game = game;
     }

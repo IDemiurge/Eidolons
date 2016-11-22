@@ -4,7 +4,7 @@ import main.content.OBJ_TYPE;
 import main.entity.obj.Obj;
 import main.game.Game;
 import main.game.GameState;
-import main.game.battlefield.BattleField;
+import main.game.battlefield.SwingBattleField;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.list.CustomList;
 import main.swing.generic.components.list.G_List;
@@ -30,7 +30,7 @@ public abstract class G_ListPanel<E> extends G_Panel {
     protected Collection<E> data;
     protected GameState state;
     protected Obj obj;
-    protected BattleField bf;
+    protected SwingBattleField bf;
     protected int hpolicy = JScrollPane.HORIZONTAL_SCROLLBAR_NEVER;
     protected int vpolicy = JScrollPane.VERTICAL_SCROLLBAR_NEVER;
     protected int layoutOrientation = JList.HORIZONTAL_WRAP;

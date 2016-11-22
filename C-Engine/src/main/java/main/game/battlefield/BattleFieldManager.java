@@ -11,9 +11,9 @@ public abstract class BattleFieldManager {
     protected MicroGame game;
     protected GameManager mngr;
     protected MicroGameState state;
-    private BattleField battlefield;
+    private SwingBattleField battlefield;
 
-    public BattleFieldManager(MicroGame game, BattleField battlefield) {
+    public BattleFieldManager(MicroGame game, SwingBattleField battlefield) {
         this.game = game;
         this.setBattlefield(battlefield);
         mngr = game.getManager();
@@ -37,11 +37,11 @@ public abstract class BattleFieldManager {
 
     public abstract boolean isCellVisiblyFree(Coordinates c);
 
-    public BattleField getBattlefield() {
+    public SwingBattleField getBattlefield() {
         return battlefield;
     }
 
-    public void setBattlefield(BattleField battlefield) {
+    public void setBattlefield(SwingBattleField battlefield) {
         this.battlefield = battlefield;
     }
 

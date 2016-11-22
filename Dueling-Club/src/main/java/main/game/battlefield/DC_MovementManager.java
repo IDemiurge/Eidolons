@@ -369,7 +369,7 @@ public class DC_MovementManager implements MovementManager {
     }
 
     @Override
-    public BattleField getBf() {
+    public SwingBattleField getBf() {
         return game.getBattleField();
     }
 

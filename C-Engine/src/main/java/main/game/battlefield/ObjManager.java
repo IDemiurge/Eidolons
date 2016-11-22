@@ -5,9 +5,9 @@ import main.game.MicroGame;
 public class ObjManager {
 
     private MicroGame game;
-    private BattleField bf;
+    private SwingBattleField bf;
 
-    public ObjManager(MicroGame game, BattleField bf) {
+    public ObjManager(MicroGame game, SwingBattleField bf) {
         this.game = game;
         this.bf = bf;
     }
