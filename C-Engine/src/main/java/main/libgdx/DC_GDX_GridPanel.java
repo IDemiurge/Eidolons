@@ -223,6 +223,7 @@ public class DC_GDX_GridPanel extends Group {
                 @Override
                 public void run() {
                     ((Entity) pair.getLeft()).invokeClicked();
+                    System.out.println(pair.getLeft().getName());
                 }
             };
             nn1.add(inn1);

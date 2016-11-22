@@ -56,6 +56,7 @@ import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.graphics.*;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
@@ -1168,7 +1169,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         if (!dont) {
             dont = !canBeManuallyActivated();
         }
-        if (dont) {
+        if (dont && !CoreEngine.isGraphicTestMode()) {
             getGame().getToolTipMaster().initActionToolTip(this, false);
 
             SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
