@@ -550,6 +550,11 @@ Game.game.setSimulation(true);
             if (forceBattleInit || !game.isBattleInit())
                 game.battleInit();
             game.start(first);
+
+
+            if (!CoreEngine.isSwingOn()){
+                //TODO INSERT NEW GUI HERE
+            }else {
             DC_GameGUI GUI = new DC_GameGUI(game, fullscreen, false);
             GUI.initGUI();
             game.setGUI(GUI);
@@ -557,8 +562,9 @@ Game.game.setSimulation(true);
             frame.setLayout(new BorderLayout());
             frame.setSize(GuiManager.getScreenSize());
             frame.setLocationRelativeTo(null);
-            // viewPanel.setLayout(new GridLayout());
+                //TODO remove SWING DEPENDENCY
             setView(GUI.getPanel(), VIEWS.DC);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             game.setSimulation(true);

@@ -212,6 +212,7 @@ public class FAST_DC {
         game = gameLauncher.initDC_Game();
         game.setHostClient(host_client);
         game.start(true);
+        if (CoreEngine.isSwingOn())
         try {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override

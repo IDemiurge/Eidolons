@@ -96,13 +96,10 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
         }
 
         boolean result = true;
-        try {
+
             result = chooseUnit();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return true;
-        }
+
         Weaver.inNewThread(new Runnable() {
             public void run() {
                 resetCosts();
@@ -192,7 +189,8 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
                 displayedUnitQueue.add(unit);
         }
 
-        game.getBattleField().refreshInitiativeQueue();
+try{game.getBattleField().refreshInitiativeQueue();                }catch(Exception e){                e.printStackTrace();            }
+
     }
 
     private void resetQueue() {
@@ -227,6 +225,7 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
     private boolean chooseUnit() {
 
         setActiveUnit(unitQueue.peek());
+        try{
         if (!game.getManager().activeSelect(getActiveUnit()))
             return false;
 
@@ -236,6 +235,8 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
         main.system.auxiliary.LogMaster.log(LogMaster.LOG_CHANNELS.GAME_INFO, StringMaster
                 .getStringXTimes(50 - getActiveUnit().toString().length(), ">")
                 + "Active unit: " + getActiveUnit());
+        }catch(Exception e){
+            e.printStackTrace();            }
         return true;
     }
 
