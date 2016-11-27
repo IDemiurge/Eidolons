@@ -21,7 +21,7 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.Set;
 
-public class DC_BattleField extends BattleField {
+public class DC_BattleField extends SwingBattleField {
 
     private DC_Builder dc_builder;
     private DC_Map map;

@@ -28,6 +28,8 @@ public class CoreEngine {
     private static boolean enumCachingOn = true;
     private static boolean writingLogFilesOn;
     private static  boolean arcaneTower=false;
+    private static boolean swingOn=false;
+    private static boolean graphicTestMode=true;
 
     public static void dataInit(boolean newThread, final boolean macro) {
         if (newThread) {
@@ -166,6 +168,14 @@ public class CoreEngine {
         CoreEngine.arcaneTower = arcaneTower;
     }
 
+    public static boolean isGraphicTestMode() {
+        return graphicTestMode;
+    }
+
+    public static void setGraphicTestMode(boolean graphicTestMode) {
+        CoreEngine.graphicTestMode = graphicTestMode;
+    }
+
 
     public void dataInit(boolean macro) {
 
@@ -189,5 +199,9 @@ public class CoreEngine {
 
     public static boolean isArcaneTower() {
             return arcaneTower;
+    }
+
+    public static boolean isSwingOn() {
+        return swingOn;
     }
 }

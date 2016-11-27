@@ -28,7 +28,7 @@ public interface MovementManager {
 
     int getDistance(Obj obj1, Obj obj2);
 
-    BattleField getBf();
+    SwingBattleField getBf();
 
     Obj getCell(Coordinates c1);
 

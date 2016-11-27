@@ -19,6 +19,7 @@ import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.images.ImageManager.HIGHLIGHT;
+import main.system.launch.CoreEngine;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -324,7 +325,7 @@ public class Obj extends Entity {
 
     public boolean isToolTipDisabled() {
 
-        return game.isSimulation();
+        return game.isSimulation() || CoreEngine.isGraphicTestMode();
         // return false;
     }
 

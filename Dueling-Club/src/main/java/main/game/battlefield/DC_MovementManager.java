@@ -269,6 +269,7 @@ public class DC_MovementManager implements MovementManager {
 
     public boolean move(DC_HeroObj obj, DC_Cell cell, boolean free, Path path, MOVE_MODIFIER mod,
                         Ref ref) {
+        Coordinates from = new Coordinates(obj.getCoordinates().getX(), obj.getCoordinates().getY());
         // if (path == null) {
         // if (!free)
         // path = getPath(obj, cell); // TODO just check if it's blocked
@@ -320,7 +321,9 @@ public class DC_MovementManager implements MovementManager {
         event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);
         if (!game.fireEvent(event))
             return false;
-
+        Coordinates to = new Coordinates(obj.getCoordinates().getX(), obj.getCoordinates().getY());
+        TempEventManager.trigger("cell-update", from);
+        TempEventManager.trigger("cell-update", to);
         return true;
     }
 
@@ -369,7 +372,7 @@ public class DC_MovementManager implements MovementManager {
     }
 
     @Override
-    public BattleField getBf() {
+    public SwingBattleField getBf() {
         return game.getBattleField();
     }
 

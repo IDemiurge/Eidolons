@@ -48,7 +48,7 @@ public class GameScreen implements Screen {
         TempEventManager.bind("grid-created", new EventCallback() {
             @Override
             public void call(final Object obj) {
-                Pair<Integer,Integer> p = ((Pair<Integer, Integer>) obj);
+                Pair<Integer, Integer> p = ((Pair<Integer, Integer>) obj);
                 gridPanel = new DC_GDX_GridPanel(PathFinder.getImagePath(), p.getLeft(), p.getRight()).init();
                 bf.addActor(gridPanel);
             }
@@ -75,10 +75,11 @@ public class GameScreen implements Screen {
     }
 
 
-
     @Override
     public void render(float delta) {
         TempEventManager.processEvents();
+
+        bf.act(delta);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);

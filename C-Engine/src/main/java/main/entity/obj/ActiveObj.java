@@ -47,4 +47,7 @@ public interface ActiveObj extends Cancellable, Active, OBJ {
 
     boolean isMelee();
 
+    boolean isMove();
+
+    boolean isTurn();
 }

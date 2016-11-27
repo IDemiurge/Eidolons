@@ -471,7 +471,7 @@ public class DC_Builder extends Builder {
                 - ImageManager.getArrowImage(false, true, DC_PagedUnitActionPanel.ARROW_VERSION)
                 .getWidth(null);
         int y = uap.getY() + unitActionPanel.getY();
-        Point p = new Point(x, y);
+        Point p = new Point(1, 1);
         return p;
     }
 

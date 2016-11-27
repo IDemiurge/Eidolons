@@ -26,7 +26,7 @@ public abstract class MicroGame extends Game {
     protected Player player2;
     protected String gameName;
     protected BattleFieldManager battleFieldManager;
-    protected BattleField battlefield;
+    protected SwingBattleField battlefield;
     protected String unitData1;
     protected String unitData2;
     private boolean hotseatMode = false;
@@ -46,7 +46,7 @@ public abstract class MicroGame extends Game {
 
     }
 
-    public BattleField getBattleField() {
+    public SwingBattleField getBattleField() {
         return battlefield;
     }
 

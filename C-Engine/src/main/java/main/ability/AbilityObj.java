@@ -252,4 +252,14 @@ public class AbilityObj extends Obj implements ActiveObj, Interruptable {
         return false;
     }
 
+    @Override
+    public boolean isMove() {
+        return false;
+    }
+
+    @Override
+    public boolean isTurn() {
+        return false;
+    }
+
 }

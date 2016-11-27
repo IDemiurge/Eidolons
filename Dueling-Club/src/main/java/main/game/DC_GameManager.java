@@ -129,8 +129,12 @@ public class DC_GameManager extends GameManager {
         }
 
         setSelectedActiveObj(obj);
+try{
         getGame().getBattleField().selectActiveObj(obj, true);
-        // if (VisionManager.c)
+}catch(Exception e) {
+    e.printStackTrace();
+}
+    // if (VisionManager.c)
         // SoundMaster.playEffectSound(SOUNDS.WHAT, obj);
 
         ColorManager.setCurrentColor(ColorManager.getDarkerColor(ColorManager.getAltAspectColor(obj
