@@ -15,11 +15,15 @@ import java.util.Set;
 /**
  * Created by PC on 19.11.2016.
  */
-public class Lightmap_test {
+public class Lightmap {
     static Map<MicroObj, Body> bodyMap;
 
 
-    public Lightmap_test(DequeImpl<MicroObj> un, World world, RayHandler rayHandler) {
+    public Lightmap(DequeImpl<MicroObj> un) {
+        //init(un,new World(),new RayHandler());
+    }
+
+    private void init(DequeImpl<MicroObj> un, World world, RayHandler rayHandler) {
         bodyMap = new Map<MicroObj, Body>() {
             @Override
             public int size() {
@@ -108,7 +112,7 @@ public class Lightmap_test {
 
             }else {
 //                if (!un.get(i).getName().equalsIgnoreCase("Stone Wall")){
-                    if (un.get(i).getType().toString().contains("units")){
+                if (un.get(i).getType().toString().contains("units")){
 //                    System.out.println("Unit detected - need only to create a body");
                     BodyDef bdef = new BodyDef();
                     bdef.type = BodyDef.BodyType.KinematicBody;
@@ -121,11 +125,15 @@ public class Lightmap_test {
                     body.createFixture(fdef);
 //                    System.out.println("Created a body");
 //                    System.out.println("Position on: " + un.get(i).getX() + "||" + un.get(i).getY());
-                        bodyMap.put(un.get(i),body);
+                    bodyMap.put(un.get(i),body);
 //                    System.out.println("===================");
                 }
             }
         }
+    }
+
+    public Lightmap(DequeImpl<MicroObj> un, World world, RayHandler rayHandler) {
+        init(un, world, rayHandler);
     }
     public void move(MicroObj obj,float x, float y ){
         if (bodyMap.containsKey(obj)) {

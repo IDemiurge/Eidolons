@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import main.data.filesys.PathFinder;
 import main.entity.obj.MicroObj;
-import main.libgdx.*;
 import main.libgdx.Lightmap;
 import main.system.datatypes.DequeImpl;
 
@@ -135,7 +134,7 @@ public class PrototypeScreen implements Screen {
                 stage.addActor(player);
                 gridadded = true;
                 System.out.println("added grid");
-                Lightmap_test lightmap = new Lightmap_test(units,world,rayHandler);
+                Lightmap lightmap = new Lightmap(units,world,rayHandler);
 
             }
         }

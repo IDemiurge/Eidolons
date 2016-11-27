@@ -21,6 +21,7 @@ import main.game.event.Event;
 import main.system.EventCallback;
 import main.system.TempEventManager;
 import main.system.datatypes.DequeImpl;
+import main.test.libgdx.prototype.Lightmap;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -107,7 +108,7 @@ public class DC_GDX_GridPanel extends Group {
             @Override
             public void call(final DequeImpl<MicroObj> obj) {
                 units = obj;
-                lightmap = new Lightmap(units);
+                //lightmap = new Lightmap(units, cells[0][0].getWidth(),cells[0][0].getHeight());
                 Map<Coordinates, List<MicroObj>> map = new HashMap<>();
                 for (MicroObj object : units) {
                     Coordinates c = object.getCoordinates();
