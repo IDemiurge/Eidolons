@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.data.filesys.PathFinder;
 import main.libgdx.*;
+import main.system.EventCallback;
+import main.system.TempEventManager;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**

@@ -98,11 +98,12 @@ public class DC_GDX_RadialMenu extends Group {
             menuNode.parent = parent;
             if (node.action != null) {
                 final Runnable r = node.action;
+                final DC_GDX_RadialMenu menu = this;
                 menuNode.action = new Runnable() {
                     @Override
                     public void run() {
                         r.run();
-                        curentNode.setVisible(false);
+                        menu.setVisible(false);
                     }
                 };
             } else {
@@ -122,6 +123,7 @@ public class DC_GDX_RadialMenu extends Group {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+
         curentNode.draw(batch, parentAlpha);
     }
 

@@ -18,7 +18,7 @@ import main.game.battlefield.map.DungeonMapGenerator;
 import main.game.logic.dungeon.Dungeon;
 import main.game.player.DC_Player;
 import main.game.player.Player;
-import main.libgdx.TempEventManager;
+import main.system.TempEventManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.net.data.MapData;

@@ -36,7 +36,7 @@ public class GridCell extends Group {
         if (old != null) {
             removeActor(old);
             old.dispose();
-            return;
+            //return;
         }
         if (innerDrawable != null) {
             addActor(innerDrawable);
@@ -58,6 +58,10 @@ public class GridCell extends Group {
     private void dispose() {
         removeActor(backImage);
         backImage = null;
+    }
+
+    public Actor hitChilds(float x, float y, boolean touchable) {
+        return super.hit(x, y, touchable);
     }
 
 
