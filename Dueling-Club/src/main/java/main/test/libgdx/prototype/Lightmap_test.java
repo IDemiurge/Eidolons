@@ -8,7 +8,9 @@ import main.content.PARAMS;
 import main.entity.obj.MicroObj;
 import main.system.datatypes.DequeImpl;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by PC on 19.11.2016.
@@ -18,6 +20,67 @@ public class Lightmap_test {
 
 
     public Lightmap_test(DequeImpl<MicroObj> un, World world, RayHandler rayHandler) {
+        bodyMap = new Map<MicroObj, Body>() {
+            @Override
+            public int size() {
+                return 0;
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public boolean containsKey(Object key) {
+                return false;
+            }
+
+            @Override
+            public boolean containsValue(Object value) {
+                return false;
+            }
+
+            @Override
+            public Body get(Object key) {
+                return null;
+            }
+
+            @Override
+            public Body put(MicroObj key, Body value) {
+                return null;
+            }
+
+            @Override
+            public Body remove(Object key) {
+                return null;
+            }
+
+            @Override
+            public void putAll(Map<? extends MicroObj, ? extends Body> m) {
+
+            }
+
+            @Override
+            public void clear() {
+
+            }
+
+            @Override
+            public Set<MicroObj> keySet() {
+                return null;
+            }
+
+            @Override
+            public Collection<Body> values() {
+                return null;
+            }
+
+            @Override
+            public Set<Entry<MicroObj, Body>> entrySet() {
+                return null;
+            }
+        };
         for (int i = 0;i < un.size();i++){
 //            System.out.println("===================");
 //            System.out.println(un.get(i).getName());
@@ -61,17 +124,12 @@ public class Lightmap_test {
                         bodyMap.put(un.get(i),body);
 //                    System.out.println("===================");
                 }
-
             }
         }
     }
     public void move(MicroObj obj,float x, float y ){
-        for (Map.Entry<MicroObj,Body> entry : bodyMap.entrySet() ){
-            MicroObj current = entry.getKey();
-            if (current.equals(obj)){
-                entry.getValue().setTransform(x,y,0);
-
-            }
+        if (bodyMap.containsKey(obj)) {
+            bodyMap.get(obj).setTransform(x,y,0);
         }
     }
 }
