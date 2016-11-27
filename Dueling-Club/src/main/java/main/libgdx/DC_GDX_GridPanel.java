@@ -136,7 +136,6 @@ public class DC_GDX_GridPanel extends Group {
         TempEventManager.bind("cell-update", new EventCallback<Coordinates>() {
             @Override
             public void call(Coordinates cords) {
-
                 List<MicroObj> objList = new ArrayList<>();
                 for (MicroObj unit : units) {
                     if (unit.getCoordinates().equals(cords)) {
@@ -395,9 +394,5 @@ public class DC_GDX_GridPanel extends Group {
         if (radialMenu != null && radialMenu.isVisible()) {
             radialMenu.draw(batch, parentAlpha);
         }
-    }
-
-    public DequeImpl<MicroObj> getUnits() {
-        return units;
     }
 }
