@@ -101,12 +101,14 @@ public class FAST_DC {
     private static int unitGroupLevel;
     private static GameLauncher gameLauncher;
     private static DENIS_Launcher guiLauncher;
+    private static main.test.libgdx.prototype.Launcher launcher;
 
     public static boolean isRunning() {
         return running;
     }
 
     public static void main(String[] args) {
+
 /*        ClassLoader classLoader = FAST_DC.class.getClassLoader();
         File f = new File(classLoader.getResource("").getFile());
         f = new File(f.getParentFile()+"/dependency/Font");
@@ -202,7 +204,8 @@ public class FAST_DC {
 
             }
 
-        DENIS_Launcher.main(new String[]{});
+//        DENIS_Launcher.main(new String[]{});
+       main.test.libgdx.prototype.Launcher.main(new String[]{});
         CoreEngine.setTEST_MODE(true);
         DC_Engine.init();
         Chronos.mark("GAME LAUNCHED");

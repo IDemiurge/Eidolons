@@ -65,8 +65,8 @@ public class PrototypeController implements InputProcessor {
     public boolean touchDragged(int i, int i1, int i2) {
 //        System.out.println("i = " + i + " || i1 = " + i1 + " || i2 = "  + i2);
         if (is_it_Left_Click){
-            camera.position.x +=((x_cam_pos- i)/50)*camera.zoom;
-            camera.position.y -=((y_cam_pos- i1)/50)*camera.zoom;
+            camera.position.x +=((x_cam_pos- i))*camera.zoom;
+            camera.position.y -=((y_cam_pos- i1))*camera.zoom;
             x_cam_pos = i;
             y_cam_pos = i1;
         }
