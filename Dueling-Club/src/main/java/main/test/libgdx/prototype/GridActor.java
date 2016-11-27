@@ -16,18 +16,24 @@ import main.libgdx.DC_GDX_GridPanel;
 public class GridActor extends Actor {
     private DC_GDX_GridPanel gridPanel;
     Sprite sprite;
+    int raws = 10;
+    int lines = 10;
+
     public GridActor() {
         PathFinder.init();
 
 //        sprite = new Sprite(new Texture(PathFinder.getImagePath() + "mini\\unit\\Nature\\griff.jpg"));
 //        sprite.setBounds(0,0,5,5);
 
-        gridPanel = new DC_GDX_GridPanel(PathFinder.getImagePath(), 10, 10).init();
+        gridPanel = new DC_GDX_GridPanel(PathFinder.getImagePath(), raws, lines).init();
+//        Lightmap_test lightmap = new Lightmap_test(gridPanel.getUnits());
         setBounds(gridPanel.getX(),gridPanel.getY(),gridPanel.getWidth(),gridPanel.getHeight());
         addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 System.out.println("GRID touch detected");
+                System.out.println("Mouse touch is on: " + x + " " + y);
+                System.out.println(" Cell with coords : " + (int)x/132 + " _ " + (int)y/113);
                 return super.touchDown(event, x, y, pointer, button);
             }
         });

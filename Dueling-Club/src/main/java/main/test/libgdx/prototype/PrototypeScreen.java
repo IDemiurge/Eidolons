@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -18,6 +17,11 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import main.data.filesys.PathFinder;
+import main.entity.obj.MicroObj;
+import main.libgdx.*;
+import main.libgdx.Lightmap;
+import main.system.datatypes.DequeImpl;
+
 
 import java.util.ArrayList;
 
@@ -28,15 +32,15 @@ import java.util.ArrayList;
 public class PrototypeScreen implements Screen {
     World world;
    Stage stage;
-    float viewport_width = 20;
-    float viewport_height = 15;
+    float viewport_width = Gdx.graphics.getWidth();
+    float viewport_height = Gdx.graphics.getHeight();
     RayHandler rayHandler;
     GUIStage guiStage;
     Box2DDebugRenderer debugRenderer;
     PrototypeController controller;
     boolean flag = true;
-    float distance = 30;
-    float distance1 = 30;
+    float distance = 1200;
+    float distance1 = 1300;
     float degree = 45;
     float degree1 = 90;
     long timer = 0;
@@ -47,9 +51,20 @@ public class PrototypeScreen implements Screen {
     private Animation anim;
     Sprite sprite;
     SpriteBatch batch;
+    DequeImpl<MicroObj> units;
+    private static boolean gridadded = false;
+
+
 
     @Override
     public void show() {
+        TempEventManager.bind("create-units-model", new EventCallback() {
+            @Override
+            public void call(final Object obj) {
+                units = (DequeImpl<MicroObj>) obj;
+
+            }
+        });
         PathFinder.init();
         // TEMP
         PathFinder.init();
@@ -59,7 +74,7 @@ public class PrototypeScreen implements Screen {
             local_Texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
             regions.add(local_Texture);
         }
-        anim = new Animation(regions,regions.size()-1,0.85f);
+//        anim = new Animation(regions,regions.size()-1,0.85f);
         sprite = new Sprite(new Texture(PathFinder.getImagePath() + "mini\\sprites\\impact\\electro impact\\e"+1+".jpg"));
         sprite.setBounds(3,3,5,5);
         batch = new SpriteBatch();
@@ -74,20 +89,20 @@ public class PrototypeScreen implements Screen {
         rayHandler.setBlurNum(5);
         rayHandler.setGammaCorrection(true);
 
-       coneLight = new ConeLight(rayHandler,75,Color.RED,distance,10,10,degree,degree);
-       coneLight1 = new ConeLight(rayHandler,75,Color.RED,distance1,20,25,270,degree1);
+       coneLight = new ConeLight(rayHandler,75,Color.RED,distance,0,0,degree,degree);
+       coneLight1 = new ConeLight(rayHandler,75,Color.RED,distance1,700,850,270,degree1);
 
         guiStage = new GUIStage();
         stage = new Stage(new FitViewport(viewport_width,viewport_height));
         batch.setProjectionMatrix(stage.getCamera().combined);
         controller = new PrototypeController((OrthographicCamera) stage.getCamera());
-        PlayerActor player = new PlayerActor(world);
-        GridActor grid = new GridActor();
 
-        stage.addActor(player);
-        stage.addActor(grid);
-        grid.setZIndex(1);
-        player.setZIndex(2);
+
+
+
+//        stage.addActor(grid);
+//        grid.setZIndex(1);
+//        player.setZIndex(2);
         stage.setDebugAll(true);
         InputMultiplexer in = new InputMultiplexer();
         in.addProcessor(guiStage);
@@ -110,8 +125,23 @@ public class PrototypeScreen implements Screen {
         long diff = now - timer;
         timer = now;
         counter += diff;
-        anim.update(v);
-        sprite.setTexture(anim.getTexture());
+        TempEventManager.processEvents();
+        if (!gridadded){
+
+            if (units != null){
+                GridActor grid = new GridActor();
+                stage.addActor(grid);
+                PlayerActor player = new PlayerActor(world);
+                stage.addActor(player);
+                gridadded = true;
+                System.out.println("added grid");
+                Lightmap_test lightmap = new Lightmap_test(units,world,rayHandler);
+
+            }
+        }
+//        System.out.println(gridadded);
+//        anim.update(v);
+//        sprite.setTexture(anim.getTexture());
         if (counter >= 100000000){
             if (flag){
                 distance++;
@@ -122,7 +152,7 @@ public class PrototypeScreen implements Screen {
                 coneLight.setDirection(degree);
                 coneLight.setConeDegree(degree);
                 coneLight1.setDistance(distance1);
-                if (distance >= 34){
+                if (distance >= 1220){
                     flag = false;
                 }
             }else {
@@ -134,7 +164,7 @@ public class PrototypeScreen implements Screen {
                 coneLight.setDirection(degree);
                 coneLight.setConeDegree(degree);
                 coneLight1.setDistance(distance1);
-                if (distance <= 33){
+                if (distance <= 1203){
                     flag = true;
                 }
             }
@@ -143,9 +173,9 @@ public class PrototypeScreen implements Screen {
         world.step(1/60f,4,4);
         stage.act(v);
         stage.draw();
-        batch.begin();
-        sprite.draw(batch);
-        batch.end();
+//        batch.begin();
+//        sprite.draw(batch);
+//        batch.end();
 
         rayHandler.setCombinedMatrix((OrthographicCamera) stage.getCamera());
         rayHandler.updateAndRender();

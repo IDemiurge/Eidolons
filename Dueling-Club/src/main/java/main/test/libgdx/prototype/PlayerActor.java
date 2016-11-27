@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class PlayerActor extends Actor {
     private static World world;
     private static Body body;
-    private static float size = 2.5f;
+    private static float size = 50f;
     public PlayerActor(World world) {
     this.world = world;
 
@@ -28,7 +28,7 @@ public class PlayerActor extends Actor {
         fixtureDef.restitution = 0;
         body.createFixture(fixtureDef);
 //        setBounds(body.getPosition().x+1,body.getPosition().y+1,20,20);
-        setBounds(15,15,size*2,size*2);
+        setBounds(132,113,size*2,size*2);
         addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

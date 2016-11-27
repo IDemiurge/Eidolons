@@ -34,7 +34,8 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class DC_GDX_GridPanel extends Group {
-    protected GridCell[][] cells;
+//    protected GridCell[][] cells;
+    public GridCell[][] cells;
     protected Texture emptyImage;
     protected Texture hiddenImage;
     protected Texture highlightImage;
@@ -42,6 +43,7 @@ public class DC_GDX_GridPanel extends Group {
     protected Texture cellBorderTexture;
     protected Image greenBorder;
     protected Image redBorder;
+    protected Lightmap lightmap;
     protected DequeImpl<MicroObj> units;
     private Map<String, Texture> textureMap = new HashMap<>();
 
@@ -105,7 +107,7 @@ public class DC_GDX_GridPanel extends Group {
             @Override
             public void call(final DequeImpl<MicroObj> obj) {
                 units = obj;
-
+                lightmap = new Lightmap(units);
                 Map<Coordinates, List<MicroObj>> map = new HashMap<>();
                 for (MicroObj object : units) {
                     Coordinates c = object.getCoordinates();
@@ -393,5 +395,9 @@ public class DC_GDX_GridPanel extends Group {
         if (radialMenu != null && radialMenu.isVisible()) {
             radialMenu.draw(batch, parentAlpha);
         }
+    }
+
+    public DequeImpl<MicroObj> getUnits() {
+        return units;
     }
 }
