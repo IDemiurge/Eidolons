@@ -156,16 +156,16 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
     public void resetCosts() {
         if (game.getManager().getActiveObj() == null)
             return;
-        for (ACTION_TYPE key : ((DC_HeroObj) game.getManager().getActiveObj()).getActionMap()
+        for (ACTION_TYPE key : game.getManager().getActiveObj().getActionMap()
                 .keySet())
-            for (DC_ActiveObj active : ((DC_HeroObj) game.getManager().getActiveObj())
+            for (DC_ActiveObj active : game.getManager().getActiveObj()
                     .getActionMap().get(key))
                 active.initCosts();
 
-        for (DC_ActiveObj active : ((DC_HeroObj) game.getManager().getActiveObj()).getSpells())
+        for (DC_ActiveObj active : game.getManager().getActiveObj().getSpells())
             active.initCosts();
 
-        for (DC_QuickItemObj item : ((DC_HeroObj) game.getManager().getActiveObj()).getQuickItems())
+        for (DC_QuickItemObj item : game.getManager().getActiveObj().getQuickItems())
             if (item.getActive() != null)
                 item.getActive().initCosts();
     }
@@ -215,7 +215,7 @@ try{game.getBattleField().refreshInitiativeQueue();                }catch(Except
     }
 
     public DC_HeroObj getActiveUnit() {
-        return (DC_HeroObj) activeUnit;
+        return activeUnit;
     }
 
     public void setActiveUnit(DC_HeroObj activeUnit) {
@@ -232,7 +232,7 @@ try{game.getBattleField().refreshInitiativeQueue();                }catch(Except
         if (game.getManager().getInfoObj() == null)
             game.getManager().infoSelect(activeUnit);
 
-        LogMaster.gameInfo(StringMaster.getStringXTimes(50 - getActiveUnit().toString().length(), ">")
+            LogMaster.gameInfo(StringMaster.getStringXTimes(50 - getActiveUnit().toString().length(), ">")
                 + "Active unit: " + getActiveUnit());
         }catch(Exception e){
             e.printStackTrace();            }

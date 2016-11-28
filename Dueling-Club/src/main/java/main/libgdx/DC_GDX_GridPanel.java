@@ -21,7 +21,7 @@ import main.game.event.Event;
 import main.system.EventCallback;
 import main.system.TempEventManager;
 import main.system.datatypes.DequeImpl;
-import main.test.libgdx.prototype.Lightmap;
+import main.test.libgdx.prototype.LightmapTest;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -44,7 +44,7 @@ public class DC_GDX_GridPanel extends Group {
     protected Texture cellBorderTexture;
     protected Image greenBorder;
     protected Image redBorder;
-    protected Lightmap lightmap;
+    protected LightmapTest lightmap;
     protected DequeImpl<MicroObj> units;
     private Map<String, Texture> textureMap = new HashMap<>();
 

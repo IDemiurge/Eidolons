@@ -152,9 +152,7 @@ public class ArenaManager {
     private boolean isEncountersConstructed() {
         if (game.isTestMode())
             return false;
-        if (game.getGameMode() == GAME_MODES.ARENA)
-            return true;
-        return false;
+        return game.getGameMode() == GAME_MODES.ARENA;
     }
 
     private void initializeMap() {

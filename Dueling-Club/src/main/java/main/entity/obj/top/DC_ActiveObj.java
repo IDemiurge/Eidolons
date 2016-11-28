@@ -409,7 +409,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
         // TODO *player's* detection, not AI's!
         String string = ownerObj.getNameIfKnown() + " is activating " + getDisplayedName();
-        LogMaster.gameInfo(StringMaster.getStringXTimes(80 - string.length(),">") + string);
+        LogMaster.gameInfo(StringMaster.getStringXTimes(80 - string.length(), ">") + string);
 
         boolean logAction = ownerObj.getVisibilityLevel() == VISIBILITY_LEVEL.CLEAR_SIGHT
                 && !isAttackAny();
@@ -1018,9 +1018,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isSubActionOnly() {
-        if (isAttack())
-            return true;
-        return false;
+        return isAttack();
     }
 
     public boolean isSpell() {
@@ -1248,9 +1246,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         DC_UnitAction action = getModeAction();
         if (action == null)
             return null;
-        if (!action.canBeActivated(ref))
-            return false;
-        return true;
+        return action.canBeActivated(ref);
 
     }
 

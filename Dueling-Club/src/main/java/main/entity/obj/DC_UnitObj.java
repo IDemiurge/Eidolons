@@ -16,7 +16,6 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.top.DC_ActiveObj;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
-import main.game.MicroGame;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
@@ -348,7 +347,7 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     @Override
     public void init() {
         super.init();
-        this.setGame((MicroGame) getGenericGame());
+        this.setGame(getGenericGame());
 
         addDynamicValues();
         // construct();
@@ -632,9 +631,7 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     public boolean isDisabled() {
         if (isUnconscious())
             return true;
-        if (isDead())
-            return true;
-        return false;
+        return isDead();
     }
 
     public boolean checkStatusDisablesCounters() {
@@ -646,10 +643,8 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
             return true;
         if (checkStatus(STATUS.PRONE))
             return true;
-        if (checkStatus(STATUS.EXHAUSTED))
-            return true;
+        return checkStatus(STATUS.EXHAUSTED);
 
-        return false;
     }
 
     public boolean isUnconscious() {
@@ -702,9 +697,7 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     public boolean checkUncontrollable() {
         // if (checkBuffStatusPreventsActions())
         // return true;
-        if (getMode().isBehavior())
-            return true;
-        return false;
+        return getMode().isBehavior();
 
     }
 
@@ -717,9 +710,7 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
             return true;
         if (checkStatus(STATUS.FROZEN))
             return true;
-        if (checkStatus(STATUS.UNCONSCIOUS))
-            return true;
-        return false;
+        return checkStatus(STATUS.UNCONSCIOUS);
     }
 
     public boolean isIncapacitated() {
@@ -727,9 +718,7 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
             return true;
         if (checkStatus(STATUS.CHARMED))
             return true;
-        if (checkStatusPreventsActions())
-            return true;
-        return false;
+        return checkStatusPreventsActions();
     }
 
     public boolean isImmobilized() {
@@ -740,10 +729,8 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
         if (checkStatus(STATUS.CHARMED))
             return true;
 
-        if (checkModeDisablesActions())
-            return true;
+        return checkModeDisablesActions();
 
-        return false;
     }
 
     public boolean checkModeDisablesCounters() {
@@ -754,9 +741,7 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public boolean checkModeDisablesActions() {
-        if (getMode().isDisableActions())
-            return true;
-        return false;
+        return getMode().isDisableActions();
 
     }
 
@@ -834,10 +819,7 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     public boolean isDone() {
         if (isDead())
             return true;
-        if (getIntParam(PARAMS.C_N_OF_ACTIONS) > 0) {
-            return false;
-        }
-        return true;
+        return getIntParam(PARAMS.C_N_OF_ACTIONS) <= 0;
     }
 
     public void regen() {
@@ -862,10 +844,8 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public boolean isUnmoved() {
-        if (getIntParam(PARAMS.C_N_OF_ACTIONS) < getIntParam(PARAMS.N_OF_ACTIONS))
-            return false;
+        return getIntParam(PARAMS.C_N_OF_ACTIONS) >= getIntParam(PARAMS.N_OF_ACTIONS);
 
-        return true;
     }
 
     public boolean isFull() {
@@ -881,9 +861,7 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
             return false;
         if (getIntParam(PARAMS.C_ESSENCE) < getIntParam(PARAMS.ESSENCE))
             return false;
-        if (getIntParam(PARAMS.C_ENERGY) < getIntParam(PARAMS.ENERGY))
-            return false;
-        return true;
+        return getIntParam(PARAMS.C_ENERGY) >= getIntParam(PARAMS.ENERGY);
     }
 
     public FACING_DIRECTION getFacing() {
@@ -1160,12 +1138,10 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
             return false;
         if (checkClassification(CLASSIFICATIONS.STRUCTURE))
             return false;
-        if (checkClassification(CLASSIFICATIONS.MECHANICAL))
-            return false;
-        return true;
+        return !checkClassification(CLASSIFICATIONS.MECHANICAL);
     }
 
-    public boolean isTurnable(){
+    public boolean isTurnable() {
         return true;
     }
 

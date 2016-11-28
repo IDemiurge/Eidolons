@@ -73,13 +73,12 @@ class UnitView extends Group {
     }
 
 
-
     @Override
     public void draw(Batch batch, float parentAlpha) {
         //setHeight(baseHeight * getScaleY());
         //setWidth(baseWidth * getScaleX());
         if (arrow != null) {
-            arrow.setOrigin(arrow.getWidth()/2, getHeight()/2);
+            arrow.setOrigin(arrow.getWidth() / 2, getHeight() / 2);
             //arrow.rotateBy(1);
             //arrow.setRotation(getRotation()+5);
             //arrow.setOrigin(getWidth()/2 , getHeight()/2);
@@ -108,9 +107,9 @@ class UnitView extends Group {
         }
 
         if (arrow != null) {
-            arrow.setOrigin(arrow.getWidth()/2, getHeight()/2);
+            arrow.setOrigin(arrow.getWidth() / 2, getHeight() / 2);
             arrow.setX(getWidth() / 2 - arrow.getWidth() / 2);
-            arrow.setRotation(arrowRotation-90);
+            arrow.setRotation(arrowRotation - 90);
         }
     }
 

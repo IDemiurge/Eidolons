@@ -129,8 +129,8 @@ public class MicroObj extends Obj {
 
     }
 
-    public boolean isTurnable(){
+    public boolean isTurnable() {
         return false;
-    };
+    }
 
 }

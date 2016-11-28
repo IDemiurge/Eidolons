@@ -18,9 +18,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import main.data.filesys.PathFinder;
 import main.entity.obj.MicroObj;
-import main.libgdx.*;
+import main.system.EventCallback;
+import main.system.TempEventManager;
 import main.system.datatypes.DequeImpl;
-
 
 import java.util.ArrayList;
 
@@ -86,7 +86,7 @@ public class PrototypeScreen implements Screen {
 //        rayHandler.setAmbientLight(0.1f);
         rayHandler.setBlur(true);
         rayHandler.setBlurNum(5);
-        rayHandler.setGammaCorrection(true);
+        RayHandler.setGammaCorrection(true);
 
        coneLight = new ConeLight(rayHandler,75,Color.RED,distance,0,0,degree,degree);
        coneLight1 = new ConeLight(rayHandler,75,Color.RED,distance1,700,850,270,degree1);

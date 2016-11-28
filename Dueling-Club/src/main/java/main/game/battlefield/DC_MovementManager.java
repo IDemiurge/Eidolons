@@ -22,7 +22,6 @@ import main.game.battlefield.pathing.Path;
 import main.game.battlefield.pathing.PathingManager;
 import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
-import main.system.TempEventManager;
 import main.rules.DC_ActionManager;
 import main.rules.mechanics.CollisionRule;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
@@ -30,6 +29,7 @@ import main.swing.generic.services.dialog.DialogMaster;
 import main.system.ConditionMaster;
 import main.system.CustomValueManager;
 import main.system.FilterMaster;
+import main.system.TempEventManager;
 import main.system.ai.logic.actions.Action;
 import main.system.ai.logic.actions.ActionManager;
 import main.system.ai.logic.path.ActionPath;
@@ -197,9 +197,7 @@ public class DC_MovementManager implements MovementManager {
         if (cost == PathingManager.NO_PATH)
             return false;
 
-        if (Math.min(moves, actions) < getIntegerCost(cost))
-            return false;
-        return true;
+        return Math.min(moves, actions) >= getIntegerCost(cost);
         // return cost
 
         // Coordinates objP = new Coordinates(unit.getX(), unit.getY());
@@ -300,7 +298,7 @@ public class DC_MovementManager implements MovementManager {
                 if (ref.getActive() instanceof DC_ActiveObj) {
                     DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
                     if (moveObj instanceof DC_HeroObj) {
-                        DC_HeroObj heroObj = (DC_HeroObj) moveObj;
+                        DC_HeroObj heroObj = moveObj;
                         Coordinates c = CollisionRule.collision(ref, activeObj, moveObj, heroObj,
                                 false, activeObj.getIntParam(PARAMS.FORCE));
                         if (c != null) {// TODO UPDATE!
