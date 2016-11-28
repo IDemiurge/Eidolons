@@ -142,6 +142,10 @@ public class LogMaster {
         }, "logger thread").start();
     }
 
+    public static void gameInfo(String mes) {
+        log(LOG_CHANNELS.GAME_INFO, mes);
+    }
+
     public static void log(LOG_CHANNELS c, String s) {
         if (c.isOn()) {
             if (isLogInNewThread())
@@ -378,9 +382,10 @@ public class LogMaster {
         GAME_INFO, HIDDEN_INFO, SYSTEM_INFO, DEBUG
     }
 
-    public static final  LOG_CHANNELS[] specialLogChannels={
+    public static final LOG_CHANNELS[] specialLogChannels = {
 
     };
+
     public enum LOG_CHANNELS {
         EFFECT_ACTIVE_DEBUG(LogMaster.EFFECT_SPECIFIC_DEBUG_PREFIX, LogMaster.EFFECT_SPECIFIC_DEBUG_ON, LogMaster.EFFECT_SPECIFIC_DEBUG),
 
@@ -479,6 +484,6 @@ public class LogMaster {
 
     public enum LOGS {
         COMBAT_LOG, SYS_LOG, CHAT_LOG
-	}
+    }
 
 }

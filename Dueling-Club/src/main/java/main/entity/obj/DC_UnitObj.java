@@ -28,6 +28,7 @@ import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.dungeon.building.MapBlock;
 import main.game.player.DC_Player;
 import main.game.player.Player;
+import main.libgdx.Rotatable;
 import main.rules.DC_ActionManager;
 import main.swing.components.obj.drawing.VisibilityMaster;
 import main.system.DC_Constants;
@@ -48,7 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DC_UnitObj extends DC_Obj implements BattlefieldObj {
+public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
 
     protected FACING_DIRECTION facing;
     protected VISION_MODE vision_mode;
@@ -1161,6 +1162,10 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj {
             return false;
         if (checkClassification(CLASSIFICATIONS.MECHANICAL))
             return false;
+        return true;
+    }
+
+    public boolean isTurnable(){
         return true;
     }
 

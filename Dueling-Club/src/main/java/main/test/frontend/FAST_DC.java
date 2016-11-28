@@ -52,7 +52,7 @@ public class FAST_DC {
     private static final boolean BEHAVIOR_TEST_ON = false;
 
     public static String DEFAULT_TEST_DUNGEON = "test\\Clearshot Test.xml";
-    public static String DEFAULT_DUNGEON = null     ;
+    public static String DEFAULT_DUNGEON = null;
     public static Boolean FAST_MODE = false;
     public static Boolean factionLeaderRequired = false;
     // public static boolean PRESET_PARTY = false;
@@ -121,7 +121,6 @@ public class FAST_DC {
         //InputStream is = FAST_DC.class.getClassLoader().getResourceAsStream("Font");
 
 
-
         running = true;
         PathFinder.init();
         DC_Engine.systemInit();
@@ -132,7 +131,7 @@ public class FAST_DC {
 
         List<String> arglist = new LinkedList<>(Arrays.asList(args));
         if (args != null)
-            if (args == SKIP_CHOICE_ARGS || (arglist.contains(PRESET_OPTION_ARG )||
+            if (args == SKIP_CHOICE_ARGS || (arglist.contains(PRESET_OPTION_ARG) ||
                     (arglist.contains(PRESET_ARG)))) {
                 skipChoice = true;
 
@@ -162,11 +161,10 @@ public class FAST_DC {
         }
         gameLauncher = new GameLauncher(game, FAST_MODE, SUPER_FAST_MODE, host_client);
         if (skipChoice) {
-            if (args[0]==PRESET_OPTION_ARG){
-                PresetLauncher.PRESET_OPTION=StringMaster.getInteger(args[1]);
+            if (args[0] == PRESET_OPTION_ARG) {
+                PresetLauncher.PRESET_OPTION = StringMaster.getInteger(args[1]);
                 FAST_MODE = PresetLauncher.chooseLaunchOption();
-            } else
-            if (arglist.contains(PRESET_ARG)) {
+            } else if (arglist.contains(PRESET_ARG)) {
                 if (arglist.size() > 1)
                     gameLauncher.PLAYER_PARTY = arglist.get(1);
                 if (arglist.size() > 2)
@@ -204,8 +202,8 @@ public class FAST_DC {
 
             }
 
-//        DENIS_Launcher.main(new String[]{});
-       main.test.libgdx.prototype.Launcher.main(new String[]{});
+        DENIS_Launcher.main(new String[]{});
+//       main.test.libgdx.prototype.Launcher.main(new String[]{});
         CoreEngine.setTEST_MODE(true);
         DC_Engine.init();
         Chronos.mark("GAME LAUNCHED");
@@ -216,16 +214,16 @@ public class FAST_DC {
         game.setHostClient(host_client);
         game.start(true);
         if (CoreEngine.isSwingOn())
-        try {
-            SwingUtilities.invokeAndWait(new Runnable() {
-                @Override
-                public void run() {
-                    createGUI();
-                }
-            });
-        } catch (InvocationTargetException | InterruptedException e1) {
-            e1.printStackTrace();
-        }
+            try {
+                SwingUtilities.invokeAndWait(new Runnable() {
+                    @Override
+                    public void run() {
+                        createGUI();
+                    }
+                });
+            } catch (InvocationTargetException | InterruptedException e1) {
+                e1.printStackTrace();
+            }
         initKeyManager();
 
         if (MINIMAP_TEST_ON)

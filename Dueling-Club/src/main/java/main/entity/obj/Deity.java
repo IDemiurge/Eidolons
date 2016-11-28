@@ -90,7 +90,7 @@ public class Deity extends Entity {
     private void initFriendDeities() {
 
         if (friendDeities == null)
-            friendDeities = new LinkedList<Deity>();
+            friendDeities = new LinkedList<>();
         for (String type : StringMaster.openContainer(getProperty(PROPS.FRIEND_DEITIES))) {
             Deity deity = DC_ContentManager.getDeity(ref, type);
             if (deity != null)

@@ -232,8 +232,7 @@ try{game.getBattleField().refreshInitiativeQueue();                }catch(Except
         if (game.getManager().getInfoObj() == null)
             game.getManager().infoSelect(activeUnit);
 
-        main.system.auxiliary.LogMaster.log(LogMaster.LOG_CHANNELS.GAME_INFO, StringMaster
-                .getStringXTimes(50 - getActiveUnit().toString().length(), ">")
+        LogMaster.gameInfo(StringMaster.getStringXTimes(50 - getActiveUnit().toString().length(), ">")
                 + "Active unit: " + getActiveUnit());
         }catch(Exception e){
             e.printStackTrace();            }

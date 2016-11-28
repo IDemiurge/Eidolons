@@ -409,9 +409,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
         // TODO *player's* detection, not AI's!
         String string = ownerObj.getNameIfKnown() + " is activating " + getDisplayedName();
-        LogMaster.log(LOG_CHANNELS.GAME_INFO, StringMaster.getStringXTimes(80 - string.length(),
-                ">")
-                + string);
+        LogMaster.gameInfo(StringMaster.getStringXTimes(80 - string.length(),">") + string);
 
         boolean logAction = ownerObj.getVisibilityLevel() == VISIBILITY_LEVEL.CLEAR_SIGHT
                 && !isAttackAny();

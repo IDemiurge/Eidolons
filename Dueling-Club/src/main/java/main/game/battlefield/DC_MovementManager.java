@@ -22,7 +22,7 @@ import main.game.battlefield.pathing.Path;
 import main.game.battlefield.pathing.PathingManager;
 import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
-import main.libgdx.TempEventManager;
+import main.system.TempEventManager;
 import main.rules.DC_ActionManager;
 import main.rules.mechanics.CollisionRule;
 import main.swing.components.battlefield.DC_BattleFieldGrid;

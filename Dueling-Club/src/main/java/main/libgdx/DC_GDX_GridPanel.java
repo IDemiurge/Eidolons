@@ -7,12 +7,21 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import main.ability.effects.ChangeFacingEffect;
+import main.content.OBJ_TYPES;
+import main.content.properties.G_PROPS;
 import main.entity.Entity;
+import main.entity.Ref;
 import main.entity.obj.ActiveObj;
+import main.entity.obj.DC_HeroObj;
 import main.entity.obj.MicroObj;
 import main.game.Game;
 import main.game.battlefield.Coordinates;
+import main.game.event.Event;
+import main.system.EventCallback;
+import main.system.TempEventManager;
 import main.system.datatypes.DequeImpl;
+import main.test.libgdx.prototype.Lightmap;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -82,12 +91,24 @@ public class DC_GDX_GridPanel extends Group {
             }
         }
 
-        TempEventManager.bind("create-units-model", new EventCallback() {
+        TempEventManager.bind("ingame-event-triggered", new EventCallback<Event>() {
             @Override
-            public void call(final Object obj) {
-                units = (DequeImpl<MicroObj>) obj;
-                lightmap = new Lightmap(units);
+            public void call(Event obj) {
+                System.out.println("catch ingame event: " + obj.getType() + " in " + obj.getRef());
+                Ref r = obj.getRef();
+                if (r.getEffect() instanceof ChangeFacingEffect) {
+                    ChangeFacingEffect ef = (ChangeFacingEffect) r.getEffect();
+                    DC_HeroObj hero = ((DC_HeroObj) ef.getActiveObj().getOwnerObj());
+                    TempEventManager.trigger("cell-update", hero.getCoordinates());
+                }
+            }
+        });
 
+        TempEventManager.bind("create-units-model", new EventCallback<DequeImpl<MicroObj>>() {
+            @Override
+            public void call(final DequeImpl<MicroObj> obj) {
+                units = obj;
+                //lightmap = new Lightmap(units, cells[0][0].getWidth(),cells[0][0].getHeight());
                 Map<Coordinates, List<MicroObj>> map = new HashMap<>();
                 for (MicroObj object : units) {
                     Coordinates c = object.getCoordinates();
@@ -99,26 +120,23 @@ public class DC_GDX_GridPanel extends Group {
                 }
 
                 for (Coordinates coordinates : map.keySet()) {
-                    List<Texture> textures = new ArrayList<>();
+                    List<UnitViewOptions> options = new ArrayList<>();
 
-                    for (Entity object : map.get(coordinates)) {
-                        String path = imagePath + File.separator + object.getImagePath();
-                        textures.add(getOreCreate(path));
+                    for (MicroObj object : map.get(coordinates)) {
+                        options.add(initUnitViewOptions(object));
                     }
 
                     GridCellContainer cellContainer = new GridCellContainer(cellBorderTexture, imagePath, coordinates.getX(), coordinates.getY()).init();
-                    cellContainer.setObjects(textures);
+                    cellContainer.setObjects(options);
 
                     cells[coordinates.getX()][coordinates.getY()].addInnerDrawable(cellContainer);
                 }
             }
         });
 
-        TempEventManager.bind("cell-update", new EventCallback() {
+        TempEventManager.bind("cell-update", new EventCallback<Coordinates>() {
             @Override
-            public void call(Object obj) {
-                Coordinates cords = (Coordinates) obj;
-
+            public void call(Coordinates cords) {
                 List<MicroObj> objList = new ArrayList<>();
                 for (MicroObj unit : units) {
                     if (unit.getCoordinates().equals(cords)) {
@@ -126,16 +144,15 @@ public class DC_GDX_GridPanel extends Group {
                     }
                 }
 
-                List<Texture> textures = new ArrayList<>();
+                List<UnitViewOptions> options = new ArrayList<>();
                 for (MicroObj microObj : objList) {
-                    String path = imagePath + File.separator + microObj.getImagePath();
-                    textures.add(getOreCreate(path));
+                    options.add(initUnitViewOptions(microObj));
                 }
-                if (textures.size() == 0) {
+                if (options.size() == 0) {
                     cells[cords.getX()][cords.getY()].addInnerDrawable(null);
                 } else {
                     GridCellContainer cellContainer = new GridCellContainer(cellBorderTexture, imagePath, cords.getX(), cords.getY()).init();
-                    cellContainer.setObjects(textures);
+                    cellContainer.setObjects(options);
 
                     if (cells[cords.getX()][cords.getY()].getInnerDrawable() != null) {
                         cells[cords.getX()][cords.getY()].addInnerDrawable(cellContainer);
@@ -183,6 +200,9 @@ public class DC_GDX_GridPanel extends Group {
                 a = DC_GDX_GridPanel.super.hit(x, y, true);
                 if (a != null && a instanceof GridCell) {
                     GridCell cell = (GridCell) a;
+                    if (cell.getInnerDrawable() != null) {
+                        cell.getInnerDrawable().hit(x, y, true);
+                    }
                     if (event.getButton() == 0) {
                         greenBorder.setX(cell.getX() - 5);
                         greenBorder.setY(cell.getY() - 5);
@@ -198,6 +218,31 @@ public class DC_GDX_GridPanel extends Group {
 
 
         return this;
+    }
+
+    private UnitViewOptions initUnitViewOptions(MicroObj object) {
+        String path = imagePath + File.separator + object.getImagePath();
+        UnitViewOptions viewOption = new UnitViewOptions();
+        viewOption.setPortrateTexture(getOreCreate(path));
+
+        if (object.getOBJ_TYPE_ENUM() == OBJ_TYPES.UNITS) {
+            if (object instanceof Rotatable) {
+                Rotatable rotatable = (Rotatable) object;
+                viewOption.setDirectionValue(rotatable.getFacing().getDirection().getDegrees());
+                path = imagePath + File.separator + "\\UI\\DIRECTION POINTER.png";
+                viewOption.setDirectionPointerTexture(getOreCreate(path));
+            }
+
+            path = imagePath + File.separator + "\\UI\\value icons\\actions.png";
+            viewOption.setClockTexture(getOreCreate(path));
+
+            String emblem = object.getProperty(G_PROPS.EMBLEM, true);
+            if (emblem != null) {
+
+            }
+        }
+
+        return viewOption;
     }
 
     private static List<DC_GDX_RadialMenu.CreatorNode> creatorNodes(final String name, Texture t) {
@@ -226,7 +271,6 @@ public class DC_GDX_GridPanel extends Group {
                 @Override
                 public void run() {
                     ((Entity) pair.getLeft()).invokeClicked();
-                    System.out.println(pair.getLeft().getName());
                 }
             };
             nn1.add(inn1);
@@ -351,9 +395,5 @@ public class DC_GDX_GridPanel extends Group {
         if (radialMenu != null && radialMenu.isVisible()) {
             radialMenu.draw(batch, parentAlpha);
         }
-    }
-
-    public DequeImpl<MicroObj> getUnits() {
-        return units;
     }
 }

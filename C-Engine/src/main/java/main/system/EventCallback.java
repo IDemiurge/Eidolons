@@ -1,4 +1,4 @@
-package main.libgdx;
+package main.system;
 
 /**
  * Created with IntelliJ IDEA.

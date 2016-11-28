@@ -8,7 +8,7 @@ import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.VisionManager;
 import main.game.battlefield.XLine;
-import main.libgdx.TempEventManager;
+import main.system.TempEventManager;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.drawing.DrawHelper;
 import main.swing.components.obj.drawing.DrawMasterStatic;
