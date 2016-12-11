@@ -117,6 +117,7 @@ public class DC_GDX_GridPanel extends Group {
                 }
                 uv.setVisible(true);
                 cells[c.x][c.y].getInnerDrawable().addActor(uv);
+                lightmap.updatePos(heroObj);
                 catched = true;
             }
 
@@ -128,10 +129,10 @@ public class DC_GDX_GridPanel extends Group {
         TempEventManager.bind("active-unit-selected", obj -> {
             DC_HeroObj hero = (DC_HeroObj) obj.get();
             UnitView view = unitMap.get(hero);
-            if (view.getParent() != null){
+            if (view.getParent() != null) {
                 ((GridCellContainer) view.getParent()).popupUnitView(view);
             }
-            if (hero.isMine()){
+            if (hero.isMine()) {
                 TempEventManager.trigger("show-green-border", new EventCallbackParam(view));
             } else {
                 TempEventManager.trigger("show-red-border", new EventCallbackParam(view));
@@ -140,7 +141,7 @@ public class DC_GDX_GridPanel extends Group {
 
         TempEventManager.bind("create-units-model", param -> {
             units = (DequeImpl<MicroObj>) param.get();
-            lightmap = new LightmapTest(units, cells[0][0].getWidth(),cells[0][0].getHeight());
+            lightmap = new LightmapTest(units, cells[0][0].getWidth(), cells[0][0].getHeight());
             Map<Coordinates, List<MicroObj>> map = new HashMap<>();
             for (MicroObj object : units) {
                 Coordinates c = object.getCoordinates();
@@ -277,6 +278,10 @@ public class DC_GDX_GridPanel extends Group {
 
         if (radialMenu != null) {
             radialMenu.draw(batch, parentAlpha);
+        }
+
+        if (lightmap != null) {
+            lightmap.updateLight();
         }
     }
 }
