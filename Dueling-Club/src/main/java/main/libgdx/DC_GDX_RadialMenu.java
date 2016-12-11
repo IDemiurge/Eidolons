@@ -5,8 +5,15 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import main.entity.Entity;
+import main.entity.obj.ActiveObj;
+import main.entity.obj.MicroObj;
+import main.game.Game;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DC_GDX_RadialMenu extends Group {
@@ -19,12 +26,7 @@ public class DC_GDX_RadialMenu extends Group {
         setWidth(curentNode.getWidth());
 
         final DC_GDX_RadialMenu menu = this;
-        curentNode.action = new Runnable() {
-            @Override
-            public void run() {
-                menu.setVisible(false);
-            }
-        };
+        curentNode.action = () -> menu.setVisible(false);
 
         updateCallbacks();
         curentNode.drawChilds = true;
@@ -65,28 +67,13 @@ public class DC_GDX_RadialMenu extends Group {
 
     private void updateCallbacks() {
         if (curentNode.parent == null) {
-            curentNode.action = new Runnable() {
-                @Override
-                public void run() {
-                    setVisible(false);
-                }
-            };
+            curentNode.action = () -> setVisible(false);
         } else {
-            curentNode.action = new Runnable() {
-                @Override
-                public void run() {
-                    setCurentNode(curentNode.parent);
-                }
-            };
+            curentNode.action = () -> setCurentNode(curentNode.parent);
         }
         for (final MenuNode child : curentNode.childs) {
             if (child.childs.size() > 0) {
-                child.action = new Runnable() {
-                    @Override
-                    public void run() {
-                        setCurentNode(child);
-                    }
-                };
+                child.action = () -> setCurentNode(child);
             }
         }
     }
@@ -99,12 +86,9 @@ public class DC_GDX_RadialMenu extends Group {
             if (node.action != null) {
                 final Runnable r = node.action;
                 final DC_GDX_RadialMenu menu = this;
-                menuNode.action = new Runnable() {
-                    @Override
-                    public void run() {
-                        r.run();
-                        menu.setVisible(false);
-                    }
+                menuNode.action = () -> {
+                    r.run();
+                    menu.setVisible(false);
                 };
             } else {
                 menuNode.setChilds(createChilds(menuNode, node.childNodes));
@@ -123,7 +107,7 @@ public class DC_GDX_RadialMenu extends Group {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-
+        if (!isVisible()) return;
         curentNode.draw(batch, parentAlpha);
     }
 
@@ -177,7 +161,7 @@ public class DC_GDX_RadialMenu extends Group {
             if (a != null) a = this;
             if (a == null && drawChilds) {
                 for (MenuNode child : childs) {
-                    a = child.hit(x , y , touchable);
+                    a = child.hit(x, y, touchable);
                     if (a != null) {
                         a = child;
                         break;
@@ -192,5 +176,92 @@ public class DC_GDX_RadialMenu extends Group {
         public Texture texture;
         public List<CreatorNode> childNodes;
         public Runnable action;
+    }
+
+
+    public static DC_GDX_RadialMenu create(float x, float y, TextureCache cache){
+        MicroObj activeObj = (MicroObj) Game.game.getManager().getActiveObj();
+
+        List<ActiveObj> activeObjs = activeObj.getActives();
+
+        List<Pair<ActiveObj, Texture>> moves = new ArrayList<>();
+        List<Pair<ActiveObj, Texture>> turns = new ArrayList<>();
+
+        for (ActiveObj obj : activeObjs) {
+            if (obj.isMove()) {
+                moves.add(new ImmutablePair<>(obj,cache.getOreCreate(((Entity) obj).getImagePath())));
+                //add this filter later
+                //obj.getTargeting().getFilter().getObjects().contains(Game.game.getCellByCoordinate(new Coordinates(0, 0)));
+            }
+            if (obj.isTurn()) {
+                turns.add(new ImmutablePair<>(obj, cache.getOreCreate(((Entity) obj).getImagePath())));
+            }
+
+/*
+            Entity e = ((Entity) obj);
+            obj.isAttack();
+            obj.getTargeting() instanceof SelectiveTargeting;
+            obj.getTargeting().getFilter().getObjects().contains(Game.game.getCellByCoordinate(new Coordinates(0, 0)));
+            obj.isMove();
+            obj.isTurn();
+            ((Entity) obj).getImagePath();*/
+
+        }
+
+
+        Texture moveAction = cache.getOreCreate("\\UI\\actions\\Move gold.jpg");
+        Texture turnAction = cache.getOreCreate("\\UI\\actions\\turn anticlockwise quick2 - Copy.jpg");
+        Texture yellow = new Texture(DC_GDX_GridPanel.class.getResource("/data/marble_yellow.png").getPath());
+        Texture red = new Texture(DC_GDX_GridPanel.class.getResource("/data/marble_red.png").getPath());
+        Texture green = new Texture(DC_GDX_GridPanel.class.getResource("/data/marble_green.png").getPath());
+
+        DC_GDX_RadialMenu.CreatorNode n1 = new DC_GDX_RadialMenu.CreatorNode();
+        n1.texture = moveAction;
+        n1.childNodes = creatorNodes(moves);
+
+        DC_GDX_RadialMenu.CreatorNode n2 = new DC_GDX_RadialMenu.CreatorNode();
+        n2.texture = turnAction;
+        n2.childNodes = creatorNodes(turns);
+
+        DC_GDX_RadialMenu.CreatorNode n3 = new DC_GDX_RadialMenu.CreatorNode();
+        n3.texture = yellow;
+        n3.childNodes = creatorNodes("nn3:", red);
+
+        DC_GDX_RadialMenu.CreatorNode n4 = new DC_GDX_RadialMenu.CreatorNode();
+        n4.texture = yellow;
+        n4.action = () -> {
+//                activeObj.invokeClicked();
+        };
+        n4.childNodes = creatorNodes("nn4:", red);
+
+        DC_GDX_RadialMenu radialMenu = new DC_GDX_RadialMenu(green, Arrays.asList(n1, n2, n3, n4));
+
+        radialMenu.setX(x - radialMenu.getWidth() / 2);
+        radialMenu.setY(y - radialMenu.getHeight() / 2);
+
+        return radialMenu;
+    }
+
+    private static List<DC_GDX_RadialMenu.CreatorNode> creatorNodes(List<Pair<ActiveObj, Texture>> pairs) {
+        List<DC_GDX_RadialMenu.CreatorNode> nn1 = new ArrayList<>();
+        for (final Pair<ActiveObj, Texture> pair : pairs) {
+            DC_GDX_RadialMenu.CreatorNode inn1 = new DC_GDX_RadialMenu.CreatorNode();
+            inn1.texture = pair.getRight();
+            inn1.action = () -> ((Entity) pair.getLeft()).invokeClicked();
+            nn1.add(inn1);
+        }
+        return nn1;
+    }
+
+    private static List<DC_GDX_RadialMenu.CreatorNode> creatorNodes(final String name, Texture t) {
+        List<DC_GDX_RadialMenu.CreatorNode> nn1 = new ArrayList<>();
+        for (int i = 0; i <= 5; i++) {
+            DC_GDX_RadialMenu.CreatorNode inn1 = new DC_GDX_RadialMenu.CreatorNode();
+            inn1.texture = t;
+            final int finalI = i;
+            inn1.action = () -> System.out.println(name + finalI);
+            nn1.add(inn1);
+        }
+        return nn1;
     }
 }

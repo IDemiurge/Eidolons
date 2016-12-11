@@ -6,8 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import main.entity.obj.DC_HeroObj;
 
-class UnitView extends Group {
+public class UnitView extends Group implements Borderable {
     private Image arrow;
     private Image clock;
     private Image portrait;
@@ -16,13 +17,14 @@ class UnitView extends Group {
     private int baseWidth;
     private int arrowRotation;
     private String clockVal;
+    private Image border = null;
 
     public UnitView(Texture arrowTexture, int arrowRotation, Texture clockTexture, String clockVal, Texture portraitTexture, Texture iconTexture) {
         init(arrowTexture, arrowRotation, clockTexture, clockVal, portraitTexture, iconTexture);
     }
 
     private void init(Texture arrowTexture, int arrowRotation, Texture clockTexture, String clockVal, Texture portraitTexture, Texture iconTexture) {
-        this.arrowRotation = arrowRotation;
+        this.arrowRotation = arrowRotation - 90;
         this.clockVal = clockVal;
 
         portrait = new Image(portraitTexture);
@@ -33,6 +35,13 @@ class UnitView extends Group {
         setHeight(baseHeight * getScaleY());
         setWidth(baseWidth * getScaleX());
 
+        if (clockTexture != null) {
+            clock = new Image(clockTexture);
+            addActor(clock);
+            clock.setX(getWidth() - clock.getHeight());
+            clock.setY(0);
+        }
+
         if (arrowTexture != null) {
             arrow = new Image(arrowTexture);
             addActor(arrow);
@@ -40,14 +49,7 @@ class UnitView extends Group {
             arrow.setX(getWidth() / 2 - arrow.getWidth() / 2);
             arrow.setY(0);
             //arrow.setRotation(arrowRotation);
-            arrow.setDebug(true);
-        }
-
-        if (clockTexture != null) {
-            clock = new Image(clockTexture);
-            addActor(clock);
-            clock.setX(getWidth() - clock.getHeight());
-            clock.setY(0);
+//            arrow.setDebug(true);
         }
 
         if (iconTexture != null) {
@@ -56,11 +58,12 @@ class UnitView extends Group {
             icon.setX(0);
             icon.setY(getHeight() - icon.getImageHeight());
         }
-        setDebug(true);
+//        setDebug(true);
     }
 
     public UnitView(UnitViewOptions o) {
         init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getClockTexture(), o.getClockValue(), o.getPortrateTexture(), o.getIconTexture());
+        o.getUnitMap().put((DC_HeroObj) o.getObj(), this);
     }
 
     @Override
@@ -72,7 +75,6 @@ class UnitView extends Group {
         arrow.setX(getWidth() / 2 - arrow.getWidth() / 2);
     }
 
-
     @Override
     public void draw(Batch batch, float parentAlpha) {
         //setHeight(baseHeight * getScaleY());
@@ -80,12 +82,17 @@ class UnitView extends Group {
         if (arrow != null) {
             arrow.setOrigin(arrow.getWidth() / 2, getHeight() / 2);
             //arrow.rotateBy(1);
-            //arrow.setRotation(getRotation()+5);
+            arrow.setRotation(arrowRotation);
             //arrow.setOrigin(getWidth()/2 , getHeight()/2);
         }
 
 
         super.draw(batch, parentAlpha);
+    }
+
+    public void updateRotation(int val) {
+        arrowRotation = val - 90;
+        arrow.setRotation(arrowRotation);
     }
 
     @Override
@@ -109,7 +116,7 @@ class UnitView extends Group {
         if (arrow != null) {
             arrow.setOrigin(arrow.getWidth() / 2, getHeight() / 2);
             arrow.setX(getWidth() / 2 - arrow.getWidth() / 2);
-            arrow.setRotation(arrowRotation - 90);
+            arrow.setRotation(arrowRotation);
         }
     }
 
@@ -117,5 +124,26 @@ class UnitView extends Group {
     public Actor hit(float x, float y, boolean touchable) {
         if (touchable && this.getTouchable() != Touchable.enabled) return null;
         return x >= 0 && x < getWidth() && y >= 0 && y < getHeight() ? this : null;
+    }
+
+    @Override
+    public void setBorder(Image image) {
+        if (image == null) {
+            removeActor(border);
+            border = null;
+        } else {
+            addActor(image);
+            border = image;
+        }
+    }
+
+    @Override
+    public int getW() {
+        return (int) getWidth();
+    }
+
+    @Override
+    public int getH() {
+        return (int) getHeight();
     }
 }

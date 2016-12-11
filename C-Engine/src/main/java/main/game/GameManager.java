@@ -24,6 +24,8 @@ import main.game.battlefield.pathing.Path;
 import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.game.player.Player;
+import main.system.EventCallbackParam;
+import main.system.TempEventManager;
 import main.system.auxiliary.LogMaster;
 
 import java.util.LinkedList;
@@ -387,6 +389,7 @@ public abstract class GameManager implements GenericGameManager {
     }
 
     public boolean handleEvent(Event event) {
+        TempEventManager.trigger("ingame-event-triggered", new EventCallbackParam(event));
         if (!game.isStarted())
             return true;
         if (event.getRef().isQuiet())

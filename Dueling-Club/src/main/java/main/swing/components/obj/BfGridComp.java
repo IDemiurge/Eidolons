@@ -12,6 +12,7 @@ import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.drawing.DrawHelper;
 import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.swing.generic.components.G_Panel;
+import main.system.EventCallbackParam;
 import main.system.TempEventManager;
 import main.system.auxiliary.GuiManager;
 import main.system.images.ImageManager;
@@ -128,7 +129,7 @@ public class BfGridComp {
             }
         }
 
-        TempEventManager.trigger("grid-created", new ImmutablePair<>(getCellsX(),getCellsY()));
+        TempEventManager.trigger("grid-created", new EventCallbackParam(new ImmutablePair<>(getCellsX(),getCellsY())));
 
         panel = new G_Panel() {
             protected void paintComponent(Graphics g) {

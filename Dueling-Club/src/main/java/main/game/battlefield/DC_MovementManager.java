@@ -26,10 +26,7 @@ import main.rules.DC_ActionManager;
 import main.rules.mechanics.CollisionRule;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.ConditionMaster;
-import main.system.CustomValueManager;
-import main.system.FilterMaster;
-import main.system.TempEventManager;
+import main.system.*;
 import main.system.ai.logic.actions.Action;
 import main.system.ai.logic.actions.ActionManager;
 import main.system.ai.logic.path.ActionPath;
@@ -145,7 +142,6 @@ public class DC_MovementManager implements MovementManager {
 
     public void moveTo(Coordinates coordinates) {
         DC_HeroObj unit = game.getManager().getActiveObj();
-        Coordinates from = new Coordinates(unit.getX(), unit.getY());
         List<ActionPath> paths = buildPath(unit, coordinates);
         if (paths == null) {
             Coordinates adjacentCoordinate = coordinates.getAdjacentCoordinate(DirectionMaster
@@ -177,9 +173,6 @@ public class DC_MovementManager implements MovementManager {
             ref.setTarget(game.getCellByCoordinate(coordinates).getId());
         action.getActive().activate(ref);
         action.getActive().actionComplete();
-        Coordinates to = new Coordinates(unit.getX(), unit.getY());
-        TempEventManager.trigger("cell-update", from);
-        TempEventManager.trigger("cell-update", to);
     }
 
     @Deprecated
@@ -267,7 +260,6 @@ public class DC_MovementManager implements MovementManager {
 
     public boolean move(DC_HeroObj obj, DC_Cell cell, boolean free, Path path, MOVE_MODIFIER mod,
                         Ref ref) {
-        Coordinates from = new Coordinates(obj.getCoordinates().getX(), obj.getCoordinates().getY());
         // if (path == null) {
         // if (!free)
         // path = getPath(obj, cell); // TODO just check if it's blocked
@@ -319,9 +311,6 @@ public class DC_MovementManager implements MovementManager {
         event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);
         if (!game.fireEvent(event))
             return false;
-        Coordinates to = new Coordinates(obj.getCoordinates().getX(), obj.getCoordinates().getY());
-        TempEventManager.trigger("cell-update", from);
-        TempEventManager.trigger("cell-update", to);
         return true;
     }
 

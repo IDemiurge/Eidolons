@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import main.data.filesys.PathFinder;
 import main.entity.obj.MicroObj;
-import main.system.EventCallback;
 import main.system.TempEventManager;
 import main.system.datatypes.DequeImpl;
 
@@ -57,12 +56,8 @@ public class PrototypeScreen implements Screen {
 
     @Override
     public void show() {
-        TempEventManager.bind("create-units-model", new EventCallback() {
-            @Override
-            public void call(final Object obj) {
-                units = (DequeImpl<MicroObj>) obj;
-
-            }
+        TempEventManager.bind("create-units-model", param -> {
+            units = (DequeImpl<MicroObj>) param.get();
         });
         PathFinder.init();
         // TEMP
