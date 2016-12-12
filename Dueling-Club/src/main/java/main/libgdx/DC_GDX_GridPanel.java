@@ -138,7 +138,9 @@ public class DC_GDX_GridPanel extends Group {
             if (event.getType().name().startsWith("PARAM_MODIFIED")) {
                 switch (event.getType().getArg()) {
                     case "Illumination":
-                        lightmap.updateObject((DC_HeroObj) event.getRef().getTargetObj());
+                        if (lightmap != null) {
+                            lightmap.updateObject((DC_HeroObj) event.getRef().getTargetObj());
+                        }
                         catched = true;
                         break;
                 }
