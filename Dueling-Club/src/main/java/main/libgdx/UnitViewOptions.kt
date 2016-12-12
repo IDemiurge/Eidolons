@@ -21,15 +21,15 @@ class UnitViewOptions(var obj: MicroObj, textureCache: TextureCache, var unitMap
     }
 
     fun createFromGameObject(obj: MicroObj, textureCache: TextureCache) {
-        portrateTexture = textureCache.getOreCreate(obj.imagePath)
+        portrateTexture = textureCache.getOrCreate(obj.imagePath)
 
         if (obj.obJ_TYPE_ENUM === OBJ_TYPES.UNITS) {
             if (obj is Rotatable) {
                 directionValue = obj.facing.direction.degrees
-                directionPointerTexture = textureCache.getOreCreate("\\UI\\DIRECTION POINTER.png")
+                directionPointerTexture = textureCache.getOrCreate("\\UI\\DIRECTION POINTER.png")
             }
 
-            clockTexture = textureCache.getOreCreate("\\UI\\value icons\\actions.png")
+            clockTexture = textureCache.getOrCreate("\\UI\\value icons\\actions.png")
 
             val emblem = obj.getProperty(G_PROPS.EMBLEM, true)
             if (emblem != null) {

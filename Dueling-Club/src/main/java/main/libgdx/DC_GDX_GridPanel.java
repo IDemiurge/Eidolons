@@ -7,7 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.*;
 import main.ability.effects.ChangeFacingEffect;
 import main.entity.Ref;
 import main.entity.obj.DC_HeroObj;
+import main.entity.obj.DC_Obj;
 import main.entity.obj.MicroObj;
+import main.game.DC_Game;
 import main.game.Game;
 import main.game.battlefield.Coordinates;
 import main.game.event.Event;
@@ -248,18 +250,25 @@ public class DC_GDX_GridPanel extends Group {
                 a = DC_GDX_GridPanel.super.hit(x, y, true);
                 if (a != null && a instanceof GridCell) {
                     GridCell cell = (GridCell) a;
-                   /* if (cell.getInnerDrawable() != null) {
+                    if (cell.getInnerDrawable() != null) {
                         Actor unit = cell.getInnerDrawable().hit(x, y, true);
-                        if (unit != null && unit instanceof UnitView) {
+/*                        if (unit != null && unit instanceof UnitView) {
                             ((GridCellContainer) cell.getInnerDrawable()).onClick(unit, event);
+                        }*/
+                        if (event.getButton() == 1 && unit != null && unit instanceof UnitView) {
+                            DC_HeroObj heroObj = unitMap.entrySet()
+                                    .stream().filter(entry -> entry.getValue() == unit).findFirst()
+                                    .get().getKey();
+                            createRadialMenu(x, y, heroObj);
                         }
-                    }*/
+                    } else {
+                        DC_Obj dc_cell = DC_Game.game.getCellByCoordinate(new Coordinates(cell.gridX, cell.gridY));
+                        createRadialMenu(x, y, dc_cell);
+                    }
                     if (event.getButton() == 0) {
 /*                        greenBorder.setX(cell.getX() - 5);
                         greenBorder.setY(cell.getY() - 5);
                         greenBorder.setVisible(true);*/
-                    } else if (event.getButton() == 1) {
-                        createRadialMenu(x, y);
                     }
                 }
 
@@ -271,12 +280,11 @@ public class DC_GDX_GridPanel extends Group {
         return this;
     }
 
-    private void createRadialMenu(float x, float y) {
+    private void createRadialMenu(float x, float y, DC_Obj targetObj) {
         if (radialMenu != null) {
             radialMenu = null;//dispose if required;
         }
-
-        radialMenu = DC_GDX_RadialMenu.create(x, y, textureCache);
+        radialMenu = DC_GDX_RadialMenu.create(x, y, targetObj, textureCache);
     }
 
     @Override

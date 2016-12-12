@@ -7,7 +7,7 @@ import java.util.*
 class TextureCache(private var imagePath: String) {
     private var cache: MutableMap<String, Texture> = HashMap()
 
-    fun getOreCreate(path: String): Texture {
+    fun getOrCreate(path: String): Texture {
         var p = path;
         if (!path.startsWith(File.separator)) {
             p = File.separator + path
