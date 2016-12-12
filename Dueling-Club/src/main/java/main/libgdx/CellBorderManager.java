@@ -15,16 +15,27 @@ public class CellBorderManager extends Group {
 
     protected Image greenBorder;
     protected Image redBorder;
+    protected Image orangeBorder;
+    protected Image blueBorder;
 
-    public CellBorderManager(int cellW, int cellH) {
+    private static final String cyanPath = "UI\\Borders\\neo\\color flag\\cyan 132.png";
+    private static final String bluePath = "UI\\Borders\\neo\\color flag\\blue 132.png";
+    private static final String orangePath = "UI\\Borders\\neo\\color flag\\orange 132.png";
+    private static final String purplePath = "UI\\Borders\\neo\\color flag\\purple 132.png";
+    private static final String redPath = "UI\\Borders\\neo\\color flag\\red 132.png";
+
+    private Borderable unitBorderOwner = null;
+
+    public CellBorderManager(int cellW, int cellH, TextureCache textureCache) {
         this.cellW = cellW;
         this.cellH = cellH;
 
-        greenBorder = new Image(getColoredBorderTexture(Color.GREEN));
-        greenBorder.setVisible(false);
-        greenBorder.setBounds(2,2,4,4);
-        redBorder = new Image(getColoredBorderTexture(Color.RED));
-        redBorder.setVisible(false);
+        greenBorder = new Image(textureCache.getOreCreate(cyanPath));
+        greenBorder.setBounds(2, 2, 4, 4);
+
+        redBorder = new Image(textureCache.getOreCreate(redPath));
+
+        blueBorder = new Image(textureCache.getOreCreate(bluePath));
 
         initCallbacks();
     }
@@ -47,29 +58,34 @@ public class CellBorderManager extends Group {
         return t;
     }
 
-    private Borderable greenOwner = null;
 
     private void initCallbacks() {
 
         TempEventManager.bind("show-green-border", obj -> {
-            if (greenOwner != obj && obj == null) {
-                greenOwner.setBorder(null);
-                greenBorder.setVisible(false);
-            } else {
+            if (obj != null) {
                 Borderable b = (Borderable) obj.get();
-                greenBorder.setVisible(true);
-                greenBorder.setWidth(b.getW());
-                greenBorder.setHeight(b.getH());
-                greenBorder.setX(0);
-                greenBorder.setY(0);
-                b.setBorder(greenBorder);
-                greenOwner = b;
+                showBorder(greenBorder, b);
+            }
+        });
+
+        TempEventManager.bind("show-red-border", obj -> {
+            if (obj != null) {
+                Borderable b = (Borderable) obj.get();
+                showBorder(redBorder, b);
             }
         });
     }
 
-    private void showGreenBorder(float x, float y) {
-
+    private void showBorder(Image border, Borderable owner) {
+        border.setWidth(owner.getW() + 12);
+        border.setHeight(owner.getH() + 12);
+        border.setX(-6);
+        border.setY(-6);
+        owner.setBorder(border);
+        if (unitBorderOwner != null) {
+            unitBorderOwner.setBorder(null);
+        }
+        unitBorderOwner = owner;
     }
 
     @Override
@@ -77,6 +93,13 @@ public class CellBorderManager extends Group {
 /*        if (greenBorder.isVisible()) {
             greenBorder.draw(batch, parentAlpha);
         }*/
+    }
+
+    public void updateBorderSize(){
+        if (unitBorderOwner != null && unitBorderOwner.getBorder() != null) {
+            unitBorderOwner.getBorder().setWidth(unitBorderOwner.getW()+12);
+            unitBorderOwner.getBorder().setHeight(unitBorderOwner.getH()+12);
+        }
     }
 
     @Override

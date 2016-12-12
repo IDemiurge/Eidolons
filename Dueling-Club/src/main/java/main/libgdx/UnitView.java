@@ -146,4 +146,9 @@ public class UnitView extends Group implements Borderable {
     public int getH() {
         return (int) getHeight();
     }
+
+    @Override
+    public Actor getBorder() {
+        return border;
+    }
 }

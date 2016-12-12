@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import main.content.PARAMS;
+import main.entity.obj.DC_HeroObj;
 import main.entity.obj.MicroObj;
 import main.game.battlefield.Coordinates;
 import main.system.datatypes.DequeImpl;
@@ -95,5 +96,9 @@ public class LightmapTest {
 
     public void updateLight(){
         rayHandler.render();
+    }
+
+    public void updateObject(DC_HeroObj heroObj) {
+        // TODO: 12.12.2016 update illumination and other ligth here
     }
 }

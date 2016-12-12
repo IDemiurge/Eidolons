@@ -68,9 +68,9 @@ public class DC_GDX_GridPanel extends Group {
         highlightImage = new Texture(imagePath + File.separator + highlightCellPath);
         unknownImage = new Texture(imagePath + File.separator + unknownCellPath);
         cellBorderTexture = new Texture(imagePath + File.separator + cellBorderPath);
-
-        cellBorderManager = new CellBorderManager(emptyImage.getWidth(), emptyImage.getHeight());
         textureCache = new TextureCache(imagePath);
+
+        cellBorderManager = new CellBorderManager(emptyImage.getWidth(), emptyImage.getHeight(), textureCache);
 
         unitMap = new HashMap<>();
 
@@ -117,8 +117,31 @@ public class DC_GDX_GridPanel extends Group {
                 }
                 uv.setVisible(true);
                 cells[c.x][c.y].getInnerDrawable().addActor(uv);
-                lightmap.updatePos(heroObj);
+
+                cellBorderManager.updateBorderSize();
+
+                if (lightmap != null) {
+                    lightmap.updatePos(heroObj);
+                }
                 catched = true;
+            }
+
+            if (event.getType().name().startsWith("PARAM_BEING_MODIFIED")) {
+                catched = true;
+                /*switch (event.getType().getArg()) {
+                    case "Spellpower":
+                        int a = 10;
+                        break;
+                }*/
+            }
+
+            if (event.getType().name().startsWith("PARAM_MODIFIED")) {
+                switch (event.getType().getArg()) {
+                    case "Illumination":
+                        lightmap.updateObject((DC_HeroObj) event.getRef().getTargetObj());
+                        catched = true;
+                        break;
+                }
             }
 
             if (!catched) {
@@ -141,7 +164,7 @@ public class DC_GDX_GridPanel extends Group {
 
         TempEventManager.bind("create-units-model", param -> {
             units = (DequeImpl<MicroObj>) param.get();
-            lightmap = new LightmapTest(units, cells[0][0].getWidth(), cells[0][0].getHeight());
+            //lightmap = new LightmapTest(units, cells[0][0].getWidth(), cells[0][0].getHeight());
             Map<Coordinates, List<MicroObj>> map = new HashMap<>();
             for (MicroObj object : units) {
                 Coordinates c = object.getCoordinates();
