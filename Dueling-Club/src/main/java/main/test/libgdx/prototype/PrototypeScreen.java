@@ -3,20 +3,15 @@ package main.test.libgdx.prototype;
 import box2dLight.ConeLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import main.data.filesys.PathFinder;
 import main.entity.obj.MicroObj;
 import main.system.TempEventManager;
 import main.system.datatypes.DequeImpl;
@@ -60,7 +55,7 @@ public class PrototypeScreen implements Screen {
 
     @Override
     public void show() {
-<<<<<<< HEAD
+/*<<<<<<< HEAD
         mousX = 0;
         mousY = 0;
         TempEventManager.bind("create-units-model", new EventCallback() {
@@ -73,62 +68,40 @@ public class PrototypeScreen implements Screen {
         TempEventManager.bind("create-units-model", param -> {
             units = (DequeImpl<MicroObj>) param.get();
 >>>>>>> 4ef48468430a425ba81820ca46e99b8804b4eaf4
-            })
+        });
 
-                    PathFinder.init()
-            regions =new ArrayList<>()
-                    for(
-            int i = 1;
-            i<18i++)
-
-            {
+        PathFinder.init();
+        regions = new ArrayList<>();
+        for (int i = 1;i<18;i++){
             Texture local_Texture = new Texture(PathFinder.getImagePath() + "mini\\sprites\\impact\\electro impact\\e"+i+".jpg");
             local_Texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
             regions.add(local_Texture);
         }
 //        anim = new Animation(regions,regions.size()-1,0.85f);
-            sprite =new
-
-            Sprite(new Texture(PathFinder.getImagePath() +"mini\\sprites\\impact\\electro impact\\e"+1+".jpg"))
-                    sprite.setBounds(3,3,5,5)
-            batch =new
-
-            SpriteBatch();
+        sprite = new Sprite(new Texture(PathFinder.getImagePath() + "mini\\sprites\\impact\\electro impact\\e"+1+".jpg"));
+        sprite.setBounds(3,3,5,5);
+        batch = new SpriteBatch();
 
         // TEMP END
         debugRenderer = new Box2DDebugRenderer();
-
-            world =new
-
-            World(new Vector2(0,-10),false)
-            rayHandler =new
-
-            RayHandler(world);
-        rayHandler.setAmbientLight(Color.SKY)
-                    rayHandler.setAmbientLight(0.1f)
-                    rayHandler.setBlur(true)
-                    rayHandler.setBlurNum(15)
-                    RayHandler.setGammaCorrection(true)
+        world = new World(new Vector2(0,-10),false);
+        rayHandler = new RayHandler(world);
+        rayHandler.setAmbientLight(Color.SKY);
+        rayHandler.setAmbientLight(0.1f);
+        rayHandler.setBlur(true);
+        rayHandler.setBlurNum(15);
+        RayHandler.setGammaCorrection(true);
 
 
 //       coneLight = new ConeLight(rayHandler,75,Color.RED,distance,0,0,degree,degree);
 //       coneLight1 = new ConeLight(rayHandler,75,Color.RED,distance1,700,850,270,degree1);
 
         guiStage = new GUIStage();
+        stage = new Stage(new FitViewport(viewport_width,viewport_height));
+        batch.setProjectionMatrix(stage.getCamera().combined);
+        controller = new PrototypeController((OrthographicCamera) stage.getCamera());
 
-            stage =new
-
-            Stage(new FitViewport(viewport_width, viewport_height))
-                    batch.setProjectionMatrix(stage.getCamera().combined)
-            controller =new
-
-            PrototypeController((OrthographicCamera) stage.
-
-            getCamera())
-
-            fireLightProt =new
-
-            FireLightProt(world, rayHandler, 120,100,500,90,0.05f);
+        fireLightProt = new FireLightProt(world, rayHandler, 120, 100, 500, 90, 0.05f);
 
 
 //        stage.addActor(grid);
@@ -136,16 +109,16 @@ public class PrototypeScreen implements Screen {
 //        player.setZIndex(2);
         test = new ParticleActor(world, 0, 0);
 
-        stage.setDebugAll(true)
-            InputMultiplexer in = new InputMultiplexer();
-        in.addProcessor(guiStage)
-                    in.addProcessor(controller)
-                    in.addProcessor(stage)
+        stage.setDebugAll(true);
+        InputMultiplexer in = new InputMultiplexer();
+        in.addProcessor(guiStage);
+        in.addProcessor(controller);
+        in.addProcessor(stage);
 
 
-                    Gdx.input.setInputProcessor(in)
-            timer =System.nanoTime()
-        }
+        Gdx.input.setInputProcessor(in);
+         timer = System.nanoTime();*/
+    }
 
     @Override
     public void render(float v) {
