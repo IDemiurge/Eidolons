@@ -129,12 +129,12 @@ public class DC_GameManager extends GameManager {
         }
 
         setSelectedActiveObj(obj);
-try{
-        getGame().getBattleField().selectActiveObj(obj, true);
-}catch(Exception e) {
-    e.printStackTrace();
-}
-    // if (VisionManager.c)
+        try {
+            getGame().getBattleField().selectActiveObj(obj, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // if (VisionManager.c)
         // SoundMaster.playEffectSound(SOUNDS.WHAT, obj);
 
         ColorManager.setCurrentColor(ColorManager.getDarkerColor(ColorManager.getAltAspectColor(obj
@@ -548,7 +548,7 @@ try{
     public List<DC_SpellObj> getSpells(DC_HeroObj obj, boolean reset) {
         if (obj == null)
             return new LinkedList<>();
-        List<DC_SpellObj> spells = ((DC_HeroObj) obj).getSpells();
+        List<DC_SpellObj> spells = obj.getSpells();
         if (spells != null && !reset)
             if (!spells.isEmpty())
                 return spells;
@@ -648,7 +648,7 @@ try{
 
     public void activateMyAction(int index, ACTION_TYPE group) {
         try {
-            ((DC_UnitAction) getActiveObj().getActionMap().get(group).get(index)).invokeClicked();
+            getActiveObj().getActionMap().get(group).get(index).invokeClicked();
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -733,7 +733,7 @@ try{
 
     public DC_Builder getBfBuilder() {
         if (bfBuilder == null)
-            bfBuilder = (DC_Builder) getGame().getBattleField().getBuilder();
+            bfBuilder = getGame().getBattleField().getBuilder();
         return bfBuilder;
     }
 

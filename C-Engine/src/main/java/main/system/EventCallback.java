@@ -6,6 +6,6 @@ package main.system;
  * Time: 17:26
  * To change this template use File | Settings | File Templates.
  */
-public interface EventCallback<T> {
-    void call(T obj);
+public interface EventCallback {
+   void call(EventCallbackParam obj);
 }

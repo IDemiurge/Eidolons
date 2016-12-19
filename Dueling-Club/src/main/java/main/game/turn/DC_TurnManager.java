@@ -8,6 +8,8 @@ import main.entity.obj.top.DC_ActiveObj;
 import main.game.DC_Game;
 import main.game.battlefield.VisionManager;
 import main.rules.mechanics.WaitRule;
+import main.system.EventCallbackParam;
+import main.system.TempEventManager;
 import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -234,6 +236,7 @@ try{game.getBattleField().refreshInitiativeQueue();                }catch(Except
 
             LogMaster.gameInfo(StringMaster.getStringXTimes(50 - getActiveUnit().toString().length(), ">")
                 + "Active unit: " + getActiveUnit());
+            TempEventManager.trigger("active-unit-selected", new EventCallbackParam(activeUnit));
         }catch(Exception e){
             e.printStackTrace();            }
         return true;

@@ -9,7 +9,6 @@ import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.game.event.Event;
-import main.system.TempEventManager;
 import main.system.auxiliary.LogMaster;
 
 public class AbilityImpl extends ReferredElement implements Ability {
@@ -99,7 +98,6 @@ public class AbilityImpl extends ReferredElement implements Ability {
     public boolean resolve() {
         LogMaster.log(0, "ABILITY_BEING_RESOLVED " + getClass().getSimpleName());
         Event event = new Event("ABILITY_BEING_RESOLVED", ref);
-        TempEventManager.trigger("ingame-event-triggered", event);
         if (game.fireEvent(event)) {
             return effects.apply(ref);
         } else
