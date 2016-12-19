@@ -18,13 +18,7 @@ import main.game.event.Event;
 import main.system.EventCallbackParam;
 import main.system.TempEventManager;
 import main.system.datatypes.DequeImpl;
-<<<<<<< HEAD
 import main.test.libgdx.prototype.Lightmap;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-=======
-import main.test.libgdx.prototype.LightmapTest;
->>>>>>> 4ef48468430a425ba81820ca46e99b8804b4eaf4
 
 import java.io.File;
 import java.util.*;
@@ -43,13 +37,7 @@ public class DC_GDX_GridPanel extends Group {
     protected Texture highlightImage;
     protected Texture unknownImage;
     protected Texture cellBorderTexture;
-<<<<<<< HEAD
-    protected Image greenBorder;
-    protected Image redBorder;
     protected Lightmap lightmap;
-=======
-    protected LightmapTest lightmap;
->>>>>>> 4ef48468430a425ba81820ca46e99b8804b4eaf4
     protected DequeImpl<MicroObj> units;
 
     protected CellBorderManager cellBorderManager;
