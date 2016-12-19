@@ -267,8 +267,8 @@ public class DC_GDX_GridPanel extends Group {
 
                         tooltipStatMap.entrySet().forEach(entry -> {
                             ToolTipManager.ToolTipRecordOption recordOption = new ToolTipManager.ToolTipRecordOption();
-                            recordOption.curVal = hero.getIntParam(entry.getValue());
-                            recordOption.maxVal = hero.getIntParam(entry.getKey());
+                            recordOption.curVal = hero.getIntParam(entry.getKey());
+                            recordOption.maxVal = hero.getIntParam(entry.getValue());
                             recordOption.name = entry.getValue();
                             recordOption.recordImage = textureCache.getOrCreate("UI\\value icons\\" + entry.getValue().replaceAll("_", " ") + ".png");
                             option.recordOptions.add(recordOption);

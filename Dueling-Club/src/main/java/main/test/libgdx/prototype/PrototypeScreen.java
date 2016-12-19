@@ -3,20 +3,15 @@ package main.test.libgdx.prototype;
 import box2dLight.ConeLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import main.data.filesys.PathFinder;
 import main.entity.obj.MicroObj;
 import main.system.TempEventManager;
 import main.system.datatypes.DequeImpl;
@@ -60,7 +55,7 @@ public class PrototypeScreen implements Screen {
 
     @Override
     public void show() {
-<<<<<<< HEAD
+/*<<<<<<< HEAD
         mousX = 0;
         mousY = 0;
         TempEventManager.bind("create-units-model", new EventCallback() {
@@ -122,7 +117,7 @@ public class PrototypeScreen implements Screen {
 
 
         Gdx.input.setInputProcessor(in);
-         timer = System.nanoTime();
+         timer = System.nanoTime();*/
     }
 
     @Override
