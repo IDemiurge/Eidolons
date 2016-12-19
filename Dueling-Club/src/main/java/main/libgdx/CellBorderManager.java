@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.system.TempEventManager;
 
+import java.util.List;
+
 public class CellBorderManager extends Group {
     private int cellW;
     private int cellH;
@@ -25,7 +27,7 @@ public class CellBorderManager extends Group {
     private static final String redPath = "UI\\Borders\\neo\\color flag\\red 132.png";
 
     private Borderable unitBorderOwner = null;
-    private Borderable[] blueBorderOwners = null;
+    private List<Borderable> blueBorderOwners = null;
 
 
     public CellBorderManager(int cellW, int cellH, TextureCache textureCache) {
@@ -78,7 +80,7 @@ public class CellBorderManager extends Group {
         });
 
         TempEventManager.bind("show-blue-borders", obj -> {
-            Borderable[] brs = (Borderable[]) obj.get();
+            List<Borderable> brs = (List<Borderable>) obj.get();
 
             if (brs == null) {
                 for (Borderable blueBorderOwner : blueBorderOwners) {
@@ -86,6 +88,9 @@ public class CellBorderManager extends Group {
                 }
             } else {
                 for (Borderable br : brs) {
+                    if (unitBorderOwner == br){
+                        unitBorderOwner.setBorder(null);// TODO: 12.12.2016 make better
+                    }
                     Image i = new Image(blueBorderTexture);
                     br.setBorder(new Image(blueBorderTexture));
                     i.setX(-6);

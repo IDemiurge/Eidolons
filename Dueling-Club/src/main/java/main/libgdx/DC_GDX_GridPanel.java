@@ -5,10 +5,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import main.ability.effects.ChangeFacingEffect;
+import main.content.parameters.ParamMap;
 import main.entity.Ref;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.MicroObj;
+import main.entity.obj.Obj;
 import main.game.DC_Game;
 import main.game.Game;
 import main.game.battlefield.Coordinates;
@@ -19,10 +21,7 @@ import main.system.datatypes.DequeImpl;
 import main.test.libgdx.prototype.LightmapTest;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -42,6 +41,7 @@ public class DC_GDX_GridPanel extends Group {
     protected DequeImpl<MicroObj> units;
 
     protected CellBorderManager cellBorderManager;
+    protected ToolTipManager toolTipManager;
     protected TextureCache textureCache;
     protected Map<DC_HeroObj, UnitView> unitMap;
 
@@ -73,6 +73,7 @@ public class DC_GDX_GridPanel extends Group {
         textureCache = new TextureCache(imagePath);
 
         cellBorderManager = new CellBorderManager(emptyImage.getWidth(), emptyImage.getHeight(), textureCache);
+        toolTipManager = new ToolTipManager(textureCache);
 
         unitMap = new HashMap<>();
 
@@ -86,6 +87,15 @@ public class DC_GDX_GridPanel extends Group {
                 addActor(cells[x][y].init());
             }
         }
+
+        TempEventManager.bind("select-multi-objects", obj -> {
+            Set<Obj> objSet = (Set<Obj>) obj.get();
+            List<Borderable> borderableList = new ArrayList<>();
+            for (Obj obj1 : objSet) {
+                borderableList.add(unitMap.get(obj1));
+            }
+            TempEventManager.trigger("show-blue-borders", new EventCallbackParam(borderableList));
+        });
 
         TempEventManager.bind("ingame-event-triggered", param -> {
             main.game.event.Event event = (main.game.event.Event) param.get();
@@ -231,7 +241,48 @@ public class DC_GDX_GridPanel extends Group {
         setHeight(cells[0][0].getHeight() * rows);
         setWidth(cells[0][0].getWidth() * cols);
 
+        Map<String, String> tooltipStatMap = new HashMap<>();
+        tooltipStatMap.put("C_Toughness", "Toughness");
+        tooltipStatMap.put("C_Endurance", "Endurance");
+        tooltipStatMap.put("C_N_Of_Actions", "N_Of_Actions");
+
         addListener(new InputListener() {
+
+            @Override
+            public boolean mouseMoved(InputEvent event, float x, float y) {
+                int cell = (int) (x / cells[0][0].getWidth());
+                int row = (int) (y / cells[0][0].getHeight());
+                GridCell gridCell = cells[cell][row];
+                if (gridCell.getInnerDrawable() != null) {
+                    GridCellContainer innerDrawable = (GridCellContainer) gridCell.getInnerDrawable();
+                    Actor a = innerDrawable.hit(x, y, true);
+                    if (a != null && a instanceof UnitView) {
+                        UnitView uv = (UnitView) a;
+                        DC_HeroObj hero = unitMap.entrySet().stream()
+                                .filter(entry -> entry.getValue() == uv).findFirst()
+                                .get().getKey();
+                        ParamMap paramMap = hero.getParamMap();
+                        ToolTipManager.ToolTipOption option = new ToolTipManager.ToolTipOption();
+                        option.x = (int) x;
+                        option.y = (int) y;
+
+                        tooltipStatMap.entrySet().forEach(entry -> {
+                            ToolTipManager.ToolTipRecordOption recordOption = new ToolTipManager.ToolTipRecordOption();
+                            recordOption.curVal = hero.getIntParam(entry.getValue());
+                            recordOption.maxVal = hero.getIntParam(entry.getKey());
+                            recordOption.name = entry.getValue();
+                            recordOption.recordImage = textureCache.getOrCreate("UI\\value icons\\" + entry.getValue().replaceAll("_", " ") + ".png");
+                            option.recordOptions.add(recordOption);
+                        });
+
+                        TempEventManager.trigger("show-tooltip", new EventCallbackParam(option));
+                        return true;
+                    }
+                }
+                TempEventManager.trigger("show-tooltip", new EventCallbackParam(null));
+                return true;
+            }
+
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Actor a;
@@ -261,7 +312,7 @@ public class DC_GDX_GridPanel extends Group {
                                     .get().getKey();
                             createRadialMenu(x, y, heroObj);
                         }
-                    } else {
+                    } else if (event.getButton() == 1) {
                         DC_Obj dc_cell = DC_Game.game.getCellByCoordinate(new Coordinates(cell.gridX, cell.gridY));
                         createRadialMenu(x, y, dc_cell);
                     }
@@ -315,6 +366,10 @@ public class DC_GDX_GridPanel extends Group {
 
         if (lightmap != null) {
             lightmap.updateLight();
+        }
+
+        if (toolTipManager != null) {
+            toolTipManager.draw(batch, parentAlpha);
         }
     }
 }

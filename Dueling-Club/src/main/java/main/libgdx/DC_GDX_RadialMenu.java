@@ -8,14 +8,15 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import main.elements.Filter;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
-import main.entity.obj.DC_Obj;
-import main.entity.obj.MicroObj;
+import main.entity.obj.*;
 import main.entity.obj.top.DC_ActiveObj;
 import main.game.Game;
+import main.system.EventCallbackParam;
+import main.system.TempEventManager;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 
@@ -236,10 +237,14 @@ public class DC_GDX_RadialMenu extends Group {
 
             if (obj.isAttack()) {
                 DC_ActiveObj dcActiveObj = (DC_ActiveObj) obj;
-                Ref ref1 = dcActiveObj.getRef();
-                ref1.setMatch(target.getId());
-                dcActiveObj.getTargeting().getFilter().setRef(ref1);
-                dcActiveObj.getTargeting().getFilter().getObjects();
+                if (obj.getRef().getSourceObj() == target){
+                    Ref ref1 = dcActiveObj.getRef();
+                    ref1.setMatch(target.getId());
+                    Filter<Obj> filter = dcActiveObj.getTargeting().getFilter();
+                    filter.setRef(ref1);
+                    TempEventManager.trigger("select-multi-objects", new EventCallbackParam(filter.getObjects()));
+                }
+
                 if (obj.getTargeting() instanceof SelectiveTargeting) {
                     DC_GDX_RadialMenu.CreatorNode inn1 = new CreatorNode();
                     inn1.texture = cache.getOrCreate(((Entity) obj).getImagePath());
