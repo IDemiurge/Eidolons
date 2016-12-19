@@ -92,7 +92,7 @@ public class Lightmap {
         }
     }
 
-    public void updateLight(){
+    public void updateLight() {
         rayHandler.render();
     }
 
