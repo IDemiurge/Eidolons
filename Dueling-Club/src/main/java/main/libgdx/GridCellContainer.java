@@ -83,7 +83,7 @@ public class GridCellContainer extends GridCell {
         }
     }
 
-    public void popupUnitView(UnitView uv){
+    public void popupUnitView(UnitView uv) {
         this.removeActor(uv);
         this.addActor(uv);
         recalcImagesPos();

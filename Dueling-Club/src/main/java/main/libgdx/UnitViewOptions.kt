@@ -17,7 +17,7 @@ class UnitViewOptions(var obj: MicroObj, textureCache: TextureCache, var unitMap
     var hideBorder: Boolean = false
 
     init {
-        createFromGameObject(obj, textureCache);
+        createFromGameObject(obj, textureCache)
     }
 
     fun createFromGameObject(obj: MicroObj, textureCache: TextureCache) {

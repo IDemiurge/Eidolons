@@ -8,7 +8,7 @@ class TextureCache(private var imagePath: String) {
     private var cache: MutableMap<String, Texture> = HashMap()
 
     fun getOrCreate(path: String): Texture {
-        var p = path;
+        var p = path
         if (!path.startsWith(File.separator)) {
             p = File.separator + path
         }

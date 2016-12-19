@@ -73,40 +73,62 @@ public class PrototypeScreen implements Screen {
         TempEventManager.bind("create-units-model", param -> {
             units = (DequeImpl<MicroObj>) param.get();
 >>>>>>> 4ef48468430a425ba81820ca46e99b8804b4eaf4
-        });
+            })
 
-        PathFinder.init();
-        regions = new ArrayList<>();
-        for (int i = 1;i<18;i++){
+                    PathFinder.init()
+            regions =new ArrayList<>()
+                    for(
+            int i = 1;
+            i<18i++)
+
+            {
             Texture local_Texture = new Texture(PathFinder.getImagePath() + "mini\\sprites\\impact\\electro impact\\e"+i+".jpg");
             local_Texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
             regions.add(local_Texture);
         }
 //        anim = new Animation(regions,regions.size()-1,0.85f);
-        sprite = new Sprite(new Texture(PathFinder.getImagePath() + "mini\\sprites\\impact\\electro impact\\e"+1+".jpg"));
-        sprite.setBounds(3,3,5,5);
-        batch = new SpriteBatch();
+            sprite =new
+
+            Sprite(new Texture(PathFinder.getImagePath() +"mini\\sprites\\impact\\electro impact\\e"+1+".jpg"))
+                    sprite.setBounds(3,3,5,5)
+            batch =new
+
+            SpriteBatch();
 
         // TEMP END
         debugRenderer = new Box2DDebugRenderer();
-        world = new World(new Vector2(0,-10),false);
-        rayHandler = new RayHandler(world);
-        rayHandler.setAmbientLight(Color.SKY);
-        rayHandler.setAmbientLight(0.1f);
-        rayHandler.setBlur(true);
-        rayHandler.setBlurNum(15);
-        RayHandler.setGammaCorrection(true);
+
+            world =new
+
+            World(new Vector2(0,-10),false)
+            rayHandler =new
+
+            RayHandler(world);
+        rayHandler.setAmbientLight(Color.SKY)
+                    rayHandler.setAmbientLight(0.1f)
+                    rayHandler.setBlur(true)
+                    rayHandler.setBlurNum(15)
+                    RayHandler.setGammaCorrection(true)
 
 
 //       coneLight = new ConeLight(rayHandler,75,Color.RED,distance,0,0,degree,degree);
 //       coneLight1 = new ConeLight(rayHandler,75,Color.RED,distance1,700,850,270,degree1);
 
         guiStage = new GUIStage();
-        stage = new Stage(new FitViewport(viewport_width,viewport_height));
-        batch.setProjectionMatrix(stage.getCamera().combined);
-        controller = new PrototypeController((OrthographicCamera) stage.getCamera());
 
-        fireLightProt = new FireLightProt(world, rayHandler, 120, 100, 500, 90, 0.05f);
+            stage =new
+
+            Stage(new FitViewport(viewport_width, viewport_height))
+                    batch.setProjectionMatrix(stage.getCamera().combined)
+            controller =new
+
+            PrototypeController((OrthographicCamera) stage.
+
+            getCamera())
+
+            fireLightProt =new
+
+            FireLightProt(world, rayHandler, 120,100,500,90,0.05f);
 
 
 //        stage.addActor(grid);
@@ -114,16 +136,16 @@ public class PrototypeScreen implements Screen {
 //        player.setZIndex(2);
         test = new ParticleActor(world, 0, 0);
 
-        stage.setDebugAll(true);
-        InputMultiplexer in = new InputMultiplexer();
-        in.addProcessor(guiStage);
-        in.addProcessor(controller);
-        in.addProcessor(stage);
+        stage.setDebugAll(true)
+            InputMultiplexer in = new InputMultiplexer();
+        in.addProcessor(guiStage)
+                    in.addProcessor(controller)
+                    in.addProcessor(stage)
 
 
-        Gdx.input.setInputProcessor(in);
-         timer = System.nanoTime();
-    }
+                    Gdx.input.setInputProcessor(in)
+            timer =System.nanoTime()
+        }
 
     @Override
     public void render(float v) {

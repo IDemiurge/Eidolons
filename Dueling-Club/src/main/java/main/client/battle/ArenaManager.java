@@ -120,7 +120,7 @@ public class ArenaManager {
 
         if (game.getData() != null) {
             DC_ObjInitializer.processUnitData(game.getData(), game);
-            TempEventManager.trigger("create-units-model",new EventCallbackParam(game.getUnits()));
+            TempEventManager.trigger("create-units-model", new EventCallbackParam(game.getUnits()));
         }
         if (!game.isOffline()) {
             saveFacing();
