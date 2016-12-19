@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import main.ability.effects.ChangeFacingEffect;
-import main.content.parameters.ParamMap;
+import main.content.PARAMS;
 import main.entity.Ref;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
@@ -19,15 +19,10 @@ import main.system.EventCallbackParam;
 import main.system.TempEventManager;
 import main.system.datatypes.DequeImpl;
 import main.test.libgdx.prototype.Lightmap;
-import main.test.libgdx.prototype.LightmapTest;
 
 import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
-
-<<<<<<<HEAD
-        =======
-        >>>>>>>4ef48468430a425ba81820ca46e99b8804b4eaf4
 
 /**
  * Created with IntelliJ IDEA.
@@ -42,13 +37,7 @@ public class DC_GDX_GridPanel extends Group {
     protected Texture highlightImage;
     protected Texture unknownImage;
     protected Texture cellBorderTexture;
-<<<<<<<HEAD
-    protected Image greenBorder;
-    protected Image redBorder;
     protected Lightmap lightmap;
-=======
-    protected LightmapTest lightmap;
->>>>>>>4ef48468430a425ba81820ca46e99b8804b4eaf4
     protected DequeImpl<MicroObj> units;
 
     protected CellBorderManager cellBorderManager;
@@ -253,7 +242,7 @@ public class DC_GDX_GridPanel extends Group {
         setWidth(cells[0][0].getWidth() * cols);
 
         Map<String, String> tooltipStatMap = new HashMap<>();
-        tooltipStatMap.put("C_Toughness", "Toughness");
+        tooltipStatMap.put(PARAMS.C_TOUGHNESS.getName(), "Toughness");
         tooltipStatMap.put("C_Endurance", "Endurance");
         tooltipStatMap.put("C_N_Of_Actions", "N_Of_Actions");
 
@@ -272,7 +261,6 @@ public class DC_GDX_GridPanel extends Group {
                         DC_HeroObj hero = unitMap.entrySet().stream()
                                 .filter(entry -> entry.getValue() == uv).findFirst()
                                 .get().getKey();
-                        ParamMap paramMap = hero.getParamMap();
                         ToolTipManager.ToolTipOption option = new ToolTipManager.ToolTipOption();
                         option.x = (int) x;
                         option.y = (int) y;
