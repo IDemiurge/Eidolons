@@ -26,7 +26,7 @@ public class GridActor extends Actor {
 //        sprite.setBounds(0,0,5,5);
 
         gridPanel = new DC_GDX_GridPanel(PathFinder.getImagePath(), raws, lines).init();
-//        Lightmap_test lightmap = new Lightmap_test(gridPanel.getUnits());
+//        LightmapTest lightmap = new LightmapTest(gridPanel.getUnits());
         setBounds(gridPanel.getX(),gridPanel.getY(),gridPanel.getWidth(),gridPanel.getHeight());
         addListener(new ClickListener(){
             @Override

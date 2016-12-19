@@ -30,7 +30,7 @@ public class DENIS_Launcher implements ApplicationListener {
     private static LwjglApplicationConfiguration getConf(){
         LwjglApplicationConfiguration conf = new LwjglApplicationConfiguration();
         conf.title = "demo";
-        conf.useGL30 = true;
+        conf.useGL30 = false;
 
         conf.width = 1600;
         conf.height = 900;

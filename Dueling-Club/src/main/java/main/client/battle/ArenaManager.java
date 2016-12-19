@@ -18,6 +18,7 @@ import main.game.battlefield.map.DungeonMapGenerator;
 import main.game.logic.dungeon.Dungeon;
 import main.game.player.DC_Player;
 import main.game.player.Player;
+import main.system.EventCallbackParam;
 import main.system.TempEventManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -119,7 +120,7 @@ public class ArenaManager {
 
         if (game.getData() != null) {
             DC_ObjInitializer.processUnitData(game.getData(), game);
-            TempEventManager.trigger("create-units-model",game.getUnits());
+            TempEventManager.trigger("create-units-model",new EventCallbackParam(game.getUnits()));
         }
         if (!game.isOffline()) {
             saveFacing();
@@ -152,9 +153,7 @@ public class ArenaManager {
     private boolean isEncountersConstructed() {
         if (game.isTestMode())
             return false;
-        if (game.getGameMode() == GAME_MODES.ARENA)
-            return true;
-        return false;
+        return game.getGameMode() == GAME_MODES.ARENA;
     }
 
     private void initializeMap() {

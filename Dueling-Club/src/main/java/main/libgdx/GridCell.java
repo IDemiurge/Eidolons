@@ -6,13 +6,14 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-public class GridCell extends Group {
+public class GridCell extends Group implements Borderable {
     protected Image backImage;
     protected Texture backTexture;
     protected String imagePath;
     protected int gridX;
     protected int gridY;
     private GridCell innerDrawable;
+    private Image border = null;
 
     public GridCell(Texture backTexture, String imagePath, int gridX, int gridY) {
         this.backTexture = backTexture;
@@ -69,5 +70,31 @@ public class GridCell extends Group {
     public Actor hit(float x, float y, boolean touchable) {
         if (touchable && getTouchable() != Touchable.enabled) return null;
         return x >= 0 && x < getWidth() && y >= 0 && y < getHeight() ? this : null;
+    }
+
+    @Override
+    public void setBorder(Image image) {
+        if (image == null) {
+            removeActor(border);
+            border = null;
+        } else {
+            addActor(image);
+            border = image;
+        }
+    }
+
+    @Override
+    public int getW() {
+        return (int) getWidth();
+    }
+
+    @Override
+    public int getH() {
+        return (int) getHeight();
+    }
+
+    @Override
+    public Actor getBorder() {
+        return border;
     }
 }

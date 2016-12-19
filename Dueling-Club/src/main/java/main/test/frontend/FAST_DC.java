@@ -12,7 +12,6 @@ import main.client.net.HostClientConnection;
 import main.data.filesys.PathFinder;
 import main.game.DC_Game;
 import main.game.DC_Game.GAME_MODES;
-import main.game.DC_GameManager;
 import main.game.battlefield.UnitGroupMaster;
 import main.game.logic.dungeon.DungeonMaster;
 import main.game.player.DC_Player;
@@ -303,7 +302,7 @@ public class FAST_DC {
     }
 
     private static void initKeyManager() {
-        keyManager = new DC_KeyManager((DC_GameManager) game.getManager());
+        keyManager = new DC_KeyManager(game.getManager());
         keyManager.init();
         if (GLOBAL_HOTKEYS_ON)
             new GlobalKeys().initDC_GlobalKeys();

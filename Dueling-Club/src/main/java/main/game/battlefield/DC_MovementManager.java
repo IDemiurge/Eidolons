@@ -22,14 +22,11 @@ import main.game.battlefield.pathing.Path;
 import main.game.battlefield.pathing.PathingManager;
 import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
-import main.system.TempEventManager;
 import main.rules.DC_ActionManager;
 import main.rules.mechanics.CollisionRule;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.ConditionMaster;
-import main.system.CustomValueManager;
-import main.system.FilterMaster;
+import main.system.*;
 import main.system.ai.logic.actions.Action;
 import main.system.ai.logic.actions.ActionManager;
 import main.system.ai.logic.path.ActionPath;
@@ -145,7 +142,6 @@ public class DC_MovementManager implements MovementManager {
 
     public void moveTo(Coordinates coordinates) {
         DC_HeroObj unit = game.getManager().getActiveObj();
-        Coordinates from = new Coordinates(unit.getX(), unit.getY());
         List<ActionPath> paths = buildPath(unit, coordinates);
         if (paths == null) {
             Coordinates adjacentCoordinate = coordinates.getAdjacentCoordinate(DirectionMaster
@@ -177,9 +173,6 @@ public class DC_MovementManager implements MovementManager {
             ref.setTarget(game.getCellByCoordinate(coordinates).getId());
         action.getActive().activate(ref);
         action.getActive().actionComplete();
-        Coordinates to = new Coordinates(unit.getX(), unit.getY());
-        TempEventManager.trigger("cell-update", from);
-        TempEventManager.trigger("cell-update", to);
     }
 
     @Deprecated
@@ -197,9 +190,7 @@ public class DC_MovementManager implements MovementManager {
         if (cost == PathingManager.NO_PATH)
             return false;
 
-        if (Math.min(moves, actions) < getIntegerCost(cost))
-            return false;
-        return true;
+        return Math.min(moves, actions) >= getIntegerCost(cost);
         // return cost
 
         // Coordinates objP = new Coordinates(unit.getX(), unit.getY());
@@ -269,7 +260,6 @@ public class DC_MovementManager implements MovementManager {
 
     public boolean move(DC_HeroObj obj, DC_Cell cell, boolean free, Path path, MOVE_MODIFIER mod,
                         Ref ref) {
-        Coordinates from = new Coordinates(obj.getCoordinates().getX(), obj.getCoordinates().getY());
         // if (path == null) {
         // if (!free)
         // path = getPath(obj, cell); // TODO just check if it's blocked
@@ -300,7 +290,7 @@ public class DC_MovementManager implements MovementManager {
                 if (ref.getActive() instanceof DC_ActiveObj) {
                     DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
                     if (moveObj instanceof DC_HeroObj) {
-                        DC_HeroObj heroObj = (DC_HeroObj) moveObj;
+                        DC_HeroObj heroObj = moveObj;
                         Coordinates c = CollisionRule.collision(ref, activeObj, moveObj, heroObj,
                                 false, activeObj.getIntParam(PARAMS.FORCE));
                         if (c != null) {// TODO UPDATE!
@@ -321,9 +311,6 @@ public class DC_MovementManager implements MovementManager {
         event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);
         if (!game.fireEvent(event))
             return false;
-        Coordinates to = new Coordinates(obj.getCoordinates().getX(), obj.getCoordinates().getY());
-        TempEventManager.trigger("cell-update", from);
-        TempEventManager.trigger("cell-update", to);
         return true;
     }
 

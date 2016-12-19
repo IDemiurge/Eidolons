@@ -18,9 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import main.data.filesys.PathFinder;
 import main.entity.obj.MicroObj;
-import main.libgdx.Lightmap;
+import main.system.TempEventManager;
 import main.system.datatypes.DequeImpl;
-
 
 import java.util.ArrayList;
 
@@ -57,12 +56,8 @@ public class PrototypeScreen implements Screen {
 
     @Override
     public void show() {
-        TempEventManager.bind("create-units-model", new EventCallback() {
-            @Override
-            public void call(final Object obj) {
-                units = (DequeImpl<MicroObj>) obj;
-
-            }
+        TempEventManager.bind("create-units-model", param -> {
+            units = (DequeImpl<MicroObj>) param.get();
         });
         PathFinder.init();
         // TEMP
@@ -86,7 +81,7 @@ public class PrototypeScreen implements Screen {
 //        rayHandler.setAmbientLight(0.1f);
         rayHandler.setBlur(true);
         rayHandler.setBlurNum(5);
-        rayHandler.setGammaCorrection(true);
+        RayHandler.setGammaCorrection(true);
 
        coneLight = new ConeLight(rayHandler,75,Color.RED,distance,0,0,degree,degree);
        coneLight1 = new ConeLight(rayHandler,75,Color.RED,distance1,700,850,270,degree1);
@@ -134,7 +129,7 @@ public class PrototypeScreen implements Screen {
                 stage.addActor(player);
                 gridadded = true;
                 System.out.println("added grid");
-                Lightmap lightmap = new Lightmap(units,world,rayHandler);
+                LightmapTest lightmap = new LightmapTest(units,world,rayHandler);
 
             }
         }

@@ -3,13 +3,13 @@ package main.test.libgdx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.data.filesys.PathFinder;
 import main.libgdx.*;
-import main.system.EventCallback;
 import main.system.TempEventManager;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -37,37 +37,34 @@ public class GameScreen implements Screen {
         bf.getViewport().setCamera(cam);
         MyInputController controller = new MyInputController(cam);
         cam.setToOrtho(false, 1600, 900);
-        GL30 gl = Gdx.graphics.getGL30();
-        gl.glEnable(GL30.GL_BLEND);
-        gl.glEnable(GL30.GL_TEXTURE_2D);
-        gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
+        GL20 gl = Gdx.graphics.getGL20();
+        gl.glEnable(GL20.GL_BLEND);
+        gl.glEnable(GL20.GL_TEXTURE_2D);
+        gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         batch = new SpriteBatch();
         PathFinder.init();
         background = new DC_GDX_Background(PathFinder.getImagePath()).init();
-        topPanel = new DC_GDX_TopPanel(PathFinder.getImagePath()).init();
+        //topPanel = new DC_GDX_TopPanel(PathFinder.getImagePath()).init();
 
 
-        TempEventManager.bind("grid-created", new EventCallback() {
-            @Override
-            public void call(final Object obj) {
-                Pair<Integer, Integer> p = ((Pair<Integer, Integer>) obj);
-                gridPanel = new DC_GDX_GridPanel(PathFinder.getImagePath(), p.getLeft(), p.getRight()).init();
-                bf.addActor(gridPanel);
-            }
+        TempEventManager.bind("grid-created", param -> {
+            Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
+            gridPanel = new DC_GDX_GridPanel(PathFinder.getImagePath(), p.getLeft(), p.getRight()).init();
+            bf.addActor(gridPanel);
         });
 
-
-        unitInfoPanel = new DC_GDX_TargetUnitInfoPanel(PathFinder.getImagePath()).init();
-        unitInfoPanel.setX(Gdx.graphics.getWidth() - unitInfoPanel.getWidth());
-        unitInfoPanel.setY(Gdx.graphics.getHeight() - unitInfoPanel.getHeight());
-
-        activeUnitInfoPanel = new DC_GDX_ActiveUnitInfoPanel(PathFinder.getImagePath()).init();
-        activeUnitInfoPanel.setX(0);
-        activeUnitInfoPanel.setY(Gdx.graphics.getHeight() - activeUnitInfoPanel.getHeight());
-
-        actionGroup = new DC_GDX_ActionGroup(PathFinder.getImagePath()).init();
-        actionGroup.setY(10);
-        actionGroup.setX(Gdx.graphics.getWidth() / 2 - actionGroup.getWidth() / 2);
+//
+//        unitInfoPanel = new DC_GDX_TargetUnitInfoPanel(PathFinder.getImagePath()).init();
+//        unitInfoPanel.setX(Gdx.graphics.getWidth() - unitInfoPanel.getWidth());
+//        unitInfoPanel.setY(Gdx.graphics.getHeight() - unitInfoPanel.getHeight());
+//
+//        activeUnitInfoPanel = new DC_GDX_ActiveUnitInfoPanel(PathFinder.getImagePath()).init();
+//        activeUnitInfoPanel.setX(0);
+//        activeUnitInfoPanel.setY(Gdx.graphics.getHeight() - activeUnitInfoPanel.getHeight());
+//
+//        actionGroup = new DC_GDX_ActionGroup(PathFinder.getImagePath()).init();
+//        actionGroup.setY(10);
+//        actionGroup.setX(Gdx.graphics.getWidth() / 2 - actionGroup.getWidth() / 2);
 
         //gridPanel.setY(actionGroup.getY()+actionGroup.getHeight());
         //gridPanel.setX(activeUnitInfoPanel.getMinWeight());
@@ -96,10 +93,10 @@ public class GameScreen implements Screen {
         batch.begin();
         //background.draw(batch, 1);
         //gridPanel.draw(batch, 1);
-        topPanel.draw(batch, 1);
-        unitInfoPanel.draw(batch, 1);
-        activeUnitInfoPanel.draw(batch, 1);
-        actionGroup.draw(batch, 1);
+//        topPanel.draw(batch, 1);
+//        unitInfoPanel.draw(batch, 1);
+//        activeUnitInfoPanel.draw(batch, 1);
+//        actionGroup.draw(batch, 1);
         batch.end();
     }
 
