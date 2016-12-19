@@ -178,7 +178,7 @@ public class DC_GDX_GridPanel extends Group {
 
         TempEventManager.bind("create-units-model", param -> {
             units = (DequeImpl<MicroObj>) param.get();
-            //lightmap = new LightmapTest(units, cells[0][0].getWidth(), cells[0][0].getHeight());
+            //lightmap = new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight());
             Map<Coordinates, List<MicroObj>> map = new HashMap<>();
             for (MicroObj object : units) {
                 Coordinates c = object.getCoordinates();
@@ -228,10 +228,6 @@ public class DC_GDX_GridPanel extends Group {
                 }
             }
 
-/*                physx.getUnit(unit).addXY(x,y);
-            MoveToAction moveToAction = Actions.moveTo(1,1,1);
-            moveToAction.
-            addAction(Actions.moveTo());*/
         });
         /*
         LIGHT_EMISSION
