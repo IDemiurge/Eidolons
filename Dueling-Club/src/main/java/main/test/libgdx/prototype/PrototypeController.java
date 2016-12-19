@@ -77,6 +77,10 @@ public class PrototypeController implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int i, int i1) {
+//        PrototypeScreen.mousX = i + camera.position.x - camera.viewportWidth/2;
+//        PrototypeScreen.mousY = i1 - camera.position.y + camera.viewportHeight/2;
+        PrototypeScreen.mousX = i;
+        PrototypeScreen.mousY = camera.viewportHeight - i1;
         return false;
     }
 
@@ -91,5 +95,4 @@ public class PrototypeController implements InputProcessor {
         System.out.println(camera.zoom);
         return false;
     }
-
 }

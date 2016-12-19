@@ -1,9 +1,7 @@
 package main.test.libgdx.prototype;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -18,6 +16,8 @@ public class GridActor extends Actor {
     Sprite sprite;
     int raws = 10;
     int lines = 10;
+    private float X;
+    private float Y;
 
     public GridActor() {
         PathFinder.init();
@@ -26,7 +26,7 @@ public class GridActor extends Actor {
 //        sprite.setBounds(0,0,5,5);
 
         gridPanel = new DC_GDX_GridPanel(PathFinder.getImagePath(), raws, lines).init();
-//        LightmapTest lightmap = new LightmapTest(gridPanel.getUnits());
+//        Lightmap lightmap = new Lightmap(gridPanel.getUnits());
         setBounds(gridPanel.getX(),gridPanel.getY(),gridPanel.getWidth(),gridPanel.getHeight());
         addListener(new ClickListener(){
             @Override
@@ -52,7 +52,7 @@ public class GridActor extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
 //        System.out.println("Grid Draw " + System.currentTimeMillis());
-      gridPanel.draw((SpriteBatch)batch,1);
+        gridPanel.draw(batch, 1);
         super.draw(batch, parentAlpha);
     }
 }

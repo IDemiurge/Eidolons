@@ -29,7 +29,7 @@ import java.util.ArrayList;
  */
 public class PrototypeScreen implements Screen {
     World world;
-   Stage stage;
+    public Stage stage;
     float viewport_width = Gdx.graphics.getWidth();
     float viewport_height = Gdx.graphics.getHeight();
     RayHandler rayHandler;
@@ -51,16 +51,30 @@ public class PrototypeScreen implements Screen {
     SpriteBatch batch;
     DequeImpl<MicroObj> units;
     private static boolean gridadded = false;
+    FireLightProt fireLightProt;
+    ParticleActor test;
+    static float mousX;
+    static float mousY;
 
 
 
     @Override
     public void show() {
+<<<<<<< HEAD
+        mousX = 0;
+        mousY = 0;
+        TempEventManager.bind("create-units-model", new EventCallback() {
+            @Override
+            public void call(final Object obj) {
+                units = (DequeImpl<MicroObj>) obj;
+
+            }
+=======
         TempEventManager.bind("create-units-model", param -> {
             units = (DequeImpl<MicroObj>) param.get();
+>>>>>>> 4ef48468430a425ba81820ca46e99b8804b4eaf4
         });
-        PathFinder.init();
-        // TEMP
+
         PathFinder.init();
         regions = new ArrayList<>();
         for (int i = 1;i<18;i++){
@@ -77,26 +91,29 @@ public class PrototypeScreen implements Screen {
         debugRenderer = new Box2DDebugRenderer();
         world = new World(new Vector2(0,-10),false);
         rayHandler = new RayHandler(world);
-//        rayHandler.setAmbientLight(Color.SKY);
-//        rayHandler.setAmbientLight(0.1f);
+        rayHandler.setAmbientLight(Color.SKY);
+        rayHandler.setAmbientLight(0.1f);
         rayHandler.setBlur(true);
-        rayHandler.setBlurNum(5);
+        rayHandler.setBlurNum(15);
         RayHandler.setGammaCorrection(true);
 
-       coneLight = new ConeLight(rayHandler,75,Color.RED,distance,0,0,degree,degree);
-       coneLight1 = new ConeLight(rayHandler,75,Color.RED,distance1,700,850,270,degree1);
+
+//       coneLight = new ConeLight(rayHandler,75,Color.RED,distance,0,0,degree,degree);
+//       coneLight1 = new ConeLight(rayHandler,75,Color.RED,distance1,700,850,270,degree1);
 
         guiStage = new GUIStage();
         stage = new Stage(new FitViewport(viewport_width,viewport_height));
         batch.setProjectionMatrix(stage.getCamera().combined);
         controller = new PrototypeController((OrthographicCamera) stage.getCamera());
 
-
+        fireLightProt = new FireLightProt(world, rayHandler, 120, 100, 500, 90, 0.05f);
 
 
 //        stage.addActor(grid);
 //        grid.setZIndex(1);
 //        player.setZIndex(2);
+        test = new ParticleActor(world, 0, 0);
+
         stage.setDebugAll(true);
         InputMultiplexer in = new InputMultiplexer();
         in.addProcessor(guiStage);
@@ -104,12 +121,8 @@ public class PrototypeScreen implements Screen {
         in.addProcessor(stage);
 
 
-
-
-
         Gdx.input.setInputProcessor(in);
          timer = System.nanoTime();
-
     }
 
     @Override
@@ -129,56 +142,104 @@ public class PrototypeScreen implements Screen {
                 stage.addActor(player);
                 gridadded = true;
                 System.out.println("added grid");
-                LightmapTest lightmap = new LightmapTest(units,world,rayHandler);
+                Lightmap lightmap = new Lightmap(units, world, rayHandler);
 
             }
         }
 //        System.out.println(gridadded);
 //        anim.update(v);
 //        sprite.setTexture(anim.getTexture());
-        if (counter >= 100000000){
-            if (flag){
-                distance++;
-                degree++;
-                distance1++;
-                counter = 0;
-                coneLight.setDistance(distance);
-                coneLight.setDirection(degree);
-                coneLight.setConeDegree(degree);
-                coneLight1.setDistance(distance1);
-                if (distance >= 1220){
-                    flag = false;
-                }
-            }else {
-                distance--;
-                degree--;
-                distance1--;
-                counter = 0;
-                coneLight.setDistance(distance);
-                coneLight.setDirection(degree);
-                coneLight.setConeDegree(degree);
-                coneLight1.setDistance(distance1);
-                if (distance <= 1203){
-                    flag = true;
-                }
-            }
-        }
-
+//        if (counter >= 100000000){
+//            if (flag){
+//                distance++;
+//                degree++;
+//                distance1++;
+//                counter = 0;
+//                coneLight.setDistance(distance);
+//                coneLight.setDirection(degree);
+//                coneLight.setConeDegree(degree);
+//                coneLight1.setDistance(distance1);
+//                if (distance >= 1220){
+//                    flag = false;
+//                }
+//            }else {
+//                distance--;
+//                degree--;
+//                distance1--;
+//                counter = 0;
+//                coneLight.setDistance(distance);
+//                coneLight.setDirection(degree);
+//                coneLight.setConeDegree(degree);
+//                coneLight1.setDistance(distance1);
+//                if (distance <= 1203){
+//                    flag = true;
+//                }
+//            }
+//        }
         world.step(1/60f,4,4);
         stage.act(v);
         stage.draw();
-//        batch.begin();
-//        sprite.draw(batch);
-//        batch.end();
+
+        fireLightProt.update(v);
 
         rayHandler.setCombinedMatrix((OrthographicCamera) stage.getCamera());
         rayHandler.updateAndRender();
+        batch.begin();
+        for (int a = 0; a < test.array.size(); a++) {
+//            mousX += (-1*stage.getCamera().position.x) + stage.getCamera().viewportWidth/2;
+//            mousY += (-1*stage.getCamera().position.y) + stage.getCamera().viewportHeight/2;
+            float xpos = test.getX() + (-1 * stage.getCamera().position.x) + stage.getCamera().viewportWidth / 2 + a * 400;
+            float ypos = test.getY() + (-1 * stage.getCamera().position.y) + stage.getCamera().viewportHeight / 2;
+            test.array.get(a).setPosition(xpos, ypos);
+            if (counter >= 300000000) {
+                counter = 0;
+                System.out.println("xpos = " + xpos + " || ypos = " + ypos);
+                System.out.println("mouse X =" + mousX + "||| mouse Y = " + mousY);
+                System.out.println("For particles #" + a + " diff x = " + (xpos - mousX) + " || diff y = " + (ypos - mousY));
+            }
 
+            if (Math.abs(xpos - mousX) <= 100) {
+                if (Math.abs(ypos - mousY) <= 100) {
+                    for (int z = 0; z < test.array.get(a).getEmitters().size; z++) {
+                        test.array.get(a).getEmitters().get(z).getTransparency().setHighMax(0f);
+                        test.array.get(a).getEmitters().get(z).getTransparency().setHigh(0);
+                    }
+                } else {
+                    for (int z = 0; z < test.array.get(a).getEmitters().size; z++) {
+                        test.array.get(a).getEmitters().get(z).getTransparency().setHighMax(1f);
+                        test.array.get(a).getEmitters().get(z).getTransparency().setHigh(1);
+                    }
+                }
+            } else {
+                for (int z = 0; z < test.array.get(a).getEmitters().size; z++) {
+                    test.array.get(a).getEmitters().get(z).getTransparency().setHighMax(1f);
+                    test.array.get(a).getEmitters().get(z).getTransparency().setHigh(1);
+                }
+            }
+            test.array.get(a).update(v);
+            test.array.get(a).draw(batch, v);
+            if (test.array.get(a).isComplete()) {
+                test.array.get(a).reset();
+            }
+        }
+//        test.particleEffect.setPosition(test.getX() + (-1*stage.getCamera().position.x) + stage.getCamera().viewportWidth/2,test.getY() + (-1*stage.getCamera().position.y) + stage.getCamera().viewportHeight/2);
+//        test.particleEffect.update(v);
+//        test.particleEffect.draw(batch,v);
+//        if (test.particleEffect.isComplete()){
+////            System.out.println("test pos X: " + test.getX() +" || Y: " + test.getY());
+////            System.out.println("cam pos X: " + stage.getCamera().position.x+" || Y: " + stage.getCamera().position.y);
+////            System.out.println("Position seted: X " +(test.getX() + (-1*stage.getCamera().position.x) + stage.getCamera().viewportWidth/2) + "|| Y: " + (test.getY() + (-1*stage.getCamera().position.y) + stage.getCamera().viewportHeight/2) );
+////            test.particleEffect.getEmitters().first().setPosition(test.getX() + (-1*stage.getCamera().position.x) + stage.getCamera().viewportWidth/2,test.getY() + (-1*stage.getCamera().position.y) + stage.getCamera().viewportHeight/2);
+//            test.particleEffect.reset();
+//            System.out.println("Reseted");
+//        }
+//  sprite.draw(batch);
+        batch.end();
         guiStage.act(v);
         guiStage.draw();
         debugRenderer.render(world,stage.getCamera().combined);
-
     }
+
 
     @Override
     public void resize(int i, int i1) {
