@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * Created by PC on 19.11.2016.
  */
-public class LightmapTest {
+public class Lightmap {
     Map<MicroObj, Body> bodyMap;
     World world;
     RayHandler rayHandler;
@@ -98,7 +98,7 @@ public class LightmapTest {
                 BodyDef bdef = new BodyDef();
                 bdef.type = BodyDef.BodyType.KinematicBody;
                 Body body = world.createBody(bdef);
-                body.setTransform(un.get(i).getX()*cellWidth,un.get(i).getY()*cellHeight,0);
+                body.setTransform(un.get(i).getX() * cellWidth + 10, un.get(i).getY() * cellHeight, 0);
                 PolygonShape shape = new PolygonShape();
                 shape.setAsBox(cellWidth/20,cellHeight/20);
                 FixtureDef fdef = new FixtureDef();
@@ -108,11 +108,11 @@ public class LightmapTest {
                 pointLight.attachToBody(body);
                 bodyMap.put(un.get(i),body);
 //                System.out.println("Created a body for Torch with a point light");
-
-
             }else {
 //                if (!un.get(i).getName().equalsIgnoreCase("Stone Wall")){
                 if (un.get(i).getType().toString().contains("units")){
+
+                    // getobjType
 //                    System.out.println("Unit detected - need only to create a body");
                     BodyDef bdef = new BodyDef();
                     bdef.type = BodyDef.BodyType.KinematicBody;
@@ -132,13 +132,12 @@ public class LightmapTest {
         }
     }
 
-    public LightmapTest(DequeImpl<MicroObj> un, float cellWidth, float cellHeight){
+    public Lightmap(DequeImpl<MicroObj> un, float cellWidth, float cellHeight) {
         World world = new World(new Vector2(0,0),true);
      init(un,world,new RayHandler(world),cellWidth,cellHeight);
     }
 
-
-    public LightmapTest(DequeImpl<MicroObj> un, World world, RayHandler rayHandler) {
+    public Lightmap(DequeImpl<MicroObj> un, World world, RayHandler rayHandler) {
        init(un,world,rayHandler,132,113);
     }
     public void move(MicroObj obj,float x, float y ){
