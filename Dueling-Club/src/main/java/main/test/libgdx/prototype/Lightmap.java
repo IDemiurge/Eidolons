@@ -97,6 +97,8 @@ public class Lightmap {
     }
 
     public void updateObject(DC_HeroObj heroObj) {
+        int lightEmmi = heroObj.getIntParam(PARAMS.LIGHT_EMISSION);
+        bodyMap.get(heroObj);
         // TODO: 12.12.2016 update illumination and other ligth here
         // TODO 20.12.2016 - add point lights to ANY units on the map - if the Light Emission is 0 - sed distance 0!!!!! - update emission here!!!!
     }
