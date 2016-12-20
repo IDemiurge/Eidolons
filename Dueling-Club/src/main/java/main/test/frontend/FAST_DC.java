@@ -201,8 +201,8 @@ public class FAST_DC {
 
             }
 
-        DENIS_Launcher.main(new String[]{});
-//        main.test.libgdx.prototype.Launcher.main(new String[]{});
+//        DENIS_Launcher.main(new String[]{});
+        main.test.libgdx.prototype.Launcher.main(new String[]{});
         CoreEngine.setTEST_MODE(true);
         DC_Engine.init();
         Chronos.mark("GAME LAUNCHED");
