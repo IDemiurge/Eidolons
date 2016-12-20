@@ -23,56 +23,63 @@ public class Lightmap {
     private RayHandler rayHandler;
     private float cellWidth;
     private float cellHeight;
+    private Map<MicroObj, PointLight> lightMap;
 
     private void init(DequeImpl<MicroObj> un, World world, RayHandler rayHandler, float cellWidth, float cellHeight) {
         this.cellWidth = cellWidth;
         this.cellHeight = cellHeight;
         this.world = world;
         this.rayHandler = rayHandler;
+        lightMap = new HashMap<>();
         bodyMap = new HashMap<>();
         for (int i = 0; i < un.size(); i++) {
-//            System.out.println("===================");
-//            System.out.println(un.get(i).getName());
-//            System.out.println(un.get(i).getIntParam(PARAMS.LIGHT_EMISSION));
-//            if (un.get(i).getName().equalsIgnoreCase("Torch")){
-            if (un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) > 0) {
-//                System.out.println("Torch Code DETECTED");
-//                System.out.println("Coords: " + un.get(i).getX() + " || " + un.get(i).getY() + " || " + un.get(i).getCoordinates());
-//                System.out.println("Add Body");
-//                System.out.println("Add PointLighther and Attach it to the body");
-                BodyDef bdef = new BodyDef();
-                bdef.type = BodyDef.BodyType.KinematicBody;
-                Body body = world.createBody(bdef);
-                body.setTransform(un.get(i).getX() * cellWidth, un.get(i).getY() * cellHeight, 0);
-                PolygonShape shape = new PolygonShape();
-                shape.setAsBox(cellWidth / 20, cellHeight / 20);
-                FixtureDef fdef = new FixtureDef();
-                fdef.shape = shape;
-                body.createFixture(fdef);
-                PointLight pointLight = new PointLight(rayHandler, 100, Color.RED, un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 5, un.get(i).getX(), un.get(i).getY());
-                pointLight.attachToBody(body);
-                bodyMap.put(un.get(i), body);
-//                System.out.println("Created a body for Torch with a point light");
-            } else {
-//                if (!un.get(i).getName().equalsIgnoreCase("Stone Wall")){
-                if (un.get(i).getType().toString().contains("units")) {
-//                    System.out.println("Unit detected - need only to create a body");
-                    BodyDef bdef = new BodyDef();
-                    bdef.type = BodyDef.BodyType.KinematicBody;
-                    Body body = world.createBody(bdef);
-                    body.setTransform(un.get(i).getX() * cellWidth + cellWidth / 2, un.get(i).getY() * cellHeight + cellHeight / 2, 0);
-                    PolygonShape shape = new PolygonShape();
-                    shape.setAsBox(cellWidth / 2, cellHeight / 2);
-                    FixtureDef fdef = new FixtureDef();
-                    fdef.shape = shape;
-                    body.createFixture(fdef);
-//                    System.out.println("Created a body");
-//                    System.out.println("Position on: " + un.get(i).getX() + "||" + un.get(i).getY());
-                    bodyMap.put(un.get(i), body);
-//                    System.out.println("===================");
-                }
-            }
+            BodyDef bdef = new BodyDef();
+            bdef.type = BodyDef.BodyType.KinematicBody;
+            Body body = world.createBody(bdef);
+            body.setTransform(un.get(i).getX() * cellWidth, un.get(i).getY() * cellHeight, 0);
+            PolygonShape shape = new PolygonShape();
+            shape.setAsBox(cellWidth / 20, cellHeight / 20);
+            FixtureDef fdef = new FixtureDef();
+            fdef.shape = shape;
+            body.createFixture(fdef);
+            PointLight pointLight = new PointLight(rayHandler, 100, Color.RED, un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 5, un.get(i).getX(), un.get(i).getY());
+            pointLight.attachToBody(body);
+            bodyMap.put(un.get(i), body);
+            lightMap.put(un.get(i), pointLight);
+
         }
+//        for (int i = 0; i < un.size(); i++) {
+//            if (un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) > 0) {
+//                BodyDef bdef = new BodyDef();
+//                bdef.type = BodyDef.BodyType.KinematicBody;
+//                Body body = world.createBody(bdef);
+//                body.setTransform(un.get(i).getX() * cellWidth, un.get(i).getY() * cellHeight, 0);
+//                PolygonShape shape = new PolygonShape();
+//                shape.setAsBox(cellWidth / 20, cellHeight / 20);
+//                FixtureDef fdef = new FixtureDef();
+//                fdef.shape = shape;
+//                body.createFixture(fdef);
+//                PointLight pointLight = new PointLight(rayHandler, 100, Color.RED, un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 5, un.get(i).getX(), un.get(i).getY());
+//                pointLight.attachToBody(body);
+//                bodyMap.put(un.get(i), body);
+//
+//            } else {
+//                if (un.get(i).getType().toString().contains("units")) {
+//
+//                    BodyDef bdef = new BodyDef();
+//                    bdef.type = BodyDef.BodyType.KinematicBody;
+//                    Body body = world.createBody(bdef);
+//                    body.setTransform(un.get(i).getX() * cellWidth + cellWidth / 2, un.get(i).getY() * cellHeight + cellHeight / 2, 0);
+//                    PolygonShape shape = new PolygonShape();
+//                    shape.setAsBox(cellWidth / 2, cellHeight / 2);
+//                    FixtureDef fdef = new FixtureDef();
+//                    fdef.shape = shape;
+//                    body.createFixture(fdef);
+//                    bodyMap.put(un.get(i), body);
+//
+//                }
+//            }
+//        }
     }
 
     public Lightmap(DequeImpl<MicroObj> un, float cellWidth, float cellHeight) {
@@ -98,8 +105,9 @@ public class Lightmap {
 
     public void updateObject(DC_HeroObj heroObj) {
         int lightEmmi = heroObj.getIntParam(PARAMS.LIGHT_EMISSION);
-        bodyMap.get(heroObj);
+        if (lightMap.containsKey(heroObj)) {
+            lightMap.get(heroObj).setDistance(lightEmmi * 15);
+        }
         // TODO: 12.12.2016 update illumination and other ligth here
-        // TODO 20.12.2016 - add point lights to ANY units on the map - if the Light Emission is 0 - sed distance 0!!!!! - update emission here!!!!
     }
 }
