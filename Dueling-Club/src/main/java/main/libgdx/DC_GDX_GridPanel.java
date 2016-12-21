@@ -151,7 +151,10 @@ public class DC_GDX_GridPanel extends Group {
                 switch (event.getType().getArg()) {
                     case "Illumination":
                         if (lightmap != null) {
-                            lightmap.updateObject((DC_HeroObj) event.getRef().getTargetObj());
+                            Obj o = event.getRef().getTargetObj();
+                            if (o instanceof DC_HeroObj) {
+                                lightmap.updateObject((DC_HeroObj) event.getRef().getTargetObj());
+                            }
                         }
                         catched = true;
                         break;
@@ -178,7 +181,7 @@ public class DC_GDX_GridPanel extends Group {
 
         TempEventManager.bind("create-units-model", param -> {
             units = (DequeImpl<MicroObj>) param.get();
-            //lightmap = new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight());
+            lightmap = new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight());
             Map<Coordinates, List<MicroObj>> map = new HashMap<>();
             for (MicroObj object : units) {
                 Coordinates c = object.getCoordinates();
