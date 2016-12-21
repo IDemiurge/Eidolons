@@ -70,6 +70,7 @@ public class PrototypeScreen implements Screen {
 //                    }
 //                });
 
+
         TempEventManager.bind("create-units-model", param -> {
             units = (DequeImpl<MicroObj>) param.get();
         });
@@ -131,7 +132,7 @@ public class PrototypeScreen implements Screen {
         long diff = now - timer;
         timer = now;
         counter += diff;
-        TempEventManager.processEvents();
+//        TempEventManager.processEvents();
         if (!gridadded){
 
             if (units != null){
