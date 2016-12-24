@@ -362,12 +362,12 @@ public class DC_GDX_GridPanel extends Group {
             radialMenu.draw(batch, parentAlpha);
         }
 
-        if (lightmap != null) {
-            lightmap.updateLight();
-        }
-
         if (toolTipManager != null) {
             toolTipManager.draw(batch, parentAlpha);
+        }
+
+        if (lightmap != null) {
+            lightmap.updateLight();
         }
     }
 }

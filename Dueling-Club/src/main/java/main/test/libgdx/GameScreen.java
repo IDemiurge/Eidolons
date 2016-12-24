@@ -84,7 +84,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         cam.update();
-
+        batch.setProjectionMatrix(cam.combined);
         batch.begin();
         background.draw(batch, 1);
         batch.end();

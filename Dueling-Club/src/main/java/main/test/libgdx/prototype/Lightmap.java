@@ -101,9 +101,9 @@ public class Lightmap {
     }
 
     public void updateLight() {
+        world.step(1 / 60, 4, 4);
         rayHandler.setCombinedMatrix(GameScreen.camera);
         rayHandler.updateAndRender();
-        world.step(1 / 60, 4, 4);
     }
 
     public void updateObject(DC_HeroObj heroObj) {
