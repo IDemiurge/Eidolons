@@ -84,10 +84,6 @@ public class ToolTipManager extends Group {
         return offset;
     }
 
-    private void initMany(ToolTipOption options) {
-
-    }
-
     public static class ToolTip extends Group {
         private Image image = null;
         private Label name;

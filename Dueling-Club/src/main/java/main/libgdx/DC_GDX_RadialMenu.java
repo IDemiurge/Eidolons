@@ -12,7 +12,10 @@ import main.elements.Filter;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.*;
+import main.entity.obj.ActiveObj;
+import main.entity.obj.DC_Obj;
+import main.entity.obj.MicroObj;
+import main.entity.obj.Obj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.game.Game;
 import main.system.EventCallbackParam;
@@ -237,7 +240,7 @@ public class DC_GDX_RadialMenu extends Group {
 
             if (obj.isAttack()) {
                 DC_ActiveObj dcActiveObj = (DC_ActiveObj) obj;
-                if (obj.getRef().getSourceObj() == target){
+                if (obj.getRef().getSourceObj() == target) {
                     Ref ref1 = dcActiveObj.getRef();
                     ref1.setMatch(target.getId());
                     Filter<Obj> filter = dcActiveObj.getTargeting().getFilter();

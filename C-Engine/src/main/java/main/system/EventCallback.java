@@ -7,5 +7,5 @@ package main.system;
  * To change this template use File | Settings | File Templates.
  */
 public interface EventCallback {
-   void call(EventCallbackParam obj);
+    void call(EventCallbackParam obj);
 }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import main.data.filesys.PathFinder;
 
 /**
  * Created by PC on 07.11.2016.
@@ -21,19 +22,22 @@ public class Res_holder {
     static TextButton.TextButtonStyle exit_button_style;
     public static void load(){
         skin = new Skin();
-        textureAtlas = new TextureAtlas(Gdx.files.internal("D:\\NewRepos\\battlecraft\\Dueling-Club\\src\\main\\java\\main\\test\\libgdx\\resOUT\\Atlas.atlas"));
+        PathFinder.init();
+//        textureAtlas = new TextureAtlas(Gdx.files.internal("D:\\NewRepos\\battlecraft\\Dueling-Club\\src\\main\\java\\main\\test\\libgdx\\resOUT\\Atlas.atlas"));
+        textureAtlas = new TextureAtlas(Gdx.files.internal(PathFinder.getImagePath() + "\\myFolder\\Atlas.atlas"));
         skin.addRegions(textureAtlas);
         buttonStyle = new Button.ButtonStyle();
         buttonStyle.up = skin.getDrawable("e1");
         buttonStyle.down = skin.getDrawable("e17");
         exit_button_skin = new Skin();
-        exit_button_atlas = new TextureAtlas(Gdx.files.internal("D:\\NewRepos\\battlecraft\\Dueling-Club\\src\\main\\java\\main\\test\\libgdx\\resOUT\\exit_button.atlas"));
+//        exit_button_atlas = new TextureAtlas(Gdx.files.internal("D:\\NewRepos\\battlecraft\\Dueling-Club\\src\\main\\java\\main\\test\\libgdx\\resOUT\\exit_button.atlas"));
+        exit_button_atlas = new TextureAtlas(Gdx.files.internal(PathFinder.getImagePath() + "\\myFolder\\exit_button.atlas"));
         exit_button_skin.addRegions(exit_button_atlas);
         exit_button_style = new TextButton.TextButtonStyle();
         exit_button_style.up = exit_button_skin.getDrawable("ex_on");
         exit_button_style.down = exit_button_skin.getDrawable("ex_off");
 
-        FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("D:\\NewRepos\\battlecraft\\resources\\res\\Fonts\\Starcraft.ttf"));
+        FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(PathFinder.getFontPath() + "\\Starcraft.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.color = Color.RED;
         parameter.borderWidth = 1.5f;

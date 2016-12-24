@@ -26,7 +26,9 @@ import main.rules.DC_ActionManager;
 import main.rules.mechanics.CollisionRule;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.*;
+import main.system.ConditionMaster;
+import main.system.CustomValueManager;
+import main.system.FilterMaster;
 import main.system.ai.logic.actions.Action;
 import main.system.ai.logic.actions.ActionManager;
 import main.system.ai.logic.path.ActionPath;
@@ -309,9 +311,7 @@ public class DC_MovementManager implements MovementManager {
         getBf().moveBattleFieldObj(obj, x, y);
 
         event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);
-        if (!game.fireEvent(event))
-            return false;
-        return true;
+        return game.fireEvent(event);
     }
 
     private boolean checkCanMove(DC_HeroObj obj, DC_Cell cell, MOVE_MODIFIER mod) {

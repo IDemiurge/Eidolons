@@ -88,7 +88,7 @@ public class CellBorderManager extends Group {
                 }
             } else {
                 for (Borderable br : brs) {
-                    if (unitBorderOwner == br){
+                    if (unitBorderOwner == br) {
                         unitBorderOwner.setBorder(null);// TODO: 12.12.2016 make better
                     }
                     Image i = new Image(blueBorderTexture);

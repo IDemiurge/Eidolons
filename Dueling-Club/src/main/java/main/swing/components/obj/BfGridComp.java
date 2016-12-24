@@ -129,7 +129,7 @@ public class BfGridComp {
             }
         }
 
-        TempEventManager.trigger("grid-created", new EventCallbackParam(new ImmutablePair<>(getCellsX(),getCellsY())));
+        TempEventManager.trigger("grid-created", new EventCallbackParam(new ImmutablePair<>(getCellsX(), getCellsY())));
 
         panel = new G_Panel() {
             protected void paintComponent(Graphics g) {

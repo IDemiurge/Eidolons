@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import main.ability.effects.ChangeFacingEffect;
-import main.content.parameters.ParamMap;
+import main.content.PARAMS;
 import main.entity.Ref;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
@@ -18,7 +18,7 @@ import main.game.event.Event;
 import main.system.EventCallbackParam;
 import main.system.TempEventManager;
 import main.system.datatypes.DequeImpl;
-import main.test.libgdx.prototype.LightmapTest;
+import main.test.libgdx.prototype.Lightmap;
 
 import java.io.File;
 import java.util.*;
@@ -37,7 +37,7 @@ public class DC_GDX_GridPanel extends Group {
     protected Texture highlightImage;
     protected Texture unknownImage;
     protected Texture cellBorderTexture;
-    protected LightmapTest lightmap;
+    protected Lightmap lightmap;
     protected DequeImpl<MicroObj> units;
 
     protected CellBorderManager cellBorderManager;
@@ -151,7 +151,10 @@ public class DC_GDX_GridPanel extends Group {
                 switch (event.getType().getArg()) {
                     case "Illumination":
                         if (lightmap != null) {
-                            lightmap.updateObject((DC_HeroObj) event.getRef().getTargetObj());
+                            Obj o = event.getRef().getTargetObj();
+                            if (o instanceof DC_HeroObj) {
+                                lightmap.updateObject((DC_HeroObj) event.getRef().getTargetObj());
+                            }
                         }
                         catched = true;
                         break;
@@ -178,7 +181,7 @@ public class DC_GDX_GridPanel extends Group {
 
         TempEventManager.bind("create-units-model", param -> {
             units = (DequeImpl<MicroObj>) param.get();
-            //lightmap = new LightmapTest(units, cells[0][0].getWidth(), cells[0][0].getHeight());
+            lightmap = new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight());
             Map<Coordinates, List<MicroObj>> map = new HashMap<>();
             for (MicroObj object : units) {
                 Coordinates c = object.getCoordinates();
@@ -228,10 +231,6 @@ public class DC_GDX_GridPanel extends Group {
                 }
             }
 
-/*                physx.getUnit(unit).addXY(x,y);
-            MoveToAction moveToAction = Actions.moveTo(1,1,1);
-            moveToAction.
-            addAction(Actions.moveTo());*/
         });
         /*
         LIGHT_EMISSION
@@ -242,7 +241,7 @@ public class DC_GDX_GridPanel extends Group {
         setWidth(cells[0][0].getWidth() * cols);
 
         Map<String, String> tooltipStatMap = new HashMap<>();
-        tooltipStatMap.put("C_Toughness", "Toughness");
+        tooltipStatMap.put(PARAMS.C_TOUGHNESS.getName(), "Toughness");
         tooltipStatMap.put("C_Endurance", "Endurance");
         tooltipStatMap.put("C_N_Of_Actions", "N_Of_Actions");
 
@@ -261,15 +260,14 @@ public class DC_GDX_GridPanel extends Group {
                         DC_HeroObj hero = unitMap.entrySet().stream()
                                 .filter(entry -> entry.getValue() == uv).findFirst()
                                 .get().getKey();
-                        ParamMap paramMap = hero.getParamMap();
                         ToolTipManager.ToolTipOption option = new ToolTipManager.ToolTipOption();
                         option.x = (int) x;
                         option.y = (int) y;
 
                         tooltipStatMap.entrySet().forEach(entry -> {
                             ToolTipManager.ToolTipRecordOption recordOption = new ToolTipManager.ToolTipRecordOption();
-                            recordOption.curVal = hero.getIntParam(entry.getValue());
-                            recordOption.maxVal = hero.getIntParam(entry.getKey());
+                            recordOption.curVal = hero.getIntParam(entry.getKey());
+                            recordOption.maxVal = hero.getIntParam(entry.getValue());
                             recordOption.name = entry.getValue();
                             recordOption.recordImage = textureCache.getOrCreate("UI\\value icons\\" + entry.getValue().replaceAll("_", " ") + ".png");
                             option.recordOptions.add(recordOption);
@@ -364,12 +362,12 @@ public class DC_GDX_GridPanel extends Group {
             radialMenu.draw(batch, parentAlpha);
         }
 
-        if (lightmap != null) {
-            lightmap.updateLight();
-        }
-
         if (toolTipManager != null) {
             toolTipManager.draw(batch, parentAlpha);
+        }
+
+        if (lightmap != null) {
+            lightmap.updateLight();
         }
     }
 }

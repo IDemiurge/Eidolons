@@ -22,7 +22,7 @@ public class TempEventManager<T> {
         if (event != null) {
             if (eventMap.containsKey(name)) {
                 final EventCallback old = eventMap.remove(name);
-                eventMap.put(name, (obj)->{
+                eventMap.put(name, (obj) -> {
                     old.call(obj);
                     event.call(obj);
                 });

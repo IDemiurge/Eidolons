@@ -33,7 +33,7 @@ public class GameScreen implements Screen {
 
     public GameScreen PostConstruct() {
         bf = new Stage();
-        cam = new OrthographicCamera();
+        camera = cam = new OrthographicCamera();
         bf.getViewport().setCamera(cam);
         MyInputController controller = new MyInputController(cam);
         cam.setToOrtho(false, 1600, 900);
@@ -73,6 +73,7 @@ public class GameScreen implements Screen {
         return this;
     }
 
+    public static OrthographicCamera camera;
 
     @Override
     public void render(float delta) {
@@ -83,7 +84,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         cam.update();
-
+        batch.setProjectionMatrix(cam.combined);
         batch.begin();
         background.draw(batch, 1);
         batch.end();
