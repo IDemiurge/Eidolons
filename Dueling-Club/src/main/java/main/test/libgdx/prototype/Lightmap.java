@@ -10,6 +10,7 @@ import main.entity.obj.DC_HeroObj;
 import main.entity.obj.MicroObj;
 import main.game.battlefield.Coordinates;
 import main.system.datatypes.DequeImpl;
+import main.test.libgdx.GameScreen;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -100,7 +101,9 @@ public class Lightmap {
     }
 
     public void updateLight() {
-        rayHandler.render();
+        rayHandler.setCombinedMatrix(GameScreen.camera);
+        rayHandler.updateAndRender();
+        world.step(1 / 60, 4, 4);
     }
 
     public void updateObject(DC_HeroObj heroObj) {
