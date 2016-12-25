@@ -133,19 +133,19 @@ public class PrototypeScreen implements Screen {
         timer = now;
         counter += diff;
 //        TempEventManager.processEvents();
-        if (!gridadded){
-
-            if (units != null){
-                GridActor grid = new GridActor();
-                stage.addActor(grid);
-                PlayerActor player = new PlayerActor(world);
-                stage.addActor(player);
-                gridadded = true;
-                System.out.println("added grid");
-                Lightmap lightmap = new Lightmap(units, world, rayHandler);
-
-            }
-        }
+//        if (!gridadded){
+//
+//            if (units != null){
+//                GridActor grid = new GridActor();
+//                stage.addActor(grid);
+//                PlayerActor player = new PlayerActor(world);
+//                stage.addActor(player);
+//                gridadded = true;
+//                System.out.println("added grid");
+//                Lightmap lightmap = new Lightmap(units, world, rayHandler);
+//
+//            }
+//        }
 //        System.out.println(gridadded);
 //        anim.update(v);
 //        sprite.setTexture(anim.getTexture());
@@ -180,42 +180,88 @@ public class PrototypeScreen implements Screen {
         stage.act(v);
         stage.draw();
 
-        fireLightProt.update(v);
+        fireLightProt.update();
 
         rayHandler.setCombinedMatrix((OrthographicCamera) stage.getCamera());
         rayHandler.updateAndRender();
         batch.begin();
         for (int a = 0; a < test.array.size(); a++) {
-//            mousX += (-1*stage.getCamera().position.x) + stage.getCamera().viewportWidth/2;
-//            mousY += (-1*stage.getCamera().position.y) + stage.getCamera().viewportHeight/2;
             float xpos = test.getX() + (-1 * stage.getCamera().position.x) + stage.getCamera().viewportWidth / 2 + a * 400;
             float ypos = test.getY() + (-1 * stage.getCamera().position.y) + stage.getCamera().viewportHeight / 2;
             test.array.get(a).setPosition(xpos, ypos);
-            if (counter >= 300000000) {
-                counter = 0;
-                System.out.println("xpos = " + xpos + " || ypos = " + ypos);
-                System.out.println("mouse X =" + mousX + "||| mouse Y = " + mousY);
-                System.out.println("For particles #" + a + " diff x = " + (xpos - mousX) + " || diff y = " + (ypos - mousY));
-            }
-
+//            if (counter >= 300000000) {
+//                counter = 0;
+//                System.out.println("xpos = " + xpos + " || ypos = " + ypos);
+//                System.out.println("mouse X =" + mousX + "||| mouse Y = " + mousY);
+//                System.out.println("For particles #" + a + " diff x = " + (xpos - mousX) + " || diff y = " + (ypos - mousY));
+//            }
             if (Math.abs(xpos - mousX) <= 100) {
                 if (Math.abs(ypos - mousY) <= 100) {
                     for (int z = 0; z < test.array.get(a).getEmitters().size; z++) {
-                        test.array.get(a).getEmitters().get(z).getTransparency().setHighMax(0f);
-                        test.array.get(a).getEmitters().get(z).getTransparency().setHigh(0);
+                        float distanceX = xpos - mousX;
+                        float distanceY = ypos - mousY;
+//                        test.array.get(a).getEmitters().get(z).getTransparency().setHighMax(0f);
+//                        test.array.get(a).getEmitters().get(z).getTransparency().setHigh(0);
+                        if (distanceX <= 0) {
+                            test.array.get(a).getEmitters().get(z).getWind().setHigh(-45);
+                            test.array.get(a).getEmitters().get(z).getWind().setLow(-50);
+                        }
+                        if (distanceX > 0) {
+                            test.array.get(a).getEmitters().get(z).getWind().setHigh(50);
+                            test.array.get(a).getEmitters().get(z).getWind().setLow(45);
+                        }
+                        if (distanceY <= 0) {
+                            test.array.get(a).getEmitters().get(z).getVelocity().setHigh(-45);
+                            test.array.get(a).getEmitters().get(z).getVelocity().setLow(-50);
+                        }
+                        if (distanceY > 0) {
+                            test.array.get(a).getEmitters().get(z).getVelocity().setHigh(50);
+                            test.array.get(a).getEmitters().get(z).getVelocity().setLow(45);
+                        }
+
+
+
                     }
                 } else {
                     for (int z = 0; z < test.array.get(a).getEmitters().size; z++) {
-                        test.array.get(a).getEmitters().get(z).getTransparency().setHighMax(1f);
-                        test.array.get(a).getEmitters().get(z).getTransparency().setHigh(1);
+//                        test.array.get(a).getEmitters().get(z).getTransparency().setHighMax(1f);
+//                        test.array.get(a).getEmitters().get(z).getTransparency().setHigh(1);
+                        test.array.get(a).getEmitters().get(z).getWind().setHigh(0f, 0f);
+                        test.array.get(a).getEmitters().get(z).getWind().setLow(0f, 0f);
+                        test.array.get(a).getEmitters().get(z).getVelocity().setHigh(0);
+                        test.array.get(a).getEmitters().get(z).getVelocity().setLow(0);
                     }
                 }
             } else {
                 for (int z = 0; z < test.array.get(a).getEmitters().size; z++) {
-                    test.array.get(a).getEmitters().get(z).getTransparency().setHighMax(1f);
-                    test.array.get(a).getEmitters().get(z).getTransparency().setHigh(1);
+//                    test.array.get(a).getEmitters().get(z).getTransparency().setHighMax(1f);
+//                    test.array.get(a).getEmitters().get(z).getTransparency().setHigh(1);
+                    test.array.get(a).getEmitters().get(z).getWind().setHigh(0f, 0f);
+                    test.array.get(a).getEmitters().get(z).getWind().setLow(0f, 0f);
+                    test.array.get(a).getEmitters().get(z).getVelocity().setHigh(0);
+                    test.array.get(a).getEmitters().get(z).getVelocity().setLow(0);
                 }
             }
+//            for (int z = 0; z < test.array.get(a).getEmitters().size; z++){
+//                System.out.println(Math.abs(test.array.get(a).getEmitters().get(z).getX() -mousX));
+//                if ( Math.abs(test.array.get(a).getEmitters().get(z).getX() -mousX) <= 200) {
+//                   if (Math.abs(test.array.get(a).getEmitters().get(z).getY() -mousY) <= 200){
+////                       test.array.get(a).getEmitters().get(z).getTransparency().setHighMax(0f);
+////                       test.array.get(a).getEmitters().get(z).getTransparency().setHigh(0f);
+//
+//                       test.array.get(a).getEmitters().get(z).getWind().setHigh(50f);
+//                       test.array.get(a).getEmitters().get(z).getWind().setLow(45f);
+//
+//                   }else {
+//                       test.array.get(a).getEmitters().get(z).getWind().setHigh(0,0);
+//                       test.array.get(a).getEmitters().get(z).getWind().setLow(0,0);
+//                   }
+//                } else {
+//                    test.array.get(a).getEmitters().get(z).getWind().setHigh(0,0);
+//                    test.array.get(a).getEmitters().get(z).getWind().setLow(0,0);
+//                }
+//            }
+
             test.array.get(a).update(v);
             test.array.get(a).draw(batch, v);
             if (test.array.get(a).isComplete()) {
