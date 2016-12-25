@@ -393,6 +393,10 @@ public enum PARAMS implements PARAMETER {
     CELESTIAL_MASTERY(null, "Mastery", false, 0, "units", "chars", "classes", "skills"),
     BENEDICTION_MASTERY(null, "Mastery", false, 0, "units", "chars", "classes", "skills"),
     ELEMENTAL_MASTERY(null, "Mastery", false, 0, "units", "chars", "classes", "skills"),
+    FIRE_MASTERY(null, "Mastery", false, 0, "units", "chars", "classes", "skills"),
+    AIR_MASTERY(null, "Mastery", false, 0, "units", "chars", "classes", "skills"),
+    WATER_MASTERY(null, "Mastery", false, 0, "units", "chars", "classes", "skills"),
+    EARTH_MASTERY(null, "Mastery", false, 0, "units", "chars", "classes", "skills"),
     SYLVAN_MASTERY(null, "Mastery", false, 0, "units", "chars", "classes", "skills"),
     DEMONOLOGY_MASTERY(null, "Mastery", false, 0, "units", "chars", "classes", "skills"),
 

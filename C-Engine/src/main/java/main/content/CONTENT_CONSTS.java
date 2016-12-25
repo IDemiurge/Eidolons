@@ -2018,7 +2018,10 @@ public class CONTENT_CONSTS {
     }
 
     public enum SPELL_GROUP {
-
+        FIRE,
+        AIR,
+        WATER,
+        EARTH,
         CONJURATION, ENCHANTMENT, SORCERY, TRANSMUTATION, VOID,
 
         WITCHERY, SHADOW, PSYCHIC,
@@ -2104,7 +2107,10 @@ public class CONTENT_CONSTS {
         PSYCHIC_MASTERY,
         SHADOW_MASTERY,
         WITCHERY_MASTERY,
-
+        FIRE_MASTERY,
+        AIR_MASTERY,
+        WATER_MASTERY,
+        EARTH_MASTERY,
         REDEMPTION_MASTERY,
         BENEDICTION_MASTERY,
         CELESTIAL_MASTERY,
