@@ -3,6 +3,7 @@ package main.libgdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.ability.effects.ChangeFacingEffect;
 import main.content.PARAMS;
 import main.entity.Ref;
@@ -75,7 +76,7 @@ public class GridPanel extends Group {
 
         for (int x = 0; x < cols; x++) {
             for (int y = rows - 1; y >= 0; y--) {
-                cells[x][y] = new GridCell(emptyImage,x, y);
+                cells[x][y] = new GridCell(emptyImage, x, y);
                 cells[x][y].setX(x * emptyImage.getWidth());
                 cells[x][y].setY(y * emptyImage.getHeight());
                 addActor(cells[x][y].init());
@@ -299,12 +300,12 @@ public class GridPanel extends Group {
                             DC_HeroObj heroObj = unitMap.entrySet()
                                     .stream().filter(entry -> entry.getValue() == unit).findFirst()
                                     .get().getKey();
-                            Triple<DC_Obj,Float,Float> container = new ImmutableTriple<>(heroObj,x,y);
+                            Triple<DC_Obj, Float, Float> container = new ImmutableTriple<>(heroObj, x, y);
                             TempEventManager.trigger("create-radial-menu", new EventCallbackParam(container));
                         }
                     } else if (event.getButton() == 1) {
                         DC_Obj dc_cell = DC_Game.game.getCellByCoordinate(new Coordinates(cell.gridX, cell.gridY));
-                        Triple<DC_Obj,Float,Float> container = new ImmutableTriple<>(dc_cell,x,y);
+                        Triple<DC_Obj, Float, Float> container = new ImmutableTriple<>(dc_cell, x, y);
                         TempEventManager.trigger("create-radial-menu", new EventCallbackParam(container));
                     }
                     if (event.getButton() == 0) {
