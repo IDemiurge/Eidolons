@@ -3,7 +3,6 @@ package main.libgdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.*;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.ability.effects.ChangeFacingEffect;
 import main.content.PARAMS;
 import main.entity.Ref;
@@ -20,6 +19,7 @@ import main.system.TempEventManager;
 import main.system.datatypes.DequeImpl;
 import main.test.libgdx.prototype.Lightmap;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.*;
@@ -84,12 +84,12 @@ public class GridPanel extends Group {
         }
 
         TempEventManager.bind("select-multi-objects", obj -> {
-            Set<Obj> objSet = (Set<Obj>) obj.get();
-            List<Borderable> borderableList = new ArrayList<>();
-            for (Obj obj1 : objSet) {
-                borderableList.add(unitMap.get(obj1));
+            Pair<Set<DC_HeroObj>, TargetRunnable> p = (Pair<Set<DC_HeroObj>, TargetRunnable>) obj.get();
+            Map<Borderable, Runnable> map = new HashMap<>();
+            for (DC_HeroObj obj1 : p.getLeft()) {
+                map.put(unitMap.get(obj1), () -> p.getRight().run(obj1));
             }
-            TempEventManager.trigger("show-blue-borders", new EventCallbackParam(borderableList));
+            TempEventManager.trigger("show-blue-borders", new EventCallbackParam(map));
         });
 
         TempEventManager.bind("ingame-event-triggered", param -> {
@@ -286,39 +286,48 @@ public class GridPanel extends Group {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                try{ return   handleTouchDown(event,x,y,pointer,button);             }catch(Exception e){                e.printStackTrace();            }
+                try {
+                    return handleTouchDown(event, x, y, pointer, button);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return false;
             }
-                public boolean handleTouchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Actor a;
 
+            public boolean handleTouchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Actor a;
                 a = GridPanel.super.hit(x, y, true);
                 if (a != null && a instanceof GridCell) {
                     GridCell cell = (GridCell) a;
+                    if (cellBorderManager.isBlueBorderActive() && event.getButton() == 0) {
+                        Borderable b = cell;
+                        if (cell.getInnerDrawable() != null) {
+                            Actor unit = cell.getInnerDrawable().hit(x, y, true);
+                            if (unit != null && unit instanceof Borderable) {
+                                b = (Borderable) unit;
+                            }
+                        }
+                        cellBorderManager.hitAndCall(b);
+                    }
+
+
                     if (cell.getInnerDrawable() != null) {
                         Actor unit = cell.getInnerDrawable().hit(x, y, true);
-/*                        if (unit != null && unit instanceof UnitView) {
-                            ((GridCellContainer) cell.getInnerDrawable()).onClick(unit, event);
-                        }*/
-                        if (event.getButton() == 1 && unit != null && unit instanceof UnitView) {
-                            DC_HeroObj heroObj = unitMap.entrySet()
-                                    .stream().filter(entry -> entry.getValue() == unit).findFirst()
-                                    .get().getKey();
-                            Triple<DC_Obj, Float, Float> container = new ImmutableTriple<>(heroObj, x, y);
-                            TempEventManager.trigger("create-radial-menu", new EventCallbackParam(container));
+                        if (unit != null && unit instanceof UnitView) {
+                            if (event.getButton() == 1) {
+                                DC_HeroObj heroObj = unitMap.entrySet()
+                                        .stream().filter(entry -> entry.getValue() == unit).findFirst()
+                                        .get().getKey();
+                                Triple<DC_Obj, Float, Float> container = new ImmutableTriple<>(heroObj, x, y);
+                                TempEventManager.trigger("create-radial-menu", new EventCallbackParam(container));
+                            }
                         }
                     } else if (event.getButton() == 1) {
                         DC_Obj dc_cell = DC_Game.game.getCellByCoordinate(new Coordinates(cell.gridX, cell.gridY));
                         Triple<DC_Obj, Float, Float> container = new ImmutableTriple<>(dc_cell, x, y);
                         TempEventManager.trigger("create-radial-menu", new EventCallbackParam(container));
                     }
-                    if (event.getButton() == 0) {
-/*                        greenBorder.setX(cell.getX() - 5);
-                        greenBorder.setY(cell.getY() - 5);
-                        greenBorder.setVisible(true);*/
-                    }
                 }
-
                 return false;
             }
         });

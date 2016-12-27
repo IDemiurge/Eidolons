@@ -3,13 +3,12 @@ package main.libgdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.system.TempEventManager;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CellBorderManager extends Group {
     private int cellW;
@@ -20,6 +19,11 @@ public class CellBorderManager extends Group {
     protected Image orangeBorder;
     protected Texture blueBorderTexture;
 
+
+    public boolean isBlueBorderActive() {
+        return blueBorderOwners.size() > 0;
+    }
+
     private static final String cyanPath = "UI\\Borders\\neo\\color flag\\cyan 132.png";
     private static final String bluePath = "UI\\Borders\\neo\\color flag\\blue 132.png";
     private static final String orangePath = "UI\\Borders\\neo\\color flag\\orange 132.png";
@@ -27,8 +31,9 @@ public class CellBorderManager extends Group {
     private static final String redPath = "UI\\Borders\\neo\\color flag\\red 132.png";
 
     private Borderable unitBorderOwner = null;
-    private List<Borderable> blueBorderOwners = null;
+    private Map<Borderable, Runnable> blueBorderOwners = new HashMap<>();
 
+    public Image singleBorderImageBackup = null;
 
     public CellBorderManager(int cellW, int cellH, TextureCache textureCache) {
         this.cellW = cellW;
@@ -63,6 +68,13 @@ public class CellBorderManager extends Group {
     }
 
 
+    private void clearBlueBorder() {
+        blueBorderOwners.entrySet().forEach(entity -> {
+            entity.getKey().setBorder(null);
+        });
+        blueBorderOwners = new HashMap<>();
+    }
+
     private void initCallbacks() {
 
         TempEventManager.bind("show-green-border", obj -> {
@@ -80,32 +92,41 @@ public class CellBorderManager extends Group {
         });
 
         TempEventManager.bind("show-blue-borders", obj -> {
-            List<Borderable> brs = (List<Borderable>) obj.get();
-
-            if (brs == null) {
-                for (Borderable blueBorderOwner : blueBorderOwners) {
-                    blueBorderOwner.setBorder(null);
-                }
-            } else {
-                for (Borderable br : brs) {
-                    if (unitBorderOwner == br) {
+            Map<Borderable, Runnable> map = (Map<Borderable, Runnable>) obj.get();
+            clearBlueBorder();
+            if (map != null) {
+                map.entrySet().forEach(entry -> {
+                    if (unitBorderOwner == entry.getKey()) {
+                        singleBorderImageBackup = unitBorderOwner.getBorder();
                         unitBorderOwner.setBorder(null);// TODO: 12.12.2016 make better
                     }
                     Image i = new Image(blueBorderTexture);
-                    br.setBorder(new Image(blueBorderTexture));
+                    entry.getKey().setBorder(new Image(blueBorderTexture));
                     i.setX(-6);
                     i.setY(-6);
-                    i.setHeight(br.getH() + 12);
-                    i.setWidth(br.getW() + 12);
-                }
-                if (blueBorderOwners != null) {
-                    for (Borderable blueBorderOwner : blueBorderOwners) {
-                        blueBorderOwner.setBorder(null);
-                    }
-                }
-                blueBorderOwners = brs;
+                    i.setHeight(entry.getKey().getH() + 12);
+                    i.setWidth(entry.getKey().getW() + 12);
+                });
+
+                blueBorderOwners = map;
             }
         });
+    }
+
+    public void hitAndCall(Borderable borderable) {
+        blueBorderOwners.entrySet().forEach(entry -> {
+            if (entry.getKey() == borderable) {
+                entry.getValue().run();
+            }
+        });
+
+        clearBlueBorder();
+
+        if (singleBorderImageBackup != null) {
+            showBorder(singleBorderImageBackup, unitBorderOwner);
+            singleBorderImageBackup = null;
+        }
+
     }
 
     private void showBorder(Image border, Borderable owner) {
@@ -114,17 +135,11 @@ public class CellBorderManager extends Group {
         border.setX(-6);
         border.setY(-6);
         owner.setBorder(border);
-        if (unitBorderOwner != null) {
+
+        if (unitBorderOwner != null && unitBorderOwner != owner) {
             unitBorderOwner.setBorder(null);
         }
         unitBorderOwner = owner;
-    }
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-/*        if (greenBorder.isVisible()) {
-            greenBorder.draw(batch, parentAlpha);
-        }*/
     }
 
     public void updateBorderSize() {
@@ -132,10 +147,5 @@ public class CellBorderManager extends Group {
             unitBorderOwner.getBorder().setWidth(unitBorderOwner.getW() + 12);
             unitBorderOwner.getBorder().setHeight(unitBorderOwner.getH() + 12);
         }
-    }
-
-    @Override
-    public Actor hit(float x, float y, boolean touchable) {
-        return null;//this is abstract object
     }
 }

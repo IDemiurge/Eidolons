@@ -128,8 +128,11 @@ public class UnitView extends Group implements Borderable {
 
     @Override
     public void setBorder(Image image) {
-        if (image == null) {
+        if (border != null) {
             removeActor(border);
+        }
+
+        if (image == null) {
             border = null;
         } else {
             addActor(image);
@@ -148,7 +151,7 @@ public class UnitView extends Group implements Borderable {
     }
 
     @Override
-    public Actor getBorder() {
+    public Image getBorder() {
         return border;
     }
 }

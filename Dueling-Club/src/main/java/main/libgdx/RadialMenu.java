@@ -21,13 +21,17 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.entity.obj.top.DC_ActiveObj;
+import main.game.DC_Game;
 import main.game.Game;
 import main.system.EventCallbackParam;
-import main.system.TempEventManager;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.*;
+
+import static main.system.TempEventManager.trigger;
 
 public class RadialMenu extends Group {
     private TextureCache textureCache;
@@ -192,6 +196,7 @@ public class RadialMenu extends Group {
                     action.run();
                     return true;
                 }
+
             });
         }
 
@@ -301,24 +306,43 @@ public class RadialMenu extends Group {
 
             if (obj.isAttack()) {
                 DC_ActiveObj dcActiveObj = (DC_ActiveObj) obj;
+                RadialMenu.CreatorNode inn1 = new CreatorNode();
+                inn1.texture = textureCache.getOrCreate(((Entity) obj).getImagePath());
+                inn1.name = obj.getName();
+                inn1.action = null;
                 if (obj.getRef().getSourceObj() == target) {
-                    Ref ref1 = dcActiveObj.getRef();
-                    ref1.setMatch(target.getId());
-                    Filter<Obj> filter = dcActiveObj.getTargeting().getFilter();
-                    filter.setRef(ref1);
-                    if (filter.getObjects().size() > 0){
-                        TempEventManager.trigger("select-multi-objects", new EventCallbackParam(filter.getObjects()));
-                    } else {
-                        int debug  = 10;
-                        //STD_SOUNDS.CLICK_ERROR.getPath()
+                    List<RadialMenu.CreatorNode> list = new ArrayList<>();
+                    for (DC_ActiveObj dc_activeObj : dcActiveObj.getSubActions()) {
+                        Ref ref1 = dcActiveObj.getRef();
+                        ref1.setMatch(target.getId());
+                        Filter<Obj> filter = dcActiveObj.getTargeting().getFilter();
+                        filter.setRef(ref1);
+                        //Set<Obj> objects = filter.getObjects();
+                        Set<Obj> objects = new HashSet<>();
+                        DC_Game.game.getUnits().forEach(o -> {
+                            objects.add(o);
+                        });
+                        if (objects.size() > 0) {
+                            Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(objects, (t) -> {
+                                Ref ref = dc_activeObj.getRef();
+                                ref.setTarget(t.getId());
+                                dc_activeObj.activate(ref);
+                            });
+                            RadialMenu.CreatorNode innn = new CreatorNode();
+                            innn.name = dc_activeObj.getName();
+                            innn.texture = textureCache.getOrCreate(dc_activeObj.getImagePath());
+                            innn.action = () -> {
+                                trigger("select-multi-objects", new EventCallbackParam(p));
+                            };
+                            list.add(innn);
+                        } else {
+                            int debug = 10;
+                            //STD_SOUNDS.CLICK_ERROR.getPath()
+                        }
                     }
-                }
-
-                if (obj.getTargeting() instanceof SelectiveTargeting) {
-                    RadialMenu.CreatorNode inn1 = new CreatorNode();
-                    inn1.texture = textureCache.getOrCreate(((Entity) obj).getImagePath());
-                    inn1.name = obj.getName();
-                    inn1.action = null;
+                    inn1.childNodes = list;
+                    nn1.add(inn1);
+                } else if (obj.getTargeting() instanceof SelectiveTargeting) {
                     List<RadialMenu.CreatorNode> list = new ArrayList<>();
                     for (DC_ActiveObj dc_activeObj : dcActiveObj.getSubActions()) {
                         RadialMenu.CreatorNode innn = new CreatorNode();

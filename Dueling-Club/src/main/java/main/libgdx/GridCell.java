@@ -92,7 +92,7 @@ public class GridCell extends Group implements Borderable {
     }
 
     @Override
-    public Actor getBorder() {
+    public Image getBorder() {
         return border;
     }
 }

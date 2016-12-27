@@ -1,6 +1,5 @@
 package main.libgdx;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public interface Borderable {
@@ -10,5 +9,5 @@ public interface Borderable {
 
     int getH();
 
-    Actor getBorder();
+    Image getBorder();
 }
