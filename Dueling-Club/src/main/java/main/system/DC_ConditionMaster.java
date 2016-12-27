@@ -27,6 +27,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.DC_HeroObj;
 import main.game.battlefield.Coordinates.UNIT_DIRECTION;
+import main.rules.mechanics.AirborneRule;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
@@ -81,7 +82,8 @@ public class DC_ConditionMaster extends ConditionMaster {
                         new ClassificationCondition(CLASSIFICATIONS.DEMON), new PropCondition(
                         G_PROPS.PRINCIPLES, PRINCIPLES.TREACHERY)));
             case ONLY_EVIL:
-                return new OrConditions(new ClassificationCondition(CLASSIFICATIONS.UNDEAD),
+                return new OrConditions(
+                        new ClassificationCondition(CLASSIFICATIONS.UNDEAD),
                         new ClassificationCondition(CLASSIFICATIONS.DEMON), new PropCondition(
                         G_PROPS.PRINCIPLES, PRINCIPLES.TREACHERY));
 
@@ -96,6 +98,13 @@ public class DC_ConditionMaster extends ConditionMaster {
             case NO_ENEMIES:
                 return new NotCondition(new OwnershipCondition(true, KEYS.MATCH + "", KEYS.SOURCE
                         + ""));
+            case NO_WALLS:
+            return     new NotCondition(
+                        new PropCondition(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.WALL+""));
+
+            case NO_WATER:  return   new NotCondition(
+                 new PropCondition(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.WATER+""));
+
             case NO_NEUTRALS:
                 return new NotCondition(new OwnershipCondition(KEYS.MATCH + "", true));
             case NO_LIVING:
@@ -319,7 +328,7 @@ public class DC_ConditionMaster extends ConditionMaster {
                 ));
                 c.add(ConditionMaster.getAttackConditions());
                 c.add(getClearShotCondition(KEYS.MATCH.name()));
-
+                c.add(AirborneRule.getMeleeAttackCondition());
                 break;
             case GRAVE_CELL:
                 c.add(new GraveCondition());

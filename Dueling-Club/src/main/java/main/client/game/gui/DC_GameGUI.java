@@ -18,11 +18,11 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 public class DC_GameGUI implements MouseListener {
+    private static final String ICON_PATH = "UI\\Death Combat.png"
+     // "UI\\PentagramX3.png"
+     ;
     public static final int BF_WIDTH = 9;
     public static final int BF_HEIGHT = 5;
-    private static final String ICON_PATH = "UI\\Death Combat.png"
-            // "UI\\PentagramX3.png"
-            ;
     private static final String SV_POS = "pos 400 400";
 
     private JFrame window;
@@ -49,79 +49,32 @@ public class DC_GameGUI implements MouseListener {
 
     }
 
-    public static Image createBackgroundOverlay() {
-        Image img = ImageManager.getNewBufferedImage(GuiManager.getScreenWidthInt(), GuiManager
-                .getScreenHeightInt());
-        int width = img.getWidth(null);
-        int height = img.getHeight(null);
-
-        Image applied = ImageManager.getImage("ui\\bf\\bf frame vertical stripe.png");
-        img = ImageManager.applyImage(img, applied, 0, 0, false, false);
-        img = ImageManager
-                .applyImage(img, applied, width - applied.getWidth(null), 0, false, false);
-        applied = ImageManager.getImage("ui\\bf\\bf frame horizontal stripe.png");
-        // img = ImageManager.applyImage(img, applied, 0, 0, false, false);
-        img = ImageManager.applyImage(img, applied, 0, height - applied.getHeight(null), false,
-                false);
-        //
-        applied = ImageManager.getImage("ui\\bf\\bf frame corner.png");
-        img = ImageManager.applyImage(img, applied, 0, height - applied.getHeight(null), false,
-                false);
-        applied = main.system.graphics.ImageTransformer.flipHorizontally(ImageManager
-                .getBufferedImage(applied));
-        img = ImageManager.applyImage(img, applied, width - applied.getWidth(null), height
-                - applied.getHeight(null), false, false);
-
-        applied = main.system.graphics.ImageTransformer.flipVertically(ImageManager
-                .getBufferedImage(applied));
-        img = ImageManager
-                .applyImage(img, applied, width - applied.getWidth(null), 0, false, false);
-        applied = main.system.graphics.ImageTransformer.flipHorizontally(ImageManager
-                .getBufferedImage(applied));
-        img = ImageManager.applyImage(img, applied, 0, 0, false, false);
-
-        return img;
-    }
-
-    public static String getIconPath() {
-        return ICON_PATH;
-    }
-
-    public static int getBfWidth() {
-        return BF_WIDTH;
-    }
-
-    public static int getBfHeight() {
-        return BF_HEIGHT;
-    }
-
-    //
-
-    public static String getSvPos() {
-        return SV_POS;
-    }
-
     public void initGUI() {
         game.setGUI(this);
+        // G_Panel.setPanelSize(GuiManager.getSize());
 
-        //init main panel
+        bfBuilder = (DC_Builder) game.getBattleField().getBuilder();
+        initMainPanel();
+        if (standalone)
+            initMainWindow();
+
+    }
+
+    private void initMainPanel() {
         setPanel(new G_Panel());
         getPanel().setIgnoreRepaint(true);
         getPanel().setOpaque(false);
 
-        //init battlefield
+        initBattleField();
+    }
+
+    private void initBattleField() {
         // WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
-        bfBuilder = game.getBattleField().getBuilder();
         bfComp = bfBuilder.getComp();
         ((G_Panel) bfComp).setPanelSize(GuiManager.DEF_DIMENSION);
         initBackground();
         getPanel().add(bfComp);
-
         setDefaultComponentZOrder();
-
-        if (standalone) {
-            initMainWindow();
-        }
 
     }
 
@@ -130,6 +83,8 @@ public class DC_GameGUI implements MouseListener {
         getPanel().setComponentZOrder(bg, 1);
 
     }
+
+    //
 
     private void initBackground() {
         ImageIcon icon = getBackgroundPic();
@@ -153,40 +108,13 @@ public class DC_GameGUI implements MouseListener {
         return getBackgroundPic(null);
     }
 
-    // public void setSceneViewer(SceneViewer sv) {
-    // // bf sized
-    // this.sv = sv;
-    // }
-    //
-    // public void showSceneViewer(boolean fullscreen) {
-    // addSceneViewer(fullscreen);
-    // sv.activate();
-    // }
-    //
-    // private void addSceneViewer(boolean fullscreen) {
-    // panel.add(sv.getComp(), (fullscreen) ? "pos 0 0" : SV_POS);
-    // panel.setComponentZOrder(sv.getComp(), 0);
-    // panel.setComponentZOrder(bfComp, 1);
-    // panel.setComponentZOrder(lbl, 2);
-    // }
-    //
-    // public void hideSceneViewer() {
-    // removeSceneViewer();
-    // setDefaultComponentZOrder();
-    // }
-    //
-    // private void removeSceneViewer() {
-    // panel.remove(sv.getComp());
-    //
-    // }
-
     private ImageIcon getBackgroundPic(String path) {
         if (path == null) {
 
             path = ImageManager.DEFAULT_BACKGROUND;
             try {
                 path = ((DC_Builder) game.getBattleField().getBuilder()).getGrid().getMap()
-                        .getBackground();
+                 .getBackground();
             } catch (Exception e) {
                 main.system.auxiliary.LogMaster.log(1, "failed to load background!");
             }
@@ -213,9 +141,43 @@ public class DC_GameGUI implements MouseListener {
         img = ImageManager.applyImage(img, backgroundOverlays, 0, 0, false, false);
 
         bgPic = (BufferedImage) ImageManager.applyImage(bgPic, img, ImageManager.CENTERED,
-                ImageManager.CENTERED, false, false);
+         ImageManager.CENTERED, false, false);
         return new ImageIcon(bgPic);
 
+    }
+
+    public static Image createBackgroundOverlay() {
+        Image img = ImageManager.getNewBufferedImage(GuiManager.getScreenWidthInt(), GuiManager
+         .getScreenHeightInt());
+        int width = img.getWidth(null);
+        int height = img.getHeight(null);
+
+        Image applied = ImageManager.getImage("ui\\bf\\bf frame vertical stripe.png");
+        img = ImageManager.applyImage(img, applied, 0, 0, false, false);
+        img = ImageManager
+         .applyImage(img, applied, width - applied.getWidth(null), 0, false, false);
+        applied = ImageManager.getImage("ui\\bf\\bf frame horizontal stripe.png");
+        // img = ImageManager.applyImage(img, applied, 0, 0, false, false);
+        img = ImageManager.applyImage(img, applied, 0, height - applied.getHeight(null), false,
+         false);
+        //
+        applied = ImageManager.getImage("ui\\bf\\bf frame corner.png");
+        img = ImageManager.applyImage(img, applied, 0, height - applied.getHeight(null), false,
+         false);
+        applied = main.system.graphics.ImageTransformer.flipHorizontally(ImageManager
+         .getBufferedImage(applied));
+        img = ImageManager.applyImage(img, applied, width - applied.getWidth(null), height
+         - applied.getHeight(null), false, false);
+
+        applied = main.system.graphics.ImageTransformer.flipVertically(ImageManager
+         .getBufferedImage(applied));
+        img = ImageManager
+         .applyImage(img, applied, width - applied.getWidth(null), 0, false, false);
+        applied = main.system.graphics.ImageTransformer.flipHorizontally(ImageManager
+         .getBufferedImage(applied));
+        img = ImageManager.applyImage(img, applied, 0, 0, false, false);
+
+        return img;
     }
 
     private void initMainWindow() {
@@ -261,6 +223,33 @@ public class DC_GameGUI implements MouseListener {
         window.setIconImage(img.getImage());
     }
 
+    // public void setSceneViewer(SceneViewer sv) {
+    // // bf sized
+    // this.sv = sv;
+    // }
+    //
+    // public void showSceneViewer(boolean fullscreen) {
+    // addSceneViewer(fullscreen);
+    // sv.activate();
+    // }
+    //
+    // private void addSceneViewer(boolean fullscreen) {
+    // panel.add(sv.getComp(), (fullscreen) ? "pos 0 0" : SV_POS);
+    // panel.setComponentZOrder(sv.getComp(), 0);
+    // panel.setComponentZOrder(bfComp, 1);
+    // panel.setComponentZOrder(lbl, 2);
+    // }
+    //
+    // public void hideSceneViewer() {
+    // removeSceneViewer();
+    // setDefaultComponentZOrder();
+    // }
+    //
+    // private void removeSceneViewer() {
+    // panel.remove(sv.getComp());
+    //
+    // }
+
     public G_Panel getPanel() {
         return panel;
     }
@@ -269,12 +258,24 @@ public class DC_GameGUI implements MouseListener {
         this.panel = panel;
     }
 
-    public JFrame getWindow() {
-        return window;
+    public static String getIconPath() {
+        return ICON_PATH;
     }
 
-    public void setWindow(JFrame window) {
-        this.window = window;
+    public static int getBfWidth() {
+        return BF_WIDTH;
+    }
+
+    public static int getBfHeight() {
+        return BF_HEIGHT;
+    }
+
+    public static String getSvPos() {
+        return SV_POS;
+    }
+
+    public JFrame getWindow() {
+        return window;
     }
 
     public JLabel getBg() {
@@ -299,6 +300,10 @@ public class DC_GameGUI implements MouseListener {
 
     public boolean isStandalone() {
         return standalone;
+    }
+
+    public void setWindow(JFrame window) {
+        this.window = window;
     }
 
     @Override

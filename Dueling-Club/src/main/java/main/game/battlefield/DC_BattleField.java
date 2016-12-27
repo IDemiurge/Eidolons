@@ -230,11 +230,13 @@ public class DC_BattleField extends SwingBattleField {
     }
 
     public void refreshInitiativeQueue() {
+        if (dc_builder!=null )
         dc_builder.getUnitInfoPanel().getPriorityListPanel().refresh();
 
     }
 
     public void centerCameraOn(Obj selected) {
+        if (grid==null )return ;
         grid.manualOffsetReset();
         grid.setCameraCenterCoordinates(selected.getCoordinates());
 

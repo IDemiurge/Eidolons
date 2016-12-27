@@ -18,3 +18,8 @@ Arcane-Vault/target/*
 generated
 /out
 resources/res
+/C-Engine/*.project
+/Dueling-Club/*.project
+/resources/*.project
+/Arcane-Vault/*.project
+/Arcane-Tower/*.project

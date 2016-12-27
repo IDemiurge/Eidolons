@@ -14,7 +14,8 @@ public abstract class G_ButtonPanel extends G_Panel implements ActionListener {
     private static final String BASE_CONSTRAINT = "sg btn";
     protected int R_HEIGHT = 0;
     protected int C_WIDTH = 0;
-    protected int columns = 1;
+
+    protected int columns;
     protected int maxRows = Integer.MAX_VALUE;
     protected boolean horizontal = true;
 
@@ -63,6 +64,10 @@ public abstract class G_ButtonPanel extends G_Panel implements ActionListener {
         }
     }
 
+    public int getColumns() {
+        return 1;
+    }
+
     public boolean isHorizontal() {
         return horizontal;
     }
@@ -93,7 +98,7 @@ public abstract class G_ButtonPanel extends G_Panel implements ActionListener {
     }
 
     protected void setInts() {
-
+        columns = getColumns();
     }
 
 }

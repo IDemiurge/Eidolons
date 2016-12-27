@@ -357,6 +357,7 @@ public class GuiManager {
     }
 
     public static boolean isGuiDebug() {
+//        return true;
         return guiDebug;
     }
 

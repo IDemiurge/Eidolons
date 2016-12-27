@@ -863,6 +863,10 @@ public enum PARAMS implements PARAMETER {
         // WISDOM_PER_LEVEL.setLowPriority(true);
         // CHARISMA_PER_LEVEL.setLowPriority(true);
 
+        WATER_MASTERY.initMastery();
+        AIR_MASTERY.initMastery();
+        EARTH_MASTERY.initMastery();
+        FIRE_MASTERY.initMastery();
         WARCRY_MASTERY.initMastery();
         TACTICS_MASTERY.initMastery();
         LEADERSHIP_MASTERY.initMastery();

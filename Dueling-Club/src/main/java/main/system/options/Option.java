@@ -1,6 +1,6 @@
 package main.system.options;
 
-import main.swing.components.menus.OptionsPanel.OPTION;
+import main.swing.components.menus.OPTION;
 
 public class Option implements OPTION {
     Object[] options;
