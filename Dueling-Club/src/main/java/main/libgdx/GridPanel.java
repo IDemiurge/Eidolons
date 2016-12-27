@@ -2,7 +2,6 @@ package main.libgdx;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import main.ability.effects.ChangeFacingEffect;
 import main.content.PARAMS;
@@ -19,8 +18,9 @@ import main.system.EventCallbackParam;
 import main.system.TempEventManager;
 import main.system.datatypes.DequeImpl;
 import main.test.libgdx.prototype.Lightmap;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Triple;
 
-import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  * Time: 15:57
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_GridPanel extends Group {
+public class GridPanel extends Group {
     protected GridCell[][] cells;
     protected Texture emptyImage;
     protected Texture hiddenImage;
@@ -39,10 +39,10 @@ public class DC_GDX_GridPanel extends Group {
     protected Texture cellBorderTexture;
     protected Lightmap lightmap;
     protected DequeImpl<MicroObj> units;
-
-    protected CellBorderManager cellBorderManager;
-    protected ToolTipManager toolTipManager;
     protected TextureCache textureCache;
+    protected CellBorderManager cellBorderManager;
+
+
     protected Map<DC_HeroObj, UnitView> unitMap;
 
     private static final String backgroundPath = "UI/custom/grid/GRID_BG_WIDE.png";
@@ -52,36 +52,30 @@ public class DC_GDX_GridPanel extends Group {
     private static final String unknownCellPath = "UI/cells/Unknown Cell v2.png";
     private static final String cellBorderPath = "UI\\CELL for 96.png";
 
-    private DC_GDX_RadialMenu radialMenu = null;
-
-    private String imagePath;
     private int cols;
     private int rows;
 
-    public DC_GDX_GridPanel(String imagePath, int cols, int rows) {
-        this.imagePath = imagePath;
+    public GridPanel(TextureCache textureCache, int cols, int rows) {
+        this.textureCache = textureCache;
         this.cols = cols;
         this.rows = rows;
     }
 
-    public DC_GDX_GridPanel init() {
-        emptyImage = new Texture(imagePath + File.separator + emptyCellPath);
-        hiddenImage = new Texture(imagePath + File.separator + hiddenCellPath);
-        highlightImage = new Texture(imagePath + File.separator + highlightCellPath);
-        unknownImage = new Texture(imagePath + File.separator + unknownCellPath);
-        cellBorderTexture = new Texture(imagePath + File.separator + cellBorderPath);
-        textureCache = new TextureCache(imagePath);
-
-        cellBorderManager = new CellBorderManager(emptyImage.getWidth(), emptyImage.getHeight(), textureCache);
-        toolTipManager = new ToolTipManager(textureCache);
-
+    public GridPanel init() {
         unitMap = new HashMap<>();
+        emptyImage = textureCache.getOrCreate(emptyCellPath);
+        hiddenImage = textureCache.getOrCreate(hiddenCellPath);
+        highlightImage = textureCache.getOrCreate(highlightCellPath);
+        unknownImage = textureCache.getOrCreate(unknownCellPath);
+        cellBorderTexture = textureCache.getOrCreate(cellBorderPath);
 
         cells = new GridCell[cols][rows];
 
+        cellBorderManager = new CellBorderManager(emptyImage.getWidth(), emptyImage.getHeight(), textureCache);
+
         for (int x = 0; x < cols; x++) {
             for (int y = rows - 1; y >= 0; y--) {
-                cells[x][y] = new GridCell(emptyImage, imagePath, x, y);
+                cells[x][y] = new GridCell(emptyImage,x, y);
                 cells[x][y].setX(x * emptyImage.getWidth());
                 cells[x][y].setY(y * emptyImage.getHeight());
                 addActor(cells[x][y].init());
@@ -199,7 +193,7 @@ public class DC_GDX_GridPanel extends Group {
                     options.add(new UnitViewOptions(object, textureCache, unitMap));
                 }
 
-                GridCellContainer cellContainer = new GridCellContainer(emptyImage, imagePath, coordinates.getX(), coordinates.getY()).init();
+                GridCellContainer cellContainer = new GridCellContainer(emptyImage, coordinates.getX(), coordinates.getY()).init();
                 cellContainer.setObjects(options);
 
                 cells[coordinates.getX()][coordinates.getY()].addInnerDrawable(cellContainer);
@@ -221,7 +215,7 @@ public class DC_GDX_GridPanel extends Group {
             if (options.size() == 0) {
                 cells[cords.getX()][cords.getY()].addInnerDrawable(null);
             } else {
-                GridCellContainer cellContainer = new GridCellContainer(cellBorderTexture, imagePath, cords.getX(), cords.getY()).init();
+                GridCellContainer cellContainer = new GridCellContainer(cellBorderTexture, cords.getX(), cords.getY()).init();
                 cellContainer.setObjects(options);
 
                 if (cells[cords.getX()][cords.getY()].getInnerDrawable() != null) {
@@ -260,9 +254,8 @@ public class DC_GDX_GridPanel extends Group {
                         DC_HeroObj hero = unitMap.entrySet().stream()
                                 .filter(entry -> entry.getValue() == uv).findFirst()
                                 .get().getKey();
-                        ToolTipManager.ToolTipOption option = new ToolTipManager.ToolTipOption();
-                        option.x = (int) x;
-                        option.y = (int) y;
+
+                        List<ToolTipManager.ToolTipRecordOption> recordOptions = new ArrayList<>();
 
                         tooltipStatMap.entrySet().forEach(entry -> {
                             ToolTipManager.ToolTipRecordOption recordOption = new ToolTipManager.ToolTipRecordOption();
@@ -270,10 +263,10 @@ public class DC_GDX_GridPanel extends Group {
                             recordOption.maxVal = hero.getIntParam(entry.getValue());
                             recordOption.name = entry.getValue();
                             recordOption.recordImage = textureCache.getOrCreate("UI\\value icons\\" + entry.getValue().replaceAll("_", " ") + ".png");
-                            option.recordOptions.add(recordOption);
+                            recordOptions.add(recordOption);
                         });
 
-                        TempEventManager.trigger("show-tooltip", new EventCallbackParam(option));
+                        TempEventManager.trigger("show-tooltip", new EventCallbackParam(recordOptions));
                         return true;
                     }
                 }
@@ -281,22 +274,20 @@ public class DC_GDX_GridPanel extends Group {
                 return true;
             }
 
+            /*
+            Entity e = ((Entity) obj);
+            obj.isAttack();
+            obj.getTargeting() instanceof SelectiveTargeting;
+            obj.getTargeting().getFilter().getObjects().contains(Game.game.getCellByCoordinate(new Coordinates(0, 0)));
+            obj.isMove();
+            obj.isTurn();
+            ((Entity) obj).getImagePath();*/
+
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Actor a;
-                if (radialMenu != null) {
-                    Vector2 v = new Vector2(x, y);
-                    v = parentToLocalCoordinates(v);
-//                    a = radialMenu.hit(v.x - radialMenu.getX(), v.y - radialMenu.getY(), true);
-                    a = radialMenu.hit(x, y, true);
-                    if (a != null && a instanceof DC_GDX_RadialMenu.MenuNode) {
-                        DC_GDX_RadialMenu.MenuNode node = (DC_GDX_RadialMenu.MenuNode) a;
-                        node.action.run();
-                        return true;
-                    }
-                }
 
-                a = DC_GDX_GridPanel.super.hit(x, y, true);
+                a = GridPanel.super.hit(x, y, true);
                 if (a != null && a instanceof GridCell) {
                     GridCell cell = (GridCell) a;
                     if (cell.getInnerDrawable() != null) {
@@ -308,11 +299,13 @@ public class DC_GDX_GridPanel extends Group {
                             DC_HeroObj heroObj = unitMap.entrySet()
                                     .stream().filter(entry -> entry.getValue() == unit).findFirst()
                                     .get().getKey();
-                            createRadialMenu(x, y, heroObj);
+                            Triple<DC_Obj,Float,Float> container = new ImmutableTriple<>(heroObj,x,y);
+                            TempEventManager.trigger("create-radial-menu", new EventCallbackParam(container));
                         }
                     } else if (event.getButton() == 1) {
                         DC_Obj dc_cell = DC_Game.game.getCellByCoordinate(new Coordinates(cell.gridX, cell.gridY));
-                        createRadialMenu(x, y, dc_cell);
+                        Triple<DC_Obj,Float,Float> container = new ImmutableTriple<>(dc_cell,x,y);
+                        TempEventManager.trigger("create-radial-menu", new EventCallbackParam(container));
                     }
                     if (event.getButton() == 0) {
 /*                        greenBorder.setX(cell.getX() - 5);
@@ -327,13 +320,6 @@ public class DC_GDX_GridPanel extends Group {
 
 
         return this;
-    }
-
-    private void createRadialMenu(float x, float y, DC_Obj targetObj) {
-        if (radialMenu != null) {
-            radialMenu = null;//dispose if required;
-        }
-        radialMenu = DC_GDX_RadialMenu.create(x, y, targetObj, textureCache);
     }
 
     @Override
@@ -357,14 +343,6 @@ public class DC_GDX_GridPanel extends Group {
         }
 
         cellBorderManager.draw(batch, parentAlpha);
-
-        if (radialMenu != null) {
-            radialMenu.draw(batch, parentAlpha);
-        }
-
-        if (toolTipManager != null) {
-            toolTipManager.draw(batch, parentAlpha);
-        }
 
         if (lightmap != null) {
             lightmap.updateLight();
