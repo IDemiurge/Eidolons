@@ -2,7 +2,7 @@ package main.system.options;
 
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
-import main.swing.components.menus.OPTION;
+import main.swing.components.menus.OptionsPanel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
@@ -122,7 +122,7 @@ public class OptionsMaster {
             return null;
         Class<?> clazz = getOptionGroupEnumClass(group);
         for (Object c : clazz.getEnumConstants()) {
-            OPTION option = (OPTION) c;
+            OptionsPanel.OPTION option = (OptionsPanel.OPTION) c;
             if (option.getDefaultValue() == null)
                 continue;
             String value = option.getDefaultValue().toString();

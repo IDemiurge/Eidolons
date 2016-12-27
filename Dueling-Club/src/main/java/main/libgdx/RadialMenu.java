@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -70,9 +71,11 @@ public class RadialMenu extends Group {
     private void init(List<CreatorNode> nodes) {
         curentNode = new MenuNode(closeImage, "Close");
         curentNode.childs = createChilds(curentNode, nodes);
+        Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        v2 = getStage().screenToStageCoordinates(v2);
         setBounds(
-                Gdx.input.getX() - getWidth() / 2,
-                Gdx.graphics.getHeight() - Gdx.input.getY() - getHeight() / 2,
+                v2.x - getWidth() / 2,
+                v2.y - getHeight() / 2,
                 curentNode.getWidth(),
                 curentNode.getHeight()
         );
@@ -156,9 +159,9 @@ public class RadialMenu extends Group {
     public Actor hit(float x, float y, boolean touchable) {
         if (!isVisible() || curentNode == null) return null;
         if (!Gdx.input.isTouched()) return null;
-        int xx = Gdx.input.getX();
-        int yy = Gdx.graphics.getHeight() - Gdx.input.getY();
-        return curentNode.hit(xx, yy, touchable);
+        Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        v2 = getStage().screenToStageCoordinates(v2);
+        return curentNode.hit(v2.x, v2.y, touchable);
     }
 
     @Override

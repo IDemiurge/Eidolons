@@ -1,6 +1,6 @@
 package main.system.options;
 
-import main.swing.components.menus.OPTION;
+import main.swing.components.menus.OptionsPanel;
 import main.system.options.AnimationOptions.ANIMATION_OPTION;
 
 public class AnimationOptions extends Options<ANIMATION_OPTION> {
@@ -11,7 +11,7 @@ public class AnimationOptions extends Options<ANIMATION_OPTION> {
     }
 
     // AI_PARAMS,
-    public enum ANIMATION_OPTION implements OPTION {
+    public enum ANIMATION_OPTION implements OptionsPanel.OPTION {
         INFO_LEVEL(1), SPEED(100), PHASE_TIME(500), OFFSET_FOR_OVERLAP(true),;
 
         Object[] options;

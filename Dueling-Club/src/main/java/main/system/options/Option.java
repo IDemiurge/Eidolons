@@ -1,8 +1,9 @@
 package main.system.options;
 
-import main.swing.components.menus.OPTION;
 
-public class Option implements OPTION {
+import main.swing.components.menus.OptionsPanel;
+
+public class Option implements OptionsPanel.OPTION {
     Object[] options;
     Integer min;
     Integer max;
