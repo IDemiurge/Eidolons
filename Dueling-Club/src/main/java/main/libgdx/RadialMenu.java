@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -26,9 +27,7 @@ import main.system.TempEventManager;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class RadialMenu extends Group {
     private TextureCache textureCache;
@@ -70,9 +69,11 @@ public class RadialMenu extends Group {
     private void init(List<CreatorNode> nodes) {
         curentNode = new MenuNode(closeImage, "Close");
         curentNode.childs = createChilds(curentNode, nodes);
+        Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        v2 = getStage().screenToStageCoordinates(v2);
         setBounds(
-                Gdx.input.getX() - getWidth() / 2,
-                Gdx.graphics.getHeight() - Gdx.input.getY() - getHeight() / 2,
+                v2.x - getWidth() / 2,
+                v2.y - getHeight() / 2,
                 curentNode.getWidth(),
                 curentNode.getHeight()
         );
@@ -156,9 +157,9 @@ public class RadialMenu extends Group {
     public Actor hit(float x, float y, boolean touchable) {
         if (!isVisible() || curentNode == null) return null;
         if (!Gdx.input.isTouched()) return null;
-        int xx = Gdx.input.getX();
-        int yy = Gdx.graphics.getHeight() - Gdx.input.getY();
-        return curentNode.hit(xx, yy, touchable);
+        Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        v2 = getStage().screenToStageCoordinates(v2);
+        return curentNode.hit(v2.x, v2.y, touchable);
     }
 
     @Override
@@ -257,7 +258,7 @@ public class RadialMenu extends Group {
     }
 
 
-    public void createNew(float x, float y, DC_Obj target) {
+    public void createNew(DC_Obj target) {
         MicroObj activeObj = (MicroObj) Game.game.getManager().getActiveObj();
         List<ActiveObj> activeObjs = activeObj.getActives();
 
@@ -265,7 +266,13 @@ public class RadialMenu extends Group {
         List<Triple<Runnable, Texture, String>> turns = new ArrayList<>();
         List<RadialMenu.CreatorNode> nn1 = new ArrayList<>();
 
+        Set<ActiveObj> unics = new HashSet<>();
+
         for (ActiveObj obj : activeObjs) {
+            if (unics.contains(obj)) {
+                continue;
+            }
+            unics.add(obj);
             if (obj.isMove()) {
                 if (obj.getTargeting() instanceof SelectiveTargeting) {
                     moves.add(new ImmutableTriple<>(() -> {
@@ -299,7 +306,12 @@ public class RadialMenu extends Group {
                     ref1.setMatch(target.getId());
                     Filter<Obj> filter = dcActiveObj.getTargeting().getFilter();
                     filter.setRef(ref1);
-                    TempEventManager.trigger("select-multi-objects", new EventCallbackParam(filter.getObjects()));
+                    if (filter.getObjects().size() > 0){
+                        TempEventManager.trigger("select-multi-objects", new EventCallbackParam(filter.getObjects()));
+                    } else {
+                        int debug  = 10;
+                        //STD_SOUNDS.CLICK_ERROR.getPath()
+                    }
                 }
 
                 if (obj.getTargeting() instanceof SelectiveTargeting) {
@@ -338,13 +350,24 @@ public class RadialMenu extends Group {
         n1.texture = moveAction;
         n1.childNodes = creatorNodes(moves);
 
+        RadialMenu.CreatorNode attM = new RadialMenu.CreatorNode();
+        attM.texture = nn1.get(0).texture;
+        attM.childNodes = nn1.get(0).childNodes;
+        attM.name = nn1.get(0).name;
+
         RadialMenu.CreatorNode n2 = new RadialMenu.CreatorNode();
         n2.texture = turnAction;
         n2.childNodes = creatorNodes(turns);
 
-        RadialMenu.CreatorNode n3 = new RadialMenu.CreatorNode();
+        RadialMenu.CreatorNode attO = new RadialMenu.CreatorNode();
+        attO.texture = nn1.get(1).texture;
+        attO.childNodes = nn1.get(1).childNodes;
+        attO.name = nn1.get(1).name;
+
+
+/*        RadialMenu.CreatorNode n3 = new RadialMenu.CreatorNode();
         n3.texture = attackAction;
-        n3.childNodes = nn1;
+        n3.childNodes = nn1;*/
 
         RadialMenu.CreatorNode n4 = new RadialMenu.CreatorNode();
         n4.texture = yellow;
@@ -353,7 +376,7 @@ public class RadialMenu extends Group {
         };
         n4.childNodes = creatorNodes("nn4:", red);
 
-        init(Arrays.asList(n1, n2, n3, n4));
+        init(Arrays.asList(attM, n1, attO, n2));
     }
 
     private static List<RadialMenu.CreatorNode> creatorNodes(List<Triple<Runnable, Texture, String>> pairs) {

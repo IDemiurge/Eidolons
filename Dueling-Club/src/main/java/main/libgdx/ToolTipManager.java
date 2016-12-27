@@ -3,6 +3,7 @@ package main.libgdx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -72,8 +73,10 @@ public class ToolTipManager extends Group {
                 offsetY = addToolTipOffset(bot, offsetY, recordOption);
             }
         }
-        setX(Gdx.input.getX());
-        setY(Gdx.graphics.getHeight() - Gdx.input.getY());
+
+        Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        v2 = getStage().screenToStageCoordinates(v2);
+        setPosition(v2.x,v2.y);
     }
 
     private int addToolTipOffset(TextureRegion region, int offset, ToolTipRecordOption option) {

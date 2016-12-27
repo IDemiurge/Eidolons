@@ -43,10 +43,10 @@ public class GameScreen implements Screen {
         bf = new Stage();
         gui = new Stage();
         camera = cam = new OrthographicCamera();
+        cam.setToOrtho(false, 1600, 900);
         bf.getViewport().setCamera(cam);
         //gui.getViewport().setCamera(cam);
         MyInputController controller = new MyInputController(cam);
-        cam.setToOrtho(false, 1600, 900);
         GL20 gl = Gdx.graphics.getGL20();
         gl.glEnable(GL20.GL_BLEND);
         gl.glEnable(GL20.GL_TEXTURE_2D);
@@ -71,7 +71,7 @@ public class GameScreen implements Screen {
 
         TempEventManager.bind("create-radial-menu", obj -> {
             Triple<DC_HeroObj, Float, Float> container = (Triple<DC_HeroObj, Float, Float>) obj.get();
-            radialMenu.createNew(container.getMiddle(), container.getRight(), container.getLeft());
+            radialMenu.createNew(container.getLeft());
         });
 
 //
@@ -121,6 +121,12 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         float camWidth = width;
         float camHeight = height;
+
+/*        camera = cam = new OrthographicCamera(width, height);
+        cam.update();*/
+        cam.setToOrtho(false, width, height);
+        bf.getViewport().update(width, height);
+        gui.getViewport().update(width, height);
 
 /*        to disable pixelperfect
         float camWidth = MapView.TILE_WIDTH * 10.0f;
