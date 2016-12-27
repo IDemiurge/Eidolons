@@ -141,6 +141,10 @@ public class GridPanel extends Group {
                         break;
                 }*/
             }
+            if (event.getType().name().startsWith("PROP_")) {
+
+                catched = true;
+            }
 
             if (event.getType().name().startsWith("PARAM_MODIFIED")) {
                 switch (event.getType().getArg()) {
@@ -154,6 +158,8 @@ public class GridPanel extends Group {
                         catched = true;
                         break;
                 }
+
+                catched = true;
             }
 
             if (!catched) {

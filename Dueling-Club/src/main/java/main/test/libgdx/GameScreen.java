@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.data.filesys.PathFinder;
 import main.entity.obj.DC_HeroObj;
@@ -42,6 +43,7 @@ public class GameScreen implements Screen {
     public GameScreen PostConstruct() {
         bf = new Stage();
         gui = new Stage();
+
         camera = cam = new OrthographicCamera();
         cam.setToOrtho(false, 1600, 900);
         bf.getViewport().setCamera(cam);

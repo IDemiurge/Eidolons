@@ -373,6 +373,8 @@ public class DC_GameManager extends GameManager {
                     .isTargetingTooltipShown((DC_ActiveObj) ref.getActive()))
                 getGame().getToolTipMaster().initTargetingTooltip((DC_ActiveObj) ref.getActive());
         selectingSet = filter.getObjects();
+//        new Pair(selectingSet, new TargetRunnable())
+//        TempEventManager.trigger("", new EventCallbackParam());
         return select(selectingSet);
     }
 
