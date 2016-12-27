@@ -106,6 +106,60 @@ public class DebugMaster {
         this.game = state.getGame();
         this.bf = bf;
     }
+public enum DEBUG_CONTROL{
+    DYNAMIC_PARAMETER(),
+    PARAMETER(),
+    PROPERTY(),
+    POSITION(),
+    SET(PROPERTY,PARAMETER,DYNAMIC_PARAMETER, POSITION){
+        @Override
+        boolean isRoot() {
+            return true;
+        }
+    },
+
+
+    REF(),
+    INFO(),
+    SHOW(REF,INFO){
+        @Override
+        boolean isRoot() {
+            return true;
+        }
+    },
+
+    STANDARD(),
+    PICK(),
+    TYPE(),
+    PICK_HIDDEN(),
+    FUNCTION(STANDARD,PICK,TYPE,PICK_HIDDEN){
+        @Override
+        boolean isRoot() {
+            return true;
+        }
+    },
+
+
+    ;
+
+
+    private   DEBUG_CONTROL[] children;
+
+    DEBUG_CONTROL(DEBUG_CONTROL...children){
+        this.children=children;
+
+    }boolean
+    isRoot(){
+        return false;
+    }
+    DEBUG_CONTROL[] getChildren(){
+        return children;
+    }
+    Object[] getChildObjects(){
+        return children;
+    }
+}
+
 
     public static boolean isOmnivisionOn() {
         return omnivision;

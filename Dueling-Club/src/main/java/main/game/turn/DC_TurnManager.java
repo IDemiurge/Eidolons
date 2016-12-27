@@ -47,6 +47,7 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
     public DC_TurnManager(DC_Game game) {
         this.game = game;
         // init();
+
     }
 
     public static boolean isVisionInitialized() {
