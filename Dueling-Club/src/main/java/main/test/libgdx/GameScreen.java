@@ -71,7 +71,7 @@ public class GameScreen implements Screen {
 
         TempEventManager.bind("create-radial-menu", obj -> {
             Triple<DC_HeroObj, Float, Float> container = (Triple<DC_HeroObj, Float, Float>) obj.get();
-            radialMenu.createNew(container.getMiddle(), container.getRight(), container.getLeft());
+            radialMenu.createNew(container.getLeft());
         });
 
 //
