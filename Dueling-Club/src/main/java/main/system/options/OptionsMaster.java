@@ -2,7 +2,7 @@ package main.system.options;
 
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
-import main.swing.components.menus.OptionsPanel.OPTION;
+import main.swing.components.menus.OPTION;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;

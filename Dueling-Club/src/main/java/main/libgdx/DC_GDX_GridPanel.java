@@ -283,6 +283,10 @@ public class DC_GDX_GridPanel extends Group {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                try{ return   handleTouchDown(event,x,y,pointer,button);             }catch(Exception e){                e.printStackTrace();            }
+                return false;
+            }
+                public boolean handleTouchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Actor a;
                 if (radialMenu != null) {
                     Vector2 v = new Vector2(x, y);

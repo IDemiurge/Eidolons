@@ -12,13 +12,23 @@ import main.system.DC_ConditionMaster;
 import main.system.math.PositionMaster;
 
 public class RayEffect extends SpecialTargetingEffect {
+    private String distance;
+
     public RayEffect(Effect effects) {
+        this(effects,null);
+    }
+    public RayEffect(Effect effects,String distance) {
         this.effects = effects;
+        this.distance = distance;
         effects.setReconstruct(true);
     }
 
     public void initTargeting() {
         Conditions conditions = new Conditions();
+        if (distance!=null )
+        conditions.add(ConditionMaster.getDistanceFilterCondition(
+                KEYS.SOURCE.toString(), distance));
+        
         if (PositionMaster.inLine(ref.getTargetObj().getCoordinates(), ref
                 .getSourceObj().getCoordinates())) {
             conditions.add(ConditionMaster.getLineCondition(ref.getSourceObj(),

@@ -23,6 +23,7 @@ import main.swing.components.panels.page.DC_PagedUnitActionPanel;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;
 import main.swing.components.panels.secondary.ActionModePanel;
 import main.swing.generic.components.Builder;
+import main.swing.generic.components.G_Component;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.swing.generic.services.dialog.DialogPanel;
@@ -58,14 +59,14 @@ public class DC_Builder extends Builder {
     private TurnTimer timer;
     private DC_GameState state;
     private DC_ActiveUnitPanel aup;
+    private DC_UnitInfoPanel uip;
     private boolean refreshing;
     private DC_BattleFieldGrid lastGrid;
     private Minimap minimap;
     private boolean minimapDisplayed;
     private Map<Dungeon, Minimap> minimaps;
-    private G_Panel ipHolder; //holder for cip and uip
+    private G_Panel ipHolder;
     private DC_CellInfoPanel cip;
-    private DC_UnitInfoPanel uip;
     private boolean dungeonsPanelDisplayed;
     private DungeonsPanel dungeonsPanel;
     private ActionModePanel actionModePanel;
@@ -81,32 +82,6 @@ public class DC_Builder extends Builder {
         comp.setBackground(ColorManager.getTranslucent(ColorManager.OBSIDIAN, 10));
         levelGrids = new HashMap<Dungeon, DC_BattleFieldGrid>();
         newDungeon((state.getGame().getDungeonMaster().getDungeon()));
-    }
-
-    public static int getBfGridPosY() {
-        // return VISUALS.PORTRAIT_BORDER.getHeight();
-        return GuiManager.getSquareCellSize();
-    }
-
-    public static int getBfGridPosX() {
-        return VISUALS.PORTRAIT_BORDER.getWidth() + OFFSET_X;
-        // return getSpellbookPanel().getPanelWidth();
-    }
-
-    public static int getBfGridPosY2() {
-        return getBfGridPosY() + GuiManager.getBattleFieldHeight();
-    }
-
-    public static int getBfGridPosX2() {
-        return getBfGridPosX() + GuiManager.getBattleFieldWidth();
-    }
-
-    public static int getCellSize() {
-        return cellSize;
-    }
-
-    private static void setCellSize(int cellSize) {
-        DC_Builder.cellSize = cellSize;
     }
 
     private G_Panel createMainComponent() {
@@ -178,28 +153,26 @@ public class DC_Builder extends Builder {
         topPanel = new DC_TopPanel(state.getGame());
         uap = new DC_UAP_Holder(state);
         aup = new DC_ActiveUnitPanel(state.getGame());
-        builderArray = new Builder[]{
+        builderArray = new Builder[] {
+
+        };
+        compArray = new G_Component[] { aup,grid.getComp(),  ipHolder, uap, topPanel };
+
+        infoArray = new String[] {
 
         };
 
-        compArray = new JComponent[]{grid.getComp() ,
-                aup, ipHolder, uap, topPanel};
-
-        infoArray = new String[]{
-
-        };
-
-        cInfoArray = new String[]{
-                getGridPos(),
-                "id aup, pos " + 0 + " 0",
-                "id uip, pos bf.x2" + "-"
-                        + (GuiManager.getSquareCellSize() + getInfoPanelOffsetX()) + " 0",
-                "id uap, pos bf.x bf.y2 ",
-                // "id tB, pos bf.x2 uip.y2",
-                "id topPanel, pos "
-                        // + "@center_x+("+ (VISUALS.TOP.getWidth() / 2 - 2.5 *
-                        // GuiManager.getCellWidth())+ ") 0"
-                        + "aup.x2-" + getInfoPanelOffsetX() + " 0"};
+        cInfoArray = new String[] {
+         "id aup, pos " + 0 + " 0",
+         getGridPos(),
+         "id uip, pos bf.x2" + "-"
+          + (GuiManager.getSquareCellSize() + getInfoPanelOffsetX()) + " 0",
+         "id uap, pos bf.x bf.y2 ",
+         // "id tB, pos bf.x2 uip.y2",
+         "id topPanel, pos "
+          // + "@center_x+("+ (VISUALS.TOP.getWidth() / 2 - 2.5 *
+          // GuiManager.getCellWidth())+ ") 0"
+          + "aup.x2-" + getInfoPanelOffsetX() + " 0" };
 
         initMap();
         this.initialized = true;
@@ -215,17 +188,35 @@ public class DC_Builder extends Builder {
 
     private String getMinimapPos() {
         return "id bf, pos " + getBfGridPosX() + "-24 " + GuiManager.getSquareCellSize() + ""
-                + ", w " + cellSize + "*" + GuiManager.getBF_CompDisplayedCellsX() + "!, h "
-                + GuiManager.getCellHeight() + "*" + GuiManager.getBF_CompDisplayedCellsY() + "!";
+         + ", w " + cellSize + "*" + GuiManager.getBF_CompDisplayedCellsX() + "!, h "
+         + GuiManager.getCellHeight() + "*" + GuiManager.getBF_CompDisplayedCellsY() + "!";
     }
 
     private String getGridPos() {
         return "id bf, pos " + getBfGridPosX()
-                + " "
-                + getBfGridPosY() // +
-                // getUnitNameLabelHeight()
-                + "" + ", w " + cellSize + "*" + GuiManager.getBF_CompDisplayedCellsX() + "!, h "
-                + GuiManager.getCellHeight() + "*" + GuiManager.getBF_CompDisplayedCellsY() + "!";
+         + " "
+         + getBfGridPosY() // +
+         // getUnitNameLabelHeight()
+         + "" + ", w " + cellSize + "*" + GuiManager.getBF_CompDisplayedCellsX() + "!, h "
+         + GuiManager.getCellHeight() + "*" + GuiManager.getBF_CompDisplayedCellsY() + "!";
+    }
+
+    public static int getBfGridPosY() {
+        // return VISUALS.PORTRAIT_BORDER.getHeight();
+        return GuiManager.getSquareCellSize();
+    }
+
+    public static int getBfGridPosX() {
+        return VISUALS.PORTRAIT_BORDER.getWidth() + OFFSET_X;
+        // return getSpellbookPanel().getPanelWidth();
+    }
+
+    public static int getBfGridPosY2() {
+        return getBfGridPosY() + GuiManager.getBattleFieldHeight();
+    }
+
+    public static int getBfGridPosX2() {
+        return getBfGridPosX() + GuiManager.getBattleFieldWidth();
     }
 
     private int getUnitNameLabelHeight() {
@@ -272,7 +263,8 @@ public class DC_Builder extends Builder {
                     state.getGame().getManager().resetWallMap();
                 lastGrid = grid;
                 grid = levelGrids.get(dungeon);
-                state.getGame().getGUI().resetBgIcon(grid.getMap().getBackground());
+try{state.getGame().getGUI().resetBgIcon(grid.getMap().getBackground());                }catch(Exception e){                e.printStackTrace();            }
+
                 getComp().add(grid.getComp(), getGridPos());
                 // if (grid.isDirty())
                 grid.reset();
@@ -316,6 +308,14 @@ public class DC_Builder extends Builder {
         return null;
     }
 
+    public static int getCellSize() {
+        return cellSize;
+    }
+
+    public static void setCellSize(int cellSize) {
+        DC_Builder.cellSize = cellSize;
+    }
+
     public DC_BattleFieldGrid getGrid() {
         return grid;
     }
@@ -344,14 +344,10 @@ public class DC_Builder extends Builder {
         return smallSize;
     }
 
-    private DungeonsPanel getDungeonsPanel() {
+    public DungeonsPanel getDungeonsPanel() {
         if (dungeonsPanel == null)
             setDungeonsPanel(new DungeonsPanel(state.getGame()));
         return dungeonsPanel;
-    }
-
-    private void setDungeonsPanel(DungeonsPanel dungeonsPanel) {
-        this.dungeonsPanel = dungeonsPanel;
     }
 
     public void toggleDisplayActionModePanel(DC_ActiveObj activeObj) {
@@ -389,14 +385,14 @@ public class DC_Builder extends Builder {
             return;
         actionModePanel.setAction(activeObj);
         int x = uap.getX()
-                + actionPanel.getX()
-                + (column)
-                * 64
-                - actionModePanel.getWidth()
-                / 2
-                + 64
-                - ImageManager.getArrowImage(false, true, DC_PagedUnitActionPanel.ARROW_VERSION)
-                .getWidth(null);
+         + actionPanel.getX()
+         + (column)
+         * 64
+         - actionModePanel.getWidth()
+         / 2
+         + 64
+         - ImageManager.getArrowImage(false, true, DC_PagedUnitActionPanel.ARROW_VERSION)
+         .getWidth(null);
         int y = uap.getY() + actionPanel.getY() - actionModePanel.getHeight();
 
         comp.add(actionModePanel, "pos " + x + " " + y);
@@ -405,7 +401,7 @@ public class DC_Builder extends Builder {
         comp.repaint();
     }
 
-    private void paintListOverlays(Graphics g) {
+    protected void paintListOverlays(Graphics g) {
         // [OPTIMIZE] - why not set x/y for non-unit objects to their screen
         // coordinates?
         if (state.getManager().getInfoObj() instanceof DC_ActiveObj) {
@@ -459,19 +455,19 @@ public class DC_Builder extends Builder {
             return getScreenPointForQuickItem((DC_ItemActiveObj) activeObj);
         }
         DC_PagedUnitActionPanel unitActionPanel = getUap().getPanelForAction(
-                (DC_ActiveObj) activeObj);
+         (DC_ActiveObj) activeObj);
         if (unitActionPanel == null)
             return null;
         DC_UnitActionPanel panel = (DC_UnitActionPanel) unitActionPanel.getCurrentComponent();
         int column = panel.getData().indexOf(activeObj);
         int x = uap.getX()
-                + unitActionPanel.getX()
-                + (column)
-                * 64
-                - ImageManager.getArrowImage(false, true, DC_PagedUnitActionPanel.ARROW_VERSION)
-                .getWidth(null);
+         + unitActionPanel.getX()
+         + (column)
+         * 64
+         - ImageManager.getArrowImage(false, true, DC_PagedUnitActionPanel.ARROW_VERSION)
+         .getWidth(null);
         int y = uap.getY() + unitActionPanel.getY();
-        Point p = new Point(1, 1);
+        Point p = new Point(x, y);
         return p;
     }
 
@@ -487,7 +483,7 @@ public class DC_Builder extends Builder {
         return uip;
     }
 
-    private void setUip(DC_UnitInfoPanel uip) {
+    public void setUip(DC_UnitInfoPanel uip) {
         this.uip = uip;
     }
 
@@ -495,7 +491,7 @@ public class DC_Builder extends Builder {
         minimapDisplayed = !minimapDisplayed;
     }
 
-    private Map<Dungeon, Minimap> getMinimaps() {
+    public Map<Dungeon, Minimap> getMinimaps() {
         if (minimaps == null)
             minimaps = new HashMap<>();
         return minimaps;
@@ -503,6 +499,10 @@ public class DC_Builder extends Builder {
 
     public DC_TopPanel getTopPanel() {
         return topPanel;
+    }
+
+    public void setDungeonsPanel(DungeonsPanel dungeonsPanel) {
+        this.dungeonsPanel = dungeonsPanel;
     }
 
     public DC_ActiveUnitPanel getActiveUnitPanel() {

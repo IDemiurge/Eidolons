@@ -100,7 +100,7 @@ public class AE_Element extends G_Panel implements MouseListener {
 		setDropBoxIndexQuietly(i);
 	}
 
-	private void addToolTip() {
+	private void addToolTip() { if (arg==null )return ;
 		JTextArea toolTip = new JTextArea(arg.name());
 		toolTip.setEditable(false);
 		toolTip.setFont(FontMaster.getFont(FONT.MAIN, 12, Font.PLAIN));
@@ -215,7 +215,9 @@ public class AE_Element extends G_Panel implements MouseListener {
 
 		box.addActionListener(nodeMaster);
 		// box.setSelectedIndex(db_index);
-		add(box, "pos 0 " + y + ", w visual.x2/2" + ", h " + h);
+		add(box, "pos 0 " + y +
+//				", w container.x2/2"+
+				 ", h " + h);
 		y += h;
 		box.setFont(FontMaster.getFont(FONT.MAIN, 12, Font.PLAIN));
 

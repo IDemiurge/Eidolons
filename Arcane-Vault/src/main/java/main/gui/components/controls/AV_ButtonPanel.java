@@ -3,12 +3,7 @@ package main.gui.components.controls;
 import main.client.cc.CharacterCreator;
 import main.client.cc.HC_Master;
 import main.client.cc.logic.items.ItemGenerator;
-import main.content.ContentManager;
-import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.PARAMS;
-import main.content.PROPS;
-import main.content.VALUE;
+import main.content.*;
 import main.content.parameters.PARAMETER;
 import main.content.properties.G_PROPS;
 import main.content.properties.PROPERTY;
@@ -18,7 +13,6 @@ import main.data.xml.XML_Transformer;
 import main.data.xml.XML_Writer;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
 import main.game.battlefield.UnitGroupMaster;
 import main.gui.builders.EditViewPanel;
 import main.gui.builders.TabBuilder;
@@ -36,17 +30,12 @@ import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.system.threading.Weaver;
 
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.util.List;
-
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.List;
 
 
 public class AV_ButtonPanel extends G_ButtonPanel {
@@ -78,6 +67,11 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 	public AV_ButtonPanel() {
 		super(commands);
 		setPanelSize(new Dimension(ArcaneVault.WIDTH, 47));
+	}
+
+	@Override
+	public int getColumns() {
+		return 2;
 	}
 
 	private void renameType(ObjType type) {
@@ -164,9 +158,12 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 				// }
 				// types.removeAll( XML_Reader.getXmlMap().keySet());
 				Class<?> ENUM_CLASS = OBJ_TYPES.class;
-				String toAdd = ListChooser.chooseEnum(ENUM_CLASS, SELECTION_MODE.MULTIPLE);
+				String toAdd = ListChooser.chooseEnum(ENUM_CLASS,
+						SELECTION_MODE.MULTIPLE);
+
 				for (String sub : StringMaster.openContainer(toAdd)) {
-					ArcaneVault.getMainBuilder().getTabBuilder().addTab(ENUM_CLASS, sub);
+					ArcaneVault.getMainBuilder().getTabBuilder().addTab(
+							ENUM_CLASS, sub);
 				}
 				break;
 			}

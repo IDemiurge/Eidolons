@@ -1,6 +1,6 @@
 package main.system.options;
 
-import main.swing.components.menus.OptionsPanel.OPTION;
+import main.swing.components.menus.OPTION;
 import main.system.options.AnimationOptions.ANIMATION_OPTION;
 
 public class AnimationOptions extends Options<ANIMATION_OPTION> {

@@ -90,7 +90,7 @@ public class AE_EditPanel extends G_Panel {
 //		} else {
 //			expandArg = item.getArg();
 //		}
-
+expandArg=item.getArg();
 	}
 
 	private void createGUI() {

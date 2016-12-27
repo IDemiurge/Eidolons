@@ -2,11 +2,13 @@ package main.data.ability.construct;
 
 import main.ability.*;
 import main.ability.effects.Effect;
+import main.ability.effects.Effects;
 import main.content.CONTENT_CONSTS.TARGETING_MODE;
 import main.content.properties.G_PROPS;
 import main.data.XLinkedMap;
 import main.data.ability.Mapper;
 import main.data.xml.XML_Converter;
+import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.Targeting;
 import main.entity.Entity;
 import main.entity.Ref;
@@ -78,19 +80,25 @@ public class AbilityConstructor {
         for (Node NODE : XML_Converter.getNodeList(node)) {
             if (NODE.getNodeName().equals(EFFECTS) || NODE.getNodeName().contains(EFFECTS)) {
                 effects = constructEffects(NODE);
-                if (effects == null) {
-                    main.system.auxiliary.LogMaster.log(1, "null abil effects!");
-                }
+
             }
 
             if (NODE.getNodeName().equals(TARGETING) || NODE.getNodeName().contains(TARGETING)) {
                 targeting = constructTargeting(NODE);
-                if (targeting == null) {
-                    main.system.auxiliary.LogMaster.log(1, "null abil targeting!");
-                }
+
             }
         }
+            if (effects == null) {
+                main.system.auxiliary.LogMaster.log(1,
+                 "null abil effects!");
+                effects = new Effects();
+            }
 
+            if (targeting == null) {
+            main.system.auxiliary.LogMaster.log(1,
+             "null abil targeting!");
+            targeting = new FixedTargeting();
+        }
         if (node.getNodeName().equals(ACTIVE_ABILITY))
             return new ActiveAbility(targeting, effects);
         if (node.getNodeName().equals(ONESHOT_ABILITY))

@@ -200,7 +200,7 @@ public class FAST_DC {
                 }
 
             }
-
+if (!CoreEngine.isSwingOn())
        DENIS_Launcher.main(new String[]{});
 //        main.test.libgdx.prototype.Launcher.main(new String[]{});
         CoreEngine.setTEST_MODE(true);

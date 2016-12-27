@@ -524,6 +524,8 @@ public class TabBuilder extends Builder implements ChangeListener {
 			path = PathFinder.getMACRO_TYPES_PATH();
 		}
 		File file = new File(path + name + ".xml");
+		if (!file.isFile())
+			return ;
 		XML_Reader.readTypeXmlFile(file, false);
 		TabBuilder tabBuilder = new TabBuilder(name);
 		JComponent tabs = tabBuilder.build();

@@ -1189,6 +1189,8 @@ public class CONTENT_CONSTS {
         ONLY_EVIL,
         NO_EVIL,
         NO_ENEMIES,
+        NO_WALLS,
+        NO_WATER,
         NO_NEUTRALS
 
     }
@@ -1269,6 +1271,7 @@ public class CONTENT_CONSTS {
 
     public enum STATUS {
         // UNIT
+        AIRBORNE,
         DEAD,
         LATE,
         DEFENDING,
