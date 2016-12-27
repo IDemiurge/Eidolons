@@ -141,7 +141,11 @@ public class DC_KeyManager
             return;
 
         char CHAR = (e.getKeyChar());
-
+        int keyMod = e.getModifiers();
+//        arrowPressed(e); TODO
+        handleKeyTyped(keyMod, CHAR);
+    }
+    public void handleKeyTyped(int keyMod, char CHAR) {
         int index = -1;
         if (numberChars.indexOf(CHAR) != -1) {
             index = Integer.valueOf(CHAR + "");
@@ -160,10 +164,10 @@ public class DC_KeyManager
                 return;
             }
 
-            arrowPressed(e);
+
 
         } else {
-            int keyMod = e.getModifiers();
+
             if (index == 0)
                 index = 10;
 

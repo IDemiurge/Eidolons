@@ -2,6 +2,7 @@ package main.test.libgdx;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import main.game.DC_Game;
 
 /**
  * Created by PC on 25.10.2016.
@@ -35,6 +36,8 @@ public class MyInputController implements InputProcessor {
 
     @Override
     public boolean keyTyped(char c) {
+        DC_Game.game.getBattleField().getKeyListener().handleKeyTyped(0,c);
+
         return false;
     }
 
