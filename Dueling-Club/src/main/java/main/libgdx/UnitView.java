@@ -63,7 +63,7 @@ public class UnitView extends Group implements Borderable {
 
     public UnitView(UnitViewOptions o) {
         init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getClockTexture(), o.getClockValue(), o.getPortrateTexture(), o.getIconTexture());
-        o.getUnitMap().put((DC_HeroObj) o.getObj(), this);
+        o.getUnitMap().put((DC_HeroObj) o.getObj(), this);//todo fix this shit
     }
 
     @Override

@@ -6,13 +6,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.data.filesys.PathFinder;
-import main.libgdx.DC_GDX_GridPanel;
+import main.libgdx.GridPanel;
 
 /**
  * Created by PC on 07.11.2016.
  */
 public class GridActor extends Actor {
-    private DC_GDX_GridPanel gridPanel;
+    private GridPanel gridPanel;
     Sprite sprite;
     int raws = 10;
     int lines = 10;
@@ -25,7 +25,7 @@ public class GridActor extends Actor {
 //        sprite = new Sprite(new Texture(PathFinder.getImagePath() + "mini\\unit\\Nature\\griff.jpg"));
 //        sprite.setBounds(0,0,5,5);
 
-        gridPanel = new DC_GDX_GridPanel(PathFinder.getImagePath(), raws, lines).init();
+        //gridPanel = new GridPanel(PathFinder.getImagePath(), raws, lines).init();
 //        Lightmap lightmap = new Lightmap(gridPanel.getUnits());
         setBounds(gridPanel.getX(),gridPanel.getY(),gridPanel.getWidth(),gridPanel.getHeight());
         addListener(new ClickListener(){

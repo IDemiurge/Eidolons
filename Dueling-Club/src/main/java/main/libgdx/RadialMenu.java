@@ -1,11 +1,14 @@
 package main.libgdx;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.elements.Filter;
@@ -27,20 +30,59 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DC_GDX_RadialMenu extends Group {
+public class RadialMenu extends Group {
+    private TextureCache textureCache;
     private MenuNode curentNode;
+    private Image closeImage;
 
-    public DC_GDX_RadialMenu(Texture green, List<CreatorNode> nodes) {
-        curentNode = new MenuNode(new Image(green), "Close");
+    public RadialMenu(Texture closeTex, TextureCache textureCache) {
+        this.textureCache = textureCache;
+        closeImage = new Image(closeTex);
+
+/*        addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Actor a = event.getTarget();
+                if (a != null && a instanceof RadialMenu.MenuNode) {
+                    RadialMenu.MenuNode node = (RadialMenu.MenuNode) a;
+                    node.action.run();
+                    return true;
+                }
+
+*//*
+                if (radialMenu != null) {
+                    Vector2 v = new Vector2(x, y);
+                    v = parentToLocalCoordinates(v);
+//                    a = radialMenu.hit(v.x - radialMenu.getX(), v.y - radialMenu.getY(), true);
+                    a = radialMenu.hit(x, y, true);
+                    if (a != null && a instanceof RadialMenu.MenuNode) {
+                        RadialMenu.MenuNode node = (RadialMenu.MenuNode) a;
+                        node.action.run();
+                        return true;
+                    }
+                }
+*//*
+                return false;
+            }
+        });*/
+    }
+
+    private void init(List<CreatorNode> nodes) {
+        curentNode = new MenuNode(closeImage, "Close");
         curentNode.childs = createChilds(curentNode, nodes);
-        setHeight(curentNode.getHeight());
-        setWidth(curentNode.getWidth());
+        setBounds(
+                Gdx.input.getX() - getWidth() / 2,
+                Gdx.graphics.getHeight() - Gdx.input.getY() - getHeight() / 2,
+                curentNode.getWidth(),
+                curentNode.getHeight()
+        );
 
-        final DC_GDX_RadialMenu menu = this;
+        final RadialMenu menu = this;
         curentNode.action = () -> menu.setVisible(false);
 
         updateCallbacks();
         curentNode.drawChilds = true;
+        setVisible(true);
         //addActor(curentNode);
     }
 
@@ -96,7 +138,7 @@ public class DC_GDX_RadialMenu extends Group {
             menuNode.parent = parent;
             if (node.action != null) {
                 final Runnable r = node.action;
-                final DC_GDX_RadialMenu menu = this;
+                final RadialMenu menu = this;
                 menuNode.action = () -> {
                     r.run();
                     menu.setVisible(false);
@@ -112,13 +154,16 @@ public class DC_GDX_RadialMenu extends Group {
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
-        if (!isVisible()) return null;
-        return curentNode.hit(x, y, touchable);
+        if (!isVisible() || curentNode == null) return null;
+        if (!Gdx.input.isTouched()) return null;
+        int xx = Gdx.input.getX();
+        int yy = Gdx.graphics.getHeight() - Gdx.input.getY();
+        return curentNode.hit(xx, yy, touchable);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (!isVisible()) return;
+        if (!isVisible() || curentNode == null) return;
         curentNode.draw(batch, parentAlpha);
     }
 
@@ -139,6 +184,14 @@ public class DC_GDX_RadialMenu extends Group {
             this.image = image;
             setHeight(image.getHeight());
             setWidth(image.getWidth());
+
+            addListener(new InputListener() {
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    action.run();
+                    return true;
+                }
+            });
         }
 
         @Override
@@ -204,13 +257,14 @@ public class DC_GDX_RadialMenu extends Group {
     }
 
 
-    public static DC_GDX_RadialMenu create(float x, float y, DC_Obj target, TextureCache cache) {
+    public void createNew(float x, float y, DC_Obj target) {
         MicroObj activeObj = (MicroObj) Game.game.getManager().getActiveObj();
         List<ActiveObj> activeObjs = activeObj.getActives();
 
         List<Triple<Runnable, Texture, String>> moves = new ArrayList<>();
         List<Triple<Runnable, Texture, String>> turns = new ArrayList<>();
-        List<DC_GDX_RadialMenu.CreatorNode> nn1 = new ArrayList<>();
+        List<RadialMenu.CreatorNode> nn1 = new ArrayList<>();
+
         for (ActiveObj obj : activeObjs) {
             if (obj.isMove()) {
                 if (obj.getTargeting() instanceof SelectiveTargeting) {
@@ -218,11 +272,11 @@ public class DC_GDX_RadialMenu extends Group {
                         Ref ref = obj.getRef();
                         ref.setTarget(target.getId());
                         obj.activate(ref);
-                    }, cache.getOrCreate(((Entity) obj).getImagePath()), obj.getName()));
+                    }, textureCache.getOrCreate(((Entity) obj).getImagePath()), obj.getName()));
                 } else {
                     moves.add(new ImmutableTriple<>(
                             ((Entity) obj)::invokeClicked,
-                            cache.getOrCreate(((Entity) obj).getImagePath()),
+                            textureCache.getOrCreate(((Entity) obj).getImagePath()),
                             obj.getName()
                     ));
                 }
@@ -233,7 +287,7 @@ public class DC_GDX_RadialMenu extends Group {
             if (obj.isTurn()) {
                 turns.add(new ImmutableTriple<>(
                         ((Entity) obj)::invokeClicked,
-                        cache.getOrCreate(((Entity) obj).getImagePath()),
+                        textureCache.getOrCreate(((Entity) obj).getImagePath()),
                         obj.getName()
                 ));
             }
@@ -249,15 +303,15 @@ public class DC_GDX_RadialMenu extends Group {
                 }
 
                 if (obj.getTargeting() instanceof SelectiveTargeting) {
-                    DC_GDX_RadialMenu.CreatorNode inn1 = new CreatorNode();
-                    inn1.texture = cache.getOrCreate(((Entity) obj).getImagePath());
+                    RadialMenu.CreatorNode inn1 = new CreatorNode();
+                    inn1.texture = textureCache.getOrCreate(((Entity) obj).getImagePath());
                     inn1.name = obj.getName();
                     inn1.action = null;
-                    List<DC_GDX_RadialMenu.CreatorNode> list = new ArrayList<>();
+                    List<RadialMenu.CreatorNode> list = new ArrayList<>();
                     for (DC_ActiveObj dc_activeObj : dcActiveObj.getSubActions()) {
-                        DC_GDX_RadialMenu.CreatorNode innn = new CreatorNode();
+                        RadialMenu.CreatorNode innn = new CreatorNode();
                         innn.name = dc_activeObj.getName();
-                        innn.texture = cache.getOrCreate(dc_activeObj.getImagePath());
+                        innn.texture = textureCache.getOrCreate(dc_activeObj.getImagePath());
                         innn.action = () -> {
                             Ref ref = dc_activeObj.getRef();
                             ref.setTarget(target.getId());
@@ -270,56 +324,42 @@ public class DC_GDX_RadialMenu extends Group {
                 }
             }
 
-/*
-            Entity e = ((Entity) obj);
-            obj.isAttack();
-            obj.getTargeting() instanceof SelectiveTargeting;
-            obj.getTargeting().getFilter().getObjects().contains(Game.game.getCellByCoordinate(new Coordinates(0, 0)));
-            obj.isMove();
-            obj.isTurn();
-            ((Entity) obj).getImagePath();*/
-
         }
 
 
-        Texture moveAction = cache.getOrCreate("\\UI\\actions\\Move gold.jpg");
-        Texture turnAction = cache.getOrCreate("\\UI\\actions\\turn anticlockwise quick2 - Copy.jpg");
-        Texture attackAction = cache.getOrCreate("\\mini\\actions\\New folder\\Achievement_Arena_2v2_2.jpg");
-        Texture yellow = new Texture(DC_GDX_GridPanel.class.getResource("/data/marble_yellow.png").getPath());
-        Texture red = new Texture(DC_GDX_GridPanel.class.getResource("/data/marble_red.png").getPath());
-        Texture green = new Texture(DC_GDX_GridPanel.class.getResource("/data/marble_green.png").getPath());
+        Texture moveAction = textureCache.getOrCreate("\\UI\\actions\\Move gold.jpg");
+        Texture turnAction = textureCache.getOrCreate("\\UI\\actions\\turn anticlockwise quick2 - Copy.jpg");
+        Texture attackAction = textureCache.getOrCreate("\\mini\\actions\\New folder\\Achievement_Arena_2v2_2.jpg");
+        Texture yellow = new Texture(GridPanel.class.getResource("/data/marble_yellow.png").getPath());
+        Texture red = new Texture(GridPanel.class.getResource("/data/marble_red.png").getPath());
+        Texture green = new Texture(GridPanel.class.getResource("/data/marble_green.png").getPath());
 
-        DC_GDX_RadialMenu.CreatorNode n1 = new DC_GDX_RadialMenu.CreatorNode();
+        RadialMenu.CreatorNode n1 = new RadialMenu.CreatorNode();
         n1.texture = moveAction;
         n1.childNodes = creatorNodes(moves);
 
-        DC_GDX_RadialMenu.CreatorNode n2 = new DC_GDX_RadialMenu.CreatorNode();
+        RadialMenu.CreatorNode n2 = new RadialMenu.CreatorNode();
         n2.texture = turnAction;
         n2.childNodes = creatorNodes(turns);
 
-        DC_GDX_RadialMenu.CreatorNode n3 = new DC_GDX_RadialMenu.CreatorNode();
+        RadialMenu.CreatorNode n3 = new RadialMenu.CreatorNode();
         n3.texture = attackAction;
         n3.childNodes = nn1;
 
-        DC_GDX_RadialMenu.CreatorNode n4 = new DC_GDX_RadialMenu.CreatorNode();
+        RadialMenu.CreatorNode n4 = new RadialMenu.CreatorNode();
         n4.texture = yellow;
         n4.action = () -> {
 //                activeObj.invokeClicked();
         };
         n4.childNodes = creatorNodes("nn4:", red);
 
-        DC_GDX_RadialMenu radialMenu = new DC_GDX_RadialMenu(green, Arrays.asList(n1, n2, n3, n4));
-
-        radialMenu.setX(x - radialMenu.getWidth() / 2);
-        radialMenu.setY(y - radialMenu.getHeight() / 2);
-
-        return radialMenu;
+        init(Arrays.asList(n1, n2, n3, n4));
     }
 
-    private static List<DC_GDX_RadialMenu.CreatorNode> creatorNodes(List<Triple<Runnable, Texture, String>> pairs) {
-        List<DC_GDX_RadialMenu.CreatorNode> nn1 = new ArrayList<>();
+    private static List<RadialMenu.CreatorNode> creatorNodes(List<Triple<Runnable, Texture, String>> pairs) {
+        List<RadialMenu.CreatorNode> nn1 = new ArrayList<>();
         for (final Triple<Runnable, Texture, String> pair : pairs) {
-            DC_GDX_RadialMenu.CreatorNode inn1 = new DC_GDX_RadialMenu.CreatorNode();
+            RadialMenu.CreatorNode inn1 = new RadialMenu.CreatorNode();
             inn1.texture = pair.getMiddle();
             inn1.action = pair.getLeft();
             inn1.name = pair.getRight();
@@ -328,10 +368,10 @@ public class DC_GDX_RadialMenu extends Group {
         return nn1;
     }
 
-    private static List<DC_GDX_RadialMenu.CreatorNode> creatorNodes(final String name, Texture t) {
-        List<DC_GDX_RadialMenu.CreatorNode> nn1 = new ArrayList<>();
+    private static List<RadialMenu.CreatorNode> creatorNodes(final String name, Texture t) {
+        List<RadialMenu.CreatorNode> nn1 = new ArrayList<>();
         for (int i = 0; i <= 5; i++) {
-            DC_GDX_RadialMenu.CreatorNode inn1 = new DC_GDX_RadialMenu.CreatorNode();
+            RadialMenu.CreatorNode inn1 = new RadialMenu.CreatorNode();
             inn1.texture = t;
             final int finalI = i;
             inn1.action = () -> System.out.println(name + finalI);

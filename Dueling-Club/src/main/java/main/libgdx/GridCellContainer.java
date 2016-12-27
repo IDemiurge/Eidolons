@@ -14,12 +14,12 @@ public class GridCellContainer extends GridCell {
     private final int offsetY = 7;
     private int unitViewCount = 0;
 
-    public GridCellContainer(Texture backTexture, String imagePath, int gridX, int gridY) {
-        super(backTexture, imagePath, gridX, gridY);
+    public GridCellContainer(Texture backTexture, int gridX, int gridY) {
+        super(backTexture, gridX, gridY);
     }
 
     public GridCellContainer(GridCell parent) {
-        super(parent.backTexture, parent.imagePath, parent.gridX, parent.gridY);
+        super(parent.backTexture, parent.gridX, parent.gridY);
     }
 
     @Override

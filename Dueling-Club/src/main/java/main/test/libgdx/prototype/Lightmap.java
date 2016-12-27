@@ -36,8 +36,8 @@ public class Lightmap {
         this.rayHandler = rayHandler;
         this.rayHandler.setBlur(true);
         this.rayHandler.setBlurNum(15);
-        this.rayHandler.setAmbientLight(Color.RED);
-        this.rayHandler.setAmbientLight(0.01f);
+        this.rayHandler.setAmbientLight(Color.GRAY);
+        this.rayHandler.setAmbientLight(0.25f);
         this.rayHandler.setBlurNum(15);
         RayHandler.setGammaCorrection(true);
         debugRenderer = new Box2DDebugRenderer();

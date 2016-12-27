@@ -1,5 +1,6 @@
 package main.libgdx;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -31,7 +32,7 @@ public class ToolTipManager extends Group {
         toolTips = new ArrayList<>();
 
         TempEventManager.bind("show-tooltip", (event) -> {
-            ToolTipOption options = (ToolTipOption) event.get();
+            List<ToolTipRecordOption> options = (List<ToolTipRecordOption>) event.get();
             if (options == null) {
                 toolTips.forEach(this::removeActor);
             } else {
@@ -46,33 +47,33 @@ public class ToolTipManager extends Group {
         return hashCode == curHashCode;
     }
 
-    private void init(ToolTipOption option) {
-        ToolTipRecordOption recordOption = option.recordOptions.get(0);
-        if (toolTips.size() == option.recordOptions.size() && isEquals(recordOption.name)) {
+    private void init(List<ToolTipRecordOption> options) {
+        ToolTipRecordOption recordOption = options.get(0);
+        if (toolTips.size() == options.size() && isEquals(recordOption.name)) {
             ToolTip toolTip = toolTips.get(0);
             toolTip.updateVal(getCurMaxVal(recordOption.curVal, recordOption.maxVal));
         } else {
             toolTips.forEach(this::removeActor);
-            recordOption = option.recordOptions.get(0);
-            int offsetY = (option.recordOptions.size() - 1) * 45;
-            if (option.recordOptions.size() == 1) {
+            recordOption = options.get(0);
+            int offsetY = (options.size() - 1) * 45;
+            if (options.size() == 1) {
                 offsetY = addToolTipOffset(single, offsetY, recordOption);
             } else {
                 offsetY = addToolTipOffset(top, offsetY, recordOption);
 
-                if (option.recordOptions.size() > 2) {
-                    for (int i = 1; i < option.recordOptions.size() - 1; i++) {
-                        recordOption = option.recordOptions.get(i);
+                if (options.size() > 2) {
+                    for (int i = 1; i < options.size() - 1; i++) {
+                        recordOption = options.get(i);
                         offsetY = addToolTipOffset(middle, offsetY, recordOption);
                     }
                 }
 
-                recordOption = option.recordOptions.get(option.recordOptions.size() - 1);
+                recordOption = options.get(options.size() - 1);
                 offsetY = addToolTipOffset(bot, offsetY, recordOption);
             }
         }
-        setX(option.x);
-        setY(option.y);
+        setX(Gdx.input.getX());
+        setY(Gdx.graphics.getHeight() - Gdx.input.getY());
     }
 
     private int addToolTipOffset(TextureRegion region, int offset, ToolTipRecordOption option) {

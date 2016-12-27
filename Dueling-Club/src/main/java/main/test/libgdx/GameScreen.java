@@ -6,12 +6,15 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.data.filesys.PathFinder;
+import main.entity.obj.DC_HeroObj;
 import main.libgdx.*;
 import main.system.TempEventManager;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,20 +24,27 @@ import org.apache.commons.lang3.tuple.Pair;
  */
 public class GameScreen implements Screen {
     private Stage bf;
+    private Stage gui;
     private DC_GDX_Background background;
     private DC_GDX_TopPanel topPanel;
-    private DC_GDX_GridPanel gridPanel;
+    private GridPanel gridPanel;
     private DC_GDX_TargetUnitInfoPanel unitInfoPanel;
     private DC_GDX_ActiveUnitInfoPanel activeUnitInfoPanel;
     private DC_GDX_ActionGroup actionGroup;
+    private TextureCache textureCache;
+    private RadialMenu radialMenu;
+
+    protected ToolTipManager toolTipManager;
 
     private SpriteBatch batch;
     private OrthographicCamera cam;
 
     public GameScreen PostConstruct() {
         bf = new Stage();
+        gui = new Stage();
         camera = cam = new OrthographicCamera();
         bf.getViewport().setCamera(cam);
+        //gui.getViewport().setCamera(cam);
         MyInputController controller = new MyInputController(cam);
         cam.setToOrtho(false, 1600, 900);
         GL20 gl = Gdx.graphics.getGL20();
@@ -45,12 +55,23 @@ public class GameScreen implements Screen {
         PathFinder.init();
         background = new DC_GDX_Background(PathFinder.getImagePath()).init();
         //topPanel = new DC_GDX_TopPanel(PathFinder.getImagePath()).init();
+        textureCache = new TextureCache(PathFinder.getImagePath());
+        final Texture t = new Texture(GameScreen.class.getResource("/data/marble_green.png").getPath());
+        radialMenu = new RadialMenu(t, textureCache);
+        toolTipManager = new ToolTipManager(textureCache);
 
+        gui.addActor(radialMenu);
+        gui.addActor(toolTipManager);
 
         TempEventManager.bind("grid-created", param -> {
             Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
-            gridPanel = new DC_GDX_GridPanel(PathFinder.getImagePath(), p.getLeft(), p.getRight()).init();
+            gridPanel = new GridPanel(textureCache, p.getLeft(), p.getRight()).init();
             bf.addActor(gridPanel);
+        });
+
+        TempEventManager.bind("create-radial-menu", obj -> {
+            Triple<DC_HeroObj, Float, Float> container = (Triple<DC_HeroObj, Float, Float>) obj.get();
+            radialMenu.createNew(container.getMiddle(), container.getRight(), container.getLeft());
         });
 
 //
@@ -68,7 +89,7 @@ public class GameScreen implements Screen {
 
         //gridPanel.setY(actionGroup.getY()+actionGroup.getHeight());
         //gridPanel.setX(activeUnitInfoPanel.getMinWeight());
-        InputMultiplexer multiplexer = new InputMultiplexer(controller, bf);
+        InputMultiplexer multiplexer = new InputMultiplexer(controller, bf, gui);
         Gdx.input.setInputProcessor(multiplexer);
         return this;
     }
@@ -84,6 +105,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         cam.update();
+
         batch.setProjectionMatrix(cam.combined);
         batch.begin();
         background.draw(batch, 1);
@@ -91,16 +113,9 @@ public class GameScreen implements Screen {
 
         bf.draw();
 
-        batch.begin();
-        //background.draw(batch, 1);
-        //gridPanel.draw(batch, 1);
-//        topPanel.draw(batch, 1);
-//        unitInfoPanel.draw(batch, 1);
-//        activeUnitInfoPanel.draw(batch, 1);
-//        actionGroup.draw(batch, 1);
-        batch.end();
+        gui.act(delta);
+        gui.draw();
     }
-
 
     @Override
     public void resize(int width, int height) {

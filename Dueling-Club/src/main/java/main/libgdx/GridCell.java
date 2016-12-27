@@ -9,15 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 public class GridCell extends Group implements Borderable {
     protected Image backImage;
     protected Texture backTexture;
-    protected String imagePath;
     protected int gridX;
     protected int gridY;
     private GridCell innerDrawable;
     private Image border = null;
 
-    public GridCell(Texture backTexture, String imagePath, int gridX, int gridY) {
+    public GridCell(Texture backTexture, int gridX, int gridY) {
         this.backTexture = backTexture;
-        this.imagePath = imagePath;
         this.gridX = gridX;
         this.gridY = gridY;
     }
