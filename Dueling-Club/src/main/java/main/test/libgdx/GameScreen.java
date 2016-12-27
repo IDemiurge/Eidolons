@@ -100,13 +100,12 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         TempEventManager.processEvents();
 
-
-
         bf.act(delta);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         cam.update();
+
         batch.setProjectionMatrix(cam.combined);
         batch.begin();
         background.draw(batch, 1);
@@ -115,16 +114,7 @@ public class GameScreen implements Screen {
         bf.draw();
 
         gui.act(delta);
-
         gui.draw();
-        batch.begin();
-/*        if (toolTipManager != null) {
-            toolTipManager.draw(batch, 1);
-        }
-        if (radialMenu != null) {
-            radialMenu.draw(batch, 1);
-        }*/
-        batch.end();
     }
 
     @Override
