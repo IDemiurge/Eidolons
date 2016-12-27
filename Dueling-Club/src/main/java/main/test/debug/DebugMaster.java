@@ -31,6 +31,7 @@ import main.entity.obj.*;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.DC_GameState;
+import main.game.Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
@@ -71,6 +72,8 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Stack;
 
+import static main.test.debug.DebugMaster.DEBUG_FUNCTIONS.*;
+
 /**
  * @author JustMe
  */
@@ -84,7 +87,7 @@ public class DebugMaster {
     private static boolean mapDebugOn = true;
     private static boolean altMode;
     public DEBUG_FUNCTIONS[] onStartFunctions = {DEBUG_FUNCTIONS.GOD_MODE,
-            DEBUG_FUNCTIONS.SPAWN_WAVE};
+            SPAWN_WAVE};
     DC_HeroObj target = null;
     private String lastFunction;
     private Stack<String> executedFunctions = new Stack<>();
@@ -107,61 +110,125 @@ public class DebugMaster {
         this.bf = bf;
     }
 public enum DEBUG_CONTROL{
-    DYNAMIC_PARAMETER(),
-    PARAMETER(),
-    PROPERTY(),
-    POSITION(),
-    SET(PROPERTY,PARAMETER,DYNAMIC_PARAMETER, POSITION){
+//    DYNAMIC_PARAMETER(),
+//    PARAMETER(),
+//    PROPERTY(),
+//    POSITION(),
+//    SET(PROPERTY,PARAMETER,DYNAMIC_PARAMETER, POSITION){
+//        @Override
+//        boolean isRoot() {
+//            return true;
+//        }
+//    },
+    SET_VALUE{
         @Override
-        boolean isRoot() {
+        public    boolean isRoot() {
             return true;
         }
     },
-
 
     REF(),
     INFO(),
     SHOW(REF,INFO){
         @Override
-        boolean isRoot() {
+        public   boolean isRoot() {
             return true;
         }
     },
 
-    STANDARD(),
+    FUNC_STANDARD(group_basic),
+    FUNC_ADD_BF(group_add_bf_obj),
+    FUNC_ADD_NON_BF(group_add),
+    FUNC_GLOBAL(group_basic),
+
     PICK(),
     TYPE(),
     PICK_HIDDEN(),
-    FUNCTION(STANDARD,PICK,TYPE,PICK_HIDDEN){
+    FUNCTION(FUNC_STANDARD,FUNC_ADD_BF,FUNC_ADD_NON_BF,FUNC_GLOBAL,
+
+     PICK,TYPE,PICK_HIDDEN){
         @Override
-        boolean isRoot() {
+        public    boolean isRoot() {
             return true;
         }
     },
-
 
     ;
 
 
+    private   Object[] objects;
     private   DEBUG_CONTROL[] children;
 
+    DEBUG_CONTROL(Object...children){
+        this.objects=children;
+
+    }
     DEBUG_CONTROL(DEBUG_CONTROL...children){
         this.children=children;
 
-    }boolean
+    }
+    public boolean
     isRoot(){
         return false;
     }
-    DEBUG_CONTROL[] getChildren(){
+  public  DEBUG_CONTROL[] getChildren(){
         return children;
     }
-    Object[] getChildObjects(){
-        return children;
+    public   Object[] getChildObjects(){
+        return objects;
     }
 }
+    public   void handleDebugControl(Object control) {
+        if (control instanceof DEBUG_FUNCTIONS){
+            DEBUG_FUNCTIONS func_control = ((DEBUG_FUNCTIONS) control);
+            executeDebugFunctionNewThread(func_control);
+        }
+    }
+        public   void handleDebugControl(DEBUG_CONTROL control) {
+        switch(control){
+            case SET_VALUE:   Game.game.getValueHelper().promptSetValue();
+                break;
+//            case DYNAMIC_PARAMETER:
+//                break;
+//            case PARAMETER:
+//                break;
+//            case PROPERTY:
+//                break;
+//            case POSITION:
+//                break;
+//            case SET:
+//                break;
+            case REF:
+                break;
+            case INFO:
+                break;
+            case SHOW:
+
+                break;
 
 
-    public static boolean isOmnivisionOn() {
+            case PICK:
+
+                executeDebugFunction(new EnumMaster<DEBUG_FUNCTIONS>()
+                 .retrieveEnumConst(DEBUG_FUNCTIONS.class,
+                  ListChooser.chooseEnum(DEBUG_FUNCTIONS.class) ));
+                break;
+            case TYPE:
+                promptFunctionToExecute();
+                break;
+            case PICK_HIDDEN:
+            executeHiddenDebugFunction(new EnumMaster<HIDDEN_DEBUG_FUNCTIONS>()
+             .retrieveEnumConst(HIDDEN_DEBUG_FUNCTIONS.class,
+              ListChooser.chooseEnum(HIDDEN_DEBUG_FUNCTIONS.class) ));
+                break;
+            case FUNCTION:
+                break;
+        }
+    }
+
+
+
+        public static boolean isOmnivisionOn() {
         return omnivision;
     }
 
@@ -977,7 +1044,7 @@ public enum DEBUG_CONTROL{
                 break;
             }
             case RESTART_GAME:
-                executeDebugFunction(DEBUG_FUNCTIONS.KILL_ALL_UNITS);
+                executeDebugFunction(KILL_ALL_UNITS);
                 DC_ObjInitializer.processUnitDataString(game.getPlayer(true),
                         game.getPlayerParty(), game);
                 game.getManager().unitActionCompleted(null, false);
@@ -1166,7 +1233,35 @@ public enum DEBUG_CONTROL{
         LOG_LEVEL
     }
 
-    public enum DEBUG_FUNCTIONS {
+    public  static final DEBUG_FUNCTIONS[] group_add_bf_obj ={
+     DEBUG_FUNCTIONS.ADD_UNIT,
+     DEBUG_FUNCTIONS.ADD_ENEMY_UNIT,
+     DEBUG_FUNCTIONS. ADD_GROUP,
+     DEBUG_FUNCTIONS. ADD_CHAR,
+     DEBUG_FUNCTIONS. ADD_OBJ,
+
+    };
+    public  static final DEBUG_FUNCTIONS[] group_bf = {
+     DEBUG_FUNCTIONS.CLEAR,
+     DEBUG_FUNCTIONS.RESTART,
+     DEBUG_FUNCTIONS.KILL_ALL_UNITS,
+     DEBUG_FUNCTIONS.SPAWN_WAVE,
+     DEBUG_FUNCTIONS.SPAWN_CUSTOM_WAVE,
+    };
+    public  static final DEBUG_FUNCTIONS[] group_basic = {
+     DEBUG_FUNCTIONS.END_TURN,
+     DEBUG_FUNCTIONS.TOGGLE_DEBUG,
+     DEBUG_FUNCTIONS.TOGGLE_OMNIVISION,
+     DEBUG_FUNCTIONS.PAUSE,
+    };
+    public  static final DEBUG_FUNCTIONS[] group_add ={
+     DEBUG_FUNCTIONS.ADD_DUNGEON,
+     DEBUG_FUNCTIONS. ADD_SKILL,
+     DEBUG_FUNCTIONS. ADD_ACTIVE,
+     DEBUG_FUNCTIONS. ADD_SPELL,
+
+    };
+        public enum DEBUG_FUNCTIONS {
         // GAME
 
         //
