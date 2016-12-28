@@ -263,7 +263,10 @@ public class DC_Builder extends Builder {
                     state.getGame().getManager().resetWallMap();
                 lastGrid = grid;
                 grid = levelGrids.get(dungeon);
-try{state.getGame().getGUI().resetBgIcon(grid.getMap().getBackground());                }catch(Exception e){                e.printStackTrace();            }
+try{state.getGame().getGUI().resetBgIcon(grid.getMap().getBackground());
+}catch(Exception e){
+//    e.printStackTrace();
+}
 
                 getComp().add(grid.getComp(), getGridPos());
                 // if (grid.isDirty())

@@ -16,6 +16,7 @@ import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.system.auxiliary.Chronos;
 import main.system.auxiliary.LogMaster;
 import main.system.hotkey.DC_KeyManager;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -231,6 +232,7 @@ public class DC_BattleField extends SwingBattleField {
 
     public void refreshInitiativeQueue() {
         if (dc_builder!=null )
+            if (CoreEngine.isSwingOn())
         dc_builder.getUnitInfoPanel().getPriorityListPanel().refresh();
 
     }
