@@ -63,7 +63,7 @@ public class Lightmap {
                 fdef.shape = shape;
                 body.createFixture(fdef);
                 // TEMP
-                FireLightProt fireLightProt = new FireLightProt(world, rayHandler, un.get(i).getX() * cellWidth + cellWidth / 2, un.get(i).getY() * cellHeight + cellHeight / 2, un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 15, 360, SECOND);
+                FireLightProt fireLightProt = new FireLightProt(world, rayHandler, un.get(i).getX() * cellWidth + cellWidth / 2, un.get(i).getY() * cellHeight + cellHeight / 2, un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 30, 360, SECOND);
 //                FireLightProt fireLightProt = new FireLightProt();
                 fireLightProt.attachToBody(body);
                 //TEMP END
@@ -154,6 +154,7 @@ public class Lightmap {
 //        if (lightMap.containsKey(heroObj)) {
 //            lightMap.get(heroObj).setDistance(lightEmmi * 15);
 //        }
-        // TODO: 12.12.2016 update illumination and other ligth here
+        // TODO: 12.12.2016 pointlighter around the mouse - 35 ligth emission and arround active Unite - (his emission +20) (DC_Game.game.getManager.getActiveUnit()
+        //      light_emission + 20)
     }
 }
