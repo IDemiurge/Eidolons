@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.data.filesys.PathFinder;
 import main.entity.obj.DC_HeroObj;
@@ -43,15 +45,21 @@ public class GameScreen implements Screen {
     private SpriteBatch batch;
     private OrthographicCamera cam;
 
+
+    private World world;
+    private static GameScreen instance;
+
     public GameScreen PostConstruct() {
+        instance=this;
         bf = new Stage();
         gui = new Stage();
 
+        world = new World(new Vector2(0,-10),false);
         camera = cam = new OrthographicCamera();
         cam.setToOrtho(false, 1600, 900);
         bf.getViewport().setCamera(cam);
         //gui.getViewport().setCamera(cam);
-        MyInputController controller = new MyInputController(cam);
+        MyInputController controller = new MyInputController(bf, gui, cam);
         GL20 gl = Gdx.graphics.getGL20();
         gl.glEnable(GL20.GL_BLEND);
         gl.glEnable(GL20.GL_TEXTURE_2D);
@@ -101,6 +109,9 @@ public class GameScreen implements Screen {
 
     public static OrthographicCamera camera;
 
+    public static GameScreen getInstance() {
+        return instance;
+    }
     @Override
     public void render(float delta) {
         TempEventManager.processEvents();
@@ -165,5 +176,9 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    public World getWorld() {
+        return world;
     }
 }

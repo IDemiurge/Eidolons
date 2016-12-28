@@ -37,7 +37,7 @@ public class Lightmap {
         this.rayHandler.setBlur(true);
         this.rayHandler.setBlurNum(15);
         this.rayHandler.setAmbientLight(Color.GRAY);
-        this.rayHandler.setAmbientLight(0.25f);
+        this.rayHandler.setAmbientLight(0.025f);
         this.rayHandler.setBlurNum(15);
         RayHandler.setGammaCorrection(true);
         debugRenderer = new Box2DDebugRenderer();
@@ -45,28 +45,36 @@ public class Lightmap {
         fireLightProtMap = new HashMap<>();
         bodyMap = new HashMap<>();
         for (int i = 0; i < un.size(); i++) {
-            BodyDef bdef = new BodyDef();
-            bdef.type = BodyDef.BodyType.KinematicBody;
-            Body body = world.createBody(bdef);
-            body.setTransform(un.get(i).getX() * cellWidth, un.get(i).getY() * cellHeight, 0);
-            PolygonShape shape = new PolygonShape();
-            shape.setAsBox(cellWidth, cellHeight);
-            FixtureDef fdef = new FixtureDef();
-            fdef.shape = shape;
-            body.createFixture(fdef);
+
 //            PointLight pointLight = new PointLight(rayHandler, 100, Color.RED, un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 5, un.get(i).getX(), un.get(i).getY());
 //            PointLight pointLight = new PointLight(rayHandler, 100, new Color(0xf7ffa8C8), un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 5, un.get(i).getX(), un.get(i).getY());
 //            pointLight.setSoft(true);
 //            pointLight.setSoftnessLength(50);
 //            pointLight.attachToBody(body);
-
+            BodyDef bdef = new BodyDef();
+            bdef.type = BodyDef.BodyType.KinematicBody;
+            Body body = world.createBody(bdef);
 
             if (un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) > 0) {
+                body.setTransform(un.get(i).getX() * cellWidth + cellWidth / 2, un.get(i).getY() * cellHeight + cellHeight / 2, 0);
+                PolygonShape shape = new PolygonShape();
+                shape.setAsBox(cellWidth / 2, cellHeight / 2);
+                FixtureDef fdef = new FixtureDef();
+                fdef.shape = shape;
+                body.createFixture(fdef);
                 // TEMP
-                FireLightProt fireLightProt = new FireLightProt(world, rayHandler, un.get(i).getX() * cellWidth, un.get(i).getY() * cellHeight, un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 15, 360, SECOND);
+                FireLightProt fireLightProt = new FireLightProt(world, rayHandler, un.get(i).getX() * cellWidth + cellWidth / 2, un.get(i).getY() * cellHeight + cellHeight / 2, un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 30, 360, SECOND);
+//                FireLightProt fireLightProt = new FireLightProt();
                 fireLightProt.attachToBody(body);
                 //TEMP END
                 fireLightProtMap.put(i, fireLightProt);
+            } else {
+                body.setTransform(un.get(i).getX() * cellWidth + cellWidth / 2, un.get(i).getY() * cellHeight + cellHeight / 2, 0);
+                PolygonShape shape = new PolygonShape();
+                shape.setAsBox(cellWidth / 2, cellHeight / 2);
+                FixtureDef fdef = new FixtureDef();
+                fdef.shape = shape;
+                body.createFixture(fdef);
             }
 
 
@@ -146,6 +154,7 @@ public class Lightmap {
 //        if (lightMap.containsKey(heroObj)) {
 //            lightMap.get(heroObj).setDistance(lightEmmi * 15);
 //        }
-        // TODO: 12.12.2016 update illumination and other ligth here
+        // TODO: 12.12.2016 pointlighter around the mouse - 35 ligth emission and arround active Unite - (his emission +20) (DC_Game.game.getManager.getActiveUnit()
+        //      light_emission + 20)
     }
 }
