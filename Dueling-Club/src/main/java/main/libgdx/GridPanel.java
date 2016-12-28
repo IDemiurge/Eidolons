@@ -273,6 +273,11 @@ public class GridPanel extends Group {
                             recordOptions.add(recordOption);
                         });
 
+                        ToolTipManager.ToolTipRecordOption recordOption = new ToolTipManager.ToolTipRecordOption();
+                        recordOption.name = hero.getName();
+                        recordOptions.add(0, recordOption);
+
+
                         TempEventManager.trigger("show-tooltip", new EventCallbackParam(recordOptions));
                         return true;
                     }
