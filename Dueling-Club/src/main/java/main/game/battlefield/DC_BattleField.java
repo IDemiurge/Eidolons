@@ -211,7 +211,11 @@ public class DC_BattleField extends SwingBattleField {
 
     @Override
     public void refreshSpellbook() {
+        if (CoreEngine.isSwingOn())
         dc_builder.getSpellbookPanel().refresh();
+        else {
+//            TODO
+        }
     }
 
     @Override

@@ -38,7 +38,6 @@ public class Lightmap {
         this.rayHandler.setBlur(true);
         this.rayHandler.setBlurNum(15);
         this.rayHandler.setAmbientLight(Color.GRAY);
-
         this.rayHandler.setAmbientLight(LightingManager.ambient_light);
         this.rayHandler.setBlurNum(15);
         RayHandler.setGammaCorrection(true);
@@ -145,6 +144,7 @@ public class Lightmap {
             entry.getValue().update();
 
         }
+
 //        for (int q =0;q<fireLightProtMap.entrySet().size();q++){
 //                fireLightProtMap.get(q).update(Gdx.graphics.getDeltaTime());
 //        }

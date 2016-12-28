@@ -139,13 +139,13 @@ public class GameLauncher {
         if (PresetMaster.getPreset() == null) {
 
             game.setDebugMode(Launcher.isDEBUG_MODE_DEFAULT());
-            game.init();
             initPlayerParties();
             if (PARTY_CODE != CODE.NONE)
                 game.setPlayerParty(PLAYER_PARTY);
             if (ENEMY_CODE != CODE.NONE)
                 game.setEnemyParty(ENEMY_PARTY);
-            // game.init();
+
+             game.init();
         } else {
             game.init();
 

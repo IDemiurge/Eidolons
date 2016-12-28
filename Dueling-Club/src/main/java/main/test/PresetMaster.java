@@ -20,7 +20,6 @@ import main.system.auxiliary.secondary.BooleanMaster;
 import main.test.Preset.PRESET_DATA;
 import main.test.Preset.PRESET_OPTION;
 import main.test.Preset.PRESET_TYPE;
-import main.test.frontend.FAST_DC;
 
 import java.io.File;
 import java.util.Collections;
@@ -358,8 +357,15 @@ public class PresetMaster {
 
         presets = new LinkedList<>();
         // getPresets()
-        for (File file : recent) {
-            presets.add(loadPreset(file));
+        int n=0;    for (File file : list) {
+           Preset preset=loadPreset(file);
+            if (preset==null ) continue;
+
+            if (StringMaster.isEmpty(preset.getAllies()) )continue;
+            if (StringMaster.isEmpty(preset.getFirstDungeonName()) )continue;
+            presets.add(preset);
+            if (n>maximum)break;
+            n++;
         }
         return presets;
 

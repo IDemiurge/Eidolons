@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.data.filesys.PathFinder;
 import main.entity.obj.DC_HeroObj;
 import main.libgdx.*;
+import main.libgdx.gui.radial.RadialMenu;
 import main.libgdx.old.ActionGroup;
 import main.libgdx.old.ActiveUnitInfoPanel;
 import main.libgdx.old.TargetUnitInfoPanel;
@@ -31,6 +32,8 @@ import org.apache.commons.lang3.tuple.Triple;
 public class GameScreen implements Screen {
     private Stage bf;
     private Stage gui;
+
+
     private Background background;
     private TopPanel topPanel;
     private GridPanel gridPanel;
@@ -66,7 +69,7 @@ public class GameScreen implements Screen {
         gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         batch = new SpriteBatch();
         PathFinder.init();
-        background = new Background(PathFinder.getImagePath()).init();
+        background = new Background().init();
         //topPanel = new DC_GDX_TopPanel(PathFinder.getImagePath()).init();
         textureCache = new TextureCache(PathFinder.getImagePath());
         final Texture t = new Texture(GameScreen.class.getResource("/data/marble_green.png").getPath());
@@ -124,6 +127,8 @@ public class GameScreen implements Screen {
 
         batch.setProjectionMatrix(cam.combined);
         batch.begin();
+        if (background.isDirty())
+            background.update();
         background.draw(batch, 1);
         batch.end();
 
@@ -181,4 +186,7 @@ public class GameScreen implements Screen {
     public World getWorld() {
         return world;
     }
-}
+
+    public Background getBackground() {
+        return background;
+    }}

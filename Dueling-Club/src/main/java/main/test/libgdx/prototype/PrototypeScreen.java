@@ -113,7 +113,7 @@ public class PrototypeScreen implements Screen {
 //        stage.addActor(grid);
 //        grid.setZIndex(1);
 //        player.setZIndex(2);
-        test = new ParticleActor(PARTICLE_EFFECTS.SMOKE_TEST.getPath(), world, 0, 0);
+        test = new ParticleActor(PARTICLE_EFFECTS.DARK_SOULS.getPath(), world, 0, 0);
 
         stage.setDebugAll(true);
         InputMultiplexer in = new InputMultiplexer();

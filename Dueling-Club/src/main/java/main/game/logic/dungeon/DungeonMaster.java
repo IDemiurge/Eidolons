@@ -1,5 +1,6 @@
 package main.game.logic.dungeon;
 
+import main.client.dc.Launcher;
 import main.content.CONTENT_CONSTS.DUNGEON_SUBFOLDER;
 import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
 import main.content.OBJ_TYPES;
@@ -29,6 +30,7 @@ import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.test.frontend.FAST_DC;
+import main.test.libgdx.GameScreen;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -193,8 +195,8 @@ public class DungeonMaster {
             return;
 
 
-        if (getDEFAULT_DUNGEON() != null
-                || getDungeonPath() != null) {
+//        if (getDEFAULT_DUNGEON() != null
+//                || getDungeonPath() != null) {
 //            if (!CoreEngine.isLevelEditor())
 //                game.setSimulation(false);
 //            if (getDEFAULT_DUNGEON() != null) {
@@ -202,9 +204,10 @@ public class DungeonMaster {
 //                setDungeon(DungeonBuilder.loadDungeon(getDEFAULT_DUNGEON()));
 //            } else
 //                setDungeon(DungeonBuilder.loadDungeon(getDungeonPath()));
-        }
-        else
-        {if (game.isDebugMode())
+//        }
+//        else
+        {
+            if (Launcher.DEV_MODE)
                 if (RANDOM_DUNGEON) {
                     type = pickRandomDungeon();
                 } else if (type == null)
@@ -332,7 +335,7 @@ public class DungeonMaster {
         }
         if (getDungeonPath() != null)
             setDungeon(DungeonBuilder.loadDungeon(getDungeonPath()));
-        else if (isChooseLevel())
+        else //if (isChooseLevel())
             setDungeonPath(chooseDungeonLevel());
     }
 
@@ -419,6 +422,8 @@ public class DungeonMaster {
         this.dungeon = dungeon;
         GuiManager.setCurrentLevelCellsX(getLevelWidth());
         GuiManager.setCurrentLevelCellsY(getLevelHeight());
+        if (ImageManager.isImage(dungeon.getMapBackground()))
+        GameScreen.getInstance().getBackground().setImagePath(dungeon.getMapBackground());
     }
 
     public G_Panel getMinimapComponent() {
