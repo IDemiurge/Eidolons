@@ -11,6 +11,7 @@ import main.entity.obj.MicroObj;
 import main.game.battlefield.Coordinates;
 import main.system.datatypes.DequeImpl;
 import main.test.libgdx.GameScreen;
+import main.test.libgdx.sfx.particles.lighting.LightingManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +38,8 @@ public class Lightmap {
         this.rayHandler.setBlur(true);
         this.rayHandler.setBlurNum(15);
         this.rayHandler.setAmbientLight(Color.GRAY);
-        this.rayHandler.setAmbientLight(0.025f);
+
+        this.rayHandler.setAmbientLight(LightingManager.ambient_light);
         this.rayHandler.setBlurNum(15);
         RayHandler.setGammaCorrection(true);
         debugRenderer = new Box2DDebugRenderer();
@@ -63,7 +65,11 @@ public class Lightmap {
                 fdef.shape = shape;
                 body.createFixture(fdef);
                 // TEMP
-                FireLightProt fireLightProt = new FireLightProt(world, rayHandler, un.get(i).getX() * cellWidth + cellWidth / 2, un.get(i).getY() * cellHeight + cellHeight / 2, un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 15, 360, SECOND);
+                FireLightProt fireLightProt = new FireLightProt(world, rayHandler,
+                 un.get(i).getX() * cellWidth + cellWidth / 2,
+                 un.get(i).getY() * cellHeight + cellHeight / 2,
+
+                 un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 30, 360, SECOND);
 //                FireLightProt fireLightProt = new FireLightProt();
                 fireLightProt.attachToBody(body);
                 //TEMP END
