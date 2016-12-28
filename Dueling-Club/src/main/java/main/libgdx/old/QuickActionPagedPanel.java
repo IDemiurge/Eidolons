@@ -1,4 +1,4 @@
-package main.libgdx;
+package main.libgdx.old;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -9,13 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  * Time: 15:51
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_QuickActionPagedPanel extends DC_GDX_PagedPanel {
+public class QuickActionPagedPanel extends PagedPanel {
 
     private Image actionButton1;
     private Image actionButton2;
 
 
-    public DC_GDX_QuickActionPagedPanel(String imagePath, int col, int row) {
+    public QuickActionPagedPanel(String imagePath, int col, int row) {
         super(imagePath, col, row);
     }
 
@@ -34,7 +34,7 @@ public class DC_GDX_QuickActionPagedPanel extends DC_GDX_PagedPanel {
     }
 
     @Override
-    public DC_GDX_QuickActionPagedPanel init() {
+    public QuickActionPagedPanel init() {
         super.init();
 
         actionButton1 = new Image(new Texture(getActionButtonImagePaths()[0]));

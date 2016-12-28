@@ -1,4 +1,4 @@
-package main.libgdx;
+package main.libgdx.old;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,7 +14,7 @@ import java.io.File;
  * Time: 23:50
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_ValueOrb extends Group {
+public class ValueOrb extends Group {
     private Texture backTexture;
     private Image topTexture;
     private Color backColor;
@@ -23,13 +23,13 @@ public class DC_GDX_ValueOrb extends Group {
     private final static String topImagePath = "UI\\components\\new\\orb 64.png";
     private String imagePath;
 
-    public DC_GDX_ValueOrb(Color backColor, String imagePath) {
+    public ValueOrb(Color backColor, String imagePath) {
         this.backColor = backColor;
         this.imagePath = imagePath;
 
     }
 
-    public DC_GDX_ValueOrb init() {
+    public ValueOrb init() {
         topTexture = new Image(new Texture(imagePath + File.separator + topImagePath));
         addActor(topTexture);
         this.setWidth(topTexture.getWidth());
@@ -37,12 +37,12 @@ public class DC_GDX_ValueOrb extends Group {
         return this;
     }
 
-    public DC_GDX_ValueOrb setValue(int val) {
+    public ValueOrb setValue(int val) {
 
         return this;
     }
 
-    public DC_GDX_ValueOrb setMaxValue(int val) {
+    public ValueOrb setMaxValue(int val) {
 
 
         return this;

@@ -1,4 +1,4 @@
-package main.libgdx;
+package main.libgdx.old;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.Align;
  * Time: 21:24
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_TopPanel extends Image {
+public class TopPanel extends Image {
 
     private Image imageButton;
     private Label text;
@@ -24,13 +24,13 @@ public class DC_GDX_TopPanel extends Image {
 //    public static final String
 
 
-    public DC_GDX_TopPanel(String imagePath) {
+    public TopPanel(String imagePath) {
         super(new Texture(imagePath + backgroundImagePath));
         imageButton = new Image(new Texture(imagePath + buttonImagePath));
        // text = new Label("aaaaaaa", new Skin());
     }
 
-    public DC_GDX_TopPanel init() {
+    public TopPanel init() {
 //        int h = Gdx.graphics.getHeight();
 //        int w = Gdx.graphics.getWidth();
 
@@ -46,12 +46,12 @@ public class DC_GDX_TopPanel extends Image {
         return this;
     }
 
-    public DC_GDX_TopPanel setText(String text) {
+    public TopPanel setText(String text) {
         //this.text.setText(text);
         return this;
     }
 
-    private DC_GDX_TopPanel setOnButtonClicked(EventListener listener) {
+    private TopPanel setOnButtonClicked(EventListener listener) {
         imageButton.addListener(listener);
         return this;
     }

@@ -1,4 +1,4 @@
-package main.libgdx;
+package main.libgdx.old;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  * Time: 23:24
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_PortraitPanel extends Group {
+public class PortraitPanel extends Group {
 
     private Image portrait;
     private Image border;
@@ -19,11 +19,11 @@ public class DC_GDX_PortraitPanel extends Group {
 
     private static final String borderImagePath = "\\UI\\components\\Border New.png";
 
-    public DC_GDX_PortraitPanel(String imagePath) {
+    public PortraitPanel(String imagePath) {
         this.imagePath = imagePath;
     }
 
-    public DC_GDX_PortraitPanel init() {
+    public PortraitPanel init() {
         border = new Image(new Texture(imagePath + borderImagePath));
         addActor(border);
         setHeight(border.getHeight());

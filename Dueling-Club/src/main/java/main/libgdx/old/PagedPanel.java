@@ -1,4 +1,4 @@
-package main.libgdx;
+package main.libgdx.old;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  * Time: 23:25
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_PagedPanel extends Group {
+public class PagedPanel extends Group {
     private Image pager1;
     protected Image pager2;
 
@@ -31,7 +31,7 @@ public class DC_GDX_PagedPanel extends Group {
     private static final String pagerImagePath3 = "\\UI\\components\\down5.png";
     private static final String pagerImagePath4 = "\\UI\\components\\up5.png";
 
-    public DC_GDX_PagedPanel(String imagePath, int col, int row) {
+    public PagedPanel(String imagePath, int col, int row) {
         this.imagePath = imagePath;
         this.col = col;
         this.row = row;
@@ -50,7 +50,7 @@ public class DC_GDX_PagedPanel extends Group {
         return true;
     }
 
-    public DC_GDX_PagedPanel init() {
+    public PagedPanel init() {
         if (getCellScale() != 1) {
             //make empty image little smaller
             //if use image scale we must calc real w&h when we call it

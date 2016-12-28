@@ -1,4 +1,6 @@
-package main.libgdx;
+package main.libgdx.old;
+
+import main.libgdx.UnitInfoPanel;
 
 /**
  * Created with IntelliJ IDEA.
@@ -6,21 +8,21 @@ package main.libgdx;
  * Time: 17:13
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_TargetUnitInfoPanel extends DC_GDX_UnitInfoPanel {
+public class TargetUnitInfoPanel extends UnitInfoPanel {
 
-    private DC_GDX_ValueIconGroup valueIconGroup;
+    private ValueIconGroup valueIconGroup;
 
-    public DC_GDX_TargetUnitInfoPanel(String imagePath) {
+    public TargetUnitInfoPanel(String imagePath) {
         super(imagePath);
     }
 
 
 
     @Override
-    public DC_GDX_TargetUnitInfoPanel init() {
+    public TargetUnitInfoPanel init() {
         super.init();
 
-        valueIconGroup = new DC_GDX_ValueIconGroup(imagePath).init();
+        valueIconGroup = new ValueIconGroup(imagePath).init();
         valueIconGroup.setX(getWidth() - valueIconGroup.getWidth());
         valueIconGroup.setY(0);
 
