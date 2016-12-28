@@ -1,4 +1,4 @@
-package main.libgdx;
+package main.libgdx.old;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -10,19 +10,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  * Time: 0:03
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_ValueIcon extends Group {
+public class ValueIcon extends Group {
 
     private String imagePath;
     private Texture backTexture;
     private Image backImage;
     private Image iconImage;
 
-    public DC_GDX_ValueIcon(String valueIconImagePath, Texture backTexture) {
+    public ValueIcon(String valueIconImagePath, Texture backTexture) {
         this.imagePath = valueIconImagePath;
         this.backTexture = backTexture;
     }
 
-    public DC_GDX_ValueIcon init() {
+    public ValueIcon init() {
         backImage = new Image(backTexture);
         iconImage = new Image(new Texture(imagePath));
 

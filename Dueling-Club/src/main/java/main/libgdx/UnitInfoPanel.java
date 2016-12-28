@@ -1,6 +1,10 @@
 package main.libgdx;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
+import main.libgdx.old.ItemPanel;
+import main.libgdx.old.OrbPanel;
+import main.libgdx.old.PagedPanel;
+import main.libgdx.old.PortraitPanel;
 
 /**
  * Created with IntelliJ IDEA.
@@ -8,37 +12,37 @@ import com.badlogic.gdx.scenes.scene2d.Group;
  * Time: 23:46
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_UnitInfoPanel extends Group {
+public class UnitInfoPanel extends Group {
 
-    protected DC_GDX_OrbPanel orbPanel;
-    protected DC_GDX_PortraitPanel portraitPanel;
-    protected DC_GDX_PagedPanel buffPanel;
-    protected DC_GDX_ItemPanel itemPanel;
+    protected OrbPanel orbPanel;
+    protected PortraitPanel portraitPanel;
+    protected PagedPanel buffPanel;
+    protected ItemPanel itemPanel;
 
     protected String imagePath;
 
-    public DC_GDX_UnitInfoPanel(String imagePath) {
+    public UnitInfoPanel(String imagePath) {
         this.imagePath = imagePath;
     }
 
-    public DC_GDX_UnitInfoPanel init() {
-        orbPanel = new DC_GDX_OrbPanel(false, imagePath).init();
+    public UnitInfoPanel init() {
+        orbPanel = new OrbPanel(false, imagePath).init();
         orbPanel.setX(0);
         addActor(orbPanel);
 
-        portraitPanel = new DC_GDX_PortraitPanel(imagePath).init();
+        portraitPanel = new PortraitPanel(imagePath).init();
         portraitPanel.setX(orbPanel.getWidth());
         portraitPanel.setY(0);
         addActor(portraitPanel);
 
         orbPanel.setY(portraitPanel.getHeight() - orbPanel.getHeight());
 
-        buffPanel = new DC_GDX_PagedPanel(imagePath, 5, 1).init();
+        buffPanel = new PagedPanel(imagePath, 5, 1).init();
         buffPanel.setX(orbPanel.getWidth() + portraitPanel.getWidth());
         buffPanel.setY(portraitPanel.getHeight() - buffPanel.getHeight());
         addActor(buffPanel);
 
-        itemPanel = new DC_GDX_ItemPanel(imagePath).init();
+        itemPanel = new ItemPanel(imagePath).init();
         itemPanel.setX(buffPanel.getX());
         itemPanel.setY(buffPanel.getY() - itemPanel.getHeight());
         addActor(itemPanel);

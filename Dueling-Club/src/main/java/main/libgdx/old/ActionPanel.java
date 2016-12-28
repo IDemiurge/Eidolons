@@ -1,4 +1,4 @@
-package main.libgdx;
+package main.libgdx.old;
 
 /**
  * Created with IntelliJ IDEA.
@@ -6,8 +6,8 @@ package main.libgdx;
  * Time: 20:08
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_ActionPanel extends DC_GDX_PagedPanel {
-    public DC_GDX_ActionPanel(String imagePath, int col, int row) {
+public class ActionPanel extends PagedPanel {
+    public ActionPanel(String imagePath, int col, int row) {
         super(imagePath, col, row);
     }
 
@@ -22,7 +22,7 @@ public class DC_GDX_ActionPanel extends DC_GDX_PagedPanel {
     }
 
     @Override
-    public DC_GDX_ActionPanel init() {
-        return (DC_GDX_ActionPanel) super.init();
+    public ActionPanel init() {
+        return (ActionPanel) super.init();
     }
 }

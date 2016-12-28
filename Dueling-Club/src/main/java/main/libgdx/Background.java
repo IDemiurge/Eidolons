@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  * Time: 16:34
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_Background extends Group {
+public class Background extends Group {
 
     private final static String backImagePath = "big\\dungeon.jpg";
     //private final static String backImagePath = "big\\big bf grid test2.jpg";
@@ -19,11 +19,11 @@ public class DC_GDX_Background extends Group {
 
     private String imagePath;
 
-    public DC_GDX_Background(String path) {
+    public Background(String path) {
         imagePath = path;
     }
 
-    public DC_GDX_Background init() {
+    public Background init() {
         backImage = new Image(new Texture(imagePath + backImagePath));
         addActor(backImage);
 

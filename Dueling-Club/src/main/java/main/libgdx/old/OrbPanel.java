@@ -1,4 +1,4 @@
-package main.libgdx;
+package main.libgdx.old;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -10,29 +10,29 @@ import com.badlogic.gdx.scenes.scene2d.Group;
  * Time: 23:47
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_OrbPanel extends Group {
+public class OrbPanel extends Group {
 
-    DC_GDX_ValueOrb[] orbs = new DC_GDX_ValueOrb[6];
+    ValueOrb[] orbs = new ValueOrb[6];
     private boolean rightToLeft;
     private String imagePath;
 
-    public DC_GDX_OrbPanel(boolean rightToLeft, String imagePath) {
+    public OrbPanel(boolean rightToLeft, String imagePath) {
         this.rightToLeft = rightToLeft;
         this.imagePath = imagePath;
     }
 
-    public DC_GDX_OrbPanel init() {
+    public OrbPanel init() {
         int i = 0;
-        orbs[i++] = new DC_GDX_ValueOrb(Color.BLUE, imagePath).init();
-        orbs[i++] = new DC_GDX_ValueOrb(Color.BROWN, imagePath).init();
-        orbs[i++] = new DC_GDX_ValueOrb(Color.CYAN, imagePath).init();
+        orbs[i++] = new ValueOrb(Color.BLUE, imagePath).init();
+        orbs[i++] = new ValueOrb(Color.BROWN, imagePath).init();
+        orbs[i++] = new ValueOrb(Color.CYAN, imagePath).init();
 
-        orbs[i++] = new DC_GDX_ValueOrb(Color.GOLD, imagePath).init();
-        orbs[i++] = new DC_GDX_ValueOrb(Color.FOREST, imagePath).init();
-        orbs[i++] = new DC_GDX_ValueOrb(Color.MAGENTA, imagePath).init();
+        orbs[i++] = new ValueOrb(Color.GOLD, imagePath).init();
+        orbs[i++] = new ValueOrb(Color.FOREST, imagePath).init();
+        orbs[i++] = new ValueOrb(Color.MAGENTA, imagePath).init();
 
         for (i = 0; i < orbs.length / 2; i++) {
-            DC_GDX_ValueOrb orb = orbs[i];
+            ValueOrb orb = orbs[i];
             orb.setX(i * orb.getWidth());
             orb.setY(0);
             addActor(orb);
@@ -53,7 +53,7 @@ public class DC_GDX_OrbPanel extends Group {
         swapOrbsPos(orbs[3],orbs[5]);
     }
 
-    private void swapOrbsPos(DC_GDX_ValueOrb first, DC_GDX_ValueOrb last){
+    private void swapOrbsPos(ValueOrb first, ValueOrb last){
         float fX = first.getX();
         float fY = first.getY();
 

@@ -2,6 +2,7 @@ package main.libgdx;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import main.libgdx.old.PagedPanel;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,12 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  * Time: 18:50
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_PagedPriorityPanel extends DC_GDX_PagedPanel {
+public class PagedPriorityPanel extends PagedPanel {
 
     private String clockImagePath = "\\UI\\custom\\Time.JPG";
     private Image clockImage;
 
-    public DC_GDX_PagedPriorityPanel(String imagePath, int col, int row) {
+    public PagedPriorityPanel(String imagePath, int col, int row) {
         super(imagePath, col, row);
     }
 
@@ -28,7 +29,7 @@ public class DC_GDX_PagedPriorityPanel extends DC_GDX_PagedPanel {
         return false;
     }
 
-    public DC_GDX_PagedPriorityPanel init() {
+    public PagedPriorityPanel init() {
         super.init();
         clockImage = new Image(new Texture(imagePath + clockImagePath));
         clockImage.setY(pager2.getY());

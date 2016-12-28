@@ -1,4 +1,4 @@
-package main.libgdx;
+package main.libgdx.old;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
  * Time: 15:37
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_ValueIconGroup extends Group {
+public class ValueIconGroup extends Group {
     private String resIcon = "\\UI\\value icons\\resistance.jpg";
     private String spiritIcon = "\\UI\\value icons\\spirit.jpg";
     private String enduranceIcon = "\\UI\\value icons\\Endurance.jpg";
@@ -20,37 +20,37 @@ public class DC_GDX_ValueIconGroup extends Group {
     private String defenceIcon = "\\UI\\value icons\\Defense.jpg";
     private String offAttackIcon = "\\UI\\value icons\\Off Hand Attack.jpg";
 
-    private DC_GDX_ValueIcon resValue;
-    private DC_GDX_ValueIcon spiritValue;
-    private DC_GDX_ValueIcon enduranceValue;
-    private DC_GDX_ValueIcon damageValue;
-    private DC_GDX_ValueIcon armorValue;
-    private DC_GDX_ValueIcon offDamageValue;
-    private DC_GDX_ValueIcon attackValue;
-    private DC_GDX_ValueIcon defenceValue;
-    private DC_GDX_ValueIcon offAttackValue;
+    private ValueIcon resValue;
+    private ValueIcon spiritValue;
+    private ValueIcon enduranceValue;
+    private ValueIcon damageValue;
+    private ValueIcon armorValue;
+    private ValueIcon offDamageValue;
+    private ValueIcon attackValue;
+    private ValueIcon defenceValue;
+    private ValueIcon offAttackValue;
 
     private String backIcon = "\\UI\\components\\box.jpg";
 
     private String imagePath;
 
-    public DC_GDX_ValueIconGroup(String imagePath) {
+    public ValueIconGroup(String imagePath) {
         this.imagePath = imagePath;
     }
 
-    public DC_GDX_ValueIconGroup init() {
+    public ValueIconGroup init() {
         Texture t = new Texture(imagePath + backIcon);
-        resValue = new DC_GDX_ValueIcon(imagePath + resIcon, t).init();
-        spiritValue = new DC_GDX_ValueIcon(imagePath + spiritIcon, t).init();
-        enduranceValue = new DC_GDX_ValueIcon(imagePath + enduranceIcon, t).init();
+        resValue = new ValueIcon(imagePath + resIcon, t).init();
+        spiritValue = new ValueIcon(imagePath + spiritIcon, t).init();
+        enduranceValue = new ValueIcon(imagePath + enduranceIcon, t).init();
 
-        damageValue = new DC_GDX_ValueIcon(imagePath + damageIcon, t).init();
-        armorValue = new DC_GDX_ValueIcon(imagePath + armorIcon, t).init();
-        offDamageValue = new DC_GDX_ValueIcon(imagePath + offDamageIcon, t).init();
+        damageValue = new ValueIcon(imagePath + damageIcon, t).init();
+        armorValue = new ValueIcon(imagePath + armorIcon, t).init();
+        offDamageValue = new ValueIcon(imagePath + offDamageIcon, t).init();
 
-        attackValue = new DC_GDX_ValueIcon(imagePath + attackIcon, t).init();
-        defenceValue = new DC_GDX_ValueIcon(imagePath + defenceIcon, t).init();
-        offAttackValue = new DC_GDX_ValueIcon(imagePath + offAttackIcon, t).init();
+        attackValue = new ValueIcon(imagePath + attackIcon, t).init();
+        defenceValue = new ValueIcon(imagePath + defenceIcon, t).init();
+        offAttackValue = new ValueIcon(imagePath + offAttackIcon, t).init();
 
         final int offset = 1;
 

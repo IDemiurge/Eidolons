@@ -1,4 +1,4 @@
-package main.libgdx;
+package main.libgdx.old;
 
 /**
  * Created with IntelliJ IDEA.
@@ -6,8 +6,8 @@ package main.libgdx;
  * Time: 23:56
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_QuickSpellPagedPanel extends DC_GDX_QuickActionPagedPanel {
-    public DC_GDX_QuickSpellPagedPanel(String imagePath, int col, int row) {
+public class QuickSpellPagedPanel extends QuickActionPagedPanel {
+    public QuickSpellPagedPanel(String imagePath, int col, int row) {
         super(imagePath, col, row);
     }
 

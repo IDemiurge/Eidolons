@@ -1,4 +1,6 @@
-package main.libgdx;
+package main.libgdx.old;
+
+import main.libgdx.UnitInfoPanel;
 
 /**
  * Created with IntelliJ IDEA.
@@ -6,38 +8,38 @@ package main.libgdx;
  * Time: 15:44
  * To change this template use File | Settings | File Templates.
  */
-public class DC_GDX_ActiveUnitInfoPanel extends DC_GDX_UnitInfoPanel {
-    protected DC_GDX_ActivePanelUnitName unitName;
+public class ActiveUnitInfoPanel extends UnitInfoPanel {
+    protected ActivePanelUnitName unitName;
 
-    protected DC_GDX_QuickActionPagedPanel spellPanel;
+    protected QuickActionPagedPanel spellPanel;
 
-    protected DC_GDX_QuickActionPagedPanel quickPanel;
+    protected QuickActionPagedPanel quickPanel;
 
     private float minHeight = 0;
     private float minWeight = 0;
 
-    public DC_GDX_ActiveUnitInfoPanel(String imagePath) {
+    public ActiveUnitInfoPanel(String imagePath) {
         super(imagePath);
     }
 
     @Override
-    public DC_GDX_ActiveUnitInfoPanel init() {
+    public ActiveUnitInfoPanel init() {
         int oldH = 0;
         super.init();
 
-        quickPanel = new DC_GDX_QuickActionPagedPanel(imagePath, 2, 5).init();
+        quickPanel = new QuickActionPagedPanel(imagePath, 2, 5).init();
         quickPanel.setY(oldH);
         quickPanel.setX(portraitPanel.getWidth() / 2 - quickPanel.getWidth() / 2);
         addActor(quickPanel);
         oldH += quickPanel.getHeight();
 
-        spellPanel = new DC_GDX_QuickActionPagedPanel(imagePath, 2, 5).init();
+        spellPanel = new QuickActionPagedPanel(imagePath, 2, 5).init();
         spellPanel.setY(oldH);
         spellPanel.setX(portraitPanel.getWidth() / 2 - spellPanel.getWidth() / 2);
         addActor(spellPanel);
         oldH += spellPanel.getHeight();
 
-        unitName = new DC_GDX_ActivePanelUnitName(imagePath).init();
+        unitName = new ActivePanelUnitName(imagePath).init();
 
         unitName.setX(portraitPanel.getWidth() / 2 - unitName.getWidth() / 2);
         unitName.setY(oldH);
