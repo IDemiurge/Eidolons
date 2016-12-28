@@ -63,7 +63,9 @@ public class Lightmap {
                 fdef.shape = shape;
                 body.createFixture(fdef);
                 // TEMP
-                FireLightProt fireLightProt = new FireLightProt(world, rayHandler, un.get(i).getX() * cellWidth + cellWidth / 2, un.get(i).getY() * cellHeight + cellHeight / 2, un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 30, 360, SECOND);
+                FireLightProt fireLightProt = new FireLightProt(world, rayHandler,
+                 un.get(i).getX() * cellWidth + cellWidth / 2, un.get(i).getY() *
+                 cellHeight + cellHeight / 2, un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 30, 360, SECOND);
 //                FireLightProt fireLightProt = new FireLightProt();
                 fireLightProt.attachToBody(body);
                 //TEMP END

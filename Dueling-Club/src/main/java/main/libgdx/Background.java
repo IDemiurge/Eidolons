@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.GuiManager;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,8 +30,7 @@ public class Background extends Group {
         this(        PathFinder.getImagePath()+defaultBackground);
     }
     public Background init() {
-        backImage = new Image(new Texture(imagePath ));
-        addActor(backImage);
+        update();
         return this;
     }
     public void setImagePath(String path) {
@@ -41,8 +41,10 @@ public class Background extends Group {
 
     }
         public void update() {
+            if (hasChildren())
         removeActor(backImage);
         backImage = new Image(new Texture(imagePath  ));
+            backImage.setBounds(0,0,(float) GuiManager.getScreenWidth(), (float) GuiManager.getScreenHeight());
         addActor(backImage);
             dirty=false;
     }
