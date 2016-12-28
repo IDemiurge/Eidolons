@@ -20,6 +20,7 @@ import main.data.filesys.PathFinder;
 import main.entity.obj.MicroObj;
 import main.system.TempEventManager;
 import main.system.datatypes.DequeImpl;
+import main.test.libgdx.sfx.particles.PARTICLE_EFFECTS;
 
 import java.util.ArrayList;
 
@@ -112,7 +113,7 @@ public class PrototypeScreen implements Screen {
 //        stage.addActor(grid);
 //        grid.setZIndex(1);
 //        player.setZIndex(2);
-        test = new ParticleActor(world, 0, 0);
+        test = new ParticleActor(PARTICLE_EFFECTS.SMOKE_TEST.getPath(), world, 0, 0);
 
         stage.setDebugAll(true);
         InputMultiplexer in = new InputMultiplexer();
