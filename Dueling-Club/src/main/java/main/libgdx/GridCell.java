@@ -1,10 +1,14 @@
 package main.libgdx;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 public class GridCell extends Group implements Borderable {
     protected Image backImage;
@@ -13,6 +17,7 @@ public class GridCell extends Group implements Borderable {
     protected int gridY;
     private GridCell innerDrawable;
     private Image border = null;
+    private Label cordsText;
 
     public GridCell(Texture backTexture, int gridX, int gridY) {
         this.backTexture = backTexture;
@@ -26,6 +31,12 @@ public class GridCell extends Group implements Borderable {
         addActor(backImage);
         setWidth(backImage.getWidth());
         setHeight(backImage.getHeight());
+
+        cordsText = new Label(gridX + ":" + gridY, StyleHolder.getDefaultLabelStyle());
+        cordsText.setPosition(getWidth() / 2 - cordsText.getWidth() / 2, getHeight() / 2 - cordsText.getHeight() / 2);
+        cordsText.setVisible(false);
+        addActor(cordsText);
+
         return this;
     }
 
@@ -38,6 +49,7 @@ public class GridCell extends Group implements Borderable {
             //return;
         }
         if (innerDrawable != null) {
+            cordsText.setVisible(false);
             addActor(innerDrawable);
             removeActor(backImage);
         } else {
@@ -52,6 +64,14 @@ public class GridCell extends Group implements Borderable {
     public void updateInnerDrawable(GridCell cell) {
         addInnerDrawable(null);
         addInnerDrawable(cell);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && getInnerDrawable() == null){
+            cordsText.setVisible(!cordsText.isVisible());
+        }
+        super.draw(batch, parentAlpha);
     }
 
     private void dispose() {

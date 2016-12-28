@@ -24,7 +24,7 @@ public class UnitView extends Group implements Borderable {
     }
 
     private void init(Texture arrowTexture, int arrowRotation, Texture clockTexture, String clockVal, Texture portraitTexture, Texture iconTexture) {
-        this.arrowRotation = arrowRotation - 90;
+        this.arrowRotation = arrowRotation-90;
         this.clockVal = clockVal;
 
         portrait = new Image(portraitTexture);

@@ -131,10 +131,13 @@ public class ToolTipManager extends Group {
 
         public static String getCurMaxVal(int curVal, int maxVal) {
             StringBuilder sb = new StringBuilder();
-            sb.append(curVal);
-            if (maxVal != -1) {
-                sb.append("\\");
-                sb.append(maxVal);
+            if (curVal != -1) {
+                sb.append(curVal);
+
+                if (maxVal != -1) {
+                    sb.append("\\");
+                    sb.append(maxVal);
+                }
             }
 
             return sb.toString();
@@ -150,7 +153,7 @@ public class ToolTipManager extends Group {
     public static class ToolTipRecordOption {
         public Texture recordImage;
         public String name;
-        public int curVal;
+        public int curVal = -1;
         public int maxVal = -1;
     }
 }

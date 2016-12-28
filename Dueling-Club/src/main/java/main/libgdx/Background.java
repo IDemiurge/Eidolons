@@ -31,7 +31,6 @@ public class Background extends Group {
     public Background init() {
         backImage = new Image(new Texture(imagePath ));
         addActor(backImage);
-
         return this;
     }
     public void setImagePath(String path) {
