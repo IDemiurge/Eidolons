@@ -183,7 +183,7 @@ public class GridPanel extends Group {
         TempEventManager.bind("create-units-model", param -> {
             units = (DequeImpl<MicroObj>) param.get();
 
-            //lightmap = new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight());
+            lightmap = new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight());
 
             Map<Coordinates, List<MicroObj>> map = new HashMap<>();
             for (MicroObj object : units) {

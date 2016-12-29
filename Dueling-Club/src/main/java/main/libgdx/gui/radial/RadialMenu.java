@@ -38,7 +38,7 @@ import static main.system.TempEventManager.trigger;
 
 public class RadialMenu extends Group {
     private TextureCache textureCache;
-    private MenuNode curentNode;
+    private MenuNode currentNode;
     private Image closeImage;
 
     public RadialMenu(Texture closeTex, TextureCache textureCache) {
@@ -73,66 +73,66 @@ public class RadialMenu extends Group {
         });*/
     }
 
-    private void init(List<CreatorNode> nodes) {
-        curentNode = new MenuNode(closeImage, "Close");
-        curentNode.childs = createChildren(curentNode, nodes);
+    public void init(List<CreatorNode> nodes) {
+        currentNode = new MenuNode(closeImage, "Close");
+        currentNode.childs = createChildren(currentNode, nodes);
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
         setBounds(
                 v2.x - getWidth() / 2,
                 v2.y - getHeight() / 2,
-                curentNode.getWidth(),
-                curentNode.getHeight()
+                currentNode.getWidth(),
+                currentNode.getHeight()
         );
 
         final RadialMenu menu = this;
-        curentNode.action = () -> menu.setVisible(false);
+        currentNode.action = () -> menu.setVisible(false);
 
         updateCallbacks();
-        curentNode.drawChilds = true;
+        currentNode.drawChilds = true;
         setVisible(true);
-        //addActor(curentNode);
+        //addActor(currentNode);
     }
 
     @Override
     protected void positionChanged() {
-        curentNode.setX(getX());
-        curentNode.setY(getY());
+        currentNode.setX(getX());
+        currentNode.setY(getY());
         updatePosition();
     }
 
     private void setCurentNode(MenuNode node) {
-        removeActor(curentNode);
-        curentNode.drawChilds = false;
-        curentNode = node;
+        removeActor(currentNode);
+        currentNode.drawChilds = false;
+        currentNode = node;
         updatePosition();
         updateCallbacks();
-        curentNode.drawChilds = true;
-        // addActor(curentNode);
+        currentNode.drawChilds = true;
+        // addActor(currentNode);
     }
 
     private void updatePosition() {
 
-        int step = 360 / curentNode.childs.size();
+        int step = 360 / currentNode.childs.size();
         int pos;
-        int r = (int) (curentNode.getWidth() * 1.5);
+        int r = (int) (currentNode.getWidth() * 1.5);
 
-        for (int i = 0; i < curentNode.childs.size(); i++) {
+        for (int i = 0; i < currentNode.childs.size(); i++) {
             pos = i * step;
             int y = (int) (r * Math.sin(Math.toRadians(pos)));
             int x = (int) (r * Math.cos(Math.toRadians(pos)));
-            curentNode.childs.get(i).setX(x + curentNode.getX());
-            curentNode.childs.get(i).setY(y + curentNode.getY());
+            currentNode.childs.get(i).setX(x + currentNode.getX());
+            currentNode.childs.get(i).setY(y + currentNode.getY());
         }
     }
 
     private void updateCallbacks() {
-        if (curentNode.parent == null) {
-            curentNode.action = () -> setVisible(false);
+        if (currentNode.parent == null) {
+            currentNode.action = () -> setVisible(false);
         } else {
-            curentNode.action = () -> setCurentNode(curentNode.parent);
+            currentNode.action = () -> setCurentNode(currentNode.parent);
         }
-        for (final MenuNode child : curentNode.childs) {
+        for (final MenuNode child : currentNode.childs) {
             if (child.childs.size() > 0) {
                 child.action = () -> setCurentNode(child);
             }
@@ -162,17 +162,17 @@ public class RadialMenu extends Group {
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
-        if (!isVisible() || curentNode == null) return null;
+        if (!isVisible() || currentNode == null) return null;
         if (!Gdx.input.isTouched()) return null;
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
-        return curentNode.hit(v2.x, v2.y, touchable);
+        return currentNode.hit(v2.x, v2.y, touchable);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (!isVisible() || curentNode == null) return;
-        curentNode.draw(batch, parentAlpha);
+        if (!isVisible() || currentNode == null) return;
+        currentNode.draw(batch, parentAlpha);
     }
 
 
@@ -280,6 +280,9 @@ public class RadialMenu extends Group {
             if (unics.contains(obj)) {
                 continue;
             }
+
+            if (obj.getTargeting()==null )
+                continue;
             unics.add(obj);
             if (obj.isMove()) {
                 if (obj.getTargeting() instanceof SelectiveTargeting) {

@@ -2,8 +2,14 @@ package main.test.debug;
 
 import main.game.DC_Game;
 import main.game.Game;
+import main.libgdx.gui.radial.RadialMenu;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by JustMe on 12/28/2016.
@@ -12,8 +18,9 @@ public class DebugRadialManager {
 
     public static void clicked(Object obj){
         if (obj instanceof DEBUG_CONTROL){
-            clicked(obj);
-        }
+            clickedControl((DEBUG_CONTROL) obj);
+        } else
+            handleDebugControl(obj);
     }
     public static void clickedControl(DEBUG_CONTROL c){
         if (c.getChildObjects()!=null ){
@@ -24,13 +31,57 @@ public class DebugRadialManager {
             show(c.getChildren());
             return ;
         }
-         clickedLeaf(c);
+         handleDebugControl(c);
     }
 
     private static void show(Object[] children) {
     }
 
-    public static void clickedLeaf(DEBUG_CONTROL c) {
+
+
+    public static void show(RadialMenu radialMenu) {
+        radialMenu.init(getDebugNodes());
+    }
+    public static List< RadialMenu.CreatorNode> getDebugNodes(){
+        List< RadialMenu.CreatorNode> list = new LinkedList<>();
+        new LinkedList<DebugRadialManager.DEBUG_CONTROL>(
+         Arrays.asList(DebugRadialManager.DEBUG_CONTROL.values())).forEach(c->{
+           createNodeBranch(c, list);
+
+
+        });
+        return list;
+    }
+
+    private static void createNodeBranch(Object object, List<RadialMenu.CreatorNode> list) {
+        RadialMenu.CreatorNode node = new RadialMenu.CreatorNode();
+//        node.texture = TextureCache.;TODO
+        node.name =  StringMaster.getWellFormattedString(object.toString());
+        node.action = new Runnable() {
+            @Override
+            public void run() {
+                DebugRadialManager.clicked(object);
+            }
+        };
+
+        list.add(node);
+
+if (object instanceof  DEBUG_CONTROL){
+    DEBUG_CONTROL c= (DEBUG_CONTROL) object;
+    if (c.getChildObjects()!=null ){
+        node.childNodes=    new LinkedList<>() ;
+        for (Object o : c.getChildObjects()){
+            createNodeBranch(o,  node.childNodes);
+        }
+    } else
+    if (c.getChildren()!=null ){
+        node.childNodes=    new LinkedList<>() ;
+        for (Object o : c.getChildren()){
+            createNodeBranch(o,  node.childNodes);
+        }
+    }
+    }
+
     }
 
     public enum DEBUG_CONTROL{
@@ -38,6 +89,8 @@ public class DebugRadialManager {
 //    PARAMETER(),
 //    PROPERTY(),
 //    POSITION(),
+//
+//
 //    SET(PROPERTY,PARAMETER,DYNAMIC_PARAMETER, POSITION){
 //        @Override
 //        boolean isRoot() {
@@ -64,6 +117,7 @@ public class DebugRadialManager {
         FUNC_ADD_BF(DebugMaster.group_add_bf_obj),
         FUNC_ADD_NON_BF(DebugMaster.group_add),
         FUNC_GLOBAL(DebugMaster.group_basic),
+        FUNC_GRAPHICS(DebugMaster.group_graphics),
 
         PICK(),
         TYPE(),
@@ -102,13 +156,13 @@ public class DebugRadialManager {
             return objects;
         }
     }
-    public   void handleDebugControl(Object control) {
+    public  static void handleDebugControl(Object control) {
         if (control instanceof DebugMaster.DEBUG_FUNCTIONS){
             DebugMaster.DEBUG_FUNCTIONS func_control = ((DebugMaster.DEBUG_FUNCTIONS) control);
             DC_Game.game.getDebugMaster(). executeDebugFunctionNewThread(func_control);
         }
     }
-    public   void handleDebugControl(DEBUG_CONTROL control) {
+    public static  void handleDebugControl(DEBUG_CONTROL control) {
         switch(control){
             case SET_VALUE:   Game.game.getValueHelper().promptSetValue();
                 break;

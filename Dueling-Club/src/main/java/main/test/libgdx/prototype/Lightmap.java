@@ -11,6 +11,7 @@ import main.entity.obj.MicroObj;
 import main.game.battlefield.Coordinates;
 import main.system.datatypes.DequeImpl;
 import main.test.libgdx.GameScreen;
+import main.test.libgdx.sfx.particles.lighting.LightingManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class Lightmap {
         this.rayHandler.setBlur(true);
         this.rayHandler.setBlurNum(15);
         this.rayHandler.setAmbientLight(Color.GRAY);
-        this.rayHandler.setAmbientLight(0.025f);
+        this.rayHandler.setAmbientLight(LightingManager.ambient_light);
         this.rayHandler.setBlurNum(15);
         RayHandler.setGammaCorrection(true);
         debugRenderer = new Box2DDebugRenderer();
