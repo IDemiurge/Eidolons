@@ -49,6 +49,7 @@ import main.system.math.DC_MathManager;
 import main.system.math.MathMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+import main.test.debug.GameLauncher;
 
 import java.util.*;
 
@@ -558,7 +559,7 @@ public class DC_HeroObj extends DC_UnitObj {
         // Chronos.logTimeElapsedForMark(toString() + "to base (values)");
 
         // Chronos.mark(toString() + "to base (init objects)");
-
+if (!  GameLauncher.getInstance().SUPER_FAST_MODE)
         initHeroObjects();
         // Chronos.logTimeElapsedForMark(toString() + "to base (init objects)");
         // if (mainHero)

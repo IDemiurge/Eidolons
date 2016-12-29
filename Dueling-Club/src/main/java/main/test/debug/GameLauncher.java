@@ -35,6 +35,7 @@ import java.util.List;
 public class GameLauncher {
     public final boolean NET_FAST_MODE = true;
     private final boolean factionMode = true;
+    private static GameLauncher instance;
     public int ENEMY_CODE = CODE.CHOOSE;
     public int PARTY_CODE = CODE.CHOOSE; // preset sub-code?
     public boolean VISION_HACK = false;
@@ -56,8 +57,8 @@ public class GameLauncher {
     private boolean factionLeaderRequired;
     private String dungeon;
 
-    private Boolean FAST_MODE;
-    private Boolean SUPER_FAST_MODE;
+    public Boolean FAST_MODE;
+    public Boolean SUPER_FAST_MODE;
 
     public GameLauncher(DC_Game game, Boolean host_client) {
         this(game, null, null, host_client);
@@ -69,6 +70,7 @@ public class GameLauncher {
         this.host_client = host_client;
         this.FAST_MODE = FAST_MODE;
         this.SUPER_FAST_MODE = SUPER_FAST_MODE;
+        instance=this;
     }
 
     private String initFactionData() {
@@ -100,7 +102,13 @@ public class GameLauncher {
         PresetMaster.updatePreset();
     }
 
+    public static GameLauncher getInstance() {
+        return instance;
+    }
+
     private void savePresetAsLast() {
+        if (  ! FAST_MODE)
+            if (  ! SUPER_FAST_MODE)
         PresetMaster.savePreset(PresetMaster.getPreset(), null);
     }
 
