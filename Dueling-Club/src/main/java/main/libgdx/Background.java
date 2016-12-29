@@ -20,7 +20,7 @@ public class Background extends Group {
     public Image backImage;
 
     private String imagePath;
-    private boolean dirty;
+    private boolean dirty=true;
 
     public Background(String path) {
         imagePath = path;

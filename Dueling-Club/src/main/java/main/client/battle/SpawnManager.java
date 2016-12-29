@@ -358,7 +358,7 @@ public class SpawnManager {
                 player.setEmblem( // TODO ???
                         ((DC_HeroObj) list.get(0)).getEmblem().getImage());
             } catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }
 

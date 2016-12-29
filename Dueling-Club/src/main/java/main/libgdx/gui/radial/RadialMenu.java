@@ -310,7 +310,12 @@ public class RadialMenu extends Group {
             if (obj.isAttack()) {
                 DC_ActiveObj dcActiveObj = (DC_ActiveObj) obj;
                 RadialMenu.CreatorNode inn1 = new CreatorNode();
+                try{
                 inn1.texture = textureCache.getOrCreate(((Entity) obj).getImagePath());
+                }catch(Exception e){                e.printStackTrace();
+
+                }
+
                 inn1.name = obj.getName();
                 inn1.action = null;
                 if (obj.getRef().getSourceObj() == target) {

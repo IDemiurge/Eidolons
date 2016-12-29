@@ -5,12 +5,12 @@ import main.game.MicroGame;
 import main.game.MicroGameState;
 import main.game.player.Player;
 import main.swing.generic.components.Builder;
+import main.system.launch.CoreEngine;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseWheelListener;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Set;
 
 public abstract class SwingBattleField implements BattleField {
     protected BattleFieldGrid grid;
@@ -50,6 +50,7 @@ public abstract class SwingBattleField implements BattleField {
     }
 
     public void refresh() {
+        if (!CoreEngine.isSwingOn()) return ;
         if (SwingUtilities.isEventDispatchThread())
             builder.refresh();
         else

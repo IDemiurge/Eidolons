@@ -14,6 +14,7 @@ import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
@@ -231,7 +232,7 @@ try{game.getBattleField().refreshInitiativeQueue();                }catch(Except
         try{
         if (!game.getManager().activeSelect(getActiveUnit()))
             return false;
-
+if (CoreEngine.isSwingOn())
         if (game.getManager().getInfoObj() == null)
             game.getManager().infoSelect(activeUnit);
 

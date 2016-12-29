@@ -173,10 +173,12 @@ public class DungeonMaster {
         if (BooleanMaster.isTrue(FAST_DC.getGameLauncher().getSUPER_FAST_MODE())
                 ){
             setDungeonPath(FAST_DC.DEFAULT_TEST_DUNGEON);
-            if (getDungeonPath() != null)
-            {  setDungeon(DungeonBuilder.loadDungeon(getDungeonPath()));
-        return ;
-        }}
+            }
+        if (getDungeonPath() != null)
+        {  setDungeon(DungeonBuilder.loadDungeon(getDungeonPath()));
+            return ;
+        }
+
         if (CoreEngine.isArcaneVault()) {
             ObjType objType = new ObjType("Test Dungeon", OBJ_TYPES.DUNGEONS);
             objType.setParam(PARAMS.BF_WIDTH, 3);
@@ -201,7 +203,7 @@ public class DungeonMaster {
 //        }
 //        else
 
-      if (type==null )  {
+      if (type==null  )  {
             if (Launcher.DEV_MODE)
                 if (RANDOM_DUNGEON) {
                     type = pickRandomDungeon();
@@ -423,7 +425,10 @@ public class DungeonMaster {
         GuiManager.setCurrentLevelCellsX(getLevelWidth());
         GuiManager.setCurrentLevelCellsY(getLevelHeight());
         if (ImageManager.isImage(dungeon.getMapBackground()))
-        GameScreen.getInstance().getBackground().setImagePath(dungeon.getMapBackground());
+if (GameScreen.getInstance()!=null )
+    try{GameScreen.getInstance().getBackground().setImagePath(dungeon.getMapBackground());
+        }catch(Exception e){                e.printStackTrace();            }
+
     }
 
     public G_Panel getMinimapComponent() {

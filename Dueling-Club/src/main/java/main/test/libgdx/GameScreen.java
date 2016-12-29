@@ -51,9 +51,14 @@ public class GameScreen implements Screen {
 
     private World world;
     private static GameScreen instance;
+    private MyInputController controller;
 
-    public GameScreen PostConstruct() {
-        instance=this;
+    public void PostGameStart() {
+        InputMultiplexer multiplexer = new InputMultiplexer(controller, bf, gui);
+        Gdx.input.setInputProcessor(multiplexer);
+    }
+
+        public GameScreen PostConstruct() {  instance=this;
         bf = new Stage();
         gui = new Stage();
 
@@ -62,7 +67,7 @@ public class GameScreen implements Screen {
         cam.setToOrtho(false, 1600, 900);
         bf.getViewport().setCamera(cam);
         //gui.getViewport().setCamera(cam);
-        MyInputController controller = new MyInputController(bf, gui, cam);
+       controller = new MyInputController(bf, gui, cam);
         GL20 gl = Gdx.graphics.getGL20();
         gl.glEnable(GL20.GL_BLEND);
         gl.glEnable(GL20.GL_TEXTURE_2D);
@@ -105,8 +110,7 @@ public class GameScreen implements Screen {
 
         //gridPanel.setY(actionGroup.getY()+actionGroup.getHeight());
         //gridPanel.setX(activeUnitInfoPanel.getMinWeight());
-        InputMultiplexer multiplexer = new InputMultiplexer(controller, bf, gui);
-        Gdx.input.setInputProcessor(multiplexer);
+
         return this;
     }
 
