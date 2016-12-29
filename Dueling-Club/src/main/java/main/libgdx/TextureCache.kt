@@ -1,6 +1,7 @@
 package main.libgdx
 
 import com.badlogic.gdx.graphics.Texture
+import main.system.images.ImageManager
 import java.io.File
 import java.util.*
 
@@ -14,6 +15,10 @@ class TextureCache(private var imagePath: String) {
         }
 
         p = imagePath + p
+        if (ImageManager.getPATH()!=null )
+ if(!ImageManager.isImage(p)){
+            p=ImageManager.getPATH  ()+(ImageManager.getAltEmptyListIcon())
+        }
 
         if (!cache.containsKey(p)) {
             val t = Texture(p)

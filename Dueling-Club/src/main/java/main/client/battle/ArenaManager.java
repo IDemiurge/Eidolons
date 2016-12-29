@@ -80,12 +80,12 @@ public class ArenaManager {
 
         arenaOptions.setValue(ARENA_GAME_OPTIONS.PLAYER_STARTING_SIDE, DEFAULT_SIDE);
 
-        if (game.getDungeonMaster().getDungeon() != null)
-            arenaOptions.setValue(ARENA_GAME_OPTIONS.BACKGROUND, game.getDungeonMaster()
-                    .getDungeon().getMapBackground());
-        else
-            arenaOptions.setValue(ARENA_GAME_OPTIONS.BACKGROUND,
-                    (DEFAULT_BACKGROUND != null) ? DEFAULT_BACKGROUND : getRandomBackground());
+//        if (game.getDungeonMaster().getDungeon() != null)
+//            arenaOptions.setValue(ARENA_GAME_OPTIONS.BACKGROUND, game.getDungeonMaster()
+//                    .getDungeon().getMapBackground());
+//        else
+//            arenaOptions.setValue(ARENA_GAME_OPTIONS.BACKGROUND,
+//                    (DEFAULT_BACKGROUND != null) ? DEFAULT_BACKGROUND : getRandomBackground());
 
         arenaOptions.setValue(ARENA_GAME_OPTIONS.DIFFICULTY, DEFAULT_DIFFICULTY);
         arenaOptions.setValue(ARENA_GAME_OPTIONS.LIVES, DEFAULT_LIVES);

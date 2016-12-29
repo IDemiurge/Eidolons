@@ -10,12 +10,12 @@ import main.system.auxiliary.EnumMaster;
  */
 public class DebugRadialManager {
 
-    public void clicked(Object obj){
+    public static void clicked(Object obj){
         if (obj instanceof DEBUG_CONTROL){
             clicked(obj);
         }
     }
-    public void clickedControl(DEBUG_CONTROL c){
+    public static void clickedControl(DEBUG_CONTROL c){
         if (c.getChildObjects()!=null ){
             show(c.getChildObjects());
             return ;
@@ -27,7 +27,7 @@ public class DebugRadialManager {
          clickedLeaf(c);
     }
 
-    private void show(Object[] children) {
+    private static void show(Object[] children) {
     }
 
     public static void clickedLeaf(DEBUG_CONTROL c) {

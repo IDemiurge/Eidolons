@@ -67,6 +67,7 @@ import main.system.util.ValueHelper;
 import main.test.PresetLauncher;
 import main.test.PresetMaster;
 import main.test.debug.DebugMaster;
+import main.test.libgdx.GameScreen;
 
 import javax.swing.*;
 import java.util.*;
@@ -369,6 +370,9 @@ public class DC_Game extends MicroGame {
         if (playerMaster == null)
             playerMaster = new PlayerMaster(game, getPlayer(true), getPlayer(false));
         playerMaster.initPlayerFlags();
+
+        if (GameScreen.getInstance()!=null )
+        GameScreen.getInstance().PostGameStart();
         Chronos.logTimeElapsedForMark("GAME_START");
     }
 
