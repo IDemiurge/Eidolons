@@ -67,7 +67,6 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         PathFinder.init();
         background = new Background().init();
-        //topPanel = new DC_GDX_TopPanel(PathFinder.getImagePath()).init();
         textureCache = new TextureCache(PathFinder.getImagePath());
         final Texture t = new Texture(GameScreen.class.getResource("/data/marble_green.png").getPath());
         radialMenu = new RadialMenu(t, textureCache);

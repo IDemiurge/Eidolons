@@ -73,10 +73,11 @@ public class GridPanel extends Group {
         cells = new GridCell[cols][rows];
 
         cellBorderManager = new CellBorderManager(emptyImage.getWidth(), emptyImage.getHeight(), textureCache);
-
+        int rows1 = rows - 1;
+        int cols1 = cols -1;
         for (int x = 0; x < cols; x++) {
-            for (int y = rows - 1; y >= 0; y--) {
-                cells[x][y] = new GridCell(emptyImage, x, y);
+            for (int y = 0; y < rows; y++) {
+                cells[x][y] = new GridCell(emptyImage, x, rows1 - y);
                 cells[x][y].setX(x * emptyImage.getWidth());
                 cells[x][y].setY(y * emptyImage.getHeight());
                 addActor(cells[x][y].init());
@@ -118,12 +119,12 @@ public class GridPanel extends Group {
                 DC_HeroObj heroObj = (DC_HeroObj) Game.game.getObjectById(Integer.valueOf(id));
                 UnitView uv = unitMap.get(heroObj);
                 Coordinates c = heroObj.getCoordinates();
-                if (cells[c.x][c.y].getInnerDrawable() == null) {
-                    GridCellContainer cellContainer = new GridCellContainer(cells[c.x][c.y]).init();
-                    cells[c.x][c.y].addInnerDrawable(cellContainer);
+                if (cells[c.x][rows1 - c.y].getInnerDrawable() == null) {
+                    GridCellContainer cellContainer = new GridCellContainer(cells[c.x][rows1 - c.y]).init();
+                    cells[c.x][rows1 - c.y].addInnerDrawable(cellContainer);
                 }
                 uv.setVisible(true);
-                cells[c.x][c.y].getInnerDrawable().addActor(uv);
+                cells[c.x][rows1 - c.y].getInnerDrawable().addActor(uv);
 
                 cellBorderManager.updateBorderSize();
 
@@ -205,7 +206,7 @@ public class GridPanel extends Group {
                 GridCellContainer cellContainer = new GridCellContainer(emptyImage, coordinates.getX(), coordinates.getY()).init();
                 cellContainer.setObjects(options);
 
-                cells[coordinates.getX()][coordinates.getY()].addInnerDrawable(cellContainer);
+                cells[coordinates.getX()][rows1 - coordinates.getY()].addInnerDrawable(cellContainer);
             }
         });
 
@@ -284,7 +285,7 @@ public class GridPanel extends Group {
                         recordOptions.add(recordOption);
 
                         recordOption = new ToolTipManager.ToolTipRecordOption();
-                        recordOption.name = "direction: "+ hero.getFacing().getDirection();
+                        recordOption.name = "direction: " + hero.getFacing().getDirection();
                         recordOptions.add(recordOption);
 
                         TempEventManager.trigger("show-tooltip", new EventCallbackParam(recordOptions));
