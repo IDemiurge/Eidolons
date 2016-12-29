@@ -26,7 +26,6 @@ public class Background extends Group {
     public Background init() {
         backImage = new Image(new Texture(imagePath + backImagePath));
         addActor(backImage);
-
         return this;
     }
 }
