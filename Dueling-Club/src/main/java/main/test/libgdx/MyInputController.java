@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.game.DC_Game;
-import main.test.libgdx.prototype.ParticleActor;
-import main.test.libgdx.sfx.particles.PARTICLE_EFFECTS;
 
 /**
  * Created by PC on 25.10.2016.
@@ -58,9 +56,9 @@ public class MyInputController implements InputProcessor {
 
     @Override
     public boolean touchDown(int i, int i1, int i2, int i3) {
-        bf.addActor(new ParticleActor(PARTICLE_EFFECTS.SMOKE_TEST.getPath(),
+/*        bf.addActor(new ParticleActor(PARTICLE_EFFECTS.SMOKE_TEST.getPath(),
          GameScreen.getInstance().getWorld()
-         , i, i1));
+         , i, i1));*/
         // Условно у меня на ширину приложения пикселей приходится ширина камеры абстрактрых едениц
             if (i3 ==0){
                 x_cam_pos = i;
