@@ -1,6 +1,7 @@
 package main.test.libgdx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -8,17 +9,15 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.data.filesys.PathFinder;
 import main.entity.obj.DC_HeroObj;
-import main.libgdx.*;
+import main.game.DC_Game;
+import main.libgdx.Background;
+import main.libgdx.GridPanel;
+import main.libgdx.TextureCache;
+import main.libgdx.ToolTipManager;
 import main.libgdx.gui.radial.RadialMenu;
-import main.libgdx.old.ActionGroup;
-import main.libgdx.old.ActiveUnitInfoPanel;
-import main.libgdx.old.TargetUnitInfoPanel;
-import main.libgdx.old.TopPanel;
 import main.system.TempEventManager;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -33,13 +32,8 @@ public class GameScreen implements Screen {
     private Stage bf;
     private Stage gui;
 
-
     private Background background;
-    private TopPanel topPanel;
     private GridPanel gridPanel;
-    private TargetUnitInfoPanel unitInfoPanel;
-    private ActiveUnitInfoPanel activeUnitInfoPanel;
-    private ActionGroup actionGroup;
     private TextureCache textureCache;
     private RadialMenu radialMenu;
 
@@ -48,8 +42,6 @@ public class GameScreen implements Screen {
     private SpriteBatch batch;
     private OrthographicCamera cam;
 
-
-    private World world;
     private static GameScreen instance;
     private MyInputController controller;
 
@@ -58,16 +50,16 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(multiplexer);
     }
 
-        public GameScreen PostConstruct() {  instance=this;
+    public GameScreen PostConstruct() {
+        instance = this;
         bf = new Stage();
         gui = new Stage();
 
-        world = new World(new Vector2(0,-10),false);
         camera = cam = new OrthographicCamera();
         cam.setToOrtho(false, 1600, 900);
         bf.getViewport().setCamera(cam);
         //gui.getViewport().setCamera(cam);
-       controller = new MyInputController(bf, gui, cam);
+        controller = new MyInputController(bf, gui, cam);
         GL20 gl = Gdx.graphics.getGL20();
         gl.glEnable(GL20.GL_BLEND);
         gl.glEnable(GL20.GL_TEXTURE_2D);
@@ -95,22 +87,6 @@ public class GameScreen implements Screen {
             radialMenu.createNew(container.getLeft());
         });
 
-//
-//        unitInfoPanel = new DC_GDX_TargetUnitInfoPanel(PathFinder.getImagePath()).init();
-//        unitInfoPanel.setX(Gdx.graphics.getWidth() - unitInfoPanel.getWidth());
-//        unitInfoPanel.setY(Gdx.graphics.getHeight() - unitInfoPanel.getHeight());
-//
-//        activeUnitInfoPanel = new DC_GDX_ActiveUnitInfoPanel(PathFinder.getImagePath()).init();
-//        activeUnitInfoPanel.setX(0);
-//        activeUnitInfoPanel.setY(Gdx.graphics.getHeight() - activeUnitInfoPanel.getHeight());
-//
-//        actionGroup = new DC_GDX_ActionGroup(PathFinder.getImagePath()).init();
-//        actionGroup.setY(10);
-//        actionGroup.setX(Gdx.graphics.getWidth() / 2 - actionGroup.getWidth() / 2);
-
-        //gridPanel.setY(actionGroup.getY()+actionGroup.getHeight());
-        //gridPanel.setX(activeUnitInfoPanel.getMinWeight());
-
         return this;
     }
 
@@ -119,8 +95,13 @@ public class GameScreen implements Screen {
     public static GameScreen getInstance() {
         return instance;
     }
+
     @Override
     public void render(float delta) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+            DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
+        }
+
         TempEventManager.processEvents();
 
         bf.act(delta);
@@ -187,10 +168,7 @@ public class GameScreen implements Screen {
 
     }
 
-    public World getWorld() {
-        return world;
-    }
-
     public Background getBackground() {
         return background;
-    }}
+    }
+}
