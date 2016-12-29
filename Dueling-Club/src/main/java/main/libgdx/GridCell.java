@@ -1,7 +1,5 @@
 package main.libgdx;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -9,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import main.game.DC_Game;
 
 public class GridCell extends Group implements Borderable {
     protected Image backImage;
@@ -68,9 +67,18 @@ public class GridCell extends Group implements Borderable {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && getInnerDrawable() == null){
-            cordsText.setVisible(!cordsText.isVisible());
+        if (getInnerDrawable() == null) {
+            if (DC_Game.game.isDebugMode()) {
+                if (!cordsText.isVisible()) {
+                    cordsText.setVisible(true);
+                }
+            } else {
+                if (cordsText.isVisible()) {
+                    cordsText.setVisible(false);
+                }
+            }
         }
+
         super.draw(batch, parentAlpha);
     }
 

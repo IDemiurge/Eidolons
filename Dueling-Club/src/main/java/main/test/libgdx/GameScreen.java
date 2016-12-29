@@ -1,6 +1,7 @@
 package main.test.libgdx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.data.filesys.PathFinder;
 import main.entity.obj.DC_HeroObj;
+import main.game.DC_Game;
 import main.libgdx.*;
 import main.libgdx.old.ActionGroup;
 import main.libgdx.old.ActiveUnitInfoPanel;
@@ -114,6 +116,10 @@ public class GameScreen implements Screen {
     }
     @Override
     public void render(float delta) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)){
+            DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
+        }
+
         TempEventManager.processEvents();
 
         bf.act(delta);
