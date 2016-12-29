@@ -44,13 +44,13 @@ public class Background extends Group {
             if (hasChildren())
         removeActor(backImage);
         backImage = new Image(new Texture(imagePath  ));
-            backImage.setBounds(0,0,(float) GuiManager.getScreenWidth(), (float) GuiManager.getScreenHeight());
+            backImage.setBounds(backImage.getImageX() ,backImage.getImageY() ,(float) GuiManager.getScreenWidth(), (float) GuiManager.getScreenHeight());
         addActor(backImage);
             dirty=false;
     }
 
     public boolean isDirty() {
-        return dirty;
+          return dirty;
     }
 
     public void setDirty(boolean dirty) {

@@ -173,7 +173,10 @@ public class DungeonMaster {
         if (BooleanMaster.isTrue(FAST_DC.getGameLauncher().getSUPER_FAST_MODE())
                 ){
             setDungeonPath(FAST_DC.DEFAULT_TEST_DUNGEON);
-        }
+            if (getDungeonPath() != null)
+            {  setDungeon(DungeonBuilder.loadDungeon(getDungeonPath()));
+        return ;
+        }}
         if (CoreEngine.isArcaneVault()) {
             ObjType objType = new ObjType("Test Dungeon", OBJ_TYPES.DUNGEONS);
             objType.setParam(PARAMS.BF_WIDTH, 3);
@@ -182,18 +185,9 @@ public class DungeonMaster {
             return;
         }
         if (FAST_DC.isRunning()) {
-            type = DataManager.getType(getPresetDungeonType(), OBJ_TYPES.DUNGEONS);
-            if (!initialized)
-                if (type == null) {
-                    // game.getArenaManager().getArenaOptions().getDungeonType();
-                    initDungeonLevelChoice();
-                    if (dungeon != null)
-                        return;
-                }
-        }
-        if (initialized)
-            return;
-
+            if (type==null ) {
+                type = DataManager.getType(getPresetDungeonType(), OBJ_TYPES.DUNGEONS);
+            }}
 
 //        if (getDEFAULT_DUNGEON() != null
 //                || getDungeonPath() != null) {
@@ -206,13 +200,17 @@ public class DungeonMaster {
 //                setDungeon(DungeonBuilder.loadDungeon(getDungeonPath()));
 //        }
 //        else
-        {
+
+      if (type==null )  {
             if (Launcher.DEV_MODE)
                 if (RANDOM_DUNGEON) {
                     type = pickRandomDungeon();
                 } else if (type == null)
                     type = DataManager.getType(ListChooser.chooseType(OBJ_TYPES.DUNGEONS));
-        setDungeon(new Dungeon(type));
+
+                if (type==null )
+                        initDungeonLevelChoice();
+            setDungeon(new Dungeon(type));
         getDungeons().add(dungeon);
         rootDungeon = getDungeon();
     }
@@ -333,10 +331,12 @@ public class DungeonMaster {
             setDungeon(DungeonBuilder.loadDungeon(getRandomDungeonPath()));
             return;
         }
+        if (getDungeonPath() == null)
+            setDungeonPath(chooseDungeonLevel());
         if (getDungeonPath() != null)
             setDungeon(DungeonBuilder.loadDungeon(getDungeonPath()));
-        else //if (isChooseLevel())
-            setDungeonPath(chooseDungeonLevel());
+//        else //if (isChooseLevel())
+//            setDungeonPath(chooseDungeonLevel());
     }
 
     private String getRandomDungeonPath() {

@@ -3,6 +3,7 @@ package main.test.libgdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.game.DC_Game;
 import main.test.libgdx.prototype.ParticleActor;
 import main.test.libgdx.sfx.particles.PARTICLE_EFFECTS;
@@ -89,6 +90,11 @@ public class MyInputController implements InputProcessor {
             camera.position.y -=(y_cam_pos- i1)*camera.zoom;
             x_cam_pos = i;
             y_cam_pos = i1;
+            Image background = GameScreen.getInstance().getBackground().backImage;
+            background.setBounds(
+              camera.position.x-  background.getWidth ()/2, camera.position.y-  background.getHeight ()/2,
+             background.getWidth (),
+             background.getHeight());
         }
 
 
