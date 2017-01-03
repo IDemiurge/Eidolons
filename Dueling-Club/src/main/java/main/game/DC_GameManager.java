@@ -26,12 +26,15 @@ import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.dungeon.Entrance;
 import main.game.player.Player;
+import main.libgdx.TargetRunnable;
 import main.rules.action.ActionRule;
 import main.rules.mechanics.IlluminationRule;
 import main.rules.mechanics.UpkeepRule;
 import main.swing.builders.DC_Builder;
 import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.swing.components.panels.page.DC_PagedPriorityPanel;
+import main.system.EventCallbackParam;
+import main.system.TempEventManager;
 import main.system.auxiliary.*;
 import main.system.graphics.ANIM;
 import main.system.graphics.AnimPhase;
@@ -45,6 +48,8 @@ import main.system.text.LogEntryNode;
 import main.system.text.ToolTipMaster.SCREEN_POSITION;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 
@@ -373,8 +378,16 @@ public class DC_GameManager extends GameManager {
                     .isTargetingTooltipShown((DC_ActiveObj) ref.getActive()))
                 getGame().getToolTipMaster().initTargetingTooltip((DC_ActiveObj) ref.getActive());
         selectingSet = filter.getObjects();
-//        new Pair(selectingSet, new TargetRunnable())
-//        TempEventManager.trigger("", new EventCallbackParam());
+
+        if (!CoreEngine.isSwingOn()){
+        Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(selectingSet, (t) -> {
+            ref.setTarget(t.getId());
+            ref.getActive().activate(ref);
+        });
+        TempEventManager.
+            trigger("select-multi-objects",
+             new EventCallbackParam(p));
+        }
         return select(selectingSet);
     }
 
@@ -422,7 +435,9 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public void highlight(Set<Obj> set) {
+if (CoreEngine.isSwingOn())
         getGame().getBattleField().highlight(set);
+
 
     }
 

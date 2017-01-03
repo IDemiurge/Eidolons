@@ -14,6 +14,7 @@ import main.game.DC_Game;
 import main.game.Game;
 import main.game.battlefield.Coordinates;
 import main.game.event.Event;
+import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.TempEventManager;
 import main.system.datatypes.DequeImpl;
@@ -84,7 +85,8 @@ public class GridPanel extends Group {
         }
 
         TempEventManager.bind("select-multi-objects", obj -> {
-            Pair<Set<DC_HeroObj>, TargetRunnable> p = (Pair<Set<DC_HeroObj>, TargetRunnable>) obj.get();
+            Pair<Set<DC_HeroObj>, TargetRunnable> p =
+             (Pair<Set<DC_HeroObj>, TargetRunnable>) obj.get();
             Map<Borderable, Runnable> map = new HashMap<>();
             for (DC_HeroObj obj1 : p.getLeft()) {
                 map.put(unitMap.get(obj1), () -> p.getRight().run(obj1));

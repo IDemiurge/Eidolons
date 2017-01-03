@@ -16,17 +16,15 @@ import main.elements.Filter;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
-import main.entity.obj.DC_Obj;
-import main.entity.obj.MicroObj;
-import main.entity.obj.Obj;
+import main.entity.obj.*;
 import main.entity.obj.top.DC_ActiveObj;
 import main.game.DC_Game;
 import main.game.Game;
 import main.libgdx.GridPanel;
 import main.libgdx.TargetRunnable;
-import main.libgdx.TextureCache;
+import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
+import main.system.images.ImageManager;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
@@ -37,6 +35,7 @@ import java.util.*;
 import static main.system.TempEventManager.trigger;
 
 public class RadialMenu extends Group {
+    private Texture  closeTex;
     private TextureCache textureCache;
     private MenuNode currentNode;
     private Image closeImage;
@@ -44,6 +43,7 @@ public class RadialMenu extends Group {
     public RadialMenu(Texture closeTex, TextureCache textureCache) {
         this.textureCache = textureCache;
         closeImage = new Image(closeTex);
+        this .closeTex = closeTex;
 
 /*        addListener(new InputListener() {
             @Override
@@ -75,7 +75,7 @@ public class RadialMenu extends Group {
 
     public void init(List<CreatorNode> nodes) {
         currentNode = new MenuNode(closeImage, "Close");
-        currentNode.childs = createChildren(currentNode, nodes);
+        currentNode.childNodes = createChildren(currentNode, nodes);
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
         setBounds(
@@ -89,7 +89,7 @@ public class RadialMenu extends Group {
         currentNode.action = () -> menu.setVisible(false);
 
         updateCallbacks();
-        currentNode.drawChilds = true;
+        currentNode.drawChildren = true;
         setVisible(true);
         //addActor(currentNode);
     }
@@ -103,26 +103,26 @@ public class RadialMenu extends Group {
 
     private void setCurentNode(MenuNode node) {
         removeActor(currentNode);
-        currentNode.drawChilds = false;
+        currentNode.drawChildren = false;
         currentNode = node;
         updatePosition();
         updateCallbacks();
-        currentNode.drawChilds = true;
+        currentNode.drawChildren = true;
         // addActor(currentNode);
     }
 
     private void updatePosition() {
 
-        int step = 360 / currentNode.childs.size();
+        int step = 360 / currentNode.childNodes.size();
         int pos;
         int r = (int) (currentNode.getWidth() * 1.5);
 
-        for (int i = 0; i < currentNode.childs.size(); i++) {
+        for (int i = 0; i < currentNode.childNodes.size(); i++) {
             pos = i * step;
             int y = (int) (r * Math.sin(Math.toRadians(pos)));
             int x = (int) (r * Math.cos(Math.toRadians(pos)));
-            currentNode.childs.get(i).setX(x + currentNode.getX());
-            currentNode.childs.get(i).setY(y + currentNode.getY());
+            currentNode.childNodes.get(i).setX(x + currentNode.getX());
+            currentNode.childNodes.get(i).setY(y + currentNode.getY());
         }
     }
 
@@ -132,8 +132,8 @@ public class RadialMenu extends Group {
         } else {
             currentNode.action = () -> setCurentNode(currentNode.parent);
         }
-        for (final MenuNode child : currentNode.childs) {
-            if (child.childs.size() > 0) {
+        for (final MenuNode child : currentNode.childNodes) {
+            if (child.childNodes.size() > 0) {
                 child.action = () -> setCurentNode(child);
             }
         }
@@ -142,7 +142,12 @@ public class RadialMenu extends Group {
     private List<MenuNode> createChildren(final MenuNode parent, final List<CreatorNode> creatorNodes) {
         List<MenuNode> menuNodes = new ArrayList<>();
         for (final CreatorNode node : creatorNodes) {
-            final MenuNode menuNode = new MenuNode(new Image(node.texture), node.name);
+
+
+            final MenuNode menuNode =
+            new MenuNode((node.texture==null )?
+             new Image(closeTex)
+             :new Image(node.texture), node.name);
             menuNode.parent = parent;
             if (node.action != null) {
                 final Runnable r = node.action;
@@ -178,9 +183,9 @@ public class RadialMenu extends Group {
 
     public class MenuNode extends Group {
         public MenuNode parent = null;
-        private List<MenuNode> childs = new ArrayList<>();
+        private List<MenuNode> childNodes = new ArrayList<>();
         public Runnable action = null;
-        private boolean drawChilds = false;
+        private boolean drawChildren = false;
         private Image image;
         private Label text = null;
 
@@ -222,7 +227,7 @@ public class RadialMenu extends Group {
         }
 
         public void setChildren(List<MenuNode> childs) {
-            this.childs = childs;
+            this.childNodes = childs;
             for (MenuNode child : childs) {
                 addActor(child);
             }
@@ -234,8 +239,8 @@ public class RadialMenu extends Group {
             if (text != null) {
                 text.draw(batch, parentAlpha);
             }
-            if (drawChilds) {
-                for (MenuNode child : childs) {
+            if (drawChildren) {
+                for (MenuNode child : childNodes) {
                     child.draw(batch, parentAlpha);
                 }
             }
@@ -245,8 +250,8 @@ public class RadialMenu extends Group {
         public Actor hit(float x, float y, boolean touchable) {
             Actor a = image.hit(x - image.getX(), y - image.getY(), touchable);
             if (a != null) a = this;
-            if (a == null && drawChilds) {
-                for (MenuNode child : childs) {
+            if (a == null && drawChildren) {
+                for (MenuNode child : childNodes) {
                     a = child.hit(x, y, touchable);
                     if (a != null) {
                         a = child;
@@ -267,8 +272,9 @@ public class RadialMenu extends Group {
 
 
     public void createNew(DC_Obj target) {
-        MicroObj activeObj = (MicroObj) Game.game.getManager().getActiveObj();
-        List<ActiveObj> activeObjs = activeObj.getActives();
+        DC_HeroObj source
+         = (DC_HeroObj) Game.game.getManager().getActiveObj();
+        List<ActiveObj> activeObjs = source.getActives();
 
         List<Triple<Runnable, Texture, String>> moves = new ArrayList<>();
         List<Triple<Runnable, Texture, String>> turns = new ArrayList<>();
@@ -343,7 +349,8 @@ public class RadialMenu extends Group {
                             innn.name = dc_activeObj.getName();
                             innn.texture = textureCache.getOrCreate(dc_activeObj.getImagePath());
                             innn.action = () -> {
-                                trigger("select-multi-objects", new EventCallbackParam(p));
+                                trigger("select-multi-objects",
+                                 new EventCallbackParam(p));
                             };
                             list.add(innn);
                         } else {
@@ -396,14 +403,24 @@ public class RadialMenu extends Group {
         movesN1.childNodes = creatorNodes(moves);
         list.add(movesN1);
 
-if (nn1.size()>1){
-        RadialMenu.CreatorNode attO = new RadialMenu.CreatorNode();
-        attO.texture = nn1.get(1).texture;
-        attO.childNodes = nn1.get(1).childNodes;
-        attO.name = nn1.get(1).name;
-    list.add(attO);
+        if (nn1.size()>1){
+            RadialMenu.CreatorNode attO = new RadialMenu.CreatorNode();
+            attO.texture = nn1.get(1).texture;
+            attO.childNodes = nn1.get(1).childNodes;
+            attO.name = nn1.get(1).name;
+            list.add(attO);
 
-}
+        }
+        if (getDebug() || !source.getSpells().isEmpty()){
+            RadialMenu.CreatorNode spellNode = new RadialMenu.CreatorNode();
+            spellNode.texture =textureCache.getOrCreate(
+             ImageManager.getRadialSpellIconPath())
+            ;
+            spellNode.childNodes = SpellRadialManager.getSpellNodes(source, target);
+            spellNode.name = "Spells";
+            list.add(spellNode);
+
+        }
         RadialMenu.CreatorNode turnsN1 = new RadialMenu.CreatorNode();
         turnsN1.texture = turnAction;
         turnsN1.childNodes = creatorNodes(turns);

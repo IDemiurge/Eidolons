@@ -1083,6 +1083,10 @@ public class ImageManager {
         return img;
     }
 
+    public static String getRadialSpellIconPath() {
+        return "UI\\Spellbook.png";
+    }
+
     public enum ALIGNMENT {
         NORTH, SOUTH, EAST, WEST, CENTER, NORTH_WEST, SOUTH_EAST
     }

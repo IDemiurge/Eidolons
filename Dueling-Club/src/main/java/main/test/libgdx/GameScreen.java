@@ -15,10 +15,12 @@ import main.entity.obj.DC_HeroObj;
 import main.game.DC_Game;
 import main.libgdx.Background;
 import main.libgdx.GridPanel;
-import main.libgdx.TextureCache;
+import main.libgdx.texture.TextureCache;
 import main.libgdx.ToolTipManager;
 import main.libgdx.gui.radial.RadialMenu;
+import main.libgdx.texture.TextureManager;
 import main.system.TempEventManager;
+import main.test.debug.DebugRadialManager;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
@@ -68,7 +70,7 @@ public class GameScreen implements Screen {
         PathFinder.init();
         background = new Background().init();
         //topPanel = new DC_GDX_TopPanel(PathFinder.getImagePath()).init();
-        textureCache = new TextureCache(PathFinder.getImagePath());
+        textureCache = TextureManager.getCache();
         final Texture t = new Texture(GameScreen.class.getResource("/data/marble_green.png").getPath());
         radialMenu = new RadialMenu(t, textureCache);
         toolTipManager = new ToolTipManager(textureCache);
@@ -83,8 +85,13 @@ public class GameScreen implements Screen {
         });
 
         TempEventManager.bind("create-radial-menu", obj -> {
+            if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)){
+                DebugRadialManager.show(radialMenu);
+            }else {
+
             Triple<DC_HeroObj, Float, Float> container = (Triple<DC_HeroObj, Float, Float>) obj.get();
             radialMenu.createNew(container.getLeft());
+            }
         });
 
         return this;
