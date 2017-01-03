@@ -10,6 +10,7 @@ import main.system.TempEventManager;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class CellBorderManager extends Group {
     private int cellW;
@@ -96,10 +97,13 @@ public class CellBorderManager extends Group {
             Map<Borderable, Runnable> map = (Map<Borderable, Runnable>) obj.get();
             clearBlueBorder();
             if (map != null) {
-                map.entrySet().forEach(entry -> {
+                map.entrySet().forEach((Entry<Borderable, Runnable> entry) -> {
                     if (unitBorderOwner == entry.getKey()) {
                         singleBorderImageBackup = unitBorderOwner.getBorder();
                         unitBorderOwner.setBorder(null);// TODO: 12.12.2016 make better
+                    }
+                    if (entry.getKey()==null ){
+                         return;
                     }
                     Image i = new Image(blueBorderTexture);
                     entry.getKey().setBorder(new Image(blueBorderTexture));

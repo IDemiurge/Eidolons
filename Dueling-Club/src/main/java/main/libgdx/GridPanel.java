@@ -86,11 +86,14 @@ public class GridPanel extends Group {
         }
 
         TempEventManager.bind("select-multi-objects", obj -> {
-            Pair<Set<DC_HeroObj>, TargetRunnable> p =
-             (Pair<Set<DC_HeroObj>, TargetRunnable>) obj.get();
+            Pair<Set<DC_Obj>, TargetRunnable> p =
+             (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             Map<Borderable, Runnable> map = new HashMap<>();
-            for (DC_HeroObj obj1 : p.getLeft()) {
-                map.put(unitMap.get(obj1), () -> p.getRight().run(obj1));
+            for (DC_Obj obj1 : p.getLeft()) {
+                Borderable   b=unitMap.get(obj1);
+                if (b==null )
+                b=cells[obj1.getX()][obj1.getY()];
+                map.put(b, () -> p.getRight().run(obj1));
             }
             TempEventManager.trigger("show-blue-borders", new EventCallbackParam(map));
         });

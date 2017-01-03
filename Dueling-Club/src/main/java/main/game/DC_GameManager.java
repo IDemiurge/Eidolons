@@ -443,6 +443,7 @@ if (CoreEngine.isSwingOn())
 
     @Override
     public void highlightsOff() {
+        if (CoreEngine.isSwingOn())
         getGame().getBattleField().highlightsOff();
     }
 
