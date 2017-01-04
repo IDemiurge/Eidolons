@@ -8,7 +8,6 @@ import main.content.PARAMS;
 import main.entity.Ref;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.game.DC_Game;
 import main.game.Game;
@@ -39,7 +38,7 @@ public class GridPanel extends Group {
     protected Texture unknownImage;
     protected Texture cellBorderTexture;
     protected Lightmap lightmap;
-    protected DequeImpl<MicroObj> units;
+    protected DequeImpl<DC_HeroObj> units;
     protected TextureCache textureCache;
     protected CellBorderManager cellBorderManager;
 
@@ -74,7 +73,7 @@ public class GridPanel extends Group {
 
         cellBorderManager = new CellBorderManager(emptyImage.getWidth(), emptyImage.getHeight(), textureCache);
         int rows1 = rows - 1;
-        int cols1 = cols -1;
+        int cols1 = cols - 1;
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
                 cells[x][y] = new GridCell(emptyImage, x, rows1 - y);
@@ -182,24 +181,24 @@ public class GridPanel extends Group {
         });
 
         TempEventManager.bind("create-units-model", param -> {
-            units = (DequeImpl<MicroObj>) param.get();
+            units = (DequeImpl<DC_HeroObj>) param.get();
 
             //lightmap = new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight());
 
-            Map<Coordinates, List<MicroObj>> map = new HashMap<>();
-            for (MicroObj object : units) {
+            Map<Coordinates, List<DC_HeroObj>> map = new HashMap<>();
+            for (DC_HeroObj object : units) {
                 Coordinates c = object.getCoordinates();
                 if (!map.containsKey(c)) {
                     map.put(c, new ArrayList<>());
                 }
-                List<MicroObj> list = map.get(c);
+                List<DC_HeroObj> list = map.get(c);
                 list.add(object);
             }
 
             for (Coordinates coordinates : map.keySet()) {
                 List<UnitViewOptions> options = new ArrayList<>();
 
-                for (MicroObj object : map.get(coordinates)) {
+                for (DC_HeroObj object : map.get(coordinates)) {
                     options.add(new UnitViewOptions(object, textureCache, unitMap));
                 }
 
@@ -213,12 +212,12 @@ public class GridPanel extends Group {
         TempEventManager.bind("cell-update", param -> {
             Coordinates cords = (Coordinates) param.get();
 
-            List<MicroObj> objList = units.stream()
+            List<DC_HeroObj> objList = units.stream()
                     .filter(microObj -> microObj.getCoordinates().equals(cords))
                     .collect(Collectors.toList());
 
             List<UnitViewOptions> options = new ArrayList<>();
-            for (MicroObj microObj : objList) {
+            for (DC_HeroObj microObj : objList) {
                 options.add(new UnitViewOptions(microObj, textureCache, unitMap));
             }
 
@@ -287,6 +286,12 @@ public class GridPanel extends Group {
                         recordOption = new ToolTipManager.ToolTipRecordOption();
                         recordOption.name = "direction: " + hero.getFacing().getDirection();
                         recordOptions.add(recordOption);
+
+                        if (hero.isOverlaying()){
+                            recordOption = new ToolTipManager.ToolTipRecordOption();
+                            recordOption.name = "direction O: " + hero.getDirection();
+                            recordOptions.add(recordOption);
+                        }
 
                         TempEventManager.trigger("show-tooltip", new EventCallbackParam(recordOptions));
                         return true;
