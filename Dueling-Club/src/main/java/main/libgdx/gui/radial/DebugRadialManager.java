@@ -1,11 +1,11 @@
-package main.test.debug;
+package main.libgdx.gui.radial;
 
 import main.game.DC_Game;
 import main.game.Game;
-import main.libgdx.gui.radial.RadialMenu;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.test.debug.DebugMaster;
 import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 
 import java.util.Arrays;
