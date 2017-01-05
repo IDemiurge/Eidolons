@@ -26,7 +26,7 @@ import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.dungeon.Entrance;
 import main.game.player.Player;
-import main.libgdx.TargetRunnable;
+import main.libgdx.bf.TargetRunnable;
 import main.rules.action.ActionRule;
 import main.rules.mechanics.IlluminationRule;
 import main.rules.mechanics.UpkeepRule;

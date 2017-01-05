@@ -1,4 +1,4 @@
-package main.libgdx;
+package main.libgdx.bf;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -14,6 +14,7 @@ import main.game.DC_Game;
 import main.game.Game;
 import main.game.battlefield.Coordinates;
 import main.game.event.Event;
+import main.libgdx.bf.mouse.ToolTipManager;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.TempEventManager;

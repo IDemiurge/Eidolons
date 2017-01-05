@@ -1,4 +1,4 @@
-package main.libgdx;
+package main.libgdx.bf.mouse;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import main.libgdx.StyleHolder;
 import main.libgdx.texture.TextureCache;
 import main.system.TempEventManager;
 
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static main.libgdx.ToolTipManager.ToolTip.getCurMaxVal;
+import static main.libgdx.bf.mouse.ToolTipManager.ToolTip.getCurMaxVal;
 
 public class ToolTipManager extends Group {
 

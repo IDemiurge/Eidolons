@@ -67,7 +67,7 @@ import main.system.util.ValueHelper;
 import main.test.PresetLauncher;
 import main.test.PresetMaster;
 import main.test.debug.DebugMaster;
-import main.test.libgdx.GameScreen;
+import main.libgdx.GameScreen;
 
 import javax.swing.*;
 import java.util.*;

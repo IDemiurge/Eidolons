@@ -1,4 +1,4 @@
-package main.test.libgdx;
+package main.libgdx;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -13,10 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.data.filesys.PathFinder;
 import main.entity.obj.DC_HeroObj;
 import main.game.DC_Game;
-import main.libgdx.Background;
-import main.libgdx.GridPanel;
+import main.libgdx.bf.Background;
+import main.libgdx.bf.GridPanel;
+import main.libgdx.bf.InputController;
+import main.libgdx.bf.mouse.ToolTipManager;
 import main.libgdx.texture.TextureCache;
-import main.libgdx.ToolTipManager;
 import main.libgdx.gui.radial.RadialMenu;
 import main.libgdx.texture.TextureManager;
 import main.system.TempEventManager;
@@ -33,6 +34,8 @@ import org.apache.commons.lang3.tuple.Triple;
 public class GameScreen implements Screen {
     private Stage bf;
     private Stage gui;
+    private Stage anim;
+    private Stage dialog;
 
     private Background background;
     private GridPanel gridPanel;
@@ -45,7 +48,7 @@ public class GameScreen implements Screen {
     private OrthographicCamera cam;
 
     private static GameScreen instance;
-    private MyInputController controller;
+    private InputController controller;
 
     public void PostGameStart() {
         InputMultiplexer multiplexer = new InputMultiplexer(controller, bf, gui);
@@ -56,12 +59,13 @@ public class GameScreen implements Screen {
         instance = this;
         bf = new Stage();
         gui = new Stage();
+initGui();
 
         camera = cam = new OrthographicCamera();
         cam.setToOrtho(false, 1600, 900);
         bf.getViewport().setCamera(cam);
         //gui.getViewport().setCamera(cam);
-        controller = new MyInputController(bf, gui, cam);
+        controller = new InputController(bf, gui, cam);
         GL20 gl = Gdx.graphics.getGL20();
         gl.glEnable(GL20.GL_BLEND);
         gl.glEnable(GL20.GL_TEXTURE_2D);
@@ -78,6 +82,19 @@ public class GameScreen implements Screen {
         gui.addActor(radialMenu);
         gui.addActor(toolTipManager);
 
+
+bindEvents();
+
+
+        return this;
+    }
+
+    private void initGui() {
+
+
+    }
+
+    private void bindEvents() {
         TempEventManager.bind("grid-created", param -> {
             Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
             gridPanel = new GridPanel(textureCache, p.getLeft(), p.getRight()).init();
@@ -89,12 +106,10 @@ public class GameScreen implements Screen {
                 DebugRadialManager.show(radialMenu);
             }else {
 
-            Triple<DC_HeroObj, Float, Float> container = (Triple<DC_HeroObj, Float, Float>) obj.get();
-            radialMenu.createNew(container.getLeft());
+                Triple<DC_HeroObj, Float, Float> container = (Triple<DC_HeroObj, Float, Float>) obj.get();
+                radialMenu.createNew(container.getLeft());
             }
         });
-
-        return this;
     }
 
     public static OrthographicCamera camera;

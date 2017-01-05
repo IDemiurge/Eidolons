@@ -10,8 +10,8 @@ import main.entity.obj.DC_HeroObj;
 import main.entity.obj.MicroObj;
 import main.game.battlefield.Coordinates;
 import main.system.datatypes.DequeImpl;
-import main.test.libgdx.GameScreen;
-import main.test.libgdx.sfx.particles.lighting.LightingManager;
+import main.libgdx.GameScreen;
+import main.libgdx.anims.particles.lighting.LightingManager;
 
 import java.util.HashMap;
 import java.util.Map;
