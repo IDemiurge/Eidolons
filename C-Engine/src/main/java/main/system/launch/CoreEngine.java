@@ -25,10 +25,11 @@ public class CoreEngine {
     private static boolean menuScope = true;
     private static boolean levelEditor;
     private static String selectivelyReadTypes;
+    private static String exceptionTypes;
     private static boolean enumCachingOn = true;
     private static boolean writingLogFilesOn;
     private static  boolean arcaneTower=false;
-    private static boolean swingOn=false;
+    public static boolean swingOn=true;
     private static boolean graphicTestMode=true;
 
     public static void dataInit(boolean newThread, final boolean macro) {
@@ -96,6 +97,10 @@ public class CoreEngine {
         CoreEngine.concurrentLaunch = concurrentLaunch;
     }
 
+    public static void setExceptionTypes(String exceptionTypes) {
+        CoreEngine.exceptionTypes = exceptionTypes;
+    }
+
     public static boolean checkReadNecessary(String name) {
 
         if (selectivelyReadTypes != null)
@@ -103,6 +108,12 @@ public class CoreEngine {
                             .cropFormat(StringMaster.cropLast(name, "-"))
 
                     , false);
+
+        if (exceptionTypes != null)
+            if( StringMaster.checkContainer(exceptionTypes, StringMaster
+              .cropFormat(StringMaster.cropLast(name, "-"))
+             , false))
+        return false;
 
         OBJ_TYPES TYPE = new EnumMaster<OBJ_TYPES>().retrieveEnumConst(OBJ_TYPES.class, name);
 

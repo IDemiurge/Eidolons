@@ -286,7 +286,7 @@ public class AttackAnimation extends ActionAnimation {
         Font font = getFontNeutral();
         for (MOD_IDENTIFIER id : bonusesMap.keySet()) {
             String text = StringMaster.getBonusString(bonusesMap.get(id));
-            // string += map.get(s) + "" + StringMaster.wrapInParenthesis(s);
+            // string += map.getOrCreate(s) + "" + StringMaster.wrapInParenthesis(s);
             Image image = id.getImage(bonusesMap.get(id), attack);
             if (image == null)
                 image = ImageManager.getDeadIcon();
@@ -306,7 +306,7 @@ public class AttackAnimation extends ActionAnimation {
             addMouseItem(false, x, y, width, height, new MouseItemImpl(MOUSE_ITEM.SUB_PHASE,
                     getSubPhaseTypeForKey(id)));
 
-            // addToolTip(s+modsMap.get(s));
+            // addToolTip(s+modsMap.getOrCreate(s));
 
             y += MAX_MINI_ICON_SIZE + 3;
             Integer mod = bonusesMap.get(id);
@@ -519,8 +519,8 @@ public class AttackAnimation extends ActionAnimation {
         drawOnTarget(image, x, y);
 
         setAlignmentX(ALIGNMENT.CENTER);
-        // int percent = ((Attack) phase.getArgs()[0]).get;
-        // int bonus = ((List) phase.getArgs()[1]).get(0);
+        // int percent = ((Attack) phase.getArgs()[0]).getOrCreate;
+        // int bonus = ((List) phase.getArgs()[1]).getOrCreate(0);
         int bonus = (int) phase.getArgs()[1];
         int chance = (int) phase.getArgs()[2];
         String str = StringMaster.getBonusString(bonus);

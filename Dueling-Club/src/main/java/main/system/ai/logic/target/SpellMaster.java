@@ -253,7 +253,7 @@ public class SpellMaster {
 
                 // Effect e = EffectMaster.getEffectsOfClass(
                 // zoneEffect.getEffect(), ModifyCounterEffect.class)
-                // .get(0);
+                // .getOrCreate(0);
 
                 if (EffectMaster.check(zoneEffect.getEffect(),
                         ModifyCounterEffect.class)) {

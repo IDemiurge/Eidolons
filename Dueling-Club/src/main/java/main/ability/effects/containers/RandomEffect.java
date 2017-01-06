@@ -82,7 +82,7 @@ public class RandomEffect extends MicroEffect {
         // abilityList.add(a);
         // }
         // // TODO targeting???
-        // Ability ability = abilityList.get(RandomWizard
+        // Ability ability = abilityList.getOrCreate(RandomWizard
         // .getRandomListIndex(abilityList));
         // return ability.activate(ref);
     }

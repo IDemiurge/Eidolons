@@ -31,7 +31,7 @@ public class PerceptionRule extends TurnRule implements ActionRule {
         for (DC_HeroObj source : getUnits(activeObj)) {
 //			status = getPerceptionStatus(source, activeObj, actionNoise);
             // map of statuses would be nice...
-            // statusMap.get(source).put(unit, status);
+            // statusMap.getOrCreate(source).put(unit, status);
 //			checkResetPlayerPerceptionStatus(status, source, unit);
             // personal independent detection?
         }

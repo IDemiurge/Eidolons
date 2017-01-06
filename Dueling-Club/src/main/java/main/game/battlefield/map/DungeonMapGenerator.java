@@ -149,7 +149,7 @@ public class DungeonMapGenerator {
         // if (mod.getPresetObjects()!=null){ TODO
         // StringMaster.openContainer(mod.getPresetObjects(),
         // StringMaster.AND_SEPARATOR)
-        // .get(index)
+        // .getOrCreate(index)
         // for ( s s StringMaster.openContainer(mod.getPresetObjects) ){
         // c = new Coordinates(s);TODO
         //

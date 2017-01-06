@@ -23,6 +23,8 @@ import main.game.player.Player;
 import main.rules.mechanics.SummoningSicknessRule;
 import main.rules.mechanics.UpkeepRule;
 import main.system.DC_Formulas;
+import main.system.EventCallbackParam;
+import main.system.TempEventManager;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
@@ -129,7 +131,9 @@ public class SummonEffect extends MicroEffect {
          * upkeep rule - RoundRule plus an event "cannot_support" to be handled
 		 * manually
 		 */
-
+        TempEventManager.trigger("cell-update",new EventCallbackParam<>(
+         getUnit().getCoordinates()
+        ) );
         if (effects != null) {
 
             REF.setTarget(getUnit().getId());

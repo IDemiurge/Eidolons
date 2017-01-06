@@ -63,7 +63,7 @@ public class ActionManager {
 
     public static Integer selectTargetForAction(DC_ActiveObj a) {
         /*
-		 * get possible targets init goal type prioritize
+		 * getOrCreate possible targets init goal type prioritize
 		 */
         GOAL_TYPE type = GoalManager.getGoalFromAction(a);
 
@@ -324,7 +324,7 @@ public class ActionManager {
             for (ActionSequence a : createActionSequences(ai)) {
                 if (a.get(0).canBeActivated())
                     if (checkNotBroken(a))
-                        // if (a.get(0).canBeTargeted())
+                        // if (a.getOrCreate(0).canBeTargeted())
                         actions.add(a);
             }
         } catch (Exception e) {

@@ -19,10 +19,11 @@ import java.io.IOException;
 public class TextureManager {
     static TextureCache cache;
 
-    public static Texture get(String p) {
+    public static Texture getOrCreate(String p) {
         if (ImageManager.getPATH() != null)
             if (!ImageManager.isImage(p)) {
-                p =  (ImageManager.getAltEmptyListIcon());
+                return   getCache().get(ImageManager.getAltEmptyListIcon());
+                // don't cache if missing!
             }
        return  getCache().getOrCreate(p);
     }

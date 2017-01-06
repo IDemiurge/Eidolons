@@ -44,7 +44,7 @@ public class DroppedItemManager {
     }
 
     public boolean checkHasItems(Obj obj) {
-        // game.getBattleField().getGrid().get
+        // game.getBattleField().getGrid().getOrCreate
         return obj.checkProperty(PROPS.DROPPED_ITEMS);
     }
 

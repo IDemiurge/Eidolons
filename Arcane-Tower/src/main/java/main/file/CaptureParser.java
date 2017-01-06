@@ -31,7 +31,7 @@ public class CaptureParser {
 	private static String SUPER_HEADER = "^";
 	private static String HEADER = "*";
 	private static String BLOCK_SEPARATOR = "::";
-	private static final String BLOCK_DESCRIPTION_SEPARATOR = "–";
+	private static final String BLOCK_DESCRIPTION_SEPARATOR = "ï¿½";
 	private static final String BLOCK_DESCRIPTION_SEPARATOR_ALT = " - ";
 	private static final String DETAILS_SEPARATOR = ">>";
 	private static final String DETAILS_VALUE_SEPARATOR = "=";
@@ -265,11 +265,11 @@ public class CaptureParser {
 
 	private static String formatBlockName(String[] parts) {
 		String string = parts[0].trim();
-		string = string.replace(("–"), "-");
-		string = string.replace(("…"), "...");
+		string = string.replace(("ï¿½"), "-");
+		string = string.replace(("ï¿½"), "...");
 		string = string.replace(("?"), "...");
-		string = string.replace(("’"), "'");
-		string = string.replace(("‘"), "'");
+		string = string.replace(("ï¿½"), "'");
+		string = string.replace(("ï¿½"), "'");
 		// String numbers = "";
 		// while (true) {
 		// int i = StringMaster.getFirstNumberIndex(string);
@@ -317,7 +317,7 @@ public class CaptureParser {
 			imgPath = ArcaneTower.IMG_PATH + type.getOBJ_TYPE_ENUM() + "\\default.";
 
 		return imgPath;// return
-		// DataManager.getTypes(type.getOBJ_TYPE_ENUM()).get(0).getImagePath();
+		// DataManager.getTypes(type.getOBJ_TYPE_ENUM()).getOrCreate(0).getImagePath();
 	}
 
 	private static ObjType getType(AT_OBJ_TYPE scope, String header, ObjType enclosingType,
@@ -355,7 +355,7 @@ public class CaptureParser {
 							+ " has no enclosingType; choice prompts on?");
 				if (promptsMode)
 					enclosingType = ListChooser.chooseTypeFromSubgroup_(scope.getParentType(), "");
-				// else enclosingType = DataManager.getTypes(scope).get(0);
+				// else enclosingType = DataManager.getTypes(scope).getOrCreate(0);
 			}
 		if (enclosingType != null)
 			type.setProperty(AT_OBJ_TYPE.getParentValue((AT_OBJ_TYPE) type.getOBJ_TYPE_ENUM()),

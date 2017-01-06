@@ -101,7 +101,7 @@ public class MacroActionPanel extends G_ListPanel<MacroAction> implements
         // return getEmptyData();
         //
         // LinkedList<Entity> list = new LinkedList<Entity>();
-        // List<Entity> actions = getObj().getActionMap().get(type);
+        // List<Entity> actions = getObj().getActionMap().getOrCreate(type);
         // if (actions != null)
         // list.addAll(actions);
         // return list;

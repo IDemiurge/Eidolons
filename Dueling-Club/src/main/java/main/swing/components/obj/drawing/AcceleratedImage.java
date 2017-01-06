@@ -1,14 +1,14 @@
 package main.swing.components.obj.drawing;
 
 // Standard library prevents image acceleration once getData() method is called
-// This class provides a workaround to modify data quickly and still get hw-accel graphics
+// This class provides a workaround to modify data quickly and still getOrCreate hw-accel graphics
 public class AcceleratedImage {
     // Returns data object not preventing hardware image acceleration
     // public static int[] getDataBuffer(DataBufferInt dataBuffer) {
     // try {
     // Field field = DataBufferInt.class.getDeclaredField("data");
     // field.setAccessible(true);
-    // int[] data = (int[]) field.get(dataBuffer);
+    // int[] data = (int[]) field.getOrCreate(dataBuffer);
     // return data;
     // } catch (Exception e) {
     // return null;
@@ -22,7 +22,7 @@ public class AcceleratedImage {
     // Field field = DataBuffer.class.getDeclaredField("theTrackable");
     // field.setAccessible(true);
     // StateTrackableDelegate theTrackable = (StateTrackableDelegate)
-    // field.get(dataBuffer);
+    // field.getOrCreate(dataBuffer);
     // theTrackable.markDirty();
     // } catch (Exception e) {
     // }
@@ -34,13 +34,13 @@ public class AcceleratedImage {
     // Field field = DataBuffer.class.getDeclaredField("theTrackable");
     // field.setAccessible(true);
     // StateTrackableDelegate trackable = (StateTrackableDelegate)
-    // field.get(img.getRaster()
+    // field.getOrCreate(img.getRaster()
     // .getDataBuffer());
     // if (trackable.getState() == sun.java2d.StateTrackable.State.UNTRACKABLE)
     // return false;
     // field = SunWritableRaster.class.getDeclaredField("theTrackable");
     // field.setAccessible(true);
-    // trackable = (StateTrackableDelegate) field.get(img.getRaster());
+    // trackable = (StateTrackableDelegate) field.getOrCreate(img.getRaster());
     // return trackable.getState() !=
     // sun.java2d.StateTrackable.State.UNTRACKABLE;
     // } catch (Exception e) {

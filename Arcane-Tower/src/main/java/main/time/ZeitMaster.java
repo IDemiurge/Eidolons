@@ -49,7 +49,7 @@ public class ZeitMaster {
 	 */
 
 	public static void checkCreateTimeTypes() {
-		// get last day, week, month...
+		// getOrCreate last day, week, month...
 		Entity era = getLatest(DataManager.getTypes(AT_OBJ_TYPE.ERA));
 		boolean create = era == null;
 		if (!create)

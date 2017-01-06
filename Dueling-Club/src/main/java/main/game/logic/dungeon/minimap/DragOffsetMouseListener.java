@@ -78,7 +78,7 @@ public class DragOffsetMouseListener implements MouseListener, AWTEventListener,
     public void mouseDragged(MouseEvent e) {
         releasePoint = e.getPoint();
         main.system.auxiliary.LogMaster.log(1, "DRAGGED " + releasePoint);
-        // e.get
+        // e.getOrCreate
         // e.getComponent();
 
     }

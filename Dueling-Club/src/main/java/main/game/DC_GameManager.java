@@ -382,6 +382,7 @@ public class DC_GameManager extends GameManager {
         if (!CoreEngine.isSwingOn()){
         Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(selectingSet, (t) -> {
             ref.setTarget(t.getId());
+            if (ref.getActive()!=null )
             ref.getActive().activate(ref);
         });
         TempEventManager.
@@ -503,7 +504,7 @@ if (CoreEngine.isSwingOn())
         ref.setTarget(killed.getId());
 
         // List<Attachment> attachments = getState().getAttachmentsMap()
-        // .get(killed);
+        // .getOrCreate(killed);
         if (killed.getBuffs() != null)
             for (Attachment attach : killed.getBuffs()) {
                 if (!attach.isRetainAfterDeath()) {
@@ -685,7 +686,7 @@ if (CoreEngine.isSwingOn())
 
     // @Override
     // public List<? extends Active> getUnitActions(Obj obj) {
-    // acts = actionsMap.get(obj);
+    // acts = actionsMap.getOrCreate(obj);
     // if (acts != null)
     // return acts;
     //

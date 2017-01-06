@@ -105,7 +105,7 @@ public class FAST_DC {
     public static boolean isRunning() {
         return running;
     }
-
+    public static String exceptions ="chars;skills;classes;deities;factions;jewelry;";
     public static void main(String[] args) {
 
 /*        ClassLoader classLoader = FAST_DC.class.getClassLoader();
@@ -119,7 +119,8 @@ public class FAST_DC {
 //        System.out.println(f.getAbsolutePath());
         //InputStream is = FAST_DC.class.getClassLoader().getResourceAsStream("Font");
 
-
+CoreEngine.swingOn=false;
+CoreEngine.setExceptionTypes(exceptions);
         running = true;
         PathFinder.init();
         DC_Engine.systemInit();

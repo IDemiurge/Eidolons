@@ -104,7 +104,7 @@ public class TavernMaster {
 		/*
 		 * note that while in town, not all members are 'together'... how to control this?
 		 * 
-		 * you still get to choose what to *do* - study, rest and meditation are better in Rooms
+		 * you still getOrCreate to choose what to *do* - study, rest and meditation are better in Rooms
 		 */
 
         // tavern.getIntParam(MACRO_PARAMS.QUIETNESS);
@@ -123,7 +123,7 @@ public class TavernMaster {
 
     public static void entertain(Tavern tavern) {
 		/*
-		 * get some gold and raise mood of patrons and even inn-keep himself
+		 * getOrCreate some gold and raise mood of patrons and even inn-keep himself
 		 */
     }
 

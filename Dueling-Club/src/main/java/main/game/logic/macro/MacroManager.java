@@ -299,7 +299,7 @@ public class MacroManager {
     // // moved to Custom is altered...
     // Map<ObjType, List<ObjType>> map = new XLinkedMap<>();
     // for (ObjType t : copyTypes) {
-    // List<ObjType> list = map.get(t.getType());
+    // List<ObjType> list = map.getOrCreate(t.getType());
     // if (list == null) {
     // list = new LinkedList<>();
     // map.put(t.getType(), list);
@@ -308,7 +308,7 @@ public class MacroManager {
     // }
     // for (ObjType t : map.keySet()) {
     // String typeString = "";
-    // for (ObjType t2 : map.get(t)) {
+    // for (ObjType t2 : map.getOrCreate(t)) {
     // typeString += t2.getName() + ";";
     // }
     // typeMapContent += t.getName()
@@ -359,12 +359,12 @@ public class MacroManager {
     // if (p instanceof Town) {
     // Town town = (Town) p;
     //
-    // parts.get(MACRO_OBJ_TYPES.TOWN).append("");
+    // parts.getOrCreate(MACRO_OBJ_TYPES.TOWN).append("");
     //
     // for (Shop s : town.getShops()) {
     // s.getSaveData();
     // for (ObjType t : s.getItems()) {
-    // parts.get(t.getOBJ_TYPE_ENUM()).append(string);
+    // parts.getOrCreate(t.getOBJ_TYPE_ENUM()).append(string);
     // if (t.isCustom()) { // with traits or so
     // customTypes += XML_Writer.getTypeXML(t, null);
     // }

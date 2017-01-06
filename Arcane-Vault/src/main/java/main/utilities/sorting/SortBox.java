@@ -41,7 +41,7 @@ public class SortBox extends G_CompHolder implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		sorter.appendLast(items.get(((JComboBox<SORT_BY>) e.getSource())
+//		sorter.appendLast(items.getOrCreate(((JComboBox<SORT_BY>) e.getSource())
 //				.getSelectedIndex()));
 	}
 }

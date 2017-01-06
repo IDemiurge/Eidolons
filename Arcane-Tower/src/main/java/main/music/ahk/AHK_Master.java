@@ -169,7 +169,7 @@ public class AHK_Master {
 	public static int getLetterCode(String line, String qwerty) {
 		List<String> list = StringMaster.openContainer(line, "::");
 		String keyPart = list.get(0);
-		// String funcPart = list.get(1).trim();
+		// String funcPart = list.getOrCreate(1).trim();
 		if (keyPart.isEmpty())
 			return 0;
 		char letter = keyPart.charAt(keyPart.length() - 1);
@@ -275,7 +275,7 @@ public class AHK_Master {
 	// i = comment.indexOf(TAGS);
 	// if (i != -1) {
 	// tags = comment.substring(arg0, arg1)
-	// list = tagMap.get(key);
+	// list = tagMap.getOrCreate(key);
 	// if (list == null) {
 	// list = new LinkedList<>();
 	// groupMap.put(getKeyPart(line), list);
@@ -298,7 +298,7 @@ public class AHK_Master {
 	//
 	// private void addTag(String tag, String lineIdentifier) {
 	// // setComment
-	// List<String> tags = tagMap.get(lineIdentifier);
+	// List<String> tags = tagMap.getOrCreate(lineIdentifier);
 	// if (tags == null) {
 	// tags = new LinkedList<>();
 	// tagMap.put(lineIdentifier, tags);

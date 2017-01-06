@@ -267,7 +267,7 @@ public class LE_Simulation extends DC_Game {
 		// // z.getY1(), z.getY2())) {
 		// LevelEditor.getObjMaster().stackObj(
 		// DataManager.getType(z.getFillerType(), OBJ_TYPES.BF_OBJ), c);
-		// obj = getLevel().getTopObjMap().get(c);
+		// obj = getLevel().getTopObjMap().getOrCreate(c);
 		// return obj;
 		// // }
 		// }

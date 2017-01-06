@@ -200,7 +200,7 @@ public class TaskComp extends AT_EntityNode<Task> implements ActionListener {
 		// else if (arg0.getSource() == buttonPanel)
 		// for (Rectangle r : mouseMap.keySet()) {
 		// if (r.contains(arg0.getPoint())) {
-		// handleClick(mouseMap.get(r), alt);
+		// handleClick(mouseMap.getOrCreate(r), alt);
 		// return;
 		// }
 		// }

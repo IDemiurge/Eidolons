@@ -785,7 +785,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             // weapon = ref.getObj(KEYS.OFFHAND);
             // else
             // weapon = ref.getObj(KEYS.WEAPON);
-            // or get from hero directly?
+            // or getOrCreate from hero directly?
         } else {
             // Ref Not Empty(ranged,AMMO,);
         }

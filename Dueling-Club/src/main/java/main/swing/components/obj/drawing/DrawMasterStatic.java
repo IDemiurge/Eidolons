@@ -173,7 +173,7 @@ public class DrawMasterStatic {
                 // if (list.indexOf(side) > 0) {
                 // flipped = !flipped;
                 // }
-                // get the corner for this side
+                // getOrCreate the corner for this side
                 // add offset if necessary
 
                 Image image = ImageManager.STD_IMAGES.WALL_CORNER_ALMOND.getPathPrefixedImage(prefix);

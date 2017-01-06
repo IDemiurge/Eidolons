@@ -82,7 +82,7 @@ public class EngagedRule implements ActionRule {
         // if (list.size() == 0)
         // return true;
         // // if (units.size() == 1) { //TODO forced?
-        // // engage(obj, units.get(0));
+        // // engage(obj, units.getOrCreate(0));
         // // return true;
         // // }
         // DC_HeroObj engaged = chooseEngagedUnit(obj, list);

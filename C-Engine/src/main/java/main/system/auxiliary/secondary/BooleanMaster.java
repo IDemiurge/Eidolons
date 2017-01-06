@@ -21,6 +21,11 @@ public class BooleanMaster {
         return b != b2;
     }
 
+    public static int compare(Number n, Number n2) {
+        if (n.intValue()>n2.intValue())return 1;
+        if (n2.intValue()>n.intValue())return -1;
+return 0;
+    }
     public static boolean isTrue(Boolean b) {
         if (b == null)
             return false;
@@ -40,4 +45,5 @@ public class BooleanMaster {
     public static Boolean[][] getBoolArrayCombinatorics2D() {
         return new Boolean[][]{FALSE_FALSE, TRUE_TRUE, TRUE_FALSE, TRUE_FALSE};
     }
+
 }

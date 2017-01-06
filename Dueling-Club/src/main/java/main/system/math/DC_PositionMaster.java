@@ -29,7 +29,7 @@ public class DC_PositionMaster {
                 // define a filter function based on facing and apply base
                 // coordinates
 
-                // get horizontal lines of increasing width
+                // getOrCreate horizontal lines of increasing width
                 for (int i = 0; i < height; i++) {
 
                     list.addAll(getLine(FacingMaster.rotate(facing, false)

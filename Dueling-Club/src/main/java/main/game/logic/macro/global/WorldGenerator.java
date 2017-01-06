@@ -129,8 +129,8 @@ public class WorldGenerator {
         // continue;
         // }
         //
-        // String origin = vars.get(0);
-        // String destination = vars.get(1);
+        // String origin = vars.getOrCreate(0);
+        // String destination = vars.getOrCreate(1);
         // vars.remove(0);
         // vars.remove(1); // perhaps same format better?
         // for (String v : vars) { // setRouteValues(r, vars);

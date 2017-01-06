@@ -92,7 +92,7 @@ public class DC_UnitActionPanel extends G_ListPanel<DC_UnitAction> implements
         // return getEmptyData();
         //
         // LinkedList<DC_UnitAction> list = new LinkedList<DC_UnitAction>();
-        // List<DC_UnitAction> actions = getObj().getActionMap().get(type);
+        // List<DC_UnitAction> actions = getObj().getActionMap().getOrCreate(type);
         // if (actions != null)
         // list.addAll(actions);
         // return list;

@@ -83,7 +83,7 @@ public class PatrolMaster {
         DC_HeroObj unit = ai.getUnit();
         DIRECTION direction = DirectionMaster.getRelativeDirection(unit.getCoordinates(), patrol
                 .getDestination());
-        // paths.get(unit);
+        // paths.getOrCreate(unit);
         Coordinates coordinates = unit.getCoordinates().getAdjacentCoordinate(direction);
         // TODO more than 1 coordinate?
         DC_HeroObj unitByCoordinate = null;// unit.getGame().getUnitByCoordinate(coordinates);

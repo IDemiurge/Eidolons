@@ -347,7 +347,7 @@ public class HC_Master {
         else
             setAvTreeView(new ClassTreeView(treeArg, hero));
 
-        // treeView.getTabPanel().adjustPageIndexToSelectTab(treeView.getTabList().get(i));
+        // treeView.getTabPanel().adjustPageIndexToSelectTab(treeView.getTabList().getOrCreate(i));
         // treeView.getTabPanel().select(i)
         getAvTreeView().tabSelected(treeArg.toString());
         getAvTreeView().refresh();

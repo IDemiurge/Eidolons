@@ -177,7 +177,7 @@ public class DC_UAP_Holder extends G_Panel {
     // break;
     //
     // }
-    // add(uapMap.get(group), LI);
+    // add(uapMap.getOrCreate(group), LI);
     //
     // i++;
 

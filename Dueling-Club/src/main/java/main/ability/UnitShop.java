@@ -107,7 +107,7 @@ public class UnitShop {
         // let the weights be determined by weight vs strength!
         // common classes first, then as per offhand
         if (!offhand) {
-            // ParamMaster.get
+            // ParamMaster.getOrCreate
         } else {
 
         }

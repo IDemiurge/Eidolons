@@ -66,7 +66,7 @@ public class MapZone {
             if (b.getCoordinates().contains(coordinates))
                 return b;
         }
-        return null; // coordinateMap.get(coordinates)
+        return null; // coordinateMap.getOrCreate(coordinates)
     }
 
     public void addBlock(MapBlock block) {

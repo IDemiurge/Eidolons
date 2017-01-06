@@ -95,7 +95,7 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
                     return false;
 
         }
-        // if (!lists.get(list).isResponsive())
+        // if (!lists.getOrCreate(list).isResponsive())
         // return;
 
         if (TYPE == OBJ_TYPES.CLASSES || TYPE == OBJ_TYPES.SKILLS) {

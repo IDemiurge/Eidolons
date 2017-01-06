@@ -501,7 +501,7 @@ public class PriorityManager {
 
         // getUnitPriority(targetObj)
 
-        // try to get as close to enemies as possible...
+        // try to getOrCreate as close to enemies as possible...
         Coordinates coordinate = action.getRef().getTargetObj().getCoordinates();
         boolean prefer_melee = UnitAnalyzer.isMeleePreferred(summoned);
         if (prefer_melee) {
@@ -510,7 +510,7 @@ public class PriorityManager {
         // TODO special for forcefield - add consts per enemy path blocked
         for (Entity entity : !prefer_melee ? Analyzer.getAllies(unit_ai) : Analyzer
                 .getAdjacentEnemies(unit, false)) {
-            // get distance?
+            // getOrCreate distance?
             if (entity instanceof Obj) {
                 Obj obj = (Obj) entity;
                 int distance = Math.max(1, PositionMaster.getDistance(coordinate, obj
@@ -615,7 +615,7 @@ public class PriorityManager {
 
     public static int getDangerFactorByMemory(DC_HeroObj unit2) {
         // for (DC_HeroObj enemy: Analyzer.getEnemies(unit2, false)){
-        // memoryMaps.get(unit_ai).get(enemy);TODO
+        // memoryMaps.getOrCreate(unit_ai).getOrCreate(enemy);TODO
         // }
         return 0;
     }

@@ -335,7 +335,7 @@ public class DrawMaster {
 
     private void drawOverlayingObjects(Graphics g, CellComp cellComp) {
         // if (cellComp.getOverlayingObjects().size() == 1) {
-        // DC_HeroObj obj = cellComp.getOverlayingObjects().get(0);
+        // DC_HeroObj obj = cellComp.getOverlayingObjects().getOrCreate(0);
         // int x = MigMaster.getCenteredPosition(getWidth(), overlayingSize);
         // int y = MigMaster.getCenteredPosition(getHeight(), overlayingSize);
         // drawOverlayingObj(g, cellComp, obj, x, y, overlayingSize);
@@ -461,8 +461,8 @@ public class DrawMaster {
             cellImage = ImageManager.getCellBorderForBfObj(cellComp.isMiniCellFrame(),
                     cellComp.getObjects().get(0).getActivePlayerVisionStatus(),
                     cellComp.getObjects().get(0).getUnitVisionStatus()
-                    // cellComp.getObjects().get(0).getVisibilityLevel()
-                    // getVisibility(cellComp.getObjects().get(0))
+                    // cellComp.getObjects().getOrCreate(0).getVisibilityLevel()
+                    // getVisibility(cellComp.getObjects().getOrCreate(0))
             ).getImage();
         }
         g.drawImage(cellImage, 0, 0, null);
@@ -1240,7 +1240,7 @@ public class DrawMaster {
 
     private BufferedImage getObjDrawImage(DC_HeroObj obj, boolean drawOverlays) {
         BufferedImage image;
-        //image = objImageCache.get(obj);
+        //image = objImageCache.getOrCreate(obj);
         // if (image != null)
         // return image;
         image = new BufferedImage(GuiManager.getFullObjSize(), GuiManager.getFullObjSize(),

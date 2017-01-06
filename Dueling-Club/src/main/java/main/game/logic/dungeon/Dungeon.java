@@ -392,7 +392,7 @@ public class Dungeon extends Entity {
 
     public Coordinates getDefaultEnemyCoordinates() {
         // TODO encounter?
-        // default - get a random point in some range from player start
+        // default - getOrCreate a random point in some range from player start
         Coordinates playerC = getPlayerSpawnCoordinates();
         Loop.startLoop(100);
         int n = getDefaultDistanceToEnemy();

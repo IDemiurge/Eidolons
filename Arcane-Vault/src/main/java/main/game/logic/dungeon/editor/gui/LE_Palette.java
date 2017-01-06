@@ -274,7 +274,7 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
 
 		// int index = DialogMaster.optionChoice("Choose object TYPE...",
 		// palettes.toArray());
-		// PaletteWorkspace ws = palettes.get(index);
+		// PaletteWorkspace ws = palettes.getOrCreate(index);
 		List<String> listData = DataManager.toStringList(typeList);
 		List<String> secondListData = (TYPE instanceof C_OBJ_TYPE) ? new LinkedList<String>()
 				: DataManager.toStringList(typeList);

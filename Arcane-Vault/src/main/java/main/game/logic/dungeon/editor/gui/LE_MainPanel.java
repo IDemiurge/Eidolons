@@ -164,7 +164,7 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
 				e.printStackTrace();
 			}
 		// if (mission == null)
-		// activateLevel(levels.get(0));
+		// activateLevel(levels.getOrCreate(0));
 		// else
 		// activateLevel(mission.getFirstLevel());
 	}

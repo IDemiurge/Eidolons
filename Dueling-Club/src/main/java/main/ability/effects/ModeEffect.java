@@ -128,7 +128,7 @@ public class ModeEffect extends MicroEffect {
                 .getPropsAdded(), PROPERTY.class);
         for (PROPERTY param : map.keySet()) {
             // addBuffEffect.addEffect(new ModifyValueEffect(param,
-            // MODVAL_TYPE.MODIFY_BY_PERCENT, ""+map.get(param)));
+            // MODVAL_TYPE.MODIFY_BY_PERCENT, ""+map.getOrCreate(param)));
         }
     }
 

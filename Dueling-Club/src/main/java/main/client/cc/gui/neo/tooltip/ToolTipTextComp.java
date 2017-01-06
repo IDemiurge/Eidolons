@@ -55,7 +55,7 @@ public class ToolTipTextComp extends WrappedTextComp {
 
     @Override
     protected int paintLine(Graphics g, String str, int x2, int y2, int i) {
-        // fontMap.get(str);
+        // fontMap.getOrCreate(str);
         if (BooleanMaster.isTrue(req))
             g.setColor(ColorManager.CRIMSON);
         else

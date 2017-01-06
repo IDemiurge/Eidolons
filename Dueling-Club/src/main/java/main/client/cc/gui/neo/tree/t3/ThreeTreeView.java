@@ -30,7 +30,7 @@ public class ThreeTreeView extends G_Panel {
     public ThreeTreeView(DC_HeroObj hero, Boolean skill_class_spell) {
         setBackground(Color.black);
         setOpaque(true);
-        this.hero = hero; // masteries.get(0)
+        this.hero = hero; // masteries.getOrCreate(0)
         initInfoPanels();
         initTrees(hero, skill_class_spell);
         setPanelSize(getDimension());
