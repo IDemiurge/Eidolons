@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import main.entity.obj.DC_HeroObj;
 
 public class UnitView extends Group implements Borderable {
     private Image arrow;
@@ -18,13 +17,14 @@ public class UnitView extends Group implements Borderable {
     private int arrowRotation;
     private String clockVal;
     private Image border = null;
+    private boolean overlaying;
 
     public UnitView(Texture arrowTexture, int arrowRotation, Texture clockTexture, String clockVal, Texture portraitTexture, Texture iconTexture) {
         init(arrowTexture, arrowRotation, clockTexture, clockVal, portraitTexture, iconTexture);
     }
 
     private void init(Texture arrowTexture, int arrowRotation, Texture clockTexture, String clockVal, Texture portraitTexture, Texture iconTexture) {
-        this.arrowRotation = arrowRotation+90;
+        this.arrowRotation = arrowRotation + 90;
         this.clockVal = clockVal;
 
         portrait = new Image(portraitTexture);
@@ -62,8 +62,44 @@ public class UnitView extends Group implements Borderable {
     }
 
     public UnitView(UnitViewOptions o) {
-        init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getClockTexture(), o.getClockValue(), o.getPortrateTexture(), o.getIconTexture());
-        o.getUnitMap().put((DC_HeroObj) o.getObj(), this);//todo fix this shit
+        if (o.getOverlaying()) {
+            overlaying = true;
+            init(o.getDirectionValue(), o.getPortrateTexture());
+        } else
+            {
+            init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getClockTexture(), o.getClockValue(), o.getPortrateTexture(), o.getIconTexture());
+        }
+        o.getUnitMap().put(o.getObj(), this);//todo fix this shit
+    }
+
+    public boolean isOverlaying() {
+        return overlaying;
+    }
+
+    private void init(int directionValue, Texture portrateTexture) {
+        portrait = new Image(portrateTexture);
+        addActor(portrait);
+
+        switch (directionValue) {
+            case -1://center
+                break;
+            case 360://RIGHT
+                break;
+            case 90://UP
+                break;
+            case 180://LEFT
+                break;
+            case 270://DOWN
+                break;
+            case 135://UP_LEFT
+                break;
+            case 45://UP_RIGHT
+                break;
+            case 225://DOWN_RIGHT
+                break;
+            case 315://DOWN_LEFT
+                break;
+        }
     }
 
     @Override
@@ -71,8 +107,10 @@ public class UnitView extends Group implements Borderable {
         super.setScale(scaleXY);
         setHeight(baseHeight * getScaleY());
         setWidth(baseWidth * getScaleX());
-        arrow.setOrigin(getWidth() / 2 + arrow.getWidth(), getHeight() / 2 + arrow.getHeight());
-        arrow.setX(getWidth() / 2 - arrow.getWidth() / 2);
+        if (arrow != null) {
+            arrow.setOrigin(getWidth() / 2 + arrow.getWidth(), getHeight() / 2 + arrow.getHeight());
+            arrow.setX(getWidth() / 2 - arrow.getWidth() / 2);
+        }
     }
 
     @Override
@@ -91,8 +129,10 @@ public class UnitView extends Group implements Borderable {
     }
 
     public void updateRotation(int val) {
-        arrowRotation = val + 90;
-        arrow.setRotation(arrowRotation);
+        if (arrow != null) {
+            arrowRotation = val + 90;
+            arrow.setRotation(arrowRotation);
+        }
     }
 
     @Override

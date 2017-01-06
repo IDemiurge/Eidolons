@@ -5,7 +5,6 @@ import main.content.OBJ_TYPES
 import main.content.properties.G_PROPS
 import main.entity.obj.DC_HeroObj
 import main.entity.obj.MicroObj
-import main.libgdx.bf.Rotatable
 import main.libgdx.texture.TextureCache
 
 class UnitViewOptions(var obj: MicroObj, textureCache: TextureCache, var unitMap: MutableMap<DC_HeroObj, UnitView>) {
