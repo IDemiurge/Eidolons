@@ -79,6 +79,9 @@ public class LogMaster {
     public static final String MACRO_DYNAMICS_PREFIX = "MACRO_DYNAMICS: ";
     public static final String GENERATION_PREFIX = "GENERATION: ";
     public static final int GENERATION = -33;
+    public static final LOG_CHANNELS[] specialLogChannels = {
+
+    };
     private static final String ERROR_PREFIX = "<!ERROR!>";
     private static final boolean APPEND_TIME = true;
     public static Priority INFO = Priority.toPriority(Priority.INFO_INT);
@@ -381,10 +384,6 @@ public class LogMaster {
     public enum LOG {
         GAME_INFO, HIDDEN_INFO, SYSTEM_INFO, DEBUG
     }
-
-    public static final LOG_CHANNELS[] specialLogChannels = {
-
-    };
 
     public enum LOG_CHANNELS {
         EFFECT_ACTIVE_DEBUG(LogMaster.EFFECT_SPECIFIC_DEBUG_PREFIX, LogMaster.EFFECT_SPECIFIC_DEBUG_ON, LogMaster.EFFECT_SPECIFIC_DEBUG),

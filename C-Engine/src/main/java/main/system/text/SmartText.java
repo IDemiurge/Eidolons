@@ -10,6 +10,7 @@ public class SmartText {
     private String text;
     private Color color;
     private Font font;
+
     public SmartText(String text, Color color) {
         this.text = text;
         this.color = color;

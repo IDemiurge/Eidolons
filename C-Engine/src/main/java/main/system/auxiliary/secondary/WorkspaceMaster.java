@@ -45,7 +45,7 @@ public class WorkspaceMaster {
 
     public static void autoTagTypesWithWsGroup() {
         /*
-		 * non-Complete items from [groups] will be given proper values
+         * non-Complete items from [groups] will be given proper values
 		 */
     }
 

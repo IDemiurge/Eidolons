@@ -15,7 +15,7 @@ public class ObjComparison extends ConditionImpl {
 
     // example: dispel buffs on target: /*
     /*
-	 * ability 1: select target (emply ability) ability 2: targeting: auto
+     * ability 1: select target (emply ability) ability 2: targeting: auto
 	 * (filter(conditions: 1) obj_class ==buff 2) idCondition:
 	 * ABILITY_1(target)==MATCH_TARGET(buff's basis)) effect: saving throw
 	 * effect: caster roll: ("SOURCE", "SP" + "SOURCE", "INT" + "SOURCE", target

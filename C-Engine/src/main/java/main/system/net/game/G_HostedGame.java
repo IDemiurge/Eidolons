@@ -44,6 +44,7 @@ public class G_HostedGame extends DataUnit<GAME_VALUES> {
         // "failed to init game! - " + string);
         // }
     }
+
     public G_HostedGame(String input, User user) {
         setValue(GAME_VALUES.TITLE.name(), input);
         setValue(GAME_VALUES.HOST_NAME.name(), user.getName());

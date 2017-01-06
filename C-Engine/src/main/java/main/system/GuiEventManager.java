@@ -37,7 +37,6 @@ public class GuiEventManager<T> {
     }
 
 
-
     public static void trigger(final GuiEventType type, final EventCallbackParam obj) {
         if (eventMap.containsKey(type)) {
             lock.lock();

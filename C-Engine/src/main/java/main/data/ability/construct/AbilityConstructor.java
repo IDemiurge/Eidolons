@@ -15,7 +15,6 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.BattlefieldObj;
-import main.game.MicroGame;
 import main.system.auxiliary.Chronos;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Err;
@@ -88,15 +87,15 @@ public class AbilityConstructor {
 
             }
         }
-            if (effects == null) {
-                main.system.auxiliary.LogMaster.log(1,
-                 "null abil effects!");
-                effects = new Effects();
-            }
-
-            if (targeting == null) {
+        if (effects == null) {
             main.system.auxiliary.LogMaster.log(1,
-             "null abil targeting!");
+                    "null abil effects!");
+            effects = new Effects();
+        }
+
+        if (targeting == null) {
+            main.system.auxiliary.LogMaster.log(1,
+                    "null abil targeting!");
             targeting = new FixedTargeting();
         }
         if (node.getNodeName().equals(ACTIVE_ABILITY))

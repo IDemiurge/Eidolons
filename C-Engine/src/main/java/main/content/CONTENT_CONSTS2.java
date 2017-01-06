@@ -171,9 +171,11 @@ public class CONTENT_CONSTS2 {
         String group = "Standard";
         FACTION[] allies;
         private String image = "mini\\special\\pirate.jpg";
+
         FACTION() {
 
         }
+
         FACTION(String units, String group, String image, FACTION... allies) {
             this.units = units;
             if (!group.isEmpty())
@@ -215,7 +217,7 @@ public class CONTENT_CONSTS2 {
 
     // to use {INDEXES} ... I'd need a lot of smarts :) >|< separator for
     /*
-	 * Pestlego
+     * Pestlego
 	 * Astro 
 	 * Syphron
 	 * 
@@ -224,9 +226,11 @@ public class CONTENT_CONSTS2 {
     public enum ORDER_TYPE {
         PATROL, PURSUIT, MOVE, ATTACK, KILL, SPECIAL, HEAL, SUPPORT, PROTECT, HOLD, WANDER
     }
+
     public enum GLOBAL_ORDER_TYPE {
         EXPLORE, RALLY, SCATTER, WANDER,
     }
+
     public enum LINK_VARIANT {
 
         ANGLE_TO_LEFT_2,
@@ -265,9 +269,11 @@ public class CONTENT_CONSTS2 {
         int nodeOffsetY;
         int nodeOffsetX;
         private Image image;
+
         LINK_VARIANT(boolean b) {
 
         }
+
         LINK_VARIANT() {
 
             // this.offsetY = getYOffsetForLink(this);
@@ -275,6 +281,7 @@ public class CONTENT_CONSTS2 {
             // this.nodeOffsetY = getYOffsetForLink(this);
             // this.nodeOffsetX = getXOffsetForLink(this);
         }
+
         LINK_VARIANT(int offsetY, int offsetX, int nodeOffsetY, int nodeOffsetX) {
             this.offsetY = offsetY;
             this.offsetX = offsetX;
@@ -365,9 +372,11 @@ public class CONTENT_CONSTS2 {
         }
 
     }
+
     public enum MACRO_STATUS {
         CAMPING, EXPLORING, TRAVELING, IN_AMBUSH,
     }
+
     public enum SHOP_LEVEL { // quality and materials - filter in and Type will
         // filter out?
         POOR,
@@ -375,9 +384,11 @@ public class CONTENT_CONSTS2 {
         QUALITY,
         OPULENT,
     }
+
     public enum SHOP_MODIFIER {
         HUMAN, ELVEN, DWARVEN, WIZARDING, DARK, UNDERGROUND, HOLY,
     }
+
     public enum SHOP_TYPE {
         // ++ per faction?
         MERCHANT("cloth", "ranged", "ammo", "potions", "poisons", "elixirs", "concoctions", "orbs", "wands"), // if
@@ -420,6 +431,7 @@ public class CONTENT_CONSTS2 {
             return filterProp;
         }
     }
+
     public enum AI_MODIFIERS {
         TRUE_BRUTE, COWARD, MERCIFUL, CRUEL,
     }

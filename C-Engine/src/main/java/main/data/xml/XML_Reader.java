@@ -41,10 +41,10 @@ public class XML_Reader {
     static Map<String, Set<String>> macroTreeSubGroupedTypeMap = new ConcurrentMap<String, Set<String>>();
 
     private static Map<String, Map<String, ObjType>> typeMaps =
-     new ConcurrentSkipListMap
+            new ConcurrentSkipListMap
 //     new XLinkedMap
-      <>(
-     );
+                    <>(
+            );
     private static Map<String, ObjType> bufferCharTypeMap = new XLinkedMap<String, ObjType>(20);
     private static boolean macro;
 
@@ -116,7 +116,7 @@ public class XML_Reader {
 
                 type_map.put(name, type);
                 main.system.auxiliary.LogMaster.log(LogMaster.DATA_DEBUG, nl1.item(a).getNodeName()
-                 + " has been put into map as " + type);
+                        + " has been put into map as " + type);
             }
         }
 
@@ -133,11 +133,11 @@ public class XML_Reader {
     public static void loadXml(String path) {
         File folder = new File(path);
         List<File> list = new LinkedList<>(
-         Arrays.asList(folder.listFiles()));
+                Arrays.asList(folder.listFiles()));
         list.sort((p1, p2) ->
-         BooleanMaster.compare(
-          p1.getTotalSpace(), (p2.getTotalSpace())
-         ));
+                BooleanMaster.compare(
+                        p1.getTotalSpace(), (p2.getTotalSpace())
+                ));
         for (File file : list) {
             file.getTotalSpace();
             if (checkFile(file)) {
@@ -203,7 +203,7 @@ public class XML_Reader {
     protected static void addReadingThread(Thread t) {
         threads.add(t);
         main.system.auxiliary.LogMaster.log(LogMaster.THREADING_DEBUG, t.getName() + " added to "
-         + threads);
+                + threads);
 
     }
 
@@ -221,7 +221,7 @@ public class XML_Reader {
         String fileName = file.getName().replace(".xml", "");
         if (fileName.contains(OBJ_TYPES.CHARS.getName())) {
             XML_File heroFile = new XML_File(OBJ_TYPES.CHARS, fileName, "", // TODO
-             macro, text);
+                    macro, text);
             heroFile.setFile(file);
             heroFiles.put(fileName, heroFile);
         }
@@ -237,7 +237,7 @@ public class XML_Reader {
             }
 
             xmlFile = new XML_File(OBJ_TYPES.getType(typeName), fileName, fileName.substring(
-             fileName.indexOf("-") + 1, fileName.length()), macro, text);
+                    fileName.indexOf("-") + 1, fileName.length()), macro, text);
 
             fileName = typeName;
         } else {
@@ -290,7 +290,7 @@ public class XML_Reader {
 
             if (incompleteTypes) {
                 ObjType parent = DataManager.getType(type.getProperty(G_PROPS.PARENT_TYPE), type
-                 .getOBJ_TYPE_ENUM());
+                        .getOBJ_TYPE_ENUM());
                 if (parent != null) {
                     type.setType(parent);
                     for (PROPERTY prop : parent.getPropMap().keySet())
@@ -374,7 +374,7 @@ public class XML_Reader {
         if (OBJ_TYPES.isOBJ_TYPE(name)) {
             try {
                 constructTypeMap(XML_Converter.getDoc(text), name, tabGroupMap, treeSubGroupMap,
-                 treeSubGroupedTypeMap);
+                        treeSubGroupedTypeMap);
             } catch (ConcurrentModificationException ex) {
                 ex.printStackTrace();
                 if (Err.getErrorsShown().contains(name)) {
@@ -391,10 +391,10 @@ public class XML_Reader {
             }
         } else {
             constructTypeMap(XML_Converter.getDoc(text), name, macroTabGroupMap,
-             macroTreeSubGroupMap, macroTreeSubGroupedTypeMap);
+                    macroTreeSubGroupMap, macroTreeSubGroupedTypeMap);
         }
         LogMaster.getInstance().log(LogMaster.INFO,
-         "" + Chronos.getTimeElapsedForMark("TYPE MAPPING " + name));
+                "" + Chronos.getTimeElapsedForMark("TYPE MAPPING " + name));
 
     }
 
@@ -516,12 +516,12 @@ public class XML_Reader {
         String key = OBJ_TYPES.CHARS.getName();
         if (originalCharTypeMap == null)
             originalCharTypeMap = new MapMaster<String, ObjType>().constructMap(new LinkedList<>(
-             getTypeMaps().get(key).keySet()), new LinkedList<ObjType>(getTypeMaps()
-             .get(key).values()));
+                    getTypeMaps().get(key).keySet()), new LinkedList<ObjType>(getTypeMaps()
+                    .get(key).values()));
 
         bufferCharTypeMap = new MapMaster<String, ObjType>().constructMap(new LinkedList<>(
-         getTypeMaps().get(key).keySet()), new LinkedList<ObjType>(getTypeMaps().get(key)
-         .values()));
+                getTypeMaps().get(key).keySet()), new LinkedList<ObjType>(getTypeMaps().get(key)
+                .values()));
 
         try {
             reloadHeroFiles();

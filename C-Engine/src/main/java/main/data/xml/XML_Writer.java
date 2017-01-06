@@ -196,7 +196,7 @@ public class XML_Writer {
         builder = new StringBuilder(STR_CAPACITY);
         setPathForOBJ_TYPE(TYPE, group);
         String newTypeString = getTypeXML(type, builder);
-      if (!newTypeString.isEmpty())  if (XML_Converter.getDoc(newTypeString) == null) {
+        if (!newTypeString.isEmpty()) if (XML_Converter.getDoc(newTypeString) == null) {
             main.system.auxiliary.LogMaster.log(1, "faulty xml for " + type.getName());
             return false;
         }
