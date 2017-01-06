@@ -66,7 +66,7 @@ public class MainViewPanel extends G_Panel {
     private void initView(HERO_VIEWS VIEW) {
         HeroView view = null;
         try {
-            // view = new ViewWorker(VIEW, hero).get();
+            // view = new ViewWorker(VIEW, hero).getOrCreate();
             view = createView(VIEW);
         } catch (Exception e) {
             e.printStackTrace();

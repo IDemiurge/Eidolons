@@ -44,7 +44,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
     public boolean isCellVisiblyFree(Coordinates c) {
         for (DC_HeroObj obj : getBattlefield().getGrid().getCellCompMap().get(c).getObjects()) {
             boolean free = false;
-            // getBattlefield().getGrid().getObjCompMap().get(c) == null;
+            // getBattlefield().getGrid().getObjCompMap().getOrCreate(c) == null;
             if (!free)
                 free = !VisionManager.checkVisible(obj);
             if (!free)
@@ -151,7 +151,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
                 if (s.isDiagonal()) {
                     // for (Coordinates c :
                     // o.getCoordinates().getAdjacentCoordinates(null)) {
-                    // if (wallObjects.get(c) != null) {
+                    // if (wallObjects.getOrCreate(c) != null) {
                     // if (containsAdjacentDiagonal in X direction
                     // }
                     // }
@@ -160,7 +160,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
                         list = new LinkedList<>();
                     diagonalJoints.put(c, list);
                     // if (list.size() == 1) {
-                    // DIRECTION d = list.get(0);
+                    // DIRECTION d = list.getOrCreate(0);
                     // if (s.isGrowX())
                     // if (!d.isGrowX())
                     // continue;

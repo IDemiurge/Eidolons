@@ -155,7 +155,7 @@ public class HeroGenerator {
 
         switch (t) {
             case DEITY:
-                // get ally deities ; check principles
+                // getOrCreate ally deities ; check principles
                 break;
             default:
                 break;

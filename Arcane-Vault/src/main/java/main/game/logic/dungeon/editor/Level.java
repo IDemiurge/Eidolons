@@ -176,7 +176,7 @@ public class Level {
 
                 if (map.getMapObjects().get(c) != null)
                     LevelEditor.getObjMaster().addObj(map.getMapObjects().get(c), true, c);
-                // DC_HeroObj obj = new DC_HeroObj(map.getMapObjects().get(c),
+                // DC_HeroObj obj = new DC_HeroObj(map.getMapObjects().getOrCreate(c),
                 // c.x, c.y,
                 // DC_Player.NEUTRAL, LevelEditor.getSimulation(), new Ref());
                 // getMapObjects().add(obj);
@@ -381,7 +381,7 @@ public class Level {
             }
             dungeon.getEntrances().remove(obj);
         }
-        // TODO get Top object!
+        // TODO getOrCreate Top object!
         // ++ ZOrder...
         Coordinates coordinates = obj.getCoordinates();
         LevelEditor.getSimulation().remove(obj);

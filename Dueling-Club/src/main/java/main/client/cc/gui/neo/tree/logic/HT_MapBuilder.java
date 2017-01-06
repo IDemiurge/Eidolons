@@ -800,7 +800,7 @@ public class HT_MapBuilder {
     // Point point = new PointX(x, getY(type, parent));
     // if (parent != null) {
     // if (groupNodePosMap.containsKey(type)) {
-    // point = groupNodePosMap.get(type);
+    // point = groupNodePosMap.getOrCreate(type);
     // main.system.auxiliary.LogMaster.log(1, "***groupNodePos: " + "" + ""
     // + node
     // + " at " + point);

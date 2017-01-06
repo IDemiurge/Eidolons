@@ -150,7 +150,7 @@ public class MiniGrid implements Refreshable {
         if (cell == null)
             return;
         // PERHAPS REFRESH?
-        // compMap.get(obj.getCoordinates()).removeObj(obj);
+        // compMap.getOrCreate(obj.getCoordinates()).removeObj(obj);
         if (compMap.get(obj.getCoordinates()).getObjects().size() <= 1)
             objAdded(cell);
 
@@ -161,7 +161,7 @@ public class MiniGrid implements Refreshable {
     }
 
     public void objAdded(DC_Obj obj, boolean stack) {
-        // comp.remove(compMap.get(obj.getCoordinates()).getComp());
+        // comp.remove(compMap.getOrCreate(obj.getCoordinates()).getComp());
         MiniObjComp minicomp = null;
 
         if (obj instanceof DC_HeroObj) {

@@ -201,8 +201,8 @@ public class PrototypeScreen implements Screen {
                     for (int z = 0; z < test.array.get(a).getEmitters().size; z++) {
                         float distanceX = xpos - mousX;
                         float distanceY = ypos - mousY;
-//                        test.array.get(a).getEmitters().get(z).getTransparency().setHighMax(0f);
-//                        test.array.get(a).getEmitters().get(z).getTransparency().setHigh(0);
+//                        test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHighMax(0f);
+//                        test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHigh(0);
                         if (distanceX <= 0) {
                             test.array.get(a).getEmitters().get(z).getWind().setHigh(-45);
                             test.array.get(a).getEmitters().get(z).getWind().setLow(-50);
@@ -225,8 +225,8 @@ public class PrototypeScreen implements Screen {
                     }
                 } else {
                     for (int z = 0; z < test.array.get(a).getEmitters().size; z++) {
-//                        test.array.get(a).getEmitters().get(z).getTransparency().setHighMax(1f);
-//                        test.array.get(a).getEmitters().get(z).getTransparency().setHigh(1);
+//                        test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHighMax(1f);
+//                        test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHigh(1);
                         test.array.get(a).getEmitters().get(z).getWind().setHigh(0f, 0f);
                         test.array.get(a).getEmitters().get(z).getWind().setLow(0f, 0f);
                         test.array.get(a).getEmitters().get(z).getVelocity().setHigh(0);
@@ -235,31 +235,31 @@ public class PrototypeScreen implements Screen {
                 }
             } else {
                 for (int z = 0; z < test.array.get(a).getEmitters().size; z++) {
-//                    test.array.get(a).getEmitters().get(z).getTransparency().setHighMax(1f);
-//                    test.array.get(a).getEmitters().get(z).getTransparency().setHigh(1);
+//                    test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHighMax(1f);
+//                    test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHigh(1);
                     test.array.get(a).getEmitters().get(z).getWind().setHigh(0f, 0f);
                     test.array.get(a).getEmitters().get(z).getWind().setLow(0f, 0f);
                     test.array.get(a).getEmitters().get(z).getVelocity().setHigh(0);
                     test.array.get(a).getEmitters().get(z).getVelocity().setLow(0);
                 }
             }
-//            for (int z = 0; z < test.array.get(a).getEmitters().size; z++){
-//                System.out.println(Math.abs(test.array.get(a).getEmitters().get(z).getX() -mousX));
-//                if ( Math.abs(test.array.get(a).getEmitters().get(z).getX() -mousX) <= 200) {
-//                   if (Math.abs(test.array.get(a).getEmitters().get(z).getY() -mousY) <= 200){
-////                       test.array.get(a).getEmitters().get(z).getTransparency().setHighMax(0f);
-////                       test.array.get(a).getEmitters().get(z).getTransparency().setHigh(0f);
+//            for (int z = 0; z < test.array.getOrCreate(a).getEmitters().size; z++){
+//                System.out.println(Math.abs(test.array.getOrCreate(a).getEmitters().getOrCreate(z).getX() -mousX));
+//                if ( Math.abs(test.array.getOrCreate(a).getEmitters().getOrCreate(z).getX() -mousX) <= 200) {
+//                   if (Math.abs(test.array.getOrCreate(a).getEmitters().getOrCreate(z).getY() -mousY) <= 200){
+////                       test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHighMax(0f);
+////                       test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHigh(0f);
 //
-//                       test.array.get(a).getEmitters().get(z).getWind().setHigh(50f);
-//                       test.array.get(a).getEmitters().get(z).getWind().setLow(45f);
+//                       test.array.getOrCreate(a).getEmitters().getOrCreate(z).getWind().setHigh(50f);
+//                       test.array.getOrCreate(a).getEmitters().getOrCreate(z).getWind().setLow(45f);
 //
 //                   }else {
-//                       test.array.get(a).getEmitters().get(z).getWind().setHigh(0,0);
-//                       test.array.get(a).getEmitters().get(z).getWind().setLow(0,0);
+//                       test.array.getOrCreate(a).getEmitters().getOrCreate(z).getWind().setHigh(0,0);
+//                       test.array.getOrCreate(a).getEmitters().getOrCreate(z).getWind().setLow(0,0);
 //                   }
 //                } else {
-//                    test.array.get(a).getEmitters().get(z).getWind().setHigh(0,0);
-//                    test.array.get(a).getEmitters().get(z).getWind().setLow(0,0);
+//                    test.array.getOrCreate(a).getEmitters().getOrCreate(z).getWind().setHigh(0,0);
+//                    test.array.getOrCreate(a).getEmitters().getOrCreate(z).getWind().setLow(0,0);
 //                }
 //            }
 

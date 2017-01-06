@@ -159,7 +159,7 @@ public class Shop extends TownPlace {
                 getIntParam(MACRO_PARAMS.SHOP_INCOME_GROWTH));
         getType().modifyParameter(MACRO_PARAMS.SHOP_INCOME,
                 getIntParam(MACRO_PARAMS.SHOP_INCOME_GROWTH));
-        // perhaps shops should get "Level Ups" eventually too :)
+        // perhaps shops should getOrCreate "Level Ups" eventually too :)
     }
 
     public void sellItem(ObjType t, int price) {

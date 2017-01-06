@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import main.data.filesys.PathFinder;
-import main.libgdx.bf.InputController;
+import main.libgdx.bf.mouse.InputController;
 
 import java.util.ArrayList;
 
@@ -218,7 +218,7 @@ public class BattleFieldScreen implements Screen {
     @Override
     public void render(float v) {
 //        Gdx.gl.glClearColor(color1,color2,color3,color4); // color for cleaning the screen,as for now its black
-//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT );// method that deletes previous scene and make all pixels get Clear Color
+//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT );// method that deletes previous scene and make all pixels getOrCreate Clear Color
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
 //        batch.setProjectionMatrix(stage.getCamera().combined);
         batch.setProjectionMatrix(camera.combined);

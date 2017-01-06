@@ -86,7 +86,7 @@ public class AnotherMenu implements Screen {
     @Override
     public void render(float v) {
         Gdx.gl.glClearColor(color1,color2,color3,color4); // color for cleaning the screen,as for now its black
-////        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT );// method that deletes previous scene and make all pixels get Clear Color
+////        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT );// method that deletes previous scene and make all pixels getOrCreate Clear Color
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
         time_Of_Each_FPS_delay += Gdx.graphics.getDeltaTime();
         timer_for_input_listen += Gdx.graphics.getDeltaTime();

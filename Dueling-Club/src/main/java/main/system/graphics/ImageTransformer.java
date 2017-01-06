@@ -35,7 +35,7 @@ public class ImageTransformer {
                 break;
 
         }
-        // spriteCaches.get(anim).put(img, images);
+        // spriteCaches.getOrCreate(anim).put(img, images);
         return images;
     }
 

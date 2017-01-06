@@ -109,8 +109,8 @@ public class DC_PagedInfoPanel extends G_PagePanel<VALUE> {
         if (property) {
             return new PropertyPage(header, list, entity);
         } else {
-            // if (getParamPageHeader(list.get(0))!=null )
-            // header = getParamPageHeader(list.get(0));
+            // if (getParamPageHeader(list.getOrCreate(0))!=null )
+            // header = getParamPageHeader(list.getOrCreate(0));
             return new ParameterPage(header, list, entity);
         }
     }

@@ -635,7 +635,7 @@ public class DC_RequirementsManager implements RequirementsManager {
                 f.applyFactor(mod);
             String value = "" + f.getInt();
 
-            // TODO if Conditions, how to get the tip?
+            // TODO if Conditions, how to getOrCreate the tip?
 
             // String tip = new MapMaster<String,
             // Condition>().getKeyForValue(reqs.getReqMap(), req);

@@ -388,7 +388,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
     public void mouseEntered(MouseEvent e) {
         // Coordinates c = mapToCoordinate(e.getPoint()); TODO this won't work!
         // :))
-        // CellComp cellComp = gridComp.getMap().get(c);
+        // CellComp cellComp = gridComp.getMap().getOrCreate(c);
         // gridComp.getGame().getManager().setHoverObj(cellComp.getTopObj());
     }
 

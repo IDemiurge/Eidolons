@@ -62,7 +62,7 @@ public class PathBuilder {
     private List<ActionPath> filteredPaths;
     private LinkedList<Object> nonSneakCells;
     private boolean firstStep;
-    // should these be dynamic? stronger units should get more!
+    // should these be dynamic? stronger units should getOrCreate more!
     private Choice base_choice;
 
     public PathBuilder(List<DC_ActiveObj> moveActions, Action targetAction) {

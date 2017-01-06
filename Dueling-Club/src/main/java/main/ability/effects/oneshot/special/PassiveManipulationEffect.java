@@ -4,7 +4,7 @@ import main.ability.effects.oneshot.MicroEffect;
 import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
 
 /* 
- * filter passives, get a list of names to remove and generate ModifyPropertyEffect
+ * filter passives, getOrCreate a list of names to remove and generate ModifyPropertyEffect
  * 
  * 
  */

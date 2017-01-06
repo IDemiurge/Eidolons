@@ -1,6 +1,7 @@
 package main.libgdx.old;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
+import main.libgdx.gui.panels.PagedPanel;
 
 /**
  * Created with IntelliJ IDEA.

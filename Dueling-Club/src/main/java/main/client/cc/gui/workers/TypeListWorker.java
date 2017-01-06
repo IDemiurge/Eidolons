@@ -48,13 +48,13 @@ public class TypeListWorker extends SwingWorker<List<ObjType>, String> {
     // public void initMap(List<ObjType> data, String listName) {
     // Map<String, HC_PagedListPanel> map = new HashMap<>();
     // putList(listName, data, map);
-    // G_Panel tab = tabMap.get(listName);
+    // G_Panel tab = tabMap.getOrCreate(listName);
     //
     // for (String name : map.keySet()) {
     // // String pos = "sg listHeader";
     // // JLabel header = new JLabel(name); // TODO +icon?
     // // tab.add(header, pos);
-    // tab.add(map.get(name), "wrap");
+    // tab.add(map.getOrCreate(name), "wrap");
     // }
     // listMaps.add(map);
     // initCache.add(listName);
@@ -63,7 +63,7 @@ public class TypeListWorker extends SwingWorker<List<ObjType>, String> {
     @Override
     protected void done() {
         /*try {
-            panel.initMap(get(), listName);
+            panel.initMap(getOrCreate(), listName);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

@@ -34,7 +34,7 @@ public class PlayerMaster {
         if (randomFlags)
             player.setFlagColor(getRandomColorFlag());
         else {
-            // choose or get from data or sequential next()
+            // choose or getOrCreate from data or sequential next()
         }
     }
 

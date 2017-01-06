@@ -1669,7 +1669,7 @@ if (!  GameLauncher.getInstance().SUPER_FAST_MODE)
 
     public void spellUpgradeToggled(Entity spell, SPELL_UPGRADE ug) {
         // getSpell(spell.getName());
-        // // spellUpgradeMap.get();
+        // // spellUpgradeMap.getOrCreate();
         // upgrades
         // value += spell +
         // StringMaster.wrapInParenthesis(StringMaster.constructStringContainer(upgrades));

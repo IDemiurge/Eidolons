@@ -6,7 +6,7 @@ import main.client.DC_Engine;
  * request host/client input or Create game (specs) => Join game (game list
  * panel? Lobby?)
  * <p>
- * get game data => player
+ * getOrCreate game data => player
  *
  * @author Regulus
  */

@@ -418,21 +418,21 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
             obj.setTargetHighlighted(true);
         }
         // for (Obj obj : set) {
-        // ObjComponent objC = getObjCompMap().get(obj.getCoordinates());
+        // ObjComponent objC = getObjCompMap().getOrCreate(obj.getCoordinates());
         // if (objC != null)
         // if (objC.getObj() == obj) {
         // objC.setHighlighted(true);
         // continue;
         // }
         //
-        // objC = getPassableObjMap().get(obj.getCoordinates());
+        // objC = getPassableObjMap().getOrCreate(obj.getCoordinates());
         //
         // if (objC != null)
         // if (objC.getObj() == obj) {
         // objC.setHighlighted(true);
         // continue;
         // }
-        // objC = getOverlayingObjMap().get(obj.getCoordinates());
+        // objC = getOverlayingObjMap().getOrCreate(obj.getCoordinates());
         //
         // if (objC != null)
         // if (objC.getObj() == obj) {
@@ -440,7 +440,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         // continue;
         // }
         //
-        // objC = getCellCompMap().get(obj.getCoordinates());
+        // objC = getCellCompMap().getOrCreate(obj.getCoordinates());
         // if (objC != null)
         // if (objC.getObj() == obj)
         // objC.setHighlighted(true);
@@ -560,11 +560,11 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         if (gridComp.getMap().get(c) == null)
             return null;
         return gridComp.getMap().get(c).getTopObjOrCell();
-        // ObjComponent objComponent = getObjCompMap().get(c);
+        // ObjComponent objComponent = getObjCompMap().getOrCreate(c);
         // if (objComponent == null)
-        // objComponent = getPassableObjMap().get(c);
+        // objComponent = getPassableObjMap().getOrCreate(c);
         // if (objComponent == null)
-        // objComponent = getCellCompMap().get(c);
+        // objComponent = getCellCompMap().getOrCreate(c);
         // if (objComponent == null)
         // return null;
         // return objComponent.getObj();
@@ -575,7 +575,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     // }
     //
     // public boolean isCoordinateObstructed(Coordinates c) {
-    // return (objCompMap.get(c) != null);
+    // return (objCompMap.getOrCreate(c) != null);
     // }
     //
     // public Map<Coordinates, ObjComponent> getHiddenObjCompMap() {

@@ -22,12 +22,12 @@ import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 public class UnconsciousRule extends RoundRule implements ActionRule {
     /*
 	 * For living units, when their Toughness falls to or below 0, they are knocked out and lose all current Focus
-	 * Focus and Toughness will regenerate with half the speed while you are Unconscious, and you only get up once you have 
+	 * Focus and Toughness will regenerate with half the speed while you are Unconscious, and you only getOrCreate up once you have
 	 * 25-{focus_retainment}/2 and of x% of maximum Toughness . 
 	 *  
 	 *  You can still be attacked 
 	 *  
-	 *  get Prone and Immobile status and lose all Defense, plus your Willpower is halved so you are more vulnerable to spells and Mind-affecting effects 
+	 *  getOrCreate Prone and Immobile status and lose all Defense, plus your Willpower is halved so you are more vulnerable to spells and Mind-affecting effects
 	 *   
 	 *  
 	 *  Units with Trample will automatically crush an unconscious target if <...> 

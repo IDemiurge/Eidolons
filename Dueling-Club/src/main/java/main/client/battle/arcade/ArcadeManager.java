@@ -51,7 +51,7 @@ public class ArcadeManager {
 	 * 
 	 * For skirmishes, it's really more about getting attacked on all sides OR attacking the enemy yourself
 	 * 
-	 * So maybe the 'dungeons' could just combine the two - first you get through the mob, 
+	 * So maybe the 'dungeons' could just combine the two - first you getOrCreate through the mob,
 	 * which crawl from all sides as you go, then there is a space to prepare and attack the boss... 
 	 * 
 	 * difference from DC vision will be in the focus on combat for now...
@@ -254,7 +254,7 @@ public class ArcadeManager {
 
     public void routeComplete() {
         // game.setMode();
-        // show dialog? let get back to HC?
+        // show dialog? let getOrCreate back to HC?
 
         // let choose whether to proceed or turn back - lose time, but possible
         // to resurrect/buy/repair

@@ -63,7 +63,7 @@ public class UpkeepRule extends RoundRule {
 
     @Override
     public void apply(DC_HeroObj unit) {
-        // TODO get all buffs/units with this SOURCE /summoner
+        // TODO getOrCreate all buffs/units with this SOURCE /summoner
         List<Obj> payObjects = new LinkedList<>();
         for (DC_HeroObj u : game.getUnits()) {
             if (u.getRef().getObj(KEYS.SUMMONER) == unit)

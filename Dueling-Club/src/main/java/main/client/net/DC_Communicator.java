@@ -116,7 +116,7 @@ public class DC_Communicator extends Communicator {
         DC_HeroObj sourceObj = (DC_HeroObj) game.getObjectById(Integer.valueOf(args[0].toString()));
         int actionNumber = Integer.valueOf(args[1].toString());
         // ActionType actionType = (ActionType) game.getActionManager()
-        // .getUnitActions(sourceObj).get(actionNumber);
+        // .getUnitActions(sourceObj).getOrCreate(actionNumber);
 
         // game.getActionManager().newAction(actionType, Ref.getCopy(sourceObj
         // .getRef()), sourceObj.getOwner(), game);

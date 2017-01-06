@@ -275,7 +275,7 @@ public class DescriptionMaster {
                 // you can hit
 
             case CHARISMA:
-                break; // you can get your way with up to x% of the people you
+                break; // you can getOrCreate your way with up to x% of the people you
             // meet ; your prayers are answered in x% of cases
             case DEXTERITY:
                 // you can jump feet high/length, run at velocity, dodge

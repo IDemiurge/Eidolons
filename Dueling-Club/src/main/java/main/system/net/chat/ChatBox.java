@@ -32,7 +32,7 @@ public class ChatBox extends G_Panel {
 
     public synchronized void appendToChat(String input) {
         input = formatInput(input);
-        // //get html doc, ensure ENDL
+        // //getOrCreate html doc, ensure ENDL
         // CHAT.setDocument(null)
 
         CHAT.setText(CHAT.getText() + "\n" + input);

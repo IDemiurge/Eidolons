@@ -11,6 +11,7 @@ import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.PointX;
 import main.game.battlefield.attack.Attack;
+import main.libgdx.anims.phased.PhaseAnim;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.system.auxiliary.*;
 import main.system.auxiliary.FontMaster.FONT;
@@ -22,6 +23,7 @@ import main.system.graphics.AnimationManager.MouseItem;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.ALIGNMENT;
 import main.system.images.ImageManager.BORDER;
+import main.system.launch.CoreEngine;
 import main.system.options.OptionsMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -34,6 +36,7 @@ import java.util.List;
 
 public abstract class Animation implements ANIM {
 
+    PhaseAnim phaseAnim;
     public static final int MAX_MINI_ICON_SIZE = 40;
     public static final int CENTERED_Y = -9999;
     public static final int CENTERED_X = -6666;
@@ -331,6 +334,7 @@ public abstract class Animation implements ANIM {
         }
         mouseMap.clear();
         repaint();
+        getPhaseAnim().update();
     }
 
     public boolean checkTime() {
@@ -941,6 +945,7 @@ public abstract class Animation implements ANIM {
     }
 
     protected void repaint() {
+        if (CoreEngine.isSwingOn())
         getGrid().getGridComp().getPanel().repaint();
     }
 
@@ -1551,4 +1556,11 @@ public abstract class Animation implements ANIM {
     public void setFlipOver(boolean b) {
         flipOver = b;
     }
-}
+
+    public PhaseAnim getPhaseAnim() {
+        return phaseAnim;
+    }
+
+    public void setPhaseAnim(PhaseAnim phaseAnim) {
+        this.phaseAnim = phaseAnim;
+    }}

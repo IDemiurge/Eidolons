@@ -15,7 +15,7 @@ public class BoundaryMaster {
 	 * 2) random vector
 	 * 3) prune irrelevant lines (outside spectrum)
 	 * 4) find first line crossed by vector
-	 * 5) solve up/down -> get 1 or 2nd 
+	 * 5) solve up/down -> getOrCreate 1 or 2nd
 	 * 
 	 * ++ re-use points - 
 	 */
@@ -47,7 +47,7 @@ public class BoundaryMaster {
 
     private static List<AreaLine> getCrossedLines(List<AreaLine> relevantLines,
                                                   float vectorSlope, int length) {
-        // TODO or was there some better way to get the first crossed line?
+        // TODO or was there some better way to getOrCreate the first crossed line?
         // perhaps just by distance from p to p1/p2
         return null;
     }

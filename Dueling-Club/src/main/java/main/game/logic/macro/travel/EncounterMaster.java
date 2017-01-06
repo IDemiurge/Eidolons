@@ -33,7 +33,7 @@ public class EncounterMaster {
     private static FACING_DIRECTION playerBfSide;
 
     private static boolean flee(Encounter e) {
-        // get fastest wave in encounter -> re-arrange waves and init battle
+        // getOrCreate fastest wave in encounter -> re-arrange waves and init battle
         // perhaps the only way a battle is joined is if the party is
         // surrounded...
         // check more encounters - perhaps with luck you can run into even more

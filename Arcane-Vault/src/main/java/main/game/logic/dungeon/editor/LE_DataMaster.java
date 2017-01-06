@@ -239,7 +239,7 @@ public class LE_DataMaster {
 		File file = FileManager.getFile(path);
 		String data = FileManager.readFile(file);
 		String baseType = StringMaster.cropFormat(StringMaster.getLastPathSegment(path));
-		// TODO get name from data!
+		// TODO getOrCreate name from data!
 		Mission mission = new Mission(baseType, data);
 		LevelEditor.getMainPanel().newMission(mission);
 		resetMissionWorkspace();

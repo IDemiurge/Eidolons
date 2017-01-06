@@ -1,6 +1,5 @@
 package main.libgdx.gui.panels;
 
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
@@ -16,7 +15,7 @@ import java.util.List;
 /**
  * Created by JustMe on 1/5/2017.
  */
-public class ActionPanel<T extends DC_Obj> extends Group {
+public class ActionPanel<T extends DC_Obj> extends PagedPanel {
 
 
     private DC_HeroObj hero;
@@ -24,8 +23,9 @@ public class ActionPanel<T extends DC_Obj> extends Group {
     private List<T> actives;
 
     public ActionPanel(DC_HeroObj hero
-     , final EventCallback event
-    ) {
+     , final EventCallback event,
+                       int columns) {
+        super( columns, 1);
         this.hero = hero;
         this.event = event;
     }
@@ -35,7 +35,7 @@ public class ActionPanel<T extends DC_Obj> extends Group {
          int x = 0;
         actives = new LinkedList<T>(activeObjs);
         actives.forEach( a -> {
-            addActor(new Image(TextureManager.get(a.getImagePath())));
+            addActor(new Image(TextureManager.getOrCreate(a.getImagePath())));
 //            x += w;
 
         });

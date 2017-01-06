@@ -77,7 +77,7 @@ public class DC_SoundMaster {
 
         boolean natural = false;
 
-        // cache = attackImpactSoundFilesCache.get(armor_type+damage_type) TODO
+        // cache = attackImpactSoundFilesCache.getOrCreate(armor_type+damage_type) TODO
         if (armor_type.isEmpty() && blocked > 0) {
             if (attacked.getRef().getObj(KEYS.ARMOR) != null)
                 armor_type = attacked.getRef().getObj(KEYS.ARMOR).getProperty("ARMOR_GROUP");

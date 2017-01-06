@@ -72,7 +72,7 @@ public class Workspace {
 	}
 
 	public OBJ_TYPE getOBJ_TYPE(String typeName, String parent) {
-		// TODO if 2 types with same name? Perhaps types should finally get
+		// TODO if 2 types with same name? Perhaps types should finally getOrCreate
 		// *IDs* too!
 		OBJ_TYPE TYPE = null;
 		for (ObjType type : getTypeList())

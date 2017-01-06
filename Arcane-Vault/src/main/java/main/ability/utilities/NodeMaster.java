@@ -82,7 +82,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 		} else {
 			name = Arrays.asList(arg.getCoreClass().getEnumConstants()).get(index).toString();
 			// collection = CollectionsMaster.getSortedCollection(collection);
-			// name =collection.get(index).toString()
+			// name =collection.getOrCreate(index).toString()
 		}
 		if (Mapper.getItem(name) != null)
 			return Mapper.getItem(name);
@@ -217,7 +217,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 			return 0;
 		}
 		return itemList.indexOf(item);
-		// return Mapper.getItemList(nodeItem.getArgList().get(elementIndex))
+		// return Mapper.getItemList(nodeItem.getArgList().getOrCreate(elementIndex))
 		// .indexOf(child.getUserObject());
 	}
 
@@ -445,7 +445,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 		// ArcaneVault.getPreviousSelectedType().setProperty(G_PROPS.BASE_TYPE,
 		// ArcaneVault.getSelectedType().getName());
 		// ((ObjType)getSelectedNode().getUserObject())
-		// ArcaneVault.getMainBuilder().get;
+		// ArcaneVault.getMainBuilder().getOrCreate;
 	}
 
 	public void nodePasted() {

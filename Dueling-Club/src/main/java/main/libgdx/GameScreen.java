@@ -13,15 +13,17 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.data.filesys.PathFinder;
 import main.entity.obj.DC_HeroObj;
 import main.game.DC_Game;
+import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.bf.Background;
 import main.libgdx.bf.GridPanel;
-import main.libgdx.bf.InputController;
+import main.libgdx.bf.mouse.InputController;
 import main.libgdx.bf.mouse.ToolTipManager;
-import main.libgdx.texture.TextureCache;
+import main.libgdx.gui.GuiStage;
+import main.libgdx.gui.radial.DebugRadialManager;
 import main.libgdx.gui.radial.RadialMenu;
+import main.libgdx.texture.TextureCache;
 import main.libgdx.texture.TextureManager;
 import main.system.TempEventManager;
-import main.libgdx.gui.radial.DebugRadialManager;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
@@ -49,6 +51,7 @@ public class GameScreen implements Screen {
 
     private static GameScreen instance;
     private InputController controller;
+    private PhaseAnimator phaseAnimator;
 
     public void PostGameStart() {
         InputMultiplexer multiplexer = new InputMultiplexer(controller, bf, gui);
@@ -56,10 +59,10 @@ public class GameScreen implements Screen {
     }
 
     public GameScreen PostConstruct() {
+        PathFinder.init();
         instance = this;
         bf = new Stage();
-        gui = new Stage();
-initGui();
+        initGui();
 
         camera = cam = new OrthographicCamera();
         cam.setToOrtho(false, 1600, 900);
@@ -71,27 +74,26 @@ initGui();
         gl.glEnable(GL20.GL_TEXTURE_2D);
         gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         batch = new SpriteBatch();
-        PathFinder.init();
         background = new Background().init();
-        //topPanel = new DC_GDX_TopPanel(PathFinder.getImagePath()).init();
-        textureCache = TextureManager.getCache();
-        final Texture t = new Texture(GameScreen.class.getResource("/data/marble_green.png").getPath());
-        radialMenu = new RadialMenu(t, textureCache);
-        toolTipManager = new ToolTipManager(textureCache);
-
-        gui.addActor(radialMenu);
-        gui.addActor(toolTipManager);
 
 
-bindEvents();
+        bindEvents();
 
 
         return this;
     }
 
     private void initGui() {
+        textureCache = TextureManager.getCache();
+        final Texture t = new Texture(GameScreen.class.getResource("/data/marble_green.png").getPath());
 
-
+        radialMenu = new RadialMenu(t, textureCache);
+        toolTipManager = new ToolTipManager(textureCache);
+        gui = new GuiStage();
+        phaseAnimator = new PhaseAnimator();
+        gui.addActor(radialMenu);
+        gui.addActor(toolTipManager);
+        gui.addActor(phaseAnimator);
     }
 
     private void bindEvents() {
@@ -102,9 +104,9 @@ bindEvents();
         });
 
         TempEventManager.bind("create-radial-menu", obj -> {
-            if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)){
+            if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
                 DebugRadialManager.show(radialMenu);
-            }else {
+            } else {
 
                 Triple<DC_HeroObj, Float, Float> container = (Triple<DC_HeroObj, Float, Float>) obj.get();
                 radialMenu.createNew(container.getLeft());
@@ -123,7 +125,11 @@ bindEvents();
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
             DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
         }
-
+            try{
+                DC_Game.game.getAnimationManager().updateAnimations();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         TempEventManager.processEvents();
 
         bf.act(delta);
@@ -136,7 +142,9 @@ bindEvents();
         batch.begin();
         if (background.isDirty())
             background.update();
+        batch.disableBlending();
         background.draw(batch, 1);
+        batch.enableBlending();
         batch.end();
 
         bf.draw();

@@ -1,5 +1,7 @@
 package main.libgdx.old;
 
+import main.libgdx.gui.panels.PagedPanel;
+
 /**
  * Created with IntelliJ IDEA.
  * Date: 26.10.2016

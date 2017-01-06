@@ -19,7 +19,7 @@ import org.w3c.dom.Document;
 
 public class FilterMaster {
 	/*
-	 * valueName ++ value easier to deal via conditions just get a bridge
+	 * valueName ++ value easier to deal via conditions just getOrCreate a bridge
 	 */
 
 	public final static char HOTKEY_CHAR = 't';

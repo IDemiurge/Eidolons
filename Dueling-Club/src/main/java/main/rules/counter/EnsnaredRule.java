@@ -47,7 +47,7 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
 
     @Override
     protected Effect getSpecialRoundEffects() {
-        // reduce ap? how to get the number? min(n_of_counters, max ap)
+        // reduce ap? how to getOrCreate the number? min(n_of_counters, max ap)
         return super.getSpecialRoundEffects();
     }
 

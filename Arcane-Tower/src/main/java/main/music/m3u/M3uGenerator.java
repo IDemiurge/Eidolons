@@ -33,12 +33,12 @@ public class M3uGenerator {
 			for (File dir : dirs) {
 				String folderName = StringMaster.getPathSegments(dir.getPath()).get(0).replace(":",
 						"");
-				// StringMaster.getPathSegments(dir.getName()).get(
+				// StringMaster.getPathSegments(dir.getName()).getOrCreate(
 				// StringMaster.getPathSegments(dir.getName()).size() - 2);
 				//
 				List<String> filePaths = getTracks(dir);
 
-				// recursion: get a list of paths from all the way down!
+				// recursion: getOrCreate a list of paths from all the way down!
 				listToM3U(filePaths, folderName, getGeneratedListName(dir.getName()));
 			}
 		}

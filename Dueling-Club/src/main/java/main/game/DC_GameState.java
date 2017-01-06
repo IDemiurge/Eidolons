@@ -75,7 +75,7 @@ public class DC_GameState extends MicroGameState {
     public void newRound() {
         getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.NEW_ROUND, getRound());
 
-        game.getLogManager().log("            >>>Round #" + (getRound() + 1) + "<<<");// get
+        game.getLogManager().log("            >>>Round #" + (getRound() + 1) + "<<<");// getOrCreate
         // 10-round
         // "><"'s!
         try {

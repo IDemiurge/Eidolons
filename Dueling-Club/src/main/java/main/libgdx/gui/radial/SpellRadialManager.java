@@ -61,7 +61,7 @@ spell 'types'?
         List<RadialMenu.CreatorNode> nodes = new LinkedList<>();
         List<DC_SpellObj> spells = source.getSpells()
         .stream()
-         .filter(spell -> spell.canBeActivated() && spell.canBeTargeted(target.getId()))
+         .filter(spell -> (spell.getGame().isDebugMode() || (spell.canBeActivated() && spell.canBeTargeted(target.getId()))))
          .collect(Collectors.toList());
         if (spells.size()<=8) {
             for (DC_SpellObj g : spells)
@@ -104,7 +104,7 @@ spell 'types'?
         if (object instanceof SpellNode) {
             final DC_ActiveObj action = (DC_ActiveObj) ((SpellNode) object).getContents();
 
-            node.texture  = TextureManager.get(action.getImagePath());
+            node.texture  = TextureManager.getOrCreate(action.getImagePath());
             node.name = action.getName();
             node.action = new Runnable() {
                 @Override
@@ -114,7 +114,9 @@ spell 'types'?
             };
         } else {
             node.childNodes = new LinkedList<>();
-            node.texture  = TextureManager.get(object.getTexturePath());
+
+            node.texture  = TextureManager.getOrCreate(object.getTexturePath());
+
             object.getItems(source).forEach(child -> {
                 createNodeBranch(
                  child, node.childNodes, source);

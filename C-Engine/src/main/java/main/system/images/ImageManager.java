@@ -524,8 +524,11 @@ public class ImageManager {
 
             return null;
         }
-        if (icon != null)
-            return icon.getImage();
+        if (icon != null) {
+            if (CoreEngine.isSwingOn()) return
+             icon.getImage();
+            return new CustomImage(imgPath, icon.getImage());
+        }
         return null;
     }
 

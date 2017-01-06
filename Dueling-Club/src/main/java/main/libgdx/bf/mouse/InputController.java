@@ -1,4 +1,4 @@
-package main.libgdx.bf;
+package main.libgdx.bf.mouse;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;

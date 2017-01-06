@@ -39,7 +39,7 @@ public class PlayerWaitDialog extends ModalDialog {
     }
 
     public void playerReady(int n, String data) {
-        // player = playerList.get(n);
+        // player = playerList.getOrCreate(n);
         // player.initData(data);
         // playerList.remove(player);
     }

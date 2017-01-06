@@ -135,7 +135,7 @@ public class Location {
                 if (StringMaster.isInteger(stretch)) {
                     // for (int i = 0; i < StringMaster.getInteger(stretch);
                     // i++) {
-                    // dungeon = dungeon.getSubLevels().get(0); // TODO unsafe
+                    // dungeon = dungeon.getSubLevels().getOrCreate(0); // TODO unsafe
                     // }
                     i = StringMaster.getInteger(stretch);
                     continue;
@@ -345,7 +345,7 @@ public class Location {
     //
     // public void constructMission() {
     // //
-    // dungeon.getGame().getArenaManager().getSpawnManager().getPositioner().get
+    // dungeon.getGame().getArenaManager().getSpawnManager().getPositioner().getOrCreate
     // FACING_DIRECTION side = EncounterMaster.getPlayerBfSide();
     // if (side == null)
     // side = Positioner.DEFAULT_PLAYER_SIDE;
@@ -363,7 +363,7 @@ public class Location {
     // Coordinates enterCoordinate = DungeonLevelMaster
     // .getEntranceCoordinates(entranceSide, template, root);
     // List<Dungeon> subLevels = new LinkedList<>();
-    // Entrance mainExit = root.getEntrances().get(0);
+    // Entrance mainExit = root.getEntrances().getOrCreate(0);
     //
     // distributeDungeonDepth(root, i); // this creates dungeons, now adjust -
     // // entrances, ...
@@ -390,7 +390,7 @@ public class Location {
     // // same object as last...
     // List<Entrance> entrances = dungeon.getEntrances();
     // dungeon.setMainEntrance(mainExit);
-    // mainExit = entrances.get(0);
+    // mainExit = entrances.getOrCreate(0);
     //
     // // DungeonLevelMaster.generateEntranceData(dungeon)
     //
@@ -422,7 +422,7 @@ public class Location {
     // if (i==2){
     // //no preboss?
     // }
-    // //recursive - get sublevels from next sublevel? step by step I mean...
+    // //recursive - getOrCreate sublevels from next sublevel? step by step I mean...
     // reserve depth for boss/preboss
     // typeMap = new
     // RandomWizard<ObjType>().constructWeightMap(root.getProperty(PROPS.SUBLEVELS),
@@ -447,7 +447,7 @@ public class Location {
     // ObjType type = new RandomWizard<ObjType>().getObjectByWeight(
     // root.getProperty(PROPS.SUBLEVELS), ObjType.class);
     // if (type == null) {
-    // // get by group
+    // // getOrCreate by group
     // }
     // Dungeon sublevel = new Dungeon(type, true);
     // sublevel.setZ(dungeon.getZ() - 1);

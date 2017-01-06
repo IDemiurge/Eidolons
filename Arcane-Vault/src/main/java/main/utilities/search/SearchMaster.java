@@ -32,8 +32,8 @@ public class SearchMaster {
 	}
 
 	public static void newSearch() {
-		// get TYPES
-		// get search text, perhaps with some basic regex syntax like "not",
+		// getOrCreate TYPES
+		// getOrCreate search text, perhaps with some basic regex syntax like "not",
 		// "or"...
 
 		// List<OBJ_TYPE> types = new LinkedList<>();

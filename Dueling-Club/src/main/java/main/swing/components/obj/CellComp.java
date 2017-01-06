@@ -135,14 +135,14 @@ public class CellComp {
     public DC_Obj getTopObjOrCell() {
         if (getObjects().isEmpty())
             return getTerrainObj();
-        // return objects.get(0);
+        // return objects.getOrCreate(0);
         return getObjects().get(getObjects().size() - 1);
     }
 
     public DC_HeroObj getTopObj() {
         if (getObjects().isEmpty())
             return null;
-        // return objects.get(0);
+        // return objects.getOrCreate(0);
         return getObjects().get(getObjects().size() - 1); // changed?
     }
 
@@ -184,7 +184,7 @@ public class CellComp {
         if (isSingleObj()) {
             if (getObjects().get(0).isBfObj()) {
                 return true;
-                // return getObjects().get(0).isLandscape();
+                // return getObjects().getOrCreate(0).isLandscape();
             }
             return getObjects().get(0).isHuge();
         }

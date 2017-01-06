@@ -872,8 +872,8 @@ public class DungeonBuilder {
     // BLOCK_TYPE b = !altBlock ? BLOCK_TYPE.ROOM : BLOCK_TYPE.CORRIDOR;
     //
     // while (i < map.getZones().size()) {
-    // MapZone zone = map.getZones().get(i);
-    // MapZone targetZone = map.getZones().get(i);
+    // MapZone zone = map.getZones().getOrCreate(i);
+    // MapZone targetZone = map.getZones().getOrCreate(i);
     // MapBlock block = buildBlock(template, zone, targetZone, b, map);
     // if (block != null)
     // break;

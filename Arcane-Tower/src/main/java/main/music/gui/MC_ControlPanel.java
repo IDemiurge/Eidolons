@@ -400,7 +400,7 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 			// list.play();
 		}
 		list.getMouseListener().handleClick(0, list.getMouseListener().getClickMode());
-		// get path for name
+		// getOrCreate path for name
 
 		// add to selected?
 		// replace selected

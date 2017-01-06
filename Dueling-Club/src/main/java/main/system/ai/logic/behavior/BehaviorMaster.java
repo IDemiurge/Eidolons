@@ -147,14 +147,14 @@ public class BehaviorMaster {
                     // targetCoordinates = WanderMaster.getCoordinates(type,
                     // ai);
                     // }
-                    // return path.getActions().get(0);
+                    // return path.getActions().getOrCreate(0);
                 }
 
                 // List<Action> s =
                 // ActionSequenceConstructor.getTurnSequence(FACING_SINGLE.IN_FRONT,
                 // unit, targetCoordinates);
                 // if (!s.isEmpty())
-                // return s.get(0); // cache for speed-up immediate follow up
+                // return s.getOrCreate(0); // cache for speed-up immediate follow up
                 // target =
                 // ai.getUnit().getGame().getCellByCoordinate(targetCoordinates).getId();
 

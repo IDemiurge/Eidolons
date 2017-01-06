@@ -1,4 +1,4 @@
-package main.libgdx.old;
+package main.libgdx.gui.panels;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -21,10 +21,9 @@ public class PagedPanel extends Group {
     protected Image[] slots;
 
     private Texture emptySlotTexture;
-
     protected String imagePath;
-    protected final int col;
-    protected final int row;
+    protected   int col;
+    protected   int row;
 
     private static final String pagerImagePath = "\\UI\\components\\left5.png";
     private static final String pagerImagePath2 = "\\UI\\components\\right5.png";
@@ -32,14 +31,17 @@ public class PagedPanel extends Group {
     private static final String pagerImagePath4 = "\\UI\\components\\up5.png";
 
     public PagedPanel(String imagePath, int col, int row) {
-        this.imagePath = imagePath;
+        
+    }
+    public PagedPanel( int col, int row) {
         this.col = col;
         this.row = row;
         slots = new Image[col * row];
     }
 
     protected String getEmptySlotImagePath() {
-        return imagePath + "\\UI\\EMPTY_ITEM.jpg";
+        return 
+         "\\UI\\EMPTY_ITEM.jpg";
     }
 
     protected float getCellScale() {
@@ -70,11 +72,11 @@ public class PagedPanel extends Group {
         }
 
         if (isHorizontal()) {
-            pager1 = new Image(new Texture(imagePath + pagerImagePath));
-            pager2 = new Image(new Texture(imagePath + pagerImagePath2));
+            pager1 = new Image(new Texture(  pagerImagePath));
+            pager2 = new Image(new Texture(  pagerImagePath2));
         } else {
-            pager1 = new Image(new Texture(imagePath + pagerImagePath3));
-            pager2 = new Image(new Texture(imagePath + pagerImagePath4));
+            pager1 = new Image(new Texture(  pagerImagePath3));
+            pager2 = new Image(new Texture(  pagerImagePath4));
         }
 
         //pager2.rotateBy(180);

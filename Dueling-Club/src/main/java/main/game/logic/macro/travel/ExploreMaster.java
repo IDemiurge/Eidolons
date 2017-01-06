@@ -29,7 +29,7 @@ public class ExploreMaster {
             else {
                 Boolean north_or_south = RandomWizard.random();
                 Boolean west_or_east = RandomWizard.random();
-                // get available directions
+                // getOrCreate available directions
                 ExploreMaster.exploreLocation(party, north_or_south,
                         west_or_east);
             }

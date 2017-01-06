@@ -31,7 +31,7 @@ public class TimeRule {
 	 * only appeared late in the round, as long as it has enough initiative!
 	 * Original idea was to limit by ap_cost...
 	 * 
-	 * There should be a middleground - slow units should never get to move if
+	 * There should be a middleground - slow units should never getOrCreate to move if
 	 * round is sped up, but near-speed units should be able to take some
 	 * actions reasonably, perhaps I should use the TimeMap -
 	 * 

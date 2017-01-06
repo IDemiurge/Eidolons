@@ -154,7 +154,7 @@ public class AE_Manager {
 			AE_Item item, int index) {
 		if (item == null)
 			return null;
-		// AE_EditPanel panel = smallCache.get(item);
+		// AE_EditPanel panel = smallCache.getOrCreate(item);
 		// if (panel == null) {
 		// main.system.auxiliary.LogMaster
 		// .log(0, "*** ae_edit panel NOT FOUND! - " + item.getName()
