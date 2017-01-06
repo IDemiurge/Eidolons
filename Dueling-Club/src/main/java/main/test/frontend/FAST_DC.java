@@ -105,7 +105,9 @@ public class FAST_DC {
     public static boolean isRunning() {
         return running;
     }
-    public static String exceptions ="chars;skills;classes;deities;factions;jewelry;";
+
+    public static String exceptions = "chars;skills;classes;deities;factions;jewelry;";
+
     public static void main(String[] args) {
 
 /*        ClassLoader classLoader = FAST_DC.class.getClassLoader();
@@ -119,8 +121,8 @@ public class FAST_DC {
 //        System.out.println(f.getAbsolutePath());
         //InputStream is = FAST_DC.class.getClassLoader().getResourceAsStream("Font");
 
-CoreEngine.swingOn=false;
-CoreEngine.setExceptionTypes(exceptions);
+        CoreEngine.swingOn = false;
+        CoreEngine.setExceptionTypes(exceptions);
         running = true;
         PathFinder.init();
         DC_Engine.systemInit();
@@ -201,8 +203,8 @@ CoreEngine.setExceptionTypes(exceptions);
                 }
 
             }
-if (!CoreEngine.isSwingOn())
-       DENIS_Launcher.main(new String[]{});
+        if (!CoreEngine.isSwingOn())
+            DENIS_Launcher.main(new String[]{});
 //        main.test.libgdx.prototype.Launcher.main(new String[]{});
         CoreEngine.setTEST_MODE(true);
         DC_Engine.init();

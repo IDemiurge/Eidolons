@@ -104,9 +104,9 @@ public class GameScreen implements Screen {
         });
 
         TempEventManager.bind("create-radial-menu", obj -> {
-            if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)){
+            if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
                 radialMenu.init(DebugRadialManager.getDebugNodes());
-            }else {
+            } else {
 
                 Triple<DC_HeroObj, Float, Float> container = (Triple<DC_HeroObj, Float, Float>) obj.get();
                 radialMenu.createNew(container.getLeft());
@@ -125,9 +125,9 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
             DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
         }
-            try{
-                DC_Game.game.getAnimationManager().updateAnimations();
-        }catch(Exception e){
+        try {
+            DC_Game.game.getAnimationManager().updateAnimations();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         TempEventManager.processEvents();
