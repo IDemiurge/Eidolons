@@ -9,7 +9,7 @@ import main.game.DC_Game;
 import main.game.battlefield.VisionManager;
 import main.rules.mechanics.WaitRule;
 import main.system.EventCallbackParam;
-import main.system.TempEventManager;
+import main.system.GuiEventManager;
 import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.ConcurrentModificationException;
+
+import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
 
 /**
  * Initiative
@@ -238,7 +240,7 @@ if (CoreEngine.isSwingOn())
 
             LogMaster.gameInfo(StringMaster.getStringXTimes(50 - getActiveUnit().toString().length(), ">")
                 + "Active unit: " + getActiveUnit());
-            TempEventManager.trigger("active-unit-selected", new EventCallbackParam(activeUnit));
+            GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, new EventCallbackParam(activeUnit));
         }catch(Exception e){
             e.printStackTrace();            }
         return true;

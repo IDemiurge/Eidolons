@@ -13,33 +13,35 @@ import java.util.concurrent.locks.ReentrantLock;
  * Time: 17:18
  * To change this template use File | Settings | File Templates.
  */
-public class TempEventManager<T> {
-    private static Map<String, EventCallback> eventMap = new HashMap<>();
+public class GuiEventManager<T> {
+    private static Map<GuiEventType, EventCallback> eventMap = new HashMap<>();
     private static List<Runnable> eventQueue = new ArrayList<>();
     private static Lock lock = new ReentrantLock();
 
-    public static void bind(String name, final EventCallback event) {
+    public static void bind(GuiEventType type, final EventCallback event) {
         if (event != null) {
-            if (eventMap.containsKey(name)) {
-                final EventCallback old = eventMap.remove(name);
-                eventMap.put(name, (obj) -> {
+            if (eventMap.containsKey(type)) {
+                final EventCallback old = eventMap.remove(type);
+                eventMap.put(type, (obj) -> {
                     old.call(obj);
                     event.call(obj);
                 });
             } else {
-                eventMap.put(name, event);
+                eventMap.put(type, event);
             }
         } else {
-            if (eventMap.containsKey(name)) {
-                eventMap.remove(name);
+            if (eventMap.containsKey(type)) {
+                eventMap.remove(type);
             }
         }
     }
 
-    public static void trigger(final String name, final EventCallbackParam obj) {
-        if (eventMap.containsKey(name)) {
+
+
+    public static void trigger(final GuiEventType type, final EventCallbackParam obj) {
+        if (eventMap.containsKey(type)) {
             lock.lock();
-            eventQueue.add(() -> eventMap.get(name).call(obj));
+            eventQueue.add(() -> eventMap.get(type).call(obj));
             lock.unlock();
         }
     }

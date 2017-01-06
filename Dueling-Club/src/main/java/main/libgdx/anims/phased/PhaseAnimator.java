@@ -2,10 +2,12 @@ package main.libgdx.anims.phased;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import main.system.TempEventManager;
+import main.system.GuiEventManager;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import static main.system.GuiEventType.SHOW_PHASE_ANIM;
 
 /**
  * Created by JustMe on 1/5/2017.
@@ -17,7 +19,7 @@ public class PhaseAnimator extends Group {
 
 
     public void init() {
-        TempEventManager.bind("show-phase-anim", (event) -> {
+        GuiEventManager.bind(SHOW_PHASE_ANIM, (event) -> {
 
         });
 //        DC_Game.game.getAnimationManager().drawAnimations();

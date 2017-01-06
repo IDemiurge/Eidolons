@@ -16,7 +16,7 @@ import main.game.event.Event;
 import main.libgdx.bf.mouse.ToolTipManager;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
-import main.system.TempEventManager;
+import main.system.GuiEventManager;
 import main.system.datatypes.DequeImpl;
 import main.test.libgdx.prototype.Lightmap;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
@@ -25,6 +25,8 @@ import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static main.system.GuiEventType.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -85,7 +87,7 @@ public class GridPanel extends Group {
             }
         }
 
-        TempEventManager.bind("select-multi-objects", obj -> {
+        GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p =
              (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             Map<Borderable, Runnable> map = new HashMap<>();
@@ -95,10 +97,10 @@ public class GridPanel extends Group {
                 b=cells[obj1.getX()][rows1-obj1.getY()];
                 map.put(b, () -> p.getRight().run(obj1));
             }
-            TempEventManager.trigger("show-blue-borders", new EventCallbackParam(map));
+            GuiEventManager.trigger(SHOW_BLUE_BORDERS, new EventCallbackParam(map));
         });
 
-        TempEventManager.bind("ingame-event-triggered", param -> {
+        GuiEventManager.bind(INGAME_EVENT_TRIGGERED, param -> {
             main.game.event.Event event = (main.game.event.Event) param.get();
             Ref r = event.getRef();
             boolean catched = false;
@@ -173,20 +175,20 @@ public class GridPanel extends Group {
             }
         });
 
-        TempEventManager.bind("active-unit-selected", obj -> {
+        GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
             DC_HeroObj hero = (DC_HeroObj) obj.get();
             UnitView view = unitMap.get(hero);
             if (view.getParent() != null) {
                 ((GridCellContainer) view.getParent()).popupUnitView(view);
             }
             if (hero.isMine()) {
-                TempEventManager.trigger("show-green-border", new EventCallbackParam(view));
+                GuiEventManager.trigger(SHOW_GREEN_BORDER, new EventCallbackParam(view));
             } else {
-                TempEventManager.trigger("show-red-border", new EventCallbackParam(view));
+                GuiEventManager.trigger(SHOW_RED_BORDER, new EventCallbackParam(view));
             }
         });
 
-        TempEventManager.bind("create-units-model", param -> {
+        GuiEventManager.bind(CREATE_UNITS_MODEL, param -> {
             units = (DequeImpl<DC_HeroObj>) param.get();
 
             lightmap = new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight());
@@ -215,7 +217,7 @@ public class GridPanel extends Group {
             }
         });
 
-        TempEventManager.bind("cell-update", param -> {
+        GuiEventManager.bind(CELL_UPDATE, param -> {
             Coordinates cords = (Coordinates) param.get();
 
             List<DC_HeroObj> objList = units.stream()
@@ -299,11 +301,11 @@ public class GridPanel extends Group {
                             recordOptions.add(recordOption);
                         }
 
-                        TempEventManager.trigger("show-tooltip", new EventCallbackParam(recordOptions));
+                        GuiEventManager.trigger(SHOW_TOOLTIP, new EventCallbackParam(recordOptions));
                         return true;
                     }
                 }
-                TempEventManager.trigger("show-tooltip", new EventCallbackParam(null));
+                GuiEventManager.trigger(SHOW_TOOLTIP, new EventCallbackParam(null));
                 return true;
             }
 
@@ -351,13 +353,13 @@ public class GridPanel extends Group {
                                         .stream().filter(entry -> entry.getValue() == unit).findFirst()
                                         .get().getKey();
                                 Triple<DC_Obj, Float, Float> container = new ImmutableTriple<>(heroObj, x, y);
-                                TempEventManager.trigger("create-radial-menu", new EventCallbackParam(container));
+                                GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(container));
                             }
                         }
                     } else if (event.getButton() == 1) {
                         DC_Obj dc_cell = DC_Game.game.getCellByCoordinate(new Coordinates(cell.gridX, cell.gridY));
                         Triple<DC_Obj, Float, Float> container = new ImmutableTriple<>(dc_cell, x, y);
-                        TempEventManager.trigger("create-radial-menu", new EventCallbackParam(container));
+                        GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(container));
                     }
                 }
                 return false;

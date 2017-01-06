@@ -19,7 +19,7 @@ import main.game.logic.dungeon.Dungeon;
 import main.game.player.DC_Player;
 import main.game.player.Player;
 import main.system.EventCallbackParam;
-import main.system.TempEventManager;
+import main.system.GuiEventManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.net.data.MapData;
@@ -28,6 +28,8 @@ import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import static main.system.GuiEventType.CREATE_UNITS_MODEL;
 
 public class ArenaManager {
 
@@ -120,7 +122,7 @@ public class ArenaManager {
 
         if (game.getData() != null) {
             DC_ObjInitializer.processUnitData(game.getData(), game);
-            TempEventManager.trigger("create-units-model", new EventCallbackParam(game.getUnits()));
+            GuiEventManager.trigger(CREATE_UNITS_MODEL, new EventCallbackParam(game.getUnits()));
         }
         if (!game.isOffline()) {
             saveFacing();

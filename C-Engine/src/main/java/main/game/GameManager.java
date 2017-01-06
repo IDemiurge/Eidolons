@@ -25,12 +25,14 @@ import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.game.player.Player;
 import main.system.EventCallbackParam;
-import main.system.TempEventManager;
+import main.system.GuiEventManager;
 import main.system.auxiliary.LogMaster;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import static main.system.GuiEventType.INGAME_EVENT_TRIGGERED;
 
 /**
  * With gamestate being mostly a data holder, this class is a method container
@@ -389,7 +391,7 @@ public abstract class GameManager implements GenericGameManager {
     }
 
     public boolean handleEvent(Event event) {
-        TempEventManager.trigger("ingame-event-triggered", new EventCallbackParam(event));
+        GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, new EventCallbackParam(event));
         if (!game.isStarted())
             return true;
         if (event.getRef().isQuiet())

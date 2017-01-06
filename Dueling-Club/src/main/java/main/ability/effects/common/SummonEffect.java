@@ -24,13 +24,15 @@ import main.rules.mechanics.SummoningSicknessRule;
 import main.rules.mechanics.UpkeepRule;
 import main.system.DC_Formulas;
 import main.system.EventCallbackParam;
-import main.system.TempEventManager;
+import main.system.GuiEventManager;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 import main.system.math.Property;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
+
+import static main.system.GuiEventType.CELL_UPDATE;
 
 public class SummonEffect extends MicroEffect {
 
@@ -131,7 +133,7 @@ public class SummonEffect extends MicroEffect {
          * upkeep rule - RoundRule plus an event "cannot_support" to be handled
 		 * manually
 		 */
-        TempEventManager.trigger("cell-update",new EventCallbackParam<>(
+        GuiEventManager.trigger(CELL_UPDATE,new EventCallbackParam<>(
          getUnit().getCoordinates()
         ) );
         if (effects != null) {

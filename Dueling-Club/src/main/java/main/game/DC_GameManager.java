@@ -34,7 +34,7 @@ import main.swing.builders.DC_Builder;
 import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.swing.components.panels.page.DC_PagedPriorityPanel;
 import main.system.EventCallbackParam;
-import main.system.TempEventManager;
+import main.system.GuiEventManager;
 import main.system.auxiliary.*;
 import main.system.graphics.ANIM;
 import main.system.graphics.AnimPhase;
@@ -52,6 +52,8 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
+
+import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
 
 /**
  * *
@@ -379,15 +381,13 @@ public class DC_GameManager extends GameManager {
                 getGame().getToolTipMaster().initTargetingTooltip((DC_ActiveObj) ref.getActive());
         selectingSet = filter.getObjects();
 
-        if (!CoreEngine.isSwingOn()){
-        Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(selectingSet, (t) -> {
-            ref.setTarget(t.getId());
-            if (ref.getActive()!=null )
-            ref.getActive().activate(ref);
-        });
-        TempEventManager.
-            trigger("select-multi-objects",
-             new EventCallbackParam(p));
+        if (!CoreEngine.isSwingOn()) {
+            Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(selectingSet, (t) -> {
+                ref.setTarget(t.getId());
+                if (ref.getActive() != null)
+                    ref.getActive().activate(ref);
+            });
+            GuiEventManager.trigger(SELECT_MULTI_OBJECTS, new EventCallbackParam(p));
         }
         return select(selectingSet);
     }
@@ -436,8 +436,8 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public void highlight(Set<Obj> set) {
-if (CoreEngine.isSwingOn())
-        getGame().getBattleField().highlight(set);
+        if (CoreEngine.isSwingOn())
+            getGame().getBattleField().highlight(set);
 
 
     }
@@ -445,7 +445,7 @@ if (CoreEngine.isSwingOn())
     @Override
     public void highlightsOff() {
         if (CoreEngine.isSwingOn())
-        getGame().getBattleField().highlightsOff();
+            getGame().getBattleField().highlightsOff();
     }
 
     public Integer selectAwait() {

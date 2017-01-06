@@ -23,9 +23,12 @@ import main.libgdx.gui.radial.DebugRadialManager;
 import main.libgdx.gui.radial.RadialMenu;
 import main.libgdx.texture.TextureCache;
 import main.libgdx.texture.TextureManager;
-import main.system.TempEventManager;
+import main.system.GuiEventManager;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
+
+import static main.system.GuiEventType.CREATE_RADIAL_MENU;
+import static main.system.GuiEventType.GRID_CREATED;
 
 /**
  * Created with IntelliJ IDEA.
@@ -97,13 +100,13 @@ public class GameScreen implements Screen {
     }
 
     private void bindEvents() {
-        TempEventManager.bind("grid-created", param -> {
+        GuiEventManager.bind(GRID_CREATED, param -> {
             Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
             gridPanel = new GridPanel(textureCache, p.getLeft(), p.getRight()).init();
             bf.addActor(gridPanel);
         });
 
-        TempEventManager.bind("create-radial-menu", obj -> {
+        GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
             if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
                 radialMenu.init(DebugRadialManager.getDebugNodes());
             } else {
@@ -130,7 +133,7 @@ public class GameScreen implements Screen {
 //        }catch(Exception e){
 //            e.printStackTrace();
 //        }
-        TempEventManager.processEvents();
+        GuiEventManager.processEvents();
 
         bf.act(delta);
 

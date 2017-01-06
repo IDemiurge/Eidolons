@@ -13,7 +13,7 @@ import main.swing.components.obj.drawing.DrawHelper;
 import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.swing.generic.components.G_Panel;
 import main.system.EventCallbackParam;
-import main.system.TempEventManager;
+import main.system.GuiEventManager;
 import main.system.auxiliary.GuiManager;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
@@ -24,6 +24,8 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
+
+import static main.system.GuiEventType.GRID_CREATED;
 
 //++ better animations! 
 public class BfGridComp {
@@ -129,7 +131,7 @@ public class BfGridComp {
             }
         }
 
-        TempEventManager.trigger("grid-created", new EventCallbackParam(new ImmutablePair<>(getCellsX(), getCellsY())));
+        GuiEventManager.trigger(GRID_CREATED, new EventCallbackParam(new ImmutablePair<>(getCellsX(), getCellsY())));
 
         panel = new G_Panel() {
             protected void paintComponent(Graphics g) {
