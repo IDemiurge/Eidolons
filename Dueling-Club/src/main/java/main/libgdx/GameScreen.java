@@ -17,11 +17,11 @@ import main.libgdx.bf.Background;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.InputController;
 import main.libgdx.bf.mouse.ToolTipManager;
-import main.libgdx.texture.TextureCache;
+import main.libgdx.gui.radial.DebugRadialManager;
 import main.libgdx.gui.radial.RadialMenu;
+import main.libgdx.texture.TextureCache;
 import main.libgdx.texture.TextureManager;
 import main.system.TempEventManager;
-import main.libgdx.gui.radial.DebugRadialManager;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
