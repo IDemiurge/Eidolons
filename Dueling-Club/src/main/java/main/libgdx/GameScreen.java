@@ -125,11 +125,11 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
             DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
         }
-            try{
-                DC_Game.game.getAnimationManager().updateAnimations();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+//            try{
+//                DC_Game.game.getAnimationManager().updateAnimations();
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }
         TempEventManager.processEvents();
 
         bf.act(delta);
