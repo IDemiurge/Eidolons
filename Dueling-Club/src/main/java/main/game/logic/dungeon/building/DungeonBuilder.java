@@ -585,7 +585,7 @@ public class DungeonBuilder {
             try {
                 zone = createZone(plan, zoneId, zoneNode);
             } catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
                 zone = new MapZone(plan.getDungeon(), zoneId, 0, plan.getDungeon().getWidth(), 0,
                         plan.getDungeon().getHeight());
             } // ++ add coord exceptions
