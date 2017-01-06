@@ -103,7 +103,7 @@ bindEvents();
 
         TempEventManager.bind("create-radial-menu", obj -> {
             if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)){
-                DebugRadialManager.show(radialMenu);
+                radialMenu.init(DebugRadialManager.getDebugNodes());
             }else {
 
                 Triple<DC_HeroObj, Float, Float> container = (Triple<DC_HeroObj, Float, Float>) obj.get();

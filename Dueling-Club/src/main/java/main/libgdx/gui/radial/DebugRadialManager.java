@@ -22,27 +22,21 @@ public class DebugRadialManager {
         DEBUG_CONTROL.FUNC_OTHER.objects = getUnlistedFunctions().toArray();
     }
 
-    public static void show(RadialMenu radialMenu) {
-        radialMenu.init(getDebugNodes());
-    }
-
     public static List<RadialMenu.CreatorNode> getDebugNodes() {
         List<RadialMenu.CreatorNode> list = new LinkedList<>();
-        new LinkedList<>(
-                Arrays.asList(DebugRadialManager.DEBUG_CONTROL.values())).forEach(c -> {
-            if (c.isRoot())
-                createNodeBranch(c, list);
 
-
+        Arrays.stream(DEBUG_CONTROL.values()).forEach(c -> {
+            if (c.isRoot()) {
+               list.add(createNodeBranch(c));
+            }
         });
+
         return list;
     }
 
-    private static void createNodeBranch(Object object, List<RadialMenu.CreatorNode> list) {
+    private static RadialMenu.CreatorNode createNodeBranch(Object object) {
         RadialMenu.CreatorNode node = new RadialMenu.CreatorNode();
         node.name = StringMaster.getWellFormattedString(object.toString());
-
-        list.add(node);
 
         boolean leaf = true;
         if (object instanceof DEBUG_CONTROL) {
@@ -51,13 +45,13 @@ public class DebugRadialManager {
             if (c.getChildObjects() != null) {
                 node.childNodes = new LinkedList<>();
                 for (Object o : c.getChildObjects()) {
-                    createNodeBranch(o, node.childNodes);
+                    node.childNodes.add(createNodeBranch(o));
                     leaf = false;
                 }
             } else if (c.getChildren() != null) {
                 node.childNodes = new LinkedList<>();
                 for (Object o : c.getChildren()) {
-                    createNodeBranch(o, node.childNodes);
+                    node.childNodes.add(createNodeBranch(o));
                     leaf = false;
                 }
             }
@@ -75,7 +69,7 @@ public class DebugRadialManager {
                 }
             };
         }
-
+        return node;
     }
 
     private static List<DEBUG_FUNCTIONS> getUnlistedFunctions() {
