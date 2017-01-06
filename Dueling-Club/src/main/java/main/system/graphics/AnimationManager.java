@@ -24,6 +24,7 @@ import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.options.AnimationOptions.ANIMATION_OPTION;
 import main.system.options.OptionsMaster;
@@ -121,12 +122,16 @@ public class AnimationManager {
 
     public void updateAnimations() {
         cleanAnimations();
+
+        if (CoreEngine.isSwingOn())
         updatePoints();
         // DequeImpl<Animation> animsToDraw = new DequeImpl<>(animations);
         // animsToDraw.addAll(tempAnims); drawn manually!
         for (Animation anim : animations) {
             if (anim.isPending())
                 anim.run();
+
+            if (CoreEngine.isSwingOn())
             checkOverlapping(anim);
         }
         // drawThumbnails()

@@ -107,7 +107,7 @@ public class FAST_DC {
     }
 
     public static String exceptions = "";
-//    chars;skills;classes;deities;factions;jewelry; TODO 
+//    chars;skills;classes;deities;factions;jewelry; TODO
     public static void main(String[] args) {
 
 /*        ClassLoader classLoader = FAST_DC.class.getClassLoader();

@@ -31,6 +31,7 @@ public PhaseAnim( Animation anim){
     }
     texture=new Texture2D(w, h);
         Graphics2D g2d = texture.begin();
+        
         anim.draw(g2d);
         texture.end();
         removeActor(image);

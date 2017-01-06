@@ -332,8 +332,8 @@ public abstract class Animation implements ANIM {
                 }
             }
         }
-        mouseMap.clear();
-        repaint();
+//        mouseMap.clear();
+        //      repaint();
         getPhaseAnim().update();
     }
 
