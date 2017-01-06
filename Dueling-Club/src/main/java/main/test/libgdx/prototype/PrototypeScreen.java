@@ -20,7 +20,7 @@ import main.data.filesys.PathFinder;
 import main.entity.obj.MicroObj;
 import main.system.TempEventManager;
 import main.system.datatypes.DequeImpl;
-import main.test.libgdx.sfx.particles.PARTICLE_EFFECTS;
+import main.libgdx.anims.particles.PARTICLE_EFFECTS;
 
 import java.util.ArrayList;
 

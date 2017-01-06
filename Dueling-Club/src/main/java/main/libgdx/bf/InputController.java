@@ -1,15 +1,16 @@
-package main.test.libgdx;
+package main.libgdx.bf;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.game.DC_Game;
+import main.libgdx.GameScreen;
 
 /**
  * Created by PC on 25.10.2016.
  */
-public class MyInputController implements InputProcessor {
+public class InputController implements InputProcessor {
 
 
     private Stage  bf;
@@ -19,11 +20,11 @@ public class MyInputController implements InputProcessor {
     OrthographicCamera camera;
     boolean is_it_Left_Click = false;
 
-    public MyInputController ( OrthographicCamera camera){
+    public InputController(OrthographicCamera camera){
         this.camera = camera;
     }
 
-    public MyInputController(Stage bf, Stage gui, OrthographicCamera cam) {
+    public InputController(Stage bf, Stage gui, OrthographicCamera cam) {
         this.bf = bf;
         this.gui = gui;
         this.camera = cam;

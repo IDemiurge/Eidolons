@@ -1,7 +1,5 @@
 package main.libgdx.old;
 
-import main.libgdx.UnitInfoPanel;
-
 /**
  * Created with IntelliJ IDEA.
  * Date: 30.10.2016

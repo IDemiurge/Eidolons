@@ -1,4 +1,4 @@
-package main.test.libgdx.sfx.particles;
+package main.libgdx.anims.particles;
 
 /**
  * Created by JustMe on 12/28/2016.

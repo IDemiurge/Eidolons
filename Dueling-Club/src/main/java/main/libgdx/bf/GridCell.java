@@ -1,4 +1,4 @@
-package main.libgdx;
+package main.libgdx.bf;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.game.DC_Game;
+import main.libgdx.StyleHolder;
 
 public class GridCell extends Group implements Borderable {
     protected Image backImage;

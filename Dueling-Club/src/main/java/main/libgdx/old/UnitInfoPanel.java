@@ -1,10 +1,6 @@
-package main.libgdx;
+package main.libgdx.old;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
-import main.libgdx.old.ItemPanel;
-import main.libgdx.old.OrbPanel;
-import main.libgdx.old.PagedPanel;
-import main.libgdx.old.PortraitPanel;
 
 /**
  * Created with IntelliJ IDEA.

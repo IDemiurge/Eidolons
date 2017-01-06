@@ -29,7 +29,7 @@ import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.test.frontend.FAST_DC;
-import main.test.libgdx.GameScreen;
+import main.libgdx.GameScreen;
 
 import java.io.File;
 import java.util.LinkedList;

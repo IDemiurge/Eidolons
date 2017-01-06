@@ -1,4 +1,4 @@
-package main.libgdx;
+package main.libgdx.bf;
 
 import main.game.battlefield.Coordinates;
 

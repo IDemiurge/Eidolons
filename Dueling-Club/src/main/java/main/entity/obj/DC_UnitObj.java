@@ -27,7 +27,7 @@ import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.dungeon.building.MapBlock;
 import main.game.player.DC_Player;
 import main.game.player.Player;
-import main.libgdx.Rotatable;
+import main.libgdx.bf.Rotatable;
 import main.rules.DC_ActionManager;
 import main.swing.components.obj.drawing.VisibilityMaster;
 import main.system.DC_Constants;

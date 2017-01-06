@@ -8,19 +8,15 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import main.data.filesys.PathFinder;
+import main.libgdx.bf.InputController;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by PC on 22.10.2016.
@@ -38,7 +34,7 @@ public class BattleFieldScreen implements Screen {
     Texture testTexture;
 
 
-    protected static MyInputController controller;
+    protected static InputController controller;
 
     float img_X = 200;
     float img_Y = 200;
@@ -190,7 +186,7 @@ public class BattleFieldScreen implements Screen {
 
 
 
-        controller = new MyInputController(camera);
+        controller = new InputController(camera);
         Gdx.input.setInputProcessor(controller);
 //        stage.setKeyboardFocus(actor);
 //        Gdx.input.setInputProcessor(stage);

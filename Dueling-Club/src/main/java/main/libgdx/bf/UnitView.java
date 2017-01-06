@@ -1,4 +1,4 @@
-package main.libgdx;
+package main.libgdx.bf;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
