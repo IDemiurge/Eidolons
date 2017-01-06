@@ -22,10 +22,11 @@ public class BooleanMaster {
     }
 
     public static int compare(Number n, Number n2) {
-        if (n.intValue()>n2.intValue())return 1;
-        if (n2.intValue()>n.intValue())return -1;
-return 0;
+        if (n.intValue() > n2.intValue()) return 1;
+        if (n2.intValue() > n.intValue()) return -1;
+        return 0;
     }
+
     public static boolean isTrue(Boolean b) {
         if (b == null)
             return false;

@@ -13,6 +13,7 @@ public class GraphicComponent extends JComponent {
     private Image img;
     private Dimension compSize;
     private Object dataObject;
+
     public GraphicComponent(STD_IMAGES template) {
         this(template.getImage());
     }
@@ -112,6 +113,7 @@ public class GraphicComponent extends JComponent {
 
         public Image img;
         private String s;
+
         STD_COMP_IMAGES(String path) {
             this.setS(path);
         }

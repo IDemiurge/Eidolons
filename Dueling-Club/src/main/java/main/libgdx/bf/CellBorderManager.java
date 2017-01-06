@@ -7,11 +7,15 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.BlurUtils;
 import main.libgdx.texture.TextureCache;
-import main.system.TempEventManager;
+import main.system.GuiEventManager;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import static main.system.GuiEventType.*;
 
 public class CellBorderManager extends Group {
     private int cellW;
@@ -80,21 +84,21 @@ public class CellBorderManager extends Group {
 
     private void initCallbacks() {
 
-        TempEventManager.bind("show-green-border", obj -> {
+        GuiEventManager.bind(SHOW_GREEN_BORDER, obj -> {
             if (obj != null) {
                 Borderable b = (Borderable) obj.get();
                 showBorder(greenBorder, b);
             }
         });
 
-        TempEventManager.bind("show-red-border", obj -> {
+        GuiEventManager.bind(SHOW_RED_BORDER, obj -> {
             if (obj != null) {
                 Borderable b = (Borderable) obj.get();
                 showBorder(redBorder, b);
             }
         });
 
-        TempEventManager.bind("show-blue-borders", obj -> {
+        GuiEventManager.bind(SHOW_BLUE_BORDERS, obj -> {
             Map<Borderable, Runnable> map = (Map<Borderable, Runnable>) obj.get();
             clearBlueBorder();
             if (map != null) {
@@ -123,6 +127,9 @@ public class CellBorderManager extends Group {
         blueBorderOwners.entrySet().forEach(entry -> {
             if (entry.getKey() == borderable) {
                 entry.getValue().run();
+                int id = 0; //TODO get that id!
+                WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ,id
+                );
             }
         });
 

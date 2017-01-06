@@ -35,7 +35,8 @@ import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.*;
 
-import static main.system.TempEventManager.trigger;
+import static main.system.GuiEventManager.trigger;
+import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
 
 public class RadialMenu extends Group {
     private Texture  closeTex;
@@ -205,6 +206,7 @@ public class RadialMenu extends Group {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                     action.run();
+                    event.stop();
                     return true;
                 }
 
@@ -352,8 +354,7 @@ public class RadialMenu extends Group {
                             innn.name = dc_activeObj.getName();
                             innn.texture = textureCache.getOrCreate(dc_activeObj.getImagePath());
                             innn.action = () -> {
-                                trigger("select-multi-objects",
-                                 new EventCallbackParam(p));
+                                trigger(SELECT_MULTI_OBJECTS, new EventCallbackParam(p));
                             };
                             list.add(innn);
                         } else {

@@ -15,6 +15,7 @@ public class DataUnit<T extends Enum<T>> {
     protected Map<String, String> values = new ConcurrentMap<String, String>();
     // Map<T, String>
     protected String[] relevantValues;
+
     public DataUnit() {
 
     }

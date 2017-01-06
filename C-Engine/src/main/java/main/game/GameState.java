@@ -41,6 +41,7 @@ public abstract class GameState {
     protected DequeImpl<Attachment> attachments = new DequeImpl<Attachment>();
     protected GameManager mngr;
     private int round = ROUND_NOT_SET;
+
     public GameState(Game game) {
         this.game = game;
         initTypeMaps();

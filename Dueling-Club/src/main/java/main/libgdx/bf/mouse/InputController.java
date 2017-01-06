@@ -17,6 +17,9 @@ public class InputController implements InputProcessor {
     private Stage  gui;
     float x_cam_pos;
     float y_cam_pos;
+
+
+
     OrthographicCamera camera;
     boolean is_it_Left_Click = false;
 
@@ -116,4 +119,10 @@ public class InputController implements InputProcessor {
         System.out.println(camera.zoom);
         return false;
     }
-}
+    public float getX_cam_pos() {
+        return x_cam_pos;
+    }
+
+    public float getY_cam_pos() {
+        return y_cam_pos;
+    }}

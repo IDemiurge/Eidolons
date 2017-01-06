@@ -262,10 +262,10 @@ public class ImageManager {
 
         if (x == CENTERED)
             x = MigMaster
-             .getCenteredPosition(applied.getWidth(observer), target.getWidth(observer));
+                    .getCenteredPosition(applied.getWidth(observer), target.getWidth(observer));
         if (y == CENTERED)
             y = MigMaster.getCenteredPosition(applied.getHeight(observer), target
-             .getHeight(observer));
+                    .getHeight(observer));
         // return applied;
         if (target == null || applied == null)
             throw new RuntimeException();
@@ -273,20 +273,20 @@ public class ImageManager {
             BufferedImage IMG = null;
             if (resize == null && size != null) {
                 IMG = new BufferedImage((int) size.getWidth(), (int) size.getHeight(),
-                 BufferedImage.TYPE_INT_ARGB);
+                        BufferedImage.TYPE_INT_ARGB);
                 IMG.getGraphics().drawImage(target, 0, 0, (int) size.getWidth(),
-                 (int) size.getHeight(), observer);
+                        (int) size.getHeight(), observer);
                 IMG.getGraphics().drawImage(applied, x, y, (int) size.getHeight(),
-                 (int) size.getWidth(), observer);
+                        (int) size.getWidth(), observer);
                 return IMG;
             }
             IMG = new BufferedImage(target.getWidth(observer), target.getHeight(observer),
-             BufferedImage.TYPE_INT_ARGB);
+                    BufferedImage.TYPE_INT_ARGB);
             IMG.getGraphics().drawImage(target, 0, 0, observer);
             if (resize)
                 if (target.getHeight(observer) != applied.getHeight(observer)) {
                     IMG.getGraphics().drawImage(applied, x, y, target.getWidth(observer),
-                     target.getHeight(observer), observer);
+                            target.getHeight(observer), observer);
                     return IMG;
                 }
             IMG.getGraphics().drawImage(applied, x, y, observer);
@@ -294,7 +294,7 @@ public class ImageManager {
         } catch (Exception e) {
             e.printStackTrace();
             main.system.auxiliary.LogMaster.log(1, " failed " + target.getWidth(observer) + " and "
-             + applied.getWidth(observer));
+                    + applied.getWidth(observer));
             // if (retry)
             // return applyImage(target, applied, x, y, resize, false);
             return target;
@@ -316,7 +316,7 @@ public class ImageManager {
             if (icon == null)
                 throw new Exception();
             if (icon.getImage().getHeight(null) == size.getHeight()
-             && icon.getImage().getWidth(null) == size.getWidth())
+                    && icon.getImage().getWidth(null) == size.getWidth())
                 return icon;
 
         } catch (Exception e) {
@@ -339,7 +339,7 @@ public class ImageManager {
             main.system.auxiliary.LogMaster.log(1, img + " to " + tsize);
         if (img.getWidth(null) != tsize.width || img.getHeight(null) != tsize.height) {
             image = img.getScaledInstance((int) tsize.getWidth(), (int) tsize.getHeight(),
-             Image.SCALE_SMOOTH);
+                    Image.SCALE_SMOOTH);
             if (checkMemoryForSizedCache() || forceCache)
                 sizedImageCache.put(img.hashCode() + tsize.toString(), image);
             return image;
@@ -408,10 +408,10 @@ public class ImageManager {
                                                   UNIT_TO_UNIT_VISION visibility) {
         String suffix = (!huge) ? "96" : "HUGE";
         if (detection == UNIT_TO_PLAYER_VISION.UNKNOWN
-         || detection == UNIT_TO_PLAYER_VISION.CONCEALED)
+                || detection == UNIT_TO_PLAYER_VISION.CONCEALED)
             suffix += " unknown";
         else if (detection == UNIT_TO_PLAYER_VISION.KNOWN
-         || visibility == UNIT_TO_UNIT_VISION.BEYOND_SIGHT)
+                || visibility == UNIT_TO_UNIT_VISION.BEYOND_SIGHT)
             suffix += " hidden";
         return getIcon("UI//CELL for " + suffix + ".png");
 
@@ -486,8 +486,8 @@ public class ImageManager {
         if (label != null)
             return label;
         ImageIcon image = new ImageIcon(ImageManager.getSizedVersion(
-         ((ImageManager.getImage(img) != null) ? ImageManager.getImage(img)
-          : getDefaultImage()), new Dimension(w, h)));
+                ((ImageManager.getImage(img) != null) ? ImageManager.getImage(img)
+                        : getDefaultImage()), new Dimension(w, h)));
         label = new JLabel(image);
         labelCache.put(img + w + h, label);
         return label;
@@ -526,7 +526,7 @@ public class ImageManager {
         }
         if (icon != null) {
             if (CoreEngine.isSwingOn()) return
-             icon.getImage();
+                    icon.getImage();
             return new CustomImage(imgPath, icon.getImage());
         }
         return null;
@@ -544,7 +544,7 @@ public class ImageManager {
         String imgPath = colorImgCache.get(colorTheme).get(imagePath);
         if (imgPath == null)
             imgPath = StringMaster.cropFormat(imagePath) + colorTheme.getSuffix()
-             + DEFAULT_ENTITY_IMAGE_FORMAT;
+                    + DEFAULT_ENTITY_IMAGE_FORMAT;
         if (isImage(imgPath)) {
             colorImgCache.get(colorTheme).put(imagePath, imgPath);
             return imgPath;
@@ -689,7 +689,7 @@ public class ImageManager {
 
     public static Image getFacingImage(FACING_DIRECTION facing) {
         return new EnumMaster<STD_IMAGES>().retrieveEnumConst(STD_IMAGES.class, facing.name())
-         .getImage();
+                .getImage();
     }
 
     public static boolean isImageFile(String name) {
@@ -739,7 +739,7 @@ public class ImageManager {
         while (loop.continues())
             try {
                 String bg = BACKGROUND.values()[RandomWizard.getRandomIntBetween(0, BACKGROUND
-                 .values().length - 1)].toString();
+                        .values().length - 1)].toString();
                 List<String> portraitsForBackground = ImageManager.getPortraitsForBackground(bg);
                 int index = RandomWizard.getRandomListIndex(portraitsForBackground);
                 String image = portraitsForBackground.get(index);
@@ -933,7 +933,7 @@ public class ImageManager {
         ASPECT[] aspects = new ASPECT[]{A};
         if (A == ASPECT.NEUTRAL) {
             aspects = new ASPECT[]{ASPECT.NEUTRAL, ASPECT.LIGHT, ASPECT.ARCANUM, ASPECT.LIFE,
-             ASPECT.DARKNESS, ASPECT.CHAOS, ASPECT.DEATH,
+                    ASPECT.DARKNESS, ASPECT.CHAOS, ASPECT.DEATH,
 
             };
         }
@@ -1042,15 +1042,16 @@ public class ImageManager {
         icm.getBlues(blues);
         IndexColorModel icm2 = new IndexColorModel(8, size, reds, greens, blues, pixel);
         return new BufferedImage(icm2, raster,
-         image.isAlphaPremultiplied(),
+                image.isAlphaPremultiplied(),
 
-         null);
+                null);
     }
 
     public static BufferedImage getBufferedImage(Image image) {
         return getBufferedImage(image, 100);
     }
-    public static BufferedImage getBufferedImage(Image image, int alpha){
+
+    public static BufferedImage getBufferedImage(Image image, int alpha) {
         if (image.getHeight(null) <= 0 || image.getWidth(null) <= 0) {
             return new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         }
@@ -1112,6 +1113,7 @@ public class ImageManager {
     public enum ALIGNMENT {
         NORTH, SOUTH, EAST, WEST, CENTER, NORTH_WEST, SOUTH_EAST
     }
+
     public enum STD_IMAGES {
         SCROLL_ATTACK_CHOICE("UI\\components\\neo\\attack choice scroll.png"),
         SCROLL_ATTACK_TEXT("UI\\components\\neo\\choose attack.png"),
@@ -1269,6 +1271,7 @@ public class ImageManager {
         }
 
     }
+
     public enum HIGHLIGHT {
         TRAVERSED_PATH(BORDER.HIGHLIGHTED),
         DONE(BORDER.CONCEALED),
@@ -1299,6 +1302,7 @@ public class ImageManager {
             this.border = border;
         }
     }
+
     public enum BORDER {
         DEFAULT("default.png"),
         GOLDEN("128_golden.png"),

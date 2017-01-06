@@ -11,6 +11,7 @@ import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.PointX;
 import main.game.battlefield.attack.Attack;
+import main.libgdx.GameScreen;
 import main.libgdx.anims.phased.PhaseAnim;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.system.auxiliary.*;
@@ -161,8 +162,10 @@ public abstract class Animation implements ANIM {
     }
 
     public boolean updatePoints() {
-        sourcePoint = getGrid().getGridComp().getPointForCoordinateWithOffset(
-                getSourceCoordinates());
+//        sourcePoint = getGrid().getGridComp().getPointForCoordinateWithOffset(
+//                getSourceCoordinates());
+        sourcePoint =
+         GameScreen.getInstance().getPointForCoordinateWithOffset( getSourceCoordinates());
         if (sourcePoint.getX() < 0)
             return false;
         if (sourcePoint.getY() < 0)

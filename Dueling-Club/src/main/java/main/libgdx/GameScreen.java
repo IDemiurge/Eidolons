@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.data.filesys.PathFinder;
 import main.entity.obj.DC_HeroObj;
 import main.game.DC_Game;
+import main.game.battlefield.Coordinates;
+import main.game.battlefield.PointX;
 import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.bf.Background;
 import main.libgdx.bf.GridPanel;
@@ -23,9 +25,14 @@ import main.libgdx.gui.radial.DebugRadialManager;
 import main.libgdx.gui.radial.RadialMenu;
 import main.libgdx.texture.TextureCache;
 import main.libgdx.texture.TextureManager;
-import main.system.TempEventManager;
+import main.system.GuiEventManager;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
+
+import java.awt.*;
+
+import static main.system.GuiEventType.CREATE_RADIAL_MENU;
+import static main.system.GuiEventType.GRID_CREATED;
 
 /**
  * Created with IntelliJ IDEA.
@@ -97,13 +104,13 @@ public class GameScreen implements Screen {
     }
 
     private void bindEvents() {
-        TempEventManager.bind("grid-created", param -> {
+        GuiEventManager.bind(GRID_CREATED, param -> {
             Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
             gridPanel = new GridPanel(textureCache, p.getLeft(), p.getRight()).init();
             bf.addActor(gridPanel);
         });
 
-        TempEventManager.bind("create-radial-menu", obj -> {
+        GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
             if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
                 radialMenu.init(DebugRadialManager.getDebugNodes());
             } else {
@@ -125,11 +132,8 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
             DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
         }
-            try{
-                DC_Game.game.getAnimationManager().updateAnimations();
-        }catch(Exception e){
-        }
-        TempEventManager.processEvents();
+
+        GuiEventManager.processEvents();
 
         bf.act(delta);
 
@@ -150,6 +154,11 @@ public class GameScreen implements Screen {
 
         gui.act(delta);
         gui.draw();
+        try{
+            DC_Game.game.getAnimationManager().updateAnimations();
+            PhaseAnimator.getInstance(). show();
+        }catch(Exception e){
+        }
     }
 
     @Override
@@ -199,5 +208,15 @@ public class GameScreen implements Screen {
 
     public Background getBackground() {
         return background;
+    }
+
+    public Point getPointForCoordinateWithOffset(Coordinates sourceCoordinates) {
+     int   x = (int) (controller.getX_cam_pos() + sourceCoordinates.getX()* 142);
+        int y = (int) (controller.getY_cam_pos() + sourceCoordinates.getY()* 126);
+        return new PointX(x, y);
+    }
+
+    public InputController getController() {
+        return controller;
     }
 }

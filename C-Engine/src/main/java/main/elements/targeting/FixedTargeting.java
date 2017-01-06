@@ -11,6 +11,7 @@ public class FixedTargeting extends TargetingImpl {
     public FixedTargeting() {
         this(KEYS.SOURCE);
     }
+
     public FixedTargeting(KEYS keyword) {
         this.keyword = keyword.name();
     }

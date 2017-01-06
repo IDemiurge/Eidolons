@@ -212,7 +212,7 @@ public abstract class Builder implements GameGUI {
         for (Builder b : builderArray)
             b.dataChanged();
         //for (JComponent c : compArray)
-            //c.dataChanged();
+        //c.dataChanged();
     }
 
     private KeyListener getKeyListener() {

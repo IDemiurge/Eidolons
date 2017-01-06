@@ -8,15 +8,17 @@ import main.content.PARAMS;
 import main.entity.Ref;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
+import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.game.DC_Game;
-import main.game.Game;
 import main.game.battlefield.Coordinates;
 import main.game.event.Event;
+import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.bf.mouse.ToolTipManager;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
-import main.system.TempEventManager;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.datatypes.DequeImpl;
 import main.test.libgdx.prototype.Lightmap;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
@@ -25,6 +27,8 @@ import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static main.system.GuiEventType.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -85,7 +89,7 @@ public class GridPanel extends Group {
             }
         }
 
-        TempEventManager.bind("select-multi-objects", obj -> {
+        GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p =
              (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             Map<Borderable, Runnable> map = new HashMap<>();
@@ -95,62 +99,53 @@ public class GridPanel extends Group {
                 b=cells[obj1.getX()][rows1-obj1.getY()];
                 map.put(b, () -> p.getRight().run(obj1));
             }
-            TempEventManager.trigger("show-blue-borders", new EventCallbackParam(map));
+            GuiEventManager.trigger(SHOW_BLUE_BORDERS, new EventCallbackParam(map));
         });
 
-        TempEventManager.bind("ingame-event-triggered", param -> {
+//        GuiEventManager.bind(DESTROY_UNIT_MODEL, param -> {
+//         });
+        GuiEventManager.bind(INGAME_EVENT_TRIGGERED, param -> {
             main.game.event.Event event = (main.game.event.Event) param.get();
             Ref r = event.getRef();
-            boolean catched = false;
+            boolean caught = false;
             if (r.getEffect() instanceof ChangeFacingEffect) {
                 ChangeFacingEffect ef = (ChangeFacingEffect) r.getEffect();
                 DC_HeroObj hero = ((DC_HeroObj) ef.getActiveObj().getOwnerObj());
                 UnitView unitView = unitMap.get(hero);
                 unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
-                catched = true;
+                caught = true;
             }
 
-            if (event.getType() == Event.STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
-                String id = event.getRef().getValue("SOURCE");
-                DC_HeroObj heroObj = (DC_HeroObj) Game.game.getObjectById(Integer.valueOf(id));
-                UnitView uv = unitMap.get(heroObj);
-                uv.getParent().removeActor(uv);
-                uv.setVisible(false);
-                catched = true;
+            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED
+             ||  event.getType() == Event.STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
+                    removeUnitView(r.getSourceObj());
+                caught = true;
             }
 
-            if (event.getType() == Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING) {
-                String id = event.getRef().getValue("SOURCE");
-                DC_HeroObj heroObj = (DC_HeroObj) Game.game.getObjectById(Integer.valueOf(id));
-                UnitView uv = unitMap.get(heroObj);
-                Coordinates c = heroObj.getCoordinates();
-                if (cells[c.x][rows1 - c.y].getInnerDrawable() == null) {
-                    GridCellContainer cellContainer = new GridCellContainer(cells[c.x][rows1 - c.y]).init();
-                    cells[c.x][rows1 - c.y].addInnerDrawable(cellContainer);
-                }
-                uv.setVisible(true);
-                cells[c.x][rows1 - c.y].getInnerDrawable().addActor(uv);
+            if (event.getType() == Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING||
+             event.getType() == STANDARD_EVENT_TYPE.UNIT_SUMMONED
+             ) {
+                addUnitView(r.getSourceObj());
+//                String id = event.getRef().getValue("SOURCE");
+//                DC_HeroObj heroObj = (DC_HeroObj) Game.game.getObjectById(Integer.valueOf(id));
 
-                cellBorderManager.updateBorderSize();
-
-                if (lightmap != null) {
-                    lightmap.updatePos(heroObj);
-                }
-                catched = true;
+                caught = true;
             }
 
             if (event.getType().name().startsWith("PARAM_BEING_MODIFIED")) {
-                catched = true;
+                caught = true;
                 /*switch (event.getType().getArg()) {
                     case "Spellpower":
                         int a = 10;
                         break;
                 }*/
             }
-            if (event.getType().name().startsWith("PROP_")) {
-
-                catched = true;
-            }
+            if (event.getType().name().startsWith("PROP_"))
+                caught = true;
+            if (event.getType().name().startsWith("ABILITY_"))
+                caught = true;
+            if (event.getType().name().startsWith("EFFECT_"))
+                caught = true;
 
             if (event.getType().name().startsWith("PARAM_MODIFIED")) {
                 switch (event.getType().getArg()) {
@@ -161,32 +156,46 @@ public class GridPanel extends Group {
                                 lightmap.updateObject((DC_HeroObj) event.getRef().getTargetObj());
                             }
                         }
-                        catched = true;
+                        caught = true;
                         break;
                 }
 
-                catched = true;
+                caught = true;
             }
 
-            if (!catched) {
+            if (!caught) {
+                Arrays.stream(GuiEventType.values()).forEach(e->{
+                    if (e.boundEvents!=null )
+                        Arrays.stream(e.boundEvents).forEach(
+                     bound->{
+                         if (event.getType().equals(bound ))
+                         {
+                             GuiEventManager.trigger(e, param);
+//                             caught=true; TODO howto?
+                         }
+
+                     });
+                });
+            }
+            if (!caught) {
                 System.out.println("catch ingame event: " + event.getType() + " in " + event.getRef());
             }
         });
 
-        TempEventManager.bind("active-unit-selected", obj -> {
+        GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
             DC_HeroObj hero = (DC_HeroObj) obj.get();
             UnitView view = unitMap.get(hero);
             if (view.getParent() != null) {
                 ((GridCellContainer) view.getParent()).popupUnitView(view);
             }
             if (hero.isMine()) {
-                TempEventManager.trigger("show-green-border", new EventCallbackParam(view));
+                GuiEventManager.trigger(SHOW_GREEN_BORDER, new EventCallbackParam(view));
             } else {
-                TempEventManager.trigger("show-red-border", new EventCallbackParam(view));
+                GuiEventManager.trigger(SHOW_RED_BORDER, new EventCallbackParam(view));
             }
         });
 
-        TempEventManager.bind("create-units-model", param -> {
+        GuiEventManager.bind(CREATE_UNITS_MODEL, param -> {
             units = (DequeImpl<DC_HeroObj>) param.get();
 
             lightmap = new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight());
@@ -215,7 +224,7 @@ public class GridPanel extends Group {
             }
         });
 
-        TempEventManager.bind("cell-update", param -> {
+        GuiEventManager.bind(CELL_UPDATE, param -> {
             Coordinates cords = (Coordinates) param.get();
 
             List<DC_HeroObj> objList = units.stream()
@@ -299,11 +308,11 @@ public class GridPanel extends Group {
                             recordOptions.add(recordOption);
                         }
 
-                        TempEventManager.trigger("show-tooltip", new EventCallbackParam(recordOptions));
+                        GuiEventManager.trigger(SHOW_TOOLTIP, new EventCallbackParam(recordOptions));
                         return true;
                     }
                 }
-                TempEventManager.trigger("show-tooltip", new EventCallbackParam(null));
+                GuiEventManager.trigger(SHOW_TOOLTIP, new EventCallbackParam(null));
                 return true;
             }
 
@@ -351,13 +360,13 @@ public class GridPanel extends Group {
                                         .stream().filter(entry -> entry.getValue() == unit).findFirst()
                                         .get().getKey();
                                 Triple<DC_Obj, Float, Float> container = new ImmutableTriple<>(heroObj, x, y);
-                                TempEventManager.trigger("create-radial-menu", new EventCallbackParam(container));
+                                GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(container));
                             }
                         }
                     } else if (event.getButton() == 1) {
                         DC_Obj dc_cell = DC_Game.game.getCellByCoordinate(new Coordinates(cell.gridX, cell.gridY));
                         Triple<DC_Obj, Float, Float> container = new ImmutableTriple<>(dc_cell, x, y);
-                        TempEventManager.trigger("create-radial-menu", new EventCallbackParam(container));
+                        GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(container));
                     }
                 }
                 return false;
@@ -366,6 +375,30 @@ public class GridPanel extends Group {
 
 
         return this;
+    }
+
+    private void addUnitView(Obj heroObj) {
+        int rows1 = rows - 1;
+        UnitView uv = unitMap.get(heroObj);
+        Coordinates c = heroObj.getCoordinates();
+        if (cells[c.x][rows1 - c.y].getInnerDrawable() == null) {
+            GridCellContainer cellContainer = new GridCellContainer(cells[c.x][rows1 - c.y]).init();
+            cells[c.x][rows1 - c.y].addInnerDrawable(cellContainer);
+        }
+        uv.setVisible(true);
+        cells[c.x][rows1 - c.y].getInnerDrawable().addActor(uv);
+
+        cellBorderManager.updateBorderSize();
+
+        if (lightmap != null) {
+            lightmap.updatePos((MicroObj) heroObj);
+        }
+    }
+
+    private void removeUnitView(Obj obj) {
+        UnitView uv = unitMap.get(obj);
+        uv.getParent().removeActor(uv);
+        uv.setVisible(false);
     }
 
     @Override

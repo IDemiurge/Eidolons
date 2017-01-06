@@ -7,6 +7,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.test.debug.DebugMaster;
 import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
+import main.test.debug.DebugMaster.HIDDEN_DEBUG_FUNCTIONS;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -93,32 +94,20 @@ public class DebugRadialManager {
             DebugMaster.DEBUG_FUNCTIONS func_control = ((DebugMaster.DEBUG_FUNCTIONS) control);
             DC_Game.game.getDebugMaster().executeDebugFunctionNewThread(func_control);
         }
+
+        if (control instanceof   HIDDEN_DEBUG_FUNCTIONS) {
+            HIDDEN_DEBUG_FUNCTIONS func_control = ((HIDDEN_DEBUG_FUNCTIONS) control);
+            DC_Game.game.getDebugMaster().executeHiddenDebugFunction(func_control);
+
+        }
     }
 
     public static void handleDebugControl(DEBUG_CONTROL control) {
+         new Thread(new Runnable() {            public void run() {
         switch (control) {
             case SET_VALUE:
                 Game.game.getValueHelper().promptSetValue();
                 break;
-//            case DYNAMIC_PARAMETER:
-//                break;
-//            case PARAMETER:
-//                break;
-//            case PROPERTY:
-//                break;
-//            case POSITION:
-//                break;
-//            case SET:
-//                break;
-            case REF:
-                break;
-            case INFO:
-                break;
-            case SHOW:
-
-                break;
-
-
             case PICK:
 
                 DC_Game.game.getDebugMaster().executeDebugFunction(new EnumMaster<DebugMaster.DEBUG_FUNCTIONS>()
@@ -133,9 +122,7 @@ public class DebugRadialManager {
                         .retrieveEnumConst(DebugMaster.HIDDEN_DEBUG_FUNCTIONS.class,
                                 ListChooser.chooseEnum(DebugMaster.HIDDEN_DEBUG_FUNCTIONS.class)));
                 break;
-            case FUNCTION:
-                break;
-        }
+        }                     }       }, "debug radial click handle").start();
     }
 
     public enum DEBUG_CONTROL {
@@ -160,7 +147,9 @@ public class DebugRadialManager {
 
         REF(),
         INFO(),
-        SHOW(REF, INFO) {
+        SHOW(DebugMaster.group_display
+//         REF, INFO
+        ) {
             @Override
             public boolean isRoot() {
                 return true;
@@ -170,7 +159,7 @@ public class DebugRadialManager {
         FUNC_STANDARD(DebugMaster.group_basic),
         FUNC_ADD_BF(DebugMaster.group_add_bf_obj),
         FUNC_ADD_NON_BF(DebugMaster.group_add),
-        FUNC_GLOBAL(DebugMaster.group_basic),
+        FUNC_GLOBAL(DebugMaster.group_bf),
         FUNC_GRAPHICS(DebugMaster.group_graphics),
         FUNC_OTHER(
         ),

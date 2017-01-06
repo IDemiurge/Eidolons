@@ -18,11 +18,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import main.data.filesys.PathFinder;
 import main.entity.obj.MicroObj;
-import main.system.TempEventManager;
-import main.system.datatypes.DequeImpl;
 import main.libgdx.anims.particles.PARTICLE_EFFECTS;
+import main.system.GuiEventManager;
+import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
+
+import static main.system.GuiEventType.CREATE_UNITS_MODEL;
 
 
 /**
@@ -72,7 +74,7 @@ public class PrototypeScreen implements Screen {
 //                });
 
 
-        TempEventManager.bind("create-units-model", param -> {
+        GuiEventManager.bind(CREATE_UNITS_MODEL, param -> {
             units = (DequeImpl<MicroObj>) param.get();
         });
 

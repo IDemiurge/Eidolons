@@ -50,7 +50,7 @@ public abstract class SwingBattleField implements BattleField {
     }
 
     public void refresh() {
-        if (!CoreEngine.isSwingOn()) return ;
+        if (!CoreEngine.isSwingOn()) return;
         if (SwingUtilities.isEventDispatchThread())
             builder.refresh();
         else

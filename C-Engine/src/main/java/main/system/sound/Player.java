@@ -218,7 +218,7 @@ public class Player {
     private Clip createSoundClip(String sound) throws UnsupportedAudioFileException, IOException,
             LineUnavailableException {
         /*
-		 * Once you have a handle to the inputStream, get the audioInputStream and do the rest.
+         * Once you have a handle to the inputStream, get the audioInputStream and do the rest.
 
 		InputStream is = getClass().getResourceAsStream("......");
 		AudioInputStream ais = AudioSystem.getAudioInputStream(is);

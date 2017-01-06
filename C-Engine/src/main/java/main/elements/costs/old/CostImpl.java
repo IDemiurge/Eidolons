@@ -45,7 +45,7 @@ public class CostImpl implements Cost {
 
     public CostImpl(String s) {
         /*
-		 * IF DYNAMIC COST - formulas=s.split(" "); payment_type=tempArray[1];
+         * IF DYNAMIC COST - formulas=s.split(" "); payment_type=tempArray[1];
 		 * =tempArray[0]; if (s.contains("#")) {
 		 * target=s.substring(s.indexOf("#")+1, s.lastIndexOf("#")-1);
 		 *

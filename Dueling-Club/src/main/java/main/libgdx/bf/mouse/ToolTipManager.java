@@ -9,13 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.libgdx.StyleHolder;
 import main.libgdx.texture.TextureCache;
-import main.system.TempEventManager;
+import main.system.GuiEventManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import static main.libgdx.bf.mouse.ToolTipManager.ToolTip.getCurMaxVal;
+import static main.system.GuiEventType.SHOW_TOOLTIP;
 
 public class ToolTipManager extends Group {
 
@@ -34,7 +35,7 @@ public class ToolTipManager extends Group {
 
         toolTips = new ArrayList<>();
 
-        TempEventManager.bind("show-tooltip", (event) -> {
+        GuiEventManager.bind(SHOW_TOOLTIP, (event) -> {
             List<ToolTipRecordOption> options = (List<ToolTipRecordOption>) event.get();
             if (options == null) {
                 toolTips.forEach(this::removeActor);

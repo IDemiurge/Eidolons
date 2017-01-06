@@ -6,6 +6,7 @@ import main.system.auxiliary.StringMaster;
 public class EventType implements EVENT_TYPE {
     private CONSTRUCTED_EVENT_TYPE typeBasis;
     private String arg;
+
     public EventType(CONSTRUCTED_EVENT_TYPE typeBasis, String arg) {
         this.typeBasis = typeBasis;
         this.arg = arg;

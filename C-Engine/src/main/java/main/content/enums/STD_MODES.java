@@ -25,6 +25,7 @@ public enum STD_MODES implements MODE {
 
     NORMAL(false, false, false),
     COWER(true, true, true),;
+
     static {
         COWER.setDefenseMod(Formulas.DEFAULT_MODE_DEF_MOD * 3 / 2);
 
