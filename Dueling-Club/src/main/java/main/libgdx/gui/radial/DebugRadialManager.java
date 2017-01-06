@@ -22,17 +22,6 @@ public class DebugRadialManager {
         DEBUG_CONTROL.FUNC_OTHER.objects = getUnlistedFunctions().toArray();
     }
 
-    public static void clicked(Object obj) {
-        try {
-            if (obj instanceof DEBUG_CONTROL) {
-                handleDebugControl((DEBUG_CONTROL) obj);
-            } else
-                handleDebugControl(obj);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void show(RadialMenu radialMenu) {
         radialMenu.init(getDebugNodes());
     }
@@ -74,26 +63,33 @@ public class DebugRadialManager {
             }
 
         }
-        if (leaf)
-            node.action = new Runnable() {
-                @Override
-                public void run() {
-                    DebugRadialManager.clicked(object);
+        if (leaf) {
+            node.action = () -> {
+                try {
+                    if (object instanceof DEBUG_CONTROL) {
+                        handleDebugControl((DEBUG_CONTROL) object);
+                    } else
+                        handleDebugControl(object);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             };
+        }
 
     }
 
     private static List<DEBUG_FUNCTIONS> getUnlistedFunctions() {
-        return Arrays.asList(DEBUG_FUNCTIONS.values()).stream()
+        return Arrays.stream(DEBUG_FUNCTIONS.values())
                 .filter(func -> !isListed(func)).collect(Collectors.toList());
     }
 
     private static boolean isListed(DEBUG_FUNCTIONS func) {
-        for (DEBUG_CONTROL c : Arrays.asList(DEBUG_CONTROL.values())) {
-            if (c.getChildObjects() != null)
-                if (Arrays.asList(c.getChildObjects()).contains(func))
+        for (DEBUG_CONTROL c : DEBUG_CONTROL.values()) {
+            if (c.getChildObjects() != null) {
+                if (Arrays.asList(c.getChildObjects()).contains(func)) {
                     return true;
+                }
+            }
         }
         return false;
     }

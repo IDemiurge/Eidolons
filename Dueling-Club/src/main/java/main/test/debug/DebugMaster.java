@@ -104,6 +104,7 @@ public class DebugMaster {
     private String lastType;
     private Obj arg;
     private String type;
+
     public DebugMaster(DC_GameState state, DC_Builder bf) {
         this.state = state;
         this.game = state.getGame();
@@ -111,7 +112,7 @@ public class DebugMaster {
     }
 
 
-        public static boolean isOmnivisionOn() {
+    public static boolean isOmnivisionOn() {
         return omnivision;
     }
 
@@ -733,7 +734,7 @@ public class DebugMaster {
                     player = altAiPlayer;
                 }
         }
-		/*
+        /*
 		 * alt mode: >> random >> preset >> last
 		 */
         ref.setPlayer(player);
@@ -1108,7 +1109,6 @@ public class DebugMaster {
     }
 
 
-
     public enum SIMULATION_FUNCTIONS {
         REMAP,
 
@@ -1118,40 +1118,41 @@ public class DebugMaster {
         LOG_LEVEL
     }
 
-    public  static final DEBUG_FUNCTIONS[] group_add_bf_obj ={
-     DEBUG_FUNCTIONS.ADD_UNIT,
-     DEBUG_FUNCTIONS.ADD_ENEMY_UNIT,
-     DEBUG_FUNCTIONS. ADD_GROUP,
-     DEBUG_FUNCTIONS. ADD_CHAR,
-     DEBUG_FUNCTIONS. ADD_OBJ,
+    public static final DEBUG_FUNCTIONS[] group_add_bf_obj = {
+            DEBUG_FUNCTIONS.ADD_UNIT,
+            DEBUG_FUNCTIONS.ADD_ENEMY_UNIT,
+            DEBUG_FUNCTIONS.ADD_GROUP,
+            DEBUG_FUNCTIONS.ADD_CHAR,
+            DEBUG_FUNCTIONS.ADD_OBJ,
 
     };
-    public  static final DEBUG_FUNCTIONS[] group_bf = {
-     DEBUG_FUNCTIONS.CLEAR,
-     DEBUG_FUNCTIONS.RESTART,
-     DEBUG_FUNCTIONS.KILL_ALL_UNITS,
-     DEBUG_FUNCTIONS.SPAWN_WAVE,
-     DEBUG_FUNCTIONS.SPAWN_CUSTOM_WAVE,
+    public static final DEBUG_FUNCTIONS[] group_bf = {
+            DEBUG_FUNCTIONS.CLEAR,
+            DEBUG_FUNCTIONS.RESTART,
+            DEBUG_FUNCTIONS.KILL_ALL_UNITS,
+            DEBUG_FUNCTIONS.SPAWN_WAVE,
+            DEBUG_FUNCTIONS.SPAWN_CUSTOM_WAVE,
     };
-    public  static final DEBUG_FUNCTIONS[] group_basic = {
-     DEBUG_FUNCTIONS.END_TURN,
-     DEBUG_FUNCTIONS.TOGGLE_DEBUG,
-     DEBUG_FUNCTIONS.TOGGLE_OMNIVISION,
-     DEBUG_FUNCTIONS.PAUSE,
+    public static final DEBUG_FUNCTIONS[] group_basic = {
+            DEBUG_FUNCTIONS.END_TURN,
+            DEBUG_FUNCTIONS.TOGGLE_DEBUG,
+            DEBUG_FUNCTIONS.TOGGLE_OMNIVISION,
+            DEBUG_FUNCTIONS.PAUSE,
     };
-    public  static final DEBUG_FUNCTIONS[] group_add ={
-     DEBUG_FUNCTIONS.ADD_DUNGEON,
-     DEBUG_FUNCTIONS. ADD_SKILL,
-     DEBUG_FUNCTIONS. ADD_ACTIVE,
-     DEBUG_FUNCTIONS. ADD_SPELL,
+    public static final DEBUG_FUNCTIONS[] group_add = {
+            DEBUG_FUNCTIONS.ADD_DUNGEON,
+            DEBUG_FUNCTIONS.ADD_SKILL,
+            DEBUG_FUNCTIONS.ADD_ACTIVE,
+            DEBUG_FUNCTIONS.ADD_SPELL,
 
     };
-    public  static final DEBUG_FUNCTIONS[] group_graphics = {
-     DEBUG_FUNCTIONS.TOGGLE_LIGHTING,
-     DEBUG_FUNCTIONS.TOGGLE_FOG,
-     DEBUG_FUNCTIONS.ADD_SFX,
+    public static final DEBUG_FUNCTIONS[] group_graphics = {
+            DEBUG_FUNCTIONS.TOGGLE_LIGHTING,
+            DEBUG_FUNCTIONS.TOGGLE_FOG,
+            DEBUG_FUNCTIONS.ADD_SFX,
     };
-        public enum DEBUG_FUNCTIONS {
+
+    public enum DEBUG_FUNCTIONS {
         // GAME
 
         //
@@ -1215,17 +1216,12 @@ public class DebugMaster {
         DUNGEON_ADD_SUBLEVEL,
 
         AUTO_TEST_INPUT,
-            RUN_AUTO_TESTS,
+        RUN_AUTO_TESTS,
 
 
-            TOGGLE_LIGHTING,
-            TOGGLE_FOG,
-            ADD_SFX,
-
-
-
-
-            ;
+        TOGGLE_LIGHTING,
+        TOGGLE_FOG,
+        ADD_SFX,;
 
         boolean transmitted;
 
