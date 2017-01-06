@@ -160,7 +160,7 @@ public class TimeRule {
                 // other units will have their remaining initiative transferred
                 // to the next round
                 // as well as action points? or half at least?
-                // late buff will be nominal to show that the unit will not make
+                // late buff will be nominal to update that the unit will not make
                 // if unless something speeds him up!
 
                 speedyUnit = action.getOwnerObj();

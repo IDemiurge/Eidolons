@@ -1,9 +1,9 @@
-package main.libgdx.gui.radial;
+package main.libgdx.bf.controls.radial;
 
 import main.content.CONTENT_CONSTS.SPELL_GROUP;
 import main.entity.obj.DC_HeroObj;
-import main.libgdx.gui.radial.SpellRadialManager.RADIAL_ITEM;
-import main.libgdx.gui.radial.SpellRadialManager.SPELL_ASPECT;
+import main.libgdx.bf.controls.radial.SpellRadialManager.RADIAL_ITEM;
+import main.libgdx.bf.controls.radial.SpellRadialManager.SPELL_ASPECT;
 
 import java.util.LinkedList;
 import java.util.List;

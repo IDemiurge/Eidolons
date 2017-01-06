@@ -17,7 +17,7 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 
 /**
- * mouse listening: show full info on click! modified C_ tooltips: base value;
+ * mouse listening: update full info on click! modified C_ tooltips: base value;
  * ...
  *
  * @author JustMe

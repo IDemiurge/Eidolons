@@ -31,6 +31,7 @@ public class InputController implements InputProcessor {
         this.bf = bf;
         this.gui = gui;
         this.camera = cam;
+
     }
 
     
@@ -111,13 +112,20 @@ public class InputController implements InputProcessor {
     @Override
     public boolean scrolled(int i) {
         if (i == 1){
-            camera.zoom *= 2f;
+//            camera.zoom *= 2f;
+            camera.zoom += 0.25f;
         }
         if (i == -1){
-            camera.zoom /= 2f;
+//            camera.zoom /= 2f;
+            if (camera.zoom>=0.25f)
+            camera.zoom -= 0.25f;
+
         }
         System.out.println(camera.zoom);
         return false;
+    }
+    public float getZoom() {
+        return camera.zoom;
     }
     public float getX_cam_pos() {
         return x_cam_pos;

@@ -11,10 +11,10 @@ import main.entity.obj.top.DC_ActiveObj;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.options.UIOptions;
-import main.libgdx.anims.phased.PhaseAnim;
-import main.libgdx.anims.phased.PhaseAnimator;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.CellComp;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.ColorManager;
 import main.system.auxiliary.FontMaster;
 import main.system.auxiliary.FontMaster.FONT;
@@ -65,6 +65,7 @@ public class AnimationManager {
     private Coordinates bufferedOffset;
     private Animation lastThumbnail;
     private List<Animation> tempAnims = new LinkedList<>();
+    private boolean changed;
 
     public AnimationManager(DC_Game game) {
         this.game = game;
@@ -120,11 +121,12 @@ public class AnimationManager {
         return false;
     }
 
-    public void updateAnimations() {
-        cleanAnimations();
+    public boolean updateAnimations() {
+       if (!changed)
+         changed = cleanAnimations();
 
         if (CoreEngine.isSwingOn())
-        updatePoints();
+            updatePoints();
         // DequeImpl<Animation> animsToDraw = new DequeImpl<>(animations);
         // animsToDraw.addAll(tempAnims); drawn manually!
         for (Animation anim : animations) {
@@ -132,14 +134,16 @@ public class AnimationManager {
                 anim.run();
 
             if (CoreEngine.isSwingOn())
-            checkOverlapping(anim);
+                checkOverlapping(anim);
         }
         // drawThumbnails()
-
-        PhaseAnimator.getInstance().getAnims().clear();
-        animations.forEach(a->{
-            PhaseAnimator.getInstance().getAnims().add(new PhaseAnim(a));
-        });
+if (changed)
+{
+    changed=!changed;
+    GuiEventManager.trigger(GuiEventType.UPDATE_PHASE_ANIMS, null);
+    return true;
+}
+        return changed;
     }
 
     public void drawAnimations(Graphics bfGraphics) {
@@ -151,16 +155,19 @@ public class AnimationManager {
         // anim.getTarget()
     }
 
-    public void cleanAnimations() {
+    public boolean cleanAnimations() {
 
+        boolean changed = false;
         for (Animation anim : new LinkedList<>(animations)) {
             if (anim.isFinished())
                 if (!anim.isPaused())
                     if (!anim.isThumbnail())
-                        if (!anim.isReplay())
+                        if (!anim.isReplay()) {
                             removeAnimation(anim);
+                            changed = true;
+                        }
         }
-
+        return changed;
     }
 
     public void removeAnimation(Animation animation) {
@@ -431,7 +438,7 @@ public class AnimationManager {
     }
 
     // action activated on source?
-    // exception with std attacks - show weapon?
+    // exception with std attacks - update weapon?
     public void actionResolves(DC_ActiveObj action, Ref ref) {
         ImageIcon img = action.getIcon();
         if (img == null)
@@ -609,6 +616,7 @@ public class AnimationManager {
         if (animations.contains(animation))
             return;
         animations.add(animation);
+        changed=true;
 
     }
 

@@ -381,7 +381,7 @@ public class DC_Game extends MicroGame {
             if (hostClient) {
                 // PlayerWaitDialog dialog = new
                 // PlayerWaitDialog(getConnector().getGameHost());
-                // dialog.show(); TODO
+                // dialog.update(); TODO
                 // WaitMaster.waitForInput()
 
                 // modal dialogue to prevent host from "playing" already...

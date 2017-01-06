@@ -1,4 +1,4 @@
-package main.libgdx.gui.radial;
+package main.libgdx.bf.controls.radial;
 
 import main.content.CONTENT_CONSTS;
 import main.content.CONTENT_CONSTS.SPELL_GROUP;
@@ -6,7 +6,7 @@ import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.DC_SpellObj;
 import main.entity.obj.top.DC_ActiveObj;
-import main.libgdx.gui.radial.RadialMenu.CreatorNode;
+import main.libgdx.bf.controls.radial.RadialMenu.CreatorNode;
 import main.libgdx.texture.TextureManager;
 import main.system.auxiliary.StringMaster;
 

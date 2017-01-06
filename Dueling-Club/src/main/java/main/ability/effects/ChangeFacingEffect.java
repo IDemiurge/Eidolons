@@ -8,6 +8,8 @@ import main.entity.obj.DC_HeroObj;
 import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.FacingMaster;
+import main.game.event.Event;
+import main.game.event.Event.STANDARD_EVENT_TYPE;
 
 public class ChangeFacingEffect extends MicroEffect {
 
@@ -50,7 +52,15 @@ public class ChangeFacingEffect extends MicroEffect {
             newDirection = FacingMaster.rotate(oldDirection, isClockwise());
 
         obj.setFacing(newDirection);
+        game.fireEvent(new Event(getEventTypeDone(), ref));
         return true;
+    }
+
+    @Override
+    public STANDARD_EVENT_TYPE getEventTypeDone() {
+        if (clockwise==null )
+            return  STANDARD_EVENT_TYPE.UNIT_HAS_TURNED;
+        return clockwise? STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE: STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE;
     }
 
     public Boolean isClockwise() {

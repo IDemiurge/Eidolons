@@ -1,5 +1,6 @@
-package main.libgdx.gui.radial;
+package main.libgdx.bf.controls.radial;
 
+import main.entity.obj.DC_Obj;
 import main.game.DC_Game;
 import main.game.Game;
 import main.swing.generic.components.editors.lists.ListChooser;
@@ -23,19 +24,19 @@ public class DebugRadialManager {
         DEBUG_CONTROL.FUNC_OTHER.objects = getUnlistedFunctions().toArray();
     }
 
-    public static List<RadialMenu.CreatorNode> getDebugNodes() {
+    public static List<RadialMenu.CreatorNode> getDebugNodes(DC_Obj obj) {
         List<RadialMenu.CreatorNode> list = new LinkedList<>();
 
         Arrays.stream(DEBUG_CONTROL.values()).forEach(c -> {
             if (c.isRoot()) {
-               list.add(createNodeBranch(c));
+               list.add(createNodeBranch(c, obj));
             }
         });
 
         return list;
     }
 
-    private static RadialMenu.CreatorNode createNodeBranch(Object object) {
+    private static RadialMenu.CreatorNode createNodeBranch(Object object, DC_Obj obj) {
         RadialMenu.CreatorNode node = new RadialMenu.CreatorNode();
         node.name = StringMaster.getWellFormattedString(object.toString());
 
@@ -46,13 +47,13 @@ public class DebugRadialManager {
             if (c.getChildObjects() != null) {
                 node.childNodes = new LinkedList<>();
                 for (Object o : c.getChildObjects()) {
-                    node.childNodes.add(createNodeBranch(o));
+                    node.childNodes.add(createNodeBranch(o, obj));
                     leaf = false;
                 }
             } else if (c.getChildren() != null) {
                 node.childNodes = new LinkedList<>();
                 for (Object o : c.getChildren()) {
-                    node.childNodes.add(createNodeBranch(o));
+                    node.childNodes.add(createNodeBranch(o, obj));
                     leaf = false;
                 }
             }
@@ -60,6 +61,7 @@ public class DebugRadialManager {
         }
         if (leaf) {
             node.action = () -> {
+                DebugMaster.setTarget(obj);
                 try {
                     if (object instanceof DEBUG_CONTROL) {
                         handleDebugControl((DEBUG_CONTROL) object);

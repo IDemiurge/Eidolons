@@ -101,7 +101,7 @@ public class BattleFieldScreen implements Screen {
 
     @Override
     public void show() {
-        System.out.println("show");
+        System.out.println("update");
         actorsArray = new ArrayList<>();
         batch = new SpriteBatch();
 //        shapeRenderer =new ShapeRenderer();

@@ -3,17 +3,20 @@ package main.libgdx.bf;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.*;
-import main.ability.effects.ChangeFacingEffect;
 import main.content.PARAMS;
 import main.entity.Ref;
+import main.entity.Ref.KEYS;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
+import main.game.battlefield.PointX;
 import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.libgdx.GameScreen;
+import main.libgdx.bf.mouse.InputController;
 import main.libgdx.bf.mouse.ToolTipManager;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
@@ -25,7 +28,9 @@ import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static main.system.GuiEventType.*;
@@ -67,6 +72,33 @@ public class GridPanel extends Group {
         this.rows = rows;
     }
 
+    public int getCellWidth() {
+        return cellBorderTexture.getWidth();
+    }
+
+    public int getCellHeight() {
+        return cellBorderTexture.getHeight();
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public Point getPointForCoordinateWithOffset(Coordinates sourceCoordinates) {
+        InputController controller = GameScreen.getInstance().getController();
+        int x = (int) (
+//         controller.getX_cam_pos()/2
+         + sourceCoordinates.getX() * getCellWidth() / controller.getZoom());
+        int y = (int) (
+//         controller.getY_cam_pos()/2
+         + (rows - sourceCoordinates.getY()) * getCellHeight() / controller.getZoom());
+        return new PointX(x, y);
+    }
+
     public GridPanel init() {
         unitMap = new HashMap<>();
         emptyImage = textureCache.getOrCreate(emptyCellPath);
@@ -94,9 +126,9 @@ public class GridPanel extends Group {
              (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             Map<Borderable, Runnable> map = new HashMap<>();
             for (DC_Obj obj1 : p.getLeft()) {
-                Borderable   b=unitMap.get(obj1);
-                if (b==null )
-                b=cells[obj1.getX()][rows1-obj1.getY()];
+                Borderable b = unitMap.get(obj1);
+                if (b == null)
+                    b = cells[obj1.getX()][rows1 - obj1.getY()];
                 map.put(b, () -> p.getRight().run(obj1));
             }
             GuiEventManager.trigger(SHOW_BLUE_BORDERS, new EventCallbackParam(map));
@@ -108,21 +140,26 @@ public class GridPanel extends Group {
             main.game.event.Event event = (main.game.event.Event) param.get();
             Ref r = event.getRef();
             boolean caught = false;
-            if (r.getEffect() instanceof ChangeFacingEffect) {
-                ChangeFacingEffect ef = (ChangeFacingEffect) r.getEffect();
-                DC_HeroObj hero = ((DC_HeroObj) ef.getActiveObj().getOwnerObj());
+
+            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED
+             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
+             || event.getType() == Event.STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
+//                (r.getEffect() instanceof ChangeFacingEffect) nice try
+            {
+                DC_HeroObj hero = (DC_HeroObj) r.getObj(KEYS.TARGET
+                );
                 UnitView unitView = unitMap.get(hero);
                 unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
                 caught = true;
             }
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED
-             ||  event.getType() == Event.STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
-                    removeUnitView(r.getSourceObj());
+             || event.getType() == Event.STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
+                removeUnitView(r.getSourceObj());
                 caught = true;
             }
 
-            if (event.getType() == Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING||
+            if (event.getType() == Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING ||
              event.getType() == STANDARD_EVENT_TYPE.UNIT_SUMMONED
              ) {
                 addUnitView(r.getSourceObj());
@@ -164,17 +201,16 @@ public class GridPanel extends Group {
             }
 
             if (!caught) {
-                Arrays.stream(GuiEventType.values()).forEach(e->{
-                    if (e.boundEvents!=null )
+                Arrays.stream(GuiEventType.values()).forEach(e -> {
+                    if (e.boundEvents != null)
                         Arrays.stream(e.boundEvents).forEach(
-                     bound->{
-                         if (event.getType().equals(bound ))
-                         {
-                             GuiEventManager.trigger(e, param);
+                         bound -> {
+                             if (event.getType().equals(bound)) {
+                                 GuiEventManager.trigger(e, param);
 //                             caught=true; TODO howto?
-                         }
+                             }
 
-                     });
+                         });
                 });
             }
             if (!caught) {
@@ -228,8 +264,8 @@ public class GridPanel extends Group {
             Coordinates cords = (Coordinates) param.get();
 
             List<DC_HeroObj> objList = units.stream()
-                    .filter(microObj -> microObj.getCoordinates().equals(cords))
-                    .collect(Collectors.toList());
+             .filter(microObj -> microObj.getCoordinates().equals(cords))
+             .collect(Collectors.toList());
 
             List<UnitViewOptions> options = new ArrayList<>();
             for (DC_HeroObj microObj : objList) {
@@ -276,8 +312,8 @@ public class GridPanel extends Group {
                     if (a != null && a instanceof UnitView) {
                         UnitView uv = (UnitView) a;
                         DC_HeroObj hero = unitMap.entrySet().stream()
-                                .filter(entry -> entry.getValue() == uv).findFirst()
-                                .get().getKey();
+                         .filter(entry -> entry.getValue() == uv).findFirst()
+                         .get().getKey();
 
                         List<ToolTipManager.ToolTipRecordOption> recordOptions = new ArrayList<>();
 
@@ -302,7 +338,7 @@ public class GridPanel extends Group {
                         recordOption.name = "direction: " + hero.getFacing().getDirection();
                         recordOptions.add(recordOption);
 
-                        if (hero.isOverlaying()){
+                        if (hero.isOverlaying()) {
                             recordOption = new ToolTipManager.ToolTipRecordOption();
                             recordOption.name = "direction O: " + hero.getDirection();
                             recordOptions.add(recordOption);
@@ -357,13 +393,15 @@ public class GridPanel extends Group {
                         if (unit != null && unit instanceof UnitView) {
                             if (event.getButton() == 1) {
                                 DC_HeroObj heroObj = unitMap.entrySet()
-                                        .stream().filter(entry -> entry.getValue() == unit).findFirst()
-                                        .get().getKey();
+                                 .stream().filter(entry -> entry.getValue() == unit).findFirst()
+                                 .get().getKey();
                                 Triple<DC_Obj, Float, Float> container = new ImmutableTriple<>(heroObj, x, y);
                                 GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(container));
                             }
                         }
-                    } else if (event.getButton() == 1) {
+                    } else
+                        if (event.getButton() == 1)
+                    {
                         DC_Obj dc_cell = DC_Game.game.getCellByCoordinate(new Coordinates(cell.gridX, cell.gridY));
                         Triple<DC_Obj, Float, Float> container = new ImmutableTriple<>(dc_cell, x, y);
                         GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(container));
@@ -380,6 +418,10 @@ public class GridPanel extends Group {
     private void addUnitView(Obj heroObj) {
         int rows1 = rows - 1;
         UnitView uv = unitMap.get(heroObj);
+        if (uv == null) {
+//            main.system.auxiliary.LogMaster.log(1," " );
+            return;
+        }
         Coordinates c = heroObj.getCoordinates();
         if (cells[c.x][rows1 - c.y].getInnerDrawable() == null) {
             GridCellContainer cellContainer = new GridCellContainer(cells[c.x][rows1 - c.y]).init();

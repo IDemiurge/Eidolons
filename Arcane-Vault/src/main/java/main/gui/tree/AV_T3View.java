@@ -75,7 +75,7 @@ public class AV_T3View extends ThreeTreeView {
 							new Thread(new Runnable() {
 								public void run() {
 									Boolean result = DialogMaster.askAndWait(
-											"Where to show the Edit Table?", "Left!", "Right!",
+											"Where to update the Edit Table?", "Left!", "Right!",
 											"Center!");
 									AV_T3View.toggleEditTable(result);
 								}

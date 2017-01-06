@@ -2,13 +2,18 @@ package main.libgdx.anims.phased;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import main.game.DC_Game;
 import main.libgdx.GameScreen;
 import main.system.GuiEventManager;
+import main.system.auxiliary.GuiManager;
 
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
 import static main.system.GuiEventType.SHOW_PHASE_ANIM;
+import static main.system.GuiEventType.UPDATE_PHASE_ANIM;
+import static main.system.GuiEventType.UPDATE_PHASE_ANIMS;
 
 /**
  * Created by JustMe on 1/5/2017.
@@ -17,11 +22,22 @@ public class PhaseAnimator extends Group {
     private static PhaseAnimator instance;
     List<PhaseAnim> anims = new LinkedList<>();
 
+    public PhaseAnimator() {
+        setBounds(0, 0, (float) GuiManager.getScreenWidth(), (float)
+         GuiManager.getScreenHeight());
+        setVisible(true);
 
+    }
 
     public void init() {
         GuiEventManager.bind(SHOW_PHASE_ANIM, (event) -> {
 
+        });
+        GuiEventManager.bind(UPDATE_PHASE_ANIMS, (event) -> {
+            update();
+        });
+        GuiEventManager.bind(UPDATE_PHASE_ANIM, (param) -> {
+            ((PhaseAnim) param.get()).update();
         });
 //        DC_Game.game.getAnimationManager().drawAnimations();
 
@@ -36,33 +52,62 @@ public class PhaseAnimator extends Group {
 
     {
 
-        anims.forEach(anim -> {
-            anim.draw(batch, parentAlpha);
-        });
+//        getAnims().forEach(anim -> {
+//            main.system.auxiliary.LogMaster.log(1,"anim drawn "+anim+ "at " + anim.getX() + " - " + anim.getY() );
+//            anim.draw(batch, parentAlpha);
+//        });
         super.draw(batch, parentAlpha);
     }
 
-    public void show() {
+    public void update() {
+//        getAnims().forEach(anim -> {
+//            if (!DC_Game.game.getAnimationManager().
+//             getAnimations().contains(anim.getAnim()))
+//                try {
+//                    getAnims().remove(anim);
+//                    main.system.auxiliary.LogMaster.log(1, "**********Removed anim : " + anim);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//
+//        });
+        DC_Game.game.getAnimationManager().getAnimations().forEach(a -> {
+            if (a.getPhaseAnim() == null) {
+                getAnims().add(new PhaseAnim(a));
+            }
+
+        });
         clear();
         clearChildren();
-        anims.forEach(anim -> {
+        getAnims().forEach(anim -> {
             anim.update();
             addActor(anim);
-//            anim.getAnim().getSourceCoordinates()
-            anim.setX(255+ GameScreen.getInstance().getController().getX_cam_pos());
-            anim.setY(255+ GameScreen.getInstance().getController().getY_cam_pos());
+            Point p = GameScreen.getInstance().getGridPanel()
+             .getPointForCoordinateWithOffset(anim.getAnim().getSourceCoordinates());
+            float x = p.x  ;
+            float y = p.y  ;
+            y = GameScreen.getInstance().getGridPanel().getCellHeight()*
+             GameScreen.getInstance().getGridPanel().getRows();
+            x = 0   ;
+            y = 0   ;
+//            y = 255+GameScreen.getInstance().getController().getY_cam_pos();
+//            x = 255+  GameScreen.getInstance().getController().getX_cam_pos();
+
+            anim.setX(x);
+            anim.setY(y);
+            main.system.auxiliary.LogMaster.log(1, "**********Added anim : "
+             + anim + "at " + x + " - " + y);
 //    anim.getAnim().getMouseMap()
         });
 //            sprite = new TextureRegion(j2dTex);
         setVisible(true);
     }
+
     public List<PhaseAnim> getAnims() {
         return anims;
     }
 
-    public void setAnims(List<PhaseAnim> anims) {
-        this.anims = anims;
-    }
+
     public static PhaseAnimator getInstance() {
         if (instance == null)
             instance = new PhaseAnimator();

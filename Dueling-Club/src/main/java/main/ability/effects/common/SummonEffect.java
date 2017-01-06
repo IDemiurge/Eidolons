@@ -164,7 +164,7 @@ public class SummonEffect extends MicroEffect {
 
     }
 
-    protected STANDARD_EVENT_TYPE getEventTypeDone() {
+    public STANDARD_EVENT_TYPE getEventTypeDone() {
         return STANDARD_EVENT_TYPE.UNIT_SUMMONED;
     }
 

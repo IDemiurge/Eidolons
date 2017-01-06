@@ -86,9 +86,10 @@ public class DebugMaster {
     private static boolean omnivision;
     private static boolean mapDebugOn = true;
     private static boolean altMode;
+    private static DC_Obj target;
     public DEBUG_FUNCTIONS[] onStartFunctions = {DEBUG_FUNCTIONS.GOD_MODE,
      SPAWN_WAVE};
-    DC_HeroObj target = null;
+    DC_HeroObj selectedTarget = null;
     private String lastFunction;
     private Stack<String> executedFunctions = new Stack<>();
     private DC_Builder bf;
@@ -290,18 +291,22 @@ public class DebugMaster {
                 transmitted = true;
 
             }
+if (target!=null )
+    arg = target;
 
         DC_HeroObj infoObj = null;
-        Ref ref = null;
+        Ref ref =  null  ;
         try {
             infoObj = (DC_HeroObj) getObj();
         } catch (Exception e) {
-            infoObj = (DC_HeroObj) game.getManager().getActiveObj();
         }
+        if (infoObj==null )
+            infoObj =  game.getManager().getActiveObj();
         try {
             ref = new Ref(game, game.getManager().getActiveObj().getId());
         } catch (Exception e) {
         }
+
         Coordinates coordinate = null;
         String data = null;
         OBJ_TYPES TYPE;
@@ -504,8 +509,8 @@ public class DebugMaster {
                     break;
 
                 if (!selectTarget(ref))
-                    target = infoObj;
-                if (target == null)
+                    selectedTarget = infoObj;
+                if (selectedTarget == null)
                     break;
                 boolean quick = false;
                 if (isAltMode())
@@ -514,16 +519,16 @@ public class DebugMaster {
                     quick = true;
                 else if (TYPE == OBJ_TYPES.WEAPONS)
                     quick = DialogMaster.confirm("quick slot item?");
-                DC_HeroItemObj item = ItemFactory.createItemObj(selectedType, target.getOwner(),
+                DC_HeroItemObj item = ItemFactory.createItemObj(selectedType, selectedTarget.getOwner(),
                  game, ref, quick);
                 if (!quick) {
                     if (TYPE != OBJ_TYPES.JEWELRY)
-                        target.equip(item, TYPE == OBJ_TYPES.ARMOR ? ITEM_SLOT.ARMOR
+                        selectedTarget.equip(item, TYPE == OBJ_TYPES.ARMOR ? ITEM_SLOT.ARMOR
                          : ITEM_SLOT.MAIN_HAND);
                 } else
-                    target.addQuickItem((DC_QuickItemObj) item);
+                    selectedTarget.addQuickItem((DC_QuickItemObj) item);
 
-                // target.addItemToInventory(item);
+                // selectedTarget.addItemToInventory(item);
 
                 game.getManager().refreshGUI();
                 break;
@@ -531,14 +536,14 @@ public class DebugMaster {
                 if (!selectType(OBJ_TYPES.SPELLS))
                     break;
                 if (!selectTarget(ref))
-                    target = infoObj;
-                if (target == null)
+                    selectedTarget = infoObj;
+                if (selectedTarget == null)
                     break;
                 TestMasterContent.setTEST_LIST(TestMasterContent.getTEST_LIST()
                  + selectedType.getName() + ";");
 
-                target.getSpells().add(
-                 new DC_SpellObj(selectedType, target.getOwner(), game, target.getRef()));
+                selectedTarget.getSpells().add(
+                 new DC_SpellObj(selectedType, selectedTarget.getOwner(), game, selectedTarget.getRef()));
                 game.getManager().refreshGUI();
                 break;
             case ADD_SKILL:
@@ -763,10 +768,11 @@ public class DebugMaster {
             typeName = foundType.getName();
 
         }
-        if (arg instanceof DC_Cell) {
+        if (arg instanceof Obj) {
+
             Obj obj = (Obj) arg;
-            ref.setTarget(obj.getId());
-        }
+            ref.setTarget(game.getCellByCoordinate(obj.getCoordinates()).getId());
+        } else
         if (!new SelectiveTargeting(new Conditions(ConditionMaster
          .getTYPECondition(OBJ_TYPES.TERRAIN))).select(ref))
             return;
@@ -810,7 +816,7 @@ public class DebugMaster {
          .getTYPECondition(C_OBJ_TYPE.BF_OBJ))).select(ref))
             return false;
 
-        target = (DC_HeroObj) ref.getTargetObj();
+        selectedTarget = (DC_HeroObj) ref.getTargetObj();
         return true;
     }
 
@@ -1106,6 +1112,10 @@ public class DebugMaster {
 
     public void setArg(Obj arg) {
         this.arg = arg;
+    }
+
+    public static void setTarget(DC_Obj obj) {
+        target =obj;
     }
 
 

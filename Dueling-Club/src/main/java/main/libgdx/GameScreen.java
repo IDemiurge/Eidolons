@@ -11,25 +11,21 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.data.filesys.PathFinder;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.DC_Obj;
 import main.game.DC_Game;
-import main.game.battlefield.Coordinates;
-import main.game.battlefield.PointX;
 import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.bf.Background;
 import main.libgdx.bf.GridPanel;
+import main.libgdx.bf.controls.radial.DebugRadialManager;
+import main.libgdx.bf.controls.radial.RadialMenu;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.bf.mouse.ToolTipManager;
 import main.libgdx.gui.GuiStage;
-import main.libgdx.gui.radial.DebugRadialManager;
-import main.libgdx.gui.radial.RadialMenu;
 import main.libgdx.texture.TextureCache;
 import main.libgdx.texture.TextureManager;
 import main.system.GuiEventManager;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
-
-import java.awt.*;
 
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
 import static main.system.GuiEventType.GRID_CREATED;
@@ -97,10 +93,10 @@ public class GameScreen implements Screen {
         radialMenu = new RadialMenu(t, textureCache);
         toolTipManager = new ToolTipManager(textureCache);
         gui = new GuiStage();
-        phaseAnimator = new PhaseAnimator();
+        phaseAnimator =   PhaseAnimator.getInstance();
         gui.addActor(radialMenu);
         gui.addActor(toolTipManager);
-        gui.addActor(phaseAnimator);
+//        gui.addActor(phaseAnimator);
     }
 
     private void bindEvents() {
@@ -111,11 +107,14 @@ public class GameScreen implements Screen {
         });
 
         GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
+            Triple<DC_Obj, Float, Float> container =
+             (Triple<DC_Obj, Float, Float>) obj.get();
+
             if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
-                radialMenu.init(DebugRadialManager.getDebugNodes());
+                radialMenu.init(DebugRadialManager.getDebugNodes(container.getLeft()));
             } else {
 
-                Triple<DC_HeroObj, Float, Float> container = (Triple<DC_HeroObj, Float, Float>) obj.get();
+
                 radialMenu.createNew(container.getLeft());
             }
         });
@@ -155,8 +154,8 @@ public class GameScreen implements Screen {
         gui.act(delta);
         gui.draw();
         try{
-            DC_Game.game.getAnimationManager().updateAnimations();
-            PhaseAnimator.getInstance(). show();
+         if (  DC_Game.game.getAnimationManager().updateAnimations())
+            PhaseAnimator.getInstance().update();
         }catch(Exception e){
         }
     }
@@ -210,10 +209,8 @@ public class GameScreen implements Screen {
         return background;
     }
 
-    public Point getPointForCoordinateWithOffset(Coordinates sourceCoordinates) {
-     int   x = (int) (controller.getX_cam_pos() + sourceCoordinates.getX()* 142);
-        int y = (int) (controller.getY_cam_pos() + sourceCoordinates.getY()* 126);
-        return new PointX(x, y);
+    public GridPanel getGridPanel() {
+        return gridPanel;
     }
 
     public InputController getController() {

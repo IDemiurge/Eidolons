@@ -1,4 +1,4 @@
-package main.libgdx.gui.radial;
+package main.libgdx.bf.controls.radial;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -205,6 +205,7 @@ public class RadialMenu extends Group {
             addListener(new InputListener() {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+//                    if (action==null )return false;
                     action.run();
                     event.stop();
                     return true;

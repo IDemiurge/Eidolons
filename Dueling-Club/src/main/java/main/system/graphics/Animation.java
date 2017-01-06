@@ -11,9 +11,11 @@ import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.PointX;
 import main.game.battlefield.attack.Attack;
-import main.libgdx.GameScreen;
 import main.libgdx.anims.phased.PhaseAnim;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
+import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.*;
 import main.system.auxiliary.FontMaster.FONT;
 import main.system.auxiliary.secondary.GeometryMaster;
@@ -162,17 +164,17 @@ public abstract class Animation implements ANIM {
     }
 
     public boolean updatePoints() {
-//        sourcePoint = getGrid().getGridComp().getPointForCoordinateWithOffset(
-//                getSourceCoordinates());
-        sourcePoint =
-         GameScreen.getInstance().getPointForCoordinateWithOffset( getSourceCoordinates());
+        sourcePoint = getGrid().getGridComp().getPointForCoordinateWithOffset(
+                getSourceCoordinates());
+//        sourcePoint =
+//         GameScreen.getInstance().getPointForCoordinateWithOffset(getSourceCoordinates());
         if (sourcePoint.getX() < 0)
             return false;
         if (sourcePoint.getY() < 0)
             return false;
 
         targetPoint = getGrid().getGridComp().getPointForCoordinateWithOffset(
-                getTargetCoordinates());
+         getTargetCoordinates());
         if (targetPoint.getX() < 0)
             return false;
         if (targetPoint.getY() < 0)
@@ -277,7 +279,7 @@ public abstract class Animation implements ANIM {
                 if (!freeze) {
                     if (isLogged())
                         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, "Anim FROZEN: "
-                                + this);
+                         + this);
                     freeze = true;
                 }
                 return;
@@ -337,7 +339,11 @@ public abstract class Animation implements ANIM {
         }
 //        mouseMap.clear();
         //      repaint();
-        getPhaseAnim().update();
+
+        if (getPhaseAnim() != null)
+            GuiEventManager.trigger(GuiEventType.UPDATE_PHASE_ANIM,
+             new EventCallbackParam(getPhaseAnim()));
+
     }
 
     public boolean checkTime() {
@@ -356,7 +362,7 @@ public abstract class Animation implements ANIM {
             } else {
                 if (isLogged())
                     main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, "Next phase for "
-                            + this + ": " + phase);
+                     + this + ": " + phase);
 
                 Chronos.mark(getIdentifierString());
             }
@@ -394,7 +400,7 @@ public abstract class Animation implements ANIM {
             }
         if (isLogged())
             main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, "Static Phase added: "
-                    + animPhase);
+             + animPhase);
         getStaticPhases().add(animPhase);
     }
 
@@ -432,7 +438,7 @@ public abstract class Animation implements ANIM {
         if (isLogged())
             if (isLogged())
                 main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, animPhase
-                        + " phase added to " + this);
+                 + " phase added to " + this);
     }
 
     public void addSubPhase(AnimPhase animPhase) {
@@ -463,11 +469,11 @@ public abstract class Animation implements ANIM {
             // TODO draw on origin cell for move anims
             if (getTarget() instanceof DC_HeroObj)
                 if (!getTarget().getCoordinates().equals(getTargetCoordinates())
-                        || getTarget().isDead())
+                 || getTarget().isDead())
                     drawGhost((DC_HeroObj) getTarget(), getTargetCoordinates());
         if (isGhostDrawn(false))
             if (!getSource().getCoordinates().equals(getSourceCoordinates())
-                    || getSource().isDead())
+             || getSource().isDead())
                 drawGhost(getSource(), getSourceCoordinates());
 
         return true;
@@ -480,8 +486,8 @@ public abstract class Animation implements ANIM {
 
     protected void drawGhost(DC_HeroObj unit, Coordinates c) {
         Image image = ImageTransformer.getTransparentImage(ImageManager
-                .getBufferedImage(ImageManager.getSizedVersion(unit.getImagePath(),
-                        GuiManager.getCellHeight()).getImage()), 0.33);
+         .getBufferedImage(ImageManager.getSizedVersion(unit.getImagePath(),
+          GuiManager.getCellHeight()).getImage()), 0.33);
 
         // TODO real x y
         Point p = game.getBattleField().getGrid().getGridComp().getPointForCoordinateWithOffset(c);
@@ -492,7 +498,7 @@ public abstract class Animation implements ANIM {
 
     public Point getPointForCoordinate(Coordinates coordinates) {
         return game.getBattleField().getGrid().getGridComp().getPointForCoordinateWithOffset(
-                coordinates);
+         coordinates);
     }
 
     protected boolean isReplay() {
@@ -546,7 +552,7 @@ public abstract class Animation implements ANIM {
 
     protected PHASE_TYPE getSubPhaseTypeForKey(String string) {
         return getSubPhaseTypeForKey(new EnumMaster<MOD_IDENTIFIER>().retrieveEnumConst(
-                MOD_IDENTIFIER.class, string));
+         MOD_IDENTIFIER.class, string));
     }
 
     protected void setDrawOnTarget(boolean flag) {
@@ -597,7 +603,7 @@ public abstract class Animation implements ANIM {
             }
         if (isLogged())
             main.system.auxiliary.LogMaster
-                    .log(LogMaster.ANIM_DEBUG, "NO PHASE TYPE FOR ID: " + id);
+             .log(LogMaster.ANIM_DEBUG, "NO PHASE TYPE FOR ID: " + id);
         return null;
     }
 
@@ -614,9 +620,9 @@ public abstract class Animation implements ANIM {
 
     protected void initArea() {
         areaSource = new Rectangle(sourcePoint.x + getFullOffset(true, true), sourcePoint.y
-                + getFullOffset(true, false), w, h);
+         + getFullOffset(true, false), w, h);
         areaTarget = new Rectangle(targetPoint.x + getFullOffset(false, true), targetPoint.y
-                + getFullOffset(false, false), w, h);
+         + getFullOffset(false, false), w, h);
 
         if (isGenericsDrawnOnSource())
             area = areaSource;
@@ -626,7 +632,7 @@ public abstract class Animation implements ANIM {
 
     protected void drawControls() {
         Point p1 = new Point(-getControlImage(true).getWidth(null), (h - getControlImage(true)
-                .getHeight(null) / 2));
+         .getHeight(null) / 2));
         Point p2 = new Point(w, (h - getControlImage(true).getHeight(null) / 2));
         int width = getControlImage(false).getWidth(null);
         int height = getControlImage(false).getHeight(null);
@@ -668,7 +674,7 @@ public abstract class Animation implements ANIM {
 
     protected void addToolTip(boolean source, Rectangle rect, int x, int y, Object... lines) {
         Point point = new Point(x + (source ? sourcePoint.x : targetPoint.x), y
-                + (source ? sourcePoint.y : targetPoint.y));
+         + (source ? sourcePoint.y : targetPoint.y));
         tooltipMap.put(rect, new TextItem(point, TEXT_TYPE.ANIMATION, lines));
     }
 
@@ -741,8 +747,9 @@ public abstract class Animation implements ANIM {
                 return 0;
         if (isLogged())
             if (isLogged())
-                main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, str + " anim text at "
-                        + new PointX(x, y));
+                main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+                 str + " anim text at "
+                 + new PointX(x, y));
         if (isDrawTextBackground())
             drawTextBackground(str, font, x, y + fontHeight / 2 + 3);
         g.setColor(c);
@@ -793,7 +800,7 @@ public abstract class Animation implements ANIM {
     protected void drawTextBackground(String str, Font font, int x, int y) {
         g.setColor(ColorManager.BACKGROUND_MORE_TRANSPARENT);
         g.fillRect(x - 7, y - FontMaster.getFontHeight(font) / 2 - 4, FontMaster.getStringWidth(
-                font, str) + 13, FontMaster.getFontHeight(font) / 2 + 10);
+         font, str) + 13, FontMaster.getFontHeight(font) / 2 + 10);
     }
 
     protected void fillTextRowWithDarkBackground(boolean source, int base, Font font) {
@@ -803,7 +810,7 @@ public abstract class Animation implements ANIM {
         g.setColor(ColorManager.BACKGROUND_MORE_TRANSPARENT);
 
         g.fillRect(p.x, p.y + base - FontMaster.getFontHeight(font) / 2 - 4, w, FontMaster
-                .getFontHeight(font) / 2 + 10);
+         .getFontHeight(font) / 2 + 10);
 
     }
 
@@ -854,7 +861,7 @@ public abstract class Animation implements ANIM {
 
     protected void drawOnTargetCenter(Image image) {
         drawImage(g, image, targetPoint.x + (w - image.getWidth(null)) / 2, targetPoint.y
-                + (h - image.getHeight(null)) / 2);
+         + (h - image.getHeight(null)) / 2);
     }
 
     protected int drawOnTargetCenterX(Image image, int y) {
@@ -892,7 +899,7 @@ public abstract class Animation implements ANIM {
 
         if (isLogged())
             main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, image.getWidth(null)
-                    + "-wide image text at " + new PointX(x, y));
+             + "-wide image text at " + new PointX(x, y));
         g.drawImage(image, x, y, null);
     }
 
@@ -949,7 +956,7 @@ public abstract class Animation implements ANIM {
 
     protected void repaint() {
         if (CoreEngine.isSwingOn())
-        getGrid().getGridComp().getPanel().repaint();
+            getGrid().getGridComp().getPanel().repaint();
     }
 
     protected void drawDebugInfo() {
@@ -1032,24 +1039,24 @@ public abstract class Animation implements ANIM {
     private void drawStackedImage(boolean source) {
         Obj obj = source ? this.source : target;
         Image image = ImageManager.getSizedVersion(obj.getImagePath(), getStackedImageSize())
-                .getImage();
+         .getImage();
         int x = 16;
         int y = 16;
         drawOn(source, image, x, y);
         Image img = (source ? BORDER.NEO_ACTIVE_SELECT_HIGHLIGHT
-                : BORDER.NEO_ACTIVE_ENEMY_SELECT_HIGHLIGHT).getImage();
+         : BORDER.NEO_ACTIVE_ENEMY_SELECT_HIGHLIGHT).getImage();
         img = ImageManager.getSizedVersion(img, getStackedImageSize() * 100 / 128);
 
         image = ImageTransformer.getTransparentImage(img, 75);
         int centeredPosition = MigMaster.getCenteredPosition(w, image.getWidth(null)
-                // image.getWidth(null),
-                // getStackedImageSize()
+         // image.getWidth(null),
+         // getStackedImageSize()
         ) - 16;
         drawOn(source, image, x + centeredPosition, y + centeredPosition);
 
         if (!source)
             drawOn(source, ImageManager.getValueIcon(PARAMS.ACCURACY), MigMaster
-                    .getCenteredPosition(getStackedImageSize(), 32), -32);
+             .getCenteredPosition(getStackedImageSize(), 32), -32);
     }
 
     public void initStackedDrawing() {
@@ -1061,9 +1068,9 @@ public abstract class Animation implements ANIM {
         // consider multiple?
 
         Point p1 = GeometryMaster.getFarthestPointInRectangleForImage(w, h, getStackedImageSize(),
-                getStackedImageSize(), d1);
+         getStackedImageSize(), d1);
         Point p2 = GeometryMaster.getFarthestPointInRectangleForImage(w, h, getStackedImageSize(),
-                getStackedImageSize(), d2);
+         getStackedImageSize(), d2);
 
         // int maxDisplacement;
 
@@ -1109,7 +1116,7 @@ public abstract class Animation implements ANIM {
         stackDrawingOn = false;
 
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         source.setAnimation(this);
         if (getTarget() instanceof DC_HeroObj) {
@@ -1204,7 +1211,7 @@ public abstract class Animation implements ANIM {
     @Override
     public String toString() {
         return getIdentifierString() + " with " + phases.size() + " phases, c_time="
-                + timeRemaining + ", phase=" + phase;
+         + timeRemaining + ", phase=" + phase;
     }
 
     public boolean isFinished() {
@@ -1549,7 +1556,8 @@ public abstract class Animation implements ANIM {
     }
 
     public boolean isLogged() {
-        return logged;
+//        return logged;
+        return LogMaster.ANIM_DEBUG_ON;
     }
 
     public void setLogged(boolean b) {
@@ -1566,4 +1574,5 @@ public abstract class Animation implements ANIM {
 
     public void setPhaseAnim(PhaseAnim phaseAnim) {
         this.phaseAnim = phaseAnim;
-    }}
+    }
+}

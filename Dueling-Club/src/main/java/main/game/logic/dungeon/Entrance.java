@@ -27,7 +27,7 @@ public class Entrance extends DC_HeroObj {
     }
 
     public void enter(DC_HeroObj unit, Coordinates coordinates) {
-        // each unit can really be independent; refresh will show... but
+        // each unit can really be independent; refresh will update... but
         // admittedly, with gameplay as it is now, it could be a hassle...
 
         // unit.setCurrentInstance(this);
