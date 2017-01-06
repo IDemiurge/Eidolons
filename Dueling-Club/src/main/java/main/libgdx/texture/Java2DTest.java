@@ -18,7 +18,6 @@ import main.data.filesys.PathFinder;
 import main.system.images.ImageManager;
 
 import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,13 +101,13 @@ public class Java2DTest implements ApplicationListener {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 //        batch.draw(sprite, 10, 10);
-        try {
-            batch.draw(TextureManager.toTexture(
-             ImageManager.getBufferedImage8bit(      ImageManager.getBufferedImage(
-             ImageManager.getImage(ImageManager.DEFAULT_BACKGROUND)))), 0, 0);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            batch.draw(TextureManager.toTexture(
+//             ImageManager.getBufferedImage8bit(      ImageManager.getBufferedImage(
+//             ImageManager.getImage(ImageManager.DEFAULT_BACKGROUND)))), 0, 0);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         batch.end();
     }
 
