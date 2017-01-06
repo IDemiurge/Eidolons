@@ -11,6 +11,7 @@ import main.entity.obj.MicroObj;
 import main.game.battlefield.Coordinates;
 import main.system.datatypes.DequeImpl;
 import main.test.libgdx.GameScreen;
+import main.test.libgdx.sfx.particles.lighting.LightingManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class Lightmap {
     private static float SECOND = 1000000000;
     Box2DDebugRenderer debugRenderer;
 
-    private void init(DequeImpl<MicroObj> un, World world, RayHandler rayHandler, float cellWidth, float cellHeight) {
+    private void init(DequeImpl<DC_HeroObj> un, World world, RayHandler rayHandler, float cellWidth, float cellHeight) {
         this.cellWidth = cellWidth;
         this.cellHeight = cellHeight;
         this.world = world;
@@ -37,7 +38,7 @@ public class Lightmap {
         this.rayHandler.setBlur(true);
         this.rayHandler.setBlurNum(15);
         this.rayHandler.setAmbientLight(Color.GRAY);
-        this.rayHandler.setAmbientLight(0.025f);
+        this.rayHandler.setAmbientLight(LightingManager.ambient_light);
         this.rayHandler.setBlurNum(15);
         RayHandler.setGammaCorrection(true);
         debugRenderer = new Box2DDebugRenderer();
@@ -119,14 +120,9 @@ public class Lightmap {
 //        }
     }
 
-    public Lightmap(DequeImpl<MicroObj> un, float cellWidth, float cellHeight) {
+    public Lightmap(DequeImpl<DC_HeroObj> un, float cellWidth, float cellHeight) {
         World world = new World(new Vector2(0, 0), true);
         init(un, world, new RayHandler(world), cellWidth, cellHeight);
-    }
-
-
-    public Lightmap(DequeImpl<MicroObj> un, World world, RayHandler rayHandler) {
-        init(un, world, rayHandler, 132, 113);
     }
 
     public void updatePos(MicroObj obj) {

@@ -13,6 +13,7 @@ import main.game.DC_Game;
 import main.game.Game;
 import main.game.battlefield.Coordinates;
 import main.game.event.Event;
+import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.TempEventManager;
 import main.system.datatypes.DequeImpl;
@@ -84,10 +85,14 @@ public class GridPanel extends Group {
         }
 
         TempEventManager.bind("select-multi-objects", obj -> {
-            Pair<Set<DC_HeroObj>, TargetRunnable> p = (Pair<Set<DC_HeroObj>, TargetRunnable>) obj.get();
+            Pair<Set<DC_Obj>, TargetRunnable> p =
+             (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             Map<Borderable, Runnable> map = new HashMap<>();
-            for (DC_HeroObj obj1 : p.getLeft()) {
-                map.put(unitMap.get(obj1), () -> p.getRight().run(obj1));
+            for (DC_Obj obj1 : p.getLeft()) {
+                Borderable   b=unitMap.get(obj1);
+                if (b==null )
+                b=cells[obj1.getX()][rows1-obj1.getY()];
+                map.put(b, () -> p.getRight().run(obj1));
             }
             TempEventManager.trigger("show-blue-borders", new EventCallbackParam(map));
         });
@@ -183,7 +188,7 @@ public class GridPanel extends Group {
         TempEventManager.bind("create-units-model", param -> {
             units = (DequeImpl<DC_HeroObj>) param.get();
 
-            //lightmap = new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight());
+            lightmap = new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight());
 
             Map<Coordinates, List<DC_HeroObj>> map = new HashMap<>();
             for (DC_HeroObj object : units) {

@@ -1146,6 +1146,11 @@ public class DebugMaster {
      DEBUG_FUNCTIONS. ADD_SPELL,
 
     };
+    public  static final DEBUG_FUNCTIONS[] group_graphics = {
+     DEBUG_FUNCTIONS.TOGGLE_LIGHTING,
+     DEBUG_FUNCTIONS.TOGGLE_FOG,
+     DEBUG_FUNCTIONS.ADD_SFX,
+    };
         public enum DEBUG_FUNCTIONS {
         // GAME
 
@@ -1210,7 +1215,17 @@ public class DebugMaster {
         DUNGEON_ADD_SUBLEVEL,
 
         AUTO_TEST_INPUT,
-        RUN_AUTO_TESTS,;
+            RUN_AUTO_TESTS,
+
+
+            TOGGLE_LIGHTING,
+            TOGGLE_FOG,
+            ADD_SFX,
+
+
+
+
+            ;
 
         boolean transmitted;
 

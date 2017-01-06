@@ -1,6 +1,5 @@
 package main.game.logic.dungeon;
 
-import main.client.dc.Launcher;
 import main.content.CONTENT_CONSTS.DUNGEON_SUBFOLDER;
 import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
 import main.content.OBJ_TYPES;
@@ -186,11 +185,10 @@ public class DungeonMaster {
             setDungeon(new Dungeon(objType));
             return;
         }
-        if (FAST_DC.isRunning()) {
-            if (type==null ) {
-                type = DataManager.getType(getPresetDungeonType(), OBJ_TYPES.DUNGEONS);
-            }}
-
+//        if (FAST_DC.isRunning()) {
+//            if (type==null ) {
+//                type = DataManager.getType(getPresetDungeonType(), OBJ_TYPES.DUNGEONS);
+//            }}
 //        if (getDEFAULT_DUNGEON() != null
 //                || getDungeonPath() != null) {
 //            if (!CoreEngine.isLevelEditor())
@@ -204,14 +202,19 @@ public class DungeonMaster {
 //        else
 
       if (type==null  )  {
-            if (Launcher.DEV_MODE)
+            if (!FAST_DC.isRunning()){
+                type = DataManager.getType(getPresetDungeonType(), OBJ_TYPES.DUNGEONS);
+            }else {
                 if (RANDOM_DUNGEON) {
-                    type = pickRandomDungeon();
+
+                    type =
+                     pickRandomDungeon();
                 } else if (type == null)
                     type = DataManager.getType(ListChooser.chooseType(OBJ_TYPES.DUNGEONS));
 
                 if (type==null )
                         initDungeonLevelChoice();
+            }
             setDungeon(new Dungeon(type));
         getDungeons().add(dungeon);
         rootDungeon = getDungeon();

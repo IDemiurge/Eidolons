@@ -24,6 +24,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 public class XML_Reader {
     final static DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
@@ -38,8 +39,11 @@ public class XML_Reader {
     static Map<String, Set<String>> macroTreeSubGroupMap = new ConcurrentMap<String, Set<String>>();
     static Map<String, Set<String>> macroTreeSubGroupedTypeMap = new ConcurrentMap<String, Set<String>>();
 
-    private static Map<String, Map<String, ObjType>> typeMaps = new XLinkedMap<String, Map<String, ObjType>>(
-            20);
+    private static Map<String, Map<String, ObjType>> typeMaps =
+     new ConcurrentSkipListMap
+//     new XLinkedMap
+      < >(
+             );
     private static Map<String, ObjType> bufferCharTypeMap = new XLinkedMap<String, ObjType>(20);
     private static boolean macro;
 
