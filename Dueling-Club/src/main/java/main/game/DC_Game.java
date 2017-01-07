@@ -230,7 +230,6 @@ public class DC_Game extends MicroGame {
         }
         if (!simulation) {
             battleInit();
-
         }
 
         setInitialized(true);
@@ -325,12 +324,11 @@ public class DC_Game extends MicroGame {
 
         mngr.setSbInitialized(true);
         turnManager.init();
-      if (  !CoreEngine.isSwingOn()){
+        if (!CoreEngine.isSwingOn()) {
 
             WaitMaster.receiveInput(WAIT_OPERATIONS.GUI_READY, true);
             WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
-        }else
-        if (!battlefield.isInitialized())
+        } else if (!battlefield.isInitialized())
             // gui starts building while logic is getting ready TODO
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {

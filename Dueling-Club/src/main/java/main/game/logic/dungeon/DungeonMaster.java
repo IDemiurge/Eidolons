@@ -169,8 +169,8 @@ public class DungeonMaster {
 
     public void initDungeon() {
         ObjType type = null;
-        if (BooleanMaster.isTrue(FAST_DC.getGameLauncher().getSUPER_FAST_MODE())
-                ){
+
+        if (BooleanMaster.isTrue(FAST_DC.getGameLauncher().getSUPER_FAST_MODE())) {
             setDungeonPath(FAST_DC.DEFAULT_TEST_DUNGEON);
         }
         if (getDungeonPath() != null) {
@@ -216,9 +216,9 @@ public class DungeonMaster {
                     initDungeonLevelChoice();
             }
             setDungeon(new Dungeon(type));
-        getDungeons().add(dungeon);
-        rootDungeon = getDungeon();
-    }
+            getDungeons().add(dungeon);
+            rootDungeon = getDungeon();
+        }
         if (dungeon != null)
             initialized = true;
     }
