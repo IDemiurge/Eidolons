@@ -23,7 +23,7 @@ public class Lightmap {
     private static World world;
     private static RayHandler rayHandler;
     private static float SECOND = 1000000000;
-    private static float ambient = 0.05f;
+    private static float ambient = 0.35f;
     Box2DDebugRenderer debugRenderer;
     private Map<MicroObj, Body> bodyMap;
     private float cellWidth;
