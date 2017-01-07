@@ -20,6 +20,7 @@ import main.game.player.DC_Player;
 import main.game.player.Player;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
+import main.system.auxiliary.ListMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.net.data.MapData;
@@ -117,13 +118,22 @@ public class ArenaManager {
     public void startGame() {
 
         spawnManager.init();
+        main.system.auxiliary.LogMaster.log(1,"init " );
         spawnManager.spawnParty(true);
+        main.system.auxiliary.LogMaster.log(1,"spawnParty " );
         spawnManager.spawnParty(false);
+        main.system.auxiliary.LogMaster.log(1,"spawnParty " );
 
         if (game.getData() != null) {
+            main.system.auxiliary.LogMaster.log(1,"processing UnitData " +game.getData());
             DC_ObjInitializer.processUnitData(game.getData(), game);
-            GuiEventManager.trigger(CREATE_UNITS_MODEL, new EventCallbackParam(game.getUnits()));
+            main.system.auxiliary.LogMaster.log(1,"processed UnitData " );
         }
+        if (!ListMaster.isNotEmpty(game.getUnits()))
+            main.system.auxiliary.LogMaster.log(1,"NO UNITS! " );
+
+        GuiEventManager.trigger(CREATE_UNITS_MODEL, new EventCallbackParam(game.getUnits()));
+
         if (!game.isOffline()) {
             saveFacing();
         }
