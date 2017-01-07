@@ -161,9 +161,7 @@ public class DivinationMaster {
 
         // TODO if already available, add a buff to it for 50% ess cost and cd
 
-        if (spellType.getIntParam(PARAMS.SPELL_DIFFICULTY) > pool)
-            return false;
-        return true;
+        return spellType.getIntParam(PARAMS.SPELL_DIFFICULTY) <= pool;
     }
 
     private static void initSpellPool() {

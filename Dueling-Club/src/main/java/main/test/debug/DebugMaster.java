@@ -86,9 +86,10 @@ public class DebugMaster {
     private static boolean omnivision;
     private static boolean mapDebugOn = true;
     private static boolean altMode;
+    private static DC_Obj target;
     public DEBUG_FUNCTIONS[] onStartFunctions = {DEBUG_FUNCTIONS.GOD_MODE,
             SPAWN_WAVE};
-    DC_HeroObj target = null;
+    DC_HeroObj selectedTarget = null;
     private String lastFunction;
     private Stack<String> executedFunctions = new Stack<>();
     private DC_Builder bf;
@@ -290,18 +291,22 @@ public class DebugMaster {
                 transmitted = true;
 
             }
+        if (target != null)
+            arg = target;
 
-        DC_HeroObj infoObj = null;
+        DC_HeroObj infoObj = target instanceof DC_HeroObj ? (DC_HeroObj) target : null;
         Ref ref = null;
-        try {
+        if (infoObj == null) try {
             infoObj = (DC_HeroObj) getObj();
         } catch (Exception e) {
-            infoObj = (DC_HeroObj) game.getManager().getActiveObj();
         }
+        if (infoObj == null)
+            infoObj = game.getManager().getActiveObj();
         try {
             ref = new Ref(game, game.getManager().getActiveObj().getId());
         } catch (Exception e) {
         }
+
         Coordinates coordinate = null;
         String data = null;
         OBJ_TYPES TYPE;
@@ -504,8 +509,8 @@ public class DebugMaster {
                     break;
 
                 if (!selectTarget(ref))
-                    target = infoObj;
-                if (target == null)
+                    selectedTarget = infoObj;
+                if (selectedTarget == null)
                     break;
                 boolean quick = false;
                 if (isAltMode())
@@ -514,16 +519,16 @@ public class DebugMaster {
                     quick = true;
                 else if (TYPE == OBJ_TYPES.WEAPONS)
                     quick = DialogMaster.confirm("quick slot item?");
-                DC_HeroItemObj item = ItemFactory.createItemObj(selectedType, target.getOwner(),
+                DC_HeroItemObj item = ItemFactory.createItemObj(selectedType, selectedTarget.getOwner(),
                         game, ref, quick);
                 if (!quick) {
                     if (TYPE != OBJ_TYPES.JEWELRY)
-                        target.equip(item, TYPE == OBJ_TYPES.ARMOR ? ITEM_SLOT.ARMOR
+                        selectedTarget.equip(item, TYPE == OBJ_TYPES.ARMOR ? ITEM_SLOT.ARMOR
                                 : ITEM_SLOT.MAIN_HAND);
                 } else
-                    target.addQuickItem((DC_QuickItemObj) item);
+                    selectedTarget.addQuickItem((DC_QuickItemObj) item);
 
-                // target.addItemToInventory(item);
+                // selectedTarget.addItemToInventory(item);
 
                 game.getManager().refreshGUI();
                 break;
@@ -531,14 +536,14 @@ public class DebugMaster {
                 if (!selectType(OBJ_TYPES.SPELLS))
                     break;
                 if (!selectTarget(ref))
-                    target = infoObj;
-                if (target == null)
+                    selectedTarget = infoObj;
+                if (selectedTarget == null)
                     break;
                 TestMasterContent.setTEST_LIST(TestMasterContent.getTEST_LIST()
                         + selectedType.getName() + ";");
 
-                target.getSpells().add(
-                        new DC_SpellObj(selectedType, target.getOwner(), game, target.getRef()));
+                selectedTarget.getSpells().add(
+                        new DC_SpellObj(selectedType, selectedTarget.getOwner(), game, selectedTarget.getRef()));
                 game.getManager().refreshGUI();
                 break;
             case ADD_SKILL:
@@ -735,12 +740,12 @@ public class DebugMaster {
                 }
         }
         /*
-		 * alt mode: >> random >> preset >> last
+         * alt mode: >> random >> preset >> last
 		 */
         ref.setPlayer(player);
         String typeName = null;
         if (arg instanceof DC_HeroObj) {
-            Obj obj = (Obj) arg;
+            Obj obj = arg;
             typeName = (obj.getType().getName());
         }
 
@@ -763,10 +768,11 @@ public class DebugMaster {
             typeName = foundType.getName();
 
         }
-        if (arg instanceof DC_Cell) {
-            Obj obj = (Obj) arg;
-            ref.setTarget(obj.getId());
-        }
+        if (arg instanceof Obj) {
+
+            Obj obj = arg;
+            ref.setTarget(game.getCellByCoordinate(obj.getCoordinates()).getId());
+        } else
         if (!new SelectiveTargeting(new Conditions(ConditionMaster
                 .getTYPECondition(OBJ_TYPES.TERRAIN))).select(ref))
             return;
@@ -810,7 +816,7 @@ public class DebugMaster {
                 .getTYPECondition(C_OBJ_TYPE.BF_OBJ))).select(ref))
             return false;
 
-        target = (DC_HeroObj) ref.getTargetObj();
+        selectedTarget = (DC_HeroObj) ref.getTargetObj();
         return true;
     }
 
@@ -887,7 +893,7 @@ public class DebugMaster {
         try {
             infoObj = (DC_HeroObj) getObj();
         } catch (Exception e) {
-            infoObj = (DC_HeroObj) game.getManager().getActiveObj();
+            infoObj = game.getManager().getActiveObj();
         }
         switch (func) {
             case WRITE_GROUP:
@@ -1108,6 +1114,10 @@ public class DebugMaster {
         this.arg = arg;
     }
 
+    public static void setTarget(DC_Obj obj) {
+        target = obj;
+    }
+
 
     public enum SIMULATION_FUNCTIONS {
         REMAP,
@@ -1119,37 +1129,54 @@ public class DebugMaster {
     }
 
     public static final DEBUG_FUNCTIONS[] group_add_bf_obj = {
-            DEBUG_FUNCTIONS.ADD_UNIT,
-            DEBUG_FUNCTIONS.ADD_ENEMY_UNIT,
+     DEBUG_FUNCTIONS.ADD_UNIT,
+     DEBUG_FUNCTIONS.ADD_ENEMY_UNIT,
             DEBUG_FUNCTIONS.ADD_GROUP,
             DEBUG_FUNCTIONS.ADD_CHAR,
             DEBUG_FUNCTIONS.ADD_OBJ,
+            DEBUG_FUNCTIONS.SPAWN_PARTY,
+            DEBUG_FUNCTIONS.SPAWN_WAVE,
+            DEBUG_FUNCTIONS.SPAWN_CUSTOM_WAVE,
 
     };
     public static final DEBUG_FUNCTIONS[] group_bf = {
-            DEBUG_FUNCTIONS.CLEAR,
-            DEBUG_FUNCTIONS.RESTART,
-            DEBUG_FUNCTIONS.KILL_ALL_UNITS,
-            DEBUG_FUNCTIONS.SPAWN_WAVE,
-            DEBUG_FUNCTIONS.SPAWN_CUSTOM_WAVE,
+     DEBUG_FUNCTIONS.CLEAR,
+     DEBUG_FUNCTIONS.RESTART,
+     DEBUG_FUNCTIONS.KILL_ALL_UNITS,
+            DEBUG_FUNCTIONS.CLEAR_WAVES,
+            DEBUG_FUNCTIONS.LOAD_DUNGEON,
     };
     public static final DEBUG_FUNCTIONS[] group_basic = {
-            DEBUG_FUNCTIONS.END_TURN,
-            DEBUG_FUNCTIONS.TOGGLE_DEBUG,
-            DEBUG_FUNCTIONS.TOGGLE_OMNIVISION,
-            DEBUG_FUNCTIONS.PAUSE,
+     DEBUG_FUNCTIONS.END_TURN,
+     DEBUG_FUNCTIONS.TOGGLE_DEBUG,
+     DEBUG_FUNCTIONS.TOGGLE_OMNIVISION,
+     DEBUG_FUNCTIONS.PAUSE,
     };
     public static final DEBUG_FUNCTIONS[] group_add = {
-            DEBUG_FUNCTIONS.ADD_DUNGEON,
+     DEBUG_FUNCTIONS.ADD_DUNGEON,
             DEBUG_FUNCTIONS.ADD_SKILL,
             DEBUG_FUNCTIONS.ADD_ACTIVE,
             DEBUG_FUNCTIONS.ADD_SPELL,
+            DEBUG_FUNCTIONS.ADD_ITEM,
 
     };
     public static final DEBUG_FUNCTIONS[] group_graphics = {
             DEBUG_FUNCTIONS.TOGGLE_LIGHTING,
             DEBUG_FUNCTIONS.TOGGLE_FOG,
             DEBUG_FUNCTIONS.ADD_SFX,
+    };
+
+    public static final HIDDEN_DEBUG_FUNCTIONS[] group_display = {
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_EFFECTS,
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_TRIGGERS,
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_EFFECTS,
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_EVENT_LOG,
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_LOG,
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_STATE,
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_OBJECTS,
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_UNITS,
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_REF,
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_UNIT_INFO,
     };
 
     public enum DEBUG_FUNCTIONS {

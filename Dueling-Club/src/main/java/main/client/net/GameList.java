@@ -48,7 +48,7 @@ public class GameList extends GenericList<HostedGame> {
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        // show game description etc?...
+        // update game description etc?...
 
     }
 

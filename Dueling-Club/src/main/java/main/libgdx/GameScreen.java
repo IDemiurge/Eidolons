@@ -11,18 +11,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.data.filesys.PathFinder;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.DC_Obj;
 import main.game.DC_Game;
 import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.bf.Background;
 import main.libgdx.bf.GridPanel;
+import main.libgdx.bf.controls.radial.DebugRadialManager;
+import main.libgdx.bf.controls.radial.RadialMenu;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.bf.mouse.ToolTipManager;
 import main.libgdx.gui.GuiStage;
-import main.libgdx.gui.radial.DebugRadialManager;
-import main.libgdx.gui.radial.RadialMenu;
-import main.libgdx.texture.TextureCache;
-import main.libgdx.texture.TextureManager;
 import main.system.GuiEventManager;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -44,7 +42,6 @@ public class GameScreen implements Screen {
 
     private Background background;
     private GridPanel gridPanel;
-    private TextureCache textureCache;
     private RadialMenu radialMenu;
 
     protected ToolTipManager toolTipManager;
@@ -87,31 +84,35 @@ public class GameScreen implements Screen {
     }
 
     private void initGui() {
-        textureCache = TextureManager.getCache();
         final Texture t = new Texture(GameScreen.class.getResource("/data/marble_green.png").getPath());
 
-        radialMenu = new RadialMenu(t, textureCache);
-        toolTipManager = new ToolTipManager(textureCache);
+        radialMenu = new RadialMenu(t );
+        toolTipManager = new ToolTipManager( );
         gui = new GuiStage();
-        phaseAnimator = new PhaseAnimator();
+        phaseAnimator =   PhaseAnimator.getInstance();
         gui.addActor(radialMenu);
         gui.addActor(toolTipManager);
-        gui.addActor(phaseAnimator);
+
+//        anim=new Stage();
+//        anim.addActor(phaseAnimator);
     }
 
     private void bindEvents() {
         GuiEventManager.bind(GRID_CREATED, param -> {
             Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
-            gridPanel = new GridPanel(textureCache, p.getLeft(), p.getRight()).init();
+            gridPanel = new GridPanel(  p.getLeft(), p.getRight()).init();
             bf.addActor(gridPanel);
         });
 
         GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
+            Triple<DC_Obj, Float, Float> container =
+             (Triple<DC_Obj, Float, Float>) obj.get();
+
             if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
-                radialMenu.init(DebugRadialManager.getDebugNodes());
+                radialMenu.init(DebugRadialManager.getDebugNodes(container.getLeft()));
             } else {
 
-                Triple<DC_HeroObj, Float, Float> container = (Triple<DC_HeroObj, Float, Float>) obj.get();
+
                 radialMenu.createNew(container.getLeft());
             }
         });
@@ -128,11 +129,7 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
             DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
         }
-//            try{
-//                DC_Game.game.getAnimationManager().updateAnimations();
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
+
         GuiEventManager.processEvents();
 
         bf.act(delta);
@@ -154,6 +151,11 @@ public class GameScreen implements Screen {
 
         gui.act(delta);
         gui.draw();
+        try{
+//         if (  DC_Game.game.getAnimationManager().updateAnimations())
+//            PhaseAnimator.getInstance().update();
+        }catch(Exception e){
+        }
     }
 
     @Override
@@ -203,5 +205,13 @@ public class GameScreen implements Screen {
 
     public Background getBackground() {
         return background;
+    }
+
+    public GridPanel getGridPanel() {
+        return gridPanel;
+    }
+
+    public InputController getController() {
+        return controller;
     }
 }

@@ -99,7 +99,7 @@ public class Descriptions {
             + "	Knowledge also provides additional experience with levels and decreases all experience costs,"
             + " since often hero would already know something before he starts learning, and has greater skill in studying as well. ";
     /*
-	 * Even if you intend to increase your Knowledge and spell school Mastery, learning spell manually ahead of time might be a 
+     * Even if you intend to increase your Knowledge and spell school Mastery, learning spell manually ahead of time might be a
 	 * good option, as it will be promoted to Verbatim once you meet the aforementioned requirements. 
 	 * 
 	 *  

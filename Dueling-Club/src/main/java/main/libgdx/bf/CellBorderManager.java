@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.BlurUtils;
-import main.libgdx.texture.TextureCache;
+import main.libgdx.texture.TextureManager;
 import main.system.GuiEventManager;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,16 +42,16 @@ public class CellBorderManager extends Group {
 
     public Image singleBorderImageBackup = null;
 
-    public CellBorderManager(int cellW, int cellH, TextureCache textureCache) {
+    public CellBorderManager(int cellW, int cellH) {
         this.cellW = cellW;
         this.cellH = cellH;
 
-        greenBorder = new Image(textureCache.getOrCreate(cyanPath));
+        greenBorder = new Image(TextureManager.getOrCreate(cyanPath));
         greenBorder.setBounds(2, 2, 4, 4);
 
-        redBorder = new Image(textureCache.getOrCreate(redPath));
+        redBorder = new Image(TextureManager.getOrCreate(redPath));
 
-        blueBorderTexture = textureCache.getOrCreate(bluePath);
+        blueBorderTexture = TextureManager.getOrCreate(bluePath);
 
         initCallbacks();
     }
@@ -105,8 +107,8 @@ public class CellBorderManager extends Group {
                         singleBorderImageBackup = unitBorderOwner.getBorder();
                         unitBorderOwner.setBorder(null);// TODO: 12.12.2016 make better
                     }
-                    if (entry.getKey()==null ){
-                         return;
+                    if (entry.getKey() == null) {
+                        return;
                     }
                     Image i = new Image(blueBorderTexture);
                     entry.getKey().setBorder(new Image(blueBorderTexture));
@@ -125,6 +127,9 @@ public class CellBorderManager extends Group {
         blueBorderOwners.entrySet().forEach(entry -> {
             if (entry.getKey() == borderable) {
                 entry.getValue().run();
+                int id = 0; //TODO get that id!
+                WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, id
+                );
             }
         });
 

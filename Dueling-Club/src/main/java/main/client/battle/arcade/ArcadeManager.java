@@ -30,7 +30,7 @@ import java.util.List;
 
 public class ArcadeManager {
     /*
-	 * Battlecraft Skirmish Arcades 
+     * Battlecraft Skirmish Arcades
 	 * 
 	 *  Simple mode 
 	 *  	 *  
@@ -199,7 +199,6 @@ public class ArcadeManager {
 
         // StringMaster.openContainer(region
         // .getDungeonPool())
-        ;
         for (int i = 0; i < region.getMinPoolSize(); i++) {
             String dungeonName = fullPool.get(RandomWizard.getRandomListIndex(fullPool));
             pool += dungeonName + ";";
@@ -225,7 +224,7 @@ public class ArcadeManager {
                 + " place among the heroes of Edalar " + HallOfFame.getComment(place));
 
         Launcher.getMainManager().exitToMainMenu();
-        // new VictoryDialogue(party).show(); TODO
+        // new VictoryDialogue(party).update(); TODO
         // HallOfFame.checkNomination(party); // ++ difficulty TODO
 
     }
@@ -254,7 +253,7 @@ public class ArcadeManager {
 
     public void routeComplete() {
         // game.setMode();
-        // show dialog? let getOrCreate back to HC?
+        // update dialog? let getOrCreate back to HC?
 
         // let choose whether to proceed or turn back - lose time, but possible
         // to resurrect/buy/repair

@@ -13,6 +13,7 @@ import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
+import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.LogMaster.LOG_CHANNELS;
 import main.system.auxiliary.StringMaster;
@@ -499,6 +500,9 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 
     }
 
+    public STANDARD_EVENT_TYPE getEventTypeDone() {
+        return null;
+    }
     @Override
     public Boolean isForceStaticParse() {
         return forceStaticParse;

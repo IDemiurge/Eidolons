@@ -222,7 +222,7 @@ public abstract class DC_CounterRule {
             // else getUnitList().add(unit); // for logging!
 
             // disappear
-            // tooltip should show number of counters
+            // tooltip should update number of counters
             // could status also have the number?
         }
 

@@ -16,8 +16,7 @@ public class GuiStage extends Stage {
     LogPanel logPanel;
     PagedPriorityPanel initiativeQueue;
 
-    public void init(){
-
+    public void init() {
 
 
     }

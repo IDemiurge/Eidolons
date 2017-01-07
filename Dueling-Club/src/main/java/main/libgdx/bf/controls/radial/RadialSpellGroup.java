@@ -1,9 +1,9 @@
-package main.libgdx.gui.radial;
+package main.libgdx.bf.controls.radial;
 
 import main.content.CONTENT_CONSTS.SPELL_GROUP;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_SpellObj;
-import main.libgdx.gui.radial.SpellRadialManager.RADIAL_ITEM;
+import main.libgdx.bf.controls.radial.SpellRadialManager.RADIAL_ITEM;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -24,9 +24,9 @@ public class RadialSpellGroup implements RADIAL_ITEM {
     public List<RADIAL_ITEM> getItems(DC_HeroObj source) {
         LinkedList<RADIAL_ITEM> nodes = new LinkedList<>();
         List<DC_SpellObj> spells = source.getSpells()
-         .stream()
-         .filter(spell -> spell.getSpellGroup().equals(group))
-         .collect(Collectors.toList());
+                .stream()
+                .filter(spell -> spell.getSpellGroup().equals(group))
+                .collect(Collectors.toList());
         spells.forEach(s -> {
             nodes.add(new SpellNode(s));
         });
@@ -36,7 +36,7 @@ public class RadialSpellGroup implements RADIAL_ITEM {
     @Override
     public Object getContents() {
         return
-         group;
+                group;
     }
 
     @Override

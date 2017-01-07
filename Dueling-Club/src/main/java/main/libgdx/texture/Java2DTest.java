@@ -43,7 +43,7 @@ public class Java2DTest implements ApplicationListener {
 
     @Override
     public void create() {
-        if (Gdx.app.getType()!=ApplicationType.Desktop)
+        if (Gdx.app.getType() != ApplicationType.Desktop)
             throw new GdxRuntimeException("this demo only works on desktop with Java2D");
 
         float w = Gdx.graphics.getWidth();
@@ -54,7 +54,7 @@ public class Java2DTest implements ApplicationListener {
         batch = new SpriteBatch();
 
         // 1. -- create our Java2D buffer; must be big enough to hold our shape!
-        j2dTex = new  Texture2D(1024, 1024);
+        j2dTex = new Texture2D(1024, 1024);
 
         // 2. -- setup our texture region for drawing part of our buffer
         sprite = new TextureRegion(j2dTex);
@@ -67,13 +67,13 @@ public class Java2DTest implements ApplicationListener {
     }
 
 
-        void show(Image image) {
+    void show(Image image) {
         Graphics2D g2d = j2dTex.begin();
 
         //do whatever want here, e.g. solid fill, strokes, gradient fill
 
         g2d.drawImage(image
-          , 0,0, null );
+                , 0, 0, null);
 
         //upload data to GL
         j2dTex.end();
@@ -81,8 +81,8 @@ public class Java2DTest implements ApplicationListener {
         //don't forget to set our texture region up..
         //we use + 1 since Java2D draws outlines on the OUTSIDE
         Rectangle bounds = //shape.getBounds();
-         new Rectangle(0, 0,  image.getWidth(null ), image.getHeight(null ));
-        sprite.setRegion(bounds.x, bounds.y, bounds.width+1, bounds.height+1);
+                new Rectangle(0, 0, image.getWidth(null), image.getHeight(null));
+        sprite.setRegion(bounds.x, bounds.y, bounds.width + 1, bounds.height + 1);
     }
 
     @Override
@@ -123,8 +123,6 @@ public class Java2DTest implements ApplicationListener {
     @Override
     public void resume() {
     }
-
-
 
 
 }

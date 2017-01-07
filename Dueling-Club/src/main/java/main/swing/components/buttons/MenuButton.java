@@ -2,7 +2,6 @@ package main.swing.components.buttons;
 
 import main.client.dc.Launcher;
 import main.game.DC_Game;
-
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -30,7 +29,7 @@ public class MenuButton extends CustomButton implements Runnable {
             Launcher.getMainManager().exitToMainMenu();
             return;
         }
-        // getMenuDialog().show();
+        // getMenuDialog().update();
         if (DialogMaster.confirm("Exit to Main Menu?"))
             Launcher.getMainManager().exitToMainMenu();
 

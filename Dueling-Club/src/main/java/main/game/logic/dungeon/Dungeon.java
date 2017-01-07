@@ -183,9 +183,7 @@ public class Dungeon extends Entity {
     public boolean isExtendedBattlefield() {
         if (getCellsY() != 0)
             return true; // TODO WHAT IF IT IS 'SHRUNKEN'?
-        if (getCellsX() != 0)
-            return true;
-        return false;
+        return getCellsX() != 0;
     }
 
     public Integer getCellsX() {

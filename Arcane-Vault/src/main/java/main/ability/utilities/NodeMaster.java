@@ -82,9 +82,9 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 		} else {
 			name = Arrays.asList(arg.getCoreClass().getEnumConstants()).get(index).toString();
 			// collection = CollectionsMaster.getSortedCollection(collection);
-			// name =collection.getOrCreate(index).toString()
-		}
-		if (Mapper.getItem(name) != null)
+            // name =collection.getOrCreate(index).toString()
+        }
+        if (Mapper.getItem(name) != null)
 			return Mapper.getItem(name);
 		AE_Item item = new AE_Item(name, arg, null, arg.getCoreClass(), false);
 		Mapper.addEnumConstItem(item);
@@ -217,9 +217,9 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 			return 0;
 		}
 		return itemList.indexOf(item);
-		// return Mapper.getItemList(nodeItem.getArgList().getOrCreate(elementIndex))
-		// .indexOf(child.getUserObject());
-	}
+        // return Mapper.getItemList(nodeItem.getArgList().getOrCreate(elementIndex))
+        // .indexOf(child.getUserObject());
+    }
 
 	private void textBoxAction(Object source) {
 		DefaultMutableTreeNode parent = (DefaultMutableTreeNode) tree
@@ -284,7 +284,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 		DefaultMutableTreeNode parent = (DefaultMutableTreeNode) tree
 				.getLastSelectedPathComponent();
 //		if (parent.isLeaf())
-			createEmptyNodes(parent, (AE_Item) parent.getUserObject());
+        createEmptyNodes(parent, (AE_Item) parent.getUserObject());
 
 		if (parent.getChildCount() > index) {
 			if (parent.getChildAt(index) != null)
@@ -306,31 +306,30 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 		if (item.isContainer())
 			return;
 		for (Argument arg : item.getArgList()) {
-		if (!arg.isPrimitive())
-		{
-			DefaultMutableTreeNode newChild = new DefaultMutableTreeNode("<" +
-			arg.name() +
-			">" + VariableManager.VARIABLE + "</" +
-			arg.name() +
-			">");
-			if (!Mapper.getItemList(arg).isEmpty())
-			newChild = new DefaultMutableTreeNode(	Mapper.getItemList(arg).get(0));
-		createEmptyNodes(newChild,	Mapper.getItemList(arg).get(0));
-			node.add(newChild);
-		continue;
+            if (!arg.isPrimitive()) {
+                DefaultMutableTreeNode newChild = new DefaultMutableTreeNode("<" +
+                        arg.name() +
+                        ">" + VariableManager.VARIABLE + "</" +
+                        arg.name() +
+                        ">");
+                if (!Mapper.getItemList(arg).isEmpty())
+                    newChild = new DefaultMutableTreeNode(Mapper.getItemList(arg).get(0));
+                createEmptyNodes(newChild, Mapper.getItemList(arg).get(0));
+                node.add(newChild);
+                continue;
 
 		}
 
-			Object	value=VariableManager.VARIABLE;
-			if (arg.equals(ARGS.BOOLEAN)){
-				value=false;
-			}
-			DefaultMutableTreeNode	itemNode = new DefaultMutableTreeNode(Mapper.getPrimitiveItem(arg));
-			itemNode.add(new DefaultMutableTreeNode(value));
+            Object value = VariableManager.VARIABLE;
+            if (arg.equals(ARGS.BOOLEAN)) {
+                value = false;
+            }
+            DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(Mapper.getPrimitiveItem(arg));
+            itemNode.add(new DefaultMutableTreeNode(value));
 
 
-		}
-	}
+        }
+    }
 
 	public JTree getTree() {
 		return tree;
@@ -445,8 +444,8 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 		// ArcaneVault.getPreviousSelectedType().setProperty(G_PROPS.BASE_TYPE,
 		// ArcaneVault.getSelectedType().getName());
 		// ((ObjType)getSelectedNode().getUserObject())
-		// ArcaneVault.getMainBuilder().getOrCreate;
-	}
+        // ArcaneVault.getMainBuilder().getOrCreate;
+    }
 
 	public void nodePasted() {
 

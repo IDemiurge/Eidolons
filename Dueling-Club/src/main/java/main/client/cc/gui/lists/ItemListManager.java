@@ -217,7 +217,7 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
         boolean right = SwingUtilities.isRightMouseButton(e);
         JList<ObjType> list = (JList<ObjType>) e.getSource();
         HeroListPanel hlp = (HeroListPanel) list.getParent();
-        ObjType type = (ObjType) list.getSelectedValue();
+        ObjType type = list.getSelectedValue();
         if (right && e.getClickCount() == 1)
             if (isRemovable((HC_PagedListPanel) hlp.getParent())
                     || (!getHero().getGame().isSimulation() && PROP == PROPS.INVENTORY)) {
@@ -282,7 +282,7 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
     @Override
     public void valueChanged(ListSelectionEvent e) {
         JList<ObjType> list = (JList<ObjType>) e.getSource();
-        ObjType type = (ObjType) list.getSelectedValue();
+        ObjType type = list.getSelectedValue();
         if (type != null)
             typeSelected(type, (HeroListPanel) list.getParent());
     }

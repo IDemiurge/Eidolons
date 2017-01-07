@@ -5,13 +5,11 @@ import main.content.parameters.MACRO_PARAMS;
 import main.content.properties.MACRO_PROPS;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.entity.MacroObj;
-import main.game.logic.macro.global.TimeMaster;
 import main.game.logic.macro.map.Place;
 import main.game.logic.macro.map.Place.PLACE_VISIBILITY_STATUS;
 import main.game.logic.macro.map.Route;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.PositionMaster;
-import main.system.math.roll.RollMaster;
 
 import java.util.LinkedList;
 import java.util.List;

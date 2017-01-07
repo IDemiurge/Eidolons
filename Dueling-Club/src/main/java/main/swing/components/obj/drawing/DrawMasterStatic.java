@@ -16,9 +16,9 @@ import main.system.launch.CoreEngine;
 import main.test.debug.DebugMaster;
 
 import java.awt.*;
-import java.awt.List;
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.

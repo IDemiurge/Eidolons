@@ -81,7 +81,7 @@ public class MacroGroup { // macro obj type?
             else
                 westOrEast = null;
 
-        // useful for visual scouting too - can actually show enemies on the map
+        // useful for visual scouting too - can actually update enemies on the map
         // rather realistically... although in some cases it might look weird on
         // mountains etc ;)
         boolean diagonal = northOrSouth != null && westOrEast != null;
@@ -92,11 +92,11 @@ public class MacroGroup { // macro obj type?
                     * Math.sqrt(2) / 2);
             x_offset = y_offset;
         } else if (westOrEast != null) {
-            x_offset = (int) Math.round(travelSpeed / region.getMilePerPixel());
+            x_offset = Math.round(travelSpeed / region.getMilePerPixel());
             if (westOrEast)
                 x_offset = -x_offset;
         } else if (northOrSouth != null) {
-            y_offset = (int) Math.round(travelSpeed / region.getMilePerPixel());
+            y_offset = Math.round(travelSpeed / region.getMilePerPixel());
             if (northOrSouth)
                 y_offset = -y_offset;
         }

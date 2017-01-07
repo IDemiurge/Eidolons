@@ -9,13 +9,8 @@ import main.enums.StatEnums.SESSION_STATUS;
 import main.enums.StatEnums.STATE;
 import main.enums.StatEnums.WORK_STYLE;
 import main.gui.SessionWindow;
-import main.logic.AT_OBJ_TYPE;
-import main.logic.AT_PROPS;
-import main.logic.ArcaneEntity;
+import main.logic.*;
 import main.logic.ArcaneRef.AT_KEYS;
-import main.logic.Direction;
-import main.logic.Goal;
-import main.logic.Task;
 import main.logic.util.AT_SortMaster;
 import main.system.auxiliary.ListMaster;
 import main.time.ZeitMaster;
@@ -140,9 +135,9 @@ public class Session extends ArcaneEntity {
 			return null;
 		AT_SortMaster.sortGoals(goals, this);
 		if (goals.isEmpty())
-			// in non-locked mode, show all Direction's goals?
-			// otherwise, all Session's goals
-			return new ListMaster<Goal>().join(false, goals, getDirection().getGoals());
+            // in non-locked mode, update all Direction's goals?
+            // otherwise, all Session's goals
+            return new ListMaster<Goal>().join(false, goals, getDirection().getGoals());
 		return new ListMaster<Goal>().getCommonElements(goals, getDirection().getGoals());
 		// return goals;
 	}

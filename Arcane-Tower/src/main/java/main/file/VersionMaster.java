@@ -86,9 +86,9 @@ public class VersionMaster {
 			v = getPeriodInteger(v, period, stamp);
 			// oct 1 -> sept 31
 			while (v < 0) {
-				// getOrCreate one level down
-				Integer month = version.map.get(VERSION_PERIOD.MONTH);
-				Integer daysInMonth = TimeMaster.getDaysInMonth(month);
+                // getOrCreate one level down
+                Integer month = version.map.get(VERSION_PERIOD.MONTH);
+                Integer daysInMonth = TimeMaster.getDaysInMonth(month);
 				switch (period) {
 					case DAY:
 						v = daysInMonth + v;

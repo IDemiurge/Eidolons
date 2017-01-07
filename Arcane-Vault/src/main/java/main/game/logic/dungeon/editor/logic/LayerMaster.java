@@ -1,7 +1,5 @@
 package main.game.logic.dungeon.editor.logic;
 
-import main.game.logic.dungeon.editor.Level;
-
 public class LayerMaster {
 
 	// xml writing

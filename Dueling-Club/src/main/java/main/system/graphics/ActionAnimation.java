@@ -276,11 +276,11 @@ public class ActionAnimation extends Animation {
         string = StringMaster.wrapInBraces(durability + "") + " durability lost";
         x = (w - FontMaster.getStringWidth(font, string)) / 2;
         drawTextOnTarget(string, font, x, y, ColorManager.CRIMSON);
-        // show initial amount/dmg_type?
+        // update initial amount/dmg_type?
         return true;
     }
 
-    // TODO include RESISTANCE; add EXTENDED MAP that will show things like
+    // TODO include RESISTANCE; add EXTENDED MAP that will update things like
     // SIDE_MOD, CLOSE_QUARTERS...
     protected boolean drawDamageFormulaBonuses(AnimPhase phase) {
         Attack attack = (Attack) phase.getArgs()[0];

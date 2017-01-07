@@ -136,6 +136,11 @@ public class Event implements Referred {
         OBJECT_ENTERS_BATTLEFIELD,
         UNIT_HAS_BEEN_KILLED,
 
+
+        UNIT_HAS_TURNED,
+        UNIT_HAS_TURNED_CLOCKWISE,
+        UNIT_HAS_TURNED_ANTICLOCKWISE,
+
         ITEM_MANIPULATED,
         DUMMY,
 

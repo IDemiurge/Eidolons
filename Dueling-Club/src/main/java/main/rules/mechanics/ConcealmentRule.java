@@ -4,7 +4,10 @@ import main.content.CONTENT_CONSTS.FACING_SINGLE;
 import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
 import main.content.CONTENT_CONSTS.VISION_MODE;
 import main.content.PARAMS;
-import main.entity.obj.*;
+import main.entity.obj.BattlefieldObj;
+import main.entity.obj.DC_HeroObj;
+import main.entity.obj.DC_Obj;
+import main.entity.obj.Obj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.game.battlefield.FacingMaster;
 import main.game.logic.dungeon.Dungeon;
@@ -77,7 +80,7 @@ public class ConcealmentRule {
         // from 200 to 25 on diff of 8 to -5
         // def sight range of 5, I'd say
         Integer sight = source.getIntParam(PARAMS.SIGHT_RANGE);
-        FACING_SINGLE singleFacing = FacingMaster.getSingleFacing((DC_UnitObj) source, (BattlefieldObj) target);
+        FACING_SINGLE singleFacing = FacingMaster.getSingleFacing(source, (BattlefieldObj) target);
         if (singleFacing == FACING_SINGLE.BEHIND)
             sight = source.getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
         else if (singleFacing == FACING_SINGLE.TO_THE_SIDE) {

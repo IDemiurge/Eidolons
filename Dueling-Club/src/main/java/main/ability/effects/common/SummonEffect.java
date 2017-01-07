@@ -133,9 +133,10 @@ public class SummonEffect extends MicroEffect {
          * upkeep rule - RoundRule plus an event "cannot_support" to be handled
 		 * manually
 		 */
-        GuiEventManager.trigger(CELL_UPDATE,new EventCallbackParam<>(
-         getUnit().getCoordinates()
-        ) );
+
+        GuiEventManager.trigger(CELL_UPDATE, new EventCallbackParam<>(
+                getUnit().getCoordinates()
+        ));
         if (effects != null) {
 
             REF.setTarget(getUnit().getId());
@@ -164,7 +165,7 @@ public class SummonEffect extends MicroEffect {
 
     }
 
-    protected STANDARD_EVENT_TYPE getEventTypeDone() {
+    public STANDARD_EVENT_TYPE getEventTypeDone() {
         return STANDARD_EVENT_TYPE.UNIT_SUMMONED;
     }
 

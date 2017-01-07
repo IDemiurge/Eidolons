@@ -55,9 +55,9 @@ public class DC_ContentManager extends ContentManager {
     private static final Class<?>[] PROP_ENUM_CLASSES = {G_PROPS.class, PROPS.class};
     private static final String DEFAULT_DEITY = "Faithless";
     private static final List<VALUE> DEFAULTED_VALUES = new LinkedList<>(Arrays
-            .asList(new VALUE[]{PARAMS.COUNTER_MOD,}
+            .asList(
 
-            ));
+                    PARAMS.COUNTER_MOD));
     private static final String DEFAULT_WEAPON = "Petty Fist";
     private static PARAMETER[] WEAPON_MODIFYING_PARAMS = {
 
@@ -175,8 +175,6 @@ public class DC_ContentManager extends ContentManager {
 
         FEAT_MODIFYING_PARAMS = list.toArray(new PARAMETER[list.size()]);
     }
-
-    ;
 
     public DC_ContentManager() {
         super();
@@ -398,9 +396,7 @@ public class DC_ContentManager extends ContentManager {
     }
 
     public static boolean isShowValueName(VALUE value) {
-        if (NO_SHOW_NAME_VALUES.contains(value))
-            return false;
-        return true;
+        return !NO_SHOW_NAME_VALUES.contains(value);
     }
 
     public static List<PARAMETER> getBackgroundDynamicParams() {
@@ -905,7 +901,7 @@ public class DC_ContentManager extends ContentManager {
         private PARAMS parameter;
         private PARAMS[] params;
 
-        private ATTRIBUTE(PARAMS attr_param, boolean physical, PARAMS... params) {
+        ATTRIBUTE(PARAMS attr_param, boolean physical, PARAMS... params) {
             this.setParameter(attr_param);
             this.setParams(params);
         }

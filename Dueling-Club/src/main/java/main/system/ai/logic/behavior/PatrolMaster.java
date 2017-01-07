@@ -117,10 +117,8 @@ public class PatrolMaster {
 
         DC_HeroObj unit = getBlockingUnit(patrol, ai);
 
-        if (unit.isOwnedBy(ai.getUnit().getOwner()))
-            return true;
+        return unit.isOwnedBy(ai.getUnit().getOwner());
 
-        return false;
     }
 
     public static boolean isArrived(Patrol patrol, UnitAI ai) {

@@ -243,18 +243,14 @@ public class UnitAI {
             return false;
         if (index > 3)
             return true;
-        if (unit.getAiType() == AI_TYPE.BRUTE)
-            return true;
-        return false;
+        return unit.getAiType() == AI_TYPE.BRUTE;
     }
 
     private boolean checkStalk() {
         // if (getGroup().getEngagementLevel()==ENGAGEMENT_LEVEL.UNSUSPECTING)
         if (new EnumMaster<ENGAGEMENT_LEVEL>().getEnumConstIndex(getEngagementLevel()) < 1)
             return false;
-        if (unit.getAiType() == AI_TYPE.SNEAK)
-            return true;
-        return false;
+        return unit.getAiType() == AI_TYPE.SNEAK;
     }
 
     private boolean checkAmbush() {

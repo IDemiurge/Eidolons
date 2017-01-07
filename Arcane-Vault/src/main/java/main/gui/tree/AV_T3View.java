@@ -18,9 +18,8 @@ import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.GuiManager;
 import main.system.images.ImageManager;
 
-import java.awt.Dimension;
-
-import javax.swing.JFrame;
+import javax.swing.*;
+import java.awt.*;
 
 public class AV_T3View extends ThreeTreeView {
 
@@ -75,9 +74,9 @@ public class AV_T3View extends ThreeTreeView {
 							new Thread(new Runnable() {
 								public void run() {
 									Boolean result = DialogMaster.askAndWait(
-											"Where to show the Edit Table?", "Left!", "Right!",
-											"Center!");
-									AV_T3View.toggleEditTable(result);
+                                            "Where to update the Edit Table?", "Left!", "Right!",
+                                            "Center!");
+                                    AV_T3View.toggleEditTable(result);
 								}
 							}, "DialogMaster thread").start();
 
@@ -151,16 +150,16 @@ public class AV_T3View extends ThreeTreeView {
 					}
 
 					protected int getHeight() {
-						return (int) comp.getTreeSize().height;
-					}
+                        return comp.getTreeSize().height;
+                    }
 
 					public boolean isMenuHidden() {
 						return true;
 					}
 
 					protected int getWidth() {
-						return (int) comp.getTreeSize().width;
-					}
+                        return comp.getTreeSize().width;
+                    }
 
 					protected void initTable(boolean second) {
 						super.initTable(second);

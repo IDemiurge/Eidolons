@@ -53,6 +53,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 
+import static main.system.GuiEventType.CELL_UPDATE;
 import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
 
 /**
@@ -451,7 +452,9 @@ public class DC_GameManager extends GameManager {
     public Integer selectAwait() {
 
         // add Cancel button? add hotkey listener?
-        Integer selectedId = (Integer) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECT_BF_OBJ);
+        main.system.auxiliary.LogMaster.log(1, "***** awaiting selection from: " + selectingSet);
+        Integer selectedId = (Integer) WaitMaster.waitForInput(
+                WAIT_OPERATIONS.SELECT_BF_OBJ);
         // selecting = false;
         // cancelSelecting();
         return selectedId;
@@ -530,7 +533,6 @@ public class DC_GameManager extends GameManager {
         }
 
         getGame().getUnits().remove(killed);
-
         // getGame().getBattleField().remove(killed); // TODO GRAVEYARD
         if (!quietly) {
             Ref REF = Ref.getCopy(killer.getRef());
@@ -556,7 +558,9 @@ public class DC_GameManager extends GameManager {
             getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED, REF));
             game.getLogManager().doneLogEntryNode();
         }
-
+        GuiEventManager.trigger(CELL_UPDATE, new EventCallbackParam<>(
+                killed.getCoordinates()
+        ));
         // refreshAll();
     }
 

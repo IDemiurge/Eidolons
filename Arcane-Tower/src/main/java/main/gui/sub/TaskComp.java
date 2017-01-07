@@ -19,15 +19,13 @@ import main.system.auxiliary.FontMaster;
 import main.system.auxiliary.FontMaster.FONT;
 import main.system.auxiliary.StringMaster;
 
-import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
-
-import javax.swing.JComboBox;
-import javax.swing.SwingUtilities;
 
 public class TaskComp extends AT_EntityNode<Task> implements ActionListener {
 	private IconValueComp gloryComp;
@@ -200,9 +198,9 @@ public class TaskComp extends AT_EntityNode<Task> implements ActionListener {
 		// else if (arg0.getSource() == buttonPanel)
 		// for (Rectangle r : mouseMap.keySet()) {
 		// if (r.contains(arg0.getPoint())) {
-		// handleClick(mouseMap.getOrCreate(r), alt);
-		// return;
-		// }
+        // handleClick(mouseMap.getOrCreate(r), alt);
+        // return;
+        // }
 		// }
 	}
 }

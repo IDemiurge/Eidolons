@@ -21,7 +21,7 @@ public class QuickActionPagedPanel extends PagedPanel {
     }
 
     protected String[] getActionButtonImagePaths() {
-        return new String[]{ "\\UI\\components\\new\\inv.jpg",   "\\UI\\components\\new\\hammer.jpg"};
+        return new String[]{"\\UI\\components\\new\\inv.jpg", "\\UI\\components\\new\\hammer.jpg"};
     }
 
     @Override

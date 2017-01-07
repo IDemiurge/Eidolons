@@ -3,7 +3,6 @@ package main.game.logic.dungeon.special;
 import main.content.CONTENT_CONSTS.ROLL_TYPES;
 import main.content.CONTENT_CONSTS.STATUS;
 import main.content.PARAMS;
-import main.content.PROPS;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.DC_HeroObj;
@@ -11,7 +10,6 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
-import main.game.player.DC_Player;
 import main.system.math.Formula;
 import main.system.math.roll.RollMaster;
 

@@ -59,7 +59,7 @@ public class CellPrioritizer {
     public static int getPriorityForCell(DC_HeroObj unit, Obj cell,
                                          DC_ActiveObj targetAcsdftion) {
 		/*
-		 * getOrCreate attack priority for each adjacent enemy...
+         * getOrCreate attack priority for each adjacent enemy...
 		 */
 
 		/*

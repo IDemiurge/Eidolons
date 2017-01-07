@@ -100,10 +100,8 @@ public class Analyzer {
         if (unit.getQuickItems() != null)
             if (!unit.getQuickItems().isEmpty())
                 return true;
-        if (ListMaster.isNotEmpty(unit.getActionMap().get(
-                ACTION_DISPLAY_GROUP.SPEC_ACTIONS)))
-            return true;
-        return false;
+        return ListMaster.isNotEmpty(unit.getActionMap().get(
+                ACTION_DISPLAY_GROUP.SPEC_ACTIONS));
     }
 
     public static boolean hasQuickItems(DC_HeroObj unit) {
@@ -137,10 +135,7 @@ public class Analyzer {
     public static boolean checkRangedThreat(DC_HeroObj target) {
         if (!hasSpecialActions(target))
             return false;
-        if (canCast(target))
-            return true;
-
-        return false;
+        return canCast(target);
 
     }
 
@@ -152,10 +147,7 @@ public class Analyzer {
                 unit.getFacing().getDirection());
         if (c == null)
             return false;
-        if (c.equals(target.getCoordinates())) {
-            return true;
-        }
-        return false;
+        return c.equals(target.getCoordinates());
 
     }
 
@@ -165,7 +157,7 @@ public class Analyzer {
             if (isEnemy(obj, ai.getUnit())) {
                 Coordinates coordinates = ai.getUnit().getOwner()
                         .getLastSeenCache().get(obj);
-                list.add((DC_Cell) obj.getGame().getCellByCoordinate(
+                list.add(obj.getGame().getCellByCoordinate(
                         coordinates));
             }
         }

@@ -293,6 +293,7 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     private void preventDeath() {
+        main.system.auxiliary.LogMaster.log(1, "****preventDeath for " + this);
         setParam(PARAMS.C_ENDURANCE, Math.max(1, getIntParam(PARAMS.C_ENDURANCE)));
         setParam(PARAMS.C_TOUGHNESS, Math.max(1, getIntParam(PARAMS.C_TOUGHNESS)));
 

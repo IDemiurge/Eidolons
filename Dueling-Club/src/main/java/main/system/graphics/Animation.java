@@ -13,6 +13,9 @@ import main.game.battlefield.PointX;
 import main.game.battlefield.attack.Attack;
 import main.libgdx.anims.phased.PhaseAnim;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
+import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.*;
 import main.system.auxiliary.FontMaster.FONT;
 import main.system.auxiliary.secondary.GeometryMaster;
@@ -163,6 +166,8 @@ public abstract class Animation implements ANIM {
     public boolean updatePoints() {
         sourcePoint = getGrid().getGridComp().getPointForCoordinateWithOffset(
                 getSourceCoordinates());
+//        sourcePoint =
+//         GameScreen.getInstance().getPointForCoordinateWithOffset(getSourceCoordinates());
         if (sourcePoint.getX() < 0)
             return false;
         if (sourcePoint.getY() < 0)
@@ -172,10 +177,8 @@ public abstract class Animation implements ANIM {
                 getTargetCoordinates());
         if (targetPoint.getX() < 0)
             return false;
-        if (targetPoint.getY() < 0)
-            return false;
+        return targetPoint.getY() >= 0;
 
-        return true;
     }
 
     public void start() {
@@ -332,9 +335,13 @@ public abstract class Animation implements ANIM {
                 }
             }
         }
-        mouseMap.clear();
-        repaint();
-        getPhaseAnim().update();
+//        mouseMap.clear();
+        //      repaint();
+
+        if (getPhaseAnim() != null)
+            GuiEventManager.trigger(GuiEventType.UPDATE_PHASE_ANIM,
+                    new EventCallbackParam(getPhaseAnim()));
+
     }
 
     public boolean checkTime() {
@@ -738,8 +745,9 @@ public abstract class Animation implements ANIM {
                 return 0;
         if (isLogged())
             if (isLogged())
-                main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, str + " anim text at "
-                        + new PointX(x, y));
+                main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+                        str + " anim text at "
+                                + new PointX(x, y));
         if (isDrawTextBackground())
             drawTextBackground(str, font, x, y + fontHeight / 2 + 3);
         g.setColor(c);
@@ -946,7 +954,7 @@ public abstract class Animation implements ANIM {
 
     protected void repaint() {
         if (CoreEngine.isSwingOn())
-        getGrid().getGridComp().getPanel().repaint();
+            getGrid().getGridComp().getPanel().repaint();
     }
 
     protected void drawDebugInfo() {
@@ -1255,9 +1263,7 @@ public abstract class Animation implements ANIM {
     public boolean isVisible() {
         if (!isDrawReady())
             return false;
-        if (area == null)
-            return false;
-        return true;
+        return area != null;
         // Coordinates c = getGrid().getOffsetCoordinate();
         // // getGrid().getPointForCoordinateWithOffset(new Coordinates (0, 0))
         // ;
@@ -1285,9 +1291,7 @@ public abstract class Animation implements ANIM {
             return false;
         if (!isStarted())
             return false;
-        if (phase == null)
-            return false;
-        return true;
+        return phase != null;
     }
 
     public Map<Rectangle, MouseItem> getMouseMap() {
@@ -1546,7 +1550,8 @@ public abstract class Animation implements ANIM {
     }
 
     public boolean isLogged() {
-        return logged;
+//        return logged;
+        return LogMaster.ANIM_DEBUG_ON;
     }
 
     public void setLogged(boolean b) {
@@ -1563,4 +1568,5 @@ public abstract class Animation implements ANIM {
 
     public void setPhaseAnim(PhaseAnim phaseAnim) {
         this.phaseAnim = phaseAnim;
-    }}
+    }
+}

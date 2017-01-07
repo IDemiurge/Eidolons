@@ -82,7 +82,7 @@ public class EffectAnimation extends ActionAnimation {
             drawOnTarget(image, x, y);
             y += image.getHeight(null);
         }
-        // TODO tooltips? or subphases? show final numbers only?
+        // TODO tooltips? or subphases? update final numbers only?
         String str = roll.getRollTarget();
         x = MigMaster.getCenteredTextPosition(str, font, w);
         drawOnTarget(ImageManager.getDiceIcon(negative, true), x - 45, y);
