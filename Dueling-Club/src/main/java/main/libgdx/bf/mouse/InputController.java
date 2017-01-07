@@ -6,6 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.game.DC_Game;
 import main.libgdx.GameScreen;
+import main.test.libgdx.prototype.FireLightProt;
+import main.test.libgdx.prototype.Lightmap;
 
 /**
  * Created by PC on 25.10.2016.
@@ -21,6 +23,8 @@ public class InputController implements InputProcessor {
 
     OrthographicCamera camera;
     boolean is_it_Left_Click = false;
+    boolean alt = false;
+    boolean ctrl = false;
 
     public InputController(OrthographicCamera camera) {
         this.camera = camera;
@@ -39,14 +43,25 @@ public class InputController implements InputProcessor {
     // сюда передаются все обьекты, что есть в мире, и потом отсюда они управляются
     @Override
     public boolean keyDown(int i) {
-
+        if (i == 57) {
+            alt = true;
+        }
+        if (i == 129) {
+            ctrl = true;
+        }
         return false;
+        // alt = 57, crtl = 129
     }
 
 
     @Override
     public boolean keyUp(int i) {
-
+        if (i == 57) {
+            alt = false;
+        }
+        if (i == 129) {
+            ctrl = false;
+        }
 
         return false;
     }
@@ -110,17 +125,47 @@ public class InputController implements InputProcessor {
 
     @Override
     public boolean scrolled(int i) {
-        if (i == 1){
-//            camera.zoom *= 2f;
-            camera.zoom += 0.25f;
-        }
-        if (i == -1){
-//            camera.zoom /= 2f;
-            if (camera.zoom >= 0.25f)
-                camera.zoom -= 0.25f;
+        if (alt && !ctrl) {
+            // ambient
+            if (i == 1) {
+                Lightmap.setAmbint(Lightmap.getAmbint() + 0.02f);
+            }
+            if (i == -1) {
+                Lightmap.setAmbint(Lightmap.getAmbint() - 0.02f);
+            }
 
         }
-        System.out.println(camera.zoom);
+        if (ctrl) {
+            if (alt) {
+                if (i == 1) {
+                    FireLightProt.setBiggerAlpha(FireLightProt.getAlphaBigger() + 0.05f);
+                }
+                if (i == -1) {
+                    FireLightProt.setBiggerAlpha(FireLightProt.getAlphaBigger() - 0.05f);
+                }
+
+            }
+            if (!alt) {
+                if (i == 1) {
+                    FireLightProt.setSmallerAlpha(FireLightProt.getAlphaSmaller() + 0.05f);
+                }
+                if (i == -1) {
+                    FireLightProt.setSmallerAlpha(FireLightProt.getAlphaSmaller() - 0.05f);
+                }
+            }
+            // local lights
+        }
+        if (!alt && !ctrl) {
+            if (i == 1) {
+                camera.zoom += 0.25f;
+            }
+            if (i == -1) {
+                if (camera.zoom >= 0.25f)
+                    camera.zoom -= 0.25f;
+            }
+        }
+
+//        System.out.println(camera.zoom);
         return false;
     }
 

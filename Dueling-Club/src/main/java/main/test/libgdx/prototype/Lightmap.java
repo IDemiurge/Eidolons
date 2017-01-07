@@ -21,14 +21,15 @@ import java.util.Map;
  */
 public class Lightmap {
     private Map<MicroObj, Body> bodyMap;
-    private World world;
-    private RayHandler rayHandler;
+    private static World world;
+    private static RayHandler rayHandler;
     private float cellWidth;
     private float cellHeight;
     private int rows;
     private Map<MicroObj, PointLight> lightMap;
     private Map<Integer, FireLightProt> fireLightProtMap;
     private static float SECOND = 1000000000;
+    private static float ambient = 0.05f;
     Box2DDebugRenderer debugRenderer;
 
     private void init(DequeImpl<DC_HeroObj> un, World world, RayHandler rayHandler, float cellWidth, float cellHeight, int rows) {
@@ -40,13 +41,13 @@ public class Lightmap {
             this.rows = 0;
         }
 
-        this.world = world;
-        this.rayHandler = rayHandler;
-        this.rayHandler.setBlur(true);
-        this.rayHandler.setBlurNum(15);
-        this.rayHandler.setAmbientLight(Color.GRAY);
-        this.rayHandler.setAmbientLight(LightingManager.ambient_light);
-        this.rayHandler.setBlurNum(15);
+        Lightmap.world = world;
+        Lightmap.rayHandler = rayHandler;
+        Lightmap.rayHandler.setBlur(true);
+        Lightmap.rayHandler.setBlurNum(15);
+        Lightmap.rayHandler.setAmbientLight(Color.GRAY);
+        Lightmap.rayHandler.setAmbientLight(LightingManager.ambient_light);
+        Lightmap.rayHandler.setBlurNum(15);
         RayHandler.setGammaCorrection(true);
         debugRenderer = new Box2DDebugRenderer();
         lightMap = new HashMap<>();
@@ -161,5 +162,15 @@ public class Lightmap {
 //        }
         // TODO: 12.12.2016 pointlighter around the mouse - 35 ligth emission and arround active Unite - (his emission +20) (DC_Game.game.getManager.getActiveUnit()
         //      light_emission + 20)
+    }
+
+    public static void setAmbint(float c) {
+        rayHandler.setAmbientLight(c);
+        rayHandler.update();
+        ambient = c;
+    }
+
+    public static float getAmbint() {
+        return ambient;
     }
 }
