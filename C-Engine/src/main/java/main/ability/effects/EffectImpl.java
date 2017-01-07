@@ -499,8 +499,9 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
         this.forceStaticParse = forceStaticParse;
 
     }
+
     public STANDARD_EVENT_TYPE getEventTypeDone() {
-        return null ;
+        return null;
     }
     @Override
     public Boolean isForceStaticParse() {

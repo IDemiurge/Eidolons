@@ -402,7 +402,7 @@ public class BuildHelper {
         SIZE_MOD,
         RANDOM_ROOMS,
         CORRIDORS,
-        FILLER_TYPE;
+        FILLER_TYPE
     }
 
     public class BuildParameters extends DataUnit<BUILD_PARAMS> {

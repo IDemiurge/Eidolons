@@ -319,9 +319,7 @@ public class BattleConstructor {
     }
 
     private boolean checkEncounter(ObjType waveType) {
-        if (waveType.checkGroup(StringMaster.PLAYABLE))
-            return true;
-        return false;
+        return waveType.checkGroup(StringMaster.PLAYABLE);
     }
 
     public Integer getRoundsToFight(ObjType waveType) {

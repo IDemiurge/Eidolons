@@ -1,17 +1,14 @@
 package main.utilities.sorting;
 
-import java.util.Arrays;
-import java.util.Vector;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-
 import main.swing.generic.components.G_CompHolder;
 import main.swing.generic.components.G_Panel;
 import main.utilities.sorting.TypeSorter.SORT_BY;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.Vector;
 
 public class SortBox extends G_CompHolder implements ActionListener {
 

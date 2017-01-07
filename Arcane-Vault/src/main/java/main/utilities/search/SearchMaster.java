@@ -32,9 +32,9 @@ public class SearchMaster {
 	}
 
 	public static void newSearch() {
-		// getOrCreate TYPES
-		// getOrCreate search text, perhaps with some basic regex syntax like "not",
-		// "or"...
+        // getOrCreate TYPES
+        // getOrCreate search text, perhaps with some basic regex syntax like "not",
+        // "or"...
 
 		// List<OBJ_TYPE> types = new LinkedList<>();
 		// int i = DialogMaster.optionChoice(OBJ_TYPES.values(),

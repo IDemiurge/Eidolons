@@ -452,9 +452,9 @@ public class DC_GameManager extends GameManager {
     public Integer selectAwait() {
 
         // add Cancel button? add hotkey listener?
-        main.system.auxiliary.LogMaster.log(1,"***** awaiting selection from: "+selectingSet );
+        main.system.auxiliary.LogMaster.log(1, "***** awaiting selection from: " + selectingSet);
         Integer selectedId = (Integer) WaitMaster.waitForInput(
-         WAIT_OPERATIONS.SELECT_BF_OBJ);
+                WAIT_OPERATIONS.SELECT_BF_OBJ);
         // selecting = false;
         // cancelSelecting();
         return selectedId;
@@ -558,9 +558,9 @@ public class DC_GameManager extends GameManager {
             getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED, REF));
             game.getLogManager().doneLogEntryNode();
         }
-        GuiEventManager.trigger(CELL_UPDATE,new EventCallbackParam<>(
-         killed.getCoordinates()
-        ) );
+        GuiEventManager.trigger(CELL_UPDATE, new EventCallbackParam<>(
+                killed.getCoordinates()
+        ));
         // refreshAll();
     }
 

@@ -29,7 +29,7 @@ public class DebugRadialManager {
 
         Arrays.stream(DEBUG_CONTROL.values()).forEach(c -> {
             if (c.isRoot()) {
-               list.add(createNodeBranch(c, obj));
+                list.add(createNodeBranch(c, obj));
             }
         });
 
@@ -97,7 +97,7 @@ public class DebugRadialManager {
             DC_Game.game.getDebugMaster().executeDebugFunctionNewThread(func_control);
         }
 
-        if (control instanceof   HIDDEN_DEBUG_FUNCTIONS) {
+        if (control instanceof HIDDEN_DEBUG_FUNCTIONS) {
             HIDDEN_DEBUG_FUNCTIONS func_control = ((HIDDEN_DEBUG_FUNCTIONS) control);
             DC_Game.game.getDebugMaster().executeHiddenDebugFunction(func_control);
 
@@ -105,26 +105,29 @@ public class DebugRadialManager {
     }
 
     public static void handleDebugControl(DEBUG_CONTROL control) {
-         new Thread(new Runnable() {            public void run() {
-        switch (control) {
-            case SET_VALUE:
-                Game.game.getValueHelper().promptSetValue();
-                break;
-            case PICK:
+        new Thread(new Runnable() {
+            public void run() {
+                switch (control) {
+                    case SET_VALUE:
+                        Game.game.getValueHelper().promptSetValue();
+                        break;
+                    case PICK:
 
-                DC_Game.game.getDebugMaster().executeDebugFunction(new EnumMaster<DebugMaster.DEBUG_FUNCTIONS>()
-                        .retrieveEnumConst(DebugMaster.DEBUG_FUNCTIONS.class,
-                                ListChooser.chooseEnum(DebugMaster.DEBUG_FUNCTIONS.class)));
-                break;
-            case TYPE:
-                DC_Game.game.getDebugMaster().promptFunctionToExecute();
-                break;
-            case PICK_HIDDEN:
-                DC_Game.game.getDebugMaster().executeHiddenDebugFunction(new EnumMaster<DebugMaster.HIDDEN_DEBUG_FUNCTIONS>()
-                        .retrieveEnumConst(DebugMaster.HIDDEN_DEBUG_FUNCTIONS.class,
-                                ListChooser.chooseEnum(DebugMaster.HIDDEN_DEBUG_FUNCTIONS.class)));
-                break;
-        }                     }       }, "debug radial click handle").start();
+                        DC_Game.game.getDebugMaster().executeDebugFunction(new EnumMaster<DebugMaster.DEBUG_FUNCTIONS>()
+                                .retrieveEnumConst(DebugMaster.DEBUG_FUNCTIONS.class,
+                                        ListChooser.chooseEnum(DebugMaster.DEBUG_FUNCTIONS.class)));
+                        break;
+                    case TYPE:
+                        DC_Game.game.getDebugMaster().promptFunctionToExecute();
+                        break;
+                    case PICK_HIDDEN:
+                        DC_Game.game.getDebugMaster().executeHiddenDebugFunction(new EnumMaster<DebugMaster.HIDDEN_DEBUG_FUNCTIONS>()
+                                .retrieveEnumConst(DebugMaster.HIDDEN_DEBUG_FUNCTIONS.class,
+                                        ListChooser.chooseEnum(DebugMaster.HIDDEN_DEBUG_FUNCTIONS.class)));
+                        break;
+                }
+            }
+        }, "debug radial click handle").start();
     }
 
     public enum DEBUG_CONTROL {

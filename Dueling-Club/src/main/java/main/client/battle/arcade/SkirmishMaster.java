@@ -101,7 +101,6 @@ public class SkirmishMaster {
 
             }
 
-            ;
         };
         // filter!
         final LinkedList<OBJECTIVE_TYPE> allowed = new LinkedList<OBJECTIVE_TYPE>();

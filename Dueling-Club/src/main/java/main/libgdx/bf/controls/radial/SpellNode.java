@@ -29,6 +29,6 @@ public class SpellNode implements RADIAL_ITEM {
 
     @Override
     public String getTexturePath() {
-        return ((Entity)getContents()).getImagePath();
+        return ((Entity) getContents()).getImagePath();
     }
 }

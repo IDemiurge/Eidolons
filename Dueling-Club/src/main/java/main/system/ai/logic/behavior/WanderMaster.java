@@ -110,9 +110,7 @@ public class WanderMaster {
     }
 
     private static boolean checkProgressObstructed(DIRECTION direction, UnitAI ai, GOAL_TYPE type) {
-        if (ai.isPathBlocked())
-            return true;
-        return false;
+        return ai.isPathBlocked();
         // Coordinates c =
         // ai.getUnit().getCoordinates().getAdjacentCoordinate(direction);
         // if (c == null)

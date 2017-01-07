@@ -193,7 +193,7 @@ public class PerceptionRule extends TurnRule implements ActionRule {
         KNOWN_TO_BE_THERE,
         SUSPECTED_TO_BE_THERE,
         KNOWN_TO_BE_SOMEWHERE,
-        SUSPECTED_TO_BE_SOMEWHERE;
+        SUSPECTED_TO_BE_SOMEWHERE
 
     }
 

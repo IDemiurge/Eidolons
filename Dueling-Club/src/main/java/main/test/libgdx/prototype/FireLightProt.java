@@ -26,19 +26,30 @@ public class FireLightProt {
     float lengthFinal;
     float now;
     float past;
+    static float alphaBigger;
+    static float alphaSmaller;
+    static Color biggerLigth;
+    static Color smallerLigth;
 
     public void setDISTANCE(float DISTANCE) {
         this.DISTANCE = DISTANCE;
     }
 
+
     public FireLightProt(World world, RayHandler rayHandler, float x, float y, int distance, float degree, float changeSpeed) {
+        biggerLigth = new Color(0xffe9a3AF);
+        smallerLigth = new Color(0xf7ffa832);
+        alphaBigger = biggerLigth.a;
+        alphaSmaller = smallerLigth.a;
+
 //        pointLight = new ConeLight(rayHandler, AMOUNT_OF_RAYS, Color.RED, distance,degree, x, y);
-        pointLight = new ConeLight(rayHandler, AMOUNT_OF_RAYS, new Color(0xffe9a3AF), distance, x, y, 90, degree);
-        pointLight.setSoft(true);
-        pointLight.setSoftnessLength(50f);
-        pointLight_test = new ConeLight(rayHandler, AMOUNT_OF_RAYS, new Color(0xf7ffa8AF), distance / 3, x, y, 90, degree);
-        pointLight_test.setSoft(true);
-        pointLight_test.setSoftnessLength(50f);
+        pointLight = new ConeLight(rayHandler, AMOUNT_OF_RAYS, biggerLigth, distance, x, y, 90, degree);
+//        pointLight.setSoft(true);
+//        pointLight.setSoftnessLength(50f);
+        pointLight_test = new ConeLight(rayHandler, AMOUNT_OF_RAYS, smallerLigth, distance / 3, x, y, 90, degree);
+
+//    pointLight_test.setSoft(true);
+//        pointLight_test.setSoftnessLength(50f);
 
 
         changesp = changeSpeed;
@@ -57,6 +68,8 @@ public class FireLightProt {
         float diff = now - past;
         timeCounter += diff;
         past = now;
+        pointLight.setColor(biggerLigth);
+        pointLight_test.setColor(smallerLigth);
 //        System.out.println("V = " + v + " || timeCounter = " + timeCounter);
 //        System.out.println("Timecounter is " + timeCounter);
         if (timeCounter >= changesp + randomTimeToAdd) {
@@ -161,5 +174,24 @@ public class FireLightProt {
     public void attachToBody(Body body) {
         pointLight.attachToBody(body);
         pointLight_test.attachToBody(body);
+    }
+
+    public static void setBiggerAlpha(float alpha) {
+        biggerLigth.a = alpha;
+        alphaBigger = alpha;
+
+    }
+
+    public static void setSmallerAlpha(float alpha) {
+        smallerLigth.a = alpha;
+        alphaSmaller = alpha;
+    }
+
+    public static float getAlphaBigger() {
+        return alphaBigger;
+    }
+
+    public static float getAlphaSmaller() {
+        return alphaSmaller;
     }
 }

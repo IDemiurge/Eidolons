@@ -42,7 +42,7 @@ public class CellBorderManager extends Group {
 
     public Image singleBorderImageBackup = null;
 
-    public CellBorderManager(int cellW, int cellH ) {
+    public CellBorderManager(int cellW, int cellH) {
         this.cellW = cellW;
         this.cellH = cellH;
 
@@ -107,8 +107,8 @@ public class CellBorderManager extends Group {
                         singleBorderImageBackup = unitBorderOwner.getBorder();
                         unitBorderOwner.setBorder(null);// TODO: 12.12.2016 make better
                     }
-                    if (entry.getKey()==null ){
-                         return;
+                    if (entry.getKey() == null) {
+                        return;
                     }
                     Image i = new Image(blueBorderTexture);
                     entry.getKey().setBorder(new Image(blueBorderTexture));
@@ -128,7 +128,7 @@ public class CellBorderManager extends Group {
             if (entry.getKey() == borderable) {
                 entry.getValue().run();
                 int id = 0; //TODO get that id!
-                WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ,id
+                WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, id
                 );
             }
         });

@@ -21,7 +21,7 @@ import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 public class UnconsciousRule extends RoundRule implements ActionRule {
     /*
-	 * For living units, when their Toughness falls to or below 0, they are knocked out and lose all current Focus
+     * For living units, when their Toughness falls to or below 0, they are knocked out and lose all current Focus
 	 * Focus and Toughness will regenerate with half the speed while you are Unconscious, and you only getOrCreate up once you have
 	 * 25-{focus_retainment}/2 and of x% of maximum Toughness . 
 	 *  

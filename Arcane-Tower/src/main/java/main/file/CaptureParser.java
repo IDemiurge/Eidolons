@@ -8,11 +8,7 @@ import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
 import main.enums.StatEnums.TASK_TYPE;
 import main.io.PromptMaster;
-import main.logic.AT_OBJ_TYPE;
-import main.logic.AT_PARAMS;
-import main.logic.Direction;
-import main.logic.Goal;
-import main.logic.Task;
+import main.logic.*;
 import main.session.Session;
 import main.session.SessionMaster;
 import main.swing.generic.components.editors.lists.ListChooser;
@@ -317,8 +313,8 @@ public class CaptureParser {
 			imgPath = ArcaneTower.IMG_PATH + type.getOBJ_TYPE_ENUM() + "\\default.";
 
 		return imgPath;// return
-		// DataManager.getTypes(type.getOBJ_TYPE_ENUM()).getOrCreate(0).getImagePath();
-	}
+        // DataManager.getTypes(type.getOBJ_TYPE_ENUM()).getOrCreate(0).getImagePath();
+    }
 
 	private static ObjType getType(AT_OBJ_TYPE scope, String header, ObjType enclosingType,
 			boolean update) {
@@ -355,9 +351,9 @@ public class CaptureParser {
 							+ " has no enclosingType; choice prompts on?");
 				if (promptsMode)
 					enclosingType = ListChooser.chooseTypeFromSubgroup_(scope.getParentType(), "");
-				// else enclosingType = DataManager.getTypes(scope).getOrCreate(0);
-			}
-		if (enclosingType != null)
+                // else enclosingType = DataManager.getTypes(scope).getOrCreate(0);
+            }
+        if (enclosingType != null)
 			type.setProperty(AT_OBJ_TYPE.getParentValue((AT_OBJ_TYPE) type.getOBJ_TYPE_ENUM()),
 					enclosingType.getName());
 		return type;

@@ -247,7 +247,7 @@ public class TestMasterContent {
 
     private static void addTestSpells(ObjType type, boolean last) {
         type.addProperty(PROPS.VERBATIM_SPELLS, "Blink;"
-         + getTEST_LIST(), true);
+                + getTEST_LIST(), true);
         if (DrawMasterStatic.GRAPHICS_TEST_MODE) {
             type.addProperty(PROPS.VERBATIM_SPELLS, "Light", true);
             type.addProperty(PROPS.VERBATIM_SPELLS, "Haze", true);

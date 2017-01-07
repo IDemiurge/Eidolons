@@ -128,9 +128,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     }
 
     protected boolean isPositive() {
-        if (isReverse(level))
-            return true;
-        return false;
+        return isReverse(level);
     }
 
     protected boolean checkLogged(Obj obj) {
@@ -221,9 +219,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     protected boolean checkAnimationDisplayed(Ref ref) {
         if (!checkLogged(ref.getSourceObj()))
             return false;
-        if (!ref.getGame().isStarted())
-            return false;
-        return true;
+        return ref.getGame().isStarted();
     }
 
     public DC_Game getGame() {

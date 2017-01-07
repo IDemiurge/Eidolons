@@ -26,7 +26,7 @@ public class ToolTipManager extends Group {
     private final TextureRegion single;
     private List<ToolTip> toolTips;
 
-    public ToolTipManager( ) {
+    public ToolTipManager() {
         Texture imageTexture = TextureManager.getOrCreate("UI\\components\\VALUE_BOX_BIG111.png");
         single = new TextureRegion(imageTexture, 0, 0, 240, 45);
         top = new TextureRegion(imageTexture, 0, 45, 240, 45);

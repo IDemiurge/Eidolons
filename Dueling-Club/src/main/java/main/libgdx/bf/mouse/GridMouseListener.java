@@ -48,8 +48,8 @@ public class GridMouseListener extends InputListener {
             if (a != null && a instanceof UnitView) {
                 UnitView uv = (UnitView) a;
                 DC_HeroObj hero = gridPanel.getUnitMap().entrySet().stream()
-                 .filter(entry -> entry.getValue() == uv).findFirst()
-                 .get().getKey();
+                        .filter(entry -> entry.getValue() == uv).findFirst()
+                        .get().getKey();
 
                 Map<String, String> tooltipStatMap = new HashMap<>();
                 tooltipStatMap.put(PARAMS.C_TOUGHNESS.getName(), "Toughness");
@@ -112,7 +112,7 @@ public class GridMouseListener extends InputListener {
 
     public boolean handleTouchDown(InputEvent event, float x, float y, int pointer, int button) {
         Actor a;
-        a =  gridPanel. hitChildren(x, y, true);
+        a = gridPanel.hitChildren(x, y, true);
         if (a != null && a instanceof GridCell) {
             GridCell cell = (GridCell) a;
             if (gridPanel.getCellBorderManager().isBlueBorderActive() && event.getButton() == 0) {
@@ -132,15 +132,15 @@ public class GridMouseListener extends InputListener {
                 if (unit != null && unit instanceof UnitView) {
                     if (event.getButton() == 1) {
                         DC_HeroObj heroObj = gridPanel.getUnitMap().entrySet()
-                         .stream().filter(entry -> entry.getValue() == unit).findFirst()
-                         .get().getKey();
+                                .stream().filter(entry -> entry.getValue() == unit).findFirst()
+                                .get().getKey();
                         Triple<DC_Obj, Float, Float> container = new ImmutableTriple<>(heroObj, x, y);
                         GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(container));
                     }
                 }
             } else if (event.getButton() == 1) {
                 DC_Obj dc_cell = DC_Game.game.getCellByCoordinate(
-                 new Coordinates(cell.getGridX(), cell.getGridY()));
+                        new Coordinates(cell.getGridX(), cell.getGridY()));
                 Triple<DC_Obj, Float, Float> container = new ImmutableTriple<>(dc_cell, x, y);
                 GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(container));
             }

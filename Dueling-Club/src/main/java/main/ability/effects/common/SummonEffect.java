@@ -134,9 +134,9 @@ public class SummonEffect extends MicroEffect {
 		 * manually
 		 */
 
-        GuiEventManager.trigger(CELL_UPDATE,new EventCallbackParam<>(
-         getUnit().getCoordinates()
-        ) );
+        GuiEventManager.trigger(CELL_UPDATE, new EventCallbackParam<>(
+                getUnit().getCoordinates()
+        ));
         if (effects != null) {
 
             REF.setTarget(getUnit().getId());

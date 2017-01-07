@@ -2,7 +2,6 @@ package main.client.cc.logic.party;
 
 import main.client.battle.arcade.ArcadeManager.ARCADE_STATUS;
 import main.client.cc.logic.HeroCreator;
-import main.client.dc.Launcher;
 import main.client.dc.Simulation;
 import main.content.CONTENT_CONSTS.PRINCIPLES;
 import main.content.*;

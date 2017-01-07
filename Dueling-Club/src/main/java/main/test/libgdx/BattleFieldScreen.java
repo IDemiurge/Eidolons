@@ -185,7 +185,6 @@ public class BattleFieldScreen implements Screen {
         stage.addActor(actor2);
 
 
-
         controller = new InputController(camera);
         Gdx.input.setInputProcessor(controller);
 //        stage.setKeyboardFocus(actor);

@@ -9,12 +9,12 @@ public class Panel extends Group {
 
 //    public GDX_EVENT event;
 
-    public void init(){
+    public void init() {
 //        TempEventManager.bind();
 
     }
 
-    public void refresh(){
+    public void refresh() {
 
     }
 

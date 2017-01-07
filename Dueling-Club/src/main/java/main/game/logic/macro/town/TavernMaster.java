@@ -102,7 +102,7 @@ public class TavernMaster {
 
         // offer rented rooms when resting in this town?
 		/*
-		 * note that while in town, not all members are 'together'... how to control this?
+         * note that while in town, not all members are 'together'... how to control this?
 		 * 
 		 * you still getOrCreate to choose what to *do* - study, rest and meditation are better in Rooms
 		 */
@@ -123,16 +123,14 @@ public class TavernMaster {
 
     public static void entertain(Tavern tavern) {
 		/*
-		 * getOrCreate some gold and raise mood of patrons and even inn-keep himself
+         * getOrCreate some gold and raise mood of patrons and even inn-keep himself
 		 */
     }
 
     public static boolean checkCanHire(MacroParty macroParty, DC_HeroObj hero,
                                        Tavern tavern, DC_HeroObj e) {
         // TODO principles, party size,
-        if (macroParty.getMembers().size() > 4)
-            return false;
-        return true;
+        return macroParty.getMembers().size() <= 4;
     }
 
     public static int getXpPerTurn(Tavern tavern) {

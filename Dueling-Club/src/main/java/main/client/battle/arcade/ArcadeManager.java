@@ -30,7 +30,7 @@ import java.util.List;
 
 public class ArcadeManager {
     /*
-	 * Battlecraft Skirmish Arcades 
+     * Battlecraft Skirmish Arcades
 	 * 
 	 *  Simple mode 
 	 *  	 *  
@@ -199,7 +199,6 @@ public class ArcadeManager {
 
         // StringMaster.openContainer(region
         // .getDungeonPool())
-        ;
         for (int i = 0; i < region.getMinPoolSize(); i++) {
             String dungeonName = fullPool.get(RandomWizard.getRandomListIndex(fullPool));
             pool += dungeonName + ";";

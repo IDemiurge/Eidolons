@@ -16,19 +16,12 @@ import main.system.auxiliary.CloneMaster;
 import main.system.auxiliary.ColorManager;
 import main.utilities.workspace.Workspace;
 
-import java.awt.Dimension;
-import java.util.List;
-
-import javax.swing.JComponent;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
+import javax.swing.tree.*;
+import java.awt.*;
+import java.util.List;
 
 // a tree for each tab 
 // search result as a tree or a list? 
@@ -69,9 +62,9 @@ public class TreeViewBuilder extends Builder {
 		// List<DefaultMutableTreeNode> nodes = TreeMaster
 		// .getChildren((DefaultMutableTreeNode) tree.getTree().getModel()
 		// .getRoot());
-		// nodes = TreeMaster.getChildren(nodes.getOrCreate(0));
-		if (comp == null) {
-			Dimension dimension = new Dimension(ArcaneVault.TREE_WIDTH, ArcaneVault.TREE_HEIGHT);
+        // nodes = TreeMaster.getChildren(nodes.getOrCreate(0));
+        if (comp == null) {
+            Dimension dimension = new Dimension(ArcaneVault.TREE_WIDTH, ArcaneVault.TREE_HEIGHT);
 			JScrollPane scrollPane = new JScrollPane(getTree());
 			// comp = new G_Panel();
 			// scrollPane.setSize(dimension);
@@ -91,9 +84,9 @@ public class TreeViewBuilder extends Builder {
 		// listener?
 
 		if (ArcaneVault.isColorsInverted())
-			getTree().setBackground(ColorManager.BACKGROUND); // getOrCreate ws
-																// background
-	}
+            getTree().setBackground(ColorManager.BACKGROUND); // getOrCreate ws
+        // background
+    }
 
 	// TODO
 	public void reload() {

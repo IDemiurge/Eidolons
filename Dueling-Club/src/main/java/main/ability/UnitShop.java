@@ -364,8 +364,6 @@ public class UnitShop {
         if (max == -1)
             max = min;
 
-        if (index < min || index > max)
-            return false;
-        return true;
+        return !(index < min || index > max);
     }
 }

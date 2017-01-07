@@ -1,13 +1,5 @@
 package main.libgdx.gui.layout;
 
-import main.libgdx.gui.panels.sub.Comp;
-import main.libgdx.gui.panels.sub.Container;
-import main.system.auxiliary.StringMaster;
-import main.system.graphics.MigMaster;
-
-import java.awt.*;
-import java.util.Map;
-
 /**
  * Created by JustMe on 1/7/2017.
  */

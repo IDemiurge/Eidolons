@@ -18,11 +18,10 @@ public enum GuiEventType {
     CELL_UPDATE,
     SHOW_TOOLTIP,
     CREATE_UNITS_MODEL,
-    DESTROY_UNIT_MODEL(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED) ,
+    DESTROY_UNIT_MODEL(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED),;
+    public STANDARD_EVENT_TYPE[] boundEvents;
 
-    ;
-    public STANDARD_EVENT_TYPE[]    boundEvents;
-    GuiEventType(STANDARD_EVENT_TYPE... boundEvents){
-       this. boundEvents=boundEvents;
+    GuiEventType(STANDARD_EVENT_TYPE... boundEvents) {
+        this.boundEvents = boundEvents;
     }
 }

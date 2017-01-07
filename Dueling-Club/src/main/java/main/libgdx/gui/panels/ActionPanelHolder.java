@@ -18,9 +18,9 @@ public class ActionPanelHolder {
     ActionPanel itemPanel;
     ActionPanel centerPanel;
     ActionPanel spellPanel;
-    private int columns=6;
+    private int columns = 6;
 
-    public void refresh(){
+    public void refresh() {
         itemPanel.init(hero.getQuickItems());
         Collection<DC_UnitAction> actives = getFilteredActions();
         centerPanel.init(actives); //TODO filter actions!!!
@@ -29,31 +29,31 @@ public class ActionPanelHolder {
     }
 
     private Collection<DC_UnitAction> getFilteredActions() {
-         List<DC_UnitAction> list = new LinkedList<>();
-         hero.getActives().forEach(a->{
-             list.add((DC_UnitAction) a);
+        List<DC_UnitAction> list = new LinkedList<>();
+        hero.getActives().forEach(a -> {
+            list.add((DC_UnitAction) a);
         });
         return list;
     }
 
-    public void init(){
-    itemPanel= new ActionPanel<DC_QuickItemObj>(hero,
-     action->{
-         DC_QuickItemObj item= (DC_QuickItemObj) action.get();
-         item.invokeClicked();
-    }, columns);
+    public void init() {
+        itemPanel = new ActionPanel<DC_QuickItemObj>(hero,
+                action -> {
+                    DC_QuickItemObj item = (DC_QuickItemObj) action.get();
+                    item.invokeClicked();
+                }, columns);
 
-    centerPanel= new ActionPanel<DC_UnitAction>(hero,
-     action->{
-         DC_UnitAction active = (DC_UnitAction) action.get();
-         active.invokeClicked();
-     }, columns);
+        centerPanel = new ActionPanel<DC_UnitAction>(hero,
+                action -> {
+                    DC_UnitAction active = (DC_UnitAction) action.get();
+                    active.invokeClicked();
+                }, columns);
 
-    spellPanel= new ActionPanel<DC_SpellObj>(hero,
-     action->{
-         DC_SpellObj spell = (DC_SpellObj) action.get();
-         spell.invokeClicked();
-     }, columns);
-    refresh();
-}
+        spellPanel = new ActionPanel<DC_SpellObj>(hero,
+                action -> {
+                    DC_SpellObj spell = (DC_SpellObj) action.get();
+                    spell.invokeClicked();
+                }, columns);
+        refresh();
+    }
 }

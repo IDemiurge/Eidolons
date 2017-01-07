@@ -70,7 +70,7 @@ public class GameLauncher {
         this.host_client = host_client;
         this.FAST_MODE = FAST_MODE;
         this.SUPER_FAST_MODE = SUPER_FAST_MODE;
-        instance=this;
+        instance = this;
     }
 
     private String initFactionData() {
@@ -107,8 +107,8 @@ public class GameLauncher {
     }
 
     private void savePresetAsLast() {
-        if (  ! FAST_MODE)
-            if (  ! SUPER_FAST_MODE)
+        if (!FAST_MODE)
+            if (!SUPER_FAST_MODE)
         PresetMaster.savePreset(PresetMaster.getPreset(), null);
     }
 
@@ -153,7 +153,7 @@ public class GameLauncher {
             if (ENEMY_CODE != CODE.NONE)
                 game.setEnemyParty(ENEMY_PARTY);
 
-             game.init();
+            game.init();
         } else {
             game.init();
 

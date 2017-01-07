@@ -17,6 +17,7 @@ import main.game.battlefield.Coordinates;
 import main.game.logic.dungeon.building.DungeonBuilder;
 import main.game.logic.macro.map.Place;
 import main.game.logic.macro.travel.Encounter;
+import main.libgdx.GameScreen;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
@@ -29,7 +30,6 @@ import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.test.frontend.FAST_DC;
-import main.libgdx.GameScreen;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -71,7 +71,7 @@ public class DungeonMaster {
     private String dungeonPath;
 
     public DungeonMaster(DC_Game game) {
-        this.game = game;
+        DungeonMaster.game = game;
         setChooseLevel(CHOOSE_LEVEL);
         // setDungeonPath(DEFAULT_DUNGEON_LEVEL);
         presetDungeonType = getDEFAULT_DUNGEON();
@@ -172,10 +172,10 @@ public class DungeonMaster {
         if (BooleanMaster.isTrue(FAST_DC.getGameLauncher().getSUPER_FAST_MODE())
                 ){
             setDungeonPath(FAST_DC.DEFAULT_TEST_DUNGEON);
-            }
-        if (getDungeonPath() != null)
-        {  setDungeon(DungeonBuilder.loadDungeon(getDungeonPath()));
-            return ;
+        }
+        if (getDungeonPath() != null) {
+            setDungeon(DungeonBuilder.loadDungeon(getDungeonPath()));
+            return;
         }
 
         if (CoreEngine.isArcaneVault()) {
@@ -201,19 +201,19 @@ public class DungeonMaster {
 //        }
 //        else
 
-      if (type==null  )  {
-            if (!FAST_DC.isRunning()){
+        if (type == null) {
+            if (!FAST_DC.isRunning()) {
                 type = DataManager.getType(getPresetDungeonType(), OBJ_TYPES.DUNGEONS);
-            }else {
+            } else {
                 if (RANDOM_DUNGEON) {
 
                     type =
-                     pickRandomDungeon();
+                            pickRandomDungeon();
                 } else if (type == null)
                     type = DataManager.getType(ListChooser.chooseType(OBJ_TYPES.DUNGEONS));
 
-                if (type==null )
-                        initDungeonLevelChoice();
+                if (type == null)
+                    initDungeonLevelChoice();
             }
             setDungeon(new Dungeon(type));
         getDungeons().add(dungeon);
@@ -428,9 +428,12 @@ public class DungeonMaster {
         GuiManager.setCurrentLevelCellsX(getLevelWidth());
         GuiManager.setCurrentLevelCellsY(getLevelHeight());
         if (ImageManager.isImage(dungeon.getMapBackground()))
-if (GameScreen.getInstance()!=null )
-    try{GameScreen.getInstance().getBackground().setImagePath(dungeon.getMapBackground());
-        }catch(Exception e){                e.printStackTrace();            }
+            if (GameScreen.getInstance() != null)
+                try {
+                    GameScreen.getInstance().getBackground().setImagePath(dungeon.getMapBackground());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
     }
 

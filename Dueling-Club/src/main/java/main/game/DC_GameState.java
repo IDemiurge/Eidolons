@@ -326,7 +326,7 @@ public class DC_GameState extends MicroGameState {
         if (obj == null)
             return;
         if (obj instanceof DC_HeroObj) {
-            getGame().getUnits().remove((DC_HeroObj) obj);
+            getGame().getUnits().remove(obj);
 
             removeAttachedObjects((DC_HeroObj) obj);
 

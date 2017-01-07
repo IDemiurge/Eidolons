@@ -13,14 +13,14 @@ public class TextureManager {
     public static Texture getOrCreate(String p) {
         if (ImageManager.getPATH() != null)
             if (!ImageManager.isImage(p)) {
-                return   getCache().get(ImageManager.getAltEmptyListIcon());
+                return getCache().get(ImageManager.getAltEmptyListIcon());
                 // don't cache if missing!
             }
-       return  getCache().getOrCreate(p);
+        return getCache().getOrCreate(p);
     }
 
     public static TextureCache getCache() {
-        if (cache==null )
+        if (cache == null)
             cache = new TextureCache(PathFinder.getImagePath());
         return cache;
     }

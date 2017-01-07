@@ -65,8 +65,7 @@ public class UnitView extends Group implements Borderable {
         if (o.getOverlaying()) {
             overlaying = true;
             init(o.getDirectionValue(), o.getPortrateTexture());
-        } else
-            {
+        } else {
             init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getClockTexture(), o.getClockValue(), o.getPortrateTexture(), o.getIconTexture());
         }
         o.getUnitMap().put(o.getObj(), this);//todo fix this shit

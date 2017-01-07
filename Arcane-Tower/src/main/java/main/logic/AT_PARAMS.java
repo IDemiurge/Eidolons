@@ -7,7 +7,7 @@ import main.content.parameters.PARAMETER;
 import main.system.auxiliary.ListMaster;
 import main.system.auxiliary.StringMaster;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -42,6 +42,7 @@ import main.game.player.DC_Player;
 import main.game.player.Player;
 import main.game.player.PlayerMaster;
 import main.game.turn.DC_TurnManager;
+import main.libgdx.GameScreen;
 import main.rules.DC_ActionManager;
 import main.rules.DC_Rules;
 import main.rules.action.ActionRule;
@@ -67,12 +68,9 @@ import main.system.util.ValueHelper;
 import main.test.PresetLauncher;
 import main.test.PresetMaster;
 import main.test.debug.DebugMaster;
-import main.libgdx.GameScreen;
 
 import javax.swing.*;
 import java.util.*;
-
-;
 
 public class DC_Game extends MicroGame {
     public static DC_Game game;
@@ -279,7 +277,7 @@ public class DC_Game extends MicroGame {
 
         }
         // if (battlefield == null) {
-        battlefield = new DC_BattleField(map, player1, player2, (DC_GameState) getState());
+        battlefield = new DC_BattleField(map, player1, player2, getState());
         setGraveyardManager(new GraveyardManager(battlefield));
         battleFieldManager = new DC_BattleFieldManager(this, battlefield);
         movementManager.setGrid(battlefield.getGrid());
@@ -371,8 +369,8 @@ public class DC_Game extends MicroGame {
             playerMaster = new PlayerMaster(game, getPlayer(true), getPlayer(false));
         playerMaster.initPlayerFlags();
 
-        if (GameScreen.getInstance()!=null )
-        GameScreen.getInstance().PostGameStart();
+        if (GameScreen.getInstance() != null)
+            GameScreen.getInstance().PostGameStart();
         Chronos.logTimeElapsedForMark("GAME_START");
     }
 
@@ -968,7 +966,7 @@ public class DC_Game extends MicroGame {
     public void checkAddUnit(DC_HeroObj obj) {
         if (!obj.isHidden())
             if (!getUnits().contains(obj))
-                getUnits().add((DC_HeroObj) obj);
+                getUnits().add(obj);
     }
 
     public Dungeon getDungeon() {

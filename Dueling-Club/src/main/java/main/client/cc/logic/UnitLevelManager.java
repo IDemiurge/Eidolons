@@ -326,17 +326,13 @@ public class UnitLevelManager {
                 return true;
             if (newType.checkContainerProp(PROPS.INVENTORY, item))
                 return true;
-            if (newType.checkContainerProp(PROPS.QUICK_ITEMS, item))
-                return true;
-            return false;
+            return newType.checkContainerProp(PROPS.QUICK_ITEMS, item);
         }
         if (newType.checkContainerProp(PROPS.VERBATIM_SPELLS, item))
             return true;
         if (newType.checkContainerProp(G_PROPS.ACTIVES, item))
             return true;
-        if (newType.checkContainerProp(PROPS.SKILLS, item))
-            return true;
-        return false;
+        return newType.checkContainerProp(PROPS.SKILLS, item);
     }
 
 }

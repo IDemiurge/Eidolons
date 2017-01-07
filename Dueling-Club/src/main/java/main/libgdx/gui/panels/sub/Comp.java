@@ -10,7 +10,8 @@ import main.libgdx.texture.TextureManager;
 public class Comp extends Actor {
     //tooltips,
     Texture texture;
-    public  Comp(String imagePath){
-        texture=       TextureManager.getOrCreate(imagePath);
+
+    public Comp(String imagePath) {
+        texture = TextureManager.getOrCreate(imagePath);
     }
 }

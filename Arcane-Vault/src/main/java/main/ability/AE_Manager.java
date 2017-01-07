@@ -16,14 +16,12 @@ import main.data.ability.construct.VariableManager;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjType;
 import main.launch.ArcaneVault;
+import org.w3c.dom.Node;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import javax.swing.JTree;
-
-import org.w3c.dom.Node;
 
 public class AE_Manager {
 	public static Map<String, AE_MainPanel> cacheMap = new ConcurrentHashMap<String, AE_MainPanel>();
@@ -154,9 +152,9 @@ public class AE_Manager {
 			AE_Item item, int index) {
 		if (item == null)
 			return null;
-		// AE_EditPanel panel = smallCache.getOrCreate(item);
-		// if (panel == null) {
-		// main.system.auxiliary.LogMaster
+        // AE_EditPanel panel = smallCache.getOrCreate(item);
+        // if (panel == null) {
+        // main.system.auxiliary.LogMaster
 		// .log(0, "*** ae_edit panel NOT FOUND! - " + item.getName()
 		// + index);
 		// panel = new AE_EditPanel(item, mainPanel, index);

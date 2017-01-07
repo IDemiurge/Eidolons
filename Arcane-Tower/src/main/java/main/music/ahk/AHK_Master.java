@@ -13,20 +13,15 @@ import main.music.gui.MusicMouseListener;
 import main.music.m3u.M3uGenerator;
 import main.system.auxiliary.FileManager;
 import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Image;
+import javax.swing.*;
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
 
 public class AHK_Master {
 
@@ -169,9 +164,9 @@ public class AHK_Master {
 	public static int getLetterCode(String line, String qwerty) {
 		List<String> list = StringMaster.openContainer(line, "::");
 		String keyPart = list.get(0);
-		// String funcPart = list.getOrCreate(1).trim();
-		if (keyPart.isEmpty())
-			return 0;
+        // String funcPart = list.getOrCreate(1).trim();
+        if (keyPart.isEmpty())
+            return 0;
 		char letter = keyPart.charAt(keyPart.length() - 1);
 		int letterCode = 1000;
 		for (char c : qwerty.toCharArray()) {
@@ -275,9 +270,9 @@ public class AHK_Master {
 	// i = comment.indexOf(TAGS);
 	// if (i != -1) {
 	// tags = comment.substring(arg0, arg1)
-	// list = tagMap.getOrCreate(key);
-	// if (list == null) {
-	// list = new LinkedList<>();
+    // list = tagMap.getOrCreate(key);
+    // if (list == null) {
+    // list = new LinkedList<>();
 	// groupMap.put(getKeyPart(line), list);
 	// }
 	// for(String substring: StringMaster.openContainer( tags )){
@@ -298,9 +293,9 @@ public class AHK_Master {
 	//
 	// private void addTag(String tag, String lineIdentifier) {
 	// // setComment
-	// List<String> tags = tagMap.getOrCreate(lineIdentifier);
-	// if (tags == null) {
-	// tags = new LinkedList<>();
+    // List<String> tags = tagMap.getOrCreate(lineIdentifier);
+    // if (tags == null) {
+    // tags = new LinkedList<>();
 	// tagMap.put(lineIdentifier, tags);
 	// }
 	// if (tags.contains(tag))

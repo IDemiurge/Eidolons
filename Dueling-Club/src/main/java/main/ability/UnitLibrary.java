@@ -235,6 +235,6 @@ public class UnitLibrary {
     }
 
     public enum LEARN_CASE {
-        NEW, EN_VERBATIM, MEMORIZE, UPGRADE;
+        NEW, EN_VERBATIM, MEMORIZE, UPGRADE
     }
 }

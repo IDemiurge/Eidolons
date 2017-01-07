@@ -24,9 +24,9 @@ public class RadialSpellGroup implements RADIAL_ITEM {
     public List<RADIAL_ITEM> getItems(DC_HeroObj source) {
         LinkedList<RADIAL_ITEM> nodes = new LinkedList<>();
         List<DC_SpellObj> spells = source.getSpells()
-         .stream()
-         .filter(spell -> spell.getSpellGroup().equals(group))
-         .collect(Collectors.toList());
+                .stream()
+                .filter(spell -> spell.getSpellGroup().equals(group))
+                .collect(Collectors.toList());
         spells.forEach(s -> {
             nodes.add(new SpellNode(s));
         });
@@ -36,7 +36,7 @@ public class RadialSpellGroup implements RADIAL_ITEM {
     @Override
     public Object getContents() {
         return
-         group;
+                group;
     }
 
     @Override

@@ -4,7 +4,6 @@ import main.content.OBJ_TYPES;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
-import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
@@ -306,7 +305,7 @@ public class PresetMaster {
             // if
             // (!preset.getValue(PRESET_DATA.PLAYER_PARTY).contains(obj.getName()))
             // ALL UNITS SAVED - BUT THEN CHOOSE IF CUSTOM INIT OR PARTY
-            PLAYER_UNITS += DC_ObjInitializer.getObjStringAlt((DC_Obj) obj) + ";";
+            PLAYER_UNITS += DC_ObjInitializer.getObjStringAlt(obj) + ";";
             // custom hacks - spells, skills, items..
         }
         for (Obj obj : DC_Game.game.getPlayer(false).getControlledUnits()) {
@@ -314,7 +313,7 @@ public class PresetMaster {
                 ENEMY_PARTY += obj.getName() + ";";
 
             // if (!enemyUnits.contains(obj.getName()))
-            ENEMIES += DC_ObjInitializer.getObjStringAlt((DC_Obj) obj) + ";";
+            ENEMIES += DC_ObjInitializer.getObjStringAlt(obj) + ";";
             // custom hacks - spells, skills, items..
         }
         for (Dungeon d : DungeonMaster.getDungeons()) {
@@ -357,14 +356,15 @@ public class PresetMaster {
 
         presets = new LinkedList<>();
         // getPresets()
-        int n=0;    for (File file : list) {
-           Preset preset=loadPreset(file);
-            if (preset==null ) continue;
+        int n = 0;
+        for (File file : list) {
+            Preset preset = loadPreset(file);
+            if (preset == null) continue;
 
-            if (StringMaster.isEmpty(preset.getAllies()) )continue;
-            if (StringMaster.isEmpty(preset.getFirstDungeonName()) )continue;
+            if (StringMaster.isEmpty(preset.getAllies())) continue;
+            if (StringMaster.isEmpty(preset.getFirstDungeonName())) continue;
             presets.add(preset);
-            if (n>maximum)break;
+            if (n > maximum) break;
             n++;
         }
         return presets;

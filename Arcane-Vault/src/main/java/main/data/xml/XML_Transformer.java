@@ -3,20 +3,11 @@ package main.data.xml;
 import main.content.CONTENT_CONSTS.BUFF_TYPE;
 import main.content.CONTENT_CONSTS.CLASSIFICATIONS;
 import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
-import main.content.ContentManager;
-import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.PARAMS;
-import main.content.PROPS;
-import main.content.VALUE;
+import main.content.*;
 import main.content.properties.G_PROPS;
 import main.content.properties.PROPERTY;
 import main.data.DataManager;
-import main.elements.conditions.Condition;
-import main.elements.conditions.Conditions;
-import main.elements.conditions.NotCondition;
-import main.elements.conditions.NumericCondition;
-import main.elements.conditions.StringComparison;
+import main.elements.conditions.*;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
 import main.game.Game;
@@ -25,16 +16,14 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.util.ValueHelper;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.JOptionPane;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 
 public class XML_Transformer {
 
@@ -307,9 +296,9 @@ public class XML_Transformer {
 	}
 
 	// private static XML_File getFile(OBJ_TYPE TYPE) {
-	// return getXmlFiles().getOrCreate(TYPE);
-	//
-	// }
+    // return getXmlFiles().getOrCreate(TYPE);
+    //
+    // }
 
 	private static List<XML_File> getXmlFiles(OBJ_TYPE key) {
 		List<XML_File> list = new LinkedList<>();
@@ -333,9 +322,9 @@ public class XML_Transformer {
 		// for (String type : xmlMap.keySet()) {
 		// OBJ_TYPES TYPE = OBJ_TYPES.getType(type);
 		// XML_File file = new XML_File(TYPE, TYPE.getName(), null, macro,
-		// XML_Reader.getXmlMap().getOrCreate(type));
-		// files.put(TYPE, file);
-		// }
+        // XML_Reader.getXmlMap().getOrCreate(type));
+        // files.put(TYPE, file);
+        // }
 		// return files;
 	}
 
