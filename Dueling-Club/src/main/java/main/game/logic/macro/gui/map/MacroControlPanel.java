@@ -78,7 +78,7 @@ public class MacroControlPanel extends G_Panel implements ButtonHandler {
                 case FACTIONS:
                     break;
                 case JOURNAL:
-                    // show all logs in a special big window
+                    // update all logs in a special big window
                     break;
                 case MENU:
                     Launcher.getMainManager().exitToMainMenu();

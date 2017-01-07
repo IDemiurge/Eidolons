@@ -243,7 +243,7 @@ public class DC_MovementManager implements MovementManager {
     public boolean move(Obj obj, Coordinates c, boolean free, Path path) {
         return free;
         // return move((DC_HeroObj) obj,
-        // (DC_Cell) getGrid().getCellCompMap().get(c).getObj(), free,
+        // (DC_Cell) getGrid().getCellCompMap().getOrCreate(c).getObj(), free,
         // path, null, null);
     }
 
@@ -251,7 +251,7 @@ public class DC_MovementManager implements MovementManager {
     public boolean move(Obj obj, Coordinates c) {
         return false;
         // return move((DC_HeroObj) obj,
-        // (DC_Cell) getGrid().getCellCompMap().get(c).getObj(), false,
+        // (DC_Cell) getGrid().getCellCompMap().getOrCreate(c).getObj(), false,
         // null, null, null);
     }
 
@@ -417,7 +417,7 @@ public class DC_MovementManager implements MovementManager {
     @Override
     public Coordinates getTemplateMoveCoordinate(MOVE_TEMPLATES template, FACING_DIRECTION facing,
                                                  Obj obj, Ref ref) {
-        // get some caching to optimize this!
+        // getOrCreate some caching to optimize this!
         UNIT_DIRECTION direction = template.getDirection();
         String range = template.getRange();
         Boolean selective = template.isSelectiveTargeting();

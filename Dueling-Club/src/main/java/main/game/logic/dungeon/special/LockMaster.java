@@ -29,7 +29,7 @@ public class LockMaster {
     }
 
     public static boolean isLocked(DC_Obj mapObj) {
-//        List<LockObj> locks = locksMap.get(mapObj.getCoordinates());
+//        List<LockObj> locks = locksMap.getOrCreate(mapObj.getCoordinates());
 //        for (LockObj lock : locks) {
 //            if (lock.isUnlocked())
 //                return true;

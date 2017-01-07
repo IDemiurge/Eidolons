@@ -585,7 +585,7 @@ public class DungeonBuilder {
             try {
                 zone = createZone(plan, zoneId, zoneNode);
             } catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
                 zone = new MapZone(plan.getDungeon(), zoneId, 0, plan.getDungeon().getWidth(), 0,
                         plan.getDungeon().getHeight());
             } // ++ add coord exceptions
@@ -872,8 +872,8 @@ public class DungeonBuilder {
     // BLOCK_TYPE b = !altBlock ? BLOCK_TYPE.ROOM : BLOCK_TYPE.CORRIDOR;
     //
     // while (i < map.getZones().size()) {
-    // MapZone zone = map.getZones().get(i);
-    // MapZone targetZone = map.getZones().get(i);
+    // MapZone zone = map.getZones().getOrCreate(i);
+    // MapZone targetZone = map.getZones().getOrCreate(i);
     // MapBlock block = buildBlock(template, zone, targetZone, b, map);
     // if (block != null)
     // break;

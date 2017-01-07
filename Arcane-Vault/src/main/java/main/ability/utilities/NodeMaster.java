@@ -12,37 +12,20 @@ import main.data.ability.AE_Item;
 import main.data.ability.ARGS;
 import main.data.ability.Argument;
 import main.data.ability.Mapper;
+import main.data.ability.construct.VariableManager;
 import main.launch.ArcaneVault;
-import main.system.auxiliary.CloneMaster;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.LogMaster;
-import main.system.auxiliary.SearchMaster;
-import main.system.auxiliary.TreeMaster;
+import main.system.auxiliary.*;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
+import org.w3c.dom.Node;
 
-import java.awt.Checkbox;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import javax.swing.*;
+import javax.swing.tree.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
-import javax.swing.JTree;
-import javax.swing.SwingUtilities;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
-
-import org.w3c.dom.Node;
 
 public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 	private static final int COMBO_BOX_MOUSE_MODIFIER = 16;
@@ -99,7 +82,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 		} else {
 			name = Arrays.asList(arg.getCoreClass().getEnumConstants()).get(index).toString();
 			// collection = CollectionsMaster.getSortedCollection(collection);
-			// name =collection.get(index).toString()
+			// name =collection.getOrCreate(index).toString()
 		}
 		if (Mapper.getItem(name) != null)
 			return Mapper.getItem(name);
@@ -234,7 +217,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 			return 0;
 		}
 		return itemList.indexOf(item);
-		// return Mapper.getItemList(nodeItem.getArgList().get(elementIndex))
+		// return Mapper.getItemList(nodeItem.getArgList().getOrCreate(elementIndex))
 		// .indexOf(child.getUserObject());
 	}
 
@@ -300,7 +283,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 	private DefaultMutableTreeNode newNode(DefaultMutableTreeNode node, int index) {
 		DefaultMutableTreeNode parent = (DefaultMutableTreeNode) tree
 				.getLastSelectedPathComponent();
-		if (parent.isLeaf())
+//		if (parent.isLeaf())
 			createEmptyNodes(parent, (AE_Item) parent.getUserObject());
 
 		if (parent.getChildCount() > index) {
@@ -323,7 +306,29 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 		if (item.isContainer())
 			return;
 		for (Argument arg : item.getArgList()) {
-			node.add(new DefaultMutableTreeNode("<EMPTY>" + arg.name() + "</EMPTY>"));
+		if (!arg.isPrimitive())
+		{
+			DefaultMutableTreeNode newChild = new DefaultMutableTreeNode("<" +
+			arg.name() +
+			">" + VariableManager.VARIABLE + "</" +
+			arg.name() +
+			">");
+			if (!Mapper.getItemList(arg).isEmpty())
+			newChild = new DefaultMutableTreeNode(	Mapper.getItemList(arg).get(0));
+		createEmptyNodes(newChild,	Mapper.getItemList(arg).get(0));
+			node.add(newChild);
+		continue;
+
+		}
+
+			Object	value=VariableManager.VARIABLE;
+			if (arg.equals(ARGS.BOOLEAN)){
+				value=false;
+			}
+			DefaultMutableTreeNode	itemNode = new DefaultMutableTreeNode(Mapper.getPrimitiveItem(arg));
+			itemNode.add(new DefaultMutableTreeNode(value));
+
+
 		}
 	}
 
@@ -440,7 +445,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 		// ArcaneVault.getPreviousSelectedType().setProperty(G_PROPS.BASE_TYPE,
 		// ArcaneVault.getSelectedType().getName());
 		// ((ObjType)getSelectedNode().getUserObject())
-		// ArcaneVault.getMainBuilder().get;
+		// ArcaneVault.getMainBuilder().getOrCreate;
 	}
 
 	public void nodePasted() {

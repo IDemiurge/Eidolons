@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import main.libgdx.GameScreen;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,6 +36,9 @@ public class DENIS_Launcher implements ApplicationListener {
         conf.width = 1600;
         conf.height = 900;
         conf.fullscreen = false;
+//        conf.width = GuiManager.getScreenWidthInt();
+//        conf.height = GuiManager.getScreenHeightInt();
+//        conf.fullscreen = true;
         return conf;
     }
 

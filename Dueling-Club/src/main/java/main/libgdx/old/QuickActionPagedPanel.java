@@ -2,6 +2,7 @@ package main.libgdx.old;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import main.libgdx.gui.panels.PagedPanel;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,7 +21,7 @@ public class QuickActionPagedPanel extends PagedPanel {
     }
 
     protected String[] getActionButtonImagePaths() {
-        return new String[]{imagePath + "\\UI\\components\\new\\inv.jpg", imagePath + "\\UI\\components\\new\\hammer.jpg"};
+        return new String[]{ "\\UI\\components\\new\\inv.jpg",   "\\UI\\components\\new\\hammer.jpg"};
     }
 
     @Override

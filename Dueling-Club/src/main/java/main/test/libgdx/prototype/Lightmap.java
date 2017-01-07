@@ -10,7 +10,8 @@ import main.entity.obj.DC_HeroObj;
 import main.entity.obj.MicroObj;
 import main.game.battlefield.Coordinates;
 import main.system.datatypes.DequeImpl;
-import main.test.libgdx.GameScreen;
+import main.libgdx.GameScreen;
+import main.libgdx.anims.particles.lighting.LightingManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +21,7 @@ import java.util.Map;
  */
 public class Lightmap {
     private Map<MicroObj, Body> bodyMap;
-    private static World world;
+    private World world;
     private RayHandler rayHandler;
     private float cellWidth;
     private float cellHeight;
@@ -29,19 +30,15 @@ public class Lightmap {
     private static float SECOND = 1000000000;
     Box2DDebugRenderer debugRenderer;
 
-    public static World getWorld() {
-        return world;
-    }
-
-    private void init(DequeImpl<MicroObj> un, World world, RayHandler rayHandler, float cellWidth, float cellHeight) {
+    private void init(DequeImpl<DC_HeroObj> un, World world, RayHandler rayHandler, float cellWidth, float cellHeight) {
         this.cellWidth = cellWidth;
         this.cellHeight = cellHeight;
-        Lightmap.world = world;
+        this.world = world;
         this.rayHandler = rayHandler;
         this.rayHandler.setBlur(true);
         this.rayHandler.setBlurNum(15);
         this.rayHandler.setAmbientLight(Color.GRAY);
-        this.rayHandler.setAmbientLight(0.25f);
+        this.rayHandler.setAmbientLight(LightingManager.ambient_light);
         this.rayHandler.setBlurNum(15);
         RayHandler.setGammaCorrection(true);
         debugRenderer = new Box2DDebugRenderer();
@@ -50,8 +47,8 @@ public class Lightmap {
         bodyMap = new HashMap<>();
         for (int i = 0; i < un.size(); i++) {
 
-//            PointLight pointLight = new PointLight(rayHandler, 100, Color.RED, un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 5, un.get(i).getX(), un.get(i).getY());
-//            PointLight pointLight = new PointLight(rayHandler, 100, new Color(0xf7ffa8C8), un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 5, un.get(i).getX(), un.get(i).getY());
+//            PointLight pointLight = new PointLight(rayHandler, 100, Color.RED, un.getOrCreate(i).getIntParam(PARAMS.LIGHT_EMISSION) * 5, un.getOrCreate(i).getX(), un.getOrCreate(i).getY());
+//            PointLight pointLight = new PointLight(rayHandler, 100, new Color(0xf7ffa8C8), un.getOrCreate(i).getIntParam(PARAMS.LIGHT_EMISSION) * 5, un.getOrCreate(i).getX(), un.getOrCreate(i).getY());
 //            pointLight.setSoft(true);
 //            pointLight.setSoftnessLength(50);
 //            pointLight.attachToBody(body);
@@ -67,7 +64,9 @@ public class Lightmap {
                 fdef.shape = shape;
                 body.createFixture(fdef);
                 // TEMP
-                FireLightProt fireLightProt = new FireLightProt(world, rayHandler, un.get(i).getX() * cellWidth + cellWidth / 2, un.get(i).getY() * cellHeight + cellHeight / 2, un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 30, 360, SECOND);
+                FireLightProt fireLightProt = new FireLightProt(world, rayHandler,
+                 un.get(i).getX() * cellWidth + cellWidth / 2, un.get(i).getY() *
+                 cellHeight + cellHeight / 2, un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 30, 360, SECOND);
 //                FireLightProt fireLightProt = new FireLightProt();
                 fireLightProt.attachToBody(body);
                 //TEMP END
@@ -83,58 +82,53 @@ public class Lightmap {
 
 
             bodyMap.put(un.get(i), body);
-//            lightMap.put(un.get(i), pointLight);
+//            lightMap.put(un.getOrCreate(i), pointLight);
 
 
         }
 //        for (int i = 0; i < un.size(); i++) {
-//            if (un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) > 0) {
+//            if (un.getOrCreate(i).getIntParam(PARAMS.LIGHT_EMISSION) > 0) {
 //                BodyDef bdef = new BodyDef();
 //                bdef.type = BodyDef.BodyType.KinematicBody;
 //                Body body = world.createBody(bdef);
-//                body.setTransform(un.get(i).getX() * cellWidth, un.get(i).getY() * cellHeight, 0);
+//                body.setTransform(un.getOrCreate(i).getX() * cellWidth, un.getOrCreate(i).getY() * cellHeight, 0);
 //                PolygonShape shape = new PolygonShape();
 //                shape.setAsBox(cellWidth / 20, cellHeight / 20);
 //                FixtureDef fdef = new FixtureDef();
 //                fdef.shape = shape;
 //                body.createFixture(fdef);
-//                PointLight pointLight = new PointLight(rayHandler, 100, Color.RED, un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 5, un.get(i).getX(), un.get(i).getY());
+//                PointLight pointLight = new PointLight(rayHandler, 100, Color.RED, un.getOrCreate(i).getIntParam(PARAMS.LIGHT_EMISSION) * 5, un.getOrCreate(i).getX(), un.getOrCreate(i).getY());
 //                pointLight.attachToBody(body);
-//                bodyMap.put(un.get(i), body);
+//                bodyMap.put(un.getOrCreate(i), body);
 //
 //            } else {
-//                if (un.get(i).getType().toString().contains("units")) {
+//                if (un.getOrCreate(i).getType().toString().contains("units")) {
 //
 //                    BodyDef bdef = new BodyDef();
 //                    bdef.type = BodyDef.BodyType.KinematicBody;
 //                    Body body = world.createBody(bdef);
-//                    body.setTransform(un.get(i).getX() * cellWidth + cellWidth / 2, un.get(i).getY() * cellHeight + cellHeight / 2, 0);
+//                    body.setTransform(un.getOrCreate(i).getX() * cellWidth + cellWidth / 2, un.getOrCreate(i).getY() * cellHeight + cellHeight / 2, 0);
 //                    PolygonShape shape = new PolygonShape();
 //                    shape.setAsBox(cellWidth / 2, cellHeight / 2);
 //                    FixtureDef fdef = new FixtureDef();
 //                    fdef.shape = shape;
 //                    body.createFixture(fdef);
-//                    bodyMap.put(un.get(i), body);
+//                    bodyMap.put(un.getOrCreate(i), body);
 //
 //                }
 //            }
 //        }
     }
 
-    public Lightmap(DequeImpl<MicroObj> un, float cellWidth, float cellHeight) {
+    public Lightmap(DequeImpl<DC_HeroObj> un, float cellWidth, float cellHeight) {
         World world = new World(new Vector2(0, 0), true);
         init(un, world, new RayHandler(world), cellWidth, cellHeight);
-    }
-
-
-    public Lightmap(DequeImpl<MicroObj> un, World world, RayHandler rayHandler) {
-        init(un, world, rayHandler, 132, 113);
     }
 
     public void updatePos(MicroObj obj) {
         if (bodyMap.containsKey(obj)) {
             Coordinates c = obj.getCoordinates();
-            bodyMap.get(obj).setTransform(c.getX() * cellWidth + cellWidth / 2, c.getY() * cellHeight + cellHeight / 2, 0);
+            bodyMap.get(obj).setTransform(c.getX() * cellWidth, c.getY() * cellHeight, 0);
         }
     }
 
@@ -144,19 +138,19 @@ public class Lightmap {
 
         }
 //        for (int q =0;q<fireLightProtMap.entrySet().size();q++){
-//                fireLightProtMap.get(q).update(Gdx.graphics.getDeltaTime());
+//                fireLightProtMap.getOrCreate(q).update(Gdx.graphics.getDeltaTime());
 //        }
         world.step(1 / 60, 4, 4);
         rayHandler.setCombinedMatrix(GameScreen.camera);
         rayHandler.updateAndRender();
 
-        debugRenderer.render(world, GameScreen.camera.combined);
+//        debugRenderer.render(world,GameScreen.camera.combined);
     }
 
     public void updateObject(DC_HeroObj heroObj) {
 //        int lightEmmi = heroObj.getIntParam(PARAMS.LIGHT_EMISSION);
 //        if (lightMap.containsKey(heroObj)) {
-//            lightMap.get(heroObj).setDistance(lightEmmi * 15);
+//            lightMap.getOrCreate(heroObj).setDistance(lightEmmi * 15);
 //        }
         // TODO: 12.12.2016 pointlighter around the mouse - 35 ligth emission and arround active Unite - (his emission +20) (DC_Game.game.getManager.getActiveUnit()
         //      light_emission + 20)

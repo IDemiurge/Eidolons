@@ -1719,17 +1719,20 @@ public class CONTENT_CONSTS {
         private DAMAGE_TYPE dmg_type;
         private Map<DAMAGE_TYPE, RESIST_GRADE> selfDamageGradeMap;
         private Map<DAMAGE_TYPE, RESIST_GRADE> resistGradeMap;
+
         MATERIAL(int modifier, int durability, double weight, int cost, int magic,
                  ITEM_MATERIAL_GROUP g, int code, DAMAGE_TYPE dmg_type) {
             this(modifier, weight, cost, magic, g, dmg_type, code);
             this.durabilityMod = durability;
             this.group = g;
         }
+
         MATERIAL(int modifier, double weight, int cost, int magic, ITEM_MATERIAL_GROUP g, int code) {
             this(modifier, weight, cost, magic, code);
             this.group = g;
 
         }
+
         MATERIAL(int modifier, double weight, int cost, int magic, ITEM_MATERIAL_GROUP g,
                  DAMAGE_TYPE dmg_type, int code) {
             this(modifier, weight, cost, magic, code);
@@ -1737,6 +1740,7 @@ public class CONTENT_CONSTS {
             this.magical = true;
             this.group = g;
         }
+
         MATERIAL(int modifier, double weight, int cost, int magic, int code) {
             this.name = StringMaster.getWellFormattedString(name());
             this.modifier = modifier;
@@ -1874,6 +1878,7 @@ public class CONTENT_CONSTS {
     public enum PRINCIPLES {
 
         WAR, PEACE, HONOR, TREACHERY, LAW, FREEDOM, CHARITY, AMBITION, TRADITION, PROGRESS,;
+
         static {
             HONOR.setOpposite(TREACHERY);
             TREACHERY.setOpposite(HONOR);

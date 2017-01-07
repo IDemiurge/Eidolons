@@ -105,7 +105,7 @@ public class GlobalKeys implements HotkeyListener {
     //
     // main.system.auxiliary.LogMaster
     // .log(1, "hotkey pressed: " + aIdentifier);
-    // HotKey hotkey = keyMap.get(aIdentifier);
+    // HotKey hotkey = keyMap.getOrCreate(aIdentifier);
     // if (hotkey.getHOTKEY() == null)
     // customHotkeyPressed(hotkey);
     // else

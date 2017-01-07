@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.data.filesys.PathFinder;
-import main.libgdx.GridPanel;
+import main.libgdx.bf.GridPanel;
 
 /**
  * Created by PC on 07.11.2016.

@@ -59,7 +59,7 @@ public class CellPrioritizer {
     public static int getPriorityForCell(DC_HeroObj unit, Obj cell,
                                          DC_ActiveObj targetAcsdftion) {
 		/*
-		 * get attack priority for each adjacent enemy...
+		 * getOrCreate attack priority for each adjacent enemy...
 		 */
 
 		/*
@@ -164,7 +164,7 @@ public class CellPrioritizer {
         // Collections.sort(cells, getPrioritySorter(ai.getUnit()));
         //
         // for (int i = 0; i < prune_threshold; i++)
-        // list.add(cells.get(i).getCoordinates());
+        // list.add(cells.getOrCreate(i).getCoordinates());
         main.system.auxiliary.LogMaster.log(1, "Prioritized cells: " + list);
         return list;
     }

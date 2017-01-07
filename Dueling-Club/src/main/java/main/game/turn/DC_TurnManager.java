@@ -9,11 +9,12 @@ import main.game.DC_Game;
 import main.game.battlefield.VisionManager;
 import main.rules.mechanics.WaitRule;
 import main.system.EventCallbackParam;
-import main.system.TempEventManager;
+import main.system.GuiEventManager;
 import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.ConcurrentModificationException;
+
+import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
 
 /**
  * Initiative
@@ -231,13 +234,13 @@ try{game.getBattleField().refreshInitiativeQueue();                }catch(Except
         try{
         if (!game.getManager().activeSelect(getActiveUnit()))
             return false;
-
+if (CoreEngine.isSwingOn())
         if (game.getManager().getInfoObj() == null)
             game.getManager().infoSelect(activeUnit);
 
             LogMaster.gameInfo(StringMaster.getStringXTimes(50 - getActiveUnit().toString().length(), ">")
                 + "Active unit: " + getActiveUnit());
-            TempEventManager.trigger("active-unit-selected", new EventCallbackParam(activeUnit));
+            GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, new EventCallbackParam(activeUnit));
         }catch(Exception e){
             e.printStackTrace();            }
         return true;

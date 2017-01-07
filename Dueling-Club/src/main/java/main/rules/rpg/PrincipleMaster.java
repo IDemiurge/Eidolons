@@ -92,7 +92,7 @@ public class PrincipleMaster {
             return false;
         boolean result = false;
         for (PRINCIPLES principle : map.keySet()) {
-            // Integer amount =StringMaster.getInteger(map.get(principle));
+            // Integer amount =StringMaster.getInteger(map.getOrCreate(principle));
             // if (amount == 0)
             // continue;
             result = true;

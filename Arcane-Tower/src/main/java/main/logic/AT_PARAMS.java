@@ -179,7 +179,7 @@ public enum AT_PARAMS implements PARAMETER {
 		inputReq = INPUT_REQ.INTEGER;
 	}
 
-	// get(base)
+	// getOrCreate(base)
 
 	@Override
 	public String getName() {

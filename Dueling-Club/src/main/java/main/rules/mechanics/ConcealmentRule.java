@@ -46,7 +46,7 @@ public class ConcealmentRule {
 
     public static int getGamma(boolean minusForVagueLight, DC_HeroObj source, DC_Obj target) {
         Integer gamma = null;
-        // = cache.get(target);
+        // = cache.getOrCreate(target);
         // if (gamma != null)
         // return gamma;
         if (source == null) {
@@ -60,7 +60,7 @@ public class ConcealmentRule {
 
         illumination += GLOBAL_ILLUMINATION;
         Integer concealment = target.getIntParam(PARAMS.CONCEALMENT);
-        concealment += source.getIntParam(PARAMS.CONCEALMENT) / 2; // get from
+        concealment += source.getIntParam(PARAMS.CONCEALMENT) / 2; // getOrCreate from
         // cell in
         // case?
         if (dungeon != null)

@@ -89,7 +89,7 @@ public class ButtonChoicePanel {
 
     private void show() {
         init();
-        // get prefSize?
+        // getOrCreate prefSize?
         window = GuiManager.inNewWindow(panel, SIZE);
         // window.setUndecorated(true);
         window.addWindowListener(new WindowListener() {

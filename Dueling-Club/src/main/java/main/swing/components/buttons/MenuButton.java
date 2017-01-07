@@ -30,7 +30,7 @@ public class MenuButton extends CustomButton implements Runnable {
             Launcher.getMainManager().exitToMainMenu();
             return;
         }
-        // getMenuDialog().show();
+        // getMenuDialog().update();
         if (DialogMaster.confirm("Exit to Main Menu?"))
             Launcher.getMainManager().exitToMainMenu();
 

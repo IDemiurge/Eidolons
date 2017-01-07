@@ -22,6 +22,7 @@ public class CustomList<E> extends G_List<E> {
     private int offsetY;
     private Map<Rectangle, E> mouseMap;
     private MouseListener mouseListener;
+
     public CustomList(Collection<E> data) {
         super(data);
         setIgnoreRepaint(true);

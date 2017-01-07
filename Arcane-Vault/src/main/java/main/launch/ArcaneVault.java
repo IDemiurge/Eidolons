@@ -256,7 +256,7 @@ public class ArcaneVault {
 		ObjType type = DataManager.getType("Controlled Engagement", OBJ_TYPES.SKILLS);
 		getMainBuilder().getEditViewPanel().selectType(true, type);
 		getMainBuilder().getButtonPanel().handleButtonClick(false, AV_ButtonPanel.NEW_TREE);
-		// HC_Master.getAvTreeView().getBottomPanel().get;
+		// HC_Master.getAvTreeView().getBottomPanel().getOrCreate;
 	}
 
 	private static void initialize() {

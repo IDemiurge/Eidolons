@@ -69,7 +69,7 @@ public class TreeViewBuilder extends Builder {
 		// List<DefaultMutableTreeNode> nodes = TreeMaster
 		// .getChildren((DefaultMutableTreeNode) tree.getTree().getModel()
 		// .getRoot());
-		// nodes = TreeMaster.getChildren(nodes.get(0));
+		// nodes = TreeMaster.getChildren(nodes.getOrCreate(0));
 		if (comp == null) {
 			Dimension dimension = new Dimension(ArcaneVault.TREE_WIDTH, ArcaneVault.TREE_HEIGHT);
 			JScrollPane scrollPane = new JScrollPane(getTree());
@@ -91,7 +91,7 @@ public class TreeViewBuilder extends Builder {
 		// listener?
 
 		if (ArcaneVault.isColorsInverted())
-			getTree().setBackground(ColorManager.BACKGROUND); // get ws
+			getTree().setBackground(ColorManager.BACKGROUND); // getOrCreate ws
 																// background
 	}
 

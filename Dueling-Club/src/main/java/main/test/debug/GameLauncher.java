@@ -35,14 +35,15 @@ import java.util.List;
 public class GameLauncher {
     public final boolean NET_FAST_MODE = true;
     private final boolean factionMode = true;
+    private static GameLauncher instance;
     public int ENEMY_CODE = CODE.CHOOSE;
     public int PARTY_CODE = CODE.CHOOSE; // preset sub-code?
     public boolean VISION_HACK = false;
     // private boolean RANDOMIZE_PARTY = false;
     // private boolean RANDOMIZE_ENEMIES_PARTY = true;
     public boolean LEADER_MOVES_FIRST = false;
-    public String ENEMY_PARTY = "Minotaur;Troglodyte;Harpy";
-    public String PLAYER_PARTY = "";
+    public String ENEMY_PARTY = "Troglodyte";
+    public String PLAYER_PARTY = "Pirate";
     public boolean DUMMY_MODE = false;
     public boolean DUMMY_PP = false;
     private Integer PLAYER_CHOICE_OPTION = null;
@@ -56,8 +57,8 @@ public class GameLauncher {
     private boolean factionLeaderRequired;
     private String dungeon;
 
-    private Boolean FAST_MODE;
-    private Boolean SUPER_FAST_MODE;
+    public Boolean FAST_MODE;
+    public Boolean SUPER_FAST_MODE;
 
     public GameLauncher(DC_Game game, Boolean host_client) {
         this(game, null, null, host_client);
@@ -69,6 +70,7 @@ public class GameLauncher {
         this.host_client = host_client;
         this.FAST_MODE = FAST_MODE;
         this.SUPER_FAST_MODE = SUPER_FAST_MODE;
+        instance=this;
     }
 
     private String initFactionData() {
@@ -100,7 +102,13 @@ public class GameLauncher {
         PresetMaster.updatePreset();
     }
 
+    public static GameLauncher getInstance() {
+        return instance;
+    }
+
     private void savePresetAsLast() {
+        if (  ! FAST_MODE)
+            if (  ! SUPER_FAST_MODE)
         PresetMaster.savePreset(PresetMaster.getPreset(), null);
     }
 
@@ -139,13 +147,13 @@ public class GameLauncher {
         if (PresetMaster.getPreset() == null) {
 
             game.setDebugMode(Launcher.isDEBUG_MODE_DEFAULT());
-            game.init();
             initPlayerParties();
             if (PARTY_CODE != CODE.NONE)
                 game.setPlayerParty(PLAYER_PARTY);
             if (ENEMY_CODE != CODE.NONE)
                 game.setEnemyParty(ENEMY_PARTY);
-            // game.init();
+
+             game.init();
         } else {
             game.init();
 

@@ -237,7 +237,7 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
 		// LevelEditor.getMapMaster().getActiveZone()
 		// how to ignore this if necessary?
 		// don't wanna select obj being removed, e.g. ...
-		// DC_Obj obj = map.get(e.getSource()).getObj();
+		// DC_Obj obj = map.getOrCreate(e.getSource()).getObj();
 
 		if (e.getClickCount() > 1 || (alt && !empty)) {
 			if (right) {

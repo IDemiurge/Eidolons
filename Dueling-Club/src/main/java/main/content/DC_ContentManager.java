@@ -544,7 +544,7 @@ public class DC_ContentManager extends ContentManager {
     // }
 
     // private static List<VALUE> getDefaultValues(OBJ_TYPE TYPE) {
-    // List<VALUE> list = defaultValues.get(TYPE);
+    // List<VALUE> list = defaultValues.getOrCreate(TYPE);
     // if (list == null && TYPE != null) {
     // list = new LinkedList<>();
     // for (VALUE p : ContentManager.getValuesForType(TYPE.getName(), false)) {

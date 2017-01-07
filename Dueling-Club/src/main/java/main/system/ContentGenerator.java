@@ -600,12 +600,12 @@ public class ContentGenerator {
     // int i = 0;
     // List<String> list = getParamsFor(armorType);
     // for (PARAMS p : params) {
-    // t.setParam(p, list.get(i));
+    // t.setParam(p, list.getOrCreate(i));
     // i++;
     // }
     // list = getResistancesForArmorType(armorType);
     // for (PARAMETER p : ValuePages.RESISTANCES) {
-    // t.setParam(p, list.get(i));
+    // t.setParam(p, list.getOrCreate(i));
     // i++;
     // }
     //
@@ -643,7 +643,7 @@ public class ContentGenerator {
     // switch ((PARAMS) p) {
     // case PIERCING_RESISTANCE:
     // list.add(getPIERCING_RESISTANCE(armorType));
-    // list.add(get(armorType));
+    // list.add(getOrCreate(armorType));
     // break;
     // case BLUDGEONING_RESISTANCE:
     // list.add(getBLUDGEONING_RESISTANCE(armorType));

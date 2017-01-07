@@ -67,6 +67,7 @@ import main.system.util.ValueHelper;
 import main.test.PresetLauncher;
 import main.test.PresetMaster;
 import main.test.debug.DebugMaster;
+import main.libgdx.GameScreen;
 
 import javax.swing.*;
 import java.util.*;
@@ -369,6 +370,9 @@ public class DC_Game extends MicroGame {
         if (playerMaster == null)
             playerMaster = new PlayerMaster(game, getPlayer(true), getPlayer(false));
         playerMaster.initPlayerFlags();
+
+        if (GameScreen.getInstance()!=null )
+        GameScreen.getInstance().PostGameStart();
         Chronos.logTimeElapsedForMark("GAME_START");
     }
 
@@ -377,7 +381,7 @@ public class DC_Game extends MicroGame {
             if (hostClient) {
                 // PlayerWaitDialog dialog = new
                 // PlayerWaitDialog(getConnector().getGameHost());
-                // dialog.show(); TODO
+                // dialog.update(); TODO
                 // WaitMaster.waitForInput()
 
                 // modal dialogue to prevent host from "playing" already...
@@ -665,15 +669,15 @@ public class DC_Game extends MicroGame {
         }
         // ObjComponent objComp = null;
         // if (overlayingIncluded)
-        // objComp = battlefield.getGrid(z).getOverlayingObjMap().get(c);
+        // objComp = battlefield.getGrid(z).getOverlayingObjMap().getOrCreate(c);
         // if (objComp == null)
-        // objComp = battlefield.getGrid(z).getObjCompMap().get(c);
+        // objComp = battlefield.getGrid(z).getObjCompMap().getOrCreate(c);
         // if (objComp == null)
         // if (passableIncluded)
-        // objComp = battlefield.getGrid(z).getPassableObjMap().get(c);
+        // objComp = battlefield.getGrid(z).getPassableObjMap().getOrCreate(c);
         // if (objComp == null)
         // if (cellsIncluded)
-        // objComp = battlefield.getGrid(z).getCellCompMap().get(c);
+        // objComp = battlefield.getGrid(z).getCellCompMap().getOrCreate(c);
         // if (objComp != null)
         // return objComp.getObj();
         return list.get(0);
@@ -731,22 +735,22 @@ public class DC_Game extends MicroGame {
 
         // ObjComponent objComp = null;
         // if (overlayingIncluded)
-        // objComp = battlefield.getGrid(z).getOverlayingObjMap().get(c);
+        // objComp = battlefield.getGrid(z).getOverlayingObjMap().getOrCreate(c);
         // {
         // if (objComp != null)
         // list.addAllCast(objComp.getObjects());
         // }
-        // objComp = battlefield.getGrid(z).getObjCompMap().get(c);
+        // objComp = battlefield.getGrid(z).getObjCompMap().getOrCreate(c);
         //
         // if (objComp != null)
         // list.addAllCast(objComp.getObjects());
         // if (passableIncluded) {
-        // objComp = battlefield.getGrid(z).getPassableObjMap().get(c);
+        // objComp = battlefield.getGrid(z).getPassableObjMap().getOrCreate(c);
         // if (objComp != null)
         // list.addAllCast(objComp.getObjects());
         // }
         // if (cellsIncluded)
-        // objComp = battlefield.getGrid(z).getCellCompMap().get(c);
+        // objComp = battlefield.getGrid(z).getCellCompMap().getOrCreate(c);
         // {
         // if (objComp != null)
         // list.addAllCast(objComp.getObjects());

@@ -490,6 +490,8 @@ public class DC_ActionManager implements ActionManager {
         if (weapon == null)
             return new LinkedList<>();
         DC_HeroObj obj = weapon.getOwnerObj();
+        if (obj == null)
+            return new LinkedList<>();
         List<DC_UnitAction> list = new LinkedList<>();
         for (String typeName : StringMaster.openContainer(weapon.getProperty(PROPS.WEAPON_ATTACKS))) {
             if (!weapon.isMainHand())

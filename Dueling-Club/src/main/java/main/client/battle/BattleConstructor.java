@@ -310,7 +310,7 @@ public class BattleConstructor {
         ObjType waveType = null;
         while (true) {
             waveType = waves.get(RandomWizard.getRandomListIndex(waves));
-            // could roll by power if I can get the target power...
+            // could roll by power if I can getOrCreate the target power...
 
             if (checkEncounter(waveType))
                 break;

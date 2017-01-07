@@ -11,11 +11,12 @@ import java.util.List;
  * Created by JustMe on 12/26/2016.
  */
 public class ConditionalMultiTargeting extends SelectiveTargeting {
-List<Integer> selectedTargets;
+    List<Integer> selectedTargets;
     private Formula nOfTargets;
     private boolean noDuplicates = true;
     private boolean ignoreGroupTargeting = true;
     private boolean consecutive = true;
+
     public ConditionalMultiTargeting(
             Condition c) {
         super(c);
@@ -25,9 +26,9 @@ List<Integer> selectedTargets;
 
     @Override
     public Conditions getConditions() {
-        if (consecutive){
+        if (consecutive) {
 //            conditions.add()
-                    selectedTargets.get(selectedTargets.size()-1);
+            selectedTargets.get(selectedTargets.size() - 1);
 
         }
         return super.getConditions();

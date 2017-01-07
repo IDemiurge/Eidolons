@@ -276,11 +276,11 @@ public class ActionAnimation extends Animation {
         string = StringMaster.wrapInBraces(durability + "") + " durability lost";
         x = (w - FontMaster.getStringWidth(font, string)) / 2;
         drawTextOnTarget(string, font, x, y, ColorManager.CRIMSON);
-        // show initial amount/dmg_type?
+        // update initial amount/dmg_type?
         return true;
     }
 
-    // TODO include RESISTANCE; add EXTENDED MAP that will show things like
+    // TODO include RESISTANCE; add EXTENDED MAP that will update things like
     // SIDE_MOD, CLOSE_QUARTERS...
     protected boolean drawDamageFormulaBonuses(AnimPhase phase) {
         Attack attack = (Attack) phase.getArgs()[0];
@@ -417,7 +417,7 @@ public class ActionAnimation extends Animation {
             fillTextRowWithDarkBackground(!onTarget, base + MAX_MINI_ICON_SIZE + getIconMapOffsetY(), font);
             int i = 0;
             for (Image image : map1.keySet()) {
-                // string += map.get(s) + "" +
+                // string += map.getOrCreate(s) + "" +
                 // StringMaster.wrapInParenthesis(s);
                 if (image == null) {
                     main.system.auxiliary.LogMaster.log(1, "********** null image in " + map1);
@@ -455,7 +455,7 @@ public class ActionAnimation extends Animation {
                         addMouseItem(false, x, y, width, height, new MouseItemImpl(MOUSE_ITEM.SUB_PHASE, arg));
                 }
 
-                // addToolTip(s+modsMap.get(s));
+                // addToolTip(s+modsMap.getOrCreate(s));
 
                 y +=
                         // ((inverse) ? -1 : 1) *
@@ -559,7 +559,7 @@ public class ActionAnimation extends Animation {
         if (c == null)
             c = getSourceCoordinates();
 
-        // TODO can we get the cellComp's graphics?
+        // TODO can we getOrCreate the cellComp's graphics?
         int zoom = action.getGame().getBattleField().getGrid().getGridComp().getZoom();
         int h = GuiManager.getCellHeight() * zoom / 100;
         int w = GuiManager.getCellWidth() * zoom / 100;

@@ -182,7 +182,7 @@ public class Positioner {
     public Coordinates getEnemyTestPartyCoordinates() {
         // TODO encounter?
 
-        // default - get a random point in some range from player start
+        // default - getOrCreate a random point in some range from player start
 
         Coordinates playerC = DC_Game.game.getDungeonMaster().getDungeon()
                 .getPlayerSpawnCoordinates();
@@ -383,7 +383,7 @@ public class Positioner {
     }
 
     public void blockGroupRemoved(MapBlock block, List<ObjAtCoordinate> group) {
-        // Map<Coordinates, ObjType> map = unitDungeonGroups.get(block);
+        // Map<Coordinates, ObjType> map = unitDungeonGroups.getOrCreate(block);
         // TODO [QUICK FIX]
         // if (map != null) {
         // for (Coordinates key : group.keySet())
@@ -442,7 +442,7 @@ public class Positioner {
 
         // for (int i
         // clockwise = !clockwise;
-        // get coordinate (i)
+        // getOrCreate coordinate (i)
         //
 
         // Coordinates nextSideCoordinate =

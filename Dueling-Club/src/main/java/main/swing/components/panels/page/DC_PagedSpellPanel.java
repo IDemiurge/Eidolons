@@ -59,7 +59,7 @@ public class DC_PagedSpellPanel extends G_PagedListPanel<DC_SpellObj> implements
         // if (list.isEmpty())
         // return list;
         //
-        // List<DC_SpellObj> lastList = list.get(list.size() - 1);
+        // List<DC_SpellObj> lastList = list.getOrCreate(list.size() - 1);
         // ListMaster.fillWithNullElements(lastList, PAGE_SIZE);
 
         return splitList(spells);

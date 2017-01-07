@@ -71,7 +71,7 @@ public class PartyHeader extends G_Panel {
                     + party.getCurrentRoute().getDisplayedName() + " to "
                     + party.getCurrentDestination().getDisplayedName() + "("
                     + party.getIntParam(MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE)
-                    + "%)"; // TODO get hours to go?
+                    + "%)"; // TODO getOrCreate hours to go?
         } else
             locationString = locationString + ", at "
                     + party.getCurrentLocation().getDisplayedName();

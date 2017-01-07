@@ -175,11 +175,11 @@ public class ClearShotCondition extends MicroCondition {
 	 * 
 	 * Return meaning: True for "is in clear shot".
 	 *                                   <><><><><> 
-	 * 1) get slope factor (rectangle) 
-	 * 2) get base y (intersect vector with y axis) 
+	 * 1) getOrCreate slope factor (rectangle)
+	 * 2) getOrCreate base y (intersect vector with y axis)
 	 * 3) run for each X cell : project intersection with  verticals , IFF 2 integers - big circle (2 blocks requires) 
 	 * 
-	 * get rectangle -> transform it -> 
+	 * getOrCreate rectangle -> transform it ->
 	 * 
 	 * 
 	 */

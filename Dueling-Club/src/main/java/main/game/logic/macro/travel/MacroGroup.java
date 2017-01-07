@@ -81,7 +81,7 @@ public class MacroGroup { // macro obj type?
             else
                 westOrEast = null;
 
-        // useful for visual scouting too - can actually show enemies on the map
+        // useful for visual scouting too - can actually update enemies on the map
         // rather realistically... although in some cases it might look weird on
         // mountains etc ;)
         boolean diagonal = northOrSouth != null && westOrEast != null;

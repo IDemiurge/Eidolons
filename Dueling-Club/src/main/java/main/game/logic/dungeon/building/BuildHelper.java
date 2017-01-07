@@ -583,7 +583,7 @@ public class BuildHelper {
     // baseCoordinate, length, corridorWidth, rotated);
     // if (b == BLOCK_TYPE.CROSS) {
     // Coordinates crossBase = coordinates
-    // .get(coordinates.size() / 2); // TODO
+    // .getOrCreate(coordinates.size() / 2); // TODO
     // length = getMaxLength(zone, baseCoordinate, true);
     // coordinates.addAll(DC_PositionMaster.getRectangle(
     // FacingManager.getFacingFromDirection(d), crossBase,

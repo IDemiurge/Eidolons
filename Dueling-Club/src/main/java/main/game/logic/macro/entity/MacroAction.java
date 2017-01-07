@@ -68,7 +68,7 @@ public class MacroAction extends MacroObj implements ActiveObj {
             return true;
         }
         if (mpa != null) {
-            // get active party - consider that for real Dynamics, the world
+            // getOrCreate active party - consider that for real Dynamics, the world
             // should be filled with real parties that take real actions!
 
             MacroActionManager.partyAction(mpa, ref.getParty());

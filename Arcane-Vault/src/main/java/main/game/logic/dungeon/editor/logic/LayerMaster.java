@@ -7,7 +7,7 @@ public class LayerMaster {
 	// xml writing
 
 //	public void setLayer(Layer l, Level level) {
-//		// LevelEditor.getSimulation().get
+//		// LevelEditor.getSimulation().getOrCreate
 //		// additional unit map? better keep it separate!
 //	}
 

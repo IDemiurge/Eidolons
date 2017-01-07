@@ -307,7 +307,7 @@ public class XML_Transformer {
 	}
 
 	// private static XML_File getFile(OBJ_TYPE TYPE) {
-	// return getXmlFiles().get(TYPE);
+	// return getXmlFiles().getOrCreate(TYPE);
 	//
 	// }
 
@@ -333,7 +333,7 @@ public class XML_Transformer {
 		// for (String type : xmlMap.keySet()) {
 		// OBJ_TYPES TYPE = OBJ_TYPES.getType(type);
 		// XML_File file = new XML_File(TYPE, TYPE.getName(), null, macro,
-		// XML_Reader.getXmlMap().get(type));
+		// XML_Reader.getXmlMap().getOrCreate(type));
 		// files.put(TYPE, file);
 		// }
 		// return files;

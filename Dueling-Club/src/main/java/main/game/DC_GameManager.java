@@ -26,12 +26,15 @@ import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.dungeon.Entrance;
 import main.game.player.Player;
+import main.libgdx.bf.TargetRunnable;
 import main.rules.action.ActionRule;
 import main.rules.mechanics.IlluminationRule;
 import main.rules.mechanics.UpkeepRule;
 import main.swing.builders.DC_Builder;
 import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.swing.components.panels.page.DC_PagedPriorityPanel;
+import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
 import main.system.auxiliary.*;
 import main.system.graphics.ANIM;
 import main.system.graphics.AnimPhase;
@@ -45,8 +48,12 @@ import main.system.text.LogEntryNode;
 import main.system.text.ToolTipMaster.SCREEN_POSITION;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
+
+import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
 
 /**
  * *
@@ -373,8 +380,15 @@ public class DC_GameManager extends GameManager {
                     .isTargetingTooltipShown((DC_ActiveObj) ref.getActive()))
                 getGame().getToolTipMaster().initTargetingTooltip((DC_ActiveObj) ref.getActive());
         selectingSet = filter.getObjects();
-//        new Pair(selectingSet, new TargetRunnable())
-//        TempEventManager.trigger("", new EventCallbackParam());
+
+        if (!CoreEngine.isSwingOn()) {
+            Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(selectingSet, (t) -> {
+                ref.setTarget(t.getId());
+                if (ref.getActive() != null)
+                    ref.getActive().activate(ref);
+            });
+            GuiEventManager.trigger(SELECT_MULTI_OBJECTS, new EventCallbackParam(p));
+        }
         return select(selectingSet);
     }
 
@@ -422,19 +436,24 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public void highlight(Set<Obj> set) {
-        getGame().getBattleField().highlight(set);
+        if (CoreEngine.isSwingOn())
+            getGame().getBattleField().highlight(set);
+
 
     }
 
     @Override
     public void highlightsOff() {
-        getGame().getBattleField().highlightsOff();
+        if (CoreEngine.isSwingOn())
+            getGame().getBattleField().highlightsOff();
     }
 
     public Integer selectAwait() {
 
         // add Cancel button? add hotkey listener?
-        Integer selectedId = (Integer) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECT_BF_OBJ);
+        main.system.auxiliary.LogMaster.log(1,"***** awaiting selection from: "+selectingSet );
+        Integer selectedId = (Integer) WaitMaster.waitForInput(
+         WAIT_OPERATIONS.SELECT_BF_OBJ);
         // selecting = false;
         // cancelSelecting();
         return selectedId;
@@ -487,7 +506,7 @@ public class DC_GameManager extends GameManager {
         ref.setTarget(killed.getId());
 
         // List<Attachment> attachments = getState().getAttachmentsMap()
-        // .get(killed);
+        // .getOrCreate(killed);
         if (killed.getBuffs() != null)
             for (Attachment attach : killed.getBuffs()) {
                 if (!attach.isRetainAfterDeath()) {
@@ -513,7 +532,6 @@ public class DC_GameManager extends GameManager {
         }
 
         getGame().getUnits().remove(killed);
-
         // getGame().getBattleField().remove(killed); // TODO GRAVEYARD
         if (!quietly) {
             Ref REF = Ref.getCopy(killer.getRef());
@@ -669,7 +687,7 @@ public class DC_GameManager extends GameManager {
 
     // @Override
     // public List<? extends Active> getUnitActions(Obj obj) {
-    // acts = actionsMap.get(obj);
+    // acts = actionsMap.getOrCreate(obj);
     // if (acts != null)
     // return acts;
     //

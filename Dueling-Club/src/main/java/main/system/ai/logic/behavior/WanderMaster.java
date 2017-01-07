@@ -222,7 +222,7 @@ public class WanderMaster {
                 wanderDirection = DirectionMaster.rotate90(wanderDirection, RandomWizard.random());
         // if () //TODO change of opposite!
         // DirectionMaster.getDirectionByDegree(degrees);
-        // get direction by Leader's facing at the time, and make him
+        // getOrCreate direction by Leader's facing at the time, and make him
         // turn and turn while waiting!
         group.setWanderDirection(wanderDirection);
     }

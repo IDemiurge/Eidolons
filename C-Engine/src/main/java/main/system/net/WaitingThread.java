@@ -179,7 +179,7 @@ public class WaitingThread implements Runnable {
 		 */
 
 		/*
-		 * Waiter waiter = new Waiter(); boolean b = false; waiter.execute();
+         * Waiter waiter = new Waiter(); boolean b = false; waiter.execute();
 		 * try { b = waiter.get(); } catch (InterruptedException e) {
 		 * e.printStackTrace(); } catch (ExecutionException e) {
 		 * e.printStackTrace(); } Err.warn("WAITING: " + b); return b;

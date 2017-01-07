@@ -2,7 +2,7 @@ package main.test.libgdx.prototype;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import main.data.filesys.PathFinder;
-import main.libgdx.*;
+import main.libgdx.bf.Background;
 import main.libgdx.old.ActionGroup;
 import main.libgdx.old.ActiveUnitInfoPanel;
 import main.libgdx.old.TargetUnitInfoPanel;

@@ -84,7 +84,7 @@ public class VariableManager {
             if (!xml.contains(StringMaster.VAR_STRING)) {
                 // parsedVars +=var + StringMaster.CONTAINER_SEPARATOR; TODO
                 /*
-				 * if I want {1} to serve in multiple places for an Ability, I
+                 * if I want {1} to serve in multiple places for an Ability, I
 				 * will need another Property This property will 1) work in
 				 * parallel to Variables? 2) wait, we already are setting
 				 * Variables to the *parsed*, the question is how does

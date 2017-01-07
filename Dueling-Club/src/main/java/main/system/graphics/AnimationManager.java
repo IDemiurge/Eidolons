@@ -13,6 +13,8 @@ import main.game.battlefield.Coordinates;
 import main.game.battlefield.options.UIOptions;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.CellComp;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.ColorManager;
 import main.system.auxiliary.FontMaster;
 import main.system.auxiliary.FontMaster.FONT;
@@ -22,6 +24,7 @@ import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.options.AnimationOptions.ANIMATION_OPTION;
 import main.system.options.OptionsMaster;
@@ -62,6 +65,7 @@ public class AnimationManager {
     private Coordinates bufferedOffset;
     private Animation lastThumbnail;
     private List<Animation> tempAnims = new LinkedList<>();
+    private boolean changed;
 
     public AnimationManager(DC_Game game) {
         this.game = game;
@@ -78,7 +82,7 @@ public class AnimationManager {
      * perhaps break it into multiple phases - attackActivated, attackProceeds, attackFinished
 	 * indeed, this would seem reasonable for all action-anims! 
 	 * >> click-thru to skip phases
-	 * >> click on any of the anim-items to get fast-info
+	 * >> click on any of the anim-items to getOrCreate fast-info
 	 * >> synchronize sounds
 	 * >> overlay with damage/mod animation 
 	 * 
@@ -117,18 +121,33 @@ public class AnimationManager {
         return false;
     }
 
-    public void drawAnimations(Graphics bfGraphics) {
-        cleanAnimations();
-        updatePoints();
+    public boolean updateAnimations() {
+       if (!changed)
+         changed = cleanAnimations();
+
+        if (CoreEngine.isSwingOn())
+            updatePoints();
         // DequeImpl<Animation> animsToDraw = new DequeImpl<>(animations);
         // animsToDraw.addAll(tempAnims); drawn manually!
         for (Animation anim : animations) {
             if (anim.isPending())
                 anim.run();
-            checkOverlapping(anim);
+
+            if (CoreEngine.isSwingOn())
+                checkOverlapping(anim);
         }
         // drawThumbnails()
+if (changed)
+{
+    changed=!changed;
+    GuiEventManager.trigger(GuiEventType.UPDATE_PHASE_ANIMS, null);
+    return true;
+}
+        return changed;
+    }
 
+    public void drawAnimations(Graphics bfGraphics) {
+        updateAnimations();
         // will phase have time to init via timer.start()?
         for (Animation anim : animations)
             anim.draw(bfGraphics);
@@ -136,16 +155,19 @@ public class AnimationManager {
         // anim.getTarget()
     }
 
-    public void cleanAnimations() {
+    public boolean cleanAnimations() {
 
+        boolean changed = false;
         for (Animation anim : new LinkedList<>(animations)) {
             if (anim.isFinished())
                 if (!anim.isPaused())
                     if (!anim.isThumbnail())
-                        if (!anim.isReplay())
+                        if (!anim.isReplay()) {
                             removeAnimation(anim);
+                            changed = true;
+                        }
         }
-
+        return changed;
     }
 
     public void removeAnimation(Animation animation) {
@@ -276,7 +298,7 @@ public class AnimationManager {
 
     private void adjustOffset(Coordinates c_offset) {
         game.getBattleField().getGrid()
-                .setOffsetCoordinate(new Coordinates(c_offset.x, c_offset.y));
+         .setOffsetCoordinate(new Coordinates(c_offset.x, c_offset.y));
 
     }
 
@@ -416,7 +438,7 @@ public class AnimationManager {
     }
 
     // action activated on source?
-    // exception with std attacks - show weapon?
+    // exception with std attacks - update weapon?
     public void actionResolves(DC_ActiveObj action, Ref ref) {
         ImageIcon img = action.getIcon();
         if (img == null)
@@ -451,38 +473,38 @@ public class AnimationManager {
 
     private void animate(final int delay, final CellComp comp) {
         new Thread
-                // SwingUtilities.invokeLater
-                (new Runnable() {
+         // SwingUtilities.invokeLater
+         (new Runnable() {
 
-                    @Override
-                    public void run() {
-                        map.put(comp.getTopObjOrCell(), comp);
+             @Override
+             public void run() {
+                 map.put(comp.getTopObjOrCell(), comp);
 
-                        getGrid().refresh();
-                        // main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-                        // comp + " animated");
-                        WaitMaster.WAIT(delay);
-                        // main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-                        // comp + " de-animated");
-                        comp.removeAnimation();
-                        comp.refresh();
-                        //
-                        // Chronos.mark(comp.getTopObjOrCell().getName() +
-                        // " animation, delay = " + delay);
-                        getGrid().refresh();
-                        // Chronos.logTimeElapsedForMark(comp.getTopObjOrCell().getName()
-                        // + " animation, delay = " + delay);
+                 getGrid().refresh();
+                 // main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+                 // comp + " animated");
+                 WaitMaster.WAIT(delay);
+                 // main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+                 // comp + " de-animated");
+                 comp.removeAnimation();
+                 comp.refresh();
+                 //
+                 // Chronos.mark(comp.getTopObjOrCell().getName() +
+                 // " animation, delay = " + delay);
+                 getGrid().refresh();
+                 // Chronos.logTimeElapsedForMark(comp.getTopObjOrCell().getName()
+                 // + " animation, delay = " + delay);
 
-                        map.remove(comp.getTopObjOrCell());
-                        if (map.isEmpty())
-                            WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_FINISHED, true);
-                        else {
-                            WaitMaster.WAIT(delay);
-                            WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_FINISHED, true);
-                        }
+                 map.remove(comp.getTopObjOrCell());
+                 if (map.isEmpty())
+                     WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_FINISHED, true);
+                 else {
+                     WaitMaster.WAIT(delay);
+                     WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_FINISHED, true);
+                 }
 
-                    }
-                }, comp.getTopObjOrCell().getName() + " animation").start();
+             }
+         }, comp.getTopObjOrCell().getName() + " animation").start();
 
     }
 
@@ -498,12 +520,12 @@ public class AnimationManager {
     }
 
     private CellComp getComp(Obj obj) {
-        // if (getGrid().getObjCompMap().get(obj.getCoordinates()) == null) {
+        // if (getGrid().getObjCompMap().getOrCreate(obj.getCoordinates()) == null) {
         // CellComp component = (CellComp) getGrid()
-        // .getPassableObjMap().get(obj.getCoordinates());
+        // .getPassableObjMap().getOrCreate(obj.getCoordinates());
         // if (component != null)
         // return component;
-        // component = (CellComp) getGrid().getCellCompMap().get(
+        // component = (CellComp) getGrid().getCellCompMap().getOrCreate(
         // obj.getCoordinates());
         // return component;
         // }
@@ -594,6 +616,7 @@ public class AnimationManager {
         if (animations.contains(animation))
             return;
         animations.add(animation);
+        changed=true;
 
     }
 

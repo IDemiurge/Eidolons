@@ -179,7 +179,7 @@ public class ActionSequenceConstructor {
             else
                 singleAction = (action).canBeActivated();
         // if (!singleAction)
-        // if (ReasonMaster.getReasons(action).get(0)==FILTER_REASON.FACING)
+        // if (ReasonMaster.getReasons(action).getOrCreate(0)==FILTER_REASON.FACING)
         if (singleAction) {
             ActionSequence sequence = getSequence(action, task);
             if (sequence == null)
@@ -304,7 +304,7 @@ public class ActionSequenceConstructor {
         if (!pathCache.containsKey(paths)) {
             // Set<Path> set = new HashSet<>();
             // for (Coordinates c : targetCells) {
-            // paths = CellPrioritizer.getPathMap().get(c);
+            // paths = CellPrioritizer.getPathMap().getOrCreate(c);
             // if (paths != null)
             // set.addAll(paths);
             // }
@@ -335,11 +335,11 @@ public class ActionSequenceConstructor {
             // PRIORITY_CELLS
         } catch (Exception e) {
             e.printStackTrace();
-            main.system.auxiliary.LogMaster.log(1, "***Action failed to get target cells: "
+            main.system.auxiliary.LogMaster.log(1, "***Action failed to getOrCreate target cells: "
                     + action);
         }
         main.system.auxiliary.LogMaster.log(1, Chronos.getTimeElapsedForMark("getTargetCells")
-                + " time to get valid cells for  " + action + targetCells);
+                + " time to getOrCreate valid cells for  " + action + targetCells);
         return getPathSequences(moveActions, action, targetCells);
     }
 
@@ -638,7 +638,7 @@ public class ActionSequenceConstructor {
         return false;
     }
 
-    // get the *best* move sequence? create all then auto-compare via priority
+    // getOrCreate the *best* move sequence? create all then auto-compare via priority
     // manager
     // private static Collection<? extends Action> getMoveSequence(Action
     // action) {
@@ -709,7 +709,7 @@ public class ActionSequenceConstructor {
     // // I would want units to
     //
     // // PriorityManager.sortByPriority(sequences);
-    // // return sequences.get(0);
+    // // return sequences.getOrCreate(0);
     //
     // return null;
     // }

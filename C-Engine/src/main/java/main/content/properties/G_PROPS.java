@@ -133,6 +133,7 @@ public enum G_PROPS implements PROPERTY {
     TOOLTIP("all"),
     FACTION_GROUP("factions"),
     UNIQUE_ID("all"),;
+
     static {
         NAME.setInputReq(INPUT_REQ.STRING);
         // MAIN_HAND_ITEM.setDynamic(true);

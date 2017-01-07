@@ -91,7 +91,7 @@ public class SortMaster {
 
             public int compare(Entity o1, Entity o2) {
                 /*
-				 * get background type from bg prop OR just race get id -> sort
+                 * get background type from bg prop OR just race get id -> sort
 				 * into sublists by id sort sublists by name
 				 */
                 int result = checkHeroSubList(o1, o2);

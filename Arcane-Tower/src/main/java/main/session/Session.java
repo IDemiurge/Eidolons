@@ -140,7 +140,7 @@ public class Session extends ArcaneEntity {
 			return null;
 		AT_SortMaster.sortGoals(goals, this);
 		if (goals.isEmpty())
-			// in non-locked mode, show all Direction's goals?
+			// in non-locked mode, update all Direction's goals?
 			// otherwise, all Session's goals
 			return new ListMaster<Goal>().join(false, goals, getDirection().getGoals());
 		return new ListMaster<Goal>().getCommonElements(goals, getDirection().getGoals());

@@ -12,6 +12,7 @@ import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
 import main.game.Game;
 import main.system.auxiliary.*;
+import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.launch.TypeBuilder;
@@ -24,6 +25,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 public class XML_Reader {
     final static DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
@@ -38,8 +40,11 @@ public class XML_Reader {
     static Map<String, Set<String>> macroTreeSubGroupMap = new ConcurrentMap<String, Set<String>>();
     static Map<String, Set<String>> macroTreeSubGroupedTypeMap = new ConcurrentMap<String, Set<String>>();
 
-    private static Map<String, Map<String, ObjType>> typeMaps = new XLinkedMap<String, Map<String, ObjType>>(
-            20);
+    private static Map<String, Map<String, ObjType>> typeMaps =
+            new ConcurrentSkipListMap
+//     new XLinkedMap
+                    <>(
+            );
     private static Map<String, ObjType> bufferCharTypeMap = new XLinkedMap<String, ObjType>(20);
     private static boolean macro;
 
@@ -127,8 +132,14 @@ public class XML_Reader {
 
     public static void loadXml(String path) {
         File folder = new File(path);
-
-        for (File file : folder.listFiles()) {
+        List<File> list = new LinkedList<>(
+                Arrays.asList(folder.listFiles()));
+        list.sort((p1, p2) ->
+                BooleanMaster.compare(
+                        p1.getTotalSpace(), (p2.getTotalSpace())
+                ));
+        for (File file : list) {
+            file.getTotalSpace();
             if (checkFile(file)) {
                 readTypeXmlFile(file, isConcurrentReadingOn());
 
@@ -439,8 +450,8 @@ public class XML_Reader {
     }
 
     /**
-//     * @param tabGroupMap
-     *            the tabGroupMap to set
+     * //     * @param tabGroupMap
+     * the tabGroupMap to set
      */
 
     public static Map<String, Set<String>> getTabGroupMap() {

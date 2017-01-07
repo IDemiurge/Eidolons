@@ -214,7 +214,7 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
                     list = getIdList(hero);
                 } catch (Exception e) {
                     main.system.auxiliary.LogMaster.log(1,
-                            "Group obj effect failed to get targets: " + this);
+                            "Group obj effect failed to getOrCreate targets: " + this);
                     return new LinkedList<>();
                 }
 

@@ -258,7 +258,7 @@ public class DivinationMaster {
         }
         index++;
 
-        // get the group randomly, then a spell randomly from it!
+        // getOrCreate the group randomly, then a spell randomly from it!
 
         int weight = spellGroups.get(new EnumMaster<SPELL_GROUP>()
                 .retrieveEnumConst(SPELL_GROUP.class,

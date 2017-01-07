@@ -338,7 +338,7 @@ public class Analyzer {
     }
 
     public static List<? extends DC_Obj> getStalkCells(UnitAI ai) {
-        // get closest enemy?
+        // getOrCreate closest enemy?
 //        DC_HeroObj enemy = getClosestEnemy(ai);
 //        List<DC_Obj> list = new LinkedList<>();
 //        for (DC_Cell cell : getCells(ai, false, false, true)) {

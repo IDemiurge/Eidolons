@@ -17,7 +17,7 @@ import java.util.Arrays;
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability"};
     public static final String VERSION = "0.05";
-
+    public static boolean swingOn = true;
     private static boolean TEST_MODE = true;
     private static SoundMaster sm;
     private static boolean arcaneVault;
@@ -25,11 +25,11 @@ public class CoreEngine {
     private static boolean menuScope = true;
     private static boolean levelEditor;
     private static String selectivelyReadTypes;
+    private static String exceptionTypes;
     private static boolean enumCachingOn = true;
     private static boolean writingLogFilesOn;
-    private static  boolean arcaneTower=false;
-    private static boolean swingOn=false;
-    private static boolean graphicTestMode=true;
+    private static boolean arcaneTower = false;
+    private static boolean graphicTestMode = true;
 
     public static void dataInit(boolean newThread, final boolean macro) {
         if (newThread) {
@@ -96,6 +96,10 @@ public class CoreEngine {
         CoreEngine.concurrentLaunch = concurrentLaunch;
     }
 
+    public static void setExceptionTypes(String exceptionTypes) {
+        CoreEngine.exceptionTypes = exceptionTypes;
+    }
+
     public static boolean checkReadNecessary(String name) {
 
         if (selectivelyReadTypes != null)
@@ -103,6 +107,12 @@ public class CoreEngine {
                             .cropFormat(StringMaster.cropLast(name, "-"))
 
                     , false);
+
+        if (exceptionTypes != null)
+            if (StringMaster.checkContainer(exceptionTypes, StringMaster
+                            .cropFormat(StringMaster.cropLast(name, "-"))
+                    , false))
+                return false;
 
         OBJ_TYPES TYPE = new EnumMaster<OBJ_TYPES>().retrieveEnumConst(OBJ_TYPES.class, name);
 
@@ -164,10 +174,6 @@ public class CoreEngine {
         CoreEngine.writingLogFilesOn = writingLogFilesOn;
     }
 
-    public static void setArcaneTower(boolean arcaneTower) {
-        CoreEngine.arcaneTower = arcaneTower;
-    }
-
     public static boolean isGraphicTestMode() {
         return graphicTestMode;
     }
@@ -176,6 +182,17 @@ public class CoreEngine {
         CoreEngine.graphicTestMode = graphicTestMode;
     }
 
+    public static boolean isArcaneTower() {
+        return arcaneTower;
+    }
+
+    public static void setArcaneTower(boolean arcaneTower) {
+        CoreEngine.arcaneTower = arcaneTower;
+    }
+
+    public static boolean isSwingOn() {
+        return swingOn;
+    }
 
     public void dataInit(boolean macro) {
 
@@ -195,13 +212,5 @@ public class CoreEngine {
             e.printStackTrace();
         }
 
-    }
-
-    public static boolean isArcaneTower() {
-            return arcaneTower;
-    }
-
-    public static boolean isSwingOn() {
-        return swingOn;
     }
 }

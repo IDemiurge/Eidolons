@@ -250,7 +250,7 @@ public class UnitLevelManager {
         List<String> array = StringMaster.openContainer(newType
                 .getProperty((xp) ? PROPS.GOLD_PLAN : PROPS.XP_PLAN));
         boolean success = false;
-        for (String item : array) { // get all the xp items next in line while
+        for (String item : array) { // getOrCreate all the xp items next in line while
             // there is xp to spend
             if (!checkItem(newType, item, xp))
                 continue;

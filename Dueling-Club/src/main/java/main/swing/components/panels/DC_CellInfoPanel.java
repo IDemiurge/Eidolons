@@ -108,7 +108,7 @@ public class DC_CellInfoPanel extends G_Panel {
         info.refresh();
         remove(log);
         addInfo();
-        // toggle log panel? some button to get it back...
+        // toggle log panel? some button to getOrCreate it back...
     }
 
     @Override

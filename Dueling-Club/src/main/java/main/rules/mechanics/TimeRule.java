@@ -31,7 +31,7 @@ public class TimeRule {
 	 * only appeared late in the round, as long as it has enough initiative!
 	 * Original idea was to limit by ap_cost...
 	 * 
-	 * There should be a middleground - slow units should never get to move if
+	 * There should be a middleground - slow units should never getOrCreate to move if
 	 * round is sped up, but near-speed units should be able to take some
 	 * actions reasonably, perhaps I should use the TimeMap -
 	 * 
@@ -160,7 +160,7 @@ public class TimeRule {
                 // other units will have their remaining initiative transferred
                 // to the next round
                 // as well as action points? or half at least?
-                // late buff will be nominal to show that the unit will not make
+                // late buff will be nominal to update that the unit will not make
                 // if unless something speeds him up!
 
                 speedyUnit = action.getOwnerObj();

@@ -15,9 +15,9 @@ public class MicroObj extends Obj {
     protected int x;
     protected int y;
     protected Coordinates coordinates;
+    protected Boolean overlaying;
     private Coordinates lastKnownCoordinates;
     private int z;
-    protected Boolean overlaying;
 
     public MicroObj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);

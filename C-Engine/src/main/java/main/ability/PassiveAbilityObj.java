@@ -7,7 +7,6 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.Attachment;
 import main.entity.obj.Obj;
 import main.game.Game;
-import main.game.MicroGame;
 import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.game.player.Player;

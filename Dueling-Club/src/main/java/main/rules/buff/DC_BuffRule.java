@@ -144,7 +144,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
             // else // TODO instead, set the effect's BOOLEAN_APPLIED
             // if (level != null)
             // if (level > 0)
-            // if (effectCache.get(obj)[level] != null)
+            // if (effectCache.getOrCreate(obj)[level] != null)
             // logged = false;
         } catch (Exception e) {
             e.printStackTrace();

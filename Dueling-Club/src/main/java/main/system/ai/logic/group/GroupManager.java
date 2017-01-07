@@ -36,7 +36,7 @@ public class GroupManager {
                 }
 
             dungeon.getGame().getUnitsForCoordinates(coordinates);
-            // sort(); leader = units.get(0);
+            // sort(); leader = units.getOrCreate(0);
 
 //			group.setLeader(leader);
 

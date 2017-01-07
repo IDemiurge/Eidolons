@@ -273,7 +273,7 @@ public class PartyManager {
     }
 
     public static List<DC_HeroObj> loadParty(String typeName, DC_Game game) {
-        // invoke before obj init, to get full obj string
+        // invoke before obj init, to getOrCreate full obj string
         File file = getPartyFile(typeName);
         String xml = FileManager.readFile(file);
         if (xml.contains(XML_Converter.openXmlFormatted(typeName))) {

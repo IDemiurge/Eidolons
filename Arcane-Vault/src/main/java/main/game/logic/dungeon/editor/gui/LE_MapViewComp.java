@@ -111,7 +111,7 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
 
 	public void refresh() {
 		// removeAll();
-		// map = maps.get(currentLevel);
+		// map = maps.getOrCreate(currentLevel);
 		// if (map == null) {
 		// map = new Minimap(true, currentLevel.getDungeon());
 		// map.init();

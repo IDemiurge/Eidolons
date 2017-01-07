@@ -73,7 +73,7 @@ public class SkirmishMaster {
             // skirmish.getDifficulty();
         }
         DC_Game.game.getParty();
-        // get power level?
+        // getOrCreate power level?
         return waves;
     }
 

@@ -132,7 +132,7 @@ public class ModelManager {
 				index--;
 		TabBuilder tb = ArcaneVault.getMainBuilder().getTabBuilder().getSubTabs(code);
 		tb.getTabbedPane().setSelectedIndex(index);
-		// get path for node? I could keep some map from type to path...
+		// getOrCreate path for node? I could keep some map from type to path...
 		if (!select) {
 			if (tb.getTree().getTreeSelectionListeners().length != 1)
 				return;

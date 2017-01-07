@@ -322,7 +322,7 @@ public class UnitAI {
             }
         }
 
-        // groupAI.get
+        // groupAI.getOrCreate
         if (orderType == ORDER_TYPE.PURSUIT) {
             if (standingOrders.getLastAction().getTarget() instanceof DC_Cell) {
                 DC_Cell cell = (DC_Cell) standingOrders.getLastAction().getTarget();

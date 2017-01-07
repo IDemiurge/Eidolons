@@ -35,7 +35,7 @@ public class UnitLibrary {
         unit = learner;
         // a better approach: iterate thru new/memo/verb until <...>
         // at each iteration, learn 1 new spell if possible, memorize max and
-        // get the rest max en verbatim
+        // getOrCreate the rest max en verbatim
         if (!unit.checkProperty(PROPS.SPELL_PLAN) || getPlan().contains(StringMaster.BASE_CHAR)) {
             if (UnitAnalyzer.checkIsCaster(unit)) {
                 generateSpellPlan();

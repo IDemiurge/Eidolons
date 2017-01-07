@@ -20,8 +20,7 @@ import main.system.math.MathMaster;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
+import java.awt.image.*;
 import java.io.File;
 import java.util.*;
 import java.util.List;
@@ -525,8 +524,11 @@ public class ImageManager {
 
             return null;
         }
-        if (icon != null)
-            return icon.getImage();
+        if (icon != null) {
+            if (CoreEngine.isSwingOn()) return
+                    icon.getImage();
+            return new CustomImage(imgPath, icon.getImage());
+        }
         return null;
     }
 
@@ -1024,6 +1026,27 @@ public class ImageManager {
         return getImage(imgPath);
     }
 
+    public static BufferedImage getBufferedImage8bit(BufferedImage image) {
+        ColorModel cm = image.getColorModel();
+        if (!(cm instanceof IndexColorModel))
+            return image; // sorry...
+        IndexColorModel icm = (IndexColorModel) cm;
+        WritableRaster raster = image.getRaster();
+        int pixel = raster.getSample(0, 0, 0); // pixel is offset in ICM's palette
+        int size = icm.getMapSize();
+        byte[] reds = new byte[size];
+        byte[] greens = new byte[size];
+        byte[] blues = new byte[size];
+        icm.getReds(reds);
+        icm.getGreens(greens);
+        icm.getBlues(blues);
+        IndexColorModel icm2 = new IndexColorModel(8, size, reds, greens, blues, pixel);
+        return new BufferedImage(icm2, raster,
+                image.isAlphaPremultiplied(),
+
+                null);
+    }
+
     public static BufferedImage getBufferedImage(Image image) {
         return getBufferedImage(image, 100);
     }
@@ -1083,9 +1106,14 @@ public class ImageManager {
         return img;
     }
 
+    public static String getRadialSpellIconPath() {
+        return "UI\\Spellbook.png";
+    }
+
     public enum ALIGNMENT {
         NORTH, SOUTH, EAST, WEST, CENTER, NORTH_WEST, SOUTH_EAST
     }
+
     public enum STD_IMAGES {
         SCROLL_ATTACK_CHOICE("UI\\components\\neo\\attack choice scroll.png"),
         SCROLL_ATTACK_TEXT("UI\\components\\neo\\choose attack.png"),
@@ -1243,6 +1271,7 @@ public class ImageManager {
         }
 
     }
+
     public enum HIGHLIGHT {
         TRAVERSED_PATH(BORDER.HIGHLIGHTED),
         DONE(BORDER.CONCEALED),
@@ -1273,6 +1302,7 @@ public class ImageManager {
             this.border = border;
         }
     }
+
     public enum BORDER {
         DEFAULT("default.png"),
         GOLDEN("128_golden.png"),

@@ -8,19 +8,15 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import main.data.filesys.PathFinder;
+import main.libgdx.bf.mouse.InputController;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by PC on 22.10.2016.
@@ -38,7 +34,7 @@ public class BattleFieldScreen implements Screen {
     Texture testTexture;
 
 
-    protected static MyInputController controller;
+    protected static InputController controller;
 
     float img_X = 200;
     float img_Y = 200;
@@ -105,7 +101,7 @@ public class BattleFieldScreen implements Screen {
 
     @Override
     public void show() {
-        System.out.println("show");
+        System.out.println("update");
         actorsArray = new ArrayList<>();
         batch = new SpriteBatch();
 //        shapeRenderer =new ShapeRenderer();
@@ -190,7 +186,7 @@ public class BattleFieldScreen implements Screen {
 
 
 
-        controller = new MyInputController(camera);
+        controller = new InputController(camera);
         Gdx.input.setInputProcessor(controller);
 //        stage.setKeyboardFocus(actor);
 //        Gdx.input.setInputProcessor(stage);
@@ -222,7 +218,7 @@ public class BattleFieldScreen implements Screen {
     @Override
     public void render(float v) {
 //        Gdx.gl.glClearColor(color1,color2,color3,color4); // color for cleaning the screen,as for now its black
-//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT );// method that deletes previous scene and make all pixels get Clear Color
+//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT );// method that deletes previous scene and make all pixels getOrCreate Clear Color
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
 //        batch.setProjectionMatrix(stage.getCamera().combined);
         batch.setProjectionMatrix(camera.combined);

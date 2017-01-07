@@ -180,7 +180,7 @@ public class AttackCalculator {
 
     private void parseCalcMap() {
         // amount =
-        // calcMap.get(PARAMS.DAMAGE_BONUS);
+        // calcMap.getOrCreate(PARAMS.DAMAGE_BONUS);
 
     }
 
@@ -310,14 +310,14 @@ public class AttackCalculator {
         }
         // bonusMap.put() inside
         totalBonus += bonus;
-        // then add modMap and bonusMap to get final bonus! useful to know what
+        // then add modMap and bonusMap to getOrCreate final bonus! useful to know what
         // part of it was % though
         // TODO MODIFIER NOW DISPLAYED SEPARATED!
         // for (MOD_IDENTIFIER id : bonusMap.keySet()) {
-        // bonus = bonusMap.get(id);
+        // bonus = bonusMap.getOrCreate(id);
         // bonus += bonus * totalMod / 100;
-        // if (modMap.get(id) != null)
-        // bonus += (amount - bonus) * modMap.get(id) / 100;
+        // if (modMap.getOrCreate(id) != null)
+        // bonus += (amount - bonus) * modMap.getOrCreate(id) / 100;
         // bonusMap.put(id, bonus);
         // }
         amount += totalBonus;
@@ -325,7 +325,7 @@ public class AttackCalculator {
 
         // ATK/DEF/CRIT - MUST BE LAST???
 
-        // TODO refactor so that there a method for each that will get bonus/mod
+        // TODO refactor so that there a method for each that will getOrCreate bonus/mod
         // and build subMap for anim page... the issue is that we also need to
         // keep it real!..
 
@@ -376,7 +376,7 @@ public class AttackCalculator {
                 action.modifyParameter(PARAMS.IMPACT_AREA, ammo.getIntParam(PARAMS.IMPACT_AREA));
                 // weapon. //IN DC_WEAPONOBJ
                 // addSpecialEffect(SPECIAL_EFFECTS_CASE.ON_ATTACK,
-                // ammo.getSpecialEffects().get(SPECIAL_EFFECTS_CASE.ON_ATTACK));
+                // ammo.getSpecialEffects().getOrCreate(SPECIAL_EFFECTS_CASE.ON_ATTACK));
                 int bonus = ammo.getIntParam(PARAMS.DAMAGE_BONUS) + rollDice(ammo);
                 bonusMap.put(MOD_IDENTIFIER.AMMO, bonus);
                 dmg_bonus += bonus;

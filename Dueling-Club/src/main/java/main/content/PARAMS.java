@@ -1055,7 +1055,7 @@ public enum PARAMS implements PARAMETER {
         setDescr(DescriptionMaster.getMasteryDescription(this));
     }
 
-    // get(base)
+    // getOrCreate(base)
 
     @Override
     public String getName() {
