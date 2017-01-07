@@ -140,8 +140,6 @@ public class GridPanel extends Group {
             GuiEventManager.trigger(SHOW_BLUE_BORDERS, new EventCallbackParam(map));
         });
 
-//        GuiEventManager.bind(DESTROY_UNIT_MODEL, param -> {
-//         });
         GuiEventManager.bind(INGAME_EVENT_TRIGGERED, param -> {
             main.game.event.Event event = (main.game.event.Event) param.get();
             Ref r = event.getRef();
@@ -169,8 +167,7 @@ public class GridPanel extends Group {
                 addUnitView(r.getSourceObj());
                 caught = true;
             }
-            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_SUMMONED
-                    ) {
+            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_SUMMONED) {
                 addUnitView(r.getObj(KEYS.SUMMONED));
                 caught = true;
             }
@@ -206,19 +203,6 @@ public class GridPanel extends Group {
                 caught = true;
             }
 
-//            if (!caught) {
-//                Arrays.stream(GuiEventType.values()).forEach(e -> {
-//                    if (e.boundEvents != null)
-//                        Arrays.stream(e.boundEvents).forEach(
-//                         bound -> {
-//                             if (event.getType().equals(bound)) {
-//                                 GuiEventManager.trigger(e, param);
-////                             caught=true; TODO howto?
-//                             }
-//
-//                         });
-//                });
-//            }
             if (!caught) {
                 System.out.println("catch ingame event: " + event.getType() + " in " + event.getRef());
             }

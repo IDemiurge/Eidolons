@@ -1,5 +1,6 @@
 package main.libgdx.bf.mouse;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -13,8 +14,6 @@ import main.libgdx.bf.mouse.ToolTipManager.ToolTipRecordOption;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
-import org.apache.commons.lang3.tuple.ImmutableTriple;
-import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -102,15 +101,6 @@ public class GridMouseListener extends InputListener {
 
     @Override
     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-        try {
-            return handleTouchDown(event, x, y, pointer, button);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean handleTouchDown(InputEvent event, float x, float y, int pointer, int button) {
         Actor a;
         a = gridPanel.hitChildren(x, y, true);
         if (a != null && a instanceof GridCell) {
@@ -126,25 +116,24 @@ public class GridMouseListener extends InputListener {
                 gridPanel.getCellBorderManager().hitAndCall(b);
             }
 
-
             if (cell.getInnerDrawable() != null) {
                 Actor unit = cell.getInnerDrawable().hit(x, y, true);
                 if (unit != null && unit instanceof UnitView) {
-                    if (event.getButton() == 1) {
+                    if (event.getButton() == Input.Buttons.RIGHT) {
                         DC_HeroObj heroObj = gridPanel.getUnitMap().entrySet()
                                 .stream().filter(entry -> entry.getValue() == unit).findFirst()
                                 .get().getKey();
-                        Triple<DC_Obj, Float, Float> container = new ImmutableTriple<>(heroObj, x, y);
-                        GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(container));
+                        GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(heroObj));
                     }
                 }
-            } else if (event.getButton() == 1) {
-                DC_Obj dc_cell = DC_Game.game.getCellByCoordinate(
-                        new Coordinates(cell.getGridX(), cell.getGridY()));
-                Triple<DC_Obj, Float, Float> container = new ImmutableTriple<>(dc_cell, x, y);
-                GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(container));
+            } else if (event.getButton() == Input.Buttons.RIGHT) {
+                DC_Obj dc_cell = DC_Game.game.getCellByCoordinate(new Coordinates(cell.getGridX(), cell.getGridY()));
+                GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(dc_cell));
             }
+            event.stop();
+            return true;
         }
         return false;
     }
+
 }
