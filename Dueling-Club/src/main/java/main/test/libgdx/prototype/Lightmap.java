@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class Lightmap {
     private Map<MicroObj, Body> bodyMap;
-    private World world;
+    private static World world;
     private RayHandler rayHandler;
     private float cellWidth;
     private float cellHeight;
@@ -29,15 +29,19 @@ public class Lightmap {
     private static float SECOND = 1000000000;
     Box2DDebugRenderer debugRenderer;
 
+    public static World getWorld() {
+        return world;
+    }
+
     private void init(DequeImpl<MicroObj> un, World world, RayHandler rayHandler, float cellWidth, float cellHeight) {
         this.cellWidth = cellWidth;
         this.cellHeight = cellHeight;
-        this.world = world;
+        Lightmap.world = world;
         this.rayHandler = rayHandler;
         this.rayHandler.setBlur(true);
         this.rayHandler.setBlurNum(15);
         this.rayHandler.setAmbientLight(Color.GRAY);
-        this.rayHandler.setAmbientLight(0.025f);
+        this.rayHandler.setAmbientLight(0.25f);
         this.rayHandler.setBlurNum(15);
         RayHandler.setGammaCorrection(true);
         debugRenderer = new Box2DDebugRenderer();
@@ -130,7 +134,7 @@ public class Lightmap {
     public void updatePos(MicroObj obj) {
         if (bodyMap.containsKey(obj)) {
             Coordinates c = obj.getCoordinates();
-            bodyMap.get(obj).setTransform(c.getX() * cellWidth, c.getY() * cellHeight, 0);
+            bodyMap.get(obj).setTransform(c.getX() * cellWidth + cellWidth / 2, c.getY() * cellHeight + cellHeight / 2, 0);
         }
     }
 
@@ -146,7 +150,7 @@ public class Lightmap {
         rayHandler.setCombinedMatrix(GameScreen.camera);
         rayHandler.updateAndRender();
 
-//        debugRenderer.render(world,GameScreen.camera.combined);
+        debugRenderer.render(world, GameScreen.camera.combined);
     }
 
     public void updateObject(DC_HeroObj heroObj) {

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.data.filesys.PathFinder;
@@ -45,6 +46,7 @@ public class GameScreen implements Screen {
     private SpriteBatch batch;
     private OrthographicCamera cam;
 
+    private Box2DDebugRenderer debugRenderer;
 
     private World world;
     private static GameScreen instance;
@@ -53,6 +55,8 @@ public class GameScreen implements Screen {
         instance=this;
         bf = new Stage();
         gui = new Stage();
+
+        debugRenderer = new Box2DDebugRenderer();
 
         world = new World(new Vector2(0,-10),false);
         camera = cam = new OrthographicCamera();
@@ -131,6 +135,8 @@ public class GameScreen implements Screen {
 
         gui.act(delta);
         gui.draw();
+
+        debugRenderer.render(world, camera.combined);
     }
 
     @Override
