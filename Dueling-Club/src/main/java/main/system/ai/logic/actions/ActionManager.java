@@ -63,7 +63,7 @@ public class ActionManager {
 
     public static Integer selectTargetForAction(DC_ActiveObj a) {
         /*
-		 * getOrCreate possible targets init goal type prioritize
+         * getOrCreate possible targets init goal type prioritize
 		 */
         GOAL_TYPE type = GoalManager.getGoalFromAction(a);
 

@@ -8,12 +8,14 @@ class TextureCache(private var imagePath: String) {
     private var cache: MutableMap<String, Texture> = HashMap()
 
     fun getOrCreate(path: String): Texture {
-        return get(path, true);
+        return get(path, true)
     }
-        fun get(path: String): Texture {
-            return get(path, false);
-        }
-            fun get(path: String, save: Boolean): Texture {
+
+    fun get(path: String): Texture {
+        return get(path, false)
+    }
+
+    fun get(path: String, save: Boolean): Texture {
         var p = path
         if (!path.startsWith(File.separator)) {
             p = File.separator + path

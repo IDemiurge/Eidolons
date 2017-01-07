@@ -15,7 +15,7 @@ class UnitViewOptions(var obj: DC_HeroObj, textureCache: TextureCache, var unitM
     var directionValue: Int = 0
     var clockValue: String? = null
     var hideBorder: Boolean = false
-    var overlaying: Boolean = false;
+    var overlaying: Boolean = false
 
     init {
         createFromGameObject(obj, textureCache)

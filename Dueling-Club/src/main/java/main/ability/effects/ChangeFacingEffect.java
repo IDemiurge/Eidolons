@@ -58,9 +58,9 @@ public class ChangeFacingEffect extends MicroEffect {
 
     @Override
     public STANDARD_EVENT_TYPE getEventTypeDone() {
-        if (clockwise==null )
-            return  STANDARD_EVENT_TYPE.UNIT_HAS_TURNED;
-        return clockwise? STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE: STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE;
+        if (clockwise == null)
+            return STANDARD_EVENT_TYPE.UNIT_HAS_TURNED;
+        return clockwise ? STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE : STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE;
     }
 
     public Boolean isClockwise() {

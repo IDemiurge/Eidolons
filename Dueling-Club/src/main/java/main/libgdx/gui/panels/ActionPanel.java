@@ -23,18 +23,18 @@ public class ActionPanel<T extends DC_Obj> extends PagedPanel {
     private List<T> actives;
 
     public ActionPanel(DC_HeroObj hero
-     , final EventCallback event,
+            , final EventCallback event,
                        int columns) {
-        super( columns, 1);
+        super(columns, 1);
         this.hero = hero;
         this.event = event;
     }
 
     public void init(Collection<T> activeObjs) {
         int w = GuiManager.getSmallObjSize();
-         int x = 0;
+        int x = 0;
         actives = new LinkedList<T>(activeObjs);
-        actives.forEach( a -> {
+        actives.forEach(a -> {
             addActor(new Image(TextureManager.getOrCreate(a.getImagePath())));
 //            x += w;
 

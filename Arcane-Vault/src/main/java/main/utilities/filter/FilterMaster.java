@@ -11,15 +11,14 @@ import main.swing.generic.services.dialog.DialogMaster;
 import main.system.ConditionMaster;
 import main.system.ConditionMaster.CONDITION_TEMPLATES;
 import main.system.auxiliary.StringMaster;
+import org.w3c.dom.Document;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import org.w3c.dom.Document;
-
 public class FilterMaster {
 	/*
-	 * valueName ++ value easier to deal via conditions just getOrCreate a bridge
+     * valueName ++ value easier to deal via conditions just getOrCreate a bridge
 	 */
 
 	public final static char HOTKEY_CHAR = 't';

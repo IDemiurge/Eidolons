@@ -270,7 +270,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                     switch (element) {
                         case STACK:
                             // if (CoreEngine.isLevelEditor())
-                            objClicked = (DC_Obj) DialogMaster
+                            objClicked = DialogMaster
                                     .objChoice("Which object?", cellComp.getObjects().toArray(
                                             new DC_Obj[cellComp.getObjects().size()]));
                             break;

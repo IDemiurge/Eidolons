@@ -22,16 +22,11 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.SwingUtilities;
 
 public class LE_MouseMaster implements MouseMotionListener, MouseListener, MouseWheelListener {
 	// select multiple
@@ -237,7 +232,7 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
 		// LevelEditor.getMapMaster().getActiveZone()
 		// how to ignore this if necessary?
 		// don't wanna select obj being removed, e.g. ...
-		// DC_Obj obj = map.getOrCreate(e.getSource()).getObj();
+        // DC_Obj obj = map.getOrCreate(e.getSource()).getObj();
 
 		if (e.getClickCount() > 1 || (alt && !empty)) {
 			if (right) {
@@ -246,9 +241,9 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
 						.getObjectsOnCoordinate(null, lastClicked.getCoordinates(), false, false,
 								false);
 				LevelEditor.cache();
-				LevelEditor.getObjMaster().removeObj(lastClicked.getCoordinates());
-				SoundMaster.playStandardSound(STD_SOUNDS.ERASE);
-				return;
+                LE_ObjMaster.removeObj(lastClicked.getCoordinates());
+                SoundMaster.playStandardSound(STD_SOUNDS.ERASE);
+                return;
 			} else if (e.isShiftDown()) {
 				int i = lastClicked.getIntParam(G_PARAMS.CHANCE);
 				i = DialogMaster.inputInt("Set chance for object to be there..."

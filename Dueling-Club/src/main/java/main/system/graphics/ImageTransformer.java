@@ -252,10 +252,7 @@ public class ImageTransformer {
 
         long result = Math.round((x * x) + (y * y)) - Math.round(radius * radius);
         // main.system.auxiliary.LogMaster.log(1,"x=" + X + "" + Y +
-        if (Math.abs(result) < gapSize) {
-            return true;
-        }
-        return false;
+        return Math.abs(result) < gapSize;
     }
 
     protected static boolean withinCircle(int x, int y, Image img, int offset) {
@@ -265,10 +262,7 @@ public class ImageTransformer {
         y = (y - img.getHeight(null) / 2);
 
         boolean result = Math.round((x * x) + (y * y)) <= Math.round(radius * radius);
-        if (result) {
-            return true;
-        }
-        return false;
+        return result;
 
     }
 

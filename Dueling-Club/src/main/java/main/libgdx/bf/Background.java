@@ -20,37 +20,40 @@ public class Background extends Group {
     public Image backImage;
 
     private String imagePath;
-    private boolean dirty=true;
+    private boolean dirty = true;
 
     public Background(String path) {
         imagePath = path;
     }
 
-    public Background( ) {
-        this(        PathFinder.getImagePath()+defaultBackground);
+    public Background() {
+        this(PathFinder.getImagePath() + defaultBackground);
     }
+
     public Background init() {
         update();
         return this;
     }
+
     public void setImagePath(String path) {
         if (!path.contains(PathFinder.getImagePath()))
-            path=PathFinder.getImagePath()+path;
+            path = PathFinder.getImagePath() + path;
         imagePath = path;
-        dirty=true;
+        dirty = true;
 
     }
-        public void update() {
-            if (hasChildren())
-        removeActor(backImage);
-        backImage = new Image(new Texture(imagePath  ));
-            backImage.setBounds(backImage.getImageX() ,backImage.getImageY() ,(float) GuiManager.getScreenWidth(), (float) GuiManager.getScreenHeight());
+
+    public void update() {
+        if (hasChildren())
+            removeActor(backImage);
+        backImage = new Image(new Texture(imagePath));
+        backImage.setBounds(backImage.getImageX(), backImage.getImageY(), (float) GuiManager.getScreenWidth(), (float) GuiManager.getScreenHeight());
         addActor(backImage);
-            dirty=false;
+        dirty = false;
     }
 
     public boolean isDirty() {
-          return dirty;
+        return dirty;
     }
 
     public void setDirty(boolean dirty) {

@@ -5,11 +5,7 @@ import main.client.cc.CharacterCreator;
 import main.client.cc.gui.neo.tree.view.HT_View;
 import main.client.cc.logic.items.ItemGenerator;
 import main.client.dc.Simulation;
-import main.content.ContentManager;
-import main.content.DC_ContentManager;
-import main.content.MACRO_OBJ_TYPES;
-import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.*;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
@@ -26,26 +22,19 @@ import main.simulation.SimulationManager;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.FileManager;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.LogMaster;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.util.ResourceMaster;
 import main.utilities.hotkeys.AV_KeyListener;
 import main.utilities.workspace.WorkspaceManager;
-
 import net.miginfocom.swing.MigLayout;
 
-import java.awt.Dimension;
+import javax.swing.*;
+import javax.swing.tree.TreeNode;
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.tree.TreeNode;
 
 public class ArcaneVault {
 
@@ -256,8 +245,8 @@ public class ArcaneVault {
 		ObjType type = DataManager.getType("Controlled Engagement", OBJ_TYPES.SKILLS);
 		getMainBuilder().getEditViewPanel().selectType(true, type);
 		getMainBuilder().getButtonPanel().handleButtonClick(false, AV_ButtonPanel.NEW_TREE);
-		// HC_Master.getAvTreeView().getBottomPanel().getOrCreate;
-	}
+        // HC_Master.getAvTreeView().getBottomPanel().getOrCreate;
+    }
 
 	private static void initialize() {
 		CoreEngine.setArcaneVault(true);

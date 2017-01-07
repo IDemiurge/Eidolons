@@ -27,7 +27,6 @@ import main.system.auxiliary.FileManager;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 import main.utilities.workspace.Workspace;
-
 import net.miginfocom.swing.MigLayout;
 
 import java.io.File;
@@ -274,9 +273,9 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
 
 		// int index = DialogMaster.optionChoice("Choose object TYPE...",
 		// palettes.toArray());
-		// PaletteWorkspace ws = palettes.getOrCreate(index);
-		List<String> listData = DataManager.toStringList(typeList);
-		List<String> secondListData = (TYPE instanceof C_OBJ_TYPE) ? new LinkedList<String>()
+        // PaletteWorkspace ws = palettes.getOrCreate(index);
+        List<String> listData = DataManager.toStringList(typeList);
+        List<String> secondListData = (TYPE instanceof C_OBJ_TYPE) ? new LinkedList<String>()
 				: DataManager.toStringList(typeList);
 		// if (ws != null) {
 		// secondListData = DataManager.convertToStringList(ws.getTypeList());

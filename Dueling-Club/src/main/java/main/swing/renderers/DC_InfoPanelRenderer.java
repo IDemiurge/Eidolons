@@ -72,12 +72,12 @@ public class DC_InfoPanelRenderer implements TableCellRenderer {
     }
 
     private Component getParamValueComp(String value, String VALUE, PARAMETER p) {
-        VALUE_CASES CASE = smartRender.getParamCase(p, obj);
+        VALUE_CASES CASE = SmartTextManager.getParamCase(p, obj);
         return getValueComp(CASE, value);
     }
 
     private Component getPropertyValueComp(PROPERTY prop, String value, String VALUE) {
-        VALUE_CASES CASE = smartRender.getPropCase(prop, obj);
+        VALUE_CASES CASE = SmartTextManager.getPropCase(prop, obj);
         return getValueComp(CASE, value);
 
     }

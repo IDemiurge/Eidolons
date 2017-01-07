@@ -51,7 +51,6 @@ public class MacroControlPanel extends G_Panel implements ButtonHandler {
             protected void playClickSound() {
             }
 
-            ;
         };
         button.activateMouseListener();
         return button;

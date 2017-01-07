@@ -14,12 +14,9 @@ import main.system.auxiliary.GuiManager;
 import main.system.auxiliary.ListMaster;
 import main.system.images.ImageManager;
 
+import javax.swing.*;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 public class LE_MainPanel extends G_Panel implements TabChangeListener {
 	// Multiple tabs with grids?
@@ -164,9 +161,9 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
 				e.printStackTrace();
 			}
 		// if (mission == null)
-		// activateLevel(levels.getOrCreate(0));
-		// else
-		// activateLevel(mission.getFirstLevel());
+        // activateLevel(levels.getOrCreate(0));
+        // else
+        // activateLevel(mission.getFirstLevel());
 	}
 
 	public void activateLevel(Level level) {

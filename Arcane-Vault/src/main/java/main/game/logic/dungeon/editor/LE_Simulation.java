@@ -16,11 +16,7 @@ import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.system.auxiliary.ListMaster;
 import main.system.datatypes.DequeImpl;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class LE_Simulation extends DC_Game {
 	// one per mission/level???
@@ -267,9 +263,9 @@ public class LE_Simulation extends DC_Game {
 		// // z.getY1(), z.getY2())) {
 		// LevelEditor.getObjMaster().stackObj(
 		// DataManager.getType(z.getFillerType(), OBJ_TYPES.BF_OBJ), c);
-		// obj = getLevel().getTopObjMap().getOrCreate(c);
-		// return obj;
-		// // }
+        // obj = getLevel().getTopObjMap().getOrCreate(c);
+        // return obj;
+        // // }
 		// }
 		// }
 		// return obj;

@@ -19,11 +19,10 @@ public class InputController implements InputProcessor {
     float y_cam_pos;
 
 
-
     OrthographicCamera camera;
     boolean is_it_Left_Click = false;
 
-    public InputController(OrthographicCamera camera){
+    public InputController(OrthographicCamera camera) {
         this.camera = camera;
     }
 
@@ -95,9 +94,9 @@ public class InputController implements InputProcessor {
             y_cam_pos = i1;
             Image background = GameScreen.getInstance().getBackground().backImage;
             background.setBounds(
-              camera.position.x-  background.getWidth ()/2, camera.position.y-  background.getHeight ()/2,
-             background.getWidth (),
-             background.getHeight());
+                    camera.position.x - background.getWidth() / 2, camera.position.y - background.getHeight() / 2,
+                    background.getWidth(),
+                    background.getHeight());
         }
 
 
@@ -117,20 +116,23 @@ public class InputController implements InputProcessor {
         }
         if (i == -1){
 //            camera.zoom /= 2f;
-            if (camera.zoom>=0.25f)
-            camera.zoom -= 0.25f;
+            if (camera.zoom >= 0.25f)
+                camera.zoom -= 0.25f;
 
         }
         System.out.println(camera.zoom);
         return false;
     }
+
     public float getZoom() {
         return camera.zoom;
     }
+
     public float getX_cam_pos() {
         return x_cam_pos;
     }
 
     public float getY_cam_pos() {
         return y_cam_pos;
-    }}
+    }
+}

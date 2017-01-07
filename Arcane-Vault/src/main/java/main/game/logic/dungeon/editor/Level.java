@@ -256,7 +256,6 @@ public class Level {
         String aiGroupData = getAiGroupData();
         if (!aiGroupData.isEmpty())
             xml += XML_Converter.wrapLeaf(DungeonBuilder.AI_GROUPS_NODE, aiGroupData);
-        ;
 
         xml += dungeon.getPlan().getXml();
         xml += XML_Converter.closeXmlFormatted("Level");

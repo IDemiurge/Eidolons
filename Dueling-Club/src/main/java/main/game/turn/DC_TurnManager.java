@@ -234,7 +234,7 @@ try{game.getBattleField().refreshInitiativeQueue();                }catch(Except
         try{
         if (!game.getManager().activeSelect(getActiveUnit()))
             return false;
-if (CoreEngine.isSwingOn())
+            if (CoreEngine.isSwingOn())
         if (game.getManager().getInfoObj() == null)
             game.getManager().infoSelect(activeUnit);
 

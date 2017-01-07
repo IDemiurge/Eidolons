@@ -365,11 +365,9 @@ public class DC_ActionManager implements ActionManager {
             if (checkStdAction(action))
                 return true;
         }
-        if (action.getProperty(PROPS.ACTION_MODES).contains(
-                StringMaster.getWellFormattedString(mode.toString())))
-            return true;
+        return action.getProperty(PROPS.ACTION_MODES).contains(
+                StringMaster.getWellFormattedString(mode.toString()));
 
-        return false;
     }
 
     private boolean checkStdAction(DC_ActiveObj action) {
@@ -722,12 +720,12 @@ public class DC_ActionManager implements ActionManager {
         switch (type) {
             case STANDARD_ATTACK:
                 // TODO
-                DC_ActiveObj action = (DC_ActiveObj) getAction(DC_ActionManager.ATTACK, unit);
+                DC_ActiveObj action = getAction(DC_ActionManager.ATTACK, unit);
                 List<DC_UnitAction> subActions = getWeaponActions(unit.getActiveWeapon(false));
                 action.setSubActions(new LinkedList<DC_ActiveObj>(subActions));
                 actions.addAll(subActions);
 
-                action = (DC_ActiveObj) getAction(DC_ActionManager.OFFHAND_ATTACK, unit);
+                action = getAction(DC_ActionManager.OFFHAND_ATTACK, unit);
                 if (action != null) {
                     subActions = getWeaponActions(unit.getActiveWeapon(true));
                     action.setSubActions(new LinkedList<DC_ActiveObj>(subActions));
@@ -861,7 +859,6 @@ public class DC_ActionManager implements ActionManager {
             return StringMaster.getWellFormattedString(name());
         }
 
-        ;
     }
 
 }

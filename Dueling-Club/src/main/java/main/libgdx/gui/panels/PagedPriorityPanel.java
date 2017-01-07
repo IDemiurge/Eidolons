@@ -30,7 +30,7 @@ public class PagedPriorityPanel extends PagedPanel {
 
     public PagedPriorityPanel init() {
         super.init();
-        clockImage = new Image(  TextureManager.getOrCreate(  clockImagePath));
+        clockImage = new Image(TextureManager.getOrCreate(clockImagePath));
         clockImage.setY(pager2.getY());
         addActor(clockImage);
         pager2.setY(pager2.getY() + clockImage.getHeight());

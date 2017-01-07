@@ -142,9 +142,9 @@ public class DC_PagedInfoPanel extends G_PagePanel<VALUE> {
                 return ATTRIBUTES;
             if (((PARAMETER) value).isMastery())
                 return MASTERIES;
-            if (((PARAMETER) value).toString().contains("Resistance"))
+            if (value.toString().contains("Resistance"))
                 return RESISTANCES;
-            if (((PARAMETER) value).toString().equalsIgnoreCase("Armor"))
+            if (value.toString().equalsIgnoreCase("Armor"))
                 return "Armor Values";
             return
                     // entity.getOBJ_TYPE_ENUM().getFullName()+ " " +

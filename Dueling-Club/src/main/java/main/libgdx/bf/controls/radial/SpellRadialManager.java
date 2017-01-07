@@ -26,7 +26,7 @@ public class SpellRadialManager {
     public enum SPELL_ASPECT {
         ARCANE(SPELL_GROUP.CONJURATION, SPELL_GROUP.SORCERY, SPELL_GROUP.ENCHANTMENT),
         LIFE(SPELL_GROUP.SAVAGE, SPELL_GROUP.SYLVAN, SPELL_GROUP.FIRE
-         , SPELL_GROUP.AIR, SPELL_GROUP.EARTH, SPELL_GROUP.WATER
+                , SPELL_GROUP.AIR, SPELL_GROUP.EARTH, SPELL_GROUP.WATER
 
         ),
         CHAOS(SPELL_GROUP.DESTRUCTION, SPELL_GROUP.DEMONOLOGY, SPELL_GROUP.WARP),
@@ -46,8 +46,9 @@ public class SpellRadialManager {
         List<RADIAL_ITEM> getItems(DC_HeroObj heroObj);
 
         Object getContents();
+
         String getTexturePath();
-        
+
     }
 /*
 6 aspects?
@@ -60,28 +61,28 @@ spell 'types'?
         List<SPELL_ASPECT> aspects = new LinkedList<>();
         List<RadialMenu.CreatorNode> nodes = new LinkedList<>();
         List<DC_SpellObj> spells = source.getSpells()
-        .stream()
-         .filter(spell -> (spell.getGame().isDebugMode() || (spell.canBeActivated() && spell.canBeTargeted(target.getId()))))
-         .collect(Collectors.toList());
-        if (spells.size()<=8) {
+                .stream()
+                .filter(spell -> (spell.getGame().isDebugMode() || (spell.canBeActivated() && spell.canBeTargeted(target.getId()))))
+                .collect(Collectors.toList());
+        if (spells.size() <= 8) {
             for (DC_SpellObj g : spells)
                 createNodeBranch(new SpellNode(g), nodes, source);
-        return nodes;
+            return nodes;
         }
         for (DC_SpellObj spell : spells) {
             CONTENT_CONSTS.SPELL_GROUP group = spell.getSpellGroup();
-            spell_groups.add(group            );
+            spell_groups.add(group);
 
             for (SPELL_ASPECT g : SPELL_ASPECT.values())
                 if (!aspects.contains(g))
-                    if ( new LinkedList<>(Arrays.asList(g.groups))
-                  .contains(spell.getSpellGroup()))
-                    aspects.add(g);
+                    if (new LinkedList<>(Arrays.asList(g.groups))
+                            .contains(spell.getSpellGroup()))
+                        aspects.add(g);
 
         }
-        if (aspects.size()>1)
-        for (SPELL_ASPECT g : aspects)
-            createNodeBranch(new RadialSpellAspect(g), nodes, source);
+        if (aspects.size() > 1)
+            for (SPELL_ASPECT g : aspects)
+                createNodeBranch(new RadialSpellAspect(g), nodes, source);
         else {
             for (SPELL_GROUP g : spell_groups)
                 createNodeBranch(new RadialSpellGroup(g), nodes, source);
@@ -99,12 +100,12 @@ spell 'types'?
     private static void createNodeBranch(RADIAL_ITEM object,
                                          List<CreatorNode> list, DC_HeroObj source) {
         RadialMenu.CreatorNode node = new RadialMenu.CreatorNode();
-        node.name = StringMaster.getWellFormattedString(object.getContents(). toString());
+        node.name = StringMaster.getWellFormattedString(object.getContents().toString());
         list.add(node);
         if (object instanceof SpellNode) {
-            final DC_ActiveObj action = (DC_ActiveObj) ((SpellNode) object).getContents();
+            final DC_ActiveObj action = (DC_ActiveObj) object.getContents();
 
-            node.texture  = TextureManager.getOrCreate(action.getImagePath());
+            node.texture = TextureManager.getOrCreate(action.getImagePath());
             node.name = action.getName();
             node.action = new Runnable() {
                 @Override
@@ -115,11 +116,11 @@ spell 'types'?
         } else {
             node.childNodes = new LinkedList<>();
 
-            node.texture  = TextureManager.getOrCreate(object.getTexturePath());
+            node.texture = TextureManager.getOrCreate(object.getTexturePath());
 
             object.getItems(source).forEach(child -> {
                 createNodeBranch(
-                 child, node.childNodes, source);
+                        child, node.childNodes, source);
             });
         }
 //        if (object instanceof RadialSpellAspect ){

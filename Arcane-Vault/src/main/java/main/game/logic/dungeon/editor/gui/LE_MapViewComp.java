@@ -15,8 +15,7 @@ import main.system.auxiliary.FontMaster.FONT;
 import main.system.datatypes.DequeImpl;
 import main.system.math.MathMaster;
 
-import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -111,9 +110,9 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
 
 	public void refresh() {
 		// removeAll();
-		// map = maps.getOrCreate(currentLevel);
-		// if (map == null) {
-		// map = new Minimap(true, currentLevel.getDungeon());
+        // map = maps.getOrCreate(currentLevel);
+        // if (map == null) {
+        // map = new Minimap(true, currentLevel.getDungeon());
 		// map.init();
 		// maps.put(currentLevel, map);
 		// } else if (!map.isInitialized())

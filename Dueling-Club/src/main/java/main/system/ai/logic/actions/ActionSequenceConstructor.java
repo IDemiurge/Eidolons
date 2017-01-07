@@ -467,7 +467,7 @@ public class ActionSequenceConstructor {
         Conditions conditions = (action.getTargeting().getFilter().getConditions());
         FacingCondition condition = null;
         FACING_SINGLE template = null;
-        DC_Obj target = (DC_Obj) action.getTarget();
+        DC_Obj target = action.getTarget();
         DC_HeroObj source = (DC_HeroObj) action.getRef().getSourceObj();
         for (Condition c : conditions) {
             if (c instanceof FacingCondition) {

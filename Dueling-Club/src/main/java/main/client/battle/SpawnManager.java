@@ -217,13 +217,11 @@ public class SpawnManager {
         if (DungeonCrawler.isAiTestOn()) {
             return block.getId() < 2;
         }
-        if (block.getRoomType() == ROOM_TYPE.GUARD_ROOM
+        return block.getRoomType() == ROOM_TYPE.GUARD_ROOM
                 || block.getRoomType() == ROOM_TYPE.COMMON_ROOM
                 || block.getRoomType() == ROOM_TYPE.THRONE_ROOM
                 || block.getRoomType() == ROOM_TYPE.EXIT_ROOM
-                || block.getRoomType() == ROOM_TYPE.DEATH_ROOM)
-            return true;
-        return false;
+                || block.getRoomType() == ROOM_TYPE.DEATH_ROOM;
     }
 
     private Wave getCreepGroupForBlock(int preferredPower, Dungeon dungeon, MapBlock block,

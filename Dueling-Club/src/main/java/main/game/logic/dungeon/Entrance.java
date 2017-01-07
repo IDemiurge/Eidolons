@@ -2,7 +2,6 @@ package main.game.logic.dungeon;
 
 import main.entity.obj.DC_HeroObj;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.player.DC_Player;
 
@@ -12,7 +11,7 @@ public class Entrance extends DC_HeroObj {
 
     public Entrance(int x, int y, ObjType type, Dungeon dungeon,
                     Dungeon sublevel) {
-        super(type, x, y, DC_Player.NEUTRAL, (DC_Game) dungeon.getGame(),
+        super(type, x, y, DC_Player.NEUTRAL, dungeon.getGame(),
                 dungeon.getRef().getCopy());
         this.dungeon = dungeon;
         this.sublevel = sublevel;

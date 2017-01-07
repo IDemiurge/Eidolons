@@ -174,9 +174,9 @@ public class LE_DataMaster {
 	}
 
 	private static void removeSelectedObj() {
-		LevelEditor.getObjMaster().removeObj(
-				LevelEditor.getMouseMaster().getSelectedObj().getCoordinates());
-	}
+        LE_ObjMaster.removeObj(
+                LevelEditor.getMouseMaster().getSelectedObj().getCoordinates());
+    }
 
 	private static void removeLevel(Level level) {
 		if (LevelEditor.getMainPanel().getCurrentMission() != null)
@@ -239,9 +239,9 @@ public class LE_DataMaster {
 		File file = FileManager.getFile(path);
 		String data = FileManager.readFile(file);
 		String baseType = StringMaster.cropFormat(StringMaster.getLastPathSegment(path));
-		// TODO getOrCreate name from data!
-		Mission mission = new Mission(baseType, data);
-		LevelEditor.getMainPanel().newMission(mission);
+        // TODO getOrCreate name from data!
+        Mission mission = new Mission(baseType, data);
+        LevelEditor.getMainPanel().newMission(mission);
 		resetMissionWorkspace();
 		mission.initLevels();
 	}

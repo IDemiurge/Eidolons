@@ -559,7 +559,7 @@ public class DC_HeroObj extends DC_UnitObj {
         // Chronos.logTimeElapsedForMark(toString() + "to base (values)");
 
         // Chronos.mark(toString() + "to base (init objects)");
-if (!  GameLauncher.getInstance().SUPER_FAST_MODE)
+        if (!GameLauncher.getInstance().SUPER_FAST_MODE)
         initHeroObjects();
         // Chronos.logTimeElapsedForMark(toString() + "to base (init objects)");
         // if (mainHero)
@@ -1396,9 +1396,7 @@ if (!  GameLauncher.getInstance().SUPER_FAST_MODE)
             return false;
         if (!checkParam(PARAMS.DIVINATION_MASTERY))
             return false;
-        if (deity.getName().equals(STD_BUFF_NAMES.Faithless.name()))
-            return false;
-        return true;
+        return !deity.getName().equals(STD_BUFF_NAMES.Faithless.name());
 
     }
 
@@ -1696,8 +1694,6 @@ if (!  GameLauncher.getInstance().SUPER_FAST_MODE)
         }
         super.setCoordinates(coordinates);
     }
-
-    ;
 
     public DC_ActiveObj getAttackAction(boolean offhand) {
         return getAction(offhand ? DC_ActionManager.OFFHAND_ATTACK : DC_ActionManager.ATTACK);

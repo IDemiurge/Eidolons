@@ -710,7 +710,6 @@ public class DungeonBuilder {
             return StringMaster.getWellFormattedString(toString());
         }
 
-        ;
         // spawning in
         // rooms, ai
         // behavior

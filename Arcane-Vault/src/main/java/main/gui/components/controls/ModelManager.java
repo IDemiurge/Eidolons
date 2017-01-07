@@ -10,13 +10,7 @@ import main.content.CONTENT_CONSTS.BACKGROUND;
 import main.content.CONTENT_CONSTS.RACE;
 import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
 import main.content.CONTENT_CONSTS2.FACTION;
-import main.content.ContentManager;
-import main.content.DC_ContentManager;
-import main.content.MACRO_OBJ_TYPES;
-import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.PARAMS;
-import main.content.PROPS;
+import main.content.*;
 import main.content.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
@@ -34,11 +28,7 @@ import main.swing.generic.services.dialog.DialogMaster;
 import main.system.BfObjPropGenerator;
 import main.system.ContentGenerator;
 import main.system.DC_Formulas;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
-import main.system.auxiliary.LogMaster;
-import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.TreeMaster;
+import main.system.auxiliary.*;
 import main.system.math.DC_MathManager;
 import main.system.math.Formula;
 import main.system.sound.SoundMaster;
@@ -49,16 +39,14 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.system.threading.Weaver;
 import main.utilities.search.TypeFinder;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ModelManager {
 
@@ -73,8 +61,8 @@ public class ModelManager {
 	private static int classId;
 	private static List<ObjType> idSet = new LinkedList<>();
 	private static boolean backupOnLaunch;
-	private static List<String> masteriesToCleanUp = Arrays.asList(new String[] { "Spellcraft",
-			"Spellcraft", "Spellcraft", "Affliction", });
+    private static List<String> masteriesToCleanUp = Arrays.asList("Spellcraft",
+            "Spellcraft", "Spellcraft", "Affliction");
 
 	public static void addParent() {
 		add(false);
@@ -132,9 +120,9 @@ public class ModelManager {
 				index--;
 		TabBuilder tb = ArcaneVault.getMainBuilder().getTabBuilder().getSubTabs(code);
 		tb.getTabbedPane().setSelectedIndex(index);
-		// getOrCreate path for node? I could keep some map from type to path...
-		if (!select) {
-			if (tb.getTree().getTreeSelectionListeners().length != 1)
+        // getOrCreate path for node? I could keep some map from type to path...
+        if (!select) {
+            if (tb.getTree().getTreeSelectionListeners().length != 1)
 				return;
 			TreeSelectionListener listener = tb.getTree().getTreeSelectionListeners()[0];
 			tb.getTree().removeTreeSelectionListener(listener);

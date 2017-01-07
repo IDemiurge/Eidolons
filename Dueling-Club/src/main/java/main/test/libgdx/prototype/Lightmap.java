@@ -9,9 +9,9 @@ import main.content.PARAMS;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.MicroObj;
 import main.game.battlefield.Coordinates;
-import main.system.datatypes.DequeImpl;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.particles.lighting.LightingManager;
+import main.system.datatypes.DequeImpl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,8 +65,8 @@ public class Lightmap {
                 body.createFixture(fdef);
                 // TEMP
                 FireLightProt fireLightProt = new FireLightProt(world, rayHandler,
-                 un.get(i).getX() * cellWidth + cellWidth / 2, un.get(i).getY() *
-                 cellHeight + cellHeight / 2, un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 30, 360, SECOND);
+                        un.get(i).getX() * cellWidth + cellWidth / 2, un.get(i).getY() *
+                        cellHeight + cellHeight / 2, un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 30, 360, SECOND);
 //                FireLightProt fireLightProt = new FireLightProt();
                 fireLightProt.attachToBody(body);
                 //TEMP END

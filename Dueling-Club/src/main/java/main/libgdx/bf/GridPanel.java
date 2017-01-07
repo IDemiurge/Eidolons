@@ -92,10 +92,10 @@ public class GridPanel extends Group {
         InputController controller = GameScreen.getInstance().getController();
         int x = (int) (
 //         controller.getX_cam_pos()/2
-         + sourceCoordinates.getX() * getCellWidth() / controller.getZoom());
+                +sourceCoordinates.getX() * getCellWidth() / controller.getZoom());
         int y = (int) (
 //         controller.getY_cam_pos()/2
-         + (rows - sourceCoordinates.getY()) * getCellHeight() / controller.getZoom());
+                +(rows - sourceCoordinates.getY()) * getCellHeight() / controller.getZoom());
         return new PointX(x, y);
     }
 
@@ -123,7 +123,7 @@ public class GridPanel extends Group {
 
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p =
-             (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
+                    (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             Map<Borderable, Runnable> map = new HashMap<>();
             for (DC_Obj obj1 : p.getLeft()) {
                 Borderable b = unitMap.get(obj1);
@@ -142,8 +142,8 @@ public class GridPanel extends Group {
             boolean caught = false;
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED
-             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
-             || event.getType() == Event.STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
+                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
+                    || event.getType() == Event.STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
 //                (r.getEffect() instanceof ChangeFacingEffect) nice try
             {
                 DC_HeroObj hero = (DC_HeroObj) r.getObj(KEYS.TARGET
@@ -154,14 +154,14 @@ public class GridPanel extends Group {
             }
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED
-             || event.getType() == Event.STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
+                    || event.getType() == Event.STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
                 removeUnitView(r.getSourceObj());
                 caught = true;
             }
 
             if (event.getType() == Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING ||
-             event.getType() == STANDARD_EVENT_TYPE.UNIT_SUMMONED
-             ) {
+                    event.getType() == STANDARD_EVENT_TYPE.UNIT_SUMMONED
+                    ) {
                 addUnitView(r.getSourceObj());
 //                String id = event.getRef().getValue("SOURCE");
 //                DC_HeroObj heroObj = (DC_HeroObj) Game.game.getObjectById(Integer.valueOf(id));
@@ -204,13 +204,13 @@ public class GridPanel extends Group {
                 Arrays.stream(GuiEventType.values()).forEach(e -> {
                     if (e.boundEvents != null)
                         Arrays.stream(e.boundEvents).forEach(
-                         bound -> {
-                             if (event.getType().equals(bound)) {
-                                 GuiEventManager.trigger(e, param);
+                                bound -> {
+                                    if (event.getType().equals(bound)) {
+                                        GuiEventManager.trigger(e, param);
 //                             caught=true; TODO howto?
-                             }
+                                    }
 
-                         });
+                                });
                 });
             }
             if (!caught) {
@@ -264,8 +264,8 @@ public class GridPanel extends Group {
             Coordinates cords = (Coordinates) param.get();
 
             List<DC_HeroObj> objList = units.stream()
-             .filter(microObj -> microObj.getCoordinates().equals(cords))
-             .collect(Collectors.toList());
+                    .filter(microObj -> microObj.getCoordinates().equals(cords))
+                    .collect(Collectors.toList());
 
             List<UnitViewOptions> options = new ArrayList<>();
             for (DC_HeroObj microObj : objList) {
@@ -312,8 +312,8 @@ public class GridPanel extends Group {
                     if (a != null && a instanceof UnitView) {
                         UnitView uv = (UnitView) a;
                         DC_HeroObj hero = unitMap.entrySet().stream()
-                         .filter(entry -> entry.getValue() == uv).findFirst()
-                         .get().getKey();
+                                .filter(entry -> entry.getValue() == uv).findFirst()
+                                .get().getKey();
 
                         List<ToolTipManager.ToolTipRecordOption> recordOptions = new ArrayList<>();
 
@@ -393,15 +393,13 @@ public class GridPanel extends Group {
                         if (unit != null && unit instanceof UnitView) {
                             if (event.getButton() == 1) {
                                 DC_HeroObj heroObj = unitMap.entrySet()
-                                 .stream().filter(entry -> entry.getValue() == unit).findFirst()
-                                 .get().getKey();
+                                        .stream().filter(entry -> entry.getValue() == unit).findFirst()
+                                        .get().getKey();
                                 Triple<DC_Obj, Float, Float> container = new ImmutableTriple<>(heroObj, x, y);
                                 GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(container));
                             }
                         }
-                    } else
-                        if (event.getButton() == 1)
-                    {
+                    } else if (event.getButton() == 1) {
                         DC_Obj dc_cell = DC_Game.game.getCellByCoordinate(new Coordinates(cell.gridX, cell.gridY));
                         Triple<DC_Obj, Float, Float> container = new ImmutableTriple<>(dc_cell, x, y);
                         GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(container));

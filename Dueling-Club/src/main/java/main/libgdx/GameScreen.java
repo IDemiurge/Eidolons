@@ -93,7 +93,7 @@ public class GameScreen implements Screen {
         radialMenu = new RadialMenu(t, textureCache);
         toolTipManager = new ToolTipManager(textureCache);
         gui = new GuiStage();
-        phaseAnimator =   PhaseAnimator.getInstance();
+        phaseAnimator = PhaseAnimator.getInstance();
         gui.addActor(radialMenu);
         gui.addActor(toolTipManager);
 //        gui.addActor(phaseAnimator);
@@ -108,7 +108,7 @@ public class GameScreen implements Screen {
 
         GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
             Triple<DC_Obj, Float, Float> container =
-             (Triple<DC_Obj, Float, Float>) obj.get();
+                    (Triple<DC_Obj, Float, Float>) obj.get();
 
             if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
                 radialMenu.init(DebugRadialManager.getDebugNodes(container.getLeft()));
@@ -153,10 +153,10 @@ public class GameScreen implements Screen {
 
         gui.act(delta);
         gui.draw();
-        try{
-         if (  DC_Game.game.getAnimationManager().updateAnimations())
-            PhaseAnimator.getInstance().update();
-        }catch(Exception e){
+        try {
+            if (DC_Game.game.getAnimationManager().updateAnimations())
+                PhaseAnimator.getInstance().update();
+        } catch (Exception e) {
         }
     }
 

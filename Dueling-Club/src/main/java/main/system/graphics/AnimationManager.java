@@ -122,8 +122,8 @@ public class AnimationManager {
     }
 
     public boolean updateAnimations() {
-       if (!changed)
-         changed = cleanAnimations();
+        if (!changed)
+            changed = cleanAnimations();
 
         if (CoreEngine.isSwingOn())
             updatePoints();
@@ -137,12 +137,11 @@ public class AnimationManager {
                 checkOverlapping(anim);
         }
         // drawThumbnails()
-if (changed)
-{
-    changed=!changed;
-    GuiEventManager.trigger(GuiEventType.UPDATE_PHASE_ANIMS, null);
-    return true;
-}
+        if (changed) {
+            changed = !changed;
+            GuiEventManager.trigger(GuiEventType.UPDATE_PHASE_ANIMS, null);
+            return true;
+        }
         return changed;
     }
 
@@ -298,7 +297,7 @@ if (changed)
 
     private void adjustOffset(Coordinates c_offset) {
         game.getBattleField().getGrid()
-         .setOffsetCoordinate(new Coordinates(c_offset.x, c_offset.y));
+                .setOffsetCoordinate(new Coordinates(c_offset.x, c_offset.y));
 
     }
 
@@ -473,38 +472,38 @@ if (changed)
 
     private void animate(final int delay, final CellComp comp) {
         new Thread
-         // SwingUtilities.invokeLater
-         (new Runnable() {
+                // SwingUtilities.invokeLater
+                (new Runnable() {
 
-             @Override
-             public void run() {
-                 map.put(comp.getTopObjOrCell(), comp);
+                    @Override
+                    public void run() {
+                        map.put(comp.getTopObjOrCell(), comp);
 
-                 getGrid().refresh();
-                 // main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-                 // comp + " animated");
-                 WaitMaster.WAIT(delay);
-                 // main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-                 // comp + " de-animated");
-                 comp.removeAnimation();
-                 comp.refresh();
-                 //
-                 // Chronos.mark(comp.getTopObjOrCell().getName() +
-                 // " animation, delay = " + delay);
-                 getGrid().refresh();
-                 // Chronos.logTimeElapsedForMark(comp.getTopObjOrCell().getName()
-                 // + " animation, delay = " + delay);
+                        getGrid().refresh();
+                        // main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+                        // comp + " animated");
+                        WaitMaster.WAIT(delay);
+                        // main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+                        // comp + " de-animated");
+                        comp.removeAnimation();
+                        comp.refresh();
+                        //
+                        // Chronos.mark(comp.getTopObjOrCell().getName() +
+                        // " animation, delay = " + delay);
+                        getGrid().refresh();
+                        // Chronos.logTimeElapsedForMark(comp.getTopObjOrCell().getName()
+                        // + " animation, delay = " + delay);
 
-                 map.remove(comp.getTopObjOrCell());
-                 if (map.isEmpty())
-                     WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_FINISHED, true);
-                 else {
-                     WaitMaster.WAIT(delay);
-                     WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_FINISHED, true);
-                 }
+                        map.remove(comp.getTopObjOrCell());
+                        if (map.isEmpty())
+                            WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_FINISHED, true);
+                        else {
+                            WaitMaster.WAIT(delay);
+                            WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_FINISHED, true);
+                        }
 
-             }
-         }, comp.getTopObjOrCell().getName() + " animation").start();
+                    }
+                }, comp.getTopObjOrCell().getName() + " animation").start();
 
     }
 
@@ -616,7 +615,7 @@ if (changed)
         if (animations.contains(animation))
             return;
         animations.add(animation);
-        changed=true;
+        changed = true;
 
     }
 
@@ -658,17 +657,17 @@ if (changed)
     }
 
     public interface MouseItem {
-        public Object getArg();
+        Object getArg();
 
-        public MOUSE_ITEM getType();
+        MOUSE_ITEM getType();
 
         Point getPoint();
 
-        public void setPoint(Point point);
+        void setPoint(Point point);
 
         Rectangle getRectangle();
 
-        public void setRectangle(Rectangle rectangle);
+        void setRectangle(Rectangle rectangle);
     }
 
 }

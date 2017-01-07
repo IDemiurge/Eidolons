@@ -263,10 +263,8 @@ public class HC_Master {
         Boolean skill_class_spell = null;
         // if (CharacterCreator.getPanel().getMvp().getCurrentView() !=
         // HERO_VIEWS.LIBRARY) { }
-        skill_class_spell = true;
-        if (CharacterCreator.getPanel().getMvp().getCurrentView() == HERO_VIEWS.CLASS_TREE
-                || CharacterCreator.getPanel().getMvp().getCurrentView() == HERO_VIEWS.CLASSES)
-            skill_class_spell = false;
+        skill_class_spell = !(CharacterCreator.getPanel().getMvp().getCurrentView() == HERO_VIEWS.CLASS_TREE
+                || CharacterCreator.getPanel().getMvp().getCurrentView() == HERO_VIEWS.CLASSES);
         return skill_class_spell;
     }
 

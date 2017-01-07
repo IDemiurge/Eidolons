@@ -28,28 +28,16 @@ import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.EntityFilter;
 import main.system.FilterMaster;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.FontMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.FontMaster.FONT;
-import main.system.auxiliary.ListMaster;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 import main.system.math.MathMaster;
 
-import java.awt.Color;
-import java.awt.Font;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Vector;
-
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 
 public class MC_ControlPanel extends G_Panel implements ActionListener {
 
@@ -274,9 +262,9 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 	public static void doDialog(boolean alt, boolean shift, boolean ctrl, MusicList list,
 			boolean last) {
 		if (!last)
-			dialogChooseOrRandom = alt ? true : DialogMaster.confirm("Choose or random?");
-		if (!last) {
-			dialogListTypes = new LinkedList<>(DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST));
+            dialogChooseOrRandom = alt || DialogMaster.confirm("Choose or random?");
+        if (!last) {
+            dialogListTypes = new LinkedList<>(DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST));
 			dialogListTypes = filterViaDialog(dialogListTypes, ctrl, shift);
 			cachedDialogListTypes = new LinkedList<>(dialogListTypes);
 		}
@@ -321,9 +309,9 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 		String filterValue = null;
 		PROPERTY filterProp = null;
 		boolean filterIn = !shift;
-		boolean template = ctrl ? true : DialogMaster.confirm("Template or Custom filter?");
-		if (template) {
-			// MusicMouseListener.s
+        boolean template = ctrl || DialogMaster.confirm("Template or Custom filter?");
+        if (template) {
+            // MusicMouseListener.s
 			boolean group_tag = DialogMaster.confirm("Group or Tag Template?");
 			Object[] values = null;
 			if (group_tag) {
@@ -400,7 +388,7 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 			// list.play();
 		}
 		list.getMouseListener().handleClick(0, list.getMouseListener().getClickMode());
-		// getOrCreate path for name
+        // getOrCreate path for name
 
 		// add to selected?
 		// replace selected

@@ -7,7 +7,7 @@ import main.libgdx.gui.panels.sub.Container;
 /**
  * Created by JustMe on 1/5/2017.
  */
-public class InfoDialog extends Dialog{
+public class InfoDialog extends Dialog {
 
     Container top;
     Comp portrait;
@@ -25,7 +25,7 @@ public class InfoDialog extends Dialog{
     Container description;
     Container lore;
 
-    public  InfoDialog(DC_HeroObj unit){
+    public InfoDialog(DC_HeroObj unit) {
 //        armor = new Container( ->{
 //           add(new ObjComp(unit.getArmor()), x, y)
 //        });

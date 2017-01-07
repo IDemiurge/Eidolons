@@ -154,7 +154,7 @@ public class AttackAnimation extends ActionAnimation {
                             (DC_HeroObj) getTarget(), attack.getDamage(), (int) phase.getArgs()[1]);
                     break;
                 case REDUCTION_SHIELD:
-                    DC_SoundMaster.playBlockedSound(source, (DC_HeroObj) getTarget(), attack
+                    DC_SoundMaster.playBlockedSound(source, getTarget(), attack
                             .getShield(), attack.getWeapon(), (int) phase.getArgs()[1], (int) phase
                             .getArgs()[3]);
                     break;
@@ -338,9 +338,7 @@ public class AttackAnimation extends ActionAnimation {
     protected boolean isAutoFinishDefault() {
         if (attack.isAttackOfOpportunity())
             return false;
-        if (attack.isInstant())
-            return false;
-        return true; // TODO ?
+        return !attack.isInstant();
     }
 
     protected boolean drawDiceRollDetails(AnimPhase phase) {
