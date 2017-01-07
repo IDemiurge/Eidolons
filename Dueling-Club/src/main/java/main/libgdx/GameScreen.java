@@ -152,8 +152,8 @@ public class GameScreen implements Screen {
         gui.act(delta);
         gui.draw();
         try{
-         if (  DC_Game.game.getAnimationManager().updateAnimations())
-            PhaseAnimator.getInstance().update();
+//         if (  DC_Game.game.getAnimationManager().updateAnimations())
+//            PhaseAnimator.getInstance().update();
         }catch(Exception e){
         }
     }
