@@ -86,10 +86,10 @@ public class GameScreen implements Screen {
     private void initGui() {
         final Texture t = new Texture(GameScreen.class.getResource("/data/marble_green.png").getPath());
 
-        radialMenu = new RadialMenu(t);
-        toolTipManager = new ToolTipManager();
+        radialMenu = new RadialMenu(t );
+        toolTipManager = new ToolTipManager( );
         gui = new GuiStage();
-        phaseAnimator = PhaseAnimator.getInstance();
+        phaseAnimator =   PhaseAnimator.getInstance();
         gui.addActor(radialMenu);
         gui.addActor(toolTipManager);
 
@@ -100,13 +100,13 @@ public class GameScreen implements Screen {
     private void bindEvents() {
         GuiEventManager.bind(GRID_CREATED, param -> {
             Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
-            gridPanel = new GridPanel(p.getLeft(), p.getRight()).init();
+            gridPanel = new GridPanel(  p.getLeft(), p.getRight()).init();
             bf.addActor(gridPanel);
         });
 
         GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
             Triple<DC_Obj, Float, Float> container =
-                    (Triple<DC_Obj, Float, Float>) obj.get();
+             (Triple<DC_Obj, Float, Float>) obj.get();
 
             if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
                 radialMenu.init(DebugRadialManager.getDebugNodes(container.getLeft()));
@@ -151,10 +151,10 @@ public class GameScreen implements Screen {
 
         gui.act(delta);
         gui.draw();
-        try {
-            if (DC_Game.game.getAnimationManager().updateAnimations())
-                PhaseAnimator.getInstance().update();
-        } catch (Exception e) {
+        try{
+//         if (  DC_Game.game.getAnimationManager().updateAnimations())
+//            PhaseAnimator.getInstance().update();
+        }catch(Exception e){
         }
     }
 
