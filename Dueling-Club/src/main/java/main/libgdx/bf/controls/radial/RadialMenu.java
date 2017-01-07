@@ -25,7 +25,7 @@ import main.game.DC_Game;
 import main.game.Game;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.TargetRunnable;
-import main.libgdx.texture.TextureCache;
+import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
 import main.system.images.ImageManager;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -40,12 +40,10 @@ import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
 
 public class RadialMenu extends Group {
     private Texture  closeTex;
-    private TextureCache textureCache;
     private MenuNode currentNode;
     private Image closeImage;
 
-    public RadialMenu(Texture closeTex, TextureCache textureCache) {
-        this.textureCache = textureCache;
+    public RadialMenu(Texture closeTex ) {
         closeImage = new Image(closeTex);
         this .closeTex = closeTex;
 
@@ -302,11 +300,11 @@ public class RadialMenu extends Group {
                         Ref ref = obj.getRef();
                         ref.setTarget(target.getId());
                         obj.activate(ref);
-                    }, textureCache.getOrCreate(((Entity) obj).getImagePath()), obj.getName()));
+                    }, TextureManager.getOrCreate(((Entity) obj).getImagePath()), obj.getName()));
                 } else {
                     moves.add(new ImmutableTriple<>(
                             ((Entity) obj)::invokeClicked,
-                            textureCache.getOrCreate(((Entity) obj).getImagePath()),
+                            TextureManager.getOrCreate(((Entity) obj).getImagePath()),
                             obj.getName()
                     ));
                 }
@@ -317,7 +315,7 @@ public class RadialMenu extends Group {
             if (obj.isTurn()) {
                 turns.add(new ImmutableTriple<>(
                         ((Entity) obj)::invokeClicked,
-                        textureCache.getOrCreate(((Entity) obj).getImagePath()),
+                        TextureManager.getOrCreate(((Entity) obj).getImagePath()),
                         obj.getName()
                 ));
             }
@@ -326,7 +324,7 @@ public class RadialMenu extends Group {
                 DC_ActiveObj dcActiveObj = (DC_ActiveObj) obj;
                 RadialMenu.CreatorNode inn1 = new CreatorNode();
                 try{
-                inn1.texture = textureCache.getOrCreate(((Entity) obj).getImagePath());
+                inn1.texture = TextureManager.getOrCreate(((Entity) obj).getImagePath());
                 }catch(Exception e){                e.printStackTrace();
 
                 }
@@ -353,7 +351,7 @@ public class RadialMenu extends Group {
                             });
                             RadialMenu.CreatorNode innn = new CreatorNode();
                             innn.name = dc_activeObj.getName();
-                            innn.texture = textureCache.getOrCreate(dc_activeObj.getImagePath());
+                            innn.texture = TextureManager.getOrCreate(dc_activeObj.getImagePath());
                             innn.action = () -> {
                                 trigger(SELECT_MULTI_OBJECTS, new EventCallbackParam(p));
                             };
@@ -370,7 +368,7 @@ public class RadialMenu extends Group {
                     for (DC_ActiveObj dc_activeObj : dcActiveObj.getSubActions()) {
                         RadialMenu.CreatorNode innn = new CreatorNode();
                         innn.name = dc_activeObj.getName();
-                        innn.texture = textureCache.getOrCreate(dc_activeObj.getImagePath());
+                        innn.texture = TextureManager.getOrCreate(dc_activeObj.getImagePath());
                         innn.action = () -> {
                             Ref ref = dc_activeObj.getRef();
                             ref.setTarget(target.getId());
@@ -386,9 +384,9 @@ public class RadialMenu extends Group {
         }
 
 
-        Texture moveAction = textureCache.getOrCreate("\\UI\\actions\\Move gold.jpg");
-        Texture turnAction = textureCache.getOrCreate("\\UI\\actions\\turn anticlockwise quick2 - Copy.jpg");
-        Texture attackAction = textureCache.getOrCreate("\\mini\\actions\\New folder\\Achievement_Arena_2v2_2.jpg");
+        Texture moveAction = TextureManager.getOrCreate("\\UI\\actions\\Move gold.jpg");
+        Texture turnAction = TextureManager.getOrCreate("\\UI\\actions\\turn anticlockwise quick2 - Copy.jpg");
+        Texture attackAction = TextureManager.getOrCreate("\\mini\\actions\\New folder\\Achievement_Arena_2v2_2.jpg");
         Texture yellow = new Texture(GridPanel.class.getResource("/data/marble_yellow.png").getPath());
         Texture red = new Texture(GridPanel.class.getResource("/data/marble_red.png").getPath());
         Texture green = new Texture(GridPanel.class.getResource("/data/marble_green.png").getPath());
@@ -418,7 +416,7 @@ public class RadialMenu extends Group {
         }
         if (getDebug() || !source.getSpells().isEmpty()){
             RadialMenu.CreatorNode spellNode = new RadialMenu.CreatorNode();
-            spellNode.texture =textureCache.getOrCreate(
+            spellNode.texture =TextureManager.getOrCreate(
              ImageManager.getRadialSpellIconPath())
             ;
             spellNode.childNodes = SpellRadialManager.getSpellNodes(source, target);

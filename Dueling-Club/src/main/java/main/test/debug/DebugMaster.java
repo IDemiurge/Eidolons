@@ -294,9 +294,9 @@ public class DebugMaster {
 if (target!=null )
     arg = target;
 
-        DC_HeroObj infoObj = null;
+        DC_HeroObj infoObj =target instanceof  DC_HeroObj ?  (DC_HeroObj) target : null;
         Ref ref =  null  ;
-        try {
+        if (infoObj==null )  try {
             infoObj = (DC_HeroObj) getObj();
         } catch (Exception e) {
         }

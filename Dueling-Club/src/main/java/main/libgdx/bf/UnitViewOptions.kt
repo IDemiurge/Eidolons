@@ -5,8 +5,9 @@ import main.content.OBJ_TYPES
 import main.content.properties.G_PROPS
 import main.entity.obj.DC_HeroObj
 import main.libgdx.texture.TextureCache
+import main.libgdx.texture.TextureManager
 
-class UnitViewOptions(var obj: DC_HeroObj, textureCache: TextureCache, var unitMap: MutableMap<DC_HeroObj, UnitView>) {
+class UnitViewOptions(var obj: DC_HeroObj,   var unitMap: MutableMap<DC_HeroObj, UnitView>) {
     var runnable: Runnable? = null
     var portrateTexture: Texture? = null
     var directionPointerTexture: Texture? = null
@@ -18,19 +19,19 @@ class UnitViewOptions(var obj: DC_HeroObj, textureCache: TextureCache, var unitM
     var overlaying: Boolean = false;
 
     init {
-        createFromGameObject(obj, textureCache)
+        createFromGameObject(obj )
     }
 
-    fun createFromGameObject(obj: DC_HeroObj, textureCache: TextureCache) {
-        portrateTexture = textureCache.getOrCreate(obj.imagePath)
+    fun createFromGameObject(obj: DC_HeroObj ) {
+        portrateTexture = TextureManager.getOrCreate(obj.imagePath)
 
         if (obj.obJ_TYPE_ENUM === OBJ_TYPES.UNITS) {
             if (obj is Rotatable) {
                 directionValue = obj.facing.direction.degrees
-                directionPointerTexture = textureCache.getOrCreate("\\UI\\DIRECTION POINTER.png")
+                directionPointerTexture = TextureManager.getOrCreate("\\UI\\DIRECTION POINTER.png")
             }
 
-            clockTexture = textureCache.getOrCreate("\\UI\\value icons\\actions.png")
+            clockTexture = TextureManager.getOrCreate("\\UI\\value icons\\actions.png")
 
             val emblem = obj.getProperty(G_PROPS.EMBLEM, true)
             if (emblem != null) {

@@ -53,6 +53,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 
+import static main.system.GuiEventType.CELL_UPDATE;
 import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
 
 /**
@@ -557,7 +558,9 @@ public class DC_GameManager extends GameManager {
             getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED, REF));
             game.getLogManager().doneLogEntryNode();
         }
-
+        GuiEventManager.trigger(CELL_UPDATE,new EventCallbackParam<>(
+         killed.getCoordinates()
+        ) );
         // refreshAll();
     }
 
