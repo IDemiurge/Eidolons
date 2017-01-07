@@ -89,12 +89,13 @@ public class GridPanel extends Group {
 
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p =
-             (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
+                    (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             Map<Borderable, Runnable> map = new HashMap<>();
             for (DC_Obj obj1 : p.getLeft()) {
-                Borderable   b=unitMap.get(obj1);
-                if (b==null )
-                b=cells[obj1.getX()][rows1-obj1.getY()];
+                Borderable b = unitMap.get(obj1);
+                if (b == null) {
+                    b = cells[obj1.getX()][rows1 - obj1.getY()];
+                }
                 map.put(b, () -> p.getRight().run(obj1));
             }
             GuiEventManager.trigger(SHOW_BLUE_BORDERS, new EventCallbackParam(map));
@@ -295,7 +296,7 @@ public class GridPanel extends Group {
                         recordOption.name = "direction: " + hero.getFacing().getDirection();
                         recordOptions.add(recordOption);
 
-                        if (hero.isOverlaying()){
+                        if (hero.isOverlaying()) {
                             recordOption = new ToolTipManager.ToolTipRecordOption();
                             recordOption.name = "direction O: " + hero.getDirection();
                             recordOptions.add(recordOption);
