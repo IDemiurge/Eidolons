@@ -32,10 +32,10 @@ public class Background extends Group {
     }
 
     public Background init() {
-        if (DC_Game.game!=null)
+        if (DC_Game.game != null)
             if (DC_Game.game.getDungeon() != null) {
-            setImagePath(DC_Game.game.getDungeon().getMapBackground());
-        }
+                setImagePath(DC_Game.game.getDungeon().getMapBackground());
+            }
         update();
         return this;
     }

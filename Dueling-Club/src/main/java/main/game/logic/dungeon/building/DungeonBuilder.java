@@ -453,7 +453,7 @@ public class DungeonBuilder {
         String data = FileManager.readFile(path);
         if (data.isEmpty()) {
             data = FileManager.readFile(
-             path.contains(PathFinder.getDungeonLevelFolder()) ? path
+                    path.contains(PathFinder.getDungeonLevelFolder()) ? path
                     : PathFinder.getDungeonLevelFolder() + path);
         }
         if (data.isEmpty())

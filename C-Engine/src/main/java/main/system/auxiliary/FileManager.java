@@ -7,6 +7,7 @@ import main.system.sound.SoundMaster;
 import org.w3c.dom.Node;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -37,11 +38,25 @@ public class FileManager {
     public static String readFile(File file, String lineSeparator) {
         if (!isFile(file))
             return "";
+
+        String result = "";
+
+        try {
+            result = new String(Files.readAllBytes(file.toPath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+
+        /*
         FileReader fr = null;
         String s = "";
         try {
-            if (StringMaster.getFormat(file.getName()).equalsIgnoreCase(".Odt"))
+            if (StringMaster.getFormat(file.getName()).equalsIgnoreCase(".Odt")) {
                 return readOdtFile(file);
+            }
+
             fr = new FileReader(file);
             BufferedReader br = new BufferedReader(fr);
 
@@ -79,7 +94,7 @@ public class FileManager {
             }
         }
 
-        return s;
+        return s;*/
     }
 
     // private OutputStream out;
