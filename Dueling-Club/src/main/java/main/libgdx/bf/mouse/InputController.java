@@ -126,10 +126,10 @@ public class InputController implements InputProcessor {
         if (alt && !ctrl) {
             // ambient
             if (i == 1) {
-                Lightmap.setAmbint(Lightmap.getAmbient() + 0.02f);
+                Lightmap.setAmbint(Lightmap.getAmbint()  + 0.02f);
             }
             if (i == -1) {
-                Lightmap.setAmbint(Lightmap.getAmbient() - 0.02f);
+                Lightmap.setAmbint(Lightmap.getAmbint() - 0.02f);
             }
 
         }
