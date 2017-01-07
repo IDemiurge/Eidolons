@@ -36,20 +36,48 @@ public class InfoDialog extends Dialog {
 //           add(new ObjComp(unit.getArmor()), x, y)
 //        });
 
-        parser=new LayoutParser(this);
-        parser.parse(this,
-         mainLayout,fxAndAbils, attributes, dynamicParams,mainWeapon,description,
+        armor = new Container(""){
+            @Override
+            public void layout() {
+//                public class EntityContainer extends PagedPanel {
+//
+//                    public EntityContainer(String name, int itemSize, int columns, int rows
+//                     ,   Supplier<Collection> supplier
+//                    ) {
+//                        super(columns, rows);
+////        this.name=name;
+////        this.itemSize=itemSize;
+////        this.columns=columns;
+////        this.rows=rows;
+////        this.supplier=supplier;
+//                    }
+//                }
+//                EntityContainer buffs = new EntityContainer("Buffs", 32, 2, 2,
+//                 ()->{
+//                     return unit.getArmor().getBuffs();
+//                 });
+//
+//                EntityContainer traits = new EntityContainer("Traits", 32, 2, 2,
+//                 ()->{
+//                     return unit.getArmor().getPassives();
+//                 });
+//
+//
+//                super.layout();
+            }
+        };
+                parser = new LayoutParser(this);
+                parser.parse(this,
+                 mainLayout, fxAndAbils, attributes, dynamicParams, mainWeapon, description,
 
-         resistances, armor, mainParams,   points, portrait,
+                 resistances, armor, mainParams, points, portrait,
 
-         params, offWeapon, lore
-
-
-
-         );
+                 params, offWeapon, lore
 
 
-    }
+                );
+            }
+        }
 
 
 
@@ -63,4 +91,4 @@ public class InfoDialog extends Dialog {
 
 
 
-}
+

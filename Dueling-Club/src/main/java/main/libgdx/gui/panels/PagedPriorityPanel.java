@@ -1,6 +1,7 @@
 package main.libgdx.gui.panels;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import main.libgdx.gui.panels.sub.PagedPanel;
 import main.libgdx.texture.TextureManager;
 
 /**
@@ -28,7 +29,7 @@ public class PagedPriorityPanel extends PagedPanel {
         return false;
     }
 
-    public PagedPriorityPanel init() {
+    public PagedPanel init() {
         super.init();
         clockImage = new Image(TextureManager.getOrCreate(clockImagePath));
         clockImage.setY(pager2.getY());

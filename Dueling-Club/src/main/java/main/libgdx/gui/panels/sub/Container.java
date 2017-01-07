@@ -19,7 +19,9 @@ public class Container extends  Comp{
 //            comp.getName();
 //        });
 //    }
-//layout(){
+    public void layout(){
+
+}
 //    Arrays.stream(comps).forEach(comp->{
 //
 //        comp.setX(x);

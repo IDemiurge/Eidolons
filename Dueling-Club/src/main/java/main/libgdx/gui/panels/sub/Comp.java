@@ -11,7 +11,9 @@ public class Comp extends Group {
     //tooltips,
     Texture texture;
 
-    public Comp(String imagePath) {
+    public Comp( ) {
+    }
+        public Comp(String imagePath) {
         texture = TextureManager.getOrCreate(imagePath);
     }
 }

@@ -25,13 +25,13 @@ public class ActiveUnitInfoPanel extends UnitInfoPanel {
         int oldH = 0;
         super.init();
 
-        quickPanel = new QuickActionPagedPanel(imagePath, 2, 5).init();
+//        quickPanel = new QuickActionPagedPanel(imagePath, 2, 5).init();
         quickPanel.setY(oldH);
         quickPanel.setX(portraitPanel.getWidth() / 2 - quickPanel.getWidth() / 2);
         addActor(quickPanel);
         oldH += quickPanel.getHeight();
 
-        spellPanel = new QuickActionPagedPanel(imagePath, 2, 5).init();
+//        spellPanel = new QuickActionPagedPanel(imagePath, 2, 5).init();
         spellPanel.setY(oldH);
         spellPanel.setX(portraitPanel.getWidth() / 2 - spellPanel.getWidth() / 2);
         addActor(spellPanel);

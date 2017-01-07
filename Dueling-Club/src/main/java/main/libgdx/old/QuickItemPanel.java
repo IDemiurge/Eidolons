@@ -1,6 +1,6 @@
 package main.libgdx.old;
 
-import main.libgdx.gui.panels.PagedPanel;
+import main.libgdx.gui.panels.sub.PagedPanel;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,7 +24,7 @@ public class QuickItemPanel extends PagedPanel {
     }
 
     @Override
-    public QuickItemPanel init() {
+    public PagedPanel init() {
         return (QuickItemPanel) super.init();
     }
 }

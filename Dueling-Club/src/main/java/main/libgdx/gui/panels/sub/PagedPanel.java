@@ -1,11 +1,10 @@
-package main.libgdx.gui.panels;
+package main.libgdx.gui.panels.sub;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 /**
@@ -14,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  * Time: 23:25
  * To change this template use File | Settings | File Templates.
  */
-public class PagedPanel extends Group {
+public class PagedPanel extends Panel {
     private static final String pagerImagePath = "\\UI\\components\\left5.png";
     private static final String pagerImagePath2 = "\\UI\\components\\right5.png";
     private static final String pagerImagePath3 = "\\UI\\components\\down5.png";
