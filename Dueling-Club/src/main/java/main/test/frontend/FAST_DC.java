@@ -50,7 +50,7 @@ public class FAST_DC {
     // "Cemetary";
     private static final boolean BEHAVIOR_TEST_ON = false;
 
-    public static String DEFAULT_TEST_DUNGEON = "test\\Clearshot Test.xml";
+    public static String DEFAULT_TEST_DUNGEON = "test\\Lighting Test.xml";//Clearshot
     public static String DEFAULT_DUNGEON = null;
     public static Boolean FAST_MODE = false;
     public static Boolean factionLeaderRequired = false;

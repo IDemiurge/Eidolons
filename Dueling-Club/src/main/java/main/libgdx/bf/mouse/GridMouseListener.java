@@ -29,16 +29,19 @@ import static main.system.GuiEventType.SHOW_TOOLTIP;
  */
 public class GridMouseListener extends InputListener {
     private GridPanel gridPanel;
+    private GridCell[][] cells;
 
-    public GridMouseListener(GridPanel gridPanel) {
+    public GridMouseListener(GridPanel gridPanel, GridCell[][] cells) {
         this.gridPanel = gridPanel;
+        this.cells = cells;
     }
+
 
     @Override
     public boolean mouseMoved(InputEvent event, float x, float y) {
-        int cell = (int) (x / gridPanel.getCells()[0][0].getWidth());
-        int row = (int) (y / gridPanel.getCells()[0][0].getHeight());
-        GridCell gridCell = gridPanel.getCells()[cell][row];
+        int cell = (int) (x / cells[0][0].getWidth());
+        int row = (int) (y / cells[0][0].getHeight());
+        GridCell gridCell = cells[cell][row];
         if (gridCell.getInnerDrawable() != null) {
             GridCellContainer innerDrawable = (GridCellContainer) gridCell.getInnerDrawable();
             Actor a = innerDrawable.hit(x, y, true);
