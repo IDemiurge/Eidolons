@@ -591,6 +591,7 @@ public class DC_HeroObj extends DC_UnitObj {
                     if (!getOwner().isMe()) {
                         setParam(PARAMS.INITIATIVE_MODIFIER, 1);
                     }
+                    if (equals(getOwner().getHeroObj()))
                     addPassive(STANDARD_PASSIVES.INDESTRUCTIBLE);
                 }
     }

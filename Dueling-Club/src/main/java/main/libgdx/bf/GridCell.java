@@ -13,16 +13,16 @@ import main.libgdx.StyleHolder;
 public class GridCell extends Group implements Borderable {
     protected Image backImage;
     protected Texture backTexture;
-    protected int gridX;
-    protected int gridY;
+    private int gridX;
+    private int gridY;
     private GridCell innerDrawable;
     private Image border = null;
     private Label cordsText;
 
     public GridCell(Texture backTexture, int gridX, int gridY) {
         this.backTexture = backTexture;
-        this.gridX = gridX;
-        this.gridY = gridY;
+        this.setGridX(gridX);
+        this.setGridY(gridY);
     }
 
     public GridCell init() {
@@ -32,7 +32,7 @@ public class GridCell extends Group implements Borderable {
         setWidth(backImage.getWidth());
         setHeight(backImage.getHeight());
 
-        cordsText = new Label(gridX + ":" + gridY, StyleHolder.getDefaultLabelStyle());
+        cordsText = new Label(getGridX() + ":" + getGridY(), StyleHolder.getDefaultLabelStyle());
         cordsText.setPosition(getWidth() / 2 - cordsText.getWidth() / 2, getHeight() / 2 - cordsText.getHeight() / 2);
         cordsText.setVisible(false);
         addActor(cordsText);
@@ -123,5 +123,21 @@ public class GridCell extends Group implements Borderable {
     @Override
     public Image getBorder() {
         return border;
+    }
+
+    public int getGridX() {
+        return gridX;
+    }
+
+    public void setGridX(int gridX) {
+        this.gridX = gridX;
+    }
+
+    public int getGridY() {
+        return gridY;
+    }
+
+    public void setGridY(int gridY) {
+        this.gridY = gridY;
     }
 }

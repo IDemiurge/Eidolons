@@ -21,8 +21,6 @@ import main.libgdx.bf.controls.radial.RadialMenu;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.bf.mouse.ToolTipManager;
 import main.libgdx.gui.GuiStage;
-import main.libgdx.texture.TextureCache;
-import main.libgdx.texture.TextureManager;
 import main.system.GuiEventManager;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -44,7 +42,6 @@ public class GameScreen implements Screen {
 
     private Background background;
     private GridPanel gridPanel;
-    private TextureCache textureCache;
     private RadialMenu radialMenu;
 
     protected ToolTipManager toolTipManager;
@@ -87,22 +84,23 @@ public class GameScreen implements Screen {
     }
 
     private void initGui() {
-        textureCache = TextureManager.getCache();
         final Texture t = new Texture(GameScreen.class.getResource("/data/marble_green.png").getPath());
 
-        radialMenu = new RadialMenu(t, textureCache);
-        toolTipManager = new ToolTipManager(textureCache);
+        radialMenu = new RadialMenu(t );
+        toolTipManager = new ToolTipManager( );
         gui = new GuiStage();
         phaseAnimator = PhaseAnimator.getInstance();
         gui.addActor(radialMenu);
         gui.addActor(toolTipManager);
-//        gui.addActor(phaseAnimator);
+
+//        anim=new Stage();
+//        anim.addActor(phaseAnimator);
     }
 
     private void bindEvents() {
         GuiEventManager.bind(GRID_CREATED, param -> {
             Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
-            gridPanel = new GridPanel(textureCache, p.getLeft(), p.getRight()).init();
+            gridPanel = new GridPanel(  p.getLeft(), p.getRight()).init();
             bf.addActor(gridPanel);
         });
 

@@ -19,7 +19,7 @@ public class GridCellContainer extends GridCell {
     }
 
     public GridCellContainer(GridCell parent) {
-        super(parent.backTexture, parent.gridX, parent.gridY);
+        super(parent.backTexture, parent.getGridX(), parent.getGridY());
     }
 
     @Override
