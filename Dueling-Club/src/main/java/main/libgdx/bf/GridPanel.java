@@ -20,7 +20,6 @@ import main.libgdx.bf.mouse.InputController;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.datatypes.DequeImpl;
 import main.test.libgdx.prototype.Lightmap;
 import org.apache.commons.lang3.tuple.Pair;
@@ -213,19 +212,19 @@ public class GridPanel extends Group {
                 caught = true;
             }
 
-            if (!caught) {
-                Arrays.stream(GuiEventType.values()).forEach(e -> {
-                    if (e.boundEvents != null)
-                        Arrays.stream(e.boundEvents).forEach(
-                         bound -> {
-                             if (event.getType().equals(bound)) {
-                                 GuiEventManager.trigger(e, param);
-//                             caught=true; TODO howto?
-                             }
-
-                         });
-                });
-            }
+//            if (!caught) {
+//                Arrays.stream(GuiEventType.values()).forEach(e -> {
+//                    if (e.boundEvents != null)
+//                        Arrays.stream(e.boundEvents).forEach(
+//                         bound -> {
+//                             if (event.getType().equals(bound)) {
+//                                 GuiEventManager.trigger(e, param);
+////                             caught=true; TODO howto?
+//                             }
+//
+//                         });
+//                });
+//            }
             if (!caught) {
                 System.out.println("catch ingame event: " + event.getType() + " in " + event.getRef());
             }
@@ -309,13 +308,12 @@ public class GridPanel extends Group {
             return;
         }
         Coordinates c = heroObj.getCoordinates();
-        final int y = rows1 - c.y;
-        if (getCells()[c.x][y].getInnerDrawable() == null) {
-            GridCellContainer cellContainer = new GridCellContainer(getCells()[c.x][y]).init();
-            getCells()[c.x][y].addInnerDrawable(cellContainer);
+        if (getCells()[c.x][rows1 - c.y].getInnerDrawable() == null) {
+            GridCellContainer cellContainer = new GridCellContainer(getCells()[c.x][rows1 - c.y]).init();
+            getCells()[c.x][rows1 - c.y].addInnerDrawable(cellContainer);
         }
         uv.setVisible(true);
-        getCells()[c.x][y].getInnerDrawable().addActor(uv);
+        getCells()[c.x][rows1 - c.y].getInnerDrawable().addActor(uv);
 
         getCellBorderManager().updateBorderSize();
 
