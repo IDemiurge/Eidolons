@@ -15,16 +15,14 @@ import main.test.libgdx.prototype.Lightmap;
 public class InputController implements InputProcessor {
 
 
-    private Stage  bf;
-    private Stage  gui;
     float x_cam_pos;
     float y_cam_pos;
-
-
     OrthographicCamera camera;
     boolean is_it_Left_Click = false;
     boolean alt = false;
     boolean ctrl = false;
+    private Stage bf;
+    private Stage gui;
 
     public InputController(OrthographicCamera camera) {
         this.camera = camera;

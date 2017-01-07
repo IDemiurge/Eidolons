@@ -23,18 +23,16 @@ import java.util.Map;
 public class LE_MapViewComp extends G_Panel implements TabChangeListener {
 	public static final Dimension SIZE = new Dimension(1050, 750);
 	private static boolean minimapMode = false;
-	private Mission mission;
 	Level currentLevel;
 	Minimap map;
 	HC_TabPanel tabs;
-
-	private Map<Level, Minimap> maps = new HashMap<Level, Minimap>();
-	private DequeImpl<Level> levels;
+    WrappedTextComp infoComp = new WrappedTextComp(null);
+    private Mission mission;
+    private Map<Level, Minimap> maps = new HashMap<Level, Minimap>();
+    private DequeImpl<Level> levels;
 	private LE_MainPanel mainPanel;
 	private BfGridComp grid;
 	private Map<Level, BfGridComp> grids = new HashMap<Level, BfGridComp>();
-
-	WrappedTextComp infoComp = new WrappedTextComp(null);
 
 	public LE_MapViewComp(Mission mission, LE_MainPanel mainPanel) {
 		this(mission, new DequeImpl<Level>(), mainPanel);
@@ -64,6 +62,14 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
 		setOpaque(false);
 		// new LE_MouseMaster();
 	}
+
+    public static boolean isMinimapMode() {
+        return minimapMode;
+    }
+
+    public static void setMinimapMode(boolean minimapMode) {
+        LE_MapViewComp.minimapMode = minimapMode;
+    }
 
 	@Override
 	public boolean isAutoSizingOn() {
@@ -113,8 +119,8 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
         // map = maps.getOrCreate(currentLevel);
         // if (map == null) {
         // map = new Minimap(true, currentLevel.getDungeon());
-		// map.init();
-		// maps.put(currentLevel, map);
+        // map.init();
+        // maps.put(currentLevel, map);
 		// } else if (!map.isInitialized())
 		// map.init();
 
@@ -217,14 +223,6 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
 
 	public void setCurrentLevel(Level currentLevel) {
 		this.currentLevel = currentLevel;
-	}
-
-	public static boolean isMinimapMode() {
-		return minimapMode;
-	}
-
-	public static void setMinimapMode(boolean minimapMode) {
-		LE_MapViewComp.minimapMode = minimapMode;
 	}
 
 	public Mission getMission() {

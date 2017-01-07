@@ -15,20 +15,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  * To change this template use File | Settings | File Templates.
  */
 public class PagedPanel extends Group {
-    private Image pager1;
-    protected Image pager2;
-
-    protected Image[] slots;
-
-    private Texture emptySlotTexture;
-    protected String imagePath;
-    protected int col;
-    protected int row;
-
     private static final String pagerImagePath = "\\UI\\components\\left5.png";
     private static final String pagerImagePath2 = "\\UI\\components\\right5.png";
     private static final String pagerImagePath3 = "\\UI\\components\\down5.png";
     private static final String pagerImagePath4 = "\\UI\\components\\up5.png";
+    protected Image pager2;
+    protected Image[] slots;
+    protected String imagePath;
+    protected int col;
+    protected int row;
+    private Image pager1;
+    private Texture emptySlotTexture;
 
     public PagedPanel(String imagePath, int col, int row) {
 

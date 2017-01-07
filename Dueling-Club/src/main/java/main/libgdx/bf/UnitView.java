@@ -23,6 +23,16 @@ public class UnitView extends Group implements Borderable {
         init(arrowTexture, arrowRotation, clockTexture, clockVal, portraitTexture, iconTexture);
     }
 
+    public UnitView(UnitViewOptions o) {
+        if (o.getOverlaying()) {
+            overlaying = true;
+            init(o.getDirectionValue(), o.getPortrateTexture());
+        } else {
+            init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getClockTexture(), o.getClockValue(), o.getPortrateTexture(), o.getIconTexture());
+        }
+        o.getUnitMap().put(o.getObj(), this);//todo fix this shit
+    }
+
     private void init(Texture arrowTexture, int arrowRotation, Texture clockTexture, String clockVal, Texture portraitTexture, Texture iconTexture) {
         this.arrowRotation = arrowRotation + 90;
         this.clockVal = clockVal;
@@ -59,16 +69,6 @@ public class UnitView extends Group implements Borderable {
             icon.setY(getHeight() - icon.getImageHeight());
         }
 //        setDebug(true);
-    }
-
-    public UnitView(UnitViewOptions o) {
-        if (o.getOverlaying()) {
-            overlaying = true;
-            init(o.getDirectionValue(), o.getPortrateTexture());
-        } else {
-            init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getClockTexture(), o.getClockValue(), o.getPortrateTexture(), o.getIconTexture());
-        }
-        o.getUnitMap().put(o.getObj(), this);//todo fix this shit
     }
 
     public boolean isOverlaying() {
@@ -166,20 +166,6 @@ public class UnitView extends Group implements Borderable {
     }
 
     @Override
-    public void setBorder(Image image) {
-        if (border != null) {
-            removeActor(border);
-        }
-
-        if (image == null) {
-            border = null;
-        } else {
-            addActor(image);
-            border = image;
-        }
-    }
-
-    @Override
     public int getW() {
         return (int) getWidth();
     }
@@ -192,5 +178,19 @@ public class UnitView extends Group implements Borderable {
     @Override
     public Image getBorder() {
         return border;
+    }
+
+    @Override
+    public void setBorder(Image image) {
+        if (border != null) {
+            removeActor(border);
+        }
+
+        if (image == null) {
+            border = null;
+        } else {
+            addActor(image);
+            border = image;
+        }
     }
 }

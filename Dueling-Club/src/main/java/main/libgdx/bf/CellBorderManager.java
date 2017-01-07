@@ -18,29 +18,20 @@ import java.util.Map.Entry;
 import static main.system.GuiEventType.*;
 
 public class CellBorderManager extends Group {
-    private int cellW;
-    private int cellH;
-
-    protected Image greenBorder;
-    protected Image redBorder;
-    protected Image orangeBorder;
-    protected Texture blueBorderTexture;
-
-
-    public boolean isBlueBorderActive() {
-        return blueBorderOwners.size() > 0;
-    }
-
     private static final String cyanPath = "UI\\Borders\\neo\\color flag\\cyan 132.png";
     private static final String bluePath = "UI\\Borders\\neo\\color flag\\blue 132.png";
     private static final String orangePath = "UI\\Borders\\neo\\color flag\\orange 132.png";
     private static final String purplePath = "UI\\Borders\\neo\\color flag\\purple 132.png";
     private static final String redPath = "UI\\Borders\\neo\\color flag\\red 132.png";
-
+    public Image singleBorderImageBackup = null;
+    protected Image greenBorder;
+    protected Image redBorder;
+    protected Image orangeBorder;
+    protected Texture blueBorderTexture;
+    private int cellW;
+    private int cellH;
     private Borderable unitBorderOwner = null;
     private Map<Borderable, Runnable> blueBorderOwners = new HashMap<>();
-
-    public Image singleBorderImageBackup = null;
 
     public CellBorderManager(int cellW, int cellH) {
         this.cellW = cellW;
@@ -54,6 +45,10 @@ public class CellBorderManager extends Group {
         blueBorderTexture = TextureManager.getOrCreate(bluePath);
 
         initCallbacks();
+    }
+
+    public boolean isBlueBorderActive() {
+        return blueBorderOwners.size() > 0;
     }
 
     private Texture getColoredBorderTexture(Color c) {

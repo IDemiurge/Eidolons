@@ -88,6 +88,7 @@ public class FAST_DC {
             = "7-5=Minotaur,8-5=Troglodyte,";
     public static boolean SUPER_FAST_MODE;
     public static boolean LOCALHOST = true;
+    public static String exceptions = "";
     private static boolean MINIMAP_TEST_ON = false;
     private static boolean VISION_HACK = false;
     private static boolean fullscreen = false;
@@ -105,8 +106,6 @@ public class FAST_DC {
     public static boolean isRunning() {
         return running;
     }
-
-    public static String exceptions = "";
 
     //    chars;skills;classes;deities;factions;jewelry; TODO
     public static void main(String[] args) {

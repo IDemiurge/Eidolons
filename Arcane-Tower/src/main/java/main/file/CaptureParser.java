@@ -24,9 +24,6 @@ import java.util.regex.Pattern;
 
 public class CaptureParser {
 
-	private static String SUPER_HEADER = "^";
-	private static String HEADER = "*";
-	private static String BLOCK_SEPARATOR = "::";
 	private static final String BLOCK_DESCRIPTION_SEPARATOR = "�";
 	private static final String BLOCK_DESCRIPTION_SEPARATOR_ALT = " - ";
 	private static final String DETAILS_SEPARATOR = ">>";
@@ -36,8 +33,11 @@ public class CaptureParser {
 	static List<Goal> goals;
 	static List<Task> tasks;
 	static Direction direction;
-	private static String directionHeader;
-	private static ObjType enclosingType;
+    private static String SUPER_HEADER = "^";
+    private static String HEADER = "*";
+    private static String BLOCK_SEPARATOR = "::";
+    private static String directionHeader;
+    private static ObjType enclosingType;
 
 	private static void initScope(AT_OBJ_TYPE scope) {
 
@@ -354,8 +354,8 @@ public class CaptureParser {
                 // else enclosingType = DataManager.getTypes(scope).getOrCreate(0);
             }
         if (enclosingType != null)
-			type.setProperty(AT_OBJ_TYPE.getParentValue((AT_OBJ_TYPE) type.getOBJ_TYPE_ENUM()),
-					enclosingType.getName());
+            type.setProperty(AT_OBJ_TYPE.getParentValue((AT_OBJ_TYPE) type.getOBJ_TYPE_ENUM()),
+                    enclosingType.getName());
 		return type;
 	}
 

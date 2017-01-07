@@ -65,8 +65,8 @@ public class TreeViewBuilder extends Builder {
         // nodes = TreeMaster.getChildren(nodes.getOrCreate(0));
         if (comp == null) {
             Dimension dimension = new Dimension(ArcaneVault.TREE_WIDTH, ArcaneVault.TREE_HEIGHT);
-			JScrollPane scrollPane = new JScrollPane(getTree());
-			// comp = new G_Panel();
+            JScrollPane scrollPane = new JScrollPane(getTree());
+            // comp = new G_Panel();
 			// scrollPane.setSize(dimension);
 			// scrollPane.setPreferredSize(dimension);
 			// scrollPane.setMaximumSize(dimension);
