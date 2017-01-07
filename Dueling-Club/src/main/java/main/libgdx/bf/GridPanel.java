@@ -304,7 +304,8 @@ public class GridPanel extends Group {
 
     private void removeUnitView(Obj obj) {
         UnitView uv = getUnitMap().get(obj);
-        uv.getParent().removeActor(uv);
+        GridCellContainer gridCellContainer = (GridCellContainer) uv.getParent();
+        gridCellContainer.removeActor(uv);
         uv.setVisible(false);
     }
 
