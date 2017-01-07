@@ -177,7 +177,7 @@ public class ArenaManager {
 
     private void initializeMap() {
         try {
-            this.map = new DungeonMapGenerator().generateMap(game.getDungeonMaster().getDungeon());
+//            this.map = new DungeonMapGenerator().generateMap(game.getDungeonMaster().getDungeon());
         } catch (Exception e) {
             e.printStackTrace();
         }

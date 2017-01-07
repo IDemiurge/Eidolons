@@ -12,6 +12,13 @@ import java.util.Map;
  * Created by JustMe on 1/7/2017.
  */
 public class LayoutParser {
+    public enum LAYOUT{
+        HORIZONTAL,
+        VERTICAL,
+
+
+        ;
+    }
     public static final String X2 = "x2";
     public static final String Y2 = "y2";
     private static final String DELIMITER = " ";

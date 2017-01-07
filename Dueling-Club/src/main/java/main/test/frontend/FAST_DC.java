@@ -197,7 +197,9 @@ public class FAST_DC {
                     if (SUPER_FAST_MODE)
                         DungeonMaster.CHOOSE_LEVEL = false;
                     // preset
-                    ItemGenerator.setGenerationOn(!SUPER_FAST_MODE);
+                    ItemGenerator.setGenerationOn(!SUPER_FAST_MODE
+//                     && !CoreEngine.isGraphicTestMode()
+                    );
                     ItemGenerator.setBasicMode(FAST_MODE);
 
                 }
