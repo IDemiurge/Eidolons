@@ -29,7 +29,7 @@ public class Lightmap {
     private Map<MicroObj, PointLight> lightMap;
     private Map<Integer, FireLightProt> fireLightProtMap;
     private static float SECOND = 1000000000;
-    private static float ambient = 0.05f;
+    private static float ambient = 0.15f;
     Box2DDebugRenderer debugRenderer;
 
     private void init(DequeImpl<DC_HeroObj> un, World world, RayHandler rayHandler, float cellWidth, float cellHeight, int rows) {
@@ -170,7 +170,7 @@ public class Lightmap {
         ambient = c;
     }
 
-    public static float getAmbint() {
+    public static float getAmbient() {
         return ambient;
     }
 }

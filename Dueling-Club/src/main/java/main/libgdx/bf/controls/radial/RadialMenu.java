@@ -203,7 +203,10 @@ public class RadialMenu extends Group {
             addListener(new InputListener() {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-//                    if (action==null )return false;
+                    if (action==null ){
+                        main.system.auxiliary.LogMaster.log(1,"null action  " +text);
+                        return false;
+                    }
                     action.run();
                     event.stop();
                     return true;

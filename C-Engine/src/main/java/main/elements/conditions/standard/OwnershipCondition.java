@@ -2,6 +2,7 @@ package main.elements.conditions.standard;
 
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref.KEYS;
+import main.entity.obj.Obj;
 import main.game.player.Player;
 
 public class OwnershipCondition extends ConditionImpl {
@@ -40,17 +41,21 @@ public class OwnershipCondition extends ConditionImpl {
 
     @Override
     public boolean check() {
+        Obj obj = ref.getObj(string);
+        Obj obj2 = ref.getObj(string2);
+//        if (obj==null )
+//            return  false;
         if (player != null)
-            return ref.getObj(string).getOwner() == player;
+            return obj.getOwner() == player;
         if (neutral)
-            return ref.getObj(string).getOwner() == Player.NEUTRAL;
+            return obj.getOwner() == Player.NEUTRAL;
 
         if (enemy)
-            return ref.getObj(string).getOwner() != Player.NEUTRAL
-                    && ref.getObj(string).getOwner() != ref.getObj(string2)
+            return obj.getOwner() != Player.NEUTRAL
+                    && obj.getOwner() != obj2
                     .getOwner();
         else
-            return ref.getObj(string).getOwner() == ref.getObj(string2)
+            return obj.getOwner() == obj2
                     .getOwner();
     }
 }
