@@ -36,7 +36,7 @@ public class FireLightProt {
         pointLight = new ConeLight(rayHandler, AMOUNT_OF_RAYS, new Color(0xffe9a3AF), distance, x, y, 90, degree);
         pointLight.setSoft(true);
         pointLight.setSoftnessLength(50f);
-        pointLight_test = new ConeLight(rayHandler, AMOUNT_OF_RAYS, new Color(0xf7ffa8AF), distance / 3, x, y, 90, degree);
+        pointLight_test = new ConeLight(rayHandler, AMOUNT_OF_RAYS, new Color(0xf7ffa832), distance / 3, x, y, 90, degree);
         pointLight_test.setSoft(true);
         pointLight_test.setSoftnessLength(50f);
 

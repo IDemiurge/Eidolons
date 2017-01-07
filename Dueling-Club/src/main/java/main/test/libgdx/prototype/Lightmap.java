@@ -25,14 +25,21 @@ public class Lightmap {
     private RayHandler rayHandler;
     private float cellWidth;
     private float cellHeight;
+    private int rows;
     private Map<MicroObj, PointLight> lightMap;
     private Map<Integer, FireLightProt> fireLightProtMap;
     private static float SECOND = 1000000000;
     Box2DDebugRenderer debugRenderer;
 
-    private void init(DequeImpl<DC_HeroObj> un, World world, RayHandler rayHandler, float cellWidth, float cellHeight) {
+    private void init(DequeImpl<DC_HeroObj> un, World world, RayHandler rayHandler, float cellWidth, float cellHeight, int rows) {
         this.cellWidth = cellWidth;
         this.cellHeight = cellHeight;
+        if (rows > 0) {
+            this.rows = rows - 1;
+        } else {
+            this.rows = 0;
+        }
+
         this.world = world;
         this.rayHandler = rayHandler;
         this.rayHandler.setBlur(true);
@@ -57,7 +64,7 @@ public class Lightmap {
             Body body = world.createBody(bdef);
 
             if (un.get(i).getIntParam(PARAMS.LIGHT_EMISSION) > 0) {
-                body.setTransform(un.get(i).getX() * cellWidth + cellWidth / 2, un.get(i).getY() * cellHeight + cellHeight / 2, 0);
+                body.setTransform(un.get(i).getX() * cellWidth + cellWidth / 2, this.rows * cellHeight - un.get(i).getY() * cellHeight + cellHeight / 2, 0);
                 PolygonShape shape = new PolygonShape();
                 shape.setAsBox(cellWidth / 2, cellHeight / 2);
                 FixtureDef fdef = new FixtureDef();
@@ -72,7 +79,7 @@ public class Lightmap {
                 //TEMP END
                 fireLightProtMap.put(i, fireLightProt);
             } else {
-                body.setTransform(un.get(i).getX() * cellWidth + cellWidth / 2, un.get(i).getY() * cellHeight + cellHeight / 2, 0);
+                body.setTransform(un.get(i).getX() * cellWidth + cellWidth / 2, this.rows * cellHeight - un.get(i).getY() * cellHeight + cellHeight / 2, 0);
                 PolygonShape shape = new PolygonShape();
                 shape.setAsBox(cellWidth / 2, cellHeight / 2);
                 FixtureDef fdef = new FixtureDef();
@@ -120,15 +127,15 @@ public class Lightmap {
 //        }
     }
 
-    public Lightmap(DequeImpl<DC_HeroObj> un, float cellWidth, float cellHeight) {
+    public Lightmap(DequeImpl<DC_HeroObj> un, float cellWidth, float cellHeight, int rows) {
         World world = new World(new Vector2(0, 0), true);
-        init(un, world, new RayHandler(world), cellWidth, cellHeight);
+        init(un, world, new RayHandler(world), cellWidth, cellHeight, rows);
     }
 
     public void updatePos(MicroObj obj) {
         if (bodyMap.containsKey(obj)) {
             Coordinates c = obj.getCoordinates();
-            bodyMap.get(obj).setTransform(c.getX() * cellWidth, c.getY() * cellHeight, 0);
+            bodyMap.get(obj).setTransform(c.getX() * cellWidth + cellWidth / 2, this.rows * cellHeight - c.getY() * cellHeight + cellHeight / 2, 0);
         }
     }
 
@@ -144,7 +151,7 @@ public class Lightmap {
         rayHandler.setCombinedMatrix(GameScreen.camera);
         rayHandler.updateAndRender();
 
-//        debugRenderer.render(world,GameScreen.camera.combined);
+        debugRenderer.render(world, GameScreen.camera.combined);
     }
 
     public void updateObject(DC_HeroObj heroObj) {
