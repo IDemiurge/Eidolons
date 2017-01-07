@@ -123,125 +123,6 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 
 	}
 
-	@Override
-	public void refresh() {
-		Vector vector = new Vector(MusicCore.getLastPlayed());
-		lastPlayed.setModel(new DefaultComboBoxModel<MusicList>(vector));
-		super.refresh();
-	}
-
-	private void addBox(JComboBox<?> box, String tooltip, boolean wrap) {
-		box.addActionListener(this);
-		G_Panel wrapper = SwingMaster.decorateWithText(tooltip, Color.black, box, "pos 0 20");
-		boxPanel.add(wrapper, (wrap ? "wrap" : ""));
-	}
-
-	private String getToolTipText(String cmd) {
-		switch (cmd) {
-			case "Filter":
-				return "Alt to Reset filter; Ctrl to Refresh current filtered view; Shift ...";
-		}
-		return null;
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == clickModeBox) {
-			MusicMouseListener.setClickMode((CLICK_MODE) clickModeBox.getSelectedItem());
-			return;
-		}
-		if (e.getSource() == sortBox) {
-			doSort(e, (VALUE) sortBox.getSelectedItem());
-			return;
-		}
-		if (e.getSource() == lastPlayed) {
-			MusicList list = (MusicList) lastPlayed.getSelectedItem();
-			list.getMouseListener()
-					.handleClick(e.getModifiers(), MusicMouseListener.getClickMode());
-			return;
-		}
-		if (e.getSource() == playBox) {
-			MusicMouseListener.setPlayMode((PLAY_MODE) playBox.getSelectedItem());
-			return;
-		}
-		MusicList list = MusicMouseListener.getSelectedList();
-		boolean alt = MathMaster.isMaskAlt(e.getModifiers());
-		boolean shift = MathMaster.isShiftMask(e.getModifiers());
-		boolean ctrl = MathMaster.isCtrlMask(e.getModifiers());
-
-		List<ObjType> types;
-		switch (e.getActionCommand()) {
-			case "Dialog":
-				doDialog(alt, shift, ctrl, list, false);
-				break;
-			case "Prioritize":
-				prioritize(ctrl, shift);
-				break;
-			case "Repair":
-				M3uGenerator.repairM3uLists();
-				break;
-			case "Find":
-				doFind(alt);
-
-				break;
-			case "Filter":
-				doFilter(alt, shift);
-				break;
-			case "Visual": //
-				if (alt)
-					MusicCore.newGroupView(0);
-				else {
-					int choice = DialogMaster.optionChoice("Filtered by Music Type?"
-					// , MusicCore.std_groups
-							, "Full", "Day", "Gym", "Night");
-					if (choice > -1) {
-						MusicCore.newGroupView(choice);
-						break;
-					}
-
-					choice = DialogMaster.optionChoice("Filtered by Music Tag?", "Day",
-							"Afternoon", "Dusk", "Night");
-					if (choice > -1)
-						MusicCore.newFilteredView(choice, MUSIC_TAGS.class);
-				}
-				break;
-			case "Random":
-				doRandom(alt);
-				break;
-			case "New":
-				// "put together similar tracks"
-				// TODO from multiple selected lists?
-				MusicListMaster.newList(list, alt);
-				break;
-			case "Save":
-				if (!ctrl)
-					MusicCore.saveAll();
-				if (alt) {
-					boolean export = DialogMaster.confirm("Export or process?");
-					String inputText = DialogMaster.inputText("folder relative to "
-							+ AHK_Master.SYSTEM_LISTS_FOLDER)
-							+ "\\";
-					String path = AHK_Master.SYSTEM_LISTS_FOLDER;
-					VALUE p = export ? getMassFilterValue() : getMassEditValue();
-					if (export)
-						M3uMaster.exportListsIntoFolder(path + "export\\" + inputText,
-								(PROPERTY) p, !shift);
-					else {
-						M3uMaster.processMetaListFolder(path + inputText, (PROPERTY) p);
-					}
-				}
-				break;
-			case "Edit":
-				doEdit(list, alt);
-				break;
-			case "Mass Edit":
-				// MusicMouseListener.setClickMode(CLICK_MODE.TAG);
-				doMassEdit(alt);
-				break;
-		}
-
-	}
-
 	public static void doDialogLast() {
 		try {
 			doDialog(false, false, false, null, true);
@@ -265,8 +146,8 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
             dialogChooseOrRandom = alt || DialogMaster.confirm("Choose or random?");
         if (!last) {
             dialogListTypes = new LinkedList<>(DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST));
-			dialogListTypes = filterViaDialog(dialogListTypes, ctrl, shift);
-			cachedDialogListTypes = new LinkedList<>(dialogListTypes);
+            dialogListTypes = filterViaDialog(dialogListTypes, ctrl, shift);
+            cachedDialogListTypes = new LinkedList<>(dialogListTypes);
 		}
 		String result = null;
 		if (dialogChooseOrRandom)
@@ -312,8 +193,8 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
         boolean template = ctrl || DialogMaster.confirm("Template or Custom filter?");
         if (template) {
             // MusicMouseListener.s
-			boolean group_tag = DialogMaster.confirm("Group or Tag Template?");
-			Object[] values = null;
+            boolean group_tag = DialogMaster.confirm("Group or Tag Template?");
+            Object[] values = null;
 			if (group_tag) {
 				filterProp = AT_PROPS.MUSIC_TYPE;
 				values = MusicCore.std_groups[DialogMaster.optionChoice("Choose Template",
@@ -408,17 +289,6 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 		AHK_Master.getPanel().refresh();
 	}
 
-	// private void playRandom() {
-	// randomList = new
-	// RandomWizard<E>().getRandomListItem(AHK_Master.getLists());
-	// String s = DialogMaster.inputText("", randomList);
-	// MusicList list = null;
-	// for (list l : AHK_Master.getLists())
-	// list = l;
-	// if (list != null)
-	// AHK_Master.play(list);
-	// }
-
 	public static void doMassEdit(boolean alt) {
 		VALUE prop = AT_PROPS.MUSIC_TYPE;
 		// List<ObjType> types=DataManager.getTypes(AT_OBJ_TYPE. MUSIC_LIST );
@@ -481,6 +351,17 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 		return prop;
 	}
 
+    // private void playRandom() {
+    // randomList = new
+    // RandomWizard<E>().getRandomListItem(AHK_Master.getLists());
+    // String s = DialogMaster.inputText("", randomList);
+    // MusicList list = null;
+    // for (list l : AHK_Master.getLists())
+    // list = l;
+    // if (list != null)
+    // AHK_Master.play(list);
+    // }
+
 	private static String inputMassValue(VALUE val) {
 		return CreationHelper.getInput(val, null, null, INPUT_REQ.MULTI_ENUM);
 	}
@@ -494,22 +375,6 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 		// ListChooser.chooseString(stringList);
 		String input = CreationHelper.getInput(val, list, list.getValue(val));
 		list.setValue(val, input, true);
-	}
-
-	public void cycleSort() {
-		cycle(sortBox);
-	}
-
-	public void cyclePlayMode() {
-		cycle(playBox);
-	}
-
-	public void cycle(JComboBox<?> box) {
-		int i = box.getSelectedIndex() + 1;
-		if (i >= box.getModel().getSize())
-			i = 0;
-		box.setSelectedIndex(i);
-
 	}
 
 	public static void doRandom(boolean alt) {
@@ -541,5 +406,140 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 	public static void setDialogChooseOrRandom(boolean dialogChooseOrRandom) {
 		MC_ControlPanel.dialogChooseOrRandom = dialogChooseOrRandom;
 	}
+
+    @Override
+    public void refresh() {
+        Vector vector = new Vector(MusicCore.getLastPlayed());
+        lastPlayed.setModel(new DefaultComboBoxModel<MusicList>(vector));
+        super.refresh();
+    }
+
+    private void addBox(JComboBox<?> box, String tooltip, boolean wrap) {
+        box.addActionListener(this);
+        G_Panel wrapper = SwingMaster.decorateWithText(tooltip, Color.black, box, "pos 0 20");
+        boxPanel.add(wrapper, (wrap ? "wrap" : ""));
+    }
+
+    private String getToolTipText(String cmd) {
+        switch (cmd) {
+            case "Filter":
+                return "Alt to Reset filter; Ctrl to Refresh current filtered view; Shift ...";
+        }
+        return null;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == clickModeBox) {
+            MusicMouseListener.setClickMode((CLICK_MODE) clickModeBox.getSelectedItem());
+            return;
+        }
+        if (e.getSource() == sortBox) {
+            doSort(e, (VALUE) sortBox.getSelectedItem());
+            return;
+        }
+        if (e.getSource() == lastPlayed) {
+            MusicList list = (MusicList) lastPlayed.getSelectedItem();
+            list.getMouseListener()
+                    .handleClick(e.getModifiers(), MusicMouseListener.getClickMode());
+            return;
+        }
+        if (e.getSource() == playBox) {
+            MusicMouseListener.setPlayMode((PLAY_MODE) playBox.getSelectedItem());
+            return;
+        }
+        MusicList list = MusicMouseListener.getSelectedList();
+        boolean alt = MathMaster.isMaskAlt(e.getModifiers());
+        boolean shift = MathMaster.isShiftMask(e.getModifiers());
+        boolean ctrl = MathMaster.isCtrlMask(e.getModifiers());
+
+        List<ObjType> types;
+        switch (e.getActionCommand()) {
+            case "Dialog":
+                doDialog(alt, shift, ctrl, list, false);
+                break;
+            case "Prioritize":
+                prioritize(ctrl, shift);
+                break;
+            case "Repair":
+                M3uGenerator.repairM3uLists();
+                break;
+            case "Find":
+                doFind(alt);
+
+                break;
+            case "Filter":
+                doFilter(alt, shift);
+                break;
+            case "Visual": //
+                if (alt)
+                    MusicCore.newGroupView(0);
+                else {
+                    int choice = DialogMaster.optionChoice("Filtered by Music Type?"
+                            // , MusicCore.std_groups
+                            , "Full", "Day", "Gym", "Night");
+                    if (choice > -1) {
+                        MusicCore.newGroupView(choice);
+                        break;
+                    }
+
+                    choice = DialogMaster.optionChoice("Filtered by Music Tag?", "Day",
+                            "Afternoon", "Dusk", "Night");
+                    if (choice > -1)
+                        MusicCore.newFilteredView(choice, MUSIC_TAGS.class);
+                }
+                break;
+            case "Random":
+                doRandom(alt);
+                break;
+            case "New":
+                // "put together similar tracks"
+                // TODO from multiple selected lists?
+                MusicListMaster.newList(list, alt);
+                break;
+            case "Save":
+                if (!ctrl)
+                    MusicCore.saveAll();
+                if (alt) {
+                    boolean export = DialogMaster.confirm("Export or process?");
+                    String inputText = DialogMaster.inputText("folder relative to "
+                            + AHK_Master.SYSTEM_LISTS_FOLDER)
+                            + "\\";
+                    String path = AHK_Master.SYSTEM_LISTS_FOLDER;
+                    VALUE p = export ? getMassFilterValue() : getMassEditValue();
+                    if (export)
+                        M3uMaster.exportListsIntoFolder(path + "export\\" + inputText,
+                                (PROPERTY) p, !shift);
+                    else {
+                        M3uMaster.processMetaListFolder(path + inputText, (PROPERTY) p);
+                    }
+                }
+                break;
+            case "Edit":
+                doEdit(list, alt);
+                break;
+            case "Mass Edit":
+                // MusicMouseListener.setClickMode(CLICK_MODE.TAG);
+                doMassEdit(alt);
+                break;
+        }
+
+    }
+
+    public void cycleSort() {
+        cycle(sortBox);
+    }
+
+    public void cyclePlayMode() {
+        cycle(playBox);
+    }
+
+    public void cycle(JComboBox<?> box) {
+        int i = box.getSelectedIndex() + 1;
+        if (i >= box.getModel().getSize())
+            i = 0;
+        box.setSelectedIndex(i);
+
+    }
 
 }

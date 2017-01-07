@@ -25,26 +25,29 @@ import java.util.Map;
 
 public class AHK_Master {
 
-	private static final String PLAYLISTS_FOLDER = "C:\\playlists\\music core\\";
-	private static final String UI_ARCANE_TOWER_KEY_PNG = "UI\\arcane tower\\key white.png";
-	private static final String PATH = "X:\\Dropbox\\soft\\";
+    public static final String qwerty = "`1234567890-= qwertyuiop[] asdfghjkl;'\\ zxcvbnm,./";
+    public static final int ROWS = 4;
+    public static final boolean generateLists = false;
+    public static final boolean repairLists = false;
+    private static final String PLAYLISTS_FOLDER = "C:\\playlists\\music core\\";
+    public static final String SYSTEM_LISTS_FOLDER = PLAYLISTS_FOLDER + "system\\";
+    public static final String CUSTOM_LISTS_FOLDER = PLAYLISTS_FOLDER + "custom\\";
+    public static final String GENERATED_LISTS_FOLDER = PLAYLISTS_FOLDER + "generated\\";
+    private static final String UI_ARCANE_TOWER_KEY_PNG = "UI\\arcane tower\\key white.png";
+    private static final String PATH = "X:\\Dropbox\\soft\\";
 	private static final String CORE_PATH = PATH + "AutoHotkey Core.ahk";
-	public static String[] scripts = { "Rpg Lists.ahk", "Epic Lists.ahk",
-			"Songs and Edalar Themes.ahk", "Atmo and Ambience.ahk", "Immersions and Edalar.ahk",
+    private static final String TYPES_PATH = "mus-core\\types";
+    public static String[] scripts = {"Rpg Lists.ahk", "Epic Lists.ahk",
+            "Songs and Edalar Themes.ahk", "Atmo and Ambience.ahk", "Immersions and Edalar.ahk",
 			"Mists of Ersidris, Hero's Exploits.ahk", };
 	public static String[] generated_scripts = { "Rpg Lists.ahk", "Epic Lists.ahk" };
 	private static int height = 264;
 	private static int width = 124;
-
-	public static final String qwerty = "`1234567890-= qwertyuiop[] asdfghjkl;'\\ zxcvbnm,./";
-
-	public static final String SYSTEM_LISTS_FOLDER = PLAYLISTS_FOLDER + "system\\";
-	public static final String CUSTOM_LISTS_FOLDER = PLAYLISTS_FOLDER + "custom\\";
-	public static final String GENERATED_LISTS_FOLDER = PLAYLISTS_FOLDER + "generated\\";
-	public static final int ROWS = 4;
-	private static final String TYPES_PATH = "mus-core\\types";
-	public static final boolean generateLists = false;
-	public static final boolean repairLists = false;
+    static private Map<String, List<String>> tagMap = new XLinkedMap<>();
+    static private Map<String, List<String>> groupMap = new XLinkedMap<>();
+    private static MusicListPanel panel;
+    private static MusicListPanel wrappingPanel;
+    private String arg;
 
 	public static void main(String[] args) {
 		CoreEngine.setArcaneTower(true);
@@ -82,12 +85,6 @@ public class AHK_Master {
 		if (repairLists)
 			M3uGenerator.repairM3uLists();
 	}
-
-	static private Map<String, List<String>> tagMap = new XLinkedMap<>();
-	static private Map<String, List<String>> groupMap = new XLinkedMap<>();
-	private static MusicListPanel panel;
-	private static MusicListPanel wrappingPanel;
-	private String arg;
 
 	private static void generateScrips() {
 		for (String name : generated_scripts) {
@@ -167,8 +164,8 @@ public class AHK_Master {
         // String funcPart = list.getOrCreate(1).trim();
         if (keyPart.isEmpty())
             return 0;
-		char letter = keyPart.charAt(keyPart.length() - 1);
-		int letterCode = 1000;
+        char letter = keyPart.charAt(keyPart.length() - 1);
+        int letterCode = 1000;
 		for (char c : qwerty.toCharArray()) {
 			if (c == letter)
 				break;
@@ -273,8 +270,8 @@ public class AHK_Master {
     // list = tagMap.getOrCreate(key);
     // if (list == null) {
     // list = new LinkedList<>();
-	// groupMap.put(getKeyPart(line), list);
-	// }
+    // groupMap.put(getKeyPart(line), list);
+    // }
 	// for(String substring: StringMaster.openContainer( tags )){
 	//
 	// list.add(tag);
@@ -296,8 +293,8 @@ public class AHK_Master {
     // List<String> tags = tagMap.getOrCreate(lineIdentifier);
     // if (tags == null) {
     // tags = new LinkedList<>();
-	// tagMap.put(lineIdentifier, tags);
-	// }
+    // tagMap.put(lineIdentifier, tags);
+    // }
 	// if (tags.contains(tag))
 	// tags.remove(tag);
 	// else
@@ -403,14 +400,14 @@ return     new LinkedList<>() ; 	}
 		AHK_Master.panel = panel;
 	}
 
-	public static void setWrappingPanel(MusicListPanel wrappingPanel) {
-		AHK_Master.wrappingPanel = wrappingPanel;
-	}
-
 	public static MusicListPanel getWrappingPanel() {
 		if (wrappingPanel == null)
 			return panel;
 		return wrappingPanel;
 	}
+
+    public static void setWrappingPanel(MusicListPanel wrappingPanel) {
+        AHK_Master.wrappingPanel = wrappingPanel;
+    }
 
 }

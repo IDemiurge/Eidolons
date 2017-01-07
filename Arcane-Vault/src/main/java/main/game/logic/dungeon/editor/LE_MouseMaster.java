@@ -46,19 +46,6 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
 	private CONTROL_MODE mode;
 	private Coordinates previousCoordinate;
 
-	public enum CONTROL_MODE {
-		CLEAR, REMOVE, FILL
-	}
-
-	public void setMode(CONTROL_MODE mode) {
-		this.mode = mode;
-		if (mode != null) {
-			LevelEditor.setActionStatusTooltip(StringMaster.getWellFormattedString(mode.name()));
-		} else {
-			LevelEditor.setActionStatusTooltip(null);
-		}
-	}
-
 	public void dragObj() {
 		// MOVE! :)
 	}
@@ -244,8 +231,8 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
                 LE_ObjMaster.removeObj(lastClicked.getCoordinates());
                 SoundMaster.playStandardSound(STD_SOUNDS.ERASE);
                 return;
-			} else if (e.isShiftDown()) {
-				int i = lastClicked.getIntParam(G_PARAMS.CHANCE);
+            } else if (e.isShiftDown()) {
+                int i = lastClicked.getIntParam(G_PARAMS.CHANCE);
 				i = DialogMaster.inputInt("Set chance for object to be there..."
 						+ " (set negative to add '1 object only' rule for this coordinate)", i);
 				lastClicked.setParam(G_PARAMS.CHANCE, i);
@@ -366,6 +353,15 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
 		return mode;
 	}
 
+    public void setMode(CONTROL_MODE mode) {
+        this.mode = mode;
+        if (mode != null) {
+            LevelEditor.setActionStatusTooltip(StringMaster.getWellFormattedString(mode.name()));
+        } else {
+            LevelEditor.setActionStatusTooltip(null);
+        }
+    }
+
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		releasePoint = e.getPoint();
@@ -408,5 +404,9 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
 		// TODO Auto-generated method stub
 
 	}
+
+    public enum CONTROL_MODE {
+        CLEAR, REMOVE, FILL
+    }
 
 }

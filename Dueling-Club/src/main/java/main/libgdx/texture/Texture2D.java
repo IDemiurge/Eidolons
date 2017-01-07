@@ -17,9 +17,9 @@ import java.nio.IntBuffer;
  */
 public class Texture2D extends Texture {
 
+    private final Color BACKGROUND = new Color(0, 0, 0, 0);
     protected BufferedImage bufferImg;
     protected IntBuffer buffer;
-    private final Color BACKGROUND = new Color(0, 0, 0, 0);
 
     public Texture2D(int width, int height, Format format) {
         super(width, height, format);

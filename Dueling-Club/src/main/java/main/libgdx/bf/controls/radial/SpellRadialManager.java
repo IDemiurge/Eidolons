@@ -17,44 +17,6 @@ import java.util.stream.Collectors;
  * Created by JustMe on 12/29/2016.
  */
 public class SpellRadialManager {
-    public enum RADIAL_ITEM_SPELL {
-        RECOMMENDED,
-        LAST,
-
-    }
-
-    public enum SPELL_ASPECT {
-        ARCANE(SPELL_GROUP.CONJURATION, SPELL_GROUP.SORCERY, SPELL_GROUP.ENCHANTMENT),
-        LIFE(SPELL_GROUP.SAVAGE, SPELL_GROUP.SYLVAN, SPELL_GROUP.FIRE
-                , SPELL_GROUP.AIR, SPELL_GROUP.EARTH, SPELL_GROUP.WATER
-
-        ),
-        CHAOS(SPELL_GROUP.DESTRUCTION, SPELL_GROUP.DEMONOLOGY, SPELL_GROUP.WARP),
-        DARKNESS(SPELL_GROUP.SHADOW, SPELL_GROUP.WITCHERY, SPELL_GROUP.PSYCHIC),
-        LIGHT(SPELL_GROUP.BENEDICTION, SPELL_GROUP.REDEMPTION, SPELL_GROUP.CELESTIAL),
-        DEATH(SPELL_GROUP.AFFLICTION, SPELL_GROUP.BLOOD_MAGIC, SPELL_GROUP.NECROMANCY),;
-        public SPELL_GROUP[] groups;
-
-        SPELL_ASPECT(SPELL_GROUP... groups) {
-            this.groups = groups;
-        }
-    }
-
-
-    public interface RADIAL_ITEM {
-
-        List<RADIAL_ITEM> getItems(DC_HeroObj heroObj);
-
-        Object getContents();
-        String getTexturePath();
-
-    }
-/*
-6 aspects?
-spell 'types'?
-
- */
-
     public static List<RadialMenu.CreatorNode> getSpellNodes(DC_HeroObj source,
                                                              DC_Obj target) {
         Set<CONTENT_CONSTS.SPELL_GROUP> spell_groups = new HashSet<>();
@@ -91,12 +53,6 @@ spell 'types'?
         return nodes;
     }
 
-    public enum SPELL_RADIAL_MODE {
-        ASPECT,
-        ALL,
-
-    }
-
     private static boolean checkForceTargeting(DC_HeroObj source,
                                                DC_Obj target, DC_ActiveObj action) {
 
@@ -116,7 +72,7 @@ spell 'types'?
                 @Override
                 public void run() {
                     if (checkForceTargeting(source, target, action))
-                    action.invokeClicked();
+                        action.invokeClicked();
                     else {
                         action.getRef().setTarget(target.getId());
                         action.activate(action.getRef());
@@ -135,6 +91,50 @@ spell 'types'?
             });
         }
         return node;
+    }
+/*
+6 aspects?
+spell 'types'?
+
+ */
+
+    public enum RADIAL_ITEM_SPELL {
+        RECOMMENDED,
+        LAST,
+
+    }
+
+    public enum SPELL_ASPECT {
+        ARCANE(SPELL_GROUP.CONJURATION, SPELL_GROUP.SORCERY, SPELL_GROUP.ENCHANTMENT),
+        LIFE(SPELL_GROUP.SAVAGE, SPELL_GROUP.SYLVAN, SPELL_GROUP.FIRE
+                , SPELL_GROUP.AIR, SPELL_GROUP.EARTH, SPELL_GROUP.WATER
+
+        ),
+        CHAOS(SPELL_GROUP.DESTRUCTION, SPELL_GROUP.DEMONOLOGY, SPELL_GROUP.WARP),
+        DARKNESS(SPELL_GROUP.SHADOW, SPELL_GROUP.WITCHERY, SPELL_GROUP.PSYCHIC),
+        LIGHT(SPELL_GROUP.BENEDICTION, SPELL_GROUP.REDEMPTION, SPELL_GROUP.CELESTIAL),
+        DEATH(SPELL_GROUP.AFFLICTION, SPELL_GROUP.BLOOD_MAGIC, SPELL_GROUP.NECROMANCY),;
+        public SPELL_GROUP[] groups;
+
+        SPELL_ASPECT(SPELL_GROUP... groups) {
+            this.groups = groups;
+        }
+    }
+
+    public enum SPELL_RADIAL_MODE {
+        ASPECT,
+        ALL,
+
+    }
+
+    public interface RADIAL_ITEM {
+
+        List<RADIAL_ITEM> getItems(DC_HeroObj heroObj);
+
+        Object getContents();
+
+        String getTexturePath();
+
     }
 
 }

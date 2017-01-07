@@ -27,10 +27,7 @@ import java.util.Map;
 
 public class XML_Transformer {
 
-	public enum SPECIAL_ROUTINES {
-		SPEACIAL_ROUTINE, CLEAN_UP, FILTER_HEROES, REMOVE_VALUE, RENAME_VALUE, RENAME_TYPE,
-
-	}
+    private static final int PROGRESSION_WEIGHT_CONST = 3;
 
 	public static void showTransformDialog() {
 		int i = JOptionPane.showOptionDialog(null, "", "", JOptionPane.DEFAULT_OPTION,
@@ -63,8 +60,6 @@ public class XML_Transformer {
 		// TODO Auto-generated method stub
 
 	}
-
-	private static final int PROGRESSION_WEIGHT_CONST = 3;
 
 	public static void renameValue() {
 		String valueName = JOptionPane.showInputDialog(null, "Enter value to be renamed ", null);
@@ -295,11 +290,6 @@ public class XML_Transformer {
 		// XML_Writer.write(file);
 	}
 
-	// private static XML_File getFile(OBJ_TYPE TYPE) {
-    // return getXmlFiles().getOrCreate(TYPE);
-    //
-    // }
-
 	private static List<XML_File> getXmlFiles(OBJ_TYPE key) {
 		List<XML_File> list = new LinkedList<>();
 		for (XML_File t : XML_Reader.getFiles()) {
@@ -310,6 +300,11 @@ public class XML_Transformer {
 		return list;
 
 	}
+
+    // private static XML_File getFile(OBJ_TYPE TYPE) {
+    // return getXmlFiles().getOrCreate(TYPE);
+    //
+    // }
 
 	private static DequeImpl<XML_File> getXmlFiles() {
 		return XML_Reader.getFiles();
@@ -325,11 +320,16 @@ public class XML_Transformer {
         // XML_Reader.getXmlMap().getOrCreate(type));
         // files.put(TYPE, file);
         // }
-		// return files;
-	}
+        // return files;
+    }
 
 	private static void backUp() {
 		ModelManager.backUp(); // new reserve?
 	}
+
+    public enum SPECIAL_ROUTINES {
+        SPEACIAL_ROUTINE, CLEAN_UP, FILTER_HEROES, REMOVE_VALUE, RENAME_VALUE, RENAME_TYPE,
+
+    }
 
 }

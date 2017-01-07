@@ -38,7 +38,6 @@ import java.util.List;
 
 public class ArcaneVault {
 
-	private static final boolean ENABLE_ITEM_GENERATION = true;
 	public static final String ICON_PATH = "UI\\" + "Forge4" +
 	// "spellbook" +
 			".png";
@@ -52,14 +51,27 @@ public class ArcaneVault {
 	public static final int TREE_HEIGHT = HEIGHT * 11 / 12;
 	public static final int TABLE_WIDTH = (WIDTH - TREE_WIDTH) / 2;
 	public static final int TABLE_HEIGHT = TREE_HEIGHT * 19 / 20;
-	private static boolean testMode = false;
-
-	private static String title = "Arcane Vault";
+    public final static boolean defaultTypesGenerateOn = false;
+    public final static String presetTypes = "chars;dungeons;factions;units;deities;"
+            + "weapons;armor;actions;" + "";
+    private static final boolean ENABLE_ITEM_GENERATION = true;
+    private static final String[] LAUNCH_OPTIONS = {"Last", "Selective", "Selective Custom",
+            "Full", "Battlecraft", "Arcane Tower",};
+    private static final String actions = "buffs;actions;abils-ACTIVES;abils-PASSIVES;";
+    private static final String skills = "skills;classes;";
+    private static final String units = "chars;units;deities;dungeons;factions;";
+    private static final String items = "weapons;armor;actions;";
+    public final static String[] selectiveTemplates = {presetTypes, actions, skills, units, items,};
+    public static boolean selectiveInit = true;
+    public static boolean arcaneTower;
+    public static boolean selectiveLaunch = true;
+    public static boolean CUSTOM_LAUNCH;
+    static MainBuilder mainBuilder;
+    private static boolean testMode = false;
+    private static String title = "Arcane Vault";
 	private static JFrame window;
 	private static Dimension size = new Dimension(WIDTH, HEIGHT);
-	static MainBuilder mainBuilder;
 	private static boolean dirty = false;
-
 	private static boolean macroMode = false;
 	private static DC_Game microGame;
 	private static boolean showTime = true;
@@ -72,19 +84,12 @@ public class ArcaneVault {
 	private static List<ObjType> selectedTypes;
 	private static List<TabBuilder> additionalTrees;
 	private static boolean worldEditAutoInit;
-	public static boolean selectiveInit = true;
 	private static WORKSPACE_TEMPLATE template;
 	private static String types;
-	public final static boolean defaultTypesGenerateOn = false;
 	private static ContentManager contentManager;
-	private static final String[] LAUNCH_OPTIONS = { "Last", "Selective", "Selective Custom",
-			"Full", "Battlecraft", "Arcane Tower", };
-	public final static String presetTypes = "chars;dungeons;factions;units;deities;"
-			+ "weapons;armor;actions;" + "";
-	private static final String actions = "buffs;actions;abils-ACTIVES;abils-PASSIVES;";
-	private static final String skills = "skills;classes;";
-	private static final String units = "chars;units;deities;dungeons;factions;";
-	private static final String items = "weapons;armor;actions;";
+    private static boolean artGen = false;
+    private static boolean workspaceLaunch = true;
+
 	static {
 		WORKSPACE_TEMPLATE.presetTypes.setTypes("skills;classes;party;chars;");
 		// WORKSPACE_TEMPLATE.presetTypes
@@ -94,38 +99,6 @@ public class ArcaneVault {
 		WORKSPACE_TEMPLATE.units.setTypes("chars;units;deities;dungeons;factions;");
 		WORKSPACE_TEMPLATE.items.setTypes("weapons;armor;actions;buffs;");
 	}
-
-	public enum WORKSPACE_TEMPLATE {
-		presetTypes, actions, skills, units, items, ;
-		String types;
-
-		@Override
-		public String toString() {
-			return StringMaster.getWellFormattedString(super.toString());
-		}
-
-		public String getTypes() {
-			return types;
-		}
-
-		public void setTypes(String types) {
-			this.types = types;
-		}
-
-	}
-
-	public final static String[] selectiveTemplates = { presetTypes, actions, skills, units, items, };
-	private static boolean artGen = false;
-	private static boolean workspaceLaunch = true;
-	public static boolean arcaneTower;
-	public static boolean selectiveLaunch = true;
-	public static boolean CUSTOM_LAUNCH;
-
-	// "bf obj";
-
-	/*
-	 * 2 threads - init and gui? then when will gui request data?
-	 */
 
 	public static void main(String[] args) {
 		CoreEngine.setArcaneVault(true);
@@ -223,6 +196,12 @@ public class ArcaneVault {
 		// CoreEngine.setWritingLogFilesOn(true);
 	}
 
+    // "bf obj";
+
+	/*
+     * 2 threads - init and gui? then when will gui request data?
+	 */
+
 	private static boolean isCustomLaunch() {
 		return CUSTOM_LAUNCH;
 	}
@@ -310,6 +289,10 @@ public class ArcaneVault {
 		return previousSelectedType;
 	}
 
+    public static void setPreviousSelectedType(ObjType previousSelectedType) {
+        ArcaneVault.previousSelectedType = previousSelectedType;
+    }
+
 	// public static void selectedType() {
 	// DefaultMutableTreeNode node = getMainBuilder().getSelectedNode();
 	// if (node == null)
@@ -321,6 +304,13 @@ public class ArcaneVault {
 	public static ObjType getSelectedType() {
 		return selectedType;
 	}
+
+    public static void setSelectedType(ObjType selectedType) {
+        if (ArcaneVault.selectedType == selectedType)
+            return;
+        previousSelectedType = ArcaneVault.selectedType;
+        ArcaneVault.selectedType = selectedType;
+    }
 
 	// TODO macro types?
 	public static OBJ_TYPE getSelectedOBJ_TYPE() {
@@ -365,17 +355,6 @@ public class ArcaneVault {
 		ArcaneVault.microGame = microGame;
 	}
 
-	public static void setPreviousSelectedType(ObjType previousSelectedType) {
-		ArcaneVault.previousSelectedType = previousSelectedType;
-	}
-
-	public static void setSelectedType(ObjType selectedType) {
-		if (ArcaneVault.selectedType == selectedType)
-			return;
-		previousSelectedType = ArcaneVault.selectedType;
-		ArcaneVault.selectedType = selectedType;
-	}
-
 	public static boolean isSimulationOn() {
 		return simulationOn;
 	}
@@ -387,6 +366,10 @@ public class ArcaneVault {
 	public static boolean isColorsInverted() {
 		return colorsInverted;
 	}
+
+    public static void setColorsInverted(boolean b) {
+        colorsInverted = b;
+    }
 
 	public static WorkspaceManager getWorkspaceManager() {
 		return workspaceManager;
@@ -400,21 +383,17 @@ public class ArcaneVault {
 		ArcaneVault.altPressed = altPressed;
 	}
 
-	public static void setSelectedTypes(List<ObjType> types) {
-		selectedTypes = types;
-	}
-
 	public static List<ObjType> getSelectedTypes() {
 		return selectedTypes;
 	}
 
+    public static void setSelectedTypes(List<ObjType> types) {
+        selectedTypes = types;
+    }
+
 	public static void addTree(TabBuilder tabBuilder) {
 		getAdditionalTrees().add(tabBuilder);
 
-	}
-
-	public static void setColorsInverted(boolean b) {
-		colorsInverted = b;
 	}
 
 	public static List<TabBuilder> getAdditionalTrees() {
@@ -448,5 +427,24 @@ public class ArcaneVault {
 	public static JFrame getWindow() {
 		return window;
 	}
+
+    public enum WORKSPACE_TEMPLATE {
+        presetTypes, actions, skills, units, items,;
+        String types;
+
+        @Override
+        public String toString() {
+            return StringMaster.getWellFormattedString(super.toString());
+        }
+
+        public String getTypes() {
+            return types;
+        }
+
+        public void setTypes(String types) {
+            this.types = types;
+        }
+
+    }
 
 }

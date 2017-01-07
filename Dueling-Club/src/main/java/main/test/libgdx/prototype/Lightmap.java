@@ -20,17 +20,32 @@ import java.util.Map;
  * Created by PC on 19.11.2016.
  */
 public class Lightmap {
-    private Map<MicroObj, Body> bodyMap;
     private static World world;
     private static RayHandler rayHandler;
+    private static float SECOND = 1000000000;
+    private static float ambient = 0.05f;
+    Box2DDebugRenderer debugRenderer;
+    private Map<MicroObj, Body> bodyMap;
     private float cellWidth;
     private float cellHeight;
     private int rows;
     private Map<MicroObj, PointLight> lightMap;
     private Map<Integer, FireLightProt> fireLightProtMap;
-    private static float SECOND = 1000000000;
-    private static float ambient = 0.15f;
-    Box2DDebugRenderer debugRenderer;
+
+    public Lightmap(DequeImpl<DC_HeroObj> un, float cellWidth, float cellHeight, int rows) {
+        World world = new World(new Vector2(0, 0), true);
+        init(un, world, new RayHandler(world), cellWidth, cellHeight, rows);
+    }
+
+    public static float getAmbint() {
+        return ambient;
+    }
+
+    public static void setAmbint(float c) {
+        rayHandler.setAmbientLight(c);
+        rayHandler.update();
+        ambient = c;
+    }
 
     private void init(DequeImpl<DC_HeroObj> un, World world, RayHandler rayHandler, float cellWidth, float cellHeight, int rows) {
         this.cellWidth = cellWidth;
@@ -128,11 +143,6 @@ public class Lightmap {
 //        }
     }
 
-    public Lightmap(DequeImpl<DC_HeroObj> un, float cellWidth, float cellHeight, int rows) {
-        World world = new World(new Vector2(0, 0), true);
-        init(un, world, new RayHandler(world), cellWidth, cellHeight, rows);
-    }
-
     public void updatePos(MicroObj obj) {
         if (bodyMap.containsKey(obj)) {
             Coordinates c = obj.getCoordinates();
@@ -162,15 +172,5 @@ public class Lightmap {
 //        }
         // TODO: 12.12.2016 pointlighter around the mouse - 35 ligth emission and arround active Unite - (his emission +20) (DC_Game.game.getManager.getActiveUnit()
         //      light_emission + 20)
-    }
-
-    public static void setAmbint(float c) {
-        rayHandler.setAmbientLight(c);
-        rayHandler.update();
-        ambient = c;
-    }
-
-    public static float getAmbient() {
-        return ambient;
     }
 }

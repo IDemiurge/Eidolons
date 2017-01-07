@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Level {
+    boolean initialized;
     // Dungeon!
     // private DequeImpl<DC_Obj> mapObjects;
     // private DequeImpl<DC_Obj> wallObjects;
@@ -51,7 +52,6 @@ public class Level {
     // private DequeImpl<DC_Cell> cells;
     // private Map<Coordinates, DC_Obj> topObjMap;
     private DC_Map map;
-    boolean initialized;
     private String name;
     private String path;
     private Map<ObjType, DC_HeroObj> objCache = new HashMap<>();

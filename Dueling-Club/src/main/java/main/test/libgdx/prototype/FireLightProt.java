@@ -12,6 +12,10 @@ import java.util.Random;
  * Created by PC on 29.11.2016.
  */
 public class FireLightProt {
+    static float alphaBigger;
+    static float alphaSmaller;
+    static Color biggerLigth;
+    static Color smallerLigth;
     float timeCounter;
     long timePassed;
     float changesp;
@@ -26,15 +30,6 @@ public class FireLightProt {
     float lengthFinal;
     float now;
     float past;
-    static float alphaBigger;
-    static float alphaSmaller;
-    static Color biggerLigth;
-    static Color smallerLigth;
-
-    public void setDISTANCE(float DISTANCE) {
-        this.DISTANCE = DISTANCE;
-    }
-
 
     public FireLightProt(World world, RayHandler rayHandler, float x, float y, int distance, float degree, float changeSpeed) {
         biggerLigth = new Color(0xffe9a3AF);
@@ -61,6 +56,29 @@ public class FireLightProt {
         past = System.nanoTime();
         timeCounter = 0;
 
+    }
+
+    public static void setBiggerAlpha(float alpha) {
+        biggerLigth.a = alpha;
+        alphaBigger = alpha;
+
+    }
+
+    public static void setSmallerAlpha(float alpha) {
+        smallerLigth.a = alpha;
+        alphaSmaller = alpha;
+    }
+
+    public static float getAlphaBigger() {
+        return alphaBigger;
+    }
+
+    public static float getAlphaSmaller() {
+        return alphaSmaller;
+    }
+
+    public void setDISTANCE(float DISTANCE) {
+        this.DISTANCE = DISTANCE;
     }
 
     public void update() {
@@ -174,24 +192,5 @@ public class FireLightProt {
     public void attachToBody(Body body) {
         pointLight.attachToBody(body);
         pointLight_test.attachToBody(body);
-    }
-
-    public static void setBiggerAlpha(float alpha) {
-        biggerLigth.a = alpha;
-        alphaBigger = alpha;
-
-    }
-
-    public static void setSmallerAlpha(float alpha) {
-        smallerLigth.a = alpha;
-        alphaSmaller = alpha;
-    }
-
-    public static float getAlphaBigger() {
-        return alphaBigger;
-    }
-
-    public static float getAlphaSmaller() {
-        return alphaSmaller;
     }
 }

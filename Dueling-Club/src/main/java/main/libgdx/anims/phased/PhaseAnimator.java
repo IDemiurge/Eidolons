@@ -27,6 +27,13 @@ public class PhaseAnimator extends Group {
 
     }
 
+    public static PhaseAnimator getInstance() {
+        if (instance == null)
+            instance = new PhaseAnimator();
+        return
+                instance;
+    }
+
     public void init() {
         GuiEventManager.bind(SHOW_PHASE_ANIM, (event) -> {
 
@@ -103,13 +110,5 @@ public class PhaseAnimator extends Group {
 
     public List<PhaseAnim> getAnims() {
         return anims;
-    }
-
-
-    public static PhaseAnimator getInstance() {
-        if (instance == null)
-            instance = new PhaseAnimator();
-        return
-                instance;
     }
 }

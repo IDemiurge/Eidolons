@@ -85,8 +85,8 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
             // name =collection.getOrCreate(index).toString()
         }
         if (Mapper.getItem(name) != null)
-			return Mapper.getItem(name);
-		AE_Item item = new AE_Item(name, arg, null, arg.getCoreClass(), false);
+            return Mapper.getItem(name);
+        AE_Item item = new AE_Item(name, arg, null, arg.getCoreClass(), false);
 		Mapper.addEnumConstItem(item);
 		return item;
 	}
@@ -144,35 +144,6 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 		return result;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		Object source = e.getSource();
-		if (source instanceof JComboBox) {
-			// toggle this how? perhaps based on n_of_items?
-			if (e.getModifiers() == COMBO_BOX_MOUSE_MODIFIER)
-				comboboxAction(source);
-		} else if (source instanceof JTextField) {
-			textBoxAction(source);
-		}
-
-	}
-
-	@Override
-	public void itemStateChanged(ItemEvent arg0) {
-		// checkBox
-		Checkbox cb = (Checkbox) arg0.getSource();
-		AE_Item item = Mapper.getPrimitiveItem(ARGS.BOOLEAN);
-		AE_Element element = (AE_Element) cb.getParent();
-		int index = element.getIndex();
-
-		DefaultMutableTreeNode node = newNode(item, index);
-		DefaultMutableTreeNode textNode = new DefaultMutableTreeNode(item.getName() + cb.getState());
-
-		node.add(textNode);
-
-	}
-
 	private static int getDropBoxIndex(Object selectedItem, AE_Element element) {
 		String text = selectedItem.toString();
 		int index = new SearchMaster<AE_Item>().getIndex(text, element.getItemList());
@@ -219,6 +190,64 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 		return itemList.indexOf(item);
         // return Mapper.getItemList(nodeItem.getArgList().getOrCreate(elementIndex))
         // .indexOf(child.getUserObject());
+    }
+
+    public static DefaultMutableTreeNode newNode(DefaultMutableTreeNode newNode, int index,
+                                                 JTree tree) {
+        return new NodeMaster(tree).newNode(newNode, index);
+
+    }
+
+    public static DefaultMutableTreeNode newNode(AE_Item item, int index, JTree tree) {
+        return new NodeMaster(tree).newNode(item, index);
+    }
+
+    public static void moveNode(DefaultTreeModel model, DefaultMutableTreeNode node, boolean down) {
+        TreeNode parent = node.getParent();
+        if (parent == null)
+            return;
+        int index = model.getIndexOfChild(parent, node);
+        if (down)
+            index++;
+        else
+            index--;
+
+        if (index < 0)
+            return;
+        if (index >= model.getChildCount(parent))
+            return;
+
+        model.removeNodeFromParent(node);
+        model.insertNodeInto(node, (DefaultMutableTreeNode) parent, index);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+        if (source instanceof JComboBox) {
+            // toggle this how? perhaps based on n_of_items?
+            if (e.getModifiers() == COMBO_BOX_MOUSE_MODIFIER)
+                comboboxAction(source);
+        } else if (source instanceof JTextField) {
+            textBoxAction(source);
+        }
+
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent arg0) {
+        // checkBox
+        Checkbox cb = (Checkbox) arg0.getSource();
+        AE_Item item = Mapper.getPrimitiveItem(ARGS.BOOLEAN);
+        AE_Element element = (AE_Element) cb.getParent();
+        int index = element.getIndex();
+
+        DefaultMutableTreeNode node = newNode(item, index);
+        DefaultMutableTreeNode textNode = new DefaultMutableTreeNode(item.getName() + cb.getState());
+
+        node.add(textNode);
+
     }
 
 	private void textBoxAction(Object source) {
@@ -268,16 +297,6 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 
 		}
 
-	}
-
-	public static DefaultMutableTreeNode newNode(DefaultMutableTreeNode newNode, int index,
-			JTree tree) {
-		return new NodeMaster(tree).newNode(newNode, index);
-
-	}
-
-	public static DefaultMutableTreeNode newNode(AE_Item item, int index, JTree tree) {
-		return new NodeMaster(tree).newNode(item, index);
 	}
 
 	private DefaultMutableTreeNode newNode(DefaultMutableTreeNode node, int index) {
@@ -339,13 +358,13 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 		this.tree = tree;
 	}
 
-	public void setAutoSelect(boolean b) {
-		this.autoSelect = b;
-	}
-
 	public boolean isAutoSelect() {
 		return autoSelect;
 	}
+
+    public void setAutoSelect(boolean b) {
+        this.autoSelect = b;
+    }
 
 	public DefaultMutableTreeNode getSelectedNode() {
 		try {
@@ -500,25 +519,6 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 
-	}
-
-	public static void moveNode(DefaultTreeModel model, DefaultMutableTreeNode node, boolean down) {
-		TreeNode parent = node.getParent();
-		if (parent == null)
-			return;
-		int index = model.getIndexOfChild(parent, node);
-		if (down)
-			index++;
-		else
-			index--;
-
-		if (index < 0)
-			return;
-		if (index >= model.getChildCount(parent))
-			return;
-
-		model.removeNodeFromParent(node);
-		model.insertNodeInto(node, (DefaultMutableTreeNode) parent, index);
 	}
 
 }

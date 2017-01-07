@@ -21,8 +21,6 @@ import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.datatypes.DequeImpl;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.libgdx.prototype.Lightmap;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -40,30 +38,26 @@ import static main.system.GuiEventType.*;
  * To change this template use File | Settings | File Templates.
  */
 public class GridPanel extends Group {
-    protected GridCell[][] cells;
-    protected Texture emptyImage;
-    protected Texture hiddenImage;
-    protected Texture highlightImage;
-    protected Texture unknownImage;
-    protected Texture cellBorderTexture;
-    private Lightmap lightmap;
-    protected DequeImpl<DC_HeroObj> units;
-    private CellBorderManager cellBorderManager;
-
-
-    private Map<DC_HeroObj, UnitView> unitMap;
-
     private static final String backgroundPath = "UI/custom/grid/GRID_BG_WIDE.png";
     private static final String emptyCellPath = "UI/cells/Empty Cell v3.png";
     private static final String hiddenCellPath = "UI/cells/Hidden Cell v2.png";
     private static final String highlightCellPath = "UI/cells/Highlight Green Cell v3.png";
     private static final String unknownCellPath = "UI/cells/Unknown Cell v2.png";
     private static final String cellBorderPath = "UI\\CELL for 96.png";
-
+    protected Texture emptyImage;
+    protected Texture hiddenImage;
+    protected Texture highlightImage;
+    protected Texture unknownImage;
+    protected Texture cellBorderTexture;
+    protected DequeImpl<DC_HeroObj> units;
+    private GridCell[][] cells;
+    private Lightmap lightmap;
+    private CellBorderManager cellBorderManager;
+    private Map<DC_HeroObj, UnitView> unitMap;
     private int cols;
     private int rows;
 
-    public GridPanel(  int cols, int rows) {
+    public GridPanel(int cols, int rows) {
         this.cols = cols;
         this.rows = rows;
     }
@@ -88,10 +82,10 @@ public class GridPanel extends Group {
         InputController controller = GameScreen.getInstance().getController();
         int x = (int) (
 //         controller.getX_cam_pos()/2
-         +sourceCoordinates.getX() * getCellWidth() / controller.getZoom());
+                +sourceCoordinates.getX() * getCellWidth() / controller.getZoom());
         int y = (int) (
 //         controller.getY_cam_pos()/2
-         +(rows - sourceCoordinates.getY()) * getCellHeight() / controller.getZoom());
+                +(rows - sourceCoordinates.getY()) * getCellHeight() / controller.getZoom());
         return new PointX(x, y);
     }
 
@@ -103,18 +97,18 @@ public class GridPanel extends Group {
         unknownImage = TextureManager.getOrCreate(unknownCellPath);
         cellBorderTexture = TextureManager.getOrCreate(cellBorderPath);
 
-        cells=(new GridCell[cols][rows]);
+        setCells(new GridCell[cols][rows]);
 
         setCellBorderManager(new CellBorderManager(emptyImage.getWidth(),
-         emptyImage.getHeight() ));
+                emptyImage.getHeight()));
         int rows1 = rows - 1;
         int cols1 = cols - 1;
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
-                cells[x][y] = new GridCell(emptyImage, x, rows1 - y);
-                cells[x][y].setX(x * emptyImage.getWidth());
-                cells[x][y].setY(y * emptyImage.getHeight());
-                addActor(cells[x][y].init());
+                getCells()[x][y] = new GridCell(emptyImage, x, rows1 - y);
+                getCells()[x][y].setX(x * emptyImage.getWidth());
+                getCells()[x][y].setY(y * emptyImage.getHeight());
+                addActor(getCells()[x][y].init());
             }
         }
         bindEvents();
@@ -124,11 +118,11 @@ public class GridPanel extends Group {
          ILLUMINATION
            CONCEALMENT*/
 
-        setHeight(cells[0][0].getHeight() * rows);
-        setWidth(cells[0][0].getWidth() * cols);
+        setHeight(getCells()[0][0].getHeight() * rows);
+        setWidth(getCells()[0][0].getWidth() * cols);
 
 
-        addListener(new GridMouseListener(this, cells));
+        addListener(new GridMouseListener(this));
 
 
         return this;
@@ -137,16 +131,13 @@ public class GridPanel extends Group {
     private void bindEvents() {
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p =
-             (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
+                    (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             Map<Borderable, Runnable> map = new HashMap<>();
             for (DC_Obj obj1 : p.getLeft()) {
                 Borderable b = getUnitMap().get(obj1);
                 if (b == null)
-                    b = cells[obj1.getX()][rows - 1 - obj1.getY()];
-                map.put(b, () -> {
-                    p.getRight().run(obj1);
-                    WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, obj1.getId());
-                });
+                    b = getCells()[obj1.getX()][rows - 1 - obj1.getY()];
+                map.put(b, () -> p.getRight().run(obj1));
             }
             GuiEventManager.trigger(SHOW_BLUE_BORDERS, new EventCallbackParam(map));
         });
@@ -159,8 +150,8 @@ public class GridPanel extends Group {
             boolean caught = false;
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED
-             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
-             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
+                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
+                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
 //                (r.getEffect() instanceof ChangeFacingEffect) nice try
             {
                 DC_HeroObj hero = (DC_HeroObj) r.getObj(KEYS.TARGET
@@ -171,7 +162,7 @@ public class GridPanel extends Group {
             }
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED
-             || event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
+                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
                 removeUnitView(r.getSourceObj());
                 caught = true;
             }
@@ -181,7 +172,7 @@ public class GridPanel extends Group {
                 caught = true;
             }
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_SUMMONED
-             ) {
+                    ) {
                 addUnitView(r.getObj(KEYS.SUMMONED));
                 caught = true;
             }
@@ -251,8 +242,7 @@ public class GridPanel extends Group {
         GuiEventManager.bind(CREATE_UNITS_MODEL, param -> {
             units = (DequeImpl<DC_HeroObj>) param.get();
 
-            setLightmap(new Lightmap(units, cells[0][0].getWidth(),
-             cells[0][0].getHeight(), rows));
+            setLightmap(new Lightmap(units, getCells()[0][0].getWidth(), getCells()[0][0].getHeight(), rows));
 
             Map<Coordinates, List<DC_HeroObj>> map = new HashMap<>();
             for (DC_HeroObj object : units) {
@@ -268,13 +258,13 @@ public class GridPanel extends Group {
                 List<UnitViewOptions> options = new ArrayList<>();
 
                 for (DC_HeroObj object : map.get(coordinates)) {
-                    options.add(new UnitViewOptions(object , getUnitMap()));
+                    options.add(new UnitViewOptions(object, getUnitMap()));
                 }
 
                 GridCellContainer cellContainer = new GridCellContainer(emptyImage, coordinates.getX(), coordinates.getY()).init();
                 cellContainer.setObjects(options);
 
-                cells[coordinates.getX()][rows - 1 - coordinates.getY()].addInnerDrawable(cellContainer);
+                getCells()[coordinates.getX()][rows - 1 - coordinates.getY()].addInnerDrawable(cellContainer);
             }
         });
 
@@ -282,8 +272,8 @@ public class GridPanel extends Group {
             Coordinates cords = (Coordinates) param.get();
 
             List<DC_HeroObj> objList = units.stream()
-             .filter(microObj -> microObj.getCoordinates().equals(cords))
-             .collect(Collectors.toList());
+                    .filter(microObj -> microObj.getCoordinates().equals(cords))
+                    .collect(Collectors.toList());
 
             List<UnitViewOptions> options = new ArrayList<>();
             for (DC_HeroObj microObj : objList) {
@@ -291,15 +281,15 @@ public class GridPanel extends Group {
             }
 
             if (options.size() == 0) {
-                cells[cords.getX()][cords.getY()].addInnerDrawable(null);
+                getCells()[cords.getX()][cords.getY()].addInnerDrawable(null);
             } else {
                 GridCellContainer cellContainer = new GridCellContainer(cellBorderTexture, cords.getX(), cords.getY()).init();
                 cellContainer.setObjects(options);
 
-                if (cells[cords.getX()][cords.getY()].getInnerDrawable() != null) {
-                    cells[cords.getX()][cords.getY()].addInnerDrawable(cellContainer);
+                if (getCells()[cords.getX()][cords.getY()].getInnerDrawable() != null) {
+                    getCells()[cords.getX()][cords.getY()].addInnerDrawable(cellContainer);
                 } else {
-                    cells[cords.getX()][cords.getY()].updateInnerDrawable(cellContainer);
+                    getCells()[cords.getX()][cords.getY()].updateInnerDrawable(cellContainer);
                 }
             }
 
@@ -314,12 +304,12 @@ public class GridPanel extends Group {
             return;
         }
         Coordinates c = heroObj.getCoordinates();
-        if (cells[c.x][rows1 - c.y].getInnerDrawable() == null) {
-            GridCellContainer cellContainer = new GridCellContainer(cells[c.x][rows1 - c.y]).init();
-            cells[c.x][rows1 - c.y].addInnerDrawable(cellContainer);
+        if (getCells()[c.x][rows1 - c.y].getInnerDrawable() == null) {
+            GridCellContainer cellContainer = new GridCellContainer(getCells()[c.x][rows1 - c.y]).init();
+            getCells()[c.x][rows1 - c.y].addInnerDrawable(cellContainer);
         }
         uv.setVisible(true);
-        cells[c.x][rows1 - c.y].getInnerDrawable().addActor(uv);
+        getCells()[c.x][rows1 - c.y].getInnerDrawable().addActor(uv);
 
         getCellBorderManager().updateBorderSize();
 
@@ -354,7 +344,7 @@ public class GridPanel extends Group {
     public void draw(Batch batch, float parentAlpha) {
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
-                cells[x][y].draw(batch, parentAlpha);
+                getCells()[x][y].draw(batch, parentAlpha);
             }
         }
 
@@ -365,7 +355,13 @@ public class GridPanel extends Group {
         }
     }
 
+    public GridCell[][] getCells() {
+        return cells;
+    }
 
+    public void setCells(GridCell[][] cells) {
+        this.cells = cells;
+    }
 
     public Lightmap getLightmap() {
         return lightmap;

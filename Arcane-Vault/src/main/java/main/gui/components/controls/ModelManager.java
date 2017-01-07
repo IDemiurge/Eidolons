@@ -123,8 +123,8 @@ public class ModelManager {
         // getOrCreate path for node? I could keep some map from type to path...
         if (!select) {
             if (tb.getTree().getTreeSelectionListeners().length != 1)
-				return;
-			TreeSelectionListener listener = tb.getTree().getTreeSelectionListeners()[0];
+                return;
+            TreeSelectionListener listener = tb.getTree().getTreeSelectionListeners()[0];
 			tb.getTree().removeTreeSelectionListener(listener);
 			try {
 				TreeMaster.collapseTree(tb.getTree());

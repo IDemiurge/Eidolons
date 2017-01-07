@@ -22,29 +22,27 @@ import java.util.ArrayList;
  * Created by PC on 22.10.2016.
  */
 public class BattleFieldScreen implements Screen {
+    public static Sprite sprite1; //simple sprite
+    public static Sprite portraitFrame; //simple sprite
+    public static float shape_X = 600;
+    public static float shape_Y = 150;
+    public static OrthographicCamera camera;
+    public static float x_for_camera = 0;
+    public static float y_for_camera = 0;
+    public static ArrayList<TestActorForStage> actorsArray;
+    protected static InputController controller;
     SpriteBatch batch; // seems to be as Graphics2D class in simple java
     ShapeRenderer shapeRenderer; // renderer of classic shapes
     Texture img; // Image Class
     TextureRegion region; // sub image of Texture
     Sprite sprite; //simple sprite
-    public static Sprite sprite1; //simple sprite
       Sprite spriteForBack; //simple sprite
-    public static Sprite portraitFrame; //simple sprite
     Sprite testSprite; //simple sprite
     Texture testTexture;
-
-
-    protected static InputController controller;
-
     float img_X = 200;
     float img_Y = 200;
-
     float background_Width = 1365;
     float background_Height = 1023;
-
-    public static float shape_X = 600;
-    public static float shape_Y = 150;
-
     float time_Of_Each_FPS_delay = 0;
     float time_Of_Each_FPS_delay1 = 0;
     float time_for_input_listen = 0;
@@ -55,7 +53,6 @@ public class BattleFieldScreen implements Screen {
     boolean frame_alfa_flag = true;
     float alpha1 = 0.2f;
     float alpha = 0.2f;
-
     Stage stage;
     Game myGame;
     Pixmap pixmap;
@@ -63,28 +60,17 @@ public class BattleFieldScreen implements Screen {
     Texture face;
     Texture face2;
     Texture backGround;
-
-
     Texture cam;
     Sprite camspr;
     TestActorForStage camact;
-
-
     Lightning_Animation lightning_animation;
     Dark_Impact_Animation dark_impact_animation;
-
-    public static OrthographicCamera camera;
-    public static float x_for_camera = 0;
-    public static float y_for_camera = 0;
     float z_for_camera = 0;
     float camera_width = 800;
     float camera_height = 600;
     TestActorForStage actor;
     TestActorForStage actor2;
     TestActorForStage actorBackground;
-    public static ArrayList<TestActorForStage> actorsArray;
-
-
     Texture paralax;
     Texture paralax1;
     Table table;

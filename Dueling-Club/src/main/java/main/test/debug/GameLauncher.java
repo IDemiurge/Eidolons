@@ -33,9 +33,9 @@ import main.test.frontend.FAST_DC;
 import java.util.List;
 
 public class GameLauncher {
+    private static GameLauncher instance;
     public final boolean NET_FAST_MODE = true;
     private final boolean factionMode = true;
-    private static GameLauncher instance;
     public int ENEMY_CODE = CODE.CHOOSE;
     public int PARTY_CODE = CODE.CHOOSE; // preset sub-code?
     public boolean VISION_HACK = false;
@@ -46,6 +46,8 @@ public class GameLauncher {
     public String PLAYER_PARTY = "Pirate";
     public boolean DUMMY_MODE = false;
     public boolean DUMMY_PP = false;
+    public Boolean FAST_MODE;
+    public Boolean SUPER_FAST_MODE;
     private Integer PLAYER_CHOICE_OPTION = null;
     private Integer ENEMY_CHOICE_OPTION = 0;
     private Boolean host_client;
@@ -56,9 +58,6 @@ public class GameLauncher {
     private Integer unitGroupLevel;
     private boolean factionLeaderRequired;
     private String dungeon;
-
-    public Boolean FAST_MODE;
-    public Boolean SUPER_FAST_MODE;
 
     public GameLauncher(DC_Game game, Boolean host_client) {
         this(game, null, null, host_client);
@@ -71,6 +70,10 @@ public class GameLauncher {
         this.FAST_MODE = FAST_MODE;
         this.SUPER_FAST_MODE = SUPER_FAST_MODE;
         instance = this;
+    }
+
+    public static GameLauncher getInstance() {
+        return instance;
     }
 
     private String initFactionData() {
@@ -100,10 +103,6 @@ public class GameLauncher {
         Preset preset = PresetMaster.createPreset(party, enemy, levelFilePath, true);
         PresetMaster.setPreset(preset);
         PresetMaster.updatePreset();
-    }
-
-    public static GameLauncher getInstance() {
-        return instance;
     }
 
     private void savePresetAsLast() {
@@ -449,13 +448,6 @@ public class GameLauncher {
     // return new RandomWizard<String>().getRandomListItem(list);
     // }
 
-    public class CODE {
-        public final static int PRESET = 0;
-        public final static int RANDOM = 1;
-        public final static int CHOOSE = 2;
-        public final static int NONE = 3;
-    }
-
     public Boolean getFAST_MODE() {
         return FAST_MODE;
     }
@@ -464,13 +456,19 @@ public class GameLauncher {
         this.FAST_MODE = FAST_MODE;
     }
 
-
     public Boolean getSUPER_FAST_MODE() {
         return SUPER_FAST_MODE;
     }
 
     public void setSUPER_FAST_MODE(Boolean SUPER_FAST_MODE) {
         this.SUPER_FAST_MODE = SUPER_FAST_MODE;
+    }
+
+    public class CODE {
+        public final static int PRESET = 0;
+        public final static int RANDOM = 1;
+        public final static int CHOOSE = 2;
+        public final static int NONE = 3;
     }
 
 }

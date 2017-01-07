@@ -46,105 +46,20 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
 	private static final String NAME = "Name: ";
 	private static final String IMAGE = "Image: ";
 
-	private Mission mission;
-	private Level level;
+    static {
+        UPPER_PALETTE.Chars.upper = true;
+    }
+
 	int brushSize = 1;
 	ObjType selectedType;
 	HC_TabPanel paletteTabs;
-	private G_Component workspaceControlTab;
-
 	List<PaletteWorkspace> palettes;
-	private String imagePath;
-	private List<PaletteWorkspace> workspaces;
-
+    private Mission mission;
+    private Level level;
+    private G_Component workspaceControlTab;
+    private String imagePath;
+    private List<PaletteWorkspace> workspaces;
 	private PaletteWorkspace activePalette;
-	static {
-		UPPER_PALETTE.Chars.upper = true;
-	}
-
-	public enum UPPER_PALETTE {
-		Full(G_PROPS.BF_OBJECT_TYPE, "Structure, Prop, Natural, Special"),
-		Props(G_PROPS.BF_OBJECT_TYPE, "Prop", G_PROPS.BF_OBJECT_GROUP, "interior, statues, hanging, magical, mechanical"),
-		Structures(G_PROPS.BF_OBJECT_TYPE, "Structure", G_PROPS.BF_OBJECT_GROUP, "wall, structure, columns, statues, ruins, graves"),
-		Natural(G_PROPS.BF_OBJECT_TYPE, "Natural", G_PROPS.BF_OBJECT_GROUP, "dungeon, trees, rocks, water, remains, vegetation, crystal"),
-		Special(G_PROPS.BF_OBJECT_TYPE, "Special", G_PROPS.BF_OBJECT_GROUP, "entrance, container, treasure, trap, door, light emitter, windows"),
-		// Theme(), // castle, outdoor, interior
-		// Units(OBJ_TYPES.UNITS, G_PROPS.DEITY,
-		// DC_ContentManager.getStandardDeitiesString(", ")),
-
-		Units(OBJ_TYPES.UNITS, G_PROPS.ASPECT, "Neutral", G_PROPS.UNIT_GROUP, "Humans, Knights, Bandits, Greenskins, Dwarves, Undead, Dark, Demons, Animals, "
-				+ "Light, Constructs, Magi, North, Critters, Dungeon"),
-		Chars(OBJ_TYPES.CHARS, G_PROPS.GROUP, "Preset", G_PROPS.RACE, "Human, Dwarf, Elf, Demon, "
-				+ "Goblinoid, Vampire"),
-		// ENCOUNTER_SUBGROUP
-		All(OBJ_TYPES.UNITS, OBJ_TYPES.ENCOUNTERS, OBJ_TYPES.CHARS),
-		// CHARS(OBJ_TYPES.UNITS, OBJ_TYPES.ENCOUNTERS, OBJ_TYPES.CHARS),
-		Items(OBJ_TYPES.WEAPONS, OBJ_TYPES.ARMOR, OBJ_TYPES.ITEMS, OBJ_TYPES.JEWELRY),
-
-		;
-
-		public PROPERTY groupProp;
-		public String subPalettes;
-		public PROPERTY filterProp;
-		public String filterValue;
-		public OBJ_TYPE[] TYPES;
-		public boolean upper;
-		OBJ_TYPES TYPE = OBJ_TYPES.BF_OBJ;
-
-		UPPER_PALETTE(PROPERTY filterProp, String filterValue, PROPERTY prop, String subPalettes) {
-			this(OBJ_TYPES.BF_OBJ, filterProp, filterValue, prop, subPalettes);
-		}
-
-		UPPER_PALETTE(OBJ_TYPES TYPE, PROPERTY filterProp, String filterValue, PROPERTY prop,
-				String subPalettes) {
-			this.groupProp = prop;
-			this.subPalettes = subPalettes;
-			this.filterProp = filterProp;
-			this.filterValue = filterValue;
-			this.TYPE = TYPE;
-		}
-
-		UPPER_PALETTE(OBJ_TYPES TYPE, PROPERTY prop, String subPalettes) {
-			this(null, null, prop, subPalettes);
-			upper = true;
-			this.TYPE = TYPE;
-		}
-
-		UPPER_PALETTE(PROPERTY prop, String subPalettes) {
-			this(OBJ_TYPES.BF_OBJ, prop, subPalettes);
-		}
-
-		UPPER_PALETTE(OBJ_TYPE... TYPES) {
-			this.TYPES = TYPES;
-		}
-
-		public OBJ_TYPE getTYPE() {
-			return TYPE;
-		}
-
-	}
-
-	public void initPalettes() {
-		for (UPPER_PALETTE p : UPPER_PALETTE.values()) {
-			PaletteTabPanel upperPalette = new PaletteTabPanel(p);
-			paletteTabs.addTab(StringMaster.getWellFormattedString(p.name()), "", upperPalette);
-
-		}
-
-		// TODO subpalettes? use ws ?
-		// for (PALETTE p : PALETTE.values())
-		// list.add(new Palette(p));
-		//
-		// for (OBJ_TYPES TYPE : default_palette) {
-		// List<ObjType> types = DataManager.getTypes(TYPE);
-		// for (ObjType t : types)
-		// for (Palette p : list) {
-		// if (!checkPaletteForType(p, t))
-		// continue;
-		// p.add(t);
-		// }
-		// }
-	}
 
 	public LE_Palette() {
 		paletteTabs = new HC_TabPanel();
@@ -180,6 +95,28 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
 		loadWorkspaces();
 		addAllWorkspaces();
 	}
+
+    public void initPalettes() {
+        for (UPPER_PALETTE p : UPPER_PALETTE.values()) {
+            PaletteTabPanel upperPalette = new PaletteTabPanel(p);
+            paletteTabs.addTab(StringMaster.getWellFormattedString(p.name()), "", upperPalette);
+
+        }
+
+        // TODO subpalettes? use ws ?
+        // for (PALETTE p : PALETTE.values())
+        // list.add(new Palette(p));
+        //
+        // for (OBJ_TYPES TYPE : default_palette) {
+        // List<ObjType> types = DataManager.getTypes(TYPE);
+        // for (ObjType t : types)
+        // for (Palette p : list) {
+        // if (!checkPaletteForType(p, t))
+        // continue;
+        // p.add(t);
+        // }
+        // }
+    }
 
 	private boolean isGroupingOn() {
 		return false;
@@ -276,8 +213,8 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         // PaletteWorkspace ws = palettes.getOrCreate(index);
         List<String> listData = DataManager.toStringList(typeList);
         List<String> secondListData = (TYPE instanceof C_OBJ_TYPE) ? new LinkedList<String>()
-				: DataManager.toStringList(typeList);
-		// if (ws != null) {
+                : DataManager.toStringList(typeList);
+        // if (ws != null) {
 		// secondListData = DataManager.convertToStringList(ws.getTypeList());
 		// }
 		String data = new ListChooser(listData, secondListData, false, TYPE).choose();
@@ -459,21 +396,6 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
 			LevelEditor.setMouseAddMode(true);
 	}
 
-	public class PaletteWorkspace extends Workspace {
-
-		private String imagePath;
-
-		public PaletteWorkspace(String name, List<ObjType> typeList, String imagePath) {
-			super(name, typeList, false);
-			if (ImageManager.isImage(imagePath))
-				this.imagePath = imagePath;
-		}
-
-		public String getImagePath() {
-			return imagePath;
-		}
-	}
-
 	public void checkRemoveOrAddToPalette(ObjType selectedType) {
 		if (activePalette == null)
 			return;
@@ -495,12 +417,87 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
 	}
 
 	@Override
-	public void tabSelected(String name) {
-		activePalette = null;
-		for (PaletteWorkspace ws : workspaces) {
-			if (ws.getName().equals(name))
-				activePalette = ws;
-		}
+    public void tabSelected(String name) {
+        activePalette = null;
+        for (PaletteWorkspace ws : workspaces) {
+            if (ws.getName().equals(name))
+                activePalette = ws;
+        }
 
-	}
+    }
+
+    public enum UPPER_PALETTE {
+        Full(G_PROPS.BF_OBJECT_TYPE, "Structure, Prop, Natural, Special"),
+        Props(G_PROPS.BF_OBJECT_TYPE, "Prop", G_PROPS.BF_OBJECT_GROUP, "interior, statues, hanging, magical, mechanical"),
+        Structures(G_PROPS.BF_OBJECT_TYPE, "Structure", G_PROPS.BF_OBJECT_GROUP, "wall, structure, columns, statues, ruins, graves"),
+        Natural(G_PROPS.BF_OBJECT_TYPE, "Natural", G_PROPS.BF_OBJECT_GROUP, "dungeon, trees, rocks, water, remains, vegetation, crystal"),
+        Special(G_PROPS.BF_OBJECT_TYPE, "Special", G_PROPS.BF_OBJECT_GROUP, "entrance, container, treasure, trap, door, light emitter, windows"),
+        // Theme(), // castle, outdoor, interior
+        // Units(OBJ_TYPES.UNITS, G_PROPS.DEITY,
+        // DC_ContentManager.getStandardDeitiesString(", ")),
+
+        Units(OBJ_TYPES.UNITS, G_PROPS.ASPECT, "Neutral", G_PROPS.UNIT_GROUP, "Humans, Knights, Bandits, Greenskins, Dwarves, Undead, Dark, Demons, Animals, "
+                + "Light, Constructs, Magi, North, Critters, Dungeon"),
+        Chars(OBJ_TYPES.CHARS, G_PROPS.GROUP, "Preset", G_PROPS.RACE, "Human, Dwarf, Elf, Demon, "
+                + "Goblinoid, Vampire"),
+        // ENCOUNTER_SUBGROUP
+        All(OBJ_TYPES.UNITS, OBJ_TYPES.ENCOUNTERS, OBJ_TYPES.CHARS),
+        // CHARS(OBJ_TYPES.UNITS, OBJ_TYPES.ENCOUNTERS, OBJ_TYPES.CHARS),
+        Items(OBJ_TYPES.WEAPONS, OBJ_TYPES.ARMOR, OBJ_TYPES.ITEMS, OBJ_TYPES.JEWELRY),;
+
+        public PROPERTY groupProp;
+        public String subPalettes;
+        public PROPERTY filterProp;
+        public String filterValue;
+        public OBJ_TYPE[] TYPES;
+        public boolean upper;
+        OBJ_TYPES TYPE = OBJ_TYPES.BF_OBJ;
+
+        UPPER_PALETTE(PROPERTY filterProp, String filterValue, PROPERTY prop, String subPalettes) {
+            this(OBJ_TYPES.BF_OBJ, filterProp, filterValue, prop, subPalettes);
+        }
+
+        UPPER_PALETTE(OBJ_TYPES TYPE, PROPERTY filterProp, String filterValue, PROPERTY prop,
+                      String subPalettes) {
+            this.groupProp = prop;
+            this.subPalettes = subPalettes;
+            this.filterProp = filterProp;
+            this.filterValue = filterValue;
+            this.TYPE = TYPE;
+        }
+
+        UPPER_PALETTE(OBJ_TYPES TYPE, PROPERTY prop, String subPalettes) {
+            this(null, null, prop, subPalettes);
+            upper = true;
+            this.TYPE = TYPE;
+        }
+
+        UPPER_PALETTE(PROPERTY prop, String subPalettes) {
+            this(OBJ_TYPES.BF_OBJ, prop, subPalettes);
+        }
+
+        UPPER_PALETTE(OBJ_TYPE... TYPES) {
+            this.TYPES = TYPES;
+        }
+
+        public OBJ_TYPE getTYPE() {
+            return TYPE;
+        }
+
+    }
+
+    public class PaletteWorkspace extends Workspace {
+
+        private String imagePath;
+
+        public PaletteWorkspace(String name, List<ObjType> typeList, String imagePath) {
+            super(name, typeList, false);
+            if (ImageManager.isImage(imagePath))
+                this.imagePath = imagePath;
+        }
+
+        public String getImagePath() {
+            return imagePath;
+        }
+    }
 }

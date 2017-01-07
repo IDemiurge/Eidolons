@@ -47,6 +47,10 @@ public enum AT_PARAMS implements PARAMETER {
 	static {
 		DYNAMIC_PRIORITY.setDynamic(true);
 	}
+
+	boolean writeToType;
+	Color color;
+	INPUT_REQ inputReq;
 	private String name;
 	private String shortName;
 	private String descr;
@@ -65,20 +69,6 @@ public enum AT_PARAMS implements PARAMETER {
 	private String fullName;
 	private Map<OBJ_TYPE, Object> defaultValuesMap;
 	private boolean mod;
-	boolean writeToType;
-	Color color;
-	INPUT_REQ inputReq;
-
-	@Override
-	public INPUT_REQ getInputReq() {
-		return inputReq;
-	}
-
-	public Map<OBJ_TYPE, Object> getDefaultValuesMap() {
-		if (defaultValuesMap == null)
-			defaultValuesMap = new HashMap<OBJ_TYPE, Object>();
-		return defaultValuesMap;
-	}
 
 	AT_PARAMS(boolean highPriority, INPUT_REQ inputReq, int defaultValue, AT_OBJ_TYPE... types) {
 		this(null, null, false, defaultValue, types.length == 0 ? new String[] { "all" }
@@ -113,18 +103,6 @@ public enum AT_PARAMS implements PARAMETER {
 			i++;
 		}
 		this.entityTypes = ENTITY_TYPES;
-	}
-
-	@Override
-	public void addSpecialDefault(OBJ_TYPE type, Object value) {
-		getDefaultValuesMap().put(type, value);
-
-	}
-
-	@Override
-	public Object getSpecialDefault(OBJ_TYPE type) {
-		return getDefaultValuesMap().get(type);
-
 	}
 
 	AT_PARAMS(boolean mod, String shortName, String descr, boolean dynamic, int defaultValue,
@@ -177,6 +155,29 @@ public enum AT_PARAMS implements PARAMETER {
 	AT_PARAMS(String str) {
 		this(str, null, "", false, 0, Integer.MAX_VALUE);
 		inputReq = INPUT_REQ.INTEGER;
+	}
+
+	@Override
+	public INPUT_REQ getInputReq() {
+		return inputReq;
+	}
+
+	public Map<OBJ_TYPE, Object> getDefaultValuesMap() {
+		if (defaultValuesMap == null)
+			defaultValuesMap = new HashMap<OBJ_TYPE, Object>();
+		return defaultValuesMap;
+	}
+
+	@Override
+	public void addSpecialDefault(OBJ_TYPE type, Object value) {
+		getDefaultValuesMap().put(type, value);
+
+	}
+
+	@Override
+	public Object getSpecialDefault(OBJ_TYPE type) {
+		return getDefaultValuesMap().get(type);
+
 	}
 
 	// getOrCreate(base)
@@ -252,14 +253,14 @@ public enum AT_PARAMS implements PARAMETER {
 		this.lowPriority = lowPriority;
 	}
 
-	public void setMastery(boolean mastery) {
-		this.mastery = mastery;
-		this.shortName = shortName.replace("Mastery", "");
-	}
-
 	@Override
 	public boolean isMastery() {
 		return this.mastery;
+	}
+
+	public void setMastery(boolean mastery) {
+		this.mastery = mastery;
+		this.shortName = shortName.replace("Mastery", "");
 	}
 
 	@Override

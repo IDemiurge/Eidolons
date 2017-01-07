@@ -39,7 +39,6 @@ import java.util.List;
 
 public abstract class Animation implements ANIM {
 
-    PhaseAnim phaseAnim;
     public static final int MAX_MINI_ICON_SIZE = 40;
     public static final int CENTERED_Y = -9999;
     public static final int CENTERED_X = -6666;
@@ -111,6 +110,7 @@ public abstract class Animation implements ANIM {
     protected Rectangle areaTarget;
     protected boolean thumbnail;
     protected Integer thumbnailIndex;
+    PhaseAnim phaseAnim;
     private int staticPhaseOffsetY;
     private int staticPhaseOffsetX;
     private int offsetGenericsX;

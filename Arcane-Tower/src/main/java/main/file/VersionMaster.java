@@ -22,18 +22,13 @@ import java.util.Map;
 
 public class VersionMaster {
 
-	public enum VERSION_PERIOD {
-		MILESTONE, MONTH, WEEK, DAY, SESSION,
-	}
-
 	private static final String periodSeparator = "-";
 	private static final String MILESTONE = "BC Alpha";
 	private static final String VERSIONS = "Versions";
-
-	static Map<String, Map<String, ObjType>> map;
 	public static int version_session;
-	static String version_day;
-	static String version_week;
+    static Map<String, Map<String, ObjType>> map;
+    static String version_day;
+    static String version_week;
 	static String version_month;
 
 	static {
@@ -53,28 +48,6 @@ public class VersionMaster {
 		return null;
 	}
 
-	public static class Version {
-		public Map<VERSION_PERIOD, Integer> map;
-
-		public Version(String version) {
-			// return MILESTONE + periodSeparator + version_month +
-			// periodSeparator + version_week
-			// + periodSeparator + version_day + periodSeparator + " Session " +
-			// version_session;
-			int i = 0;
-			for (String sub : version.split(periodSeparator)) {
-				if (i != 0)
-					map.put(VERSION_PERIOD.values()[i], StringMaster.getInteger(sub));
-				i++;
-			}
-		}
-		// int DAY;
-		// String MILESTONE;
-		// int MONTH;
-		// int SESSION;
-		// int WEEK;
-	}
-
 	private static String getAlteredVersionStamp(String stamp, VERSION_PERIOD period, int diff) {
 		// string to stamp, stamp to string
 		Version version = new Version(stamp);
@@ -89,8 +62,8 @@ public class VersionMaster {
                 // getOrCreate one level down
                 Integer month = version.map.get(VERSION_PERIOD.MONTH);
                 Integer daysInMonth = TimeMaster.getDaysInMonth(month);
-				switch (period) {
-					case DAY:
+                switch (period) {
+                    case DAY:
 						v = daysInMonth + v;
 						MapMaster.addToIntegerMap(version.map, VERSION_PERIOD.MONTH, -1);
 						break;
@@ -122,24 +95,6 @@ public class VersionMaster {
 		}
 		return null;
 	}
-
-	public enum MILESTONES {
-		BC_ALPHA, BC_BETA, BATTLECRAFT, DC_ALPHA, DC_BETA, DUNGEONCRAFT, PROTO_MACRO,
-
-	}
-
-	// what find() funcs do I really need?
-	/*
-	 * x days before (discard session n)
-	 * x weeks - what if not all days are present? Create anyway, if only empty 
-	 * x months - uneven 
-	 * x sessions - crawl versions to go beyond 1 day difference?
-	 * 
-	 *  compare 'progress' somehow? 
-	 *  meta values 
-	 *  
-	 *  
-	 */
 
 	private static Integer getPeriodInteger(Integer v, VERSION_PERIOD period, String version) {
 		switch (period) {
@@ -190,6 +145,19 @@ public class VersionMaster {
 
 		return map;
 	}
+
+    // what find() funcs do I really need?
+    /*
+     * x days before (discard session n)
+	 * x weeks - what if not all days are present? Create anyway, if only empty 
+	 * x months - uneven 
+	 * x sessions - crawl versions to go beyond 1 day difference?
+	 * 
+	 *  compare 'progress' somehow? 
+	 *  meta values 
+	 *  
+	 *  
+	 */
 
 	public static String getVersion() {
 		// TODO era?
@@ -288,5 +256,36 @@ public class VersionMaster {
 
 		map.put(version, idMap);
 	}
+
+    public enum VERSION_PERIOD {
+        MILESTONE, MONTH, WEEK, DAY, SESSION,
+    }
+
+    public enum MILESTONES {
+        BC_ALPHA, BC_BETA, BATTLECRAFT, DC_ALPHA, DC_BETA, DUNGEONCRAFT, PROTO_MACRO,
+
+    }
+
+    public static class Version {
+        public Map<VERSION_PERIOD, Integer> map;
+
+        public Version(String version) {
+            // return MILESTONE + periodSeparator + version_month +
+            // periodSeparator + version_week
+            // + periodSeparator + version_day + periodSeparator + " Session " +
+            // version_session;
+            int i = 0;
+            for (String sub : version.split(periodSeparator)) {
+                if (i != 0)
+                    map.put(VERSION_PERIOD.values()[i], StringMaster.getInteger(sub));
+                i++;
+            }
+        }
+        // int DAY;
+        // String MILESTONE;
+        // int MONTH;
+        // int SESSION;
+        // int WEEK;
+    }
 
 }

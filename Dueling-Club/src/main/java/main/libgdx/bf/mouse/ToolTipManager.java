@@ -123,15 +123,6 @@ public class ToolTipManager extends Group {
             addActor(val);
         }
 
-        @Override
-        public int hashCode() {
-            return Objects.hashCode(name.getText().toString());
-        }
-
-        public void updateVal(String sval) {
-            val = new Label(sval, StyleHolder.getDefaultLabelStyle());
-        }
-
         public static String getCurMaxVal(int curVal, int maxVal) {
             StringBuilder sb = new StringBuilder();
             if (curVal != -1) {
@@ -144,6 +135,15 @@ public class ToolTipManager extends Group {
             }
 
             return sb.toString();
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(name.getText().toString());
+        }
+
+        public void updateVal(String sval) {
+            val = new Label(sval, StyleHolder.getDefaultLabelStyle());
         }
     }
 

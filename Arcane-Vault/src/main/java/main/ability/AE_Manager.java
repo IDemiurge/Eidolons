@@ -155,8 +155,8 @@ public class AE_Manager {
         // AE_EditPanel panel = smallCache.getOrCreate(item);
         // if (panel == null) {
         // main.system.auxiliary.LogMaster
-		// .log(0, "*** ae_edit panel NOT FOUND! - " + item.getName()
-		// + index);
+        // .log(0, "*** ae_edit panel NOT FOUND! - " + item.getName()
+        // + index);
 		// panel = new AE_EditPanel(item, mainPanel, index);
 		//
 		// smallCache.put(item, panel);
