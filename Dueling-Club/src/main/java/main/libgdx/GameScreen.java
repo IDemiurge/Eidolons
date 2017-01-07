@@ -86,8 +86,8 @@ public class GameScreen implements Screen {
     private void initGui() {
         final Texture t = new Texture(GameScreen.class.getResource("/data/marble_green.png").getPath());
 
-        radialMenu = new RadialMenu(t );
-        toolTipManager = new ToolTipManager( );
+        radialMenu = new RadialMenu(t);
+        toolTipManager = new ToolTipManager();
         gui = new GuiStage();
         phaseAnimator = PhaseAnimator.getInstance();
         gui.addActor(radialMenu);
@@ -100,7 +100,7 @@ public class GameScreen implements Screen {
     private void bindEvents() {
         GuiEventManager.bind(GRID_CREATED, param -> {
             Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
-            gridPanel = new GridPanel(  p.getLeft(), p.getRight()).init();
+            gridPanel = new GridPanel(p.getLeft(), p.getRight()).init();
             bf.addActor(gridPanel);
         });
 

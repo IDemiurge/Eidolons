@@ -42,7 +42,7 @@ public class CellBorderManager extends Group {
 
     public Image singleBorderImageBackup = null;
 
-    public CellBorderManager(int cellW, int cellH ) {
+    public CellBorderManager(int cellW, int cellH) {
         this.cellW = cellW;
         this.cellH = cellH;
 

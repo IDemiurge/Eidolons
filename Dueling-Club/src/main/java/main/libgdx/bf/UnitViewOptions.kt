@@ -4,10 +4,9 @@ import com.badlogic.gdx.graphics.Texture
 import main.content.OBJ_TYPES
 import main.content.properties.G_PROPS
 import main.entity.obj.DC_HeroObj
-import main.libgdx.texture.TextureCache
 import main.libgdx.texture.TextureManager
 
-class UnitViewOptions(var obj: DC_HeroObj,   var unitMap: MutableMap<DC_HeroObj, UnitView>) {
+class UnitViewOptions(var obj: DC_HeroObj, var unitMap: MutableMap<DC_HeroObj, UnitView>) {
     var runnable: Runnable? = null
     var portrateTexture: Texture? = null
     var directionPointerTexture: Texture? = null
@@ -19,10 +18,10 @@ class UnitViewOptions(var obj: DC_HeroObj,   var unitMap: MutableMap<DC_HeroObj,
     var overlaying: Boolean = false
 
     init {
-        createFromGameObject(obj )
+        createFromGameObject(obj)
     }
 
-    fun createFromGameObject(obj: DC_HeroObj ) {
+    fun createFromGameObject(obj: DC_HeroObj) {
         portrateTexture = TextureManager.getOrCreate(obj.imagePath)
 
         if (obj.obJ_TYPE_ENUM === OBJ_TYPES.UNITS) {

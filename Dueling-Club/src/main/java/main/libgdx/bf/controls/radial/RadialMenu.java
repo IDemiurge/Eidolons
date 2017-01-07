@@ -39,13 +39,13 @@ import static main.system.GuiEventManager.trigger;
 import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
 
 public class RadialMenu extends Group {
-    private Texture  closeTex;
+    private Texture closeTex;
     private MenuNode currentNode;
     private Image closeImage;
 
-    public RadialMenu(Texture closeTex ) {
+    public RadialMenu(Texture closeTex) {
         closeImage = new Image(closeTex);
-        this .closeTex = closeTex;
+        this.closeTex = closeTex;
 
 /*        addListener(new InputListener() {
             @Override
@@ -147,9 +147,9 @@ public class RadialMenu extends Group {
 
 
             final MenuNode menuNode =
-            new MenuNode((node.texture==null )?
-             new Image(closeTex)
-             :new Image(node.texture), node.name);
+                    new MenuNode((node.texture == null) ?
+                            new Image(closeTex)
+                            : new Image(node.texture), node.name);
             menuNode.parent = parent;
             if (node.action != null) {
                 final Runnable r = node.action;
@@ -277,7 +277,7 @@ public class RadialMenu extends Group {
 
     public void createNew(DC_Obj target) {
         DC_HeroObj source
-         = (DC_HeroObj) Game.game.getManager().getActiveObj();
+                = (DC_HeroObj) Game.game.getManager().getActiveObj();
         List<ActiveObj> activeObjs = source.getActives();
 
         List<Triple<Runnable, Texture, String>> moves = new ArrayList<>();
@@ -291,7 +291,7 @@ public class RadialMenu extends Group {
                 continue;
             }
 
-            if (obj.getTargeting()==null )
+            if (obj.getTargeting() == null)
                 continue;
             unics.add(obj);
             if (obj.isMove()) {
@@ -323,9 +323,10 @@ public class RadialMenu extends Group {
             if (obj.isAttack()) {
                 DC_ActiveObj dcActiveObj = (DC_ActiveObj) obj;
                 RadialMenu.CreatorNode inn1 = new CreatorNode();
-                try{
-                inn1.texture = TextureManager.getOrCreate(((Entity) obj).getImagePath());
-                }catch(Exception e){                e.printStackTrace();
+                try {
+                    inn1.texture = TextureManager.getOrCreate(((Entity) obj).getImagePath());
+                } catch (Exception e) {
+                    e.printStackTrace();
 
                 }
 
@@ -406,7 +407,7 @@ public class RadialMenu extends Group {
         movesN1.childNodes = creatorNodes(moves);
         list.add(movesN1);
 
-        if (nn1.size()>1){
+        if (nn1.size() > 1) {
             RadialMenu.CreatorNode attO = new RadialMenu.CreatorNode();
             attO.texture = nn1.get(1).texture;
             attO.childNodes = nn1.get(1).childNodes;
@@ -414,10 +415,10 @@ public class RadialMenu extends Group {
             list.add(attO);
 
         }
-        if (getDebug() || !source.getSpells().isEmpty()){
+        if (getDebug() || !source.getSpells().isEmpty()) {
             RadialMenu.CreatorNode spellNode = new RadialMenu.CreatorNode();
-            spellNode.texture =TextureManager.getOrCreate(
-             ImageManager.getRadialSpellIconPath())
+            spellNode.texture = TextureManager.getOrCreate(
+                    ImageManager.getRadialSpellIconPath())
             ;
             spellNode.childNodes = SpellRadialManager.getSpellNodes(source, target);
             spellNode.name = "Spells";
@@ -439,7 +440,7 @@ public class RadialMenu extends Group {
 //                activeObj.invokeClicked();
         };
         n4.childNodes = creatorNodes("nn4:", red);
-        init(list );
+        init(list);
     }
 
     private static List<RadialMenu.CreatorNode> creatorNodes(List<Triple<Runnable, Texture, String>> pairs) {
