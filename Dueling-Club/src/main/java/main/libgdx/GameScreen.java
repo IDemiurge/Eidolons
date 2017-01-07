@@ -13,19 +13,16 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.data.filesys.PathFinder;
 import main.entity.obj.DC_Obj;
 import main.game.DC_Game;
-import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.bf.Background;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.controls.radial.DebugRadialManager;
 import main.libgdx.bf.controls.radial.RadialMenu;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.bf.mouse.ToolTipManager;
-import main.libgdx.gui.GuiStage;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.commons.lang3.tuple.Triple;
 
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
 import static main.system.GuiEventType.GRID_CREATED;
@@ -42,22 +39,19 @@ public class GameScreen implements Screen {
     protected ToolTipManager toolTipManager;
     private Stage bf;
     private Stage gui;
-    private Stage anim;
-    private Stage dialog;
     private Background background;
     private GridPanel gridPanel;
     private RadialMenu radialMenu;
     private SpriteBatch batch;
     private OrthographicCamera cam;
     private InputController controller;
-    private PhaseAnimator phaseAnimator;
 
     public static GameScreen getInstance() {
         return instance;
     }
 
     public void PostGameStart() {
-        InputMultiplexer multiplexer = new InputMultiplexer(controller, bf, gui);
+        InputMultiplexer multiplexer = new InputMultiplexer(gui, controller, bf);
         Gdx.input.setInputProcessor(multiplexer);
     }
 
@@ -70,16 +64,16 @@ public class GameScreen implements Screen {
         camera = cam = new OrthographicCamera();
         cam.setToOrtho(false, 1600, 900);
         bf.getViewport().setCamera(cam);
-        //gui.getViewport().setCamera(cam);
-        controller = new InputController(bf, gui, cam);
+        controller = new InputController(cam);
+
         GL20 gl = Gdx.graphics.getGL20();
         gl.glEnable(GL20.GL_BLEND);
         gl.glEnable(GL20.GL_TEXTURE_2D);
         gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
         batch = new SpriteBatch();
 
         background = new Background().init();
-
 
         bindEvents();
 
@@ -93,16 +87,9 @@ public class GameScreen implements Screen {
 
     private void initGui() {
         final Texture t = new Texture(GameScreen.class.getResource("/data/marble_green.png").getPath());
-
-        radialMenu = new RadialMenu(t);
-        toolTipManager = new ToolTipManager();
-        gui = new GuiStage();
-        phaseAnimator = PhaseAnimator.getInstance();
-        gui.addActor(radialMenu);
-        gui.addActor(toolTipManager);
-
-//        anim=new Stage();
-//        anim.addActor(phaseAnimator);
+        gui = new Stage();
+        gui.addActor(radialMenu = new RadialMenu(t));
+        gui.addActor(toolTipManager = new ToolTipManager());
     }
 
     private void bindEvents() {
@@ -113,15 +100,12 @@ public class GameScreen implements Screen {
         });
 
         GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
-            Triple<DC_Obj, Float, Float> container =
-                    (Triple<DC_Obj, Float, Float>) obj.get();
+            DC_Obj dc_obj = (DC_Obj) obj.get();
 
             if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
-                radialMenu.init(DebugRadialManager.getDebugNodes(container.getLeft()));
+                radialMenu.init(DebugRadialManager.getDebugNodes(dc_obj));
             } else {
-
-
-                radialMenu.createNew(container.getLeft());
+                radialMenu.createNew(dc_obj);
             }
         });
     }
@@ -134,7 +118,8 @@ public class GameScreen implements Screen {
 
         GuiEventManager.processEvents();
 
-        bf.act(delta);
+        //gui.act(delta);
+        //bf.act(delta);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
@@ -142,22 +127,18 @@ public class GameScreen implements Screen {
 
         batch.setProjectionMatrix(cam.combined);
         batch.begin();
-        if (background.isDirty())
+
+        if (background.isDirty()) {
             background.update();
+        }
         batch.disableBlending();
         background.draw(batch, 1);
         batch.enableBlending();
+
         batch.end();
 
         bf.draw();
-
-        gui.act(delta);
         gui.draw();
-        try {
-//         if (  DC_Game.game.getAnimationManager().updateAnimations())
-//            PhaseAnimator.getInstance().update();
-        } catch (Exception e) {
-        }
     }
 
     @Override

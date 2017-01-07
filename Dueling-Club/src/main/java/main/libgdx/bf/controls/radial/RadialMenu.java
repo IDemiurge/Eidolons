@@ -46,33 +46,6 @@ public class RadialMenu extends Group {
     public RadialMenu(Texture closeTex) {
         closeImage = new Image(closeTex);
         this.closeTex = closeTex;
-
-/*        addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Actor a = event.getTarget();
-                if (a != null && a instanceof RadialMenu.MenuNode) {
-                    RadialMenu.MenuNode node = (RadialMenu.MenuNode) a;
-                    node.action.run();
-                    return true;
-                }
-
-*//*
-                if (radialMenu != null) {
-                    Vector2 v = new Vector2(x, y);
-                    v = parentToLocalCoordinates(v);
-//                    a = radialMenu.hit(v.x - radialMenu.getX(), v.y - radialMenu.getY(), true);
-                    a = radialMenu.hit(x, y, true);
-                    if (a != null && a instanceof RadialMenu.MenuNode) {
-                        RadialMenu.MenuNode node = (RadialMenu.MenuNode) a;
-                        node.action.run();
-                        return true;
-                    }
-                }
-*//*
-                return false;
-            }
-        });*/
     }
 
     private static List<RadialMenu.CreatorNode> creatorNodes(List<Triple<Runnable, Texture, String>> pairs) {
@@ -127,7 +100,7 @@ public class RadialMenu extends Group {
         updatePosition();
     }
 
-    private void setCurentNode(MenuNode node) {
+    private void setCurrentNode(MenuNode node) {
         removeActor(currentNode);
         currentNode.drawChildren = false;
         currentNode = node;
@@ -156,11 +129,11 @@ public class RadialMenu extends Group {
         if (currentNode.parent == null) {
             currentNode.action = () -> setVisible(false);
         } else {
-            currentNode.action = () -> setCurentNode(currentNode.parent);
+            currentNode.action = () -> setCurrentNode(currentNode.parent);
         }
         for (final MenuNode child : currentNode.childNodes) {
             if (child.childNodes.size() > 0) {
-                child.action = () -> setCurentNode(child);
+                child.action = () -> setCurrentNode(child);
             }
         }
     }
@@ -168,12 +141,11 @@ public class RadialMenu extends Group {
     private List<MenuNode> createChildren(final MenuNode parent, final List<CreatorNode> creatorNodes) {
         List<MenuNode> menuNodes = new ArrayList<>();
         for (final CreatorNode node : creatorNodes) {
-
-
-            final MenuNode menuNode =
-                    new MenuNode((node.texture == null) ?
+            final MenuNode menuNode = new MenuNode(
+                    node.texture == null ?
                             new Image(closeTex)
-                            : new Image(node.texture), node.name);
+                            : new Image(node.texture), node.name
+            );
             menuNode.parent = parent;
             if (node.action != null) {
                 final Runnable r = node.action;
@@ -193,8 +165,9 @@ public class RadialMenu extends Group {
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
-        if (!isVisible() || currentNode == null) return null;
-        if (!Gdx.input.isTouched()) return null;
+        if (!isVisible() || currentNode == null) {
+            return null;
+        }
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
         return currentNode.hit(v2.x, v2.y, touchable);
@@ -401,7 +374,6 @@ public class RadialMenu extends Group {
             addListener(new InputListener() {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    if (action==null )return false;
                     action.run();
                     event.stop();
                     return true;

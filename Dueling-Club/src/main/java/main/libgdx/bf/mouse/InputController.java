@@ -1,8 +1,8 @@
 package main.libgdx.bf.mouse;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.game.DC_Game;
 import main.libgdx.GameScreen;
@@ -21,30 +21,18 @@ public class InputController implements InputProcessor {
     boolean is_it_Left_Click = false;
     boolean alt = false;
     boolean ctrl = false;
-    private Stage bf;
-    private Stage gui;
 
     public InputController(OrthographicCamera camera) {
         this.camera = camera;
     }
 
-    public InputController(Stage bf, Stage gui, OrthographicCamera cam) {
-        this.bf = bf;
-        this.gui = gui;
-        this.camera = cam;
-
-    }
-
-    
-
-
     // сюда передаются все обьекты, что есть в мире, и потом отсюда они управляются
     @Override
     public boolean keyDown(int i) {
-        if (i == 57) {
+        if (i == Input.Keys.ALT_LEFT) {
             alt = true;
         }
-        if (i == 129) {
+        if (i == Input.Keys.CONTROL_LEFT) {
             ctrl = true;
         }
         return false;
@@ -54,10 +42,10 @@ public class InputController implements InputProcessor {
 
     @Override
     public boolean keyUp(int i) {
-        if (i == 57) {
+        if (i == Input.Keys.ALT_LEFT) {
             alt = false;
         }
-        if (i == 129) {
+        if (i == Input.Keys.CONTROL_LEFT) {
             ctrl = false;
         }
 
@@ -66,7 +54,7 @@ public class InputController implements InputProcessor {
 
     @Override
     public boolean keyTyped(char c) {
-        DC_Game.game.getBattleField().getKeyListener().handleKeyTyped(0,c);
+        DC_Game.game.getBattleField().getKeyListener().handleKeyTyped(0, c);
 
         return false;
     }
@@ -77,15 +65,14 @@ public class InputController implements InputProcessor {
          GameScreen.getInstance().getWorld()
          , i, i1));*/
         // Условно у меня на ширину приложения пикселей приходится ширина камеры абстрактрых едениц
-            if (i3 ==0){
-                x_cam_pos = i;
-                y_cam_pos = i1;
-                is_it_Left_Click = true;
-            }
+        if (i3 == 0) {
+            x_cam_pos = i;
+            y_cam_pos = i1;
+            is_it_Left_Click = true;
+        }
 
 
-
-        System.out.println( i + " || " + i1 + " || " + i2 + " || " + i3);
+        System.out.println(i + " || " + i1 + " || " + i2 + " || " + i3);
 
         return false;
     }
@@ -100,9 +87,9 @@ public class InputController implements InputProcessor {
     @Override
     public boolean touchDragged(int i, int i1, int i2) {
 //        System.out.println("i = " + i + " || i1 = " + i1 + " || i2 = "  + i2);
-        if (is_it_Left_Click){
-            camera.position.x +=(x_cam_pos- i)*camera.zoom;
-            camera.position.y -=(y_cam_pos- i1)*camera.zoom;
+        if (is_it_Left_Click) {
+            camera.position.x += (x_cam_pos - i) * camera.zoom;
+            camera.position.y -= (y_cam_pos - i1) * camera.zoom;
             x_cam_pos = i;
             y_cam_pos = i1;
             Image background = GameScreen.getInstance().getBackground().backImage;
@@ -126,7 +113,7 @@ public class InputController implements InputProcessor {
         if (alt && !ctrl) {
             // ambient
             if (i == 1) {
-                Lightmap.setAmbint(Lightmap.getAmbint()  + 0.02f);
+                Lightmap.setAmbint(Lightmap.getAmbint() + 0.02f);
             }
             if (i == -1) {
                 Lightmap.setAmbint(Lightmap.getAmbint() - 0.02f);
@@ -142,8 +129,7 @@ public class InputController implements InputProcessor {
                     FireLightProt.setBiggerAlpha(FireLightProt.getAlphaBigger() - 0.05f);
                 }
 
-            }
-            if (!alt) {
+            } else {
                 if (i == 1) {
                     FireLightProt.setSmallerAlpha(FireLightProt.getAlphaSmaller() + 0.05f);
                 }
