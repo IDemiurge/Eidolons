@@ -24,11 +24,17 @@ public class InfoDialog extends Dialog {
 
     Container description;
     Container lore;
+String mainLayout = "attributes: 0 0; ";
+
+
 
     public InfoDialog(DC_HeroObj unit) {
 //        armor = new Container( ->{
 //           add(new ObjComp(unit.getArmor()), x, y)
 //        });
+
+
+
     }
 
 }
