@@ -25,6 +25,8 @@ import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.net.data.MapData;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -136,6 +138,7 @@ public class ArenaManager {
             LogMaster.log(1, "NO UNITS! ");
         }
 
+        WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
         GuiEventManager.trigger(CREATE_UNITS_MODEL, new EventCallbackParam(game.getUnits()));
 
         if (!game.isOffline()) {

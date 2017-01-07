@@ -452,7 +452,8 @@ public class DungeonBuilder {
     public Dungeon initDungeon(String path, boolean preload) {
         String data = FileManager.readFile(path);
         if (data.isEmpty()) {
-            data = FileManager.readFile(path.contains(PathFinder.getDungeonLevelFolder()) ? path
+            data = FileManager.readFile(
+             path.contains(PathFinder.getDungeonLevelFolder()) ? path
                     : PathFinder.getDungeonLevelFolder() + path);
         }
         if (data.isEmpty())

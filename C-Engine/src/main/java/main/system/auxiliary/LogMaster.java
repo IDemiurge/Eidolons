@@ -111,7 +111,7 @@ public class LogMaster {
     public static boolean GAME_INFO_ON = true;
     public static boolean RULES_DEBUG_ON = false;
     public static boolean THREADING_DEBUG_ON = false;
-    public static boolean WAIT_DEBUG_ON = false;
+    public static boolean WAIT_DEBUG_ON = true;
     public static boolean BUFF_DEBUG_ON = true;
     public static boolean WAVE_ASSEMBLING_DEBUG_ON = true;
     public static boolean LOGIC_DEBUG_ON = true;

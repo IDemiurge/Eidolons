@@ -20,6 +20,8 @@ import main.libgdx.bf.controls.radial.RadialMenu;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.bf.mouse.ToolTipManager;
 import main.system.GuiEventManager;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
 
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
@@ -70,9 +72,15 @@ public class GameScreen implements Screen {
         gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         batch = new SpriteBatch();
+
         background = new Background().init();
 
         bindEvents();
+
+        WaitMaster.receiveInput(WAIT_OPERATIONS.GDX_READY, true);
+        WaitMaster.markAsComplete(WAIT_OPERATIONS.GDX_READY);
+        WaitMaster.receiveInput(WAIT_OPERATIONS.GUI_READY, true);
+        WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
 
         return this;
     }

@@ -175,6 +175,7 @@ public class DungeonMaster {
         }
         if (getDungeonPath() != null) {
             setDungeon(DungeonBuilder.loadDungeon(getDungeonPath()));
+
             return;
         }
 
@@ -427,15 +428,24 @@ public class DungeonMaster {
         this.dungeon = dungeon;
         GuiManager.setCurrentLevelCellsX(getLevelWidth());
         GuiManager.setCurrentLevelCellsY(getLevelHeight());
-        if (ImageManager.isImage(dungeon.getMapBackground()))
-            if (GameScreen.getInstance() != null)
+        if (!ImageManager.isImage(dungeon.getMapBackground())){
+            main.system.auxiliary.LogMaster.log(1,
+             dungeon.getMapBackground()+ " is not a valid image! >> " + dungeon);
+            return ;
+        }
+            if (GameScreen.getInstance() == null){
+                main.system.auxiliary.LogMaster.log(1,
+                 dungeon.getMapBackground()+ "failed to set as bg;" +
+                  " GameScreen is not ready! >> " + dungeon);
+            return ;
+            }
                 try {
                     GameScreen.getInstance().getBackground().setImagePath(dungeon.getMapBackground());
+                    main.system.auxiliary.LogMaster.log(1,dungeon.getMapBackground()+ " bg set for " + dungeon);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-    }
+   }
 
     public G_Panel getMinimapComponent() {
         return dungeon.getMinimap().getComp();
