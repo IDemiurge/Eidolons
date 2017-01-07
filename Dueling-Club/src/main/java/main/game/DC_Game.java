@@ -327,8 +327,8 @@ public class DC_Game extends MicroGame {
         turnManager.init();
       if (  !CoreEngine.isSwingOn()){
 
-            WaitMaster.receiveInput(WAIT_OPERATIONS.GUI_READY, true);
-            WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
+//            WaitMaster.receiveInput(WAIT_OPERATIONS.GUI_READY, true);
+//            WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
         }else
         if (!battlefield.isInitialized())
             // gui starts building while logic is getting ready TODO
@@ -970,6 +970,7 @@ public class DC_Game extends MicroGame {
     }
 
     public Dungeon getDungeon() {
+        if (getDungeonMaster()==null )return null ;
         return getDungeonMaster().getDungeon();
     }
 

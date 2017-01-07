@@ -21,6 +21,8 @@ import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.datatypes.DequeImpl;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.libgdx.prototype.Lightmap;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -294,6 +296,8 @@ public class GridPanel extends Group {
             }
 
         });
+
+
     }
 
     private void addUnitView(Obj heroObj) {

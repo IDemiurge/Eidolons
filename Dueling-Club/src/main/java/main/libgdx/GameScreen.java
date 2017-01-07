@@ -22,6 +22,8 @@ import main.libgdx.bf.mouse.InputController;
 import main.libgdx.bf.mouse.ToolTipManager;
 import main.libgdx.gui.GuiStage;
 import main.system.GuiEventManager;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
@@ -75,11 +77,16 @@ public class GameScreen implements Screen {
         gl.glEnable(GL20.GL_TEXTURE_2D);
         gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         batch = new SpriteBatch();
+
         background = new Background().init();
 
 
         bindEvents();
 
+        WaitMaster.receiveInput(WAIT_OPERATIONS.GDX_READY, true);
+        WaitMaster.markAsComplete(WAIT_OPERATIONS.GDX_READY);
+        WaitMaster.receiveInput(WAIT_OPERATIONS.GUI_READY, true);
+        WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
 
         return this;
     }
