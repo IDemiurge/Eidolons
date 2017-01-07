@@ -125,8 +125,6 @@ public class GridPanel extends Group {
 
 
         addListener(new GridMouseListener(this,cells ));
-
-
         return this;
     }
 

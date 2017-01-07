@@ -136,8 +136,9 @@ public class FileManager {
     }
 
     private static boolean isFile(File file) {
-        if (file == null)
+        if (file == null) {
             return false;
+        }
         return file.isFile();
     }
 
@@ -147,8 +148,9 @@ public class FileManager {
 
     public static File getFile(String path, boolean first) {
         File file = new File(path);
-        if (!first || file.isFile() || file.isDirectory())
+        if (!first || file.isFile() || file.isDirectory()) {
             return file;
+        }
         file = getFile(formatPath(path), false);
         return file;
     }

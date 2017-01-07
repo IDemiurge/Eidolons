@@ -21,6 +21,7 @@ import main.game.player.Player;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.net.data.MapData;
@@ -120,19 +121,22 @@ public class ArenaManager {
     public void startGame() {
 
         spawnManager.init();
-        main.system.auxiliary.LogMaster.log(1,"init " );
+        LogMaster.log(1, "init ");
+
         spawnManager.spawnParty(true);
-        main.system.auxiliary.LogMaster.log(1,"spawnParty " );
+        LogMaster.log(1, "spawnParty ");
+
         spawnManager.spawnParty(false);
-        main.system.auxiliary.LogMaster.log(1,"spawnParty " );
+        LogMaster.log(1, "spawnParty ");
 
         if (game.getData() != null) {
-            main.system.auxiliary.LogMaster.log(1,"processing UnitData " +game.getData());
+            LogMaster.log(1, "processing UnitData " + game.getData());
             DC_ObjInitializer.processUnitData(game.getData(), game);
-            main.system.auxiliary.LogMaster.log(1,"processed UnitData " );
+            LogMaster.log(1, "processed UnitData ");
         }
-        if (!ListMaster.isNotEmpty(game.getUnits()))
-            main.system.auxiliary.LogMaster.log(1,"NO UNITS! " );
+        if (!ListMaster.isNotEmpty(game.getUnits())) {
+            LogMaster.log(1, "NO UNITS! ");
+        }
 
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
         GuiEventManager.trigger(CREATE_UNITS_MODEL, new EventCallbackParam(game.getUnits()));
