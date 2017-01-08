@@ -268,9 +268,9 @@ public class LE_Simulation extends DC_Game {
         // // }
         // }
         // }
-		// return obj;
-		// for (DC_Obj obj : getLevel().getMapObjects())
-		// if (obj.getCoordinates().equals(c))
+        // return obj;
+        // for (DC_Obj obj : getLevel().getMapObjects())
+        // if (obj.getCoordinates().equals(c))
 		// return obj;
 		// if (!cellsIncluded)
 		// return null;

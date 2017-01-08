@@ -8,7 +8,6 @@ public class Panel extends Comp {
 //    public GDX_EVENT event;
 
 
-
     public void refresh() {
 
     }

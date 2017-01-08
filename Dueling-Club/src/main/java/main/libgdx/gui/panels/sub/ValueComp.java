@@ -16,7 +16,7 @@ import main.system.images.ImageManager;
  */
 public class ValueComp extends Group {
 
-    private  VALUE value;
+    private VALUE value;
     private Label label;
     private DC_Obj obj;
     private boolean iconDisplayed;
@@ -30,7 +30,7 @@ public class ValueComp extends Group {
         this.value = value;
         this.obj = obj;
         image = new Image(TextureManager.getOrCreate(((CustomImage)
-         ImageManager.getValueIcon(value)).getImgPath()));
+                ImageManager.getValueIcon(value)).getImgPath()));
         label = new Label("", StyleHolder.getDefaultLabelStyle());
     }
 
@@ -39,7 +39,7 @@ public class ValueComp extends Group {
         super.draw(batch, parentAlpha);
     }
 
-    public void    update() {
+    public void update() {
         clearChildren();
         if (nameDisplayed)
             addActor(image);
@@ -53,7 +53,7 @@ public class ValueComp extends Group {
     public String getText() {
         String text = obj.getValue(value);
         if (nameDisplayed)
-            text = value.getName()+ " :"+text;
+            text = value.getName() + " :" + text;
 
         return text;
     }

@@ -23,6 +23,7 @@ import main.libgdx.gui.dialog.DialogDisplay;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+import main.test.libgdx.prototype.ParticleActor;
 import org.apache.commons.lang3.tuple.Pair;
 
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
@@ -50,6 +51,10 @@ public class GameScreen implements Screen {
     private DialogDisplay dialogDisplay;
     private Stage effects;
 
+    // temp by Bogdan
+    private ParticleActor partAct;
+    // temp end by Bogdan
+
     public static GameScreen getInstance() {
         return instance;
     }
@@ -68,6 +73,10 @@ public class GameScreen implements Screen {
         dialogDisplay =new DialogDisplay();
         dialog.addActor(dialogDisplay);
         initGui();
+
+        // temp by Bogdan
+        partAct = new ParticleActor();
+        // temp end by Bogdan
 
         camera = cam = new OrthographicCamera();
         cam.setToOrtho(false, 1600, 900);
@@ -105,6 +114,7 @@ public class GameScreen implements Screen {
             Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
             gridPanel = new GridPanel(p.getLeft(), p.getRight()).init();
             bf.addActor(gridPanel);
+            effects.addActor(partAct);
         });
 
         GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
@@ -208,9 +218,5 @@ public class GameScreen implements Screen {
 
     public InputController getController() {
         return controller;
-    }
-
-    public Stage getEffectsStage() {
-        return effects;
     }
 }

@@ -35,13 +35,13 @@ public class AHK_Master {
     public static final String GENERATED_LISTS_FOLDER = PLAYLISTS_FOLDER + "generated\\";
     private static final String UI_ARCANE_TOWER_KEY_PNG = "UI\\arcane tower\\key white.png";
     private static final String PATH = "X:\\Dropbox\\soft\\";
-	private static final String CORE_PATH = PATH + "AutoHotkey Core.ahk";
+    private static final String CORE_PATH = PATH + "AutoHotkey Core.ahk";
     private static final String TYPES_PATH = "mus-core\\types";
     public static String[] scripts = {"Rpg Lists.ahk", "Epic Lists.ahk",
             "Songs and Edalar Themes.ahk", "Atmo and Ambience.ahk", "Immersions and Edalar.ahk",
-			"Mists of Ersidris, Hero's Exploits.ahk", };
-	public static String[] generated_scripts = { "Rpg Lists.ahk", "Epic Lists.ahk" };
-	private static int height = 264;
+            "Mists of Ersidris, Hero's Exploits.ahk",};
+    public static String[] generated_scripts = {"Rpg Lists.ahk", "Epic Lists.ahk"};
+    private static int height = 264;
 	private static int width = 124;
     static private Map<String, List<String>> tagMap = new XLinkedMap<>();
     static private Map<String, List<String>> groupMap = new XLinkedMap<>();
@@ -166,9 +166,9 @@ public class AHK_Master {
             return 0;
         char letter = keyPart.charAt(keyPart.length() - 1);
         int letterCode = 1000;
-		for (char c : qwerty.toCharArray()) {
-			if (c == letter)
-				break;
+        for (char c : qwerty.toCharArray()) {
+            if (c == letter)
+                break;
 			letterCode += 100;
 		}
 		for (char c : keyPart.toCharArray()) {
@@ -272,9 +272,9 @@ public class AHK_Master {
     // list = new LinkedList<>();
     // groupMap.put(getKeyPart(line), list);
     // }
-	// for(String substring: StringMaster.openContainer( tags )){
-	//
-	// list.add(tag);
+    // for(String substring: StringMaster.openContainer( tags )){
+    //
+    // list.add(tag);
 	// }
 	// }
 	// return line.replace(comment, "");
@@ -295,9 +295,9 @@ public class AHK_Master {
     // tags = new LinkedList<>();
     // tagMap.put(lineIdentifier, tags);
     // }
-	// if (tags.contains(tag))
-	// tags.remove(tag);
-	// else
+    // if (tags.contains(tag))
+    // tags.remove(tag);
+    // else
 	// tags.add(tag);
 	//
 	// String comment = StringMaster.joinStringList(tags, ",");

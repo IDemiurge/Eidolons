@@ -59,7 +59,7 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
     private G_Component workspaceControlTab;
     private String imagePath;
     private List<PaletteWorkspace> workspaces;
-	private PaletteWorkspace activePalette;
+    private PaletteWorkspace activePalette;
 
 	public LE_Palette() {
 		paletteTabs = new HC_TabPanel();
@@ -215,9 +215,9 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         List<String> secondListData = (TYPE instanceof C_OBJ_TYPE) ? new LinkedList<String>()
                 : DataManager.toStringList(typeList);
         // if (ws != null) {
-		// secondListData = DataManager.convertToStringList(ws.getTypeList());
-		// }
-		String data = new ListChooser(listData, secondListData, false, TYPE).choose();
+        // secondListData = DataManager.convertToStringList(ws.getTypeList());
+        // }
+        String data = new ListChooser(listData, secondListData, false, TYPE).choose();
 		if (data == null)
 			return;
 		List<ObjType> list = DataManager.toTypeList(data, TYPE);

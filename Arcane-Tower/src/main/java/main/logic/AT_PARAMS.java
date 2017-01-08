@@ -48,12 +48,12 @@ public enum AT_PARAMS implements PARAMETER {
 		DYNAMIC_PRIORITY.setDynamic(true);
 	}
 
-	boolean writeToType;
-	Color color;
-	INPUT_REQ inputReq;
-	private String name;
-	private String shortName;
-	private String descr;
+    boolean writeToType;
+    Color color;
+    INPUT_REQ inputReq;
+    private String name;
+    private String shortName;
+    private String descr;
 	private String entityType;
 	private String[] entityTypes;
 	private String[] sentityTypes;
@@ -157,28 +157,28 @@ public enum AT_PARAMS implements PARAMETER {
 		inputReq = INPUT_REQ.INTEGER;
 	}
 
-	@Override
-	public INPUT_REQ getInputReq() {
-		return inputReq;
-	}
+    @Override
+    public INPUT_REQ getInputReq() {
+        return inputReq;
+    }
 
-	public Map<OBJ_TYPE, Object> getDefaultValuesMap() {
-		if (defaultValuesMap == null)
-			defaultValuesMap = new HashMap<OBJ_TYPE, Object>();
-		return defaultValuesMap;
-	}
+    public Map<OBJ_TYPE, Object> getDefaultValuesMap() {
+        if (defaultValuesMap == null)
+            defaultValuesMap = new HashMap<OBJ_TYPE, Object>();
+        return defaultValuesMap;
+    }
 
-	@Override
-	public void addSpecialDefault(OBJ_TYPE type, Object value) {
-		getDefaultValuesMap().put(type, value);
+    @Override
+    public void addSpecialDefault(OBJ_TYPE type, Object value) {
+        getDefaultValuesMap().put(type, value);
 
-	}
+    }
 
-	@Override
-	public Object getSpecialDefault(OBJ_TYPE type) {
-		return getDefaultValuesMap().get(type);
+    @Override
+    public Object getSpecialDefault(OBJ_TYPE type) {
+        return getDefaultValuesMap().get(type);
 
-	}
+    }
 
 	// getOrCreate(base)
 
@@ -256,12 +256,12 @@ public enum AT_PARAMS implements PARAMETER {
 	@Override
 	public boolean isMastery() {
 		return this.mastery;
-	}
+    }
 
-	public void setMastery(boolean mastery) {
-		this.mastery = mastery;
-		this.shortName = shortName.replace("Mastery", "");
-	}
+    public void setMastery(boolean mastery) {
+        this.mastery = mastery;
+        this.shortName = shortName.replace("Mastery", "");
+    }
 
 	@Override
 	public boolean isAttribute() {

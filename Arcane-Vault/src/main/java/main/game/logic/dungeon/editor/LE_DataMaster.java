@@ -244,7 +244,7 @@ public class LE_DataMaster {
         LevelEditor.getMainPanel().newMission(mission);
         resetMissionWorkspace();
         mission.initLevels();
-	}
+    }
 
 	public static void resetMissionWorkspace() {
 		String data = "";

@@ -119,7 +119,7 @@ public class WaitMaster {
         SELECT_MAP_OBJ,
         MAP_CLICK,
         DIALOGUE_DONE,
-        AUTO_TEST_INPUT, GDX_READY;
+        AUTO_TEST_INPUT, GDX_READY
     }
 
 }

@@ -43,13 +43,13 @@ public class InfoDialog extends Dialog {
             public void layout() {
 
                 EntityContainer effects = new EntityContainer("Active Effects", 32, 6, 4,
-                 () -> {
-                     return unit.getBuffs();
-                 });
+                        () -> {
+                            return unit.getBuffs();
+                        });
                 EntityContainer abilities = new EntityContainer("Special Abilities", 32, 6, 4,
-                 () -> {
-                     return unit.getPassives();
-                 });
+                        () -> {
+                            return unit.getPassives();
+                        });
             }
         };
 
@@ -59,14 +59,14 @@ public class InfoDialog extends Dialog {
             public void layout() {
 
                 EntityContainer buffs = new EntityContainer("Buffs", 32, 2, 2,
-                 () -> {
-                     return unit.getArmor().getBuffs();
-                 });
+                        () -> {
+                            return unit.getArmor().getBuffs();
+                        });
 
                 EntityContainer traits = new EntityContainer("Traits", 32, 2, 2,
-                 () -> {
-                     return unit.getArmor().getPassives();
-                 });
+                        () -> {
+                            return unit.getArmor().getPassives();
+                        });
 //                setConstraints("");
 //                layout(buffs, armorIcon, new Space(10, 10), traits);
 
@@ -76,21 +76,21 @@ public class InfoDialog extends Dialog {
 //        parser = new LayoutParser(this);
 //        parser.parse(this, mainLayou
 
-        attributes= new ValueContainer(unit, 5, 2, ()->{
-            return  DC_ContentManager.getAttributes();
-        }){
+        attributes = new ValueContainer(unit, 5, 2, () -> {
+            return DC_ContentManager.getAttributes();
+        }) {
             @Override
             protected boolean isNameDisplayed() {
                 return super.isNameDisplayed();
             }
         };
         setComps(
-           fxAndAbils, attributes, dynamicParams, mainWeapon, description,
-         new Wrap(false),
-         resistances, armor, mainParams, points, portrait,
-         new Wrap(false),
-         new Space(false, 0.2f),
-         params, offWeapon, lore
+                fxAndAbils, attributes, dynamicParams, mainWeapon, description,
+                new Wrap(false),
+                resistances, armor, mainParams, points, portrait,
+                new Wrap(false),
+                new Space(false, 0.2f),
+                params, offWeapon, lore
         );
     }
 }
