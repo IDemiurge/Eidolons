@@ -67,8 +67,8 @@ public class GameScreen implements Screen {
         PathFinder.init();
         instance = this;
         bf = new Stage();
-        dialog= new Stage();
-        dialogDisplay =new DialogDisplay();
+        dialog = new Stage();
+        dialogDisplay = new DialogDisplay();
         dialog.addActor(dialogDisplay);
         initGui();
 
@@ -118,7 +118,7 @@ public class GameScreen implements Screen {
         GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
             DC_Obj dc_obj = (DC_Obj) obj.get();
 
-            if (Gdx.input.isButtonPressed(0)||Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+            if (Gdx.input.isButtonPressed(0) || Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
                 radialMenu.init(DebugRadialManager.getDebugNodes(dc_obj));
             } else {
                 radialMenu.createNew(dc_obj);
@@ -157,10 +157,10 @@ public class GameScreen implements Screen {
         batch.end();
 
         bf.draw();
-        if (dialogDisplay.getDialog()==null )
+        if (dialogDisplay.getDialog() == null)
         gui.draw();
         else
-        dialog.draw();
+            dialog.draw();
     }
 
     @Override

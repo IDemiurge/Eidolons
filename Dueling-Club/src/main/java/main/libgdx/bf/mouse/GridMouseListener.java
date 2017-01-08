@@ -20,14 +20,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static main.system.GuiEventType.CREATE_RADIAL_MENU;
-import static main.system.GuiEventType.SHOW_INFO_DIALOG;
-import static main.system.GuiEventType.SHOW_TOOLTIP;
+import static main.system.GuiEventType.*;
 
 /**
  * Created by JustMe on 1/7/2017.
  */
-public class GridMouseListener extends    ClickListener{
+public class GridMouseListener extends ClickListener {
     private GridPanel gridPanel;
     private GridCell[][] cells;
 
@@ -127,12 +125,11 @@ public class GridMouseListener extends    ClickListener{
                         DC_HeroObj heroObj = gridPanel.getUnitMap().entrySet()
                                 .stream().filter(entry -> entry.getValue() == unit).findFirst()
                                 .get().getKey();
-                        if (getTapCount()>1){
+                        if (getTapCount() > 1) {
                             GuiEventManager.trigger(SHOW_INFO_DIALOG,
-                             new EventCallbackParam(heroObj));
+                                    new EventCallbackParam(heroObj));
 
-                        }
-                        else
+                        } else
                             GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(heroObj));
                     }
                 }
