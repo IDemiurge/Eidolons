@@ -99,8 +99,7 @@ public class GridPanel extends Group {
 
         cells = (new GridCell[cols][rows]);
 
-        setCellBorderManager(new CellBorderManager(emptyImage.getWidth(),
-                emptyImage.getHeight()));
+        setCellBorderManager(new CellBorderManager(emptyImage.getWidth(), emptyImage.getHeight()));
         int rows1 = rows - 1;
         int cols1 = cols - 1;
         for (int x = 0; x < cols; x++) {
@@ -122,7 +121,7 @@ public class GridPanel extends Group {
         setWidth(cells[0][0].getWidth() * cols);
 
 
-        addListener(new GridMouseListener(this, cells));
+        addListener(new GridMouseListener(this, cells, unitViewMap));
         return this;
     }
 
@@ -132,7 +131,7 @@ public class GridPanel extends Group {
                     (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             Map<Borderable, Runnable> map = new HashMap<>();
             for (DC_Obj obj1 : p.getLeft()) {
-                Borderable b = getUnitMap().get(obj1);
+                Borderable b = unitMap.get(obj1);
                 if (b == null)
                     b = cells[obj1.getX()][rows - 1 - obj1.getY()];
                 map.put(b, () -> p.getRight().run(obj1));
@@ -152,7 +151,7 @@ public class GridPanel extends Group {
             {
                 DC_HeroObj hero = (DC_HeroObj) r.getObj(KEYS.TARGET
                 );
-                UnitView unitView = getUnitMap().get(hero);
+                UnitView unitView = unitMap.get(hero);
                 unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
                 caught = true;
             }
@@ -210,7 +209,7 @@ public class GridPanel extends Group {
 
         GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
             DC_HeroObj hero = (DC_HeroObj) obj.get();
-            UnitView view = getUnitMap().get(hero);
+            UnitView view = unitMap.get(hero);
             if (view.getParent() != null) {
                 ((GridCellContainer) view.getParent()).popupUnitView(view);
             }
@@ -243,7 +242,7 @@ public class GridPanel extends Group {
                 List<UnitViewOptions> options = new ArrayList<>();
 
                 for (DC_HeroObj object : map.get(coordinates)) {
-                    options.add(new UnitViewOptions(object, getUnitMap()));
+                    options.add(new UnitViewOptions(object, unitMap));
                 }
 
                 GridCellContainer cellContainer = new GridCellContainer(emptyImage, coordinates.getX(), coordinates.getY()).init();
@@ -262,7 +261,7 @@ public class GridPanel extends Group {
 
             List<UnitViewOptions> options = new ArrayList<>();
             for (DC_HeroObj microObj : objList) {
-                options.add(new UnitViewOptions(microObj, getUnitMap()));
+                options.add(new UnitViewOptions(microObj, unitMap));
             }
 
             if (options.size() == 0) {
@@ -285,7 +284,7 @@ public class GridPanel extends Group {
 
     private void addUnitView(Obj heroObj) {
         int rows1 = rows - 1;
-        UnitView uv = getUnitMap().get(heroObj);
+        UnitView uv = unitMap.get(heroObj);
         if (uv == null) {
 //            main.system.auxiliary.LogMaster.log(1," " );
             return;
@@ -306,7 +305,7 @@ public class GridPanel extends Group {
     }
 
     private void removeUnitView(Obj obj) {
-        UnitView uv = getUnitMap().get(obj);
+        UnitView uv = unitMap.get(obj);
         GridCellContainer gridCellContainer = (GridCellContainer) uv.getParent();
         gridCellContainer.removeActor(uv);
         uv.setVisible(false);

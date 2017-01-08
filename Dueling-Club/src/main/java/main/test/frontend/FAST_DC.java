@@ -315,8 +315,9 @@ public class FAST_DC {
     }
 
     public static GameLauncher getGameLauncher() {
-        if (gameLauncher == null)
+        if (gameLauncher == null) {
             gameLauncher = new GameLauncher(game, FAST_MODE, SUPER_FAST_MODE, host_client);
+        }
 
         return gameLauncher;
     }
