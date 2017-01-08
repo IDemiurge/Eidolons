@@ -3,7 +3,7 @@ package main.libgdx.bf.mouse;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.content.PARAMS;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
@@ -21,12 +21,13 @@ import java.util.List;
 import java.util.Map;
 
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
+import static main.system.GuiEventType.SHOW_INFO_DIALOG;
 import static main.system.GuiEventType.SHOW_TOOLTIP;
 
 /**
  * Created by JustMe on 1/7/2017.
  */
-public class GridMouseListener extends InputListener {
+public class GridMouseListener extends    ClickListener{
     private GridPanel gridPanel;
     private GridCell[][] cells;
 
@@ -102,6 +103,7 @@ public class GridMouseListener extends InputListener {
     @Override
     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
         Actor a;
+
         a = gridPanel.hitChildren(x, y, true);
         if (a != null && a instanceof GridCell) {
             GridCell cell = (GridCell) a;
@@ -120,10 +122,18 @@ public class GridMouseListener extends InputListener {
                 Actor unit = cell.getInnerDrawable().hit(x, y, true);
                 if (unit != null && unit instanceof UnitView) {
                     if (event.getButton() == Input.Buttons.RIGHT) {
+                        //TODO map the click to the right object in the stack?
+
                         DC_HeroObj heroObj = gridPanel.getUnitMap().entrySet()
                                 .stream().filter(entry -> entry.getValue() == unit).findFirst()
                                 .get().getKey();
-                        GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(heroObj));
+                        if (getTapCount()>1){
+                            GuiEventManager.trigger(SHOW_INFO_DIALOG,
+                             new EventCallbackParam(heroObj));
+
+                        }
+                        else
+                            GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(heroObj));
                     }
                 }
             } else if (event.getButton() == Input.Buttons.RIGHT) {

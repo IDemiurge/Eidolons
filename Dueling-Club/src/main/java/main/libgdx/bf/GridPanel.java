@@ -82,10 +82,10 @@ public class GridPanel extends Group {
         InputController controller = GameScreen.getInstance().getController();
         int x = (int) (
 //         controller.getX_cam_pos()/2
-                +sourceCoordinates.getX() * getCellWidth() / controller.getZoom());
+         +sourceCoordinates.getX() * getCellWidth() / controller.getZoom());
         int y = (int) (
 //         controller.getY_cam_pos()/2
-                +(rows - sourceCoordinates.getY()) * getCellHeight() / controller.getZoom());
+         +(rows - sourceCoordinates.getY()) * getCellHeight() / controller.getZoom());
         return new PointX(x, y);
     }
 
@@ -97,10 +97,10 @@ public class GridPanel extends Group {
         unknownImage = TextureManager.getOrCreate(unknownCellPath);
         cellBorderTexture = TextureManager.getOrCreate(cellBorderPath);
 
-        cells=(new GridCell[cols][rows]);
+        cells = (new GridCell[cols][rows]);
 
         setCellBorderManager(new CellBorderManager(emptyImage.getWidth(),
-                emptyImage.getHeight()));
+         emptyImage.getHeight()));
         int rows1 = rows - 1;
         int cols1 = cols - 1;
         for (int x = 0; x < cols; x++) {
@@ -122,14 +122,16 @@ public class GridPanel extends Group {
         setWidth(cells[0][0].getWidth() * cols);
 
 
-        addListener(new GridMouseListener(this,cells ));
+        addListener(new GridMouseListener(this, cells));
         return this;
     }
 
     private void bindEvents() {
+
+
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p =
-                    (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
+             (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             Map<Borderable, Runnable> map = new HashMap<>();
             for (DC_Obj obj1 : p.getLeft()) {
                 Borderable b = getUnitMap().get(obj1);
@@ -146,8 +148,8 @@ public class GridPanel extends Group {
             boolean caught = false;
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED
-                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
-                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
+             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
+             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
 //                (r.getEffect() instanceof ChangeFacingEffect) nice try
             {
                 DC_HeroObj hero = (DC_HeroObj) r.getObj(KEYS.TARGET
@@ -158,7 +160,7 @@ public class GridPanel extends Group {
             }
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED
-                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
+             || event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
                 removeUnitView(r.getSourceObj());
                 caught = true;
             }
@@ -223,8 +225,9 @@ public class GridPanel extends Group {
 
         GuiEventManager.bind(CREATE_UNITS_MODEL, param -> {
             units = (DequeImpl<DC_HeroObj>) param.get();
-
-            setLightmap(new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight(), rows));
+            Lightmap lightmap = new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight(), rows);
+            if (lightmap.isValid())
+                setLightmap(lightmap);
 
             Map<Coordinates, List<DC_HeroObj>> map = new HashMap<>();
             for (DC_HeroObj object : units) {
@@ -254,8 +257,8 @@ public class GridPanel extends Group {
             Coordinates cords = (Coordinates) param.get();
 
             List<DC_HeroObj> objList = units.stream()
-                    .filter(microObj -> microObj.getCoordinates().equals(cords))
-                    .collect(Collectors.toList());
+             .filter(microObj -> microObj.getCoordinates().equals(cords))
+             .collect(Collectors.toList());
 
             List<UnitViewOptions> options = new ArrayList<>();
             for (DC_HeroObj microObj : objList) {

@@ -31,6 +31,11 @@ public class Lightmap {
     private int rows;
     private Map<MicroObj, PointLight> lightMap;
     private Map<Integer, FireLightProt> fireLightProtMap;
+    private boolean valid;
+
+    public boolean isValid() {
+        return valid;
+    }
 
     public Lightmap(DequeImpl<DC_HeroObj> un, float cellWidth, float cellHeight, int rows) {
         World world = new World(new Vector2(0, 0), true);
@@ -48,6 +53,7 @@ public class Lightmap {
     }
 
     private void init(DequeImpl<DC_HeroObj> un, World world, RayHandler rayHandler, float cellWidth, float cellHeight, int rows) {
+        valid=false;
         this.cellWidth = cellWidth;
         this.cellHeight = cellHeight;
         if (rows > 0) {
@@ -94,6 +100,7 @@ public class Lightmap {
                 fireLightProt.attachToBody(body);
                 //TEMP END
                 fireLightProtMap.put(i, fireLightProt);
+                valid = true;
             } else {
                 body.setTransform(un.get(i).getX() * cellWidth + cellWidth / 2, this.rows * cellHeight - un.get(i).getY() * cellHeight + cellHeight / 2, 0);
                 PolygonShape shape = new PolygonShape();
