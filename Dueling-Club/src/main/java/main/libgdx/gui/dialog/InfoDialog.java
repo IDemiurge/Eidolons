@@ -77,7 +77,7 @@ public class InfoDialog extends Dialog {
 //        parser.parse(this, mainLayou
 
         attributes = new ValueContainer(unit, 5, 2, () -> {
-            return DC_ContentManager.getAttributes();
+            return DC_ContentManager.getFinalAttributes();
         }) {
             @Override
             protected boolean isNameDisplayed() {

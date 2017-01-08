@@ -1,6 +1,8 @@
 package main.libgdx.bf.mouse;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -14,6 +16,7 @@ import main.libgdx.bf.mouse.ToolTipManager.ToolTipRecordOption;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
+import main.test.frontend.FAST_DC;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -128,7 +131,7 @@ public class GridMouseListener extends ClickListener {
                         //TODO map the click to the right object in the stack?
                         GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(heroObj));
                     } else {
-
+if (FAST_DC.getGameLauncher().SUPER_FAST_MODE || Gdx.input.isKeyPressed(Keys.ALT_LEFT))
                             GuiEventManager.trigger(SHOW_INFO_DIALOG,
                              new EventCallbackParam(heroObj));
 

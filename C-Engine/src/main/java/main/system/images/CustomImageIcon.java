@@ -10,6 +10,7 @@ public class CustomImageIcon extends ImageIcon{
 
     public CustomImageIcon(String s ){
         super(s);
-        imgPath = s;
+        imgPath = s.toLowerCase(). replace(ImageManager.getPATH().toLowerCase(), "");
+
     }
 }
