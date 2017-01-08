@@ -64,10 +64,15 @@ public class GridCellContainer extends GridCell {
 
     public boolean removeActor(Actor actor) {
         boolean result = super.removeActor(actor);
-        if (actor instanceof UnitView) {
+
+        if (result && actor instanceof UnitView) {
             unitViewCount--;
             recalcUnitViewBounds();
+            if (unitViewCount <= 0) {
+                ((GridCell) getParent()).addInnerDrawable(null);
+            }
         }
+
         return result;
     }
 
@@ -84,8 +89,8 @@ public class GridCellContainer extends GridCell {
     }
 
     public void popupUnitView(UnitView uv) {
-        this.removeActor(uv);
-        this.addActor(uv);
+        super.removeActor(uv); //call super for only popup
+        super.addActor(uv);
         recalcImagesPos();
     }
 

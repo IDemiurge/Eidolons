@@ -23,9 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static main.system.GuiEventType.CREATE_RADIAL_MENU;
-import static main.system.GuiEventType.SHOW_INFO_DIALOG;
-import static main.system.GuiEventType.SHOW_TOOLTIP;
+import static main.system.GuiEventType.*;
 
 /**
  * Created by JustMe on 1/7/2017.
@@ -33,10 +31,12 @@ import static main.system.GuiEventType.SHOW_TOOLTIP;
 public class GridMouseListener extends ClickListener {
     private GridPanel gridPanel;
     private GridCell[][] cells;
+    private Map<DC_HeroObj, UnitView> unitViewMap;
 
-    public GridMouseListener(GridPanel gridPanel, GridCell[][] cells) {
+    public GridMouseListener(GridPanel gridPanel, GridCell[][] cells, Map<DC_HeroObj, UnitView> unitViewMap) {
         this.gridPanel = gridPanel;
         this.cells = cells;
+        this.unitViewMap = unitViewMap;
     }
 
 
@@ -50,9 +50,9 @@ public class GridMouseListener extends ClickListener {
             Actor a = innerDrawable.hit(x, y, true);
             if (a != null && a instanceof UnitView) {
                 UnitView uv = (UnitView) a;
-                DC_HeroObj hero = gridPanel.getUnitMap().entrySet().stream()
-                 .filter(entry -> entry.getValue() == uv).findFirst()
-                 .get().getKey();
+                DC_HeroObj hero = unitViewMap.entrySet().stream()
+                        .filter(entry -> entry.getValue() == uv).findFirst()
+                        .get().getKey();
 
                 Map<String, String> tooltipStatMap = new HashMap<>();
                 tooltipStatMap.put(PARAMS.C_TOUGHNESS.getName(), "Toughness");
@@ -110,7 +110,7 @@ public class GridMouseListener extends ClickListener {
         a = gridPanel.hitChildren(x, y, true);
         if (a != null && a instanceof GridCell) {
             GridCell cell = (GridCell) a;
-            if (gridPanel.getCellBorderManager().isBlueBorderActive() && event.getButton() == 0) {
+            if (gridPanel.getCellBorderManager().isBlueBorderActive() && event.getButton() == Input.Buttons.LEFT) {
                 Borderable b = cell;
                 if (cell.getInnerDrawable() != null) {
                     Actor unit = cell.getInnerDrawable().hit(x, y, true);
@@ -124,24 +124,20 @@ public class GridMouseListener extends ClickListener {
             if (cell.getInnerDrawable() != null) {
                 Actor unit = cell.getInnerDrawable().hit(x, y, true);
                 if (unit != null && unit instanceof UnitView) {
-                    DC_HeroObj heroObj = gridPanel.getUnitMap().entrySet()
-                     .stream().filter(entry -> entry.getValue() == unit).findFirst()
-                     .get().getKey();
-                    if (event.getButton() == Input.Buttons.RIGHT) {
-                        //TODO map the click to the right object in the stack?
-                        GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(heroObj));
-                    } else {
-                        if (FAST_DC.getGameLauncher() != null)
-                            if (FAST_DC.getGameLauncher().SUPER_FAST_MODE)
-                                GuiEventManager.trigger(SHOW_INFO_DIALOG,
-                                 new EventCallbackParam(heroObj));
-                            else if (
-                             Gdx.input.isKeyPressed(Keys.ALT_LEFT))
-                                GuiEventManager.trigger(SHOW_INFO_DIALOG,
-                                 new EventCallbackParam(heroObj));
+                    DC_HeroObj heroObj = unitViewMap.entrySet()
+                            .stream().filter(entry -> entry.getValue() == unit).findFirst()
+                            .get().getKey();
 
+                    switch (event.getButton()) {
+                        case Input.Buttons.RIGHT:
+                            //TODO map the click to the right object in the stack?
+                            GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(heroObj));
+                            break;
+                        default:
+                            if (FAST_DC.getGameLauncher().SUPER_FAST_MODE || Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
+                                GuiEventManager.trigger(SHOW_INFO_DIALOG, new EventCallbackParam(heroObj));
+                            }
                     }
-
                 }
             } else if (event.getButton() == Input.Buttons.RIGHT) {
                 DC_Obj dc_cell = DC_Game.game.getCellByCoordinate(new Coordinates(cell.getGridX(), cell.getGridY()));

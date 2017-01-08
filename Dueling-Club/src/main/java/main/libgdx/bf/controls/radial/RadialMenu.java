@@ -74,30 +74,28 @@ public class RadialMenu extends Group {
 
     public void init(List<CreatorNode> nodes) {
         currentNode = new MenuNode(closeImage, "Close");
-        currentNode.childNodes = createChildren(currentNode, nodes);
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
         setBounds(
-                v2.x - getWidth() / 2,
-                v2.y - getHeight() / 2,
+                v2.x - currentNode.getWidth() / 2,
+                v2.y - currentNode.getHeight() / 2,
                 currentNode.getWidth(),
                 currentNode.getHeight()
         );
+
+        currentNode.setX(getX());
+        currentNode.setY(getY());
+
+        currentNode.childNodes = createChildren(currentNode, nodes);
 
         final RadialMenu menu = this;
         currentNode.action = () -> menu.setVisible(false);
 
         updateCallbacks();
+        updatePosition();
         currentNode.drawChildren = true;
         setVisible(true);
         //addActor(currentNode);
-    }
-
-    @Override
-    protected void positionChanged() {
-        currentNode.setX(getX());
-        currentNode.setY(getY());
-        updatePosition();
     }
 
     private void setCurrentNode(MenuNode node) {
