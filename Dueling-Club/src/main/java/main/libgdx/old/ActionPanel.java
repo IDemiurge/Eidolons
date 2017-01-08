@@ -1,6 +1,6 @@
 package main.libgdx.old;
 
-import main.libgdx.gui.panels.sub.PagedPanel;
+import main.libgdx.gui.panels.generic.PagedListPanel;
 
 /**
  * Created with IntelliJ IDEA.
@@ -8,7 +8,7 @@ import main.libgdx.gui.panels.sub.PagedPanel;
  * Time: 20:08
  * To change this template use File | Settings | File Templates.
  */
-public class ActionPanel extends PagedPanel {
+public class ActionPanel extends PagedListPanel {
     public ActionPanel(String imagePath, int col, int row) {
         super(imagePath, col, row);
     }
@@ -24,7 +24,7 @@ public class ActionPanel extends PagedPanel {
     }
 
     @Override
-    public PagedPanel init() {
+    public PagedListPanel init() {
         return super.init();
     }
 }

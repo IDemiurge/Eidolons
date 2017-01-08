@@ -16,6 +16,7 @@ import static main.system.GuiEventType.SHOW_INFO_DIALOG;
  */
 public class DialogDisplay extends Group {
 
+    private static final int HEIGHT_OFFSET = 65;
     private static   DialogDisplay instance;
     Dialog dialog;
 
@@ -37,6 +38,7 @@ public class DialogDisplay extends Group {
             int h = Math.max((int) dialog.getHeight(), (int) GameScreen.getInstance().
              getBackground().getHeight());
             setPosition(MigMaster.getCenteredPosition(w, (int) dialog.getWidth()),
+             HEIGHT_OFFSET+
              MigMaster.getCenteredPosition(h, (int) dialog.getHeight()));
 //            GameScreen.getInstance().
             setVisible(true);

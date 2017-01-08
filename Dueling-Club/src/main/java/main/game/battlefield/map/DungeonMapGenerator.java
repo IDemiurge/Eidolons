@@ -93,7 +93,7 @@ public class DungeonMapGenerator {
                 dungeon.getProperty(PROPS.DUNGEON_MAP_MODIFIER));
 
 		/*
-		 * mod should have a preset layout option as well.
+		 * mod should have a preset initComps option as well.
 		 */
 
         try {

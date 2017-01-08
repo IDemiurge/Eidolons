@@ -1,4 +1,4 @@
-package main.libgdx.gui.panels.sub;
+package main.libgdx.gui.panels.generic;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
@@ -37,9 +37,12 @@ public class Container extends Comp {
     public void setComps(Comp... comps) {
         this.comps = comps;
     }
+    public void initComps() {
 
+    }
     @Override
     public void update() {
+        initComps();
         super.update();
         root.clearChildren();
         Group group = getGroup(defaultLayout);
@@ -94,9 +97,7 @@ public class Container extends Comp {
         }
     }
 
-    public void layout() {
 
-    }
 //    Arrays.stream(comps).forEach(comp->{
 //
 //        comp.setX(x);

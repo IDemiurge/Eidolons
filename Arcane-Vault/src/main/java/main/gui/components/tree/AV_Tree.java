@@ -154,7 +154,7 @@ public class AV_Tree extends G_Panel {
 
 		}
 
-		// TODO filter sub groups
+		// TODO filter generic groups
 		if (subGroups.size() <= 1) {
 			return buildSimple(typesDoc, group);
 		}

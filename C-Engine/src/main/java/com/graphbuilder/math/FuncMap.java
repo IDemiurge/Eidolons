@@ -43,9 +43,9 @@ import com.graphbuilder.math.func.*;
  * <li>ceil(x) &rarr; Math.ceil(double)</li>
  * <li>floor(x) &rarr; Math.floor(double)</li>
  * <li>exp(x) &rarr; <i>e</i><sup>x</sup></li>
- * <li>ln(x) &rarr; log<sub><i>e</i></sub>x</li>
- * <li>lg(x) &rarr; log<sub>2</sub>x</li>
- * <li>log(x) &rarr; log<sub>10</sub>x</li>
+ * <li>ln(x) &rarr; log<generic><i>e</i></generic>x</li>
+ * <li>lg(x) &rarr; log<generic>2</generic>x</li>
+ * <li>log(x) &rarr; log<generic>10</generic>x</li>
  * <li>sign(x) &rarr; x > 0 = 1, x < 0 = -1, else 0</li>
  * <li>fact(n) &rarr; n! = 1 * 2 * ... * (n - 1) * n</li>
  * <li>round(x) &rarr; Math.round(double)</li>
@@ -54,7 +54,7 @@ import com.graphbuilder.math.func.*;
  * <dt>2 Parameters</dt>
  * <dd>
  * <ul>
- * <li>log(x,y) &rarr; log<sub>y</sub>x</li>
+ * <li>log(x,y) &rarr; log<generic>y</generic>x</li>
  * <li>combin(n, r) &rarr; PascalsTriangle.nCr(n, r)</li>
  * <li>mod(x, y) &rarr; x % y</li>
  * <li>pow(x, y) &rarr; x<sup>y</sup></li>

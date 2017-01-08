@@ -8,9 +8,9 @@ public class ReportDialog {
 	public void init(List<String> vals) {
 		for (String sub : vals) {
 
-//			REPORT_CATEGORY category = getCategory(sub);
+//			REPORT_CATEGORY category = getCategory(generic);
 //
-//			addReportedValueComp(sub, category);
+//			addReportedValueComp(generic, category);
 
 		}
 

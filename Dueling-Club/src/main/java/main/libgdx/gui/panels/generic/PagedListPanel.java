@@ -1,4 +1,4 @@
-package main.libgdx.gui.panels.sub;
+package main.libgdx.gui.panels.generic;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import main.system.images.ImageManager;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,24 +14,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  * Time: 23:25
  * To change this template use File | Settings | File Templates.
  */
-public class PagedPanel extends Panel {
-    private static final String pagerImagePath = "\\UI\\components\\left5.png";
-    private static final String pagerImagePath2 = "\\UI\\components\\right5.png";
-    private static final String pagerImagePath3 = "\\UI\\components\\down5.png";
-    private static final String pagerImagePath4 = "\\UI\\components\\up5.png";
-    protected Image pager2;
+public class PagedListPanel extends Panel {
     protected Image[] slots;
     protected String imagePath;
     protected int col;
     protected int row;
     private Image pager1;
+    protected Image pager2;
     private Texture emptySlotTexture;
+    private int arrowVersion=5;
 
-    public PagedPanel(String imagePath, int col, int row) {
+    public PagedListPanel(String imagePath, int col, int row) {
 
     }
 
-    public PagedPanel(int col, int row) {
+    public PagedListPanel(int col, int row) {
         this.col = col;
         this.row = row;
         slots = new Image[col * row];
@@ -49,7 +47,7 @@ public class PagedPanel extends Panel {
         return true;
     }
 
-    public PagedPanel init() {
+    public PagedListPanel init() {
         if (getCellScale() != 1) {
             //make empty image little smaller
             //if use image scale we must calc real w&h when we call it
@@ -69,11 +67,13 @@ public class PagedPanel extends Panel {
         }
 
         if (isHorizontal()) {
-            pager1 = new Image(new Texture(pagerImagePath));
-            pager2 = new Image(new Texture(pagerImagePath2));
-        } else {
-            pager1 = new Image(new Texture(pagerImagePath3));
-            pager2 = new Image(new Texture(pagerImagePath4));
+
+            pager1 = new Image(new Texture(
+             ImageManager.getArrowImagePath(!isHorizontal(), false,
+              arrowVersion)));
+            pager2 = new Image(new Texture(
+             ImageManager.getArrowImagePath(!isHorizontal(), true,
+              arrowVersion)));
         }
 
         //pager2.rotateBy(180);

@@ -56,7 +56,7 @@ public class FAST_DC {
     public static Boolean factionLeaderRequired = false;
     // public static boolean PRESET_PARTY = false;
     public static int ENEMY_CODE = CODE.CHOOSE;
-    public static int PARTY_CODE = CODE.CHOOSE; // preset sub-code?
+    public static int PARTY_CODE = CODE.CHOOSE; // preset generic-code?
     // private static boolean RANDOMIZE_PARTY = false;
     // private static boolean RANDOMIZE_ENEMIES_PARTY = true;
     public static boolean LEADER_MOVES_FIRST = false;

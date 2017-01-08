@@ -1,4 +1,4 @@
-package main.libgdx.gui.panels.sub;
+package main.libgdx.gui.panels.generic;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 

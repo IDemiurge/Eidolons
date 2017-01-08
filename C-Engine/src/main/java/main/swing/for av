@@ -5,7 +5,7 @@ table view
 menu
 control panel
 
-layout? 
+initComps?
 in what way is G used? by Builders? yes, they would have just imperative ways of 
 using G classes. But what is the advantage over using standard classes? 
 Kind of more control and separation of concerns, more encapsulation and potential for

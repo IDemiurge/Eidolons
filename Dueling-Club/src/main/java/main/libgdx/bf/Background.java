@@ -1,7 +1,7 @@
 package main.libgdx.bf;
 
 import main.game.DC_Game;
-import main.libgdx.gui.panels.sub.Comp;
+import main.libgdx.gui.panels.generic.Comp;
 import main.system.auxiliary.GuiManager;
 
 /**

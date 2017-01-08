@@ -61,24 +61,20 @@ public class FontMaster {
         }
         String path = PathFinder.getFontPath();
 
-        File f = new File(path + "/Avqest.ttf");
-        File f1 = new File(path + "/Starcraft.ttf");
-        File f2 = new File(path + "/Dark.ttf");
-        File f3 = new File(path + "/main.otf");
-        File f4 = new File(path + "/nyala.ttf");
-        try {
-            AVQ = Font.createFont(Font.TRUETYPE_FONT, f);
-            SC = Font.createFont(Font.TRUETYPE_FONT, f1);
-            DARK = Font.createFont(Font.TRUETYPE_FONT, f2);
-            MAIN = Font.createFont(Font.TRUETYPE_FONT, f3);
-            NYALA = Font.createFont(Font.TRUETYPE_FONT, f4);
-        } catch (FontFormatException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+
+        for (FONT F: FONT.values()){
+            try {
+                F.font=Font.createFont(Font.TRUETYPE_FONT, new File(path +F.path));
+            } catch (FontFormatException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
         }
+
         initialized = true;
     }
 
@@ -234,16 +230,15 @@ public class FontMaster {
     }
 
     public enum FONT {
-        AVQ(FontMaster.AVQ),
-        SC(FontMaster.SC),
-        DARK(FontMaster.DARK),
-        NYALA(FontMaster.NYALA),
-        MAIN(FontMaster.MAIN);
-
+        AVQ( "/Avqest.ttf"),
+        SC( "/Starcraft.ttf"),
+        DARK( "/Dark.ttf"),
+        NYALA( "/nyala.ttf"),
+        MAIN( "/main.otf");
         public Font font;
-
-        FONT(Font font) {
-            this.font = font;
+        public   String path;
+        FONT(  String path) {
+            this.path = path;
         }
     }
 

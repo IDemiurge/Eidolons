@@ -383,7 +383,7 @@ return     new LinkedList<>() ; 	}
 				if (sub.contains(".m3u")) {
 					String string = sub.split("::")[0].trim();
 					if (Character.isDigit(string.charAt(string.length() - 1)))
-						// if (StringMaster.getFirstNumberIndex(sub)>1)
+						// if (StringMaster.getFirstNumberIndex(generic)>1)
 						continue;
 				}
 			content += sub + StringMaster.NEW_LINE;

@@ -34,7 +34,7 @@ public class BattleFieldScreen implements Screen {
     SpriteBatch batch; // seems to be as Graphics2D class in simple java
     ShapeRenderer shapeRenderer; // renderer of classic shapes
     Texture img; // Image Class
-    TextureRegion region; // sub image of Texture
+    TextureRegion region; // generic image of Texture
     Sprite sprite; //simple sprite
       Sprite spriteForBack; //simple sprite
     Sprite testSprite; //simple sprite

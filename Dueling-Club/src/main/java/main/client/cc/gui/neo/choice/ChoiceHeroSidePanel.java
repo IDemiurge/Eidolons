@@ -23,7 +23,7 @@ public class ChoiceHeroSidePanel {
 	 * 
 	 * So as class, how is *this* different from HeroPanel?
 	 * 
-	 * Well, it could simply have a different layout! It does not require
+	 * Well, it could simply have a different initComps! It does not require
 	 * displaying classes... It should display stats - at least attributes, and
 	 * certainly have a Mastery page
 	 * 

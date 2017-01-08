@@ -37,7 +37,7 @@ public class GameLauncher {
     public final boolean NET_FAST_MODE = true;
     private final boolean factionMode = true;
     public int ENEMY_CODE = CODE.CHOOSE;
-    public int PARTY_CODE = CODE.CHOOSE; // preset sub-code?
+    public int PARTY_CODE = CODE.CHOOSE; // preset generic-code?
     public boolean VISION_HACK = false;
     // private boolean RANDOMIZE_PARTY = false;
     // private boolean RANDOMIZE_ENEMIES_PARTY = true;

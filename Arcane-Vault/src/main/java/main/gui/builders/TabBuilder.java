@@ -98,7 +98,7 @@ public class TabBuilder extends Builder implements ChangeListener {
 				TabBuilder tabBuilder = new TabBuilder(sub);
 				tabBuilder.setLevelEditor(levelEditor);
 				list.add(tabBuilder);
-				// tabNames.add(sub);
+				// tabNames.add(generic);
 			}
 
 		} else {
@@ -342,7 +342,7 @@ public class TabBuilder extends Builder implements ChangeListener {
 		int index = getTabbedPane().getSelectedIndex();
 		builderArray[index].build(); // if types had been added or removed...
 										// TODO
-		// new TreeViewBuilder(typesDoc, sub, type)
+		// new TreeViewBuilder(typesDoc, generic, type)
 	}
 
 	private Component generateWorkspaceTree(Workspace workspace) {

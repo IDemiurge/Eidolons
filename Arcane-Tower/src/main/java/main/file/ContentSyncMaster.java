@@ -29,7 +29,7 @@ public class ContentSyncMaster {
 
 	private static boolean checkGroupInWorkspace(String sub) {
 		// WorkspaceMaster
-//		scope.getGroups().contains(sub);
+//		scope.getGroups().contains(generic);
 //		new Workspace(name, typeList); // save
 		return false;
 	}
@@ -41,7 +41,7 @@ public class ContentSyncMaster {
 			for (String sub : XML_Reader.getSubGroups(TYPE)) {
 				if (!checkGroupInWorkspace(sub))
 					continue;
-//				goal = generateGoal(sub);
+//				goal = generateGoal(generic);
 			}
 
 		for (OBJ_TYPES t : OBJ_TYPES.values())

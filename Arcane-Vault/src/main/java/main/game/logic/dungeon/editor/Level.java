@@ -484,12 +484,12 @@ public class Level {
                 dungeon.setMainEntrance((Entrance) obj);
                 dungeon.getPlan().setEntranceLayout(
                         DungeonLevelMaster.getLayout(dungeon.getPlan(), c));
-                main.system.auxiliary.LogMaster.log(1, "Main Entrance: " + obj + "; layout = "
+                main.system.auxiliary.LogMaster.log(1, "Main Entrance: " + obj + "; initComps = "
                         + dungeon.getPlan().getEntranceLayout());
             } else if (dungeon.getMainExit() == null) {
                 dungeon.setMainExit((Entrance) obj);
                 dungeon.getPlan().setExitLayout(DungeonLevelMaster.getLayout(dungeon.getPlan(), c));
-                main.system.auxiliary.LogMaster.log(1, "Main Exit: " + obj + "; layout = "
+                main.system.auxiliary.LogMaster.log(1, "Main Exit: " + obj + "; initComps = "
                         + dungeon.getPlan().getExitLayout());
             }
             dungeon.getEntrances().add((Entrance) obj);

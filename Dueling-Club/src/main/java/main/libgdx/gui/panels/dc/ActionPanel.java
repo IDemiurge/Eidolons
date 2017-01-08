@@ -1,9 +1,9 @@
-package main.libgdx.gui.panels;
+package main.libgdx.gui.panels.dc;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
-import main.libgdx.gui.panels.sub.PagedPanel;
+import main.libgdx.gui.panels.generic.PagedListPanel;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallback;
 import main.system.EventCallbackParam;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by JustMe on 1/5/2017.
  */
-public class ActionPanel<T extends DC_Obj> extends PagedPanel {
+public class ActionPanel<T extends DC_Obj> extends PagedListPanel {
 
 
     private DC_HeroObj hero;

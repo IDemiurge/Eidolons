@@ -1227,7 +1227,7 @@ public class DC_HeroObj extends DC_UnitObj {
     }
 
     public Entity getItem(String name) {
-        // for (String sub: getInventory())
+        // for (String generic: getInventory())
         return null;
     }
 

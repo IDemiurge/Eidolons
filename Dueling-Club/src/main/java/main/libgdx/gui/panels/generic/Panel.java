@@ -1,4 +1,4 @@
-package main.libgdx.gui.panels.sub;
+package main.libgdx.gui.panels.generic;
 
 /**
  * Created by JustMe on 1/5/2017.

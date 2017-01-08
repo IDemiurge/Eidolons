@@ -465,7 +465,7 @@ public class AttackCalculator {
             }
             sideMod = action.getIntParam(PARAMS.SIDE_DAMAGE_MOD) - 100;
             if (sideMod != 0 && sideMod != 100) {
-                // sub?
+                // generic?
                 modMap.put(MOD_IDENTIFIER.POS, sideMod);
                 dmg_mod += sideMod;
                 posMap.put(MOD_IDENTIFIER.SIDE_ATTACK, sideMod);

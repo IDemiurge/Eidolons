@@ -37,7 +37,7 @@ public class TextMaster {
         generateMissingDescrTemplate(TYPE, 1, null, true);
         Map<String, Set<String>> tabGroupMap = XML_Reader.getTabGroupMap();
         for (String sub : tabGroupMap.get(TYPE.getName())) {
-//            if (!ContentMaster.basicScope.contains(sub))
+//            if (!ContentMaster.basicScope.contains(generic))
 //                continue;
             generateMissingDescrTemplate(TYPE, 1, sub, false);
             generateMissingDescrTemplate(TYPE, 1, sub, true);

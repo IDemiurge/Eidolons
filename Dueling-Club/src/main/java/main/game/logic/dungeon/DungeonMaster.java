@@ -358,7 +358,7 @@ public class DungeonMaster {
     public String chooseDungeonLevel() {
         String path = PathFinder.getDungeonLevelFolder();
         String subFolder = ListChooser.chooseEnum(DUNGEON_SUBFOLDER.class, SELECTION_MODE.SINGLE);
-        // DialogMaster.inputText("sub folder (empty for root", "");
+        // DialogMaster.inputText("generic folder (empty for root", "");
         if (!StringMaster.isEmpty(subFolder))
             path += subFolder.replace(";", "") + "\\";
         File folder = FileManager.getFile(path);

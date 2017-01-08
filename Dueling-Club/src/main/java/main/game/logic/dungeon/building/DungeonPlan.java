@@ -46,7 +46,7 @@ public class DungeonPlan {
     private LinkedHashMap<String, FLIP> flipMap;
 
     public DungeonPlan(DUNGEON_TEMPLATES template, Dungeon dungeon) {
-        // or maybe it should be 1 main... can use sub-templates for Zones
+        // or maybe it should be 1 main... can use generic-templates for Zones
         // specifically? E.g. WEST==PRISON_CELLS
         this.template = template;
         this.dungeon = dungeon;

@@ -2,11 +2,13 @@ package main.libgdx.gui.dialog;
 
 import main.content.DC_ContentManager;
 import main.entity.obj.DC_HeroObj;
+import main.libgdx.StyleHolder;
 import main.libgdx.gui.layout.LayoutParser.LAYOUT;
-import main.libgdx.gui.panels.sub.Comp;
-import main.libgdx.gui.panels.sub.Container;
-import main.libgdx.gui.panels.sub.EntityContainer;
-import main.libgdx.gui.panels.sub.ValueContainer;
+import main.libgdx.gui.panels.generic.*;
+import main.libgdx.gui.panels.info.WeaponPanel;
+import main.system.images.ImageManager.ALIGNMENT;
+
+import java.util.Arrays;
 
 /**
  * Created by JustMe on 1/5/2017.
@@ -15,21 +17,19 @@ public class InfoDialog extends Dialog {
     Container top;
     Container fxAndAbils;
     Container armor;
-    Container armorTraits;
-    Container mainWeapon;
-    Container offWeapon;
+    EntityContainer armorTraits;
+    WeaponPanel mainWeapon;
+    WeaponPanel offWeapon;
     ValueContainer attributes;
-    Container dynamicParams;
+    ValueContainer dynamicParams;
     Container points;
-    Container mainParams;
-    Container params;
-    Container resistances;
+    ValueContainer mainParams;
+    TabbedPanel tabs;
 
     Container description;
     Container lore;
-    String mainLayout = "attributes: 0 0; ";
     public final static String bgPath =
-     "UI\\components\\2017\\dialog\\info\\info panel big.jpg";
+     "UI\\components\\2017\\dialog\\info\\info panel big.png";
 
 
     public InfoDialog(DC_HeroObj unit) {
@@ -37,34 +37,35 @@ public class InfoDialog extends Dialog {
 //        VISUALS.DOUBLE_CONTAINER,
         fxAndAbils = new Container("fxAndAbils") {
             @Override
-            public void layout() {
+            public void initComps() {
 
-                EntityContainer effects = new EntityContainer("Active Effects", 32, 6, 4,
-                        () -> {
-                            return unit.getBuffs();
-                        });
-                EntityContainer abilities = new EntityContainer("Special Abilities", 32, 6, 4,
-                        () -> {
-                            return unit.getPassives();
-                        });
+                PagedContainer effects = new PagedContainer("Active Effects", true, 32, 2, 2,
+                 unit, () -> {
+                    return unit.getBuffs();
+                });
+                PagedContainer abilities = new PagedContainer("Special Abilities", true, 32, 2, 2,
+                 unit, () -> {
+                    return unit.getPassives();
+                });
+                setComps(abilities, effects);
             }
         };
 
 
         armor = new Container("", LAYOUT.HORIZONTAL) {
             @Override
-            public void layout() {
+            public void initComps() {
 
-                EntityContainer buffs = new EntityContainer("Buffs", 32, 2, 2,
-                        () -> {
-                            return unit.getArmor().getBuffs();
-                        });
+                PagedContainer buffs = new PagedContainer("Buffs", true, 32, 2, 2,
+                 unit, () -> {
+                    return unit.getArmor().getBuffs();
+                });
+                PagedContainer traits = new PagedContainer("Traits", true, 32, 2, 2,
+                 unit, () -> {
+                    return unit.getArmor().getPassives();
+                });
 
-                EntityContainer traits = new EntityContainer("Traits", 32, 2, 2,
-                        () -> {
-                            return unit.getArmor().getPassives();
-                        });
-
+                setComps(buffs, traits);
             }
         };
 
@@ -78,29 +79,43 @@ public class InfoDialog extends Dialog {
         };
 
 
-        dynamicParams = new Container("", LAYOUT.HORIZONTAL);
-        mainWeapon = new Container("", LAYOUT.HORIZONTAL);
+        dynamicParams = new ValueContainer(unit, 2, 3, true, false, ALIGNMENT.SOUTH,
+         StyleHolder.getAVQLabelStyle(),
+         () -> {
+             return Arrays.asList(DC_ContentManager.DYNAMIC_PARAMETERS);
+         });
+
+        mainWeapon = new WeaponPanel();
         description = new Container("", LAYOUT.HORIZONTAL);
-        resistances = new Container("", LAYOUT.HORIZONTAL);
-        mainParams = new Container("", LAYOUT.HORIZONTAL);
+        tabs = new TabbedPanel("");
+
+        mainParams = new ValueContainer(unit, 1,
+         DC_ContentManager.MAIN_PARAMETERS.length,
+         true, false,
+         ALIGNMENT.SOUTH, StyleHolder.getAVQLabelStyle(),
+         () -> {
+             return Arrays.asList(DC_ContentManager.MAIN_PARAMETERS);
+         });
+
+
         points = new Container("", LAYOUT.HORIZONTAL);
         top = new Container("", LAYOUT.HORIZONTAL);
         {
+
             Comp portrait;
             Comp portraitBg;
         }
-        params = new Container("", LAYOUT.HORIZONTAL);
-        offWeapon = new Container("", LAYOUT.HORIZONTAL);
+        offWeapon = new WeaponPanel();
         lore = new Container("", LAYOUT.HORIZONTAL);
 
         setComps(
          //from bottom left
-                fxAndAbils, attributes, dynamicParams, mainWeapon, description,
-                new Wrap(false), //next column
-                resistances, armor, mainParams, points, top,
-                new Wrap(false),//next column
-                new Space(false, 0.2f), //leave 20% space
-                params, offWeapon, lore
+         fxAndAbils, attributes, dynamicParams, mainWeapon, description,
+         new Wrap(false), //next column
+         armor, mainParams, points, top,
+         new Wrap(false),//next column
+         new Space(false, 0.2f), //leave 20% space
+         tabs, offWeapon, lore
         );
     }
 }

@@ -1328,7 +1328,7 @@ public class StringMaster {
         return string.toUpperCase();
     }
 
-    // public static String getTypeNameFormat(String sub) {
+    // public static String getTypeNameFormat(String generic) {
     // //1.
     // cropFormat(str)
     // return null;

@@ -90,7 +90,7 @@ public class TreeViewBuilder extends Builder {
 
 	// TODO
 	public void reload() {
-		// types = DataManager.getTypesGroupNames(OBJ_TYPES.getType(type), sub);
+		// types = DataManager.getTypesGroupNames(OBJ_TYPES.getType(type), generic);
 		// init();
 		// ((JScrollPane) comp).setViewportView(getTree());
 
@@ -99,7 +99,7 @@ public class TreeViewBuilder extends Builder {
 		// scrollPane.getVerticalScrollBar().setUnitIncrement(VERTICAL_SCROLL_BAR_UNIT_INCREMENT);
 		// comp.add(scrollPane, "pos 0 0");
 		// comp.revalidate();
-		// comp.add(new AV_Tree(types, sub, type,
+		// comp.add(new AV_Tree(types, generic, type,
 		// ArcaneVault.isColorsInverted()));
 	}
 

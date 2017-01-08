@@ -307,8 +307,8 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 				// if (emptyOnly) {
 				if (!sub.checkContainerProp((PROPERTY) prop, filterValue, true))
 					types.remove(sub);
-			// } else if (!sub.checkValue(prop, filterValue))
-			// types.remove(sub);
+			// } else if (!generic.checkValue(prop, filterValue))
+			// types.remove(generic);
 
 		}
 		prop = getMassEditValue();

@@ -454,13 +454,13 @@ public class ListMaster<E> {
         return list;
         // List<E> result = new LinkedList<>();
         //
-        // for (E sub : new LinkedList<>(list)) {
+        // for (E generic : new LinkedList<>(list)) {
         //
         //
         // // n++;
         // // if (n>=i){
         // // n=0;
-        // // result.add(sub);
+        // // result.add(generic);
         // // }
         // element = list.get(index);
         // if (index + 1 % (i * 2) == 0 && index + 1 >= i * 2) {
@@ -485,7 +485,7 @@ public class ListMaster<E> {
         List<E> filtered = new LinkedList<>();
         for (ObjType sub : list) {
             for (E task : tasks)
-//				if (task.getType() == sub) {
+//				if (task.getType() == generic) {
                 filtered.add(task);
             break;
         }

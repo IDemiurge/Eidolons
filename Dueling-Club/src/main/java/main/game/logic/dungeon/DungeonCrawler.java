@@ -88,7 +88,7 @@ public class DungeonCrawler {
 	 * 
 	 * borders of the battlefield 
 	 *
-	 * sub-dungeons - changing (caching) battlefield, filtering bf-obj add by sublevel 
+	 * generic-dungeons - changing (caching) battlefield, filtering bf-obj add by sublevel
 	 * >> enter/leave for each hero? 
 	 * 
 	 * entrance-based spawning 

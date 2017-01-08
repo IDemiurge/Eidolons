@@ -291,7 +291,7 @@ public class CaptureParser {
 		// copy from template type per parent
 		if (enclosingType != null)
 			type.setValue(AT_OBJ_TYPE.getParentValue(blockType), enclosingType.getName());
-		// group/sub
+		// group/generic
 		for (String valString : lines) {
 			if (StringMaster.isEmpty(valString))
 				continue;

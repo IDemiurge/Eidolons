@@ -278,7 +278,7 @@ public class MusicListPanel extends G_Panel {
 		LinkedList<String> list = new LinkedList<>(lines);
 		lines.clear();
 		for (String sub : list) {
-			sub = DataManager.getType(sub, AT_OBJ_TYPE.MUSIC_LIST).getName();// StringMaster.getWellFormattedString(sub);
+			sub = DataManager.getType(sub, AT_OBJ_TYPE.MUSIC_LIST).getName();// StringMaster.getWellFormattedString(generic);
 			if (lineMap.get(sub) == null)
 				continue;
 			lines.add(lineMap.get(sub));
@@ -296,7 +296,7 @@ public class MusicListPanel extends G_Panel {
 					.getLastPathSegment(StringMaster.cropFormat(sub)));
 			ObjType type = DataManager.getType(formatted, AT_OBJ_TYPE.MUSIC_LIST);
 			if (type == null) {
-				// formatted = StringMaster.getTypeNameFormat(sub);
+				// formatted = StringMaster.getTypeNameFormat(generic);
 				type = DataManager.findType(formatted, AT_OBJ_TYPE.MUSIC_LIST);
 			}
 			// else
@@ -383,7 +383,7 @@ public class MusicListPanel extends G_Panel {
 		if (name.length() > max_length)
 			name = name.replace("And", "&");
 		if (name.length() > max_length)
-			name = name.substring(0, max_length) + "…";
+			name = name.substring(0, max_length) + "ï¿½";
 		return name;
 	}
 

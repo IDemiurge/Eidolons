@@ -14,7 +14,7 @@ import java.util.List;
 
 public class SearchMaster {
 	/*
-	 * search vs filter: 1) search top tab, filter sub-tabs per type-tab or
+	 * search vs filter: 1) search top tab, filter generic-tabs per type-tab or
 	 * custom ones in Workspace 2) both use [...] value-condition filtering
 	 * (should add a dropbox with condition templates - greater, less, equal,
 	 * contains, strict, not, ) => OR could be an AE_EditPanel!

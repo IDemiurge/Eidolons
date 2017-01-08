@@ -125,7 +125,7 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
                 // TODO
                 // top
                 // vs
-                // sub
+                // generic
                 // separate!
                 ImageButton entryNodeButton = new ImageButton((node.getButtonImagePath())) {
                     @Override

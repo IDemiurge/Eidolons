@@ -28,19 +28,19 @@ public class GatewayTree {
 	// maxWidth = w/tops.size();
 	// //top to bottom
 	// TYPE = null ;
-	// for (ArcaneEntity sub : branch) {
+	// for (ArcaneEntity generic : branch) {
 	//
 	// String pos = "wrap";
-	// panel.add(new GatewayTreeNode(sub));
+	// panel.add(new GatewayTreeNode(generic));
 	// }
 	// }
 	// }
 	//
 	// private List<ArcaneEntity> getTopEntities(List<ArcaneEntity> data) {
 	// List<ArcaneEntity> list = new LinkedList<>();
-	// for (ArcaneEntity sub : data) {
-	// if (sub.getOBJ_TYPE_ENUM() == TOP_TYPE)
-	// list.add(sub);
+	// for (ArcaneEntity generic : data) {
+	// if (generic.getOBJ_TYPE_ENUM() == TOP_TYPE)
+	// list.add(generic);
 	// }
 	// return list;
 	// }
@@ -60,7 +60,7 @@ public class GatewayTree {
 	// String xOffset;
 	// String relativeY;
 	// String yOffset;
-	// panel.add(new GatewayTreeNode(sub).getClass(), "pos " +
+	// panel.add(new GatewayTreeNode(generic).getClass(), "pos " +
 	// parent +
 	// relativeX + "+("
 	// + xOffset + ")" + " " + parent + relativeY + "+(" + yOffset +

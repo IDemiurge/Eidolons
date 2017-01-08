@@ -75,14 +75,14 @@ public class TextPage extends WrappedTextComp {
         //
         // while (measurer.getPosition() < fStyledText.length()) {
         //
-        // TextLayout layout = measurer.nextLayout(wrappingWidth);
+        // TextLayout initComps = measurer.nextLayout(wrappingWidth);
         //
-        // pen.y += (layout.getAscent());
-        // float dx = layout.isLeftToRight() ?
-        // 0 : (wrappingWidth - layout.getAdvance());
+        // pen.y += (initComps.getAscent());
+        // float dx = initComps.isLeftToRight() ?
+        // 0 : (wrappingWidth - initComps.getAdvance());
         //
-        // layout.draw(graphics, pen.x + dx, pen.y);
-        // pen.y += layout.getDescent() + layout.getLeading();
+        // initComps.draw(graphics, pen.x + dx, pen.y);
+        // pen.y += initComps.getDescent() + initComps.getLeading();
         // }
     }
 

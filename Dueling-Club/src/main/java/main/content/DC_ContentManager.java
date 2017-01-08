@@ -24,6 +24,17 @@ import main.system.math.DC_MathManager;
 import java.util.*;
 
 public class DC_ContentManager extends ContentManager {
+    public static final PARAMETER[] DYNAMIC_PARAMETERS = {
+     PARAMS.C_TOUGHNESS,
+     PARAMS.C_ENDURANCE,
+     PARAMS.C_STAMINA,
+     PARAMS.C_MORALE,
+     PARAMS.C_FOCUS,
+     PARAMS.C_ESSENCE,
+    };
+    public static final PARAMETER[] MAIN_PARAMETERS= {
+     PARAMS.C_ESSENCE,
+    };
     public static final VALUE[] ATTRIBUTES = {PARAMS.STRENGTH, PARAMS.VITALITY, PARAMS.AGILITY,
             PARAMS.DEXTERITY, PARAMS.WILLPOWER, PARAMS.INTELLIGENCE, PARAMS.SPELLPOWER,
             PARAMS.KNOWLEDGE, PARAMS.WISDOM, PARAMS.CHARISMA,};

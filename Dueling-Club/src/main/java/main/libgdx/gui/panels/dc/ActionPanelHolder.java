@@ -1,4 +1,4 @@
-package main.libgdx.gui.panels;
+package main.libgdx.gui.panels.dc;
 
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_QuickItemObj;

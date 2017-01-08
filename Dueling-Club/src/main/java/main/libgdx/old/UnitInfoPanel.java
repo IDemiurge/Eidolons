@@ -1,7 +1,7 @@
 package main.libgdx.old;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
-import main.libgdx.gui.panels.sub.PagedPanel;
+import main.libgdx.gui.panels.generic.PagedListPanel;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,7 +13,7 @@ public class UnitInfoPanel extends Group {
 
     protected OrbPanel orbPanel;
     protected PortraitPanel portraitPanel;
-    protected PagedPanel buffPanel;
+    protected PagedListPanel buffPanel;
     protected ItemPanel itemPanel;
 
     protected String imagePath;
@@ -34,7 +34,7 @@ public class UnitInfoPanel extends Group {
 
         orbPanel.setY(portraitPanel.getHeight() - orbPanel.getHeight());
 
-//        buffPanel = new PagedPanel(imagePath, 5, 1).init();
+//        buffPanel = new PagedListPanel(imagePath, 5, 1).init();
         buffPanel.setX(orbPanel.getWidth() + portraitPanel.getWidth());
         buffPanel.setY(portraitPanel.getHeight() - buffPanel.getHeight());
         addActor(buffPanel);
