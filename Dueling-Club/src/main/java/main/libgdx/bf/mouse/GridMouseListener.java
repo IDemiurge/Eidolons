@@ -110,7 +110,7 @@ public class GridMouseListener extends ClickListener {
         a = gridPanel.hitChildren(x, y, true);
         if (a != null && a instanceof GridCell) {
             GridCell cell = (GridCell) a;
-            if (gridPanel.getCellBorderManager().isBlueBorderActive() && event.getButton() == 0) {
+            if (gridPanel.getCellBorderManager().isBlueBorderActive() && event.getButton() == Input.Buttons.LEFT) {
                 Borderable b = cell;
                 if (cell.getInnerDrawable() != null) {
                     Actor unit = cell.getInnerDrawable().hit(x, y, true);

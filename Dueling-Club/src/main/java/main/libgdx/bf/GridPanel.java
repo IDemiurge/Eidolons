@@ -9,7 +9,6 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.PointX;
@@ -121,7 +120,7 @@ public class GridPanel extends Group {
         setWidth(cells[0][0].getWidth() * cols);
 
 
-        addListener(new GridMouseListener(this, cells, unitViewMap));
+        addListener(new GridMouseListener(this, cells, unitMap));
         return this;
     }
 
@@ -158,16 +157,16 @@ public class GridPanel extends Group {
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED
                     || event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
-                removeUnitView(r.getSourceObj());
+                removeUnitView((DC_HeroObj) r.getSourceObj());
                 caught = true;
             }
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING) {
-                addUnitView(r.getSourceObj());
+                moveUnitView((DC_HeroObj) r.getSourceObj());
                 caught = true;
             }
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_SUMMONED) {
-                addUnitView(r.getObj(KEYS.SUMMONED));
+                addUnitView((DC_HeroObj) r.getObj(KEYS.SUMMONED));
                 caught = true;
             }
 
@@ -222,10 +221,10 @@ public class GridPanel extends Group {
 
         GuiEventManager.bind(CREATE_UNITS_MODEL, param -> {
             units = (DequeImpl<DC_HeroObj>) param.get();
-            Lightmap lightmap  =new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight(), rows, cols);
+            Lightmap lightmap = new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight(), rows, cols);
             if (lightmap.isValid())
-            setLightmap(lightmap
-            );
+                setLightmap(lightmap
+                );
 
 
             Map<Coordinates, List<DC_HeroObj>> map = new HashMap<>();
@@ -282,13 +281,9 @@ public class GridPanel extends Group {
 
     }
 
-    private void addUnitView(Obj heroObj) {
+    private void moveUnitView(DC_HeroObj heroObj) {
         int rows1 = rows - 1;
         UnitView uv = unitMap.get(heroObj);
-        if (uv == null) {
-//            main.system.auxiliary.LogMaster.log(1," " );
-            return;
-        }
         Coordinates c = heroObj.getCoordinates();
         if (cells[c.x][rows1 - c.y].getInnerDrawable() == null) {
             GridCellContainer cellContainer = new GridCellContainer(cells[c.x][rows1 - c.y]).init();
@@ -300,11 +295,17 @@ public class GridPanel extends Group {
         getCellBorderManager().updateBorderSize();
 
         if (getLightmap() != null) {
-            getLightmap().updatePos((MicroObj) heroObj);
+            getLightmap().updatePos(heroObj);
         }
     }
 
-    private void removeUnitView(Obj obj) {
+    private void addUnitView(DC_HeroObj heroObj) {
+        UnitViewOptions uvo = new UnitViewOptions(heroObj, unitMap);
+        new UnitView(uvo);
+        moveUnitView(heroObj);
+    }
+
+    private void removeUnitView(DC_HeroObj obj) {
         UnitView uv = unitMap.get(obj);
         GridCellContainer gridCellContainer = (GridCellContainer) uv.getParent();
         gridCellContainer.removeActor(uv);
