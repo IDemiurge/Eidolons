@@ -5,6 +5,7 @@ import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
 import main.content.*;
 import main.content.properties.G_PROPS;
 import main.data.DataManager;
+import main.entity.Entity;
 import main.entity.obj.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.entity.type.SpellType;
@@ -64,7 +65,10 @@ public class TestMasterContent {
     private static String FOCUS_LIST = "";
     private static String FIX_LIST = "";
     private static String POLISH_LIST = "";
-    private static String TEST_LIST = "Raise Skeleton;Light;Haze;Leap into Darkness;Blink;Summon Vampire Bat;"
+    private static String GRAPHICS_TEST_LIST = "Light;Haze;Force Field;" +
+     "Summon Vampire Bat;Blink";
+    private static String TEST_LIST = "Raise Skeleton;Light;Haze;" +
+     "Leap into Darkness;Blink;Summon Vampire Bat;"
             // + "Enchant Weapon;"
             // + "Enchant Armor;"
             + "Arcane Bolt;Ray of Arcanum;Time Warp;"
@@ -245,7 +249,13 @@ public class TestMasterContent {
             }
     }
 
-    private static void addTestSpells(ObjType type, boolean last) {
+    public static void addGRAPHICS_TEST_Spells(Entity type) {
+        for (String s : StringMaster.openContainer(GRAPHICS_TEST_LIST ))
+            type.addProperty(PROPS.VERBATIM_SPELLS, s
+         , true);
+    }
+
+        private static void addTestSpells(ObjType type, boolean last) {
         type.addProperty(PROPS.VERBATIM_SPELLS, "Blink;"
                 + getTEST_LIST(), true);
         if (DrawMasterStatic.GRAPHICS_TEST_MODE) {

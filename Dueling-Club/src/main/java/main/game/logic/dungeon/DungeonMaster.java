@@ -413,7 +413,9 @@ public class DungeonMaster {
         setDungeon(dungeon);
         getDungeons().add(dungeon);
     }
-
+    public Dungeon getDungeonNeverInit() {
+        return dungeon;
+    }
     public Dungeon getDungeon() {
         if (dungeon == null)
             initDungeon();

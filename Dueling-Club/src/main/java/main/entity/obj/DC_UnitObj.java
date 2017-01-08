@@ -38,8 +38,10 @@ import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
 import main.system.math.DC_MathManager;
 import main.system.math.MathMaster;
+import main.system.test.TestMasterContent;
 import main.system.text.ToolTipMaster;
 import main.test.debug.DebugMaster;
 
@@ -367,6 +369,10 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
             return;
         // resetActives();
         // resetFacing();
+//        if (isActiveSelected())
+            if (isMine() )
+            if (CoreEngine.isGraphicTestMode())
+                TestMasterContent.addGRAPHICS_TEST_Spells(this);
 
         if (checkClassification(CLASSIFICATIONS.TALL)) {
             addProperty(G_PROPS.STANDARD_PASSIVES, "" + CLASSIFICATIONS.TALL, true);
@@ -481,6 +487,7 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
 
         initiative += getIntParam(PARAMS.C_INITIATIVE_BONUS);
         // game.getTurnManager().getPreviousActive() take turns
+
         if (game.isDummyMode())
             if (!isBfObj())
                 if (!isNeutral())

@@ -973,6 +973,7 @@ public class DC_Game extends MicroGame {
         return getDungeonMaster().getDungeon();
     }
 
+
     public GAME_TYPE getGameType() {
         return gameType;
     }
