@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.data.filesys.PathFinder;
+import main.game.DC_Game;
 import main.system.auxiliary.GuiManager;
 
 /**
@@ -31,6 +32,12 @@ public class Background extends Group {
     }
 
     public Background init() {
+        if (DC_Game.game != null)
+            if (DC_Game.game.getDungeonMaster() != null)
+            if (DC_Game.game.getDungeonMaster().getDungeonNeverInit() != null) {
+                setImagePath(
+                 DC_Game.game.getDungeonMaster().getDungeonNeverInit(). getMapBackground());
+            }
         update();
         return this;
     }

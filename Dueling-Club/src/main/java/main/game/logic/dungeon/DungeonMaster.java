@@ -169,12 +169,13 @@ public class DungeonMaster {
 
     public void initDungeon() {
         ObjType type = null;
-        if (BooleanMaster.isTrue(FAST_DC.getGameLauncher().getSUPER_FAST_MODE())
-                ){
+
+        if (BooleanMaster.isTrue(FAST_DC.getGameLauncher().getSUPER_FAST_MODE())) {
             setDungeonPath(FAST_DC.DEFAULT_TEST_DUNGEON);
         }
         if (getDungeonPath() != null) {
             setDungeon(DungeonBuilder.loadDungeon(getDungeonPath()));
+
             return;
         }
 
@@ -216,9 +217,9 @@ public class DungeonMaster {
                     initDungeonLevelChoice();
             }
             setDungeon(new Dungeon(type));
-        getDungeons().add(dungeon);
-        rootDungeon = getDungeon();
-    }
+            getDungeons().add(dungeon);
+            rootDungeon = getDungeon();
+        }
         if (dungeon != null)
             initialized = true;
     }
@@ -412,7 +413,9 @@ public class DungeonMaster {
         setDungeon(dungeon);
         getDungeons().add(dungeon);
     }
-
+    public Dungeon getDungeonNeverInit() {
+        return dungeon;
+    }
     public Dungeon getDungeon() {
         if (dungeon == null)
             initDungeon();
@@ -427,14 +430,23 @@ public class DungeonMaster {
         this.dungeon = dungeon;
         GuiManager.setCurrentLevelCellsX(getLevelWidth());
         GuiManager.setCurrentLevelCellsY(getLevelHeight());
-        if (ImageManager.isImage(dungeon.getMapBackground()))
-            if (GameScreen.getInstance() != null)
+        if (!ImageManager.isImage(dungeon.getMapBackground())) {
+            main.system.auxiliary.LogMaster.log(1,
+                    dungeon.getMapBackground() + " is not a valid image! >> " + dungeon);
+            return;
+        }
+        if (GameScreen.getInstance() == null) {
+            main.system.auxiliary.LogMaster.log(1,
+                    dungeon.getMapBackground() + "failed to set as bg;" +
+                            " GameScreen is not ready! >> " + dungeon);
+            return;
+        }
                 try {
                     GameScreen.getInstance().getBackground().setImagePath(dungeon.getMapBackground());
+                    main.system.auxiliary.LogMaster.log(1, dungeon.getMapBackground() + " bg set for " + dungeon);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
     }
 
     public G_Panel getMinimapComponent() {

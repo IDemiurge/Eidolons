@@ -242,8 +242,8 @@ public class LE_DataMaster {
         // TODO getOrCreate name from data!
         Mission mission = new Mission(baseType, data);
         LevelEditor.getMainPanel().newMission(mission);
-		resetMissionWorkspace();
-		mission.initLevels();
+        resetMissionWorkspace();
+        mission.initLevels();
 	}
 
 	public static void resetMissionWorkspace() {

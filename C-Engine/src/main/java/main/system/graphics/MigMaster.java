@@ -109,6 +109,11 @@ public class MigMaster {
                     width = visuals.getWidth();
             }
         }
+        return process(constraints, height, width, container_height, container_width);
+    }
+
+
+    public static String process(String constraints, int height, int width, int container_height, int container_width) {
         constraints = constraints.replace(PROCESS_CHAR, "");
         constraints = constraints.replace(WIDTH, "" + width);
         constraints = constraints.replace(HEIGHT, "" + height);

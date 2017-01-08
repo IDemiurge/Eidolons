@@ -50,7 +50,7 @@ public class FAST_DC {
     // "Cemetary";
     private static final boolean BEHAVIOR_TEST_ON = false;
 
-    public static String DEFAULT_TEST_DUNGEON = "test\\Clearshot Test.xml";
+    public static String DEFAULT_TEST_DUNGEON = "test\\Clearshot Test.xml";//Clearshot
     public static String DEFAULT_DUNGEON = null;
     public static Boolean FAST_MODE = false;
     public static Boolean factionLeaderRequired = false;
@@ -88,6 +88,7 @@ public class FAST_DC {
             = "7-5=Minotaur,8-5=Troglodyte,";
     public static boolean SUPER_FAST_MODE;
     public static boolean LOCALHOST = true;
+    public static String exceptions = "";
     private static boolean MINIMAP_TEST_ON = false;
     private static boolean VISION_HACK = false;
     private static boolean fullscreen = false;
@@ -105,8 +106,6 @@ public class FAST_DC {
     public static boolean isRunning() {
         return running;
     }
-
-    public static String exceptions = "";
 
     //    chars;skills;classes;deities;factions;jewelry; TODO
     public static void main(String[] args) {
@@ -198,14 +197,17 @@ public class FAST_DC {
                     if (SUPER_FAST_MODE)
                         DungeonMaster.CHOOSE_LEVEL = false;
                     // preset
-                    ItemGenerator.setGenerationOn(!SUPER_FAST_MODE);
+                    ItemGenerator.setGenerationOn(!SUPER_FAST_MODE
+//                     && !CoreEngine.isGraphicTestMode()
+                    );
                     ItemGenerator.setBasicMode(FAST_MODE);
 
                 }
 
             }
-        if (!CoreEngine.isSwingOn())
+        if (!CoreEngine.isSwingOn()) {
             DENIS_Launcher.main(new String[]{});
+        }
 //        main.test.libgdx.prototype.Launcher.main(new String[]{});
         CoreEngine.setTEST_MODE(true);
         DC_Engine.init();

@@ -41,66 +41,6 @@ public class AV_T3View extends ThreeTreeView {
 		// .getPanelSize().height - 40));
 	}
 
-	private void init() {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * or maybe I should return to the idea of letting EDV display a tree! 
-	 * 
-	 * 
-	 * 
-	 * bottom panels! 
-	 * 
-	 * edit table panel!.. 
-	 * 
-	 * 
-	 * selection 
-	 * 
-	 * sync turn off? 
-	 * 
-	 * 
-	 */
-	@Override
-	protected void initUpperPanel(DC_HeroObj hero) {
-		upperPanel = new T3UpperPanel(T3UpperPanel.AV_CONTROLS, hero, this) {
-			public void handleControl(String c, boolean alt) {
-				switch (c) {
-					case T3UpperPanel.TOGGLE_VIEW:
-						if (!alt)
-							AV_T3View.toggleEditTable();
-						else
-							new Thread(new Runnable() {
-								public void run() {
-									Boolean result = DialogMaster.askAndWait(
-                                            "Where to update the Edit Table?", "Left!", "Right!",
-                                            "Center!");
-                                    AV_T3View.toggleEditTable(result);
-								}
-							}, "DialogMaster thread").start();
-
-						break;
-					case T3UpperPanel.SAVE:
-						if (!alt)
-							ModelManager.saveAll();
-						else
-							ModelManager.backUp();
-						break;
-					case T3UpperPanel.REMOVE:
-						ModelManager.backUp();
-						break;
-					case T3UpperPanel.ADD:
-						ModelManager.add(true); // alt ? true : null
-						break;
-				}
-			}
-
-		};
-		upperPanel.setPanelSize(new Dimension(treeSize.width, panelSize.height - treeSize.height));
-		upperPanel.init();
-	}
-
 	public static void toggleEditTable() {
 		Boolean left_right_center = null;
 		HT_View relevantTree = comp.getRemovedTree();
@@ -195,25 +135,6 @@ public class AV_T3View extends ThreeTreeView {
 
 	}
 
-	public void selected(Boolean left_right_none_preferred, ObjType value) {
-		Object arg = centerTree.getArg(value.getSubGroupingKey());
-		activeTree = centerTree;
-		if (arg == leftTree.getArg())
-			activeTree = leftTree;
-		if (arg == rightTree.getArg())
-			activeTree = rightTree;
-		if (table != null) {
-			table.selectType(value);
-			if (removedTree != null) {
-				if (removedTree != centerTree)
-					left_right_none_preferred = removedTree == rightTree;
-			}
-		}
-		super.selected(left_right_none_preferred, value);
-		infoPanel.repaint();
-		infoPanel2.repaint();
-	}
-
 	public static JFrame showInNewWindow(boolean undecorated, boolean skill_class) {
 		GuiManager.setKeyListener(Launcher.getHcKeyListener());
 
@@ -244,6 +165,85 @@ public class AV_T3View extends ThreeTreeView {
 
 		return window;
 	}
+
+    private void init() {
+        // TODO Auto-generated method stub
+
+    }
+
+    /*
+     * or maybe I should return to the idea of letting EDV display a tree!
+     *
+     *
+     *
+     * bottom panels!
+     *
+     * edit table panel!..
+     *
+     *
+     * selection
+     *
+     * sync turn off?
+     *
+     *
+     */
+    @Override
+    protected void initUpperPanel(DC_HeroObj hero) {
+        upperPanel = new T3UpperPanel(T3UpperPanel.AV_CONTROLS, hero, this) {
+            public void handleControl(String c, boolean alt) {
+                switch (c) {
+                    case T3UpperPanel.TOGGLE_VIEW:
+                        if (!alt)
+                            AV_T3View.toggleEditTable();
+                        else
+                            new Thread(new Runnable() {
+                                public void run() {
+                                    Boolean result = DialogMaster.askAndWait(
+                                            "Where to update the Edit Table?", "Left!", "Right!",
+                                            "Center!");
+                                    AV_T3View.toggleEditTable(result);
+                                }
+                            }, "DialogMaster thread").start();
+
+                        break;
+                    case T3UpperPanel.SAVE:
+                        if (!alt)
+                            ModelManager.saveAll();
+                        else
+                            ModelManager.backUp();
+                        break;
+                    case T3UpperPanel.REMOVE:
+                        ModelManager.backUp();
+                        break;
+                    case T3UpperPanel.ADD:
+                        ModelManager.add(true); // alt ? true : null
+                        break;
+                }
+            }
+
+        };
+        upperPanel.setPanelSize(new Dimension(treeSize.width, panelSize.height - treeSize.height));
+        upperPanel.init();
+    }
+
+    public void selected(Boolean left_right_none_preferred, ObjType value) {
+        Object arg = centerTree.getArg(value.getSubGroupingKey());
+        activeTree = centerTree;
+        if (arg == leftTree.getArg())
+            activeTree = leftTree;
+        if (arg == rightTree.getArg())
+            activeTree = rightTree;
+        if (table != null) {
+            table.selectType(value);
+            if (removedTree != null) {
+                if (removedTree != centerTree)
+                    left_right_none_preferred = removedTree == rightTree;
+            }
+        }
+        super.selected(left_right_none_preferred, value);
+        infoPanel.repaint();
+        infoPanel2.repaint();
+    }
 
 	public HT_View getActiveTree() {
 		return activeTree;

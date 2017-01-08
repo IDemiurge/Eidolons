@@ -20,9 +20,13 @@ import main.game.player.DC_Player;
 import main.game.player.Player;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
+import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.net.data.MapData;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -117,13 +121,26 @@ public class ArenaManager {
     public void startGame() {
 
         spawnManager.init();
+        LogMaster.log(1, "init ");
+
         spawnManager.spawnParty(true);
+        LogMaster.log(1, "spawnParty ");
+
         spawnManager.spawnParty(false);
+        LogMaster.log(1, "spawnParty ");
 
         if (game.getData() != null) {
+            LogMaster.log(1, "processing UnitData " + game.getData());
             DC_ObjInitializer.processUnitData(game.getData(), game);
-            GuiEventManager.trigger(CREATE_UNITS_MODEL, new EventCallbackParam(game.getUnits()));
+            LogMaster.log(1, "processed UnitData ");
         }
+        if (!ListMaster.isNotEmpty(game.getUnits())) {
+            LogMaster.log(1, "NO UNITS! ");
+        }
+
+        WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
+        GuiEventManager.trigger(CREATE_UNITS_MODEL, new EventCallbackParam(game.getUnits()));
+
         if (!game.isOffline()) {
             saveFacing();
         }
@@ -160,7 +177,7 @@ public class ArenaManager {
 
     private void initializeMap() {
         try {
-            this.map = new DungeonMapGenerator().generateMap(game.getDungeonMaster().getDungeon());
+//            this.map = new DungeonMapGenerator().generateMap(game.getDungeonMaster().getDungeon());
         } catch (Exception e) {
             e.printStackTrace();
         }

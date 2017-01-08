@@ -81,7 +81,55 @@ import static main.test.debug.DebugMaster.DEBUG_FUNCTIONS.SPAWN_WAVE;
 public class DebugMaster {
     public static final char HOTKEY_CHAR = 'd';
     public static final char FUNCTION_HOTKEY_CHAR = 'f';
+    public static final DEBUG_FUNCTIONS[] group_add_bf_obj = {
+            DEBUG_FUNCTIONS.ADD_UNIT,
+            DEBUG_FUNCTIONS.ADD_ENEMY_UNIT,
+            DEBUG_FUNCTIONS.ADD_GROUP,
+            DEBUG_FUNCTIONS.ADD_CHAR,
+            DEBUG_FUNCTIONS.ADD_OBJ,
+            DEBUG_FUNCTIONS.SPAWN_PARTY,
+            DEBUG_FUNCTIONS.SPAWN_WAVE,
+            DEBUG_FUNCTIONS.SPAWN_CUSTOM_WAVE,
 
+    };
+    public static final DEBUG_FUNCTIONS[] group_bf = {
+            DEBUG_FUNCTIONS.CLEAR,
+            DEBUG_FUNCTIONS.RESTART,
+            DEBUG_FUNCTIONS.KILL_ALL_UNITS,
+            DEBUG_FUNCTIONS.CLEAR_WAVES,
+            DEBUG_FUNCTIONS.LOAD_DUNGEON,
+    };
+    public static final DEBUG_FUNCTIONS[] group_basic = {
+            DEBUG_FUNCTIONS.END_TURN,
+            DEBUG_FUNCTIONS.TOGGLE_DEBUG,
+            DEBUG_FUNCTIONS.TOGGLE_OMNIVISION,
+            DEBUG_FUNCTIONS.PAUSE,
+    };
+    public static final DEBUG_FUNCTIONS[] group_add = {
+            DEBUG_FUNCTIONS.ADD_DUNGEON,
+            DEBUG_FUNCTIONS.ADD_SKILL,
+            DEBUG_FUNCTIONS.ADD_ACTIVE,
+            DEBUG_FUNCTIONS.ADD_SPELL,
+            DEBUG_FUNCTIONS.ADD_ITEM,
+
+    };
+    public static final DEBUG_FUNCTIONS[] group_graphics = {
+            DEBUG_FUNCTIONS.TOGGLE_LIGHTING,
+            DEBUG_FUNCTIONS.TOGGLE_FOG,
+            DEBUG_FUNCTIONS.ADD_SFX,
+    };
+    public static final HIDDEN_DEBUG_FUNCTIONS[] group_display = {
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_EFFECTS,
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_TRIGGERS,
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_EFFECTS,
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_EVENT_LOG,
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_LOG,
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_STATE,
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_OBJECTS,
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_UNITS,
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_REF,
+            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_UNIT_INFO,
+    };
     public static boolean ALT_AI_PLAYER;
     private static boolean omnivision;
     private static boolean mapDebugOn = true;
@@ -93,7 +141,6 @@ public class DebugMaster {
     private String lastFunction;
     private Stack<String> executedFunctions = new Stack<>();
     private DC_Builder bf;
-
     // public void editAi(DC_HeroObj unit) {
     // UnitAI ai = unit.getUnitAI();
     // }
@@ -111,7 +158,6 @@ public class DebugMaster {
         this.game = state.getGame();
         this.bf = bf;
     }
-
 
     public static boolean isOmnivisionOn() {
         return omnivision;
@@ -131,6 +177,10 @@ public class DebugMaster {
 
     public static void setAltMode(boolean altMode2) {
         altMode = altMode2;
+    }
+
+    public static void setTarget(DC_Obj obj) {
+        target = obj;
     }
 
     public void promptFunctionToExecute() {
@@ -1113,12 +1163,6 @@ public class DebugMaster {
     public void setArg(Obj arg) {
         this.arg = arg;
     }
-
-    public static void setTarget(DC_Obj obj) {
-        target = obj;
-    }
-
-
     public enum SIMULATION_FUNCTIONS {
         REMAP,
 
@@ -1127,57 +1171,6 @@ public class DebugMaster {
     public enum AI_PARAM {
         LOG_LEVEL
     }
-
-    public static final DEBUG_FUNCTIONS[] group_add_bf_obj = {
-     DEBUG_FUNCTIONS.ADD_UNIT,
-     DEBUG_FUNCTIONS.ADD_ENEMY_UNIT,
-            DEBUG_FUNCTIONS.ADD_GROUP,
-            DEBUG_FUNCTIONS.ADD_CHAR,
-            DEBUG_FUNCTIONS.ADD_OBJ,
-            DEBUG_FUNCTIONS.SPAWN_PARTY,
-            DEBUG_FUNCTIONS.SPAWN_WAVE,
-            DEBUG_FUNCTIONS.SPAWN_CUSTOM_WAVE,
-
-    };
-    public static final DEBUG_FUNCTIONS[] group_bf = {
-     DEBUG_FUNCTIONS.CLEAR,
-     DEBUG_FUNCTIONS.RESTART,
-     DEBUG_FUNCTIONS.KILL_ALL_UNITS,
-            DEBUG_FUNCTIONS.CLEAR_WAVES,
-            DEBUG_FUNCTIONS.LOAD_DUNGEON,
-    };
-    public static final DEBUG_FUNCTIONS[] group_basic = {
-     DEBUG_FUNCTIONS.END_TURN,
-     DEBUG_FUNCTIONS.TOGGLE_DEBUG,
-     DEBUG_FUNCTIONS.TOGGLE_OMNIVISION,
-     DEBUG_FUNCTIONS.PAUSE,
-    };
-    public static final DEBUG_FUNCTIONS[] group_add = {
-     DEBUG_FUNCTIONS.ADD_DUNGEON,
-            DEBUG_FUNCTIONS.ADD_SKILL,
-            DEBUG_FUNCTIONS.ADD_ACTIVE,
-            DEBUG_FUNCTIONS.ADD_SPELL,
-            DEBUG_FUNCTIONS.ADD_ITEM,
-
-    };
-    public static final DEBUG_FUNCTIONS[] group_graphics = {
-            DEBUG_FUNCTIONS.TOGGLE_LIGHTING,
-            DEBUG_FUNCTIONS.TOGGLE_FOG,
-            DEBUG_FUNCTIONS.ADD_SFX,
-    };
-
-    public static final HIDDEN_DEBUG_FUNCTIONS[] group_display = {
-            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_EFFECTS,
-            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_TRIGGERS,
-            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_EFFECTS,
-            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_EVENT_LOG,
-            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_LOG,
-            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_STATE,
-            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_OBJECTS,
-            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_UNITS,
-            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_REF,
-            HIDDEN_DEBUG_FUNCTIONS.DISPLAY_UNIT_INFO,
-    };
 
     public enum DEBUG_FUNCTIONS {
         // GAME

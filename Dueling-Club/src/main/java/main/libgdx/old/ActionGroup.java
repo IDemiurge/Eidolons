@@ -23,12 +23,12 @@ public class ActionGroup extends Group {
     }
 
     public ActionGroup init() {
-        panel = new ActionPanel(imagePath, 5, 1).init();
-        panel2 = new ActionPanel(imagePath, 5, 1).init();
-        panel3 = new ActionPanel(imagePath, 5, 1).init();
-        panel4 = new ActionPanel(imagePath, 5, 1).init();
-        panel5 = new ActionPanel(imagePath, 5, 1).init();
-        panel6 = new ActionPanel(imagePath, 5, 1).init();
+//        panel = new ActionPanel(imagePath, 5, 1).init();
+//        panel2 = new ActionPanel(imagePath, 5, 1).init();
+//        panel3 = new ActionPanel(imagePath, 5, 1).init();
+//        panel4 = new ActionPanel(imagePath, 5, 1).init();
+//        panel5 = new ActionPanel(imagePath, 5, 1).init();
+//        panel6 = new ActionPanel(imagePath, 5, 1).init();
 
         final int hOffset = 0;
         final int wOffset = 10;

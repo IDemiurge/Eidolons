@@ -16,10 +16,10 @@ public class PhaseAnim extends Group {
 
 
     Animation anim;
-    private Texture2D texture;
-    private Image image;
     int w = GuiManager.getScreenWidthInt();
     int h = GuiManager.getScreenHeightInt();
+    private Texture2D texture;
+    private Image image;
     private boolean dirty;
 
     public PhaseAnim(Animation anim) {

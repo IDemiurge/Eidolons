@@ -23,6 +23,13 @@ import java.util.List;
 
 public class Java2DTest implements ApplicationListener {
 
+    private OrthographicCamera camera;
+    private SpriteBatch batch;
+    private Texture2D j2dTex;
+    private TextureRegion sprite;
+    private List<java.awt.Shape> shapes = new ArrayList<java.awt.Shape>();
+    private int pointer = 0;
+
     public static void main(String[] args) {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "Java2DTest";
@@ -31,15 +38,6 @@ public class Java2DTest implements ApplicationListener {
 
         new LwjglApplication(new Java2DTest(), cfg);
     }
-
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
-    private Texture2D j2dTex;
-    private TextureRegion sprite;
-
-
-    private List<java.awt.Shape> shapes = new ArrayList<java.awt.Shape>();
-    private int pointer = 0;
 
     @Override
     public void create() {

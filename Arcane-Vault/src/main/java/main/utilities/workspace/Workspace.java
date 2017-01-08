@@ -20,9 +20,9 @@ public class Workspace {
 
 	String name;
 	List<ObjType> typeList;
-	private G_Panel tabComp;
-	private boolean dirty;
-	boolean search;
+    boolean search;
+    private G_Panel tabComp;
+    private boolean dirty;
 	private List<String> subgroups;
 	private PROPERTY subgroupingProp;
 	private String metadata;
@@ -75,8 +75,8 @@ public class Workspace {
         // TODO if 2 types with same name? Perhaps types should finally getOrCreate
         // *IDs* too!
         OBJ_TYPE TYPE = null;
-		for (ObjType type : getTypeList())
-			if (type.getName().equals(typeName)) {
+        for (ObjType type : getTypeList())
+            if (type.getName().equals(typeName)) {
 				TYPE = type.getOBJ_TYPE_ENUM();
 				if (OBJ_TYPES.getType(parent) != null)
 					if (TYPE == OBJ_TYPES.getType(parent))
@@ -136,14 +136,14 @@ public class Workspace {
 		this.subgroupingProp = subgroupingProp;
 	}
 
-	public void setMetaData(String metadata) {
-		this.metadata = metadata;
-
-	}
-
 	public String getMetaData() {
 		return metadata;
 	}
+
+    public void setMetaData(String metadata) {
+        this.metadata = metadata;
+
+    }
 
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;

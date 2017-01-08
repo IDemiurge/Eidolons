@@ -116,16 +116,6 @@ public class Session extends ArcaneEntity {
 		resetPropertyFromList(prop, list);
 	}
 
-	public void setWindow(SessionWindow window) {
-		this.window = window;
-	}
-
-	public void setDirection(Direction direction) {
-		this.direction = direction;
-		setProperty(AT_PROPS.DIRECTION, direction.toString());
-		// removeCustomGoals();
-	}
-
 	public List<Goal> getDisplayedGoals() {
 		if (goals == null)
 			goals = new LinkedList<>();
@@ -138,22 +128,26 @@ public class Session extends ArcaneEntity {
             // in non-locked mode, update all Direction's goals?
             // otherwise, all Session's goals
             return new ListMaster<Goal>().join(false, goals, getDirection().getGoals());
-		return new ListMaster<Goal>().getCommonElements(goals, getDirection().getGoals());
-		// return goals;
+        return new ListMaster<Goal>().getCommonElements(goals, getDirection().getGoals());
+        // return goals;
 	}
 
 	public List<Goal> getGoals() {
 		return goals;
 	}
 
-	public void setMultiDirection(boolean multiDirection) {
-		this.multiDirection = multiDirection;
-
-	}
+    public void setGoals(List<Goal> goals) {
+        this.goals = goals;
+    }
 
 	public boolean isMultiDirection() {
 		return multiDirection;
 	}
+
+    public void setMultiDirection(boolean multiDirection) {
+        this.multiDirection = multiDirection;
+
+    }
 
 	public boolean isLocked() {
 		return locked;
@@ -161,10 +155,6 @@ public class Session extends ArcaneEntity {
 
 	public void setLocked(boolean locked) {
 		this.locked = locked;
-	}
-
-	public void setGoals(List<Goal> goals) {
-		this.goals = goals;
 	}
 
 	public void addGoal(Goal goal) {
@@ -197,6 +187,12 @@ public class Session extends ArcaneEntity {
 		return direction;
 	}
 
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+        setProperty(AT_PROPS.DIRECTION, direction.toString());
+        // removeCustomGoals();
+    }
+
 	public List<Goal> getPinnedGoals() {
 		if (pinnedGoals == null)
 			pinnedGoals = new LinkedList<>();
@@ -212,5 +208,9 @@ public class Session extends ArcaneEntity {
 	public SessionWindow getWindow() {
 		return window;
 	}
+
+    public void setWindow(SessionWindow window) {
+        this.window = window;
+    }
 
 }

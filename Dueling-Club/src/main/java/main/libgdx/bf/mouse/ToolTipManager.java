@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -91,6 +92,11 @@ public class ToolTipManager extends Group {
         return offset;
     }
 
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        return null;//this is untouchable element
+    }
+
     public static class ToolTip extends Group {
         private Image image = null;
         private Label name;
@@ -123,15 +129,6 @@ public class ToolTipManager extends Group {
             addActor(val);
         }
 
-        @Override
-        public int hashCode() {
-            return Objects.hashCode(name.getText().toString());
-        }
-
-        public void updateVal(String sval) {
-            val = new Label(sval, StyleHolder.getDefaultLabelStyle());
-        }
-
         public static String getCurMaxVal(int curVal, int maxVal) {
             StringBuilder sb = new StringBuilder();
             if (curVal != -1) {
@@ -144,6 +141,15 @@ public class ToolTipManager extends Group {
             }
 
             return sb.toString();
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(name.getText().toString());
+        }
+
+        public void updateVal(String sval) {
+            val = new Label(sval, StyleHolder.getDefaultLabelStyle());
         }
     }
 

@@ -41,6 +41,17 @@ public class TaskComp extends AT_EntityNode<Task> implements ActionListener {
 		headerComp.addMouseListener(new AT_EntityMouseListener(entity));
 	}
 
+    public static String getDirectionShorthand(ObjType type) {
+        String string = StringMaster.getAbbreviation(type.getName());
+        if (string.length() > 4)
+            string = string.substring(0, 3);
+        if (string.length() < 2)
+            string = type.getName().substring(0, 2);
+        // if (string.length()>4|| string.length()<2)
+        // string = StringMaster.getFirstConsonants(type.getName(), 2);
+        return string.toUpperCase();
+    }
+
 	@Override
 	protected void addComponents() {
 		super.addComponents();
@@ -98,17 +109,17 @@ public class TaskComp extends AT_EntityNode<Task> implements ActionListener {
 		return super.getValuePanelPos();
 	}
 
-	@Override
-	protected String getDescrText() {
-		// TODO Auto-generated method stub
-		return super.getDescrText();
-	}
-
 	// protected void drawRect(Graphics g, int offset) {
 	// g.drawRect(offset + GoalPanel.offsetX, offset, getPanelWidth() - 1 -
 	// offset,
 	// getPanelHeight() - 1 - offset);
 	// }
+
+    @Override
+    protected String getDescrText() {
+        // TODO Auto-generated method stub
+        return super.getDescrText();
+    }
 
 	private void resetStatusComboBox() {
 		comboBox.setSelectedItem(entity.getStatusEnum());
@@ -158,17 +169,6 @@ public class TaskComp extends AT_EntityNode<Task> implements ActionListener {
 		return super.getHeaderText();
 	}
 
-	public static String getDirectionShorthand(ObjType type) {
-		String string = StringMaster.getAbbreviation(type.getName());
-		if (string.length() > 4)
-			string = string.substring(0, 3);
-		if (string.length() < 2)
-			string = type.getName().substring(0, 2);
-		// if (string.length()>4|| string.length()<2)
-		// string = StringMaster.getFirstConsonants(type.getName(), 2);
-		return string.toUpperCase();
-	}
-
 	protected void handleButtonMouseClick(MouseEvent arg0) {
 		boolean alt = arg0.isAltDown();
 
@@ -201,6 +201,6 @@ public class TaskComp extends AT_EntityNode<Task> implements ActionListener {
         // handleClick(mouseMap.getOrCreate(r), alt);
         // return;
         // }
-		// }
-	}
+        // }
+    }
 }

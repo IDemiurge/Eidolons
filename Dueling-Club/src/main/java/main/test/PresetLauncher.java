@@ -25,12 +25,12 @@ import java.util.List;
 import static main.test.Preset.PRESET_DATA.FIRST_DUNGEON;
 
 public class PresetLauncher {
-    public   static int PRESET_OPTION=-1;
     public final static String[] LAUNCH_OPTIONS = {
             "Last", "Graphics Test", "Recent", "New", "Load", "Fast",
             "Superfast"
 
     };
+    public static int PRESET_OPTION = -1;
 
     public static Boolean chooseLaunchOption() {
         int i =PRESET_OPTION;

@@ -16,10 +16,12 @@ public class WaitMaster {
 
     public static void unmarkAsComplete(WAIT_OPERATIONS operation) {
         getCompleteOperations().remove(operation);
+        LogMaster.log(LogMaster.WAIT_DEBUG, "Unmarked As Complete: " + operation);
     }
 
     public static void markAsComplete(WAIT_OPERATIONS operation) {
         getCompleteOperations().add(operation);
+        LogMaster.log(LogMaster.WAIT_DEBUG, "Marked As Complete: " + operation);
         // waiters.get(operation).
     }
 
@@ -117,7 +119,7 @@ public class WaitMaster {
         SELECT_MAP_OBJ,
         MAP_CLICK,
         DIALOGUE_DONE,
-        AUTO_TEST_INPUT,;
+        AUTO_TEST_INPUT, GDX_READY;
     }
 
 }

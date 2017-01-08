@@ -2,7 +2,7 @@ package main.libgdx.old;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import main.libgdx.gui.panels.PagedPanel;
+import main.libgdx.gui.panels.sub.PagedPanel;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,7 +35,7 @@ public class QuickActionPagedPanel extends PagedPanel {
     }
 
     @Override
-    public QuickActionPagedPanel init() {
+    public PagedPanel init() {
         super.init();
 
         actionButton1 = new Image(new Texture(getActionButtonImagePaths()[0]));

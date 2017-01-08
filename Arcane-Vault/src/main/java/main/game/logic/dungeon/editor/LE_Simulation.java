@@ -117,14 +117,14 @@ public class LE_Simulation extends DC_Game {
 
 	}
 
-	public void setSelectedEntity(Entity selectedEntity) {
-		this.selectedEntity = selectedEntity;
-
-	}
-
 	public Entity getSelectedEntity() {
 		return selectedEntity;
 	}
+
+    public void setSelectedEntity(Entity selectedEntity) {
+        this.selectedEntity = selectedEntity;
+
+    }
 
 	public DC_Cell getCellByCoordinate(Coordinates c) {
 		if (cell == null)
@@ -166,15 +166,15 @@ public class LE_Simulation extends DC_Game {
 		return super.getUnits();
 	}
 
-	public LinkedList<DC_HeroObj> getUnitsCache() {
-		return unitsCache;
-	}
-
 	public void setUnits(Collection<DC_HeroObj> unitsCache) {
 		// state.removeObject(id)
 		this.units = new DequeImpl<DC_HeroObj>(unitsCache);
 		// state.addObject(obj)
 	}
+
+    public LinkedList<DC_HeroObj> getUnitsCache() {
+        return unitsCache;
+    }
 
 	public void setUnitsCache(LinkedList<DC_HeroObj> unitsCache) {
 		this.unitsCache = unitsCache;
@@ -266,8 +266,8 @@ public class LE_Simulation extends DC_Game {
         // obj = getLevel().getTopObjMap().getOrCreate(c);
         // return obj;
         // // }
-		// }
-		// }
+        // }
+        // }
 		// return obj;
 		// for (DC_Obj obj : getLevel().getMapObjects())
 		// if (obj.getCoordinates().equals(c))

@@ -3,6 +3,7 @@ package main.libgdx.gui.panels;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
+import main.libgdx.gui.panels.sub.PagedPanel;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallback;
 import main.system.EventCallbackParam;

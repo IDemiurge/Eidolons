@@ -24,10 +24,6 @@ public class ZeitMaster {
 
 	public static final String MARK_SEPARATOR = ": ";
 
-	public enum STATUS_MARK {
-		STARTED, PAUSED, FINISHED,
-	}
-
 	public static int getTotalSecondsForEntity(ArcaneEntity e, AT_PARAMS timeParam) {
 		long time = TimeMaster.getTime() - new Long(e.getParam(timeParam));
 		int seconds = (int) (time / 1000);
@@ -42,18 +38,12 @@ public class ZeitMaster {
 		return TimeMaster.isToday(time);
 	}
 
-	/*
-	 * markTime()
-	 * paused()
-	 * getTotalTime()
-	 */
-
 	public static void checkCreateTimeTypes() {
         // getOrCreate last day, week, month...
         Entity era = getLatest(DataManager.getTypes(AT_OBJ_TYPE.ERA));
         boolean create = era == null;
-		if (!create)
-			create = era.checkProperty(AT_PROPS.ERA_STATUS, "Concluded");
+        if (!create)
+            create = era.checkProperty(AT_PROPS.ERA_STATUS, "Concluded");
 		if (create) {
 			int n = DataManager.getTypes(AT_OBJ_TYPE.ERA).size() + 1;
 			String name = DialogMaster.inputText("New Era's Name?", "The " + n
@@ -70,6 +60,12 @@ public class ZeitMaster {
 		// }
 
 	}
+
+	/*
+     * markTime()
+	 * paused()
+	 * getTotalTime()
+	 */
 
 	private static void createPeriod(Entity era, AT_OBJ_TYPE T) {
 		boolean create;
@@ -238,5 +234,9 @@ public class ZeitMaster {
 		entity.addProperty(AT_PROPS.TIME_MARKS, STATUS_MARK.STARTED + ": " + time);
 
 	}
+
+    public enum STATUS_MARK {
+        STARTED, PAUSED, FINISHED,
+    }
 
 }

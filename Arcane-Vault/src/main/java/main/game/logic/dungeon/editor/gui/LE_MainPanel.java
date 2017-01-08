@@ -164,7 +164,7 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
         // activateLevel(levels.getOrCreate(0));
         // else
         // activateLevel(mission.getFirstLevel());
-	}
+    }
 
 	public void activateLevel(Level level) {
 		// if (level.getMission() != null)

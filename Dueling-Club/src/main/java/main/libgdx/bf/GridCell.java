@@ -100,17 +100,6 @@ public class GridCell extends Group implements Borderable {
     }
 
     @Override
-    public void setBorder(Image image) {
-        if (image == null) {
-            removeActor(border);
-            border = null;
-        } else {
-            addActor(image);
-            border = image;
-        }
-    }
-
-    @Override
     public int getW() {
         return (int) getWidth();
     }
@@ -123,6 +112,17 @@ public class GridCell extends Group implements Borderable {
     @Override
     public Image getBorder() {
         return border;
+    }
+
+    @Override
+    public void setBorder(Image image) {
+        if (image == null) {
+            removeActor(border);
+            border = null;
+        } else {
+            addActor(image);
+            border = image;
+        }
     }
 
     public int getGridX() {
