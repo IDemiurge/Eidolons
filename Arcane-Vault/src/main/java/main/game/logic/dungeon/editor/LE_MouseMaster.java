@@ -233,9 +233,9 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
                 return;
             } else if (e.isShiftDown()) {
                 int i = lastClicked.getIntParam(G_PARAMS.CHANCE);
-				i = DialogMaster.inputInt("Set chance for object to be there..."
-						+ " (set negative to add '1 object only' rule for this coordinate)", i);
-				lastClicked.setParam(G_PARAMS.CHANCE, i);
+                i = DialogMaster.inputInt("Set chance for object to be there..."
+                        + " (set negative to add '1 object only' rule for this coordinate)", i);
+                lastClicked.setParam(G_PARAMS.CHANCE, i);
 				SoundMaster.playStandardSound(STD_SOUNDS.NOTE);
 				return;
 			} else if (alt && !empty) {

@@ -23,9 +23,9 @@ public class Workspace {
     boolean search;
     private G_Panel tabComp;
     private boolean dirty;
-	private List<String> subgroups;
-	private PROPERTY subgroupingProp;
-	private String metadata;
+    private List<String> subgroups;
+    private PROPERTY subgroupingProp;
+    private String metadata;
 
 	public Workspace(String name, List<ObjType> typeList, boolean search) {
 		this.search = search;
@@ -77,9 +77,9 @@ public class Workspace {
         OBJ_TYPE TYPE = null;
         for (ObjType type : getTypeList())
             if (type.getName().equals(typeName)) {
-				TYPE = type.getOBJ_TYPE_ENUM();
-				if (OBJ_TYPES.getType(parent) != null)
-					if (TYPE == OBJ_TYPES.getType(parent))
+                TYPE = type.getOBJ_TYPE_ENUM();
+                if (OBJ_TYPES.getType(parent) != null)
+                    if (TYPE == OBJ_TYPES.getType(parent))
 						return TYPE;
 			}
 		return TYPE;

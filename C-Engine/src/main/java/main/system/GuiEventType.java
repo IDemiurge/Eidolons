@@ -5,6 +5,7 @@ import main.game.event.Event.STANDARD_EVENT_TYPE;
 public enum GuiEventType {
     GRID_CREATED,
     CREATE_RADIAL_MENU,
+    SHOW_INFO_DIALOG, DIALOG_CLOSED,
     SHOW_PHASE_ANIM,
     UPDATE_PHASE_ANIM,
     UPDATE_PHASE_ANIMS,

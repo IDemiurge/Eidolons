@@ -97,7 +97,7 @@ public class GridPanel extends Group {
         unknownImage = TextureManager.getOrCreate(unknownCellPath);
         cellBorderTexture = TextureManager.getOrCreate(cellBorderPath);
 
-        cells=(new GridCell[cols][rows]);
+        cells = (new GridCell[cols][rows]);
 
         setCellBorderManager(new CellBorderManager(emptyImage.getWidth(),
                 emptyImage.getHeight()));
@@ -122,7 +122,7 @@ public class GridPanel extends Group {
         setWidth(cells[0][0].getWidth() * cols);
 
 
-        addListener(new GridMouseListener(this,cells ));
+        addListener(new GridMouseListener(this, cells));
         return this;
     }
 
@@ -223,8 +223,11 @@ public class GridPanel extends Group {
 
         GuiEventManager.bind(CREATE_UNITS_MODEL, param -> {
             units = (DequeImpl<DC_HeroObj>) param.get();
+            Lightmap lightmap  =new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight(), rows, cols);
+            if (lightmap.isValid())
+            setLightmap(lightmap
+            );
 
-            setLightmap(new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight(), rows));
 
             Map<Coordinates, List<DC_HeroObj>> map = new HashMap<>();
             for (DC_HeroObj object : units) {

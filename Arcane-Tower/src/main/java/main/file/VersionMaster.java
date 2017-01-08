@@ -29,7 +29,7 @@ public class VersionMaster {
     static Map<String, Map<String, ObjType>> map;
     static String version_day;
     static String version_week;
-	static String version_month;
+    static String version_month;
 
 	static {
 		version_session = 1;
@@ -64,9 +64,9 @@ public class VersionMaster {
                 Integer daysInMonth = TimeMaster.getDaysInMonth(month);
                 switch (period) {
                     case DAY:
-						v = daysInMonth + v;
-						MapMaster.addToIntegerMap(version.map, VERSION_PERIOD.MONTH, -1);
-						break;
+                        v = daysInMonth + v;
+                        MapMaster.addToIntegerMap(version.map, VERSION_PERIOD.MONTH, -1);
+                        break;
 					case WEEK:
 						break; // recalculate based on days?
 					// reduce month also...

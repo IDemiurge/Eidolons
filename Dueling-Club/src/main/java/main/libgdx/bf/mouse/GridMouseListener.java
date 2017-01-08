@@ -1,9 +1,11 @@
 package main.libgdx.bf.mouse;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.content.PARAMS;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
@@ -14,6 +16,7 @@ import main.libgdx.bf.mouse.ToolTipManager.ToolTipRecordOption;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
+import main.test.frontend.FAST_DC;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,12 +24,13 @@ import java.util.List;
 import java.util.Map;
 
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
+import static main.system.GuiEventType.SHOW_INFO_DIALOG;
 import static main.system.GuiEventType.SHOW_TOOLTIP;
 
 /**
  * Created by JustMe on 1/7/2017.
  */
-public class GridMouseListener extends InputListener {
+public class GridMouseListener extends ClickListener {
     private GridPanel gridPanel;
     private GridCell[][] cells;
 
@@ -47,8 +51,8 @@ public class GridMouseListener extends InputListener {
             if (a != null && a instanceof UnitView) {
                 UnitView uv = (UnitView) a;
                 DC_HeroObj hero = gridPanel.getUnitMap().entrySet().stream()
-                        .filter(entry -> entry.getValue() == uv).findFirst()
-                        .get().getKey();
+                 .filter(entry -> entry.getValue() == uv).findFirst()
+                 .get().getKey();
 
                 Map<String, String> tooltipStatMap = new HashMap<>();
                 tooltipStatMap.put(PARAMS.C_TOUGHNESS.getName(), "Toughness");
@@ -102,6 +106,7 @@ public class GridMouseListener extends InputListener {
     @Override
     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
         Actor a;
+
         a = gridPanel.hitChildren(x, y, true);
         if (a != null && a instanceof GridCell) {
             GridCell cell = (GridCell) a;
@@ -119,12 +124,24 @@ public class GridMouseListener extends InputListener {
             if (cell.getInnerDrawable() != null) {
                 Actor unit = cell.getInnerDrawable().hit(x, y, true);
                 if (unit != null && unit instanceof UnitView) {
+                    DC_HeroObj heroObj = gridPanel.getUnitMap().entrySet()
+                     .stream().filter(entry -> entry.getValue() == unit).findFirst()
+                     .get().getKey();
                     if (event.getButton() == Input.Buttons.RIGHT) {
-                        DC_HeroObj heroObj = gridPanel.getUnitMap().entrySet()
-                                .stream().filter(entry -> entry.getValue() == unit).findFirst()
-                                .get().getKey();
+                        //TODO map the click to the right object in the stack?
                         GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(heroObj));
+                    } else {
+                        if (FAST_DC.getGameLauncher() != null)
+                            if (FAST_DC.getGameLauncher().SUPER_FAST_MODE)
+                                GuiEventManager.trigger(SHOW_INFO_DIALOG,
+                                 new EventCallbackParam(heroObj));
+                            else if (
+                             Gdx.input.isKeyPressed(Keys.ALT_LEFT))
+                                GuiEventManager.trigger(SHOW_INFO_DIALOG,
+                                 new EventCallbackParam(heroObj));
+
                     }
+
                 }
             } else if (event.getButton() == Input.Buttons.RIGHT) {
                 DC_Obj dc_cell = DC_Game.game.getCellByCoordinate(new Coordinates(cell.getGridX(), cell.getGridY()));

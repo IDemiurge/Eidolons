@@ -14,7 +14,6 @@ import main.game.DC_Game.GAME_MODES;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.DC_ObjInitializer;
 import main.game.battlefield.map.DC_Map;
-import main.game.battlefield.map.DungeonMapGenerator;
 import main.game.logic.dungeon.Dungeon;
 import main.game.player.DC_Player;
 import main.game.player.Player;
@@ -25,8 +24,6 @@ import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.net.data.MapData;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -138,7 +135,7 @@ public class ArenaManager {
             LogMaster.log(1, "NO UNITS! ");
         }
 
-        WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
+//        WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
         GuiEventManager.trigger(CREATE_UNITS_MODEL, new EventCallbackParam(game.getUnits()));
 
         if (!game.isOffline()) {

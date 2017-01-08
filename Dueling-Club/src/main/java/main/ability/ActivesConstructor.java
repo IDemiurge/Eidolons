@@ -105,7 +105,7 @@ public class ActivesConstructor {
         for (Active active : list) {
             for (Ability abil : ((AbilityObj) active).getAbilities().getAbils()) {
                 for (Effect effect : ((Ability) abil).getEffects().getEffects()) {
-                    // effects.add(((Ability) abil).getEffects()); does it
+                    // effects.add(((Ability) abil).getEffectsStage()); does it
                     // change
                     // anything?
                     if (effect instanceof DC_Effect) {

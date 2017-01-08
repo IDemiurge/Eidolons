@@ -130,7 +130,7 @@ public class Session extends ArcaneEntity {
             return new ListMaster<Goal>().join(false, goals, getDirection().getGoals());
         return new ListMaster<Goal>().getCommonElements(goals, getDirection().getGoals());
         // return goals;
-	}
+    }
 
 	public List<Goal> getGoals() {
 		return goals;

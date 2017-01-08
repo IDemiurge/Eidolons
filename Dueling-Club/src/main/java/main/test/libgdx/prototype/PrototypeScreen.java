@@ -18,7 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import main.data.filesys.PathFinder;
 import main.entity.obj.MicroObj;
-import main.libgdx.anims.particles.PARTICLE_EFFECTS;
+import main.libgdx.anims.particles.ParticleActor;
 import main.system.GuiEventManager;
 import main.system.datatypes.DequeImpl;
 
@@ -115,7 +115,7 @@ public class PrototypeScreen implements Screen {
 //        stage.addActor(grid);
 //        grid.setZIndex(1);
 //        player.setZIndex(2);
-        test = new ParticleActor(PARTICLE_EFFECTS.DARK_SOULS.getPath(), world, 0, 0);
+//        test = new ParticleActor(PARTICLE_EFFECTS.DARK_SOULS.getPath(), world, 0, 0);
 
         stage.setDebugAll(true);
         InputMultiplexer in = new InputMultiplexer();
@@ -188,89 +188,89 @@ public class PrototypeScreen implements Screen {
         rayHandler.setCombinedMatrix((OrthographicCamera) stage.getCamera());
         rayHandler.updateAndRender();
         batch.begin();
-        for (int a = 0; a < test.array.size(); a++) {
-            float xpos = test.getX() + (-1 * stage.getCamera().position.x) + stage.getCamera().viewportWidth / 2 + a * 400;
-            float ypos = test.getY() + (-1 * stage.getCamera().position.y) + stage.getCamera().viewportHeight / 2;
-            test.array.get(a).setPosition(xpos, ypos);
-//            if (counter >= 300000000) {
-//                counter = 0;
-//                System.out.println("xpos = " + xpos + " || ypos = " + ypos);
-//                System.out.println("mouse X =" + mousX + "||| mouse Y = " + mousY);
-//                System.out.println("For particles #" + a + " diff x = " + (xpos - mousX) + " || diff y = " + (ypos - mousY));
-//            }
-            if (Math.abs(xpos - mousX) <= 100) {
-                if (Math.abs(ypos - mousY) <= 100) {
-                    for (int z = 0; z < test.array.get(a).getEmitters().size; z++) {
-                        float distanceX = xpos - mousX;
-                        float distanceY = ypos - mousY;
-//                        test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHighMax(0f);
-//                        test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHigh(0);
-                        if (distanceX <= 0) {
-                            test.array.get(a).getEmitters().get(z).getWind().setHigh(-45);
-                            test.array.get(a).getEmitters().get(z).getWind().setLow(-50);
-                        }
-                        if (distanceX > 0) {
-                            test.array.get(a).getEmitters().get(z).getWind().setHigh(50);
-                            test.array.get(a).getEmitters().get(z).getWind().setLow(45);
-                        }
-                        if (distanceY <= 0) {
-                            test.array.get(a).getEmitters().get(z).getVelocity().setHigh(-45);
-                            test.array.get(a).getEmitters().get(z).getVelocity().setLow(-50);
-                        }
-                        if (distanceY > 0) {
-                            test.array.get(a).getEmitters().get(z).getVelocity().setHigh(50);
-                            test.array.get(a).getEmitters().get(z).getVelocity().setLow(45);
-                        }
-
-
-
-                    }
-                } else {
-                    for (int z = 0; z < test.array.get(a).getEmitters().size; z++) {
-//                        test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHighMax(1f);
-//                        test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHigh(1);
-                        test.array.get(a).getEmitters().get(z).getWind().setHigh(0f, 0f);
-                        test.array.get(a).getEmitters().get(z).getWind().setLow(0f, 0f);
-                        test.array.get(a).getEmitters().get(z).getVelocity().setHigh(0);
-                        test.array.get(a).getEmitters().get(z).getVelocity().setLow(0);
-                    }
-                }
-            } else {
-                for (int z = 0; z < test.array.get(a).getEmitters().size; z++) {
-//                    test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHighMax(1f);
-//                    test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHigh(1);
-                    test.array.get(a).getEmitters().get(z).getWind().setHigh(0f, 0f);
-                    test.array.get(a).getEmitters().get(z).getWind().setLow(0f, 0f);
-                    test.array.get(a).getEmitters().get(z).getVelocity().setHigh(0);
-                    test.array.get(a).getEmitters().get(z).getVelocity().setLow(0);
-                }
-            }
-//            for (int z = 0; z < test.array.getOrCreate(a).getEmitters().size; z++){
-//                System.out.println(Math.abs(test.array.getOrCreate(a).getEmitters().getOrCreate(z).getX() -mousX));
-//                if ( Math.abs(test.array.getOrCreate(a).getEmitters().getOrCreate(z).getX() -mousX) <= 200) {
-//                   if (Math.abs(test.array.getOrCreate(a).getEmitters().getOrCreate(z).getY() -mousY) <= 200){
-////                       test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHighMax(0f);
-////                       test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHigh(0f);
+//        for (int a = 0; a < test.array.size(); a++) {
+//            float xpos = test.getX() + (-1 * stage.getCamera().position.x) + stage.getCamera().viewportWidth / 2 + a * 400;
+//            float ypos = test.getY() + (-1 * stage.getCamera().position.y) + stage.getCamera().viewportHeight / 2;
+//            test.array.get(a).setPosition(xpos, ypos);
+////            if (counter >= 300000000) {
+////                counter = 0;
+////                System.out.println("xpos = " + xpos + " || ypos = " + ypos);
+////                System.out.println("mouse X =" + mousX + "||| mouse Y = " + mousY);
+////                System.out.println("For particles #" + a + " diff x = " + (xpos - mousX) + " || diff y = " + (ypos - mousY));
+////            }
+//            if (Math.abs(xpos - mousX) <= 100) {
+//                if (Math.abs(ypos - mousY) <= 100) {
+//                    for (int z = 0; z < test.array.get(a).getEmitters().size; z++) {
+//                        float distanceX = xpos - mousX;
+//                        float distanceY = ypos - mousY;
+////                        test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHighMax(0f);
+////                        test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHigh(0);
+//                        if (distanceX <= 0) {
+//                            test.array.get(a).getEmitters().get(z).getWind().setHigh(-45);
+//                            test.array.get(a).getEmitters().get(z).getWind().setLow(-50);
+//                        }
+//                        if (distanceX > 0) {
+//                            test.array.get(a).getEmitters().get(z).getWind().setHigh(50);
+//                            test.array.get(a).getEmitters().get(z).getWind().setLow(45);
+//                        }
+//                        if (distanceY <= 0) {
+//                            test.array.get(a).getEmitters().get(z).getVelocity().setHigh(-45);
+//                            test.array.get(a).getEmitters().get(z).getVelocity().setLow(-50);
+//                        }
+//                        if (distanceY > 0) {
+//                            test.array.get(a).getEmitters().get(z).getVelocity().setHigh(50);
+//                            test.array.get(a).getEmitters().get(z).getVelocity().setLow(45);
+//                        }
 //
-//                       test.array.getOrCreate(a).getEmitters().getOrCreate(z).getWind().setHigh(50f);
-//                       test.array.getOrCreate(a).getEmitters().getOrCreate(z).getWind().setLow(45f);
 //
-//                   }else {
-//                       test.array.getOrCreate(a).getEmitters().getOrCreate(z).getWind().setHigh(0,0);
-//                       test.array.getOrCreate(a).getEmitters().getOrCreate(z).getWind().setLow(0,0);
-//                   }
+//
+//                    }
 //                } else {
-//                    test.array.getOrCreate(a).getEmitters().getOrCreate(z).getWind().setHigh(0,0);
-//                    test.array.getOrCreate(a).getEmitters().getOrCreate(z).getWind().setLow(0,0);
+//                    for (int z = 0; z < test.array.get(a).getEmitters().size; z++) {
+////                        test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHighMax(1f);
+////                        test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHigh(1);
+//                        test.array.get(a).getEmitters().get(z).getWind().setHigh(0f, 0f);
+//                        test.array.get(a).getEmitters().get(z).getWind().setLow(0f, 0f);
+//                        test.array.get(a).getEmitters().get(z).getVelocity().setHigh(0);
+//                        test.array.get(a).getEmitters().get(z).getVelocity().setLow(0);
+//                    }
+//                }
+//            } else {
+//                for (int z = 0; z < test.array.get(a).getEmitters().size; z++) {
+////                    test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHighMax(1f);
+////                    test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHigh(1);
+//                    test.array.get(a).getEmitters().get(z).getWind().setHigh(0f, 0f);
+//                    test.array.get(a).getEmitters().get(z).getWind().setLow(0f, 0f);
+//                    test.array.get(a).getEmitters().get(z).getVelocity().setHigh(0);
+//                    test.array.get(a).getEmitters().get(z).getVelocity().setLow(0);
 //                }
 //            }
-
-            test.array.get(a).update(v);
-            test.array.get(a).draw(batch, v);
-            if (test.array.get(a).isComplete()) {
-                test.array.get(a).reset();
-            }
-        }
+////            for (int z = 0; z < test.array.getOrCreate(a).getEmitters().size; z++){
+////                System.out.println(Math.abs(test.array.getOrCreate(a).getEmitters().getOrCreate(z).getX() -mousX));
+////                if ( Math.abs(test.array.getOrCreate(a).getEmitters().getOrCreate(z).getX() -mousX) <= 200) {
+////                   if (Math.abs(test.array.getOrCreate(a).getEmitters().getOrCreate(z).getY() -mousY) <= 200){
+//////                       test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHighMax(0f);
+//////                       test.array.getOrCreate(a).getEmitters().getOrCreate(z).getTransparency().setHigh(0f);
+////
+////                       test.array.getOrCreate(a).getEmitters().getOrCreate(z).getWind().setHigh(50f);
+////                       test.array.getOrCreate(a).getEmitters().getOrCreate(z).getWind().setLow(45f);
+////
+////                   }else {
+////                       test.array.getOrCreate(a).getEmitters().getOrCreate(z).getWind().setHigh(0,0);
+////                       test.array.getOrCreate(a).getEmitters().getOrCreate(z).getWind().setLow(0,0);
+////                   }
+////                } else {
+////                    test.array.getOrCreate(a).getEmitters().getOrCreate(z).getWind().setHigh(0,0);
+////                    test.array.getOrCreate(a).getEmitters().getOrCreate(z).getWind().setLow(0,0);
+////                }
+////            }
+//
+//            test.array.get(a).update(v);
+//            test.array.get(a).draw(batch, v);
+//            if (test.array.get(a).isComplete()) {
+//                test.array.get(a).reset();
+//            }
+//        }
 //        test.particleEffect.setPosition(test.getX() + (-1*stage.getCamera().position.x) + stage.getCamera().viewportWidth/2,test.getY() + (-1*stage.getCamera().position.y) + stage.getCamera().viewportHeight/2);
 //        test.particleEffect.update(v);
 //        test.particleEffect.draw(batch,v);
