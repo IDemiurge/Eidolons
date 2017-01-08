@@ -14,7 +14,6 @@ import main.game.DC_Game.GAME_MODES;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.DC_ObjInitializer;
 import main.game.battlefield.map.DC_Map;
-import main.game.battlefield.map.DungeonMapGenerator;
 import main.game.logic.dungeon.Dungeon;
 import main.game.player.DC_Player;
 import main.game.player.Player;

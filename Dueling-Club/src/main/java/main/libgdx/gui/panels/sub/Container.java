@@ -14,11 +14,12 @@ public class Container extends Comp {
     private LAYOUT defaultLayout;
 
     public Container(String imagePath) {
-this(imagePath, LAYOUT.HORIZONTAL);
+        this(imagePath, LAYOUT.HORIZONTAL);
     }
+
     public Container(String imagePath, LAYOUT defaultLayout) {
         super(imagePath);
-        this.defaultLayout=defaultLayout;
+        this.defaultLayout = defaultLayout;
     }
 
     public Group getGroup(LAYOUT layout) {
@@ -30,7 +31,7 @@ this(imagePath, LAYOUT.HORIZONTAL);
     }
 
     public void setComps(Comp... comps) {
-this.comps=comps;
+        this.comps = comps;
     }
 
     @Override
@@ -56,11 +57,12 @@ this.comps=comps;
     public static class Space extends Comp {
 
         public Space(int w, int h) {
-            setWidth((float)w);
-            setHeight((float)h);
+            setWidth((float) w);
+            setHeight((float) h);
         }
     }
-        public static class Wrap extends Comp {
+
+    public static class Wrap extends Comp {
         public boolean horizontal;
 
         public Wrap(boolean horizontal) {

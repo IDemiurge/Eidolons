@@ -97,7 +97,7 @@ public class GridPanel extends Group {
         unknownImage = TextureManager.getOrCreate(unknownCellPath);
         cellBorderTexture = TextureManager.getOrCreate(cellBorderPath);
 
-        cells=(new GridCell[cols][rows]);
+        cells = (new GridCell[cols][rows]);
 
         setCellBorderManager(new CellBorderManager(emptyImage.getWidth(),
                 emptyImage.getHeight()));
@@ -122,7 +122,7 @@ public class GridPanel extends Group {
         setWidth(cells[0][0].getWidth() * cols);
 
 
-        addListener(new GridMouseListener(this,cells ));
+        addListener(new GridMouseListener(this, cells));
         return this;
     }
 

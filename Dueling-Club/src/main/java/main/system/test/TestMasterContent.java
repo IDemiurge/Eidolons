@@ -66,9 +66,9 @@ public class TestMasterContent {
     private static String FIX_LIST = "";
     private static String POLISH_LIST = "";
     private static String GRAPHICS_TEST_LIST = "Light;Haze;Force Field;" +
-     "Summon Vampire Bat;Blink";
+            "Summon Vampire Bat;Blink";
     private static String TEST_LIST = "Raise Skeleton;Light;Haze;" +
-     "Leap into Darkness;Blink;Summon Vampire Bat;"
+            "Leap into Darkness;Blink;Summon Vampire Bat;"
             // + "Enchant Weapon;"
             // + "Enchant Armor;"
             + "Arcane Bolt;Ray of Arcanum;Time Warp;"
@@ -250,12 +250,12 @@ public class TestMasterContent {
     }
 
     public static void addGRAPHICS_TEST_Spells(Entity type) {
-        for (String s : StringMaster.openContainer(GRAPHICS_TEST_LIST ))
+        for (String s : StringMaster.openContainer(GRAPHICS_TEST_LIST))
             type.addProperty(PROPS.VERBATIM_SPELLS, s
-         , true);
+                    , true);
     }
 
-        private static void addTestSpells(ObjType type, boolean last) {
+    private static void addTestSpells(ObjType type, boolean last) {
         type.addProperty(PROPS.VERBATIM_SPELLS, "Blink;"
                 + getTEST_LIST(), true);
         if (DrawMasterStatic.GRAPHICS_TEST_MODE) {

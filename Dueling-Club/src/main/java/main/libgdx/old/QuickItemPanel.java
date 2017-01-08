@@ -25,6 +25,6 @@ public class QuickItemPanel extends PagedPanel {
 
     @Override
     public PagedPanel init() {
-        return (QuickItemPanel) super.init();
+        return super.init();
     }
 }

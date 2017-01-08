@@ -148,9 +148,9 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
             dialogListTypes = new LinkedList<>(DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST));
             dialogListTypes = filterViaDialog(dialogListTypes, ctrl, shift);
             cachedDialogListTypes = new LinkedList<>(dialogListTypes);
-		}
-		String result = null;
-		if (dialogChooseOrRandom)
+        }
+        String result = null;
+        if (dialogChooseOrRandom)
 			result = ListChooser.chooseType(dialogListTypes).getProperty(AT_PROPS.PATH);
 		else {
 			ObjType item = new RandomWizard<ObjType>().getRandomListItem(dialogListTypes);
@@ -195,9 +195,9 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
             // MusicMouseListener.s
             boolean group_tag = DialogMaster.confirm("Group or Tag Template?");
             Object[] values = null;
-			if (group_tag) {
-				filterProp = AT_PROPS.MUSIC_TYPE;
-				values = MusicCore.std_groups[DialogMaster.optionChoice("Choose Template",
+            if (group_tag) {
+                filterProp = AT_PROPS.MUSIC_TYPE;
+                values = MusicCore.std_groups[DialogMaster.optionChoice("Choose Template",
 						(Object[]) MusicCore.std_groups)];
 			} else {
 				filterProp = AT_PROPS.MUSIC_TAGS;

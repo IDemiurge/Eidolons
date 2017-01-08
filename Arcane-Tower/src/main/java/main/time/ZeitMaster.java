@@ -44,9 +44,9 @@ public class ZeitMaster {
         boolean create = era == null;
         if (!create)
             create = era.checkProperty(AT_PROPS.ERA_STATUS, "Concluded");
-		if (create) {
-			int n = DataManager.getTypes(AT_OBJ_TYPE.ERA).size() + 1;
-			String name = DialogMaster.inputText("New Era's Name?", "The " + n
+        if (create) {
+            int n = DataManager.getTypes(AT_OBJ_TYPE.ERA).size() + 1;
+            String name = DialogMaster.inputText("New Era's Name?", "The " + n
 					+ StringMaster.getOrdinalEnding(n) + " Era");
 			era = new ObjType(name, AT_OBJ_TYPE.ERA);
 			DataManager.addType((ObjType) era);

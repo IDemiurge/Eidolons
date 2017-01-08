@@ -25,6 +25,6 @@ public class ActionPanel extends PagedPanel {
 
     @Override
     public PagedPanel init() {
-        return (ActionPanel) super.init();
+        return super.init();
     }
 }

@@ -87,9 +87,9 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
         if (Mapper.getItem(name) != null)
             return Mapper.getItem(name);
         AE_Item item = new AE_Item(name, arg, null, arg.getCoreClass(), false);
-		Mapper.addEnumConstItem(item);
-		return item;
-	}
+        Mapper.addEnumConstItem(item);
+        return item;
+    }
 
 	public static DefaultMutableTreeNode build(Node e) {
 		if (e == null)

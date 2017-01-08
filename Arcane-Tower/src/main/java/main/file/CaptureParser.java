@@ -356,8 +356,8 @@ public class CaptureParser {
         if (enclosingType != null)
             type.setProperty(AT_OBJ_TYPE.getParentValue((AT_OBJ_TYPE) type.getOBJ_TYPE_ENUM()),
                     enclosingType.getName());
-		return type;
-	}
+        return type;
+    }
 
 	private static AT_OBJ_TYPE getBlockType(AT_OBJ_TYPE scope) {
 		switch (scope) {

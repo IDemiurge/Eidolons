@@ -8,19 +8,19 @@ import java.util.function.Supplier;
  */
 public class EntityContainer extends PagedPanel {
 
-    private   String name;
-    private   int itemSize;
-    private   Supplier<Collection> supplier;
+    private String name;
+    private int itemSize;
+    private Supplier<Collection> supplier;
 
     public EntityContainer(String name, int itemSize, int columns, int rows
-     , Supplier<Collection> supplier
+            , Supplier<Collection> supplier
     ) {
         super(columns, rows);
-        this.name=name;
-        this.itemSize=itemSize;
-        this.col=columns;
-        this.row=rows;
+        this.name = name;
+        this.itemSize = itemSize;
+        this.col = columns;
+        this.row = rows;
 
-        this.supplier=supplier;
+        this.supplier = supplier;
     }
 }

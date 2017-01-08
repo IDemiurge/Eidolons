@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
  * Created by JustMe on 1/7/2017.
  */
 public class TableContainer extends Group {
-    public TableContainer(){
+    public TableContainer() {
 
     }
 

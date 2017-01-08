@@ -30,9 +30,9 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
     private Mission mission;
     private Map<Level, Minimap> maps = new HashMap<Level, Minimap>();
     private DequeImpl<Level> levels;
-	private LE_MainPanel mainPanel;
-	private BfGridComp grid;
-	private Map<Level, BfGridComp> grids = new HashMap<Level, BfGridComp>();
+    private LE_MainPanel mainPanel;
+    private BfGridComp grid;
+    private Map<Level, BfGridComp> grids = new HashMap<Level, BfGridComp>();
 
 	public LE_MapViewComp(Mission mission, LE_MainPanel mainPanel) {
 		this(mission, new DequeImpl<Level>(), mainPanel);
@@ -121,8 +121,8 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
         // map = new Minimap(true, currentLevel.getDungeon());
         // map.init();
         // maps.put(currentLevel, map);
-		// } else if (!map.isInitialized())
-		// map.init();
+        // } else if (!map.isInitialized())
+        // map.init();
 
 		// tabs.getCurrentComp().add(map.getComp(), "pos 0 0");
 		// revalidate();

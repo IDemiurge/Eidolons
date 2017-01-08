@@ -125,9 +125,9 @@ public class ModelManager {
             if (tb.getTree().getTreeSelectionListeners().length != 1)
                 return;
             TreeSelectionListener listener = tb.getTree().getTreeSelectionListeners()[0];
-			tb.getTree().removeTreeSelectionListener(listener);
-			try {
-				TreeMaster.collapseTree(tb.getTree());
+            tb.getTree().removeTreeSelectionListener(listener);
+            try {
+                TreeMaster.collapseTree(tb.getTree());
 				DefaultMutableTreeNode node = TreeMaster.findNode(tb.getTree(), type.getName());
 				tb.getTree().setSelectionPath(new TreePath(node.getPath()));
 			} catch (Exception e) {

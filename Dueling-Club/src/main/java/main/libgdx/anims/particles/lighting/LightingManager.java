@@ -5,5 +5,5 @@ package main.libgdx.anims.particles.lighting;
  */
 public class LightingManager {
     public static float ambient_light = 0.35f;
-    public static boolean debug=false;
+    public static boolean debug = false;
 }
