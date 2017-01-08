@@ -131,9 +131,14 @@ public class GridMouseListener extends ClickListener {
                         //TODO map the click to the right object in the stack?
                         GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(heroObj));
                     } else {
-if (FAST_DC.getGameLauncher().SUPER_FAST_MODE || Gdx.input.isKeyPressed(Keys.ALT_LEFT))
-                            GuiEventManager.trigger(SHOW_INFO_DIALOG,
-                             new EventCallbackParam(heroObj));
+                        if (FAST_DC.getGameLauncher() != null)
+                            if (FAST_DC.getGameLauncher().SUPER_FAST_MODE)
+                                GuiEventManager.trigger(SHOW_INFO_DIALOG,
+                                 new EventCallbackParam(heroObj));
+                            else if (
+                             Gdx.input.isKeyPressed(Keys.ALT_LEFT))
+                                GuiEventManager.trigger(SHOW_INFO_DIALOG,
+                                 new EventCallbackParam(heroObj));
 
                     }
 
