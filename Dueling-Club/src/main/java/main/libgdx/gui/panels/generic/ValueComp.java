@@ -1,7 +1,6 @@
 package main.libgdx.gui.panels.generic;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.content.VALUE;
@@ -14,7 +13,7 @@ import main.system.images.ImageManager;
 /**
  * Created by JustMe on 1/6/2017.
  */
-public class ValueComp extends Group {
+public class ValueComp extends Comp {
 
     private VALUE value;
     private Label label;

@@ -14,7 +14,7 @@ import main.system.images.ImageManager;
  * Time: 23:25
  * To change this template use File | Settings | File Templates.
  */
-public class PagedListPanel extends Panel {
+public class PagedListPanel extends Comp {
     protected Image[] slots;
     protected String imagePath;
     protected int col;

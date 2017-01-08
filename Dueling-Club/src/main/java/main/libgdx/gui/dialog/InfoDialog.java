@@ -40,13 +40,10 @@ public class InfoDialog extends Dialog {
             public void initComps() {
 
                 PagedContainer effects = new PagedContainer("Active Effects", true, 32, 2, 2,
-                 unit, () -> {
-                    return unit.getBuffs();
-                });
+                 unit, () -> unit.getBuffs()
+                );
                 PagedContainer abilities = new PagedContainer("Special Abilities", true, 32, 2, 2,
-                 unit, () -> {
-                    return unit.getPassives();
-                });
+                 unit, () -> unit.getPassives());
                 setComps(abilities, effects);
             }
         };
@@ -57,14 +54,10 @@ public class InfoDialog extends Dialog {
             public void initComps() {
 
                 PagedContainer buffs = new PagedContainer("Buffs", true, 32, 2, 2,
-                 unit, () -> {
-                    return unit.getArmor().getBuffs();
-                });
+                 unit, () -> unit.getArmor().getBuffs());
                 PagedContainer traits = new PagedContainer("Traits", true, 32, 2, 2,
-                 unit, () -> {
-                    return unit.getArmor().getPassives();
-                });
-
+                 unit, () ->   unit.getArmor().getPassives());
+//EntityComp armor = new EntityComp()
                 setComps(buffs, traits);
             }
         };
