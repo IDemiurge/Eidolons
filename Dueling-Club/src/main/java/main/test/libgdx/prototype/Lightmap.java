@@ -31,8 +31,13 @@ public class Lightmap {
     private static float SECOND = 1000000000;
     private static float ambient = 0.05f;
     Box2DDebugRenderer debugRenderer;
+    private static int testA;
+    private static int testB;
 
     private void init(DequeImpl<DC_HeroObj> un, World world, RayHandler rayHandler, float cellWidth, float cellHeight, int rows) {
+        testA = 1600;
+        testB = 900;
+
         this.cellWidth = cellWidth;
         this.cellHeight = cellHeight;
         if (rows > 0) {
@@ -173,4 +178,17 @@ public class Lightmap {
     public static float getAmbint() {
         return ambient;
     }
+    public static void resizeFBOb(){
+        testB += 50;
+        testA += 50;
+        rayHandler.resizeFBO(testA,testB);
+        rayHandler.update();
+    }
+    public static void resizeFBOa(){
+        testA -= 50;
+        testB -= 50;
+        rayHandler.resizeFBO(testA,testB);
+        rayHandler.update();
+    }
+
 }

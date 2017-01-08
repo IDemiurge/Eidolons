@@ -1,5 +1,6 @@
 package main.libgdx.bf.mouse;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -49,6 +50,14 @@ public class InputController implements InputProcessor {
         if (i == 129) {
             ctrl = true;
         }
+
+        if (i == 54) {
+            Lightmap.resizeFBOa();
+        }
+        if (i == 52) {
+            Lightmap.resizeFBOb();
+        }
+
         return false;
         // alt = 57, crtl = 129
     }

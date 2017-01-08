@@ -21,7 +21,8 @@ public class FireLightProt {
     float PERCENT = 0.1f;
     int AMOUNT_OF_RAYS = 100;
     float amountOfPercentFromDistance;
-    float DISTANCE;
+    float DISTANCEBIGGER;
+    float DISTANCESMALLER;
     float DEGREE;
     float lengthFinal;
     float now;
@@ -32,7 +33,8 @@ public class FireLightProt {
     static Color smallerLigth;
 
     public void setDISTANCE(float DISTANCE) {
-        this.DISTANCE = DISTANCE;
+        this.DISTANCEBIGGER = DISTANCE;
+        this.DISTANCESMALLER = DISTANCEBIGGER/3;
     }
 
 
@@ -41,6 +43,8 @@ public class FireLightProt {
         smallerLigth = new Color(0xf7ffa832);
         alphaBigger = biggerLigth.a;
         alphaSmaller = smallerLigth.a;
+        DISTANCEBIGGER = distance;
+        DISTANCESMALLER = DISTANCEBIGGER/3;
 
 //        pointLight = new ConeLight(rayHandler, AMOUNT_OF_RAYS, Color.RED, distance,degree, x, y);
         pointLight = new ConeLight(rayHandler, AMOUNT_OF_RAYS, biggerLigth, distance, x, y, 90, degree);
@@ -57,7 +61,7 @@ public class FireLightProt {
         randomTimeToAdd = random.nextFloat() - changeSpeed;
         amountOfPercentFromDistance = distance * PERCENT;
         DEGREE = degree;
-        DISTANCE = distance;
+        DISTANCEBIGGER = distance;
         past = System.nanoTime();
         timeCounter = 0;
 
@@ -76,9 +80,6 @@ public class FireLightProt {
 //            System.out.println("CREATED NEW RANDOM ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             Random currentRandom = new Random();
             int number = 1 + Math.abs(currentRandom.nextInt() % 10);
-//            System.out.println(" Random is " + number);
-            float lengthtoAdd = (DISTANCE / 100) * number;
-//            lengthFinal = lengthtoAdd + DISTANCE;
             Random random = new Random();
             randomTimeToAdd = Math.abs(random.nextFloat()) % changesp;
             timeCounter = 0;
@@ -96,37 +97,41 @@ public class FireLightProt {
 //        }
 
 
-        if (pointLight.getDistance() <= DISTANCE - amountOfPercentFromDistance) {
+        if (pointLight.getDistance() < DISTANCEBIGGER - amountOfPercentFromDistance) {
             Random currentRandom = new Random();
             float number = 1 + currentRandom.nextFloat() % 4;
-            float lengthtoAdd = (DISTANCE / 100) * number;
-            pointLight.setDistance(DISTANCE + lengthtoAdd);
-            pointLight_test.setDistance(pointLight_test.getDistance() + lengthtoAdd / 3);
+            float lengthtoAddBig = (DISTANCEBIGGER / 100) * number;
+            float lengthtoAddSmall = (DISTANCESMALLER / 100) * number;
+            pointLight.setDistance(DISTANCEBIGGER + lengthtoAddBig);
+            pointLight_test.setDistance(DISTANCESMALLER + lengthtoAddSmall);
         }
-        if (pointLight.getDistance() >= DISTANCE + amountOfPercentFromDistance) {
+        if (pointLight.getDistance() > DISTANCEBIGGER + amountOfPercentFromDistance) {
             Random currentRandom = new Random();
             float number = 1 + currentRandom.nextFloat() % 4;
-            float lengthtoAdd = (DISTANCE / 100) * number;
-            pointLight.setDistance(DISTANCE - lengthtoAdd);
-            pointLight_test.setDistance(pointLight_test.getDistance() - lengthtoAdd / 3);
+            float lengthtoAddBig = (DISTANCEBIGGER / 100) * number;
+            float lengthtoAddSmall = (DISTANCESMALLER / 100) * number;
+            pointLight.setDistance(DISTANCEBIGGER - lengthtoAddBig);
+            pointLight_test.setDistance(DISTANCESMALLER - lengthtoAddSmall);
         }
-        if (pointLight.getDistance() > DISTANCE - amountOfPercentFromDistance) {
-            if (pointLight.getDistance() < DISTANCE + amountOfPercentFromDistance) {
+        if (pointLight.getDistance() >= DISTANCEBIGGER - amountOfPercentFromDistance) {
+            if (pointLight.getDistance() <= DISTANCEBIGGER + amountOfPercentFromDistance) {
 //                    System.out.println("Distance is in between");
                 Random random = new Random();
                 int whatAction = Math.abs(random.nextInt());
                 if (whatAction % 2 == 0) {
                     Random currentRandom = new Random();
                     float number = 1 + currentRandom.nextFloat() % 4;
-                    float lengthtoAdd = (DISTANCE / 100) * number;
-                    pointLight.setDistance(DISTANCE + lengthtoAdd);
-                    pointLight_test.setDistance(pointLight_test.getDistance() + lengthtoAdd / 3);
+                    float lengthtoAddBig = (DISTANCEBIGGER / 100) * number;
+                    float lengthtoAddSmall = (DISTANCESMALLER / 100) * number;
+                    pointLight.setDistance(DISTANCEBIGGER + lengthtoAddBig);
+                    pointLight_test.setDistance(DISTANCESMALLER + lengthtoAddSmall);
                 } else {
                     Random currentRandom = new Random();
                     float number = 1 + currentRandom.nextFloat() % 4;
-                    float lengthtoAdd = (DISTANCE / 100) * number;
-                    pointLight.setDistance(DISTANCE - lengthtoAdd);
-                    pointLight_test.setDistance(pointLight_test.getDistance() - lengthtoAdd / 3);
+                    float lengthtoAddBig = (DISTANCEBIGGER / 100) * number;
+                    float lengthtoAddSmall = (DISTANCESMALLER / 100) * number;
+                    pointLight.setDistance(DISTANCEBIGGER - lengthtoAddBig);
+                    pointLight_test.setDistance(DISTANCESMALLER - lengthtoAddSmall);
                 }
             }
         }
