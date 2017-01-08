@@ -66,7 +66,7 @@ public class ImageManager {
             return false;
         }
     };
-    private static Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>();
+    private static Map<String, CustomImageIcon> iconCache = new HashMap<  >();
     private static Map<String, ImageIcon> sizedImageStringCache = new HashMap<String, ImageIcon>();
     private static Map<String, Image> sizedImageCache = new HashMap<String, Image>();
     private static Map<String, Image[]> sprites = new HashMap<String, Image[]>();
@@ -91,7 +91,7 @@ public class ImageManager {
         }
     }
 
-    public static ImageIcon getIcon(String imgName) {
+    public static CustomImageIcon getIcon(String imgName) {
         // Toolkit.getDefaultToolkit().createImage(filename)
         if (imgName == null)
             return null;
@@ -99,11 +99,11 @@ public class ImageManager {
             return iconCache.get(imgName);
         // DEFAULT + f.list()[new Random().nextInt(f.list().length)]
 
-        ImageIcon img = null;
+        CustomImageIcon img = null;
         if (!imgName.contains(getPATH()))
-            img = new ImageIcon(getPATH() + imgName);
+            img = new CustomImageIcon(getPATH() + imgName);
         else
-            img = new ImageIcon(imgName);
+            img = new CustomImageIcon(imgName);
 
         if (img.getImage().getHeight(null) == -1) {
             if (!imgName.equals(imgName.toLowerCase()))
@@ -114,10 +114,10 @@ public class ImageManager {
                 imgName = getPATH() + imgName;
             if (StringMaster.getFormat(imgName).length() < 2) {
                 for (String format : STD_FORMATS) {
-                    img = new ImageIcon(imgName + format);
+                    img = new CustomImageIcon(imgName + format);
                     if (isValidIcon(img))
                         return img;
-                    img = new ImageIcon(imgName + "." + format);
+                    img = new CustomImageIcon(imgName + "." + format);
                     if (isValidIcon(img))
                         return img;
                 }
@@ -516,7 +516,7 @@ public class ImageManager {
     }
 
     public static Image getImage(String imgPath) {
-        ImageIcon icon = null;
+        CustomImageIcon icon = null;
         try {
             icon = getIcon(imgPath);
         } catch (Exception e) {
@@ -527,7 +527,8 @@ public class ImageManager {
         if (icon != null) {
             if (CoreEngine.isSwingOn()) return
                     icon.getImage();
-            return new CustomImage(imgPath, icon.getImage());
+
+            return new CustomImage(icon.imgPath, icon.getImage());
         }
         return null;
     }

@@ -48,6 +48,7 @@ public class GameScreen implements Screen {
     private OrthographicCamera cam;
     private InputController controller;
     private DialogDisplay dialogDisplay;
+    private Stage effects;
 
     public static GameScreen getInstance() {
         return instance;
@@ -62,6 +63,7 @@ public class GameScreen implements Screen {
         PathFinder.init();
         instance = this;
         bf = new Stage();
+        effects= new Stage();
         dialog= new Stage();
         dialogDisplay =new DialogDisplay();
         dialog.addActor(dialogDisplay);
@@ -144,6 +146,7 @@ public class GameScreen implements Screen {
         batch.end();
 
         bf.draw();
+        effects.draw();
         if (dialogDisplay.getDialog()==null )
         gui.draw();
         else
@@ -205,5 +208,9 @@ public class GameScreen implements Screen {
 
     public InputController getController() {
         return controller;
+    }
+
+    public Stage getEffectsStage() {
+        return effects;
     }
 }

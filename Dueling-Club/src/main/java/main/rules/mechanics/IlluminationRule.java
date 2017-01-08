@@ -63,7 +63,7 @@ public class IlluminationRule {
         effect.setRef(new Ref(source));
         effectCache.put(source, effect);
         // } else
-        // effect.getEffect().getEffects().getOrCreate(0).setFormula(new Formula("" +
+        // effect.getEffect().getEffectsStage().getOrCreate(0).setFormula(new Formula("" +
         // value));
         return effect;
 

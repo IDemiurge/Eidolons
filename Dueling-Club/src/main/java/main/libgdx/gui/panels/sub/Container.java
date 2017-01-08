@@ -38,8 +38,8 @@ public class Container extends Comp {
     @Override
     public void update() {
         super.update();
-//        TableLayout layout;
         Group group = getGroup(defaultLayout);
+        root.clearChildren();
         root.addActor(group);
         for (Comp comp : comps) {
             if (comp instanceof Wrap) {
@@ -49,10 +49,7 @@ public class Container extends Comp {
             }
             group.addActor(comp);
         }
-//        Arrays.stream(comps).forEach(comp -> {
-
-//            comp.
-//        });
+addActor(root);
     }
 
     public static class Space extends Comp {

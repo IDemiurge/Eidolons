@@ -15,11 +15,15 @@ import static main.system.GuiEventType.SHOW_INFO_DIALOG;
 public class DialogDisplay extends Group{
 
     Dialog dialog;
-    public void  init(){
+    public DialogDisplay(){
         GuiEventManager.bind(SHOW_INFO_DIALOG, obj -> {
             DC_HeroObj unit = (DC_HeroObj) obj.get();
           clearChildren();
-          dialog=new InfoDialog(unit);
+        try{        dialog=new InfoDialog(unit);        }catch(Exception e){
+            e.printStackTrace();
+        closedDialog(); return ;
+        }
+
           addActor( dialog);
             setPosition(MigMaster.getCenteredWidth((int)dialog.getWidth()),
              MigMaster.getCenteredHeight((int)dialog.getHeight()));

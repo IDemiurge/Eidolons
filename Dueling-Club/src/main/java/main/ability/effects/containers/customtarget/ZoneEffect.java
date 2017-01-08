@@ -14,7 +14,7 @@ import main.system.ConditionMaster;
 import main.system.math.Formula;
 
 public class ZoneEffect extends SpecialTargetingEffect
-// getEffects() setEffect() etc
+// getEffectsStage() setEffect() etc
 {
     private Formula radius;
 

@@ -103,7 +103,7 @@ public class SpectrumEffect extends DC_Effect {
                     if (!filterConditions.check(ref))
                         continue;
                 Integer target = o.getId();
-                // for (Effect effect : effects.getEffects()) {
+                // for (Effect effect : effects.getEffectsStage()) {
                 // Ref REF = Ref.getCopy(ref);
                 // REF.setTarget(target);
                 // effect.apply(REF);

@@ -27,7 +27,7 @@ import static main.system.GuiEventType.SHOW_TOOLTIP;
 /**
  * Created by JustMe on 1/7/2017.
  */
-public class GridMouseListener extends    ClickListener{
+public class GridMouseListener extends ClickListener {
     private GridPanel gridPanel;
     private GridCell[][] cells;
 
@@ -48,8 +48,8 @@ public class GridMouseListener extends    ClickListener{
             if (a != null && a instanceof UnitView) {
                 UnitView uv = (UnitView) a;
                 DC_HeroObj hero = gridPanel.getUnitMap().entrySet().stream()
-                        .filter(entry -> entry.getValue() == uv).findFirst()
-                        .get().getKey();
+                 .filter(entry -> entry.getValue() == uv).findFirst()
+                 .get().getKey();
 
                 Map<String, String> tooltipStatMap = new HashMap<>();
                 tooltipStatMap.put(PARAMS.C_TOUGHNESS.getName(), "Toughness");
@@ -121,20 +121,19 @@ public class GridMouseListener extends    ClickListener{
             if (cell.getInnerDrawable() != null) {
                 Actor unit = cell.getInnerDrawable().hit(x, y, true);
                 if (unit != null && unit instanceof UnitView) {
+                    DC_HeroObj heroObj = gridPanel.getUnitMap().entrySet()
+                     .stream().filter(entry -> entry.getValue() == unit).findFirst()
+                     .get().getKey();
                     if (event.getButton() == Input.Buttons.RIGHT) {
                         //TODO map the click to the right object in the stack?
+                        GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(heroObj));
+                    } else {
 
-                        DC_HeroObj heroObj = gridPanel.getUnitMap().entrySet()
-                                .stream().filter(entry -> entry.getValue() == unit).findFirst()
-                                .get().getKey();
-                        if (getTapCount()>1){
                             GuiEventManager.trigger(SHOW_INFO_DIALOG,
                              new EventCallbackParam(heroObj));
 
-                        }
-                        else
-                            GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(heroObj));
                     }
+
                 }
             } else if (event.getButton() == Input.Buttons.RIGHT) {
                 DC_Obj dc_cell = DC_Game.game.getCellByCoordinate(new Coordinates(cell.getGridX(), cell.getGridY()));
