@@ -132,7 +132,7 @@ public class Lightmap {
         world.step(1 / 60, 4, 4);
         rayHandler.setCombinedMatrix(GameScreen.camera);
         rayHandler.updateAndRender();
-
+if (LightingManager.debug)
         debugRenderer.render(world, GameScreen.camera.combined);
     }
 

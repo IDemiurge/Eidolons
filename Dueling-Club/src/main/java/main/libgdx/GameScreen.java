@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.data.filesys.PathFinder;
 import main.entity.obj.DC_Obj;
 import main.game.DC_Game;
+import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.bf.Background;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.controls.radial.DebugRadialManager;
@@ -23,7 +24,7 @@ import main.libgdx.gui.dialog.DialogDisplay;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import main.test.libgdx.prototype.ParticleActor;
+import main.libgdx.anims.particles.ParticleActor;
 import org.apache.commons.lang3.tuple.Pair;
 
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
@@ -51,9 +52,7 @@ public class GameScreen implements Screen {
     private DialogDisplay dialogDisplay;
     private Stage effects;
 
-    // temp by Bogdan
-    private ParticleActor partAct;
-    // temp end by Bogdan
+    private ParticleActor particleActor;
 
     public static GameScreen getInstance() {
         return instance;
@@ -75,7 +74,7 @@ public class GameScreen implements Screen {
         initGui();
 
         // temp by Bogdan
-        partAct = new ParticleActor();
+        particleActor = new ParticleActor();
         // temp end by Bogdan
 
         camera = cam = new OrthographicCamera();
@@ -114,7 +113,8 @@ public class GameScreen implements Screen {
             Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
             gridPanel = new GridPanel(p.getLeft(), p.getRight()).init();
             bf.addActor(gridPanel);
-            effects.addActor(partAct);
+            if (ParticleManager.debug)
+            effects.addActor(particleActor);
         });
 
         GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {

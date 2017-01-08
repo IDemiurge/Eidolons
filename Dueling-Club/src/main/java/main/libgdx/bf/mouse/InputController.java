@@ -143,8 +143,6 @@ public class InputController implements InputProcessor {
 
         }
         if (ctrl) {
-            if (alt) {
-
                 if (i == 1) {
                     Lightmap.setAmbint(Lightmap.getAmbint() + 0.02f);
                 }
@@ -153,15 +151,7 @@ public class InputController implements InputProcessor {
                 }
 
             }
-            if (!alt) {
-                if (i == 1) {
-                    FireLightProt.setBiggerAlpha(FireLightProt.getAlphaBigger() + 0.05f);
-                }
-                if (i == -1) {
-                    FireLightProt.setBiggerAlpha(FireLightProt.getAlphaBigger() - 0.05f);
-                }
-            }
-        }
+
         if (!alt && !ctrl) {
             if (i == 1) {
                 camera.zoom += 0.25f;

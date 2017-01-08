@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import main.data.filesys.PathFinder;
 import main.entity.obj.MicroObj;
+import main.libgdx.anims.particles.ParticleActor;
 import main.system.GuiEventManager;
 import main.system.datatypes.DequeImpl;
 

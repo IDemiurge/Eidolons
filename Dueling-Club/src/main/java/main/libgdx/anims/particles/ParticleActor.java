@@ -1,4 +1,4 @@
-package main.test.libgdx.prototype;
+package main.libgdx.anims.particles;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
