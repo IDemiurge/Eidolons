@@ -19,6 +19,7 @@ import main.libgdx.bf.controls.radial.DebugRadialManager;
 import main.libgdx.bf.controls.radial.RadialMenu;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.bf.mouse.ToolTipManager;
+import main.libgdx.gui.dialog.DialogDisplay;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -40,12 +41,14 @@ public class GameScreen implements Screen {
     protected ToolTipManager toolTipManager;
     private Stage bf;
     private Stage gui;
+    private Stage dialog;
     private Background background;
     private GridPanel gridPanel;
     private RadialMenu radialMenu;
     private SpriteBatch batch;
     private OrthographicCamera cam;
     private InputController controller;
+    private DialogDisplay dialogDisplay;
 
     // temp by Bogdan
     private ParticleActor partAct;
@@ -64,6 +67,9 @@ public class GameScreen implements Screen {
         PathFinder.init();
         instance = this;
         bf = new Stage();
+        dialog= new Stage();
+        dialogDisplay =new DialogDisplay();
+        dialog.addActor(dialogDisplay);
         initGui();
 
         // temp by Bogdan
@@ -112,7 +118,7 @@ public class GameScreen implements Screen {
         GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
             DC_Obj dc_obj = (DC_Obj) obj.get();
 
-            if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+            if (Gdx.input.isButtonPressed(0)||Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
                 radialMenu.init(DebugRadialManager.getDebugNodes(dc_obj));
             } else {
                 radialMenu.createNew(dc_obj);
@@ -151,7 +157,10 @@ public class GameScreen implements Screen {
         batch.end();
 
         bf.draw();
+        if (dialogDisplay.getDialog()==null )
         gui.draw();
+        else
+        dialog.draw();
     }
 
     @Override
