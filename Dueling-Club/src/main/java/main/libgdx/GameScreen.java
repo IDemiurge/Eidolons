@@ -219,4 +219,8 @@ public class GameScreen implements Screen {
     public InputController getController() {
         return controller;
     }
+
+    public DialogDisplay getDialogDisplay() {
+        return dialogDisplay;
+    }
 }

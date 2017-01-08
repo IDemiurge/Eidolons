@@ -22,8 +22,10 @@ public class ParticleActor extends Actor {
     PolygonShape shape;
     FixtureDef fixtureDef;
     static ArrayList<ParticleEffect> array;
-
-    public ParticleActor(/*String presetName,World world, float x, float y*/) {
+    public ParticleActor() {
+        this("");
+    }
+    public ParticleActor(String presetName/*,World world, float x, float y*/) {
         array = new ArrayList<>();
 //        bodyDef = new BodyDef();
 //        bodyDef.position.set(new Vector2(x, y));
@@ -53,12 +55,11 @@ public class ParticleActor extends Actor {
 //        }
 
         particleEffect = new ParticleEffect();
-        //        particleEffect.load(Gdx.files.internal("D:\\NewRepos\\battlecraft\\Dueling-Club\\src\\main\\java\\main\\test\\libgdx\\resOUT\\particle.pt"),Gdx.files.internal(""));
-//            pf.load(Gdx.files.internal("D:\\NewRepos\\battlecraft\\Dueling-Club\\src\\main\\java\\main\\test\\libgdx\\resOUT\\Smoke_Test.pt"),Gdx.files.internal("D:\\NewRepos\\battlecraft\\Dueling-Club\\src\\main\\java\\main\\test\\libgdx\\resOUT"));
         particleEffect.load(Gdx.files.internal(PathFinder.getImagePath() +
                         "mini\\sprites\\particles\\" +
                         "Smoke_Test1.pt"),
-                Gdx.files.internal(PathFinder.getImagePath() + "\\mini\\sprites\\particles\\" +
+                Gdx.files.internal(PathFinder.getImagePath() +
+                 "\\mini\\sprites\\particles\\" +
                         ""
                 ));
         particleEffect.getEmitters().first().setPosition(200, 200);

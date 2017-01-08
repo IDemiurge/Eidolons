@@ -2,7 +2,6 @@ package main.libgdx.gui.dialog;
 
 import main.content.DC_ContentManager;
 import main.entity.obj.DC_HeroObj;
-import main.libgdx.gui.layout.LayoutParser;
 import main.libgdx.gui.layout.LayoutParser.LAYOUT;
 import main.libgdx.gui.panels.sub.Comp;
 import main.libgdx.gui.panels.sub.Container;
@@ -13,10 +12,7 @@ import main.libgdx.gui.panels.sub.ValueContainer;
  * Created by JustMe on 1/5/2017.
  */
 public class InfoDialog extends Dialog {
-    private LayoutParser parser;
     Container top;
-    Comp portrait;
-    Comp portraitBg;
     Container fxAndAbils;
     Container armor;
     Container armorTraits;
@@ -32,7 +28,8 @@ public class InfoDialog extends Dialog {
     Container description;
     Container lore;
     String mainLayout = "attributes: 0 0; ";
-    public final static String bgPath = "";
+    public final static String bgPath =
+     "UI\\components\\2017\\dialog\\info\\info panel big.jpg";
 
 
     public InfoDialog(DC_HeroObj unit) {
@@ -67,14 +64,9 @@ public class InfoDialog extends Dialog {
                         () -> {
                             return unit.getArmor().getPassives();
                         });
-//                setConstraints("");
-//                layout(buffs, armorIcon, new Space(10, 10), traits);
 
-                super.layout();
             }
         };
-//        parser = new LayoutParser(this);
-//        parser.parse(this, mainLayou
 
         attributes = new ValueContainer(unit, 5, 2, () -> {
             return DC_ContentManager.getFinalAttributes();
@@ -84,12 +76,30 @@ public class InfoDialog extends Dialog {
                 return super.isNameDisplayed();
             }
         };
+
+
+        dynamicParams = new Container("", LAYOUT.HORIZONTAL);
+        mainWeapon = new Container("", LAYOUT.HORIZONTAL);
+        description = new Container("", LAYOUT.HORIZONTAL);
+        resistances = new Container("", LAYOUT.HORIZONTAL);
+        mainParams = new Container("", LAYOUT.HORIZONTAL);
+        points = new Container("", LAYOUT.HORIZONTAL);
+        top = new Container("", LAYOUT.HORIZONTAL);
+        {
+            Comp portrait;
+            Comp portraitBg;
+        }
+        params = new Container("", LAYOUT.HORIZONTAL);
+        offWeapon = new Container("", LAYOUT.HORIZONTAL);
+        lore = new Container("", LAYOUT.HORIZONTAL);
+
         setComps(
+         //from bottom left
                 fxAndAbils, attributes, dynamicParams, mainWeapon, description,
-                new Wrap(false),
-                resistances, armor, mainParams, points, portrait,
-                new Wrap(false),
-                new Space(false, 0.2f),
+                new Wrap(false), //next column
+                resistances, armor, mainParams, points, top,
+                new Wrap(false),//next column
+                new Space(false, 0.2f), //leave 20% space
                 params, offWeapon, lore
         );
     }

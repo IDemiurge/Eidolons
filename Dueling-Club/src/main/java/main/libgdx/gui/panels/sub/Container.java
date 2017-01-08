@@ -21,6 +21,9 @@ public class Container extends Comp {
     public Container(String imagePath, LAYOUT defaultLayout) {
         super(imagePath);
         this.defaultLayout = defaultLayout;
+
+        root = getGroup(defaultLayout
+        );
     }
 
     public Group getGroup(LAYOUT layout) {
@@ -38,8 +41,8 @@ public class Container extends Comp {
     @Override
     public void update() {
         super.update();
-        Group group = getGroup(defaultLayout);
         root.clearChildren();
+        Group group = getGroup(defaultLayout);
         root.addActor(group);
         for (Comp comp : comps) {
             if (comp instanceof Wrap) {
@@ -49,7 +52,7 @@ public class Container extends Comp {
             }
             group.addActor(comp);
         }
-addActor(root);
+        addActor(root);
     }
 
     public static class Space extends Comp {
