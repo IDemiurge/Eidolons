@@ -22,6 +22,7 @@ import main.libgdx.bf.mouse.ToolTipManager;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+import main.test.libgdx.prototype.ParticleActor;
 import org.apache.commons.lang3.tuple.Pair;
 
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
@@ -46,6 +47,10 @@ public class GameScreen implements Screen {
     private OrthographicCamera cam;
     private InputController controller;
 
+    // temp by Bogdan
+    private ParticleActor partAct;
+    // temp end by Bogdan
+
     public static GameScreen getInstance() {
         return instance;
     }
@@ -60,6 +65,10 @@ public class GameScreen implements Screen {
         instance = this;
         bf = new Stage();
         initGui();
+
+        // temp by Bogdan
+        partAct = new ParticleActor();
+        // temp end by Bogdan
 
         camera = cam = new OrthographicCamera();
         cam.setToOrtho(false, 1600, 900);
@@ -97,6 +106,7 @@ public class GameScreen implements Screen {
             Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
             gridPanel = new GridPanel(p.getLeft(), p.getRight()).init();
             bf.addActor(gridPanel);
+            bf.addActor(partAct);
         });
 
         GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
@@ -106,8 +116,10 @@ public class GameScreen implements Screen {
                 radialMenu.init(DebugRadialManager.getDebugNodes(dc_obj));
             } else {
                 radialMenu.createNew(dc_obj);
+
             }
         });
+
     }
 
     @Override
@@ -127,6 +139,7 @@ public class GameScreen implements Screen {
 
         batch.setProjectionMatrix(cam.combined);
         batch.begin();
+
 
         if (background.isDirty()) {
             background.update();

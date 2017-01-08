@@ -224,7 +224,8 @@ public class GridPanel extends Group {
         GuiEventManager.bind(CREATE_UNITS_MODEL, param -> {
             units = (DequeImpl<DC_HeroObj>) param.get();
 
-            setLightmap(new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight(), rows));
+            setLightmap(new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight(), rows, cols));
+
 
             Map<Coordinates, List<DC_HeroObj>> map = new HashMap<>();
             for (DC_HeroObj object : units) {

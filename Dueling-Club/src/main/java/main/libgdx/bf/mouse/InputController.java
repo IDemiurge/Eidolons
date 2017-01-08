@@ -1,6 +1,5 @@
 package main.libgdx.bf.mouse;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -135,34 +134,33 @@ public class InputController implements InputProcessor {
     @Override
     public boolean scrolled(int i) {
         if (alt && !ctrl) {
-            // ambient
             if (i == 1) {
-                Lightmap.setAmbint(Lightmap.getAmbint() + 0.02f);
+                FireLightProt.setSmallerAlpha(FireLightProt.getAlphaSmaller() + 0.05f);
             }
             if (i == -1) {
-                Lightmap.setAmbint(Lightmap.getAmbint() - 0.02f);
+                FireLightProt.setSmallerAlpha(FireLightProt.getAlphaSmaller() - 0.05f);
             }
 
         }
         if (ctrl) {
             if (alt) {
+
+                if (i == 1) {
+                    Lightmap.setAmbint(Lightmap.getAmbint() + 0.02f);
+                }
+                if (i == -1) {
+                    Lightmap.setAmbint(Lightmap.getAmbint() - 0.02f);
+                }
+
+            }
+            if (!alt) {
                 if (i == 1) {
                     FireLightProt.setBiggerAlpha(FireLightProt.getAlphaBigger() + 0.05f);
                 }
                 if (i == -1) {
                     FireLightProt.setBiggerAlpha(FireLightProt.getAlphaBigger() - 0.05f);
                 }
-
             }
-            if (!alt) {
-                if (i == 1) {
-                    FireLightProt.setSmallerAlpha(FireLightProt.getAlphaSmaller() + 0.05f);
-                }
-                if (i == -1) {
-                    FireLightProt.setSmallerAlpha(FireLightProt.getAlphaSmaller() - 0.05f);
-                }
-            }
-            // local lights
         }
         if (!alt && !ctrl) {
             if (i == 1) {
