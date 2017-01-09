@@ -2,6 +2,7 @@ package main.libgdx.texture;
 
 import com.badlogic.gdx.graphics.Texture;
 import main.data.filesys.PathFinder;
+import main.system.datatypes.Boxer;
 import main.system.images.ImageManager;
 
 /**
@@ -23,6 +24,10 @@ public class TextureManager {
         if (cache == null)
             cache = new TextureCache(PathFinder.getImagePath());
         return cache;
+    }
+
+    public static Texture getOrCreate(Boxer<String> stringBoxer) {
+       return  getOrCreate(stringBoxer.get());
     }
 
 //    public static Texture toTexture(BufferedImage img) throws IOException {

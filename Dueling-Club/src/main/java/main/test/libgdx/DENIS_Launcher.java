@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import main.client.dc.Launcher;
 import main.libgdx.GameScreen;
 
 /**
@@ -30,7 +31,7 @@ public class DENIS_Launcher implements ApplicationListener {
 
     private static LwjglApplicationConfiguration getConf(){
         LwjglApplicationConfiguration conf = new LwjglApplicationConfiguration();
-        conf.title = "demo";
+        conf.title = "Eidolons: Battlecraft v" + Launcher.VERSION;
         conf.useGL30 = false;
 
         conf.width = 1600;

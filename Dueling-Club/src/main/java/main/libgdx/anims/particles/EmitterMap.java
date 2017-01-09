@@ -10,6 +10,7 @@ import java.util.Map;
 public class EmitterMap {
 
     Map<Point, List<ParticleActor>> map;
+    List<ParticleActor> emitters;
 
     public boolean contains(ParticleActor actor) {
         return false;//TODO

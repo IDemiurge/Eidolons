@@ -1,5 +1,6 @@
 package main.libgdx.gui.panels.generic;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import main.content.VALUE;
 import main.entity.obj.DC_Obj;
@@ -46,19 +47,20 @@ public class ValueContainer extends TableContainer {
         this.isIconDisplayed = isIconDisplayed;
     }
 
-    private static Supplier<List<Comp>> getCompSupplier(Supplier<List<? extends VALUE>>
+    private static Supplier<List<Actor>> getCompSupplier(Supplier<List<? extends VALUE>>
                                                          valueSupplier, DC_Obj obj,
-                                                        boolean isNameDisplayed,
-                                                        boolean isIconDisplayed,
-                                                        LabelStyle style, ALIGNMENT
+                                                         boolean isNameDisplayed,
+                                                         boolean isIconDisplayed,
+                                                         LabelStyle style, ALIGNMENT
                                                          textAlignment, String bgImage) {
-        return new Supplier<List<Comp>>() {
+        return new Supplier<List<Actor>>() {
             @Override
-            public List<Comp> get() {
-                List<Comp> list = new LinkedList<>();
+            public List<Actor> get() {
+                List<Actor> list = new LinkedList<>();
                 valueSupplier.get().forEach(value -> {
                     ValueComp comp = new ValueComp(value, obj,
                      isNameDisplayed, isIconDisplayed,  textAlignment, style, bgImage);
+               list.add(comp);
                 });
                 return list;
             }

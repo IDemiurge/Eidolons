@@ -33,7 +33,7 @@ import main.system.auxiliary.ColorManager;
 import main.system.auxiliary.FontMaster;
 import main.system.auxiliary.GuiManager;
 import main.system.auxiliary.ListMaster;
-import main.system.graphics.Animation;
+import main.system.graphics.PhaseAnimation;
 import main.system.graphics.AnimationManager.MouseItem;
 import main.system.graphics.MigMaster;
 import main.system.images.ImageManager;
@@ -639,7 +639,7 @@ public class ToolTipMaster {
 
     }
 
-    public void addTooltip(Animation anim, Point point, Rectangle rectangle, MouseItem item) {
+    public void addTooltip(PhaseAnimation anim, Point point, Rectangle rectangle, MouseItem item) {
         List lines = (List) item.getArg();
         TextItem textItem = new TextItem(lines, TEXT_TYPE.ANIMATION);
         addTooltip(textItem);

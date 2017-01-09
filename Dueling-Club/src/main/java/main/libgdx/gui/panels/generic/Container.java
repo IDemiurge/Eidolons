@@ -53,6 +53,10 @@ public class Container extends Comp {
         Group group = getGroup(defaultLayout);
         root.addActor(group);
         for (Actor comp : comps) {
+            if (comp==null){
+                main.system.auxiliary.LogMaster.log(1,"NULL COMP IN " +this);
+                continue;
+            }
             if (comp instanceof Wrap) {
                 group = getGroup(((Wrap) comp).horizontal ? LAYOUT.HORIZONTAL : LAYOUT.VERTICAL);
                 root.addActor(group);
@@ -65,6 +69,13 @@ public class Container extends Comp {
             group.addActor(comp);
         }
 
+    }
+
+    public boolean isPaged(){
+        return false;
+    }
+    public boolean isScrolled(){
+        return false;
     }
 
     public static class Space extends Comp {

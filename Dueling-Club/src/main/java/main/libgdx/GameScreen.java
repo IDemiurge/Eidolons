@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.data.filesys.PathFinder;
 import main.entity.obj.DC_Obj;
 import main.game.DC_Game;
+import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.bf.Background;
 import main.libgdx.bf.GridPanel;
@@ -24,7 +25,6 @@ import main.libgdx.gui.dialog.DialogDisplay;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import main.libgdx.anims.particles.ParticleActor;
 import org.apache.commons.lang3.tuple.Pair;
 
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
@@ -40,9 +40,10 @@ public class GameScreen implements Screen {
     public static OrthographicCamera camera;
     private static GameScreen instance;
     protected ToolTipManager toolTipManager;
-    private Stage bf;
+    private Stage grid;
     private Stage gui;
     private Stage dialog;
+    private Stage anims;
     private Background background;
     private GridPanel gridPanel;
     private RadialMenu radialMenu;
@@ -53,29 +54,27 @@ public class GameScreen implements Screen {
     private Stage effects;
 
     private ParticleManager particleManager;
+    private AnimMaster animMaster;
 
     public static GameScreen getInstance() {
         return instance;
     }
 
     public void PostGameStart() {
-        InputMultiplexer multiplexer = new InputMultiplexer(gui, controller, bf);
+        InputMultiplexer multiplexer = new InputMultiplexer(gui, controller, grid);
         Gdx.input.setInputProcessor(multiplexer);
     }
 
     public GameScreen PostConstruct() {
         PathFinder.init();
         instance = this;
-        bf = new Stage();
 
+initBf();
         initDialog();
         initEffects();
         initGui();
-
-
-        camera = cam = new OrthographicCamera();
-        cam.setToOrtho(false, 1600, 900);
-        bf.getViewport().setCamera(cam);
+        initAnims();
+initCamera();
         controller = new InputController(cam);
 
         GL20 gl = Gdx.graphics.getGL20();
@@ -97,16 +96,30 @@ public class GameScreen implements Screen {
         return this;
     }
 
-    private void initBf() {
-
+    private void initCamera() {
+        camera = cam = new OrthographicCamera();
+        cam.setToOrtho(false, 1600, 900);
+        grid.getViewport().setCamera(cam);
+        anims.getViewport().setCamera(cam);
+        effects.getViewport().setCamera(cam);
     }
-        private void initEffects() {
-            effects= new Stage();
-            particleManager= new ParticleManager(effects);
-        }
-            private void initDialog() {
-        dialog= new Stage();
-        dialogDisplay =new DialogDisplay();
+
+    private void initBf() {
+        grid = new Stage();
+    }
+
+    private void initEffects() {
+        effects = new Stage();
+        particleManager = new ParticleManager(effects);
+    }
+
+    private void initAnims() {
+        anims = new Stage();
+        animMaster = new AnimMaster(anims);
+    }
+    private void initDialog() {
+        dialog = new Stage();
+        dialogDisplay = new DialogDisplay();
         dialog.addActor(dialogDisplay);
     }
 
@@ -121,13 +134,13 @@ public class GameScreen implements Screen {
         GuiEventManager.bind(GRID_CREATED, param -> {
             Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
             gridPanel = new GridPanel(p.getLeft(), p.getRight()).init();
-            bf.addActor(gridPanel);
+            grid.addActor(gridPanel);
         });
 
         GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
             DC_Obj dc_obj = (DC_Obj) obj.get();
 
-            if (Gdx.input.isButtonPressed(0)||Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+            if (Gdx.input.isButtonPressed(0) || Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
                 radialMenu.init(DebugRadialManager.getDebugNodes(dc_obj));
             } else {
                 radialMenu.createNew(dc_obj);
@@ -144,7 +157,7 @@ public class GameScreen implements Screen {
         GuiEventManager.processEvents();
 
         //gui.act(delta);
-        //bf.act(delta);
+        //grid.act(delta);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
@@ -162,12 +175,12 @@ public class GameScreen implements Screen {
 
         batch.end();
 
-        bf.draw();
+        grid.draw();
         effects.draw();
-        if (dialogDisplay.getDialog()==null )
-        gui.draw();
-        else
-        dialog.draw();
+        anims.draw();
+            gui.draw();
+        if (dialogDisplay.getDialog() != null)
+            dialog.draw();
     }
 
     @Override
@@ -178,7 +191,9 @@ public class GameScreen implements Screen {
 /*        camera = cam = new OrthographicCamera(width, height);
         cam.update();*/
         cam.setToOrtho(false, width, height);
-        bf.getViewport().update(width, height);
+        anims.getViewport().update(width, height);
+        effects.getViewport().update(width, height);
+         grid.getViewport().update(width, height);
         gui.getViewport().update(width, height);
 
 /*        to disable pixelperfect

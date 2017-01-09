@@ -20,13 +20,6 @@ public class ActionPanelHolder {
     ActionPanel spellPanel;
     private int columns = 6;
 
-    public void refresh() {
-        itemPanel.init(hero.getQuickItems());
-        Collection<DC_UnitAction> actives = getFilteredActions();
-        centerPanel.init(actives); //TODO filter actions!!!
-        spellPanel.init(hero.getSpells());
-
-    }
 
     private Collection<DC_UnitAction> getFilteredActions() {
         List<DC_UnitAction> list = new LinkedList<>();
@@ -38,22 +31,24 @@ public class ActionPanelHolder {
 
     public void init() {
         itemPanel = new ActionPanel<DC_QuickItemObj>(hero,
+         ()-> hero.getQuickItems(),
                 action -> {
                     DC_QuickItemObj item = (DC_QuickItemObj) action.get();
                     item.invokeClicked();
                 }, columns);
 
         centerPanel = new ActionPanel<DC_UnitAction>(hero,
+         ()-> getFilteredActions(),
                 action -> {
                     DC_UnitAction active = (DC_UnitAction) action.get();
                     active.invokeClicked();
                 }, columns);
 
         spellPanel = new ActionPanel<DC_SpellObj>(hero,
+         ()-> hero.getSpells(),
                 action -> {
                     DC_SpellObj spell = (DC_SpellObj) action.get();
                     spell.invokeClicked();
                 }, columns);
-        refresh();
     }
 }

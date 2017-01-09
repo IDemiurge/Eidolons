@@ -7,9 +7,9 @@ import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class MultiAnim extends Animation {
+public abstract class MultiAnim extends PhaseAnimation {
 
-    protected List<Animation> animations;
+    protected List<PhaseAnimation> animations;
 
     public MultiAnim(ANIM_TYPE type, Object mainArg, Obj... targets) {
         super(type);
@@ -20,7 +20,7 @@ public abstract class MultiAnim extends Animation {
         // TODO WHAT IS TARGET? WHERE ARE THE CONTROLS/... DRAWN?
     }
 
-    protected abstract Animation createAnimation(Object mainArg, Obj targetArg);
+    protected abstract PhaseAnimation createAnimation(Object mainArg, Obj targetArg);
 
     @Override
     public Object getKey() {
@@ -30,7 +30,7 @@ public abstract class MultiAnim extends Animation {
 
     @Override
     public boolean draw(Graphics g) {
-        for (Animation a : animations) {
+        for (PhaseAnimation a : animations) {
             a.draw(g);
         }
         return true;

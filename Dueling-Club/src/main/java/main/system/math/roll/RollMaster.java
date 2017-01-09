@@ -21,7 +21,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.graphics.ANIM;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
-import main.system.graphics.Animation;
+import main.system.graphics.PhaseAnimation;
 import main.system.graphics.EffectAnimation;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
@@ -295,7 +295,7 @@ public class RollMaster {
         ref.getGame().getLogManager();
         ref.getGame().getLogManager();
         if (!ref.isAnimationDisabled()) {
-            Animation anim = null;
+            PhaseAnimation anim = null;
             if (ref.getActive() != null) {
                 // else ?
                 anim = ((DC_ActiveObj) ref.getActive()).getAnimation();

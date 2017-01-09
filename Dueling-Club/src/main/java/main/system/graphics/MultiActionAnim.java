@@ -16,7 +16,7 @@ public class MultiActionAnim extends MultiAnim {
     }
 
     @Override
-    protected Animation createAnimation(Object mainArg, Obj target) {
+    protected PhaseAnimation createAnimation(Object mainArg, Obj target) {
         ActionAnimation actionAnimation = new ActionAnimation(action);
         actionAnimation.setTarget(target);
         return actionAnimation;

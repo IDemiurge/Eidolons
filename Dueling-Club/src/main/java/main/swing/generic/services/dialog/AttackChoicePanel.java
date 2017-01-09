@@ -13,7 +13,7 @@ import main.system.auxiliary.FontMaster;
 import main.system.auxiliary.FontMaster.FONT;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
-import main.system.graphics.Animation;
+import main.system.graphics.PhaseAnimation;
 import main.system.graphics.AttackAnimation;
 import main.system.graphics.MigMaster;
 import main.system.images.ImageManager;
@@ -78,7 +78,7 @@ public class AttackChoicePanel extends ChoicePanel<DC_ActiveObj> {
 
         Attack attack = EffectMaster.getAttackFromAction(t);
         AttackAnimation animation = new AttackAnimation(t);
-        animation.setDrawMode(Animation.TARGET_ONLY);
+        animation.setDrawMode(PhaseAnimation.TARGET_ONLY);
         // animation.setGenericsAbove(true);
         t.getRef().setTarget(target.getId());
         t.getAbilities().getEffects().setRef(t.getRef());

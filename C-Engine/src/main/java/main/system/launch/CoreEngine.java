@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability"};
-    public static final String VERSION = "0.05";
+    public static final String VERSION = "0.01";
     public static boolean swingOn = true;
     private static boolean TEST_MODE = true;
     private static SoundMaster sm;

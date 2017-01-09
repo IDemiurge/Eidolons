@@ -129,7 +129,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         this.ownerObj = (DC_HeroObj) ref.getSourceObj();
     }
 
-    public static void waitForAnimation(Animation anim) {
+    public static void waitForAnimation(PhaseAnimation anim) {
         if (anim != null)
             if (anim.isStarted())
                 while (!anim.isFinished()) { // TODO limit?
@@ -1010,7 +1010,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     @Override
-    public Animation getAnimation() {
+    public PhaseAnimation getAnimation() {
         if (getModeAction() != null) {
             return getModeAction().getAnimation();
         }

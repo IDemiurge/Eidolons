@@ -30,7 +30,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
-import main.system.graphics.Animation;
+import main.system.graphics.PhaseAnimation;
 import main.system.graphics.AttackAnimation;
 import main.system.math.roll.RollMaster;
 import main.system.sound.SoundMaster;
@@ -342,7 +342,7 @@ public class DC_AttackMaster {
                              Effect onHit, Effect onKill, boolean offhand, boolean counter) {
         if (!(ref.getTargetObj() instanceof DC_HeroObj))
             return true;
-        // Animation animation =
+        // PhaseAnimation animation =
         // game.getAnimationManager().getAnimation(attack.getAction().getAnimationKey());
         DC_ActiveObj action = (DC_ActiveObj) ref.getObj(KEYS.ACTIVE);
         if (action.checkProperty(G_PROPS.ACTION_TAGS, "" + ACTION_TAGS.OFF_HAND))
@@ -704,7 +704,7 @@ public class DC_AttackMaster {
     }
 
     private Boolean checkDodgedOrCrit(DC_HeroObj attacker, DC_HeroObj attacked,
-                                      DC_ActiveObj action, Ref ref, boolean offhand, Animation animation) {
+                                      DC_ActiveObj action, Ref ref, boolean offhand, PhaseAnimation animation) {
         if (attacked.checkPassive(STANDARD_PASSIVES.IMMATERIAL))
             if (!attacker.checkPassive(STANDARD_PASSIVES.IMMATERIAL)) {
                 if (!RollMaster.roll(ROLL_TYPES.IMMATERIAL, ref))

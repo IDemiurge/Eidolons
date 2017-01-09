@@ -36,7 +36,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class ActionAnimation extends Animation {
+public class ActionAnimation extends PhaseAnimation {
     protected DC_ActiveObj action;
 
     public ActionAnimation(DC_ActiveObj action) {
@@ -635,7 +635,7 @@ public class ActionAnimation extends Animation {
     }
 
     @Override
-    public Animation clone() {
+    public PhaseAnimation clone() {
         return new ActionAnimation(action);
     }
 

@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.texture.Texture2D;
 import main.system.auxiliary.GuiManager;
-import main.system.graphics.Animation;
+import main.system.graphics.PhaseAnimation;
 
 import java.awt.*;
 
@@ -15,14 +15,14 @@ import java.awt.*;
 public class PhaseAnim extends Group {
 
 
-    Animation anim;
+    PhaseAnimation anim;
     int w = GuiManager.getScreenWidthInt();
     int h = GuiManager.getScreenHeightInt();
     private Texture2D texture;
     private Image image;
     private boolean dirty;
 
-    public PhaseAnim(Animation anim) {
+    public PhaseAnim(PhaseAnimation anim) {
         this.anim = anim;
         anim.setPhaseAnim(this);
     }
@@ -65,7 +65,7 @@ public class PhaseAnim extends Group {
         super.draw(batch, parentAlpha);
     }
 
-    public Animation getAnim() {
+    public PhaseAnimation getAnim() {
         return anim;
     }
 

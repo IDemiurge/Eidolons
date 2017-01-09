@@ -1,5 +1,6 @@
 package main.libgdx.gui.dialog;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.google.gwt.rpc.server.WebModeClientOracle.Triple;
 import main.content.DC_ContentManager;
@@ -33,8 +34,9 @@ public class InfoDialog extends Dialog {
 
     Container description;
     Container lore;
-    public final static String bgPath =
-     "UI\\components\\2017\\dialog\\info\\background.png";
+    public final static String path ="UI\\components\\2017\\dialog\\info";
+    public final static String bgPath =path+
+    "background.png";
 
 
     public InfoDialog(DC_HeroObj unit) {
@@ -138,6 +140,11 @@ public class InfoDialog extends Dialog {
         });
 
         return list;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
     }
 }
 

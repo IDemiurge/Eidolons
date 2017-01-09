@@ -22,7 +22,7 @@ public class MultiAttackAnim extends MultiAnim {
     }
 
     @Override
-    protected Animation createAnimation(Object mainArg, Obj targetArg) {
+    protected PhaseAnimation createAnimation(Object mainArg, Obj targetArg) {
         return null;
     }
 

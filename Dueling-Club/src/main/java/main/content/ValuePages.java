@@ -660,11 +660,7 @@ public class ValuePages {
      {
 
      },
-
-    };
-//    Combat
-//1
-//    Crit Bonus, Crit Chance
+//     Crit Bonus, Crit Chance
 //    Penalties +Move x 2
 //    Penalties +Attack x 2
 //    Position mods x 2
@@ -676,17 +672,17 @@ public class ValuePages {
 //3
 //    Close quarters - 2x2
 //    Long Reach - 2x2
-//
-//
-//     Misc
-//1
+    };
+
+    private static final VALUE[][] UNIT_INFO_PARAMS_MISC = {
+     {
+
+     },
 //    QUICK_SLOTS, Item Use Speed
 //    Detection Stealth
 //    Sneak params - 2x2 def, dmg
 //
-//
-//2
-//    Watch x4 – atk/def
+//   Watch x4 – atk/def
 //
 //3
 //    Cadence - 2x2
@@ -694,14 +690,21 @@ public class ValuePages {
 //     Rolls
 //    Rolls – 2x12
 //    Pass/Stop chance bonuses - 2x4
-//
+    };
+    private static final VALUE[][] UNIT_INFO_PARAMS_MAGIC = {
+     {
 
+     },
+    };
 
     public static final String[] INFO_TABLE_NAMES= {
-     "Physical",
+     "Physical",  "Combat",  "Magic",  "Misc",
     };
     public static final VALUE[][][] UNIT_INFO_PARAMS = {
      UNIT_INFO_PARAMS_PHYSICAL,
+     UNIT_INFO_PARAMS_COMBAT ,
+     UNIT_INFO_PARAMS_MAGIC,
+     UNIT_INFO_PARAMS_MISC ,
     };
     public static VALUE[] ARMOR_GRADES;
 

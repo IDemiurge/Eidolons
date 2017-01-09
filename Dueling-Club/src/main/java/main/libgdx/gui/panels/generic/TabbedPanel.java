@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.google.gwt.rpc.server.WebModeClientOracle.Triple;
 import main.libgdx.gui.layout.LayoutParser.LAYOUT;
+import main.swing.generic.components.G_Panel.VISUALS;
 
 import java.util.Collection;
 import java.util.function.Supplier;
@@ -19,8 +20,15 @@ public class TabbedPanel extends Container {
     public enum TAB_VARIANT {
         SMALL,
 //auto-adjust size?
-    }
+        ;
+        public String toString() {
 
+            return super.toString();
+        }
+    }
+    int selectedIndex;
+    Actor displayedComp;
+    TAB_VARIANT variant;
     private Group contents;
     Group tabRow;
     Supplier<Collection<Triple<String, String, Actor>>> tabSupplier;
@@ -69,7 +77,12 @@ public class TabbedPanel extends Container {
          getTab(text, imgPath, content));
     }
         private Actor getTab(String text, String imgPath, Actor content) {
-        TextIconComp tab = new TextIconComp(text, imgPath);
+        TextIconComp tab = new TextIconComp(()->text,
+         ()-> isSelected(content)
+        ? VISUALS.TAB_SELECTED.getImgPath() :VISUALS.TAB.getImgPath()
+        //TODO size up/down! 
+       ) ;
+        tab.addActor(new Comp(imgPath));
         tab.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -79,6 +92,10 @@ public class TabbedPanel extends Container {
             }
         });
         return tab;
+    }
+
+    private boolean isSelected(Actor content) {
+        return displayedComp==content;
     }
 
     public void setContents(Actor a) {

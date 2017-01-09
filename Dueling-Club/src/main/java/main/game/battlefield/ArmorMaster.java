@@ -14,7 +14,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
-import main.system.graphics.Animation;
+import main.system.graphics.PhaseAnimation;
 import main.system.math.MathMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
@@ -102,7 +102,7 @@ public class ArmorMaster {
                 int durabilityLost = reduceDurability(blocked, armorObj, spell, dmg_type, attacker
                         .getActiveWeapon(offhand), damage);
                 if (!shield) {
-                    Animation animation = action.getGame().getAnimationManager().getAnimation(
+                    PhaseAnimation animation = action.getGame().getAnimationManager().getAnimation(
                             Attack.getAnimationKey(action));
                     animation.addPhase(new AnimPhase(PHASE_TYPE.REDUCTION_ARMOR, blockedPercentage,
                             blocked, durabilityLost, damage, dmg_type, armorObj));
@@ -262,7 +262,7 @@ public class ArmorMaster {
             // ENTRY_TYPE.DAMAGE);
             // return damage;
             // }
-            Animation animation = action.getGame().getAnimationManager().getAnimation(
+            PhaseAnimation animation = action.getGame().getAnimationManager().getAnimation(
                     Attack.getAnimationKey(action));
             animation.addPhase(new AnimPhase(PHASE_TYPE.REDUCTION_SHIELD, chance, blockValue,
                     durabilityLost, damage, damage_type, shield));

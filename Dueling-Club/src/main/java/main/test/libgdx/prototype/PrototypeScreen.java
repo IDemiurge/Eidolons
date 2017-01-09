@@ -20,6 +20,7 @@ import main.data.filesys.PathFinder;
 import main.entity.obj.MicroObj;
 import main.libgdx.anims.particles.ParticleActor;
 import main.libgdx.anims.particles.lighting.FireLightProt;
+import main.libgdx.anims.sprite.SpriteAnimation;
 import main.system.GuiEventManager;
 import main.system.datatypes.DequeImpl;
 
@@ -50,7 +51,7 @@ public class PrototypeScreen implements Screen {
     ConeLight coneLight;
     ConeLight coneLight1;
     private ArrayList<Texture> regions;
-    private Animation anim;
+    private SpriteAnimation anim;
     Sprite sprite;
     SpriteBatch batch;
     DequeImpl<MicroObj> units;
@@ -86,7 +87,7 @@ public class PrototypeScreen implements Screen {
             local_Texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
             regions.add(local_Texture);
         }
-//        anim = new Animation(regions,regions.size()-1,0.85f);
+//        anim = new PhaseAnimation(regions,regions.size()-1,0.85f);
         sprite = new Sprite(new Texture(PathFinder.getImagePath() + "mini\\sprites\\impact\\electro impact\\e"+1+".jpg"));
         sprite.setBounds(3,3,5,5);
         batch = new SpriteBatch();

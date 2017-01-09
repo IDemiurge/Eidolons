@@ -118,8 +118,8 @@ public class DC_ImageMaster {
     }
 
     public static Image getProcessedImage(Image image) {
-        image = ImageManager.getSizedVersion(image, new Dimension(Animation.MAX_MINI_ICON_SIZE,
-                Animation.MAX_MINI_ICON_SIZE));
+        image = ImageManager.getSizedVersion(image, new Dimension(PhaseAnimation.MAX_MINI_ICON_SIZE,
+                PhaseAnimation.MAX_MINI_ICON_SIZE));
         // image = ImageTransformer.getCircleCroppedImage(image);
         // image = ImageManager.applyBorder(image, BORDER.CIRCLE_GLOW_40);
         return image;

@@ -24,7 +24,7 @@ import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.Manager;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
-import main.system.graphics.Animation;
+import main.system.graphics.PhaseAnimation;
 import main.system.graphics.AttackAnimation;
 import main.system.math.DC_MathManager;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -82,7 +82,7 @@ public class DamageMaster extends Manager {
                 dmg_type);
         int e_damage = calculateEnduranceDamage(attacked, attacker, amount, magical, ref, blocked,
                 dmg_type);
-        Animation animation = magical ? getActionAnimation(ref, attacked) : getAttackAnimation(ref,
+        PhaseAnimation animation = magical ? getActionAnimation(ref, attacked) : getAttackAnimation(ref,
                 attacked);
 
         entry.addLinkedAnimations(animation);
@@ -111,14 +111,14 @@ public class DamageMaster extends Manager {
                 AttackAnimation.generateKey((DC_ActiveObj) ref.getActive()));
     }
 
-    private static Animation getAnimation(Ref ref, DC_HeroObj obj) {
-        Animation a = getAttackAnimation(ref, obj);
+    private static PhaseAnimation getAnimation(Ref ref, DC_HeroObj obj) {
+        PhaseAnimation a = getAttackAnimation(ref, obj);
         if (a != null)
             return a;
         return getActionAnimation(ref, obj);
     }
 
-    private static Animation getActionAnimation(Ref ref, DC_HeroObj obj) {
+    private static PhaseAnimation getActionAnimation(Ref ref, DC_HeroObj obj) {
         return obj.getGame().getAnimationManager().getAnimation(
                 ((DC_ActiveObj) ref.getActive()).getAnimationKey());
     }
@@ -363,7 +363,7 @@ public class DamageMaster extends Manager {
             // e_damage, ref,
             // DAMAGE_TYPE.PURE, dead);
 
-            Animation animation = getAnimation(ref, attacked);
+            PhaseAnimation animation = getAnimation(ref, attacked);
             if (animation != null)
                 animation.addPhaseArgs(PHASE_TYPE.DAMAGE_DEALT, t_damage, e_damage, ref
                         .getDamageType());
@@ -413,7 +413,7 @@ public class DamageMaster extends Manager {
 
         if (!endurance)
             if (isPeriodic(ref)) {
-                // Animation animation = getAttackAnimation(ref, attacked);
+                // PhaseAnimation animation = getAttackAnimation(ref, attacked);
                 // animation.addPhaseArgs(PHASE_TYPE.REDUCTION_NATURAL, 0, 0,
                 // 0);
                 return 0;
@@ -423,7 +423,7 @@ public class DamageMaster extends Manager {
         int resistance = getResistanceForDamageType(i, attacked, attacker, damage_type);
         i = applyPercentReduction(i, resistance);
         int armor = ArmorMaster.getArmorValue(attacked, damage_type);
-        Animation animation = magical ? getActionAnimation(ref, attacker) : getAttackAnimation(ref,
+        PhaseAnimation animation = magical ? getActionAnimation(ref, attacker) : getAttackAnimation(ref,
                 attacked);
 
         if (resistance != 0 || armor != 0)

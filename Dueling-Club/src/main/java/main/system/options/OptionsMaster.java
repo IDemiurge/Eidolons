@@ -47,8 +47,8 @@ public class OptionsMaster {
     // Misc Volume
     //
     // Graphics
-    // Animation speed
-    // Animation details
+    // PhaseAnimation speed
+    // PhaseAnimation details
     //
     // Stacked Units as Thumbnails
     // Values displayed as: Orbs, Bars

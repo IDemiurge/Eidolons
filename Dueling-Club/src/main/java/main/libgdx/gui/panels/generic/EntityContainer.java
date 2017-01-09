@@ -1,7 +1,10 @@
 package main.libgdx.gui.panels.generic;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.entity.Entity;
 import main.entity.obj.DC_Obj;
+import main.system.EventCallback;
+import main.system.EventCallbackParam;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -13,27 +16,31 @@ import java.util.function.Supplier;
  */
 public class EntityContainer extends TableContainer {
 
-    private String name;
     private int itemSize;
-
-    public EntityContainer(String name, int itemSize, int columns, int rows
-     , Supplier<Collection<? extends Entity>> supplier,
-                           DC_Obj obj) {
-
-        super(columns, rows, getCompSupplier(supplier, obj, itemSize));
-        this.name = name;
-        this.itemSize = itemSize;
-
+    private EventCallback event;
+    public EntityContainer(String imagePath, int itemSize, int columns, int rows
+     , Supplier<Collection<? extends Entity>> supplier, DC_Obj obj ) {
+this(imagePath,itemSize,columns,rows,supplier,obj, param-> {
+});
     }
 
-    private static Supplier<List<Comp>> getCompSupplier(
+    public EntityContainer(String imagePath, int itemSize, int columns, int rows
+     , Supplier<Collection<? extends Entity>> supplier, DC_Obj obj,
+                           final EventCallback event) {
+
+        super(columns, rows, getCompSupplier(supplier, obj, itemSize));
+        this.imagePath = imagePath;
+        this.event = event;
+        this.itemSize = itemSize;
+    }
+    private static Supplier<List<Actor>> getCompSupplier(
      Supplier<Collection<? extends Entity>>
       supplier, DC_Obj obj,
      int itemSize) {
-        return new Supplier<List<Comp>>() {
+        return new Supplier<List<Actor>>() {
             @Override
-            public List<Comp> get() {
-                List<Comp> list = new LinkedList<>();
+            public List<Actor> get() {
+                List<Actor> list = new LinkedList<>();
                 supplier.get().forEach(value -> {
                     EntityComp comp = new EntityComp(obj);
                     list.add(comp);
@@ -42,5 +49,8 @@ public class EntityContainer extends TableContainer {
             }
         };
 
+    }
+    public void clicked(Entity obj) {
+        event.call(new EventCallbackParam<Entity>(obj));
     }
 }

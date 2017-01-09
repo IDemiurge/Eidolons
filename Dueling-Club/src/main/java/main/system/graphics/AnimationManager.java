@@ -49,10 +49,10 @@ public class AnimationManager {
     private static final int DAMAGE_CONST = 175;
     private static final float DEFAULT_OVERLAY_FONT_SIZE = 18;
     private final Point OBJ_COMP_CENTER = new Point(getDefaultObjCompX(), getDefaultObjCompY());
-    DequeImpl<Animation> animations = new DequeImpl<>();
-    DequeImpl<Animation> archivedAnimations = new DequeImpl<>();
+    DequeImpl<PhaseAnimation> animations = new DequeImpl<>();
+    DequeImpl<PhaseAnimation> archivedAnimations = new DequeImpl<>();
     Map<Obj, List<Ref>> modifiedValues = new ConcurrentHashMap<>();
-    List<Animation> pendingCameraAdjustmentAnims = new LinkedList<>();
+    List<PhaseAnimation> pendingCameraAdjustmentAnims = new LinkedList<>();
     private boolean waiting;
     private UIOptions options;
     private int damageDelay;
@@ -63,8 +63,8 @@ public class AnimationManager {
     private DC_Game game;
     private Coordinates offset;
     private Coordinates bufferedOffset;
-    private Animation lastThumbnail;
-    private List<Animation> tempAnims = new LinkedList<>();
+    private PhaseAnimation lastThumbnail;
+    private List<PhaseAnimation> tempAnims = new LinkedList<>();
     private boolean changed;
 
     public AnimationManager(DC_Game game) {
@@ -101,7 +101,7 @@ public class AnimationManager {
 
     // TODO
     public void paintCalledOnBfGrid() {
-        for (Animation anim : new LinkedList<>(animations)) {
+        for (PhaseAnimation anim : new LinkedList<>(animations)) {
             if (!anim.isAutoHandled())
                 continue;
             if (!anim.isStarted())
@@ -112,7 +112,7 @@ public class AnimationManager {
     }
 
     public boolean isStackAnimOverride(Coordinates coordinates) {
-        for (Animation anim : animations)
+        for (PhaseAnimation anim : animations)
             if (anim.isDrawReady())
                 if (anim.isStackDrawingOn()) {
                     if (anim.getTargetCoordinates().equals(coordinates))
@@ -127,9 +127,9 @@ public class AnimationManager {
 
         if (CoreEngine.isSwingOn())
             updatePoints();
-        // DequeImpl<Animation> animsToDraw = new DequeImpl<>(animations);
+        // DequeImpl<PhaseAnimation> animsToDraw = new DequeImpl<>(animations);
         // animsToDraw.addAll(tempAnims); drawn manually!
-        for (Animation anim : animations) {
+        for (PhaseAnimation anim : animations) {
             if (anim.isPending())
                 anim.run();
 
@@ -148,7 +148,7 @@ public class AnimationManager {
     public void drawAnimations(Graphics bfGraphics) {
         updateAnimations();
         // will phase have time to init via timer.start()?
-        for (Animation anim : animations)
+        for (PhaseAnimation anim : animations)
             anim.draw(bfGraphics);
         // check overlapping !
         // anim.getTarget()
@@ -157,7 +157,7 @@ public class AnimationManager {
     public boolean cleanAnimations() {
 
         boolean changed = false;
-        for (Animation anim : new LinkedList<>(animations)) {
+        for (PhaseAnimation anim : new LinkedList<>(animations)) {
             if (anim.isFinished())
                 if (!anim.isPaused())
                     if (!anim.isThumbnail())
@@ -169,13 +169,13 @@ public class AnimationManager {
         return changed;
     }
 
-    public void removeAnimation(Animation animation) {
+    public void removeAnimation(PhaseAnimation animation) {
         animations.remove(animation);
         archivedAnimations.add(animation);
     }
 
-    private void checkOverlapping(Animation anim) {
-        for (Animation anim1 : animations) {
+    private void checkOverlapping(PhaseAnimation anim) {
+        for (PhaseAnimation anim1 : animations) {
             int i = 0;
             if (anim != (anim1))
                 if (anim.isVisible())
@@ -204,12 +204,12 @@ public class AnimationManager {
         return OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.OFFSET_FOR_OVERLAP);
     }
 
-    private Animation getAnimBelow(Animation anim, Animation anim1) {
+    private PhaseAnimation getAnimBelow(PhaseAnimation anim, PhaseAnimation anim1) {
         // default priorities? what are the overlapping cases? TODO
         return anim1;
     }
 
-    private void addOffsets(Animation anim, Animation anim1, int offset, boolean source_target_all,
+    private void addOffsets(PhaseAnimation anim, PhaseAnimation anim1, int offset, boolean source_target_all,
                             boolean x) {
         if (anim.getOffset(source_target_all, x) == 0)
             anim.addOffset(source_target_all, x, offset);
@@ -224,8 +224,8 @@ public class AnimationManager {
 
     public Coordinates updatePoints() {
         bufferedOffset = game.getBattleField().getGrid().getOffsetCoordinate();
-        List<Animation> anims = new LinkedList<>();
-        for (Animation anim : animations) {
+        List<PhaseAnimation> anims = new LinkedList<>();
+        for (PhaseAnimation anim : animations) {
             if (!anim.isDrawReady())
                 continue;
             anims.add(anim);
@@ -233,8 +233,8 @@ public class AnimationManager {
         return updatePoints(anims);
     }
 
-    public Coordinates updatePoints(List<Animation> anims) {
-        for (Animation anim : anims) {
+    public Coordinates updatePoints(List<PhaseAnimation> anims) {
+        for (PhaseAnimation anim : anims) {
 
             boolean result = anim.updatePoints();
             if (!result) {
@@ -280,8 +280,8 @@ public class AnimationManager {
             Coordinates c_offset = new Coordinates(x, y);
 
             adjustOffset(c_offset);
-            LinkedList<Animation> list = new LinkedList<>(pendingCameraAdjustmentAnims);
-            for (Animation anim : pendingCameraAdjustmentAnims) {
+            LinkedList<PhaseAnimation> list = new LinkedList<>(pendingCameraAdjustmentAnims);
+            for (PhaseAnimation anim : pendingCameraAdjustmentAnims) {
                 boolean result = anim.updatePoints();
                 if (result) {
                     list.remove(anim);
@@ -301,8 +301,8 @@ public class AnimationManager {
 
     }
 
-    public Animation cloneWithPhases(Animation anim, PHASE_TYPE... phaseTypes) {
-        Animation newAnim = (Animation) anim.clone();
+    public PhaseAnimation cloneWithPhases(PhaseAnimation anim, PHASE_TYPE... phaseTypes) {
+        PhaseAnimation newAnim = (PhaseAnimation) anim.clone();
         List<PHASE_TYPE> phaseList = new LinkedList<>(Arrays.asList(phaseTypes));
         for (AnimPhase phase : anim.getPhases()) {
             if (phaseList.contains(phase.getType())) {
@@ -337,15 +337,15 @@ public class AnimationManager {
         return null;
     }
 
-    public Animation getAnimation(Object key) {
-        Animation anim = getAnimation(key, animations);
+    public PhaseAnimation getAnimation(Object key) {
+        PhaseAnimation anim = getAnimation(key, animations);
         if (anim == null)
             anim = getAnimation(key, archivedAnimations);
         return anim;
     }
 
-    public Animation getAnimation(Object key, DequeImpl<Animation> pool) {
-        for (Animation anim : pool) {
+    public PhaseAnimation getAnimation(Object key, DequeImpl<PhaseAnimation> pool) {
+        for (PhaseAnimation anim : pool) {
             if (anim.getKey() != null)
                 if (anim.getKey().equals(key))
                     return anim;
@@ -531,7 +531,7 @@ public class AnimationManager {
         return getGrid().getCellCompMap().get(obj.getCoordinates());
     }
 
-    public DequeImpl<Animation> getAnimations() {
+    public DequeImpl<PhaseAnimation> getAnimations() {
         return animations;
     }
 
@@ -558,13 +558,13 @@ public class AnimationManager {
         return ANIM_TYPE.ACTION;
     }
 
-    public void updateLastThumbnail(Animation animation) {
+    public void updateLastThumbnail(PhaseAnimation animation) {
         return;
         // removeLastThumbnail();
         // setLastThumbnail(animation);
     }
 
-    private void setLastThumbnail(Animation animation) {
+    private void setLastThumbnail(PhaseAnimation animation) {
         if (animation != null) {
             main.system.auxiliary.LogMaster.log(1, "setLastThumbnail " + animation);
             lastThumbnail = animation;
@@ -580,11 +580,11 @@ public class AnimationManager {
         }
     }
 
-    public List<Animation> getTempAnims() {
+    public List<PhaseAnimation> getTempAnims() {
         return tempAnims;
     }
 
-    public Animation getActionAnimation(DC_ActiveObj action) {
+    public PhaseAnimation getActionAnimation(DC_ActiveObj action) {
         if (action.isAttack())
             return null;
         if (action.getRef().getGroup() != null)
@@ -609,7 +609,7 @@ public class AnimationManager {
         return animation;
     }
 
-    public void newAnimation(Animation animation) {
+    public void newAnimation(PhaseAnimation animation) {
         if (animation == null)
             return;
         if (animations.contains(animation))

@@ -37,7 +37,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public abstract class Animation implements ANIM {
+public abstract class PhaseAnimation implements ANIM {
 
     public static final int MAX_MINI_ICON_SIZE = 40;
     public static final int CENTERED_Y = -9999;
@@ -123,11 +123,11 @@ public abstract class Animation implements ANIM {
     private boolean debugInfoDrawDisabled;
     private boolean flipOver;
 
-    public Animation(ANIM_TYPE type) {
+    public PhaseAnimation(ANIM_TYPE type) {
         this(type, OptionsMaster.getAnimPhasePeriod(), DEFAULT_MAX_PHASES);
     }
 
-    public Animation(ANIM_TYPE type, int time, int phases) {
+    public PhaseAnimation(ANIM_TYPE type, int time, int phases) {
         this.type = type;
         this.id = ID;
         baseTime = time;
@@ -1201,7 +1201,7 @@ public abstract class Animation implements ANIM {
     @Override
     public ANIM cloneAndAdd() {
         ANIM anim = clone();
-        getGame().getAnimationManager().newAnimation((Animation) anim);
+        getGame().getAnimationManager().newAnimation((PhaseAnimation) anim);
 
         return anim;
     }
@@ -1402,15 +1402,15 @@ public abstract class Animation implements ANIM {
         this.sourceCoordinates = new Coordinates(c.x, c.y);
     }
 
-    public boolean overlapsPartly(Animation anim, boolean source, boolean x) {
+    public boolean overlapsPartly(PhaseAnimation anim, boolean source, boolean x) {
         return overlaps(false, anim, source, x);
     }
 
-    public boolean overlapsFully(Animation anim, boolean source, boolean x) {
+    public boolean overlapsFully(PhaseAnimation anim, boolean source, boolean x) {
         return overlaps(true, anim, source, x);
     }
 
-    public boolean overlaps(boolean fully, Animation anim, boolean source, boolean x) {
+    public boolean overlaps(boolean fully, PhaseAnimation anim, boolean source, boolean x) {
         initArea();
         anim.initArea();
         Rectangle area1 = source ? getAreaSource() : getAreaTarget();

@@ -7,7 +7,7 @@ import main.system.graphics.AnimationManager.ANIM_TYPE;
 
 import java.awt.*;
 
-public class DamageAnimation extends Animation {
+public class DamageAnimation extends PhaseAnimation {
 
     private DAMAGE_TYPE dmg_type;
     private Integer amount;

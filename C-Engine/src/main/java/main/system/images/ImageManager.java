@@ -653,7 +653,7 @@ public class ImageManager {
             if (mastery)
                 return getImage(getEmptyListIconSmall());
             else
-                return getNewBufferedImage(40, 40);
+                return  new CustomImage("", getNewBufferedImage(40, 40));
         }
         return icon;
 

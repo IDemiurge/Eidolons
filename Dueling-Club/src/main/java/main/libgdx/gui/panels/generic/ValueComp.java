@@ -1,6 +1,6 @@
 package main.libgdx.gui.panels.generic;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import main.content.ContentManager;
 import main.content.VALUE;
@@ -8,6 +8,8 @@ import main.content.parameters.PARAMETER;
 import main.entity.obj.DC_Obj;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.layout.LayoutParser.LAYOUT;
+import main.libgdx.texture.TextureManager;
+import main.system.datatypes.Boxer;
 import main.system.images.CustomImage;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.ALIGNMENT;
@@ -46,32 +48,20 @@ public class ValueComp extends Container {
         return (textAlignment == ALIGNMENT.WEST || textAlignment == ALIGNMENT.EAST) ? LAYOUT.HORIZONTAL : LAYOUT.VERTICAL;
     }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-    }
 
     @Override
     public void initComps() {
-       Comp image = new Comp(
+        if (iconDisplayed)
+                image = new Image(TextureManager.getOrCreate(new Boxer<>(
          ()-> ((CustomImage)
-         ImageManager.getValueIcon(value)).getImgPath() );
+         ImageManager.getValueIcon(value)).getImgPath() )));
+        else image=null;
+
         label = new TextComp(getText(), style);
-//        if ()
+//        if (layout)
         setComps(image, label);
     }
 
-    public void update() {
-        clearChildren();
-
-        if (iconDisplayed)
-            addActor(image);
-
-        label.setText(getText());
-        addActor(label);
-
-//           image.setVisible(nameDisplayed);
-    }
 
     public String getText() {
         String text = obj.getValue(value);

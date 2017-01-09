@@ -13,7 +13,7 @@ import main.system.auxiliary.GuiManager;
 import main.system.datatypes.DequeImpl;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
-import main.system.graphics.Animation;
+import main.system.graphics.PhaseAnimation;
 import main.system.graphics.AnimationManager.MouseItem;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
@@ -115,7 +115,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
     }
 
     private boolean checkAnimationPageFlipped(MouseWheelEvent e) {
-        for (Animation anim : gridComp.getGame().getAnimationManager().getAnimations()) {
+        for (PhaseAnimation anim : gridComp.getGame().getAnimationManager().getAnimations()) {
             if (anim.contains(e.getPoint())) {
                 if (anim.isWheelSupported()) {
                     if (anim.isManualFlippingSupported()) {
@@ -142,12 +142,12 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
 
     public boolean checkAnimationClick(MouseEvent e) {
         point = e.getPoint();
-        DequeImpl<Animation> animations = new DequeImpl<>(gridComp.getGame().getAnimationManager()
+        DequeImpl<PhaseAnimation> animations = new DequeImpl<>(gridComp.getGame().getAnimationManager()
                 .getAnimations());
         animations.addAll(gridComp.getGame().getAnimationManager().getTempAnims());
         if (SwingUtilities.isRightMouseButton(e)) {
 
-            for (Animation anim : animations) {
+            for (PhaseAnimation anim : animations) {
                 if (checkToggleTooltip(anim, e))
                     return true;
 
@@ -169,7 +169,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                 }
             }
         }
-        for (Animation anim : animations) {
+        for (PhaseAnimation anim : animations) {
             if (anim.getMouseMap() != null)
 
                 for (Rectangle rect : anim.getMouseMap().keySet()) {
@@ -183,7 +183,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
         return false;
     }
 
-    private boolean checkToggleTooltip(Animation anim, MouseEvent e) {
+    private boolean checkToggleTooltip(PhaseAnimation anim, MouseEvent e) {
         for (Rectangle rect : anim.getTooltipMap().keySet()) {
             if (rect.contains(e.getPoint())) {
                 gridComp.getGame().getToolTipMaster().toggleToolTip(anim.getTooltipMap().get(rect));
@@ -195,14 +195,14 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
 
     }
 
-    private void displayTooltip(Animation anim, MouseItem item) {
+    private void displayTooltip(PhaseAnimation anim, MouseItem item) {
         // TODO
         gridComp.getGame().getToolTipMaster().addTooltip(anim, item.getPoint(),
                 item.getRectangle(), item);
 
     }
 
-    private boolean itemClicked(MouseItem item, Animation anim) {
+    private boolean itemClicked(MouseItem item, PhaseAnimation anim) {
 
         if (item.getType() != null)
             switch (item.getType()) {

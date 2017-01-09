@@ -4,7 +4,6 @@ import main.content.properties.G_PROPS;
 import main.entity.obj.Obj;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
-import main.game.logic.macro.MacroGame;
 import main.swing.components.ImageButton;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Component;
@@ -12,7 +11,7 @@ import main.swing.generic.components.panels.G_PagePanel;
 import main.system.auxiliary.FontMaster;
 import main.system.auxiliary.ListMaster;
 import main.system.graphics.ANIM;
-import main.system.graphics.Animation;
+import main.system.graphics.PhaseAnimation;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.text.EntryNodeMaster;
@@ -134,7 +133,7 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
                             setCachedTopPageIndex(getCurrentIndex());
                         if (node.getLinkedAnimation() != null) {
                             for (ANIM anim : node.getLinkedAnimations()) {
-                                Animation animation = (Animation) anim;
+                                PhaseAnimation animation = (PhaseAnimation) anim;
                                 // DC_Game.game.getAnimationManager()
                                 // .getAnimation(key);
                                 animation.setPhaseFilter(node.getAnimPhasesToPlay());
@@ -189,7 +188,7 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
         if (entryNode != null)
             if (entryNode.getLinkedAnimation() != null)
                 for (ANIM anim : entryNode.getLinkedAnimations()) {
-                    Animation animation = (Animation) anim;
+                    PhaseAnimation animation = (PhaseAnimation) anim;
                     animation.setAutoFinish(true);
                     if (!animation.isPaused()) {
                         if (animation.stopAndRemove()) {

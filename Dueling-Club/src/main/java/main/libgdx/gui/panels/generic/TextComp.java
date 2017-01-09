@@ -9,5 +9,7 @@ public class TextComp extends Label{
 
     public TextComp(CharSequence text, LabelStyle style) {
         super(text, style);
+//        setWrap(true);
+
     }
 }
