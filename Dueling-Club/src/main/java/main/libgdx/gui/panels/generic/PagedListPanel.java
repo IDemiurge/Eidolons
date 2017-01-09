@@ -76,7 +76,7 @@ public class PagedListPanel extends Comp {
               arrowVersion)));
         }
 
-        //pager2.rotateBy(180);
+        //pager2.rotateBy(180); TODO flip!
         addActor(pager1);
         addActor(pager2);
 

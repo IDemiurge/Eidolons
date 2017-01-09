@@ -631,6 +631,78 @@ public class ValuePages {
     };
     public static final VALUE[][] ALT_SPELL_PAGES = {DESCRIPTION, DC_SPELL_PARAMETERS,
             DC_SPELLS_HEADER, SPELLS_UPGRADES};
+
+    public static final VALUE[][] UNIT_INFO_PARAMS_PHYSICAL = {
+     {
+      PARAMS.INITIATIVE_MODIFIER, PARAMS.INITIATIVE,
+      PARAMS.STARTING_FOCUS,
+//      PARAMS.BASE_MORALE,
+      PARAMS.ENDURANCE_REGEN, PARAMS.STAMINA_REGEN,
+      PARAMS.TOUGHNESS_RECOVERY ,
+//      PARAMS.UNCONSCIOUS_THRESHOLD
+     },
+     {
+      PARAMS.SIGHT_RANGE, PARAMS.SIDE_SIGHT_PENALTY,
+      PARAMS.HEIGHT, PARAMS.GIRTH,
+      PARAMS.WEIGHT, PARAMS.CARRYING_CAPACITY,
+      PARAMS.ILLUMINATION, PARAMS.CONCEALMENT
+ },
+     {
+      PARAMS.FOCUS_RETAINMENT , PARAMS.FOCUS_RESTORATION,
+      PARAMS. MORALE_RETAINMENT , PARAMS.MORALE_RESTORATION,
+//      PARAMS.FEAR RESISTANCE,  PARAMS.WOUNDS RESISTANCE,
+//     FATIGUE, CONFUSION,
+     },
+
+    };
+
+    public static final VALUE[][] UNIT_INFO_PARAMS_COMBAT = {
+     {
+
+     },
+
+    };
+//    Combat
+//1
+//    Crit Bonus, Crit Chance
+//    Penalties +Move x 2
+//    Penalties +Attack x 2
+//    Position mods x 2
+//     2
+//    Resistance Penetration, Armor Penetration
+//    Block Chance, Parry Chance
+//    Block Penetration, Parry Penetration
+//     Accuracy, Evasion
+//3
+//    Close quarters - 2x2
+//    Long Reach - 2x2
+//
+//
+//     Misc
+//1
+//    QUICK_SLOTS, Item Use Speed
+//    Detection Stealth
+//    Sneak params - 2x2 def, dmg
+//
+//
+//2
+//    Watch x4 – atk/def
+//
+//3
+//    Cadence - 2x2
+//
+//     Rolls
+//    Rolls – 2x12
+//    Pass/Stop chance bonuses - 2x4
+//
+
+
+    public static final String[] INFO_TABLE_NAMES= {
+     "Physical",
+    };
+    public static final VALUE[][][] UNIT_INFO_PARAMS = {
+     UNIT_INFO_PARAMS_PHYSICAL,
+    };
     public static VALUE[] ARMOR_GRADES;
 
     static {

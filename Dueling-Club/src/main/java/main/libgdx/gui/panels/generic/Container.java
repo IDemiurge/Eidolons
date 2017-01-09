@@ -25,6 +25,7 @@ public class Container extends Comp {
         root = getGroup(defaultLayout
         );
         this.comps=comps;
+        addActor(root);
     }
     public Container(String imagePath, LAYOUT defaultLayout) {
        this(defaultLayout, imagePath  );
@@ -63,7 +64,6 @@ public class Container extends Comp {
             }
             group.addActor(comp);
         }
-        addActor(root);
 
     }
 

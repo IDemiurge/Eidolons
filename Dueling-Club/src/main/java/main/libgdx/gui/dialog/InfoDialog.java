@@ -1,16 +1,20 @@
 package main.libgdx.gui.dialog;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.google.gwt.rpc.server.WebModeClientOracle.Triple;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
+import main.content.ValuePages;
 import main.content.properties.G_PROPS;
 import main.entity.obj.DC_HeroObj;
+import main.entity.obj.DC_Obj;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.layout.LayoutParser.LAYOUT;
 import main.libgdx.gui.panels.generic.*;
 import main.libgdx.gui.panels.info.WeaponPanel;
 import main.system.images.ImageManager.ALIGNMENT;
 
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * Created by JustMe on 1/5/2017.
@@ -19,7 +23,6 @@ public class InfoDialog extends Dialog {
     Container top;
     Container fxAndAbils;
     Container armor;
-    EntityContainer armorTraits;
     WeaponPanel mainWeapon;
     WeaponPanel offWeapon;
     ValueContainer attributes;
@@ -80,7 +83,8 @@ public class InfoDialog extends Dialog {
 
         mainWeapon = new WeaponPanel();
         description = new Container("", LAYOUT.HORIZONTAL);
-        tabs = new TabbedPanel("");
+
+        tabs = new TabbedPanel("", ()-> getTabs(unit));
 
         mainParams = new ValueContainer(unit, 1,
          DC_ContentManager.MAIN_PARAMETERS.length,
@@ -114,6 +118,26 @@ public class InfoDialog extends Dialog {
          new Space(false, 0.2f), //leave 20% space
          tabs, offWeapon, lore
         );
+    }
+
+    private Collection<Triple<String,String,Actor>> getTabs(DC_Obj unit) {
+         List<Triple<String,String,Actor>> list = new LinkedList<>();
+        Iterator<String> iterator = Arrays.stream(ValuePages.INFO_TABLE_NAMES).iterator();
+        Arrays.stream(ValuePages.UNIT_INFO_PARAMS).forEach(arrays->{
+            List<ValueContainer> comps=    new LinkedList<>() ;
+            Arrays.stream(arrays).forEach(s-> {
+                 comps.add( new ValueContainer(unit, 4, 4, () -> Arrays.asList(s)));
+            });
+
+             Container tables = new Container
+              (LAYOUT.VERTICAL, "", comps.toArray(new Actor[comps.size()]));
+
+            String text =iterator.next();
+            Triple<String, String, Actor> t = new Triple<>(text, null, tables);
+            list.add(t);
+        });
+
+        return list;
     }
 }
 

@@ -26,7 +26,7 @@ public class GridActor extends Actor {
 //        sprite.setBounds(0,0,5,5);
 
         //gridPanel = new GridPanel(PathFinder.getImagePath(), raws, lines).init();
-//        Lightmap lightmap = new Lightmap(gridPanel.getUnits());
+//        LightMap lightmap = new LightMap(gridPanel.getUnits());
         setBounds(gridPanel.getX(),gridPanel.getY(),gridPanel.getWidth(),gridPanel.getHeight());
         addListener(new ClickListener(){
             @Override

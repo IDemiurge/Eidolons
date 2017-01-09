@@ -20,7 +20,7 @@ import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.datatypes.DequeImpl;
-import main.test.libgdx.prototype.Lightmap;
+import main.libgdx.anims.particles.lighting.LightMap;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.awt.*;
@@ -50,7 +50,7 @@ public class GridPanel extends Group {
     protected Texture cellBorderTexture;
     protected DequeImpl<DC_HeroObj> units;
     protected GridCell[][] cells;
-    private Lightmap lightmap;
+    private LightMap lightMap;
     private CellBorderManager cellBorderManager;
     private Map<DC_HeroObj, UnitView> unitMap;
     private int cols;
@@ -188,10 +188,10 @@ public class GridPanel extends Group {
             if (event.getType().name().startsWith("PARAM_MODIFIED")) {
                 switch (event.getType().getArg()) {
                     case "Illumination":
-                        if (getLightmap() != null) {
+                        if (getLightMap() != null) {
                             Obj o = event.getRef().getTargetObj();
                             if (o instanceof DC_HeroObj) {
-                                getLightmap().updateObject((DC_HeroObj) event.getRef().getTargetObj());
+                                getLightMap().updateObject((DC_HeroObj) event.getRef().getTargetObj());
                             }
                         }
                         caught = true;
@@ -221,9 +221,9 @@ public class GridPanel extends Group {
 
         GuiEventManager.bind(CREATE_UNITS_MODEL, param -> {
             units = (DequeImpl<DC_HeroObj>) param.get();
-            Lightmap lightmap = new Lightmap(units, cells[0][0].getWidth(), cells[0][0].getHeight(), rows, cols);
-            if (lightmap.isValid())
-                setLightmap(lightmap
+            LightMap lightMap = new LightMap(units, cells[0][0].getWidth(), cells[0][0].getHeight(), rows, cols);
+            if (lightMap.isValid())
+                setLightMap(lightMap
                 );
 
 
@@ -294,8 +294,8 @@ public class GridPanel extends Group {
 
         getCellBorderManager().updateBorderSize();
 
-        if (getLightmap() != null) {
-            getLightmap().updatePos(heroObj);
+        if (getLightMap() != null) {
+            getLightMap().updatePos(heroObj);
         }
     }
 
@@ -338,18 +338,18 @@ public class GridPanel extends Group {
 
         getCellBorderManager().draw(batch, parentAlpha);
 
-        if (getLightmap() != null) {
-            getLightmap().updateLight();
+        if (getLightMap() != null) {
+            getLightMap().updateLight();
         }
     }
 
 
-    public Lightmap getLightmap() {
-        return lightmap;
+    public LightMap getLightMap() {
+        return lightMap;
     }
 
-    public void setLightmap(Lightmap lightmap) {
-        this.lightmap = lightmap;
+    public void setLightMap(LightMap lightMap) {
+        this.lightMap = lightMap;
     }
 
     public CellBorderManager getCellBorderManager() {

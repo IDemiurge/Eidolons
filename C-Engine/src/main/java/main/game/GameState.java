@@ -10,6 +10,8 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.event.Event;
 import main.game.event.Rule;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.Chronos;
 import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.LogMaster.LOG_CHANNELS;
@@ -235,6 +237,7 @@ public abstract class GameState {
         resetCurrentValues();
         mngr.checkForChanges(true);
 
+        GuiEventManager.trigger(GuiEventType.UPDATE_EMITTERS, null);
     }
 
     public abstract void checkContinuousRules();

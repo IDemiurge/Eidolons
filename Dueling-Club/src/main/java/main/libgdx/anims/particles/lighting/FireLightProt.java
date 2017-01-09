@@ -1,4 +1,4 @@
-package main.test.libgdx.prototype;
+package main.libgdx.anims.particles.lighting;
 
 import box2dLight.ConeLight;
 import box2dLight.RayHandler;
@@ -29,8 +29,8 @@ public class FireLightProt {
     float past;
     static float alphaBigger;
     static float alphaSmaller;
-    static Color biggerLigth;
-    static Color smallerLigth;
+    static Color biggerLight;
+    static Color smallerLight;
 
     public void setDISTANCE(float DISTANCE) {
         this.DISTANCEBIGGER = DISTANCE;
@@ -39,18 +39,18 @@ public class FireLightProt {
 
 
     public FireLightProt(World world, RayHandler rayHandler, float x, float y, int distance, float degree, float changeSpeed) {
-        biggerLigth = new Color(0xffe9a3AF);
-        smallerLigth = new Color(0xf7ffa832);
-        alphaBigger = biggerLigth.a;
-        alphaSmaller = smallerLigth.a;
+        biggerLight = new Color(0xffe9a3AF);
+        smallerLight = new Color(0xf7ffa832);
+        alphaBigger = biggerLight.a;
+        alphaSmaller = smallerLight.a;
         DISTANCEBIGGER = distance;
         DISTANCESMALLER = DISTANCEBIGGER/3;
 
 //        pointLight = new ConeLight(rayHandler, AMOUNT_OF_RAYS, Color.RED, distance,degree, x, y);
-        pointLight = new ConeLight(rayHandler, AMOUNT_OF_RAYS, biggerLigth, distance, x, y, 90, degree);
+        pointLight = new ConeLight(rayHandler, AMOUNT_OF_RAYS, biggerLight, distance, x, y, 90, degree);
 //        pointLight.setSoft(true);
 //        pointLight.setSoftnessLength(50f);
-        pointLight_test = new ConeLight(rayHandler, AMOUNT_OF_RAYS, smallerLigth, distance / 3, x, y, 90, degree);
+        pointLight_test = new ConeLight(rayHandler, AMOUNT_OF_RAYS, smallerLight, distance / 3, x, y, 90, degree);
 
 //    pointLight_test.setSoft(true);
 //        pointLight_test.setSoftnessLength(50f);
@@ -72,8 +72,8 @@ public class FireLightProt {
         float diff = now - past;
         timeCounter += diff;
         past = now;
-        pointLight.setColor(biggerLigth);
-        pointLight_test.setColor(smallerLigth);
+        pointLight.setColor(biggerLight);
+        pointLight_test.setColor(smallerLight);
 //        System.out.println("V = " + v + " || timeCounter = " + timeCounter);
 //        System.out.println("Timecounter is " + timeCounter);
         if (timeCounter >= changesp + randomTimeToAdd) {
@@ -182,13 +182,13 @@ public class FireLightProt {
     }
 
     public static void setBiggerAlpha(float alpha) {
-        biggerLigth.a = alpha;
+        biggerLight.a = alpha;
         alphaBigger = alpha;
 
     }
 
     public static void setSmallerAlpha(float alpha) {
-        smallerLigth.a = alpha;
+        smallerLight.a = alpha;
         alphaSmaller = alpha;
     }
 

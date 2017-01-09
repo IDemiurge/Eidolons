@@ -1,4 +1,4 @@
-package main.test.libgdx.prototype;
+package main.libgdx.anims.particles.lighting;
 
 import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.Color;
@@ -10,7 +10,6 @@ import main.entity.obj.DC_HeroObj;
 import main.entity.obj.MicroObj;
 import main.game.battlefield.Coordinates;
 import main.libgdx.GameScreen;
-import main.libgdx.anims.particles.lighting.LightingManager;
 import main.system.datatypes.DequeImpl;
 
 import java.util.HashMap;
@@ -19,7 +18,7 @@ import java.util.Map;
 /**
  * Created by PC on 19.11.2016.
  */
-public class Lightmap {
+public class LightMap {
     private Map<MicroObj, Body> bodyMap;
     private static World world;
     private static RayHandler rayHandler;
@@ -57,19 +56,19 @@ public class Lightmap {
             this.cols = 0;
         }
 
-        Lightmap.world = world;
-        Lightmap.rayHandler = rayHandler;
-        Lightmap.rayHandler.setBlur(true);
+        LightMap.world = world;
+        LightMap.rayHandler = rayHandler;
+        LightMap.rayHandler.setBlur(true);
 
        updateMap();
     }
 
-    private void updateMap() {
+    public void updateMap() {
         valid=false;
-        Lightmap.rayHandler.setBlurNum(15);
-        Lightmap.rayHandler.setAmbientLight(Color.GRAY);
-        Lightmap.rayHandler.setAmbientLight(LightingManager.ambient_light);
-        Lightmap.rayHandler.setBlurNum(15);
+        LightMap.rayHandler.setBlurNum(15);
+        LightMap.rayHandler.setAmbientLight(Color.GRAY);
+        LightMap.rayHandler.setAmbientLight(LightingManager.ambient_light);
+        LightMap.rayHandler.setBlurNum(15);
         RayHandler.setGammaCorrection(true);
         debugRenderer = new Box2DDebugRenderer();
         fireLightProtMap = new HashMap<>();
@@ -108,7 +107,7 @@ public class Lightmap {
         }
     }
 
-    public Lightmap(DequeImpl<DC_HeroObj> un, float cellWidth, float cellHeight, int rows, int cols) {
+    public LightMap(DequeImpl<DC_HeroObj> un, float cellWidth, float cellHeight, int rows, int cols) {
         World world = new World(new Vector2(0, 0), true);
         init(un, world, new RayHandler(world), cellWidth, cellHeight, rows, cols);
     }

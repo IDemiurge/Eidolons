@@ -52,7 +52,7 @@ public class GameScreen implements Screen {
     private DialogDisplay dialogDisplay;
     private Stage effects;
 
-    private ParticleActor particleActor;
+    private ParticleManager particleManager;
 
     public static GameScreen getInstance() {
         return instance;
@@ -67,15 +67,11 @@ public class GameScreen implements Screen {
         PathFinder.init();
         instance = this;
         bf = new Stage();
-        effects= new Stage();
-        dialog= new Stage();
-        dialogDisplay =new DialogDisplay();
-        dialog.addActor(dialogDisplay);
+
+        initDialog();
+        initEffects();
         initGui();
 
-        // temp by Bogdan
-        particleActor = new ParticleActor();
-        // temp end by Bogdan
 
         camera = cam = new OrthographicCamera();
         cam.setToOrtho(false, 1600, 900);
@@ -101,6 +97,19 @@ public class GameScreen implements Screen {
         return this;
     }
 
+    private void initBf() {
+
+    }
+        private void initEffects() {
+            effects= new Stage();
+            particleManager= new ParticleManager(effects);
+        }
+            private void initDialog() {
+        dialog= new Stage();
+        dialogDisplay =new DialogDisplay();
+        dialog.addActor(dialogDisplay);
+    }
+
     private void initGui() {
         final Texture t = new Texture(GameScreen.class.getResource("/data/marble_green.png").getPath());
         gui = new Stage();
@@ -113,8 +122,6 @@ public class GameScreen implements Screen {
             Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
             gridPanel = new GridPanel(p.getLeft(), p.getRight()).init();
             bf.addActor(gridPanel);
-            if (ParticleManager.debug)
-            effects.addActor(particleActor);
         });
 
         GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {

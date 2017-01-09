@@ -11,8 +11,8 @@ import main.libgdx.gui.dialog.DialogDisplay;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.graphics.MigMaster;
-import main.test.libgdx.prototype.FireLightProt;
-import main.test.libgdx.prototype.Lightmap;
+import main.libgdx.anims.particles.lighting.FireLightProt;
+import main.libgdx.anims.particles.lighting.LightMap;
 
 /**
  * Created by PC on 25.10.2016.
@@ -54,10 +54,10 @@ public class InputController implements InputProcessor {
         }
 
         if (i == 54) {
-            Lightmap.resizeFBOa();
+            LightMap.resizeFBOa();
         }
         if (i == 52) {
-            Lightmap.resizeFBOb();
+            LightMap.resizeFBOb();
         }
 
         return false;
@@ -173,10 +173,10 @@ public class InputController implements InputProcessor {
         }
         if (ctrl) {
             if (i == 1) {
-                Lightmap.setAmbint(Lightmap.getAmbint() + 0.02f);
+                LightMap.setAmbint(LightMap.getAmbint() + 0.02f);
             }
             if (i == -1) {
-                Lightmap.setAmbint(Lightmap.getAmbint() - 0.02f);
+                LightMap.setAmbint(LightMap.getAmbint() - 0.02f);
             }
 
         }

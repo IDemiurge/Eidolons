@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import main.data.filesys.PathFinder;
 import main.entity.obj.MicroObj;
 import main.libgdx.anims.particles.ParticleActor;
+import main.libgdx.anims.particles.lighting.FireLightProt;
 import main.system.GuiEventManager;
 import main.system.datatypes.DequeImpl;
 
@@ -145,7 +146,7 @@ public class PrototypeScreen implements Screen {
 //                stage.addActor(player);
 //                gridadded = true;
 //                System.out.println("added grid");
-//                Lightmap lightmap = new Lightmap(units, world, rayHandler);
+//                LightMap lightmap = new LightMap(units, world, rayHandler);
 //
 //            }
 //        }
