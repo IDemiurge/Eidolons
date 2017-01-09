@@ -92,6 +92,7 @@ public enum PARAMS implements PARAMETER {
     COST_MODIFIER(null, "", false, 100, "armor", "weapons"),
     QUICK_SLOTS(null, "", false, 0, "armor", "chars", "units"),
     C_QUICK_SLOTS(null, "", true, 2, "chars", "units"),
+    ITEM_COST_MOD(null, "", false, 0,   "chars", "units"),
 
     CHARGES(null, "", false, 1, "items"),
     C_CHARGES(null, "", true, 1, "items"),

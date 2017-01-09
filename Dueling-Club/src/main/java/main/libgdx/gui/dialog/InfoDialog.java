@@ -36,7 +36,7 @@ public class InfoDialog extends Dialog {
     Container lore;
     public final static String path ="UI\\components\\2017\\dialog\\info";
     public final static String bgPath =path+
-    "background.png";
+    "\\background.png";
 
 
     public InfoDialog(DC_HeroObj unit) {

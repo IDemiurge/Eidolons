@@ -131,7 +131,8 @@ public class Event implements Referred {
         EFFECT_MODIFY_VALUE,
 
         ABILITY_BEING_RESOLVED,
-        ABILITY_ACTIVATED,
+        ACTION_ACTIVATED,
+        ACTION_COMPLETE,
 
         OBJECT_ENTERS_BATTLEFIELD,
         UNIT_HAS_BEEN_KILLED,
