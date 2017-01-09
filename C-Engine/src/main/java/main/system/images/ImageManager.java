@@ -1112,7 +1112,7 @@ public class ImageManager {
     }
 
     public enum ALIGNMENT {
-        NORTH, SOUTH, EAST, WEST, CENTER, NORTH_WEST, SOUTH_EAST
+        NORTH, SOUTH, EAST, WEST, CENTER, NORTH_WEST, SOUTH_EAST, NORTH_EAST, SOUTH_WEST
     }
 
     public enum STD_IMAGES {

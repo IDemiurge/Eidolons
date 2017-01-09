@@ -31,8 +31,15 @@ public class Comp extends Group {
         clearChildren();
         if (supplier != null) {
             imagePath = supplier.get();
-            image = new Image(TextureManager.getOrCreate(imagePath));
         }
+            if (imagePath != null) {
+                image = new Image(TextureManager.getOrCreate(imagePath));
+            }
+        if (image==null ){
+            return ;
+        }
+        setWidth(image.getWidth());
+        setHeight(image.getHeight());
         addActor(getImage());
         dirty = false;
     }

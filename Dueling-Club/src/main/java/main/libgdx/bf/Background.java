@@ -14,8 +14,7 @@ public class Background extends Comp {
 
     private final static String defaultBackground = "big\\dungeon.jpg";
     //private final static String defaultBackground = "big\\big bf grid test2.jpg";
- 
-    private boolean dirty = true;
+
 
     public Background(String path) {
         
@@ -41,10 +40,17 @@ public class Background extends Comp {
 
 
     public void update() {
+        main.system.auxiliary.LogMaster.log(1,"update " +imagePath);
         super.update();
         image.setBounds(image.getImageX(), image.getImageY(), (float) GuiManager.getScreenWidth(), (float) GuiManager.getScreenHeight());
 
 
+    }
+
+    @Override
+    public void setImagePath(String path) {
+        main.system.auxiliary.LogMaster.log(1,"setImagePath " +path);
+        super.setImagePath(path);
     }
 
     public boolean isDirty() {

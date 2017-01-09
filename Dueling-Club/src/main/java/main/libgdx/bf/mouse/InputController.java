@@ -142,7 +142,8 @@ public class InputController implements InputProcessor {
             y_cam_pos = i1;
             Image background = GameScreen.getInstance().getBackground().getImage();
             background.setBounds(
-             camera.position.x - background.getWidth() / 2, camera.position.y - background.getHeight() / 2,
+             camera.position.x - background.getWidth() / 2,
+             camera.position.y - background.getHeight() / 2,
              background.getWidth(),
              background.getHeight());
         }

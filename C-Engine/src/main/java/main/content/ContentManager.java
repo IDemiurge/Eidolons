@@ -38,15 +38,15 @@ public class ContentManager {
     private static List<String> sprops;
     private static List<String> sparams;
     private static Map<String, List<String>> spropListsMap = new ConcurrentMap<String, List<String>>(
-            400, 0.75f);
+     400, 0.75f);
     private static Map<String, List<String>> sparamListsMap = new ConcurrentMap<String, List<String>>(
-            400, 0.75f);
+     400, 0.75f);
 
     private static Map<String, List<String>> spropListsMapAV = new ConcurrentMap<String, List<String>>();
     private static Map<String, List<String>> sparamListsMapAV = new ConcurrentMap<String, List<String>>();
 
     private static Map<String, List<PROPERTY>> propListsMap = new ConcurrentMap<String, List<PROPERTY>>(
-            400, 0.75f);
+     400, 0.75f);
     private static Map<String, List<PARAMETER>> paramListsMap = new ConcurrentMap<>(400, 0.75f);
     private static Map<String, List<VALUE>> valueListsMap = new ConcurrentMap<>();
     private static Map<String, List<VALUE>> valueListsMapAV = new ConcurrentMap<>();
@@ -229,7 +229,7 @@ public class ContentManager {
 
         if (param == null) {
             main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, "PARAM NOT FOUND: "
-                    + valueName + "!");
+             + valueName + "!");
             param = G_PARAMS.EMPTY_PARAMETER;
         }
 
@@ -336,7 +336,7 @@ public class ContentManager {
         if (property == null)
 
             main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, "PROPERTY NOT FOUND: "
-                    + valueName + "!");
+             + valueName + "!");
 
         if (property == null)
             property = G_PROPS.EMPTY_VALUE;
@@ -381,7 +381,7 @@ public class ContentManager {
                 PARAMETER param = findPARAM(valueName);
                 if (prop != null && param != null) {
                     v = StringMaster.compareSimilar(prop.toString(), valueName) >= StringMaster
-                            .compareSimilar(param.toString(), valueName) ? prop : param;
+                     .compareSimilar(param.toString(), valueName) ? prop : param;
                 } else if (prop != null) {
                     v = prop;
                 } else
@@ -391,7 +391,7 @@ public class ContentManager {
             }
             if (v == null)
                 main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, "VALUE NOT FOUND: "
-                        + valueName);
+                 + valueName);
 
         }
         return v;
@@ -456,7 +456,7 @@ public class ContentManager {
 
     public static List<PARAMETER> getParamsForType(String entity, boolean dynamic) {
         List<PARAMETER> paramList = (dynamic) ? paramListsMap.get(entity) : paramListsMapAV
-                .get(entity);
+         .get(entity);
         if (paramList != null)
             return paramList;
         paramList = new LinkedList<PARAMETER>();
@@ -476,7 +476,7 @@ public class ContentManager {
 
     public static List<String> getParamNames(String entity, boolean dynamic) {
         List<String> paramList = (dynamic) ? sparamListsMap.get(entity) : sparamListsMapAV
-                .get(entity);
+         .get(entity);
         if (paramList != null)
             return paramList;
         paramList = new LinkedList<String>();
@@ -562,7 +562,7 @@ public class ContentManager {
         if (objType == null)
             return Collections.EMPTY_LIST;
         List<String> valueNames = (av) ? getValueNamesMapAV().get(objType) : getValueNamesMap()
-                .get(objType);
+         .get(objType);
         if (valueNames != null)
             return valueNames;
         valueNames = new LinkedList<String>();
@@ -917,6 +917,11 @@ public class ContentManager {
 
     public boolean isTextAlwaysShownInListItems(OBJ_TYPE TYPE) {
         return false;
+    }
+
+    public static String getCurrentOutOfTotal(PARAMETER value, Entity obj) {
+        return obj.getValue(value) +
+         "/" + obj.getValue(getBaseParameterFromCurrent(value));
     }
 
     public enum AV_EDITOR_TYPES {

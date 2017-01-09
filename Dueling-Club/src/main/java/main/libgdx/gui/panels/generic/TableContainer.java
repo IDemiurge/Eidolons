@@ -10,17 +10,22 @@ import java.util.function.Supplier;
  * Created by JustMe on 1/7/2017.
  */
 public class TableContainer extends Container {
-    private int rows;
-    private int columns;
-    private int horSpace;
-    private int vertSpace;
+    protected int rows;
+    protected int columns;
+    protected int horSpace;
+    protected int vertSpace;
 
-    boolean horizontal = true;
-    List<Comp> cellComps;
-    Supplier<List<Comp>> supplier;
+    protected boolean horizontal = true;
+    protected List<Comp> cellComps;
+    protected Supplier<List<Comp>> supplier;
+//TODO generate texture for row*column
 
-    public TableContainer(int rows, int columns, Supplier<List<Comp>> supplier) {
-        super("");
+    public TableContainer( int rows, int columns,
+                          Supplier<List<Comp>> supplier) {
+        this("",   rows,   columns,  supplier);
+    }
+     public TableContainer(String imagePath, int rows, int columns, Supplier<List<Comp>> supplier) {
+            super(imagePath);
         this.columns = columns;
         this.rows = rows;
         this.supplier = supplier;

@@ -27,16 +27,16 @@ public class ValueContainer extends TableContainer {
                           Supplier<List<? extends VALUE>> valueSupplier) {
         this(obj, rows, columns,
          true, true, ALIGNMENT.EAST, StyleHolder.getDefaultLabelStyle(),
-         valueSupplier);
+         valueSupplier, null );
     }
 
     public ValueContainer(DC_Obj obj,
                           int rows, int columns, boolean isIconDisplayed, boolean isNameDisplayed,
                           ALIGNMENT textAlignment, LabelStyle style,
-                          Supplier<List<? extends VALUE>> valueSupplier) {
+                          Supplier<List<? extends VALUE>> valueSupplier, String bgImage) {
         super(rows, columns, getCompSupplier(valueSupplier, obj,
-         isNameDisplayed, isIconDisplayed
-        ));
+         isNameDisplayed, isIconDisplayed ,style,textAlignment,
+         bgImage));
 
         this.obj = obj;
         this.style = style;
@@ -47,14 +47,18 @@ public class ValueContainer extends TableContainer {
     }
 
     private static Supplier<List<Comp>> getCompSupplier(Supplier<List<? extends VALUE>>
-                                                         valueSupplier, DC_Obj obj, boolean isNameDisplayed, boolean isIconDisplayed) {
+                                                         valueSupplier, DC_Obj obj,
+                                                        boolean isNameDisplayed,
+                                                        boolean isIconDisplayed,
+                                                        LabelStyle style, ALIGNMENT
+                                                         textAlignment, String bgImage) {
         return new Supplier<List<Comp>>() {
             @Override
             public List<Comp> get() {
                 List<Comp> list = new LinkedList<>();
                 valueSupplier.get().forEach(value -> {
                     ValueComp comp = new ValueComp(value, obj,
-                     isNameDisplayed, isIconDisplayed);
+                     isNameDisplayed, isIconDisplayed,  textAlignment, style, bgImage);
                 });
                 return list;
             }

@@ -1,6 +1,8 @@
 package main.libgdx.gui.dialog;
 
 import main.content.DC_ContentManager;
+import main.content.PARAMS;
+import main.content.properties.G_PROPS;
 import main.entity.obj.DC_HeroObj;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.layout.LayoutParser.LAYOUT;
@@ -29,7 +31,7 @@ public class InfoDialog extends Dialog {
     Container description;
     Container lore;
     public final static String bgPath =
-     "UI\\components\\2017\\dialog\\info\\info panel big.png";
+     "UI\\components\\2017\\dialog\\info\\background.png";
 
 
     public InfoDialog(DC_HeroObj unit) {
@@ -56,9 +58,9 @@ public class InfoDialog extends Dialog {
                 PagedContainer buffs = new PagedContainer("Buffs", true, 32, 2, 2,
                  unit, () -> unit.getArmor().getBuffs());
                 PagedContainer traits = new PagedContainer("Traits", true, 32, 2, 2,
-                 unit, () ->   unit.getArmor().getPassives());
-//EntityComp armor = new EntityComp()
-                setComps(buffs, traits);
+                 unit, () -> unit.getArmor().getPassives());
+                EntityComp armor = new EntityComp(() -> unit.getArmor());
+                setComps(buffs, armor, traits);
             }
         };
 
@@ -74,9 +76,7 @@ public class InfoDialog extends Dialog {
 
         dynamicParams = new ValueContainer(unit, 2, 3, true, false, ALIGNMENT.SOUTH,
          StyleHolder.getAVQLabelStyle(),
-         () -> {
-             return Arrays.asList(DC_ContentManager.DYNAMIC_PARAMETERS);
-         });
+         () -> Arrays.asList(DC_ContentManager.DYNAMIC_PARAMETERS), null);
 
         mainWeapon = new WeaponPanel();
         description = new Container("", LAYOUT.HORIZONTAL);
@@ -86,18 +86,22 @@ public class InfoDialog extends Dialog {
          DC_ContentManager.MAIN_PARAMETERS.length,
          true, false,
          ALIGNMENT.SOUTH, StyleHolder.getAVQLabelStyle(),
-         () -> {
-             return Arrays.asList(DC_ContentManager.MAIN_PARAMETERS);
-         });
+         () -> Arrays.asList(DC_ContentManager.MAIN_PARAMETERS), null);
 
 
         points = new Container("", LAYOUT.HORIZONTAL);
-        top = new Container("", LAYOUT.HORIZONTAL);
-        {
+        top = new Container("", LAYOUT.HORIZONTAL) {
+            @Override
+            public void initComps() {
+                EntityComp portrait = new EntityComp(unit);
+                Comp portraitBg = new Comp("");
+                new Container(LAYOUT.VERTICAL, "", new ValueComp(unit, G_PROPS.NAME)
+                 , new ValueComp(unit, PARAMS.LEVEL)
+                 , new ValueComp(unit, G_PROPS.ASPECT));
+            }
 
-            Comp portrait;
-            Comp portraitBg;
-        }
+            ;
+        };
         offWeapon = new WeaponPanel();
         lore = new Container("", LAYOUT.HORIZONTAL);
 

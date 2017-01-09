@@ -1,5 +1,6 @@
 package main.libgdx.gui.panels.generic;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
@@ -10,7 +11,7 @@ import main.system.auxiliary.secondary.BooleanMaster;
  * Created by JustMe on 1/6/2017.
  */
 public class Container extends Comp {
-    protected Comp[] comps;
+    protected Actor[] comps;
     protected Group root;
     protected LAYOUT defaultLayout;
 
@@ -18,12 +19,15 @@ public class Container extends Comp {
         this(imagePath, LAYOUT.HORIZONTAL);
     }
 
-    public Container(String imagePath, LAYOUT defaultLayout) {
+    public Container( LAYOUT defaultLayout, String imagePath,Actor...comps) {
         super(imagePath);
         this.defaultLayout = defaultLayout;
-
         root = getGroup(defaultLayout
         );
+        this.comps=comps;
+    }
+    public Container(String imagePath, LAYOUT defaultLayout) {
+       this(defaultLayout, imagePath  );
     }
 
     public Group getGroup(LAYOUT layout) {
@@ -34,7 +38,7 @@ public class Container extends Comp {
         }
     }
 
-    public void setComps(Comp... comps) {
+    public void setComps(Actor... comps) {
         this.comps = comps;
     }
     public void initComps() {
@@ -47,15 +51,20 @@ public class Container extends Comp {
         root.clearChildren();
         Group group = getGroup(defaultLayout);
         root.addActor(group);
-        for (Comp comp : comps) {
+        for (Actor comp : comps) {
             if (comp instanceof Wrap) {
                 group = getGroup(((Wrap) comp).horizontal ? LAYOUT.HORIZONTAL : LAYOUT.VERTICAL);
                 root.addActor(group);
                 continue;
             }
+            if (comp instanceof Comp) {
+                ((Comp) comp).update();
+
+            }
             group.addActor(comp);
         }
         addActor(root);
+
     }
 
     public static class Space extends Comp {
