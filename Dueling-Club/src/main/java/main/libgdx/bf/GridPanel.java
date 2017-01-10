@@ -14,19 +14,18 @@ import main.game.battlefield.Coordinates;
 import main.game.battlefield.PointX;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.GameScreen;
+import main.libgdx.anims.particles.lighting.LightMap;
 import main.libgdx.bf.mouse.GridMouseListener;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.datatypes.DequeImpl;
-import main.libgdx.anims.particles.lighting.LightMap;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static main.system.GuiEventType.*;
 
@@ -239,19 +238,25 @@ public class GridPanel extends Group {
 
             for (Coordinates coordinates : map.keySet()) {
                 List<UnitViewOptions> options = new ArrayList<>();
+                List<UnitViewOptions> overlays = new ArrayList<>();
 
                 for (DC_HeroObj object : map.get(coordinates)) {
-                    options.add(new UnitViewOptions(object, unitMap));
+                    if (!object.isOverlaying()) {
+                        options.add(new UnitViewOptions(object, unitMap));
+                    } else {
+                        overlays.add(new UnitViewOptions(object, unitMap));
+                    }
                 }
 
                 GridCellContainer cellContainer = new GridCellContainer(emptyImage, coordinates.getX(), coordinates.getY()).init();
                 cellContainer.setObjects(options);
+                cellContainer.setOverlays(overlays);
 
                 cells[coordinates.getX()][rows - 1 - coordinates.getY()].addInnerDrawable(cellContainer);
             }
         });
 
-        GuiEventManager.bind(CELL_UPDATE, param -> {
+       /* GuiEventManager.bind(CELL_UPDATE, param -> {
             Coordinates cords = (Coordinates) param.get();
 
             List<DC_HeroObj> objList = units.stream()
@@ -277,7 +282,7 @@ public class GridPanel extends Group {
             }
 
         });
-
+*/
 
     }
 

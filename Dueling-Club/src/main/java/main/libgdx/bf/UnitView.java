@@ -24,12 +24,8 @@ public class UnitView extends Group implements Borderable {
     }
 
     public UnitView(UnitViewOptions o) {
-        if (o.getOverlaying()) {
-            overlaying = true;
-            init(o.getDirectionValue(), o.getPortrateTexture());
-        } else {
-            init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getClockTexture(), o.getClockValue(), o.getPortrateTexture(), o.getIconTexture());
-        }
+        init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getClockTexture(), o.getClockValue(), o.getPortrateTexture(), o.getIconTexture());
+
         o.getUnitMap().put(o.getObj(), this);//todo fix this shit
     }
 
