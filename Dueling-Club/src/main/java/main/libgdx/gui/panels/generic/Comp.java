@@ -1,8 +1,8 @@
 package main.libgdx.gui.panels.generic;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import main.libgdx.texture.TextureManager;
 
 import java.util.function.Supplier;
@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 /**
  * Created by JustMe on 1/6/2017.
  */
-public class Comp extends Group {
+public class Comp extends WidgetGroup {
     protected String imagePath;
     protected Image image;
     protected boolean dirty = true;

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import main.libgdx.gui.layout.LayoutParser.LAYOUT;
 import main.system.auxiliary.secondary.BooleanMaster;
@@ -13,7 +14,7 @@ import main.system.auxiliary.secondary.BooleanMaster;
  */
 public class Container extends Comp {
     protected Actor[] comps;
-    protected Group root;
+    protected Table root;
     protected LAYOUT defaultLayout;
     protected LAYOUT rootLayout;
 
@@ -32,9 +33,9 @@ public class Container extends Comp {
        this(defaultLayout, imagePath  );
     }
 
-    public Group getRoot() {
+    public Table getRoot() {
         if (root==null )
-            root = getGroup(getRootLayout());
+            root = new Table();//getGroup(getRootLayout());
         return root;
     }
 
@@ -60,9 +61,14 @@ public class Container extends Comp {
                 continue;
             }
             if (comp instanceof Wrap) {
-                group = getGroup(((Wrap) comp).horizontal ? LAYOUT.HORIZONTAL : LAYOUT.VERTICAL);
+                boolean horizontal = ((Wrap) comp).horizontal;
+                group = getGroup( horizontal ? LAYOUT.HORIZONTAL : LAYOUT.VERTICAL);
                 root.addActor(group);
-//                group.setY(root.getHeight()-group.getY());
+                if(!horizontal)
+                {
+                    group.setY(root.getHeight()-group.getHeight());
+                }else
+                group.setY(root.getHeight()-group.getHeight());
                 continue;
             }
             if (comp instanceof Comp) {
@@ -139,6 +145,8 @@ public class Container extends Comp {
     }
 
     public Group getGroup(LAYOUT layout) {
+        Table t = new Table();
+//        t.ad
         if (layout == LAYOUT.HORIZONTAL) {
             return new HorizontalGroup(){
                 @Override
@@ -150,6 +158,12 @@ public class Container extends Comp {
             };
         } else {
             return new VerticalGroup(){
+                @Override
+                public void addActor(Actor actor) {
+                    super.addActor(actor);
+                    actor.setY(getHeight()-actor.getHeight());
+                }
+
                 @Override
                 public String toString() {
                     return   getClass().getSimpleName()+ " " +getWidth() + " by " + getHeight()
