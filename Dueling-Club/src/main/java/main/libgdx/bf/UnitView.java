@@ -3,30 +3,21 @@ package main.libgdx.bf;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-public class UnitView extends Group implements Borderable {
+public class UnitView extends BaseView {
     private Image arrow;
     private Image clock;
-    private Image portrait;
     private Image icon;
     private int baseHeight;
     private int baseWidth;
     private int arrowRotation;
     private String clockVal;
-    private Image border = null;
-    private boolean overlaying;
-
-    public UnitView(Texture arrowTexture, int arrowRotation, Texture clockTexture, String clockVal, Texture portraitTexture, Texture iconTexture) {
-        init(arrowTexture, arrowRotation, clockTexture, clockVal, portraitTexture, iconTexture);
-    }
 
     public UnitView(UnitViewOptions o) {
+        super(o);
         init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getClockTexture(), o.getClockValue(), o.getPortrateTexture(), o.getIconTexture());
-
-        o.getUnitMap().put(o.getObj(), this);//todo fix this shit
     }
 
     private void init(Texture arrowTexture, int arrowRotation, Texture clockTexture, String clockVal, Texture portraitTexture, Texture iconTexture) {
@@ -65,36 +56,6 @@ public class UnitView extends Group implements Borderable {
             icon.setY(getHeight() - icon.getImageHeight());
         }
 //        setDebug(true);
-    }
-
-    public boolean isOverlaying() {
-        return overlaying;
-    }
-
-    private void init(int directionValue, Texture portrateTexture) {
-        portrait = new Image(portrateTexture);
-        addActor(portrait);
-
-        switch (directionValue) {
-            case -1://center
-                break;
-            case 360://RIGHT
-                break;
-            case 90://UP
-                break;
-            case 180://LEFT
-                break;
-            case 270://DOWN
-                break;
-            case 135://UP_LEFT
-                break;
-            case 45://UP_RIGHT
-                break;
-            case 225://DOWN_RIGHT
-                break;
-            case 315://DOWN_LEFT
-                break;
-        }
     }
 
     @Override
@@ -161,32 +122,4 @@ public class UnitView extends Group implements Borderable {
         return x >= 0 && x < getWidth() && y >= 0 && y < getHeight() ? this : null;
     }
 
-    @Override
-    public int getW() {
-        return (int) getWidth();
-    }
-
-    @Override
-    public int getH() {
-        return (int) getHeight();
-    }
-
-    @Override
-    public Image getBorder() {
-        return border;
-    }
-
-    @Override
-    public void setBorder(Image image) {
-        if (border != null) {
-            removeActor(border);
-        }
-
-        if (image == null) {
-            border = null;
-        } else {
-            addActor(image);
-            border = image;
-        }
-    }
 }

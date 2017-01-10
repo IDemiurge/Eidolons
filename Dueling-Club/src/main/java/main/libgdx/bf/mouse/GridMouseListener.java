@@ -31,9 +31,9 @@ import static main.system.GuiEventType.*;
 public class GridMouseListener extends ClickListener {
     private GridPanel gridPanel;
     private GridCell[][] cells;
-    private Map<DC_HeroObj, UnitView> unitViewMap;
+    private Map<DC_HeroObj, BaseView> unitViewMap;
 
-    public GridMouseListener(GridPanel gridPanel, GridCell[][] cells, Map<DC_HeroObj, UnitView> unitViewMap) {
+    public GridMouseListener(GridPanel gridPanel, GridCell[][] cells, Map<DC_HeroObj, BaseView> unitViewMap) {
         this.gridPanel = gridPanel;
         this.cells = cells;
         this.unitViewMap = unitViewMap;
@@ -48,17 +48,19 @@ public class GridMouseListener extends ClickListener {
         if (gridCell.getInnerDrawable() != null) {
             GridCellContainer innerDrawable = (GridCellContainer) gridCell.getInnerDrawable();
             Actor a = innerDrawable.hit(x, y, true);
-            if (a != null && a instanceof UnitView) {
-                UnitView uv = (UnitView) a;
+            if (a != null && a instanceof BaseView) {
+                BaseView uv = (BaseView) a;
                 DC_HeroObj hero = unitViewMap.entrySet().stream()
                         .filter(entry -> entry.getValue() == uv).findFirst()
                         .get().getKey();
 
                 Map<String, String> tooltipStatMap = new HashMap<>();
+                List<ToolTipRecordOption> recordOptions = new ArrayList<>();
+
                 tooltipStatMap.put(PARAMS.C_TOUGHNESS.getName(), "Toughness");
                 tooltipStatMap.put("C_Endurance", "Endurance");
                 tooltipStatMap.put("C_N_Of_Actions", "N_Of_Actions");
-                List<ToolTipRecordOption> recordOptions = new ArrayList<>();
+
                 tooltipStatMap.entrySet().forEach(entry -> {
                     ToolTipManager.ToolTipRecordOption recordOption = new ToolTipManager.ToolTipRecordOption();
                     recordOption.curVal = hero.getIntParam(entry.getKey());
@@ -80,9 +82,10 @@ public class GridMouseListener extends ClickListener {
                 recordOption.name = "direction: " + hero.getFacing().getDirection();
                 recordOptions.add(recordOption);
 
-                if (hero.isOverlaying()) {
+                if (a instanceof OverlayView) {
                     recordOption = new ToolTipManager.ToolTipRecordOption();
-                    recordOption.name = "direction O: " + hero.getDirection();
+                    recordOption.name = "LIGHT_EMISSION";
+                    recordOption.curVal = hero.getIntParam(PARAMS.LIGHT_EMISSION);
                     recordOptions.add(recordOption);
                 }
 
