@@ -1,5 +1,6 @@
 package main.libgdx.gui.panels.generic;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
@@ -51,6 +52,8 @@ public class Container extends Comp {
         getRoot().clearChildren();
         Group group = getGroup(defaultLayout);
         root.addActor(group);
+//        root.setPosition(0, getHeight());
+        group.setPosition(0,root.getHeight());
         for (Actor comp : comps) {
             if (comp==null){
                 main.system.auxiliary.LogMaster.log(1,"NULL COMP IN " +this);
@@ -59,6 +62,7 @@ public class Container extends Comp {
             if (comp instanceof Wrap) {
                 group = getGroup(((Wrap) comp).horizontal ? LAYOUT.HORIZONTAL : LAYOUT.VERTICAL);
                 root.addActor(group);
+//                group.setY(root.getHeight()-group.getY());
                 continue;
             }
             if (comp instanceof Comp) {
@@ -68,6 +72,11 @@ public class Container extends Comp {
             group.addActor(comp);
         }
 
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
     }
 
     public LAYOUT getRootLayout() {
