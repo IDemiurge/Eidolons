@@ -795,7 +795,7 @@ public class ValuePages {
      },
     };
     public static final String[] INFO_TABLE_NAMES = {
-     "Physical", "Combat", "Magic", "Misc", "Rolls"
+     "Physical", "Combat", "Magic", "Misc", "Rolls", "Mods"
     };
     public static final VALUE[][][] UNIT_INFO_PARAMS = {
      UNIT_INFO_PARAMS_PHYSICAL,

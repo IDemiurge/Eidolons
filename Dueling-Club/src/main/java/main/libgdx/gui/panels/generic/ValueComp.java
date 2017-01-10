@@ -51,15 +51,15 @@ public class ValueComp extends Container {
 
     @Override
     public void initComps() {
+        Image valueImage=null ;
         if (iconDisplayed)
-                image = new Image(TextureManager.getOrCreate(new Boxer<>(
+                valueImage = new Image(TextureManager.getOrCreate(new Boxer<>(
          ()-> ((CustomImage)
          ImageManager.getValueIcon(value)).getImgPath() )));
-        else image=null;
 
         label = new TextComp(getText(), style);
 //        if (layout)
-        setComps(image, label);
+        setComps(valueImage, label);
     }
 
 

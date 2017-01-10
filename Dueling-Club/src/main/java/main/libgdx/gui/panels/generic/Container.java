@@ -14,6 +14,7 @@ public class Container extends Comp {
     protected Actor[] comps;
     protected Group root;
     protected LAYOUT defaultLayout;
+    protected LAYOUT rootLayout;
 
     public Container(String imagePath) {
         this(imagePath, LAYOUT.HORIZONTAL);
@@ -22,8 +23,7 @@ public class Container extends Comp {
     public Container( LAYOUT defaultLayout, String imagePath,Actor...comps) {
         super(imagePath);
         this.defaultLayout = defaultLayout;
-        root = getGroup(defaultLayout
-        );
+        root = getRoot();
         this.comps=comps;
         addActor(root);
     }
@@ -31,13 +31,12 @@ public class Container extends Comp {
        this(defaultLayout, imagePath  );
     }
 
-    public Group getGroup(LAYOUT layout) {
-        if (layout == LAYOUT.HORIZONTAL) {
-            return new HorizontalGroup();
-        } else {
-            return new VerticalGroup();
-        }
+    public Group getRoot() {
+        if (root==null )
+            root = getGroup(getRootLayout());
+        return root;
     }
+
 
     public void setComps(Actor... comps) {
         this.comps = comps;
@@ -49,7 +48,7 @@ public class Container extends Comp {
     public void update() {
         initComps();
         super.update();
-        root.clearChildren();
+        getRoot().clearChildren();
         Group group = getGroup(defaultLayout);
         root.addActor(group);
         for (Actor comp : comps) {
@@ -71,11 +70,24 @@ public class Container extends Comp {
 
     }
 
+    public LAYOUT getRootLayout() {
+        if (rootLayout==null )return defaultLayout;
+        return rootLayout;
+    }
+
+    public void setRootLayout(LAYOUT rootLayout) {
+        this.rootLayout = rootLayout;
+    }
+
     public boolean isPaged(){
         return false;
     }
     public boolean isScrolled(){
-        return false;
+        return true;
+    }
+
+    public void setLayout(LAYOUT layout) {
+        this.defaultLayout = layout;
     }
 
     public static class Space extends Comp {
@@ -117,7 +129,27 @@ public class Container extends Comp {
         }
     }
 
-
+    public Group getGroup(LAYOUT layout) {
+        if (layout == LAYOUT.HORIZONTAL) {
+            return new HorizontalGroup(){
+                @Override
+                public String toString() {
+                    return   getClass().getSimpleName()+ " " +getWidth() + " by " + getHeight()
+                     + " at " + getX() + ":" + getY()
+                     + " with " + getChildren().size + " children: " + getChildren();
+                }
+            };
+        } else {
+            return new VerticalGroup(){
+                @Override
+                public String toString() {
+                    return   getClass().getSimpleName()+ " " +getWidth() + " by " + getHeight()
+                     + " at " + getX() + ":" + getY()
+                     + " with " + getChildren().size + " children: " + getChildren();
+                }
+            };
+        }
+    }
 //    Arrays.stream(comps).forEach(comp->{
 //
 //        comp.setX(x);

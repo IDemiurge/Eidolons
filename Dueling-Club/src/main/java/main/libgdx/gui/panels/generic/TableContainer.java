@@ -1,6 +1,7 @@
 package main.libgdx.gui.panels.generic;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import main.libgdx.gui.layout.LayoutParser.LAYOUT;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -19,7 +20,8 @@ public class TableContainer extends Container {
     protected boolean horizontal = true;
     protected List<Actor> cellComps;
     protected Supplier<List<Actor>> supplier;
-//TODO generate texture for row*column
+    private ScrollPanel scrollPanel;
+    //TODO generate texture for row*column
 
     public TableContainer(int rows, int columns,
                           Supplier<List<Actor>> supplier) {
@@ -29,31 +31,40 @@ public class TableContainer extends Container {
     public TableContainer(String imagePath, int rows, int columns,
                           Supplier<List<Actor>> supplier) {
         super(imagePath);
-        this.columns = columns;
         this.rows = rows;
+        this.columns = columns;
         this.supplier = supplier;
     }
 
     public TableContainer(String imagePath, int rows, int columns,
                           Actor... actors) {
         super(imagePath);
-        this.columns = columns;
         this.rows = rows;
+        this.columns = columns;
         this.cellComps = new LinkedList<>(Arrays.asList(actors));
     }
 
+
     @Override
     public void update() {
+        horizontal= defaultLayout== LAYOUT.HORIZONTAL;
         initComps();
         List<Actor> list = new LinkedList<>();
-        int n = horizontal ? columns : rows;
+        int n = horizontal ? columns :  rows;
         if (cellComps.size() > rows * columns) {
-            //what if not enough cells? Default expand direction?
+            if (isScrolled())
+                if (scrollPanel==null )
+            {
+                removeActor(root);
+                scrollPanel = new ScrollPanel(root);
+
+                addActor(scrollPanel);
+            }
         }
         for (Actor c : cellComps) {
-
+//
             if (n <= 0) {
-                n = horizontal ? columns : rows;
+                  n = horizontal ?columns :  rows;
                 list.add(new Wrap(horizontal));
             } else
                 n--;
@@ -62,6 +73,16 @@ public class TableContainer extends Container {
         }
         setComps(list.toArray(new Comp[list.size()]));
         super.update();
+    }
+
+    public boolean isHorizontal() {
+        return horizontal;
+    }
+
+    public void setHorizontal(boolean horizontal) {
+        setLayout(horizontal?LAYOUT.HORIZONTAL : LAYOUT.VERTICAL);
+        setRootLayout(!horizontal?LAYOUT.HORIZONTAL : LAYOUT.VERTICAL);
+        this.horizontal = horizontal;
     }
 
     @Override

@@ -9,6 +9,7 @@ import main.content.ValuePages;
 import main.content.properties.G_PROPS;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
+import main.entity.obj.Obj;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.layout.LayoutParser.LAYOUT;
 import main.libgdx.gui.panels.generic.*;
@@ -21,6 +22,9 @@ import java.util.*;
  * Created by JustMe on 1/5/2017.
  */
 public class InfoDialog extends Dialog {
+    public final static String path = "UI\\components\\2017\\dialog\\info\\";
+    public final static String bgPath = path +
+     "background.png";
     Container top;
     Container fxAndAbils;
     Container armor;
@@ -31,27 +35,26 @@ public class InfoDialog extends Dialog {
     Container points;
     ValueContainer mainParams;
     TabbedPanel tabs;
-
     Container description;
     Container lore;
-    public final static String path ="UI\\components\\2017\\dialog\\info";
-    public final static String bgPath =path+
-    "\\background.png";
 
 
     public InfoDialog(DC_HeroObj unit) {
         super(bgPath);
 //        VISUALS.DOUBLE_CONTAINER,
-        fxAndAbils = new Container("fxAndAbils") {
+        fxAndAbils = new Container(path + "abils and fxs bg.png") {
             @Override
             public void initComps() {
 
-                PagedContainer effects = new PagedContainer("Active Effects", true, 32, 2, 2,
-                 unit, () -> unit.getBuffs()
+                EntityContainer effects = new EntityContainer("Active Effects", 32, 2, 2
+                 , () -> unit.getBuffs(),
+                 unit, n -> ((Obj) n.get()).invokeClicked()
                 );
-                PagedContainer abilities = new PagedContainer("Special Abilities", true, 32, 2, 2,
-                 unit, () -> unit.getPassives());
-                setComps(abilities, effects);
+                EntityContainer abilities = new EntityContainer("Special Abilities", 32, 2, 2
+                 , () -> unit.getPassives(),
+                 unit, n -> ((Obj) n.get()).invokeClicked()
+                );
+                setComps(effects, abilities);
             }
         };
 
@@ -77,7 +80,8 @@ public class InfoDialog extends Dialog {
                 return super.isNameDisplayed();
             }
         };
-
+        attributes.setHorizontal(false);
+         attributes.setImagePath(path+"params frame.png");
 
         dynamicParams = new ValueContainer(unit, 2, 3, true, false, ALIGNMENT.SOUTH,
          StyleHolder.getAVQLabelStyle(),
@@ -86,7 +90,7 @@ public class InfoDialog extends Dialog {
         mainWeapon = new WeaponPanel();
         description = new Container("", LAYOUT.HORIZONTAL);
 
-        tabs = new TabbedPanel("", ()-> getTabs(unit));
+        tabs = new TabbedPanel("", () -> getTabs(unit));
 
         mainParams = new ValueContainer(unit, 1,
          DC_ContentManager.MAIN_PARAMETERS.length,
@@ -113,33 +117,41 @@ public class InfoDialog extends Dialog {
 
         setComps(
          //from bottom left
-         fxAndAbils, attributes, dynamicParams, mainWeapon, description,
-         new Wrap(false), //next column
-         armor, mainParams, points, top,
-         new Wrap(false),//next column
-         new Space(false, 0.2f), //leave 20% space
-         tabs, offWeapon, lore
+//         fxAndAbils,
+         attributes
+
+//         , dynamicParams,mainWeapon, description,
+//         new Wrap(false), //next column
+//         armor, mainParams, points, top,
+//         new Wrap(false),//next column
+//         new Space(false, 0.2f), //leave 20% space
+//         tabs, offWeapon, lore
         );
     }
 
-    private Collection<Triple<String,String,Actor>> getTabs(DC_Obj unit) {
-         List<Triple<String,String,Actor>> list = new LinkedList<>();
+    private Collection<Triple<String, String, Actor>> getTabs(DC_Obj unit) {
+        List<Triple<String, String, Actor>> list = new LinkedList<>();
         Iterator<String> iterator = Arrays.stream(ValuePages.INFO_TABLE_NAMES).iterator();
-        Arrays.stream(ValuePages.UNIT_INFO_PARAMS).forEach(arrays->{
-            List<ValueContainer> comps=    new LinkedList<>() ;
-            Arrays.stream(arrays).forEach(s-> {
-                 comps.add( new ValueContainer(unit, 4, 4, () -> Arrays.asList(s)));
+        Arrays.stream(ValuePages.UNIT_INFO_PARAMS).forEach(arrays -> {
+            List<ValueContainer> comps = new LinkedList<>();
+            Arrays.stream(arrays).forEach(s -> {
+                comps.add(new ValueContainer(unit, 4, 4, () -> Arrays.asList(s)));
             });
 
-             Container tables = new Container
-              (LAYOUT.VERTICAL, "", comps.toArray(new Actor[comps.size()]));
+            Container tables = new Container
+             (LAYOUT.VERTICAL, "", comps.toArray(new Actor[comps.size()]));
 
-            String text =iterator.next();
+            String text = iterator.next();
             Triple<String, String, Actor> t = new Triple<>(text, null, tables);
             list.add(t);
         });
 
         return list;
+    }
+
+    @Override
+    public void update() {
+        super.update();
     }
 
     @Override
