@@ -27,7 +27,7 @@ import main.rules.mechanics.PerceptionRule.PERCEPTION_STATUS_PLAYER;
 import main.swing.components.obj.drawing.VisibilityMaster.OUTLINE_TYPE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.graphics.Animation;
+import main.system.graphics.PhaseAnimation;
 import main.system.launch.CoreEngine;
 
 import java.util.HashMap;
@@ -53,7 +53,7 @@ public abstract class DC_Obj extends MicroObj {
     protected boolean blockingDiagonalSide;
     protected Coordinates blockingWallCoordinate;
     protected boolean detectedByPlayer;
-    protected Animation animation;
+    protected PhaseAnimation animation;
     Coordinates blockingCoordinate;
 
     public DC_Obj(ObjType type, Player owner, Game game, Ref ref) {
@@ -216,7 +216,7 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public void initSpecialEffects() {
-        specialEffects = new HashMap<SPECIAL_EFFECTS_CASE, Effect>();
+        specialEffects = new HashMap<>();
 
     }
 
@@ -504,11 +504,11 @@ public abstract class DC_Obj extends MicroObj {
     public void initAnimation() {
     }
 
-    public Animation getAnimation() {
+    public PhaseAnimation getAnimation() {
         return animation;
     }
 
-    public void setAnimation(Animation animation) {
+    public void setAnimation(PhaseAnimation animation) {
         this.animation = animation;
     }
 }
