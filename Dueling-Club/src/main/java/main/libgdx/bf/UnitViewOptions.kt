@@ -38,6 +38,11 @@ class UnitViewOptions(var obj: DC_HeroObj, var unitMap: MutableMap<DC_HeroObj, U
             }
         }
 
+        if (obj.isOverlaying) {
+            overlaying = true
+            portrateTexture = TextureManager.getOrCreate(obj.imagePath)
+        }
+
         if (obj.obJ_TYPE_ENUM === OBJ_TYPES.BF_OBJ) {
             hideBorder = true
         }
