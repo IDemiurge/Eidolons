@@ -319,13 +319,15 @@ public class RadialMenu extends Group {
         }
         if (getDebug() || !source.getSpells().isEmpty()) {
             RadialMenu.CreatorNode spellNode = new RadialMenu.CreatorNode();
-            spellNode.texture = TextureManager.getOrCreate(
-                    ImageManager.getRadialSpellIconPath())
-            ;
+            spellNode.texture = TextureManager.getOrCreate(ImageManager.getRadialSpellIconPath());
             spellNode.childNodes = SpellRadialManager.getSpellNodes(source, target);
             spellNode.name = "Spells";
+            if (spellNode.childNodes.size() == 0) {
+                spellNode.action = () -> {
+                };//spell manager may return empty spell list, close menu
+                System.out.println("Error: SpellRadialManager.getSpellNodes() return empty list");
+            }
             list.add(spellNode);
-
         }
         RadialMenu.CreatorNode turnsN1 = new RadialMenu.CreatorNode();
         turnsN1.texture = turnAction;

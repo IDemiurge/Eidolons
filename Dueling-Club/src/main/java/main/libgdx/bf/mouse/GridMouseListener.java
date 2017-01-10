@@ -126,7 +126,7 @@ public class GridMouseListener extends ClickListener {
 
             if (cell.getInnerDrawable() != null) {
                 Actor unit = cell.getInnerDrawable().hit(x, y, true);
-                if (unit != null && unit instanceof UnitView) {
+                if (unit != null && unit instanceof BaseView) {
                     DC_HeroObj heroObj = unitViewMap.entrySet()
                             .stream().filter(entry -> entry.getValue() == unit).findFirst()
                             .get().getKey();
