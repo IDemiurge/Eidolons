@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.libgdx.gui.layout.LayoutParser.LAYOUT;
 import main.libgdx.gui.panels.generic.sub.RootTable;
+import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 
 /**
@@ -11,9 +12,9 @@ import main.system.auxiliary.secondary.BooleanMaster;
  */
 public class Container extends Comp {
     protected Actor[] comps;
-    protected RootTable root;
     protected LAYOUT defaultLayout;
     protected LAYOUT rootLayout;
+    protected RootTable root;
 
     public Container(String imagePath) {
         this(imagePath, LAYOUT.HORIZONTAL);
@@ -22,19 +23,13 @@ public class Container extends Comp {
     public Container(LAYOUT defaultLayout, String imagePath, Actor... comps) {
         super(imagePath);
         this.defaultLayout = defaultLayout;
-        root = getRoot();
         this.comps = comps;
+        root = new RootTable();
         addActor(root);
     }
 
     public Container(String imagePath, LAYOUT defaultLayout) {
         this(defaultLayout, imagePath);
-    }
-
-    public RootTable getRoot() {
-        if (root == null)
-            root = new RootTable();//getGroup(getRootLayout());
-        return root;
     }
 
 
@@ -50,26 +45,23 @@ public class Container extends Comp {
     public void update() {
         initComps();
         super.update();
-        getRoot().clearChildren();
+        root.clear();
         WidgetContainer group = getGroup(defaultLayout);
         root.add(group);
-        root.setFillParent(true);
         for (Actor comp : comps) {
 
             if (comp == null) {
-                main.system.auxiliary.LogMaster.log(1, "NULL COMP IN " + this);
+                LogMaster.log(1, "NULL COMP IN " + this);
                 continue;
             }
-            if (comp instanceof Wrap) {
 
+            if (comp instanceof Wrap) {
                 group.layout();
                 boolean horizontal = ((Wrap) comp).horizontal;
                 group = getGroup(horizontal ? LAYOUT.HORIZONTAL : LAYOUT.VERTICAL);
                 root.add(group);
 //                group.top();
                 group.setFillParent(true);
-                if (!horizontal)
-                    root.row();
 
                 continue;
             }
