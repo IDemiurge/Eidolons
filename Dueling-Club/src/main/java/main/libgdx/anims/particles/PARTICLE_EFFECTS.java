@@ -12,15 +12,14 @@ public enum PARTICLE_EFFECTS{
     SKULL2("skull2"),
     SKULL3("skull3"),
 
+    //TODO sub-emitters
 
     ;
-    private  String path;
+    public   String path;
 
     PARTICLE_EFFECTS(String path){
         this.path=path;
     }
-    public String getPath() {
-        return path;
-    }
+
 
 }

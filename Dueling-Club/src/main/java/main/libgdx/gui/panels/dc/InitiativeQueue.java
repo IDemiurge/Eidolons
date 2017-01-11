@@ -5,7 +5,6 @@ import main.entity.obj.DC_HeroObj;
 import main.game.DC_Game;
 import main.libgdx.gui.panels.generic.EntityContainer;
 import main.libgdx.gui.panels.generic.TextIconComp;
-import main.libgdx.texture.TextureManager;
 import main.system.auxiliary.GuiManager;
 
 /**
@@ -20,33 +19,32 @@ public class InitiativeQueue extends EntityContainer {
     private Image clockImage;
 
     public InitiativeQueue() {
-        super(null  , GuiManager.getSmallObjSize(), getMaxSlots(), 1, ()->
-         DC_Game.game.getTurnManager().getDisplayedUnitQueue(),
-        null, p->{
-            DC_HeroObj unit = (DC_HeroObj) p.get();
-            unit.invokeClicked();
-         }  );
+        super(null, GuiManager.getSmallObjSize(), getMaxSlots(), 1, () ->
+          DC_Game.game.getTurnManager().getDisplayedUnitQueue(),
+         null, p -> {
+             DC_HeroObj unit = (DC_HeroObj) p.get();
+             unit.invokeClicked();
+         });
 
+    }
+
+    private static int getMaxSlots() {
+        return 8;
     }
 
     @Override
     public void initComps() {
-        clockImage = new Image(TextureManager.getOrCreate(clockImagePath));
-        addActor(clockImage);
-        new TextIconComp(()->
-         DC_Game.game.getRules().getTimeRule().getTimeRemaining()+"" ,
-         ()->clockImagePath
-          );
+        TextIconComp comp = new TextIconComp(() ->
+         DC_Game.game.getRules().getTimeRule().getTimeRemaining() + "",
+         () -> clockImagePath);
+        addActor(comp);
+//        comp.setTextAlignment(ALIGNMENT.CENTER);
         super.initComps();
     }
 
     @Override
     public float getWidth() {
-        return clockImage.getWidth()+ supplier.get().size() *GuiManager.getSmallObjSize();
-    }
-
-    private static int getMaxSlots() {
-        return 8;
+        return clockImage.getWidth() + supplier.get().size() * GuiManager.getSmallObjSize();
     }
 
 

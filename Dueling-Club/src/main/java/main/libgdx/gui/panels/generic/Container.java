@@ -2,11 +2,8 @@ package main.libgdx.gui.panels.generic;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import main.libgdx.gui.layout.LayoutParser.LAYOUT;
+import main.libgdx.gui.panels.generic.sub.RootTable;
 import main.system.auxiliary.secondary.BooleanMaster;
 
 /**
@@ -14,7 +11,7 @@ import main.system.auxiliary.secondary.BooleanMaster;
  */
 public class Container extends Comp {
     protected Actor[] comps;
-    protected Table root;
+    protected RootTable root;
     protected LAYOUT defaultLayout;
     protected LAYOUT rootLayout;
 
@@ -22,20 +19,25 @@ public class Container extends Comp {
         this(imagePath, LAYOUT.HORIZONTAL);
     }
 
-    public Container( LAYOUT defaultLayout, String imagePath,Actor...comps) {
+    public Container(LAYOUT defaultLayout, String imagePath, Actor... comps) {
         super(imagePath);
         this.defaultLayout = defaultLayout;
         root = getRoot();
-        this.comps=comps;
+        this.comps = comps;
         addActor(root);
     }
+
     public Container(String imagePath, LAYOUT defaultLayout) {
-       this(defaultLayout, imagePath  );
+        this(defaultLayout, imagePath);
     }
 
-    public Table getRoot() {
-        if (root==null )
-            root = new Table();//getGroup(getRootLayout());
+    public RootTable getRoot() {
+        if (root == null)
+            root = new RootTable() {
+                public void add(WidgetContainer c) {
+                    addActor((Actor) c);
+                }
+            };//getGroup(getRootLayout());
         return root;
     }
 
@@ -43,32 +45,36 @@ public class Container extends Comp {
     public void setComps(Actor... comps) {
         this.comps = comps;
     }
+
     public void initComps() {
 
     }
+
     @Override
     public void update() {
         initComps();
         super.update();
         getRoot().clearChildren();
-        Group group = getGroup(defaultLayout);
-        root.addActor(group);
+        WidgetContainer group = getGroup(defaultLayout);
+        root.add(group);
 //        root.setPosition(0, getHeight());
-        group.setPosition(0,root.getHeight());
+//        group.setPosition(0, root.getHeight());
         for (Actor comp : comps) {
-            if (comp==null){
-                main.system.auxiliary.LogMaster.log(1,"NULL COMP IN " +this);
+            if (comp == null) {
+                main.system.auxiliary.LogMaster.log(1, "NULL COMP IN " + this);
                 continue;
             }
             if (comp instanceof Wrap) {
                 boolean horizontal = ((Wrap) comp).horizontal;
-                group = getGroup( horizontal ? LAYOUT.HORIZONTAL : LAYOUT.VERTICAL);
-                root.addActor(group);
-                if(!horizontal)
-                {
-                    group.setY(root.getHeight()-group.getHeight());
-                }else
-                group.setY(root.getHeight()-group.getHeight());
+                group = getGroup(horizontal ? LAYOUT.HORIZONTAL : LAYOUT.VERTICAL);
+                root.add(group);
+                group.top();
+                if (!horizontal) {
+                    root.row();
+//                    group.setY(root.getHeight() - group.getHeight());
+                } else
+//                    group.setY(root.getHeight() - group.getHeight());
+
                 continue;
             }
             if (comp instanceof Comp) {
@@ -77,7 +83,17 @@ public class Container extends Comp {
             }
             group.addActor(comp);
         }
+        //alignment
+        root.top();
 
+    }
+
+    public WidgetContainer getGroup(LAYOUT layout) {
+        if (layout == LAYOUT.HORIZONTAL) {
+            return new HorizontalContainer();
+        } else {
+            return new VerticalContainer();
+        }
     }
 
     @Override
@@ -86,7 +102,7 @@ public class Container extends Comp {
     }
 
     public LAYOUT getRootLayout() {
-        if (rootLayout==null )return defaultLayout;
+        if (rootLayout == null) return defaultLayout;
         return rootLayout;
     }
 
@@ -94,10 +110,11 @@ public class Container extends Comp {
         this.rootLayout = rootLayout;
     }
 
-    public boolean isPaged(){
+    public boolean isPaged() {
         return false;
     }
-    public boolean isScrolled(){
+
+    public boolean isScrolled() {
         return true;
     }
 
@@ -144,35 +161,6 @@ public class Container extends Comp {
         }
     }
 
-    public Group getGroup(LAYOUT layout) {
-        Table t = new Table();
-//        t.ad
-        if (layout == LAYOUT.HORIZONTAL) {
-            return new HorizontalGroup(){
-                @Override
-                public String toString() {
-                    return   getClass().getSimpleName()+ " " +getWidth() + " by " + getHeight()
-                     + " at " + getX() + ":" + getY()
-                     + " with " + getChildren().size + " children: " + getChildren();
-                }
-            };
-        } else {
-            return new VerticalGroup(){
-                @Override
-                public void addActor(Actor actor) {
-                    super.addActor(actor);
-                    actor.setY(getHeight()-actor.getHeight());
-                }
-
-                @Override
-                public String toString() {
-                    return   getClass().getSimpleName()+ " " +getWidth() + " by " + getHeight()
-                     + " at " + getX() + ":" + getY()
-                     + " with " + getChildren().size + " children: " + getChildren();
-                }
-            };
-        }
-    }
 //    Arrays.stream(comps).forEach(comp->{
 //
 //        comp.setX(x);

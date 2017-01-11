@@ -217,4 +217,7 @@ public class PathFinder {
         return path.contains(ENGINE_PATH);
     }
 
+    public static String getParticlePresetPath() {
+        return getImagePath()+ "mini\\sprites\\particles\\";
+    }
 }

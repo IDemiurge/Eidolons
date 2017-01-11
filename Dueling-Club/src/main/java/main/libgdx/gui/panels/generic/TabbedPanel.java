@@ -30,7 +30,7 @@ public class TabbedPanel extends Container {
     Actor displayedComp;
     TAB_VARIANT variant;
     private Group contents;
-    Group tabRow;
+    WidgetContainer tabRow;
     Supplier<Collection<Triple<String, String, Actor>>> tabSupplier;
 
     public TabbedPanel(String imagePath, Supplier<Collection<Triple<String, String, Actor>>> tabSupplier) {
@@ -50,7 +50,7 @@ public class TabbedPanel extends Container {
 
     @Override
     public void initComps() {
-        setComps(tabRow, contents);
+        setComps((Actor)tabRow, contents);
     }
 
     @Override

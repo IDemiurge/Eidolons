@@ -32,7 +32,7 @@ public class StatEnums {
 		TEST("[>]"),
 		UPGRADE("[$]"),
 		DESIGN("[@]"),
-		ADDITIONAL("[…]"),
+		ADDITIONAL("[ï¿½]"),
 		RECURRING("[-]"), ;
 		public String prefix;
 
@@ -95,7 +95,9 @@ public class StatEnums {
 	public enum MUSIC_TAGS {
 		DARK, HEAVY, ACTION, NORTH, ARCANE, TRAURIG, RPG, CELTIC, FANTASY,
 
-		COOL, DEEP, JOLLY, GOODLY, SACRED, EVIL, FIERY, SHARP, LIGHT, FUTURE
+		COOL, DEEP, JOLLY, GOODLY, SACRED, EVIL, FIERY, SHARP, LIGHT, FUTURE,
+
+
 	}
 
 	public enum MUSIC_TAG_GROUPS {

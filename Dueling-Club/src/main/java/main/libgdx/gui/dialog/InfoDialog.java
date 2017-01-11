@@ -90,7 +90,7 @@ public class InfoDialog extends Dialog {
         mainWeapon = new WeaponPanel();
         description = new Container("", LAYOUT.HORIZONTAL);
 
-        tabs = new TabbedPanel("", () -> getTabs(unit));
+//        tabs = new TabbedPanel("", () -> getTabs(unit));
 
         mainParams = new ValueContainer(unit, 1,
          DC_ContentManager.MAIN_PARAMETERS.length,
@@ -129,8 +129,11 @@ public class InfoDialog extends Dialog {
         );
     }
 
-    private Collection<Triple<String, String, Actor>> getTabs(DC_Obj unit) {
+    
+        private Collection<Triple<String, String, Actor>> getAdditionalParamTabs(DC_Obj unit) {
         List<Triple<String, String, Actor>> list = new LinkedList<>();
+//        add ( new Triple<>(text, null,
+//         new Container(LAYOUT.VERTICAL, null , fxAndAbils, res)));
         Iterator<String> iterator = Arrays.stream(ValuePages.INFO_TABLE_NAMES).iterator();
         Arrays.stream(ValuePages.UNIT_INFO_PARAMS).forEach(arrays -> {
             List<ValueContainer> comps = new LinkedList<>();
