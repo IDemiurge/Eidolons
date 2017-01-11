@@ -137,8 +137,8 @@ public class GameScreen implements Screen {
 
         LogDialog ld = new LogDialog();
         gui.addActor(ld);
-        ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
-        ld.update();
+//        ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
+        ld.setPosition(200, 200);
     }
 
     private void bindEvents() {
@@ -171,8 +171,8 @@ public class GameScreen implements Screen {
 
         GuiEventManager.processEvents();
 
-        //gui.act(delta);
-        //grid.act(delta);
+        gui.act(delta);
+        grid.act(delta);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
@@ -193,9 +193,12 @@ public class GameScreen implements Screen {
         grid.draw();
         effects.draw();
         anims.draw();
+
         gui.draw();
-        if (dialogDisplay.getDialog() != null)
+
+        if (dialogDisplay.getDialog() != null) {
             dialog.draw();
+        }
     }
 
     @Override

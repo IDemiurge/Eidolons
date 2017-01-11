@@ -89,6 +89,7 @@ public class FAST_DC {
     public static boolean SUPER_FAST_MODE;
     public static boolean LOCALHOST = true;
     public static String exceptions = "";
+    public static boolean forceRunGT = false;
     private static boolean MINIMAP_TEST_ON = false;
     private static boolean VISION_HACK = false;
     private static boolean fullscreen = false;
@@ -109,7 +110,11 @@ public class FAST_DC {
 
     //    chars;skills;classes;deities;factions;jewelry; TODO
     public static void main(String[] args) {
-
+        if (args.length > 0) {
+            if (args[0].equals("-GT")) {
+                forceRunGT = true;
+            }
+        }
 /*        ClassLoader classLoader = FAST_DC.class.getClassLoader();
         File f = new File(classLoader.getResource("").getFile());
         f = new File(f.getParentFile()+"/dependency/Font");
@@ -132,7 +137,7 @@ public class FAST_DC {
 
 
         List<String> arglist = new LinkedList<>(Arrays.asList(args));
-        if (args != null)
+        if (args != null) {
             if (args == SKIP_CHOICE_ARGS || (arglist.contains(PRESET_OPTION_ARG) ||
                     (arglist.contains(PRESET_ARG)))) {
                 skipChoice = true;
@@ -146,6 +151,7 @@ public class FAST_DC {
                     host_client = true;
                 }
             }
+        }
         if (host_client != null) {
             netGame = TestMode.launch(host_client);
             // OptionsMaster.setOption(SOUND_OPTION.VOICE_OFF, true);
