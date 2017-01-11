@@ -48,6 +48,15 @@ public class ParticleManager extends Actor{
         super.draw(batch, parentAlpha);
     }
 
+    @Override
+    public void act(float delta) {
+        for (ParticleActor actor : emitterMap.getEmitters()) {
+
+        }
+
+            super.act(delta);
+    }
+
     private void updateEmitters() {
 //        for (ParticleActor actor : emitterMap.getEmitters()) {
 //            if (!emitterMap.contains(actor))

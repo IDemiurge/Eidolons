@@ -3,12 +3,13 @@ package main.libgdx.anims.particles;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.data.filesys.PathFinder;
 
 /**
  * Created by JustMe on 1/10/2017.
  */
-public class ParticleEmitter implements ParticleActor {
+public class ParticleEmitter extends Actor implements ParticleActor {
 
     private final int defaultCapacity=12;
     private final int defaultMaxCapacity=24;
@@ -27,7 +28,11 @@ public class ParticleEmitter implements ParticleActor {
          Gdx.files.internal(PathFinder.getParticlePresetPath()));
     }
 
-
+    public void act(float delta) {
+        super.act(delta);
+//        effect.setPosition(x, y);
+        effect.update(delta);
+    }
     @Override
     public PARTICLE_EFFECTS getTemplate() {
         return fx;
@@ -55,6 +60,6 @@ public class ParticleEmitter implements ParticleActor {
 
     @Override
     public void start() {
-
+        effect.start();
     }
 }

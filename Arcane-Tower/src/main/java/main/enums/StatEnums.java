@@ -97,7 +97,7 @@ public class StatEnums {
 
 		COOL, DEEP, JOLLY, GOODLY, SACRED, EVIL, FIERY, SHARP, LIGHT, FUTURE,
 
-
+BEST, DAY, EVENING, NIGHT, AMBIENT,
 	}
 
 	public enum MUSIC_TAG_GROUPS {

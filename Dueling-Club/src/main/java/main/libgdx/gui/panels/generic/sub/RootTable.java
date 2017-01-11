@@ -1,7 +1,7 @@
 package main.libgdx.gui.panels.generic.sub;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import main.libgdx.gui.panels.generic.WidgetContainer;
 
@@ -11,7 +11,7 @@ import main.libgdx.gui.panels.generic.WidgetContainer;
 public class RootTable extends Table implements WidgetContainer {
     @Override
     public void add(WidgetContainer c) {
-        super.add((Widget) c);
+        super.add((Actor) c);
         debug();
     }
     @Override

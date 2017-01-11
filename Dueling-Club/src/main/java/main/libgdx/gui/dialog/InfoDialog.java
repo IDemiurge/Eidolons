@@ -129,7 +129,7 @@ public class InfoDialog extends Dialog {
         );
     }
 
-    
+
         private Collection<Triple<String, String, Actor>> getAdditionalParamTabs(DC_Obj unit) {
         List<Triple<String, String, Actor>> list = new LinkedList<>();
 //        add ( new Triple<>(text, null,

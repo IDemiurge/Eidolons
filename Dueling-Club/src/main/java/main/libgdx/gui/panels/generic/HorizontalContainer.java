@@ -1,7 +1,6 @@
 package main.libgdx.gui.panels.generic;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 
 /**
