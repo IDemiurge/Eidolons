@@ -42,7 +42,7 @@ this(imagePath,itemSize,columns,rows,supplier,obj, param-> {
             public List<Actor> get() {
                 List<Actor> list = new LinkedList<>();
                 supplier.get().forEach(value -> {
-                    EntityComp comp = new EntityComp(obj);
+                    EntityComp comp = new EntityComp(value);
                     list.add(comp);
                 });
                 return list;

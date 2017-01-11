@@ -20,5 +20,10 @@ public class EntityComp extends Comp {
     }
     public EntityComp(Entity obj) {
         super(()-> obj==null ? "" : obj.getImagePath());
+        this.entity=obj;
+    }
+
+    public Entity getEntity() {
+        return entity;
     }
 }

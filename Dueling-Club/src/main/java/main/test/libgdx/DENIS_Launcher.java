@@ -24,7 +24,7 @@ public class DENIS_Launcher implements ApplicationListener {
     }
 
     public LwjglAWTCanvas getCanvas(){
-
+        System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
 //        new LwjglApplication(new DENIS_Launcher(), lwjglApplicationConfiguration);
         return new LwjglAWTCanvas(new DENIS_Launcher(), getConf());
     }

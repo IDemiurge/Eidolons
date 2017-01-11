@@ -1,5 +1,7 @@
 package main.libgdx.gui.dialog;
 
+import main.libgdx.gui.layout.LayoutParser.LAYOUT;
+
 /**
  * Created by JustMe on 1/5/2017.
  */

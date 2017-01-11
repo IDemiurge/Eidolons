@@ -43,7 +43,7 @@ public class InitiativeQueue extends EntityContainer {
     }
 
     @Override
-    public float getWidth() {
+    public float getWidth() { //TODO don't do this!
         return (1 + supplier.get().size()) * GuiManager.getSmallObjSize();
     }
 

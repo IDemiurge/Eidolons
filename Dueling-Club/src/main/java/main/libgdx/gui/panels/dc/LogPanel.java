@@ -10,5 +10,6 @@ public class LogPanel extends PagedListPanel {
     public LogPanel(  int col, int row) {
 
         super(VISUALS.INFO_PANEL.getImgPath(), col, row);
+
     }
 }

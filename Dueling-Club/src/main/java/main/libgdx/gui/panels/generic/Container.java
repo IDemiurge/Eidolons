@@ -68,8 +68,8 @@ public class Container extends Comp {
                 root.add(group);
 //                group.top();
                 group.setFillParent(true);
-                if (!horizontal)
-                    root.row();
+//                if (!horizontal)
+//                    root.row();
 
                 continue;
             }

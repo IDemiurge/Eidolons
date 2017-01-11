@@ -2,6 +2,7 @@ package main.libgdx.gui.panels.generic;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.libgdx.gui.layout.LayoutParser.LAYOUT;
+import main.libgdx.gui.panels.generic.sub.RootTable;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -22,6 +23,11 @@ public class TableContainer extends Container {
     protected Supplier<List<Actor>> supplier;
     private ScrollPanel scrollPanel;
     //TODO generate texture for row*column
+
+    @Override
+    public RootTable getRoot() {
+        return super.getRoot();
+    }
 
     public TableContainer(int rows, int columns,
                           Supplier<List<Actor>> supplier) {
