@@ -1734,4 +1734,7 @@ public class DC_HeroObj extends DC_UnitObj {
         return false;
     }
 
+    public List<DC_ActiveObj> getAttacks(boolean offhand) {
+        return getAction(offhand? DC_ActionManager.ATTACK : DC_ActionManager.OFFHAND_ATTACK).getSubActions();
+    }
 }

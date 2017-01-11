@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.google.gwt.rpc.server.WebModeClientOracle.Triple;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
+import main.content.VALUE;
 import main.content.ValuePages;
 import main.content.properties.G_PROPS;
 import main.entity.obj.DC_HeroObj;
@@ -23,6 +24,9 @@ import java.util.*;
  */
 public class InfoDialog extends Dialog {
     public final static String path = "UI\\components\\2017\\dialog\\info\\";
+    public final static String portraitBg =
+     path +
+      "portrait bg.png";
     public final static String bgPath = path +
      "background.png";
     Container top;
@@ -87,7 +91,8 @@ public class InfoDialog extends Dialog {
          StyleHolder.getAVQLabelStyle(),
          () -> Arrays.asList(DC_ContentManager.DYNAMIC_PARAMETERS), null);
 
-        mainWeapon = new WeaponPanel();
+        mainWeapon = new WeaponPanel(unit, false);
+        offWeapon = new WeaponPanel(unit, true);
         description = new Container("", LAYOUT.HORIZONTAL);
 
 //        tabs = new TabbedPanel("", () -> getTabs(unit));
@@ -100,32 +105,32 @@ public class InfoDialog extends Dialog {
 
 
         points = new Container("", LAYOUT.HORIZONTAL);
-        top = new Container("", LAYOUT.HORIZONTAL) {
+        top = new Container(portraitBg, LAYOUT.HORIZONTAL) {
             @Override
             public void initComps() {
                 EntityComp portrait = new EntityComp(unit);
-                Comp portraitBg = new Comp("");
-                new Container(LAYOUT.VERTICAL, "", new ValueComp(unit, G_PROPS.NAME)
-                 , new ValueComp(unit, PARAMS.LEVEL)
-                 , new ValueComp(unit, G_PROPS.ASPECT));
+                ValueContainer values = new ValueContainer(unit, 3, 1,
+                 () -> new LinkedList<>(Arrays.asList(new VALUE[]{
+                  G_PROPS.NAME, PARAMS.LEVEL, G_PROPS.ASPECT
+                 })));
+            setComps(values, portrait);
             }
 
             ;
         };
-        offWeapon = new WeaponPanel();
-        lore = new Container("", LAYOUT.HORIZONTAL);
+//        lore = new TextContainer("", LAYOUT.HORIZONTAL);
 
         setComps(
          //from bottom left
 //         fxAndAbils,
          attributes
 
-//         , dynamicParams,mainWeapon, description,
-//         new Wrap(false), //next column
-//         armor, mainParams, points, top,
-//         new Wrap(false),//next column
-//         new Space(false, 0.2f), //leave 20% space
-//         tabs, offWeapon, lore
+         , dynamicParams,mainWeapon, description,
+         new Wrap(false), //next column
+         armor, mainParams, points, top,
+         new Wrap(false),//next column
+         new Space(false, 0.2f), //leave 20% space
+         tabs, offWeapon, lore
         );
     }
 

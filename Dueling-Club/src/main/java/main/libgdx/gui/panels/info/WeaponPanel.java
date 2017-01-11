@@ -1,13 +1,33 @@
 package main.libgdx.gui.panels.info;
 
+import main.entity.obj.DC_HeroObj;
+import main.libgdx.gui.dialog.InfoDialog;
+import main.libgdx.gui.layout.LayoutParser.LAYOUT;
 import main.libgdx.gui.panels.generic.Container;
+import main.libgdx.gui.panels.generic.EntityComp;
+import main.libgdx.gui.panels.generic.EntityContainer;
+import main.libgdx.gui.panels.generic.TextComp;
 
 /**
  * Created by JustMe on 1/8/2017.
  */
 public class WeaponPanel extends Container{
-    static String imagePath="";
-    public WeaponPanel() {
-        super(imagePath);
+    static String imagePath= InfoDialog.path+"weapon bg.png";
+    public WeaponPanel(DC_HeroObj unit,boolean offhand) {
+        super(imagePath, LAYOUT.VERTICAL);
+//        if (offhand) flip();
+
+        EntityContainer attacks = new EntityContainer(null, 64, 5, 1,
+         () -> unit.getAttacks(offhand), unit
+        );
+        EntityComp weapon = new EntityComp(
+         unit.getWeapon(offhand));
+//        weapon2 = new EntityComp(
+//         unit.getNaturalWeapon(offhand));
+//        traits = new EntityContainer(2, 2, ()-> unit.getWeapon(offhand).getPassives());
+//         tabs = new Tabs(natural, weapon);
+
+        TextComp label = new TextComp(unit.getWeapon(offhand).getName());
+        setComps(attacks, weapon, label);
     }
 }

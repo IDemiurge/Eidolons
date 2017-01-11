@@ -1,9 +1,9 @@
 package main.libgdx.gui.panels.generic;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import main.libgdx.texture.TextureManager;
+import main.system.images.ImageManager;
 
 import java.util.function.Supplier;
 
@@ -33,8 +33,9 @@ public class Comp extends WidgetGroup {
         if (supplier != null) {
             imagePath = supplier.get();
         }
-        if (imagePath != null) {
+        if (ImageManager.isImage(imagePath)) {
             image = new Image(TextureManager.getOrCreate(imagePath));
+            addActorAt(0, image);
         }
         if (image == null) {
             return;
@@ -42,14 +43,6 @@ public class Comp extends WidgetGroup {
         setWidth(image.getWidth());
         setHeight(image.getHeight());
         dirty = false;
-    }
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        if (getImage() != null) {
-            getImage().draw(batch, parentAlpha);
-        }
-        super.draw(batch, parentAlpha);
     }
 
     public Image getImage() {
@@ -81,10 +74,10 @@ public class Comp extends WidgetGroup {
     @Override
     public String toString() {
         return
-         getClass().getSimpleName()+ " "+getWidth() + " by " + getHeight()
-          + " at " + getX() + ":" + getY()
-          + " with " + getChildren().size + " children: " + getChildren()
-         ;
+                getClass().getSimpleName() + " " + getWidth() + " by " + getHeight()
+                        + " at " + getX() + ":" + getY()
+                        + " with " + getChildren().size + " children: " + getChildren()
+                ;
 
     }
 }

@@ -24,10 +24,7 @@ public class TableContainer extends Container {
     private ScrollPanel scrollPanel;
     //TODO generate texture for row*column
 
-    @Override
-    public RootTable getRoot() {
-        return super.getRoot();
-    }
+
 
     public TableContainer(int rows, int columns,
                           Supplier<List<Actor>> supplier) {
@@ -50,27 +47,29 @@ public class TableContainer extends Container {
         this.cellComps = new LinkedList<>(Arrays.asList(actors));
     }
 
+    @Override
+    protected void initRoot() {
+        root=new RootTable();
+    }
 
     @Override
     public void update() {
-        horizontal= defaultLayout== LAYOUT.HORIZONTAL;
+        horizontal = defaultLayout == LAYOUT.HORIZONTAL;
         initComps();
         List<Actor> list = new LinkedList<>();
-        int n = horizontal ? columns :  rows;
+        int n = horizontal ? columns : rows;
         if (cellComps.size() > rows * columns) {
             if (isScrolled())
-                if (scrollPanel==null )
-            {
-                removeActor(root);
-                scrollPanel = new ScrollPanel(root);
-
-                addActor(scrollPanel);
-            }
+                if (scrollPanel == null) {
+//                    removeActor((Actor) root);
+//                    scrollPanel = new ScrollPanel(root);
+//                    addActor(scrollPanel);
+                }
         }
         for (Actor c : cellComps) {
 //
             if (n <= 0) {
-                  n = horizontal ?columns :  rows;
+                n = horizontal ? columns : rows;
                 list.add(new Wrap(horizontal));
             } else
                 n--;
@@ -86,8 +85,8 @@ public class TableContainer extends Container {
     }
 
     public void setHorizontal(boolean horizontal) {
-        setLayout(horizontal?LAYOUT.HORIZONTAL : LAYOUT.VERTICAL);
-        setRootLayout(!horizontal?LAYOUT.HORIZONTAL : LAYOUT.VERTICAL);
+        setLayout(horizontal ? LAYOUT.HORIZONTAL : LAYOUT.VERTICAL);
+        setRootLayout(!horizontal ? LAYOUT.HORIZONTAL : LAYOUT.VERTICAL);
         this.horizontal = horizontal;
     }
 

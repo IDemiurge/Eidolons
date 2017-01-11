@@ -92,4 +92,6 @@ public interface WidgetContainer extends Layout{
     void setY(float n);
 
     boolean addListener(EventListener listener);
+
+    void clear();
 }

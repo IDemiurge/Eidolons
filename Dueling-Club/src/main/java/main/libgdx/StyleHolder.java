@@ -16,8 +16,6 @@ public class StyleHolder {
             defaultLabelStyle = new Label.LabelStyle(new BitmapFont(),
              defaultColor);
         }
-
-//        new FileHandle(PathFinder.getFontPath()+ FONT.MAIN.path )
         return defaultLabelStyle;
     }
 

@@ -35,7 +35,11 @@ public class PresetLauncher {
     public static Boolean chooseLaunchOption() {
         int i =PRESET_OPTION;
         if (i==-1)
-        i=DialogMaster.optionChoice("", LAUNCH_OPTIONS);
+            if (!FAST_DC.forceRunGT) {
+                i = DialogMaster.optionChoice("", LAUNCH_OPTIONS);
+            } else {
+                i = 1;
+            }
         switch (LAUNCH_OPTIONS[i]) {
             case "Last":
                 Preset lastPreset = PresetMaster.loadLastPreset();

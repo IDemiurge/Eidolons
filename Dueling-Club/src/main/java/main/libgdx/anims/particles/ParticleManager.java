@@ -18,8 +18,8 @@ public class ParticleManager extends Actor{
 
     public ParticleManager(Stage effects) {
         this.effects = effects;
+        emitterMap= new EmitterMap();
         GuiEventManager.bind(GuiEventType.GRID_CREATED, p -> {
-            emitterMap= new EmitterMap();
          });
         GuiEventManager.bind(GuiEventType.UPDATE_EMITTERS, p -> {
             emitterMap.update();

@@ -3,17 +3,21 @@ package main.libgdx.gui.panels.generic;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.libgdx.gui.layout.LayoutParser.LAYOUT;
-import main.libgdx.gui.panels.generic.sub.RootTable;
+import main.libgdx.gui.panels.generic.sub.Root;
+import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
+
+import java.util.List;
 
 /**
  * Created by JustMe on 1/6/2017.
  */
 public class Container extends Comp {
+    private static final boolean DEBUG_MODE =true ;
     protected Actor[] comps;
-    protected RootTable root;
     protected LAYOUT defaultLayout;
     protected LAYOUT rootLayout;
+    protected WidgetContainer root;
 
     public Container(String imagePath) {
         this(imagePath, LAYOUT.HORIZONTAL);
@@ -22,23 +26,31 @@ public class Container extends Comp {
     public Container(LAYOUT defaultLayout, String imagePath, Actor... comps) {
         super(imagePath);
         this.defaultLayout = defaultLayout;
-        root = getRoot();
         this.comps = comps;
-        addActor(root);
+        initRoot();
+        if (DEBUG_MODE)
+        debug();
+    }
+
+    public WidgetContainer getRoot() {
+        if (root==null )
+            root= new Root();
+        return root;
+    }
+        protected void initRoot() {
+        root =   getRoot();
+        addActor((Actor) root);
     }
 
     public Container(String imagePath, LAYOUT defaultLayout) {
         this(defaultLayout, imagePath);
     }
 
-    public RootTable getRoot() {
-        if (root == null)
-            root = new RootTable();//getGroup(getRootLayout());
-        return root;
+
+    public void setComps(List<Actor> comps) {
+        setComps(comps.toArray(new Actor[comps.size()]));
     }
-
-
-    public void setComps(Actor... comps) {
+        public void setComps(Actor... comps) {
         this.comps = comps;
     }
 
@@ -50,26 +62,23 @@ public class Container extends Comp {
     public void update() {
         initComps();
         super.update();
-        getRoot().clearChildren();
+        root.clear();
         WidgetContainer group = getGroup(defaultLayout);
         root.add(group);
-        root.setFillParent(true);
         for (Actor comp : comps) {
 
             if (comp == null) {
-                main.system.auxiliary.LogMaster.log(1, "NULL COMP IN " + this);
+                LogMaster.log(1, "NULL COMP IN " + this);
                 continue;
             }
-            if (comp instanceof Wrap) {
 
-                group.layout();
+            if (comp instanceof Wrap) {
+//                group.layout();
                 boolean horizontal = ((Wrap) comp).horizontal;
                 group = getGroup(horizontal ? LAYOUT.HORIZONTAL : LAYOUT.VERTICAL);
                 root.add(group);
 //                group.top();
                 group.setFillParent(true);
-//                if (!horizontal)
-//                    root.row();
 
                 continue;
             }
@@ -82,7 +91,7 @@ public class Container extends Comp {
         }
         //alignment
 //        root.top();
-        root.layout();
+//        root.layout();
 
     }
 

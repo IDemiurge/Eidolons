@@ -1,5 +1,6 @@
 package main.libgdx.gui.dialog;
 
+import main.libgdx.gui.layout.LayoutParser;
 import main.libgdx.gui.panels.generic.Container;
 
 /**
@@ -8,6 +9,10 @@ import main.libgdx.gui.panels.generic.Container;
 public abstract class Dialog extends Container {
     public Dialog(String imagePath) {
         super(imagePath);
+    }
+
+    public Dialog(String bgPath, LayoutParser.LAYOUT layout) {
+        super(bgPath, layout);
     }
     //block other controls while active
 

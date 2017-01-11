@@ -22,15 +22,14 @@ import main.libgdx.bf.controls.radial.RadialMenu;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.bf.mouse.ToolTipManager;
 import main.libgdx.gui.dialog.DialogDisplay;
+import main.libgdx.gui.dialog.LogDialog;
 import main.libgdx.gui.panels.dc.InitiativeQueue;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
 
-import static main.system.GuiEventType.CREATE_RADIAL_MENU;
-import static main.system.GuiEventType.GRID_CREATED;
-import static main.system.GuiEventType.UPDATE_GUI;
+import static main.system.GuiEventType.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -72,12 +71,12 @@ public class GameScreen implements Screen {
         PathFinder.init();
         instance = this;
 
-initBf();
+        initBf();
         initDialog();
         initEffects();
         initGui();
         initAnims();
-initCamera();
+        initCamera();
         controller = new InputController(cam);
 
         GL20 gl = Gdx.graphics.getGL20();
@@ -120,6 +119,7 @@ initCamera();
         anims = new Stage();
         animMaster = new AnimMaster(anims);
     }
+
     private void initDialog() {
         dialog = new Stage();
         dialogDisplay = new DialogDisplay();
@@ -133,13 +133,18 @@ initCamera();
         gui.addActor(toolTipManager = new ToolTipManager());
         queue = new InitiativeQueue();
         gui.addActor(queue);
-        queue.setPosition(0, Gdx.app.getGraphics().getHeight()-64);
+        queue.setPosition(0, Gdx.app.getGraphics().getHeight() - 64);
+
+        LogDialog ld = new LogDialog();
+        gui.addActor(ld);
+//        ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
+        ld.setPosition(200, 200);
     }
 
     private void bindEvents() {
         GuiEventManager.bind(UPDATE_GUI, param -> {
-             queue.update();
-         });
+            queue.update();
+        });
 
         GuiEventManager.bind(GRID_CREATED, param -> {
             Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
@@ -166,8 +171,8 @@ initCamera();
 
         GuiEventManager.processEvents();
 
-        //gui.act(delta);
-        //grid.act(delta);
+        gui.act(delta);
+        grid.act(delta);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
@@ -188,9 +193,12 @@ initCamera();
         grid.draw();
         effects.draw();
         anims.draw();
-            gui.draw();
-        if (dialogDisplay.getDialog() != null)
+
+        gui.draw();
+
+        if (dialogDisplay.getDialog() != null) {
             dialog.draw();
+        }
     }
 
     @Override
@@ -203,7 +211,7 @@ initCamera();
         cam.setToOrtho(false, width, height);
         anims.getViewport().update(width, height);
         effects.getViewport().update(width, height);
-         grid.getViewport().update(width, height);
+        grid.getViewport().update(width, height);
         gui.getViewport().update(width, height);
 
 /*        to disable pixelperfect
