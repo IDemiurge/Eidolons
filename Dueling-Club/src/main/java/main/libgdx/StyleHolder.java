@@ -16,6 +16,9 @@ public class StyleHolder {
             defaultLabelStyle = new Label.LabelStyle(new BitmapFont(),
              defaultColor);
         }
+
+        defaultLabelStyle.font.getData().markupEnabled = true;
+
         return defaultLabelStyle;
     }
 
