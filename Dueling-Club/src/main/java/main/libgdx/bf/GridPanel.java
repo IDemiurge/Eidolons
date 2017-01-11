@@ -51,7 +51,7 @@ public class GridPanel extends Group {
     protected GridCell[][] cells;
     private LightMap lightMap;
     private CellBorderManager cellBorderManager;
-    private Map<DC_HeroObj, UnitView> unitMap;
+    private Map<DC_HeroObj, BaseView> unitMap;
     private int cols;
     private int rows;
 
@@ -149,8 +149,11 @@ public class GridPanel extends Group {
             {
                 DC_HeroObj hero = (DC_HeroObj) r.getObj(KEYS.TARGET
                 );
-                UnitView unitView = unitMap.get(hero);
-                unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
+                BaseView view = unitMap.get(hero);
+                if (view instanceof UnitView) {
+                    UnitView unitView = ((UnitView) view);
+                    unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
+                }
                 caught = true;
             }
 
@@ -207,7 +210,7 @@ public class GridPanel extends Group {
 
         GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
             DC_HeroObj hero = (DC_HeroObj) obj.get();
-            UnitView view = unitMap.get(hero);
+            BaseView view = unitMap.get(hero);
             if (view.getParent() != null) {
                 ((GridCellContainer) view.getParent()).popupUnitView(view);
             }
@@ -288,7 +291,7 @@ public class GridPanel extends Group {
 
     private void moveUnitView(DC_HeroObj heroObj) {
         int rows1 = rows - 1;
-        UnitView uv = unitMap.get(heroObj);
+        BaseView uv = unitMap.get(heroObj);
         Coordinates c = heroObj.getCoordinates();
         if (cells[c.x][rows1 - c.y].getInnerDrawable() == null) {
             GridCellContainer cellContainer = new GridCellContainer(cells[c.x][rows1 - c.y]).init();
@@ -311,7 +314,7 @@ public class GridPanel extends Group {
     }
 
     private void removeUnitView(DC_HeroObj obj) {
-        UnitView uv = unitMap.get(obj);
+        BaseView uv = unitMap.get(obj);
         GridCellContainer gridCellContainer = (GridCellContainer) uv.getParent();
         gridCellContainer.removeActor(uv);
         uv.setVisible(false);
@@ -365,11 +368,11 @@ public class GridPanel extends Group {
         this.cellBorderManager = cellBorderManager;
     }
 
-    public Map<DC_HeroObj, UnitView> getUnitMap() {
+    public Map<DC_HeroObj, BaseView> getUnitMap() {
         return unitMap;
     }
 
-    public void setUnitMap(Map<DC_HeroObj, UnitView> unitMap) {
+    public void setUnitMap(Map<DC_HeroObj, BaseView> unitMap) {
         this.unitMap = unitMap;
     }
 }

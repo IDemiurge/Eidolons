@@ -35,7 +35,7 @@ public class GridCellContainer extends GridCell {
 
     public void setObjects(List<UnitViewOptions> objects) {
         for (UnitViewOptions object : objects) {
-            UnitView im = new UnitView(object);
+            BaseView im = new UnitView(object);
             addActor(im);
         }
     }
@@ -93,7 +93,7 @@ public class GridCellContainer extends GridCell {
         }
     }
 
-    public void popupUnitView(UnitView uv) {
+    public void popupUnitView(BaseView uv) {
         super.removeActor(uv); //call super for only popup
         super.addActorAt(getChildren().size - overlayCount, uv);
         recalcImagesPos();
@@ -154,7 +154,7 @@ public class GridCellContainer extends GridCell {
                 }
             }
 
-            OverlayView view = new OverlayView(unitViewOptions.getPortrateTexture());
+            OverlayView view = new OverlayView(unitViewOptions);
             view.setBounds(calcXOffset, calcYOffset, xOffset, yOffset);
             view.setScale(.333f, .333f);
             addActor(view);

@@ -6,7 +6,7 @@ import main.content.properties.G_PROPS
 import main.entity.obj.DC_HeroObj
 import main.libgdx.texture.TextureManager
 
-class UnitViewOptions(var obj: DC_HeroObj, var unitMap: MutableMap<DC_HeroObj, UnitView>) {
+class UnitViewOptions(var obj: DC_HeroObj, var unitMap: MutableMap<DC_HeroObj, BaseView>) {
     var runnable: Runnable? = null
     var portrateTexture: Texture? = null
     var directionPointerTexture: Texture? = null

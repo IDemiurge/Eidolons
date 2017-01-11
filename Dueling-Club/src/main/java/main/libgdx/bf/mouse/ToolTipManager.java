@@ -54,11 +54,13 @@ public class ToolTipManager extends Group {
 
     private void init(List<ToolTipRecordOption> options) {
         ToolTipRecordOption recordOption = options.get(0);
-        if (toolTips.size() == options.size() && isEquals(recordOption.name)) {
+        //todo make working cache check before remove this ugly hack
+        if (true == false && toolTips.size() == options.size() && isEquals(recordOption.name)) {
             ToolTip toolTip = toolTips.get(0);
             toolTip.updateVal(getCurMaxVal(recordOption.curVal, recordOption.maxVal));
         } else {
             toolTips.forEach(this::removeActor);
+            toolTips.clear();
             recordOption = options.get(0);
             int offsetY = (options.size() - 1) * 45;
             if (options.size() == 1) {
