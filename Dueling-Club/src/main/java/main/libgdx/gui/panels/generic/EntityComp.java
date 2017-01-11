@@ -19,6 +19,6 @@ public class EntityComp extends Comp {
         super(supplier.get()==null  ? null :  ()-> supplier.get().getImagePath());
     }
     public EntityComp(Entity obj) {
-        super(()->obj.getImagePath());
+        super(()-> obj==null ? "" : obj.getImagePath());
     }
 }

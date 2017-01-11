@@ -33,7 +33,7 @@ public class Container extends Comp {
 
     public RootTable getRoot() {
         if (root == null)
-            root = new RootTable() ;//getGroup(getRootLayout());
+            root = new RootTable();//getGroup(getRootLayout());
         return root;
     }
 
@@ -54,29 +54,22 @@ public class Container extends Comp {
         WidgetContainer group = getGroup(defaultLayout);
         root.add(group);
         root.setFillParent(true);
-//        root.setPosition(0, getHeight());
-//        group.setPosition(0, root.getHeight());
-        int i = 0;
-        int j = 0;  for (Actor comp : comps) {
+        for (Actor comp : comps) {
 
-            boolean horizontal = defaultLayout == LAYOUT.HORIZONTAL;
             if (comp == null) {
                 main.system.auxiliary.LogMaster.log(1, "NULL COMP IN " + this);
                 continue;
             }
             if (comp instanceof Wrap) {
-                i=0;
+
                 group.layout();
-                horizontal = ((Wrap) comp).horizontal;
+                boolean horizontal = ((Wrap) comp).horizontal;
                 group = getGroup(horizontal ? LAYOUT.HORIZONTAL : LAYOUT.VERTICAL);
                 root.add(group);
 //                group.top();
                 group.setFillParent(true);
-//if (!horizontal)
-//    root.row();
-////                    group.setY(root.getHeight() - group.getHeight());
-//                } else
-//                    group.setY(root.getHeight() - group.getHeight());
+                if (!horizontal)
+                    root.row();
 
                 continue;
             }
@@ -85,11 +78,7 @@ public class Container extends Comp {
 
             }
             group.addActor(comp);
-            float y = (!horizontal) ? j * comp.getHeight() : i * comp.getHeight();
-               float  x = (horizontal) ? j * comp.getHeight() : i * comp.getHeight();
-//            comp.setPosition(x, y);
-            j++;
-            i++;
+
         }
         //alignment
 //        root.top();

@@ -44,7 +44,7 @@ public class InitiativeQueue extends EntityContainer {
 
     @Override
     public float getWidth() {
-        return clockImage.getWidth() + supplier.get().size() * GuiManager.getSmallObjSize();
+        return (1 + supplier.get().size()) * GuiManager.getSmallObjSize();
     }
 
 

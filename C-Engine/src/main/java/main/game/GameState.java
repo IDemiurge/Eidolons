@@ -238,6 +238,7 @@ public abstract class GameState {
         mngr.checkForChanges(true);
 
         GuiEventManager.trigger(GuiEventType.UPDATE_EMITTERS, null);
+        GuiEventManager.trigger(GuiEventType.UPDATE_GUI, null);
     }
 
     public abstract void checkContinuousRules();

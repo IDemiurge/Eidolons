@@ -22,6 +22,7 @@ import main.libgdx.bf.controls.radial.RadialMenu;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.bf.mouse.ToolTipManager;
 import main.libgdx.gui.dialog.DialogDisplay;
+import main.libgdx.gui.panels.dc.InitiativeQueue;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -29,6 +30,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
 import static main.system.GuiEventType.GRID_CREATED;
+import static main.system.GuiEventType.UPDATE_GUI;
 
 /**
  * Created with IntelliJ IDEA.
@@ -55,6 +57,7 @@ public class GameScreen implements Screen {
 
     private ParticleManager particleManager;
     private AnimMaster animMaster;
+    private InitiativeQueue queue;
 
     public static GameScreen getInstance() {
         return instance;
@@ -128,9 +131,16 @@ initCamera();
         gui = new Stage();
         gui.addActor(radialMenu = new RadialMenu(t));
         gui.addActor(toolTipManager = new ToolTipManager());
+        queue = new InitiativeQueue();
+        gui.addActor(queue);
+        queue.setPosition(0, Gdx.app.getGraphics().getHeight()-64);
     }
 
     private void bindEvents() {
+        GuiEventManager.bind(UPDATE_GUI, param -> {
+             queue.update();
+         });
+
         GuiEventManager.bind(GRID_CREATED, param -> {
             Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
             gridPanel = new GridPanel(p.getLeft(), p.getRight()).init();

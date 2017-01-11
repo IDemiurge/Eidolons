@@ -238,6 +238,7 @@ try{game.getBattleField().refreshInitiativeQueue();                }catch(Except
         if (game.getManager().getInfoObj() == null)
             game.getManager().infoSelect(activeUnit);
 
+            WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
             LogMaster.gameInfo(StringMaster.getStringXTimes(50 - getActiveUnit().toString().length(), ">")
                 + "Active unit: " + getActiveUnit());
             GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, new EventCallbackParam(activeUnit));
