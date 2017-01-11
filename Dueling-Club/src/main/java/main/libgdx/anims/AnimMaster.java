@@ -29,7 +29,7 @@ public class AnimMaster extends Actor {
 //if (leadAnimation.isFinished()){
 //
 //}
-        stage.addActor(this);
+//        stage.addActor(this);
     }
 
 
