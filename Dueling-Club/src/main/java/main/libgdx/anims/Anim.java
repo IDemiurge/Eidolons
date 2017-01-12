@@ -67,6 +67,7 @@ public class Anim extends Group {
         updatePosition();
         batch.begin();
         batch.draw(textureSupplier.get(), getX(), getY());
+//        AnimMaster.getDrawer().draw(this, batch);
         batch.end();
         addLight();
         addEmitters();

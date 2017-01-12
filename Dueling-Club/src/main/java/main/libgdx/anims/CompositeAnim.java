@@ -21,6 +21,7 @@ public class CompositeAnim {
     Map<ANIM_PART, List<CompositeAnim>> attached;
     ANIM_PART part;
     int index;
+    private boolean finished;
 
     public CompositeAnim(Anim... anims) {
         this(new MapMaster<ANIM_PART, Anim>().constructMap(new LinkedList<>(Arrays.asList(ANIM_PART.values()).subList(0, anims.length)),
@@ -55,7 +56,7 @@ public class CompositeAnim {
 
     private void playAttached() {
         List<CompositeAnim> list = attached.get(part);
-//        AnimMaster
+//        AnimMaster.add(list);
 
         list.forEach(anim->{
 //            anim.start();
@@ -66,7 +67,7 @@ public class CompositeAnim {
     public void finished() {
         index = 0;
         part = null;
-//        finished = true;
+        finished = true;
     }
 
     private void triggerGraphicEvents() {

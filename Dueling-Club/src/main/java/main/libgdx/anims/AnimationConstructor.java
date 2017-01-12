@@ -89,7 +89,7 @@ public class AnimationConstructor {
     public enum ANIM_PART {
         CAST,
         RESOLVE,
-        MAIN,
+        MAIN, //flying missile
         IMPACT,
         AFTEREFFECT;
     }

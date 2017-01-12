@@ -17,7 +17,7 @@ public class LightingManager {
         GuiEventManager.bind(GuiEventType.GRID_CREATED, p -> {
             //TODO init emitterMap and lightMap
         });
-        GuiEventManager.bind(GuiEventType.UPDATE_EMITTERS, p -> {
+        GuiEventManager.bind(GuiEventType.UPDATE_LIGHT, p -> {
              lightMap.updateMap();
     });
     }

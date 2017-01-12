@@ -13,7 +13,7 @@ public class AnimMaster extends Actor {
 
     private   Stage stage;
     Stack<CompositeAnim>  leadQueue; //if more Action Stacks have been created before leadAnimation is finished
-    Anim leadAnimation; // wait for it to finish before popping more from the queue
+    CompositeAnim leadAnimation; // wait for it to finish before popping more from the queue
 
     AnimDrawer drawer;
 //animations will use emitters, light, sprites, text and icons
@@ -66,17 +66,17 @@ public class AnimMaster extends Actor {
 
 
 
-    private Anim loadNext() {
-//       leadAnimation= leadQueue.pop();
-        return null;
-    }
+        private CompositeAnim loadNext() {
+    //       leadAnimation= leadQueue.pop();
+            return null;
+        }
 
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
 
-//        result=   leadAnimation.draw(batch);//drawer
-//if (!result)
+        boolean result = leadAnimation.draw(batch);//drawer
+        if (!result)
     leadAnimation=loadNext();
     }
 

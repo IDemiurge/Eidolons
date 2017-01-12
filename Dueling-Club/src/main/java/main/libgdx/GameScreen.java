@@ -45,6 +45,7 @@ public class GameScreen implements Screen {
     private Stage gui;
     private Stage dialog;
     private Stage anims;
+    private Stage ambience;
     private Background background;
     private GridPanel gridPanel;
     private RadialMenu radialMenu;
@@ -136,7 +137,7 @@ public class GameScreen implements Screen {
         queue.setPosition(0, Gdx.app.getGraphics().getHeight() - 64);
 
         LogDialog ld = new LogDialog();
-        gui.addActor(ld);
+//        gui.addActor(ld);
 //        ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
         ld.setPosition(200, 200);
     }
