@@ -40,17 +40,12 @@ import main.game.battlefield.VisionManager;
 import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.game.player.Player;
-import main.libgdx.anims.Anim;
-import main.libgdx.anims.STD_ANIMS.ATK_ANIMS;
 import main.rules.DC_ActionManager;
 import main.rules.mechanics.*;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
 import main.rules.mechanics.RuleMaster.RULE_GROUP;
 import main.swing.generic.components.list.ListItem;
 import main.system.CustomValueManager;
-import main.system.EventCallbackParam;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.ai.logic.actions.ActionManager;
 import main.system.ai.logic.target.EffectMaster;
 import main.system.auxiliary.EnumMaster;
@@ -627,8 +622,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
                     refreshVisuals(false);
                 }
             }
-        GuiEventManager.trigger(GuiEventType.ANIMATION_ADDED,
-        new EventCallbackParam( new Anim(this, ATK_ANIMS.SWING)));
         SoundMaster.playEffectSound(SOUNDS.IMPACT, this);
         return result;
     }

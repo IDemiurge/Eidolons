@@ -3,8 +3,6 @@ package main.libgdx.anims;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 
 import java.util.Stack;
 
@@ -14,37 +12,72 @@ import java.util.Stack;
 public class AnimMaster extends Actor {
 
     private   Stage stage;
-    Stack<Anim> queue;
-    Stack<Anim> runningAnims;
-    AnimDrawer drawer;
+    Stack<CompositeAnim>  leadQueue; //if more Action Stacks have been created before leadAnimation is finished
     Anim leadAnimation; // wait for it to finish before popping more from the queue
 
+    AnimDrawer drawer;
 //animations will use emitters, light, sprites, text and icons
     public AnimMaster(Stage stage) {
         drawer=new AnimDrawer(stage);
         this.stage=stage;
-        GuiEventManager.bind(GuiEventType.ANIMATION_ADDED, p->{
-            queue.add(  ((Anim) p.get()));
-        });
-//if (leadAnimation.isFinished()){
+
+
+//        GuiEventManager.bind(GuiEventType.ACTION_INTERRUPTED, p->{
+//leadAnimation.interrupt();
+//         });
+//            GuiEventManager.bind(GuiEventType.ANIM_CAST, p->{
+//            CompositeAnim composite =AnimationConstructor. map.get(p.get());
+//             composite.get(ANIM_PART.CAST);
 //
-//}
+//         });
+//
+//        GuiEventManager.bind(GuiEventType.EFFECT_APPLIED, p->{
+//            Effect effect = (Effect) p.get();
+//          anim =   getRootAnim(effect.getRef().getActive());
+//          if (anim!=null )anim.addEffectAnim(effect);
+//          else {
+//
+//              new EffectAnim(effect);
+//              //anim group vs anim(Effects)
+//          }
+//         }
+//    );
+//        GuiEventManager.bind(GuiEventType.ACTION_RESOLVES, p->{
+//            leadAnimation = new ActionAnim((Entity) p.get());
+//            leadQueue.add(leadAnimation);
+//        });
+//        GuiEventManager.bind(GuiEventType.ANIM_GROUP_COMPLETE, p->{
+//            map.get((Entity) p.get());
+//
+//            leadQueue.add(leadAnimation);
+//        });
+//            GuiEventManager.bind(GuiEventType.ABILITY_RESOLVES, p->{
+//           Ability ability = (Ability) p.get();
+//           //what about triggers?
+//           getRootAnim(ability.getRef().getActive()).addAbilityAnims(ability);
+//           //or maybe on effect?
+//            // default binding would be useful
+////            queue.add(  ((Anim) p.get()));
+//        });
+
 //        stage.addActor(this);
     }
 
 
 
 
+    private Anim loadNext() {
+//       leadAnimation= leadQueue.pop();
+        return null;
+    }
+
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
 
-        runningAnims.forEach(anim->{
-//            if (anim.isFinished())
-         });
-
-        runningAnims.forEach(anim->{
-//            anim.draw(batch, );
-
-        });
+//        result=   leadAnimation.draw(batch);//drawer
+//if (!result)
+    leadAnimation=loadNext();
     }
+
 }

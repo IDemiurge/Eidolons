@@ -9,6 +9,9 @@ import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.game.event.Event;
+import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.LogMaster;
 
 public class AbilityImpl extends ReferredElement implements Ability {
@@ -99,6 +102,10 @@ public class AbilityImpl extends ReferredElement implements Ability {
         LogMaster.log(0, "ABILITY_BEING_RESOLVED " + getClass().getSimpleName());
         Event event = new Event("ABILITY_BEING_RESOLVED", ref);
         if (game.fireEvent(event)) {
+
+            GuiEventManager.trigger(GuiEventType.ABILITY_RESOLVES,
+             new EventCallbackParam( this));
+
             return effects.apply(ref);
         } else
             return false;
