@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.Align;
 import main.libgdx.StyleHolder;
+import main.libgdx.bf.mouse.MovableHeader;
 import main.libgdx.texture.TextureManager;
 
 /**
@@ -56,9 +57,38 @@ public class LogDialog extends Group {
         //widgetGroup.setDebug(true);
         widgetGroup.addActor(tb);
 
+        Actor movableHeader = new MovableHeader();
+        movableHeader.setBounds(0, getHeight() - 10, getWidth(), 10);
+        //movableHeader.setDebug(true);
+        movableHeader.addCaptureListener(new InputListener() {
+            private Vector2 offset;
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                float x1 = LogDialog.this.getX();
+                float y1 = LogDialog.this.getY();
+
+                Vector2 vector2 = new Vector2(x, y);
+                vector2 = localToParentCoordinates(vector2);
+
+                offset = new Vector2(x1 - vector2.x, y1 - vector2.y);
+                return true;
+            }
+
+            @Override
+            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                x = Math.min(Math.max(LogDialog.this.getX() + x + offset.x, 0), getStage().getWidth() - LogDialog.this.getWidth());
+                y = Math.min(Math.max(LogDialog.this.getY() + y + offset.y, 0), getStage().getHeight() - LogDialog.this.getHeight());
+                LogDialog.this.setPosition(x, y);
+                updatePos = true;
+            }
+        });
+
+        addActor(movableHeader);
+
         addCaptureListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                event.stop();
+                //event.stop();
                 getStage().setScrollFocus(LogDialog.this);
                 return true;
             }
@@ -114,10 +144,10 @@ public class LogDialog extends Group {
     public void act(float delta) {
         super.act(delta);
         if (updatePos) {
-            Vector2 v2 = new Vector2(0, 10);
-            v2 = localToParentCoordinates(v2);
-            widgetGroup.setX(v2.x);
-            widgetGroup.setY(v2.y);
+            //Vector2 v2 = new Vector2(getX(), getY()+10);
+            //v2 = localToParentCoordinates(v2);
+            widgetGroup.setX(getX());
+            widgetGroup.setY(getY() + 10);
             updatePos = false;
         }
     }
@@ -125,7 +155,11 @@ public class LogDialog extends Group {
     @Override
     public Actor hit(float x, float y, boolean touchable) {
         Actor actor = super.hit(x, y, touchable);
-        return actor != null ? this : null;
+        if (actor == null) return null;
+        if (actor instanceof MovableHeader) {
+            return actor;
+        }
+        return this;
     }
 
     @Override
