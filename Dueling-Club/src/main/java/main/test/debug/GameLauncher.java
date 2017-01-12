@@ -25,6 +25,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.auxiliary.secondary.WorkspaceMaster;
+import main.system.launch.CoreEngine;
 import main.system.test.TestMasterContent;
 import main.test.Preset;
 import main.test.PresetMaster;
@@ -203,7 +204,12 @@ public class GameLauncher {
                     DungeonMaster.setDEFAULT_DUNGEON_LEVEL(dungeon);
             }
 
-        if (BooleanMaster.isTrue(getSUPER_FAST_MODE() )  ) {
+            if (BooleanMaster.isTrue(getFAST_MODE() )  ) {
+                DungeonMaster.RANDOM_DUNGEON= true;
+                CoreEngine.animationTestMode= true;
+TestMasterContent.test_on=false;
+            }
+                if (BooleanMaster.isTrue(getSUPER_FAST_MODE() )  ) {
            PLAYER_PARTY=(FAST_DC.PLAYER_PARTY);
             ENEMY_PARTY="";
             game.setEnemyParty("");

@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.VALUE;
+import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.particles.PARTICLE_EFFECTS;
+import main.system.net.data.DataUnit;
 
 import java.awt.*;
 import java.util.Map;
@@ -12,7 +14,7 @@ import java.util.Map;
 /**
  * Created by JustMe on 1/12/2017.
  */
-public class AnimData {
+public class AnimData extends DataUnit<ANIM_VALUES>{
 
     float duration;
     float spriteDuration;
@@ -42,14 +44,23 @@ public class AnimData {
     }
 
     private void setProp(PROPS val, String value) {
+        //contains? 
         switch(val){
-
+            case ANIM_SPRITE_CAST:
+            case ANIM_SPRITE_AFTEREFFECT:
+            case ANIM_SPRITE_MAIN:
+            case ANIM_SPRITE_IMPACT:
+            case ANIM_SPRITE_RESOLVE:
+                setValue(ANIM_VALUES.SPRITES, value);
         }
     }
 
-    public enum ANIM_VALUES{
 
-}
+
+    public enum ANIM_VALUES{
+        SPRITES
+
+    }
 
     public  AnimData(String... data){
 

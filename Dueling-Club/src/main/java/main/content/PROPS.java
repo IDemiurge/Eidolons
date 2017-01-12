@@ -266,76 +266,76 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     TERRAIN_TYPE(null, false, "terrain"),
 
     DURABILITY_GRADE_PIERCING(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "DURABILITY_GRADE_PIERCING", "_")), false, "weapons", "armor"),
+     "DURABILITY_GRADE_PIERCING", "_")), false, "weapons", "armor"),
     DURABILITY_GRADE_BLUDGEONING(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "DURABILITY_GRADE_BLUDGEONING", "_")), false, "weapons", "armor"),
+     "DURABILITY_GRADE_BLUDGEONING", "_")), false, "weapons", "armor"),
     DURABILITY_GRADE_SLASHING(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "DURABILITY_GRADE_SLASHING", "_")), false, "weapons", "armor"),
+     "DURABILITY_GRADE_SLASHING", "_")), false, "weapons", "armor"),
     DURABILITY_GRADE_POISON(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "DURABILITY_GRADE_POISON", "_")), false, "weapons", "armor"),
+     "DURABILITY_GRADE_POISON", "_")), false, "weapons", "armor"),
     DURABILITY_GRADE_FIRE(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "DURABILITY_GRADE_FIRE", "_")), false, "weapons", "armor"),
+     "DURABILITY_GRADE_FIRE", "_")), false, "weapons", "armor"),
     DURABILITY_GRADE_COLD(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "DURABILITY_GRADE_COLD", "_")), false, "weapons", "armor"),
+     "DURABILITY_GRADE_COLD", "_")), false, "weapons", "armor"),
     DURABILITY_GRADE_LIGHTNING(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "DURABILITY_GRADE_LIGHTNING", "_")), false, "weapons", "armor"),
+     "DURABILITY_GRADE_LIGHTNING", "_")), false, "weapons", "armor"),
     DURABILITY_GRADE_ACID(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "DURABILITY_GRADE_ACID", "_")), false, "weapons", "armor"),
+     "DURABILITY_GRADE_ACID", "_")), false, "weapons", "armor"),
 
     DURABILITY_GRADE_SONIC(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "DURABILITY_GRADE_SONIC", "_")), false, "weapons", "armor"),
+     "DURABILITY_GRADE_SONIC", "_")), false, "weapons", "armor"),
     DURABILITY_GRADE_LIGHT(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "DURABILITY_GRADE_LIGHT", "_")), false, "weapons", "armor"),
+     "DURABILITY_GRADE_LIGHT", "_")), false, "weapons", "armor"),
 
     DURABILITY_GRADE_ARCANE(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "DURABILITY_GRADE_ARCANE", "_")), false, "weapons", "armor"),
+     "DURABILITY_GRADE_ARCANE", "_")), false, "weapons", "armor"),
     DURABILITY_GRADE_CHAOS(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "DURABILITY_GRADE_CHAOS", "_")), false, "weapons", "armor"),
+     "DURABILITY_GRADE_CHAOS", "_")), false, "weapons", "armor"),
 
     DURABILITY_GRADE_SHADOW(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "DURABILITY_GRADE_SHADOW", "_")), false, "weapons", "armor"),
+     "DURABILITY_GRADE_SHADOW", "_")), false, "weapons", "armor"),
     DURABILITY_GRADE_HOLY(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "DURABILITY_GRADE_HOLY", "_")), false, "weapons", "armor"),
+     "DURABILITY_GRADE_HOLY", "_")), false, "weapons", "armor"),
     DURABILITY_GRADE_DEATH(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "DURABILITY_GRADE_DEATH", "_")), false, "weapons", "armor"),
+     "DURABILITY_GRADE_DEATH", "_")), false, "weapons", "armor"),
     DURABILITY_GRADE_PSIONIC(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "DURABILITY_GRADE_PSIONIC", "_")), false, "weapons", "armor"),
+     "DURABILITY_GRADE_PSIONIC", "_")), false, "weapons", "armor"),
     //
     RESIST_GRADE_PIERCING(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "RESIST_GRADE_PIERCING", "_")), false, "units", "chars", "weapons", "armor"),
+     "RESIST_GRADE_PIERCING", "_")), false, "units", "chars", "weapons", "armor"),
     RESIST_GRADE_BLUDGEONING(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "RESIST_GRADE_BLUDGEONING", "_")), false, "units", "chars", "weapons", "armor"),
+     "RESIST_GRADE_BLUDGEONING", "_")), false, "units", "chars", "weapons", "armor"),
     RESIST_GRADE_SLASHING(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "RESIST_GRADE_SLASHING", "_")), false, "units", "chars", "weapons", "armor"),
+     "RESIST_GRADE_SLASHING", "_")), false, "units", "chars", "weapons", "armor"),
     RESIST_GRADE_POISON(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "RESIST_GRADE_POISON", "_")), false, "units", "chars", "weapons", "armor"),
+     "RESIST_GRADE_POISON", "_")), false, "units", "chars", "weapons", "armor"),
     RESIST_GRADE_FIRE(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "RESIST_GRADE_FIRE", "_")), false, "units", "chars", "weapons", "armor"),
+     "RESIST_GRADE_FIRE", "_")), false, "units", "chars", "weapons", "armor"),
     RESIST_GRADE_COLD(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "RESIST_GRADE_COLD", "_")), false, "units", "chars", "weapons", "armor"),
+     "RESIST_GRADE_COLD", "_")), false, "units", "chars", "weapons", "armor"),
     RESIST_GRADE_LIGHTNING(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "RESIST_GRADE_LIGHTNING", "_")), false, "units", "chars", "weapons", "armor"),
+     "RESIST_GRADE_LIGHTNING", "_")), false, "units", "chars", "weapons", "armor"),
     RESIST_GRADE_ACID(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "RESIST_GRADE_ACID", "_")), false, "units", "chars", "weapons", "armor"),
+     "RESIST_GRADE_ACID", "_")), false, "units", "chars", "weapons", "armor"),
 
     RESIST_GRADE_SONIC(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "RESIST_GRADE_SONIC", "_")), false, "units", "chars", "weapons", "armor"),
+     "RESIST_GRADE_SONIC", "_")), false, "units", "chars", "weapons", "armor"),
     RESIST_GRADE_LIGHT(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "RESIST_GRADE_LIGHT", "_")), false, "units", "chars", "weapons", "armor"),
+     "RESIST_GRADE_LIGHT", "_")), false, "units", "chars", "weapons", "armor"),
 
     RESIST_GRADE_ARCANE(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "RESIST_GRADE_ARCANE", "_")), false, "units", "chars", "weapons", "armor"),
+     "RESIST_GRADE_ARCANE", "_")), false, "units", "chars", "weapons", "armor"),
     RESIST_GRADE_CHAOS(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "RESIST_GRADE_CHAOS", "_")), false, "units", "chars", "weapons", "armor"),
+     "RESIST_GRADE_CHAOS", "_")), false, "units", "chars", "weapons", "armor"),
 
     RESIST_GRADE_SHADOW(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "RESIST_GRADE_SHADOW", "_")), false, "units", "chars", "weapons", "armor"),
+     "RESIST_GRADE_SHADOW", "_")), false, "units", "chars", "weapons", "armor"),
     RESIST_GRADE_HOLY(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "RESIST_GRADE_HOLY", "_")), false, "units", "chars", "weapons", "armor"),
+     "RESIST_GRADE_HOLY", "_")), false, "units", "chars", "weapons", "armor"),
     RESIST_GRADE_DEATH(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "RESIST_GRADE_DEATH", "_")), false, "units", "chars", "weapons", "armor"),
+     "RESIST_GRADE_DEATH", "_")), false, "units", "chars", "weapons", "armor"),
     RESIST_GRADE_PSIONIC(StringMaster.getWellFormattedString(StringMaster.getLastPart(
-            "RESIST_GRADE_PSIONIC", "_")), false, "units", "chars", "weapons", "armor"),
+     "RESIST_GRADE_PSIONIC", "_")), false, "units", "chars", "weapons", "armor"),
     // common,
     // rare,
     // special,
@@ -343,7 +343,19 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     // etc
     // unit in the middle of each GROUP
 
-    ;
+
+    ANIM_SPRITE_CAST
+     ("", true, "spells", "actions"),
+    ANIM_SPRITE_RESOLVE
+     ("", true, "spells", "actions"),
+    ANIM_SPRITE_MAIN
+     ("", true, "spells", "actions"),
+    ANIM_SPRITE_IMPACT
+     ("", true, "spells", "actions"),
+    ANIM_SPRITE_AFTEREFFECT
+     ("", true, "spells", "actions"),
+    ANIM_MISSILE_SPRITE
+     ("", true, "spells", "actions"),;
 
     static {
         FAVORED_SPELL_GROUPS.setContainer(true);

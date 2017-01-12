@@ -1,6 +1,7 @@
 package main.swing.generic.components.editors;
 
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.StringMaster;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,7 +63,18 @@ public class FileChooser implements EDITOR {
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
-            String selected = file.getPath().replace(getDefaultFileLocation(), "");
+
+            String selected = file.getPath();
+
+            selected =StringMaster.replaceFirst(selected,
+            defaultFileLocation
+             , "");
+            selected =StringMaster.replaceFirst(selected,
+             PathFinder.getEnginePathPlusNewResourceProject()
+             , "");
+            selected =StringMaster.replaceFirst(selected,
+             PathFinder.getEnginePath()
+             , "");
             if (multi) {
                 if (value.isEmpty())
                     return selected;
