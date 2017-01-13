@@ -220,6 +220,6 @@ public class PathFinder {
     }
 
     public static String getParticlePresetPath() {
-        return getImagePath()+ "mini\\sprites\\particles\\";
+        return getImagePath()+ "mini\\sfx\\";
     }
 }

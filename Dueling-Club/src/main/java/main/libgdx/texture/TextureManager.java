@@ -69,7 +69,8 @@ public class TextureManager {
     }
 
     private static int getDimension(String path, boolean xOrY) {
-        for (String part : path.split(" ")) {
+
+        for (String part :  StringMaster.cropFormat(path) .split(" ")) {
             if (part.startsWith(xOrY ? "x" : "y"))
                 if (StringMaster.isNumber(part.substring(1), true)) {
                     return StringMaster.getInteger(part.substring(1));

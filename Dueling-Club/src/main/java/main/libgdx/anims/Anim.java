@@ -4,13 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g3d.particles.emitters.Emitter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
+import main.libgdx.anims.particles.ParticleEmitter;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.texture.TextureManager;
 
@@ -24,7 +24,7 @@ public class Anim extends Group {
     Vector2 origin;
     Vector2 destination;
     Vector2 position;
-    List<Emitter> emitterList;
+    List<ParticleEmitter> emitterList;
     int lightEmission; // its own lightmap?
     Color color;
     List<SpriteAnimation> sprites;
@@ -57,8 +57,8 @@ public class Anim extends Group {
     public boolean draw(Batch batch) {
 //switch(template){
 //} applyTemplate()
-
-        stateTime += Gdx.graphics.getDeltaTime();
+        float delta = Gdx.graphics.getDeltaTime();
+        stateTime += delta;
         Texture currentFrame = textureSupplier.get();
         if (currentFrame == null || stateTime>=duration) {
             dispose();
@@ -69,6 +69,10 @@ public class Anim extends Group {
         batch.draw(currentFrame, position.x,  position.y);
 
         sprites.forEach(s-> s.draw(batch));
+        emitterList.forEach(e-> {
+            e.act(delta);
+            e.draw(batch, 1f);
+        });
 //        AnimMaster.getDrawer().draw(this, batch);
 //        batch.end();
         return true;
@@ -87,6 +91,9 @@ public class Anim extends Group {
     }
 
     private void addEmitters() {
+        emitterList.forEach(e -> {
+            e.start();
+        });
     }
 
     private void dispose() {
@@ -99,11 +106,35 @@ public class Anim extends Group {
         sprites.forEach(s-> s.setOffsetX(offsetX));
         sprites.forEach(s-> s.setOffsetY(offsetY));
 //       lightBody.setPosition()
-//        emitterList.forEach(e -> {
-//        e.setPos
-//        });
+        emitterList.forEach(e -> {
+            e.setPosition(position.x,position.y);
+        });
     }
 
+    public void setEmitterList(List<ParticleEmitter> emitterList) {
+        this.emitterList = emitterList;
+    }
+
+    public void setLightEmission(int lightEmission) {
+        this.lightEmission = lightEmission;
+    }
+
+    @Override
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public void setTextureSupplier(Supplier<Texture> textureSupplier) {
+        this.textureSupplier = textureSupplier;
+    }
+
+    public void setDuration(float duration) {
+        this.duration = duration;
+    }
+
+    public void setMods(ANIM_MOD[] mods) {
+        this.mods = mods;
+    }
 
     public void setSprites(List<SpriteAnimation> sprites) {
         this.sprites = sprites;

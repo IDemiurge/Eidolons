@@ -1,11 +1,11 @@
 package main.libgdx.anims;
 
 import com.badlogic.gdx.graphics.Color;
+import main.content.CONTENT_CONSTS2.SFX;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.VALUE;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
-import main.libgdx.anims.particles.PARTICLE_EFFECTS;
 import main.system.net.data.DataUnit;
 
 import java.awt.*;
@@ -21,7 +21,7 @@ public class AnimData extends DataUnit<ANIM_VALUES>{
     float emitterDuration;
 
     String spriteImagePaths;
-    PARTICLE_EFFECTS[] emitters; //other params?
+    SFX[] emitters; //other params?
     Color[] emitterColors;
     Point[] emitterOffsets;
     int[] emitterScales;
@@ -47,18 +47,26 @@ public class AnimData extends DataUnit<ANIM_VALUES>{
         //contains? 
         switch(val){
             case ANIM_SPRITE_CAST:
-            case ANIM_SPRITE_AFTEREFFECT:
+            case ANIM_SPRITE_RESOLVE:
             case ANIM_SPRITE_MAIN:
             case ANIM_SPRITE_IMPACT:
-            case ANIM_SPRITE_RESOLVE:
+            case ANIM_SPRITE_AFTEREFFECT:
                 setValue(ANIM_VALUES.SPRITES, value);
+                break;
+            case ANIM_SFX_CAST:
+            case ANIM_SFX_MAIN:
+            case ANIM_SFX_IMPACT:
+            case ANIM_SFX_RESOLVE:
+            case ANIM_SFX_AFTEREFFECT:
+                setValue(ANIM_VALUES.PARTICLE_EFFECTS, value);
+                break;
         }
     }
 
 
 
     public enum ANIM_VALUES{
-        SPRITES
+        PARTICLE_EFFECTS, SPRITES
 
     }
 

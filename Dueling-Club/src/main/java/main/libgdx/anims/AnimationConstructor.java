@@ -1,13 +1,16 @@
 package main.libgdx.anims;
 
 import main.ability.effects.Effect;
+import main.content.CONTENT_CONSTS2.SFX;
 import main.content.PROPS;
 import main.content.VALUE;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
+import main.libgdx.anims.particles.ParticleEmitter;
 import main.libgdx.anims.sprite.SpriteAnimation;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.*;
@@ -27,15 +30,15 @@ public class AnimationConstructor {
      PROPS.ANIM_SPRITE_IMPACT,
      PROPS.ANIM_SPRITE_AFTEREFFECT,
      PROPS.ANIM_MISSILE_SPRITE,
-//     PROPS.ANIM_MODS_SPRITE,
-//     PROPS.ANIM_MISSILE_SFX,
+     PROPS.ANIM_MODS_SPRITE,
+     PROPS.ANIM_MISSILE_SFX,
 //
-//     PROPS.ANIM_SFX_CAST,
-//     PROPS.ANIM_SFX_RESOLVE,
-//     PROPS.ANIM_SFX_MAIN,
-//     PROPS.ANIM_SFX_IMPACT,
-//     PROPS.ANIM_SFX_AFTEREFFECT,
-//     PROPS.ANIM_MODS_SFX,
+     PROPS.ANIM_SFX_CAST,
+     PROPS.ANIM_SFX_RESOLVE,
+     PROPS.ANIM_SFX_MAIN,
+     PROPS.ANIM_SFX_IMPACT,
+     PROPS.ANIM_SFX_AFTEREFFECT,
+     PROPS.ANIM_MODS_SFX,
 //
 //
 //     PROPS.ANIM_SPRITE_COLOR,
@@ -115,9 +118,22 @@ boolean reconstruct = true;
             sprites.add(new SpriteAnimation(path));
             exists = true;
         }
+        List<ParticleEmitter> list = new LinkedList<>();
+        for (String path :
+         StringMaster.openContainer(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS))) {
+            ParticleEmitter emitter = null ;
+            try{
+                emitter =  new ParticleEmitter(new EnumMaster<SFX>().
+             retrieveEnumConst(SFX.class, path));       }catch(Exception e){                e.printStackTrace();            }
+            if (emitter!=null )
+            list.add(emitter
+             );
+            exists = true;
+        }
         if (!exists) return null;
         Anim anim = new Anim(active, data);
         anim.setSprites(sprites);
+        anim.setEmitterList(list);
         return anim;
     }
 

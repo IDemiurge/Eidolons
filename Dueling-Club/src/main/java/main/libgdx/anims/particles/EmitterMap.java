@@ -1,5 +1,6 @@
 package main.libgdx.anims.particles;
 
+import main.content.CONTENT_CONSTS2.SFX;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -45,7 +46,7 @@ public EmitterMap(){
     }
 
     private void addSmoke() {
-        Ambience smoke = new Ambience(PARTICLE_EFFECTS.SMOKE_TEST);
+        Ambience smoke = new Ambience(SFX.SMOKE_TEST);
 //    smoke.getEffect().setPosition(x, y);
         smoke.getEffect().start();
     }

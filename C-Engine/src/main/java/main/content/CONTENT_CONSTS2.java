@@ -47,6 +47,26 @@ public class CONTENT_CONSTS2 {
         LIMB, HEAD, BODY, INTERNAL
     }
 
+    public enum SFX {
+        SMOKE_TEST( "Smoke_Test1.pt"),
+        DARK_SOULS("dark souls"),
+        DARK_SOULS2("dark souls2"),
+        DARK_SOULS3("dark souls3"),
+        SKULL("skulls"),
+        SKULL2("skulls2"),
+        SKULL3("skulls3"),
+
+        //TODO sub-emitters
+
+        ;
+        public   String path;
+
+        SFX(String path){
+            this.path=path;
+        }
+
+
+    }
     public enum INJURY {
         RIPPED,
         MAIMED,

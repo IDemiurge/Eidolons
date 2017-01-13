@@ -61,6 +61,11 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 	public static final String SPRITE_PATH =
 	"img\\mini\\sprites\\";
 
+	public static final VALUE[] SFX_IDS = {
+	//as single enum for now! 
+	};
+	public static final String SFX_PATH =
+	"img\\mini\\sfx\\";
 	public static final String[] SINGLE_RES_FILE_IDS = {};
 	public static final String[] RES_FILE_KEYS = {};
 	public static final String[] SINGLE_RES_FOLDER_IDS = { G_PROPS.SOUNDSET.name(), };
@@ -109,7 +114,15 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 			PROPS.THIRD_FAVORED_ASPECT.name(), G_PROPS.SPELL_TYPE.name(),
 			// "DEITY",
 			PROPS.BF_OBJECT_SIZE.name(), PROPS.OBJECT_ARMOR_TYPE.name(), PROPS.DIMENSION.name() };
-	public static final String[] MULTIPLE_ENUM_LIST_IDS = { PROPS.PARAMETER_BONUSES.getName(),
+	public static final String[] MULTIPLE_ENUM_LIST_IDS = {
+
+	PROPS.ANIM_SFX_CAST.name(),
+	PROPS.ANIM_SFX_RESOLVE.name(),
+	PROPS.ANIM_SFX_MAIN.name(),
+	PROPS.ANIM_SFX_IMPACT.name(),
+	PROPS.ANIM_SFX_AFTEREFFECT.name(),
+	PROPS.ANIM_MISSILE_SFX.name(),
+	PROPS.PARAMETER_BONUSES.getName(),
 			PROPS.PALETTE.name(), PROPS.ATTRIBUTE_BONUSES.getName(), PROPS.DUNGEON_TAGS.name(),
 			PROPS.MASTERY_GROUPS_MAGIC.name(), PROPS.MASTERY_GROUPS_WEAPONS.name(),
 			PROPS.MASTERY_GROUPS_MISC.name(), G_PROPS.SPELL_UPGRADE_GROUPS.name(),
@@ -362,10 +375,18 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 		}
 
 		for (VALUE val : SPRITE_IDS) {
-		String	id = StringMaster.getWellFormattedString(val.name());
-			editorMap.put(id, new FileChooser(false, false) {
+			String	id = StringMaster.getWellFormattedString(val.name());
+			editorMap.put(id, new FileChooser(false, true) {
 				protected String getDefaultFileLocation() {
 					return PathFinder.getEnginePathPlusNewResourceProject() + SPRITE_PATH ;
+				};
+			});
+		}
+		for (VALUE val : SFX_IDS) {
+			String	id = StringMaster.getWellFormattedString(val.name());
+			editorMap.put(id, new FileChooser(false, true) {
+				protected String getDefaultFileLocation() {
+					return PathFinder.getEnginePathPlusNewResourceProject() + SFX_PATH ;
 				};
 			});
 		}
