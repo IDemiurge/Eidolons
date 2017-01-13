@@ -1,14 +1,16 @@
 package main.libgdx.anims;
 
+import main.ability.effects.DealDamageEffect;
 import main.ability.effects.Effect;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
+import main.libgdx.anims.AnimData.ANIM_VALUES;
 
 /**
  * Created by JustMe on 1/11/2017.
  */
 public class EffectAnim extends Anim {
     public EffectAnim(Effect e, ANIM_MOD template) {
-        super(null, null  );
+        super(null, null);
         /*
         animation could be constructed from effects and action/spell-properties
 
@@ -29,9 +31,11 @@ via trigger etc
          */
     }
 
-    ANIM_MOD[] getAnims(Effect e){
-        switch (e.getClass().getSimpleName().replace("Effect", "")){
+    AnimData getAnimData(Effect e) {
+        AnimData data = new AnimData();
+        switch (e.getClass().getSimpleName().replace("Effect", "")) {
             case "DealDamage":
+                return getDamageAnimData((DealDamageEffect) e);
             case "ModifyValue":
             case "InstantDeath":
             case "AddBuff":
@@ -45,5 +49,17 @@ via trigger etc
 
 
         }
-   return null ; }
+        return data;
+    }
+
+    private AnimData getDamageAnimData(DealDamageEffect e) {
+        AnimData data = new AnimData();
+        data.setValue(ANIM_VALUES.SPRITES, "damage\\" + ((DealDamageEffect) e).getDamage_type().toString());
+        return data;
+    }
+
+    ANIM_MOD[] getAnims(Effect e) {
+
+        return null;
+    }
 }

@@ -132,6 +132,7 @@ boolean reconstruct = true;
         }
         if (!exists) return null;
         Anim anim = new Anim(active, data);
+        anim.setPart(part);
         anim.setSprites(sprites);
         anim.setEmitterList(list);
         return anim;

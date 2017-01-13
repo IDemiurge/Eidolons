@@ -65,9 +65,9 @@ public class FileChooser implements EDITOR {
             File file = fc.getSelectedFile();
 
             String selected = file.getPath();
-
+if (getDefaultFileLocation()!=null )
             selected =StringMaster.replaceFirst(selected,
-            defaultFileLocation
+             getDefaultFileLocation()
              , "");
             selected =StringMaster.replaceFirst(selected,
              PathFinder.getEnginePathPlusNewResourceProject()

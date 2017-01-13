@@ -17,7 +17,7 @@ import java.util.Stack;
  */
 public class AnimMaster extends Actor {
 
-    Stack<CompositeAnim> leadQueue=new Stack<>(); //if more Action Stacks have been created before leadAnimation is finished
+    Stack<CompositeAnim> leadQueue = new Stack<>(); //if more Action Stacks have been created before leadAnimation is finished
     CompositeAnim leadAnimation; // wait for it to finish before popping more from the queue
     AnimDrawer drawer;
     private AnimationConstructor constructor;
@@ -35,13 +35,11 @@ public class AnimMaster extends Actor {
         });
 
         GuiEventManager.bind(GuiEventType.ACTION_RESOLVES, p -> {
-            if (leadAnimation == null)
-            {
+            if (leadAnimation == null) {
                 leadAnimation =
                  constructor.construct((DC_ActiveObj) p.get());
                 leadAnimation.start();
-            }
-            else
+            } else
                 leadQueue.add(leadAnimation);
         });
 //        GuiEventManager.bind(GuiEventType.ANIM_GROUP_COMPLETE, p -> {
@@ -67,13 +65,13 @@ public class AnimMaster extends Actor {
     }
 
     private CompositeAnim getParentAnim(ActiveObj active) {
-        return  constructor.getOrCreate(active);
+        return constructor.getOrCreate(active);
     }
 
 
     private CompositeAnim next() {
-        if (leadQueue.isEmpty()){
-            leadAnimation = null  ;
+        if (leadQueue.isEmpty()) {
+            leadAnimation = null;
             return null;
         }
         leadAnimation = leadQueue.pop();
@@ -83,10 +81,18 @@ public class AnimMaster extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-if (leadAnimation==null )return ;
-        boolean result = leadAnimation.draw(batch);//drawer
-        if (!result)
+
+        if (leadAnimation == null) {
             leadAnimation = next();
+        }
+        if (leadAnimation == null) {
+            return;
+        }
+
+        boolean result = leadAnimation.draw(batch);//drawer
+        if (!result) {
+            leadAnimation = next();
+        }
     }
 
 }

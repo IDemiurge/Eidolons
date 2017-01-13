@@ -27,7 +27,7 @@ public class ParticleEmitter extends Actor implements ParticleActor {
         effect = new ParticleEffect();
         effect.load(Gdx.files.internal(PathFinder.getParticlePresetPath() +
           fx.path),
-         Gdx.files.internal(PathFinder.getParticlePresetPath()));
+         Gdx.files.internal(PathFinder.getParticleImagePath()));
 
 //        m_effect = new ParticleEffect();
 //        m_effect.load(Gdx.files.internal("particle/effects/lightning.p"), this.getAtlas());

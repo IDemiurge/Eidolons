@@ -9,13 +9,19 @@ import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.system.net.data.DataUnit;
 
 import java.awt.*;
-import java.util.Map;
 
 /**
  * Created by JustMe on 1/12/2017.
  */
 public class AnimData extends DataUnit<ANIM_VALUES>{
 
+
+    public enum ANIM_VALUES{
+        PARTICLE_EFFECTS, SPRITES,
+        DURATION, SCALE, COLOR, LIGHT_FOCUS,LIGHT_AMBIENT
+
+
+    }
     float duration;
     float spriteDuration;
     float emitterDuration;
@@ -28,8 +34,6 @@ public class AnimData extends DataUnit<ANIM_VALUES>{
 
     int lightEmission;
     Color lightColor;
-
-    Map<String, Object> dataMap;
 
     public void add(VALUE val, String value) {
         if (val instanceof PARAMS) {
@@ -64,11 +68,6 @@ public class AnimData extends DataUnit<ANIM_VALUES>{
     }
 
 
-
-    public enum ANIM_VALUES{
-        PARTICLE_EFFECTS, SPRITES
-
-    }
 
     public  AnimData(String... data){
 

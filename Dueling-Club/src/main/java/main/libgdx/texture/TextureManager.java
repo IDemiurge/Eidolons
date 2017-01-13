@@ -17,10 +17,10 @@ public class TextureManager {
     public static Texture getOrCreate(String p) {
         if (ImageManager.getPATH() != null)
             if (!ImageManager.isImage(p)) {
-                p  =StringMaster.addMissingPathSegments(p, ImageManager.getPATH() );
-                p  =StringMaster.removePreviousPathSegments(p, ImageManager.getPATH() );
+                p = StringMaster.addMissingPathSegments(p, ImageManager.getPATH());
+                p = StringMaster.removePreviousPathSegments(p, ImageManager.getPATH());
                 if (!ImageManager.isImage(p))
-                return getCache().get(ImageManager.getAltEmptyListIcon());
+                    return getCache().get(ImageManager.getAltEmptyListIcon());
                 // don't cache if missing!
             }
         return getCache().getOrCreate(p);
@@ -33,12 +33,12 @@ public class TextureManager {
     }
 
     public static Texture getOrCreate(Boxer<String> stringBoxer) {
-       return  getOrCreate(stringBoxer.get());
+        return getOrCreate(stringBoxer.get());
     }
 
 
     public static Array<TextureRegion> getSpriteSheetFrames(String path
-                                                          ) {
+    ) {
         return getSpriteSheetFrames(path, getColumns(path), getRows(path));
     }
 
@@ -59,6 +59,7 @@ public class TextureManager {
         }
         return new Array<>(frames);
     }
+
     private static int getColumns(String path) {
         return getDimension(path, false);
     }
@@ -69,14 +70,30 @@ public class TextureManager {
     }
 
     private static int getDimension(String path, boolean xOrY) {
+        path =StringMaster.cropFormat(path);
+        String y = StringMaster.getLastPart(path, " ");
 
-        for (String part :  StringMaster.cropFormat(path) .split(" ")) {
-            if (part.startsWith(xOrY ? "x" : "y"))
-                if (StringMaster.isNumber(part.substring(1), true)) {
-                    return StringMaster.getInteger(part.substring(1));
-                }
+        if (!xOrY) {
+            if (StringMaster.isNumber(y, true)) {
+                return StringMaster.getInteger(y);
+            }
+        }
+        path = StringMaster.cropLast(path, y);
+        String x = StringMaster.getLastPart(path, " ");
+        if (StringMaster.isNumber(x, true)) {
+            return StringMaster.getInteger(x);
         }
         return 1;
+
+// List<String> list =  StringMaster.openContainer( 
+//  StringMaster.cropFormat(path) ," ") ;
+//        ListMaster.invert(list);
+//        for (String part : list) {
+//            if (part.startsWith(xOrY ? "x" : "y"))
+//                if (StringMaster.isNumber(part.substring(1), true)) {
+//                    return StringMaster.getInteger(part.substring(1));
+//                }
+//        }
     }
 
 //    public static Texture toTexture(BufferedImage img) throws IOException {

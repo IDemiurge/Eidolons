@@ -493,6 +493,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 			try {
 				editor.launch(table, row, column, value);
 			} catch (NullPointerException ex) {
+				ex.printStackTrace();
 				handleMouseClick(e, true);
 			} catch (Exception ex) {
 				ex.printStackTrace();
