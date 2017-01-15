@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class SpriteAnimation extends Animation {
     public float x;
-    public  float y;
+    public float y;
     private SpriteBatch spriteBatch;
     private ArrayList<Texture> regions;
     private float maxFrameTime;
@@ -33,12 +33,11 @@ public class SpriteAnimation extends Animation {
 //        frame = 0;
 //    }
 
-    public SpriteAnimation(String path ) {
-        super(0.025f,   TextureManager. getSpriteSheetFrames(path));
+    public SpriteAnimation(String path) {
+        super(0.025f, TextureManager.getSpriteSheetFrames(path));
         stateTime = 0;
         spriteBatch = new SpriteBatch();
     }
-
 
 
     public boolean draw(Batch batch) {
@@ -49,7 +48,7 @@ public class SpriteAnimation extends Animation {
             return false;
         }
 //        batch.begin();
-        batch.draw(currentFrame, x+offsetX, y+offsetY);
+        batch.draw(currentFrame, x + offsetX, y + offsetY);
 //        batch.end();
 
         return true;
@@ -76,12 +75,12 @@ public class SpriteAnimation extends Animation {
     }
 
 
-
     public void setOffsetX(float offsetX) {
-        this.offsetX=offsetX;
+        this.offsetX = offsetX;
     }
+
     public void setOffsetY(float offsetY) {
-        this.offsetY=offsetY;
+        this.offsetY = offsetY;
     }
 
     public float getX() {

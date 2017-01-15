@@ -99,33 +99,33 @@ public class Anim extends Group {
 
     public void initPosition() {
         origin = GameScreen.getInstance().getGridPanel()
-         .getVectorForCoordinateWithOffset(ref.getSourceObj().getCoordinates());
-        if (ref.getTargetObj()==null )
+                .getVectorForCoordinateWithOffset(ref.getSourceObj().getCoordinates());
+        if (ref.getTargetObj() == null)
             destination = new Vector2(origin);
-      else   destination = GameScreen.getInstance().getGridPanel()
-         .getVectorForCoordinateWithOffset(ref.getTargetObj().getCoordinates());
+        else destination = GameScreen.getInstance().getGridPanel()
+                .getVectorForCoordinateWithOffset(ref.getTargetObj().getCoordinates());
 
         position = getDefaultPosition();
     }
 
     private Vector2 getDefaultPosition() {
-        if (part!=null )
-        switch (part) {
-            case IMPACT:
-            case AFTEREFFECT:
-                return new Vector2(destination);
-        }
+        if (part != null)
+            switch (part) {
+                case IMPACT:
+                case AFTEREFFECT:
+                    return new Vector2(destination);
+            }
         return new Vector2(origin);
     }
 
     public void updatePosition() {
-        if (part!=null )
-        switch (part) {
-            case MAIN:
-                offsetX = (destination.x - origin.x) * stateTime / duration;
-                offsetY = (destination.y - origin.y) * stateTime / duration;
-                break;
-        }
+        if (part != null)
+            switch (part) {
+                case MAIN:
+                    offsetX = (destination.x - origin.x) * stateTime / duration;
+                    offsetY = (destination.y - origin.y) * stateTime / duration;
+                    break;
+            }
         position.set(position.x + offsetX, position.y + offsetY);
         sprites.forEach(s -> {
             s.setOffsetX(offsetX);
@@ -133,7 +133,7 @@ public class Anim extends Group {
         });
 
         emitterList.forEach(e ->
-         e.setPosition(position.x, position.y));
+                e.setPosition(position.x, position.y));
     }
 
     public void setEmitterList(List<ParticleEmitter> emitterList) {

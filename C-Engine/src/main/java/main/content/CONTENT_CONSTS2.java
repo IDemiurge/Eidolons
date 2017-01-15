@@ -48,7 +48,7 @@ public class CONTENT_CONSTS2 {
     }
 
     public enum SFX {
-        SMOKE_TEST( "Smoke_Test1.pt"),
+        SMOKE_TEST("Smoke_Test1.pt"),
         DARK_SOULS("dark souls"),
         DARK_SOULS2("dark souls2"),
         DARK_SOULS3("dark souls3"),
@@ -59,10 +59,10 @@ public class CONTENT_CONSTS2 {
         //TODO sub-emitters
 
         ;
-        public   String path;
+        public String path;
 
-        SFX(String path){
-            this.path=path;
+        SFX(String path) {
+            this.path = path;
         }
 
 

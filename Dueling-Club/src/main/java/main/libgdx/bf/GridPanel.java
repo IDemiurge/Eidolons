@@ -81,17 +81,18 @@ public class GridPanel extends Group {
         InputController controller = GameScreen.getInstance().getController();
         int x = (int) (
 //         controller.getX_cam_pos()/2
-         +sourceCoordinates.getX() * getCellWidth() / controller.getZoom());
+                +sourceCoordinates.getX() * getCellWidth() / controller.getZoom());
         int y = (int) (
 //         controller.getY_cam_pos()/2
-         +(rows - sourceCoordinates.getY()) * getCellHeight() / controller.getZoom());
+                +(rows - sourceCoordinates.getY()) * getCellHeight() / controller.getZoom());
         return new PointX(x, y);
     }
+
     public Vector2 getVectorForCoordinateWithOffset(Coordinates sourceCoordinates) {
         InputController controller = GameScreen.getInstance().getController();
         return new Vector2(
-          sourceCoordinates.getX() * getCellWidth() / controller.getZoom()
-        , (rows - sourceCoordinates.getY()) * getCellHeight() / controller.getZoom());
+                sourceCoordinates.getX() * getCellWidth() / controller.getZoom()
+                , (rows - sourceCoordinates.getY()) * getCellHeight() / controller.getZoom());
     }
 
     public GridPanel init() {

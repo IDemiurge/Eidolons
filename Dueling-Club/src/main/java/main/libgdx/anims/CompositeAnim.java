@@ -50,7 +50,7 @@ public class CompositeAnim {
             }
         if (!result) {
             index++;
-                triggerGraphicEvents();
+            triggerGraphicEvents();
             if (map.size() <= index) {
                 finished();
                 return false;
@@ -86,8 +86,8 @@ public class CompositeAnim {
 
     private void triggerGraphicEvents() {
 //        eventMap.get()
-        if (part!=null )
-        switch (part) {
+        if (part != null)
+            switch (part) {
             // remove unit, set position, set facing etc
 
         }
@@ -102,14 +102,14 @@ public class CompositeAnim {
         if (map.isEmpty()) {
             return;
         }
-        index=0;
-       initPartAnim();
+        index = 0;
+        initPartAnim();
 //        running=true;
     }
 
     private void initPartAnim() {
         part = (ANIM_PART) MapMaster.get(map, index);
-        currentAnim=map.get(part);
+        currentAnim = map.get(part);
         currentAnim.start();
     }
 

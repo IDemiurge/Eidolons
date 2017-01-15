@@ -23,7 +23,7 @@ public EmitterMap(){
 
     GuiEventManager.bind(GuiEventType.EMITTER_ANIM_CREATED, p -> {
         ParticleAnimation
-        anim= new ParticleAnimation();
+                anim = new ParticleAnimation();
         animationFx.add(anim);
 
     });
@@ -37,12 +37,12 @@ public EmitterMap(){
     }
 
     public void updateAnimFx() {
-    animationFx.forEach(fx->{
-        if (fx.isRunning())
-            fx.start();
-        fx.updatePosition(2);
+        animationFx.forEach(fx -> {
+            if (fx.isRunning())
+                fx.start();
+            fx.updatePosition(2);
 
-    });
+        });
     }
 
     private void addSmoke() {

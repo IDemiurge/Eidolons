@@ -253,11 +253,12 @@ public class TestMasterContent {
     public static void addSpells(Entity type, String list) {
         for (String s : StringMaster.openContainer(list))
             type.addProperty(PROPS.VERBATIM_SPELLS, s
-             , true);
+                    , true);
 
     }
-        public static void addANIM_TEST_Spells(Entity type) {
-       addSpells(type, ANIM_TEST_LIST);
+
+    public static void addANIM_TEST_Spells(Entity type) {
+        addSpells(type, ANIM_TEST_LIST);
     }
 
     public static void addGRAPHICS_TEST_Spells(Entity type) {

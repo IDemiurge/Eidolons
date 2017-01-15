@@ -13,12 +13,12 @@ import java.awt.*;
 /**
  * Created by JustMe on 1/12/2017.
  */
-public class AnimData extends DataUnit<ANIM_VALUES>{
+public class AnimData extends DataUnit<ANIM_VALUES> {
 
 
-    public enum ANIM_VALUES{
+    public enum ANIM_VALUES {
         PARTICLE_EFFECTS, SPRITES,
-        DURATION, SCALE, COLOR, LIGHT_FOCUS,LIGHT_AMBIENT
+        DURATION, SCALE, COLOR, LIGHT_FOCUS, LIGHT_AMBIENT
 
 
     }

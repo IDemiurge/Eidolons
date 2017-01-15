@@ -24,21 +24,21 @@ public class AnimationConstructor {
     VALUE[] anim_vals = {
 //     PROPS.ANIM_MODS,
 //
-     PROPS.ANIM_SPRITE_CAST,
-     PROPS.ANIM_SPRITE_RESOLVE,
-     PROPS.ANIM_SPRITE_MAIN,
-     PROPS.ANIM_SPRITE_IMPACT,
-     PROPS.ANIM_SPRITE_AFTEREFFECT,
-     PROPS.ANIM_MISSILE_SPRITE,
-     PROPS.ANIM_MODS_SPRITE,
-     PROPS.ANIM_MISSILE_SFX,
+            PROPS.ANIM_SPRITE_CAST,
+            PROPS.ANIM_SPRITE_RESOLVE,
+            PROPS.ANIM_SPRITE_MAIN,
+            PROPS.ANIM_SPRITE_IMPACT,
+            PROPS.ANIM_SPRITE_AFTEREFFECT,
+            PROPS.ANIM_MISSILE_SPRITE,
+            PROPS.ANIM_MODS_SPRITE,
+            PROPS.ANIM_MISSILE_SFX,
 //
-     PROPS.ANIM_SFX_CAST,
-     PROPS.ANIM_SFX_RESOLVE,
-     PROPS.ANIM_SFX_MAIN,
-     PROPS.ANIM_SFX_IMPACT,
-     PROPS.ANIM_SFX_AFTEREFFECT,
-     PROPS.ANIM_MODS_SFX,
+            PROPS.ANIM_SFX_CAST,
+            PROPS.ANIM_SFX_RESOLVE,
+            PROPS.ANIM_SFX_MAIN,
+            PROPS.ANIM_SFX_IMPACT,
+            PROPS.ANIM_SFX_AFTEREFFECT,
+            PROPS.ANIM_MODS_SFX,
 //
 //
 //     PROPS.ANIM_SPRITE_COLOR,
@@ -61,12 +61,12 @@ public class AnimationConstructor {
 //     PARAMS.ANIM_SIZE,
     };
     Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
-boolean reconstruct = true;
+    boolean reconstruct = true;
 
     public CompositeAnim getOrCreate(ActiveObj active) {
         CompositeAnim anim = map.get(active);
         if (!reconstruct)
-        if (anim != null) return anim;
+            if (anim != null) return anim;
         return construct((DC_ActiveObj) active);
     }
 
@@ -114,20 +114,23 @@ boolean reconstruct = true;
         boolean exists = false;
         List<SpriteAnimation> sprites = new LinkedList<>();
         for (String path :
-         StringMaster.openContainer(data.getValue(ANIM_VALUES.SPRITES))) {
+                StringMaster.openContainer(data.getValue(ANIM_VALUES.SPRITES))) {
             sprites.add(new SpriteAnimation(path));
             exists = true;
         }
         List<ParticleEmitter> list = new LinkedList<>();
         for (String path :
-         StringMaster.openContainer(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS))) {
-            ParticleEmitter emitter = null ;
-            try{
-                emitter =  new ParticleEmitter(new EnumMaster<SFX>().
-             retrieveEnumConst(SFX.class, path));       }catch(Exception e){                e.printStackTrace();            }
-            if (emitter!=null )
-            list.add(emitter
-             );
+                StringMaster.openContainer(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS))) {
+            ParticleEmitter emitter = null;
+            try {
+                emitter = new ParticleEmitter(new EnumMaster<SFX>().
+                        retrieveEnumConst(SFX.class, path));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (emitter != null)
+                list.add(emitter
+                );
             exists = true;
         }
         if (!exists) return null;

@@ -37,7 +37,7 @@ public class AnimMaster extends Actor {
         GuiEventManager.bind(GuiEventType.ACTION_RESOLVES, p -> {
             if (leadAnimation == null) {
                 leadAnimation =
-                 constructor.construct((DC_ActiveObj) p.get());
+                        constructor.construct((DC_ActiveObj) p.get());
                 leadAnimation.start();
             } else
                 leadQueue.add(leadAnimation);
@@ -51,15 +51,15 @@ public class AnimMaster extends Actor {
 //            getParentAnim(ability.getRef().getActive()).addAbilityAnims(ability);
         });
         GuiEventManager.bind(GuiEventType.EFFECT_APPLIED, p -> {
-             Effect effect = (Effect) p.get();
-             CompositeAnim anim = getParentAnim(effect.getRef().getActive());
-             if (anim != null)
-                 anim.addEffectAnim(null, effect); //TODO
-             else {
+                    Effect effect = (Effect) p.get();
+                    CompositeAnim anim = getParentAnim(effect.getRef().getActive());
+                    if (anim != null)
+                        anim.addEffectAnim(null, effect); //TODO
+                    else {
 
 
-             }
-         }
+                    }
+                }
         );
         stage.addActor(this);
     }
