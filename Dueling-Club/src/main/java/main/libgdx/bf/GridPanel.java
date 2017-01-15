@@ -55,6 +55,7 @@ public class GridPanel extends Group {
     private Map<DC_HeroObj, BaseView> unitMap;
     private int cols;
     private int rows;
+    private static boolean lightCreated = false;
 
     public GridPanel(int cols, int rows) {
         this.cols = cols;
@@ -168,6 +169,8 @@ public class GridPanel extends Group {
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED
                     || event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
                 removeUnitView((DC_HeroObj) r.getSourceObj());
+                lightMap.updateMap();
+                lightMap.updateLight();
                 caught = true;
             }
 
@@ -177,6 +180,8 @@ public class GridPanel extends Group {
             }
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_SUMMONED) {
                 addUnitView((DC_HeroObj) r.getObj(KEYS.SUMMONED));
+                lightMap.updateMap();
+                lightMap.updateLight();
                 caught = true;
             }
 
@@ -232,9 +237,9 @@ public class GridPanel extends Group {
         GuiEventManager.bind(CREATE_UNITS_MODEL, param -> {
             units = (DequeImpl<DC_HeroObj>) param.get();
             LightMap lightMap = new LightMap(units, cells[0][0].getWidth(), cells[0][0].getHeight(), rows, cols);
-            if (lightMap.isValid())
-                setLightMap(lightMap
-                );
+            if (lightMap.isValid()) {
+                setLightMap(lightMap);
+            }
 
 
             Map<Coordinates, List<DC_HeroObj>> map = new HashMap<>();

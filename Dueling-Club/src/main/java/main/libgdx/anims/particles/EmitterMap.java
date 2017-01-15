@@ -12,12 +12,12 @@ import java.util.Stack;
  */
 public class EmitterMap {
 
-    List<ParticleActor> emitters;
+    List<ParticleInterface> emitters;
 
-    List<ParticleActor> animationFx;
-    List<ParticleActor> ambientFx;
+    List<ParticleInterface> animationFx;
+    List<ParticleInterface> ambientFx;
 
-    Stack<List<ParticleActor>> fxStack;
+    Stack<List<ParticleInterface>> fxStack;
 
 public EmitterMap(){
 
@@ -28,7 +28,8 @@ public EmitterMap(){
 
     });
 }
-    public boolean contains(ParticleActor actor) {
+
+    public boolean contains(ParticleInterface actor) {
         return emitters.contains(actor);
     }
 
@@ -51,19 +52,19 @@ public EmitterMap(){
         smoke.getEffect().start();
     }
 
-    public List<ParticleActor> getEmitters() {
+    public List<ParticleInterface> getEmitters() {
         return emitters;
     }
 
-    public List<ParticleActor> getAnimationFx() {
+    public List<ParticleInterface> getAnimationFx() {
         return animationFx;
     }
 
-    public List<ParticleActor> getAmbientFx() {
+    public List<ParticleInterface> getAmbientFx() {
         return ambientFx;
     }
 
-    public Stack<List<ParticleActor>> getFxStack() {
+    public Stack<List<ParticleInterface>> getFxStack() {
         return fxStack;
     }
 }

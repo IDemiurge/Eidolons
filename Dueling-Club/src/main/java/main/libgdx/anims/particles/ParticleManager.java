@@ -34,7 +34,7 @@ public class ParticleManager extends Actor{
     public void draw(Batch batch, float parentAlpha) {
         ParticleEffect particleEffect;
         animatedEmitterMap.updateAnimFx();
-            for (ParticleActor actor : emitterMap.getEmitters()) {
+        for (ParticleInterface actor : emitterMap.getEmitters()) {
             particleEffect=    actor.getEffect();
             particleEffect.update(parentAlpha);
             particleEffect.draw(batch, parentAlpha);
@@ -52,7 +52,7 @@ public class ParticleManager extends Actor{
 
     @Override
     public void act(float delta) {
-        for (ParticleActor actor : emitterMap.getEmitters()) {
+        for (ParticleInterface actor : emitterMap.getEmitters()) {
 
         }
 
@@ -60,7 +60,7 @@ public class ParticleManager extends Actor{
     }
 
     private void updateEmitters() {
-//        for (ParticleActor actor : emitterMap.getEmitters()) {
+//        for (ParticleInterface actor : emitterMap.getEmitters()) {
 //            if (!emitterMap.contains(actor))
 //                actor.remove();
 //            else if (effects.getActors().contains(actor, true))

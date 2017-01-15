@@ -6,7 +6,7 @@ import main.content.CONTENT_CONSTS2.SFX;
 /**
  * Created by JustMe on 1/8/2017.
  */
-public class ParticleAnimation implements ParticleActor{
+public class ParticleAnimation implements ParticleInterface {
     @Override
     public SFX getTemplate() {
         return null;

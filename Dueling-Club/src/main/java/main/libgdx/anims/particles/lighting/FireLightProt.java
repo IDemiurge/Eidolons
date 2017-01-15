@@ -199,4 +199,9 @@ public class FireLightProt {
     public static float getAlphaSmaller() {
         return alphaSmaller;
     }
+
+    public void dispose() {
+        pointLight.remove();
+        pointLight_test.remove();
+    }
 }

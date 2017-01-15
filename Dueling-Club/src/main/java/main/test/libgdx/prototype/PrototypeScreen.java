@@ -18,7 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import main.data.filesys.PathFinder;
 import main.entity.obj.MicroObj;
-import main.libgdx.anims.particles.ParticleActor;
+import main.libgdx.anims.particles.ParticleInterface;
 import main.libgdx.anims.particles.lighting.FireLightProt;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.system.GuiEventManager;
@@ -57,7 +57,7 @@ public class PrototypeScreen implements Screen {
     DequeImpl<MicroObj> units;
     private static boolean gridadded = false;
     FireLightProt fireLightProt;
-    ParticleActor test;
+    ParticleInterface test;
     static float mousX;
     static float mousY;
 
@@ -117,7 +117,7 @@ public class PrototypeScreen implements Screen {
 //        stage.addActor(grid);
 //        grid.setZIndex(1);
 //        player.setZIndex(2);
-//        test = new ParticleActor(PARTICLE_EFFECTS.DARK_SOULS.getPath(), world, 0, 0);
+//        test = new ParticleInterface(PARTICLE_EFFECTS.DARK_SOULS.getPath(), world, 0, 0);
 
         stage.setDebugAll(true);
         InputMultiplexer in = new InputMultiplexer();
