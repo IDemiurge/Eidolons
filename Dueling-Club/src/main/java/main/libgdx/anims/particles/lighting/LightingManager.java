@@ -1,5 +1,6 @@
 package main.libgdx.anims.particles.lighting;
 
+import main.libgdx.bf.GridPanel;
 import main.system.GuiEventManager;
 import main.system.GraphicEvent;
 
@@ -16,12 +17,16 @@ public class LightingManager {
 
     LightMap lightMap;
 
-    public   LightingManager(LightMap map) {
+    public   LightingManager(LightMap map, GridPanel gridPanel) {
+        lightMap=map;
         GuiEventManager.bind(GraphicEvent.GRID_CREATED, p -> {
             //TODO init emitterMap and lightMap
         });
         GuiEventManager.bind(GraphicEvent.UPDATE_LIGHT, p -> {
-             lightMap.updateMap();
+            lightMap.updateMap();
+            lightMap.updateLight();
+            if (lightMap.isValid())
+            gridPanel.setLightMap(lightMap);
     });
     }
 

@@ -16,12 +16,13 @@ import main.game.battlefield.PointX;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.particles.lighting.LightMap;
+import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.bf.mouse.GridMouseListener;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
-import main.system.GuiEventManager;
 import main.system.GraphicEvent;
+import main.system.GuiEventManager;
 import main.system.datatypes.DequeImpl;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -56,6 +57,7 @@ public class GridPanel extends Group {
     private Map<DC_HeroObj, BaseView> unitMap;
     private int cols;
     private int rows;
+    private LightingManager lightingManager;
 
     public GridPanel(int cols, int rows) {
         this.cols = cols;
@@ -187,6 +189,11 @@ public class GridPanel extends Group {
                         caught = true;
                     }
 
+
+
+
+
+
                     if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED
                      || event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
                         removeUnitView((DC_HeroObj) r.getSourceObj());
@@ -253,11 +260,13 @@ public class GridPanel extends Group {
         });
 
         GuiEventManager.bind(CREATE_UNITS_MODEL, param -> {
+
             units = (DequeImpl<DC_HeroObj>) param.get();
             LightMap lightMap = new LightMap(units, cells[0][0].getWidth(), cells[0][0].getHeight(), rows, cols);
-            if (lightMap.isValid())
-                setLightMap(lightMap
-                );
+            lightingManager = new LightingManager(lightMap, this);
+            if (lightMap.isValid()) {
+                setLightMap(lightMap);
+            }
 
 
             Map<Coordinates, List<DC_HeroObj>> map = new HashMap<>();
@@ -336,6 +345,7 @@ public class GridPanel extends Group {
         if (getLightMap() != null) {
             getLightMap().updatePos(heroObj);
         }
+        GuiEventManager.trigger(UPDATE_LIGHT, null );
     }
 
     private void addUnitView(DC_HeroObj heroObj) {
@@ -349,6 +359,7 @@ public class GridPanel extends Group {
         GridCellContainer gridCellContainer = (GridCellContainer) uv.getParent();
         gridCellContainer.removeActor(uv);
         uv.setVisible(false);
+        GuiEventManager.trigger(UPDATE_LIGHT, null );
     }
 
     @Override

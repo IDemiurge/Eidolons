@@ -15,6 +15,7 @@ import main.entity.obj.DC_Obj;
 import main.game.DC_Game;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.particles.ParticleManager;
+import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.bf.Background;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.controls.radial.DebugRadialManager;

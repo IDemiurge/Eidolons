@@ -12,7 +12,7 @@ import main.system.auxiliary.StringMaster;
 /**
  * Created by JustMe on 1/10/2017.
  */
-public class ParticleEmitter extends Actor implements ParticleActor {
+public class ParticleEmitter extends Actor implements ParticleInterface {
 
     private final int defaultCapacity=12;
     private final int defaultMaxCapacity=24;
