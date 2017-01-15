@@ -1,13 +1,14 @@
 package main.libgdx.anims.particles;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import main.content.CONTENT_CONSTS2.SFX;
 
 /**
  * Created by JustMe on 1/8/2017.
  */
 public class ParticleAnimation implements ParticleActor{
     @Override
-    public PARTICLE_EFFECTS getTemplate() {
+    public SFX getTemplate() {
         return null;
     }
 

@@ -51,7 +51,7 @@ public class TestMasterContent {
             + "Masterpiece Dark Steel Dagger;" + "Ancient Dark Steel Bolts;"
             + "Ancient Dark Steel Bolts;";
     public static boolean addSpells;
-    static boolean test_on = true;
+    public static boolean test_on = true;
     static boolean auto_test_list = false;
     static boolean full_test = false;
     static boolean char_test_active_filtering = true;
@@ -65,6 +65,7 @@ public class TestMasterContent {
     private static String FOCUS_LIST = "";
     private static String FIX_LIST = "";
     private static String POLISH_LIST = "";
+    private static String ANIM_TEST_LIST = "Fire Bolt;";
     private static String GRAPHICS_TEST_LIST = "Light;Haze;Force Field;" +
             "Summon Vampire Bat;Blink";
     private static String TEST_LIST = "Raise Skeleton;Light;Haze;" +
@@ -247,6 +248,16 @@ public class TestMasterContent {
                 addTestActives(type, last);
                 return;
             }
+    }
+
+    public static void addSpells(Entity type, String list) {
+        for (String s : StringMaster.openContainer(list))
+            type.addProperty(PROPS.VERBATIM_SPELLS, s
+             , true);
+
+    }
+        public static void addANIM_TEST_Spells(Entity type) {
+       addSpells(type, ANIM_TEST_LIST);
     }
 
     public static void addGRAPHICS_TEST_Spells(Entity type) {

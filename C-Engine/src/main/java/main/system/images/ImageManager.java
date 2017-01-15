@@ -100,7 +100,7 @@ public class ImageManager {
         // DEFAULT + f.list()[new Random().nextInt(f.list().length)]
 
         CustomImageIcon img = null;
-        if (!imgName.contains(getPATH()))
+        if (!imgName.toLowerCase(). contains(getPATH().toLowerCase()))
             img = new CustomImageIcon(getPATH() + imgName);
         else
             img = new CustomImageIcon(imgName);

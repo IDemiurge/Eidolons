@@ -159,7 +159,9 @@ public class PathFinder {
     public static String getEnginePath() {
         return ENGINE_PATH;
     }
-
+    public static String getEnginePathPlusNewResourceProject() {
+        return ENGINE_PATH+"\\\\resource\\";
+    }
     public static String getThemedBgPicsPath() {
         // TODO Auto-generated method stub
         return IMG_PATH + "\\mini\\bg\\";
@@ -218,6 +220,9 @@ public class PathFinder {
     }
 
     public static String getParticlePresetPath() {
-        return getImagePath()+ "mini\\sprites\\particles\\";
+        return getImagePath()+ "mini\\sfx\\";
+    }
+    public static String getParticleImagePath() {
+        return getParticlePresetPath()+ "images\\";
     }
 }

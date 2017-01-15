@@ -1,13 +1,14 @@
 package main.libgdx.anims.particles;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import main.content.CONTENT_CONSTS2.SFX;
 
 /**
  * Created by PC on 04.12.2016.
  */
 public interface ParticleActor  {
 
-    PARTICLE_EFFECTS getTemplate();
+    SFX getTemplate();
     ParticleEffect getEffect();
 
     boolean isContinuous();
@@ -93,7 +94,7 @@ void start();
 ////            array.get(i).update(1/60);
 ////            System.out.println("updated");
 ////            array.get(i).draw(batch,1/60);
-////            System.out.println("drawd particles");
+////            System.out.println("draw particles");
 ////            if (array.get(i).isComplete()){
 ////                array.get(i).reset();
 ////                System.out.println("RESETED!!!!!!");

@@ -147,4 +147,7 @@ public class MapMaster<E, T> {
 
     }
 
+    public static Object get(Map map, int i) {
+    return map.keySet().toArray()[i];
+    }
 }

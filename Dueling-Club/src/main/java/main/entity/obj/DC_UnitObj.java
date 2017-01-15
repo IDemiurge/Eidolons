@@ -370,9 +370,13 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
         // resetActives();
         // resetFacing();
 //        if (isActiveSelected())
-        if (isMine())
+        if (isMine()) {
+            if (CoreEngine.isAnimationTestMode())
+                TestMasterContent.addANIM_TEST_Spells(this);
+            else
             if (CoreEngine.isGraphicTestMode())
                 TestMasterContent.addGRAPHICS_TEST_Spells(this);
+        }
 
         if (checkClassification(CLASSIFICATIONS.TALL)) {
             addProperty(G_PROPS.STANDARD_PASSIVES, "" + CLASSIFICATIONS.TALL, true);

@@ -1,7 +1,10 @@
 package main.libgdx.texture;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.StringMaster;
 import main.system.datatypes.Boxer;
 import main.system.images.ImageManager;
 
@@ -14,7 +17,10 @@ public class TextureManager {
     public static Texture getOrCreate(String p) {
         if (ImageManager.getPATH() != null)
             if (!ImageManager.isImage(p)) {
-                return getCache().get(ImageManager.getAltEmptyListIcon());
+                p = StringMaster.addMissingPathSegments(p, ImageManager.getPATH());
+                p = StringMaster.removePreviousPathSegments(p, ImageManager.getPATH());
+                if (!ImageManager.isImage(p))
+                    return getCache().get(ImageManager.getAltEmptyListIcon());
                 // don't cache if missing!
             }
         return getCache().getOrCreate(p);
@@ -27,7 +33,67 @@ public class TextureManager {
     }
 
     public static Texture getOrCreate(Boxer<String> stringBoxer) {
-       return  getOrCreate(stringBoxer.get());
+        return getOrCreate(stringBoxer.get());
+    }
+
+
+    public static Array<TextureRegion> getSpriteSheetFrames(String path
+    ) {
+        return getSpriteSheetFrames(path, getColumns(path), getRows(path));
+    }
+
+    public static Array<TextureRegion> getSpriteSheetFrames(String path,
+                                                            int FRAME_COLS, int FRAME_ROWS) {
+
+        Texture sheet = TextureManager.getOrCreate(path);
+        TextureRegion[][] tmp = TextureRegion.split(sheet,
+         sheet.getWidth() / FRAME_COLS,
+         sheet.getHeight() / FRAME_ROWS);
+
+        TextureRegion[] frames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+        int index = 0;
+        for (int i = 0; i < FRAME_ROWS; i++) {
+            for (int j = 0; j < FRAME_COLS; j++) {
+                frames[index++] = tmp[i][j];
+            }
+        }
+        return new Array<>(frames);
+    }
+
+    private static int getColumns(String path) {
+        return getDimension(path, false);
+    }
+
+    private static int getRows(String path) {
+        return getDimension(path, true);
+
+    }
+
+    private static int getDimension(String path, boolean xOrY) {
+        path =StringMaster.cropFormat(path);
+        String y = StringMaster.getLastPart(path, " ");
+
+        if (!xOrY) {
+            if (StringMaster.isNumber(y, true)) {
+                return StringMaster.getInteger(y);
+            }
+        }
+        path = StringMaster.cropLast(path, y);
+        String x = StringMaster.getLastPart(path, " ");
+        if (StringMaster.isNumber(x, true)) {
+            return StringMaster.getInteger(x);
+        }
+        return 1;
+
+// List<String> list =  StringMaster.openContainer( 
+//  StringMaster.cropFormat(path) ," ") ;
+//        ListMaster.invert(list);
+//        for (String part : list) {
+//            if (part.startsWith(xOrY ? "x" : "y"))
+//                if (StringMaster.isNumber(part.substring(1), true)) {
+//                    return StringMaster.getInteger(part.substring(1));
+//                }
+//        }
     }
 
 //    public static Texture toTexture(BufferedImage img) throws IOException {

@@ -34,6 +34,7 @@ public class Comp extends WidgetGroup {
             imagePath = supplier.get();
         }
         if (ImageManager.isImage(imagePath)) {
+            removeActor(image);
             image = new Image(TextureManager.getOrCreate(imagePath));
             addActorAt(0, image);
         }

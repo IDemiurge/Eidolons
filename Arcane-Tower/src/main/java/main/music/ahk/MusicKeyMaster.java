@@ -1,5 +1,7 @@
 package main.music.ahk;
 
+import com.melloware.jintellitype.HotkeyListener;
+import com.melloware.jintellitype.JIntellitype;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.enums.StatEnums.MUSIC_TAG_GROUPS;
@@ -10,14 +12,10 @@ import main.music.entity.MusicList;
 import main.music.gui.MC_ControlPanel;
 import main.system.auxiliary.RandomWizard;
 
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.swing.JButton;
-
-import com.melloware.jintellitype.HotkeyListener;
-import com.melloware.jintellitype.JIntellitype;
 
 public class MusicKeyMaster implements HotkeyListener {
 	private static final int keyIdCycleView = 100;
@@ -30,6 +28,7 @@ public class MusicKeyMaster implements HotkeyListener {
 	private static final int keyIdDialog = 120;
 	private static final int keyIdDialogLast = 121;
 	private static final int keyIdDialogLastToggle = 122;
+	private static final int keyFind= 122;
 	/*
 													* cycle active panel (for alt)
 													* cycle view 

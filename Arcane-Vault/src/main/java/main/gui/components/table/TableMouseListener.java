@@ -4,18 +4,8 @@ import main.content.CONTENT_CONSTS.ATTRIBUTE;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
 import main.content.CONTENT_CONSTS.SPELL_GROUP;
 import main.content.CONTENT_CONSTS.WEAPON_TYPE;
-import main.content.C_OBJ_TYPE;
-import main.content.ContentManager;
-import main.content.DC_CONSTS;
-import main.content.DC_ContentManager;
+import main.content.*;
 import main.content.DC_ValueManager.VALUE_GROUP;
-import main.content.MACRO_OBJ_TYPES;
-import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.PARAMS;
-import main.content.PROPS;
-import main.content.VALUE;
-import main.content.ValueEditor;
 import main.content.parameters.PARAMETER;
 import main.content.properties.G_PROPS;
 import main.content.properties.MACRO_PROPS;
@@ -32,12 +22,7 @@ import main.entity.type.ObjType;
 import main.gui.builders.EditViewPanel;
 import main.gui.components.editors.AV_ImgChooser;
 import main.launch.ArcaneVault;
-import main.swing.generic.components.editors.EDITOR;
-import main.swing.generic.components.editors.FileChooser;
-import main.swing.generic.components.editors.ListEditor;
-import main.swing.generic.components.editors.NumberEditor;
-import main.swing.generic.components.editors.SoundChooser;
-import main.swing.generic.components.editors.TextEditor;
+import main.swing.generic.components.editors.*;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.misc.G_Table;
 import main.system.ConditionMaster;
@@ -45,30 +30,49 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.ListMaster;
 import main.system.auxiliary.StringMaster;
 
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.DefaultCellEditor;
-import javax.swing.JTextField;
-
 public class TableMouseListener extends DefaultCellEditor implements MouseListener {
 	public static final String[] SINGLE_RES_LIST_IDS = { G_PROPS.IMPACT_SPRITE.name(),
 	// PROPS.MAP_BACKGROUND.name(),
 	};
-	public static final String[] MULTI_RES_FILE_IDS = { PROPS.ARCADE_LEVELS.name(),
-			PROPS.ARCADE_ENEMY_GROUPS.name(), };
-	public static final String[] MULTI_RES_FILE_KEYS = { "RES\\XML\\dungeons\\levels\\battle\\",
-			"RES\\XML\\groups\\" };
+	public static final String[] MULTI_RES_FILE_IDS = {
+	PROPS.ARCADE_LEVELS.name(),
+			PROPS.ARCADE_ENEMY_GROUPS.name(),
+	};
+	public static final String[] MULTI_RES_FILE_KEYS = {
+	"XML\\dungeons\\levels\\battle\\",
+			"XML\\groups\\",
 
+	};
+	public static final VALUE[] SPRITE_IDS = {
+	PROPS.ANIM_SPRITE_CAST,
+	PROPS.ANIM_SPRITE_RESOLVE,
+	PROPS.ANIM_SPRITE_MAIN,
+	PROPS.ANIM_SPRITE_IMPACT,
+	PROPS.ANIM_SPRITE_AFTEREFFECT,
+	PROPS.ANIM_MISSILE_SPRITE,
+	};
+	public static final String SPRITE_PATH =
+	"img\\mini\\sprites\\";
+
+	public static final VALUE[] SFX_IDS = {
+	//as single enum for now! 
+	};
+	public static final String SFX_PATH =
+	"img\\mini\\sfx\\";
 	public static final String[] SINGLE_RES_FILE_IDS = {};
 	public static final String[] RES_FILE_KEYS = {};
 	public static final String[] SINGLE_RES_FOLDER_IDS = { G_PROPS.SOUNDSET.name(), };
-	public static final String[] RES_FOLDER_KEYS = { "RES\\sound\\soundsets\\", };
+	public static final String[] RES_FOLDER_KEYS = { "sound\\soundsets\\", };
 
-	public static final String[] RES_KEYS = { "RES\\img\\mini\\sprites\\impact",
+	public static final String[] RES_KEYS = {
+	"img\\mini\\sprites\\impact",
 	// DungeonMaster.getDungeonBackgroundFolder()
 	};
 	public static final String[] VAR_MULTI_ENUM_LIST_IDS = {
@@ -110,7 +114,15 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 			PROPS.THIRD_FAVORED_ASPECT.name(), G_PROPS.SPELL_TYPE.name(),
 			// "DEITY",
 			PROPS.BF_OBJECT_SIZE.name(), PROPS.OBJECT_ARMOR_TYPE.name(), PROPS.DIMENSION.name() };
-	public static final String[] MULTIPLE_ENUM_LIST_IDS = { PROPS.PARAMETER_BONUSES.getName(),
+	public static final String[] MULTIPLE_ENUM_LIST_IDS = {
+
+	PROPS.ANIM_SFX_CAST.name(),
+	PROPS.ANIM_SFX_RESOLVE.name(),
+	PROPS.ANIM_SFX_MAIN.name(),
+	PROPS.ANIM_SFX_IMPACT.name(),
+	PROPS.ANIM_SFX_AFTEREFFECT.name(),
+	PROPS.ANIM_MISSILE_SFX.name(),
+	PROPS.PARAMETER_BONUSES.getName(),
 			PROPS.PALETTE.name(), PROPS.ATTRIBUTE_BONUSES.getName(), PROPS.DUNGEON_TAGS.name(),
 			PROPS.MASTERY_GROUPS_MAGIC.name(), PROPS.MASTERY_GROUPS_WEAPONS.name(),
 			PROPS.MASTERY_GROUPS_MISC.name(), G_PROPS.SPELL_UPGRADE_GROUPS.name(),
@@ -332,9 +344,9 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 			final int index = i;
 			editorMap.put(id, new FileChooser(true) {
 				protected String getDefaultFileLocation() {
-					return PathFinder.getEnginePath() + RES_FOLDER_KEYS[index];
-				};
-			});
+					return PathFinder.getEnginePathPlusNewResourceProject() + RES_FOLDER_KEYS[index];
+				}
+            });
 			i++;
 		}
 
@@ -344,9 +356,9 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 			final int index = i;
 			editorMap.put(id, new FileChooser(false) {
 				protected String getDefaultFileLocation() {
-					return PathFinder.getEnginePath() + RES_FILE_KEYS[index];
-				};
-			});
+					return PathFinder.getEnginePathPlusNewResourceProject() + RES_FILE_KEYS[index];
+				}
+            });
 			i++;
 		}
 
@@ -356,11 +368,29 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 			final int index = i;
 			editorMap.put(id, new FileChooser(false, true) {
 				protected String getDefaultFileLocation() {
-					return PathFinder.getEnginePath() + MULTI_RES_FILE_KEYS[index];
-				};
-			});
+					return PathFinder.getEnginePathPlusNewResourceProject() + MULTI_RES_FILE_KEYS[index];
+				}
+            });
 			i++;
 		}
+
+		for (VALUE val : SPRITE_IDS) {
+			String	id = StringMaster.getWellFormattedString(val.name());
+			editorMap.put(id, new FileChooser(false, true) {
+				protected String getDefaultFileLocation() {
+					return PathFinder.getEnginePathPlusNewResourceProject() + SPRITE_PATH ;
+				}
+            });
+		}
+		for (VALUE val : SFX_IDS) {
+			String	id = StringMaster.getWellFormattedString(val.name());
+			editorMap.put(id, new FileChooser(false, true) {
+				protected String getDefaultFileLocation() {
+					return PathFinder.getEnginePathPlusNewResourceProject() + SFX_PATH ;
+				}
+            });
+		}
+
 
 		i = 0;
 		for (String id : ENUM_LIST_IDS) {
@@ -463,6 +493,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 			try {
 				editor.launch(table, row, column, value);
 			} catch (NullPointerException ex) {
+				ex.printStackTrace();
 				handleMouseClick(e, true);
 			} catch (Exception ex) {
 				ex.printStackTrace();

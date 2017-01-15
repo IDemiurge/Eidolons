@@ -2,6 +2,7 @@ package main.libgdx.bf;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -80,11 +81,17 @@ public class GridPanel extends Group {
         InputController controller = GameScreen.getInstance().getController();
         int x = (int) (
 //         controller.getX_cam_pos()/2
-                +sourceCoordinates.getX() * getCellWidth() / controller.getZoom());
+         +sourceCoordinates.getX() * getCellWidth() / controller.getZoom());
         int y = (int) (
 //         controller.getY_cam_pos()/2
-                +(rows - sourceCoordinates.getY()) * getCellHeight() / controller.getZoom());
+         +(rows - sourceCoordinates.getY()) * getCellHeight() / controller.getZoom());
         return new PointX(x, y);
+    }
+    public Vector2 getVectorForCoordinateWithOffset(Coordinates sourceCoordinates) {
+        InputController controller = GameScreen.getInstance().getController();
+        return new Vector2(
+          sourceCoordinates.getX() * getCellWidth() / controller.getZoom()
+        , (rows - sourceCoordinates.getY()) * getCellHeight() / controller.getZoom());
     }
 
     public GridPanel init() {

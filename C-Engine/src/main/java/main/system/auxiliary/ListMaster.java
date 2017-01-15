@@ -365,7 +365,16 @@ public class ListMaster<E> {
         return new LinkedList<E>(Arrays.asList(e));
     }
 
-    public List<E> invertList(List<E> list) {
+    public static void invert(List list) {
+        List inv_list = new LinkedList<>();
+
+        for (int i = list.size() - 1; i >= 0; i--) {
+            inv_list.add(list.get(i));
+        }
+        list.clear();
+        list.addAll(inv_list);
+    }
+        public List<E> invertList(List<E> list) {
         List<E> inv_list = new LinkedList<>();
 
         for (int i = list.size() - 1; i >= 0; i--) {

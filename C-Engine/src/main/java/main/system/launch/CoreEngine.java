@@ -30,6 +30,7 @@ public class CoreEngine {
     private static boolean writingLogFilesOn;
     private static boolean arcaneTower = false;
     private static boolean graphicTestMode = true;
+    public static boolean animationTestMode ;
 
     public static void dataInit(boolean newThread, final boolean macro) {
         if (newThread) {
@@ -177,6 +178,9 @@ public class CoreEngine {
     public static boolean isGraphicTestMode() {
         return graphicTestMode;
     }
+    public static boolean isAnimationTestMode() {
+     return   animationTestMode;
+    }
 
     public static void setGraphicTestMode(boolean graphicTestMode) {
         CoreEngine.graphicTestMode = graphicTestMode;
@@ -213,4 +217,5 @@ public class CoreEngine {
         }
 
     }
+
 }
