@@ -20,7 +20,7 @@ class TextureCache(private var imagePath: String) {
         if (!path.startsWith(File.separator)) {
             p = File.separator + path
         }
-if (!p. startsWith(File.separator+imagePath, true))
+        if (!p.startsWith(File.separator + imagePath, true))
         p = imagePath + p
 
 

@@ -65,16 +65,16 @@ public class FileChooser implements EDITOR {
             File file = fc.getSelectedFile();
 
             String selected = file.getPath();
-if (getDefaultFileLocation()!=null )
-            selected =StringMaster.replaceFirst(selected,
-             getDefaultFileLocation()
-             , "");
-            selected =StringMaster.replaceFirst(selected,
-             PathFinder.getEnginePathPlusNewResourceProject()
-             , "");
-            selected =StringMaster.replaceFirst(selected,
-             PathFinder.getEnginePath()
-             , "");
+            if (getDefaultFileLocation() != null)
+                selected = StringMaster.replaceFirst(selected,
+                        getDefaultFileLocation()
+                        , "");
+            selected = StringMaster.replaceFirst(selected,
+                    PathFinder.getEnginePathPlusNewResourceProject()
+                    , "");
+            selected = StringMaster.replaceFirst(selected,
+                    PathFinder.getEnginePath()
+                    , "");
             if (multi) {
                 if (value.isEmpty())
                     return selected;

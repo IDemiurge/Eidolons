@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.system.GuiEventManager;
-import main.system.GraphicEvent;
+import main.system.GuiEventType;
 
 /**
  * Created by JustMe on 1/8/2017.
@@ -14,14 +14,16 @@ public class ParticleManager extends Actor{
     public   boolean debugMode;
     private Stage effects;
     EmitterMap emitterMap;
+    AnimatedEmitterMap animatedEmitterMap;
 
 
     public ParticleManager(Stage effects) {
         this.effects = effects;
         emitterMap= new EmitterMap();
-        GuiEventManager.bind(GraphicEvent.GRID_CREATED, p -> {
+        animatedEmitterMap = new AnimatedEmitterMap();
+        GuiEventManager.bind(GuiEventType.GRID_CREATED, p -> {
          });
-        GuiEventManager.bind(GraphicEvent.UPDATE_EMITTERS, p -> {
+        GuiEventManager.bind(GuiEventType.UPDATE_EMITTERS, p -> {
             emitterMap.update();
             updateEmitters();
 //
@@ -31,8 +33,8 @@ public class ParticleManager extends Actor{
     @Override
     public void draw(Batch batch, float parentAlpha) {
         ParticleEffect particleEffect;
-        emitterMap.updateAnimFx();
-            for (ParticleActor actor : emitterMap.getEmitters()) {
+        animatedEmitterMap.updateAnimFx();
+        for (ParticleInterface actor : emitterMap.getEmitters()) {
             particleEffect=    actor.getEffect();
             particleEffect.update(parentAlpha);
             particleEffect.draw(batch, parentAlpha);
@@ -50,7 +52,7 @@ public class ParticleManager extends Actor{
 
     @Override
     public void act(float delta) {
-        for (ParticleActor actor : emitterMap.getEmitters()) {
+        for (ParticleInterface actor : emitterMap.getEmitters()) {
 
         }
 
@@ -58,7 +60,7 @@ public class ParticleManager extends Actor{
     }
 
     private void updateEmitters() {
-//        for (ParticleActor actor : emitterMap.getEmitters()) {
+//        for (ParticleInterface actor : emitterMap.getEmitters()) {
 //            if (!emitterMap.contains(actor))
 //                actor.remove();
 //            else if (effects.getActors().contains(actor, true))

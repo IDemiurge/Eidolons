@@ -374,7 +374,8 @@ public class ListMaster<E> {
         list.clear();
         list.addAll(inv_list);
     }
-        public List<E> invertList(List<E> list) {
+
+    public List<E> invertList(List<E> list) {
         List<E> inv_list = new LinkedList<>();
 
         for (int i = list.size() - 1; i >= 0; i--) {

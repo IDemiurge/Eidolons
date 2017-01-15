@@ -1371,30 +1371,31 @@ public class StringMaster {
         // TODO Auto-generated method stub
         return null;
     }
+
     public static String removePreviousPathSegments(String p, String path) {
-        p=p.toLowerCase();
-        path=path.toLowerCase();
-        String prefix="";
-        for (String sub: getPathSegments(path)){
+        p = p.toLowerCase();
+        path = path.toLowerCase();
+        String prefix = "";
+        for (String sub : getPathSegments(path)) {
             if (p.startsWith(sub))
                 break;
-            prefix += sub+PATH_SEPARATOR;
+            prefix += sub + PATH_SEPARATOR;
         }
 
         return p.replace(prefix, "");
     }
 
     public static String addMissingPathSegments(String p, String path) {
-        p=p.toLowerCase();
-        path=path.toLowerCase();
-        String prefix="";
-        for (String sub: getPathSegments(path)){
+        p = p.toLowerCase();
+        path = path.toLowerCase();
+        String prefix = "";
+        for (String sub : getPathSegments(path)) {
             if (p.startsWith(sub))
-            break;
-            prefix += sub+PATH_SEPARATOR;
+                break;
+            prefix += sub + PATH_SEPARATOR;
         }
 
-        return prefix+p;
+        return prefix + p;
     }
 
     public enum STD_TYPE_NAMES {

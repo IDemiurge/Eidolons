@@ -2,7 +2,7 @@ package main.libgdx.anims.particles;
 
 import main.content.CONTENT_CONSTS2.SFX;
 import main.system.GuiEventManager;
-import main.system.GraphicEvent;
+import main.system.GuiEventType;
 
 import java.util.List;
 import java.util.Stack;
@@ -12,23 +12,24 @@ import java.util.Stack;
  */
 public class EmitterMap {
 
-    List<ParticleActor> emitters;
+    List<ParticleInterface> emitters;
 
-    List<ParticleActor> animationFx;
-    List<ParticleActor> ambientFx;
+    List<ParticleInterface> animationFx;
+    List<ParticleInterface> ambientFx;
 
-    Stack<List<ParticleActor>> fxStack;
+    Stack<List<ParticleInterface>> fxStack;
 
 public EmitterMap(){
 
-    GuiEventManager.bind(GraphicEvent.EMITTER_ANIM_CREATED, p -> {
+    GuiEventManager.bind(GuiEventType.EMITTER_ANIM_CREATED, p -> {
         ParticleAnimation
-        anim= new ParticleAnimation();
+                anim = new ParticleAnimation();
         animationFx.add(anim);
 
     });
 }
-    public boolean contains(ParticleActor actor) {
+
+    public boolean contains(ParticleInterface actor) {
         return emitters.contains(actor);
     }
 
@@ -37,12 +38,12 @@ public EmitterMap(){
     }
 
     public void updateAnimFx() {
-    animationFx.forEach(fx->{
-        if (fx.isRunning())
-            fx.start();
-//        fx.updatePosition(2);
+        animationFx.forEach(fx -> {
+            if (fx.isRunning())
+                fx.start();
+            fx.updatePosition(2);
 
-    });
+        });
     }
 
     private void addSmoke() {
@@ -51,19 +52,19 @@ public EmitterMap(){
         smoke.getEffect().start();
     }
 
-    public List<ParticleActor> getEmitters() {
+    public List<ParticleInterface> getEmitters() {
         return emitters;
     }
 
-    public List<ParticleActor> getAnimationFx() {
+    public List<ParticleInterface> getAnimationFx() {
         return animationFx;
     }
 
-    public List<ParticleActor> getAmbientFx() {
+    public List<ParticleInterface> getAmbientFx() {
         return ambientFx;
     }
 
-    public Stack<List<ParticleActor>> getFxStack() {
+    public Stack<List<ParticleInterface>> getFxStack() {
         return fxStack;
     }
 }

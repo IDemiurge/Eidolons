@@ -192,8 +192,10 @@ public class GameScreen implements Screen {
         batch.end();
 
         grid.draw();
+
         effects.draw();
         anims.draw();
+
 
         gui.draw();
 

@@ -6,7 +6,7 @@ import main.content.CONTENT_CONSTS2.SFX;
 /**
  * Created by PC on 04.12.2016.
  */
-public interface ParticleActor  {
+public interface ParticleInterface {
 
     SFX getTemplate();
     ParticleEffect getEffect();
@@ -24,10 +24,10 @@ void start();
 //    PolygonShape shape;
 //    FixtureDef fixtureDef;
 //    static ArrayList<ParticleEffect> array;
-//    public ParticleActor() {
+//    public ParticleInterface() {
 //        this("");
 //    }
-//    public ParticleActor(String presetName/*,World world, float x, float y*/) {
+//    public ParticleInterface(String presetName/*,World world, float x, float y*/) {
 //        array = new ArrayList<>();
 ////        bodyDef = new BodyDef();
 ////        bodyDef.position.set(new Vector2(x, y));

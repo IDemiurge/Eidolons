@@ -28,9 +28,9 @@ public class MusicKeyMaster implements HotkeyListener {
 	private static final int keyIdDialog = 120;
 	private static final int keyIdDialogLast = 121;
 	private static final int keyIdDialogLastToggle = 122;
-	private static final int keyFind= 122;
-	/*
-													* cycle active panel (for alt)
+    private static final int keyFind = 122;
+    /*
+                                                    * cycle active panel (for alt)
 													* cycle view 
 													* 
 													*/

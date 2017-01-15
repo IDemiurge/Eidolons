@@ -6,13 +6,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.game.DC_Game;
 import main.libgdx.GameScreen;
+import main.libgdx.anims.particles.lighting.FireLightProt;
+import main.libgdx.anims.particles.lighting.LightMap;
+import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.gui.dialog.Dialog;
 import main.libgdx.gui.dialog.DialogDisplay;
 import main.system.GuiEventManager;
 import main.system.GraphicEvent;
 import main.system.graphics.MigMaster;
-import main.libgdx.anims.particles.lighting.FireLightProt;
-import main.libgdx.anims.particles.lighting.LightMap;
 
 /**
  * Created by PC on 25.10.2016.
@@ -86,7 +87,7 @@ public class InputController implements InputProcessor {
 
     @Override
     public boolean touchDown(int i, int i1, int i2, int i3) {
-/*        bf.addActor(new ParticleActor(PARTICLE_EFFECTS.SMOKE_TEST.getPath(),
+/*        bf.addActor(new ParticleInterface(PARTICLE_EFFECTS.SMOKE_TEST.getPath(),
          GameScreen.getInstance().getWorld()
          , i, i1));*/
         // Условно у меня на ширину приложения пикселей приходится ширина камеры абстрактрых едениц
@@ -115,9 +116,6 @@ public class InputController implements InputProcessor {
                 GuiEventManager.trigger(GraphicEvent.DIALOG_CLOSED, null);
             }
         }
-
-
-        System.out.println(i + " || " + i1 + " || " + i2 + " || " + i3);
 
         return false;
     }
@@ -154,14 +152,31 @@ public class InputController implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int i, int i1) {
+
+        if (LightingManager.isMouse_light()) {
+            LightMap.mouseMouseMove((camera.position.x - (camera.viewportWidth / 2) * camera.zoom + (i) * camera.zoom), (camera.position.y + (camera.viewportHeight / 2) * camera.zoom - i1 * camera.zoom), camera.zoom);
+            float x_light = (camera.position.x - (camera.viewportWidth / 2) * camera.zoom + (i) * camera.zoom);
+            float y_light = (camera.position.y + (camera.viewportHeight / 2) * camera.zoom - i1 * camera.zoom);
+            boolean by_X;
+            boolean by_Y;
+            by_X = !(x_light < camera.position.x - (camera.viewportWidth / 2) * camera.zoom + LightingManager.mouse_light_distance_to_turn_off || x_light > camera.position.x + (camera.viewportWidth / 2) * camera.zoom - LightingManager.mouse_light_distance_to_turn_off);
+            by_Y = !(y_light < camera.position.y - (camera.viewportHeight / 2) * camera.zoom + LightingManager.mouse_light_distance_to_turn_off || y_light > camera.position.y + (camera.viewportHeight / 2) * camera.zoom - LightingManager.mouse_light_distance_to_turn_off);
+            if (by_X & by_Y) {
+                LightMap.mouseLightDistance(LightingManager.mouse_light_distance);
+            } else {
+                LightMap.mouseLightDistance(0);
+            }
+        }
         return false;
+
     }
 
     @Override
     public boolean scrolled(int i) {
 
-        if (DialogDisplay.isDisplaying() )
-            return false;
+//        if (DialogDisplay.isDisplaying() )
+//            return false;
+//
         if (alt && !ctrl) {
             if (i == 1) {
                 FireLightProt.setSmallerAlpha(FireLightProt.getAlphaSmaller() + 0.05f);
@@ -171,12 +186,21 @@ public class InputController implements InputProcessor {
             }
 
         }
-        if (ctrl) {
+        if (!alt && ctrl) {
             if (i == 1) {
-                LightMap.setAmbint(LightMap.getAmbint() + 0.02f);
+                FireLightProt.setBiggerAlpha(FireLightProt.getAlphaBigger() + 0.05f);
             }
             if (i == -1) {
-                LightMap.setAmbint(LightMap.getAmbint() - 0.02f);
+                FireLightProt.setBiggerAlpha(FireLightProt.getAlphaBigger() - 0.05f);
+            }
+
+        }
+        if (alt && ctrl) {
+            if (i == 1) {
+                LightMap.setAmbient(LightMap.getAmbint() + 0.02f);
+            }
+            if (i == -1) {
+                LightMap.setAmbient(LightMap.getAmbint() - 0.02f);
             }
 
         }
