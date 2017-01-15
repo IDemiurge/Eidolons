@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import static main.system.GuiEventType.*;
+import static main.system.GraphicEvent.*;
 
 public class CellBorderManager extends Group {
     private static final String cyanPath = "UI\\Borders\\neo\\color flag\\cyan 132.png";

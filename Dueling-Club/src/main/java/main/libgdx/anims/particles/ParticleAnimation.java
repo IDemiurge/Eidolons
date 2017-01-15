@@ -28,9 +28,10 @@ public class ParticleAnimation implements ParticleActor{
     }
 
     @Override
-    public void updatePosition(int d) {
+    public void updatePosition(float x, float y) {
 
     }
+
 
     @Override
     public void start() {

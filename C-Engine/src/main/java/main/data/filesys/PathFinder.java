@@ -218,6 +218,12 @@ public class PathFinder {
     public static boolean isFullPath(String path) {
         return path.contains(ENGINE_PATH);
     }
+    public static String getSfxPath() {
+        return getImagePath()+ "mini\\sfx\\";
+    }
+    public static String getSpritesPath() {
+        return getImagePath()+ "mini\\sprites\\";
+    }
 
     public static String getParticlePresetPath() {
         return getImagePath()+ "mini\\sfx\\";

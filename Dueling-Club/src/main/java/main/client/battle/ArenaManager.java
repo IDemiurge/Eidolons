@@ -30,7 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static main.system.GuiEventType.CREATE_UNITS_MODEL;
+import static main.system.GraphicEvent.CREATE_UNITS_MODEL;
 
 public class ArenaManager {
 

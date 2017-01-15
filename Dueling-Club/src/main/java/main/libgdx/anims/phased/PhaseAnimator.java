@@ -11,7 +11,7 @@ import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
-import static main.system.GuiEventType.*;
+import static main.system.GraphicEvent.*;
 
 /**
  * Created by JustMe on 1/5/2017.

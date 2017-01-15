@@ -29,7 +29,7 @@ import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
 
-import static main.system.GuiEventType.*;
+import static main.system.GraphicEvent.*;
 
 /**
  * Created with IntelliJ IDEA.

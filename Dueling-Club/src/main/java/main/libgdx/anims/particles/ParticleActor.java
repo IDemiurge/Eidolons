@@ -15,7 +15,7 @@ public interface ParticleActor  {
 
     boolean isRunning();
 
-    void updatePosition(int d);
+    void updatePosition(float x, float y);
     
 void start();
 //    ParticleEffect particleEffect;

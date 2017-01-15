@@ -28,7 +28,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 
-import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
+import static main.system.GraphicEvent.ACTIVE_UNIT_SELECTED;
 
 /**
  * Initiative

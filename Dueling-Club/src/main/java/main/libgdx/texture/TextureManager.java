@@ -3,10 +3,14 @@ package main.libgdx.texture;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import javafx.util.Pair;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.Boxer;
 import main.system.images.ImageManager;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by JustMe on 12/30/2016.
@@ -44,7 +48,9 @@ public class TextureManager {
 
     public static Array<TextureRegion> getSpriteSheetFrames(String path,
                                                             int FRAME_COLS, int FRAME_ROWS) {
-
+//if (FRAME_COLS==1 && FRAME_ROWS==1){
+//    Pair<Integer, Integer> xy = get
+//}
         Texture sheet = TextureManager.getOrCreate(path);
         TextureRegion[][] tmp = TextureRegion.split(sheet,
          sheet.getWidth() / FRAME_COLS,
@@ -60,17 +66,17 @@ public class TextureManager {
         return new Array<>(frames);
     }
 
-    private static int getColumns(String path) {
-        return getDimension(path, false);
-    }
-
-    private static int getRows(String path) {
+    public static int getColumns(String path) {
         return getDimension(path, true);
+    }
+
+    public static int getRows(String path) {
+        return getDimension(path, false);
 
     }
 
-    private static int getDimension(String path, boolean xOrY) {
-        path =StringMaster.cropFormat(path);
+    public static int getDimension(String origPath, boolean xOrY) {
+        String path = StringMaster.cropFormat(origPath);
         String y = StringMaster.getLastPart(path, " ");
 
         if (!xOrY) {
@@ -83,18 +89,48 @@ public class TextureManager {
         if (StringMaster.isNumber(x, true)) {
             return StringMaster.getInteger(x);
         }
-        return 1;
-
-// List<String> list =  StringMaster.openContainer( 
-//  StringMaster.cropFormat(path) ," ") ;
-//        ListMaster.invert(list);
-//        for (String part : list) {
-//            if (part.startsWith(xOrY ? "x" : "y"))
-//                if (StringMaster.isNumber(part.substring(1), true)) {
-//                    return StringMaster.getInteger(part.substring(1));
-//                }
-//        }
+        return xOrY ?
+         getXY(origPath).getKey() :
+         getXY(origPath).getValue();
     }
+
+    public static float getFrameNumber(String path) {
+        return getRows(path) * getColumns(path);
+    }
+
+    public static Pair<Integer, Integer> getXY(String origPath) {
+        int x = 1;
+        int y = 1;
+        List<Integer> xs = new LinkedList<>();
+        List<Integer> ys = new LinkedList<>();
+        Texture texture = getOrCreate(origPath);
+        for (int i = 7; i >= 1; i--) {
+            if (texture.getWidth() % i == 0) {
+                x = i;
+                xs.add(i);
+            }
+
+            if (texture.getHeight() % i == 0) {
+                y = i;
+                ys.add(i);
+            }
+        }
+        //prefer square
+        {
+            for (int x1 : xs) {
+                final int w = texture.getWidth() / x1;
+                for (int y1 : ys) {
+                    int h = texture.getHeight() / y1;
+                    if (w == h)
+                        return new Pair<>(x1, y1);
+                }
+            }
+        }
+
+        return new Pair<>(x, y);
+
+    }
+
 
 //    public static Texture toTexture(BufferedImage img) throws IOException {
 //

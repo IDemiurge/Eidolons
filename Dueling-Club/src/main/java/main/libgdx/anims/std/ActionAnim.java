@@ -1,37 +1,26 @@
-package main.libgdx.anims;
+package main.libgdx.anims.std;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import main.ability.Ability;
 import main.ability.effects.Effect;
 import main.entity.Entity;
-
-import java.util.List;
+import main.entity.obj.top.DC_ActiveObj;
+import main.libgdx.anims.Anim;
+import main.libgdx.anims.AnimData;
 
 
 /**
  * Created by JustMe on 1/9/2017.
  */
 public class ActionAnim extends Anim {
-    List<Anim> anims;
-    public ActionAnim(Entity active, Anim... subAnims) {
-        super(active, null);
+
+
+    public ActionAnim(Entity active, AnimData params) {
+        super(active, params);
     }
 
-
-    /*
-    damage info
-    costs
-    icon
-
-     */
-
-    public boolean draw(Batch batch ) {
-
-        anims.forEach(a-> {
-            addActor(a);
-         draw(batch) ; });
-
-        return true;
+    @Override
+    public DC_ActiveObj getActive() {
+        return (DC_ActiveObj) super.getActive();
     }
 
     public void addEffectAnims(Effect effect) {

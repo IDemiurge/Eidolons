@@ -53,11 +53,11 @@ public class SelfMoveEffect extends MoveEffect {
         game.getMovementManager().move(obj, c, free, mod, ref);
         return true;
     }
-
+@Override
     public Coordinates getCoordinates() {
         DC_UnitObj obj = (DC_UnitObj) ref.getSourceObj();
-        Coordinates c = obj.getCoordinates();
-        if (template != null) {
+    Coordinates  c = obj.getCoordinates();
+    if (template != null) {
             // ++ variables
             c = game.getMovementManager().getTemplateMoveCoordinate(template, obj.getFacing(), obj,
                     ref);

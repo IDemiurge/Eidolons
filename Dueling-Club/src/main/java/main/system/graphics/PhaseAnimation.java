@@ -15,7 +15,7 @@ import main.libgdx.anims.phased.PhaseAnim;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
+import main.system.GraphicEvent;
 import main.system.auxiliary.*;
 import main.system.auxiliary.FontMaster.FONT;
 import main.system.auxiliary.secondary.GeometryMaster;
@@ -339,7 +339,7 @@ public abstract class PhaseAnimation implements ANIM {
         //      repaint();
 
         if (getPhaseAnim() != null)
-            GuiEventManager.trigger(GuiEventType.UPDATE_PHASE_ANIM,
+            GuiEventManager.trigger(GraphicEvent.UPDATE_PHASE_ANIM,
                     new EventCallbackParam(getPhaseAnim()));
 
     }

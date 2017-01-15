@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
+import main.system.GraphicEvent;
 
 /**
  * Created by JustMe on 1/8/2017.
@@ -19,9 +19,9 @@ public class ParticleManager extends Actor{
     public ParticleManager(Stage effects) {
         this.effects = effects;
         emitterMap= new EmitterMap();
-        GuiEventManager.bind(GuiEventType.GRID_CREATED, p -> {
+        GuiEventManager.bind(GraphicEvent.GRID_CREATED, p -> {
          });
-        GuiEventManager.bind(GuiEventType.UPDATE_EMITTERS, p -> {
+        GuiEventManager.bind(GraphicEvent.UPDATE_EMITTERS, p -> {
             emitterMap.update();
             updateEmitters();
 //

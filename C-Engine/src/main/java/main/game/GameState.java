@@ -11,7 +11,7 @@ import main.entity.type.ObjType;
 import main.game.event.Event;
 import main.game.event.Rule;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
+import main.system.GraphicEvent;
 import main.system.auxiliary.Chronos;
 import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.LogMaster.LOG_CHANNELS;
@@ -237,9 +237,9 @@ public abstract class GameState {
         resetCurrentValues();
         mngr.checkForChanges(true);
 
-        GuiEventManager.trigger(GuiEventType.UPDATE_LIGHT, null);
-        GuiEventManager.trigger(GuiEventType.UPDATE_EMITTERS, null);
-        GuiEventManager.trigger(GuiEventType.UPDATE_GUI, null);
+        GuiEventManager.trigger(GraphicEvent.UPDATE_LIGHT, null);
+        GuiEventManager.trigger(GraphicEvent.UPDATE_EMITTERS, null);
+        GuiEventManager.trigger(GraphicEvent.UPDATE_GUI, null);
     }
 
     public abstract void checkContinuousRules();

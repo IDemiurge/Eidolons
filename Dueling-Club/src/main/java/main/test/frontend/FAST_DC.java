@@ -204,6 +204,7 @@ public class FAST_DC {
                         DungeonMaster.CHOOSE_LEVEL = false;
                     // preset
                     ItemGenerator.setGenerationOn(!SUPER_FAST_MODE
+//                      &&!FAST_MODE
 //                     && !CoreEngine.isGraphicTestMode() TODO racing conditions with gdx!
                     );
                     ItemGenerator.setBasicMode(FAST_MODE);

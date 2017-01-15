@@ -36,7 +36,7 @@ import org.apache.commons.lang3.tuple.Triple;
 import java.util.*;
 
 import static main.system.GuiEventManager.trigger;
-import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
+import static main.system.GraphicEvent.SELECT_MULTI_OBJECTS;
 
 public class RadialMenu extends Group {
     private Texture closeTex;
@@ -180,6 +180,7 @@ public class RadialMenu extends Group {
     public void createNew(DC_Obj target) {
         DC_HeroObj source
                 = (DC_HeroObj) Game.game.getManager().getActiveObj();
+
         List<ActiveObj> activeObjs = source.getActives();
 
         List<Triple<Runnable, Texture, String>> moves = new ArrayList<>();

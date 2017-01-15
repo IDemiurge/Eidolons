@@ -26,8 +26,16 @@ public class MapMaster<E, T> {
         Object entry = map.get(key);
         if (entry instanceof Collection) {
             Collection collection = (Collection) entry;
-            collection.add(value);
+            if (value instanceof Collection) {
+                collection.addAll(((Collection) value));
+            } else
+                collection.add(value);
         } else {
+
+            if (value instanceof Collection) {
+                map.put(key, new LinkedList<>(((Collection) value)));
+                return;
+            }
             LinkedList<Object> list = new LinkedList<>();
             list.add(value);
             map.put(key, list);
@@ -40,7 +48,7 @@ public class MapMaster<E, T> {
 
         for (Object e : map.keySet()) {
             s += e.toString() + StringMaster.wrapInParenthesis(map.get(e).toString())
-                    + StringMaster.SEPARATOR;
+             + StringMaster.SEPARATOR;
         }
         return s;
     }
@@ -49,6 +57,10 @@ public class MapMaster<E, T> {
         if (map == null)
             return false;
         return !map.isEmpty();
+    }
+
+    public static Object get(Map map, int i) {
+        return map.keySet().toArray()[i];
     }
 
     public E getKeyForValue(Map<E, T> itemMap, T value) {
@@ -132,7 +144,7 @@ public class MapMaster<E, T> {
     public Map<E, T> crop(Map<E, T> map, int crop, boolean first) {
         List<E> removeList = new LinkedList<>();
         Set<E> set = (!first) ? new MapMaster<E, T>().invertMapOrder(map, false).keySet() : map
-                .keySet();
+         .keySet();
         for (E o : set) {
             crop--;
             if (crop < 0)
@@ -145,9 +157,5 @@ public class MapMaster<E, T> {
 
         return map;
 
-    }
-
-    public static Object get(Map map, int i) {
-    return map.keySet().toArray()[i];
     }
 }

@@ -53,7 +53,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 
-import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
+import static main.system.GraphicEvent.SELECT_MULTI_OBJECTS;
 
 /**
  * *

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.content.CONTENT_CONSTS2.SFX;
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.StringMaster;
 
 /**
  * Created by JustMe on 1/10/2017.
@@ -18,15 +19,22 @@ public class ParticleEmitter extends Actor implements ParticleActor {
     protected     ParticleEffect effect;
     protected ParticleEffectPool pool;
     protected SFX fx;
+    private boolean bound=true;
 
     public ParticleEmitter(SFX fx) {
+      this(fx.path);
         this.fx = fx;
+    }
+
+    public ParticleEmitter(String path) {
         effect = new ParticleEffect();
 //        pool = new ParticleEffectPool(effect, defaultCapacity, defaultMaxCapacity);
 //        pool.obtain() ; TODO
         effect = new ParticleEffect();
-        effect.load(Gdx.files.internal(PathFinder.getParticlePresetPath() +
-          fx.path),
+        effect.load(Gdx.files.internal(
+         StringMaster.addMissingPathSegments(
+          path,
+         PathFinder.getParticlePresetPath())),
          Gdx.files.internal(PathFinder.getParticleImagePath()));
 
 //        m_effect = new ParticleEffect();
@@ -34,28 +42,32 @@ public class ParticleEmitter extends Actor implements ParticleActor {
 //
 //        m_effect.loadEmitters(Gdx.files.internal("particle/effects/lightning.p"));
 //        m_effect.loadEmitterImages(this.getAtlas());
-    }
+}
 
     public void act(float delta) {
         super.act(delta);
 //        effect.setPosition(x, y);
         effect.update(delta);
     }
+
+    public void updatePosition(float x, float y) {
+        if (bound)
+            setPosition(x,y);
+        else {
+            //its own vector
+        }
+    }
     @Override
     public SFX getTemplate() {
         return fx;
     }
 
-    @Override
-    public void setPosition(float x, float y) {
-        super.setPosition(x, y);
-     effect.getEmitters().first().setPosition(getX(),getY());
-    }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
+        effect.getEmitters().first().setPosition(getX(),getY());
         effect.draw(batch);
     }
 
@@ -74,13 +86,11 @@ public class ParticleEmitter extends Actor implements ParticleActor {
         return false;
     }
 
-    @Override
-    public void updatePosition(int d) {
 
-    }
 
     @Override
     public void start() {
         effect.start();
     }
+
 }

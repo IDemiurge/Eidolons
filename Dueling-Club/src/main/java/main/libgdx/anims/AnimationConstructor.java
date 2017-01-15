@@ -10,12 +10,13 @@ import main.entity.obj.top.DC_ActiveObj;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.particles.ParticleEmitter;
 import main.libgdx.anims.sprite.SpriteAnimation;
+import main.libgdx.anims.std.ActionAnim;
+import main.libgdx.anims.std.EffectAnim;
+import main.libgdx.anims.std.MoveAnimation;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.*;
-
-import static com.sun.jmx.snmp.EnumRowStatus.active;
 
 /**
  * Created by JustMe on 1/11/2017.
@@ -61,20 +62,28 @@ public class AnimationConstructor {
 //     PARAMS.ANIM_SIZE,
     };
     Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
-boolean reconstruct = true;
+boolean reconstruct = false;
+
+    public void setReconstruct(boolean reconstruct) {
+        this.reconstruct = reconstruct;
+    }
+
+    public boolean isReconstruct() {
+
+        return reconstruct;
+    }
 
     public CompositeAnim getOrCreate(ActiveObj active) {
         CompositeAnim anim = map.get(active);
         if (!reconstruct)
-        if (anim != null) return anim;
+        if (anim != null) {
+            anim.reset();
+            return anim;
+        }
         return construct((DC_ActiveObj) active);
     }
 
-    public CompositeAnim getOrCreate(Ref ref, AnimData data) {
-        CompositeAnim anim = map.get(active);
-        if (anim != null) return anim;
-        return construct(ref, data, null);
-    }
+
 
     CompositeAnim construct(DC_ActiveObj active) {
         return construct(active.getRef(), null, active);
@@ -86,6 +95,8 @@ boolean reconstruct = true;
         CompositeAnim anim = new CompositeAnim(active);
 //        active.getActionGroup()
 
+
+
         Arrays.stream(ANIM_PART.values()).forEach(part -> {
             Anim animPart = getAnimPart(active, part);
             if (animPart != null)
@@ -96,8 +107,13 @@ boolean reconstruct = true;
         return anim;
     }
 
-    private Anim getEffectAnim(Effect e) {
-        return null;
+    public CompositeAnim getEffectAnim(Effect e) {
+//        map
+        EffectAnim effectAnim= new EffectAnim(e);
+        CompositeAnim a = new CompositeAnim();
+        a.add(effectAnim.getPart(), effectAnim);
+
+        return a;
     }
 
     private Anim getAnimPart(DC_ActiveObj active, ANIM_PART part) {
@@ -122,29 +138,66 @@ boolean reconstruct = true;
         for (String path :
          StringMaster.openContainer(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS))) {
             ParticleEmitter emitter = null ;
-            try{
-                emitter =  new ParticleEmitter(new EnumMaster<SFX>().
-             retrieveEnumConst(SFX.class, path));       }catch(Exception e){                e.printStackTrace();            }
+            SFX sfx = new EnumMaster<SFX>().
+             retrieveEnumConst(SFX.class, path);
+        if (sfx==null )
+            emitter =  new ParticleEmitter(path);
+            else
+                emitter =  new ParticleEmitter(
+                sfx);
             if (emitter!=null )
             list.add(emitter
              );
             exists = true;
         }
-        if (!exists) return null;
-        Anim anim = new Anim(active, data);
+
+        if (!exists) exists = checkForcedAnimation(active, part);
+
+            if (!exists) return null;
+        Anim anim = createAnim(active, data);
+
         anim.setPart(part);
         anim.setSprites(sprites);
         anim.setEmitterList(list);
         return anim;
     }
 
+    private boolean checkForcedAnimation(DC_ActiveObj active, ANIM_PART part) {
+            switch (part){
+                case MAIN:
+                    return  (active.isMove() || active.isAttack() || active.isTurn());
+                case CAST:
+                    case IMPACT:
+                   return  active.isAttack();
+                case RESOLVE:
+                case AFTEREFFECT:
+                    break;
+            }
+        return false;
+    }
+
+    private Anim createAnim(DC_ActiveObj active, AnimData data) {
+        if (active.isMove())
+            return new MoveAnimation(active,data);
+      return   new ActionAnim(active, data);
+    }
+
 
     public enum ANIM_PART {
-        CAST,
-        RESOLVE,
-        MAIN, //flying missile
-        IMPACT,
-        AFTEREFFECT;
+        CAST(2.5f),
+        RESOLVE(2),
+        MAIN(3), //flying missile
+        IMPACT(1),
+        AFTEREFFECT(2.5f);
+
+           ANIM_PART(float defaultDuration) {
+               this.   defaultDuration=defaultDuration;
+        }
+        private float defaultDuration;
+
+        public float getDefaultDuration() {
+            return defaultDuration;
+        }
     }
 
 

@@ -10,11 +10,11 @@ import main.logic.AT_OBJ_TYPE;
 import main.logic.AT_PROPS;
 import main.music.entity.MusicList;
 import main.music.gui.MC_ControlPanel;
+import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
-import java.util.LinkedList;
 import java.util.List;
 
 public class MusicKeyMaster implements HotkeyListener {
@@ -183,13 +183,24 @@ public class MusicKeyMaster implements HotkeyListener {
 		int i = aIdentifier % 1000;
 		boolean tag = aIdentifier >= 2000;
 		Object c = tag ? MUSIC_TAG_GROUPS.values()[i] : MUSIC_TYPE.values()[i];
-		List<ObjType> types = new LinkedList<>();
-		for (ObjType type : DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST)) {
+		Loop loop = new Loop(DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST).size()*2);
+		List<ObjType> types =
+//		tag?
+		DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST)
+//		:
+//		DataManager.getTypesGroup(AT_OBJ_TYPE.MUSIC_LIST, c.toString())
+;
+		while (loop.continues()){
+			ObjType type = new RandomWizard<ObjType>().getRandomListItem(
+			types);
+			//subgroup/group
 			if (checkRandomGroup(type, c, tag))
-				types.add(type);
+			{
+				new MusicList(type).play();
+				return ;
+			}
 		}
-		ObjType type = new RandomWizard<ObjType>().getRandomListItem(types);
-		new MusicList(type).play();
+
 
 	}
 

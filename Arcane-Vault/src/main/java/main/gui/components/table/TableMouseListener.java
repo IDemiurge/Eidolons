@@ -62,7 +62,12 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 	"img\\mini\\sprites\\";
 
 	public static final VALUE[] SFX_IDS = {
-	//as single enum for now! 
+	PROPS.ANIM_SFX_CAST ,
+	PROPS.ANIM_SFX_RESOLVE ,
+	PROPS.ANIM_SFX_MAIN ,
+	PROPS.ANIM_SFX_IMPACT ,
+	PROPS.ANIM_SFX_AFTEREFFECT ,
+	PROPS.ANIM_MISSILE_SFX ,
 	};
 	public static final String SFX_PATH =
 	"img\\mini\\sfx\\";
@@ -116,12 +121,6 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 			PROPS.BF_OBJECT_SIZE.name(), PROPS.OBJECT_ARMOR_TYPE.name(), PROPS.DIMENSION.name() };
 	public static final String[] MULTIPLE_ENUM_LIST_IDS = {
 
-	PROPS.ANIM_SFX_CAST.name(),
-	PROPS.ANIM_SFX_RESOLVE.name(),
-	PROPS.ANIM_SFX_MAIN.name(),
-	PROPS.ANIM_SFX_IMPACT.name(),
-	PROPS.ANIM_SFX_AFTEREFFECT.name(),
-	PROPS.ANIM_MISSILE_SFX.name(),
 	PROPS.PARAMETER_BONUSES.getName(),
 			PROPS.PALETTE.name(), PROPS.ATTRIBUTE_BONUSES.getName(), PROPS.DUNGEON_TAGS.name(),
 			PROPS.MASTERY_GROUPS_MAGIC.name(), PROPS.MASTERY_GROUPS_WEAPONS.name(),

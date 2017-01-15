@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static main.libgdx.bf.mouse.ToolTipManager.ToolTip.getCurMaxVal;
-import static main.system.GuiEventType.SHOW_TOOLTIP;
+import static main.system.GraphicEvent.SHOW_TOOLTIP;
 
 public class ToolTipManager extends Group {
 

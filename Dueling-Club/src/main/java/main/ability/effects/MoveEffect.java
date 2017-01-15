@@ -66,6 +66,7 @@ public class MoveEffect extends DC_Effect {
         free = true;
     }
 
+    protected  Coordinates destination;
     @Override
     public boolean applyThis() {
         DC_HeroObj obj = (DC_HeroObj) ref.getObj(obj_to_move);
@@ -77,17 +78,9 @@ public class MoveEffect extends DC_Effect {
                     MOVE_MODIFIER.DISPLACEMENT, ref);
             return true;
         }
-        Coordinates c = null;
-        if (movement) {
-            c = ((MicroObj) ref.getObj(targetKey)).getCoordinates();
-        } else {
-            Integer x = x_displacement.getInt(ref);
-            Integer y = y_displacement.getInt(ref);
-            // TODO direction?!
-            c = new Coordinates(obj.getCoordinates().getX() + x, obj
-                    .getCoordinates().getY() + y);
-        }
-        game.getMovementManager().move(obj, c, free,
+        destination= getCoordinates();
+
+        game.getMovementManager().move(obj, destination, free,
                 MOVE_MODIFIER.DISPLACEMENT, ref);
 
         //
@@ -97,5 +90,23 @@ public class MoveEffect extends DC_Effect {
 //         direction = DirectionMaster.getDirectionByFacing(facing, d);
 
         return true;
+    }
+    public Coordinates getCoordinates() {
+        Coordinates c=null ;
+        if (movement) {
+            c = ((MicroObj) ref.getObj(targetKey)).getCoordinates();
+        } else {
+            Integer x = x_displacement.getInt(ref);
+            Integer y = y_displacement.getInt(ref);
+            // TODO direction?!
+            c = new Coordinates(ref.getObj(obj_to_move).getCoordinates().getX() + x, ref.getObj(obj_to_move)
+             .getCoordinates().getY() + y);
+        }
+        return c;
+    }
+
+    public Coordinates getDestination() {
+        if (destination==null ) return getCoordinates();
+        return destination;
     }
 }

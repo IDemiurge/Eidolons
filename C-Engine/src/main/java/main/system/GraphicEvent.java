@@ -1,8 +1,18 @@
 package main.system;
 
 import main.game.event.Event.STANDARD_EVENT_TYPE;
+//public enum GUI_EVENT implements GraphicEvent{
+//
+//}
+//public enum ANIMATION_EVENT implements GraphicEvent{
+//
+//}
+//public enum GRID_EVENT implements GraphicEvent{
+//
+//}
+public enum GraphicEvent {
 
-public enum GuiEventType {
+
     GRID_CREATED,
     CREATE_RADIAL_MENU,
     SHOW_INFO_DIALOG, DIALOG_CLOSED,
@@ -24,10 +34,12 @@ UPDATE_GUI,
     CELL_UPDATE,
     SHOW_TOOLTIP,
     CREATE_UNITS_MODEL,
-    DESTROY_UNIT_MODEL(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED ), ABILITY_RESOLVES(), EFFECT_APPLIED(), ACTION_RESOLVES(), ACTION_INTERRUPTED();
+    DESTROY_UNIT_MODEL(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED ),
+    ABILITY_RESOLVES(), EFFECT_APPLIED(), ACTION_RESOLVES(),
+    ACTION_INTERRUPTED(), UNIT_MOVED(), ACTION_BEING_RESOLVED();
     public STANDARD_EVENT_TYPE[] boundEvents;
 
-    GuiEventType(STANDARD_EVENT_TYPE... boundEvents) {
+    GraphicEvent(STANDARD_EVENT_TYPE... boundEvents) {
         this.boundEvents = boundEvents;
     }
 }

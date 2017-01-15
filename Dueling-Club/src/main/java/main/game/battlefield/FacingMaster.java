@@ -1,9 +1,7 @@
 package main.game.battlefield;
 
 import main.content.CONTENT_CONSTS.FACING_SINGLE;
-import main.entity.obj.BattlefieldObj;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_UnitObj;
+import main.entity.obj.*;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
@@ -179,4 +177,10 @@ public class FacingMaster {
         return f;
     }
 
+    public static FACING_DIRECTION getFacing(Obj sourceObj) {
+        if (sourceObj instanceof DC_HeroObj) {
+            return ((DC_HeroObj) sourceObj).getFacing();
+        }
+        return null;
+    }
 }
