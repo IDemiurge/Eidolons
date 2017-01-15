@@ -14,11 +14,13 @@ public class ParticleManager extends Actor{
     public   boolean debugMode;
     private Stage effects;
     EmitterMap emitterMap;
+    AnimatedEmitterMap animatedEmitterMap;
 
 
     public ParticleManager(Stage effects) {
         this.effects = effects;
         emitterMap= new EmitterMap();
+        animatedEmitterMap = new AnimatedEmitterMap();
         GuiEventManager.bind(GuiEventType.GRID_CREATED, p -> {
          });
         GuiEventManager.bind(GuiEventType.UPDATE_EMITTERS, p -> {
@@ -31,7 +33,7 @@ public class ParticleManager extends Actor{
     @Override
     public void draw(Batch batch, float parentAlpha) {
         ParticleEffect particleEffect;
-        emitterMap.updateAnimFx();
+        animatedEmitterMap.updateAnimFx();
             for (ParticleActor actor : emitterMap.getEmitters()) {
             particleEffect=    actor.getEffect();
             particleEffect.update(parentAlpha);

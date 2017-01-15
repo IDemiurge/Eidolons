@@ -120,7 +120,7 @@ public class LightMap {
     }
 
     public void updateLight() {
-
+        // TODO : add DequeImpl<DC_HeroObj> units update here, about DIrection - Game->GetDirectionmap
         for (Map.Entry<Integer, FireLightProt> entry : fireLightProtMap.entrySet()) {
             entry.getValue().update();
 
