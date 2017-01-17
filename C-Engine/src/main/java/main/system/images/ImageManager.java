@@ -54,7 +54,7 @@ public class ImageManager {
     private static final String DEFAULT_IMAGE_PATH = "UI\\Empty1.jpg";
     private static final int MAX_TYPE_ICON_SIZE = 256;
     public static final int LARGE_ICON = MAX_TYPE_ICON_SIZE;
-    private static final String VALUE_ICONS_PATH = "UI\\value icons\\";
+    public static final String VALUE_ICONS_PATH = "UI\\value icons\\";
     private static final String DEFAULT_CURSOR = "UI\\cursor.png";
     private static final String PORTRAIT_ROOT_PATH = "\\mini\\char\\std\\";
     private static final String EMBLEM_PATH = "UI\\emblems\\std\\";
@@ -566,6 +566,9 @@ public class ImageManager {
         return PATH;
     }
 
+    public static String getValueIconsPath() {
+        return PATH+VALUE_ICONS_PATH;
+    }
     public static void setPATH(String pATH) {
         PATH = pATH;
     }

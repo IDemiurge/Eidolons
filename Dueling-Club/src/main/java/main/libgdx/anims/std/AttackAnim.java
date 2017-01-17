@@ -4,14 +4,6 @@ package main.libgdx.anims.std;
  * Created by JustMe on 1/14/2017.
  */
 public class AttackAnim {
-    float overswing;
-    float backswing;
-    float preswing;
-    float zoomOut;
-    float zoomIn;
-    float acceleration;
-    float startSpeed;
-    int force;
     public enum ATK_ANIMS {
         THRUST_LANCE,
 
@@ -46,6 +38,7 @@ public class AttackAnim {
 
         }
     }
+    int force;
 
 //    bloodTemplate; from real bleeding amount?
 //    sparks;

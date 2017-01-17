@@ -2,7 +2,7 @@ package main.libgdx.anims.particles;
 
 import main.content.CONTENT_CONSTS2.SFX;
 import main.system.GuiEventManager;
-import main.system.GraphicEvent;
+import main.system.GuiEventType;
 
 import java.util.List;
 import java.util.Stack;
@@ -21,7 +21,7 @@ public class EmitterMap {
 
 public EmitterMap(){
 
-    GuiEventManager.bind(GraphicEvent.EMITTER_ANIM_CREATED, p -> {
+    GuiEventManager.bind(GuiEventType.EMITTER_ANIM_CREATED, p -> {
         ParticleAnimation
                 anim = new ParticleAnimation();
         animationFx.add(anim);

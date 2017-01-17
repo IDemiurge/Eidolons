@@ -12,7 +12,7 @@ import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.gui.dialog.Dialog;
 import main.libgdx.gui.dialog.DialogDisplay;
 import main.system.GuiEventManager;
-import main.system.GraphicEvent;
+import main.system.GuiEventType;
 import main.system.graphics.MigMaster;
 
 /**
@@ -113,7 +113,7 @@ public class InputController implements InputProcessor {
                 outside =   y  < h || y> h+ (int) dialog.getHeight();
             }
             if (outside) {
-                GuiEventManager.trigger(GraphicEvent.DIALOG_CLOSED, null);
+                GuiEventManager.trigger(GuiEventType.DIALOG_CLOSED, null);
             }
         }
 

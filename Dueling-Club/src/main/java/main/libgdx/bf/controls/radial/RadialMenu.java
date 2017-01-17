@@ -36,7 +36,7 @@ import org.apache.commons.lang3.tuple.Triple;
 import java.util.*;
 
 import static main.system.GuiEventManager.trigger;
-import static main.system.GraphicEvent.SELECT_MULTI_OBJECTS;
+import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
 
 public class RadialMenu extends Group {
     private Texture closeTex;

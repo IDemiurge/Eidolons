@@ -53,7 +53,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 
-import static main.system.GraphicEvent.SELECT_MULTI_OBJECTS;
+import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
 
 /**
  * *
@@ -734,12 +734,12 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public boolean effectApplies(EffectImpl effect) {
-        // Ref ref = effect.getRef();
-        // if (!getGame().fireEvent(new
-        // Event(STANDARD_EVENT_TYPE.EFFECT_APPLIES,
-        // ref))) {
-        // return false;
-        // }
+         Ref ref = effect.getRef();
+         if (!getGame().fireEvent(new
+         Event(STANDARD_EVENT_TYPE.EFFECT_APPLIES,
+         ref))) {
+         return false;
+         }
 
         return game.getEffectManager().checkNotResisted(effect);
 

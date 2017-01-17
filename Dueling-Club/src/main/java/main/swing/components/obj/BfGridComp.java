@@ -25,7 +25,7 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
-import static main.system.GraphicEvent.GRID_CREATED;
+import static main.system.GuiEventType.GRID_CREATED;
 
 //++ better animations! 
 public class BfGridComp {

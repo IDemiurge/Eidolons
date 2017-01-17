@@ -10,7 +10,7 @@ import main.game.event.Event.STANDARD_EVENT_TYPE;
 //public enum GRID_EVENT implements GraphicEvent{
 //
 //}
-public enum GraphicEvent {
+public enum GuiEventType {
 
 
     GRID_CREATED,
@@ -39,7 +39,7 @@ UPDATE_GUI,
     ACTION_INTERRUPTED(), UNIT_MOVED(), ACTION_BEING_RESOLVED();
     public STANDARD_EVENT_TYPE[] boundEvents;
 
-    GraphicEvent(STANDARD_EVENT_TYPE... boundEvents) {
+    GuiEventType(STANDARD_EVENT_TYPE... boundEvents) {
         this.boundEvents = boundEvents;
     }
 }

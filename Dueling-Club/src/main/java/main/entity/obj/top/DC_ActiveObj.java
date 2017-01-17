@@ -48,7 +48,7 @@ import main.swing.generic.components.list.ListItem;
 import main.system.CustomValueManager;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
-import main.system.GraphicEvent;
+import main.system.GuiEventType;
 import main.system.ai.logic.actions.ActionManager;
 import main.system.ai.logic.target.EffectMaster;
 import main.system.auxiliary.EnumMaster;
@@ -600,7 +600,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             setConstructed(false);
         if (!isConstructed())
             construct();
-        GuiEventManager.trigger(GraphicEvent.ACTION_BEING_RESOLVED,
+        GuiEventManager.trigger(GuiEventType.ACTION_BEING_RESOLVED,
          new EventCallbackParam(this));
         if (animation != null)
             if (!(animation instanceof AttackAnimation))
@@ -626,7 +626,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
                     refreshVisuals(false);
                 }
             }
-        GuiEventManager.trigger(GraphicEvent.ACTION_RESOLVES, new EventCallbackParam(this));
+        GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, new EventCallbackParam(this));
 
         SoundMaster.playEffectSound(SOUNDS.IMPACT, this); //TODO queue on anim!
         return result;

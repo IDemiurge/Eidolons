@@ -27,7 +27,9 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
     public SpecialTargetingEffect(Effect effect, boolean friendlyFire, Conditions conditions,
                                   Formula reductionFormula) {
         this.filteringConditions = conditions;
-        this.allyOrEnemyOnly = friendlyFire;
+        if (!friendlyFire)
+            this.allyOrEnemyOnly=false;
+
         this.effects = effect;
         this.reductionFormula = reductionFormula;
         initConstruct();

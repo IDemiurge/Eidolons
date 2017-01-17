@@ -1,5 +1,6 @@
 package main.libgdx.anims.std;
 
+import com.badlogic.gdx.scenes.scene2d.Action;
 import main.ability.Ability;
 import main.ability.effects.Effect;
 import main.entity.Entity;
@@ -13,6 +14,10 @@ import main.libgdx.anims.AnimData;
  */
 public class ActionAnim extends Anim {
 
+
+    protected Action getAction() {
+        return null  ;
+    }
 
     public ActionAnim(Entity active, AnimData params) {
         super(active, params);

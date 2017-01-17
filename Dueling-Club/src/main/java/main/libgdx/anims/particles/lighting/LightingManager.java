@@ -2,7 +2,7 @@ package main.libgdx.anims.particles.lighting;
 
 import main.libgdx.bf.GridPanel;
 import main.system.GuiEventManager;
-import main.system.GraphicEvent;
+import main.system.GuiEventType;
 
 /**
  * Created by JustMe on 12/28/2016.
@@ -19,10 +19,10 @@ public class LightingManager {
 
     public   LightingManager(LightMap map, GridPanel gridPanel) {
         lightMap=map;
-        GuiEventManager.bind(GraphicEvent.GRID_CREATED, p -> {
+        GuiEventManager.bind(GuiEventType.GRID_CREATED, p -> {
             //TODO init emitterMap and lightMap
         });
-        GuiEventManager.bind(GraphicEvent.UPDATE_LIGHT, p -> {
+        GuiEventManager.bind(GuiEventType.UPDATE_LIGHT, p -> {
             lightMap.updateMap();
             lightMap.updateLight();
             if (lightMap.isValid())

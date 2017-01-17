@@ -26,6 +26,7 @@ public class DisplacementEffect extends SelfMoveEffect {
 
     private boolean moveTarget() {
         DC_HeroObj obj = (DC_HeroObj) ref.getTargetObj();
+        origin= obj.getCoordinates();
         Coordinates coordinate = obj.getCoordinates().getAdjacentCoordinate(
                 obj.getFacing().getDirection());
         Boolean result = tryMove(obj, coordinate);

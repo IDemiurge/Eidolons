@@ -26,7 +26,7 @@ import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
 
-import static main.system.GraphicEvent.CREATE_UNITS_MODEL;
+import static main.system.GuiEventType.CREATE_UNITS_MODEL;
 
 
 /**

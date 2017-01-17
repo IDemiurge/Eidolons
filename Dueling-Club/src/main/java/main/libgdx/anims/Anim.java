@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.game.battlefield.Coordinates;
@@ -15,7 +14,7 @@ import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.particles.ParticleEmitter;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.texture.TextureManager;
-import main.system.GraphicEvent;
+import main.system.GuiEventType;
 import main.system.auxiliary.LogMaster;
 
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.function.Supplier;
 /**
  * Created by JustMe on 1/9/2017.
  */
-public class Anim extends Group {
+public class Anim   {
     protected Entity active;
     protected Vector2 origin;
     protected Vector2 destination;
@@ -39,14 +38,15 @@ public class Anim extends Group {
     protected float duration;
     protected float offsetX = 0;
     protected float offsetY = 0;
+    protected float height = 0;
+    protected float width = 0;
     protected AnimData data;
     protected ANIM_MOD[] mods;
-    protected Ref ref;
     protected ANIM_PART part;
-
+    private Float speedX;
+    private Float speedY;
 
     public Anim(Entity active, AnimData params) {
-        ref = active.getRef();
         data = params;
         this.active = active;
         textureSupplier = () -> getTexture();
@@ -59,7 +59,6 @@ public class Anim extends Group {
         stateTime = 0;
         offsetX = 0;
         offsetY = 0;
-        initPosition();
         initDuration();
     }
 
@@ -83,15 +82,18 @@ public class Anim extends Group {
         stateTime += delta;
         Texture currentFrame = textureSupplier.get();
 
-        if (currentFrame == null || stateTime >= duration) {
+        if (  stateTime >= duration) {
             dispose();
             return false;
         }
-        setWidth(currentFrame.getWidth());
+        if (currentFrame != null){
+            setWidth(currentFrame.getWidth());
         setHeight(currentFrame.getHeight());
+        }
         updatePosition();
 //        batch.begin();
-        batch.draw(currentFrame, position.x, position.y);
+        if (currentFrame != null)
+            batch.draw(currentFrame, position.x, position.y);
 
         sprites.forEach(s -> s.draw(batch));
         emitterList.forEach(e -> {
@@ -104,6 +106,7 @@ public class Anim extends Group {
     }
 
     public void start() {
+        initPosition();
         sprites.forEach(s -> s.setX(position.x));
         sprites.forEach(s -> s.setY(position.y));
         sprites.forEach(s -> s.setOffsetX(0));
@@ -129,7 +132,7 @@ public class Anim extends Group {
          .getVectorForCoordinateWithOffset(getOriginCoordinates());
 
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-         this + " origin: " + destination);
+         this + " origin: " + origin);
 
         destination = GameScreen.getInstance().getGridPanel()
          .getVectorForCoordinateWithOffset(getDestinationCoordinates());
@@ -139,19 +142,19 @@ public class Anim extends Group {
 
 
         defaultPosition = getDefaultPosition();
-        position=new Vector2(defaultPosition);
+        position = new Vector2(defaultPosition);
     }
 
     protected Coordinates getOriginCoordinates() {
 
-        return ref.getSourceObj().getCoordinates();
+        return getRef().getSourceObj().getCoordinates();
 
     }
 
     protected Coordinates getDestinationCoordinates() {
-        if (ref.getTargetObj() == null)
-            return ref.getSourceObj().getCoordinates();
-        return ref.getTargetObj().getCoordinates();
+        if (getRef().getTargetObj() == null)
+            return getRef().getSourceObj().getCoordinates();
+        return getRef().getTargetObj().getCoordinates();
     }
 
     protected Vector2 getDefaultPosition() {
@@ -168,8 +171,14 @@ public class Anim extends Group {
         if (part != null)
             switch (part) {
                 case MAIN:
-                    offsetX = (destination.x - origin.x) * stateTime / duration;
-                    offsetY = (destination.y - origin.y) * stateTime / duration;
+                    if (speedX != null)
+                        offsetX += speedX;
+                    else
+                        offsetX = (destination.x - origin.x) * stateTime / duration;
+                    if (speedY != null)
+                        offsetY += speedY;
+                    else
+                        offsetY = (destination.y - origin.y) * stateTime / duration;
                     break;
             }
 
@@ -183,7 +192,7 @@ public class Anim extends Group {
         emitterList.forEach(e ->
          e.updatePosition(position.x, position.y));
 
-        position.set(origin.x - getWidth() / 2, origin.y + getHeight() / 2);
+        position.set(origin.x + getWidth() / 2, origin.y - getHeight() / 2);
     }
 
     public ANIM_PART getPart() {
@@ -193,6 +202,11 @@ public class Anim extends Group {
     public void setPart(ANIM_PART part) {
         this.part = part;
         initDuration();
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName()+" "+part;
     }
 
     public Entity getActive() {
@@ -227,21 +241,19 @@ public class Anim extends Group {
         this.lightEmission = lightEmission;
     }
 
-    @Override
     public Color getColor() {
         return color;
     }
 
-    @Override
     public void setColor(Color color) {
         this.color = color;
     }
 
-    public List<GraphicEvent> getEventsOnFinish() {
+    public List<GuiEventType> getEventsOnFinish() {
         return null;
     }
 
-    public List<GraphicEvent> getEventsOnStart() {
+    public List<GuiEventType> getEventsOnStart() {
         return null;
     }
 
@@ -294,7 +306,38 @@ public class Anim extends Group {
     }
 
     public Ref getRef() {
-        return ref;
+        return active.getRef();
     }
 
+    public void setSpeedX(Float speedX) {
+        this.speedX = speedX;
+    }
+
+    public void setSpeedY(Float speedY) {
+        this.speedY = speedY;
+    }
+
+    public void setOffsetX(float offsetX) {
+        this.offsetX = offsetX;
+    }
+
+    public void setOffsetY(float offsetY) {
+        this.offsetY = offsetY;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
 }

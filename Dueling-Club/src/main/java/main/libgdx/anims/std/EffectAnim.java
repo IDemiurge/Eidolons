@@ -3,19 +3,22 @@ package main.libgdx.anims.std;
 import main.ability.effects.DealDamageEffect;
 import main.ability.effects.Effect;
 import main.data.filesys.PathFinder;
+import main.entity.Entity;
 import main.game.battlefield.Coordinates;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
+import main.system.auxiliary.LogMaster;
 
 /**
  * Created by JustMe on 1/11/2017.
  */
 public class EffectAnim extends Anim {
     public EffectAnim(Effect e) {
-        super(null, getAnimData(e));
+        super((Entity) e.getRef().getActive(), getAnimData(e));
+        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,this +" created: " +data);
         /*
         animation could be constructed from effects and action/spell-properties
 
@@ -58,9 +61,20 @@ via trigger etc
     }
 
     @Override
-    protected Coordinates getDestinationCoordinates() {
-        return super.getDestinationCoordinates();
+    public ANIM_PART getPart() {
+        return ANIM_PART.IMPACT;
     }
+
+    @Override
+    protected Coordinates getDestinationCoordinates() {
+        return getRef().getTargetObj().getCoordinates();
+    }
+
+    @Override
+    protected Coordinates getOriginCoordinates() {
+        return getRef().getTargetObj().getCoordinates();
+    }
+
 
     private static AnimData getDamageAnimData(DealDamageEffect e) {
         AnimData data = new AnimData();
@@ -81,14 +95,19 @@ via trigger etc
     private static String getSfx(Effect e) {
         if (e instanceof  DealDamageEffect)
         return PathFinder.getSfxPath()+ "damage\\"
-         + ((DealDamageEffect) e).getDamage_type().toString();
+//         +         "fire"
+         + ((DealDamageEffect) e).getDamage_type().toString()
+         ;
         return null;
     }
 
     private static String getSprites( Effect e) {
         if (e instanceof  DealDamageEffect)
 
-            return   PathFinder.getSpritesPath()+   "damage\\" + ((DealDamageEffect) e).getDamage_type().toString()+ ".png";
+            return   PathFinder.getSpritesPath()+   "damage\\"
+//             +"fire"
+             +  ((DealDamageEffect) e).getDamage_type().toString()
+             + ".png";
         return null;
     }
 

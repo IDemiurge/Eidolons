@@ -5,7 +5,9 @@ import main.content.CONTENT_CONSTS2.SFX;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.VALUE;
+import main.data.filesys.PathFinder;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
+import main.system.auxiliary.StringMaster;
 import main.system.net.data.DataUnit;
 
 import java.awt.*;
@@ -19,7 +21,7 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
     public enum ANIM_VALUES {
         PARTICLE_EFFECTS, SPRITES,
         DURATION, SCALE, COLOR, LIGHT_FOCUS, LIGHT_AMBIENT
-
+, MISSILE_SPEED
 
     }
     float duration;
@@ -34,6 +36,21 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
 
     int lightEmission;
     Color lightColor;
+
+    @Override
+    public void setValue(ANIM_VALUES name, String value) {
+     if (!StringMaster.isEmpty(value))   switch (name){
+            case SPRITES:
+                value =
+                 StringMaster.addMissingPathSegments(value, PathFinder.getSpritesPath());
+            break;
+            case PARTICLE_EFFECTS:
+                value = StringMaster.addMissingPathSegments(value, PathFinder.getSfxPath());
+                break;
+
+        }
+        super.setValue(name, value);
+    }
 
     public void add(VALUE val, String value) {
         if (val instanceof PARAMS) {

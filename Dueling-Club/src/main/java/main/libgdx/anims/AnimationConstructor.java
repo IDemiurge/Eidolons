@@ -1,11 +1,17 @@
 package main.libgdx.anims;
 
+import main.ability.effects.DealDamageEffect;
 import main.ability.effects.Effect;
 import main.content.CONTENT_CONSTS2.SFX;
+import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.VALUE;
+import main.content.properties.G_PROPS;
+import main.content.properties.PROPERTY;
+import main.data.filesys.PathFinder;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
+import main.entity.obj.DC_SpellObj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.particles.ParticleEmitter;
@@ -14,6 +20,8 @@ import main.libgdx.anims.std.ActionAnim;
 import main.libgdx.anims.std.EffectAnim;
 import main.libgdx.anims.std.MoveAnimation;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.FileManager;
+import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.*;
@@ -58,32 +66,21 @@ public class AnimationConstructor {
 //     PARAMS.ANIM_LIGHT_TARGET,
 //
 //     PARAMS.ANIM_MAGNITUDE,
-//     PARAMS.ANIM_SPEED,
+     PARAMS.ANIM_SPEED,
 //     PARAMS.ANIM_SIZE,
     };
     Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
-boolean reconstruct = false;
-
-    public void setReconstruct(boolean reconstruct) {
-        this.reconstruct = reconstruct;
-    }
-
-    public boolean isReconstruct() {
-
-        return reconstruct;
-    }
+    boolean reconstruct = false;
 
     public CompositeAnim getOrCreate(ActiveObj active) {
         CompositeAnim anim = map.get(active);
-        if (!reconstruct)
-        if (anim != null) {
-            anim.reset();
-            return anim;
-        }
+        if (!isReconstruct())
+            if (anim != null) {
+
+                return anim;
+            }
         return construct((DC_ActiveObj) active);
     }
-
-
 
     CompositeAnim construct(DC_ActiveObj active) {
         return construct(active.getRef(), null, active);
@@ -96,9 +93,8 @@ boolean reconstruct = false;
 //        active.getActionGroup()
 
 
-
         Arrays.stream(ANIM_PART.values()).forEach(part -> {
-            Anim animPart = getAnimPart(active, part);
+            Anim animPart = getPartAnim(active, part);
             if (animPart != null)
                 anim.add(part, animPart);
         });
@@ -107,26 +103,41 @@ boolean reconstruct = false;
         return anim;
     }
 
-    public CompositeAnim getEffectAnim(Effect e) {
-//        map
-        EffectAnim effectAnim= new EffectAnim(e);
-        CompositeAnim a = new CompositeAnim();
-        a.add(effectAnim.getPart(), effectAnim);
 
-        return a;
-    }
-
-    private Anim getAnimPart(DC_ActiveObj active, ANIM_PART part) {
+    private Anim getPartAnim(DC_ActiveObj active, ANIM_PART part) {
 //        active.getProperty(sfx);
         AnimData data = new AnimData();
         for (VALUE val : anim_vals) {
             if (StringMaster.contains(val.getName(), part.toString()))
                 data.add(val, active.getValue(val));
         }
-        return getAnimPart(data, active, part);
+        return getPartAnim(data, active, part);
     }
 
-    private Anim getAnimPart(AnimData data, DC_ActiveObj active, ANIM_PART part) {
+    private Anim getPartAnim(AnimData data, DC_ActiveObj active, ANIM_PART part) {
+
+        Anim anim = createAnim(active, data);
+
+        if (!initAnim(data, active, part, anim)) {
+            if (!(active instanceof DC_SpellObj)) {
+                return null;
+            }
+
+            data = getStandardData((DC_SpellObj) active, part);
+            if (!initAnim(data, active, part, anim))
+                return null;
+        }
+        return anim;
+    }
+
+    private Anim createAnim(DC_ActiveObj active, AnimData data) {
+        if (active.isMove())
+            return new MoveAnimation(active, data);
+        return new ActionAnim(active, data);
+    }
+
+    private boolean initAnim(AnimData data,
+                             DC_ActiveObj active, ANIM_PART part, Anim anim) {
         boolean exists = false;
         List<SpriteAnimation> sprites = new LinkedList<>();
         for (String path :
@@ -137,51 +148,154 @@ boolean reconstruct = false;
         List<ParticleEmitter> list = new LinkedList<>();
         for (String path :
          StringMaster.openContainer(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS))) {
-            ParticleEmitter emitter = null ;
+            ParticleEmitter emitter = null;
             SFX sfx = new EnumMaster<SFX>().
              retrieveEnumConst(SFX.class, path);
-        if (sfx==null )
-            emitter =  new ParticleEmitter(path);
+            if (sfx == null)
+                emitter = new ParticleEmitter(path);
             else
-                emitter =  new ParticleEmitter(
-                sfx);
-            if (emitter!=null )
-            list.add(emitter
-             );
+                emitter = new ParticleEmitter(
+                 sfx);
+            if (emitter != null)
+                list.add(emitter
+                );
             exists = true;
         }
 
         if (!exists) exists = checkForcedAnimation(active, part);
-
-            if (!exists) return null;
-        Anim anim = createAnim(active, data);
+//        if (!exists) return true;
 
         anim.setPart(part);
         anim.setSprites(sprites);
         anim.setEmitterList(list);
-        return anim;
+        return exists;
     }
 
     private boolean checkForcedAnimation(DC_ActiveObj active, ANIM_PART part) {
-            switch (part){
-                case MAIN:
-                    return  (active.isMove() || active.isAttack() || active.isTurn());
-                case CAST:
-                    case IMPACT:
-                   return  active.isAttack();
-                case RESOLVE:
-                case AFTEREFFECT:
-                    break;
-            }
+        switch (part) {
+            case MAIN:
+                return (active.isMove() || active.isAttack() || active.isTurn());
+            case CAST:
+            case IMPACT:
+                return active.isAttack();
+            case RESOLVE:
+            case AFTEREFFECT:
+                break;
+        }
         return false;
     }
 
-    private Anim createAnim(DC_ActiveObj active, AnimData data) {
-        if (active.isMove())
-            return new MoveAnimation(active,data);
-      return   new ActionAnim(active, data);
+    public CompositeAnim getEffectAnim(Effect e) {
+//        map
+        if (!isAnimated(e)) return null;
+        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, "EFFECT ANIM CONSTRUCTED FOR " + e + e.getRef());
+        EffectAnim effectAnim = new EffectAnim(e);
+        initAnim(effectAnim.getData(), (DC_ActiveObj) effectAnim.getActive(),
+         effectAnim.getPart(),
+         effectAnim);
+        CompositeAnim a = new CompositeAnim();
+        a.add(
+         effectAnim.getPart()
+         , effectAnim);
+
+        return a;
     }
 
+    private boolean isAnimated(Effect e) {
+        if (e instanceof DealDamageEffect) return true;
+        return false;
+    }
+
+
+    AnimData getStandardData(DC_SpellObj spell, ANIM_PART part) {
+        AnimData data = new AnimData();
+
+        String partPath = part.toString();
+        String size = "";
+        if (spell.getCircle() > 4)
+            size = " huge";
+        if (spell.getCircle() >= 3)
+            size = " large";
+        if (spell.getCircle() < 2)
+            size = " small";
+        if (part == ANIM_PART.MAIN) partPath = "missile";
+
+        ANIM_VALUES[] values = {
+         ANIM_VALUES.SPRITES,
+         ANIM_VALUES.PARTICLE_EFFECTS,
+        };
+//         getValuesForPart(part);
+        PROPERTY[] props = {
+         G_PROPS.NAME,
+         G_PROPS.ASPECT,
+         G_PROPS.SPELL_TYPE,
+         G_PROPS.SPELL_GROUP,
+         PROPS.DAMAGE_TYPE,
+        };
+        for (ANIM_VALUES s : values) {
+
+            String pathRoot = getPath(s);
+            String file = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
+            if (file == null)
+            {
+                file = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
+                if (file == null)
+                    continue;
+            }
+            String val =StringMaster.buildPath(
+             partPath,StringMaster.removePreviousPathSegments(file, pathRoot));
+            main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+             "AUTO ANIM CONSTRUCTION FOR " + spell +"-" + part +": " + s + " is set automatically to " + val);
+            data.setValue(s, val);
+        }
+//        for (String substring : StringMaster.openContainer(
+//         spell.getProperty(G_PROPS.SPELL_TAGS))) {
+//            SPELL_TAGS tag = new EnumMaster<SPELL_TAGS>().retrieveEnumConst(SPELL_TAGS.class, substring);
+//            if (tag == SPELL_TAGS.MISSILE) {
+//                data.setValue(ANIM_VALUES.MISSILE_SPEED, "");
+//            }
+//        }
+        return data;
+    }
+
+    private String findResourceForSpell(DC_SpellObj spell,
+                                        String partPath, String size,
+                                        PROPERTY[] props, String pathRoot,
+                                        boolean closest) {
+        String path = StringMaster.buildPath(
+         pathRoot, partPath);
+//        spell.getTargeting();
+        String file = null;
+        for (PROPERTY p : props) {
+            String name = spell.getProperty(p) +" " +partPath+ size;
+            file = FileManager.findFirstFile(path, name, closest);
+            if (file != null)
+                break;
+        }
+        return file;
+    }
+
+
+    private String getPath(ANIM_VALUES s) {
+        switch (s) {
+            case PARTICLE_EFFECTS:
+                return PathFinder.getSfxPath();
+            case SPRITES:
+                return PathFinder.getSpritesPath();
+
+        }
+        return null;
+    }
+
+
+    public boolean isReconstruct() {
+return true;
+//        return reconstruct;
+    }
+
+    public void setReconstruct(boolean reconstruct) {
+        this.reconstruct = reconstruct;
+    }
 
     public enum ANIM_PART {
         CAST(2.5f),
@@ -190,10 +304,11 @@ boolean reconstruct = false;
         IMPACT(1),
         AFTEREFFECT(2.5f);
 
-           ANIM_PART(float defaultDuration) {
-               this.   defaultDuration=defaultDuration;
-        }
         private float defaultDuration;
+
+        ANIM_PART(float defaultDuration) {
+            this.defaultDuration = defaultDuration;
+        }
 
         public float getDefaultDuration() {
             return defaultDuration;

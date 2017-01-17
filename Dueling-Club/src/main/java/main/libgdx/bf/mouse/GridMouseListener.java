@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static main.system.GraphicEvent.*;
+import static main.system.GuiEventType.*;
 
 /**
  * Created by JustMe on 1/7/2017.

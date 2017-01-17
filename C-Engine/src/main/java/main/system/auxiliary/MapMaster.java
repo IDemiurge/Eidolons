@@ -15,14 +15,10 @@ public class MapMaster<E, T> {
             map.put(key, new Integer(i + n));
     }
 
-    public static void addAllToListMap(Map map, Map map1) {
-        for (Object key : map1.keySet()) {
-            addToListMap(map, key, map1.get(key));
-        }
 
-    }
 
     public static void addToListMap(Map map, Object key, Object value) {
+        if (value==null )return ;
         Object entry = map.get(key);
         if (entry instanceof Collection) {
             Collection collection = (Collection) entry;

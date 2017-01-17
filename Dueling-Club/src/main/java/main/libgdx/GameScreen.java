@@ -15,7 +15,7 @@ import main.entity.obj.DC_Obj;
 import main.game.DC_Game;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.particles.ParticleManager;
-import main.libgdx.anims.particles.lighting.LightingManager;
+import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.bf.Background;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.controls.radial.DebugRadialManager;
@@ -30,7 +30,7 @@ import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
 
-import static main.system.GraphicEvent.*;
+import static main.system.GuiEventType.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -47,6 +47,7 @@ public class GameScreen implements Screen {
     private Stage dialog;
     private Stage anims;
     private Stage ambience;
+    private Stage phaseAnims;
     private Background background;
     private GridPanel gridPanel;
     private RadialMenu radialMenu;
@@ -59,6 +60,7 @@ public class GameScreen implements Screen {
     private ParticleManager particleManager;
     private AnimMaster animMaster;
     private InitiativeQueue queue;
+    private PhaseAnimator phaseAnimator;
 
     public static GameScreen getInstance() {
         return instance;
@@ -119,7 +121,9 @@ public class GameScreen implements Screen {
 
     private void initAnims() {
         anims = new Stage();
+        phaseAnims = new Stage();
         animMaster = new AnimMaster(anims);
+        phaseAnimator = new PhaseAnimator(phaseAnims);
     }
 
     private void initDialog() {
@@ -195,6 +199,10 @@ public class GameScreen implements Screen {
         grid.draw();
 
         effects.draw();
+        if (         DC_Game.game != null)
+            if (             DC_Game.game.getAnimationManager() != null)
+                DC_Game.game.getAnimationManager().updateAnimations();
+        phaseAnims.draw();
         anims.draw();
 
 

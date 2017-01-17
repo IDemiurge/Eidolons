@@ -43,7 +43,7 @@ public class GameLauncher {
     // private boolean RANDOMIZE_PARTY = false;
     // private boolean RANDOMIZE_ENEMIES_PARTY = true;
     public boolean LEADER_MOVES_FIRST = false;
-    public String ENEMY_PARTY = "Troglodyte";
+    public String ENEMY_PARTY = "Troglodyte;Troglodyte;Troglodyte";
     public String PLAYER_PARTY = "Pirate";
     public boolean DUMMY_MODE = false;
     public boolean DUMMY_PP = false;

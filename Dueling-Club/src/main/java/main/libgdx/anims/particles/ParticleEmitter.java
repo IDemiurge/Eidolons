@@ -20,10 +20,15 @@ public class ParticleEmitter extends Actor implements ParticleInterface {
     protected ParticleEffectPool pool;
     protected SFX fx;
     private boolean bound=true;
+    boolean flipX;
+    boolean flipY;
+
 
     public ParticleEmitter(SFX fx) {
       this(fx.path);
         this.fx = fx;
+//        effect.setFlip(flipX, flipY);
+//        effect.getEmitters().get(0).setSprite();
     }
 
     public ParticleEmitter(String path) {
@@ -50,6 +55,13 @@ public class ParticleEmitter extends Actor implements ParticleInterface {
         effect.update(delta);
     }
 
+    public void setFlipX(boolean flipX) {
+        this.flipX = flipX;
+    }
+
+    public void setFlipY(boolean flipY) {
+        this.flipY = flipY;
+    }
     public void updatePosition(float x, float y) {
         if (bound)
             setPosition(x,y);

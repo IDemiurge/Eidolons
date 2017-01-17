@@ -13,6 +13,7 @@ import main.entity.obj.MicroObj;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.libgdx.GameScreen;
+import main.system.auxiliary.LogMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.HashMap;
@@ -77,7 +78,8 @@ public class LightMap {
 
     //    public void updateMap(Map<DC_HeroObj, BaseView> units) {
     public void updateMap() {
-        System.out.println("UpdateMap method was called");
+       main.system.auxiliary.LogMaster.log(LogMaster.VISIBILITY_DEBUG,
+        "UpdateMap method was called");
         valid = false;
         if (bodyMap != null) {
             bodyMap.clear();

@@ -47,6 +47,14 @@ play_mode.
         }
         if (getKeyFrameIndex(stateTime)==frameNumber)
             loops--;
+
+//        Sprite sprite = new Sprite(currentFrame);
+//        sprite.setRotation(RandomWizard.getRandomInt(360)/360f);
+//        sprite.draw(batch);
+//        sprite.setPosition( x + offsetX-currentFrame.getRegionWidth()/2, y
+//         + offsetY
+//         -currentFrame.getRegionHeight()/2);
+
         batch.draw(currentFrame, x + offsetX-currentFrame.getRegionWidth()/2, y
          + offsetY
          -currentFrame.getRegionHeight()/2);

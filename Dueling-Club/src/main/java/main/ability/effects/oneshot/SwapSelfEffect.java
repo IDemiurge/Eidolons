@@ -1,7 +1,6 @@
 package main.ability.effects.oneshot;
 
 import main.ability.effects.SelfMoveEffect;
-import main.entity.obj.DC_HeroObj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.MovementManager.MOVE_MODIFIER;
 
@@ -12,6 +11,7 @@ public class SwapSelfEffect extends SelfMoveEffect {
     @Override
     public boolean applyThis() {
         c = ref.getTargetObj().getCoordinates();
+        origin= c;
         try {
             game.getMovementManager().move(ref.getTargetObj(),
                     ref.getSourceObj().getCoordinates(), free,

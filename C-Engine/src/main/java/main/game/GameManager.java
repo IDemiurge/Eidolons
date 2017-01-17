@@ -32,7 +32,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import static main.system.GraphicEvent.INGAME_EVENT_TRIGGERED;
+import static main.system.GuiEventType.INGAME_EVENT_TRIGGERED;
 
 /**
  * With gamestate being mostly a data holder, this class is a method container

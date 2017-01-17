@@ -258,7 +258,14 @@ public class FileManager {
         return findFiles(folder, regex, false, true);
     }
 
-    public static List<File> findFiles(File folder, String regex) {
+    public static String findFirstFile(String folder, String regex, boolean closest) {
+        List<File> files = getFilesFromDirectory(folder,   false);
+        if (files.isEmpty()) return null ;
+        if (closest)
+            return   SearchMaster .findClosest(regex,  getFileNames(files).toArray()).toString();
+        return  new SearchMaster<String>().find(regex,  getFileNames(files));
+    }
+        public static List<File> findFiles(File folder, String regex) {
         return findFiles(folder, regex, false, true);
     }
 

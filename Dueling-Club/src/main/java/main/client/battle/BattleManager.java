@@ -238,6 +238,7 @@ public class BattleManager {
     }
 
     private void checkClear() {
+        if (!DC_Game.game.isDebugMode())
         if (checkNoEnemiesLeft())
             if (game.getGameMode() != GAME_MODES.ARENA)
                 victory();

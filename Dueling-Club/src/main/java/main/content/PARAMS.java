@@ -777,7 +777,9 @@ public enum PARAMS implements PARAMETER {
 
     AUTO_TEST_ID("", "", false, 0, "spells", "actions", "classes", "skills"),
     HT_CUSTOM_POS_X("", "", false, 0, "classes", "skills"),
-    HT_CUSTOM_POS_Y("", "", false, 0, "classes", "skills");
+    HT_CUSTOM_POS_Y("", "", false, 0, "classes", "skills"),
+    ANIM_SPEED("", "", false, 0, "spells", "actions")
+    ;
 
     static {
         COUNTER_MOD.addSpecialDefault(OBJ_TYPES.ACTIONS, 75);

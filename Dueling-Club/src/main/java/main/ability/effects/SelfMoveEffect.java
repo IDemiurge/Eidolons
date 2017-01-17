@@ -46,16 +46,16 @@ public class SelfMoveEffect extends MoveEffect {
     @Override
     public boolean applyThis() {
         DC_UnitObj obj = (DC_UnitObj) ref.getSourceObj();
-        Coordinates c = null;
-        c = getCoordinates();
-        if (c == null) // if selective?
+        destination = getCoordinates();
+        if (destination == null) // if selective?
             return false;
-        game.getMovementManager().move(obj, c, free, mod, ref);
+        game.getMovementManager().move(obj, destination, free, mod, ref);
         return true;
     }
 @Override
     public Coordinates getCoordinates() {
         DC_UnitObj obj = (DC_UnitObj) ref.getSourceObj();
+    origin= obj.getCoordinates();
     Coordinates  c = obj.getCoordinates();
     if (template != null) {
             // ++ variables

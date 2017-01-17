@@ -4,11 +4,13 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import main.ability.effects.Effect;
 import main.data.XLinkedMap;
 import main.entity.obj.top.DC_ActiveObj;
+import main.game.DC_Game;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.phased.PhaseAnim;
 import main.libgdx.anims.std.EffectAnim;
 import main.system.GuiEventManager;
-import main.system.GraphicEvent;
+import main.system.GuiEventType;
+import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.MapMaster;
 
 import java.util.Arrays;
@@ -22,8 +24,8 @@ import java.util.Map;
 public class CompositeAnim {
 
     Map<ANIM_PART, Anim> map = new XLinkedMap<>();
-    Map<ANIM_PART, List<GraphicEvent>> startEventMap ;
-    Map<ANIM_PART, List<GraphicEvent>> eventMap ;
+    Map<ANIM_PART, List<GuiEventType>> startEventMap ;
+    Map<ANIM_PART, List<GuiEventType>> eventMap ;
     Map<ANIM_PART, List<CompositeAnim>> attached ;
     ANIM_PART part;
     int index;
@@ -48,6 +50,14 @@ this(new XLinkedMap< >());
     }
 
     public boolean draw(Batch batch) {
+        if (currentAnim != null)
+            try{
+            DC_Game.game.getAnimationManager().getAnimations().forEach(a -> {
+                PhaseAnim phaseAnim= a.getPhaseAnim();
+//                main.system.auxiliary.LogMaster.log(1,"drawing " +a + " at " + currentAnim.getPosition());
+                phaseAnim.setPosition(currentAnim.getPosition().x,currentAnim.getPosition().y);
+                phaseAnim.draw(batch, 1f);
+            });        }catch(Exception e){                e.printStackTrace();            }
 
         boolean result = false;
         if (currentAnim != null)
@@ -77,7 +87,7 @@ this(new XLinkedMap< >());
 
     private void drawAttached(Batch batch) {
         List<CompositeAnim> list = attached.get(part);
-        if ( list!=null )
+        if ( list==null ) return;
         list.forEach(anim -> {
             anim.draw(batch);
 
@@ -131,11 +141,26 @@ map.values().forEach(anim -> {
         if (map.isEmpty()) {
             return;
         }
-
+        queueGraphicEvents();
         running=true;
+        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,this +" started: "
+        );
+
     }
 
+    @Override
+    public String toString() {
+
+        return getClass().getSimpleName() + map;
+    }
+
+    private void queueGraphicEvents() {
+        getStartEventMap().values().forEach(
+     (List<GuiEventType> e) -> e.forEach(x -> GuiEventManager.queue(x))        );
+    }
     private void initPartAnim() {
+        if (map.isEmpty())
+            return ;
         part = (ANIM_PART) MapMaster.get(map, index);
         currentAnim=map.get(part);
         currentAnim.start();
@@ -163,11 +188,11 @@ map.values().forEach(anim -> {
         return map;
     }
 
-    public Map<ANIM_PART, List<GraphicEvent>> getStartEventMap() {
+    public Map<ANIM_PART, List<GuiEventType>> getStartEventMap() {
         return startEventMap;
     }
 
-    public Map<ANIM_PART, List<GraphicEvent>> getEventMap() {
+    public Map<ANIM_PART, List<GuiEventType>> getEventMap() {
         return eventMap;
     }
 

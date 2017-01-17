@@ -1086,6 +1086,13 @@ public class StringMaster {
 
         return string;
     }
+    public static String buildPath(String... strings) {
+        String result = "";
+        for (String s : strings) {
+            result += s + PATH_SEPARATOR;
+        }
+        return result.substring(0, result.length()-1);
+    }
 
     public static String build(String... strings) {
         String result = "";

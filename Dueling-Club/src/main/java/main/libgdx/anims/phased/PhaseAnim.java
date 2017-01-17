@@ -1,10 +1,10 @@
 package main.libgdx.anims.phased;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.texture.Texture2D;
-import main.system.auxiliary.GuiManager;
 import main.system.graphics.PhaseAnimation;
 
 import java.awt.*;
@@ -16,8 +16,8 @@ public class PhaseAnim extends Group {
 
 
     PhaseAnimation anim;
-    int w = GuiManager.getScreenWidthInt();
-    int h = GuiManager.getScreenHeightInt();
+    int w =Gdx.graphics.getWidth(); // GuiManager.getScreenWidthInt();
+    int h = Gdx.graphics.getHeight(); // GuiManager.getScreenHeightInt();
     private Texture2D texture;
     private Image image;
     private boolean dirty;
@@ -29,7 +29,9 @@ public class PhaseAnim extends Group {
 
     @Override
     public String toString() {
-        return anim.toString();
+        return
+         getX()+" "+getY()+ " - "+
+         anim.toString();
     }
 
     public void update() {
@@ -53,18 +55,18 @@ public class PhaseAnim extends Group {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (dirty) {
-
+            texture = new Texture2D(w, h);
             Graphics2D g2d = texture.begin();
             anim.draw(g2d);
             texture.end();
             removeActor(image);
             image = new Image(texture);
+            image.setPosition(w/2, h/2);
             addActor(image);
             dirty = false;
         }
         super.draw(batch, parentAlpha);
     }
-
     public PhaseAnimation getAnim() {
         return anim;
     }

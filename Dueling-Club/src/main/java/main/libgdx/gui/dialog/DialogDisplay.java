@@ -8,8 +8,8 @@ import main.libgdx.anims.particles.lighting.LightingManager;
 import main.system.GuiEventManager;
 import main.system.graphics.MigMaster;
 
-import static main.system.GraphicEvent.DIALOG_CLOSED;
-import static main.system.GraphicEvent.SHOW_INFO_DIALOG;
+import static main.system.GuiEventType.DIALOG_CLOSED;
+import static main.system.GuiEventType.SHOW_INFO_DIALOG;
 
 /**
  * Created by JustMe on 1/8/2017.

@@ -345,7 +345,11 @@ public class ActivesConstructor {
 
     public static Effect wrapEffects(EFFECTS_WRAP wrap, Effect effects, Entity entity) {
         Formula radius = new Formula(entity.getParam(G_PARAMS.RADIUS));
-        boolean friendlyFire = !entity.checkBool(STD_BOOLS.NO_FRIENDLY_FIRE);
+        Boolean allyOrEnemyOnly = null ;
+        if (entity.checkBool(STD_BOOLS.NO_FRIENDLY_FIRE))
+            allyOrEnemyOnly = false;
+        if (entity.checkBool(STD_BOOLS.NO_ENEMY_FIRE))
+            allyOrEnemyOnly = true;
         boolean notSelf = entity.checkBool(STD_BOOLS.NO_SELF_FIRE);
         switch (wrap) {
             case CHAIN:
@@ -369,7 +373,7 @@ public class ActivesConstructor {
                 // };
                 break;
             case ZONE:
-                effects = new Effects(new ZoneEffect(effects, radius, friendlyFire, notSelf));
+                effects = new Effects(new ZoneEffect(effects, radius, allyOrEnemyOnly, notSelf));
                 break;
 
             case SINGLE_BUFF:

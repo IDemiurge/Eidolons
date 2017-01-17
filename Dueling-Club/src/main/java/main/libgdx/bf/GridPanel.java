@@ -21,7 +21,7 @@ import main.libgdx.bf.mouse.GridMouseListener;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
-import main.system.GraphicEvent;
+import main.system.GuiEventType;
 import main.system.GuiEventManager;
 import main.system.datatypes.DequeImpl;
 import org.apache.commons.lang3.tuple.Pair;
@@ -30,7 +30,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-import static main.system.GraphicEvent.*;
+import static main.system.GuiEventType.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -168,7 +168,7 @@ public class GridPanel extends Group {
             boolean caught = false;
             if (event.getType() == STANDARD_EVENT_TYPE.EFFECT_APPLIES)
             {
-                GuiEventManager.trigger (GraphicEvent.EFFECT_APPLIED,
+                GuiEventManager.trigger (GuiEventType.EFFECT_APPLIED,
              new EventCallbackParam<>(event.getRef().getEffect())) ;
                 caught=true;
             }

@@ -116,6 +116,12 @@ public class EffectMaster {
         return getEffectsOfClass(getEffectsFromSpell(active), CLASS);
     }
 
+    public static Effect getFirstEffectOfClass(DC_ActiveObj active, Class<?> CLASS) {
+        List<Effect> list = getEffectsOfClass(getEffectsFromSpell(active), CLASS);
+        if (list.isEmpty()) return null;
+        return list.get(0);
+    }
+
     public static List<Effect> getEffectsOfClass(Effect effect, Class<?> CLASS) {
         if (ClassMaster.isInstanceOf(effect, CLASS))
             return new ListMaster<Effect>().getList(effect);
@@ -224,7 +230,7 @@ public class EffectMaster {
     public static Effects initParamModEffects(String modString, Ref ref) {
         Effects modEffects = new Effects();
         Map<PARAMETER, String> map = new RandomWizard<PARAMETER>().constructStringWeightMap(
-                modString, PARAMETER.class);
+         modString, PARAMETER.class);
         initParamModEffects(modEffects, map, ref);
         return modEffects;
     }
@@ -232,7 +238,7 @@ public class EffectMaster {
     public static Effects initPropModEffects(String modString, Ref ref) {
         Effects modEffects = new Effects();
         Map<PROPERTY, String> map = new RandomWizard<PROPERTY>().constructStringWeightMap(
-                modString, PROPERTY.class);
+         modString, PROPERTY.class);
         initPropModEffects(modEffects, map, ref);
         return modEffects;
     }

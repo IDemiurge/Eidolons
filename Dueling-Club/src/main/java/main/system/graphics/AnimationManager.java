@@ -14,7 +14,7 @@ import main.game.battlefield.options.UIOptions;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.CellComp;
 import main.system.GuiEventManager;
-import main.system.GraphicEvent;
+import main.system.GuiEventType;
 import main.system.auxiliary.ColorManager;
 import main.system.auxiliary.FontMaster;
 import main.system.auxiliary.FontMaster.FONT;
@@ -139,7 +139,7 @@ public class AnimationManager {
         // drawThumbnails()
         if (changed) {
             changed = !changed;
-            GuiEventManager.trigger(GraphicEvent.UPDATE_PHASE_ANIMS, null);
+            GuiEventManager.trigger(GuiEventType.UPDATE_PHASE_ANIMS, null);
             return true;
         }
         return changed;

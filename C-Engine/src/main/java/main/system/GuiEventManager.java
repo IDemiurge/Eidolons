@@ -15,13 +15,13 @@ import java.util.concurrent.locks.ReentrantLock;
  * To change this template use File | Settings | File Templates.
  */
 public class GuiEventManager<T> {
-    private static Map<GraphicEvent, EventCallback> eventMap = new HashMap<>();
+    private static Map<GuiEventType, EventCallback> eventMap = new HashMap<>();
     private static List<Runnable> eventQueue = new ArrayList<>();
     private static Lock lock = new ReentrantLock();
-    private static Map<GraphicEvent, List<EventCallbackParam>> queue = new XLinkedMap<>();
-    private static List<GraphicEvent> waiting = new LinkedList<>();
+    private static Map<GuiEventType, List<EventCallbackParam>> queue = new XLinkedMap<>();
+    private static List<GuiEventType> waiting = new LinkedList<>();
 
-    public static void bind(GraphicEvent type, final EventCallback event) {
+    public static void bind(GuiEventType type, final EventCallback event) {
         if (event != null) {
             if (eventMap.containsKey(type)) {
                 final EventCallback old = eventMap.remove(type);
@@ -39,7 +39,7 @@ public class GuiEventManager<T> {
         }
     }
 
-    public static void triggerQueued(GraphicEvent e) {
+    public static void triggerQueued(GuiEventType e) {
 
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, e +
          " trigger queued ");
@@ -57,12 +57,12 @@ public class GuiEventManager<T> {
         trigger(e, p);
     }
 
-    public static void queue(GraphicEvent e) {
+    public static void queue(GuiEventType e) {
         waiting.add(e);
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, e + " waiting for anim: " + waiting);
     }
 
-    public static void trigger(final GraphicEvent type, final EventCallbackParam obj) {
+    public static void trigger(final GuiEventType type, final EventCallbackParam obj) {
 //        main.system.auxiliary.LogMaster.log(1,
 //         type + " triggering with: " + obj == null ? "" : obj.toString());
         if (waiting.contains(type)) {

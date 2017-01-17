@@ -2,8 +2,10 @@ package main.libgdx.anims.phased;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.DC_Game;
 import main.libgdx.GameScreen;
+import main.libgdx.anims.AnimMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.GuiManager;
 
@@ -11,7 +13,7 @@ import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
-import static main.system.GraphicEvent.*;
+import static main.system.GuiEventType.*;
 
 /**
  * Created by JustMe on 1/5/2017.
@@ -19,19 +21,20 @@ import static main.system.GraphicEvent.*;
 public class PhaseAnimator extends Group {
     private static PhaseAnimator instance;
     List<PhaseAnim> anims = new LinkedList<>();
+    private Stage stage;
 
-    public PhaseAnimator() {
+    public PhaseAnimator(Stage stage) {
+        this.stage = stage;
+        stage.addActor(this);
         setBounds(0, 0, (float) GuiManager.getScreenWidth(), (float)
-                GuiManager.getScreenHeight());
+         GuiManager.getScreenHeight());
         setVisible(true);
-
+        instance=this;
+        init();
     }
 
     public static PhaseAnimator getInstance() {
-        if (instance == null)
-            instance = new PhaseAnimator();
-        return
-                instance;
+      return    instance;
     }
 
     public void init() {
@@ -65,6 +68,7 @@ public class PhaseAnimator extends Group {
     }
 
     public void update() {
+        if (!AnimMaster.isOn())return ;
 //        getAnims().forEach(anim -> {
 //            if (!DC_Game.game.getAnimationManager().
 //             getAnimations().contains(anim.getAnim()))
@@ -88,20 +92,20 @@ public class PhaseAnimator extends Group {
             anim.update();
             addActor(anim);
             Point p = GameScreen.getInstance().getGridPanel()
-                    .getPointForCoordinateWithOffset(anim.getAnim().getSourceCoordinates());
+             .getPointForCoordinateWithOffset(anim.getAnim().getSourceCoordinates());
             float x = p.x;
             float y = p.y;
-            y = GameScreen.getInstance().getGridPanel().getCellHeight() *
-                    GameScreen.getInstance().getGridPanel().getRows();
-            x = 0;
-            y = 0;
+//            y = GameScreen.getInstance().getGridPanel().getCellHeight() *
+//             GameScreen.getInstance().getGridPanel().getRows();
+//            x = 0;
+//            y = 0;
 //            y = 255+GameScreen.getInstance().getController().getY_cam_pos();
 //            x = 255+  GameScreen.getInstance().getController().getX_cam_pos();
 
             anim.setX(x);
             anim.setY(y);
             main.system.auxiliary.LogMaster.log(1, "**********Added anim : "
-                    + anim + "at " + x + " - " + y);
+             + anim + "at " + x + " - " + y);
 //    anim.getAnim().getMouseMap()
         });
 //            sprite = new TextureRegion(j2dTex);

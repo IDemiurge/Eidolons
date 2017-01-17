@@ -20,6 +20,8 @@ public class MoveEffect extends DC_Effect {
     private UNIT_DIRECTION direction;
     private String relativeDirection;
     private String targetKey = KEYS.TARGET.toString();
+    protected  Coordinates origin;
+    protected  Coordinates destination;
 
     public MoveEffect() {
         movement = true;
@@ -66,15 +68,15 @@ public class MoveEffect extends DC_Effect {
         free = true;
     }
 
-    protected  Coordinates destination;
     @Override
     public boolean applyThis() {
         DC_HeroObj obj = (DC_HeroObj) ref.getObj(obj_to_move);
+        origin= obj.getCoordinates();
         if (direction != null) {
-            Coordinates c = obj.getCoordinates().getAdjacentCoordinate(
+            destination= obj.getCoordinates().getAdjacentCoordinate(
                     DirectionMaster.getDirectionByFacing(obj.getFacing(),
                             direction));
-            game.getMovementManager().move(obj, c, free,
+            game.getMovementManager().move(obj, destination, free,
                     MOVE_MODIFIER.DISPLACEMENT, ref);
             return true;
         }
@@ -108,5 +110,9 @@ public class MoveEffect extends DC_Effect {
     public Coordinates getDestination() {
         if (destination==null ) return getCoordinates();
         return destination;
+    }
+
+    public Coordinates getOrigin() {
+        return origin;
     }
 }

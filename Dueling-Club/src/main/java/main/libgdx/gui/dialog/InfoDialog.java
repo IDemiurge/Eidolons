@@ -105,6 +105,8 @@ public class InfoDialog extends Dialog {
 
 
         points = new Container("", LAYOUT.HORIZONTAL);
+
+
         top = new Container(portraitBg, LAYOUT.HORIZONTAL) {
             @Override
             public void initComps() {
