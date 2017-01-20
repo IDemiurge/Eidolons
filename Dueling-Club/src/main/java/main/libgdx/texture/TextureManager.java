@@ -16,7 +16,7 @@ import java.util.List;
  * Created by JustMe on 12/30/2016.
  */
 public class TextureManager {
-    static TextureCache cache;
+    private static TextureCache cache;
 
     public static Texture getOrCreate(String p) {
         if (ImageManager.getPATH() != null)
