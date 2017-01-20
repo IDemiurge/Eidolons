@@ -24,15 +24,15 @@ public class TextIconComp extends Table {
     public TextIconComp(Supplier<String> textGetter, Supplier<String> imgGetter
     ) {
         this(textGetter, imgGetter
-         , StyleHolder.getDefaultLabelStyle()
-         , 0,
-         0,
-         ALIGNMENT.EAST);
+                , StyleHolder.getDefaultLabelStyle()
+                , 0,
+                0,
+                ALIGNMENT.EAST);
     }
 
     public TextIconComp(Supplier<String> textGetter, Supplier<String> imgGetter
-     , LabelStyle style
-     , int offsetX,
+            , LabelStyle style
+            , int offsetX,
                         int offsetY,
                         ALIGNMENT alignment
     ) {
@@ -52,14 +52,14 @@ public class TextIconComp extends Table {
 
     public void initComps() {
         imageComp = new Comp(
-         imgGetter.get());
+                imgGetter.get());
         textComp = new TextComp(textGetter.get(), style);
         addActor(imageComp);
         addActor(textComp);
-        com.badlogic.gdx.scenes.scene2d.ui.Container       textTable=
-        new com.badlogic.gdx.scenes.scene2d.ui.Container<TextComp>();
+        com.badlogic.gdx.scenes.scene2d.ui.Container textTable =
+                new com.badlogic.gdx.scenes.scene2d.ui.Container<TextComp>();
 //        center()
-        switch (alignment){
+        switch (alignment) {
 
             case NORTH:
                 textTable.top();

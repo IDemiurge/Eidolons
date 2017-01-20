@@ -1,15 +1,15 @@
 package main.libgdx.anims.phased;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.DC_Game;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.AnimMaster;
 import main.system.GuiEventManager;
-import main.system.auxiliary.GuiManager;
 
-import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,16 +25,16 @@ public class PhaseAnimator extends Group {
 
     public PhaseAnimator(Stage stage) {
         this.stage = stage;
-        stage.addActor(this);
-        setBounds(0, 0, (float) GuiManager.getScreenWidth(), (float)
-         GuiManager.getScreenHeight());
+        this.stage.addActor(this);
+        setBounds(0, 0, (float) Gdx.graphics.getWidth(), (float)
+                Gdx.graphics.getHeight());
         setVisible(true);
-        instance=this;
+        instance = this;
         init();
     }
 
     public static PhaseAnimator getInstance() {
-      return    instance;
+        return instance;
     }
 
     public void init() {
@@ -68,18 +68,11 @@ public class PhaseAnimator extends Group {
     }
 
     public void update() {
-        if (!AnimMaster.isOn())return ;
-//        getAnims().forEach(anim -> {
-//            if (!DC_Game.game.getAnimationManager().
-//             getAnimations().contains(anim.getAnim()))
-//                try {
-//                    getAnims().remove(anim);
-//                    main.system.auxiliary.LogMaster.log(1, "**********Removed anim : " + anim);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//        });
+        if (!AnimMaster.isOn()) return;
+//        removeAnims();
+        setBounds(0, 0, (float) Gdx.graphics.getWidth(), (float)
+                Gdx.graphics.getHeight());
+
         DC_Game.game.getAnimationManager().getAnimations().forEach(a -> {
             if (a.getPhaseAnim() == null) {
                 getAnims().add(new PhaseAnim(a));
@@ -91,8 +84,8 @@ public class PhaseAnimator extends Group {
         getAnims().forEach(anim -> {
             anim.update();
             addActor(anim);
-            Point p = GameScreen.getInstance().getGridPanel()
-             .getPointForCoordinateWithOffset(anim.getAnim().getSourceCoordinates());
+            Vector2 p = GameScreen.getInstance().getGridPanel()
+                    .getVectorForCoordinateWithOffset(anim.getAnim().getSourceCoordinates());
             float x = p.x;
             float y = p.y;
 //            y = GameScreen.getInstance().getGridPanel().getCellHeight() *
@@ -105,14 +98,34 @@ public class PhaseAnimator extends Group {
             anim.setX(x);
             anim.setY(y);
             main.system.auxiliary.LogMaster.log(1, "**********Added anim : "
-             + anim + "at " + x + " - " + y);
+                    + anim + "at " + x + " - " + y);
 //    anim.getAnim().getMouseMap()
         });
 //            sprite = new TextureRegion(j2dTex);
         setVisible(true);
     }
 
+    private void removeAnims() {
+        getAnims().forEach(anim -> {
+            if (!DC_Game.game.getAnimationManager().
+                    getAnimations().contains(anim.getAnim()))
+                try {
+                    getAnims().remove(anim);
+                    main.system.auxiliary.LogMaster.log(1, "**********Removed anim : " + anim);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+        });
+    }
+
     public List<PhaseAnim> getAnims() {
         return anims;
+    }
+
+    public boolean checkAnimClicked(float x, float y, int pointer, int button) {
+//        getAnims().forEach(a->{
+//            a.getAnim().getMouseMap()
+        return false;
     }
 }

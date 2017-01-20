@@ -12,19 +12,22 @@ import java.util.Map;
  * Created by JustMe on 1/7/2017.
  */
 public class LayoutParser {
-    public enum LAYOUT {
-        HORIZONTAL,
-        VERTICAL,;
-    }
-
     public static final String X2 = "x2";
     public static final String Y2 = "y2";
     private static final String DELIMITER = " ";
-    private Container c;
     Map<Comp, Point> map;
-
+    private Container c;
     public LayoutParser(Container c) {
         this.c = c;
+    }
+
+    public static String process(Container c, String constraints, Comp comp) {
+        int height = (int) comp.getHeight();
+        int width = (int) comp.getWidth();
+        int container_height = (int) c.getHeight();
+        int container_width = (int) c.getWidth();
+        return MigMaster.process(constraints,
+                height, width, container_height, container_width);
     }
 
     public void add(String s, Comp comp) {
@@ -50,12 +53,8 @@ public class LayoutParser {
         return map;
     }
 
-    public static String process(Container c, String constraints, Comp comp) {
-        int height = (int) comp.getHeight();
-        int width = (int) comp.getWidth();
-        int container_height = (int) c.getHeight();
-        int container_width = (int) c.getWidth();
-        return MigMaster.process(constraints,
-                height, width, container_height, container_width);
+    public enum LAYOUT {
+        HORIZONTAL,
+        VERTICAL,;
     }
 }

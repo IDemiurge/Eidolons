@@ -31,21 +31,21 @@ public class ActionPanelHolder {
 
     public void init() {
         itemPanel = new ActionPanel<DC_QuickItemObj>(hero,
-         ()-> hero.getQuickItems(),
+                () -> hero.getQuickItems(),
                 action -> {
                     DC_QuickItemObj item = (DC_QuickItemObj) action.get();
                     item.invokeClicked();
                 }, columns);
 
         centerPanel = new ActionPanel<DC_UnitAction>(hero,
-         ()-> getFilteredActions(),
+                () -> getFilteredActions(),
                 action -> {
                     DC_UnitAction active = (DC_UnitAction) action.get();
                     active.invokeClicked();
                 }, columns);
 
         spellPanel = new ActionPanel<DC_SpellObj>(hero,
-         ()-> hero.getSpells(),
+                () -> hero.getSpells(),
                 action -> {
                     DC_SpellObj spell = (DC_SpellObj) action.get();
                     spell.invokeClicked();

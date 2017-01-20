@@ -25,7 +25,6 @@ public class TableContainer extends Container {
     //TODO generate texture for row*column
 
 
-
     public TableContainer(int rows, int columns,
                           Supplier<List<Actor>> supplier) {
         this("", rows, columns, supplier);
@@ -49,7 +48,7 @@ public class TableContainer extends Container {
 
     @Override
     protected void initRoot() {
-        root=new RootTable();
+        root = new RootTable();
     }
 
     @Override

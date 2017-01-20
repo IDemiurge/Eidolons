@@ -23,23 +23,71 @@ import java.util.Map;
  * Created by PC on 19.11.2016.
  */
 public class LightMap {
-    private Map<MicroObj, Body> bodyMap;
     private static World world;
     private static RayHandler rayHandler;
+    private static float SECOND = 1000000000;
+    private static float ambient = 0.05f;
+    private static int testA;
+    private static int testB;
+    private static PointLight mouseLight;
+    Box2DDebugRenderer debugRenderer;
+    private Map<MicroObj, Body> bodyMap;
     private float cellWidth;
     private float cellHeight;
     private int rows;
     private int cols;
     private Map<Integer, FireLightProt> fireLightProtMap;
-    private static float SECOND = 1000000000;
-    private static float ambient = 0.05f;
-    Box2DDebugRenderer debugRenderer;
-    private static int testA;
-    private static int testB;
     private boolean valid;
     private DequeImpl<DC_HeroObj> units;
-    private static PointLight mouseLight;
 
+
+    public LightMap(DequeImpl<DC_HeroObj> units, float cellWidth, float cellHeight, int rows, int cols) {
+        World world = new World(new Vector2(0, 0), true);
+        init(units, world, new RayHandler(world), cellWidth, cellHeight, rows, cols);
+    }
+
+    public static void setAmbient(float c) {
+        rayHandler.setAmbientLight(c);
+        rayHandler.update();
+        ambient = c;
+    }
+
+    public static float getAmbint() {
+        return ambient;
+    }
+
+    public static void resizeFBOb() {
+        testB += 50;
+        testA += 50;
+        rayHandler.resizeFBO(testA, testB);
+        rayHandler.update();
+    }
+
+    public static void resizeFBOa() {
+        testA -= 50;
+        testB -= 50;
+        rayHandler.resizeFBO(testA, testB);
+        rayHandler.update();
+    }
+
+    public static void mouseMouseMove(float x, float y, float zoom) {
+        mouseLight.setPosition(x, y);
+        boolean checkoutX = false;
+        boolean checkoutY = false;
+        float x_distance_from_the_border = Math.abs(x - Gdx.graphics.getWidth());
+        float y_distance_from_the_border = Math.abs(y - Gdx.graphics.getHeight());
+        checkoutX = !(x_distance_from_the_border < LightingManager.mouse_light_distance_to_turn_off || x_distance_from_the_border > Gdx.graphics.getWidth() - LightingManager.mouse_light_distance_to_turn_off);
+        checkoutY = !(y_distance_from_the_border < LightingManager.mouse_light_distance_to_turn_off || y_distance_from_the_border > Gdx.graphics.getWidth() - LightingManager.mouse_light_distance_to_turn_off);
+        if (checkoutX & checkoutY) {
+            mouseLight.setDistance(LightingManager.mouse_light_distance);
+        } else {
+            mouseLight.setDistance(0);
+        }
+    }
+
+    public static void mouseLightDistance(float distance) {
+        mouseLight.setDistance(distance);
+    }
 
     //
     private void init(DequeImpl<DC_HeroObj> units, World world,
@@ -78,8 +126,8 @@ public class LightMap {
 
     //    public void updateMap(Map<DC_HeroObj, BaseView> units) {
     public void updateMap() {
-       main.system.auxiliary.LogMaster.log(LogMaster.VISIBILITY_DEBUG,
-        "UpdateMap method was called");
+        main.system.auxiliary.LogMaster.log(LogMaster.VISIBILITY_DEBUG,
+                "UpdateMap method was called");
         valid = false;
         if (bodyMap != null) {
             bodyMap.clear();
@@ -115,11 +163,11 @@ public class LightMap {
                 fdef.shape = shape;
                 body.createFixture(fdef);
                 FireLightProt fireLightProt = new FireLightProt(world, rayHandler,
-                 units.get(i).getX() * cellWidth + cellWidth / 2, units.get(i).getY() *
-                 cellHeight + cellHeight / 2, units.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 30, 360, SECOND);
+                        units.get(i).getX() * cellWidth + cellWidth / 2, units.get(i).getY() *
+                        cellHeight + cellHeight / 2, units.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 30, 360, SECOND);
                 fireLightProt.attachToBody(body);
                 fireLightProtMap.put(i, fireLightProt);
-                valid=true;
+                valid = true;
             } else {
                 body.setTransform(units.get(i).getX() * cellWidth + cellWidth / 2, this.rows * cellHeight - units.get(i).getY() * cellHeight + cellHeight / 2, 0);
                 PolygonShape shape = new PolygonShape();
@@ -130,11 +178,6 @@ public class LightMap {
             }
             bodyMap.put(units.get(i), body);
         }
-    }
-
-    public LightMap(DequeImpl<DC_HeroObj> units, float cellWidth, float cellHeight, int rows, int cols) {
-        World world = new World(new Vector2(0, 0), true);
-        init(units, world, new RayHandler(world), cellWidth, cellHeight, rows, cols);
     }
 
     public void updatePos(MicroObj obj) {
@@ -153,7 +196,7 @@ public class LightMap {
         rayHandler.setCombinedMatrix(GameScreen.camera);
         rayHandler.updateAndRender();
         if (LightingManager.debug) {
-        debugRenderer.render(world, GameScreen.camera.combined);
+            debugRenderer.render(world, GameScreen.camera.combined);
         }
     }
 
@@ -161,47 +204,7 @@ public class LightMap {
         // TODO: 12.12.2016 pointlighter around the mouse - 35 ligth emission and arround active Unite - (his emission +20) (DC_Game.game.getManager.getActiveUnit()
     }
 
-    public static void setAmbient(float c) {
-        rayHandler.setAmbientLight(c);
-        rayHandler.update();
-        ambient = c;
-    }
-
-    public static float getAmbint() {
-        return ambient;
-    }
-    public static void resizeFBOb(){
-        testB += 50;
-        testA += 50;
-        rayHandler.resizeFBO(testA,testB);
-        rayHandler.update();
-    }
-    public static void resizeFBOa(){
-        testA -= 50;
-        testB -= 50;
-        rayHandler.resizeFBO(testA,testB);
-        rayHandler.update();
-    }
-
-    public boolean isValid() {return valid;
-    }
-
-    public static void mouseMouseMove(float x, float y, float zoom) {
-        mouseLight.setPosition(x, y);
-        boolean checkoutX = false;
-        boolean checkoutY = false;
-        float x_distance_from_the_border = Math.abs(x - Gdx.graphics.getWidth());
-        float y_distance_from_the_border = Math.abs(y - Gdx.graphics.getHeight());
-        checkoutX = !(x_distance_from_the_border < LightingManager.mouse_light_distance_to_turn_off || x_distance_from_the_border > Gdx.graphics.getWidth() - LightingManager.mouse_light_distance_to_turn_off);
-        checkoutY = !(y_distance_from_the_border < LightingManager.mouse_light_distance_to_turn_off || y_distance_from_the_border > Gdx.graphics.getWidth() - LightingManager.mouse_light_distance_to_turn_off);
-        if (checkoutX & checkoutY) {
-            mouseLight.setDistance(LightingManager.mouse_light_distance);
-        } else {
-            mouseLight.setDistance(0);
-        }
-    }
-
-    public static void mouseLightDistance(float distance) {
-        mouseLight.setDistance(distance);
+    public boolean isValid() {
+        return valid;
     }
 }

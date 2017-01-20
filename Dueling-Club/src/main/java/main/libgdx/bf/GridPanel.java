@@ -12,7 +12,6 @@ import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
-import main.game.battlefield.PointX;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.particles.lighting.LightMap;
@@ -21,14 +20,12 @@ import main.libgdx.bf.mouse.GridMouseListener;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
-import main.system.GuiEventType;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.datatypes.DequeImpl;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 import static main.system.GuiEventType.*;
 
@@ -80,16 +77,6 @@ public class GridPanel extends Group {
         return rows;
     }
 
-    public Point getPointForCoordinateWithOffset(Coordinates sourceCoordinates) {
-        InputController controller = GameScreen.getInstance().getController();
-        int x = (int) (
-//         controller.getX_cam_pos()/2
-         +sourceCoordinates.getX() * getCellWidth() / controller.getZoom());
-        int y = (int) (
-//         controller.getY_cam_pos()/2
-         +(rows - sourceCoordinates.getY()) * getCellHeight() / controller.getZoom());
-        return new PointX(x, y);
-    }
 
     public Vector2 getVectorForCoordinateWithOffset(Coordinates sourceCoordinates
     ) {
@@ -97,16 +84,16 @@ public class GridPanel extends Group {
     }
 
     public Vector2 getVectorForCoordinateWithOffset(Coordinates sourceCoordinates
-     , boolean centered) {
+            , boolean centered) {
         InputController controller = GameScreen.getInstance().getController();
         float x = sourceCoordinates.getX() * getCellWidth() / controller.getZoom();
         float y = (rows - sourceCoordinates.getY()) * getCellHeight() / controller.getZoom();
         if (centered) {
-            x+=getCellWidth()/2;
-            y-=getCellHeight()/2;
+            x += getCellWidth() / 2;
+            y -= getCellHeight() / 2;
         }
         return new Vector2(
-         x, y);
+                x, y);
     }
 
     public GridPanel init() {
@@ -148,7 +135,7 @@ public class GridPanel extends Group {
     private void bindEvents() {
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p =
-             (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
+                    (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             Map<Borderable, Runnable> map = new HashMap<>();
             for (DC_Obj obj1 : p.getLeft()) {
                 Borderable b = unitMap.get(obj1);
@@ -159,97 +146,92 @@ public class GridPanel extends Group {
             GuiEventManager.trigger(SHOW_BLUE_BORDERS, new EventCallbackParam(map));
         });
         GuiEventManager.bind(UNIT_MOVED, param -> {
-                moveUnitView((DC_HeroObj) param.get());
-         });
+            moveUnitView((DC_HeroObj) param.get());
+        });
 
         GuiEventManager.bind(INGAME_EVENT_TRIGGERED, param -> {
             main.game.event.Event event = (main.game.event.Event) param.get();
             Ref r = event.getRef();
             boolean caught = false;
-            if (event.getType() == STANDARD_EVENT_TYPE.EFFECT_APPLIES)
-            {
-                GuiEventManager.trigger (GuiEventType.EFFECT_APPLIED,
-             new EventCallbackParam<>(event.getRef().getEffect())) ;
-                caught=true;
+            if (event.getType() == STANDARD_EVENT_TYPE.EFFECT_APPLIES) {
+                GuiEventManager.trigger(GuiEventType.EFFECT_APPLIED,
+                        new EventCallbackParam<>(event.getRef().getEffect()));
+                caught = true;
             }
 
 
-                    if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED
-                     || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
-                     || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
+            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED
+                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
+                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
 //                (r.getEffect() instanceof ChangeFacingEffect) nice try
-                    {
-                        DC_HeroObj hero = (DC_HeroObj) r.getObj(KEYS.TARGET
-                        );
-                        BaseView view = unitMap.get(hero);
-                        if (view instanceof UnitView) {
-                            UnitView unitView = ((UnitView) view);
-                            unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
-                        }
-                        caught = true;
-                    }
+            {
+                DC_HeroObj hero = (DC_HeroObj) r.getObj(KEYS.TARGET
+                );
+                BaseView view = unitMap.get(hero);
+                if (view instanceof UnitView) {
+                    UnitView unitView = ((UnitView) view);
+                    unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
+                }
+                caught = true;
+            }
 
 
+            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED
+                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
+                removeUnitView((DC_HeroObj) r.getSourceObj());
+                caught = true;
+            }
 
+            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING) {
+                moveUnitView((DC_HeroObj) r.getSourceObj());
+                caught = true;
+            }
+            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_SUMMONED) {
+                addUnitView((DC_HeroObj) r.getObj(KEYS.SUMMONED));
+                caught = true;
+            }
 
-
-
-                    if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED
-                     || event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
-                        removeUnitView((DC_HeroObj) r.getSourceObj());
-                        caught = true;
-                    }
-
-                    if (event.getType() == STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING) {
-                        moveUnitView((DC_HeroObj) r.getSourceObj());
-                        caught = true;
-                    }
-                    if (event.getType() == STANDARD_EVENT_TYPE.UNIT_SUMMONED) {
-                        addUnitView((DC_HeroObj) r.getObj(KEYS.SUMMONED));
-                        caught = true;
-                    }
-
-                    if (event.getType().name().startsWith("PARAM_BEING_MODIFIED")) {
-                        caught = true;
+            if (event.getType().name().startsWith("PARAM_BEING_MODIFIED")) {
+                caught = true;
                 /*switch (event.getType().getArg()) {
                     case "Spellpower":
                         int a = 10;
                         break;
                 }*/
-                    }
-                    if (event.getType().name().startsWith("PROP_"))
-                        caught = true;
-                    if (event.getType().name().startsWith("ABILITY_"))
-                        caught = true;
-                    if (event.getType().name().startsWith("EFFECT_"))
-                        caught = true;
+            }
+            if (event.getType().name().startsWith("PROP_"))
+                caught = true;
+            if (event.getType().name().startsWith("ABILITY_"))
+                caught = true;
+            if (event.getType().name().startsWith("EFFECT_"))
+                caught = true;
 
-                    if (event.getType().name().startsWith("PARAM_MODIFIED")) {
-                        switch (event.getType().getArg()) {
-                            case "Illumination":
-                                if (getLightMap() != null) {
-                                    Obj o = event.getRef().getTargetObj();
-                                    if (o instanceof DC_HeroObj) {
-                                        getLightMap().updateObject((DC_HeroObj) event.getRef().getTargetObj());
-                                    }
-                                }
-                                caught = true;
-                                break;
+            if (event.getType().name().startsWith("PARAM_MODIFIED")) {
+                switch (event.getType().getArg()) {
+                    case "Illumination":
+                        if (getLightMap() != null) {
+                            Obj o = event.getRef().getTargetObj();
+                            if (o instanceof DC_HeroObj) {
+                                getLightMap().updateObject((DC_HeroObj) event.getRef().getTargetObj());
+                            }
                         }
-
                         caught = true;
-                    }
+                        break;
+                }
 
-                    if (!caught) {
-                        System.out.println("catch ingame event: " + event.getType() + " in " + event.getRef());
-                    }
-                });
+                caught = true;
+            }
+
+            if (!caught) {
+                System.out.println("catch ingame event: " + event.getType() + " in " + event.getRef());
+            }
+        });
 
 
         GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
             DC_HeroObj hero = (DC_HeroObj) obj.get();
             BaseView view = unitMap.get(hero);
-            if (view.getParent() != null) {
+            if (view.getParent() instanceof GridCellContainer) {
                 ((GridCellContainer) view.getParent()).popupUnitView(view);
             }
             if (hero.isMine()) {
@@ -345,7 +327,7 @@ public class GridPanel extends Group {
         if (getLightMap() != null) {
             getLightMap().updatePos(heroObj);
         }
-        GuiEventManager.trigger(UPDATE_LIGHT, null );
+        GuiEventManager.trigger(UPDATE_LIGHT, null);
     }
 
     private void addUnitView(DC_HeroObj heroObj) {
@@ -359,7 +341,7 @@ public class GridPanel extends Group {
         GridCellContainer gridCellContainer = (GridCellContainer) uv.getParent();
         gridCellContainer.removeActor(uv);
         uv.setVisible(false);
-        GuiEventManager.trigger(UPDATE_LIGHT, null );
+        GuiEventManager.trigger(UPDATE_LIGHT, null);
     }
 
     @Override

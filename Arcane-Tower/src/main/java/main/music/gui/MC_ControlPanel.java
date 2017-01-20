@@ -268,7 +268,7 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 		} else {
 			// list.play();
 		}
-		list.getMouseListener().handleClick(0, list.getMouseListener().getClickMode());
+		list.getMouseListener().handleClick(0, CLICK_MODE.PLAY);//list.getMouseListener().getClickMode()
         // getOrCreate path for name
 
 		// add to selected?

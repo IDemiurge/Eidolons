@@ -41,8 +41,8 @@ public class GuiEventManager<T> {
 
     public static void triggerQueued(GuiEventType e) {
 
-        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, e +
-         " trigger queued ");
+        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+         "Triggering queued " + e);
 
         List<EventCallbackParam> list = queue.get(e);
         if (list == null) {

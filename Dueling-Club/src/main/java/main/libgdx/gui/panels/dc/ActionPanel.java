@@ -19,7 +19,7 @@ public class ActionPanel<T extends DC_Obj> extends EntityContainer {
                        Supplier<Collection<? extends Entity>> supplier
             , final EventCallback event,
                        int columns) {
-        super(  "", 64, columns, 1, supplier, hero, event );
+        super("", 64, columns, 1, supplier, hero, event);
     }
 
 

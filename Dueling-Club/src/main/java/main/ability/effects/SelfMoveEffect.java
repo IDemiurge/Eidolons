@@ -46,6 +46,7 @@ public class SelfMoveEffect extends MoveEffect {
     @Override
     public boolean applyThis() {
         DC_UnitObj obj = (DC_UnitObj) ref.getSourceObj();
+        origin=new Coordinates(obj.getCoordinates().getX(),obj.getCoordinates().getY());
         destination = getCoordinates();
         if (destination == null) // if selective?
             return false;
@@ -55,14 +56,12 @@ public class SelfMoveEffect extends MoveEffect {
 @Override
     public Coordinates getCoordinates() {
         DC_UnitObj obj = (DC_UnitObj) ref.getSourceObj();
-    origin= obj.getCoordinates();
-    Coordinates  c = obj.getCoordinates();
     if (template != null) {
             // ++ variables
-            c = game.getMovementManager().getTemplateMoveCoordinate(template, obj.getFacing(), obj,
+        destination = game.getMovementManager().getTemplateMoveCoordinate(template, obj.getFacing(), obj,
                     ref);
         } else if (direction != null)
-            c = c.getAdjacentCoordinate(DirectionMaster.getDirectionByFacing(obj.getFacing(),
+        destination = origin.getAdjacentCoordinate(DirectionMaster.getDirectionByFacing(obj.getFacing(),
                     direction));
         else {
             if (formula == null) {
@@ -85,9 +84,9 @@ public class SelfMoveEffect extends MoveEffect {
             if (!new TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES.CELL, conditions)
                     .select(ref))
                 return null;
-            c = ref.getTargetObj().getCoordinates();
+        destination = ref.getTargetObj().getCoordinates();
         }
-        return c;
+        return destination;
     }
 
     public UNIT_DIRECTION getDirection() {

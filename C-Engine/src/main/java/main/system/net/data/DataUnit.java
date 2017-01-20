@@ -5,6 +5,7 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.MapMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.*;
@@ -13,6 +14,7 @@ public class DataUnit<T extends Enum<T>> {
     public static final String TRUE = "TRUE";
     protected Class<? extends Enum<T>> enumClass;
     protected Map<String, String> values = new ConcurrentMap<String, String>();
+    protected Map<String, String> removedValues;
     // Map<T, String>
     protected String[] relevantValues;
 
@@ -60,9 +62,26 @@ public class DataUnit<T extends Enum<T>> {
         this.values = values;
 
     }
+    public String removeValue(T t) {
+        return removeValue(t.name());
+    }
+
+    public String removeValue(String name) {
+        getRemovedValues().put(name, values.get(name));
+        return values.remove(name);
+    }
+
+    public Map<String, String> getRemovedValues() {
+        if (removedValues==null )    removedValues = new ConcurrentMap< >();
+        return removedValues;
+    }
 
     public void setValue(T name, String value) {
+        if (value==null )   removeValue(name);
         values.put(name.name(), value);
+    }
+    public void addValue(T name, String value) {
+      MapMaster.addToStringMap(values, name.name(), value);
     }
 
     public void setValue(String name, String value) {
@@ -77,13 +96,7 @@ public class DataUnit<T extends Enum<T>> {
         return values.get(name);
     }
 
-    public String removeValue(T t) {
-        return removeValue(t.name());
-    }
 
-    public String removeValue(String name) {
-        return values.remove(name);
-    }
 
     public void setData(String data, Boolean std_alt_map) {
         String[] entries = data.split(getSeparator(std_alt_map));

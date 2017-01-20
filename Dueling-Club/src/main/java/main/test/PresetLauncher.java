@@ -62,6 +62,8 @@ public class PresetLauncher {
                 UnitGroupMaster.setFactionMode(DialogMaster.confirm("Faction Mode?"));
                 return null;
             case "Fast":
+                FAST_DC.getGameLauncher().DUMMY_MODE = true;
+                FAST_DC.getGameLauncher().DUMMY_PP = true;
                 FAST_DC.getGameLauncher().setFAST_MODE(true);
                 return true;
             case "Superfast":

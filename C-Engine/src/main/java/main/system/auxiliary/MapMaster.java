@@ -16,9 +16,8 @@ public class MapMaster<E, T> {
     }
 
 
-
     public static void addToListMap(Map map, Object key, Object value) {
-        if (value==null )return ;
+        if (value == null) return;
         Object entry = map.get(key);
         if (entry instanceof Collection) {
             Collection collection = (Collection) entry;
@@ -57,6 +56,16 @@ public class MapMaster<E, T> {
 
     public static Object get(Map map, int i) {
         return map.keySet().toArray()[i];
+    }
+
+    public static void addToStringMap(Map<String, String> values, String name, String value) {
+        String val = values.get(name);
+        if (val == null) {
+            values.put(name, value);
+            return;
+        }
+        val += value + StringMaster.getContainerSeparator();
+        values.put(name, val);
     }
 
     public E getKeyForValue(Map<E, T> itemMap, T value) {
@@ -154,4 +163,5 @@ public class MapMaster<E, T> {
         return map;
 
     }
+
 }

@@ -53,8 +53,8 @@ public class TextureManager {
 //}
         Texture sheet = TextureManager.getOrCreate(path);
         TextureRegion[][] tmp = TextureRegion.split(sheet,
-         sheet.getWidth() / FRAME_COLS,
-         sheet.getHeight() / FRAME_ROWS);
+                sheet.getWidth() / FRAME_COLS,
+                sheet.getHeight() / FRAME_ROWS);
 
         TextureRegion[] frames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
         int index = 0;
@@ -90,8 +90,8 @@ public class TextureManager {
             return StringMaster.getInteger(x);
         }
         return xOrY ?
-         getXY(origPath).getKey() :
-         getXY(origPath).getValue();
+                getXY(origPath).getKey() :
+                getXY(origPath).getValue();
     }
 
     public static float getFrameNumber(String path) {

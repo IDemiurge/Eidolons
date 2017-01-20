@@ -2,6 +2,7 @@ package main.libgdx.anims.phased;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.texture.Texture2D;
@@ -15,23 +16,33 @@ import java.awt.*;
 public class PhaseAnim extends Group {
 
 
-    PhaseAnimation anim;
-    int w =Gdx.graphics.getWidth(); // GuiManager.getScreenWidthInt();
-    int h = Gdx.graphics.getHeight(); // GuiManager.getScreenHeightInt();
-    private Texture2D texture;
-    private Image image;
-    private boolean dirty;
+    protected PhaseAnimation anim;
+    protected int w = Gdx.graphics.getWidth(); // GuiManager.getScreenWidthInt();
+    protected int h = Gdx.graphics.getHeight(); // GuiManager.getScreenHeightInt();
+    protected Texture2D texture;
+    protected Image image;
+    protected boolean dirty;
 
     public PhaseAnim(PhaseAnimation anim) {
         this.anim = anim;
         anim.setPhaseAnim(this);
+        w = Math.max(228, anim.getW());
+        h = Math.max(228, anim.getH());
+
+        anim.setThumbnail(true);
+        addListener(new PhaseAnimListener(this));
+    }
+
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        return super.hit(x, y, touchable);
     }
 
     @Override
     public String toString() {
         return
-         getX()+" "+getY()+ " - "+
-         anim.toString();
+                getX() + " " + getY() + " - " +
+                        anim.toString();
     }
 
     public void update() {
@@ -55,18 +66,21 @@ public class PhaseAnim extends Group {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (dirty) {
+            if (texture != null)
+                texture.dispose();
             texture = new Texture2D(w, h);
             Graphics2D g2d = texture.begin();
             anim.draw(g2d);
             texture.end();
             removeActor(image);
             image = new Image(texture);
-            image.setPosition(w/2, h/2);
+//            image.setPosition(w/2, h/2);
             addActor(image);
             dirty = false;
         }
         super.draw(batch, parentAlpha);
     }
+
     public PhaseAnimation getAnim() {
         return anim;
     }

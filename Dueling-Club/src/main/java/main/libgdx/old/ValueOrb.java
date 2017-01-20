@@ -15,12 +15,11 @@ import java.io.File;
  * To change this template use File | Settings | File Templates.
  */
 public class ValueOrb extends Group {
+    private final static String topImagePath = "UI\\components\\new\\orb 64.png";
     private Texture backTexture;
     private Image topTexture;
     private Color backColor;
     private Texture newBackTexture;
-
-    private final static String topImagePath = "UI\\components\\new\\orb 64.png";
     private String imagePath;
 
     public ValueOrb(Color backColor, String imagePath) {

@@ -82,7 +82,7 @@ public class ToolTipManager extends Group {
 
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
-        setPosition(v2.x,v2.y);
+        setPosition(v2.x, v2.y);
     }
 
     private int addToolTipOffset(TextureRegion region, int offset, ToolTipRecordOption option) {

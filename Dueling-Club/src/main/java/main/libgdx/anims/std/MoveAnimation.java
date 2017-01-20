@@ -6,16 +6,12 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import main.ability.effects.MoveEffect;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
 import main.game.battlefield.Coordinates;
-import main.libgdx.GameScreen;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.particles.ParticleEmitter;
 import main.libgdx.anims.sprite.SpriteAnimation;
-import main.libgdx.bf.BaseView;
 import main.system.GuiEventType;
 import main.system.ai.logic.target.EffectMaster;
-import main.system.auxiliary.ListMaster;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -40,7 +36,7 @@ public class MoveAnimation extends ActionAnim {
                 protected void begin() {
                     super.begin();
                     main.system.auxiliary.LogMaster.log(1, this + " begins! "
-                     + this.getX() + " " + this.getY());
+                            + this.getX() + " " + this.getY());
                 }
 
                 @Override
@@ -55,7 +51,7 @@ public class MoveAnimation extends ActionAnim {
                 }
             };
         action.setPosition(getDestination().x, getDestination().y);
-        action.setDuration(duration);
+        action.setDuration(1);
         return action;
     }
 
@@ -69,18 +65,23 @@ public class MoveAnimation extends ActionAnim {
         return new LinkedList<>();
     }
 
+
     @Override
     public void start() {
         super.start();
-        DC_HeroObj unit = (DC_HeroObj) getRef().getSourceObj();
-        if (!ListMaster.isNotEmpty(EffectMaster.getEffectsOfClass(getActive(),
-         MoveEffect.class)))
-            unit = (DC_HeroObj) getRef().getTargetObj();
-        BaseView actor = GameScreen.getInstance().getGridPanel().getUnitMap()
-         .get(unit);
-        main.system.auxiliary.LogMaster.log(1, " ");
-        actor.addAction(getAction());
-        action.setTarget(actor);
+//        DC_HeroObj unit = (DC_HeroObj) getRef().getSourceObj();
+//        if (!ListMaster.isNotEmpty(EffectMaster.getEffectsOfClass(getActive(),
+//         MoveEffect.class)))
+//            unit = (DC_HeroObj) getRef().getTargetObj();
+//        BaseView actor = GameScreen.getInstance().getGridPanel().getUnitMap()
+//         .get(unit);
+//        GameScreen.getInstance().getGridStage().addActor(actor);
+//        actor.setPosition(getX(), getY());
+//        main.system.auxiliary.LogMaster.log(1, " ");
+//        actor.addAction(getAction());
+//        action.setTarget(actor);
+
+
     }
 
 
@@ -96,7 +97,7 @@ public class MoveAnimation extends ActionAnim {
 //            return getRef().getTargetObj().getCoordinates();
 //        return super.getOriginCoordinates();
         MoveEffect e = (MoveEffect) EffectMaster.getFirstEffectOfClass(getActive(),
-         MoveEffect.class);
+                MoveEffect.class);
         return e.getOrigin();
 
     }
@@ -106,7 +107,7 @@ public class MoveAnimation extends ActionAnim {
 
 
         MoveEffect e = (MoveEffect) EffectMaster.getFirstEffectOfClass(getActive(),
-         MoveEffect.class); //TODO could be 2+?
+                MoveEffect.class); //TODO could be 2+?
         return e.getDestination();
 //            if (e.getDirection() != null) {
 //                return ref.getSourceObj().getCoordinates().getAdjacentCoordinate
@@ -125,14 +126,14 @@ public class MoveAnimation extends ActionAnim {
     @Override
     public List<GuiEventType> getEventsOnStart() {
         return new LinkedList<>(Arrays.asList(new GuiEventType[]{
-         GuiEventType.DESTROY_UNIT_MODEL
+                GuiEventType.DESTROY_UNIT_MODEL
         }));
     }
 
     @Override
     public List<GuiEventType> getEventsOnFinish() {
         return new LinkedList<>(Arrays.asList(new GuiEventType[]{
-         GuiEventType.UNIT_MOVED
+                GuiEventType.UNIT_MOVED
         }));
     }
 

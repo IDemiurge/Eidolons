@@ -434,14 +434,15 @@ public class DC_AttackMaster {
                 DC_SoundMaster.playMissedSound(attacker, getAttackWeapon(ref, offhand));
                 StackingRule.actionMissed(action);
                 // ++ animation? *MISS* //TODO ++ true strike
-
+                action.setFailedLast(true);
                 if (checkEffectsInterrupt(attacked, attacker, SPECIAL_EFFECTS_CASE.ON_DODGE, ref,
-                        offhand))
+                 offhand)) {
                     return true;
+                }
                 if (canCounter)
-                    if ((!countered) || attacked.hasDoubleCounter())
-                        // tryCounter(attack);
-                        return true;
+                    if ((!countered) || attacked.hasDoubleCounter()){
+                        // tryCounter(attack); TODO ?
+                        return true;}
             } else {
                 if (attacked.checkPassive(STANDARD_PASSIVES.CRITICAL_IMMUNE)) {
                     log(StringMaster.MESSAGE_PREFIX_INFO + attacked.getName()
@@ -565,7 +566,10 @@ public class DC_AttackMaster {
             attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_DEATH, attacker, ref); // e.g.
             // retribution
             if (attacker.isDead())
+            {
+                attack.setLethal(true);
                 return true;
+            }
             // attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_KILL,
             // attacker, ref); // already applied in DC_UnitObj.kill()
 

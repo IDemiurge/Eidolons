@@ -14,12 +14,12 @@ import java.util.List;
 public class DeathAnim extends Anim {
     DC_HeroObj unit;
 
+    public DeathAnim(Entity active, AnimData params) {
+        super(active, params);
+    }
+
     @Override
     public List<SpriteAnimation> getSprites() {
         return super.getSprites();
-    }
-
-    public DeathAnim(Entity active, AnimData params) {
-        super(active, params);
     }
 }

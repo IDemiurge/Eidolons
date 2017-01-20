@@ -1467,6 +1467,22 @@ public abstract class PhaseAnimation implements ANIM {
         this.offsetX = offsetX;
     }
 
+    public int getH() {
+        return h;
+    }
+
+    public int getW() {
+        return w;
+    }
+
+    public Point getSourcePoint() {
+        return sourcePoint;
+    }
+
+    public Point getTargetPoint() {
+        return targetPoint;
+    }
+
     public int getOffsetY() {
         return offsetY;
     }

@@ -12,11 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  */
 public class ActivePanelUnitName extends Group {
 
+    private static final String backgroundImagePath = "\\UI\\bf\\name comp.png";
     private Image background;
     //private Label text;
     private String imagePath;
-
-    private static final String backgroundImagePath = "\\UI\\bf\\name comp.png";
 
     public ActivePanelUnitName(String imagePath) {
         this.imagePath = imagePath;

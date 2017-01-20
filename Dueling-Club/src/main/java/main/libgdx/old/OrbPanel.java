@@ -48,12 +48,12 @@ public class OrbPanel extends Group {
         return this;
     }
 
-    public void invertOrbOrder(){
-        swapOrbsPos(orbs[0],orbs[2]);
-        swapOrbsPos(orbs[3],orbs[5]);
+    public void invertOrbOrder() {
+        swapOrbsPos(orbs[0], orbs[2]);
+        swapOrbsPos(orbs[3], orbs[5]);
     }
 
-    private void swapOrbsPos(ValueOrb first, ValueOrb last){
+    private void swapOrbsPos(ValueOrb first, ValueOrb last) {
         float fX = first.getX();
         float fY = first.getY();
 

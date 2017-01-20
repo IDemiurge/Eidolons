@@ -18,7 +18,7 @@ import main.system.auxiliary.LogMaster;
 public class EffectAnim extends Anim {
     public EffectAnim(Effect e) {
         super((Entity) e.getRef().getActive(), getAnimData(e));
-        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,this +" created: " +data);
+        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, this + " created: " + data);
         /*
         animation could be constructed from effects and action/spell-properties
 
@@ -39,7 +39,7 @@ via trigger etc
          */
     }
 
-   public static AnimData getAnimData(Effect e) {
+    public static AnimData getAnimData(Effect e) {
         AnimData data = new AnimData();
         switch (e.getClass().getSimpleName().replace("Effect", "")) {
             case "DealDamage":
@@ -60,6 +60,49 @@ via trigger etc
         return data;
     }
 
+    private static AnimData getDamageAnimData(DealDamageEffect e) {
+        AnimData data = new AnimData();
+        data.setValue(ANIM_VALUES.SPRITES, getSprites(e));
+        data.setValue(ANIM_VALUES.PARTICLE_EFFECTS, getSfx(e));
+//        data.setValue(ANIM_VALUES.LIGHT_AMBIENT,        getLight
+//         (e));
+//        data.setValue(ANIM_VALUES.LIGHT_FOCUS,        getLight
+//         (e));
+
+        return data;
+    }
+
+    private static String getLight(Effect e) {
+        return null;
+    }
+
+    private static String getSfx(Effect e) {
+        if (e instanceof DealDamageEffect)
+            return PathFinder.getSfxPath() + "damage\\"
+                    + "fire"
+//         + ((DealDamageEffect) e).getDamage_type().toString()
+                    ;
+        return null;
+    }
+
+    private static String getSprites(Effect e) {
+        if (e instanceof DealDamageEffect)
+
+            return PathFinder.getSpritesPath() + "damage\\"
+                    + "fire"
+//             +  ((DealDamageEffect) e).getDamage_type().toString()
+                    + ".png";
+        return null;
+    }
+
+    public static ANIM_PART getPartToAttachTo(Effect effect) {
+//        if (e instanceof  DealDamageEffect)
+        return ANIM_PART.IMPACT;
+
+//        return ANIM_PART.AFTEREFFECT;
+
+    }
+
     @Override
     public ANIM_PART getPart() {
         return ANIM_PART.IMPACT;
@@ -75,52 +118,8 @@ via trigger etc
         return getRef().getTargetObj().getCoordinates();
     }
 
-
-    private static AnimData getDamageAnimData(DealDamageEffect e) {
-        AnimData data = new AnimData();
-        data.setValue(ANIM_VALUES.SPRITES,getSprites(e));
-        data.setValue(ANIM_VALUES.PARTICLE_EFFECTS,getSfx(e));
-//        data.setValue(ANIM_VALUES.LIGHT_AMBIENT,        getLight
-//         (e));
-//        data.setValue(ANIM_VALUES.LIGHT_FOCUS,        getLight
-//         (e));
-
-        return data;
-    }
-
-    private static String getLight(Effect e) {
-        return null ;
-    }
-
-    private static String getSfx(Effect e) {
-        if (e instanceof  DealDamageEffect)
-        return PathFinder.getSfxPath()+ "damage\\"
-//         +         "fire"
-         + ((DealDamageEffect) e).getDamage_type().toString()
-         ;
-        return null;
-    }
-
-    private static String getSprites( Effect e) {
-        if (e instanceof  DealDamageEffect)
-
-            return   PathFinder.getSpritesPath()+   "damage\\"
-//             +"fire"
-             +  ((DealDamageEffect) e).getDamage_type().toString()
-             + ".png";
-        return null;
-    }
-
     ANIM_MOD[] getAnims(Effect e) {
 
         return null;
-    }
-
-    public static ANIM_PART getPartToAttachTo(Effect effect) {
-//        if (e instanceof  DealDamageEffect)
-        return ANIM_PART.IMPACT;
-
-//        return ANIM_PART.AFTEREFFECT;
-
     }
 }

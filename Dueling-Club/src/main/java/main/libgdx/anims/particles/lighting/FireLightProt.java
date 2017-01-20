@@ -12,6 +12,10 @@ import java.util.Random;
  * Created by PC on 29.11.2016.
  */
 public class FireLightProt {
+    static float alphaBigger;
+    static float alphaSmaller;
+    static Color biggerLight;
+    static Color smallerLight;
     float timeCounter;
     long timePassed;
     float changesp;
@@ -27,16 +31,6 @@ public class FireLightProt {
     float lengthFinal;
     float now;
     float past;
-    static float alphaBigger;
-    static float alphaSmaller;
-    static Color biggerLight;
-    static Color smallerLight;
-
-    public void setDISTANCE(float DISTANCE) {
-        this.DISTANCEBIGGER = DISTANCE;
-        this.DISTANCESMALLER = DISTANCEBIGGER/3;
-    }
-
 
     public FireLightProt(World world, RayHandler rayHandler, float x, float y, int distance, float degree, float changeSpeed) {
         biggerLight = new Color(0xffe9a3AF);
@@ -44,7 +38,7 @@ public class FireLightProt {
         alphaBigger = biggerLight.a;
         alphaSmaller = smallerLight.a;
         DISTANCEBIGGER = distance;
-        DISTANCESMALLER = DISTANCEBIGGER/3;
+        DISTANCESMALLER = DISTANCEBIGGER / 3;
 
 //        pointLight = new ConeLight(rayHandler, AMOUNT_OF_RAYS, Color.RED, distance,degree, x, y);
         pointLight = new ConeLight(rayHandler, AMOUNT_OF_RAYS, biggerLight, distance, x, y, 90, degree);
@@ -65,6 +59,30 @@ public class FireLightProt {
         past = System.nanoTime();
         timeCounter = 0;
 
+    }
+
+    public static void setBiggerAlpha(float alpha) {
+        biggerLight.a = alpha;
+        alphaBigger = alpha;
+
+    }
+
+    public static void setSmallerAlpha(float alpha) {
+        smallerLight.a = alpha;
+        alphaSmaller = alpha;
+    }
+
+    public static float getAlphaBigger() {
+        return alphaBigger;
+    }
+
+    public static float getAlphaSmaller() {
+        return alphaSmaller;
+    }
+
+    public void setDISTANCE(float DISTANCE) {
+        this.DISTANCEBIGGER = DISTANCE;
+        this.DISTANCESMALLER = DISTANCEBIGGER / 3;
     }
 
     public void update() {
@@ -179,25 +197,6 @@ public class FireLightProt {
     public void attachToBody(Body body) {
         pointLight.attachToBody(body);
         pointLight_test.attachToBody(body);
-    }
-
-    public static void setBiggerAlpha(float alpha) {
-        biggerLight.a = alpha;
-        alphaBigger = alpha;
-
-    }
-
-    public static void setSmallerAlpha(float alpha) {
-        smallerLight.a = alpha;
-        alphaSmaller = alpha;
-    }
-
-    public static float getAlphaBigger() {
-        return alphaBigger;
-    }
-
-    public static float getAlphaSmaller() {
-        return alphaSmaller;
     }
 
     public void dispose() {

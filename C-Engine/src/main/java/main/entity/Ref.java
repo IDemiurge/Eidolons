@@ -421,10 +421,19 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
         try {
             return game.getObjectById(getId(string));
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
-
+    public Obj getLastRemovedObj(KEYS string) {
+        try {
+            return game.getObjectById(StringMaster.getInteger(getRemovedValues()
+             .get(string.toString())));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     public ObjType getType(String string) {
         try {
             return game.getTypeById(getId(string));

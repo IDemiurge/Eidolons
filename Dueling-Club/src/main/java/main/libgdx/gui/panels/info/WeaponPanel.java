@@ -11,17 +11,18 @@ import main.libgdx.gui.panels.generic.TextComp;
 /**
  * Created by JustMe on 1/8/2017.
  */
-public class WeaponPanel extends Container{
-    static String imagePath= InfoDialog.path+"weapon bg.png";
-    public WeaponPanel(DC_HeroObj unit,boolean offhand) {
+public class WeaponPanel extends Container {
+    static String imagePath = InfoDialog.path + "weapon bg.png";
+
+    public WeaponPanel(DC_HeroObj unit, boolean offhand) {
         super(imagePath, LAYOUT.VERTICAL);
 //        if (offhand) flip();
 
         EntityContainer attacks = new EntityContainer(null, 64, 5, 1,
-         () -> unit.getAttacks(offhand), unit
+                () -> unit.getAttacks(offhand), unit
         );
         EntityComp weapon = new EntityComp(
-         unit.getWeapon(offhand));
+                unit.getWeapon(offhand));
 //        weapon2 = new EntityComp(
 //         unit.getNaturalWeapon(offhand));
 //        traits = new EntityContainer(2, 2, ()-> unit.getWeapon(offhand).getPassives());

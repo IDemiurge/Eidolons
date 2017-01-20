@@ -285,11 +285,17 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     protected PARAMETER getDurabilityParam() {
         return PARAMS.DAMAGE_BONUS;
     }
+    public boolean isNatural() {
+        return checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.NATURAL.toString(), true);
+    }
 
     public boolean isShield() {
         return checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.SHIELD.toString());
     }
 
+    public boolean isAmmo() { return checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.AMMO.toString());
+
+    }
     public boolean isMagical() {
         return checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.MAGICAL.toString());
     }
@@ -333,4 +339,5 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         modifyParameter(PARAMS.SPELL_AP_PENALTY, penalty_reduction, 0, true);
 
     }
+
 }

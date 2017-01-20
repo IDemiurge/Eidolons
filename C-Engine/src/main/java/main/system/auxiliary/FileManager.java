@@ -369,6 +369,9 @@ public class FileManager {
 
             } else if (!(f.isFile()))
                 continue;
+
+            if (f.getName().equalsIgnoreCase("desktop.ini"))
+                continue;
             list.add(f);
         }
         return list;

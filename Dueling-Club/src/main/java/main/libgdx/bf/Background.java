@@ -17,9 +17,9 @@ public class Background extends Comp {
 
 
     public Background(String path) {
-        
+
         super(path);
-        
+
     }
 
     public Background() {
@@ -38,9 +38,8 @@ public class Background extends Comp {
     }
 
 
-
     public void update() {
-        main.system.auxiliary.LogMaster.log(1,"update " +imagePath);
+        main.system.auxiliary.LogMaster.log(1, "update " + imagePath);
         super.update();
         image.setBounds(image.getImageX(), image.getImageY(), (float) GuiManager.getScreenWidth(), (float) GuiManager.getScreenHeight());
 
@@ -49,7 +48,7 @@ public class Background extends Comp {
 
     @Override
     public void setImagePath(String path) {
-        main.system.auxiliary.LogMaster.log(1,"setImagePath " +path);
+        main.system.auxiliary.LogMaster.log(1, "setImagePath " + path);
         super.setImagePath(path);
     }
 

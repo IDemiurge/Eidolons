@@ -17,26 +17,16 @@ import java.util.function.Supplier;
  */
 public class TabbedPanel extends Container {
 
-    public enum TAB_VARIANT {
-        SMALL,
-//auto-adjust size?
-        ;
-        public String toString() {
-
-            return super.toString();
-        }
-    }
     int selectedIndex;
     Actor displayedComp;
     TAB_VARIANT variant;
-    private Group contents;
     WidgetContainer tabRow;
     Supplier<Collection<Triple<String, String, Actor>>> tabSupplier;
-
+    private Group contents;
     public TabbedPanel(String imagePath, Supplier<Collection<Triple<String, String, Actor>>> tabSupplier) {
         super(imagePath, LAYOUT.VERTICAL);
 //reverse on demand
-        this.tabSupplier=tabSupplier;
+        this.tabSupplier = tabSupplier;
         tabRow = getGroup(LAYOUT.HORIZONTAL);
         tabRow.addListener(new ClickListener() {
             @Override
@@ -50,7 +40,7 @@ public class TabbedPanel extends Container {
 
     @Override
     public void initComps() {
-        setComps((Actor)tabRow, contents);
+        setComps((Actor) tabRow, contents);
     }
 
     @Override
@@ -61,27 +51,28 @@ public class TabbedPanel extends Container {
 
     public void addTabs() {
 
-        if (tabSupplier!=null  )
+        if (tabSupplier != null)
             tabSupplier.get().forEach(triple -> {
                 String text = triple.getA();
                 String imgPath = triple.getB();
                 Actor content = triple.getC()[0];
                 tabRow.addActor(
-                getTab(text, imgPath, content));
+                        getTab(text, imgPath, content));
             });
 
     }
 
     public void addTab(String text, String imgPath, Actor content) {
         tabRow.addActor(
-         getTab(text, imgPath, content));
+                getTab(text, imgPath, content));
     }
-        private Actor getTab(String text, String imgPath, Actor content) {
-        TextIconComp tab = new TextIconComp(()->text,
-         ()-> isSelected(content)
-        ? VISUALS.TAB_SELECTED.getImgPath() :VISUALS.TAB.getImgPath()
-        //TODO size up/down! 
-       ) ;
+
+    private Actor getTab(String text, String imgPath, Actor content) {
+        TextIconComp tab = new TextIconComp(() -> text,
+                () -> isSelected(content)
+                        ? VISUALS.TAB_SELECTED.getImgPath() : VISUALS.TAB.getImgPath()
+                //TODO size up/down!
+        );
         tab.addActor(new Comp(imgPath));
         tab.addListener(new InputListener() {
             @Override
@@ -95,11 +86,22 @@ public class TabbedPanel extends Container {
     }
 
     private boolean isSelected(Actor content) {
-        return displayedComp==content;
+        return displayedComp == content;
     }
 
     public void setContents(Actor a) {
         contents.clearChildren();
         contents.addActor(a);
+    }
+
+    public enum TAB_VARIANT {
+        SMALL,
+//auto-adjust size?
+        ;
+
+        public String toString() {
+
+            return super.toString();
+        }
     }
 }

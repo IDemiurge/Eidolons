@@ -21,7 +21,7 @@ class TextureCache(private var imagePath: String) {
             p = File.separator + path
         }
         if (!p.startsWith(File.separator + imagePath, true))
-        p = imagePath + p
+            p = imagePath + p
 
 
         if (!cache.containsKey(p)) {

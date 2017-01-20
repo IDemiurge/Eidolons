@@ -10,15 +10,15 @@ import main.system.GuiEventType;
 /**
  * Created by JustMe on 1/8/2017.
  */
-public class ParticleManager extends Actor{
-    public   boolean debugMode;
-    private Stage effects;
+public class ParticleManager extends Actor {
+    public boolean debugMode;
     EmitterMap emitterMap;
+    private Stage effects;
 
 
     public ParticleManager(Stage effects) {
         this.effects = effects;
-        emitterMap= new EmitterMap();
+        emitterMap = new EmitterMap();
 //        GuiEventManager.bind(GraphicEvent.GRID_CREATED, p -> {
 //         });
         GuiEventManager.bind(GuiEventType.UPDATE_EMITTERS, p -> {
@@ -32,14 +32,14 @@ public class ParticleManager extends Actor{
     public void draw(Batch batch, float parentAlpha) {
         ParticleEffect particleEffect;
         for (ParticleInterface actor : emitterMap.getEmitters()) {
-            particleEffect=    actor.getEffect();
+            particleEffect = actor.getEffect();
             particleEffect.update(parentAlpha);
             particleEffect.draw(batch, parentAlpha);
 
             if (particleEffect.isComplete()) {
-            if (actor.isContinuous())
-                particleEffect.reset();
-            else particleEffect.dispose();
+                if (actor.isContinuous())
+                    particleEffect.reset();
+                else particleEffect.dispose();
             }
         }
 
@@ -53,7 +53,7 @@ public class ParticleManager extends Actor{
 
         }
 
-            super.act(delta);
+        super.act(delta);
     }
 
     private void updateEmitters() {

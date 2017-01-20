@@ -19,10 +19,10 @@ public class PagedListPanel extends Comp {
     protected String imagePath;
     protected int col;
     protected int row;
-    private Image pager1;
     protected Image pager2;
+    private Image pager1;
     private Texture emptySlotTexture;
-    private int arrowVersion=5;
+    private int arrowVersion = 5;
 
     public PagedListPanel(String imagePath, int col, int row) {
 
@@ -69,11 +69,11 @@ public class PagedListPanel extends Comp {
         if (isHorizontal()) {
 
             pager1 = new Image(new Texture(
-             ImageManager.getArrowImagePath(!isHorizontal(), false,
-              arrowVersion)));
+                    ImageManager.getArrowImagePath(!isHorizontal(), false,
+                            arrowVersion)));
             pager2 = new Image(new Texture(
-             ImageManager.getArrowImagePath(!isHorizontal(), true,
-              arrowVersion)));
+                    ImageManager.getArrowImagePath(!isHorizontal(), true,
+                            arrowVersion)));
         }
 
         //pager2.rotateBy(180); TODO flip!

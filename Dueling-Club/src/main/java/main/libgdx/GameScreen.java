@@ -42,12 +42,12 @@ public class GameScreen implements Screen {
     public static OrthographicCamera camera;
     private static GameScreen instance;
     protected ToolTipManager toolTipManager;
-    private Stage grid;
-    private Stage gui;
-    private Stage dialog;
-    private Stage anims;
-    private Stage ambience;
-    private Stage phaseAnims;
+    private Stage gridStage;
+    private Stage guiStage;
+    private Stage dialogStage;
+    private Stage animsStage;
+    private Stage ambienceStage;
+    private Stage phaseAnimsStage;
     private Background background;
     private GridPanel gridPanel;
     private RadialMenu radialMenu;
@@ -67,7 +67,7 @@ public class GameScreen implements Screen {
     }
 
     public void PostGameStart() {
-        InputMultiplexer multiplexer = new InputMultiplexer(gui, controller, grid);
+        InputMultiplexer multiplexer = new InputMultiplexer(guiStage, controller, gridStage);
         Gdx.input.setInputProcessor(multiplexer);
     }
 
@@ -105,13 +105,14 @@ public class GameScreen implements Screen {
     private void initCamera() {
         camera = cam = new OrthographicCamera();
         cam.setToOrtho(false, 1600, 900);
-        grid.getViewport().setCamera(cam);
-        anims.getViewport().setCamera(cam);
+        gridStage.getViewport().setCamera(cam);
+        animsStage.getViewport().setCamera(cam);
+        phaseAnimsStage.getViewport().setCamera(cam);
         effects.getViewport().setCamera(cam);
     }
 
     private void initBf() {
-        grid = new Stage();
+        gridStage = new Stage();
     }
 
     private void initEffects() {
@@ -120,29 +121,29 @@ public class GameScreen implements Screen {
     }
 
     private void initAnims() {
-        anims = new Stage();
-        phaseAnims = new Stage();
-        animMaster = new AnimMaster(anims);
-        phaseAnimator = new PhaseAnimator(phaseAnims);
+        animsStage = new Stage();
+        phaseAnimsStage = new Stage();
+        animMaster = new AnimMaster(animsStage);
+        phaseAnimator = new PhaseAnimator(phaseAnimsStage);
     }
 
     private void initDialog() {
-        dialog = new Stage();
+        dialogStage = new Stage();
         dialogDisplay = new DialogDisplay();
-        dialog.addActor(dialogDisplay);
+        dialogStage.addActor(dialogDisplay);
     }
 
     private void initGui() {
         final Texture t = new Texture(GameScreen.class.getResource("/data/marble_green.png").getPath());
-        gui = new Stage();
-        gui.addActor(radialMenu = new RadialMenu(t));
-        gui.addActor(toolTipManager = new ToolTipManager());
+        guiStage = new Stage();
+        guiStage.addActor(radialMenu = new RadialMenu(t));
+        guiStage.addActor(toolTipManager = new ToolTipManager());
         queue = new InitiativeQueue();
-        gui.addActor(queue);
+        guiStage.addActor(queue);
         queue.setPosition(0, Gdx.app.getGraphics().getHeight() - 64);
 
         LogPanel ld = new LogPanel();
-        gui.addActor(ld);
+        guiStage.addActor(ld);
         ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
         ld.setPosition(200, 200);
     }
@@ -155,7 +156,7 @@ public class GameScreen implements Screen {
         GuiEventManager.bind(GRID_CREATED, param -> {
             Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
             gridPanel = new GridPanel(p.getLeft(), p.getRight()).init();
-            grid.addActor(gridPanel);
+            gridStage.addActor(gridPanel);
         });
 
         GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
@@ -177,8 +178,8 @@ public class GameScreen implements Screen {
 
         GuiEventManager.processEvents();
 
-        gui.act(delta);
-        grid.act(delta);
+        guiStage.act(delta);
+        gridStage.act(delta);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
@@ -196,20 +197,22 @@ public class GameScreen implements Screen {
 
         batch.end();
 
-        grid.draw();
+        gridStage.draw();
 
         effects.draw();
-        if (         DC_Game.game != null)
-            if (             DC_Game.game.getAnimationManager() != null)
+        if (DC_Game.game != null)
+            if (DC_Game.game.getAnimationManager() != null)
                 DC_Game.game.getAnimationManager().updateAnimations();
-        phaseAnims.draw();
-        anims.draw();
+        if (animMaster.isOn()) {
+            phaseAnimsStage.draw();
+            animsStage.draw();
+        }
 
 
-        gui.draw();
+        guiStage.draw();
 
         if (dialogDisplay.getDialog() != null) {
-            dialog.draw();
+            dialogStage.draw();
         }
     }
 
@@ -221,10 +224,11 @@ public class GameScreen implements Screen {
 /*        camera = cam = new OrthographicCamera(width, height);
         cam.update();*/
         cam.setToOrtho(false, width, height);
-        anims.getViewport().update(width, height);
+        animsStage.getViewport().update(width, height);
+        phaseAnimsStage.getViewport().update(width, height);
         effects.getViewport().update(width, height);
-        grid.getViewport().update(width, height);
-        gui.getViewport().update(width, height);
+        gridStage.getViewport().update(width, height);
+        guiStage.getViewport().update(width, height);
 
 /*        to disable pixelperfect
         float camWidth = MapView.TILE_WIDTH * 10.0f;
@@ -274,5 +278,29 @@ public class GameScreen implements Screen {
 
     public DialogDisplay getDialogDisplay() {
         return dialogDisplay;
+    }
+
+    public Stage getGridStage() {
+        return gridStage;
+    }
+
+    public Stage getGuiStage() {
+        return guiStage;
+    }
+
+    public Stage getDialogStage() {
+        return dialogStage;
+    }
+
+    public Stage getAnimsStage() {
+        return animsStage;
+    }
+
+    public Stage getAmbienceStage() {
+        return ambienceStage;
+    }
+
+    public Stage getPhaseAnimsStage() {
+        return phaseAnimsStage;
     }
 }
