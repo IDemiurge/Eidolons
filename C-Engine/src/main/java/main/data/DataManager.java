@@ -492,7 +492,8 @@ public class DataManager {
             if (or) {
                 if (StringMaster.contains(filter, objName.getValue(filterValue)))
                     list.add(objName);
-            } else if (StringMaster.compare(objName.getValue(filterValue), filter, true)) {
+            } else if (StringMaster.compare(objName.getValue(filterValue),
+             filter, true)) {
                 list.add(objName);
             }
         }

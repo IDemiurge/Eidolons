@@ -124,8 +124,10 @@ public class PhaseAnimator extends Group {
     }
 
     public boolean checkAnimClicked(float x, float y, int pointer, int button) {
-//        getAnims().forEach(a->{
-//            a.getAnim().getMouseMap()
+        for (PhaseAnim a : getAnims()) {
+            if (a.getListener().checkClick(x, y, button))
+                return true;
+        }
         return false;
         }
 }
