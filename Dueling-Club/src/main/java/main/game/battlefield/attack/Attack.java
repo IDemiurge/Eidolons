@@ -27,6 +27,7 @@ public class Attack {
     private boolean ranged;
     private boolean critical;
     private boolean dodged;
+    private boolean lethal;
     private Effect onHit;
     private Effect onKill;
     private Effect onAttack;
@@ -312,6 +313,14 @@ public class Attack {
 
         this.rawDamage = rawDamage;
 
+    }
+
+    public boolean isLethal() {
+        return lethal;
+    }
+
+    public void setLethal(boolean lethal) {
+        this.lethal = lethal;
     }
 
     public int getDamage() {

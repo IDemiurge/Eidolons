@@ -16,9 +16,7 @@ import main.entity.obj.top.DC_ActiveObj;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.particles.ParticleEmitter;
 import main.libgdx.anims.sprite.SpriteAnimation;
-import main.libgdx.anims.std.ActionAnim;
-import main.libgdx.anims.std.EffectAnim;
-import main.libgdx.anims.std.MoveAnimation;
+import main.libgdx.anims.std.*;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.FileManager;
 import main.system.auxiliary.LogMaster;
@@ -116,7 +114,7 @@ public class AnimationConstructor {
 
     private Anim getPartAnim(AnimData data, DC_ActiveObj active, ANIM_PART part) {
 
-        Anim anim = createAnim(active, data);
+        Anim anim = createAnim(active, data, part);
 
         if (!initAnim(data, active, part, anim)) {
             if (!(active instanceof DC_SpellObj)) {
@@ -130,9 +128,20 @@ public class AnimationConstructor {
         return anim;
     }
 
-    private Anim createAnim(DC_ActiveObj active, AnimData data) {
+    private Anim createAnim(DC_ActiveObj active, AnimData data, ANIM_PART part) {
         if (active.isMove())
             return new MoveAnimation(active, data);
+        if (active.isAttackAny()) {
+            if (part == ANIM_PART.MAIN) {
+                if (active.isRanged())
+                    return new RangedAttackAnim(active);
+                return new AttackAnim(active);
+            }
+            if (part == ANIM_PART.IMPACT)
+                return new HitAnim(active, data);
+            if (part == ANIM_PART.AFTEREFFECT)
+                return new DeathAnim(active, data);
+        }
         return new ActionAnim(active, data);
     }
 
@@ -174,12 +183,22 @@ public class AnimationConstructor {
     private boolean checkForcedAnimation(DC_ActiveObj active, ANIM_PART part) {
         switch (part) {
             case MAIN:
-                return (active.isMove() || active.isAttack() || active.isTurn());
-            case CAST:
+                return (active.isMove() || active.isAttackAny() || active.isTurn());
             case IMPACT:
-                return active.isAttack();
+                if (active.isAttackAny())
+                    if (!active.isFailedLast())
+                        return true;
+                break;
+//            case AFTEREFFECT:
+//                if (active.isAttackAny()) {
+//                    if (active.getAttack()!=null )
+//
+//                        return true;
+//                }
+//
+
+            case CAST:
             case RESOLVE:
-            case AFTEREFFECT:
                 break;
         }
         return false;
@@ -236,16 +255,15 @@ public class AnimationConstructor {
 
             String pathRoot = getPath(s);
             String file = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
-            if (file == null)
-            {
+            if (file == null) {
                 file = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
                 if (file == null)
                     continue;
             }
-            String val =StringMaster.buildPath(
-             partPath,StringMaster.removePreviousPathSegments(file, pathRoot));
+            String val = StringMaster.buildPath(
+             partPath, StringMaster.removePreviousPathSegments(file, pathRoot));
             main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-             "AUTO ANIM CONSTRUCTION FOR " + spell +"-" + part +": " + s + " is set automatically to " + val);
+             "AUTO ANIM CONSTRUCTION FOR " + spell + "-" + part + ": " + s + " is set automatically to " + val);
             data.setValue(s, val);
         }
 //        for (String substring : StringMaster.openContainer(
@@ -267,7 +285,7 @@ public class AnimationConstructor {
 //        spell.getTargeting();
         String file = null;
         for (PROPERTY p : props) {
-            String name = spell.getProperty(p) +" " +partPath+ size;
+            String name = spell.getProperty(p) + " " + partPath + size;
             file = FileManager.findFirstFile(path, name, closest);
             if (file != null)
                 break;
@@ -289,7 +307,7 @@ public class AnimationConstructor {
 
 
     public boolean isReconstruct() {
-return true;
+        return true;
 //        return reconstruct;
     }
 

@@ -125,6 +125,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     private LogEntryNode entry;
     private String customTooltip;
     private boolean switchOn = false;
+    private boolean failedLast;
 
     public DC_ActiveObj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -1171,7 +1172,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         if (!dont) {
             dont = !canBeManuallyActivated();
         }
-        if (dont && !CoreEngine.isGraphicTestMode()) {
+        if (dont &&  CoreEngine.isSwingOn()) {
             getGame().getToolTipMaster().initActionToolTip(this, false);
 
             SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
@@ -1695,7 +1696,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isOffhand() {
-        return checkProperty(G_PROPS.GROUP, ACTION_TAGS.OFF_HAND + "");
+        return checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.OFF_HAND + "");
     }
 
     public Map<Coordinates, Map<FACING_DIRECTION, Boolean>> getTargetingAnyCache() {
@@ -1773,4 +1774,17 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return getIntParam(PARAMS.RANGE);
     }
 
+    public DC_WeaponObj getActiveWeapon() {
+        if (isRanged())
+            return (DC_WeaponObj)  getRef().getObj(KEYS.RANGED);
+        return (DC_WeaponObj)  getRef().getObj( isOffhand()? KEYS.OFFHAND: KEYS.WEAPON);
+    }
+
+    public boolean isFailedLast() {
+        return failedLast;
+    }
+
+    public void setFailedLast(boolean failedLast) {
+        this.failedLast = failedLast;
+    }
 }

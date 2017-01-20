@@ -12,7 +12,6 @@ import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
-import main.game.battlefield.PointX;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.particles.lighting.LightMap;
@@ -21,14 +20,12 @@ import main.libgdx.bf.mouse.GridMouseListener;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
-import main.system.GuiEventType;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.datatypes.DequeImpl;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 import static main.system.GuiEventType.*;
 
@@ -80,16 +77,6 @@ public class GridPanel extends Group {
         return rows;
     }
 
-    public Point getPointForCoordinateWithOffset(Coordinates sourceCoordinates) {
-        InputController controller = GameScreen.getInstance().getController();
-        int x = (int) (
-//         controller.getX_cam_pos()/2
-         +sourceCoordinates.getX() * getCellWidth() / controller.getZoom());
-        int y = (int) (
-//         controller.getY_cam_pos()/2
-         +(rows - sourceCoordinates.getY()) * getCellHeight() / controller.getZoom());
-        return new PointX(x, y);
-    }
 
     public Vector2 getVectorForCoordinateWithOffset(Coordinates sourceCoordinates
     ) {
@@ -249,7 +236,7 @@ public class GridPanel extends Group {
         GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
             DC_HeroObj hero = (DC_HeroObj) obj.get();
             BaseView view = unitMap.get(hero);
-            if (view.getParent() != null) {
+            if (view.getParent() instanceof GridCellContainer) {
                 ((GridCellContainer) view.getParent()).popupUnitView(view);
             }
             if (hero.isMine()) {

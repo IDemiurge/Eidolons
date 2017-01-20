@@ -20,6 +20,10 @@ public class SpriteAnimation extends Animation {
     private float offsetX;
     private float frameNumber;
 
+    public enum SPRITE_BEHAVIOR{
+        FREEZE_WHEN_LOOPS_DONE,
+    }
+
     public SpriteAnimation(String path) {
         this(defaultFrameDuration, false, 1, path);
     }
@@ -39,7 +43,7 @@ play_mode.
     public boolean draw(Batch batch) {
         stateTime += Gdx.graphics.getDeltaTime();
         updateSpeed();
-        boolean looping = this.looping || loops>0;
+        boolean looping = this.looping || loops==0;
         TextureRegion currentFrame = getKeyFrame(stateTime, looping);
         if (currentFrame == null) {
             dispose();
@@ -77,6 +81,22 @@ play_mode.
 
     public void setOffsetY(float offsetY) {
         this.offsetY = offsetY;
+    }
+
+    public int getLoops() {
+        return loops;
+    }
+
+    public void setLoops(int loops) {
+        this.loops = loops;
+    }
+
+    public boolean isLooping() {
+        return looping;
+    }
+
+    public void setLooping(boolean looping) {
+        this.looping = looping;
     }
 
     public float getX() {

@@ -11,6 +11,7 @@ import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
+import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.bf.*;
 import main.libgdx.bf.mouse.ToolTipManager.ToolTipRecordOption;
 import main.libgdx.texture.TextureManager;
@@ -94,7 +95,7 @@ public class GridMouseListener extends ClickListener {
             }
         }
         GuiEventManager.trigger(SHOW_TOOLTIP, new EventCallbackParam(null));
-        return true;
+        return false;
     }
 
             /*
@@ -110,6 +111,9 @@ public class GridMouseListener extends ClickListener {
     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
         Actor a;
 
+if (PhaseAnimator.getInstance().checkAnimClicked(x, y, pointer, button)){
+     return true;
+}
         a = gridPanel.hitChildren(x, y, true);
         if (a != null && a instanceof GridCell) {
             GridCell cell = (GridCell) a;

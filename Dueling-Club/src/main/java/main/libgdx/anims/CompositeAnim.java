@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import main.ability.effects.Effect;
 import main.data.XLinkedMap;
 import main.entity.obj.top.DC_ActiveObj;
-import main.game.DC_Game;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.phased.PhaseAnim;
 import main.libgdx.anims.std.EffectAnim;
@@ -50,14 +49,14 @@ this(new XLinkedMap< >());
     }
 
     public boolean draw(Batch batch) {
-        if (currentAnim != null)
-            try{
-            DC_Game.game.getAnimationManager().getAnimations().forEach(a -> {
-                PhaseAnim phaseAnim= a.getPhaseAnim();
-//                main.system.auxiliary.LogMaster.log(1,"drawing " +a + " at " + currentAnim.getPosition());
-                phaseAnim.setPosition(currentAnim.getPosition().x,currentAnim.getPosition().y);
-                phaseAnim.draw(batch, 1f);
-            });        }catch(Exception e){                e.printStackTrace();            }
+//        if (currentAnim != null)
+//            try{
+//            DC_Game.game.getAnimationManager().getAnimations().forEach(a -> {
+//                PhaseAnim phaseAnim= a.getPhaseAnim();
+////                main.system.auxiliary.LogMaster.log(1,"drawing " +a + " at " + currentAnim.getPosition());
+//                phaseAnim.setPosition(currentAnim.getX(),currentAnim.getY() );
+//                phaseAnim.draw(batch, 1f);
+//            });        }catch(Exception e){                e.printStackTrace();            }
 
         boolean result = false;
         if (currentAnim != null)

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.game.battlefield.Coordinates;
@@ -23,12 +24,11 @@ import java.util.function.Supplier;
 /**
  * Created by JustMe on 1/9/2017.
  */
-public class Anim   {
+public class Anim  extends Actor {
     protected Entity active;
     protected Vector2 origin;
     protected Vector2 destination;
     protected Vector2 defaultPosition;
-    protected Vector2 position;
     protected List<ParticleEmitter> emitterList;
     protected int lightEmission; // its own lightmap?
     protected Color color;
@@ -38,13 +38,19 @@ public class Anim   {
     protected float duration;
     protected float offsetX = 0;
     protected float offsetY = 0;
-    protected float height = 0;
-    protected float width = 0;
     protected AnimData data;
     protected ANIM_MOD[] mods;
     protected ANIM_PART part;
     private Float speedX;
     private Float speedY;
+    private int loops;
+
+
+    @Override
+    public void setPosition(float x, float y) {
+        super.setPosition(x, y);
+        
+    }
 
     public Anim(Entity active, AnimData params) {
         data = params;
@@ -62,8 +68,9 @@ public class Anim   {
         initDuration();
     }
 
-    private void initDuration() {
-        duration = 3;
+    protected void initDuration() {
+
+        duration = 2;
         if (part != null)
             duration = part.getDefaultDuration();
 //        duration*= AnimMaster.getOptions().getAnimationSpeed()
@@ -83,6 +90,7 @@ public class Anim   {
         Texture currentFrame = textureSupplier.get();
 
         if (  stateTime >= duration) {
+            main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,this+" finished; duration = " +duration);
             dispose();
             return false;
         }
@@ -92,8 +100,9 @@ public class Anim   {
         }
         updatePosition();
 //        batch.begin();
-        if (currentFrame != null)
-            batch.draw(currentFrame, position.x, position.y);
+        if (isDrawTexture())
+            if (currentFrame != null)
+            batch.draw(currentFrame, getX(), getY());
 
         sprites.forEach(s -> s.draw(batch));
         emitterList.forEach(e -> {
@@ -105,14 +114,36 @@ public class Anim   {
         return true;
     }
 
+    protected boolean isDrawTexture() {
+        return true;
+    }
+
     public void start() {
         initPosition();
-        sprites.forEach(s -> s.setX(position.x));
-        sprites.forEach(s -> s.setY(position.y));
+        sprites.forEach(s -> s.setX(getX()));
+        sprites.forEach(s -> s.setY(getY()));
         sprites.forEach(s -> s.setOffsetX(0));
         sprites.forEach(s -> s.setOffsetY(0));
+        sprites.forEach(s -> s.setLoops(loops));
         addLight();
         addEmitters();
+
+    }
+
+    public Float getSpeedX() {
+        return speedX;
+    }
+
+    public Float getSpeedY() {
+        return speedY;
+    }
+
+    public int getLoops() {
+        return loops;
+    }
+
+    public void setLoops(int loops) {
+        this.loops = loops;
     }
 
     protected void addLight() {
@@ -142,7 +173,9 @@ public class Anim   {
 
 
         defaultPosition = getDefaultPosition();
-        position = new Vector2(defaultPosition);
+        setX(defaultPosition.x);
+        setY(defaultPosition.y); main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+         this + " defaultPosition: " + defaultPosition);
     }
 
     protected Coordinates getOriginCoordinates() {
@@ -182,17 +215,21 @@ public class Anim   {
                     break;
             }
 
-
-        position.set(defaultPosition.x + offsetX, defaultPosition.y + offsetY);
+if (getActions().size==0){
+          setX(defaultPosition.x + offsetX);
+         setY(defaultPosition.y + offsetY);
+}
         sprites.forEach(s -> {
             s.setOffsetX(offsetX);
             s.setOffsetY(offsetY);
         });
 
         emitterList.forEach(e ->
-         e.updatePosition(position.x, position.y));
+         e.updatePosition(getX(), getY()));
 
-        position.set(origin.x + getWidth() / 2, origin.y - getHeight() / 2);
+        if (getActions().size==0){
+       setX(origin.x + getWidth() / 2);
+       setY(origin.y - getHeight() / 2);}
     }
 
     public ANIM_PART getPart() {
@@ -221,9 +258,7 @@ public class Anim   {
         return destination;
     }
 
-    public Vector2 getPosition() {
-        return position;
-    }
+
 
     public List<ParticleEmitter> getEmitterList() {
         return emitterList;
@@ -325,19 +360,4 @@ public class Anim   {
         this.offsetY = offsetY;
     }
 
-    public float getHeight() {
-        return height;
-    }
-
-    public void setHeight(float height) {
-        this.height = height;
-    }
-
-    public float getWidth() {
-        return width;
-    }
-
-    public void setWidth(float width) {
-        this.width = width;
-    }
 }

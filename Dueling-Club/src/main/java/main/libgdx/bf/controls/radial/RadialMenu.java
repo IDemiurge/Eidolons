@@ -16,10 +16,8 @@ import main.elements.Filter;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_Obj;
-import main.entity.obj.Obj;
+import main.entity.Ref.KEYS;
+import main.entity.obj.*;
 import main.entity.obj.top.DC_ActiveObj;
 import main.game.DC_Game;
 import main.game.Game;
@@ -180,7 +178,8 @@ public class RadialMenu extends Group {
     public void createNew(DC_Obj target) {
         DC_HeroObj source
                 = (DC_HeroObj) Game.game.getManager().getActiveObj();
-
+if (source==null )
+    return ; //fix logic to avoid null value between turns!
         List<ActiveObj> activeObjs = source.getActives();
 
         List<Triple<Runnable, Texture, String>> moves = new ArrayList<>();
@@ -235,8 +234,8 @@ public class RadialMenu extends Group {
 
                 inn1.name = obj.getName();
                 inn1.action = null;
+                List<RadialMenu.CreatorNode> list = new ArrayList<>();
                 if (obj.getRef().getSourceObj() == target) {
-                    List<RadialMenu.CreatorNode> list = new ArrayList<>();
                     for (DC_ActiveObj dc_activeObj : dcActiveObj.getSubActions()) {
                         Ref ref1 = dcActiveObj.getRef();
                         ref1.setMatch(target.getId());
@@ -265,10 +264,11 @@ public class RadialMenu extends Group {
                             //STD_SOUNDS.CLICK_ERROR.getPath()
                         }
                     }
+
+
                     inn1.childNodes = list;
                     nn1.add(inn1);
                 } else if (obj.getTargeting() instanceof SelectiveTargeting) {
-                    List<RadialMenu.CreatorNode> list = new ArrayList<>();
                     for (DC_ActiveObj dc_activeObj : dcActiveObj.getSubActions()) {
                         RadialMenu.CreatorNode innn = new CreatorNode();
                         innn.name = dc_activeObj.getName();
@@ -282,7 +282,19 @@ public class RadialMenu extends Group {
                     }
                     inn1.childNodes = list;
                     nn1.add(inn1);
-                }
+                }if (dcActiveObj.getActiveWeapon()!=null )
+                if (dcActiveObj.getActiveWeapon(). isRanged())
+                    if (dcActiveObj.getRef().getObj(KEYS.AMMO)==null ){
+                        for ( DC_QuickItemObj ammo: dcActiveObj.getOwnerObj().getQuickItems()) {
+                            RadialMenu.CreatorNode innn = new CreatorNode();
+                            innn.name = "Reload with "+ ammo.getName();
+                            innn.texture = TextureManager.getOrCreate(ammo.getImagePath());
+                            innn.action = () -> {
+                                ammo.invokeClicked();
+                            };
+                            list.add(innn);
+                        }
+                    }
             }
 
         }

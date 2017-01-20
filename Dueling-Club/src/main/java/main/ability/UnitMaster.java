@@ -7,8 +7,10 @@ import main.content.ValuePages;
 import main.content.parameters.PARAMETER;
 import main.entity.obj.DC_HeroObj;
 import main.rules.generic.UnitAnalyzer;
+import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
+import main.test.frontend.FAST_DC;
 
 public class UnitMaster {
 
@@ -23,8 +25,10 @@ public class UnitMaster {
     }
 
     public static void train(DC_HeroObj unit) {
+        if (!BooleanMaster.isTrue(FAST_DC.getGameLauncher().getFAST_MODE()))
         if (CoreEngine.isGraphicTestMode())
             return ;
+
         int perc = DEFAULT_XP_MOD;
 
         if (unit.checkClassification(CLASSIFICATIONS.HUMANOID)) {

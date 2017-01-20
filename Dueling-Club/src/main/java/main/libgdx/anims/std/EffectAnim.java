@@ -95,8 +95,8 @@ via trigger etc
     private static String getSfx(Effect e) {
         if (e instanceof  DealDamageEffect)
         return PathFinder.getSfxPath()+ "damage\\"
-//         +         "fire"
-         + ((DealDamageEffect) e).getDamage_type().toString()
+         +         "fire"
+//         + ((DealDamageEffect) e).getDamage_type().toString()
          ;
         return null;
     }
@@ -105,8 +105,8 @@ via trigger etc
         if (e instanceof  DealDamageEffect)
 
             return   PathFinder.getSpritesPath()+   "damage\\"
-//             +"fire"
-             +  ((DealDamageEffect) e).getDamage_type().toString()
+             +"fire"
+//             +  ((DealDamageEffect) e).getDamage_type().toString()
              + ".png";
         return null;
     }
