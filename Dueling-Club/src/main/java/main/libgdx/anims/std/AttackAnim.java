@@ -22,7 +22,6 @@ import main.libgdx.anims.AnimData;
 import main.libgdx.texture.TextureManager;
 import main.system.auxiliary.FileManager;
 import main.system.math.PositionMaster;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -202,7 +201,6 @@ size - elongate
         return sequence;
     }
 
-    @NotNull
     protected MoveByAction getMoveAction(float x, float y, float duration) {
         MoveByAction mainMove = new MoveByAction();
         mainMove.setDuration(duration);
@@ -217,7 +215,6 @@ size - elongate
         return mainMove;
     }
 
-    @NotNull
     protected RotateByAction getRotateAction(float angle, float duration) {
         RotateByAction mainRotate = new RotateByAction();
 //                angle += targetAngleOffset;
