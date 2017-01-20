@@ -23,8 +23,8 @@ import main.libgdx.bf.controls.radial.RadialMenu;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.bf.mouse.ToolTipManager;
 import main.libgdx.gui.dialog.DialogDisplay;
-import main.libgdx.gui.dialog.LogDialog;
 import main.libgdx.gui.panels.dc.InitiativeQueue;
+import main.libgdx.gui.panels.dc.LogPanel;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -141,9 +141,9 @@ public class GameScreen implements Screen {
         gui.addActor(queue);
         queue.setPosition(0, Gdx.app.getGraphics().getHeight() - 64);
 
-        LogDialog ld = new LogDialog();
-//        gui.addActor(ld);
-//        ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
+        LogPanel ld = new LogPanel();
+        gui.addActor(ld);
+        ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
         ld.setPosition(200, 200);
     }
 
