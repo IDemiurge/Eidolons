@@ -18,32 +18,27 @@ import java.awt.*;
 public class AnimData extends DataUnit<ANIM_VALUES> {
 
 
-    public enum ANIM_VALUES {
-        PARTICLE_EFFECTS, SPRITES,
-        DURATION, SCALE, COLOR, LIGHT_FOCUS, LIGHT_AMBIENT
-, MISSILE_SPEED
-
-    }
     float duration;
     float spriteDuration;
     float emitterDuration;
-
     String spriteImagePaths;
     SFX[] emitters; //other params?
     Color[] emitterColors;
     Point[] emitterOffsets;
     int[] emitterScales;
-
     int lightEmission;
     Color lightColor;
+    public AnimData(String... data) {
+
+    }
 
     @Override
     public void setValue(ANIM_VALUES name, String value) {
-     if (!StringMaster.isEmpty(value))   switch (name){
+        if (!StringMaster.isEmpty(value)) switch (name) {
             case SPRITES:
                 value =
-                 StringMaster.addMissingPathSegments(value, PathFinder.getSpritesPath());
-            break;
+                        StringMaster.addMissingPathSegments(value, PathFinder.getSpritesPath());
+                break;
             case PARTICLE_EFFECTS:
                 value = StringMaster.addMissingPathSegments(value, PathFinder.getSfxPath());
                 break;
@@ -54,10 +49,10 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
 
     public void add(VALUE val, String value) {
         if (val instanceof PARAMS) {
-            setParam ((PARAMS) val, value);
+            setParam((PARAMS) val, value);
         }
         if (val instanceof PROPS) {
-            setProp ((PROPS) val, value);
+            setProp((PROPS) val, value);
         }
     }
 
@@ -66,7 +61,7 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
 
     private void setProp(PROPS val, String value) {
         //contains? 
-        switch(val){
+        switch (val) {
             case ANIM_SPRITE_CAST:
             case ANIM_SPRITE_RESOLVE:
             case ANIM_SPRITE_MAIN:
@@ -85,8 +80,9 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
     }
 
 
-
-    public  AnimData(String... data){
+    public enum ANIM_VALUES {
+        PARTICLE_EFFECTS, SPRITES,
+        DURATION, SCALE, COLOR, LIGHT_FOCUS, LIGHT_AMBIENT, MISSILE_SPEED
 
     }
 

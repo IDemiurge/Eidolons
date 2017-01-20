@@ -8,13 +8,13 @@ import main.system.auxiliary.ColorManager;
 public class StyleHolder {
     private static Label.LabelStyle defaultLabelStyle;
     private static Label.LabelStyle avqLabelStyle;
-    private static Color defaultColor=
-     ColorManager.getGdxColor( ColorManager.GOLDEN_WHITE);
+    private static Color defaultColor =
+            ColorManager.getGdxColor(ColorManager.GOLDEN_WHITE);
 
     public static Label.LabelStyle getDefaultLabelStyle() {
         if (defaultLabelStyle == null) {
             defaultLabelStyle = new Label.LabelStyle(new BitmapFont(),
-             defaultColor);
+                    defaultColor);
         }
 
         defaultLabelStyle.font.getData().markupEnabled = true;
@@ -28,8 +28,8 @@ public class StyleHolder {
 //             new FileHandle(
 //              PathFinder.getFontPath()+ FONT.AVQ.path
 //             )
-),
-             defaultColor);
+            ),
+                    defaultColor);
         }
         return avqLabelStyle;
     }

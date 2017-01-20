@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 /**
  * Created by JustMe on 1/9/2017.
  */
-public class Anim  extends Actor {
+public class Anim extends Actor {
     protected Entity active;
     protected Vector2 origin;
     protected Vector2 destination;
@@ -46,12 +46,6 @@ public class Anim  extends Actor {
     private int loops;
 
 
-    @Override
-    public void setPosition(float x, float y) {
-        super.setPosition(x, y);
-        
-    }
-
     public Anim(Entity active, AnimData params) {
         data = params;
         this.active = active;
@@ -59,6 +53,12 @@ public class Anim  extends Actor {
         reset();
 
 //        duration= params.getIntValue(ANIM_VALUES.DURATION);
+    }
+
+    @Override
+    public void setPosition(float x, float y) {
+        super.setPosition(x, y);
+
     }
 
     public void reset() {
@@ -89,20 +89,20 @@ public class Anim  extends Actor {
         stateTime += delta;
         Texture currentFrame = textureSupplier.get();
 
-        if (  stateTime >= duration) {
-            main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,this+" finished; duration = " +duration);
+        if (stateTime >= duration) {
+            main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, this + " finished; duration = " + duration);
             dispose();
             return false;
         }
-        if (currentFrame != null){
+        if (currentFrame != null) {
             setWidth(currentFrame.getWidth());
-        setHeight(currentFrame.getHeight());
+            setHeight(currentFrame.getHeight());
         }
         updatePosition();
 //        batch.begin();
         if (isDrawTexture())
             if (currentFrame != null)
-            batch.draw(currentFrame, getX(), getY());
+                batch.draw(currentFrame, getX(), getY());
 
         sprites.forEach(s -> s.draw(batch));
         emitterList.forEach(e -> {
@@ -134,8 +134,16 @@ public class Anim  extends Actor {
         return speedX;
     }
 
+    public void setSpeedX(Float speedX) {
+        this.speedX = speedX;
+    }
+
     public Float getSpeedY() {
         return speedY;
+    }
+
+    public void setSpeedY(Float speedY) {
+        this.speedY = speedY;
     }
 
     public int getLoops() {
@@ -160,22 +168,23 @@ public class Anim  extends Actor {
 
     public void initPosition() {
         origin = GameScreen.getInstance().getGridPanel()
-         .getVectorForCoordinateWithOffset(getOriginCoordinates());
+                .getVectorForCoordinateWithOffset(getOriginCoordinates());
 
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-         this + " origin: " + origin);
+                this + " origin: " + origin);
 
         destination = GameScreen.getInstance().getGridPanel()
-         .getVectorForCoordinateWithOffset(getDestinationCoordinates());
+                .getVectorForCoordinateWithOffset(getDestinationCoordinates());
 
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-         this + " destination: " + destination);
+                this + " destination: " + destination);
 
 
         defaultPosition = getDefaultPosition();
         setX(defaultPosition.x);
-        setY(defaultPosition.y); main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-         this + " defaultPosition: " + defaultPosition);
+        setY(defaultPosition.y);
+        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+                this + " defaultPosition: " + defaultPosition);
     }
 
     protected Coordinates getOriginCoordinates() {
@@ -215,21 +224,22 @@ public class Anim  extends Actor {
                     break;
             }
 
-if (getActions().size==0){
-          setX(defaultPosition.x + offsetX);
-         setY(defaultPosition.y + offsetY);
-}
+        if (getActions().size == 0) {
+            setX(defaultPosition.x + offsetX);
+            setY(defaultPosition.y + offsetY);
+        }
         sprites.forEach(s -> {
             s.setOffsetX(offsetX);
             s.setOffsetY(offsetY);
         });
 
         emitterList.forEach(e ->
-         e.updatePosition(getX(), getY()));
+                e.updatePosition(getX(), getY()));
 
-        if (getActions().size==0){
-       setX(origin.x + getWidth() / 2);
-       setY(origin.y - getHeight() / 2);}
+        if (getActions().size == 0) {
+            setX(origin.x + getWidth() / 2);
+            setY(origin.y - getHeight() / 2);
+        }
     }
 
     public ANIM_PART getPart() {
@@ -243,7 +253,7 @@ if (getActions().size==0){
 
     @Override
     public String toString() {
-        return getClass().getSimpleName()+" "+part;
+        return getClass().getSimpleName() + " " + part;
     }
 
     public Entity getActive() {
@@ -257,8 +267,6 @@ if (getActions().size==0){
     public Vector2 getDestination() {
         return destination;
     }
-
-
 
     public List<ParticleEmitter> getEmitterList() {
         return emitterList;
@@ -324,8 +332,16 @@ if (getActions().size==0){
         return offsetX;
     }
 
+    public void setOffsetX(float offsetX) {
+        this.offsetX = offsetX;
+    }
+
     public float getOffsetY() {
         return offsetY;
+    }
+
+    public void setOffsetY(float offsetY) {
+        this.offsetY = offsetY;
     }
 
     public AnimData getData() {
@@ -342,22 +358,6 @@ if (getActions().size==0){
 
     public Ref getRef() {
         return active.getRef();
-    }
-
-    public void setSpeedX(Float speedX) {
-        this.speedX = speedX;
-    }
-
-    public void setSpeedY(Float speedY) {
-        this.speedY = speedY;
-    }
-
-    public void setOffsetX(float offsetX) {
-        this.offsetX = offsetX;
-    }
-
-    public void setOffsetY(float offsetY) {
-        this.offsetY = offsetY;
     }
 
 }

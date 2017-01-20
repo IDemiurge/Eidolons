@@ -13,7 +13,7 @@ import java.util.List;
  * Created by JustMe on 1/6/2017.
  */
 public class Container extends Comp {
-    private static final boolean DEBUG_MODE =true ;
+    private static final boolean DEBUG_MODE = true;
     protected Actor[] comps;
     protected LAYOUT defaultLayout;
     protected LAYOUT rootLayout;
@@ -29,28 +29,29 @@ public class Container extends Comp {
         this.comps = comps;
         initRoot();
         if (DEBUG_MODE)
-        debug();
-    }
-
-    public WidgetContainer getRoot() {
-        if (root==null )
-            root= new Root();
-        return root;
-    }
-        protected void initRoot() {
-        root =   getRoot();
-        addActor((Actor) root);
+            debug();
     }
 
     public Container(String imagePath, LAYOUT defaultLayout) {
         this(defaultLayout, imagePath);
     }
 
+    public WidgetContainer getRoot() {
+        if (root == null)
+            root = new Root();
+        return root;
+    }
+
+    protected void initRoot() {
+        root = getRoot();
+        addActor((Actor) root);
+    }
 
     public void setComps(List<Actor> comps) {
         setComps(comps.toArray(new Actor[comps.size()]));
     }
-        public void setComps(Actor... comps) {
+
+    public void setComps(Actor... comps) {
         this.comps = comps;
     }
 

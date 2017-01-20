@@ -18,14 +18,15 @@ public class EntityContainer extends TableContainer {
 
     private int itemSize;
     private EventCallback event;
+
     public EntityContainer(String imagePath, int itemSize, int columns, int rows
-     , Supplier<Collection<? extends Entity>> supplier, DC_Obj obj ) {
-this(imagePath,itemSize,columns,rows,supplier,obj, param-> {
-});
+            , Supplier<Collection<? extends Entity>> supplier, DC_Obj obj) {
+        this(imagePath, itemSize, columns, rows, supplier, obj, param -> {
+        });
     }
 
     public EntityContainer(String imagePath, int itemSize, int columns, int rows
-     , Supplier<Collection<? extends Entity>> supplier, DC_Obj obj,
+            , Supplier<Collection<? extends Entity>> supplier, DC_Obj obj,
                            final EventCallback event) {
 
         super(columns, rows, getCompSupplier(supplier, obj, itemSize));
@@ -33,10 +34,11 @@ this(imagePath,itemSize,columns,rows,supplier,obj, param-> {
         this.event = event;
         this.itemSize = itemSize;
     }
+
     private static Supplier<List<Actor>> getCompSupplier(
-     Supplier<Collection<? extends Entity>>
-      supplier, DC_Obj obj,
-     int itemSize) {
+            Supplier<Collection<? extends Entity>>
+                    supplier, DC_Obj obj,
+            int itemSize) {
         return new Supplier<List<Actor>>() {
             @Override
             public List<Actor> get() {
@@ -50,6 +52,7 @@ this(imagePath,itemSize,columns,rows,supplier,obj, param-> {
         };
 
     }
+
     public void clicked(Entity obj) {
         event.call(new EventCallbackParam<Entity>(obj));
     }

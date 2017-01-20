@@ -17,21 +17,21 @@ public class PhaseAnim extends Group {
 
 
     protected PhaseAnimation anim;
-    protected int w =Gdx.graphics.getWidth(); // GuiManager.getScreenWidthInt();
+    protected int w = Gdx.graphics.getWidth(); // GuiManager.getScreenWidthInt();
     protected int h = Gdx.graphics.getHeight(); // GuiManager.getScreenHeightInt();
-    protected  Texture2D texture;
-    protected  Image image;
+    protected Texture2D texture;
+    protected Image image;
     protected boolean dirty;
     private PhaseAnimListener listener;
 
     public PhaseAnim(PhaseAnimation anim) {
         this.anim = anim;
         anim.setPhaseAnim(this);
-       w=Math. max(228, anim.getW());
-       h=Math. max(228, anim.getH());
+        w = Math.max(228, anim.getW());
+        h = Math.max(228, anim.getH());
 
         anim.setThumbnail(true);
-        addListener(new PhaseAnimListener(this));
+        setListener(new PhaseAnimListener(this));
     }
 
     @Override
@@ -42,8 +42,8 @@ public class PhaseAnim extends Group {
     @Override
     public String toString() {
         return
-         getX()+" "+getY()+ " - "+
-         anim.toString();
+                getX() + " " + getY() + " - " +
+                        anim.toString();
     }
 
     public void update() {
@@ -57,7 +57,7 @@ public class PhaseAnim extends Group {
 //            setVisible(false);
 //            return;
 //        }
-        texture = new Texture2D(w,h);
+        texture = new Texture2D(w, h);
         image = new Image(texture);
         addActor(image);
         setVisible(true);
@@ -67,8 +67,8 @@ public class PhaseAnim extends Group {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (dirty) {
-            if (texture!=null )
-            texture.dispose();
+            if (texture != null)
+                texture.dispose();
             texture = new Texture2D(w, h);
             Graphics2D g2d = texture.begin();
             anim.draw(g2d);
@@ -81,6 +81,7 @@ public class PhaseAnim extends Group {
         }
         super.draw(batch, parentAlpha);
     }
+
     public PhaseAnimation getAnim() {
         return anim;
     }

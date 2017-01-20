@@ -8,10 +8,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.Layout;
 /**
  * Created by JustMe on 1/11/2017.
  */
-public interface WidgetContainer extends Layout{
+public interface WidgetContainer extends Layout {
     public void add(WidgetContainer c);
+
     public void addActor(Actor actor);
+
     public WidgetGroup top();
+
     void invalidate();
 
     void layout();
@@ -83,12 +86,19 @@ public interface WidgetContainer extends Layout{
 //    void setPosition(int i, float height);
 
     float getHeight();
-    float getWidth();
-    float getX();
-    float getY();
+
     void setHeight(float n);
+
+    float getWidth();
+
     void setWidth(float n);
+
+    float getX();
+
     void setX(float n);
+
+    float getY();
+
     void setY(float n);
 
     boolean addListener(EventListener listener);

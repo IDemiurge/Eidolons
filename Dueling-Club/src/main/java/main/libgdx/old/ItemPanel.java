@@ -12,13 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  */
 public class ItemPanel extends Group {
 
-    private Image[] slots = new Image[3];
-
-    private Texture emptySlotTexture;
-
-    private String imagePath;
-
     private static final String emptySlotImagePath = "\\UI\\EMPTY_ITEM.jpg";
+    private Image[] slots = new Image[3];
+    private Texture emptySlotTexture;
+    private String imagePath;
 
     public ItemPanel(String imagePath) {
         this.imagePath = imagePath;

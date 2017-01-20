@@ -8,7 +8,7 @@ import main.libgdx.gui.panels.generic.WidgetContainer;
 /**
  * Created by JustMe on 1/11/2017.
  */
-public class RootTable extends Table  implements WidgetContainer {
+public class RootTable extends Table implements WidgetContainer {
     @Override
     public void add(WidgetContainer c) {
         super.addActor((Actor) c);

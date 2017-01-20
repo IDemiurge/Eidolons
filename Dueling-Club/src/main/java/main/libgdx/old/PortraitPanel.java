@@ -12,12 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  */
 public class PortraitPanel extends Group {
 
+    private static final String borderImagePath = "\\UI\\components\\Border New.png";
     private Image portrait;
     private Image border;
-
     private String imagePath;
-
-    private static final String borderImagePath = "\\UI\\components\\Border New.png";
 
     public PortraitPanel(String imagePath) {
         this.imagePath = imagePath;

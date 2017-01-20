@@ -25,10 +25,10 @@ import java.util.*;
 public class InfoDialog extends Dialog {
     public final static String path = "UI\\components\\2017\\dialog\\info\\";
     public final static String portraitBg =
-     path +
-      "portrait bg.png";
+            path +
+                    "portrait bg.png";
     public final static String bgPath = path +
-     "background.png";
+            "background.png";
     Container top;
     Container fxAndAbils;
     Container armor;
@@ -51,12 +51,12 @@ public class InfoDialog extends Dialog {
             public void initComps() {
 
                 EntityContainer effects = new EntityContainer("Active Effects", 32, 2, 2
-                 , () -> unit.getBuffs(),
-                 unit, n -> ((Obj) n.get()).invokeClicked()
+                        , () -> unit.getBuffs(),
+                        unit, n -> ((Obj) n.get()).invokeClicked()
                 );
                 EntityContainer abilities = new EntityContainer("Special Abilities", 32, 2, 2
-                 , () -> unit.getPassives(),
-                 unit, n -> ((Obj) n.get()).invokeClicked()
+                        , () -> unit.getPassives(),
+                        unit, n -> ((Obj) n.get()).invokeClicked()
                 );
                 setComps(effects, abilities);
             }
@@ -68,9 +68,9 @@ public class InfoDialog extends Dialog {
             public void initComps() {
 
                 PagedContainer buffs = new PagedContainer("Buffs", true, 32, 2, 2,
-                 unit, () -> unit.getArmor().getBuffs());
+                        unit, () -> unit.getArmor().getBuffs());
                 PagedContainer traits = new PagedContainer("Traits", true, 32, 2, 2,
-                 unit, () -> unit.getArmor().getPassives());
+                        unit, () -> unit.getArmor().getPassives());
                 EntityComp armor = new EntityComp(() -> unit.getArmor());
                 setComps(buffs, armor, traits);
             }
@@ -85,11 +85,11 @@ public class InfoDialog extends Dialog {
             }
         };
         attributes.setHorizontal(false);
-         attributes.setImagePath(path+"params frame.png");
+        attributes.setImagePath(path + "params frame.png");
 
         dynamicParams = new ValueContainer(unit, 2, 3, true, false, ALIGNMENT.SOUTH,
-         StyleHolder.getAVQLabelStyle(),
-         () -> Arrays.asList(DC_ContentManager.DYNAMIC_PARAMETERS), null);
+                StyleHolder.getAVQLabelStyle(),
+                () -> Arrays.asList(DC_ContentManager.DYNAMIC_PARAMETERS), null);
 
         mainWeapon = new WeaponPanel(unit, false);
         offWeapon = new WeaponPanel(unit, true);
@@ -98,10 +98,10 @@ public class InfoDialog extends Dialog {
 //        tabs = new TabbedPanel("", () -> getTabs(unit));
 
         mainParams = new ValueContainer(unit, 1,
-         DC_ContentManager.MAIN_PARAMETERS.length,
-         true, false,
-         ALIGNMENT.SOUTH, StyleHolder.getAVQLabelStyle(),
-         () -> Arrays.asList(DC_ContentManager.MAIN_PARAMETERS), null);
+                DC_ContentManager.MAIN_PARAMETERS.length,
+                true, false,
+                ALIGNMENT.SOUTH, StyleHolder.getAVQLabelStyle(),
+                () -> Arrays.asList(DC_ContentManager.MAIN_PARAMETERS), null);
 
 
         points = new Container("", LAYOUT.HORIZONTAL);
@@ -112,10 +112,10 @@ public class InfoDialog extends Dialog {
             public void initComps() {
                 EntityComp portrait = new EntityComp(unit);
                 ValueContainer values = new ValueContainer(unit, 3, 1,
-                 () -> new LinkedList<>(Arrays.asList(new VALUE[]{
-                  G_PROPS.NAME, PARAMS.LEVEL, G_PROPS.ASPECT
-                 })));
-            setComps(values, portrait);
+                        () -> new LinkedList<>(Arrays.asList(new VALUE[]{
+                                G_PROPS.NAME, PARAMS.LEVEL, G_PROPS.ASPECT
+                        })));
+                setComps(values, portrait);
             }
 
             ;
@@ -123,21 +123,21 @@ public class InfoDialog extends Dialog {
 //        lore = new TextContainer("", LAYOUT.HORIZONTAL);
 
         setComps(
-         //from bottom left
+                //from bottom left
 //         fxAndAbils,
-         attributes
+                attributes
 
-         , dynamicParams,mainWeapon, description,
-         new Wrap(false), //next column
-         armor, mainParams, points, top,
-         new Wrap(false),//next column
-         new Space(false, 0.2f), //leave 20% space
-         tabs, offWeapon, lore
+                , dynamicParams, mainWeapon, description,
+                new Wrap(false), //next column
+                armor, mainParams, points, top,
+                new Wrap(false),//next column
+                new Space(false, 0.2f), //leave 20% space
+                tabs, offWeapon, lore
         );
     }
 
 
-        private Collection<Triple<String, String, Actor>> getAdditionalParamTabs(DC_Obj unit) {
+    private Collection<Triple<String, String, Actor>> getAdditionalParamTabs(DC_Obj unit) {
         List<Triple<String, String, Actor>> list = new LinkedList<>();
 //        add ( new Triple<>(text, null,
 //         new Container(LAYOUT.VERTICAL, null , fxAndAbils, res)));
@@ -149,7 +149,7 @@ public class InfoDialog extends Dialog {
             });
 
             Container tables = new Container
-             (LAYOUT.VERTICAL, "", comps.toArray(new Actor[comps.size()]));
+                    (LAYOUT.VERTICAL, "", comps.toArray(new Actor[comps.size()]));
 
             String text = iterator.next();
             Triple<String, String, Actor> t = new Triple<>(text, null, tables);

@@ -12,7 +12,7 @@ public class AttackDialog {
     Container actionChoicePanel;
     Container df;
 
-    public AttackDialog(DC_ActiveObj rootAction){
+    public AttackDialog(DC_ActiveObj rootAction) {
 
 
     }

@@ -16,19 +16,12 @@ import main.libgdx.bf.BaseView;
  */
 public class ActionAnim extends Anim {
 
-    public enum SPELL_ANIMS {
-        RAY,
-        NOVA,
-        ;
-        //emitter placement templates
+    public ActionAnim(Entity active, AnimData params) {
+        super(active, params);
     }
 
     protected Action getAction() {
-        return null  ;
-    }
-
-    public ActionAnim(Entity active, AnimData params) {
-        super(active, params);
+        return null;
     }
 
     @Override
@@ -36,6 +29,7 @@ public class ActionAnim extends Anim {
         super.dispose();
         remove();
     }
+
     @Override
     public DC_ActiveObj getActive() {
         return (DC_ActiveObj) super.getActive();
@@ -44,6 +38,7 @@ public class ActionAnim extends Anim {
     public BaseView getActor() {
         return GameScreen.getInstance().getGridPanel().getUnitMap().get(getActive().getOwnerObj());
     }
+
     public void addEffectAnims(Effect effect) {
 //        effect.get
         //damage,
@@ -54,5 +49,11 @@ public class ActionAnim extends Anim {
 
     public void addAbilityAnims(Ability ability) {
 
+    }
+
+    public enum SPELL_ANIMS {
+        RAY,
+        NOVA,;
+        //emitter placement templates
     }
 }

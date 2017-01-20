@@ -16,7 +16,7 @@ import java.util.List;
  * Created by JustMe on 12/30/2016.
  */
 public class TextureManager {
-    static TextureCache cache;
+    private static TextureCache cache;
 
     public static Texture getOrCreate(String p) {
         if (ImageManager.getPATH() != null)
@@ -53,8 +53,8 @@ public class TextureManager {
 //}
         Texture sheet = TextureManager.getOrCreate(path);
         TextureRegion[][] tmp = TextureRegion.split(sheet,
-         sheet.getWidth() / FRAME_COLS,
-         sheet.getHeight() / FRAME_ROWS);
+                sheet.getWidth() / FRAME_COLS,
+                sheet.getHeight() / FRAME_ROWS);
 
         TextureRegion[] frames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
         int index = 0;
@@ -90,8 +90,8 @@ public class TextureManager {
             return StringMaster.getInteger(x);
         }
         return xOrY ?
-         getXY(origPath).getKey() :
-         getXY(origPath).getValue();
+                getXY(origPath).getKey() :
+                getXY(origPath).getValue();
     }
 
     public static float getFrameNumber(String path) {

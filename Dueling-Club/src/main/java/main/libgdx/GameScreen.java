@@ -23,8 +23,8 @@ import main.libgdx.bf.controls.radial.RadialMenu;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.bf.mouse.ToolTipManager;
 import main.libgdx.gui.dialog.DialogDisplay;
-import main.libgdx.gui.dialog.LogDialog;
 import main.libgdx.gui.panels.dc.InitiativeQueue;
+import main.libgdx.gui.panels.dc.LogPanel;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -142,9 +142,9 @@ public class GameScreen implements Screen {
         guiStage.addActor(queue);
         queue.setPosition(0, Gdx.app.getGraphics().getHeight() - 64);
 
-        LogDialog ld = new LogDialog();
-//        guiStage.addActor(ld);
-//        ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
+        LogPanel ld = new LogPanel();
+        guiStage.addActor(ld);
+        ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
         ld.setPosition(200, 200);
     }
 
@@ -200,12 +200,12 @@ public class GameScreen implements Screen {
         gridStage.draw();
 
         effects.draw();
-        if (         DC_Game.game != null)
-            if (             DC_Game.game.getAnimationManager() != null)
+        if (DC_Game.game != null)
+            if (DC_Game.game.getAnimationManager() != null)
                 DC_Game.game.getAnimationManager().updateAnimations();
         if (animMaster.isOn()) {
-        phaseAnimsStage.draw();
-        animsStage.draw();
+            phaseAnimsStage.draw();
+            animsStage.draw();
         }
 
 

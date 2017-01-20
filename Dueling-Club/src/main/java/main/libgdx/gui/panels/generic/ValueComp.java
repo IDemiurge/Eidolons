@@ -41,7 +41,7 @@ public class ValueComp extends Container {
     }
 
     public ValueComp(DC_Obj unit, VALUE value) {
-      this(value, unit, false, false, ALIGNMENT.EAST, StyleHolder.getDefaultLabelStyle(), null);
+        this(value, unit, false, false, ALIGNMENT.EAST, StyleHolder.getDefaultLabelStyle(), null);
     }
 
     private static LAYOUT getLayout(ALIGNMENT textAlignment) {
@@ -51,11 +51,11 @@ public class ValueComp extends Container {
 
     @Override
     public void initComps() {
-        Image valueImage=null ;
+        Image valueImage = null;
         if (iconDisplayed)
-                valueImage = new Image(TextureManager.getOrCreate(new Boxer<>(
-         ()-> ((CustomImage)
-         ImageManager.getValueIcon(value)).getImgPath() )));
+            valueImage = new Image(TextureManager.getOrCreate(new Boxer<>(
+                    () -> ((CustomImage)
+                            ImageManager.getValueIcon(value)).getImgPath())));
 
         label = new TextComp(getText(), style);
 //        if (layout)
@@ -65,8 +65,8 @@ public class ValueComp extends Container {
 
     public String getText() {
         String text = obj.getValue(value);
-        if (value.isDynamic()){
-            text = ContentManager.getCurrentOutOfTotal((PARAMETER)value, obj);
+        if (value.isDynamic()) {
+            text = ContentManager.getCurrentOutOfTotal((PARAMETER) value, obj);
         }
         if (nameDisplayed)
             text = value.getName() + " :" + text;

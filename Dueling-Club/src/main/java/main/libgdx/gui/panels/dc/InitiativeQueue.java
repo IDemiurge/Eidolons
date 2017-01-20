@@ -20,11 +20,11 @@ public class InitiativeQueue extends EntityContainer {
 
     public InitiativeQueue() {
         super(null, GuiManager.getSmallObjSize(), getMaxSlots(), 1, () ->
-          DC_Game.game.getTurnManager().getDisplayedUnitQueue(),
-         null, p -> {
-             DC_HeroObj unit = (DC_HeroObj) p.get();
-             unit.invokeClicked();
-         });
+                        DC_Game.game.getTurnManager().getDisplayedUnitQueue(),
+                null, p -> {
+                    DC_HeroObj unit = (DC_HeroObj) p.get();
+                    unit.invokeClicked();
+                });
 
     }
 
@@ -35,8 +35,8 @@ public class InitiativeQueue extends EntityContainer {
     @Override
     public void initComps() {
         TextIconComp comp = new TextIconComp(() ->
-         DC_Game.game.getRules().getTimeRule().getTimeRemaining() + "",
-         () -> clockImagePath);
+                DC_Game.game.getRules().getTimeRule().getTimeRemaining() + "",
+                () -> clockImagePath);
         addActor(comp);
 //        comp.setTextAlignment(ALIGNMENT.CENTER);
         super.initComps();

@@ -1,13 +1,20 @@
 package main.libgdx.anims.phased;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import main.game.battlefield.PointX;
+import main.system.graphics.AnimPhase.PHASE_TYPE;
+import main.system.graphics.AnimationManager.MouseItem;
 import main.system.graphics.PhaseAnimation;
+import main.system.sound.SoundMaster;
+import main.system.sound.SoundMaster.STD_SOUNDS;
+
+import java.awt.*;
 
 /**
  * Created by JustMe on 1/17/2017.
  */
-public class PhaseAnimListener extends ClickListener {
+public class PhaseAnimListener extends InputListener {
 
 
     private final PhaseAnim actor;
@@ -19,39 +26,20 @@ public class PhaseAnimListener extends ClickListener {
     }
 
     @Override
-    public void clicked(InputEvent event, float x, float y) {
-        super.clicked(event, x, y);
-       anim.setThumbnail(! anim.isThumbnail());
-       actor.dirty=true;
-//        TODO
+    public boolean scrolled(InputEvent event, float x, float y, int amount) {
+            if (anim.contains(new PointX(x, y))) {
+                if (anim.isWheelSupported()) {
+                    if (anim.isManualFlippingSupported()) {
+                        boolean forward = amount < 0;
+                        anim.pageFlipped(forward);
+                        return true;
+                    }
+                }
+        }
+        return false;
     }
-//    private boolean checkAnimationPageFlipped(MouseWheelEvent e) {
-//        for (PhaseAnimation anim : gridComp.getGame().getAnimationManager().getAnimations()) {
-//            if (anim.contains(e.getPoint())) {
-//                if (anim.isWheelSupported()) {
-//                    if (anim.isManualFlippingSupported()) {
-//                        boolean forward = e.getWheelRotation() < 0;
-//                        anim.pageFlipped(forward);
-//                        return true;
-//                    }
-//                }
-//            }
-//        }
-//
-//        return false;
-//    }
 
-    //    public boolean checkAnimationClick(MouseEvent e) {
-//        point = e.getPoint();
-//        DequeImpl<PhaseAnimation> animations = new DequeImpl<>(gridComp.getGame().getAnimationManager()
-//         .getAnimations());
-//        animations.addAll(gridComp.getGame().getAnimationManager().getTempAnims());
-//        if (SwingUtilities.isRightMouseButton(e)) {
-//
-//            for (PhaseAnimation anim : animations) {
-//                if (checkToggleTooltip(anim, e))
-//                    return true;
-//
+
 //                if (anim.contains(e.getPoint())) {
 //                    if (e.getClickCount() > 1) {
 //
@@ -66,28 +54,49 @@ public class PhaseAnimListener extends ClickListener {
 //                        if (anim.subPhaseClosed()) {
 //                            SoundMaster.playStandardSound(STD_SOUNDS.BACK);
 //                            return true;
-//                        }
-//                }
-//            }
-//        }
-//        for (PhaseAnimation anim : animations) {
-//            if (anim.getMouseMap() != null)
-//
-//                for (Rectangle rect : anim.getMouseMap().keySet()) {
-//                    if (rect.contains(point)) {
-//                        MouseItem item = anim.getMouseMap().get(rect);
-//                        return itemClicked(item, anim);
-//                    }
-//                }
-//        }
-//
-//        return false;
-//    }
-//
-    public boolean checkClick(float x, float y, int button) {
-//        for ()
 
+
+    public boolean checkClick(float x, float y, int button) {
+        for (Rectangle rect : anim.getMouseMap().keySet()) {
+                    if (rect.contains(x, y)) {
+                        MouseItem item = anim.getMouseMap().get(rect);
+                        return itemClicked(item );
+                    }
+                }
         return false;
+
+    }
+        private boolean itemClicked(MouseItem item ) {
+
+            if (item.getType() != null)
+                switch (item.getType()) {
+
+                    case THUMBNAIL:
+                        anim.toggleThumbnail();
+                        break;
+                    case TOOLTIP:
+//                        displayTooltip(anim, item);
+                        break;
+                    case SUB_PHASE:
+                        if (anim.getPhase().getType().isSubPhase())
+                            return false;
+                        if (item.getArg() == null) {
+                            SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
+                            return true;
+                        }
+                        anim.subPhaseOpened(anim.getPhase((PHASE_TYPE) item.getArg()));
+                        SoundMaster.playStandardSound(STD_SOUNDS.DIS__OPEN_MENU);
+                        return true;
+                    case CONTROL_BACK:
+                        anim.pageFlipped(false);
+                        return true;
+                    case CONTROL_FORWARD:
+                        anim.pageFlipped(true);
+                        return true;
+
+                }
+            return false;
+
 
 
 

@@ -20,17 +20,14 @@ public class SpriteAnimation extends Animation {
     private float offsetX;
     private float frameNumber;
 
-    public enum SPRITE_BEHAVIOR{
-        FREEZE_WHEN_LOOPS_DONE,
-    }
-
     public SpriteAnimation(String path) {
         this(defaultFrameDuration, false, 1, path);
     }
-/*
-play_mode.
 
- */
+    /*
+    play_mode.
+
+     */
     public SpriteAnimation(float frameDuration, boolean looping, int loops, String path) {
         super(frameDuration, TextureManager.getSpriteSheetFrames(path));
         frameNumber = TextureManager.getFrameNumber(path);
@@ -43,13 +40,13 @@ play_mode.
     public boolean draw(Batch batch) {
         stateTime += Gdx.graphics.getDeltaTime();
         updateSpeed();
-        boolean looping = this.looping || loops==0;
+        boolean looping = this.looping || loops == 0;
         TextureRegion currentFrame = getKeyFrame(stateTime, looping);
         if (currentFrame == null) {
             dispose();
             return false;
         }
-        if (getKeyFrameIndex(stateTime)==frameNumber)
+        if (getKeyFrameIndex(stateTime) == frameNumber)
             loops--;
 
 //        Sprite sprite = new Sprite(currentFrame);
@@ -59,9 +56,9 @@ play_mode.
 //         + offsetY
 //         -currentFrame.getRegionHeight()/2);
 
-        batch.draw(currentFrame, x + offsetX-currentFrame.getRegionWidth()/2, y
-         + offsetY
-         -currentFrame.getRegionHeight()/2);
+        batch.draw(currentFrame, x + offsetX - currentFrame.getRegionWidth() / 2, y
+                + offsetY
+                - currentFrame.getRegionHeight() / 2);
 
         return true;
     }
@@ -100,7 +97,7 @@ play_mode.
     }
 
     public float getX() {
-        return x ;
+        return x;
     }
 
     public void setX(float x) {
@@ -113,5 +110,9 @@ play_mode.
 
     public void setY(float y) {
         this.y = y;
+    }
+
+    public enum SPRITE_BEHAVIOR {
+        FREEZE_WHEN_LOOPS_DONE,
     }
 }

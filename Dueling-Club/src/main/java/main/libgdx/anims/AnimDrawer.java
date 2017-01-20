@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 /**
  * Created by JustMe on 1/9/2017.
  */
-public class AnimDrawer extends Actor{
+public class AnimDrawer extends Actor {
     public AnimDrawer(Stage stage) {
     }
 

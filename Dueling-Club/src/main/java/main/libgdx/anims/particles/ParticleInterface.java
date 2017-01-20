@@ -9,6 +9,7 @@ import main.content.CONTENT_CONSTS2.SFX;
 public interface ParticleInterface {
 
     SFX getTemplate();
+
     ParticleEffect getEffect();
 
     boolean isContinuous();
@@ -16,8 +17,8 @@ public interface ParticleInterface {
     boolean isRunning();
 
     void updatePosition(float x, float y);
-    
-void start();
+
+    void start();
 //    ParticleEffect particleEffect;
 //    Body body;
 //    BodyDef bodyDef;

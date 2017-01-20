@@ -22,7 +22,6 @@ import main.libgdx.anims.AnimData;
 import main.libgdx.texture.TextureManager;
 import main.system.auxiliary.FileManager;
 import main.system.math.PositionMaster;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -46,7 +45,7 @@ public class AttackAnim extends ActionAnim {
 
 
         this.anims = new ATK_ANIMS[]{
-         ATK_ANIMS.HEAVY_SWING
+                ATK_ANIMS.HEAVY_SWING
         };
         weapon = getActive().getActiveWeapon();
 
@@ -59,9 +58,9 @@ public class AttackAnim extends ActionAnim {
     protected String findWeaponSprite(DC_WeaponObj weapon) {
         if (weapon == null) return "";
         String path = PathFinder.getSpritesPath() + "weapons\\"
-         + (weapon.isNatural() ? "natural\\" : "")
-         + (weapon.isRanged() ? "ranged\\" : "")
-         + (weapon.isAmmo() ? "ammo\\" : "");
+                + (weapon.isNatural() ? "natural\\" : "")
+                + (weapon.isRanged() ? "ranged\\" : "")
+                + (weapon.isAmmo() ? "ammo\\" : "");
         String file = FileManager.findFirstFile(path, weapon.getName(), false);
         if (file == null)
             file = FileManager.findFirstFile(path, weapon.getProperty(G_PROPS.BASE_TYPE), false);
@@ -100,8 +99,8 @@ public class AttackAnim extends ActionAnim {
         act(Gdx.graphics.getDeltaTime());
         Texture texture = getTexture();
         batch.draw(texture, this.getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
-         this.getHeight(), this.getScaleX(), this.getScaleY(), initialAngle + this.getRotation(), 0, 0,
-         texture.getWidth(), texture.getHeight(), flipX, flipY);
+                this.getHeight(), this.getScaleX(), this.getScaleY(), initialAngle + this.getRotation(), 0, 0,
+                texture.getWidth(), texture.getHeight(), flipX, flipY);
 
     }
 
@@ -124,7 +123,7 @@ public class AttackAnim extends ActionAnim {
     public void initPosition() {
         super.initPosition();
         initialAngle =
-         getInitialAngle();
+                getInitialAngle();
         initFlip();
         initOffhand();
 //            destination.x = destination.x+offsetX;
@@ -155,7 +154,7 @@ public class AttackAnim extends ActionAnim {
 
     protected int getInitialAngle() {
         return
-         FacingMaster.getFacing(active.getRef().getSourceObj()).getDirection().getDegrees();
+                FacingMaster.getFacing(active.getRef().getSourceObj()).getDirection().getDegrees();
     }
 
     protected FACING_DIRECTION getFacing() {
@@ -202,22 +201,22 @@ size - elongate
         return sequence;
     }
 
-    @NotNull
+    
     protected MoveByAction getMoveAction(float x, float y, float duration) {
         MoveByAction mainMove = new MoveByAction();
         mainMove.setDuration(duration);
         int distanceX = active.getRef().getSourceObj().getX() -
-         active.getRef().getTargetObj().getX();
+                active.getRef().getTargetObj().getX();
         x -= distanceX * GameScreen.getInstance().getGridPanel().getCellWidth();
         int distanceY = active.getRef().getSourceObj().getY() -
-         active.getRef().getTargetObj().getY();
+                active.getRef().getTargetObj().getY();
         y += distanceY * GameScreen.getInstance().getGridPanel().getCellHeight();
 
         mainMove.setAmount(x, y);
         return mainMove;
     }
 
-    @NotNull
+    
     protected RotateByAction getRotateAction(float angle, float duration) {
         RotateByAction mainRotate = new RotateByAction();
 //                angle += targetAngleOffset;
@@ -231,8 +230,8 @@ size - elongate
         else add = left;
 
         FACING_SINGLE relativeFacing = FacingMaster.getSingleFacing(
-         facing,
-         getOriginCoordinates(), getDestinationCoordinates());
+                facing,
+                getOriginCoordinates(), getDestinationCoordinates());
 //increase angle?
         int addAngle = 0;
         switch (relativeFacing) {
@@ -288,17 +287,17 @@ size - elongate
         float targetOffsetY = 25;
         float baseAngle = 0; // 0 - horizontal; 90 - vertical
         float[] targetAngles = {
-         -90
+                -90
         };
 
         float[] durations = {
-         0.5f
+                0.5f
         };
         float[] offsetsY = {
-         0f
+                0f
         };
         float[] offsetsX = {
-         0f
+                0f
         };
 
         // will assume each one in turn during animation

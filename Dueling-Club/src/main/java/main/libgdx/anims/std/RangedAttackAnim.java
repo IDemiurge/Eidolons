@@ -18,57 +18,58 @@ import java.util.List;
 /**
  * Created by JustMe on 1/19/2017.
  */
-public class RangedAttackAnim extends  AttackAnim {
+public class RangedAttackAnim extends AttackAnim {
 
-   Texture rangedWeaponImage;
+    Texture rangedWeaponImage;
     private Obj ammo;
 
-    public RangedAttackAnim(Entity active ) {
-        super(active  );
-        this.anims=GET();
+    public RangedAttackAnim(Entity active) {
+        super(active);
+        this.anims = GET();
         //draw bow on the source, ammo as missile
 
         //another actor? separate sprite?
-        rangedWeaponImage= TextureManager.getOrCreate(getRangedWeaponImage(getActive()));
-        ammo=       weapon.getRef(). getObj(KEYS.AMMO);
-        ammo=       weapon.getRef().getLastRemovedObj (KEYS.AMMO );
+        rangedWeaponImage = TextureManager.getOrCreate(getRangedWeaponImage(getActive()));
+        ammo = weapon.getRef().getObj(KEYS.AMMO);
+        ammo = weapon.getRef().getLastRemovedObj(KEYS.AMMO);
         if (ammo instanceof DC_QuickItemObj) {
-            ammo=((DC_QuickItemObj) ammo).getWrappedWeapon();
+            ammo = ((DC_QuickItemObj) ammo).getWrappedWeapon();
 
         }
     }
 
-    private  ATK_ANIMS[] GET() {
+    private ATK_ANIMS[] GET() {
         List<ATK_ANIMS> list = new LinkedList<>();
-        switch (weapon.getWeaponGroup()){
+        switch (weapon.getWeaponGroup()) {
             case CROSSBOWS:
             case BOWS:
                 list.
-                add(ATK_ANIMS.SHOT);
+                        add(ATK_ANIMS.SHOT);
 //            case RIFLES:
 //            case PISTOLS:
         }
-         return list.toArray(new ATK_ANIMS[list.size()]);
+        return list.toArray(new ATK_ANIMS[list.size()]);
 
 
     }
 
     @Override
     protected int getInitialAngle() {
-        return super.getInitialAngle()-90;
+        return super.getInitialAngle() - 90;
     }
 
     @Override
     protected void initFlip() {
         super.initFlip();
     }
+
     @Override
     protected RotateByAction getRotateAction(float angle, float duration) {
         return super.getRotateAction(0, 0);
     }
 
     private String getRangedWeaponImage(DC_ActiveObj active) {
-    return  findWeaponSprite(active.getActiveWeapon());
+        return findWeaponSprite(active.getActiveWeapon());
 
     }
 
@@ -80,10 +81,10 @@ public class RangedAttackAnim extends  AttackAnim {
     @Override
     public void draw(Batch batch, float alpha) {
         super.draw(batch, alpha);
-        Texture texture=rangedWeaponImage;
+        Texture texture = rangedWeaponImage;
         batch.draw(texture, origin.x, origin.y, this.getOriginX(), this.getOriginY(), this.getWidth(),
-         this.getHeight(), this.getScaleX(), this.getScaleY(), initialAngle + this.getRotation(), 0, 0,
-         texture.getWidth(), texture.getHeight(), flipX, flipY);
+                this.getHeight(), this.getScaleX(), this.getScaleY(), initialAngle + this.getRotation(), 0, 0,
+                texture.getWidth(), texture.getHeight(), flipX, flipY);
 
     }
 

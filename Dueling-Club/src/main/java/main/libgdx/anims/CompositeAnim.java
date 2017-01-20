@@ -23,29 +23,29 @@ import java.util.Map;
 public class CompositeAnim {
 
     Map<ANIM_PART, Anim> map = new XLinkedMap<>();
-    Map<ANIM_PART, List<GuiEventType>> startEventMap ;
-    Map<ANIM_PART, List<GuiEventType>> eventMap ;
-    Map<ANIM_PART, List<CompositeAnim>> attached ;
+    Map<ANIM_PART, List<GuiEventType>> startEventMap;
+    Map<ANIM_PART, List<GuiEventType>> eventMap;
+    Map<ANIM_PART, List<CompositeAnim>> attached;
     ANIM_PART part;
     int index;
+    PhaseAnim phaseAnim;
     private boolean finished;
     private boolean running;
     private Anim currentAnim;
-    PhaseAnim phaseAnim;
 
     public CompositeAnim(Anim... anims) {
         this(new MapMaster<ANIM_PART, Anim>().constructMap(new LinkedList<>(Arrays.asList(ANIM_PART.values()).subList(0, anims.length)),
-         new LinkedList<>(Arrays.asList(anims))));
+                new LinkedList<>(Arrays.asList(anims))));
 
     }
 
     public CompositeAnim(Map<ANIM_PART, Anim> map) {
-this.map=map;
+        this.map = map;
         reset();
     }
 
     public CompositeAnim(DC_ActiveObj active) {
-this(new XLinkedMap< >());
+        this(new XLinkedMap<>());
     }
 
     public boolean draw(Batch batch) {
@@ -67,7 +67,7 @@ this(new XLinkedMap< >());
             }
         if (!result) {
             index++;
-                triggerFinishEvents();
+            triggerFinishEvents();
             if (map.size() <= index) {
                 finished();
                 return false;
@@ -80,25 +80,26 @@ this(new XLinkedMap< >());
     }
 
 
-    public  void attach(CompositeAnim anim, ANIM_PART part) {
+    public void attach(CompositeAnim anim, ANIM_PART part) {
         new MapMaster<ANIM_PART, Anim>().addToListMap(attached, part, anim);
     }
 
     private void drawAttached(Batch batch) {
         List<CompositeAnim> list = attached.get(part);
-        if ( list==null ) return;
+        if (list == null) return;
         list.forEach(anim -> {
             anim.draw(batch);
 
         });
     }
+
     private void playAttached() {
         List<CompositeAnim> list = attached.get(part);
-        if ( list!=null )
-        list.forEach(anim -> {
-            anim.start();
+        if (list != null)
+            list.forEach(anim -> {
+                anim.start();
 
-        });
+            });
     }
 
     public void finished() {
@@ -109,40 +110,43 @@ this(new XLinkedMap< >());
 
 
     private void triggerStartEvents() {
-        if (startEventMap.get(part)!=null )
-        startEventMap.get(part).forEach(e-> GuiEventManager.triggerQueued(e));
+        if (startEventMap.get(part) != null)
+            startEventMap.get(part).forEach(e -> GuiEventManager.triggerQueued(e));
     }
-        private void triggerFinishEvents() {
-        if (eventMap.get(part)!=null )
-        eventMap.get(part).forEach(e-> GuiEventManager.triggerQueued(e));
+
+    private void triggerFinishEvents() {
+        if (eventMap.get(part) != null)
+            eventMap.get(part).forEach(e -> GuiEventManager.triggerQueued(e));
     }
 
     public void add(ANIM_PART part, Anim anim) {
         map.put(part, anim);
         new MapMaster<ANIM_PART, Anim>().addToListMap(eventMap,
-         part, anim.getEventsOnFinish());
+                part, anim.getEventsOnFinish());
         new MapMaster<ANIM_PART, Anim>().addToListMap(startEventMap,
-         part, anim.getEventsOnStart());
+                part, anim.getEventsOnStart());
     }
 
     public void reset() {
-map.values().forEach(anim -> {
-    anim.reset();
-});
-        startEventMap= new XLinkedMap<>();
-        eventMap= new XLinkedMap<>();
-         attached = new XLinkedMap<>(); ;
-        finished=false;
+        map.values().forEach(anim -> {
+            anim.reset();
+        });
+        startEventMap = new XLinkedMap<>();
+        eventMap = new XLinkedMap<>();
+        attached = new XLinkedMap<>();
+        ;
+        finished = false;
     }
+
     public void start() {
-        index=0;
-       initPartAnim();
+        index = 0;
+        initPartAnim();
         if (map.isEmpty()) {
             return;
         }
         queueGraphicEvents();
-        running=true;
-        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,this +" started: "
+        running = true;
+        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, this + " started: "
         );
 
     }
@@ -155,25 +159,26 @@ map.values().forEach(anim -> {
 
     private void queueGraphicEvents() {
         getStartEventMap().values().forEach(
-     (List<GuiEventType> e) -> e.forEach(x -> GuiEventManager.queue(x))        );
+                (List<GuiEventType> e) -> e.forEach(x -> GuiEventManager.queue(x)));
     }
+
     private void initPartAnim() {
         if (map.isEmpty())
-            return ;
+            return;
         part = (ANIM_PART) MapMaster.get(map, index);
-        currentAnim=map.get(part);
+        currentAnim = map.get(part);
         currentAnim.start();
         triggerStartEvents();
     }
 
     public void addEffectAnim(CompositeAnim anim, Effect effect) {
-        ANIM_PART partToAddAt = EffectAnim. getPartToAttachTo(effect);
+        ANIM_PART partToAddAt = EffectAnim.getPartToAttachTo(effect);
 
         attach(anim, partToAddAt);
         //anim group vs anim(Effects)
     }
 
-        public void interrupt() {
+    public void interrupt() {
         //at what part?
 //        setInterruptPart(p);
 //        setInterruptMethod(method); //fade, flash, drop, skip

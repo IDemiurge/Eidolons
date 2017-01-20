@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 /**
  * Created by JustMe on 1/11/2017.
  */
-public class HorizontalContainer extends HorizontalGroup implements WidgetContainer{
+public class HorizontalContainer extends HorizontalGroup implements WidgetContainer {
 
     @Override
     public void add(WidgetContainer c) {
@@ -14,13 +14,12 @@ public class HorizontalContainer extends HorizontalGroup implements WidgetContai
     }
 
 
-
     @Override
-        public String toString() {
-            return   getClass().getSimpleName()+ " " +getWidth() + " by " + getHeight()
-             + " at " + getX() + ":" + getY()
-             + " with " + getChildren().size + " children: " + getChildren();
-        }
+    public String toString() {
+        return getClass().getSimpleName() + " " + getWidth() + " by " + getHeight()
+                + " at " + getX() + ":" + getY()
+                + " with " + getChildren().size + " children: " + getChildren();
     }
+}
 
 

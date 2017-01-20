@@ -36,7 +36,7 @@ public class MoveAnimation extends ActionAnim {
                 protected void begin() {
                     super.begin();
                     main.system.auxiliary.LogMaster.log(1, this + " begins! "
-                     + this.getX() + " " + this.getY());
+                            + this.getX() + " " + this.getY());
                 }
 
                 @Override
@@ -64,7 +64,6 @@ public class MoveAnimation extends ActionAnim {
     public List<ParticleEmitter> getEmitterList() {
         return new LinkedList<>();
     }
-
 
 
     @Override
@@ -98,7 +97,7 @@ public class MoveAnimation extends ActionAnim {
 //            return getRef().getTargetObj().getCoordinates();
 //        return super.getOriginCoordinates();
         MoveEffect e = (MoveEffect) EffectMaster.getFirstEffectOfClass(getActive(),
-         MoveEffect.class);
+                MoveEffect.class);
         return e.getOrigin();
 
     }
@@ -108,7 +107,7 @@ public class MoveAnimation extends ActionAnim {
 
 
         MoveEffect e = (MoveEffect) EffectMaster.getFirstEffectOfClass(getActive(),
-         MoveEffect.class); //TODO could be 2+?
+                MoveEffect.class); //TODO could be 2+?
         return e.getDestination();
 //            if (e.getDirection() != null) {
 //                return ref.getSourceObj().getCoordinates().getAdjacentCoordinate
@@ -127,14 +126,14 @@ public class MoveAnimation extends ActionAnim {
     @Override
     public List<GuiEventType> getEventsOnStart() {
         return new LinkedList<>(Arrays.asList(new GuiEventType[]{
-         GuiEventType.DESTROY_UNIT_MODEL
+                GuiEventType.DESTROY_UNIT_MODEL
         }));
     }
 
     @Override
     public List<GuiEventType> getEventsOnFinish() {
         return new LinkedList<>(Arrays.asList(new GuiEventType[]{
-         GuiEventType.UNIT_MOVED
+                GuiEventType.UNIT_MOVED
         }));
     }
 

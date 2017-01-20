@@ -178,8 +178,8 @@ public class RadialMenu extends Group {
     public void createNew(DC_Obj target) {
         DC_HeroObj source
                 = (DC_HeroObj) Game.game.getManager().getActiveObj();
-if (source==null )
-    return ; //fix logic to avoid null value between turns!
+        if (source == null)
+            return; //fix logic to avoid null value between turns!
         List<ActiveObj> activeObjs = source.getActives();
 
         List<Triple<Runnable, Texture, String>> moves = new ArrayList<>();
@@ -282,19 +282,20 @@ if (source==null )
                     }
                     inn1.childNodes = list;
                     nn1.add(inn1);
-                }if (dcActiveObj.getActiveWeapon()!=null )
-                if (dcActiveObj.getActiveWeapon(). isRanged())
-                    if (dcActiveObj.getRef().getObj(KEYS.AMMO)==null ){
-                        for ( DC_QuickItemObj ammo: dcActiveObj.getOwnerObj().getQuickItems()) {
-                            RadialMenu.CreatorNode innn = new CreatorNode();
-                            innn.name = "Reload with "+ ammo.getName();
-                            innn.texture = TextureManager.getOrCreate(ammo.getImagePath());
-                            innn.action = () -> {
-                                ammo.invokeClicked();
-                            };
-                            list.add(innn);
+                }
+                if (dcActiveObj.getActiveWeapon() != null)
+                    if (dcActiveObj.getActiveWeapon().isRanged())
+                        if (dcActiveObj.getRef().getObj(KEYS.AMMO) == null) {
+                            for (DC_QuickItemObj ammo : dcActiveObj.getOwnerObj().getQuickItems()) {
+                                RadialMenu.CreatorNode innn = new CreatorNode();
+                                innn.name = "Reload with " + ammo.getName();
+                                innn.texture = TextureManager.getOrCreate(ammo.getImagePath());
+                                innn.action = () -> {
+                                    ammo.invokeClicked();
+                                };
+                                list.add(innn);
+                            }
                         }
-                    }
             }
 
         }

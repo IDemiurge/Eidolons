@@ -20,39 +20,39 @@ import java.util.Stack;
  */
 public class AnimMaster extends Actor {
 
+    static private boolean on;
     Stack<CompositeAnim> leadQueue = new Stack<>(); //if more Action Stacks have been created before leadAnimation is finished
     CompositeAnim leadAnimation; // wait for it to finish before popping more from the queue
     AnimDrawer drawer;
     boolean parallelDrawing = false;
     private AnimationConstructor constructor;
     private Stage stage;
-   static private boolean on;
 
     //animations will use emitters, light, sprites, text and icons
     public AnimMaster(Stage stage) {
         on =
-         FAST_DC.getGameLauncher().FAST_MODE ||  FAST_DC.getGameLauncher().SUPER_FAST_MODE;
+                FAST_DC.getGameLauncher().FAST_MODE || FAST_DC.getGameLauncher().SUPER_FAST_MODE;
         drawer = new AnimDrawer(stage);
         this.stage = stage;
         constructor = new AnimationConstructor();
 
 
         GuiEventManager.bind(GuiEventType.ACTION_INTERRUPTED, p -> {
-            if (!isOn()) return ;
+            if (!isOn()) return;
             leadAnimation.interrupt();
         });
         GuiEventManager.bind(GuiEventType.ACTION_BEING_RESOLVED, p -> {
-            if (!isOn()) return ;
-       CompositeAnim animation = constructor.getOrCreate((DC_ActiveObj) p.get());
+            if (!isOn()) return;
+            CompositeAnim animation = constructor.getOrCreate((DC_ActiveObj) p.get());
             animation.getStartEventMap().values().forEach(
-             (List<GuiEventType> e) -> e.forEach(x -> GuiEventManager.queue(x))
+                    (List<GuiEventType> e) -> e.forEach(x -> GuiEventManager.queue(x))
             );
 
         });
 
         GuiEventManager.bind(GuiEventType.ACTION_RESOLVES, p -> {
 
-            if (!isOn()) return ;
+            if (!isOn()) return;
             CompositeAnim animation = constructor.getOrCreate((DC_ActiveObj) p.get());
             animation.reset();
             if (leadAnimation == null) {
@@ -65,7 +65,7 @@ public class AnimMaster extends Actor {
                 }
             }
             animation.getEventMap().values().forEach(
-             (List<GuiEventType> e) -> e.forEach(x -> GuiEventManager.queue(x))
+                    (List<GuiEventType> e) -> e.forEach(x -> GuiEventManager.queue(x))
             );
 
         });
@@ -73,32 +73,40 @@ public class AnimMaster extends Actor {
 //            leadAnimation.start();
 //        });
         GuiEventManager.bind(GuiEventType.ABILITY_RESOLVES, p -> {
-            if (!isOn()) return ;
+            if (!isOn()) return;
             Ability ability = (Ability) p.get();
             //what about triggers?
 //            getParentAnim(ability.getRef().getActive()).addAbilityAnims(ability);
         });
         GuiEventManager.bind(GuiEventType.EFFECT_APPLIED, p -> {
-             if (!isOn()) return ;
-             Effect effect = (Effect) p.get();
-             CompositeAnim anim = constructor.getEffectAnim(effect);
-             if (anim==null )return;
-             CompositeAnim parentAnim = getParentAnim(effect.getRef());
+                    if (!isOn()) return;
+                    Effect effect = (Effect) p.get();
+                    CompositeAnim anim = constructor.getEffectAnim(effect);
+                    if (anim == null) return;
+                    CompositeAnim parentAnim = getParentAnim(effect.getRef());
 
 //                 getTrigger().getEvent()
 // some active will be there anyway, so...
-             //
-            if (parentAnim != null) {
-                main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,anim +" created for: "+parentAnim );
-                parentAnim.addEffectAnim(anim, effect); //TODO}
-            }
-             else{
+                    //
+                    if (parentAnim != null) {
+                        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, anim + " created for: " + parentAnim);
+                        parentAnim.addEffectAnim(anim, effect); //TODO}
+                    } else {
 
-                    add(anim);// when to start()?
+                        add(anim);// when to start()?
+                    }
                 }
-            }
         );
         stage.addActor(this);
+    }
+
+    public static boolean isOn() {
+        return on;
+
+    }
+
+    public void setOn(boolean on) {
+        this.on = on;
     }
 
     private void add(CompositeAnim anim) {
@@ -107,17 +115,16 @@ public class AnimMaster extends Actor {
 
     private void startNext() {
         leadAnimation = next();
-        if (leadAnimation!=null )
+        if (leadAnimation != null)
             leadAnimation.start();
     }
 
     private CompositeAnim getParentAnim(Ref ref) {
-        if (ref.getActive()==null ){
+        if (ref.getActive() == null) {
             //TODO
         }
         return constructor.getOrCreate(ref.getActive());
     }
-
 
     private CompositeAnim next() {
         if (leadQueue.isEmpty()) {
@@ -128,10 +135,9 @@ public class AnimMaster extends Actor {
         return leadAnimation;
     }
 
-
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (!isOn()) return ;
+        if (!isOn()) return;
         if (leadAnimation == null) {
             leadAnimation = next();
         }
@@ -151,15 +157,5 @@ public class AnimMaster extends Actor {
 
             leadQueue.removeIf((CompositeAnim anim) -> anim.isFinished());
         }
-    }
-
-
-    public static boolean isOn() {
-        return on;
-
-    }
-
-    public void setOn(boolean on) {
-        this.on = on;
     }
 }

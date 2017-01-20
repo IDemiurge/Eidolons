@@ -16,32 +16,31 @@ import com.badlogic.gdx.utils.Align;
  */
 public class TopPanel extends Image {
 
-    private Image imageButton;
-    private Label text;
-
     private final static String backgroundImagePath = "UI\\components\\top.png";
     private static final String buttonImagePath = "UI\\components\\menu.png";
+    private Image imageButton;
+    private Label text;
 //    public static final String
 
 
     public TopPanel(String imagePath) {
         super(new Texture(imagePath + backgroundImagePath));
         imageButton = new Image(new Texture(imagePath + buttonImagePath));
-       // text = new Label("aaaaaaa", new Skin());
+        // text = new Label("aaaaaaa", new Skin());
     }
 
     public TopPanel init() {
 //        int h = Gdx.graphics.getHeight();
 //        int w = Gdx.graphics.getWidth();
 
-          int h = 900;
-          int w = 1600;
+        int h = 900;
+        int w = 1600;
 
         setAlign(Align.top);
-        setX(w/2-(getWidth()/2));
-        setY(h-getHeight());
-        imageButton.setX(w/2-(imageButton.getWidth()/2));
-        imageButton.setY(h-imageButton.getHeight());
+        setX(w / 2 - (getWidth() / 2));
+        setY(h - getHeight());
+        imageButton.setX(w / 2 - (imageButton.getWidth() / 2));
+        imageButton.setY(h - imageButton.getHeight());
         //text.setBounds(0, 0, 10, 10);
         return this;
     }

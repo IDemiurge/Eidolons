@@ -20,11 +20,12 @@ public class EntityComp extends Comp {
     }
 
     public EntityComp(Supplier<? extends Entity> supplier, int size) {
-        super(supplier.get()==null  ? null :  ()-> supplier.get().getImagePath());
+        super(supplier.get() == null ? null : () -> supplier.get().getImagePath());
     }
+
     public EntityComp(Entity obj) {
-        super(()-> obj==null ? "" : obj.getImagePath());
-        this.entity=obj;
+        super(() -> obj == null ? "" : obj.getImagePath());
+        this.entity = obj;
     }
 
     public Entity getEntity() {

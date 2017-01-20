@@ -21,16 +21,14 @@ import main.system.graphics.MigMaster;
 public class InputController implements InputProcessor {
 
 
-    private Stage bf;
-    private Stage gui;
     float x_cam_pos;
     float y_cam_pos;
-
-
     OrthographicCamera camera;
     boolean is_it_Left_Click = false;
     boolean alt = false;
     boolean ctrl = false;
+    private Stage bf;
+    private Stage gui;
 
     public InputController(OrthographicCamera camera) {
         this.camera = camera;
@@ -102,15 +100,15 @@ public class InputController implements InputProcessor {
         Dialog dialog = GameScreen.getInstance().getDialogDisplay().getDialog();
         if (dialog != null) {
             int w = MigMaster.getCenteredPosition(
-             (int) GameScreen.getInstance().getBackground().getWidth()
-             , (int) dialog.getWidth());
+                    (int) GameScreen.getInstance().getBackground().getWidth()
+                    , (int) dialog.getWidth());
             boolean
-             outside =   x  < w || x> w+ (int) dialog.getWidth();
+                    outside = x < w || x > w + (int) dialog.getWidth();
             if (!outside) {
                 int h = MigMaster.getCenteredPosition(
-                 (int) GameScreen.getInstance().getBackground().getHeight()
-                 , (int) dialog.getHeight());
-                outside =   y  < h || y> h+ (int) dialog.getHeight();
+                        (int) GameScreen.getInstance().getBackground().getHeight()
+                        , (int) dialog.getHeight());
+                outside = y < h || y > h + (int) dialog.getHeight();
             }
             if (outside) {
                 GuiEventManager.trigger(GuiEventType.DIALOG_CLOSED, null);
@@ -130,7 +128,7 @@ public class InputController implements InputProcessor {
     @Override
     public boolean touchDragged(int i, int i1, int i2) {
 
-        if (DialogDisplay.isDisplaying() )
+        if (DialogDisplay.isDisplaying())
             return false;
 //        System.out.println("i = " + i + " || i1 = " + i1 + " || i2 = "  + i2);
         if (is_it_Left_Click) {
@@ -140,10 +138,10 @@ public class InputController implements InputProcessor {
             y_cam_pos = i1;
             Image background = GameScreen.getInstance().getBackground().getImage();
             background.setBounds(
-             camera.position.x - background.getWidth() / 2,
-             camera.position.y - background.getHeight() / 2,
-             background.getWidth(),
-             background.getHeight());
+                    camera.position.x - background.getWidth() / 2,
+                    camera.position.y - background.getHeight() / 2,
+                    background.getWidth(),
+                    background.getHeight());
         }
 
 

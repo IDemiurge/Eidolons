@@ -15,7 +15,6 @@ public class TargetUnitInfoPanel extends UnitInfoPanel {
     }
 
 
-
     @Override
     public TargetUnitInfoPanel init() {
         super.init();

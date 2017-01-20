@@ -17,7 +17,7 @@ import static main.system.GuiEventType.SHOW_INFO_DIALOG;
 public class DialogDisplay extends Group {
 
     private static final int HEIGHT_OFFSET = 65;
-    private static   DialogDisplay instance;
+    private static DialogDisplay instance;
     Dialog dialog;
 
     public DialogDisplay() {
@@ -36,10 +36,10 @@ public class DialogDisplay extends Group {
 
             int w = Math.max((int) dialog.getWidth(), (int) GameScreen.getInstance().getBackground().getWidth());
             int h = Math.max((int) dialog.getHeight(), (int) GameScreen.getInstance().
-             getBackground().getHeight());
+                    getBackground().getHeight());
             setPosition(MigMaster.getCenteredPosition(w, (int) dialog.getWidth()),
-             HEIGHT_OFFSET+
-             MigMaster.getCenteredPosition(h, (int) dialog.getHeight()));
+                    HEIGHT_OFFSET +
+                            MigMaster.getCenteredPosition(h, (int) dialog.getHeight()));
 //            GameScreen.getInstance().
             setVisible(true);
             LightingManager.darkening = 0.5f;
@@ -48,7 +48,15 @@ public class DialogDisplay extends Group {
         GuiEventManager.bind(DIALOG_CLOSED, obj -> {
             closedDialog();
         });
-        instance=this;
+        instance = this;
+    }
+
+    public static boolean isDisplaying() {
+        return instance.getDialog() != null;
+    }
+
+    public static DialogDisplay getInstance() {
+        return instance;
     }
 
     @Override
@@ -63,13 +71,5 @@ public class DialogDisplay extends Group {
 
     public Dialog getDialog() {
         return dialog;
-    }
-
-    public static boolean isDisplaying() {
-        return instance.getDialog()!=null ;
-    }
-
-    public static DialogDisplay getInstance() {
-        return instance;
     }
 }

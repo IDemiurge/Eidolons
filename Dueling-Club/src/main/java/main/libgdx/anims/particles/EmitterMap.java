@@ -19,15 +19,15 @@ public class EmitterMap {
 
     Stack<List<ParticleInterface>> fxStack;
 
-public EmitterMap(){
+    public EmitterMap() {
 
-    GuiEventManager.bind(GuiEventType.EMITTER_ANIM_CREATED, p -> {
-        ParticleAnimation
-                anim = new ParticleAnimation();
-        animationFx.add(anim);
+        GuiEventManager.bind(GuiEventType.EMITTER_ANIM_CREATED, p -> {
+            ParticleAnimation
+                    anim = new ParticleAnimation();
+            animationFx.add(anim);
 
-    });
-}
+        });
+    }
 
     public boolean contains(ParticleInterface actor) {
         return emitters.contains(actor);
