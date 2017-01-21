@@ -29,6 +29,8 @@ public class LogPanel extends Group {
     private static final String loremIpsum = "[#FF0000FF]Lorem ipsum[] dolor sit amet, [#00FF00FF]consectetur adipiscing elit[]. [#0000FFFF]Vestibulum faucibus[], augue sit amet porttitor rutrum, nulla eros finibus mauris, nec sagittis mauris nulla et urna. Sed ac orci nec urna ornare aliquam a sit amet neque. Nulla condimentum iaculis dolor, et porttitor dui sollicitudin vel. Fusce convallis fringilla dolor eu mollis. Nam porta augue nec ullamcorper ultricies. Morbi bibendum libero efficitur metus accumsan viverra at ut metus. Duis congue pulvinar ligula, sed maximus tellus lacinia eu.";
 
     WidgetGroup widgetGroup;
+    MovableHeader movableHeader;
+    ExtendButton extendButton;
     private boolean updatePos = false;
 
     public LogPanel() {
@@ -54,10 +56,10 @@ public class LogPanel extends Group {
         widgetGroup = new WidgetGroup();
         widgetGroup.setWidth(getWidth() - 50);
         widgetGroup.setHeight(tb.getHeight());
-        widgetGroup.setDebug(true);
+        //widgetGroup.setDebug(true);
         widgetGroup.addActor(tb);
 
-        Actor movableHeader = new MovableHeader();
+        movableHeader = new MovableHeader();
         movableHeader.setBounds(0, getHeight() - 10, getWidth(), 10);
         //movableHeader.setDebug(true);
         movableHeader.addCaptureListener(new InputListener() {
@@ -65,8 +67,8 @@ public class LogPanel extends Group {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                float x1 = LogPanel.this.getX();
-                float y1 = LogPanel.this.getY();
+                float x1 = getX();
+                float y1 = getY();
 
                 Vector2 vector2 = new Vector2(x, y);
                 vector2 = localToParentCoordinates(vector2);
@@ -77,9 +79,9 @@ public class LogPanel extends Group {
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                x = Math.min(Math.max(LogPanel.this.getX() + x + offset.x, 0), getStage().getWidth() - LogPanel.this.getWidth());
-                y = Math.min(Math.max(LogPanel.this.getY() + y + offset.y, 0), getStage().getHeight() - LogPanel.this.getHeight());
-                LogPanel.this.setPosition(x, y);
+                x = Math.min(Math.max(getX() + x + offset.x, 0), getStage().getWidth() - getWidth());
+                y = Math.min(Math.max(getY() + y + offset.y, 0), getStage().getHeight() - getHeight());
+                setPosition(x, y);
                 updatePos = true;
             }
         });
@@ -105,6 +107,26 @@ public class LogPanel extends Group {
                 return true;
             }
         });
+
+        extendButton = new ExtendButton();
+        addActor(extendButton);
+
+        extendButton.setPosition(getWidth() / 2 - extendButton.getWidth() / 2, getHeight() - movableHeader.getHeight() + 4);
+
+        extendButton.addCaptureListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                event.stop();
+                return true;
+            }
+
+            @Override
+            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                setHeight(Math.min(Math.max(getHeight() + y, 300), 600));
+                updatePos = true;
+            }
+        });
+
 
         updatePos = true;
     }
@@ -136,6 +158,10 @@ public class LogPanel extends Group {
             //v2 = localToParentCoordinates(v2);
             widgetGroup.setX(getX());
             widgetGroup.setY(getY() + 10);
+
+            movableHeader.setBounds(0, getHeight() - 10, getWidth(), 10);
+            extendButton.setPosition(getWidth() / 2 - extendButton.getWidth() / 2, getHeight() - movableHeader.getHeight() + 4);
+
             updatePos = false;
         }
     }
@@ -144,7 +170,7 @@ public class LogPanel extends Group {
     public Actor hit(float x, float y, boolean touchable) {
         Actor actor = super.hit(x, y, touchable);
         if (actor == null) return null;
-        if (actor instanceof MovableHeader) {
+        if (actor instanceof MovableHeader || actor instanceof ExtendButton) {
             return actor;
         }
         return this;
