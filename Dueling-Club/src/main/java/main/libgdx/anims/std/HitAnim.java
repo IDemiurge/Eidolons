@@ -46,8 +46,8 @@ public class HitAnim extends ActionAnim {
     @Override
     public void start() {
         super.start();
-        floatingText.init(GameScreen.getInstance().getAnimsStage());
-        new FloatingText("TEST" , Color.BLUE).init(GameScreen.getInstance().getAnimsStage());
+        floatingText.init(GameScreen.getInstance().getAnimsStage()
+         , destination, 64, 128, 1.5f);
     }
 
     private String getTargetSuffix(Obj targetObj) {

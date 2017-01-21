@@ -54,7 +54,7 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 	// size,
 	};
 
-	public static final String commands = "Visual;New;Dialog;Filter;Prioritize;@Add;Save;Repair;Edit;Mass Edit;Random;Find;";
+	public static final String commands = "Visual;New;Dialog;Filter;Prioritize;@Filters;Save;Repair;Edit;Mass Edit;Random;Find;";
 	private static List<ObjType> dialogListTypes;
 	private static boolean dialogChooseOrRandom;
 	private static LinkedList<ObjType> cachedDialogListTypes;
@@ -455,9 +455,13 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 
         List<ObjType> types;
         switch (e.getActionCommand()) {
-            case "Dialog":
-                doDialog(alt, shift, ctrl, list, false);
-                break;
+			case "Filters":
+				doAddRemoveFilters(alt, shift, ctrl, list, false);
+				break;
+
+			case "Dialog":
+				doDialog(alt, shift, ctrl, list, false);
+				break;
             case "Prioritize":
                 prioritize(ctrl, shift);
                 break;
@@ -526,7 +530,17 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 
     }
 
-    public void cycleSort() {
+	private void
+	doAddRemoveFilters(boolean alt, boolean shift, boolean ctrl,
+					   MusicList list, boolean b) {
+		if (shift)
+			MusicCore.setFilterOut(!MusicCore.isFilterOut());
+if (!alt)
+		MusicCore.addFilterValue();else
+		MusicCore.removeFilterValue();
+	}
+
+	public void cycleSort() {
         cycle(sortBox);
     }
 
