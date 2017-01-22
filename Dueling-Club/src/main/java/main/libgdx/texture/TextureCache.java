@@ -1,8 +1,8 @@
 package main.libgdx.texture;
 
 import com.badlogic.gdx.graphics.Texture;
+import main.system.auxiliary.StringMaster;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,10 +25,8 @@ public class TextureCache {
     }
 
     public final Texture get(String path, boolean save) {
-        String p = File.separator + path;
-
-        p = this.imagePath + p;
-
+        String p = //File.separator + path;
+        StringMaster.addMissingPathSegments(path, this.imagePath);
         if (!this.cache.containsKey(p)) {
             Texture t = new Texture(p);
             if (!save) {

@@ -201,6 +201,7 @@ size - elongate
         return sequence;
     }
 
+    
     protected MoveByAction getMoveAction(float x, float y, float duration) {
         MoveByAction mainMove = new MoveByAction();
         mainMove.setDuration(duration);
@@ -215,6 +216,7 @@ size - elongate
         return mainMove;
     }
 
+    
     protected RotateByAction getRotateAction(float angle, float duration) {
         RotateByAction mainRotate = new RotateByAction();
 //                angle += targetAngleOffset;

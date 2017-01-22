@@ -22,6 +22,7 @@ public class PhaseAnim extends Group {
     protected Texture2D texture;
     protected Image image;
     protected boolean dirty;
+    private PhaseAnimListener listener;
 
     public PhaseAnim(PhaseAnimation anim) {
         this.anim = anim;
@@ -30,7 +31,7 @@ public class PhaseAnim extends Group {
         h = Math.max(228, anim.getH());
 
         anim.setThumbnail(true);
-        addListener(new PhaseAnimListener(this));
+        setListener(new PhaseAnimListener(this));
     }
 
     @Override
@@ -100,5 +101,13 @@ public class PhaseAnim extends Group {
 
     public void setH(int h) {
         this.h = h;
+    }
+
+    public PhaseAnimListener getListener() {
+        return listener;
+    }
+
+    public void setListener(PhaseAnimListener listener) {
+        this.listener = listener;
     }
 }

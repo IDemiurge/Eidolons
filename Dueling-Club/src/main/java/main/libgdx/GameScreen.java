@@ -26,8 +26,10 @@ import main.libgdx.gui.dialog.DialogDisplay;
 import main.libgdx.gui.panels.dc.InitiativeQueue;
 import main.libgdx.gui.panels.dc.LogPanel;
 import main.system.GuiEventManager;
+import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+import main.test.frontend.FAST_DC;
 import org.apache.commons.lang3.tuple.Pair;
 
 import static main.system.GuiEventType.*;
@@ -142,10 +144,13 @@ public class GameScreen implements Screen {
         guiStage.addActor(queue);
         queue.setPosition(0, Gdx.app.getGraphics().getHeight() - 64);
 
-        LogPanel ld = new LogPanel();
+
+        if (!BooleanMaster.isTrue(FAST_DC.getGameLauncher().getFAST_MODE())
+         &&!BooleanMaster.isTrue(FAST_DC.getGameLauncher().getSUPER_FAST_MODE()))
+        {      LogPanel ld = new LogPanel();
         guiStage.addActor(ld);
         ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
-        ld.setPosition(200, 200);
+        ld.setPosition(200, 200);}
     }
 
     private void bindEvents() {

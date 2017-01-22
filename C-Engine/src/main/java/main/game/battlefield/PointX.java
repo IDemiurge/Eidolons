@@ -11,6 +11,10 @@ public class PointX extends Point {
         this(p.x + x, p.y + y);
     }
 
+    public PointX(float x, float y) {
+        this((int)x , (int)y);
+    }
+
     public String toString() {
         return x + "-" + y;
     }

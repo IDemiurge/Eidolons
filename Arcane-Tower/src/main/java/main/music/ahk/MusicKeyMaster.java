@@ -2,12 +2,15 @@ package main.music.ahk;
 
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
+import javafx.util.Pair;
+import main.content.VALUE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.enums.StatEnums.MUSIC_TAG_GROUPS;
 import main.enums.StatEnums.MUSIC_TYPE;
 import main.logic.AT_OBJ_TYPE;
 import main.logic.AT_PROPS;
+import main.music.MusicCore;
 import main.music.entity.MusicList;
 import main.music.gui.MC_ControlPanel;
 import main.swing.generic.components.editors.lists.ListChooser;
@@ -236,6 +239,14 @@ public class MusicKeyMaster implements HotkeyListener {
     }
 
     private boolean checkRandomGroup(ObjType type, Object c, boolean tag) {
+        for (Pair<VALUE, String> pair: MusicCore.getFilterValues() ){
+            if (MusicCore.isFilterOut()) {
+            if (type.checkValue(pair.getKey(), pair.getValue()))
+                return false;
+            }else
+            if (!type.checkValue(pair.getKey(), pair.getValue()))
+                return false;
+        }
         AT_PROPS PROP = tag ? AT_PROPS.MUSIC_TAGS : AT_PROPS.MUSIC_TYPE;
         if (tag) {
             return type.checkContainerProp(PROP, c.toString().replace("_", ";"), true);
