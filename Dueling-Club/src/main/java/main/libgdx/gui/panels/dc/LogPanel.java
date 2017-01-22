@@ -1,21 +1,17 @@
 package main.libgdx.gui.panels.dc;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
-import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import main.libgdx.StyleHolder;
 import main.libgdx.bf.mouse.MovableHeader;
+import main.libgdx.gui.dialog.LogMessage;
+import main.libgdx.gui.dialog.LogMessageBuilder;
 import main.libgdx.texture.TextureManager;
 
 /**
@@ -28,10 +24,13 @@ public class LogPanel extends Group {
 
     private static final String loremIpsum = "[#FF0000FF]Lorem ipsum[] dolor sit amet, [#00FF00FF]consectetur adipiscing elit[]. [#0000FFFF]Vestibulum faucibus[], augue sit amet porttitor rutrum, nulla eros finibus mauris, nec sagittis mauris nulla et urna. Sed ac orci nec urna ornare aliquam a sit amet neque. Nulla condimentum iaculis dolor, et porttitor dui sollicitudin vel. Fusce convallis fringilla dolor eu mollis. Nam porta augue nec ullamcorper ultricies. Morbi bibendum libero efficitur metus accumsan viverra at ut metus. Duis congue pulvinar ligula, sed maximus tellus lacinia eu.";
 
-    WidgetGroup widgetGroup;
+    Container<Table> widgetGroup;
     MovableHeader movableHeader;
     ExtendButton extendButton;
     private boolean updatePos = false;
+    private float offsetY = 0;
+    private Container<WidgetGroup> container;
+    private boolean widgetPosChanged = false;
 
     public LogPanel() {
         setSize(300, 500);
@@ -53,11 +52,16 @@ public class LogPanel extends Group {
         tb.setLayoutEnabled(true);
         tb.pack();
 
-        widgetGroup = new WidgetGroup();
-        widgetGroup.setWidth(getWidth() - 50);
-        widgetGroup.setHeight(tb.getHeight());
-        //widgetGroup.setDebug(true);
-        widgetGroup.addActor(tb);
+        container = new Container<>();
+        container.setBounds(15, 15, getWidth() - 30, getHeight() - 30);
+        container.setClip(true);
+        addActor(container);
+        widgetGroup = new Container<>();
+        widgetGroup.setWidth(getWidth() - 30);
+        widgetGroup.setActor(tb);
+        container.setActor(widgetGroup);
+        widgetGroup.setX(0);
+        widgetGroup.setY(0);
 
         movableHeader = new MovableHeader();
         movableHeader.setBounds(0, getHeight() - 10, getWidth(), 10);
@@ -94,16 +98,11 @@ public class LogPanel extends Group {
                 getStage().setScrollFocus(LogPanel.this);
                 return true;
             }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //widgetGroup.setY(widgetGroup.getY() + 10);
-            }
         });
 
         addListener(new InputListener() {
             public boolean scrolled(InputEvent event, float x, float y, int amount) {
-                widgetGroup.setY(widgetGroup.getY() + amount * 10);
+                offsetY += amount * 3500;
                 return true;
             }
         });
@@ -127,7 +126,6 @@ public class LogPanel extends Group {
             }
         });
 
-
         updatePos = true;
     }
 
@@ -143,27 +141,60 @@ public class LogPanel extends Group {
     public void drawDebug(ShapeRenderer shapes) {
         super.drawDebug(shapes);
 
-        if (widgetGroup.getDebug()) {
+/*        if (widgetGroup.getDebug()) {
             shapes.set(ShapeRenderer.ShapeType.Line);
             shapes.setColor(this.getStage().getDebugColor());
             shapes.rect(widgetGroup.getX(), widgetGroup.getY(), widgetGroup.getOriginX(), widgetGroup.getOriginY(), widgetGroup.getWidth(), widgetGroup.getHeight(), widgetGroup.getScaleX(), widgetGroup.getScaleY(), widgetGroup.getRotation());
-        }
+        }*/
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
         if (updatePos) {
-            //Vector2 v2 = new Vector2(getX(), getY()+10);
-            //v2 = localToParentCoordinates(v2);
-            widgetGroup.setX(getX());
-            widgetGroup.setY(getY() + 10);
+            container.setBounds(10, 10, getWidth() - 20, getHeight() - 20);
+
+            widgetGroup.setY(0);
 
             movableHeader.setBounds(0, getHeight() - 10, getWidth(), 10);
             extendButton.setPosition(getWidth() / 2 - extendButton.getWidth() / 2, getHeight() - movableHeader.getHeight() + 4);
 
             updatePos = false;
         }
+
+        if (!widgetPosChanged && widgetGroup.getY() != 0) {
+            widgetGroup.setY(0);
+            widgetPosChanged = true;
+        }
+
+        if (0 != ((int) offsetY)) {
+            float cy = widgetGroup.getY();
+
+            float step = (float) Math.sqrt(Math.abs(offsetY)) * 2;
+            if (offsetY < 0) {
+                step *= -1;
+            }
+
+            cy = Math.min(cy + step * delta, 0);
+
+            widgetGroup.setY(cy);
+            offsetY -= step;
+        }
+    }
+
+    private LogMessage getMessage() {
+        return LogMessageBuilder.createNew()
+                .addString("Lorem ipsum", "FF0000FF")
+                .addString(" dolor sit amet, ")
+                .addString("consectetur adipiscing elit", "00FF00FF")
+                .addString("Vestibulum faucibus", "0000FFFF")
+                .addString(", augue sit amet porttitor rutrum, nulla eros finibus mauris," +
+                        " nec sagittis mauris nulla et urna. Sed ac orci nec urna ornare aliquam a sit amet neque. " +
+                        "Nulla condimentum iaculis dolor, et porttitor dui sollicitudin vel. " +
+                        "Fusce convallis fringilla dolor eu mollis. Nam porta augue nec ullamcorper ultricies. " +
+                        "Morbi bibendum libero efficitur metus accumsan viverra at ut metus. " +
+                        "Duis congue pulvinar ligula, sed maximus tellus lacinia eu.")
+                .build();
     }
 
     @Override
@@ -174,24 +205,5 @@ public class LogPanel extends Group {
             return actor;
         }
         return this;
-    }
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-
-        Vector2 v2 = new Vector2(getX(), getY());
-        Vector2 vector2 = new Vector2(v2.x + getWidth(), v2.y + getHeight() - 10);
-
-        vector2 = getStage().getViewport().project(vector2);
-        v2 = getStage().getViewport().project(v2);
-
-        Rectangle scissorBounds = new Rectangle(v2.x, v2.y, vector2.x - v2.x, vector2.y - v2.y);
-
-        if (ScissorStack.pushScissors(scissorBounds)) {
-            widgetGroup.draw(batch, parentAlpha);
-            batch.flush();
-            ScissorStack.popScissors();
-        }
     }
 }
