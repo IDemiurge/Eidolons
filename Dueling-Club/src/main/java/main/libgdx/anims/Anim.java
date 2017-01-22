@@ -11,6 +11,7 @@ import main.entity.Ref;
 import main.game.battlefield.Coordinates;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
+import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.particles.ParticleEmitter;
 import main.libgdx.anims.sprite.SpriteAnimation;
@@ -35,15 +36,19 @@ public class Anim extends Actor {
     protected List<SpriteAnimation> sprites;
     protected Supplier<Texture> textureSupplier;
     protected float stateTime = 0;
-    protected float duration;
+    protected float duration = 0;
     protected float offsetX = 0;
     protected float offsetY = 0;
     protected AnimData data;
     protected ANIM_MOD[] mods;
     protected ANIM_PART part;
+    protected boolean flipX;
+    protected boolean flipY;
+    protected int initialAngle;
     private Float speedX;
     private Float speedY;
     private int loops;
+    private int pixelsPerSecond;
 
 
     public Anim(Entity active, AnimData params) {
@@ -51,9 +56,9 @@ public class Anim extends Actor {
         this.active = active;
         textureSupplier = () -> getTexture();
         reset();
-
 //        duration= params.getIntValue(ANIM_VALUES.DURATION);
     }
+
 
     @Override
     public void setPosition(float x, float y) {
@@ -66,6 +71,7 @@ public class Anim extends Actor {
         offsetX = 0;
         offsetY = 0;
         initDuration();
+        initSpeed();
     }
 
     protected void initDuration() {
@@ -74,6 +80,35 @@ public class Anim extends Actor {
         if (part != null)
             duration = part.getDefaultDuration();
 //        duration*= AnimMaster.getOptions().getAnimationSpeed()
+    }
+
+    protected void initFlip() {
+        flipX = false;
+        flipY = false;
+        if (getOriginCoordinates().x < getDestinationCoordinates().x) flipX = true;
+        if (getOriginCoordinates().y > getDestinationCoordinates().y) flipY = true;
+    }
+
+    private void initSpeed() {
+        if (!isSpeedSupported()) return;
+        if (destination == null) return;
+        if (origin == null) return;
+        pixelsPerSecond = data.getIntValue(ANIM_VALUES.MISSILE_SPEED);
+        if (pixelsPerSecond == 0) return;
+        float x = destination.x - origin.x;
+        float y = destination.y - origin.y;
+
+        double distance = Math.sqrt(x * x + y * y);
+        duration = (float) distance / pixelsPerSecond;
+
+        speedX = x / duration;
+        speedY = y / duration;
+
+    }
+
+    private boolean isSpeedSupported() {
+        if (part == ANIM_PART.MAIN) return true;
+        return false;
     }
 
     protected Texture getTexture() {
@@ -98,14 +133,20 @@ public class Anim extends Actor {
             setWidth(currentFrame.getWidth());
             setHeight(currentFrame.getHeight());
         }
-        updatePosition();
+        updatePosition(delta);
 //        batch.begin();
         if (isDrawTexture())
-            if (currentFrame != null)
-                batch.draw(currentFrame, getX(), getY());
+            if (currentFrame != null) {
+                batch.draw(currentFrame, this.getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
+                 this.getHeight(), this.getScaleX(), this.getScaleY(),
+                 initialAngle + this.getRotation(), 0, 0,
+                 currentFrame.getWidth(), currentFrame.getHeight(), flipX, flipY);
+            }
 
         sprites.forEach(s -> s.draw(batch));
         emitterList.forEach(e -> {
+            e.setFlipX(flipX);
+            e.setFlipX(flipY);
             e.act(delta);
             e.draw(batch, 1f);
         });
@@ -120,6 +161,8 @@ public class Anim extends Actor {
 
     public void start() {
         initPosition();
+        initDuration();
+        initSpeed();
         sprites.forEach(s -> s.setX(getX()));
         sprites.forEach(s -> s.setY(getY()));
         sprites.forEach(s -> s.setOffsetX(0));
@@ -209,16 +252,16 @@ public class Anim extends Actor {
         return new Vector2(origin);
     }
 
-    public void updatePosition() {
+    public void updatePosition(float delta) {
         if (part != null)
             switch (part) {
                 case MAIN:
                     if (speedX != null)
-                        offsetX += speedX;
+                        offsetX += speedX * delta;
                     else
                         offsetX = (destination.x - origin.x) * stateTime / duration;
                     if (speedY != null)
-                        offsetY += speedY;
+                        offsetY += speedY * delta;
                     else
                         offsetY = (destination.y - origin.y) * stateTime / duration;
                     break;

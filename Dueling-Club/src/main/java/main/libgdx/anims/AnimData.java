@@ -57,6 +57,11 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
     }
 
     private void setParam(PARAMS val, String value) {
+        switch (val) {
+            case ANIM_SPEED:
+                setValue(ANIM_VALUES.MISSILE_SPEED, value);
+                break;
+        }
     }
 
     private void setProp(PROPS val, String value) {
@@ -82,7 +87,8 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
 
     public enum ANIM_VALUES {
         PARTICLE_EFFECTS, SPRITES,
-        DURATION, SCALE, COLOR, LIGHT_FOCUS, LIGHT_AMBIENT, MISSILE_SPEED
+        DURATION, SCALE, COLOR, LIGHT_FOCUS, LIGHT_AMBIENT,
+        MISSILE_SPEED
 
     }
 

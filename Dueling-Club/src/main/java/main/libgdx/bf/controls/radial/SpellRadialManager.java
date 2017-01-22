@@ -28,7 +28,7 @@ public class SpellRadialManager {
                 .collect(Collectors.toList());
         if (spells.size() <= 8) {
             for (DC_SpellObj g : spells)
-                nodes.add(createNodeBranch(new SpellNode(g), source, target));
+                nodes.add(createNodeBranch(new EntityNode(g), source, target));
             return nodes;
         }
         for (DC_SpellObj spell : spells) {
@@ -63,7 +63,7 @@ public class SpellRadialManager {
                                                 DC_HeroObj source, DC_Obj target) {
         CreatorNode node = new RadialMenu.CreatorNode();
         node.name = StringMaster.getWellFormattedString(object.getContents().toString());
-        if (object instanceof SpellNode) {
+        if (object instanceof EntityNode) {
             final DC_ActiveObj action = (DC_ActiveObj) object.getContents();
 
             node.texture = TextureManager.getOrCreate(action.getImagePath());
@@ -124,16 +124,6 @@ spell 'types'?
     public enum SPELL_RADIAL_MODE {
         ASPECT,
         ALL,
-
-    }
-
-    public interface RADIAL_ITEM {
-
-        List<RADIAL_ITEM> getItems(DC_HeroObj heroObj);
-
-        Object getContents();
-
-        String getTexturePath();
 
     }
 

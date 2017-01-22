@@ -6,6 +6,7 @@ import main.content.CONTENT_CONSTS2.SFX;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.VALUE;
+import main.content.parameters.PARAMETER;
 import main.content.properties.G_PROPS;
 import main.content.properties.PROPERTY;
 import main.data.filesys.PathFinder;
@@ -106,7 +107,8 @@ public class AnimationConstructor {
 //        active.getProperty(sfx);
         AnimData data = new AnimData();
         for (VALUE val : anim_vals) {
-            if (StringMaster.contains(val.getName(), part.toString()))
+            if (val instanceof PARAMETER || //TODO add filtering
+             StringMaster.contains(val.getName(), part.toString()))
                 data.add(val, active.getValue(val));
         }
         return getPartAnim(data, active, part);
@@ -139,8 +141,14 @@ public class AnimationConstructor {
             }
             if (part == ANIM_PART.IMPACT)
                 return new HitAnim(active, data);
-            if (part == ANIM_PART.AFTEREFFECT)
-                return new DeathAnim(active, data);
+//            if (part == ANIM_PART.AFTEREFFECT)
+//                if (lethal)
+//                return new DeathAnim(active, data);
+        }
+        if (active.isSpell()) {
+            if (part == ANIM_PART.IMPACT)
+                return new HitAnim(active, data);
+
         }
         return new ActionAnim(active, data);
     }
@@ -208,7 +216,7 @@ public class AnimationConstructor {
 //        map
         if (!isAnimated(e)) return null;
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, "EFFECT ANIM CONSTRUCTED FOR " + e + e.getRef());
-        EffectAnim effectAnim = new EffectAnim(e);
+        Anim effectAnim = EffectAnimCreator.getEffectAnim(e);
         initAnim(effectAnim.getData(), (DC_ActiveObj) effectAnim.getActive(),
                 effectAnim.getPart(),
                 effectAnim);

@@ -97,7 +97,7 @@ public class PhaseAnimator extends Group {
 
             anim.setX(x);
             anim.setY(y);
-            main.system.auxiliary.LogMaster.log(1, "**********Added anim : "
+            main.system.auxiliary.LogMaster.shout("Added anim : "
                     + anim + "at " + x + " - " + y);
 //    anim.getAnim().getMouseMap()
         });
@@ -111,7 +111,7 @@ public class PhaseAnimator extends Group {
                     getAnimations().contains(anim.getAnim()))
                 try {
                     getAnims().remove(anim);
-                    main.system.auxiliary.LogMaster.log(1, "**********Removed anim : " + anim);
+                    main.system.auxiliary.LogMaster.shout("Removed anim : " + anim);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

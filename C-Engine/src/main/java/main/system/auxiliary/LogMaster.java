@@ -119,6 +119,7 @@ public class LogMaster {
     public static boolean EFFECT_PASSIVE_DEBUG_ON = !true;
     public static boolean MACRO_DYNAMICS_ON = true;
     public static boolean GENERATION_ON = false;
+    static String shout = "\n******************\n";
     private static boolean off = false;
     private static int PRIORITY = 1;
 
@@ -126,6 +127,11 @@ public class LogMaster {
         String callingClassName = Thread.currentThread().getStackTrace()[2].getClass()
                 .getCanonicalName();
         return Logger.getLogger(callingClassName);
+    }
+
+    public static void shout(String s) {
+
+        System.out.println(shout + s + shout);
     }
 
     public static void log(String s) {

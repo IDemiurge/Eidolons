@@ -6,7 +6,7 @@ import main.data.XLinkedMap;
 import main.entity.obj.top.DC_ActiveObj;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.phased.PhaseAnim;
-import main.libgdx.anims.std.EffectAnim;
+import main.libgdx.anims.std.EffectAnimCreator;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.LogMaster;
@@ -134,7 +134,7 @@ public class CompositeAnim {
         startEventMap = new XLinkedMap<>();
         eventMap = new XLinkedMap<>();
         attached = new XLinkedMap<>();
-        ;
+
         finished = false;
     }
 
@@ -172,7 +172,7 @@ public class CompositeAnim {
     }
 
     public void addEffectAnim(CompositeAnim anim, Effect effect) {
-        ANIM_PART partToAddAt = EffectAnim.getPartToAttachTo(effect);
+        ANIM_PART partToAddAt = EffectAnimCreator.getPartToAttachTo(effect);
 
         attach(anim, partToAddAt);
         //anim group vs anim(Effects)

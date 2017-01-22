@@ -3,7 +3,6 @@ package main.libgdx.bf.controls.radial;
 import main.content.CONTENT_CONSTS.SPELL_GROUP;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_SpellObj;
-import main.libgdx.bf.controls.radial.SpellRadialManager.RADIAL_ITEM;
 import main.system.images.ImageManager;
 
 import java.util.LinkedList;
@@ -29,7 +28,7 @@ public class RadialSpellGroup implements RADIAL_ITEM {
                 .filter(spell -> spell.getSpellGroup().equals(group))
                 .collect(Collectors.toList());
         spells.forEach(s -> {
-            nodes.add(new SpellNode(s));
+            nodes.add(new EntityNode(s));
         });
         return nodes;
     }
