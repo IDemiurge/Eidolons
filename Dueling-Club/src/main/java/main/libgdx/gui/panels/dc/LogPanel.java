@@ -34,7 +34,7 @@ public class LogPanel extends Group {
     private Table table;
 
     public LogPanel() {
-        setSize(300, 500);
+        setSize(400, 250);
         Image bg = new Image(TextureManager.getOrCreate(bgPath));
         bg.setFillParent(true);
         addActor(bg);
@@ -100,8 +100,6 @@ public class LogPanel extends Group {
 
         addCaptureListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //event.stop();
-
                 return true;
             }
 
@@ -137,7 +135,7 @@ public class LogPanel extends Group {
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                setHeight(Math.min(Math.max(getHeight() + y, 300), 600));
+                setHeight(Math.min(Math.max(getHeight() + y, 250), 600));
                 updatePos = true;
             }
         });
