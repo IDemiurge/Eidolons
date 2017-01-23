@@ -48,14 +48,14 @@ public class Anim extends Actor {
     protected boolean flipX;
     protected boolean flipY;
     protected int initialAngle;
-    protected  Float speedX;
-    protected  Float speedY;
-    protected  int loops;
-    protected  int pixelsPerSecond;
-    protected  int cycles;
-    protected  float lifecycle; //0 to 1f 
-    protected  float lifecycleDuration;
-    protected  Float frameDuration;
+    protected Float speedX;
+    protected Float speedY;
+    protected int loops;
+    protected int pixelsPerSecond;
+    protected int cycles;
+    protected float lifecycle; //0 to 1f
+    protected float lifecycleDuration;
+    protected Float frameDuration;
 
 
     public Anim(Entity active, AnimData params) {
@@ -63,7 +63,7 @@ public class Anim extends Actor {
         this.active = active;
         textureSupplier = () -> getTexture();
         reset();
-        frameDuration=data.getIntValue(ANIM_VALUES.FRAME_DURATION)/100f;
+        frameDuration = data.getIntValue(ANIM_VALUES.FRAME_DURATION) / 100f;
 //        duration= params.getIntValue(ANIM_VALUES.DURATION);
     }
 
@@ -97,7 +97,7 @@ public class Anim extends Actor {
         if (getOriginCoordinates().y > getDestinationCoordinates().y) flipY = true;
     }
 
-    protected  void initSpeed() {
+    protected void initSpeed() {
         if (!isSpeedSupported()) return;
         if (destination == null) return;
         if (origin == null) return;
@@ -114,7 +114,7 @@ public class Anim extends Actor {
 
     }
 
-    protected  boolean isSpeedSupported() {
+    protected boolean isSpeedSupported() {
         if (part == ANIM_PART.MAIN) return true;
         return false;
     }
@@ -124,9 +124,11 @@ public class Anim extends Actor {
         //TODO scale, colorize, apply alpha, rotate, warp, ... based on time
         //for attack/turn anims?
     }
+
     public void finished() {
         //TODO
     }
+
     public boolean draw(Batch batch) {
 //switch(template){
 //}
@@ -134,10 +136,10 @@ public class Anim extends Actor {
         time += delta;
         Texture currentFrame = textureSupplier.get();
         if (lifecycleDuration != 0) {
-        cycles=(int)(time/lifecycleDuration);
-        lifecycle = time %lifecycleDuration/lifecycleDuration;
+            cycles = (int) (time / lifecycleDuration);
+            lifecycle = time % lifecycleDuration / lifecycleDuration;
         }
-        if (duration > 0 ) //|| finished //  lifecycle duration for continuous?
+        if (duration > 0) //|| finished //  lifecycle duration for continuous?
             if (time >= duration) {
                 main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, this + " finished; duration = " + duration);
                 dispose();
@@ -161,9 +163,9 @@ public class Anim extends Actor {
         if (isDrawTexture())
             if (currentFrame != null) {
                 batch.draw(currentFrame, this.getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
-                 this.getHeight(), this.getScaleX(), this.getScaleY(),
-                 initialAngle + this.getRotation(), 0, 0,
-                 currentFrame.getWidth(), currentFrame.getHeight(), flipX, flipY);
+                        this.getHeight(), this.getScaleX(), this.getScaleY(),
+                        initialAngle + this.getRotation(), 0, 0,
+                        currentFrame.getWidth(), currentFrame.getHeight(), flipX, flipY);
             }
 
         sprites.forEach(s -> {
@@ -175,24 +177,24 @@ public class Anim extends Actor {
         return true;
     }
 
-    protected  void applyAnimMods() {
-        if (mods!=null )
-        Arrays.stream(mods).forEach((ANIM_MOD mod) -> {
-            if (mod instanceof CONTINUOUS_ANIM_MODS) {
-                switch ((CONTINUOUS_ANIM_MODS) mod) {
-                    case PENDULUM_ALPHA:
-                        sprites.forEach(s -> {
-                            if (cycles % 2 == 0)
-                                s.setAlpha(1f - lifecycle);
-                            else
-                                s.setAlpha(lifecycle);
+    protected void applyAnimMods() {
+        if (mods != null)
+            Arrays.stream(mods).forEach((ANIM_MOD mod) -> {
+                if (mod instanceof CONTINUOUS_ANIM_MODS) {
+                    switch ((CONTINUOUS_ANIM_MODS) mod) {
+                        case PENDULUM_ALPHA:
+                            sprites.forEach(s -> {
+                                if (cycles % 2 == 0)
+                                    s.setAlpha(1f - lifecycle);
+                                else
+                                    s.setAlpha(lifecycle);
 
 //                           time%lifecycle/lifecycle
-                        });
-                        break;
+                            });
+                            break;
+                    }
                 }
-            }
-        });
+            });
 
 
     }
@@ -210,8 +212,8 @@ public class Anim extends Actor {
         sprites.forEach(s -> s.setOffsetX(0));
         sprites.forEach(s -> s.setOffsetY(0));
         sprites.forEach(s -> s.setLoops(loops));
-        if (frameDuration!=null )
-        sprites.forEach(s -> s.setFrameDuration(frameDuration));
+        if (frameDuration != null)
+            sprites.forEach(s -> s.setFrameDuration(frameDuration));
         addLight();
         addEmitters();
 
@@ -255,23 +257,23 @@ public class Anim extends Actor {
 
     public void initPosition() {
         origin = GameScreen.getInstance().getGridPanel()
-         .getVectorForCoordinateWithOffset(getOriginCoordinates());
+                .getVectorForCoordinateWithOffset(getOriginCoordinates());
 
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-         this + " origin: " + origin);
+                this + " origin: " + origin);
 
         destination = GameScreen.getInstance().getGridPanel()
-         .getVectorForCoordinateWithOffset(getDestinationCoordinates());
+                .getVectorForCoordinateWithOffset(getDestinationCoordinates());
 
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-         this + " destination: " + destination);
+                this + " destination: " + destination);
 
 
         defaultPosition = getDefaultPosition();
         setX(defaultPosition.x);
         setY(defaultPosition.y);
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-         this + " defaultPosition: " + defaultPosition);
+                this + " defaultPosition: " + defaultPosition);
     }
 
     protected Coordinates getOriginCoordinates() {
@@ -321,7 +323,7 @@ public class Anim extends Actor {
         });
 
         emitterList.forEach(e ->
-         e.updatePosition(getX(), getY()));
+                e.updatePosition(getX(), getY()));
 
         if (getActions().size == 0) {
             setX(origin.x + getWidth() / 2);
@@ -444,8 +446,8 @@ public class Anim extends Actor {
     }
 
     public Ref getRef() {
-        if (active==null )
-            return  (DC_Game.game.getManager().getActiveObj().getRef());
+        if (active == null)
+            return (DC_Game.game.getManager().getActiveObj().getRef());
 
         return active.getRef();
     }

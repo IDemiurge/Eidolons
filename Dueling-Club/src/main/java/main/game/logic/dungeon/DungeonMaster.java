@@ -26,7 +26,6 @@ import main.system.auxiliary.FileManager;
 import main.system.auxiliary.GuiManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.test.frontend.FAST_DC;
@@ -170,7 +169,7 @@ public class DungeonMaster {
     public void initDungeon() {
         ObjType type = null;
 
-        if (BooleanMaster.isTrue(FAST_DC.getGameLauncher().getSUPER_FAST_MODE())) {
+        if (FAST_DC.getGameLauncher().getSUPER_FAST_MODE()) {
             setDungeonPath(FAST_DC.DEFAULT_TEST_DUNGEON);
         }
         if (getDungeonPath() != null) {

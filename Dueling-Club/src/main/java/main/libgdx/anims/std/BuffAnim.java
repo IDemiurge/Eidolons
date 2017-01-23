@@ -25,30 +25,15 @@ public class BuffAnim extends ActionAnim {
 
     public BuffAnim(BuffObj buff) {
         super(buff.getActive(), getBuffAnimData(buff));
-        this.buff=buff;
+        this.buff = buff;
         mods = new ANIM_MOD[]{
-         CONTINUOUS_ANIM_MODS.PENDULUM_ALPHA
+                CONTINUOUS_ANIM_MODS.PENDULUM_ALPHA
         };
-part = ANIM_PART.AFTEREFFECT;
+        part = ANIM_PART.AFTEREFFECT;
 
-textureSupplier= ()-> TextureManager.getOrCreate( buff.getImagePath());
+        textureSupplier = () -> TextureManager.getOrCreate(buff.getImagePath());
 //alpha?
 
-    }
-
-    @Override
-    public String toString() {
-        return buff.getName()+ " anim";
-    }
-
-    @Override
-    public void setSprites(List<SpriteAnimation> sprites) {
-        super.setSprites(sprites);
-        lifecycleDuration = 0;
-        for (SpriteAnimation s : getSprites()) {
-            if (s.getLifecycleDuration() > lifecycleDuration)
-                lifecycleDuration = s.getLifecycleDuration();
-        }
     }
 
     private static AnimData getBuffAnimData(BuffObj buff) {
@@ -61,21 +46,21 @@ textureSupplier= ()-> TextureManager.getOrCreate( buff.getImagePath());
         ablaze, frozen, bleeding, wounded, charmed,
          */
         STD_BUFF_NAMES name =
-         new EnumMaster<STD_BUFF_NAMES>().retrieveEnumConst(STD_BUFF_NAMES.class, buff.getName());
-if (name==null )return data;
-        String sfx = PathFinder.getSfxPath() +getStdSfx(name);
-        String sprites = PathFinder.getSpritesPath() +getStdSprites(name);
-        sprites+=";"+buff.getImagePath();
+                new EnumMaster<STD_BUFF_NAMES>().retrieveEnumConst(STD_BUFF_NAMES.class, buff.getName());
+        if (name == null) return data;
+        String sfx = PathFinder.getSfxPath() + getStdSfx(name);
+        String sprites = PathFinder.getSpritesPath() + getStdSprites(name);
+        sprites += ";" + buff.getImagePath();
 
-        if (sfx.split(";").length>1 || FileManager.isFile(sfx))
-        data.setValue(ANIM_VALUES.PARTICLE_EFFECTS, sfx);
-        if (sprites.split(";").length>1 || FileManager.isFile(sprites))
-        data.setValue(ANIM_VALUES.SPRITES, sprites);
+        if (sfx.split(";").length > 1 || FileManager.isFile(sfx))
+            data.setValue(ANIM_VALUES.PARTICLE_EFFECTS, sfx);
+        if (sprites.split(";").length > 1 || FileManager.isFile(sprites))
+            data.setValue(ANIM_VALUES.SPRITES, sprites);
         return data;
     }
 
     private static String getStdSprites(STD_BUFF_NAMES name) {
-        return  "buffs\\"+name.getName();
+        return "buffs\\" + name.getName();
     }
 
     private static String getStdSfx(STD_BUFF_NAMES name) {
@@ -106,7 +91,22 @@ if (name==null )return data;
             case Entangled:
                 break;
         }
-        return  "buffs\\"+name.getName();
+        return "buffs\\" + name.getName();
+    }
+
+    @Override
+    public String toString() {
+        return buff.getName() + " anim";
+    }
+
+    @Override
+    public void setSprites(List<SpriteAnimation> sprites) {
+        super.setSprites(sprites);
+        lifecycleDuration = 0;
+        for (SpriteAnimation s : getSprites()) {
+            if (s.getLifecycleDuration() > lifecycleDuration)
+                lifecycleDuration = s.getLifecycleDuration();
+        }
     }
 
     public BuffObj getBuff() {

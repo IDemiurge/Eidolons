@@ -52,8 +52,8 @@ public class InitiativeQueue extends EntityContainer {
     public float getWidth() {
         return
 //         (1 + supplier.get().size()) //TODO don't do this!
-         getMaxSlots()
-          * GuiManager.getSmallObjSize();
+                getMaxSlots()
+                        * GuiManager.getSmallObjSize();
     }
 
 

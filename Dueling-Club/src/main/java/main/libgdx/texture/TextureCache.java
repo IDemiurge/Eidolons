@@ -26,7 +26,7 @@ public class TextureCache {
 
     public final Texture get(String path, boolean save) {
         String p = //File.separator + path;
-        StringMaster.addMissingPathSegments(path, this.imagePath);
+                StringMaster.addMissingPathSegments(path, this.imagePath);
         if (!this.cache.containsKey(p)) {
             Texture t = new Texture(p);
             if (!save) {

@@ -23,20 +23,20 @@ public class PhaseAnimListener extends InputListener {
     private final PhaseAnimation anim;
 
     public PhaseAnimListener(PhaseAnim phaseAnim) {
-        this.actor =phaseAnim;
-        this.anim =phaseAnim.getAnim();
+        this.actor = phaseAnim;
+        this.anim = phaseAnim.getAnim();
     }
 
     @Override
     public boolean scrolled(InputEvent event, float x, float y, int amount) {
-            if (anim.contains(new PointX(x, y))) {
-                if (anim.isWheelSupported()) {
-                    if (anim.isManualFlippingSupported()) {
-                        boolean forward = amount < 0;
-                        anim.pageFlipped(forward);
-                        return true;
-                    }
+        if (anim.contains(new PointX(x, y))) {
+            if (anim.isWheelSupported()) {
+                if (anim.isManualFlippingSupported()) {
+                    boolean forward = amount < 0;
+                    anim.pageFlipped(forward);
+                    return true;
                 }
+            }
         }
         return false;
     }
@@ -60,74 +60,48 @@ public class PhaseAnimListener extends InputListener {
 
     public boolean checkClick(float x, float y, int button) {
         for (Rectangle rect : anim.getMouseMap().keySet()) {
-                    if (rect.contains(x, y)) {
-                        MouseItem item = anim.getMouseMap().get(rect);
-                        return itemClicked(item );
-                    }
-                }
+            if (rect.contains(x, y)) {
+                MouseItem item = anim.getMouseMap().get(rect);
+                return itemClicked(item);
+            }
+        }
         Vector2 v = GameScreen.getInstance().getGridPanel().
-         getVectorForCoordinateWithOffset(anim.getSourceCoordinates());
-            return     new Rectangle(
-             (int)v.x, (int)v.y, anim.getW(), anim.getH()).contains(x, y);
+                getVectorForCoordinateWithOffset(anim.getSourceCoordinates());
+        return new Rectangle(
+                (int) v.x, (int) v.y, anim.getW(), anim.getH()).contains(x, y);
 
     }
-        private boolean itemClicked(MouseItem item ) {
 
-            if (item.getType() != null)
-                switch (item.getType()) {
+    private boolean itemClicked(MouseItem item) {
 
-                    case THUMBNAIL:
-                        anim.toggleThumbnail();
-                        break;
-                    case TOOLTIP:
+        if (item.getType() != null)
+            switch (item.getType()) {
+
+                case THUMBNAIL:
+                    anim.toggleThumbnail();
+                    break;
+                case TOOLTIP:
 //                        displayTooltip(anim, item);
-                        break;
-                    case SUB_PHASE:
-                        if (anim.getPhase().getType().isSubPhase())
-                            return false;
-                        if (item.getArg() == null) {
-                            SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
-                            return true;
-                        }
-                        anim.subPhaseOpened(anim.getPhase((PHASE_TYPE) item.getArg()));
-                        SoundMaster.playStandardSound(STD_SOUNDS.DIS__OPEN_MENU);
+                    break;
+                case SUB_PHASE:
+                    if (anim.getPhase().getType().isSubPhase())
+                        return false;
+                    if (item.getArg() == null) {
+                        SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
                         return true;
-                    case CONTROL_BACK:
-                        anim.pageFlipped(false);
-                        return true;
-                    case CONTROL_FORWARD:
-                        anim.pageFlipped(true);
-                        return true;
+                    }
+                    anim.subPhaseOpened(anim.getPhase((PHASE_TYPE) item.getArg()));
+                    SoundMaster.playStandardSound(STD_SOUNDS.DIS__OPEN_MENU);
+                    return true;
+                case CONTROL_BACK:
+                    anim.pageFlipped(false);
+                    return true;
+                case CONTROL_FORWARD:
+                    anim.pageFlipped(true);
+                    return true;
 
-                }
-            return false;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            }
+        return false;
 
 
     }

@@ -17,6 +17,7 @@ public class LayoutParser {
     private static final String DELIMITER = " ";
     Map<Comp, Point> map;
     private Container c;
+
     public LayoutParser(Container c) {
         this.c = c;
     }

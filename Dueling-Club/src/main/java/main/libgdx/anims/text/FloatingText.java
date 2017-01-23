@@ -26,26 +26,29 @@ public class FloatingText extends Group {
 
     public FloatingText(String text, Color c) {
         label =
-         new Label(text, StyleHolder.getDefaultLabelStyle()) ;
+                new Label(text, StyleHolder.getDefaultLabelStyle());
         label.setColor(c);
     }
-    public void draw(Batch batch, float parentAlpha) {
-        act(Gdx.graphics.getDeltaTime());
-        super.draw(batch, parentAlpha);
-    }
+
     public FloatingText(Supplier<String> textSupplier, Color c) {
         this(textSupplier.get(), c);
         this.textSupplier = textSupplier;
     }
-    public FloatingText(Supplier<String> textSupplier,Supplier<String> imageSupplier, Color c) {
+
+    public FloatingText(Supplier<String> textSupplier, Supplier<String> imageSupplier, Color c) {
         this(textSupplier.get(), c);
         this.textSupplier = textSupplier;
         this.imageSupplier = imageSupplier;
     }
 
+    public void draw(Batch batch, float parentAlpha) {
+        act(Gdx.graphics.getDeltaTime());
+        super.draw(batch, parentAlpha);
+    }
+
     public FloatingText
     init(Stage stage, Vector2 origin, float x, float y, float duration) {
-       AlphaAction alphaAction = new AlphaAction();
+        AlphaAction alphaAction = new AlphaAction();
         alphaAction.setAlpha(0.0f);
         alphaAction.setDuration(duration);
 
@@ -67,11 +70,10 @@ public class FloatingText extends Group {
         }
 
 
-
         label.setText(textSupplier.get());
         addActor(label);
 
-        setPosition(origin.x, origin.y );
+        setPosition(origin.x, origin.y);
         stage.addActor(this);
         addAction(parallelAction);
         addAction(afterAction);

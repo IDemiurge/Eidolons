@@ -28,7 +28,7 @@ public class DeathAnim extends ActionAnim {
     protected Action getAction() {
         AlphaAction action = new AlphaAction();
         action.setAlpha(0);
-        
+
 
         return super.getAction();
     }

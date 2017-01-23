@@ -15,11 +15,6 @@ import main.libgdx.bf.BaseView;
  * Created by JustMe on 1/9/2017.
  */
 public class ActionAnim extends Anim {
-    public enum SPELL_ANIMS {
-        RAY,
-        NOVA,;
-        //emitter placement templates
-    }
     public ActionAnim(Entity active, AnimData params) {
         super(active, params);
     }
@@ -53,6 +48,12 @@ public class ActionAnim extends Anim {
 
     public void addAbilityAnims(Ability ability) {
 
+    }
+
+    public enum SPELL_ANIMS {
+        RAY,
+        NOVA,;
+        //emitter placement templates
     }
 
 

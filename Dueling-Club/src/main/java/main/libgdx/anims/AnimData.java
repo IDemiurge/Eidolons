@@ -28,6 +28,7 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
     int[] emitterScales;
     int lightEmission;
     Color lightColor;
+
     public AnimData(String... data) {
 
     }

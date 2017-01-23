@@ -18,14 +18,6 @@ import main.system.images.ImageManager;
  */
 public class EffectAnimCreator {
 
-public enum ANIMATED_EFFECT{
-    BUFF,
-    SUMMON,
-    TURN,
-    DISPLACE,
-    MODIFY_VALUE,
-    DISPEL,
-}
     public static Anim getEffectAnim(Effect e) {
         DC_ActiveObj active = (DC_ActiveObj) e.getActiveObj();
         switch (e.getClass().getSimpleName().replace("Effect", "")) {
@@ -36,10 +28,10 @@ public enum ANIMATED_EFFECT{
                 ModifyValueEffect modEffect = (ModifyValueEffect) e;
                 return new HitAnim(
 
-                 active, getModValAnimData(modEffect)
-                ,false, GdxColorMaster.getParamColor( modEffect.getParam()),
-                 ()-> modEffect.getLastModValue(),
-                 ()-> ImageManager.getValueIconPath(modEffect.getParam())
+                        active, getModValAnimData(modEffect)
+                        , false, GdxColorMaster.getParamColor(modEffect.getParam()),
+                        () -> modEffect.getLastModValue(),
+                        () -> ImageManager.getValueIconPath(modEffect.getParam())
                 );
 
             case "InstantDeath":
@@ -59,7 +51,7 @@ public enum ANIMATED_EFFECT{
 
     private static AnimData getModValAnimData(ModifyValueEffect e) {
         AnimData data = new AnimData();
-    return data;
+        return data;
     }
 
     private static AnimData getDamageAnimData(DealDamageEffect e) {
@@ -105,9 +97,18 @@ public enum ANIMATED_EFFECT{
 
     }
 
-
     ANIM_MOD[] getAnims(Effect e) {
 
         return null;
+    }
+
+
+    public enum ANIMATED_EFFECT {
+        BUFF,
+        SUMMON,
+        TURN,
+        DISPLACE,
+        MODIFY_VALUE,
+        DISPEL,
     }
 }
