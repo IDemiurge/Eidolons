@@ -109,6 +109,11 @@ public class LogPanel extends Group {
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 getStage().setScrollFocus(LogPanel.this);
             }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                getStage().setScrollFocus(null);
+            }
         });
 
         addListener(new InputListener() {
