@@ -38,6 +38,7 @@ public class LogPanel extends Group {
         Image bg = new Image(TextureManager.getOrCreate(bgPath));
         bg.setFillParent(true);
         addActor(bg);
+       
 
         table = new Table();
         table.setFillParent(true);
