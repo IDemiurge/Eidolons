@@ -41,12 +41,9 @@ public class GridMouseListener extends ClickListener {
     }
 
     @Override
-    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-        //getStage().setScrollFocus(gridPanel);
-    }
-
-    @Override
     public boolean mouseMoved(InputEvent event, float x, float y) {
+        gridPanel.getStage().setScrollFocus(gridPanel);
+
         int cell = (int) (x / cells[0][0].getWidth());
         int row = (int) (y / cells[0][0].getHeight());
         GridCell gridCell = cells[cell][row];
