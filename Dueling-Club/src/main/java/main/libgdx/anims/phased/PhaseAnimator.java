@@ -24,10 +24,10 @@ public class PhaseAnimator extends Group {
     private boolean on;
 
     public PhaseAnimator(Stage stage) {
-        this. on =
-         FAST_DC.getGameLauncher().FAST_MODE || FAST_DC.getGameLauncher().SUPER_FAST_MODE;
+        this.on =
+                FAST_DC.getGameLauncher().FAST_MODE || FAST_DC.getGameLauncher().SUPER_FAST_MODE;
 
-         stage.addActor(this);
+        stage.addActor(this);
         setBounds(0, 0, (float) Gdx.graphics.getWidth(), (float)
                 Gdx.graphics.getHeight());
         setVisible(true);
@@ -73,7 +73,7 @@ public class PhaseAnimator extends Group {
         if (!isOn()) return;
 //        removeAnims();
         setBounds(0, 0, (float) Gdx.graphics.getWidth(), (float)
-         Gdx.graphics.getHeight());
+                Gdx.graphics.getHeight());
 
         DC_Game.game.getAnimationManager().getAnimations().forEach(a -> {
             if (a.getPhaseAnim() == null) {
@@ -87,7 +87,7 @@ public class PhaseAnimator extends Group {
             anim.update();
             addActor(anim);
             Vector2 p = GameScreen.getInstance().getGridPanel()
-             .getVectorForCoordinateWithOffset(anim.getAnim().getSourceCoordinates());
+                    .getVectorForCoordinateWithOffset(anim.getAnim().getSourceCoordinates());
             float x = p.x;
             float y = p.y;
 //            y = GameScreen.getInstance().getGridPanel().getCellHeight() *
@@ -100,13 +100,12 @@ public class PhaseAnimator extends Group {
             anim.setX(x);
             anim.setY(y);
             main.system.auxiliary.LogMaster.shout("Added anim : "
-             + anim + "at " + x + " - " + y);
+                    + anim + "at " + x + " - " + y);
 //    anim.getAnim().getMouseMap()
         });
 //            sprite = new TextureRegion(j2dTex);
         setVisible(true);
     }
-
 
 
     private void removeAnims() {
@@ -129,8 +128,12 @@ public class PhaseAnimator extends Group {
 
     public boolean checkAnimClicked(float x, float y, int pointer, int button) {
         for (PhaseAnim a : getAnims()) {
-          try{         if (a.getListener().checkClick(x, y, button))
-              return true;     }catch(Exception e){                e.printStackTrace();            }
+            try {
+                if (a.getListener().checkClick(x, y, button))
+                    return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }
         return false;

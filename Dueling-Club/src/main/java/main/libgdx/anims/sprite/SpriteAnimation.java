@@ -21,7 +21,7 @@ public class SpriteAnimation extends Animation {
     private float offsetY;
     private float offsetX;
     private float frameNumber;
-    private float alpha=1f;
+    private float alpha = 1f;
     private int cycles;
     private float lifecycle;
     private float angle;
@@ -45,7 +45,7 @@ public class SpriteAnimation extends Animation {
     public boolean draw(Batch batch) {
         stateTime += Gdx.graphics.getDeltaTime();
         updateSpeed();
-        boolean looping = this.looping || loops > cycles || loops ==0; //TODO need null!
+        boolean looping = this.looping || loops > cycles || loops == 0; //TODO need null!
         TextureRegion currentFrame = getKeyFrame(stateTime, looping);
 
 
@@ -55,17 +55,17 @@ public class SpriteAnimation extends Animation {
         }
 
         if (getLifecycleDuration() != 0) {
-            cycles=(int)(stateTime/getLifecycleDuration());
-            lifecycle = stateTime %getLifecycleDuration()/getLifecycleDuration();
+            cycles = (int) (stateTime / getLifecycleDuration());
+            lifecycle = stateTime % getLifecycleDuration() / getLifecycleDuration();
         }
-        
+
         Sprite sprite = new Sprite(currentFrame);
         sprite.setAlpha(alpha);
-        angle = RandomWizard.getRandomInt(360)/360f;
+        angle = RandomWizard.getRandomInt(360) / 360f;
         sprite.setRotation(angle);
-        sprite.setPosition( x + offsetX-currentFrame.getRegionWidth()/2, y
-         + offsetY
-         -currentFrame.getRegionHeight()/2);
+        sprite.setPosition(x + offsetX - currentFrame.getRegionWidth() / 2, y
+                + offsetY
+                - currentFrame.getRegionHeight() / 2);
         sprite.draw(batch);
 
 //        batch.draw(currentFrame, x + offsetX - currentFrame.getRegionWidth() / 2, y
@@ -124,15 +124,16 @@ public class SpriteAnimation extends Animation {
         this.y = y;
     }
 
-    public void setAlpha(float alpha) {
-        this.alpha = alpha;
-    }
     public float getLifecycleDuration() {
-        return getFrameDuration()*frameNumber;
+        return getFrameDuration() * frameNumber;
     }
 
     public float getAlpha() {
         return alpha;
+    }
+
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
     }
 
     public enum SPRITE_BEHAVIOR {

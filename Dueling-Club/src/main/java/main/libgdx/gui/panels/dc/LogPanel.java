@@ -6,9 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.utils.Align;
-import main.libgdx.StyleHolder;
 import main.libgdx.bf.mouse.MovableHeader;
 import main.libgdx.gui.dialog.LogMessage;
 import main.libgdx.gui.dialog.LogMessageBuilder;
@@ -24,11 +26,12 @@ public class LogPanel extends Group {
 
     private static final String loremIpsum = "[#FF0000FF]Lorem ipsum[] dolor sit amet, [#00FF00FF]consectetur adipiscing elit[]. [#0000FFFF]Vestibulum faucibus[], augue sit amet porttitor rutrum, nulla eros finibus mauris, nec sagittis mauris nulla et urna. Sed ac orci nec urna ornare aliquam a sit amet neque. Nulla condimentum iaculis dolor, et porttitor dui sollicitudin vel. Fusce convallis fringilla dolor eu mollis. Nam porta augue nec ullamcorper ultricies. Morbi bibendum libero efficitur metus accumsan viverra at ut metus. Duis congue pulvinar ligula, sed maximus tellus lacinia eu.";
 
-    Container<Table> widgetGroup;
+    Container<Table> innerScrollContainer;
     MovableHeader movableHeader;
     ExtendButton extendButton;
     private boolean updatePos = false;
     private float offsetY = 0;
+    private float instantOffsetY = 0;
     private Container<WidgetGroup> container;
     private boolean widgetPosChanged = false;
     private Table table;
@@ -61,17 +64,55 @@ public class LogPanel extends Group {
         container.setBounds(15, 15, getWidth() - 30, getHeight() - 30);
         container.setClip(true);
         addActor(container);
-        widgetGroup = new Container<>();
-        widgetGroup.setWidth(getWidth() - 30);
-        widgetGroup.setActor(table);
-        container.setActor(widgetGroup);
-        widgetGroup.setX(0);
-        widgetGroup.setY(0);
-        widgetGroup.setDebug(true);
+        innerScrollContainer = new InnerScrollContainer<>();
+        innerScrollContainer.setWidth(getWidth() - 30);
+        innerScrollContainer.setActor(table);
+        container.setActor(innerScrollContainer);
+        innerScrollContainer.setX(0);
+        innerScrollContainer.setY(0);
+        innerScrollContainer.setDebug(true);
+
+        innerScrollContainer.addCaptureListener(new InputListener() {
+            private float yy;
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                event.stop();
+                yy = y;
+                instantOffsetY = 0;
+                offsetY = 0;
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                offsetY += instantOffsetY * 6;
+                instantOffsetY = 0;
+            }
+
+            @Override
+            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                instantOffsetY += y - yy;
+            }
+
+            public boolean scrolled(InputEvent event, float x, float y, int amount) {
+                offsetY += amount * 3500;
+                return true;
+            }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                getStage().setScrollFocus(innerScrollContainer);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                getStage().setScrollFocus(null);
+            }
+        });
 
         movableHeader = new MovableHeader();
         movableHeader.setBounds(0, getHeight() - 10, getWidth(), 10);
-        //movableHeader.setDebug(true);
         movableHeader.addCaptureListener(new InputListener() {
             private Vector2 offset;
 
@@ -93,33 +134,11 @@ public class LogPanel extends Group {
                 y = Math.min(Math.max(getY() + y + offset.y, 0), getStage().getHeight() - getHeight());
                 setPosition(x, y);
                 updatePos = true;
+                event.stop();
             }
         });
 
         addActor(movableHeader);
-
-        addCaptureListener(new InputListener() {
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                getStage().setScrollFocus(LogPanel.this);
-            }
-
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                getStage().setScrollFocus(null);
-            }
-        });
-
-        addListener(new InputListener() {
-            public boolean scrolled(InputEvent event, float x, float y, int amount) {
-                offsetY += amount * 3500;
-                return true;
-            }
-        });
 
         extendButton = new ExtendButton();
         addActor(extendButton);
@@ -143,23 +162,9 @@ public class LogPanel extends Group {
         updatePos = true;
     }
 
-    private static Label getLabel() {
-//        Label l = new Label("loremIpsum", StyleHolder.getDefaultLabelStyle());
-        Label l = new Label(loremIpsum, StyleHolder.getDefaultLabelStyle());
-        l.setWrap(true);
-        l.setAlignment(Align.left);
-        return l;
-    }
-
     @Override
     public void drawDebug(ShapeRenderer shapes) {
         super.drawDebug(shapes);
-
-/*        if (widgetGroup.getDebug()) {
-            shapes.set(ShapeRenderer.ShapeType.Line);
-            shapes.setColor(this.getStage().getDebugColor());
-            shapes.rect(widgetGroup.getX(), widgetGroup.getY(), widgetGroup.getOriginX(), widgetGroup.getOriginY(), widgetGroup.getWidth(), widgetGroup.getHeight(), widgetGroup.getScaleX(), widgetGroup.getScaleY(), widgetGroup.getRotation());
-        }*/
     }
 
     @Override
@@ -168,7 +173,7 @@ public class LogPanel extends Group {
         if (updatePos) {
             container.setBounds(10, 10, getWidth() - 20, getHeight() - 20);
 
-            widgetGroup.setY(0);
+            innerScrollContainer.setY(0);
 
             movableHeader.setBounds(0, getHeight() - 10, getWidth(), 10);
             extendButton.setPosition(getWidth() / 2 - extendButton.getWidth() / 2, getHeight() - movableHeader.getHeight() + 4);
@@ -176,23 +181,28 @@ public class LogPanel extends Group {
             updatePos = false;
         }
 
-        if (!widgetPosChanged && widgetGroup.getY() != 0) {
-            widgetGroup.setY(0);
+        if (!widgetPosChanged && innerScrollContainer.getY() != 0) {
+            innerScrollContainer.setY(0);
             widgetPosChanged = true;
         }
 
-        if (0 != ((int) offsetY)) {
-            float cy = widgetGroup.getY();
+        if (0 != ((int) offsetY) || (int) instantOffsetY != 0) {
+            float cy = innerScrollContainer.getY();
 
             float step = (float) Math.sqrt(Math.abs(offsetY)) * 2;
+
             if (offsetY < 0) {
                 step *= -1;
             }
 
+            step += instantOffsetY;
+
             cy = Math.min(cy + step * delta, 0);
 
-            widgetGroup.setY(cy);
-            offsetY -= step;
+            innerScrollContainer.setY(cy);
+            if ((int) offsetY != 0) {
+                offsetY -= step;
+            }
         }
     }
 
@@ -215,7 +225,9 @@ public class LogPanel extends Group {
     public Actor hit(float x, float y, boolean touchable) {
         Actor actor = super.hit(x, y, touchable);
         if (actor == null) return null;
-        if (actor instanceof MovableHeader || actor instanceof ExtendButton) {
+        if (actor instanceof MovableHeader
+                || actor instanceof ExtendButton
+                || actor instanceof InnerScrollContainer) {
             return actor;
         }
         return this;

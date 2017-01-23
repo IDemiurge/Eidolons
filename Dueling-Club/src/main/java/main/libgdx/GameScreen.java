@@ -147,11 +147,11 @@ public class GameScreen implements Screen {
 
 
         if (!BooleanMaster.isTrue(FAST_DC.getGameLauncher().getFAST_MODE())
-         &&!BooleanMaster.isTrue(FAST_DC.getGameLauncher().getSUPER_FAST_MODE()))
-        {      LogPanel ld = new LogPanel();
-        guiStage.addActor(ld);
-        ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
-        ld.setPosition(200, 200);}
+                && !BooleanMaster.isTrue(FAST_DC.getGameLauncher().getSUPER_FAST_MODE())) {
+            LogPanel ld = new LogPanel();
+            guiStage.addActor(ld);
+            ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
+        }
     }
 
     private void bindEvents() {

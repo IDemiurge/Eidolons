@@ -5,9 +5,6 @@ package main.libgdx.anims;
  */
 public class ANIM_MODS {
 
-    public interface ANIM_MOD {
-
-    }
     public enum ANIM_SHAPE implements ANIM_MOD {
 
         THRUST,
@@ -16,6 +13,7 @@ public class ANIM_MODS {
 
 
     }
+
     public enum CONTINUOUS_ANIM_MODS implements ANIM_MOD {
         PENDULUM_ALPHA,
         PENDULUM_OFFSET_X,
@@ -36,6 +34,7 @@ public class ANIM_MODS {
     public enum OBJ_ANIMS implements ANIM_MOD {
         SHAKE,
     }
+
     public enum COLOR_ANIMS implements ANIM_MOD {
         DARKEN, COLORIZE,
     }
@@ -44,11 +43,15 @@ public class ANIM_MODS {
         QUAKE,
     }
 
-
     public enum SPELL_ANIMS implements ANIM_MOD {
         MISSILE,
         SNAKE,
         IMPACT,
+
+    }
+
+
+    public interface ANIM_MOD {
 
     }
 

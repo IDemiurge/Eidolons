@@ -32,7 +32,7 @@ public class MoveAnimation extends ActionAnim {
     @Override
     protected void initDuration() {
         super.initDuration();
-        duration=0.1f;
+        duration = 0.1f;
     }
 
     protected Action getAction() {

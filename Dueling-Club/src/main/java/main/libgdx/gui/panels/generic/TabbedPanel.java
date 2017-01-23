@@ -23,6 +23,7 @@ public class TabbedPanel extends Container {
     WidgetContainer tabRow;
     Supplier<Collection<Triple<String, String, Actor>>> tabSupplier;
     private Group contents;
+
     public TabbedPanel(String imagePath, Supplier<Collection<Triple<String, String, Actor>>> tabSupplier) {
         super(imagePath, LAYOUT.VERTICAL);
 //reverse on demand
