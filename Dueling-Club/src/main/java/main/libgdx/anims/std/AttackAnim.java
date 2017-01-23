@@ -35,9 +35,6 @@ public class AttackAnim extends ActionAnim {
     protected DC_WeaponObj weapon;
     protected SequenceAction sequence;
     protected String imgPath;
-    protected boolean flipX;
-    protected boolean flipY;
-    protected int initialAngle;
 
     public AttackAnim(Entity active, ATK_ANIMS... anims) {
         super(active, getWeaponAnimData(active));
@@ -129,12 +126,6 @@ public class AttackAnim extends ActionAnim {
 //            destination.x = destination.x+offsetX;
     }
 
-    protected void initFlip() {
-        flipX = false;
-        flipY = false;
-        if (getOriginCoordinates().x < getDestinationCoordinates().y) flipX = true;
-        if (getOriginCoordinates().y < getDestinationCoordinates().y) flipY = true;
-    }
 
     protected void initOffhand() {
         int offsetX = 0;

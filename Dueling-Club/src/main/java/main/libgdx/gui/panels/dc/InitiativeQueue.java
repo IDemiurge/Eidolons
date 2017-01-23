@@ -40,11 +40,20 @@ public class InitiativeQueue extends EntityContainer {
         addActor(comp);
 //        comp.setTextAlignment(ALIGNMENT.CENTER);
         super.initComps();
+        debugAll();
     }
 
     @Override
-    public float getWidth() { //TODO don't do this!
-        return (1 + supplier.get().size()) * GuiManager.getSmallObjSize();
+    public String toString() {
+        return super.toString();
+    }
+
+    @Override
+    public float getWidth() {
+        return
+//         (1 + supplier.get().size()) //TODO don't do this!
+         getMaxSlots()
+          * GuiManager.getSmallObjSize();
     }
 
 

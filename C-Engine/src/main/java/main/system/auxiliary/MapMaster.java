@@ -64,7 +64,7 @@ public class MapMaster<E, T> {
             values.put(name, value);
             return;
         }
-        val += value + StringMaster.getContainerSeparator();
+        val += StringMaster.getContainerSeparator() + value;
         values.put(name, val);
     }
 

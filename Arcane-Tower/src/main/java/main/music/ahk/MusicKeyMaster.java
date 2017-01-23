@@ -227,7 +227,7 @@ public class MusicKeyMaster implements HotkeyListener {
             types =    new LinkedList<>() ;
 
         for (ObjType type :random?  types :DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST)) {
-            if (checkRandomGroup(type, c, tag))
+            if (checkRandomGroup(type, c, tag, random))
                 if (random) {
                     new MusicList(type).play();
                     return;
@@ -238,8 +238,9 @@ public class MusicKeyMaster implements HotkeyListener {
             new MusicList(type).play();
     }
 
-    private boolean checkRandomGroup(ObjType type, Object c, boolean tag) {
-        for (Pair<VALUE, String> pair: MusicCore.getFilterValues() ){
+    private boolean checkRandomGroup(ObjType type, Object c, boolean tag, boolean random) {
+        if (random)
+            for (Pair<VALUE, String> pair : MusicCore.getFilterValues()) {
             if (MusicCore.isFilterOut()) {
             if (type.checkValue(pair.getKey(), pair.getValue()))
                 return false;

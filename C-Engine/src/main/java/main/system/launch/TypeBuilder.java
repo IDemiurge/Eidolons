@@ -116,9 +116,9 @@ public class TypeBuilder {
     public static void setParams(Entity type, NodeList childNodes) {
         for (int i = 0; i < childNodes.getLength(); i++) {
             Node child = childNodes.item(i);
-            if (child.getNodeName().contains("Material")) {
-                child = childNodes.item(i);
-            }
+
+            if (child.getTextContent().startsWith("\n"))
+                continue;
             PARAMETER param = ContentManager.getPARAM(child.getNodeName());
             if (param == null) {
                 main.system.auxiliary.LogMaster.log(1, "no such param: " + child.getNodeName());

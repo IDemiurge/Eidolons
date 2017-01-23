@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Align;
 import main.data.filesys.PathFinder;
 import main.entity.obj.DC_Obj;
 import main.game.DC_Game;
@@ -142,7 +143,7 @@ public class GameScreen implements Screen {
         guiStage.addActor(toolTipManager = new ToolTipManager());
         queue = new InitiativeQueue();
         guiStage.addActor(queue);
-        queue.setPosition(0, Gdx.app.getGraphics().getHeight() - 64);
+        queue.setPosition(0, 0, Align.topLeft);
 
 
         if (!BooleanMaster.isTrue(FAST_DC.getGameLauncher().getFAST_MODE())
