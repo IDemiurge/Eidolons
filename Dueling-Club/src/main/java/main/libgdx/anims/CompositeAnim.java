@@ -68,12 +68,12 @@ public class CompositeAnim {
         if (!result) {
             index++;
             triggerFinishEvents();
+            playAttached();
             if (map.size() <= index) {
                 finished();
                 return false;
             }
             initPartAnim();
-            playAttached();
         }
         drawAttached(batch);
         return true;

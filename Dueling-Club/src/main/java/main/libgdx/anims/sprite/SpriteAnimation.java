@@ -3,8 +3,10 @@ package main.libgdx.anims.sprite;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.libgdx.texture.TextureManager;
+import main.system.auxiliary.RandomWizard;
 
 /**
  * Created by PC on 10.11.2016.
@@ -19,6 +21,10 @@ public class SpriteAnimation extends Animation {
     private float offsetY;
     private float offsetX;
     private float frameNumber;
+    private float alpha=1f;
+    private int cycles;
+    private float lifecycle;
+    private float angle;
 
     public SpriteAnimation(String path) {
         this(defaultFrameDuration, false, 1, path);
@@ -34,31 +40,37 @@ public class SpriteAnimation extends Animation {
         stateTime = 0;
         this.looping = looping;
         this.loops = loops;
-
     }
 
     public boolean draw(Batch batch) {
         stateTime += Gdx.graphics.getDeltaTime();
         updateSpeed();
-        boolean looping = this.looping || loops == 0;
+        boolean looping = this.looping || loops > cycles || loops ==0; //TODO need null!
         TextureRegion currentFrame = getKeyFrame(stateTime, looping);
+
+
         if (currentFrame == null) {
             dispose();
             return false;
         }
-        if (getKeyFrameIndex(stateTime) == frameNumber)
-            loops--;
 
-//        Sprite sprite = new Sprite(currentFrame);
-//        sprite.setRotation(RandomWizard.getRandomInt(360)/360f);
-//        sprite.draw(batch);
-//        sprite.setPosition( x + offsetX-currentFrame.getRegionWidth()/2, y
-//         + offsetY
-//         -currentFrame.getRegionHeight()/2);
+        if (getLifecycleDuration() != 0) {
+            cycles=(int)(stateTime/getLifecycleDuration());
+            lifecycle = stateTime %getLifecycleDuration()/getLifecycleDuration();
+        }
+        
+        Sprite sprite = new Sprite(currentFrame);
+        sprite.setAlpha(alpha);
+        angle = RandomWizard.getRandomInt(360)/360f;
+        sprite.setRotation(angle);
+        sprite.setPosition( x + offsetX-currentFrame.getRegionWidth()/2, y
+         + offsetY
+         -currentFrame.getRegionHeight()/2);
+        sprite.draw(batch);
 
-        batch.draw(currentFrame, x + offsetX - currentFrame.getRegionWidth() / 2, y
-                + offsetY
-                - currentFrame.getRegionHeight() / 2);
+//        batch.draw(currentFrame, x + offsetX - currentFrame.getRegionWidth() / 2, y
+//                + offsetY
+//                - currentFrame.getRegionHeight() / 2);
 
         return true;
     }
@@ -110,6 +122,17 @@ public class SpriteAnimation extends Animation {
 
     public void setY(float y) {
         this.y = y;
+    }
+
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
+    }
+    public float getLifecycleDuration() {
+        return getFrameDuration()*frameNumber;
+    }
+
+    public float getAlpha() {
+        return alpha;
     }
 
     public enum SPRITE_BEHAVIOR {

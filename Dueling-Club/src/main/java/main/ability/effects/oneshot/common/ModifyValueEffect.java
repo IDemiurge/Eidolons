@@ -40,6 +40,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
     private Double staticAmount;
     private boolean base;
     private String modString;
+    private String lastModValue;
 
     public ModifyValueEffect(PARAMETER param, MOD code, String formula) {
         if (param == null)
@@ -365,6 +366,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         if (mod_type != MOD.SET && !checkPassive())
             getGame().getAnimationManager().valueModified(Ref.getCopy(ref));
 
+        lastModValue= String.valueOf(amount_modified);
         return true;
     }
 
@@ -463,5 +465,13 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         if (sparam == null)
             return param.getName();
         return sparam;
+    }
+
+    public String getLastModValue() {
+        return lastModValue;
+    }
+
+    public void setLastModValue(String lastModValue) {
+        this.lastModValue = lastModValue;
     }
 }

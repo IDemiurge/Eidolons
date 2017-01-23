@@ -8,9 +8,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.entity.Entity;
 import main.entity.Ref;
+import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
+import main.libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.particles.ParticleEmitter;
@@ -19,6 +21,7 @@ import main.libgdx.texture.TextureManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.LogMaster;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -35,7 +38,7 @@ public class Anim extends Actor {
     protected Color color;
     protected List<SpriteAnimation> sprites;
     protected Supplier<Texture> textureSupplier;
-    protected float stateTime = 0;
+    protected float time = 0;
     protected float duration = 0;
     protected float offsetX = 0;
     protected float offsetY = 0;
@@ -45,10 +48,14 @@ public class Anim extends Actor {
     protected boolean flipX;
     protected boolean flipY;
     protected int initialAngle;
-    private Float speedX;
-    private Float speedY;
-    private int loops;
-    private int pixelsPerSecond;
+    protected  Float speedX;
+    protected  Float speedY;
+    protected  int loops;
+    protected  int pixelsPerSecond;
+    protected  int cycles;
+    protected  float lifecycle; //0 to 1f 
+    protected  float lifecycleDuration;
+    protected  Float frameDuration;
 
 
     public Anim(Entity active, AnimData params) {
@@ -56,6 +63,7 @@ public class Anim extends Actor {
         this.active = active;
         textureSupplier = () -> getTexture();
         reset();
+        frameDuration=data.getIntValue(ANIM_VALUES.FRAME_DURATION)/100f;
 //        duration= params.getIntValue(ANIM_VALUES.DURATION);
     }
 
@@ -67,7 +75,7 @@ public class Anim extends Actor {
     }
 
     public void reset() {
-        stateTime = 0;
+        time = 0;
         offsetX = 0;
         offsetY = 0;
         initDuration();
@@ -89,7 +97,7 @@ public class Anim extends Actor {
         if (getOriginCoordinates().y > getDestinationCoordinates().y) flipY = true;
     }
 
-    private void initSpeed() {
+    protected  void initSpeed() {
         if (!isSpeedSupported()) return;
         if (destination == null) return;
         if (origin == null) return;
@@ -106,35 +114,50 @@ public class Anim extends Actor {
 
     }
 
-    private boolean isSpeedSupported() {
+    protected  boolean isSpeedSupported() {
         if (part == ANIM_PART.MAIN) return true;
         return false;
     }
 
     protected Texture getTexture() {
         return TextureManager.getOrCreate(active.getImagePath());
-        //TODO scale, colorize, apply alpha, rotate, warp, ... based on stateTime
+        //TODO scale, colorize, apply alpha, rotate, warp, ... based on time
         //for attack/turn anims?
     }
-
+    public void finished() {
+        //TODO
+    }
     public boolean draw(Batch batch) {
 //switch(template){
-//} applyTemplate()
+//}
         float delta = Gdx.graphics.getDeltaTime();
-        stateTime += delta;
+        time += delta;
         Texture currentFrame = textureSupplier.get();
-
-        if (stateTime >= duration) {
-            main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, this + " finished; duration = " + duration);
-            dispose();
-            return false;
+        if (lifecycleDuration != 0) {
+        cycles=(int)(time/lifecycleDuration);
+        lifecycle = time %lifecycleDuration/lifecycleDuration;
         }
+        if (duration > 0 ) //|| finished //  lifecycle duration for continuous?
+            if (time >= duration) {
+                main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, this + " finished; duration = " + duration);
+                dispose();
+                return false;
+            }
         if (currentFrame != null) {
             setWidth(currentFrame.getWidth());
             setHeight(currentFrame.getHeight());
         }
         updatePosition(delta);
-//        batch.begin();
+        emitterList.forEach(e -> {
+            e.setFlipX(flipX);
+            e.setFlipX(flipY);
+            e.act(delta);
+        });
+        sprites.forEach(s -> {
+//            s.setFlipX(flipX);
+//            s.setFlipX(flipY);
+        });
+        applyAnimMods();
         if (isDrawTexture())
             if (currentFrame != null) {
                 batch.draw(currentFrame, this.getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
@@ -143,16 +166,35 @@ public class Anim extends Actor {
                  currentFrame.getWidth(), currentFrame.getHeight(), flipX, flipY);
             }
 
-        sprites.forEach(s -> s.draw(batch));
+        sprites.forEach(s -> {
+            s.draw(batch);
+        });
         emitterList.forEach(e -> {
-            e.setFlipX(flipX);
-            e.setFlipX(flipY);
-            e.act(delta);
             e.draw(batch, 1f);
         });
-//        AnimMaster.getDrawer().draw(this, batch);
-//        batch.end();
         return true;
+    }
+
+    protected  void applyAnimMods() {
+        if (mods!=null )
+        Arrays.stream(mods).forEach((ANIM_MOD mod) -> {
+            if (mod instanceof CONTINUOUS_ANIM_MODS) {
+                switch ((CONTINUOUS_ANIM_MODS) mod) {
+                    case PENDULUM_ALPHA:
+                        sprites.forEach(s -> {
+                            if (cycles % 2 == 0)
+                                s.setAlpha(1f - lifecycle);
+                            else
+                                s.setAlpha(lifecycle);
+
+//                           time%lifecycle/lifecycle
+                        });
+                        break;
+                }
+            }
+        });
+
+
     }
 
     protected boolean isDrawTexture() {
@@ -168,6 +210,8 @@ public class Anim extends Actor {
         sprites.forEach(s -> s.setOffsetX(0));
         sprites.forEach(s -> s.setOffsetY(0));
         sprites.forEach(s -> s.setLoops(loops));
+        if (frameDuration!=null )
+        sprites.forEach(s -> s.setFrameDuration(frameDuration));
         addLight();
         addEmitters();
 
@@ -211,23 +255,23 @@ public class Anim extends Actor {
 
     public void initPosition() {
         origin = GameScreen.getInstance().getGridPanel()
-                .getVectorForCoordinateWithOffset(getOriginCoordinates());
+         .getVectorForCoordinateWithOffset(getOriginCoordinates());
 
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-                this + " origin: " + origin);
+         this + " origin: " + origin);
 
         destination = GameScreen.getInstance().getGridPanel()
-                .getVectorForCoordinateWithOffset(getDestinationCoordinates());
+         .getVectorForCoordinateWithOffset(getDestinationCoordinates());
 
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-                this + " destination: " + destination);
+         this + " destination: " + destination);
 
 
         defaultPosition = getDefaultPosition();
         setX(defaultPosition.x);
         setY(defaultPosition.y);
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-                this + " defaultPosition: " + defaultPosition);
+         this + " defaultPosition: " + defaultPosition);
     }
 
     protected Coordinates getOriginCoordinates() {
@@ -259,11 +303,11 @@ public class Anim extends Actor {
                     if (speedX != null)
                         offsetX += speedX * delta;
                     else
-                        offsetX = (destination.x - origin.x) * stateTime / duration;
+                        offsetX = (destination.x - origin.x) * time / duration;
                     if (speedY != null)
                         offsetY += speedY * delta;
                     else
-                        offsetY = (destination.y - origin.y) * stateTime / duration;
+                        offsetY = (destination.y - origin.y) * time / duration;
                     break;
             }
 
@@ -277,7 +321,7 @@ public class Anim extends Actor {
         });
 
         emitterList.forEach(e ->
-                e.updatePosition(getX(), getY()));
+         e.updatePosition(getX(), getY()));
 
         if (getActions().size == 0) {
             setX(origin.x + getWidth() / 2);
@@ -359,8 +403,8 @@ public class Anim extends Actor {
         this.textureSupplier = textureSupplier;
     }
 
-    public float getStateTime() {
-        return stateTime;
+    public float getTime() {
+        return time;
     }
 
     public float getDuration() {
@@ -400,7 +444,11 @@ public class Anim extends Actor {
     }
 
     public Ref getRef() {
+        if (active==null )
+            return  (DC_Game.game.getManager().getActiveObj().getRef());
+
         return active.getRef();
     }
+
 
 }

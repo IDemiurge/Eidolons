@@ -29,6 +29,12 @@ public class MoveAnimation extends ActionAnim {
         super(active, params);
     }
 
+    @Override
+    protected void initDuration() {
+        super.initDuration();
+        duration=0.1f;
+    }
+
     protected Action getAction() {
         if (action == null)
             action = new MoveToAction() {

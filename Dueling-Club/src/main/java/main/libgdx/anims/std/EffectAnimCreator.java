@@ -2,26 +2,46 @@ package main.libgdx.anims.std;
 
 import main.ability.effects.DealDamageEffect;
 import main.ability.effects.Effect;
+import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.data.filesys.PathFinder;
 import main.entity.obj.top.DC_ActiveObj;
+import main.libgdx.GdxColorMaster;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
+import main.system.images.ImageManager;
 
 /**
  * Created by JustMe on 1/11/2017.
  */
 public class EffectAnimCreator {
 
-
+public enum ANIMATED_EFFECT{
+    BUFF,
+    SUMMON,
+    TURN,
+    DISPLACE,
+    MODIFY_VALUE,
+    DISPEL,
+}
     public static Anim getEffectAnim(Effect e) {
         DC_ActiveObj active = (DC_ActiveObj) e.getActiveObj();
         switch (e.getClass().getSimpleName().replace("Effect", "")) {
             case "DealDamage":
                 return new HitAnim(active, getDamageAnimData((DealDamageEffect) e));
+            case "Drain":
             case "ModifyValue":
+                ModifyValueEffect modEffect = (ModifyValueEffect) e;
+                return new HitAnim(
+
+                 active, getModValAnimData(modEffect)
+                ,false, GdxColorMaster.getParamColor( modEffect.getParam()),
+                 ()-> modEffect.getLastModValue(),
+                 ()-> ImageManager.getValueIconPath(modEffect.getParam())
+                );
+
             case "InstantDeath":
             case "AddBuff":
             case "OwnershipChange":
@@ -35,6 +55,11 @@ public class EffectAnimCreator {
 
         }
         return null;
+    }
+
+    private static AnimData getModValAnimData(ModifyValueEffect e) {
+        AnimData data = new AnimData();
+    return data;
     }
 
     private static AnimData getDamageAnimData(DealDamageEffect e) {

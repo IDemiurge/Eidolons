@@ -150,7 +150,10 @@ public class FileManager {
         return null;
     }
 
-    private static boolean isFile(File file) {
+    public static boolean isFile(String file) {
+        return isFile(new File(file));
+    }
+    public static boolean isFile(File file) {
         if (file == null) {
             return false;
         }

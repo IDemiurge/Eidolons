@@ -39,6 +39,9 @@ public class LightMap {
     private Map<Integer, FireLightProt> fireLightProtMap;
     private boolean valid;
     private DequeImpl<DC_HeroObj> units;
+    private PARAMS lightParam;
+    private PARAMS darkParam;
+    private int LIGHT_MULTIPLIER=30;
 
 
     public LightMap(DequeImpl<DC_HeroObj> units, float cellWidth, float cellHeight, int rows, int cols) {
@@ -155,7 +158,11 @@ public class LightMap {
             BodyDef bdef = new BodyDef();
             bdef.type = BodyDef.BodyType.KinematicBody;
             Body body = world.createBody(bdef);
-            if (units.get(i).getIntParam(PARAMS.LIGHT_EMISSION) > 0) {
+            lightParam =PARAMS.LIGHT_EMISSION;
+            darkParam =PARAMS.CONCEALMENT;
+            DC_HeroObj unit = units.get(i);
+            int lightStrength = unit.getIntParam(lightParam) - unit.getIntParam(darkParam);
+            if (lightStrength > 0) {
                 body.setTransform(units.get(i).getX() * cellWidth + cellWidth / 2, this.rows * cellHeight - units.get(i).getY() * cellHeight + cellHeight / 2, 0);
                 PolygonShape shape = new PolygonShape();
                 shape.setAsBox(cellWidth / 2, cellHeight / 2);
@@ -163,8 +170,10 @@ public class LightMap {
                 fdef.shape = shape;
                 body.createFixture(fdef);
                 FireLightProt fireLightProt = new FireLightProt(world, rayHandler,
-                        units.get(i).getX() * cellWidth + cellWidth / 2, units.get(i).getY() *
-                        cellHeight + cellHeight / 2, units.get(i).getIntParam(PARAMS.LIGHT_EMISSION) * 30, 360, SECOND);
+                        unit .getX() * cellWidth + cellWidth / 2,
+                 unit .getY() *
+                        cellHeight + cellHeight / 2,
+                 lightStrength * LIGHT_MULTIPLIER, 360, SECOND);
                 fireLightProt.attachToBody(body);
                 fireLightProtMap.put(i, fireLightProt);
                 valid = true;

@@ -10,8 +10,6 @@ import main.content.CONTENT_CONSTS2.SFX;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
 
-import java.util.Random;
-
 /**
  * Created by JustMe on 1/10/2017.
  */
@@ -86,11 +84,10 @@ public class ParticleEmitter extends Actor implements ParticleInterface {
         super.draw(batch, parentAlpha);
 
         effect.getEmitters().first().setPosition(getX(), getY());
-        sprite = effect.getEmitters().first().getSprite();
-        sprite.setRotation(new Random().nextInt(360));
+//        sprite = effect.getEmitters().first().getSprite();
+//        sprite.setRotation(new Random().nextInt(360));
         effect.draw(batch);
 
-        sprite.draw(batch);
     }
 
     @Override
