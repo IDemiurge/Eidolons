@@ -61,6 +61,9 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
             case ANIM_SPEED:
                 setValue(ANIM_VALUES.MISSILE_SPEED, value);
                 break;
+            case ANIM_FRAME_DURATION:
+                setValue(ANIM_VALUES.FRAME_DURATION, value);
+                break;
         }
     }
 
@@ -88,7 +91,7 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
     public enum ANIM_VALUES {
         PARTICLE_EFFECTS, SPRITES,
         DURATION, SCALE, COLOR, LIGHT_FOCUS, LIGHT_AMBIENT,
-        MISSILE_SPEED
+        FRAME_DURATION, MISSILE_SPEED
 
     }
 

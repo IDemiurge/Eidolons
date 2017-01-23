@@ -2,6 +2,7 @@ package main.libgdx.anims;
 
 import main.ability.effects.DealDamageEffect;
 import main.ability.effects.Effect;
+import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.content.CONTENT_CONSTS2.SFX;
 import main.content.PARAMS;
 import main.content.PROPS;
@@ -13,6 +14,7 @@ import main.data.filesys.PathFinder;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.DC_SpellObj;
+import main.entity.obj.specific.BuffObj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.particles.ParticleEmitter;
@@ -65,13 +67,16 @@ public class AnimationConstructor {
 //     PARAMS.ANIM_LIGHT_TARGET,
 //
 //     PARAMS.ANIM_MAGNITUDE,
-            PARAMS.ANIM_SPEED,
+     PARAMS.ANIM_SPEED,
+     PARAMS.ANIM_FRAME_DURATION,
 //     PARAMS.ANIM_SIZE,
     };
     Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
     boolean reconstruct = false;
+    private boolean findClosestResource;
 
     public CompositeAnim getOrCreate(ActiveObj active) {
+        if (active==null )return null ;
         CompositeAnim anim = map.get(active);
         if (!isReconstruct())
             if (anim != null) {
@@ -145,7 +150,8 @@ public class AnimationConstructor {
 //                if (lethal)
 //                return new DeathAnim(active, data);
         }
-        if (active.isSpell()) {
+        if (active.isSpell())
+            if (active.isMissile()   ) {
             if (part == ANIM_PART.IMPACT)
                 return new HitAnim(active, data);
 
@@ -179,7 +185,9 @@ public class AnimationConstructor {
             exists = true;
         }
 
-        if (!exists) exists = checkForcedAnimation(active, part);
+        if (!exists)
+            if ( active!=null )
+                exists = checkForcedAnimation(active, part);
 //        if (!exists) return true;
 
         anim.setPart(part);
@@ -220,6 +228,7 @@ public class AnimationConstructor {
         initAnim(effectAnim.getData(), (DC_ActiveObj) effectAnim.getActive(),
                 effectAnim.getPart(),
                 effectAnim);
+        if (!isValid(effectAnim)) return null;
         CompositeAnim a = new CompositeAnim();
         a.add(
                 effectAnim.getPart()
@@ -229,7 +238,14 @@ public class AnimationConstructor {
     }
 
     private boolean isAnimated(Effect e) {
+        if (e.getActiveObj()==null )return false;
+
         if (e instanceof DealDamageEffect) return true;
+        if (e instanceof ModifyValueEffect){
+            if (e.isContinuousWrapped())
+                return false;
+            return true;}
+
         return false;
     }
 
@@ -248,30 +264,33 @@ public class AnimationConstructor {
         if (part == ANIM_PART.MAIN) partPath = "missile";
 
         ANIM_VALUES[] values = {
-                ANIM_VALUES.SPRITES,
-                ANIM_VALUES.PARTICLE_EFFECTS,
+         ANIM_VALUES.SPRITES,
+         ANIM_VALUES.PARTICLE_EFFECTS,
         };
 //         getValuesForPart(part);
         PROPERTY[] props = {
-                G_PROPS.NAME,
-                G_PROPS.ASPECT,
-                G_PROPS.SPELL_TYPE,
-                G_PROPS.SPELL_GROUP,
-                PROPS.DAMAGE_TYPE,
+         G_PROPS.NAME,
+         G_PROPS.ASPECT,
+         G_PROPS.SPELL_TYPE,
+         G_PROPS.SPELL_GROUP,
+         PROPS.DAMAGE_TYPE,
         };
         for (ANIM_VALUES s : values) {
 
             String pathRoot = getPath(s);
             String file = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
-            if (file == null) {
-                file = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
-                if (file == null)
-                    continue;
-            }
+
+                if (file == null) {
+                    if (!isFindClosestResource(part))
+                        continue;
+                    file = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
+                    if (file == null)
+                        continue;
+                }
             String val = StringMaster.buildPath(
-                    partPath, StringMaster.removePreviousPathSegments(file, pathRoot));
+             partPath, StringMaster.removePreviousPathSegments(file, pathRoot));
             main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-                    "AUTO ANIM CONSTRUCTION FOR " + spell + "-" + part + ": " + s + " is set automatically to " + val);
+             "AUTO ANIM CONSTRUCTION FOR " + spell + "-" + part + ": " + s + " is set automatically to " + val);
             data.setValue(s, val);
         }
 //        for (String substring : StringMaster.openContainer(
@@ -315,7 +334,7 @@ public class AnimationConstructor {
 
 
     public boolean isReconstruct() {
-        return true;
+        return false;
 //        return reconstruct;
     }
 
@@ -323,7 +342,37 @@ public class AnimationConstructor {
         this.reconstruct = reconstruct;
     }
 
+    public BuffAnim getBuffAnim(BuffObj buff) {
+       BuffAnim anim = new BuffAnim(buff);
+        DC_ActiveObj active = null;
+        if (buff.getActive() instanceof  DC_ActiveObj)
+        active = (DC_ActiveObj) buff.getActive();
+        initAnim(anim.getData(), active, anim.getPart(), anim);
+        if (!isValid(anim)) return null;
+        return anim;
+    }
+
+    private boolean isValid( Anim anim) {
+        if (!anim.getSprites().isEmpty())return true;
+        if (!anim.getEmitterList().isEmpty())return true;
+        if ( anim.getLightEmission()>0)return true;
+if (anim instanceof HitAnim) return true;
+        return false;
+    }
+
+    public boolean isFindClosestResource(ANIM_PART part) {
+        switch (part){
+            case MAIN: return true;
+        }
+        return findClosestResource;
+    }
+
+    public void setFindClosestResource(boolean findClosestResource) {
+        this.findClosestResource = findClosestResource;
+    }
+
     public enum ANIM_PART {
+        PRECAST(2F ), //channeling
         CAST(2.5f),
         RESOLVE(2),
         MAIN(3), //flying missile

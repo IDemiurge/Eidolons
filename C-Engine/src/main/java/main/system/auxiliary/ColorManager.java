@@ -14,9 +14,9 @@ public class ColorManager {
     public static final Color NEUTRAL = new Color(100, 100, 120);
     public static final Color ALLY_COLOR = new Color(50, 150, 100);
     public static final Color ENEMY_COLOR = new Color(150, 100, 50);
-    public static final Color HEALTH = new Color(210, 100, 110);
-    public static final Color ENDURANCE = HEALTH;
     // new Color(55, 215, 65)
+    public static final Color HEALTH = new Color(210, 100, 110);
+    public static final Color ENDURANCE =  new Color(210, 100, 110);
     public static final Color TOUGHNESS = new Color(65, 35, 15);
     public static final Color STAMINA = new Color(180, 150, 45);
     public static final Color ESSENCE = new Color(80, 30, 225);

@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.DC_Game;
 import main.libgdx.GameScreen;
-import main.libgdx.anims.AnimMaster;
 import main.system.GuiEventManager;
+import main.test.frontend.FAST_DC;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -21,11 +21,13 @@ import static main.system.GuiEventType.*;
 public class PhaseAnimator extends Group {
     private static PhaseAnimator instance;
     List<PhaseAnim> anims = new LinkedList<>();
-    private Stage stage;
+    private boolean on;
 
     public PhaseAnimator(Stage stage) {
-        this.stage = stage;
-        this.stage.addActor(this);
+        this. on =
+         FAST_DC.getGameLauncher().FAST_MODE || FAST_DC.getGameLauncher().SUPER_FAST_MODE;
+
+         stage.addActor(this);
         setBounds(0, 0, (float) Gdx.graphics.getWidth(), (float)
                 Gdx.graphics.getHeight());
         setVisible(true);
@@ -68,10 +70,10 @@ public class PhaseAnimator extends Group {
     }
 
     public void update() {
-        if (!AnimMaster.isOn()) return;
+        if (!isOn()) return;
 //        removeAnims();
         setBounds(0, 0, (float) Gdx.graphics.getWidth(), (float)
-                Gdx.graphics.getHeight());
+         Gdx.graphics.getHeight());
 
         DC_Game.game.getAnimationManager().getAnimations().forEach(a -> {
             if (a.getPhaseAnim() == null) {
@@ -85,7 +87,7 @@ public class PhaseAnimator extends Group {
             anim.update();
             addActor(anim);
             Vector2 p = GameScreen.getInstance().getGridPanel()
-                    .getVectorForCoordinateWithOffset(anim.getAnim().getSourceCoordinates());
+             .getVectorForCoordinateWithOffset(anim.getAnim().getSourceCoordinates());
             float x = p.x;
             float y = p.y;
 //            y = GameScreen.getInstance().getGridPanel().getCellHeight() *
@@ -98,12 +100,14 @@ public class PhaseAnimator extends Group {
             anim.setX(x);
             anim.setY(y);
             main.system.auxiliary.LogMaster.shout("Added anim : "
-                    + anim + "at " + x + " - " + y);
+             + anim + "at " + x + " - " + y);
 //    anim.getAnim().getMouseMap()
         });
 //            sprite = new TextureRegion(j2dTex);
         setVisible(true);
     }
+
+
 
     private void removeAnims() {
         getAnims().forEach(anim -> {
@@ -130,5 +134,13 @@ public class PhaseAnimator extends Group {
 
         }
         return false;
+    }
+
+    public boolean isOn() {
+        return on;
+    }
+
+    public void setOn(boolean on) {
+        this.on = on;
     }
 }

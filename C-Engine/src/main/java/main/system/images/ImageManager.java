@@ -358,7 +358,6 @@ public class ImageManager {
     /**
      * @param img
      * @param percentage
-     * @param b
      * @return
      */
 
@@ -621,7 +620,14 @@ public class ImageManager {
         return null;
     }
 
-    public static Image getValueIcon(VALUE value, boolean glowIconForDynamicIfAvailable) {
+    public static String getValueIconPath(VALUE value
+      ) {
+        Image img = getValueIcon(value);
+        if (img == null  )return "";
+return ((CustomImage)img).getImgPath();
+
+    }
+        public static Image getValueIcon(VALUE value, boolean glowIconForDynamicIfAvailable) {
         Image icon;
         String imgPath = VALUE_ICONS_PATH;
         String name = value.getName().toLowerCase();

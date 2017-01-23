@@ -5,13 +5,18 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.ability.Ability;
 import main.ability.effects.Effect;
+import main.data.ConcurrentMap;
 import main.entity.Ref;
+import main.entity.obj.specific.BuffObj;
 import main.entity.obj.top.DC_ActiveObj;
+import main.game.DC_Game;
+import main.libgdx.anims.std.BuffAnim;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.LogMaster;
 import main.test.frontend.FAST_DC;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
@@ -26,14 +31,17 @@ public class AnimMaster extends Actor {
     AnimDrawer drawer;
     boolean parallelDrawing = false;
     private AnimationConstructor constructor;
-    private Stage stage;
+
+    ConcurrentMap<BuffObj, BuffAnim> continuousAnims=    new ConcurrentMap<>() ;
+    private boolean continuousAnimsOn;
 
     //animations will use emitters, light, sprites, text and icons
     public AnimMaster(Stage stage) {
-        on =
-                FAST_DC.getGameLauncher().FAST_MODE || FAST_DC.getGameLauncher().SUPER_FAST_MODE;
+        continuousAnimsOn=
+                FAST_DC.getGameLauncher().FAST_MODE ||
+                 FAST_DC.getGameLauncher().SUPER_FAST_MODE;
+        on =true;
         drawer = new AnimDrawer(stage);
-        this.stage = stage;
         constructor = new AnimationConstructor();
 
 
@@ -72,7 +80,10 @@ public class AnimMaster extends Actor {
 //        GuiEventManager.bind(GuiEventType.ANIM_GROUP_COMPLETE, p -> {
 //            leadAnimation.start();
 //        });
-        GuiEventManager.bind(GuiEventType.ABILITY_RESOLVES, p -> {
+        GuiEventManager.bind(GuiEventType.UPDATE_BUFFS, p -> {
+            updateContinuousAnims();
+         });
+            GuiEventManager.bind(GuiEventType.ABILITY_RESOLVES, p -> {
             if (!isOn()) return;
             Ability ability = (Ability) p.get();
             //what about triggers?
@@ -87,7 +98,7 @@ public class AnimMaster extends Actor {
 
 //                 getTrigger().getEvent()
 // some active will be there anyway, so...
-                    //
+
                     if (parentAnim != null) {
                         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, anim + " created for: " + parentAnim);
                         parentAnim.addEffectAnim(anim, effect); //TODO}
@@ -98,6 +109,34 @@ public class AnimMaster extends Actor {
                 }
         );
         stage.addActor(this);
+    }
+
+    private void updateContinuousAnims() {
+        if (!continuousAnimsOn)
+            return ;
+        final List<BuffObj> toRemove = new LinkedList<>();
+        continuousAnims.keySet().forEach(buff->{
+            if (buff.isDead()) {
+                continuousAnims.get(buff).finished();
+                        toRemove.add(buff);
+            }
+         });
+        toRemove.forEach(buff->{
+            continuousAnims.remove(buff);
+         });
+        DC_Game.game.getUnits().forEach(unit->{
+            unit.getBuffs().forEach(buff->{
+                if (!continuousAnims.containsKey(buff)) //TODO or full reset always?
+                if (buff.isVisible()) {
+                    BuffAnim anim =constructor.getBuffAnim(buff);
+                    //TODO cache!
+                    if (anim != null) {
+                        continuousAnims.put(buff, anim);
+                        anim.start();
+                    }
+                }
+            });
+        });
     }
 
     public static boolean isOn() {
@@ -138,6 +177,12 @@ public class AnimMaster extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (!isOn()) return;
+
+        continuousAnims.values().forEach(a->{
+            if (!a.getBuff().isDead())
+            a.draw(batch);
+        });
+
         if (leadAnimation == null) {
             leadAnimation = next();
         }

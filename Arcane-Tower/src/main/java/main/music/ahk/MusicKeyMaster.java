@@ -14,6 +14,7 @@ import main.music.MusicCore;
 import main.music.entity.MusicList;
 import main.music.gui.MC_ControlPanel;
 import main.swing.generic.components.editors.lists.ListChooser;
+import main.swing.generic.services.DialogMaster;
 import main.system.auxiliary.RandomWizard;
 
 import javax.swing.*;
@@ -33,7 +34,8 @@ public class MusicKeyMaster implements HotkeyListener {
     private static final int keyIdDialog = 120;
     private static final int keyIdDialogLast = 121;
     private static final int keyIdDialogLastToggle = 122;
-    private static final int keyIdFind = 123;
+    private static final int keyIdHelp = 123;
+    private static final int keyIdFind = 124;
     MUSIC_TYPE[] bind_types = {
 
     };
@@ -144,6 +146,7 @@ public class MusicKeyMaster implements HotkeyListener {
             JIntellitype.getInstance().registerHotKey(4000 + i,
              JIntellitype.MOD_WIN+JIntellitype.MOD_CONTROL, getFx(i));
             i++;
+//            helpInfo+= "win+ctrl+" +"\nF"+i+" for random " + n;
         }
 
         JIntellitype.getInstance().registerHotKey(keyIdDialog,
@@ -171,6 +174,8 @@ public class MusicKeyMaster implements HotkeyListener {
         JIntellitype.getInstance().registerHotKey(keyIdRandomView, getMod(2), keyRandom);
         JIntellitype.getInstance().registerHotKey(keyIdRandomAll, getMod(3), keyRandom);
         JIntellitype.getInstance().registerHotKey(keyIdRandomChoice, getMod(4), keyRandom);
+
+        JIntellitype.getInstance().registerHotKey(keyIdHelp, getMod(1), KeyEvent.VK_F1);
 
         int keyFind = KeyEvent.VK_F2;
         JIntellitype.getInstance().registerHotKey(keyIdFind, getMod(1), keyFind);
@@ -200,6 +205,10 @@ public class MusicKeyMaster implements HotkeyListener {
                 return KeyEvent.VK_F9;
             case 9:
                 return KeyEvent.VK_F10;
+            case 10:
+                return KeyEvent.VK_F11;
+            case 11:
+                return KeyEvent.VK_F12;
         }
         return 0;
     }
@@ -281,7 +290,22 @@ public class MusicKeyMaster implements HotkeyListener {
                 return randomChoice();
             case keyIdFind:
                 return find();
+            case keyIdHelp:
+                return help();
         }
+        return true;
+    }
+
+    private boolean help() {
+        String helpInfo="MUSIC_TAG_GROUPS:\n";
+        for (MUSIC_TAG_GROUPS sub: MUSIC_TAG_GROUPS.values()){
+            helpInfo+=sub+" ";
+        }
+        helpInfo+= "MUSIC_TYPES:\n ";
+        for (MUSIC_TYPE sub: MUSIC_TYPE.values()){
+            helpInfo+=sub+" ";
+        }
+        DialogMaster.inform(helpInfo);
         return true;
     }
 

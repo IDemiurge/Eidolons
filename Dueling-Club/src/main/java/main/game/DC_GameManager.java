@@ -54,6 +54,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.*;
 
 import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
+import static main.system.GuiEventType.UPDATE_BUFFS;
 
 /**
  * *
@@ -967,6 +968,7 @@ public class DC_GameManager extends GameManager {
     public void buffCreated(BuffObj buff, Obj basis) {
         super.buffCreated(buff, basis);
         UpkeepRule.addUpkeep(buff);
+        GuiEventManager.trigger(UPDATE_BUFFS, new EventCallbackParam(buff));
     }
 
     public void copyBuff(BuffObj buff, Obj obj, Condition retainCondition) {

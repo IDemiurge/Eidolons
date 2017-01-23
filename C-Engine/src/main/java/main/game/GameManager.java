@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Set;
 
 import static main.system.GuiEventType.INGAME_EVENT_TRIGGERED;
+import static main.system.GuiEventType.UPDATE_BUFFS;
 
 /**
  * With gamestate being mostly a data holder, this class is a method container
@@ -190,6 +191,7 @@ public abstract class GameManager implements GenericGameManager {
         attachmentRemoved(buff, buff.getBasis());
         getState().getAttachmentsMap().get(buff.getBasis()).remove(buff);
         getState().getAttachments().remove(buff);
+        GuiEventManager.trigger(UPDATE_BUFFS, new EventCallbackParam(buff));
         // if (game.isStarted())
         // refreshGUI();
     }
