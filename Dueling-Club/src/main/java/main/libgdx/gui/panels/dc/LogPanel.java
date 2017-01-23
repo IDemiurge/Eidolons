@@ -31,6 +31,7 @@ public class LogPanel extends Group {
     private float offsetY = 0;
     private Container<WidgetGroup> container;
     private boolean widgetPosChanged = false;
+    private Table table;
 
     public LogPanel() {
         setSize(300, 500);
@@ -38,19 +39,23 @@ public class LogPanel extends Group {
         bg.setFillParent(true);
         addActor(bg);
 
-        Table tb = new Table();
-        tb.setFillParent(true);
+        table = new Table();
+        table.setFillParent(true);
         //tb.setDebug(true);
-        tb.align(Align.left);
+        table.align(Align.left);
 
         for (int i = 0; i < 32; i++) {
-            if (i != 0) tb.row();
-            tb.add(getLabel()).fill().padLeft(10).width(getWidth() - 20);
+            if (i != 0) table.row();
+            LogMessage message = getMessage();
+            message.setFillParent(true);
+//            table.add(message).fill().padLeft(10).width(getWidth() - 20);
+            table.add(message).fill().padLeft(10).width(getWidth() - 20);
+            //message.pack();
         }
 
         //require to calc valid height
-        tb.setLayoutEnabled(true);
-        tb.pack();
+        table.setLayoutEnabled(true);
+        table.pack();
 
         container = new Container<>();
         container.setBounds(15, 15, getWidth() - 30, getHeight() - 30);
@@ -58,10 +63,11 @@ public class LogPanel extends Group {
         addActor(container);
         widgetGroup = new Container<>();
         widgetGroup.setWidth(getWidth() - 30);
-        widgetGroup.setActor(tb);
+        widgetGroup.setActor(table);
         container.setActor(widgetGroup);
         widgetGroup.setX(0);
         widgetGroup.setY(0);
+        widgetGroup.setDebug(true);
 
         movableHeader = new MovableHeader();
         movableHeader.setBounds(0, getHeight() - 10, getWidth(), 10);
@@ -95,8 +101,13 @@ public class LogPanel extends Group {
         addCaptureListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 //event.stop();
-                getStage().setScrollFocus(LogPanel.this);
+
                 return true;
+            }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                getStage().setScrollFocus(LogPanel.this);
             }
         });
 
@@ -194,7 +205,7 @@ public class LogPanel extends Group {
                         "Fusce convallis fringilla dolor eu mollis. Nam porta augue nec ullamcorper ultricies. " +
                         "Morbi bibendum libero efficitur metus accumsan viverra at ut metus. " +
                         "Duis congue pulvinar ligula, sed maximus tellus lacinia eu.")
-                .build();
+                .build(getWidth() - 20);
     }
 
     @Override

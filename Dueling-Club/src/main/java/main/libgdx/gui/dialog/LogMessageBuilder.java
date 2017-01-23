@@ -18,16 +18,18 @@ public class LogMessageBuilder {
         return new LogMessageBuilder();
     }
 
-    public LogMessage build() {
+    public LogMessage build(float w) {
         Label l = new Label(sb.toString(), StyleHolder.getDefaultLabelStyle());
         l.setWrap(true);
         l.setAlignment(Align.left);
-        l.setFillParent(true);
         logMessage = new LogMessage();
-        logMessage.addActor(l);
-        logMessage.setWidth(l.getWidth());
-        logMessage.setHeight(l.getHeight());
+        logMessage.setFillParent(true);
+        logMessage.align(Align.bottomLeft);
+        logMessage.add(l).fill().width(w);
+        logMessage.setLayoutEnabled(true);
+        logMessage.pack();
         addHoverObjects();
+
 
         return logMessage;
     }
@@ -50,7 +52,7 @@ public class LogMessageBuilder {
 
     public void startColor(String colorRGBA) {
         sb.append("[");
-        if (colorRGBA.startsWith("#")) {
+        if (!colorRGBA.startsWith("#")) {
             sb.append("#");
         }
         sb.append(colorRGBA.toUpperCase());
