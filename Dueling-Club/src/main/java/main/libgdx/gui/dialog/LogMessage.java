@@ -1,17 +1,6 @@
 package main.libgdx.gui.dialog;
 
-import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-public class LogMessage extends Group {
-    public LogMessage pack() {
-        return this;
-    }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-        if (getHeight() != getChildren().first().getHeight()) {
-            setHeight(getChildren().first().getHeight());
-        }
-    }
+public class LogMessage extends Table {
 }
