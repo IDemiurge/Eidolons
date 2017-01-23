@@ -27,7 +27,6 @@ import main.libgdx.gui.dialog.DialogDisplay;
 import main.libgdx.gui.panels.dc.InitiativeQueue;
 import main.libgdx.gui.panels.dc.LogPanel;
 import main.system.GuiEventManager;
-import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.frontend.FAST_DC;
@@ -146,8 +145,8 @@ public class GameScreen implements Screen {
         queue.setPosition(0, 0, Align.topLeft);
 
 
-        if (!BooleanMaster.isTrue(FAST_DC.getGameLauncher().getFAST_MODE())
-                && !BooleanMaster.isTrue(FAST_DC.getGameLauncher().getSUPER_FAST_MODE())) {
+        if (!FAST_DC.getGameLauncher().getFAST_MODE()
+                && !FAST_DC.getGameLauncher().getSUPER_FAST_MODE()) {
             LogPanel ld = new LogPanel();
             guiStage.addActor(ld);
             ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);

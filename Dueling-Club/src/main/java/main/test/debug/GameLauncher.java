@@ -47,8 +47,8 @@ public class GameLauncher {
     public String PLAYER_PARTY = "Bandit Archer";
     public boolean DUMMY_MODE = false;
     public boolean DUMMY_PP = false;
-    public Boolean FAST_MODE;
-    public Boolean SUPER_FAST_MODE;
+    public boolean FAST_MODE;
+    public boolean SUPER_FAST_MODE;
     private Integer PLAYER_CHOICE_OPTION = null;
     private Integer ENEMY_CHOICE_OPTION = 0;
     private Boolean host_client;
@@ -109,7 +109,7 @@ public class GameLauncher {
     private void savePresetAsLast() {
         if (!FAST_MODE)
             if (!SUPER_FAST_MODE)
-        PresetMaster.savePreset(PresetMaster.getPreset(), null);
+                PresetMaster.savePreset(PresetMaster.getPreset(), null);
     }
 
     private void autosavePreset() {
@@ -123,9 +123,9 @@ public class GameLauncher {
 
     public void selectiveInit() {
 
-        if (FAST_MODE == null)
+        if (!FAST_MODE)
             FAST_MODE = DialogMaster.confirm("FAST_MODE?");
-        if (SUPER_FAST_MODE == null) {
+        if (!SUPER_FAST_MODE) {
             SUPER_FAST_MODE = DialogMaster.confirm("SUPER_FAST_MODE?");
         }
 
@@ -180,43 +180,43 @@ public class GameLauncher {
     }
 
     public void initData() {
-        if (FAST_MODE == null)
-            FAST_MODE = false;
-        if (SUPER_FAST_MODE == null)
-            SUPER_FAST_MODE = false;
-
-        if (game == null)
+        if (game == null) {
             game = new DC_Game(false);
+        }
+        
         game.setPlayerParty(PLAYER_PARTY);
         game.setEnemyParty(ENEMY_PARTY);
-        if (host_client != null)
+
+        if (host_client != null) {
             initMultiplayerFlags();
+        }
         DC_Game.setGame(game);
         // select code?
         VisionManager.setVisionHacked(VISION_HACK);
         DebugMaster.setOmnivisionOn(VISION_HACK);
 
-        if (PresetMaster.getPreset() == null){
-            if (BooleanMaster.isTrue(FAST_MODE)  ) {
-                if (netGame == null && dungeon == null)
-                    DungeonMaster.RANDOM_DUNGEON = true;
-                else
-                    DungeonMaster.setDEFAULT_DUNGEON_LEVEL(dungeon);
-            }
+        if (PresetMaster.getPreset() == null) {
+            if (getFAST_MODE()) {
 
-            if (BooleanMaster.isTrue(getFAST_MODE())) {
+                if (netGame == null && dungeon == null) {
+                    DungeonMaster.RANDOM_DUNGEON = true;
+                } else {
+                    DungeonMaster.setDEFAULT_DUNGEON_LEVEL(dungeon);
+                }
+
                 DungeonMaster.RANDOM_DUNGEON = true;
                 CoreEngine.animationTestMode = true;
                 TestMasterContent.test_on = false;
             }
-            if (BooleanMaster.isTrue(getSUPER_FAST_MODE())) {
-           PLAYER_PARTY=(FAST_DC.PLAYER_PARTY);
-            ENEMY_PARTY="";
-            game.setEnemyParty("");
+            if (getSUPER_FAST_MODE()) {
+                PLAYER_PARTY = (FAST_DC.PLAYER_PARTY);
+                ENEMY_PARTY = "";
+                game.setEnemyParty("");
+            }
         }
-        }
-        if (game.getArenaManager() != null)
+        if (game.getArenaManager() != null) {
             game.getArenaManager().getSpawnManager().init();
+        }
     }
 
     private void initPlayerParties() {
@@ -454,19 +454,19 @@ public class GameLauncher {
     // return new RandomWizard<String>().getRandomListItem(list);
     // }
 
-    public Boolean getFAST_MODE() {
+    public boolean getFAST_MODE() {
         return FAST_MODE;
     }
 
-    public void setFAST_MODE(Boolean FAST_MODE) {
+    public void setFAST_MODE(boolean FAST_MODE) {
         this.FAST_MODE = FAST_MODE;
     }
 
-    public Boolean getSUPER_FAST_MODE() {
+    public boolean getSUPER_FAST_MODE() {
         return SUPER_FAST_MODE;
     }
 
-    public void setSUPER_FAST_MODE(Boolean SUPER_FAST_MODE) {
+    public void setSUPER_FAST_MODE(boolean SUPER_FAST_MODE) {
         this.SUPER_FAST_MODE = SUPER_FAST_MODE;
     }
 
