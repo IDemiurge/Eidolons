@@ -178,6 +178,8 @@ if (test)
             LogMessage message = builder.build(getWidth() - offsetX);
             message.setFillParent(true);
             table.add(message).fill().padLeft(10).width(getWidth() - 20);
+            table.row();
+            table.pack();
         });
 
     }
