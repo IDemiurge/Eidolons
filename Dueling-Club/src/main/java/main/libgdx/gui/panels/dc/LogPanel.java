@@ -77,7 +77,7 @@ if (test)
         innerScrollContainer.setY(0);
         innerScrollContainer.setDebug(true);
 
-        innerScrollContainer.addCaptureListener(new InputListener() {
+        addCaptureListener(new InputListener() {
             private float yy;
 
             @Override
