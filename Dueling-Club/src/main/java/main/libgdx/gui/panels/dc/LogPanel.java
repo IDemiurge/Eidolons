@@ -15,6 +15,8 @@ import main.libgdx.bf.mouse.MovableHeader;
 import main.libgdx.gui.dialog.LogMessage;
 import main.libgdx.gui.dialog.LogMessageBuilder;
 import main.libgdx.texture.TextureManager;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 /**
  * Created by JustMe on 1/5/2017.
@@ -25,12 +27,14 @@ public class LogPanel extends Group {
             "background.png";
 
     private static final String loremIpsum = "[#FF0000FF]Lorem ipsum[] dolor sit amet, [#00FF00FF]consectetur adipiscing elit[]. [#0000FFFF]Vestibulum faucibus[], augue sit amet porttitor rutrum, nulla eros finibus mauris, nec sagittis mauris nulla et urna. Sed ac orci nec urna ornare aliquam a sit amet neque. Nulla condimentum iaculis dolor, et porttitor dui sollicitudin vel. Fusce convallis fringilla dolor eu mollis. Nam porta augue nec ullamcorper ultricies. Morbi bibendum libero efficitur metus accumsan viverra at ut metus. Duis congue pulvinar ligula, sed maximus tellus lacinia eu.";
+    private   boolean test;
 
     Container<Table> innerScrollContainer;
     MovableHeader movableHeader;
     ExtendButton extendButton;
     private boolean updatePos = false;
     private float offsetY = 0;
+    private float offsetX=20;
     private float instantOffsetY = 0;
     private Container<WidgetGroup> container;
     private boolean widgetPosChanged = false;
@@ -47,10 +51,10 @@ public class LogPanel extends Group {
         table.setFillParent(true);
         //tb.setDebug(true);
         table.align(Align.left);
-
+if (test)
         for (int i = 0; i < 32; i++) {
             if (i != 0) table.row();
-            LogMessage message = getMessage();
+            LogMessage message = getTestMessage();
             message.setFillParent(true);
 //            table.add(message).fill().padLeft(10).width(getWidth() - 20);
             table.add(message).fill().padLeft(10).width(getWidth() - 20);
@@ -161,8 +165,22 @@ public class LogPanel extends Group {
         });
 
         updatePos = true;
+        bind();
     }
 
+    public void bind(){
+        GuiEventManager.bind(GuiEventType.LOG_ENTRY_ADDED, p->{
+//            LogEntryNode entry = (LogEntryNode) p.get();
+            LogMessageBuilder builder = LogMessageBuilder.createNew();
+//            entry.getTextLines().forEach(line ->{
+                builder.addString(p.get().toString(), "FF0000FF");
+//            });
+            LogMessage message = builder.build(getWidth() - offsetX);
+            message.setFillParent(true);
+            table.add(message).fill().padLeft(10).width(getWidth() - 20);
+        });
+
+    }
     @Override
     public void drawDebug(ShapeRenderer shapes) {
         super.drawDebug(shapes);
@@ -207,7 +225,7 @@ public class LogPanel extends Group {
         }
     }
 
-    private LogMessage getMessage() {
+    private LogMessage getTestMessage() {
         return LogMessageBuilder.createNew()
                 .addString("Lorem ipsum", "FF0000FF")
                 .addString(" dolor sit amet, ")
@@ -219,7 +237,7 @@ public class LogPanel extends Group {
                         "Fusce convallis fringilla dolor eu mollis. Nam porta augue nec ullamcorper ultricies. " +
                         "Morbi bibendum libero efficitur metus accumsan viverra at ut metus. " +
                         "Duis congue pulvinar ligula, sed maximus tellus lacinia eu.")
-                .build(getWidth() - 20);
+                .build(getWidth() - offsetX);
     }
 
     @Override

@@ -40,7 +40,7 @@ public class BuffAnim extends ActionAnim {
         AnimData data = new AnimData();
 //    buff.get
         if (buff.getName().equals("Channeling")) {
-
+//rotating!
         }
         /*
         ablaze, frozen, bleeding, wounded, charmed,

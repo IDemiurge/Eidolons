@@ -255,6 +255,7 @@ public class AnimationConstructor {
         AnimData data = new AnimData();
 
         String partPath = part.toString();
+        if (part == ANIM_PART.MAIN) partPath = "missile";
         String size = "";
         if (spell.getCircle() > 4)
             size = " huge";
@@ -262,7 +263,6 @@ public class AnimationConstructor {
             size = " large";
         if (spell.getCircle() < 2)
             size = " small";
-        if (part == ANIM_PART.MAIN) partPath = "missile";
 
         ANIM_VALUES[] values = {
                 ANIM_VALUES.SPRITES,
@@ -282,7 +282,7 @@ public class AnimationConstructor {
             String file = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
 
             if (file == null) {
-                if (!isFindClosestResource(part))
+                if (!isFindClosestResource(part, s))
                     continue;
                 file = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
                 if (file == null)
@@ -361,9 +361,11 @@ public class AnimationConstructor {
         return false;
     }
 
-    public boolean isFindClosestResource(ANIM_PART part) {
+    public boolean isFindClosestResource(ANIM_PART part, ANIM_VALUES val) {
+
         switch (part) {
             case MAIN:
+                if (val==ANIM_VALUES.PARTICLE_EFFECTS)
                 return true;
         }
         return findClosestResource;

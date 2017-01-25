@@ -145,8 +145,9 @@ public class GameScreen implements Screen {
         queue.setPosition(0, 0, Align.topLeft);
 
 
-        if (!FAST_DC.getGameLauncher().getFAST_MODE()
-                && !FAST_DC.getGameLauncher().getSUPER_FAST_MODE()) {
+        if (!FAST_DC.getGameLauncher().getSUPER_FAST_MODE()
+//                && !FAST_DC.getGameLauncher().getFAST_MODE()
+         ) {
             LogPanel ld = new LogPanel();
             guiStage.addActor(ld);
             ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
@@ -208,13 +209,14 @@ public class GameScreen implements Screen {
         if (DC_Game.game != null)
             if (DC_Game.game.getAnimationManager() != null)
                 DC_Game.game.getAnimationManager().updateAnimations();
+
         if (animMaster.isOn()) {
             phaseAnimsStage.draw();
             animsStage.draw();
         }
 
-
         guiStage.draw();
+
 
         if (dialogDisplay.getDialog() != null) {
             dialogStage.draw();

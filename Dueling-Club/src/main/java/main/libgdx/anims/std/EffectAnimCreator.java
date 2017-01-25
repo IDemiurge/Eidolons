@@ -4,9 +4,11 @@ import main.ability.effects.DealDamageEffect;
 import main.ability.effects.Effect;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.data.filesys.PathFinder;
+import main.entity.Ref.KEYS;
 import main.entity.obj.top.DC_ActiveObj;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
+import main.libgdx.anims.ANIM_MODS.OBJ_ANIMS;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
@@ -23,7 +25,7 @@ public class EffectAnimCreator {
         switch (e.getClass().getSimpleName().replace("Effect", "")) {
             case "DealDamage":
                 return new HitAnim(active, getDamageAnimData((DealDamageEffect) e));
-            case "Drain":
+            case "Drain": // missile back?
             case "ModifyValue":
                 ModifyValueEffect modEffect = (ModifyValueEffect) e;
                 return new HitAnim(
@@ -34,15 +36,22 @@ public class EffectAnimCreator {
                         () -> ImageManager.getValueIconPath(modEffect.getParam())
                 );
 
-            case "InstantDeath":
-            case "AddBuff":
-            case "OwnershipChange":
             case "Raise":
             case "Resurrect":
             case "Summon":
+                return new ActionAnim(active, new AnimData(),
+                 ()-> active.getRef().getObj(KEYS.SUMMONED).getImagePath(),
+                 new ANIM_MOD[]{
+                  OBJ_ANIMS.FADE_IN,
+                 }
+                );
+            case "InstantDeath":
+                //flash
+            case "AddBuff":
+            case "OwnershipChange":
             case "Move":
             case "ChangeFacing":
-            case "DurabilityReduction":
+            case "DurabilityReduction": // show item?
 
 
         }

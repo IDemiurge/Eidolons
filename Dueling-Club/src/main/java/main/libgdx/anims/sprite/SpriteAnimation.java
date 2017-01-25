@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.libgdx.texture.TextureManager;
-import main.system.auxiliary.RandomWizard;
 
 /**
  * Created by PC on 10.11.2016.
@@ -41,11 +40,15 @@ public class SpriteAnimation extends Animation {
         this.looping = looping;
         this.loops = loops;
     }
-
+public void  reset(){
+        stateTime=0;
+        cycles=0;
+        lifecycle=0;
+}
     public boolean draw(Batch batch) {
         stateTime += Gdx.graphics.getDeltaTime();
         updateSpeed();
-        boolean looping = this.looping || loops > cycles || loops == 0; //TODO need null!
+        boolean looping = this.looping || loops > cycles || loops == 0;
         TextureRegion currentFrame = getKeyFrame(stateTime, looping);
 
 
@@ -61,16 +64,16 @@ public class SpriteAnimation extends Animation {
 
         Sprite sprite = new Sprite(currentFrame);
         sprite.setAlpha(alpha);
-        angle = RandomWizard.getRandomInt(360) / 360f;
-        sprite.setRotation(angle);
+//        angle = RandomWizard.getRandomInt(360) / 360f;
+//        sprite.setRotation(angle);
         sprite.setPosition(x + offsetX - currentFrame.getRegionWidth() / 2, y
                 + offsetY
                 - currentFrame.getRegionHeight() / 2);
         sprite.draw(batch);
 
-//        batch.draw(currentFrame, x + offsetX - currentFrame.getRegionWidth() / 2, y
-//                + offsetY
-//                - currentFrame.getRegionHeight() / 2);
+        batch.draw(currentFrame, x + offsetX - currentFrame.getRegionWidth() / 2, y
+                + offsetY
+                - currentFrame.getRegionHeight() / 2);
 
         return true;
     }

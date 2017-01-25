@@ -25,15 +25,6 @@ import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import java.util.*;
 
 public abstract class LogManager {
-//     GuiEventManager.bind(GuiEventType.UPDATE_BUFFS, p->{
-//        LogEntryNode entry = (LogEntryNode) p.get();
-//        LogMessageBuilder builder = LogMessageBuilder.createNew();
-//        entry.getTextLines().forEach(line ->{
-//            builder.addString(line, "FF0000FF");
-//        });
-//        table.add(message).fill().padLeft(10).width(getWidth() - 20);
-//    });
-    //         GuiEventManager.trigger(GuiEventType.UPDATE_BUFFS, );
 
     public static final String WRITE_TO_TOP = "to top";
     static boolean dirty;
@@ -227,7 +218,7 @@ public abstract class LogManager {
     // return map;
     // }
 
-    private void addTextToDisplayed(String entry) {
+    protected void addTextToDisplayed(String entry) {
         getTopDisplayedEntries().add(entry);
         getDisplayedLines().addAll(TextWrapper.wrap(entry, EntryNodeMaster.getWrapLength(true)));
     }

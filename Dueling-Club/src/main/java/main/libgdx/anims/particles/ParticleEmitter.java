@@ -19,16 +19,17 @@ public class ParticleEmitter extends Actor implements ParticleInterface {
     private final int defaultMaxCapacity = 24;
     protected ParticleEffect effect;
     protected ParticleEffectPool pool;
-    protected SFX fx;
+    protected SFX sfx;
     boolean flipX;
     boolean flipY;
     private boolean bound = true;
     private Sprite sprite;
 
 
+
     public ParticleEmitter(SFX fx) {
         this(fx.path);
-        this.fx = fx;
+        this.sfx = fx;
 //        effect.setFlip(flipX, flipY);
 //        effect.getEmitters().get(0).setSprite();
     }
@@ -38,11 +39,16 @@ public class ParticleEmitter extends Actor implements ParticleInterface {
 //        pool = new ParticleEffectPool(effect, defaultCapacity, defaultMaxCapacity);
 //        pool.obtain() ; TODO
         effect = new ParticleEffect();
+        String imagePath = PathFinder.getParticleImagePath();
+        String suffix = StringMaster.replaceFirst(path,          PathFinder.getParticlePresetPath(),"") ;
+        suffix = StringMaster.cropLastPathSegment(suffix);
+        imagePath +=suffix;
+
         effect.load(Gdx.files.internal(
                 StringMaster.addMissingPathSegments(
                         path,
                         PathFinder.getParticlePresetPath())),
-                Gdx.files.internal(PathFinder.getParticleImagePath()));
+                Gdx.files.internal(imagePath));
 
 //        m_effect = new ParticleEffect();
 //        m_effect.load(Gdx.files.internal("particle/effects/lightning.p"), this.getAtlas());
@@ -55,6 +61,7 @@ public class ParticleEmitter extends Actor implements ParticleInterface {
         super.act(delta);
 //        effect.setPosition(x, y);
         effect.update(delta);
+//        effect.getEmitters().get(0).set
     }
 
     public void setFlipX(boolean flipX) {
@@ -75,7 +82,7 @@ public class ParticleEmitter extends Actor implements ParticleInterface {
 
     @Override
     public SFX getTemplate() {
-        return fx;
+        return sfx;
     }
 
 
@@ -111,4 +118,11 @@ public class ParticleEmitter extends Actor implements ParticleInterface {
         effect.start();
     }
 
+    public SFX getSfx() {
+        return sfx;
+    }
+
+    public void setSfx(SFX sfx) {
+        this.sfx = sfx;
+    }
 }

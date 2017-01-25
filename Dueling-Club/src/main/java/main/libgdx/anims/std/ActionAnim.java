@@ -6,9 +6,13 @@ import main.ability.effects.Effect;
 import main.entity.Entity;
 import main.entity.obj.top.DC_ActiveObj;
 import main.libgdx.GameScreen;
+import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimData;
 import main.libgdx.bf.BaseView;
+import main.libgdx.texture.TextureManager;
+
+import java.util.function.Supplier;
 
 
 /**
@@ -17,6 +21,13 @@ import main.libgdx.bf.BaseView;
 public class ActionAnim extends Anim {
     public ActionAnim(Entity active, AnimData params) {
         super(active, params);
+    }
+
+    public ActionAnim(DC_ActiveObj active, AnimData animData, Supplier<String> imagePath,
+                      ANIM_MOD[] anim_mods) {
+        super(active, animData);
+        mods=anim_mods;
+        this.textureSupplier=()-> TextureManager.getOrCreate(imagePath.get());
     }
 
     protected Action getAction() {
@@ -48,12 +59,6 @@ public class ActionAnim extends Anim {
 
     public void addAbilityAnims(Ability ability) {
 
-    }
-
-    public enum SPELL_ANIMS {
-        RAY,
-        NOVA,;
-        //emitter placement templates
     }
 
 

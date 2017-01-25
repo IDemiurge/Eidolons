@@ -5,7 +5,12 @@ import main.entity.Ref;
 import main.entity.obj.DC_Obj;
 import main.game.Game;
 import main.game.battlefield.Coordinates;
+import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
+import main.system.auxiliary.LogMaster.LOG;
 import main.system.auxiliary.StringMaster;
+import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 public class DC_LogManager extends LogManager {
 
@@ -35,5 +40,19 @@ public class DC_LogManager extends LogManager {
         logMovement((DC_Obj) ref.getSourceObj(), ref.getTargetObj().getCoordinates());
         return true;
     }
+    public void     addToLogPanel(){
 
+
+    }
+
+    @Override
+    protected void addTextToDisplayed(String entry) {
+        super.addTextToDisplayed(entry);
+        GuiEventManager.trigger(GuiEventType.LOG_ENTRY_ADDED, new EventCallbackParam(entry));
+    }
+
+    @Override
+    public boolean log(LOG log, String entry, ENTRY_TYPE enclosingEntryType) {
+        return super.log(log, entry, enclosingEntryType);
+    }
 }

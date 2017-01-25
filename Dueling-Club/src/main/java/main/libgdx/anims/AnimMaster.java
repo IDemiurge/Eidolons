@@ -14,7 +14,6 @@ import main.libgdx.anims.std.BuffAnim;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.LogMaster;
-import main.test.frontend.FAST_DC;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,9 +35,9 @@ public class AnimMaster extends Actor {
 
     //animations will use emitters, light, sprites, text and icons
     public AnimMaster(Stage stage) {
-        continuousAnimsOn =
-                FAST_DC.getGameLauncher().FAST_MODE ||
-                        FAST_DC.getGameLauncher().SUPER_FAST_MODE;
+        continuousAnimsOn =false;
+//                FAST_DC.getGameLauncher().FAST_MODE ||
+//                        FAST_DC.getGameLauncher().SUPER_FAST_MODE;
         on = true;
         drawer = new AnimDrawer(stage);
         constructor = new AnimationConstructor();
