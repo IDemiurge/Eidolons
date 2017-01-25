@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.content.CONTENT_CONSTS2.SFX;
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.FileManager;
 import main.system.auxiliary.StringMaster;
 
 /**
@@ -43,13 +44,21 @@ public class ParticleEmitter extends Actor implements ParticleInterface {
         String suffix = StringMaster.replaceFirst(path,          PathFinder.getParticlePresetPath(),"") ;
         suffix = StringMaster.cropLastPathSegment(suffix);
         imagePath +=suffix;
+        if (!FileManager.isFile(imagePath+StringMaster.getLastPathSegment(path))){
+            imagePath+="particles\\";
+        }
 
+        if (FileManager.isFile(imagePath + StringMaster.getLastPathSegment(path))) {
+//            FileHandle imgFile = Gdx.files.internal(imagePath);
         effect.load(Gdx.files.internal(
                 StringMaster.addMissingPathSegments(
                         path,
                         PathFinder.getParticlePresetPath())),
-                Gdx.files.internal(imagePath));
+         Gdx.files.internal(imagePath));
+        }else {
+            main.system.auxiliary.LogMaster.log(1,imagePath+" - NO IMAGE FOUND FOR SFX: " +path);
 
+        }
 //        m_effect = new ParticleEffect();
 //        m_effect.load(Gdx.files.internal("particle/effects/lightning.p"), this.getAtlas());
 //
