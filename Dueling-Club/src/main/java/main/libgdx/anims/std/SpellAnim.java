@@ -3,6 +3,7 @@ package main.libgdx.anims.std;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.google.gwt.user.client.ui.Grid;
 import main.content.CONTENT_CONSTS.FACING_SINGLE;
 import main.content.parameters.G_PARAMS;
 import main.entity.Entity;
@@ -12,6 +13,7 @@ import main.game.battlefield.FacingMaster;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.particles.ParticleEmitter;
+import main.libgdx.bf.GridPanel;
 import main.system.Producer;
 
 import java.util.LinkedList;
@@ -36,6 +38,7 @@ public class SpellAnim extends ActionAnim {
     }
 
     public void applyTemplate() {
+        if (template==null )return ;
         int max = template.getNumberOfEmitters(getActive());
         List<ParticleEmitter> list = new LinkedList<>();
         for (ParticleEmitter e : emitterList) {
@@ -72,8 +75,8 @@ public class SpellAnim extends ActionAnim {
 
     private Action addRangeAndAngle(int angle, int range, ParticleEmitter actor) {
         MoveByAction action = new MoveByAction();
-        float x = (float) (Math.sin(angle) * range);
-        float y = (float) (Math.cos(angle) * range);
+        float x = (float)( 132*Math.sin(angle) * range);
+        float y = (float) ( 132*Math.cos(angle) * range);
         action.setAmount(x, y);
         actor.setRotation(-angle);
         actor.addAction(action);
