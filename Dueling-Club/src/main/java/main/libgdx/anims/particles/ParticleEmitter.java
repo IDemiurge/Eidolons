@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.content.CONTENT_CONSTS2.SFX;
 import main.data.filesys.PathFinder;
-import main.system.auxiliary.FileManager;
 import main.system.auxiliary.StringMaster;
 
 /**
@@ -18,6 +17,7 @@ public class ParticleEmitter extends Actor implements ParticleInterface {
 
     private final int defaultCapacity = 12;
     private final int defaultMaxCapacity = 24;
+    public String path;
     protected ParticleEffect effect;
     protected ParticleEffectPool pool;
     protected SFX sfx;
@@ -25,7 +25,6 @@ public class ParticleEmitter extends Actor implements ParticleInterface {
     boolean flipY;
     private boolean bound = true;
     private Sprite sprite;
-
 
 
     public ParticleEmitter(SFX fx) {
@@ -36,29 +35,44 @@ public class ParticleEmitter extends Actor implements ParticleInterface {
     }
 
     public ParticleEmitter(String path) {
+        this.path=path;
         effect = new ParticleEffect();
 //        pool = new ParticleEffectPool(effect, defaultCapacity, defaultMaxCapacity);
 //        pool.obtain() ; TODO
         effect = new ParticleEffect();
         String imagePath = PathFinder.getParticleImagePath();
-        String suffix = StringMaster.replaceFirst(path,          PathFinder.getParticlePresetPath(),"") ;
-        suffix = StringMaster.cropLastPathSegment(suffix);
-        imagePath +=suffix;
-        if (!FileManager.isFile(imagePath+StringMaster.getLastPathSegment(path))){
-            imagePath+="particles\\";
+
+        try {
+            effect.load(Gdx.files.internal(
+             StringMaster.addMissingPathSegments(
+              path, PathFinder.getParticlePresetPath())),
+             Gdx.files.internal(imagePath));
+
+        } catch (Exception e) {
+            String suffix = StringMaster.replaceFirst(path, PathFinder.getParticlePresetPath(), "");
+            suffix = StringMaster.cropLastPathSegment(suffix);
+            imagePath += suffix;
+        try {
+            effect.load(Gdx.files.internal(
+             StringMaster.addMissingPathSegments(
+              path, PathFinder.getParticlePresetPath())),
+             Gdx.files.internal(imagePath));
+
+        } catch (Exception e0) {
+            imagePath += "particles\\";
+            try {
+                effect.load(Gdx.files.internal(
+                 StringMaster.addMissingPathSegments(
+                  path, PathFinder.getParticlePresetPath())),
+                 Gdx.files.internal(imagePath));
+            } catch (Exception e1) {
+                main.system.auxiliary.LogMaster.log(1, imagePath + " - NO IMAGE FOUND FOR SFX: " + path);
+                e.printStackTrace();
+            }
         }
 
-        if (FileManager.isFile(imagePath + StringMaster.getLastPathSegment(path))) {
-//            FileHandle imgFile = Gdx.files.internal(imagePath);
-        effect.load(Gdx.files.internal(
-                StringMaster.addMissingPathSegments(
-                        path,
-                        PathFinder.getParticlePresetPath())),
-         Gdx.files.internal(imagePath));
-        }else {
-            main.system.auxiliary.LogMaster.log(1,imagePath+" - NO IMAGE FOUND FOR SFX: " +path);
-
         }
+
 //        m_effect = new ParticleEffect();
 //        m_effect.load(Gdx.files.internal("particle/effects/lightning.p"), this.getAtlas());
 //

@@ -105,6 +105,7 @@ public class Anim extends Group {
         if (!isSpeedSupported()) return;
         if (destination == null) return;
         if (origin == null) return;
+        if (origin .equals(destination)) return;
         if (data.getIntValue(ANIM_VALUES.MISSILE_SPEED) != 0)
         pixelsPerSecond = data.getIntValue(ANIM_VALUES.MISSILE_SPEED);
         if (pixelsPerSecond == 0) return;
@@ -112,6 +113,7 @@ public class Anim extends Group {
         float y = destination.y - origin.y;
 
         double distance = Math.sqrt(x * x + y * y);
+        if (distance == 0) return;
         duration = (float) distance / pixelsPerSecond;
 
         speedX = x / duration;

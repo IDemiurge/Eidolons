@@ -65,8 +65,12 @@ public class TestMasterContent {
     private static String FOCUS_LIST = "";
     private static String FIX_LIST = "";
     private static String POLISH_LIST = "";
-    private static String ANIM_TEST_LIST = "Fire Bolt;Chaos Bolt;Immolation;" +
-     "Shadow Bolt;Haze;Drain Focus;Light;Summon Vampire Bat";
+    private static String ANIM_TEST_LIST =
+     "Shadow Flame;Demon mark;Poison;Fire Bolt;Chaos Bolt;" +
+     "Shadow Bolt;Death Bolt;Arcane Bolt;" +
+     "Scare;Freeze;Wraith Bolt;warp time;" +
+     "Drain Focus;Light;Summon Lesser Demon";
+
     private static String GRAPHICS_TEST_LIST = "Light;Haze;Force Field;" +
             "Summon Vampire Bat;Blink";
     private static String TEST_LIST = "Raise Skeleton;Light;Haze;" +

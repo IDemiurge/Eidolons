@@ -9,10 +9,12 @@ import main.entity.Entity;
 import main.entity.obj.top.DC_ActiveObj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.FacingMaster;
+import main.libgdx.GameScreen;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.particles.ParticleEmitter;
 import main.system.Producer;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -27,15 +29,27 @@ public class SpellAnim extends ActionAnim {
         this.template = template;
     }
 
+    @Override
+    public void start() {
+        super.start();
+        applyTemplate();
+    }
+
     public void applyTemplate() {
         int max = template.getNumberOfEmitters(getActive());
+        List<ParticleEmitter> list = new LinkedList<>();
         for (ParticleEmitter e : emitterList) {
             //check emitter multiplication on
-            for (int i = 0; i < max; i++) {
-                ParticleEmitter actor = new ParticleEmitter(e.getSfx());
+            for (int i = 1; i <= max; i++) {
+                ParticleEmitter actor = new ParticleEmitter(e.path);
                 createAndAddEmitterActions(actor, i, template);
+                list.add(actor);
+                actor.setPosition(getX(), getY());
+//                actor.setGenerated(true);
+                GameScreen.getInstance().getAnimsStage().addActor(actor);
             }
         }
+//        list.forEach(a-> emitterList.add(a)); they have their own movements!
 
     }
 
@@ -64,24 +78,28 @@ public class SpellAnim extends ActionAnim {
         actor.setRotation(-angle);
         actor.addAction(action);
         action.setTarget(actor);
+        Float duration = (float) (Math.sqrt(x * x + y * y) / pixelsPerSecond);
+        action.setDuration(
+         duration);
+        if (duration > this.duration) this.duration = duration;
         return action;
     }
 
     public enum SPELL_ANIMS {
         RAY(activeObj -> 1),
-        BLAST(active ->(active.getIntParam(G_PARAMS.RADIUS)==0) ?1 :
+        BLAST(active -> (active.getIntParam(G_PARAMS.RADIUS) == 0) ? 1 :
          active.getRef().getTargetObj().getCoordinates().
-         getAdjacentCoordinates().size()),
+          getAdjacentCoordinates().size()),
         SPRAY(active -> {
             List<Coordinates> list = active.getOwnerObj().getCoordinates().
              getAdjacentCoordinates();
             list.removeIf(coordinates ->
-                  FacingMaster.getSingleFacing(active.getOwnerObj().getFacing(),
-                 active.getOwnerObj().getCoordinates(), coordinates) != FACING_SINGLE.IN_FRONT );
+             FacingMaster.getSingleFacing(active.getOwnerObj().getFacing(),
+              active.getOwnerObj().getCoordinates(), coordinates) != FACING_SINGLE.IN_FRONT);
             return list.size();
         }
         ),
-        WAVE(active-> active.getIntParam(G_PARAMS.RADIUS)),
+        WAVE(active -> active.getIntParam(G_PARAMS.RADIUS)),
         RING(activeObj -> 8),
         NOVA(activeObj -> activeObj.getOwnerObj().getCoordinates().getAdjacentCoordinates().size()),;
 

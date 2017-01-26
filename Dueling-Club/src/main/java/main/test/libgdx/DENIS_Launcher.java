@@ -20,8 +20,9 @@ public class DENIS_Launcher implements ApplicationListener {
     Screen screen;
 
     public static void main(String[] args) {
+      new LwjglApplication(new DENIS_Launcher(), getConf());
 
-        new LwjglApplication(new DENIS_Launcher(), getConf());
+
     }
 
     private static LwjglApplicationConfiguration getConf() {
@@ -47,6 +48,7 @@ public class DENIS_Launcher implements ApplicationListener {
     @Override
     public void create() {
         screen = new GameScreen().PostConstruct();
+
     }
 
     @Override

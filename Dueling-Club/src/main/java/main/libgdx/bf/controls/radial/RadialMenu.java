@@ -75,10 +75,10 @@ public class RadialMenu extends Group {
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
         setBounds(
-                v2.x - currentNode.getWidth() / 2,
-                v2.y - currentNode.getHeight() / 2,
-                currentNode.getWidth(),
-                currentNode.getHeight()
+         v2.x - currentNode.getWidth() / 2,
+         v2.y - currentNode.getHeight() / 2,
+         currentNode.getWidth(),
+         currentNode.getHeight()
         );
 
         currentNode.setX(getX());
@@ -138,9 +138,9 @@ public class RadialMenu extends Group {
         List<MenuNode> menuNodes = new ArrayList<>();
         for (final CreatorNode node : creatorNodes) {
             final MenuNode menuNode = new MenuNode(
-                    node.texture == null ?
-                            new Image(closeTex)
-                            : new Image(node.texture), node.name
+             node.texture == null ?
+              new Image(closeTex)
+              : new Image(node.texture), node.name
             );
             menuNode.parent = parent;
             if (node.action != null) {
@@ -177,7 +177,7 @@ public class RadialMenu extends Group {
 
     public void createNew(DC_Obj target) {
         DC_HeroObj source
-                = (DC_HeroObj) Game.game.getManager().getActiveObj();
+         = (DC_HeroObj) Game.game.getManager().getActiveObj();
         if (source == null)
             return; //fix logic to avoid null value between turns!
         List<ActiveObj> activeObjs = source.getActives();
@@ -205,9 +205,9 @@ public class RadialMenu extends Group {
                     }, TextureManager.getOrCreate(((Entity) obj).getImagePath()), obj.getName()));
                 } else {
                     moves.add(new ImmutableTriple<>(
-                            ((Entity) obj)::invokeClicked,
-                            TextureManager.getOrCreate(((Entity) obj).getImagePath()),
-                            obj.getName()
+                     ((Entity) obj)::invokeClicked,
+                     TextureManager.getOrCreate(((Entity) obj).getImagePath()),
+                     obj.getName()
                     ));
                 }
 
@@ -216,9 +216,9 @@ public class RadialMenu extends Group {
             }
             if (obj.isTurn()) {
                 turns.add(new ImmutableTriple<>(
-                        ((Entity) obj)::invokeClicked,
-                        TextureManager.getOrCreate(((Entity) obj).getImagePath()),
-                        obj.getName()
+                 ((Entity) obj)::invokeClicked,
+                 TextureManager.getOrCreate(((Entity) obj).getImagePath()),
+                 obj.getName()
                 ));
             }
 
@@ -388,7 +388,12 @@ public class RadialMenu extends Group {
             addListener(new InputListener() {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    action.run();
+                    if (action == null) {
+                        main.system.auxiliary.LogMaster.log(1, " ");
+                    } else {
+
+                        action.run();
+                    }
                     event.stop();
                     return true;
                 }

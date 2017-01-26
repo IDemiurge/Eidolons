@@ -55,6 +55,7 @@ public class GridPanel extends Group {
     private int cols;
     private int rows;
     private LightingManager lightingManager;
+    private boolean muteEventLog=true;
 
     public GridPanel(int cols, int rows) {
         this.cols = cols;
@@ -176,8 +177,12 @@ public class GridPanel extends Group {
             }
 
 
-            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED
-                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
+            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED){
+                removeUnitView((DC_HeroObj) r.getTargetObj());
+                caught = true;
+            }
+
+                if (  event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
                 removeUnitView((DC_HeroObj) r.getSourceObj());
                 caught = true;
             }
@@ -221,7 +226,7 @@ public class GridPanel extends Group {
 
                 caught = true;
             }
-
+if (!muteEventLog)
             if (!caught) {
                 System.out.println("catch ingame event: " + event.getType() + " in " + event.getRef());
             }
