@@ -84,6 +84,8 @@ public class Anim extends Group {
         offsetY = 0;
         initDuration();
         initSpeed();
+        if (emitterList!=null )
+        emitterList.removeIf(e->e.isGenerated());
     }
 
     protected void initDuration() {
@@ -349,8 +351,11 @@ public class Anim extends Group {
             s.setOffsetY(offsetY);
         });
 
-        emitterList.forEach(e ->
-                e.updatePosition(getX(), getY()));
+        emitterList.forEach(e ->{
+            if (e.isAttached())
+                      e.updatePosition(getX(), getY());
+
+        });
 
         if (getActions().size == 0) {
             setX(origin.x + getWidth() / 2);

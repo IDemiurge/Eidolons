@@ -2,7 +2,6 @@ package main.ability.effects.containers.customtarget;
 
 import main.ability.effects.Effect;
 import main.ability.effects.oneshot.common.SpecialTargetingEffect;
-import main.content.CONTENT_CONSTS.STD_BOOLS;
 import main.content.C_OBJ_TYPE;
 import main.content.parameters.G_PARAMS;
 import main.data.ability.AE_ConstrArgs;
@@ -70,9 +69,9 @@ public class ZoneEffect extends SpecialTargetingEffect
         // conditions.add(allyOrEnemyOnly? ConditionMaster.getAllyCondition() :
         // ConditionMaster.getEnemyCondition());
         // }
-        if (effects.getSpell() != null)
-            if (effects.getSpell().checkBool(STD_BOOLS.APPLY_THRU))
-                this.targeting = new AutoTargeting(conditions, C_OBJ_TYPE.BF_OBJ);
+//        if (effects.getSpell() != null)
+//            if (effects.getSpell().checkBool(STD_BOOLS.APPLY_THRU))
+                this.targeting = new AutoTargeting(conditions, C_OBJ_TYPE.BF);
 
         if (targeting == null)
             this.targeting = new AutoTargeting(conditions, C_OBJ_TYPE.BF_OBJ);

@@ -7,8 +7,12 @@ import main.data.ability.OmittedConstructor;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.standard.ZLevelCondition;
 import main.elements.targeting.AutoTargeting;
+import main.game.battlefield.Coordinates;
 import main.system.math.Formula;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public abstract class SpecialTargetingEffect extends MicroEffect implements ContainerEffect {
     protected Effect effects;
@@ -17,7 +21,7 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
     protected AutoTargeting targeting;
     protected Boolean notSelf;
     protected Formula reductionFormula;
-
+    protected Set<Coordinates> coordinates;
     @OmittedConstructor
     public SpecialTargetingEffect() {
 
@@ -66,6 +70,10 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
         }
         this.targeting.select(ref);
         getActiveObj().getRef().setGroup(ref.getGroup());
+
+        coordinates = new LinkedHashSet();
+        ref.getGroup().getObjects().forEach(o -> coordinates.add(o.getCoordinates()));
+
         getActiveObj().initAnimation();
         // if (ref.getObj(KEYS.ACTIVE) != null) {
         // ref.getObj(KEYS.ACTIVE).getRef().setGroup(ref.getGroup());
@@ -79,6 +87,9 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
         return result;
     }
 
+    public Set<Coordinates> getCoordinates() {
+        return coordinates;
+    }
     protected boolean isLoggingWrapped() {
         return true;
     }

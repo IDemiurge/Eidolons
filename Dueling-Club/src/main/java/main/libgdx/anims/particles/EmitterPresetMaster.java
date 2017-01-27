@@ -1,27 +1,32 @@
 package main.libgdx.anims.particles;
 
-import main.data.xml.XML_Converter;
+import javafx.util.Pair;
 import main.data.xml.XML_Writer;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.FileManager;
 import main.system.auxiliary.StringMaster;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by JustMe on 1/26/2017.
  */
 public class EmitterPresetMaster {
+    private static EmitterPresetMaster instance;
     String separator = " - ";
-    String value_separator = ":";
-    private EmitterPresetMaster instance;
+    String value_separator = ": ";
     private Map<String, String> map = new HashMap<>();
+    private String lowHighMinMax = "lowMin lowMax highMin highMax";
 
     public EmitterPresetMaster() {
         instance = this;
     }
 
-    public EmitterPresetMaster getInstance() {
+    public static EmitterPresetMaster getInstance() {
+        if (instance == null) instance = new EmitterPresetMaster();
         return instance;
     }
 
@@ -32,7 +37,7 @@ public class EmitterPresetMaster {
     }
 
     public String getValueFromGroup(String path, EMITTER_VALUE_GROUP group, String value) {
-        String text = getGroupText(path, group);
+        String text = getGroupTextFromPreset(path, group);
         if (value == null)
             return text;
         for (String substring : StringMaster.openContainer(text, "\n")) {
@@ -43,17 +48,103 @@ public class EmitterPresetMaster {
         return null;
     }
 
+    public ParticleEmitter getModifiedEmitter(String path, int offset, EMITTER_VALUE_GROUP... groups) {
+        String[] array = new String[groups.length];
+        for (int i = 0; i < groups.length; i++) {
+            array[i] = groups[i].name + value_separator + offset;
+        }
+        return getModifiedEmitter(path, false, array);
+    }
+
     public ParticleEmitter getModifiedEmitter(String path,
-                                              boolean wut, String... modvals) {
+                                              boolean write, String... modvals) {
 
-        String newName=null ;
-        clone(path, newName);
+        String newName =StringMaster.getLastPathSegment(path) +" modified";
+//crop format!
 
-        String newPath=null ;
-        return new ParticleEmitter(newPath);
+            clone(path, newName);
+
+        String data = getData(path);
+        for (String sub : modvals) {
+
+            String name = sub.split(value_separator)[0];
+            String val = sub.split(value_separator)[1];
+
+            EMITTER_VALUE_GROUP group = new EnumMaster<EMITTER_VALUE_GROUP>().retrieveEnumConst(EMITTER_VALUE_GROUP.class, name);
+            if (group != null) {
+                if (group.container)
+                    data = offsetValue(group, StringMaster.getDouble(val), data);
+                else {
+                    data = setValue(group, val, data);
+                }
+            }
+        }
+        path = StringMaster.cropLastPathSegment(path);
+
+            XML_Writer.write(data, path, newName);
+
+        String newPath = path + newName;
+        ParticleEmitter actor = new ParticleEmitter(newPath);
+        if (!write){
+            //delete
+        }
+        return actor;
 
     }
 
+    private String setValue(EMITTER_VALUE_GROUP group, String val, String data) {
+        String text = getGroupText(data, group);
+        for (String substring : StringMaster.openContainer(text, "\n")) {
+//            if (predicate())
+//                data = producer()
+            if (substring.split(value_separator)[0].equalsIgnoreCase(group.name)) {
+                String newString = substring.replace(substring.split(value_separator)[1], val);
+                data = data.replace(substring, newString);
+            }
+        }
+        data =  data.replace(getGroupText(data, group), text);
+        return data;
+    }
+
+    String offsetValue(EMITTER_VALUE_GROUP group, double offset, String data) {
+        String text = getGroupText(data, group);
+        List<Pair<String, String>> entryList = getGroupEntries(text);
+        for (Pair<String, String> p : entryList) {
+            if (lowHighMinMax.contains(p.getKey().toString())) {
+                double newValue = StringMaster.getDouble(p.getValue()) + offset;
+                text = text.replace(p.getKey() + value_separator + p.getValue(),
+                 p.getKey() + value_separator + String.valueOf(
+                  newValue));
+            }
+        }
+        data =  data.replace(getGroupText(data, group), text);
+        return data;
+    }
+
+    private List<Pair<String, String>> getGroupEntries(String text) {
+        List<Pair<String, String>> list = new LinkedList<>();
+        for (String substring : StringMaster.openContainer(text, "\n")) {
+            String[] parts = substring.split(value_separator);
+            list.add(new Pair<>(parts[0], parts[1]));
+        }
+        return list;
+    }
+
+    //    - Angle -
+//    active: true
+//    lowMin: 312.0
+//    lowMax: 312.0
+//    highMin: -115.0
+//    highMax: -360.0
+//    relative: false
+//    scalingCount: 3
+//    scaling0: 0.0
+//    scaling1: 0.6862745
+//    scaling2: 1.0
+//    timelineCount: 3
+//    timeline0: 0.0
+//    timeline1: 0.29452056
+//    timeline2: 0.84931505
     public void clone(String path, String newName) {
         String content = getData(path);
         path = StringMaster.cropLastPathSegment(path);
@@ -62,10 +153,14 @@ public class EmitterPresetMaster {
 
     }
 
-    public String getGroupText(String path, EMITTER_VALUE_GROUP group) {
+    public String getGroupTextFromPreset(String path, EMITTER_VALUE_GROUP group) {
         String data = getData(path);
-        String[] parts = data.split(XML_Converter.wrap(separator, group.name));
-        String text = parts[1].split(separator)[0];
+        return getGroupText(data, group);
+    }
+
+    public String getGroupText(String data, EMITTER_VALUE_GROUP group) {
+        String[] parts = data.split(group.name + " - \n");
+        String text = parts[1].split("- ")[0];
         return text;
     }
 
@@ -113,15 +208,20 @@ public class EmitterPresetMaster {
     }
 
     public enum EMITTER_VALUE_GROUP {
-        Image_Path("Image Path"),;
+        Image_Path(),
+        Angle(true),
+        Rotation(true),
+        Scale,;
+        private Boolean container;
         private String name;
 
         EMITTER_VALUE_GROUP() {
             name = StringMaster.getWellFormattedString(name());
         }
 
-        EMITTER_VALUE_GROUP(String name) {
-            this.name = name;
+        EMITTER_VALUE_GROUP(Boolean container) {
+            this();
+            this.container = container;
         }
     }
 }

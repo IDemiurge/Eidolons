@@ -2,8 +2,10 @@ package main.libgdx.anims.std;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.google.gwt.user.client.ui.Grid;
+import main.ability.effects.Effect;
+import main.ability.effects.oneshot.common.SpecialTargetingEffect;
 import main.content.CONTENT_CONSTS.FACING_SINGLE;
 import main.content.parameters.G_PARAMS;
 import main.entity.Entity;
@@ -11,13 +13,19 @@ import main.entity.obj.top.DC_ActiveObj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.FacingMaster;
 import main.libgdx.GameScreen;
+import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimData;
+import main.libgdx.anims.particles.EmitterPresetMaster;
+import main.libgdx.anims.particles.EmitterPresetMaster.EMITTER_VALUE_GROUP;
 import main.libgdx.anims.particles.ParticleEmitter;
-import main.libgdx.bf.GridPanel;
 import main.system.Producer;
+import main.system.ai.logic.target.EffectMaster;
+import main.system.auxiliary.secondary.GeometryMaster;
 
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by JustMe on 1/24/2017.
@@ -37,46 +45,106 @@ public class SpellAnim extends ActionAnim {
         applyTemplate();
     }
 
+
     public void applyTemplate() {
-        if (template==null )return ;
+        Effect effect = EffectMaster.getFirstEffectOfClass(getActive(), SpecialTargetingEffect.class);
+        if (effect != null) {
+            SpecialTargetingEffect targetEffect = (SpecialTargetingEffect) effect;
+            applyTemplateForCoordinates(targetEffect.getCoordinates());
+            return;
+        }
+        if (getRef().getGroup() != null) {
+            Set<Coordinates> set = new LinkedHashSet();
+            getRef().getGroup().getObjects().forEach(o -> set.add(o.getCoordinates()));
+            applyTemplateForCoordinates(set);
+            return;
+        }
+
+        if (template == null) return;
         int max = template.getNumberOfEmitters(getActive());
         List<ParticleEmitter> list = new LinkedList<>();
         for (ParticleEmitter e : emitterList) {
+            if (e.isGenerated()) continue;
             //check emitter multiplication on
+            int angle = 0;
             for (int i = 1; i <= max; i++) {
                 ParticleEmitter actor = new ParticleEmitter(e.path);
-                createAndAddEmitterActions(actor, i, template);
+                createAndAddEmitterActions(actor, angle, template);
+                angle += 360 / max;
                 list.add(actor);
                 actor.setPosition(getX(), getY());
-//                actor.setGenerated(true);
+                actor.setAttached(false);
+                actor.setGenerated(true);
                 GameScreen.getInstance().getAnimsStage().addActor(actor);
             }
         }
-//        list.forEach(a-> emitterList.add(a)); they have their own movements!
+        list.forEach(a -> emitterList.add(a));
+
+    }
+
+    public void applyTemplateForCoordinates(Set<Coordinates> coordinates) {
+        List<ParticleEmitter> list = new LinkedList<>();
+        coordinates.forEach(c ->
+         {
+             for (ParticleEmitter e : emitterList) {
+                 if (e.isGenerated()) continue;
+                 int angle = GeometryMaster.getAngle(c, getActive().getOwnerObj().getCoordinates());
+                 //relative vs absolute
+                 ParticleEmitter actor = null;
+                 try {
+                     actor = EmitterPresetMaster.getInstance().
+                      getModifiedEmitter(e.path, angle, EMITTER_VALUE_GROUP.Angle);
+                 } catch (Exception e1) {
+                     e1.printStackTrace();
+                     actor = new ParticleEmitter(e.path);
+                 }
+
+
+                 createAndAddEmitterActions(actor, c);
+
+                 list.add(actor);
+                 actor.setPosition(getX(), getY());
+                 actor.setAttached(false);
+                 actor.setGenerated(true);
+                 GameScreen.getInstance().getAnimsStage().addActor(actor);
+             }
+         }
+        );
+
+        list.forEach(a -> emitterList.add(a));
 
     }
 
 
-    private Action createAndAddEmitterActions(ParticleEmitter actor, int i, SPELL_ANIMS template) {
+    private Action createAndAddEmitterActions(ParticleEmitter actor, int angle, SPELL_ANIMS template) {
         Action action = new SequenceAction();
         actor.addAction(action);
         action.setTarget(actor);
         int range = getActive().getRange();
 //        if ()
         range = getActive().getIntParam(G_PARAMS.RADIUS);
+
         switch (template) {
             case NOVA:
-                return addRangeAndAngle(360 / i, range, actor);
+                return addRangeAndAngle(angle, range, actor);
 
         }
 
         return action;
     }
 
+
+    private void createAndAddEmitterActions(ParticleEmitter actor, Coordinates c) {
+        MoveToAction action = ActorMaster.getMoveToAction(c, actor, pixelsPerSecond);
+        if (action.getDuration() > this.duration) this.duration = action.getDuration();
+        ActorMaster.addRemoveAfter(actor);
+        actor.getEffect().setDuration((int) action.getDuration());
+    }
+
     private Action addRangeAndAngle(int angle, int range, ParticleEmitter actor) {
         MoveByAction action = new MoveByAction();
-        float x = (float)( 132*Math.sin(angle) * range);
-        float y = (float) ( 132*Math.cos(angle) * range);
+        float x = (float) (132 * Math.sin(angle) * range);
+        float y = (float) (132 * Math.cos(angle) * range);
         action.setAmount(x, y);
         actor.setRotation(-angle);
         actor.addAction(action);
@@ -85,7 +153,17 @@ public class SpellAnim extends ActionAnim {
         action.setDuration(
          duration);
         if (duration > this.duration) this.duration = duration;
+
+        ActorMaster.addRemoveAfter(actor);
+
+        //TRY ALPHA/ROTATE ACTION
         return action;
+    }
+
+    public enum ZONE_ANIM_MODS {
+        SWIRL,
+        RETRACT,
+
     }
 
     public enum SPELL_ANIMS {

@@ -25,6 +25,8 @@ public class ParticleEmitter extends Actor implements ParticleInterface {
     boolean flipY;
     private boolean bound = true;
     private Sprite sprite;
+    private boolean attached=true;
+    private boolean generated;
 
 
     public ParticleEmitter(SFX fx) {
@@ -84,7 +86,7 @@ public class ParticleEmitter extends Actor implements ParticleInterface {
         super.act(delta);
 //        effect.setPosition(x, y);
         effect.update(delta);
-//        effect.getEmitters().get(0).set
+
     }
 
     public void setFlipX(boolean flipX) {
@@ -147,5 +149,21 @@ public class ParticleEmitter extends Actor implements ParticleInterface {
 
     public void setSfx(SFX sfx) {
         this.sfx = sfx;
+    }
+
+    public boolean isAttached() {
+        return attached;
+    }
+
+    public void setAttached(boolean attached) {
+        this.attached = attached;
+    }
+
+    public void setGenerated(boolean generated) {
+        this.generated = generated;
+    }
+
+    public boolean isGenerated() {
+        return generated;
     }
 }
