@@ -31,11 +31,8 @@ import java.util.ConcurrentModificationException;
 import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
 
 /**
- * Initiative
- * <p>
- * <p>
- * <p>
- * Lock-in the Active Unit ++ Action Panel ++ Remove BF highlight
+ After each Action, recalculates Initiative for each unit,
+ rebuilds Queue and makes the top unit Active.
  */
 
 public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {

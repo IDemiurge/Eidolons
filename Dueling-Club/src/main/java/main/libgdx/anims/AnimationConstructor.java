@@ -15,7 +15,7 @@ import main.data.filesys.PathFinder;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.DC_SpellObj;
-import main.entity.obj.specific.BuffObj;
+import main.entity.obj.BuffObj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.particles.EmitterActor;

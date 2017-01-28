@@ -9,6 +9,10 @@ import main.game.Game;
 
 import javax.swing.*;
 
+/**
+ * Represents a game object's type, from which it is created
+ * Can also have a type field if it is a cloned/generated ObjType. (e.g. leveled up unit)
+ */
 public class ObjType extends Entity {
     private boolean generated;
     private boolean model;
@@ -57,11 +61,7 @@ public class ObjType extends Entity {
         super.setProperty(name, value);
     }
 
-    @Override
-    public void newRound() {
-        // TODO Auto-generated method stub
 
-    }
 
     public ObjType getType() {
         return (type != null) ? type : this;
@@ -83,8 +83,7 @@ public class ObjType extends Entity {
 
     @Override
     public void toBase() {
-        // TODO return to BASE TYPE?
-
+        // does nothing
     }
 
     public void initType() {

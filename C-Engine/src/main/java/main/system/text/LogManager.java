@@ -7,6 +7,7 @@ import main.content.ContentManager;
 import main.content.OBJ_TYPES;
 import main.content.parameters.PARAMETER;
 import main.data.XLinkedMap;
+import main.entity.DataModel;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
@@ -470,7 +471,7 @@ public abstract class LogManager {
 
     }
 
-    public void logCounterModified(Entity entity, String name, int modValue) {
+    public void logCounterModified(DataModel entity, String name, int modValue) {
         Integer value = entity.getCounter(name);
         if (value > 0) {
             logInfo(modValue + " " + name + "s applied to " + entity.getNameIfKnown() + ", total "

@@ -149,7 +149,6 @@ public class DC_Builder extends Builder {
         };
         setUip(new DC_UnitInfoPanel(ipHolder, state.getGame()));
         cip = new DC_CellInfoPanel(ipHolder, state.getGame());
-        timer = state.getTimer();
         topPanel = new DC_TopPanel(state.getGame());
         uap = new DC_UAP_Holder(state);
         aup = new DC_ActiveUnitPanel(state.getGame());

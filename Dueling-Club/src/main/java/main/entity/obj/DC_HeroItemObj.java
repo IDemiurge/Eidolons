@@ -6,7 +6,6 @@ import main.content.parameters.PARAMETER;
 import main.content.properties.G_PROPS;
 import main.content.properties.PROPERTY;
 import main.entity.Ref;
-import main.entity.obj.specific.BuffObj;
 import main.entity.type.ObjType;
 import main.game.MicroGame;
 import main.game.player.Player;

@@ -2,7 +2,7 @@ package main.swing.components.panels;
 
 import main.entity.obj.Attachment;
 import main.entity.obj.DC_BuffObj;
-import main.entity.obj.specific.BuffObj;
+import main.entity.obj.BuffObj;
 import main.game.DC_Game;
 import main.game.MicroGameState;
 import main.game.player.Player;

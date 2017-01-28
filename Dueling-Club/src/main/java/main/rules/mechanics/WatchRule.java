@@ -13,7 +13,7 @@ import main.elements.conditions.standard.OwnershipCondition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.*;
-import main.entity.obj.specific.BuffObj;
+import main.entity.obj.BuffObj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.game.battlefield.FacingMaster;
 import main.game.battlefield.VisionManager;

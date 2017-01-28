@@ -21,6 +21,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Contains all the data about a Game (like a save) stored in maps
+ * //TODO master-classes should be linked here too, e.g. DungeonMaster,
+ * Objects are mapped to ids
+ * Provides methods for retrieving it and some for managing it (refactor needed)
+ *
+ */
 public abstract class GameState {
 
     protected static final int DEFAULT_ROUND = 0;
@@ -50,25 +57,24 @@ public abstract class GameState {
     }
 
     public void init() {
-        objMap = new ConcurrentMap<Integer, Obj>();
-        objMaps = new HashMap<OBJ_TYPE, Map<Integer, Obj>>();
-        typeMaps = new HashMap<OBJ_TYPE, Map<Integer, ObjType>>();
-        typeMap = new ConcurrentMap<Integer, ObjType>();
+        objMap = new ConcurrentMap<>();
+        objMaps = new HashMap<>();
+        typeMaps = new HashMap<>();
+        typeMap = new ConcurrentMap<>();
 
-        attachedEffects = new HashMap<Attachment, List<Effect>>();
-        attachedTriggers = new HashMap<Attachment, List<Trigger>>();
-        attachedObjects = new HashMap<Attachment, List<Obj>>();
-        attachmentsMap = new HashMap<Obj, List<Attachment>>();
+        attachedEffects = new HashMap<>();
+        attachedTriggers = new HashMap<>();
+        attachedObjects = new HashMap<>();
+        attachmentsMap = new HashMap<>();
 
-        triggers = new DequeImpl<Trigger>();
-        effects = new DequeImpl<Effect>();
-        effectsMap = new ConcurrentMap<Integer, Effect>();
-        attachments = new DequeImpl<Attachment>();
+        triggers = new DequeImpl<>();
+        effects = new DequeImpl<>();
+        effectsMap = new ConcurrentMap<>();
+        attachments = new DequeImpl<>();
     }
 
     public void reset() {
-        setRound(DEFAULT_ROUND - 1); // TODO where is it incremented then?
-    }
+        setRound(DEFAULT_ROUND - 1);  }
 
     public void checkTriggers(Event e) {
         if (triggers.size() == 0)
@@ -257,8 +263,6 @@ public abstract class GameState {
     }
 
     public void applyEffects(int layer) {
-        // TODO The hardest thing is to ensure nothing gets out of sync Also,
-        // what about REF's of effects?
         if (effects.size() == 0)
             return;
         for (Effect effect : effects) {

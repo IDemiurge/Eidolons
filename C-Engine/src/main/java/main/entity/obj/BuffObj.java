@@ -1,4 +1,4 @@
-package main.entity.obj.specific;
+package main.entity.obj;
 
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
@@ -10,10 +10,6 @@ import main.content.properties.G_PROPS;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.AttachedObj;
-import main.entity.obj.Attachment;
-import main.entity.obj.MicroObj;
-import main.entity.obj.Obj;
 import main.entity.type.BuffType;
 import main.game.MicroGame;
 import main.game.event.MessageManager;

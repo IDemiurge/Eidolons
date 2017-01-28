@@ -16,7 +16,7 @@ import main.elements.conditions.Conditions;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.*;
-import main.entity.obj.specific.BuffObj;
+import main.entity.obj.BuffObj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.entity.type.BuffType;
 import main.entity.type.ObjType;
@@ -63,15 +63,13 @@ import static main.system.GuiEventType.UPDATE_BUFFS;
  */
 public class DC_GameManager extends GameManager {
 
-    private static final String CANCEL_SELECTING = "Cancel selecting?";
     private static final String DEFEND = "Defend";
-    private static final PROPERTY SPELLBOOK = PROPS.SPELLBOOK;
     private static final PROPERTY VERBATIM = PROPS.VERBATIM_SPELLS;
     private static final PROPERTY MEMORIZED = PROPS.MEMORIZED_SPELLS;
     private static final RemoveBuffEffect removeBuffEffect = new RemoveBuffEffect(DEFEND);
     HashMap<MicroObj, Map<ObjType, MicroObj>> spellCache = new HashMap<>();
-    private boolean selectingInterrupted = false;
     private DC_Builder bfBuilder;
+    private boolean selectingInterrupted;
 
     // public void setSceneViewer(SceneViewer sv) {
     // dc_getGame().getGUI().setSceneViewer(sv);
@@ -248,14 +246,7 @@ public class DC_GameManager extends GameManager {
 
         // checkForChanges();
     }
-
-    public boolean isMyTurn() {
-        return getState().isMyTurn();
-    }
-
-    public Player getActivePlayer() {
-        return getState().getActivePlayer();
-    }
+ 
 
     private void checkSelectedObj(Obj obj) {
         boolean selectionObj = selectingSet.contains(obj);
@@ -757,17 +748,7 @@ public class DC_GameManager extends GameManager {
             bfBuilder = getGame().getBattleField().getBuilder();
         return bfBuilder;
     }
-
-    public void setBfBuilder(DC_Builder bfBuilder) {
-        this.bfBuilder = bfBuilder;
-    }
-
-    public boolean isAI_Turn() {
-        if (getActiveObj() == null)
-            return false;
-        return getActiveObj().getOwner().isAi();
-    }
-
+  
     public DC_HeroObj getActiveObj() {
         if (game.isStarted())
             if (selectedActiveObj == null) {

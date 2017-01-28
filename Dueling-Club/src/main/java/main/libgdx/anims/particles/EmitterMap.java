@@ -10,6 +10,7 @@ import main.game.battlefield.Coordinates;
 import main.libgdx.GameScreen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.Chronos;
 import main.system.math.PositionMaster;
 
 import java.util.LinkedHashMap;
@@ -20,8 +21,8 @@ import java.util.Map;
  */
 public class EmitterMap {
 
-    private static final int MIN_DISTANCE_FROM_LIGHT = 2;
-    private static final int MIN_DISTANCE_BETWEEN_FOG = 3;
+    private static final int MIN_DISTANCE_FROM_LIGHT = 1;
+    private static final int MIN_DISTANCE_BETWEEN_FOG = 2;
     Map<Coordinates, Ambience> fogMap =    new LinkedHashMap<>() ;
     private final Pool<Ambience> ambiencePool = new Pool<Ambience>() {
         @Override
@@ -33,7 +34,9 @@ public class EmitterMap {
 
         GuiEventManager.bind(GuiEventType.UPDATE_AMBIENCE, p -> {
             try {
+                Chronos.mark("UPDATE_AMBIENCE");
                 update();
+                Chronos.logTimeElapsedForMark("UPDATE_AMBIENCE");
             } catch (Exception e) {
                 e.printStackTrace();
             }

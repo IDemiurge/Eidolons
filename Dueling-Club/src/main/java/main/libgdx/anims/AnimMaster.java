@@ -7,7 +7,7 @@ import main.ability.Ability;
 import main.ability.effects.Effect;
 import main.data.ConcurrentMap;
 import main.entity.Ref;
-import main.entity.obj.specific.BuffObj;
+import main.entity.obj.BuffObj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.game.DC_Game;
 import main.libgdx.anims.std.BuffAnim;

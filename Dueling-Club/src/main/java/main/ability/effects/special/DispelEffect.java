@@ -2,7 +2,7 @@ package main.ability.effects.special;
 
 import main.ability.effects.oneshot.MicroEffect;
 import main.entity.obj.Attachment;
-import main.entity.obj.specific.BuffObj;
+import main.entity.obj.BuffObj;
 import main.system.math.Formula;
 
 public class DispelEffect extends MicroEffect {

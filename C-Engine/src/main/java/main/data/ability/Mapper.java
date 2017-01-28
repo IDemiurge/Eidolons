@@ -21,6 +21,12 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.*;
 
+/**
+ * Mapper class makes a map of all public constructors without
+ * @ommittedConstructor in elements/... and ability/... folders of C-Engine and Dueling-Club.
+ [known to fail if full path contains Russian letters!]
+
+ */
 public class Mapper {
 
     public static final Class<?>[] CONTAINER_CLASSES = {Abilities.class, Effects.class,

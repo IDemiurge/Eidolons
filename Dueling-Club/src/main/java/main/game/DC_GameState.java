@@ -9,12 +9,10 @@ import main.elements.conditions.standard.PositionCondition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.*;
-import main.entity.obj.specific.BuffObj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.game.DC_Game.GAME_MODES;
 import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
-import main.game.turn.TurnTimer;
 import main.rules.counter.DC_CounterRule;
 import main.rules.counter.DamageCounterRule;
 import main.rules.generic.RoundRule;
@@ -36,12 +34,11 @@ import java.util.Stack;
  * @author JustMe
  */
 public class DC_GameState extends MicroGameState {
-    private TurnTimer timer = new TurnTimer(this);
-    private OBJ_TYPE[] ignoredTypes = {OBJ_TYPES.SPELLS, OBJ_TYPES.ACTIONS};
+    private OBJ_TYPE[] toBaseIgnoredTypes = {OBJ_TYPES.SPELLS, OBJ_TYPES.ACTIONS};
     private DequeImpl<DamageCounterRule> damageRules;
     private DequeImpl<DC_CounterRule> counterRules;
-    private int timeRemaining;
     private Map<DC_HeroObj, Stack<DC_ActiveObj>> unitActionStack;
+
 
     public DC_GameState(MicroGame game) {
         super(game);
@@ -255,14 +252,11 @@ public class DC_GameState extends MicroGameState {
         }
     }
 
-    public TurnTimer getTimer() {
-        return timer;
-    }
 
     @Override
     public void allToBase() {
         for (Obj obj : objMap.values()) {
-            if (Arrays.asList(ignoredTypes).contains(obj.getOBJ_TYPE_ENUM()))
+            if (Arrays.asList(toBaseIgnoredTypes).contains(obj.getOBJ_TYPE_ENUM()))
                 continue;
             if (!obj.isDead())
                 try {
@@ -368,20 +362,17 @@ public class DC_GameState extends MicroGameState {
         this.counterRules = counterRules;
     }
 
-    public void setTimeRemaining(int timeRemaining) {
-        this.timeRemaining = timeRemaining;
-    }
 
     public Map<DC_HeroObj, Stack<DC_ActiveObj>> getUnitActionStack() {
         if (unitActionStack == null)
-            unitActionStack = new HashMap<DC_HeroObj, Stack<DC_ActiveObj>>();
+            unitActionStack = new HashMap<>();
         return unitActionStack;
     }
 
     public Stack<DC_ActiveObj> getUnitActionStack(DC_HeroObj ownerObj) {
         Stack<DC_ActiveObj> stack = getUnitActionStack().get(ownerObj);
         if (stack == null) {
-            stack = new Stack<DC_ActiveObj>();
+            stack = new Stack<>();
             getUnitActionStack().put(ownerObj, stack);
         }
         return stack;

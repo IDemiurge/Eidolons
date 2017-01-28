@@ -19,7 +19,7 @@ import main.elements.conditions.Conditions;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
-import main.entity.obj.specific.BuffObj;
+import main.entity.obj.BuffObj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.entity.type.BuffType;
 import main.system.ConditionMaster;

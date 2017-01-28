@@ -26,7 +26,7 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_UnitAction;
 import main.entity.obj.DC_WeaponObj;
-import main.entity.obj.specific.BuffObj;
+import main.entity.obj.BuffObj;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.rules.generic.UnitAnalyzer;
 import main.system.DC_Formulas;

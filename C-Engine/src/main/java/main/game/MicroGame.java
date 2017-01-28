@@ -100,25 +100,11 @@ public abstract class MicroGame extends Game {
         return battleFieldManager;
     }
 
-    public void setBattleFieldManager(BattleFieldManager battleFieldManager) {
-        this.battleFieldManager = battleFieldManager;
-    }
-
-    public boolean placeUnit(MicroObj unit) {
-        return battleFieldManager.placeUnit(unit);
-    }
-
-    public boolean placeUnit(MicroObj unit, int x, int y) {
-        return battleFieldManager.placeUnit(unit, x, y);
-    }
-
     public MicroObj createUnit(ObjType type, int x, int y, Player owner) {
         return mngr.createUnit(type, x, y, owner);
     }
 
-    public MicroObj createMapObject(int x, int y, ObjType type) {
-        return battleFieldManager.createMapObject(x, y, type);
-    }
+
 
     public MicroObj createSpell(ObjType type, Player player, Ref ref) {
         return mngr.createSpell(type, player, ref);

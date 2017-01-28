@@ -7,7 +7,7 @@ import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
-import main.entity.obj.specific.BuffObj;
+import main.entity.obj.BuffObj;
 import main.entity.type.BuffType;
 import main.entity.type.ObjType;
 import main.game.GameManager;

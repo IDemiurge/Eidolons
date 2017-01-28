@@ -20,6 +20,9 @@ import java.util.*;
 
 /**
  Stores all the relevant ID's. Used to find proper Entities with getObj(KEYS key).
+
+ Ref object is passed on activate(Ref ref) from the source entity to Active entity.
+ To activate on a given object, set ref’s {target} key, otherwise Active's Targeting will select()
  */
 public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
     public static final String SOURCE = "source";

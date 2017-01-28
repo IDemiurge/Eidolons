@@ -22,7 +22,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.*;
-import main.entity.obj.specific.BuffObj;
+import main.entity.obj.BuffObj;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.event.MessageManager;

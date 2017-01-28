@@ -12,7 +12,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.Obj;
-import main.entity.obj.specific.BuffObj;
+import main.entity.obj.BuffObj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.game.DC_Game;
 import main.game.MicroGame;

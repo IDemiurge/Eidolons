@@ -1,2 +1,26 @@
-Annotations?
-Class file creeping? 
+Ability Construction Reflection API
+Mapper class makes a map of all public constructors without @ommittedConstructor in elements/* and ability/* folders of C-Engine and DC-Engine.
+[known to fail if full path contains Russian letters!]
+
+From XML, e.g.
+<Abilities>
+<ActiveAbility>
+<SelectiveTargeting><Conditions>
+<StringComparison><STRING>{MATCH_TYPE}</STRING><STRING>TERRAIN</STRING></StringComparison>
+</Conditions></SelectiveTargeting>
+<Effects><SummonEffect><STRING>^VAR</STRING></SummonEffect></Effects>
+</ActiveAbility>
+</Abilities>
+
+To construct an Abilities object,
+
+Argument types
+
+Primitives - String, Int, Boolean
+
+
+Each Active (Spell, Action, Quick Item Active) has Abilities.
+
+
+
+

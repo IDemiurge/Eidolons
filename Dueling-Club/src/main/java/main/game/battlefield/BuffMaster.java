@@ -6,7 +6,7 @@ import main.content.CONTENT_CONSTS.BUFF_TYPE;
 import main.content.CONTENT_CONSTS.STD_BOOLS;
 import main.entity.Ref;
 import main.entity.obj.Obj;
-import main.entity.obj.specific.BuffObj;
+import main.entity.obj.BuffObj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.entity.type.ObjType;
 import main.system.ai.logic.target.EffectMaster;
