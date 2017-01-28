@@ -34,8 +34,9 @@ ANGLE,
     public void offsetAngle(float offset) {
         offset(offset,"angle");
     }
+
         public void offset(float offset, String name) {
-        ScaledNumericValue val = getScaledNumericValue(name+"Value");
+        ScaledNumericValue val =  getScaledNumericValue(name+"Value");
         float min = val.getHighMin();
         float max = val.getHighMax();
         val.setHigh(min + offset, max + offset);

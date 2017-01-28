@@ -12,15 +12,17 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.math.PositionMaster;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by JustMe on 1/9/2017.
  */
 public class EmitterMap {
 
-    List<EmitterActor> ambientFx=    new LinkedList<>() ;
+    private static final int MIN_DISTANCE_FROM_LIGHT = 2;
+    private static final int MIN_DISTANCE_BETWEEN_FOG = 3;
+    Map<Coordinates, Ambience> fogMap =    new LinkedHashMap<>() ;
     private final Pool<Ambience> ambiencePool = new Pool<Ambience>() {
         @Override
         protected Ambience newObject() {
@@ -49,37 +51,57 @@ public class EmitterMap {
 
      cc:   for (Coordinates c: DC_Game.game.getCoordinates() ) {
          boolean add=true;
+         boolean remove=false;
          if (!GameScreen.getInstance().getGridPanel().isCoordinateVisible(c))
              continue ;
          for (DC_HeroObj unit :  DC_Game.game.getUnits()) {
                 if ((unit.isActiveSelected()||
                  unit.checkParam(PARAMS.LIGHT_EMISSION)) &&
-                 PositionMaster.getDistance(unit.getCoordinates(), c) < 3) {
-                    add = false;continue cc;
+                 PositionMaster.getDistance(unit.getCoordinates(), c) <
+                  MIN_DISTANCE_FROM_LIGHT
+                 + unit.getIntParam(PARAMS.LIGHT_EMISSION)/25
+                 ) {
+                    add = false;
+                    remove=true;
                 }
 
 
-         } for (EmitterActor e :  ambientFx) {
-             if (
-              PositionMaster.getDistance(e.getTarget() , c) < 3)
+         } for (Coordinates c1 : fogMap.keySet()) {
+             if (PositionMaster.getDistance(c1 , c) < MIN_DISTANCE_BETWEEN_FOG)
+             {
                  add = false;
+                 remove=true;
+             }
          }
 
          if ( add)
              addSmoke(c);
+         if (remove)
+             removeSmoke(c);
         }
     }
 
+    private void removeSmoke(Coordinates c) {
+        Ambience fog = fogMap.remove(c);
+        if (fog==null )return ;
+        fog.remove();
+        fog.setVisible(false);
+        ambiencePool.free(fog);
+    }
+
     private void addSmoke(Coordinates c) {
+        if (fogMap.containsKey(c))
+            return ;
+
         Vector2 v=  GameScreen.getInstance().getGridPanel().
          getVectorForCoordinateWithOffset(c);
-        Ambience smoke = ambiencePool.obtain();
-        smoke.setTarget(c);
-        ambientFx.add(smoke);
-        smoke.setPosition(v.x, v.y);
-        GameScreen.getInstance().getAmbienceStage().addActor(smoke);
-
-        smoke.getEffect().getEmitters().get(0). start();
+        Ambience fog = ambiencePool.obtain();
+        fog.setTarget(c);
+        fogMap.put(c,fog);
+        fog.setPosition(v.x, v.y);
+        GameScreen.getInstance().getAmbienceStage().addActor(fog);
+        fog.setVisible(true);
+        fog.getEffect(). start();
     }
 
 

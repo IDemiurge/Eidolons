@@ -87,7 +87,7 @@ public class GridPanel extends Group {
     public boolean isCoordinateVisible(Coordinates c) {
         Vector2 v = getVectorForCoordinateWithOffset(c);
         InputController controller = GameScreen.getInstance().getController();
-       return !controller.getCamera().frustum.pointInFrustum(new Vector3(v.x, v.y, 0)) ;
+       return controller.getCamera().frustum.pointInFrustum(new Vector3(v.x, v.y, 0)) ;
 
 
     }

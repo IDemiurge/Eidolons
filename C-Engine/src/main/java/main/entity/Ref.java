@@ -18,18 +18,14 @@ import main.system.net.data.DataUnit;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ Stores all the relevant ID's. Used to find proper Entities with getObj(KEYS key).
+ */
 public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
     public static final String SOURCE = "source";
     public static final String PAYEE = "payee";
-    public static final String EVENT_PREFIX = "EVENT_";
-    public static final String EFFECT_PREFIX = "EFFECT_";
-    public static final String MATCH_PREFIX = "MATCH_";
-    /**
-     *
-     */
     protected static final long serialVersionUID = 1L;
     protected static final String MULTI_TARGET = KEYS.TARGET.name() + "#";
-    private static List<Ref> refClones = new LinkedList<>();
     public Game game;
     public Event event;
     public boolean base;
@@ -44,10 +40,7 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
     protected VALUE value;
 
     protected boolean periodic;
-    Map<String, String> replacingRefsMap = new HashMap<String, String>();
-    String[][] replacingRefsArray = {{"spell", "action"}};
     private Formula formula;
-    private boolean altCloneFunc;
     private ActiveObj animationActive;
     private boolean animationDisabled;
     private Entity infoEntity;
@@ -77,26 +70,6 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
         this(entity.getGame(), entity.getId());
     }
 
-    public static void refTest() {
-        Ref ref = new Ref();
-        for (KEYS key : KEYS.values()) {
-            ref.setValue(key, key.toString());
-        }
-        String string = "test 1";
-        Chronos.mark(string);
-        for (int i : ListMaster.getIntegerList(100000)) {
-            ref.getCopy();
-        }
-        Chronos.logTimeElapsedForMark(string);
-        string = "test 2";
-        Chronos.mark(string);
-        ref.setAltCloneFunc(true);
-        for (int i : ListMaster.getIntegerList(100000)) {
-            ref.getCopy();
-        }
-        Chronos.logTimeElapsedForMark(string);
-
-    }
 
     public static Ref getCopy(Ref ref) {
         if (ref == null)
@@ -189,31 +162,9 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
     protected void cloneMaps(Ref ref) {
         // no deep copy required here
         values = new HashMap<>(ref.getValues());
-        // if (!altCloneFunc) {
-        // for (Entry<String, String> entry : ref.getValues().entrySet()) {
-        // setValue(entry.getKey(), entry.getValue());
-        // }
-        // return;
-        // }
-        // getValues().clear();
-        // getValues().putAll(ref.getValues());
+           }
 
-    }
 
-    public boolean isAltCloneFunc() {
-        return altCloneFunc;
-    }
-
-    public void setAltCloneFunc(boolean altCloneFunc) {
-        this.altCloneFunc = altCloneFunc;
-    }
-
-    public void swapTargetSource() {
-        int id = getTarget();
-        setTarget(getSource());
-        setSource(id);
-
-    }
 
     protected Ref checkForRefReplacement() {
         String s = getStr();
@@ -315,15 +266,7 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
 
     }
 
-    protected String searchForReplacingRef(String str) {
-        for (String[] refGroupImpl : replacingRefsArray) {
-            int index = Arrays.asList(refGroupImpl).indexOf(str.toLowerCase());
-            if (index != -1)
-                return refGroupImpl[-index + 1];
 
-        }
-        return str;
-    }
 
     protected String formatKeyString(String key) {
         // return key;
