@@ -220,6 +220,10 @@ public class InputController implements InputProcessor {
         }
     }
 
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
     public float getZoom() {
         return camera.zoom;
     }

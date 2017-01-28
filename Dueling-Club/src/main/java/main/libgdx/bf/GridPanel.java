@@ -3,6 +3,7 @@ package main.libgdx.bf;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -83,7 +84,13 @@ public class GridPanel extends Group {
     ) {
         return getVectorForCoordinateWithOffset(sourceCoordinates, true);
     }
+    public boolean isCoordinateVisible(Coordinates c) {
+        Vector2 v = getVectorForCoordinateWithOffset(c);
+        InputController controller = GameScreen.getInstance().getController();
+       return !controller.getCamera().frustum.pointInFrustum(new Vector3(v.x, v.y, 0)) ;
 
+
+    }
     public Vector2 getVectorForCoordinateWithOffset(Coordinates sourceCoordinates
             , boolean centered) {
         InputController controller = GameScreen.getInstance().getController();
@@ -404,4 +411,6 @@ if (!muteEventLog)
     public void setUnitMap(Map<DC_HeroObj, BaseView> unitMap) {
         this.unitMap = unitMap;
     }
+
+
 }
