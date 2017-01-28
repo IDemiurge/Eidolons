@@ -237,7 +237,8 @@ public abstract class GameState {
         resetCurrentValues();
         mngr.checkForChanges(true);
 
-//        GuiEventManager.trigger(GraphicEvent.UPDATE_LIGHT, null);
+        GuiEventManager.trigger(GuiEventType.UPDATE_LIGHT, null);
+        GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, null);
         GuiEventManager.trigger(GuiEventType.UPDATE_EMITTERS, null);
         GuiEventManager.trigger(GuiEventType.UPDATE_GUI, null);
     }

@@ -36,9 +36,9 @@ public class Anim extends Group {
     protected Vector2 destination;
     protected Vector2 defaultPosition;
     protected List<EmitterActor> emitterList;
+    protected List<SpriteAnimation> sprites;
     protected int lightEmission; // its own lightmap?
     protected Color color;
-    protected List<SpriteAnimation> sprites;
     protected Supplier<Texture> textureSupplier;
     protected float time = 0;
     protected float duration = 0;

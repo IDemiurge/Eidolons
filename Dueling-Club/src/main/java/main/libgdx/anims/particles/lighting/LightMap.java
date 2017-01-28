@@ -158,11 +158,12 @@ public class LightMap {
             BodyDef bdef = new BodyDef();
             bdef.type = BodyDef.BodyType.KinematicBody;
             Body body = world.createBody(bdef);
-            lightParam = PARAMS.LIGHT_EMISSION;
+            lightParam = PARAMS.LIGHT_EMISSION; //ILLUMINATION
             darkParam = PARAMS.CONCEALMENT;
             DC_HeroObj unit = units.get(i);
             int lightStrength = unit.getIntParam(lightParam) - unit.getIntParam(darkParam);
             if (lightStrength > 0) {
+//                emitters.add(unit);
                 body.setTransform(units.get(i).getX() * cellWidth + cellWidth / 2, this.rows * cellHeight - units.get(i).getY() * cellHeight + cellHeight / 2, 0);
                 PolygonShape shape = new PolygonShape();
                 shape.setAsBox(cellWidth / 2, cellHeight / 2);

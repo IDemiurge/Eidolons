@@ -119,6 +119,7 @@ public class GameScreen implements Screen {
 
     private void initEffects() {
         effects = new Stage();
+        ambienceStage = new Stage();
         particleManager = new ParticleManager(effects);
     }
 
@@ -204,7 +205,7 @@ public class GameScreen implements Screen {
         batch.end();
 
         gridStage.draw();
-
+        ambienceStage.draw();
         effects.draw();
         if (DC_Game.game != null)
             if (DC_Game.game.getAnimationManager() != null)
