@@ -205,6 +205,7 @@ public class GameScreen implements Screen {
         batch.end();
 
         gridStage.draw();
+        ambienceStage.act(delta);
         ambienceStage.draw();
         effects.draw();
         if (DC_Game.game != null)
