@@ -52,8 +52,10 @@ public class EmitterMap {
      cc:   for (Coordinates c: DC_Game.game.getCoordinates() ) {
          boolean add=true;
          boolean remove=false;
-         if (!GameScreen.getInstance().getGridPanel().isCoordinateVisible(c))
-             continue ;
+//         if (!GameScreen.getInstance().getGridPanel().isCoordinateVisible(c))
+//             continue ;  если апдейт был бы быстрый, можно было бы не пре-создавать там где не видно
+
+        //нужно оптимизировать!
          for (DC_HeroObj unit :  DC_Game.game.getUnits()) {
                 if ((unit.isActiveSelected()||
                  unit.checkParam(PARAMS.LIGHT_EMISSION)) &&
