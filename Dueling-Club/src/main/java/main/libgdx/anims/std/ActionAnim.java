@@ -34,6 +34,12 @@ public class ActionAnim extends Anim {
         return null;
     }
 
+    protected void add() {
+        addAction(getAction());
+        getAction().setTarget(this);
+        GameScreen.getInstance().getAnimsStage().addActor(this);
+        main.system.auxiliary.LogMaster.log(1, this + " added to stage");
+    }
     @Override
     protected void dispose() {
         super.dispose();

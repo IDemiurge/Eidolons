@@ -48,7 +48,7 @@ public class EmitterPresetMaster {
         return null;
     }
 
-    public ParticleEmitter getModifiedEmitter(String path, int offset, EMITTER_VALUE_GROUP... groups) {
+    public EmitterActor getModifiedEmitter(String path, int offset, EMITTER_VALUE_GROUP... groups) {
         String[] array = new String[groups.length];
         for (int i = 0; i < groups.length; i++) {
             array[i] = groups[i].name + value_separator + offset;
@@ -56,8 +56,8 @@ public class EmitterPresetMaster {
         return getModifiedEmitter(path, false, array);
     }
 
-    public ParticleEmitter getModifiedEmitter(String path,
-                                              boolean write, String... modvals) {
+    public EmitterActor getModifiedEmitter(String path,
+                                           boolean write, String... modvals) {
 
         String newName =StringMaster.getLastPathSegment(path) +" modified";
 //crop format!
@@ -84,7 +84,7 @@ public class EmitterPresetMaster {
             XML_Writer.write(data, path, newName);
 
         String newPath = path + newName;
-        ParticleEmitter actor = new ParticleEmitter(newPath);
+        EmitterActor actor = new EmitterActor(newPath);
         if (!write){
             //delete
         }

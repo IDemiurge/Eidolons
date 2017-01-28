@@ -65,10 +65,11 @@ public abstract class MicroEffect extends EffectImpl {
                                 }
                             }
                         }
-                        if (!checkAnimDisabledForAction(getActiveObj()))
+                        try{                 if (!checkAnimDisabledForAction(getActiveObj()))
                             if (!getAnimation().isPending())
                                 if (!getAnimation().isFinished())
                                     getAnimation().start();
+                   }catch(Exception e){                e.printStackTrace();            }
                     }
         return result;
     }

@@ -92,14 +92,5 @@ public class HitAnim extends ActionAnim {
         }
     }
 
-    public enum DEATH {
-        SHATTER,
-        FADE,
-        EXPLODE,
-        BURN,
-        COLLAPSE,
-        ATOMIZE,;
-        String spritePath;
 
-    }
 }

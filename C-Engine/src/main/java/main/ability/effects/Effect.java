@@ -16,7 +16,7 @@ public interface Effect extends Interruptable, Referred, Variable, Reconstructab
     int BASE_LAYER = 0;
     int SECOND_LAYER = 1;
     int ZERO_LAYER = -1;
-    Integer BUFF_RULE = 2;
+    Integer BUFF_RULE = 2; // effects from dynamic
 
     boolean apply(Ref ref);
 

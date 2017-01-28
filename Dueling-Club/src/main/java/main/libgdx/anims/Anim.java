@@ -17,7 +17,7 @@ import main.libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import main.libgdx.anims.ANIM_MODS.OBJ_ANIMS;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
-import main.libgdx.anims.particles.ParticleEmitter;
+import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.texture.TextureManager;
 import main.system.GuiEventType;
@@ -35,7 +35,7 @@ public class Anim extends Group {
     protected Vector2 origin;
     protected Vector2 destination;
     protected Vector2 defaultPosition;
-    protected List<ParticleEmitter> emitterList;
+    protected List<EmitterActor> emitterList;
     protected int lightEmission; // its own lightmap?
     protected Color color;
     protected List<SpriteAnimation> sprites;
@@ -53,7 +53,7 @@ public class Anim extends Group {
     protected Float speedX;
     protected Float speedY;
     protected int loops;
-    protected int pixelsPerSecond=500;
+    protected int pixelsPerSecond = 500;
     protected int cycles;
     protected float lifecycle; //0 to 1f
     protected float lifecycleDuration;
@@ -66,8 +66,8 @@ public class Anim extends Group {
         this.active = active;
         textureSupplier = () -> getTexture();
         reset();
-        if (data.getIntValue(ANIM_VALUES.FRAME_DURATION)>0)
-        frameDuration = data.getIntValue(ANIM_VALUES.FRAME_DURATION) / 100f;
+        if (data.getIntValue(ANIM_VALUES.FRAME_DURATION) > 0)
+            frameDuration = data.getIntValue(ANIM_VALUES.FRAME_DURATION) / 100f;
 //        duration= params.getIntValue(ANIM_VALUES.DURATION);
     }
 
@@ -84,8 +84,7 @@ public class Anim extends Group {
         offsetY = 0;
         initDuration();
         initSpeed();
-        if (emitterList!=null )
-        emitterList.removeIf(e->e.isGenerated());
+
     }
 
     protected void initDuration() {
@@ -107,9 +106,9 @@ public class Anim extends Group {
         if (!isSpeedSupported()) return;
         if (destination == null) return;
         if (origin == null) return;
-        if (origin .equals(destination)) return;
+        if (origin.equals(destination)) return;
         if (data.getIntValue(ANIM_VALUES.MISSILE_SPEED) != 0)
-        pixelsPerSecond = data.getIntValue(ANIM_VALUES.MISSILE_SPEED);
+            pixelsPerSecond = data.getIntValue(ANIM_VALUES.MISSILE_SPEED);
         if (pixelsPerSecond == 0) return;
         float x = destination.x - origin.x;
         float y = destination.y - origin.y;
@@ -171,10 +170,10 @@ public class Anim extends Group {
         applyAnimMods();
         if (isDrawTexture())
             if (currentFrame != null) {
-            clear();
-            addActor(new Image(currentFrame));
+                clear();
+                addActor(new Image(currentFrame));
 
-            draw(batch, alpha);
+                draw(batch, alpha);
 //                batch.draw(currentFrame, this.getX(), getY(), this.getOriginX(),
 //                 this.getOriginY(), this.getWidth(),
 //                        this.getHeight(), this.getScaleX(), this.getScaleY(),
@@ -206,14 +205,14 @@ public class Anim extends Group {
     }
 
     private void applyObjAnimMod(OBJ_ANIMS mod) {
-        switch (  mod) {
+        switch (mod) {
             case FADE_IN:
-                alpha =0.1f+ time/duration;
+                alpha = 0.1f + time / duration;
         }
     }
 
     private void applyContinuousAnimMod(CONTINUOUS_ANIM_MODS mod) {
-        switch (  mod) {
+        switch (mod) {
             case PENDULUM_ALPHA:
                 sprites.forEach(s -> {
                     if (cycles % 2 == 0)
@@ -235,6 +234,13 @@ public class Anim extends Group {
         initPosition();
         initDuration();
         initSpeed();
+        if (emitterList != null)
+            emitterList.removeIf(e -> e.isGenerated());
+        emitterList.forEach(e -> {
+            if (!e.isGenerated())
+                if (e.isAttached())
+                    e.setTarget(getDestinationCoordinates());
+        });
         sprites.forEach(s -> s.setX(getX()));
         sprites.forEach(s -> s.setY(getY()));
         sprites.forEach(s -> s.setOffsetX(0));
@@ -286,23 +292,23 @@ public class Anim extends Group {
 
     public void initPosition() {
         origin = GameScreen.getInstance().getGridPanel()
-                .getVectorForCoordinateWithOffset(getOriginCoordinates());
+         .getVectorForCoordinateWithOffset(getOriginCoordinates());
 
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-                this + " origin: " + origin);
+         this + " origin: " + origin);
 
         destination = GameScreen.getInstance().getGridPanel()
-                .getVectorForCoordinateWithOffset(getDestinationCoordinates());
+         .getVectorForCoordinateWithOffset(getDestinationCoordinates());
 
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-                this + " destination: " + destination);
+         this + " destination: " + destination);
 
 
         defaultPosition = getDefaultPosition();
         setX(defaultPosition.x);
         setY(defaultPosition.y);
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-                this + " defaultPosition: " + defaultPosition);
+         this + " defaultPosition: " + defaultPosition);
     }
 
     protected Coordinates getOriginCoordinates() {
@@ -351,9 +357,9 @@ public class Anim extends Group {
             s.setOffsetY(offsetY);
         });
 
-        emitterList.forEach(e ->{
+        emitterList.forEach(e -> {
             if (e.isAttached())
-                      e.updatePosition(getX(), getY());
+                e.updatePosition(getX(), getY());
 
         });
 
@@ -389,11 +395,11 @@ public class Anim extends Group {
         return destination;
     }
 
-    public List<ParticleEmitter> getEmitterList() {
+    public List<EmitterActor> getEmitterList() {
         return emitterList;
     }
 
-    public void setEmitterList(List<ParticleEmitter> emitterList) {
+    public void setEmitterList(List<EmitterActor> emitterList) {
         this.emitterList = emitterList;
     }
 

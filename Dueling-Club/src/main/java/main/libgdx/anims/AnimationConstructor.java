@@ -18,7 +18,7 @@ import main.entity.obj.DC_SpellObj;
 import main.entity.obj.specific.BuffObj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
-import main.libgdx.anims.particles.ParticleEmitter;
+import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.anims.std.*;
 import main.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
@@ -185,16 +185,16 @@ public class AnimationConstructor {
             sprites.add(new SpriteAnimation(path));
             exists = true;
         }
-        List<ParticleEmitter> list = new LinkedList<>();
+        List<EmitterActor> list = new LinkedList<>();
         for (String path :
          StringMaster.openContainer(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS))) {
-            ParticleEmitter emitter = null;
+            EmitterActor emitter = null;
             SFX sfx = new EnumMaster<SFX>().
              retrieveEnumConst(SFX.class, path);
             if (sfx == null)
-                emitter = new ParticleEmitter(path);
+                emitter = new EmitterActor(path);
             else
-                emitter = new ParticleEmitter(
+                emitter = new EmitterActor(
                  sfx);
             if (emitter != null)
                 list.add(emitter

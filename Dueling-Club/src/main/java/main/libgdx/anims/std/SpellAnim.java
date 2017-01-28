@@ -15,9 +15,7 @@ import main.game.battlefield.FacingMaster;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimData;
-import main.libgdx.anims.particles.EmitterPresetMaster;
-import main.libgdx.anims.particles.EmitterPresetMaster.EMITTER_VALUE_GROUP;
-import main.libgdx.anims.particles.ParticleEmitter;
+import main.libgdx.anims.particles.EmitterActor;
 import main.system.Producer;
 import main.system.ai.logic.target.EffectMaster;
 import main.system.auxiliary.secondary.GeometryMaster;
@@ -43,10 +41,25 @@ public class SpellAnim extends ActionAnim {
     public void start() {
         super.start();
         applyTemplate();
+        adjustAngle();
+    }
+
+    private void adjustAngle() {
+        emitterList.forEach(e->{
+            if ( e.getTarget()!=null ){
+            float offset =1* (float) GeometryMaster.getAngle(
+             getActive().getOwnerObj().getCoordinates(),
+//             getRef().getTargetObj().getCoordinates()
+            e.getTarget());
+           offset+=90;
+            main.system.auxiliary.LogMaster.log(1,getActive()+" is offset by " +offset);
+            e.getEffect().offsetAngle(offset);}
+        });
     }
 
 
     public void applyTemplate() {
+        if (template != null){         applyTemplateAngles();return;}
         Effect effect = EffectMaster.getFirstEffectOfClass(getActive(), SpecialTargetingEffect.class);
         if (effect != null) {
             SpecialTargetingEffect targetEffect = (SpecialTargetingEffect) effect;
@@ -60,49 +73,39 @@ public class SpellAnim extends ActionAnim {
             return;
         }
 
-        if (template == null) return;
-        int max = template.getNumberOfEmitters(getActive());
-        List<ParticleEmitter> list = new LinkedList<>();
-        for (ParticleEmitter e : emitterList) {
-            if (e.isGenerated()) continue;
-            //check emitter multiplication on
-            int angle = 0;
-            for (int i = 1; i <= max; i++) {
-                ParticleEmitter actor = new ParticleEmitter(e.path);
-                createAndAddEmitterActions(actor, angle, template);
-                angle += 360 / max;
-                list.add(actor);
-                actor.setPosition(getX(), getY());
-                actor.setAttached(false);
-                actor.setGenerated(true);
-                GameScreen.getInstance().getAnimsStage().addActor(actor);
-            }
-        }
-        list.forEach(a -> emitterList.add(a));
+
+
+       
 
     }
 
+
+
     public void applyTemplateForCoordinates(Set<Coordinates> coordinates) {
-        List<ParticleEmitter> list = new LinkedList<>();
+        List<EmitterActor> list = new LinkedList<>();
         coordinates.forEach(c ->
          {
-             for (ParticleEmitter e : emitterList) {
+             for (EmitterActor e : emitterList) {
                  if (e.isGenerated()) continue;
-                 int angle = GeometryMaster.getAngle(c, getActive().getOwnerObj().getCoordinates());
+//                 double angle = GeometryMaster.getAngle(c,
+//                  getActive().getOwnerObj().getCoordinates());
                  //relative vs absolute
-                 ParticleEmitter actor = null;
-                 try {
-                     actor = EmitterPresetMaster.getInstance().
-                      getModifiedEmitter(e.path, angle, EMITTER_VALUE_GROUP.Angle);
-                 } catch (Exception e1) {
-                     e1.printStackTrace();
-                     actor = new ParticleEmitter(e.path);
-                 }
+                 EmitterActor actor  = new EmitterActor(e.path);
+//                 actor.getEffect().offsetAngle((float) angle);
+
+//                 try {
+//                     actor = EmitterPresetMaster.getInstance().
+//                      getModifiedEmitter(e.path, angle, EMITTER_VALUE_GROUP.Angle);
+//                 } catch (Exception e1) {
+//                     e1.printStackTrace();
+//                     actor = new EmitterActor(e.path);
+//                 }
 
 
                  createAndAddEmitterActions(actor, c);
-
+actor.debug();
                  list.add(actor);
+                 actor.setTarget(c);
                  actor.setPosition(getX(), getY());
                  actor.setAttached(false);
                  actor.setGenerated(true);
@@ -114,9 +117,36 @@ public class SpellAnim extends ActionAnim {
         list.forEach(a -> emitterList.add(a));
 
     }
+    private void createAndAddEmitterActions(EmitterActor actor, Coordinates c) {
+        MoveToAction action = ActorMaster.getMoveToAction(c, actor, pixelsPerSecond);
+        if (action.getDuration() > this.duration) this.duration = action.getDuration();
+//        ActorMaster.addRemoveAfter(actor);
+        actor.getEffect().setDuration((int) action.getDuration());
+    }
 
 
-    private Action createAndAddEmitterActions(ParticleEmitter actor, int angle, SPELL_ANIMS template) {
+    private void applyTemplateAngles() {
+        int max = template.getNumberOfEmitters(getActive());
+        List<EmitterActor> list = new LinkedList<>();
+        for (EmitterActor e : emitterList) {
+            if (e.isGenerated()) continue;
+            //check emitter multiplication on
+            int angle = 0;
+            for (int i = 1; i <= max; i++) {
+                EmitterActor actor = new EmitterActor(e.path);
+                createAndAddEmitterActions(actor, angle, template);
+                angle += 360 / max;
+                list.add(actor);
+                actor.setPosition(getX(), getY());
+                actor.setAttached(false);
+                actor.setGenerated(true);
+                ActorMaster.addRemoveAfter(actor);
+                GameScreen.getInstance().getAnimsStage().addActor(actor);
+            }
+        }
+        list.forEach(a -> emitterList.add(a));
+    }
+    private Action createAndAddEmitterActions(EmitterActor actor, int angle, SPELL_ANIMS template) {
         Action action = new SequenceAction();
         actor.addAction(action);
         action.setTarget(actor);
@@ -134,14 +164,7 @@ public class SpellAnim extends ActionAnim {
     }
 
 
-    private void createAndAddEmitterActions(ParticleEmitter actor, Coordinates c) {
-        MoveToAction action = ActorMaster.getMoveToAction(c, actor, pixelsPerSecond);
-        if (action.getDuration() > this.duration) this.duration = action.getDuration();
-        ActorMaster.addRemoveAfter(actor);
-        actor.getEffect().setDuration((int) action.getDuration());
-    }
-
-    private Action addRangeAndAngle(int angle, int range, ParticleEmitter actor) {
+    private Action addRangeAndAngle(int angle, int range, EmitterActor actor) {
         MoveByAction action = new MoveByAction();
         float x = (float) (132 * Math.sin(angle) * range);
         float y = (float) (132 * Math.cos(angle) * range);

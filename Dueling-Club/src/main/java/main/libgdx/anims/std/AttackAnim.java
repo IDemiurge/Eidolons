@@ -115,10 +115,7 @@ public class AttackAnim extends ActionAnim {
     @Override
     public void start() {
         super.start();
-        main.system.auxiliary.LogMaster.log(1, this + " ");
-        GameScreen.getInstance().getAnimsStage().addActor(this);
-        addAction(getAction());
-        getAction().setTarget(this);
+       add();
     }
 
     @Override
