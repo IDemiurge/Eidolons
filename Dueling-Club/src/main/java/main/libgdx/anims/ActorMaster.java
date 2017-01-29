@@ -16,7 +16,10 @@ import main.libgdx.anims.particles.EmitterActor;
 public class ActorMaster {
     public static void addRemoveAfter(Actor actor) {
         AfterAction aa = new AfterAction();
-        aa.setAction(new RemoveActorAction());
+        RemoveActorAction remove = new RemoveActorAction();
+        remove.setTarget(actor);
+
+        aa.setAction(remove);
         actor.addAction(aa);
         aa.setTarget(actor);
 

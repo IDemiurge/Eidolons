@@ -19,6 +19,7 @@ import main.entity.obj.BuffObj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.particles.EmitterActor;
+import main.libgdx.anims.particles.EmitterPools;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.anims.std.*;
 import main.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
@@ -192,10 +193,9 @@ public class AnimationConstructor {
             SFX sfx = new EnumMaster<SFX>().
              retrieveEnumConst(SFX.class, path);
             if (sfx == null)
-                emitter = new EmitterActor(path);
+                emitter =  EmitterPools.getEmitterActor(path);
             else
-                emitter = new EmitterActor(
-                 sfx);
+                emitter = EmitterPools.getEmitterActor(sfx);
             if (emitter != null)
                 list.add(emitter
                 );

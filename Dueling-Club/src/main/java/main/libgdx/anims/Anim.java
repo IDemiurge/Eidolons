@@ -18,6 +18,7 @@ import main.libgdx.anims.ANIM_MODS.OBJ_ANIMS;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.particles.EmitterActor;
+import main.libgdx.anims.particles.EmitterPools;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.texture.TextureManager;
 import main.system.GuiEventType;
@@ -135,6 +136,7 @@ public class Anim extends Group {
 
     public void finished() {
         //TODO
+
     }
 
     public boolean draw(Batch batch) {
@@ -288,6 +290,12 @@ public class Anim extends Group {
     }
 
     protected void dispose() {
+        emitterList.forEach(e-> {
+            EmitterPools.freeEmitter(e);
+            e.remove();
+
+        });
+        sprites.forEach(s-> s.dispose());
     }
 
     public void initPosition() {
