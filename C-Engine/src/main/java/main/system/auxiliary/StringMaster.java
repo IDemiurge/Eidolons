@@ -1016,6 +1016,11 @@ public class StringMaster {
     }
 
     public static List<String> splitPath(String path) {
+        if (path.charAt(0)=='/')
+            path = path.substring(1);
+        if (path.contains("/"))
+            if (!path.contains(Pattern.quote(PATH_SEPARATOR)))
+                return Arrays.asList(path.split("/"));
         return Arrays.asList(path.split(Pattern.quote(PATH_SEPARATOR)));
     }
 

@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.content.CONTENT_CONSTS2.SFX;
 import main.data.filesys.PathFinder;
 import main.game.battlefield.Coordinates;
+import main.system.auxiliary.FileManager;
 import main.system.auxiliary.StringMaster;
 
 /**
@@ -17,6 +18,7 @@ public class EmitterActor extends Actor implements ParticleInterface {
 
     private final int defaultCapacity = 12;
     private final int defaultMaxCapacity = 24;
+  static public boolean spriteEmitterTest=false;
     public String path;
     protected ParticleEffect effect;
     protected ParticleEffectPool pool;
@@ -36,13 +38,27 @@ public class EmitterActor extends Actor implements ParticleInterface {
 //        effect.getEmitters().get(0).setSprite();
     }
 
-    public EmitterActor(String path) {
+    public EmitterActor(String path, boolean test) {
         this.path=path;
+        effect = new ParticleEffect();
+        String imagePath =
+         PathFinder.getParticleImagePath();
+            effect.load(Gdx.files.internal(
+             StringMaster.addMissingPathSegments(
+              path, PathFinder.getParticlePresetPath())),
+             Gdx.files.internal(imagePath));
+
+    }
+    public EmitterActor(String path) {
+//        path =PathFinder.getSfxPath() + "templates\\sprite test";
+        this.path=path;
+
         effect = new ParticleEffect();
 //        pool = new ParticleEffectPool(effect, defaultCapacity, defaultMaxCapacity);
 //        pool.obtain() ; TODO
         effect = new ParticleEffect();
-        String imagePath = PathFinder.getParticleImagePath();
+        String imagePath =
+         PathFinder.getParticleImagePath();
 
         try {
             effect.load(Gdx.files.internal(
@@ -68,24 +84,41 @@ public class EmitterActor extends Actor implements ParticleInterface {
                   path, PathFinder.getParticlePresetPath())),
                  Gdx.files.internal(imagePath));
             } catch (Exception e1) {
-                main.system.auxiliary.LogMaster.log(1, imagePath + " - NO IMAGE FOUND FOR SFX: " + path);
-                e.printStackTrace();
+                imagePath =
+                 PathFinder.removeSpecificPcPrefix(
+                  EmitterPresetMaster.getInstance().getImagePath(path));
+                imagePath = StringMaster.cropLastPathSegment(imagePath);
+                try {
+                    effect.load(Gdx.files.internal(
+                     StringMaster.addMissingPathSegments(
+                      path, PathFinder.getParticlePresetPath())),
+                     Gdx.files.internal(imagePath));
+                } catch (Exception e2) {
+                    main.system.auxiliary.LogMaster.log(1, imagePath + " - NO IMAGE FOUND FOR SFX: " + path);
+                    e2.printStackTrace();
+                }
+
+
             }
         }
 
-        }
 
-//        m_effect = new ParticleEffect();
-//        m_effect.load(Gdx.files.internal("particle/effects/lightning.p"), this.getAtlas());
-//
-//        m_effect.loadEmitters(Gdx.files.internal("particle/effects/lightning.p"));
-//        m_effect.loadEmitterImages(this.getAtlas());
+        }
+if ( spriteEmitterTest)
+        effect.getEmitters().forEach(e->{
+            String randomPath = FileManager.getRandomFile(PathFinder.getSpritesPath() +
+             "impact\\").getPath();
+            ((Emitter)e).offset(20, "scale");
+            e.setImagePath(randomPath);
+            e.setPremultipliedAlpha(false);
+        });
     }
+
 
     public void act(float delta) {
         super.act(delta);
 //        effect.setPosition(x, y);
-        effect.update(delta);
+//        effect.update(delta); TODO now drawing with alpha!
 
     }
 
@@ -111,10 +144,11 @@ public class EmitterActor extends Actor implements ParticleInterface {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        effect.getEmitters().first().setPosition(getX(), getY());
+        effect.setPosition(getX(), getY());
 //        sprite = effect.getEmitters().first().getSprite();
 //        sprite.setRotation(new Random().nextInt(360));
-        effect.draw(batch);
+
+        effect.draw(batch,   Gdx.graphics.getDeltaTime());
 
     }
 

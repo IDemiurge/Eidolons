@@ -11,7 +11,6 @@ import main.data.DataManager;
 import main.data.xml.XML_Reader;
 import main.data.xml.XML_Transformer;
 import main.data.xml.XML_Writer;
-import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.battlefield.UnitGroupMaster;
 import main.gui.builders.EditViewPanel;
@@ -287,7 +286,6 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 			}
 			case CLEAN_UP: {
 				// cleanUp();
-				Ref.refTest();
 				break;
 
 			}

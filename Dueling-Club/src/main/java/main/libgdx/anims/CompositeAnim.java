@@ -1,5 +1,6 @@
 package main.libgdx.anims;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import main.ability.effects.Effect;
 import main.data.XLinkedMap;
@@ -20,22 +21,24 @@ import java.util.Map;
 /**
  * Created by JustMe on 1/11/2017.
  */
-public class CompositeAnim {
+public class CompositeAnim implements Animation{
 
     Map<ANIM_PART, Anim> map = new XLinkedMap<>();
     Map<ANIM_PART, List<GuiEventType>> startEventMap;
     Map<ANIM_PART, List<GuiEventType>> eventMap;
-    Map<ANIM_PART, List<CompositeAnim>> attached;
+    Map<ANIM_PART, List<Animation>> attached;
+    Map<ANIM_PART,List<Animation>> timeAttachedAnims = new XLinkedMap<>();
     ANIM_PART part;
     int index;
     PhaseAnim phaseAnim;
     private boolean finished;
     private boolean running;
     private Anim currentAnim;
+    private float time = 0;
 
     public CompositeAnim(Anim... anims) {
         this(new MapMaster<ANIM_PART, Anim>().constructMap(new LinkedList<>(Arrays.asList(ANIM_PART.values()).subList(0, anims.length)),
-                new LinkedList<>(Arrays.asList(anims))));
+         new LinkedList<>(Arrays.asList(anims))));
 
     }
 
@@ -50,14 +53,14 @@ public class CompositeAnim {
 
     public boolean draw(Batch batch) {
 //        if (currentAnim != null)
-//            try{
+//            try{ //TODO attached phaseAnims?
 //            DC_Game.game.getAnimationManager().getAnimations().forEach(a -> {
 //                PhaseAnim phaseAnim= a.getPhaseAnim();
 ////                main.system.auxiliary.LogMaster.log(1,"drawing " +a + " at " + currentAnim.getPosition());
 //                phaseAnim.setPosition(currentAnim.getX(),currentAnim.getY() );
 //                phaseAnim.draw(batch, 1f);
 //            });        }catch(Exception e){                e.printStackTrace();            }
-
+        time += Gdx.graphics.getDeltaTime();
         boolean result = false;
         if (currentAnim != null)
             try {
@@ -65,7 +68,9 @@ public class CompositeAnim {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        checkTimeAttachedAnims();
         if (!result) {
+            time = 0;
             index++;
             triggerFinishEvents();
             playAttached();
@@ -80,12 +85,29 @@ public class CompositeAnim {
     }
 
 
-    public void attach(CompositeAnim anim, ANIM_PART part) {
-        new MapMaster<ANIM_PART, Anim>().addToListMap(attached, part, anim);
+
+    private void checkTimeAttachedAnims() {
+        if (timeAttachedAnims.get(part)==null )return ;
+    timeAttachedAnims.get(part).  forEach(a -> {
+        if (!a.isRunning())
+            if (a.getDelay() >= time) {
+                a.start();
+                AnimMaster.getInstance().addTimeAttached(a);
+            }
+        });
+    }
+
+
+    public void attachDelayed(Animation anim, ANIM_PART part) {
+
+        MapMaster.addToListMap(timeAttachedAnims, part, anim);
+    }
+    public void attach(Animation anim, ANIM_PART part) {
+        MapMaster.addToListMap(attached, part, anim);
     }
 
     private void drawAttached(Batch batch) {
-        List<CompositeAnim> list = attached.get(part);
+        List<Animation> list = attached.get(part);
         if (list == null) return;
         list.forEach(anim -> {
             anim.draw(batch);
@@ -94,7 +116,7 @@ public class CompositeAnim {
     }
 
     private void playAttached() {
-        List<CompositeAnim> list = attached.get(part);
+        List<Animation> list = attached.get(part);
         if (list != null)
             list.forEach(anim -> {
                 anim.start();
@@ -122,9 +144,9 @@ public class CompositeAnim {
     public void add(ANIM_PART part, Anim anim) {
         map.put(part, anim);
         new MapMaster<ANIM_PART, Anim>().addToListMap(eventMap,
-                part, anim.getEventsOnFinish());
+         part, anim.getEventsOnFinish());
         new MapMaster<ANIM_PART, Anim>().addToListMap(startEventMap,
-                part, anim.getEventsOnStart());
+         part, anim.getEventsOnStart());
     }
 
     public void reset() {
@@ -139,6 +161,7 @@ public class CompositeAnim {
     }
 
     public void start() {
+        time = 0;
         index = 0;
         initPartAnim();
         if (map.isEmpty()) {
@@ -159,7 +182,7 @@ public class CompositeAnim {
 
     private void queueGraphicEvents() {
         getStartEventMap().values().forEach(
-                (List<GuiEventType> e) -> e.forEach(x -> GuiEventManager.queue(x)));
+         (List<GuiEventType> e) -> e.forEach(x -> GuiEventManager.queue(x)));
     }
 
     private void initPartAnim() {
@@ -171,13 +194,35 @@ public class CompositeAnim {
         triggerStartEvents();
     }
 
-    public void addEffectAnim(CompositeAnim anim, Effect effect) {
+    public void addEffectAnim(Animation anim, Effect effect) {
         ANIM_PART partToAddAt = EffectAnimCreator.getPartToAttachTo(effect);
-
+        float delay = EffectAnimCreator.getEffectAnimDelay(effect, anim, partToAddAt);
+        if (delay!=0){
+            anim.setDelay(delay);
+            attachDelayed(anim, partToAddAt);
+        }else
         attach(anim, partToAddAt);
         //anim group vs anim(Effects)
     }
 
+
+//    private void initTimeAttachedAnims() {
+//        //TODO OR PLAY IMPACT-PART IN PARALLEL AND MULTIPLIED BY TARGETS
+//        if (part == ANIM_PART.MAIN) {
+//            List<Obj> targets = currentAnim.getRef().getGroup().getObjects();
+//            for (Obj obj : targets) {
+//                Float distance =
+//                 GridMaster.getDistance(obj.getCoordinates(), currentAnim.getOriginCoordinates());
+//                float delay = distance / currentAnim.getPixelsPerSecond();
+//
+//                Anim anim = AnimMaster.getInstance().getConstructor().
+//                 getPartAnim((DC_ActiveObj) currentAnim.getActive(), part);
+//
+//                anim.setDelay(delay);
+//                timeAttachedAnims.add(anim);
+//            }
+//        }
+//    }
     public void interrupt() {
         //at what part?
 //        setInterruptPart(p);
@@ -200,12 +245,17 @@ public class CompositeAnim {
         return eventMap;
     }
 
-    public Map<ANIM_PART, List<CompositeAnim>> getAttached() {
+    public Map<ANIM_PART, List<Animation>> getAttached() {
         return attached;
     }
 
     public ANIM_PART getPart() {
         return part;
+    }
+
+    @Override
+    public float getTime() {
+        return time;
     }
 
     public int getIndex() {
@@ -214,5 +264,19 @@ public class CompositeAnim {
 
     public Anim getCurrentAnim() {
         return currentAnim;
+    }
+    @Override
+    public void setDelay(float delay) {
+
+    }
+
+    @Override
+    public float getDelay() {
+        return 0;
+    }
+
+    @Override
+    public boolean isRunning() {
+        return running;
     }
 }

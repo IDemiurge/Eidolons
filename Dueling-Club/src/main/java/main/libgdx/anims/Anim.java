@@ -31,7 +31,7 @@ import java.util.function.Supplier;
 /**
  * Created by JustMe on 1/9/2017.
  */
-public class Anim extends Group {
+public class Anim extends Group implements Animation{
     protected Entity active;
     protected Vector2 origin;
     protected Vector2 destination;
@@ -60,6 +60,8 @@ public class Anim extends Group {
     protected float lifecycleDuration;
     protected Float frameDuration;
     protected float alpha;
+    protected float delay;
+    private boolean running;
 
 
     public Anim(Entity active, AnimData params) {
@@ -79,6 +81,7 @@ public class Anim extends Group {
 
     }
 
+    @Override
     public void reset() {
         time = 0;
         offsetX = 0;
@@ -134,11 +137,13 @@ public class Anim extends Group {
         //for attack/turn anims?
     }
 
+    @Override
     public void finished() {
         //TODO
-
+        running = false;
     }
 
+    @Override
     public boolean draw(Batch batch) {
 //switch(template){
 //}
@@ -232,6 +237,7 @@ public class Anim extends Group {
         return true;
     }
 
+    @Override
     public void start() {
         initPosition();
         initDuration();
@@ -251,9 +257,15 @@ public class Anim extends Group {
         sprites.forEach(s -> s.reset());
         if (frameDuration != null)
             sprites.forEach(s -> s.setFrameDuration(frameDuration));
+
+
+        AnimMultiplier.checkMultiplication(this);
+
         addLight();
         addEmitters();
 
+
+        running = true;
     }
 
     public Float getSpeedX() {
@@ -319,7 +331,7 @@ public class Anim extends Group {
          this + " defaultPosition: " + defaultPosition);
     }
 
-    protected Coordinates getOriginCoordinates() {
+    public Coordinates getOriginCoordinates() {
 
         return getRef().getSourceObj().getCoordinates();
 
@@ -377,6 +389,7 @@ public class Anim extends Group {
         }
     }
 
+    @Override
     public ANIM_PART getPart() {
         return part;
     }
@@ -451,6 +464,7 @@ public class Anim extends Group {
         this.textureSupplier = textureSupplier;
     }
 
+    @Override
     public float getTime() {
         return time;
     }
@@ -498,5 +512,21 @@ public class Anim extends Group {
         return active.getRef();
     }
 
+    public float getDelay() {
+        return delay;
+    }
 
+    @Override
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setDelay(float delay) {
+        this.delay = delay;
+    }
+
+
+    public int getPixelsPerSecond() {
+        return pixelsPerSecond;
+    }
 }

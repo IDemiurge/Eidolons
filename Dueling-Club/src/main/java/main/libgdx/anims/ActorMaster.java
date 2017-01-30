@@ -2,10 +2,7 @@ package main.libgdx.anims;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.actions.AfterAction;
-import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.RemoveActorAction;
+import com.badlogic.gdx.scenes.scene2d.actions.*;
 import main.game.battlefield.Coordinates;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.particles.EmitterActor;
@@ -23,6 +20,19 @@ public class ActorMaster {
         actor.addAction(aa);
         aa.setTarget(actor);
 
+    }
+    public static MoveByAction getMoveByAction(Vector2 origin, Vector2 destination,
+                                               EmitterActor actor, int pixelsPerSecond) {
+
+        MoveByAction action = new MoveByAction();
+        float x = destination.x-origin.x;
+        float y = destination.y-origin.y;
+        action.setAmount(x, y);
+        Float duration = (float) (Math.sqrt( x *  x + y * y) / pixelsPerSecond);
+        action.setDuration(duration);
+        actor.addAction(action);
+        action.setTarget(actor);
+        return action;
     }
     public static  MoveToAction getMoveToAction(
      Coordinates destination, EmitterActor actor, int pixelsPerSecond) {
@@ -50,4 +60,5 @@ main.system.auxiliary.LogMaster.log(1,"MoveTo " +
         action.setTarget(actor   );
         return action;
     }
+
 }

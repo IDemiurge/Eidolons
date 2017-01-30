@@ -233,4 +233,8 @@ public class PathFinder {
     public static String getParticleImagePath() {
         return getParticlePresetPath() + "images\\";
     }
+
+    public static String removeSpecificPcPrefix(String imagePath) {
+        return imagePath.replace(getEnginePath(), "");
+    }
 }

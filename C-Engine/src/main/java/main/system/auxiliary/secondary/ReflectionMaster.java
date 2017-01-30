@@ -26,4 +26,19 @@ public class ReflectionMaster<T> {
             throw new RuntimeException(e);
         }
     }
+
+    public void setValue(String fieldName, T choice, Object obj) {
+        Field field = null;
+        try {
+            field = obj.getClass(). getDeclaredField(fieldName);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        field.setAccessible(true);
+        try {
+              field.set(obj,choice);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
 }

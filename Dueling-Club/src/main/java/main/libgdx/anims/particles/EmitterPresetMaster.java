@@ -6,6 +6,9 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.FileManager;
 import main.system.auxiliary.StringMaster;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -84,7 +87,8 @@ public class EmitterPresetMaster {
             XML_Writer.write(data, path, newName);
 
         String newPath = path + newName;
-        EmitterActor actor = new EmitterActor(newPath);
+        EmitterActor actor = EmitterPools.getEmitterActor(newPath);
+//        new EmitterActor(newPath);
         if (!write){
             //delete
         }
@@ -159,8 +163,19 @@ public class EmitterPresetMaster {
     }
 
     public String getGroupText(String data, EMITTER_VALUE_GROUP group) {
+        //TODO for multi emitters?!
         String[] parts = data.split(group.name + " - \n");
-        String text = parts[1].split("- ")[0];
+        String valuePart=null ;
+
+        if (parts.length==1)
+            parts = data.split(group.name + " -\n");
+        if (parts.length>1)
+            valuePart = parts[1];
+        if (parts.length>2){
+            valuePart = valuePart.split("\n\n")[0];
+        }
+
+        String text = valuePart.split("- ")[0];
         return text;
     }
 
@@ -198,6 +213,20 @@ public class EmitterPresetMaster {
 
 
      */
+    }
+
+    public static void save(EmitterActor last) {
+        String c = "";
+        Writer output= new StringWriter();
+        last.getEffect().getEmitters().forEach(e->{
+            try {
+                e.save(output);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+        c= output.toString();
+        XML_Writer.write(c,last.path);
     }
 
     public enum EMITTER_VALUE_SHORTCUTS {
