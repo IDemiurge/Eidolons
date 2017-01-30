@@ -19,6 +19,9 @@ import main.system.datatypes.DequeImpl;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.badlogic.gdx.graphics.GL20.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.glBindBuffer;
+
 /**
  * Created by PC on 19.11.2016.
  */
@@ -198,6 +201,7 @@ public class LightMap {
     }
 
     public void updateLight() {
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
         // TODO : add DequeImpl<DC_HeroObj> units update here, about DIrection - Game->GetDirectionmap
         for (Map.Entry<Integer, FireLightProt> entry : fireLightProtMap.entrySet()) {
             entry.getValue().update();
