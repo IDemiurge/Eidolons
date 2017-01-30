@@ -17,6 +17,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import static main.system.GuiEventType.DESTROY_UNIT_MODEL;
+import static main.system.GuiEventType.UNIT_MOVED;
+
 /**
  * Created by JustMe on 1/14/2017.
  */
@@ -131,16 +134,12 @@ public class MoveAnimation extends ActionAnim {
 
     @Override
     public List<GuiEventType> getEventsOnStart() {
-        return new LinkedList<>(Arrays.asList(new GuiEventType[]{
-                GuiEventType.DESTROY_UNIT_MODEL
-        }));
+        return Arrays.asList(DESTROY_UNIT_MODEL);
     }
 
     @Override
     public List<GuiEventType> getEventsOnFinish() {
-        return new LinkedList<>(Arrays.asList(new GuiEventType[]{
-                GuiEventType.UNIT_MOVED
-        }));
+        return Arrays.asList(UNIT_MOVED);
     }
 
     @Override

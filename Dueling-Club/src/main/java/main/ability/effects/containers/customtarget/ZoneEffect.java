@@ -71,7 +71,7 @@ public class ZoneEffect extends SpecialTargetingEffect
         // }
 //        if (effects.getSpell() != null)
 //            if (effects.getSpell().checkBool(STD_BOOLS.APPLY_THRU))
-                this.targeting = new AutoTargeting(conditions, C_OBJ_TYPE.BF);
+        this.targeting = new AutoTargeting(conditions, C_OBJ_TYPE.BF);
 
         if (targeting == null)
             this.targeting = new AutoTargeting(conditions, C_OBJ_TYPE.BF_OBJ);

@@ -1,43 +1,62 @@
 package main.libgdx.bf;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class UnitView extends BaseView {
+    private static AtomicInteger lastId = new AtomicInteger(1);
+    private final int curId;
     private Image arrow;
     private Image clock;
     private Image icon;
     private int baseHeight;
     private int baseWidth;
     private int arrowRotation;
-    private String clockVal;
+    private int clockVal;
+    private FrameBuffer fbo;
+    private Texture portraitTexture;
+    private Container<Image> imageContainer;
+    private Texture clockTexture;
 
     public UnitView(UnitViewOptions o) {
         super(o);
+        curId = lastId.getAndIncrement();
         init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getClockTexture(), o.getClockValue(), o.getPortrateTexture(), o.getIconTexture());
     }
 
-    private void init(Texture arrowTexture, int arrowRotation, Texture clockTexture, String clockVal, Texture portraitTexture, Texture iconTexture) {
+    private void init(Texture arrowTexture, int arrowRotation, Texture clockTexture, int clockVal, Texture portraitTexture, Texture iconTexture) {
         this.arrowRotation = arrowRotation + 90;
         this.clockVal = clockVal;
-
+        this.portraitTexture = portraitTexture;
         portrait = new Image(portraitTexture);
-        addActor(portrait);
 
         baseHeight = portraitTexture.getHeight();
         baseWidth = portraitTexture.getHeight();
         setHeight(baseHeight * getScaleY());
         setWidth(baseWidth * getScaleX());
 
-        if (clockTexture != null) {
-            clock = new Image(clockTexture);
-            addActor(clock);
-            clock.setX(getWidth() - clock.getHeight());
-            clock.setY(0);
-        }
+        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+//        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+        TextureRegion textureRegion = new TextureRegion(fbo.getColorBufferTexture());
+        //back = new PortraitContainer(new Image(portraitTexture));
+        //addActor(back);
+        imageContainer = new Container<>(new Image(textureRegion));
+        imageContainer.width(getW()).height(getH()).bottom().left();
+        addActor(imageContainer);
+
+        this.clockTexture = clockTexture;
 
         if (arrowTexture != null) {
             arrow = new Image(arrowTexture);
@@ -45,8 +64,6 @@ public class UnitView extends BaseView {
             arrow.setOrigin(getWidth() / 2 + arrow.getWidth(), getHeight() / 2 + arrow.getHeight());
             arrow.setX(getWidth() / 2 - arrow.getWidth() / 2);
             arrow.setY(0);
-            //arrow.setRotation(arrowRotation);
-//            arrow.setDebug(true);
         }
 
         if (iconTexture != null) {
@@ -81,6 +98,27 @@ public class UnitView extends BaseView {
         }
 
 
+        batch.end();
+        SpriteBatch sp = new SpriteBatch(1);
+        fbo.begin();
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
+        sp.begin();
+        sp.draw(portraitTexture, 0, 0, getW(), getH());
+        if (clockTexture != null) {
+            sp.draw(clockTexture, getW() - clockTexture.getWidth(), 0);
+
+        }
+        sp.end();
+        fbo.end();
+
+        TextureRegion textureRegion = new TextureRegion(fbo.getColorBufferTexture(), 0, 0, getW(), getH());
+        textureRegion.flip(false, true);
+        imageContainer.setActor(new Image(textureRegion));
+        imageContainer.width(getW()).height(getH()).bottom().left().pack();
+
+
+        batch.begin();
         super.draw(batch, parentAlpha);
     }
 
@@ -96,17 +134,20 @@ public class UnitView extends BaseView {
         //setHeight(baseHeight * getScaleY());
         //setWidth(baseWidth * getScaleX());
 
-        portrait.setWidth(getWidth());
-        portrait.setHeight(getHeight());
+        if (portrait != null) {
+            portrait.setSize(getWidth(), getHeight());
+        }
+
+        if (imageContainer != null) {
+            imageContainer.width(getWidth()).height(getHeight());
+        }
 
         if (clock != null) {
-            clock.setX(getWidth() - clock.getHeight());
-            clock.setY(0);
+            clock.setPosition(getWidth() - clock.getHeight(), 0);
         }
 
         if (icon != null) {
-            icon.setX(0);
-            icon.setY(getHeight() - icon.getImageHeight());
+            icon.setPosition(0, getHeight() - icon.getImageHeight());
         }
 
         if (arrow != null) {

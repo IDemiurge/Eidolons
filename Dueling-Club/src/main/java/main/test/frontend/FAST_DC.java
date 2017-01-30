@@ -113,8 +113,7 @@ public class FAST_DC {
         if (args.length > 0) {
             if (args[0].equals("-GT")) {
                 forceRunGT = true;
-            }
-            else if (StringMaster.isInteger(args[0])){
+            } else if (StringMaster.isInteger(args[0])) {
                 PresetLauncher.PRESET_OPTION = StringMaster.getInteger(args[0]);
             }
         }

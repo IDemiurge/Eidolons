@@ -1411,7 +1411,7 @@ public class StringMaster {
     }
 
     public static String wrap(String wrap, String string) {
-        return wrap+string+wrap;
+        return wrap + string + wrap;
     }
 
     public enum STD_TYPE_NAMES {

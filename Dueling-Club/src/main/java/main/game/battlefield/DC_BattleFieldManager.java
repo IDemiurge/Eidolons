@@ -66,7 +66,6 @@ public class DC_BattleFieldManager extends BattleFieldManager {
     }
 
 
-
     public void resetWallMap() {
         Map<Coordinates, DC_HeroObj> wallMap = new HashMap<Coordinates, DC_HeroObj>();
         for (Obj obj : game.getObjects(OBJ_TYPES.BF_OBJ)) {

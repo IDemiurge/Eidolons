@@ -66,11 +66,11 @@ public class TestMasterContent {
     private static String FIX_LIST = "";
     private static String POLISH_LIST = "";
     private static String ANIM_TEST_LIST =
-     "Shadow Flame;Sorcerous Flame;Ray of Arcanum;Gust of Wind;" +
-      "Fire Bolt;Chaos Bolt;" +
-     "Shadow Bolt;Death Bolt;Arcane Bolt;" +
-     "Scare;Freeze;" +
-     "Summon Lesser Demon";
+            "Shadow Flame;Sorcerous Flame;Ray of Arcanum;Gust of Wind;" +
+                    "Fire Bolt;Chaos Bolt;" +
+                    "Shadow Bolt;Death Bolt;Arcane Bolt;" +
+                    "Scare;Freeze;" +
+                    "Summon Lesser Demon";
 
     private static String GRAPHICS_TEST_LIST = "Light;Haze;Force Field;" +
             "Summon Vampire Bat;Blink";

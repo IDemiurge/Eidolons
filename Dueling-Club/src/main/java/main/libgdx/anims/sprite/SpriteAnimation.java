@@ -10,7 +10,7 @@ import main.libgdx.texture.TextureManager;
 /**
  * Created by PC on 10.11.2016.
  */
-public class SpriteAnimation extends Animation {
+public class SpriteAnimation extends Animation<TextureRegion> {
     final static float defaultFrameDuration = 0.025f;
     public float x;
     public float y;
@@ -40,16 +40,17 @@ public class SpriteAnimation extends Animation {
         this.looping = looping;
         this.loops = loops;
     }
-public void  reset(){
-        stateTime=0;
-        cycles=0;
-        lifecycle=0;
-}
+
+    public void reset() {
+        stateTime = 0;
+        cycles = 0;
+        lifecycle = 0;
+    }
     public boolean draw(Batch batch) {
         stateTime += Gdx.graphics.getDeltaTime();
         updateSpeed();
         boolean looping = this.looping || loops > cycles || loops == 0;
-        TextureRegion currentFrame = getKeyFrame(stateTime, looping);
+        TextureRegion currentFrame = (TextureRegion) getKeyFrame(stateTime, looping);
 
 
         if (currentFrame == null) {

@@ -2,7 +2,6 @@ package main.libgdx.gui.dialog;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.google.gwt.rpc.server.WebModeClientOracle.Triple;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
 import main.content.VALUE;
@@ -16,6 +15,8 @@ import main.libgdx.gui.layout.LayoutParser.LAYOUT;
 import main.libgdx.gui.panels.generic.*;
 import main.libgdx.gui.panels.info.WeaponPanel;
 import main.system.images.ImageManager.ALIGNMENT;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.*;
 
@@ -152,7 +153,7 @@ public class InfoDialog extends Dialog {
                     (LAYOUT.VERTICAL, "", comps.toArray(new Actor[comps.size()]));
 
             String text = iterator.next();
-            Triple<String, String, Actor> t = new Triple<>(text, null, tables);
+            Triple<String, String, Actor> t = new ImmutableTriple<>(text, null, tables);
             list.add(t);
         });
 

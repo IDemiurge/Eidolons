@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * Created by JustMe on 12/29/2016.
  */
 public class SpellRadialManager {
-    private static int MAX_SPELLS_DISPLAYED=16;
+    private static int MAX_SPELLS_DISPLAYED = 16;
 
     public static List<RadialMenu.CreatorNode> getSpellNodes(DC_HeroObj source,
                                                              DC_Obj target) {

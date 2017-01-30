@@ -84,6 +84,32 @@ public class DC_Builder extends Builder {
         newDungeon((state.getGame().getDungeonMaster().getDungeon()));
     }
 
+    public static int getBfGridPosY() {
+        // return VISUALS.PORTRAIT_BORDER.getHeight();
+        return GuiManager.getSquareCellSize();
+    }
+
+    public static int getBfGridPosX() {
+        return VISUALS.PORTRAIT_BORDER.getWidth() + OFFSET_X;
+        // return getSpellbookPanel().getPanelWidth();
+    }
+
+    public static int getBfGridPosY2() {
+        return getBfGridPosY() + GuiManager.getBattleFieldHeight();
+    }
+
+    public static int getBfGridPosX2() {
+        return getBfGridPosX() + GuiManager.getBattleFieldWidth();
+    }
+
+    public static int getCellSize() {
+        return cellSize;
+    }
+
+    public static void setCellSize(int cellSize) {
+        DC_Builder.cellSize = cellSize;
+    }
+
     private G_Panel createMainComponent() {
         return new G_Panel(true) {
             @Override
@@ -200,24 +226,6 @@ public class DC_Builder extends Builder {
          + GuiManager.getCellHeight() + "*" + GuiManager.getBF_CompDisplayedCellsY() + "!";
     }
 
-    public static int getBfGridPosY() {
-        // return VISUALS.PORTRAIT_BORDER.getHeight();
-        return GuiManager.getSquareCellSize();
-    }
-
-    public static int getBfGridPosX() {
-        return VISUALS.PORTRAIT_BORDER.getWidth() + OFFSET_X;
-        // return getSpellbookPanel().getPanelWidth();
-    }
-
-    public static int getBfGridPosY2() {
-        return getBfGridPosY() + GuiManager.getBattleFieldHeight();
-    }
-
-    public static int getBfGridPosX2() {
-        return getBfGridPosX() + GuiManager.getBattleFieldWidth();
-    }
-
     private int getUnitNameLabelHeight() {
         return 15;
     }
@@ -310,14 +318,6 @@ try{state.getGame().getGUI().resetBgIcon(grid.getMap().getBackground());
         return null;
     }
 
-    public static int getCellSize() {
-        return cellSize;
-    }
-
-    public static void setCellSize(int cellSize) {
-        DC_Builder.cellSize = cellSize;
-    }
-
     public DC_BattleFieldGrid getGrid() {
         return grid;
     }
@@ -350,6 +350,10 @@ try{state.getGame().getGUI().resetBgIcon(grid.getMap().getBackground());
         if (dungeonsPanel == null)
             setDungeonsPanel(new DungeonsPanel(state.getGame()));
         return dungeonsPanel;
+    }
+
+    public void setDungeonsPanel(DungeonsPanel dungeonsPanel) {
+        this.dungeonsPanel = dungeonsPanel;
     }
 
     public void toggleDisplayActionModePanel(DC_ActiveObj activeObj) {
@@ -501,10 +505,6 @@ try{state.getGame().getGUI().resetBgIcon(grid.getMap().getBackground());
 
     public DC_TopPanel getTopPanel() {
         return topPanel;
-    }
-
-    public void setDungeonsPanel(DungeonsPanel dungeonsPanel) {
-        this.dungeonsPanel = dungeonsPanel;
     }
 
     public DC_ActiveUnitPanel getActiveUnitPanel() {

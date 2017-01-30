@@ -62,7 +62,6 @@ public class ObjType extends Entity {
     }
 
 
-
     public ObjType getType() {
         return (type != null) ? type : this;
     }

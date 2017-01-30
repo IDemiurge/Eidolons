@@ -302,33 +302,33 @@ public class Anim extends Group implements Animation{
     }
 
     protected void dispose() {
-        emitterList.forEach(e-> {
+        emitterList.forEach(e -> {
             EmitterPools.freeEmitter(e);
             e.remove();
 
         });
-        sprites.forEach(s-> s.dispose());
+        sprites.forEach(s -> s.dispose());
     }
 
     public void initPosition() {
         origin = GameScreen.getInstance().getGridPanel()
-         .getVectorForCoordinateWithOffset(getOriginCoordinates());
+                .getVectorForCoordinateWithOffset(getOriginCoordinates());
 
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-         this + " origin: " + origin);
+                this + " origin: " + origin);
 
         destination = GameScreen.getInstance().getGridPanel()
-         .getVectorForCoordinateWithOffset(getDestinationCoordinates());
+                .getVectorForCoordinateWithOffset(getDestinationCoordinates());
 
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-         this + " destination: " + destination);
+                this + " destination: " + destination);
 
 
         defaultPosition = getDefaultPosition();
         setX(defaultPosition.x);
         setY(defaultPosition.y);
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-         this + " defaultPosition: " + defaultPosition);
+                this + " defaultPosition: " + defaultPosition);
     }
 
     public Coordinates getOriginCoordinates() {

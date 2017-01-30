@@ -47,6 +47,8 @@ public class Emitter extends ParticleEmitter {
     }
 
     public void offset(float offset, String name) {
+
+
         ScaledNumericValue val = getScaledNumericValue(name + "Value");
         float min = val.getHighMin();
         float max = val.getHighMax();

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -85,10 +84,10 @@ public class GameScreen implements Screen {
         initCamera();
         controller = new InputController(cam);
 
-        GL20 gl = Gdx.graphics.getGL20();
-        gl.glEnable(GL20.GL_BLEND);
-        gl.glEnable(GL20.GL_TEXTURE_2D);
-        gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        GL30 gl = Gdx.graphics.getGL30();
+        gl.glEnable(GL30.GL_BLEND);
+        gl.glEnable(GL30.GL_TEXTURE_2D);
+        gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
 
         batch = new SpriteBatch();
 
@@ -149,7 +148,7 @@ public class GameScreen implements Screen {
 
         if (!FAST_DC.getGameLauncher().getSUPER_FAST_MODE()
 //                && !FAST_DC.getGameLauncher().getFAST_MODE()
-         ) {
+                ) {
             LogPanel ld = new LogPanel();
             guiStage.addActor(ld);
             ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
@@ -239,7 +238,7 @@ public class GameScreen implements Screen {
         effects.getViewport().update(width, height);
         gridStage.getViewport().update(width, height);
         guiStage.getViewport().update(width, height);
-ambienceStage.getViewport().setCamera(cam);
+        ambienceStage.getViewport().setCamera(cam);
 /*        to disable pixelperfect
         float camWidth = MapView.TILE_WIDTH * 10.0f;
         float camHeight = camWidth * ((float)height / (float)width);

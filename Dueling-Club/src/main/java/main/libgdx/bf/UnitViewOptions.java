@@ -21,7 +21,7 @@ public class UnitViewOptions {
     private Texture clockTexture;
     private int directionValue;
 
-    private String clockValue;
+    private int clockValue;
     private boolean hideBorder;
     private boolean overlaying;
 
@@ -84,11 +84,11 @@ public class UnitViewOptions {
         this.directionValue = var1;
     }
 
-    public final String getClockValue() {
+    public final int getClockValue() {
         return this.clockValue;
     }
 
-    public final void setClockValue(String var1) {
+    public final void setClockValue(int var1) {
         this.clockValue = var1;
     }
 

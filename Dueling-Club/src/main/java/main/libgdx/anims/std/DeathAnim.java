@@ -34,21 +34,22 @@ public class DeathAnim extends ActionAnim {
         getRef().getEvent().getRef().getDamageType();
         return DEATH_ANIM.FADE;
     }
-public enum DEATH_ANIM{
-        FADE, FLASH,
-    EXPLODE,
-    BURN,
-    COLLAPSE,
-    ATOMIZE, SHATTER,;
-    String spritePath;
-}
 
     @Override
     public void start() {
 //        addSfx();
         //skull / grave?
         super.start();
-   add();
+        add();
+    }
+
+    public enum DEATH_ANIM {
+        FADE, FLASH,
+        EXPLODE,
+        BURN,
+        COLLAPSE,
+        ATOMIZE, SHATTER,;
+        String spritePath;
     }
 
 }

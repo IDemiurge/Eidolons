@@ -19,14 +19,14 @@ import java.util.function.Supplier;
  */
 public class FloatingText extends Group {
 
-    private   String text;
-    private   Color c;
+    private String text;
+    private Color c;
     private Supplier<String> textSupplier;
     private Supplier<String> imageSupplier;
 
     public FloatingText(String text, Color c) {
-       this.text=text;
-        this.c=c;
+        this.text = text;
+        this.c = c;
     }
 
     public FloatingText(Supplier<String> textSupplier, Color c) {
@@ -62,14 +62,14 @@ public class FloatingText extends Group {
 
 
         if (imageSupplier != null) {
-            Image  image = new Image(TextureManager.getOrCreate(imageSupplier.get()));
+            Image image = new Image(TextureManager.getOrCreate(imageSupplier.get()));
             addActor(image);
 //            image.setPosition(origin.x, origin.y);
         }
-        if (textSupplier!=null)
-        text=textSupplier.get();
+        if (textSupplier != null)
+            text = textSupplier.get();
         Label label =
-         new Label(text, StyleHolder.getDefaultLabelStyle());
+                new Label(text, StyleHolder.getDefaultLabelStyle());
         label.setColor(c);
         addActor(label);
 

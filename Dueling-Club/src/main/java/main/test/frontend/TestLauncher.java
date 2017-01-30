@@ -16,7 +16,8 @@ public class TestLauncher {
 
 
     }
-        public static void launchDC(String[] args) {
+
+    public static void launchDC(String[] args) {
         ItemGenerator.setGenerationOn(true);
 
         String playerParty = null;

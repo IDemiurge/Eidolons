@@ -60,7 +60,8 @@ public class VisionManager implements GenericVisionManager {
 
     public static DequeImpl<Coordinates> getSpectrumCoordinates(Integer range,
                                                                 Integer side_penalty, Integer back_bonus, DC_Obj source, boolean vision,
-                                                                FACING_DIRECTION facing, boolean extended) {
+                                                                FACING_DIRECTION facing,
+                                                                boolean extended) {
         DequeImpl<Coordinates> list = new DequeImpl<>();
         DC_HeroObj unit = null;
         Coordinates orig = source.getCoordinates();
@@ -640,7 +641,7 @@ public class VisionManager implements GenericVisionManager {
         return null;
     }
 
-    private DequeImpl<Coordinates> getVisibleCoordinatesNormalSight(DC_HeroObj source,
+    public DequeImpl<Coordinates> getVisibleCoordinatesNormalSight(DC_HeroObj source,
                                                                     boolean extended) {
         DequeImpl<Coordinates> coordinates = source.getSightSpectrumCoordinates(extended);
         if (!coordinates.isEmpty())

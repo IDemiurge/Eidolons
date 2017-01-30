@@ -26,8 +26,8 @@ public class ActionAnim extends Anim {
     public ActionAnim(DC_ActiveObj active, AnimData animData, Supplier<String> imagePath,
                       ANIM_MOD[] anim_mods) {
         super(active, animData);
-        mods=anim_mods;
-        this.textureSupplier=()-> TextureManager.getOrCreate(imagePath.get());
+        mods = anim_mods;
+        this.textureSupplier = () -> TextureManager.getOrCreate(imagePath.get());
     }
 
     protected Action getAction() {
