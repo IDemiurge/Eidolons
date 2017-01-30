@@ -2,7 +2,7 @@ package main.libgdx.anims.std;
 
 import main.content.CONTENT_CONSTS.STD_BUFF_NAMES;
 import main.data.filesys.PathFinder;
-import main.entity.obj.specific.BuffObj;
+import main.entity.obj.BuffObj;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import main.libgdx.anims.AnimData;
@@ -40,7 +40,7 @@ public class BuffAnim extends ActionAnim {
         AnimData data = new AnimData();
 //    buff.get
         if (buff.getName().equals("Channeling")) {
-
+//rotating!
         }
         /*
         ablaze, frozen, bleeding, wounded, charmed,

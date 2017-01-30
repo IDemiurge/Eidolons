@@ -106,6 +106,7 @@ public class GameScreen implements Screen {
     private void initCamera() {
         camera = cam = new OrthographicCamera();
         cam.setToOrtho(false, 1600, 900);
+        ambienceStage.getViewport().setCamera(cam);
         gridStage.getViewport().setCamera(cam);
         animsStage.getViewport().setCamera(cam);
         phaseAnimsStage.getViewport().setCamera(cam);
@@ -118,6 +119,7 @@ public class GameScreen implements Screen {
 
     private void initEffects() {
         effects = new Stage();
+        ambienceStage = new Stage();
         particleManager = new ParticleManager(effects);
     }
 
@@ -144,8 +146,9 @@ public class GameScreen implements Screen {
         queue.setPosition(0, 0, Align.topLeft);
 
 
-        if (!FAST_DC.getGameLauncher().getFAST_MODE()
-                && !FAST_DC.getGameLauncher().getSUPER_FAST_MODE()) {
+        if (!FAST_DC.getGameLauncher().getSUPER_FAST_MODE()
+//                && !FAST_DC.getGameLauncher().getFAST_MODE()
+         ) {
             LogPanel ld = new LogPanel();
             guiStage.addActor(ld);
             ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
@@ -184,6 +187,7 @@ public class GameScreen implements Screen {
 
         guiStage.act(delta);
         gridStage.act(delta);
+        ambienceStage.act(delta);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
@@ -202,18 +206,19 @@ public class GameScreen implements Screen {
         batch.end();
 
         gridStage.draw();
-
+        ambienceStage.draw();
         effects.draw();
         if (DC_Game.game != null)
             if (DC_Game.game.getAnimationManager() != null)
                 DC_Game.game.getAnimationManager().updateAnimations();
+
         if (animMaster.isOn()) {
             phaseAnimsStage.draw();
             animsStage.draw();
         }
 
-
         guiStage.draw();
+
 
         if (dialogDisplay.getDialog() != null) {
             dialogStage.draw();
@@ -233,7 +238,7 @@ public class GameScreen implements Screen {
         effects.getViewport().update(width, height);
         gridStage.getViewport().update(width, height);
         guiStage.getViewport().update(width, height);
-
+ambienceStage.getViewport().setCamera(cam);
 /*        to disable pixelperfect
         float camWidth = MapView.TILE_WIDTH * 10.0f;
         float camHeight = camWidth * ((float)height / (float)width);

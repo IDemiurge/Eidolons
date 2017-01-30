@@ -27,7 +27,7 @@ import main.data.XList;
 import main.data.xml.XML_Reader;
 import main.entity.Ref;
 import main.entity.obj.*;
-import main.entity.obj.specific.BuffObj;
+import main.entity.obj.BuffObj;
 import main.entity.type.ObjType;
 import main.game.ai.logic.DC_Analyzer;
 import main.game.battlefield.*;
@@ -72,6 +72,14 @@ import main.test.debug.DebugMaster;
 import javax.swing.*;
 import java.util.*;
 
+/**
+ * contains references to everything that may be needed in scope of a single game
+ * TODO refactor - put data into GameState!
+ *
+ * init() should be called to create all Masters
+ * battleInit() is a reset method
+ * start() creates units and starts GameLoop (DC_TurnManager)
+ */
 public class DC_Game extends MicroGame {
     public static DC_Game game;
     protected DequeImpl<DC_HeroObj> units;

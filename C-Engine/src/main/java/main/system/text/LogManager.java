@@ -7,6 +7,7 @@ import main.content.ContentManager;
 import main.content.OBJ_TYPES;
 import main.content.parameters.PARAMETER;
 import main.data.XLinkedMap;
+import main.entity.DataModel;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
@@ -25,6 +26,7 @@ import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import java.util.*;
 
 public abstract class LogManager {
+
     public static final String WRITE_TO_TOP = "to top";
     static boolean dirty;
     protected List<String> topDisplayedEntries;
@@ -217,7 +219,7 @@ public abstract class LogManager {
     // return map;
     // }
 
-    private void addTextToDisplayed(String entry) {
+    protected void addTextToDisplayed(String entry) {
         getTopDisplayedEntries().add(entry);
         getDisplayedLines().addAll(TextWrapper.wrap(entry, EntryNodeMaster.getWrapLength(true)));
     }
@@ -469,7 +471,7 @@ public abstract class LogManager {
 
     }
 
-    public void logCounterModified(Entity entity, String name, int modValue) {
+    public void logCounterModified(DataModel entity, String name, int modValue) {
         Integer value = entity.getCounter(name);
         if (value > 0) {
             logInfo(modValue + " " + name + "s applied to " + entity.getNameIfKnown() + ", total "

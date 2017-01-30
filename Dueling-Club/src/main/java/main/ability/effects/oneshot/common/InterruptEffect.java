@@ -1,7 +1,7 @@
 package main.ability.effects.oneshot.common;
 
 import main.ability.effects.DC_Effect;
-import main.entity.obj.specific.BuffObj;
+import main.entity.obj.BuffObj;
 
 public class InterruptEffect extends DC_Effect {
 

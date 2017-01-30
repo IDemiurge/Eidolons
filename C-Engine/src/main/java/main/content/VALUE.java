@@ -17,7 +17,7 @@ import java.io.Serializable;
  *
  * @author JustMe
  */
-public interface VALUE extends Serializable {
+public interface VALUE extends Serializable { //TODO test serializable is needed
     String name();
 
     String getName();

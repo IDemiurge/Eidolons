@@ -6,9 +6,13 @@ import main.ability.effects.Effect;
 import main.entity.Entity;
 import main.entity.obj.top.DC_ActiveObj;
 import main.libgdx.GameScreen;
+import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimData;
 import main.libgdx.bf.BaseView;
+import main.libgdx.texture.TextureManager;
+
+import java.util.function.Supplier;
 
 
 /**
@@ -19,10 +23,23 @@ public class ActionAnim extends Anim {
         super(active, params);
     }
 
+    public ActionAnim(DC_ActiveObj active, AnimData animData, Supplier<String> imagePath,
+                      ANIM_MOD[] anim_mods) {
+        super(active, animData);
+        mods=anim_mods;
+        this.textureSupplier=()-> TextureManager.getOrCreate(imagePath.get());
+    }
+
     protected Action getAction() {
         return null;
     }
 
+    protected void add() {
+        addAction(getAction());
+        getAction().setTarget(this);
+        GameScreen.getInstance().getAnimsStage().addActor(this);
+        main.system.auxiliary.LogMaster.log(1, this + " added to stage");
+    }
     @Override
     protected void dispose() {
         super.dispose();
@@ -48,12 +65,6 @@ public class ActionAnim extends Anim {
 
     public void addAbilityAnims(Ability ability) {
 
-    }
-
-    public enum SPELL_ANIMS {
-        RAY,
-        NOVA,;
-        //emitter placement templates
     }
 
 

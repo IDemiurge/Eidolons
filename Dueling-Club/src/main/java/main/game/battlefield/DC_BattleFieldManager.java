@@ -2,20 +2,21 @@ package main.game.battlefield;
 
 import main.content.OBJ_TYPES;
 import main.entity.Entity;
-import main.entity.Ref;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
-import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates.DIRECTION;
-import main.game.player.Player;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Supposed to provide all Grid-relevant data and methods for changing it
+ * TODO extract gameManager into here!
+ */
 public class DC_BattleFieldManager extends BattleFieldManager {
 
     private DC_Game game;
@@ -53,17 +54,6 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         return true;
     }
 
-    @Override
-    public MicroObj createMapObject(int x, int y, ObjType type) {
-        MicroObj obj = new DC_HeroObj(type, x, y, Player.NEUTRAL, game, new Ref());
-        // state.addObject(obj);
-        getBattlefield().createObj(obj);
-        return obj;
-    }
-
-    public boolean cellHasSpaceForUnit(Entity unit, Coordinates c) {
-        return getBattlefield().cellHasSpaceForUnit(unit, c);
-    }
 
     public boolean canMoveOnto(Entity unit, Coordinates c) {
         return getBattlefield().canMoveOnto(unit, c);
@@ -75,20 +65,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         return true;
     }
 
-    @Override
-    public boolean placeUnit(MicroObj unit) {
-        return placeUnit(unit, unit.getX(), unit.getY());
-    }
 
-    public boolean hasDiagonalWall(Coordinates c) {
-        List<DIRECTION> list = getWallMap().get(c);
-        if (list != null)
-            for (DIRECTION d : list)
-                if (d != null)
-                    if (d.isDiagonal())
-                        return true;
-        return false;
-    }
 
     public void resetWallMap() {
         Map<Coordinates, DC_HeroObj> wallMap = new HashMap<Coordinates, DC_HeroObj>();

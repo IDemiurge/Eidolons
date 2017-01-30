@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.DC_Game;
 import main.libgdx.GameScreen;
 import main.system.GuiEventManager;
-import main.test.frontend.FAST_DC;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -24,8 +23,8 @@ public class PhaseAnimator extends Group {
     private boolean on;
 
     public PhaseAnimator(Stage stage) {
-        this.on =
-                FAST_DC.getGameLauncher().FAST_MODE || FAST_DC.getGameLauncher().SUPER_FAST_MODE;
+        this.on =false;
+//                FAST_DC.getGameLauncher().FAST_MODE || FAST_DC.getGameLauncher().SUPER_FAST_MODE;
 
         stage.addActor(this);
         setBounds(0, 0, (float) Gdx.graphics.getWidth(), (float)
@@ -71,7 +70,7 @@ public class PhaseAnimator extends Group {
 
     public void update() {
         if (!isOn()) return;
-//        removeAnims();
+        removeAnims();
         setBounds(0, 0, (float) Gdx.graphics.getWidth(), (float)
                 Gdx.graphics.getHeight());
 

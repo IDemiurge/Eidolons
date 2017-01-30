@@ -7,7 +7,6 @@ import main.client.cc.logic.UnitLevelManager;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.C_OBJ_TYPE;
 import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.obj.DC_HeroObj;
@@ -25,74 +24,32 @@ import main.game.player.Player;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
-import main.system.net.data.PartyData;
-import main.system.net.data.PartyData.PARTY_VALUES;
 import main.system.test.TestMasterContent;
 import main.test.frontend.FAST_DC;
 
 import java.util.*;
 
+/**
+ * parses data strings for various purposes:
+ * 1) create units on coordinates at any time (default game init method)
+ * Syntax: "x-y=UnitName, ..."
+ * Note: y==0 at the top
+ * 2) Set party units' positions
+ * 3) init direction/flip maps
+ *
+ *
+ */
 public class DC_ObjInitializer {
 
     public static final String OBJ_SEPARATOR = StringMaster.getAltSeparator();
     public static final String COORDINATES_OBJ_SEPARATOR = StringMaster.getAltPairSeparator();
     private static final String MULTI_DIRECTION_SUFFIX = "MULTI_DIRECTION-";
-    private static String[] infoVals = {"name", G_PROPS.GROUP.getName(), "Toughness"};
     private static DC_GameData data;
     private static boolean mapBlockMode;
     private static MapBlock block;
     private static Dungeon c_dungeon;
     private static Coordinates offset;
 
-    public static void initFlipMap(int z, Map<String, FLIP> flipMap) {
-        if (flipMap != null)
-            for (String data : flipMap.keySet()) {
-                Coordinates c = getCoordinatesFromObjString(data);
-                FLIP d = flipMap.get(data);
-                for (DC_HeroObj obj : DC_Game.game.getObjectsOnCoordinate(z, c, null, false, false)) {
-                    String name = getNameFromObjString(data);
-                    if (name.contains(MULTI_DIRECTION_SUFFIX)) {
-                        name = name.split(MULTI_DIRECTION_SUFFIX)[0];
-                    }
-                    if (!name.equals(obj.getName()))
-                        continue;
-                    Map<DC_HeroObj, FLIP> map = obj.getGame().getFlipMap().get(c);
-                    if (map == null) {
-                        map = new HashMap<>();
-                        obj.getGame().getFlipMap().put(c, map);
-                    }
-                    map.put(obj, d);
-                }
-            }
-    }
-
-    public static void initDirectionMap(int z, Map<String, DIRECTION> directionMap) {
-        for (String data : directionMap.keySet()) {
-            Coordinates c = getCoordinatesFromObjString(data);
-            DIRECTION d = directionMap.get(data);
-            for (DC_HeroObj obj : DC_Game.game.getObjectsOnCoordinate(z, c, null, false, false)) {
-
-                String name = getNameFromObjString(data);
-                if (name.contains(MULTI_DIRECTION_SUFFIX)) {
-                    name = name.split(MULTI_DIRECTION_SUFFIX)[0];
-                }
-                if (!name.equals(obj.getName()))
-                    continue;
-                Map<DC_HeroObj, DIRECTION> map = obj.getGame().getDirectionMap().get(c);
-                if (map == null) {
-                    map = new HashMap<>();
-                    obj.getGame().getDirectionMap().put(c, map);
-                }
-                map.put(obj, d);
-
-            }
-        }
-    }
-
-    // finish init of pools and such
-    public static void processData(Player player, PartyData data, DC_Game game) {
-        processUnitDataString(player, data.getValue(PARTY_VALUES.UNITS), game);
-    }
 
     public static void processUnitData(DC_GameData gameData, DC_Game game) {
         data = gameData;
@@ -105,7 +62,7 @@ public class DC_ObjInitializer {
         mapBlockMode = true;
         block = b;
         c_dungeon = dungeon;
-        Map<Coordinates, ? extends Obj> map = new HashMap<Coordinates, Obj>();
+        Map<Coordinates, ? extends Obj> map = new HashMap<>();
         try {
             map = processUnitDataStringToMap(Player.NEUTRAL, textContent, DC_Game.game);
         } catch (Exception e) {
@@ -417,9 +374,49 @@ public class DC_ObjInitializer {
 
     }
 
-    public static Collection<String> getDefInfoValues() {
+    public static void initFlipMap(int z, Map<String, FLIP> flipMap) {
+        if (flipMap != null)
+            for (String data : flipMap.keySet()) {
+                Coordinates c = getCoordinatesFromObjString(data);
+                FLIP d = flipMap.get(data);
+                for (DC_HeroObj obj : DC_Game.game.getObjectsOnCoordinate(z, c, null, false, false)) {
+                    String name = getNameFromObjString(data);
+                    if (name.contains(MULTI_DIRECTION_SUFFIX)) {
+                        name = name.split(MULTI_DIRECTION_SUFFIX)[0];
+                    }
+                    if (!name.equals(obj.getName()))
+                        continue;
+                    Map<DC_HeroObj, FLIP> map = obj.getGame().getFlipMap().get(c);
+                    if (map == null) {
+                        map = new HashMap<>();
+                        obj.getGame().getFlipMap().put(c, map);
+                    }
+                    map.put(obj, d);
+                }
+            }
+    }
 
-        return Arrays.asList(infoVals);
+    public static void initDirectionMap(int z, Map<String, DIRECTION> directionMap) {
+        for (String data : directionMap.keySet()) {
+            Coordinates c = getCoordinatesFromObjString(data);
+            DIRECTION d = directionMap.get(data);
+            for (DC_HeroObj obj : DC_Game.game.getObjectsOnCoordinate(z, c, null, false, false)) {
+
+                String name = getNameFromObjString(data);
+                if (name.contains(MULTI_DIRECTION_SUFFIX)) {
+                    name = name.split(MULTI_DIRECTION_SUFFIX)[0];
+                }
+                if (!name.equals(obj.getName()))
+                    continue;
+                Map<DC_HeroObj, DIRECTION> map = obj.getGame().getDirectionMap().get(c);
+                if (map == null) {
+                    map = new HashMap<>();
+                    obj.getGame().getDirectionMap().put(c, map);
+                }
+                map.put(obj, d);
+
+            }
+        }
     }
 
 }

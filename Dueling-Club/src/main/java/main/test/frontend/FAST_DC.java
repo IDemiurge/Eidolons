@@ -114,6 +114,9 @@ public class FAST_DC {
             if (args[0].equals("-GT")) {
                 forceRunGT = true;
             }
+            else if (StringMaster.isInteger(args[0])){
+                PresetLauncher.PRESET_OPTION = StringMaster.getInteger(args[0]);
+            }
         }
 /*        ClassLoader classLoader = FAST_DC.class.getClassLoader();
         File f = new File(classLoader.getResource("").getFile());

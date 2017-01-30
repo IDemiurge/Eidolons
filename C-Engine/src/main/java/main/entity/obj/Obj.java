@@ -10,7 +10,6 @@ import main.content.properties.G_PROPS;
 import main.data.ability.construct.AbilityConstructor;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.specific.BuffObj;
 import main.entity.type.ObjType;
 import main.game.Game;
 import main.game.battlefield.Coordinates;
@@ -24,7 +23,12 @@ import main.system.launch.CoreEngine;
 import java.util.LinkedList;
 import java.util.List;
 
-//this is for micro only
+/**
+ *
+ Represents an Entity on the Battlefield
+ Placed in a map in GameState upon creation
+
+ */
 public class Obj extends Entity {
     private HIGHLIGHT highlight;
     private boolean added;

@@ -8,7 +8,7 @@ import main.ability.effects.MoveEffect;
 import main.entity.Entity;
 import main.game.battlefield.Coordinates;
 import main.libgdx.anims.AnimData;
-import main.libgdx.anims.particles.ParticleEmitter;
+import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.system.GuiEventType;
 import main.system.ai.logic.target.EffectMaster;
@@ -70,7 +70,7 @@ public class MoveAnimation extends ActionAnim {
     }
 
     @Override
-    public List<ParticleEmitter> getEmitterList() {
+    public List<EmitterActor> getEmitterList() {
         return new LinkedList<>();
     }
 

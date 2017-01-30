@@ -18,7 +18,10 @@ import main.system.launch.CoreEngine;
 import java.util.*;
 import java.util.Map.Entry;
 
-//multi-threaded resource management 
+/**
+ * Contains utility methods for finding and managing ObjType's
+ *
+  */
 
 public class DataManager {
 
@@ -647,17 +650,12 @@ public class DataManager {
         return typesSubGroups;
     }
 
-    public static void setTypesSubGroups(Map<OBJ_TYPE, Map<String, List<String>>> typesSubGroups) {
-        DataManager.typesSubGroups = typesSubGroups;
-    }
+
 
     public static Class<?> getGroupingClass(OBJ_TYPE TYPE) {
         return EnumMaster.getEnumClass(TYPE.getGroupingKey().getName(), CONTENT_CONSTS.class);
     }
 
-    public static Class<?> getSubGroupClass(OBJ_TYPE TYPE) {
-        return EnumMaster.getEnumClass(TYPE.getSubGroupingKey().getName(), CONTENT_CONSTS.class);
-    }
 
     public static List<String> getTabsGroup(OBJ_TYPE TYPE) {
 
@@ -714,9 +712,7 @@ public class DataManager {
         return list;
     }
 
-    public static List<ObjType> getSubGroupsForTYPE_(OBJ_TYPE TYPE, String group) {
-        return toTypeList(getSubGroupsForTYPE(TYPE, group), TYPE);
-    }
+
 
     public static List<String> getSubGroupsForTYPE(OBJ_TYPE TYPE, String group) {
         if (TYPE instanceof C_OBJ_TYPE) {
@@ -827,9 +823,7 @@ public class DataManager {
         return list;
     }
 
-    public static List<ObjType> getSublings(ObjType type) {
-        return getSublings(type, getTypes(type.getOBJ_TYPE_ENUM()));
-    }
+
 
     public static List<ObjType> getSublings(ObjType type, List<ObjType> data) {
         if (getParent(type) == null)

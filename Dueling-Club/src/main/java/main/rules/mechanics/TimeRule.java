@@ -102,7 +102,6 @@ public class TimeRule {
             game.getLogManager().log(LOG.GAME_INFO,
                     "*** Time remaining for this round: " + timeRemaining, ENTRY_TYPE.ACTION);
         }
-        game.getState().setTimeRemaining(timeRemaining);
         return timeRemaining <= 0;
 
     }

@@ -5,6 +5,12 @@ import main.system.auxiliary.StringMaster;
 import java.lang.reflect.Constructor;
 import java.util.List;
 
+/**
+ * Represents either a
+ * :: public constructor of a relevant class
+ * :: primitive value
+ * :: enum const
+ */
 public class AE_Item implements Comparable<AE_Item> {
 
     public static final String SEPARATOR = StringMaster.getPairSeparator();

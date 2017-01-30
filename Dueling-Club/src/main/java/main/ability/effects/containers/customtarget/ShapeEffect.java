@@ -49,8 +49,7 @@ public abstract class ShapeEffect extends SpecialTargetingEffect {
         Coordinates baseCoordinate = getBaseCoordinate();
         int base_width = radius.getInt(ref);
         int distance = this.distance.getInt(ref);
-
-        Set<Coordinates> coordinates = DC_PositionMaster.getShapedCoordinates(baseCoordinate,
+ coordinates = DC_PositionMaster.getShapedCoordinates(baseCoordinate,
                 getFacing(), base_width, distance, getShape());
 
         Collection<Obj> objects = game.getUnitsForCoordinates(coordinates);
@@ -72,6 +71,7 @@ public abstract class ShapeEffect extends SpecialTargetingEffect {
         setFilteringConditions(new Conditions());
         targeting.setConditions(getFilteringConditions());
     }
+
 
     protected abstract SHAPES getShape();
 

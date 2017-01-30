@@ -93,16 +93,21 @@ public class AttackAnim extends ActionAnim {
 
     @Override
     public void draw(Batch batch, float alpha) {
+        debug();
         act(Gdx.graphics.getDeltaTime());
         Texture texture = getTexture();
         batch.draw(texture, this.getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
-                this.getHeight(), this.getScaleX(), this.getScaleY(), initialAngle + this.getRotation(), 0, 0,
-                texture.getWidth(), texture.getHeight(), flipX, flipY);
+         this.getHeight(), this.getScaleX(), this.getScaleY(), initialAngle + this.getRotation(), 0, 0,
+         texture.getWidth(), texture.getHeight(), flipX, flipY);
+
+        batch.draw(texture, 543, 456, this.getOriginX(), this.getOriginY(), this.getWidth(),
+         this.getHeight(), this.getScaleX(), this.getScaleY(), initialAngle + this.getRotation(), 0, 0,
+         texture.getWidth(), texture.getHeight(), flipX, flipY);
 
     }
 
     protected boolean isDrawTexture() {
-        return false;
+        return true;
     }
 
     //entity params?
@@ -110,10 +115,7 @@ public class AttackAnim extends ActionAnim {
     @Override
     public void start() {
         super.start();
-        main.system.auxiliary.LogMaster.log(1, this + " ");
-        GameScreen.getInstance().getAnimsStage().addActor(this);
-        addAction(getAction());
-        getAction().setTarget(this);
+       add();
     }
 
     @Override
@@ -155,16 +157,14 @@ public class AttackAnim extends ActionAnim {
 
     @Override
     protected Action getAction() {
-        if (sequence != null)  //reset sometimes?
-            return sequence;
+//        if (sequence != null)  //reset sometimes?
+//            return sequence;
         sequence = new SequenceAction();
         int i = 0;
         float totalDuration = 0;
         for (ATK_ANIMS anim : anims) {
             for (float angle : anim.targetAngles) {
                 List<Pair<MoveByAction, RotateByAction>> swings = new LinkedList<>();
-
-
                 float duration = anim.durations[i];
                 totalDuration += duration;
                 float x = anim.offsetsX[i];
@@ -173,7 +173,6 @@ public class AttackAnim extends ActionAnim {
                 RotateByAction mainRotate = getRotateAction(angle, duration);
 
                 swings.add(new Pair<>(mainMove, mainRotate));
-
                 swings.forEach(swing -> {
                     sequence.addAction(new ParallelAction(swing.getKey(), swing.getValue()));
                 });
@@ -182,16 +181,16 @@ public class AttackAnim extends ActionAnim {
 
         }
 
+        this.duration = totalDuration;
+        return sequence;
+    }
+
 /*
 delayAction
 scale
 size - elongate
  */
-        //TODO back?
-        this.duration = totalDuration;
-        return sequence;
-    }
-
+    //TODO back?
 
     protected MoveByAction getMoveAction(float x, float y, float duration) {
         MoveByAction mainMove = new MoveByAction();

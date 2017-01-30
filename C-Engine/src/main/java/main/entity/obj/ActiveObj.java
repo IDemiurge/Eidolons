@@ -5,6 +5,9 @@ import main.elements.targeting.Targeting;
 import main.entity.OBJ;
 import main.system.graphics.ANIM;
 
+/**
+ *
+ */
 public interface ActiveObj extends Cancellable, Active, OBJ {
 
     void playCancelSound();

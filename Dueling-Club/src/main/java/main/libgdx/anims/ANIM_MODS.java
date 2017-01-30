@@ -32,7 +32,7 @@ public class ANIM_MODS {
     }
 
     public enum OBJ_ANIMS implements ANIM_MOD {
-        SHAKE,
+        SHAKE, FADE_IN,
     }
 
     public enum COLOR_ANIMS implements ANIM_MOD {

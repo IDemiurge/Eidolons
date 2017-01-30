@@ -1,7 +1,6 @@
 package main.libgdx.anims.particles;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.system.GuiEventManager;
@@ -30,18 +29,6 @@ public class ParticleManager extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        ParticleEffect particleEffect;
-        for (ParticleInterface actor : emitterMap.getEmitters()) {
-            particleEffect = actor.getEffect();
-            particleEffect.update(parentAlpha);
-            particleEffect.draw(batch, parentAlpha);
-
-            if (particleEffect.isComplete()) {
-                if (actor.isContinuous())
-                    particleEffect.reset();
-                else particleEffect.dispose();
-            }
-        }
 
 
         super.draw(batch, parentAlpha);
@@ -49,9 +36,6 @@ public class ParticleManager extends Actor {
 
     @Override
     public void act(float delta) {
-        for (ParticleInterface actor : emitterMap.getEmitters()) {
-
-        }
 
         super.act(delta);
     }

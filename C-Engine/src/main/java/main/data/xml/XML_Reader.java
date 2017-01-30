@@ -27,6 +27,10 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
 
+/**
+ * contains methods for reading Types' xml files, constructing ObjType's and putting them into maps
+ * also managed dynamic reload of hero types to avoid data overwriting between HC and AV
+ */
 public class XML_Reader {
     final static DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
     // private static final Logger = Logger.getLogger(XML_Reader.class);

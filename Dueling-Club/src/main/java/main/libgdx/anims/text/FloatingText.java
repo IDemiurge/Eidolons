@@ -19,15 +19,14 @@ import java.util.function.Supplier;
  */
 public class FloatingText extends Group {
 
+    private   String text;
+    private   Color c;
     private Supplier<String> textSupplier;
-    private Label label;
-    private Image image;
     private Supplier<String> imageSupplier;
 
     public FloatingText(String text, Color c) {
-        label =
-                new Label(text, StyleHolder.getDefaultLabelStyle());
-        label.setColor(c);
+       this.text=text;
+        this.c=c;
     }
 
     public FloatingText(Supplier<String> textSupplier, Color c) {
@@ -36,8 +35,7 @@ public class FloatingText extends Group {
     }
 
     public FloatingText(Supplier<String> textSupplier, Supplier<String> imageSupplier, Color c) {
-        this(textSupplier.get(), c);
-        this.textSupplier = textSupplier;
+        this(textSupplier, c);
         this.imageSupplier = imageSupplier;
     }
 
@@ -64,13 +62,15 @@ public class FloatingText extends Group {
 
 
         if (imageSupplier != null) {
-            image = new Image(TextureManager.getOrCreate(imageSupplier.get()));
+            Image  image = new Image(TextureManager.getOrCreate(imageSupplier.get()));
             addActor(image);
 //            image.setPosition(origin.x, origin.y);
         }
-
-
-        label.setText(textSupplier.get());
+        if (textSupplier!=null)
+        text=textSupplier.get();
+        Label label =
+         new Label(text, StyleHolder.getDefaultLabelStyle());
+        label.setColor(c);
         addActor(label);
 
         setPosition(origin.x, origin.y);

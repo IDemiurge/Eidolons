@@ -1,7 +1,6 @@
 package main.game.battlefield;
 
 import main.entity.obj.MicroObj;
-import main.entity.type.ObjType;
 import main.game.GameManager;
 import main.game.MicroGame;
 import main.game.MicroGameState;
@@ -22,12 +21,6 @@ public abstract class BattleFieldManager {
     }
 
     public abstract Coordinates pickCoordinate();
-
-    public boolean placeUnit(MicroObj unit) {
-        return placeUnit(unit, unit.getX(), unit.getY());
-    }
-
-    public abstract MicroObj createMapObject(int x, int y, ObjType type);
 
     public boolean placeUnit(MicroObj unit, int x, int y) {
         getBattlefield().createObj(unit);

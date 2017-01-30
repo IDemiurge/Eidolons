@@ -3,6 +3,7 @@ package main.libgdx.anims;
 import main.ability.effects.DealDamageEffect;
 import main.ability.effects.Effect;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
+import main.content.CONTENT_CONSTS.TARGETING_MODE;
 import main.content.CONTENT_CONSTS2.SFX;
 import main.content.PARAMS;
 import main.content.PROPS;
@@ -14,12 +15,14 @@ import main.data.filesys.PathFinder;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.DC_SpellObj;
-import main.entity.obj.specific.BuffObj;
+import main.entity.obj.BuffObj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
-import main.libgdx.anims.particles.ParticleEmitter;
+import main.libgdx.anims.particles.EmitterActor;
+import main.libgdx.anims.particles.EmitterPools;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.anims.std.*;
+import main.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.FileManager;
 import main.system.auxiliary.LogMaster;
@@ -34,21 +37,21 @@ public class AnimationConstructor {
     VALUE[] anim_vals = {
 //     PROPS.ANIM_MODS,
 //
-            PROPS.ANIM_SPRITE_CAST,
-            PROPS.ANIM_SPRITE_RESOLVE,
-            PROPS.ANIM_SPRITE_MAIN,
-            PROPS.ANIM_SPRITE_IMPACT,
-            PROPS.ANIM_SPRITE_AFTEREFFECT,
-            PROPS.ANIM_MISSILE_SPRITE,
-            PROPS.ANIM_MODS_SPRITE,
-            PROPS.ANIM_MISSILE_SFX,
+     PROPS.ANIM_SPRITE_CAST,
+     PROPS.ANIM_SPRITE_RESOLVE,
+     PROPS.ANIM_SPRITE_MAIN,
+     PROPS.ANIM_SPRITE_IMPACT,
+     PROPS.ANIM_SPRITE_AFTEREFFECT,
+     PROPS.ANIM_MISSILE_SPRITE,
+     PROPS.ANIM_MODS_SPRITE,
+     PROPS.ANIM_MISSILE_SFX,
 //
-            PROPS.ANIM_SFX_CAST,
-            PROPS.ANIM_SFX_RESOLVE,
-            PROPS.ANIM_SFX_MAIN,
-            PROPS.ANIM_SFX_IMPACT,
-            PROPS.ANIM_SFX_AFTEREFFECT,
-            PROPS.ANIM_MODS_SFX,
+     PROPS.ANIM_SFX_CAST,
+     PROPS.ANIM_SFX_RESOLVE,
+     PROPS.ANIM_SFX_MAIN,
+     PROPS.ANIM_SFX_IMPACT,
+     PROPS.ANIM_SFX_AFTEREFFECT,
+     PROPS.ANIM_MODS_SFX,
 //
 //
 //     PROPS.ANIM_SPRITE_COLOR,
@@ -67,8 +70,8 @@ public class AnimationConstructor {
 //     PARAMS.ANIM_LIGHT_TARGET,
 //
 //     PARAMS.ANIM_MAGNITUDE,
-            PARAMS.ANIM_SPEED,
-            PARAMS.ANIM_FRAME_DURATION,
+     PARAMS.ANIM_SPEED,
+     PARAMS.ANIM_FRAME_DURATION,
 //     PARAMS.ANIM_SIZE,
     };
     Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
@@ -113,7 +116,7 @@ public class AnimationConstructor {
         AnimData data = new AnimData();
         for (VALUE val : anim_vals) {
             if (val instanceof PARAMETER || //TODO add filtering
-                    StringMaster.contains(val.getName(), part.toString()))
+             StringMaster.contains(val.getName(), part.toString()))
                 data.add(val, active.getValue(val));
         }
         return getPartAnim(data, active, part);
@@ -150,13 +153,28 @@ public class AnimationConstructor {
 //                if (lethal)
 //                return new DeathAnim(active, data);
         }
-        if (active.isSpell())
+        if (active.isSpell()) {
             if (active.isMissile()) {
                 if (part == ANIM_PART.IMPACT)
                     return new HitAnim(active, data);
-
             }
+            SPELL_ANIMS template = getTemplateFromTargetMode(active.getTargetingMode());
+            return new SpellAnim(active, data, template);
+        }
         return new ActionAnim(active, data);
+    }
+
+    private SPELL_ANIMS getTemplateFromTargetMode(TARGETING_MODE targetingMode) {
+        switch (targetingMode) {
+            case NOVA:
+            case RAY:
+            case WAVE:
+            case BLAST:
+            case SPRAY:
+                return new EnumMaster<SPELL_ANIMS>().retrieveEnumConst(SPELL_ANIMS.class, targetingMode.name());
+        }
+        return null;
+
     }
 
     private boolean initAnim(AnimData data,
@@ -164,21 +182,20 @@ public class AnimationConstructor {
         boolean exists = false;
         List<SpriteAnimation> sprites = new LinkedList<>();
         for (String path :
-                StringMaster.openContainer(data.getValue(ANIM_VALUES.SPRITES))) {
+         StringMaster.openContainer(data.getValue(ANIM_VALUES.SPRITES))) {
             sprites.add(new SpriteAnimation(path));
             exists = true;
         }
-        List<ParticleEmitter> list = new LinkedList<>();
+        List<EmitterActor> list = new LinkedList<>();
         for (String path :
-                StringMaster.openContainer(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS))) {
-            ParticleEmitter emitter = null;
+         StringMaster.openContainer(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS))) {
+            EmitterActor emitter = null;
             SFX sfx = new EnumMaster<SFX>().
-                    retrieveEnumConst(SFX.class, path);
+             retrieveEnumConst(SFX.class, path);
             if (sfx == null)
-                emitter = new ParticleEmitter(path);
+                emitter =  EmitterPools.getEmitterActor(path);
             else
-                emitter = new ParticleEmitter(
-                        sfx);
+                emitter = EmitterPools.getEmitterActor(sfx);
             if (emitter != null)
                 list.add(emitter
                 );
@@ -226,13 +243,13 @@ public class AnimationConstructor {
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, "EFFECT ANIM CONSTRUCTED FOR " + e + e.getRef());
         Anim effectAnim = EffectAnimCreator.getEffectAnim(e);
         initAnim(effectAnim.getData(), (DC_ActiveObj) effectAnim.getActive(),
-                effectAnim.getPart(),
-                effectAnim);
+         effectAnim.getPart(),
+         effectAnim);
         if (!isValid(effectAnim)) return null;
         CompositeAnim a = new CompositeAnim();
         a.add(
-                effectAnim.getPart()
-                , effectAnim);
+         effectAnim.getPart()
+         , effectAnim);
 
         return a;
     }
@@ -255,6 +272,7 @@ public class AnimationConstructor {
         AnimData data = new AnimData();
 
         String partPath = part.toString();
+        if (part == ANIM_PART.MAIN) partPath = "missile";
         String size = "";
         if (spell.getCircle() > 4)
             size = " huge";
@@ -262,19 +280,18 @@ public class AnimationConstructor {
             size = " large";
         if (spell.getCircle() < 2)
             size = " small";
-        if (part == ANIM_PART.MAIN) partPath = "missile";
 
         ANIM_VALUES[] values = {
-                ANIM_VALUES.SPRITES,
-                ANIM_VALUES.PARTICLE_EFFECTS,
+         ANIM_VALUES.SPRITES,
+         ANIM_VALUES.PARTICLE_EFFECTS,
         };
 //         getValuesForPart(part);
         PROPERTY[] props = {
-                G_PROPS.NAME,
-                G_PROPS.ASPECT,
-                G_PROPS.SPELL_TYPE,
-                G_PROPS.SPELL_GROUP,
-                PROPS.DAMAGE_TYPE,
+         G_PROPS.NAME,
+         G_PROPS.ASPECT,
+         G_PROPS.SPELL_TYPE,
+         G_PROPS.SPELL_GROUP,
+         PROPS.DAMAGE_TYPE,
         };
         for (ANIM_VALUES s : values) {
 
@@ -282,16 +299,16 @@ public class AnimationConstructor {
             String file = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
 
             if (file == null) {
-                if (!isFindClosestResource(part))
+                if (!isFindClosestResource(part, s))
                     continue;
                 file = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
                 if (file == null)
                     continue;
             }
             String val = StringMaster.buildPath(
-                    partPath, StringMaster.removePreviousPathSegments(file, pathRoot));
+             partPath, StringMaster.removePreviousPathSegments(file, pathRoot));
             main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-                    "AUTO ANIM CONSTRUCTION FOR " + spell + "-" + part + ": " + s + " is set automatically to " + val);
+             "AUTO ANIM CONSTRUCTION FOR " + spell + "-" + part + ": " + s + " is set automatically to " + val);
             data.setValue(s, val);
         }
 //        for (String substring : StringMaster.openContainer(
@@ -309,7 +326,7 @@ public class AnimationConstructor {
                                         PROPERTY[] props, String pathRoot,
                                         boolean closest) {
         String path = StringMaster.buildPath(
-                pathRoot, partPath);
+         pathRoot, partPath);
 //        spell.getTargeting();
         String file = null;
         for (PROPERTY p : props) {
@@ -361,10 +378,12 @@ public class AnimationConstructor {
         return false;
     }
 
-    public boolean isFindClosestResource(ANIM_PART part) {
+    public boolean isFindClosestResource(ANIM_PART part, ANIM_VALUES val) {
+
         switch (part) {
             case MAIN:
-                return true;
+                if (val == ANIM_VALUES.PARTICLE_EFFECTS)
+                    return true;
         }
         return findClosestResource;
     }

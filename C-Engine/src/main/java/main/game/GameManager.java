@@ -15,7 +15,7 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.Attachment;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
-import main.entity.obj.specific.BuffObj;
+import main.entity.obj.BuffObj;
 import main.entity.type.BuffType;
 import main.entity.type.ObjType;
 import main.game.ai.AI;

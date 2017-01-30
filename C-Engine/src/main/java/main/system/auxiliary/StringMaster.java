@@ -1405,6 +1405,10 @@ public class StringMaster {
         return prefix + p;
     }
 
+    public static String wrap(String wrap, String string) {
+        return wrap+string+wrap;
+    }
+
     public enum STD_TYPE_NAMES {
         Cell
 

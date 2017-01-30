@@ -1,9 +1,6 @@
 package main.test.frontend;
 
 import main.client.cc.logic.items.ItemGenerator;
-import main.content.OBJ_TYPES;
-import main.content.PROPS;
-import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.battlefield.UnitGroupMaster;
@@ -12,7 +9,14 @@ import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 
 public class TestLauncher {
 
-    public static void launchDC(String[] args) {
+    public static void main(String[] args) {
+        /*
+        init GameLauncher from args!
+         */
+
+
+    }
+        public static void launchDC(String[] args) {
         ItemGenerator.setGenerationOn(true);
 
         String playerParty = null;
