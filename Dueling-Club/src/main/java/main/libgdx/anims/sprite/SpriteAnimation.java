@@ -50,7 +50,7 @@ public class SpriteAnimation extends Animation {
         stateTime += Gdx.graphics.getDeltaTime();
         updateSpeed();
         boolean looping = this.looping || loops > cycles || loops == 0;
-        TextureRegion currentFrame = getKeyFrame(stateTime, looping);
+        TextureRegion currentFrame = (TextureRegion) getKeyFrame(stateTime, looping);
 
 
         if (currentFrame == null) {
