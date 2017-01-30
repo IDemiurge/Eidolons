@@ -33,7 +33,7 @@ public class EmitterPresetMaster {
     public String getImagePath(String path) {
 
         return
-         getValueFromGroup(path, EMITTER_VALUE_GROUP.Image_Path, null);
+                getValueFromGroup(path, EMITTER_VALUE_GROUP.Image_Path, null);
     }
 
     public String getValueFromGroup(String path, EMITTER_VALUE_GROUP group, String value) {
@@ -59,10 +59,10 @@ public class EmitterPresetMaster {
     public EmitterActor getModifiedEmitter(String path,
                                            boolean write, String... modvals) {
 
-        String newName =StringMaster.getLastPathSegment(path) +" modified";
+        String newName = StringMaster.getLastPathSegment(path) + " modified";
 //crop format!
 
-            clone(path, newName);
+        clone(path, newName);
 
         String data = getData(path);
         for (String sub : modvals) {
@@ -81,11 +81,11 @@ public class EmitterPresetMaster {
         }
         path = StringMaster.cropLastPathSegment(path);
 
-            XML_Writer.write(data, path, newName);
+        XML_Writer.write(data, path, newName);
 
         String newPath = path + newName;
         EmitterActor actor = new EmitterActor(newPath);
-        if (!write){
+        if (!write) {
             //delete
         }
         return actor;
@@ -102,7 +102,7 @@ public class EmitterPresetMaster {
                 data = data.replace(substring, newString);
             }
         }
-        data =  data.replace(getGroupText(data, group), text);
+        data = data.replace(getGroupText(data, group), text);
         return data;
     }
 
@@ -113,11 +113,11 @@ public class EmitterPresetMaster {
             if (lowHighMinMax.contains(p.getKey().toString())) {
                 double newValue = StringMaster.getDouble(p.getValue()) + offset;
                 text = text.replace(p.getKey() + value_separator + p.getValue(),
-                 p.getKey() + value_separator + String.valueOf(
-                  newValue));
+                        p.getKey() + value_separator + String.valueOf(
+                                newValue));
             }
         }
-        data =  data.replace(getGroupText(data, group), text);
+        data = data.replace(getGroupText(data, group), text);
         return data;
     }
 

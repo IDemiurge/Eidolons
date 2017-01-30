@@ -16,7 +16,6 @@ import main.elements.conditions.Conditions;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.*;
-import main.entity.obj.BuffObj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.entity.type.BuffType;
 import main.entity.type.ObjType;
@@ -246,7 +245,7 @@ public class DC_GameManager extends GameManager {
 
         // checkForChanges();
     }
- 
+
 
     private void checkSelectedObj(Obj obj) {
         boolean selectionObj = selectingSet.contains(obj);
@@ -748,7 +747,7 @@ public class DC_GameManager extends GameManager {
             bfBuilder = getGame().getBattleField().getBuilder();
         return bfBuilder;
     }
-  
+
     public DC_HeroObj getActiveObj() {
         if (game.isStarted())
             if (selectedActiveObj == null) {

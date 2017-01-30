@@ -19,11 +19,6 @@ public class EmitterController {
         GameScreen.getInstance().getAnimsStage().addActor(actor);
 
 
-
-
-
-
-
     }
 
     public static void modify() {

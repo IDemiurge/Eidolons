@@ -11,17 +11,18 @@ import java.util.Map;
  */
 public class EmitterPools {
 
-  private static  Map<String, Pool<EmitterActor>> poolMap=new HashMap<>();
+    private static Map<String, Pool<EmitterActor>> poolMap = new HashMap<>();
 
 
     public static EmitterActor getEmitterActor(SFX sfx) {
         return getEmitterActor(sfx.path);
     }
-        public static EmitterActor getEmitterActor(String path) {
+
+    public static EmitterActor getEmitterActor(String path) {
         final String finalPath = path.toLowerCase();
         Pool<EmitterActor> pool = poolMap.get(finalPath);
         if (pool == null) {
-            pool=     new Pool<EmitterActor>() {
+            pool = new Pool<EmitterActor>() {
                 @Override
                 protected EmitterActor newObject() {
                     return new EmitterActor(finalPath);
@@ -34,8 +35,8 @@ public class EmitterPools {
 
     public static void freeEmitter(EmitterActor e) {
         Pool<EmitterActor> pool = poolMap.get(e.path.toLowerCase());
-        if (pool==null )
-            return ;
+        if (pool == null)
+            return;
         pool.free(e);
 
     }

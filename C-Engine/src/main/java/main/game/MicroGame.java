@@ -105,7 +105,6 @@ public abstract class MicroGame extends Game {
     }
 
 
-
     public MicroObj createSpell(ObjType type, Player player, Ref ref) {
         return mngr.createSpell(type, player, ref);
     }

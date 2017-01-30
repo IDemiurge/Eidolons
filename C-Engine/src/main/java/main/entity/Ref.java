@@ -11,18 +11,22 @@ import main.entity.type.ObjType;
 import main.game.Game;
 import main.game.event.Event;
 import main.game.player.Player;
-import main.system.auxiliary.*;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.SearchMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 import main.system.net.data.DataUnit;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
 
 /**
- Stores all the relevant ID's. Used to find proper Entities with getObj(KEYS key).
-
- Ref object is passed on activate(Ref ref) from the source entity to Active entity.
- To activate on a given object, set ref’s {target} key, otherwise Active's Targeting will select()
+ * Stores all the relevant ID's. Used to find proper Entities with getObj(KEYS key).
+ * <p>
+ * Ref object is passed on activate(Ref ref) from the source entity to Active entity.
+ * To activate on a given object, set ref’s {target} key, otherwise Active's Targeting will select()
  */
 public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
     public static final String SOURCE = "source";
@@ -165,8 +169,7 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
     protected void cloneMaps(Ref ref) {
         // no deep copy required here
         values = new HashMap<>(ref.getValues());
-           }
-
+    }
 
 
     protected Ref checkForRefReplacement() {
@@ -270,7 +273,6 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
     }
 
 
-
     protected String formatKeyString(String key) {
         // return key;
         return key.toUpperCase();
@@ -371,15 +373,17 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
             return null;
         }
     }
+
     public Obj getLastRemovedObj(KEYS string) {
         try {
             return game.getObjectById(StringMaster.getInteger(getRemovedValues()
-             .get(string.toString())));
+                    .get(string.toString())));
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
+
     public ObjType getType(String string) {
         try {
             return game.getTypeById(getId(string));

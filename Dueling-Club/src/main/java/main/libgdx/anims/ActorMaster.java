@@ -24,19 +24,20 @@ public class ActorMaster {
         aa.setTarget(actor);
 
     }
-    public static  MoveToAction getMoveToAction(
-     Coordinates destination, EmitterActor actor, int pixelsPerSecond) {
+
+    public static MoveToAction getMoveToAction(
+            Coordinates destination, EmitterActor actor, int pixelsPerSecond) {
 
         MoveToAction action = new MoveToAction();
         Vector2 v = GameScreen.getInstance().getGridPanel().
-         getVectorForCoordinateWithOffset(destination);
-        action.setPosition(v.x,v.y);
+                getVectorForCoordinateWithOffset(destination);
+        action.setPosition(v.x, v.y);
         Float duration = (float) (Math.sqrt(v.x * v.x + v.y * v.y) / pixelsPerSecond);
         action.setDuration(
-         duration);
-main.system.auxiliary.LogMaster.log(1,"MoveTo " +
- v +
- " duration: " +duration);
+                duration);
+        main.system.auxiliary.LogMaster.log(1, "MoveTo " +
+                v +
+                " duration: " + duration);
         actor.addAction(action);
         action.setTarget(actor);
         return action;
@@ -47,7 +48,7 @@ main.system.auxiliary.LogMaster.log(1,"MoveTo " +
         action.setAlpha(0);
         action.setDuration(3);
         actor.addAction(action);
-        action.setTarget(actor   );
+        action.setTarget(actor);
         return action;
     }
 }

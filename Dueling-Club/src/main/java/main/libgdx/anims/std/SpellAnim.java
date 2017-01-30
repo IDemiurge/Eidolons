@@ -45,21 +45,25 @@ public class SpellAnim extends ActionAnim {
     }
 
     private void adjustAngle() {
-        emitterList.forEach(e->{
-            if ( e.getTarget()!=null ){
-            float offset =1* (float) GeometryMaster.getAngle(
-             getActive().getOwnerObj().getCoordinates(),
+        emitterList.forEach(e -> {
+            if (e.getTarget() != null) {
+                float offset = 1 * (float) GeometryMaster.getAngle(
+                        getActive().getOwnerObj().getCoordinates(),
 //             getRef().getTargetObj().getCoordinates()
-            e.getTarget());
-           offset+=90;
-            main.system.auxiliary.LogMaster.log(1,getActive()+" is offset by " +offset);
-            e.getEffect().offsetAngle(offset);}
+                        e.getTarget());
+                offset += 90;
+                main.system.auxiliary.LogMaster.log(1, getActive() + " is offset by " + offset);
+                e.getEffect().offsetAngle(offset);
+            }
         });
     }
 
 
     public void applyTemplate() {
-        if (template != null){         applyTemplateAngles();return;}
+        if (template != null) {
+            applyTemplateAngles();
+            return;
+        }
         Effect effect = EffectMaster.getFirstEffectOfClass(getActive(), SpecialTargetingEffect.class);
         if (effect != null) {
             SpecialTargetingEffect targetEffect = (SpecialTargetingEffect) effect;
@@ -74,23 +78,19 @@ public class SpellAnim extends ActionAnim {
         }
 
 
-
-       
-
     }
-
 
 
     public void applyTemplateForCoordinates(Set<Coordinates> coordinates) {
         List<EmitterActor> list = new LinkedList<>();
         coordinates.forEach(c ->
-         {
-             for (EmitterActor e : emitterList) {
-                 if (e.isGenerated()) continue;
+                {
+                    for (EmitterActor e : emitterList) {
+                        if (e.isGenerated()) continue;
 //                 double angle = GeometryMaster.getAngle(c,
 //                  getActive().getOwnerObj().getCoordinates());
-                 //relative vs absolute
-                 EmitterActor actor  = new EmitterActor(e.path);
+                        //relative vs absolute
+                        EmitterActor actor = new EmitterActor(e.path);
 //                 actor.getEffect().offsetAngle((float) angle);
 
 //                 try {
@@ -102,21 +102,22 @@ public class SpellAnim extends ActionAnim {
 //                 }
 
 
-                 createAndAddEmitterActions(actor, c);
-actor.debug();
-                 list.add(actor);
-                 actor.setTarget(c);
-                 actor.setPosition(getX(), getY());
-                 actor.setAttached(false);
-                 actor.setGenerated(true);
-                 GameScreen.getInstance().getAnimsStage().addActor(actor);
-             }
-         }
+                        createAndAddEmitterActions(actor, c);
+                        actor.debug();
+                        list.add(actor);
+                        actor.setTarget(c);
+                        actor.setPosition(getX(), getY());
+                        actor.setAttached(false);
+                        actor.setGenerated(true);
+                        GameScreen.getInstance().getAnimsStage().addActor(actor);
+                    }
+                }
         );
 
         list.forEach(a -> emitterList.add(a));
 
     }
+
     private void createAndAddEmitterActions(EmitterActor actor, Coordinates c) {
         MoveToAction action = ActorMaster.getMoveToAction(c, actor, pixelsPerSecond);
         if (action.getDuration() > this.duration) this.duration = action.getDuration();
@@ -146,6 +147,7 @@ actor.debug();
         }
         list.forEach(a -> emitterList.add(a));
     }
+
     private Action createAndAddEmitterActions(EmitterActor actor, int angle, SPELL_ANIMS template) {
         Action action = new SequenceAction();
         actor.addAction(action);
@@ -174,7 +176,7 @@ actor.debug();
         action.setTarget(actor);
         Float duration = (float) (Math.sqrt(x * x + y * y) / pixelsPerSecond);
         action.setDuration(
-         duration);
+                duration);
         if (duration > this.duration) this.duration = duration;
 
         ActorMaster.addRemoveAfter(actor);
@@ -192,14 +194,14 @@ actor.debug();
     public enum SPELL_ANIMS {
         RAY(activeObj -> 1),
         BLAST(active -> (active.getIntParam(G_PARAMS.RADIUS) == 0) ? 1 :
-         active.getRef().getTargetObj().getCoordinates().
-          getAdjacentCoordinates().size()),
+                active.getRef().getTargetObj().getCoordinates().
+                        getAdjacentCoordinates().size()),
         SPRAY(active -> {
             List<Coordinates> list = active.getOwnerObj().getCoordinates().
-             getAdjacentCoordinates();
+                    getAdjacentCoordinates();
             list.removeIf(coordinates ->
-             FacingMaster.getSingleFacing(active.getOwnerObj().getFacing(),
-              active.getOwnerObj().getCoordinates(), coordinates) != FACING_SINGLE.IN_FRONT);
+                    FacingMaster.getSingleFacing(active.getOwnerObj().getFacing(),
+                            active.getOwnerObj().getCoordinates(), coordinates) != FACING_SINGLE.IN_FRONT);
             return list.size();
         }
         ),

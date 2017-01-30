@@ -97,12 +97,12 @@ public class AttackAnim extends ActionAnim {
         act(Gdx.graphics.getDeltaTime());
         Texture texture = getTexture();
         batch.draw(texture, this.getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
-         this.getHeight(), this.getScaleX(), this.getScaleY(), initialAngle + this.getRotation(), 0, 0,
-         texture.getWidth(), texture.getHeight(), flipX, flipY);
+                this.getHeight(), this.getScaleX(), this.getScaleY(), initialAngle + this.getRotation(), 0, 0,
+                texture.getWidth(), texture.getHeight(), flipX, flipY);
 
         batch.draw(texture, 543, 456, this.getOriginX(), this.getOriginY(), this.getWidth(),
-         this.getHeight(), this.getScaleX(), this.getScaleY(), initialAngle + this.getRotation(), 0, 0,
-         texture.getWidth(), texture.getHeight(), flipX, flipY);
+                this.getHeight(), this.getScaleX(), this.getScaleY(), initialAngle + this.getRotation(), 0, 0,
+                texture.getWidth(), texture.getHeight(), flipX, flipY);
 
     }
 
@@ -115,7 +115,7 @@ public class AttackAnim extends ActionAnim {
     @Override
     public void start() {
         super.start();
-       add();
+        add();
     }
 
     @Override

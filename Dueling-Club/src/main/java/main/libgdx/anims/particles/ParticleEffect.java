@@ -14,21 +14,23 @@ import java.io.InputStreamReader;
 /**
  * Created by JustMe on 1/27/2017.
  */
-public class ParticleEffect extends com.badlogic.gdx.graphics.g2d.ParticleEffect{
+public class ParticleEffect extends com.badlogic.gdx.graphics.g2d.ParticleEffect {
 
     public void modify(float offset, EMITTER_VALS_SCALED value) {
-        for (ParticleEmitter e: getEmitters()){
-            Emitter emitter= (Emitter) e;
+        for (ParticleEmitter e : getEmitters()) {
+            Emitter emitter = (Emitter) e;
             emitter.offset(offset, value.name().toLowerCase());
         }
     }
-        public void offsetAngle(float offset) {
-    for (ParticleEmitter e: getEmitters()){
-        Emitter emitter= (Emitter) e;
-        emitter.offsetAngle(offset);
+
+    public void offsetAngle(float offset) {
+        for (ParticleEmitter e : getEmitters()) {
+            Emitter emitter = (Emitter) e;
+            emitter.offsetAngle(offset);
+        }
     }
-    }
-    public void loadEmitters (FileHandle effectFile) {
+
+    public void loadEmitters(FileHandle effectFile) {
         InputStream input = effectFile.read();
         getEmitters().clear();
         BufferedReader reader = null;

@@ -26,7 +26,6 @@ import java.util.Map;
  * //TODO master-classes should be linked here too, e.g. DungeonMaster,
  * Objects are mapped to ids
  * Provides methods for retrieving it and some for managing it (refactor needed)
- *
  */
 public abstract class GameState {
 
@@ -74,7 +73,8 @@ public abstract class GameState {
     }
 
     public void reset() {
-        setRound(DEFAULT_ROUND - 1);  }
+        setRound(DEFAULT_ROUND - 1);
+    }
 
     public void checkTriggers(Event e) {
         if (triggers.size() == 0)

@@ -20,8 +20,7 @@ import java.util.Map.Entry;
 
 /**
  * Contains utility methods for finding and managing ObjType's
- *
-  */
+ */
 
 public class DataManager {
 
@@ -651,7 +650,6 @@ public class DataManager {
     }
 
 
-
     public static Class<?> getGroupingClass(OBJ_TYPE TYPE) {
         return EnumMaster.getEnumClass(TYPE.getGroupingKey().getName(), CONTENT_CONSTS.class);
     }
@@ -711,7 +709,6 @@ public class DataManager {
             list.add(e.getType());
         return list;
     }
-
 
 
     public static List<String> getSubGroupsForTYPE(OBJ_TYPE TYPE, String group) {
@@ -822,7 +819,6 @@ public class DataManager {
         }
         return list;
     }
-
 
 
     public static List<ObjType> getSublings(ObjType type, List<ObjType> data) {

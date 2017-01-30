@@ -38,27 +38,7 @@ public class GeometryMaster {
 
         double xDiff = p2.x - p1.x;
         double yDiff = p2.y - p1.y;
-        return  (Math.toDegrees(Math.atan2(yDiff, xDiff)));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return (Math.toDegrees(Math.atan2(yDiff, xDiff)));
 
 
     }

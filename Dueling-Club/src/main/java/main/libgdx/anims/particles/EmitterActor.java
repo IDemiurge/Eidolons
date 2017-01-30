@@ -24,7 +24,7 @@ public class EmitterActor extends Actor implements ParticleInterface {
     boolean flipX;
     boolean flipY;
     private Sprite sprite;
-    private boolean attached=true;
+    private boolean attached = true;
     private boolean generated;
     private Coordinates target;
 
@@ -37,7 +37,7 @@ public class EmitterActor extends Actor implements ParticleInterface {
     }
 
     public EmitterActor(String path) {
-        this.path=path;
+        this.path = path;
         effect = new ParticleEffect();
 //        pool = new ParticleEffectPool(effect, defaultCapacity, defaultMaxCapacity);
 //        pool.obtain() ; TODO
@@ -46,32 +46,32 @@ public class EmitterActor extends Actor implements ParticleInterface {
 
         try {
             effect.load(Gdx.files.internal(
-             StringMaster.addMissingPathSegments(
-              path, PathFinder.getParticlePresetPath())),
-             Gdx.files.internal(imagePath));
+                    StringMaster.addMissingPathSegments(
+                            path, PathFinder.getParticlePresetPath())),
+                    Gdx.files.internal(imagePath));
 
         } catch (Exception e) {
             String suffix = StringMaster.replaceFirst(path, PathFinder.getParticlePresetPath(), "");
             suffix = StringMaster.cropLastPathSegment(suffix);
             imagePath += suffix;
-        try {
-            effect.load(Gdx.files.internal(
-             StringMaster.addMissingPathSegments(
-              path, PathFinder.getParticlePresetPath())),
-             Gdx.files.internal(imagePath));
-
-        } catch (Exception e0) {
-            imagePath += "particles\\";
             try {
                 effect.load(Gdx.files.internal(
-                 StringMaster.addMissingPathSegments(
-                  path, PathFinder.getParticlePresetPath())),
-                 Gdx.files.internal(imagePath));
-            } catch (Exception e1) {
-                main.system.auxiliary.LogMaster.log(1, imagePath + " - NO IMAGE FOUND FOR SFX: " + path);
-                e.printStackTrace();
+                        StringMaster.addMissingPathSegments(
+                                path, PathFinder.getParticlePresetPath())),
+                        Gdx.files.internal(imagePath));
+
+            } catch (Exception e0) {
+                imagePath += "particles\\";
+                try {
+                    effect.load(Gdx.files.internal(
+                            StringMaster.addMissingPathSegments(
+                                    path, PathFinder.getParticlePresetPath())),
+                            Gdx.files.internal(imagePath));
+                } catch (Exception e1) {
+                    main.system.auxiliary.LogMaster.log(1, imagePath + " - NO IMAGE FOUND FOR SFX: " + path);
+                    e.printStackTrace();
+                }
             }
-        }
 
         }
 
@@ -155,19 +155,19 @@ public class EmitterActor extends Actor implements ParticleInterface {
         this.attached = attached;
     }
 
-    public void setGenerated(boolean generated) {
-        this.generated = generated;
-    }
-
     public boolean isGenerated() {
         return generated;
     }
 
-    public void setTarget(Coordinates target) {
-        this.target = target;
+    public void setGenerated(boolean generated) {
+        this.generated = generated;
     }
 
     public Coordinates getTarget() {
         return target;
+    }
+
+    public void setTarget(Coordinates target) {
+        this.target = target;
     }
 }

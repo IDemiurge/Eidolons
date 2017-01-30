@@ -35,7 +35,7 @@ public class AnimMaster extends Actor {
 
     //animations will use emitters, light, sprites, text and icons
     public AnimMaster(Stage stage) {
-        continuousAnimsOn =false;
+        continuousAnimsOn = false;
 //                FAST_DC.getGameLauncher().FAST_MODE ||
 //                        FAST_DC.getGameLauncher().SUPER_FAST_MODE;
         on = true;

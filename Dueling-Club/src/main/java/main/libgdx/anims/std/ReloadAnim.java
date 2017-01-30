@@ -9,7 +9,7 @@ import main.libgdx.anims.AnimData;
  */
 public class ReloadAnim extends RangedAttackAnim {
     public ReloadAnim(Entity active, AnimData params) {
-        super(active );
+        super(active);
     }
 
     @Override

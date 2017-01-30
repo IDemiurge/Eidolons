@@ -23,7 +23,7 @@ public class PhaseAnimator extends Group {
     private boolean on;
 
     public PhaseAnimator(Stage stage) {
-        this.on =false;
+        this.on = false;
 //                FAST_DC.getGameLauncher().FAST_MODE || FAST_DC.getGameLauncher().SUPER_FAST_MODE;
 
         stage.addActor(this);

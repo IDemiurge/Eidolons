@@ -36,8 +36,6 @@ import java.util.*;
  * Note: y==0 at the top
  * 2) Set party units' positions
  * 3) init direction/flip maps
- *
- *
  */
 public class DC_ObjInitializer {
 

@@ -40,7 +40,8 @@ public class DC_LogManager extends LogManager {
         logMovement((DC_Obj) ref.getSourceObj(), ref.getTargetObj().getCoordinates());
         return true;
     }
-    public void     addToLogPanel(){
+
+    public void addToLogPanel() {
 
 
     }

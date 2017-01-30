@@ -18,7 +18,6 @@ import main.system.math.Formula;
 import main.system.math.PositionMaster.SHAPES;
 
 import java.util.Collection;
-import java.util.Set;
 
 public abstract class ShapeEffect extends SpecialTargetingEffect {
 
@@ -49,7 +48,7 @@ public abstract class ShapeEffect extends SpecialTargetingEffect {
         Coordinates baseCoordinate = getBaseCoordinate();
         int base_width = radius.getInt(ref);
         int distance = this.distance.getInt(ref);
- coordinates = DC_PositionMaster.getShapedCoordinates(baseCoordinate,
+        coordinates = DC_PositionMaster.getShapedCoordinates(baseCoordinate,
                 getFacing(), base_width, distance, getShape());
 
         Collection<Obj> objects = game.getUnitsForCoordinates(coordinates);

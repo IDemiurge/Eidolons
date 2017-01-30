@@ -148,7 +148,7 @@ public class GameScreen implements Screen {
 
         if (!FAST_DC.getGameLauncher().getSUPER_FAST_MODE()
 //                && !FAST_DC.getGameLauncher().getFAST_MODE()
-         ) {
+                ) {
             LogPanel ld = new LogPanel();
             guiStage.addActor(ld);
             ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
@@ -238,7 +238,7 @@ public class GameScreen implements Screen {
         effects.getViewport().update(width, height);
         gridStage.getViewport().update(width, height);
         guiStage.getViewport().update(width, height);
-ambienceStage.getViewport().setCamera(cam);
+        ambienceStage.getViewport().setCamera(cam);
 /*        to disable pixelperfect
         float camWidth = MapView.TILE_WIDTH * 10.0f;
         float camHeight = camWidth * ((float)height / (float)width);

@@ -176,8 +176,8 @@ public abstract class Entity extends DataModel implements OBJ {
                 // if (game.isSimulation())
                 e.printStackTrace();
                 LogMaster.log(1
-                 // LogMaster.CORE_DEBUG
-                 , "Error on construction: " + getName());
+                        // LogMaster.CORE_DEBUG
+                        , "Error on construction: " + getName());
                 // if (!game.isSimulation())
                 // setConstructed(true);
             }
@@ -264,16 +264,16 @@ public abstract class Entity extends DataModel implements OBJ {
         return TYPE_ENUM;
     }
 
+    public void setOBJ_TYPE_ENUM(OBJ_TYPE TYPE_ENUM) {
+        this.TYPE_ENUM = TYPE_ENUM;
+    }
+
     @Override
     public String toString() {
         return getName() + " - " + id + " (" + getOBJ_TYPE() + ")";
         // " (" + getOBJ_TYPE() + ") HAS: "
         // + propMap.getMap().toString() + " "
         // + paramMap.getMap().toString();
-    }
-
-    public void setOBJ_TYPE_ENUM(OBJ_TYPE TYPE_ENUM) {
-        this.TYPE_ENUM = TYPE_ENUM;
     }
 
     public Player getOwner() {
@@ -340,6 +340,10 @@ public abstract class Entity extends DataModel implements OBJ {
         return getIcon().getImage();
     }
 
+    public void setImage(String image) {
+        setProperty(G_PROPS.IMAGE, image, true);
+        icon = new ImageIcon(getImagePath());
+    }
 
     public ImageIcon getIcon() {
         if (ImageManager.isValidIcon(customIcon))
@@ -354,6 +358,7 @@ public abstract class Entity extends DataModel implements OBJ {
             icon = ImageManager.getDefaultTypeIcon(this);
         return icon;
     }
+
     public boolean isDead() {
         return dead;
     }
@@ -365,13 +370,11 @@ public abstract class Entity extends DataModel implements OBJ {
     public boolean isMine() {
         return getOwner().isMe();
     }
-    public void setImage(String image) {
-        setProperty(G_PROPS.IMAGE, image, true);
-        icon = new ImageIcon(getImagePath());
-    }
+
     public String getImagePath() {
         return getProperty(G_PROPS.IMAGE);
     }
+
     public void resetRawValues() {
         for (PARAMETER param : ContentManager.getParamsForType(getOBJ_TYPE(), false)) {
             // get values from ValueIcons?
@@ -379,6 +382,7 @@ public abstract class Entity extends DataModel implements OBJ {
         }
 
     }
+
     public String getGroupingKey() {
         return getProperty(getOBJ_TYPE_ENUM().getGroupingKey());
     }

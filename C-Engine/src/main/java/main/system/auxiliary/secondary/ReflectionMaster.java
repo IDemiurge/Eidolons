@@ -6,7 +6,7 @@ import java.lang.reflect.Field;
  * Created by JustMe on 1/27/2017.
  */
 public class ReflectionMaster<T> {
-    public T getFieldValue(String fieldName ,Object thisObject, Class source ) {
+    public T getFieldValue(String fieldName, Object thisObject, Class source) {
         try {
             Field field = source.getDeclaredField(fieldName);
             field.setAccessible(true);
@@ -17,7 +17,7 @@ public class ReflectionMaster<T> {
                 return null;
             }
 //            else if (clazz.isAssignableFrom(value.getClass())) {
-                return (T) value;
+            return (T) value;
 //            }
 //            throw new RuntimeException("Wrong value");
         } catch (NoSuchFieldException e) {

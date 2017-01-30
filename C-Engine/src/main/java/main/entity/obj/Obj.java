@@ -24,10 +24,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- *
- Represents an Entity on the Battlefield
- Placed in a map in GameState upon creation
-
+ * Represents an Entity on the Battlefield
+ * Placed in a map in GameState upon creation
  */
 public class Obj extends Entity {
     private HIGHLIGHT highlight;

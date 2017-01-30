@@ -40,11 +40,12 @@ public class SpriteAnimation extends Animation {
         this.looping = looping;
         this.loops = loops;
     }
-public void  reset(){
-        stateTime=0;
-        cycles=0;
-        lifecycle=0;
-}
+
+    public void reset() {
+        stateTime = 0;
+        cycles = 0;
+        lifecycle = 0;
+    }
     public boolean draw(Batch batch) {
         stateTime += Gdx.graphics.getDeltaTime();
         updateSpeed();

@@ -40,10 +40,10 @@ public class EffectAnimCreator {
             case "Resurrect":
             case "Summon":
                 return new ActionAnim(active, new AnimData(),
-                 ()-> active.getRef().getObj(KEYS.SUMMONED).getImagePath(),
-                 new ANIM_MOD[]{
-                  OBJ_ANIMS.FADE_IN,
-                 }
+                        () -> active.getRef().getObj(KEYS.SUMMONED).getImagePath(),
+                        new ANIM_MOD[]{
+                                OBJ_ANIMS.FADE_IN,
+                        }
                 );
             case "InstantDeath":
                 //flash

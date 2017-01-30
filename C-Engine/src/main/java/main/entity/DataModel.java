@@ -67,10 +67,10 @@ public abstract class DataModel {
     protected String modifierKey;
     protected Map<Obj, Map<String, ImageIcon>> customIconCache;
     protected ImageIcon icon;
-    private HashMap<PROPERTY, Map<String, Boolean>> propCache;
-    private Map<PARAMETER, Integer> integerMap;
     protected boolean passivesReady = false;
     protected boolean activesReady = false;
+    private HashMap<PROPERTY, Map<String, Boolean>> propCache;
+    private Map<PARAMETER, Integer> integerMap;
 
     public String getToolTip() {
         return getType().getDisplayedName();
@@ -823,6 +823,7 @@ public abstract class DataModel {
         }
         return true;
     }
+
     public void resetPercentages() {
 
     }
@@ -839,10 +840,11 @@ public abstract class DataModel {
         int c_value = MathMaster.getFractionValue(base_value, percentage);
         setParam(c_p, c_value, true);
         main.system.auxiliary.LogMaster.log(LogMaster.VALUE_DEBUG, getName() + "'s "
-         + base_p.getName() + " current value reset: " + percentage + "% out of "
-         + base_value + " = " + c_value);
+                + base_p.getName() + " current value reset: " + percentage + "% out of "
+                + base_value + " = " + c_value);
 
     }
+
     protected void resetPercentage(PARAMETER p) {
         PARAMETER c_p = ContentManager.getCurrentParam(p);
         PARAMETER c_perc = ContentManager.getPercentageParam(p);
@@ -853,7 +855,7 @@ public abstract class DataModel {
         int percentage = MathMaster.getPercentage(c_value, base_value);
         setParam(c_perc, percentage, true);
         main.system.auxiliary.LogMaster.log(LogMaster.VALUE_DEBUG, getName() + "'s " + p.getName()
-         + " percentage reset: " + c_value + " out of " + base_value + " = " + percentage);
+                + " percentage reset: " + c_value + " out of " + base_value + " = " + percentage);
     }
 
     abstract public Game getGame();
@@ -1107,7 +1109,7 @@ public abstract class DataModel {
 
     @Override
     public String toString() {
-        return getName() + " - " + id ;
+        return getName() + " - " + id;
     }
 
     public void cloneMaps(Entity type) {
@@ -1343,7 +1345,6 @@ public abstract class DataModel {
                 return getName();
         return getId() + "";
     }
-
 
 
     public String getRawValue(VALUE value) {
