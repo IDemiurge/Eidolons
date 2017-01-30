@@ -3,7 +3,6 @@ package main.test.libgdx;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import main.client.dc.Launcher;
@@ -20,28 +19,22 @@ public class DENIS_Launcher implements ApplicationListener {
     Screen screen;
 
     public static void main(String[] args) {
-
         new LwjglApplication(new DENIS_Launcher(), getConf());
     }
 
     private static LwjglApplicationConfiguration getConf() {
         LwjglApplicationConfiguration conf = new LwjglApplicationConfiguration();
         conf.title = "Eidolons: Battlecraft v" + Launcher.VERSION;
-        conf.useGL30 = false;
+        conf.useGL30 = true;
 
         conf.width = 1600;
         conf.height = 900;
         conf.fullscreen = false;
+
 //        conf.width = GuiManager.getScreenWidthInt();
 //        conf.height = GuiManager.getScreenHeightInt();
 //        conf.fullscreen = true;
         return conf;
-    }
-
-    public LwjglAWTCanvas getCanvas() {
-        System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
-//        new LwjglApplication(new DENIS_Launcher(), lwjglApplicationConfiguration);
-        return new LwjglAWTCanvas(new DENIS_Launcher(), getConf());
     }
 
     @Override

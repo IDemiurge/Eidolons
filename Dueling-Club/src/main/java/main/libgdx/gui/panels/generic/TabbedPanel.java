@@ -5,9 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.google.gwt.rpc.server.WebModeClientOracle.Triple;
 import main.libgdx.gui.layout.LayoutParser.LAYOUT;
 import main.swing.generic.components.G_Panel.VISUALS;
+import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.Collection;
 import java.util.function.Supplier;
@@ -54,9 +54,9 @@ public class TabbedPanel extends Container {
 
         if (tabSupplier != null)
             tabSupplier.get().forEach(triple -> {
-                String text = triple.getA();
-                String imgPath = triple.getB();
-                Actor content = triple.getC()[0];
+                String text = triple.getLeft();
+                String imgPath = triple.getMiddle();
+                Actor content = triple.getRight();
                 tabRow.addActor(
                         getTab(text, imgPath, content));
             });
