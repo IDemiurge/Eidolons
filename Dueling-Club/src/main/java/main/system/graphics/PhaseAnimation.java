@@ -185,7 +185,7 @@ public abstract class PhaseAnimation implements ANIM {
         if (isLogged())
             main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, "STARTED ANIM: " + this);
         // start() all *pending* anims on paint() ?
-        game.getAnimationManager().newAnimation(this);
+        getGame().getAnimationManager().newAnimation(this);
         index = 0;
         timeRemaining = baseTime;
         phase = (AnimPhase) ListMaster.getListItem(phases, index);
@@ -915,6 +915,7 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     protected DC_Game getGame() {
+        if (game==null )game = DC_Game.game;
         return game;
     }
 

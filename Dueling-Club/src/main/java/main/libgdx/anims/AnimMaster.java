@@ -14,6 +14,7 @@ import main.libgdx.anims.std.BuffAnim;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.LogMaster;
+import main.system.datatypes.DequeImpl;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -25,21 +26,22 @@ import java.util.Stack;
 public class AnimMaster extends Actor {
 
     static private boolean on;
+    private static AnimMaster instance;
     Stack<CompositeAnim> leadQueue = new Stack<>(); //if more Action Stacks have been created before leadAnimation is finished
     CompositeAnim leadAnimation; // wait for it to finish before popping more from the queue
-    AnimDrawer drawer;
     boolean parallelDrawing = false;
     ConcurrentMap<BuffObj, BuffAnim> continuousAnims = new ConcurrentMap<>();
+    DequeImpl< Animation> timeAttachedAnims = new DequeImpl<>();
     private AnimationConstructor constructor;
     private boolean continuousAnimsOn;
 
     //animations will use emitters, light, sprites, text and icons
     public AnimMaster(Stage stage) {
-        continuousAnimsOn = false;
+        instance = this;
+        continuousAnimsOn =false;
 //                FAST_DC.getGameLauncher().FAST_MODE ||
 //                        FAST_DC.getGameLauncher().SUPER_FAST_MODE;
         on = true;
-        drawer = new AnimDrawer(stage);
         constructor = new AnimationConstructor();
 
 
@@ -150,6 +152,10 @@ public class AnimMaster extends Actor {
         leadQueue.add(anim);
     }
 
+    public void addTimeAttached( Animation anim) {
+        timeAttachedAnims.add(anim);
+    }
+
     private void startNext() {
         leadAnimation = next();
         if (leadAnimation != null)
@@ -180,6 +186,10 @@ public class AnimMaster extends Actor {
             if (!a.getBuff().isDead())
                 a.draw(batch);
         });
+        timeAttachedAnims.forEach(a -> {
+                a.draw(batch);
+        });
+        timeAttachedAnims.removeIf((Animation a) -> !a.isRunning());
 
         if (leadAnimation == null) {
             leadAnimation = next();
@@ -200,5 +210,13 @@ public class AnimMaster extends Actor {
 
             leadQueue.removeIf((CompositeAnim anim) -> anim.isFinished());
         }
+    }
+
+    public AnimationConstructor getConstructor() {
+        return constructor;
+    }
+
+    public static AnimMaster getInstance() {
+        return instance;
     }
 }

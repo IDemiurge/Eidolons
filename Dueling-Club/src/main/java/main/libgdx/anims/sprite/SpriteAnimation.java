@@ -10,7 +10,7 @@ import main.libgdx.texture.TextureManager;
 /**
  * Created by PC on 10.11.2016.
  */
-public class SpriteAnimation extends Animation {
+public class SpriteAnimation extends Animation<TextureRegion> {
     final static float defaultFrameDuration = 0.025f;
     public float x;
     public float y;

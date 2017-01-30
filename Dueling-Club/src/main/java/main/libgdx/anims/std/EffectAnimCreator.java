@@ -5,20 +5,36 @@ import main.ability.effects.Effect;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.data.filesys.PathFinder;
 import main.entity.Ref.KEYS;
+import main.entity.obj.Obj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.libgdx.GdxColorMaster;
+import main.libgdx.anims.*;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.ANIM_MODS.OBJ_ANIMS;
-import main.libgdx.anims.Anim;
-import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
+import main.libgdx.bf.GridMaster;
 import main.system.images.ImageManager;
 
 /**
  * Created by JustMe on 1/11/2017.
  */
 public class EffectAnimCreator {
+
+    public static float getEffectAnimDelay(Effect e, Animation anim, ANIM_PART part) {
+
+        Anim subAnim;
+        if (anim instanceof CompositeAnim) {
+            subAnim = ((CompositeAnim) anim).getMap().get(part);
+        } else subAnim = (Anim) anim;
+        Obj obj = e.getRef().getTargetObj();
+        Float distance =
+         GridMaster.getDistance(obj.getCoordinates(), subAnim.getOriginCoordinates());
+        float delay = distance / subAnim.getPixelsPerSecond();
+
+
+        return delay;
+    }
 
     public static Anim getEffectAnim(Effect e) {
         DC_ActiveObj active = (DC_ActiveObj) e.getActiveObj();
@@ -30,20 +46,20 @@ public class EffectAnimCreator {
                 ModifyValueEffect modEffect = (ModifyValueEffect) e;
                 return new HitAnim(
 
-                        active, getModValAnimData(modEffect)
-                        , false, GdxColorMaster.getParamColor(modEffect.getParam()),
-                        () -> modEffect.getLastModValue(),
-                        () -> ImageManager.getValueIconPath(modEffect.getParam())
+                 active, getModValAnimData(modEffect)
+                 , false, GdxColorMaster.getParamColor(modEffect.getParam()),
+                 () -> modEffect.getLastModValue(),
+                 () -> ImageManager.getValueIconPath(modEffect.getParam())
                 );
 
             case "Raise":
             case "Resurrect":
             case "Summon":
                 return new ActionAnim(active, new AnimData(),
-                        () -> active.getRef().getObj(KEYS.SUMMONED).getImagePath(),
-                        new ANIM_MOD[]{
-                                OBJ_ANIMS.FADE_IN,
-                        }
+                 () -> active.getRef().getObj(KEYS.SUMMONED).getImagePath(),
+                 new ANIM_MOD[]{
+                  OBJ_ANIMS.FADE_IN,
+                 }
                 );
             case "InstantDeath":
                 //flash
@@ -82,9 +98,9 @@ public class EffectAnimCreator {
     private static String getSfx(Effect e) {
         if (e instanceof DealDamageEffect)
             return PathFinder.getSfxPath() + "damage\\"
-                    + "fire"
+             + "fire"
 //         + ((DealDamageEffect) e).getDamage_type().toString()
-                    ;
+             ;
         return null;
     }
 
@@ -92,9 +108,9 @@ public class EffectAnimCreator {
         if (e instanceof DealDamageEffect)
 
             return PathFinder.getSpritesPath() + "damage\\"
-                    + "fire"
+             + "fire"
 //             +  ((DealDamageEffect) e).getDamage_type().toString()
-                    + ".png";
+             + ".png";
         return null;
     }
 

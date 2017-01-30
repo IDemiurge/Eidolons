@@ -26,9 +26,14 @@ public class EmitterMap {
     private final Pool<Ambience> ambiencePool = new Pool<Ambience>() {
         @Override
         protected Ambience newObject() {
-            return new Ambience(SFX.SMOKE_TEST);
+            return new Ambience(getFogSfx() );
         }
     };
+
+    private SFX getFogSfx() {
+        return SFX.SKULL2;
+    }
+
     Map<Coordinates, Ambience> fogMap = new LinkedHashMap<>();
     public EmitterMap() {
 

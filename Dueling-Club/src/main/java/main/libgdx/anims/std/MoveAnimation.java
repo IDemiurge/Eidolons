@@ -100,7 +100,7 @@ public class MoveAnimation extends ActionAnim {
     }
 
     @Override
-    protected Coordinates getOriginCoordinates() {
+    public Coordinates getOriginCoordinates() {
 //        if (!ListMaster.isNotEmpty(EffectMaster.getEffectsOfClass(getActive(),
 //         MoveEffect.class))) // for teleports, telekinesis etc
 //            return getRef().getTargetObj().getCoordinates();

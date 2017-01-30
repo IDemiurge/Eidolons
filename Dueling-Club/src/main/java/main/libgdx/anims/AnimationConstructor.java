@@ -111,7 +111,7 @@ public class AnimationConstructor {
     }
 
 
-    private Anim getPartAnim(DC_ActiveObj active, ANIM_PART part) {
+    public Anim getPartAnim(DC_ActiveObj active, ANIM_PART part) {
 //        active.getProperty(sfx);
         AnimData data = new AnimData();
         for (VALUE val : anim_vals) {

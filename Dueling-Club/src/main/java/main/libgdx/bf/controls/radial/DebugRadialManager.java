@@ -166,13 +166,14 @@ public class DebugRadialManager {
         FUNC_ADD_NON_BF(DebugMaster.group_add),
         FUNC_GLOBAL(DebugMaster.group_bf),
         FUNC_GRAPHICS(DebugMaster.group_graphics),
+        FUNC_SFX(DebugMaster.group_sfx),
         FUNC_OTHER(
         ),
         PICK(),
         TYPE(),
         PICK_HIDDEN(),
         FUNCTION(FUNC_STANDARD, FUNC_ADD_BF, FUNC_ADD_NON_BF, FUNC_GLOBAL,
-                FUNC_OTHER,
+                FUNC_OTHER,FUNC_SFX,
                 PICK, TYPE, PICK_HIDDEN) {
             @Override
             public boolean isRoot() {

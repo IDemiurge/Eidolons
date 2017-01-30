@@ -11,6 +11,7 @@ public class ReflectionMaster<T> {
             Field field = source.getDeclaredField(fieldName);
             field.setAccessible(true);
             Object value = field.get(thisObject);
+
             field.setAccessible(false);
 
             if (value == null) {
@@ -24,6 +25,21 @@ public class ReflectionMaster<T> {
             throw new RuntimeException(e);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void setValue(String fieldName, T choice, Object obj) {
+        Field field = null;
+        try {
+            field = obj.getClass(). getDeclaredField(fieldName);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        field.setAccessible(true);
+        try {
+              field.set(obj,choice);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
 }

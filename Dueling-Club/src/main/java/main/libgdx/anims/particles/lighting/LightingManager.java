@@ -23,9 +23,10 @@ public class LightingManager {
             //TODO init emitterMap and lightMap
         });
         GuiEventManager.bind(GuiEventType.UPDATE_LIGHT, p -> {
+            if (!lightMap.isValid()) return ;
             lightMap.updateMap();
             lightMap.updateLight();
-            if (lightMap.isValid())
+
                 gridPanel.setLightMap(lightMap);
         });
     }

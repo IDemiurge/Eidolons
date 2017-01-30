@@ -450,7 +450,11 @@ public class XML_Writer {
 
     }
 
-    public static boolean write(String content, String path, String fileName) {
+    public static boolean write(String content, String pathAndName) {
+        return write(content, StringMaster.cropLastPathSegment(pathAndName),
+         StringMaster.getLastPathSegment(pathAndName));
+    }
+        public static boolean write(String content, String path, String fileName) {
 
         if (fileName.contains("rack"))
             return false;

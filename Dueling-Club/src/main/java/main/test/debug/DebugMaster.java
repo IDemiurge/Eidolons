@@ -39,6 +39,7 @@ import main.game.battlefield.UnitGroupMaster;
 import main.game.logic.dungeon.Dungeon;
 import main.game.player.DC_Player;
 import main.game.player.Player;
+import main.libgdx.anims.particles.controls.EmitterController;
 import main.rules.DC_ActionManager;
 import main.swing.builders.DC_Builder;
 import main.swing.components.obj.drawing.DrawMasterStatic;
@@ -46,8 +47,7 @@ import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.services.dialog.EnumChooser;
-import main.system.ConditionMaster;
-import main.system.DC_Formulas;
+import main.system.*;
 import main.system.ai.AI_Manager;
 import main.system.ai.GroupAI;
 import main.system.ai.UnitAI;
@@ -113,10 +113,17 @@ public class DebugMaster {
             DEBUG_FUNCTIONS.ADD_ITEM,
 
     };
+    public static final DEBUG_FUNCTIONS[] group_sfx = {
+
+     DEBUG_FUNCTIONS.SFX_ADD,
+     DEBUG_FUNCTIONS.SFX_PLAY_LAST,
+     DEBUG_FUNCTIONS.SFX_ADD_RANDOM,
+     DEBUG_FUNCTIONS.SFX_MODIFY,
+     DEBUG_FUNCTIONS.SFX_SAVE,
+    };
     public static final DEBUG_FUNCTIONS[] group_graphics = {
             DEBUG_FUNCTIONS.TOGGLE_LIGHTING,
             DEBUG_FUNCTIONS.TOGGLE_FOG,
-            DEBUG_FUNCTIONS.ADD_SFX,
     };
     public static final HIDDEN_DEBUG_FUNCTIONS[] group_display = {
             HIDDEN_DEBUG_FUNCTIONS.DISPLAY_EFFECTS,
@@ -361,6 +368,7 @@ public class DebugMaster {
         String data = null;
         OBJ_TYPES TYPE;
         switch (func) {
+
             case RUN_AUTO_TESTS:
                 AutoTestMaster.runTests();
                 break;
@@ -458,6 +466,8 @@ public class DebugMaster {
                 // }
                 return func;
 
+            case EDIT_AI:
+                break;
             case LOAD_DUNGEON:
                 DC_Game.game.getDungeonMaster().reloadDungeon();
 
@@ -753,6 +763,28 @@ public class DebugMaster {
             case SCHEDULE_WAVES:
                 game.getArenaManager().getBattleConstructor().setIndex(0);
                 game.getArenaManager().getBattleConstructor().construct();
+                break;
+            case TOGGLE_LIGHTING:
+                break;
+            case TOGGLE_FOG:
+                break;
+            case SFX_PLAY_LAST:
+                EmitterController.getInstance();
+                GuiEventManager.trigger(GuiEventType.SFX_PLAY_LAST, null);
+                break;
+            case SFX_ADD:
+                EmitterController.getInstance();
+                GuiEventManager.trigger(GuiEventType.CREATE_EMITTER, null);
+                break;
+            case SFX_ADD_RANDOM:
+                EmitterController.getInstance();
+                GuiEventManager.trigger(GuiEventType.CREATE_EMITTER, new EventCallbackParam(true));
+                break;
+            case SFX_MODIFY:
+                EmitterController.modify();
+                break;
+            case SFX_SAVE:
+                EmitterController.save();
                 break;
         }
         reset();
@@ -1240,8 +1272,11 @@ public class DebugMaster {
 
 
         TOGGLE_LIGHTING,
-        TOGGLE_FOG,
-        ADD_SFX,;
+        TOGGLE_FOG,SFX_ADD,
+         SFX_ADD_RANDOM,
+        SFX_MODIFY,
+         SFX_SAVE,
+        SFX_PLAY_LAST;
 
         boolean transmitted;
 
