@@ -8,6 +8,7 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.battlefield.UnitGroupMaster;
+import main.libgdx.anims.particles.controls.EmitterController;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -27,7 +28,7 @@ import static main.test.Preset.PRESET_DATA.FIRST_DUNGEON;
 public class PresetLauncher {
     public final static String[] LAUNCH_OPTIONS = {
             "Last", "Graphics Test", "Recent", "New", "Load", "Fast",
-            "Superfast"
+            "Superfast", "Emitter Test"
 
     };
     public static int PRESET_OPTION = -1;
@@ -47,6 +48,8 @@ public class PresetLauncher {
                 UnitMaster.setRandom(false);
                 PresetMaster.setPreset(lastPreset);
                 break;
+            case "Emitter Test":
+                EmitterController.setTestMode(true);
             case "Graphics Test":
                 FAST_DC.getGameLauncher().DUMMY_MODE = true;
                 FAST_DC.getGameLauncher().DUMMY_PP = true;

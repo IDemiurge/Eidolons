@@ -11,6 +11,7 @@ public class ReflectionMaster<T> {
             Field field = source.getDeclaredField(fieldName);
             field.setAccessible(true);
             Object value = field.get(thisObject);
+
             field.setAccessible(false);
 
             if (value == null) {

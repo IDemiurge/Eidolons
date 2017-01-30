@@ -6,6 +6,7 @@ import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.ActorMaster;
+import main.libgdx.anims.particles.Ambience;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.particles.EmitterPresetMaster;
 import main.libgdx.anims.particles.EmitterPresetMaster.EMITTER_VALUE_GROUP;
@@ -25,6 +26,7 @@ public class EmitterController {
     boolean continuous;
     int multiplier;
     boolean cursorAttached;
+    private static boolean testMode;
 
     public static EmitterController getInstance() {
         if (instance==null )instance=new EmitterController();
@@ -99,5 +101,16 @@ add(presetPath,imagePath,destination);
         last.getEffect(). set(choice, value);
         else last.getEffect().offset(choice, value);
 
+    }
+
+    public static void setTestMode(boolean testMode) {
+        if (testMode){
+            Ambience.setModifyParticles(true);
+        }
+        EmitterController.testMode = testMode;
+    }
+
+    public static boolean isTestMode() {
+        return testMode;
     }
 }

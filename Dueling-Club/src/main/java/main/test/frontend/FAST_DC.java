@@ -109,6 +109,7 @@ public class FAST_DC {
     }
 
     //    chars;skills;classes;deities;factions;jewelry; TODO
+
     public static void main(String[] args) {
         if (args.length > 0) {
             if (args[0].equals("-GT")) {
@@ -255,6 +256,7 @@ public class FAST_DC {
 
         // CoreEngine.setWritingLogFilesOn(true);
     }
+
 
     private static void initNetGame() {
 
