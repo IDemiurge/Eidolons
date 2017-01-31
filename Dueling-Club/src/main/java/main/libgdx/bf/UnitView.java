@@ -26,7 +26,6 @@ public class UnitView extends BaseView {
     private static AtomicInteger lastId = new AtomicInteger(1);
     private final int curId;
     private Image arrow;
-    private Image clock;
     private Image icon;
     private int baseHeight;
     private int baseWidth;
@@ -56,7 +55,7 @@ public class UnitView extends BaseView {
         setHeight(baseHeight * getScaleY());
         setWidth(baseWidth * getScaleX());
 
-        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+        fbo = new FrameBuffer(Pixmap.Format.RGB888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         imageContainer = new Container<>();
         imageContainer.width(getW()).height(getH()).bottom().left();
         addActor(imageContainer);
@@ -174,10 +173,6 @@ public class UnitView extends BaseView {
 
         if (imageContainer != null) {
             imageContainer.width(getWidth()).height(getHeight());
-        }
-
-        if (clock != null) {
-            clock.setPosition(getWidth() - clock.getHeight(), 0);
         }
 
         if (icon != null) {

@@ -179,6 +179,7 @@ public class LogPanel extends Group {
             table.add(message).fill().padLeft(10).width(getWidth() - 20);
             table.row();
             table.pack();
+            offsetY = 10000;
         });
 
     }
