@@ -168,6 +168,8 @@ public class CompositeAnim implements Animation{
         time = 0;
         index = 0;
         initPartAnim();
+if (currentAnim==null )
+    return ;
 
         currentAnim.start();
         triggerStartEvents();

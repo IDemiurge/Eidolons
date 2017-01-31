@@ -942,6 +942,7 @@ public class DC_HeroObj extends DC_UnitObj {
             getGame().getRules().getWatchRule().updateWatchStatus(this);
             getGame().getRules().getWoundsRule().apply(this);
 
+
             recalculateInitiative();
         } else
             afterBuffRuleEffects();

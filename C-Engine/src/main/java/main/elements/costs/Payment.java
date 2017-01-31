@@ -38,7 +38,7 @@ public class Payment implements Serializable {
                 int chance = (int) (D * 100 + 0) % 100;
                 if (chance >= 50) {
                     boolean up = RandomWizard.chance(chance);
-                    int i = Math.round(new Float(n.doubleValue()));
+                    int i = (int) Math.round((n.doubleValue()));
                     if (!up) {
                         try {
                             ref.getGame().getLogManager()
