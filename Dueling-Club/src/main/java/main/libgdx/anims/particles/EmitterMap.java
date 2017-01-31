@@ -29,6 +29,7 @@ public class EmitterMap {
             return new Ambience(getFogSfx() );
         }
     };
+    private boolean ambienceOn;
 
     private SFX getFogSfx() {
         return SFX.SKULL2;
@@ -55,7 +56,7 @@ public class EmitterMap {
 
 
     public void update() {
-
+        if (!isAmbienceOn()) return;
 
         cc:
         for (Coordinates c : DC_Game.game.getCoordinates()) {
@@ -67,11 +68,11 @@ public class EmitterMap {
             //нужно оптимизировать!
             for (DC_HeroObj unit : DC_Game.game.getUnits()) {
                 if ((unit.isActiveSelected() ||
-                        unit.checkParam(PARAMS.LIGHT_EMISSION)) &&
-                        PositionMaster.getDistance(unit.getCoordinates(), c) <
-                                MIN_DISTANCE_FROM_LIGHT
-                                        + unit.getIntParam(PARAMS.LIGHT_EMISSION) / 25
-                        ) {
+                 unit.checkParam(PARAMS.LIGHT_EMISSION)) &&
+                 PositionMaster.getDistance(unit.getCoordinates(), c) <
+                  MIN_DISTANCE_FROM_LIGHT
+                   + unit.getIntParam(PARAMS.LIGHT_EMISSION) / 25
+                 ) {
                     add = false;
                     remove = true;
                 }
@@ -116,4 +117,11 @@ public class EmitterMap {
     }
 
 
+    public boolean isAmbienceOn() {
+        return ambienceOn;
+    }
+
+    public void setAmbienceOn(boolean ambienceOn) {
+        this.ambienceOn = ambienceOn;
+    }
 }

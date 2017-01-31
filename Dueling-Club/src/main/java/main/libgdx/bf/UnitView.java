@@ -144,8 +144,10 @@ public class UnitView extends BaseView {
             batch.begin();
 
             if (clockTexture != null) {
-                InitiativePanelParam panelParam = new InitiativePanelParam(textureRegion, curId, clockVal);
-                GuiEventManager.trigger(GuiEventType.ADD_OR_UPDATE_INITIATIVE, new EventCallbackParam(panelParam));
+                InitiativePanelParam panelParam =
+                 new InitiativePanelParam(textureRegion, curId, clockVal);
+                GuiEventManager.trigger(GuiEventType.ADD_OR_UPDATE_INITIATIVE,
+                 new EventCallbackParam(panelParam));
             }
             needRepaint = false;
         }

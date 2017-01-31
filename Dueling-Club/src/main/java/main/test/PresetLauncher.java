@@ -51,8 +51,8 @@ public class PresetLauncher {
             case "Emitter Test":
                 EmitterController.setTestMode(true);
             case "Graphics Test":
-                FAST_DC.getGameLauncher().DUMMY_MODE = true;
-                FAST_DC.getGameLauncher().DUMMY_PP = true;
+//                FAST_DC.getGameLauncher().DUMMY_MODE = true;
+//                FAST_DC.getGameLauncher().DUMMY_PP = true;
                 Preset p = PresetMaster.loadPreset("Graphics Test.xml");
                 PresetMaster.setPreset(p);
                 return true;
