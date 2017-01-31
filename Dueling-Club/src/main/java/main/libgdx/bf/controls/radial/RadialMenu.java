@@ -41,9 +41,10 @@ public class RadialMenu extends Group {
     private MenuNode currentNode;
     private Image closeImage;
 
-    public RadialMenu(Texture closeTex) {
-        closeImage = new Image(closeTex);
-        this.closeTex = closeTex;
+    public RadialMenu() {
+        final Texture t = new Texture(RadialMenu.class.getResource("/data/marble_green.png").getPath());
+        closeImage = new Image(t);
+        this.closeTex = t;
     }
 
     private static List<RadialMenu.CreatorNode> creatorNodes(List<Triple<Runnable, Texture, String>> pairs) {

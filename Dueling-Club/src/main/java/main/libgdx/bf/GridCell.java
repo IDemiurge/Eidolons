@@ -125,6 +125,14 @@ public class GridCell extends Group implements Borderable {
         }
     }
 
+    @Override
+    public void updateBorderSize() {
+        border.setX(-4);
+        border.setY(-4);
+        border.setHeight(getWidth() - 8);
+        border.setWidth(getHeight() - 8);
+    }
+
     public int getGridX() {
         return gridX;
     }

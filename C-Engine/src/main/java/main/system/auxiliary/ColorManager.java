@@ -226,12 +226,6 @@ public class ColorManager {
         return GOLDEN_WHITE;
     }
 
-    public static com.badlogic.gdx.graphics.Color getGdxColor(Color c) {
-        return new com.badlogic.gdx.graphics.Color(
-         c.getRGB()
-        );
-    }
-
     public enum FLAG_COLOR {
         BLUE(new Color(25, 25, 255)),
         CYAN(new Color(45, 225, 165)),

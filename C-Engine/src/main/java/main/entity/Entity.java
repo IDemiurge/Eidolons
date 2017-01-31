@@ -33,21 +33,20 @@ import java.util.List;
  * Root class of every CoreEngine object
  * Contains property and parameter maps and an array of methods for retrieving and modifying them
  * Has ID by which it can be found from GameState
- *
- *
+ * <p>
+ * <p>
  * has OBJ_TYPE that defines how it is treated by things like Targeting (Filter)
- *
+ * <p>
  * has ObjType that defines its [base] values  (property and parameter)
- *
+ * <p>
  * toBase() is called whenever we need to update them - first they are set to their base,
  * then modified by various effects
- *
+ * <p>
  * esetObjects, afterEffects (apply masteries/attributes), check parameter buff rules (focus, stamina, …)
- :: Dynamic values are not reset to base on toBase()
- :: Properties – container (; separated), variable(value),
- :: Parameters – formula syntax: {ref_value}, e.g. {source_base strength}, event_ prefix checked first, replaced ref with event’s ref if necessary
- :: Buffs – created with a duration or a retainCondition, add ContinuousEffect’s while in game
-
+ * :: Dynamic values are not reset to base on toBase()
+ * :: Properties – container (; separated), variable(value),
+ * :: Parameters – formula syntax: {ref_value}, e.g. {source_base strength}, event_ prefix checked first, replaced ref with event’s ref if necessary
+ * :: Buffs – created with a duration or a retainCondition, add ContinuousEffect’s while in game
  */
 public abstract class Entity extends DataModel implements OBJ {
 
@@ -78,7 +77,7 @@ public abstract class Entity extends DataModel implements OBJ {
             this.setOriginalOwner(owner);
             setProperty(G_PROPS.NAME, type.getName());
             setOriginalName(type.getName());
-            LogMaster.log(1, id + " - NEW ID for " + type.getName());
+            LogMaster.log(-1, id + " - NEW ID for " + type.getName());
 
             setRef(ref);
             init();
@@ -220,8 +219,6 @@ public abstract class Entity extends DataModel implements OBJ {
     public void invokeClicked() {
         clicked();
     }
-
-
 
 
     public boolean kill() {

@@ -246,7 +246,6 @@ public abstract class GameState {
         GuiEventManager.trigger(GuiEventType.UPDATE_LIGHT, null);
         GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, null);
         GuiEventManager.trigger(GuiEventType.UPDATE_EMITTERS, null);
-        GuiEventManager.trigger(GuiEventType.UPDATE_GUI, null);
     }
 
     public abstract void checkContinuousRules();

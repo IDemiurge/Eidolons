@@ -15,9 +15,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.panels.dc.InitiativePanelParam;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.OnDemandEventCallBack;
 import main.system.auxiliary.LogMaster;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -26,7 +26,6 @@ public class UnitView extends BaseView {
     private static AtomicInteger lastId = new AtomicInteger(1);
     private final int curId;
     private Image arrow;
-    private Image clock;
     private Image icon;
     private int baseHeight;
     private int baseWidth;
@@ -56,7 +55,7 @@ public class UnitView extends BaseView {
         setHeight(baseHeight * getScaleY());
         setWidth(baseWidth * getScaleX());
 
-        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+        fbo = new FrameBuffer(Pixmap.Format.RGB565, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         imageContainer = new Container<>();
         imageContainer.width(getW()).height(getH()).bottom().left();
         addActor(imageContainer);
@@ -96,63 +95,69 @@ public class UnitView extends BaseView {
             arrow.setOrigin(getWidth() / 2 + arrow.getWidth(), getHeight() / 2 + arrow.getHeight());
             arrow.setX(getWidth() / 2 - arrow.getWidth() / 2);
         }
+
+        needRepaint = true;
     }
 
     @Override
     public void setBorder(Image image) {
         border = image;
+        if (border != null) {
+            updateBorderSize();
+        }
         needRepaint = true;
     }
 
     @Override
-    public void draw(Batch batch, float parentAlpha) {
-        //setHeight(baseHeight * getScaleY());
-        //setWidth(baseWidth * getScaleX());
-        if (arrow != null) {
-            arrow.setOrigin(arrow.getWidth() / 2, getHeight() / 2);
-            //arrow.rotateBy(1);
-            arrow.setRotation(arrowRotation);
-            //arrow.setOrigin(getWidth()/2 , getHeight()/2);
-        }
+    public void updateBorderSize() {
+        super.updateBorderSize();
+        border.setHeight(portraitTexture.getWidth() + 8);
+        border.setWidth(portraitTexture.getHeight() + 8);
+    }
 
+    @Override
+    public void act(float delta) {
         if (needRepaint) {
-            batch.end();
             SpriteBatch sp = new SpriteBatch(1);
             fbo.begin();
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
             sp.begin();
-            sp.draw(portraitTexture, 0, 0, getW(), getH());
+
+            sp.draw(portraitTexture, 0, 0, portraitTexture.getWidth(), portraitTexture.getHeight());
             if (clockTexture != null) {
-                sp.draw(clockTexture, getW() - clockTexture.getWidth(), 0);
+                sp.draw(clockTexture, portraitTexture.getWidth() - clockTexture.getWidth(), 0);
 
             }
             if (border != null) {
-                border.draw(sp, parentAlpha);
+                border.draw(sp, 1);
             }
             if (initiativeStrVal != null) {
-                initiativeStrVal.draw(sp, parentAlpha);
+                initiativeStrVal.draw(sp, 1);
             }
             sp.end();
             fbo.end();
 
-            TextureRegion textureRegion = new TextureRegion(fbo.getColorBufferTexture(), 0, 0, getW(), getH());
+            TextureRegion textureRegion = new TextureRegion(fbo.getColorBufferTexture(), 0, 0, portraitTexture.getWidth(), portraitTexture.getHeight());
             textureRegion.flip(false, true);
             imageContainer.setActor(new Image(textureRegion));
             imageContainer.width(getW()).height(getH()).bottom().left().pack();
 
-            batch.begin();
-
             if (clockTexture != null) {
-                InitiativePanelParam panelParam =
-                 new InitiativePanelParam(textureRegion, curId, clockVal);
-                GuiEventManager.trigger(GuiEventType.ADD_OR_UPDATE_INITIATIVE,
-                 new EventCallbackParam(panelParam));
+                InitiativePanelParam panelParam = new InitiativePanelParam(textureRegion, curId, clockVal);
+                GuiEventManager.trigger(GuiEventType.ADD_OR_UPDATE_INITIATIVE, new OnDemandEventCallBack(panelParam));
             }
             needRepaint = false;
         }
 
+        if (arrow != null) {
+            arrow.setOrigin(arrow.getWidth() / 2, getHeight() / 2);
+            arrow.setRotation(arrowRotation);
+        }
+    }
 
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
     }
 
@@ -168,16 +173,14 @@ public class UnitView extends BaseView {
         //setHeight(baseHeight * getScaleY());
         //setWidth(baseWidth * getScaleX());
 
-        if (portrait != null) {
-            portrait.setSize(getWidth(), getHeight());
+        if (initiativeStrVal != null) {
+            initiativeStrVal.setPosition(
+                    portraitTexture.getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
+                    clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
         }
 
         if (imageContainer != null) {
             imageContainer.width(getWidth()).height(getHeight());
-        }
-
-        if (clock != null) {
-            clock.setPosition(getWidth() - clock.getHeight(), 0);
         }
 
         if (icon != null) {
@@ -202,7 +205,7 @@ public class UnitView extends BaseView {
             clockVal = val;
             initiativeStrVal.setText("[#00FF00FF]" + String.valueOf(val) + "[]");
             initiativeStrVal.setPosition(
-                    getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
+                    portraitTexture.getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
                     clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
 
             needRepaint = true;

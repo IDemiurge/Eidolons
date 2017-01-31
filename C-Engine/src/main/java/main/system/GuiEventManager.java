@@ -5,6 +5,7 @@ import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.MapMaster;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -20,9 +21,21 @@ public class GuiEventManager<T> {
     private static Lock lock = new ReentrantLock();
     private static Map<GuiEventType, List<EventCallbackParam>> queue = new XLinkedMap<>();
     private static List<GuiEventType> waiting = new LinkedList<>();
+    private static Map<GuiEventType, OnDemandCallback> onDemand = new ConcurrentHashMap<>();
 
     public static void bind(GuiEventType type, final EventCallback event) {
         if (event != null) {
+            if (onDemand.containsKey(type)) {
+                lock.lock();
+                OnDemandCallback r = onDemand.remove(type);
+                try {
+                    eventQueue.add(() -> r.call(event));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    lock.unlock();
+                }
+            }
             if (eventMap.containsKey(type)) {
                 final EventCallback old = eventMap.remove(type);
                 eventMap.put(type, (obj) -> {
@@ -41,8 +54,7 @@ public class GuiEventManager<T> {
 
     public static void triggerQueued(GuiEventType e) {
 
-        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-         "Triggering queued " + e);
+        LogMaster.log(LogMaster.ANIM_DEBUG, "Triggering queued " + e);
 
         List<EventCallbackParam> list = queue.get(e);
         if (list == null) {
@@ -52,22 +64,19 @@ public class GuiEventManager<T> {
         if (list.isEmpty())
             waiting.remove(e);
 
-        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, e +
-         " trigger queued with " + p);
+        LogMaster.log(LogMaster.ANIM_DEBUG, e + " trigger queued with " + p);
         trigger(e, p);
     }
 
     public static void queue(GuiEventType e) {
         waiting.add(e);
-        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, e + " waiting for anim: " + waiting);
+        LogMaster.log(LogMaster.ANIM_DEBUG, e + " waiting for anim: " + waiting);
     }
 
     public static void trigger(final GuiEventType type, final EventCallbackParam obj) {
-//        main.system.auxiliary.LogMaster.log(1,
-//         type + " triggering with: " + obj == null ? "" : obj.toString());
         if (waiting.contains(type)) {
-            main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, type + " added to queue: " + queue);
-            new MapMaster<>().addToListMap(queue, type, obj);
+            LogMaster.log(LogMaster.ANIM_DEBUG, type + " added to queue: " + queue);
+            MapMaster.addToListMap(queue, type, obj);
             return;
         }
         if (eventMap.containsKey(type)) {
@@ -78,6 +87,10 @@ public class GuiEventManager<T> {
                 e.printStackTrace();
             } finally {
                 lock.unlock();
+            }
+        } else {
+            if (obj instanceof OnDemandCallback) {
+                onDemand.put(type, (callback) -> callback.call(obj));
             }
         }
     }

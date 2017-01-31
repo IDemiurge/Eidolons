@@ -8,8 +8,7 @@ import main.system.auxiliary.ColorManager;
 public class StyleHolder {
     private static Label.LabelStyle defaultLabelStyle;
     private static Label.LabelStyle avqLabelStyle;
-    private static Color defaultColor =
-            ColorManager.getGdxColor(ColorManager.GOLDEN_WHITE);
+    private static Color defaultColor = new Color(ColorManager.GOLDEN_WHITE.getRGB());
 
     public static Label.LabelStyle getDefaultLabelStyle() {
         if (defaultLabelStyle == null) {

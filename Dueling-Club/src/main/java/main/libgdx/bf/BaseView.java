@@ -37,6 +37,15 @@ public class BaseView extends Group implements Borderable {
         } else {
             addActor(image);
             border = image;
+            updateBorderSize();
         }
+    }
+
+    @Override
+    public void updateBorderSize() {
+        border.setX(-4);
+        border.setY(-4);
+        border.setHeight(getWidth() - 8);
+        border.setWidth(getHeight() - 8);
     }
 }

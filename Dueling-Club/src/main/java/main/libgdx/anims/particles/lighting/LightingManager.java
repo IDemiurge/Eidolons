@@ -1,8 +1,9 @@
 package main.libgdx.anims.particles.lighting;
 
-import main.libgdx.bf.GridPanel;
+import main.entity.obj.DC_HeroObj;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.datatypes.DequeImpl;
 
 /**
  * Created by JustMe on 12/28/2016.
@@ -15,19 +16,12 @@ public class LightingManager {
     public static float mouse_light_distance_to_turn_off = 10;
     public static boolean mouse_light = false;
 
-    LightMap lightMap;
+    private LightMap lightMap;
 
-    public LightingManager(LightMap map, GridPanel gridPanel) {
-        lightMap = map;
+    public LightingManager(DequeImpl<DC_HeroObj> units, int rows, int cols) {
+        lightMap = new LightMap(units, rows, cols);
         GuiEventManager.bind(GuiEventType.GRID_CREATED, p -> {
             //TODO init emitterMap and lightMap
-        });
-        GuiEventManager.bind(GuiEventType.UPDATE_LIGHT, p -> {
-            if (!lightMap.isValid()) return ;
-            lightMap.updateMap();
-            lightMap.updateLight();
-
-                gridPanel.setLightMap(lightMap);
         });
     }
 
@@ -38,5 +32,23 @@ public class LightingManager {
     public static void setMouse_light(boolean mouse_light) {
         LightingManager.mouse_light = mouse_light;
 
+    }
+
+    public void updateAll() {
+        if (!lightMap.isValid()) return;
+        lightMap.updateMap();
+        lightMap.updateLight();
+    }
+
+    public void updateLight() {
+        lightMap.updateLight();
+    }
+
+    public void updatePos(DC_HeroObj obj) {
+        lightMap.updatePos(obj);
+    }
+
+    public void updateObject(DC_HeroObj targetObj) {
+        lightMap.updateObject(targetObj);
     }
 }
