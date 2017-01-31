@@ -12,6 +12,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import main.libgdx.StyleHolder;
+import main.libgdx.gui.panels.dc.InitiativePanelParam;
+import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
+import main.system.auxiliary.LogMaster;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -29,6 +36,8 @@ public class UnitView extends BaseView {
     private Texture portraitTexture;
     private Container<Image> imageContainer;
     private Texture clockTexture;
+    private boolean needRepaint = true;
+    private Label initiativeStrVal;
 
     public UnitView(UnitViewOptions o) {
         super(o);
@@ -48,15 +57,17 @@ public class UnitView extends BaseView {
         setWidth(baseWidth * getScaleX());
 
         fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-//        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-        TextureRegion textureRegion = new TextureRegion(fbo.getColorBufferTexture());
-        //back = new PortraitContainer(new Image(portraitTexture));
-        //addActor(back);
-        imageContainer = new Container<>(new Image(textureRegion));
+        imageContainer = new Container<>();
         imageContainer.width(getW()).height(getH()).bottom().left();
         addActor(imageContainer);
 
-        this.clockTexture = clockTexture;
+        if (clockTexture != null) {
+            this.clockTexture = clockTexture;
+            initiativeStrVal = new Label("[#00FF00FF]" + String.valueOf(clockVal) + "[]", StyleHolder.getDefaultLabelStyle());
+            initiativeStrVal.setPosition(
+                    getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
+                    clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
+        }
 
         if (arrowTexture != null) {
             arrow = new Image(arrowTexture);
@@ -73,6 +84,7 @@ public class UnitView extends BaseView {
             icon.setY(getHeight() - icon.getImageHeight());
         }
 //        setDebug(true);
+        needRepaint = true;
     }
 
     @Override
@@ -87,6 +99,12 @@ public class UnitView extends BaseView {
     }
 
     @Override
+    public void setBorder(Image image) {
+        border = image;
+        needRepaint = true;
+    }
+
+    @Override
     public void draw(Batch batch, float parentAlpha) {
         //setHeight(baseHeight * getScaleY());
         //setWidth(baseWidth * getScaleX());
@@ -97,28 +115,42 @@ public class UnitView extends BaseView {
             //arrow.setOrigin(getWidth()/2 , getHeight()/2);
         }
 
+        if (needRepaint) {
+            batch.end();
+            SpriteBatch sp = new SpriteBatch(1);
+            fbo.begin();
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
+            sp.begin();
+            sp.draw(portraitTexture, 0, 0, getW(), getH());
+            if (clockTexture != null) {
+                sp.draw(clockTexture, getW() - clockTexture.getWidth(), 0);
 
-        batch.end();
-        SpriteBatch sp = new SpriteBatch(1);
-        fbo.begin();
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
-        sp.begin();
-        sp.draw(portraitTexture, 0, 0, getW(), getH());
-        if (clockTexture != null) {
-            sp.draw(clockTexture, getW() - clockTexture.getWidth(), 0);
+            }
+            if (border != null) {
+                border.draw(sp, parentAlpha);
+            }
+            if (initiativeStrVal != null) {
+                initiativeStrVal.draw(sp, parentAlpha);
+            }
+            sp.end();
+            fbo.end();
 
+            TextureRegion textureRegion = new TextureRegion(fbo.getColorBufferTexture(), 0, 0, getW(), getH());
+            textureRegion.flip(false, true);
+            imageContainer.setActor(new Image(textureRegion));
+            imageContainer.width(getW()).height(getH()).bottom().left().pack();
+
+            batch.begin();
+
+            if (clockTexture != null) {
+                InitiativePanelParam panelParam = new InitiativePanelParam(textureRegion, curId, clockVal);
+                GuiEventManager.trigger(GuiEventType.ADD_OR_UPDATE_INITIATIVE, new EventCallbackParam(panelParam));
+            }
+            needRepaint = false;
         }
-        sp.end();
-        fbo.end();
-
-        TextureRegion textureRegion = new TextureRegion(fbo.getColorBufferTexture(), 0, 0, getW(), getH());
-        textureRegion.flip(false, true);
-        imageContainer.setActor(new Image(textureRegion));
-        imageContainer.width(getW()).height(getH()).bottom().left().pack();
 
 
-        batch.begin();
         super.draw(batch, parentAlpha);
     }
 
@@ -163,4 +195,17 @@ public class UnitView extends BaseView {
         return x >= 0 && x < getWidth() && y >= 0 && y < getHeight() ? this : null;
     }
 
+    public void updateInitiative(Integer val) {
+        if (clockTexture != null) {
+            clockVal = val;
+            initiativeStrVal.setText("[#00FF00FF]" + String.valueOf(val) + "[]");
+            initiativeStrVal.setPosition(
+                    getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
+                    clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
+
+            needRepaint = true;
+        } else {
+            LogMaster.error("Initiative set to wrong object type != OBJ_TYPES.UNITS");
+        }
+    }
 }

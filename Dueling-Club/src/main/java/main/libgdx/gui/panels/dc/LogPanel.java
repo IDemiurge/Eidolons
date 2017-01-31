@@ -27,10 +27,9 @@ public class LogPanel extends Group {
             "background.png";
 
     private static final String loremIpsum = "[#FF0000FF]Lorem ipsum[] dolor sit amet, [#00FF00FF]consectetur adipiscing elit[]. [#0000FFFF]Vestibulum faucibus[], augue sit amet porttitor rutrum, nulla eros finibus mauris, nec sagittis mauris nulla et urna. Sed ac orci nec urna ornare aliquam a sit amet neque. Nulla condimentum iaculis dolor, et porttitor dui sollicitudin vel. Fusce convallis fringilla dolor eu mollis. Nam porta augue nec ullamcorper ultricies. Morbi bibendum libero efficitur metus accumsan viverra at ut metus. Duis congue pulvinar ligula, sed maximus tellus lacinia eu.";
-    Container<Table> innerScrollContainer;
-    MovableHeader movableHeader;
-    ExtendButton extendButton;
-    private boolean test;
+    private Container<Table> innerScrollContainer;
+    private MovableHeader movableHeader;
+    private ExtendButton extendButton;
     private boolean updatePos = false;
     private float offsetY = 0;
     private float offsetX = 20;
@@ -50,7 +49,7 @@ public class LogPanel extends Group {
         table.setFillParent(true);
         //tb.setDebug(true);
         table.align(Align.left);
-        if (test)
+/*
         for (int i = 0; i < 32; i++) {
             if (i != 0) table.row();
             LogMessage message = getTestMessage();
@@ -59,6 +58,7 @@ public class LogPanel extends Group {
             table.add(message).fill().padLeft(10).width(getWidth() - 20);
             //message.pack();
         }
+*/
 
         //require to calc valid height
         table.setLayoutEnabled(true);
@@ -76,7 +76,7 @@ public class LogPanel extends Group {
         innerScrollContainer.setY(0);
         innerScrollContainer.setDebug(true);
 
-        addCaptureListener(new InputListener() {
+        container.addCaptureListener(new InputListener() {
             private float yy;
 
             @Override

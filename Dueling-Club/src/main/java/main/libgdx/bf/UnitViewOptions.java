@@ -8,6 +8,8 @@ import main.libgdx.texture.TextureManager;
 
 import java.util.Map;
 
+import static main.content.PARAMS.C_INITIATIVE;
+
 public class UnitViewOptions {
 
     private Runnable runnable;
@@ -116,12 +118,7 @@ public class UnitViewOptions {
 
             this.clockTexture = TextureManager.getOrCreate("\\UI\\value icons\\actions.png");
             String emblem = obj.getProperty(G_PROPS.EMBLEM, true);
-            boolean var10000;
-            if (emblem != null) {
-                var10000 = true;
-            } else {
-                var10000 = false;
-            }
+            this.clockValue = obj.getIntParam(C_INITIATIVE);
         }
 
         if (obj.isOverlaying()) {
