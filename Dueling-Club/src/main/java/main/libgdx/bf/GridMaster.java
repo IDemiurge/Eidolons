@@ -1,6 +1,8 @@
 package main.libgdx.bf;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.battlefield.Coordinates;
 import main.libgdx.GameScreen;
 
@@ -18,5 +20,12 @@ public class GridMaster {
     }
 
     private static GridPanel getGrid() {return GameScreen.getInstance().getGridPanel();
+    }
+    private static Stage getStage() {return GameScreen.getInstance().getGridStage();
+    }
+
+    public static Vector2 getMouseCoordinates() {
+       return getStage().screenToStageCoordinates(
+        new Vector2(Gdx.input.getX(), Gdx.input.getY()));
     }
 }

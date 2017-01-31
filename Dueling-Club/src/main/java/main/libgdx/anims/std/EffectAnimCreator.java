@@ -8,18 +8,27 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.libgdx.GdxColorMaster;
-import main.libgdx.anims.*;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.ANIM_MODS.OBJ_ANIMS;
+import main.libgdx.anims.Anim;
+import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
+import main.libgdx.anims.Animation;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
+import main.libgdx.anims.CompositeAnim;
 import main.libgdx.bf.GridMaster;
 import main.system.images.ImageManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by JustMe on 1/11/2017.
  */
 public class EffectAnimCreator {
+
+    private static Map<Effect, Anim> map = new HashMap<>();
+    private static boolean cachingOn;
 
     public static float getEffectAnimDelay(Effect e, Animation anim, ANIM_PART part) {
 
@@ -36,7 +45,21 @@ public class EffectAnimCreator {
         return delay;
     }
 
-    public static Anim getEffectAnim(Effect e) {
+    public static Anim getOrCreateEffectAnim(Effect e) {
+        Anim anim = map.get(e);
+
+        if (anim==null ) {
+            anim = createEffectAnim(e);
+            if (cachingOn)
+            map.put(e, anim);
+        }
+        if (e.getRef().getTargetObj()!=null )
+        anim.setForcedDestination(e.getRef().getTargetObj().getCoordinates());
+        anim.setPart(ANIM_PART.MAIN); //TODO gotta be some way to generalize this
+        return anim;
+    }
+        private static Anim createEffectAnim(Effect e) {
+
         DC_ActiveObj active = (DC_ActiveObj) e.getActiveObj();
         switch (e.getClass().getSimpleName().replace("Effect", "")) {
             case "DealDamage":

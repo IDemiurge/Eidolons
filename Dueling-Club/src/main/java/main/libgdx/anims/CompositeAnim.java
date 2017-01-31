@@ -27,7 +27,7 @@ public class CompositeAnim implements Animation{
     Map<ANIM_PART, List<GuiEventType>> startEventMap;
     Map<ANIM_PART, List<GuiEventType>> eventMap;
     Map<ANIM_PART, List<Animation>> attached;
-    Map<ANIM_PART,List<Animation>> timeAttachedAnims = new XLinkedMap<>();
+    Map<ANIM_PART,List<Animation>> timeAttachedAnims  ;
     ANIM_PART part;
     int index;
     PhaseAnim phaseAnim;
@@ -79,6 +79,8 @@ public class CompositeAnim implements Animation{
                 return false;
             }
             initPartAnim();
+            currentAnim.start();
+            triggerStartEvents();
         }
         drawAttached(batch);
         return true;
@@ -128,6 +130,7 @@ public class CompositeAnim implements Animation{
         index = 0;
         part = null;
         finished = true;
+        running=false;
     }
 
 
@@ -156,6 +159,7 @@ public class CompositeAnim implements Animation{
         startEventMap = new XLinkedMap<>();
         eventMap = new XLinkedMap<>();
         attached = new XLinkedMap<>();
+        timeAttachedAnims = new XLinkedMap<>();
 
         finished = false;
     }
@@ -164,6 +168,10 @@ public class CompositeAnim implements Animation{
         time = 0;
         index = 0;
         initPartAnim();
+
+        currentAnim.start();
+        triggerStartEvents();
+
         if (map.isEmpty()) {
             return;
         }
@@ -190,12 +198,12 @@ public class CompositeAnim implements Animation{
             return;
         part = (ANIM_PART) MapMaster.get(map, index);
         currentAnim = map.get(part);
-        currentAnim.start();
-        triggerStartEvents();
     }
 
     public void addEffectAnim(Animation anim, Effect effect) {
-        ANIM_PART partToAddAt = EffectAnimCreator.getPartToAttachTo(effect);
+        ANIM_PART partToAddAt =anim.getPart();
+        if (part==null )
+            partToAddAt=EffectAnimCreator.getPartToAttachTo(effect);
         float delay = EffectAnimCreator.getEffectAnimDelay(effect, anim, partToAddAt);
         if (delay!=0){
             anim.setDelay(delay);
@@ -263,16 +271,19 @@ public class CompositeAnim implements Animation{
     }
 
     public Anim getCurrentAnim() {
+        if (currentAnim==null )
+        initPartAnim();
         return currentAnim;
     }
     @Override
     public void setDelay(float delay) {
-
+          getCurrentAnim().setDelay(delay);
     }
 
     @Override
     public float getDelay() {
-        return 0;
+
+        return getCurrentAnim().getDelay();
     }
 
     @Override

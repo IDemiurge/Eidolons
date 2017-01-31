@@ -15,6 +15,7 @@ import main.data.filesys.PathFinder;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.BuffObj;
+import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_SpellObj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
@@ -237,33 +238,43 @@ public class AnimationConstructor {
         return false;
     }
 
-    public CompositeAnim getEffectAnim(Effect e) {
+    public Animation getEffectAnim(Effect e) {
 //        map
         if (!isAnimated(e)) return null;
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, "EFFECT ANIM CONSTRUCTED FOR " + e + e.getRef());
-        Anim effectAnim = EffectAnimCreator.getEffectAnim(e);
+        Anim effectAnim = EffectAnimCreator.getOrCreateEffectAnim(e);
         initAnim(effectAnim.getData(), (DC_ActiveObj) effectAnim.getActive(),
                 effectAnim.getPart(),
                 effectAnim);
         if (!isValid(effectAnim)) return null;
-        CompositeAnim a = new CompositeAnim();
-        a.add(
-                effectAnim.getPart()
-                , effectAnim);
 
-        return a;
+        return effectAnim;
+//        CompositeAnim a = new CompositeAnim();
+//        a.add(
+//                effectAnim.getPart()
+//                , effectAnim);
+//        return a;
     }
 
     private boolean isAnimated(Effect e) {
         if (e.getActiveObj() == null) return false;
+        if (!isCellAnimated(e))if (e.getRef().getTargetObj() instanceof DC_Cell){
 
-        if (e instanceof DealDamageEffect) return true;
+    return false;
+}
+        if (e instanceof DealDamageEffect) {
+            return true;
+        }
         if (e instanceof ModifyValueEffect) {
             if (e.isContinuousWrapped())
                 return false;
             return true;
         }
 
+        return false;
+    }
+
+    private boolean isCellAnimated(Effect e) {
         return false;
     }
 

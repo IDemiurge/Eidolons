@@ -80,7 +80,7 @@ public class InputController implements InputProcessor {
     public boolean keyTyped(char c) {
         DC_Game.game.getBattleField().getKeyListener().handleKeyTyped(0, c);
 
-        return false;
+        return true;
     }
 
     @Override

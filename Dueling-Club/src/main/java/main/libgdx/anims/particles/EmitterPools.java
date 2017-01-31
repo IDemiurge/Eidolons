@@ -12,6 +12,7 @@ import java.util.Map;
 public class EmitterPools {
 
     private static Map<String, Pool<EmitterActor>> poolMap = new HashMap<>();
+    private static boolean poolingOn;
 
 
     public static EmitterActor getEmitterActor(SFX sfx) {
@@ -19,6 +20,8 @@ public class EmitterPools {
     }
 
     public static EmitterActor getEmitterActor(String path) {
+        if (!poolingOn)
+            return new EmitterActor(path);
         final String finalPath = path.toLowerCase();
         Pool<EmitterActor> pool = poolMap.get(finalPath);
         if (pool == null) {

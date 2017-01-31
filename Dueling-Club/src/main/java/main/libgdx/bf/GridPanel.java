@@ -162,7 +162,7 @@ public class GridPanel extends Group {
             main.game.event.Event event = (main.game.event.Event) param.get();
             Ref r = event.getRef();
             boolean caught = false;
-            if (event.getType() == STANDARD_EVENT_TYPE.EFFECT_APPLIES) {
+            if (event.getType() == STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED) {
                 GuiEventManager.trigger(GuiEventType.EFFECT_APPLIED,
                         new EventCallbackParam<>(event.getRef().getEffect()));
                 caught = true;

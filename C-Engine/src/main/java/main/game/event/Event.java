@@ -126,7 +126,8 @@ public class Event implements Referred {
         MORALE_PANIC,
         MORALE_TREASON,
 
-        EFFECT_APPLIES,
+        EFFECT_IS_BEING_APPLIED,
+        EFFECT_HAS_BEEN_APPLIED,
         EFFECT_ADD_COUNTER,
         EFFECT_MODIFY_VALUE,
 

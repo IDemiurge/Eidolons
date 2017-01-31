@@ -1,6 +1,8 @@
 package main.libgdx.anims.particles.controls;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
 import main.data.filesys.PathFinder;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
@@ -10,6 +12,7 @@ import main.libgdx.anims.particles.Ambience;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.particles.EmitterPresetMaster;
 import main.libgdx.anims.particles.EmitterPresetMaster.EMITTER_VALUE_GROUP;
+import main.libgdx.bf.GridMaster;
 import main.swing.generic.components.editors.FileChooser;
 import main.swing.generic.components.editors.ImageChooser;
 import main.swing.generic.components.editors.lists.ListChooser;
@@ -20,13 +23,15 @@ import main.system.GuiEventType;
 /**
  * Created by JustMe on 1/27/2017.
  */
-public class EmitterController {
+public class EmitterController    {
     static EmitterActor last;
     static  EmitterController instance;
     boolean continuous;
     int multiplier;
     boolean cursorAttached;
     private static boolean testMode;
+
+
 
     public static EmitterController getInstance() {
         if (instance==null )instance=new EmitterController();
@@ -69,12 +74,19 @@ add(presetPath,imagePath,destination);
 
     public static void replay() {
         Coordinates destination = DC_Game.game.getUnits().get(1).getCoordinates();
+        last.reset();
         add(last, destination);
 
     }
 
     public static void add(String presetPath, String imagePath, Coordinates destination) {
-        EmitterActor actor = new EmitterActor(presetPath, true);
+        EmitterActor actor = new EmitterActor(presetPath, true){
+            @Override
+            public void draw(Batch batch, float parentAlpha) {
+                    act(Gdx.graphics.getDeltaTime());
+                super.draw(batch, parentAlpha);
+            }
+        };
         if (imagePath!=null )
         actor.getEffect().setImagePath(imagePath);
         add(actor, destination);
@@ -82,7 +94,8 @@ add(presetPath,imagePath,destination);
 
     public static void add(EmitterActor actor, Coordinates destination) {
         GameScreen.getInstance().getAnimsStage().addActor(actor);
-        actor.setPosition(Gdx.input.getX(), Gdx.input.getY());
+       Vector2 v= GridMaster.getMouseCoordinates();
+        actor.setPosition(v.x,v.y);
 
         int speed = 500;
         ActorMaster.getMoveToAction(destination, actor, speed);

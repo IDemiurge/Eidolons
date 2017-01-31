@@ -16,9 +16,9 @@ import main.system.auxiliary.StringMaster;
  */
 public class EmitterActor extends Actor implements ParticleInterface {
 
+    static public boolean spriteEmitterTest = false;
     private final int defaultCapacity = 12;
     private final int defaultMaxCapacity = 24;
-  static public boolean spriteEmitterTest=false;
     public String path;
     protected ParticleEffect effect;
     protected ParticleEffectPool pool;
@@ -26,32 +26,33 @@ public class EmitterActor extends Actor implements ParticleInterface {
     boolean flipX;
     boolean flipY;
     private Sprite sprite;
-    private boolean attached=true;
+    private boolean attached = true;
     private boolean generated;
     private Coordinates target;
+    private boolean test;
 
 
     public EmitterActor(SFX fx) {
         this(fx.path);
         this.sfx = fx;
-//        effect.setFlip(flipX, flipY);
-//        effect.getEmitters().get(0).setSprite();
     }
 
-    public EmitterActor(String path, boolean test) {
-        this.path=path;
+    public EmitterActor(String path, boolean test) { //TODO refactor!
+        this.path = path;
+        this.test = test;
         effect = new ParticleEffect();
         String imagePath =
          PathFinder.getParticleImagePath();
-            effect.load(Gdx.files.internal(
-             StringMaster.addMissingPathSegments(
-              path, PathFinder.getParticlePresetPath())),
-             Gdx.files.internal(imagePath));
+        effect.load(Gdx.files.internal(
+         StringMaster.addMissingPathSegments(
+          path, PathFinder.getParticlePresetPath())),
+         Gdx.files.internal(imagePath));
 
     }
+
     public EmitterActor(String path) {
 //        path =PathFinder.getSfxPath() + "templates\\sprite test";
-        this.path=path;
+        this.path = path;
 
         effect = new ParticleEffect();
 //        pool = new ParticleEffectPool(effect, defaultCapacity, defaultMaxCapacity);
@@ -70,48 +71,48 @@ public class EmitterActor extends Actor implements ParticleInterface {
             String suffix = StringMaster.replaceFirst(path, PathFinder.getParticlePresetPath(), "");
             suffix = StringMaster.cropLastPathSegment(suffix);
             imagePath += suffix;
-        try {
-            effect.load(Gdx.files.internal(
-             StringMaster.addMissingPathSegments(
-              path, PathFinder.getParticlePresetPath())),
-             Gdx.files.internal(imagePath));
-
-        } catch (Exception e0) {
-            imagePath += "particles\\";
             try {
                 effect.load(Gdx.files.internal(
                  StringMaster.addMissingPathSegments(
                   path, PathFinder.getParticlePresetPath())),
                  Gdx.files.internal(imagePath));
-            } catch (Exception e1) {
-                imagePath =
-                 PathFinder.removeSpecificPcPrefix(
-                  EmitterPresetMaster.getInstance().getImagePath(path));
-                imagePath = StringMaster.cropLastPathSegment(imagePath);
+
+            } catch (Exception e0) {
+                imagePath += "particles\\";
                 try {
                     effect.load(Gdx.files.internal(
                      StringMaster.addMissingPathSegments(
                       path, PathFinder.getParticlePresetPath())),
                      Gdx.files.internal(imagePath));
-                } catch (Exception e2) {
-                    main.system.auxiliary.LogMaster.log(1, imagePath + " - NO IMAGE FOUND FOR SFX: " + path);
-                    e2.printStackTrace();
+                } catch (Exception e1) {
+                    imagePath =
+                     PathFinder.removeSpecificPcPrefix(
+                      EmitterPresetMaster.getInstance().getImagePath(path));
+                    imagePath = StringMaster.cropLastPathSegment(imagePath);
+                    try {
+                        effect.load(Gdx.files.internal(
+                         StringMaster.addMissingPathSegments(
+                          path, PathFinder.getParticlePresetPath())),
+                         Gdx.files.internal(imagePath));
+                    } catch (Exception e2) {
+                        main.system.auxiliary.LogMaster.log(1, imagePath + " - NO IMAGE FOUND FOR SFX: " + path);
+                        e2.printStackTrace();
+                    }
+
+
                 }
-
-
             }
-        }
 
 
         }
-if ( spriteEmitterTest)
-        effect.getEmitters().forEach(e->{
-            String randomPath = FileManager.getRandomFile(PathFinder.getSpritesPath() +
-             "impact\\").getPath();
-            ((Emitter)e).offset(20, "scale");
-            e.setImagePath(randomPath);
-            e.setPremultipliedAlpha(false);
-        });
+        if (spriteEmitterTest)
+            effect.getEmitters().forEach(e -> {
+                String randomPath = FileManager.getRandomFile(PathFinder.getSpritesPath() +
+                 "impact\\").getPath();
+                ((Emitter) e).offset(20, "scale");
+                e.setImagePath(randomPath);
+                e.setPremultipliedAlpha(false);
+            });
     }
 
 
@@ -142,13 +143,14 @@ if ( spriteEmitterTest)
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+
         super.draw(batch, parentAlpha);
 
         effect.setPosition(getX(), getY());
 //        sprite = effect.getEmitters().first().getSprite();
 //        sprite.setRotation(new Random().nextInt(360));
 
-        effect.draw(batch,   Gdx.graphics.getDeltaTime());
+        effect.draw(batch, Gdx.graphics.getDeltaTime());
 
     }
 
@@ -189,19 +191,23 @@ if ( spriteEmitterTest)
         this.attached = attached;
     }
 
+    public boolean isGenerated() {
+        return generated;
+    }
+
     public void setGenerated(boolean generated) {
         this.generated = generated;
     }
 
-    public boolean isGenerated() {
-        return generated;
+    public Coordinates getTarget() {
+        return target;
     }
 
     public void setTarget(Coordinates target) {
         this.target = target;
     }
 
-    public Coordinates getTarget() {
-        return target;
+    public void reset() {
+        getEffect().reset();
     }
 }

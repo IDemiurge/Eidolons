@@ -92,7 +92,7 @@ public class AnimMaster extends Actor {
         GuiEventManager.bind(GuiEventType.EFFECT_APPLIED, p -> {
                     if (!isOn()) return;
                     Effect effect = (Effect) p.get();
-                    CompositeAnim anim = constructor.getEffectAnim(effect);
+                     Animation anim = constructor.getEffectAnim(effect);
                     if (anim == null) return;
                     CompositeAnim parentAnim = getParentAnim(effect.getRef());
 
@@ -104,7 +104,7 @@ public class AnimMaster extends Actor {
                         parentAnim.addEffectAnim(anim, effect); //TODO}
                     } else {
 
-                        add(anim);// when to start()?
+//                        add(anim);// when to start()?
                     }
                 }
         );

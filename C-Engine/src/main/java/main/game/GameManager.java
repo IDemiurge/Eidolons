@@ -362,7 +362,7 @@ public abstract class GameManager implements GenericGameManager {
     public boolean effectApplies(EffectImpl effect) {
         Ref ref = effect.getRef();
         ref.setEffect(effect);
-        return (!getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.EFFECT_APPLIES, ref)));
+        return (!getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.EFFECT_IS_BEING_APPLIED, ref)));
 
     }
 

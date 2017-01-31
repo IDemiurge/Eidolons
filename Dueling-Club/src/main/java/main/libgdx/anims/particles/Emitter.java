@@ -2,6 +2,7 @@ package main.libgdx.anims.particles;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
+import com.badlogic.gdx.math.Vector2;
 import main.libgdx.GameScreen;
 import main.system.auxiliary.secondary.ReflectionMaster;
 
@@ -42,6 +43,7 @@ public class Emitter extends ParticleEmitter {
     }
 
     private Object getValue(String s) {
+
         return new ReflectionMaster<>().
          getFieldValue(s, this, ParticleEmitter.class);
 
@@ -76,20 +78,21 @@ public class Emitter extends ParticleEmitter {
     public void modifyParticles() {
         Arrays.stream(getParticles()).forEach(p -> {
             if (p != null) {
-//                GridMaster.getMouseCoordinates
-
-            float x = Gdx.input.getX() - (getX()+p.getX())
-//             - GameScreen.getInstance().getController().getX_cam_pos()
-             ;
-            float y =(Gdx.graphics.getHeight()- Gdx.input.getY()) //fuck that shit 
+//                GridMaster.getMouseCoordinates;
+                Vector2 v = new Vector2(Gdx.input.getX(), (Gdx.graphics.getHeight() - Gdx.input.getY()));
+                Vector2 pos = GameScreen.getInstance().getGridStage().screenToStageCoordinates(v);
+            float xDiff = pos.x
+             - GameScreen.getInstance().getController().getX_cam_pos()
+             - (getX()+p.getX()) ;
+            float yDiff = pos.y //fuck that shit
              -(getY()+p.getY())
-//             - GameScreen.getInstance().getController().getY_cam_pos()
+             - GameScreen.getInstance().getController().getY_cam_pos()
              ;
-            Float distance = (float) (Math.sqrt(x * x + y * y));
+            Float distance = (float) (Math.sqrt(xDiff * xDiff + yDiff * yDiff));
             if (particleLogOn)
             main.system.auxiliary.LogMaster.log(1,
-             " Mouse x: "+ Gdx.input.getX()
-             + " Mouse y: "+ (Gdx.graphics.getHeight()- Gdx.input.getY()) //fuck that shit
+             " Mouse x: "+ pos.x
+             + " Mouse y: "+ pos.y //fuck that shit
               + " Particle x: " + (getY()+p.getX())
               + " Particle y: " + (getY()+p.getY())
               + " cam x: " + (GameScreen.getInstance().getController().getX_cam_pos())

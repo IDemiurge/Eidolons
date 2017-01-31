@@ -1,7 +1,5 @@
 package main.system;
 
-import main.game.event.Event.STANDARD_EVENT_TYPE;
-
 //public enum GUI_EVENT implements GraphicEvent{
 //
 //}
@@ -38,18 +36,20 @@ public enum GuiEventType {
     CELL_UPDATE,
     SHOW_TOOLTIP,
     CREATE_UNITS_MODEL,
-    DESTROY_UNIT_MODEL(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED),
-    ABILITY_RESOLVES(), EFFECT_APPLIED(), ACTION_RESOLVES(),
-    ACTION_INTERRUPTED(), UNIT_MOVED(), ACTION_BEING_RESOLVED(), UPDATE_BUFFS(),
-    LOG_ENTRY_ADDED(), UPDATE_AMBIENCE(),
+    DESTROY_UNIT_MODEL(),
+    ABILITY_RESOLVES(),
+    EFFECT_APPLIED(),
+    ACTION_RESOLVES(),
+    ACTION_INTERRUPTED(),
+    UNIT_MOVED(),
+    ACTION_BEING_RESOLVED(),
+    UPDATE_BUFFS(),
+    LOG_ENTRY_ADDED(),
+    UPDATE_AMBIENCE(),
 
     CREATE_EMITTER,
 
 
     SFX_PLAY_LAST();
-    public STANDARD_EVENT_TYPE[] boundEvents;
 
-    GuiEventType(STANDARD_EVENT_TYPE... boundEvents) {
-        this.boundEvents = boundEvents;
-    }
 }

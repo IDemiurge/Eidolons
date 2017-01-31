@@ -62,6 +62,7 @@ public class Anim extends Group implements Animation{
     protected float alpha;
     protected float delay;
     private boolean running;
+    protected Coordinates forcedDestination;
 
 
     public Anim(Entity active, AnimData params) {
@@ -157,7 +158,8 @@ public class Anim extends Group implements Animation{
         if (duration > 0) //|| finished //  lifecycle duration for continuous?
             if (time >= duration) {
                 main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, this + " finished; duration = " + duration);
-                dispose();
+               finished();
+               dispose();
                 return false;
             }
         if (currentFrame != null) {
@@ -338,9 +340,14 @@ public class Anim extends Group implements Animation{
     }
 
     protected Coordinates getDestinationCoordinates() {
+        if (forcedDestination!=null )return forcedDestination;
         if (getRef().getTargetObj() == null)
             return getRef().getSourceObj().getCoordinates();
         return getRef().getTargetObj().getCoordinates();
+    }
+
+    public void setForcedDestination(Coordinates forcedDestination) {
+        this.forcedDestination = forcedDestination;
     }
 
     protected Vector2 getDefaultPosition() {

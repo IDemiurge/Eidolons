@@ -13,6 +13,7 @@ import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
+import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.LogMaster.LOG_CHANNELS;
@@ -282,6 +283,8 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        game.fireEvent(new Event(STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED, ref));
+
         return result;
 
     }

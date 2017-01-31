@@ -727,7 +727,7 @@ public class DC_GameManager extends GameManager {
     public boolean effectApplies(EffectImpl effect) {
          Ref ref = effect.getRef();
          if (!getGame().fireEvent(new
-         Event(STANDARD_EVENT_TYPE.EFFECT_APPLIES,
+         Event(STANDARD_EVENT_TYPE.EFFECT_IS_BEING_APPLIED,
          ref))) {
          return false;
          }

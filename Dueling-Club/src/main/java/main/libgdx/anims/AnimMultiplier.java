@@ -11,6 +11,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.top.DC_ActiveObj;
 import main.game.battlefield.Coordinates;
+import main.game.logic.macro.utils.CoordinatesMaster;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.particles.EmitterPools;
@@ -19,10 +20,7 @@ import main.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
 import main.system.ai.logic.target.EffectMaster;
 import main.system.auxiliary.secondary.GeometryMaster;
 
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by JustMe on 1/29/2017.
@@ -77,6 +75,7 @@ public class AnimMultiplier implements Runnable {
         applyTemplate();
         adjustAngle();
     }
+
     private void adjustAngle() {
         emitterList.forEach(e -> {
             if (e.getTarget() != null) {
@@ -110,14 +109,15 @@ public class AnimMultiplier implements Runnable {
                 applyTemplateAngles(coordinates);
                 return;
             }
-            if (coordinates!=null )
-        applyMultiplicationForCoordinates(coordinates);
+        if (coordinates != null)
+            applyMultiplicationForCoordinates(coordinates);
 
     }
 
     public void applyMultiplicationForCoordinates(Set<Coordinates> coordinates) {
         List<EmitterActor> list = new LinkedList<>();
-        coordinates.forEach(c ->
+
+        filterCoordinates(template, coordinates).forEach(c ->
          {
              for (EmitterActor e : emitterList) {
                  if (e.isGenerated()) continue;
@@ -131,6 +131,26 @@ public class AnimMultiplier implements Runnable {
 
     }
 
+    private Collection<Coordinates> filterCoordinates(SPELL_ANIMS template, Set<Coordinates> coordinates) {
+
+        if (template != null) {
+            List<Coordinates> list = new LinkedList<>();
+            switch (template) {
+//                template.getNumberOfEmitters(getActive())
+                case RAY:
+                    Coordinates c = CoordinatesMaster.getFarmostCoordinateInDirection
+                     (getActive().getOwnerObj().getFacing().getDirection(), new LinkedList<>(coordinates), null);
+                    anim.setForcedDestination(c);
+
+                    return Arrays.asList(new Coordinates[]{
+                     c
+                    });
+            }
+            return list;
+        }
+        return coordinates;
+    }
+
     private EmitterActor multiplicateEmitter(Integer angle, Coordinates c, EmitterActor e) {
         EmitterActor actor = EmitterPools.getEmitterActor(e.path);
         actor.setPosition(getX(), getY());
@@ -139,10 +159,10 @@ public class AnimMultiplier implements Runnable {
         ActorMaster.addRemoveAfter(actor);
         GameScreen.getInstance().getAnimsStage().addActor(actor);
 
-if (angle!=null )
-        createAndAddEmitterActions(actor, angle, template);
-else
-        createAndAddEmitterActions(actor, c);
+        if (angle != null)
+            createAndAddEmitterActions(actor, angle, template);
+        else
+            createAndAddEmitterActions(actor, c);
 
         return actor;
     }
@@ -211,14 +231,6 @@ else
         return action;
     }
 
-
-    public enum MULTIPLICATION_METHOD {
-        ANGLE,
-        COORDINATE,
-    }
-
-
-
     public DC_ActiveObj getActive() {
         return (DC_ActiveObj) anim.getActive();
     }
@@ -245,5 +257,10 @@ else
 
     public float getY() {
         return anim.getY();
+    }
+
+    public enum MULTIPLICATION_METHOD {
+        ANGLE,
+        COORDINATE,
     }
 }
