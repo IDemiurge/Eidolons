@@ -485,7 +485,7 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public void recalculateInitiative() {
-
+//        int before =  getIntParam(PARAMS.C_INITIATIVE);
         int initiative = getIntParam(PARAMS.C_N_OF_ACTIONS)
                 * getIntParam(PARAMS.INITIATIVE_MODIFIER);
 
@@ -505,6 +505,15 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
                 * getIntParam(PARAMS.INITIATIVE_MODIFIER) + getIntParam(PARAMS.C_INITIATIVE_BONUS);
         setParam(PARAMS.INITIATIVE, base_initiative, true);
         resetPercentage(PARAMS.INITIATIVE);
+
+//        int after =  getIntParam(PARAMS.C_INITIATIVE);
+//        if (before == after) return;
+//        int diff = before - after;
+//
+//        if (diff != 0) {
+//            GuiEventManager.trigger(INITIATIVE_CHANGED,
+//             new EventCallbackParam(new ImmutablePair<>(this, after))); TODO ON DEMAND!
+//        }
     }
 
     protected void resetToughness() {

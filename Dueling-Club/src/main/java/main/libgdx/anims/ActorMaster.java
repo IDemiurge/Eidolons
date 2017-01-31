@@ -4,8 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import main.game.battlefield.Coordinates;
-import main.libgdx.GameScreen;
 import main.libgdx.anims.particles.EmitterActor;
+import main.libgdx.bf.GridMaster;
 
 /**
  * Created by JustMe on 1/26/2017.
@@ -38,7 +38,7 @@ public class ActorMaster {
      Coordinates destination, EmitterActor actor, int pixelsPerSecond) {
 
         MoveToAction action = new MoveToAction();
-        Vector2 v = GameScreen.getInstance().getGridPanel().
+        Vector2 v = GridMaster.
          getVectorForCoordinateWithOffset(destination);
         action.setPosition(v.x,v.y);
         Float duration = (float) (Math.sqrt(v.x * v.x + v.y * v.y) / pixelsPerSecond);

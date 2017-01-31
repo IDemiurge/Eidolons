@@ -5,8 +5,8 @@ import main.ability.effects.Effect;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.data.filesys.PathFinder;
 import main.entity.Ref.KEYS;
-import main.entity.obj.Obj;
 import main.entity.obj.top.DC_ActiveObj;
+import main.game.battlefield.Coordinates;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.ANIM_MODS.OBJ_ANIMS;
@@ -36,9 +36,13 @@ public class EffectAnimCreator {
         if (anim instanceof CompositeAnim) {
             subAnim = ((CompositeAnim) anim).getMap().get(part);
         } else subAnim = (Anim) anim;
-        Obj obj = e.getRef().getTargetObj();
+
+        Coordinates destination=null ;
+        if (anim instanceof Anim) {
+            destination=((Anim) anim).getDestinationCoordinates();
+        }
         Float distance =
-         GridMaster.getDistance(obj.getCoordinates(), subAnim.getOriginCoordinates());
+         GridMaster.getDistance(destination, subAnim.getOriginCoordinates());
         float delay = distance / subAnim.getPixelsPerSecond();
 
 

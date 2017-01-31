@@ -92,11 +92,12 @@ public class CompositeAnim implements Animation{
         if (timeAttachedAnims.get(part)==null )return ;
     timeAttachedAnims.get(part).  forEach(a -> {
         if (!a.isRunning())
-            if (a.getDelay() >= time) {
+            if (a.getDelay() <= time) {
                 a.start();
                 AnimMaster.getInstance().addTimeAttached(a);
             }
         });
+        timeAttachedAnims.get(part).removeIf(a-> a .isRunning());
     }
 
 

@@ -17,6 +17,7 @@ import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.particles.EmitterPools;
 import main.libgdx.anims.std.SpellAnim;
 import main.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
+import main.libgdx.bf.GridMaster;
 import main.system.ai.logic.target.EffectMaster;
 import main.system.auxiliary.secondary.GeometryMaster;
 
@@ -187,7 +188,7 @@ public class AnimMultiplier implements Runnable {
 
     private void createAndAddEmitterActions(EmitterActor actor, Coordinates c) {
 //        MoveToAction action = ActorMaster.getMoveToAction(c, actor, pixelsPerSecond);
-        Vector2 v = GameScreen.getInstance().getGridPanel().
+        Vector2 v = GridMaster.
          getVectorForCoordinateWithOffset(c);
         MoveByAction action = ActorMaster.getMoveByAction(getOrigin(), v, actor, getPixelsPerSecond());
         if (action.getDuration() > this.duration) this.duration = action.getDuration();

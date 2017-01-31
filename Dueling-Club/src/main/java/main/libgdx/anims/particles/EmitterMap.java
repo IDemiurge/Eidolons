@@ -8,6 +8,7 @@ import main.entity.obj.DC_HeroObj;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.libgdx.GameScreen;
+import main.libgdx.bf.GridMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.Chronos;
@@ -105,7 +106,7 @@ public class EmitterMap {
         if (fogMap.containsKey(c))
             return;
 
-        Vector2 v = GameScreen.getInstance().getGridPanel().
+        Vector2 v = GridMaster.
                 getVectorForCoordinateWithOffset(c);
         Ambience fog = ambiencePool.obtain();
         fog.setTarget(c);

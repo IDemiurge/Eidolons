@@ -174,6 +174,7 @@ public class LogPanel extends Group {
 //            entry.getTextLines().forEach(line ->{
             builder.addString(p.get().toString(), "FF0000FF");
 //            });
+
             LogMessage message = builder.build(getWidth() - offsetX);
             message.setFillParent(true);
             table.add(message).fill().padLeft(10).width(getWidth() - 20);

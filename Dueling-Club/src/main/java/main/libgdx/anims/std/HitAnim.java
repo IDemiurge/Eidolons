@@ -8,6 +8,7 @@ import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.entity.obj.top.DC_ActiveObj;
+import main.game.battlefield.Coordinates;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
@@ -55,6 +56,11 @@ public class HitAnim extends ActionAnim {
                         , c);
         part = ANIM_PART.IMPACT;
 
+    }
+
+    @Override
+    public Coordinates getOriginCoordinates() {
+        return getRef().getTargetObj().getCoordinates();
     }
 
     @Override
