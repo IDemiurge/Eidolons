@@ -128,6 +128,7 @@ public class InitiativePanel extends Group {
                         queue[ip1] = cur;
                         next.pos--;
                         queue[i] = next;
+
                         for (int y = i; y > 0; y--) {
                             if (queue[y] == null) break;
                             if (queue[y].initiative >= queue[y - 1].initiative) break;
@@ -150,6 +151,7 @@ public class InitiativePanel extends Group {
             if (container != null && container.pos != 0) {
                 MoveByAction a = new MoveByAction();
                 a.setAmountX(relToPixPos(container.pos));
+                container.pos = 0;
                 container.image.addAction(a);
             }
         }
@@ -161,7 +163,7 @@ public class InitiativePanel extends Group {
 
     private ImageContainer getIfExists(int id) {
         for (int i = 0; i < queue.length; i++) {
-            if (queue[i] == null && queue[i].id == id) return queue[i];
+            if (queue[i] != null && queue[i].id == id) return queue[i];
         }
         return null;
     }

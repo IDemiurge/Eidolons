@@ -92,6 +92,7 @@ public class GridPanel extends Group {
 
 
     }
+
     public Vector2 getVectorForCoordinateWithOffset(Coordinates sourceCoordinates
             , boolean centered) {
         InputController controller = GameScreen.getInstance().getController();
@@ -142,6 +143,12 @@ public class GridPanel extends Group {
     }
 
     private void bindEvents() {
+        GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
+            Pair<DC_HeroObj, Integer> p = (Pair<DC_HeroObj, Integer>) obj.get();
+            UnitView uv = (UnitView) unitMap.get(p.getLeft());
+            uv.updateInitiative(p.getRight());
+        });
+
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p =
                     (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
@@ -235,9 +242,9 @@ public class GridPanel extends Group {
                 caught = true;
             }
             if (!muteEventLog)
-            if (!caught) {
-                System.out.println("catch ingame event: " + event.getType() + " in " + event.getRef());
-            }
+                if (!caught) {
+                    System.out.println("catch ingame event: " + event.getType() + " in " + event.getRef());
+                }
         });
 
 

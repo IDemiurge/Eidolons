@@ -22,6 +22,7 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.system.threading.Weaver;
 import main.test.TestMaster;
 import main.test.frontend.FAST_DC;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,10 +30,11 @@ import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 
 import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
+import static main.system.GuiEventType.INITIATIVE_CHANGED;
 
 /**
- After each Action, recalculates Initiative for each unit,
- rebuilds Queue and makes the top unit Active.
+ * After each Action, recalculates Initiative for each unit,
+ * rebuilds Queue and makes the top unit Active.
  */
 
 public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
@@ -100,7 +102,7 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
 
         boolean result = true;
 
-            result = chooseUnit();
+        result = chooseUnit();
 
 
         Weaver.inNewThread(new Runnable() {
@@ -175,7 +177,14 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
 
     private void resetInitiative(boolean first) {
         for (DC_HeroObj unit : game.getUnits()) {
+            int before = unit.getIntParam(PARAMS.C_INITIATIVE);
             resetInitiative(unit, first);
+            int after = unit.getIntParam(PARAMS.C_INITIATIVE);
+            if (before == after) return;
+            int diff = before - after;
+            if (diff != 0) {
+                GuiEventManager.trigger(INITIATIVE_CHANGED, new EventCallbackParam(new ImmutablePair<>(unit, diff)));
+            }
         }
     }
 
@@ -192,7 +201,11 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
                 displayedUnitQueue.add(unit);
         }
 
-try{game.getBattleField().refreshInitiativeQueue();                }catch(Exception e){                e.printStackTrace();            }
+        try {
+            game.getBattleField().refreshInitiativeQueue();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -228,19 +241,20 @@ try{game.getBattleField().refreshInitiativeQueue();                }catch(Except
     private boolean chooseUnit() {
 
         setActiveUnit(unitQueue.peek());
-        try{
-        if (!game.getManager().activeSelect(getActiveUnit()))
-            return false;
+        try {
+            if (!game.getManager().activeSelect(getActiveUnit()))
+                return false;
             if (CoreEngine.isSwingOn())
-        if (game.getManager().getInfoObj() == null)
-            game.getManager().infoSelect(activeUnit);
+                if (game.getManager().getInfoObj() == null)
+                    game.getManager().infoSelect(activeUnit);
 
             WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
             LogMaster.gameInfo(StringMaster.getStringXTimes(50 - getActiveUnit().toString().length(), ">")
-                + "Active unit: " + getActiveUnit());
+                    + "Active unit: " + getActiveUnit());
             GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, new EventCallbackParam(activeUnit));
-        }catch(Exception e){
-            e.printStackTrace();            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return true;
     }
 

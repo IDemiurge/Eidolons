@@ -23,6 +23,7 @@ import main.libgdx.bf.controls.radial.RadialMenu;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.bf.mouse.ToolTipManager;
 import main.libgdx.gui.dialog.DialogDisplay;
+import main.libgdx.gui.panels.dc.InitiativePanel;
 import main.libgdx.gui.panels.dc.InitiativeQueue;
 import main.libgdx.gui.panels.dc.LogPanel;
 import main.system.GuiEventManager;
@@ -145,6 +146,9 @@ public class GameScreen implements Screen {
         guiStage.addActor(queue);
         queue.setPosition(0, 0, Align.topLeft);
 
+        InitiativePanel initiativePanel = new InitiativePanel();
+        initiativePanel.setPosition(100, 100);
+        guiStage.addActor(initiativePanel);
 
         if (!FAST_DC.getGameLauncher().getSUPER_FAST_MODE()
 //                && !FAST_DC.getGameLauncher().getFAST_MODE()

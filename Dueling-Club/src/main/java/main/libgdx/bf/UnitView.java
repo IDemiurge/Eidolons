@@ -99,7 +99,7 @@ public class UnitView extends BaseView {
 
     @Override
     public void setBorder(Image image) {
-        super.setBorder(image);
+        border = image;
         needRepaint = true;
     }
 
@@ -115,7 +115,6 @@ public class UnitView extends BaseView {
         }
 
         if (needRepaint) {
-
             batch.end();
             SpriteBatch sp = new SpriteBatch(1);
             fbo.begin();
@@ -126,6 +125,9 @@ public class UnitView extends BaseView {
             if (clockTexture != null) {
                 sp.draw(clockTexture, getW() - clockTexture.getWidth(), 0);
 
+            }
+            if (border != null) {
+                border.draw(sp, parentAlpha);
             }
             initiativeStrVal.draw(sp, parentAlpha);
             sp.end();
@@ -187,4 +189,8 @@ public class UnitView extends BaseView {
         return x >= 0 && x < getWidth() && y >= 0 && y < getHeight() ? this : null;
     }
 
+    public void updateInitiative(Integer val) {
+        clockVal = val;
+        needRepaint = true;
+    }
 }
