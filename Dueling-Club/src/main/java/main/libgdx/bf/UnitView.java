@@ -18,6 +18,7 @@ import main.libgdx.gui.panels.dc.InitiativePanelParam;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.LogMaster;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -60,13 +61,13 @@ public class UnitView extends BaseView {
         imageContainer.width(getW()).height(getH()).bottom().left();
         addActor(imageContainer);
 
-        this.clockTexture = clockTexture;
-
-        initiativeStrVal = new Label(String.valueOf(clockVal), StyleHolder.getDefaultLabelStyle());
-        initiativeStrVal.setPosition(
-                getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
-                clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
-
+        if (clockTexture != null) {
+            this.clockTexture = clockTexture;
+            initiativeStrVal = new Label("[#00FF00FF]" + String.valueOf(clockVal) + "[]", StyleHolder.getDefaultLabelStyle());
+            initiativeStrVal.setPosition(
+                    getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
+                    clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
+        }
 
         if (arrowTexture != null) {
             arrow = new Image(arrowTexture);
@@ -129,7 +130,9 @@ public class UnitView extends BaseView {
             if (border != null) {
                 border.draw(sp, parentAlpha);
             }
-            initiativeStrVal.draw(sp, parentAlpha);
+            if (initiativeStrVal != null) {
+                initiativeStrVal.draw(sp, parentAlpha);
+            }
             sp.end();
             fbo.end();
 
@@ -140,8 +143,11 @@ public class UnitView extends BaseView {
 
             batch.begin();
 
-            InitiativePanelParam panelParam = new InitiativePanelParam(textureRegion, curId, 10);
-            GuiEventManager.trigger(GuiEventType.ADD_OR_UPDATE_INITIATIVE, new EventCallbackParam(panelParam));
+            if (clockTexture != null) {
+                InitiativePanelParam panelParam = new InitiativePanelParam(textureRegion, curId, clockVal);
+                GuiEventManager.trigger(GuiEventType.ADD_OR_UPDATE_INITIATIVE, new EventCallbackParam(panelParam));
+            }
+            needRepaint = false;
         }
 
 
@@ -190,7 +196,16 @@ public class UnitView extends BaseView {
     }
 
     public void updateInitiative(Integer val) {
-        clockVal = val;
-        needRepaint = true;
+        if (clockTexture != null) {
+            clockVal = val;
+            initiativeStrVal.setText("[#00FF00FF]" + String.valueOf(val) + "[]");
+            initiativeStrVal.setPosition(
+                    getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
+                    clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
+
+            needRepaint = true;
+        } else {
+            LogMaster.error("Initiative set to wrong object type != OBJ_TYPES.UNITS");
+        }
     }
 }

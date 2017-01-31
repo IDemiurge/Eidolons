@@ -183,7 +183,7 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
             if (before == after) return;
             int diff = before - after;
             if (diff != 0) {
-                GuiEventManager.trigger(INITIATIVE_CHANGED, new EventCallbackParam(new ImmutablePair<>(unit, diff)));
+                GuiEventManager.trigger(INITIATIVE_CHANGED, new EventCallbackParam(new ImmutablePair<>(unit, after)));
             }
         }
     }
