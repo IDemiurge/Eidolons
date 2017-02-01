@@ -10,4 +10,6 @@ public interface Borderable {
     Image getBorder();
 
     void setBorder(Image image);
+
+    void updateBorderSize();
 }

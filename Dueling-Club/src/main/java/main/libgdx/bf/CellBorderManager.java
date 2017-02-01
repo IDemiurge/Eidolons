@@ -78,12 +78,7 @@ public class CellBorderManager extends Group {
                     if (entry.getKey() == null) {
                         return;
                     }
-                    Image i = new Image(blueBorderTexture);
                     entry.getKey().setBorder(new Image(blueBorderTexture));
-                    i.setX(-4);
-                    i.setY(-4);
-                    i.setHeight(entry.getKey().getH() + 8);
-                    i.setWidth(entry.getKey().getW() + 8);
                 });
 
                 blueBorderOwners = map;
@@ -111,10 +106,6 @@ public class CellBorderManager extends Group {
     }
 
     private void showBorder(Image border, Borderable owner) {
-        border.setWidth(owner.getW() + 8);
-        border.setHeight(owner.getH() + 8);
-        border.setX(-4);
-        border.setY(-4);
         owner.setBorder(border);
 
         if (unitBorderOwner != null && unitBorderOwner != owner) {
@@ -125,8 +116,7 @@ public class CellBorderManager extends Group {
 
     public void updateBorderSize() {
         if (unitBorderOwner != null && unitBorderOwner.getBorder() != null) {
-            unitBorderOwner.getBorder().setWidth(unitBorderOwner.getW() + 12);
-            unitBorderOwner.getBorder().setHeight(unitBorderOwner.getH() + 12);
+            unitBorderOwner.updateBorderSize();
         }
     }
 }

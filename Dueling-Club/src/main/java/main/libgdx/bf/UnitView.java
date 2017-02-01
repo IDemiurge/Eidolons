@@ -102,47 +102,45 @@ public class UnitView extends BaseView {
     @Override
     public void setBorder(Image image) {
         border = image;
+        updateBorderSize();
         needRepaint = true;
     }
 
     @Override
-    public void draw(Batch batch, float parentAlpha) {
-        //setHeight(baseHeight * getScaleY());
-        //setWidth(baseWidth * getScaleX());
-        if (arrow != null) {
-            arrow.setOrigin(arrow.getWidth() / 2, getHeight() / 2);
-            //arrow.rotateBy(1);
-            arrow.setRotation(arrowRotation);
-            //arrow.setOrigin(getWidth()/2 , getHeight()/2);
-        }
+    public void updateBorderSize() {
+        super.updateBorderSize();
+        border.setHeight(portraitTexture.getWidth() + 8);
+        border.setWidth(portraitTexture.getHeight() + 8);
+    }
 
+    @Override
+    public void act(float delta) {
         if (needRepaint) {
-            batch.end();
+
             SpriteBatch sp = new SpriteBatch(1);
             fbo.begin();
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
             sp.begin();
-            sp.draw(portraitTexture, 0, 0, getW(), getH());
+
+            sp.draw(portraitTexture, 0, 0, portraitTexture.getWidth(), portraitTexture.getHeight());
             if (clockTexture != null) {
-                sp.draw(clockTexture, getW() - clockTexture.getWidth(), 0);
+                sp.draw(clockTexture, portraitTexture.getWidth() - clockTexture.getWidth(), 0);
 
             }
             if (border != null) {
-                border.draw(sp, parentAlpha);
+                border.draw(sp, 1);
             }
             if (initiativeStrVal != null) {
-                initiativeStrVal.draw(sp, parentAlpha);
+                initiativeStrVal.draw(sp, 1);
             }
             sp.end();
             fbo.end();
 
-            TextureRegion textureRegion = new TextureRegion(fbo.getColorBufferTexture(), 0, 0, getW(), getH());
+            TextureRegion textureRegion = new TextureRegion(fbo.getColorBufferTexture(), 0, 0, portraitTexture.getWidth(), portraitTexture.getHeight());
             textureRegion.flip(false, true);
             imageContainer.setActor(new Image(textureRegion));
             imageContainer.width(getW()).height(getH()).bottom().left().pack();
-
-            batch.begin();
 
             if (clockTexture != null) {
                 InitiativePanelParam panelParam = new InitiativePanelParam(textureRegion, curId, clockVal);
@@ -151,7 +149,14 @@ public class UnitView extends BaseView {
             needRepaint = false;
         }
 
+        if (arrow != null) {
+            arrow.setOrigin(arrow.getWidth() / 2, getHeight() / 2);
+            arrow.setRotation(arrowRotation);
+        }
+    }
 
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
     }
 
@@ -167,13 +172,9 @@ public class UnitView extends BaseView {
         //setHeight(baseHeight * getScaleY());
         //setWidth(baseWidth * getScaleX());
 
-        if (portrait != null) {
-            portrait.setSize(getWidth(), getHeight());
-        }
-
         if (initiativeStrVal != null) {
             initiativeStrVal.setPosition(
-                    getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
+                    portraitTexture.getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
                     clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
         }
 
@@ -203,7 +204,7 @@ public class UnitView extends BaseView {
             clockVal = val;
             initiativeStrVal.setText("[#00FF00FF]" + String.valueOf(val) + "[]");
             initiativeStrVal.setPosition(
-                    getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
+                    portraitTexture.getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
                     clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
 
             needRepaint = true;
