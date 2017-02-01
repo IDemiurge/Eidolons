@@ -305,7 +305,6 @@ public class GridPanel extends Group {
 */
 
     }
-
     private void moveUnitView(DC_HeroObj heroObj) {
         int rows1 = rows - 1;
         BaseView uv = unitMap.get(heroObj);
