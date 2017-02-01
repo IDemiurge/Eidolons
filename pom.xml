@@ -9,6 +9,9 @@
 
     <properties>
         <libgdx.version>1.9.5</libgdx.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <repositories>
@@ -40,11 +43,11 @@
 
 
     <modules>
-       <module>Arcane-Tower</module>
-       <module>Arcane-Vault</module>
-       <module>C-Engine</module>
-       <module>Dueling-Club</module>
-       <module>resources</module>
+        <module>Arcane-Tower</module>
+        <module>Arcane-Vault</module>
+        <module>C-Engine</module>
+        <module>Dueling-Club</module>
+        <module>resources</module>
     </modules>
 
     <dependencies>
@@ -60,66 +63,89 @@
             <version>1.2.17</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-backend-lwjgl</artifactId>
-            <version>${libgdx.version}</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
         </dependency>
 
         <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx</artifactId>
-            <version>${libgdx.version}</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-box2d -->
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-box2d</artifactId>
-            <version>${libgdx.version}</version>
+            <groupId>com.miglayout</groupId>
+            <artifactId>miglayout-core</artifactId>
+            <version>4.2</version>
         </dependency>
 
         <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-box2d-platform</artifactId>
-            <classifier>natives-desktop</classifier>
-            <version>${libgdx.version}</version>
-            <scope>compile</scope>
+            <groupId>com.miglayout</groupId>
+            <artifactId>miglayout-swing</artifactId>
+            <version>4.2</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.badlogicgames.box2dlights/box2dlights -->
-        <dependency>
-            <groupId>com.badlogicgames.box2dlights</groupId>
-            <artifactId>box2dlights</artifactId>
-            <version>1.4</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-tools -->
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-tools</artifactId>
-            <version>${libgdx.version}</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-box2d-gwt -->
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-box2d-gwt</artifactId>
-            <version>${libgdx.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-freetype-platform</artifactId>
-            <classifier>natives-desktop</classifier>
-            <version>${libgdx.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-platform</artifactId>
-            <classifier>natives-desktop</classifier>
-            <version>${libgdx.version}</version>
-        </dependency>
     </dependencies>
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>testCompile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.8</version>
+                <executions>
+                    <execution>
+                        <id>purge-local-dependencies</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>purge-local-repository</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>eidolons:battlecraft-core</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                </executions>
+                <!-- <executions>
+                     <execution>
+                         <id>unpack</id>
+                         <phase>generate-resources</phase>
+                         <goals>
+                             <goal>unpack-dependencies</goal>
+                         </goals>
+                         <configuration>
+                             <includeArtifactIds>core</includeArtifactIds>
+                             <excludeTransitive>true</excludeTransitive>
+                             <outputDirectory>classes/</outputDirectory>
+                             <excludes>org/**,META-INF/**,rebel.xml,main/**,com/**,log4j</excludes>
+                             <overWriteReleases>true</overWriteReleases>
+                             <overWriteSnapshots>true</overWriteSnapshots>
+                         </configuration>
+                     </execution>
+                 </executions>-->
+            </plugin>
+        </plugins>
+    </build>
 </project>
