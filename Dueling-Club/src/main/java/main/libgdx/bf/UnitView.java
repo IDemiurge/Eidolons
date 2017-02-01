@@ -15,9 +15,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.panels.dc.InitiativePanelParam;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.OnDemandEventCallBack;
 import main.system.auxiliary.LogMaster;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -95,6 +95,8 @@ public class UnitView extends BaseView {
             arrow.setOrigin(getWidth() / 2 + arrow.getWidth(), getHeight() / 2 + arrow.getHeight());
             arrow.setX(getWidth() / 2 - arrow.getWidth() / 2);
         }
+
+        needRepaint = true;
     }
 
     @Override
@@ -143,10 +145,8 @@ public class UnitView extends BaseView {
             batch.begin();
 
             if (clockTexture != null) {
-                InitiativePanelParam panelParam =
-                 new InitiativePanelParam(textureRegion, curId, clockVal);
-                GuiEventManager.trigger(GuiEventType.ADD_OR_UPDATE_INITIATIVE,
-                 new EventCallbackParam(panelParam));
+                InitiativePanelParam panelParam = new InitiativePanelParam(textureRegion, curId, clockVal);
+                GuiEventManager.trigger(GuiEventType.ADD_OR_UPDATE_INITIATIVE, new OnDemandEventCallBack(panelParam));
             }
             needRepaint = false;
         }
@@ -169,6 +169,12 @@ public class UnitView extends BaseView {
 
         if (portrait != null) {
             portrait.setSize(getWidth(), getHeight());
+        }
+
+        if (initiativeStrVal != null) {
+            initiativeStrVal.setPosition(
+                    getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
+                    clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
         }
 
         if (imageContainer != null) {
