@@ -55,6 +55,7 @@ public class InitiativePanel extends Group {
         //container.setClip(true);
         //container.debug();
         addActor(container);
+        setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
     }
 
     private void addOrUpdate(InitiativePanelParam panelParam) {

@@ -15,7 +15,6 @@ import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.GameScreen;
-import main.libgdx.anims.particles.lighting.LightMap;
 import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.bf.mouse.GridMouseListener;
 import main.libgdx.bf.mouse.InputController;
@@ -50,7 +49,6 @@ public class GridPanel extends Group {
     protected Texture cellBorderTexture;
     protected DequeImpl<DC_HeroObj> units;
     protected GridCell[][] cells;
-    private LightMap lightMap;
     private CellBorderManager cellBorderManager;
     private Map<DC_HeroObj, BaseView> unitMap;
     private int cols;
@@ -64,26 +62,20 @@ public class GridPanel extends Group {
     }
 
     public Vector2 getVectorForCoordinateWithOffset(Coordinates sourceCoordinates) {
-        return getVectorForCoordinateWithOffset(sourceCoordinates, true);
+        InputController controller = GameScreen.getInstance().getController();
+        float x = sourceCoordinates.getX() * GridConst.CELL_W / controller.getZoom();
+        float y = (rows - sourceCoordinates.getY()) * GridConst.CELL_H / controller.getZoom();
+        if (true) {
+            x += GridConst.CELL_W / 2;
+            y -= GridConst.CELL_H / 2;
+        }
+        return new Vector2(x, y);
     }
 
     public boolean isCoordinateVisible(Coordinates c) {
         Vector2 v = getVectorForCoordinateWithOffset(c);
         InputController controller = GameScreen.getInstance().getController();
         return controller.getCamera().frustum.pointInFrustum(new Vector3(v.x, v.y, 0));
-    }
-
-    public Vector2 getVectorForCoordinateWithOffset(Coordinates sourceCoordinates
-            , boolean centered) {
-        InputController controller = GameScreen.getInstance().getController();
-        float x = sourceCoordinates.getX() * GridConst.CELL_W / controller.getZoom();
-        float y = (rows - sourceCoordinates.getY()) * GridConst.CELL_H / controller.getZoom();
-        if (centered) {
-            x += GridConst.CELL_W / 2;
-            y -= GridConst.CELL_H / 2;
-        }
-        return new Vector2(
-                x, y);
     }
 
     public GridPanel init() {

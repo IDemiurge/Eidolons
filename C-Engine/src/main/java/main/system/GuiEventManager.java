@@ -41,8 +41,7 @@ public class GuiEventManager<T> {
 
     public static void triggerQueued(GuiEventType e) {
 
-        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-         "Triggering queued " + e);
+        LogMaster.log(LogMaster.ANIM_DEBUG, "Triggering queued " + e);
 
         List<EventCallbackParam> list = queue.get(e);
         if (list == null) {
@@ -52,21 +51,18 @@ public class GuiEventManager<T> {
         if (list.isEmpty())
             waiting.remove(e);
 
-        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, e +
-         " trigger queued with " + p);
+        LogMaster.log(LogMaster.ANIM_DEBUG, e + " trigger queued with " + p);
         trigger(e, p);
     }
 
     public static void queue(GuiEventType e) {
         waiting.add(e);
-        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, e + " waiting for anim: " + waiting);
+        LogMaster.log(LogMaster.ANIM_DEBUG, e + " waiting for anim: " + waiting);
     }
 
     public static void trigger(final GuiEventType type, final EventCallbackParam obj) {
-//        main.system.auxiliary.LogMaster.log(1,
-//         type + " triggering with: " + obj == null ? "" : obj.toString());
         if (waiting.contains(type)) {
-            main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, type + " added to queue: " + queue);
+            LogMaster.log(LogMaster.ANIM_DEBUG, type + " added to queue: " + queue);
             new MapMaster<>().addToListMap(queue, type, obj);
             return;
         }

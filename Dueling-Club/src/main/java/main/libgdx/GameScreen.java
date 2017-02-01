@@ -6,10 +6,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Align;
 import main.data.filesys.PathFinder;
 import main.entity.obj.DC_Obj;
 import main.game.DC_Game;
@@ -24,15 +22,14 @@ import main.libgdx.bf.mouse.InputController;
 import main.libgdx.bf.mouse.ToolTipManager;
 import main.libgdx.gui.dialog.DialogDisplay;
 import main.libgdx.gui.panels.dc.InitiativePanel;
-import main.libgdx.gui.panels.dc.InitiativeQueue;
 import main.libgdx.gui.panels.dc.LogPanel;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import main.test.frontend.FAST_DC;
 import org.apache.commons.lang3.tuple.Pair;
 
-import static main.system.GuiEventType.*;
+import static main.system.GuiEventType.CREATE_RADIAL_MENU;
+import static main.system.GuiEventType.GRID_CREATED;
 
 /**
  * Created with IntelliJ IDEA.
@@ -61,7 +58,6 @@ public class GameScreen implements Screen {
 
     private ParticleManager particleManager;
     private AnimMaster animMaster;
-    private InitiativeQueue queue;
     private PhaseAnimator phaseAnimator;
 
     public static GameScreen getInstance() {
@@ -77,7 +73,8 @@ public class GameScreen implements Screen {
         PathFinder.init();
         instance = this;
 
-        initBf();
+        gridStage = new Stage();
+
         initDialog();
         initEffects();
         initGui();
@@ -114,10 +111,6 @@ public class GameScreen implements Screen {
         effects.getViewport().setCamera(cam);
     }
 
-    private void initBf() {
-        gridStage = new Stage();
-    }
-
     private void initEffects() {
         effects = new Stage();
         ambienceStage = new Stage();
@@ -138,32 +131,20 @@ public class GameScreen implements Screen {
     }
 
     private void initGui() {
-        final Texture t = new Texture(GameScreen.class.getResource("/data/marble_green.png").getPath());
         guiStage = new Stage();
-        guiStage.addActor(radialMenu = new RadialMenu(t));
+        guiStage.addActor(radialMenu = new RadialMenu());
         guiStage.addActor(toolTipManager = new ToolTipManager());
-        queue = new InitiativeQueue();
-        guiStage.addActor(queue);
-        queue.setPosition(0, 0, Align.topLeft);
 
         InitiativePanel initiativePanel = new InitiativePanel();
-        initiativePanel.setPosition(100, 100);
+        initiativePanel.setPosition(0, Gdx.graphics.getHeight() - initiativePanel.getHeight());
         guiStage.addActor(initiativePanel);
 
-        if (!FAST_DC.getGameLauncher().getSUPER_FAST_MODE()
-//                && !FAST_DC.getGameLauncher().getFAST_MODE()
-                ) {
-            LogPanel ld = new LogPanel();
-            guiStage.addActor(ld);
-            ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
-        }
+        LogPanel ld = new LogPanel();
+        guiStage.addActor(ld);
+        ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
     }
 
     private void bindEvents() {
-        GuiEventManager.bind(UPDATE_GUI, param -> {
-            queue.update();
-        });
-
         GuiEventManager.bind(GRID_CREATED, param -> {
             Pair<Integer, Integer> p = ((Pair<Integer, Integer>) param.get());
             gridPanel = new GridPanel(p.getLeft(), p.getRight()).init();

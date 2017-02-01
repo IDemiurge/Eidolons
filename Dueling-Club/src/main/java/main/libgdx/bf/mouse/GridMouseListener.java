@@ -99,16 +99,6 @@ public class GridMouseListener extends ClickListener {
         return false;
     }
 
-
-            /*
-            Entity e = ((Entity) obj);
-            obj.isAttack();
-            obj.getTargeting() instanceof SelectiveTargeting;
-            obj.getTargeting().getFilter().getObjects().contains(Game.game.getCellByCoordinate(new Coordinates(0, 0)));
-            obj.isMove();
-            obj.isTurn();
-            ((Entity) obj).getImagePath();*/
-
     @Override
     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
         Actor a;
