@@ -99,6 +99,7 @@ public class GridMouseListener extends ClickListener {
         return false;
     }
 
+
             /*
             Entity e = ((Entity) obj);
             obj.isAttack();
@@ -115,7 +116,7 @@ public class GridMouseListener extends ClickListener {
         if (PhaseAnimator.getInstance().checkAnimClicked(x, y, pointer, button)) {
             return true;
         }
-        a = gridPanel.hit(x, y, true);
+        a = gridPanel.hitChildren(x, y, true);
         if (a != null && a instanceof GridCell) {
             GridCell cell = (GridCell) a;
             if (gridPanel.getCellBorderManager().isBlueBorderActive() && event.getButton() == Input.Buttons.LEFT) {
