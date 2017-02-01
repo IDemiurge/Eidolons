@@ -1,11 +1,8 @@
 package main.libgdx.bf;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import main.libgdx.BlurUtils;
 import main.libgdx.texture.TextureManager;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
@@ -28,15 +25,10 @@ public class CellBorderManager extends Group {
     protected Image redBorder;
     protected Image orangeBorder;
     protected Texture blueBorderTexture;
-    private int cellW;
-    private int cellH;
     private Borderable unitBorderOwner = null;
     private Map<Borderable, Runnable> blueBorderOwners = new HashMap<>();
 
-    public CellBorderManager(int cellW, int cellH) {
-        this.cellW = cellW;
-        this.cellH = cellH;
-
+    public CellBorderManager() {
         greenBorder = new Image(TextureManager.getOrCreate(cyanPath));
         greenBorder.setBounds(2, 2, 4, 4);
 
@@ -50,25 +42,6 @@ public class CellBorderManager extends Group {
     public boolean isBlueBorderActive() {
         return blueBorderOwners.size() > 0;
     }
-
-    private Texture getColoredBorderTexture(Color c) {
-        Pixmap p = new Pixmap(cellW + 10, cellH + 10, Pixmap.Format.RGBA8888);
-        p.setColor(c);
-        p.drawRectangle(5, 5, p.getWidth() - 10, p.getHeight() - 10);
-        p.drawRectangle(6, 6, p.getWidth() - 12, p.getHeight() - 12);
-        p = BlurUtils.blur(p, 3, 1, true);
-        p.setColor(c);
-        p.drawRectangle(5, 5, p.getWidth() - 10, p.getHeight() - 10);
-        p.drawRectangle(6, 6, p.getWidth() - 12, p.getHeight() - 12);
-        p = BlurUtils.blur(p, 2, 2, true);
-        p.setColor(c);
-        p.drawRectangle(5, 5, p.getWidth() - 10, p.getHeight() - 10);
-        p = BlurUtils.blur(p, 1, 1, true);
-        Texture t = new Texture(p);
-        p.dispose();
-        return t;
-    }
-
 
     private void clearBlueBorder() {
         blueBorderOwners.entrySet().forEach(entity -> {
@@ -107,10 +80,10 @@ public class CellBorderManager extends Group {
                     }
                     Image i = new Image(blueBorderTexture);
                     entry.getKey().setBorder(new Image(blueBorderTexture));
-                    i.setX(-6);
-                    i.setY(-6);
-                    i.setHeight(entry.getKey().getH() + 12);
-                    i.setWidth(entry.getKey().getW() + 12);
+                    i.setX(-4);
+                    i.setY(-4);
+                    i.setHeight(entry.getKey().getH() + 8);
+                    i.setWidth(entry.getKey().getW() + 8);
                 });
 
                 blueBorderOwners = map;
@@ -138,10 +111,10 @@ public class CellBorderManager extends Group {
     }
 
     private void showBorder(Image border, Borderable owner) {
-        border.setWidth(owner.getW() + 12);
-        border.setHeight(owner.getH() + 12);
-        border.setX(-6);
-        border.setY(-6);
+        border.setWidth(owner.getW() + 8);
+        border.setHeight(owner.getH() + 8);
+        border.setX(-4);
+        border.setY(-4);
         owner.setBorder(border);
 
         if (unitBorderOwner != null && unitBorderOwner != owner) {

@@ -13,6 +13,7 @@ import main.entity.obj.MicroObj;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.libgdx.GameScreen;
+import main.libgdx.bf.GridConst;
 import main.system.auxiliary.LogMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -47,9 +48,9 @@ public class LightMap {
     private int LIGHT_MULTIPLIER = 30;
 
 
-    public LightMap(DequeImpl<DC_HeroObj> units, float cellWidth, float cellHeight, int rows, int cols) {
+    public LightMap(DequeImpl<DC_HeroObj> units, int rows, int cols) {
         World world = new World(new Vector2(0, 0), true);
-        init(units, world, new RayHandler(world), cellWidth, cellHeight, rows, cols);
+        init(units, world, new RayHandler(world), GridConst.CELL_W, GridConst.CELL_H, rows, cols);
     }
 
     public static void setAmbient(float c) {

@@ -17,8 +17,8 @@ import main.entity.Entity;
 import main.entity.obj.DC_WeaponObj;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.FacingMaster;
-import main.libgdx.GameScreen;
 import main.libgdx.anims.AnimData;
+import main.libgdx.bf.GridConst;
 import main.libgdx.texture.TextureManager;
 import main.system.auxiliary.FileManager;
 import main.system.math.PositionMaster;
@@ -197,10 +197,10 @@ size - elongate
         mainMove.setDuration(duration);
         int distanceX = active.getRef().getSourceObj().getX() -
                 active.getRef().getTargetObj().getX();
-        x -= distanceX * GameScreen.getInstance().getGridPanel().getCellWidth();
+        x -= distanceX * GridConst.CELL_W;
         int distanceY = active.getRef().getSourceObj().getY() -
                 active.getRef().getTargetObj().getY();
-        y += distanceY * GameScreen.getInstance().getGridPanel().getCellHeight();
+        y += distanceY * GridConst.CELL_H;
 
         mainMove.setAmount(x, y);
         return mainMove;

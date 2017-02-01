@@ -63,25 +63,7 @@ public class GridPanel extends Group {
         this.rows = rows;
     }
 
-    public int getCellWidth() {
-        return cellBorderTexture.getWidth();
-    }
-
-    public int getCellHeight() {
-        return cellBorderTexture.getHeight();
-    }
-
-    public int getCols() {
-        return cols;
-    }
-
-    public int getRows() {
-        return rows;
-    }
-
-
-    public Vector2 getVectorForCoordinateWithOffset(Coordinates sourceCoordinates
-    ) {
+    public Vector2 getVectorForCoordinateWithOffset(Coordinates sourceCoordinates) {
         return getVectorForCoordinateWithOffset(sourceCoordinates, true);
     }
 
@@ -89,18 +71,16 @@ public class GridPanel extends Group {
         Vector2 v = getVectorForCoordinateWithOffset(c);
         InputController controller = GameScreen.getInstance().getController();
         return controller.getCamera().frustum.pointInFrustum(new Vector3(v.x, v.y, 0));
-
-
     }
 
     public Vector2 getVectorForCoordinateWithOffset(Coordinates sourceCoordinates
             , boolean centered) {
         InputController controller = GameScreen.getInstance().getController();
-        float x = sourceCoordinates.getX() * getCellWidth() / controller.getZoom();
-        float y = (rows - sourceCoordinates.getY()) * getCellHeight() / controller.getZoom();
+        float x = sourceCoordinates.getX() * GridConst.CELL_W / controller.getZoom();
+        float y = (rows - sourceCoordinates.getY()) * GridConst.CELL_H / controller.getZoom();
         if (centered) {
-            x += getCellWidth() / 2;
-            y -= getCellHeight() / 2;
+            x += GridConst.CELL_W / 2;
+            y -= GridConst.CELL_H / 2;
         }
         return new Vector2(
                 x, y);
@@ -116,14 +96,14 @@ public class GridPanel extends Group {
 
         cells = (new GridCell[cols][rows]);
 
-        setCellBorderManager(new CellBorderManager(emptyImage.getWidth(), emptyImage.getHeight()));
+        setCellBorderManager(new CellBorderManager());
         int rows1 = rows - 1;
         int cols1 = cols - 1;
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
                 cells[x][y] = new GridCell(emptyImage, x, rows1 - y);
-                cells[x][y].setX(x * emptyImage.getWidth());
-                cells[x][y].setY(y * emptyImage.getHeight());
+                cells[x][y].setX(x * GridConst.CELL_W);
+                cells[x][y].setY(y * GridConst.CELL_H);
                 addActor(cells[x][y].init());
             }
         }
@@ -229,10 +209,10 @@ public class GridPanel extends Group {
             if (event.getType().name().startsWith("PARAM_MODIFIED")) {
                 switch (event.getType().getArg()) {
                     case "Illumination":
-                        if (getLightMap() != null) {
+                        if (lightingManager != null) {
                             Obj o = event.getRef().getTargetObj();
                             if (o instanceof DC_HeroObj) {
-                                getLightMap().updateObject((DC_HeroObj) event.getRef().getTargetObj());
+                                lightingManager.updateObject((DC_HeroObj) event.getRef().getTargetObj());
                             }
                         }
                         caught = true;
@@ -262,14 +242,9 @@ public class GridPanel extends Group {
         });
 
         GuiEventManager.bind(CREATE_UNITS_MODEL, param -> {
-
             units = (DequeImpl<DC_HeroObj>) param.get();
-            LightMap lightMap = new LightMap(units, cells[0][0].getWidth(), cells[0][0].getHeight(), rows, cols);
-            lightingManager = new LightingManager(lightMap, this);
-            if (lightMap.isValid()) {
-                setLightMap(lightMap);
-            }
 
+            lightingManager = new LightingManager(units, rows, cols);
 
             Map<Coordinates, List<DC_HeroObj>> map = new HashMap<>();
             for (DC_HeroObj object : units) {
@@ -344,10 +319,10 @@ public class GridPanel extends Group {
 
         getCellBorderManager().updateBorderSize();
 
-        if (getLightMap() != null) {
-            getLightMap().updatePos(heroObj);
+        if (lightingManager != null) {
+            lightingManager.updatePos(heroObj);
+            lightingManager.updateAll();
         }
-        GuiEventManager.trigger(UPDATE_LIGHT, null);
     }
 
     private void addUnitView(DC_HeroObj heroObj) {
@@ -362,16 +337,6 @@ public class GridPanel extends Group {
         gridCellContainer.removeActor(uv);
         uv.setVisible(false);
         GuiEventManager.trigger(UPDATE_LIGHT, null);
-    }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-        //physx.getUnit(unit).setTransform(getX(),getY());
-    }
-
-    public Actor hitChildren(float x, float y, boolean touchable) {
-        return super.hit(x, y, touchable);
     }
 
     @Override
@@ -390,18 +355,9 @@ public class GridPanel extends Group {
 
         getCellBorderManager().draw(batch, parentAlpha);
 
-        if (getLightMap() != null) {
-            getLightMap().updateLight();
+        if (lightingManager != null) {
+            lightingManager.updateLight();
         }
-    }
-
-
-    public LightMap getLightMap() {
-        return lightMap;
-    }
-
-    public void setLightMap(LightMap lightMap) {
-        this.lightMap = lightMap;
     }
 
     public CellBorderManager getCellBorderManager() {
