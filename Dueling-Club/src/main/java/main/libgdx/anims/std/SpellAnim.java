@@ -52,6 +52,7 @@ public class SpellAnim extends ActionAnim {
         NOVA(activeObj -> activeObj.getOwnerObj().getCoordinates().getAdjacentCoordinates().size()),;
 
         private Producer<DC_ActiveObj, Integer> numberOfEmitters;
+        private boolean removeBaseEmitters=true;
 
         //emitter placement templates
         SPELL_ANIMS() {
@@ -67,6 +68,15 @@ public class SpellAnim extends ActionAnim {
         }
 
 
-    }
+        public boolean isRemoveBaseEmitters() {
+            return removeBaseEmitters;
+        }
 
+        public void setRemoveBaseEmitters(boolean removeBaseEmitters) {
+            this.removeBaseEmitters = removeBaseEmitters;
+        }
+    }
+static{
+        SPELL_ANIMS.BLAST.setRemoveBaseEmitters(false);
+}
 }

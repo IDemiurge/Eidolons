@@ -13,6 +13,8 @@ public class ParticleManager extends Actor {
     public boolean debugMode;
     EmitterMap emitterMap;
     private Stage effects;
+    private static boolean ambienceOn;
+
 
 
     public ParticleManager(Stage effects) {
@@ -48,5 +50,11 @@ public class ParticleManager extends Actor {
 //                effects.addActor(actor);
 //        }
     }
+    public static boolean isAmbienceOn() {
+        return ambienceOn;
+    }
 
+    public static void setAmbienceOn(boolean ambienceOn) {
+        ParticleManager.ambienceOn = ambienceOn;
+    }
 }

@@ -32,6 +32,8 @@ import main.rules.DC_ActionManager;
 import main.swing.components.obj.drawing.VisibilityMaster;
 import main.system.DC_Constants;
 import main.system.DC_Formulas;
+import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
 import main.system.ai.UnitAI;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.LogMaster;
@@ -44,11 +46,14 @@ import main.system.math.MathMaster;
 import main.system.test.TestMasterContent;
 import main.system.text.ToolTipMaster;
 import main.test.debug.DebugMaster;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import javax.swing.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static main.system.GuiEventType.INITIATIVE_CHANGED;
 
 public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
 
@@ -485,7 +490,7 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public void recalculateInitiative() {
-//        int before =  getIntParam(PARAMS.C_INITIATIVE);
+        int before =  getIntParam(PARAMS.C_INITIATIVE);
         int initiative = getIntParam(PARAMS.C_N_OF_ACTIONS)
                 * getIntParam(PARAMS.INITIATIVE_MODIFIER);
 
@@ -506,15 +511,17 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
         setParam(PARAMS.INITIATIVE, base_initiative, true);
         resetPercentage(PARAMS.INITIATIVE);
 
-//        int after =  getIntParam(PARAMS.C_INITIATIVE);
-//        if (before == after) return;
-//        int diff = before - after;
-//
-//        if (diff != 0) {
-//            GuiEventManager.trigger(INITIATIVE_CHANGED,
-//             new EventCallbackParam(new ImmutablePair<>(this, after))); TODO ON DEMAND!
-//        }
+        int after =  getIntParam(PARAMS.C_INITIATIVE);
+        if (before == after) return;
+        int diff = before - after;
+
+        if (diff != 0) {
+            GuiEventManager.trigger(INITIATIVE_CHANGED,
+             new EventCallbackParam(new ImmutablePair<>(this, after)));
+
+        }
     }
+
 
     protected void resetToughness() {
         Integer amount = getIntParam(PARAMS.TOUGHNESS_RECOVERY) * getIntParam(PARAMS.TOUGHNESS)

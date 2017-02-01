@@ -11,6 +11,7 @@ import main.entity.obj.BuffObj;
 import main.entity.obj.top.DC_ActiveObj;
 import main.game.DC_Game;
 import main.libgdx.anims.std.BuffAnim;
+import main.system.AnimEventMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.LogMaster;
@@ -53,7 +54,7 @@ public class AnimMaster extends Actor {
             if (!isOn()) return;
             CompositeAnim animation = constructor.getOrCreate((DC_ActiveObj) p.get());
             animation.getStartEventMap().values().forEach(
-                    (List<GuiEventType> e) -> e.forEach(x -> GuiEventManager.queue(x))
+                    (List<GuiEventType> e) -> e.forEach(x -> AnimEventMaster.queue(x))
             );
 
         });
@@ -73,7 +74,7 @@ public class AnimMaster extends Actor {
                 }
             }
             animation.getEventMap().values().forEach(
-                    (List<GuiEventType> e) -> e.forEach(x -> GuiEventManager.queue(x))
+                    (List<GuiEventType> e) -> e.forEach(x -> AnimEventMaster.queue(x))
             );
 
         });

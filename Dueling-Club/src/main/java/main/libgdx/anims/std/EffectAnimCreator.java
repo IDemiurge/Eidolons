@@ -42,7 +42,8 @@ public class EffectAnimCreator {
             destination=((Anim) anim).getDestinationCoordinates();
         }
         Float distance =
-         GridMaster.getDistance(destination, subAnim.getOriginCoordinates());
+         GridMaster.getDistance(destination,
+          e.getActiveObj().getOwnerObj(). getCoordinates()); //TODO from parent anim's origin!
         float delay = distance / subAnim.getPixelsPerSecond();
 
 

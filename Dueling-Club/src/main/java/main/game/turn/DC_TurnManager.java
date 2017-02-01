@@ -22,7 +22,6 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.system.threading.Weaver;
 import main.test.TestMaster;
 import main.test.frontend.FAST_DC;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +29,6 @@ import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 
 import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
-import static main.system.GuiEventType.INITIATIVE_CHANGED;
 
 /**
  * After each Action, recalculates Initiative for each unit,
@@ -176,16 +174,15 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
     }
 
     private void resetInitiative(boolean first) {
-        for (DC_HeroObj unit : game.getUnits()) {
-            int before = unit.getIntParam(PARAMS.C_INITIATIVE);
-            resetInitiative(unit, first);
-            int after = unit.getIntParam(PARAMS.C_INITIATIVE);
-            if (before == after) return;
-            int diff = before - after;
-            if (diff != 0) {
-                GuiEventManager.trigger(INITIATIVE_CHANGED,
-                 new EventCallbackParam(new ImmutablePair<>(unit, after)));
-            }
+        for (DC_HeroObj unit : game.getUnits()) {resetInitiative(unit, first);
+//            int before = unit.getIntParam(PARAMS.C_INITIATIVE);
+//            int after = unit.getIntParam(PARAMS.C_INITIATIVE);
+//            if (before == after) return;
+//            int diff = before - after;
+//            if (diff != 0) {
+//                GuiEventManager.trigger(INITIATIVE_CHANGED,
+//                 new EventCallbackParam(new ImmutablePair<>(unit, after)));
+//            }
         }
     }
 

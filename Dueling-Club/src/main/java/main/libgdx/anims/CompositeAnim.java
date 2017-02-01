@@ -8,7 +8,7 @@ import main.entity.obj.top.DC_ActiveObj;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.phased.PhaseAnim;
 import main.libgdx.anims.std.EffectAnimCreator;
-import main.system.GuiEventManager;
+import main.system.AnimEventMaster;
 import main.system.GuiEventType;
 import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.MapMaster;
@@ -113,6 +113,8 @@ public class CompositeAnim implements Animation{
         List<Animation> list = attached.get(part);
         if (list == null) return;
         list.forEach(anim -> {
+            if (!anim.isRunning())
+                anim.start();
             anim.draw(batch);
 
         });
@@ -137,12 +139,12 @@ public class CompositeAnim implements Animation{
 
     private void triggerStartEvents() {
         if (startEventMap.get(part) != null)
-            startEventMap.get(part).forEach(e -> GuiEventManager.triggerQueued(e));
+            startEventMap.get(part).forEach(e -> AnimEventMaster.triggerQueued(e));
     }
 
     private void triggerFinishEvents() {
         if (eventMap.get(part) != null)
-            eventMap.get(part).forEach(e -> GuiEventManager.triggerQueued(e));
+            eventMap.get(part).forEach(e -> AnimEventMaster.triggerQueued(e));
     }
 
     public void add(ANIM_PART part, Anim anim) {
@@ -193,7 +195,7 @@ if (currentAnim==null )
 
     private void queueGraphicEvents() {
         getStartEventMap().values().forEach(
-         (List<GuiEventType> e) -> e.forEach(x -> GuiEventManager.queue(x)));
+         (List<GuiEventType> e) -> e.forEach(x -> AnimEventMaster.queue(x)));
     }
 
     private void initPartAnim() {

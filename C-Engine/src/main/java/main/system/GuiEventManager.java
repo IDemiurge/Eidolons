@@ -19,8 +19,6 @@ public class GuiEventManager<T> {
     private static Map<GuiEventType, EventCallback> eventMap = new HashMap<>();
     private static List<Runnable> eventQueue = new ArrayList<>();
     private static Lock lock = new ReentrantLock();
-    private static Map<GuiEventType, List<EventCallbackParam>> queue = new XLinkedMap<>();
-    private static List<GuiEventType> waiting = new LinkedList<>();
     private static Map<GuiEventType, OnDemandCallback> onDemand = new ConcurrentHashMap<>();
 
     public static void bind(GuiEventType type, final EventCallback event) {
@@ -52,33 +50,8 @@ public class GuiEventManager<T> {
         }
     }
 
-    public static void triggerQueued(GuiEventType e) {
-
-        LogMaster.log(LogMaster.ANIM_DEBUG, "Triggering queued " + e);
-
-        List<EventCallbackParam> list = queue.get(e);
-        if (list == null) {
-            return;
-        }
-        EventCallbackParam p = list.remove(0);
-        if (list.isEmpty())
-            waiting.remove(e);
-
-        LogMaster.log(LogMaster.ANIM_DEBUG, e + " trigger queued with " + p);
-        trigger(e, p);
-    }
-
-    public static void queue(GuiEventType e) {
-        waiting.add(e);
-        LogMaster.log(LogMaster.ANIM_DEBUG, e + " waiting for anim: " + waiting);
-    }
-
     public static void trigger(final GuiEventType type, final EventCallbackParam obj) {
-        if (waiting.contains(type)) {
-            LogMaster.log(LogMaster.ANIM_DEBUG, type + " added to queue: " + queue);
-            MapMaster.addToListMap(queue, type, obj);
-            return;
-        }
+
         if (eventMap.containsKey(type)) {
             lock.lock();
             try {

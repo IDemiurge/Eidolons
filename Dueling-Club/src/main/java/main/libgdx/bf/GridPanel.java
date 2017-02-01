@@ -63,11 +63,7 @@ public class GridPanel extends Group {
 
 
 
-    public boolean isCoordinateVisible(Coordinates c) {
-        Vector2 v =GridMaster. getVectorForCoordinateWithOffset(c);
-        InputController controller = GameScreen.getInstance().getController();
-        return controller.getCamera().frustum.pointInFrustum(new Vector3(v.x, v.y, 0));
-    }
+
 
     public GridPanel init() {
         setUnitMap(new HashMap<>());
@@ -106,11 +102,7 @@ public class GridPanel extends Group {
     }
 
     private void bindEvents() {
-        GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
-            Pair<DC_HeroObj, Integer> p = (Pair<DC_HeroObj, Integer>) obj.get();
-            UnitView uv = (UnitView) unitMap.get(p.getLeft());
-            uv.updateInitiative(p.getRight());
-        });
+
 
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p =
@@ -257,6 +249,12 @@ public class GridPanel extends Group {
 
                 cells[coordinates.getX()][rows - 1 - coordinates.getY()].addInnerDrawable(cellContainer);
             }
+
+            GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
+                Pair<DC_HeroObj, Integer> p = (Pair<DC_HeroObj, Integer>) obj.get();
+                UnitView uv = (UnitView) unitMap.get(p.getLeft());
+                uv.updateInitiative(p.getRight());
+            });
         });
 
        /* GuiEventManager.bind(CELL_UPDATE, param -> {

@@ -8,6 +8,7 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.battlefield.UnitGroupMaster;
+import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.anims.particles.controls.EmitterController;
 import main.libgdx.anims.particles.lighting.LightingManager;
 import main.swing.generic.components.editors.lists.ListChooser;
@@ -52,8 +53,10 @@ public class PresetLauncher {
                 break;
             case "Light":
                 LightingManager.setLightOn(true);
-//                    p = PresetMaster.loadPreset("Light Test.xml");
+                LightingManager.setTestMode(true);
+                    p = PresetMaster.loadPreset("Light Test.xml");
             case "Emitters":
+                ParticleManager.setAmbienceOn(true);
 //                if (p==null )
 //                    p = PresetMaster.loadPreset("Emitters Test.xml");
                 EmitterController.setTestMode(true);

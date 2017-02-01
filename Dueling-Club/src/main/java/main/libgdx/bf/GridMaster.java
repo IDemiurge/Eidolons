@@ -2,6 +2,7 @@ package main.libgdx.bf;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.battlefield.Coordinates;
 import main.libgdx.GameScreen;
@@ -11,6 +12,12 @@ import main.libgdx.bf.mouse.InputController;
  * Created by JustMe on 1/29/2017.
  */
 public class GridMaster {
+
+    public static boolean isCoordinateVisible(Coordinates c) {
+        Vector2 v =GridMaster. getVectorForCoordinateWithOffset(c);
+        InputController controller = GameScreen.getInstance().getController();
+        return controller.getCamera().frustum.pointInFrustum(new Vector3(v.x, v.y, 0));
+    }
 
     public static float getDistance(Coordinates coordinates, Coordinates coordinates2) {
         Vector2 v1 =  getVectorForCoordinateWithOffset(coordinates);

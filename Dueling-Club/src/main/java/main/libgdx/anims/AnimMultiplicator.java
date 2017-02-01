@@ -26,7 +26,7 @@ import java.util.*;
 /**
  * Created by JustMe on 1/29/2017.
  */
-public class AnimMultiplier implements Runnable {
+public class AnimMultiplicator implements Runnable {
     static final MULTIPLICATION_METHOD defaultMultiplicationMethod = MULTIPLICATION_METHOD.COORDINATE;
     MULTIPLICATION_METHOD multiplicationMethod = defaultMultiplicationMethod;
     private Anim anim;
@@ -37,12 +37,12 @@ public class AnimMultiplier implements Runnable {
     private Entity active;
     private SPELL_ANIMS template;
 
-    public AnimMultiplier(Anim anim) {
+    public AnimMultiplicator(Anim anim) {
         this.anim = anim;
     }
 
-    public static AnimMultiplier getInstance(Anim anim) {
-        return new AnimMultiplier(anim);
+    public static AnimMultiplicator getInstance(Anim anim) {
+        return new AnimMultiplicator(anim);
     }
 
     public static void checkMultiplication(Anim anim) {
@@ -113,6 +113,11 @@ public class AnimMultiplier implements Runnable {
         if (coordinates != null)
             applyMultiplicationForCoordinates(coordinates);
 
+        if (template!=null ){
+            if (template.isRemoveBaseEmitters()){
+                anim.getEmitterList().removeIf(e->!e.isGenerated());
+            }
+        }
     }
 
     public void applyMultiplicationForCoordinates(Set<Coordinates> coordinates) {
@@ -135,7 +140,6 @@ public class AnimMultiplier implements Runnable {
     private Collection<Coordinates> filterCoordinates(SPELL_ANIMS template, Set<Coordinates> coordinates) {
 
         if (template != null) {
-            List<Coordinates> list = new LinkedList<>();
             switch (template) {
 //                template.getNumberOfEmitters(getActive())
                 case RAY:
@@ -147,7 +151,6 @@ public class AnimMultiplier implements Runnable {
                      c
                     });
             }
-            return list;
         }
         return coordinates;
     }
