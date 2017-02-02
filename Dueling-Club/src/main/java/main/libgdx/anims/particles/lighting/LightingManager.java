@@ -17,6 +17,8 @@ public class LightingManager {
     public static boolean mouse_light = false;
 
     private LightMap lightMap;
+    private static boolean lightOn;
+    private static boolean testMode;
 
     public LightingManager(DequeImpl<DC_HeroObj> units, int rows, int cols) {
         lightMap = new LightMap(units, rows, cols);
@@ -32,6 +34,22 @@ public class LightingManager {
     public static void setMouse_light(boolean mouse_light) {
         LightingManager.mouse_light = mouse_light;
 
+    }
+
+    public static boolean isLightOn() {
+        return lightOn;
+    }
+
+    public static void setLightOn(boolean lightOn) {
+        LightingManager.lightOn = lightOn;
+    }
+
+    public static void setTestMode(boolean testMode) {
+        LightingManager.testMode = testMode;
+    }
+
+    public static boolean isTestMode() {
+        return testMode;
     }
 
     public void updateAll() {

@@ -112,7 +112,7 @@ public class MoveAnimation extends ActionAnim {
     }
 
     @Override
-    protected Coordinates getDestinationCoordinates() {
+    public Coordinates getDestinationCoordinates() {
 
 
         MoveEffect e = (MoveEffect) EffectMaster.getFirstEffectOfClass(getActive(),

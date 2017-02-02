@@ -8,6 +8,7 @@ import main.entity.obj.DC_HeroObj;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.libgdx.GameScreen;
+import main.libgdx.bf.GridMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.Chronos;
@@ -29,7 +30,7 @@ public class EmitterMap {
             return new Ambience(getFogSfx() );
         }
     };
-    private boolean ambienceOn;
+
 
     private SFX getFogSfx() {
         return SFX.SKULL2;
@@ -56,7 +57,7 @@ public class EmitterMap {
 
 
     public void update() {
-        if (!isAmbienceOn()) return;
+        if (! isAmbienceOn()) return;
 
         cc:
         for (Coordinates c : DC_Game.game.getCoordinates()) {
@@ -105,7 +106,7 @@ public class EmitterMap {
         if (fogMap.containsKey(c))
             return;
 
-        Vector2 v = GameScreen.getInstance().getGridPanel().
+        Vector2 v = GridMaster.
                 getVectorForCoordinateWithOffset(c);
         Ambience fog = ambiencePool.obtain();
         fog.setTarget(c);
@@ -118,10 +119,7 @@ public class EmitterMap {
 
 
     public boolean isAmbienceOn() {
-        return ambienceOn;
+        return ParticleManager.isAmbienceOn() ;
     }
 
-    public void setAmbienceOn(boolean ambienceOn) {
-        this.ambienceOn = ambienceOn;
-    }
 }

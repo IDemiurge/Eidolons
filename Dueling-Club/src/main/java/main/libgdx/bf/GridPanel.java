@@ -61,22 +61,9 @@ public class GridPanel extends Group {
         this.rows = rows;
     }
 
-    public Vector2 getVectorForCoordinateWithOffset(Coordinates sourceCoordinates) {
-        InputController controller = GameScreen.getInstance().getController();
-        float x = sourceCoordinates.getX() * GridConst.CELL_W / controller.getZoom();
-        float y = (rows - sourceCoordinates.getY()) * GridConst.CELL_H / controller.getZoom();
-        if (true) {
-            x += GridConst.CELL_W / 2;
-            y -= GridConst.CELL_H / 2;
-        }
-        return new Vector2(x, y);
-    }
 
-    public boolean isCoordinateVisible(Coordinates c) {
-        Vector2 v = getVectorForCoordinateWithOffset(c);
-        InputController controller = GameScreen.getInstance().getController();
-        return controller.getCamera().frustum.pointInFrustum(new Vector3(v.x, v.y, 0));
-    }
+
+
 
     public GridPanel init() {
         setUnitMap(new HashMap<>());
@@ -115,11 +102,7 @@ public class GridPanel extends Group {
     }
 
     private void bindEvents() {
-        GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
-            Pair<DC_HeroObj, Integer> p = (Pair<DC_HeroObj, Integer>) obj.get();
-            UnitView uv = (UnitView) unitMap.get(p.getLeft());
-            uv.updateInitiative(p.getRight());
-        });
+
 
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p =
@@ -266,6 +249,12 @@ public class GridPanel extends Group {
 
                 cells[coordinates.getX()][rows - 1 - coordinates.getY()].addInnerDrawable(cellContainer);
             }
+
+            GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
+                Pair<DC_HeroObj, Integer> p = (Pair<DC_HeroObj, Integer>) obj.get();
+                UnitView uv = (UnitView) unitMap.get(p.getLeft());
+                uv.updateInitiative(p.getRight());
+            });
         });
 
        /* GuiEventManager.bind(CELL_UPDATE, param -> {
@@ -373,4 +362,7 @@ public class GridPanel extends Group {
     }
 
 
+    public int getRows() {
+        return rows;
+    }
 }

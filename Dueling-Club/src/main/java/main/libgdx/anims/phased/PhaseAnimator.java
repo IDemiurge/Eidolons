@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.DC_Game;
-import main.libgdx.GameScreen;
+import main.libgdx.bf.GridMaster;
 import main.system.GuiEventManager;
 
 import java.util.LinkedList;
@@ -85,12 +85,12 @@ public class PhaseAnimator extends Group {
         getAnims().forEach(anim -> {
             anim.update();
             addActor(anim);
-            Vector2 p = GameScreen.getInstance().getGridPanel()
+            Vector2 p = GridMaster
                     .getVectorForCoordinateWithOffset(anim.getAnim().getSourceCoordinates());
             float x = p.x;
             float y = p.y;
-//            y = GameScreen.getInstance().getGridPanel().getCellHeight() *
-//             GameScreen.getInstance().getGridPanel().getRows();
+//            y = GridMaster.getCellHeight() *
+//             GridMaster.getRows();
 //            x = 0;
 //            y = 0;
 //            y = 255+GameScreen.getInstance().getController().getY_cam_pos();

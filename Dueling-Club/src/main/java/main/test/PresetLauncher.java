@@ -8,7 +8,9 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.battlefield.UnitGroupMaster;
+import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.anims.particles.controls.EmitterController;
+import main.libgdx.anims.particles.lighting.LightingManager;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -27,8 +29,8 @@ import static main.test.Preset.PRESET_DATA.FIRST_DUNGEON;
 
 public class PresetLauncher {
     public final static String[] LAUNCH_OPTIONS = {
-            "Last", "Graphics Test", "Recent", "New", "Load", "Fast",
-            "Superfast", "Emitter Test"
+            "Last", "Gui", "Recent", "New", "Light", "Anims",
+             "Emitters"
 
     };
     public static int PRESET_OPTION = -1;
@@ -41,6 +43,7 @@ public class PresetLauncher {
             } else {
                 i = 1;
             }
+            Preset p =null ;
         switch (LAUNCH_OPTIONS[i]) {
             case "Last":
                 Preset lastPreset = PresetMaster.loadLastPreset();
@@ -48,12 +51,20 @@ public class PresetLauncher {
                 UnitMaster.setRandom(false);
                 PresetMaster.setPreset(lastPreset);
                 break;
-            case "Emitter Test":
+            case "Light":
+                LightingManager.setLightOn(true);
+                LightingManager.setTestMode(true);
+                    p = PresetMaster.loadPreset("Light Test.xml");
+            case "Emitters":
+                ParticleManager.setAmbienceOn(true);
+//                if (p==null )
+//                    p = PresetMaster.loadPreset("Emitters Test.xml");
                 EmitterController.setTestMode(true);
-            case "Graphics Test":
-//                FAST_DC.getGameLauncher().DUMMY_MODE = true;
-//                FAST_DC.getGameLauncher().DUMMY_PP = true;
-                Preset p = PresetMaster.loadPreset("Graphics Test.xml");
+                FAST_DC.getGameLauncher().DUMMY_MODE = true;
+                FAST_DC.getGameLauncher().DUMMY_PP = true;
+            case "Gui":
+                 if (p==null )
+                     p = PresetMaster.loadPreset("Graphics Test.xml");
                 PresetMaster.setPreset(p);
                 return true;
             case "Recent":
@@ -64,7 +75,7 @@ public class PresetLauncher {
                 FAST_DC.getGameLauncher().DUMMY_PP = false;
                 UnitGroupMaster.setFactionMode(DialogMaster.confirm("Faction Mode?"));
                 return null;
-            case "Fast":
+            case "Anims":
                 FAST_DC.getGameLauncher().DUMMY_MODE = true;
                 FAST_DC.getGameLauncher().DUMMY_PP = true;
                 FAST_DC.getGameLauncher().setFAST_MODE(true);

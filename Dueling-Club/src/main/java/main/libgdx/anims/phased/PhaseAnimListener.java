@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import main.game.battlefield.PointX;
-import main.libgdx.GameScreen;
+import main.libgdx.bf.GridMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.AnimationManager.MouseItem;
 import main.system.graphics.PhaseAnimation;
@@ -65,7 +65,7 @@ public class PhaseAnimListener extends InputListener {
                 return itemClicked(item);
             }
         }
-        Vector2 v = GameScreen.getInstance().getGridPanel().
+        Vector2 v = GridMaster.
                 getVectorForCoordinateWithOffset(anim.getSourceCoordinates());
         return new Rectangle(
                 (int) v.x, (int) v.y, anim.getW(), anim.getH()).contains(x, y);

@@ -11,7 +11,6 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
-import main.libgdx.GameScreen;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import main.libgdx.anims.ANIM_MODS.OBJ_ANIMS;
@@ -20,11 +19,13 @@ import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.particles.EmitterPools;
 import main.libgdx.anims.sprite.SpriteAnimation;
+import main.libgdx.bf.GridMaster;
 import main.libgdx.texture.TextureManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.LogMaster;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -37,6 +38,7 @@ public class Anim extends Group implements Animation{
     protected Vector2 destination;
     protected Vector2 defaultPosition;
     protected List<EmitterActor> emitterList;
+    protected List<EmitterActor> emitterCache; //TODO not the best practice!
     protected List<SpriteAnimation> sprites;
     protected int lightEmission; // its own lightmap?
     protected Color color;
@@ -89,7 +91,25 @@ public class Anim extends Group implements Animation{
         offsetY = 0;
         initDuration();
         initSpeed();
+//if ()
+    }
 
+    private void resetEmitters() {
+        if (emitterList != null)
+            emitterList.forEach(e ->
+             {
+                 if (e.isGenerated()) {
+                     e.getEffect().dispose();
+                 }
+             }
+            );
+        emitterList=emitterCache;
+        emitterCache=     new LinkedList<>(emitterList);
+        emitterList.forEach(e -> {
+            if (!e.isGenerated())
+                if (e.isAttached())
+                    e.setTarget(getDestinationCoordinates());
+        });
     }
 
     protected void initDuration() {
@@ -244,13 +264,8 @@ public class Anim extends Group implements Animation{
         initPosition();
         initDuration();
         initSpeed();
-        if (emitterList != null)
-            emitterList.removeIf(e -> e.isGenerated());
-        emitterList.forEach(e -> {
-            if (!e.isGenerated())
-                if (e.isAttached())
-                    e.setTarget(getDestinationCoordinates());
-        });
+        resetEmitters();
+
         sprites.forEach(s -> s.setX(getX()));
         sprites.forEach(s -> s.setY(getY()));
         sprites.forEach(s -> s.setOffsetX(0));
@@ -261,10 +276,10 @@ public class Anim extends Group implements Animation{
             sprites.forEach(s -> s.setFrameDuration(frameDuration));
 
 
-        AnimMultiplier.checkMultiplication(this);
+        AnimMultiplicator.checkMultiplication(this);
 
         addLight();
-        addEmitters();
+        startEmitters();
 
 
         running = true;
@@ -297,7 +312,7 @@ public class Anim extends Group implements Animation{
     protected void addLight() {
     }
 
-    protected void addEmitters() {
+    protected void startEmitters() {
         emitterList.forEach(e -> {
             e.start();
         });
@@ -313,13 +328,13 @@ public class Anim extends Group implements Animation{
     }
 
     public void initPosition() {
-        origin = GameScreen.getInstance().getGridPanel()
+        origin = GridMaster
                 .getVectorForCoordinateWithOffset(getOriginCoordinates());
 
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
                 this + " origin: " + origin);
 
-        destination = GameScreen.getInstance().getGridPanel()
+        destination = GridMaster
                 .getVectorForCoordinateWithOffset(getDestinationCoordinates());
 
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
@@ -339,7 +354,7 @@ public class Anim extends Group implements Animation{
 
     }
 
-    protected Coordinates getDestinationCoordinates() {
+    public Coordinates getDestinationCoordinates() {
         if (forcedDestination!=null )return forcedDestination;
         if (getRef().getTargetObj() == null)
             return getRef().getSourceObj().getCoordinates();
@@ -429,6 +444,7 @@ public class Anim extends Group implements Animation{
 
     public void setEmitterList(List<EmitterActor> emitterList) {
         this.emitterList = emitterList;
+        emitterCache=    new LinkedList<>(emitterList);
     }
 
     public int getLightEmission() {
