@@ -1,1 +1,2261 @@
-<XML> <Empty><Ancient_Ruins><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier><Name>Ancient Ruins</Name><Map_Background>big\new dungeons\ruins .jpg</Map_Background><Unique_Id>dungeons Ancient Ruins1375856173669977706</Unique_Id><Description></Description><Displayed_Name>Ancient Ruins</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new4\stairs.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Ancient_Ruins><Lower_Hell><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier><Name>Lower Hell</Name><Map_Background>big\New2\214290.jpg</Map_Background><Unique_Id>dungeons Lower Hell5372896617371612295</Unique_Id><Description></Description><Displayed_Name>Lower Hell</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new5\hell.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme>red</Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Lower_Hell><Elf_Cottage><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier><Name>Elf Cottage</Name><Map_Background>big\New2\322925.jpg</Map_Background><Unique_Id>dungeons Elf Cottage3470886841716865412</Unique_Id><Description></Description><Displayed_Name>Elf Cottage</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new5\vines.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme>blue</Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Elf_Cottage><Sewers><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier><Name>Sewers</Name><Map_Background>big\new dungeons\black dungeon.jpg</Map_Background><Unique_Id>dungeons Sewers4386474384631727467</Unique_Id><Description></Description><Displayed_Name>Sewers</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new5\sewers.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme>green</Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Sewers><Dark_Mansion><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier><Name>Dark Mansion</Name><Map_Background>big\new dungeons\darkest.jpg</Map_Background><Unique_Id>dungeons Dark Mansion8985351545984008510</Unique_Id><Description></Description><Displayed_Name>Dark Mansion</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\undead\dark mansion2.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Dark_Mansion><Elven_Crypt><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier><Name>Elven Crypt</Name><Map_Background>big\new dungeons\elven dungeon.jpg</Map_Background><Unique_Id>dungeons Elven Crypt-7952247680759199986</Unique_Id><Description></Description><Displayed_Name>Elven Crypt</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new5\souls.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Elven_Crypt><Wizard_Study><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier><Name>Wizard Study</Name><Map_Background>big\New2\015.jpg</Map_Background><Unique_Id>dungeons Wizard Study1464034441773596243</Unique_Id><Description></Description><Displayed_Name>Wizard Study</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new5\library.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme>blue</Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Wizard_Study><Arcane_Vault><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier><Name>Arcane Vault</Name><Map_Background>big\New2\fantasy-castles- .jpg</Map_Background><Unique_Id>dungeons Arcane Vault-3611868523408887951</Unique_Id><Description></Description><Displayed_Name>Arcane Vault</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new5\study.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme>blue</Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Arcane_Vault><Archives><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier><Name>Archives</Name><Map_Background>big\New2\fantasy-castles- .jpg</Map_Background><Unique_Id>dungeons Archives-5071678944408879127</Unique_Id><Description></Description><Displayed_Name>Archives</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new5\study3.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme>blue</Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Archives><Ravenguard_Fort><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier><Name>Ravenguard Fort</Name><Map_Background>big\new dungeons\subterranean city.jpg</Map_Background><Unique_Id>dungeons Ravenguard Fort2673094442954259663</Unique_Id><Description></Description><Displayed_Name>Ravenguard Fort</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new5\tower.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Ravenguard_Fort><Eerie_Woods><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier><Name>Eerie Woods</Name><Map_Background>big\new dungeons\subterranean city.jpg</Map_Background><Unique_Id>dungeons Eerie Woods-8994767159092522253</Unique_Id><Description></Description><Displayed_Name>Eerie Woods</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new5\tower.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Eerie_Woods><Forgotten_Tomb><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Hall</Dungeon_Map_Modifier><Name>Forgotten Tomb</Name><Map_Background>big\new dungeons\elven dungeon.jpg</Map_Background><Unique_Id>dungeons Forgotten Tomb958036821370889850</Unique_Id><Description></Description><Displayed_Name>Forgotten Tomb</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new4\overgrown tomb.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Forgotten_Tomb><Gnome_Vaults><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Cavern</Dungeon_Map_Modifier><Name>Gnome Vaults</Name><Map_Background>big\dungeons\dungeon2.jpg</Map_Background><Unique_Id>dungeons Gnome Vaults7269276256297334434</Unique_Id><Description></Description><Displayed_Name>Gnome Vaults</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\arcane\wizarding_bank.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Gnome_Vaults><Volcano_Island><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Cavern</Dungeon_Map_Modifier><Name>Volcano Island</Name><Map_Background>big\dungeons\island.jpg</Map_Background><Unique_Id>dungeons Volcano Island6674747998806256740</Unique_Id><Description></Description><Displayed_Name>Volcano Island</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new6\volcano.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Volcano_Island><Cathedral><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Hall</Dungeon_Map_Modifier><Name>Cathedral</Name><Map_Background>big\New2\temple.jpg</Map_Background><Unique_Id>dungeons Cathedral-5064738797760618165</Unique_Id><Description></Description><Displayed_Name>Cathedral</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new6\church.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Cathedral><Stronghold><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Hall</Dungeon_Map_Modifier><Name>Stronghold</Name><Map_Background>big\dread keep.jpg</Map_Background><Unique_Id>dungeons Stronghold1165299593120104887</Unique_Id><Description></Description><Displayed_Name>Stronghold</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\underground\dungeon4.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Stronghold><Crusader_Dungeons><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Hall</Dungeon_Map_Modifier><Name>Crusader Dungeons</Name><Map_Background>big\new dungeons\subterranean city.jpg</Map_Background><Unique_Id>dungeons Crusader Dungeons2633777075010400554</Unique_Id><Description></Description><Displayed_Name>Crusader Dungeons</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new6\prison.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Crusader_Dungeons><Dungeon_Fort><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Hall</Dungeon_Map_Modifier><Name>Dungeon Fort</Name><Map_Background>big\new dungeons\subterranean city.jpg</Map_Background><Unique_Id>dungeons Dungeon Fort-7782353205241715471</Unique_Id><Description></Description><Displayed_Name>Dungeon Fort</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\underground\undercity.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Dungeon_Fort><Snowcloud_Peaks><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Rocky</Dungeon_Map_Modifier><Name>Snowcloud Peaks</Name><Map_Background>big\New2\north.jpg</Map_Background><Unique_Id>dungeons Snowcloud Peaks4632974599329055924</Unique_Id><Description></Description><Displayed_Name>Snowcloud Peaks</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new6\snowcloud peaks.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Snowcloud_Peaks><Feywood><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier><Name>Feywood</Name><Map_Background>big\New2\2880424.jpg</Map_Background><Unique_Id>dungeons Feywood-7366579927507738200</Unique_Id><Description></Description><Displayed_Name>Feywood</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new5\mystic wood.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Feywood><Underworld_Keep><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Rocky</Dungeon_Map_Modifier><Name>Underworld Keep</Name><Map_Background>big\new5\dungeon city.jpg</Map_Background><Unique_Id>dungeons Underworld Keep7343514692437874666</Unique_Id><Description></Description><Displayed_Name>Underworld Keep</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new6\dungeon5.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Underworld_Keep><Ravenwood><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier><Name>Ravenwood</Name><Map_Background>big\New2\dangerous_forest.jpg</Map_Background><Unique_Id>dungeons Ravenwood4998412788820045878</Unique_Id><Description></Description><Displayed_Name>Ravenwood</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new5\tombstones.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Ravenwood><Mograve_Keep><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier><Name>Mograve Keep</Name><Map_Background>big\New2\dark_castle3.jpg</Map_Background><Unique_Id>dungeons Mograve Keep-7369103444219196865</Unique_Id><Description></Description><Displayed_Name>Mograve Keep</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\human\Von Finsterheim Castle.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Mograve_Keep><Forsaken_Gardens><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier><Name>Forsaken Gardens</Name><Map_Background>big\New2\516513.jpg</Map_Background><Unique_Id>dungeons Forsaken Gardens5574715257869399839</Unique_Id><Description></Description><Displayed_Name>Forsaken Gardens</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new4\marsh.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Forsaken_Gardens><Grave_Hill><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier><Name>Grave Hill</Name><Map_Background>big\New2\dark forest.jpg</Map_Background><Unique_Id>dungeons Grave Hill1926875505784595759</Unique_Id><Description></Description><Displayed_Name>Grave Hill</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new4\grave hill.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Grave_Hill><Highland_Keep><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier><Name>Highland Keep</Name><Map_Background>big\New2\dnight_valley .jpg</Map_Background><Unique_Id>dungeons Highland Keep-6916561623437406384</Unique_Id><Description></Description><Displayed_Name>Highland Keep</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new4\castle.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Highland_Keep><Observatory><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes></Dev_Notes><Alt_Encounters></Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Playtest</Group><Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier><Name>Observatory</Name><Map_Background>big\New2\ancient tech spire.jpg</Map_Background><Unique_Id>dungeons Observatory7355501568176504858</Unique_Id><Description></Description><Displayed_Name>Observatory</Displayed_Name><Lore></Lore><Type>dungeons</Type><Map_Preset_Objects></Map_Preset_Objects><Image>mini\dungeon\new4\town.jpg</Image><Encounters></Encounters><Version>0.05</Version><Workspace_Group>Test</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region></Arcade_Region><Map_Objects></Map_Objects></props></Observatory><Tavern><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Turns_In_Game>0</Turns_In_Game><Loot_Value>0</Loot_Value><Power_Level>0</Power_Level></params><props><Dungeon_Group>Human</Dungeon_Group><Alt_Encounters></Alt_Encounters><Dungeon_Type>Average</Dungeon_Type><Group>Skirmish</Group><Name>Tavern</Name><Map_Background>big\new4\tavern.jpg</Map_Background><Description>[Quest] This may once have been a well-off farm, but no more. Dangers aside, the [faction] want this place cleared out and you could certainly use their support. </Description><Unique_Id>dungeons Tavern-6975077295217575077</Unique_Id><Displayed_Name>Tavern</Displayed_Name><Type>dungeons</Type><Image>macro\place\Misty Shores\Neugard Tavern.jpg</Image><Encounters>Robber Band;Hired Thugs;Brawlers;Guards;Cutthroats;Killer Crew;Bandit Lord;Warband;Dwarf Rabble;Dwarven Company;</Encounters><Version>0.05</Version><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>One</Dungeon_Level><Color_Theme>red</Color_Theme><Dungeon_Map_Template>Wooden Interior</Dungeon_Map_Template><Arcade_Region></Arcade_Region></props></Tavern></Empty><Misty_Shores><Smuggler_Grotto><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>1</Power_Level></params><props><Dungeon_Group>Human</Dungeon_Group><Alt_Encounters>Dungeon Critters;Wolf Pack;Sewer Horrors;Night Terrors;</Alt_Encounters><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Arcade_Route>Eerie Coast;Rocky Climb;</Arcade_Route><Name>Smuggler Grotto</Name><Unique_Id>dungeons Smuggler Grotto-974190637213970493</Unique_Id><Map_Background>big\new dungeons\subterranean city.jpg</Map_Background><Type>dungeons</Type><Image>mini\dungeon\human\Smuggler Grottos.jpg</Image><Encounters>Undead Minions;Wraiths;Death Lord;</Encounters><Version>0.05</Version><Dungeon_Level>One</Dungeon_Level><Arcade_Region>Misty Shores</Arcade_Region></props></Smuggler_Grotto><Lichyard><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\undead\Cemetary.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Name>Lichyard</Name><Dungeon_Level>Two</Dungeon_Level><Map_Background>big\dungeons\mansion.jpg</Map_Background><Unique_Id>dungeons Lichyard8136416163356475563</Unique_Id><Arcade_Region>Misty Shores</Arcade_Region></props></Lichyard><Dark_Castle><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\human\castle.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Version>0.05</Version><Name>Dark Castle</Name><Dungeon_Level>Four</Dungeon_Level><Map_Background>big\new dungeons\Night Castle.jpg</Map_Background><Unique_Id>dungeons Dark Castle-9083349529801461926</Unique_Id><Arcade_Region>Misty Shores</Arcade_Region></props></Dark_Castle><Arcane_Sanctum><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\arcane\arcane sanctum.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Version>0.05</Version><Name>Arcane Sanctum</Name><Dungeon_Level>Four</Dungeon_Level><Map_Background>big\dungeons\labyrinth.jpg</Map_Background><Unique_Id>dungeons Arcane Sanctum-7050026690769965663</Unique_Id><Arcade_Region>Misty Shores</Arcade_Region></props></Arcane_Sanctum><Crimson_Castle><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\human\castle.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Version>0.05</Version><Name>Crimson Castle</Name><Dungeon_Level>Four</Dungeon_Level><Map_Background>big\new dungeons\Night Castle.jpg</Map_Background><Unique_Id>dungeons Crimson Castle-2782872389505814617</Unique_Id><Arcade_Region>Misty Shores</Arcade_Region></props></Crimson_Castle><BaronUNICODE39CODEENDs_Castle><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\human\castle.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Version>0.05</Version><Name>Baron's Castle</Name><Dungeon_Level>Four</Dungeon_Level><Map_Background>big\new dungeons\Night Castle.jpg</Map_Background><Unique_Id>dungeons Baron's Castle2231727569988835354</Unique_Id><Arcade_Region>Misty Shores</Arcade_Region></props></BaronUNICODE39CODEENDs_Castle><Warlock_Castle><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\human\castle.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Name>Warlock Castle</Name><Dungeon_Level>Four</Dungeon_Level><Map_Background>big\dungeons\labyrinth.jpg</Map_Background><Unique_Id>dungeons Warlock Castle6314824203572782671</Unique_Id><Arcade_Region>Misty Shores</Arcade_Region></props></Warlock_Castle></Misty_Shores><Dusk_Dale><Arcane_Tower><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Arcane</Dungeon_Group><Sublevels>Crystal Cave(Dark Tunnel=corner,middle);</Sublevels><Dev_Notes>Arcane Brotherhood;Conjurer; Marble Column(3-0);Marble Column(3-4);Marble Column(5-0);</Dev_Notes><Alt_Encounters>Derelict Machinery;Apostates;Arcane Guardians;Elementals;Lich;</Alt_Encounters><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Dungeon_Map_Modifier></Dungeon_Map_Modifier><Name>Arcane Tower</Name><Map_Background>big\dungeons\dark castle1.jpg</Map_Background><Unique_Id>dungeons Arcane Tower3410434868605374287</Unique_Id><Description>Standing aloof at the feet of the Pale Mountains, this tower is rumored to have appear out of nothing overnight and now house a powerful sorceror or sorceress... There is an aura of unnatural cold and stillness, eerie even by Dusk Dale standards. </Description><Displayed_Name>Arcane Tower</Displayed_Name><Lore>A perfectly likely place to start on the search, this tower is almost certain to have some clues about the Artifacts' present or past. </Lore><Type>dungeons</Type><Map_Preset_Objects>Arcane Crystal(4-5);Altar(1-4);Altar(1-1);Altar(7-1);Altar(7-4); Marble Column(4-0);</Map_Preset_Objects><Image>mini\dungeon\arcane\arcane tower2.jpg</Image><Encounters>Dark Apostates;Mutant Band;Eldritch Order;Sewer Horrors;Unchained Wyvern;</Encounters><Version>0.1002b</Version><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme>purple</Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region>Dusk Dale</Arcade_Region></props></Arcane_Tower><Demon_Shrine><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Turns_In_Game>0</Turns_In_Game><Loot_Value>0</Loot_Value><Power_Level>0</Power_Level></params><props><Dungeon_Group>Undead</Dungeon_Group><Alt_Encounters>Chaos Apostates;Possessed;Chaos Cultists;Anti-Paladin;Demon Lord</Alt_Encounters><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Dungeon_Map_Modifier></Dungeon_Map_Modifier><Name>Demon Shrine</Name><Map_Background>big\dungeons\swamp.jpg</Map_Background><Unique_Id>dungeons Demon Shrine6233512090274128348</Unique_Id><Description>A long accursed place, this once splendid Eledari temple of elements has seen a gruesome transformation by fire, blood and sorcery. </Description><Lore>Whatever particular sect holds its gatherings in this grim shrine, they are likely to have information about the Artifacts of Mastery. It's doubtful that they will offer it freely though. </Lore><Type>dungeons</Type><Map_Preset_Objects>Altar(4-5);Altar(4-0);</Map_Preset_Objects><Image>mini\dungeon\misc\forge.jpg</Image><Encounters>Lesser Demons;Demon Worshippers;Demon Callers;Abyssal Fiend;Warp Champion;</Encounters><Version>0.1002b</Version><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>Three</Dungeon_Level><Color_Theme>red</Color_Theme><Dungeon_Map_Template>Swamp</Dungeon_Map_Template><Arcade_Region>Dusk Dale</Arcade_Region><Map_Objects>Ruined Structure(1);Ruined Gateway(1);Ruined Column(1)</Map_Objects></props></Demon_Shrine><Cemetary><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>1</Power_Level></params><props><Dungeon_Group>Undead</Dungeon_Group><Alt_Encounters>Cannibals;Grave Looters;Death Adepts;Lich;</Alt_Encounters><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Name>Cemetary</Name><Map_Background>big\dungeons\cemetary.jpg</Map_Background><Description>Strangely, the white marble crypt in the middle of the cemetary seems to have resisted any harm from marauders and grave looters whose work is all too apparent in the multitude of desecrated graves strewn across the cemetary. Unless the graves dug up themselves, of course...</Description><Unique_Id>dungeons Cemetary-6582458615521949041</Unique_Id><Lore>The ancient elven crypt at the center of this dilapidated human cemetary is a promising place to find out more about the history of the Artifacts. Who knows what secrets are kept by the elves long dead? </Lore><Type>dungeons</Type><Map_Preset_Objects>Gravestone(2-1);Gravestone(6-3);Gravestone(2-3);Gravestone(6-1);</Map_Preset_Objects><Image>mini\dungeon\undead\graveyard2.jpg</Image><Encounters>Death Worshippers;Undead Minions;Death Adepts;Wraiths;Corpseborn;Death Lord;Lich;Vampire;</Encounters><Version>0.1001</Version><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>One</Dungeon_Level><Color_Theme>blue</Color_Theme><Dungeon_Map_Template>Dead Forest</Dungeon_Map_Template><Arcade_Region>Dusk Dale</Arcade_Region></props></Cemetary><Bandit_Den><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>1</Power_Level></params><props><Dungeon_Group>Human</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\human\Pirate Den.jpg</Image><Encounters>Robber Band</Encounters><Dungeon_Type>Average</Dungeon_Type><Group>Playable</Group><Name>Bandit Den</Name><Dungeon_Level>One</Dungeon_Level><Map_Background>big\dungeons\Pirate Bay.jpg</Map_Background><Unique_Id>dungeons Bandit Den-1294535686477989477</Unique_Id><Arcade_Region>Dusk Dale</Arcade_Region></props></Bandit_Den><Dungeon><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Turns_In_Game>0</Turns_In_Game><Loot_Value>0</Loot_Value><Power_Level>0</Power_Level><Spawning_Delay_Mod>100</Spawning_Delay_Mod></params><props><Dungeon_Group>Undead</Dungeon_Group><Alt_Encounters>Shades; Death Worshippers;Dark Apostates;Hungry Dead;Bone Dragon;Dungeon Terrors;Blood Thralls;</Alt_Encounters><Power_Encounters>Dragnir Patrol;</Power_Encounters><Dungeon_Type>Underground</Dungeon_Type><Group>Arcade</Group><Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier><Name>Dungeon</Name><Map_Background>big\dungeons\cave2.jpg</Map_Background><Unique_Id>dungeons Dungeon2731227289594262211</Unique_Id><Description>As little as you may like it, this is the place incicated by [faction]. There is no knowing what may lurk in these shadowy halls...</Description><Known_Spells></Known_Spells><Displayed_Name>Dungeon</Displayed_Name><Spellbook></Spellbook><Type>dungeons</Type><Image>mini\dungeon\underground\dungeon.jpg</Image><Encounters>Dungeon Critters;Dungeon Monsters;Dungeon Terrors;Sewer Horrors;Unchained Wyvern;Ancient Beast;</Encounters><Version>0.05</Version><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme>blue</Color_Theme><Dungeon_Map_Template>Dungeon</Dungeon_Map_Template><Arcade_Region>Dusk Dale</Arcade_Region></props></Dungeon><Crystal_Cave><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>1</Power_Level></params><props><Dungeon_Group>Undead</Dungeon_Group><Alt_Encounters>Spider Brood;Spider Lords;Chosen of Arachnia;</Alt_Encounters><Dungeon_Type>Underground</Dungeon_Type><Group>Arcade</Group><Dungeon_Map_Modifier> Cavern</Dungeon_Map_Modifier><Name>Crystal Cave</Name><Map_Background>big\dungeons\cave2.jpg</Map_Background><Unique_Id>dungeons Crystal Cave-4961916923501245943</Unique_Id><Description>Infested by some manner of insectoids, if rumors are to be believed, this cave radiates strange energy and emanates light that is probably not coming from any purely natural source... </Description><Displayed_Name>Crystal Cave</Displayed_Name><Lore>Although it is highly unlikely that there are clues about the Artifacts in a place like this, acquiring shards of a pure Aspect Crystal may be very useful - either as a prize to sell for information, or a source of magical power to aid the quest. </Lore><Type>dungeons</Type><Image>mini\dungeon\underground\crystal cave2.jpg</Image><Encounters>Colony Brood;Colony Warriors;Colony Queen;</Encounters><Version>0.05</Version><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme>yellow</Color_Theme><Dungeon_Map_Template>Dungeon</Dungeon_Map_Template><Arcade_Region>Dusk Dale</Arcade_Region></props></Crystal_Cave><Twilight_Monastery><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\misc\Twilight Monastery.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Group>Playable</Group><Version>0.05</Version><Workspace_Group>Implement</Workspace_Group><Name>Twilight Monastery</Name><Dungeon_Level>Three</Dungeon_Level><Map_Background>big\dungeons\new dungeon3.jpg</Map_Background><Unique_Id>dungeons Twilight Monastery-7023162069410491143</Unique_Id><Arcade_Region>Dusk Dale</Arcade_Region></props></Twilight_Monastery><Hidden_Camp><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>1</Power_Level></params><props><Dungeon_Group>Human</Dungeon_Group><Alt_Encounters>Goblins;Orcs;Orc Khan;</Alt_Encounters><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Dungeon_Map_Modifier>Camp</Dungeon_Map_Modifier><Name>Hidden Camp</Name><Map_Background>big\dungeons\Pirate Bay.jpg</Map_Background><Description>Your tracking has led you to this site which upon closer inspection seems to be hosting a well-hidden camp... no friendly folk would likely be living in such a place. </Description><Unique_Id>dungeons Hidden Camp-8056336409772700566</Unique_Id><Type>dungeons</Type><Image>mini\dungeon\human\Pirate Den.jpg</Image><Encounters>Robber Band;Deserters;Bandit Lord;</Encounters><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>One</Dungeon_Level><Color_Theme>green</Color_Theme><Dungeon_Map_Template>Forest</Dungeon_Map_Template><Arcade_Region>Dusk Dale</Arcade_Region><Alt_Spawning_Delays>25</Alt_Spawning_Delays></props></Hidden_Camp><Wizard_Tower><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level><Turns_In_Game>0</Turns_In_Game><Loot_Value>0</Loot_Value></params><props><Dungeon_Group>Arcane</Dungeon_Group><Alt_Encounters>Derelict Machinery;Apostates;Arcane Guardians;Elementals;Sorceror;Enchantress;Lich;</Alt_Encounters><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Dungeon_Map_Modifier></Dungeon_Map_Modifier><Name>Wizard Tower</Name><Map_Background>big\dungeons\spires.jpg</Map_Background><Unique_Id>dungeons Wizard Tower521839787978479620</Unique_Id><Description>Standing aloof at the feet of the Pale Mountains, this tower is rumored to have appear out of nothing overnight and now house a powerful sorceror or sorceress... There is an aura of unnatural cold and stillness, eerie even by Dusk Dale standards. </Description><Displayed_Name>Wizard Tower</Displayed_Name><Lore>A perfectly likely place to start on the search, this tower is almost certain to have some clues about the Artifacts' present or past. </Lore><Type>dungeons</Type><Map_Preset_Objects>Force Field(2-1);Force Field(6-4);Force Field(2-4);Force Field(6-1);</Map_Preset_Objects><Image>mini\dungeon\arcane\tower.jpg</Image><Encounters>Derelict Machinery;Discarded and Orphaned Familiars;Arcane Guardians;Aether Golem;Mechanicum Titan;</Encounters><Version>0.1002b</Version><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme>purple</Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region>Dusk Dale</Arcade_Region><Map_Objects>Marble Column(2);</Map_Objects></props></Wizard_Tower><Spire><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Arcane</Dungeon_Group><Dev_Notes>Fanatics;Crusaders;Defender of Light;</Dev_Notes><Alt_Encounters>Sky Minions;Celestials;Sky Lord;</Alt_Encounters><Spawning_Delays>Marble Column(0-0);Marble Column(8-4);Marble Column(0-4);Marble Column(8-0);</Spawning_Delays><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Name>Spire</Name><Map_Background>big\dungeons\Misty Mountains.jpg</Map_Background><Unique_Id>dungeons Spire7616998187644955473</Unique_Id><Description>Standing aloof at the feet of the Pale Mountains, this tower is rumored to have appear out of nothing overnight and now house a powerful sorceror or sorceress... There is an aura of unnatural cold and stillness, eerie even by Dusk Dale standards. </Description><Lore>A perfectly likely place to start on the search, this tower is almost certain to have some clues about the Artifacts' present or past. </Lore><Type>dungeons</Type><Map_Preset_Objects>Marble Column(2-1);Ruined Gateway(2-2);Marble Column(6-3);Marble Column(2-3);Marble Column(6-1);Ruined Gateway(6-2);</Map_Preset_Objects><Image>mini\dungeon\arcane\Onyx Spire.jpg</Image><Encounters>Sky Minions;Celestials;Sky Lord;</Encounters><Version>0.1002b</Version><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme>light</Color_Theme><Arcade_Region>Dusk Dale</Arcade_Region><Map_Objects></Map_Objects></props></Spire><Abandoned_House><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Turns_In_Game>0</Turns_In_Game><Loot_Value>0</Loot_Value><Power_Level>0</Power_Level></params><props><Dungeon_Group>Undead</Dungeon_Group><Alt_Encounters>Plague Bearers;Plague Servants;Corpseborn;Undead Monstrocity;</Alt_Encounters><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Name>Abandoned House</Name><Map_Background>big\new4\tavern3.jpg</Map_Background><Description>[Quest] This may once have been a well-off farm, but no more. Dangers aside, the [faction] want this place cleared out and you could certainly use their support. </Description><Unique_Id>dungeons Abandoned House-1427079487081755716</Unique_Id><Type>dungeons</Type><Image>mini\dungeon\undead\Haunted House.jpg</Image><Encounters>Hungry Dead;Blood Thralls;Vampires;Vampire Lord;</Encounters><Version>0.05</Version><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>One</Dungeon_Level><Color_Theme>red</Color_Theme><Dungeon_Map_Template>Wooden Interior</Dungeon_Map_Template><Arcade_Region>Dusk Dale</Arcade_Region></props></Abandoned_House><Witch_Grove><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>1</Power_Level></params><props><Dungeon_Group>Undead</Dungeon_Group><Alt_Encounters>Spider Brood;Undead Beasts;Dark Apostates;Huorn;Nightmare;Undead Monstrocity;Witches;Shades;</Alt_Encounters><Power_Encounters>Sorceress;</Power_Encounters><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier><Name>Witch Grove</Name><Map_Background>big\dungeons\haunted wood.jpg</Map_Background><Unique_Id>dungeons Witch Grove-6476551884388452499</Unique_Id><Description>Strangely, the white marble crypt seems to have resisted any harm from marauders and grave looters who work is all too apparent in the multitude of desecrated graves strewn across the cemetary. Unless the graves dug up themselves, of course...</Description><Lore>The ancient elven crypt at the center of this dilapidated human cemetary is a promising place to find out more about the history of the Artifacts. Who knows what secrets are kept by the elves long dead? </Lore><Type>dungeons</Type><Map_Preset_Objects>Altar(4-0)</Map_Preset_Objects><Image>mini\dungeon\haunted wood.jpg</Image><Encounters>Wisps;Wolf Pack;Warg Pack;Feline Predators;Angered Grizzly;Werewolf;Witches;Shades;</Encounters><Version>0.1003b</Version><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>One</Dungeon_Level><Color_Theme>blue</Color_Theme><Dungeon_Map_Template>Dark Forest</Dungeon_Map_Template><Arcade_Region>Dusk Dale</Arcade_Region></props></Witch_Grove><Dwarven_Halls><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Alt_Encounters>Goblins;Orcs;Troll;Ogre</Alt_Encounters><Dungeon_Type>Underground</Dungeon_Type><Group>Arcade</Group><Name>Dwarven Halls</Name><Map_Background>big\dungeons\dwarf city.jpg</Map_Background><Unique_Id>dungeons Dwarven Halls8720026499083904951</Unique_Id><Type>dungeons</Type><Image>mini\dungeon\misc\zwergenheim.jpg</Image><Alt_Power_Encounters></Alt_Power_Encounters><Encounters>Dwarven Company;Dwarf Patrol;Dwarf Rabble;Exiled Thane;</Encounters><Version>0.05</Version><Dungeon_Level>Three</Dungeon_Level><Color_Theme>yellow</Color_Theme><Encounter_Groups></Encounter_Groups><Arcade_Region>Dusk Dale</Arcade_Region></props></Dwarven_Halls><Hell><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes>Fanatics;Crusaders;Defender of Light;</Dev_Notes><Alt_Encounters>Abyssal Fiend;Demon Lord;Chaos Legion;Greater Demons;Demons of Abyss;Lord of Abyss;Demon Callers;</Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Arcade</Group><Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier><Name>Hell</Name><Map_Background>big\dungeons\hell.jpg</Map_Background><Unique_Id>dungeons Hell4881953358138330138</Unique_Id><Description>Standing aloof at the feet of the Pale Mountains, this tower is rumored to have appear out of nothing overnight and now house a powerful sorceror or sorceress... There is an aura of unnatural cold and stillness, eerie even by Dusk Dale standards. </Description><Displayed_Name>Hell</Displayed_Name><Lore>A perfectly likely place to start on the search, this tower is almost certain to have some clues about the Artifacts' present or past. </Lore><Type>dungeons</Type><Map_Preset_Objects>Altar(4-0);Altar(4-5);</Map_Preset_Objects><Image>mini\dungeon\misc\hell.jpg</Image><Encounters>Abyssal Fiend;Demon Lord;Chaos Legion;Greater Demons;Demons of Abyss;Lord of Abyss;Demon Callers;</Encounters><Version>0.05</Version><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme>red</Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region>Dusk Dale</Arcade_Region><Map_Objects></Map_Objects></props></Hell><Nordheim><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes>Fanatics;Crusaders;Defender of Light;</Dev_Notes><Alt_Encounters>Dwarven Company;Exiled Thane;Dwarf Patrol;</Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Arcade</Group><Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier><Name>Nordheim</Name><Map_Background>big\dungeons\undercity.jpg</Map_Background><Unique_Id>dungeons Nordheim2998774586245838664</Unique_Id><Description>Standing aloof at the feet of the Pale Mountains, this tower is rumored to have appear out of nothing overnight and now house a powerful sorceror or sorceress... There is an aura of unnatural cold and stillness, eerie even by Dusk Dale standards. </Description><Displayed_Name>Nordheim</Displayed_Name><Lore>A perfectly likely place to start on the search, this tower is almost certain to have some clues about the Artifacts' present or past. </Lore><Type>dungeons</Type><Map_Preset_Objects>Ruined Column(4-0);Ruined Column(4-5);</Map_Preset_Objects><Image>mini\dungeon\misc\temple.jpg</Image><Encounters>Frost Giant;Storm Giant;Mountain Giants;Hill Giants;</Encounters><Version>0.05</Version><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme>blue</Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region>Dusk Dale</Arcade_Region><Map_Objects></Map_Objects></props></Nordheim><Wraith_Kingdom><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes>Fanatics;Crusaders;Defender of Light;</Dev_Notes><Alt_Encounters>Shades;Wisps;Wraiths;Celestials;Bone Dragon;Sky Lord;</Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Arcade</Group><Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier><Name>Wraith Kingdom</Name><Map_Background>big\dungeons\dead city.jpg</Map_Background><Unique_Id>dungeons Wraith Kingdom-8115100935675817013</Unique_Id><Description>Standing aloof at the feet of the Pale Mountains, this tower is rumored to have appear out of nothing overnight and now house a powerful sorceror or sorceress... There is an aura of unnatural cold and stillness, eerie even by Dusk Dale standards. </Description><Displayed_Name>Wraith Kingdom</Displayed_Name><Lore>A perfectly likely place to start on the search, this tower is almost certain to have some clues about the Artifacts' present or past. </Lore><Type>dungeons</Type><Map_Preset_Objects>Altar(4-0);Altar(4-5);</Map_Preset_Objects><Image>mini\dungeon\undead\death gate.jpg</Image><Encounters>Frost Giant;Bone Dragon;Wraiths;Wisps;Undead Minions;</Encounters><Version>0.05</Version><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme>blue</Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region>Dusk Dale</Arcade_Region><Map_Objects></Map_Objects></props></Wraith_Kingdom><City_of_Ancients><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes>Fanatics;Crusaders;Defender of Light;</Dev_Notes><Alt_Encounters>Naga;Troll;Unchained Wyvern;Dungeon Monsters;Spider Lords;Chosen of Arachnia;Dungeon Terrors</Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Arcade</Group><Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier><Name>City of Ancients</Name><Map_Background>big\dungeons\forgotten city.jpg</Map_Background><Unique_Id>dungeons City of Ancients-8412869575389324123</Unique_Id><Description>Standing aloof at the feet of the Pale Mountains, this tower is rumored to have appear out of nothing overnight and now house a powerful sorceror or sorceress... There is an aura of unnatural cold and stillness, eerie even by Dusk Dale standards. </Description><Displayed_Name>City of Ancients</Displayed_Name><Lore>A perfectly likely place to start on the search, this tower is almost certain to have some clues about the Artifacts' present or past. </Lore><Type>dungeons</Type><Map_Preset_Objects>Marble Column(4-0);Marble Column(4-5);</Map_Preset_Objects><Image>mini\dungeon\underground\dungeon3.jpg</Image><Encounters>Mechanicum Titan;Derelict Machinery;Arcane Guardians;Elementals;Bone Dragon;</Encounters><Version>0.1002b</Version><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme>blue</Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region>Dusk Dale</Arcade_Region><Map_Objects></Map_Objects></props></City_of_Ancients><Castle_Black><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes>Fanatics;Crusaders;Defender of Light;</Dev_Notes><Alt_Encounters>Hungry Dead;Lich;Werewolf;Vampire Lord;Death Lord;Vampires;Blood Thralls;Wraiths;Night Terrors;</Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Arcade</Group><Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier><Name>Castle Black</Name><Map_Background>big\dungeons\dark castle.jpg</Map_Background><Unique_Id>dungeons Castle Black3721470019156231124</Unique_Id><Description>Standing aloof at the feet of the Pale Mountains, this tower is rumored to have appear out of nothing overnight and now house a powerful sorceror or sorceress... There is an aura of unnatural cold and stillness, eerie even by Dusk Dale standards. </Description><Displayed_Name>Castle Black</Displayed_Name><Lore>A perfectly likely place to start on the search, this tower is almost certain to have some clues about the Artifacts' present or past. </Lore><Type>dungeons</Type><Map_Preset_Objects>Marble Column(4-0);Marble Column(4-5);</Map_Preset_Objects><Image>mini\dungeon\human\castle.jpg</Image><Encounters>Robber Band;Apostates;Death Adepts;Anti-Paladin;Dark Apostates;Bandit Lord;Killer Crew;</Encounters><Version>0.05</Version><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme>blue</Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region>Dusk Dale</Arcade_Region><Map_Objects></Map_Objects></props></Castle_Black><Jotunheim><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>3</Power_Level></params><props><Dungeon_Group>Misc</Dungeon_Group><Dev_Notes>Fanatics;Crusaders;Defender of Light;</Dev_Notes><Alt_Encounters>Hill Giants;Mountain Giants;Storm Giant;Dwarven Company;Exiled Thane;</Alt_Encounters><Spawning_Delays></Spawning_Delays><Dungeon_Type>Boss</Dungeon_Type><Group>Arcade</Group><Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier><Name>Jotunheim</Name><Map_Background>big\dungeons\ruins.jpg</Map_Background><Unique_Id>dungeons Jotunheim1593132873668160509</Unique_Id><Description>Standing aloof at the feet of the Pale Mountains, this tower is rumored to have appear out of nothing overnight and now house a powerful sorceror or sorceress... There is an aura of unnatural cold and stillness, eerie even by Dusk Dale standards. </Description><Displayed_Name>Jotunheim</Displayed_Name><Lore>A perfectly likely place to start on the search, this tower is almost certain to have some clues about the Artifacts' present or past. </Lore><Type>dungeons</Type><Map_Preset_Objects>Marble Column(3-0);Ruined Gateway(4-0);Marble Column(5-0);</Map_Preset_Objects><Image>mini\dungeon\misc\Ancient Ruin.jpg</Image><Encounters>Hill Giants;Mountain Giants;Storm Giant;Frost Giant;</Encounters><Version>0.1002b</Version><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme>light</Color_Theme><Dungeon_Map_Template></Dungeon_Map_Template><Arcade_Region>Dusk Dale</Arcade_Region><Map_Objects></Map_Objects></props></Jotunheim><Crystal_Cavern><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>1</Power_Level></params><props><Dungeon_Group>Undead</Dungeon_Group><Alt_Encounters>Spider Brood;Spider Lords;Chosen of Arachnia;</Alt_Encounters><Dungeon_Type>Underground</Dungeon_Type><Group>Arcade</Group><Dungeon_Map_Modifier> Cavern</Dungeon_Map_Modifier><Name>Crystal Cavern</Name><Map_Background>big\dungeons\cave2.jpg</Map_Background><Unique_Id>dungeons Crystal Cavern855297418542232454</Unique_Id><Description>Infested by some manner of insectoids, if rumors are to be believed, this cave radiates strange energy and emanates light that is probably not coming from any purely natural source... </Description><Displayed_Name>Crystal Cavern</Displayed_Name><Lore>Although it is highly unlikely that there are clues about the Artifacts in a place like this, acquiring shards of a pure Aspect Crystal may be very useful - either as a prize to sell for information, or a source of magical power to aid the quest. </Lore><Type>dungeons</Type><Image>mini\dungeon\underground\Crystal_Cave.jpg</Image><Encounters>Colony Brood;Colony Warriors;Colony Queen;</Encounters><Version>0.05</Version><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>Two</Dungeon_Level><Color_Theme>yellow</Color_Theme><Dungeon_Map_Template>Dungeon</Dungeon_Map_Template><Arcade_Region>Dusk Dale</Arcade_Region></props></Crystal_Cavern><Academy_Vaults><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Turns_In_Game>0</Turns_In_Game><Loot_Value>0</Loot_Value><Power_Level>0</Power_Level></params><props><Dungeon_Group>Undead</Dungeon_Group><Alt_Encounters>Plague Bearers;Plague Servants;Corpseborn;Undead Monstrocity;</Alt_Encounters><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Name>Academy Vaults</Name><Map_Background>big\New2\monument .jpg</Map_Background><Description>[Quest] This may once have been a well-off farm, but no more. Dangers aside, the [faction] want this place cleared out and you could certainly use their support. </Description><Unique_Id>dungeons Academy Vaults4158813695300890467</Unique_Id><Displayed_Name>Academy Vaults</Displayed_Name><Type>dungeons</Type><Image>mini\dungeon\new4\arcane library2.jpg</Image><Encounters>Hungry Dead;Blood Thralls;Vampires;Vampire Lord;</Encounters><Version>0.05</Version><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>One</Dungeon_Level><Color_Theme></Color_Theme><Dungeon_Map_Template>Wooden Interior</Dungeon_Map_Template><Arcade_Region>Dusk Dale</Arcade_Region></props></Academy_Vaults><Shadow_Keep><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Turns_In_Game>0</Turns_In_Game><Loot_Value>0</Loot_Value><Power_Level>0</Power_Level></params><props><Dungeon_Group>Undead</Dungeon_Group><Alt_Encounters>Plague Bearers;Plague Servants;Corpseborn;Undead Monstrocity;</Alt_Encounters><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Name>Shadow Keep</Name><Map_Background>big\New2\twilight.jpg</Map_Background><Description>[Quest] This may once have been a well-off farm, but no more. Dangers aside, the [faction] want this place cleared out and you could certainly use their support. </Description><Unique_Id>dungeons Shadow Keep-6624790838310892952</Unique_Id><Displayed_Name>Shadow Keep</Displayed_Name><Type>dungeons</Type><Image>mini\dungeon\new5\shadow keep.jpg</Image><Encounters>Hungry Dead;Blood Thralls;Vampires;Vampire Lord;</Encounters><Version>0.05</Version><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>One</Dungeon_Level><Color_Theme>blue</Color_Theme><Dungeon_Map_Template>Hall Dark</Dungeon_Map_Template><Arcade_Region>Dusk Dale</Arcade_Region></props></Shadow_Keep></Dusk_Dale><Blightstone_Desert><Titan_Temple><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\misc\temple.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Version>0.05</Version><Name>Titan Temple</Name><Dungeon_Level>Four</Dungeon_Level><Map_Background>big\dungeons\undercity.jpg</Map_Background><Unique_Id>dungeons Titan Temple-308954205096376380</Unique_Id><Arcade_Region>Blightstone Desert</Arcade_Region></props></Titan_Temple><Sanctuary><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\underground\hall.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Version>0.05</Version><Name>Sanctuary</Name><Dungeon_Level>Five</Dungeon_Level><Map_Background>big\dungeons\new dungeon3.jpg</Map_Background><Unique_Id>dungeons Sanctuary4229967137042529354</Unique_Id><Arcade_Region>Blightstone Desert</Arcade_Region></props></Sanctuary><Undercity><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\undead\death gate.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Version>0.05</Version><Name>Undercity</Name><Dungeon_Level>Five</Dungeon_Level><Map_Background>big\dungeons\dead city.jpg</Map_Background><Unique_Id>dungeons Undercity-2786916357765439655</Unique_Id><Arcade_Region>Blightstone Desert</Arcade_Region></props></Undercity><Necropolis><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\undead\City of the Dead.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Name>Necropolis</Name><Dungeon_Level>Five</Dungeon_Level><Map_Background>big\dungeons\labyrinth.jpg</Map_Background><Unique_Id>dungeons Necropolis7889320962828368498</Unique_Id><Arcade_Region>Blightstone Desert</Arcade_Region></props></Necropolis><Crystal_Chamber><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\underground\treasure room.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Version>0.05</Version><Name>Crystal Chamber</Name><Dungeon_Level>Five</Dungeon_Level><Map_Background>big\dungeons\cave.jpg</Map_Background><Unique_Id>dungeons Crystal Chamber-7114577677224009846</Unique_Id><Arcade_Region>Blightstone Desert</Arcade_Region></props></Crystal_Chamber><Mausoleum><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\undead\Lich Palace.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Version>0.05</Version><Name>Mausoleum</Name><Dungeon_Level>Five</Dungeon_Level><Map_Background>big\dungeons\labyrinth.jpg</Map_Background><Unique_Id>dungeons Mausoleum9152072247111401384</Unique_Id><Displayed_Name>Mausoleum</Displayed_Name><Arcade_Region>Blightstone Desert</Arcade_Region></props></Mausoleum></Blightstone_Desert><Wraith_Marshes><Ancient_Crypt><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\undead\ancient crypts.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Version>0.05</Version><Name>Ancient Crypt</Name><Dungeon_Level>Three</Dungeon_Level><Map_Background>big\new dungeons\crypt.jpg</Map_Background><Unique_Id>dungeons Ancient Crypt6966054462381041418</Unique_Id><Arcade_Region>Wraith Marshes</Arcade_Region></props></Ancient_Crypt><Forsaken_Castle><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\human\Von Finsterheim Castle.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Version>0.05</Version><Name>Forsaken Castle</Name><Dungeon_Level>Three</Dungeon_Level><Map_Background>big\new dungeons\dark castle.jpg</Map_Background><Unique_Id>dungeons Forsaken Castle3864776273295969028</Unique_Id><Arcade_Region>Wraith Marshes</Arcade_Region></props></Forsaken_Castle><Defiled_Crypt><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\misc\ruins.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Version>0.05</Version><Name>Defiled Crypt</Name><Dungeon_Level>Three</Dungeon_Level><Map_Background>big\new dungeons\crypt.jpg</Map_Background><Unique_Id>dungeons Defiled Crypt4902542893492371116</Unique_Id><Arcade_Region>Wraith Marshes</Arcade_Region></props></Defiled_Crypt><Enchanted_Glade><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\underground\cave.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Version>0.05</Version><Name>Enchanted Glade</Name><Dungeon_Level>Three</Dungeon_Level><Map_Background>big\dungeons\cave.jpg</Map_Background><Unique_Id>dungeons Enchanted Glade3514462024778574949</Unique_Id><Arcade_Region>Wraith Marshes</Arcade_Region></props></Enchanted_Glade><Haunted_Mansion><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\undead\Dark Mansion.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Name>Haunted Mansion</Name><Dungeon_Level>Two</Dungeon_Level><Map_Background>big\dungeons\mansion.jpg</Map_Background><Unique_Id>dungeons Haunted Mansion-4241228012509754710</Unique_Id><Arcade_Region>Wraith Marshes</Arcade_Region></props></Haunted_Mansion><Drowned_Crypt><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\undead\catacombs.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Version>0.05</Version><Name>Drowned Crypt</Name><Dungeon_Level>Two</Dungeon_Level><Map_Background>big\new dungeons\crypt.jpg</Map_Background><Unique_Id>dungeons Drowned Crypt-9139310677029146256</Unique_Id><Arcade_Region>Wraith Marshes</Arcade_Region></props></Drowned_Crypt><Library><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\library.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Version>0.05</Version><Name>Library</Name><Dungeon_Level>Three</Dungeon_Level><Map_Background>big\new dungeons\dark castle.jpg</Map_Background><Unique_Id>dungeons Library-4192594821449278817</Unique_Id><Displayed_Name>Library</Displayed_Name><Arcade_Region>Wraith Marshes</Arcade_Region></props></Library></Wraith_Marshes><Greyleaf_Woods><Ancient_Tomb><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\undead\crypt.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Workspace_Group>Design</Workspace_Group><Name>Ancient Tomb</Name><Dungeon_Level>Two</Dungeon_Level><Map_Background>big\dungeons\mansion.jpg</Map_Background><Unique_Id>dungeons Ancient Tomb-3625231595617770850</Unique_Id><Arcade_Region>Greyleaf Woods</Arcade_Region></props></Ancient_Tomb><Ruined_Fort><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward></params><props><Lore>Despite its crudeness, this fort has withstood the test of time better than most structures in the region</Lore><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Image>mini\dungeon\misc\ruins2.jpg</Image><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Name>Ruined Fort</Name><Dungeon_Level>Two</Dungeon_Level><Map_Background>big\dungeons\mansion.jpg</Map_Background><Unique_Id>dungeons Ruined Fort-206038106868321881</Unique_Id><Description>[faction leader] has indicated this to be the likeliest place to search for [party].</Description><Arcade_Region>Greyleaf Woods</Arcade_Region></props></Ruined_Fort><Cavern><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>1</Power_Level></params><props><Dungeon_Group>Undead</Dungeon_Group><Alt_Encounters>Chaos Apostates;Demon Worshippers;Chaos Minions;Chaos Legion;Abyssal Fiend;Demon Lord;</Alt_Encounters><Power_Encounters>Chaos Minions;Chaos Legion;Abyssal Fiend;Demon Lord;</Power_Encounters><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Name>Cavern</Name><Unique_Id>dungeons Cavern7368385314494980954</Unique_Id><Map_Background>big\dungeons\dungeon2.jpg</Map_Background><Type>dungeons</Type><Image>mini\dungeon\underground\dungeon2.jpg</Image><Encounters>Dungeon Monsters;Dungeon Terrors;Ancient Beast;</Encounters><Workspace_Group>Focus</Workspace_Group><Dungeon_Level>One</Dungeon_Level><Arcade_Region>Greyleaf Woods</Arcade_Region></props></Cavern><Forlorn_Ruins><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>1</Power_Level></params><props><Dungeon_Group>Human</Dungeon_Group><Alt_Encounters>Robber Band</Alt_Encounters><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Name>Forlorn Ruins</Name><Map_Background>big\dungeons\ruins.jpg</Map_Background><Unique_Id>dungeons Forlorn Ruins6947518333460955219</Unique_Id><Type>dungeons</Type><Lore>Your information indicates that some of the Scrolls may be hidden in a place that resembles what these ruins might have once looked like. </Lore><Image>mini\dungeon\human\hidden camp.jpg</Image><Encounters>Wolf Pack;Warg Pack;Feline Predators;Angered Grizzly;</Encounters><Dungeon_Level>One</Dungeon_Level><Arcade_Region>Greyleaf Woods</Arcade_Region></props></Forlorn_Ruins><Labyrinth><params><Glory_Reward>25</Glory_Reward><Xp_Reward>150</Xp_Reward><Gold_Reward>100</Gold_Reward><Power_Level>1</Power_Level></params><props><Dungeon_Group>Undead</Dungeon_Group><Type>dungeons</Type><Alt_Encounters>Colony Brood;Colony Warriors;Colony Queen;</Alt_Encounters><Image>mini\dungeon\underground\dungeon2.jpg</Image><Encounters>Dungeon Monsters;Dungeon Horrors;Ancient Beast;</Encounters><Dungeon_Type>Average</Dungeon_Type><Group>Arcade</Group><Name>Labyrinth</Name><Dungeon_Level>One</Dungeon_Level><Map_Background>big\dungeons\dungeon2.jpg</Map_Background><Unique_Id>dungeons Labyrinth3279141810628717248</Unique_Id><Arcade_Region>Greyleaf Woods</Arcade_Region></props></Labyrinth></Greyleaf_Woods></XML>
+<XML>
+    <Empty>
+        <Ancient_Ruins>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier>
+                <Name>Ancient Ruins</Name>
+                <Map_Background>big\new dungeons\ruins .jpg</Map_Background>
+                <Unique_Id>dungeons Ancient Ruins1375856173669977706</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Ancient Ruins</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new4\stairs.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Ancient_Ruins>
+        <Lower_Hell>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier>
+                <Name>Lower Hell</Name>
+                <Map_Background>big\New2\214290.jpg</Map_Background>
+                <Unique_Id>dungeons Lower Hell5372896617371612295</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Lower Hell</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new5\hell.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme>red</Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Lower_Hell>
+        <Elf_Cottage>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier>
+                <Name>Elf Cottage</Name>
+                <Map_Background>big\New2\322925.jpg</Map_Background>
+                <Unique_Id>dungeons Elf Cottage3470886841716865412</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Elf Cottage</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new5\vines.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme>blue</Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Elf_Cottage>
+        <Sewers>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier>
+                <Name>Sewers</Name>
+                <Map_Background>big\new dungeons\black dungeon.jpg</Map_Background>
+                <Unique_Id>dungeons Sewers4386474384631727467</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Sewers</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new5\sewers.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme>green</Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Sewers>
+        <Dark_Mansion>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier>
+                <Name>Dark Mansion</Name>
+                <Map_Background>big\new dungeons\darkest.jpg</Map_Background>
+                <Unique_Id>dungeons Dark Mansion8985351545984008510</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Dark Mansion</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\undead\dark mansion2.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Dark_Mansion>
+        <Elven_Crypt>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier>
+                <Name>Elven Crypt</Name>
+                <Map_Background>big\new dungeons\elven dungeon.jpg</Map_Background>
+                <Unique_Id>dungeons Elven Crypt-7952247680759199986</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Elven Crypt</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new5\souls.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Elven_Crypt>
+        <Wizard_Study>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier>
+                <Name>Wizard Study</Name>
+                <Map_Background>big\New2\015.jpg</Map_Background>
+                <Unique_Id>dungeons Wizard Study1464034441773596243</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Wizard Study</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new5\library.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme>blue</Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Wizard_Study>
+        <Arcane_Vault>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier>
+                <Name>Arcane Vault</Name>
+                <Map_Background>big\New2\fantasy-castles- .jpg</Map_Background>
+                <Unique_Id>dungeons Arcane Vault-3611868523408887951</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Arcane Vault</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new5\study.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme>blue</Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Arcane_Vault>
+        <Archives>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier>
+                <Name>Archives</Name>
+                <Map_Background>big\New2\fantasy-castles- .jpg</Map_Background>
+                <Unique_Id>dungeons Archives-5071678944408879127</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Archives</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new5\study3.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme>blue</Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Archives>
+        <Ravenguard_Fort>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier>
+                <Name>Ravenguard Fort</Name>
+                <Map_Background>big\new dungeons\subterranean city.jpg</Map_Background>
+                <Unique_Id>dungeons Ravenguard Fort2673094442954259663</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Ravenguard Fort</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new5\tower.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Ravenguard_Fort>
+        <Eerie_Woods>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier>
+                <Name>Eerie Woods</Name>
+                <Map_Background>big\new dungeons\subterranean city.jpg</Map_Background>
+                <Unique_Id>dungeons Eerie Woods-8994767159092522253</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Eerie Woods</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new5\tower.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Eerie_Woods>
+        <Forgotten_Tomb>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Hall</Dungeon_Map_Modifier>
+                <Name>Forgotten Tomb</Name>
+                <Map_Background>big\new dungeons\elven dungeon.jpg</Map_Background>
+                <Unique_Id>dungeons Forgotten Tomb958036821370889850</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Forgotten Tomb</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new4\overgrown tomb.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Forgotten_Tomb>
+        <Gnome_Vaults>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Cavern</Dungeon_Map_Modifier>
+                <Name>Gnome Vaults</Name>
+                <Map_Background>big\dungeons\dungeon2.jpg</Map_Background>
+                <Unique_Id>dungeons Gnome Vaults7269276256297334434</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Gnome Vaults</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\arcane\wizarding_bank.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Gnome_Vaults>
+        <Volcano_Island>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Cavern</Dungeon_Map_Modifier>
+                <Name>Volcano Island</Name>
+                <Map_Background>big\dungeons\island.jpg</Map_Background>
+                <Unique_Id>dungeons Volcano Island6674747998806256740</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Volcano Island</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new6\volcano.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Volcano_Island>
+        <Cathedral>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Hall</Dungeon_Map_Modifier>
+                <Name>Cathedral</Name>
+                <Map_Background>big\New2\temple.jpg</Map_Background>
+                <Unique_Id>dungeons Cathedral-5064738797760618165</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Cathedral</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new6\church.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Cathedral>
+        <Stronghold>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Hall</Dungeon_Map_Modifier>
+                <Name>Stronghold</Name>
+                <Map_Background>big\dread keep.jpg</Map_Background>
+                <Unique_Id>dungeons Stronghold1165299593120104887</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Stronghold</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\underground\dungeon4.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Stronghold>
+        <Crusader_Dungeons>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Hall</Dungeon_Map_Modifier>
+                <Name>Crusader Dungeons</Name>
+                <Map_Background>big\new dungeons\subterranean city.jpg</Map_Background>
+                <Unique_Id>dungeons Crusader Dungeons2633777075010400554</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Crusader Dungeons</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new6\prison.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Crusader_Dungeons>
+        <Dungeon_Fort>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Hall</Dungeon_Map_Modifier>
+                <Name>Dungeon Fort</Name>
+                <Map_Background>big\new dungeons\subterranean city.jpg</Map_Background>
+                <Unique_Id>dungeons Dungeon Fort-7782353205241715471</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Dungeon Fort</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\underground\undercity.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Dungeon_Fort>
+        <Snowcloud_Peaks>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Rocky</Dungeon_Map_Modifier>
+                <Name>Snowcloud Peaks</Name>
+                <Map_Background>big\New2\north.jpg</Map_Background>
+                <Unique_Id>dungeons Snowcloud Peaks4632974599329055924</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Snowcloud Peaks</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new6\snowcloud peaks.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Snowcloud_Peaks>
+        <Feywood>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier>
+                <Name>Feywood</Name>
+                <Map_Background>big\New2\2880424.jpg</Map_Background>
+                <Unique_Id>dungeons Feywood-7366579927507738200</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Feywood</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new5\mystic wood.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Feywood>
+        <Underworld_Keep>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Rocky</Dungeon_Map_Modifier>
+                <Name>Underworld Keep</Name>
+                <Map_Background>big\new5\dungeon city.jpg</Map_Background>
+                <Unique_Id>dungeons Underworld Keep7343514692437874666</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Underworld Keep</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new6\dungeon5.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Underworld_Keep>
+        <Ravenwood>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier>
+                <Name>Ravenwood</Name>
+                <Map_Background>big\New2\dangerous_forest.jpg</Map_Background>
+                <Unique_Id>dungeons Ravenwood4998412788820045878</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Ravenwood</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new5\tombstones.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Ravenwood>
+        <Mograve_Keep>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier>
+                <Name>Mograve Keep</Name>
+                <Map_Background>big\New2\dark_castle3.jpg</Map_Background>
+                <Unique_Id>dungeons Mograve Keep-7369103444219196865</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Mograve Keep</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\human\Von Finsterheim Castle.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Mograve_Keep>
+        <Forsaken_Gardens>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier>
+                <Name>Forsaken Gardens</Name>
+                <Map_Background>big\New2\516513.jpg</Map_Background>
+                <Unique_Id>dungeons Forsaken Gardens5574715257869399839</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Forsaken Gardens</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new4\marsh.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Forsaken_Gardens>
+        <Grave_Hill>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier>
+                <Name>Grave Hill</Name>
+                <Map_Background>big\New2\dark forest.jpg</Map_Background>
+                <Unique_Id>dungeons Grave Hill1926875505784595759</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Grave Hill</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new4\grave hill.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Grave_Hill>
+        <Highland_Keep>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier>
+                <Name>Highland Keep</Name>
+                <Map_Background>big\New2\dnight_valley .jpg</Map_Background>
+                <Unique_Id>dungeons Highland Keep-6916561623437406384</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Highland Keep</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new4\castle.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Highland_Keep>
+        <Observatory>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes></Dev_Notes>
+                <Alt_Encounters></Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Playtest</Group>
+                <Dungeon_Map_Modifier>Deep Wood</Dungeon_Map_Modifier>
+                <Name>Observatory</Name>
+                <Map_Background>big\New2\ancient tech spire.jpg</Map_Background>
+                <Unique_Id>dungeons Observatory7355501568176504858</Unique_Id>
+                <Description></Description>
+                <Displayed_Name>Observatory</Displayed_Name>
+                <Lore></Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects></Map_Preset_Objects>
+                <Image>mini\dungeon\new4\town.jpg</Image>
+                <Encounters></Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Test</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Observatory>
+        <Tavern>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Turns_In_Game>0</Turns_In_Game>
+                <Loot_Value>0</Loot_Value>
+                <Power_Level>0</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Human</Dungeon_Group>
+                <Alt_Encounters></Alt_Encounters>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Skirmish</Group>
+                <Name>Tavern</Name>
+                <Map_Background>big\new4\tavern.jpg</Map_Background>
+                <Description>[Quest] This may once have been a well-off farm, but no more. Dangers aside, the [faction]
+                    want this place cleared out and you could certainly use their support.
+                </Description>
+                <Unique_Id>dungeons Tavern-6975077295217575077</Unique_Id>
+                <Displayed_Name>Tavern</Displayed_Name>
+                <Type>dungeons</Type>
+                <Image>macro\place\Misty Shores\Neugard Tavern.jpg</Image>
+                <Encounters>Robber Band;Hired Thugs;Brawlers;Guards;Cutthroats;Killer Crew;Bandit Lord;Warband;Dwarf
+                    Rabble;Dwarven Company;
+                </Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>One</Dungeon_Level>
+                <Color_Theme>red</Color_Theme>
+                <Dungeon_Map_Template>Wooden Interior</Dungeon_Map_Template>
+                <Arcade_Region></Arcade_Region>
+            </props>
+        </Tavern>
+    </Empty>
+    <Misty_Shores>
+        <Smuggler_Grotto>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>1</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Human</Dungeon_Group>
+                <Alt_Encounters>Dungeon Critters;Wolf Pack;Sewer Horrors;Night Terrors;</Alt_Encounters>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Arcade_Route>Eerie Coast;Rocky Climb;</Arcade_Route>
+                <Name>Smuggler Grotto</Name>
+                <Unique_Id>dungeons Smuggler Grotto-974190637213970493</Unique_Id>
+                <Map_Background>big\new dungeons\subterranean city.jpg</Map_Background>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\human\Smuggler Grottos.jpg</Image>
+                <Encounters>Undead Minions;Wraiths;Death Lord;</Encounters>
+                <Version>0.05</Version>
+                <Dungeon_Level>One</Dungeon_Level>
+                <Arcade_Region>Misty Shores</Arcade_Region>
+            </props>
+        </Smuggler_Grotto>
+        <Lichyard>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\undead\Cemetary.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Name>Lichyard</Name>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Map_Background>big\dungeons\mansion.jpg</Map_Background>
+                <Unique_Id>dungeons Lichyard8136416163356475563</Unique_Id>
+                <Arcade_Region>Misty Shores</Arcade_Region>
+            </props>
+        </Lichyard>
+        <Dark_Castle>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\human\castle.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Version>0.05</Version>
+                <Name>Dark Castle</Name>
+                <Dungeon_Level>Four</Dungeon_Level>
+                <Map_Background>big\new dungeons\Night Castle.jpg</Map_Background>
+                <Unique_Id>dungeons Dark Castle-9083349529801461926</Unique_Id>
+                <Arcade_Region>Misty Shores</Arcade_Region>
+            </props>
+        </Dark_Castle>
+        <Arcane_Sanctum>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\arcane\arcane sanctum.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Version>0.05</Version>
+                <Name>Arcane Sanctum</Name>
+                <Dungeon_Level>Four</Dungeon_Level>
+                <Map_Background>big\dungeons\labyrinth.jpg</Map_Background>
+                <Unique_Id>dungeons Arcane Sanctum-7050026690769965663</Unique_Id>
+                <Arcade_Region>Misty Shores</Arcade_Region>
+            </props>
+        </Arcane_Sanctum>
+        <Crimson_Castle>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\human\castle.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Version>0.05</Version>
+                <Name>Crimson Castle</Name>
+                <Dungeon_Level>Four</Dungeon_Level>
+                <Map_Background>big\new dungeons\Night Castle.jpg</Map_Background>
+                <Unique_Id>dungeons Crimson Castle-2782872389505814617</Unique_Id>
+                <Arcade_Region>Misty Shores</Arcade_Region>
+            </props>
+        </Crimson_Castle>
+        <BaronUNICODE39CODEENDs_Castle>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\human\castle.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Version>0.05</Version>
+                <Name>Baron's Castle</Name>
+                <Dungeon_Level>Four</Dungeon_Level>
+                <Map_Background>big\new dungeons\Night Castle.jpg</Map_Background>
+                <Unique_Id>dungeons Baron's Castle2231727569988835354</Unique_Id>
+                <Arcade_Region>Misty Shores</Arcade_Region>
+            </props>
+        </BaronUNICODE39CODEENDs_Castle>
+        <Warlock_Castle>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\human\castle.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Name>Warlock Castle</Name>
+                <Dungeon_Level>Four</Dungeon_Level>
+                <Map_Background>big\dungeons\labyrinth.jpg</Map_Background>
+                <Unique_Id>dungeons Warlock Castle6314824203572782671</Unique_Id>
+                <Arcade_Region>Misty Shores</Arcade_Region>
+            </props>
+        </Warlock_Castle>
+    </Misty_Shores>
+    <Dusk_Dale>
+        <Arcane_Tower>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Arcane</Dungeon_Group>
+                <Sublevels>Crystal Cave(Dark Tunnel=corner,middle);</Sublevels>
+                <Dev_Notes>Arcane Brotherhood;Conjurer; Marble Column(3-0);Marble Column(3-4);Marble Column(5-0);
+                </Dev_Notes>
+                <Alt_Encounters>Derelict Machinery;Apostates;Arcane Guardians;Elementals;Lich;</Alt_Encounters>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Dungeon_Map_Modifier></Dungeon_Map_Modifier>
+                <Name>Arcane Tower</Name>
+                <Map_Background>big\dungeons\dark castle1.jpg</Map_Background>
+                <Unique_Id>dungeons Arcane Tower3410434868605374287</Unique_Id>
+                <Description>Standing aloof at the feet of the Pale Mountains, this tower is rumored to have appear out
+                    of nothing overnight and now house a powerful sorceror or sorceress... There is an aura of unnatural
+                    cold and stillness, eerie even by Dusk Dale standards.
+                </Description>
+                <Displayed_Name>Arcane Tower</Displayed_Name>
+                <Lore>A perfectly likely place to start on the search, this tower is almost certain to have some clues
+                    about the Artifacts' present or past.
+                </Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects>Arcane Crystal(4-5);Altar(1-4);Altar(1-1);Altar(7-1);Altar(7-4); Marble
+                    Column(4-0);
+                </Map_Preset_Objects>
+                <Image>mini\dungeon\arcane\arcane tower2.jpg</Image>
+                <Encounters>Dark Apostates;Mutant Band;Eldritch Order;Sewer Horrors;Unchained Wyvern;</Encounters>
+                <Version>0.1002b</Version>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme>purple</Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </Arcane_Tower>
+        <Demon_Shrine>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Turns_In_Game>0</Turns_In_Game>
+                <Loot_Value>0</Loot_Value>
+                <Power_Level>0</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Alt_Encounters>Chaos Apostates;Possessed;Chaos Cultists;Anti-Paladin;Demon Lord</Alt_Encounters>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Dungeon_Map_Modifier></Dungeon_Map_Modifier>
+                <Name>Demon Shrine</Name>
+                <Map_Background>big\dungeons\swamp.jpg</Map_Background>
+                <Unique_Id>dungeons Demon Shrine6233512090274128348</Unique_Id>
+                <Description>A long accursed place, this once splendid Eledari temple of elements has seen a gruesome
+                    transformation by fire, blood and sorcery.
+                </Description>
+                <Lore>Whatever particular sect holds its gatherings in this grim shrine, they are likely to have
+                    information about the Artifacts of Mastery. It's doubtful that they will offer it freely though.
+                </Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects>Altar(4-5);Altar(4-0);</Map_Preset_Objects>
+                <Image>mini\dungeon\misc\forge.jpg</Image>
+                <Encounters>Lesser Demons;Demon Worshippers;Demon Callers;Abyssal Fiend;Warp Champion;</Encounters>
+                <Version>0.1002b</Version>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>Three</Dungeon_Level>
+                <Color_Theme>red</Color_Theme>
+                <Dungeon_Map_Template>Swamp</Dungeon_Map_Template>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Map_Objects>Ruined Structure(1);Ruined Gateway(1);Ruined Column(1)</Map_Objects>
+            </props>
+        </Demon_Shrine>
+        <Cemetary>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>1</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Alt_Encounters>Cannibals;Grave Looters;Death Adepts;Lich;</Alt_Encounters>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Name>Cemetary</Name>
+                <Map_Background>big\dungeons\cemetary.jpg</Map_Background>
+                <Description>Strangely, the white marble crypt in the middle of the cemetary seems to have resisted any
+                    harm from marauders and grave looters whose work is all too apparent in the multitude of desecrated
+                    graves strewn across the cemetary. Unless the graves dug up themselves, of course...
+                </Description>
+                <Unique_Id>dungeons Cemetary-6582458615521949041</Unique_Id>
+                <Lore>The ancient elven crypt at the center of this dilapidated human cemetary is a promising place to
+                    find out more about the history of the Artifacts. Who knows what secrets are kept by the elves long
+                    dead?
+                </Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects>Gravestone(2-1);Gravestone(6-3);Gravestone(2-3);Gravestone(6-1);
+                </Map_Preset_Objects>
+                <Image>mini\dungeon\undead\graveyard2.jpg</Image>
+                <Encounters>Death Worshippers;Undead Minions;Death Adepts;Wraiths;Corpseborn;Death Lord;Lich;Vampire;
+                </Encounters>
+                <Version>0.1001</Version>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>One</Dungeon_Level>
+                <Color_Theme>blue</Color_Theme>
+                <Dungeon_Map_Template>Dead Forest</Dungeon_Map_Template>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </Cemetary>
+        <Bandit_Den>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>1</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Human</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\human\Pirate Den.jpg</Image>
+                <Encounters>Robber Band</Encounters>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Playable</Group>
+                <Name>Bandit Den</Name>
+                <Dungeon_Level>One</Dungeon_Level>
+                <Map_Background>big\dungeons\Pirate Bay.jpg</Map_Background>
+                <Unique_Id>dungeons Bandit Den-1294535686477989477</Unique_Id>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </Bandit_Den>
+        <Dungeon>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Turns_In_Game>0</Turns_In_Game>
+                <Loot_Value>0</Loot_Value>
+                <Power_Level>0</Power_Level>
+                <Spawning_Delay_Mod>100</Spawning_Delay_Mod>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Alt_Encounters>Shades; Death Worshippers;Dark Apostates;Hungry Dead;Bone Dragon;Dungeon Terrors;Blood
+                    Thralls;
+                </Alt_Encounters>
+                <Power_Encounters>Dragnir Patrol;</Power_Encounters>
+                <Dungeon_Type>Underground</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier>
+                <Name>Dungeon</Name>
+                <Map_Background>big\dungeons\cave2.jpg</Map_Background>
+                <Unique_Id>dungeons Dungeon2731227289594262211</Unique_Id>
+                <Description>As little as you may like it, this is the place incicated by [faction]. There is no knowing
+                    what may lurk in these shadowy halls...
+                </Description>
+                <Known_Spells></Known_Spells>
+                <Displayed_Name>Dungeon</Displayed_Name>
+                <Spellbook></Spellbook>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\underground\dungeon.jpg</Image>
+                <Encounters>Dungeon Critters;Dungeon Monsters;Dungeon Terrors;Sewer Horrors;Unchained Wyvern;Ancient
+                    Beast;
+                </Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme>blue</Color_Theme>
+                <Dungeon_Map_Template>Dungeon</Dungeon_Map_Template>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </Dungeon>
+        <Crystal_Cave>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>1</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Alt_Encounters>Spider Brood;Spider Lords;Chosen of Arachnia;</Alt_Encounters>
+                <Dungeon_Type>Underground</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Dungeon_Map_Modifier>Cavern</Dungeon_Map_Modifier>
+                <Name>Crystal Cave</Name>
+                <Map_Background>big\dungeons\cave2.jpg</Map_Background>
+                <Unique_Id>dungeons Crystal Cave-4961916923501245943</Unique_Id>
+                <Description>Infested by some manner of insectoids, if rumors are to be believed, this cave radiates
+                    strange energy and emanates light that is probably not coming from any purely natural source...
+                </Description>
+                <Displayed_Name>Crystal Cave</Displayed_Name>
+                <Lore>Although it is highly unlikely that there are clues about the Artifacts in a place like this,
+                    acquiring shards of a pure Aspect Crystal may be very useful - either as a prize to sell for
+                    information, or a source of magical power to aid the quest.
+                </Lore>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\underground\crystal cave2.jpg</Image>
+                <Encounters>Colony Brood;Colony Warriors;Colony Queen;</Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme>yellow</Color_Theme>
+                <Dungeon_Map_Template>Dungeon</Dungeon_Map_Template>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </Crystal_Cave>
+        <Twilight_Monastery>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\misc\Twilight Monastery.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Playable</Group>
+                <Version>0.05</Version>
+                <Workspace_Group>Implement</Workspace_Group>
+                <Name>Twilight Monastery</Name>
+                <Dungeon_Level>Three</Dungeon_Level>
+                <Map_Background>big\dungeons\new dungeon3.jpg</Map_Background>
+                <Unique_Id>dungeons Twilight Monastery-7023162069410491143</Unique_Id>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </Twilight_Monastery>
+        <Hidden_Camp>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>1</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Human</Dungeon_Group>
+                <Alt_Encounters>Goblins;Orcs;Orc Khan;</Alt_Encounters>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Dungeon_Map_Modifier>Camp</Dungeon_Map_Modifier>
+                <Name>Hidden Camp</Name>
+                <Map_Background>big\dungeons\Pirate Bay.jpg</Map_Background>
+                <Description>Your tracking has led you to this site which upon closer inspection seems to be hosting a
+                    well-hidden camp... no friendly folk would likely be living in such a place.
+                </Description>
+                <Unique_Id>dungeons Hidden Camp-8056336409772700566</Unique_Id>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\human\Pirate Den.jpg</Image>
+                <Encounters>Robber Band;Deserters;Bandit Lord;</Encounters>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>One</Dungeon_Level>
+                <Color_Theme>green</Color_Theme>
+                <Dungeon_Map_Template>Forest</Dungeon_Map_Template>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Alt_Spawning_Delays>25</Alt_Spawning_Delays>
+            </props>
+        </Hidden_Camp>
+        <Wizard_Tower>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+                <Turns_In_Game>0</Turns_In_Game>
+                <Loot_Value>0</Loot_Value>
+            </params>
+            <props>
+                <Dungeon_Group>Arcane</Dungeon_Group>
+                <Alt_Encounters>Derelict Machinery;Apostates;Arcane Guardians;Elementals;Sorceror;Enchantress;Lich;
+                </Alt_Encounters>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Dungeon_Map_Modifier></Dungeon_Map_Modifier>
+                <Name>Wizard Tower</Name>
+                <Map_Background>big\dungeons\spires.jpg</Map_Background>
+                <Unique_Id>dungeons Wizard Tower521839787978479620</Unique_Id>
+                <Description>Standing aloof at the feet of the Pale Mountains, this tower is rumored to have appear out
+                    of nothing overnight and now house a powerful sorceror or sorceress... There is an aura of unnatural
+                    cold and stillness, eerie even by Dusk Dale standards.
+                </Description>
+                <Displayed_Name>Wizard Tower</Displayed_Name>
+                <Lore>A perfectly likely place to start on the search, this tower is almost certain to have some clues
+                    about the Artifacts' present or past.
+                </Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects>Force Field(2-1);Force Field(6-4);Force Field(2-4);Force Field(6-1);
+                </Map_Preset_Objects>
+                <Image>mini\dungeon\arcane\tower.jpg</Image>
+                <Encounters>Derelict Machinery;Discarded and Orphaned Familiars;Arcane Guardians;Aether Golem;Mechanicum
+                    Titan;
+                </Encounters>
+                <Version>0.1002b</Version>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme>purple</Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Map_Objects>Marble Column(2);</Map_Objects>
+            </props>
+        </Wizard_Tower>
+        <Spire>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Arcane</Dungeon_Group>
+                <Dev_Notes>Fanatics;Crusaders;Defender of Light;</Dev_Notes>
+                <Alt_Encounters>Sky Minions;Celestials;Sky Lord;</Alt_Encounters>
+                <Spawning_Delays>Marble Column(0-0);Marble Column(8-4);Marble Column(0-4);Marble Column(8-0);
+                </Spawning_Delays>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Name>Spire</Name>
+                <Map_Background>big\dungeons\Misty Mountains.jpg</Map_Background>
+                <Unique_Id>dungeons Spire7616998187644955473</Unique_Id>
+                <Description>Standing aloof at the feet of the Pale Mountains, this tower is rumored to have appear out
+                    of nothing overnight and now house a powerful sorceror or sorceress... There is an aura of unnatural
+                    cold and stillness, eerie even by Dusk Dale standards.
+                </Description>
+                <Lore>A perfectly likely place to start on the search, this tower is almost certain to have some clues
+                    about the Artifacts' present or past.
+                </Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects>Marble Column(2-1);Ruined Gateway(2-2);Marble Column(6-3);Marble Column(2-3);Marble
+                    Column(6-1);Ruined Gateway(6-2);
+                </Map_Preset_Objects>
+                <Image>mini\dungeon\arcane\Onyx Spire.jpg</Image>
+                <Encounters>Sky Minions;Celestials;Sky Lord;</Encounters>
+                <Version>0.1002b</Version>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme>light</Color_Theme>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Spire>
+        <Abandoned_House>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Turns_In_Game>0</Turns_In_Game>
+                <Loot_Value>0</Loot_Value>
+                <Power_Level>0</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Alt_Encounters>Plague Bearers;Plague Servants;Corpseborn;Undead Monstrocity;</Alt_Encounters>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Name>Abandoned House</Name>
+                <Map_Background>big\new4\tavern3.jpg</Map_Background>
+                <Description>[Quest] This may once have been a well-off farm, but no more. Dangers aside, the [faction]
+                    want this place cleared out and you could certainly use their support.
+                </Description>
+                <Unique_Id>dungeons Abandoned House-1427079487081755716</Unique_Id>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\undead\Haunted House.jpg</Image>
+                <Encounters>Hungry Dead;Blood Thralls;Vampires;Vampire Lord;</Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>One</Dungeon_Level>
+                <Color_Theme>red</Color_Theme>
+                <Dungeon_Map_Template>Wooden Interior</Dungeon_Map_Template>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </Abandoned_House>
+        <Witch_Grove>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>1</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Alt_Encounters>Spider Brood;Undead Beasts;Dark Apostates;Huorn;Nightmare;Undead
+                    Monstrocity;Witches;Shades;
+                </Alt_Encounters>
+                <Power_Encounters>Sorceress;</Power_Encounters>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier>
+                <Name>Witch Grove</Name>
+                <Map_Background>big\dungeons\haunted wood.jpg</Map_Background>
+                <Unique_Id>dungeons Witch Grove-6476551884388452499</Unique_Id>
+                <Description>Strangely, the white marble crypt seems to have resisted any harm from marauders and grave
+                    looters who work is all too apparent in the multitude of desecrated graves strewn across the
+                    cemetary. Unless the graves dug up themselves, of course...
+                </Description>
+                <Lore>The ancient elven crypt at the center of this dilapidated human cemetary is a promising place to
+                    find out more about the history of the Artifacts. Who knows what secrets are kept by the elves long
+                    dead?
+                </Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects>Altar(4-0)</Map_Preset_Objects>
+                <Image>mini\dungeon\haunted wood.jpg</Image>
+                <Encounters>Wisps;Wolf Pack;Warg Pack;Feline Predators;Angered Grizzly;Werewolf;Witches;Shades;
+                </Encounters>
+                <Version>0.1003b</Version>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>One</Dungeon_Level>
+                <Color_Theme>blue</Color_Theme>
+                <Dungeon_Map_Template>Dark Forest</Dungeon_Map_Template>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </Witch_Grove>
+        <Dwarven_Halls>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Alt_Encounters>Goblins;Orcs;Troll;Ogre</Alt_Encounters>
+                <Dungeon_Type>Underground</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Name>Dwarven Halls</Name>
+                <Map_Background>big\dungeons\dwarf city.jpg</Map_Background>
+                <Unique_Id>dungeons Dwarven Halls8720026499083904951</Unique_Id>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\misc\zwergenheim.jpg</Image>
+                <Alt_Power_Encounters></Alt_Power_Encounters>
+                <Encounters>Dwarven Company;Dwarf Patrol;Dwarf Rabble;Exiled Thane;</Encounters>
+                <Version>0.05</Version>
+                <Dungeon_Level>Three</Dungeon_Level>
+                <Color_Theme>yellow</Color_Theme>
+                <Encounter_Groups></Encounter_Groups>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </Dwarven_Halls>
+        <Hell>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes>Fanatics;Crusaders;Defender of Light;</Dev_Notes>
+                <Alt_Encounters>Abyssal Fiend;Demon Lord;Chaos Legion;Greater Demons;Demons of Abyss;Lord of Abyss;Demon
+                    Callers;
+                </Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier>
+                <Name>Hell</Name>
+                <Map_Background>big\dungeons\hell.jpg</Map_Background>
+                <Unique_Id>dungeons Hell4881953358138330138</Unique_Id>
+                <Description>Standing aloof at the feet of the Pale Mountains, this tower is rumored to have appear out
+                    of nothing overnight and now house a powerful sorceror or sorceress... There is an aura of unnatural
+                    cold and stillness, eerie even by Dusk Dale standards.
+                </Description>
+                <Displayed_Name>Hell</Displayed_Name>
+                <Lore>A perfectly likely place to start on the search, this tower is almost certain to have some clues
+                    about the Artifacts' present or past.
+                </Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects>Altar(4-0);Altar(4-5);</Map_Preset_Objects>
+                <Image>mini\dungeon\misc\hell.jpg</Image>
+                <Encounters>Abyssal Fiend;Demon Lord;Chaos Legion;Greater Demons;Demons of Abyss;Lord of Abyss;Demon
+                    Callers;
+                </Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme>red</Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Hell>
+        <Nordheim>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes>Fanatics;Crusaders;Defender of Light;</Dev_Notes>
+                <Alt_Encounters>Dwarven Company;Exiled Thane;Dwarf Patrol;</Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier>
+                <Name>Nordheim</Name>
+                <Map_Background>big\dungeons\undercity.jpg</Map_Background>
+                <Unique_Id>dungeons Nordheim2998774586245838664</Unique_Id>
+                <Description>Standing aloof at the feet of the Pale Mountains, this tower is rumored to have appear out
+                    of nothing overnight and now house a powerful sorceror or sorceress... There is an aura of unnatural
+                    cold and stillness, eerie even by Dusk Dale standards.
+                </Description>
+                <Displayed_Name>Nordheim</Displayed_Name>
+                <Lore>A perfectly likely place to start on the search, this tower is almost certain to have some clues
+                    about the Artifacts' present or past.
+                </Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects>Ruined Column(4-0);Ruined Column(4-5);</Map_Preset_Objects>
+                <Image>mini\dungeon\misc\temple.jpg</Image>
+                <Encounters>Frost Giant;Storm Giant;Mountain Giants;Hill Giants;</Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme>blue</Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Nordheim>
+        <Wraith_Kingdom>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes>Fanatics;Crusaders;Defender of Light;</Dev_Notes>
+                <Alt_Encounters>Shades;Wisps;Wraiths;Celestials;Bone Dragon;Sky Lord;</Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier>
+                <Name>Wraith Kingdom</Name>
+                <Map_Background>big\dungeons\dead city.jpg</Map_Background>
+                <Unique_Id>dungeons Wraith Kingdom-8115100935675817013</Unique_Id>
+                <Description>Standing aloof at the feet of the Pale Mountains, this tower is rumored to have appear out
+                    of nothing overnight and now house a powerful sorceror or sorceress... There is an aura of unnatural
+                    cold and stillness, eerie even by Dusk Dale standards.
+                </Description>
+                <Displayed_Name>Wraith Kingdom</Displayed_Name>
+                <Lore>A perfectly likely place to start on the search, this tower is almost certain to have some clues
+                    about the Artifacts' present or past.
+                </Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects>Altar(4-0);Altar(4-5);</Map_Preset_Objects>
+                <Image>mini\dungeon\undead\death gate.jpg</Image>
+                <Encounters>Frost Giant;Bone Dragon;Wraiths;Wisps;Undead Minions;</Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme>blue</Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Wraith_Kingdom>
+        <City_of_Ancients>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes>Fanatics;Crusaders;Defender of Light;</Dev_Notes>
+                <Alt_Encounters>Naga;Troll;Unchained Wyvern;Dungeon Monsters;Spider Lords;Chosen of Arachnia;Dungeon
+                    Terrors
+                </Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier>
+                <Name>City of Ancients</Name>
+                <Map_Background>big\dungeons\forgotten city.jpg</Map_Background>
+                <Unique_Id>dungeons City of Ancients-8412869575389324123</Unique_Id>
+                <Description>Standing aloof at the feet of the Pale Mountains, this tower is rumored to have appear out
+                    of nothing overnight and now house a powerful sorceror or sorceress... There is an aura of unnatural
+                    cold and stillness, eerie even by Dusk Dale standards.
+                </Description>
+                <Displayed_Name>City of Ancients</Displayed_Name>
+                <Lore>A perfectly likely place to start on the search, this tower is almost certain to have some clues
+                    about the Artifacts' present or past.
+                </Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects>Marble Column(4-0);Marble Column(4-5);</Map_Preset_Objects>
+                <Image>mini\dungeon\underground\dungeon3.jpg</Image>
+                <Encounters>Mechanicum Titan;Derelict Machinery;Arcane Guardians;Elementals;Bone Dragon;</Encounters>
+                <Version>0.1002b</Version>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme>blue</Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </City_of_Ancients>
+        <Castle_Black>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes>Fanatics;Crusaders;Defender of Light;</Dev_Notes>
+                <Alt_Encounters>Hungry Dead;Lich;Werewolf;Vampire Lord;Death Lord;Vampires;Blood Thralls;Wraiths;Night
+                    Terrors;
+                </Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier>
+                <Name>Castle Black</Name>
+                <Map_Background>big\dungeons\dark castle.jpg</Map_Background>
+                <Unique_Id>dungeons Castle Black3721470019156231124</Unique_Id>
+                <Description>Standing aloof at the feet of the Pale Mountains, this tower is rumored to have appear out
+                    of nothing overnight and now house a powerful sorceror or sorceress... There is an aura of unnatural
+                    cold and stillness, eerie even by Dusk Dale standards.
+                </Description>
+                <Displayed_Name>Castle Black</Displayed_Name>
+                <Lore>A perfectly likely place to start on the search, this tower is almost certain to have some clues
+                    about the Artifacts' present or past.
+                </Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects>Marble Column(4-0);Marble Column(4-5);</Map_Preset_Objects>
+                <Image>mini\dungeon\human\castle.jpg</Image>
+                <Encounters>Robber Band;Apostates;Death Adepts;Anti-Paladin;Dark Apostates;Bandit Lord;Killer Crew;
+                </Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme>blue</Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Castle_Black>
+        <Jotunheim>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>3</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Misc</Dungeon_Group>
+                <Dev_Notes>Fanatics;Crusaders;Defender of Light;</Dev_Notes>
+                <Alt_Encounters>Hill Giants;Mountain Giants;Storm Giant;Dwarven Company;Exiled Thane;</Alt_Encounters>
+                <Spawning_Delays></Spawning_Delays>
+                <Dungeon_Type>Boss</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Dungeon_Map_Modifier>Ruins</Dungeon_Map_Modifier>
+                <Name>Jotunheim</Name>
+                <Map_Background>big\dungeons\ruins.jpg</Map_Background>
+                <Unique_Id>dungeons Jotunheim1593132873668160509</Unique_Id>
+                <Description>Standing aloof at the feet of the Pale Mountains, this tower is rumored to have appear out
+                    of nothing overnight and now house a powerful sorceror or sorceress... There is an aura of unnatural
+                    cold and stillness, eerie even by Dusk Dale standards.
+                </Description>
+                <Displayed_Name>Jotunheim</Displayed_Name>
+                <Lore>A perfectly likely place to start on the search, this tower is almost certain to have some clues
+                    about the Artifacts' present or past.
+                </Lore>
+                <Type>dungeons</Type>
+                <Map_Preset_Objects>Marble Column(3-0);Ruined Gateway(4-0);Marble Column(5-0);</Map_Preset_Objects>
+                <Image>mini\dungeon\misc\Ancient Ruin.jpg</Image>
+                <Encounters>Hill Giants;Mountain Giants;Storm Giant;Frost Giant;</Encounters>
+                <Version>0.1002b</Version>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme>light</Color_Theme>
+                <Dungeon_Map_Template></Dungeon_Map_Template>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Map_Objects></Map_Objects>
+            </props>
+        </Jotunheim>
+        <Crystal_Cavern>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>1</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Alt_Encounters>Spider Brood;Spider Lords;Chosen of Arachnia;</Alt_Encounters>
+                <Dungeon_Type>Underground</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Dungeon_Map_Modifier>Cavern</Dungeon_Map_Modifier>
+                <Name>Crystal Cavern</Name>
+                <Map_Background>big\dungeons\cave2.jpg</Map_Background>
+                <Unique_Id>dungeons Crystal Cavern855297418542232454</Unique_Id>
+                <Description>Infested by some manner of insectoids, if rumors are to be believed, this cave radiates
+                    strange energy and emanates light that is probably not coming from any purely natural source...
+                </Description>
+                <Displayed_Name>Crystal Cavern</Displayed_Name>
+                <Lore>Although it is highly unlikely that there are clues about the Artifacts in a place like this,
+                    acquiring shards of a pure Aspect Crystal may be very useful - either as a prize to sell for
+                    information, or a source of magical power to aid the quest.
+                </Lore>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\underground\Crystal_Cave.jpg</Image>
+                <Encounters>Colony Brood;Colony Warriors;Colony Queen;</Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Color_Theme>yellow</Color_Theme>
+                <Dungeon_Map_Template>Dungeon</Dungeon_Map_Template>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </Crystal_Cavern>
+        <Academy_Vaults>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Turns_In_Game>0</Turns_In_Game>
+                <Loot_Value>0</Loot_Value>
+                <Power_Level>0</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Alt_Encounters>Plague Bearers;Plague Servants;Corpseborn;Undead Monstrocity;</Alt_Encounters>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Name>Academy Vaults</Name>
+                <Map_Background>big\New2\monument .jpg</Map_Background>
+                <Description>[Quest] This may once have been a well-off farm, but no more. Dangers aside, the [faction]
+                    want this place cleared out and you could certainly use their support.
+                </Description>
+                <Unique_Id>dungeons Academy Vaults4158813695300890467</Unique_Id>
+                <Displayed_Name>Academy Vaults</Displayed_Name>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\new4\arcane library2.jpg</Image>
+                <Encounters>Hungry Dead;Blood Thralls;Vampires;Vampire Lord;</Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>One</Dungeon_Level>
+                <Color_Theme></Color_Theme>
+                <Dungeon_Map_Template>Wooden Interior</Dungeon_Map_Template>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </Academy_Vaults>
+        <Shadow_Keep>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Turns_In_Game>0</Turns_In_Game>
+                <Loot_Value>0</Loot_Value>
+                <Power_Level>0</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Alt_Encounters>Plague Bearers;Plague Servants;Corpseborn;Undead Monstrocity;</Alt_Encounters>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Name>Shadow Keep</Name>
+                <Map_Background>big\New2\twilight.jpg</Map_Background>
+                <Description>[Quest] This may once have been a well-off farm, but no more. Dangers aside, the [faction]
+                    want this place cleared out and you could certainly use their support.
+                </Description>
+                <Unique_Id>dungeons Shadow Keep-6624790838310892952</Unique_Id>
+                <Displayed_Name>Shadow Keep</Displayed_Name>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\new5\shadow keep.jpg</Image>
+                <Encounters>Hungry Dead;Blood Thralls;Vampires;Vampire Lord;</Encounters>
+                <Version>0.05</Version>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>One</Dungeon_Level>
+                <Color_Theme>blue</Color_Theme>
+                <Dungeon_Map_Template>Hall Dark</Dungeon_Map_Template>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </Shadow_Keep>
+    </Dusk_Dale>
+    <Blightstone_Desert>
+        <Titan_Temple>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\misc\temple.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Version>0.05</Version>
+                <Name>Titan Temple</Name>
+                <Dungeon_Level>Four</Dungeon_Level>
+                <Map_Background>big\dungeons\undercity.jpg</Map_Background>
+                <Unique_Id>dungeons Titan Temple-308954205096376380</Unique_Id>
+                <Arcade_Region>Blightstone Desert</Arcade_Region>
+            </props>
+        </Titan_Temple>
+        <Sanctuary>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\underground\hall.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Version>0.05</Version>
+                <Name>Sanctuary</Name>
+                <Dungeon_Level>Five</Dungeon_Level>
+                <Map_Background>big\dungeons\new dungeon3.jpg</Map_Background>
+                <Unique_Id>dungeons Sanctuary4229967137042529354</Unique_Id>
+                <Arcade_Region>Blightstone Desert</Arcade_Region>
+            </props>
+        </Sanctuary>
+        <Undercity>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\undead\death gate.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Version>0.05</Version>
+                <Name>Undercity</Name>
+                <Dungeon_Level>Five</Dungeon_Level>
+                <Map_Background>big\dungeons\dead city.jpg</Map_Background>
+                <Unique_Id>dungeons Undercity-2786916357765439655</Unique_Id>
+                <Arcade_Region>Blightstone Desert</Arcade_Region>
+            </props>
+        </Undercity>
+        <Necropolis>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\undead\City of the Dead.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Name>Necropolis</Name>
+                <Dungeon_Level>Five</Dungeon_Level>
+                <Map_Background>big\dungeons\labyrinth.jpg</Map_Background>
+                <Unique_Id>dungeons Necropolis7889320962828368498</Unique_Id>
+                <Arcade_Region>Blightstone Desert</Arcade_Region>
+            </props>
+        </Necropolis>
+        <Crystal_Chamber>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\underground\treasure room.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Version>0.05</Version>
+                <Name>Crystal Chamber</Name>
+                <Dungeon_Level>Five</Dungeon_Level>
+                <Map_Background>big\dungeons\cave.jpg</Map_Background>
+                <Unique_Id>dungeons Crystal Chamber-7114577677224009846</Unique_Id>
+                <Arcade_Region>Blightstone Desert</Arcade_Region>
+            </props>
+        </Crystal_Chamber>
+        <Mausoleum>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\undead\Lich Palace.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Version>0.05</Version>
+                <Name>Mausoleum</Name>
+                <Dungeon_Level>Five</Dungeon_Level>
+                <Map_Background>big\dungeons\labyrinth.jpg</Map_Background>
+                <Unique_Id>dungeons Mausoleum9152072247111401384</Unique_Id>
+                <Displayed_Name>Mausoleum</Displayed_Name>
+                <Arcade_Region>Blightstone Desert</Arcade_Region>
+            </props>
+        </Mausoleum>
+    </Blightstone_Desert>
+    <Wraith_Marshes>
+        <Ancient_Crypt>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\undead\ancient crypts.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Version>0.05</Version>
+                <Name>Ancient Crypt</Name>
+                <Dungeon_Level>Three</Dungeon_Level>
+                <Map_Background>big\new dungeons\crypt.jpg</Map_Background>
+                <Unique_Id>dungeons Ancient Crypt6966054462381041418</Unique_Id>
+                <Arcade_Region>Wraith Marshes</Arcade_Region>
+            </props>
+        </Ancient_Crypt>
+        <Forsaken_Castle>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\human\Von Finsterheim Castle.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Version>0.05</Version>
+                <Name>Forsaken Castle</Name>
+                <Dungeon_Level>Three</Dungeon_Level>
+                <Map_Background>big\new dungeons\dark castle.jpg</Map_Background>
+                <Unique_Id>dungeons Forsaken Castle3864776273295969028</Unique_Id>
+                <Arcade_Region>Wraith Marshes</Arcade_Region>
+            </props>
+        </Forsaken_Castle>
+        <Defiled_Crypt>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\misc\ruins.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Version>0.05</Version>
+                <Name>Defiled Crypt</Name>
+                <Dungeon_Level>Three</Dungeon_Level>
+                <Map_Background>big\new dungeons\crypt.jpg</Map_Background>
+                <Unique_Id>dungeons Defiled Crypt4902542893492371116</Unique_Id>
+                <Arcade_Region>Wraith Marshes</Arcade_Region>
+            </props>
+        </Defiled_Crypt>
+        <Enchanted_Glade>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\underground\cave.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Version>0.05</Version>
+                <Name>Enchanted Glade</Name>
+                <Dungeon_Level>Three</Dungeon_Level>
+                <Map_Background>big\dungeons\cave.jpg</Map_Background>
+                <Unique_Id>dungeons Enchanted Glade3514462024778574949</Unique_Id>
+                <Arcade_Region>Wraith Marshes</Arcade_Region>
+            </props>
+        </Enchanted_Glade>
+        <Haunted_Mansion>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\undead\Dark Mansion.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Name>Haunted Mansion</Name>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Map_Background>big\dungeons\mansion.jpg</Map_Background>
+                <Unique_Id>dungeons Haunted Mansion-4241228012509754710</Unique_Id>
+                <Arcade_Region>Wraith Marshes</Arcade_Region>
+            </props>
+        </Haunted_Mansion>
+        <Drowned_Crypt>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\undead\catacombs.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Version>0.05</Version>
+                <Name>Drowned Crypt</Name>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Map_Background>big\new dungeons\crypt.jpg</Map_Background>
+                <Unique_Id>dungeons Drowned Crypt-9139310677029146256</Unique_Id>
+                <Arcade_Region>Wraith Marshes</Arcade_Region>
+            </props>
+        </Drowned_Crypt>
+        <Library>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\library.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Version>0.05</Version>
+                <Name>Library</Name>
+                <Dungeon_Level>Three</Dungeon_Level>
+                <Map_Background>big\new dungeons\dark castle.jpg</Map_Background>
+                <Unique_Id>dungeons Library-4192594821449278817</Unique_Id>
+                <Displayed_Name>Library</Displayed_Name>
+                <Arcade_Region>Wraith Marshes</Arcade_Region>
+            </props>
+        </Library>
+    </Wraith_Marshes>
+    <Greyleaf_Woods>
+        <Ancient_Tomb>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\undead\crypt.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Workspace_Group>Design</Workspace_Group>
+                <Name>Ancient Tomb</Name>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Map_Background>big\dungeons\mansion.jpg</Map_Background>
+                <Unique_Id>dungeons Ancient Tomb-3625231595617770850</Unique_Id>
+                <Arcade_Region>Greyleaf Woods</Arcade_Region>
+            </props>
+        </Ancient_Tomb>
+        <Ruined_Fort>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+            </params>
+            <props>
+                <Lore>Despite its crudeness, this fort has withstood the test of time better than most structures in the
+                    region
+                </Lore>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\misc\ruins2.jpg</Image>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Name>Ruined Fort</Name>
+                <Dungeon_Level>Two</Dungeon_Level>
+                <Map_Background>big\dungeons\mansion.jpg</Map_Background>
+                <Unique_Id>dungeons Ruined Fort-206038106868321881</Unique_Id>
+                <Description>[faction leader] has indicated this to be the likeliest place to search for [party].
+                </Description>
+                <Arcade_Region>Greyleaf Woods</Arcade_Region>
+            </props>
+        </Ruined_Fort>
+        <Cavern>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>1</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Alt_Encounters>Chaos Apostates;Demon Worshippers;Chaos Minions;Chaos Legion;Abyssal Fiend;Demon Lord;
+                </Alt_Encounters>
+                <Power_Encounters>Chaos Minions;Chaos Legion;Abyssal Fiend;Demon Lord;</Power_Encounters>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Name>Cavern</Name>
+                <Unique_Id>dungeons Cavern7368385314494980954</Unique_Id>
+                <Map_Background>big\dungeons\dungeon2.jpg</Map_Background>
+                <Type>dungeons</Type>
+                <Image>mini\dungeon\underground\dungeon2.jpg</Image>
+                <Encounters>Dungeon Monsters;Dungeon Terrors;Ancient Beast;</Encounters>
+                <Workspace_Group>Focus</Workspace_Group>
+                <Dungeon_Level>One</Dungeon_Level>
+                <Arcade_Region>Greyleaf Woods</Arcade_Region>
+            </props>
+        </Cavern>
+        <Forlorn_Ruins>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>1</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Human</Dungeon_Group>
+                <Alt_Encounters>Robber Band</Alt_Encounters>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Name>Forlorn Ruins</Name>
+                <Map_Background>big\dungeons\ruins.jpg</Map_Background>
+                <Unique_Id>dungeons Forlorn Ruins6947518333460955219</Unique_Id>
+                <Type>dungeons</Type>
+                <Lore>Your information indicates that some of the Scrolls may be hidden in a place that resembles what
+                    these ruins might have once looked like.
+                </Lore>
+                <Image>mini\dungeon\human\hidden camp.jpg</Image>
+                <Encounters>Wolf Pack;Warg Pack;Feline Predators;Angered Grizzly;</Encounters>
+                <Dungeon_Level>One</Dungeon_Level>
+                <Arcade_Region>Greyleaf Woods</Arcade_Region>
+            </props>
+        </Forlorn_Ruins>
+        <Labyrinth>
+            <params>
+                <Glory_Reward>25</Glory_Reward>
+                <Xp_Reward>150</Xp_Reward>
+                <Gold_Reward>100</Gold_Reward>
+                <Power_Level>1</Power_Level>
+            </params>
+            <props>
+                <Dungeon_Group>Undead</Dungeon_Group>
+                <Type>dungeons</Type>
+                <Alt_Encounters>Colony Brood;Colony Warriors;Colony Queen;</Alt_Encounters>
+                <Image>mini\dungeon\underground\dungeon2.jpg</Image>
+                <Encounters>Dungeon Monsters;Dungeon Horrors;Ancient Beast;</Encounters>
+                <Dungeon_Type>Average</Dungeon_Type>
+                <Group>Arcade</Group>
+                <Name>Labyrinth</Name>
+                <Dungeon_Level>One</Dungeon_Level>
+                <Map_Background>big\dungeons\dungeon2.jpg</Map_Background>
+                <Unique_Id>dungeons Labyrinth3279141810628717248</Unique_Id>
+                <Arcade_Region>Greyleaf Woods</Arcade_Region>
+            </props>
+        </Labyrinth>
+    </Greyleaf_Woods>
+</XML>

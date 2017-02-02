@@ -16,6 +16,7 @@ import main.libgdx.gui.dialog.LogMessageBuilder;
 import main.libgdx.texture.TextureManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.ColorManager;
 
 /**
  * Created by JustMe on 1/5/2017.
@@ -175,7 +176,8 @@ public class LogPanel extends Group {
 //            LogEntryNode entry = (LogEntryNode) p.get();
             LogMessageBuilder builder = LogMessageBuilder.createNew();
 //            entry.getTextLines().forEach(line ->{
-            builder.addString(p.get().toString(), "FF0000FF");
+            builder.addString(p.get().toString(),
+             ColorManager.toStringForLog(ColorManager.GOLDEN_WHITE));
 //            });
 
             LogMessage message = builder.build(getWidth() - offsetX);

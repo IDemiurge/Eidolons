@@ -226,6 +226,11 @@ public class ColorManager {
         return GOLDEN_WHITE;
     }
 
+    public static String toStringForLog(Color goldenWhite) {
+        return
+         String.valueOf(goldenWhite.getRGB());
+    }
+
     public enum FLAG_COLOR {
         BLUE(new Color(25, 25, 255)),
         CYAN(new Color(45, 225, 165)),
