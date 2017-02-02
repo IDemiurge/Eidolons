@@ -918,40 +918,7 @@
                 <Map_Objects></Map_Objects>
             </props>
         </Observatory>
-        <Tavern>
-            <params>
-                <Glory_Reward>25</Glory_Reward>
-                <Xp_Reward>150</Xp_Reward>
-                <Gold_Reward>100</Gold_Reward>
-                <Turns_In_Game>0</Turns_In_Game>
-                <Loot_Value>0</Loot_Value>
-                <Power_Level>0</Power_Level>
-            </params>
-            <props>
-                <Dungeon_Group>Human</Dungeon_Group>
-                <Alt_Encounters></Alt_Encounters>
-                <Dungeon_Type>Average</Dungeon_Type>
-                <Group>Skirmish</Group>
-                <Name>Tavern</Name>
-                <Map_Background>big\new4\tavern.jpg</Map_Background>
-                <Description>[Quest] This may once have been a well-off farm, but no more. Dangers aside, the [faction]
-                    want this place cleared out and you could certainly use their support.
-                </Description>
-                <Unique_Id>dungeons Tavern-6975077295217575077</Unique_Id>
-                <Displayed_Name>Tavern</Displayed_Name>
-                <Type>dungeons</Type>
-                <Image>macro\place\Misty Shores\Neugard Tavern.jpg</Image>
-                <Encounters>Robber Band;Hired Thugs;Brawlers;Guards;Cutthroats;Killer Crew;Bandit Lord;Warband;Dwarf
-                    Rabble;Dwarven Company;
-                </Encounters>
-                <Version>0.05</Version>
-                <Workspace_Group>Focus</Workspace_Group>
-                <Dungeon_Level>One</Dungeon_Level>
-                <Color_Theme>red</Color_Theme>
-                <Dungeon_Map_Template>Wooden Interior</Dungeon_Map_Template>
-                <Arcade_Region></Arcade_Region>
-            </props>
-        </Tavern>
+        
     </Empty>
     <Misty_Shores>
         <Smuggler_Grotto>
@@ -1443,37 +1410,7 @@
                 <Map_Objects></Map_Objects>
             </props>
         </Spire>
-        <Abandoned_House>
-            <params>
-                <Glory_Reward>25</Glory_Reward>
-                <Xp_Reward>150</Xp_Reward>
-                <Gold_Reward>100</Gold_Reward>
-                <Turns_In_Game>0</Turns_In_Game>
-                <Loot_Value>0</Loot_Value>
-                <Power_Level>0</Power_Level>
-            </params>
-            <props>
-                <Dungeon_Group>Undead</Dungeon_Group>
-                <Alt_Encounters>Plague Bearers;Plague Servants;Corpseborn;Undead Monstrocity;</Alt_Encounters>
-                <Dungeon_Type>Average</Dungeon_Type>
-                <Group>Arcade</Group>
-                <Name>Abandoned House</Name>
-                <Map_Background>big\new4\tavern3.jpg</Map_Background>
-                <Description>[Quest] This may once have been a well-off farm, but no more. Dangers aside, the [faction]
-                    want this place cleared out and you could certainly use their support.
-                </Description>
-                <Unique_Id>dungeons Abandoned House-1427079487081755716</Unique_Id>
-                <Type>dungeons</Type>
-                <Image>mini\dungeon\undead\Haunted House.jpg</Image>
-                <Encounters>Hungry Dead;Blood Thralls;Vampires;Vampire Lord;</Encounters>
-                <Version>0.05</Version>
-                <Workspace_Group>Focus</Workspace_Group>
-                <Dungeon_Level>One</Dungeon_Level>
-                <Color_Theme>red</Color_Theme>
-                <Dungeon_Map_Template>Wooden Interior</Dungeon_Map_Template>
-                <Arcade_Region>Dusk Dale</Arcade_Region>
-            </props>
-        </Abandoned_House>
+       
         <Witch_Grove>
             <params>
                 <Glory_Reward>25</Glory_Reward>

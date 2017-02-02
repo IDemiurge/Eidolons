@@ -228,7 +228,12 @@ public class ColorManager {
 
     public static String toStringForLog(Color goldenWhite) {
         return
-         String.valueOf(goldenWhite.getRGB());
+         ( Integer.toHexString(goldenWhite.getRed()))+
+          (  Integer.toHexString(goldenWhite.getGreen()))+
+          ( Integer.toHexString(goldenWhite.getBlue()))
+
+         ;
+
     }
 
     public enum FLAG_COLOR {
