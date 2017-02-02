@@ -4,15 +4,11 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_HeroObj;
-import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
-import main.game.DC_GameManager;
 import main.game.battlefield.Coordinates;
-import main.game.player.Player;
 import main.swing.components.obj.CellComp;
-import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.system.auxiliary.ListMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -61,59 +57,59 @@ public class LE_Simulation extends DC_Game {
 
 	public void init() {
 		super.init();
-		setManager(new DC_GameManager(getState(), this) {
-			@Override
-			public MicroObj createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
-				Coordinates coordinates = new Coordinates(x, y);
-				MicroObj obj = LE_ObjMaster.getObjCache().get(type);
-				DC_HeroObj unit = null;
-				if (obj == null) {
-					obj = super.createUnit(type, x, y, owner, ref);
-
-				}
-				unit = (DC_HeroObj) obj;
-				getUnits().add(unit);
-				LE_ObjMaster.unitAdded(coordinates, unit);
-
-				return unit;
-			}
-
-			public void rightClicked(Obj obj) {
-				if (LevelEditor.getMouseMaster().checkEventConsumed(obj, true))
-					return;
-
-				super.rightClicked(obj);
-			}
-
-			public void objClicked(Obj obj) {
-				// ControlPanel().clicked(obj) => remove / ...
-
-				if (LevelEditor.getMouseMaster().checkEventConsumed(obj, false))
-					return;
-				deselectInfo();
-				setSelectedEntity(obj);
-				setSelectedInfoObj(obj);
-				infoSelect(obj);
-			}
-
-			@Override
-			public void deselectInfo() {
-				DrawMasterStatic.getObjImageCache().remove(getSelectedEntity());
-				if (infoObj != null)
-					infoObj.setInfoSelected(false);
-			}
-
-			public void infoSelect(Obj obj) {
-				obj.setInfoSelected(true);
-				DrawMasterStatic.getObjImageCache().remove(obj);
-				LevelEditor.getMainPanel().getInfoPanel().selectType(obj.getType());
-				LevelEditor.updateDynamicControls();
-			}
-
-			public void infoSelect(Entity entity) {
-				LevelEditor.getMainPanel().getInfoPanel().selectType(entity.getType());
-			}
-		});
+//		setManager(new DC_GameManager(getState(), this) {
+//			@Override
+//			public MicroObj createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
+//				Coordinates coordinates = new Coordinates(x, y);
+//				MicroObj obj = LE_ObjMaster.getObjCache().get(type);
+//				DC_HeroObj unit = null;
+//				if (obj == null) {
+//					obj = super.createUnit(type, x, y, owner, ref);
+//
+//				}
+//				unit = (DC_HeroObj) obj;
+//				getUnits().add(unit);
+//				LE_ObjMaster.unitAdded(coordinates, unit);
+//
+//				return unit;
+//			}
+//
+//			public void rightClicked(Obj obj) {
+//				if (LevelEditor.getMouseMaster().checkEventConsumed(obj, true))
+//					return;
+//
+//				super.rightClicked(obj);
+//			}
+//
+//			public void objClicked(Obj obj) {
+//				// ControlPanel().clicked(obj) => remove / ...
+//
+//				if (LevelEditor.getMouseMaster().checkEventConsumed(obj, false))
+//					return;
+//				deselectInfo();
+//				setSelectedEntity(obj);
+//				setSelectedInfoObj(obj);
+//				infoSelect(obj);
+//			}
+//
+//			@Override
+//			public void deselectInfo() {
+//				DrawMasterStatic.getObjImageCache().remove(getSelectedEntity());
+//				if (infoObj != null)
+//					infoObj.setInfoSelected(false);
+//			}
+//
+//			public void infoSelect(Obj obj) {
+//				obj.setInfoSelected(true);
+//				DrawMasterStatic.getObjImageCache().remove(obj);
+//				LevelEditor.getMainPanel().getInfoPanel().selectType(obj.getType());
+//				LevelEditor.updateDynamicControls();
+//			}
+//
+//			public void infoSelect(Entity entity) {
+//				LevelEditor.getMainPanel().getInfoPanel().selectType(entity.getType());
+//			}
+//		});
 
 	}
 

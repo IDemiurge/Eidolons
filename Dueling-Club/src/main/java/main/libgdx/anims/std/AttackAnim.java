@@ -1,7 +1,6 @@
 package main.libgdx.anims.std;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -18,8 +17,8 @@ import main.entity.obj.DC_WeaponObj;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.FacingMaster;
 import main.libgdx.anims.AnimData;
+import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.bf.GridConst;
-import main.libgdx.texture.TextureManager;
 import main.system.auxiliary.FileManager;
 import main.system.math.PositionMaster;
 
@@ -45,7 +44,7 @@ public class AttackAnim extends ActionAnim {
                 ATK_ANIMS.HEAVY_SWING
         };
         weapon = getActive().getActiveWeapon();
-
+        debug();
     }
 
     protected static AnimData getWeaponAnimData(Entity active) {
@@ -74,8 +73,7 @@ public class AttackAnim extends ActionAnim {
         return path + file;
     }
 
-    public String getWeaponSpritePath() {
-
+    public String getTexturePath() {
         if (imgPath == null)
 //            imgPath = FileManager.getRandomFile(PathFinder.getSpritesPath() + "weapons\\"
 //             + (weapon.isNatural() ? "natural\\" : "")
@@ -86,34 +84,24 @@ public class AttackAnim extends ActionAnim {
 //        return PathFinder.getSpritesPath() + "weapons\\" + "scimitar.png";
     }
 
-    @Override
-    protected Texture getTexture() {
-        return TextureManager.getOrCreate(getWeaponSpritePath());
-    }
 
     @Override
     public void draw(Batch batch, float alpha) {
-        debug();
         act(Gdx.graphics.getDeltaTime());
-        Texture texture = getTexture();
-        batch.draw(texture, this.getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
-                this.getHeight(), this.getScaleX(), this.getScaleY(), initialAngle + this.getRotation(), 0, 0,
-                texture.getWidth(), texture.getHeight(), flipX, flipY);
-
-        batch.draw(texture, 543, 456, this.getOriginX(), this.getOriginY(), this.getWidth(),
-                this.getHeight(), this.getScaleX(), this.getScaleY(), initialAngle + this.getRotation(), 0, 0,
-                texture.getWidth(), texture.getHeight(), flipX, flipY);
+        super.draw(batch,alpha);
 
     }
 
     protected boolean isDrawTexture() {
-        return true;
+        return false;
     }
 
     //entity params?
 
     @Override
     public void start() {
+        sprites.clear();
+        sprites.add(new SpriteAnimation(getTexturePath()));
         super.start();
         add();
     }
@@ -165,7 +153,9 @@ public class AttackAnim extends ActionAnim {
         for (ATK_ANIMS anim : anims) {
             for (float angle : anim.targetAngles) {
                 List<Pair<MoveByAction, RotateByAction>> swings = new LinkedList<>();
-                float duration = anim.durations[i];
+                float duration =
+                 1;
+                 //anim.durations[i];
                 totalDuration += duration;
                 float x = anim.offsetsX[i];
                 float y = anim.offsetsY[i];

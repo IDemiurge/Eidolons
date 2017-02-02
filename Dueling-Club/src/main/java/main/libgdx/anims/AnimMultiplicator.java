@@ -11,12 +11,14 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.top.DC_ActiveObj;
 import main.game.battlefield.Coordinates;
+import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.logic.macro.utils.CoordinatesMaster;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.particles.EmitterPools;
 import main.libgdx.anims.std.SpellAnim;
 import main.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
+import main.libgdx.anims.std.SpellAnim.ZONE_ANIM_MODS;
 import main.libgdx.bf.GridMaster;
 import main.system.ai.logic.target.EffectMaster;
 import main.system.auxiliary.secondary.GeometryMaster;
@@ -113,9 +115,9 @@ public class AnimMultiplicator implements Runnable {
         if (coordinates != null)
             applyMultiplicationForCoordinates(coordinates);
 
-        if (template!=null ){
-            if (template.isRemoveBaseEmitters()){
-                anim.getEmitterList().removeIf(e->!e.isGenerated());
+        if (template != null) {
+            if (template.isRemoveBaseEmitters()) {
+                anim.getEmitterList().removeIf(e -> !e.isGenerated());
             }
         }
     }
@@ -140,16 +142,50 @@ public class AnimMultiplicator implements Runnable {
     private Collection<Coordinates> filterCoordinates(SPELL_ANIMS template, Set<Coordinates> coordinates) {
 
         if (template != null) {
+            FACING_DIRECTION facing = getActive().getOwnerObj().getFacing();
+            List<Coordinates> filtered = new LinkedList<>(coordinates);
+            Coordinates farthest = CoordinatesMaster.getFarmostCoordinateInDirection
+             (facing.getDirection(),
+              new LinkedList<>(coordinates), null);
             switch (template) {
 //                template.getNumberOfEmitters(getActive())
                 case RAY:
-                    Coordinates c = CoordinatesMaster.getFarmostCoordinateInDirection
-                     (getActive().getOwnerObj().getFacing().getDirection(), new LinkedList<>(coordinates), null);
-                    anim.setForcedDestination(c);
+                    anim.setForcedDestination(farthest);
 
                     return Arrays.asList(new Coordinates[]{
-                     c
+                     farthest
                     });
+
+                case BLAST:
+                    break;
+                case SPRAY: {
+                    boolean xOrY = !facing.isVertical();
+                    filtered.removeIf(c ->
+                      farthest.getXorY(xOrY) != c.getXorY(xOrY)
+//                     PositionMaster.getDistance(farthest, anim.getOriginCoordinates()) 
+//                         > PositionMaster.getDistance(c, anim.getOriginCoordinates())
+                    );
+                    while (filtered.size() <
+                     template.getNumberOfEmitters(getActive())) {
+                        List<Coordinates> list = new LinkedList<>(coordinates);
+                        list.removeAll(filtered);
+                        list.removeIf(c ->
+                         farthest.getXorY(!xOrY) == c.getXorY(!xOrY)
+                        );
+                        Coordinates c = CoordinatesMaster.getFarmostCoordinateInDirection(
+                         facing.getDirection(),
+                         list, null);
+                        filtered.add(c);
+                    }
+
+                    return filtered;
+                }
+                case WAVE:
+                    break;
+                case RING:
+                    break;
+                case NOVA:
+                    break;
             }
         }
         return coordinates;
@@ -189,14 +225,34 @@ public class AnimMultiplicator implements Runnable {
         list.forEach(a -> emitterList.add(a));
     }
 
-    private void createAndAddEmitterActions(EmitterActor actor, Coordinates c) {
+    private void createAndAddEmitterActions(EmitterActor actor,ZONE_ANIM_MODS mod) {
+//if (mod.isParallel()){
+//    ParallelAction a = new ParallelAction();
+//    actor.getActions().forEach(action ->  a .addAction(action));
+//
+//        }
+//        switch (template) {
+//
+//        }
+    }
+        private void createAndAddEmitterActions(EmitterActor actor, Coordinates c) {
 //        MoveToAction action = ActorMaster.getMoveToAction(c, actor, pixelsPerSecond);
         Vector2 v = GridMaster.
          getVectorForCoordinateWithOffset(c);
-        MoveByAction action = ActorMaster.getMoveByAction(getOrigin(), v, actor, getPixelsPerSecond());
+        int speed = getPixelsPerSecond();
+        if (template!=null )
+        {
+            GridMaster.offset(getOrigin(), v, template.getAdditionalDistance(getActive()),getOrigin().x>c.x, getOrigin().y>c.y);
+            speed =  template.speed;
+        }
+        MoveByAction action = ActorMaster.getMoveByAction(getOrigin(),
+         v, actor,speed);
+
+
         if (action.getDuration() > this.duration) this.duration = action.getDuration();
 //        ActorMaster.addRemoveAfter(actor);
         actor.getEffect().setDuration((int) action.getDuration());
+        anim.setDuration(duration);
     }
 
     private Action createAndAddEmitterActions(EmitterActor actor, Integer angle, SPELL_ANIMS template) {
@@ -248,7 +304,8 @@ public class AnimMultiplicator implements Runnable {
     }
 
     public int getPixelsPerSecond() {
-        return anim.getPixelsPerSecond();
+        return
+         anim.getPixelsPerSecond();
     }
 
     public Vector2 getOrigin() {

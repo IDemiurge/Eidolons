@@ -260,7 +260,7 @@ public class PositionMaster {
     }
 
     public enum SHAPES {
-        WAVE, RECTANGLE {
+        CONE, RECTANGLE {
             public boolean isRemoveBase() {
                 return true;
             }

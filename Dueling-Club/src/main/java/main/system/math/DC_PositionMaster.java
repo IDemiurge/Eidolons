@@ -25,7 +25,7 @@ public class DC_PositionMaster {
             case STAR:
                 // four diagonals
                 break;
-            case WAVE:
+            case CONE:
                 // define a filter function based on facing and apply base
                 // coordinates
 

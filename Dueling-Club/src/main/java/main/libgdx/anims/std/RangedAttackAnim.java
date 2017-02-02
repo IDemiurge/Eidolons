@@ -74,7 +74,7 @@ public class RangedAttackAnim extends AttackAnim {
     }
 
     @Override
-    public String getWeaponSpritePath() {
+    public String getTexturePath() {
         return findWeaponSprite((DC_WeaponObj) ammo);
     }
 

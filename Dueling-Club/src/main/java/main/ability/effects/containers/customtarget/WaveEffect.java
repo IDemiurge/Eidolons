@@ -32,7 +32,7 @@ public class WaveEffect extends ShapeEffect {
 
     @Override
     protected SHAPES getShape() {
-        return (expanding) ? SHAPES.WAVE : SHAPES.RECTANGLE;
+        return (expanding) ? SHAPES.CONE : SHAPES.RECTANGLE;
     }
 
 }

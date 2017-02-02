@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.game.DC_Game;
@@ -61,10 +60,11 @@ public class Anim extends Group implements Animation{
     protected float lifecycle; //0 to 1f
     protected float lifecycleDuration;
     protected Float frameDuration;
-    protected float alpha;
+    protected float alpha=1f;
     protected float delay;
     private boolean running;
     protected Coordinates forcedDestination;
+    protected Texture texture;
 
 
     public Anim(Entity active, AnimData params) {
@@ -77,18 +77,101 @@ public class Anim extends Group implements Animation{
 //        duration= params.getIntValue(ANIM_VALUES.DURATION);
     }
 
+    @Override
+    public void start() {
+        initPosition();
+        initDuration();
+        initSpeed();
+        resetEmitters();
+
+        sprites.forEach(s -> s.setX(getX()));
+        sprites.forEach(s -> s.setY(getY()));
+        sprites.forEach(s -> s.setOffsetX(0));
+        sprites.forEach(s -> s.setOffsetY(0));
+        sprites.forEach(s -> s.setLoops(loops));
+        sprites.forEach(s -> s.reset());
+        if (frameDuration != null)
+            sprites.forEach(s -> s.setFrameDuration(frameDuration));
+
+
+        AnimMultiplicator.checkMultiplication(this);
+
+        addLight();
+        startEmitters();
+
+
+        running = true;
+    }
 
     @Override
-    public void setPosition(float x, float y) {
-        super.setPosition(x, y);
+    public boolean draw(Batch batch) {
+//switch(template){
+//}
+        float delta = Gdx.graphics.getDeltaTime();
+        time += delta;
+        if (time<0) return true; //delay
+        Texture currentFrame = textureSupplier.get();
+        if (lifecycleDuration != 0) {
+            cycles = (int) (time / lifecycleDuration);
+            lifecycle = time % lifecycleDuration / lifecycleDuration;
+        }
+        if (duration > 0) //|| finished //  lifecycle duration for continuous?
+            if (time >= duration) {
+                main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, this + " finished; duration = " + duration);
+                finished();
+                dispose();
+                return false;
+            }
+        if (currentFrame != null) {
+            setWidth(currentFrame.getWidth());
+            setHeight(currentFrame.getHeight());
+        }
+        updatePosition(delta);
+        emitterList.forEach(e -> {
+            e.setFlipX(flipX);
+            e.setFlipX(flipY);
+            e.act(delta);
+        });
+        sprites.forEach(s -> {
+//            s.setFlipX(flipX);
+//            s.setFlipX(flipY);
+        });
+        applyAnimMods(); if (isDrawTexture() && getActions().size==0)
+            draw(batch, alpha);
+
+        sprites.forEach(s -> {
+            s.draw(batch);
+        });
+        emitterList.forEach(e -> {
+            e.draw(batch, 1f);
+        });
+        return true;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+
+        if (!isDrawTexture())return ;
+
+        Texture texture = getTexture();
+
+        if (texture==null )return ;
+
+        batch.draw((texture), this.getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
+         this.getHeight(), this.getScaleX(), this.getScaleY(),
+         this.getRotation(), 0, 0,
+         texture.getWidth(), texture.getHeight(), flipX , flipY);
 
     }
 
     @Override
     public void reset() {
         time = 0;
+//        time = -delay; TODO
         offsetX = 0;
         offsetY = 0;
+        alpha=1f;
         initDuration();
         initSpeed();
 //if ()
@@ -152,72 +235,21 @@ public class Anim extends Group implements Animation{
         return false;
     }
 
-    protected Texture getTexture() {
-        return TextureManager.getOrCreate(active.getImagePath());
-        //TODO scale, colorize, apply alpha, rotate, warp, ... based on time
-        //for attack/turn anims?
+    public String getTexturePath() {
+        return active.getImagePath();
     }
 
+    protected Texture getTexture() {
+        if (texture ==null )
+            texture = TextureManager.create( getTexturePath());
+        return texture;
+
+    }
     @Override
     public void finished() {
-        //TODO
         running = false;
     }
 
-    @Override
-    public boolean draw(Batch batch) {
-//switch(template){
-//}
-        float delta = Gdx.graphics.getDeltaTime();
-        time += delta;
-        Texture currentFrame = textureSupplier.get();
-        if (lifecycleDuration != 0) {
-            cycles = (int) (time / lifecycleDuration);
-            lifecycle = time % lifecycleDuration / lifecycleDuration;
-        }
-        if (duration > 0) //|| finished //  lifecycle duration for continuous?
-            if (time >= duration) {
-                main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, this + " finished; duration = " + duration);
-               finished();
-               dispose();
-                return false;
-            }
-        if (currentFrame != null) {
-            setWidth(currentFrame.getWidth());
-            setHeight(currentFrame.getHeight());
-        }
-        updatePosition(delta);
-        emitterList.forEach(e -> {
-            e.setFlipX(flipX);
-            e.setFlipX(flipY);
-            e.act(delta);
-        });
-        sprites.forEach(s -> {
-//            s.setFlipX(flipX);
-//            s.setFlipX(flipY);
-        });
-        applyAnimMods();
-        if (isDrawTexture())
-            if (currentFrame != null) {
-                clear();
-                addActor(new Image(currentFrame));
-
-                draw(batch, alpha);
-//                batch.draw(currentFrame, this.getX(), getY(), this.getOriginX(),
-//                 this.getOriginY(), this.getWidth(),
-//                        this.getHeight(), this.getScaleX(), this.getScaleY(),
-//                        initialAngle + this.getRotation(), 0, 0,
-//                        currentFrame.getWidth(), currentFrame.getHeight(), flipX, flipY);
-            }
-
-        sprites.forEach(s -> {
-            s.draw(batch);
-        });
-        emitterList.forEach(e -> {
-            e.draw(batch, 1f);
-        });
-        return true;
-    }
 
     protected void applyAnimMods() {
         if (mods != null)
@@ -259,32 +291,6 @@ public class Anim extends Group implements Animation{
         return true;
     }
 
-    @Override
-    public void start() {
-        initPosition();
-        initDuration();
-        initSpeed();
-        resetEmitters();
-
-        sprites.forEach(s -> s.setX(getX()));
-        sprites.forEach(s -> s.setY(getY()));
-        sprites.forEach(s -> s.setOffsetX(0));
-        sprites.forEach(s -> s.setOffsetY(0));
-        sprites.forEach(s -> s.setLoops(loops));
-        sprites.forEach(s -> s.reset());
-        if (frameDuration != null)
-            sprites.forEach(s -> s.setFrameDuration(frameDuration));
-
-
-        AnimMultiplicator.checkMultiplication(this);
-
-        addLight();
-        startEmitters();
-
-
-        running = true;
-    }
-
     public Float getSpeedX() {
         return speedX;
     }
@@ -319,6 +325,10 @@ public class Anim extends Group implements Animation{
     }
 
     protected void dispose() {
+        if (texture!=null )
+            texture.dispose();
+        texture=null;
+
         emitterList.forEach(e -> {
             EmitterPools.freeEmitter(e);
             e.remove();
@@ -375,6 +385,7 @@ public class Anim extends Group implements Animation{
         return new Vector2(origin);
     }
 
+
     public void updatePosition(float delta) {
         if (part != null)
             switch (part) {
@@ -397,6 +408,7 @@ public class Anim extends Group implements Animation{
         sprites.forEach(s -> {
             s.setOffsetX(offsetX);
             s.setOffsetY(offsetY);
+            s.setRotation(getRotation());
         });
 
         emitterList.forEach(e -> {

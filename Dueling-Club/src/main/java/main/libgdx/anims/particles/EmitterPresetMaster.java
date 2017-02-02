@@ -1,6 +1,7 @@
 package main.libgdx.anims.particles;
 
 import javafx.util.Pair;
+import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.FileManager;
@@ -226,7 +227,7 @@ public class EmitterPresetMaster {
             }
         });
         c= output.toString();
-        XML_Writer.write(c,last.path);
+        XML_Writer.write(c, PathFinder.getSfxPath()+"custom\\"+ last.path);
     }
 
     public enum EMITTER_VALUE_SHORTCUTS {

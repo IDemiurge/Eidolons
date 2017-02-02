@@ -3,6 +3,7 @@ package main.ability.effects.oneshot.common;
 import main.ability.effects.Effect;
 import main.ability.effects.oneshot.ContainerEffect;
 import main.ability.effects.oneshot.MicroEffect;
+import main.content.CONTENT_CONSTS.STD_BOOLS;
 import main.data.ability.OmittedConstructor;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.standard.ZLevelCondition;
@@ -22,6 +23,7 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
     protected Boolean notSelf;
     protected Formula reductionFormula;
     protected Set<Coordinates> coordinates;
+
     @OmittedConstructor
     public SpecialTargetingEffect() {
 
@@ -32,7 +34,7 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
                                   Formula reductionFormula) {
         this.filteringConditions = conditions;
         if (!friendlyFire)
-            this.allyOrEnemyOnly=false;
+            this.allyOrEnemyOnly = false;
 
         this.effects = effect;
         this.reductionFormula = reductionFormula;
@@ -70,10 +72,12 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
         }
         this.targeting.select(ref);
         getActiveObj().getRef().setGroup(ref.getGroup());
-
-        coordinates = new LinkedHashSet();
-        ref.getGroup().getObjects().forEach(o -> coordinates.add(o.getCoordinates()));
-
+        if (         (coordinates == null || getActiveObj().checkBool(STD_BOOLS.APPLY_THRU))) {
+            coordinates = new LinkedHashSet();
+            if (ref.getGroup() != null) {
+                ref.getGroup().getObjects().forEach(o -> coordinates.add(o.getCoordinates()));
+            }
+        }
         getActiveObj().initAnimation();
         // if (ref.getObj(KEYS.ACTIVE) != null) {
         // ref.getObj(KEYS.ACTIVE).getRef().setGroup(ref.getGroup());
@@ -90,6 +94,7 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
     public Set<Coordinates> getCoordinates() {
         return coordinates;
     }
+
     protected boolean isLoggingWrapped() {
         return true;
     }

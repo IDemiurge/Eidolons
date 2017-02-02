@@ -7,6 +7,7 @@ import main.entity.obj.top.DC_ActiveObj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.FacingMaster;
 import main.libgdx.anims.AnimData;
+import main.libgdx.bf.GridConst;
 import main.system.Producer;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public class SpellAnim extends ActionAnim {
         BLAST(active -> (active.getIntParam(G_PARAMS.RADIUS) == 0) ? 1 :
          active.getRef().getTargetObj().getCoordinates().
           getAdjacentCoordinates().size()),
-        SPRAY(active -> {
+        SPRAY(300,0, active -> {
             List<Coordinates> list = active.getOwnerObj().getCoordinates().
              getAdjacentCoordinates();
             list.removeIf(coordinates ->
@@ -46,21 +47,37 @@ public class SpellAnim extends ActionAnim {
               active.getOwnerObj().getCoordinates(), coordinates) != FACING_SINGLE.IN_FRONT);
             return list.size();
         }
-        ),
+        ){
+            @Override
+            public int getAdditionalDistance(DC_ActiveObj active) {
+                if (active.getOwnerObj().getFacing().isVertical())
+                    return GridConst.CELL_H ;
+                return GridConst.CELL_W ;
+            }
+        },
         WAVE(active -> active.getIntParam(G_PARAMS.RADIUS)),
         RING(activeObj -> 8),
         NOVA(activeObj -> activeObj.getOwnerObj().getCoordinates().getAdjacentCoordinates().size()),;
 
         private Producer<DC_ActiveObj, Integer> numberOfEmitters;
         private boolean removeBaseEmitters=true;
+public int speed;
 
         //emitter placement templates
         SPELL_ANIMS() {
 
         }
 
-        SPELL_ANIMS(Producer<DC_ActiveObj, Integer> numberOfEmittersSupplier) {
+        SPELL_ANIMS(int speed, int distance, Producer<DC_ActiveObj, Integer> numberOfEmittersSupplier) {
+           this.speed =speed;
             numberOfEmitters = numberOfEmittersSupplier;
+        }
+        SPELL_ANIMS(Producer<DC_ActiveObj, Integer> numberOfEmittersSupplier) {
+            this(300, 0, numberOfEmittersSupplier);
+        }
+        public int getAdditionalDistance(DC_ActiveObj active) {
+
+            return 0;
         }
 
         public int getNumberOfEmitters(DC_ActiveObj active) {

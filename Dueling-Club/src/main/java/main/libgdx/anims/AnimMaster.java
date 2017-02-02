@@ -1,7 +1,7 @@
 package main.libgdx.anims;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.ability.Ability;
 import main.ability.effects.Effect;
@@ -24,7 +24,7 @@ import java.util.Stack;
 /**
  * Created by JustMe on 1/9/2017.
  */
-public class AnimMaster extends Actor {
+public class AnimMaster extends Group {
 
     static private boolean on;
     private static AnimMaster instance;
@@ -182,7 +182,6 @@ public class AnimMaster extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (!isOn()) return;
-
         continuousAnims.values().forEach(a -> {
             if (!a.getBuff().isDead())
                 a.draw(batch);
@@ -211,6 +210,9 @@ public class AnimMaster extends Actor {
 
             leadQueue.removeIf((CompositeAnim anim) -> anim.isFinished());
         }
+
+        if (getChildren().size>0)
+            super.draw(batch,parentAlpha);
     }
 
     public AnimationConstructor getConstructor() {

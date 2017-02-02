@@ -24,19 +24,23 @@ public class TextureCache {
         return this.get(path, false);
     }
 
-    public final Texture get(String path, boolean save) {
-        String p = //File.separator + path;
-                StringMaster.addMissingPathSegments(path, this.imagePath);
-        if (!this.cache.containsKey(p)) {
-            Texture t = new Texture(p);
+    public final Texture create(String path) {
+        return new Texture( StringMaster.addMissingPathSegments(path, this.imagePath));
+    }
+        public final Texture get(String path, boolean save) {
+            Texture t = create(path);
+//        String p =
+//                StringMaster.addMissingPathSegments(path, this.imagePath);
+        if (!this.cache.containsKey(path)) {
+
             if (!save) {
                 return t;
             }
 
-            this.cache.put(p, t);
+            this.cache.put(path, t);
         }
 
-        return this.cache.get(p);
+        return this.cache.get(path);
     }
 }
 

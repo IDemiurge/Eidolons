@@ -23,7 +23,8 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private float alpha = 1f;
     private int cycles;
     private float lifecycle;
-    private float angle;
+    private float rotation;
+    private Sprite sprite;
 
     public SpriteAnimation(String path) {
         this(defaultFrameDuration, false, 1, path);
@@ -45,12 +46,15 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         stateTime = 0;
         cycles = 0;
         lifecycle = 0;
+        rotation=0;
+        alpha = 1f;
+        sprite = null ;
     }
     public boolean draw(Batch batch) {
         stateTime += Gdx.graphics.getDeltaTime();
         updateSpeed();
         boolean looping = this.looping || loops > cycles || loops == 0;
-        TextureRegion currentFrame = (TextureRegion) getKeyFrame(stateTime, looping);
+        TextureRegion currentFrame =  getKeyFrame(stateTime, looping);
 
 
         if (currentFrame == null) {
@@ -63,18 +67,19 @@ public class SpriteAnimation extends Animation<TextureRegion> {
             lifecycle = stateTime % getLifecycleDuration() / getLifecycleDuration();
         }
 
-        Sprite sprite = new Sprite(currentFrame);
+if (sprite==null )
+         sprite = new Sprite(currentFrame);
+        else
+            sprite.setRegion(currentFrame);
         sprite.setAlpha(alpha);
-//        angle = RandomWizard.getRandomInt(360) / 360f;
-//        sprite.setRotation(angle);
+
+        sprite.setRotation(rotation);
         sprite.setPosition(x + offsetX - currentFrame.getRegionWidth() / 2, y
                 + offsetY
                 - currentFrame.getRegionHeight() / 2);
         sprite.draw(batch);
 
-        batch.draw(currentFrame, x + offsetX - currentFrame.getRegionWidth() / 2, y
-                + offsetY
-                - currentFrame.getRegionHeight() / 2);
+
 
         return true;
     }
@@ -138,6 +143,15 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public void setAlpha(float alpha) {
         this.alpha = alpha;
+    }
+
+    public void setRotation(float rotation) {
+        main.system.auxiliary.LogMaster.log(1,"ROTATION old : "+ this.rotation+"; new : "+ rotation );
+        this.rotation = rotation;
+    }
+
+    public float getRotation() {
+        return rotation;
     }
 
     public enum SPRITE_BEHAVIOR {

@@ -30,6 +30,10 @@ public class TextureManager {
         return getCache().getOrCreate(p);
     }
 
+    public static Texture create(String p) {
+        return getCache().create(p);
+
+    }
     public static TextureCache getCache() {
         if (cache == null)
             cache = new TextureCache(PathFinder.getImagePath());

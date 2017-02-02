@@ -2,13 +2,13 @@ package main.libgdx.anims.std;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 import main.ability.Ability;
-import main.ability.effects.Effect;
 import main.entity.Entity;
 import main.entity.obj.top.DC_ActiveObj;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimData;
+import main.libgdx.anims.AnimMaster;
 import main.libgdx.bf.BaseView;
 import main.libgdx.texture.TextureManager;
 
@@ -37,13 +37,20 @@ public class ActionAnim extends Anim {
     protected void add() {
         addAction(getAction());
         getAction().setTarget(this);
-        GameScreen.getInstance().getAnimsStage().addActor(this);
+        AnimMaster.getInstance().addActor(this);
         main.system.auxiliary.LogMaster.log(1, this + " added to stage");
     }
     @Override
     protected void dispose() {
         super.dispose();
         remove();
+    }
+
+    @Override
+    public void start() {
+
+        setRotation(initialAngle);
+        super.start();
     }
 
     @Override
@@ -55,14 +62,7 @@ public class ActionAnim extends Anim {
         return GameScreen.getInstance().getGridPanel().getUnitMap().get(getActive().getOwnerObj());
     }
 
-    public void addEffectAnims(Effect effect) {
-//        effect.get
-        //damage,
-//        Anim anim = new Anim();
-//        add(anim);
-//        addActor(a);
-    }
-
+//for triggers!
     public void addAbilityAnims(Ability ability) {
 
     }
