@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
-import com.badlogic.gdx.utils.Align;
 import main.libgdx.bf.mouse.MovableHeader;
 import main.libgdx.gui.dialog.LogMessage;
 import main.libgdx.gui.dialog.LogMessageBuilder;
@@ -37,6 +36,7 @@ public class LogPanel extends Group {
     private Container<WidgetGroup> container;
     private boolean widgetPosChanged = false;
     private Table table;
+    private ScrollPanel<LogMessage> scrollPanel;
 
     public LogPanel() {
         setSize(400, 250);
@@ -44,11 +44,14 @@ public class LogPanel extends Group {
         bg.setFillParent(true);
         addActor(bg);
 
+        scrollPanel = new ScrollPanel<>();
+        scrollPanel.setBounds(15, 15, getWidth() - 30, getHeight() - 30);
+        addActor(scrollPanel);
 
-        table = new Table();
+/*        table = new Table();
         table.setFillParent(true);
         //tb.setDebug(true);
-        table.align(Align.left);
+        table.align(Align.left);*/
 /*
         for (int i = 0; i < 32; i++) {
             if (i != 0) table.row();
@@ -61,7 +64,7 @@ public class LogPanel extends Group {
 */
 
         //require to calc valid height
-        table.setLayoutEnabled(true);
+        /*table.setLayoutEnabled(true);
         table.pack();
 
         container = new Container<>();
@@ -113,7 +116,7 @@ public class LogPanel extends Group {
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 getStage().setScrollFocus(null);
             }
-        });
+        });*/
 
         movableHeader = new MovableHeader();
         movableHeader.setBounds(0, getHeight() - 10, getWidth(), 10);
@@ -177,13 +180,11 @@ public class LogPanel extends Group {
 
             LogMessage message = builder.build(getWidth() - offsetX);
             message.setFillParent(true);
-            table.add(message).fill().padLeft(10).width(getWidth() - 20);
-            table.row();
-            table.pack();
-            offsetY = 10000;
+            scrollPanel.addElement(message);
         });
 
     }
+
     @Override
     public void drawDebug(ShapeRenderer shapes) {
         super.drawDebug(shapes);
@@ -193,9 +194,7 @@ public class LogPanel extends Group {
     public void act(float delta) {
         super.act(delta);
         if (updatePos) {
-            container.setBounds(10, 10, getWidth() - 20, getHeight() - 20);
-
-            innerScrollContainer.setY(0);
+            scrollPanel.setBounds(10, 10, getWidth() - 20, getHeight() - 20);
 
             movableHeader.setBounds(0, getHeight() - 10, getWidth(), 10);
             extendButton.setPosition(getWidth() / 2 - extendButton.getWidth() / 2, getHeight() - movableHeader.getHeight() + 4);
@@ -203,7 +202,7 @@ public class LogPanel extends Group {
             updatePos = false;
         }
 
-        if (!widgetPosChanged && innerScrollContainer.getY() != 0) {
+/*        if (!widgetPosChanged && innerScrollContainer.getY() != 0) {
             innerScrollContainer.setY(0);
             widgetPosChanged = true;
         }
@@ -225,7 +224,7 @@ public class LogPanel extends Group {
             if ((int) offsetY != 0) {
                 offsetY -= step;
             }
-        }
+        }*/
     }
 
     private LogMessage getTestMessage() {
@@ -247,11 +246,8 @@ public class LogPanel extends Group {
     public Actor hit(float x, float y, boolean touchable) {
         Actor actor = super.hit(x, y, touchable);
         if (actor == null) return null;
-        if (actor instanceof MovableHeader
-                || actor instanceof ExtendButton
-                || actor instanceof InnerScrollContainer) {
-            return actor;
-        }
-        return this;
+
+        if (actor instanceof Image) return null;
+        return actor;
     }
 }
