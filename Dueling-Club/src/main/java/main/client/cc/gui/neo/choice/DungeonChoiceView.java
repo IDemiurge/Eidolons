@@ -89,8 +89,9 @@ public class DungeonChoiceView extends EntityChoiceView {
 
     @Override
     public boolean checkBlocked(ObjType e) {
-        if (party.checkProperty(G_PROPS.DUNGEONS_COMPLETED, e.getName()))
+        if (party.checkProperty(G_PROPS.DUNGEONS_COMPLETED, e.getName())) {
             return true;
+        }
         return super.checkBlocked(e);
     }
 
@@ -111,10 +112,11 @@ public class DungeonChoiceView extends EntityChoiceView {
 
     @Override
     public String getInfo() {
-        if (ListMaster.isNotEmpty(data))
+        if (ListMaster.isNotEmpty(data)) {
             if (getSelectedIndex() >= 0) {
                 return getSelectedItem().getName();
             }
+        }
         return InfoMaster.CHOOSE_DUNGEON;
     }
 

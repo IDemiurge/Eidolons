@@ -16,30 +16,16 @@ import main.system.auxiliary.FileManager;
 import main.system.auxiliary.GuiManager;
 import main.system.auxiliary.StringMaster;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-
-import javax.swing.JButton;
 
 public class MusicListPanel extends G_Panel {
 	public static final int max_length = 12;
-	VALUE sortValue;
-	String tagFilter;
-	String groupFilter;
-	protected String filterValue;
-	PROPERTY filterProp;
-	Boolean filterOut;
-	Boolean highlight_disable_remove;
-
-	Map<String, List<String>> listMap;
+    static Map<String, String> lineMap = new HashMap<String, String>();
+    protected String filterValue;
 	protected MusicViewsPanel viewsPanel;
 	protected G_Panel view;
 	protected String key;
@@ -47,7 +33,14 @@ public class MusicListPanel extends G_Panel {
 	protected boolean sortByTag;
 	protected boolean sortDescending;
 	protected Map<String, List<String>> lastMap;
-	private MC_ControlPanel controlPanel;
+    VALUE sortValue;
+    String tagFilter;
+    String groupFilter;
+    PROPERTY filterProp;
+    Boolean filterOut;
+    Boolean highlight_disable_remove;
+    Map<String, List<String>> listMap;
+    private MC_ControlPanel controlPanel;
 	private G_Panel sidePanel;
 
 	public MusicListPanel(String key, Map<String, List<String>> map) {
@@ -65,6 +58,21 @@ public class MusicListPanel extends G_Panel {
 		sidePanel.add(controlPanel);
 	}
 
+    public static String formatListName(String funcPart) {
+        funcPart = StringMaster.cropFormat(StringMaster.getLastPathSegment(funcPart));
+        if (funcPart.indexOf(".") != -1) {
+            funcPart = funcPart.substring(funcPart.indexOf(".") + 1);
+        }
+        funcPart = funcPart.replace("Battle Mix ", "Bat.");
+        funcPart = StringMaster.getWellFormattedString(funcPart);
+
+        return funcPart;
+    }
+
+    public static int getMaxLength() {
+        return max_length;
+    }
+
 	public void init() {
 		// map.put(letter, line);
 		initViews();
@@ -80,11 +88,13 @@ public class MusicListPanel extends G_Panel {
 				// way...
 				int code = AHK_Master.getLetterCode(o1, chars);
 				int code2 = AHK_Master.getLetterCode(o2, chars);
-				if (code == code2)
-					return 0;
-				if (code > code2)
-					return 1;
-				return -1;
+                if (code == code2) {
+                    return 0;
+                }
+                if (code > code2) {
+                    return 1;
+                }
+                return -1;
 			}
 		};
 	}
@@ -93,10 +103,10 @@ public class MusicListPanel extends G_Panel {
 	public void refresh() {
 		removeAll();
 
-		if (view != null)
-			add(view);
-		else {
-			view = initView(listMap, isLetterShown());
+        if (view != null) {
+            add(view);
+        } else {
+            view = initView(listMap, isLetterShown());
 			add(view);
 		}
 		displayPanel.refresh();
@@ -128,18 +138,20 @@ public class MusicListPanel extends G_Panel {
 		while (true) {
 			MusicListPanel v = MusicCore.getGroupedView(i);
 			viewsPanel.addView(v.getView().getName(), v);
-			if (i >= MusicCore.std_groups.length)
-				break;
-			i++;
+            if (i >= MusicCore.std_groups.length) {
+                break;
+            }
+            i++;
 
 		}
 		i = 0;
 		while (true) {
 			MusicListPanel v = MusicCore.getGroupedView(i, MUSIC_TAGS.class);
 			viewsPanel.addView(v.getView().getName(), v);
-			if (i >= MusicCore.std_tags.length)
-				break;
-			i++;
+            if (i >= MusicCore.std_tags.length) {
+                break;
+            }
+            i++;
 
 		}
 	}
@@ -156,12 +168,10 @@ public class MusicListPanel extends G_Panel {
 		}
 		initCustomViews();
 		if (!MusicCore.initMusicListTypes)// TODO into combobox!
-			initGeneratedViews();
-		initFilteredViews();
-	}
-
-	public void setView(G_Panel view) {
-		this.view = view;
+        {
+            initGeneratedViews();
+        }
+        initFilteredViews();
 	}
 
 	protected void initGeneratedViews() {
@@ -186,9 +196,10 @@ public class MusicListPanel extends G_Panel {
 	}
 
 	protected boolean checkNewMap(Map<String, List<String>> customMap) {
-		if (customMap == null)
-			return true;
-		return customMap.size() > 4;
+        if (customMap == null) {
+            return true;
+        }
+        return customMap.size() > 4;
 	}
 
 	protected void initCustomViews() {
@@ -200,9 +211,10 @@ public class MusicListPanel extends G_Panel {
 				G_Panel view = initView(getCustomMap(name, FileManager.getFilesFromDirectory(file
 						.getPath(), false), customMap), isLetterShown());
 				// viewsPanel.addView(file.getName(), view);
-			} else
-				topList.add(file);
-		}
+            } else {
+                topList.add(file);
+            }
+        }
 		// add root to the subpanel map
 		Map<String, List<String>> map = getCustomMap(topList, customMap);
 		MusicListPanel panel = new MusicListPanel(key, map);
@@ -218,9 +230,9 @@ public class MusicListPanel extends G_Panel {
 
 	protected Map<String, List<String>> getCustomMap(String mappedLetters,
 			List<File> filesFromDirectory, Map<String, List<String>> map) {
-		if (map == null)
-			map = new XLinkedMap<>();
-		else {
+        if (map == null) {
+            map = new XLinkedMap<>();
+        } else {
 
 		}
 		List<String> list = new LinkedList<>();
@@ -229,9 +241,10 @@ public class MusicListPanel extends G_Panel {
 			String listString = letter + "::" + sub.getPath();
 			list.add(listString);
 		}
-		if (mappedLetters == null)
-			mappedLetters = getCustomListMappedLetters(map);
-		map.put(mappedLetters, list);
+        if (mappedLetters == null) {
+            mappedLetters = getCustomListMappedLetters(map);
+        }
+        map.put(mappedLetters, list);
 		return map;
 	}
 
@@ -263,13 +276,15 @@ public class MusicListPanel extends G_Panel {
 		} else if (getSortValue() != null) {
 			removeLineFormat(lines);
 			boolean descending = isSortDescending();
-			if (getSortValue() instanceof PARAMETER)
-				descending = !descending;
-			lines = SortMaster.sortByValue(lines, getSortValue(), AT_OBJ_TYPE.MUSIC_LIST,
+            if (getSortValue() instanceof PARAMETER) {
+                descending = !descending;
+            }
+            lines = SortMaster.sortByValue(lines, getSortValue(), AT_OBJ_TYPE.MUSIC_LIST,
 					descending);
 			restoreLineFormat(lines);
-		} else
-			Collections.sort(lines, getComparator(chars));
+        } else {
+            Collections.sort(lines, getComparator(chars));
+        }
 
 		return lines;
 	}
@@ -279,13 +294,12 @@ public class MusicListPanel extends G_Panel {
 		lines.clear();
 		for (String sub : list) {
 			sub = DataManager.getType(sub, AT_OBJ_TYPE.MUSIC_LIST).getName();// StringMaster.getWellFormattedString(generic);
-			if (lineMap.get(sub) == null)
-				continue;
-			lines.add(lineMap.get(sub));
+            if (lineMap.get(sub) == null) {
+                continue;
+            }
+            lines.add(lineMap.get(sub));
 		}
 	}
-
-	static Map<String, String> lineMap = new HashMap<String, String>();
 
 	protected void removeLineFormat(List<String> lines) {
 		LinkedList<String> list = new LinkedList<>(lines);
@@ -300,9 +314,10 @@ public class MusicListPanel extends G_Panel {
 				type = DataManager.findType(formatted, AT_OBJ_TYPE.MUSIC_LIST);
 			}
 			// else
-			if (type != null)
-				formatted = type.getName();
-			lines.add(formatted);
+            if (type != null) {
+                formatted = type.getName();
+            }
+            lines.add(formatted);
 
 			lineMap.put(formatted, sub);
 		}
@@ -323,22 +338,14 @@ public class MusicListPanel extends G_Panel {
 	}
 
 	protected boolean checkWrap(int i, int customWrap, Character lastLetter, char letter) {
-		if (customWrap != 0)
-			return (customWrap <= i);
+        if (customWrap != 0) {
+            return (customWrap <= i);
+        }
 
-		if (lastLetter != null)
-			return letter != lastLetter;
-		return false;
-	}
-
-	public static String formatListName(String funcPart) {
-		funcPart = StringMaster.cropFormat(StringMaster.getLastPathSegment(funcPart));
-		if (funcPart.indexOf(".") != -1)
-			funcPart = funcPart.substring(funcPart.indexOf(".") + 1);
-		funcPart = funcPart.replace("Battle Mix ", "Bat.");
-		funcPart = StringMaster.getWellFormattedString(funcPart);
-
-		return funcPart;
+        if (lastLetter != null) {
+            return letter != lastLetter;
+        }
+        return false;
 	}
 
 	protected JButton getButton(String keyPart, String funcPart, Font font, String name) {
@@ -351,12 +358,16 @@ public class MusicListPanel extends G_Panel {
 			boolean result = DataManager.getType(name, AT_OBJ_TYPE.MUSIC_LIST).
 			// mouseListener.getList().
 					checkProperty(filterProp, filterValue);
-			if (result)
-				if (filterOut)
-					applyResult(button);
-			if (!result)
-				if (!filterOut)
-					applyResult(button);
+            if (result) {
+                if (filterOut) {
+                    applyResult(button);
+                }
+            }
+            if (!result) {
+                if (!filterOut) {
+                    applyResult(button);
+                }
+            }
 
 		}
 
@@ -366,10 +377,10 @@ public class MusicListPanel extends G_Panel {
 	}
 
 	protected void applyResult(JButton button) {
-		if (highlight_disable_remove == null)
-			button.setVisible(false);
-		else if (highlight_disable_remove) {
-			button.setForeground(Color.white);
+        if (highlight_disable_remove == null) {
+            button.setVisible(false);
+        } else if (highlight_disable_remove) {
+            button.setForeground(Color.white);
 			button.setBackground(Color.black);
 		} else {
 			button.setEnabled(false);
@@ -378,21 +389,20 @@ public class MusicListPanel extends G_Panel {
 	}
 
 	protected String formatButtonText(String name) {
-		if (name.length() > max_length)
-			name = name.replace(" ", "");
-		if (name.length() > max_length)
-			name = name.replace("And", "&");
-		if (name.length() > max_length)
-			name = name.substring(0, max_length) + "�";
-		return name;
+        if (name.length() > max_length) {
+            name = name.replace(" ", "");
+        }
+        if (name.length() > max_length) {
+            name = name.replace("And", "&");
+        }
+        if (name.length() > max_length) {
+            name = name.substring(0, max_length) + "�";
+        }
+        return name;
 	}
 
 	protected boolean isLetterShown() {
 		return false;
-	}
-
-	public static int getMaxLength() {
-		return max_length;
 	}
 
 	public Map<String, List<String>> getListMap() {
@@ -410,6 +420,10 @@ public class MusicListPanel extends G_Panel {
 	public G_Panel getView() {
 		return view;
 	}
+
+    public void setView(G_Panel view) {
+        this.view = view;
+    }
 
 	public String getKey() {
 		return key;

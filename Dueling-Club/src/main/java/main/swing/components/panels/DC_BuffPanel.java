@@ -40,20 +40,24 @@ public class DC_BuffPanel extends G_ListPanel<DC_BuffObj> {
 
     @Override
     public Collection<DC_BuffObj> getData() {
-        if (obj == null)
+        if (obj == null) {
             return getEmptyData();
+        }
 
         DequeImpl<BuffObj> attachments = obj.getBuffs();
 
-        if (attachments == null)
+        if (attachments == null) {
             return getEmptyData();
-        if (attachments.isEmpty())
+        }
+        if (attachments.isEmpty()) {
             return getEmptyData();
+        }
 
         data = new LinkedList<DC_BuffObj>();
         for (Attachment attachment : attachments) {
-            if (attachment instanceof DC_BuffObj)
+            if (attachment instanceof DC_BuffObj) {
                 data.add((DC_BuffObj) attachment);
+            }
         }
 
         return data;
@@ -61,13 +65,14 @@ public class DC_BuffPanel extends G_ListPanel<DC_BuffObj> {
 
     @Override
     protected void resetData() {
-        if (info != null)
-            if (info)
+        if (info != null) {
+            if (info) {
                 this.obj = state.getGame().getManager().getInfoObj();
-            else {
+            } else {
                 this.obj = state.getGame().getManager().getActiveObj();
 
             }
+        }
         super.resetData();
     }
 
@@ -78,8 +83,9 @@ public class DC_BuffPanel extends G_ListPanel<DC_BuffObj> {
                 + GuiManager.getSmallObjSize() / 2 + "+" + GuiManager.SCROLL_BAR_WIDTH * 5 / 3;
         vpolicy = JScrollPane.VERTICAL_SCROLLBAR_NEVER;
         hpolicy = JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED;
-        if (minItems == 0)
+        if (minItems == 0) {
             minItems = DEFAULT_PAGE_SIZE;
+        }
         layoutOrientation = JList.HORIZONTAL_WRAP;
     }
 

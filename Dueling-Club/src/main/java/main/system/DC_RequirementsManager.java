@@ -53,8 +53,9 @@ public class DC_RequirementsManager implements RequirementsManager {
     private static MASTERY_RANK getRank(Integer score) {
         MASTERY_RANK rank = MASTERY_RANK.NONE;
         for (MASTERY_RANK r : MASTERY_RANK.values()) {
-            if (r.getMasteryReq() > score)
+            if (r.getMasteryReq() > score) {
                 break;
+            }
             rank = r;
         }
         return rank;
@@ -87,8 +88,9 @@ public class DC_RequirementsManager implements RequirementsManager {
 
     @Override
     public String check(Entity hero, Entity type, int mode) {
-        if (CoreEngine.isArcaneVault())
+        if (CoreEngine.isArcaneVault()) {
             return null;
+        }
         // Chronos.mark(type.getName() + " req check");
         this.setHero(hero);
         String reason = null;
@@ -99,8 +101,9 @@ public class DC_RequirementsManager implements RequirementsManager {
         // Chronos.mark(type.getName() + " req build");
         Requirements requirements = getRequirements(type, mode);
         // Chronos.logTimeElapsedForMark(type.getName() + " req build");
-        if (requirements == null)
+        if (requirements == null) {
             return null;
+        }
         reason = requirements.checkReason(hero.getRef(), type);
         // Chronos.logTimeElapsedForMark(type.getName() + " req check");
         return reason;
@@ -110,9 +113,12 @@ public class DC_RequirementsManager implements RequirementsManager {
     public Requirements getRequirements(Entity type, int mode) {
 
         Map<Entity, Requirements> map = getReqMap(mode);
-        if (map != null)
+        if (map != null) {
             if (map.get(type) != null) // TODO
+            {
                 return map.get(type);
+            }
+        }
 
         Requirements req = null;
         OBJ_TYPE TYPE = type.getOBJ_TYPE_ENUM();
@@ -145,8 +151,9 @@ public class DC_RequirementsManager implements RequirementsManager {
                     break;
             }
         }
-        if (req == null)
+        if (req == null) {
             return null;
+        }
 
         String additionalRequirements = type.getProperty(PROPS.REQUIREMENTS);
         if (!StringMaster.isEmpty(additionalRequirements)) {
@@ -160,25 +167,29 @@ public class DC_RequirementsManager implements RequirementsManager {
         }
         if (type.isUpgrade() && TYPE != null) {
             Requirement baseTypeRequirement = getBaseTypeRequirement(type, TYPE);
-            if (baseTypeRequirement != null)
+            if (baseTypeRequirement != null) {
                 req.add(baseTypeRequirement);
+            }
         }
-        if (map != null)
+        if (map != null) {
             map.put(type, req);
+        }
         return req;
     }
 
     private Requirement getBaseTypeRequirement(Entity type, OBJ_TYPE TYPE) {
         PROPERTY prop = TYPE.getUpgradeRequirementProp();
-        if (prop == null)
+        if (prop == null) {
             return null;
+        }
         Condition condition = ConditionMaster.getPropConditionSourceMatch(prop.toString(),
                 G_PROPS.BASE_TYPE.toString());
         String altBases = type.getProperty(PROPS.ALT_BASE_TYPES);
         if (!altBases.isEmpty()) {
             OrConditions orCondition = new OrConditions(condition);
-            for (String s : StringMaster.openContainer(altBases))
+            for (String s : StringMaster.openContainer(altBases)) {
                 orCondition.add(new PropCondition(PROPS.ALT_BASE_TYPES, s, false));
+            }
             condition = orCondition;
         }
         // String typeName = VariableManager.removeVarPart(s);
@@ -192,8 +203,9 @@ public class DC_RequirementsManager implements RequirementsManager {
         for (String subString : StringMaster.openContainer(string)) {
 
             subString = subString.trim();
-            if (StringMaster.isEmpty(subString))
+            if (StringMaster.isEmpty(subString)) {
                 continue;
+            }
             String t = "";
             Conditions c = null;
             if (StringMaster.contains(subString, StringMaster.OR)) {
@@ -243,8 +255,9 @@ public class DC_RequirementsManager implements RequirementsManager {
     }
 
     private String getReasonString(String valRef, String value) {
-        if (StringMaster.isInteger(value))
+        if (StringMaster.isInteger(value)) {
             return InfoMaster.getParamReasonString(valRef, value);
+        }
         return InfoMaster.getPropReasonString(valRef, value);
     }
 
@@ -281,14 +294,17 @@ public class DC_RequirementsManager implements RequirementsManager {
 
     private String getSeparator(String s) {
         String separator = StringMaster.REQ_VALUE_SEPARATOR;
-        if (s.contains(separator))
+        if (s.contains(separator)) {
             return separator;
+        }
         separator = NOT;
-        if (s.contains(separator))
+        if (s.contains(separator)) {
             return separator;
+        }
         separator = " ";
-        if (s.contains(separator))
+        if (s.contains(separator)) {
             return separator;
+        }
         return "";
     }
 
@@ -318,8 +334,9 @@ public class DC_RequirementsManager implements RequirementsManager {
 
     private Condition getTotalCondition(String req, PARAMETER... params) {
         String valRef = "";
-        for (PARAMETER param : params)
+        for (PARAMETER param : params) {
             valRef += param.getName() + StringMaster.VAR_SEPARATOR;
+        }
         return getTotalCondition(valRef, req);
 
     }
@@ -357,8 +374,9 @@ public class DC_RequirementsManager implements RequirementsManager {
     }
 
     private Condition getCondition(String valRef, String value) {
-        if (StringMaster.isInteger(value))
+        if (StringMaster.isInteger(value)) {
             return ConditionMaster.getParamCondition(valRef, value);
+        }
         return new StringComparison("{SOURCE_" + valRef + "}", value, false);
     }
 
@@ -387,8 +405,9 @@ public class DC_RequirementsManager implements RequirementsManager {
         if (mode != NORMAL_MODE) {
             req.add(new Requirement(ConditionMaster.getParamCondition(spellMastery.getName(), "1",
                     true), InfoMaster.getSpellMasteryReason(spellMastery)));
-            if (mode != VERBATIM_MODE)
+            if (mode != VERBATIM_MODE) {
                 req.add(getParamRequirements(PARAMS.MEMORY_REMAINING, PARAMS.SPELL_DIFFICULTY, type));
+            }
             if (type.isUpgrade()) {
                 String base = type.getProperty(G_PROPS.BASE_TYPE);
                 req.add(new Requirement(ConditionMaster.getPropCondition(KEYS.SOURCE
@@ -431,15 +450,17 @@ public class DC_RequirementsManager implements RequirementsManager {
     public Requirements generateClassRequirements(Entity type, int mode) {
         // check has class of this Base Type of equal or greater Circle
         // multi :
-        if (mode == RANK_MODE)
+        if (mode == RANK_MODE) {
             return generateClassRankRequirements(type);
+        }
         Requirements requirements = new Requirements();
 
         for (PARAMS mastery : DC_ContentManager.getMasteryParams()) {
             PARAMETER req = ContentManager.getReqParam(mastery);
             int param = type.getIntParam(req);
-            if (param <= 0)
+            if (param <= 0) {
                 continue;
+            }
             Condition c = ConditionMaster.getParamCondition(0, mastery, req);
             String t = InfoMaster.getParamReasonString(type, mastery, req);
             Requirement r = new Requirement(c, t);
@@ -521,8 +542,9 @@ public class DC_RequirementsManager implements RequirementsManager {
     }
 
     public Requirements generateSkillRequirements(Entity type, int mode) {
-        if (mode == RANK_MODE)
+        if (mode == RANK_MODE) {
             return generateSkillRankRequirements(type);
+        }
         String cost = HeroManager.getCost(type, getHero());
         Condition xpReq = ConditionMaster.getParamCondition(1, PARAMS.XP, PARAMS.XP_COST);
         String mastery = type.getProperty(G_PROPS.MASTERY);
@@ -554,18 +576,21 @@ public class DC_RequirementsManager implements RequirementsManager {
     // to condition master
     public Map<Entity, Requirements> getReqMap(int mode) {
         if (mode == RANK_MODE) {
-            if (rankReqMap == null)
+            if (rankReqMap == null) {
                 rankReqMap = new HashMap<>();
+            }
             return rankReqMap;
         }
         if (mode == ALT_MODE) {
-            if (altReqMap == null)
+            if (altReqMap == null) {
                 altReqMap = new HashMap<>();
+            }
             return altReqMap;
         }
         if (mode == NORMAL_MODE) {
-            if (reqMap == null)
+            if (reqMap == null) {
                 reqMap = new HashMap<>();
+            }
 
             return reqMap;
 
@@ -596,8 +621,9 @@ public class DC_RequirementsManager implements RequirementsManager {
             String prevValue = null;
             for (Condition c : conditions) {
                 if (orCondition != null) {
-                    if (reqTip.equals(tip))
+                    if (reqTip.equals(tip)) {
                         reqTip = "";
+                    }
                     Requirements modifiedReqs = modifyRankReq(feat, reqs, tipParts[i],
                             new HashMap<String, Condition>(), c, rank);
                     // NumericCondition numericCondition = (NumericCondition) c;
@@ -618,11 +644,13 @@ public class DC_RequirementsManager implements RequirementsManager {
                     }
                     i++;
                     // prevValue = value;
-                } else
+                } else {
                     modifyRankReq(feat, reqs, reqTip, reqMap, c, rank);
+                }
             }
-            if (orCondition != null)
+            if (orCondition != null) {
                 reqMap.put(StringMaster.cropLast(reqTip, 4), orCondition);
+            }
 
         } else if (condition instanceof NumericCondition) {
             NumericCondition numericCondition = (NumericCondition) condition;
@@ -631,8 +659,9 @@ public class DC_RequirementsManager implements RequirementsManager {
             Integer mod = (rank + 1) * feat.getIntParam(PARAMS.RANK_SD_MOD);
             if (tip.contains("Xp")) {
                 f.applyModifier(feat.getIntParam(PARAMS.RANK_XP_MOD));
-            } else
+            } else {
                 f.applyFactor(mod);
+            }
             String value = "" + f.getInt();
 
             // TODO if Conditions, how to getOrCreate the tip?
@@ -647,7 +676,9 @@ public class DC_RequirementsManager implements RequirementsManager {
             // tip.replace(originalValue, value);
             // }
             if (tip.contains("otal "))// total...
+            {
                 tip.replace(originalValue, value);
+            }
             tip = tip.replace(originalValue, value);
 
             main.system.auxiliary.LogMaster.log(1, tip + " for " + feat + " = " + value);
@@ -661,8 +692,9 @@ public class DC_RequirementsManager implements RequirementsManager {
     }
 
     public Entity getHero() {
-        if (hero == null)
+        if (hero == null) {
             return CharacterCreator.getHero();
+        }
         return hero;
     }
 

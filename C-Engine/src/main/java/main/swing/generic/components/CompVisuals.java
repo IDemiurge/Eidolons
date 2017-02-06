@@ -51,23 +51,26 @@ public class CompVisuals implements ComponentVisuals {
 
     public Image getImage() {
         if (img == null) {
-            if (dimension != null)
+            if (dimension != null) {
                 img = ImageManager.getSizedIcon(s, dimension).getImage();
-            else
+            } else {
                 img = ImageManager.getIcon(s).getImage();
+            }
         }
         return img;
     }
 
     public JLabel getLabel() {
-        if (label == null)
+        if (label == null) {
             label = new JLabel(new ImageIcon(getImage()));
+        }
         return label;
     }
 
     public Dimension getSize() {
-        if (dimension == null)
+        if (dimension == null) {
             dimension = new Dimension(getWidth(), getHeight());
+        }
         return dimension;
     }
 }

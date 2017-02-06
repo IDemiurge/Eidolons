@@ -94,8 +94,9 @@ public class Coordinates {
     }
 
     public static Coordinates[] getCoordinates(String string) {
-        if (string.isEmpty())
+        if (string.isEmpty()) {
             return new Coordinates[0];
+        }
         Coordinates[] coordinates = new Coordinates[string.split(",").length];
         int i = 0;
         for (String s : string.split(",")) {
@@ -134,8 +135,9 @@ public class Coordinates {
             if (this instanceof ZCoordinates) {
                 ZCoordinates z1 = (ZCoordinates) this;
                 ZCoordinates z2 = (ZCoordinates) arg0;
-                if (z1.z != z2.z)
+                if (z1.z != z2.z) {
                     return false;
+                }
             }
         }
         if (arg0 instanceof Coordinates) {
@@ -153,10 +155,12 @@ public class Coordinates {
     }
 
     public Coordinates invert() {
-        if (h == 0)
+        if (h == 0) {
             h = GuiManager.getBF_CompDisplayedCellsY();
-        if (w == 0)
+        }
+        if (w == 0) {
             w = GuiManager.getBF_CompDisplayedCellsX();
+        }
         this.x = w - 1 - x;
         this.y = h - 1 - y;
         main.system.auxiliary.LogMaster.log(2, "Inverted to " + toString());
@@ -167,8 +171,9 @@ public class Coordinates {
         Coordinates c = null;
         for (; i > 0; i--) {
             c = getAdjacentCoordinate(d);
-            if (c == null)
+            if (c == null) {
                 return null;
+            }
         }
         return c;
     }
@@ -214,9 +219,11 @@ public class Coordinates {
             default:
                 break;
         }
-        if (!allowInvalid)
-            if (!withinBounds(x1, y1))
+        if (!allowInvalid) {
+            if (!withinBounds(x1, y1)) {
                 return null;
+            }
+        }
         return new Coordinates(allowInvalid, x1, y1);
     }
 
@@ -234,34 +241,42 @@ public class Coordinates {
         Coordinates e = null;
         if (!diagonal) {
             e = new Coordinates(c.x, c.y - 1);
-            if (!e.isInvalid())
+            if (!e.isInvalid()) {
                 list.add(e);
+            }
 
             e = new Coordinates(c.x - 1, c.y);
-            if (!e.isInvalid())
+            if (!e.isInvalid()) {
                 list.add(e);
+            }
             e = new Coordinates(c.x + 1, c.y);
-            if (!e.isInvalid())
+            if (!e.isInvalid()) {
                 list.add(e);
+            }
 
             e = new Coordinates(c.x, c.y + 1);
-            if (!e.isInvalid())
+            if (!e.isInvalid()) {
                 list.add(e);
+            }
         } else {
             e = new Coordinates(c.x - 1, c.y + 1);
-            if (!e.isInvalid())
+            if (!e.isInvalid()) {
                 list.add(e);
+            }
             e = new Coordinates(c.x + 1, c.y - 1);
-            if (!e.isInvalid())
+            if (!e.isInvalid()) {
                 list.add(e);
+            }
 
             e = new Coordinates(c.x - 1, c.y - 1);
-            if (!e.isInvalid())
+            if (!e.isInvalid()) {
                 list.add(e);
+            }
 
             e = new Coordinates(c.x + 1, c.y + 1);
-            if (!e.isInvalid())
+            if (!e.isInvalid()) {
                 list.add(e);
+            }
         }
         return list;
     }
@@ -278,8 +293,9 @@ public class Coordinates {
         List<Coordinates> list = new LinkedList<Coordinates>();
 
         if (diagonals_included_not_only != null) {
-            if (diagonals_included_not_only)
+            if (diagonals_included_not_only) {
                 list.addAll(getAdjacentDiagonal());
+            }
             list.addAll(getAdjacentOrthagonal());
         } else {
             list.addAll(getAdjacentDiagonal());
@@ -302,32 +318,44 @@ public class Coordinates {
             return Math.abs(coordinates.x - x) == 1 && Math.abs(coordinates.y - y) == 1;
         }
         if (diagonals_included_not_only) {
-            if (Math.abs(coordinates.x - x) == 1)
-                if (Math.abs(coordinates.y - y) <= 1)
+            if (Math.abs(coordinates.x - x) == 1) {
+                if (Math.abs(coordinates.y - y) <= 1) {
                     return true;
-            if (Math.abs(coordinates.y - y) == 1)
-                if (Math.abs(coordinates.x - x) <= 1)
+                }
+            }
+            if (Math.abs(coordinates.y - y) == 1) {
+                if (Math.abs(coordinates.x - x) <= 1) {
                     return true;
+                }
+            }
             return false;
         }
-        if (Math.abs(coordinates.x - x) == 1)
-            if (Math.abs(coordinates.y - y) < 1)
+        if (Math.abs(coordinates.x - x) == 1) {
+            if (Math.abs(coordinates.y - y) < 1) {
                 return true;
-        if (Math.abs(coordinates.y - y) == 1)
-            if (Math.abs(coordinates.x - x) < 1)
+            }
+        }
+        if (Math.abs(coordinates.y - y) == 1) {
+            if (Math.abs(coordinates.x - x) < 1) {
                 return true;
+            }
+        }
         return false;
         // [OPTIMIZED] return
         // getAdjacentCoordinates(diagonals_included_not_only).contains(coordinates);
     }
 
     public boolean isAdjacent(Coordinates coordinates) {
-        if (Math.abs(coordinates.x - x) == 1)
-            if (Math.abs(coordinates.y - y) <= 1)
+        if (Math.abs(coordinates.x - x) == 1) {
+            if (Math.abs(coordinates.y - y) <= 1) {
                 return true;
-        if (Math.abs(coordinates.y - y) == 1)
-            if (Math.abs(coordinates.x - x) <= 1)
+            }
+        }
+        if (Math.abs(coordinates.y - y) == 1) {
+            if (Math.abs(coordinates.x - x) <= 1) {
                 return true;
+            }
+        }
         return false;
         // [OPTIMIZED] return
         // getAdjacentCoordinates(true).contains(coordinates);
@@ -511,18 +539,22 @@ public class Coordinates {
         }
 
         public DIRECTION getXDirection() {
-            if (this == RIGHT || this == UP_RIGHT || this == DIRECTION.DOWN_RIGHT)
+            if (this == RIGHT || this == UP_RIGHT || this == DIRECTION.DOWN_RIGHT) {
                 return RIGHT;
-            if (this == LEFT || this == DOWN_LEFT || this == DIRECTION.UP_LEFT)
+            }
+            if (this == LEFT || this == DOWN_LEFT || this == DIRECTION.UP_LEFT) {
                 return LEFT;
+            }
             return null;
         }
 
         public DIRECTION getYDirection() {
-            if (this == UP || this == UP_RIGHT || this == DIRECTION.UP_LEFT)
+            if (this == UP || this == UP_RIGHT || this == DIRECTION.UP_LEFT) {
                 return UP;
-            if (this == DOWN || this == DOWN_RIGHT || this == DIRECTION.DOWN_LEFT)
+            }
+            if (this == DOWN || this == DOWN_RIGHT || this == DIRECTION.DOWN_LEFT) {
                 return DOWN;
+            }
             return null;
         }
 

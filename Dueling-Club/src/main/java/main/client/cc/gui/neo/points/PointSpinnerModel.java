@@ -42,8 +42,9 @@ public class PointSpinnerModel {
     }
 
     protected int getCost(Integer value, boolean down) {
-        if (down)
+        if (down) {
             return PointMaster.getPointCost(value, buffer, param);
+        }
         return PointMaster.getPointCost(value + 1, buffer, param);
     }
 
@@ -64,24 +65,27 @@ public class PointSpinnerModel {
     }
 
     protected STD_SOUNDS getUpSound() {
-        if (param.isAttribute())
+        if (param.isAttribute()) {
             return STD_SOUNDS.ButtonUp;
+        }
         return STD_SOUNDS.OK_STONE;
     }
 
     protected STD_SOUNDS getDownSound() {
-        if (param.isAttribute())
+        if (param.isAttribute()) {
             return STD_SOUNDS.ButtonDown;
+        }
         return STD_SOUNDS.CLICK1;
     }
 
     protected void refresh(boolean up) {
         // comp.refresh();
         int buffer = modified;
-        if (!isUndoOnDown())
+        if (!isUndoOnDown()) {
             CharacterCreator.getHeroManager().applyChangedType(false, hero, this.buffer);
-        else
+        } else {
             CharacterCreator.getHeroManager().applyChangedType(!up, hero, this.buffer);
+        }
         modified = buffer;
         // CharacterCreator.getHeroPanel(hero).getMiddlePanel().getScc()
         // .refreshPools();
@@ -93,11 +97,14 @@ public class PointSpinnerModel {
     }
 
     protected boolean checkUp() {
-        if (CoreEngine.isArcaneVault())
+        if (CoreEngine.isArcaneVault()) {
             return true;
-        if (!isUndoOnDown())
-            if (modified < 0)
+        }
+        if (!isUndoOnDown()) {
+            if (modified < 0) {
                 return true;
+            }
+        }
         return checkPool(getCost());
     }
 
@@ -110,13 +117,16 @@ public class PointSpinnerModel {
     }
 
     protected boolean checkDown() {
-        if (CoreEngine.isArcaneVault())
+        if (CoreEngine.isArcaneVault()) {
             return true;
-        if (!isUndoOnDown())
-            if ((modified) > 0)
+        }
+        if (!isUndoOnDown()) {
+            if ((modified) > 0) {
                 return true;
-            else
+            } else {
                 return checkPool(getCost(true));
+            }
+        }
 
         return modified > 0;
 
@@ -130,8 +140,9 @@ public class PointSpinnerModel {
             // down();
             // } else
             SoundMaster.playStandardSound(getBlockedSound());
-        } else
+        } else {
             down();
+        }
     }
 
     public void down() {
@@ -141,8 +152,9 @@ public class PointSpinnerModel {
         refresh(false);
         int buffer = modified;
         // TODO ???
-        if (isUndoOnDown())
+        if (isUndoOnDown()) {
             CharacterCreator.getHeroManager().stepBack(hero);
+        }
         modified = buffer;
         modified--;
     }

@@ -30,8 +30,9 @@ public class ClassTreeBuilder extends HT_MapBuilder {
     @Override
     protected HT_Node createNode(ObjType type, int nodeSize, ObjType parent) {
         ClassNode node = new ClassNode(type, nodeSize, parent);
-        if (isGrouped(type, parent))
+        if (isGrouped(type, parent)) {
             node.setGrouped(true);
+        }
         return node;
     }
 
@@ -43,8 +44,9 @@ public class ClassTreeBuilder extends HT_MapBuilder {
     }
 
     private void addMulticlassNodes(ObjType type) {
-        if (map.getPointForType(type) == null)
+        if (map.getPointForType(type) == null) {
             return;
+        }
         boolean multiclass = DC_ContentManager.isMulticlass(type);
         List<ObjType> children = DataManager.getChildren(type, DC_ContentManager
                         .getMulticlassTypes(), (multiclass ? G_PROPS.BASE_TYPE : PROPS.BASE_CLASSES_ONE),
@@ -54,8 +56,9 @@ public class ClassTreeBuilder extends HT_MapBuilder {
         initGroups(children);
         for (ObjType c : children) {
             if (children.size() == 1) {
-                if (!c.checkProperty(PROPS.LINK_VARIANT))
+                if (!c.checkProperty(PROPS.LINK_VARIANT)) {
                     c.setProperty(PROPS.LINK_VARIANT, LINK_VARIANT.VERTICAL_LONG.toString());
+                }
             }
             addNodeBranch(c, map.getPointForType(type).x, i, children.size(), type);
             i++;
@@ -102,8 +105,9 @@ public class ClassTreeBuilder extends HT_MapBuilder {
             parentPosSpecial = linkPosMap.get(parent);
             if (parentPosSpecial != null) {
                 parentCircle = 0;
-            } else
+            } else {
                 parentCircle = parent.getIntParam(PARAMS.CIRCLE) + 1;
+            }
         }
 
         Integer circle = Math.max(parentCircle + 1, child.getIntParam(PARAMS.CIRCLE) + 1);

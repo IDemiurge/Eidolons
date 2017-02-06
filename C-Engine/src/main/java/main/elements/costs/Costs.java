@@ -40,8 +40,9 @@ public class Costs extends CostImpl {
     public String toString() {
         String req = (requirements == null) ? "" : "req: " + requirements.toString();
         List<String> strings = toStrings();
-        if (strings.isEmpty())
+        if (strings.isEmpty()) {
             return req;
+        }
         String costsString = "to pay: ";
         for (String s : strings) {
             costsString += s + ", ";
@@ -59,8 +60,9 @@ public class Costs extends CostImpl {
         for (Cost c : getCosts()) {
             try {
                 Integer amount = c.getPayment().getAmountFormula().getInt(ref);
-                if (amount > 0)
+                if (amount > 0) {
                     list.add(c.getPayment().getParamToPay().getName() + separator + amount);
+                }
             } catch (Exception e) {
 
             }
@@ -74,9 +76,11 @@ public class Costs extends CostImpl {
     }
 
     public Cost getCost(PARAMETER param) {
-        for (Cost cost : costs)
-            if (cost.getCostParam() == param || cost.getPayment().getParamToPay() == param)
+        for (Cost cost : costs) {
+            if (cost.getCostParam() == param || cost.getPayment().getParamToPay() == param) {
                 return cost;
+            }
+        }
         return null;
     }
 
@@ -120,38 +124,47 @@ public class Costs extends CostImpl {
 
     public int compare(Cost costs) {
 
-        if (!(costs instanceof Costs))
+        if (!(costs instanceof Costs)) {
             return 0; // still possible to compare!
+        }
 
-        if (equals(costs))
+        if (equals(costs)) {
             return 0;
+        }
 
         Boolean result = null;
         for (Cost c : getCosts()) {
             Cost c2 = ((Costs) costs).getCost(c.getCostParam());
-            if (c2 == null)
+            if (c2 == null) {
                 continue;
+            }
             int compare = c.compare(c2);
-            if (compare == 0)
+            if (compare == 0) {
                 continue;
-            else {
+            } else {
                 if (result == null) {
                     result = compare > 0;
                     continue;
                 }
             }
-            if (compare > 0)
-                if (!result)
+            if (compare > 0) {
+                if (!result) {
                     return 0;
-            if (compare < 0)
-                if (result)
+                }
+            }
+            if (compare < 0) {
+                if (result) {
                     return 0;
+                }
+            }
 
         }
-        if (result == null)
+        if (result == null) {
             return 0;
-        if (result)
+        }
+        if (result) {
             return 1;
+        }
         return -1;
     }
 
@@ -161,8 +174,9 @@ public class Costs extends CostImpl {
 
         boolean result = true;
         for (Cost cost : costs) {
-            if (cost != null)
+            if (cost != null) {
                 result &= cost.pay(this.ref);
+            }
         }
         return result;
     }
@@ -172,11 +186,12 @@ public class Costs extends CostImpl {
         setRef(REF);
         reasons.clear();
 
-        if (requirements != null)
+        if (requirements != null) {
             if (!requirements.check(ref)) {
                 reasons.add(requirements.getReason());
                 return false;
             }
+        }
 
         boolean result = true;
         for (Cost cost : costs) {
@@ -186,8 +201,9 @@ public class Costs extends CostImpl {
                 e.printStackTrace();
                 return false;
             }
-            if (cost.getReason() != null)
+            if (cost.getReason() != null) {
                 reasons.add(cost.getReason());
+            }
         }
 
         return result;
@@ -213,10 +229,13 @@ public class Costs extends CostImpl {
 
     @Override
     public String getReason() {
-        if (reason == null)
-            if (reasons != null)
-                if (reasons.size() > 1)
+        if (reason == null) {
+            if (reasons != null) {
+                if (reasons.size() > 1) {
                     return reasons.get(0);
+                }
+            }
+        }
         return super.getReason();
     }
 
@@ -226,15 +245,18 @@ public class Costs extends CostImpl {
 
     public void removeCost(PARAMETER param) {
         Cost cost = getCost(param);
-        if (cost != null)
+        if (cost != null) {
             costs.remove(cost);
+        }
 
     }
 
     public void removeRequirement(String string) {
-        if (requirements != null)
-            if (requirements.getReqMap() != null)
+        if (requirements != null) {
+            if (requirements.getReqMap() != null) {
                 requirements.getReqMap().remove(string);
+            }
+        }
 
     }
 

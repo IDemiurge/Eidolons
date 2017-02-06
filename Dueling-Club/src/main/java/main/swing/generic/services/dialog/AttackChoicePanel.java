@@ -13,9 +13,9 @@ import main.system.auxiliary.FontMaster;
 import main.system.auxiliary.FontMaster.FONT;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
-import main.system.graphics.PhaseAnimation;
 import main.system.graphics.AttackAnimation;
 import main.system.graphics.MigMaster;
+import main.system.graphics.PhaseAnimation;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 import main.system.images.ImageManager.STD_IMAGES;
@@ -58,8 +58,9 @@ public class AttackChoicePanel extends ChoicePanel<DC_ActiveObj> {
         super.clicked(t);
 
         SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
-        if (isInfoSelectionOn())
+        if (isInfoSelectionOn()) {
             t.getGame().getManager().infoSelect(t);
+        }
 
         try {
             anim = getAnim(t);
@@ -73,8 +74,9 @@ public class AttackChoicePanel extends ChoicePanel<DC_ActiveObj> {
     }
 
     private AttackAnimation getAnim(DC_ActiveObj t) {
-        if (anim != null)
+        if (anim != null) {
             target.getGame().getAnimationManager().getTempAnims().clear();
+        }
 
         Attack attack = EffectMaster.getAttackFromAction(t);
         AttackAnimation animation = new AttackAnimation(t);
@@ -140,9 +142,9 @@ public class AttackChoicePanel extends ChoicePanel<DC_ActiveObj> {
                 getLocation().x + MigMaster.getCenteredPosition(scroll.getWidth(null), scroll_text.getWidth(null)),
                 getLocation().y + scroll_text.getHeight(null) + 4, null);
         super.paint(g);
-        if (!animated)
+        if (!animated) {
             drawTargetMark(g);
-        else {
+        } else {
             anim.draw(g);
         }
         // g.drawImage(scroll, getLocation().x, getLocation().y, null);
@@ -152,13 +154,16 @@ public class AttackChoicePanel extends ChoicePanel<DC_ActiveObj> {
         // IMG.getWidth(null)
         // - img.getWidth(null), getLocation().y, null);
 
-        if (costTooltip != null)
+        if (costTooltip != null) {
             lastSelected.getGame().getToolTipMaster().drawTextItem(g, costTooltip);
-        if (getTooltipTextItem() != null)
+        }
+        if (getTooltipTextItem() != null) {
             lastSelected.getGame().getToolTipMaster().drawTextItem(g, getTooltipTextItem());
+        }
 
-        if (anim != null)
+        if (anim != null) {
             target.getGame().getAnimationManager().getTempAnims().add(anim);
+        }
     }
 
     private TextItem getTooltipTextItem() {
@@ -217,14 +222,16 @@ public class AttackChoicePanel extends ChoicePanel<DC_ActiveObj> {
         if (effect.size() > 0) {
             AttackCalculator attackCalculator = new AttackCalculator(((AttackEffect) effect.get(0)).getAttack(), true);
             int chance = attackCalculator.getCritOrDodgeChance();
-            if (chance > 0)
+            if (chance > 0) {
                 tooltip += ", % for ";
+            }
 
-            if (DamageMaster.isLethal(damage, target))
+            if (DamageMaster.isLethal(damage, target)) {
                 tooltip += "(lethal)"; // TODO possibly lethal
-            else {
-                if (((DC_HeroObj) target).canCounter(t))
+            } else {
+                if (((DC_HeroObj) target).canCounter(t)) {
                     tooltip += "(will retaliate)"; // TODO precalc dmg?
+                }
             }
         }
         return tooltip;

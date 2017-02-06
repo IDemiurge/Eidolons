@@ -58,14 +58,17 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 	public static AE_Item getEnumItem(Argument arg, String string) {
 
 		if (!arg.getCoreClass().isEnum()) {
-			if (arg.getCoreClass() == Param.class || arg.getCoreClass() == PARAMETER.class)
-				string = ContentManager.getPARAM(string).getName();
-			if (arg.getCoreClass() == Prop.class || arg.getCoreClass() == PROPERTY.class)
-				string = ContentManager.getPROP(string).getName();
-		}
-		if (Mapper.getItem(string) != null)
-			return Mapper.getItem(string);
-		AE_Item item = new AE_Item(string, arg, null, arg.getCoreClass(), false);
+            if (arg.getCoreClass() == Param.class || arg.getCoreClass() == PARAMETER.class) {
+                string = ContentManager.getPARAM(string).getName();
+            }
+            if (arg.getCoreClass() == Prop.class || arg.getCoreClass() == PROPERTY.class) {
+                string = ContentManager.getPROP(string).getName();
+            }
+        }
+        if (Mapper.getItem(string) != null) {
+            return Mapper.getItem(string);
+        }
+        AE_Item item = new AE_Item(string, arg, null, arg.getCoreClass(), false);
 		Mapper.addEnumConstItem(item);
 		return item;
 	}
@@ -75,39 +78,46 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 		String name = null;
 
 		if (!arg.getCoreClass().isEnum()) {
-			if (arg.getCoreClass() == Param.class || arg.getCoreClass() == PARAMETER.class)
-				name = ContentManager.getParamList().get(index).getName();
-			if (arg.getCoreClass() == Prop.class || arg.getCoreClass() == PROPERTY.class)
-				name = ContentManager.getPropList().get(index).getName();
-		} else {
+            if (arg.getCoreClass() == Param.class || arg.getCoreClass() == PARAMETER.class) {
+                name = ContentManager.getParamList().get(index).getName();
+            }
+            if (arg.getCoreClass() == Prop.class || arg.getCoreClass() == PROPERTY.class) {
+                name = ContentManager.getPropList().get(index).getName();
+            }
+        } else {
 			name = Arrays.asList(arg.getCoreClass().getEnumConstants()).get(index).toString();
 			// collection = CollectionsMaster.getSortedCollection(collection);
             // name =collection.getOrCreate(index).toString()
         }
-        if (Mapper.getItem(name) != null)
+        if (Mapper.getItem(name) != null) {
             return Mapper.getItem(name);
+        }
         AE_Item item = new AE_Item(name, arg, null, arg.getCoreClass(), false);
         Mapper.addEnumConstItem(item);
         return item;
     }
 
 	public static DefaultMutableTreeNode build(Node e) {
-		if (e == null)
-			return new DefaultMutableTreeNode();
-		String nodeName = e.getNodeName();
+        if (e == null) {
+            return new DefaultMutableTreeNode();
+        }
+        String nodeName = e.getNodeName();
 
-		if (nodeName.contains("#"))
-			return new DefaultMutableTreeNode();
+        if (nodeName.contains("#")) {
+            return new DefaultMutableTreeNode();
+        }
 
-		if (nodeName.contains(AE_Item.SEPARATOR))
-			nodeName = nodeName.substring(0, nodeName.indexOf(AE_Item.SEPARATOR));
+        if (nodeName.contains(AE_Item.SEPARATOR)) {
+            nodeName = nodeName.substring(0, nodeName.indexOf(AE_Item.SEPARATOR));
+        }
 
 		AE_Item rootItem = Mapper.getItem(e);
 		DefaultMutableTreeNode result = new DefaultMutableTreeNode(rootItem);
 
 		if (rootItem.isENUM()) {
-			if (e.getTextContent() == null)
-				return new DefaultMutableTreeNode(rootItem.getArg().getEmptyName());
+            if (e.getTextContent() == null) {
+                return new DefaultMutableTreeNode(rootItem.getArg().getEmptyName());
+            }
 
 			AE_Item childItem = getEnumItem(rootItem.getArg(), EnumMaster.getEnumConstIndex(
 					rootItem.getArg().getCoreClass(), e.getTextContent()));
@@ -118,8 +128,9 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 		}
 		if (rootItem.isPrimitive()) {
 
-			if (e.getTextContent() == null)
-				return new DefaultMutableTreeNode(rootItem.getArg().getEmptyName());
+            if (e.getTextContent() == null) {
+                return new DefaultMutableTreeNode(rootItem.getArg().getEmptyName());
+            }
 
 			DefaultMutableTreeNode child = new DefaultMutableTreeNode(rootItem.getArg().name()
 					+ e.getTextContent());
@@ -132,9 +143,10 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 		for (int i = 0; i < x; i++) {
 			Node child = e.getChildNodes().item(i);
 			String itemName = child.getNodeName();
-			if (itemName.contains("#text"))
-				continue;
-			DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+            if (itemName.contains("#text")) {
+                continue;
+            }
+            DefaultMutableTreeNode node = new DefaultMutableTreeNode();
 			node.setUserObject(Mapper.getItem(child));
 			result.add(build(child));
 			main.system.auxiliary.LogMaster.log(LogMaster.AV_AE, "node added: "
@@ -158,14 +170,16 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 		AE_Item nodeItem = (AE_Item) parentNode.getUserObject();
 
 		List<DefaultMutableTreeNode> children = TreeMaster.getChildren(parentNode);
-		if (children.isEmpty())
-			return 0;
-		DefaultMutableTreeNode child = children.get(elementIndex);
+        if (children.isEmpty()) {
+            return 0;
+        }
+        DefaultMutableTreeNode child = children.get(elementIndex);
 		Object userObject = child.getUserObject();
 
-		if (!(userObject instanceof AE_Item))
-			return 0;
-		AE_Item item = (AE_Item) userObject;
+        if (!(userObject instanceof AE_Item)) {
+            return 0;
+        }
+        AE_Item item = (AE_Item) userObject;
 
 		if (item.isENUM()) {
 
@@ -178,8 +192,9 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 		Argument arg = null;
 		if (nodeItem.isContainer()) {
 			arg = item.getArg();
-		} else
-			arg = nodeItem.getArgList().get(elementIndex);
+        } else {
+            arg = nodeItem.getArgList().get(elementIndex);
+        }
 
 		List<AE_Item> itemList = Mapper.getItemList(arg);
 		if (!itemList.contains(item)) {
@@ -204,18 +219,22 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 
     public static void moveNode(DefaultTreeModel model, DefaultMutableTreeNode node, boolean down) {
         TreeNode parent = node.getParent();
-        if (parent == null)
+        if (parent == null) {
             return;
+        }
         int index = model.getIndexOfChild(parent, node);
-        if (down)
+        if (down) {
             index++;
-        else
+        } else {
             index--;
+        }
 
-        if (index < 0)
+        if (index < 0) {
             return;
-        if (index >= model.getChildCount(parent))
+        }
+        if (index >= model.getChildCount(parent)) {
             return;
+        }
 
         model.removeNodeFromParent(node);
         model.insertNodeInto(node, (DefaultMutableTreeNode) parent, index);
@@ -227,8 +246,9 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
         Object source = e.getSource();
         if (source instanceof JComboBox) {
             // toggle this how? perhaps based on n_of_items?
-            if (e.getModifiers() == COMBO_BOX_MOUSE_MODIFIER)
+            if (e.getModifiers() == COMBO_BOX_MOUSE_MODIFIER) {
                 comboboxAction(source);
+            }
         } else if (source instanceof JTextField) {
             textBoxAction(source);
         }
@@ -306,9 +326,10 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
         createEmptyNodes(parent, (AE_Item) parent.getUserObject());
 
 		if (parent.getChildCount() > index) {
-			if (parent.getChildAt(index) != null)
-				parent.remove(index);
-		}
+            if (parent.getChildAt(index) != null) {
+                parent.remove(index);
+            }
+        }
 
 		((DefaultTreeModel) tree.getModel()).insertNodeInto(node, parent, index);
 		tree.scrollPathToVisible(new TreePath(node.getPath()));
@@ -322,17 +343,19 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 	}
 
 	private void createEmptyNodes(DefaultMutableTreeNode node, AE_Item item) {
-		if (item.isContainer())
-			return;
-		for (Argument arg : item.getArgList()) {
+        if (item.isContainer()) {
+            return;
+        }
+        for (Argument arg : item.getArgList()) {
             if (!arg.isPrimitive()) {
                 DefaultMutableTreeNode newChild = new DefaultMutableTreeNode("<" +
                         arg.name() +
                         ">" + VariableManager.VARIABLE + "</" +
                         arg.name() +
                         ">");
-                if (!Mapper.getItemList(arg).isEmpty())
+                if (!Mapper.getItemList(arg).isEmpty()) {
                     newChild = new DefaultMutableTreeNode(Mapper.getItemList(arg).get(0));
+                }
                 createEmptyNodes(newChild, Mapper.getItemList(arg).get(0));
                 node.add(newChild);
                 continue;
@@ -387,11 +410,12 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 			}
 		}
 		if (arg0.isShiftDown()) {
-			if (right && ability)
-				tryRemove();
-			else
-				tryClone();
-			return;
+            if (right && ability) {
+                tryRemove();
+            } else {
+                tryClone();
+            }
+            return;
 		} else if (arg0.isControlDown()) {
 			moveNode((DefaultTreeModel) tree.getModel(), getSelectedNode(), right);
 		} else if (right) {
@@ -407,9 +431,10 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 			for (int i = row; i < tree.getRowCount(); ++i) {
 				if (arg0.getClickCount() > 1) {
 					tree.expandRow(i);
-				} else
-					tree.collapseRow(i);
-			}
+                } else {
+                    tree.collapseRow(i);
+                }
+            }
 		}
 	}
 
@@ -424,11 +449,12 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 	}
 
 	private DefaultMutableTreeNode cloneNode(DefaultMutableTreeNode n) {
-		if (n.children().hasMoreElements())
-			return cloneNodeTree(n);
-		else
-			return cloneLeafNode(n);
-	}
+        if (n.children().hasMoreElements()) {
+            return cloneNodeTree(n);
+        } else {
+            return cloneLeafNode(n);
+        }
+    }
 
 	private DefaultMutableTreeNode cloneLeafNode(DefaultMutableTreeNode n) {
 		DefaultMutableTreeNode newNode = (DefaultMutableTreeNode) CloneMaster.deepCopy(n);
@@ -441,9 +467,10 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 			DefaultMutableTreeNode node = getSelectedNode();
 			DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
 
-			if (!checkNodeClonable(parent.getUserObject().toString()))
-				return;
-			parent.remove(node);
+            if (!checkNodeClonable(parent.getUserObject().toString())) {
+                return;
+            }
+            parent.remove(node);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -481,9 +508,10 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 			MutableTreeNode newNode = cloneNodeTree(node);
 
 			DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
-			if (!checkNodeClonable(parent.getUserObject().toString()))
-				return;
-			((DefaultTreeModel) tree.getModel()).insertNodeInto(newNode, parent, node.getParent()
+            if (!checkNodeClonable(parent.getUserObject().toString())) {
+                return;
+            }
+            ((DefaultTreeModel) tree.getModel()).insertNodeInto(newNode, parent, node.getParent()
 					.getChildCount() - 1);
 
 		} catch (Exception e) {

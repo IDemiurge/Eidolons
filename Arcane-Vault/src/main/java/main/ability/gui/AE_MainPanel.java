@@ -1,25 +1,20 @@
 package main.ability.gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTree;
-import javax.swing.SwingUtilities;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
-
 import main.ability.AE_Manager;
 import main.ability.utilities.NodeMaster;
 import main.ability.utilities.TemplateManager;
 import main.data.ability.AE_Item;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.G_Panel;
-
 import org.w3c.dom.Node;
+
+import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class AE_MainPanel extends G_Panel implements TreeSelectionListener,
 		ActionListener {
@@ -31,10 +26,6 @@ public class AE_MainPanel extends G_Panel implements TreeSelectionListener,
 	private NodeMaster		nodeMaster;
 	private Node			doc;
 	private TemplateManager	templateManager;
-
-	public String toString() {
-		return doc.getTextContent();
-	}
 
 	public AE_MainPanel(String typeName) {
 		Node document = AE_Manager.getDoc(typeName);
@@ -55,10 +46,15 @@ public class AE_MainPanel extends G_Panel implements TreeSelectionListener,
 
 	}
 
+    public String toString() {
+        return doc.getTextContent();
+    }
+
 	public AE_Item getSelectedItem() {
-		if (tree.getSelectionPath() == null)
-			return null;
-		AE_Item item = null;
+        if (tree.getSelectionPath() == null) {
+            return null;
+        }
+        AE_Item item = null;
 		try {
 			DefaultMutableTreeNode node = getSelectedNode();
 
@@ -77,9 +73,10 @@ public class AE_MainPanel extends G_Panel implements TreeSelectionListener,
 
 	// selected tree node - ITEM + cached values for each ARG; how to map???
 	public void refresh() {
-		if (getSelectedItem() == null)
-			return;
-		removeAll();
+        if (getSelectedItem() == null) {
+            return;
+        }
+        removeAll();
 		initComponents();
 		// remove(editPanel);
 		addComponents();
@@ -103,11 +100,12 @@ public class AE_MainPanel extends G_Panel implements TreeSelectionListener,
 	}
 
 	private void initComponents() {
-		if (tree.getSelectionPath() == null)
-			editPanel = new AE_EditPanel();
-		else
-			editPanel = AE_Manager.getAE_EditPanel(this, getSelectedItem(),
-					tree.getRowForPath(tree.getSelectionPath()));
+        if (tree.getSelectionPath() == null) {
+            editPanel = new AE_EditPanel();
+        } else {
+            editPanel = AE_Manager.getAE_EditPanel(this, getSelectedItem(),
+                    tree.getRowForPath(tree.getSelectionPath()));
+        }
 
 	}
 
@@ -118,20 +116,22 @@ public class AE_MainPanel extends G_Panel implements TreeSelectionListener,
 	@Override
 	public void valueChanged(TreeSelectionEvent e) {
 		try {
-			if (e.getSource() == null)
-				return;
+            if (e.getSource() == null) {
+                return;
+            }
 
 			if (e.getPath() != null) {
-				if (e.getOldLeadSelectionPath() != null)
-					SwingUtilities.invokeLater(new Runnable() {
+                if (e.getOldLeadSelectionPath() != null) {
+                    SwingUtilities.invokeLater(new Runnable() {
 
-						@Override
-						public void run() {
+                        @Override
+                        public void run() {
 
-							tree.updateUI();
-						}
-					});
-				refresh();
+                            tree.updateUI();
+                        }
+                    });
+                }
+                refresh();
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();

@@ -108,9 +108,10 @@ public class ArcaneVault {
 		if (selectiveLaunch) {
 
 			int init = DialogMaster.optionChoice("Launch Options", LAUNCH_OPTIONS);
-			if (init == -1)
-				return;
-			HT_View.setWorkspaceLaunch(workspaceLaunch);
+            if (init == -1) {
+                return;
+            }
+            HT_View.setWorkspaceLaunch(workspaceLaunch);
 			WorkspaceManager.ADD_WORKSPACE_TAB_ON_INIT = workspaceLaunch;
 
 			selectiveInit = LAUNCH_OPTIONS[init] != "Full";
@@ -121,10 +122,12 @@ public class ArcaneVault {
 					case "Battlecraft":
 						List<OBJ_TYPES> enumList = new EnumMaster<OBJ_TYPES>()
 								.getEnumList(OBJ_TYPES.class);
-						for (OBJ_TYPES sub : OBJ_TYPES.values())
-							if (sub.isNonBattlecraft())
-								enumList.remove(sub);
-						types = StringMaster.constructStringContainer(enumList);
+                        for (OBJ_TYPES sub : OBJ_TYPES.values()) {
+                            if (sub.isNonBattlecraft()) {
+                                enumList.remove(sub);
+                            }
+                        }
+                        types = StringMaster.constructStringContainer(enumList);
 						break;
 					case "Last":
 						types = FileManager.readFile(getLastTypesFilePath());
@@ -143,27 +146,31 @@ public class ArcaneVault {
 					case "Selective":
 						init = DialogMaster.optionChoice("Selective Templates", WORKSPACE_TEMPLATE
 								.values());
-						if (init == -1)
-							return;
-						template = WORKSPACE_TEMPLATE.values()[init];
+                        if (init == -1) {
+                            return;
+                        }
+                        template = WORKSPACE_TEMPLATE.values()[init];
 						types = template.getTypes();
 						break;
 				}
 
 				CoreEngine.setSelectivelyReadTypes(types);
-			} else
-				AV_Tree.setFullNodeStructureOn(true);
+            } else {
+                AV_Tree.setFullNodeStructureOn(true);
+            }
 
 		}
 		ItemGenerator.setGenerationOn(!ENABLE_ITEM_GENERATION);
 		LogMaster.PERFORMANCE_DEBUG_ON = showTime;
 		CoreEngine.setTEST_MODE(true);
-		if (args != null)
-			if (args.length > 0) {
-				setMacroMode(true);
-				if (args.length > 1)
-					worldEditAutoInit = true;
-			}
+        if (args != null) {
+            if (args.length > 0) {
+                setMacroMode(true);
+                if (args.length > 1) {
+                    worldEditAutoInit = true;
+                }
+            }
+        }
 
 		main.system.auxiliary.LogMaster
 				.log(3,
@@ -179,10 +186,12 @@ public class ArcaneVault {
 
 		mainBuilder = new MainBuilder();
 		mainBuilder.setKeyListener(new AV_KeyListener(getGame()));
-		if (!isCustomLaunch())
-			if (XML_Reader.getTypeMaps().keySet().contains(OBJ_TYPES.FACTIONS.getName()))
-				UnitGroupMaster.modifyFactions();
-		// ModelManager.generateFactions();
+        if (!isCustomLaunch()) {
+            if (XML_Reader.getTypeMaps().keySet().contains(OBJ_TYPES.FACTIONS.getName())) {
+                UnitGroupMaster.modifyFactions();
+            }
+        }
+        // ModelManager.generateFactions();
 		showAndCreateGUI();
 
 		if (worldEditAutoInit) {
@@ -211,14 +220,15 @@ public class ArcaneVault {
 	}
 
 	private static void afterInit(WORKSPACE_TEMPLATE template) {
-		if (template != null)
-			switch (template) {
-				case skills:
-					initSkillLaunch();
+        if (template != null) {
+            switch (template) {
+                case skills:
+                    initSkillLaunch();
 
-					break;
-			}
-	}
+                    break;
+            }
+        }
+    }
 
 	private static void initSkillLaunch() {
 		ObjType type = DataManager.getType("Controlled Engagement", OBJ_TYPES.SKILLS);
@@ -241,15 +251,17 @@ public class ArcaneVault {
 
 		workspaceManager = new WorkspaceManager(macroMode, getGame());
 
-		if (XML_Reader.getTypeMaps().keySet().size() + 3 < OBJ_TYPES.values().length)
-			testMode = true;
+        if (XML_Reader.getTypeMaps().keySet().size() + 3 < OBJ_TYPES.values().length) {
+            testMode = true;
+        }
 
 		// if (!testMode)
 		Simulation.init(testMode);
 		microGame = Simulation.getGame();
-		if (!testMode)
-			SimulationManager.init();
-		CharacterCreator.setAV(true);
+        if (!testMode) {
+            SimulationManager.init();
+        }
+        CharacterCreator.setAV(true);
 	}
 
 	public static Game getGame() {
@@ -277,16 +289,18 @@ public class ArcaneVault {
 
 	private static void setArcaneVaultIcon() {
 		ImageIcon img = ImageManager.getIcon(ICON_PATH);
-		if (macroMode)
-			img = ImageManager.getIcon("UI\\" + "PentagramX3" + ".png");
+        if (macroMode) {
+            img = ImageManager.getIcon("UI\\" + "PentagramX3" + ".png");
+        }
 
 		window.setIconImage(img.getImage());
 	}
 
 	public static ObjType getPreviousSelectedType() {
-		if (previousSelectedType == null)
-			return selectedType;
-		return previousSelectedType;
+        if (previousSelectedType == null) {
+            return selectedType;
+        }
+        return previousSelectedType;
 	}
 
     public static void setPreviousSelectedType(ObjType previousSelectedType) {
@@ -306,17 +320,19 @@ public class ArcaneVault {
 	}
 
     public static void setSelectedType(ObjType selectedType) {
-        if (ArcaneVault.selectedType == selectedType)
+        if (ArcaneVault.selectedType == selectedType) {
             return;
+        }
         previousSelectedType = ArcaneVault.selectedType;
         ArcaneVault.selectedType = selectedType;
     }
 
 	// TODO macro types?
 	public static OBJ_TYPE getSelectedOBJ_TYPE() {
-		if (macroMode)
-			MACRO_OBJ_TYPES.getType(getMainBuilder().getSelectedTabName());
-		return ContentManager.getOBJ_TYPE(getMainBuilder().getSelectedTabName());
+        if (macroMode) {
+            MACRO_OBJ_TYPES.getType(getMainBuilder().getSelectedTabName());
+        }
+        return ContentManager.getOBJ_TYPE(getMainBuilder().getSelectedTabName());
 	}
 
 	public static boolean isDirty() {
@@ -324,13 +340,14 @@ public class ArcaneVault {
 	}
 
 	public static void setDirty(boolean dirty) {
-		if (window == null)
-			return;
-		ArcaneVault.dirty = dirty;
-		if (dirty)
-			window.setTitle(title + "*");
-		else {
-			window.setTitle(title);
+        if (window == null) {
+            return;
+        }
+        ArcaneVault.dirty = dirty;
+        if (dirty) {
+            window.setTitle(title + "*");
+        } else {
+            window.setTitle(title);
 		}
 	}
 
@@ -397,9 +414,10 @@ public class ArcaneVault {
 	}
 
 	public static List<TabBuilder> getAdditionalTrees() {
-		if (additionalTrees == null)
-			additionalTrees = new LinkedList<>();
-		return additionalTrees;
+        if (additionalTrees == null) {
+            additionalTrees = new LinkedList<>();
+        }
+        return additionalTrees;
 	}
 
 	public static boolean isSelectiveInit() {
@@ -415,9 +433,10 @@ public class ArcaneVault {
 	}
 
 	public static ContentManager getContentManager() {
-		if (contentManager == null)
-			contentManager = new DC_ContentManager();
-		return contentManager;
+        if (contentManager == null) {
+            contentManager = new DC_ContentManager();
+        }
+        return contentManager;
 	}
 
 	public static void setContentManager(ContentManager contentManager) {

@@ -46,12 +46,15 @@ public class AI_Manager {
     }
 
     public static DC_HeroObj chooseEnemyToEngage(DC_HeroObj obj, List<DC_HeroObj> units) {
-        if (obj.getAiType() == AI_TYPE.CASTER)
+        if (obj.getAiType() == AI_TYPE.CASTER) {
             return null;
-        if (obj.getAiType() == AI_TYPE.ARCHER)
+        }
+        if (obj.getAiType() == AI_TYPE.ARCHER) {
             return null;
-        if (obj.getAiType() == AI_TYPE.SNEAK)
+        }
+        if (obj.getAiType() == AI_TYPE.SNEAK) {
             return null;
+        }
         DC_HeroObj topPriorityUnit = null;
         int topPriority = -1;
         for (DC_HeroObj u : units) {
@@ -65,8 +68,9 @@ public class AI_Manager {
     }
 
     public static GroupAI getCustomUnitGroup() {
-        if (customGroup == null)
+        if (customGroup == null) {
             customGroup = new GroupAI(null);
+        }
         return customGroup;
     }
 
@@ -101,18 +105,20 @@ public class AI_Manager {
                 if (action == null) {
                     game.getManager().freezeUnit(unit);
                     game.getManager().unitActionCompleted(null, true);
-                } else
+                } else {
                     try {
                         getAI(unit).setLastAction(action);
-                        if (!executor.execute(action))
+                        if (!executor.execute(action)) {
                             brokenActions.add(action);
-                        else
+                        } else {
                             brokenActions.remove(action);
+                        }
                         getAI(unit).standingOrderActionComplete();
                     } catch (Exception e2) {
                         e2.printStackTrace();
                         // TODO block action, and try again!
                     }
+                }
             }
         }, unit.getName() + " AI Thread").start();
 

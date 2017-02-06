@@ -30,16 +30,18 @@ public class TownInitializer {
         String typeName = town.getProperty(MACRO_PROPS.TAVERNS);
 
         if (!DataManager.isTypeName(typeName)) {
-            if (typeName.isEmpty())
+            if (typeName.isEmpty()) {
                 typeName = TavernMaster.DEFAULT_TAVERN;
-            else {
+            } else {
                 // PER T_TYPE, random or default
             }
         }
         ObjType type = DataManager
                 .getType(typeName, MACRO_OBJ_TYPES.TOWN_PLACE);
         if (type == null) // TODO yeah...
+        {
             type = DataManager.getTypes(MACRO_OBJ_TYPES.TOWN_PLACE).get(0);
+        }
         Tavern tavern = new Tavern(town.getRef().getGame(), type, town.getRef());
         TavernMaster.generateTavernName(tavern);
         town.setTavern(tavern);
@@ -50,21 +52,25 @@ public class TownInitializer {
         MacroRef ref = MacroGame.getGame().getRef().getCopy();
         int i = 0;
         int max = town.getLevel();
-        if (max == 0)
+        if (max == 0) {
             max = default_shop_limit;
+        }
         int min = town.getLevel() / 2;
-        if (min == 0)
+        if (min == 0) {
             min = default_shop_min;
+        }
         for (String shopTypeName : StringMaster.openContainer(town
                 .getProperty(MACRO_PROPS.SHOPS))) {
             i++;
-            if (i > max)
+            if (i > max) {
                 break;
+            }
             ObjType type = new ObjType(DataManager.getType(shopTypeName,
                     MACRO_OBJ_TYPES.SHOP));
             type.initType();
-            if (type == null)
+            if (type == null) {
                 type = getGenericShopType(shopTypeName);
+            }
             addShop(town, ref, type);
         }
         if (i < min) {
@@ -107,8 +113,9 @@ public class TownInitializer {
             Shop shop = new Shop(town.getGame(), type, ref);
             town.setShop(shop);
             town.getShops().add(shop);
-        } else
+        } else {
             town.getShops().add(new Shop(town.getGame(), type, ref));
+        }
     }
 
     public static void initLibraries(Town town) {

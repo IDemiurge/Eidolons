@@ -140,21 +140,25 @@ public class XML_Transformer {
 	}
 
 	public static void filterTypes(Condition c, OBJ_TYPE... TYPES) {
-		for (OBJ_TYPE TYPE : TYPES)
-			for (ObjType type : DataManager.getTypes(TYPE)) {
-				if (c.check(type.getRef()))
-					DataManager.removeType(type.getName(), TYPE.getName());
-			}
-	}
+        for (OBJ_TYPE TYPE : TYPES) {
+            for (ObjType type : DataManager.getTypes(TYPE)) {
+                if (c.check(type.getRef())) {
+                    DataManager.removeType(type.getName(), TYPE.getName());
+                }
+            }
+        }
+    }
 
 	public static void adjustProgressionToWeightForm(ObjType type, boolean attr) {
 		String finalString = "";
 		String attrString = attr ? type.getProperty(PROPS.ATTRIBUTE_PROGRESSION) : type
 				.getProperty(PROPS.MASTERY_PROGRESSION);
-		if (attrString.isEmpty())
-			return;
-		if (attrString.contains("("))
-			return;
+        if (attrString.isEmpty()) {
+            return;
+        }
+        if (attrString.contains("(")) {
+            return;
+        }
 
 		List<String> container = StringMaster.openContainer(attrString);
 		int i = 0;
@@ -162,9 +166,10 @@ public class XML_Transformer {
 		for (String s : container) {
 			int weight = container.size() - i + PROGRESSION_WEIGHT_CONST;
 			map.get(s);
-			if (map.get(s) != null)
-				weight += map.get(s);
-			map.put(s, weight);
+            if (map.get(s) != null) {
+                weight += map.get(s);
+            }
+            map.put(s, weight);
 			i++;
 		}
 
@@ -191,9 +196,11 @@ public class XML_Transformer {
 		// XML_Writer.createBackUpReserve();
 		DequeImpl<XML_File> xmlFiles = getXmlFiles();
 		for (XML_File file : xmlFiles) {
-			for (VALUE v : ContentManager.getValueList())
-				if (!ContentManager.isValueForOBJ_TYPE(file.getType(), v))
-					removeValue(v, file, false, false);
+            for (VALUE v : ContentManager.getValueList()) {
+                if (!ContentManager.isValueForOBJ_TYPE(file.getType(), v)) {
+                    removeValue(v, file, false, false);
+                }
+            }
 
 			removeEmptyNodes(file);
 			XML_Writer.write(file);
@@ -203,16 +210,20 @@ public class XML_Transformer {
 
 	private static void removeEmptyNodes(XML_File file) {
 		Document doc = XML_Converter.getDoc(file.getContents());
-		if (doc == null)
-			return;
-		for (Node groupNode : XML_Converter.getNodeList(doc.getFirstChild())) {
-			for (Node typeNode : XML_Converter.getNodeList(groupNode))
-				for (Node valueGroupNode : XML_Converter.getNodeList(typeNode))
-					for (Node valueNode : XML_Converter.getNodeList(valueGroupNode))
-						if (StringMaster.isEmpty(valueNode.getTextContent())) {
-							valueGroupNode.removeChild(valueNode);
-						}
-		}
+        if (doc == null) {
+            return;
+        }
+        for (Node groupNode : XML_Converter.getNodeList(doc.getFirstChild())) {
+            for (Node typeNode : XML_Converter.getNodeList(groupNode)) {
+                for (Node valueGroupNode : XML_Converter.getNodeList(typeNode)) {
+                    for (Node valueNode : XML_Converter.getNodeList(valueGroupNode)) {
+                        if (StringMaster.isEmpty(valueNode.getTextContent())) {
+                            valueGroupNode.removeChild(valueNode);
+                        }
+                    }
+                }
+            }
+        }
 		String contents = XML_Converter.getStringFromXML(doc);
 		file.setContents(contents);
 
@@ -240,13 +251,15 @@ public class XML_Transformer {
 				list.add(subString);
 			}
 		}
-		if (!changed)
-			return;
-		newContents = StringMaster.joinStringList(list, divider);
+        if (!changed) {
+            return;
+        }
+        newContents = StringMaster.joinStringList(list, divider);
 		file.setContents(newContents);
-		if (write)
-			XML_Writer.write(file);
-	}
+        if (write) {
+            XML_Writer.write(file);
+        }
+    }
 
 	public static void renameType(ObjType type, String newName, PROPERTY... props) {
 		// backUp();

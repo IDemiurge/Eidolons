@@ -27,8 +27,9 @@ public abstract class HeroItemTab extends HeroPanelTab implements BorderChecker 
     public HeroItemTab(String title, MainViewPanel mvp, DC_HeroObj hero) {
         super(title, mvp, hero);
         setPanelSize(MainPanel.SIZE);
-        if (isReady())
+        if (isReady()) {
             init();
+        }
     }
 
     protected void init() {
@@ -47,8 +48,9 @@ public abstract class HeroItemTab extends HeroPanelTab implements BorderChecker 
     }
 
     public void activate() {
-        if (getItemManager() != null)
+        if (getItemManager() != null) {
             getItemManager().setHeroList(pagedListPanel);
+        }
         resetComps();
     }
 
@@ -72,15 +74,17 @@ public abstract class HeroItemTab extends HeroPanelTab implements BorderChecker 
     }
 
     public void resetComps() {
-        if (isReinitDataRequired() || isDirty())
+        if (isReinitDataRequired() || isDirty()) {
             initData();
+        }
 
         pagedListPanel.setData(data);
         pagedListPanel.initPages();
         getItemManager().add(pagedListPanel);
         pagedListPanel.refresh();
-        if (pagedListPanel.getParent() == null)
+        if (pagedListPanel.getParent() == null) {
             addComps();
+        }
     }
 
     protected ItemListManager getItemManager() {

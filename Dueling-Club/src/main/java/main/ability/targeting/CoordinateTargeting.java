@@ -43,12 +43,13 @@ public class CoordinateTargeting extends TargetingImpl {
         }
         Coordinates coordinate = obj.getCoordinates().getAdjacentCoordinate(used_direction);
         List<DC_HeroObj> objects = obj.getGame().getObjectsOnCoordinate(coordinate);
-        if (objects.size() == 0)
+        if (objects.size() == 0) {
             ref.setTarget(obj.getGame().getCellByCoordinate(coordinate).getId());
-        else if (objects.size() == 1)
+        } else if (objects.size() == 1) {
             ref.setTarget(objects.get(0).getId());
-        else
+        } else {
             ref.setGroup(new GroupImpl(new LinkedList<Obj>(objects)));
+        }
         return true;
     }
 }

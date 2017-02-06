@@ -1,12 +1,7 @@
 package main.data;
 
 import main.AV_DataManager;
-import main.content.ContentManager;
-import main.content.MACRO_OBJ_TYPES;
-import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.PARAMS;
-import main.content.VALUE;
+import main.content.*;
 import main.content.parameters.G_PARAMS;
 import main.content.parameters.PARAMETER;
 import main.content.properties.PROPERTY;
@@ -18,13 +13,8 @@ import main.simulation.SimulationManager;
 import main.system.auxiliary.ListMaster;
 import main.system.auxiliary.StringMaster;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.Vector;
-
 import javax.swing.table.DefaultTableModel;
+import java.util.*;
 
 public class TableDataManager {
 
@@ -38,10 +28,6 @@ public class TableDataManager {
 			PARAMS.FORMULA, G_PARAMS.DURATION, };
 	public static int IMG_ROW = 1;
 
-	public void init() {
-		// subgroups
-	}
-
 	public static Set<ObjType> getTypes(String key) {
 		return null;
 
@@ -51,9 +37,10 @@ public class TableDataManager {
 		List<String> set = new LinkedList<String>();
 		for (OBJ_TYPE type : (ArcaneVault.isMacroMode()) ? MACRO_OBJ_TYPES
 				.getTypeGroups() : OBJ_TYPES.getTypeGroups()) {
-			if (type.getCode() != -1)
-				set.add(type.getName());
-		}
+            if (type.getCode() != -1) {
+                set.add(type.getName());
+            }
+        }
 		return set;
 	}
 
@@ -100,32 +87,35 @@ public class TableDataManager {
 		// values.putAll(entity.getParamMap().getMap());
 		for (String name : names) {
 			Vector<String> vector1 = new Vector<String>();
-			if (name.equalsIgnoreCase("Material Quantity"))
-				vector1 = new Vector<String>();
-			vector1.add(name);
+            if (name.equalsIgnoreCase("Material Quantity")) {
+                vector1 = new Vector<String>();
+            }
+            vector1.add(name);
 			VALUE val = ContentManager.getValue(name);
 			String value = null;
 			if (val instanceof PROPERTY) {
 				value = entity.getProperty((PROPERTY) val);
 			} else {
-				if (ListMaster.toList(SHOW_FORMULA_PARAM_LIST).contains(val))
-					value = entity.getParam((PARAMETER) val);
-				else
-					try {
-						value = "" + entity.getIntParam((PARAMETER) val);
-					} catch (Exception e) {
+                if (ListMaster.toList(SHOW_FORMULA_PARAM_LIST).contains(val)) {
+                    value = entity.getParam((PARAMETER) val);
+                } else {
+                    try {
+                        value = "" + entity.getIntParam((PARAMETER) val);
+                    } catch (Exception e) {
 
-						e.printStackTrace();
-						value = "(error)"
-						// + entity.getParam((PARAMETER) val)
-						;
-					}
+                        e.printStackTrace();
+                        value = "(error)"
+                        // + entity.getParam((PARAMETER) val)
+                        ;
+                    }
+                }
 
 			}
 
-			if (value == null || StringMaster.isEmpty(value))
-				value = ContentManager.getValue(name).getDefaultValue();
-			vector1.add(value);
+            if (value == null || StringMaster.isEmpty(value)) {
+                value = ContentManager.getValue(name).getDefaultValue();
+            }
+            vector1.add(value);
 			data.add(vector1);
 
 		}
@@ -158,4 +148,8 @@ public class TableDataManager {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+    public void init() {
+        // subgroups
+    }
 }

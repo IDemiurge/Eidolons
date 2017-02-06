@@ -47,8 +47,9 @@ public class DC_ServerConnector extends ServerConnector {
             int retry = JOptionPane
                     .showConfirmDialog(null, "Should I keep trying to connect?", "Failed to connect to the server! ("
                             + host + ")", JOptionPane.ERROR_MESSAGE);
-            if (retry != JOptionPane.YES_OPTION)
+            if (retry != JOptionPane.YES_OPTION) {
                 return null;
+            }
             main.system.auxiliary.LogMaster
                     .log(4, "Retrying every 5 seconds...");
             while (socket == null) {

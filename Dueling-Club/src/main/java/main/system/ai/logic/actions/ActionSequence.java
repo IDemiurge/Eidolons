@@ -23,13 +23,15 @@ public class ActionSequence {
 
     public ActionSequence(Action... actions) {
         this(new ListMaster<Action>().getList(actions), null, null);
-        if (this.actions.isEmpty())
+        if (this.actions.isEmpty()) {
             setAi(getActions().get(0).getSource().getUnitAI());
+        }
     }
 
     public ActionSequence(List<Action> actions, Task task, UnitAI ai) {
-        if (task != null)
+        if (task != null) {
             this.type = task.getType();
+        }
         this.task = task;
         this.ai = ai;
         this.actions = actions;
@@ -56,22 +58,25 @@ public class ActionSequence {
     }
 
     public void removeFirstAction() {
-        if (actions.isEmpty())
+        if (actions.isEmpty()) {
             return;
+        }
         actions.remove(0);
     }
 
     public Action getNextAction() {
         i++;
-        if (actions.size() <= i)
+        if (actions.size() <= i) {
             return null;
+        }
         return actions.get(i);
 
     }
 
     public UnitAI getAi() {
-        if (ai == null)
+        if (ai == null) {
             setAi(getActions().get(0).getSource().getUnitAI());
+        }
         return ai;
     }
 
@@ -100,8 +105,9 @@ public class ActionSequence {
     }
 
     public int getPriority() {
-        if (priority == null)
+        if (priority == null) {
             return -1;
+        }
         return priority;
     }
 

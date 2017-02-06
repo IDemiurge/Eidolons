@@ -91,12 +91,13 @@ public class GridMouseListener extends ClickListener {
                     recordOptions.add(recordOption);
                 }
                 if (
-                        hero.getCustomParamMap() != null)
+                        hero.getCustomParamMap() != null) {
                     hero.getCustomParamMap().keySet().forEach(counter -> {
-                        ToolTipRecordOption option = new ToolTipManager.ToolTipRecordOption();
+                        ToolTipRecordOption option = new ToolTipRecordOption();
                         option.name = counter + " " + hero.getCustomParamMap().get(counter);
                         recordOptions.add(option);
                     });
+                }
 
                 GuiEventManager.trigger(SHOW_TOOLTIP, new EventCallbackParam(recordOptions));
                 GuiEventManager.trigger(MOUSE_HOVER, new EventCallbackParam(hero));

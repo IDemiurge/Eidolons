@@ -87,8 +87,9 @@ public abstract class CustomButton extends TextCompDC implements MouseListener {
 
     @Override
     protected int getDefaultY() {
-        if (isMoreY())
+        if (isMoreY()) {
             return 3 * super.getDefaultY() / 2;
+        }
         return super.getDefaultY();
     }
 
@@ -98,19 +99,21 @@ public abstract class CustomButton extends TextCompDC implements MouseListener {
 
     @Override
     protected int getDefaultX() {
-        if (!StringMaster.isEmpty(text))
+        if (!StringMaster.isEmpty(text)) {
             return getCenteredX(text);
+        }
         return super.getDefaultY();
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (SwingUtilities.isRightMouseButton(e))
+        if (SwingUtilities.isRightMouseButton(e)) {
             handleRightClick();
-        else if (e.isAltDown())
+        } else if (e.isAltDown()) {
             altClicked();
-        else
+        } else {
             clicked();
+        }
 
     }
 
@@ -141,8 +144,9 @@ public abstract class CustomButton extends TextCompDC implements MouseListener {
     }
 
     public void activateMouseListener() {
-        if (Arrays.asList(getMouseListeners()).isEmpty())
+        if (Arrays.asList(getMouseListeners()).isEmpty()) {
             addMouseListener(this);
+        }
 
     }
 }

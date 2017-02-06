@@ -24,10 +24,12 @@ public class BF_MouseWheelListener implements MouseWheelListener {
         Obj hoverObj = DC_Game.game.getManager().getHoverObj();
         if (hoverObj != null) {
             if (grid.isOnEdgeX(hoverObj.getCoordinates()) != null) {
-                if (grid.isOnEdgeY(hoverObj.getCoordinates()) == null)
+                if (grid.isOnEdgeY(hoverObj.getCoordinates()) == null) {
                     x = true;
-            } else if (grid.isOnEdgeY(hoverObj.getCoordinates()) != null)
+                }
+            } else if (grid.isOnEdgeY(hoverObj.getCoordinates()) != null) {
                 x = false;
+            }
         } else {
             Point p = e.getPoint();
             int y_diff = Math.max(p.y, GuiManager.getBattleFieldHeight() - p.y);
@@ -36,8 +38,9 @@ public class BF_MouseWheelListener implements MouseWheelListener {
         }
 
         int n = (int) Math.round(e.getPreciseWheelRotation());
-        if (n == 0)
+        if (n == 0) {
             return;
+        }
         grid.wheelRotates(n, x);
     }
 }

@@ -117,10 +117,12 @@ public class DrawHelper {
     public static boolean isFacingDrawn(CellComp cellComp, Obj obj) {
         if (obj instanceof DC_HeroObj) {
             DC_HeroObj unit = (DC_HeroObj) obj;
-            if (!VisionManager.checkDetectedEnemy((DC_Obj) obj))
+            if (!VisionManager.checkDetectedEnemy((DC_Obj) obj)) {
                 return false;
-            if (unit.isBfObj())
+            }
+            if (unit.isBfObj()) {
                 return false;
+            }
             return true;
             // !unit.checkProperty(G_PROPS.BF_OBJECT_TAGS, "" +
             // BF_OBJECT_TAGS.ASSYMETRICAL)

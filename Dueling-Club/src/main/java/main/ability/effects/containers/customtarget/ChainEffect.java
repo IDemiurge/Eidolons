@@ -49,7 +49,9 @@ public class ChainEffect extends SpecialTargetingEffect {
         nOfJumps = formula.getInt(ref);
         //while has adjacent?
         while (nOfJumps > 0) {
-            if (!targeting.select(ref)) break;
+            if (!targeting.select(ref)) {
+                break;
+            }
             //targeting.setLastTarget(lastTarget);
 
 //			ref.setTarget(target);

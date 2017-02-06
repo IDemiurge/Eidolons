@@ -16,11 +16,13 @@ public class MenuButton extends CustomButton implements Runnable {
     }
 
     public void handleAltClick() {
-        if (game.isDebugMode() || Launcher.DEV_MODE)
-            if (game.isSimulation())
+        if (game.isDebugMode() || Launcher.DEV_MODE) {
+            if (game.isSimulation()) {
                 game.getDebugMaster().showDebugWindow();
-            else
+            } else {
                 game.getDebugMaster().toggleDebugGui();
+            }
+        }
     }
 
     @Override
@@ -30,8 +32,9 @@ public class MenuButton extends CustomButton implements Runnable {
             return;
         }
         // getMenuDialog().update();
-        if (DialogMaster.confirm("Exit to Main Menu?"))
+        if (DialogMaster.confirm("Exit to Main Menu?")) {
             Launcher.getMainManager().exitToMainMenu();
+        }
 
         // if (game.isDebugMode()) {
         // game.getDebugMaster().showDebugWindow();

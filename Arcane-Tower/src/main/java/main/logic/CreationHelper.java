@@ -68,15 +68,16 @@ public class CreationHelper implements ValueEditor {
 		ObjType type = null;
 		// ArcaneVault.getSelectedType();
 		// if (type == null)
-		if (DialogMaster.confirm("Select template?"))
-			type = ListChooser.chooseType_(TYPE);
-		else {
-			String name = DialogMaster.inputText("Name?");
+        if (DialogMaster.confirm("Select template?")) {
+            type = ListChooser.chooseType_(TYPE);
+        } else {
+            String name = DialogMaster.inputText("Name?");
 			type = new ObjType(name, TYPE);
 		}
-		if (type == null)
-			return null;
-		fillOut(type);
+        if (type == null) {
+            return null;
+        }
+        fillOut(type);
 		return type;
 	}
 
@@ -93,14 +94,18 @@ public class CreationHelper implements ValueEditor {
 		List<VALUE> list = new LinkedList<>();
 		for (VALUE l : ContentManager.getValuesForType(t.getOBJ_TYPE(), false)) {
 			if (extended) {
-				if (l.isLowPriority())
-					continue;
-				list.add(l);
-			} else if (l.isHighPriority())
-				if (!(l instanceof G_PROPS))
-					if (!(l instanceof G_PARAMS))
-						list.add(l);
-		}
+                if (l.isLowPriority()) {
+                    continue;
+                }
+                list.add(l);
+            } else if (l.isHighPriority()) {
+                if (!(l instanceof G_PROPS)) {
+                    if (!(l instanceof G_PARAMS)) {
+                        list.add(l);
+                    }
+                }
+            }
+        }
 		switch (TYPE) {
 			case TASK:
 				list.add(AT_PARAMS.GLORY);
@@ -112,36 +117,22 @@ public class CreationHelper implements ValueEditor {
 			case SESSION:
 
 		}
-		if (TYPE.getChildValue() != null)
-			list.add(TYPE.getChildValue());
+        if (TYPE.getChildValue() != null) {
+            list.add(TYPE.getChildValue());
+        }
 
-		if (TYPE.getParentValue() != null)
-			list.add(TYPE.getParentValue());
+        if (TYPE.getParentValue() != null) {
+            list.add(TYPE.getParentValue());
+        }
 
-		if (TYPE.getGroupingKey() != G_PROPS.GROUP)
-			list.add(TYPE.getGroupingKey());
-		if (TYPE.getSubGroupingKey() != G_PROPS.GROUP)
-			list.add(TYPE.getSubGroupingKey());
+        if (TYPE.getGroupingKey() != G_PROPS.GROUP) {
+            list.add(TYPE.getGroupingKey());
+        }
+        if (TYPE.getSubGroupingKey() != G_PROPS.GROUP) {
+            list.add(TYPE.getSubGroupingKey());
+        }
 
 		return list;
-	}
-
-	@Override
-	public boolean checkClickProcessed(MouseEvent e, ObjType selectedType, VALUE val, String value) {
-		if (val instanceof AT_PROPS) {
-			String input = getInput(val, selectedType, value);
-			if (input != null)
-				selectedType.setValue(val, input);
-			return true;
-		}
-		if (val instanceof AT_PARAMS) {
-
-			String input = getInput(val, selectedType, value);
-			if (input != null)
-				selectedType.setValue(val, input);
-			return true;
-		}
-		return false;
 	}
 
 	public static Goal getAllSessionTasks(Session session) {
@@ -169,12 +160,14 @@ public class CreationHelper implements ValueEditor {
 
 	public static Goal getGroupGoal(VIEW_OPTION viewOption) {
 		ObjType type = null;
-		if (viewOption == VIEW_OPTION.CHOOSE_GROUP)
-			type = ListChooser.chooseTypeFromSubgroup_(AT_OBJ_TYPE.GOAL, "Task Group");
-		if (viewOption == VIEW_OPTION.GROUP_LAST)
-			type = (ObjType) ZeitMaster.getLatest(DataManager.getTypesGroup(AT_OBJ_TYPE.GOAL,
-					"Task Group"), AT_PARAMS.TIME_LAST_MODIFIED);
-		if (viewOption == VIEW_OPTION.NEW_GROUP) {
+        if (viewOption == VIEW_OPTION.CHOOSE_GROUP) {
+            type = ListChooser.chooseTypeFromSubgroup_(AT_OBJ_TYPE.GOAL, "Task Group");
+        }
+        if (viewOption == VIEW_OPTION.GROUP_LAST) {
+            type = (ObjType) ZeitMaster.getLatest(DataManager.getTypesGroup(AT_OBJ_TYPE.GOAL,
+                    "Task Group"), AT_PARAMS.TIME_LAST_MODIFIED);
+        }
+        if (viewOption == VIEW_OPTION.NEW_GROUP) {
 			String typeName = CreationHelper.TASK_COMPILATION + " from "
 					+ TimeMaster.getDateString();
 			typeName = NameMaster.getUniqueVersionedName(DataManager.getTypes(AT_OBJ_TYPE.GOAL),
@@ -184,9 +177,10 @@ public class CreationHelper implements ValueEditor {
 			ListChooser.addMod(LC_MODS.TEXT_DISPLAYED);
 			StringMaster.constructEntityNameContainer(PromptMaster.taskPrompt());
 			String types = ListChooser.chooseTypes(AT_OBJ_TYPE.TASK, "", "");
-			if (types.isEmpty())
-				return null;
-			type.setProperty(AT_PROPS.TASKS, types);
+            if (types.isEmpty()) {
+                return null;
+            }
+            type.setProperty(AT_PROPS.TASKS, types);
 			// unique name if same day!
 			type.setProperty(AT_PROPS.GOAL_TYPE, CreationHelper.TASK_COMPILATION);
 			DataManager.addType(type);
@@ -215,10 +209,12 @@ public class CreationHelper implements ValueEditor {
 		INPUT_REQ inputReq = preferredInputMode;
 		if (inputReq == null) {
 			inputReq = val.getInputReq();
-			if (inputReq == null)
-				if (ENUM_CLASS != null)
-					inputReq = INPUT_REQ.SINGLE_ENUM;
-		}
+            if (inputReq == null) {
+                if (ENUM_CLASS != null) {
+                    inputReq = INPUT_REQ.SINGLE_ENUM;
+                }
+            }
+        }
 		switch (inputReq) {
 			case STRING:
 				return DialogMaster.inputText("Set value for " + val.getName(), value);
@@ -246,5 +242,25 @@ public class CreationHelper implements ValueEditor {
 		}
 		return null;
 	}
+
+    @Override
+    public boolean checkClickProcessed(MouseEvent e, ObjType selectedType, VALUE val, String value) {
+        if (val instanceof AT_PROPS) {
+            String input = getInput(val, selectedType, value);
+            if (input != null) {
+                selectedType.setValue(val, input);
+            }
+            return true;
+        }
+        if (val instanceof AT_PARAMS) {
+
+            String input = getInput(val, selectedType, value);
+            if (input != null) {
+                selectedType.setValue(val, input);
+            }
+            return true;
+        }
+        return false;
+    }
 
 }

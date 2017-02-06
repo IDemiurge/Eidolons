@@ -79,7 +79,9 @@ public class MultiTargeting extends TargetingImpl {
             if (noDuplicates) {
                 for (Integer id : IDs) {
                     if (id != null) // ?
+                    {
                         targeting.getFilter().getDynamicExceptions().add(id);
+                    }
                 }
 
             }
@@ -90,8 +92,9 @@ public class MultiTargeting extends TargetingImpl {
             IDs.add(REF.getTarget());
             i++;
         }
-        if (!result)
+        if (!result) {
             return false;
+        }
 
         Collection<Integer> ids = new LinkedList<Integer>();
         for (Ref REF : refs) {

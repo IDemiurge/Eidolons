@@ -55,8 +55,9 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
         this.listMap.put(list, lists);
         for (HeroListPanel page : lists) {
             page.getList().addListSelectionListener(this);
-            if (!Arrays.asList(page.getList().getMouseListeners()).contains(this))
+            if (!Arrays.asList(page.getList().getMouseListeners()).contains(this)) {
                 page.getList().addMouseListener(this);
+            }
         }
 
     }
@@ -67,48 +68,58 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
 
     protected boolean addType(ObjType type, HeroListPanel hlp, boolean alt) {
         if (isQuickItemList(hlp, type.getOBJ_TYPE_ENUM() == OBJ_TYPES.ITEMS ? PROPS.QUICK_ITEMS
-                : null))
+                : null)) {
             return false;
+        }
         if (hlp != null) {
             if (isHeroList(hlp)) {
-                if (TYPE == OBJ_TYPES.JEWELRY)
+                if (TYPE == OBJ_TYPES.JEWELRY) {
                     return false;
-                if (TYPE == OBJ_TYPES.SKILLS)
+                }
+                if (TYPE == OBJ_TYPES.SKILLS) {
                     return false;
+                }
                 if (C_OBJ_TYPE.ITEMS.equals(TYPE))
 
+                {
                     return CharacterCreator.getHeroManager().addSlotItem(getHero(), type, alt) > 0;
+                }
 
                 if (TYPE == OBJ_TYPES.SPELLS) {
                     if (!alt) {
                         return CharacterCreator.getHeroManager().addItem(getHero(), type, TYPE,
                                 PROPS.VERBATIM_SPELLS);
 
-                    } else
+                    } else {
                         return CharacterCreator.getHeroManager().addMemorizedSpell(getHero(), type);
+                    }
 
                 }
             }
 
-            if (hlp.getParent() instanceof HC_PagedListPanel)
-                if (isRemovable((HC_PagedListPanel) hlp.getParent()))
+            if (hlp.getParent() instanceof HC_PagedListPanel) {
+                if (isRemovable((HC_PagedListPanel) hlp.getParent())) {
                     return false;
+                }
+            }
 
         }
         // if (!lists.getOrCreate(list).isResponsive())
         // return;
 
         if (TYPE == OBJ_TYPES.CLASSES || TYPE == OBJ_TYPES.SKILLS) {
-            if (hero.getFeat(type) != null)
+            if (hero.getFeat(type) != null) {
                 return CharacterCreator.getHeroManager().tryIncrementRank(hero, type);
+            }
         }
 
         return CharacterCreator.getHeroManager().addItem(getHero(), type, TYPE, PROP);
     }
 
     protected boolean isHeroList(HeroListPanel hlp) {
-        if (getHeroList() == null)
+        if (getHeroList() == null) {
             return false;
+        }
         return getHeroList().getLists().contains(hlp);
     }
 
@@ -124,22 +135,28 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
             // if (isHeroList(hlp))
             if (HeroCreator.getObjForType(hero, (ObjType) selected) != null)
                 // if (checkObjConversion(type.getOBJ_TYPE_ENUM()))
+            {
                 selected = HeroCreator.getObjForType(hero, (ObjType) selected);
+            }
         }
 
         if (infoPanelSwitch) {
-            if (heroInfoPanel.getEntity() != null)
-                if (heroInfoPanel.getEntity().equals(selected))
+            if (heroInfoPanel.getEntity() != null) {
+                if (heroInfoPanel.getEntity().equals(selected)) {
                     return;
+                }
+            }
             Entity entity = heroInfoPanel.getEntity();
             heroInfoPanel.setEntity(selected);
             heroInfoPanel.refresh();
             itemInfoPanel.setEntity(entity);
             itemInfoPanel.refresh();
         } else {
-            if (itemInfoPanel.getEntity() != null)
-                if (itemInfoPanel.getEntity().equals(selected))
+            if (itemInfoPanel.getEntity() != null) {
+                if (itemInfoPanel.getEntity().equals(selected)) {
                     return;
+                }
+            }
             Entity entity = itemInfoPanel.getEntity();
             itemInfoPanel.setEntity(selected);
             itemInfoPanel.refresh();
@@ -171,7 +188,7 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
     }
 
     private void updateToolTip(Entity type, boolean prompted) {
-        if (getHero().getGame().isSimulation())
+        if (getHero().getGame().isSimulation()) {
             if (CharacterCreator.getHeroPanel().getMiddlePanel().isTooltipPanelDisplayed()) {
 
                 CharacterCreator.getHeroPanel().getMiddlePanel().getToolTipPanel().setHero(hero);
@@ -180,6 +197,7 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
                         prompted);
                 CharacterCreator.getHeroPanel().getMiddlePanel().getToolTipPanel().refresh();
             }
+        }
     }
 
     public void removeType(Entity entity) {
@@ -190,20 +208,20 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
     protected void removeType(Entity type, HeroListPanel hlp, PROPERTY p) {
         boolean free = !heroList.getLists().contains(hlp);
 
-        if (isQuickItemList(hlp, p))
+        if (isQuickItemList(hlp, p)) {
             CharacterCreator.getHeroManager().removeQuickSlotItem(getHero(), type);
-
-        else if (free && type.getOBJ_TYPE_ENUM() == OBJ_TYPES.JEWELRY)
+        } else if (free && type.getOBJ_TYPE_ENUM() == OBJ_TYPES.JEWELRY) {
             CharacterCreator.getHeroManager().removeJewelryItem(getHero(), type);
-        else {
+        } else {
             CharacterCreator.getHeroManager().removeItem(getHero(), type, p, TYPE, free);
         }
 
     }
 
     private boolean isQuickItemList(HeroListPanel hlp, PROPERTY p) {
-        if (quickItemsList != null)
+        if (quickItemsList != null) {
             return quickItemsList.getLists().contains(hlp);
+        }
         return p == PROPS.QUICK_ITEMS;
     }
 
@@ -218,7 +236,7 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
         JList<ObjType> list = (JList<ObjType>) e.getSource();
         HeroListPanel hlp = (HeroListPanel) list.getParent();
         ObjType type = list.getSelectedValue();
-        if (right && e.getClickCount() == 1)
+        if (right && e.getClickCount() == 1) {
             if (isRemovable((HC_PagedListPanel) hlp.getParent())
                     || (!getHero().getGame().isSimulation() && PROP == PROPS.INVENTORY)) {
                 removeType(type, hlp, isAltProp(hlp) ? prop2 : PROP);
@@ -226,9 +244,11 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
                 // coins clink! failed to parse xml
                 return;
             }
+        }
         // double right click won't work for ITEMS!
-        if (right && e.getClickCount() > 1)
+        if (right && e.getClickCount() > 1) {
             alt = true;
+        }
 
         if (alt || e.getClickCount() > 1) {
             if (addType(type, hlp, alt)) {
@@ -250,25 +270,30 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
     }
 
     private STD_SOUNDS getRemoveSound(OBJ_TYPE TYPE) {
-        if (C_OBJ_TYPE.ITEMS.equals(TYPE))
+        if (C_OBJ_TYPE.ITEMS.equals(TYPE)) {
             return STD_SOUNDS.DIS__COINS;
-        if (OBJ_TYPES.SPELLS.equals(TYPE))
+        }
+        if (OBJ_TYPES.SPELLS.equals(TYPE)) {
             return STD_SOUNDS.DIS__BOOK_CLOSE;
+        }
 
         return STD_SOUNDS.ACTION_CANCELLED;
 
     }
 
     private STD_SOUNDS getAddSound(OBJ_TYPE TYPE) {
-        if (C_OBJ_TYPE.ITEMS.equals(TYPE))
+        if (C_OBJ_TYPE.ITEMS.equals(TYPE)) {
             return STD_SOUNDS.DIS__COINS;
-        if (OBJ_TYPES.SPELLS.equals(TYPE))
+        }
+        if (OBJ_TYPES.SPELLS.equals(TYPE)) {
             return STD_SOUNDS.DIS__BOOK_OPEN;
+        }
         if (OBJ_TYPES.SKILLS.equals(TYPE)) {// TODO
             return STD_SOUNDS.FIGHT;
         }
-        if (OBJ_TYPES.CLASSES.equals(TYPE))
+        if (OBJ_TYPES.CLASSES.equals(TYPE)) {
             return STD_SOUNDS.DIS__KNIFE;
+        }
         return STD_SOUNDS.CLICK_ACTIVATE;
     }
 
@@ -283,8 +308,9 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
     public void valueChanged(ListSelectionEvent e) {
         JList<ObjType> list = (JList<ObjType>) e.getSource();
         ObjType type = list.getSelectedValue();
-        if (type != null)
+        if (type != null) {
             typeSelected(type, (HeroListPanel) list.getParent());
+        }
     }
 
     @Override
@@ -340,8 +366,9 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
     }
 
     public void addRemoveList(HC_PagedListPanel list) {
-        if (!removeLists.contains(list))
+        if (!removeLists.contains(list)) {
             removeLists.add(list);
+        }
 
     }
 

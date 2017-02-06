@@ -106,9 +106,9 @@ public class EntityChoiceDialog<T extends Entity> extends G_Dialog implements Mo
 
     @Override
     protected void ok() {
-        if (choicePanel.getSelectedValue() == null)
+        if (choicePanel.getSelectedValue() == null) {
             WaitMaster.interrupt(getWaitOperation());
-        else {
+        } else {
             WaitMaster.receiveInput(getWaitOperation(), choicePanel.getSelectedValue());
         }
         super.ok();
@@ -141,8 +141,9 @@ public class EntityChoiceDialog<T extends Entity> extends G_Dialog implements Mo
             return;
         }
 
-        if (isInfoSelectionOn())
+        if (isInfoSelectionOn()) {
             entity.getGame().getManager().infoSelect(entity);
+        }
         initTooltip(entity);
     }
 
@@ -153,8 +154,9 @@ public class EntityChoiceDialog<T extends Entity> extends G_Dialog implements Mo
             return;
         }
         T entity = choicePanel.getSelectedValue();
-        if (isInfoSelectionOn())
+        if (isInfoSelectionOn()) {
             entity.getGame().getManager().infoSelect(entity);
+        }
         initTooltip(entity);
     }
 

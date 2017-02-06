@@ -58,8 +58,9 @@ public class SaveMaster {
             // same format as WE?
             // every object?
             StringBuilder builder = builders.get(obj.getOBJ_TYPE_ENUM());
-            if (builder == null)
+            if (builder == null) {
                 continue;
+            }
             XML_Writer.getTypeXML_Builder(obj, builder, obj.getType());
             builders.put(obj.getOBJ_TYPE_ENUM(), builder);
             // both macro and micro types...

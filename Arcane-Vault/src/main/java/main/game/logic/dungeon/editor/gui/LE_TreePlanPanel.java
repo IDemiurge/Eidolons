@@ -16,17 +16,7 @@ import main.system.auxiliary.TreeMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Rectangle;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JTree;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.plaf.basic.BasicTreeUI;
@@ -34,6 +24,9 @@ import javax.swing.tree.AbstractLayoutCache.NodeDimensions;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LE_TreePlanPanel extends BasicTreeUI implements TreeCellRenderer,
 		TreeSelectionListener {
@@ -59,16 +52,18 @@ public class LE_TreePlanPanel extends BasicTreeUI implements TreeCellRenderer,
 			DefaultMutableTreeNode node = new DefaultMutableTreeNode(z);
 			root.add(node);
 			for (MapBlock b : plan.getBlocks()) {
-				if (b.getType() == BLOCK_TYPE.CORRIDOR)
-					continue;// TODO
-				DefaultMutableTreeNode blockNode = new DefaultMutableTreeNode(b);
+                if (b.getType() == BLOCK_TYPE.CORRIDOR) {
+                    continue;// TODO
+                }
+                DefaultMutableTreeNode blockNode = new DefaultMutableTreeNode(b);
 				node.add(blockNode);
-				if (b.getObjects() != null)
-					for (Obj o : b.getObjects()) {
-						blockNode.add(new DefaultMutableTreeNode(o));
-						b.getConnectedBlocks();
-					}
-			}
+                if (b.getObjects() != null) {
+                    for (Obj o : b.getObjects()) {
+                        blockNode.add(new DefaultMutableTreeNode(o));
+                        b.getConnectedBlocks();
+                    }
+                }
+            }
 			root.add(node);
 		}
 		setTree(new JTree(root));
@@ -91,19 +86,23 @@ public class LE_TreePlanPanel extends BasicTreeUI implements TreeCellRenderer,
 
 	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected,
 			boolean expanded, boolean leaf, int row, boolean hasFocus) {
-		if (value == null)
-			return null;
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+        if (value == null) {
+            return null;
+        }
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 		value = node.getUserObject();
-		if (value instanceof MapZone)
-			return getZoneComponent((MapZone) value, selected);
+        if (value instanceof MapZone) {
+            return getZoneComponent((MapZone) value, selected);
+        }
 
-		if (value instanceof MapBlock)
-			return getBlockComponent((MapBlock) value, selected);
+        if (value instanceof MapBlock) {
+            return getBlockComponent((MapBlock) value, selected);
+        }
 
-		if (value instanceof Obj)
-			return getObjComponent((Obj) value, selected);
-		// TODO add dungeon icon
+        if (value instanceof Obj) {
+            return getObjComponent((Obj) value, selected);
+        }
+        // TODO add dungeon icon
 		JLabel label = new JLabel(value.toString());
 		label.setForeground(ColorManager.GOLDEN_WHITE);
 		label.setFont(FontMaster.getFont(FONT.AVQ, 19, Font.PLAIN));
@@ -129,15 +128,16 @@ public class LE_TreePlanPanel extends BasicTreeUI implements TreeCellRenderer,
 
 	public void blockRemoved(MapBlock block) {
 		DefaultMutableTreeNode node = getZoneNodeForBlock(block);
-		for (DefaultMutableTreeNode aChild : TreeMaster.getChildren(node))
-			if (aChild.getUserObject().equals(block)) {
-				// node.remove(aChild);
-				aChild.removeFromParent();
-				tree.updateUI();
-				tree.revalidate();
-				return;
-			}
-	}
+        for (DefaultMutableTreeNode aChild : TreeMaster.getChildren(node)) {
+            if (aChild.getUserObject().equals(block)) {
+                // node.remove(aChild);
+                aChild.removeFromParent();
+                tree.updateUI();
+                tree.revalidate();
+                return;
+            }
+        }
+    }
 
 	private DefaultMutableTreeNode getZoneNodeForBlock(MapBlock b) {
 		for (DefaultMutableTreeNode node : TreeMaster.getChildren(root)) {
@@ -160,9 +160,10 @@ public class LE_TreePlanPanel extends BasicTreeUI implements TreeCellRenderer,
 				+ CoordinatesMaster.getBoundsString(value.getX1(), value.getX2(), value.getY1(),
 						value.getY2());
 		Component comp = compCache.get(labelText);
-		if (comp != null)
-			return comp;
-		comp = getBlockComponent(STD_IMAGES.ZONE_NODE.getPath(), labelText, selected);
+        if (comp != null) {
+            return comp;
+        }
+        comp = getBlockComponent(STD_IMAGES.ZONE_NODE.getPath(), labelText, selected);
 		compCache.put(labelText, comp);
 		return comp;
 	}
@@ -174,14 +175,16 @@ public class LE_TreePlanPanel extends BasicTreeUI implements TreeCellRenderer,
 		// .getBoundsFromCoordinates(b.getCoordinates())
 		;
 		Component comp = compCache.get(labelText);
-		if (comp != null)
-			return comp;
-		String iconPath = "";
+        if (comp != null) {
+            return comp;
+        }
+        String iconPath = "";
 		if (b.getRoomType() == null) {
 			iconPath = STD_IMAGES.FOOT.getPath();
-		} else
-			iconPath = getIconPath(b.getRoomType());
-		comp = getBlockComponent(iconPath, labelText, selected);
+        } else {
+            iconPath = getIconPath(b.getRoomType());
+        }
+        comp = getBlockComponent(iconPath, labelText, selected);
 		compCache.put(b, comp);
 		return comp;
 
@@ -209,9 +212,10 @@ public class LE_TreePlanPanel extends BasicTreeUI implements TreeCellRenderer,
 	}
 
 	public void valueChanged(final TreeSelectionEvent e1) {
-		if (((JTree) e1.getSource()).getSelectionPath() == null)
-			return;
-		new Thread(new Runnable() {
+        if (((JTree) e1.getSource()).getSelectionPath() == null) {
+            return;
+        }
+        new Thread(new Runnable() {
 			@Override
 			public void run() {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) (((JTree) e1.getSource())
@@ -244,9 +248,10 @@ public class LE_TreePlanPanel extends BasicTreeUI implements TreeCellRenderer,
 			@Override
 			public Rectangle getNodeDimensions(Object value, int row, int depth, boolean expanded,
 					Rectangle rect) {
-				if (value == null)
-					return new Rectangle(VISUALS.PLAN_PANEL_FRAME.getWidth() - 50, ROW_HEIGHT);
-				Rectangle dimensions = super.getNodeDimensions(value, row, depth, expanded, rect);
+                if (value == null) {
+                    return new Rectangle(VISUALS.PLAN_PANEL_FRAME.getWidth() - 50, ROW_HEIGHT);
+                }
+                Rectangle dimensions = super.getNodeDimensions(value, row, depth, expanded, rect);
 				return dimensions;
 				// return new Rectangle(VISUALS.PLAN_PANEL_FRAME.getWidth() -
 				// 50,

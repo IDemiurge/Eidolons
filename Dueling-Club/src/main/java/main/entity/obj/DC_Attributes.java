@@ -50,9 +50,10 @@ public class DC_Attributes {
                 hero.modifyParameter(PARAMS.REST_BONUS, DC_Formulas
                         .getRestBonusFromVitality(amount), modifierKey);
 
-                if (DC_ConditionMaster.checkLiving(hero))
+                if (DC_ConditionMaster.checkLiving(hero)) {
                     hero.modifyParameter(PARAMS.ENDURANCE_REGEN, DC_Formulas
                             .getEnduranceRegenFromVitality(amount), modifierKey);
+                }
                 break;
             case AGILITY:
                 hero.modifyParameter(PARAMS.NOISE, -amount / 2, modifierKey);

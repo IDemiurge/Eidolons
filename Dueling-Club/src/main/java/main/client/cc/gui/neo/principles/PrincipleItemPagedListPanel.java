@@ -36,18 +36,24 @@ public class PrincipleItemPagedListPanel extends G_PagePanel<Entity> {
     protected List<List<Entity>> getPageData() {
         List<Entity> items = new LinkedList<>();
 
-        if (checkItemDisplayed(hero.getDeity()))
+        if (checkItemDisplayed(hero.getDeity())) {
             items.add(hero.getDeity());
+        }
         if (hero.getBackgroundType() != null) // TODO
-            if (checkItemDisplayed(hero.getBackgroundType()))
+        {
+            if (checkItemDisplayed(hero.getBackgroundType())) {
                 items.add(hero.getBackgroundType());
+            }
+        }
         for (DC_FeatObj feat : hero.getClasses()) {
-            if (checkItemDisplayed(feat))
+            if (checkItemDisplayed(feat)) {
                 items.add(feat);
+            }
         }
         for (DC_FeatObj feat : hero.getSkills()) {
-            if (checkItemDisplayed(feat))
+            if (checkItemDisplayed(feat)) {
                 items.add(feat);
+            }
         }
         return splitList(items);
     }

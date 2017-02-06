@@ -49,13 +49,15 @@ public class OptionDialog extends G_Dialog {
     @Override
     public Component createComponent() {
         panel = new G_Panel(getVisuals());
-        if (vertical)
+        if (vertical) {
             panel.setLayout(new MigLayout("fillx, flowy"));
-        else
+        } else {
             panel.setLayout(new MigLayout("fillx"));
+        }
         // panel.add(new TextComp(null, title), "");
-        for (Object o : options)
+        for (Object o : options) {
             addButton(o);
+        }
         WrappedTextComp comp = new WrappedTextComp(null, true) {
             protected int getDefaultFontSize() {
                 return 16;
@@ -90,8 +92,9 @@ public class OptionDialog extends G_Dialog {
         if (n >= wrapN) {
             n = 0;
             wrap = true;
-        } else
+        } else {
             n++;
+        }
         String constraints =
                 // "grow" +
                 ((wrap) ? ", wrap" : ""); // , id button" + n

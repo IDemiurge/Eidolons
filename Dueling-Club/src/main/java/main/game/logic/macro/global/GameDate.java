@@ -87,6 +87,10 @@ public class GameDate extends DataUnit<TIME_UNITS> {
         return era;
     }
 
+    public void setEra(int era) {
+        this.era = era + StringMaster.getOrdinalEnding(era) + " Era";
+    }
+
     public void setEra(String era) {
         this.era = era;
     }
@@ -101,10 +105,11 @@ public class GameDate extends DataUnit<TIME_UNITS> {
 
     public MONTH getMonth() {
         if (month == null) {
-            if (humanMonthsDisplayed)
+            if (humanMonthsDisplayed) {
                 month = HUMAN_MONTHS.values()[getMonthNumber()];
-            else
+            } else {
                 month = ELEDARI_MONTHS.values()[getMonthNumber()];
+            }
         }
         return month;
     }
@@ -135,10 +140,6 @@ public class GameDate extends DataUnit<TIME_UNITS> {
 
     public void setDay_or_night(boolean day_or_night) {
         this.day_or_night = day_or_night;
-    }
-
-    public void setEra(int era) {
-        this.era = era + StringMaster.getOrdinalEnding(era) + " Era";
     }
 
     public int getHour() {

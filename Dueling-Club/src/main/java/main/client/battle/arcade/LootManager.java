@@ -75,8 +75,9 @@ public class LootManager {
         // "take gold"?
         // perhaps if Loyalty is high enough...
         for (DC_HeroObj m : party.getMembers()) {
-            if (m == party.getLeader())
+            if (m == party.getLeader()) {
                 continue;
+            }
             int share = amount * m.getIntParam(MACRO_PARAMS.C_GOLD_SHARE) / 100;
             amount -= share;
             m.modifyParameter(PARAMS.GOLD, share);

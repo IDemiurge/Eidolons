@@ -11,23 +11,26 @@ public class EntityMaster {
 
     public static boolean checkPropertyAny(List<? extends Entity> list, PROPERTY prop, Object value) {
         for (Entity sub : list) {
-            if (sub.checkProperty(prop, value.toString()))
+            if (sub.checkProperty(prop, value.toString())) {
                 return true;
+            }
         }
         return false;
     }
 
     public static boolean checkPropertyAll(List<? extends Entity> list, PROPERTY prop, Object value) {
         for (Entity sub : list) {
-            if (!sub.checkProperty(prop, value.toString()))
+            if (!sub.checkProperty(prop, value.toString())) {
                 return false;
+            }
         }
         return true;
     }
 
     public static boolean isOverlaying(Entity entity) {
-        if (entity == null)
+        if (entity == null) {
             return false;
+        }
         return entity.checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BF_OBJECT_TAGS.OVERLAYING)
                 || entity.checkProperty(G_PROPS.CLASSIFICATIONS, "" + CLASSIFICATIONS.ATTACHED);
     }

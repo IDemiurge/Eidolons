@@ -72,8 +72,9 @@ public class FocusBuffRule extends DC_BuffRule {
 
     @Override
     protected boolean isReverse(Integer level) {
-        if (level == getMaxLevel())
+        if (level == getMaxLevel()) {
             return true;
+        }
         return super.isReverse(level);
     }
 

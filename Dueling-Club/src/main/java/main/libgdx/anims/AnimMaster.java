@@ -73,7 +73,9 @@ public class AnimMaster extends Group {
     private void bindEvents() {
 
         GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
-            if (showBuffAnimsOnHoverLength == null) return;
+            if (showBuffAnimsOnHoverLength == null) {
+                return;
+            }
             DC_HeroObj unit = (DC_HeroObj) p.get();
             unit.getBuffs().forEach(buff -> {
                 BuffAnim anim = continuousAnims.get(buff);
@@ -85,7 +87,9 @@ public class AnimMaster extends Group {
             });
         });
         GuiEventManager.bind(GuiEventType.INGAME_EVENT_TRIGGERED, p -> {
-            if (showBuffAnimsOnNewRoundLength == null) return;
+            if (showBuffAnimsOnNewRoundLength == null) {
+                return;
+            }
             Event e = (Event) p.get();
             if (e.getType() == STANDARD_EVENT_TYPE.NEW_ROUND) {
                 continuousAnims.values().forEach(anim -> {
@@ -99,7 +103,9 @@ public class AnimMaster extends Group {
         });
 
         GuiEventManager.bind(GuiEventType.ACTION_INTERRUPTED, p -> {
-            if (!isOn()) return;
+            if (!isOn()) {
+                return;
+            }
             leadAnimation.interrupt();
         });
         GuiEventManager.bind(GuiEventType.ACTION_BEING_RESOLVED, p -> {
@@ -109,7 +115,9 @@ public class AnimMaster extends Group {
 
         GuiEventManager.bind(GuiEventType.ACTION_RESOLVES, p -> {
 
-            if (!isOn()) return;
+            if (!isOn()) {
+                return;
+            }
             CompositeAnim animation = constructor.getOrCreate((DC_ActiveObj) p.get());
             animation.reset();
             if (leadAnimation == null) {
@@ -126,16 +134,22 @@ public class AnimMaster extends Group {
             updateContinuousAnims();
         });
         GuiEventManager.bind(GuiEventType.ABILITY_RESOLVES, p -> {
-            if (!isOn()) return;
+            if (!isOn()) {
+                return;
+            }
             Ability ability = (Ability) p.get();
             //what about triggers?
 //            getParentAnim(ability.getRef().getActive()).addAbilityAnims(ability);
         });
         GuiEventManager.bind(GuiEventType.INGAME_EVENT_TRIGGERED, p -> {
-            if (!isOn()) return;
+            if (!isOn()) {
+                return;
+            }
             Event event = (Event) p.get();
             Anim anim = EventAnimCreator.getAnim(event);
-            if (anim == null) return;
+            if (anim == null) {
+                return;
+            }
             CompositeAnim parentAnim = getParentAnim(event.getRef());
             if (parentAnim != null) {
                 main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, anim +
@@ -147,10 +161,14 @@ public class AnimMaster extends Group {
             }
         });
         GuiEventManager.bind(GuiEventType.EFFECT_APPLIED, p -> {
-                    if (!isOn()) return;
+                    if (!isOn()) {
+                        return;
+                    }
                     Effect effect = (Effect) p.get();
                     Animation anim = constructor.getEffectAnim(effect);
-                    if (anim == null) return;
+                    if (anim == null) {
+                        return;
+                    }
                     CompositeAnim parentAnim = getParentAnim(effect.getRef());
                     if (parentAnim != null) {
                         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, anim + " created for: " + parentAnim);
@@ -163,8 +181,9 @@ public class AnimMaster extends Group {
     }
 
     private void updateContinuousAnims() {
-        if (!continuousAnimsOn)
+        if (!continuousAnimsOn) {
             return;
+        }
         final List<BuffObj> toRemove = new LinkedList<>();
         continuousAnims.keySet().forEach(buff -> {
             if (buff.isDead()) {
@@ -178,6 +197,7 @@ public class AnimMaster extends Group {
         DC_Game.game.getUnits().forEach(unit -> {
             unit.getBuffs().forEach(buff -> {
                 if (!continuousAnims.containsKey(buff)) //TODO or full reset always?
+                {
                     if (buff.isVisible()) {
                         BuffAnim anim = constructor.getBuffAnim(buff);
                         //TODO cache!
@@ -186,6 +206,7 @@ public class AnimMaster extends Group {
                             anim.start();
                         }
                     }
+                }
             });
         });
     }
@@ -200,8 +221,9 @@ public class AnimMaster extends Group {
 
     private void startNext() {
         leadAnimation = next();
-        if (leadAnimation != null)
+        if (leadAnimation != null) {
             leadAnimation.start();
+        }
     }
 
     private CompositeAnim getParentAnim(Ref ref) {
@@ -218,21 +240,26 @@ public class AnimMaster extends Group {
         CompositeAnim root = constructor.getOrCreate(event.getRef().getActive());
         ANIM_PART part = EventAnimCreator.getPartToAttachTo(event);
         List<Animation> list = new LinkedList<>();
-        if (root.getAttached().get(part) != null)
+        if (root.getAttached().get(part) != null) {
             list.addAll(root.getAttached().get(part));
-        if (root.getTimeAttached().get(part) != null)
+        }
+        if (root.getTimeAttached().get(part) != null) {
             list.addAll(root.getTimeAttached().get(part));
+        }
         int i = 0;
         for (Animation e : list) {
-            if (e instanceof CompositeAnim)
+            if (e instanceof CompositeAnim) {
                 return (CompositeAnim) e;
+            }
             CompositeAnim a = new CompositeAnim();
             a.add(
                     part
                     , (Anim) e);
-            if (e.getDelay() == 0)
+            if (e.getDelay() == 0) {
                 root.getAttached().get(part).set(i, a);
-            else root.getTimeAttached().get(part).set(i, a);
+            } else {
+                root.getTimeAttached().get(part).set(i, a);
+            }
             return a;
         }
         return root;
@@ -249,11 +276,15 @@ public class AnimMaster extends Group {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (!isOn()) return;
+        if (!isOn()) {
+            return;
+        }
         continuousAnims.values().forEach(a -> {
-            if (!a.getBuff().isDead())
-                if (a.isRunning())
+            if (!a.getBuff().isDead()) {
+                if (a.isRunning()) {
                     a.draw(batch);
+                }
+            }
         });
         attachedAnims.removeIf((Animation a) -> !a.isRunning());
         attachedAnims.forEach(a -> {
@@ -280,8 +311,9 @@ public class AnimMaster extends Group {
             leadQueue.removeIf((CompositeAnim anim) -> anim.isFinished());
         }
 
-        if (getChildren().size > 0)
+        if (getChildren().size > 0) {
             super.draw(batch, parentAlpha);
+        }
     }
 
     public AnimationConstructor getConstructor() {

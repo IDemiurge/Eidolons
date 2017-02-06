@@ -60,11 +60,12 @@ public class Workspace {
 	}
 
 	public List<ObjType> getTypeList() {
-		if (typeList == null)
-			typeList = new LinkedList<>();
-		else
-			ListMaster.removeNullElements(typeList);
-		return typeList;
+        if (typeList == null) {
+            typeList = new LinkedList<>();
+        } else {
+            ListMaster.removeNullElements(typeList);
+        }
+        return typeList;
 	}
 
 	public void setTypeList(List<ObjType> typeList) {
@@ -75,14 +76,17 @@ public class Workspace {
         // TODO if 2 types with same name? Perhaps types should finally getOrCreate
         // *IDs* too!
         OBJ_TYPE TYPE = null;
-        for (ObjType type : getTypeList())
+        for (ObjType type : getTypeList()) {
             if (type.getName().equals(typeName)) {
                 TYPE = type.getOBJ_TYPE_ENUM();
-                if (OBJ_TYPES.getType(parent) != null)
-                    if (TYPE == OBJ_TYPES.getType(parent))
-						return TYPE;
-			}
-		return TYPE;
+                if (OBJ_TYPES.getType(parent) != null) {
+                    if (TYPE == OBJ_TYPES.getType(parent)) {
+                        return TYPE;
+                    }
+                }
+            }
+        }
+        return TYPE;
 	}
 
 	/**
@@ -92,16 +96,18 @@ public class Workspace {
 	 * @return
 	 */
 	public boolean addType(ObjType selectedType) {
-		if (selectedType == null)
-			return true;
-		setDirty(true);
+        if (selectedType == null) {
+            return true;
+        }
+        setDirty(true);
 		if (getTypeList().contains(selectedType)) {
 			selectedType.setProperty(G_PROPS.WORKSPACE_GROUP, "");
 			typeList.remove(selectedType);
 			return false;
-		} else
-			typeList.add(selectedType);
-		return true;
+        } else {
+            typeList.add(selectedType);
+        }
+        return true;
 	}
 
 	public boolean isDirty() {

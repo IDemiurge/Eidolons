@@ -63,8 +63,9 @@ public class ArenaArcadeMaster {
             arcade = constructArcade(TEST_ARCADE);
             arcade.setParty(party);
             int maxHeroes = arcade.getIntParam(PARAMS.MAX_HEROES);
-            if (maxHeroes == 0)
+            if (maxHeroes == 0) {
                 maxHeroes = DEFAULT_MAX_HEROES;
+            }
             arcade.getParty().setParam(PARAMS.MAX_HEROES, maxHeroes, true, true);
             arcade.setParam(PARAMS.LEVEL, party.getIntParam(PARAMS.ARCADE_LEVEL));
         }
@@ -87,9 +88,9 @@ public class ArenaArcadeMaster {
 
     public void levelWon() {
         // award(battle);
-        if ((1 + arcade.getLevel()) % 2 == 0)
+        if ((1 + arcade.getLevel()) % 2 == 0) {
             arcade.getParty().modifyParameter(PARAMS.MAX_HEROES, 1);
-        else {
+        } else {
             PartyManager.levelUp();
         }
         arcade.getParty().modifyParameter(PARAMS.ARCADE_LEVEL, 1, true);
@@ -102,8 +103,9 @@ public class ArenaArcadeMaster {
     }
 
     public void continueArcade(PartyObj party) {
-        if (arcade == null)
+        if (arcade == null) {
             init(party);
+        }
 
         battle = constructBattle();
         initBattle(battle);

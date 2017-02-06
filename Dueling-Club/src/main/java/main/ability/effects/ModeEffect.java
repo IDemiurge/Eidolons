@@ -57,8 +57,9 @@ public class ModeEffect extends MicroEffect {
         mode.setDefenseMod(defenseMod);
         mode.setDisableCounter(disableCounter);
         mode.setDispelOnHit(dispelOnHit);
-        if (mode.getBuffName() == null)
+        if (mode.getBuffName() == null) {
             mode.setBuffName(name);
+        }
         modPropEffect = new ModifyPropertyEffect(G_PROPS.MODE, MOD_PROP_TYPE.SET, template
                 .toString());
 
@@ -73,8 +74,9 @@ public class ModeEffect extends MicroEffect {
 
     @Override
     public boolean applyThis() {
-        if (reinit)
+        if (reinit) {
             initBuffEffect();
+        }
         timeModifier = getGame().getTurnManager().getTimeModifier();
         main.system.auxiliary.LogMaster.log(1, getActiveObj() + "'s timeModifier= " + timeModifier);
         if (mode.isDispelOnHit()) {
@@ -93,22 +95,25 @@ public class ModeEffect extends MicroEffect {
         // if (mode.equals(STD_MODES.ALERT))
         // addBuffEffect.addEffect(AlertRule.getWakeUpTriggerEffect());
         if (addBuffEffect.getDuration() == null) {
-            if (mode.isContinuous())
+            if (mode.isContinuous()) {
                 addBuffEffect.setDuration(ContentManager.INFINITE_VALUE);
-            else
+            } else {
                 addBuffEffect.setDuration(1);
+            }
 
         }
         addBuffEffect.setIrresistible(true);
-        if (!mode.isContinuous())
+        if (!mode.isContinuous()) {
             addRemoveTrigger();
+        }
         boolean result = addBuffEffect.apply(ref);
         return result;
     }
 
     public synchronized AddBuffEffect getAddBuffEffect() {
-        if (addBuffEffect == null)
+        if (addBuffEffect == null) {
             initBuffEffect();
+        }
         return addBuffEffect;
     }
 
@@ -141,29 +146,35 @@ public class ModeEffect extends MicroEffect {
     }
 
     private void add(boolean mod, String string) {
-        if (!StringMaster.isEmpty(string))
+        if (!StringMaster.isEmpty(string)) {
             string += ";";
-        else
+        } else {
             string = "";
+        }
         // "Custom Parameters" of old...
         for (String s : StringMaster.openContainer(ref.getSourceObj().getProperty(
                 G_PROPS.CUSTOM_PROPS))) {
-            if (StringMaster.contains(s, mode.getBuffName(), true, false))
-                if (StringMaster.contains(s, mod ? PARAM_MOD : PARAM_BONUS, true, false))
+            if (StringMaster.contains(s, mode.getBuffName(), true, false)) {
+                if (StringMaster.contains(s, mod ? PARAM_MOD : PARAM_BONUS, true, false)) {
                     string += VariableManager.removeVarPart(s) + ";";
+                }
+            }
         }
         Map<PARAMETER, Integer> map = new RandomWizard<PARAMETER>().constructWeightMap(string,
                 PARAMETER.class);
-        for (PARAMETER param : map.keySet())
-            if (param != null)
+        for (PARAMETER param : map.keySet()) {
+            if (param != null) {
                 addBuffEffect.addEffect(new ModifyValueEffect(param, mod ? MOD.MODIFY_BY_PERCENT
                         : MOD.MODIFY_BY_CONST, "" + map.get(param)));
+            }
+        }
     }
 
     private void addRemoveTrigger() {
         REMOVE_EVENT = mode.getRemoveEvent();
-        if (REMOVE_EVENT == null)
+        if (REMOVE_EVENT == null) {
             return;
+        }
         Condition c = null;
         if (REMOVE_EVENT == STANDARD_EVENT_TYPE.UNIT_TURN_STARTED) {
             c = new RefCondition(KEYS.EVENT_SOURCE, KEYS.MATCH);
@@ -182,10 +193,11 @@ public class ModeEffect extends MicroEffect {
 
     private void addDispelOnHitTrigger() {
         Effects effects = new Effects(new RemoveBuffEffect(addBuffEffect.getBuffTypeName()));
-        if (!mode.equals(STD_MODES.ALERT))
+        if (!mode.equals(STD_MODES.ALERT)) {
             effects.add(InterruptRule.getEffect());
-        else
+        } else {
             effects.add(AlertRule.getInterruptEffect());
+        }
 
         STANDARD_EVENT_TYPE event_type = STANDARD_EVENT_TYPE.UNIT_IS_DEALT_TOUGHNESS_DAMAGE; // TODO
         Condition conditions = (mode.equals(STD_MODES.ALERT)) ? InterruptRule.getConditionsAlert()
@@ -207,8 +219,9 @@ public class ModeEffect extends MicroEffect {
             if (activeObj.getParam(PARAMS.FORMULA).contains(StringMaster.MOD)) {
                 formula = StringMaster.wrapInParenthesis(formula) + "*"
                         + activeObj.getParam(PARAMS.FORMULA) + "/100";
-            } else if (activeObj.getIntParam(PARAMS.FORMULA) != 0)
+            } else if (activeObj.getIntParam(PARAMS.FORMULA) != 0) {
                 formula += "+" + activeObj.getIntParam(PARAMS.FORMULA);
+            }
         }
         ModifyValueEffect effect = new ModifyValueEffect(mode.getParameter(), MOD.MODIFY_BY_CONST,
                 new Formula("min(0, " + formula + ")"));

@@ -14,8 +14,9 @@ public class ValueTextComp extends TextCompDC implements EntityValueComponent {
         super(V);
         this.value = value;
         x = recalculateX();
-        if (value != null)
+        if (value != null) {
             setToolTipText(value.toString());
+        }
     }
 
     public ValueTextComp(Entity entity, VISUALS V, VALUE value, int fontSize, FONT type,
@@ -24,8 +25,9 @@ public class ValueTextComp extends TextCompDC implements EntityValueComponent {
         this.entity = entity;
         this.value = value;
         x = recalculateX();
-        if (value != null)
+        if (value != null) {
             setToolTipText(value.toString());
+        }
 
     }
 
@@ -39,8 +41,9 @@ public class ValueTextComp extends TextCompDC implements EntityValueComponent {
     }
 
     protected String getValue() {
-        if (getEntity() == null)
+        if (getEntity() == null) {
             return "";
+        }
         return getEntity().getValue(value);
     }
 

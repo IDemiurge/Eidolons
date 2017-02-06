@@ -33,29 +33,35 @@ public class DC_EffectManager implements EffectManager {
 
     @Override
     public boolean checkNotResisted(Effect effect) {
-        if (effect.isIrresistible())
+        if (effect.isIrresistible()) {
             return true;
-        if (!checkEffectType(effect))
+        }
+        if (!checkEffectType(effect)) {
             return true;
+        }
 
         Ref ref = effect.getRef();
         try {
-            if (!checkTargeting(effect))
+            if (!checkTargeting(effect)) {
                 return true;
+            }
             if (effect instanceof ReducedEffect) {
                 DC_ActiveObj spell = (DC_ActiveObj) ref.getActive();
-                if (spell == null)
+                if (spell == null) {
                     return true;
-                if (spell.getResistanceType() != RESISTANCE_TYPE.IRRESISTIBLE)
+                }
+                if (spell.getResistanceType() != RESISTANCE_TYPE.IRRESISTIBLE) {
                     if (spell.getResistanceType() != RESISTANCE_TYPE.CHANCE_TO_BLOCK) {
                         int mod = ResistanceRule.getResistanceMod(ref);
                         ((ReducedEffect) effect).setResistanceMod(mod);
                         return true;
                     }
+                }
 
             }
-            if (checkResistanceAlreadyChecked(effect))
+            if (checkResistanceAlreadyChecked(effect)) {
                 return true;
+            }
             return ResistanceRule.checkNotResisted(ref);
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,8 +84,9 @@ public class DC_EffectManager implements EffectManager {
 
     private boolean checkTargeting(Effect effect) {
         Obj targetObj = effect.getRef().getTargetObj();
-        if (!(targetObj instanceof DC_HeroObj))
+        if (!(targetObj instanceof DC_HeroObj)) {
             return false;
+        }
         return targetObj.getOwner() != effect.getRef().getSourceObj()
                 .getOwner();
     }

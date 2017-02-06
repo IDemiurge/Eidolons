@@ -70,14 +70,16 @@ public class XML_Converter {
 
     public static List<Node> getNodeList(Node node) {
         List<Node> list = new LinkedList<Node>();
-        if (node == null)
+        if (node == null) {
             return list;
+        }
         NodeList nl = node.getChildNodes();
         for (int i = 0; i < nl.getLength(); i++) {
 
             Node item = nl.item(i);
-            if (checkTextNode(item))
+            if (checkTextNode(item)) {
                 continue;
+            }
             list.add(item);
 
         }
@@ -137,8 +139,9 @@ public class XML_Converter {
 
     public static Node getChildAt(Node levelDocument, int i) {
         List<Node> nodeList = getNodeList(levelDocument);
-        if (nodeList.size() <= i)
+        if (nodeList.size() <= i) {
             return null;
+        }
         return nodeList.get(i);
     }
 
@@ -176,12 +179,14 @@ public class XML_Converter {
     public static String getXmlFromNode(DefaultMutableTreeNode node)
             throws java.lang.ClassCastException {
         String nodeName = "";
-        if (!(node.getUserObject() instanceof AE_Item))
+        if (!(node.getUserObject() instanceof AE_Item)) {
             return "";
+        }
         nodeName = ((AE_Item) node.getUserObject()).getName();
         AE_Item item = (AE_Item) node.getUserObject();
-        if (item == null)
+        if (item == null) {
             return "";
+        }
         if (item.isENUM()) {
             return wrapLeaf(((AE_Item) node.getUserObject()).getName(), getEnumNodeValue(node));
         }
@@ -190,10 +195,11 @@ public class XML_Converter {
                     (item).getArg(), node));
         }
         String xml = openXmlFormatted(nodeName);
-        if (!node.isLeaf())
+        if (!node.isLeaf()) {
             for (DefaultMutableTreeNode child : TreeMaster.getChildren(node)) {
                 xml += getXmlFromNode(child);
             }
+        }
 
         xml += closeXmlFormatted(nodeName);
         return xml;
@@ -201,18 +207,21 @@ public class XML_Converter {
     }
 
     private static String getEnumNodeValue(DefaultMutableTreeNode node) {
-        if (node.isLeaf())
+        if (node.isLeaf()) {
             return "";
+        }
         TreeNode child = node.getFirstChild();
         Object object = ((DefaultMutableTreeNode) child).getUserObject();
-        if (object == null)
+        if (object == null) {
             return "";
+        }
         return object.toString();
     }
 
     private static String getPrimitiveNodeValue(Argument argument, DefaultMutableTreeNode node) {
-        if (node.isLeaf())
+        if (node.isLeaf()) {
             return "";
+        }
         TreeNode child = node.getFirstChild();
         Object object = ((DefaultMutableTreeNode) child).getUserObject();
         return object.toString().replace(argument.name(), "");
@@ -221,7 +230,9 @@ public class XML_Converter {
     private static String getStringFromXMLNode(Node node) {
         if (node.getNodeName().contains("#text"))
 
+        {
             return node.getTextContent();
+        }
         String string = openXmlFormatted(node.getNodeName());
         if (node.hasChildNodes()) {
             NodeList childNodes = node.getChildNodes();
@@ -255,8 +266,9 @@ public class XML_Converter {
 
     public static String getStringFromXML(Node child, boolean layerDown) {
         String xml = getStringFromXMLNode(child);
-        if (layerDown)
+        if (layerDown) {
             xml = layerDown(xml);
+        }
         return xml;
     }
 
@@ -296,17 +308,20 @@ public class XML_Converter {
 
     public static Node getAbilitiesDoc(Node node) {
         List<Node> nodeList = XML_Converter.getNodeList(node);
-        if (nodeList.size() < 1)
+        if (nodeList.size() < 1) {
             return node;
+        }
         while (nodeList.size() < 2 && nodeList.get(0).getNodeName().equals(Mapper.ABILITIES)) {
 
             Node child = node.getFirstChild();
             nodeList = XML_Converter.getNodeList(child);
-            if (nodeList.size() < 1)
+            if (nodeList.size() < 1) {
                 return node;
+            }
 
-            if (child.getNodeName().equals(Mapper.ABILITIES))
+            if (child.getNodeName().equals(Mapper.ABILITIES)) {
                 node = child;
+            }
         }
         return node;
     }
@@ -317,8 +332,9 @@ public class XML_Converter {
     }
 
     public static List<ObjType> getTypeListFromXML(String xml, boolean layerDown) {
-        if (layerDown)
+        if (layerDown) {
             xml = layerDown(xml);
+        }
         Document doc = getDoc(xml);
         List<ObjType> list = new LinkedList<>();
         List<Node> typeGroupsList = null;
@@ -327,14 +343,17 @@ public class XML_Converter {
                 typeGroupsList = getNodeList(n);
             }
         }
-        if (typeGroupsList == null)
+        if (typeGroupsList == null) {
             return new LinkedList<ObjType>();
+        }
         for (Node groupNode : typeGroupsList) {
             OBJ_TYPES obj_type = OBJ_TYPES.getType(groupNode.getNodeName());
             for (Node typeNode : getNodeList(groupNode)) {
                 ObjType type = DataManager.getType(typeNode.getNodeName(), obj_type);
                 if (type != null) // TODO find?
+                {
                     list.add(type);
+                }
                 // TODO each type node could have some spec data for workspace?
             }
         }
@@ -363,8 +382,9 @@ public class XML_Converter {
 
         for (ObjType type : typeList) {
             String typeString = subStringMap.get(type.getOBJ_TYPE_ENUM());
-            if (typeString == null)
+            if (typeString == null) {
                 typeString = "";
+            }
             typeString += wrap(XML_Writer.formatStringForXmlNodeName(type.getName()), "");
             subStringMap.put(type.getOBJ_TYPE_ENUM(), typeString);
         }
@@ -383,8 +403,9 @@ public class XML_Converter {
 
     public static Node getChildByName(Node parent, String name) {
         for (Node node : getNodeList(parent)) {
-            if (node.getNodeName().equals(name))
+            if (node.getNodeName().equals(name)) {
                 return node;
+            }
         }
 
         return null;

@@ -67,8 +67,9 @@ public class Dungeon extends Entity {
         super(type, Player.NEUTRAL, DC_Game.game, new Ref());
         z = getIntParam(G_PARAMS.Z_LEVEL);
         this.sublevel = sublevel;
-        if (!sublevel)
+        if (!sublevel) {
             generateSublevels();
+        }
         initEntrances();
     }
 
@@ -122,8 +123,9 @@ public class Dungeon extends Entity {
     }
 
     public List<Entrance> getEntrances() {
-        if (entrances == null)
+        if (entrances == null) {
             entrances = new LinkedList<>();
+        }
         return entrances;
     }
 
@@ -160,8 +162,9 @@ public class Dungeon extends Entity {
     }
 
     public int getNextZ() {
-        if (nextZ == null)
+        if (nextZ == null) {
             nextZ = getZ() + DungeonLevelMaster.getNextZ(true);
+        }
         return nextZ;
     }
 
@@ -174,15 +177,17 @@ public class Dungeon extends Entity {
             DungeonLevelMaster.generateEntranceData(dungeon);
         }
         int z = dungeon.getIntParam(G_PARAMS.Z_LEVEL);
-        if (z == 0)
+        if (z == 0) {
             z = getNextZ();
+        }
         dungeon.setZ(z);
         nextZ = null;
     }
 
     public boolean isExtendedBattlefield() {
-        if (getCellsY() != 0)
+        if (getCellsY() != 0) {
             return true; // TODO WHAT IF IT IS 'SHRUNKEN'?
+        }
         return getCellsX() != 0;
     }
 
@@ -191,8 +196,9 @@ public class Dungeon extends Entity {
     }
 
     public Integer getWidth() {
-        if (getIntParam(PARAMS.BF_WIDTH) == 0)
+        if (getIntParam(PARAMS.BF_WIDTH) == 0) {
             return DungeonMaster.BASE_WIDTH;
+        }
         return getIntParam(PARAMS.BF_WIDTH);
     }
 
@@ -201,8 +207,9 @@ public class Dungeon extends Entity {
     }
 
     public Integer getHeight() {
-        if (getIntParam(PARAMS.BF_HEIGHT) == 0)
+        if (getIntParam(PARAMS.BF_HEIGHT) == 0) {
             return DungeonMaster.BASE_HEIGHT;
+        }
         return getIntParam(PARAMS.BF_HEIGHT);
     }
 
@@ -212,8 +219,9 @@ public class Dungeon extends Entity {
     }
 
     public List<Dungeon> getSubLevels() {
-        if (subLevels == null)
+        if (subLevels == null) {
             subLevels = new LinkedList<>();
+        }
         return subLevels;
     }
 
@@ -249,26 +257,32 @@ public class Dungeon extends Entity {
         if (StringMaster.isEmpty(entranceData)) {
             entranceData = getProperty(PROPS.DUNGEON_MAIN_ENTRANCES);
         }
-        if (StringMaster.isEmpty(entranceData))
+        if (StringMaster.isEmpty(entranceData)) {
             return;
+        }
         String enterData = entranceData.split(DungeonLevelMaster.ENTRANCE_SEPARATOR)[0];
         String name = VariableManager.removeVarPart(enterData);
         Coordinates c = new Coordinates(VariableManager.getVarPart(enterData));
 
         for (Entrance e : getEntrances()) {
-            if (e.getCoordinates().equals(c))
-                if (e.getName().equals(name))
+            if (e.getCoordinates().equals(c)) {
+                if (e.getName().equals(name)) {
                     setMainEntrance(e);
+                }
+            }
         }
-        if (entranceData.split(DungeonLevelMaster.ENTRANCE_SEPARATOR).length < 2)
+        if (entranceData.split(DungeonLevelMaster.ENTRANCE_SEPARATOR).length < 2) {
             return;
+        }
         String exitData = entranceData.split(DungeonLevelMaster.ENTRANCE_SEPARATOR)[1];
         name = VariableManager.removeVarPart(exitData);
         c = new Coordinates(VariableManager.getVarPart(exitData));
         for (Entrance e : getEntrances()) {
-            if (e.getCoordinates().equals(c))
-                if (e.getName().equals(name))
+            if (e.getCoordinates().equals(c)) {
+                if (e.getName().equals(name)) {
                     setMainExit(e);
+                }
+            }
         }
     }
 
@@ -285,8 +299,9 @@ public class Dungeon extends Entity {
     }
 
     public DUNGEON_TEMPLATES getTemplate() {
-        if (template == null)
+        if (template == null) {
             initTemplate();
+        }
         return template;
     }
 
@@ -376,15 +391,17 @@ public class Dungeon extends Entity {
 
     public Coordinates getPlayerSpawnCoordinates() {
         String prop = getProperty(PROPS.PARTY_SPAWN_COORDINATES);
-        if (prop.isEmpty())
+        if (prop.isEmpty()) {
             return Coordinates.getMiddleCoordinate(FACING_DIRECTION.NONE);
+        }
         return new Coordinates(prop);
     }
 
     public Coordinates getEnemySpawningCoordinates() {
         String prop = getProperty(PROPS.ENEMY_SPAWN_COORDINATES);
-        if (prop.isEmpty())
+        if (prop.isEmpty()) {
             return getDefaultEnemyCoordinates();
+        }
         return new Coordinates(prop);
     }
 
@@ -404,10 +421,12 @@ public class Dungeon extends Entity {
             }
             if (isOffsetEnemyByX()) {
                 x = x + RandomWizard.getRandomIntBetween(-n, n);
-                if (x > GuiManager.getBattleFieldWidth() - 1)
+                if (x > GuiManager.getBattleFieldWidth() - 1) {
                     continue;
-                if (x < 0)
+                }
+                if (x < 0) {
                     continue;
+                }
             }
             return new Coordinates(x, y);
         }
@@ -439,12 +458,14 @@ public class Dungeon extends Entity {
     }
 
     public Integer getGlobalIllumination() {
-        if (isSurface())
-            if (checkParam(PARAMS.GLOBAL_ILLUMINATION))
+        if (isSurface()) {
+            if (checkParam(PARAMS.GLOBAL_ILLUMINATION)) {
                 return getIntParam(PARAMS.GLOBAL_ILLUMINATION);
-                // day/night
-            else
+            }// day/night
+            else {
                 return DEFAULT_GLOBAL_ILLUMINATION;
+            }
+        }
 
         return 0;
 

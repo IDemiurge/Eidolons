@@ -27,8 +27,9 @@ public abstract class G_TabbedPagePanel<E> extends G_PagePanel<E> {
         // new G_TabbedPanel();
         if (tabs == null) {
             tabs = new G_Panel(vertical ? "flowy" : "");
-        } else
+        } else {
             tabs.removeAll();
+        }
         int i = 0;
         for (E sub : getTabData()) {
             tabs.add(createTab(sub, i));
@@ -106,8 +107,9 @@ public abstract class G_TabbedPagePanel<E> extends G_PagePanel<E> {
     }
 
     public void tabClicked(int i) {
-        if (currentIndex == i)
+        if (currentIndex == i) {
             return;
+        }
         currentIndex = i;
         refresh();
     }

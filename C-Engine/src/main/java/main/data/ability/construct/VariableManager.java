@@ -44,12 +44,13 @@ public class VariableManager {
     private static String prevValue;
 
     public static AbilityType getVarType(String abilTypeName, boolean passive, Ref ref) {
-        if (passive)
+        if (passive) {
             abilTypeName = TextParser.parse(abilTypeName, ref, TextParser.ABILITY_PARSING_CODE,
                     TextParser.VARIABLE_PARSING_CODE);
-        else
+        } else {
             abilTypeName = TextParser.parse(abilTypeName, ref, TextParser.ACTIVE_PARSING_CODE,
                     TextParser.VARIABLE_PARSING_CODE, TextParser.ABILITY_PARSING_CODE);
+        }
         return getVarType(abilTypeName);
     }
 
@@ -58,10 +59,12 @@ public class VariableManager {
         String vars = getVarPart(abilTypeName);
         abilTypeName = abilTypeName.replace(vars, "");
         AbilityType type = (AbilityType) DataManager.getType(abilTypeName, OBJ_TYPES.ABILS);
-        if (type == null)
+        if (type == null) {
             return null;
-        if (vars == "")
+        }
+        if (vars == "") {
             return type;
+        }
         AbilityType newType = new AbilityType(type);
         type.initType();
         setAbilityVariables(newType, vars);
@@ -91,21 +94,24 @@ public class VariableManager {
 				 * TextParser use this? Perhaps I need to run another
 				 * replaceCycle on XML here - one that will *parse* references!
 				 */
-            } else
+            } else {
                 xml = StringMaster.replaceFirst(xml, StringMaster.VAR_STRING, var);
+            }
         }
 
         xml = StringMaster.replace(true, xml, StringMaster.VAR_STRING, lastVar);
         newType.setProperty(G_PROPS.VARIABLES, varProp);
         if (TextParser.checkHasVarRefs(xml)) {
             xml = TextParser.parseXmlVarRefs(newType, xml);
-            if (!TextParser.checkHasVarRefs(xml))
+            if (!TextParser.checkHasVarRefs(xml)) {
                 newType.setProperty(G_PROPS.ABILITIES, xml);
+            }
         }
 
         Node doc = XML_Converter.getDoc(xml);
-        if (!doc.getNodeName().contains("Abil"))
+        if (!doc.getNodeName().contains("Abil")) {
             doc = doc.getFirstChild();
+        }
         newType.setDoc(doc);
         newType.setProperty(G_PROPS.ABILITIES, xml);
 
@@ -128,16 +134,18 @@ public class VariableManager {
 
     public static String getVarPart(String typeName) {
         int index = typeName.indexOf(VAR_CHAR);
-        if (index == -1)
+        if (index == -1) {
             return "";
+        }
         return typeName.substring(index);
 
     }
 
     public static String getVarPartLast(String typeName) {
         int index = typeName.lastIndexOf(VAR_CHAR);
-        if (index == -1)
+        if (index == -1) {
             return "";
+        }
         return typeName.substring(index);
     }
 
@@ -148,9 +156,11 @@ public class VariableManager {
         int index = xml.indexOf(StringMaster.VAR_STRING);
         int i = 1;
         boolean manualVars = variableInputRequesting;
-        if (!manualVars)
-            if (isVariablesSet(type))
+        if (!manualVars) {
+            if (isVariablesSet(type)) {
                 return getTypeVariables(type);
+            }
+        }
         while (index != -1) {
             xml = xml.substring(0, index) + xml.substring(index + StringMaster.VAR_STRING.length());
             String input = null;
@@ -177,8 +187,9 @@ public class VariableManager {
             result += input + StringMaster.getSeparator();
 
         }
-        if (manualVars)
+        if (manualVars) {
             varCache.add(type);
+        }
         return result;
     }
 
@@ -238,15 +249,17 @@ public class VariableManager {
             } else {
                 VARIABLE_TYPES varType = getVarType(varTypes.get(i));
                 value = promptVarTypeInput(var, varType, varTypes.get(i));
-                if (value == null)
+                if (value == null) {
                     return null;
+                }
                 value = value.replace(StringMaster.getContainerSeparator(), StringMaster
                         .getVarSeparator());
                 prevValue = value;
             }
 
-            if (value == null)
+            if (value == null) {
                 return null;
+            }
             varPart += value + ",";
             i++;
         }
@@ -273,8 +286,9 @@ public class VariableManager {
                 return ListChooser.chooseType((OBJ_TYPE) value);
             case PROP_VALUE: {
                 String result = promptEnumInput(getPreviousValue(), var);
-                if (result == null)
+                if (result == null) {
                     return promptStringInput(var);
+                }
                 return result;
             }
             default:
@@ -306,8 +320,9 @@ public class VariableManager {
     private static String promptEnumInput(Object value, String var) {
         if (value instanceof String) {
             value = EnumMaster.getEnumClass(value.toString());
-            if (value == null)
+            if (value == null) {
                 return null;
+            }
         }
         return ListChooser.chooseEnum((Class<?>) value);
     }
@@ -317,18 +332,24 @@ public class VariableManager {
             return VARIABLE_TYPES.TYPE;
         }
         if (object instanceof String) {
-            if (StringMaster.compare((String) object, PROP_VALUE_VAR_CLASS, true))
+            if (StringMaster.compare((String) object, PROP_VALUE_VAR_CLASS, true)) {
                 return VARIABLE_TYPES.PROP_VALUE;
-            if (StringMaster.compare((String) object, NUMBER_VAR_CLASS, true))
+            }
+            if (StringMaster.compare((String) object, NUMBER_VAR_CLASS, true)) {
                 return VARIABLE_TYPES.NUMBER;
-            if (StringMaster.compare((String) object, PROP_VAR_CLASS, true))
+            }
+            if (StringMaster.compare((String) object, PROP_VAR_CLASS, true)) {
                 return VARIABLE_TYPES.PROP;
-            if (StringMaster.compare((String) object, PARAM_VAR_CLASS, true))
+            }
+            if (StringMaster.compare((String) object, PARAM_VAR_CLASS, true)) {
                 return VARIABLE_TYPES.PARAM;
+            }
         }
-        if (object instanceof Class<?>)
-            if (((Class<?>) object).isEnum())
+        if (object instanceof Class<?>) {
+            if (((Class<?>) object).isEnum()) {
                 return VARIABLE_TYPES.ENUM;
+            }
+        }
 
         return VARIABLE_TYPES.STRING;
     }
@@ -418,8 +439,9 @@ public class VariableManager {
                     entity = obj.getRef().getEntity(KEYS.SKILL);
                     if (obj.getGame().isSimulation()) {
                         entity = obj.getRef().getEntity(KEYS.ACTIVE);
-                        if (entity == null)
+                        if (entity == null) {
                             entity = obj.getRef().getEntity(KEYS.INFO);
+                        }
                     }
                 }
                 PARAMETER param = null;
@@ -429,9 +451,10 @@ public class VariableManager {
 
                     param = ContentManager
                             .findMasteryScore(entity.getProperty(G_PROPS.SPELL_GROUP));
-                    if (param == null)
+                    if (param == null) {
                         param = ContentManager
                                 .findMasteryScore(entity.getProperty(G_PROPS.MASTERY));
+                    }
                 }
                 return obj.getRef().getSourceObj().getIntParam(param);
             }
@@ -444,10 +467,11 @@ public class VariableManager {
         },
         RANDOM_PARAMETER {
             public Object evaluate(Entity obj, String s) {
-                if (obj.getOBJ_TYPE_ENUM() == OBJ_TYPES.CHARS)
+                if (obj.getOBJ_TYPE_ENUM() == OBJ_TYPES.CHARS) {
                     return ContentManager.getRandomCharParameter().getName();
-                else
+                } else {
                     return ContentManager.getRandomUnitParameter().getName();
+                }
 
             }
         },

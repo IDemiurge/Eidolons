@@ -42,8 +42,9 @@ public class Abilities implements Ability, Iterable<Ability> {
             // abil.activate(ref);
 
             if (!abil.activate(ref)) {
-                if (abil instanceof OneshotAbility)
+                if (abil instanceof OneshotAbility) {
                     continue;
+                }
                 return false;
             }
         }
@@ -104,15 +105,17 @@ public class Abilities implements Ability, Iterable<Ability> {
 
     @Override
     public Ref getRef() {
-        if (abils.size() == 0)
+        if (abils.size() == 0) {
             return null;
+        }
         return abils.get(0).getRef();
     }
 
     @Override
     public void setRef(Ref ref) {
-        for (Ability abil : abils)
+        for (Ability abil : abils) {
             abil.setRef(ref);
+        }
 
     }
 

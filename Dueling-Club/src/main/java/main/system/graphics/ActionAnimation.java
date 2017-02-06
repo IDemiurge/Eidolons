@@ -44,10 +44,11 @@ public class ActionAnimation extends PhaseAnimation {
         this.action = action;
 
         setSource(action.getOwnerObj());
-        if (action.getRef().getTargetObj() == null)
+        if (action.getRef().getTargetObj() == null) {
             setTarget(action.getRef().getSourceObj());
-        else
+        } else {
             setTarget(action.getRef().getTargetObj());
+        }
         game = action.getGame();
         setKey(generateKey());
         action.setAnimation(this);
@@ -59,8 +60,9 @@ public class ActionAnimation extends PhaseAnimation {
 
     @Override
     protected boolean drawGenerics() {
-        if (source == null)
+        if (source == null) {
             return false;
+        }
 
         return super.drawGenerics();
     }
@@ -147,12 +149,13 @@ public class ActionAnimation extends PhaseAnimation {
         int t_dmg = (int) phase.getArgs()[5];
         DAMAGE_TYPE dmg_type = (DAMAGE_TYPE) phase.getArgs()[6];
         boolean separate = false;
-        if (e_armor != t_armor)
+        if (e_armor != t_armor) {
             separate = true;
-        else if (e_res != t_res)
+        } else if (e_res != t_res) {
             separate = true;
-        else if (e_dmg != t_dmg)
+        } else if (e_dmg != t_dmg) {
             separate = true;
+        }
 
         // check separate or not!
         // center damage if not and
@@ -184,13 +187,15 @@ public class ActionAnimation extends PhaseAnimation {
 
             base_y = y;
         }
-        if (left_right_center != null)
+        if (left_right_center != null) {
             y = 0;
+        }
 
         y = drawNaturalReductionModifier(left_right_center, dmg, armor, y, false);
 
-        if (left_right_center == null)
+        if (left_right_center == null) {
             y = base_y;
+        }
         drawNaturalReductionModifier(left_right_center, dmg, res, y, true);
         // image = AttackCalculator.getImageDynamic(MOD_IDENTIFIER.ARMOR,
         // armor);
@@ -213,16 +218,18 @@ public class ActionAnimation extends PhaseAnimation {
         Image image = DC_ImageMaster.getImageDynamic(res_armor ? MOD_IDENTIFIER.RESISTANCE : MOD_IDENTIFIER.ARMOR,
                 value);
         int width = 32;
-        if (left_right_center == null)
+        if (left_right_center == null) {
             width += res_armor ? 32 : -32;
+        }
         x = MigMaster.getOptimalPosition(left_right_center, w, width);
         drawOnTarget(image, x, y);
         y += 32 + FontMaster.getFontHeight(font) / 2;
         int modifier = res_armor ? -MathMaster.getFractionValueCentimal(dmg, value) : -Math.min(dmg, value);
         text = StringMaster.getBonusString(modifier);
         width = FontMaster.getStringWidth(font, text);
-        if (left_right_center == null)
+        if (left_right_center == null) {
             width += res_armor ? 32 : -32;
+        }
 
         x = MigMaster.getOptimalPosition(left_right_center, w, width);
 
@@ -270,8 +277,9 @@ public class ActionAnimation extends PhaseAnimation {
         y += drawTextOnTarget(string, font, x, y) - 6;
 
         // Shield/armor  chance, numbers, dmg type, durability
-        if (durability <= 0)
+        if (durability <= 0) {
             return true;
+        }
         font = getFontNegative();
         string = StringMaster.wrapInBraces(durability + "") + " durability lost";
         x = (w - FontMaster.getStringWidth(font, string)) / 2;
@@ -292,8 +300,9 @@ public class ActionAnimation extends PhaseAnimation {
         for (Integer mod : modsMap.values()) {
             totalMod += mod;
         }
-        if (totalMod == 0)
+        if (totalMod == 0) {
             return true;
+        }
         String text = StringMaster.getModifierString(totalMod);
         int y = (h - fontHeight) / 2;
         drawTextOnTarget(text, font, w, y, getColorForModifier(totalMod));
@@ -441,18 +450,21 @@ public class ActionAnimation extends PhaseAnimation {
                 int itemWidth = w / wrap;
                 int x = itemWidth * i;
 
-                if (map1.size() < wrap)
+                if (map1.size() < wrap) {
                     x = MigMaster.getCenteredPosition(w, itemWidth * map1.size()) + (i) * itemWidth;
+                }
                 drawOn(!onTarget, image, x, y);
                 if (mouseMap) {
                     PHASE_TYPE arg = null;
-                    if (subPhaseTypeMap != null)
+                    if (subPhaseTypeMap != null) {
                         arg = subPhaseTypeMap.get(image);
-                    if (arg == null)
+                    }
+                    if (arg == null) {
                         addMouseItem(false, x, y, width, height,
                                 new MouseItemImpl(MOUSE_ITEM.TOOLTIP, getSubPhaseTooltipMap().get(image)));
-                    else
+                    } else {
                         addMouseItem(false, x, y, width, height, new MouseItemImpl(MOUSE_ITEM.SUB_PHASE, arg));
+                    }
                 }
 
                 // addToolTip(s+modsMap.getOrCreate(s));
@@ -464,8 +476,9 @@ public class ActionAnimation extends PhaseAnimation {
                 Integer mod = StringMaster.getInteger(s);
                 Color color = getColorForModifier(mod);
                 String text = s;
-                if (bonus_mod_other != null)
+                if (bonus_mod_other != null) {
                     text = bonus_mod_other ? StringMaster.getBonusString(mod) : StringMaster.getModifierString(mod);
+                }
                 x += (width - FontMaster.getStringWidth(font, text)) / 2;
                 drawTextOn(!onTarget, text, font, x, y - fontHeight / 2, color);
                 i++;
@@ -493,10 +506,11 @@ public class ActionAnimation extends PhaseAnimation {
     protected int getOffsetBase(boolean positive) {
         int offset = (positive ? 1 : -1) * GuiManager.getCellHeight()
                 * game.getBattleField().getGrid().getGridComp().getZoom() / 100;
-        if (!positive)
+        if (!positive) {
             offset += 12;
-        else
+        } else {
             offset += 12;
+        }
 
         return offset;
 
@@ -514,28 +528,33 @@ public class ActionAnimation extends PhaseAnimation {
             // TODO
             positive = BooleanMaster.isTrue(edge) || edge == null;
             base = getOffsetBase(positive);
-            if (base < 0)
+            if (base < 0) {
                 invert = true;
+            }
         }
         if (getTarget().getCoordinates().isAdjacent(source.getCoordinates())) {
             if (PositionMaster.inLine(source, target)) {
-                if (PositionMaster.isAbove(target, source))
+                if (PositionMaster.isAbove(target, source)) {
                     invert = true;
-                if (PositionMaster.isAbove(source, target))
+                }
+                if (PositionMaster.isAbove(source, target)) {
                     invert = false;
+                }
             }
         }
         Costs costs = (Costs) phase.getArgs()[0];
         Map<Image, String> map = new XLinkedMap<Image, String>();
         for (Cost s : costs.getCosts()) {
-            if (s.isPaidAlt())
+            if (s.isPaidAlt()) {
                 s = s.getAltCost();
+            }
             Formula formula = s.getPayment().getAmountFormula();
             PARAMETER param = s.getPayment().getParamToPay();
 
             Image image = ImageManager.getValueIcon(param);
-            if (image == null)
+            if (image == null) {
                 continue;
+            }
             String string = "" + (-formula.getInt(action.getRef()));
             map.put(image, string);
             List<String> list = new LinkedList<>();
@@ -552,12 +571,14 @@ public class ActionAnimation extends PhaseAnimation {
     }
 
     protected boolean drawActivate(AnimPhase phase) {
-        if (action.isAttackOrStandardAttack())
+        if (action.isAttackOrStandardAttack()) {
             return false;
+        }
         Image image = action.getIcon().getImage();
         Coordinates c = getTargetCoordinates();
-        if (c == null)
+        if (c == null) {
             c = getSourceCoordinates();
+        }
 
         // TODO can we getOrCreate the cellComp's graphics?
         int zoom = action.getGame().getBattleField().getGrid().getGridComp().getZoom();
@@ -589,12 +610,13 @@ public class ActionAnimation extends PhaseAnimation {
 
     @Override
     public void playSound() {
-        if (phase != null)
+        if (phase != null) {
             switch (phase.getType()) {
                 case MISSED:
                     SoundMaster.playStandardSound(STD_SOUNDS.MISSED);
                     break;
             }
+        }
     }
 
     public void setTarget(Obj target) {
@@ -607,8 +629,9 @@ public class ActionAnimation extends PhaseAnimation {
 
     @Override
     protected boolean isGhostDrawn(Boolean target) {
-        if (isMove())
+        if (isMove()) {
             return true;
+        }
 
         return super.isGhostDrawn(target);
     }

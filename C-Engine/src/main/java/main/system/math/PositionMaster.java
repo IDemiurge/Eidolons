@@ -187,14 +187,16 @@ public class PositionMaster {
     }
 
     public static Boolean isToTheLeftOr(Coordinates c1, Coordinates c2) {
-        if (c1.getX() == c2.getX())
+        if (c1.getX() == c2.getX()) {
             return null;
+        }
         return c1.getX() < c2.getX();
     }
 
     public static Boolean isAboveOr(Coordinates c1, Coordinates c2) {
-        if (c1.getY() == c2.getY())
+        if (c1.getY() == c2.getY()) {
             return null;
+        }
         return c1.getY() < c2.getY();
     }
 
@@ -240,19 +242,23 @@ public class PositionMaster {
         }
         Boolean aboveOr = isAboveOr(obj1, obj2);
         if (aboveOr == null) {
-            if (north_or_south != null)
+            if (north_or_south != null) {
                 return false;
+            }
         } else if (aboveOr) { // strict - permit null?
-            if (!BooleanMaster.isTrue(north_or_south))
+            if (!BooleanMaster.isTrue(north_or_south)) {
                 return false;
+            }
         }
         Boolean toTheLeftOr = isToTheLeftOr(obj1, obj2);
         if (toTheLeftOr == null) {
-            if (west_or_east != null)
+            if (west_or_east != null) {
                 return false;
+            }
         } else if (toTheLeftOr) {
-            if (!BooleanMaster.isTrue(west_or_east))
+            if (!BooleanMaster.isTrue(west_or_east)) {
                 return false;
+            }
         }
 
         return true;

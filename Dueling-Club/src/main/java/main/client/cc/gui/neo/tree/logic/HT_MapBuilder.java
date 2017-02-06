@@ -82,34 +82,41 @@ public class HT_MapBuilder {
 
     public static LINK_VARIANT getShiftedLinkVariant(LINK_VARIANT variant, boolean moreVertical) {
         if (variant == LINK_VARIANT.HORIZONTAL) {
-            if (moreVertical)
+            if (moreVertical) {
                 return LINK_VARIANT.ANGLE_TO_LEFT;
+            }
             return LINK_VARIANT.ANGLE_TO_RIGHT;
         }
         if (variant == LINK_VARIANT.VERTICAL) {
-            if (!moreVertical)
+            if (!moreVertical) {
                 return LINK_VARIANT.ANGLE_TO_LEFT;
+            }
             return LINK_VARIANT.ANGLE_TO_RIGHT;
         }
         int i = new EnumMaster<LINK_VARIANT>().getEnumConstIndex(variant);
         int n = moreVertical ? 1 : -1;
-        if (variant.isToRight())
+        if (variant.isToRight()) {
             i -= n;
-        else if (variant.isToLeft())
+        } else if (variant.isToLeft()) {
             i += n;
-        if (i < 0)
-            if (!moreVertical)
+        }
+        if (i < 0) {
+            if (!moreVertical) {
                 return LINK_VARIANT.HORIZONTAL;
+            }
+        }
 
-        if (i >= LINK_VARIANT.values().length)
+        if (i >= LINK_VARIANT.values().length) {
             return null;
+        }
         LINK_VARIANT link = LINK_VARIANT.values()[i];
         // if (link == LINK_VARIANT.VERTICAL || link ==
         // LINK_VARIANT.VERTICAL_LONG) {
         if (!(link.isToRight() || link.isToLeft())) {
             // check LONG/s TODO
-            if (!moreVertical)
+            if (!moreVertical) {
                 return LINK_VARIANT.HORIZONTAL;
+            }
             return LINK_VARIANT.VERTICAL;
         }
         return link;
@@ -148,10 +155,11 @@ public class HT_MapBuilder {
                 + rootTypes);
         // TODO next row of root types!
         if (rootTypes.size() > 3) {
-            if (rootTypes.size() > 4)
+            if (rootTypes.size() > 4) {
                 marginX = 38;
-            else
+            } else {
                 marginX = 28;
+            }
         }
         for (ObjType rootType : rootTypes) {
 
@@ -207,8 +215,9 @@ public class HT_MapBuilder {
     private List<ObjType> getCustomPosTypes(List<ObjType> rootTypes) {
         List<ObjType> list = new LinkedList<>();
         for (ObjType t : rootTypes) {
-            if (t.checkParam(PARAMS.HT_CUSTOM_POS_X) || t.checkParam(PARAMS.HT_CUSTOM_POS_Y))
+            if (t.checkParam(PARAMS.HT_CUSTOM_POS_X) || t.checkParam(PARAMS.HT_CUSTOM_POS_Y)) {
                 list.add(t);
+            }
         }
         return list;
     }
@@ -216,8 +225,9 @@ public class HT_MapBuilder {
     protected void addNodeBranch(ObjType root, int parentX, int i, int sublingCount, ObjType parent) { // int
         int newParentX = addNode(parentX, root, i, sublingCount, parent);
         List<ObjType> children = DataManager.getChildren(root, data);
-        if (children.isEmpty())
+        if (children.isEmpty()) {
             return;
+        }
         i = 0;
         sortDefault(children);
 
@@ -225,9 +235,11 @@ public class HT_MapBuilder {
         for (ObjType child : children) {
             sublingCount = getSublingCount(children);
             addNodeBranch(child, newParentX, i, sublingCount, root);
-            if (sublingCount < children.size())
-                if (isRowPosIgnored(child))
+            if (sublingCount < children.size()) {
+                if (isRowPosIgnored(child)) {
                     continue;
+                }
+            }
             i++;
         }
     }
@@ -236,26 +248,31 @@ public class HT_MapBuilder {
         int c = 0;
         List<Object> groups = new LinkedList<>();
         for (ObjType child : children) {
-            if (isRowPosIgnored(child))
+            if (isRowPosIgnored(child)) {
                 continue;
+            }
 
             String group = child.getProperty(PROPS.TREE_NODE_GROUP);
             if (!groups.contains(group)) {
                 c++;
-                if (!group.isEmpty())
+                if (!group.isEmpty()) {
                     groups.add(child);
+                }
             }
         }
         return c;
     }
 
     private boolean isRowPosIgnored(ObjType child) {
-        if (isAddLinkPerChild())
+        if (isAddLinkPerChild()) {
             return false;
+        }
         LINK_VARIANT presetLink = getPresetLink(child);
-        if (presetLink != null)
-            if (!presetLink.isVertical())
+        if (presetLink != null) {
+            if (!presetLink.isVertical()) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -285,8 +302,9 @@ public class HT_MapBuilder {
     private void addAltBaseLinks(Point point, HT_Node node) {
         ObjType type = node.getType();
         String prop = type.getProperty(PROPS.ALT_BASE_LINKS);
-        if (prop.isEmpty())
+        if (prop.isEmpty()) {
             return;
+        }
         StaticTreeLink link = getStaticLink(type);
         for (String s : StringMaster.openContainer(prop)) {
             addAltBaseLink(link, s, type, point);
@@ -297,8 +315,9 @@ public class HT_MapBuilder {
     private void addAltBaseLinks() {
         for (HT_Node c : map.getNodeMap().values()) {
             String prop = c.getType().getProperty(PROPS.ALT_BASE_LINKS);
-            if (prop.isEmpty())
+            if (prop.isEmpty()) {
                 continue;
+            }
 
             for (String s : StringMaster.openContainer(prop)) {
                 String typeName = VariableManager.removeVarPart(s);
@@ -345,8 +364,8 @@ public class HT_MapBuilder {
         point = link.getPoint();
         Point originalPoint = new Point(point.x, point.y);
         boolean adjusted = false;
-        if (isAutoAdjustmentOn())
-            if (parent != null)
+        if (isAutoAdjustmentOn()) {
+            if (parent != null) {
                 while (adjustLink(point, link, parent, type, parentX, i, sublingCount)) {
                     adjusted = true; // link point or node point?
                     point = new PointX(link.getPoint().x + variant.getNodeOffsetX(), link
@@ -355,6 +374,8 @@ public class HT_MapBuilder {
                     // sublingCount); //
                     // unnecessary?
                 }
+            }
+        }
         if (adjusted) {
             main.system.auxiliary.LogMaster.log(1, "^v^ " + type.getName() + " adjusted to "
                     + variant + " from " + link.getVariant());
@@ -367,10 +388,11 @@ public class HT_MapBuilder {
 
         int x = point.x + variant.getNodeOffsetX();// +getGroupNodeOffsetX(type,
         // link.getChildren());
-        if (!isAddLinkPerChild())
+        if (!isAddLinkPerChild()) {
             if (link.getVariant().isVertical() || (!link.isManualSet())) {
                 x = getX(parentX, i, sublingCount, type, parent);
             }
+        }
         int y = point.y - 64; // + variant.getNodeOffsetY();
 
         Point groupNodeOffset = groupNodePosMap.get(type);
@@ -386,14 +408,16 @@ public class HT_MapBuilder {
         int finalY = MathMaster.getMinMax(y, 0, defTreeHeight - 64);
         // int diffY = finalY-y;
         int abs = Math.abs(finalX - x);
-        if (!customPos)
-            if (abs > 0)
+        if (!customPos) {
+            if (abs > 0) {
                 if (finalY == y) { // just limit the diff!
 
                     main.system.auxiliary.LogMaster.log(1, type.getName()
                             + " (x adjustment) -> Y decreased by " + abs);
                     finalY += abs; // increase or decrease Y for x-change?
                 }
+            }
+        }
 
         point = new PointX(finalX, finalY);
 
@@ -409,10 +433,11 @@ public class HT_MapBuilder {
         int v = 0;
         int h = 0;
         if (point.x > defTreeWidth - defSize || point.x < 0) {
-            if (point.x < 0)
+            if (point.x < 0) {
                 v += Math.abs(point.x);
-            else
+            } else {
                 v += point.x - (defTreeWidth - defSize);
+            }
         }
         if (point.y > defTreeHeight - defSize || point.y < 0) {
             // if (point.x < 0)
@@ -476,10 +501,12 @@ public class HT_MapBuilder {
         LINK_VARIANT variant = getShiftedLinkVariant(link.getVariant(), moreVertical);
         main.system.auxiliary.LogMaster.log(1, "***** vertical= " + moreVertical
                 + " => adjusted to " + variant + "  [" + link);
-        if (variant == null)
+        if (variant == null) {
             return false;
-        if (variant == link.getVariant())
+        }
+        if (variant == link.getVariant()) {
             return false;
+        }
         link.setVariant(variant);
         return true;
     }
@@ -501,19 +528,22 @@ public class HT_MapBuilder {
         // TODO multiple
         // if (groupNodePosMap.containsKey(type)){
         // }
-        if (parent == null)
+        if (parent == null) {
             return;
+        }
 
         LINK_VARIANT variant = getPresetLink(type);
 
-        if (!isAddLinkPerChild())
-            if (i > 0)
+        if (!isAddLinkPerChild()) {
+            if (i > 0) {
                 if (variant == null) {
                     StaticTreeLink link = map.getLinkForParentType(parent, true);
                     link.getChildren().add(type);
                     // TODO add child!
                     return;
                 }
+            }
+        }
 
         if (isGrouped(type, parent)) {
             for (StaticTreeLink link : map.getStaticLinkMap().keySet()) {
@@ -530,12 +560,14 @@ public class HT_MapBuilder {
                 variant = getDefaultLinkVariant();
             }
 
-        } else
+        } else {
             variant = getLinkVariant(type, i, sublingCount);
+        }
         Point point = getPoint(variant, parent, type, parentX, i, sublingCount);
         StaticTreeLink link = new StaticTreeLink(variant, point, parent, type);
-        if (getPresetLink(type) == variant)
+        if (getPresetLink(type) == variant) {
             link.setManualSet(true);
+        }
         map.getStaticLinkMap().put(link, point);
 
         main.system.auxiliary.LogMaster.log(1, "LINK added: " + variant + " FOR " + type.getName()
@@ -545,8 +577,9 @@ public class HT_MapBuilder {
 
     protected Point getPoint(LINK_VARIANT variant, ObjType parent, ObjType type, int parentX,
                              int i, int sublingCount) {
-        if ((variant.isAutoPos()) || parent == null)
+        if ((variant.isAutoPos()) || parent == null) {
             return new PointX(getX(parentX, i, sublingCount, type, parent), getY(type, parent));
+        }
         int x = parentX + variant.getOffsetX();
         int y = map.getPointForType(parent).y + variant.getOffsetY();
         x += type.getIntParam(PARAMS.TREE_LINK_OFFSET_X);
@@ -566,7 +599,7 @@ public class HT_MapBuilder {
         LINK_VARIANT variant = getDefaultLinkVariant();
         Integer circle = type.getIntParam(PARAMS.CIRCLE);
         String linkName = type.getProperty(PROPS.LINK_VARIANT);
-        if (linkName.isEmpty())
+        if (linkName.isEmpty()) {
             if (!isAddLinkPerChild()) {
                 List<ObjType> typesOnRow = getTypesWithinRange(type, sublingCount, sublingCount,
                         64, 64);
@@ -575,8 +608,9 @@ public class HT_MapBuilder {
                     int index = 0;
                     while (index < typesOnRow.size()) {
                         if (alteredTypeLinkMap.containsKey(DataManager.getParent(typesOnRow
-                                .get(index))))
+                                .get(index)))) {
                             return LINK_VARIANT.VERTICAL; // TODO short? if any
+                        }
                         // in
                         // line are long!
                         index++;
@@ -590,25 +624,30 @@ public class HT_MapBuilder {
             } else {
                 if (sublingCount > 1) {
                     if (sublingCount % 2 == 1) {
-                        if ((i == sublingCount / 2))
+                        if ((i == sublingCount / 2)) {
                             variant = getDefaultLinkVariant(); // getSpecialLink?
-                        else if (i < sublingCount / 2) {
+                        } else if (i < sublingCount / 2) {
                             linkName += "ANGLE_TO_LEFT";
-                        } else
+                        } else {
                             linkName += "ANGLE_TO_RIGHT";
+                        }
                     } else if (i % 2 == 0) {
                         linkName += "ANGLE_TO_LEFT";
                     } else {
                         linkName += "ANGLE_TO_RIGHT";
                     }
                 }
-                if (!linkName.isEmpty())
-                    if (circle > 0 && circle < 4)
+                if (!linkName.isEmpty()) {
+                    if (circle > 0 && circle < 4) {
                         linkName += circle;
+                    }
+                }
             }
-        if (!linkName.isEmpty())
+        }
+        if (!linkName.isEmpty()) {
             variant = new EnumMaster<LINK_VARIANT>()
                     .retrieveEnumConst(LINK_VARIANT.class, linkName);
+        }
         if (variant == null) {
             variant = getDefaultLinkVariant();
         }
@@ -635,8 +674,9 @@ public class HT_MapBuilder {
 
     protected StaticTreeLink getStaticLink(ObjType type) {
         for (StaticTreeLink s : map.getStaticLinkMap().keySet()) {
-            if (s.getChildren().contains(type))
+            if (s.getChildren().contains(type)) {
                 return (s);
+            }
         }
 
         if (!isAddLinkPerChild()) {
@@ -644,14 +684,18 @@ public class HT_MapBuilder {
             ObjType typeAltered = alteredTypeLinkMap.get(parent);
             if (typeAltered != null)
                 // return alteredLink;
+            {
                 for (StaticTreeLink s : map.getStaticLinkMap().keySet()) {
-                    if (s.getChildren().contains(typeAltered))
+                    if (s.getChildren().contains(typeAltered)) {
                         return s;
+                    }
                 }
+            }
 
             for (StaticTreeLink s : map.getStaticLinkMap().keySet()) {
-                if (s.getSource() == parent)
+                if (s.getSource() == parent) {
                     return s;
+                }
             }
         }
 
@@ -660,8 +704,9 @@ public class HT_MapBuilder {
 
     protected HT_Node createNode(ObjType type, int nodeSize, ObjType parent) {
         HT_Node node = new HT_Node(type, nodeSize, parent);
-        if (isGrouped(type, parent))
+        if (isGrouped(type, parent)) {
             node.setGrouped(true);
+        }
         return node;
     }
 
@@ -690,8 +735,9 @@ public class HT_MapBuilder {
             parentPosSpecial = linkPosMap.get(parent);
             if (parentPosSpecial != null) {
                 parentCircle = 0;
-            } else
+            } else {
                 parentCircle = parent.getIntParam(PARAMS.CIRCLE) + 1;
+            }
         }
 
         Integer circle = Math.max(parentCircle + 1, child.getIntParam(PARAMS.CIRCLE) + 1);
@@ -718,8 +764,9 @@ public class HT_MapBuilder {
         for (ObjType c : data) {
             // init groups
             String group = c.getProperty(PROPS.TREE_NODE_GROUP);
-            if (group.isEmpty())
+            if (group.isEmpty()) {
                 continue;
+            }
             List<ObjType> types = groupsMap.get(group);
             if (types == null) {
                 types = new LinkedList<>();
@@ -743,15 +790,18 @@ public class HT_MapBuilder {
     }
 
     protected boolean isGrouped(ObjType type, ObjType parent) {
-        if (groupNodePosMap.containsKey(type))
+        if (groupNodePosMap.containsKey(type)) {
             return true;
+        }
         String group = type.getProperty(PROPS.TREE_NODE_GROUP);
-        if (group.isEmpty())
+        if (group.isEmpty()) {
             return false;
+        }
 
         for (ObjType t : DataManager.getChildren(parent, data)) {
-            if (t.checkProperty(PROPS.TREE_NODE_GROUP, group))
+            if (t.checkProperty(PROPS.TREE_NODE_GROUP, group)) {
                 return true;
+            }
         }
         return false;
     }

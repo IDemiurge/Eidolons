@@ -39,13 +39,16 @@ public class TemplateCondition extends MicroCondition {
         conditions = new Conditions();
         if (modeTemplate != null) {
             Condition modConditions = DC_ConditionMaster.getTargetingModConditions(modeTemplate);
-            if (!conditions.contains(modConditions))
+            if (!conditions.contains(modConditions)) {
                 conditions.add(modConditions);
+            }
         }
-        if (selectiveTemplate != null)
+        if (selectiveTemplate != null) {
             conditions.add(DC_ConditionMaster
                     .getSelectiveTargetingTemplateConditions(selectiveTemplate));
-        if (autoTemplate != null)
+        }
+        if (autoTemplate != null) {
             conditions.add(DC_ConditionMaster.getAutoTargetingTemplateConditions(autoTemplate));
+        }
     }
 }

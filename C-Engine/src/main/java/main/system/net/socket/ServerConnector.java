@@ -32,11 +32,13 @@ public abstract class ServerConnector {
 
             setUser(new User(userData));
             String string = user.getData();
-            if (viewer != null)
+            if (viewer != null) {
                 viewer.info(string);
+            }
             return true;
-        } else
+        } else {
             return false;
+        }
     }
 
     public static boolean checkUser(String name) {

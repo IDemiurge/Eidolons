@@ -82,8 +82,9 @@ public class Route extends Place {
     public Area getArea() {
         if (area == null) {
             area = orig.getArea();
-            if (area == null)
+            if (area == null) {
                 area = dest.getArea();
+            }
         }
         return area;
     }
@@ -97,24 +98,28 @@ public class Route extends Place {
     }
 
     public void addLinkedPlace(Place place) {
-        if (!getLinkedPlaces().contains(place))
+        if (!getLinkedPlaces().contains(place)) {
             getLinkedPlaces().add(place);
+        }
     }
 
     public void addLinkedRoute(Route place) {
-        if (!getLinkedRoutes().contains(place))
+        if (!getLinkedRoutes().contains(place)) {
             getLinkedRoutes().add(place);
+        }
     }
 
     public void addLinkedTown(Town place) {
-        if (!getLinkedTowns().contains(place))
+        if (!getLinkedTowns().contains(place)) {
             getLinkedTowns().add(place);
+        }
     }
 
     @Override
     public void resetCoordinates() {
-        if (coordinates != null)
+        if (coordinates != null) {
             return;
+        }
         Coordinates c1 = orig.getDefaultMapRenderPoint();
         Coordinates c2 = dest.getDefaultMapRenderPoint();
         // min max enforced from MapComp that knows display-state of Places?
@@ -123,15 +128,18 @@ public class Route extends Place {
 
         int index = 0;
         for (Route route : orig.getRoutes()) {
-            if (route.isCoordinatesValid())
+            if (route.isCoordinatesValid()) {
                 if ((route.getOrigin() == dest || route.getOrigin() == orig)
                         && (route.getDestination() == dest || route
-                        .getDestination() == orig))
+                        .getDestination() == orig)) {
                     index++;
+                }
+            }
         }
         perpendicularOffset = index * MacroGuiManager.getRouteOffset();
-        if (index % 2 == 0)
+        if (index % 2 == 0) {
             perpendicularOffset = -perpendicularOffset;
+        }
         // TODO LINKED ROUTES
         // if (isAvailable()) { // not necessarily visible
         // if (dest == MacroManager.getActiveParty().getCurrentLocation())
@@ -145,8 +153,9 @@ public class Route extends Place {
             MacroManager.getActiveParty().getCurrentDestination();
             displacement = MacroManager.getActiveParty().getIntParam(
                     MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE);
-            if (isBackwards(MacroManager.getActiveParty()))
+            if (isBackwards(MacroManager.getActiveParty())) {
                 displacement = 100 - displacement;
+            }
         }
         this.coordinates = CoordinatesMaster.getCoordinateBetween(c1, c2,
                 displacement, perpendicularOffset);
@@ -185,8 +194,9 @@ public class Route extends Place {
 
     public Place getOtherEnd(Place oneEnd) {
         // if linked??? can be traveled on either direction...
-        if (oneEnd == dest)
+        if (oneEnd == dest) {
             return orig;
+        }
         return dest;
     }
 

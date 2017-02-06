@@ -90,8 +90,9 @@ public class XML_Writer {
     public static void saveAll() {
         for (String typeName : XML_Reader.getTypeMaps().keySet()) {
             OBJ_TYPE type = ContentManager.getOBJ_TYPE(typeName);
-            if (isWritingBlocked(type))
+            if (isWritingBlocked(type)) {
                 continue;
+            }
             writeXML_ForTypeGroup(type);
         }
     }
@@ -111,9 +112,10 @@ public class XML_Writer {
                 // .confirm("Xml wasn't read properly, block writing Types' xml?");
             }
         }
-        if (BooleanMaster.isTrue(writingBlocked))
+        if (BooleanMaster.isTrue(writingBlocked)) {
             return false;
-        if (group == null)
+        }
+        if (group == null) {
             if (OBJ_TYPES.getXmlGroups(TYPE) != null) {
                 for (Object obj : OBJ_TYPES.getXmlGroups(TYPE)) {
                     String name = obj.toString();
@@ -125,6 +127,7 @@ public class XML_Writer {
                 }
                 return true;
             }
+        }
 
         setPathForOBJ_TYPE(TYPE, group);
         main.system.auxiliary.LogMaster.log(0, path + " - WRITING XML FOR GROUP " + TYPE);
@@ -132,8 +135,9 @@ public class XML_Writer {
 
         if (group == null) {
             map = DataManager.getTypeMap(TYPE);
-            if (map == null)
+            if (map == null) {
                 return false;
+            }
         }
         constructSubStrings();
 
@@ -154,19 +158,22 @@ public class XML_Writer {
         if (customPath != null) {
             path = customPath;
             customPath = null;
-        } else if (XML_Reader.getCustomTypesPath() != null)
+        } else if (XML_Reader.getCustomTypesPath() != null) {
             path = XML_Reader.getCustomTypesPath();
-        else
+        } else {
             path = (!OBJ_TYPES.isOBJ_TYPE(TYPE.toString()) ? PathFinder.getMACRO_TYPES_PATH()
                     : PathFinder.getTYPES_PATH());
-        if (backUp)
+        }
+        if (backUp) {
             path += BACK_UP;
+        }
         if (reserve) {
             path += RESERVE;
             path += " " + TimeMaster.getFormattedDate(true);
             File file = FileManager.getFile(path);
-            if (!file.exists())
+            if (!file.exists()) {
                 file.mkdir();
+            }
         }
         fileName = (!StringMaster.isEmpty(group)) ? TYPE + "-" + group + ".xml" : TYPE + ".xml";
     }
@@ -196,9 +203,11 @@ public class XML_Writer {
         builder = new StringBuilder(STR_CAPACITY);
         setPathForOBJ_TYPE(TYPE, group);
         String newTypeString = getTypeXML(type, builder);
-        if (!newTypeString.isEmpty()) if (XML_Converter.getDoc(newTypeString) == null) {
-            main.system.auxiliary.LogMaster.log(1, "faulty xml for " + type.getName());
-            return false;
+        if (!newTypeString.isEmpty()) {
+            if (XML_Converter.getDoc(newTypeString) == null) {
+                main.system.auxiliary.LogMaster.log(1, "faulty xml for " + type.getName());
+                return false;
+            }
         }
         String xml = getXML();
 
@@ -217,9 +226,9 @@ public class XML_Writer {
         {
             String groupNode = openXML(type.getProperty(TYPE.getGroupingKey()));
 
-            if (xml.contains(groupNode))
+            if (xml.contains(groupNode)) {
                 stringPool = xml.replace(groupNode, groupNode + newTypeString);
-            else {
+            } else {
                 stringPool = xml.replace(closeXML(XML), groupNode + newTypeString
                         + closeXML(type.getProperty(TYPE.getGroupingKey())) + closeXML(XML));
             }
@@ -240,12 +249,15 @@ public class XML_Writer {
                 map.remove(typename);
                 continue;
             }
-            if (objType.isGenerated())
+            if (objType.isGenerated()) {
                 continue;
+            }
 
-            if (dirtyOnly)
-                if (!objType.isDirty())
+            if (dirtyOnly) {
+                if (!objType.isDirty()) {
                     continue;
+                }
+            }
             objType.setDirty(false);
             String subgroup1 = objType.getProperty(DataManager.getGroupingKey(currentObjTypeGroup));
 
@@ -270,8 +282,9 @@ public class XML_Writer {
         for (String strname : subStrings.keySet()) {
             StringBuilder subGroup = subStrings.get(strname);
             main.system.auxiliary.LogMaster.log(0, "SUBSTRING: " + strname);
-            if (strname.isEmpty())
+            if (strname.isEmpty()) {
                 strname = "Empty";
+            }
             stringPool += openXML(strname);
             stringPool += subGroup.toString();
             stringPool += closeXML(strname);
@@ -288,21 +301,26 @@ public class XML_Writer {
     }
 
     public static StringBuilder getTypeXML_Builder(Entity type, StringBuilder builder, Entity parent) {
-        if (type.getName().isEmpty())
+        if (type.getName().isEmpty()) {
             return builder;
+        }
         builder.append(openXML(type.getName()));
         builder.append("<params>");
         for (PARAMETER param : type.getParamMap().keySet()) {
-            if (param == null)
+            if (param == null) {
                 continue;
+            }
 
             String value = formatXmlTextContent(type.getParamMap().get(param));
-            if (parent != null)
-                if (parent.getParam(param).equals(value))
+            if (parent != null) {
+                if (parent.getParam(param).equals(value)) {
                     continue;
+                }
+            }
 
-            if (!checkWriteValue(param, value, type.getOBJ_TYPE_ENUM()))
+            if (!checkWriteValue(param, value, type.getOBJ_TYPE_ENUM())) {
                 continue;
+            }
 
             appendLeafNode(builder, StringMaster.capitalizeFirstLetter(param.getName()), value);
         }
@@ -313,12 +331,15 @@ public class XML_Writer {
         for (PROPERTY prop : type.getPropMap().keySet()) {
 
             String value = formatXmlTextContent(type.getPropMap().get(prop));
-            if (parent != null)
-                if (parent.getProperty(prop).equals(value))
+            if (parent != null) {
+                if (parent.getProperty(prop).equals(value)) {
                     continue;
-            if (prop == null)
+                }
+            }
+            if (prop == null) {
                 main.system.auxiliary.LogMaster.log(1, "null key! ; value = "
                         + type.getPropMap().get(prop));
+            }
             appendLeafNode(builder, StringMaster.capitalizeFirstLetter(prop
 
                     .getName()), value);
@@ -335,14 +356,16 @@ public class XML_Writer {
     }
 
     private static boolean checkWriteValue(VALUE val, String value, OBJ_TYPE TYPE) {
-        if (!(ContentManager.isValueForOBJ_TYPE(TYPE, val)))
+        if (!(ContentManager.isValueForOBJ_TYPE(TYPE, val))) {
             return false;
+        }
         if (TYPE == OBJ_TYPES.SKILLS || TYPE == OBJ_TYPES.CHARS || TYPE == OBJ_TYPES.UNITS
                 || TYPE == OBJ_TYPES.SPELLS) {
-            if (StringMaster.isEmpty(value) || value.equals("0"))
+            if (StringMaster.isEmpty(value) || value.equals("0")) {
                 if (!val.getName().equalsIgnoreCase("CIRCLE")) {
                     return false;
                 }
+            }
         }
         return true;
     }
@@ -366,8 +389,9 @@ public class XML_Writer {
 
     public static String restoreXmlNodeText(String s) {
         while (true) {
-            if (!s.contains(XML_Parser.ASCII_OPEN))
+            if (!s.contains(XML_Parser.ASCII_OPEN)) {
                 break;
+            }
             String code = StringMaster.getSubStringBetween(s, XML_Parser.ASCII_OPEN,
                     XML_Parser.ASCII_CLOSE);
             try {
@@ -386,8 +410,9 @@ public class XML_Writer {
             String code = xmlFormatReplacements.get(x);
             s = s.replace(code, StringMaster.getStringFromCode(code));
         }
-        if (s.startsWith(FIRST_CHAR))
+        if (s.startsWith(FIRST_CHAR)) {
             s = s.substring(FIRST_CHAR.length());
+        }
         return s.replace("_", " ");
 
     }
@@ -404,8 +429,9 @@ public class XML_Writer {
     }
 
     public static String formatStringForXmlNodeName(String s) {
-        if (s == null)
+        if (s == null) {
             return "";
+        }
         if (!Character.isAlphabetic(s.charAt(0))) {
             s = FIRST_CHAR + s;
         }
@@ -456,16 +482,18 @@ public class XML_Writer {
     }
         public static boolean write(String content, String path, String fileName) {
 
-        if (fileName.contains("rack"))
-            return false;
+            if (fileName.contains("rack")) {
+                return false;
+            }
 
         File dir = new File(path);
-        if (!dir.isDirectory())
-            try {
-                dir.mkdirs();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
+            if (!dir.isDirectory()) {
+                try {
+                    dir.mkdirs();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                }
             }
         return FileManager.write(content, path + "\\" + fileName);
     }

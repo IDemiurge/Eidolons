@@ -90,8 +90,9 @@ public class DC_ObjInitializer {
     }
 
     public static Coordinates getCoordinatesFromObjString(String item, boolean alt) {
-        if (alt)
+        if (alt) {
             return getCoordinatesFromObjStringAlt(item);
+        }
         try {
             return new Coordinates(true, item.split(COORDINATES_OBJ_SEPARATOR)[0]);
         } catch (Exception e) {
@@ -112,8 +113,9 @@ public class DC_ObjInitializer {
     }
 
     public static String getNameFromObjString(String item, boolean alt) {
-        if (alt)
+        if (alt) {
             return getNameFromObjStringAlt(item);
+        }
         return item.split(COORDINATES_OBJ_SEPARATOR)[1];
     }
 
@@ -131,12 +133,14 @@ public class DC_ObjInitializer {
     }
 
     public static List<MicroObj> processUnitDataString(Player owner, String objData, DC_Game game) {
-        if (StringMaster.isEmpty(objData))
+        if (StringMaster.isEmpty(objData)) {
             return new LinkedList<>();
+        }
         Map<Coordinates, MicroObj> processUnitDataStringToMap = processUnitDataStringToMap(owner,
                 objData, game);
-        if (processUnitDataStringToMap == null)
+        if (processUnitDataStringToMap == null) {
             return new LinkedList<>();
+        }
         return new LinkedList<>(processUnitDataStringToMap.values());
     }
 
@@ -152,8 +156,9 @@ public class DC_ObjInitializer {
 
     public static Map<Coordinates, MicroObj> processUnitDataStringToMap(Player owner,
                                                                         String objData, DC_Game game, boolean alt) {
-        if (objData == null || objData.equals(""))
+        if (objData == null || objData.equals("")) {
             return null;
+        }
 
         String[] items = objData.split(getObjSeparator(alt));
         Map<Coordinates, MicroObj> map = new HashMap<>();
@@ -174,15 +179,17 @@ public class DC_ObjInitializer {
                         chance = -chance;
                         excludeCoordinate = true;
                     }
-                    if (RandomWizard.chance(chance))
+                    if (RandomWizard.chance(chance)) {
                         continue;
+                    }
                 }
             }
             try {
                 String typeName = getNameFromObjString(item, alt);
                 i++;
-                if (i == items.length)
+                if (i == items.length) {
                     last = true;
+                }
                 int level = 0;
                 if (typeName.contains(UnitGroupMaster.TYPE_LEVEL_SEPARATOR)) {
                     level = StringMaster.getInteger(StringMaster.getLastPart(typeName,
@@ -190,17 +197,19 @@ public class DC_ObjInitializer {
 
                 }
                 ObjType type = DataManager.getType(typeName, C_OBJ_TYPE.BF_OBJ);
-                if (level != 0)
+                if (level != 0) {
                     type = new UnitLevelManager().getLeveledType(type, level);
+                }
                 // type = UnitGroupMaster.getLeveledType(type, owner, objData);
 
                 Coordinates c = null;
-                if (!item.contains("null="))
+                if (!item.contains("null=")) {
                     try {
                         c = getCoordinatesFromObjString(item, alt);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
                 int height = UnitGroupMaster.getGroupSizeY(owner);// UnitGroupMaster.getCurrentGroupHeight();
                 int width = UnitGroupMaster.getGroupSizeX(owner);
 
@@ -236,18 +245,22 @@ public class DC_ObjInitializer {
                     }
 
                 }
-                if (mapBlockMode)
-                    if (excludedCoordinates.contains(c))
+                if (mapBlockMode) {
+                    if (excludedCoordinates.contains(c)) {
                         continue;
-                if (excludeCoordinate)
+                    }
+                }
+                if (excludeCoordinate) {
                     excludedCoordinates.add(c);
+                }
 
                 if (mapBlockMode) {
                     if (!CoreEngine.isLevelEditor()
-                            && C_OBJ_TYPE.UNITS_CHARS.equals(type.getOBJ_TYPE_ENUM()))
+                            && C_OBJ_TYPE.UNITS_CHARS.equals(type.getOBJ_TYPE_ENUM())) {
                         owner = game.getPlayer(false);
-                    else
+                    } else {
                         owner = DC_Player.NEUTRAL;
+                    }
                     if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.ENCOUNTERS) {
                         if (!game.isSimulation()) {
                             game.getArenaManager().getSpawnManager().addDungeonEncounter(c_dungeon,
@@ -262,18 +275,21 @@ public class DC_ObjInitializer {
                     // TODO ownership data ought to be in the Map Plan!
                 }
 
-                if (type == null)
+                if (type == null) {
                     continue;
-                if (data != null)
+                }
+                if (data != null) {
                     data.addType(type, owner.isMe());
+                }
 
                 if (game.isDebugMode()) {
-                    if (owner.isMe())
+                    if (owner.isMe()) {
                         try {
                             TestMasterContent.addTestItems(type, last);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                    }
                 }
                 last = false;
                 //todo optimize create unit func it too slow
@@ -281,21 +297,24 @@ public class DC_ObjInitializer {
                 DC_HeroObj hero = (DC_HeroObj) unit;
 
                 if (!game.isOffline()) {
-                    if (!game.isHost())
+                    if (!game.isHost()) {
                         hero.setFacing(hero.getGame().getArenaManager().getSpawnManager()
                                 .getMultiplayerFacingForUnit(unit));
+                    }
                 } else if (FAST_DC.isRunning()) {
-                    if (!owner.isMe())
+                    if (!owner.isMe()) {
                         creeps = true;
-                    else
+                    } else {
                         try {
-                            if (first)
+                            if (first) {
                                 PartyManager.newParty(hero);
-                            else
+                            } else {
                                 PartyManager.addMember(hero);
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                    }
 
                 }
 
@@ -307,13 +326,14 @@ public class DC_ObjInitializer {
                     map.put(c, unit);
                 }
 
-                if (!CoreEngine.isLevelEditor() && unit.getOBJ_TYPE_ENUM() != null)
-                    if (unit.getOBJ_TYPE_ENUM() == OBJ_TYPES.UNITS){
+                if (!CoreEngine.isLevelEditor() && unit.getOBJ_TYPE_ENUM() != null) {
+                    if (unit.getOBJ_TYPE_ENUM() == OBJ_TYPES.UNITS) {
                         // if (!owner.isMe() || game.isDebugMode()) TODO why
                         // not?
                         //todo optimize train func it too slow
                         UnitMaster.train((DC_HeroObj) unit);
                     }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -343,8 +363,9 @@ public class DC_ObjInitializer {
     }
 
     private static String getObjSeparator(boolean alt) {
-        if (alt)
+        if (alt) {
             return StringMaster.SEPARATOR;
+        }
         return OBJ_SEPARATOR;
     }
 
@@ -373,7 +394,7 @@ public class DC_ObjInitializer {
     }
 
     public static void initFlipMap(int z, Map<String, FLIP> flipMap) {
-        if (flipMap != null)
+        if (flipMap != null) {
             for (String data : flipMap.keySet()) {
                 Coordinates c = getCoordinatesFromObjString(data);
                 FLIP d = flipMap.get(data);
@@ -382,8 +403,9 @@ public class DC_ObjInitializer {
                     if (name.contains(MULTI_DIRECTION_SUFFIX)) {
                         name = name.split(MULTI_DIRECTION_SUFFIX)[0];
                     }
-                    if (!name.equals(obj.getName()))
+                    if (!name.equals(obj.getName())) {
                         continue;
+                    }
                     Map<DC_HeroObj, FLIP> map = obj.getGame().getFlipMap().get(c);
                     if (map == null) {
                         map = new HashMap<>();
@@ -392,6 +414,7 @@ public class DC_ObjInitializer {
                     map.put(obj, d);
                 }
             }
+        }
     }
 
     public static void initDirectionMap(int z, Map<String, DIRECTION> directionMap) {
@@ -404,8 +427,9 @@ public class DC_ObjInitializer {
                 if (name.contains(MULTI_DIRECTION_SUFFIX)) {
                     name = name.split(MULTI_DIRECTION_SUFFIX)[0];
                 }
-                if (!name.equals(obj.getName()))
+                if (!name.equals(obj.getName())) {
                     continue;
+                }
                 Map<DC_HeroObj, DIRECTION> map = obj.getGame().getDirectionMap().get(c);
                 if (map == null) {
                     map = new HashMap<>();

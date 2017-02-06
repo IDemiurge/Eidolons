@@ -58,8 +58,9 @@ public class HeroTabsPanel extends G_Panel implements TabChangeListener {
             add(header, "id header, pos 0 0");
             // add(tabs, "@id tabs, pos 0 " + MigMaster.MAX_BOTTOM);
             add(tabs, "id tabs, pos 0 header.y2");
-        } else
+        } else {
             add(tabs, "id tabs, pos 0 0");
+        }
 
         top.setBackground(ColorManager.BACKGROUND);
         setBackground(ColorManager.BACKGROUND);
@@ -77,16 +78,19 @@ public class HeroTabsPanel extends G_Panel implements TabChangeListener {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        if (DC_Game.game.getToolTipMaster() != null)
+        if (DC_Game.game.getToolTipMaster() != null) {
             DC_Game.game.getToolTipMaster().drawToolTips(this);
+        }
     }
 
     @Override
     public void refresh() {
-        if (PartyManager.getParty() != null)
+        if (PartyManager.getParty() != null) {
             PartyManager.getParty().toBase();
-        if (header != null)
+        }
+        if (header != null) {
             header.refresh();
+        }
         tabs.refresh();
         super.refresh();
     }
@@ -115,18 +119,21 @@ public class HeroTabsPanel extends G_Panel implements TabChangeListener {
         // HC_Tab tab = new HC_Tab(hero.getImagePath(),
         // panel.getComp());
         tabs.addTab(hero.getImagePath(), panel.getComp());
-        if (!quiet)
+        if (!quiet) {
             tabs.selectLast();
-        else
+        } else {
             tabs.select(0);
+        }
         // tabs.getTabs().setSelectedComponent(panel.getComp());
     }
 
     public MainPanel getCurrentPanel() {
-        if (tabs.getIndex() == -1)
+        if (tabs.getIndex() == -1) {
             return null;
-        if (panelList.size() <= tabs.getIndex())
+        }
+        if (panelList.size() <= tabs.getIndex()) {
             return null;
+        }
         return panelList.get(tabs.getIndex());
     }
 

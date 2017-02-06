@@ -14,18 +14,22 @@ public abstract class TermNode extends Expression {
     }
 
     private static boolean isValidName(String s) {
-        if (s.length() == 0) return false;
+        if (s.length() == 0) {
+            return false;
+        }
 
         char c = s.charAt(0);
 
-        if (c >= '0' && c <= '9' || c == '.' || c == ',' || c == '(' || c == ')' || c == '^' || c == '*' || c == '/' || c == '+' || c == '-' || c == ' ' || c == '\t' || c == '\n')
+        if (c >= '0' && c <= '9' || c == '.' || c == ',' || c == '(' || c == ')' || c == '^' || c == '*' || c == '/' || c == '+' || c == '-' || c == ' ' || c == '\t' || c == '\n') {
             return false;
+        }
 
         for (int i = 1; i < s.length(); i++) {
             c = s.charAt(i);
 
-            if (c == ',' || c == '(' || c == ')' || c == '^' || c == '*' || c == '/' || c == '+' || c == '-' || c == ' ' || c == '\t' || c == '\n')
+            if (c == ',' || c == '(' || c == ')' || c == '^' || c == '*' || c == '/' || c == '+' || c == '-' || c == ' ' || c == '\t' || c == '\n') {
                 return false;
+            }
         }
 
         return true;
@@ -56,11 +60,13 @@ public abstract class TermNode extends Expression {
      * @throws IllegalArgumentException If the name is null or invalid.
      */
     public void setName(String s) {
-        if (s == null)
+        if (s == null) {
             throw new IllegalArgumentException("name cannot be null");
+        }
 
-        if (!isValidName(s))
+        if (!isValidName(s)) {
             throw new IllegalArgumentException("invalid name: " + s);
+        }
 
         name = s;
     }

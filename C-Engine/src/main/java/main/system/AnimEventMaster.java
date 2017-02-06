@@ -14,11 +14,6 @@ public class AnimEventMaster {
     private static Map<main.system.GuiEventType, List<EventCallbackParam>> queue = new XLinkedMap<>();
     private static List<main.system.GuiEventType> waiting = new LinkedList<>();
 
-    public enum GuiEventType {
-        UPDATE_PHASE_ANIM,
-        UPDATE_PHASE_ANIMS,
-    }
-
     public static void triggerQueued(main.system.GuiEventType e) {
 
         LogMaster.log(LogMaster.ANIM_DEBUG, "Triggering queued " + e);
@@ -28,18 +23,19 @@ public class AnimEventMaster {
             return;
         }
         EventCallbackParam p = list.remove(0);
-        if (list.isEmpty())
+        if (list.isEmpty()) {
             waiting.remove(e);
+        }
 
         LogMaster.log(LogMaster.ANIM_DEBUG, e + " trigger queued with " + p);
 //        trigger(e, p);
     }
 
-
     public static void queue(main.system.GuiEventType e) {
         waiting.add(e);
         LogMaster.log(LogMaster.ANIM_DEBUG, e + " waiting for anim: " + waiting);
     }
+
     private static void trigger(GuiEventType e, EventCallbackParam p) {
 
 // if (waiting.contains(type)) {
@@ -47,5 +43,10 @@ public class AnimEventMaster {
 //        MapMaster.addToListMap(queue, type, obj);
 //        return;
 //    }
+    }
+
+    public enum GuiEventType {
+        UPDATE_PHASE_ANIM,
+        UPDATE_PHASE_ANIMS,
     }
 }

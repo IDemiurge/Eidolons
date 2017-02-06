@@ -20,8 +20,9 @@ public class C_MACRO_OBJ_TYPE implements OBJ_TYPE {
     }
 
     public static C_MACRO_OBJ_TYPE getType(String s) {
-        if (s == null)
+        if (s == null) {
             return null;
+        }
         C_MACRO_OBJ_TYPES type = null;
         try {
             type = C_MACRO_OBJ_TYPES.valueOf(s.toUpperCase().replace(" ", "_"));
@@ -50,8 +51,9 @@ public class C_MACRO_OBJ_TYPE implements OBJ_TYPE {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof C_OBJ_TYPE)
+        if (obj instanceof C_OBJ_TYPE) {
             return super.equals(obj);
+        }
         return Arrays.asList(getTypes()).contains(obj);
     }
 

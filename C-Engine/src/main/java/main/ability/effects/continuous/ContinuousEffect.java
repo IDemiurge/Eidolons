@@ -21,8 +21,9 @@ public class ContinuousEffect extends MicroEffect {
         if ((effect instanceof ContinuousEffect)) {
             this.setEffect(((ContinuousEffect) effect).getEffect());
         }
-        if (getEffect() != null)
+        if (getEffect() != null) {
             getEffect().setQuietMode(true);
+        }
     }
 
     public static Effect transformEffect(Effect effect) {
@@ -43,11 +44,12 @@ public class ContinuousEffect extends MicroEffect {
         } else {
             boolean isTransform = !(effect instanceof ContinuousEffect)
                     && !(effect instanceof AttachmentEffect);
-            if (isTransform)
+            if (isTransform) {
                 if (effect instanceof ContainerEffect) {
                     ContainerEffect containerEffect = (ContainerEffect) effect;
                     isTransform = !(containerEffect.getEffect() instanceof AttachmentEffect);
                 }
+            }
             if (isTransform) {
 
                 effect = new ContinuousEffect(effect);
@@ -85,29 +87,33 @@ public class ContinuousEffect extends MicroEffect {
 
             effect.initLayer();
             setLayer(effect.getLayer());
-        } else
+        } else {
             super.initLayer();
+        }
     }
 
     @Override
     public int getLayer() {
-        if (effect != null)
+        if (effect != null) {
             return effect.getLayer();
+        }
         return super.getLayer();
     }
 
     public int tick() {
         duration--;
-        if (duration > 1)
+        if (duration > 1) {
             remove();
+        }
         return duration;
     }
 
     public void remove() {
         effect.remove();
         ref.getGame().getState().removeEffect(this);
-        if (getTrigger() != null)
+        if (getTrigger() != null) {
             ref.getGame().getState().removeTrigger(getTrigger());
+        }
 
     }
 

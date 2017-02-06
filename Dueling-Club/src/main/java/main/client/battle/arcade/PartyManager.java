@@ -53,16 +53,18 @@ public class PartyManager {
 
     public static void addMember(DC_HeroObj hero) {
         getParty().addMember(hero);
-        if (hero.getGame().isSimulation())
+        if (hero.getGame().isSimulation()) {
             CharacterCreator.partyMemberAdded(hero);
+        }
         if (hero.getIntParam(PARAMS.LEVEL) < getParty().getIntParam(PARAMS.LEVEL)) {
             // SoundMaster.playStandardSound(STD_SOUNDS.LEVEL_UP); why not have
             // some fun with this loop...
             Loop.startLoop(10);
             while (!Loop.loopEnded()
                     && hero.getIntParam(PARAMS.LEVEL) < getParty().getIntParam(PARAMS.LEVEL)) {
-                if (hero.getGame().isSimulation())
+                if (hero.getGame().isSimulation()) {
                     SoundMaster.playStandardSound(STD_SOUNDS.LEVEL_UP);
+                }
                 HeroLevelManager.levelUp(hero);
             }
         }
@@ -71,16 +73,18 @@ public class PartyManager {
     public static PartyObj newParty(DC_HeroObj hero) {
         String newName = "";
 
-        if (CharacterCreator.isArcadeMode())
+        if (CharacterCreator.isArcadeMode()) {
             while (true) {
-                if ((newName) == null)
+                if ((newName) == null) {
                     return null;
+                }
                 if (checkPartyName(newName)) {
                     newName = StringMaster.getPossessive(hero.getName()) + " Party";
                     break;
                 }
                 newName = DialogMaster.inputText(PARTY_NAME_TIP, DEFAULT_TYPE_NAME);
             }
+        }
 
         PartyObj party = createParty(hero);
         // party.getLeader().getProperty(G_PROPS.NAME) +
@@ -120,13 +124,14 @@ public class PartyManager {
             String propValue = type.getProperty(prop);
             List<String> items = StringMaster.openContainer(propValue);
             for (String item : items) {
-                if (StringMaster.isInteger(item))
+                if (StringMaster.isInteger(item)) {
                     try {
                         propValue = StringMaster.replaceFirst(propValue, item, type.getGame()
                                 .getObjectById(StringMaster.getInteger(item)).getType().getName());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
             }
             type.setProperty(prop, propValue);
         }
@@ -172,8 +177,9 @@ public class PartyManager {
     }
 
     public static void initArcade() {
-        if (!party.isArcade())
+        if (!party.isArcade()) {
             savePartyAs(true, true);
+        }
 
     }
 
@@ -188,24 +194,30 @@ public class PartyManager {
     public static void savePartyAs(boolean arcade, boolean auto) {
 
         String newName = party.getName();
-        if (!arcade)
+        if (!arcade) {
             newName = DialogMaster.inputText(PARTY_NAME_TIP, party.getName());
-        if (newName == null)
+        }
+        if (newName == null) {
             return;
+        }
 
-        if (auto)
-            if (!newName.contains(StringMaster.ARCADE))
+        if (auto) {
+            if (!newName.contains(StringMaster.ARCADE)) {
                 newName = newName + " " + StringMaster.ARCADE;
+            }
+        }
 
-        if (!auto)
+        if (!auto) {
             if (DataManager.isTypeName(newName) && !party.getName().equals(newName)) {
-                if (!newName.contains(StringMaster.ARCADE))
+                if (!newName.contains(StringMaster.ARCADE)) {
                     newName = newName + " " + StringMaster.ARCADE;
+                }
                 Loop.startLoop(97);
                 int i = 2;
                 while (!Loop.loopEnded()) {
-                    if (DataManager.isTypeName(newName + "-" + i))
+                    if (DataManager.isTypeName(newName + "-" + i)) {
                         continue;
+                    }
                     newName = newName + "-" + i;
                     break;
                 }
@@ -214,6 +226,7 @@ public class PartyManager {
                     return;
                 }
             }
+        }
 
         saveParty(); // save old party
         ObjType newType = new ObjType(party.getType());
@@ -243,11 +256,14 @@ public class PartyManager {
     }
 
     private static boolean checkPartyName(String newName) {
-        if (party != null)
-            if (newName.equals(party.getName()))
+        if (party != null) {
+            if (newName.equals(party.getName())) {
                 return false;
-        if (newName == null)
+            }
+        }
+        if (newName == null) {
             return false;
+        }
 
         if (DataManager.isTypeName(newName)) {
             DialogMaster.error("Name already exists!");
@@ -290,13 +306,15 @@ public class PartyManager {
     }
 
     public static void saveParty() {
-        if (getParty() != null)
+        if (getParty() != null) {
             saveParty(getParty());
+        }
     }
 
     public static void remove(DC_HeroObj hero) {
-        if (hero == getParty().getLeader())
+        if (hero == getParty().getLeader()) {
             return;
+        }
         getParty().removeMember(hero);
         CharacterCreator.partyMemberRemoved(hero);
     }
@@ -310,9 +328,11 @@ public class PartyManager {
 
         DC_Game.game.getState().addObject(party);
 
-        if (party != null)
-            if (CharacterCreator.isArcadeMode())
+        if (party != null) {
+            if (CharacterCreator.isArcadeMode()) {
                 writeLatestPartyType();
+            }
+        }
     }
 
     public static void addMember(String heroName) {
@@ -360,8 +380,9 @@ public class PartyManager {
 
     private static int getMaxPartyMembers(PartyObj party) {
         Integer max = party.getIntParam(PARAMS.MAX_HEROES);
-        if (max == 0)
+        if (max == 0) {
             return MAX_PARTY_MEMBERS_DEFAULT;
+        }
         return max;
     }
 
@@ -395,8 +416,9 @@ public class PartyManager {
                                          ObjType newType) {
         newType.setName(name);
         PartyObj p = createParty(newType, leader);
-        for (DC_HeroObj unit : units)
+        for (DC_HeroObj unit : units) {
             p.addMember(unit);
+        }
         parties.add(p);
         return p;
     }

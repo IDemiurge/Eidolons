@@ -23,8 +23,9 @@ public class ObjComponentMouseListener implements MouseListener {
                 if (e.getClickCount() > 2) {
 
                 }
-            } else
+            } else {
                 obj.invokeClicked();
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }

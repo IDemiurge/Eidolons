@@ -86,12 +86,14 @@ public class UnlockDialog extends G_Dialog {
         TextCompDC label = new TextCompDC(VISUALS.PROP_BOX);
         label.setText("Unlock " + param.getName());
         panel.add(label, "pos 20 50");
-        if (xpCost > 0)
+        if (xpCost > 0) {
             panel.add(xpButton, "pos 50 100");
+        }
 
         panel.add(cancelButton, "pos 300 50");
-        if (goldCost > 0)
+        if (goldCost > 0) {
             panel.add(goldButton, "pos 300 100");
+        }
 
         return panel;
     }

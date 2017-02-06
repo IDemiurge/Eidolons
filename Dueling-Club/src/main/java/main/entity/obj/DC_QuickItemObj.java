@@ -87,15 +87,17 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
 
     @Override
     public void construct() {
-        if (active == null)
+        if (active == null) {
             if (wrapped) {
                 generateWrappedActive();
                 return;
             }
-        if (!constructed)
+        }
+        if (!constructed) {
             ref.setID(KEYS.ACTIVE, getId());
-        else
+        } else {
             ref.setID(KEYS.ACTIVE, getActive().getId()); // TODO for parsing?
+        }
         super.construct();
 
         if (!StringMaster.isEmpty(getProperty(PROPS.ITEM_SPELL))) {
@@ -103,9 +105,12 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         }
 
         if (actives == null) // ?
+        {
             return;
-        if (actives.isEmpty())
+        }
+        if (actives.isEmpty()) {
             return;
+        }
 
         ObjType type = initActiveType();
         setActive(new DC_ItemActiveObj(type, getOriginalOwner(), getGame(), ref));
@@ -120,12 +125,15 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         REF = REF.getCopy();
         super.setRef(REF);
         this.ref.setID(KEYS.ITEM, id);
-        if (getWrappedWeapon() != null)
+        if (getWrappedWeapon() != null) {
             ref.setID(KEYS.WEAPON, getWrappedWeapon().getId());
-        if (ammo)
+        }
+        if (ammo) {
             ref.setID(KEYS.AMMO, getId());
-        if (getActive() != null)
+        }
+        if (getActive() != null) {
             ref.setID(KEYS.ACTIVE, getActive().getId());
+        }
     }
 
     private ObjType initActiveType() {
@@ -134,14 +142,18 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         type.setProperty(G_PROPS.NAME, getName() + "'s active");
         type.setGame(game);
 
-        for (VALUE v : ValuePages.COSTS)
+        for (VALUE v : ValuePages.COSTS) {
             type.copyValue(v, this);
-        for (VALUE v : ValuePages.QUICK_ITEM_PARAMETERS)
+        }
+        for (VALUE v : ValuePages.QUICK_ITEM_PARAMETERS) {
             type.copyValue(v, this);
-        for (VALUE v : ValuePages.QUICK_ITEM_PROPERTIES)
+        }
+        for (VALUE v : ValuePages.QUICK_ITEM_PROPERTIES) {
             type.copyValue(v, this);
-        for (VALUE v : TRANSLATED_VALUES)
+        }
+        for (VALUE v : TRANSLATED_VALUES) {
             type.copyValue(v, this);
+        }
 
         return type;
     }
@@ -149,42 +161,53 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     @Override
     public void afterEffects() {
         super.afterEffects();
-        if (!wrapped)
+        if (!wrapped) {
             if (active != null) {
                 // what about reload?
-                for (VALUE v : ValuePages.QUICK_ITEM_PARAMETERS)
+                for (VALUE v : ValuePages.QUICK_ITEM_PARAMETERS) {
                     active.copyValue(v, this);
-                for (VALUE v : ValuePages.QUICK_ITEM_PROPERTIES)
+                }
+                for (VALUE v : ValuePages.QUICK_ITEM_PROPERTIES) {
                     active.copyValue(v, this);
-                for (VALUE v : TRANSLATED_VALUES)
+                }
+                for (VALUE v : TRANSLATED_VALUES) {
                     active.copyValue(v, this);
+                }
             }
+        }
     }
 
     public boolean activate() {
-        if (!isConstructed() || wrapped)
+        if (!isConstructed() || wrapped) {
             construct();
-        if (wrapped)
+        }
+        if (wrapped) {
             activatePassives();
+        }
         boolean result = false;
         if (canBeActivated()) {
             setRef(ref.getSourceObj().getRef());
             ref.getSourceObj().getRef().setID(KEYS.ITEM, getId());
             if (getActive().isForcePresetTarget()) {
-                if (getActive().getRef().getTargetObj() != null)
+                if (getActive().getRef().getTargetObj() != null) {
                     ref.setTarget(getActive().getRef().getTarget());
-            } else
+                }
+            } else {
                 getActive().setRef(ref);
+            }
             ref.setID(KEYS.ACTIVE, getActive().getId());
             result = getActive().activate();
-            if (getActive().isCancelled() != null)
-                if (getActive().isCancelled())
+            if (getActive().isCancelled() != null) {
+                if (getActive().isCancelled()) {
                     return false;
+                }
+            }
             // if (!game.isDebugMode())
             removeCharge();
         } else {
-            if (CoreEngine.isSwingOn())
-            getGame().getToolTipMaster().initQuickItemTooltip(this, false);
+            if (CoreEngine.isSwingOn()) {
+                getGame().getToolTipMaster().initQuickItemTooltip(this, false);
+            }
         }
 
         return result;
@@ -192,8 +215,9 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
 
     @Override
     protected void activatePassives() {
-        if (getActive() != null)
+        if (getActive() != null) {
             ref.setID(KEYS.ACTIVE, getActive().getId());
+        }
         super.activatePassives();
     }
 
@@ -203,22 +227,27 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     }
 
     public boolean canBeActivated() {
-        if (!constructed)
+        if (!constructed) {
             constructConcurrently();
-        if (getActive() == null)
+        }
+        if (getActive() == null) {
             return false;
-        if (getIntParam(PARAMS.C_CHARGES) > 0)
+        }
+        if (getIntParam(PARAMS.C_CHARGES) > 0) {
             return getActive().canBeActivated(ref, true);
+        }
         // outOfCharges();
         return false;
     }
 
     private void removeCharge() {
         modifyParameter(PARAMS.C_CHARGES, -1);
-        if (wrapped)
+        if (wrapped) {
             modifyParameter(PARAMS.C_DURABILITY, -1);
-        if (getIntParam(PARAMS.C_CHARGES) <= 0)
+        }
+        if (getIntParam(PARAMS.C_CHARGES) <= 0) {
             outOfCharges();
+        }
 
     }
 
@@ -246,10 +275,11 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
             SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
             return;
         }
-        if (game.getManager().isSelecting())
+        if (game.getManager().isSelecting()) {
             super.clicked();
-        else
+        } else {
             activate();
+        }
     }
 
     public void invokeClicked() {
@@ -264,10 +294,12 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
 
     @Override
     public void apply() {
-        if (getHero() == null)
+        if (getHero() == null) {
             initHero();
-        if (wrapped)
+        }
+        if (wrapped) {
             return;
+        }
         activatePassives();
     }
 
@@ -276,12 +308,14 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         if (!constructed) {
             constructConcurrently();
         }
-        if (active == null)
+        if (active == null) {
             return getName();
-        if (canBeActivated())
+        }
+        if (canBeActivated()) {
             return getName();
-        else
+        } else {
             return active.getToolTip();
+        }
     }
 
     @Override

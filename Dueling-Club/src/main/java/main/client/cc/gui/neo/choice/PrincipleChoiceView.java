@@ -66,8 +66,9 @@ public class PrincipleChoiceView extends ChoiceView<PRINCIPLES> implements
     }
 
     public boolean isOkBlocked() {
-        if (blocked)
+        if (blocked) {
             return true;
+        }
         return super.isOkBlocked();
     }
 
@@ -119,7 +120,9 @@ public class PrincipleChoiceView extends ChoiceView<PRINCIPLES> implements
         int percentage = getFirstPrincipleIdentityPercentage();
         int amount = hero.getIntParam(PARAMS.IDENTITY_POINTS) * percentage / 100;
         if (secondPrinciple) // remainder!
+        {
             amount = hero.getIntParam(PARAMS.IDENTITY_POINTS);
+        }
         hero.modifyParameter(DC_ContentManager.getIdentityParamForPrinciple(getSelectedItem()),
                 amount);
         hero.modifyParameter(PARAMS.IDENTITY_POINTS, -amount);

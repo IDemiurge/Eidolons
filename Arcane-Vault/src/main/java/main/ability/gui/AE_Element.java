@@ -1,26 +1,5 @@
 package main.ability.gui;
 
-import java.awt.Checkbox;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Vector;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-
 import main.ability.utilities.NodeMaster;
 import main.ability.utilities.TemplateManager;
 import main.data.ability.AE_Item;
@@ -32,6 +11,19 @@ import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.FontMaster;
 import main.system.auxiliary.FontMaster.FONT;
 import main.system.auxiliary.secondary.DefaultComparator;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Vector;
 
 public class AE_Element extends G_Panel implements MouseListener {
 
@@ -81,9 +73,10 @@ public class AE_Element extends G_Panel implements MouseListener {
 			case TEXT:
 				initTextBoxElement();
 				item = Mapper.getPrimitiveItem(argument);
-				if (argument == ARGS.FORMULA)
-					formula = true;
-				break;
+                if (argument == ARGS.FORMULA) {
+                    formula = true;
+                }
+                break;
 			default:
 				break;
 
@@ -100,8 +93,11 @@ public class AE_Element extends G_Panel implements MouseListener {
 		setDropBoxIndexQuietly(i);
 	}
 
-	private void addToolTip() { if (arg==null )return ;
-		JTextArea toolTip = new JTextArea(arg.name());
+    private void addToolTip() {
+        if (arg == null) {
+            return;
+        }
+        JTextArea toolTip = new JTextArea(arg.name());
 		toolTip.setEditable(false);
 		toolTip.setFont(FontMaster.getFont(FONT.MAIN, 12, Font.PLAIN));
 		add(toolTip, "pos 0 " + y + ", h " + h);
@@ -121,20 +117,24 @@ public class AE_Element extends G_Panel implements MouseListener {
 	}
 
 	public void setDropBoxIndex(int i) {
-		if (item == null)
-			item = Mapper.getItemList(arg).get(i);
-		if (box == null)
-			return;
-		box.setSelectedIndex(i);
+        if (item == null) {
+            item = Mapper.getItemList(arg).get(i);
+        }
+        if (box == null) {
+            return;
+        }
+        box.setSelectedIndex(i);
 	}
 
 	public void setDropBoxIndexQuietly(int i) {
 
-		if (item == null)
-			item = Mapper.getItemList(arg).get(i);
+        if (item == null) {
+            item = Mapper.getItemList(arg).get(i);
+        }
 
-		if (box == null || (!nodeMaster.isAutoSelect()))
-			return;
+        if (box == null || (!nodeMaster.isAutoSelect())) {
+            return;
+        }
 
 		box.removeActionListener(nodeMaster);
 		box.setSelectedIndex(i);
@@ -146,9 +146,11 @@ public class AE_Element extends G_Panel implements MouseListener {
 	private void initTextBoxElement() {
 		String text = arg.name();
 		DefaultMutableTreeNode elementNode = getElementNode();
-		if (elementNode != null)
-			if (!elementNode.isLeaf())
-				text = getText();
+        if (elementNode != null) {
+            if (!elementNode.isLeaf()) {
+                text = getText();
+            }
+        }
 
 		this.textBox = new JTextField(text, COLUMNS);
 		textBox.addActionListener(nodeMaster);
@@ -166,24 +168,27 @@ public class AE_Element extends G_Panel implements MouseListener {
 
 	private String getText() {
 		TreeNode node = getElementNode().getFirstChild();
-		if (node != null)
-			try {
-				return (((DefaultMutableTreeNode) node).getUserObject()
-						.toString().replace(arg.name(), ""));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+        if (node != null) {
+            try {
+                return (((DefaultMutableTreeNode) node).getUserObject()
+                        .toString().replace(arg.name(), ""));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
 		return arg.name();
 	}
 
 	private DefaultMutableTreeNode getElementNode() {
 		DefaultMutableTreeNode parentNode = getParentNode();
-		if (parentNode == null)
-			return null;
-		if (parentNode.isLeaf())
-			return null;
-		return (DefaultMutableTreeNode) parentNode.getChildAt(index);
+        if (parentNode == null) {
+            return null;
+        }
+        if (parentNode.isLeaf()) {
+            return null;
+        }
+        return (DefaultMutableTreeNode) parentNode.getChildAt(index);
 	}
 
 	private DefaultMutableTreeNode getParentNode() {
@@ -208,9 +213,10 @@ public class AE_Element extends G_Panel implements MouseListener {
 			itemList.add(VariableManager.VARIABLE);
 			this.setItemList(itemList);
 
-		} else
-			setItemList(new Vector<AE_Item>(Mapper.getItemList(arg)));
-		this.box = new JComboBox<AE_Item>(getItemList());
+        } else {
+            setItemList(new Vector<AE_Item>(Mapper.getItemList(arg)));
+        }
+        this.box = new JComboBox<AE_Item>(getItemList());
 		box.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
 
 		box.addActionListener(nodeMaster);
@@ -253,13 +259,16 @@ public class AE_Element extends G_Panel implements MouseListener {
 		// }
 		String input = JOptionPane.showInputDialog(item.getName(),
 				textBox.getText());
-		if (input == null)
-			return;
-		if (input == "")
-			return;
-		if (input.equals(textBox.getText()))
-			return;
-		textBox.setText(input);
+        if (input == null) {
+            return;
+        }
+        if (input == "") {
+            return;
+        }
+        if (input.equals(textBox.getText())) {
+            return;
+        }
+        textBox.setText(input);
 		textBox.getListeners(ActionListener.class)[0]
 				.actionPerformed(new ActionEvent(textBox, 0, ""));
 	}

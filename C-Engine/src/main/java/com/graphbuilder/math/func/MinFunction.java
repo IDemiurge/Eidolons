@@ -12,14 +12,17 @@ public class MinFunction implements Function {
      * Returns the minimum value of the specified inputs.  Double.MIN_VALUE is returned for 0 parameters.
      */
     public double of(double[] d, int numParam) {
-        if (numParam == 0)
+        if (numParam == 0) {
             return Double.MIN_VALUE;
+        }
 
         double min = Double.MAX_VALUE;
 
-        for (int i = 0; i < numParam; i++)
-            if (d[i] < min)
+        for (int i = 0; i < numParam; i++) {
+            if (d[i] < min) {
                 min = d[i];
+            }
+        }
         return min;
     }
 

@@ -50,10 +50,11 @@ public class HC_TabComp extends G_Panel {
     }
 
     public void resetImage() {
-        if (ImageManager.isImage(imagePath))
+        if (ImageManager.isImage(imagePath)) {
             image = ImageManager.getSizedVersion(imagePath, imgSize).getImage();
-        else if (ImageManager.isImage(string))
+        } else if (ImageManager.isImage(string)) {
             image = ImageManager.getSizedVersion(string, imgSize).getImage();
+        }
 
         // if (PartyManager.getParty().getLeader().getImagePath() ){
         // if (selected) {
@@ -62,14 +63,16 @@ public class HC_TabComp extends G_Panel {
     }
 
     private Font getSelectedFont() {
-        if (selectedFont == null)
+        if (selectedFont == null) {
             selectedFont = FontMaster.getFont(FONT_TYPE, FONT_SIZE_SELECTED, Font.BOLD);
+        }
         return selectedFont;
     }
 
     private Font getDefaultFont() {
-        if (font == null)
+        if (font == null) {
             font = FontMaster.getFont(FONT_TYPE, FONT_SIZE, Font.PLAIN);
+        }
         return font;
     }
 
@@ -79,14 +82,15 @@ public class HC_TabComp extends G_Panel {
 
     @Override
     public void paint(Graphics g) {
-        if (selected)
+        if (selected) {
             visuals = visualsSelected;
-        else
+        } else {
             visuals = visualsNormal;
+        }
         super.paint(g);
-        if (image != null)
+        if (image != null) {
             g.drawImage(image, getImgX(), getImgY(), null);
-        else {
+        } else {
             g.setFont(getTextFont());
             g.setColor(ColorManager.GOLDEN_WHITE);
             g.drawString(string, getTextX(), getTextY());
@@ -99,8 +103,9 @@ public class HC_TabComp extends G_Panel {
     }
 
     private int getImgX() {
-        if (centered)
+        if (centered) {
             return MigMaster.getCenteredPosition(visuals.getWidth(), imgSize);
+        }
         return OFFSET;
     }
 
@@ -113,8 +118,9 @@ public class HC_TabComp extends G_Panel {
     }
 
     private int getTextX() {
-        if (centered)
+        if (centered) {
             return MigMaster.getCenteredTextPosition(string, getTextFont(), visuals.getWidth());
+        }
         return OFFSET;
     }
 

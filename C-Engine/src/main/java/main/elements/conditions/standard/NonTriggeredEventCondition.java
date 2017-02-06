@@ -6,8 +6,9 @@ public class NonTriggeredEventCondition extends MicroCondition {
 
     @Override
     public boolean check() {
-        if (ref.getEvent() == null)
+        if (ref.getEvent() == null) {
             return true;
+        }
         return !ref.getEvent().isTriggered();
 
     }

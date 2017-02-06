@@ -121,43 +121,48 @@ public class CellComp {
 
         if (SwingUtilities.isEventDispatchThread()) {
             drawJob.run();
-        } else
+        } else {
             try {
                 SwingUtilities.invokeAndWait(drawJob);
             } catch (InvocationTargetException | InterruptedException e) {
                 e.printStackTrace();
             }
+        }
 
         // g.drawImage(img, x, y, observer);
 
     }
 
     public DC_Obj getTopObjOrCell() {
-        if (getObjects().isEmpty())
+        if (getObjects().isEmpty()) {
             return getTerrainObj();
+        }
         // return objects.getOrCreate(0);
         return getObjects().get(getObjects().size() - 1);
     }
 
     public DC_HeroObj getTopObj() {
-        if (getObjects().isEmpty())
+        if (getObjects().isEmpty()) {
             return null;
+        }
         // return objects.getOrCreate(0);
         return getObjects().get(getObjects().size() - 1); // changed?
     }
 
     public DC_HeroObj getLandscapeObj() {
         for (DC_HeroObj o : getObjects()) {
-            if (o.isLandscape())
+            if (o.isLandscape()) {
                 return o;
+            }
         }
         return null;
     }
 
     public DC_HeroObj getWallObj() {
         for (DC_HeroObj o : getObjects()) {
-            if (o.isWall())
+            if (o.isWall()) {
                 return o;
+            }
         }
         return null;
     }
@@ -178,8 +183,9 @@ public class CellComp {
         if (stacked) {
             // if (getObjects().size() > 3) //'no frame'
             // return null;
-            if (getObjects().size() > 1)
+            if (getObjects().size() > 1) {
                 return true;
+            }
         }
         if (isSingleObj()) {
             if (getObjects().get(0).isBfObj()) {
@@ -221,8 +227,9 @@ public class CellComp {
     }
 
     public boolean isTop(Obj obj) {
-        if (objects.isEmpty())
+        if (objects.isEmpty()) {
             return false;
+        }
         return getTopObjOrCell() == obj;
     }
 
@@ -231,13 +238,14 @@ public class CellComp {
     }
 
     public List<DC_HeroObj> getObjects() {
-        if (objects == null)
+        if (objects == null) {
             objects = new LinkedList<>();
+        }
         return objects;
     }
 
     public void setObjects(List<DC_HeroObj> objects) {
-        if (objects != null)
+        if (objects != null) {
             if (objects.size() > 1) {
 
                 // main.system.auxiliary.LogMaster.log(1, objects +
@@ -246,27 +254,39 @@ public class CellComp {
                 Collections.sort(objects, new Comparator<DC_HeroObj>() {
                     @Override
                     public int compare(DC_HeroObj o1, DC_HeroObj o2) {
-                        if (o1.isInfoSelected())
-                            if (!o2.isInfoSelected())
+                        if (o1.isInfoSelected()) {
+                            if (!o2.isInfoSelected()) {
                                 return 1;
-                        if (o2.isInfoSelected())
-                            if (!o1.isInfoSelected())
+                            }
+                        }
+                        if (o2.isInfoSelected()) {
+                            if (!o1.isInfoSelected()) {
                                 return -1;
-                        if (o1.isTargetHighlighted())
-                            if (!o2.isTargetHighlighted())
+                            }
+                        }
+                        if (o1.isTargetHighlighted()) {
+                            if (!o2.isTargetHighlighted()) {
                                 return 1;
-                        if (o2.isTargetHighlighted())
-                            if (!o1.isTargetHighlighted())
+                            }
+                        }
+                        if (o2.isTargetHighlighted()) {
+                            if (!o1.isTargetHighlighted()) {
                                 return -1;
+                            }
+                        }
 
-                        if (o1.isActiveSelected())
+                        if (o1.isActiveSelected()) {
                             return 1;
-                        if (o2.isActiveSelected())
+                        }
+                        if (o2.isActiveSelected()) {
                             return -1;
-                        if (o1.getId() > o2.getId())
+                        }
+                        if (o1.getId() > o2.getId()) {
                             return 1;
-                        if (o1.getId() < o2.getId())
+                        }
+                        if (o1.getId() < o2.getId()) {
                             return -1;
+                        }
 
                         return 0;
                     }
@@ -274,6 +294,7 @@ public class CellComp {
 
                 LogMaster.log(LogMaster.GUI_DEBUG, objects + " after sort ");
             }
+        }
         // if (objects.equals(this.objects)){
 
         this.objects = objects;
@@ -319,34 +340,40 @@ public class CellComp {
 
     public boolean isInfoSelected() {
         if (CoreEngine.isLevelEditor()) {
-            if (game.getManager().getInfoUnit() == null)
+            if (game.getManager().getInfoUnit() == null) {
                 return false;
+            }
             return game.getManager().getInfoUnit().getCoordinates().equals(getCoordinates());
         }
         for (DC_HeroObj o : getObjects()) {
-            if (o.isInfoSelected())
+            if (o.isInfoSelected()) {
                 return true;
+            }
         }
         return getTopObjOrCell().isInfoSelected();
     }
 
     public boolean isAnimated() {
-        for (DC_HeroObj o : getObjects())
-            if (o.isAnimated())
+        for (DC_HeroObj o : getObjects()) {
+            if (o.isAnimated()) {
                 return true;
+            }
+        }
 
         return false;
     }
 
     public Map<SmartText, Point> getAnimOverlayingStrings() {
-        if (animOverlayingStrings == null)
+        if (animOverlayingStrings == null) {
             animOverlayingStrings = (new HashMap<>());
+        }
         return animOverlayingStrings;
     }
 
     public Map<Image, Point> getAnimOverlayingImages() {
-        if (animOverlayingImages == null)
+        if (animOverlayingImages == null) {
             animOverlayingImages = (new HashMap<>());
+        }
         return animOverlayingImages;
     }
 

@@ -88,27 +88,31 @@ public abstract class Entity extends DataModel implements OBJ {
         getPropCache().clear();
         getIntegerMap(false).clear(); // TODO [OPTIMIZED] no need to clear
         // type's map?
-        if (modifierMaps != null)
+        if (modifierMaps != null) {
             modifierMaps.clear(); // remember? For interesting spells or log
+        }
         // info...
         if (!type.checkProperty(G_PROPS.DISPLAYED_NAME)) {
             setProperty(G_PROPS.DISPLAYED_NAME, getName(), true);
         }
 
-        if (this.owner != getOriginalOwner())
-            main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, getName()
+        if (this.owner != getOriginalOwner()) {
+            LogMaster.log(LogMaster.CORE_DEBUG, getName()
                     + ": original owner restored!");
+        }
 
         this.owner = getOriginalOwner();
 
         HashSet<PARAMETER> params = new HashSet<>(getParamMap().keySet());
         params.addAll(type.getParamMap().keySet());
         for (PARAMETER p : params) {
-            if (p == null)
+            if (p == null) {
                 continue;
+            }
             if (p.isDynamic()) {
-                if (p.isWriteToType())
+                if (p.isWriteToType()) {
                     getType().setParam(p, getParam(p), true);
+                }
                 continue;
             }
 
@@ -117,9 +121,11 @@ public abstract class Entity extends DataModel implements OBJ {
             if (!value.equals(baseValue)) {
                 String amount = getType().getParam(p);
                 putParameter(p, amount);
-                if (game.isStarted() && !game.isSimulation())
-                    if (p.isDynamic())
+                if (game.isStarted() && !game.isSimulation()) {
+                    if (p.isDynamic()) {
                         fireParamEvent(p, amount, CONSTRUCTED_EVENT_TYPE.PARAM_MODIFIED);
+                    }
+                }
             }
         }
         HashSet<PROPERTY> props = new HashSet<>(getPropMap().keySet());
@@ -127,15 +133,17 @@ public abstract class Entity extends DataModel implements OBJ {
         for (PROPERTY p : props) {
 
             if (p.isDynamic()) {
-                if (p.isWriteToType())
+                if (p.isWriteToType()) {
                     getType().setProperty(p, getProperty(p));
+                }
                 continue;
             }
             String baseValue = getType().getProperty(p);
             if (TextParser.isRef(baseValue)) {
                 baseValue = new Property(baseValue).getStr(ref);
-                if ((baseValue) == null)
+                if ((baseValue) == null) {
                     baseValue = getType().getProperty(p);
+                }
             }
             String value = getProperty(p);
             if (!value.equals(baseValue)) {
@@ -151,8 +159,9 @@ public abstract class Entity extends DataModel implements OBJ {
     }
 
     public void constructConcurrently() {
-        if (constructing)
+        if (constructing) {
             return;
+        }
         constructing = true;
         Weaver.inNewThread(new Runnable() {
             public void run() {
@@ -164,12 +173,13 @@ public abstract class Entity extends DataModel implements OBJ {
 
     public void construct() {
 
-        if (!isConstructed() || game.isSimulation() || isConstructAlways())
+        if (!isConstructed() || game.isSimulation() || isConstructAlways()) {
             try {
                 setRef(ref); // potential threat
                 AbilityConstructor.constructObj(this);
-                if (!game.isSimulation())
+                if (!game.isSimulation()) {
                     setConstructed(true);
+                }
                 constructing = false;
             } catch (Exception e) {
                 // if (game.isSimulation())
@@ -180,6 +190,7 @@ public abstract class Entity extends DataModel implements OBJ {
                 // if (!game.isSimulation())
                 // setConstructed(true);
             }
+        }
 
     }
 
@@ -189,8 +200,9 @@ public abstract class Entity extends DataModel implements OBJ {
 
     protected void resetStatus() {
         setProperty(G_PROPS.STATUS, "");
-        if (isDead())
+        if (isDead()) {
             addStatus(STATUS.DEAD.toString());
+        }
     }
 
     public void addStatus(String value) {
@@ -233,8 +245,9 @@ public abstract class Entity extends DataModel implements OBJ {
     public Game getGame() {
         if (game == null) {
             main.system.auxiliary.LogMaster.log(1, "Null game on " + toString());
-            if (Game.game.isSimulation())
+            if (Game.game.isSimulation()) {
                 game = Game.game;
+            }
         }
         return game;
     }
@@ -248,16 +261,18 @@ public abstract class Entity extends DataModel implements OBJ {
     }
 
     public String getOBJ_TYPE() {
-        if (TYPE_ENUM != null)
+        if (TYPE_ENUM != null) {
             return TYPE_ENUM.getName();
-        else
+        } else {
             TYPE_ENUM = ContentManager.getOBJ_TYPE(getProperty(G_PROPS.TYPE));
+        }
         return getProperty(G_PROPS.TYPE);
     }
 
     public OBJ_TYPE getOBJ_TYPE_ENUM() {
-        if (TYPE_ENUM == null)
+        if (TYPE_ENUM == null) {
             TYPE_ENUM = ContentManager.getOBJ_TYPE(getOBJ_TYPE());
+        }
         return TYPE_ENUM;
     }
 
@@ -299,8 +314,9 @@ public abstract class Entity extends DataModel implements OBJ {
     }
 
     public boolean isUpgrade() {
-        if (checkBool(STD_BOOLS.NON_REPLACING))
+        if (checkBool(STD_BOOLS.NON_REPLACING)) {
             return false;
+        }
         return !getProperty(G_PROPS.BASE_TYPE).isEmpty();
         // return DataManager.isTypeName(getProperty(G_PROPS.BASE_TYPE)); //too
         // heavy!
@@ -319,8 +335,9 @@ public abstract class Entity extends DataModel implements OBJ {
     }
 
     public boolean isOwnedBy(Player player) {
-        if (owner == null)
+        if (owner == null) {
             return player == null;
+        }
         return owner.equals(player);
     }
 
@@ -343,16 +360,20 @@ public abstract class Entity extends DataModel implements OBJ {
     }
 
     public ImageIcon getIcon() {
-        if (ImageManager.isValidIcon(customIcon))
+        if (ImageManager.isValidIcon(customIcon)) {
             return customIcon;
-        if (!CoreEngine.isLevelEditor())
-            if (ImageManager.isValidIcon(icon))
+        }
+        if (!CoreEngine.isLevelEditor()) {
+            if (ImageManager.isValidIcon(icon)) {
                 return icon;
+            }
+        }
         String property = getImagePath();
         property = TextParser.parse(property, ref);
         icon = ImageManager.getIcon(property);
-        if (!ImageManager.isValidIcon(icon))
+        if (!ImageManager.isValidIcon(icon)) {
             icon = ImageManager.getDefaultTypeIcon(this);
+        }
         return icon;
     }
 

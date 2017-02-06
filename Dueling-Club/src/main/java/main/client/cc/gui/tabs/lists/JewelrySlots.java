@@ -38,14 +38,17 @@ public class JewelrySlots extends SecondaryItemList {
                 sortedData.set(AMULET_INDEX, type);
             } else {
                 int index = rings;
-                if (!left)
+                if (!left) {
                     index++;
-                else
+                } else {
                     rings++;
-                if (index >= AMULET_INDEX)
+                }
+                if (index >= AMULET_INDEX) {
                     index++;
-                if (index >= sortedData.size())
+                }
+                if (index >= sortedData.size()) {
                     return sortedData;
+                }
                 left = !left;
                 sortedData.set(index, type);
             }

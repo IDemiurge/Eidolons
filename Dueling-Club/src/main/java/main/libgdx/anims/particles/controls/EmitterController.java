@@ -26,17 +26,12 @@ import main.system.GuiEventType;
 public class EmitterController    {
     static EmitterActor last;
     static  EmitterController instance;
+    private static boolean testMode;
     boolean continuous;
     int multiplier;
     boolean cursorAttached;
-    private static boolean testMode;
 
 
-
-    public static EmitterController getInstance() {
-        if (instance==null )instance=new EmitterController();
-        return instance;
-    }
 
     public  EmitterController (){
         GuiEventManager.bind(GuiEventType.CREATE_EMITTER, p->{
@@ -46,6 +41,13 @@ public class EmitterController    {
             }
         });
         GuiEventManager.bind(GuiEventType.SFX_PLAY_LAST, p->EmitterController.replay());
+    }
+
+    public static EmitterController getInstance() {
+        if (instance == null) {
+            instance = new EmitterController();
+        }
+        return instance;
     }
 
     public static void save() {
@@ -87,8 +89,9 @@ add(presetPath,imagePath,destination);
                 super.draw(batch, parentAlpha);
             }
         };
-        if (imagePath!=null )
-        actor.getEffect().setImagePath(imagePath);
+        if (imagePath != null) {
+            actor.getEffect().setImagePath(imagePath);
+        }
         add(actor, destination);
     }
 
@@ -110,10 +113,16 @@ add(presetPath,imagePath,destination);
         String choice = ListChooser.chooseEnum(EMITTER_VALUE_GROUP.class);
         boolean setOrOffset = DialogMaster.confirm("Set or Offset?");
         String value = DialogMaster.inputText("");
-        if (setOrOffset)
-        last.getEffect(). set(choice, value);
-        else last.getEffect().offset(choice, value);
+        if (setOrOffset) {
+            last.getEffect().set(choice, value);
+        } else {
+            last.getEffect().offset(choice, value);
+        }
 
+    }
+
+    public static boolean isTestMode() {
+        return testMode;
     }
 
     public static void setTestMode(boolean testMode) {
@@ -121,9 +130,5 @@ add(presetPath,imagePath,destination);
             Ambience.setModifyParticles(true);
         }
         EmitterController.testMode = testMode;
-    }
-
-    public static boolean isTestMode() {
-        return testMode;
     }
 }

@@ -28,8 +28,9 @@ public class ListObjChooser<T> {
         String result = null;
         if (isEntity(list)) {
             result = ListChooser.chooseObj(list, mode);
-        } else
+        } else {
             result = ListChooser.chooseStrings(ListMaster.toStringList(list));
+        }
 
         List<T> selection = new LinkedList<>();
         // for (T item : list) {

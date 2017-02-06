@@ -30,19 +30,23 @@ public class MacroGameState extends GameState {
 
     @Override
     public void addObject(Obj obj) {
-        if (obj instanceof MacroParty)
+        if (obj instanceof MacroParty) {
             parties.add((MacroParty) obj);
+        }
 
         if (obj instanceof Place) {
             places.add((Place) obj);
 
-            if (obj instanceof Town)
+            if (obj instanceof Town) {
                 towns.add((Town) obj);
-            if (obj instanceof Route)
+            }
+            if (obj instanceof Route) {
                 routes.add((Route) obj);
+            }
 
-        } else if (obj instanceof Region)
+        } else if (obj instanceof Region) {
             regions.add((Region) obj);
+        }
 
         super.addObject(obj);
     }
@@ -57,8 +61,9 @@ public class MacroGameState extends GameState {
 
     @Override
     public void allToBase() {
-        for (MacroParty p : parties)
+        for (MacroParty p : parties) {
             p.toBase();
+        }
         // PartyManager.getParty().toBase();
 
     }

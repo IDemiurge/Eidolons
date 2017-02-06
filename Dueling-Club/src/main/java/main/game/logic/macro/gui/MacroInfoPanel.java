@@ -21,8 +21,9 @@ public class MacroInfoPanel extends G_Panel {
     public MacroInfoPanel(Entity infoObj) {
         pages = new DC_PagedInfoPanel() {
             protected List<List<VALUE>> getPageData() {
-                if (getObj() == null)
+                if (getObj() == null) {
                     return new LinkedList<>();
+                }
                 if (getObj().getOBJ_TYPE_ENUM() instanceof OBJ_TYPES) {
                     return HC_ValuePages.getPageLists((OBJ_TYPES) getObj()
                             .getOBJ_TYPE_ENUM());
@@ -33,10 +34,11 @@ return null ;
             }
         };
         pages.setEntity(infoObj);
-        if (infoObj == null)
+        if (infoObj == null) {
             label = new JLabel();
-        else
+        } else {
             label = new JLabel(infoObj.getIcon());
+        }
         addComps();
     }
 

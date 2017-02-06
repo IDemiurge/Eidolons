@@ -14,14 +14,13 @@ import main.swing.generic.components.G_Panel;
 import main.system.launch.CoreEngine;
 import main.utilities.workspace.Workspace;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
+import java.util.LinkedList;
+import java.util.List;
 
 public class AV_TreeSelectionListener implements TreeSelectionListener {
 
@@ -29,11 +28,12 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
 	private JTree tree;
 
 	public AV_TreeSelectionListener(JTree tree) {
-		if (CoreEngine.isLevelEditor())
-			panel = LevelEditor.getMainPanel().getInfoPanel();
-		else
-			panel = ArcaneVault.getMainBuilder().getEditViewPanel();
-		this.tree = tree;
+        if (CoreEngine.isLevelEditor()) {
+            panel = LevelEditor.getMainPanel().getInfoPanel();
+        } else {
+            panel = ArcaneVault.getMainBuilder().getEditViewPanel();
+        }
+        this.tree = tree;
 		// tree.setSelectionPath(path);
 		// DefaultMutableTreeNode node = ArcaneVault.getMainBuilder()
 		// .getSelectedNode();
@@ -43,34 +43,39 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
 
 	@Override
 	public void valueChanged(TreeSelectionEvent e1) {
-		if (e1 == null)
-			return;
-		tree.requestFocusInWindow();
+        if (e1 == null) {
+            return;
+        }
+        tree.requestFocusInWindow();
 		boolean dtFlag = ArcaneVault.isDirty();
-		if (((JTree) e1.getSource()).getSelectionPath() == null)
-			return;
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) (((JTree) e1.getSource())
+        if (((JTree) e1.getSource()).getSelectionPath() == null) {
+            return;
+        }
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) (((JTree) e1.getSource())
 				.getSelectionPath().getLastPathComponent());
 
-		if (node == null)
-			return;
+        if (node == null) {
+            return;
+        }
 
 		String name = (String) node.getUserObject();
 		String tab = null;
-		if (panel.isLevelEditor())
-			tab = LevelEditor.getSimulation().getSelectedEntity().getOBJ_TYPE();
-		else
-			tab = ArcaneVault.getMainBuilder().getSelectedTabName();
-		if (tab == null) {
+        if (panel.isLevelEditor()) {
+            tab = LevelEditor.getSimulation().getSelectedEntity().getOBJ_TYPE();
+        } else {
+            tab = ArcaneVault.getMainBuilder().getSelectedTabName();
+        }
+        if (tab == null) {
 			Workspace workspace = ArcaneVault.getWorkspaceManager().getWorkspaceByTab(
 					(G_Panel) SwingMaster.getParentOfClass(tree, G_Panel.class));
-			if (workspace != null)
-				try {
-					tab = workspace.getOBJ_TYPE(name, tab).getName();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-		}
+            if (workspace != null) {
+                try {
+                    tab = workspace.getOBJ_TYPE(name, tab).getName();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
 		// SoundManager.playEffectSound(SOUNDS.WHAT,
 		// DataManager.getType(name)
@@ -88,15 +93,18 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
 		if (type == null) {
 			for (TabBuilder t : ArcaneVault.getAdditionalTrees()) {
 				type = DataManager.getType(name, t.getSelectedTabName());
-				if (type != null)
-					break;
-			}
+                if (type != null) {
+                    break;
+                }
+            }
 		}
-		if (type == null)
-			type = DataManager.getType(name);
-		if (type == null)
-			return;
-		selectType(type, tab);
+        if (type == null) {
+            type = DataManager.getType(name);
+        }
+        if (type == null) {
+            return;
+        }
+        selectType(type, tab);
 		List<ObjType> types = new LinkedList<>();
 		int length = 1;
 		try {
@@ -108,13 +116,15 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
 			try {
 				for (TreePath p : e1.getPaths()) {
 					node = (DefaultMutableTreeNode) p.getLastPathComponent();
-					if (node == null)
-						continue;
-					name = (String) node.getUserObject();
+                    if (node == null) {
+                        continue;
+                    }
+                    name = (String) node.getUserObject();
 					type = DataManager.getType(name, tab);
-					if (type != null)
-						types.add(type);
-				}
+                    if (type != null) {
+                        types.add(type);
+                    }
+                }
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

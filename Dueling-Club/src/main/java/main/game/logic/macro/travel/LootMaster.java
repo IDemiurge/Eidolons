@@ -131,15 +131,17 @@ public class LootMaster {
     private static List<Entity> generateLoot(int lootValue, Dungeon dungeon) {
         int min = 0;
         // dungeon.getIntParam(PARAMS.MIN_ITEMS_LOOT);
-        if (min <= 0)
+        if (min <= 0) {
             min = DEFAULT_ITEM_MINIMUM;
+        }
         int max = min * 3 / 2;
         List<Entity> loot = new LinkedList<>();
         Loop.startLoop(max);
         int total = 0;
         while (!Loop.loopEnded()) {
-            if (total >= lootValue)
+            if (total >= lootValue) {
                 break;
+            }
             LOOT_GROUP group = getLootGroup(dungeon);
             int value = lootValue / min;
             ObjType type = generateLootItem(value, group);
@@ -169,8 +171,9 @@ public class LootMaster {
     private static int calculateLootValue(Dungeon dungeon,
                                           DequeImpl<DC_HeroObj> enemiesSlain) {
         int value = 0;
-        for (DC_HeroObj h : enemiesSlain)
+        for (DC_HeroObj h : enemiesSlain) {
             value += h.getIntParam(PARAMS.POWER);
+        }
         return value;
     }
 

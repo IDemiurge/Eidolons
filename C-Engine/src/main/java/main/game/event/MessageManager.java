@@ -19,8 +19,9 @@ public class MessageManager extends Manager {
     }
 
     public static boolean promptItemSwap(String itemName, Obj hero, Entity type) {
-        if (!game.isSimulation())
+        if (!game.isSimulation()) {
             return false; // TODO refactor
+        }
 
         String message = "Do you want to swap " + itemName + " for "
                 + type.getNameOrId() + "?";

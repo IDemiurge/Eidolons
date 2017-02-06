@@ -8,14 +8,10 @@ import main.system.auxiliary.FontMaster.FONT;
 import main.system.auxiliary.GuiManager;
 import main.system.auxiliary.StringMaster;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
+import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
 
 public class ListButtonPanel extends G_Panel {
 	private MusicListPanel panel;
@@ -58,9 +54,10 @@ public class ListButtonPanel extends G_Panel {
 					}
 				};
 				add(comp, "x @center_x");
-				if (i == 0)
-					add(comp, "x @center_x");
-				i++;
+                if (i == 0) {
+                    add(comp, "x @center_x");
+                }
+                i++;
 			}
 
 			G_Panel subPanel = new G_Panel("flowy");
@@ -70,9 +67,10 @@ public class ListButtonPanel extends G_Panel {
 						/ map.keySet().size()));
 
 				add(subPanel);
-			} else
-				add(subPanel, "w " + GuiManager.getScreenWidthInt());
-			Character lastLetter = null;
+            } else {
+                add(subPanel, "w " + GuiManager.getScreenWidthInt());
+            }
+            Character lastLetter = null;
 			boolean letterAdded = false;
 
 			for (String line : lines) {
@@ -116,12 +114,13 @@ public class ListButtonPanel extends G_Panel {
 		String sizeGroup = "SizeGroup" + (letter);
 		String pos = wrap ? "wrap," : "" + "sg " + sizeGroup;
 		String name = panel.formatListName(funcPart);
-		if (panel.isLetterShown())
-			if (!letterAdded) {
-				// letterAdded = true;
-				name = StringMaster.wrapInBraces("" + letter) + name;
-			}
-		JButton button = panel.getButton(keyPart, funcPart, font, name);
+        if (panel.isLetterShown()) {
+            if (!letterAdded) {
+                // letterAdded = true;
+                name = StringMaster.wrapInBraces("" + letter) + name;
+            }
+        }
+        JButton button = panel.getButton(keyPart, funcPart, font, name);
 		subPanel.add(button, pos);
 
 		subPanel.setBorder(BorderFactory.createBevelBorder(3));

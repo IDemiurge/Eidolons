@@ -194,17 +194,16 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 			G_PROPS.ARMOR_ITEM.name(), };
 	public static final OBJ_TYPE[] SINGLE_TYPE_LIST = { OBJ_TYPES.CLASSES, OBJ_TYPES.CLASSES,
 			OBJ_TYPES.UNITS, OBJ_TYPES.WEAPONS, OBJ_TYPES.WEAPONS, OBJ_TYPES.ARMOR, };
-
-	private static final Condition[] TYPE_LIST_CONDITIONS = { new StringComparison("{SOURCE_"
+    public static final String[] MAP_EDITOR_IDS = {MACRO_PROPS.AREA.name(),};
+    public static final String[] MULTI_VAR_TYPE_IDS = {MACRO_PROPS.INTERNAL_ROUTES.getName(),};
+    public static final Object[][] MULTI_VAR_TYPES = {new Object[]{MACRO_OBJ_TYPES.ROUTE,
+            Integer.class}};
+    private static final Condition[] TYPE_LIST_CONDITIONS = { new StringComparison("{SOURCE_"
 			+ MACRO_PROPS.REGION.getName() + "}", "{MATCH_" + MACRO_PROPS.REGION.getName() + "}",
 			true), };
 	private static final String[] CONDITIONAL_MULTI_LIST_IDS = { MACRO_PROPS.INTERNAL_ROUTES
 			.getName() };
 	private static final OBJ_TYPE[] CONDITIONAL_MULTI_TYPE_LIST = { MACRO_OBJ_TYPES.PLACE };
-	public static final String[] MAP_EDITOR_IDS = { MACRO_PROPS.AREA.name(), };
-	public static final String[] MULTI_VAR_TYPE_IDS = { MACRO_PROPS.INTERNAL_ROUTES.getName(), };
-	public static final Object[][] MULTI_VAR_TYPES = { new Object[] { MACRO_OBJ_TYPES.ROUTE,
-			Integer.class } };
 	private static final String[] GROUP_FILTERED = {
 
 	};
@@ -236,9 +235,10 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 		super(new JTextField());
 		this.table = table;
 		this.second = second;
-		if (!second)
-			configureEditors();
-	}
+        if (!second) {
+            configureEditors();
+        }
+    }
 
 	public TableMouseListener(G_Table table) {
 		this(table, false);
@@ -278,9 +278,10 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 				if (id.equalsIgnoreCase(PROPS.ATTRIBUTE_BONUSES.getName())) {
 					enumClass = ATTRIBUTE.class;
 				}
-				if (enumClass != null)
-					multiEnumListEditor.setVarTypes(ListMaster.toList(String.class));
-			}
+                if (enumClass != null) {
+                    multiEnumListEditor.setVarTypes(ListMaster.toList(String.class));
+                }
+            }
 			if (enumClass != null) {
 				multiEnumListEditor.setVarTypesClass(enumClass);
 				multiEnumListEditor.setEnumClass(enumClass);
@@ -301,10 +302,10 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 		i = 0;
 		for (String id : VAR_MULTI_ENUM_LIST_IDS) {
 			ListEditor listEditor = new ListEditor(SELECTION_MODE.MULTIPLE, true);
-			if (VAR_ENUM_CLASS_LIST.length <= i)
-				listEditor.setVarTypesClass(VariableManager.STRING_VAR_CLASS);
-			else {
-				listEditor.setEnumClass(VAR_ENUM_CLASS_LIST[i]);
+            if (VAR_ENUM_CLASS_LIST.length <= i) {
+                listEditor.setVarTypesClass(VariableManager.STRING_VAR_CLASS);
+            } else {
+                listEditor.setEnumClass(VAR_ENUM_CLASS_LIST[i]);
 				listEditor.setVarTypesClass(VAR_ENUM_CLASS_LIST[i]);
 			}
 			editorMap.put(id, listEditor);
@@ -405,13 +406,16 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 					MULTI_TYPE_LIST[i]);
 			listEditor.setConditions(getMultiTypeCondition(id));
 			listEditor.setVarTypes(getMultiTypeVarTypes(id));
-			if (isWeightedType(id))
-				listEditor.setVarTypesClass(VariableManager.STRING_VAR_CLASS);
-			if (subGroupFilterMap.get(id) != null)
-				listEditor.setFilterSubgroup(subGroupFilterMap.get(id));
-			if (groupFilterMap.get(id) != null)
-				listEditor.setFilterGroup(groupFilterMap.get(id));
-			editorMap.put(id, listEditor);
+            if (isWeightedType(id)) {
+                listEditor.setVarTypesClass(VariableManager.STRING_VAR_CLASS);
+            }
+            if (subGroupFilterMap.get(id) != null) {
+                listEditor.setFilterSubgroup(subGroupFilterMap.get(id));
+            }
+            if (groupFilterMap.get(id) != null) {
+                listEditor.setFilterGroup(groupFilterMap.get(id));
+            }
+            editorMap.put(id, listEditor);
 			i++;
 		}
 		i = 0;
@@ -428,17 +432,19 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 	}
 
 	private static List<Object> getMultiTypeVarTypes(String id) {
-		if (isWeightedType(id))
-			return ListMaster.toList(String.class);
-		return null;
+        if (isWeightedType(id)) {
+            return ListMaster.toList(String.class);
+        }
+        return null;
 	}
 
 	private static Condition getMultiTypeCondition(String id) {
-		if (isWeightedType(id))
-			return new Conditions(new NotCondition(new StringComparison(StringMaster.getValueRef(
-					KEYS.MATCH, G_PROPS.WEAPON_TYPE), "" + WEAPON_TYPE.NATURAL, true)),
-					ConditionMaster.getItemBaseTypeFilterCondition());
-		return null;
+        if (isWeightedType(id)) {
+            return new Conditions(new NotCondition(new StringComparison(StringMaster.getValueRef(
+                    KEYS.MATCH, G_PROPS.WEAPON_TYPE), "" + WEAPON_TYPE.NATURAL, true)),
+                    ConditionMaster.getItemBaseTypeFilterCondition());
+        }
+        return null;
 	}
 
 	private static boolean isWeightedType(String id) {
@@ -446,6 +452,10 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 		return StringMaster.getWellFormattedString(id).contains("Repertoire")
 				|| id.contains("Plan") || id.contains("Mastery Groups") || id.contains("Priority");
 	}
+
+    public static EDITOR getEditorByValueName(Object valueAt) {
+        return editorMap.get(valueAt);
+    }
 
 	public void handleMouseClick(MouseEvent e) {
 		handleMouseClick(e, e.isAltDown());
@@ -461,14 +471,16 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 		String value = "";
 		ObjType selectedType = (second) ? ArcaneVault.getPreviousSelectedType() : ArcaneVault
 				.getSelectedType();
-		if (val != null)
-			value = selectedType.getValue(val);
-		else {
-			value = table.getValueAt(row, 1).toString();
+        if (val != null) {
+            value = selectedType.getValue(val);
+        } else {
+            value = table.getValueAt(row, 1).toString();
 		}
-		if (altHandler != null)
-			if (altHandler.checkClickProcessed(e, selectedType, val, value))
-				return;
+        if (altHandler != null) {
+            if (altHandler.checkClickProcessed(e, selectedType, val, value)) {
+                return;
+            }
+        }
 
 		// table.setRowSelectionInterval(row, row);
 		if (altDown || e.isControlDown()
@@ -501,10 +513,6 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 			// decorators
 			launchDefault(table, row, column, value);
 		}
-	}
-
-	public static EDITOR getEditorByValueName(Object valueAt) {
-		return editorMap.get(valueAt);
 	}
 
 	private void launchDefault(G_Table table, int row, int column, String value) {

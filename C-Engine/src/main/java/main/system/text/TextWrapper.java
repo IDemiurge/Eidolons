@@ -19,8 +19,9 @@ public class TextWrapper {
     }
 
     public static List<String> wrap(String text, int wrapLength, Ref ref) {
-        if (StringMaster.isEmpty(text))
+        if (StringMaster.isEmpty(text)) {
             return new LinkedList<>();
+        }
         text = TextParser.parse(text, ref);
 
         if (text.contains(StringMaster.NEW_LINE)) {

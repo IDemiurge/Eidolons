@@ -110,8 +110,9 @@ public class Launcher {
             LAUNCH_OPTION = LAUNCH_OPTIONS[0];
         } else {
             int init = DialogMaster.optionChoice("Launch Options", LAUNCH_OPTIONS);
-            if (init == -1)
+            if (init == -1) {
                 return;
+            }
             LAUNCH_OPTION = LAUNCH_OPTIONS[init];
         }
         switch (LAUNCH_OPTION) {
@@ -128,8 +129,9 @@ public class Launcher {
                 break;
             case "Last":
                 preset = readLast();
-                if (preset.isEmpty())
+                if (preset.isEmpty()) {
                     preset = null;
+                }
                 break;
             case "Test":
                 DEV_MODE = true;
@@ -140,10 +142,11 @@ public class Launcher {
 
         ItemGenerator.setGenerationOn(!superFastMode);
 
-        if (args != null)
+        if (args != null) {
             fastMacroTest = args.length > 0;
-        else
+        } else {
             fastMacroTest = false;
+        }
         running = true;
         XML_Reader.setMacro(true);
         DC_Engine.systemInit();
@@ -182,8 +185,9 @@ public class Launcher {
                     InfoMaster.CHOOSE_HERO);
             if (preset != null) {
                 initPreset();
-            } else
+            } else {
                 initRandomLaunch();
+            }
         } else if (T3_TEST_MODE) {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
@@ -198,8 +202,9 @@ public class Launcher {
     }
 
     private static void autoSetDebug() {
-        if (ArenaArcadeMaster.isTestMode())
+        if (ArenaArcadeMaster.isTestMode()) {
             LAUNCH_OPTION = "Test";
+        }
         switch (LAUNCH_OPTION) {
             case "New Arcade":
                 break;
@@ -208,8 +213,9 @@ public class Launcher {
             case "Test":
                 DEV_MODE = true;
                 DEBUG_MODE = true;
-                if (game != null)
+                if (game != null) {
                     game.setDebugMode(DEBUG_MODE);
+                }
                 break;
             // HC_TEST_MODE = true;
         }
@@ -217,10 +223,11 @@ public class Launcher {
     }
 
     private static void runAutoPressSequence() {
-        if (autoPressSequence != null)
+        if (autoPressSequence != null) {
             for (MAIN_MENU_ITEMS item : autoPressSequence) {
                 mainManager.itemClicked(item);
             }
+        }
     }
 
     private static void initRandomLaunch() {
@@ -239,8 +246,9 @@ public class Launcher {
     private static void initPreset() {
         for (String typeName : StringMaster.openContainer(preset)) {
             ObjType presetHero = DataManager.getType(typeName, OBJ_TYPES.CHARS);
-            if (getView() != VIEWS.CHOICE)
+            if (getView() != VIEWS.CHOICE) {
                 getMainManager().getSequenceMaster().chooseNewMember(PartyManager.getParty());
+            }
             addHero(presetHero);
         }
     }
@@ -248,8 +256,9 @@ public class Launcher {
     private static void addHero(ObjType presetHero) {
         getMainManager().getSequence().getView().getData().add(presetHero);
         int index = getMainManager().getSequence().getView().getData().indexOf(presetHero);
-        if (index == -1)
-            main.system.auxiliary.LogMaster.log(1, " ");
+        if (index == -1) {
+            LogMaster.log(1, " ");
+        }
         getMainManager().getSequence().selected(index);
     }
 
@@ -274,8 +283,9 @@ public class Launcher {
 
         view = newView;
         GuiManager.setKeyListener(getKeyListener(newView));
-        if (viewComp == null)
+        if (viewComp == null) {
             return;
+        }
         if (viewPanel == null) {
             initTopGUI();
         }
@@ -408,8 +418,9 @@ public class Launcher {
         Component viewComp = views.get(newView);
         if (viewComp == null) {
             setView(newView);
-        } else
+        } else {
             setView(viewComp, newView);
+        }
 
         if (newView == VIEWS.HC) {
             try {
@@ -426,8 +437,9 @@ public class Launcher {
     }
 
     private static void exitDC(boolean mainMenu) {
-        if (game == null)
+        if (game == null) {
             return;
+        }
         try {
             game.exit(mainMenu);
         } catch (InterruptedException e) {
@@ -446,14 +458,16 @@ public class Launcher {
         selectionKeyListener = new SelectionKeyListener(getMainManager());
         mainMenu.setManager(getMainManager());
         setView(mainMenu, VIEWS.MENU);
-        if (!CoreEngine.isArcaneVault() && autoPressSequence == null)
+        if (!CoreEngine.isArcaneVault() && autoPressSequence == null) {
             getMainManager().refresh();
+        }
 
     }
 
     public static void initMenu(final MAIN_MENU_ITEMS toSelect) {
-        if (mainMenu == null)
+        if (mainMenu == null) {
             initMainMenu();
+        }
         new Thread(new Runnable() {
             public void run() {
                 mainMenu.itemClicked(toSelect);
@@ -469,16 +483,18 @@ Game.game.setSimulation(true);
             // simulationInit();
         }
         CharacterCreator.setPartyMode(true);
-        for (DC_HeroObj hero : heroes)
+        for (DC_HeroObj hero : heroes) {
             CharacterCreator.addHero(hero, true);
+        }
         setView(CharacterCreator.getTabPanel(), VIEWS.HC);
         CharacterCreator.refreshGUI();
     }
 
     private static void initFullData() {
         CoreEngine.setMenuScope(false);
-        if (isDataInitialized())
+        if (isDataInitialized()) {
             return;
+        }
         DC_Engine.dataInit(false, false);
         setDataInitialized(true);
     }
@@ -532,8 +548,9 @@ Game.game.setSimulation(true);
             }
 
             game = Simulation.getGame();
-            if (game == null)
+            if (game == null) {
                 game = new DC_Game(false);
+            }
             game.setSimulation(true);
             CharacterCreator.getHeroManager().prebattleCleanSave();
             game.setSimulation(false);
@@ -541,14 +558,16 @@ Game.game.setSimulation(true);
             game.setDebugMode(isDEBUG_MODE_DEFAULT());
             // game.getState().init();
 
-            if (CharacterCreator.isArcadeMode())
+            if (CharacterCreator.isArcadeMode()) {
                 PartyManager.initArcade();
+            }
 
             game.setPlayerParty(PartyManager.getParty());
 
             PartyManager.getParty().setGame(game);
-            if (forceBattleInit || !game.isBattleInit())
+            if (forceBattleInit || !game.isBattleInit()) {
                 game.battleInit();
+            }
             game.start(first);
 
 
@@ -596,8 +615,9 @@ Game.game.setSimulation(true);
     }
 
     public static HC_KeyManager getHcKeyListener() {
-        if (hcKeyListener == null)
+        if (hcKeyListener == null) {
             hcKeyListener = new HC_KeyManager();
+        }
         return hcKeyListener;
     }
 

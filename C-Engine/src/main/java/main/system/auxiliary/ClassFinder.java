@@ -153,8 +153,9 @@ public class ClassFinder {
         }
         File[] files = directory.listFiles();
         for (File file : files) {
-            if (Arrays.asList(ignoredpaths).contains(file.getPath()))
+            if (Arrays.asList(ignoredpaths).contains(file.getPath())) {
                 continue;
+            }
             if (file.isDirectory()) {
                 assert !file.getName().contains(".");
                 classes.addAll(findClasses(file, packageName + "."

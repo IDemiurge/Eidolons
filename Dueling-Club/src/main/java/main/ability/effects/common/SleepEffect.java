@@ -44,8 +44,9 @@ public class SleepEffect extends DC_Effect {
     }
 
     private String getBuffName() {
-        if (buffName != null)
+        if (buffName != null) {
             return buffName;
+        }
         return STD_BUFF_NAMES.Asleep.name();
     }
 }

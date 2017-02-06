@@ -42,11 +42,12 @@ public class PriorityListItem extends G_Panel {
 
     public PriorityListItem(DC_UnitObj unit) {
         this.unit = unit;
-        if (unit != null)
+        if (unit != null) {
             if (unit.getName().equals(DC_PagedPriorityPanel.CLOCK_UNIT)) {
                 clock = true;
                 unit.setProperty(G_PROPS.IMAGE, "UI\\custom\\Time2.JPG");
             }
+        }
         init();
     }
 
@@ -58,10 +59,11 @@ public class PriorityListItem extends G_Panel {
 
         initialized = true;
         initLabel();
-        if (clock)
+        if (clock) {
             initClock();
-        else
+        } else {
             initOverlays();
+        }
 
     }
 
@@ -83,12 +85,14 @@ public class PriorityListItem extends G_Panel {
             lbl.setIcon(ImageManager.getIcon(getEmptyIcon()));
             return;
         }
-        if (!initialized)
+        if (!initialized) {
             init();
-        if (clock)
+        }
+        if (clock) {
             initClock();
-        else
+        } else {
             resetSmartText();
+        }
         lbl.setIcon(new ImageIcon(img));
         if (unit.isInfoSelected()) {
             lbl.setIcon(new ImageIcon(ImageManager.applyBorder(img, BORDER.HIGHLIGHTED_96)));

@@ -52,7 +52,9 @@ public class BuffAnim extends ActionAnim {
          */
         STD_BUFF_NAMES name =
                 new EnumMaster<STD_BUFF_NAMES>().retrieveEnumConst(STD_BUFF_NAMES.class, buff.getName());
-        if (name == null) return data;
+        if (name == null) {
+            return data;
+        }
         String sfx = PathFinder.getSfxPath() + getStdSfx(name);
         String sprites = PathFinder.getSpritesPath() + "buffs\\razorsharp 20 1.png";
 //        String std = PathFinder.getSpritesPath() + getStdSprites(name);
@@ -61,8 +63,9 @@ public class BuffAnim extends ActionAnim {
 //        else
 //        sprites  =   buff.getImagePath()+TextureManager.SINGLE_SPRITE+";";;
 
-        if (sfx.split(";").length > 1 || FileManager.isFile(sfx))
+        if (sfx.split(";").length > 1 || FileManager.isFile(sfx)) {
             data.setValue(ANIM_VALUES.PARTICLE_EFFECTS, sfx);
+        }
         data.setValue(ANIM_VALUES.SPRITES, sprites);
         return data;
     }
@@ -136,8 +139,9 @@ public class BuffAnim extends ActionAnim {
         super.setSprites(sprites);
         lifecycleDuration = 0;
         for (SpriteAnimation s : getSprites()) {
-            if (s.getLifecycleDuration() > lifecycleDuration)
+            if (s.getLifecycleDuration() > lifecycleDuration) {
                 lifecycleDuration = s.getLifecycleDuration();
+            }
         }
     }
 
@@ -151,12 +155,15 @@ public class BuffAnim extends ActionAnim {
 
     @Override
     protected void initDuration() {
-        if (isPlayOnNewRound())
+        if (isPlayOnNewRound()) {
             duration = 2;
-        if (isPlayOnHover())
+        }
+        if (isPlayOnHover()) {
             duration = 3;
-        if (isPlayContinuous())
+        }
+        if (isPlayContinuous()) {
             duration = -1;
+        }
     }
 
     @Override

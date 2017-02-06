@@ -46,8 +46,9 @@ public class ContainerTextElement extends WrappedTextComp implements EntityValue
 
     @Override
     protected Ref getRef() {
-        if (entity == null)
+        if (entity == null) {
             return null;
+        }
         int id = entity.getId();
         Ref ref = null;
         // if (entity.getGame().isSimulation())
@@ -55,7 +56,7 @@ public class ContainerTextElement extends WrappedTextComp implements EntityValue
         // else TODO
         ref = entity.getRef();
 
-        if (entity.getOBJ_TYPE_ENUM() instanceof OBJ_TYPES)
+        if (entity.getOBJ_TYPE_ENUM() instanceof OBJ_TYPES) {
             switch ((OBJ_TYPES) entity.getOBJ_TYPE_ENUM()) {
                 case UNITS:
                 case CHARS:
@@ -78,14 +79,17 @@ public class ContainerTextElement extends WrappedTextComp implements EntityValue
                     ref.setID(KEYS.WEAPON, id);
                     break;
             }
+        }
         ref.setID(KEYS.INFO, id);
 
         ref.setInfoEntity(entity);
         if (CharacterCreator.getHero() != null) {
-            if (Game.game.isSimulation())
-                if (entity instanceof ObjType)
+            if (Game.game.isSimulation()) {
+                if (entity instanceof ObjType) {
                     entity = HeroCreator
                             .getObjForType(CharacterCreator.getHero(), (ObjType) entity);
+                }
+            }
             ref.setSource(CharacterCreator.getHero().getId());
             // if (item!=null )
             // ref.setSource(item.getRef().getSource());
@@ -97,8 +101,9 @@ public class ContainerTextElement extends WrappedTextComp implements EntityValue
     @Override
     public Dimension getPreferredSize() {
         int size = 2;
-        if (textLines != null)
+        if (textLines != null) {
             size = textLines.size();
+        }
 
         panelSize = new Dimension(ValueInfoPage.INNER_WIDTH, FontMaster
                 .getFontHeight(getDefaultFont())
@@ -117,10 +122,12 @@ public class ContainerTextElement extends WrappedTextComp implements EntityValue
     }
 
     public String getText() {
-        if (permanent)
+        if (permanent) {
             return text;
-        if (getEntity() == null)
+        }
+        if (getEntity() == null) {
             return text;
+        }
         String propertyValue = getEntity().getProperty(property);
         propertyValue = StringMaster.getFormattedContainerString(propertyValue);
         if (property == G_PROPS.PRINCIPLES) {
@@ -133,8 +140,9 @@ public class ContainerTextElement extends WrappedTextComp implements EntityValue
                 // PRINCIPLES.class, pr);
                 Integer identification = getEntity().getIntParam(
                         DC_ContentManager.getIdentityParamForPrinciple(principle));
-                if (identification == 0)
+                if (identification == 0) {
                     continue;
+                }
                 String values = getEntity().getIntParam(
                         DC_ContentManager.getAlignmentForPrinciple(principle))
                         + "/" + identification;

@@ -17,8 +17,9 @@ public class FactFunction implements Function {
 
         double result = 1;
 
-        for (int i = n; i > 1; i--)
+        for (int i = n; i > 1; i--) {
             result *= i;
+        }
 
         return result;
     }

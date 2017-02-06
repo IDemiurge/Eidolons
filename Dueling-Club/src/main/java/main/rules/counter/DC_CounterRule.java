@@ -55,8 +55,9 @@ public abstract class DC_CounterRule {
             effects.add(new AddStatusEffect(status.toString()));
         }
         Effect e = getEffect();
-        if (e != null)
+        if (e != null) {
             effects.add(e);
+        }
 
         effects.setForcedLayer(getEffectLayer());
     }
@@ -105,8 +106,9 @@ public abstract class DC_CounterRule {
 
     public void newTurn() {
         for (DC_HeroObj unit : game.getUnits()) {
-            if (getNumberOfCounters(unit) <= 0)
+            if (getNumberOfCounters(unit) <= 0) {
                 continue;
+            }
             applyCountersClash(unit);
             // log TODO spread
             int counterMod = getCounterNumberReductionPerTurn(unit);
@@ -115,8 +117,9 @@ public abstract class DC_CounterRule {
                 unit.modifyCounter(getCounterName(), -counterMod);
             }
             Effect oneshotEffects = getSpecialRoundEffects();
-            if (oneshotEffects != null)
+            if (oneshotEffects != null) {
                 oneshotEffects.apply(Ref.getSelfTargetingRefCopy(unit));
+            }
         }
     }
 
@@ -125,18 +128,21 @@ public abstract class DC_CounterRule {
     }
 
     public boolean check(DC_HeroObj unit) {
-        if (!checkApplies(unit))
+        if (!checkApplies(unit)) {
             return false;
+        }
         this.unit = unit;
-        if (getNumberOfCounters(unit) <= 0)
+        if (getNumberOfCounters(unit) <= 0) {
             if (!isAppliedAlways()) {
                 // if (checkAlreadyApplied(unit)) TODO that's bullshit!
                 // log(getLiftedLogString());
                 removeBuff(unit); // may not be needed now
                 return false;
             }
-        if (ImmunityRule.checkImmune(unit, getCounterName()))
+        }
+        if (ImmunityRule.checkImmune(unit, getCounterName())) {
             return false;
+        }
 
         // if (!checkAlreadyApplied(unit))
         // log(getAppliedLogString());
@@ -146,7 +152,7 @@ public abstract class DC_CounterRule {
         initEffects();
         addBuff(unit);
 
-        if (getSpread() != null)
+        if (getSpread() != null) {
             new CustomTargetEffect(new TemplateAutoTargeting(
                     AUTO_TARGETING_TEMPLATES.ADJACENT),
                     new ModifyCounterEffect(getCounterName(),
@@ -154,6 +160,7 @@ public abstract class DC_CounterRule {
 
                             getSpread())).apply(Ref
                     .getSelfTargetingRefCopy(unit));
+        }
 
         // TODO ++ APPLY THRU to cells!
 
@@ -206,8 +213,9 @@ public abstract class DC_CounterRule {
             unit.removeBuff(getBuffName());
         }
         AddBuffEffect effect = null;
-        if (isUseBuffCache())
+        if (isUseBuffCache()) {
             effect = getEffectCache().get(unit); // buff effect cache!
+        }
         if (effect == null) {
             // Ref REF = new Ref(unit.getGame(), unit.getId());
             // REF.setTarget(unit.getId());
@@ -217,8 +225,9 @@ public abstract class DC_CounterRule {
             // ContentManager.INFINITE_VALUE, null);
             // buff.setCounterRef(getCounterName());
             effect = new AddBuffEffect(getBuffName(), effects);
-            if (isUseBuffCache())
+            if (isUseBuffCache()) {
                 getEffectCache().put(unit, effect);
+            }
             // else getUnitList().add(unit); // for logging!
 
             // disappear
@@ -237,8 +246,9 @@ public abstract class DC_CounterRule {
     }
 
     public Map<DC_HeroObj, AddBuffEffect> getEffectCache() {
-        if (effectCache == null)
+        if (effectCache == null) {
             effectCache = new HashMap<>();
+        }
         return effectCache;
     }
 

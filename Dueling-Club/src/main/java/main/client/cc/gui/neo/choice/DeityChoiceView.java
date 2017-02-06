@@ -52,21 +52,25 @@ public class DeityChoiceView extends EntityChoiceView implements
     }
 
     public boolean isOkBlocked() {
-        if (getSelectedIndex() < 0)
+        if (getSelectedIndex() < 0) {
             return false;
+        }
         return checkBlocked((getSelectedIndex()));
     }
 
     @Override
     public boolean checkBlocked(ObjType e) {
-        if (StringMaster.isEmpty(hero.getProperty(G_PROPS.DEITY)))
+        if (StringMaster.isEmpty(hero.getProperty(G_PROPS.DEITY))) {
             return false;
-        if (e == null)
+        }
+        if (e == null) {
             return true;
+        }
         if (e.getName().equals(FAITHLESS)) {
             if (!StringMaster.compare(hero.getProperty(G_PROPS.DEITY),
-                    FAITHLESS, false))
+                    FAITHLESS, false)) {
                 return false;
+            }
         }
         return !hero.checkContainerProp(G_PROPS.DEITY, e.getName());
     }

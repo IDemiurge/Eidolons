@@ -48,8 +48,9 @@ public class CustomValueManager {
 
         // is this the only way, to apply manually to each item in group?
         for (String key : unit.getCustomParamMap().keySet()) {
-            if (!checkCV(key))
+            if (!checkCV(key)) {
                 continue;
+            }
             String prop = getVariablefromCV(key, 0);
             String propValue = getVariablefromCV(key, 1);
             PARAMETER param = ContentManager

@@ -33,8 +33,9 @@ public abstract class DynamicValue implements Referred {
                 obj_ref = s[0];
                 this.value_ref = valueString.substring(valueString.indexOf("_") + 1);
             }
-        } else
+        } else {
             str = valueString;
+        }
     }
 
     public DynamicValue() {

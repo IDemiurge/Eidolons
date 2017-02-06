@@ -41,13 +41,15 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type, DC_UnitObj target, Ref REF) {
         if (REF.getActive() instanceof DC_ItemActiveObj) {
             DC_Obj weapon = (DC_Obj) REF.getActive().getRef().getObj(KEYS.ITEM);
-            if (weapon != null)
+            if (weapon != null) {
                 weapon.applySpecialEffects(case_type, target, REF);
-        } else if (isRanged())
+            }
+        } else if (isRanged()) {
             if (ref.getObj(KEYS.AMMO) instanceof DC_Obj) {
                 DC_Obj ammo = (DC_Obj) ref.getObj(KEYS.AMMO);
                 ammo.applySpecialEffects(case_type, target, REF);
             }
+        }
         super.applySpecialEffects(case_type, target, REF);
     }
 
@@ -95,16 +97,18 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         super.apply();
         // applyMods();
         if (!mainHand) {
-            if (isWeapon())
+            if (isWeapon()) {
                 checkApplyOffhandPenalties();
+            }
         } else {
             if (hero.getSecondWeapon() == null) {
                 checkApplySingleHandBonus();
             }
         }
         Ref ref = getHero().getRef();
-        if (isRanged())
+        if (isRanged()) {
             ref.setID(KEYS.RANGED, getId());
+        }
         if (mainHand) {
             ref.setID(KEYS.WEAPON, getId());
         } else {
@@ -113,10 +117,12 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     }
 
     private void checkApplySingleHandBonus() {
-        if (isRanged())
+        if (isRanged()) {
             return;
-        if (isTwoHanded())
+        }
+        if (isTwoHanded()) {
             return;
+        }
 
         int bonus = DC_Formulas.SINGLE_HAND_ATTACK_BONUS;
         MathMaster.addFactor(bonus, getIntParam(PARAMS.SINGLE_HAND_ATTACK_BONUS_MOD));
@@ -125,8 +131,9 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         bonus = DC_Formulas.SINGLE_HAND_DEFENSE_BONUS;
         bonus = MathMaster.addFactor(bonus, getIntParam(PARAMS.SINGLE_HAND_DEFENSE_BONUS_MOD));
         Integer factor = hero.getIntParam(PARAMS.SINGLE_HAND_DEFENSE_BONUS_MOD);
-        if (factor != 0)
+        if (factor != 0) {
             bonus = MathMaster.addFactor(bonus, factor);
+        }
         hero.modifyParamByPercent(PARAMS.DEFENSE_MOD, bonus);
         bonus = DC_Formulas.SINGLE_HAND_DAMAGE_BONUS;
         bonus = MathMaster.addFactor(bonus, getIntParam(PARAMS.SINGLE_HAND_DAMAGE_BONUS_MOD));
@@ -148,9 +155,10 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     public void applyUnarmedMasteryBonus() {
         PARAMETER mastery = getMastery();
-        if (mastery != null)
+        if (mastery != null) {
             getHero().modifyParameter((mainHand) ? PARAMS.ATTACK : PARAMS.OFF_HAND_ATTACK,
                     2 * DC_Formulas.getAttackFromWeaponMastery(getHero().getIntParam(mastery)));
+        }
     }
 
     public void applyMasteryBonus() {
@@ -160,7 +168,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
         getHero().modifyParameter((mainHand) ? PARAMS.ATTACK : PARAMS.OFF_HAND_ATTACK,
                 DC_Formulas.getAttackFromWeaponMastery(getHero().getIntParam(getMastery())));
-        if (isTwoHanded() || getWeaponSize() == WEAPON_SIZE.HUGE)
+        if (isTwoHanded() || getWeaponSize() == WEAPON_SIZE.HUGE) {
             if (!isRanged()) {
                 getHero().modifyParameter(
                         PARAMS.DAMAGE_MOD,
@@ -168,6 +176,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
                                 PARAMS.TWO_HANDED_MASTERY)));
                 // modifyParameter(PARAMS.STR_DMG_MODIFIER,
             }
+        }
         if (isDouble()) {
             getHero().modifyParameter(
                     PARAMS.ATTACK_MOD,
@@ -196,7 +205,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         // dual mastery
 
         // TODO
-        if (hero.getMainWeapon() != null)
+        if (hero.getMainWeapon() != null) {
             if (!hero.getMainWeapon().isRanged()) {
                 int penalty = Math.min(0, DC_Formulas.getMainHandDualAttackMod()
                         + getHero().getIntParam(PARAMS.DUAL_WIELDING_MASTERY));
@@ -204,6 +213,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
             } else {
                 hero.setParam(PARAMS.OFFHAND_ATTACK_MOD, hero.getIntParam(PARAMS.ATTACK_MOD));
             }
+        }
 
     }
 
@@ -231,14 +241,18 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     public void equipped(Ref ref) {
         this.equipped = true;
-        if (ref==null )return ;
+        if (ref == null) {
+            return;
+        }
         Integer ammo = ref.getId(KEYS.AMMO);
-        if (ammo != null)
+        if (ammo != null) {
             if (ammo != 0) {
                 ref.setID(KEYS.AMMO, ammo);
             }
-        if (isRanged())
+        }
+        if (isRanged()) {
             ref.setID(KEYS.RANGED, getId());
+        }
         if (mainHand) {
             ref.setID(KEYS.WEAPON, getId());
         } else {
@@ -264,12 +278,15 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     }
 
     public boolean isWeapon() {
-        if (checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.NATURAL.toString()))
+        if (checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.NATURAL.toString())) {
             return false;
-        if (checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.MAGICAL.toString()))
+        }
+        if (checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.MAGICAL.toString())) {
             return false;
-        if (checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.SHIELD.toString()))
+        }
+        if (checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.SHIELD.toString())) {
             return false;
+        }
         return true;
     }
 

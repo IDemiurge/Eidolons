@@ -37,8 +37,9 @@ public class DungeonCrawler {
             // if (status == PERCEPTION_STATUS_PLAYER.KNOWN_TO_BE_THERE)
             // return true;
 
-            if (VisionManager.checkVisible(hero))
+            if (VisionManager.checkVisible(hero)) {
                 return true;
+            }
         }
         // }
 
@@ -49,10 +50,12 @@ public class DungeonCrawler {
     private static List<DC_HeroObj> getRelevantEnemies(DC_HeroObj unit) {
         List<DC_HeroObj> list = new LinkedList<>();
         for (DC_HeroObj enemy : unit.getGame().getUnits()) {
-            if (enemy.getOwner().equals(Player.NEUTRAL) || enemy.getOwner().equals(unit.getOwner()))
+            if (enemy.getOwner().equals(Player.NEUTRAL) || enemy.getOwner().equals(unit.getOwner())) {
                 continue;
-            if (unit.getZ() != enemy.getZ())
+            }
+            if (unit.getZ() != enemy.getZ()) {
                 continue;
+            }
             list.add(enemy);
         }
         return list;

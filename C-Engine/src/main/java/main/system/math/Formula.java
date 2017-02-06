@@ -30,8 +30,9 @@ public class Formula implements MyMathObj {
 
     public Formula(String formula) {
         this.formula = formula;
-        if (formula.equals(""))
+        if (formula.equals("")) {
             this.formula = "0";
+        }
     }
 
     public static Formula getObjValueReferenceFormula(String obj_ref, String value) {
@@ -50,11 +51,13 @@ public class Formula implements MyMathObj {
     }
 
     public Number evaluate() {
-        if (StringMaster.isInteger(formula))
+        if (StringMaster.isInteger(formula)) {
             return StringMaster.getInteger(formula);
+        }
 
-        if (StringMaster.isNumber(formula, false))
+        if (StringMaster.isNumber(formula, false)) {
             return new Double(formula);
+        }
 
         buffer = formula;
         VarMap vm = new VarMap(false /* case sensitive */);
@@ -105,8 +108,9 @@ public class Formula implements MyMathObj {
             e.printStackTrace();
             throw e;
         }
-        if (number instanceof Double)
+        if (number instanceof Double) {
             return (int) Math.round((Double) number);
+        }
 
         return (Integer) number;
     }
@@ -115,10 +119,11 @@ public class Formula implements MyMathObj {
         formula = formula.toUpperCase();
         Loop.startLoop(1000);
         while (!Loop.loopEnded()) {
-            if (!formula.contains(StringMaster.FORMULA_REF_OPEN_CHAR))
+            if (!formula.contains(StringMaster.FORMULA_REF_OPEN_CHAR)) {
                 if (!formula.contains(StringMaster.FORMULA_FUNC_OPEN_CHAR)) {
                     break;
                 }
+            }
             char[] charArray = formula.toCharArray();
 
             for (char ch : charArray) {
@@ -173,14 +178,16 @@ public class Formula implements MyMathObj {
             ref_substring = ref_substring.replace(StringMaster.FORMULA_BASE_CHAR, "");
             base = true;
         }
-        if (getRef() != null)
+        if (getRef() != null) {
             getRef().setBase(base);
+        }
         if (ref_substring.contains("_")) {
 
             obj_ref = ref_substring.substring(ref_substring.indexOf('{') + 1, ref_substring
                     .indexOf('_'));
-            if (obj_ref.length() == 0)
+            if (obj_ref.length() == 0) {
                 obj_ref = "SOURCE";
+            }
 
             param = StringMaster.getSubString(ref_substring, "_", "}", false);
             // ref_substring
@@ -194,8 +201,9 @@ public class Formula implements MyMathObj {
         // parse {n} references to Props.Formula items
         if (StringMaster.isInteger(param)) {
             String parsedString = TextParser.parse(ref_substring, ref);
-            if (!TextParser.isRef(parsedString))
+            if (!TextParser.isRef(parsedString)) {
                 return new Formula(parsedString).getInt(ref);
+            }
         }
 
         try {
@@ -279,14 +287,16 @@ public class Formula implements MyMathObj {
     }
 
     public Formula getAppendedByModifier(Object mod) {
-        if (mod == null)
+        if (mod == null) {
             return this;
+        }
         return new Formula("((" + this.formula + ")" + "*" + "(" + mod.toString() + "))/100");
     }
 
     public Formula getAppendedByFactor(Object mod) {
-        if (mod == null)
+        if (mod == null) {
             return this;
+        }
         return new Formula("" + this.formula + "+" + "(" + this.formula + ")*" + "("
                 + mod.toString() + ")");
     }

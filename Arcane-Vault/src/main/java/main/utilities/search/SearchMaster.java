@@ -59,13 +59,12 @@ public class SearchMaster {
 		if (ArcaneVault.getWorkspaceManager().getWorkspaceByName(typeName) != null) {
 			deleteSearch(typeName);
 		}
-		if (!StringMaster.isEmpty(typeName))
-			list = TypeFinder.findTypes(typeName,
-			// types.toArray(TYPES)
-					OBJ_TYPES.values());
-
-		else {
-			// TypeFilter.filter(filter, groupingValue); //should be separate I
+        if (!StringMaster.isEmpty(typeName)) {
+            list = TypeFinder.findTypes(typeName,
+                    // types.toArray(TYPES)
+                    OBJ_TYPES.values());
+        } else {
+            // TypeFilter.filter(filter, groupingValue); //should be separate I
 			// guess
 			return;
 		}

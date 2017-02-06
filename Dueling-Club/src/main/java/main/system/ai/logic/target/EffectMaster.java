@@ -37,10 +37,11 @@ public class EffectMaster {
 
     public static Effects getEffectsFromAbilities(Abilities abilities) {
         Effects effects = new Effects();
-        if (abilities != null)
+        if (abilities != null) {
             for (Ability a : abilities) {
                 effects.addAll(addEffectsFromAbility(a.getEffects()));
             }
+        }
         return effects;
     }
 
@@ -48,11 +49,11 @@ public class EffectMaster {
         Effects effects = new Effects();
         // if (!active.isConstructed())
         active.construct();
-        if (active.getAbilities() != null)
+        if (active.getAbilities() != null) {
             for (Ability a : active.getAbilities()) {
                 effects.addAll(addEffectsFromAbility(a.getEffects()));
             }
-        else {
+        } else {
             for (ActiveObj a : active.getActives()) {
                 for (Ability a1 : a.getAbilities()) {
                     for (Effect e : a1.getEffects()) {
@@ -75,8 +76,9 @@ public class EffectMaster {
             }
             if (e instanceof ContainerEffect) {
                 ContainerEffect containerEffect = (ContainerEffect) e;
-                if (containerEffect.getEffect() != null)
+                if (containerEffect.getEffect() != null) {
                     list.add(containerEffect.getEffect());
+                }
             }
             list.add(e);
         }
@@ -90,8 +92,9 @@ public class EffectMaster {
     }
 
     public static List<Effect> getEffectsFromAbilityType(AbilityType type) {
-        if (type.getAbilities() == null)
+        if (type.getAbilities() == null) {
             type.construct();
+        }
         Abilities abils = type.getAbilities();
 
         List<Effect> list = new LinkedList<>();
@@ -104,8 +107,9 @@ public class EffectMaster {
 
     public static List<Effect> getEffectsOfClass(Abilities actives, Class<?> CLASS) {
         List<Effect> list = new LinkedList<>();
-        if (actives == null)
+        if (actives == null) {
             return list;
+        }
         for (Effect e : actives.getEffects()) {
             list.addAll(getEffectsOfClass(e, CLASS));
         }
@@ -118,13 +122,16 @@ public class EffectMaster {
 
     public static Effect getFirstEffectOfClass(DC_ActiveObj active, Class<?> CLASS) {
         List<Effect> list = getEffectsOfClass(getEffectsFromSpell(active), CLASS);
-        if (list.isEmpty()) return null;
+        if (list.isEmpty()) {
+            return null;
+        }
         return list.get(0);
     }
 
     public static List<Effect> getEffectsOfClass(Effect effect, Class<?> CLASS) {
-        if (ClassMaster.isInstanceOf(effect, CLASS))
+        if (ClassMaster.isInstanceOf(effect, CLASS)) {
             return new ListMaster<Effect>().getList(effect);
+        }
 
         List<Effect> list = new LinkedList<>();
 
@@ -144,34 +151,41 @@ public class EffectMaster {
     }
 
     public static boolean check(Effect e, Class<?> CLASS) {
-        if (ClassMaster.isInstanceOf(e, CLASS))
+        if (ClassMaster.isInstanceOf(e, CLASS)) {
             return true;
+        }
         if (e instanceof ContainerEffect) {
             ContainerEffect containerEffect = (ContainerEffect) e;
             return check(containerEffect.getEffect(), CLASS);
         }
         if (e instanceof Effects) {
             Effects effects = (Effects) e;
-            for (Effect ef : effects)
-                if (check(ef, CLASS))
+            for (Effect ef : effects) {
+                if (check(ef, CLASS)) {
                     return true;
+                }
+            }
         }
         return (ClassMaster.isInstanceOf(e, CLASS));
     }
 
     public static boolean check(DC_ActiveObj active, Class<?> CLASS) {
-        if (active == null)
+        if (active == null) {
             return false;
-        if (active.getAbilities() == null)
+        }
+        if (active.getAbilities() == null) {
             return false;
+        }
         return check(active.getAbilities(), CLASS);
     }
 
     public static boolean check(Abilities actives, Class<?> CLASS) {
-        if (actives == null)
+        if (actives == null) {
             return false;
-        if (actives.getEffects() == null)
+        }
+        if (actives.getEffects() == null) {
             return false;
+        }
         return check(actives.getEffects(), CLASS);
     }
 
@@ -189,36 +203,44 @@ public class EffectMaster {
         if (e instanceof AddBuffEffect) {
             AddBuffEffect addBuffEffect = (AddBuffEffect) e;
             Effect effect = addBuffEffect.getEffect();
-            if (effect == null)
+            if (effect == null) {
                 return list;
+            }
             if (effect instanceof Effects) {
                 Effects effects = (Effects) effect;
-                for (Effect eff : effects)
-                    if (ClassMaster.isInstanceOf(eff, CLASS))
+                for (Effect eff : effects) {
+                    if (ClassMaster.isInstanceOf(eff, CLASS)) {
                         list.add(eff);
-            } else if (ClassMaster.isInstanceOf(effect, CLASS))
+                    }
+                }
+            } else if (ClassMaster.isInstanceOf(effect, CLASS)) {
                 return new ListMaster<Effect>().getList(effect);
+            }
         }
         return list;
     }
 
     public static void applyAttachmentEffects(Obj obj, Integer layer) {
-        if (obj == null)
+        if (obj == null) {
             return;
+        }
         List<Attachment> attachments = obj.getAttachments();
-        if (attachments != null)
+        if (attachments != null) {
             for (Attachment a : attachments) {
                 try {
                     for (Effect e : a.getEffects()) {
-                        if (layer != null)
-                            if (e.getLayer() != layer)
+                        if (layer != null) {
+                            if (e.getLayer() != layer) {
                                 continue;
+                            }
+                        }
                         e.apply(Ref.getSelfTargetingRefCopy(obj));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+        }
     }
 
     public static Attack getAttackFromAction(DC_ActiveObj t) {
@@ -257,8 +279,9 @@ public class EffectMaster {
                     amount.replace(StringMaster.SET, "");
                 }
             }
-            if (ref.getId(KEYS.INFO) == null)
+            if (ref.getId(KEYS.INFO) == null) {
                 ref.setID(KEYS.INFO, ref.getId(KEYS.SKILL));
+            }
             amount = TextParser.parse(amount, ref, TextParser.INFO_PARSING_CODE);
             modEffects.add(new ModifyValueEffect(param, code, amount));
         }

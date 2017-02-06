@@ -15,16 +15,10 @@ import main.system.auxiliary.GuiManager;
 import main.system.auxiliary.ListMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
-
 import net.miginfocom.swing.MigLayout;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-
-import javax.swing.JFrame;
+import javax.swing.*;
+import java.util.*;
 
 public class LevelEditor {
 	private static final String title = "Eidolons Rpg, Level Editor";
@@ -32,18 +26,18 @@ public class LevelEditor {
 	private static final boolean testMode = false;
 	private static final boolean loadWorkspace = false;
 	public static boolean DEBUG_ON = true;
-	/*
-	 * Mission editing -> xml template to use ?  
+    // load workspace control!
+    public static String testMission = "Twilight Church";
+    public static String testLevel = "Arcane Tower";
+    static int cachedStepsLimit = 10;
+    /*
+     * Mission editing -> xml template to use ?
 	 *  multiple DC_Game instances ?
-	 *  either way, it's gonna be necessary to save/load dc_games! 
+	 *  either way, it's gonna be necessary to save/load dc_games!
 	 */
 	private static LE_Simulation baseSimulation;
-
 	private static LE_MainPanel mainPanel;
 	private static JFrame window;
-	// load workspace control!
-	public static String testMission = "Twilight Church";
-	public static String testLevel = "Arcane Tower";
 	private static LE_ObjMaster objMaster;
 	private static LE_MouseMaster mouseMaster;
 	private static LE_MapMaster mapMaster;
@@ -51,7 +45,6 @@ public class LevelEditor {
 	private static Map<Level, LE_Simulation> simulationMap = new HashMap<Level, LE_Simulation>();
 	private static boolean mouseInfoMode;
 	private static Map<Level, Stack<Level>> undoCache = new HashMap<>();
-	static int cachedStepsLimit = 10;
 	private static boolean cachingOff = true;
 	private static String actionStatusTooltip;
 
@@ -70,17 +63,19 @@ public class LevelEditor {
 	}
 
 	public static void cache(boolean newThread) {
-		if (cachingOff)
-			return;
-		if (newThread) {
+        if (cachingOff) {
+            return;
+        }
+        if (newThread) {
 			new Thread(new Runnable() {
 				public void run() {
 					cacheLevel();
 				}
 			}).start();
-		} else
-			cacheLevel();
-	}
+        } else {
+            cacheLevel();
+        }
+    }
 
 	private static void cacheLevel() {
 		Stack<Level> stack = undoCache.get(getCurrentLevel());
@@ -130,9 +125,10 @@ public class LevelEditor {
 		// initKeyManager();
 		VisionManager.setVisionHacked(true);
 		initGui();
-		if (loadWorkspace)
-			LE_DataMaster.initMissionsCustomWorkspace();
-		LE_DataMaster.resetMissionWorkspace();
+        if (loadWorkspace) {
+            LE_DataMaster.initMissionsCustomWorkspace();
+        }
+        LE_DataMaster.resetMissionWorkspace();
 	}
 
 	private static void initFullData() {
@@ -160,10 +156,10 @@ public class LevelEditor {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.add(mainPanel, "pos 0 0");
 
-		if (isFullscreen())
-			GuiManager.setWindowToFullscreen(window);
-		else {
-			window.setVisible(true);
+        if (isFullscreen()) {
+            GuiManager.setWindowToFullscreen(window);
+        } else {
+            window.setVisible(true);
 		}
 	}
 
@@ -173,9 +169,10 @@ public class LevelEditor {
 
 	public static void newMission() {
 		String name = ListChooser.chooseType(MACRO_OBJ_TYPES.MISSIONS);
-		if (name == null)
-			return;
-		newMission(name);
+        if (name == null) {
+            return;
+        }
+        newMission(name);
 	}
 
 	public static void updateDynamicControls() {
@@ -186,17 +183,19 @@ public class LevelEditor {
 		Mission mission = new Mission(placeName);
 		getMainPanel().newMission(mission);
 		if (!LE_DataMaster.getMissionsWorkspace().getTypeList()
-				.contains(mission.getObj().getType()))
-			LE_DataMaster.getMissionsWorkspace().addType(mission.getObj().getType());
-		// newLevel();
+                .contains(mission.getObj().getType())) {
+            LE_DataMaster.getMissionsWorkspace().addType(mission.getObj().getType());
+        }
+        // newLevel();
 		mission.initLevels();
 	}
 
 	public static void newLevel(boolean alt) {
 		String name = ListChooser.chooseType(OBJ_TYPES.DUNGEONS);
-		if (name == null)
-			return;
-		// ObjType dungeonType = DataManager.getType(name, OBJ_TYPES.DUNGEONS);
+        if (name == null) {
+            return;
+        }
+        // ObjType dungeonType = DataManager.getType(name, OBJ_TYPES.DUNGEONS);
 		newLevel(name, null, alt);
 		// if (selectedDungeon != null) {
 		// }
@@ -290,9 +289,10 @@ public class LevelEditor {
 	}
 
 	public static ObjType checkSubstitute(ObjType type) {
-		if (type.getOBJ_TYPE_ENUM() != OBJ_TYPES.DUNGEONS)
-			return type;
-		// if (type.getType() == null)
+        if (type.getOBJ_TYPE_ENUM() != OBJ_TYPES.DUNGEONS) {
+            return type;
+        }
+        // if (type.getType() == null)
 		// return new ObjType(type, true);
 		ObjType customType = getCustomType(type.getName());
 		if (customType == null) {
@@ -306,10 +306,12 @@ public class LevelEditor {
 	}
 
 	private static ObjType getCustomType(String typeName) {
-		for (ObjType t : getSimulation().getCustomTypes())
-			if (typeName.equals(t.getName()))
-				return t;
-		return null;
+        for (ObjType t : getSimulation().getCustomTypes()) {
+            if (typeName.equals(t.getName())) {
+                return t;
+            }
+        }
+        return null;
 	}
 
 	public static String getActionStatusTooltip() {
@@ -318,33 +320,37 @@ public class LevelEditor {
 
 	public static void setActionStatusTooltip(String actionStatusTooltip) {
 		LevelEditor.actionStatusTooltip = actionStatusTooltip;
-		if (actionStatusTooltip == null)
-			getMainPanel().getMapViewComp().getInfoComp().setText("");
-		else
-			getMainPanel().getMapViewComp().getInfoComp().setText(
-					LevelEditor.getActionStatusTooltip());
-	}
+        if (actionStatusTooltip == null) {
+            getMainPanel().getMapViewComp().getInfoComp().setText("");
+        } else {
+            getMainPanel().getMapViewComp().getInfoComp().setText(
+                    LevelEditor.getActionStatusTooltip());
+        }
+    }
 
 	public static void highlight(List<Coordinates> list) {
 		if (getGrid() != null) {
 
-		} else
-			getCurrentLevel().getDungeon().getMinimap().getGrid().highlight(list);
-	}
+        } else {
+            getCurrentLevel().getDungeon().getMinimap().getGrid().highlight(list);
+        }
+    }
 
 	public static void highlight(Coordinates... list) {
 		if (getGrid() != null) {
 
-		} else
-			getCurrentLevel().getDungeon().getMinimap().getGrid().highlight(Arrays.asList(list));
-	}
+        } else {
+            getCurrentLevel().getDungeon().getMinimap().getGrid().highlight(Arrays.asList(list));
+        }
+    }
 
 	public static void highlightsOff() {
 		if (getGrid() != null) {
 
-		} else
-			getCurrentLevel().getDungeon().getMinimap().getGrid().highlightsOff();
-	}
+        } else {
+            getCurrentLevel().getDungeon().getMinimap().getGrid().highlightsOff();
+        }
+    }
 
 	public static boolean isMiniGridMode() {
 		return getGrid() == null;

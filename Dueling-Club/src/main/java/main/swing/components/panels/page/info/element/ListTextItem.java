@@ -22,10 +22,11 @@ public class ListTextItem<E> extends TextCompDC {
         this.blocked = blocked;
         this.forcedFontSize = forcedFontSize;
         this.isSelected = isSelected;
-        if (blocked)
+        if (blocked) {
             setDefaultFont(getBlockedFont());
-        else
+        } else {
             setDefaultFont((isSelected) ? getSelectedFont() : getDefaultFont());
+        }
         setBackground(ColorManager.BACKGROUND);
         setOpaque(true);
         text = getText();
@@ -37,18 +38,21 @@ public class ListTextItem<E> extends TextCompDC {
 
     @Override
     protected String getText() {
-        if (value == null)
+        if (value == null) {
             return "null";
+        }
         return value.toString().replace("_", "");
         // StringMaster.getWellFormattedString().toUpperCase();
     }
 
     @Override
     protected Color getColor() {
-        if (blocked)
+        if (blocked) {
             return getBlockedColor();
-        if (isSelected)
+        }
+        if (isSelected) {
             return getSelectedColor();
+        }
         return super.getColor();
     }
 
@@ -62,8 +66,9 @@ public class ListTextItem<E> extends TextCompDC {
 
     @Override
     protected int getDefaultFontSize() {
-        if (forcedFontSize != null)
+        if (forcedFontSize != null) {
             return forcedFontSize;
+        }
         return DEFAULT_FONT_SIZE;
     }
 

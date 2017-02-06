@@ -30,11 +30,13 @@ public class ContentGenerator {
             ObjType leader = DataManager.getType(type.getProperty(PROPS.LEADER), OBJ_TYPES.CHARS);
             if (leader == null) {
                 List<String> members = StringMaster.openContainer(type.getProperty(PROPS.MEMBERS));
-                if (members.isEmpty())
+                if (members.isEmpty()) {
                     continue;
+                }
                 leader = DataManager.getType(members.get(0), OBJ_TYPES.CHARS);
-                if (leader == null)
+                if (leader == null) {
                     continue;
+                }
                 type.setProperty(PROPS.LEADER, leader.getName());
             }
 
@@ -46,8 +48,9 @@ public class ContentGenerator {
     public static void generateWaveUnitTypes(ObjType t) {
         List<String> list = new LinkedList<>();
         for (String u : StringMaster.openContainer(t.getProperty(PROPS.SHRUNK_PRESET_GROUP))) {
-            if (!list.contains(u))
+            if (!list.contains(u)) {
                 list.add(u);
+            }
         }
     }
 
@@ -127,9 +130,9 @@ public class ContentGenerator {
 
         Integer n = t.getIntParam(PARAMS.MATERIAL_QUANTITY);
         Integer layers = t.getIntParam(PARAMS.ARMOR_LAYERS);
-        if (layers == 0)
+        if (layers == 0) {
             layers = 1;
-        else {
+        } else {
 
             Integer durability_modifier = t.getIntParam(PARAMS.DURABILITY_MODIFIER);
             int i = durability_modifier / layers / 5;
@@ -156,10 +159,11 @@ public class ContentGenerator {
     private static Map<DAMAGE_TYPE, RESIST_GRADE> getDefaultResistMap(ITEM_MATERIAL_GROUP group) {
         Map<DAMAGE_TYPE, RESIST_GRADE> map = new HashMap<>();
         for (DAMAGE_TYPE dmg_type : DAMAGE_TYPE.values()) {
-            if (!dmg_type.isMagical())
+            if (!dmg_type.isMagical()) {
                 map.put(dmg_type, RESIST_GRADE.Normal);
-            else
+            } else {
                 map.put(dmg_type, RESIST_GRADE.Ineffective);
+            }
         }
 
         switch (group) {
@@ -227,10 +231,11 @@ public class ContentGenerator {
     private static Map<DAMAGE_TYPE, RESIST_GRADE> getDefaultSelfDamageMap(ITEM_MATERIAL_GROUP group) {
         Map<DAMAGE_TYPE, RESIST_GRADE> map = new HashMap<>();
         for (DAMAGE_TYPE dmg_type : DAMAGE_TYPE.values()) {
-            if (!dmg_type.isMagical())
+            if (!dmg_type.isMagical()) {
                 map.put(dmg_type, RESIST_GRADE.Normal);
-            else
+            } else {
                 map.put(dmg_type, RESIST_GRADE.Ineffective);
+            }
         }
 
         switch (group) {
@@ -287,16 +292,21 @@ public class ContentGenerator {
     }
 
     public static OBJECT_ARMOR_TYPE getObjectArmorTypeForUnit(DC_HeroObj attacked) {
-        if (attacked.checkClassification(CLASSIFICATIONS.WRAITH))
+        if (attacked.checkClassification(CLASSIFICATIONS.WRAITH)) {
             return OBJECT_ARMOR_TYPE.ETHEREAL;
-        if (attacked.checkClassification(CLASSIFICATIONS.MECHANICAL))
+        }
+        if (attacked.checkClassification(CLASSIFICATIONS.MECHANICAL)) {
             return OBJECT_ARMOR_TYPE.METAL;
-        if (attacked.checkClassification(CLASSIFICATIONS.CONSTRUCT))
+        }
+        if (attacked.checkClassification(CLASSIFICATIONS.CONSTRUCT)) {
             return OBJECT_ARMOR_TYPE.STONE;
-        if (attacked.checkClassification(CLASSIFICATIONS.ELEMENTAL))
+        }
+        if (attacked.checkClassification(CLASSIFICATIONS.ELEMENTAL)) {
             return OBJECT_ARMOR_TYPE.CRYSTAL;
-        if (attacked.checkClassification(CLASSIFICATIONS.UNDEAD))
+        }
+        if (attacked.checkClassification(CLASSIFICATIONS.UNDEAD)) {
             return OBJECT_ARMOR_TYPE.BONE;
+        }
         return OBJECT_ARMOR_TYPE.FLESH;
     }
 
@@ -316,23 +326,26 @@ public class ContentGenerator {
             RESIST_GRADE grade = (material == null) ? getGradeForUnitType(t, dmg_type) : material
                     .getResistGrade(dmg_type);
             PROPERTY prop = DC_ContentManager.getResistGradeForDmgType(dmg_type);
-            if (prop == null)
+            if (prop == null) {
                 continue;
+            }
 
             t.setProperty(prop, grade.toString());
             t.setParam(DC_ContentManager.getArmorParamForDmgType(dmg_type), Math.round(armor
                     * grade.getPercent() / 100));
-            if (material == null)
+            if (material == null) {
                 grade = new EnumMaster<RESIST_GRADE>().retrieveEnumConst(RESIST_GRADE.class, t
                         .getProperty(DC_ContentManager.getResistGradeForDmgType(dmg_type)));
-            else
+            } else {
                 grade = material.getSelfDamageGrade(dmg_type);
+            }
             t.setProperty(DC_ContentManager.getSelfDamageGradeForDmgType(dmg_type), grade
                     .toString());
 
             prop = DC_ContentManager.getSelfDamageGradeForDmgType(dmg_type);
-            if (prop == null)
+            if (prop == null) {
                 continue;
+            }
             grade = new EnumMaster<RESIST_GRADE>().retrieveEnumConst(RESIST_GRADE.class, t
                     .getProperty(prop));
 
@@ -447,8 +460,9 @@ public class ContentGenerator {
         if (group != null) {
             String weaponActions = getDefaultWeaponActions(group);
             if (weaponActions != null) {
-                if (!t.checkProperty(PROPS.WEAPON_ATTACKS))
+                if (!t.checkProperty(PROPS.WEAPON_ATTACKS)) {
                     t.setProperty(PROPS.WEAPON_ATTACKS, weaponActions);
+                }
             }
             String defaultWeaponAction = getDEFAULT_ATTACK_ACTION(group);
             t.setProperty(PROPS.DEFAULT_ATTACK_ACTION, defaultWeaponAction);
@@ -474,8 +488,9 @@ public class ContentGenerator {
             }
             WEAPON_SIZE size = new EnumMaster<WEAPON_SIZE>().retrieveEnumConst(WEAPON_SIZE.class, t
                     .getProperty(G_PROPS.WEAPON_SIZE));
-            if (size == null)
+            if (size == null) {
                 return;
+            }
             Integer area = getDefaultImpactArea(group, size);
             t.setParam(PARAMS.IMPACT_AREA, area);
         }
@@ -707,8 +722,9 @@ public class ContentGenerator {
 
     public static void initHeight(ObjType t) {
         OBJ_TYPES TYPE = (OBJ_TYPES) t.getOBJ_TYPE_ENUM();
-        if (t.getIntParam(PARAMS.HEIGHT) != 0)
+        if (t.getIntParam(PARAMS.HEIGHT) != 0) {
             return;
+        }
         int height = 0;
         switch (TYPE) {
             case BF_OBJ:
@@ -717,12 +733,13 @@ public class ContentGenerator {
                         BF_OBJECT_TYPE.class, t.getProperty(G_PROPS.BF_OBJECT_TYPE));
                 BF_OBJECT_GROUP group = new EnumMaster<BF_OBJECT_GROUP>().retrieveEnumConst(
                         BF_OBJECT_GROUP.class, t.getProperty(G_PROPS.BF_OBJECT_GROUP));
-                if (type != null)
+                if (type != null) {
                     switch (type) {
                         // TODO
 
                     }
-                if (group != null)
+                }
+                if (group != null) {
                     switch (group) {
                         case ROCKS:
                             height = 100;
@@ -734,6 +751,7 @@ public class ContentGenerator {
                             break;
 
                     }
+                }
                 break;
 
             case UNITS:
@@ -761,7 +779,7 @@ public class ContentGenerator {
                         .getProperty(G_PROPS.BACKGROUND));
                 GENDER g = new EnumMaster<GENDER>().retrieveEnumConst(GENDER.class, t
                         .getProperty(G_PROPS.GENDER));
-                if (race != null)
+                if (race != null) {
                     switch (race) {
                         case DEMON:
                             height = 200;
@@ -777,10 +795,12 @@ public class ContentGenerator {
                             break;
                         case HUMAN:
                             height = 180;
-                            if (bg == BACKGROUND.MAN_OF_WOLF_REALM)
+                            if (bg == BACKGROUND.MAN_OF_WOLF_REALM) {
                                 height += 10;
-                            if (bg == BACKGROUND.MAN_OF_EAGLE_REALM)
+                            }
+                            if (bg == BACKGROUND.MAN_OF_EAGLE_REALM) {
                                 height += 15;
+                            }
                             break;
                         case VAMPIRE:
                             height = 180;
@@ -788,6 +808,7 @@ public class ContentGenerator {
                         default:
                             break;
                     }
+                }
                 if (g == GENDER.FEMALE) {
                     height -= height / 5;
                 }

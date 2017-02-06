@@ -134,13 +134,15 @@ public class SkirmishMaster {
                 ObjType type = (ObjType) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECTION);
                 if (type != null) {
                     File file = FileManager.getFile(type.getProperty(MACRO_PROPS.ROOT_LEVEL));
-                    if (!file.isFile())
+                    if (!file.isFile()) {
                         return;
+                    }
                     Dungeon dungeon = DungeonBuilder.loadDungeon(FileManager.readFile(file));
                     initSkirmish(type, dungeon);
                     Launcher.resetView(VIEWS.MENU);
-                } else
+                } else {
                     Launcher.getMainManager().exitToMainMenu();
+                }
             }
         }, " thread").start();
 
@@ -173,13 +175,15 @@ public class SkirmishMaster {
         }
         // crop entrance suffix etc
         Image img = ImageManager.getEmptyUnitIcon().getImage();
-        if (type != null)
+        if (type != null) {
             img = type.getIcon().getImage();
+        }
         int height = 12;
         Image image = ImageManager.applyImage(VISUALS.PORTRAIT_BORDER.getImage(), img, 2, height);
         BufferedImage buffered = ImageManager.getBufferedImage(image);
-        if (!StringMaster.isEmpty(value))
+        if (!StringMaster.isEmpty(value)) {
             buffered.getGraphics().drawString(value, 10, height);
+        }
         // TextComp comp = new TextComp(new
         // CompVisuals(VISUALS.PORTRAIT_BORDER.getSize(), image), value){
         // protected boolean isCentering() {
@@ -199,8 +203,9 @@ public class SkirmishMaster {
                 WaitMaster.receiveInput(WAIT_OPERATIONS.CUSTOM_SELECT, true);
                 Object bfName = battlefieldChoiceView.getSelectedItem();
                 File file = map.get(bfName);
-                if (!file.isFile())
+                if (!file.isFile()) {
                     return;
+                }
                 Dungeon dungeon = DungeonBuilder.loadDungeon(FileManager.readFile(file));
                 ObjType missionType = new ObjType(); // specified where? used
                 // for

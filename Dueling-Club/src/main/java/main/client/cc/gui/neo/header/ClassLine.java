@@ -53,10 +53,12 @@ public class ClassLine extends G_Panel {
 
                     boolean multi = hero.checkProperty(PROPS.MULTICLASSES, type.getName());
                     if (prime) {
-                        if (!multi)
+                        if (!multi) {
                             continue;
-                    } else if (multi)
+                        }
+                    } else if (multi) {
                         continue;
+                    }
 
                 } else {
 
@@ -86,10 +88,11 @@ public class ClassLine extends G_Panel {
 
             };
             add(item, pos);
-            if (vertical)
+            if (vertical) {
                 y++;
-            else
+            } else {
                 x++;
+            }
 
         }
 
@@ -101,13 +104,15 @@ public class ClassLine extends G_Panel {
 
         for (String className : StringMaster.openContainer(multiclassType
                 .getProperty(PROPS.BASE_CLASSES_ONE))) {
-            if (type.getName().equalsIgnoreCase(className))
+            if (type.getName().equalsIgnoreCase(className)) {
                 return true;
+            }
         }
         for (String className : StringMaster.openContainer(multiclassType
                 .getProperty(PROPS.BASE_CLASSES_TWO))) {
-            if (type.getName().equalsIgnoreCase(className))
+            if (type.getName().equalsIgnoreCase(className)) {
                 return true;
+            }
         }
         return false;
     }

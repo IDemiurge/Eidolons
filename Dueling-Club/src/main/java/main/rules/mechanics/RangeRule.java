@@ -21,10 +21,11 @@ public class RangeRule {
     public static int getMod(boolean dmg_atk, boolean close_long, DC_HeroObj source,
                              DC_HeroObj target, DC_WeaponObj weapon, DC_ActiveObj action) {
         PARAMS param = null;
-        if (close_long)
+        if (close_long) {
             param = dmg_atk ? PARAMS.CLOSE_QUARTERS_DAMAGE_MOD : PARAMS.CLOSE_QUARTERS_ATTACK_MOD;
-        else
+        } else {
             param = dmg_atk ? PARAMS.LONG_REACH_DAMAGE_MOD : PARAMS.LONG_REACH_ATTACK_MOD;
+        }
         int mod = 100;
         MathMaster.applyModIfNotZero(mod, source.getIntParam(param));
         MathMaster.applyModIfNotZero(mod, weapon.getIntParam(param));
@@ -39,29 +40,36 @@ public class RangeRule {
         int distance = PositionMaster.getDistance(source, target);
 
         if (action.isThrow()) {
-            if (distance < 1)
+            if (distance < 1) {
                 return true;
-            if (distance > action.getIntParam(PARAMS.RANGE, true))
+            }
+            if (distance > action.getIntParam(PARAMS.RANGE, true)) {
                 return false;
+            }
             return null;
         }
-        if (action.isRanged())
-            if (distance < 2)
+        if (action.isRanged()) {
+            if (distance < 2) {
                 return true;
-        if (distance < 1)
+            }
+        }
+        if (distance < 1) {
             return true;
+        }
 
-        if (distance > weapon.getIntParam(PARAMS.RANGE, true))
+        if (distance > weapon.getIntParam(PARAMS.RANGE, true)) {
             return false;
+        }
         // if (distance> weapon.getIntParam(PARAMS.AUTO_ATTACK_RANGE))
         // return false; // ?
-        if (distance == 1)
+        if (distance == 1) {
             switch (weapon.getWeaponSize()) {
                 case SMALL:
                     return false;
                 case TINY:
                     return false;
             }
+        }
         return null;
     }
 

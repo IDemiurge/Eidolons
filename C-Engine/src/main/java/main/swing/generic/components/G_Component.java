@@ -91,10 +91,11 @@ public abstract class G_Component extends JPanel implements Refreshable
 
     @Override
     public void paint(Graphics g) {
-        if (paintManager != null)
+        if (paintManager != null) {
             paintManager.paint(g);
-        else
+        } else {
             super.paint(g);
+        }
     }
 
     // DELEGATES

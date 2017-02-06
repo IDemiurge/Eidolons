@@ -96,8 +96,9 @@ public class ListChooser extends GenericListChooser<String> {
 
     public static String chooseEnum(Class<?>... ENUM_CLASSES) {
         List<String> data = new LinkedList<>();
-        for (Class<?> ENUM_CLASS : ENUM_CLASSES)
+        for (Class<?> ENUM_CLASS : ENUM_CLASSES) {
             data.addAll(EnumMaster.getEnumConstantNames(ENUM_CLASS));
+        }
         return new ListChooser(SELECTION_MODE.MULTIPLE, data, true).getString();
 
     }
@@ -114,8 +115,9 @@ public class ListChooser extends GenericListChooser<String> {
         ListChooser.setFilterGenerated(filterGenerated);
         String typeName = chooseType(TYPE);
         ListChooser.setFilterGenerated(false);
-        if (typeName == null)
+        if (typeName == null) {
             return null;
+        }
         return DataManager.getType(typeName, TYPE);
     }
 
@@ -128,12 +130,14 @@ public class ListChooser extends GenericListChooser<String> {
         List<ObjType> typesList = new ArrayList<>();
         if (filterGenerated) {
             for (ObjType t : types) {
-                if (t.isGenerated())
+                if (t.isGenerated()) {
                     continue;
+                }
                 typesList.add(t);
             }
-        } else
+        } else {
             typesList = types;
+        }
         List<String> data = DataManager.toStringList(typesList);
 
         return new ListChooser(mode, data, TYPE).getString();
@@ -147,14 +151,17 @@ public class ListChooser extends GenericListChooser<String> {
     public static File chooseFile(String path, String filter) {
         List<String> data = FileManager
                 .getFileNames(FileManager.getFilesFromDirectory(path, false));
-        if (filter != null)
+        if (filter != null) {
             for (String str : new LinkedList<>(data)) {
-                if (!str.contains(filter))
+                if (!str.contains(filter)) {
                     data.remove(str);
+                }
             }
+        }
         String name = new ListChooser(SELECTION_MODE.SINGLE, data, false).choose();
-        if (name == null)
+        if (name == null) {
             return null;
+        }
         return FileManager.getFile(path + "\\" + name);
     }
 
@@ -211,10 +218,12 @@ public class ListChooser extends GenericListChooser<String> {
     }
 
     public static ObjType chooseType(List<ObjType> types) {
-        if (types == null)
+        if (types == null) {
             return null;
-        if (types.isEmpty())
+        }
+        if (types.isEmpty()) {
             return null;
+        }
         OBJ_TYPE TYPE = types.get(0).getOBJ_TYPE_ENUM();
         return DataManager.getType(chooseType(DataManager.toStringList(types), TYPE), TYPE);
     }
@@ -238,8 +247,9 @@ public class ListChooser extends GenericListChooser<String> {
 
     public static String chooseTypes(OBJ_TYPE TYPE, String property, String group) {
         List<String> listData = new LinkedList<>();
-        if (group != "no pool")
+        if (group != "no pool") {
             listData = DataManager.toStringList(DataManager.getTypesGroup(TYPE, group));
+        }
         List<String> secondListData = DataManager.toStringList(DataManager.toTypeList(property,
                 TYPE));
 
@@ -309,7 +319,7 @@ public class ListChooser extends GenericListChooser<String> {
             sortingDisabled = false;
             return;
         }
-        if (getSortValue() != null && TYPE != null && !ENUM)
+        if (getSortValue() != null && TYPE != null && !ENUM) {
             if (isGroupSorted()) {
                 // if (TYPE == OBJ_TYPES.UNITS) {
                 // Collections.sort(listData,
@@ -341,13 +351,15 @@ public class ListChooser extends GenericListChooser<String> {
                         e2.printStackTrace();
                     }
                 }
-            } else
+            } else {
                 listData = SortMaster.sortByValue(listData, getSortValue(), TYPE);
-        else {
+            }
+        } else {
             // Collections.sort(listData);
         }
-        if (getTYPE() instanceof OBJ_TYPES)
+        if (getTYPE() instanceof OBJ_TYPES) {
             checkSpecialSort((OBJ_TYPES) getTYPE());
+        }
     }
 
     private void checkSpecialSort(OBJ_TYPES type) {
@@ -360,8 +372,9 @@ public class ListChooser extends GenericListChooser<String> {
     }
 
     private boolean isGroupSorted() {
-        if (TYPE == OBJ_TYPES.ABILS)
+        if (TYPE == OBJ_TYPES.ABILS) {
             return false;
+        }
         return TYPE instanceof OBJ_TYPES;
         // return TYPE == OBJ_TYPES.SPELLS;
     }
@@ -371,8 +384,9 @@ public class ListChooser extends GenericListChooser<String> {
     }
 
     protected void initList() {
-        if (listData == null)
+        if (listData == null) {
             initData();
+        }
         super.initList();
         if (mods.contains(LC_MODS.TEXT_DISPLAYED)) {
             list.setCellRenderer(list);
@@ -385,10 +399,11 @@ public class ListChooser extends GenericListChooser<String> {
 
         if (!ENUM) {
             ObjType type = null;
-            if (!getListData().isEmpty())
+            if (!getListData().isEmpty()) {
                 type = DataManager.getType(getListData().get(0), TYPE);
-            else
+            } else {
                 type = DataManager.getType(getSecondListData().get(0), TYPE);
+            }
             ListInfoPanel ip = new ListInfoPanel(type);
             list.addListSelectionListener(ip);
 
@@ -444,10 +459,11 @@ public class ListChooser extends GenericListChooser<String> {
         Enumeration<String> elements = ((DefaultListModel<String>) secondList.getModel())
                 .elements();
         if (!elements.hasMoreElements()) {
-            if (getSelectedItems(list).isEmpty())
+            if (getSelectedItems(list).isEmpty()) {
                 return "";
-            else
+            } else {
                 return StringMaster.constructContainer(list.getSelectedValuesList());
+            }
         }
         List<String> values = new LinkedList<>();
         while (elements.hasMoreElements()) {

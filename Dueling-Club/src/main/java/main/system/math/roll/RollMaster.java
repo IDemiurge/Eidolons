@@ -21,8 +21,8 @@ import main.system.auxiliary.StringMaster;
 import main.system.graphics.ANIM;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
-import main.system.graphics.PhaseAnimation;
 import main.system.graphics.EffectAnimation;
+import main.system.graphics.PhaseAnimation;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -195,15 +195,17 @@ public class RollMaster {
     public static boolean rollLogged(ROLL_TYPES roll_type, String success, String fail, Ref ref,
                                      String logString, String rollSource) {
         boolean result = roll(roll_type, success, fail, ref, logString, rollSource, false);
-        if (!checkRollLogged(roll_type, result))
+        if (!checkRollLogged(roll_type, result)) {
             return result;
+        }
 
         Object[] args = {roll_type.getName(), ref.getSourceObj().getName(),
                 ref.getTargetObj().getName()};
 
-        if (roll_type.isLogToTop())
+        if (roll_type.isLogToTop()) {
             args = new Object[]{main.system.text.LogManager.WRITE_TO_TOP, roll_type.getName(),
                     ref.getSourceObj().getName(), ref.getTargetObj().getName()};
+        }
         LogEntryNode entry = ref.getGame().getLogManager().newLogEntryNode(
                 result ? ENTRY_TYPE.ROLL_LOST : ENTRY_TYPE.ROLL_WON, args);
         ref.getGame().getLogManager().log(RollMaster.logString);
@@ -218,8 +220,9 @@ public class RollMaster {
         // if (ref.getActive().getAnimation() != null)
         // entry.setLinkedAnimation(ref.getActive().getAnimation().getFilteredClone(
         // PHASE_TYPE.ROLL));
-        if (ref.getGame().isDummyMode())
+        if (ref.getGame().isDummyMode()) {
             return true;
+        }
         return result;
     }
 
@@ -241,8 +244,9 @@ public class RollMaster {
             fail = initStdFail(roll_type);
         }
         Formula failFormula = new Formula(fail);
-        if (source != null)
+        if (source != null) {
             failFormula.applyFactor(getFailFactor(roll_type));
+        }
 
         Boolean result = null;
 
@@ -272,25 +276,31 @@ public class RollMaster {
         roll.setRolledValue2(rolledValue2);
         result = rolledValue > rolledValue2;
 
-        if (target == null)
+        if (target == null) {
             target = ref.getEvent().getRef().getTargetObj();
+        }
         // TODO display roll formulas if FULL_INFO is on!
-        if (rollSource == null)
+        if (rollSource == null) {
             rollSource = rolledValue + " out of " + max1;
-        else
+        } else {
             rollSource += StringMaster.wrapInParenthesis(rolledValue + " out of " + max1);
+        }
         String rollTarget = rolledValue2 + " out of " + max2;
         logString = target.getName() + ((result) ? " fails" : " wins") + " a "
                 + roll_type.getName() + " roll with " + rollTarget + " vs " + source.getName()
                 + "'s " + rollSource;
 
-        if (logAppendix != null)
-            if (isAppendixAdded(logAppendix, result))
+        if (logAppendix != null) {
+            if (isAppendixAdded(logAppendix, result)) {
                 logString = logString + logAppendix.replace(getSuccessAppendixIdentifier(), "");
-        if (logged == null)
+            }
+        }
+        if (logged == null) {
             logged = checkRollLogged(roll_type, result);
-        if (logged)
+        }
+        if (logged) {
             ref.getGame().getLogManager().log(logString);
+        }
 
         ref.getGame().getLogManager();
         ref.getGame().getLogManager();
@@ -300,8 +310,9 @@ public class RollMaster {
                 // else ?
                 anim = ((DC_ActiveObj) ref.getActive()).getAnimation();
             }
-            if (anim != null)
+            if (anim != null) {
                 anim.addPhaseArgs(PHASE_TYPE.ROLL, roll);
+            }
         }
         roll.setResult(result);
         roll.setLogAppendix(logAppendix);
@@ -322,10 +333,12 @@ public class RollMaster {
     }
 
     private static boolean checkRollLogged(ROLL_TYPES roll_type, Boolean result) {
-        if (roll_type == ROLL_TYPES.STEALTH)
+        if (roll_type == ROLL_TYPES.STEALTH) {
             return result;
-        if (roll_type == ROLL_TYPES.DETECTION)
+        }
+        if (roll_type == ROLL_TYPES.DETECTION) {
             return result;
+        }
 
         return true;
     }
@@ -348,27 +361,32 @@ public class RollMaster {
         // .getAppendedByFactor(mod).toString();
 
         PARAMETER param = ContentManager.getPARAM(roll_type.name() + "_ROLL_SAVE_BONUS");
-        if (param == null)
+        if (param == null) {
             return "0";
+        }
         return StringMaster.getValueRef(KEYS.TARGET, param);
     }
 
     public static boolean checkRollType(ROLL_TYPES rollType, Ref ref) {
         DC_HeroObj unit = (DC_HeroObj) ref.getTargetObj();
-        if (unit == null)
+        if (unit == null) {
             return false;
+        }
         boolean result = true;
         switch (rollType) {
             case MASS:
-                if (unit.checkPassive(STANDARD_PASSIVES.IMMATERIAL))
+                if (unit.checkPassive(STANDARD_PASSIVES.IMMATERIAL)) {
                     result = false;
+                }
                 break;
             case FAITH:
             case MIND_AFFECTING:
-                if (!unit.isLiving())
+                if (!unit.isLiving()) {
                     result = false;
-                if (unit.checkPassive(STANDARD_PASSIVES.MIND_AFFECTING_IMMUNE))
+                }
+                if (unit.checkPassive(STANDARD_PASSIVES.MIND_AFFECTING_IMMUNE)) {
                     result = false;
+                }
                 break;
 
             default:
@@ -377,27 +395,31 @@ public class RollMaster {
         if (!result) {
             result = !unit.checkProperty(G_PROPS.IMMUNITIES, rollType.getName());
         }
-        if (!result)
+        if (!result) {
             ref.getGame().getLogManager().logAlert(
                     unit.getName() + " is immune to " + rollType.getName() + " !");
+        }
         return result;
     }
 
     private static String getFailFactor(ROLL_TYPES roll_type) {
         PARAMETER param = ContentManager.getPARAM(roll_type.name() + "_ROLL_BEAT_BONUS");
-        if (param == null)
+        if (param == null) {
             return "0";
+        }
         return StringMaster.getValueRef(KEYS.SOURCE, param);
     }
 
     public static Rolls generateRollsFromString(String rollString) {
         boolean or = false;
-        if (rollString.contains(StringMaster.AND_SEPARATOR))
+        if (rollString.contains(StringMaster.AND_SEPARATOR)) {
             or = true;
+        }
         Rolls rolls = new Rolls(or);
         String separator = StringMaster.AND_SEPARATOR;
-        if (!or)
+        if (!or) {
             separator = StringMaster.AND;
+        }
         for (String s : StringMaster.openContainer(rollString, separator)) {
             String varPart = VariableManager.getVarPart(s);
             if (StringMaster.isEmpty(varPart)) {
@@ -453,21 +475,26 @@ public class RollMaster {
         Ref ref = action.getRef().getCopy();
         ref.setTarget(unit.getId());
         boolean result = !dex.roll(ref);
-        if (unit.getGame().isDummyMode())
+        if (unit.getGame().isDummyMode()) {
             return true;
+        }
         return result;
     }
 
     public static int getDexterousModifier(DC_HeroObj unit, DC_ActiveObj action) {
         int mod = 25;
-        if (action.checkPassive(STANDARD_PASSIVES.DEXTEROUS))
+        if (action.checkPassive(STANDARD_PASSIVES.DEXTEROUS)) {
             mod += 25;
-        if (action.getOwnerObj().checkPassive(STANDARD_PASSIVES.DEXTEROUS))
+        }
+        if (action.getOwnerObj().checkPassive(STANDARD_PASSIVES.DEXTEROUS)) {
             mod += 25;
-        if (WatchRule.checkWatched(action.getOwnerObj(), unit))
+        }
+        if (WatchRule.checkWatched(action.getOwnerObj(), unit)) {
             mod += 25;
-        if (action.getOwnerObj().checkParam(PARAMS.VIGILANCE_MOD))
+        }
+        if (action.getOwnerObj().checkParam(PARAMS.VIGILANCE_MOD)) {
             mod += action.getOwnerObj().getIntParam(PARAMS.VIGILANCE_MOD);
+        }
 
         return mod;
 
@@ -475,12 +502,15 @@ public class RollMaster {
 
     public static int getVigilanceModifier(DC_HeroObj unit, DC_ActiveObj action) {
         int mod = 10;
-        if (unit.checkPassive(STANDARD_PASSIVES.VIGILANCE))
+        if (unit.checkPassive(STANDARD_PASSIVES.VIGILANCE)) {
             mod += 40;
-        if (WatchRule.checkWatched(unit, action.getOwnerObj()))
+        }
+        if (WatchRule.checkWatched(unit, action.getOwnerObj())) {
             mod += 50;
-        if (unit.checkParam(PARAMS.VIGILANCE_MOD))
+        }
+        if (unit.checkParam(PARAMS.VIGILANCE_MOD)) {
             mod += unit.getIntParam(PARAMS.VIGILANCE_MOD);
+        }
 
         return mod;
 
@@ -497,10 +527,12 @@ public class RollMaster {
     public static Boolean getLuck(int value, int average) {
         Boolean luck = null;
 
-        if (value > average * 3 / 2)
+        if (value > average * 3 / 2) {
             luck = true;
-        if (value < average * 2 / 3)
+        }
+        if (value < average * 2 / 3) {
             luck = false;
+        }
         return luck;
     }
 

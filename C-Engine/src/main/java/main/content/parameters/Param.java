@@ -22,10 +22,12 @@ public class Param implements PARAMETER {
     }
 
     public String getName() {
-        if (name != null)
+        if (name != null) {
             return name;
-        if (parameter == null)
+        }
+        if (parameter == null) {
             return "";
+        }
         return parameter.getName();
     }
 
@@ -107,8 +109,9 @@ public class Param implements PARAMETER {
 
     @Override
     public String name() {
-        if (name != null)
+        if (name != null) {
             return name;
+        }
         return null;
     }
 

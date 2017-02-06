@@ -20,8 +20,9 @@ public class RadialSpellAspect implements RADIAL_ITEM {
     @Override
     public List<RADIAL_ITEM> getItems(DC_HeroObj source) {
         LinkedList<RADIAL_ITEM> list = new LinkedList<>();
-        for (SPELL_GROUP g : aspect.groups)
+        for (SPELL_GROUP g : aspect.groups) {
             list.add(new RadialSpellGroup(g));
+        }
         return list;
 
     }

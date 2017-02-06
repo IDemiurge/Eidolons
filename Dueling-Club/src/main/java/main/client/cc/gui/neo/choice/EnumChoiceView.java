@@ -44,8 +44,9 @@ public class EnumChoiceView<T extends Enum<?>> extends ChoiceView<T> implements
     }
 
     public boolean isOkBlocked() {
-        if (blocked)
+        if (blocked) {
             return true;
+        }
         return super.isOkBlocked();
     }
 
@@ -56,15 +57,17 @@ public class EnumChoiceView<T extends Enum<?>> extends ChoiceView<T> implements
 
     @Override
     protected void applyChoice() {
-        if (getProperty() != null)
+        if (getProperty() != null) {
             hero.setProperty(getProperty(), getSelectedItem().toString());
+        }
         // save
 
     }
 
     protected PROPERTY getProperty() {
-        if (prop == null)
+        if (prop == null) {
             prop = ContentManager.getPROP(CLASS.getSimpleName());
+        }
         return prop;
     }
 

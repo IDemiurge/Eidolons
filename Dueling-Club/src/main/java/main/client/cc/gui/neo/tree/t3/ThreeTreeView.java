@@ -47,16 +47,19 @@ public class ThreeTreeView extends G_Panel {
 
     protected void initTrees(DC_HeroObj hero, Boolean skill_class_spell) {
         treeSize = getTreeSize();
-        if (skill_class_spell != null)
+        if (skill_class_spell != null) {
             leftTree = (!skill_class_spell) ? new T3ClassTreePanel(true, null, hero)
                     : new T3SkillTreePanel(true, null, hero);
-        if (skill_class_spell != null)
+        }
+        if (skill_class_spell != null) {
             centerTree = (!skill_class_spell) ? new T3ClassTreePanel(true, null, hero) // TODO
                     // T3HeroTreePanel
                     : new T3SkillTreePanel(null, null, hero);
-        if (skill_class_spell != null)
+        }
+        if (skill_class_spell != null) {
             rightTree = (!skill_class_spell) ? new T3ClassTreePanel(true, null, hero)
                     : new T3SkillTreePanel(false, null, hero);
+        }
 
         leftTree.refresh();
         centerTree.refresh();
@@ -153,10 +156,11 @@ public class ThreeTreeView extends G_Panel {
             infoSwitch = !infoSwitch;
         }
 
-        if (left_right_none_preferred)
+        if (left_right_none_preferred) {
             infoPanel.select(value);
-        else
+        } else {
             infoPanel2.select(value);
+        }
     }
 
     public void selected(final Entity value) {

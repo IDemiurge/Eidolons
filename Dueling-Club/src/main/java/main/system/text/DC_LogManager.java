@@ -23,8 +23,9 @@ public class DC_LogManager extends LogManager {
      * log and control its filtering?
      */
     public void logMovement(DC_Obj obj, Coordinates c) {
-        if (obj.getActivePlayerVisionStatus() == UNIT_TO_PLAYER_VISION.INVISIBLE)
+        if (obj.getActivePlayerVisionStatus() == UNIT_TO_PLAYER_VISION.INVISIBLE) {
             return;
+        }
         String name = obj.getName();
         // if (obj.getActivePlayerVisionStatus() ==
         // UNIT_TO_PLAYER_VISION.UNKNOWN)

@@ -56,17 +56,17 @@ public class DamageInversionEffect extends MicroEffect implements
         Effects effects = new Effects();
 
         if (restoreEndurance) {
-            ModifyValueEffect effect = new ModifyValueEffect(
-                    PARAMS.C_ENDURANCE, code, formula.toString());
-            if (!restoreEnduranceAboveBase)
+            ModifyValueEffect effect = new ModifyValueEffect(PARAMS.C_ENDURANCE, code, formula.toString());
+            if (!restoreEnduranceAboveBase) {
                 effect.setMaxParam(PARAMS.ENDURANCE);
+            }
             effects.add(effect);
         }
         if (restoreToughness) {
-            ModifyValueEffect effect = new ModifyValueEffect(
-                    PARAMS.C_TOUGHNESS, code, formula.toString());
-            if (!restoreToughnessAboveBase)
+            ModifyValueEffect effect = new ModifyValueEffect(PARAMS.C_TOUGHNESS, code, formula.toString());
+            if (!restoreToughnessAboveBase) {
                 effect.setMaxParam(PARAMS.TOUGHNESS);
+            }
             effects.add(effect);
         }
 

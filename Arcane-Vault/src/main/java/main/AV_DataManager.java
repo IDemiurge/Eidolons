@@ -1,50 +1,13 @@
 package main;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-
-import main.content.ContentManager;
-import main.content.OBJ_TYPES;
-import main.content.PROPS;
-import main.content.VALUE;
-import main.content.ValuePageManager;
+import main.content.*;
 import main.content.properties.G_PROPS;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 
+import java.util.*;
+
 public class AV_DataManager {
-
-	private Map<ObjType, Stack<ObjType>> stackMap = new HashMap<>();
-
-	public void addType(ObjType type) {
-		stackMap.put(type, new Stack<ObjType>());
-	}
-
-	public void save(ObjType type) {
-		Stack<ObjType> stack = stackMap.get(type);
-		if (stack == null) {
-			addType(type);
-			stack = stackMap.get(type);
-		}
-
-		stack.push(new ObjType(type));
-
-	}
-
-	public void back(ObjType type) {
-		Stack<ObjType> stack = stackMap.get(type);
-		if (stack != null) {
-			if (stack.isEmpty())
-				return;
-			ObjType prev = stack.pop();
-			type.getGame().initType(prev);
-			type.cloneMaps(prev);
-		}
-	}
 
 	static VALUE[] IGNORED_FROM_ALL_VALUES = { G_PROPS.TYPE,
 			PROPS.FACING_DIRECTION, PROPS.VISIBILITY_STATUS,
@@ -60,6 +23,7 @@ public class AV_DataManager {
 			{ G_PROPS.ASPECT, G_PROPS.DEITY, }, // WEAPONS
 			{ G_PROPS.ASPECT, G_PROPS.DEITY, G_PROPS.LORE, }, // SKILLS
 	};
+    private Map<ObjType, Stack<ObjType>> stackMap = new HashMap<>();
 
 	public static void init() {
 		Map<String, List<VALUE>> IGNORE_MAP = new HashMap<String, List<VALUE>>();
@@ -76,9 +40,10 @@ public class AV_DataManager {
 		List<VALUE> values = null;
 		try {
 			values = ValuePageManager.getValuesForAV(OBJ_TYPES.getType(key));
-			if (values == null)
-				return ContentManager.getArcaneVaultValueNames(key);
-			List<String> list = StringMaster.convertToStringList(values);
+            if (values == null) {
+                return ContentManager.getArcaneVaultValueNames(key);
+            }
+            List<String> list = StringMaster.convertToStringList(values);
 			return list;
 		} catch (Exception e) {
 			// e.printStackTrace();
@@ -86,5 +51,32 @@ public class AV_DataManager {
 		}
 
 	}
+
+    public void addType(ObjType type) {
+        stackMap.put(type, new Stack<ObjType>());
+    }
+
+    public void save(ObjType type) {
+        Stack<ObjType> stack = stackMap.get(type);
+        if (stack == null) {
+            addType(type);
+            stack = stackMap.get(type);
+        }
+
+        stack.push(new ObjType(type));
+
+    }
+
+    public void back(ObjType type) {
+        Stack<ObjType> stack = stackMap.get(type);
+        if (stack != null) {
+            if (stack.isEmpty()) {
+                return;
+            }
+            ObjType prev = stack.pop();
+            type.getGame().initType(prev);
+            type.cloneMaps(prev);
+        }
+    }
 
 }

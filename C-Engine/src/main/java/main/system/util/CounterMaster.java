@@ -8,13 +8,15 @@ import main.system.auxiliary.StringMaster;
 public class CounterMaster {
 
     public static STD_COUNTERS findCounterConst(String valueName) {
-        if (valueName == null)
+        if (valueName == null) {
             return null;
+        }
         STD_COUNTERS counter = new EnumMaster<STD_COUNTERS>().retrieveEnumConst(STD_COUNTERS.class,
                 valueName);
-        if (counter == null)
+        if (counter == null) {
             counter = new EnumMaster<STD_COUNTERS>().retrieveEnumConst(STD_COUNTERS.class,
                     valueName, true);
+        }
         return counter;
     }
 
@@ -23,21 +25,25 @@ public class CounterMaster {
     }
 
     public static String findCounter(String valueName, boolean strict) {
-        if (valueName == null)
+        if (valueName == null) {
             return null;
+        }
         if (!StringMaster.contains(valueName, StringMaster.COUNTER, true, true)) {
             valueName = valueName + StringMaster.COUNTER;
         }
         STD_COUNTERS counter = new EnumMaster<STD_COUNTERS>().retrieveEnumConst(STD_COUNTERS.class,
                 valueName);
         if (counter == null) {
-            if (strict)
+            if (strict) {
                 return null;
-        } else
+            }
+        } else {
             counter = new EnumMaster<STD_COUNTERS>().retrieveEnumConst(STD_COUNTERS.class,
                     valueName, true);
-        if (counter != null)
+        }
+        if (counter != null) {
             return counter.getName();
+        }
         valueName = StringMaster.getWellFormattedString(valueName);
         if (!valueName.contains(StringMaster.COUNTER)) {
             valueName = StringMaster.getWellFormattedString(valueName.trim())

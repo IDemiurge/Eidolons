@@ -192,10 +192,11 @@ public class NameMaster {
             while (true) {
                 String secondName = getRandomHeroName(hero, getNamesForGroup(nameGroup, null));
 
-                if (secondName != null)
+                if (secondName != null) {
                     if (!secondName.equals(name)) {
                         return name + " " + secondName;
                     }
+                }
             }
         }
         return "no name";
@@ -203,84 +204,114 @@ public class NameMaster {
 
     public static String getNamesForGroup(String nameGroup, Boolean female_male_second) {
 
-        if (nameGroup.toString().equalsIgnoreCase("Raven"))
-            if (female_male_second == null)
+        if (nameGroup.toString().equalsIgnoreCase("Raven")) {
+            if (female_male_second == null) {
                 return ravenNamesSecond;
-            else
+            } else {
                 return !female_male_second ? ravenNames : ravenNamesFemale;
-        if (nameGroup.toString().equalsIgnoreCase("Griff"))
-            if (female_male_second == null)
+            }
+        }
+        if (nameGroup.toString().equalsIgnoreCase("Griff")) {
+            if (female_male_second == null) {
                 return griffNamesSecond;
-            else
+            } else {
                 return !female_male_second ? griffNames : griffNamesFemale;
-        if (nameGroup.toString().equalsIgnoreCase("Eagle"))
-            if (female_male_second == null)
+            }
+        }
+        if (nameGroup.toString().equalsIgnoreCase("Eagle")) {
+            if (female_male_second == null) {
                 return eagleNamesSecond;
-            else
+            } else {
                 return !female_male_second ? eagleNames : eagleNamesFemale;
-        if (nameGroup.toString().equalsIgnoreCase("Easterling"))
-            if (female_male_second == null)
+            }
+        }
+        if (nameGroup.toString().equalsIgnoreCase("Easterling")) {
+            if (female_male_second == null) {
                 return easterlingNamesSecond;
-            else
+            } else {
                 return !female_male_second ? easterlingNames : easterlingNamesFemale;
-        if (nameGroup.toString().equalsIgnoreCase("King"))
-            if (female_male_second == null)
+            }
+        }
+        if (nameGroup.toString().equalsIgnoreCase("King")) {
+            if (female_male_second == null) {
                 return kingNamesSecond;
-            else
+            } else {
                 return !female_male_second ? kingNames : kingNamesFemale;
-        if (nameGroup.toString().equalsIgnoreCase("Wolf"))
-            if (female_male_second == null)
+            }
+        }
+        if (nameGroup.toString().equalsIgnoreCase("Wolf")) {
+            if (female_male_second == null) {
                 return wolfNamesSecond;
-            else
+            } else {
                 return !female_male_second ? wolfNames : wolfNamesFemale;
-        if (nameGroup.toString().equalsIgnoreCase("Dwarven"))
-            if (female_male_second == null)
+            }
+        }
+        if (nameGroup.toString().equalsIgnoreCase("Dwarven")) {
+            if (female_male_second == null) {
                 return dwarvenNamesSecond;
-            else
+            } else {
                 return !female_male_second ? dwarvenNames : dwarvenNamesFemale;
-        if (nameGroup.toString().equalsIgnoreCase("Elven"))
-            if (female_male_second == null)
+            }
+        }
+        if (nameGroup.toString().equalsIgnoreCase("Elven")) {
+            if (female_male_second == null) {
                 return elvenNamesSecond;
-            else
+            } else {
                 return !female_male_second ? elvenNames : elvenNamesFemale;
-        if (nameGroup.toString().equalsIgnoreCase("Ulduin"))
-            if (female_male_second == null)
+            }
+        }
+        if (nameGroup.toString().equalsIgnoreCase("Ulduin")) {
+            if (female_male_second == null) {
                 return ulduinNamesSecond;
-            else
+            } else {
                 return !female_male_second ? ulduinNames : ulduinNamesFemale;
-        if (nameGroup.toString().equalsIgnoreCase("Pirate"))
-            if (female_male_second == null)
+            }
+        }
+        if (nameGroup.toString().equalsIgnoreCase("Pirate")) {
+            if (female_male_second == null) {
                 return pirateNamesSecond;
-            else
+            } else {
                 return !female_male_second ? pirateNames : pirateNamesFemale;
-        if (nameGroup.toString().equalsIgnoreCase("Knight"))
-            if (female_male_second == null)
+            }
+        }
+        if (nameGroup.toString().equalsIgnoreCase("Knight")) {
+            if (female_male_second == null) {
                 return knightNamesSecond;
-            else
+            } else {
                 return !female_male_second ? knightNames : kingNamesFemale;
-        if (nameGroup.toString().equalsIgnoreCase("Demon"))
-            if (female_male_second == null)
+            }
+        }
+        if (nameGroup.toString().equalsIgnoreCase("Demon")) {
+            if (female_male_second == null) {
                 return demonNamesSecond;
-            else
+            } else {
                 return !female_male_second ? demonNames : demonNamesFemale;
+            }
+        }
         return nameGroup;
     }
 
     public static String getNamesGroups(BACKGROUND bg) {
-        if (bg.toString().contains("Raven"))
+        if (bg.toString().contains("Raven")) {
             return (ravenNameGroups);
-        if (bg.toString().contains("Griff"))
+        }
+        if (bg.toString().contains("Griff")) {
             return (griffNameGroups);
-        if (bg.toString().contains("Eagle"))
+        }
+        if (bg.toString().contains("Eagle")) {
             return (eagleNameGroups);
+        }
         // if (bg.toString().contains("Easterling"))
         // return ( easterlingNameGroups);
-        if (bg.toString().contains("King"))
+        if (bg.toString().contains("King")) {
             return (kingNameGroups);
-        if (bg.toString().contains("Wolf"))
+        }
+        if (bg.toString().contains("Wolf")) {
             return (wolfNameGroups);
-        if (bg.toString().contains("Ulduin"))
+        }
+        if (bg.toString().contains("Ulduin")) {
             return (ravenNameGroups);
+        }
         return (ravenNameGroups);
     }
 
@@ -289,20 +320,26 @@ public class NameMaster {
         BACKGROUND bg = EntityMaster.getBackground(hero);
         switch (race) {
             case HUMAN:
-                if (bg.toString().contains("Raven"))
+                if (bg.toString().contains("Raven")) {
                     return generateName(hero, ravenNameGroups);
-                if (bg.toString().contains("Griff"))
+                }
+                if (bg.toString().contains("Griff")) {
                     return generateName(hero, griffNameGroups);
-                if (bg.toString().contains("Eagle"))
+                }
+                if (bg.toString().contains("Eagle")) {
                     return generateName(hero, eagleNameGroups);
+                }
                 // if (bg.toString().contains("Easterling"))
                 // return generateName(hero, easterlingNameGroups);
-                if (bg.toString().contains("King"))
+                if (bg.toString().contains("King")) {
                     return generateName(hero, kingNameGroups);
-                if (bg.toString().contains("Wolf"))
+                }
+                if (bg.toString().contains("Wolf")) {
                     return generateName(hero, wolfNameGroups);
-                if (bg.toString().contains("Ulduin"))
+                }
+                if (bg.toString().contains("Ulduin")) {
                     return generateName(hero, ravenNameGroups);
+                }
 
                 return generateName(hero, DEFAULT_NAME_GROUP);
             // TODO
@@ -322,14 +359,18 @@ public class NameMaster {
 
     private static String getRandomHeroName(Entity hero, String namePool) {
         List<String> pool = StringMaster.openContainer(namePool);
-        if (pool.isEmpty())
+        if (pool.isEmpty()) {
             return NO_NAME;
+        }
         List<String> names = new ArrayList<>();
         for (String s : pool) {
-            for (String newname : StringMaster.openContainer(s, " "))
-                if (!newname.isEmpty())
-                    if (!usedNames.contains(newname))
+            for (String newname : StringMaster.openContainer(s, " ")) {
+                if (!newname.isEmpty()) {
+                    if (!usedNames.contains(newname)) {
                         names.add(newname);
+                    }
+                }
+            }
         }
         if (names.isEmpty()) {
             usedNames.clear();
@@ -367,16 +408,18 @@ public class NameMaster {
     }
 
     public static String appendVersionToName(String name) {
-        if (name.contains(VERSION))
+        if (name.contains(VERSION)) {
             if (StringMaster.isInteger("" + name.charAt(name.length() - 1))) {
                 name = name.substring(0, name.lastIndexOf(" "));
             }
+        }
         Loop.startLoop(1000);
         int i = 2;
         while (!Loop.loopEnded()) {
             String newName = name + VERSION + i;
-            if (!DataManager.isTypeName(newName))
+            if (!DataManager.isTypeName(newName)) {
                 break;
+            }
             i++;
         }
         return name + VERSION + i;
@@ -394,8 +437,9 @@ public class NameMaster {
             i++;
             newName = name + StringMaster.VERSION_SEPARATOR + i;
             for (ObjType t : types) {
-                if (t.getName().equals(newName))
+                if (t.getName().equals(newName)) {
                     continue loop;
+                }
             }
             break;
         }

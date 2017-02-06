@@ -35,8 +35,9 @@ public class DC_BattleFieldManager extends BattleFieldManager {
     public Coordinates pickCoordinate() {
         Integer id = game.getManager().select(game.getCells());
 
-        if (id == null)
+        if (id == null) {
             return null;
+        }
 
         return game.getObjectById(id).getCoordinates();
     }
@@ -46,10 +47,12 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         for (DC_HeroObj obj : getBattlefield().getGrid().getCellCompMap().get(c).getObjects()) {
             boolean free = false;
             // getBattlefield().getGrid().getObjCompMap().getOrCreate(c) == null;
-            if (!free)
+            if (!free) {
                 free = !VisionManager.checkVisible(obj);
-            if (!free)
+            }
+            if (!free) {
                 return false;
+            }
         }
         return true;
     }
@@ -70,10 +73,11 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         Map<Coordinates, DC_HeroObj> wallMap = new HashMap<Coordinates, DC_HeroObj>();
         for (Obj obj : game.getObjects(OBJ_TYPES.BF_OBJ)) {
             DC_HeroObj bfObj = (DC_HeroObj) obj;
-            if (bfObj.getZ() == game.getDungeonMaster().getZ())
+            if (bfObj.getZ() == game.getDungeonMaster().getZ()) {
                 if (bfObj.isWall()) {
                     wallMap.put(obj.getCoordinates(), bfObj);
                 }
+            }
         }
         resetWallMap(wallMap);
     }
@@ -83,42 +87,51 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         LinkedList<Coordinates> coordinates = new LinkedList<>(wallObjects.keySet());
         for (Coordinates coordinate : coordinates) {
             DC_HeroObj wall = wallObjects.get(coordinate);
-            if (wall.isDead())
+            if (wall.isDead()) {
                 continue;
-            if (!VisionManager.checkVisible(wall))
+            }
+            if (!VisionManager.checkVisible(wall)) {
                 continue;
+            }
             List<DIRECTION> list = new LinkedList<>();
 
             for (Coordinates c : coordinate.getAdjacent(false)) {
                 DC_HeroObj adjWall = wallObjects.get(c);
-                if (adjWall != null)
+                if (adjWall != null) {
                     if (adjWall.isWall() && !adjWall.isDead()) {
                         DIRECTION side = DirectionMaster.getRelativeDirection(coordinate, c);
                         list.add(side);
                     }
+                }
             }
             adjacent:
             for (Coordinates c : coordinate.getAdjacent(true)) {
                 DC_HeroObj adjWall = wallObjects.get(c);
-                if (adjWall != null)
+                if (adjWall != null) {
                     if (adjWall.isWall() && !adjWall.isDead()) {
                         DIRECTION side = DirectionMaster.getRelativeDirection(coordinate, c);
-                        if (!side.isDiagonal())
+                        if (!side.isDiagonal()) {
                             continue;
+                        }
                         for (DIRECTION s : list) {
-                            if (s.isDiagonal())
+                            if (s.isDiagonal()) {
                                 continue;
-                            if (side.getXDirection() == s)
+                            }
+                            if (side.getXDirection() == s) {
                                 continue adjacent;
-                            if (side.getYDirection() == s)
+                            }
+                            if (side.getYDirection() == s) {
                                 continue adjacent;
+                            }
                         }
 
                         list.add(side);
                     }
+                }
             }
-            if (!list.isEmpty())
+            if (!list.isEmpty()) {
                 wallMap.put(coordinate, list);
+            }
         }
         diagonalJoints.clear();
         loop:
@@ -132,8 +145,9 @@ public class DC_BattleFieldManager extends BattleFieldManager {
                     // }
                     // }
                     List<DIRECTION> list = diagonalJoints.get(c);
-                    if (list == null)
+                    if (list == null) {
                         list = new LinkedList<>();
+                    }
                     diagonalJoints.put(c, list);
                     // if (list.size() == 1) {
                     // DIRECTION d = list.getOrCreate(0);

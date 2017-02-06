@@ -72,11 +72,13 @@ public abstract class GameManager implements GenericGameManager {
 
     public static boolean checkInterrupted(Ref ref) {
 
-        if (ref.getObj(KEYS.ACTIVE) instanceof Interruptable)
+        if (ref.getObj(KEYS.ACTIVE) instanceof Interruptable) {
             return ((Interruptable) ref.getObj(KEYS.ACTIVE)).isInterrupted();
+        }
 
-        if (ref.getObj(KEYS.SPELL) instanceof Interruptable)
+        if (ref.getObj(KEYS.SPELL) instanceof Interruptable) {
             return ((Interruptable) ref.getObj(KEYS.SPELL)).isInterrupted();
+        }
 
         return false;
     }
@@ -244,12 +246,15 @@ public abstract class GameManager implements GenericGameManager {
             list = new LinkedList<Attachment>();
             getState().getAttachmentsMap().put(basis, list);
         }
-        if (attachment instanceof BuffObj)
+        if (attachment instanceof BuffObj) {
             basis.addBuff((BuffObj) attachment);
+        }
         getState().addAttachment(attachment);
         list.add(attachment);
         if (attachment.isTransient()) // e.g. auras
+        {
             return;
+        }
         for (Effect e : attachment.getEffects()) {
             // e.apply(basis.getRef()); // how to add retain conditions?
             // else
@@ -266,8 +271,9 @@ public abstract class GameManager implements GenericGameManager {
     protected void attachEffect(ContinuousEffect effect) {
 
         Obj source = effect.getRef().getObj(Ref.KEYS.BUFF);
-        if (source == null)
+        if (source == null) {
             source = effect.getRef().getObj(KEYS.ABILITY);
+        }
         if (source instanceof BuffObj) {
             BuffObj buff = (BuffObj) source;
 
@@ -296,8 +302,9 @@ public abstract class GameManager implements GenericGameManager {
 
     protected void attachTrigger(Trigger trigger) {
         Obj source = trigger.getRef().getObj(KEYS.BUFF);
-        if (source == null)
+        if (source == null) {
             source = trigger.getRef().getObj(KEYS.ABILITY);
+        }
         Attachment attachment = null;
         if (source instanceof Attachment) { // passive ability?
             attachment = (Attachment) source;
@@ -392,10 +399,12 @@ public abstract class GameManager implements GenericGameManager {
 
     public boolean handleEvent(Event event) {
         GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, new EventCallbackParam(event));
-        if (!game.isStarted())
+        if (!game.isStarted()) {
             return true;
-        if (event.getRef().isQuiet())
+        }
+        if (event.getRef().isQuiet()) {
             return true;
+        }
         LogMaster.log(LogMaster.EVENT_DEBUG, "*** Event being handled: " + event);
         getState().checkTriggers(event);
         getState().checkRules(event);
@@ -404,8 +413,9 @@ public abstract class GameManager implements GenericGameManager {
         }
 
         boolean result = true;
-        if (event.canBeInterrupted())
+        if (event.canBeInterrupted()) {
             result = !checkInterrupted(event.getRef());
+        }
         game.getLogManager().logEvent(event, result);
         return result;
 

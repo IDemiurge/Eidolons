@@ -33,9 +33,9 @@ import main.system.auxiliary.ColorManager;
 import main.system.auxiliary.FontMaster;
 import main.system.auxiliary.GuiManager;
 import main.system.auxiliary.ListMaster;
-import main.system.graphics.PhaseAnimation;
 import main.system.graphics.AnimationManager.MouseItem;
 import main.system.graphics.MigMaster;
+import main.system.graphics.PhaseAnimation;
 import main.system.images.ImageManager;
 import main.system.math.MathMaster;
 import main.system.text.TextItem.TEXT_TYPE;
@@ -64,8 +64,9 @@ public class ToolTipMaster {
     }
 
     public static String getObjTooltip(CellComp cellComp) {
-        if (cellComp.isMultiObj())
+        if (cellComp.isMultiObj()) {
             return getMultiObjTooltip(cellComp);
+        }
         // mapping mouse hover point ... ah! I got a mouse-map, sure... but
         // resetting tooltip ... override createTooltip? Make it dynamic...
         return getObjTooltip(cellComp.getTopObjOrCell());
@@ -77,24 +78,28 @@ public class ToolTipMaster {
 
     public static String getObjTooltip(DC_Obj target) {
         String tooltip = VisibilityMaster.getTooltip(target);
-        if (tooltip != null)
+        if (tooltip != null) {
             return tooltip;
+        }
         return target.getToolTip();
 
     }
 
     public static String getActionTargetingTooltip(DC_Obj target, DC_ActiveObj active) {
-        if (active == null)
+        if (active == null) {
             return "";
+        }
         String tooltip = "";
         ACTION_TOOL_TIP_CASE _case = null;
         AI_LOGIC spellLogic = SpellMaster.getSpellLogic(active);
-        if (spellLogic == null)
+        if (spellLogic == null) {
             if (active instanceof DC_UnitAction) {
-                if (active.getActionGroup() == ACTION_TYPE_GROUPS.ATTACK)
+                if (active.getActionGroup() == ACTION_TYPE_GROUPS.ATTACK) {
                     _case = ACTION_TOOL_TIP_CASE.DAMAGE;
+                }
             }
-        if (spellLogic != null)
+        }
+        if (spellLogic != null) {
             switch (spellLogic) {
                 case BUFF_NEGATIVE:
                 case BUFF_POSITIVE:
@@ -112,8 +117,10 @@ public class ToolTipMaster {
                 case RESTORE:
                     break;
             }
-        if (_case == null)
+        }
+        if (_case == null) {
             return "";
+        }
         switch (_case) {
             case BUFF:
                 break;
@@ -123,12 +130,14 @@ public class ToolTipMaster {
                 // ++ damage type
                 tooltip += "avrg. damage: " + damage; // MIN-MAX is really in
                 // order
-                if (DamageMaster.isLethal(damage, target))
+                if (DamageMaster.isLethal(damage, target)) {
                     tooltip += "(lethal)"; // TODO possibly lethal
-                else {
-                    if (attack)
-                        if (((DC_HeroObj) target).canCounter(active))
+                } else {
+                    if (attack) {
+                        if (((DC_HeroObj) target).canCounter(active)) {
                             tooltip += "(will retaliate)"; // TODO precalc dmg?
+                        }
+                    }
                 }
                 break;
             case SPECIAL:
@@ -247,10 +256,11 @@ public class ToolTipMaster {
 
     private int getX(Rectangle rectangle, Boolean alignment, int x, int width) {
         int x1 = x;
-        if (alignment == null)
+        if (alignment == null) {
             x1 = x + (rectangle.width - width) / 2;
-        else if (!alignment)
+        } else if (!alignment) {
             x1 = x + rectangle.width - width;
+        }
         return x1;
     }
 
@@ -268,8 +278,9 @@ public class ToolTipMaster {
         toolTipTextItems.remove(unitToolTip);
         String prefix = "";
         if (unit.getOutlineTypeForPlayer() == null) {
-            if (!unit.getOwner().isNeutral())
+            if (!unit.getOwner().isNeutral()) {
                 prefix = !unit.getOwner().isEnemy() ? "[Ally] " : "[Enemy] ";
+            }
         } else {
             // lines.add(unit.getOutlineTypeForPlayer().g); TODO
 
@@ -307,12 +318,14 @@ public class ToolTipMaster {
         String counters = "";
         for (STD_COUNTERS c : CoatingRule.COATING_COUNTERS) {
             Integer n = entity.getCounter(c);
-            if (n > 0)
+            if (n > 0) {
                 counters += c.getName() + " " + n + "; ";
+            }
         }
         String[] lines = new String[]{entity.getName(), durability,};
-        if (!counters.isEmpty())
+        if (!counters.isEmpty()) {
             lines = new String[]{entity.getName(), durability, counters,};
+        }
 
         itemTooltip = new TextItem(point, TEXT_TYPE.INFO, lines);
         adjustPointForTextItem(itemTooltip, point);
@@ -342,14 +355,16 @@ public class ToolTipMaster {
     public void initBuffTooltip(SmallItem item, boolean info_active_panel) {
         DC_BuffObj buffObj = (DC_BuffObj) item.getEntity();
         List<Object> lines = new LinkedList<>();
-        if (buffObj.isPermanent())
+        if (buffObj.isPermanent()) {
             lines.add(buffObj.getName() + ", Permanent");
-        else
+        } else {
             lines.add(buffObj.getName() + ", duration: " + buffObj.getDuration());
-        if (buffObj.getEffects() != null)
+        }
+        if (buffObj.getEffects() != null) {
             for (Effect e : buffObj.getEffects()) {
                 lines.add(e.getTooltip());
             }
+        }
         toolTipTextItems.remove(buffTooltip);
         buffTooltip = new TextItem(lines, TEXT_TYPE.BUFF_TOOLTIP);
         buffTooltip.setColor(ColorManager.getStandardColor(buffObj.isNegative()));
@@ -400,14 +415,18 @@ public class ToolTipMaster {
         Costs costs = activeObj.getCosts();
         if (activeObj.isAttack()) {
             if (activeObj.getModeAction() != null)// TODO ??
+            {
                 costs = activeObj.getModeAction().getCosts();
+            }
         }
         List<String> list = info ? costs.toStrings(getValueNameSeparatorForImageLine()) : costs
                 .getReasonList();
         List<Object> lines = replaceRequirementValueNamesWithIcons(list);
-        if (!info)
-            if (activeObj.getCustomTooltip() != null)
+        if (!info) {
+            if (activeObj.getCustomTooltip() != null) {
                 lines = new ListMaster<>().toList(activeObj.getCustomTooltip());
+            }
+        }
 
         lines.add(0,
                 // "Activate " +
@@ -415,10 +434,11 @@ public class ToolTipMaster {
 
         toolTipTextItems.remove(actionRequirementText);
         actionRequirementText = new TextItem(lines, info ? TEXT_TYPE.INFO : TEXT_TYPE.REQUIREMENT);
-        if (!activeObj.isSpell())
+        if (!activeObj.isSpell()) {
             adjustPointForTextItem(actionRequirementText, p);
-        else
+        } else {
             toolTipTextItems.add(actionRequirementText);
+        }
 
         return actionRequirementText;
     }
@@ -555,17 +575,19 @@ public class ToolTipMaster {
         toolTipTextItems.remove(textItem);
         for (TextItem text : new LinkedList<>(toolTipTextItems)) {
             Rectangle rectangle = text.getRectangle();
-            if (rect.intersects(rectangle))
+            if (rect.intersects(rectangle)) {
                 panel.repaint(rectangle);
+            }
             toolTipTextItems.remove(text);
         }
         // toolTipTextItems.clear();
         addTooltip(textItem);
         // panel.repaint();
-        if (game.isSimulation())
+        if (game.isSimulation()) {
             CharacterCreator.getPanel().refresh();
-        else
+        } else {
             game.getBattleField().refresh();
+        }
         // drawToolTips(panel);
     }
 
@@ -591,8 +613,9 @@ public class ToolTipMaster {
             }
             String valueName = array[0];
             VALUE value = ContentManager.getPARAM(valueName);
-            if (value == null)
+            if (value == null) {
                 value = ContentManager.find(valueName, true);
+            }
             if (value == null) {
                 list.add(line);
                 continue;
@@ -634,8 +657,9 @@ public class ToolTipMaster {
     public void toggleToolTip(TextItem textItem) {
         if (toolTipTextItems.contains(textItem)) {
             toolTipTextItems.remove(textItem); // ?
-        } else
+        } else {
             addTooltip(textItem);
+        }
 
     }
 

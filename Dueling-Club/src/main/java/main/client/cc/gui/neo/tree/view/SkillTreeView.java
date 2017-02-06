@@ -56,8 +56,9 @@ public class SkillTreeView extends HT_View {
 
     public SkillTreeView(Object arg, DC_HeroObj hero) {
         super(arg, hero);
-        if (CoreEngine.isArcaneVault())
+        if (CoreEngine.isArcaneVault()) {
             STD_WORKSPACES = STD_AV_WORKSPACES;
+        }
         workspace = COMBAT;
     }
 
@@ -87,8 +88,9 @@ public class SkillTreeView extends HT_View {
         // 'mine only' mode
         // for (SKILL_DISPLAY_GROUPS group : SKILL_DISPLAY_GROUPS.values())
         PARAMETER[] array = getParamsFromMasteryWorkspaceArray();
-        if (array == null)
+        if (array == null) {
             array = ValuePages.MASTERIES;
+        }
 
         List<PARAMETER> masteries = new LinkedList<PARAMETER>(Arrays.asList(array));
 
@@ -133,8 +135,9 @@ public class SkillTreeView extends HT_View {
     }
 
     private PARAMETER[] getParamsFromMasteryWorkspaceArray() {
-        if (workspace == null)
+        if (workspace == null) {
             return null;
+        }
         List<PARAMETER> list = new LinkedList<>();
         for (MASTERY m : workspace) {
             list.add(ContentManager.getPARAM(m.toString()));
@@ -157,8 +160,9 @@ public class SkillTreeView extends HT_View {
         setWorkspaceMode(workspace != null);
         if (workspace != null) {
             setWorkspaceTabs(null);
-            if (!getWorkspaces().contains(workspace))
+            if (!getWorkspaces().contains(workspace)) {
                 getWorkspaces().add(workspace);
+            }
         }
     }
 
@@ -166,8 +170,9 @@ public class SkillTreeView extends HT_View {
     public List<MASTERY[]> getWorkspaces() {
         if (workspaces == null) {
             workspaces = new LinkedList<>();
-            for (MASTERY[] stdWorkspace : STD_WORKSPACES)
+            for (MASTERY[] stdWorkspace : STD_WORKSPACES) {
                 workspaces.add(stdWorkspace);
+            }
 
         }
         return workspaces;

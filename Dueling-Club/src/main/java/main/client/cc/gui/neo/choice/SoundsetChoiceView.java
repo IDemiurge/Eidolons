@@ -56,8 +56,9 @@ public class SoundsetChoiceView extends ChoiceView<HERO_SOUNDSET> implements
     protected void initData() {
         data = new LinkedList<>();
         for (HERO_SOUNDSET s : HERO_SOUNDSET.values()) {
-            if ((s.isFemale() != HeroAnalyzer.isFemale(hero)))
+            if ((s.isFemale() != HeroAnalyzer.isFemale(hero))) {
                 continue;
+            }
             data.add(s);
         }
         data.toString();

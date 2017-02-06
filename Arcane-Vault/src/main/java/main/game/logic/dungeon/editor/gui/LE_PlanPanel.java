@@ -14,15 +14,8 @@ import main.game.logic.dungeon.Entrance;
 import main.game.logic.dungeon.building.DungeonPlan;
 import main.game.logic.dungeon.building.MapBlock;
 import main.game.logic.dungeon.building.MapZone;
-import main.game.logic.dungeon.editor.LE_AiMaster;
-import main.game.logic.dungeon.editor.LE_DataMaster;
-import main.game.logic.dungeon.editor.LE_MapMaster;
+import main.game.logic.dungeon.editor.*;
 import main.game.logic.dungeon.editor.LE_MouseMaster.CONTROL_MODE;
-import main.game.logic.dungeon.editor.LE_ObjMaster;
-import main.game.logic.dungeon.editor.Level;
-import main.game.logic.dungeon.editor.LevelEditor;
-import main.game.logic.dungeon.editor.Mission;
-import main.game.logic.dungeon.editor.ObjectiveHelper;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser;
@@ -31,60 +24,30 @@ import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class LE_PlanPanel extends G_Panel {
 
-	public enum DYNAMIC_CONTROL_GROUPS {
-		BLOCK, OBJ, MISSION, LEVEL,
-	}
-
-	public enum OBJ_CONTROLS implements CONTROLS {
-		POSITIONING, GROUP, PALETTE, AI
-		// hotkeys, tooltips
-	}
-
-	public enum LEVEL_CONTROLS implements CONTROLS {
-		ENTRANCES, META, REPLACE, LAYERS
-	}
-
-	public enum MISSION_CONTROLS implements CONTROLS {
-		TRIGGERS, OBJECTIVES, QUESTS, SUBLEVELS,
-	}
-
-	public enum BLOCK_CONTROLS implements CONTROLS {
-		SAVE, LOAD, COPY, PASTE
-	}
-
-	public enum PLAN_CONTROLS implements CONTROLS {
-		FILL, CLEAR, MOVE, COPY, MIRROR, REPLACE, ROOM, EDIT
-	}
-
 	private static final DYNAMIC_CONTROL_GROUPS defaultCp = DYNAMIC_CONTROL_GROUPS.MISSION;
-
 	DYNAMIC_CONTROL_GROUPS controlGroup;
 	MapBlock activeBlock;
 	MapZone activeZone;
-
-	private LE_TreePlanPanel treePanel;
 	Map<DungeonPlan, LE_TreePlanPanel> treePanels = new HashMap<>();
 	G_Panel dynamicControlPanel;
 	G_Panel treeHolder;
-	private LE_TreePlanPanel prevTree;
+    private LE_TreePlanPanel treePanel;
+    private LE_TreePlanPanel prevTree;
 	private DYNAMIC_CONTROL_GROUPS previontrolGroup;
 	private ControlPanel<PLAN_CONTROLS> controlPanel;
 	private ControlPanel<BLOCK_CONTROLS> blockControlPanel;
 	private ControlPanel<LEVEL_CONTROLS> levelControlPanel;
 	private ControlPanel<MISSION_CONTROLS> missionControlPanel;
 	private ControlPanel<OBJ_CONTROLS> objControlPanel;
-
 	private Integer n = 0;
-
 	private String lastUnitGroupName = "group ";
-
 	public LE_PlanPanel() {
 		super(VISUALS.PLAN_PANEL_FRAME
 		// PANEL_LARGE
@@ -121,43 +84,6 @@ public class LE_PlanPanel extends G_Panel {
 		revalidate();
 	}
 
-	public interface CONTROLS {
-
-	}
-
-	public class ControlPanel<E extends CONTROLS> extends G_Panel {
-
-		public ControlPanel(Class<E> clazz) {
-			Boolean wrap = false;
-			for (E c : clazz.getEnumConstants()) {
-				add(getControlButton(c), wrap ? "wrap" : "");
-				wrap = !wrap;
-			}
-		}
-
-		public CustomButton getControlButton(final E c) {
-			return new CustomButton(VISUALS.VALUE_BOX_TINY, c.toString()) {
-
-				public void handleAltClick() {
-					new Thread(new Runnable() {
-						public void run() {
-							handleControl(c, true);
-						}
-					}).start();
-				}
-
-				public void handleClick() {
-					new Thread(new Runnable() {
-						public void run() {
-							handleControl(c, false);
-						}
-					}).start();
-				}
-			};
-		}
-
-	}
-
 	public void refresh() {
 		previontrolGroup = controlGroup;
 		controlGroup = DYNAMIC_CONTROL_GROUPS.MISSION;
@@ -166,9 +92,10 @@ public class LE_PlanPanel extends G_Panel {
 		} else {
 			if (LevelEditor.isLevelSelected()) {
 				controlGroup = DYNAMIC_CONTROL_GROUPS.LEVEL;
-			} else if (getSelectedBlock() != null)
-				controlGroup = DYNAMIC_CONTROL_GROUPS.BLOCK;
-		}
+            } else if (getSelectedBlock() != null) {
+                controlGroup = DYNAMIC_CONTROL_GROUPS.BLOCK;
+            }
+        }
 		if (previontrolGroup != controlGroup) {
 			G_Panel panel = getControlPanel(controlGroup);
 			dynamicControlPanel.removeAll();
@@ -182,8 +109,9 @@ public class LE_PlanPanel extends G_Panel {
 			treePanel = new LE_TreePlanPanel(this, getPlan());
 			treePanels.put(getPlan(), treePanel);
 		}
-		if (prevTree != treePanel)
-			resetTree();
+        if (prevTree != treePanel) {
+            resetTree();
+        }
 
 		// resetComponents();
 
@@ -235,9 +163,10 @@ public class LE_PlanPanel extends G_Panel {
 						+ getLevel().getName());
 				if (fileName.isEmpty()) {
 					return;
-				} else
-					fileName += ".xml";
-				XML_Writer.write(b.getXml(), path, fileName);
+                } else {
+                    fileName += ".xml";
+                }
+                XML_Writer.write(b.getXml(), path, fileName);
 				break;
 		}
 
@@ -287,25 +216,30 @@ public class LE_PlanPanel extends G_Panel {
 
 	private void newGroup() {
 		Coordinates coordinate = LE_MapMaster.pickCoordinate();
-		if (coordinate == null)
-			return;
-		Coordinates coordinate2 = LE_MapMaster.pickCoordinate();
-		if (coordinate2 == null)
-			return;
-		List<ObjAtCoordinate> group = LE_ObjMaster.newUnitGroup(coordinate, Math.abs(coordinate.x
+        if (coordinate == null) {
+            return;
+        }
+        Coordinates coordinate2 = LE_MapMaster.pickCoordinate();
+        if (coordinate2 == null) {
+            return;
+        }
+        List<ObjAtCoordinate> group = LE_ObjMaster.newUnitGroup(coordinate, Math.abs(coordinate.x
 				- coordinate2.x), Math.abs(coordinate.y - coordinate2.y), false);
 
 		String name = DialogMaster.inputText("group's name?", lastUnitGroupName + " " + n);
-		if (name == null)
-			return;
-		// TODO next file version?
-		if (!StringMaster.contains(name, lastUnitGroupName))
-			n = 0;
-		lastUnitGroupName = name.replace(" " + n, ""); // n will be +1
+        if (name == null) {
+            return;
+        }
+        // TODO next file version?
+        if (!StringMaster.contains(name, lastUnitGroupName)) {
+            n = 0;
+        }
+        lastUnitGroupName = name.replace(" " + n, ""); // n will be +1
 
-		if (name.contains(lastUnitGroupName + " " + (n)))
-			n++;
-		LE_DataMaster.saveUnitGroup(name, group, "");
+        if (name.contains(lastUnitGroupName + " " + (n))) {
+            n++;
+        }
+        LE_DataMaster.saveUnitGroup(name, group, "");
 	}
 
 	public void handleMissionControl(MISSION_CONTROLS control) {
@@ -393,9 +327,10 @@ public class LE_PlanPanel extends G_Panel {
 				int i = DialogMaster.optionChoice("Choose meta info to set...",
 						"Player Spawn Coordinates", "Enemy Spawn Coordinates", "Level readiness",
 						"Auto-set Points");
-				if (i == -1)
-					return;
-				Coordinates c = null;
+                if (i == -1) {
+                    return;
+                }
+                Coordinates c = null;
 				switch (i) {
 					case 4:
 
@@ -404,39 +339,42 @@ public class LE_PlanPanel extends G_Panel {
 
 						c = LE_MapMaster.pickCoordinate();
 
-						if (c != null)
-							LevelEditor.getCurrentLevel().getDungeon().setProperty(
-									PROPS.PARTY_SPAWN_COORDINATES, c.toString(), false);
-						break;
+                        if (c != null) {
+                            LevelEditor.getCurrentLevel().getDungeon().setProperty(
+                                    PROPS.PARTY_SPAWN_COORDINATES, c.toString(), false);
+                        }
+                        break;
 					case 1:
 						c = LE_MapMaster.pickCoordinate();
 						if (c == null) {
 							if (!alt) {
-								if (DialogMaster.confirm("Remove last Encounter Point?"))
-									LevelEditor.getCurrentLevel().getDungeon()
-											.removeLastPartFromProperty(
-													PROPS.ENCOUNTER_SPAWN_POINTS);
-							} else if (DialogMaster.confirm("Clear Encounter Points?")) {
+                                if (DialogMaster.confirm("Remove last Encounter Point?")) {
+                                    LevelEditor.getCurrentLevel().getDungeon()
+                                            .removeLastPartFromProperty(
+                                                    PROPS.ENCOUNTER_SPAWN_POINTS);
+                                }
+                            } else if (DialogMaster.confirm("Clear Encounter Points?")) {
 								LevelEditor.getCurrentLevel().getDungeon().removeProperty(
 										PROPS.ENCOUNTER_SPAWN_POINTS);
 							}
 							return;
 						}
 
-						if (alt)
-							LevelEditor.getCurrentLevel().getDungeon().setProperty(
-									PROPS.ENEMY_SPAWN_COORDINATES, c.toString(), false);
-						else {
-							LevelEditor.getCurrentLevel().getDungeon().addOrRemoveProperty(
+                        if (alt) {
+                            LevelEditor.getCurrentLevel().getDungeon().setProperty(
+                                    PROPS.ENEMY_SPAWN_COORDINATES, c.toString(), false);
+                        } else {
+                            LevelEditor.getCurrentLevel().getDungeon().addOrRemoveProperty(
 									PROPS.ENCOUNTER_SPAWN_POINTS, c.toString());
 						}
 						break;
 					case 2:
 						String text = ListChooser.chooseEnum(WORKSPACE_GROUP.class);
-						if (text != null)
-							LevelEditor.getCurrentLevel().getDungeon().setProperty(
-									G_PROPS.WORKSPACE_GROUP, text, false);
-						break;
+                        if (text != null) {
+                            LevelEditor.getCurrentLevel().getDungeon().setProperty(
+                                    G_PROPS.WORKSPACE_GROUP, text, false);
+                        }
+                        break;
 				}
 
 				break;
@@ -450,29 +388,32 @@ public class LE_PlanPanel extends G_Panel {
 		boolean mode = false;
 		switch (control) {
 			case COPY:
-				if (alt)
-					while (copy()) {
+                if (alt) {
+                    while (copy()) {
 
-					}
-				else
-					copy();
-				break;
+                    }
+                } else {
+                    copy();
+                }
+                break;
 			case EDIT:
-				if (edit())
-					return;
-				else
-					LE_DataMaster.edit();
-				// change block type
+                if (edit()) {
+                    return;
+                } else {
+                    LE_DataMaster.edit();
+                }
+                // change block type
 				break;
 			case MOVE:
 				move(alt);
 
 				break;
 			case CLEAR:
-				if (LevelEditor.getMouseMaster().getMode() == CONTROL_MODE.CLEAR)
-					mode = true;
-				else
-					LevelEditor.getMouseMaster().setMode(CONTROL_MODE.CLEAR);
+                if (LevelEditor.getMouseMaster().getMode() == CONTROL_MODE.CLEAR) {
+                    mode = true;
+                } else {
+                    LevelEditor.getMouseMaster().setMode(CONTROL_MODE.CLEAR);
+                }
 
 				if (mode) {
 					while (LevelEditor.getMapMaster().clearArea()) {
@@ -484,17 +425,18 @@ public class LE_PlanPanel extends G_Panel {
 
 				break;
 			case FILL:
-				if (LevelEditor.getMouseMaster().getMode() == CONTROL_MODE.FILL)
-					mode = true;
-				else
-					LevelEditor.getMouseMaster().setMode(CONTROL_MODE.FILL);
-				if (mode)
-					while (LE_ObjMaster.fillArea(alt)) {
-						// if () break;
+                if (LevelEditor.getMouseMaster().getMode() == CONTROL_MODE.FILL) {
+                    mode = true;
+                } else {
+                    LevelEditor.getMouseMaster().setMode(CONTROL_MODE.FILL);
+                }
+                if (mode) {
+                    while (LE_ObjMaster.fillArea(alt)) {
+                        // if () break;
 
-					}
-				else {
-					LE_ObjMaster.fillArea(alt);
+                    }
+                } else {
+                    LE_ObjMaster.fillArea(alt);
 					LevelEditor.getMouseMaster().setMode(null);
 				}
 				break;
@@ -550,9 +492,10 @@ public class LE_PlanPanel extends G_Panel {
 
 	private boolean edit() {
 		MapZone zone = getSelectedZone();
-		if (zone == null)
-			return false;
-		// Boolean filler_size_position =
+        if (zone == null) {
+            return false;
+        }
+        // Boolean filler_size_position =
 		// DialogMaster.askAndWait("What to edit for ",
 		// "Filler", "Size",
 		// "Position");
@@ -560,9 +503,11 @@ public class LE_PlanPanel extends G_Panel {
 		String prevFiller = zone.getFillerType();
 		String filler = DialogMaster.inputText("Set new Filler Type for " + zone.getName() + "...",
 				prevFiller);
-		if (filler != null)
-			if (filler != prevFiller)
-				zone.setFillerType(filler);
+        if (filler != null) {
+            if (filler != prevFiller) {
+                zone.setFillerType(filler);
+            }
+        }
 
 		// zone.setX1(x1);
 		// zone.setName(name)
@@ -570,9 +515,10 @@ public class LE_PlanPanel extends G_Panel {
 		// size -> re-fill spaces!
 
 		List<Coordinates> coordinates = zone.getCoordinates();
-		for (MapBlock b : zone.getBlocks())
-			coordinates.removeAll(b.getCoordinates());
-		LevelEditor.getMapMaster().replace(prevFiller, filler, coordinates);
+        for (MapBlock b : zone.getBlocks()) {
+            coordinates.removeAll(b.getCoordinates());
+        }
+        LevelEditor.getMapMaster().replace(prevFiller, filler, coordinates);
 		return true;
 	}
 
@@ -588,26 +534,8 @@ public class LE_PlanPanel extends G_Panel {
 		return getLevel().getDungeon().getPlan();
 	}
 
-	public void setSelectedZone(MapZone mapZone) {
-		activeZone = mapZone;
-		if (LevelEditor.getCurrentLevel() != null)
-			// try {
-			// LevelEditor.getCurrentLevel().getDungeon().getMinimap().getGrid().highlightsOff();
-			// } catch (NullPointerException e) {
-			// } catch (Exception e) {
-			// e.printStackTrace();
-			// }
-			if (mapZone != null)
-				highlight(mapZone.getCoordinates());
-
-	}
-
 	public MapBlock getSelectedBlock() {
 		return activeBlock;
-	}
-
-	public MapZone getSelectedZone() {
-		return activeZone;
 	}
 
 	public void setSelectedBlock(MapBlock block) {
@@ -626,6 +554,27 @@ public class LE_PlanPanel extends G_Panel {
 			}
 		}
 	}
+
+    public MapZone getSelectedZone() {
+        return activeZone;
+    }
+
+    public void setSelectedZone(MapZone mapZone) {
+        activeZone = mapZone;
+        if (LevelEditor.getCurrentLevel() != null)
+        // try {
+        // LevelEditor.getCurrentLevel().getDungeon().getMinimap().getGrid().highlightsOff();
+        // } catch (NullPointerException e) {
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // }
+        {
+            if (mapZone != null) {
+                highlight(mapZone.getCoordinates());
+            }
+        }
+
+    }
 
 	private void highlight(List<Coordinates> list) {
 		try {
@@ -676,4 +625,66 @@ public class LE_PlanPanel extends G_Panel {
 	public void setPreviontrolGroup(DYNAMIC_CONTROL_GROUPS previontrolGroup) {
 		this.previontrolGroup = previontrolGroup;
 	}
+
+    public enum DYNAMIC_CONTROL_GROUPS {
+        BLOCK, OBJ, MISSION, LEVEL,
+    }
+
+    public enum OBJ_CONTROLS implements CONTROLS {
+        POSITIONING, GROUP, PALETTE, AI
+        // hotkeys, tooltips
+    }
+
+    public enum LEVEL_CONTROLS implements CONTROLS {
+        ENTRANCES, META, REPLACE, LAYERS
+    }
+
+    public enum MISSION_CONTROLS implements CONTROLS {
+        TRIGGERS, OBJECTIVES, QUESTS, SUBLEVELS,
+    }
+
+    public enum BLOCK_CONTROLS implements CONTROLS {
+        SAVE, LOAD, COPY, PASTE
+    }
+
+    public enum PLAN_CONTROLS implements CONTROLS {
+        FILL, CLEAR, MOVE, COPY, MIRROR, REPLACE, ROOM, EDIT
+    }
+
+    public interface CONTROLS {
+
+    }
+
+    public class ControlPanel<E extends CONTROLS> extends G_Panel {
+
+        public ControlPanel(Class<E> clazz) {
+            Boolean wrap = false;
+            for (E c : clazz.getEnumConstants()) {
+                add(getControlButton(c), wrap ? "wrap" : "");
+                wrap = !wrap;
+            }
+        }
+
+        public CustomButton getControlButton(final E c) {
+            return new CustomButton(VISUALS.VALUE_BOX_TINY, c.toString()) {
+
+                public void handleAltClick() {
+                    new Thread(new Runnable() {
+                        public void run() {
+                            handleControl(c, true);
+                        }
+                    }).start();
+                }
+
+                public void handleClick() {
+                    new Thread(new Runnable() {
+                        public void run() {
+                            handleControl(c, false);
+                        }
+                    }).start();
+                }
+            };
+        }
+
+    }
 }

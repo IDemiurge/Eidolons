@@ -121,28 +121,32 @@ public class EngagedRule implements ActionRule {
     }
 
     public boolean checkDisengagingActionCancelled(DC_ActiveObj action) {
-        if (action.getRef().getTargetObj() == action.getOwnerObj().getEngagementTarget())
+        if (action.getRef().getTargetObj() == action.getOwnerObj().getEngagementTarget()) {
             return false;
+        }
 
         DC_HeroObj unit = action.getOwnerObj();
         boolean prompt = !unit.isAiControlled()
                 && action.getActionGroup() != ACTION_TYPE_GROUPS.MODE
                 && action.getActionGroup() != ACTION_TYPE_GROUPS.ATTACK;
-        if (prompt)
+        if (prompt) {
             if (action.getRef().getTargetObj() == null || action.getRef().getTargetObj() == unit) {
                 // self-targeting or misc instants shouldn't bother
-                if (action.checkProperty(G_PROPS.SPELL_TAGS, SPELL_TAGS.INSTANT.toString()))
+                if (action.checkProperty(G_PROPS.SPELL_TAGS, SPELL_TAGS.INSTANT.toString())) {
                     prompt = false;
-                else if (action.checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.INSTANT.toString()))
+                } else if (action.checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.INSTANT.toString())) {
                     prompt = false;
+                }
 
                 // auto-disengage if moved away! (blink)
 
                 // spells TODO
             }
+        }
 
-        if (!prompt)
+        if (!prompt) {
             return false;
+        }
         return !promptDisengage(action);
     }
 
@@ -157,11 +161,12 @@ public class EngagedRule implements ActionRule {
         String units = StringMaster.getStringFromEntityList(engagers).replace(";", ", ");
         units = StringMaster.replaceLast(units, ", ", "");
         String disengageString = "";
-        if (disengager.getEngagementTarget() != null)
+        if (disengager.getEngagementTarget() != null) {
             disengageString = "disengage you from " + disengager.getEngagementTarget().getName()
                     + " and ";
-        else if (units.isEmpty())
+        } else if (units.isEmpty()) {
             return true;
+        }
 
         String string = "Activating " + action.getName() + " will " + disengageString
                 + "prompt an Attack of Opportunity from " + units + "... ";
@@ -173,8 +178,9 @@ public class EngagedRule implements ActionRule {
         if (result == null) {
             disengaged(action);
             result = true;
-        } else if (result)
+        } else if (result) {
             disengaged(action);
+        }
         return result;
 
     }
@@ -196,11 +202,14 @@ public class EngagedRule implements ActionRule {
             boolean disengage = false;
             if (engagementTarget != null) {
                 if (!engagementTarget.isDead() || engagementTarget.isUnconscious()
-                        || engagementTarget.isImmobilized())
+                        || engagementTarget.isImmobilized()) {
                     disengage = true;
-                if (!disengage)
-                    if (PositionMaster.getDistance(unit, engagementTarget) >= 1)
+                }
+                if (!disengage) {
+                    if (PositionMaster.getDistance(unit, engagementTarget) >= 1) {
                         disengage = true;
+                    }
+                }
             }
             if (disengage) {
                 unit.setEngagementTarget(null);
@@ -219,8 +228,9 @@ public class EngagedRule implements ActionRule {
         for (DC_HeroObj unit : action.getGame().getUnits()) {
             if (unit.getEngagementTarget() == disengaged) {
                 checkAoO(action, unit);
-                if (PositionMaster.getDistance(unit, disengaged) >= 1)
+                if (PositionMaster.getDistance(unit, disengaged) >= 1) {
                     unit.setEngagementTarget(null);
+                }
             }
         }
         disengaged.setEngagementTarget(null);
@@ -231,13 +241,15 @@ public class EngagedRule implements ActionRule {
         // getting pushed out is OK
         engager.setEngagementTarget(engaged);
         SoundMaster.playEffectSound(SOUNDS.THREAT, engager);
-        if (RandomWizard.random())
+        if (RandomWizard.random()) {
             SoundMaster.playEffectSound(SOUNDS.THREAT, engaged);
-        if (!isAutoEngageOff(engaged))
+        }
+        if (!isAutoEngageOff(engaged)) {
             if (engaged.getEngagementTarget() == null) // TODO check dead!
             {
                 engaged.setEngagementTarget(engager);
             }
+        }
 
     }
 

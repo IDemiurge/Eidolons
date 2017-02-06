@@ -31,13 +31,16 @@ public class DrainEffect extends ModifyValueEffect {
 
     private void applyDrain() {
         ref.setTarget(target);
-        if (buffer != null)
+        if (buffer != null) {
             formula = buffer;
+        }
         formula = this.formula.getNegative();
         setMaxParam(null);
         if (resistanceApplies) // resistance rule (mod) should take care of
             // this!
+        {
             formula.addResistance();
+        }
         super.applyThis();
 
     }

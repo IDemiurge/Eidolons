@@ -64,22 +64,27 @@ public class MiniObjComp implements Refreshable {
         // width = Math.min(width, height);
         // height = Math.min(width, height);
         size = new Dimension(getWidth(), getHeight());
-        if (comp != null)
+        if (comp != null) {
             comp.setPanelSize(size);
+        }
     }
 
     public void addObj(DC_Obj obj) {
         getObjects().add(obj);
-        if (this.obj == null)
+        if (this.obj == null) {
             this.obj = obj;
+        }
     }
 
     public DequeImpl<DC_Obj> getObjects() {
-        if (objects == null)
+        if (objects == null) {
             objects = new DequeImpl<>();
-        if (obj instanceof DC_HeroObj)
-            if (!objects.contains(obj))
+        }
+        if (obj instanceof DC_HeroObj) {
+            if (!objects.contains(obj)) {
                 objects.add(obj);
+            }
+        }
         return objects;
     }
 
@@ -124,9 +129,10 @@ public class MiniObjComp implements Refreshable {
                 image = !terrain ? ImageManager
                         .applyBorder(image, ImageManager.BORDER_BEYOND_SIGHT) : (ImageManager
                         .getHiddenCellIcon()).getImage();
-            } else
+            } else {
                 image = !terrain ? ImageManager.applyBorder(image, ImageManager.BORDER_UNKNOWN)
                         : (ImageManager.getUnknownCellIcon()).getImage();
+            }
         } else {
             // if (visibility == VISIBILITY_LEVEL.THICK_DARKNESS) {
             //
@@ -162,9 +168,10 @@ public class MiniObjComp implements Refreshable {
         boolean terrain = (obj instanceof DC_Cell);
         if (terrain) {
             // green?
-        } else if (obj.isInfoSelected())
+        } else if (obj.isInfoSelected()) {
             image = ImageManager.applyImageNew(image, ImageManager.BORDER_INFO_SELECTION_HIGHLIGHT
                     .getImage());
+        }
         // image = ImageManager.applyBorder(image,
         // ImageManager.BORDER_INFO_SELECTION_HIGHLIGHT);
 
@@ -227,8 +234,9 @@ public class MiniObjComp implements Refreshable {
             // return getCellSize();
             // }
         }; // MinimapCompMouseListener
-        if (!MiniGrid.isMouseDragOffsetModeOn())
+        if (!MiniGrid.isMouseDragOffsetModeOn()) {
             comp.addMouseListener(getMouseListener()); // revamp!
+        }
         comp.setPanelSize(size);
     }
 
@@ -270,7 +278,7 @@ public class MiniObjComp implements Refreshable {
         // obj.getGame().getManager().objClicked(obj);
         // }
 
-        if (point.x < getWidth() / 3)
+        if (point.x < getWidth() / 3) {
             if (point.y < getHeight() / 3) {
                 // CYCLE THRU OBJs
                 Obj choice = DialogMaster.objChoice("Which object?", getObjects().toArray(
@@ -281,6 +289,7 @@ public class MiniObjComp implements Refreshable {
                 }
                 return;
             }
+        }
 
         obj.getGame().getManager().objClicked(obj);
     }
@@ -304,10 +313,12 @@ public class MiniObjComp implements Refreshable {
         comp.setToolTipText(obj.getToolTip());
         comp.repaint();
         comp.revalidate();
-        if (getComp().getMouseListeners() != null)
-            if (getComp().getMouseListeners().length > 0)
+        if (getComp().getMouseListeners() != null) {
+            if (getComp().getMouseListeners().length > 0) {
                 main.system.auxiliary.LogMaster.log(1, getComp().getMouseListeners() + " on "
                         + getComp().toString());
+            }
+        }
     }
 
     private int getHeight() {

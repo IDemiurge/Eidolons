@@ -22,15 +22,17 @@ public class SimulationManager {
 
 	public static void initUnitObj(String name) {
 		ObjType type = getUnitType(name);
-		if (type == null)
-			return;
-		createUnit(type);
+        if (type == null) {
+            return;
+        }
+        createUnit(type);
 	}
 
 	public static void createUnit(ObjType type) {
-		if (unitMap.containsKey(type))
-			return;
-		DC_HeroObj unit = new DC_HeroObj(type, 0, 0, DC_Player.NEUTRAL, getGame(), new Ref(
+        if (unitMap.containsKey(type)) {
+            return;
+        }
+        DC_HeroObj unit = new DC_HeroObj(type, 0, 0, DC_Player.NEUTRAL, getGame(), new Ref(
 				getGame()));
 		getGame().getState().addObject(unit);
 		try {
@@ -55,9 +57,10 @@ public class SimulationManager {
 
 	private static ObjType getUnitType(String name) {
 		ObjType type = DataManager.getType(name, OBJ_TYPES.UNITS);
-		if (type == null)
-			type = DataManager.getType(name, OBJ_TYPES.CHARS);
-		return type;
+        if (type == null) {
+            type = DataManager.getType(name, OBJ_TYPES.CHARS);
+        }
+        return type;
 	}
 
 	public static DC_HeroObj getUnit(String typeName) {
@@ -65,16 +68,18 @@ public class SimulationManager {
 	}
 
 	public static DC_HeroObj getUnit(ObjType type) {
-		if (!unitMap.containsKey(type))
-			createUnit(type);
-		return unitMap.get(type);
+        if (!unitMap.containsKey(type)) {
+            createUnit(type);
+        }
+        return unitMap.get(type);
 	}
 
 	public static void refreshType(ObjType type) {
 		DC_HeroObj unit = unitMap.get(type);
-		if (unit == null)
-			createUnit(type);
-		try {
+        if (unit == null) {
+            createUnit(type);
+        }
+        try {
 			resetUnit(unit);
 		} catch (Exception e) {
 			e.printStackTrace();

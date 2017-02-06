@@ -38,7 +38,9 @@ public class MoveAnimation extends ActionAnim {
         super(active, params);
         if (!ListMaster.isNotEmpty(EffectMaster.getEffectsOfClass(getActive(),
                 MoveEffect.class))) // for teleports, telekinesis etc
+        {
             unit = (DC_HeroObj) getRef().getTargetObj();
+        }
         unit = (DC_HeroObj) getRef().getSourceObj();
     }
 
@@ -53,7 +55,7 @@ public class MoveAnimation extends ActionAnim {
     }
 
     protected Action getAction() {
-        if (action == null)
+        if (action == null) {
             action = new MoveToAction() {
                 @Override
                 protected void begin() {
@@ -73,6 +75,7 @@ public class MoveAnimation extends ActionAnim {
                     return super.toString() + " on " + getActor() + " to: " + this.getX() + " " + this.getY();
                 }
             };
+        }
         action.setPosition(getDestination().x, getDestination().y);
         action.setDuration(1);
         return action;

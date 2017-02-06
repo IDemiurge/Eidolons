@@ -72,23 +72,27 @@ public class WaveAssembler {
         fillApplied = 0;
         groups = 0;
         positioner = manager.getSpawnManager().getPositioner();
-        if (positioner == null)
+        if (positioner == null) {
             positioner = manager.getBattleConstructor().getPositioner();
+        }
         this.wave = wave;
         typeMap = new LinkedList<>();
         unitGroups = new LinkedList<>();
         // map?
         initPower();
         applyAddGroup();
-        if (!ListMaster.isNotEmpty(unitGroups))
+        if (!ListMaster.isNotEmpty(unitGroups)) {
             return;
-        if (adjustPower)
-            if (checkPowerAdjustmentNeeded())
+        }
+        if (adjustPower) {
+            if (checkPowerAdjustmentNeeded()) {
                 try {
                     adjustPower();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        }
         wave.setUnitMap(typeMap);
         wave.setPower(power);
         // what about string output?
@@ -100,10 +104,11 @@ public class WaveAssembler {
         percentage = percentage * difficulty.getPowerPercentage() / 100;
         // Integer base_power = wave.getBasePower(); // min/max?
         // power = base_power;
-        if (wave.getPreferredPower() != 0)
+        if (wave.getPreferredPower() != 0) {
             target_power = wave.getPreferredPower() * percentage / 100;
-        else
+        } else {
             target_power = manager.getBattleLevel() * percentage / 100;
+        }
     }
 
     private void adjustPower() {
@@ -113,8 +118,9 @@ public class WaveAssembler {
         while (checkPowerAdjustmentNeeded() && !Loop.loopEnded()) {
             GROWTH_PRIORITIES priority = growthPriorities.get(index);
             index++;
-            if (index >= growthPriorities.size())
+            if (index >= growthPriorities.size()) {
                 index = 0;
+            }
             try {
                 applyGrowth(priority);
             } catch (Exception e) {
@@ -132,8 +138,9 @@ public class WaveAssembler {
                 applyExtend();
                 break;
             case FILL:
-                if (!applyFill())
+                if (!applyFill()) {
                     break; // TODO
+                }
                 break;
             case GROUP:
                 applyAddGroup();
@@ -154,20 +161,25 @@ public class WaveAssembler {
 
     public boolean addGroup(Boolean shrunk_or_extended) {
         String presetGroupTypes = wave.getPresetGroupTypes();
-        if (shrunk_or_extended != null)
+        if (shrunk_or_extended != null) {
             presetGroupTypes = (shrunk_or_extended) ? wave.getShrunkenGroupTypes() : wave
                     .getExtendedGroupTypes();
+        }
         List<ObjType> types = DataManager.toTypeList(presetGroupTypes,
                 C_OBJ_TYPE.UNITS_CHARS);
-        if (groups >= MAX_GROUPS)
+        if (groups >= MAX_GROUPS) {
             return false;
+        }
         if (checkPowerExceeding(power + calculatePower(types, true))) {
-            if (shrunk_or_extended == null)
+            if (shrunk_or_extended == null) {
                 return addGroup(true);
-            if (!shrunk_or_extended)
+            }
+            if (!shrunk_or_extended) {
                 return addGroup(null);
-            if (groups != 0)
+            }
+            if (groups != 0) {
                 return false;
+            }
         }
 
         List<ObjAtCoordinate> group = positioner.getCoordinatesForUnitGroup(types, wave, unitLevel);
@@ -193,8 +205,9 @@ public class WaveAssembler {
         int i = 0;
         for (List<ObjAtCoordinate> group : unitGroups) {
             ObjType objType = getFillingType();
-            if (objType == null)
+            if (objType == null) {
                 return false;
+            }
             FACING_DIRECTION side = null;
             try {
                 side = positioner.getSides().get(i);
@@ -213,14 +226,16 @@ public class WaveAssembler {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (c == null)
+            if (c == null) {
                 return false;
+            }
             ObjAtCoordinate objAtCoordinate = new ObjAtCoordinate(objType, c);
             group.add(objAtCoordinate);
             typeMap.add(objAtCoordinate);
 
-            if (fillApplied >= getMaxFillNumber() || !checkPowerAdjustmentNeeded())
+            if (fillApplied >= getMaxFillNumber() || !checkPowerAdjustmentNeeded()) {
                 return false;
+            }
         }
         return true;
 
@@ -235,21 +250,24 @@ public class WaveAssembler {
         String list = wave.getProperty(PROPS.FILLER_TYPES);
         ObjType objType = null;
 
-        if (RandomWizard.isWeightMap(list) || list.contains("@"))
+        if (RandomWizard.isWeightMap(list) || list.contains("@")) {
             objType = RandomWizard.getObjTypeByWeight(list, OBJ_TYPES.UNITS);
+        }
 
         if (objType == null) {
             List<ObjType> fillingTypes = DataManager
                     .toTypeList(list, C_OBJ_TYPE.UNITS_CHARS);
-            if (fillingTypes.isEmpty())
+            if (fillingTypes.isEmpty()) {
                 return null;
+            }
             if (fillApplied >= fillingTypes.size()) {
                 fillApplied = 0;
             }
             objType = fillingTypes.get(fillApplied);
         }
-        if (objType == null)
+        if (objType == null) {
             return null;
+        }
         fillApplied++;
         return objType;
     }
@@ -261,14 +279,16 @@ public class WaveAssembler {
         groups--;
         if (wave.getBlock() != null) {
             manager.getSpawnManager().getPositioner().blockGroupRemoved(wave.getBlock(), group);
-        } else
+        } else {
             manager.getSpawnManager().getPositioner().sideRemoved();
+        }
     }
 
     private boolean applyExtend() {
         int index = groups - groupsExtended - 1;
-        if (index < 0 || index >= unitGroups.size())
+        if (index < 0 || index >= unitGroups.size()) {
             return false;
+        }
         removeGroup(index);
         addGroup(false);
         groupsExtended++;
@@ -287,8 +307,9 @@ public class WaveAssembler {
 
     private boolean checkPowerAdjustmentNeeded() {
         int power = calculatePower(DataManager.toTypeList(typeMap), false);
-        if (getTargetPower() <= power)
+        if (getTargetPower() <= power) {
             return false;
+        }
         int diff = (getTargetPower() - power) * 100 / getTargetPower();
         LogMaster.log(LOG_CHANNELS.WAVE_ASSEMBLING, wave.getName() + "' Power = " + power
                 + " vs target of " + getTargetPower() + ", diff = " + diff);
@@ -297,14 +318,16 @@ public class WaveAssembler {
     }
 
     public int getTargetPower() {
-        if (forcedPower != null)
+        if (forcedPower != null) {
             return forcedPower;
+        }
         return target_power;
     }
 
     private boolean checkPowerExceeding(int i) {
-        if (getTargetPower() >= i)
+        if (getTargetPower() >= i) {
             return false;
+        }
         int diff = (i - getTargetPower()) * 100 / i;
         LogMaster.log(LOG_CHANNELS.WAVE_ASSEMBLING, i + " vs target of " + getTargetPower()
                 + ", diff = " + diff);
@@ -333,10 +356,11 @@ public class WaveAssembler {
 
         Integer mod = wave.getIntParam(PARAMS.POWER_MOD);
         if (mod == 0) {
-            if (wave.getEncounterType() == ENCOUNTER_TYPE.BOSS)
+            if (wave.getEncounterType() == ENCOUNTER_TYPE.BOSS) {
                 mod = ENCOUNTER_DEFAULT_BOSS_POWER_MOD;
-            else
+            } else {
                 mod = 100;
+            }
         }
         power = MathMaster.applyMod(power, mod);
 
@@ -344,10 +368,11 @@ public class WaveAssembler {
         if (dungeon != null) {
             mod = dungeon.getIntParam(PARAMS.POWER_MOD);
             if (mod == 0) {
-                if (dungeon.isBoss())
+                if (dungeon.isBoss()) {
                     mod = DUNGEON_DEFAULT_BOSS_POWER_MOD;
-                else
+                } else {
                     mod = 100;
+                }
             }
             power = MathMaster.applyMod(power, mod);
         }

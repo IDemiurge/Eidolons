@@ -33,15 +33,18 @@ public class HeroTextComp extends WrappedTextComp implements MouseListener {
 
     @Override
     public void refresh() {
-        if (getMouseListeners().length == 0)
+        if (getMouseListeners().length == 0) {
             addMouseListener(this);
-        if (hero == null)
+        }
+        if (hero == null) {
             return;
+        }
         List<String> lines = new LinkedList<>();
         for (VALUE V : VALUES) {
             String value = hero.getValue(V);
-            if (V instanceof PARAMETER)
+            if (V instanceof PARAMETER) {
                 value = V.getName() + " " + value;
+            }
             lines.add(value);
         }
         setTextLines(lines);
@@ -66,8 +69,9 @@ public class HeroTextComp extends WrappedTextComp implements MouseListener {
         new Thread(new Runnable() {
             public void run() {
                 String name = CharacterCreator.getHeroName(hero);
-                if (name == null)
+                if (name == null) {
                     return;
+                }
                 hero.setName(name);
                 refresh();
             }

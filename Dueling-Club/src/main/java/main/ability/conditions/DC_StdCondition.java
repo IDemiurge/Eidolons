@@ -15,8 +15,9 @@ public class DC_StdCondition extends MicroCondition {
     @Override
     public boolean check() {
 
-        if (condition == null)
+        if (condition == null) {
             condition = c.getCondition();
+        }
         return condition.check(ref);
     }
 

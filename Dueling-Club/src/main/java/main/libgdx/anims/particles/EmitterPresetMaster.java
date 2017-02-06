@@ -30,7 +30,9 @@ public class EmitterPresetMaster {
     }
 
     public static EmitterPresetMaster getInstance() {
-        if (instance == null) instance = new EmitterPresetMaster();
+        if (instance == null) {
+            instance = new EmitterPresetMaster();
+        }
         return instance;
     }
 
@@ -56,10 +58,12 @@ public class EmitterPresetMaster {
 
     public String getValueFromGroup(String path, EMITTER_VALUE_GROUP group, String value) {
         String text = getGroupTextFromPreset(path, group);
-        if (text == null)
+        if (text == null) {
             return "";
-        if (value == null)
+        }
+        if (value == null) {
             return text;
+        }
         for (String substring : StringMaster.openContainer(text, "\n")) {
             if (substring.split(value_separator)[0].equalsIgnoreCase(value)) {
                 return substring.split(value_separator)[1];
@@ -92,9 +96,9 @@ public class EmitterPresetMaster {
 
             EMITTER_VALUE_GROUP group = new EnumMaster<EMITTER_VALUE_GROUP>().retrieveEnumConst(EMITTER_VALUE_GROUP.class, name);
             if (group != null) {
-                if (group.container)
+                if (group.container) {
                     data = offsetValue(group, StringMaster.getDouble(val), data);
-                else {
+                } else {
                     data = setValue(group, val, data);
                 }
             }
@@ -161,7 +165,9 @@ public class EmitterPresetMaster {
 
     public String getGroupTextFromPreset(String path, EMITTER_VALUE_GROUP group) {
         String data = getData(path);
-        if (data == null) return null;
+        if (data == null) {
+            return null;
+        }
         return getGroupText(data, group);
     }
 
@@ -170,10 +176,12 @@ public class EmitterPresetMaster {
         String[] parts = data.split(group.name + " - \n");
         String valuePart=null ;
 
-        if (parts.length==1)
+        if (parts.length == 1) {
             parts = data.split(group.name + " -\n");
-        if (parts.length>1)
+        }
+        if (parts.length > 1) {
             valuePart = parts[1];
+        }
         if (parts.length>2){
             valuePart = valuePart.split("\n\n")[0];
         }
@@ -187,8 +195,9 @@ public class EmitterPresetMaster {
         String data = map.get(path);
         if (data == null) {
             data = FileManager.readFile(path);
-            if (!StringMaster.isEmpty(data))
+            if (!StringMaster.isEmpty(data)) {
                 map.put(path, data);
+            }
         }
         return data;
     }

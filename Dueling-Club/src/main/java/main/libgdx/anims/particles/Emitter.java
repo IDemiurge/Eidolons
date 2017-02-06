@@ -89,17 +89,20 @@ public class Emitter extends ParticleEmitter {
              - GameScreen.getInstance().getController().getY_cam_pos()
              ;
             Float distance = (float) (Math.sqrt(xDiff * xDiff + yDiff * yDiff));
-            if (particleLogOn)
-            main.system.auxiliary.LogMaster.log(1,
-             " Mouse x: "+ pos.x
-             + " Mouse y: "+ pos.y //fuck that shit
-              + " Particle x: " + (getY()+p.getX())
-              + " Particle y: " + (getY()+p.getY())
-              + " cam x: " + (GameScreen.getInstance().getController().getX_cam_pos())
-              + " cam y: " + (GameScreen.getInstance().getController().getY_cam_pos())
-              + " distance: " + (distance)
-            );
-                if (distance > 500) return;
+                if (particleLogOn) {
+                    main.system.auxiliary.LogMaster.log(1,
+                            " Mouse x: " + pos.x
+                                    + " Mouse y: " + pos.y //fuck that shit
+                                    + " Particle x: " + (getY() + p.getX())
+                                    + " Particle y: " + (getY() + p.getY())
+                                    + " cam x: " + (GameScreen.getInstance().getController().getX_cam_pos())
+                                    + " cam y: " + (GameScreen.getInstance().getController().getY_cam_pos())
+                                    + " distance: " + (distance)
+                    );
+                }
+                if (distance > 500) {
+                    return;
+                }
             p.setAlpha(1f - distance / 500);
             p.setScale(3f-distance/250,3f-distance/250);
             }

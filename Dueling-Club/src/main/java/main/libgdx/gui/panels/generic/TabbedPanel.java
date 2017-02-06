@@ -52,7 +52,7 @@ public class TabbedPanel extends Container {
 
     public void addTabs() {
 
-        if (tabSupplier != null)
+        if (tabSupplier != null) {
             tabSupplier.get().forEach(triple -> {
                 String text = triple.getLeft();
                 String imgPath = triple.getMiddle();
@@ -60,6 +60,7 @@ public class TabbedPanel extends Container {
                 tabRow.addActor(
                         getTab(text, imgPath, content));
             });
+        }
 
     }
 

@@ -44,8 +44,9 @@ public class MainViewPanel extends G_Panel {
     }
 
     public HeroView createView(HERO_VIEWS VIEW) {
-        if (VIEW == null)
+        if (VIEW == null) {
             return null;
+        }
         switch (VIEW) {
             case CLASSES:
                 return new ClassView(hero);
@@ -78,15 +79,18 @@ public class MainViewPanel extends G_Panel {
     public void activateView(final HERO_VIEWS view) {
         treeView = null;
         if (treeViewMode) {
-            if (view == HERO_VIEWS.SKILLS)
+            if (view == HERO_VIEWS.SKILLS) {
                 treeView = (HT_View) (viewsMap.get(HERO_VIEWS.SKILL_TREE));
-            if (view == HERO_VIEWS.CLASSES)
+            }
+            if (view == HERO_VIEWS.CLASSES) {
                 treeView = (HT_View) (viewsMap.get(HERO_VIEWS.CLASS_TREE));
+            }
         }
-        if (treeView == null)
+        if (treeView == null) {
             setView(getView(view));
-        else
+        } else {
             setView(treeView);
+        }
         setCurrentView(view);
         // SwingUtilities.invokeLater(new Runnable() {
         //
@@ -101,8 +105,9 @@ public class MainViewPanel extends G_Panel {
     }
 
     public HeroView getView(HERO_VIEWS VIEW) {
-        if (viewsMap.get(VIEW) == null)
+        if (viewsMap.get(VIEW) == null) {
             initView(VIEW);
+        }
         return viewsMap.get(VIEW);
     }
 
@@ -111,8 +116,9 @@ public class MainViewPanel extends G_Panel {
     }
 
     private synchronized void setView(HeroView heroView) {
-        if (getCurrentViewComp() == heroView)
+        if (getCurrentViewComp() == heroView) {
             return;
+        }
         if (heroView == null) {
             main.system.auxiliary.LogMaster.log(1, "null hero view. Current view: "
                     + getCurrentViewComp().getClass().getSimpleName());
@@ -176,27 +182,31 @@ public class MainViewPanel extends G_Panel {
         HERO_VIEWS TREE_VIEW = skills ? HERO_VIEWS.SKILL_TREE : HERO_VIEWS.CLASS_TREE;
         treeView = (HT_View) viewsMap.get(TREE_VIEW);
 
-        if (treeArg == null)
+        if (treeArg == null) {
             treeArg = skills ? DC_ContentManager.getHighestMastery(hero) : DC_ContentManager
                     .getMainClassGroup(hero);
+        }
 
         if (treeView == null) {
-            if (skills)
+            if (skills) {
                 treeView = new SkillTreeView(treeArg, hero);
-            else
+            } else {
                 treeView = new ClassTreeView(treeArg, hero);
+            }
             viewsMap.put(TREE_VIEW, treeView);
         }
-        if (treeArg != null)
+        if (treeArg != null) {
             treeView.tabSelected(treeArg.toString());
+        }
         treeView.refresh();
         setView(treeView);
 
     }
 
     public void goToSkillTree(PARAMETER param) {
-        if (treeView == null || !treeViewMode)
+        if (treeView == null || !treeViewMode) {
             toggleTreeView();
+        }
 
         treeArg = param;
         // if (!treeViewMode)
@@ -206,8 +216,9 @@ public class MainViewPanel extends G_Panel {
         int i = 0;
         // if (treeView.isAlt)
         for (HC_Tab tab : treeView.getTabList()) {
-            if (tab.getName().equalsIgnoreCase(param.getName()))
+            if (tab.getName().equalsIgnoreCase(param.getName())) {
                 break;
+            }
             i++;
         }
         treeView.getDisplayedTabPanel().adjustPageIndexToSelectTab(treeView.getTabList().get(i));

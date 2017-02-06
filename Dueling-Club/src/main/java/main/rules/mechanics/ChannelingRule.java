@@ -39,11 +39,12 @@ public class ChannelingRule {
         boolean result = true;
         ModeEffect modeEffect = new ModeEffect(STD_MODES.CHANNELING);
         String string = STD_MODES.CHANNELING.toString();
-        if (spell instanceof DC_UnitAction)
+        if (spell instanceof DC_UnitAction) {
             if (spell.checkProperty(G_PROPS.CUSTOM_PROPS)) {
                 modeEffect.getModPropEffect().setValue(
                         spell.getProperty(G_PROPS.CUSTOM_PROPS));
             }
+        }
         Ref REF = spell.getRef().getCopy();
         REF.setTarget(spell.getOwnerObj().getId());
         // modeEffect.getAddBuffEffect().setEffect(effect)
@@ -81,8 +82,9 @@ public class ChannelingRule {
         if (StringMaster.isEmpty(prop)) {
             prop = generateSoundForSpell(active);
         }
-        if (female)
+        if (female) {
             prop = "W_" + prop;
+        }
 
         String basePath = PathFinder.getSoundPath() + PATH + prop;
         SoundMaster.playRandomSoundVariant(basePath, true); // TODO find files

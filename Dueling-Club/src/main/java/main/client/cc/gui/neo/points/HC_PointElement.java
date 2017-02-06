@@ -29,8 +29,9 @@ public class HC_PointElement extends ParamElement {
 
     @Override
     protected String getText() {
-        if (shortened)
+        if (shortened) {
             return "";
+        }
         return super.getText();
     }
 
@@ -58,8 +59,9 @@ public class HC_PointElement extends ParamElement {
 
     @Override
     protected int getDefaultFontSize() {
-        if (fontSize == null)
+        if (fontSize == null) {
             fontSize = DEFAULT_FONT_SIZE;
+        }
         return fontSize;
     }
 }

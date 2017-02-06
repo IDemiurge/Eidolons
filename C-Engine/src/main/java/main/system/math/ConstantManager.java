@@ -10,8 +10,9 @@ public class ConstantManager {
     public static Object getConst(String string) {
         CONSTANTS c = new EnumMaster<CONSTANTS>()
                 .retrieveEnumConst(CONSTANTS.class, string);
-        if (c != null)
+        if (c != null) {
             return c.getValue();
+        }
         main.system.auxiliary.LogMaster.log(5, "CONST NOT FOUND! " + string);
         return null;
     }

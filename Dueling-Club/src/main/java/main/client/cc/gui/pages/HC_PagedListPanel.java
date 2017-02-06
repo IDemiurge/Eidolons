@@ -83,15 +83,16 @@ public class HC_PagedListPanel extends G_PagePanel<ObjType> {
         super.paint(g);
         g.setFont(getFont());
         g.setColor(ColorManager.GOLDEN_WHITE);
-        if (TYPE != null)
-            if (list_type == HC_LISTS.VENDOR)
+        if (TYPE != null) {
+            if (list_type == HC_LISTS.VENDOR) {
                 if (img == null) {
                     PARAMETER mastery = ContentManager.getPARAM(listName);
-                    if (mastery == null)
+                    if (mastery == null) {
                         mastery = ContentManager.getMastery(listName);
+                    }
                     if (TYPE instanceof C_OBJ_TYPE) {
 
-                    } else
+                    } else {
                         switch ((OBJ_TYPES) TYPE) {
                             case SPELLS:
                             case SKILLS:
@@ -100,6 +101,7 @@ public class HC_PagedListPanel extends G_PagePanel<ObjType> {
                             case CLASSES:
                                 // ?
                         }
+                    }
                     int y = getTextY() - 5;
                     if (img != null) {
                         g.drawImage(img, 12, y, 28, 28, null);
@@ -107,10 +109,13 @@ public class HC_PagedListPanel extends G_PagePanel<ObjType> {
                         g.drawImage(img, (getWidth() - img.getWidth(null)) / 2, y, null);
                     }
                 }
-        if (getTextY() >= 0)
+            }
+        }
+        if (getTextY() >= 0) {
             g.drawString(listName, getTextX(), getTextY());
-        else
+        } else {
             setToolTipText(listName);
+        }
 
     }
 
@@ -164,14 +169,16 @@ public class HC_PagedListPanel extends G_PagePanel<ObjType> {
     }
 
     protected String getCompDisplacementY() {
-        if (vertical)
+        if (vertical) {
             return "0";
+        }
         return "" + getOffsetY();
     }
 
     private int getOffsetY() {
-        if (list_type == HC_LISTS.JEWELRY)
+        if (list_type == HC_LISTS.JEWELRY) {
             return V_OFFSET_Y / 2;
+        }
         int offset = 51;
         if (list_type == HC_LISTS.QUICK_ITEMS) {
 
@@ -183,8 +190,9 @@ public class HC_PagedListPanel extends G_PagePanel<ObjType> {
         if (vertical) {
             return V_OFFSET_X + "";
         }
-        if (list_type == HC_LISTS.JEWELRY)
+        if (list_type == HC_LISTS.JEWELRY) {
             return "13";
+        }
         return "15";
     }
 
@@ -199,8 +207,9 @@ public class HC_PagedListPanel extends G_PagePanel<ObjType> {
 
     @Override
     protected int getArrowOffsetY() {
-        if (vertical)
+        if (vertical) {
             return V_OFFSET_Y;
+        }
 
         return (visuals == VISUALS.H_LIST_2_8) ? visuals.getHeight() / 16
                 : -visuals.getHeight() / 40;
@@ -227,8 +236,9 @@ public class HC_PagedListPanel extends G_PagePanel<ObjType> {
         if (getEmptyIcon() != null) {
             list.setEmptyIcon(getEmptyIcon());
         }
-        if (borderChecker != null)
+        if (borderChecker != null) {
             list.setBorderChecker(borderChecker);
+        }
         // if (list_type.isRemovable()) {
         // itemListManager.setPROP2(getPROP());
         // itemListManager.addRemoveList(list);
@@ -263,10 +273,11 @@ public class HC_PagedListPanel extends G_PagePanel<ObjType> {
 
     public void setBorderChecker(BorderChecker borderChecker) {
         this.borderChecker = borderChecker;
-        if (borderChecker != null)
+        if (borderChecker != null) {
             for (HeroListPanel list : getLists()) {
                 list.setBorderChecker(borderChecker);
             }
+        }
 
     }
 

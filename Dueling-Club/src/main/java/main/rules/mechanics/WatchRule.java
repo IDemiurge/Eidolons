@@ -54,8 +54,9 @@ public class WatchRule implements ActionRule {
 
     public static void breakWatch(DC_HeroObj watcher, DC_Obj watched) {
         List<DC_Obj> list = getWatchersMap().get(watcher);
-        if (list != null)
+        if (list != null) {
             list.remove(watched);
+        }
     }
 
     private static boolean checkValidWatchPairTarget(DC_HeroObj watcher, DC_Obj watched) {
@@ -64,8 +65,9 @@ public class WatchRule implements ActionRule {
             return false;
         }
         if (PositionMaster.getDistance(watched.getCoordinates(), watcher.getCoordinates()) > watcher
-                .getIntParam(PARAMS.SIGHT_RANGE))
+                .getIntParam(PARAMS.SIGHT_RANGE)) {
             return false;
+        }
 
         return true;
     }
@@ -80,12 +82,16 @@ public class WatchRule implements ActionRule {
 
     private static boolean checkValidWatchTarget(DC_Obj watched) {
         if (!VisionManager.checkVisible(watched, true)) // TODO 'to watcher' !..
+        {
             return false;
+        }
         // clear shot?
-        if (watched.isDead())
+        if (watched.isDead()) {
             return false;
-        if (watched.getVisibilityLevel() == VISIBILITY_LEVEL.CONCEALED)
+        }
+        if (watched.getVisibilityLevel() == VISIBILITY_LEVEL.CONCEALED) {
             return false;
+        }
         return true;
         // if (target.getOwner() != unit.getOwner())
         // if (!target.checkInSightForUnit(unit))
@@ -97,14 +103,18 @@ public class WatchRule implements ActionRule {
     }
 
     private static boolean checkValidWatcher(DC_HeroObj watcher) {
-        if (watcher.getBehaviorMode() != null)
+        if (watcher.getBehaviorMode() != null) {
             return false;
-        if (watcher.checkStatus(STATUS.CHARMED))
+        }
+        if (watcher.checkStatus(STATUS.CHARMED)) {
             return false;
-        if (watcher.checkStatusPreventsActions())
+        }
+        if (watcher.checkStatusPreventsActions()) {
             return false;
-        if (!watcher.getMode().isWatchSupported())
+        }
+        if (!watcher.getMode().isWatchSupported()) {
             return false;
+        }
         // if (watcher.checkModeDisablesActions() &&
         // !watcher.getMode().equals(STD_MODES.ALERT)) {
         // return false;
@@ -114,10 +124,12 @@ public class WatchRule implements ActionRule {
 
     // FOR PROMPT/INFO ONLY!
     public static boolean checkActionMayBreakWatch(DC_ActiveObj action, DC_Obj watched) {
-        if (checkActionBreaksWatch(action, watched))
+        if (checkActionBreaksWatch(action, watched)) {
             return true;
-        if (action.getActionGroup() == ACTION_TYPE_GROUPS.TURN)
+        }
+        if (action.getActionGroup() == ACTION_TYPE_GROUPS.TURN) {
             return true; // TODO detailed check!
+        }
         if (action.getActionGroup() == ACTION_TYPE_GROUPS.MODE) {
             return true; //
         }
@@ -145,16 +157,18 @@ public class WatchRule implements ActionRule {
         // only no-state actions, others will break on checkValid()
         if (action.getActionGroup() == ACTION_TYPE_GROUPS.ATTACK) {
             // other target ; special skill may allow retain watch
-            if (action.getRef().getTargetObj() != watched)
+            if (action.getRef().getTargetObj() != watched) {
                 return true;
+            }
         }
         return false;
     }
 
     public static boolean checkWatched(DC_HeroObj watcher, DC_Obj watched) {
         List<DC_Obj> list = getWatchersMap().get(watcher);
-        if (list != null)
+        if (list != null) {
             return list.contains(watched);
+        }
         return false;
     }
 
@@ -228,12 +242,12 @@ public class WatchRule implements ActionRule {
     public void updateWatchStatus(DC_HeroObj watcher) {
         List<DC_Obj> list = getWatchersMap().get(watcher);
         boolean invalid = false;
-        if (list != null)
+        if (list != null) {
             if (!checkValidWatcher(watcher)) {
                 invalid = true;
                 removeWatcher(watcher);
-            } else
-                for (DC_Obj watched : list)
+            } else {
+                for (DC_Obj watched : list) {
                     if (!checkValidWatchTarget(watched)) {
                         breakWatch(watcher, watched);
                         break;
@@ -241,11 +255,15 @@ public class WatchRule implements ActionRule {
                         breakWatch(watcher, watched);
                         break;
                     }
+                }
+            }
+        }
 
         BuffObj buff = watcher.getBuff("Watching", false);
-        if (buff != null)
+        if (buff != null) {
             watcher.getGame().getManager().buffRemoved(buff);
-        if (!invalid)
+        }
+        if (!invalid) {
             if (watcher.getMode().equals(STD_MODES.ALERT)) {
                 Ref ref = watcher.getRef().getCopy();
                 try {
@@ -261,11 +279,14 @@ public class WatchRule implements ActionRule {
                     e.printStackTrace();
                 }
             }
+        }
 
         list = getWatchersMap().get(watcher);
         if (ListMaster.isNotEmpty(list))
             // TODO alert???
+        {
             getWatchBuffEffect(watcher, list).apply(Ref.getSelfTargetingRefCopy(watcher));
+        }
     }
 
     @Override

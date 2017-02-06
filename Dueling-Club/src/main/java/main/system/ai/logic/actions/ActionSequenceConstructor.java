@@ -51,10 +51,12 @@ public class ActionSequenceConstructor {
         Coordinates coordinates = targetAction.getSource().getCoordinates();
         for (Coordinates c : list) {
             int distance = 10 * PositionMaster.getDistance(coordinates, c);
-            if (!PositionMaster.inLine(c, coordinates))
+            if (!PositionMaster.inLine(c, coordinates)) {
                 distance += 5;
-            if (PositionMaster.inLineDiagonally(c, coordinates))
+            }
+            if (PositionMaster.inLineDiagonally(c, coordinates)) {
                 distance += 2;
+            }
             FACING_SINGLE facing = FacingMaster.getSingleFacing(targetAction.getSource()
                     .getFacing(), c, coordinates);
             switch (facing) {
@@ -73,8 +75,9 @@ public class ActionSequenceConstructor {
         // minDistance=distance;
         // }
 
-        for (int i = map.size() - pruneLimit; i > 0; i--)
+        for (int i = map.size() - pruneLimit; i > 0; i--) {
             map.remove(map.lastKey());
+        }
 
         // int factor=defaultDistancePruneFactor;
         // while (factor>1)
@@ -91,15 +94,17 @@ public class ActionSequenceConstructor {
     }
 
     private static List<Coordinates> getTargetCells(Action targetAction) {
-        if (targetAction.isDummy())
+        if (targetAction.isDummy()) {
             return new ListMaster<Coordinates>().getList(targetAction.getTarget().getCoordinates());
+        }
 
         boolean fastPickClosest = false;
-        if (TimeLimitMaster.isFastPickMeleeCell())
+        if (TimeLimitMaster.isFastPickMeleeCell()) {
             if (targetAction.getActive().isMelee()) {
                 // if (targetAction.getSource().getAiType()!=AI_TYPE.SNEAK)
                 fastPickClosest = true;
             }
+        }
 
         Coordinates originalCoordinate = unit.getCoordinates();
         List<Coordinates> list = new ArrayList<>();
@@ -109,7 +114,9 @@ public class ActionSequenceConstructor {
                 for (Coordinates c : targetAction.getTarget().getCoordinates()
                         .getAdjacentCoordinates()) {
                     if (!isValidTargetingCell(targetAction, c)) // TODO
+                    {
                         continue;
+                    }
                     double distance = PositionMaster.getExactDistance(c, originalCoordinate);
                     if (distance <= min) {
                         list = new ListMaster<Coordinates>().getList(c);
@@ -119,14 +126,16 @@ public class ActionSequenceConstructor {
             }
             if (list.isEmpty()) {
                 List<Coordinates> coordinatesList = prioritizedCells;
-                if (!ListMaster.isNotEmpty(coordinatesList))
+                if (!ListMaster.isNotEmpty(coordinatesList)) {
                     coordinatesList = unit.getGame().getBattleField().getGrid()
                             .getCoordinatesList();
+                }
                 // TODO FILTER THESE!!!
                 // prune by distance/direction from target?
                 for (Coordinates c : coordinatesList) {
-                    if (!isValidTargetingCell(targetAction, c))
+                    if (!isValidTargetingCell(targetAction, c)) {
                         continue;
+                    }
                     unit.setCoordinates(c); // TODO causes visuals!
 
                     if (canBeTargeted(targetAction)) {
@@ -139,11 +148,13 @@ public class ActionSequenceConstructor {
         } finally {
             unit.setCoordinates(originalCoordinate);
         }
-        if (list.size() > 1)
+        if (list.size() > 1) {
             list = pruneTargetCells(targetAction, list);
-        if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_BASIC)
-            main.system.auxiliary.LogMaster.log(LOG_CHANNELS.AI_DEBUG, "***" + targetAction
+        }
+        if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_BASIC) {
+            LogMaster.log(LOG_CHANNELS.AI_DEBUG, "***" + targetAction
                     + " has target cells for PB: " + list);
+        }
         return list;
     }
 
@@ -169,30 +180,34 @@ public class ActionSequenceConstructor {
         }
 
         boolean singleAction = action.isSingle();
-        if (!singleAction)
-            if (arg != null)
+        if (!singleAction) {
+            if (arg != null) {
                 singleAction =
                         // action.canBeTargeted(StringMaster.getInteger(arg
                         // .toString()));
 
                         canBeTargeted(action, true);
-            else
+            } else {
                 singleAction = (action).canBeActivated();
+            }
+        }
         // if (!singleAction)
         // if (ReasonMaster.getReasons(action).getOrCreate(0)==FILTER_REASON.FACING)
         if (singleAction) {
             ActionSequence sequence = getSequence(action, task);
-            if (sequence == null)
+            if (sequence == null) {
                 return null;
+            }
             list.add(sequence);
             return list;
         }
-        if (!task.isForced())
+        if (!task.isForced()) {
             if (task.getType() != GOAL_TYPE.ATTACK && task.getType() != GOAL_TYPE.RETREAT
                     && task.getType() != GOAL_TYPE.SEARCH && task.getType() != GOAL_TYPE.MOVE
                     && !task.getType().isBehavior()) {
                 return null;
             }
+        }
         if (task.getType() == GOAL_TYPE.SUMMONING) {
             return null;
         }
@@ -204,11 +219,13 @@ public class ActionSequenceConstructor {
                 return null;
             }
 
-            if (task.getAI().getBehaviorMode() == BEHAVIOR_MODE.BERSERK)
+            if (task.getAI().getBehaviorMode() == BEHAVIOR_MODE.BERSERK) {
                 return null;
+            }
             if ((!action.getActive().isRanged() && task.getAI().getType() == AI_TYPE.ARCHER)
-                    || (task.getAI().getType() == AI_TYPE.CASTER && !unit.getSpells().isEmpty()))
+                    || (task.getAI().getType() == AI_TYPE.CASTER && !unit.getSpells().isEmpty())) {
                 return null;
+            }
         }
 
         DC_HeroObj unit = (DC_HeroObj) action.getRef().getSourceObj();
@@ -219,8 +236,9 @@ public class ActionSequenceConstructor {
             if (!unit.getAction(DC_ActionManager.STD_ACTIONS.Turn_Anticlockwise.name())
                     .canBeActivated(action.getRef(), true)
                     && !unit.getAction(DC_ActionManager.STD_ACTIONS.Move.name()).canBeActivated(
-                    action.getRef(), true))
+                    action.getRef(), true)) {
                 return null;
+            }
         } else {
             // if (prioritizedCells == null)
             // prioritizedCells = CellPrioritizer
@@ -242,12 +260,14 @@ public class ActionSequenceConstructor {
             ActionSequence sequence = new ActionSequence(path.getActions(), task, task.getAI());
             if (action.getActive().isRanged()) {
                 List<Action> rangedAttackSequence = getAttackSequence(action, task);
-                if (rangedAttackSequence.isEmpty())
+                if (rangedAttackSequence.isEmpty()) {
                     return list;
+                }
                 // TODO
                 sequence.getActions().addAll(rangedAttackSequence);
-            } else
+            } else {
                 sequence.getActions().add(action);
+            }
             list.add(sequence);
         }
         return list;
@@ -267,13 +287,15 @@ public class ActionSequenceConstructor {
             }
 
             for (DC_QuickItemObj ammo : action.getSource().getQuickItems()) {
-                if (!ammo.isAmmo())
+                if (!ammo.isAmmo()) {
                     continue;
+                }
                 ammo.construct();
                 if (ammo.getWrappedWeapon().getWeaponGroup() == weapon_group) {
                     QuickItemAction qia = new QuickItemAction(ammo);
-                    if (qia.canBeActivated())
+                    if (qia.canBeActivated()) {
                         list.add(qia);
+                    }
 
                 }
             }
@@ -314,8 +336,9 @@ public class ActionSequenceConstructor {
             //
             // else
             paths = new PathBuilder(moveActions, action).build(targetCells);
-            if (action != null)
+            if (action != null) {
                 paths = filterPaths(action, paths);
+            }
             pathCache.put(targetCells, paths);
 
         } else {
@@ -398,29 +421,33 @@ public class ActionSequenceConstructor {
 
             if (targetAction.getActive().isRanged()) {
                 targetAction.getActive().setForcePresetTarget(true);
-                if (!targetAction.canBeActivated())
+                if (!targetAction.canBeActivated()) {
                     if (ReasonMaster.checkReasonCannotActivate(targetAction,
                             SPECIAL_REQUIREMENTS.REF_NOT_EMPTY.getText(KEYS.RANGED.toString(),
                                     KEYS.AMMO.toString()))) {
                         List<QuickItemAction> reloadActions = getRangedReloadAction(targetAction);
                         // will then split- ActionManager.splitRangedSequence()
-                        if (reloadActions.isEmpty())
+                        if (reloadActions.isEmpty()) {
                             return list;
+                        }
                         list.addAll(reloadActions);
                     }
+                }
             }
             if (targetAction.canBeTargeted(id)) {
                 list.add(targetAction);
             } else {
                 List<FILTER_REASON> reasons = ReasonMaster.getReasonsCannotTarget(targetAction);
                 reasons.remove(FILTER_REASON.VISION); // ??
-                if (reasons.size() > 1 && !targetAction.getActive().isRanged())
+                if (reasons.size() > 1 && !targetAction.getActive().isRanged()) {
                     return list;
+                }
                 if (reasons.contains(FILTER_REASON.FACING)) {
                     list.addAll(getTurnSequence(targetAction));
                     list.add(targetAction);
-                } else if (targetAction.getActive().isRanged())
+                } else if (targetAction.getActive().isRanged()) {
                     list.add(targetAction);
+                }
             }
         }
 
@@ -444,8 +471,9 @@ public class ActionSequenceConstructor {
         facing = FacingMaster.rotate(facing, clockwise);
         // action.getActive().getTargeting().getFilter()
         if (FacingMaster.getSingleFacing(FacingMaster.rotate(facing, clockwise), unit
-                .getCoordinates(), targetCoordinates) == FACING_SINGLE.IN_FRONT)
+                .getCoordinates(), targetCoordinates) == FACING_SINGLE.IN_FRONT) {
             return list;
+        }
 
         clockwise = !clockwise;
         facing = unit.getFacing();
@@ -454,8 +482,9 @@ public class ActionSequenceConstructor {
         list.add(getTurnAction(clockwise, unit));
         facing = FacingMaster.rotate(facing, clockwise);
         if (FacingMaster.getSingleFacing(FacingMaster.rotate(facing, clockwise), unit
-                .getCoordinates(), targetCoordinates) == FACING_SINGLE.IN_FRONT)
+                .getCoordinates(), targetCoordinates) == FACING_SINGLE.IN_FRONT) {
             return list;
+        }
         list.add(getTurnAction(clockwise, unit));
         facing = FacingMaster.rotate(facing, clockwise);
 
@@ -482,13 +511,16 @@ public class ActionSequenceConstructor {
                 if (action.getSource().hasBroadReach()
                         || action.getActive().checkPassive(STANDARD_PASSIVES.BROAD_REACH))
                     // front_sequence.remove(front_sequence.size() - 1);
+                {
                     side_sequence = getTurnSequence(FACING_SINGLE.TO_THE_SIDE, source, target
                             .getCoordinates());
+                }
                 List<Action> hind_sequence = null;
                 if (action.getSource().hasHindReach()
-                        || action.getActive().checkPassive(STANDARD_PASSIVES.HIND_REACH))
+                        || action.getActive().checkPassive(STANDARD_PASSIVES.HIND_REACH)) {
                     hind_sequence = getTurnSequence(FACING_SINGLE.BEHIND, source, target
                             .getCoordinates());
+                }
 
                 return new ListMaster<Action>().getSmallest(front_sequence, hind_sequence,
                         side_sequence);
@@ -502,10 +534,12 @@ public class ActionSequenceConstructor {
         // break;
         // }
         // }
-        if (condition == null)
+        if (condition == null) {
             return new ArrayList<>();
-        if (ArrayMaster.isNotEmpty(condition.getTemplate()))
+        }
+        if (ArrayMaster.isNotEmpty(condition.getTemplate())) {
             template = condition.getTemplate()[0];
+        }
         return getTurnSequence(template, source, target.getCoordinates());
 
     }
@@ -537,8 +571,9 @@ public class ActionSequenceConstructor {
             facing = FacingMaster.rotate(facing, clockwise);
             clockwise_list.add(getTurnAction(clockwise, source));
             i++;
-            if (i > 2)
+            if (i > 2) {
                 break;
+            }
         }
         clockwise = false;
         i = 0;
@@ -551,8 +586,9 @@ public class ActionSequenceConstructor {
             facing = FacingMaster.rotate(facing, clockwise);
             anticlockwise_list.add(getTurnAction(clockwise, source));
             i++;
-            if (i > 2)
+            if (i > 2) {
                 break;
+            }
         }
         return (anticlockwise_list.size() > clockwise_list.size()) ? clockwise_list
                 : anticlockwise_list;
@@ -562,8 +598,9 @@ public class ActionSequenceConstructor {
         DC_UnitAction specAction = source.getAction("Quick Turn "
                 + (clockwise ? "Clockwise" : "Anticlockwise"));
         if (specAction != null) {
-            if (specAction.canBeActivated(source.getRef(), true))
+            if (specAction.canBeActivated(source.getRef(), true)) {
                 return new Action(specAction, Ref.getSelfTargetingRefCopy(source));
+            }
         }
 
         return new Action(source.getAction(""
@@ -594,8 +631,9 @@ public class ActionSequenceConstructor {
 
             for (Cost c : a.getActive().getCosts().getCosts()) {
                 Formula formula = map.get(c.getPayment().getParamToPay());
-                if (formula != null)
+                if (formula != null) {
                     formula.append("+" + c.getPayment().getAmountFormula().toString());
+                }
 
             }
         }
@@ -608,14 +646,16 @@ public class ActionSequenceConstructor {
 
     private static boolean canBeTargeted(Action action, boolean ignoreFacing) {
         try {
-            if (action.canBeTargeted(action.getTarget().getId()))
+            if (action.canBeTargeted(action.getTarget().getId())) {
                 return true;
+            }
         } catch (Exception e) {
             return false;
         }
 
-        if (!ignoreFacing)
+        if (!ignoreFacing) {
             return false;
+        }
         List<FILTER_REASON> reasons = ReasonMaster.getReasonsCannotTarget(action);
         // boolean visionRemoved = false;
         // if (reasons.contains(FILTER_REASON.FACING)
@@ -626,14 +666,17 @@ public class ActionSequenceConstructor {
         // visionRemoved = true;
         // }
         // }
-        if (action.getActive().isMelee())
+        if (action.getActive().isMelee()) {
             if (reasons.size() == 1) // what about DISTANCE?
+            {
                 if (reasons.get(0) == (FILTER_REASON.FACING)) {
                     // if (!visionRemoved)
                     // main.system.auxiliary.LogMaster.log(1, "!!!");
                     // else
                     return true;
                 }
+            }
+        }
 
         return false;
     }

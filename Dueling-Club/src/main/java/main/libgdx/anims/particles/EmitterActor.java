@@ -105,14 +105,15 @@ public class EmitterActor extends Actor implements ParticleInterface {
 
 
         }
-        if (spriteEmitterTest)
+        if (spriteEmitterTest) {
             effect.getEmitters().forEach(e -> {
                 String randomPath = FileManager.getRandomFile(PathFinder.getSpritesPath() +
-                 "impact\\").getPath();
+                        "impact\\").getPath();
                 ((Emitter) e).offset(20, "scale");
                 e.setImagePath(randomPath);
                 e.setPremultipliedAlpha(false);
             });
+        }
     }
 
 

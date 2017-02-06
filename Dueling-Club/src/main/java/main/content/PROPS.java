@@ -453,8 +453,9 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
           int AV_ID) {
         this.name = StringMaster.getWellFormattedString(name());
         this.shortName = shortName;
-        if (StringMaster.isEmpty(shortName))
+        if (StringMaster.isEmpty(shortName)) {
             this.shortName = name;
+        }
         // this.shortName = StringMaster.capitalizeFirstLetter(name()
         // .toLowerCase());
         this.fullName = name();
@@ -619,9 +620,11 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     }
 
     public boolean isPrinciple() {
-        for (PRINCIPLES p : PRINCIPLES.values())
-            if (p.toString().equalsIgnoreCase(getName()))
+        for (PRINCIPLES p : PRINCIPLES.values()) {
+            if (p.toString().equalsIgnoreCase(getName())) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -645,8 +648,9 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     }
 
     public Map<OBJ_TYPE, Object> getDefaultValuesMap() {
-        if (defaultValuesMap == null)
+        if (defaultValuesMap == null) {
             defaultValuesMap = new HashMap<OBJ_TYPE, Object>();
+        }
         return defaultValuesMap;
     }
 

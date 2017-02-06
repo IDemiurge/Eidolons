@@ -11,19 +11,12 @@ public class LE_AiMaster {
 	static String[] edit_options = { "Pick Leader", "Edit Members", "Edit Behaviors",
 			"Edit params", "Auto-Reset Members" };
 
-	public enum EDIT_OPTION {
-
-	}
-
-	public enum AI_GROUP_PARAM {
-
-	}
-
 	public static void editAI(Obj obj) {
 		int result = DialogMaster.optionChoice("What to do?", options);
-		if (result < 0)
-			return;
-		AiGroupData group = getAiGroup(obj);
+        if (result < 0) {
+            return;
+        }
+        AiGroupData group = getAiGroup(obj);
 		switch (options[result]) {
 			case "Edit Group":
 				editGroup(group);
@@ -46,9 +39,10 @@ public class LE_AiMaster {
 
 	private static AiGroupData getAiGroup(Obj obj) {
 		for (AiGroupData group : LevelEditor.getCurrentLevel().getAiGroups()) {
-			if (group.getLeader().equals(obj))
-				return group;
-		}
+            if (group.getLeader().equals(obj)) {
+                return group;
+            }
+        }
 		return null;
 	}
 
@@ -71,9 +65,10 @@ public class LE_AiMaster {
 		AiGroupData aiGroup = new AiGroupData(obj);
 		while (true) {
 			Coordinates c = LevelEditor.getMouseMaster().pickCoordinate();
-			if (c == null)
-				break;
-			// per level!
+            if (c == null) {
+                break;
+            }
+            // per level!
 			for (Obj u : LevelEditor.getSimulation().getUnitsForCoordinates(c)) {
 
 				ObjAtCoordinate objAtCoordinate = new ObjAtCoordinate(u.getType(), c);
@@ -84,5 +79,13 @@ public class LE_AiMaster {
 		}
 		LevelEditor.getCurrentLevel().getAiGroups().add(aiGroup);
 	}
+
+    public enum EDIT_OPTION {
+
+    }
+
+    public enum AI_GROUP_PARAM {
+
+    }
 
 }

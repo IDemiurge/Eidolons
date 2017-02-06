@@ -47,18 +47,21 @@ public class AddTriggerEffect extends MultiEffect implements AttachmentEffect, C
     // continuous
     @Override
     public boolean applyThis() {
-        if (game.isSimulation())
+        if (game.isSimulation()) {
             return true;
-        if (trigger == null)
+        }
+        if (trigger == null) {
             trigger = new Trigger(event_type, conditions, ability);
+        }
         trigger.setRetainCondition(retainCondition);
         ref.getGame().getManager().addTrigger(trigger);
         return true;
     }
 
     public void remove() {
-        if (getTrigger() != null)
+        if (getTrigger() != null) {
             ref.getGame().getState().removeTrigger(getTrigger());
+        }
 
     }
     @Override
@@ -69,8 +72,9 @@ public class AddTriggerEffect extends MultiEffect implements AttachmentEffect, C
     @Override
     public void setRef(Ref ref) {
         super.setRef(ref);
-        if (ability != null)
+        if (ability != null) {
             ability.setRef(ref);
+        }
     }
 
     @Override

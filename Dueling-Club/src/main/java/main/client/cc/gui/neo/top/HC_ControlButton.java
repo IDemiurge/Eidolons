@@ -52,8 +52,9 @@ public class HC_ControlButton extends CustomButton {
 
     @Override
     protected int getDefaultX() {
-        if (command != null)
+        if (command != null) {
             return getCenteredX(command) * 10 / 16;
+        }
         return 0;
     }
 

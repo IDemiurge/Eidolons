@@ -29,15 +29,17 @@ public class QuickItemPage extends G_ListPanel<DC_QuickItemObj> implements
 
     @Override
     public void refresh() {
-        if (!initialized)
+        if (!initialized) {
             return;
+        }
         super.refresh();
     }
 
     @Override
     protected void initList() {
-        if (!initialized)
+        if (!initialized) {
             return;
+        }
         super.initList();
         getList().setCellRenderer(this);
     }
@@ -53,8 +55,9 @@ public class QuickItemPage extends G_ListPanel<DC_QuickItemObj> implements
 
     @Override
     public void setInts() {
-        if (!initialized)
+        if (!initialized) {
             return;
+        }
         sizeInfo = "h " + getCompHeight() + "!" + ", w " + getCompWidth() + "!";
         rowsVisible = minItems / wrap;
         layoutOrientation = JList.HORIZONTAL_WRAP;

@@ -49,10 +49,11 @@ public class NetGame {
     }
 
     public void init() {
-        if (host)
+        if (host) {
             hostInit();
-        else
+        } else {
             clientInit();
+        }
     }
 
     public String getTestingOptions() {
@@ -62,19 +63,22 @@ public class NetGame {
     private void hostInit() {
         hostGame = new HostedGame(HOST_DATA, false, true);
         gameHost = new DC_GameHost(new GameConnector(hostGame));
-        if (testMode)
+        if (testMode) {
             WaitMaster.receiveInput(WAIT_OPERATIONS.TEST_MODE, READY);
+        }
         gameHost.setTestGame(this);
     }
 
     private void clientInit() {
-        if (testMode)
+        if (testMode) {
             WaitMaster.waitForInput(WAIT_OPERATIONS.TEST_MODE);
+        }
         if (!localhost) {
 
             String lastIp = FileManager.readFile(lastIpPath);
-            if (lastIp.isEmpty())
+            if (lastIp.isEmpty()) {
                 lastIp = DEFAULT_HOST_IP;
+            }
             String ip = DialogMaster.inputText("ip?", lastIp);
             HOST_DATA = "HOST_NAME:" + User.HOST + ";HOST_IP:" + ip + ";TITLE:Game1;";
             FileManager.write(ip, lastIpPath);
@@ -87,10 +91,12 @@ public class NetGame {
     }
 
     public HostClientConnection getConnection() {
-        if (gameHost != null)
+        if (gameHost != null) {
             return gameHost.getGameConnector().getConnection();
-        if (gameClient != null)
+        }
+        if (gameClient != null) {
             return gameClient.getGameConnector().getConnection();
+        }
         return null;
     }
 
@@ -118,8 +124,9 @@ public class NetGame {
     }
 
     public HostedGame getHostedGame() {
-        if (hostGame == null)
+        if (hostGame == null) {
             return clientGame;
+        }
         return hostGame;
     }
 

@@ -26,8 +26,9 @@ public class BehaviorModeEffect extends ModifyPropertyEffect {
     public boolean applyThis() {
         if (ref.getTargetObj() instanceof DC_HeroObj) {
             DC_HeroObj unit = (DC_HeroObj) ref.getTargetObj();
-            if (unit.isUnconscious())
+            if (unit.isUnconscious()) {
                 return false;
+            }
         }
         return super.applyThis();
 

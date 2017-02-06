@@ -142,19 +142,21 @@ public class ArenaManager {
             saveFacing();
         }
         initializeBattle();
-        if (!game.isTestMode())
-            if (game.isSkirmishOrScenario())
+        if (!game.isTestMode()) {
+            if (game.isSkirmishOrScenario()) {
                 try {
                     spawnManager.spawnDungeonCreeps(game.getDungeon());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            else if (isEncountersConstructed())
+            } else if (isEncountersConstructed()) {
                 try {
                     constructor.construct();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        }
 
     }
 
@@ -167,8 +169,9 @@ public class ArenaManager {
     }
 
     private boolean isEncountersConstructed() {
-        if (game.isTestMode())
+        if (game.isTestMode()) {
             return false;
+        }
         return game.getGameMode() == GAME_MODES.ARENA;
     }
 
@@ -178,8 +181,9 @@ public class ArenaManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (map != null)
+        if (map != null) {
             return;
+        }
         this.map = new DC_Map(game, getMapOptions());
         map.setTheme(false);
         map.setBackground(getBackground());
@@ -188,8 +192,9 @@ public class ArenaManager {
 
     public String getMapName() {
         Dungeon dungeon = game.getDungeonMaster().getDungeon();
-        if (dungeon != null)
+        if (dungeon != null) {
             return dungeon.getName();
+        }
         return StringMaster.cropFormat(StringMaster.getLastPathSegment(arenaOptions
                 .getValue(ARENA_GAME_OPTIONS.BACKGROUND)));
     }
@@ -268,13 +273,14 @@ public class ArenaManager {
 
     public ObjType getPlayerHeroName() {
         if (playerHero == null) {
-            if (game.getParty() != null)
+            if (game.getParty() != null) {
                 playerHero = game.getParty().getLeader().getType();
-            else
+            } else {
                 try {
                     playerHero = new ObjType(game.getData().getEnemyParty().get(0));
                 } catch (Exception e) {
                 }
+            }
         }
         return playerHero;
     }
@@ -303,8 +309,9 @@ public class ArenaManager {
         battleLevel = 0;
 
         List<? extends Obj> units = new LinkedList<>(game.getPlayer(true).getControlledUnits());
-        if (units.isEmpty() && game.getParty() != null)
+        if (units.isEmpty() && game.getParty() != null) {
             units = new LinkedList<>(game.getParty().getMembers());
+        }
         for (Obj unit : units) {
             battleLevel += unit.getIntParam(PARAMS.POWER);
         }

@@ -80,17 +80,18 @@ public class UserList extends GenericList<User> {
 
     @Override
     public void refresh() {
-        if (custom)
+        if (custom) {
             if (host) {
 
                 return;
             }
-        if (connector != null)
+        }
+        if (connector != null) {
             connector.send(code);
-        else {
+        } else {
             ServerConnector.send(code);
         }
-        if (ServerConnector.launchInputWaitingThread(code))
+        if (ServerConnector.launchInputWaitingThread(code)) {
             SwingUtilities.invokeLater(new Runnable() {
 
                 @Override
@@ -100,6 +101,7 @@ public class UserList extends GenericList<User> {
                 }
 
             });
+        }
     }
 
     public NetCode getCode() {

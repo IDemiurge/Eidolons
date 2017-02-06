@@ -28,8 +28,9 @@ public class ExtraAttacksRule {
             message += " by an Attack of Opportunity";
         }
         // action.getGame().getLogManager().newLogEntryNode(type, args)
-        if (!result)
+        if (!result) {
             result = (checkSourceInterrupted(action));
+        }
         if (result) {
             action.getGame().getLogManager().log(LOG.GAME_INFO, message, enclosingEntryType);
         }
@@ -37,23 +38,28 @@ public class ExtraAttacksRule {
     }
 
     private static boolean checkSourceInterrupted(DC_ActiveObj action) {
-        if (action.getOwnerObj().isDead())
+        if (action.getOwnerObj().isDead()) {
             return true;
-        if (action.getOwnerObj().isDisabled())
+        }
+        if (action.getOwnerObj().isDisabled()) {
             return true;
+        }
         return false;
     }
 
     public static List<DC_ActiveObj> getCounterAttacks(DC_ActiveObj triggeringAction,
                                                        DC_HeroObj unit) {
         List<DC_ActiveObj> list = new LinkedList<>();
-        if (unit.getActionMap().get(ACTION_TYPE.STANDARD_ATTACK) == null)
+        if (unit.getActionMap().get(ACTION_TYPE.STANDARD_ATTACK) == null) {
             return list;
+        }
         for (DC_UnitAction a : unit.getActionMap().get(ACTION_TYPE.STANDARD_ATTACK)) {
             // offhand?
             if (a.isMelee())
                 // auto-atk range?
+            {
                 list.add(a);
+            }
         }
         return list;
     }

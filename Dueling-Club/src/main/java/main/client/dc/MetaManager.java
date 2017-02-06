@@ -19,9 +19,9 @@ public class MetaManager {
 
     public static void init() {
         File file = new File(getInitFilePath() + FILE_NAME);
-        if (!file.isFile())
+        if (!file.isFile()) {
             data = new ObjType(ENTITY_NAME);
-        else {
+        } else {
             String text = FileManager.readFile(file);
             setData(TypeBuilder.buildType(XML_Converter.getDoc(text)
                     .getFirstChild(), new ObjType(ENTITY_NAME)));

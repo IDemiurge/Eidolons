@@ -40,13 +40,15 @@ public class ValueIconPanel extends G_Panel {
 
     public ValueIconPanel(Entity hero) {
         setEntity(hero);
-        if (isInitialized())
+        if (isInitialized()) {
             createBoxes();
+        }
     }
 
     public ValueIconPanel(DC_Game game) {
-        if (isInitialized())
+        if (isInitialized()) {
             createBoxes();
+        }
     }
 
     @Override

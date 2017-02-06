@@ -53,9 +53,10 @@ public class VersionMaster {
 		Version version = new Version(stamp);
 		String[] array = stamp.split(periodSeparator);
 		for (String s : array) {
-			if (!s.contains(StringMaster.getWellFormattedString(period.name())))
-				continue;
-			Integer v = StringMaster.getInteger(StringMaster.getSegment(1, s.trim(), " ")) + diff;
+            if (!s.contains(StringMaster.getWellFormattedString(period.name()))) {
+                continue;
+            }
+            Integer v = StringMaster.getInteger(StringMaster.getSegment(1, s.trim(), " ")) + diff;
 			v = getPeriodInteger(v, period, stamp);
 			// oct 1 -> sept 31
 			while (v < 0) {
@@ -99,8 +100,9 @@ public class VersionMaster {
 	private static Integer getPeriodInteger(Integer v, VERSION_PERIOD period, String version) {
 		switch (period) {
 			case DAY:
-				if (v < 28)
-					return v;
+                if (v < 28) {
+                    return v;
+                }
 //				if (getMonth(version).getDays() < v)
 //					return Integer.MIN_VALUE;
 
@@ -188,9 +190,10 @@ public class VersionMaster {
 
 	public static void saveVersionFolder(boolean dirtyOnly) {
 		for (AT_OBJ_TYPE T : AT_OBJ_TYPE.values()) {
-			if (!T.isVersioned())
-				continue;
-			XML_Writer.setCustomPath(getPath() + getVersion());
+            if (!T.isVersioned()) {
+                continue;
+            }
+            XML_Writer.setCustomPath(getPath() + getVersion());
 			XML_Writer.setDirtyOnly(dirtyOnly);
 			try {
 				XML_Writer.writeXML_ForTypeGroup(T);
@@ -227,13 +230,15 @@ public class VersionMaster {
 
 	private static ObjType getOlderVersion(ArcaneEntity e, VERSION_PERIOD period, int n) {
 		// previous meaning when, exactly?
-		if (isTestMode())
-			setVersionToCurrent(e.getType());
-		String version = getVersion(e);
+        if (isTestMode()) {
+            setVersionToCurrent(e.getType());
+        }
+        String version = getVersion(e);
 		String prevVersion = getAlteredVersionStamp(version, period, -n);
-		if (!map.containsKey(prevVersion))
-			readVersionFile(e.getOBJ_TYPE_ENUM(), prevVersion);
-		Map<String, ObjType> idMap = map.get(prevVersion);
+        if (!map.containsKey(prevVersion)) {
+            readVersionFile(e.getOBJ_TYPE_ENUM(), prevVersion);
+        }
+        Map<String, ObjType> idMap = map.get(prevVersion);
 
 		ObjType type = idMap.get(e.getUniqueId());
 		return type;
@@ -276,8 +281,9 @@ public class VersionMaster {
             // version_session;
             int i = 0;
             for (String sub : version.split(periodSeparator)) {
-                if (i != 0)
+                if (i != 0) {
                     map.put(VERSION_PERIOD.values()[i], StringMaster.getInteger(sub));
+                }
                 i++;
             }
         }

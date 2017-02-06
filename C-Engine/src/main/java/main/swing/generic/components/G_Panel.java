@@ -50,8 +50,9 @@ public class G_Panel extends G_Component implements VisualComponent {
 
     public G_Panel(Component... comps) {
         this();
-        for (Component c : comps)
+        for (Component c : comps) {
             add(c);
+        }
     }
 
     public G_Panel(boolean special) {
@@ -68,10 +69,12 @@ public class G_Panel extends G_Component implements VisualComponent {
         string += "; x=" + getX();
         string += ", y=" + getY();
         // TODO original contraints? x/y?
-        if (getParent() != null)
+        if (getParent() != null) {
             string += "; parent=" + getParent().getClass().getSimpleName();
-        if (getComponentCount() != 0)
+        }
+        if (getComponentCount() != 0) {
             string += "; comp count=" + getComponentCount();
+        }
 
         return string;
     }
@@ -79,12 +82,13 @@ public class G_Panel extends G_Component implements VisualComponent {
     @Override
     public void add(Component comp, Object constraints) {
         if (constraints instanceof String) {
-            if (getKeyManager() == null)
+            if (getKeyManager() == null) {
                 setKeyManager(GuiManager.getKeyListener());
+            }
             if (getKeyManager() != null) {
-                if (comp instanceof G_Panel)
+                if (comp instanceof G_Panel) {
                     ((G_Panel) comp).setKeyManager(getKeyManager()); // doesn't
-                else {
+                } else {
                     comp.addKeyListener(getKeyManager());
                     if (comp instanceof Container) {
                         Container container = (Container) comp;
@@ -96,8 +100,9 @@ public class G_Panel extends G_Component implements VisualComponent {
                 }
             }
             // work...
-            if (((String) constraints).contains(MigMaster.PROCESS_CHAR))
+            if (((String) constraints).contains(MigMaster.PROCESS_CHAR)) {
                 constraints = MigMaster.processConstraints(this, comp, (String) constraints);
+            }
         }
         super.add(comp, constraints);
         if (SwingMaster.DEBUG_ON) {
@@ -113,13 +118,15 @@ public class G_Panel extends G_Component implements VisualComponent {
     @Override
     @Transient
     public Dimension getMaximumSize() {
-        if (panelSize != null)
+        if (panelSize != null) {
             return panelSize;
+        }
         main.system.auxiliary.LogMaster.log(isSizeLogged() ? 1 : 0, "getMaximumSize no panel size!"
                 + toString());
         if (!isAutoSizingOn() || !isValid() || super.getMaximumSize().width <= 0
-                || super.getMaximumSize().height <= 0)
+                || super.getMaximumSize().height <= 0) {
             return super.getMaximumSize();
+        }
         panelSize = super.getMaximumSize();
         return panelSize;
     }
@@ -136,17 +143,19 @@ public class G_Panel extends G_Component implements VisualComponent {
     @Transient
     public Dimension getMinimumSize() {
         // return getPreferredSize();
-        if (panelSize != null)
+        if (panelSize != null) {
             return panelSize;
+        }
         main.system.auxiliary.LogMaster.log(isSizeLogged() ? 1 : 0, "getMinimumSize no panel size!"
                 + toString());
         if (!isAutoSizingOn() || !isValid() || super.getMinimumSize().width <= 0
-                || super.getMinimumSize().height <= 0)
+                || super.getMinimumSize().height <= 0) {
             try {
                 return super.getMinimumSize();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
         panelSize = super.getMinimumSize();
         return panelSize;
     }
@@ -154,12 +163,13 @@ public class G_Panel extends G_Component implements VisualComponent {
     @Override
     @Transient
     public Dimension getPreferredSize() {
-        if (panelSize != null)
+        if (panelSize != null) {
             return panelSize;
+        }
         main.system.auxiliary.LogMaster.log(isSizeLogged() ? 1 : 0,
                 "getPreferredSize no panel size!" + toString());
         if (!isAutoSizingOn() || !isValid() || super.getPreferredSize().width <= 0
-                || super.getPreferredSize().height <= 0)
+                || super.getPreferredSize().height <= 0) {
             try {
                 return super.getPreferredSize();
             } catch (Exception e) {
@@ -171,6 +181,7 @@ public class G_Panel extends G_Component implements VisualComponent {
                 }
 
             }
+        }
 
         panelSize = super.getPreferredSize();
         return panelSize;
@@ -178,13 +189,15 @@ public class G_Panel extends G_Component implements VisualComponent {
 
     @Override
     public Dimension getSize() {
-        if (panelSize != null)
+        if (panelSize != null) {
             return panelSize;
+        }
         main.system.auxiliary.LogMaster.log(isSizeLogged() ? 1 : 0, "getSize no panel size!"
                 + toString());
         if (!isAutoSizingOn() || !isValid() || super.getSize().width <= 0
-                || super.getSize().height <= 0)
+                || super.getSize().height <= 0) {
             return super.getSize();
+        }
         panelSize = super.getSize();
         return panelSize;
     }
@@ -206,8 +219,9 @@ public class G_Panel extends G_Component implements VisualComponent {
     @Override
     public void paint(Graphics g) {
         if (background != null) {
-            if (background.getParent() == this)
+            if (background.getParent() == this) {
                 setComponentZOrder(background, getComponentCount() - 1);
+            }
         }
 
         if (isBackgroundVisuals()) {
@@ -221,8 +235,9 @@ public class G_Panel extends G_Component implements VisualComponent {
             e.printStackTrace();
 
         }
-        if (!isBackgroundVisuals())
+        if (!isBackgroundVisuals()) {
             paintVisuals(g);
+        }
 
         int i = getBorderWidth();
         while (i > 0) {
@@ -247,8 +262,9 @@ public class G_Panel extends G_Component implements VisualComponent {
     }
 
     public int getBorderWidth() {
-        if (borderWidth != 0)
+        if (borderWidth != 0) {
             return borderWidth;
+        }
         return 0;
     }
 
@@ -258,24 +274,26 @@ public class G_Panel extends G_Component implements VisualComponent {
 
     protected void paintVisuals(Graphics g) {
         if (getGenericVisuals() != null) {
-            if (panelSize == null)
+            if (panelSize == null) {
                 panelSize = visuals.getSize();
+            }
 
             // if (visualsImage == null) {
-            if (getGenericVisuals().getImage() != null)
+            if (getGenericVisuals().getImage() != null) {
                 visualsImage = ImageManager.getSizedVersion(getGenericVisuals().getImage(),
                         panelSize);
-            else {
+            } else {
                 visualsImage = ImageManager.getSizedIcon(getGenericVisuals().getImgPath(),
                         panelSize).getImage();
             }
 
             // }
-            if (visualsImage.getWidth(null) < 1)
+            if (visualsImage.getWidth(null) < 1) {
                 g.drawImage(getGenericVisuals().getImage(), 0, 0, panelSize.width,
                         panelSize.height, null);
-            else
+            } else {
                 g.drawImage(visualsImage, 0, 0, null);
+            }
         }
     }
 
@@ -290,16 +308,18 @@ public class G_Panel extends G_Component implements VisualComponent {
 
     @Override
     public VISUALS getVisuals() {
-        if (visuals instanceof VISUALS)
+        if (visuals instanceof VISUALS) {
             return (VISUALS) visuals;
+        }
         return null;
     }
 
     @Override
     public void setVisuals(ComponentVisuals visuals) {
         this.visuals = visuals;
-        if (visuals == null)
+        if (visuals == null) {
             return;
+        }
         panelSize = visuals.getSize();
 
         if (isBackGroundLabelRequired()) {
@@ -312,9 +332,11 @@ public class G_Panel extends G_Component implements VisualComponent {
 
     @Override
     public synchronized void addMouseListener(MouseListener l) {
-        if (isBackgroundMouseListener())
-            if (background != null)
+        if (isBackgroundMouseListener()) {
+            if (background != null) {
                 background.addMouseListener(l);
+            }
+        }
         super.addMouseListener(l);
     }
 
@@ -324,9 +346,11 @@ public class G_Panel extends G_Component implements VisualComponent {
 
     @Override
     public synchronized void removeMouseListener(MouseListener l) {
-        if (isBackgroundMouseListener())
-            if (background != null)
+        if (isBackgroundMouseListener()) {
+            if (background != null) {
                 background.removeMouseListener(l);
+            }
+        }
         super.removeMouseListener(l);
     }
 
@@ -347,20 +371,23 @@ public class G_Panel extends G_Component implements VisualComponent {
     }
 
     public int getPanelWidth() {
-        if (getPanelSize() == null)
+        if (getPanelSize() == null) {
             initSize();
+        }
         return getPanelSize().width;
     }
 
     public int getPanelHeight() {
-        if (getPanelSize() == null)
+        if (getPanelSize() == null) {
             initSize();
+        }
         return getPanelSize().height;
     }
 
     public Dimension getPanelSize() {
-        if (panelSize == null)
+        if (panelSize == null) {
             initSize();
+        }
         return panelSize;
     }
 
@@ -530,21 +557,24 @@ public class G_Panel extends G_Component implements VisualComponent {
         public Image getImage() {
             if (img == null) {
                 img = ImageManager.getImage(s);
-                if (img == null)
+                if (img == null) {
                     img = ImageManager.getNewBufferedImage(0, 0);
+                }
             }
             return img;
         }
 
         public JLabel getLabel() {
-            if (img == null)
+            if (img == null) {
                 img = ImageManager.getIcon(s).getImage();
+            }
             return new JLabel(new ImageIcon(img));
         }
 
         public Dimension getSize() {
-            if (size == null)
+            if (size == null) {
                 size = new Dimension(getWidth(), getHeight());
+            }
             return size;
         }
     }

@@ -51,17 +51,20 @@ public class CoordinatesMaster {
 
     public static List<Coordinates> getEdgeCoordinatesFromSquare(FACING_DIRECTION direction,
                                                                  List<Coordinates> coordinates) {
-        if (coordinates.isEmpty())
+        if (coordinates.isEmpty()) {
             return coordinates;
+        }
         coordinates = getSortedByProximityToEdge(direction.getDirection(), coordinates, null);
         int edge = coordinates.get(0).getXorY(!direction.isVertical());
         List<Coordinates> list = new LinkedList<>();
         for (Coordinates c : coordinates) {
             if (direction.isCloserToZero()) {
-                if (c.getXorY(!direction.isVertical()) > edge)
+                if (c.getXorY(!direction.isVertical()) > edge) {
                     break;
-            } else if (c.getXorY(!direction.isVertical()) < edge)
+                }
+            } else if (c.getXorY(!direction.isVertical()) < edge) {
                 break;
+            }
             list.add(c);
         }
         return list;
@@ -73,60 +76,75 @@ public class CoordinatesMaster {
         boolean x = true;
         if (x_more != null) {
             x = false;
-            if (o1.getX() != o2.getX())
+            if (o1.getX() != o2.getX()) {
                 if (x_more) {
                     result = o1.getX() < o2.getX() ? 1 : -1;
-                } else
+                } else {
                     result = o1.getX() > o2.getX() ? 1 : -1;
+                }
+            }
         }
         if (y_more != null) {
-            if (o1.getY() != o2.getY())
+            if (o1.getY() != o2.getY()) {
                 if (y_more) {
                     result = o1.getY() < o2.getY() ? 1 : -1;
-                } else
+                } else {
                     result = o1.getY() > o2.getY() ? 1 : -1;
+                }
+            }
         }
         float midX = new Float(x1 + x2) / 2;
         float midY = new Float(y1 + y2) / 2;
-        if (result == 0)
+        if (result == 0) {
             if (prefLessMoreMiddle == null) {
                 if (o1.getY() == o2.getY()) {
-                    if (Math.abs(o1.getX() - midX) > Math.abs(o2.getX() - midX))
+                    if (Math.abs(o1.getX() - midX) > Math.abs(o2.getX() - midX)) {
                         result = 1;
-                    if (Math.abs(o1.getX() - midX) < Math.abs(o2.getX() - midX))
+                    }
+                    if (Math.abs(o1.getX() - midX) < Math.abs(o2.getX() - midX)) {
                         result = -1;
+                    }
                     // need min/max to prioritize middle!
                 } else if (o1.getX() == o2.getX()) {
-                    if (Math.abs(o1.getY() - midY) > Math.abs(o2.getY() - midY))
+                    if (Math.abs(o1.getY() - midY) > Math.abs(o2.getY() - midY)) {
                         result = 1;
-                    if (Math.abs(o1.getY() - midY) < Math.abs(o2.getY() - midY))
+                    }
+                    if (Math.abs(o1.getY() - midY) < Math.abs(o2.getY() - midY)) {
                         result = -1;
+                    }
                     // need min/max to prioritize middle!
                 }
             } else {
                 if (prefLessMoreMiddle) {
-                    if (x)
+                    if (x) {
                         result = o1.getX() < o2.getX() ? 1 : -1;
-                    else
+                    } else {
                         result = o1.getY() < o2.getY() ? 1 : -1;
-                } else if (x)
+                    }
+                } else if (x) {
                     result = o1.getX() > o2.getX() ? 1 : -1;
-                else
+                } else {
                     result = o1.getY() > o2.getY() ? 1 : -1;
+                }
             }
+        }
 
         return result;
     }
 
     public static boolean isWithinBounds(Coordinates c, int x1, int x2, int y1, int y2) {
-        if (c.x < x1)
+        if (c.x < x1) {
             return false;
-        if (c.x > x2)
+        }
+        if (c.x > x2) {
             return false;
-        if (c.y < y1)
+        }
+        if (c.y < y1) {
             return false;
-        if (c.y > y2)
+        }
+        if (c.y > y2) {
             return false;
+        }
 
         return true;
     }
@@ -188,8 +206,9 @@ public class CoordinatesMaster {
     public static int getMaxX(Collection<Coordinates> coordinates) {
         int x = Integer.MIN_VALUE;
         for (Coordinates c : coordinates) {
-            if (c.x > x)
+            if (c.x > x) {
                 x = c.x;
+            }
         }
         return x;
     }
@@ -197,8 +216,9 @@ public class CoordinatesMaster {
     public static int getMaxY(Collection<Coordinates> coordinates) {
         int y = Integer.MIN_VALUE;
         for (Coordinates c : coordinates) {
-            if (c.y > y)
+            if (c.y > y) {
                 y = c.y;
+            }
         }
         return y;
     }
@@ -206,8 +226,9 @@ public class CoordinatesMaster {
     public static int getMinX(Collection<Coordinates> coordinates) {
         int x = Integer.MAX_VALUE;
         for (Coordinates c : coordinates) {
-            if (c.x < x)
+            if (c.x < x) {
                 x = c.x;
+            }
         }
         return x;
     }
@@ -215,8 +236,9 @@ public class CoordinatesMaster {
     public static int getMinY(Collection<Coordinates> coordinates) {
         int y = Integer.MAX_VALUE;
         for (Coordinates c : coordinates) {
-            if (c.y < y)
+            if (c.y < y) {
                 y = c.y;
+            }
         }
         return y;
     }
@@ -229,19 +251,23 @@ public class CoordinatesMaster {
         int y2 = getMaxY(coordinates);
         for (int x = x1 - 1; x < x2 + 1; x++) {
             Coordinates c = new Coordinates(x, y1 - 1);
-            if (!c.isInvalid())
+            if (!c.isInvalid()) {
                 list.add(c);
+            }
             Coordinates e = new Coordinates(x, y2 + 1);
-            if (!e.isInvalid())
+            if (!e.isInvalid()) {
                 list.add(e);
+            }
         }
         for (int y = y1 - 2; y < y2; y++) {
             Coordinates e = new Coordinates(x1 - 1, y);
-            if (!e.isInvalid())
+            if (!e.isInvalid()) {
                 list.add(e);
+            }
             Coordinates e2 = new Coordinates(x2 + 1, y);
-            if (!e2.isInvalid())
+            if (!e2.isInvalid()) {
                 list.add(e2);
+            }
         }
         return list;
     }
@@ -261,9 +287,11 @@ public class CoordinatesMaster {
 
     public static List<Coordinates> getCoordinatesWithin(int x, int x1, int y, int y1) {
         List<Coordinates> list = new LinkedList<>();
-        for (; x1 > x; x1--)
-            for (int y_ = y1; y_ > y; y_--)
+        for (; x1 > x; x1--) {
+            for (int y_ = y1; y_ > y; y_--) {
                 list.add(new Coordinates(x1, y_));
+            }
+        }
         return list;
     }
 
@@ -272,18 +300,22 @@ public class CoordinatesMaster {
             Collection<Coordinates> coordinates2) {
         List<Coordinates> list = new LinkedList<>();
         Set<Coordinates> adjacent1 = new HashSet<>();
-        for (Coordinates c : coordinatesPool)
-            for (Coordinates c1 : coordinates)
-                if (c.isAdjacent(c1))
+        for (Coordinates c : coordinatesPool) {
+            for (Coordinates c1 : coordinates) {
+                if (c.isAdjacent(c1)) {
                     adjacent1.add(c1);
+                }
+            }
+        }
 
         loop:
         for (Coordinates c : adjacent1) {
-            for (Coordinates c2 : coordinates2)
+            for (Coordinates c2 : coordinates2) {
                 if (c.isAdjacent(c2)) {
                     list.add(c);
                     continue loop;
                 }
+            }
         }
 
         return list;
@@ -342,8 +374,9 @@ public class CoordinatesMaster {
                 min_y_diff = y_diff;
             }
         }
-        if (x_dir == y_dir)
+        if (x_dir == y_dir) {
             return x_dir.getDirection();
+        }
         if (x_or_y_only != null) {
             return x_or_y_only ? x_dir.getDirection() : y_dir.getDirection();
         }
@@ -351,10 +384,12 @@ public class CoordinatesMaster {
     }
 
     public static Boolean isLineXorY(Collection<Coordinates> list) {
-        if (isLine(true, list))
+        if (isLine(true, list)) {
             return true;
-        if (isLine(false, list))
+        }
+        if (isLine(false, list)) {
             return false;
+        }
         return null;
     }
 
@@ -365,11 +400,13 @@ public class CoordinatesMaster {
                 prev = c;
                 continue;
             }
-            if (x)
-                if (prev.y != c.y)
+            if (x) {
+                if (prev.y != c.y) {
                     return false;
-                else if (prev.x != c.x)
+                } else if (prev.x != c.x) {
                     return false;
+                }
+            }
         }
         return true;
     }
@@ -395,15 +432,18 @@ public class CoordinatesMaster {
     }
 
     public static int getRange(boolean xOrY, List<Coordinates> coordinates) {
-        if (xOrY)
+        if (xOrY) {
             return getMaxX(coordinates) - getMinX(coordinates);
+        }
         return getMaxY(coordinates) - getMinY(coordinates);
     }
 
     public static boolean isAdjacent(List<Coordinates> coordinatesKus, Coordinates coordinates) {
-        for (Coordinates c : coordinatesKus)
-            if (c.isAdjacent(coordinates))
+        for (Coordinates c : coordinatesKus) {
+            if (c.isAdjacent(coordinates)) {
                 return true;
+            }
+        }
 
         return false;
     }
@@ -434,8 +474,9 @@ public class CoordinatesMaster {
         List<Coordinates> list = new LinkedList<>();
         for (Coordinates c : coordinates) {
             Coordinates e = new Coordinates(c.x + offsetX, c.y + offsetY);
-            if (e.isInvalid())
+            if (e.isInvalid()) {
                 continue;
+            }
             list.add(e);
         }
         return list;

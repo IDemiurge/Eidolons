@@ -96,8 +96,9 @@ public class DC_UnitInfoPanel extends G_Panel implements MouseListener {
                 entitySelected(game.getManager().getInfoEntity());
             }
             return;
-        } else
+        } else {
             objSelected(obj);
+        }
 
         valueOrbPanel.refresh();
         bp.refresh();
@@ -131,7 +132,7 @@ public class DC_UnitInfoPanel extends G_Panel implements MouseListener {
 
         if (obj instanceof DC_Obj) {
             DC_Obj dcObj = (DC_Obj) obj;
-            if (!dcObj.isMine())
+            if (!dcObj.isMine()) {
                 if (dcObj.getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT) {
                     // if (dcObj.getVisibilityLevel() ==
                     // VISIBILITY_LEVEL.OUTLINE) {
@@ -140,12 +141,13 @@ public class DC_UnitInfoPanel extends G_Panel implements MouseListener {
                     if (dcObj.getOutlineType() != null) {
                         // VisibilityMaster.getOutlineType(unit, activeUnit)
 
-                        if (dcObj.getOutlineType().getImage128() == null)
+                        if (dcObj.getOutlineType().getImage128() == null) {
                             pp.getPortrait().setIcon(
                                     new ImageIcon(dcObj.getOutlineType().getImage()));
-                        else
+                        } else {
                             pp.getPortrait().setIcon(
                                     new ImageIcon(dcObj.getOutlineType().getImage128()));
+                        }
 
                     }
                     pp.setEntity(null);
@@ -155,6 +157,7 @@ public class DC_UnitInfoPanel extends G_Panel implements MouseListener {
                     valueIconPanel.setEntity(null);
                     // }
                 }
+            }
             // if (!VisionManager.checkKnown((DC_Obj) obj)) {
             // // && !game.isDebugMode()
             // bp.setObj(null);

@@ -23,8 +23,9 @@ public class ActionListItem extends ListItem<Entity> {
 
     public ActionListItem(Entity item, boolean isSelected, boolean cellHasFocus) {
         super(item, isSelected, cellHasFocus, GuiManager.getSmallObjSize());
-        if (item != null)
+        if (item != null) {
             setToolTipText(item.getToolTip());
+        }
         action = (DC_UnitAction) item;
 
     }
@@ -45,10 +46,12 @@ public class ActionListItem extends ListItem<Entity> {
         BufferedImage buffered = ImageManager.getBufferedImage(super
                 .getCompIcon(entity, isSelected).getImage());
         if (action != null) {
-            if (action.isThrow())
+            if (action.isThrow()) {
                 buffered = ImageTransformer.flip(FLIP.CW90, buffered);
-            if (action.isOffhand())
+            }
+            if (action.isOffhand()) {
                 buffered = ImageTransformer.flipHorizontally(buffered);
+            }
         }
         Graphics g = buffered.getGraphics();
         paintDecorations(g);
@@ -84,15 +87,17 @@ public class ActionListItem extends ListItem<Entity> {
 
     @Override
     public BORDER getSpecialBorder() {
-        if (specialBorder != null)
+        if (specialBorder != null) {
             return specialBorder;
+        }
         if (getObj() instanceof ActiveObj) {
             ActiveObj obj = (ActiveObj) getObj();
             if (obj.isBlocked()) {
                 return BORDER.HIDDEN;
             }
-            if (!obj.canBeActivated())
+            if (!obj.canBeActivated()) {
                 return BORDER.HIDDEN;
+            }
         }
         return super.getSpecialBorder();
     }

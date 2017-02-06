@@ -92,31 +92,41 @@ public class ContentManager {
         sprops = new ArrayList<String>(props.size());
         for (PROPERTY p : props) {
             sprops.add(p.getName());
-            if (p.isLowPriority())
+            if (p.isLowPriority()) {
                 lowPriorityValues.add(p);
-            if (p.isSuperLowPriority())
+            }
+            if (p.isSuperLowPriority()) {
                 superLowPriorityValues.add(p);
-            if (p.isHighPriority())
+            }
+            if (p.isHighPriority()) {
                 highPriorityValues.add(p.getName());
+            }
 
         }
         for (PARAMETER p : params) {
             sparams.add(p.getName());
-            if (p.isHighPriority())
+            if (p.isHighPriority()) {
                 highPriorityValues.add(p.getName());
-            if (p.isLowPriority())
+            }
+            if (p.isLowPriority()) {
                 lowPriorityValues.add(p);
-            if (p.isSuperLowPriority())
+            }
+            if (p.isSuperLowPriority()) {
                 superLowPriorityValues.add(p);
-            if (p.isAttribute())
+            }
+            if (p.isAttribute()) {
                 getAttributes().add(p);
-            if (p.isMastery())
-                if (p instanceof Param)
+            }
+            if (p.isMastery()) {
+                if (p instanceof Param) {
                     getMasteryScores().add(p);
-                else
+                } else {
                     getMasteries().add(p);
-            if (checkParamPerLevel(p))
+                }
+            }
+            if (checkParamPerLevel(p)) {
                 getPerLevelParams().add(p);
+            }
         }
 
         main.system.auxiliary.LogMaster.log(0, "<><><><><><><><><>props: " + sprops.toString());
@@ -156,15 +166,17 @@ public class ContentManager {
     }
 
     public static PARAMETER getRandomUnitParameter() {
-        if (unitParameters == null || filteredUnitParameters == null)
+        if (unitParameters == null || filteredUnitParameters == null) {
             initUnitParams();
+        }
         int i = RandomWizard.getRandomIntBetween(0, unitParameters.size());
         return filteredUnitParameters.get(i);
     }
 
     public static PARAMETER getRandomCharParameter() {
-        if (charParameters == null || filteredCharParameters == null)
+        if (charParameters == null || filteredCharParameters == null) {
             initCharParams();
+        }
         int i = RandomWizard.getRandomIntBetween(0, charParameters.size());
         return filteredCharParameters.get(i);
     }
@@ -176,15 +188,18 @@ public class ContentManager {
                 charParameters.add(p);
                 continue;
             }
-            if (Arrays.asList(p.getEntityTypes()).contains((OBJ_TYPES.CHARS.getName())))
+            if (Arrays.asList(p.getEntityTypes()).contains((OBJ_TYPES.CHARS.getName()))) {
                 charParameters.add(p);
+            }
         }
 
         filteredCharParameters = new ArrayList<PARAMETER>(charParameters.size());
         for (PARAMETER p : charParameters) {
-            if (!p.isDynamic())
-                if (!p.isLowPriority())
+            if (!p.isDynamic()) {
+                if (!p.isLowPriority()) {
                     filteredCharParameters.add(p);
+                }
+            }
         }
     }
 
@@ -195,37 +210,45 @@ public class ContentManager {
                 unitParameters.add(p);
                 continue;
             }
-            if (Arrays.asList(p.getEntityTypes()).contains((OBJ_TYPES.UNITS.getName())))
+            if (Arrays.asList(p.getEntityTypes()).contains((OBJ_TYPES.UNITS.getName()))) {
                 unitParameters.add(p);
+            }
         }
 
         filteredUnitParameters = new ArrayList<PARAMETER>(unitParameters.size());
         for (PARAMETER p : unitParameters) {
-            if (!p.isDynamic())
-                if (!p.isLowPriority())
+            if (!p.isDynamic()) {
+                if (!p.isLowPriority()) {
                     filteredUnitParameters.add(p);
+                }
+            }
         }
     }
 
     public static PARAMETER getPercentageParam(PARAMETER p) {
-        if (p.isDynamic())
+        if (p.isDynamic()) {
             p = getBaseParameterFromCurrent(p);
+        }
         return getPARAM(p.getName() + StringMaster.PERCENTAGE);
     }
 
     public static PARAMETER getPARAM(String valueName) {
-        if (StringMaster.isEmpty(valueName))
+        if (StringMaster.isEmpty(valueName)) {
             return null;
+        }
         PARAMETER param = paramCache.get(valueName);
-        if (param == G_PARAMS.EMPTY_PARAMETER)
+        if (param == G_PARAMS.EMPTY_PARAMETER) {
             return null;
+        }
 
-        if (param != null)
+        if (param != null) {
             return param;
+        }
         param = getPARAM(valueName, true);
 
-        if (param == null)
+        if (param == null) {
             param = getPARAM(valueName, false);
+        }
 
         if (param == null) {
             main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, "PARAM NOT FOUND: "
@@ -234,15 +257,17 @@ public class ContentManager {
         }
 
         paramCache.put(valueName, param);
-        if (param == G_PARAMS.EMPTY_PARAMETER)
+        if (param == G_PARAMS.EMPTY_PARAMETER) {
             return null;
+        }
         return param;
     }
 
     public static PARAMETER getPARAM(String valueName, boolean strict) {
         for (PARAMETER p : params) {
-            if (StringMaster.compareByChar(valueName, p.toString(), strict))
+            if (StringMaster.compareByChar(valueName, p.toString(), strict)) {
                 return p;
+            }
         }
 
         return null;
@@ -260,8 +285,9 @@ public class ContentManager {
         valueName = valueName.replace(" ", "");
         if (value == null) {
             for (VALUE v : param ? params : props) {
-                if (StringMaster.compareByChar(valueName, v.toString().replace(" ", ""), false))
+                if (StringMaster.compareByChar(valueName, v.toString().replace(" ", ""), false)) {
                     value = v;
+                }
                 break;
             }
         }
@@ -277,9 +303,11 @@ public class ContentManager {
         if (value == null) {
             for (VALUE p : param ? params : props) {
                 if (StringMaster.compare(valueName, p.toString().replace(" ", ""), false)) {
-                    if (excludedValueSet != null)
-                        if (excludedValueSet.contains(p))
+                    if (excludedValueSet != null) {
+                        if (excludedValueSet.contains(p)) {
                             continue;
+                        }
+                    }
                     valuesFound.add(p);
                     break;
                 }
@@ -293,9 +321,9 @@ public class ContentManager {
                 value = p;
             }
         }
-        if (param)
+        if (param) {
             paramCache.put(valueName, (PARAMETER) value);
-        else {
+        } else {
             propCache.put(valueName, (PROPERTY) value);
         }
         return value;
@@ -312,37 +340,47 @@ public class ContentManager {
 
     public static PROPERTY getPROP(String valueName, boolean strict) {
         for (PROPERTY p : props) {
-            if (StringMaster.compareByChar(valueName, p.toString(), strict))
+            if (StringMaster.compareByChar(valueName, p.toString(), strict)) {
                 return p;
-        }
-        if (!strict)
-            for (PROPERTY p : props) {
-                if (StringMaster.compare(valueName, p.toString(), strict))
-                    return p;
             }
+        }
+        if (!strict) {
+            for (PROPERTY p : props) {
+                if (StringMaster.compare(valueName, p.toString(), strict)) {
+                    return p;
+                }
+            }
+        }
         return null;
     }
 
     public static PROPERTY getPROP(String valueName) {
         PROPERTY property = propCache.get(valueName);
 
-        if (property != null)
-            if (property != G_PROPS.EMPTY_VALUE)
+        if (property != null) {
+            if (property != G_PROPS.EMPTY_VALUE) {
                 return property;
+            }
+        }
         property = getPROP(valueName, true);
-        if (property == null)
+        if (property == null) {
             property = getPROP(valueName, false);
+        }
 
         if (property == null)
 
-            main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, "PROPERTY NOT FOUND: "
-             + valueName + "!");
+        {
+            LogMaster.log(LogMaster.CORE_DEBUG, "PROPERTY NOT FOUND: "
+                    + valueName + "!");
+        }
 
-        if (property == null)
+        if (property == null) {
             property = G_PROPS.EMPTY_VALUE;
+        }
         propCache.put(valueName, property);
-        if (property == G_PROPS.EMPTY_VALUE)
+        if (property == G_PROPS.EMPTY_VALUE) {
             return null;
+        }
         return property;
     }
 
@@ -355,17 +393,22 @@ public class ContentManager {
     }
 
     public static VALUE getValue(String valueName, boolean extensiveSearch) {
-        if (StringMaster.isEmpty(valueName))
+        if (StringMaster.isEmpty(valueName)) {
             return null;
+        }
         VALUE v = propCache.get(valueName);
-        if (v != null)
-            if (!checkExcluded(v))
+        if (v != null) {
+            if (!checkExcluded(v)) {
                 return v;
+            }
+        }
 
         v = paramCache.get(valueName);
-        if (v != null)
-            if (!checkExcluded(v))
+        if (v != null) {
+            if (!checkExcluded(v)) {
                 return v;
+            }
+        }
 
         v = getPROP(valueName, true);
         if (v == null) {
@@ -374,8 +417,9 @@ public class ContentManager {
         if (v == null) {
             if (extensiveSearch) {
                 v = getPROP(valueName, false);
-                if (v == null)
+                if (v == null) {
                     v = getPARAM(valueName, false);
+                }
 
                 PROPERTY prop = findPROP(valueName);
                 PARAMETER param = findPARAM(valueName);
@@ -384,23 +428,27 @@ public class ContentManager {
                      .compareSimilar(param.toString(), valueName) ? prop : param;
                 } else if (prop != null) {
                     v = prop;
-                } else
+                } else {
                     v = param;
+                }
                 // //compare length difference?
                 // //cache key to value
             }
-            if (v == null)
-                main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, "VALUE NOT FOUND: "
-                 + valueName);
+            if (v == null) {
+                LogMaster.log(LogMaster.CORE_DEBUG, "VALUE NOT FOUND: "
+                        + valueName);
+            }
 
         }
         return v;
     }
 
     private static boolean checkExcluded(VALUE v) {
-        if (excludedValueSet != null)
-            if (excludedValueSet.contains(v))
+        if (excludedValueSet != null) {
+            if (excludedValueSet.contains(v)) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -411,10 +459,12 @@ public class ContentManager {
     public static List<VALUE> getValueList() {
         if (values == null) {
             values = new LinkedList<>();
-            for (PROPERTY p : getPropList())
+            for (PROPERTY p : getPropList()) {
                 values.add(p);
-            for (PARAMETER p : getParamList())
+            }
+            for (PARAMETER p : getParamList()) {
                 values.add(p);
+            }
         }
         return values;
     }
@@ -448,8 +498,9 @@ public class ContentManager {
     public static List<PARAMETER> getHeroStatsTabValueList() {
         List<PARAMETER> list = new LinkedList<>();
         for (PARAMETER p : getParamsForType(OBJ_TYPES.CHARS.getName(), false)) {
-            if (!(p.isAttribute() || p.isMastery()))
+            if (!(p.isAttribute() || p.isMastery())) {
                 list.add(p);
+            }
         }
         return list;
     }
@@ -457,71 +508,85 @@ public class ContentManager {
     public static List<PARAMETER> getParamsForType(String entity, boolean dynamic) {
         List<PARAMETER> paramList = (dynamic) ? paramListsMap.get(entity) : paramListsMapAV
          .get(entity);
-        if (paramList != null)
+        if (paramList != null) {
             return paramList;
+        }
         paramList = new LinkedList<PARAMETER>();
         for (PARAMETER param : params) {
-            if (!dynamic)
-                if (param.isDynamic() && !param.isWriteToType())
+            if (!dynamic) {
+                if (param.isDynamic() && !param.isWriteToType()) {
                     continue;
-            if (isValueForOBJ_TYPE(entity, param))
+                }
+            }
+            if (isValueForOBJ_TYPE(entity, param)) {
                 paramList.add(param);
+            }
         }
-        if (!dynamic)
+        if (!dynamic) {
             paramListsMapAV.put(entity, paramList);
-        else
+        } else {
             paramListsMap.put(entity, paramList);
+        }
         return paramList;
     }
 
     public static List<String> getParamNames(String entity, boolean dynamic) {
         List<String> paramList = (dynamic) ? sparamListsMap.get(entity) : sparamListsMapAV
          .get(entity);
-        if (paramList != null)
+        if (paramList != null) {
             return paramList;
+        }
         paramList = new LinkedList<String>();
         for (PARAMETER param : getParamsForType(entity, dynamic)) {
 
             paramList.add(param.getName());
         }
-        if (!dynamic)
+        if (!dynamic) {
             sparamListsMapAV.put(entity, paramList);
-        else
+        } else {
             sparamListsMap.put(entity, paramList);
+        }
         return paramList;
     }
 
     public static List<VALUE> getValuesForType(String TYPE, boolean dynamic) {
         List<VALUE> propList = (dynamic) ? valueListsMap.get(TYPE) : valueListsMapAV.get(TYPE);
-        if (propList != null)
+        if (propList != null) {
             return propList;
+        }
         propList = new LinkedList<VALUE>();
 
         propList.addAll(getPropsForType(TYPE, dynamic));
         propList.addAll(getParamsForType(TYPE, dynamic));
-        if (!dynamic)
+        if (!dynamic) {
             valueListsMap.put(TYPE, propList);
-        else
+        } else {
             valueListsMapAV.put(TYPE, propList);
+        }
         return propList;
     }
 
     public static List<PROPERTY> getPropsForType(String entity, boolean dynamic) {
         List<PROPERTY> propList = (dynamic) ? propListsMap.get(entity) : propListsMapAV.get(entity);
-        if (propList != null)
+        if (propList != null) {
             return propList;
+        }
         propList = new LinkedList<PROPERTY>();
         for (PROPERTY prop : props) {
-            if (!dynamic)
-                if (prop.isDynamic() && !prop.isWriteToType())
+            if (!dynamic) {
+                if (prop.isDynamic() && !prop.isWriteToType()) {
                     continue;
-            if (isValueForOBJ_TYPE(entity, prop))
+                }
+            }
+            if (isValueForOBJ_TYPE(entity, prop)) {
                 propList.add(prop);
+            }
         }
-        if (!dynamic)
+        if (!dynamic) {
             propListsMapAV.put(entity, propList);
-        else
+        } else {
             propListsMap.put(entity, propList);
+        }
         return propList;
     }
 
@@ -532,8 +597,9 @@ public class ContentManager {
 
     public static List<String> getPropNames(String entity, boolean dynamic) {
         List<String> propList = (dynamic) ? spropListsMap.get(entity) : spropListsMapAV.get(entity);
-        if (propList != null)
+        if (propList != null) {
             return propList;
+        }
         propList = new LinkedList<String>();
         for (PROPERTY prop : getPropsForType(entity, dynamic)) {
 
@@ -541,10 +607,11 @@ public class ContentManager {
 
         }
 
-        if (!dynamic)
+        if (!dynamic) {
             spropListsMapAV.put(entity, propList);
-        else
+        } else {
             spropListsMap.put(entity, propList);
+        }
         return propList;
     }
 
@@ -559,12 +626,14 @@ public class ContentManager {
     }
 
     public static List<String> getFullValueList(String objType, boolean av) {
-        if (objType == null)
+        if (objType == null) {
             return Collections.EMPTY_LIST;
+        }
         List<String> valueNames = (av) ? getValueNamesMapAV().get(objType) : getValueNamesMap()
          .get(objType);
-        if (valueNames != null)
+        if (valueNames != null) {
             return valueNames;
+        }
         valueNames = new LinkedList<String>();
         appendLast(valueNames, getParamNames(objType, !av));
         // appendLast(valueNames, masteries);
@@ -574,14 +643,18 @@ public class ContentManager {
         appendLast(valueNames, lowPriorityValues, objType);
         appendLast(valueNames, superLowPriorityValues, objType);
         if (av) {
-            if (getAV_IgnoredValues() != null)
-                if (getAV_IgnoredValues().get(objType) != null)
-                    for (VALUE v : getAV_IgnoredValues().get(objType))
+            if (getAV_IgnoredValues() != null) {
+                if (getAV_IgnoredValues().get(objType) != null) {
+                    for (VALUE v : getAV_IgnoredValues().get(objType)) {
                         valueNames.remove(v.getName());
+                    }
+                }
+            }
 
             getValueNamesMapAV().put(objType, valueNames);
-        } else
+        } else {
             getValueNamesMap().put(objType, valueNames);
+        }
         return valueNames;
 
     }
@@ -594,8 +667,9 @@ public class ContentManager {
         for (int n = 0; n < values.size(); n++) {
             String value = values.get((last) ? n : values.size() - 1 - n);
             int i = valueNames.indexOf(value);
-            if (i != -1)
+            if (i != -1) {
                 valueNames.remove(i);
+            }
             valueNames.add((last) ? valueNames.size() : 0, value);
 
         }
@@ -604,8 +678,9 @@ public class ContentManager {
     static void appendLast(List<String> valueNames, List<VALUE> values, String objType) {
         List<String> names = new LinkedList<>();
         for (VALUE val : values) {
-            if (isValueForOBJ_TYPE(objType, val))
+            if (isValueForOBJ_TYPE(objType, val)) {
                 names.add(val.getName());
+            }
         }
         append(valueNames, names, true);
     }
@@ -633,16 +708,18 @@ public class ContentManager {
 
     public static PARAMETER findMasteryScore(String property) {
         MASTERY group = new EnumMaster<MASTERY>().retrieveEnumConst(MASTERY.class, property);
-        if (group == null)
+        if (group == null) {
             return null;
+        }
         return getMasteryScore(group.toString());
 
     }
 
     public static PARAMETER findMastery(String property) {
         MASTERY group = new EnumMaster<MASTERY>().retrieveEnumConst(MASTERY.class, property, true);
-        if (group == null)
+        if (group == null) {
             return null;
+        }
         return getPARAM((group.toString()));
 
     }
@@ -661,8 +738,9 @@ public class ContentManager {
     }
 
     public static OBJ_TYPE getOBJ_TYPE(String typeName) {
-        if (typeMaster != null)
+        if (typeMaster != null) {
             return typeMaster.getOBJ_TYPE(typeName);
+        }
         OBJ_TYPE type = null;
 
         try {
@@ -670,13 +748,15 @@ public class ContentManager {
         } catch (Exception e) {
 
         }
-        if (type == null || XML_Reader.isMacro())
+        if (type == null || XML_Reader.isMacro()) {
             try {
-                if (MACRO_OBJ_TYPES.getType(typeName) != null)
+                if (MACRO_OBJ_TYPES.getType(typeName) != null) {
                     type = MACRO_OBJ_TYPES.getType(typeName);
+                }
             } catch (Exception e) {
 
             }
+        }
 
         return type;
     }
@@ -719,14 +799,18 @@ public class ContentManager {
     }
 
     public static boolean isValueForOBJ_TYPE(String type, VALUE p) {
-        if (p.getEntityTypes() != null)
-            if (Arrays.asList(p.getEntityTypes()).contains((type)))
+        if (p.getEntityTypes() != null) {
+            if (Arrays.asList(p.getEntityTypes()).contains((type))) {
                 return true;
-        if (p.getEntityType() == null)
+            }
+        }
+        if (p.getEntityType() == null) {
             return false;
+        }
         if (p.getEntityType().equalsIgnoreCase("all")) {
-            if (instance == null)
+            if (instance == null) {
                 return true;
+            }
             return instance.checkAllApplies(p, type);
         }
 
@@ -735,9 +819,9 @@ public class ContentManager {
 
     public static List<OBJ_TYPE> getOBJ_TYPEsForValue(VALUE value) {
         List<OBJ_TYPE> list = new LinkedList<>();
-        if (value.getEntityTypes() == null)
+        if (value.getEntityTypes() == null) {
             list.add(getOBJ_TYPE(value.getEntityType()));
-        else {
+        } else {
             for (String type : value.getEntityTypes()) {
                 list.add(getOBJ_TYPE(type));
             }
@@ -773,8 +857,9 @@ public class ContentManager {
         if (finalAttributes == null) {
             finalAttributes = new LinkedList<>();
             for (PARAMETER attr : attributes) {
-                if (StringMaster.compare(attr.getName(), "Base"))
+                if (StringMaster.compare(attr.getName(), "Base")) {
                     continue;
+                }
                 finalAttributes.add(attr);
             }
         }
@@ -844,8 +929,9 @@ public class ContentManager {
             masteryGroup = "Sorcery";
         } else if (StringMaster.compareByChar(name, "Celestial")) {
             masteryGroup = "Light";
-        } else if (StringMaster.compareByChar(name, "Meditation"))
+        } else if (StringMaster.compareByChar(name, "Meditation")) {
             masteryGroup = "Light";
+        }
 
         if (StringMaster.compareByChar(name, "Stealth")) {
             masteryGroup = "Stealth";
@@ -879,7 +965,7 @@ public class ContentManager {
             masteryGroup = "Savage";
         } else if (StringMaster.compareByChar(name, "Warcry")) {
             masteryGroup = "Savage";
-        } else
+        } else {
             switch (masteryGroup) {
                 case "Defense":
                     masteryGroup = "Combat";
@@ -891,6 +977,7 @@ public class ContentManager {
                     masteryGroup = "Weapons";
                     break;
             }
+        }
         masteryGroup = masteryGroup.replace("Arts", "");
         return masteryGroup;
     }
@@ -901,6 +988,11 @@ public class ContentManager {
 
     public static void setInstance(ContentManager instance) {
         ContentManager.instance = instance;
+    }
+
+    public static String getCurrentOutOfTotal(PARAMETER value, Entity obj) {
+        return obj.getValue(value) +
+                "/" + obj.getValue(getBaseParameterFromCurrent(value));
     }
 
     public void init() {
@@ -917,11 +1009,6 @@ public class ContentManager {
 
     public boolean isTextAlwaysShownInListItems(OBJ_TYPE TYPE) {
         return false;
-    }
-
-    public static String getCurrentOutOfTotal(PARAMETER value, Entity obj) {
-        return obj.getValue(value) +
-         "/" + obj.getValue(getBaseParameterFromCurrent(value));
     }
 
     public enum AV_EDITOR_TYPES {

@@ -15,24 +15,20 @@ import main.system.auxiliary.ColorManager;
 import main.system.auxiliary.FontMaster;
 import main.system.auxiliary.FontMaster.FONT;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
-import javax.swing.SwingUtilities;
 
 public abstract class AT_EntityNode<E extends ArcaneEntity> extends G_Panel {
 	protected TextCompDC headerComp;
 	protected WrappedTextComp descrPanel;
 	protected E entity;
 	protected GraphicComponent imageComp;
-	private boolean expanded;
 	protected WrappedTextComp valuePanel;
 	protected TextCompDC toggleButton;
 	protected boolean descriptionExpanded;
+    private boolean expanded;
 
 	public AT_EntityNode(E e) {
 		this.entity = e;
@@ -72,17 +68,19 @@ public abstract class AT_EntityNode<E extends ArcaneEntity> extends G_Panel {
 		String text = "";
 		for (VALUE v : getDisplayedValues()) {
 			String valueText = getValueText(v);
-			if (!valueText.isEmpty())
-				text += valueText + "  ";
-		}
+            if (!valueText.isEmpty()) {
+                text += valueText + "  ";
+            }
+        }
 		return text;
 	}
 
 	protected String getValueText(VALUE v) {
 		String value = ContentManager.getFormattedValue(v, entity.getValue(v));
-		if (value.isEmpty())
-			return "";
-		return v.getName() + ": " + value;
+        if (value.isEmpty()) {
+            return "";
+        }
+        return v.getName() + ": " + value;
 
 	}
 
@@ -190,16 +188,18 @@ public abstract class AT_EntityNode<E extends ArcaneEntity> extends G_Panel {
 
 	@Override
 	public int getBorderWidth() {
-		if (isSelected())
-			return 2;
-		return 1;
+        if (isSelected()) {
+            return 2;
+        }
+        return 1;
 	}
 
 	@Override
 	public Color getBorderColor() {
-		if (isSelected())
-			return (ColorManager.ESSENCE);
-		return super.getBorderColor();
+        if (isSelected()) {
+            return (ColorManager.ESSENCE);
+        }
+        return super.getBorderColor();
 	}
 
 	protected MouseListener getMouseListener() {
@@ -229,12 +229,6 @@ public abstract class AT_EntityNode<E extends ArcaneEntity> extends G_Panel {
 
 	}
 
-	public void setExpanded(boolean expanded) {
-		if (isExpansionSycned())
-			descriptionExpanded = expanded;
-		this.expanded = expanded;
-	}
-
 	private boolean isExpansionSycned() {
 		return true;
 	}
@@ -254,6 +248,13 @@ public abstract class AT_EntityNode<E extends ArcaneEntity> extends G_Panel {
 	public boolean isExpanded() {
 		return expanded;
 	}
+
+    public void setExpanded(boolean expanded) {
+        if (isExpansionSycned()) {
+            descriptionExpanded = expanded;
+        }
+        this.expanded = expanded;
+    }
 
 	protected boolean isCollapsable() {
 		return false;

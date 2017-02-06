@@ -49,8 +49,9 @@ public class WorldGenerator {
             region = createRegion(type, ref);
             regions.add(region);
             AreaManager.assignPlacesToAreas(region);
-            if (!MacroManager.isEditMode())
+            if (!MacroManager.isEditMode()) {
                 AreaManager.initRegionAreas(region);
+            }
 
         }
         return regions;
@@ -159,14 +160,17 @@ public class WorldGenerator {
         // }
         for (Route r : region.getRoutes()) {
             for (String p : StringMaster.openContainer(r
-                    .getProperty(MACRO_PROPS.LINKED_PLACES)))
+                    .getProperty(MACRO_PROPS.LINKED_PLACES))) {
                 r.addLinkedPlace(region.getPlace(p));
+            }
             for (String p : StringMaster.openContainer(r
-                    .getProperty(MACRO_PROPS.LINKED_TOWNS)))
+                    .getProperty(MACRO_PROPS.LINKED_TOWNS))) {
                 r.addLinkedTown(region.getTown(p));
+            }
             for (String p : StringMaster.openContainer(r
-                    .getProperty(MACRO_PROPS.LINKED_ROUTES)))
+                    .getProperty(MACRO_PROPS.LINKED_ROUTES))) {
                 r.addLinkedRoute(region.getRoute(p));
+            }
         }
     }
 
@@ -227,8 +231,9 @@ public class WorldGenerator {
     private static String formatPointVarString(String s) {
         // StringMaster.getSubString(string, open, close, inclusive) //just
         // first 2 vars!
-        while (s.endsWith(StringMaster.getVarSeparator()))
+        while (s.endsWith(StringMaster.getVarSeparator())) {
             s = StringMaster.cropLast(s, 1);
+        }
         s = s.replace(StringMaster.getVarSeparator(),
                 StringMaster.getCoordinatesSeparator());
         return s;

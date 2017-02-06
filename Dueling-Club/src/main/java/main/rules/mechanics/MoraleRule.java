@@ -21,8 +21,9 @@ public class MoraleRule extends RoundRule {
     public void apply(DC_HeroObj unit) {
         int diff = unit.getIntParam(PARAMS.C_MORALE)
                 - unit.getIntParam(PARAMS.MORALE);
-        if (diff == 0)
+        if (diff == 0) {
             return;
+        }
         boolean restore = diff < 0;
         int mod = 0;
         if (restore) {
@@ -36,15 +37,17 @@ public class MoraleRule extends RoundRule {
         }
         mod = Math.min(100, mod);
         int amount = Math.abs(diff);
-        if (mod > 0)
+        if (mod > 0) {
             amount = amount * mod / 100;
-        else
+        } else {
             return;
-        if (restore)
+        }
+        if (restore) {
             unit.modifyParameter(PARAMS.C_MORALE, amount, unit
                     .getIntParam(PARAMS.MORALE));
-        else
+        } else {
             unit.modifyParameter(PARAMS.C_MORALE, -amount);
+        }
 
     }
 

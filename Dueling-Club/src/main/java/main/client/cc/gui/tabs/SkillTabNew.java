@@ -39,8 +39,9 @@ public class SkillTabNew extends HeroItemTab {
             LinkedList<ObjType> data = new LinkedList<>();
             for (ObjType type : this.data) {
                 PARAMETER mastery = ContentManager.getPARAM(type.getProperty(G_PROPS.MASTERY));
-                if (list.contains(mastery))
+                if (list.contains(mastery)) {
                     data.add(type);
+                }
             }
             HC_SkillPagedListPanel pagedListPanel = new HC_SkillPagedListPanel(getTemplate(), hero,
                     getItemManager(), data, group.getName());
@@ -64,8 +65,9 @@ public class SkillTabNew extends HeroItemTab {
     }
 
     public void resetComps() {
-        if (isReinitDataRequired() || isDirty())
+        if (isReinitDataRequired() || isDirty()) {
             initData();
+        }
         int i = 0;
         for (HC_PagedListPanel pagedListPanel : listPages) {
             LinkedList<ObjType> data = getData(SKILL_DISPLAY_GROUPS.values()[i]);
@@ -74,8 +76,9 @@ public class SkillTabNew extends HeroItemTab {
             pagedListPanel.initPages();
             getItemManager().add(pagedListPanel);
             pagedListPanel.refresh();
-            if (pagedListPanel.getParent() == null)
+            if (pagedListPanel.getParent() == null) {
                 addComps();
+            }
         }
     }
 
@@ -84,8 +87,9 @@ public class SkillTabNew extends HeroItemTab {
         LinkedList<ObjType> data = new LinkedList<>();
         for (ObjType type : this.data) {
             PARAMETER mastery = ContentManager.getPARAM(type.getProperty(G_PROPS.MASTERY));
-            if (list.contains(mastery))
+            if (list.contains(mastery)) {
                 data.add(type);
+            }
         }
         return data;
     }
@@ -138,8 +142,9 @@ public class SkillTabNew extends HeroItemTab {
     @Override
     public BORDER getBorder(ObjType value) {
         for (DC_FeatObj skill : hero.getSkills()) {
-            if (!skill.getName().equals(value.getName()))
+            if (!skill.getName().equals(value.getName())) {
                 continue;
+            }
             return skill.getRankBorder();
         }
         return null;

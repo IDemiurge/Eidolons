@@ -26,8 +26,9 @@ public class DialogMaster {
 
     public static String inputTextNotNull(String tip) {
         String input = inputText(tip);
-        if (input == null)
+        if (input == null) {
             return "";
+        }
         return input;
     }
 
@@ -46,16 +47,18 @@ public class DialogMaster {
     public static Integer inputInt(String msg, int initial, boolean nullIfCancelled) {
         String input = JOptionPane.showInputDialog(msg, initial);
         if (input == null) {
-            if (nullIfCancelled)
+            if (nullIfCancelled) {
                 return null;
+            }
             return -1;
         }
         try {
             return Integer.valueOf(input);
         } catch (Exception e) {
             e.printStackTrace();
-            if (nullIfCancelled)
+            if (nullIfCancelled) {
                 return null;
+            }
             return -1;
         }
     }
@@ -83,8 +86,9 @@ public class DialogMaster {
 
     public static Object getChosenOption(String message, Object... array) {
         int optionChoice = optionChoice(array, message);
-        if (optionChoice == -1)
+        if (optionChoice == -1) {
             return null;
+        }
         return array[optionChoice];
     }
 
@@ -97,9 +101,11 @@ public class DialogMaster {
     public static Obj objChoice(String string, Obj[] array) {
         List<Obj> list = new LinkedList<>(Arrays.asList(array));
         ObjType type = (ObjType) entityChoice(DataManager.toTypeList(list));
-        for (Obj obj : list)
-            if (obj.getType() == type)
+        for (Obj obj : list) {
+            if (obj.getType() == type) {
                 return obj;
+            }
+        }
         return null;
     }
 
@@ -108,16 +114,18 @@ public class DialogMaster {
         ImageIcon[] array = new ImageIcon[types.size()];
         for (Entity t : types) {
             ImageIcon icon = t.getIcon();
-            if (icon.getIconHeight() > GuiManager.getBfObjSize())
+            if (icon.getIconHeight() > GuiManager.getBfObjSize()) {
                 icon = new ImageIcon(ImageManager.getSizedVersion(icon.getImage(), GuiManager
                         .getBfObjSize()));
+            }
             array[i] = icon;
             i++;
         }
         int index = JOptionPane.showOptionDialog(null, "Select type: ", "Choose...",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, array, array[0]);
-        if (index == -1)
+        if (index == -1) {
             return null;
+        }
         return types.get(index);
     }
 

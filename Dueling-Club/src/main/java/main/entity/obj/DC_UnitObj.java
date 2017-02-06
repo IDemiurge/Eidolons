@@ -84,8 +84,9 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
         super(type, owner, game, ref);
         this.x = x;
         this.y = y;
-        if (this.game == null)
+        if (this.game == null) {
             setGame(game);
+        }
         addDynamicValues();
     }
 
@@ -95,11 +96,13 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public String getNameIfKnown() {
-        if (owner.isMe())
+        if (owner.isMe()) {
             return getName();
+        }
 
-        if (!VisionManager.checkVisible(this))
+        if (!VisionManager.checkVisible(this)) {
             return "Someone or something";
+        }
         if (getActivePlayerVisionStatus() == UNIT_TO_PLAYER_VISION.UNKNOWN) {
             // if (isHuge())
             // return "Something huge";
@@ -122,35 +125,41 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     @Override
     public String toString() {
         String prefix = "";
-        if (getOwner() != DC_Player.NEUTRAL)
+        if (getOwner() != DC_Player.NEUTRAL) {
             prefix = isMine() ? "My " : "Enemy ";
-        if (isDead())
+        }
+        if (isDead()) {
             prefix += "(Dead)";
+        }
         return prefix + super.toString() + " at " + getCoordinates();
     }
 
     @Override
     public String getToolTip() {
-        if (!game.isSimulation())
+        if (!game.isSimulation()) {
             if (checkSelectHighlighted()) {
                 String actionTargetingTooltip = "";
                 DC_ActiveObj action = (DC_ActiveObj) getGame().getManager().getActivatingAction();
                 try {
                     actionTargetingTooltip = ToolTipMaster.getActionTargetingTooltip(this, action);
                 } catch (Exception e) {
-                    if (!action.isBroken())
+                    if (!action.isBroken()) {
                         e.printStackTrace();
-                    else
+                    } else {
                         action.setBroken(true);
+                    }
                 }
-                if (!StringMaster.isEmpty(actionTargetingTooltip))
+                if (!StringMaster.isEmpty(actionTargetingTooltip)) {
                     return actionTargetingTooltip;
+                }
             }
+        }
         if (DebugMaster.isMapDebugOn()) {
             MapBlock block = getGame().getDungeonMaster().getDungeon().getPlan()
                     .getBlockByCoordinate(getCoordinates());
-            if (block != null)
+            if (block != null) {
                 return getCoordinates() + " (" + block.getShortName() + ") " + getName();
+            }
             return getCoordinates() + " " + getName();
         }
         if (!VisionManager.checkKnown(this)) {
@@ -161,10 +170,12 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
 
     @Override
     public boolean isTransparent() {
-        if (super.isTransparent())
+        if (super.isTransparent()) {
             return true;
-        if (checkPassive(STANDARD_PASSIVES.IMMATERIAL))
+        }
+        if (checkPassive(STANDARD_PASSIVES.IMMATERIAL)) {
             return true;
+        }
         return checkPassive(STANDARD_PASSIVES.TRANSPARENT);
 
     }
@@ -187,40 +198,50 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
 
     public boolean isObstructing(Obj obj, DC_Obj target) {
 
-        if (target == null)
+        if (target == null) {
             return false;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (isBfObj())
+        }
+        if (isBfObj()) {
             if (isWall()) {
                 // if (WindowRule.checkWindowOpening(this, obj, target))
                 // return false;
             }
-        if (checkPassive(STANDARD_PASSIVES.IMMATERIAL))
+        }
+        if (checkPassive(STANDARD_PASSIVES.IMMATERIAL)) {
             return false;
+        }
         // boolean targetTall = false;
         // boolean targetShort = false;
         // if (target instanceof DC_HeroObj) {
         // targetTall = (((DC_HeroObj) target).isTall());
         // targetShort = (((DC_HeroObj) target).isShort());
         // }
-        if (checkPassive(STANDARD_PASSIVES.NON_OBSTRUCTING))
+        if (checkPassive(STANDARD_PASSIVES.NON_OBSTRUCTING)) {
             return false;
+        }
         if (obj instanceof DC_UnitObj) {
             int height = getIntParam(PARAMS.HEIGHT);
-            if (height > 200)
+            if (height > 200) {
                 height = getIntParam(PARAMS.HEIGHT);
+            }
             int source_height = obj.getIntParam(PARAMS.HEIGHT);
             int target_height = target.getIntParam(PARAMS.HEIGHT);
 
             DC_UnitObj source = (DC_UnitObj) obj;
-            if (target_height > height)
+            if (target_height > height) {
                 return false;
-            if (source.isAgile() && !isHuge())
+            }
+            if (source.isAgile() && !isHuge()) {
                 return false;
+            }
             if (source_height < height)
                 // if (!source.isFlying()) //add height TODO
+            {
                 return true;
+            }
 
             // if (isShort())
             // if (!(source.isShort() && !targetShort))
@@ -249,31 +270,35 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     public VISION_MODE getVisionMode() {
         if (vision_mode == null) {
             String name = getProperty(PROPS.VISION_MODE);
-            if (StringMaster.isEmpty(name))
+            if (StringMaster.isEmpty(name)) {
                 vision_mode = VISION_MODE.NORMAL_VISION;
-            else
+            } else {
                 vision_mode = new EnumMaster<VISION_MODE>().retrieveEnumConst(VISION_MODE.class,
                         name);
+            }
         }
         return vision_mode;
     }
 
     @Override
     public boolean kill(Entity killer, boolean leaveCorpse, Boolean quietly) {
-        if (isDead())
+        if (isDead()) {
             return false;
+        }
         boolean ignoreInterrupt = false;
         if (quietly == null) {
             ignoreInterrupt = true;
             quietly = false;
 
         }
-        if (!ignoreInterrupt)
-            if (!quietly)
+        if (!ignoreInterrupt) {
+            if (!quietly) {
                 if (checkPassive(STANDARD_PASSIVES.INDESTRUCTIBLE)) {
                     preventDeath();
                     return false;
                 }
+            }
+        }
         ref.setID(KEYS.KILLER, killer.getId());
 
         Ref REF = Ref.getCopy(killer.getRef());
@@ -281,16 +306,20 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
         REF.setSource(killer.getId());
 
         if (!quietly) {
-            if (!getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_IS_BEING_KILLED, REF)))
-                if (!ignoreInterrupt)
+            if (!getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_IS_BEING_KILLED, REF))) {
+                if (!ignoreInterrupt) {
                     return false;
+                }
+            }
 
             ((DC_UnitObj) killer).applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_KILL, this, REF);
             applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_DEATH, ((DC_UnitObj) killer), REF);
 
-            if (!ignoreInterrupt)
-                if (ref.checkInterrupted())
+            if (!ignoreInterrupt) {
+                if (ref.checkInterrupted()) {
                     return false;
+                }
+            }
         }
         setDead(true);
 
@@ -365,22 +394,24 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     @Override
     public void toBase() {
         setMode(null);
-        if (getSpecialEffects() != null)
+        if (getSpecialEffects() != null) {
             getSpecialEffects().clear();
+        }
         super.toBase();
 
         // activatePassives();
-        if (game.isSimulation())
+        if (game.isSimulation()) {
             return;
+        }
         // resetActives();
         // resetFacing();
 //        if (isActiveSelected())
         if (isMine()) {
-            if (CoreEngine.isAnimationTestMode())
+            if (CoreEngine.isAnimationTestMode()) {
                 TestMasterContent.addANIM_TEST_Spells(this);
-            else
-            if (CoreEngine.isGraphicTestMode())
+            } else if (CoreEngine.isGraphicTestMode()) {
                 TestMasterContent.addGRAPHICS_TEST_Spells(this);
+            }
         }
 
         if (checkClassification(CLASSIFICATIONS.TALL)) {
@@ -444,8 +475,9 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
 
     @Override
     public void newRound() {
-        if (!new Event(STANDARD_EVENT_TYPE.UNIT_NEW_ROUND_BEING_STARTED, ref).fire())
+        if (!new Event(STANDARD_EVENT_TYPE.UNIT_NEW_ROUND_BEING_STARTED, ref).fire()) {
             return;
+        }
         // setMode(STD_MODES.NORMAL); just don't.
 
         resetToughness();
@@ -497,12 +529,16 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
         initiative += getIntParam(PARAMS.C_INITIATIVE_BONUS);
         // game.getTurnManager().getPreviousActive() take turns
 
-        if (game.isDummyMode())
-            if (!isBfObj())
-                if (!isNeutral())
-                    if (!getOwner().isMe())
+        if (game.isDummyMode()) {
+            if (!isBfObj()) {
+                if (!isNeutral()) {
+                    if (!getOwner().isMe()) {
                         initiative = Math.min(10, getGame().getRules().getTimeRule()
                                 .getTimeRemaining() + 1);
+                    }
+                }
+            }
+        }
 
         setParam(PARAMS.C_INITIATIVE, initiative, true);
 
@@ -512,7 +548,9 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
         resetPercentage(PARAMS.INITIATIVE);
 
         int after =  getIntParam(PARAMS.C_INITIATIVE);
-        if (before == after) return;
+        if (before == after) {
+            return;
+        }
         int diff = before - after;
 
         if (diff != 0) {
@@ -527,8 +565,9 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
         Integer amount = getIntParam(PARAMS.TOUGHNESS_RECOVERY) * getIntParam(PARAMS.TOUGHNESS)
                 / 100;
         // setParam(PARAMS.C_TOUGHNESS, amount);
-        if (amount > 0)
+        if (amount > 0) {
             modifyParameter(PARAMS.C_TOUGHNESS, amount, getIntParam(PARAMS.TOUGHNESS));
+        }
     }
 
     protected void resetActions() {
@@ -540,8 +579,9 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
             return;
         }
         int carryOverFactor = DC_Constants.CARRY_OVER_FACTOR;
-        if (getIntParam(PARAMS.C_N_OF_ACTIONS) < 0)
+        if (getIntParam(PARAMS.C_N_OF_ACTIONS) < 0) {
             carryOverFactor = DC_Constants.CARRY_OVER_FACTOR_NEGATIVE;
+        }
 
         int actions = getIntParam(PARAMS.N_OF_ACTIONS) + getIntParam(PARAMS.C_N_OF_ACTIONS)
                 / carryOverFactor;
@@ -561,20 +601,23 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
 
     // melee/ranged separate!
     public boolean canAttack(DC_UnitObj attacked) {
-        if (!canAttack())
+        if (!canAttack()) {
             return false;
+        }
         // ConditionMaster.getAdjacent().check(ref);
         int range = getIntParam(PARAMS.RANGE);
-        if (range == 1)
+        if (range == 1) {
             return getGame().getMovementManager().isAdjacent(this, attacked);
+        }
         return (range >= getGame().getMovementManager().getDistance(this, attacked));
 
     }
 
     @Override
     public boolean canMove() {
-        if (isBfObj())
+        if (isBfObj()) {
             return false;
+        }
         // if (isstructure)
         return canActNow();
     }
@@ -584,21 +627,25 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public boolean canCounter(DC_ActiveObj active, boolean sneak) {
-        if (!canCounter())
+        if (!canCounter()) {
             return false;
-        if (active.checkPassive(STANDARD_PASSIVES.NO_RETALIATION))
+        }
+        if (active.checkPassive(STANDARD_PASSIVES.NO_RETALIATION)) {
             return false;
+        }
         // if (!attacked.checkPassive(STANDARD_PASSIVES.VIGILANCE))
-        if (active.getOwnerObj().checkPassive(STANDARD_PASSIVES.NO_RETALIATION))
+        if (active.getOwnerObj().checkPassive(STANDARD_PASSIVES.NO_RETALIATION)) {
             return false;
+        }
         // may still fail to activate any particular Attack Action!
         return true;
     }
 
     public DC_ActiveObj getPreferredInstantAttack() {
         String action = getProperty(PROPS.DEFAULT_INSTANT_ATTACK_ACTION);
-        if (!action.isEmpty())
+        if (!action.isEmpty()) {
             preferredInstantAttack = getAction(action);
+        }
         return preferredInstantAttack;
     }
 
@@ -609,8 +656,9 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
 
     public DC_ActiveObj getPreferredCounterAttack() {
         String action = getProperty(PROPS.DEFAULT_COUNTER_ATTACK_ACTION);
-        if (!action.isEmpty())
+        if (!action.isEmpty()) {
             preferredCounterAttack = getAction(action);
+        }
         return preferredCounterAttack;
     }
 
@@ -621,8 +669,9 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
 
     public DC_ActiveObj getPreferredAttackOfOpportunity() {
         String action = getProperty(PROPS.DEFAULT_ATTACK_OF_OPPORTUNITY_ACTION);
-        if (!action.isEmpty())
+        if (!action.isEmpty()) {
             preferredAttackOfOpportunity = getAction(action);
+        }
         return preferredAttackOfOpportunity;
     }
 
@@ -641,12 +690,15 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public boolean canCounter() {
-        if (isDisabled())
+        if (isDisabled()) {
             return false;
-        if (checkModeDisablesCounters())
+        }
+        if (checkModeDisablesCounters()) {
             return false;
-        if (checkStatusDisablesCounters())
+        }
+        if (checkStatusDisablesCounters()) {
             return false;
+        }
         // TODO getMinimumAttackCost
         // if ( checkAlertCounter())
         // return false;
@@ -657,20 +709,25 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public boolean isDisabled() {
-        if (isUnconscious())
+        if (isUnconscious()) {
             return true;
+        }
         return isDead();
     }
 
     public boolean checkStatusDisablesCounters() {
-        if (checkStatus(STATUS.IMMOBILE))
+        if (checkStatus(STATUS.IMMOBILE)) {
             return true;
-        if (checkStatus(STATUS.CHARMED))
+        }
+        if (checkStatus(STATUS.CHARMED)) {
             return true;
-        if (checkStatus(STATUS.ENSNARED))
+        }
+        if (checkStatus(STATUS.ENSNARED)) {
             return true;
-        if (checkStatus(STATUS.PRONE))
+        }
+        if (checkStatus(STATUS.PRONE)) {
             return true;
+        }
         return checkStatus(STATUS.EXHAUSTED);
 
     }
@@ -680,44 +737,53 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     protected boolean checkAlertCounter() {
-        if (!getMode().equals(STD_MODES.ALERT))
+        if (!getMode().equals(STD_MODES.ALERT)) {
             return false;
+        }
         return checkActionCanBeActivated(DC_ActionManager.HIDDEN_ACTIONS.Counter_Attack.toString());
 
     }
 
     public boolean turnStarted() {
-        if (!game.fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_TURN_STARTED, ref)))
+        if (!game.fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_TURN_STARTED, ref))) {
             return false;
+        }
         return canActNow();
 
     }
 
     public boolean canAct() {
-        if (owner == Player.NEUTRAL)
+        if (owner == Player.NEUTRAL) {
             return false;
-        if (checkStatusPreventsActions())
+        }
+        if (checkStatusPreventsActions()) {
             return false;
+        }
         return !isImmobilized();
     }
 
     public boolean canActNow() {
-        if (owner == Player.NEUTRAL)
+        if (owner == Player.NEUTRAL) {
             return false;
-        if (checkStatusPreventsActions())
+        }
+        if (checkStatusPreventsActions()) {
             return false;
+        }
 
         // if (checkStatus(STATUS.DISCOMBOBULATED))
         // return false;
 
-        if (checkStatus(STATUS.ON_ALERT))
+        if (checkStatus(STATUS.ON_ALERT)) {
             return false;
-        if (checkStatus(STATUS.WAITING))
+        }
+        if (checkStatus(STATUS.WAITING)) {
             return false;
+        }
         // if (checkStatus(STATUS.LATE))
         // return false;
-        if (getIntParam(PARAMS.C_N_OF_ACTIONS) <= 0)
+        if (getIntParam(PARAMS.C_N_OF_ACTIONS) <= 0) {
             return false;
+        }
         return !isImmobilized();
 
     }
@@ -730,40 +796,49 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public boolean checkStatusPreventsActions() {
-        if (checkStatus(STATUS.DEAD))
+        if (checkStatus(STATUS.DEAD)) {
             return true;
-        if (checkStatus(STATUS.EXHAUSTED))
+        }
+        if (checkStatus(STATUS.EXHAUSTED)) {
             return true;
-        if (checkStatus(STATUS.ASLEEP))
+        }
+        if (checkStatus(STATUS.ASLEEP)) {
             return true;
-        if (checkStatus(STATUS.FROZEN))
+        }
+        if (checkStatus(STATUS.FROZEN)) {
             return true;
+        }
         return checkStatus(STATUS.UNCONSCIOUS);
     }
 
     public boolean isIncapacitated() {
-        if (checkStatus(STATUS.IMMOBILE))
+        if (checkStatus(STATUS.IMMOBILE)) {
             return true;
-        if (checkStatus(STATUS.CHARMED))
+        }
+        if (checkStatus(STATUS.CHARMED)) {
             return true;
+        }
         return checkStatusPreventsActions();
     }
 
     public boolean isImmobilized() {
 
-        if (checkStatus(STATUS.IMMOBILE))
+        if (checkStatus(STATUS.IMMOBILE)) {
             return true;
+        }
 
-        if (checkStatus(STATUS.CHARMED))
+        if (checkStatus(STATUS.CHARMED)) {
             return true;
+        }
 
         return checkModeDisablesActions();
 
     }
 
     public boolean checkModeDisablesCounters() {
-        if (getBehaviorMode() != null)
+        if (getBehaviorMode() != null) {
             return getBehaviorMode().isDisableCounters();
+        }
 
         return getMode().isDisableCounter();
     }
@@ -788,11 +863,13 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
         if (mode == null) {
             BEHAVIOR_MODE behavior = new EnumMaster<BEHAVIOR_MODE>().retrieveEnumConst(
                     BEHAVIOR_MODE.class, name);
-            if (behavior != null)
+            if (behavior != null) {
                 this.mode = new ModeImpl(behavior);
+            }
         }
-        if (mode == null)
+        if (mode == null) {
             this.mode = (STD_MODES.NORMAL);
+        }
 
         setMode(mode);
         main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, getName() + " has mode: " + mode);
@@ -800,17 +877,19 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public MODE getMode() {
-        if (mode == null || mode == STD_MODES.NORMAL)
+        if (mode == null || mode == STD_MODES.NORMAL) {
             initMode();
+        }
         return mode;
     }
 
     public void setMode(MODE mode) {
         this.mode = mode;
-        if (mode == null)
+        if (mode == null) {
             removeProperty(G_PROPS.MODE, "");
-        else
+        } else {
             setProperty(G_PROPS.MODE, StringMaster.getWellFormattedString(mode.toString()));
+        }
     }
 
     public boolean canAttack() {
@@ -828,9 +907,9 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
 
     @Override
     public void addPassive(String abilName) {
-        if (DataManager.isTypeName(abilName))
+        if (DataManager.isTypeName(abilName)) {
             super.addPassive(abilName);
-        else {
+        } else {
             addProperty(G_PROPS.STANDARD_PASSIVES, abilName);
         }
     }
@@ -845,14 +924,16 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public boolean isDone() {
-        if (isDead())
+        if (isDead()) {
             return true;
+        }
         return getIntParam(PARAMS.C_N_OF_ACTIONS) <= 0;
     }
 
     public void regen() {
-        if (isFull())
+        if (isFull()) {
             return;
+        }
         regen(PARAMS.ENDURANCE);
         regen(PARAMS.FOCUS);
         regen(PARAMS.ESSENCE);
@@ -863,11 +944,13 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     protected void regen(PARAMETER p) {
-        if (isFull(p))
+        if (isFull(p)) {
             return;
+        }
         Integer regen = getIntParam(ContentManager.getRegenParam(p));
-        if (regen != 0)
+        if (regen != 0) {
             modifyParameter(ContentManager.getCurrentParam(p), regen, getIntParam(p));
+        }
 
     }
 
@@ -877,24 +960,31 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public boolean isFull() {
-        if (getIntParam(PARAMS.C_ENDURANCE) < getIntParam(PARAMS.ENDURANCE))
+        if (getIntParam(PARAMS.C_ENDURANCE) < getIntParam(PARAMS.ENDURANCE)) {
             return false;
-        if (getIntParam(PARAMS.C_TOUGHNESS) < getIntParam(PARAMS.TOUGHNESS))
+        }
+        if (getIntParam(PARAMS.C_TOUGHNESS) < getIntParam(PARAMS.TOUGHNESS)) {
             return false;
-        if (getIntParam(PARAMS.C_ESSENCE) < getIntParam(PARAMS.ESSENCE))
+        }
+        if (getIntParam(PARAMS.C_ESSENCE) < getIntParam(PARAMS.ESSENCE)) {
             return false;
-        if (getIntParam(PARAMS.C_FOCUS) < getIntParam(PARAMS.FOCUS))
+        }
+        if (getIntParam(PARAMS.C_FOCUS) < getIntParam(PARAMS.FOCUS)) {
             return false;
-        if (getIntParam(PARAMS.C_STAMINA) < getIntParam(PARAMS.STAMINA))
+        }
+        if (getIntParam(PARAMS.C_STAMINA) < getIntParam(PARAMS.STAMINA)) {
             return false;
-        if (getIntParam(PARAMS.C_ESSENCE) < getIntParam(PARAMS.ESSENCE))
+        }
+        if (getIntParam(PARAMS.C_ESSENCE) < getIntParam(PARAMS.ESSENCE)) {
             return false;
+        }
         return getIntParam(PARAMS.C_ENERGY) >= getIntParam(PARAMS.ENERGY);
     }
 
     public FACING_DIRECTION getFacing() {
-        if (facing == null)
+        if (facing == null) {
             resetFacing();
+        }
         return facing;
     }
 
@@ -915,20 +1005,22 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
             facing = (new EnumMaster<FACING_DIRECTION>().retrieveEnumConst(FACING_DIRECTION.class,
                     name));
             if (facing == null) {
-                if (getDirection() != null)
+                if (getDirection() != null) {
                     FacingMaster.getFacingFromDirection(getDirection());
-                else if (ref.getObj(KEYS.SUMMONER) != null)
+                } else if (ref.getObj(KEYS.SUMMONER) != null) {
                     facing = ((DC_UnitObj) ref.getObj(KEYS.SUMMONER)).getFacing();
-                else
+                } else {
                     facing = FacingMaster.getRandomFacing();
+                }
             }
 
         }
     }
 
     public void initDeity() {
-        if (DataManager.isTypeName(getProperty(G_PROPS.DEITY)))
+        if (DataManager.isTypeName(getProperty(G_PROPS.DEITY))) {
             this.setDeity(DC_ContentManager.getDeity(this));
+        }
 
     }
 
@@ -938,11 +1030,13 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public ImageIcon getEmblem() {
-        if (emblem != null)
+        if (emblem != null) {
             return emblem;
+        }
 
-        if (getDeity() == null)
+        if (getDeity() == null) {
             return null;
+        }
         return getDeity().getEmblem();
     }
 
@@ -951,8 +1045,9 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public Deity getDeity() {
-        if (deity == null)
+        if (deity == null) {
             initDeity();
+        }
         return deity;
     }
 
@@ -962,9 +1057,10 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public DIRECTION getDirection() {
-        if (direction == null)
+        if (direction == null) {
             direction = new EnumMaster<DIRECTION>().retrieveEnumConst(DIRECTION.class,
                     getProperty(PROPS.DIRECTION));
+        }
         // if (direction == null)
         // if (!isOverlaying())
         // direction = facing.getDirection();
@@ -980,8 +1076,9 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public DequeImpl<Coordinates> getPlainSightSpectrumCoordinates() {
-        if (visibleCoordinates == null)
+        if (visibleCoordinates == null) {
             visibleCoordinates = new DequeImpl<>();
+        }
         return visibleCoordinates;
     }
 
@@ -990,22 +1087,25 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public void setSightSpectrumCoordinates(DequeImpl<Coordinates> list, boolean extended) {
-        if (extended)
+        if (extended) {
             this.sightSpectrumCoordinates = list;
-        else
+        } else {
             setPlainSightSpectrumCoordinates(list);
+        }
     }
 
     public DequeImpl<Coordinates> getSightSpectrumCoordinates(boolean extended) {
-        if (extended)
+        if (extended) {
             return getSightSpectrumCoordinates();
-        else
+        } else {
             return getPlainSightSpectrumCoordinates();
+        }
     }
 
     public DequeImpl<Coordinates> getSightSpectrumCoordinates() {
-        if (sightSpectrumCoordinates == null)
+        if (sightSpectrumCoordinates == null) {
             sightSpectrumCoordinates = new DequeImpl<>();
+        }
         return sightSpectrumCoordinates;
     }
 
@@ -1020,8 +1120,9 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public Map<ACTION_TYPE, List<DC_UnitAction>> getActionMap() {
-        if (actionMap == null)
+        if (actionMap == null) {
             actionMap = new HashMap<>();
+        }
         return actionMap;
     }
 
@@ -1039,8 +1140,9 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
 
     public boolean checkActionCanBeActivated(String actionName) {
         DC_UnitAction action = getAction(actionName);
-        if (action == null)
+        if (action == null) {
             return false;
+        }
         return action.canBeActivated();
     }
 
@@ -1049,8 +1151,9 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public DC_UnitAction getAction(String action, boolean strict) {
-        if (StringMaster.isEmpty(action))
+        if (StringMaster.isEmpty(action)) {
             return null;
+        }
         // if (game.isSimulation()) if (getGame().getActionManager().)
         // return new DC_UnitAction(DataManager.getType(action,
         // OBJ_TYPES.ACTIONS),
@@ -1058,17 +1161,20 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
         // }
         for (ACTION_TYPE type : getActionMap().keySet()) {
             for (DC_UnitAction a : getActionMap().get(type)) {
-                if (StringMaster.compare(action, a.getName(), true))
+                if (StringMaster.compare(action, a.getName(), true)) {
                     return a;
-            }
-        }
-        if (!strict)
-            for (ACTION_TYPE type : getActionMap().keySet()) {
-                for (DC_UnitAction a : getActionMap().get(type)) {
-                    if (StringMaster.compare(action, a.getName(), false))
-                        return a;
                 }
             }
+        }
+        if (!strict) {
+            for (ACTION_TYPE type : getActionMap().keySet()) {
+                for (DC_UnitAction a : getActionMap().get(type)) {
+                    if (StringMaster.compare(action, a.getName(), false)) {
+                        return a;
+                    }
+                }
+            }
+        }
         // DC_UnitAction unitAction = new
         // ListMaster<DC_UnitAction>().findType(action,
         // new MapMaster<ACTION_TYPE, DC_UnitAction>().joinMap(getActionMap()));
@@ -1084,18 +1190,20 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     public AI_TYPE getAiType() {
         AI_TYPE ai = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class,
                 getProperty(PROPS.AI_TYPE));
-        if (ai == null)
+        if (ai == null) {
             return AI_TYPE.NORMAL;
+        }
         return ai;
     }
 
     public DAMAGE_TYPE getDamageType() {
         if (dmg_type == null) {
             String name = getProperty(PROPS.DAMAGE_TYPE);
-            if (StringMaster.isEmpty(name))
+            if (StringMaster.isEmpty(name)) {
                 dmg_type = DAMAGE_TYPE.PHYSICAL;
-            else
+            } else {
                 dmg_type = new EnumMaster<DAMAGE_TYPE>().retrieveEnumConst(DAMAGE_TYPE.class, name);
+            }
         }
         return dmg_type;
     }
@@ -1118,14 +1226,16 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public boolean isHuge() {
-        if (checkProperty(G_PROPS.STANDARD_PASSIVES, "" + STANDARD_PASSIVES.HUGE))
+        if (checkProperty(G_PROPS.STANDARD_PASSIVES, "" + STANDARD_PASSIVES.HUGE)) {
             return true;
+        }
         return checkProperty(G_PROPS.CLASSIFICATIONS, "" + CLASSIFICATIONS.HUGE);
     }
 
     public boolean isSmall() {
-        if (checkProperty(G_PROPS.STANDARD_PASSIVES, "" + STANDARD_PASSIVES.SMALL))
+        if (checkProperty(G_PROPS.STANDARD_PASSIVES, "" + STANDARD_PASSIVES.SMALL)) {
             return true;
+        }
         return checkProperty(G_PROPS.CLASSIFICATIONS, "" + CLASSIFICATIONS.SMALL);
     }
 
@@ -1138,8 +1248,9 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public UnitAI getUnitAI() {
-        if (unitAI == null)
+        if (unitAI == null) {
             unitAI = new UnitAI(this);
+        }
         return unitAI;
     }
 
@@ -1156,16 +1267,21 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     public boolean isLiving() {
-        if (checkClassification(CLASSIFICATIONS.UNDEAD))
+        if (checkClassification(CLASSIFICATIONS.UNDEAD)) {
             return false;
-        if (checkClassification(CLASSIFICATIONS.WRAITH))
+        }
+        if (checkClassification(CLASSIFICATIONS.WRAITH)) {
             return false;
-        if (checkClassification(CLASSIFICATIONS.ELEMENTAL))
+        }
+        if (checkClassification(CLASSIFICATIONS.ELEMENTAL)) {
             return false;
-        if (checkClassification(CLASSIFICATIONS.CONSTRUCT))
+        }
+        if (checkClassification(CLASSIFICATIONS.CONSTRUCT)) {
             return false;
-        if (checkClassification(CLASSIFICATIONS.STRUCTURE))
+        }
+        if (checkClassification(CLASSIFICATIONS.STRUCTURE)) {
             return false;
+        }
         return !checkClassification(CLASSIFICATIONS.MECHANICAL);
     }
 

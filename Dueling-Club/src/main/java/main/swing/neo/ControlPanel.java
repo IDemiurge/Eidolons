@@ -32,8 +32,9 @@ public abstract class ControlPanel extends G_Panel implements ButtonHandler {
             String pos = "growx 100";
             add(getButton(command), pos);
             i++;
-            if (i == 2)
+            if (i == 2) {
                 i++;
+            }
         }
         revalidate();
 

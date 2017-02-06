@@ -31,22 +31,30 @@ public class HallOfFame {
     }
 
     public static String getComment(int place) {
-        if (place < 1)
+        if (place < 1) {
             return "!! But for how long?..";
-        if (place < 2)
+        }
+        if (place < 2) {
             return "! A great honor indeed!";
-        if (place < 3)
+        }
+        if (place < 3) {
             return "! Who would have thought?";
-        if (place < 5)
+        }
+        if (place < 5) {
             return "! Quite Remarkable...";
-        if (place < 8)
+        }
+        if (place < 8) {
             return "! Remarkable...";
-        if (place < 12)
+        }
+        if (place < 12) {
             return ". Some may yet toast to your deeds...";
-        if (place < 16)
+        }
+        if (place < 16) {
             return "... Hardly worth mentioning.";
-        if (place < 25)
+        }
+        if (place < 25) {
             return "... You should be back.";
+        }
         return "... No comment";
     }
 

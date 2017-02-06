@@ -29,27 +29,33 @@ public class SpellRadialManager {
                 .filter(spell -> (spell.getGame().isDebugMode() || (spell.canBeActivated() && spell.canBeTargeted(target.getId()))))
                 .collect(Collectors.toList());
         if (spells.size() <= MAX_SPELLS_DISPLAYED) {
-            for (DC_SpellObj g : spells)
+            for (DC_SpellObj g : spells) {
                 nodes.add(createNodeBranch(new EntityNode(g), source, target));
+            }
             return nodes;
         }
         for (DC_SpellObj spell : spells) {
             CONTENT_CONSTS.SPELL_GROUP group = spell.getSpellGroup();
             spell_groups.add(group);
 
-            for (SPELL_ASPECT g : SPELL_ASPECT.values())
-                if (!aspects.contains(g))
+            for (SPELL_ASPECT g : SPELL_ASPECT.values()) {
+                if (!aspects.contains(g)) {
                     if (new LinkedList<>(Arrays.asList(g.groups))
-                            .contains(spell.getSpellGroup()))
+                            .contains(spell.getSpellGroup())) {
                         aspects.add(g);
+                    }
+                }
+            }
 
         }
-        if (aspects.size() > 1)
-            for (SPELL_ASPECT g : aspects)
+        if (aspects.size() > 1) {
+            for (SPELL_ASPECT g : aspects) {
                 nodes.add(createNodeBranch(new RadialSpellAspect(g), source, target));
-        else {
-            for (SPELL_GROUP g : spell_groups)
+            }
+        } else {
+            for (SPELL_GROUP g : spell_groups) {
                 nodes.add(createNodeBranch(new RadialSpellGroup(g), source, target));
+            }
         }
 
         return nodes;
@@ -73,9 +79,9 @@ public class SpellRadialManager {
             node.action = new Runnable() {
                 @Override
                 public void run() {
-                    if (checkForceTargeting(source, target, action))
+                    if (checkForceTargeting(source, target, action)) {
                         action.invokeClicked();
-                    else {
+                    } else {
                         action.getRef().setTarget(target.getId());
                         action.activate(action.getRef());
 

@@ -29,7 +29,7 @@ public class SpellUpgradePage extends InfoPage implements MouseListener {
         this.entity = entity;
         // new PropertyPage(list, entity)
         List<SPELL_UPGRADE> upgrades = SpellUpgradeMaster.getAvailableUpgradesFromSpell(entity);
-        if (upgrades.isEmpty())
+        if (upgrades.isEmpty()) {
             upgrades = new ListMaster<SPELL_UPGRADE>().getList(SPELL_UPGRADE.APHOTIC,
                     SPELL_UPGRADE.DRAINING, SPELL_UPGRADE.VAMPIRIC, SPELL_UPGRADE.PUTRID,
                     SPELL_UPGRADE.TWILIGHT, SPELL_UPGRADE.GHOSTLY, SPELL_UPGRADE.VINDICATION,
@@ -42,6 +42,7 @@ public class SpellUpgradePage extends InfoPage implements MouseListener {
                     SPELL_UPGRADE.BLIGHT
 
             );
+        }
         textComp = new WrappedTextComp(null, true);
         textComp.setDefaultSize(new Dimension(getVisuals().getWidth() - 40, getVisuals()
                 .getHeight()
@@ -52,8 +53,9 @@ public class SpellUpgradePage extends InfoPage implements MouseListener {
         int n = 0;
         String y = ", y textComp.y2";
         for (SPELL_UPGRADE su : upgrades) {
-            if (n == 0)
+            if (n == 0) {
                 selected = su;
+            }
             if (n >= wrap) {
                 n = 0;
                 y += "+" + 72;
@@ -73,16 +75,18 @@ public class SpellUpgradePage extends InfoPage implements MouseListener {
         for (SPELL_UPGRADE su : comps.keySet()) {
             comps.get(su).setSelected(su == selected);
             Image glyphImage = null;
-            if (SpellUpgradeMaster.getActiveUpgradesFromSpell(entity).contains(su))
+            if (SpellUpgradeMaster.getActiveUpgradesFromSpell(entity).contains(su)) {
                 glyphImage = su.getGlyphImageActive(); // (su == selected) ?
-            else
+            } else {
                 glyphImage = (su == selected) ? su.getGlyphImageSelected() : su.getGlyphImage();
+            }
             comps.get(su).setImg(glyphImage);
             comps.get(su).repaint();
         }
         String string = selected.getDescription();
-        if (string == null)
+        if (string == null) {
             string = selected.getName();
+        }
         textComp.setText(selected.getName() + ": "
                 // entity.getType().getName() + " Upgrades: \n"
                 + string
@@ -96,8 +100,9 @@ public class SpellUpgradePage extends InfoPage implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         SPELL_UPGRADE upgrade = ((SpellUpgradeComp) e.getSource()).getUpgrade();
         selected = upgrade;
-        if (e.getClickCount() > 1)
+        if (e.getClickCount() > 1) {
             CharacterCreator.getHeroManager().spellUpgradeToggle(selected, entity);
+        }
         refresh();
 
     }

@@ -187,8 +187,9 @@ public class DC_Game extends MicroGame {
         Chronos.mark("GAME_INIT");
         units = new DequeImpl<DC_HeroObj>() {
             public boolean add(DC_HeroObj e) {
-                if (e.isHidden())
+                if (e.isHidden()) {
                     return false;
+                }
                 return super.add(e);
             }
         };
@@ -289,8 +290,9 @@ public class DC_Game extends MicroGame {
         battleFieldManager = new DC_BattleFieldManager(this, battlefield);
         movementManager.setGrid(battlefield.getGrid());
         // }
-        if (getUiOptions() == null)
+        if (getUiOptions() == null) {
             setUiOptions(new UIOptions());
+        }
 
         if (AI_ON) {
             aiManager = new AI_Manager(this);
@@ -312,7 +314,9 @@ public class DC_Game extends MicroGame {
         } else {
             DC_Player player = playerMaster.initPlayer(hcc, data);
             if (player.isEnemy())// ??? TODO
+            {
                 setEnemyParty(player.getPartyDataString());
+            }
         }
         getCommunicator().setConnectionHandler(hcc);
     }
@@ -321,8 +325,9 @@ public class DC_Game extends MicroGame {
         if (communicator == null) {
             communicator = new DC_Communicator(this);
             connector.setCommunicator(communicator);
-            if (connection != null)
+            if (connection != null) {
                 communicator.setConnectionHandler(connection);
+            }
         }
         return (DC_Communicator) communicator;
     }
@@ -338,6 +343,7 @@ public class DC_Game extends MicroGame {
 //            WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
         } else if (!battlefield.isInitialized())
             // gui starts building while logic is getting ready TODO
+        {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     try {
@@ -349,12 +355,15 @@ public class DC_Game extends MicroGame {
                     battlefield.setInitialized(true);
                 }
             });
-        else
+        } else
             // when is this really called? TODO
+        {
             battlefield.init();
+        }
 
-        if (isDebugMode())
+        if (isDebugMode()) {
             debugMaster = new DebugMaster(getState(), getBattleField().getBuilder());
+        }
 
         arenaManager.startGame();
         game.getGraveyardManager().init();
@@ -365,23 +374,26 @@ public class DC_Game extends MicroGame {
 
         startGameLoop();
 
-        if (hostClient != null)
+        if (hostClient != null) {
             if (hostClient) {
                 waitForPlayers();
             } else {
                 getConnection().send(HOST_CLIENT_CODES.CHECK_READY, getPlayer(true).getName());
             }
-        if (playerMaster == null)
+        }
+        if (playerMaster == null) {
             playerMaster = new PlayerMaster(game, getPlayer(true), getPlayer(false));
+        }
         playerMaster.initPlayerFlags();
 
-        if (GameScreen.getInstance() != null)
+        if (GameScreen.getInstance() != null) {
             GameScreen.getInstance().PostGameStart();
+        }
         Chronos.logTimeElapsedForMark("GAME_START");
     }
 
     private void waitForPlayers() {
-        if (connection == null)
+        if (connection == null) {
             if (hostClient) {
                 // PlayerWaitDialog dialog = new
                 // PlayerWaitDialog(getConnector().getGameHost());
@@ -396,6 +408,7 @@ public class DC_Game extends MicroGame {
                 // };
                 // dialogue.s
             }
+        }
 
     }
 
@@ -414,13 +427,14 @@ public class DC_Game extends MicroGame {
 
                 @Override
                 public void run() {
-                    while (true)
+                    while (true) {
                         try {
                             state.newRound();
                             Thread.sleep(0);//release remains time quota
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                    }
                     // while (true) {
                     // if (turnManager.makeTurn()) {
                     // manager.endTurn();
@@ -484,8 +498,9 @@ public class DC_Game extends MicroGame {
         WaitRule.reset();
         for (Obj obj : getObjects(OBJ_TYPES.BUFFS)) {
             BuffObj buff = (BuffObj) obj;
-            if (buff.isDispelable() || !buff.isPermanent())
+            if (buff.isDispelable() || !buff.isPermanent()) {
                 buff.kill();
+            }
         }
         state.reset();
         logManager.clear();
@@ -496,13 +511,15 @@ public class DC_Game extends MicroGame {
             if (!obj.getOriginalOwner().isMe()) {
                 obj.kill(obj, false, true);
             }
-            if (!mainMenu && obj.getOwner().isMe())
+            if (!mainMenu && obj.getOwner().isMe()) {
                 continue;
+            }
 
             state.removeObject(obj.getId());
         }
-        if (mainMenu)
+        if (mainMenu) {
             getUnits().clear();
+        }
 
         for (Obj obj : getCells()) {
             obj.kill(obj, false, true);
@@ -516,8 +533,9 @@ public class DC_Game extends MicroGame {
         super.initObjTypes();
         if (Launcher.isMacroMode()) {
             for (OBJ_TYPE TYPE : MACRO_OBJ_TYPES.values()) {
-                if (TYPE.getCode() == -1)
+                if (TYPE.getCode() == -1) {
                     continue;
+                }
                 initTYPE(TYPE);
             }
         }
@@ -525,8 +543,9 @@ public class DC_Game extends MicroGame {
 
     @Override
     public IdManager getIdManager() {
-        if (idManager != null)
+        if (idManager != null) {
             return idManager;
+        }
 
         return idManager = new DC_IdManager(null, this);
 
@@ -549,8 +568,9 @@ public class DC_Game extends MicroGame {
     }
 
     public JFrame getWindow() {
-        if (getGUI() == null)
+        if (getGUI() == null) {
             return null;
+        }
         return getGUI().getWindow();
     }
 
@@ -593,9 +613,11 @@ public class DC_Game extends MicroGame {
     }
 
     public synchronized DebugMaster getDebugMaster() {
-        if (debugMaster == null)
-            if (getBattleField() != null)
+        if (debugMaster == null) {
+            if (getBattleField() != null) {
                 return new DebugMaster(getState(), getBattleField().getBuilder());
+            }
+        }
         return debugMaster;
     }
 
@@ -612,8 +634,9 @@ public class DC_Game extends MicroGame {
     }
 
     public GAME_MODES getGameMode() {
-        if (ArenaArcadeMaster.isTestMode())
+        if (ArenaArcadeMaster.isTestMode()) {
             return GAME_MODES.ARENA_ARCADE;
+        }
         return gameMode;
     }
 
@@ -626,14 +649,16 @@ public class DC_Game extends MicroGame {
     }
 
     public void setPlayerParty(String playerParty) {
-        if (getPlayer(true) != null)
+        if (getPlayer(true) != null) {
             getPlayer(true).setPartyDataString(playerParty);
+        }
         this.playerParty = playerParty;
     }
 
     public synchronized String getPlayerParty() {
-        if (getParty() != null)
+        if (getParty() != null) {
             return getParty().getProperty(PROPS.MEMBERS);
+        }
 
         return playerParty;
     }
@@ -663,12 +688,14 @@ public class DC_Game extends MicroGame {
 
     public Obj getObjectByCoordinate(Integer z, Coordinates c, boolean cellsIncluded,
                                      boolean passableIncluded, boolean overlayingIncluded) {
-        if (c == null)
+        if (c == null) {
             return null;
+        }
         List<DC_HeroObj> list = getObjectsOnCoordinate(c);
         if (list.isEmpty()) {
-            if (cellsIncluded)
+            if (cellsIncluded) {
                 return getCellByCoordinate(c);
+            }
             return null;
         }
         // ObjComponent objComp = null;
@@ -691,8 +718,9 @@ public class DC_Game extends MicroGame {
     public List<DC_HeroObj> getObjectsOnCoordinate(Coordinates c) {
         // [QUICK FIX] - consider no-reset coordinate changes for AI etc
         List<DC_HeroObj> units = getUnitCache().get(c);
-        if (units != null)
+        if (units != null) {
             return units;
+        }
         units = getObjectsOnCoordinate(null, c, null, true, false);
         getUnitCache().put(c, units);
         return units;
@@ -706,21 +734,25 @@ public class DC_Game extends MicroGame {
     public List<DC_HeroObj> getObjectsOnCoordinate(Integer z, Coordinates c,
                                                    Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
         // TODO auto adding cells won't work!
-        if (c == null)
+        if (c == null) {
             return null;
+        }
 
-        if (z == null)
+        if (z == null) {
             z = getDungeon().getZ();
+        }
         XList<DC_HeroObj> list = new XList<>();
 
         for (DC_HeroObj unit : getUnits()) {
             if (overlayingIncluded != null) {
                 if (overlayingIncluded) {
-                    if (!unit.isOverlaying())
+                    if (!unit.isOverlaying()) {
                         continue;
+                    }
                 } else {
-                    if (unit.isOverlaying())
+                    if (unit.isOverlaying()) {
                         continue;
+                    }
                 }
             }
 
@@ -766,8 +798,9 @@ public class DC_Game extends MicroGame {
     public void remove(Obj obj) {
         state.removeObject(obj.getId());
         obj.removed();
-        if (obj instanceof DC_HeroObj)
+        if (obj instanceof DC_HeroObj) {
             getUnits().remove(obj);
+        }
     }
 
     public InventoryManager getInventoryManager() {
@@ -782,8 +815,9 @@ public class DC_Game extends MicroGame {
 
     public List<DC_Cell> getCellsForCoordinates(List<Coordinates> coordinates) {
         List<DC_Cell> list = new LinkedList<>();
-        for (Coordinates c : coordinates)
+        for (Coordinates c : coordinates) {
             list.add(getCellByCoordinate(c));
+        }
         return list;
     }
 
@@ -797,19 +831,25 @@ public class DC_Game extends MicroGame {
 
     public Collection<Obj> getUnitsForCoordinates(Set<Coordinates> coordinates) {
         Collection<Obj> list = new LinkedList<>();
-        for (Coordinates c : coordinates)
-            for (DC_HeroObj unit : getUnits())
-                if (unit.getCoordinates().equals(c))
+        for (Coordinates c : coordinates) {
+            for (DC_HeroObj unit : getUnits()) {
+                if (unit.getCoordinates().equals(c)) {
                     list.add(unit);
+                }
+            }
+        }
         return list; // TODO z-coordinate?
     }
 
     public Collection<? extends Obj> getCellsForCoordinates(Set<Coordinates> coordinates) {
         Collection<Obj> list = new LinkedList<>();
-        for (Coordinates c : coordinates)
-            for (Obj cell : getCells())
-                if (cell.getCoordinates().equals(c))
+        for (Coordinates c : coordinates) {
+            for (Obj cell : getCells()) {
+                if (cell.getCoordinates().equals(c)) {
                     list.add(cell);
+                }
+            }
+        }
         return list;
     }
 
@@ -831,8 +871,9 @@ public class DC_Game extends MicroGame {
     }
 
     public DC_Player getPlayer(boolean me) {
-        if (playerMaster != null)
+        if (playerMaster != null) {
             return playerMaster.getPlayer(me);
+        }
         return (DC_Player) super.getPlayer(me);
     }
 
@@ -857,8 +898,9 @@ public class DC_Game extends MicroGame {
     }
 
     public Map<DC_HeroObj, Map<String, DC_HeroAttachedObj>> getSimulationCache() {
-        if (simulationCache == null)
+        if (simulationCache == null) {
             simulationCache = new XLinkedMap<DC_HeroObj, Map<String, DC_HeroAttachedObj>>();
+        }
         return simulationCache;
     }
 
@@ -911,8 +953,9 @@ public class DC_Game extends MicroGame {
     }
 
     public DC_GameData getData() {
-        if (data == null)
+        if (data == null) {
             setData(new DC_GameData(""));
+        }
         return data;
     }
 
@@ -970,13 +1013,17 @@ public class DC_Game extends MicroGame {
     }
 
     public void checkAddUnit(DC_HeroObj obj) {
-        if (!obj.isHidden())
-            if (!getUnits().contains(obj))
+        if (!obj.isHidden()) {
+            if (!getUnits().contains(obj)) {
                 getUnits().add(obj);
+            }
+        }
     }
 
     public Dungeon getDungeon() {
-        if (getDungeonMaster() == null) return null;
+        if (getDungeonMaster() == null) {
+            return null;
+        }
         return getDungeonMaster().getDungeon();
     }
 
@@ -998,14 +1045,16 @@ public class DC_Game extends MicroGame {
     }
 
     public Map<Coordinates, Map<DC_HeroObj, FLIP>> getFlipMap() {
-        if (flipMap == null)
+        if (flipMap == null) {
             flipMap = new HashMap<Coordinates, Map<DC_HeroObj, FLIP>>();
+        }
         return flipMap;
     }
 
     public Map<Coordinates, Map<DC_HeroObj, DIRECTION>> getDirectionMap() {
-        if (directionMap == null)
+        if (directionMap == null) {
             directionMap = new HashMap<>();
+        }
         return directionMap;
     }
 
@@ -1018,8 +1067,9 @@ public class DC_Game extends MicroGame {
     }
 
     public Map<Coordinates, List<DC_HeroObj>> getUnitMap() {
-        if (unitMap == null)
+        if (unitMap == null) {
             unitMap = new HashMap<>();
+        }
         return unitMap;
     }
 
@@ -1033,8 +1083,9 @@ public class DC_Game extends MicroGame {
 
     public void setEnemyParty(String property) {
         this.enemyParty = property;
-        if (getPlayer(false) != null)
+        if (getPlayer(false) != null) {
             getPlayer(false).setPartyDataString(property);
+        }
     }
 
     public Map<Coordinates, List<DC_HeroObj>> getUnitCache() {
@@ -1059,8 +1110,9 @@ public class DC_Game extends MicroGame {
 
     public void setHostClient(Boolean hostClient) {
         this.hostClient = hostClient;
-        if (hostClient != null)
+        if (hostClient != null) {
             UnitMaster.setRandom(false);
+        }
     }
 
     public GameConnector getConnector() {

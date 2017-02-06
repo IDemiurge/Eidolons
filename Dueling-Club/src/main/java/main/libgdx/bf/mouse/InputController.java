@@ -128,8 +128,9 @@ public class InputController implements InputProcessor {
     @Override
     public boolean touchDragged(int i, int i1, int i2) {
 
-        if (DialogDisplay.isDisplaying())
+        if (DialogDisplay.isDisplaying()) {
             return false;
+        }
 //        System.out.println("i = " + i + " || i1 = " + i1 + " || i2 = "  + i2);
         if (is_it_Left_Click) {
             camera.position.x += (x_cam_pos - i) * camera.zoom;
@@ -214,8 +215,9 @@ public class InputController implements InputProcessor {
                 camera.zoom += 0.25f;
             }
             if (i == -1) {
-                if (camera.zoom >= 0.25f)
+                if (camera.zoom >= 0.25f) {
                     camera.zoom -= 0.25f;
+                }
             }
         }
     }

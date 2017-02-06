@@ -31,20 +31,22 @@ public class AnimationEffect extends DC_Effect {
 
     @Override
     public boolean applyThis() {
-        if (action != null)
+        if (action != null) {
             getGame().getAnimationManager().actionResolves(action, ref);
-        else if (actionName == null)
+        } else if (actionName == null) {
             getGame().getAnimationManager().actionResolves(
                     (DC_ActiveObj) ref.getActive(), ref);
-        else {
-            ImageIcon icon = null;
+        } else {
+            ImageIcon icon;
             ObjType type = DataManager.getType(actionName, C_OBJ_TYPE.ACTIVE);
-            if (type == null)
+            if (type == null) {
                 type = DataManager.getType(actionName);
+            }
             if (type == null) {
                 icon = ImageManager.getIcon(actionName);
-            } else
+            } else {
                 icon = type.getIcon();
+            }
             getGame().getAnimationManager().actionResolves(icon, ref);
 
         }

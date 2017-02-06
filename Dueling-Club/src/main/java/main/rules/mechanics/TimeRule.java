@@ -74,8 +74,9 @@ public class TimeRule {
         for (DC_HeroObj unit : game.getUnits()) {
             Integer totalInitiative = unit.getIntParam(PARAMS.C_INITIATIVE)
                     - unit.getIntParam(PARAMS.C_INITIATIVE_BONUS);
-            if (totalInitiative > totalTime)
+            if (totalInitiative > totalTime) {
                 totalTime = totalInitiative;
+            }
         }
         baseTime = totalTime;
         maxTime = 0;
@@ -90,8 +91,9 @@ public class TimeRule {
     public boolean checkTime(DC_ActiveObj action, int time_used) {
         DC_Obj unitObj = action.getOwnerObj();
         Integer prevTime = timeMap.get(unitObj);
-        if (prevTime == null)
+        if (prevTime == null) {
             prevTime = 0;
+        }
         int time = prevTime + time_used;
 
         timeMap.put(unitObj, time);
@@ -126,10 +128,11 @@ public class TimeRule {
         // boolean result =true;
         for (DC_HeroObj unit : game.getUnits()) {
             if (unit.canActNow()) {
-                if (unit.getBuff(BUFF_NAME_PRELIMINARY) == null)
+                if (unit.getBuff(BUFF_NAME_PRELIMINARY) == null) {
                     return false;
-                else
+                } else {
                     lateUnits.add(unit);
+                }
             }
         }
 
@@ -148,7 +151,7 @@ public class TimeRule {
     }
 
     public boolean actionComplete(DC_ActiveObj action, int time_cost) {
-        if (!active)
+        if (!active) {
             if (checkTime(action, time_cost)) {
                 active = true;
                 // game.getLogManager()
@@ -170,9 +173,11 @@ public class TimeRule {
 
                 // return false;
             }
+        }
 
-        if (!active)
+        if (!active) {
             return false;
+        }
 
         // DC_Obj unitObj = action.getOwnerObj();
         // addBuff(unitObj, false);
@@ -188,8 +193,9 @@ public class TimeRule {
     }
 
     private void addBuff(DC_HeroObj unitObj, boolean preliminary) {
-        if (unitObj.isBfObj())
+        if (unitObj.isBfObj()) {
             return;
+        }
         AddStatusEffect effect = null;
         effect = new AddStatusEffect(STATUS.LATE);
         new AddBuffEffect((preliminary) ? BUFF_NAME_PRELIMINARY : BUFF_NAME, effect, 1).apply(Ref

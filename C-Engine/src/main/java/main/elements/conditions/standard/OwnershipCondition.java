@@ -45,17 +45,20 @@ public class OwnershipCondition extends ConditionImpl {
         Obj obj2 = ref.getObj(string2);
 //        if (obj==null )
 //            return  false;
-        if (player != null)
+        if (player != null) {
             return obj.getOwner() == player;
-        if (neutral)
+        }
+        if (neutral) {
             return obj.getOwner() == Player.NEUTRAL;
+        }
 
-        if (enemy)
+        if (enemy) {
             return obj.getOwner() != Player.NEUTRAL
                     && obj.getOwner() != obj2
                     .getOwner();
-        else
+        } else {
             return obj.getOwner() == obj2
                     .getOwner();
+        }
     }
 }

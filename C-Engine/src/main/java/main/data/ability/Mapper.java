@@ -55,18 +55,21 @@ public class Mapper {
             main.system.auxiliary.LogMaster.log(1, "*** No item for " + itemName);
             return null;
         }
-        if (item.getArgList().equals(argList))
+        if (item.getArgList().equals(argList)) {
             return item;
-        else {
-            if (item.isContainer())
+        } else {
+            if (item.isContainer()) {
                 return item;
+            }
 
             for (String key : itemMap.keySet()) {
                 if (key.contains(ARG_LIST_SEPARATOR)) {
                     String substring = key.substring(0, key.indexOf(ARG_LIST_SEPARATOR));
-                    if (StringMaster.compareByChar(substring, itemName, true))
-                        if (itemMap.get(key).getArgList().equals(argList))
+                    if (StringMaster.compareByChar(substring, itemName, true)) {
+                        if (itemMap.get(key).getArgList().equals(argList)) {
                             return itemMap.get(key);
+                        }
+                    }
                 }
 
             }
@@ -98,15 +101,17 @@ public class Mapper {
 
     private static List<Argument> getArgList(Class<?>[] parameterTypes) {
         List<Argument> list = new ArrayList<Argument>();
-        for (Class<?> type : parameterTypes)
+        for (Class<?> type : parameterTypes) {
             list.add(translateToArg(type));
+        }
         return list;
     }
 
     private static List<Argument> getArgs(List<Node> list2) {
         List<Argument> list = new ArrayList<Argument>();
-        for (Node node : list2)
+        for (Node node : list2) {
             list.add(translateToArg(node.getNodeName()));
+        }
         return list;
     }
 
@@ -159,8 +164,9 @@ public class Mapper {
             // though...
             Argument a = new ArgumentImpl(c, c.getSimpleName()); // format?
             List<AE_Item> list = new LinkedList<AE_Item>();
-            if (!map.containsKey(a))
+            if (!map.containsKey(a)) {
                 map.put(a, list);
+            }
         }
     }
 
@@ -222,21 +228,24 @@ public class Mapper {
 
     private static boolean constructAE_Item(Class<?> CLASS) {
 
-        if (!checkClass(CLASS))
+        if (!checkClass(CLASS)) {
             return false;
+        }
         String name = CLASS.getSimpleName();
         // create an item for each constructor
         try {
             for (Constructor<?> constr : CLASS.getConstructors()) {
-                if (constr.getAnnotation(OmittedConstructor.class) != null)
+                if (constr.getAnnotation(OmittedConstructor.class) != null) {
                     continue;
+                }
                 Argument mappedArg = translateToArg(CLASS);
 
                 boolean container = Arrays.asList(CONTAINER_CLASSES).contains(CLASS)
                         || mappedArg.isContainer();
                 if (container) {
-                    if (itemMap.containsKey(name))
+                    if (itemMap.containsKey(name)) {
                         continue;
+                    }
                 }
                 List<Argument> argList = new LinkedList<Argument>();
 
@@ -245,9 +254,9 @@ public class Mapper {
                 }
 
                 AE_Item item = new AE_Item(name, mappedArg, argList, CLASS, container, constr);
-                if (!itemMap.containsKey(name))
+                if (!itemMap.containsKey(name)) {
                     itemMap.put(name, item);
-                else {
+                } else {
                     // additional_item_list.add(item); TODO
                     itemMap.put(name + ARG_LIST_SEPARATOR + item.getArgList(), item);
                 }
@@ -255,8 +264,9 @@ public class Mapper {
                 mappedArg = translateToArg(CLASS
                         // .getSuperclass()
                 );
-                if (!(map.get(mappedArg).contains(name)))
+                if (!(map.get(mappedArg).contains(name))) {
                     map.get(mappedArg).add(item);
+                }
 
             }
         } catch (Exception e) {
@@ -281,22 +291,26 @@ public class Mapper {
             return ARGS.UNKNOWN;
         }
         for (Argument arg : args) {
-            if (arg.getCoreClass() == CLASS)
+            if (arg.getCoreClass() == CLASS) {
                 return arg;
+            }
         }
         for (Argument arg : args) {
-            if (Arrays.asList(CLASS.getInterfaces()).contains(arg.getCoreClass()))
+            if (Arrays.asList(CLASS.getInterfaces()).contains(arg.getCoreClass())) {
                 return arg;
+            }
             Class<?> sc = CLASS.getSuperclass();
             Loop.startLoop(10);
             while (sc != Object.class && sc != null) {
-                if (Loop.loopEnded())
+                if (Loop.loopEnded()) {
                     break;
+                }
                 if (sc.equals(arg.getCoreClass())
                         || Arrays.asList(sc.getInterfaces()).contains(arg.getCoreClass())) {
                     return arg;
-                } else
+                } else {
                     sc = sc.getSuperclass();
+                }
             }
         }
         return ARGS.UNKNOWN;
@@ -315,8 +329,9 @@ public class Mapper {
         }
 
         Class<?> CLASS = item.getConcreteClass();
-        if (CLASS == null)
+        if (CLASS == null) {
             return null;
+        }
         return CLASS;
     }
 

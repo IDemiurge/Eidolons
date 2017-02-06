@@ -1,7 +1,10 @@
 package main.game.battlefield;
 
 import main.content.CONTENT_CONSTS.FACING_SINGLE;
-import main.entity.obj.*;
+import main.entity.obj.BattlefieldObj;
+import main.entity.obj.DC_HeroObj;
+import main.entity.obj.DC_UnitObj;
+import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
@@ -39,40 +42,49 @@ public class FacingMaster {
 
     public static FACING_SINGLE getSingleFacing(FACING_DIRECTION facing, Coordinates c1,
                                                 Coordinates c2) {
-        if (c1.equals(c2))
+        if (c1.equals(c2)) {
             return FACING_SINGLE.IN_FRONT;
+        }
         switch (facing) {
             case NONE:
                 return FACING_SINGLE.NONE;
             case EAST:
-                if (c1.getX() == c2.getX())
+                if (c1.getX() == c2.getX()) {
                     return FACING_SINGLE.TO_THE_SIDE;
-                if (!PositionMaster.isToTheLeft(c1, c2))
+                }
+                if (!PositionMaster.isToTheLeft(c1, c2)) {
                     return FACING_SINGLE.BEHIND;
-                else
+                } else {
                     return FACING_SINGLE.IN_FRONT;
+                }
 
             case NORTH:
-                if (c1.getY() == c2.getY())
+                if (c1.getY() == c2.getY()) {
                     return FACING_SINGLE.TO_THE_SIDE;
-                if (PositionMaster.isAbove(c1, c2))
+                }
+                if (PositionMaster.isAbove(c1, c2)) {
                     return FACING_SINGLE.BEHIND;
-                else
+                } else {
                     return FACING_SINGLE.IN_FRONT;
+                }
             case SOUTH:
-                if (c1.getY() == c2.getY())
+                if (c1.getY() == c2.getY()) {
                     return FACING_SINGLE.TO_THE_SIDE;
-                if (!PositionMaster.isAbove(c1, c2))
+                }
+                if (!PositionMaster.isAbove(c1, c2)) {
                     return FACING_SINGLE.BEHIND;
-                else
+                } else {
                     return FACING_SINGLE.IN_FRONT;
+                }
             case WEST:
-                if (c1.getX() == c2.getX())
+                if (c1.getX() == c2.getX()) {
                     return FACING_SINGLE.TO_THE_SIDE;
-                if (PositionMaster.isToTheLeft(c1, c2))
+                }
+                if (PositionMaster.isToTheLeft(c1, c2)) {
                     return FACING_SINGLE.BEHIND;
-                else
+                } else {
                     return FACING_SINGLE.IN_FRONT;
+                }
 
         }
         return FACING_SINGLE.NONE;
@@ -111,25 +123,29 @@ public class FacingMaster {
             case UP:
                 return FACING_DIRECTION.NORTH;
             case DOWN_LEFT:
-                if (random)
+                if (random) {
                     return (RandomWizard.random()) ? FACING_DIRECTION.WEST : FACING_DIRECTION.SOUTH;
-                else
+                } else {
                     return (horizontalPreference) ? FACING_DIRECTION.WEST : FACING_DIRECTION.SOUTH;
+                }
             case DOWN_RIGHT:
-                if (random)
+                if (random) {
                     return (RandomWizard.random()) ? FACING_DIRECTION.EAST : FACING_DIRECTION.SOUTH;
-                else
+                } else {
                     return (horizontalPreference) ? FACING_DIRECTION.EAST : FACING_DIRECTION.SOUTH;
+                }
             case UP_LEFT:
-                if (random)
+                if (random) {
                     return (RandomWizard.random()) ? FACING_DIRECTION.WEST : FACING_DIRECTION.NORTH;
-                else
+                } else {
                     return (horizontalPreference) ? FACING_DIRECTION.WEST : FACING_DIRECTION.NORTH;
+                }
             case UP_RIGHT:
-                if (random)
+                if (random) {
                     return (RandomWizard.random()) ? FACING_DIRECTION.EAST : FACING_DIRECTION.NORTH;
-                else
+                } else {
                     return (horizontalPreference) ? FACING_DIRECTION.EAST : FACING_DIRECTION.NORTH;
+                }
 
         }
         return null;
@@ -145,11 +161,13 @@ public class FacingMaster {
 
     public static FACING_DIRECTION getRelativeFacing(Coordinates c, Coordinates c2) {
         Boolean above = PositionMaster.isAboveOr(c, c2);
-        if (above != null)
+        if (above != null) {
             return above ? FACING_DIRECTION.SOUTH : FACING_DIRECTION.NORTH;
+        }
         Boolean left = PositionMaster.isToTheLeftOr(c, c2);
-        if (left == null)
+        if (left == null) {
             return left ? FACING_DIRECTION.EAST : FACING_DIRECTION.WEST;
+        }
 
         // if diagonal
         return FACING_DIRECTION.NONE;
@@ -160,19 +178,24 @@ public class FacingMaster {
     }
 
     public static FACING_DIRECTION getRandomFacing(FACING_DIRECTION... exceptions) {
-        if (exceptions != null)
-            if (exceptions.length >= 4)
+        if (exceptions != null) {
+            if (exceptions.length >= 4) {
                 return null;
+            }
+        }
 
         FACING_DIRECTION f = new EnumMaster<FACING_DIRECTION>()
                 .getRandomEnumConst(FACING_DIRECTION.class);
 
-        if (f == FACING_DIRECTION.NONE)
+        if (f == FACING_DIRECTION.NONE) {
             return getRandomFacing();
+        }
 
-        if (exceptions != null)
-            if (Arrays.asList(exceptions).contains(f))
+        if (exceptions != null) {
+            if (Arrays.asList(exceptions).contains(f)) {
                 return getRandomFacing();
+            }
+        }
 
         return f;
     }

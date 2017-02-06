@@ -51,10 +51,12 @@ public class SelectiveTargeting extends TargetingImpl {
 
     @Override
     public boolean select(Ref ref) {
-        if (template != null)
+        if (template != null) {
             filteredType = (getTYPEforTemplate(template));
-        if (filteredType != null)
+        }
+        if (filteredType != null) {
             filter.setTYPE(filteredType);
+        }
         filter.setRef(ref);
         if (ref.getObj(KEYS.ABILITY) instanceof PassiveAbilityObj) {
             ref.setTarget(ref.getSource());
@@ -63,8 +65,9 @@ public class SelectiveTargeting extends TargetingImpl {
 
         Integer target = ref.getGame().getManager().select(filter, ref);
 
-        if (target == null)
+        if (target == null) {
             return false;
+        }
         ref.setTarget(target);
         main.system.auxiliary.LogMaster.log(1, "TARGET SELECTED : "
                 + ref.getGame().getObjectById(target));

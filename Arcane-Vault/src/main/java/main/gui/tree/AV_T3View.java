@@ -44,12 +44,15 @@ public class AV_T3View extends ThreeTreeView {
 	public static void toggleEditTable() {
 		Boolean left_right_center = null;
 		HT_View relevantTree = comp.getRemovedTree();
-		if (relevantTree == null)
-			relevantTree = comp.getActiveTree();
-		if (relevantTree == comp.getLeftTree())
-			left_right_center = true;
-		if (relevantTree == comp.getRightTree())
-			left_right_center = false;
+        if (relevantTree == null) {
+            relevantTree = comp.getActiveTree();
+        }
+        if (relevantTree == comp.getLeftTree()) {
+            left_right_center = true;
+        }
+        if (relevantTree == comp.getRightTree()) {
+            left_right_center = false;
+        }
 
 		toggleEditTable(left_right_center);
 	}
@@ -69,53 +72,59 @@ public class AV_T3View extends ThreeTreeView {
 		if (comp.getRemovedTree() != null) {
 			comp.remove(table.getPanel());
 			comp.add(comp.getRemovedTree(), pos);
-			if (left_right_center != null)
-				if (left_right_center)
-					comp.add(comp.getInfoPanel(), comp.getInfoPanelPos());
-				else
-					comp.add(comp.getInfoPanel2(), comp.getInfoPanel2Pos());
-			comp.setRemovedTree(null);
+            if (left_right_center != null) {
+                if (left_right_center) {
+                    comp.add(comp.getInfoPanel(), comp.getInfoPanelPos());
+                } else {
+                    comp.add(comp.getInfoPanel2(), comp.getInfoPanel2Pos());
+                }
+            }
+            comp.setRemovedTree(null);
 		} else {
-			if (table == null)
-				table = new EditViewPanel() {
-					// no second table! sync selection!
-					public boolean isTwoTableModeEnabled() {
-						return false;
-					}
+            if (table == null) {
+                table = new EditViewPanel() {
+                    // no second table! sync selection!
+                    public boolean isTwoTableModeEnabled() {
+                        return false;
+                    }
 
-					@Override
-					public void selectType(ObjType type) {
-						resetData(type);
-						setTableView();
-					}
+                    @Override
+                    public void selectType(ObjType type) {
+                        resetData(type);
+                        setTableView();
+                    }
 
-					protected int getHeight() {
+                    protected int getHeight() {
                         return comp.getTreeSize().height;
                     }
 
-					public boolean isMenuHidden() {
-						return true;
-					}
+                    public boolean isMenuHidden() {
+                        return true;
+                    }
 
-					protected int getWidth() {
+                    protected int getWidth() {
                         return comp.getTreeSize().width;
                     }
 
-					protected void initTable(boolean second) {
-						super.initTable(second);
-						table.setTableHeader(null);
-						// scrollPane
-						// .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-					}
-				};
-			if (HC_Master.getSelectedTreeNode() != null)
-				table.selectType(HC_Master.getSelectedTreeNode().getType());
-			if (left_right_center != null)
-				if (left_right_center)
-					comp.remove(comp.getInfoPanel());
-				else
-					comp.remove(comp.getInfoPanel2());
-			comp.remove(tree);
+                    protected void initTable(boolean second) {
+                        super.initTable(second);
+                        table.setTableHeader(null);
+                        // scrollPane
+                        // .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+                    }
+                };
+            }
+            if (HC_Master.getSelectedTreeNode() != null) {
+                table.selectType(HC_Master.getSelectedTreeNode().getType());
+            }
+            if (left_right_center != null) {
+                if (left_right_center) {
+                    comp.remove(comp.getInfoPanel());
+                } else {
+                    comp.remove(comp.getInfoPanel2());
+                }
+            }
+            comp.remove(tree);
 			comp.setRemovedTree(tree);
 			comp.add(table.getPanel(), pos);
 		}
@@ -125,13 +134,15 @@ public class AV_T3View extends ThreeTreeView {
 
 	public static void selected(String selectedTypeName, OBJ_TYPE obj_type) {
 
-		if (obj_type == OBJ_TYPES.SKILLS)
-			comp = skillComp;
-		else
-			comp = classComp;
-		if (comp == null)
-			return;
-		comp.selected(DataManager.getType(selectedTypeName, obj_type));
+        if (obj_type == OBJ_TYPES.SKILLS) {
+            comp = skillComp;
+        } else {
+            comp = classComp;
+        }
+        if (comp == null) {
+            return;
+        }
+        comp.selected(DataManager.getType(selectedTypeName, obj_type));
 
 	}
 
@@ -193,9 +204,9 @@ public class AV_T3View extends ThreeTreeView {
             public void handleControl(String c, boolean alt) {
                 switch (c) {
                     case T3UpperPanel.TOGGLE_VIEW:
-                        if (!alt)
+                        if (!alt) {
                             AV_T3View.toggleEditTable();
-                        else
+                        } else {
                             new Thread(new Runnable() {
                                 public void run() {
                                     Boolean result = DialogMaster.askAndWait(
@@ -204,13 +215,15 @@ public class AV_T3View extends ThreeTreeView {
                                     AV_T3View.toggleEditTable(result);
                                 }
                             }, "DialogMaster thread").start();
+                        }
 
                         break;
                     case T3UpperPanel.SAVE:
-                        if (!alt)
+                        if (!alt) {
                             ModelManager.saveAll();
-                        else
+                        } else {
                             ModelManager.backUp();
+                        }
                         break;
                     case T3UpperPanel.REMOVE:
                         ModelManager.backUp();
@@ -229,15 +242,18 @@ public class AV_T3View extends ThreeTreeView {
     public void selected(Boolean left_right_none_preferred, ObjType value) {
         Object arg = centerTree.getArg(value.getSubGroupingKey());
         activeTree = centerTree;
-        if (arg == leftTree.getArg())
+        if (arg == leftTree.getArg()) {
             activeTree = leftTree;
-        if (arg == rightTree.getArg())
+        }
+        if (arg == rightTree.getArg()) {
             activeTree = rightTree;
+        }
         if (table != null) {
             table.selectType(value);
             if (removedTree != null) {
-                if (removedTree != centerTree)
+                if (removedTree != centerTree) {
                     left_right_none_preferred = removedTree == rightTree;
+                }
             }
         }
         super.selected(left_right_none_preferred, value);

@@ -26,10 +26,11 @@ public class TimerTaskMaster {
                 public void run() {
                     try {
                         main.system.auxiliary.LogMaster.log(0, "Invoking " + methodName);
-                        if (args == null)
+                        if (args == null) {
                             method.invoke(null);
-                        else
+                        } else {
                             method.invoke(args);
+                        }
 
                     } catch (IllegalAccessException | IllegalArgumentException
                             | InvocationTargetException e) {

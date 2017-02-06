@@ -16,8 +16,9 @@ public class SpellUpgradeComp extends CustomButton {
     }
 
     public ComponentVisuals getGenericVisuals() {
-        if (selected)
+        if (selected) {
             return new CompVisuals(null, upgrade.getGlyphImageActive());
+        }
         return new CompVisuals(null, upgrade.getGlyphImage());
     }
 

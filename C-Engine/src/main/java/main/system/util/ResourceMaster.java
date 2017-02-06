@@ -40,18 +40,20 @@ public class ResourceMaster {
         Map<String, ObjType> map = new XLinkedMap<>();
         // String path;
         for (PROPERTY prop : props) {
-            for (OBJ_TYPES t : OBJ_TYPES.values())
+            for (OBJ_TYPES t : OBJ_TYPES.values()) {
                 try {
                     createArtFolder(t, true, prop, map);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
         }
 
         for (File f : FileManager.getFilesFromDirectory(ImageManager.getPATH() + "mini\\", false,
                 true)) {
-            if (!ImageManager.isImageFile(f.getName()))
+            if (!ImageManager.isImageFile(f.getName())) {
                 continue;
+            }
             if (map.get(f.getPath().replace(ImageManager.getPATH(), "")) == null) {
                 try {
                     writeToUnused(f, getImage(f));
@@ -66,8 +68,9 @@ public class ResourceMaster {
         List<String> segments = StringMaster.getPathSegments(f.getPath().replace(
                 ImageManager.getPATH(), ""));
         String pathPart = segments.get(1) + "\\";
-        if (!segments.get(2).contains("."))
+        if (!segments.get(2).contains(".")) {
             pathPart += segments.get(2) + "\\";
+        }
         File outputfile = new File(ImageManager.getPATH() + folderName + "\\unused\\" + pathPart
                 + "\\" + f.getName());
 
@@ -106,8 +109,9 @@ public class ResourceMaster {
                 // ???
             } else {
                 BufferedImage bufferedImage = ImageManager.getBufferedImage(oldPath);
-                if (!ImageManager.isValidImage(bufferedImage))
+                if (!ImageManager.isValidImage(bufferedImage)) {
                     continue;
+                }
                 try {
                     if (!outputfile.isFile())
                     // {}
@@ -122,8 +126,9 @@ public class ResourceMaster {
                 }
                 map.put(oldPath, type);
             }
-            if (update)
+            if (update) {
                 type.setProperty(imgProp, path);
+            }
         }
     }
 

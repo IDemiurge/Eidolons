@@ -40,10 +40,11 @@ public class DC_ItemPanel extends G_ListPanel<DC_HeroAttachedObj> implements BOR
     @Override
     public void refresh() {
         super.refresh();
-        if (!data.isEmpty())
+        if (!data.isEmpty()) {
             getList().setEmptyIcon(ImageManager.getAltEmptyListIcon());
-        else
+        } else {
             getList().setEmptyIcon(null);
+        }
 
         getList().setBorderChecker(this);
     }
@@ -132,8 +133,9 @@ public class DC_ItemPanel extends G_ListPanel<DC_HeroAttachedObj> implements BOR
 
     @Override
     public BORDER getBorder(Entity value) {
-        if (((DC_Obj) value).checkSelectHighlighted())
+        if (((DC_Obj) value).checkSelectHighlighted()) {
             return BORDER.HIGHLIGHTED;
+        }
         return null;
     }
 

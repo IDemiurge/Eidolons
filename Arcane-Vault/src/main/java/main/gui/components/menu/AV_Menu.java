@@ -2,13 +2,11 @@ package main.gui.components.menu;
 
 import main.system.auxiliary.StringMaster;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+import javax.swing.*;
 
 public class AV_Menu {
-	private JMenuBar bar;
 	AV_MenuHandler handler = new AV_MenuHandler();
+    private JMenuBar bar;
 
 	public AV_Menu() {
 		// G_Panel with a custom background perhaps, would be nice to have a bit
@@ -52,6 +50,14 @@ public class AV_Menu {
 		}
 		return menu;
 	}
+
+    public JMenuBar getBar() {
+        return bar;
+    }
+
+    public void setBar(JMenuBar bar) {
+        this.bar = bar;
+    }
 
 	public enum MENUS {
 		MENU(MENU_ITEMS.SAVE, MENU_ITEMS.AUTO_SAVE, MENU_ITEMS.BACKUP, MENU_ITEMS.SIMULATION),
@@ -166,11 +172,13 @@ public class AV_Menu {
 		}
 
 		public boolean hasSubMenu() {
-			if (items == null)
-				return false;
-			if (items.length < 1)
-				return false;
-			return true;
+            if (items == null) {
+                return false;
+            }
+            if (items.length < 1) {
+                return false;
+            }
+            return true;
 		}
 
 		public String getName() {
@@ -181,14 +189,6 @@ public class AV_Menu {
 			return items;
 		}
 
-	}
-
-	public JMenuBar getBar() {
-		return bar;
-	}
-
-	public void setBar(JMenuBar bar) {
-		this.bar = bar;
 	}
 
 }

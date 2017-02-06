@@ -66,8 +66,9 @@ public class HC_Master {
 
     public static ATTRIBUTE getSelectedAttribute() {
         for (ATTRIBUTE attr : ATTRIBUTE.values()) {
-            if (attr.getParameter() == lastClickedAttribute)
+            if (attr.getParameter() == lastClickedAttribute) {
                 return attr;
+            }
         }
         // for (ATTRIBUTE attr : ATTRIBUTE.values()) {
         // if (attr.getParameter() == getHeroPanel(getHeroPanel().getHero()
@@ -82,13 +83,15 @@ public class HC_Master {
         List<ObjType> list = new LinkedList<>();
         for (String s : StringMaster.openContainer(selectedType
                 .getProperty(PROPS.SKILL_REQUIREMENTS))) {
-            if (s.contains(StringMaster.OR))
-                if (!or)
+            if (s.contains(StringMaster.OR)) {
+                if (!or) {
                     continue;
-                else {
-                    for (String s1 : StringMaster.openContainer(s, StringMaster.OR))
+                } else {
+                    for (String s1 : StringMaster.openContainer(s, StringMaster.OR)) {
                         list.add(DataManager.getType(s1, OBJ_TYPES.SKILLS));
+                    }
                 }
+            }
 
             list.add(DataManager.getType(s, OBJ_TYPES.SKILLS));
         }
@@ -103,17 +106,20 @@ public class HC_Master {
 
     public static Image generateClassIcon(CLASS_GROUP classGroup, boolean selected, boolean locked,
                                           DC_HeroObj hero) {
-        if (CoreEngine.isArcaneVault())
+        if (CoreEngine.isArcaneVault()) {
             locked = false;
+        }
         Image classIcon = ImageManager.getImage("ui\\components\\ht\\class icons\\"
                 + classGroup.getName() + ".jpg");
-        if (!ImageManager.isValidImage(classIcon))
+        if (!ImageManager.isValidImage(classIcon)) {
             classIcon = ImageManager.getNewBufferedImage(54, 36);
+        }
         String tabImagePath = ("ui\\components\\ht\\class tab");
-        if (selected)
+        if (selected) {
             tabImagePath += " selected glow shadow";
-        else if (locked)
+        } else if (locked) {
             tabImagePath += " darkened";
+        }
         Image tabImage = ImageManager.getImage(tabImagePath + ".png");
         Image image = ImageManager.getNewBufferedImage(tabImage.getWidth(null), tabImage
                 .getHeight(null));
@@ -126,8 +132,9 @@ public class HC_Master {
     }
 
     public static Image getClassIcon(CLASS_GROUP classGroup, DC_HeroObj hero) {
-        if (hero == null)
+        if (hero == null) {
             hero = CharacterCreator.getHero();
+        }
         for (DC_FeatObj c : new ListMaster<DC_FeatObj>().invertList(new LinkedList<>(hero
                 .getClasses()))) {
 
@@ -139,24 +146,28 @@ public class HC_Master {
         }
 
         ObjType baseClassType = DC_ContentManager.getBaseClassType(classGroup);
-        if (baseClassType == null)
+        if (baseClassType == null) {
             return ImageManager.getNewBufferedImage(40, 40);
+        }
         return baseClassType.getIcon().getImage();
     }
 
     public static Image generateValueIcon(Object arg, boolean selected, boolean locked,
                                           boolean skill) {
         // return ImageManager.getValueIcon(param);
-        if (CoreEngine.isArcaneVault())
+        if (CoreEngine.isArcaneVault()) {
             locked = false;
+        }
         Map<Object, Image> cache = valueImgCache;
         if (locked) {
             if (selected) {
                 cache = valueImgCacheLockedSelected;
-            } else
+            } else {
                 cache = valueImgCacheLocked;
-        } else if (selected)
+            }
+        } else if (selected) {
             cache = valueImgCacheSelected;
+        }
 
         Image img = cache.get(arg);
         // if (img != null)
@@ -165,8 +176,10 @@ public class HC_Master {
         if (selected)
             // img = ImageManager.applyBorder(img,
             // BORDER.BACKGROUND_HIGHLIGHT_32);
+        {
             img = ImageManager.applyImage(img, BORDER.BACKGROUND_HIGHLIGHT_32.getImage(), 1, 1,
                     false);
+        }
         // Image valueIcon = ImageManager.getValueIcon(param);
         // if (valueIcon.getHeight(null)<40){
         // // replace with composite of the right size
@@ -177,7 +190,9 @@ public class HC_Master {
         img = ImageManager.applyImage(img, valueIcon, 1, 1, false);
         if (locked)
             // additional darkening?
+        {
             img = ImageManager.applyBorder(img, BORDER.DARKENING_32);
+        }
         // STD_IMAGES.background_highlight_32;
 
         cache.put(arg, img);
@@ -195,8 +210,9 @@ public class HC_Master {
 
     public static void goToSkillTree(PARAMETER param) {
         int index = EnumMaster.getEnumConstIndex(HERO_TABS.class, HERO_TABS.SKILLS);
-        if (CharacterCreator.getPanel().getIndex() != index)
+        if (CharacterCreator.getPanel().getIndex() != index) {
             CharacterCreator.getPanel().getTabs().select(index);
+        }
         CharacterCreator.getPanel().getMvp().goToSkillTree(param);
         SoundMaster.playStandardSound(STD_SOUNDS.SLING);
 
@@ -207,8 +223,9 @@ public class HC_Master {
     }
 
     public static void setSelectedTreeNode(HT_Node node) {
-        if (node != null)
+        if (node != null) {
             DC_Game.game.getValueHelper().setEntity(node.getType());
+        }
         setPreviousSelectedTreeNode(getSelectedTreeNode());
         selectedTreeNode = node;
     }
@@ -239,8 +256,9 @@ public class HC_Master {
     public static void nextHero() {
         DC_HeroObj hero = CharacterCreator.getHero();
         DC_HeroObj nextHero = CharacterCreator.getParty().getNextHero(hero);
-        if (hero == nextHero)
+        if (hero == nextHero) {
             return;
+        }
         CharacterCreator.setHero(nextHero);
         Boolean skill_class_spell = getT3Mode();
         Launcher.setView(getT3View(hero, skill_class_spell), VIEWS.T3);
@@ -278,8 +296,9 @@ public class HC_Master {
     }
 
     public static Map<DC_HeroObj, ThreeTreeView> getT3Map(Boolean skill_class_spell) {
-        if (skill_class_spell == null)
+        if (skill_class_spell == null) {
             return t3SkillMap;
+        }
 
         return skill_class_spell ? t3SkillMap : t3ClassMap;
     }
@@ -298,12 +317,14 @@ public class HC_Master {
             return getAvTreeWindow();
         }
         boolean reinitView = getAvTreeWindow() == null;
-        if (getAvTreeWindow() != null)
+        if (getAvTreeWindow() != null) {
             reinitView = !getAvTreeWindow().isVisible();
+        }
         if (reinitView) {
             initTreeView();
-        } else
+        } else {
             getAvTreeView().tabSelected(treeArg.toString());
+        }
 
         if (getAvTreeWindow() != null) {
             getAvTreeWindow().setVisible(true);
@@ -326,9 +347,9 @@ public class HC_Master {
 
     public static void initTreeArg(ObjType selectedType) {
         skill = selectedType.getOBJ_TYPE_ENUM() == OBJ_TYPES.SKILLS;
-        if (skill)
+        if (skill) {
             treeArg = ContentManager.getPARAM(selectedType.getProperty(G_PROPS.MASTERY));
-        else {
+        } else {
             treeArg = new EnumMaster<CLASS_GROUP>().retrieveEnumConst(CLASS_GROUP.class,
                     selectedType.getProperty(G_PROPS.CLASS_GROUP));
         }
@@ -340,10 +361,11 @@ public class HC_Master {
         CharacterCreator.setHero(hero);
 
         setAvTreeView(null);
-        if (skill)
+        if (skill) {
             setAvTreeView(new SkillTreeView(treeArg, hero));
-        else
+        } else {
             setAvTreeView(new ClassTreeView(treeArg, hero));
+        }
 
         // treeView.getTabPanel().adjustPageIndexToSelectTab(treeView.getTabList().getOrCreate(i));
         // treeView.getTabPanel().select(i)
@@ -352,26 +374,30 @@ public class HC_Master {
     }
 
     public static JFrame getAvTreeWindow() {
-        if (!skill)
+        if (!skill) {
             return avClassTreeWindow;
+        }
         return avTreeWindow;
     }
 
     public static void setAvTreeWindow(JFrame avTreeWindow) {
-        if (!skill)
+        if (!skill) {
             HC_Master.avClassTreeWindow = avTreeWindow;
+        }
         HC_Master.avTreeWindow = avTreeWindow;
     }
 
     public static HT_View getAvTreeView() {
-        if (!skill)
+        if (!skill) {
             return avClassTreeView;
+        }
         return avTreeView;
     }
 
     public static void setAvTreeView(HT_View avTreeView) {
-        if (!skill)
+        if (!skill) {
             HC_Master.avClassTreeView = avTreeView;
+        }
         HC_Master.avTreeView = avTreeView;
     }
 

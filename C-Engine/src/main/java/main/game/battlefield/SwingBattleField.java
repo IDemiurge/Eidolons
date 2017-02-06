@@ -38,8 +38,9 @@ public abstract class SwingBattleField implements BattleField {
     }
 
     public Component getBF_Comp() {
-        if (c == null)
+        if (c == null) {
             init();
+        }
         return c;
     }
 
@@ -50,10 +51,12 @@ public abstract class SwingBattleField implements BattleField {
     }
 
     public void refresh() {
-        if (!CoreEngine.isSwingOn()) return;
-        if (SwingUtilities.isEventDispatchThread())
+        if (!CoreEngine.isSwingOn()) {
+            return;
+        }
+        if (SwingUtilities.isEventDispatchThread()) {
             builder.refresh();
-        else
+        } else {
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
 
@@ -69,6 +72,7 @@ public abstract class SwingBattleField implements BattleField {
             } catch (Error | InvocationTargetException | InterruptedException e) {
                 e.printStackTrace();
             }
+        }
 
         // c.revalidate();
         // c.repaint();

@@ -38,23 +38,26 @@ public class Tavern extends TownPlace {
     private TAVERN_MODIFIER modifier;
     public Tavern(MacroGame game, ObjType type, Ref ref) {
         super(game, type, ref);
-        if (!MacroManager.isEditMode())
+        if (!MacroManager.isEditMode()) {
             generateHeroes();
+        }
     }
 
     public TOWN_PLACE_TYPE getTYPE() {
-        if (TYPE == null)
+        if (TYPE == null) {
             TYPE = new EnumMaster<TOWN_PLACE_TYPE>().retrieveEnumConst(
                     TOWN_PLACE_TYPE.class,
                     getProperty(MACRO_PROPS.TOWN_PLACE_TYPE));
+        }
         return TYPE;
     }
 
     public TAVERN_MODIFIER getModifier() {
-        if (modifier == null)
+        if (modifier == null) {
             modifier = new EnumMaster<TAVERN_MODIFIER>().retrieveEnumConst(
                     TAVERN_MODIFIER.class,
                     getProperty(MACRO_PROPS.TOWN_PLACE_MODIFIER));
+        }
         return modifier;
     }
 
@@ -65,24 +68,28 @@ public class Tavern extends TownPlace {
         int total = TavernMaster.getXpPool(this);
         setParam(MACRO_PARAMS.C_HERO_POWER_POOL, total);
         Integer number = getIntParam(MACRO_PARAMS.PREFERRED_HERO_NUMBER); // min/max
-        if (number == 0)
+        if (number == 0) {
             number = 4;
+        }
         while (true) {
             int xp = total / number * RandomWizard.getRandomIntBetween(40, 60)
                     / 50;
             if (xp < TavernMaster.getMinimumHeroXp(this)) {
-                if (total < TavernMaster.getMinimumHeroXp(this))
+                if (total < TavernMaster.getMinimumHeroXp(this)) {
                     break;
+                }
                 xp = TavernMaster.getMinimumHeroXp(this);
                 total -= xp;
                 number--;
             }
             boolean background = false;
             // RandomWizard.random();TODO
-            if (!newHero(background, xp))
+            if (!newHero(background, xp)) {
                 break;
-            if (number <= heroes.size())
+            }
+            if (number <= heroes.size()) {
                 break;
+            }
         }
     }
 
@@ -91,8 +98,9 @@ public class Tavern extends TownPlace {
         DC_HeroObj hero = null;
         if (!background) {
             ObjType type = getRandomHeroType(xp);
-            if (type == null)
+            if (type == null) {
                 return false;
+            }
             hero = new DC_HeroObj(type);
             initHeroHireParams(hero);
             HeroGenerator.alterHero(hero);
@@ -101,11 +109,13 @@ public class Tavern extends TownPlace {
             hero = generateHeroFromBackground(type, xp);
         }
         hero.setHidden(true);
-        if (hero == null)
+        if (hero == null) {
             return false;
+        }
 
-        if (!addHero(hero))
+        if (!addHero(hero)) {
             return false;
+        }
 
         return true;
     }
@@ -210,8 +220,9 @@ public class Tavern extends TownPlace {
                 break;
             }
         }
-        if (list.isEmpty())
+        if (list.isEmpty()) {
             return null;
+        }
         // by classes, by principles, by faction, by deity...
 
         // FilterMaster.filterByProp(list, G_PROPS.GROUP.getName(),

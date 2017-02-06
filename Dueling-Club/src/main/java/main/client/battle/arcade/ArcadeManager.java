@@ -277,13 +277,15 @@ public class ArcadeManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (dungeon != null)
+        if (dungeon != null) {
             if (dungeon.getProperty(G_PROPS.DUNGEON_TYPE).equalsIgnoreCase(
                     DUNGEON_TYPE.BOSS.toString())) {
                 if (DialogMaster
-                        .confirm("Are you ready to lay down your sword and feast in Valhalla?"))
+                        .confirm("Are you ready to lay down your sword and feast in Valhalla?")) {
                     victory();
+                }
             }
+        }
         // if (checkRegionComplete(party))
         // nextRegion(); TODO
         // rewardManager.grantReward();

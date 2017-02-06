@@ -173,12 +173,13 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
         getDisplayedTabPanel().selected(name);
         arg = getArg(name);
         panel = getDisplayedTabPanel().getCurrentComp();
-        if (!CoreEngine.isArcaneVault())
+        if (!CoreEngine.isArcaneVault()) {
             if (panel.getComponentCount() > 1) {
                 panel.refreshComponents();
                 tree.refresh();
                 return;
             }
+        }
         resetTree(name);
 
     }
@@ -194,25 +195,27 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
     public void resetTree(String name, boolean forceRebuild) {
         panel.removeAll();
         panel.setAutoZOrder(true);
-        if (forceRebuild)
+        if (forceRebuild) {
             treeCache.remove(getArg(name));
+        }
         tree = getTree(name);
 
         Component bottom = null;
         int bottomY = 45;
         int bottomX = 40;
-        if (!CoreEngine.isArcaneVault())
+        if (!CoreEngine.isArcaneVault()) {
             try {
                 bottom = initBottomPanel();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        else {
+        } else {
             if (bottomPanel == null) {
                 bottom = new TreeControlPanel(this);
                 bottomY += 15;
-            } else
+            } else {
                 bottom = bottomPanel;
+            }
         }
         // int i = panel.getComponentCount();
 
@@ -256,8 +259,9 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
                 break;
             }
         }
-        if (type == null)
+        if (type == null) {
             return;
+        }
         if (tryIncrementRank(type)) {
             SoundMaster.playStandardSound(STD_SOUNDS.ButtonUp);
             refreshComponents();
@@ -272,10 +276,12 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
 
     @Override
     public void refreshComponents() {
-        if (tree != null)
+        if (tree != null) {
             tree.refresh();
-        if (bottomPanel != null)
+        }
+        if (bottomPanel != null) {
             bottomPanel.refresh();
+        }
     }
 
     protected boolean tryIncrementRank(ObjType type) {
@@ -289,10 +295,11 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
         getTree().setDisplayRequirements(false);
         if (e.getSource() instanceof CustomButton) {
             CustomButton customButton = (CustomButton) e.getSource();
-            if (e.isAltDown())
+            if (e.isAltDown()) {
                 customButton.handleAltClick();
-            else
+            } else {
                 customButton.handleClick();
+            }
             return;
         }
         if (e.getClickCount() > 1) {
@@ -333,22 +340,24 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
                 adjustLink(vertical_horizontal_manual, node);
                 return;
             } else {
-                if (e.isAltDown())
+                if (e.isAltDown()) {
                     editDefaultProp(type);
-                else if (e.isShiftDown()) {
+                } else if (e.isShiftDown()) {
                     // Boolean x_y = null;
                     // x_y = SwingUtilities.isRightMouseButton(e);
                     // adjustOffset(x_y, node);
 
-                    if (TreeControlPanel.setProp(e.isAltDown(), type))
+                    if (TreeControlPanel.setProp(e.isAltDown(), type)) {
                         rebuildAndSetTree();
+                    }
                     return;
                 }
             }
 
             if (e.getClickCount() > 1) {
-                if (!SwingUtilities.isRightMouseButton(e))
+                if (!SwingUtilities.isRightMouseButton(e)) {
                     editImage(type);
+                }
                 // if (e.isAltDown()) {
                 // editDefaultProp(type);
                 // } else {
@@ -420,9 +429,9 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
             n.setSelected(false);
         }
         node.setSelected(true);
-        if (!CoreEngine.isArcaneVault())
+        if (!CoreEngine.isArcaneVault()) {
             CharacterCreator.typeSelected(type);
-        else {
+        } else {
             WaitMaster.receiveInput(
                     type.getOBJ_TYPE_ENUM() == OBJ_TYPES.SKILLS ? WAIT_OPERATIONS.SELECTION
                             : WAIT_OPERATIONS.CUSTOM_SELECT, type.getName(), false);
@@ -485,8 +494,9 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
                 : x_y ? PARAMS.TREE_LINK_OFFSET_X : PARAMS.TREE_LINK_OFFSET_Y;
         Integer offset = type.getIntParam(param);
         offset = DialogMaster.inputInt(offset);
-        if (offset == null)
+        if (offset == null) {
             return;
+        }
         type.setParameter(param, offset);
         rebuildAndSetTree();
         XML_Writer.writeXML_ForType(type, isSkill() ? OBJ_TYPES.SKILLS : OBJ_TYPES.CLASSES);
@@ -495,21 +505,24 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
     public void adjustLink(Boolean vertical_horizontal_manual, HT_Node node) {
         ObjType type = node.getType();
         LINK_VARIANT variant = null;
-        if (tree.getMap().getLinkForChildType(type) != null)
+        if (tree.getMap().getLinkForChildType(type) != null) {
             variant = tree.getMap().getLinkForChildType(type).getVariant();
+        }
 
-        if (variant == null || vertical_horizontal_manual == null)
+        if (variant == null || vertical_horizontal_manual == null) {
             variant = new EnumMaster<LINK_VARIANT>().retrieveEnumConst(LINK_VARIANT.class,
                     new ListChooser(SELECTION_MODE.SINGLE, LINK_VARIANT.class).choose());
-        else
+        } else {
             variant = HT_MapBuilder.getShiftedLinkVariant(variant, vertical_horizontal_manual);
+        }
         if (variant == null) {
             main.system.auxiliary.LogMaster.log(1, type + "'s LINK_VARIANT null !!! ");
             return;
         }
         type.setProperty(PROPS.LINK_VARIANT, variant.toString());
-        if (!CoreEngine.isArcaneVault())
+        if (!CoreEngine.isArcaneVault()) {
             XML_Writer.writeXML_ForType(type, isSkill() ? OBJ_TYPES.SKILLS : OBJ_TYPES.CLASSES);
+        }
         main.system.auxiliary.LogMaster.log(1, type + "'s LINK_VARIANT set for " + variant);
 
         rebuildAndSetTree();
@@ -521,14 +534,16 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
         // String baseType = selectAltBase(type);
         int index = DialogMaster.optionChoice(StringMaster.openContainer(property).toArray(),
                 "select");
-        if (index == -1)
+        if (index == -1) {
             return;
+        }
         String fullSubString = StringMaster.openContainer(property).get(index);
         String baseType = VariableManager.removeVarPart(fullSubString);
         String newString = selectAltLink(baseType, fullSubString);
         // separate offsets! retain old ...
-        if (newString == null)
+        if (newString == null) {
             return;
+        }
 
         String value = property.replace(fullSubString, newString);
 
@@ -537,8 +552,9 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
 
     public void addAltBase(ObjType type) {
         String name = selectAltBase(type);
-        if (name == null)
+        if (name == null) {
             return;
+        }
         String value = selectAltLink(name);
         type.addProperty(PROPS.ALT_BASE_LINKS, value);
 
@@ -548,8 +564,9 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
     private String selectAltBase(ObjType type) {
         List<ObjType> types = new LinkedList<>(tree.getTypes());
         for (ObjType t : tree.getTypes()) {
-            if (t.getIntParam(PARAMS.CIRCLE) >= type.getIntParam(PARAMS.CIRCLE))
+            if (t.getIntParam(PARAMS.CIRCLE) >= type.getIntParam(PARAMS.CIRCLE)) {
                 types.remove(t);
+            }
         }
         types.remove(type);
 
@@ -567,11 +584,13 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
         LINK_VARIANT variant = null;
         variant = new EnumMaster<LINK_VARIANT>().retrieveEnumConst(LINK_VARIANT.class,
                 new ListChooser(SELECTION_MODE.SINGLE, LINK_VARIANT.class).choose());
-        if (variant == null)
+        if (variant == null) {
             if (prevData != null) {
 
-            } else
+            } else {
                 return null;
+            }
+        }
         String offsetX = "" + DialogMaster.inputInt("offset x", 0);
         String offsetY = "" + DialogMaster.inputInt("offset y", 0);
 
@@ -699,12 +718,14 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
         HC_TabPanel tabsPanel = tabs;
 
         if (isWorkspaceMode()) {
-            if (workspaceTabs == null)
+            if (workspaceTabs == null) {
                 workspaceTabs = initTabPanel(initTabList());
+            }
             tabsPanel = workspaceTabs;
         } else if (isAltMode()) {
-            if (altTabs == null)
+            if (altTabs == null) {
                 altTabs = initTabPanel(initTabList());
+            }
             tabsPanel = altTabs;
         }
         return tabsPanel;
@@ -802,8 +823,9 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
     public void cycleViewMode() {
         int index = EnumMaster.getEnumConstIndex(TREE_VIEW_MODE.class, mode);
         index++;
-        if (index >= TREE_VIEW_MODE.values().length)
+        if (index >= TREE_VIEW_MODE.values().length) {
             index = 0;
+        }
         mode = TREE_VIEW_MODE.values()[index];
         tree.setMode(mode);
         SoundMaster.playStandardSound(STD_SOUNDS.SLING);

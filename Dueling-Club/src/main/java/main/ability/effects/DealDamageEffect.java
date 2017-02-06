@@ -47,10 +47,12 @@ public class DealDamageEffect extends DC_Effect {
 
     @Override
     public boolean applyThis() {
-        if (ref.getTargetObj() == null)
+        if (ref.getTargetObj() == null) {
             return false;
-        if (!(ref.getTargetObj() instanceof DC_HeroObj))
+        }
+        if (!(ref.getTargetObj() instanceof DC_HeroObj)) {
             return true; // TODO if cell, apply damage to corpses?
+        }
         DC_HeroObj targetObj = (DC_HeroObj) ref.getTargetObj();
         int amount = formula.getAppendedByModifier(ref.getFormula()).getInt(ref);
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
@@ -63,20 +65,24 @@ public class DealDamageEffect extends DC_Effect {
         main.system.auxiliary.LogMaster.log(LogMaster.COMBAT_DEBUG, "Effect is dealing damage: "
                 + amount + " to " + ref.getTargetObj().toString());
 
-        if (damage_mod != null)
+        if (damage_mod != null) {
             ref.setValue(KEYS.DAMAGE_SOURCE, damage_mod.toString());
+        }
         ref.setValue(KEYS.DAMAGE_TYPE, damage_type.getName());
         int damage = DamageMaster.dealDamageOfType(damage_type, targetObj, ref, amount);
 
         // if (active.getIntParam(PARAMS.FORCE) == 0) // ONLY MAIN SPELL'S
         // DAMAGE
-        if (damage > 0)
-            if (!ref.isPeriodic())
+        if (damage > 0) {
+            if (!ref.isPeriodic()) {
                 if (!ref.isTriggered()) {
-                    if (!active.isAttack())
+                    if (!active.isAttack()) {
                         ForceRule.applyForceEffects(active);
+                    }
 
                 }
+            }
+        }
 
         // if (damageSprite == null)
         // damageSprite = new DamageSprite(this);
@@ -106,11 +112,13 @@ public class DealDamageEffect extends DC_Effect {
             amount -= shieldBlock;
         }
 
-        if (damage_mod != null)
-            if (damage_mod == DAMAGE_MODIFIER.QUIET)
+        if (damage_mod != null) {
+            if (damage_mod == DAMAGE_MODIFIER.QUIET) {
                 ref.setQuiet(true);
-            else
+            } else {
                 ref.setQuiet(false);
+            }
+        }
         if (spell) {
             // DC_SpellObj spellObj = (DC_SpellObj) active;
             // getGame().getLogManager().newLogEntryNode(true,
@@ -125,23 +133,27 @@ public class DealDamageEffect extends DC_Effect {
     }
 
     private void initDamageType() {
-        if (damage_type == null)
+        if (damage_type == null) {
             try {
                 damage_type = ((DC_Obj) ref.getObj(KEYS.ACTIVE)).getDamageType();
             } catch (Exception e) {
             }
-        if (damage_type == null)
-            if (magical)
+        }
+        if (damage_type == null) {
+            if (magical) {
                 damage_type = DAMAGE_TYPE.MAGICAL;
-            else
+            } else {
                 damage_type = DAMAGE_TYPE.PHYSICAL;
+            }
+        }
     }
 
     @Override
     public String toString() {
         String string = "DMG: " + formula;
-        if (damage_type != null)
+        if (damage_type != null) {
             string += StringMaster.wrapInParenthesis(damage_type.getName());
+        }
         return string;
     }
 

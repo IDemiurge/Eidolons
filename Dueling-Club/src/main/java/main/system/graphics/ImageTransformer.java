@@ -46,12 +46,15 @@ public class ImageTransformer {
     }
 
     public static Image blendImages(Image image1, Image image2, float alpha, int finalTransparency) {
-        if (alpha > 1)
+        if (alpha > 1) {
             alpha = 1;
-        if (alpha < 0)
+        }
+        if (alpha < 0) {
             alpha = 0;
-        if (blendedCache == null)
+        }
+        if (blendedCache == null) {
             blendedCache = new HashMap<Image, Map<Image, Map<Float, BufferedImage>>>();
+        }
         Map<Image, Map<Float, BufferedImage>> map = blendedCache.get(image1);
         if (map == null) {
             map = new HashMap<>();
@@ -73,8 +76,9 @@ public class ImageTransformer {
         BufferedImage buffer = new BufferedImage(image1.getWidth(null), image1.getHeight(null),
                 BufferedImage.TYPE_INT_RGB);
         Graphics2D g = (Graphics2D) buffer.getGraphics();
-        if (finalTransparency == 100)
+        if (finalTransparency == 100) {
             g = finalGraphics;
+        }
         int rule = AlphaComposite.SRC_OVER;
         // if (RandomWizard.chance(33))
         // rule = AlphaComposite.DST_OVER;
@@ -83,8 +87,9 @@ public class ImageTransformer {
         g.drawImage(image1, 0, 0, null);
         g.setComposite(AlphaComposite.getInstance(rule, 1.0f - alpha));
         g.drawImage(image2, 0, 0, null);
-        if (finalTransparency == 100)
+        if (finalTransparency == 100) {
             return image;
+        }
         float floatTransparent = new Float(finalTransparency) / 100;
         main.system.auxiliary.LogMaster.log(1, "**********finalTransparency==" + floatTransparent);
         finalGraphics.setComposite(AlphaComposite.getInstance(rule, floatTransparent));

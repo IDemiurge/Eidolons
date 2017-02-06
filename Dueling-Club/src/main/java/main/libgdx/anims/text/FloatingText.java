@@ -66,8 +66,9 @@ public class FloatingText extends Group {
             addActor(image);
 //            image.setPosition(origin.x, origin.y);
         }
-        if (textSupplier != null)
+        if (textSupplier != null) {
             text = textSupplier.get();
+        }
         Label label =
                 new Label(text, StyleHolder.getDefaultLabelStyle());
         label.setColor(c);

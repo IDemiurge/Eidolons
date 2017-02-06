@@ -26,14 +26,16 @@ public class AttackCondition extends MicroCondition {
                 e.printStackTrace();
             }
         }
-        if (attackEffect == null)
+        if (attackEffect == null) {
             return false;
+        }
 
         boolean result = false;
         if (counter != null) {
             result = attackEffect.getAttack().isCounter();
-            if (!counter)
+            if (!counter) {
                 result = !result;
+            }
         }
 
         return result;

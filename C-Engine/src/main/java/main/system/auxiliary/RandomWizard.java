@@ -17,8 +17,9 @@ public class RandomWizard<E> {
     public static boolean isWeightMap(String property) {
         for (String string : StringMaster.openContainer(property)) {
             try {
-                if (StringMaster.getWeight(string) > 1)
+                if (StringMaster.getWeight(string) > 1) {
                     return true;
+                }
             } catch (Exception e) {
                 return false;
             }
@@ -45,21 +46,24 @@ public class RandomWizard<E> {
             j = buffer;
         }
         int n = j - i;
-        if (n == 0)
+        if (n == 0) {
             return 0;
+        }
         boolean negative = false;
         if (n < 0) {
             n = Math.abs(n);
             negative = true;
         }
-        if (inclusive)
+        if (inclusive) {
             n++;
+        }
         int k = i + randomGenerator.nextInt(n);
         // main.system.auxiliary.LogMaster.log(1, "*** NEW RANDOM: " + k + "[" +
         // i + " - " + j + "], "
         // + randomGenerator);
-        if (negative)
+        if (negative) {
             return -k;
+        }
         return k;
     }
 
@@ -77,10 +81,12 @@ public class RandomWizard<E> {
     }
 
     public static boolean chance(int i, Random random) {
-        if (i >= 100)
+        if (i >= 100) {
             return true;
-        if (i <= 0)
+        }
+        if (i <= 0) {
             return false;
+        }
         int res = getRandomIntBetween(0, 100, random);
         main.system.auxiliary.LogMaster.log(0, i + " chance hits " + res);
         return res < i;
@@ -91,18 +97,22 @@ public class RandomWizard<E> {
     }
 
     public static int getRandomListIndex(Collection list, Random random) {
-        if (list == null)
+        if (list == null) {
             return -1;
-        if (list.isEmpty())
+        }
+        if (list.isEmpty()) {
             return -1;
+        }
         return getRandomIntBetween(0, list.size(), random);
     }
 
     public static int getRandomInt(int j) {
-        if (j == 0)
+        if (j == 0) {
             return 0;
-        if (j < 0)
+        }
+        if (j < 0) {
             return -getRandomIntBetween(0, -j);
+        }
 
         return getRandomIntBetween(0, j);
     }
@@ -167,12 +177,14 @@ public class RandomWizard<E> {
 
     public static ObjType getRandomType(OBJ_TYPE TYPE, String group, boolean subgroup) {
         List<ObjType> types = null;
-        if (subgroup)
+        if (subgroup) {
             types = DataManager.getTypesSubGroup(TYPE, group);
-        else
+        } else {
             types = DataManager.getTypesGroup(TYPE, group);
-        if (types == null)
+        }
+        if (types == null) {
             types = DataManager.getTypes(TYPE);
+        }
 
         return types.get(getRandomListIndex(types));
 
@@ -228,8 +240,9 @@ public class RandomWizard<E> {
             }
             E object = new EnumMaster<E>().retrieveEnumConst(CLASS, value);
             string = (string).replace(StringMaster.wrapInParenthesis(value), "");
-            if (object != null)
+            if (object != null) {
                 map.put(string, object);
+            }
         }
 
         return map;
@@ -247,8 +260,9 @@ public class RandomWizard<E> {
             }
             E object = new EnumMaster<E>().retrieveEnumConst(CLASS, value);
             string = StringMaster.cropParenthesises(VariableManager.getVarPartLast(string));
-            if (object != null)
+            if (object != null) {
                 map.put(object, string);
+            }
         }
 
         return map;
@@ -261,8 +275,9 @@ public class RandomWizard<E> {
     public WeightMap<E> constructWeightMap(String property, Class<? extends E> CLASS,
                                            OBJ_TYPE TYPE, boolean inverse) {
         WeightMap<E> map = new WeightMap<E>();
-        if (inverse)
+        if (inverse) {
             invertedMap = new LinkedHashMap<Integer, E>();
+        }
         for (String string : StringMaster.openContainer(property)) {
             Integer value = 0;
             try {
@@ -270,22 +285,25 @@ public class RandomWizard<E> {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (value <= 0)
+            if (value <= 0) {
                 value = 1;
+            }
             string = StringMaster.getWeightItem(string, inverse);
             E object = null;
 
-            if (CLASS != ObjType.class)
+            if (CLASS != ObjType.class) {
                 object = new EnumMaster<E>().retrieveEnumConst(CLASS, string);
-            else {
+            } else {
                 object = (E) DataManager.getType(string, TYPE);
-                if (object == null)
+                if (object == null) {
                     object = (E) DataManager.findType(string, TYPE);
+                }
             }
             // if (object != null) //EMPTY!
             map.put(object, value);
-            if (inverse)
+            if (inverse) {
                 invertedMap.put(value, object);
+            }
         }
 
         return map;

@@ -13,8 +13,9 @@ public abstract class RoundRule {
 
     public void newTurn() {
         for (DC_HeroObj hero : game.getUnits()) {
-            if (check(hero))
+            if (check(hero)) {
                 apply(hero);
+            }
         }
     }
 

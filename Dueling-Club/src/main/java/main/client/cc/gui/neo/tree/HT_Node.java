@@ -61,13 +61,14 @@ public class HT_Node extends ListItem<ObjType> {
             // if (getType().getIntParam(PARAMS.CIRCLE) > 2)
             // image = ImageManager.applyBorder(image, BORDER.SILVER_64);
             // else
-            if (getType().getIntParam(PARAMS.CIRCLE) % 2 == 0)
+            if (getType().getIntParam(PARAMS.CIRCLE) % 2 == 0) {
                 image = ImageManager.applyBorder(image, BORDER.STEEL_64);
-            else
+            } else {
                 image = ImageManager.applyBorder(image, BORDER.PLATINUM_64);
+            }
 
-        } else if (!CoreEngine.isArcaneVault())
-            if (!isAvailable())
+        } else if (!CoreEngine.isArcaneVault()) {
+            if (!isAvailable()) {
                 if (!viewMode) {
 
                     // draw vertically
@@ -80,10 +81,11 @@ public class HT_Node extends ListItem<ObjType> {
                                 getContainerProperty(), parent.getName());
                         // so what's the issue?
                     }
-                    if (reqOverlaysDrawn)
+                    if (reqOverlaysDrawn) {
                         image = ImageManager.applyBorder(image, BORDER.CONCEALED);
-                    else
+                    } else {
                         image = ImageManager.applyBorder(image, BORDER.HIDDEN);
+                    }
                     if (isBaseBlocked()) {
                         y = drawVertically(image, STD_IMAGES.REQ_BLOCKED.getImage(), y);
                     } else {
@@ -99,6 +101,8 @@ public class HT_Node extends ListItem<ObjType> {
                         }
                     }
                 }
+            }
+        }
         // if (isHighlighted()) {
         // image = ImageManager.applyBorder(image, BORDER.HIGHLIGHTED);
         // }
@@ -106,10 +110,12 @@ public class HT_Node extends ListItem<ObjType> {
     }
 
     public boolean isBlocked() {
-        if (!ListMaster.isNotEmpty(getReqs()))
+        if (!ListMaster.isNotEmpty(getReqs())) {
             return false;
-        if (isBaseBlocked())
+        }
+        if (isBaseBlocked()) {
             return false;
+        }
         return ListMaster.contains(getReqs(), InfoMaster.PROP_REASON_STRING, false);
     }
 
@@ -128,12 +134,15 @@ public class HT_Node extends ListItem<ObjType> {
     }
 
     private int drawVertically(Image image, Image img, int y) {
-        if (!reqOverlaysDrawn)
+        if (!reqOverlaysDrawn) {
             return y;
-        if (image == null)
+        }
+        if (image == null) {
             return y;
-        if (img == null)
+        }
+        if (img == null) {
             return y;
+        }
         int x = image.getWidth(null) - img.getWidth(null);
         image.getGraphics().drawImage(img, x, y, null);
         // try {
@@ -156,10 +165,12 @@ public class HT_Node extends ListItem<ObjType> {
     }
 
     public boolean isCostBlocked() {
-        if (getReq() == null)
+        if (getReq() == null) {
             return false;
-        if (!ListMaster.isNotEmpty(getReqs()))
+        }
+        if (!ListMaster.isNotEmpty(getReqs())) {
             return false;
+        }
         return ListMaster.contains(getReqs(), InfoMaster.PARAM_REASON_STRING, false);
         // return req.contains(InfoMaster.PARAM_REASON_STRING);
     }
@@ -176,9 +187,10 @@ public class HT_Node extends ListItem<ObjType> {
     }
 
     public String getReq() {
-        if (req == null)
+        if (req == null) {
             setReq(DC_Game.game.getRequirementsManager().getRequirements(getType(), 0).checkReason(
                     getRef(), getObj()));
+        }
         return req;
     }
 
@@ -188,10 +200,11 @@ public class HT_Node extends ListItem<ObjType> {
 
     private Ref getRef() {
         Ref ref = new Ref(CharacterCreator.getHero());
-        if (CharacterCreator.getHero().getFeat(isSkill(), getType()) != null)
+        if (CharacterCreator.getHero().getFeat(isSkill(), getType()) != null) {
             ref.setMatch(CharacterCreator.getHero().getFeat(isSkill(), getType()).getId());
-        else
+        } else {
             ref.setMatch(getType().getId());
+        }
         return ref;
     }
 

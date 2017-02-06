@@ -17,8 +17,9 @@ public class CollectionsMaster {
 
         Map<V, K> inv = new HashMap<V, K>();
 
-        for (Entry<K, V> entry : map.entrySet())
+        for (Entry<K, V> entry : map.entrySet()) {
             inv.put(entry.getValue(), entry.getKey());
+        }
 
         return inv;
     }

@@ -14,8 +14,9 @@ public class G_Frame extends JFrame {
 
     public G_Frame(String mainTitle, boolean main) {
         this(mainTitle);
-        if (main)
+        if (main) {
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        }
 
     }
 

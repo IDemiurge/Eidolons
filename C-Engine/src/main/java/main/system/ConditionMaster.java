@@ -44,10 +44,12 @@ public class ConditionMaster {
     public static boolean contains(Conditions c, Class<?> CLASS) {
         for (Condition c1 : c) {
             if (c1 instanceof Conditions) {
-                if (contains((Conditions) c1, CLASS))
+                if (contains((Conditions) c1, CLASS)) {
                     return true;
-            } else if (c1.getClass().equals(CLASS))
+                }
+            } else if (c1.getClass().equals(CLASS)) {
                 return true;
+            }
         }
         return false;
     }
@@ -105,8 +107,9 @@ public class ConditionMaster {
     }
 
     public static Condition getPropCondition(String obj_ref, PROPERTY prop, String v, boolean base) {
-        if (base)
+        if (base) {
             v = StringMaster.FORMULA_BASE_CHAR + v;
+        }
         return new StringComparison("{" + obj_ref + "_" + prop.getName() + "}", v, false);
     }
 
@@ -321,8 +324,9 @@ public class ConditionMaster {
      */
     public static Condition getParamCondition(double mod, PARAMETER p, PARAMETER p2, double add,
                                               String OBJ_REF, String OBJ_REF2) {
-        if (mod == 0)
+        if (mod == 0) {
             mod = 1;
+        }
         return new NumericCondition(false, "{" + OBJ_REF + "_" + p.getName() + "}", mod + "*{"
                 + OBJ_REF2 + "_" + p2.getName() + "}+" + add);
     }
@@ -397,27 +401,31 @@ public class ConditionMaster {
         String templateName = string.replace(vars, "");
         vars = StringMaster.cropParenthesises(vars);
         String[] args = vars.split(condition_arg_separator);
-        if (args.length < 2)
+        if (args.length < 2) {
             return null;
+        }
 
         boolean negative = false;
         if (templateName.contains("!") || templateName.contains("not")) {
             templateName = templateName.replace("!", "").replace("not", "");
-            if (StringMaster.isEmpty(templateName))
+            if (StringMaster.isEmpty(templateName)) {
                 templateName = CONDITION_TEMPLATES.STRING.toString();
+            }
             negative = true;
         }
         CONDITION_TEMPLATES template = new EnumMaster<CONDITION_TEMPLATES>().retrieveEnumConst(
                 CONDITION_TEMPLATES.class, templateName);
-        if (template == null)
+        if (template == null) {
             return null;
+        }
         String str1 = args[0];
         String str2 = args[1];
         str1 = parseArg(str1);
         str2 = parseArg(str2); // different for each template?! TODO
         Condition c = getInstance().getConditionFromTemplate(template, str1, str2);
-        if (negative)
+        if (negative) {
             return new NotCondition(c);
+        }
         return c;
     }
 
@@ -434,11 +442,13 @@ public class ConditionMaster {
 
     public static String checkAddRef(String prop) {
         boolean result = false;
-        if (ContentManager.getPROP(prop) != null)
+        if (ContentManager.getPROP(prop) != null) {
             result = true;
+        }
         if (!result) {
-            if (ContentManager.getPARAM(prop) != null)
+            if (ContentManager.getPARAM(prop) != null) {
                 result = true;
+            }
         }
         if (result) {
             prop = KEYS.MATCH.toString() + StringMaster.FORMULA_REF_SEPARATOR + prop;
@@ -448,12 +458,14 @@ public class ConditionMaster {
 
     private static Condition parseCondition(String string) {
         Condition c = parseTemplateCondition(string);
-        if (c != null)
+        if (c != null) {
             return c;
+        }
 
         c = findConditionTemplate(string);
-        if (c != null)
+        if (c != null) {
             return c;
+        }
 
         // String vars = VariableManager.getVarPart(string);
         // String className = string.replace(vars, "");
@@ -484,9 +496,9 @@ public class ConditionMaster {
     public static List<Condition> removeConditionsOfClass(Conditions conditions, Class<?> clazz) {
         List<Condition> list = new LinkedList<>();
         for (Condition c : new Conditions(conditions)) {
-            if (c instanceof Conditions)
+            if (c instanceof Conditions) {
                 removeConditionsOfClass((Conditions) c, clazz);
-            else if (ClassMaster.isInstanceOf(c, clazz)) {
+            } else if (ClassMaster.isInstanceOf(c, clazz)) {
                 list.add(c);
                 conditions.remove(c);
             }
@@ -498,16 +510,18 @@ public class ConditionMaster {
     public static Conditions getFilteredConditions(Conditions conditions,
                                                    Class<?>... removedClasses) {
         Conditions result = new Conditions();
-        if (conditions instanceof OrConditions)
+        if (conditions instanceof OrConditions) {
             result = new OrConditions();
+        }
         loop:
         for (Condition c1 : conditions) {
-            if (c1 instanceof Conditions)
+            if (c1 instanceof Conditions) {
                 result.add(getFilteredConditions((Conditions) c1, removedClasses));
-            else {
+            } else {
                 for (Class<?> CLASS : removedClasses) {
-                    if (ClassMaster.isInstanceOf(c1, CLASS))
+                    if (ClassMaster.isInstanceOf(c1, CLASS)) {
                         continue loop;
+                    }
                 }
                 result.add(c1);
             }
@@ -539,8 +553,9 @@ public class ConditionMaster {
     }
 
     public static ConditionMaster getInstance() {
-        if (instance == null)
+        if (instance == null) {
             instance = new ConditionMaster();
+        }
         return instance;
     }
 
@@ -607,12 +622,16 @@ public class ConditionMaster {
         }
 
         public boolean matchString(String string) {
-            for (String name : names)
-                if (string.equalsIgnoreCase(name))
+            for (String name : names) {
+                if (string.equalsIgnoreCase(name)) {
                     return true;
-            for (String name : names)
-                if (StringMaster.compare(string, name))
+                }
+            }
+            for (String name : names) {
+                if (StringMaster.compare(string, name)) {
                     return true;
+                }
+            }
             // TODO
             return false;
         }

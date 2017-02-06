@@ -99,13 +99,16 @@ public class SummonEffect extends MicroEffect {
             type = DataManager.getType(str);
 
         }
-        if (type.getOBJ_TYPE_ENUM() != OBJ_TYPES.CHARS)
+        if (type.getOBJ_TYPE_ENUM() != OBJ_TYPES.CHARS) {
             type = addXp(type);
-        if (owner == null)
+        }
+        if (owner == null) {
             owner = ref.getSourceObj().getOwner();
+        }
         setUnit((DC_HeroObj) game.createUnit(type, c.x, c.y, owner, ref.getCopy()));
-        if (!unit.isHero())
+        if (!unit.isHero()) {
             UnitMaster.train(unit);
+        }
 
         getUnit().getRef().setID(KEYS.SUMMONER, ref.getSource());
 
@@ -141,13 +144,15 @@ public class SummonEffect extends MicroEffect {
     }
 
     private void applySickness() {
-        if (isApplySicknessRule(unit))
+        if (isApplySicknessRule(unit)) {
             SummoningSicknessRule.apply(unit);
+        }
     }
 
     private void addUpkeep() {
-        if (isAddUpkeep(unit))
+        if (isAddUpkeep(unit)) {
             UpkeepRule.addUpkeep(unit);
+        }
     }
 
     protected boolean isApplySicknessRule(DC_HeroObj unit2) {
@@ -169,12 +174,14 @@ public class SummonEffect extends MicroEffect {
             Integer xp = getSummonedUnitXp().getInt(ref);
             try {
                 Integer mod = ref.getObj(KEYS.ACTIVE).getIntParam(PARAMS.SUMMONED_XP_MOD);
-                if (mod != 0)
+                if (mod != 0) {
                     xp = MathMaster.applyMod(xp, mod);
+                }
                 if (ref.getObj(KEYS.SOURCE) != null) {
                     mod = ref.getObj(KEYS.SOURCE).getIntParam(PARAMS.SUMMONED_XP_MOD);
-                    if (mod != 0)
+                    if (mod != 0) {
                         xp = MathMaster.applyMod(xp, mod);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -194,8 +201,9 @@ public class SummonEffect extends MicroEffect {
     protected Formula getXpFormula(Obj spell) {
         Formula summonedUnitXp = DC_Formulas.SUMMONED_UNIT_XP;
         if (!StringMaster.isEmpty(spell.getParam(PARAMS.FORMULA))) {
-            if (spell.getIntParam(PARAMS.FORMULA) != 0)
+            if (spell.getIntParam(PARAMS.FORMULA) != 0) {
                 summonedUnitXp = new Formula(spell.getParam(PARAMS.FORMULA));
+            }
         }
         return summonedUnitXp;
     }
@@ -241,9 +249,11 @@ public class SummonEffect extends MicroEffect {
     }
 
     public Formula getSummonedUnitXp() {
-        if (summonedUnitXp == null)
-            if (ref.getObj(KEYS.ACTIVE) != null)
+        if (summonedUnitXp == null) {
+            if (ref.getObj(KEYS.ACTIVE) != null) {
                 summonedUnitXp = getXpFormula(ref.getObj(KEYS.ACTIVE));
+            }
+        }
         return summonedUnitXp;
     }
 

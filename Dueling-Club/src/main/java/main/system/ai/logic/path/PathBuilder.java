@@ -107,9 +107,11 @@ public class PathBuilder {
                 targetCoordinate);
         Action moveAction = getMoveAction();
         if (facing == FACING_SINGLE.IN_FRONT) {
-            if (firstStep)
-                if (!moveAction.canBeActivated())
+            if (firstStep) {
+                if (!moveAction.canBeActivated()) {
                     return null;
+                }
+            }
             return new Choice(targetCoordinate, c_coordinate, moveAction);
         }
         adjustUnit();
@@ -130,8 +132,9 @@ public class PathBuilder {
         List<Choice> choices = new LinkedList<>();
         for (Coordinates targetCoordinate : getDefaultCoordinateTargets()) {
             Choice stdMoveChoice = constructStdMoveChoice(targetCoordinate);
-            if (stdMoveChoice != null)
+            if (stdMoveChoice != null) {
                 choices.add(stdMoveChoice);
+            }
         }
         Chronos.mark("Finding custom choices for " + path);
         if (ListMaster.isNotEmpty(moveActions)) {
@@ -141,14 +144,18 @@ public class PathBuilder {
             for (DC_ActiveObj a : moveActions) {
 
                 if (!a.canBeActivated()) {
-                    if (firstStep)
+                    if (firstStep) {
                         if (!ReasonMaster.checkReasonCannotActivate(a, PARAMS.C_N_OF_ACTIONS
-                                .getName()))
+                                .getName())) {
                             continue; // exception for AP TODO
+                        }
+                    }
                 }
-                if (path.hasAction(a))
-                    if (a.getIntParam(PARAMS.COOLDOWN) >= 0)
+                if (path.hasAction(a)) {
+                    if (a.getIntParam(PARAMS.COOLDOWN) >= 0) {
                         continue;
+                    }
+                }
                 Targeting targeting = a.getTargeting();
                 Collection<Obj> objects = null;
                 if (targeting instanceof FixedTargeting) {
@@ -158,31 +165,35 @@ public class PathBuilder {
                     }
                     Effect e = a.getAbilities().getEffects().getEffects().get(0);
                     e.setRef(unit.getRef());
-                    if (e instanceof SelfMoveEffect)
+                    if (e instanceof SelfMoveEffect) {
                         try {
                             Coordinates coordinates = ((SelfMoveEffect) e).getCoordinates();
-                            if (coordinates != null)
+                            if (coordinates != null) {
                                 objects = new LinkedList<Obj>(Arrays.asList(unit
                                         .getGame().getCellByCoordinate(coordinates)));
+                            }
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
+                    }
                 } else {
                     adjustUnit();
                     objects = targeting.getFilter().getObjects(a.getRef());
                 }
-                if (objects != null)
+                if (objects != null) {
                     for (Object obj : objects) {
                         if (obj instanceof DC_Cell) {
                             Coordinates coordinates = ((DC_Cell) obj).getCoordinates();
                             // if (a.getName().equals("Clumsy Leap"))
                             if (PositionMaster.getDistance(coordinates, c_coordinate) > Math.max(1,
-                                    a.getIntParam(PARAMS.RANGE)))
+                                    a.getIntParam(PARAMS.RANGE))) {
                                 continue;
+                            }
 
                             if (PositionMaster.getDistance(coordinates, targetCoordinate) > PositionMaster
-                                    .getDistance(c_coordinate, targetCoordinate))
+                                    .getDistance(c_coordinate, targetCoordinate)) {
                                 continue; // TODO will this not eliminate good
+                            }
                             // choices?
 
                             Ref ref = unit.getRef().getCopy();
@@ -192,6 +203,7 @@ public class PathBuilder {
                             choices.add(choice);
                         }
                     }
+                }
                 // if (choices.size() > 1)
                 choices = filterSpecialMoveChoices(choices, a);
             }
@@ -220,16 +232,20 @@ public class PathBuilder {
             public int compare(Choice c1, Choice c2) {
                 int distance = PositionMaster.getDistance(c1.getCoordinates(), targetCoordinate);
                 int distance2 = PositionMaster.getDistance(c2.getCoordinates(), targetCoordinate);
-                if (distance > distance2)
+                if (distance > distance2) {
                     return 1;
-                if (distance < distance2)
+                }
+                if (distance < distance2) {
                     return -1;
+                }
                 distance = c1.actions.size();
                 distance2 = c2.actions.size();
-                if (distance > distance2)
+                if (distance > distance2) {
                     return 1;
-                if (distance < distance2)
+                }
+                if (distance < distance2) {
                     return -1;
+                }
                 return 0;
             }
         };
@@ -258,16 +274,20 @@ public class PathBuilder {
         List<Choice> filteredList = new LinkedList<>();
         for (Choice choice : choices) {
             Coordinates c = choice.getCoordinates();
-            if (c.equals(c_coordinate))
+            if (c.equals(c_coordinate)) {
                 continue;
-            if (path.hasCoordinate(c))
+            }
+            if (path.hasCoordinate(c)) {
                 continue;
+            }
             if (checkSneak(c)) // cache sneak cells?
+            {
                 filteredList.add(choice);
-            else if (PositionMaster.getDistance(coordinates, c) <= bestDistance_2
+            } else if (PositionMaster.getDistance(coordinates, c) <= bestDistance_2
                     || c.isAdjacent(targetAction.getTarget().getCoordinates())) {
-                if (PositionMaster.getDistance(c_coordinate, c) <= bestDistance_1)
+                if (PositionMaster.getDistance(c_coordinate, c) <= bestDistance_1) {
                     filteredList.add(choice);
+                }
             }
         }
 
@@ -275,10 +295,12 @@ public class PathBuilder {
     }
 
     private boolean checkSneak(Coordinates c) {
-        if (nonSneakCells.contains(c))
+        if (nonSneakCells.contains(c)) {
             return false;
-        if (sneakCells.contains(c))
+        }
+        if (sneakCells.contains(c)) {
             return true;
+        }
         unit.setCoordinates(c); // change facing
         // check range
         if (PositionMaster.getDistance(targetAction.getTarget().getCoordinates(), c) > targetAction
@@ -291,10 +313,11 @@ public class PathBuilder {
         boolean result = new SneakCondition().check(ref);
 
         adjustUnit();
-        if (result)
+        if (result) {
             sneakCells.add(c);
-        else
+        } else {
             nonSneakCells.add(c);
+        }
         return result;
     }
 
@@ -302,16 +325,20 @@ public class PathBuilder {
 
         List<Coordinates> list = new LinkedList<>();
         for (DIRECTION d : DIRECTION.values()) {
-            if (d.isDiagonal())
+            if (d.isDiagonal()) {
                 continue;
+            }
             Coordinates c = c_coordinate.getAdjacentCoordinate(d);
-            if (c == previousCoordinate || c == null)
+            if (c == previousCoordinate || c == null) {
                 continue;
-            if (path.hasCoordinate(c))
+            }
+            if (path.hasCoordinate(c)) {
                 continue;
+            }
 
-            if (!checkEmpty(c))
+            if (!checkEmpty(c)) {
                 continue;
+            }
             // if (FacingManager.getSingleFacing(c_facing, c_coordinate, c) !=
             // FACING_SINGLE.BEHIND)
             list.add(c);
@@ -350,10 +377,12 @@ public class PathBuilder {
         applyChoice(choice);
         path.add(choice);
         if (checkFinished()) {
-            if (targetAction.getActive().getActionGroup() != ACTION_TYPE_GROUPS.MOVE)
+            if (targetAction.getActive().getActionGroup() != ACTION_TYPE_GROUPS.MOVE) {
                 checkAddFaceTurn(); // TODO better check?
-            if (checkFailed())
+            }
+            if (checkFailed()) {
                 return true;
+            }
             finished();
             return true;
         }
@@ -369,16 +398,20 @@ public class PathBuilder {
             // if (!TimeLimitMaster.checkTimeLimit(METRIC.PATH_STEP,
             // getChronosPrefix() + targetAction))
             // return false; TODO ???
-            if (!TimeLimitMaster.checkTimeLimit(METRIC.PATH, getChronosPrefix() + base_choice))
+            if (!TimeLimitMaster.checkTimeLimit(METRIC.PATH, getChronosPrefix() + base_choice)) {
                 return false;
+            }
             if (!TimeLimitMaster.checkTimeLimit(METRIC.PATH_CELL, getChronosPrefix()
-                    + targetCoordinate))
+                    + targetCoordinate)) {
                 return false;
-            if (!TimeLimitMaster.checkTimeLimit(METRIC.ACTION, getChronosPrefix() + targetAction))
+            }
+            if (!TimeLimitMaster.checkTimeLimit(METRIC.ACTION, getChronosPrefix() + targetAction)) {
                 return false;
+            }
         }
-        if (checkFailed())
+        if (checkFailed()) {
             return true;
+        }
 
         List<Choice> choices = getChoices();
         // depth first search
@@ -402,8 +435,9 @@ public class PathBuilder {
         unit.setCoordinates(c_coordinate);
         if (ReasonMaster.checkReasonCannotTarget(FILTER_REASON.FACING, targetAction)) {
             List<Action> sequence = ActionSequenceConstructor.getTurnSequence(targetAction);
-            for (Action a : sequence)
+            for (Action a : sequence) {
                 path.add(new Choice(c_coordinate, a));
+            }
         }
         unit.setFacing(originalFacing);
         unit.setCoordinates(originalCoordinate);
@@ -415,28 +449,33 @@ public class PathBuilder {
     }
 
     private void back() {
-        if (!path.getChoices().isEmpty())
+        if (!path.getChoices().isEmpty()) {
             path.getChoices().remove(path.getChoices().size() - 1);
-        if (previousCoordinate != null)
+        }
+        if (previousCoordinate != null) {
             c_coordinate = previousCoordinate;
+        }
         previousCoordinate = null;
-        if (previousFacing != null)
+        if (previousFacing != null) {
             c_facing = previousFacing;
+        }
         previousFacing = null;
     }
 
     private void finished() {
-        if (checkDuplicate())
+        if (checkDuplicate()) {
             return;
+        }
         paths.add(path);
         int result = getPathPriority();
         log(result);
 
-        if (bestResult == null)
+        if (bestResult == null) {
             bestResult = result;
-        else {
-            if (result > bestResult)
+        } else {
+            if (result > bestResult) {
                 bestResult = result;
+            }
         }
         // Integer pathPriority = PriorityManager.getPathPriority(path);
         // Costs c;
@@ -453,11 +492,12 @@ public class PathBuilder {
 
     private boolean checkFailed() {
         failed = false;
-        if (path.getChoices().size() > MAX_PATH_SIZE)
+        if (path.getChoices().size() > MAX_PATH_SIZE) {
             failed = true;
-        else {
-            if (bestResult == null)
+        } else {
+            if (bestResult == null) {
                 return failed;
+            }
             Integer pathPriority = getPathPriority();
 
             if (pathPriority < bestResult || pathPriority == 0) {
@@ -490,8 +530,9 @@ public class PathBuilder {
 
     public ActionPath getPathByPriority(List<Coordinates> targetCoordinates) {
         paths = build(targetCoordinates);
-        if (paths.isEmpty())
+        if (paths.isEmpty()) {
             return null;
+        }
         return paths.get(0);
     }
 
@@ -539,16 +580,19 @@ public class PathBuilder {
                 if (!step(choice)) {
                     break;
                 }
-                if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_RESULTS)
+                if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_RESULTS) {
                     Chronos.logTimeElapsedForMark(getChronosPrefix() + choice); // TODO
+                }
                 // mark
                 // removed???
             }
-            if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_BASIC)
+            if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_BASIC) {
                 Chronos.logTimeElapsedForMark(getChronosPrefix() + dest);
+            }
         }
-        if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_BASIC)
+        if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_BASIC) {
             Chronos.logTimeElapsedForMark(getChronosPrefix() + targetAction);
+        }
         return paths;
     }
 
@@ -560,8 +604,9 @@ public class PathBuilder {
         filteredPaths = new LinkedList<>();
         for (ActionPath p : paths) {
             int priority = p.getPriority();
-            if (bestResult - priority >= FILTER_THRESHOLD)
+            if (bestResult - priority >= FILTER_THRESHOLD) {
                 continue;
+            }
             filteredPaths.add(p);
         }
 
@@ -586,23 +631,27 @@ public class PathBuilder {
         public boolean equals(Object obj) {
             if (obj instanceof Choice) {
                 Choice choice = (Choice) obj;
-                if (choice.getCoordinates().equals(getCoordinates()))
-                    if (choice.getActions().equals(getActions()))
+                if (choice.getCoordinates().equals(getCoordinates())) {
+                    if (choice.getActions().equals(getActions())) {
                         return true;
+                    }
+                }
             }
             return false;
         }
 
         public Boolean[] getTurns() {
-            if (actions.size() == 1 || turns != null)
+            if (actions.size() == 1 || turns != null) {
                 return turns;
+            }
             try {
                 List<Boolean> list = new LinkedList<>();
                 for (Action a : actions) {
                     DC_ActiveObj active = a.getActive();
                     if (active.getName().contains("lockwise")) {
-                        if (!active.isConstructed())
+                        if (!active.isConstructed()) {
                             active.construct();
+                        }
                         for (Effect e : active.getAbilities().getEffects()) {
                             if (e instanceof ChangeFacingEffect) {
                                 list.add(((ChangeFacingEffect) e).isClockwise());
@@ -620,8 +669,9 @@ public class PathBuilder {
         }
 
         public String toString() {
-            if (actions.size() == 1)
+            if (actions.size() == 1) {
                 return actions.get(0).getActive().getName() + " to " + coordinates;
+            }
             return StringMaster.joinStringList(StringMaster.convertToNameIntList(ActionManager
                     .getActionObjectList(actions)), ", ")
                     + " to " + coordinates;

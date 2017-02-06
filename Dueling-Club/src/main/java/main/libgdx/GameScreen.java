@@ -193,9 +193,11 @@ public class GameScreen implements Screen {
         gridStage.draw();
         ambienceStage.draw();
         effects.draw();
-        if (DC_Game.game != null)
-            if (DC_Game.game.getAnimationManager() != null)
+        if (DC_Game.game != null) {
+            if (DC_Game.game.getAnimationManager() != null) {
                 DC_Game.game.getAnimationManager().updateAnimations();
+            }
+        }
 
         if (animMaster.isOn()) {
             phaseAnimsStage.draw();

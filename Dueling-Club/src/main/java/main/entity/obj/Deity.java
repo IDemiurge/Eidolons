@@ -60,52 +60,61 @@ public class Deity extends Entity {
 
     private void initEnemyDeities() {
 
-        if (enemyDeities == null)
+        if (enemyDeities == null) {
             enemyDeities = new LinkedList<Deity>();
+        }
         for (String type : StringMaster.openContainer(getProperty(PROPS.ENEMY_DEITIES))) {
             Deity deity = DC_ContentManager.getDeity(ref, type);
-            if (deity != null)
+            if (deity != null) {
                 enemyDeities.add(deity);
+            }
         }
     }
 
     public LinkedList<Deity> getEnemyDeities() {
-        if (enemyDeities == null)
+        if (enemyDeities == null) {
             initEnemyDeities();
+        }
         return enemyDeities;
     }
 
     public LinkedList<Deity> getAllyDeities() {
-        if (alliedDeities == null)
+        if (alliedDeities == null) {
             initAlliedDeities();
+        }
         return alliedDeities;
     }
 
     public LinkedList<Deity> getFriendDeities() {
-        if (friendDeities == null)
+        if (friendDeities == null) {
             initFriendDeities();
+        }
         return friendDeities;
     }
 
     private void initFriendDeities() {
 
-        if (friendDeities == null)
+        if (friendDeities == null) {
             friendDeities = new LinkedList<>();
+        }
         for (String type : StringMaster.openContainer(getProperty(PROPS.FRIEND_DEITIES))) {
             Deity deity = DC_ContentManager.getDeity(ref, type);
-            if (deity != null)
+            if (deity != null) {
                 friendDeities.add(deity);
+            }
         }
     }
 
     private void initAlliedDeities() {
 
-        if (alliedDeities == null)
+        if (alliedDeities == null) {
             alliedDeities = new LinkedList<Deity>();
+        }
         for (String type : StringMaster.openContainer(getProperty(PROPS.ALLIED_DEITIES))) {
             Deity deity = DC_ContentManager.getDeity(ref, type);
-            if (deity != null)
+            if (deity != null) {
                 alliedDeities.add(deity);
+            }
         }
 
     }
@@ -154,8 +163,9 @@ public class Deity extends Entity {
     }
 
     public void applyHeroBonuses(DC_HeroObj hero) {
-        if (!isConstructed())
+        if (!isConstructed()) {
             construct();
+        }
         for (ActiveObj active : getActives()) {
             active.activate(Ref.getSelfTargetingRefCopy(hero));
         }

@@ -67,8 +67,9 @@ public class HostClientConnection extends GenericConnection {
 
     @Override
     public void handleInput(String input) {
-        if (viewer != null)
+        if (viewer != null) {
             viewer.input(input);
+        }
         CONCURRENT_INPUT(input);
 
     }
@@ -76,15 +77,17 @@ public class HostClientConnection extends GenericConnection {
     public String sendAndWaitForResponse(HOST_CLIENT_CODES code, String data) {
         send(code, data);
         WaitingThread waitingThread = new WaitingThread(code);
-        if (!waitingThread.waitForInput())
+        if (!waitingThread.waitForInput()) {
             return null;
+        }
         return waitingThread.getInput();
     }
 
     @Override
     public void handleInputCode(NetCode code) {
-        if (viewer != null)
+        if (viewer != null) {
             viewer.input("Code: " + code.name());
+        }
 
         if (new EnumMaster<COMMAND>().retrieveEnumConst(COMMAND.class, code.name()) != null) {
             gameConnector.awaitCommand(code);
@@ -96,22 +99,25 @@ public class HostClientConnection extends GenericConnection {
             // break;
             // }
             case FACING_MAP:
-                if (isHost)
+                if (isHost) {
                     gameConnector.getConnection().send(
                             HOST_CLIENT_CODES.FACING_MAP,
                             MapMaster.getNetStringForMap(gameConnector.getGame().getArenaManager()
                                     .getSpawnManager().getMultiplayerFacingMap()));
+                }
                 break;
             case POWER_LEVEL: {
                 if (isHost) {
                     if (UnitGroupMaster.isFactionMode()) {
                         Integer powerLevel = UnitGroupMaster.getPowerLevel();
-                        if (UnitGroupMaster.isFactionLeaderRequired())
+                        if (UnitGroupMaster.isFactionLeaderRequired()) {
                             powerLevel += UnitGroupMaster.LEADER_REQUIRED;
+                        }
                         send(code, "" + powerLevel);
                         return;
-                    } else
+                    } else {
                         send(code, "-1");
+                    }
                 } else {
                     // send(code, "" + UnitGroupMaster.getMyGroup());
                 }
@@ -120,15 +126,16 @@ public class HostClientConnection extends GenericConnection {
             case GAME_DATA_REQUEST:
                 if (isHost) {
                     if (PresetMaster.getPreset() == null) {
-                        if (FAST_DC.SUPER_FAST_MODE)
+                        if (FAST_DC.SUPER_FAST_MODE) {
                             send(code, "1");
-                        else if (FAST_DC.FAST_MODE)
+                        } else if (FAST_DC.FAST_MODE) {
                             send(code, "2");
-                        else {
+                        } else {
                             // TODO
                         }
-                    } else
+                    } else {
                         send(code, PresetMaster.getPreset().getData());
+                    }
                 }
                 break;
 
@@ -138,44 +145,55 @@ public class HostClientConnection extends GenericConnection {
                 return;
             }
             case HOST_READY: {
-                if (!gameConnector.isHost())
+                if (!gameConnector.isHost()) {
                     gameConnector.getHostedGame().getLobby().getGameStarter().clientInit();
+                }
                 break;
             }
             case GAME_STARTED: {
-                if (!gameConnector.isHost())
+                if (!gameConnector.isHost()) {
                     gameConnector.getHostedGame().getLobby().getGameStarter().gameStarted();
+                }
                 break;
             }
             case HOST_PARTY_DATA: {
-                if (!gameConnector.isHost())
+                if (!gameConnector.isHost()) {
                     break;
+                }
                 if (gameConnector.isReady()) // send error if not
+                {
                     gameConnector.sendPartyData();
+                }
                 break;
             }
 
             case MAP_DATA_REQUEST: {
-                if (!gameConnector.isHost())
+                if (!gameConnector.isHost()) {
                     break;
+                }
                 gameConnector.sendMapData();
                 break;
             }
             case CLIENT_PARTY_DATA_REQUEST: {
-                if (gameConnector.isHost())
+                if (gameConnector.isHost()) {
                     break;
+                }
                 if (gameConnector.isReady()) // send ABORT error if not
+                {
                     gameConnector.sendPartyData();
+                }
                 break;
             }
             case GAME_JOINED: {
-                if (gameConnector.isHost())
+                if (gameConnector.isHost()) {
                     break;
+                }
                 gameConnector.getClient().connect();
             }
             case NEW_USER_DATA_REQUEST: {
-                if (gameConnector.isHost())
+                if (gameConnector.isHost()) {
                     break;
+                }
                 // send(HOST_CLIENT_CODES.NEW_USER_DATA_REQUEST);
                 send(HOST_CLIENT_CODES.NEW_USER_DATA_REQUEST + StringMaster.NETCODE_SEPARATOR
                         + getUser().getRelevantData());
@@ -183,8 +201,9 @@ public class HostClientConnection extends GenericConnection {
 
             }
             case CHECK_READY: {
-                if (!gameConnector.isHost())
+                if (!gameConnector.isHost()) {
                     gameConnector.checkReady(); // request host's game data
+                }
                 break;
             }
 
@@ -267,8 +286,9 @@ public class HostClientConnection extends GenericConnection {
     public void send(Object o) {
         super.send(o);
         monostring:
-        if (viewer != null)
+        if (viewer != null) {
             viewer.output(String.valueOf(o));
+        }
 
     }
 

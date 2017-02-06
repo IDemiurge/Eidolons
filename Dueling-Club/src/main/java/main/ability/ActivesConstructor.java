@@ -70,22 +70,25 @@ public class ActivesConstructor {
         List<String> args = StringMaster.openContainer(argString, ",");
         String success = args.get(0);
         String fail = null;
-        if (args.size() > 1)
+        if (args.size() > 1) {
             fail = args.get(1);
+        }
         return new RollEffect(roll, success, e, fail);
 
     }
 
     public static void setAnimForEffects(DC_ActiveObj entity) {
         List<ActiveObj> list = new LinkedList<ActiveObj>(entity.getActives());
-        for (Active active : list)
-            for (Ability abil : ((AbilityObj) active).getAbilities().getAbils())
+        for (Active active : list) {
+            for (Ability abil : ((AbilityObj) active).getAbilities().getAbils()) {
                 for (Effect effect : ((Ability) abil).getEffects().getEffects()) {
                     if (effect instanceof EffectImpl) {
                         EffectImpl effect2 = (EffectImpl) effect;
                         effect2.setAnimationActive(entity);
                     }
                 }
+            }
+        }
     }
 
     public static void constructActive(TARGETING_MODE mode, DC_ActiveObj entity) {
@@ -93,10 +96,12 @@ public class ActivesConstructor {
             addMultiTargetingMods(entity);
             return;
         }
-        if (entity.checkBool(STD_BOOLS.MULTI_TARGETING))
+        if (entity.checkBool(STD_BOOLS.MULTI_TARGETING)) {
             return; // constructMultiAbilities(entity);
-        if (entity.getActives() == null)
+        }
+        if (entity.getActives() == null) {
             return;
+        }
 
         List<ActiveObj> list = new LinkedList<ActiveObj>(entity.getActives());
 
@@ -120,14 +125,15 @@ public class ActivesConstructor {
         // damage+light?
 
         String saveRoll = entity.getProperty(PROPS.ROLL_TYPES_TO_SAVE);
-        if (!StringMaster.isEmpty(saveRoll))
+        if (!StringMaster.isEmpty(saveRoll)) {
             wrapInSaveRollEffect(effects, saveRoll);
+        }
 
         String wrap = entity.getProperty(PROPS.EFFECTS_WRAP);
         Effect wrappedEffect;
-        if (StringMaster.isEmpty(wrap))
+        if (StringMaster.isEmpty(wrap)) {
             wrappedEffect = wrapEffects(mode, effects, entity);
-        else {
+        } else {
             EFFECTS_WRAP WRAP = new EnumMaster<EFFECTS_WRAP>().retrieveEnumConst(
                     EFFECTS_WRAP.class, wrap);
             wrappedEffect = wrapEffects(WRAP, effects, entity);
@@ -281,11 +287,14 @@ public class ActivesConstructor {
                 break;
 
         }
-        if (targeting == null)
+        if (targeting == null) {
             targeting = getSingleTargeting(obj);
-        if (targeting != null)
-            if (!targeting.isModsAdded())
+        }
+        if (targeting != null) {
+            if (!targeting.isModsAdded()) {
                 addTargetingMods(targeting, obj);
+            }
+        }
 
         return targeting;
     }
@@ -302,16 +311,19 @@ public class ActivesConstructor {
             // SPELL_TAGS.TELEPORT
             if (!obj.checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.FLYING.toString())) {
                 if (!obj.checkProperty(PROPS.TARGETING_MODIFIERS, TARGETING_MODIFIERS.CLEAR_SHOT
-                        .toString()))
+                        .toString())) {
                     property += TARGETING_MODIFIERS.CLEAR_SHOT.toString();
+                }
                 if (!obj.checkProperty(PROPS.TARGETING_MODIFIERS, TARGETING_MODIFIERS.SPACE
-                        .toString()))
+                        .toString())) {
                     property += TARGETING_MODIFIERS.SPACE.toString();
+                }
             }
         }
 
-        if (StringMaster.isEmpty(property))
+        if (StringMaster.isEmpty(property)) {
             return;
+        }
 
         for (String mod : StringMaster.openContainer(property)) {
             Condition targetingModConditions = null;
@@ -319,37 +331,45 @@ public class ActivesConstructor {
                     TARGETING_MODIFIERS.class, mod);
             if (MOD == null) {
                 targetingModConditions = ConditionMaster.toConditions(mod);
-            } else
+            } else {
                 targetingModConditions = DC_ConditionMaster.getTargetingModConditions(MOD);
-            if (targetingModConditions != null)
+            }
+            if (targetingModConditions != null) {
                 if (!c.contains(targetingModConditions))
-                    // if (ConditionMaster.contains(c,
-                    // targetingModConditions.getClass())) //you sure?
+                // if (ConditionMaster.contains(c,
+                // targetingModConditions.getClass())) //you sure?
+                {
                     c.add(targetingModConditions);
+                }
+            }
         }
         if (targeting instanceof TemplateSelectiveTargeting) {
             TemplateSelectiveTargeting tst = (TemplateSelectiveTargeting) targeting;
             if (tst.getTemplate() == SELECTIVE_TARGETING_TEMPLATES.GRAVE_CELL) {// TODO
-                if (tst.getConditions() != null)
+                if (tst.getConditions() != null) {
                     try {
                         ((GraveCondition) tst.getConditions().get(0)).getConditions().add(c);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
             }
         }
-        if (!c.isEmpty())
+        if (!c.isEmpty()) {
             targeting.getFilter().addCondition(c);
+        }
         targeting.setModsAdded(true);
     }
 
     public static Effect wrapEffects(EFFECTS_WRAP wrap, Effect effects, Entity entity) {
         Formula radius = new Formula(entity.getParam(G_PARAMS.RADIUS));
         Boolean allyOrEnemyOnly = null ;
-        if (entity.checkBool(STD_BOOLS.NO_FRIENDLY_FIRE))
+        if (entity.checkBool(STD_BOOLS.NO_FRIENDLY_FIRE)) {
             allyOrEnemyOnly = false;
-        if (entity.checkBool(STD_BOOLS.NO_ENEMY_FIRE))
+        }
+        if (entity.checkBool(STD_BOOLS.NO_ENEMY_FIRE)) {
             allyOrEnemyOnly = true;
+        }
         boolean notSelf = entity.checkBool(STD_BOOLS.NO_SELF_FIRE);
         switch (wrap) {
             case CHAIN:
@@ -380,15 +400,17 @@ public class ActivesConstructor {
 
                 Effects buffEffects = new Effects();
 
-                if (effects instanceof Effects)
+                if (effects instanceof Effects) {
                     for (Effect effect : (Effects) effects) {
                         if (effect instanceof AddBuffEffect) {
                             buffEffects.add(((AddBuffEffect) effect).getEffect());
-                        } else
+                        } else {
                             buffEffects.add(effect);
+                        }
                     }
-                else
+                } else {
                     buffEffects.add(effects);
+                }
 
                 String buffName = entity.getProperty(PROPS.BUFF_NAME);
                 if (buffName == null) {
@@ -408,10 +430,12 @@ public class ActivesConstructor {
         Formula radius = new Formula(entity.getParam(G_PARAMS.RADIUS));
         Formula range = new Formula(entity.getParam(PARAMS.RANGE));
         Boolean allyOrEnemyOnly = null;
-        if (entity.checkBool(STD_BOOLS.NO_FRIENDLY_FIRE))
+        if (entity.checkBool(STD_BOOLS.NO_FRIENDLY_FIRE)) {
             allyOrEnemyOnly = false;
-        if (entity.checkBool(STD_BOOLS.NO_ENEMY_FIRE))
+        }
+        if (entity.checkBool(STD_BOOLS.NO_ENEMY_FIRE)) {
             allyOrEnemyOnly = true;
+        }
         boolean notSelf = entity.checkBool(STD_BOOLS.NO_SELF_FIRE);
         switch (mode) {
             case SPRAY:
@@ -444,7 +468,9 @@ public class ActivesConstructor {
                     // up targeting
                     // and effect
                     // wrapping
+                {
                     effects = new ZoneEffect(effects, radius, allyOrEnemyOnly, notSelf);
+                }
                 break;
 
             case ALL_ENEMIES:
@@ -475,8 +501,9 @@ public class ActivesConstructor {
 
     public static void constructSingleTargeting(DC_ActiveObj obj) {
         Targeting t = getSingleTargeting(obj);
-        if (t != null)
+        if (t != null) {
             obj.setTargeting(t);
+        }
     }
 
     public static Targeting getSingleTargeting(DC_ActiveObj obj) {
@@ -487,8 +514,9 @@ public class ActivesConstructor {
         if (actives.size() < 1) {
             return null;
         }
-        if (actives.get(0) == null)
+        if (actives.get(0) == null) {
             return null;
+        }
         Targeting targeting = null;
         try {
             targeting = ((AbilityType) ((AbilityObj) actives.get(0)).getType()).getAbilities()

@@ -19,8 +19,9 @@ public class MusicManager {
         String path = mus.getFullPath();
         Clip clip = musMap.get(mus.getFullPath());
         try {
-            if (fromStart)
+            if (fromStart) {
                 stopPlay(mus, true);
+            }
 
             if (clip == null || fromStart) {
                 AudioInputStream inputStream = AudioSystem

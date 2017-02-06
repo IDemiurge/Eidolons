@@ -37,8 +37,9 @@ public class Town extends Place {
 
     @Override
     public void init() {
-        if (!readyToInit)
+        if (!readyToInit) {
             return;
+        }
         /*
 		 * setting shops for a town... > SHOT_TYPE? could be relatively easy...
 		 */
@@ -57,30 +58,35 @@ public class Town extends Place {
     }
 
     public Tavern selectTavern() {
-        if (taverns.isEmpty())
+        if (taverns.isEmpty()) {
             return null;
-        if (taverns.size() == 1)
+        }
+        if (taverns.size() == 1) {
             return taverns.get(0);
+        }
         HC_SequenceMaster sequenceMaster = new HC_SequenceMaster();
         sequenceMaster.launchEntitySelection(taverns, PartyManager.getParty()
                 .getLeader(), "Select Tavern");
-        if (WaitMaster.waitForInput(WAIT_OPERATIONS.SELECTION) == null)
+        if (WaitMaster.waitForInput(WAIT_OPERATIONS.SELECTION) == null) {
             return null;
+        }
         return getTavern(sequenceMaster.getSequence().getValue());
     }
 
     public Tavern getTavern(String tabName) {
         for (Tavern s : getTaverns()) {
-            if (s.getName().equals(tabName))
+            if (s.getName().equals(tabName)) {
                 return s;
+            }
         }
         return null;
     }
 
     public Shop getShop(String tabName) {
         for (Shop s : getShops()) {
-            if (s.getName().equals(tabName))
+            if (s.getName().equals(tabName)) {
                 return s;
+            }
         }
         return null;
     }

@@ -52,10 +52,10 @@ public class Session extends ArcaneEntity {
 
 		super.init();
 		ObjType type = DataManager.getType(getProperty(AT_PROPS.DIRECTION), AT_OBJ_TYPE.DIRECTION);
-		if (type != null)
-			direction = (Direction) ArcaneTower.getEntity(type);
-		else {
-			List<ObjType> list = DataManager.toTypeList(getProperty(AT_PROPS.SESSION_DIRECTIONS),
+        if (type != null) {
+            direction = (Direction) ArcaneTower.getEntity(type);
+        } else {
+            List<ObjType> list = DataManager.toTypeList(getProperty(AT_PROPS.SESSION_DIRECTIONS),
 					AT_OBJ_TYPE.DIRECTION);
 			if (list.isEmpty()) {
 				direction = ArcaneTower.getDirections().get(0);
@@ -105,9 +105,10 @@ public class Session extends ArcaneEntity {
 	@Override
 	public void toBase() {
 		super.toBase();
-		if (getDisplayedGoals() == null)
-			return;
-		AT_PROPS prop = AT_PROPS.GOALS;
+        if (getDisplayedGoals() == null) {
+            return;
+        }
+        AT_PROPS prop = AT_PROPS.GOALS;
 		List<? extends Entity> list = getDisplayedGoals();
 		resetPropertyFromList(prop, list);
 
@@ -117,17 +118,22 @@ public class Session extends ArcaneEntity {
 	}
 
 	public List<Goal> getDisplayedGoals() {
-		if (goals == null)
-			goals = new LinkedList<>();
-		if (isLocked())
-			return goals;
-		if (direction == null)
-			return null;
-		AT_SortMaster.sortGoals(goals, this);
+        if (goals == null) {
+            goals = new LinkedList<>();
+        }
+        if (isLocked()) {
+            return goals;
+        }
+        if (direction == null) {
+            return null;
+        }
+        AT_SortMaster.sortGoals(goals, this);
 		if (goals.isEmpty())
             // in non-locked mode, update all Direction's goals?
             // otherwise, all Session's goals
+        {
             return new ListMaster<Goal>().join(false, goals, getDirection().getGoals());
+        }
         return new ListMaster<Goal>().getCommonElements(goals, getDirection().getGoals());
         // return goals;
     }
@@ -168,15 +174,17 @@ public class Session extends ArcaneEntity {
 
 	public void removeCustomGoals() {
 		for (Goal sub : new LinkedList<>(goals)) {
-			if (sub.getDirection() == null)
-				goals.remove(sub);
-		}
+            if (sub.getDirection() == null) {
+                goals.remove(sub);
+            }
+        }
 	}
 
 	public List<Task> getTasks() {
-		if (tasks == null)
-			tasks = new LinkedList<>();
-		return tasks;
+        if (tasks == null) {
+            tasks = new LinkedList<>();
+        }
+        return tasks;
 	}
 
 	public void setTasks(List<Task> tasks) {
@@ -194,15 +202,17 @@ public class Session extends ArcaneEntity {
     }
 
 	public List<Goal> getPinnedGoals() {
-		if (pinnedGoals == null)
-			pinnedGoals = new LinkedList<>();
-		return pinnedGoals;
+        if (pinnedGoals == null) {
+            pinnedGoals = new LinkedList<>();
+        }
+        return pinnedGoals;
 	}
 
 	public List<Task> getPinnedTasks() {
-		if (pinnedTasks == null)
-			pinnedTasks = new LinkedList<>();
-		return pinnedTasks;
+        if (pinnedTasks == null) {
+            pinnedTasks = new LinkedList<>();
+        }
+        return pinnedTasks;
 	}
 
 	public SessionWindow getWindow() {

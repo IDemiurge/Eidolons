@@ -24,8 +24,9 @@ public class TooltipMouseListener implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (SwingUtilities.isRightMouseButton(e))
+        if (SwingUtilities.isRightMouseButton(e)) {
             master.initTooltip(type, e, arg);
+        }
 
     }
 

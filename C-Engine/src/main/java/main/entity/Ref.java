@@ -79,8 +79,9 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
 
 
     public static Ref getCopy(Ref ref) {
-        if (ref == null)
+        if (ref == null) {
             return new Ref(Game.game);
+        }
         return (Ref) ref.clone();
     }
 
@@ -174,8 +175,9 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
 
     protected Ref checkForRefReplacement() {
         String s = getStr();
-        if (s.startsWith("{"))
+        if (s.startsWith("{")) {
             s = s.replaceFirst("{", "");
+        }
         if (StringMaster.compareByChar(StringMaster.getSegment(0, s, "_"), "EVENT", true)) {
             // setStr(getStr().replace(EVENT_PREFIX, "")); [OPTIMIZED]
             setStr(StringMaster.cropFirstSegment(getStr(), "_").replace("}", ""));
@@ -211,10 +213,11 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
     }
 
     public void setAmount(Integer amount) {
-        if (amount == null)
+        if (amount == null) {
             setValue(KEYS.AMOUNT, null);
-        else
+        } else {
             setValue(KEYS.AMOUNT, String.valueOf(amount));
+        }
     }
 
     public Integer getId(String key) {
@@ -228,8 +231,9 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
         Ref ref = checkForRefReplacement();
 
         String value = ((ref == null) ? this : ref).getValue(getStr());
-        if (StringMaster.isInteger(value))
+        if (StringMaster.isInteger(value)) {
             return Integer.valueOf(value.replace(".0", ""));
+        }
 
         if (StringMaster.contains(getStr(), MULTI_TARGET)) {
             if (group != null) {
@@ -238,8 +242,9 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
                 LogMaster.log(LogMaster.CORE_DEBUG_1, "multi targeting effect, selecting target #"
                         + i + group);
 
-                if (i > 0)
+                if (i > 0) {
                     i--;
+                }
                 return group.getObjectIds().get(i);
 
             }
@@ -284,10 +289,11 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
         setStr(formatKeyString(key));
         Ref ref = checkForRefReplacement();
 
-        if (id == null)
+        if (id == null) {
             ((ref == null) ? this : ref).setValue(getStr(), null);
-        else
+        } else {
             ((ref == null) ? this : ref).setValue(getStr(), id.toString());
+        }
     }
 
     public Ref getCopy() {
@@ -356,8 +362,9 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
     }
 
     public Player getPlayer() {
-        if (player == null)
+        if (player == null) {
             return getSourceObj().getOwner();
+        }
         return player;
     }
 
@@ -397,8 +404,9 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
     }
 
     public void setID(KEYS key, Integer id) {
-        if (key == null)
+        if (key == null) {
             return;
+        }
         setID(key.name(), id);
     }
 
@@ -436,8 +444,9 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
     }
 
     public Entity getEntity(String str) {
-        if (getObj(str) != null)
+        if (getObj(str) != null) {
             return getObj(str);
+        }
         return getType((str));
     }
 
@@ -455,14 +464,17 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
 
     public ActiveObj getActive() {
         Obj obj = getObj(KEYS.ACTIVE);
-        if (obj == null)
+        if (obj == null) {
             obj = getObj(KEYS.SPELL);
+        }
         if (obj instanceof ActiveObj) // TODO QUICK ITEM INTERFACE
+        {
             try {
                 return (ActiveObj) obj;
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
         return null;
     }
 
@@ -475,8 +487,9 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
     }
 
     public DAMAGE_TYPE getDamageType() {
-        if (getValue(KEYS.DAMAGE_TYPE) == null)
+        if (getValue(KEYS.DAMAGE_TYPE) == null) {
             return null;
+        }
         return new EnumMaster<DAMAGE_TYPE>().retrieveEnumConst(DAMAGE_TYPE.class,
                 getValue(KEYS.DAMAGE_TYPE));
     }

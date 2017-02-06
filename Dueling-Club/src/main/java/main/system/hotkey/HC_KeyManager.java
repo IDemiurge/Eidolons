@@ -32,18 +32,19 @@ public class HC_KeyManager implements KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {
         // pagePanel = GuiManager.getActivePagePanel();
-        if (pagePanel == null)
+        if (pagePanel == null) {
             try {
                 pagePanel = sequence.getView().getPages();
             } catch (Exception e2) {
 
             }
+        }
         // TODO enter/esc for SelectionViews and Menu while in PartyView
 
         char keyChar = e.getKeyChar();
         // main.system.auxiliary.LogMaster.log(1, keyChar +
         // " typed for HC_KeyManager " + e);
-        if (CoreEngine.isArcaneVault())
+        if (CoreEngine.isArcaneVault()) {
             switch (keyChar) {
                 case 's':
                 case 'r':
@@ -53,6 +54,7 @@ public class HC_KeyManager implements KeyListener {
                     T3UpperPanel.getLastInstance().handleControl(T3UpperPanel.SAVE, e.isAltDown());
                     return;
             }
+        }
         switch (keyChar) {
 
             case 'a':

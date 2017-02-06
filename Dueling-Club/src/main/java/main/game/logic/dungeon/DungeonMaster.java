@@ -1,11 +1,11 @@
 package main.game.logic.dungeon;
 
-import main.content.CONTENT_CONSTS.DUNGEON_SUBFOLDER;
 import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
 import main.content.OBJ_TYPES;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.VALUE;
+import main.content.enums.DUNGEON_SUBFOLDER;
 import main.content.properties.G_PROPS;
 import main.content.properties.MACRO_PROPS;
 import main.data.DataManager;
@@ -124,8 +124,9 @@ public class DungeonMaster {
     }
 
     public static List<Dungeon> getDungeons() {
-        if (dungeons == null)
+        if (dungeons == null) {
             dungeons = new LinkedList<>();
+        }
         return dungeons;
     }
 
@@ -209,18 +210,21 @@ public class DungeonMaster {
 
                     type =
                             pickRandomDungeon();
-                } else if (type == null)
+                } else if (type == null) {
                     type = DataManager.getType(ListChooser.chooseType(OBJ_TYPES.DUNGEONS));
+                }
 
-                if (type == null)
+                if (type == null) {
                     initDungeonLevelChoice();
+                }
             }
             setDungeon(new Dungeon(type));
             getDungeons().add(dungeon);
             rootDungeon = getDungeon();
         }
-        if (dungeon != null)
+        if (dungeon != null) {
             initialized = true;
+        }
     }
 
     private ObjType pickRandomDungeon() {
@@ -240,8 +244,9 @@ public class DungeonMaster {
     public void initSublevel(Dungeon subLevel) {
         setDungeon(subLevel);
         game.getBattleField().getBuilder().newDungeon(subLevel);
-        if (!getDungeons().contains(subLevel))
+        if (!getDungeons().contains(subLevel)) {
             getDungeons().add(subLevel);
+        }
     }
 
     public String getPresetDungeonType() {
@@ -272,13 +277,15 @@ public class DungeonMaster {
         ObjType type = new ObjType(e.getRoute().getName(), OBJ_TYPES.DUNGEONS);
         type.initType();
         String value = e.getRoute().getProperty(PROPS.MAP_BACKGROUND);
-        if (!ImageManager.isImage(value))
+        if (!ImageManager.isImage(value)) {
             value = e.getRoute().getArea().getProperty(PROPS.MAP_BACKGROUND);
+        }
         type.setProperty(PROPS.MAP_BACKGROUND, value);
         for (VALUE p : encounterDungeonValues) {
             type.copyValue(p, e.getRoute());
-            if (type.checkValue(p))
+            if (type.checkValue(p)) {
                 type.copyValue(p, e.getRoute().getArea());
+            }
         }
 
         // 'rewards' ? encounters ?
@@ -290,30 +297,35 @@ public class DungeonMaster {
     private ObjType getDungeonTypeFromPlace(Place place) {
         // place.getProperty(prop)
         ObjType type = DataManager.getType(place.getName(), OBJ_TYPES.DUNGEONS);
-        if (type == null)
+        if (type == null) {
             type = DataManager.findType(place.getName(), OBJ_TYPES.DUNGEONS);
+        }
         return type;
     }
 
     public int getLevelWidth() {
         if (getDungeon() == null) {
-            if (testWidth != null)
+            if (testWidth != null) {
                 return testWidth;
+            }
             return BASE_WIDTH;
         }
-        if (getDungeon().getIntParam(PARAMS.BF_WIDTH) <= 0)
+        if (getDungeon().getIntParam(PARAMS.BF_WIDTH) <= 0) {
             return BASE_WIDTH;
+        }
         return getDungeon().getIntParam(PARAMS.BF_WIDTH);
     }
 
     public int getLevelHeight() {
         if (getDungeon() == null) {
-            if (testHeight != null)
+            if (testHeight != null) {
                 return testHeight;
+            }
             return BASE_HEIGHT;
         }
-        if (getDungeon().getIntParam(PARAMS.BF_HEIGHT) <= 0)
+        if (getDungeon().getIntParam(PARAMS.BF_HEIGHT) <= 0) {
             return BASE_HEIGHT;
+        }
         return getDungeon().getIntParam(PARAMS.BF_HEIGHT);
     }
 
@@ -336,10 +348,12 @@ public class DungeonMaster {
             setDungeon(DungeonBuilder.loadDungeon(getRandomDungeonPath()));
             return;
         }
-        if (getDungeonPath() == null)
+        if (getDungeonPath() == null) {
             setDungeonPath(chooseDungeonLevel());
-        if (getDungeonPath() != null)
+        }
+        if (getDungeonPath() != null) {
             setDungeon(DungeonBuilder.loadDungeon(getDungeonPath()));
+        }
 //        else //if (isChooseLevel())
 //            setDungeonPath(chooseDungeonLevel());
     }
@@ -358,8 +372,9 @@ public class DungeonMaster {
         String path = PathFinder.getDungeonLevelFolder();
         String subFolder = ListChooser.chooseEnum(DUNGEON_SUBFOLDER.class, SELECTION_MODE.SINGLE);
         // DialogMaster.inputText("generic folder (empty for root", "");
-        if (!StringMaster.isEmpty(subFolder))
+        if (!StringMaster.isEmpty(subFolder)) {
             path += subFolder.replace(";", "") + "\\";
+        }
         File folder = FileManager.getFile(path);
         List<String> files = FileManager.getFileNames(FileManager.findFiles(folder, ".xml", false,
                 false));
@@ -368,17 +383,20 @@ public class DungeonMaster {
         listChooser.setMaxColumnNumber(4);
         listChooser.setMaxRowCount(40);
         String level = listChooser.choose();
-        if (level == null)
+        if (level == null) {
             return null;
-        if (subFolder == null)
+        }
+        if (subFolder == null) {
             return level;
+        }
         return subFolder.replace(";", "") + "\\" + level;
     }
 
     public void addDungeon() {
         String level = chooseDungeonLevel();
-        if (level == null)
+        if (level == null) {
             return;
+        }
         setZ(rootDungeon.getNextZ());
         Dungeon subLevel = DungeonBuilder.loadDungeon(level);
         subLevel.setSublevel(true);
@@ -394,16 +412,19 @@ public class DungeonMaster {
     }
 
     public boolean isExtendedBattlefield() {
-        if (testHeight != null)
+        if (testHeight != null) {
             return true;
-        if (testWidth != null)
+        }
+        if (testWidth != null) {
             return true;
+        }
         return getDungeon().isExtendedBattlefield();
     }
 
     public Dungeon getRootDungeon() {
-        if (rootDungeon == null)
+        if (rootDungeon == null) {
             return dungeon;
+        }
         return rootDungeon;
     }
 
@@ -417,16 +438,19 @@ public class DungeonMaster {
         return dungeon;
     }
     public Dungeon getDungeon() {
-        if (dungeon == null)
+        if (dungeon == null) {
             initDungeon();
+        }
         return dungeon;
     }
 
     public void setDungeon(Dungeon dungeon) {
-        if (dungeon == null)
+        if (dungeon == null) {
             return;
-        if (this.dungeon == null)
+        }
+        if (this.dungeon == null) {
             rootDungeon = dungeon;
+        }
         this.dungeon = dungeon;
         GuiManager.setCurrentLevelCellsX(getLevelWidth());
         GuiManager.setCurrentLevelCellsY(getLevelHeight());
@@ -454,9 +478,11 @@ public class DungeonMaster {
     }
 
     public Integer getZ() {
-        if (z == null)
-            if (dungeon != null)
+        if (z == null) {
+            if (dungeon != null) {
                 return dungeon.getZ();
+            }
+        }
         return z;
     }
 

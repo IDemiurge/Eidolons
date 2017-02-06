@@ -51,14 +51,16 @@ public class MainManager implements SequenceManager {
         sequenceMaster = new HC_SequenceMaster();
         keyManager = new HC_KeyManager();
         this.globalKeys = new GlobalKeys();
-        if (Launcher.ITS_ME)
+        if (Launcher.ITS_ME) {
             globalKeys.initMenuGlobalKeys();
+        }
 
     }
 
     public static String getPresetGroup() {
-        if (Launcher.isSuperFastMode())
+        if (Launcher.isSuperFastMode()) {
             return StringMaster.BATTLE_READY;
+        }
 
         return StringMaster.BATTLE_READY + StringMaster.OR + StringMaster.PRESET + StringMaster.OR
                 + StringMaster.PLAYTEST;
@@ -212,20 +214,22 @@ public class MainManager implements SequenceManager {
             case OPTIONS:
                 break;
             case BACK:
-                if (currentItem == previousItem)
+                if (currentItem == previousItem) {
                     currentItem = MAIN_MENU_ITEMS.MAIN;
-                else
+                } else {
                     currentItem = previousItem;
+                }
                 break;
             case EXIT:
                 Launcher.exit();
                 break;
 
         }
-        if (currentItem == MAIN_MENU_ITEMS.MAIN)
+        if (currentItem == MAIN_MENU_ITEMS.MAIN) {
             DC_Game.game.setGameType(null);
-        else if (currentItem == MAIN_MENU_ITEMS.NEW_ARCADE)
+        } else if (currentItem == MAIN_MENU_ITEMS.NEW_ARCADE) {
             DC_Game.game.setGameType(GAME_TYPE.ARCADE);
+        }
         refresh();
     }
 
@@ -242,10 +246,11 @@ public class MainManager implements SequenceManager {
             return;
         }
 
-        if (currentItem == previousItem)
+        if (currentItem == previousItem) {
             currentItem = MAIN_MENU_ITEMS.MAIN;
-        else
+        } else {
             currentItem = previousItem;
+        }
 
         refresh();
         setMenuView();
@@ -257,15 +262,17 @@ public class MainManager implements SequenceManager {
 
     public void launchSelection(final OBJ_TYPES t, final String group, String info) {
         Condition c = null;
-        if (t == OBJ_TYPES.CHARS)
-            if (CharacterCreator.isArcadeMode())
+        if (t == OBJ_TYPES.CHARS) {
+            if (CharacterCreator.isArcadeMode()) {
                 c = new NumericCondition("1", "{match_hero_level}");
-            else {
-                if (DC_Game.game.getGameType() == GAME_TYPE.SCENARIO)
+            } else {
+                if (DC_Game.game.getGameType() == GAME_TYPE.SCENARIO) {
                     if (ScenarioMaster.getScenario() != null) {
                         c = ScenarioMaster.getSelectHeroConditions();
                     }
+                }
             }
+        }
         sequenceMaster.launchEntitySelection(t, group, c, hero, info);
         sequenceMaster.getSequence().setManager(this);
         this.sequence = sequenceMaster.getSequence();
@@ -329,9 +336,9 @@ public class MainManager implements SequenceManager {
     private void newParty() {
         PartyManager.newParty(hero);
         PartyManager.saveParty();
-        if (CharacterCreator.isArcadeMode())
+        if (CharacterCreator.isArcadeMode()) {
             DC_Game.game.getArcadeManager().initializeArcade(PartyManager.getParty());
-        else {
+        } else {
             DC_Game.game.getArcadeManager().initializeSkirmish(PartyManager.getParty());
         }
     }
@@ -341,8 +348,9 @@ public class MainManager implements SequenceManager {
             public void run() {
                 CharacterCreator.initNewHero(hero);
                 boolean result = (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECTION);
-                if (!result)
+                if (!result) {
                     return;
+                }
                 newParty();
                 launchHC();
             }
@@ -411,13 +419,14 @@ public class MainManager implements SequenceManager {
 
     public void escape() {
 
-        if (!Launcher.isInMenu())
+        if (!Launcher.isInMenu()) {
             exitToMainMenu();
-        else {
-            if (currentItem == MAIN_MENU_ITEMS.MAIN)
+        } else {
+            if (currentItem == MAIN_MENU_ITEMS.MAIN) {
                 Launcher.exit();
-            else
+            } else {
                 back();
+            }
         }
     }
 
@@ -427,9 +436,11 @@ public class MainManager implements SequenceManager {
 
     public void space() { // scroll down? init page panel into here and flip
         // it...
-        if (sequence != null)
-            if (sequence.isActive())
+        if (sequence != null) {
+            if (sequence.isActive()) {
                 sequence.tryNext();
+            }
+        }
     }
 
     public boolean isMacroMode() {

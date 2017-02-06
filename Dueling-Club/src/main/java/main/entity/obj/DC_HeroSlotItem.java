@@ -44,10 +44,12 @@ public abstract class DC_HeroSlotItem extends DC_HeroItemObj {
     }
 
     public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type, DC_UnitObj target, Ref REF) {
-        if (specialEffects == null)
+        if (specialEffects == null) {
             return;
-        if (specialEffects.get(case_type) == null)
+        }
+        if (specialEffects.get(case_type) == null) {
             return;
+        }
         Ref ref = Ref.getCopy(REF);
         ref.setTarget(target.getId());
         ref.setSource(getOwnerObj().getId());

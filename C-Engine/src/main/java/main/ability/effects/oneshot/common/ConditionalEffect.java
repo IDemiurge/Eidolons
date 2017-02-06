@@ -17,8 +17,9 @@ public class ConditionalEffect extends EffectImpl {
     public boolean applyThis() {
         if (condition.check(ref)) {
             return effect.apply(ref);
-        } else
+        } else {
             return true;
+        }
     }
 
     @Override

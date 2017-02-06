@@ -80,8 +80,9 @@ public class MacroGame extends Game {
 
         if (MacroManager.isEditMode()) {
             String partyName = campaign.getProperty(MACRO_PROPS.CAMPAIGN_PARTY);
-            if (partyName.isEmpty())
+            if (partyName.isEmpty()) {
                 partyName = Launcher.FAST_TEST_PARTY;
+            }
             try {
                 PartyManager.loadParty(partyName);
             } catch (Exception e) {
@@ -89,8 +90,9 @@ public class MacroGame extends Game {
             }
         }
 
-        if (PartyManager.getParty() == null)
+        if (PartyManager.getParty() == null) {
             return;
+        }
 
         playerParty = new MacroParty(
                 getMacroPartyType(PartyManager.getParty()), this, ref,
@@ -113,8 +115,9 @@ public class MacroGame extends Game {
     public void initObjTypes() {
         MacroManager.initTypes();
         for (OBJ_TYPE TYPE : MACRO_OBJ_TYPES.values()) {
-            if (TYPE.getCode() == -1)
+            if (TYPE.getCode() == -1) {
                 continue;
+            }
             initTYPE(TYPE);
         }
 

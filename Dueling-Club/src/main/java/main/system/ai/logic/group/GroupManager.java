@@ -29,11 +29,12 @@ public class GroupManager {
         for (int n = 0; n < factor; n++) {
             Coordinates[] coordinates = new Coordinates[blockWidth * blockHeight];
             int i = 0;
-            for (int x = 0; x < blockWidth; x++)
+            for (int x = 0; x < blockWidth; x++) {
                 for (int y = 0; y < blockWidth; y++) {
                     i++;
                     coordinates[i] = new Coordinates(n * blockWidth + x, n * blockHeight + y);
                 }
+            }
 
             dungeon.getGame().getUnitsForCoordinates(coordinates);
             // sort(); leader = units.getOrCreate(0);

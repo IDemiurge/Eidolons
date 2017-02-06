@@ -32,8 +32,9 @@ public class PathFinder {
         if (CoreEngine.isArcaneVault()) {
             ENGINE_PATH = ENGINE_PATH.replace("Arcane-Vault", "Dueling-Club");
         }
-        if (CoreEngine.isArcaneTower())
+        if (CoreEngine.isArcaneTower()) {
             ENGINE_PATH = ENGINE_PATH.replace("Arcane-Tower", "Dueling-Club");
+        }
         fullpath = System.getProperty("java.class.path");
         main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, fullpath);
         // Err.info(fullpath);
@@ -48,8 +49,9 @@ public class PathFinder {
         if (CoreEngine.isArcaneVault() || CoreEngine.isArcaneTower()) {
             XML_PATH = XML_PATH.replace("Arcane-Vault", "Dueling-Club");
         }
-        if (CoreEngine.isArcaneTower())
+        if (CoreEngine.isArcaneTower()) {
             XML_PATH = XML_PATH.replace("Arcane-Tower", "Dueling-Club");
+        }
         IMG_PATH = ENGINE_PATH + getRES_PATH() + "img\\";
 
         SND_PATH = ENGINE_PATH + getRES_PATH() + "sound\\";

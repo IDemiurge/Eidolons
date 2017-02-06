@@ -72,10 +72,11 @@ public class HeroPanel extends G_Panel {
 
     @Override
     public void refresh() {
-        if (!deityMode)
+        if (!deityMode) {
             for (G_Component c : comps) {
                 c.refresh();
             }
+        }
         removeAll();
         addComps();
         itemPanel.setObj(hero);
@@ -95,8 +96,9 @@ public class HeroPanel extends G_Panel {
     private void addComps() {
         add(header, "id header, pos " + X_OFFSET + " " + Y_OFFSET);
         if (deityMode) {
-            if (deityComp == null)
+            if (deityComp == null) {
                 deityComp = new JLabel(hero.getDeity().getType().getIcon());
+            }
             add(deityComp, "id dc, pos header.x+12 header.y2");
             add(infoPanel, "id ip, pos header.x dc.y2");
             infoPanel.setEntity(hero.getDeity());

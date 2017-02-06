@@ -45,15 +45,17 @@ public class LockMaster {
 
     public static boolean tryUnlock(Entity lockedObj, DC_HeroObj lockPicker, Formula formula) {
         boolean result = TrapMaster.checkTrapOnLock(lockedObj);
-        if (!result)
+        if (!result) {
             return false;
+        }
         Ref ref = new Ref(lockPicker);
         ref.setTarget(lockedObj.getId());
         // check lockpick
         if (formula != null) {
             // TODO
-        } else
+        } else {
             result = RollMaster.roll(ROLL_TYPES.UNLOCK, ref);
+        }
         // roll
         lockedObj.getIntParam(PARAMS.LOCK_LEVEL);
         // SoundMaster.playStandardSound(STD_SOUNDS.UNLOCK_SUCCESS);
@@ -62,11 +64,13 @@ public class LockMaster {
 
     public static List<Obj> getObjectsToUnlock(DC_HeroObj unit) {
         List<Obj> list = new LinkedList<>();
-        if (unit.getGame().getObjectByCoordinate(unit.getCoordinates(), false) != null)
+        if (unit.getGame().getObjectByCoordinate(unit.getCoordinates(), false) != null) {
             list.add(unit.getGame().getObjectByCoordinate(unit.getCoordinates(), false));
+        }
         for (Coordinates c : unit.getCoordinates().getAdjacentCoordinates()) {
-            if (unit.getGame().getObjectByCoordinate(c, false) != null)
+            if (unit.getGame().getObjectByCoordinate(c, false) != null) {
                 list.add(unit.getGame().getObjectByCoordinate(c, false));
+            }
 
         }
         return list;

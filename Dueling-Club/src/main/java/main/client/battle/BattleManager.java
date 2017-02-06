@@ -50,13 +50,14 @@ public class BattleManager {
     public void end() {
         // battle.setOutcome(outcome);
         game.stop();
-        if (EncounterMaster.isEncounterBeingResolved())
+        if (EncounterMaster.isEncounterBeingResolved()) {
             WaitMaster.receiveInput(WAIT_OPERATIONS.BATTLE_FINISHED, outcome);
-            // boolean override = (boolean) WaitMaster
+        }// boolean override = (boolean) WaitMaster
             // .waitForInputIfWaiting(WAIT_OPERATIONS.BATTLE_FINISHED);
             // if (!override)
-        else
+        else {
             initDialogue();
+        }
     }
 
     public void exited() {
@@ -81,15 +82,17 @@ public class BattleManager {
         }
         PartyManager.getParty().subtractGlory(glory);
 
-        if (game.getGameMode() == GAME_MODES.ARENA_ARCADE)
+        if (game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
             game.getArenaArcadeMaster().levelLost();
+        }
 
         CharacterCreator.getHeroManager(true).afterDefeatRewind();
         saveParty();
         outcome = false;
         // MusicMaster.playMoment(MUSIC_MOMENT.DEFEAT);
-        if (end)
+        if (end) {
             end();
+        }
     }
 
     public void victory() {
@@ -100,10 +103,11 @@ public class BattleManager {
             PartyManager.getParty().addUnitsSlain(new LinkedList<Entity>(slainUnits));
             PartyManager.getParty().addFallenHeroes(new LinkedList<Entity>(fallenHeroes));
             CharacterCreator.getHeroManager(true).prebattleCleanSave();
-            if (game.getGameMode() == GAME_MODES.ARENA_ARCADE)
+            if (game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
                 game.getArenaArcadeMaster().levelWon();
-            else
+            } else {
                 game.getArcadeManager().dungeonComplete();
+            }
             saveParty();
         } else {
             LootMaster.battleIsWon(game); // TODO
@@ -207,22 +211,28 @@ public class BattleManager {
     public void unitDies(DC_HeroObj killed) {
         if (killed.getOriginalOwner().isMe()) {
             if (killed.isHero() && isRated(killed)) {
-                if (!fallenHeroes.contains(killed))
+                if (!fallenHeroes.contains(killed)) {
                     fallenHeroes.add(killed);
+                }
             } else {
-                if (!slainPlayerUnits.contains(killed))
+                if (!slainPlayerUnits.contains(killed)) {
                     slainPlayerUnits.add(killed);
+                }
             }
-            if (checkNoPlayerUnitsLeft())
+            if (checkNoPlayerUnitsLeft()) {
                 defeat();
+            }
         }
         // TODO temp
         if (!killed.getOriginalOwner().isMe()) {
-            if (isRated(killed))
-                if (!ratedEnemyUnitsSlain.contains(killed))
+            if (isRated(killed)) {
+                if (!ratedEnemyUnitsSlain.contains(killed)) {
                     ratedEnemyUnitsSlain.add(killed);
-            if (!slainUnits.contains(killed))
+                }
+            }
+            if (!slainUnits.contains(killed)) {
                 slainUnits.add(killed);
+            }
             checkClear();
         }
 
@@ -238,18 +248,23 @@ public class BattleManager {
     }
 
     private void checkClear() {
-        if (!DC_Game.game.isDebugMode())
-        if (checkNoEnemiesLeft())
-            if (game.getGameMode() != GAME_MODES.ARENA)
-                victory();
-            else if (game.getArenaManager().getSpawnManager().getScheduledWaves().isEmpty())
-                if (!nextWaveGroup())
+        if (!DC_Game.game.isDebugMode()) {
+            if (checkNoEnemiesLeft()) {
+                if (game.getGameMode() != GAME_MODES.ARENA) {
                     victory();
+                } else if (game.getArenaManager().getSpawnManager().getScheduledWaves().isEmpty()) {
+                    if (!nextWaveGroup()) {
+                        victory();
+                    }
+                }
+            }
+        }
     }
 
     private boolean nextWaveGroup() {
-        if (!game.getArenaManager().getBattleConstructor().construct())
+        if (!game.getArenaManager().getBattleConstructor().construct()) {
             return false;
+        }
 
         game.getArenaManager().getSpawnManager().waveCleared();
         // int n = game.getArenaManager().getArenaOptions()
@@ -271,8 +286,9 @@ public class BattleManager {
 
     private boolean checkPlayerHasNoUnits(Player player) {
         for (Obj d : player.getControlledUnits()) {
-            if (!d.isDead())
+            if (!d.isDead()) {
                 return false;
+            }
             // panicked? check ownership change?
         }
         return true;
@@ -295,8 +311,9 @@ public class BattleManager {
     }
 
     public Battle getBattle() {
-        if (battle == null)
+        if (battle == null) {
             this.battle = game.getArenaManager().getBattle();
+        }
         return battle;
     }
 

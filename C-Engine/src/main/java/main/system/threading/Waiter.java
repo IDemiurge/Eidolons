@@ -65,13 +65,14 @@ public class Waiter implements Runnable {
     public void run() {
         input = null;
         interrupted = false;
-        if (timeLimit != null)
+        if (timeLimit != null) {
             Chronos.mark(getId());
+        }
         while (input == null && interrupted == false) {
             if (timeLimit != null) {
-                if (timeElapsed >= timeLimit)
+                if (timeElapsed >= timeLimit) {
                     break;
-                else {
+                } else {
                     timeElapsed = Chronos.getTimeElapsedForMark(getId());
                 }
             }

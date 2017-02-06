@@ -31,8 +31,9 @@ public class ContentMaster {
             case JEWELRY:
                 return checkItemBlocked(type, version);
             case CHARS:
-                if (type.getSubGroupingKey().equalsIgnoreCase(StringMaster.BACKGROUND))
+                if (type.getSubGroupingKey().equalsIgnoreCase(StringMaster.BACKGROUND)) {
                     return checkHeroBackgroundBlocked(type, version);
+                }
 
             case CLASSES:
                 return checkItemBlocked(type, version);
@@ -53,27 +54,33 @@ public class ContentMaster {
     }
 
     private boolean checkHeroBackgroundBlocked(ObjType type, GAME_VERSION version) {
-        if (type.getGroupingKey().equalsIgnoreCase(RACE.HUMAN.toString()))
-            if (!type.getName().contains("Realm"))
+        if (type.getGroupingKey().equalsIgnoreCase(RACE.HUMAN.toString())) {
+            if (!type.getName().contains("Realm")) {
                 return true;
-            else
+            } else {
                 return !type.getName().contains("Man of");
+            }
+        }
 
         return false;
     }
 
     private boolean checkItemBlocked(ObjType type, GAME_VERSION version) {
-        if (version == GAME_VERSION.BATTLECRAFT_PROMO)
-            if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.JEWELRY)
+        if (version == GAME_VERSION.BATTLECRAFT_PROMO) {
+            if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.JEWELRY) {
                 return true;
+            }
+        }
         if (isAboveBasic(version)) {
 
             List<String> blockedList = getBlockedTypeGroupsBasic((OBJ_TYPES) type
                     .getOBJ_TYPE_ENUM());
 
-            for (String blocked : blockedList)
-                if (StringMaster.compareByChar(type.getGroupingKey(), blocked))
+            for (String blocked : blockedList) {
+                if (StringMaster.compareByChar(type.getGroupingKey(), blocked)) {
                     return true;
+                }
+            }
 
         }
         return false;

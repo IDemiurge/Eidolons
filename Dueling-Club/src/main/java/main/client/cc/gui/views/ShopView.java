@@ -64,8 +64,9 @@ public class ShopView extends HeroItemView {
     @Override
     public BORDER getBorder(ObjType value) {
         String r = hero.getGame().getRequirementsManager().check(hero, value);
-        if (r == null)
+        if (r == null) {
             return null;
+        }
 
         // if (r.contains(InfoMaster.ITEM_REASON_BLOCKED)) {
         // // return BORDER.BLOCKED;
@@ -106,18 +107,20 @@ public class ShopView extends HeroItemView {
                 new StringComparison("{MATCH_" + G_PROPS.MATERIAL + "}", "",
                         true)));
         Conditions qualityConditions = new OrConditions();
-        for (QUALITY_LEVEL quality : getQualityLevels())
+        for (QUALITY_LEVEL quality : getQualityLevels()) {
             qualityConditions.add(new StringComparison(StringMaster
                     .getValueRef(KEYS.MATCH, G_PROPS.QUALITY_LEVEL),
                     StringMaster.getWellFormattedString(quality.toString()),
                     true));
+        }
         conditions.add(qualityConditions);
         return new OrConditions(specialConditions, conditions);
     }
 
     public QUALITY_LEVEL[] getQualityLevels() {
-        if (qualityLevels == null)
+        if (qualityLevels == null) {
             return DEFAULT_QUALITY_LEVELS;
+        }
         return qualityLevels;
     }
 

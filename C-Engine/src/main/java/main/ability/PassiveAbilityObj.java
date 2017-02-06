@@ -39,12 +39,14 @@ public class PassiveAbilityObj extends AbilityObj implements Attachment {
     @Override
     public boolean kill() {
         Ref REF = Ref.getCopy(ref);
-        if (isDead())
+        if (isDead()) {
             return false;
+        }
 
         if (!game.fireEvent(new Event(
-                STANDARD_EVENT_TYPE.PASSIVE_BEING_REMOVED, REF)))
+                STANDARD_EVENT_TYPE.PASSIVE_BEING_REMOVED, REF))) {
             return false;
+        }
 
         setDead(true);
         game.getManager().attachmentRemoved(this, ownerObj);
@@ -90,11 +92,12 @@ public class PassiveAbilityObj extends AbilityObj implements Attachment {
 
     @Override
     public boolean checkRetainCondition() {
-        if (retainConditions != null)
+        if (retainConditions != null) {
             if (retainConditions.check(ref)) {
                 kill();
                 return false;
             }
+        }
         return true;
     }
 

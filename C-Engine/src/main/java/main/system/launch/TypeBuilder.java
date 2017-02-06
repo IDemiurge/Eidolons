@@ -21,8 +21,9 @@ public class TypeBuilder {
     private static TypeInitializer typeInitializer;
 
     public static ObjType buildType(Node node, String typeType) {
-        if (typeInitializer == null)
+        if (typeInitializer == null) {
             typeInitializer = new TypeInitializer();
+        }
         OBJ_TYPE obj_type = ContentManager.getOBJ_TYPE(typeType);
         ObjType type = getTypeInitializer().getNewType(obj_type);
 
@@ -52,8 +53,9 @@ public class TypeBuilder {
             }
 
         }
-        if (getTypeInitializer() != null)
+        if (getTypeInitializer() != null) {
             getTypeInitializer().setXmlTreeValue(false);
+        }
 
         checkUID(type);
 
@@ -79,9 +81,10 @@ public class TypeBuilder {
     public static void setProps(Entity type, NodeList childNodes) {
         for (int i = 0; i < childNodes.getLength(); i++) {
             Node child = childNodes.item(i);
-            if (child.getNodeName().equals(XML_Converter.TEXT_NODE))
+            if (child.getNodeName().equals(XML_Converter.TEXT_NODE)) {
                 continue;
-            if ((type) instanceof XmlDocHolder)
+            }
+            if ((type) instanceof XmlDocHolder) {
                 if (child.getNodeName().equals(G_PROPS.ABILITIES.getName())
                         || StringMaster.getWellFormattedString(child.getNodeName()).equals(
                         MACRO_PROPS.DIALOGUE_TREE.getName())) {
@@ -94,6 +97,7 @@ public class TypeBuilder {
                     ((XmlDocHolder) type).setDoc(child);
                     continue;
                 }
+            }
             PROPERTY prop = ContentManager.getPROP(child.getNodeName());
             if (prop == null) {
                 main.system.auxiliary.LogMaster.log(1, "no such prop: " + child.getNodeName());
@@ -117,8 +121,9 @@ public class TypeBuilder {
         for (int i = 0; i < childNodes.getLength(); i++) {
             Node child = childNodes.item(i);
 
-            if (child.getTextContent().startsWith("\n"))
+            if (child.getTextContent().startsWith("\n")) {
                 continue;
+            }
             PARAMETER param = ContentManager.getPARAM(child.getNodeName());
             if (param == null) {
                 main.system.auxiliary.LogMaster.log(1, "no such param: " + child.getNodeName());

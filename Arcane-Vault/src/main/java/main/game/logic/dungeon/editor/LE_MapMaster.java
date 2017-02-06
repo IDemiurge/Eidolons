@@ -13,16 +13,12 @@ import main.game.battlefield.Coordinates;
 import main.game.battlefield.DirectionMaster;
 import main.game.battlefield.map.DungeonMapGenerator;
 import main.game.logic.dungeon.Dungeon;
-import main.game.logic.dungeon.building.BuildHelper;
+import main.game.logic.dungeon.building.*;
 import main.game.logic.dungeon.building.BuildHelper.BUILD_PARAMS;
 import main.game.logic.dungeon.building.BuildHelper.BuildParameters;
-import main.game.logic.dungeon.building.DungeonBuilder;
 import main.game.logic.dungeon.building.DungeonBuilder.BLOCK_TYPE;
 import main.game.logic.dungeon.building.DungeonBuilder.DUNGEON_TEMPLATES;
 import main.game.logic.dungeon.building.DungeonBuilder.ROOM_TYPE;
-import main.game.logic.dungeon.building.DungeonPlan;
-import main.game.logic.dungeon.building.MapBlock;
-import main.game.logic.dungeon.building.MapZone;
 import main.game.logic.macro.utils.CoordinatesMaster;
 import main.swing.generic.components.editors.FileChooser;
 import main.swing.generic.components.editors.TextEditor;
@@ -38,28 +34,28 @@ import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+import org.w3c.dom.Document;
 
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.w3c.dom.Document;
-
 public class LE_MapMaster {
 
-	public enum FILL_GROUPS {
-		FOREST,
-
-	}
+    private MapBlock block;
+    private MapBlock blockBuffer;
+    private FileChooser blockChooser;
 
 	public static void generateNew(Mission mission, Level level, boolean alt) {
 		DUNGEON_TEMPLATES template = new EnumMaster<DUNGEON_TEMPLATES>().retrieveEnumConst(
 				DUNGEON_TEMPLATES.class, ListChooser.chooseEnum(DUNGEON_TEMPLATES.class));
-		if (template == null)
-			if (!DialogMaster.confirm("Generate by standard template?"))
-				return;
-		Dungeon dungeon = level.getDungeon();
+        if (template == null) {
+            if (!DialogMaster.confirm("Generate by standard template?")) {
+                return;
+            }
+        }
+        Dungeon dungeon = level.getDungeon();
 		dungeon.setPlan(null);
 		// ++ size, fills, zone prefs ++ BUILD PARAMS
 		dungeon.setTemplate(template);
@@ -76,9 +72,10 @@ public class LE_MapMaster {
 	public static void transform() {
 		TRANSFORM transform = new EnumMaster<TRANSFORM>().retrieveEnumConst(TRANSFORM.class,
 				ListChooser.chooseEnum(TRANSFORM.class));
-		if (transform == null)
-			return;
-		Dungeon dungeon = LevelEditor.getCurrentLevel().getDungeon();
+        if (transform == null) {
+            return;
+        }
+        Dungeon dungeon = LevelEditor.getCurrentLevel().getDungeon();
 		DungeonPlan plan = dungeon.getPlan();
 		switch (transform) {
 			case FLIP_X:
@@ -96,30 +93,6 @@ public class LE_MapMaster {
 		dungeon.setPlan(plan);
 		LevelEditor.getSimulation().getUnits().clear();
 		LevelEditor.getCurrentLevel().init();
-		dungeon.getMinimap().init();
-		dungeon.getMinimap().getGrid().refresh();
-	}
-
-	public void alterSize(boolean x, String newValue) {
-		Dungeon dungeon = LevelEditor.getCurrentLevel().getDungeon();
-		int newSize = StringMaster.getInteger(newValue);
-		Integer size = x ? dungeon.getCellsX() : dungeon.getCellsY();
-		boolean reduce = newSize < size;
-		String TRUE = x ? "RIGHT" : "DOWN";
-		String FALSE = x ? "LEFT" : "UP";
-		DialogMaster.ask("Where to " + (reduce ? "crop" : "expand") + "?", true, TRUE, FALSE,
-				"BOTH");
-		// save-load onto new map of diff size with offset?
-		Boolean plus_negative_both_sides = (Boolean) WaitMaster
-				.waitForInput(WAIT_OPERATIONS.OPTION_DIALOG);
-
-		/*
-		 * expand zone 
-		 * 
-		 * introduce offset 
-		 * 
-		 */
-
 		dungeon.getMinimap().init();
 		dungeon.getMinimap().getGrid().refresh();
 	}
@@ -154,9 +127,64 @@ public class LE_MapMaster {
 		return params;
 	}
 
-	private MapBlock block;
-	private MapBlock blockBuffer;
-	private FileChooser blockChooser;
+    public static Coordinates pickCoordinate() {
+        return LevelEditor.getMouseMaster().pickCoordinate();
+    }
+
+    public static List<Coordinates> pickCoordinates() {
+        return pickCoordinates(false);
+    }
+
+    public static List<Coordinates> pickCoordinates(boolean diagonal) {
+        Coordinates c = pickCoordinate();
+        if (c == null) {
+            return null;
+        }
+        Coordinates c1 = pickCoordinate();
+        if (c1 == null) {
+            return null;
+        }
+
+        int x1 = Math.min(c.x, c1.x) - 1;
+        int x2 = Math.max(c.x, c1.x);
+        int y1 = Math.min(c.y, c1.y) - 1;
+        int y2 = Math.max(c.y, c1.y);
+
+        if (diagonal) {
+            if (PositionMaster.inLineDiagonally(c, c1)) {
+                return DC_PositionMaster.getLine(false,
+                        DirectionMaster.getRelativeDirection(c, c1), c, PositionMaster.getDistance(
+                                c, c1));
+            }
+        }
+
+        return new LinkedList<>(CoordinatesMaster.getCoordinatesWithin(x1, x2, y1, y2));
+
+    }
+
+    public void alterSize(boolean x, String newValue) {
+        Dungeon dungeon = LevelEditor.getCurrentLevel().getDungeon();
+        int newSize = StringMaster.getInteger(newValue);
+        Integer size = x ? dungeon.getCellsX() : dungeon.getCellsY();
+        boolean reduce = newSize < size;
+        String TRUE = x ? "RIGHT" : "DOWN";
+        String FALSE = x ? "LEFT" : "UP";
+        DialogMaster.ask("Where to " + (reduce ? "crop" : "expand") + "?", true, TRUE, FALSE,
+                "BOTH");
+        // save-load onto new map of diff size with offset?
+        Boolean plus_negative_both_sides = (Boolean) WaitMaster
+                .waitForInput(WAIT_OPERATIONS.OPTION_DIALOG);
+
+		/*
+         * expand zone
+		 *
+		 * introduce offset
+		 *
+		 */
+
+        dungeon.getMinimap().init();
+        dungeon.getMinimap().getGrid().refresh();
+    }
 
 	public void addZone() {
 		// choose c1 and c2
@@ -188,21 +216,20 @@ public class LE_MapMaster {
 		Coordinates c = pickCoordinate();
 		int offsetX = c.x - zone.getX1();
 		int offsetY = c.y - zone.getY1();
-		for (MapBlock b : zone.getBlocks())
-			moveBlock(b, offsetX, offsetY);
-	}
-
-	public static Coordinates pickCoordinate() {
-		return LevelEditor.getMouseMaster().pickCoordinate();
-	}
+        for (MapBlock b : zone.getBlocks()) {
+            moveBlock(b, offsetX, offsetY);
+        }
+    }
 
 	public void newRoom(List<Coordinates> coordinates) {
 		ROOM_TYPE type = chooseRoomType();
-		if (type == null)
-			return;
-		if (coordinates == null)
-			coordinates = pickCoordinates();
-		MapZone zone = pickZone(coordinates);
+        if (type == null) {
+            return;
+        }
+        if (coordinates == null) {
+            coordinates = pickCoordinates();
+        }
+        MapZone zone = pickZone(coordinates);
 		MapBlock b = new MapBlock(getPlan().getBlocks().size(), BLOCK_TYPE.ROOM, zone, getPlan(),
 				coordinates);
 		b.setRoomType(type);
@@ -226,9 +253,10 @@ public class LE_MapMaster {
 		zLoop: for (MapZone z : getPlan().getZones()) {
 			for (Coordinates c : coordinates) {
 				if (!CoordinatesMaster
-						.isWithinBounds(c, z.getX1(), z.getX2(), z.getY1(), z.getY2()))
-					continue zLoop;
-				// else zones.add(z);
+                        .isWithinBounds(c, z.getX1(), z.getX2(), z.getY1(), z.getY2())) {
+                    continue zLoop;
+                }
+                // else zones.add(z);
 			}
 		}
 		return null; // TODO choose
@@ -244,10 +272,12 @@ public class LE_MapMaster {
 			LinkedList<MapBlock> blocks = new LinkedList<>();
 			for (Coordinates c : CoordinatesMaster.getCornerCoordinates(coordinates)) {
 				MapBlock b = getLevel().getBlockForCoordinate(c, true, blocks);
-				if (b != null)
-					if (!blocks.contains(b))
-						blocks.add(b);
-			}
+                if (b != null) {
+                    if (!blocks.contains(b)) {
+                        blocks.add(b);
+                    }
+                }
+            }
 			if (blocks.size() > 1) {
 				XList<Object> list = new XList<Object>(blocks.toArray());
 				list.add(0, "New");
@@ -258,9 +288,10 @@ public class LE_MapMaster {
 					setBlock(blocks.get(i - 1));
 				} else {
 					if (i == 0) {
-						if (DialogMaster.confirm("Create new block?"))
-							newRoom(coordinates);
-					}
+                        if (DialogMaster.confirm("Create new block?")) {
+                            newRoom(coordinates);
+                        }
+                    }
 
 				}
 			}
@@ -291,14 +322,16 @@ public class LE_MapMaster {
 				// return to?
 			}
 		}
-		if (zones.isEmpty())
-			zones.addAll(getPlan().getZones());
-		MapZone zone = (MapZone) zones.toArray()[0];
+        if (zones.isEmpty()) {
+            zones.addAll(getPlan().getZones());
+        }
+        MapZone zone = (MapZone) zones.toArray()[0];
 		if (zones.size() > 1) {
 			int index = DialogMaster.optionChoice(zones.toArray(), "Choose zone");
-			if (index != -1)
-				zone = (MapZone) zones.toArray()[index];
-		}
+            if (index != -1) {
+                zone = (MapZone) zones.toArray()[index];
+            }
+        }
 		zone.addBlock(block);
 		block.setZone(zone);
 		LevelEditor.getMainPanel().getPlanPanel().getTreePanel().blockAdded(block);
@@ -323,42 +356,9 @@ public class LE_MapMaster {
 		getPlan().getBlocks().remove(block);
 	}
 
-	public static List<Coordinates> pickCoordinates() {
-		return pickCoordinates(false);
-	}
-
-	public static List<Coordinates> pickCoordinates(boolean diagonal) {
-		Coordinates c = pickCoordinate();
-		if (c == null)
-			return null;
-		Coordinates c1 = pickCoordinate();
-		if (c1 == null)
-			return null;
-
-		int x1 = Math.min(c.x, c1.x) - 1;
-		int x2 = Math.max(c.x, c1.x);
-		int y1 = Math.min(c.y, c1.y) - 1;
-		int y2 = Math.max(c.y, c1.y);
-
-		if (diagonal) {
-			if (PositionMaster.inLineDiagonally(c, c1)) {
-				return DC_PositionMaster.getLine(false,
-						DirectionMaster.getRelativeDirection(c, c1), c, PositionMaster.getDistance(
-								c, c1));
-			}
-		}
-
-		return new LinkedList<>(CoordinatesMaster.getCoordinatesWithin(x1, x2, y1, y2));
-
-	}
-
 	private ROOM_TYPE chooseRoomType() {
 		return new EnumMaster<ROOM_TYPE>().retrieveEnumConst(ROOM_TYPE.class, ListChooser
 				.chooseEnum(ROOM_TYPE.class));
-	}
-
-	public enum TRANSFORM {
-		FLIP_X, FLIP_Y, ROTATE
 	}
 
 	public Level getLevel() {
@@ -375,9 +375,10 @@ public class LE_MapMaster {
 
 	public boolean clearArea() {
 		List<Coordinates> coordinates = pickCoordinates();
-		if (coordinates == null)
-			return false;
-		clearArea(coordinates);
+        if (coordinates == null) {
+            return false;
+        }
+        clearArea(coordinates);
 		return true;
 
 	}
@@ -399,26 +400,30 @@ public class LE_MapMaster {
 	}
 
 	public void pasteBlock() {
-		if (blockBuffer == null)
-			return;
-		loadBlock(blockBuffer);
+        if (blockBuffer == null) {
+            return;
+        }
+        loadBlock(blockBuffer);
 	}
 
 	public void loadBlock() {
-		if (blockChooser == null)
-			blockChooser = new FileChooser(PathFinder.getMapBlockFolderPath());
-		String filePath = blockChooser.launch(PathFinder.getMapBlockFolderPath(), "");
-		if (filePath == null)
-			return;
-		Document node = XML_Converter.getDoc(FileManager.readFile(filePath));
+        if (blockChooser == null) {
+            blockChooser = new FileChooser(PathFinder.getMapBlockFolderPath());
+        }
+        String filePath = blockChooser.launch(PathFinder.getMapBlockFolderPath(), "");
+        if (filePath == null) {
+            return;
+        }
+        Document node = XML_Converter.getDoc(FileManager.readFile(filePath));
 		Dungeon dungeon = getLevel().getDungeon();
 		DungeonBuilder.constructBlock(node, getPlan().getBlocks().size(), null, getPlan(), dungeon);
 	}
 
 	public void loadBlock(MapBlock block) {
-		if (block == null)
-			return;
-		Coordinates c = pickCoordinate();
+        if (block == null) {
+            return;
+        }
+        Coordinates c = pickCoordinate();
 		int offsetX = -CoordinatesMaster.getMinX(block.getCoordinates()) + c.x;
 		int offsetY = -CoordinatesMaster.getMinY(block.getCoordinates()) + c.y;
 		List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesWithOffset(block
@@ -447,5 +452,14 @@ public class LE_MapMaster {
 		}
 
 	}
+
+    public enum FILL_GROUPS {
+        FOREST,
+
+    }
+
+    public enum TRANSFORM {
+        FLIP_X, FLIP_Y, ROTATE
+    }
 
 }

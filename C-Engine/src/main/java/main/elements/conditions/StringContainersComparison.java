@@ -25,24 +25,30 @@ public class StringContainersComparison extends StringComparison {
     @Override
     public boolean check() {
 
-        if (super.check())
+        if (super.check()) {
             return !negative;
-        if (StringMaster.isEmpty(val1))
+        }
+        if (StringMaster.isEmpty(val1)) {
             return negative;
-        if (StringMaster.isEmpty(val2))
+        }
+        if (StringMaster.isEmpty(val2)) {
             return !negative;
+        }
         boolean result = !negative & !strictContents;
         // result = StringMaster.compareContainers(val1, val2, strictContents);
 
         for (String s1 : StringMaster.openContainer(val1)) {
             for (String s : StringMaster.openContainer(val2)) {
                 result = negative;
-                if (strictContents)
-                    if (StringMaster.compareByChar(s1, s, strictContents))
+                if (strictContents) {
+                    if (StringMaster.compareByChar(s1, s, strictContents)) {
                         return !negative;
+                    }
+                }
 
-                if (StringMaster.compare(s1, s, strictContents))
+                if (StringMaster.compare(s1, s, strictContents)) {
                     return !negative;
+                }
             }
         }
         return result;

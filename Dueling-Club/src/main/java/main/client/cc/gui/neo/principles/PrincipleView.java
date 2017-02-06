@@ -27,8 +27,9 @@ public class PrincipleView extends G_Panel {
     }
 
     public static Font getDefaultFont() {
-        if (defaultFont == null)
+        if (defaultFont == null) {
             defaultFont = FontMaster.getFont(FONT.AVQ, 22, Font.PLAIN);
+        }
         return defaultFont;
     }
 

@@ -40,19 +40,23 @@ public class AttackOfOpportunityRule {
     }
 
     public static boolean checkActionNotInterrupted(DC_ActiveObj active, boolean simulation) {
-        if (!RuleMaster.isRuleOn(RULE.ATTACK_OF_OPPORTUNITY))
+        if (!RuleMaster.isRuleOn(RULE.ATTACK_OF_OPPORTUNITY)) {
             return false;
+        }
         sim = simulation;
-        if (simulation)
+        if (simulation) {
             setAttacks(new LinkedList<DC_ActiveObj>());
+        }
 
         checkAttacks(active);
 
-        if (sim)
+        if (sim) {
             return true;
+        }
 
-        if (!checkSource(active))
+        if (!checkSource(active)) {
             return false;
+        }
 
         boolean result = checkInterrupted(active);
         return result;
@@ -81,12 +85,16 @@ public class AttackOfOpportunityRule {
     private static Set<DC_HeroObj> getPotentialAttackers(DC_ActiveObj active) {
         Set<DC_HeroObj> set = new HashSet<>();
         for (DC_HeroObj unit : active.getGame().getUnits()) {
-            if (!unit.getOwner().isHostileTo(active.getOwner()))
+            if (!unit.getOwner().isHostileTo(active.getOwner())) {
                 continue;
+            }
             if (unit.canCounter())
                 // if (!free) {
-                if (!WatchRule.checkWatched(unit, active.getOwnerObj()))
+            {
+                if (!WatchRule.checkWatched(unit, active.getOwnerObj())) {
                     continue;
+                }
+            }
             set.add(unit);
         }
 
@@ -99,8 +107,9 @@ public class AttackOfOpportunityRule {
         // getConditions(), C_OBJ_TYPE.UNITS_CHARS);
         // filter.getObjects();
         Set<DC_HeroObj> units = getPotentialAttackers(active);
-        if (units.size() <= 0)
+        if (units.size() <= 0) {
             return;
+        }
 
         for (DC_HeroObj unit : units) {
 
@@ -139,28 +148,36 @@ public class AttackOfOpportunityRule {
         boolean free = false;
         boolean result = false;
 
-        if (!checkAction(active))
-            if (!RuleMaster.isRuleTestOn(RULE.ATTACK_OF_OPPORTUNITY))
+        if (!checkAction(active)) {
+            if (!RuleMaster.isRuleTestOn(RULE.ATTACK_OF_OPPORTUNITY)) {
                 return true;
+            }
+        }
 
-        if (!RuleMaster.isRuleTestOn(RULE.ATTACK_OF_OPPORTUNITY))
-            if (!stealthAoO)
+        if (!RuleMaster.isRuleTestOn(RULE.ATTACK_OF_OPPORTUNITY)) {
+            if (!stealthAoO) {
                 if (!VisionManager.checkVisible(unit)) {
-                    if (!unit.checkBool(STD_BOOLS.STEALTHY_AOOS))
+                    if (!unit.checkBool(STD_BOOLS.STEALTHY_AOOS)) {
                         return null;
+                    }
                 }
+            }
+        }
         if (!force) {
             int distance = PositionMaster.getDistance(active.getOwnerObj().getCoordinates(), unit
                     .getCoordinates());
 
-            if (active.getActionGroup() == ACTION_TYPE_GROUPS.MOVE)
+            if (active.getActionGroup() == ACTION_TYPE_GROUPS.MOVE) {
                 distance = Math.max(distance, PositionMaster.getDistance(DC_MovementManager
                         .getMovementDestinationCoordinate(active), unit.getCoordinates()));
+            }
             // TODO moving away from same-cell ?
-            if (distance > getAoOMaxDistance(unit, active))
+            if (distance > getAoOMaxDistance(unit, active)) {
                 return null;
-            if (FacingMaster.getSingleFacing(unit, (DC_HeroObj) active.getOwnerObj()) == FACING_SINGLE.BEHIND)
+            }
+            if (FacingMaster.getSingleFacing(unit, (DC_HeroObj) active.getOwnerObj()) == FACING_SINGLE.BEHIND) {
                 return null; // vigilance?
+            }
             if (active.getActionGroup() == ACTION_TYPE_GROUPS.MOVE) {
 
                 result = unit.checkPassive(STANDARD_PASSIVES.VIGILANCE);
@@ -176,30 +193,35 @@ public class AttackOfOpportunityRule {
             result = unit.checkActionCanBeActivated(DC_ActionManager.ATTACK_OF_OPPORTUNITY);
         }
 
-        if (!result)
-            if (!RuleMaster.isRuleTestOn(RULE.ATTACK_OF_OPPORTUNITY))
+        if (!result) {
+            if (!RuleMaster.isRuleTestOn(RULE.ATTACK_OF_OPPORTUNITY)) {
                 return null;
+            }
+        }
 
         if (sim) {
             getAttacks().add(getAoO(unit, free));
-        } else
+        } else {
             triggerAttack(unit, active, free);
+        }
         return !active.getOwnerObj().isDead();
 
     }
 
     private static int getAoOMaxDistance(DC_HeroObj unit, DC_ActiveObj active) {
-        if (active.isMove())
+        if (active.isMove()) {
             return 0;
+        }
         return 1;
     }
 
     private static Condition getConditions() {
-        if (conditions == null)
+        if (conditions == null) {
             conditions = new Conditions(ConditionMaster.getAliveAndConsciousFilterCondition(),
                     ConditionMaster.getUnit_CharTypeCondition(), ConditionMaster
                     .getEnemyCondition(), new VisibilityCondition(KEYS.MATCH, KEYS.SOURCE,
                     UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT));
+        }
         return conditions;
     }
 
@@ -236,7 +258,7 @@ public class AttackOfOpportunityRule {
     }
 
     public static boolean checkAction(DC_ActiveObj active) {
-        if (!checkOverride(active))
+        if (!checkOverride(active)) {
             switch (active.getActionGroup()) {
                 case MOVE:
                     return checkMove(active);
@@ -247,24 +269,28 @@ public class AttackOfOpportunityRule {
                 default:
                     break;
             }
+        }
         return false;
     }
 
     private static boolean checkMove(DC_ActiveObj active) {
         // agile
         if (active.getOwnerObj().checkProperty(G_PROPS.STANDARD_PASSIVES,
-                STANDARD_PASSIVES.DEXTEROUS.getName()))
+                STANDARD_PASSIVES.DEXTEROUS.getName())) {
             return false;
+        }
         if (active.checkProperty(PROPS.STANDARD_ACTION_PASSIVES, STANDARD_ACTION_PASSIVES.DEXTEROUS
-                .toString()))
+                .toString())) {
             return false;
+        }
         return true;
 
     }
 
     private static boolean checkSpell(DC_ActiveObj active) {
-        if (active.checkProperty(G_PROPS.SPELL_TAGS, SPELL_TAGS.INSTANT.toString()))
+        if (active.checkProperty(G_PROPS.SPELL_TAGS, SPELL_TAGS.INSTANT.toString())) {
             return false;
+        }
         return true;
     }
 
@@ -278,10 +304,12 @@ public class AttackOfOpportunityRule {
             DC_HeroObj source = (DC_HeroObj) active.getOwnerObj();
             // if (!source.canAct()) a good idea, but there is a bug in it I
             // guess
-            if (source.isImmobilized())
+            if (source.isImmobilized()) {
                 return false;
-            if (source.isDead())
+            }
+            if (source.isDead()) {
                 return false;
+            }
             // if (!active.canBeActivated()) // TODO will not update; need
             // toBase()
             // to reset canBeActivated!
@@ -311,15 +339,17 @@ public class AttackOfOpportunityRule {
         List<DC_HeroObj> set = getPotentialAttackersOfOpportunity(action);
         for (DC_HeroObj unit : set) {
             DC_ActiveObj attack = getAttackOfOpportunity(action, unit);
-            if (attack == null)
+            if (attack == null) {
                 continue;
+            }
             Boolean before_after_none = RollMaster.makeReactionRoll(unit, action, attack);
-            if (before_after_none == null)
+            if (before_after_none == null) {
                 action.addPendingAttackOpportunity(attack);
-            else if (before_after_none) {
+            } else if (before_after_none) {
                 boolean result = triggerAttackOfOpportunityAttack(unit, action, attack);
-                if (result)
+                if (result) {
                     return true;
+                }
             }
 
         }
@@ -338,30 +368,41 @@ public class AttackOfOpportunityRule {
     private static DC_ActiveObj getAttackOfOpportunity(DC_ActiveObj action, DC_HeroObj unit) {
         // TODO AutoAttackRange?
 
-        if (unit.getPreferredAttackOfOpportunity() != null)
+        if (unit.getPreferredAttackOfOpportunity() != null) {
             if (canMakeAttackOfOpportunityAgainst(action, unit.getPreferredAttackOfOpportunity(),
-                    unit))
+                    unit)) {
                 return unit.getPreferredAttackOfOpportunity();
+            }
+        }
 
         DC_HeroObj target = action.getOwnerObj();
         int distance = (PositionMaster.getDistance(target.getCoordinates(), unit.getCoordinates()));
 
         for (DC_ActiveObj attack : getAttacksOfOpportunity(unit)) {
 
-            if (distance > getMaxAttackRange(attack))
+            if (distance > getMaxAttackRange(attack)) {
                 continue;
-            if (!canMakeAttackOfOpportunityAgainst(action, attack, unit))
+            }
+            if (!canMakeAttackOfOpportunityAgainst(action, attack, unit)) {
                 continue;
-            if (FacingMaster.getSingleFacing(unit, target) == FACING_SINGLE.TO_THE_SIDE)
-                if (!attack.checkPassive(STANDARD_PASSIVES.BROAD_REACH))
+            }
+            if (FacingMaster.getSingleFacing(unit, target) == FACING_SINGLE.TO_THE_SIDE) {
+                if (!attack.checkPassive(STANDARD_PASSIVES.BROAD_REACH)) {
                     continue;
-            if (FacingMaster.getSingleFacing(unit, target) == FACING_SINGLE.BEHIND)
-                if (!attack.checkPassive(STANDARD_PASSIVES.HIND_REACH))
+                }
+            }
+            if (FacingMaster.getSingleFacing(unit, target) == FACING_SINGLE.BEHIND) {
+                if (!attack.checkPassive(STANDARD_PASSIVES.HIND_REACH)) {
                     continue;
-            if (attack.canBeTargeted(target.getId()))
+                }
+            }
+            if (attack.canBeTargeted(target.getId())) {
                 if (attack.canBeActivatedAsAttackOfOpportunity(false, target))
-                    // TODO PICK OPTIMAL? Consider roll's cost modifier...
+                // TODO PICK OPTIMAL? Consider roll's cost modifier...
+                {
                     return attack;
+                }
+            }
         }
 
         return null;
@@ -375,15 +416,18 @@ public class AttackOfOpportunityRule {
     private static List<DC_ActiveObj> getAttacksOfOpportunity(DC_HeroObj unit) {
         List<DC_ActiveObj> list = new LinkedList<>();
         List<DC_UnitAction> attacks = unit.getActionMap().get(ACTION_TYPE.STANDARD_ATTACK);
-        if (attacks == null)
+        if (attacks == null) {
             attacks = new LinkedList<>();
-        if (unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK) != null)
+        }
+        if (unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK) != null) {
             attacks.addAll(unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK));
+        }
         for (DC_UnitAction attack : attacks) {
             if (attack // TODO same tag?!
                     .checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.ATTACK_OF_OPPORTUNITY_ACTION
-                            .toString()))
+                            .toString())) {
                 list.add(attack);
+            }
         }
 
         return list;
@@ -391,11 +435,14 @@ public class AttackOfOpportunityRule {
 
     public static boolean checkPendingAttackProceeds(DC_HeroObj target, DC_ActiveObj attack) {
         // TODO
-        if (target.isDead())
+        if (target.isDead()) {
             return false;
-        if (attack.canBeTargeted(target.getId()))
-            if (attack.canBeActivatedAsAttackOfOpportunity(true, target))
+        }
+        if (attack.canBeTargeted(target.getId())) {
+            if (attack.canBeActivatedAsAttackOfOpportunity(true, target)) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -407,7 +454,9 @@ public class AttackOfOpportunityRule {
             if (unit.isOwnedBy(action.getGame().getPlayer(!action.getOwner().isMe())))
                 // if (!VisionManager.checkVisibileForUnit(unit,
                 // action.getOwnerObj())) TODO
+            {
                 list.add(unit);
+            }
         }
         return list;
     }
@@ -415,15 +464,19 @@ public class AttackOfOpportunityRule {
     private static boolean canMakeAttackOfOpportunityAgainst(DC_ActiveObj action,
                                                              DC_ActiveObj attack, DC_HeroObj attacker) {
         // TODO
-        if (!action.getOwnerObj().checkVisible())
+        if (!action.getOwnerObj().checkVisible()) {
             return attacker.checkPassive(STANDARD_PASSIVES.BLIND_FIGHTER);
+        }
         if (action instanceof DC_SpellObj) {
             DC_SpellObj spellObj = (DC_SpellObj) action;
-            if (spellObj.isChanneling())
+            if (spellObj.isChanneling()) {
                 return true;
-            if (attacker.checkPassive(STANDARD_PASSIVES.OPPORTUNIST))
-                if (!spellObj.isInstant())
+            }
+            if (attacker.checkPassive(STANDARD_PASSIVES.OPPORTUNIST)) {
+                if (!spellObj.isInstant()) {
                     return true;
+                }
+            }
         }
         if (action.getActionGroup() == ACTION_TYPE_GROUPS.TURN) {
             // if (distance==0)
@@ -436,9 +489,11 @@ public class AttackOfOpportunityRule {
             // interceptor
         }
         // if (action.getActionGroup() == ACTION_TYPE_GROUPS.MODE)
-        if (attacker.checkPassive(STANDARD_PASSIVES.OPPORTUNIST))
-            if (action.checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.RESTORATION.toString()))
+        if (attacker.checkPassive(STANDARD_PASSIVES.OPPORTUNIST)) {
+            if (action.checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.RESTORATION.toString())) {
                 return true;
+            }
+        }
         return action.checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.ATTACK_OF_OPPORTUNITY
                 .toString());
     }

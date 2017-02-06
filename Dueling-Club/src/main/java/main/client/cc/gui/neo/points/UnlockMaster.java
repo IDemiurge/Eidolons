@@ -107,10 +107,11 @@ public class UnlockMaster {
 
         CharacterCreator.getHeroManager().update((ObjType) entity);
 
-        if (gold)
+        if (gold) {
             SoundMaster.playStandardSound(STD_SOUNDS.DIS__COINS);
-        else
+        } else {
             SoundMaster.playStandardSound(STD_SOUNDS.DIS__BOOK_OPEN);
+        }
 
     }
 

@@ -46,8 +46,9 @@ public class AutoTargeting extends TargetingImpl {
         this.setConditions(new Conditions(condition));
         if (numberOfTargets == null) {
             unlimitedTargets = true;
-        } else
+        } else {
             this.numberOfTargets = numberOfTargets;
+        }
     }
 
     public AutoTargeting(Conditions conditions, OBJ_TYPE type) {
@@ -103,13 +104,14 @@ public class AutoTargeting extends TargetingImpl {
         }
         setRef(ref);
 
-        if (unlimitedTargets)
+        if (unlimitedTargets) {
             ref.setGroup(filter.getGroup());
-        else {
+        } else {
             setLastTarget(ref.getTargetObj());
             int nOfTargets = numberOfTargets.getInt(ref);
-            if (nOfTargets <= 0)
+            if (nOfTargets <= 0) {
                 return false;
+            }
             Set<Obj> objects = filter.getObjects();
             if (nOfTargets == 1) {
                 Obj obj = selectObj(objects);

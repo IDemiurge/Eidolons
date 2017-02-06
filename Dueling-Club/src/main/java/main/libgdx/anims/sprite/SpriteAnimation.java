@@ -69,10 +69,11 @@ public class SpriteAnimation extends Animation<TextureRegion> {
             lifecycle = stateTime % getLifecycleDuration() / getLifecycleDuration();
         }
 
-if (sprite==null )
-         sprite = new Sprite(currentFrame);
-        else
+        if (sprite == null) {
+            sprite = new Sprite(currentFrame);
+        } else {
             sprite.setRegion(currentFrame);
+        }
         sprite.setAlpha(alpha);
 
         sprite.setRotation(rotation);

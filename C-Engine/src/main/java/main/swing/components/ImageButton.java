@@ -79,12 +79,13 @@ public class ImageButton extends GraphicComponent implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (SwingUtilities.isRightMouseButton(e))
+        if (SwingUtilities.isRightMouseButton(e)) {
             handleRightClick();
-        else if (e.isAltDown())
+        } else if (e.isAltDown()) {
             altClicked();
-        else
+        } else {
             clicked();
+        }
 
     }
 

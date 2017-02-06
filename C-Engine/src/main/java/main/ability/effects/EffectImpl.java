@@ -87,11 +87,12 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 
     @Override
     public ANIM getAnimation() {
-        if (animation == null)
+        if (animation == null) {
             if (getAnimationActive() instanceof ActiveObj) {
                 ActiveObj activeObj = getAnimationActive();
                 animation = activeObj.getAnimation();
             }
+        }
         return animation;
     }
 
@@ -102,8 +103,9 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 
     @Override
     public ActiveObj getActiveObj() {
-        if (getRef().getActive() instanceof ActiveObj)
+        if (getRef().getActive() instanceof ActiveObj) {
             return getRef().getActive();
+        }
         return null;
     }
 
@@ -124,8 +126,9 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 
     @Override
     public int getLayer() {
-        if (forcedLayer != null)
+        if (forcedLayer != null) {
             return forcedLayer;
+        }
         return layer;
     }
 
@@ -147,8 +150,9 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 
     private String getArgString() {
         String arg = "";
-        if (getFormula() != null)
+        if (getFormula() != null) {
             arg = " " + StringMaster.wrapInParenthesis("" + getFormula().getInt(ref));
+        }
         // if (infoLevel==FULL) TODO
         // arg += getFormula().toString();
         return arg;
@@ -165,10 +169,11 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
         setRef(ref);
         if ((ref.getGroup() == null && targetGroup == null) || isIgnoreGroupTargeting()) {
             // single-target effect
-            if (ref.getTargetObj() != null)
+            if (ref.getTargetObj() != null) {
                 LogMaster.log(!active ? LOG_CHANNELS.EFFECT_PASSIVE_DEBUG
                         : LOG_CHANNELS.EFFECT_ACTIVE_DEBUG, toString() + " is being applied to a "
                         + ref.getTargetObj());
+            }
             return apply();
         } else {
 
@@ -179,8 +184,9 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
                 // group.setIgnoreGroupTargeting(true);// TODO later instead?
                 targetGroup = group;
             }
-            if (group.isIgnoreGroupTargeting())
+            if (group.isIgnoreGroupTargeting()) {
                 return apply();
+            }
             LogMaster.log(!active ? LOG_CHANNELS.EFFECT_PASSIVE_DEBUG
                     : LOG_CHANNELS.EFFECT_ACTIVE_DEBUG, toString()
                     + " is being applied to a group " + group);
@@ -200,8 +206,9 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
                     continue;
                 }
 
-                if (isInterrupted())
+                if (isInterrupted()) {
                     break;
+                }
 
                 Ref REF = this.ref.getCopy();
                 // REF.setGroup(new GroupImpl(targetGroup));
@@ -211,9 +218,9 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
                 main.system.auxiliary.LogMaster.log(0, "GROUP EFFECT (" + toString()
                         + ") applied to " + game.getObjectById(id));
 
-                if (construct != null)
+                if (construct != null) {
                     result &= getCopy().apply(REF);
-                else {
+                } else {
                     // this.ref.setTarget(id);
                     setIgnoreGroupTargeting(true);
                     result &= apply(REF);
@@ -233,9 +240,9 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
         REF.setGroup(targetGroup);
         REF.setTarget(targetId);
 
-        if (construct != null)
+        if (construct != null) {
             getCopy().apply(REF);
-        else {
+        } else {
             this.ref.setTarget(targetId);
             apply();
         }
@@ -249,12 +256,13 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 
     @Override
     public boolean apply() {
-        if (!quietMode)
+        if (!quietMode) {
             if (!game.getManager().effectApplies(this)) {
-                main.system.auxiliary.LogMaster.log(1, "effect resisted! - " + toString());
+                LogMaster.log(1, "effect resisted! - " + toString());
                 // TODO sound?
                 return false;
             }
+        }
 
         if (isInterrupted()) {
             setInterrupted(false);
@@ -269,12 +277,14 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (ref.getObj(KEYS.ABILITY) instanceof ActiveAbilityObj)
-            if (ref.getActive() != null)
+        if (ref.getObj(KEYS.ABILITY) instanceof ActiveAbilityObj) {
+            if (ref.getActive() != null) {
                 if (!ref.getActive().isEffectSoundPlayed()) {
                     SoundMaster.playEffectSound(SOUNDS.EFFECT, (Obj) ref.getActive());
                     ref.getActive().setEffectSoundPlayed(true);
                 }
+            }
+        }
         // TODO anim thread?
         // main.system.auxiliary.LogMaster.log(LogMaster.EFFECT_DEBUG,
         // toString()
@@ -317,21 +327,24 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     }
 
     private String getFormulaString() {
-        if (getFormula().toString().isEmpty())
+        if (getFormula().toString().isEmpty()) {
             return "0";
+        }
         return getFormula().toString();
     }
 
     public void resetOriginalFormula() {
-        if (originalFormula == null)
+        if (originalFormula == null) {
             originalFormula = new Formula(formula == null ? "" : formula.toString());
-        else
+        } else {
             formula = new Formula(originalFormula.toString());
+        }
     }
 
     protected void animateSprite() {
-        if (!hasSprite())
+        if (!hasSprite()) {
             return;
+        }
         ((SpriteAnimated) getSpell()).getSprite().animate(ref);
     }
 
@@ -346,8 +359,9 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 
     @Override
     public Obj getSpell() {
-        if (ref == null)
+        if (ref == null) {
             return null;
+        }
         return ref.getObj(KEYS.ACTIVE);
     }
 
@@ -356,8 +370,9 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 
     @Override
     public Formula getFormula() {
-        if (formula == null)
+        if (formula == null) {
             formula = new Formula("");
+        }
         return formula;
     }
 
@@ -372,10 +387,11 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
         super.setRef(REF);
         this.source = REF.getSource();
         this.target = REF.getTarget();
-        if (getAnimationActive() == null)
+        if (getAnimationActive() == null) {
             setAnimationActive(ref.getAnimationActive()); // TODO ??
-        else
+        } else {
             this.ref.setAnimationActive(getAnimationActive());
+        }
     }
 
     public boolean isAltering() {
@@ -472,8 +488,9 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     }
 
     public boolean isContinuousWrapped() {
-        if (this instanceof ContinuousEffect)
+        if (this instanceof ContinuousEffect) {
             return true;
+        }
         return continuousWrapped;
     }
 

@@ -13,12 +13,14 @@ public class SpellCondition extends MicroCondition {
 
     @Override
     public boolean check() {
-        if (!(ref.getMatchObj() instanceof DC_SpellObj))
+        if (!(ref.getMatchObj() instanceof DC_SpellObj)) {
             return false;
+        }
         DC_SpellObj spell = (DC_SpellObj) ref.getMatchObj();
         DC_HeroObj hero = (DC_HeroObj) ref.getSourceObj();
-        if (!hero.getSpells().contains(spell))
+        if (!hero.getSpells().contains(spell)) {
             return false;
+        }
 
         // if (spell.canBeActivated(ref, true))
         // return false;

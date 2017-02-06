@@ -19,8 +19,9 @@ public class Preset extends DataUnit<PRESET_DATA> {
     public Preset(String name, String path, String data) {
         this.name = name;
         this.path = path;
-        if (data != null)
+        if (data != null) {
             setData(data);
+        }
     }
 
     @Override
@@ -60,8 +61,9 @@ public class Preset extends DataUnit<PRESET_DATA> {
     }
 
     public String getFirstDungeonName() {
-        if (!StringMaster.isEmpty(getValue(PRESET_DATA.FIRST_DUNGEON)))
+        if (!StringMaster.isEmpty(getValue(PRESET_DATA.FIRST_DUNGEON))) {
             return getValue(PRESET_DATA.FIRST_DUNGEON);
+        }
         return StringMaster.openContainer(getValue(PRESET_DATA.DUNGEONS)).get(0);
     }
 

@@ -38,9 +38,6 @@ import java.util.List;
 
 
 public class AV_ButtonPanel extends G_ButtonPanel {
-	XmlTransformMenu xmlTransformMenu;
-	protected boolean skillSelectionListeningThreadRunning;
-	protected boolean classSelectionListeningThreadRunning;
 	public static final String RENAME_TYPE = ("Rename Type");
 	public static final String RENAME_SELECTED_TYPE = ("Rename Selected Type");
 	public static final String RENAME_VALUE = ("Rename Value");
@@ -48,7 +45,6 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 	public static final String CLEAN_UP = ("Clean Up");
 	public static final String NEW_TREE = "New Tree";
 	public static final String WS_TOGGLE = "WS Add";
-
 	static String[] commands = new String[] { "Add", "Remove", "Upgrade", "Undo", "Save all",
 			NEW_TREE
 			// "Reload", doesn't work yet!
@@ -62,6 +58,9 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 			"Edit", "Backup", "Add WS", "Test"
 
 	};
+    protected boolean skillSelectionListeningThreadRunning;
+    protected boolean classSelectionListeningThreadRunning;
+    XmlTransformMenu xmlTransformMenu;
 
 	public AV_ButtonPanel() {
 		super(commands);
@@ -74,20 +73,23 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 	}
 
 	private void renameType(ObjType type) {
-		if (type == null)
-			return;
+        if (type == null) {
+            return;
+        }
 
 		String input = ListChooser.chooseEnum(PROPERTY.class, SELECTION_MODE.MULTIPLE);
 
-		if (StringMaster.isEmpty(input))
-			return;
+        if (StringMaster.isEmpty(input)) {
+            return;
+        }
 
 		List<PROPERTY> propList = new ListMaster<PROPERTY>(PROPERTY.class).toList(input);
 
 		String newName = JOptionPane.showInputDialog("Enter new name");
-		if (StringMaster.isEmpty(newName))
-			return;
-		XML_Transformer.renameType(type, newName, propList.toArray(new PROPERTY[propList.size()]));
+        if (StringMaster.isEmpty(newName)) {
+            return;
+        }
+        XML_Transformer.renameType(type, newName, propList.toArray(new PROPERTY[propList.size()]));
 	}
 
 	@Override
@@ -186,18 +188,19 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 						if (alt_) {
 							ArcaneVault.getSelectedType().copyValues(
 									ArcaneVault.getPreviousSelectedType(), getCopyVals());
-						} else
-							ArcaneVault.getSelectedType().cloneMapsWithExceptions(
-									ArcaneVault.getPreviousSelectedType(),
-									G_PROPS.NAME,
-									G_PROPS.DISPLAYED_NAME,
-									G_PROPS.IMAGE,
-									G_PROPS.GROUP,
-									ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM()
-											.getGroupingKey(),
-									ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM()
-											.getSubGroupingKey());
-						refresh();
+                        } else {
+                            ArcaneVault.getSelectedType().cloneMapsWithExceptions(
+                                    ArcaneVault.getPreviousSelectedType(),
+                                    G_PROPS.NAME,
+                                    G_PROPS.DISPLAYED_NAME,
+                                    G_PROPS.IMAGE,
+                                    G_PROPS.GROUP,
+                                    ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM()
+                                            .getGroupingKey(),
+                                    ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM()
+                                            .getSubGroupingKey());
+                        }
+                        refresh();
 					}
 				}, "Clone thread").start();
 				break;
@@ -210,10 +213,11 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 						HC_Master.initTreeView();
 
 						EditViewPanel panel = ArcaneVault.getMainBuilder().getEditViewPanel();
-						if (TYPE == OBJ_TYPES.SKILLS)
-							panel.setSkillTreeViewComp(HC_Master.getAvTreeView());
-						else
-							panel.setClassTreeViewComp(HC_Master.getAvTreeView());
+                        if (TYPE == OBJ_TYPES.SKILLS) {
+                            panel.setSkillTreeViewComp(HC_Master.getAvTreeView());
+                        } else {
+                            panel.setClassTreeViewComp(HC_Master.getAvTreeView());
+                        }
 
 						panel.setTreeView(true);
 						panel.refresh();
@@ -227,12 +231,14 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 
 					}
 					if (TYPE == OBJ_TYPES.SKILLS) {
-						if (skillSelectionListeningThreadRunning)
-							return;
-					} else {
-						if (classSelectionListeningThreadRunning)
-							return;
-					}
+                        if (skillSelectionListeningThreadRunning) {
+                            return;
+                        }
+                    } else {
+                        if (classSelectionListeningThreadRunning) {
+                            return;
+                        }
+                    }
 					return;
 				}
 				if (!alt) {
@@ -257,9 +263,10 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 			case "Toggle": {
 				if (alt) {
 					int result = DialogMaster.optionChoice("What do I toggle?", "Inversion");
-					if (result == 0)
-						ArcaneVault.setColorsInverted(!ArcaneVault.isColorsInverted());
-					break;
+                    if (result == 0) {
+                        ArcaneVault.setColorsInverted(!ArcaneVault.isColorsInverted());
+                    }
+                    break;
 				}
 				EditViewPanel panel = ArcaneVault.getMainBuilder().getEditViewPanel();
 				if (panel.getTreeViewComp() != null) {
@@ -294,14 +301,17 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 			}
 			case REMOVE_VALUE: {
 				String values = JOptionPane.showInputDialog("Enter value names");
-				if (values == null)
-					values = (ListChooser.chooseEnum(PARAMETER.class, PROPERTY.class));
-				if (values == null)
-					break;
-				String input = ListChooser.chooseEnum(OBJ_TYPES.class);
-				if (input == null)
-					break;
-				for (String typeName : StringMaster.openContainer(input)) {
+                if (values == null) {
+                    values = (ListChooser.chooseEnum(PARAMETER.class, PROPERTY.class));
+                }
+                if (values == null) {
+                    break;
+                }
+                String input = ListChooser.chooseEnum(OBJ_TYPES.class);
+                if (input == null) {
+                    break;
+                }
+                for (String typeName : StringMaster.openContainer(input)) {
 					OBJ_TYPES TYPE = OBJ_TYPES.getType(typeName);
 					for (String valName : StringMaster.openContainer(values)) {
 						VALUE val = ContentManager.getValue(valName);
@@ -314,9 +324,10 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 			case "Transform": {
 				if (xmlTransformMenu == null) {
 					xmlTransformMenu = new XmlTransformMenu();
-				} else
-					xmlTransformMenu.setVisible(xmlTransformMenu.isVisible());
-			}
+                } else {
+                    xmlTransformMenu.setVisible(xmlTransformMenu.isVisible());
+                }
+            }
 			case "Undo": {
 				if (alt) {
 					// while()
@@ -326,11 +337,12 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 			}
 
 			case "Upgrade": {
-				if (alt)
-					ModelManager.addParent();
-				else
-					ModelManager.addUpgrade();
-				break;
+                if (alt) {
+                    ModelManager.addParent();
+                } else {
+                    ModelManager.addUpgrade();
+                }
+                break;
 			}
 			case "New Hero": {
 				SwingUtilities.invokeLater(new Runnable() {
@@ -395,9 +407,10 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 		List<String> retained = StringMaster.openContainer(new ListChooser(SELECTION_MODE.MULTIPLE,
 				types, TYPE).choose());
 		for (String t : types) {
-			if (retained.contains(t))
-				continue;
-			DataManager.removeType(t, TYPE.getName());
+            if (retained.contains(t)) {
+                continue;
+            }
+            DataManager.removeType(t, TYPE.getName());
 
 		}
 
@@ -434,9 +447,10 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 									DataManager.getType(selectedTypeName, TYPE));
 						}
 						if (window != null) {
-							if (!window.isVisible())
-								break;
-							AV_T3View.selected(selectedTypeName, TYPE);
+                            if (!window.isVisible()) {
+                                break;
+                            }
+                            AV_T3View.selected(selectedTypeName, TYPE);
 						}
 					}
 				} catch (Exception e) {

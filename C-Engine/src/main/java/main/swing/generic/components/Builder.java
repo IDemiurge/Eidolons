@@ -45,27 +45,30 @@ public abstract class Builder implements GameGUI {
     // G_Panel
     public JComponent build() {
         N = 0;
-        if (!initialized)
+        if (!initialized) {
             init();
+        }
         if (comp == null) {
             comp = new G_Panel();
         }
 
-        if (builders != null)
-            if (builderArray == null)
+        if (builders != null) {
+            if (builderArray == null) {
                 return getComp();
-            else {
+            } else {
                 initMap();
                 buildBuilders();
             }
+        }
 
         if (compArray != null) {
             initCompMap();
             addComponents();
 
         }
-        if (getComp() == null)
+        if (getComp() == null) {
             throw new RuntimeException();
+        }
         return getComp();
 
     }
@@ -91,8 +94,9 @@ public abstract class Builder implements GameGUI {
                     "building " + builder.getClass().getSimpleName() + " for " + getClass().getSimpleName()
                             + " at " + info);
 
-            if (keyListener != null)
+            if (keyListener != null) {
                 builder.setKeyListener(keyListener);
+            }
             JComponent newComp;
             try {
                 newComp = builder.build();
@@ -117,8 +121,9 @@ public abstract class Builder implements GameGUI {
         if (getKeyListener() != null) {
             if (newComp instanceof G_Component) {
                 ((G_Component) newComp).setKeyManager(keyListener);
-            } else
+            } else {
                 newComp.addKeyListener(getKeyListener());
+            }
         }
     }
 
@@ -209,8 +214,9 @@ public abstract class Builder implements GameGUI {
 
     @Override
     public void dataChanged() {
-        for (Builder b : builderArray)
+        for (Builder b : builderArray) {
             b.dataChanged();
+        }
         //for (JComponent c : compArray)
         //c.dataChanged();
     }

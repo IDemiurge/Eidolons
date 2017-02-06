@@ -38,8 +38,9 @@ public class MigMaster {
     }
 
     public static int getCenteredTextPosition(String string, Font font, int width) {
-        if (font == null)
+        if (font == null) {
             font = FontMaster.getDefaultFont();
+        }
 
         return (width - FontMaster.getStringWidth(font, string)) / 2;
 
@@ -82,8 +83,9 @@ public class MigMaster {
     }
 
     public static int getOptimalPosition(Boolean left_right_center, int container, int element) {
-        if (left_right_center == null)
+        if (left_right_center == null) {
             return getCenteredPosition(container, element);
+        }
         return left_right_center ? 0 : container - element;
     }
 
@@ -94,19 +96,23 @@ public class MigMaster {
         int container_height = (int) panel.getPreferredSize().getHeight();
         int container_width = (int) panel.getPreferredSize().getWidth();
         if (panel.getVisuals() != null) {
-            if (container_height == 0)
+            if (container_height == 0) {
                 container_height = panel.getVisuals().getHeight();
-            if (container_width == 0)
+            }
+            if (container_width == 0) {
                 container_width = panel.getVisuals().getWidth();
+            }
         }// if null?! container.x2...
 
         if (comp instanceof VisualComponent) {
             VISUALS visuals = ((VisualComponent) comp).getVisuals();
             if (visuals != null) {
-                if (height == 0)
+                if (height == 0) {
                     height = visuals.getHeight();
-                if (width == 0)
+                }
+                if (width == 0) {
                     width = visuals.getWidth();
+                }
             }
         }
         return process(constraints, height, width, container_height, container_width);

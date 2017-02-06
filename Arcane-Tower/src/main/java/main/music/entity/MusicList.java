@@ -67,9 +67,10 @@ public class MusicList extends MusicEntity {
 		// String result = ListChooser.chooseStrings(StringMaster
 		// .openContainer(getProperty(AT_PROPS.TRACKS)));
 
-		if (result != null)
-			setProperty(AT_PROPS.TRACKS, result);
-		MusicCore.saveList(this);
+        if (result != null) {
+            setProperty(AT_PROPS.TRACKS, result);
+        }
+        MusicCore.saveList(this);
 	}
 
 	public List<Track> selectTracks() {
@@ -90,12 +91,21 @@ public class MusicList extends MusicEntity {
 		return tracks;
 	}
 
+    public void setTracks(List<Track> tracks) {
+        this.tracks = tracks;
+        resetPropertyFromList(AT_PROPS.TRACKS, tracks);
+    }
+
 	public MusicMouseListener getMouseListener() {
 		if (mouseListener == null) {
 			mouseListener = MusicCore.getListenerMap().get(getName());
 		}
 		return mouseListener;
 	}
+
+    public void setMouseListener(MusicMouseListener musicMouseListener) {
+        mouseListener = musicMouseListener;
+    }
 
 	public void setMusicType(String arg) {
 		setProperty(AT_PROPS.MUSIC_TYPE, arg, true);
@@ -111,18 +121,9 @@ public class MusicList extends MusicEntity {
 		type.addProperty(AT_PROPS.MUSIC_TAGS, arg, true);
 	}
 
-	public void setTracks(List<Track> tracks) {
-		this.tracks = tracks;
-		resetPropertyFromList(AT_PROPS.TRACKS, tracks);
-	}
-
 	public void play() {
 		MusicMouseListener.playM3uList(getPath(), null);
 
-	}
-
-	public void setMouseListener(MusicMouseListener musicMouseListener) {
-		mouseListener = musicMouseListener;
 	}
 
 	// public static void viewTracks(String function) {

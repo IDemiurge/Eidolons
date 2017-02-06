@@ -64,18 +64,21 @@ public class DivinationMaster {
         DC_SpellObj spell = null;
         spellGroups = initSpellGroups();
 
-        if (spellGroups.isEmpty())
+        if (spellGroups.isEmpty()) {
             return list;
+        }
 
         Loop.startLoop(1000);
         while (!Loop.loopEnded()) {
             initSpellPool();
-            if (spellPool.isEmpty())
+            if (spellPool.isEmpty()) {
                 continue;
+            }
 
             spell = tryDivine();
-            if (spell == null)
+            if (spell == null) {
                 break;
+            }
 
             list.add(spell);
         }
@@ -87,19 +90,22 @@ public class DivinationMaster {
     private static DC_SpellObj tryDivine() {
         DC_SpellObj spell = null;
         for (ObjType spellType : spellPool) {
-            if (!checkSpell(spellType))
+            if (!checkSpell(spellType)) {
                 continue;
+            }
 
             spell = LibraryManager.getSpellFromHero(hero, spellType.getName());
             if (spell == null) {
                 spell = new DC_SpellObj(spellType, hero.getOwner(),
                         hero.getGame(), hero.getRef());
                 hero.getSpells().add(spell);
-                if (LibraryManager.checkHeroHasSpell(hero, spellType))
+                if (LibraryManager.checkHeroHasSpell(hero, spellType)) {
                     applyKnownSpellDivinationEffect(spell);
+                }
             } else {
-                if (!spell.getGame().isSimulation())
+                if (!spell.getGame().isSimulation()) {
                     applyKnownSpellDivinationEffect(spell);
+                }
             }
             pool -= spell.getIntParam(PARAMS.SPELL_DIFFICULTY);
             spell.setProperty(G_PROPS.SPELL_POOL, SPELL_POOL.DIVINED.toString());
@@ -152,12 +158,15 @@ public class DivinationMaster {
     }
 
     private static boolean checkSpell(ObjType spellType) {
-        if (spellType.getIntParam(PARAMS.SPELL_DIFFICULTY) <= 0)
+        if (spellType.getIntParam(PARAMS.SPELL_DIFFICULTY) <= 0) {
             return false;
-        if (!LibraryManager.checkStandardSpell(spellType))
+        }
+        if (!LibraryManager.checkStandardSpell(spellType)) {
             return false;
-        if (!WorkspaceMaster.checkTypeIsGenerallyReady(spellType))
+        }
+        if (!WorkspaceMaster.checkTypeIsGenerallyReady(spellType)) {
             return false;
+        }
 
         // TODO if already available, add a buff to it for 50% ess cost and cd
 
@@ -195,29 +204,35 @@ public class DivinationMaster {
 
         Map<SPELL_GROUP, Integer> map = new RandomWizard<SPELL_GROUP>()
                 .constructWeightMap(spellGroupProperty, SPELL_GROUP.class);
-        if (forced)
+        if (forced) {
             return map;
-        if (hero.checkBool(STD_BOOLS.DIVINATION_SPELL_GROUPS_INVERTED))
+        }
+        if (hero.checkBool(STD_BOOLS.DIVINATION_SPELL_GROUPS_INVERTED)) {
             map = new MapMaster<SPELL_GROUP, Integer>().invertMapOrder(map, true);
+        }
         // TODO ++ USE
 
         int use = hero.getIntParam(PARAMS.DIVINATION_USE_FIRST);
         int crop = hero.getIntParam(PARAMS.DIVINATION_CROP_FIRST);
-        if (use != 0)
+        if (use != 0) {
             crop = map.size() - use;
+        }
         if (crop > 0) {
-            if (crop >= map.size())
+            if (crop >= map.size()) {
                 crop = map.size() - 1;
+            }
             new MapMaster<SPELL_GROUP, Integer>().crop(map, crop, true);
         } else {
             use = hero.getIntParam(PARAMS.DIVINATION_USE_LAST);
-            if (use != 0)
+            if (use != 0) {
                 crop = map.size() - use;
-            else
+            } else {
                 crop = hero.getIntParam(PARAMS.DIVINATION_CROP_LAST);
+            }
             if (crop > 0) {
-                if (crop >= map.size())
+                if (crop >= map.size()) {
                     crop = map.size() - 1;
+                }
                 new MapMaster<SPELL_GROUP, Integer>().crop(map, crop, false);
             }
 

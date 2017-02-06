@@ -30,9 +30,11 @@ public class VarMap {
      * @throws RuntimeException If a matching variable name cannot be found.
      */
     public double getValue(String varName) {
-        for (int i = 0; i < numVars; i++)
-            if (caseSensitive && name[i].equals(varName) || !caseSensitive && name[i].equalsIgnoreCase(varName))
+        for (int i = 0; i < numVars; i++) {
+            if (caseSensitive && name[i].equals(varName) || !caseSensitive && name[i].equalsIgnoreCase(varName)) {
                 return value[i];
+            }
+        }
 
         throw new RuntimeException("variable value has not been set: " + varName);
     }
@@ -43,8 +45,9 @@ public class VarMap {
      * @throws IllegalArgumentException If the variable name is null.
      */
     public void setValue(String varName, double val) {
-        if (varName == null)
+        if (varName == null) {
             throw new IllegalArgumentException("varName cannot be null");
+        }
 
         for (int i = 0; i < numVars; i++) {
             if (caseSensitive && name[i].equals(varName) || !caseSensitive && name[i].equalsIgnoreCase(varName)) {
@@ -84,8 +87,9 @@ public class VarMap {
     public String[] getVariableNames() {
         String[] arr = new String[numVars];
 
-        for (int i = 0; i < arr.length; i++)
+        for (int i = 0; i < arr.length; i++) {
             arr[i] = name[i];
+        }
 
         return arr;
     }
@@ -97,8 +101,9 @@ public class VarMap {
     public double[] getValues() {
         double[] arr = new double[numVars];
 
-        for (int i = 0; i < arr.length; i++)
+        for (int i = 0; i < arr.length; i++) {
             arr[i] = value[i];
+        }
 
         return arr;
     }

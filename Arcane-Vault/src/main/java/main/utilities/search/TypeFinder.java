@@ -17,9 +17,10 @@ public class TypeFinder {
 
 	public static List<ObjType> findTypes(OBJ_TYPE[] TYPES) {
 		String typeName = DialogMaster.inputText(TIP, lastSearch);
-		if (StringMaster.isEmpty(typeName))
-			return null;
-		// map to chosen type?
+        if (StringMaster.isEmpty(typeName)) {
+            return null;
+        }
+        // map to chosen type?
 		return findTypes(typeName, TYPES);
 	}
 
@@ -36,20 +37,24 @@ public class TypeFinder {
 
 	public static ObjType findType(boolean strict) {
 		String typeName = DialogMaster.inputText(TIP, lastSearch);
-		if (StringMaster.isEmpty(typeName))
-			return null;
-		lastSearch = typeName; // map to chosen type?
+        if (StringMaster.isEmpty(typeName)) {
+            return null;
+        }
+        lastSearch = typeName; // map to chosen type?
 		ObjType type = DataManager.getType(typeName);
 
 		List<ObjType> foundTypes = DataManager.findTypes(typeName, strict);
-		if (foundTypes.size() == 1)
-			return foundTypes.get(0);
-		if (foundTypes.isEmpty())
-			return null;
-		if (foundTypes.size() > 1) {
+        if (foundTypes.size() == 1) {
+            return foundTypes.get(0);
+        }
+        if (foundTypes.isEmpty()) {
+            return null;
+        }
+        if (foundTypes.size() > 1) {
 			type = (ObjType) DialogMaster.entityChoice(foundTypes);
-		} else
-			type = foundTypes.get(0);
+        } else {
+            type = foundTypes.get(0);
+        }
 
 		return type;
 	}

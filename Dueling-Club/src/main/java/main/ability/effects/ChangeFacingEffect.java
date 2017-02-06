@@ -28,8 +28,9 @@ public class ChangeFacingEffect extends MicroEffect {
 
     @Override
     public boolean applyThis() {
-        if (!(ref.getTargetObj() instanceof DC_HeroObj))
+        if (!(ref.getTargetObj() instanceof DC_HeroObj)) {
             return false;
+        }
         DC_HeroObj obj = (DC_HeroObj) ref.getTargetObj();
 
         FACING_DIRECTION oldDirection = obj.getFacing();
@@ -48,8 +49,9 @@ public class ChangeFacingEffect extends MicroEffect {
                 }
 
             }
-        } else
+        } else {
             newDirection = FacingMaster.rotate(oldDirection, isClockwise());
+        }
 
         obj.setFacing(newDirection);
         game.fireEvent(new Event(getEventTypeDone(), ref));
@@ -58,8 +60,9 @@ public class ChangeFacingEffect extends MicroEffect {
 
     @Override
     public STANDARD_EVENT_TYPE getEventTypeDone() {
-        if (clockwise == null)
+        if (clockwise == null) {
             return STANDARD_EVENT_TYPE.UNIT_HAS_TURNED;
+        }
         return clockwise ? STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE : STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE;
     }
 

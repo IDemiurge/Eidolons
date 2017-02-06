@@ -15,7 +15,9 @@ public class VarNode extends TermNode {
     public double eval(VarMap v, FuncMap f) {
         double val = v.getValue(name);
 
-        if (negate) val = -val;
+        if (negate) {
+            val = -val;
+        }
 
         return val;
     }

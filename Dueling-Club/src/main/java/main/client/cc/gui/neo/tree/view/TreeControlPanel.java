@@ -33,8 +33,9 @@ public class TreeControlPanel extends G_Panel {
             if (i >= maxColumns) {
                 i = 0;
                 add(createButton(c), "wrap");
-            } else
+            } else {
                 add(createButton(c));
+            }
         }
     }
 
@@ -64,26 +65,29 @@ public class TreeControlPanel extends G_Panel {
         // TODO v-flow buttons one-click!
         List<String> listData = StringMaster.openContainer(containerString);
         name = new ListChooser(SELECTION_MODE.SINGLE, listData, true).choose();
-        if (name == null)
+        if (name == null) {
             return false;
+        }
         // name = new ButtonChoicePanel(SELECTION_MODE.SINGLE,
         // listData).choose();
         PROPERTY prop = ContentManager.getPROP(name);
         String value = null;
-        if (alt)
+        if (alt) {
             value = new TextEditor().launch(selectedType.getProperty(prop));
-        else if (DC_ContentManager.getEditorMap() != null) {
+        } else if (DC_ContentManager.getEditorMap() != null) {
             if (DC_ContentManager.getEditorMap().get(name) != null) {
                 value = DC_ContentManager.getEditorMap().get(name).launch(value, name);
             }
         } else if (prop == G_PROPS.IMAGE) {
             value = new ImageChooser().launch(selectedType.getImagePath(), "");
             // tableMouse.getEditor(prop)
-        } else
+        } else {
             value = new TextEditor().launch(selectedType.getProperty(prop));
+        }
 
-        if (value != null)
+        if (value != null) {
             selectedType.setProperty(prop, value);
+        }
 
         return true;
         // TableMouseListener
@@ -130,8 +134,9 @@ public class TreeControlPanel extends G_Panel {
 
                         String enums = new ListChooser(SELECTION_MODE.MULTIPLE, MASTERY.class)
                                 .choose();
-                        if (StringMaster.isEmpty(enums))
+                        if (StringMaster.isEmpty(enums)) {
                             return;
+                        }
                         List<MASTERY> list = new EnumMaster<MASTERY>().getEnumList(MASTERY.class,
                                 enums);
 
@@ -187,8 +192,9 @@ public class TreeControlPanel extends G_Panel {
         int i = view.getWorkspaces().indexOf(view.getWorkspace());
         i++;
 
-        if (i < 0 || i >= view.getWorkspaces().size())
+        if (i < 0 || i >= view.getWorkspaces().size()) {
             i = 0;
+        }
 
         view.setWorkspace((Object[]) view.getWorkspaces().get(i));
         view.setWorkspaceMode(true);

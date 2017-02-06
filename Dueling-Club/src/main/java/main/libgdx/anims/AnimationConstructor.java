@@ -80,13 +80,16 @@ public class AnimationConstructor {
     private boolean findClosestResource;
 
     public CompositeAnim getOrCreate(ActiveObj active) {
-        if (active == null) return null;
+        if (active == null) {
+            return null;
+        }
         CompositeAnim anim = map.get(active);
-        if (!isReconstruct())
+        if (!isReconstruct()) {
             if (anim != null) {
 
                 return anim;
             }
+        }
         return construct((DC_ActiveObj) active);
     }
 
@@ -103,8 +106,9 @@ public class AnimationConstructor {
 
         Arrays.stream(ANIM_PART.values()).forEach(part -> {
             Anim animPart = getPartAnim(active, part);
-            if (animPart != null)
+            if (animPart != null) {
                 anim.add(part, animPart);
+            }
         });
 
         map.put(active, anim);
@@ -117,8 +121,9 @@ public class AnimationConstructor {
         AnimData data = new AnimData();
         for (VALUE val : anim_vals) {
             if (val instanceof PARAMETER || //TODO add filtering
-                    StringMaster.contains(val.getName(), part.toString()))
+                    StringMaster.contains(val.getName(), part.toString())) {
                 data.add(val, active.getValue(val));
+            }
         }
         return getPartAnim(data, active, part);
     }
@@ -126,36 +131,43 @@ public class AnimationConstructor {
     private Anim getPartAnim(AnimData data, DC_ActiveObj active, ANIM_PART part) {
 
         Anim anim = createAnim(active, data, part);
-        if (anim == null) return null;
+        if (anim == null) {
+            return null;
+        }
         if (!initAnim(data, active, part, anim)) {
             if (!(active instanceof DC_SpellObj)) {
                 return null;
             }
 
             data = getStandardData((DC_SpellObj) active, part);
-            if (!initAnim(data, active, part, anim))
+            if (!initAnim(data, active, part, anim)) {
                 return null;
+            }
         }
         return anim;
     }
 
     private Anim createAnim(DC_ActiveObj active, AnimData data, ANIM_PART part) {
-        if (active.isMove())
+        if (active.isMove()) {
             return MoveAnimation.isOn() ? new MoveAnimation(active, data) : null;
+        }
         if (active.isAttackAny()) {
             if (part == ANIM_PART.MAIN) {
-                if (active.isRanged())
+                if (active.isRanged()) {
                     return new RangedAttackAnim(active);
+                }
                 return new AttackAnim(active);
             }
-            if (part == ANIM_PART.IMPACT)
+            if (part == ANIM_PART.IMPACT) {
                 return new HitAnim(active, data);
+            }
         }
 
         if (active.isSpell()) {
             if (active.isMissile()) {
-                if (part == ANIM_PART.IMPACT)
+                if (part == ANIM_PART.IMPACT) {
                     return new HitAnim(active, data);
+                }
             }
             SPELL_ANIMS template = getTemplateFromTargetMode(active.getTargetingMode());
             return new SpellAnim(active, data, template);
@@ -191,19 +203,23 @@ public class AnimationConstructor {
             EmitterActor emitter = null;
             SFX sfx = new EnumMaster<SFX>().
                     retrieveEnumConst(SFX.class, path);
-            if (sfx == null)
+            if (sfx == null) {
                 emitter = EmitterPools.getEmitterActor(path);
-            else
+            } else {
                 emitter = EmitterPools.getEmitterActor(sfx);
-            if (emitter != null)
+            }
+            if (emitter != null) {
                 list.add(emitter
                 );
+            }
             exists = true;
         }
 
-        if (!exists)
-            if (active != null)
+        if (!exists) {
+            if (active != null) {
                 exists = checkForcedAnimation(active, part);
+            }
+        }
 //        if (!exists) return true;
 
         anim.setPart(part);
@@ -217,9 +233,11 @@ public class AnimationConstructor {
             case MAIN:
                 return (active.isMove() || active.isAttackAny() || active.isTurn());
             case IMPACT:
-                if (active.isAttackAny())
-                    if (!active.isFailedLast())
+                if (active.isAttackAny()) {
+                    if (!active.isFailedLast()) {
                         return true;
+                    }
+                }
                 break;
 //            case AFTEREFFECT:
 //                if (active.isAttackAny()) {
@@ -238,13 +256,17 @@ public class AnimationConstructor {
 
     public Animation getEffectAnim(Effect e) {
 //        map
-        if (!isAnimated(e)) return null;
+        if (!isAnimated(e)) {
+            return null;
+        }
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, "EFFECT ANIM CONSTRUCTED FOR " + e + e.getRef());
         Anim effectAnim = EffectAnimCreator.getOrCreateEffectAnim(e);
         initAnim(effectAnim.getData(), (DC_ActiveObj) effectAnim.getActive(),
                 effectAnim.getPart(),
                 effectAnim);
-        if (!isValid(effectAnim)) return null;
+        if (!isValid(effectAnim)) {
+            return null;
+        }
 
         return effectAnim;
 //        CompositeAnim a = new CompositeAnim();
@@ -255,17 +277,22 @@ public class AnimationConstructor {
     }
 
     private boolean isAnimated(Effect e) {
-        if (e.getActiveObj() == null) return false;
-        if (!isCellAnimated(e))if (e.getRef().getTargetObj() instanceof DC_Cell){
+        if (e.getActiveObj() == null) {
+            return false;
+        }
+        if (!isCellAnimated(e)) {
+            if (e.getRef().getTargetObj() instanceof DC_Cell) {
 
-    return false;
-}
+                return false;
+            }
+        }
         if (e instanceof DealDamageEffect) {
             return true;
         }
         if (e instanceof ModifyValueEffect) {
-            if (e.isContinuousWrapped())
+            if (e.isContinuousWrapped()) {
                 return false;
+            }
             return true;
         }
 
@@ -281,14 +308,19 @@ public class AnimationConstructor {
         AnimData data = new AnimData();
 
         String partPath = part.toString();
-        if (part == ANIM_PART.MAIN) partPath = "missile";
+        if (part == ANIM_PART.MAIN) {
+            partPath = "missile";
+        }
         String size = "";
-        if (spell.getCircle() > 4)
+        if (spell.getCircle() > 4) {
             size = " huge";
-        if (spell.getCircle() >= 3)
+        }
+        if (spell.getCircle() >= 3) {
             size = " large";
-        if (spell.getCircle() < 2)
+        }
+        if (spell.getCircle() < 2) {
             size = " small";
+        }
 
         ANIM_VALUES[] values = {
                 ANIM_VALUES.SPRITES,
@@ -308,11 +340,13 @@ public class AnimationConstructor {
             String file = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
 
             if (file == null) {
-                if (!isFindClosestResource(part, s))
+                if (!isFindClosestResource(part, s)) {
                     continue;
+                }
                 file = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
-                if (file == null)
+                if (file == null) {
                     continue;
+                }
             }
             String val = StringMaster.buildPath(
                     partPath, StringMaster.removePreviousPathSegments(file, pathRoot));
@@ -341,8 +375,9 @@ public class AnimationConstructor {
         for (PROPERTY p : props) {
             String name = spell.getProperty(p) + " " + partPath + size;
             file = FileManager.findFirstFile(path, name, closest);
-            if (file != null)
+            if (file != null) {
                 break;
+            }
         }
         return file;
     }
@@ -372,18 +407,29 @@ public class AnimationConstructor {
     public BuffAnim getBuffAnim(BuffObj buff) {
         BuffAnim anim = new BuffAnim(buff);
         DC_ActiveObj active = null;
-        if (buff.getActive() instanceof DC_ActiveObj)
+        if (buff.getActive() instanceof DC_ActiveObj) {
             active = (DC_ActiveObj) buff.getActive();
+        }
         initAnim(anim.getData(), active, anim.getPart(), anim);
-        if (!isValid(anim)) return null;
+        if (!isValid(anim)) {
+            return null;
+        }
         return anim;
     }
 
     private boolean isValid(Anim anim) {
-        if (!anim.getSprites().isEmpty()) return true;
-        if (!anim.getEmitterList().isEmpty()) return true;
-        if (anim.getLightEmission() > 0) return true;
-        if (anim instanceof HitAnim) return true;
+        if (!anim.getSprites().isEmpty()) {
+            return true;
+        }
+        if (!anim.getEmitterList().isEmpty()) {
+            return true;
+        }
+        if (anim.getLightEmission() > 0) {
+            return true;
+        }
+        if (anim instanceof HitAnim) {
+            return true;
+        }
         return false;
     }
 
@@ -391,8 +437,9 @@ public class AnimationConstructor {
 
         switch (part) {
             case MAIN:
-                if (val == ANIM_VALUES.PARTICLE_EFFECTS)
+                if (val == ANIM_VALUES.PARTICLE_EFFECTS) {
                     return true;
+                }
         }
         return findClosestResource;
     }

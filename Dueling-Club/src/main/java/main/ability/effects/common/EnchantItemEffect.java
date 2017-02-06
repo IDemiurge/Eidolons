@@ -81,26 +81,29 @@ public class EnchantItemEffect extends MicroEffect {
         // TODO why was only that 1st spell in SB filtered in???
         if (!new TemplateSelectiveTargeting(
                 (weapon) ? SELECTIVE_TARGETING_TEMPLATES.MY_WEAPON
-                        : SELECTIVE_TARGETING_TEMPLATES.MY_ARMOR).select(ref))
+                        : SELECTIVE_TARGETING_TEMPLATES.MY_ARMOR).select(ref)) {
             return false;
+        }
         // new ModifyPropertyEffect(G_PROPS.PASSIVES, MOD_PROP_TYPE.ADD,
         // passive)
         // .apply(ref);
         //
-        KEYS key = null;
-        if (!weapon)
+        KEYS key;
+        if (!weapon) {
             key = KEYS.ARMOR;
-        else {
-            if (ref.getTargetObj() == ref.getObj(KEYS.WEAPON))
+        } else {
+            if (ref.getTargetObj() == ref.getObj(KEYS.WEAPON)) {
                 key = KEYS.WEAPON;
-            else
+            } else {
                 key = KEYS.OFFHAND;
+            }
         }
         int cost = Enchanter.calculateSpellEnergyCost(spell);
 
-        if (case_type == null)
+        if (case_type == null) {
             case_type = (weapon) ? SPECIAL_EFFECTS_CASE.ON_ATTACK
                     : SPECIAL_EFFECTS_CASE.ON_HIT;
+        }
         // another layer of customTargetEffect if ON SELF or so ! Some may even
         // be Zone-targeted!
         BuffType t = new BuffType(new Ref(ref.getGame(), ref.getSource()));

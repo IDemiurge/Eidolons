@@ -32,7 +32,7 @@ public class DuplicateSpellEffect extends MicroEffect {
     public boolean applyThis() {
         // ref getspell?
 
-        String spelltype = null;
+        String spelltype;
         Ref REF;
         if (group) {
             spelltype = ref.getEvent().getRef().getObj(KEYS.SPELL).getName();

@@ -70,12 +70,14 @@ public abstract class Analyzer {
     public Obj getClosestCell(Obj targetUnit, boolean canMove) {
         Obj cell = checkAdjacentCell(targetUnit, canMove);
 
-        if (cell != null)
+        if (cell != null) {
             return cell;
+        }
         for (int i = 2; i < getMaxDistance(); i++) {
             cell = checkCells(targetUnit, movementManager.getCellsInRadius(targetUnit, i), canMove);
-            if (cell != null)
+            if (cell != null) {
                 break;
+            }
         }
         if (cell == null) {
             main.system.auxiliary.LogMaster
@@ -100,13 +102,14 @@ public abstract class Analyzer {
         double cost = Double.MAX_VALUE;
         Obj cell = null;
         for (Obj adjCell : set) {
-            if (canMove)
+            if (canMove) {
                 if (!movementManager.canMove(getAi().getUnit(), adjCell)) {
-                    main.system.auxiliary.LogMaster
+                    LogMaster
                             .log(LogMaster.AI_DEBUG, ai.getLogic().getUnit()
                                     + " can't move to " + adjCell);
                     continue;
                 }
+            }
             Path path = movementManager.getPath(targetUnit, adjCell);
             if (path == null) {
                 main.system.auxiliary.LogMaster.log(LogMaster.AI_DEBUG, ai
@@ -200,8 +203,9 @@ public abstract class Analyzer {
 
     private boolean checkPlayerHasNoUnits(Player player) {
         for (Obj d : player.getControlledUnits()) {
-            if (!d.isDead())
+            if (!d.isDead()) {
                 return false;
+            }
             // panicked? check ownership change?
         }
         return true;

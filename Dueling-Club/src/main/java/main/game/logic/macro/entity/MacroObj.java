@@ -51,8 +51,9 @@ public class MacroObj extends Obj {
     }
 
     public Region getRegion() {
-        if (region == null)
+        if (region == null) {
             region = getRef().getRegion();
+        }
         return region;
     }
 

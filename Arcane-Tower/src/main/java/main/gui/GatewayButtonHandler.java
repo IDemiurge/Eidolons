@@ -55,9 +55,10 @@ public class GatewayButtonHandler implements ActionListener {
 		boolean alt = ActionEvent.ALT_MASK == (i & ActionEvent.ALT_MASK);
 		switch (command) {
 			case PARSE_CAPTURE:
-				if (alt)
-					CaptureParser.newCapture(AT_OBJ_TYPE.DIRECTION);
-				CaptureParser.newCapture(null);
+                if (alt) {
+                    CaptureParser.newCapture(AT_OBJ_TYPE.DIRECTION);
+                }
+                CaptureParser.newCapture(null);
 				break;
 			case GATEWAY:
 				window.getView().refresh();
@@ -80,9 +81,10 @@ public class GatewayButtonHandler implements ActionListener {
 					List<AT_OBJ_TYPE> types = new EnumMaster<AT_OBJ_TYPE>().getEnumList(
 							AT_OBJ_TYPE.class, choice);
 					MainWriter.cleanUp(true, types.toArray(new AT_OBJ_TYPE[types.size()]));
-				} else
-					MainWriter.cleanUpAll();
-				break;
+                } else {
+                    MainWriter.cleanUpAll();
+                }
+                break;
 			case CREATE_TYPE:
 				String chooseEnum = ListChooser.chooseEnum(AT_OBJ_TYPE.class);
 				type = (AT_OBJ_TYPE) ContentManager.getOBJ_TYPE(chooseEnum);

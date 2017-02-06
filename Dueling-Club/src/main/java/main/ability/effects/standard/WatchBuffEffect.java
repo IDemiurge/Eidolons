@@ -25,8 +25,9 @@ public class WatchBuffEffect extends AddBuffEffect {
     }
 
     private static String getBuffName(List<DC_Obj> list) {
-        if (list.size() == 1)
+        if (list.size() == 1) {
             return BUFF_TYPE_NAME + " " + list.get(0).getNameIfKnown();
+        }
         return BUFF_TYPE_NAME + " Multiple";
     }
 

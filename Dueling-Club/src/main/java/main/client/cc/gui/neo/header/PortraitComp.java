@@ -46,12 +46,13 @@ public class PortraitComp extends G_CompHolder implements MouseListener {
     protected void handleMouseClick() {
         if (Launcher.DEV_MODE) {
             String portrait = new ImageChooser().launch("Image", hero.getImagePath());
-            if (portrait != null)
+            if (portrait != null) {
                 if (ImageManager.isImage(portrait)) {
                     hero.setImage(portrait);
                     // hero.setProperty(G_PROPS.IMAGE, portrait, true);
                     label.setIcon(hero.getIcon());
                 }
+            }
 
         }
     }

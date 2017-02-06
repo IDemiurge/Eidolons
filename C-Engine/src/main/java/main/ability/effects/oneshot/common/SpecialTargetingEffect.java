@@ -33,8 +33,9 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
     public SpecialTargetingEffect(Effect effect, boolean friendlyFire, Conditions conditions,
                                   Formula reductionFormula) {
         this.filteringConditions = conditions;
-        if (!friendlyFire)
+        if (!friendlyFire) {
             this.allyOrEnemyOnly = false;
+        }
 
         this.effects = effect;
         this.reductionFormula = reductionFormula;
@@ -128,8 +129,9 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
     }
 
     public AutoTargeting getTargeting() {
-        if (targeting == null)
+        if (targeting == null) {
             initTargeting();
+        }
         return targeting;
     }
 

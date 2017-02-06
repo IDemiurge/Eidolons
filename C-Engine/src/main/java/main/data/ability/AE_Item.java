@@ -38,8 +38,9 @@ public class AE_Item implements Comparable<AE_Item> {
 
     @Override
     public String toString() {
-        if (constr == null)
+        if (constr == null) {
             return name;
+        }
         String args = ": ";
         try {
             for (String str : constr
@@ -48,8 +49,9 @@ public class AE_Item implements Comparable<AE_Item> {
             }
             args = args.substring(0, args.length() - 2);
         } catch (Exception e) {
-            if (constr.getParameterTypes().length < 1)
+            if (constr.getParameterTypes().length < 1) {
                 return name;
+            }
             for (Class<?> type : constr.getParameterTypes()) {
                 args += type.getSimpleName() + ", ";
             }
@@ -102,8 +104,9 @@ public class AE_Item implements Comparable<AE_Item> {
 
     @Override
     public int compareTo(AE_Item item) {
-        if (toString().equals(item.toString()))
+        if (toString().equals(item.toString())) {
             return 0;
+        }
 
         return toString().compareTo(item.toString());
     }

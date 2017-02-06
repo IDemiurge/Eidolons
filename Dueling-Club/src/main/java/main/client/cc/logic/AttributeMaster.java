@@ -17,14 +17,17 @@ public class AttributeMaster {
         key = StringMaster.getWellFormattedString(attr.name());
         for (PARAMS p : attr.getParams()) {
             Map<String, Double> map = hero.getModifierMaps().get(p);
-            if (map == null)
+            if (map == null) {
                 continue;
+            }
             Double amount = map.get(key);
-            if (amount == null)
+            if (amount == null) {
                 continue;
+            }
             String string = "+";
-            if (amount < 0)
+            if (amount < 0) {
                 string = "-";
+            }
             string += StringMaster.wrapInBraces("" + amount) + " " + p.getName();
 
             list.add(string);

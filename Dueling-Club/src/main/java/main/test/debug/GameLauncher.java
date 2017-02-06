@@ -93,10 +93,12 @@ public class GameLauncher {
     private void createPreset() {
         String enemy = ENEMY_PARTY;
         String party = PLAYER_PARTY;
-        if (partyName != null)
+        if (partyName != null) {
             party = partyName;
-        if (encounterName != null)
+        }
+        if (encounterName != null) {
             enemy = encounterName;
+        }
         String levelFilePath = game.getDungeonMaster().getDungeon().getLevelFilePath();
         if (StringMaster.isEmpty(levelFilePath)) {
             levelFilePath = game.getDungeonMaster().getDungeon().getLevelFilePath();
@@ -107,9 +109,11 @@ public class GameLauncher {
     }
 
     private void savePresetAsLast() {
-        if (!FAST_MODE)
-            if (!SUPER_FAST_MODE)
+        if (!FAST_MODE) {
+            if (!SUPER_FAST_MODE) {
                 PresetMaster.savePreset(PresetMaster.getPreset(), null);
+            }
+        }
     }
 
     private void autosavePreset() {
@@ -123,8 +127,9 @@ public class GameLauncher {
 
     public void selectiveInit() {
 
-        if (!FAST_MODE)
+        if (!FAST_MODE) {
             FAST_MODE = DialogMaster.confirm("FAST_MODE?");
+        }
         if (!SUPER_FAST_MODE) {
             SUPER_FAST_MODE = DialogMaster.confirm("SUPER_FAST_MODE?");
         }
@@ -148,10 +153,12 @@ public class GameLauncher {
 
             game.setDebugMode(Launcher.isDEBUG_MODE_DEFAULT());
             initPlayerParties();
-            if (PARTY_CODE != CODE.NONE)
+            if (PARTY_CODE != CODE.NONE) {
                 game.setPlayerParty(PLAYER_PARTY);
-            if (ENEMY_CODE != CODE.NONE)
+            }
+            if (ENEMY_CODE != CODE.NONE) {
                 game.setEnemyParty(ENEMY_PARTY);
+            }
 
             game.init();
         } else {
@@ -263,9 +270,10 @@ public class GameLauncher {
         // OBJ_TYPES.PARTY).getProperty(PROPS.MEMBERS));
         // }
         game.setTestMode(true);
-        if (OPTION == null)
+        if (OPTION == null) {
             OPTION = DialogMaster.optionChoice("Select party init option", "Group", "Default",
                     "Heroes", "Units", "Party");
+        }
         switch (OPTION) {
             case 0:
                 SpawnManager.setPlayerUnitGroupMode(true);
@@ -274,10 +282,11 @@ public class GameLauncher {
                 // UnitGroupMaster.setFlip(new
                 // EnumMaster<FLIP>().retrieveEnumConst(FLIP.class,
                 // flip));
-                if (UnitGroupMaster.isFactionMode())
+                if (UnitGroupMaster.isFactionMode()) {
                     return initFactionData();
-                else
+                } else {
                     return UnitGroupMaster.chooseGroup(true);
+                }
             case 1:
                 return PLAYER_PARTY;
             case 2:
@@ -308,8 +317,9 @@ public class GameLauncher {
     public String choose(OBJ_TYPES type) {
         String filterGroup = getFilterGroup(type);
         List<String> data = DataManager.getTypeNames(type);
-        if (!filterGroup.isEmpty())
+        if (!filterGroup.isEmpty()) {
             data = DataManager.getTypesSubGroupNames(type, filterGroup);
+        }
 
         String objects = new ListChooser(SELECTION_MODE.MULTIPLE, data, type).choose();
         return objects;
@@ -333,18 +343,20 @@ public class GameLauncher {
     }
 
     public String chooseEnemies(Integer ENEMY_OPTION) {
-        if (ENEMY_OPTION == null)
+        if (ENEMY_OPTION == null) {
             ENEMY_OPTION = DialogMaster.optionChoice("Select Enemy init option", "Group",
                     "Encounter", "Heroes", "Units", "Default");
+        }
         switch (ENEMY_OPTION) {
             case 0:
                 SpawnManager.setEnemyUnitGroupMode(true);
                 return UnitGroupMaster.chooseGroup(false);
             case 1:
                 encounterName = ListChooser.chooseType(OBJ_TYPES.ENCOUNTERS);
-                if (encounterName != null)
+                if (encounterName != null) {
                     return getEnemiesFromWave(DataManager.getType(encounterName,
                             OBJ_TYPES.ENCOUNTERS));
+                }
             case 2:
                 return chooseCharacters();
             case 3:
@@ -370,12 +382,13 @@ public class GameLauncher {
 
     private String getEnemiesFromWave(ObjType type) {
         Integer power = EncounterMaster.getPower(type, null);
-        if (power < EncounterMaster.getPower(StringMaster.openContainer(PLAYER_PARTY)))
+        if (power < EncounterMaster.getPower(StringMaster.openContainer(PLAYER_PARTY))) {
             return (type.getProperty(PROPS.EXTENDED_PRESET_GROUP));
-        else if (power > 2 * EncounterMaster.getPower(StringMaster.openContainer(PLAYER_PARTY)))
+        } else if (power > 2 * EncounterMaster.getPower(StringMaster.openContainer(PLAYER_PARTY))) {
             return (type.getProperty(PROPS.SHRUNK_PRESET_GROUP));
-        else
+        } else {
             return (type.getProperty(PROPS.PRESET_GROUP));
+        }
     }
 
     private String getRandomizedParty(int heroesCount, int unitCount, Integer maxLevel,
@@ -384,12 +397,16 @@ public class GameLauncher {
         Loop.startLoop(100);
         while (Loop.loopContinues()) {
             ObjType type = RandomWizard.getRandomType(OBJ_TYPES.CHARS);
-            if (maxLevel != null)
-                if (type.getLevel() > maxLevel)
+            if (maxLevel != null) {
+                if (type.getLevel() > maxLevel) {
                     continue;
-            if (minLevel != null)
-                if (type.getLevel() < minLevel)
+                }
+            }
+            if (minLevel != null) {
+                if (type.getLevel() < minLevel) {
                     continue;
+                }
+            }
             mainHero = type;
         }
         String party = mainHero.getName() + ";";
@@ -403,15 +420,17 @@ public class GameLauncher {
                 property = mainHero.getProperty(G_PROPS.ASPECT);
                 subgroup = false;
             }
-            if (addRandomUnit(TYPE, property, subgroup, party, minLevel, maxLevel))
+            if (addRandomUnit(TYPE, property, subgroup, party, minLevel, maxLevel)) {
                 unitCount--;
+            }
         }
         Loop.startLoop(100);
         while (heroesCount > 0 && Loop.loopContinues()) {
             // party += RandomWizard.getRandomType(OBJ_TYPES.CHARS).getName() +
             // ";";
-            if (addRandomUnit(OBJ_TYPES.CHARS, null, false, party, minLevel, maxLevel))
+            if (addRandomUnit(OBJ_TYPES.CHARS, null, false, party, minLevel, maxLevel)) {
                 heroesCount--;
+            }
         }
         return party;
     }
@@ -420,14 +439,18 @@ public class GameLauncher {
                                   Integer maxLevel, Integer minLevel) {
 
         ObjType objType = RandomWizard.getRandomType(TYPE, property, subgroup);
-        if (objType.checkProperty(G_PROPS.GROUP, "Background"))
+        if (objType.checkProperty(G_PROPS.GROUP, "Background")) {
             return false;
-        if (!WorkspaceMaster.checkTypeIsGenerallyReady(objType))
+        }
+        if (!WorkspaceMaster.checkTypeIsGenerallyReady(objType)) {
             return false;
-        if (objType.getLevel() > maxLevel)
+        }
+        if (objType.getLevel() > maxLevel) {
             return false;
-        if (objType.getLevel() < minLevel)
+        }
+        if (objType.getLevel() < minLevel) {
             return false;
+        }
         party += objType.getName() + ";";
         return true;
     }

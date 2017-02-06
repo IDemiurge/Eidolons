@@ -70,29 +70,32 @@ public class CostImpl implements Cost {
         setRef(ref);
         if (!(targeting == null)) {
             targeting.select(this.ref);
-        } else
+        } else {
             this.ref.setTarget(ref.getSource());
+        }
         int i = 0;
-        for (String s : formulas)
+        for (String s : formulas) {
             if (!s.equals("0")) {
                 // for future: maybe each 's' could also optionally provide a
                 // MOD type? some abils might require you to spend ALL mana of X
                 // type... fun, isnt it?
 
 				/*Effect effect = new ModifyValueEffect(cost_types[i], MOD.CONST,
-						new Formula(s));
+                        new Formula(s));
 				effect.apply(this.ref);
 				i++;
 				pay_ability = new ActiveAbility(targeting, effect);*/
             }
+        }
 
 
         ref.setSource(payee.getId());
         if (pay_ability.activate(ref)) {
             paid = true;
             return true;
-        } else
+        } else {
             return false;
+        }
     }
 
     @Override

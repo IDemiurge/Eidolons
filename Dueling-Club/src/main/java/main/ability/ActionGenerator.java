@@ -17,8 +17,9 @@ public class ActionGenerator {
     public static void addDefaultSneakModsToAction(ObjType type) {
 
         for (PARAMETER v : ValuePages.SNEAK_MODS) {
-            if (type.getIntParam(v) == 0)
+            if (type.getIntParam(v) == 0) {
                 type.setParam(v, v.getDefaultValue());
+            }
         }
 
     }
@@ -48,12 +49,13 @@ public class ActionGenerator {
     }
 
     public static void init() {
-        if (!CoreEngine.isArcaneVault())
+        if (!CoreEngine.isArcaneVault()) {
             try {
                 generateOffhandActions();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
 
     }
 

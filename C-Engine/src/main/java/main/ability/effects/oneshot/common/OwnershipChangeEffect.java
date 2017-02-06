@@ -32,8 +32,9 @@ public class OwnershipChangeEffect extends MicroEffect implements
 
     @Override
     public boolean applyThis() {
-        if (!new Event(STANDARD_EVENT_TYPE.UNIT_OWNERSHIP_CHANGED, ref).fire())
+        if (!new Event(STANDARD_EVENT_TYPE.UNIT_OWNERSHIP_CHANGED, ref).fire()) {
             return false;
+        }
         // + trigger rule flip image when ownership changes ;)
         Obj obj = ref.getTargetObj();
         Player newOwner = obj.getOriginalOwner();

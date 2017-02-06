@@ -150,11 +150,13 @@ public abstract class PhaseAnimation implements ANIM {
     //
     // }
     public void run() {
-        if (isLogged())
-            main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, "RUNNING ANIM: " + this);
+        if (isLogged()) {
+            LogMaster.log(LogMaster.ANIM_DEBUG, "RUNNING ANIM: " + this);
+        }
         Chronos.mark(getIdentifierString());
-        if (timer != null)
+        if (timer != null) {
             timer.cancel();
+        }
         timer = new Timer();
         timer.schedule(getUpdateTask(), 0, getUpdatePeriod());
         started = true;
@@ -168,22 +170,26 @@ public abstract class PhaseAnimation implements ANIM {
                 getSourceCoordinates());
 //        sourcePoint =
 //         GameScreen.getInstance().getPointForCoordinateWithOffset(getSourceCoordinates());
-        if (sourcePoint.getX() < 0)
+        if (sourcePoint.getX() < 0) {
             return false;
-        if (sourcePoint.getY() < 0)
+        }
+        if (sourcePoint.getY() < 0) {
             return false;
+        }
 
         targetPoint = getGrid().getGridComp().getPointForCoordinateWithOffset(
                 getTargetCoordinates());
-        if (targetPoint.getX() < 0)
+        if (targetPoint.getX() < 0) {
             return false;
+        }
         return targetPoint.getY() >= 0;
 
     }
 
     public void start() {
-        if (isLogged())
-            main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, "STARTED ANIM: " + this);
+        if (isLogged()) {
+            LogMaster.log(LogMaster.ANIM_DEBUG, "STARTED ANIM: " + this);
+        }
         // start() all *pending* anims on paint() ?
         getGame().getAnimationManager().newAnimation(this);
         index = 0;
@@ -215,8 +221,9 @@ public abstract class PhaseAnimation implements ANIM {
         int height = image.getHeight(null);
         y += height;
         drawOnTarget(image, x, y);
-        if (!text.isEmpty())
+        if (!text.isEmpty()) {
             height += drawTextOn(source, text, font, x, y, getDefaultTextColor());
+        }
         addMouseItem(source, x, y, width, height, MOUSE_ITEM.THUMBNAIL);
     }
 
@@ -273,15 +280,18 @@ public abstract class PhaseAnimation implements ANIM {
             // if set to false, always freeze
             // if not, check defaul
 
+        {
             if (!autoFinish || !isAutoFinishDefault()) {
                 if (!freeze) {
-                    if (isLogged())
-                        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, "Anim FROZEN: "
+                    if (isLogged()) {
+                        LogMaster.log(LogMaster.ANIM_DEBUG, "Anim FROZEN: "
                                 + this);
+                    }
                     freeze = true;
                 }
                 return;
             }
+        }
         moveAnimation(true);
 
         playSound();
@@ -290,11 +300,13 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     protected boolean isOnLastPhase() {
-        if (phase == null)
+        if (phase == null) {
             return false;
+        }
         int size = getPhases().size();
-        if (size < 1)
+        if (size < 1) {
             return false;
+        }
         return (phase == getPhases().get(size - 1));
     }
 
@@ -313,16 +325,18 @@ public abstract class PhaseAnimation implements ANIM {
 
     protected void moveAnimation(boolean forward) {
 
-        if (forward)
+        if (forward) {
             index++;
-        else
+        } else {
             index--;
+        }
         if (index >= phases.size() || index < 0) {
             if (flipOver) {
-                if (index >= phases.size())
+                if (index >= phases.size()) {
                     index = 0;
-                else if (index < 0)
+                } else if (index < 0) {
                     index = phases.size();
+                }
             }
             phase = null;
         } else {
@@ -338,15 +352,17 @@ public abstract class PhaseAnimation implements ANIM {
 //        mouseMap.clear();
         //      repaint();
 
-        if (getPhaseAnim() != null)
+        if (getPhaseAnim() != null) {
             GuiEventManager.trigger(GuiEventType.UPDATE_PHASE_ANIM,
                     new EventCallbackParam(getPhaseAnim()));
+        }
 
     }
 
     public boolean checkTime() {
-        if (isPaused())
+        if (isPaused()) {
             return false;
+        }
         timeRemaining = (int) (baseTime - Chronos.getTimeElapsedForMark(getIdentifierString()));
         if (freeze) {
             return false;
@@ -354,13 +370,15 @@ public abstract class PhaseAnimation implements ANIM {
         if (timeRemaining <= 0) {
             donePhase();
             if (checkDone()) {
-                if (isLogged())
-                    main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, "Anim DONE: " + this);
+                if (isLogged()) {
+                    LogMaster.log(LogMaster.ANIM_DEBUG, "Anim DONE: " + this);
+                }
                 return true;
             } else {
-                if (isLogged())
-                    main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, "Next phase for "
+                if (isLogged()) {
+                    LogMaster.log(LogMaster.ANIM_DEBUG, "Next phase for "
                             + this + ": " + phase);
+                }
 
                 Chronos.mark(getIdentifierString());
             }
@@ -378,8 +396,9 @@ public abstract class PhaseAnimation implements ANIM {
             addParallelPhase(animPhase, phases.size());
         } else {
             int index = phases.indexOf(parentPhase);
-            if (index < 0)
+            if (index < 0) {
                 return;
+            }
             addParallelPhase(animPhase, index);
         }
 
@@ -391,14 +410,17 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     public void addStaticPhase(AnimPhase animPhase, boolean replace) {
-        if (replace)
+        if (replace) {
             for (AnimPhase a : getStaticPhases()) {
-                if (a.getType() == animPhase.getType())
+                if (a.getType() == animPhase.getType()) {
                     getStaticPhases().remove(a);
+                }
             }
-        if (isLogged())
-            main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, "Static Phase added: "
+        }
+        if (isLogged()) {
+            LogMaster.log(LogMaster.ANIM_DEBUG, "Static Phase added: "
                     + animPhase);
+        }
         getStaticPhases().add(animPhase);
     }
 
@@ -419,11 +441,13 @@ public abstract class PhaseAnimation implements ANIM {
     public void addPhaseArgs(boolean ifNotNull, PHASE_TYPE type, Object... args) {
         AnimPhase PHASE = getPhase(type);
         if (PHASE == null) {
-            if (ifNotNull)
+            if (ifNotNull) {
                 return;
+            }
             addPhase(new AnimPhase(type, args));
-        } else
+        } else {
             PHASE.addArgs(args);
+        }
     }
 
     public void addPhase(AnimPhase animPhase, int index) {
@@ -431,12 +455,15 @@ public abstract class PhaseAnimation implements ANIM {
             // AnimPhase enclosing =
             // getPhase(animPhase.getType().getEnclosingPhase());
             addSubPhase(animPhase);
-        } else
+        } else {
             phases.add(index, animPhase);
-        if (isLogged())
-            if (isLogged())
-                main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, animPhase
+        }
+        if (isLogged()) {
+            if (isLogged()) {
+                LogMaster.log(LogMaster.ANIM_DEBUG, animPhase
                         + " phase added to " + this);
+            }
+        }
     }
 
     public void addSubPhase(AnimPhase animPhase) {
@@ -445,12 +472,14 @@ public abstract class PhaseAnimation implements ANIM {
 
     public AnimPhase getPhase(PHASE_TYPE type) {
         for (AnimPhase phase : phases) {
-            if (phase.getType() == type)
+            if (phase.getType() == type) {
                 return phase;
+            }
         }
         for (AnimPhase phase : subPhases) {
-            if (phase.getType() == type)
+            if (phase.getType() == type) {
                 return phase;
+            }
         }
         return null;
     }
@@ -465,14 +494,20 @@ public abstract class PhaseAnimation implements ANIM {
     protected boolean drawGenerics() {
         if (isGhostDrawn(true)) //
             // TODO draw on origin cell for move anims
-            if (getTarget() instanceof DC_HeroObj)
+        {
+            if (getTarget() instanceof DC_HeroObj) {
                 if (!getTarget().getCoordinates().equals(getTargetCoordinates())
-                        || getTarget().isDead())
+                        || getTarget().isDead()) {
                     drawGhost((DC_HeroObj) getTarget(), getTargetCoordinates());
-        if (isGhostDrawn(false))
+                }
+            }
+        }
+        if (isGhostDrawn(false)) {
             if (!getSource().getCoordinates().equals(getSourceCoordinates())
-                    || getSource().isDead())
+                    || getSource().isDead()) {
                 drawGhost(getSource(), getSourceCoordinates());
+            }
+        }
 
         return true;
     }
@@ -513,11 +548,13 @@ public abstract class PhaseAnimation implements ANIM {
         if (genericsAbove) {
             offsetY -= h;
         }
-        if (!flippingDisabled)
+        if (!flippingDisabled) {
             drawControls();
+        }
         drawLabel();
-        if (!flippingDisabled)
+        if (!flippingDisabled) {
             drawPhaseNumbers();
+        }
     }
 
     public boolean isGenericsAbove() {
@@ -543,8 +580,9 @@ public abstract class PhaseAnimation implements ANIM {
         int y = h;
         if (isGenericsDrawnOnSource()) {
             drawTextOnSource(text, font, x, y);
-        } else
+        } else {
             drawTextOnTarget(text, font, x, y);
+        }
 
     }
 
@@ -554,17 +592,19 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     protected void setDrawOnTarget(boolean flag) {
-        if (flag)
+        if (flag) {
             drawOnTargetOrSource = true;
-        else
+        } else {
             drawOnTargetOrSource = null;
+        }
     }
 
     protected void setDrawOnSource(boolean flag) {
-        if (flag)
+        if (flag) {
             drawOnTargetOrSource = false;
-        else
+        } else {
             drawOnTargetOrSource = null;
+        }
     }
 
     public void setAlignmentX(ALIGNMENT al) {
@@ -582,7 +622,7 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     protected PHASE_TYPE getSubPhaseTypeForKey(MOD_IDENTIFIER id) {
-        if (id != null)
+        if (id != null) {
             switch (id) {
                 case ATK_DEF:
                     return PHASE_TYPE.ATTACK_DEFENSE;
@@ -599,9 +639,11 @@ public abstract class PhaseAnimation implements ANIM {
                 case CRIT:
                     return PHASE_TYPE.ATTACK_CRITICAL;
             }
-        if (isLogged())
-            main.system.auxiliary.LogMaster
+        }
+        if (isLogged()) {
+            LogMaster
                     .log(LogMaster.ANIM_DEBUG, "NO PHASE TYPE FOR ID: " + id);
+        }
         return null;
     }
 
@@ -622,10 +664,11 @@ public abstract class PhaseAnimation implements ANIM {
         areaTarget = new Rectangle(targetPoint.x + getFullOffset(false, true), targetPoint.y
                 + getFullOffset(false, false), w, h);
 
-        if (isGenericsDrawnOnSource())
+        if (isGenericsDrawnOnSource()) {
             area = areaSource;
-        else
+        } else {
             area = areaTarget;
+        }
     }
 
     protected void drawControls() {
@@ -650,8 +693,9 @@ public abstract class PhaseAnimation implements ANIM {
         str += StringMaster.getStringXTimes(getBufferedPhases().size(), "*");
         if (isGenericsDrawnOnSource()) {
             drawTextOnSource(str, FontMaster.getFont(FONT.MAIN, 18, Font.PLAIN), x, y);
-        } else
+        } else {
             drawTextOnTarget(str, FontMaster.getFont(FONT.MAIN, 18, Font.PLAIN), x, y);
+        }
 
     }
 
@@ -660,8 +704,9 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     public Map<Rectangle, TextItem> getTooltipMap() {
-        if (tooltipMap == null)
+        if (tooltipMap == null) {
             tooltipMap = new HashMap<>();
+        }
         return tooltipMap;
     }
 
@@ -693,10 +738,11 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     protected void drawOn(boolean source, Image image, int x, int y) {
-        if (source)
+        if (source) {
             drawOnSource(image, x, y);
-        else
+        } else {
             drawOnTarget(image, x, y);
+        }
     }
 
     protected void drawOnTarget(Image image, int x, int y) {
@@ -734,32 +780,41 @@ public abstract class PhaseAnimation implements ANIM {
         x = adjustX(x, FontMaster.getStringWidth(font, str));
         y = adjustY(y, FontMaster.getFontHeight(font));
         // TODO min/max?
-        if (isAutoResetDrawParam())
+        if (isAutoResetDrawParam()) {
             resetDrawingParams();
+        }
 
-        if (getDrawMode() == SOURCE_ONLY)
-            if (areaTarget.contains(new Point(x, y)))
+        if (getDrawMode() == SOURCE_ONLY) {
+            if (areaTarget.contains(new Point(x, y))) {
                 return 0;
-        if (getDrawMode() == TARGET_ONLY)
-            if (areaSource.contains(new Point(x, y)))
+            }
+        }
+        if (getDrawMode() == TARGET_ONLY) {
+            if (areaSource.contains(new Point(x, y))) {
                 return 0;
-        if (isLogged())
-            if (isLogged())
-                main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+            }
+        }
+        if (isLogged()) {
+            if (isLogged()) {
+                LogMaster.log(LogMaster.ANIM_DEBUG,
                         str + " anim text at "
                                 + new PointX(x, y));
-        if (isDrawTextBackground())
+            }
+        }
+        if (isDrawTextBackground()) {
             drawTextBackground(str, font, x, y + fontHeight / 2 + 3);
+        }
         g.setColor(c);
         g.drawString(str, x, y + fontHeight / 2 + 3);
         return fontHeight + 3;
     }
 
     protected int adjustX(int x, int width) {
-        if (x == CENTERED_X)
+        if (x == CENTERED_X) {
             x = MigMaster.getAlignmentPosition(ALIGNMENT.CENTER, width, w);
-        else if (alignmentX != null)
+        } else if (alignmentX != null) {
             x = MigMaster.getAlignmentPosition(alignmentX, width, w);
+        }
         if (drawOnTargetOrSource != null) {
             x += drawOnTargetOrSource ? offsetTargetX : offsetSourceX;
             x += drawOnTargetOrSource ? targetPoint.x : sourcePoint.x;
@@ -769,10 +824,11 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     protected int adjustY(int y, int height) {
-        if (y == CENTERED_Y)
+        if (y == CENTERED_Y) {
             y = MigMaster.getAlignmentPosition(ALIGNMENT.CENTER, height, w);
-        else if (alignmentY != null)
+        } else if (alignmentY != null) {
             y = MigMaster.getAlignmentPosition(alignmentY, height, h);
+        }
         if (drawOnTargetOrSource != null) {
             y += drawOnTargetOrSource ? targetPoint.y : sourcePoint.y;
             y += drawOnTargetOrSource ? offsetTargetY : offsetSourceY;
@@ -816,16 +872,18 @@ public abstract class PhaseAnimation implements ANIM {
                                   int y) {
         Color c = null;
         boolean enemy = ((source ? this.source : getTarget())).getOwner().isEnemy();
-        if (negative == null)
+        if (negative == null) {
             c = getDefaultTextColor(); // ?
-        else {
-            if (negative)
+        } else {
+            if (negative) {
                 c = enemy ? ColorManager.CRIMSON : ColorManager.GREEN;
-            else
+            } else {
                 c = !enemy ? ColorManager.CRIMSON : ColorManager.GREEN;
+            }
         }
-        if (source)
+        if (source) {
             return drawTextOnSource(str, font, x, y, c);
+        }
         return drawTextOnTarget(str, font, x, y, c);
 
     }
@@ -839,8 +897,9 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     protected int drawTextOn(boolean source, String str, Font font, int x, int y, Color c) {
-        if (source)
+        if (source) {
             return drawTextOnSource(str, font, x, y, c);
+        }
         return drawTextOnTarget(str, font, x, y, c);
     }
 
@@ -884,20 +943,28 @@ public abstract class PhaseAnimation implements ANIM {
 
         x = adjustX(x, image.getWidth(null));
         y = adjustY(y, image.getHeight(null));
-        if (isAutoResetDrawParam())
+        if (isAutoResetDrawParam()) {
             resetDrawingParams();
-        if (getDrawMode() == SOURCE_ONLY)
-            if (areaTarget != null)
-                if (areaTarget.contains(new Point(x, y)))
+        }
+        if (getDrawMode() == SOURCE_ONLY) {
+            if (areaTarget != null) {
+                if (areaTarget.contains(new Point(x, y))) {
                     return;
-        if (getDrawMode() == TARGET_ONLY)
-            if (areaSource != null)
-                if (areaSource.contains(new Point(x, y)))
+                }
+            }
+        }
+        if (getDrawMode() == TARGET_ONLY) {
+            if (areaSource != null) {
+                if (areaSource.contains(new Point(x, y))) {
                     return;
+                }
+            }
+        }
 
-        if (isLogged())
-            main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, image.getWidth(null)
+        if (isLogged()) {
+            LogMaster.log(LogMaster.ANIM_DEBUG, image.getWidth(null)
                     + "-wide image text at " + new PointX(x, y));
+        }
         g.drawImage(image, x, y, null);
     }
 
@@ -915,7 +982,9 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     protected DC_Game getGame() {
-        if (game==null )game = DC_Game.game;
+        if (game == null) {
+            game = DC_Game.game;
+        }
         return game;
     }
 
@@ -924,14 +993,16 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     public void pageFlipped(boolean forward) {
-        if (flippingDisabled)
+        if (flippingDisabled) {
             return;
+        }
         if (isSubPhaseOpen()) {
-            if (forward)
+            if (forward) {
                 if (index == phases.size() - 1) {
                     SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
                     return;
                 }
+            }
             if (index == 0) {
                 SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
                 return;
@@ -945,8 +1016,9 @@ public abstract class PhaseAnimation implements ANIM {
             // TODO remove();
             finished();
             SoundMaster.playStandardSound(STD_SOUNDS.SCROLL);
-        } else
+        } else {
             SoundMaster.playStandardSound(STD_SOUNDS.SLING);
+        }
     }
 
     protected boolean isSubPhaseOpen() {
@@ -954,8 +1026,9 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     protected void repaint() {
-        if (CoreEngine.isSwingOn())
+        if (CoreEngine.isSwingOn()) {
             getGrid().getGridComp().getPanel().repaint();
+        }
     }
 
     protected void drawDebugInfo() {
@@ -976,10 +1049,12 @@ public abstract class PhaseAnimation implements ANIM {
         area = null;
         AnimPhase phase = this.phase;
         mouseMap = new HashMap<Rectangle, MouseItem>();
-        if (phase == null)
+        if (phase == null) {
             return false;
-        if (phase.getType() == null)
+        }
+        if (phase.getType() == null) {
             return false;
+        }
         drawing = true;
         initDrawing(g);
         boolean result = false;
@@ -1010,8 +1085,9 @@ public abstract class PhaseAnimation implements ANIM {
             }
         }
 
-        if (!debugInfoDrawDisabled)
+        if (!debugInfoDrawDisabled) {
             drawDebugInfo();
+        }
         resetDrawingParams();
         drawing = false;
         drawn = true;
@@ -1021,11 +1097,12 @@ public abstract class PhaseAnimation implements ANIM {
 
     protected void checkStackedDrawing() {
         if (getTarget() instanceof DC_HeroObj) {
-            if (!getTarget().equals(getSource()))
+            if (!getTarget().equals(getSource())) {
                 if (getTargetCoordinates().equals(getSourceCoordinates())) {
                     initStackedDrawing();
                     drawStacked();
                 }
+            }
         }
     }
 
@@ -1053,9 +1130,10 @@ public abstract class PhaseAnimation implements ANIM {
         ) - 16;
         drawOn(source, image, x + centeredPosition, y + centeredPosition);
 
-        if (!source)
+        if (!source) {
             drawOn(source, ImageManager.getValueIcon(PARAMS.ACCURACY), MigMaster
                     .getCenteredPosition(getStackedImageSize(), 32), -32);
+        }
     }
 
     public void initStackedDrawing() {
@@ -1147,11 +1225,13 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     protected void drawParallelPhases() {
-        if (index > -1)
-            if (getParallelPhases().size() > index)
+        if (index > -1) {
+            if (getParallelPhases().size() > index) {
                 for (AnimPhase phase : getParallelPhases().get(index)) {
                     drawPhase(phase);
                 }
+            }
+        }
 
     }
 
@@ -1160,8 +1240,9 @@ public abstract class PhaseAnimation implements ANIM {
     public abstract String getArgString();
 
     public String getIdentifierString() {
-        if (idString == null)
+        if (idString == null) {
             idString = "[" + type + " ANIMATION] for " + getArgString() + " " + id;
+        }
         return idString;
 
     }
@@ -1171,8 +1252,9 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     public boolean subPhaseClosed() {
-        if (getBufferedPhases().isEmpty())
+        if (getBufferedPhases().isEmpty()) {
             return false;
+        }
 
         phase = getBufferedPhases().pop();
         mouseMap.clear();
@@ -1182,8 +1264,9 @@ public abstract class PhaseAnimation implements ANIM {
 
     protected Color getColorForModifier(Integer mod) {
         Color color = getDefaultTextColor();
-        if (mod != 0)
+        if (mod != 0) {
             color = mod > 0 ? ColorManager.GREEN : ColorManager.CRIMSON;
+        }
         return color;
     }
 
@@ -1242,14 +1325,16 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     public Map<Integer, List<AnimPhase>> getParallelPhases() {
-        if (parallelPhases == null)
+        if (parallelPhases == null) {
             parallelPhases = new XLinkedMap<>();
+        }
         return parallelPhases;
     }
 
     public List<AnimPhase> getStaticPhases() {
-        if (staticPhases == null)
+        if (staticPhases == null) {
             staticPhases = new LinkedList<>();
+        }
         return staticPhases;
     }
 
@@ -1262,8 +1347,9 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     public boolean isVisible() {
-        if (!isDrawReady())
+        if (!isDrawReady()) {
             return false;
+        }
         return area != null;
         // Coordinates c = getGrid().getOffsetCoordinate();
         // // getGrid().getPointForCoordinateWithOffset(new Coordinates (0, 0))
@@ -1286,12 +1372,15 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     public boolean isDrawReady() {
-        if (isPaused())
+        if (isPaused()) {
             return true;
-        if (isFinished())
+        }
+        if (isFinished()) {
             return false;
-        if (!isStarted())
+        }
+        if (!isStarted()) {
             return false;
+        }
         return phase != null;
     }
 
@@ -1316,8 +1405,9 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     public Map<Image, List<String>> getSubPhaseTooltipMap() {
-        if (subPhaseTooltipMap == null)
+        if (subPhaseTooltipMap == null) {
             subPhaseTooltipMap = new XLinkedMap<>();
+        }
         return subPhaseTooltipMap;
     }
 
@@ -1370,8 +1460,9 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     public Stack<AnimPhase> getBufferedPhases() {
-        if (bufferedPhases == null)
+        if (bufferedPhases == null) {
             bufferedPhases = new Stack<AnimPhase>();
+        }
         return bufferedPhases;
     }
 
@@ -1433,30 +1524,35 @@ public abstract class PhaseAnimation implements ANIM {
 
     public void addOffset(Boolean source_target_all, boolean x, int offset) {
         if (source_target_all == null) {
-            if (x)
+            if (x) {
                 offsetX += offset;
-            else
+            } else {
                 offsetY += offset;
+            }
         } else {
             if (source_target_all) {
-                if (x)
+                if (x) {
                     offsetSourceX += offset;
-                else
+                } else {
                     offsetSourceY += offset;
+                }
             } else {
-                if (x)
+                if (x) {
                     offsetTargetX += offset;
-                else
+                } else {
                     offsetTargetY += offset;
+                }
             }
         }
     }
 
     public int getOffset(Boolean source_target_all, boolean x) {
-        if (source_target_all == null)
+        if (source_target_all == null) {
             return x ? offsetX : offsetY;
-        if (source_target_all)
+        }
+        if (source_target_all) {
             return x ? offsetSourceX : offsetSourceY;
+        }
         return x ? offsetTargetX : offsetTargetY;
     }
 
@@ -1512,12 +1608,16 @@ public abstract class PhaseAnimation implements ANIM {
         if (flippingDisabled) {
             point.setLocation(new Point(point.x + staticOffsetX, point.y + staticOffsetY));
         }
-        if (areaTarget != null)
-            if (areaTarget.contains(point))
+        if (areaTarget != null) {
+            if (areaTarget.contains(point)) {
                 return true;
-        if (areaSource != null)
-            if (areaSource.contains(point))
+            }
+        }
+        if (areaSource != null) {
+            if (areaSource.contains(point)) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -1527,8 +1627,9 @@ public abstract class PhaseAnimation implements ANIM {
         clone.getPhases().clear();
         for (PHASE_TYPE type : allowedTypes) {
             AnimPhase animPhase = getPhase(type);
-            if (animPhase != null)
+            if (animPhase != null) {
                 clone.addPhase(animPhase);
+            }
         }
 
         return clone;

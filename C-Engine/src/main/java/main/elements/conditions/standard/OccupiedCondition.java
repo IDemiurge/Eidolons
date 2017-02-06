@@ -19,31 +19,35 @@ public class OccupiedCondition extends ConditionImpl {
     @Override
     public boolean check() {
         Coordinates c = getCoordinates();
-        if (c == null)
+        if (c == null) {
             return true;
+        }
         boolean result = false;
-        if (permitCollision)
+        if (permitCollision) {
             result = !game.getMovementManager().getPathingManager().isGroundPassable(
                     ref.getSourceObj(), c);
-        else
+        } else {
             result = game.getMovementManager().getPathingManager().isOccupied(c);
+        }
         // ObjComponent objComponent =
         // game.getMovementManager().getPathingManager().getGrid()
         // .getObjCompMap().get(c);
         if (result) {
             for (Obj obj : game.getObjectsOnCoordinate(c)) {
-                if (game.getVisionManager().checkInvisible(obj))
+                if (game.getVisionManager().checkInvisible(obj)) {
                     if (permitInvisCollision) {
                         result = false;
                         continue;
                     }
+                }
                 try {
                     if (ref.getSourceObj().checkProperty(G_PROPS.STANDARD_PASSIVES,
                             "" + STANDARD_PASSIVES.FLYING)) {
                         if (obj.getOBJ_TYPE_ENUM() == OBJ_TYPES.BF_OBJ) {
                             if (obj.checkProperty(G_PROPS.STANDARD_PASSIVES, ""
-                                    + STANDARD_PASSIVES.TALL))
+                                    + STANDARD_PASSIVES.TALL)) {
                                 result = false;
+                            }
                             continue;
                         }
                     }

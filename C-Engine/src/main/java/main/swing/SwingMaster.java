@@ -16,10 +16,12 @@ public class SwingMaster {
     public static Component getParentOfClass(Component c, Class<?> CLASS) {
         while (true) {
             c = c.getParent();
-            if (c == null)
+            if (c == null) {
                 break;
-            if (c.getClass().equals(CLASS))
+            }
+            if (c.getClass().equals(CLASS)) {
                 break;
+            }
         }
         return c;
     }
@@ -28,8 +30,9 @@ public class SwingMaster {
 
         int i = 0;
         for (Component c : parent.getComponents()) {
-            if (c == source)
+            if (c == source) {
                 return i;
+            }
             i++;
         }
         return -1;
@@ -48,16 +51,17 @@ public class SwingMaster {
         component.addMouseListener(mouseListener);
         if (component instanceof Container) {
             Container container = (Container) component;
-            for (Component c : container.getComponents())
+            for (Component c : container.getComponents()) {
                 addMouseListener(c, mouseListener);
+            }
         }
 
     }
 
     public static void invokeAndWait(Runnable runnable) {
-        if (EventQueue.isDispatchThread())
+        if (EventQueue.isDispatchThread()) {
             runnable.run();
-        else
+        } else {
             try {
                 SwingUtilities.invokeAndWait(runnable);
             } catch (InvocationTargetException e) {
@@ -67,6 +71,7 @@ public class SwingMaster {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+        }
 
     }
 
@@ -87,9 +92,11 @@ public class SwingMaster {
     }
 
     public static boolean isSizeGreaterThan(Dimension size, Dimension than) {
-        if (size != null)
-            if (size.width > than.width && size.height > than.height)
+        if (size != null) {
+            if (size.width > than.width && size.height > than.height) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -98,10 +105,11 @@ public class SwingMaster {
     }
 
     public static void invokeLater(Runnable runnable) {
-        if (EventQueue.isDispatchThread())
+        if (EventQueue.isDispatchThread()) {
             runnable.run();
-        else
+        } else {
             SwingUtilities.invokeLater(runnable);
+        }
 
     }
 
@@ -109,12 +117,13 @@ public class SwingMaster {
         Component c = null;
 
         if (top.isShowing()) {
-            if (top instanceof RootPaneContainer)
+            if (top instanceof RootPaneContainer) {
                 c = ((RootPaneContainer) top).getLayeredPane().findComponentAt(
                         SwingUtilities.convertPoint(top, p, ((RootPaneContainer) top)
                                 .getLayeredPane()));
-            else
+            } else {
                 c = ((Container) top).findComponentAt(p);
+            }
         }
 
         return c;

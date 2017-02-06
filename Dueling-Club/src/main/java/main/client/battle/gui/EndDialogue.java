@@ -95,12 +95,13 @@ public class EndDialogue extends G_Dialog {
         panel.add(new RewardComponent(glory, STD_COMP_IMAGES.GLORY) {
             protected String getText(int value) {
                 String s = super.getText(value);
-                if (glory > 0)
+                if (glory > 0) {
                     try {
                         s += "/" + game.getParty().getMembers().size() + "";
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
                 return s;
 
             }
@@ -112,9 +113,10 @@ public class EndDialogue extends G_Dialog {
 
         panel.add(messageComp, "@id mc, pos center_x max_top");
         panel.add(pictureComp, "@id pc, pos " + OFFSET_X + " center_y");
-        if (CharacterCreator.isArcadeMode() || Launcher.DEV_MODE)
+        if (CharacterCreator.isArcadeMode() || Launcher.DEV_MODE) {
             panel.add(continueButton, "@id cb, pos max_right-" + OFFSET_X + " max_bottom-"
                     + OFFSET_Y);
+        }
         panel.add(exitButton, "@id eb, pos " + OFFSET_X + " max_bottom-" + OFFSET_Y);
         panel.add(statsButton, "@id sb, pos center_x max_bottom-" + OFFSET_Y);
         Shape s;
@@ -126,8 +128,9 @@ public class EndDialogue extends G_Dialog {
     }
 
     protected void exit() {
-        if (Launcher.isRunning())
+        if (Launcher.isRunning()) {
             Launcher.getMainManager().exitToMainMenu();
+        }
         close();
     }
 
@@ -199,8 +202,9 @@ public class EndDialogue extends G_Dialog {
         }
 
         protected String getText(int value) {
-            if (value < 0)
+            if (value < 0) {
                 return value + "";
+            }
             return "+ " + value;
         }
     }

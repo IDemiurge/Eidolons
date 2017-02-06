@@ -40,18 +40,20 @@ public class Filter<T extends Entity> extends ReferredElement {
     }
 
     public Filter(Game game, Condition conditions) {
-        if (conditions instanceof Conditions)
+        if (conditions instanceof Conditions) {
             this.conditions = (Conditions) conditions;
-        else
+        } else {
             this.conditions = new Conditions(conditions);
+        }
         this.game = game;
     }
 
     public Filter(Ref ref, Condition conditions) {
-        if (conditions instanceof Conditions)
+        if (conditions instanceof Conditions) {
             this.conditions = (Conditions) conditions;
-        else
+        } else {
             this.conditions = new Conditions(conditions);
+        }
         setRef(ref);
     }
 
@@ -66,9 +68,11 @@ public class Filter<T extends Entity> extends ReferredElement {
     }
 
     public static void filter(Collection<? extends Entity> objects, OBJ_TYPE TYPE) {
-        for (Entity obj : objects)
-            if (!TYPE.equals(obj.getOBJ_TYPE_ENUM()))
+        for (Entity obj : objects) {
+            if (!TYPE.equals(obj.getOBJ_TYPE_ENUM())) {
                 objects.remove(obj);
+            }
+        }
     }
 
     @Override
@@ -77,8 +81,9 @@ public class Filter<T extends Entity> extends ReferredElement {
     }
 
     public boolean match(Entity entity) {
-        if (ref != null)
+        if (ref != null) {
             return match(getConditions(), entity.getId(), ref);
+        }
         return match(getConditions(), entity.getId(), entity.getRef());
     }
 
@@ -91,11 +96,14 @@ public class Filter<T extends Entity> extends ReferredElement {
     }
 
     public boolean match(Condition c, Integer id, Ref REF) {
-        if (dynamicExceptions != null)
-            if (dynamicExceptions.contains(id))
+        if (dynamicExceptions != null) {
+            if (dynamicExceptions.contains(id)) {
                 return false;
-        if (c == null)
+            }
+        }
+        if (c == null) {
             return true;
+        }
         match = id;
 
         REF.setID(KEYS.MATCH.name(), id);
@@ -160,14 +168,16 @@ public class Filter<T extends Entity> extends ReferredElement {
         List<T> list;
         if (TYPE != null) {
             list = (List<T>) DataManager.getTypes(TYPE);
-        } else
+        } else {
             list = (List<T>) DataManager.getTypes();
+        }
         return filter(list);
     }
 
     private Collection<Obj> getObjectPool() {
-        if (objPool == null)
+        if (objPool == null) {
             objPool = game.getObjects();
+        }
         return objPool;
     }
 
@@ -175,13 +185,15 @@ public class Filter<T extends Entity> extends ReferredElement {
         // TYPE!
         Set<Integer> resultset;
         resultset = new HashSet<Integer>();
-        if (game == null)
+        if (game == null) {
             game = Game.game;
+        }
         Collection<Integer> filteredIdPool = getFilteredIdSet(Game.game.getObjectIds());
 
         for (Integer id : filteredIdPool) {
-            if (match(id))
+            if (match(id)) {
                 resultset.add(id);
+            }
         }
         return resultset;
 
@@ -191,8 +203,9 @@ public class Filter<T extends Entity> extends ReferredElement {
         if (TYPE == null && TYPES == null) {
             return getObjectPool();
         }
-        if (TYPE != null)
+        if (TYPE != null) {
             return game.getObjects(TYPE);
+        }
 
         Set<Obj> filteredSet = new HashSet<Obj>();
         for (OBJ_TYPE TYPE : TYPES) {
@@ -227,10 +240,11 @@ public class Filter<T extends Entity> extends ReferredElement {
     // }
 
     public void setConditions(Condition conditions) {
-        if (conditions instanceof Conditions)
+        if (conditions instanceof Conditions) {
             this.conditions = (Conditions) conditions;
-        else
+        } else {
             this.conditions = new Conditions(conditions);
+        }
     }
 
     public GroupImpl getGroup() {
@@ -248,9 +262,9 @@ public class Filter<T extends Entity> extends ReferredElement {
     public List<T> filter(Collection<T> objects) {
         List<T> resultset = new LinkedList<T>();
         for (T obj : objects) {
-            if (match(obj))
+            if (match(obj)) {
                 resultset.add(obj);
-            else {
+            } else {
                 this.TYPE = TYPE; // for debugging :)
             }
         }
@@ -258,8 +272,9 @@ public class Filter<T extends Entity> extends ReferredElement {
     }
 
     public Collection<Integer> getDynamicExceptions() {
-        if (dynamicExceptions == null)
+        if (dynamicExceptions == null) {
             dynamicExceptions = new DequeImpl<Integer>();
+        }
         return dynamicExceptions;
     }
 
@@ -279,15 +294,20 @@ public class Filter<T extends Entity> extends ReferredElement {
         List<T> list = new LinkedList<>();
 
         for (T t : typeList) {
-            if (t == null)
+            if (t == null) {
                 continue;
-            if (filterValue instanceof PROPERTY)
-                if (StringMaster.compareByChar(t.getValue(filterValue), value, false))
+            }
+            if (filterValue instanceof PROPERTY) {
+                if (StringMaster.compareByChar(t.getValue(filterValue), value, false)) {
                     list.add(t);
+                }
+            }
 
-            if (filterValue instanceof PARAMETER)
-                if (t.getIntParam((PARAMETER) filterValue) == StringMaster.getInteger(value))
+            if (filterValue instanceof PARAMETER) {
+                if (t.getIntParam((PARAMETER) filterValue) == StringMaster.getInteger(value)) {
                     list.add(t);
+                }
+            }
         }
 
         return list;

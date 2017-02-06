@@ -111,12 +111,14 @@ public class DebugPanel {
     }
 
     public void refresh() {
-        if (!frame.isVisible())
+        if (!frame.isVisible()) {
             return;
-        if (master.getGame().isSimulation())
+        }
+        if (master.getGame().isSimulation()) {
             ip.setInfoObj(CharacterCreator.getHero());
-        else
+        } else {
             ip.setInfoObj(master.getGame().getManager().getInfoObj());
+        }
         ip.refresh();
 
     }

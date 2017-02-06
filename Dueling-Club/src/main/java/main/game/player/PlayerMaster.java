@@ -31,16 +31,17 @@ public class PlayerMaster {
     }
 
     public void initPlayerFlag(DC_Player player) {
-        if (randomFlags)
+        if (randomFlags) {
             player.setFlagColor(getRandomColorFlag());
-        else {
+        } else {
             // choose or getOrCreate from data or sequential next()
         }
     }
 
     public void initPlayerFlags() {
-        for (DC_Player player : players)
+        for (DC_Player player : players) {
             initPlayerFlag(player);
+        }
         // neutral.setFlagColor(NEUTRAL_COLOR);
     }
 
@@ -63,8 +64,9 @@ public class PlayerMaster {
     }
 
     public DC_Player getPlayer(boolean me) {
-        if (me)
+        if (me) {
             return players.get(0);
+        }
         return players.get(1);
     }
 

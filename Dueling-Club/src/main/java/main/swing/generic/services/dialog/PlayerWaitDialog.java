@@ -56,11 +56,13 @@ public class PlayerWaitDialog extends ModalDialog {
     @Override
     protected boolean isCloseConditionMet() {
         // set expected player numbers
-        if (host.getGameConnector().getConnection() != null)
+        if (host.getGameConnector().getConnection() != null) {
             return true;
+        }
 
-        if (!joined)
+        if (!joined) {
             return false;
+        }
 
         return playerList.isEmpty();
     }

@@ -20,8 +20,9 @@ public class G_VisualComponent extends G_Component {
             size = new Dimension(img.getWidth(null), img.getHeight(null));
             setPreferredSize(size);
         }
-        if (!isTransparent())
+        if (!isTransparent()) {
             setOpaque(true);
+        }
     }
 
     private boolean isTransparent() {

@@ -52,8 +52,9 @@ public class G_HostedGame extends DataUnit<GAME_VALUES> {
     }
 
     public String getRelevantData() {
-        if (relevantValues == null)
+        if (relevantValues == null) {
             relevantValues = gameRelevantValues;
+        }
         return getData(new HashSet<String>(Arrays.asList(relevantValues)));
 
     }

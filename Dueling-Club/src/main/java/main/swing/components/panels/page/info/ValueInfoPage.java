@@ -58,10 +58,11 @@ public abstract class ValueInfoPage extends InfoPage {
     }
 
     protected String getHeaderText() {
-        if (header != null)
+        if (header != null) {
             return entity.getDisplayedName() + " " +
                     // StringMaster.wrapInParenthesis
                     (header);
+        }
         return entity.getDisplayedName() + InfoMaster.getWorkspaceTip(entity);
     }
 
@@ -73,8 +74,9 @@ public abstract class ValueInfoPage extends InfoPage {
         if (FontMaster.getStringWidth(FontMaster.getDefaultFont(PropertyElement.DEFAULT_SIZE),
                 getHeaderText()) > PropertyElement.ALT_HEADER_COMPONENT.getWidth() * 8 / 10) {
             headerComp = new ContainerTextElement(getHeaderText());
-        } else
+        } else {
             headerComp = new PropertyElement(getHeaderText());
+        }
         // String constraints = ((VISUALS.INFO_PANEL.getImg().getWidth(null) -
         // PropertyElement.ALT_HEADER_COMPONENT
         // .getImg().getWidth(null)) / 2) + " " + getDefaultY();
@@ -84,15 +86,17 @@ public abstract class ValueInfoPage extends InfoPage {
     }
 
     protected void init() {
-        if (!isInitialized())
+        if (!isInitialized()) {
             return;
+        }
 
         X = getDefaultX();
         Y = getDefaultY();
         i = 0;
         Z = getDefaultZ();
-        if (isAddHeader())
+        if (isAddHeader()) {
             addHeader();
+        }
         for (VALUE p : values) {
             EntityValueComponent comp = getComponent(p);
             addComponent(comp, p);

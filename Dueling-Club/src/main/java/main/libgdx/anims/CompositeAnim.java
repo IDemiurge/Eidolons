@@ -67,12 +67,13 @@ public class CompositeAnim implements Animation{
 //            });        }catch(Exception e){                e.printStackTrace();            }
         time += Gdx.graphics.getDeltaTime();
         boolean result = false;
-        if (currentAnim != null)
+        if (currentAnim != null) {
             try {
                 result = currentAnim.draw(batch);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
         checkTimeAttachedAnims();
         if (!result) {
             time = 0;
@@ -95,17 +96,19 @@ public class CompositeAnim implements Animation{
     private void checkAfterEffects() {
         if (!map.containsKey(ANIM_PART.AFTEREFFECT)) {
 
-            if (timeAttachedAnims.get(ANIM_PART.AFTEREFFECT) != null)
+            if (timeAttachedAnims.get(ANIM_PART.AFTEREFFECT) != null) {
                 timeAttachedAnims.get(ANIM_PART.AFTEREFFECT).forEach(a -> {
                     a.start();
 //                    a.setDelayNotCounted(true); TODO
                     AnimMaster.getInstance().addAttached(a);
                 });
-            if (attached.get(ANIM_PART.AFTEREFFECT) != null)
+            }
+            if (attached.get(ANIM_PART.AFTEREFFECT) != null) {
                 attached.get(ANIM_PART.AFTEREFFECT).forEach(a -> {
                     a.start();
                     AnimMaster.getInstance().addAttached(a);
                 });
+            }
             part = ANIM_PART.AFTEREFFECT; //TODO rework this!
             triggerFinishEvents();
         }
@@ -114,13 +117,16 @@ public class CompositeAnim implements Animation{
 
 
     private void checkTimeAttachedAnims() {
-        if (timeAttachedAnims.get(part)==null )return ;
+        if (timeAttachedAnims.get(part) == null) {
+            return;
+        }
     timeAttachedAnims.get(part).  forEach(a -> {
-        if (!a.isRunning())
+        if (!a.isRunning()) {
             if (a.getDelay() <= time) {
                 a.start();
                 AnimMaster.getInstance().addAttached(a);
             }
+        }
         });
         timeAttachedAnims.get(part).removeIf(a-> a .isRunning());
     }
@@ -129,10 +135,13 @@ public class CompositeAnim implements Animation{
 
     private void drawAttached(Batch batch) {
         List<Animation> list = attached.get(part);
-        if (list == null) return;
+        if (list == null) {
+            return;
+        }
         list.forEach(anim -> {
-            if (!anim.isRunning())
+            if (!anim.isRunning()) {
                 anim.start();
+            }
             anim.draw(batch);
 
         });
@@ -140,11 +149,12 @@ public class CompositeAnim implements Animation{
 
     private void playAttached() {
         List<Animation> list = attached.get(part);
-        if (list != null)
+        if (list != null) {
             list.forEach(anim -> {
                 anim.start();
 
             });
+        }
     }
 
     public void finished() {
@@ -165,17 +175,19 @@ public class CompositeAnim implements Animation{
 
 
     private void triggerStartEvents() {
-        if (onStartEventMap.get(part) != null)
+        if (onStartEventMap.get(part) != null) {
             onStartEventMap.get(part).forEach(e -> {
                 GuiEventManager.trigger(e.getKey(), e.getValue());
             });
+        }
     }
 
     private void triggerFinishEvents() {
-        if (onFinishEventMap.get(part) != null)
+        if (onFinishEventMap.get(part) != null) {
             onFinishEventMap.get(part).forEach(e -> {
                 GuiEventManager.trigger(e.getKey(), e.getValue());
             });
+        }
     }
 
     public void add(ANIM_PART part, Anim anim) {
@@ -202,8 +214,9 @@ public class CompositeAnim implements Animation{
         time = 0;
         index = 0;
         initPartAnim();
-if (currentAnim==null )
-    return ;
+        if (currentAnim == null) {
+            return;
+        }
 
         currentAnim.start();
         triggerStartEvents();
@@ -230,18 +243,21 @@ if (currentAnim==null )
     }
 
     private void initPartAnim() {
-        if (map.isEmpty())
+        if (map.isEmpty()) {
             return;
+        }
         part = (ANIM_PART) MapMaster.get(map, index);
         currentAnim = map.get(part);
     }
 
     public void addEffectAnim(Animation anim, Effect effect) {
         ANIM_PART partToAddAt =anim.getPart();
-        if (part==null )
-            partToAddAt=EffectAnimCreator.getPartToAttachTo(effect);
-        if (effect.getRef().isTriggered())
+        if (part == null) {
+            partToAddAt = EffectAnimCreator.getPartToAttachTo(effect);
+        }
+        if (effect.getRef().isTriggered()) {
             partToAddAt = EventAnimCreator.getPartToAttachTo(effect.getRef().getEvent());
+        }
         float delay = EffectAnimCreator.getEffectAnimDelay(effect, anim, partToAddAt);
         attach(anim, partToAddAt, delay);
         //anim group vs anim(Effects)
@@ -249,8 +265,9 @@ if (currentAnim==null )
 
     public void addEventAnim(Anim anim, Event event) {
         ANIM_PART partToAddAt = anim.getPart();
-        if (part == null)
+        if (part == null) {
             partToAddAt = EventAnimCreator.getPartToAttachTo(event);
+        }
         float delay = EventAnimCreator.getEventAnimDelay(event, anim, partToAddAt);
         attach(anim, partToAddAt, delay);
 
@@ -260,10 +277,12 @@ if (currentAnim==null )
         if (delay!=0){
             anim.setDelay(delay);
             attachDelayed(anim, partToAddAt);
-        }else
+        } else {
             attach(anim, partToAddAt);
-        if (anim instanceof Anim)
+        }
+        if (anim instanceof Anim) {
             addEvents(partToAddAt, (Anim) anim);
+        }
     }
 
     public void attachDelayed(Animation anim, ANIM_PART part) {
@@ -335,8 +354,9 @@ if (currentAnim==null )
     }
 
     public Anim getCurrentAnim() {
-        if (currentAnim==null )
-        initPartAnim();
+        if (currentAnim == null) {
+            initPartAnim();
+        }
         return currentAnim;
     }
 

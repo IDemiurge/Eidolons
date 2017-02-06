@@ -41,8 +41,9 @@ public class UnitTrainer {
             }
 
             pool = initXpItemPool(trainee);
-            if (pool.isEmpty())
+            if (pool.isEmpty()) {
                 break;
+            }
         }
 
         trainee.initSkills();
@@ -55,8 +56,9 @@ public class UnitTrainer {
     }
 
     private static ObjType getSkill(DC_HeroObj trainee, WeightMap<ObjType> pool) {
-        if (isDeterministicMode(trainee))
+        if (isDeterministicMode(trainee)) {
             return pool.getGreatest();
+        }
         return new RandomWizard<ObjType>().getObjectByWeight(pool);
     }
 
@@ -65,20 +67,25 @@ public class UnitTrainer {
 		 * weights per mastery level and skill difficulty TODO
 		 */
         String plan = getPlan(trainee).replace(StringMaster.BASE_CHAR, "");
-        if (!plan.isEmpty())
-            if (!plan.endsWith(";"))
+        if (!plan.isEmpty()) {
+            if (!plan.endsWith(";")) {
                 plan += ";"; // ++ syntax for cancelling [mastery] skills...
+            }
+        }
         for (PARAMETER mastery : ValuePages.MASTERIES) {
             Integer score = trainee.getIntParam(mastery);
-            if (score <= 0)
+            if (score <= 0) {
                 continue;
+            }
             List<ObjType> types = DataManager.toTypeList(DataManager.getTypesSubGroupNames(
                     OBJ_TYPES.SKILLS, mastery.getName()), OBJ_TYPES.SKILLS);
             for (ObjType t : types) {
-                if (plan.contains(t.getName()))
+                if (plan.contains(t.getName())) {
                     continue;
-                if (!WorkspaceMaster.checkTypeIsReadyForUse(t))
+                }
+                if (!WorkspaceMaster.checkTypeIsReadyForUse(t)) {
                     continue;
+                }
                 int weight = Math.max(1, score - t.getIntParam(PARAMS.SKILL_DIFFICULTY));
                 plan += t.getName() + StringMaster.wrapInParenthesis("" + weight)
                         + StringMaster.CONTAINER_SEPARATOR;
@@ -89,16 +96,18 @@ public class UnitTrainer {
     }
 
     private static void learn(ObjType newSkill, DC_HeroObj trainee) {
-        if (getHeroManager().addItem(trainee, newSkill, OBJ_TYPES.SKILLS, PROPS.SKILLS))
+        if (getHeroManager().addItem(trainee, newSkill, OBJ_TYPES.SKILLS, PROPS.SKILLS)) {
             LogMaster.log(1,
                     "SKILL TRAINING: " + trainee.getName() + " learns " + newSkill.getName()
                             + ", remaining xp: " + trainee.getIntParam(PARAMS.XP));
+        }
         // getHeroManager().update(unit); ??
     }
 
     private static HeroManager getHeroManager() {
-        if (heroManager == null)
+        if (heroManager == null) {
             heroManager = new HeroManager(DC_Game.game);
+        }
         heroManager.setTrainer(true);
         return heroManager;
     }
@@ -113,13 +122,15 @@ public class UnitTrainer {
 
         for (ObjType type : map.keySet()) {
 
-            if (trainee.checkProperty(PROPS.SKILLS, type.getName()))
+            if (trainee.checkProperty(PROPS.SKILLS, type.getName())) {
                 continue; // TODO ++ exceptions
+            }
 
             String reason = trainee.getGame().getRequirementsManager().check(trainee, type);
 
-            if (reason != null)
+            if (reason != null) {
                 continue;
+            }
 
             pool.put(type, map.get(type));
             // we really can't have weights here - must be more or less

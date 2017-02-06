@@ -21,8 +21,9 @@ public class FocusRule extends RoundRule {
 
         int diff = unit.getIntParam(PARAMS.C_FOCUS)
                 - DC_MathManager.getStartingFocus(unit);
-        if (diff == 0)
+        if (diff == 0) {
             return;
+        }
         boolean restore = diff < 0;
         int mod = 0;
         if (restore) {
@@ -36,13 +37,15 @@ public class FocusRule extends RoundRule {
         }
         mod = Math.min(100, mod);
         int amount = diff;
-        if (mod > 0)
+        if (mod > 0) {
             amount = diff * mod / 100;
+        }
 
-        if (restore)
+        if (restore) {
             unit.modifyParameter(PARAMS.C_FOCUS, -amount, 100);
-        else
+        } else {
             unit.modifyParameter(PARAMS.C_FOCUS, -amount, 0);
+        }
 
         // game.getLogManager().log(string);
 

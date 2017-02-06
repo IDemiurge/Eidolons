@@ -33,14 +33,17 @@ public class DuelingClub {
 
         if (TEST_MODE) {
             Boolean host = null;
-            if (args != null)
+            if (args != null) {
                 if (args.length >= 1) {
-                    if (args[0].equals("client"))
+                    if (args[0].equals("client")) {
                         host = false;
-                    if (args[0].equals("host"))
+                    }
+                    if (args[0].equals("host")) {
                         host = true;
+                    }
 
                 }
+            }
             TestMode.launch(host);
 
         } else {
@@ -56,10 +59,11 @@ public class DuelingClub {
         if (ServerConnector.getSocket() == null) {
             main.system.auxiliary.LogMaster.log(1, "login connect + " + SERVER_ADDRESS);
             handler = DC_ServerConnector.connect(SERVER_ADDRESS);
-            if (handler != null)
+            if (handler != null) {
                 main.system.auxiliary.LogMaster.log(1, "CONNECTED");
-            else
+            } else {
                 return;
+            }
         }
 
         if (ServerConnector.checkUser(data)) {
@@ -80,8 +84,9 @@ public class DuelingClub {
     }
 
     public static void newGameLobby(DC_GameClient client) {
-        if (TEST_MODE)
+        if (TEST_MODE) {
             client.getTestGame().clientProceed();
+        }
         new DC_Lobby(client).createAndShowGUI();
 
     }

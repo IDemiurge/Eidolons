@@ -35,12 +35,14 @@ public class DC_SpellPanel extends G_ListPanel<DC_SpellObj> implements
 
     @Override
     public void refresh() {
-        if (obj == null)
+        if (obj == null) {
             obj = state.getGame().getManager().getActiveObj();
+        }
 
         // setObj(state.getGame().getPlayer(true).getHeroObj());
-        if (obj != null)
+        if (obj != null) {
             super.refresh();
+        }
 
     }
 
@@ -99,8 +101,9 @@ public class DC_SpellPanel extends G_ListPanel<DC_SpellObj> implements
 
     public void highlightsOff() {
         for (DC_SpellObj spell : data) {
-            if (spell != null)
+            if (spell != null) {
                 spell.setHighlighted(false);
+            }
         }
         refresh();
     }
@@ -117,8 +120,9 @@ public class DC_SpellPanel extends G_ListPanel<DC_SpellObj> implements
 
     @Override
     public int compare(DC_SpellObj o1, DC_SpellObj o2) {
-        if (o1 == o2)
+        if (o1 == o2) {
             return 0;
+        }
         if (o1.isPrepared() == o2.isPrepared()) {
             return closeComparison(o1, o2);
         }
@@ -133,8 +137,9 @@ public class DC_SpellPanel extends G_ListPanel<DC_SpellObj> implements
     }
 
     private int closerComparison(DC_SpellObj o1, DC_SpellObj o2) {
-        if (o1.getCircle() == o2.getCircle())
+        if (o1.getCircle() == o2.getCircle()) {
             return (o1.getEssenceCost() < o2.getEssenceCost()) ? -1 : 1;
+        }
         return (o1.getCircle() < o2.getCircle()) ? -1 : 1;
     }
 }

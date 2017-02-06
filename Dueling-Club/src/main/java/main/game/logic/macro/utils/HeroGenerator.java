@@ -45,12 +45,14 @@ public class HeroGenerator {
                     .values().length);
             BACKGROUND_CHANGE_TEMPLATES t = BACKGROUND_CHANGE_TEMPLATES
                     .values()[i];
-            if (applied.contains(t))
+            if (applied.contains(t)) {
                 continue;
+            }
             applyTemplateChange(type, t);
             applied.add(t);
-            if (applied.size() > RandomWizard.getRandomInt(max))
+            if (applied.size() > RandomWizard.getRandomInt(max)) {
                 break;
+            }
         }
     }
 
@@ -70,8 +72,9 @@ public class HeroGenerator {
         String name = hero.getName();
         while (Loop.loopEnded()) {
             name = NameMaster.generateName(hero);
-            if (!heroNamesInGame.contains(name))
+            if (!heroNamesInGame.contains(name)) {
                 break;
+            }
         }
         hero.setName(name);
     }
@@ -108,15 +111,18 @@ public class HeroGenerator {
                             .getRandomListItem(ImageManager
                                     .getPortraitsForBackground(hero
                                             .getBackground().toString()));
-                    if (ImageManager.isImage(newPortrait))
+                    if (ImageManager.isImage(newPortrait)) {
                         if (!ImageManager.getImage(newPortrait).equals(
                                 hero.getIcon().getImage())) {
-                            if (StringMaster.isFemalePortrait(newPortrait))
-                                if (hero.getGender() != GENDER.FEMALE)
+                            if (StringMaster.isFemalePortrait(newPortrait)) {
+                                if (hero.getGender() != GENDER.FEMALE) {
                                     continue;
+                                }
+                            }
                             hero.setImage(newPortrait);
                             return true;
                         }
+                    }
                 }
                 break;
 
@@ -136,15 +142,18 @@ public class HeroGenerator {
         List<PRESET_CHANGE_TEMPLATES> applied = new LinkedList<>();
         int n = 0;
         while (true) {
-            if (n > RandomWizard.getRandomInt(max))
+            if (n > RandomWizard.getRandomInt(max)) {
                 break;
+            }
             int i = RandomWizard
                     .getRandomInt(PRESET_CHANGE_TEMPLATES.values().length);
             PRESET_CHANGE_TEMPLATES t = PRESET_CHANGE_TEMPLATES.values()[i];
-            if (applied.contains(t))
+            if (applied.contains(t)) {
                 continue;
-            if (applyTemplateChange(type, t))
+            }
+            if (applyTemplateChange(type, t)) {
                 n++;
+            }
             applied.add(t);
 
         }

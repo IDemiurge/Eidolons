@@ -59,9 +59,9 @@ public class PropertyComponent extends G_Panel {
 
     @Override
     public void refresh() {
-        if (special)
+        if (special) {
             text = obj.getValue(val);
-        else {
+        } else {
             text = val.getName() + ": " + getSpaces() + obj.getValue(val);
         }
         // JLabel lbl = new JLabel(value);

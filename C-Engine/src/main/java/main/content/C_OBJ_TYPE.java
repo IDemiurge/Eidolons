@@ -52,8 +52,9 @@ public class C_OBJ_TYPE implements OBJ_TYPE {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof C_OBJ_TYPE)
+        if (obj instanceof C_OBJ_TYPE) {
             return super.equals(obj);
+        }
         return Arrays.asList(getTypes()).contains(obj);
     }
 

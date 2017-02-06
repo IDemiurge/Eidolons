@@ -66,20 +66,24 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
             } else if (posSwitch) {
                 pos = "@pos " + MigMaster.getCenteredPosition(getSlotPanelWidth(), 64) + " 0";
                 posSwitch = false;
-            } else
+            } else {
                 pos = "@pos " + (getSlotPanelWidth() - 96) + " 0";
+            }
 
-            if (item == null)
+            if (item == null) {
                 if (slot != ITEM_SLOT.ARMOR)
 
                 {
                     boolean offhand = slot == ITEM_SLOT.OFF_HAND;
-                    if (hero.getNaturalWeapon(offhand) != null)
+                    if (hero.getNaturalWeapon(offhand) != null) {
                         item = initItem(slot, hero.getNaturalWeapon(offhand).getType());
+                    }
 
                 }
-            if (item != null)
+            }
+            if (item != null) {
                 add(item, pos);
+            }
         }
 
     }
@@ -126,18 +130,20 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
     }
 
     private Entity getType(ITEM_SLOT slot, OBJ_TYPES TYPE) {
-        if (hero.getItem(slot) != null)
+        if (hero.getItem(slot) != null) {
             return hero.getItem(slot);
+        }
         String string = hero.getProperty(slot.getProp());
         Entity type = DataManager.getType(string, C_OBJ_TYPE.SLOT_ITEMS);
 
         if (type == null) {
             if (StringMaster.isInteger(string)) {
                 Obj obj = hero.getGame().getObjectById(StringMaster.getInteger(string));
-                if (obj != null)
+                if (obj != null) {
                     type = obj.getType();
-                else
+                } else {
                     type = hero.getGame().getTypeById(StringMaster.getInteger(string));
+                }
             }
         }
         return type;
@@ -159,8 +165,9 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
         ListItem<Entity> clickedItem = (ListItem<Entity>) e.getSource();
-        if (clickedItem == null)
+        if (clickedItem == null) {
             return;
+        }
         clickedItem.setSelected(false);
         clickedItem.refresh();
     }
@@ -172,11 +179,12 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
         if (e.getClickCount() > 1 || SwingUtilities.isRightMouseButton(e)) {
             // TODO remove item
             boolean armor = clickedItem == itemMap.get(ITEM_SLOT.ARMOR);
-            if (armor)
+            if (armor) {
                 if (!ArmorMaster.isArmorUnequipAllowed(hero)) {
                     SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
                     return;
                 }
+            }
 
             int n = armor ? 2 : 1;
 
@@ -201,8 +209,9 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
 
         } else {
             for (ListItem<Entity> item : itemMap.values()) {
-                if (item == null)
+                if (item == null) {
                     continue;
+                }
                 item.setSelected(clickedItem == item);
                 item.refresh();
 

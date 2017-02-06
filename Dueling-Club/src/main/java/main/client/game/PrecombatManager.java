@@ -33,8 +33,9 @@ public class PrecombatManager {
     }
 
     public String getResults() {
-        if (precombatData.isAborted())
+        if (precombatData.isAborted()) {
             return ABORTED;
+        }
         return precombatData.getData();
     }
 

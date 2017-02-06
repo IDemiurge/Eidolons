@@ -69,7 +69,9 @@ public class PhaseAnimator extends Group {
     }
 
     public void update() {
-        if (!isOn()) return;
+        if (!isOn()) {
+            return;
+        }
         removeAnims();
         setBounds(0, 0, (float) Gdx.graphics.getWidth(), (float)
                 Gdx.graphics.getHeight());
@@ -110,13 +112,14 @@ public class PhaseAnimator extends Group {
     private void removeAnims() {
         getAnims().forEach(anim -> {
             if (!DC_Game.game.getAnimationManager().
-                    getAnimations().contains(anim.getAnim()))
+                    getAnimations().contains(anim.getAnim())) {
                 try {
                     getAnims().remove(anim);
                     main.system.auxiliary.LogMaster.shout("Removed anim : " + anim);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
 
         });
     }
@@ -128,8 +131,9 @@ public class PhaseAnimator extends Group {
     public boolean checkAnimClicked(float x, float y, int pointer, int button) {
         for (PhaseAnim a : getAnims()) {
             try {
-                if (a.getListener().checkClick(x, y, button))
+                if (a.getListener().checkClick(x, y, button)) {
                     return true;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

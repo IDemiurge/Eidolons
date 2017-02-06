@@ -46,12 +46,14 @@ public class DC_MathManager extends MathMaster {
     }
 
     private static int getArmorDurabilityForDamage(int damage, int armor) {
-        if (damage < DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_ARMOR)
+        if (damage < DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_ARMOR) {
             return 0;
+        }
 
         int max = damage;
-        if (damage > armor)
+        if (damage > armor) {
             max = armor;
+        }
 
         int reduction = 1 + MathMaster.round(max - DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_ARMOR)
                 / DC_Formulas.DURABILITY_DAMAGE_FACTOR_ARMOR;
@@ -59,11 +61,13 @@ public class DC_MathManager extends MathMaster {
     }
 
     private static int getWeaponDurabilityForDamage(int damage, int armor) {
-        if (armor < DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_WEAPON)
+        if (armor < DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_WEAPON) {
             return 0;
+        }
         int max = armor;
-        if (damage < armor)
+        if (damage < armor) {
             max = damage;
+        }
 
         int reduction = 1 + MathMaster.round(max - DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_WEAPON)
                 / DC_Formulas.DURABILITY_DAMAGE_FACTOR_WEAPON;
@@ -80,8 +84,9 @@ public class DC_MathManager extends MathMaster {
 
     public static int getDamageTypeResistance(DC_UnitObj attacked, DAMAGE_TYPE type) {
 
-        if (type == null)
+        if (type == null) {
             return 0;
+        }
         if (type == DAMAGE_TYPE.PHYSICAL) {
             return MathMaster.getAverage(attacked.getIntParam(PARAMS.SLASHING_RESISTANCE),
                     attacked.getIntParam(PARAMS.PIERCING_RESISTANCE), attacked.getIntParam(PARAMS.SLASHING_RESISTANCE));
@@ -126,8 +131,9 @@ public class DC_MathManager extends MathMaster {
     public static List<PARAMETER> getUnlockedMasteries(Entity entity) {
         List<PARAMETER> list = new LinkedList<>();
         for (PARAMS p : DC_ContentManager.getMasteryParams()) {
-            if (isMasteryUnlocked(entity, p))
+            if (isMasteryUnlocked(entity, p)) {
                 list.add(p);
+            }
         }
         return list;
     }
@@ -150,16 +156,18 @@ public class DC_MathManager extends MathMaster {
 
     public static int getMasteryPoints(DC_HeroObj hero, PARAMETER masteryParam) {
         int pts = 0;
-        for (int i = 0; i <= hero.getIntParam(masteryParam); i++)
+        for (int i = 0; i <= hero.getIntParam(masteryParam); i++) {
             pts += PointMaster.getPointCost(i, hero, masteryParam);
+        }
         return pts;
     }
 
     public static int calculateUsedMasteryPoints(DC_HeroObj hero, PARAMETER masteryParam) {
         int points = 0;
         for (DC_FeatObj skill : hero.getSkills()) {
-            if (StringMaster.compare(skill.getProperty(G_PROPS.MASTERY), masteryParam.getName(), true))
+            if (StringMaster.compare(skill.getProperty(G_PROPS.MASTERY), masteryParam.getName(), true)) {
                 points += skill.getIntParam(PARAMS.SKILL_DIFFICULTY);
+            }
         }
         return points;
 
@@ -178,8 +186,9 @@ public class DC_MathManager extends MathMaster {
         Formula divinationPoolFormula = DC_Formulas.DIVINATION_POOL_FORMULA;
         String property = hero.getProperty(PROPS.DIVINATION_PARAMETER);
         if (!property.isEmpty()) {
-            if (!property.contains("{"))
+            if (!property.contains("{")) {
                 property = StringMaster.wrapInCurlyBraces(property);
+            }
 
             divinationPoolFormula = new Formula(DC_Formulas.DIVINATION_POOL_FORMULA.toString().toLowerCase()
                     .replace("{charisma}", hero.getProperty(PROPS.DIVINATION_PARAMETER)));

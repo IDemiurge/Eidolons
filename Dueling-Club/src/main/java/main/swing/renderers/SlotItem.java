@@ -41,11 +41,12 @@ public class SlotItem extends ListItem<DC_HeroAttachedObj> {
         int y = 0;
         BufferedImage bufferedImage = ImageManager.getBufferedImage(image);
         Graphics g = bufferedImage.getGraphics();
-        for (STD_COUNTERS c : CoatingRule.COATING_COUNTERS)
+        for (STD_COUNTERS c : CoatingRule.COATING_COUNTERS) {
             if (coatedObj.getCounter(c.getName()) > 0) {
                 g.drawImage(c.getImage(), x, y, null);
                 x++;
             }
+        }
         return new ImageIcon(bufferedImage);
     }
 }

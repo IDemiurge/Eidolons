@@ -202,8 +202,9 @@ public class LightMap {
     }
 
     public void updateLight() {
-        if (!isValid())
-            return ;
+        if (!isValid()) {
+            return;
+        }
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         // TODO : add DequeImpl<DC_HeroObj> units update here, about DIrection - Game->GetDirectionmap
         for (Map.Entry<Integer, FireLightProt> entry : fireLightProtMap.entrySet()) {
@@ -222,7 +223,9 @@ public class LightMap {
     }
 
     public boolean isValid() {
-        if (!LightingManager.isLightOn())return false;
+        if (!LightingManager.isLightOn()) {
+            return false;
+        }
         return valid;
     }
 }

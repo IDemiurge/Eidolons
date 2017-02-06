@@ -34,8 +34,9 @@ public class IconTextComp extends G_Panel {
         this.fontSize = fontSize;
         this.textColor = textColor;
         this.text = text;
-        if (isInitialized())
+        if (isInitialized()) {
             init();
+        }
     }
 
     protected GraphicComponent createGraphicComponent() {

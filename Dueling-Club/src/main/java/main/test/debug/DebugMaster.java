@@ -196,14 +196,14 @@ public class DebugMaster {
         String message = "Input function name";
         String funcName = JOptionPane.showInputDialog(null, message, lastFunction);
         if (funcName == null) {
-            if (AutoTestMaster.isRunning())
+            if (AutoTestMaster.isRunning()) {
                 funcName = DEBUG_FUNCTIONS.AUTO_TEST_INPUT.name();
-            else {
+            } else {
                 reset();
                 return;
             }
         }
-        if (AutoTestMaster.isRunning())
+        if (AutoTestMaster.isRunning()) {
             if (funcName.equalsIgnoreCase("re")) {
                 new Thread(new Runnable() {
                     public void run() {
@@ -212,12 +212,14 @@ public class DebugMaster {
                 }, " thread").start();
                 return;
             }
+        }
         if (funcName.contains(" ")) {
             if (funcName.trim().equals("")) {
                 int length = funcName.length();
                 if (executedFunctions.size() >= length) {
-                    for (int i = 0; i < length; i++)
+                    for (int i = 0; i < length; i++) {
                         funcName = executedFunctions.pop();
+                    }
                 }
             }
 
@@ -251,19 +253,20 @@ public class DebugMaster {
 
         HIDDEN_DEBUG_FUNCTIONS function2 = new EnumMaster<HIDDEN_DEBUG_FUNCTIONS>()
                 .retrieveEnumConst(HIDDEN_DEBUG_FUNCTIONS.class, funcName);
-        if (function2 != null)
+        if (function2 != null) {
             executeDebugFunctionNewThread(function2);
-        else {
+        } else {
             function = new EnumMaster<DEBUG_FUNCTIONS>().retrieveEnumConst(DEBUG_FUNCTIONS.class,
                     funcName, true);
 
             function2 = new EnumMaster<HIDDEN_DEBUG_FUNCTIONS>().retrieveEnumConst(
                     HIDDEN_DEBUG_FUNCTIONS.class, funcName, true);
             if (StringMaster.compareSimilar(funcName, function.toString()) > StringMaster
-                    .compareSimilar(funcName, function2.toString()))
+                    .compareSimilar(funcName, function2.toString())) {
                 executeDebugFunctionNewThread(function);
-            else
+            } else {
                 executeDebugFunctionNewThread(function2);
+            }
 
         }
         playFuncExecuteSound();
@@ -330,8 +333,9 @@ public class DebugMaster {
 
         this.getDebugPanel().getFrame().setAlwaysOnTop(!getDebugPanel().getFrame().isAlwaysOnTop());
 
-        if (getDebugPanel().getFrame().isAlwaysOnTop())
+        if (getDebugPanel().getFrame().isAlwaysOnTop()) {
             getDebugPanel().getFrame().requestFocus();
+        }
 
     }
 
@@ -343,22 +347,27 @@ public class DebugMaster {
     public Object executeDebugFunction(DEBUG_FUNCTIONS func) {
         executedFunctions.push(func.toString());
         boolean transmitted = false;
-        if (game.isOnline())
+        if (game.isOnline()) {
             if (func.transmitted) {
                 transmitted = true;
 
             }
-        if (target != null)
+        }
+        if (target != null) {
             arg = target;
+        }
 
         DC_HeroObj infoObj = target instanceof DC_HeroObj ? (DC_HeroObj) target : null;
         Ref ref = null;
-        if (infoObj == null) try {
-            infoObj = (DC_HeroObj) getObj();
-        } catch (Exception e) {
+        if (infoObj == null) {
+            try {
+                infoObj = (DC_HeroObj) getObj();
+            } catch (Exception e) {
+            }
         }
-        if (infoObj == null)
+        if (infoObj == null) {
             infoObj = game.getManager().getActiveObj();
+        }
         try {
             ref = new Ref(game, game.getManager().getActiveObj().getId());
         } catch (Exception e) {
@@ -380,11 +389,13 @@ public class DebugMaster {
                 break;
             case ADD_GROUP:
                 File groupFile = ListChooser.chooseFile(PathFinder.getUnitGroupPath());
-                if (groupFile == null)
+                if (groupFile == null) {
                     break;
+                }
                 coordinate = getGame().getBattleFieldManager().pickCoordinate();
-                if (coordinate == null)
+                if (coordinate == null) {
                     break;
+                }
                 data = FileManager.readFile(groupFile);
 
                 UnitGroupMaster.setCurrentGroupHeight(MathMaster.getMaxY(data));
@@ -440,8 +451,9 @@ public class DebugMaster {
 
             case HIDDEN_FUNCTION: {
                 int i = DialogMaster.optionChoice(HIDDEN_DEBUG_FUNCTIONS.values(), "...");
-                if (i != -1)
+                if (i != -1) {
                     executeHiddenDebugFunction(HIDDEN_DEBUG_FUNCTIONS.values()[i]);
+                }
                 break;
             }
             case TOGGLE_AUTO_UNIT:
@@ -490,10 +502,11 @@ public class DebugMaster {
                 break;
             case TOGGLE_GRAPHICS_TEST:
                 DrawMasterStatic.GRAPHICS_TEST_MODE = !DrawMasterStatic.GRAPHICS_TEST_MODE;
-                if (DrawMasterStatic.GRAPHICS_TEST_MODE)
+                if (DrawMasterStatic.GRAPHICS_TEST_MODE) {
                     DrawMasterStatic.FULL_GRAPHICS_TEST_MODE = DialogMaster.confirm("Full test on?");
-                else
+                } else {
                     DrawMasterStatic.FULL_GRAPHICS_TEST_MODE = false;
+                }
                 break;
             case TOGGLE_LOG: {
                 String e = ListChooser.chooseEnum(LOG_CHANNELS.class);
@@ -515,10 +528,11 @@ public class DebugMaster {
                 break;
 
             case RESTART:
-                if (!altMode)
+                if (!altMode) {
                     if (DialogMaster.confirm("Select anew?")) {
                         FAST_DC.getGameLauncher().selectiveInit();
                     }
+                }
 
                 game.getManager().killAllUnits(true, false);
                 game.getArenaManager().getSpawnManager().spawnParty(true);
@@ -542,8 +556,9 @@ public class DebugMaster {
                 break;
 
             case ACTIVATE_UNIT:
-                if (isAltMode())
+                if (isAltMode()) {
                     getObj().modifyParameter(PARAMS.C_N_OF_ACTIONS, 100);
+                }
                 if (getObj().isMine()) {
                     game.getManager().setActivatingAction(null);
                     game.getManager().activeSelect(getObj());
@@ -559,46 +574,57 @@ public class DebugMaster {
             case ADD_ITEM:
                 if (isAltMode()) {
                     TYPE = OBJ_TYPES.WEAPONS;
-                } else
+                } else {
                     TYPE = (OBJ_TYPES) DialogMaster.getChosenOption("Choose item type...",
                             OBJ_TYPES.WEAPONS, OBJ_TYPES.ARMOR, OBJ_TYPES.ITEMS, OBJ_TYPES.JEWELRY);
+                }
                 if (isAltMode()) {
-                    if (!selectWeaponType())
+                    if (!selectWeaponType()) {
                         break;
-                } else if (!selectType(TYPE))
+                    }
+                } else if (!selectType(TYPE)) {
                     break;
+                }
 
-                if (!selectTarget(ref))
+                if (!selectTarget(ref)) {
                     selectedTarget = infoObj;
-                if (selectedTarget == null)
+                }
+                if (selectedTarget == null) {
                     break;
+                }
                 boolean quick = false;
-                if (isAltMode())
+                if (isAltMode()) {
                     quick = false;
-                else if (TYPE == OBJ_TYPES.ITEMS)
+                } else if (TYPE == OBJ_TYPES.ITEMS) {
                     quick = true;
-                else if (TYPE == OBJ_TYPES.WEAPONS)
+                } else if (TYPE == OBJ_TYPES.WEAPONS) {
                     quick = DialogMaster.confirm("quick slot item?");
+                }
                 DC_HeroItemObj item = ItemFactory.createItemObj(selectedType, selectedTarget.getOwner(),
                         game, ref, quick);
                 if (!quick) {
-                    if (TYPE != OBJ_TYPES.JEWELRY)
+                    if (TYPE != OBJ_TYPES.JEWELRY) {
                         selectedTarget.equip(item, TYPE == OBJ_TYPES.ARMOR ? ITEM_SLOT.ARMOR
                                 : ITEM_SLOT.MAIN_HAND);
-                } else
+                    }
+                } else {
                     selectedTarget.addQuickItem((DC_QuickItemObj) item);
+                }
 
                 // selectedTarget.addItemToInventory(item);
 
                 game.getManager().refreshGUI();
                 break;
             case ADD_SPELL:
-                if (!selectType(OBJ_TYPES.SPELLS))
+                if (!selectType(OBJ_TYPES.SPELLS)) {
                     break;
-                if (!selectTarget(ref))
+                }
+                if (!selectTarget(ref)) {
                     selectedTarget = infoObj;
-                if (selectedTarget == null)
+                }
+                if (selectedTarget == null) {
                     break;
+                }
                 TestMasterContent.setTEST_LIST(TestMasterContent.getTEST_LIST()
                         + selectedType.getName() + ";");
 
@@ -615,12 +641,14 @@ public class DebugMaster {
                     T = OBJ_TYPES.SKILLS;
                 }
                 String type = ListChooser.chooseType(T);
-                if (type == null)
+                if (type == null) {
                     break;
+                }
 
                 if (!new SelectiveTargeting(new Conditions(ConditionMaster
-                        .getTYPECondition(C_OBJ_TYPE.BF_OBJ))).select(ref))
+                        .getTYPECondition(C_OBJ_TYPE.BF_OBJ))).select(ref)) {
                     break;
+                }
                 lastType = type;
                 new AddBuffEffect(type + " hack", new ModifyPropertyEffect(prop, MOD_PROP_TYPE.ADD,
                         type), new Formula("1")).apply(ref);
@@ -669,8 +697,9 @@ public class DebugMaster {
             case SET_WAVE_POWER:
                 Integer forcedPower = null;
                 forcedPower = DialogMaster.inputInt();
-                if (forcedPower < 0)
+                if (forcedPower < 0) {
                     forcedPower = null;
+                }
                 game.getArenaManager().getWaveAssembler().setForcedPower(forcedPower);
                 break;
             case SPAWN_CUSTOM_WAVE:
@@ -701,8 +730,9 @@ public class DebugMaster {
                     game.getArenaManager().getSpawnManager().getPositioner().setForcedSide(side);
                 }
                 String typeName = ListChooser.chooseType(OBJ_TYPES.ENCOUNTERS);
-                if (typeName == null)
+                if (typeName == null) {
                     return func;
+                }
                 try {
                     game.getArenaManager().getSpawnManager().spawnWave(typeName,
                             game.getPlayer(ALT_AI_PLAYER), coordinate);
@@ -744,9 +774,10 @@ public class DebugMaster {
                 String input = DialogMaster.inputText("operation");
                 WAIT_OPERATIONS operation = new EnumMaster<WAIT_OPERATIONS>().retrieveEnumConst(
                         WAIT_OPERATIONS.class, input);
-                if (operation == null)
+                if (operation == null) {
                     operation = new EnumMaster<WAIT_OPERATIONS>().retrieveEnumConst(
                             WAIT_OPERATIONS.class, input, true);
+                }
                 if (operation == null) {
                     DialogMaster.error("no such operation");
                     return func;
@@ -814,12 +845,14 @@ public class DebugMaster {
         Player player = Player.NEUTRAL;
         if (me != null) {
             player = game.getPlayer(me);
-            if (!me)
+            if (!me) {
                 if (ALT_AI_PLAYER) {
-                    if (altAiPlayer == null)
+                    if (altAiPlayer == null) {
                         altAiPlayer = new DC_Player("", null, false);
+                    }
                     player = altAiPlayer;
                 }
+            }
         }
         /*
          * alt mode: >> random >> preset >> last
@@ -836,17 +869,20 @@ public class DebugMaster {
         if (altMode) {
             typeName = lastType;
             // RandomWizard.getRandomType(units).getName();
-        } else
+        } else {
             typeName = ListChooser.chooseType(units);
+        }
         if (!DataManager.isTypeName(typeName)) {
             typeName = DialogMaster.inputText("Then enter it yourself...");
         }
-        if (typeName == null)
+        if (typeName == null) {
             return;
+        }
         if (!DataManager.isTypeName(typeName)) {
             ObjType foundType = DataManager.findType(typeName, units);
-            if (foundType == null)
+            if (foundType == null) {
                 return;
+            }
             typeName = foundType.getName();
 
         }
@@ -856,13 +892,15 @@ public class DebugMaster {
             ref.setTarget(game.getCellByCoordinate(obj.getCoordinates()).getId());
         } else
         if (!new SelectiveTargeting(new Conditions(ConditionMaster
-                .getTYPECondition(OBJ_TYPES.TERRAIN))).select(ref))
+                .getTYPECondition(OBJ_TYPES.TERRAIN))).select(ref)) {
             return;
+        }
         lastType = typeName;
         SummonEffect effect = (me == null) ? new CreateObjectEffect(typeName, true)
                 : new SummonEffect(typeName);
         if (units == OBJ_TYPES.UNITS)
 
+        {
             if (checkAddXp()) {
                 Formula xp = new Formula(""
                         + (DC_Formulas.getTotalXpForLevel(DataManager.getType(typeName,
@@ -872,6 +910,7 @@ public class DebugMaster {
                                 OBJ_TYPES.UNITS).getIntParam(PARAMS.LEVEL))));
                 effect = new SummonEffect(typeName, xp);
             }
+        }
 
         effect.setOwner(player);
         effect.apply(ref);
@@ -895,8 +934,9 @@ public class DebugMaster {
 
     private boolean selectTarget(Ref ref) {
         if (!new SelectiveTargeting(new Conditions(ConditionMaster
-                .getTYPECondition(C_OBJ_TYPE.BF_OBJ))).select(ref))
+                .getTYPECondition(C_OBJ_TYPE.BF_OBJ))).select(ref)) {
             return false;
+        }
 
         selectedTarget = (DC_HeroObj) ref.getTargetObj();
         return true;
@@ -905,27 +945,33 @@ public class DebugMaster {
     private boolean selectType(OBJ_TYPE TYPE) {
         if (isAltMode()) {
             String name = DialogMaster.inputText("Type name...");
-            if (name == null)
+            if (name == null) {
                 return false;
+            }
             selectedType = DataManager.getType(name, TYPE);
-            if (selectedType != null)
+            if (selectedType != null) {
                 return true;
+            }
             selectedType = DataManager.findType(name, TYPE);
-            if (selectedType != null)
+            if (selectedType != null) {
                 return true;
+            }
         }
         String type = ListChooser.chooseType(TYPE);
         if (type == null)
 
+        {
             return false;
+        }
 
         selectedType = DataManager.getType(type, TYPE);
         return true;
     }
 
     private Obj getObj() {
-        if (game.isSimulation())
+        if (game.isSimulation()) {
             return CharacterCreator.getHero();
+        }
         return game.getManager().getInfoObj();
     }
 
@@ -980,20 +1026,23 @@ public class DebugMaster {
         switch (func) {
             case WRITE_GROUP:
                 Entity entity = DC_Game.game.getValueHelper().getEntity();
-                if (entity == null)
+                if (entity == null) {
                     break;
+                }
                 XML_Writer
                         .writeXML_ForTypeGroup(entity.getOBJ_TYPE_ENUM(), entity.getGroupingKey());
 
             case WRITE:
-                if (!(DC_Game.game.getValueHelper().getEntity() instanceof ObjType))
+                if (!(DC_Game.game.getValueHelper().getEntity() instanceof ObjType)) {
                     break;
+                }
                 XML_Writer.writeXML_ForTypeGroup(DC_Game.game.getValueHelper().getEntity()
                         .getOBJ_TYPE_ENUM());
                 break;
             case WRITE_TYPE:
-                if (!(DC_Game.game.getValueHelper().getEntity() instanceof ObjType))
+                if (!(DC_Game.game.getValueHelper().getEntity() instanceof ObjType)) {
                     break;
+                }
                 XML_Writer.writeXML_ForType((ObjType) DC_Game.game.getValueHelper().getEntity());
                 break;
             case TOGGLE_AV_MODE:
@@ -1041,9 +1090,10 @@ public class DebugMaster {
                 displayList("Effects ", game.getState().getEffects(), 1);
                 break;
             case DISPLAY_OBJECTS:
-                for (OBJ_TYPE sub : game.getState().getGame().getState().getObjMaps().keySet())
+                for (OBJ_TYPE sub : game.getState().getGame().getState().getObjMaps().keySet()) {
                     displayList(sub + ": ", game.getState().getGame().getState().getObjMaps().get(
                             sub).keySet(), 1);
+                }
 
             case DISPLAY_UNITS:
                 displayList("Units ", game.getState().getGame().getUnits(), 1);
@@ -1057,8 +1107,9 @@ public class DebugMaster {
 
                 for (ObjType type : DataManager.getTypes(OBJ_TYPES.SPELLS)) {
                     DC_HeroObj hero = (DC_HeroObj) game.getManager().getInfoObj();
-                    if (LibraryManager.checkHeroHasSpell(hero, type))
+                    if (LibraryManager.checkHeroHasSpell(hero, type)) {
                         continue;
+                    }
                     LibraryManager.addVerbatimSpell(hero, type);
                     DC_SpellObj spell = new DC_SpellObj(type, hero.getOriginalOwner(), hero
                             .getGame(), hero.getRef());
@@ -1096,24 +1147,27 @@ public class DebugMaster {
     private String getUnitInfo(DC_Obj infoObj) {
         String str = "Unit info: \n";
         for (PARAMETER param : PARAMS.values()) {
-            if (!param.isDynamic())
+            if (!param.isDynamic()) {
                 continue;
+            }
             str += param.toString();
             str += " = ";
             str += infoObj.getValue(param);
             str += "\n";
         }
         for (PARAMETER param : PARAMS.values()) {
-            if (!param.isAttribute())
+            if (!param.isAttribute()) {
                 continue;
+            }
             str += param.toString();
             str += " = ";
             str += infoObj.getValue(param);
             str += "\n";
         }
         for (PARAMETER param : PARAMS.values()) {
-            if (param.isDynamic() || param.isAttribute())
+            if (param.isDynamic() || param.isAttribute()) {
                 continue;
+            }
             str += param.toString();
             str += " = ";
             str += infoObj.getValue(param);
@@ -1121,8 +1175,9 @@ public class DebugMaster {
         }
         for (PROPERTY p : ContentManager.getPropList()) {
             if (!(ContentManager.isValueForOBJ_TYPE(OBJ_TYPES.CHARS, p) || ContentManager
-                    .isValueForOBJ_TYPE(OBJ_TYPES.UNITS, p)))
+                    .isValueForOBJ_TYPE(OBJ_TYPES.UNITS, p))) {
                 continue;
+            }
             str += p.toString();
             str += " = ";
             str += infoObj.getValue(p);
@@ -1140,13 +1195,14 @@ public class DebugMaster {
         String funcName = JOptionPane.showInputDialog("Type in function to execute");
         HIDDEN_DEBUG_FUNCTIONS func = new EnumMaster<HIDDEN_DEBUG_FUNCTIONS>().retrieveEnumConst(
                 HIDDEN_DEBUG_FUNCTIONS.class, funcName);
-        if (func != null)
+        if (func != null) {
             return executeHiddenDebugFunction(func);
-        else {
+        } else {
             DEBUG_FUNCTIONS func1 = new EnumMaster<DEBUG_FUNCTIONS>().retrieveEnumConst(
                     DEBUG_FUNCTIONS.class, funcName);
-            if (func1 != null)
+            if (func1 != null) {
                 return executeDebugFunction(func1);
+            }
         }
         return null;
     }

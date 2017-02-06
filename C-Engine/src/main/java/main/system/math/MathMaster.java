@@ -38,10 +38,12 @@ public abstract class MathMaster {
     }
 
     public static int getPercentage(Integer numenator, Integer denominator) {
-        if (numenator == 0)
+        if (numenator == 0) {
             return 0;
-        if (denominator == 0)
+        }
+        if (denominator == 0) {
             return 0;
+        }
         // return PERCENTAGE;
 
         return numenator * PERCENTAGE / denominator;
@@ -92,10 +94,12 @@ public abstract class MathMaster {
     }
 
     public static Integer applyModIfNotZero(int amount, Integer mod) {
-        if (amount == 0)
+        if (amount == 0) {
             return 100;
-        if (mod == 0)
+        }
+        if (mod == 0) {
             return amount;
+        }
         return applyMod(amount, mod);
     }
 
@@ -122,8 +126,9 @@ public abstract class MathMaster {
     }
 
     public static boolean compare(int n, int n1, Boolean greater_less_equal) {
-        if (greater_less_equal == null)
+        if (greater_less_equal == null) {
             return n == n1;
+        }
         return greater_less_equal ? n > n1 : n < n1;
     }
 
@@ -144,8 +149,9 @@ public abstract class MathMaster {
     }
 
     private static boolean isModOrFactor(PARAMETER param) {
-        if (param.isMod())
+        if (param.isMod()) {
             return true;
+        }
         Integer i = StringMaster.getInteger(param.getDefaultValue());
         return i == 100;
     }
@@ -188,22 +194,26 @@ public abstract class MathMaster {
     }
 
     public static int getMinMax(int i, int min, int max) {
-        if (i >= max)
+        if (i >= max) {
             return max;
-        if (i <= min)
+        }
+        if (i <= min) {
             return min;
+        }
         return i;
     }
 
     public static int getPole(int wallWidth, Integer fieldLength, boolean flipped) {
-        if (!flipped)
+        if (!flipped) {
             return wallWidth;
+        }
         return fieldLength - wallWidth;
     }
 
     public static int getPlusMinusRandom(Boolean mode, int n) {
-        if (mode == null)
+        if (mode == null) {
             return RandomWizard.getRandomIntBetween(-n, n);
+        }
         return mode ? n : -n;
     }
 

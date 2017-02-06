@@ -39,11 +39,12 @@ public class TopGatewayContainer<E extends ArcaneEntity> extends G_PagePanel<E> 
 
 	@Override
 	public List<E> getData() {
-		if (TYPE == AT_OBJ_TYPE.DIRECTION)
-			data = (List<E>) ArcaneTower.getDirections();
-		else
-			data = (List<E>) ArcaneTower.getPeriods(TYPE);
-		Collections.reverse(data);
+        if (TYPE == AT_OBJ_TYPE.DIRECTION) {
+            data = (List<E>) ArcaneTower.getDirections();
+        } else {
+            data = (List<E>) ArcaneTower.getPeriods(TYPE);
+        }
+        Collections.reverse(data);
 		return data;
 	}
 
@@ -55,9 +56,10 @@ public class TopGatewayContainer<E extends ArcaneEntity> extends G_PagePanel<E> 
 	@Override
 	protected G_Component createPageComponent(List<E> list) {
 		G_Panel panel = new G_Panel("flowy");
-		for (E e : list)
-			panel.add(createComponent(e));
-		return panel;
+        for (E e : list) {
+            panel.add(createComponent(e));
+        }
+        return panel;
 	}
 
 	@Override

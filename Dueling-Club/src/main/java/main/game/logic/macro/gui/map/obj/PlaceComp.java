@@ -20,18 +20,21 @@ public class PlaceComp extends MapObjComp implements MouseListener {
     }
 
     public Dimension getSize() {
-        if (isSymbolRepresentation())
+        if (isSymbolRepresentation()) {
             return getSymbolImageSize().getSize();
-        if (isInfoSelected())
+        }
+        if (isInfoSelected()) {
             return new Dimension(DEFAULT_SIZE + 10, DEFAULT_SIZE + 10);
+        }
         return new Dimension(DEFAULT_SIZE, DEFAULT_SIZE);
     }
 
     protected boolean isSymbolRepresentation() {
         // if (getObj().isAvailable())
         // return false;
-        if (isInfoSelected())
+        if (isInfoSelected()) {
             return false;
+        }
         return true;
     }
 

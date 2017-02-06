@@ -14,8 +14,9 @@ public class Simulation {
 
     public static void init(boolean testmode) {
         setGame(DC_GameInitializer.initSimulation());
-        if (testmode)
+        if (testmode) {
             return;
+        }
         CharacterCreator.setGame(getGame());
         CharacterCreator.init();
     }

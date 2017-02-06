@@ -45,8 +45,9 @@ public class DC_ConditionMaster extends ConditionMaster {
     private static Condition findConditionTemplate(String string) {
         TARGETING_MODIFIERS TARGETING_MODIFIERS = new EnumMaster<TARGETING_MODIFIERS>()
                 .retrieveEnumConst(TARGETING_MODIFIERS.class, string);
-        if (TARGETING_MODIFIERS != null)
+        if (TARGETING_MODIFIERS != null) {
             return getTargetingModConditions(TARGETING_MODIFIERS);
+        }
 
         // TARGETING_MODE TARGETING_MODE = new
         // EnumMaster<TARGETING_MODE>().retrieveEnumConst(TARGETING_MODE.class,
@@ -121,8 +122,9 @@ public class DC_ConditionMaster extends ConditionMaster {
         SPECIAL_REQUIREMENTS CONST = new EnumMaster<SPECIAL_REQUIREMENTS>().retrieveEnumConst(
                 SPECIAL_REQUIREMENTS.class, VariableManager.removeVarPart(subString));
 
-        if (CONST == null)
+        if (CONST == null) {
             return null;
+        }
         Object[] variables = null;
         if (VariableManager.checkVar(subString)) {
             variables = VariableManager.getVariables(subString);
@@ -165,8 +167,9 @@ public class DC_ConditionMaster extends ConditionMaster {
             default:
                 break;
         }
-        if (condition == null)
+        if (condition == null) {
             return null;
+        }
         Requirement req = new Requirement(condition, CONST.getText(variables));
         return req;
     }
@@ -178,8 +181,9 @@ public class DC_ConditionMaster extends ConditionMaster {
     public static Condition getFreeCellCondition(String obj_ref, String direction) {
         UNIT_DIRECTION CONST = new EnumMaster<UNIT_DIRECTION>().retrieveEnumConst(
                 UNIT_DIRECTION.class, direction);
-        if (CONST == null)
+        if (CONST == null) {
             return null;
+        }
         return new CellCondition(obj_ref, CONST);
     }
 
@@ -462,8 +466,9 @@ public class DC_ConditionMaster extends ConditionMaster {
         List<String> list = StringMaster.openContainer(s);
         String name = list.get(0);
         String arg = null;
-        if (list.size() > 1)
+        if (list.size() > 1) {
             arg = list.get(1);
+        }
 
         switch (name) {
             case "CostCondition":
@@ -486,8 +491,9 @@ public class DC_ConditionMaster extends ConditionMaster {
 
             }
         }
-        if (result == null)
+        if (result == null) {
             result = super.getConditionFromTemplate(template, str1, str2);
+        }
         return result;
     }
 

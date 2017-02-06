@@ -19,8 +19,9 @@ public class SpellIlluminationRule {
         // VisionManager.getSpectrumCoordinates(range, 2, 0, caster, false,
         // caster.getFacing());
         // distance reductionBoolean circular = true;
-        if (spell.checkBool(STD_BOOLS.SPECTRUM_LIGHT))
+        if (spell.checkBool(STD_BOOLS.SPECTRUM_LIGHT)) {
             circular = false;
+        }
         int value = spell.getIntParam(PARAMS.SPELL_DIFFICULTY);
         LightEmittingEffect effect = new LightEmittingEffect(("" + value), circular);
         effect.apply(new Ref(caster));

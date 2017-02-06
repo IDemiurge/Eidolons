@@ -14,10 +14,11 @@ public class DuplicateEffect extends MicroEffect {
     public boolean applyThis() {
 
         Effect copy;
-        if (event)
+        if (event) {
             copy = ref.getEvent().getRef().getEffect().getCopy();
-        else
+        } else {
             copy = ref.getEffect().getCopy();
+        }
         copy.setAltered(true); // !
         // copy.setQuietMode(true); and why would I do this? I only need to
         // check on triggers...

@@ -42,9 +42,10 @@ public class MusicListMaster {
 				name = (NameMaster.getUniqueVersionedName("Track Group", AT_OBJ_TYPE.MUSIC_LIST));// TODO
 				tracks = StringMaster.constructEntityNameContainer(MusicMouseListener
 						.getSelectedTracks());
-			} else
-				type = new ObjType(list.getType());
-		} else {
+            } else {
+                type = new ObjType(list.getType());
+            }
+        } else {
 			// type = new ObjType(typeName, AT_OBJ_TYPE.MUSIC_LIST);
 		}
 		if (DialogMaster.confirm("Manual Edit?")) {
@@ -58,9 +59,10 @@ public class MusicListMaster {
 			// }
 		}
 		if (type == null) {
-			if (DialogMaster.confirm("Input Name?"))
-				name = DialogMaster.inputText("Input Name!", name);
-			type = new ObjType(name, AT_OBJ_TYPE.MUSIC_LIST);
+            if (DialogMaster.confirm("Input Name?")) {
+                name = DialogMaster.inputText("Input Name!", name);
+            }
+            type = new ObjType(name, AT_OBJ_TYPE.MUSIC_LIST);
 		}
 		type.setProperty(AT_PROPS.TRACKS, tracks);
 
@@ -68,8 +70,9 @@ public class MusicListMaster {
 		type.setProperty(AT_PROPS.PATH, value);
 		if (list != null) {
 			type.setProperty(G_PROPS.HOTKEY, list.getProperty(G_PROPS.HOTKEY));
-		} else
-			DialogMaster.inputText("HOTKEY?", "+#^!" + name.charAt(0));
+        } else {
+            DialogMaster.inputText("HOTKEY?", "+#^!" + name.charAt(0));
+        }
 
 		if (list != null) {
 			value = list.getProperty(AT_PROPS.MUSIC_TYPE);

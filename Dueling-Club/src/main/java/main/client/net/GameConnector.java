@@ -37,8 +37,9 @@ public class GameConnector implements Connector {
 
     public GameConnector(HostedGame game) {
         this.setGame(game);
-        if (game.getHost() != null)
+        if (game.getHost() != null) {
             playerData = game.getHost().getData();
+        }
     }
 
     public void send(HOST_CLIENT_CODES code, String data) {
@@ -86,8 +87,9 @@ public class GameConnector implements Connector {
     }
 
     public boolean promptReady() {
-        if (DuelingClub.TEST_MODE)
+        if (DuelingClub.TEST_MODE) {
             return makeReady();
+        }
         if (MessageManager.confirm(HERO_CHOICE)) {
             return makeReady();
         }
@@ -116,10 +118,11 @@ public class GameConnector implements Connector {
     }
 
     public void sendPartyData() {
-        if (isHost())
+        if (isHost()) {
             send(HOST_CLIENT_CODES.HOST_PARTY_DATA);
-        else
+        } else {
             send(HOST_CLIENT_CODES.CLIENT_PARTY_DATA_REQUEST);
+        }
         send(lobby.getGameStarter().getMyPartyData().getData());
     }
 
@@ -136,8 +139,9 @@ public class GameConnector implements Connector {
     public void addConnection(User user, HostClientConnection hostClientConnection) {
         connections.put(user, hostClientConnection);
         playerData += user.getRelevantData() + StringMaster.getDataUnitSeparator();
-        if (lobby == null)
+        if (lobby == null) {
             return;
+        }
         lobby.getUserList().setData(playerData);
         main.system.auxiliary.LogMaster.log(4, "====>> User connected " + user.getData()
                 + " player data = " + playerData);

@@ -9,7 +9,7 @@ import main.logic.ArcaneEntity;
 import main.logic.Direction;
 import main.swing.SwingMaster;
 
-import java.awt.Dimension;
+import java.awt.*;
 
 public class TopGatewayComp<E extends ArcaneEntity> extends AT_EntityNode<E> {
 	private static final VALUE[] directionValues = { AT_PARAMS.TIME_SPENT,
@@ -40,21 +40,22 @@ public class TopGatewayComp<E extends ArcaneEntity> extends AT_EntityNode<E> {
 		super.addComponents();
 
 		if (isExpanded()) {
-			if (direction)
-				container = new GoalContainer((Direction) entity);
-			else {
-				// TODO
+            if (direction) {
+                container = new GoalContainer((Direction) entity);
+            } else {
+                // TODO
 			}
 			container.refresh();
 			int y = getPanelHeight();
 			int x = getPanelWidth();
 			panelSize = SwingMaster.getModifiedSize(getHeaderSize(), vertical ? 0 : container
 					.getPanelWidth(), !vertical ? 0 : container.getPanelHeight());
-			if (vertical)
-				add(container, "pos 0 " + y);
-			else
-				add(container, "pos " + x + " 0");
-			// add(container);
+            if (vertical) {
+                add(container, "pos 0 " + y);
+            } else {
+                add(container, "pos " + x + " 0");
+            }
+            // add(container);
 		}
 	}
 

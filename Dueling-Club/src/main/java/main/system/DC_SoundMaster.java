@@ -21,13 +21,14 @@ import java.util.Random;
 public class DC_SoundMaster {
     public static void playRangedAttack(DC_WeaponObj weapon) {
         // TODO double weapon sound
-        if (weapon.getWeaponGroup() == WEAPON_GROUP.CROSSBOWS)
+        if (weapon.getWeaponGroup() == WEAPON_GROUP.CROSSBOWS) {
             SoundMaster
                     .playRandomSoundVariant("weapon\\crossbow\\" + weapon.getWeaponSize(), false);
-        else if (weapon.getWeaponGroup() == WEAPON_GROUP.BOLTS)
+        } else if (weapon.getWeaponGroup() == WEAPON_GROUP.BOLTS) {
             SoundMaster.playRandomSoundVariant("weapon\\bow\\" + weapon.getWeaponSize(), false);
-        else
+        } else {
             SoundMaster.playRandomSoundVariant("weapon\\throw\\" + weapon.getWeaponSize(), false);
+        }
 
     }
 
@@ -53,18 +54,21 @@ public class DC_SoundMaster {
 
         if (shield.getWeaponSize() == WEAPON_SIZE.TINY
                 || shield.getWeaponSize() == WEAPON_SIZE.SMALL) {
-            if (RandomWizard.chance(75, new Random()))
+            if (RandomWizard.chance(75, new Random())) {
                 SoundMaster.playRandomSoundVariant(
                         "armor\\buckler\\s " + weaponObj.getDamageType(), false);
-            else
+            } else {
                 SoundMaster.playRandomSoundVariant("soundsets\\" + "armor\\buckler\\s", false);
+            }
         } else {
-            if (weaponObj != null)
-                if (RandomWizard.chance(75))
+            if (weaponObj != null) {
+                if (RandomWizard.chance(75)) {
                     SoundMaster.playRandomSoundVariant("soundsets\\" + "armor\\shield\\s "
                             + weaponObj.getDamageType(), false);
-                else
+                } else {
                     SoundMaster.playRandomSoundVariant("soundsets\\" + "armor\\shield\\s", false);
+                }
+            }
         }
 
     }
@@ -79,13 +83,16 @@ public class DC_SoundMaster {
 
         // cache = attackImpactSoundFilesCache.getOrCreate(armor_type+damage_type) TODO
         if (armor_type.isEmpty() && blocked > 0) {
-            if (attacked.getRef().getObj(KEYS.ARMOR) != null)
+            if (attacked.getRef().getObj(KEYS.ARMOR) != null) {
                 armor_type = attacked.getRef().getObj(KEYS.ARMOR).getProperty("ARMOR_GROUP");
-        } else
+            }
+        } else {
             natural = true;
+        }
 
-        if (armor_type.isEmpty())
+        if (armor_type.isEmpty()) {
             armor_type = ContentGenerator.getNaturalArmorTypeForUnit(attacked);
+        }
 
         if (!armor_type.isEmpty()) {
             String damage_type = weapon.getProperty("damage_type");
@@ -100,11 +107,12 @@ public class DC_SoundMaster {
 
     public static void playSoundForModeToggle(boolean on_off, DC_ActiveObj action, String mode) {
         // STD_ACTION_MODES
-        if (on_off)
+        if (on_off) {
             SoundMaster.playStandardSound(STD_SOUNDS.ON_OFF);
-            // SoundMaster.playStandardSound(STD_SOUNDS.CHAIN);
-        else
+        }// SoundMaster.playStandardSound(STD_SOUNDS.CHAIN);
+        else {
             SoundMaster.playStandardSound(STD_SOUNDS.ButtonDown);
+        }
 
     }
 
@@ -118,8 +126,9 @@ public class DC_SoundMaster {
         String path = SoundMaster.getPath() + "soundsets\\" + (natural ? "obj\\" : "armor\\")
                 + armor_type;
         File folder = FileManager.getFile(path);
-        if (!folder.isDirectory())
+        if (!folder.isDirectory()) {
             return;
+        }
         // filter -
         List<File> defaultSounds = FileManager.findFiles(folder, armor_type.charAt(0) + "", true,
                 true);

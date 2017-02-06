@@ -21,16 +21,18 @@ public class AutoAttackEffect extends DC_Effect {
         // auto-select action
         // getUnit().getAction(action)
         DC_ActiveObj attack = pickAttack();
-        if (attack == null)
+        if (attack == null) {
             return false;
+        }
         boolean result = attack.activate(ref);
         if (result) {
             if (getActiveObj().getParentAction() != null) {
                 getActiveObj().getParentAction().setLastSubaction(attack);
                 getActiveObj().getParentAction().getRef().setTarget(ref.getTarget());
             }
-        } else
+        } else {
             return false;
+        }
         // getRef().getActive()
         return true;
     }
@@ -47,28 +49,34 @@ public class AutoAttackEffect extends DC_Effect {
     private DC_ActiveObj pickAttack() {
         List<DC_ActiveObj> subActions = new LinkedList<>();
         for (DC_ActiveObj attack : getActiveObj().getSubActions()) {
-            if (attack.canBeActivated(ref, true))
-                if (attack.canBeTargeted(target))
+            if (attack.canBeActivated(ref, true)) {
+                if (attack.canBeTargeted(target)) {
                     subActions.add(attack);
+                }
+            }
         }
-        if (subActions.size() == 1)
+        if (subActions.size() == 1) {
             return subActions.get(0);
-        if (!getGame().isOffline())
+        }
+        if (!getGame().isOffline()) {
             if (!getUnit().isMine()) {
                 String name = WaitingThread.waitOrGetInput(HOST_CLIENT_CODES.CUSTOM_PICK);
                 return new ListMaster<DC_ActiveObj>().findType(name, subActions);
             }
-        if (getUnit().isAiControlled() || isPickAutomaticallyOn())
+        }
+        if (getUnit().isAiControlled() || isPickAutomaticallyOn()) {
             return pickAutomatically(subActions);
-        DC_ActiveObj pick = null;
+        }
+        DC_ActiveObj pick;
         try {
             pick = pickManually(subActions);
         } catch (Exception e) {
             e.printStackTrace();
             pick = pickAutomatically(subActions);
         }
-        if (pick != null)
+        if (pick != null) {
             return pick;
+        }
         return null;
     }
 
@@ -80,10 +88,13 @@ public class AutoAttackEffect extends DC_Effect {
     private DC_ActiveObj pickManually(List<DC_ActiveObj> subActions) {
         AttackChoicePanel dialog = new AttackChoicePanel(subActions, getTarget());
         DC_ActiveObj action = dialog.chooseEntity();
-        if (action != null)
-            if (!getGame().isOffline())
-                if (getGame().getConnection() != null)
+        if (action != null) {
+            if (!getGame().isOffline()) {
+                if (getGame().getConnection() != null) {
                     getGame().getConnection().send(HOST_CLIENT_CODES.CUSTOM_PICK, action.getName());
+                }
+            }
+        }
         return action;
         // Obj obj = DialogMaster.objChoice("Pick an Attack Type", subActions
         // .toArray(new DC_ActiveObj[subActions.size()]));
@@ -110,4 +121,4 @@ public class AutoAttackEffect extends DC_Effect {
         return pick;
     }
 
-};
+}

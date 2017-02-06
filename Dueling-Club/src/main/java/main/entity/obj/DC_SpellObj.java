@@ -79,8 +79,9 @@ public class DC_SpellObj extends DC_ActiveObj {
 
     @Override
     protected void addCustomMods() {
-        if (ownerObj.getCustomParamMap() == null)
+        if (ownerObj.getCustomParamMap() == null) {
             return;
+        }
         super.addCustomMods();
 
         for (PARAMETER param : DC_ContentManager.getCostParams()) {
@@ -104,26 +105,30 @@ public class DC_SpellObj extends DC_ActiveObj {
     }
 
     public SPELL_TYPE getSpellType() {
-        if (spellType == null)
+        if (spellType == null) {
             spellType = new EnumMaster<SPELL_TYPE>().retrieveEnumConst(SPELL_TYPE.class,
                     getProperty(G_PROPS.SPELL_TYPE));
-        if (spellType == null)
+        }
+        if (spellType == null) {
             spellType = DEFAULT_SPELL_TYPE;
+        }
         return spellType;
     }
 
     public SPELL_POOL getSpellPool() {
-        if (spellPool == null)
+        if (spellPool == null) {
             spellPool = new EnumMaster<SPELL_POOL>().retrieveEnumConst(SPELL_POOL.class,
                     getProperty(G_PROPS.SPELL_POOL));
+        }
         return spellPool;
 
     }
 
     public SPELL_GROUP getSpellGroup() {
-        if (spellPool == null)
+        if (spellPool == null) {
             spellGroup = new EnumMaster<SPELL_GROUP>().retrieveEnumConst(SPELL_GROUP.class,
                     getProperty(G_PROPS.SPELL_GROUP));
+        }
         return spellGroup;
     }
 
@@ -135,8 +140,9 @@ public class DC_SpellObj extends DC_ActiveObj {
         Chronos.mark(getName() + " reset");
         super.toBase();
         String prev_req = getParam(PARAMS.FOC_REQ);
-        if (StringMaster.isEmpty(prev_req))
+        if (StringMaster.isEmpty(prev_req)) {
             prev_req = "0";
+        }
         setParam(PARAMS.FOC_REQ, StringMaster.wrapInParenthesis(prev_req)
                 + ((!focReqMod.equals("0")) ? focReqMod : ""));
 
@@ -144,8 +150,9 @@ public class DC_SpellObj extends DC_ActiveObj {
 
         for (PARAMETER costModParam : getCostMods().keySet()) {
             String prev_value = getParam(costModParam);
-            if (StringMaster.isEmpty(prev_value))
+            if (StringMaster.isEmpty(prev_value)) {
                 prev_value = "0";
+            }
             setParam(costModParam, StringMaster.wrapInParenthesis(prev_value)
                     + getCostMods().get(costModParam));
             setCost(costModParam, getParam(costModParam));
@@ -157,10 +164,11 @@ public class DC_SpellObj extends DC_ActiveObj {
         // type = new ObjType(rawType);
         // }
         // }
-        if (SpellUpgradeMaster.applyUpgrades(this))
+        if (SpellUpgradeMaster.applyUpgrades(this)) {
             setCustomIcon(SpellUpgradeMaster.generateSpellIcon(this));
-        else
+        } else {
             setCustomIcon(null);
+        }
         // Chronos.logTimeElapsedForMark(getName() + " reset");
         setDirty(false);
     }
@@ -215,9 +223,9 @@ public class DC_SpellObj extends DC_ActiveObj {
 
     @Override
     public void initCosts() {
-        if (game.isDebugMode() && getGame().getTestMaster().isActionFree(getName()))
+        if (game.isDebugMode() && getGame().getTestMaster().isActionFree(getName())) {
             costs = new Costs(new LinkedList<Cost>());
-        else {
+        } else {
             costs = DC_CostsFactory.getCostsForSpell(this, isSpell());
             costs.getRequirements().add(
                     new Requirement(new NotCondition(new StatusCheckCondition(STATUS.SILENCED)),
@@ -234,8 +242,9 @@ public class DC_SpellObj extends DC_ActiveObj {
         SoundMaster.playEffectSound(SOUNDS.PRECAST, this);
         if (isChanneling()) {
             return activateChanneling();
-        } else
+        } else {
             return super.activate();
+        }
     }
 
     public boolean activateChanneling() {
@@ -249,9 +258,11 @@ public class DC_SpellObj extends DC_ActiveObj {
             ChannelingRule.playChannelingSound(this, HeroAnalyzer.isFemale(ownerObj));
             result = ChannelingRule.activateChanneing(this);
         }
-        if (result)
-            if (getOwner().isMe())
+        if (result) {
+            if (getOwner().isMe()) {
                 communicate(ref);
+            }
+        }
         channelingActivateCosts.pay(ref);
         actionComplete();
         return result;
@@ -264,16 +275,22 @@ public class DC_SpellObj extends DC_ActiveObj {
 
     @Override
     public boolean activate(Ref ref) {
-        if (getGame().isOnline())
-            if (getOwnerObj().isActiveSelected())
-                if (!channeling)
-                    if (isChanneling())
+        if (getGame().isOnline()) {
+            if (getOwnerObj().isActiveSelected()) {
+                if (!channeling) {
+                    if (isChanneling()) {
                         return activateChanneling();
+                    }
+                }
+            }
+        }
 
         ownerObj.getRef().setID(KEYS.SPELL, id);
-        if (!isQuietMode())
-            if (!new Event(STANDARD_EVENT_TYPE.SPELL_ACTIVATED, ref).fire())
+        if (!isQuietMode()) {
+            if (!new Event(STANDARD_EVENT_TYPE.SPELL_ACTIVATED, ref).fire()) {
                 return false;
+            }
+        }
         return super.activate(ref);
     }
 
@@ -308,8 +325,9 @@ public class DC_SpellObj extends DC_ActiveObj {
             if (DivinationMaster.rollRemove(this)) {
                 if (getBuff(DivinationMaster.BUFF_FAVORED) != null) {
                     removeBuff(DivinationMaster.BUFF_FAVORED);
-                } else
+                } else {
                     remove();
+                }
             }
         }
 
@@ -337,28 +355,36 @@ public class DC_SpellObj extends DC_ActiveObj {
     @Override
     public boolean resolve() {
 
-        if (!isQuietMode())
-            if (!new Event(STANDARD_EVENT_TYPE.SPELL_BEING_RESOLVED, ref).fire())
+        if (!isQuietMode()) {
+            if (!new Event(STANDARD_EVENT_TYPE.SPELL_BEING_RESOLVED, ref).fire()) {
                 return false;
-        if (isInterrupted())
+            }
+        }
+        if (isInterrupted()) {
             return true; // TODO group effects blocked?!
+        }
         boolean result = false;
 
         applySpellpowerMod();
         SoundMaster.playEffectSound(SOUNDS.RESOLVE, this);
         result = super.resolve();
-        if (result)
+        if (result) {
             applyImpactSpecialEffect();
+        }
 
-        if (!isQuietMode())
+        if (!isQuietMode()) {
             new Event(STANDARD_EVENT_TYPE.SPELL_RESOLVED, ref).fire();
+        }
 
-        if (!result)
-            if (channeling)
+        if (!result) {
+            if (channeling) {
                 SoundMaster.playEffectSound(SOUNDS.FAIL, this);
-            else
-                // try fail sound?
+            } else
+            // try fail sound?
+            {
                 SoundMaster.playStandardSound(STD_SOUNDS.SPELL_RESISTED);
+            }
+        }
 
         return result;
     }
@@ -371,13 +397,16 @@ public class DC_SpellObj extends DC_ActiveObj {
 
         // TODO spell itself should also have special effects available and
         // separate from unit's!
-        if (ref.getTargetObj() instanceof DC_UnitObj)
+        if (ref.getTargetObj() instanceof DC_UnitObj) {
             ownerObj.applySpecialEffects(case_type, (DC_UnitObj) ref.getTargetObj(), ref);
+        }
         if (ref.getGroup() != null) {
             for (Obj unit : ref.getGroup().getObjects()) {
-                if (unit != ref.getTargetObj())
-                    if (unit instanceof DC_UnitObj)
+                if (unit != ref.getTargetObj()) {
+                    if (unit instanceof DC_UnitObj) {
                         ownerObj.applySpecialEffects(case_type, (DC_UnitObj) unit, ref);
+                    }
+                }
             }
         }
     }
@@ -386,9 +415,10 @@ public class DC_SpellObj extends DC_ActiveObj {
         ownerObj.modifyParameter(PARAMS.SPELLPOWER, getIntParam(PARAMS.SPELLPOWER_BONUS));
 
         Integer perc = getIntParam(PARAMS.SPELLPOWER_MOD);
-        if (perc != 100)
+        if (perc != 100) {
             ownerObj.multiplyParamByPercent(PARAMS.SPELLPOWER, MathMaster.getFullPercent(perc),
                     false);
+        }
 
     }
 

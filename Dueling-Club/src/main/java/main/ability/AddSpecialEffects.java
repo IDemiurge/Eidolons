@@ -40,22 +40,25 @@ public class AddSpecialEffects extends MicroEffect {
         if (effects == null) {
             effects = new AbilityEffect(abilName).getEffects();
         }
-        if (!(ref.getTargetObj() instanceof DC_Obj))
+        if (!(ref.getTargetObj() instanceof DC_Obj)) {
             return false;
+        }
         DC_Obj targetObj = (DC_Obj) ref.getTargetObj();
 
         targetObj.addSpecialEffect(case_type, effects);
         if (triggerEffect == null) {
             triggerEffect = getTriggerEffect();
-            if (triggerEffect != null)
+            if (triggerEffect != null) {
                 triggerEffect.apply(ref);
+            }
         }
         return true;
     }
 
     public void remove() {
-        if (triggerEffect != null)
+        if (triggerEffect != null) {
             triggerEffect.remove();
+        }
 
     }
 

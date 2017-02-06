@@ -51,8 +51,9 @@ public class AHK_Master {
 
 	public static void main(String[] args) {
 		CoreEngine.setArcaneTower(true);
-		if (args.length > 0)
-			MusicCore.initMusicListTypes = true;
+        if (args.length > 0) {
+            MusicCore.initMusicListTypes = true;
+        }
 
 		CoreEngine.setSelectivelyReadTypes("Track;Music List;Script;");
 		XML_Writer.getBlocked().add(AT_OBJ_TYPE.TRACK);
@@ -72,9 +73,10 @@ public class AHK_Master {
 
 		generateScrips();
 		new MusicKeyMaster().initKeys();
-		if (generateLists)
-			M3uGenerator.generateCustomM3Us();
-		// showMusicListPanel("Full Session Collection.ahk");
+        if (generateLists) {
+            M3uGenerator.generateCustomM3Us();
+        }
+        // showMusicListPanel("Full Session Collection.ahk");
 		// showMusicListPanel("Full Rpg Lists.ahk");
 		showMusicListPanel(PATH + "Full Epic Lists.ahk");
 		// AT_Keys.initKeys();
@@ -82,9 +84,10 @@ public class AHK_Master {
 
 		// MusicCore.initDates();
 		XML_Writer.backUpAll();
-		if (repairLists)
-			M3uGenerator.repairM3uLists();
-	}
+        if (repairLists) {
+            M3uGenerator.repairM3uLists();
+        }
+    }
 
 	private static void generateScrips() {
 		for (String name : generated_scripts) {
@@ -97,28 +100,33 @@ public class AHK_Master {
 
 	public static void generateScript(String appendixPath, String filepath) {
 		String content = "";
-		for (String line : FileManager.readFileLines(appendixPath))
-			content += line + StringMaster.NEW_LINE;
-		for (String line : FileManager.readFileLines(CORE_PATH))
-			content += line + StringMaster.NEW_LINE;
-		FileManager.write(content, filepath);
+        for (String line : FileManager.readFileLines(appendixPath)) {
+            content += line + StringMaster.NEW_LINE;
+        }
+        for (String line : FileManager.readFileLines(CORE_PATH)) {
+            content += line + StringMaster.NEW_LINE;
+        }
+        FileManager.write(content, filepath);
 	}
 
 	public static Map<String, List<String>> getScriptViewMap(String script) {
-		if (!script.contains(PATH))
-			script = PATH + script;
-		Map<String, List<String>> map = new XLinkedMap<>();
+        if (!script.contains(PATH)) {
+            script = PATH + script;
+        }
+        Map<String, List<String>> map = new XLinkedMap<>();
 		for (String chars : StringMaster.openContainer(AHK_Master.qwerty, " ")) {
 			map.put(chars, new LinkedList<String>());
 		}
 		for (String line : FileManager.readFileLines(script)) {
-			if (!line.contains("Run C:\\playlists"))
-				continue;
-			// line = processComments(line);
+            if (!line.contains("Run C:\\playlists")) {
+                continue;
+            }
+            // line = processComments(line);
 			for (String chars : StringMaster.openContainer(AHK_Master.qwerty, " ")) {
-				if (chars.contains("" + AHK_Master.getLetter(line)))
-					map.get(chars).add(line);
-			}
+                if (chars.contains("" + AHK_Master.getLetter(line))) {
+                    map.get(chars).add(line);
+                }
+            }
 		}
 		return map;
 	}
@@ -138,9 +146,10 @@ public class AHK_Master {
 	private static int getY(char letter) {
 		int y = 50;
 		for (String chars : StringMaster.openContainer(qwerty, " ")) {
-			if (chars.contains("" + letter))
-				return y;
-			y += height;
+            if (chars.contains("" + letter)) {
+                return y;
+            }
+            y += height;
 		}
 		return y;
 	}
@@ -149,12 +158,14 @@ public class AHK_Master {
 		int x = 40;
 		for (String chars : StringMaster.openContainer(qwerty, " ")) {
 			x = 0;
-			for (char c : chars.toCharArray())
-				if (c == letter)
-					return x;
-				else
-					x += width;
-		}
+            for (char c : chars.toCharArray()) {
+                if (c == letter) {
+                    return x;
+                } else {
+                    x += width;
+                }
+            }
+        }
 		return x;
 	}
 
@@ -162,19 +173,22 @@ public class AHK_Master {
 		List<String> list = StringMaster.openContainer(line, "::");
 		String keyPart = list.get(0);
         // String funcPart = list.getOrCreate(1).trim();
-        if (keyPart.isEmpty())
+        if (keyPart.isEmpty()) {
             return 0;
+        }
         char letter = keyPart.charAt(keyPart.length() - 1);
         int letterCode = 1000;
         for (char c : qwerty.toCharArray()) {
-            if (c == letter)
+            if (c == letter) {
                 break;
-			letterCode += 100;
+            }
+            letterCode += 100;
 		}
 		for (char c : keyPart.toCharArray()) {
-			if (c == letter)
-				break;
-			letterCode += getModifierCode(c);
+            if (c == letter) {
+                break;
+            }
+            letterCode += getModifierCode(c);
 
 		}
 		return letterCode;
@@ -209,9 +223,10 @@ public class AHK_Master {
 	}
 
 	public static String getKeyModifiers(String keyPart) {
-		if (keyPart.isEmpty())
-			return "[NO HOTKEY]";
-		String tooltip = "";
+        if (keyPart.isEmpty()) {
+            return "[NO HOTKEY]";
+        }
+        String tooltip = "";
 		for (char c : keyPart.toCharArray()) {
 			tooltip += getModifierDescr(c) + "+";
 		}
@@ -221,9 +236,10 @@ public class AHK_Master {
 	public static char getLetter(String line) {
 		List<String> list = StringMaster.openContainer(line, "::");
 		String keyPart = list.get(0);
-		if (keyPart.isEmpty())
-			return '0';
-		char letter = keyPart.charAt(keyPart.length() - 1);
+        if (keyPart.isEmpty()) {
+            return '0';
+        }
+        char letter = keyPart.charAt(keyPart.length() - 1);
 		return letter;
 	}
 
@@ -317,11 +333,13 @@ return     new LinkedList<>() ; 	}
 	public static List<JButton> getButtonsFromActiveSubPanel() {
 		int n = 0;
 		while (true) {
-			if (n >= getPanel().getComponentCount() - 1)
-				break;
-			if (MusicMouseListener.getActivePanel() == getPanel().getView().getComponent(n))
-				break;
-			n++;
+            if (n >= getPanel().getComponentCount() - 1) {
+                break;
+            }
+            if (MusicMouseListener.getActivePanel() == getPanel().getView().getComponent(n)) {
+                break;
+            }
+            n++;
 		}
 		return getButtonLists().get(n);
 	}
@@ -333,13 +351,15 @@ return     new LinkedList<>() ; 	}
 			if (sub instanceof Container) {
 				Container container = (Container) sub;
 				for (Component btn : container.getComponents()) {
-					if (btn instanceof JButton)
-						list.add((JButton) btn);
-				}
+                    if (btn instanceof JButton) {
+                        list.add((JButton) btn);
+                    }
+                }
 			}
-			if (!list.isEmpty())
-				lists.add(list);
-		}
+            if (!list.isEmpty()) {
+                lists.add(list);
+            }
+        }
 		return lists;
 	}
 
@@ -362,11 +382,12 @@ return     new LinkedList<>() ; 	}
 		String content_non_music = "";
 		String content_music = "";
 		for (String sub : list) {
-			if (sub.contains(".m3u"))
-				content_music += sub + StringMaster.NEW_LINE;
-			else
-				content_non_music += sub + StringMaster.NEW_LINE;
-		}
+            if (sub.contains(".m3u")) {
+                content_music += sub + StringMaster.NEW_LINE;
+            } else {
+                content_non_music += sub + StringMaster.NEW_LINE;
+            }
+        }
 		FileManager.write(content_non_music, StringMaster.cropFormat(scriptPath) + " No Music.ahk");
 		FileManager.write(content_music, StringMaster.cropFormat(scriptPath) + " Music.ahk");
 	}
@@ -379,14 +400,17 @@ return     new LinkedList<>() ; 	}
 		List<String> list = FileManager.readFileLines(scriptPath);
 		String content = "";
 		for (String sub : list) {
-			if (sub.contains("Run "))
-				if (sub.contains(".m3u")) {
-					String string = sub.split("::")[0].trim();
-					if (Character.isDigit(string.charAt(string.length() - 1)))
-						// if (StringMaster.getFirstNumberIndex(generic)>1)
-						continue;
-				}
-			content += sub + StringMaster.NEW_LINE;
+            if (sub.contains("Run ")) {
+                if (sub.contains(".m3u")) {
+                    String string = sub.split("::")[0].trim();
+                    if (Character.isDigit(string.charAt(string.length() - 1)))
+                    // if (StringMaster.getFirstNumberIndex(generic)>1)
+                    {
+                        continue;
+                    }
+                }
+            }
+            content += sub + StringMaster.NEW_LINE;
 		}
 		FileManager.write(content, StringMaster.cropFormat(scriptPath) + " No Number Keys.ahk");
 
@@ -401,9 +425,10 @@ return     new LinkedList<>() ; 	}
 	}
 
 	public static MusicListPanel getWrappingPanel() {
-		if (wrappingPanel == null)
-			return panel;
-		return wrappingPanel;
+        if (wrappingPanel == null) {
+            return panel;
+        }
+        return wrappingPanel;
 	}
 
     public static void setWrappingPanel(MusicListPanel wrappingPanel) {

@@ -32,8 +32,9 @@ public class DataUnit<T extends Enum<T>> {
 
     public int getIntValue(String value) {
         String val = getValue(value);
-        if (StringMaster.isEmpty(val))
+        if (StringMaster.isEmpty(val)) {
             return 0;
+        }
         return StringMaster.getInteger(val);
     }
 
@@ -42,8 +43,9 @@ public class DataUnit<T extends Enum<T>> {
     }
 
     public T getEnumConst(String string) {
-        if (enumClass == null)
+        if (enumClass == null) {
             return null;
+        }
         return (T) new EnumMaster<>().getEnum(string, enumClass.getEnumConstants());
     }
 
@@ -72,12 +74,16 @@ public class DataUnit<T extends Enum<T>> {
     }
 
     public Map<String, String> getRemovedValues() {
-        if (removedValues==null )    removedValues = new ConcurrentMap< >();
+        if (removedValues == null) {
+            removedValues = new ConcurrentMap<>();
+        }
         return removedValues;
     }
 
     public void setValue(T name, String value) {
-        if (value==null )   removeValue(name);
+        if (value == null) {
+            removeValue(name);
+        }
         values.put(name.name(), value);
     }
     public void addValue(T name, String value) {
@@ -138,8 +144,9 @@ public class DataUnit<T extends Enum<T>> {
         String string = "";
         for (Coordinates c : objMap.keySet()) {
             String objTypeName = objMap.get(c).getName();
-            if (invert)
+            if (invert) {
                 c.invert();
+            }
             string += c.toString();
             string += StringMaster.getAltPairSeparator();
             string += objTypeName;
@@ -208,8 +215,9 @@ public class DataUnit<T extends Enum<T>> {
     public boolean equals(Object o) {
         if (o instanceof DataUnit) {
             DataUnit unit = (DataUnit) o;
-            if (unit.getData().equals(this.getData()))
+            if (unit.getData().equals(this.getData())) {
                 return true;
+            }
         }
         return false;
     }

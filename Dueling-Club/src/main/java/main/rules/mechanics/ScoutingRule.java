@@ -56,8 +56,9 @@ public class ScoutingRule extends RoundRule {
 
                 }
             }
-            if (level == null)
+            if (level == null) {
                 continue;
+            }
             logInfo(level, enemyWave);
         }
     }
@@ -65,11 +66,14 @@ public class ScoutingRule extends RoundRule {
     @Override
     public boolean check(DC_HeroObj unit) {
         if (PartyManager.getParty() == null) {
-            if (unit.isHero())
-                if (unit.getOwner().isMe())
+            if (unit.isHero()) {
+                if (unit.getOwner().isMe()) {
                     return true;
-        } else if (PartyManager.getParty().getMembers().contains(unit))
+                }
+            }
+        } else if (PartyManager.getParty().getMembers().contains(unit)) {
             return true;
+        }
         return false;
     }
 

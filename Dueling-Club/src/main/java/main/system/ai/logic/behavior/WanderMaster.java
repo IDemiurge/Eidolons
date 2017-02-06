@@ -27,11 +27,14 @@ public class WanderMaster {
         // permittedCells = ai.getGroup().getWanderBlocks();
         List<DC_Obj> list = new LinkedList<>();
         for (DC_Cell cell : Analyzer.getCells(ai, false, false, true)) {
-            if (d != null)
-                if (DirectionMaster.getRelativeDirection(cell, ai.getUnit()) != d)
+            if (d != null) {
+                if (DirectionMaster.getRelativeDirection(cell, ai.getUnit()) != d) {
                     continue;
-            if (PositionMaster.getDistance(cell, ai.getUnit()) <= ai.getMaxWanderDistance())
+                }
+            }
+            if (PositionMaster.getDistance(cell, ai.getUnit()) <= ai.getMaxWanderDistance()) {
                 list.add(cell);
+            }
         }
         if (list.isEmpty()) {
             // change direction?
@@ -45,13 +48,16 @@ public class WanderMaster {
         // // from original coordinate? Or 'last'?
         // ai.getGroup().getWanderDistance();
         boolean follow = ai.getGroup().isFollowLeader() || isFollowLeader(type);
-        if (follow)
-            if (isAheadOfLeader(ai))
+        if (follow) {
+            if (isAheadOfLeader(ai)) {
                 return null;
+            }
+        }
         DIRECTION direction = ai.getGroup().getWanderDirection();
         // DirectionMaster.getRelativeDirection(source, target);
-        if (direction == null)
+        if (direction == null) {
             return null;
+        }
         Coordinates c = ai.getUnit().getCoordinates().getAdjacentCoordinate(direction);
         return c;
         // auto-turn if facing ain't right? take relative *position*
@@ -73,11 +79,14 @@ public class WanderMaster {
         int maxTotal = getMaxWanderTotalDistance(group, type);
         Coordinates c2 = group.getWanderStepCoordinateStack().peek();
         int maxStep = getMaxWanderStepDistance(group, type);
-        if (PositionMaster.getDistance(c, ai.getUnit().getCoordinates()) > maxTotal)
+        if (PositionMaster.getDistance(c, ai.getUnit().getCoordinates()) > maxTotal) {
             return true;
-        if (c2 != null)
-            if (PositionMaster.getDistance(c2, ai.getUnit().getCoordinates()) > maxStep)
+        }
+        if (c2 != null) {
+            if (PositionMaster.getDistance(c2, ai.getUnit().getCoordinates()) > maxStep) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -88,18 +97,21 @@ public class WanderMaster {
 
     public static int getMaxWanderTotalDistance(GroupAI group, GOAL_TYPE type) {
         Boolean x_y_diag = !group.getWanderDirection().isVertical();
-        if (group.getWanderDirection().isDiagonal())
+        if (group.getWanderDirection().isDiagonal()) {
             x_y_diag = null;
+        }
         Dungeon dungeon = group.getLeader().getGame().getDungeon();
         switch (type) {
             case SEARCH:
             case STALK: // keep the distance from the *target*, not origin...
         } // group.getLeader().getGame().getDungeon().getCellsX()
-        if (x_y_diag == null)
+        if (x_y_diag == null) {
             return (int) Math
                     .round(Math.sqrt(dungeon.getSquare()) * getDistanceFactor(type, group));
-        if (x_y_diag)
+        }
+        if (x_y_diag) {
             return Math.round(dungeon.getCellsX() * getDistanceFactor(type, group));
+        }
         return Math.round(dungeon.getCellsY() * getDistanceFactor(type, group));
         // TODO maybe the block, the zone? Whole dungeon could be huge... or
         // small...
@@ -128,15 +140,16 @@ public class WanderMaster {
 
         boolean change = false;
 
-        if (checkUnitArrived(group.getLeader().getUnitAI(), type))
+        if (checkUnitArrived(group.getLeader().getUnitAI(), type)) {
             change = true;
-        else {
+        } else {
             List<UnitAI> forwards = new LinkedList<>();
             for (DC_HeroObj unit : group.getMembers()) {
                 UnitAI ai = unit.getUnitAI();
                 boolean done = checkUnitArrived(ai, type);
-                if (!done)
+                if (!done) {
                     done = checkProgressObstructed(group.getWanderDirection(), ai, type);
+                }
                 if (done)
                 // if (PositionMaster.getDistance(c,
                 // m.getUnit().getCoordinates()) > max)
@@ -181,15 +194,17 @@ public class WanderMaster {
     }
 
     public static void initPatrol(GroupAI group, boolean guard) {
-        if (!guard)
+        if (!guard) {
             try {
                 guard = group.getCreepGroup().getBlock().getType() == BLOCK_TYPE.CORRIDOR;
             } catch (Exception e) {
             }
-        if (guard)
+        }
+        if (guard) {
             group.setBackAndForth(true); // corridor?
-        else
+        } else {
             group.setClockwisePatrol(RandomWizard.random());
+        }
     }
 
     public static void changeGroupMoveDirection(GroupAI group, GOAL_TYPE type) {
@@ -199,11 +214,13 @@ public class WanderMaster {
             // back-forth or in circle (square); alternate or always
             // one-way-turn
             if (group.isBackAndForth()) // GUARD?
+            {
                 wanderDirection = DirectionMaster.rotate90(DirectionMaster.rotate90(
                         wanderDirection, true), true);
-            else
+            } else {
                 wanderDirection = DirectionMaster.rotate90(wanderDirection, group
                         .isClockwisePatrol());
+            }
 
         } else if (type == GOAL_TYPE.WANDER) {
             if (PositionMaster.getDistance(group.getOriginCoordinates(), group.getLeader()
@@ -213,11 +230,13 @@ public class WanderMaster {
             }
 
         }
-        if (wanderDirection == group.getWanderDirection())
-            if (RandomWizard.random() || RandomWizard.random())
+        if (wanderDirection == group.getWanderDirection()) {
+            if (RandomWizard.random() || RandomWizard.random()) {
                 wanderDirection = DirectionMaster.rotate45(wanderDirection, RandomWizard.random());
-            else
+            } else {
                 wanderDirection = DirectionMaster.rotate90(wanderDirection, RandomWizard.random());
+            }
+        }
         // if () //TODO change of opposite!
         // DirectionMaster.getDirectionByDegree(degrees);
         // getOrCreate direction by Leader's facing at the time, and make him
@@ -230,9 +249,10 @@ public class WanderMaster {
         DC_HeroObj unit = ai.getUnit();
         GroupAI group = ai.getGroup();
         boolean adjust = targetCoordinates == null;
-        if (!adjust)
+        if (!adjust) {
             adjust = (!unit.getGame().getRules().getStackingRule().canBeMovedOnto(unit,
                     targetCoordinates));
+        }
         if (adjust) {
             Coordinates c = null;
             Loop loop = new Loop(50);

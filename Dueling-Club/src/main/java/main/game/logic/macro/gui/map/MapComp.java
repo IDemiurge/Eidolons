@@ -61,7 +61,9 @@ public class MapComp implements MouseListener {
     public void generateComp() {
         setComp(getBackgroundComp());
         if (!MacroManager.isEditMode()) // TODO just remove and add again
+        {
             getComp().addMouseListener(this);
+        }
     }
 
     public void highlightsOff() {
@@ -89,13 +91,15 @@ public class MapComp implements MouseListener {
 
     private MapObjComp getComponent(Obj o, boolean repeat) {
         MapObjComp component = placeComps.get(o);
-        if (component == null)
+        if (component == null) {
             component = routeComps.get(o);
-        if (repeat)
+        }
+        if (repeat) {
             if (component == null) {
                 initComp(o);
                 return getComponent(o, false);
             }
+        }
         return component;
     }
 
@@ -104,11 +108,13 @@ public class MapComp implements MouseListener {
         getComp().removeAll();
         G_Panel backgroundComp = getBackgroundComp();
         getComp().add(backgroundComp); // ++ border of sorts?
-        if (listener != null)
+        if (listener != null) {
             backgroundComp.addMouseListener(listener);
+        }
         index = 0;
-        if (playerPartyComp == null)
+        if (playerPartyComp == null) {
             playerPartyComp = new PartyComp(getParty());
+        }
         Coordinates ppp = getPlayerPartyPoint();
         getComp().add(playerPartyComp.getComp(), "pos " + ppp.x + " " + ppp.y);
         comp.setComponentZOrder(playerPartyComp.getComp(), index);
@@ -225,11 +231,12 @@ public class MapComp implements MouseListener {
         for (Route r : getRegion().getRoutes()) {
             // TODO not all routes should be *displayed*, really...
             r.resetCoordinates();
-            if (r.isVisible())
+            if (r.isVisible()) {
                 if (r.isAvailable() || isAllRoutesDisplayedOn()) {
                     RouteComp routeComp = getRouteComp(r);
                     routes.put(adjustRouteCoordinate(routeComp), routeComp);
                 }
+            }
         }
     }
 
@@ -264,10 +271,11 @@ public class MapComp implements MouseListener {
             return c;
         }
 
-        if (party.getCurrentLocation() != null)
+        if (party.getCurrentLocation() != null) {
             c = party.getCurrentLocation().getCoordinates();
-        else
+        } else {
             c = party.getCurrentLocation().getCoordinates();
+        }
         // 'attached' objects?
         return new Coordinates(true, c.x
                 + MacroGuiManager.PARTY_MAP_DISPLACEMENT_X, c.y

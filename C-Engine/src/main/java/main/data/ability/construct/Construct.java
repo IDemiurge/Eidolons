@@ -174,8 +174,9 @@ public class Construct {
 
     @SuppressWarnings("rawtypes")
     public Object construct() {
-        if (primitive)
+        if (primitive) {
             return constructPrimitive();
+        }
         if (ENUM) {
             Object obj = constructEnum();
             return obj;
@@ -185,8 +186,9 @@ public class Construct {
         LinkedList<Object> args = new LinkedList<Object>();
         for (Construct construct : constructs) {
             Object object = construct.construct();
-            if (object instanceof Reconstructable)
+            if (object instanceof Reconstructable) {
                 ((Reconstructable) object).setConstruct(construct);
+            }
             if (object == null) {
                 main.system.auxiliary.LogMaster.log(1, "null object in construct: " + construct);
             }
@@ -201,14 +203,16 @@ public class Construct {
             argList.add(constr.getArg());
         }
         AE_Item item = Mapper.getItem(className, argList);
-        if (item != null)
-            if (!item.isContainer())
+        if (item != null) {
+            if (!item.isContainer()) {
                 if (item.getConstr() != null) {
 
                     Constructor<?> constructor = item.getConstr();
                     result = invokeConstructor(constructor, args);
                     return result;
                 }
+            }
+        }
         Class<?> CLASS = Mapper.getMappedClass(className);
 
         if (CLASS == null) {
@@ -217,8 +221,9 @@ public class Construct {
             return null;
         }
         for (Constructor<?> constructor : CLASS.getConstructors()) {
-            if (!checkConstructor(constructor, constructs))
+            if (!checkConstructor(constructor, constructs)) {
                 continue;
+            }
             result = invokeConstructor(constructor, args);
 
         }
@@ -247,12 +252,14 @@ public class Construct {
 
     private boolean checkConstructor(Constructor<?> constructor, List<Construct> constructs) {
         Class<?>[] argTypes = constructor.getParameterTypes();
-        if (argTypes.length != constructs.size())
+        if (argTypes.length != constructs.size()) {
             return false;
+        }
         int i = 0;
         for (Construct c : constructs) {
-            if (Mapper.translateToCoreClass(c.getClassName()) != argTypes[i])
+            if (Mapper.translateToCoreClass(c.getClassName()) != argTypes[i]) {
                 return false;
+            }
             i++;
             // c.getCLASS() !=
         }

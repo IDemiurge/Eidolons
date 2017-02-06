@@ -54,8 +54,9 @@ public class MusicKeyMaster implements HotkeyListener {
                     playRandomFromGroupHotkey(aIdentifier);
                     return;
                 }
-                if (!checkSpecialHotkey(aIdentifier))
+                if (!checkSpecialHotkey(aIdentifier)) {
                     return;
+                }
 
                 int mod = getModFromHotkeyId(aIdentifier);
                 int i = aIdentifier % 10;
@@ -109,9 +110,11 @@ public class MusicKeyMaster implements HotkeyListener {
             int mod = getModFromHotkeyId(i);
             int keyCode = KeyEvent.getExtendedKeyCodeForChar(Character.forDigit(i == 10 ? 0
              : i % 10, 10));
-            if (mod == JIntellitype.MOD_CONTROL)
-                if (i % 10 == 1)
+            if (mod == JIntellitype.MOD_CONTROL) {
+                if (i % 10 == 1) {
                     continue;// eclipse :)
+                }
+            }
             JIntellitype.getInstance().registerHotKey(i, mod, keyCode);
         }
         int i = 1;// win+f1 taken by windows help...
@@ -119,30 +122,34 @@ public class MusicKeyMaster implements HotkeyListener {
         JIntellitype.getInstance().registerHotKey(1000,
          JIntellitype.MOD_CONTROL + JIntellitype.MOD_SHIFT, getFx(0));
         for (MUSIC_TYPE n : MUSIC_TYPE.values()) {
-            if (getFx(i) == 0)
+            if (getFx(i) == 0) {
                 break;
+            }
             JIntellitype.getInstance().registerHotKey(1000 + i, JIntellitype.MOD_WIN, getFx(i));
             i++;
         }
         i = 0;
         for (MUSIC_TAG_GROUPS n : MUSIC_TAG_GROUPS.values()) {
-            if (getFx(i) == 0)
+            if (getFx(i) == 0) {
                 break;
+            }
             JIntellitype.getInstance().registerHotKey(2000 + i, JIntellitype.MOD_SHIFT, getFx(i));
             i++;
         }
         i = 0;
         for (MUSIC_TYPE n : MUSIC_TYPE.values()) {
-            if (getFx(i) == 0)
+            if (getFx(i) == 0) {
                 break;
+            }
             JIntellitype.getInstance().registerHotKey(3000 + i,
              JIntellitype.MOD_WIN+JIntellitype.MOD_SHIFT, getFx(i));
             i++;
         }
         i = 0;
         for (MUSIC_TAG_GROUPS n : MUSIC_TAG_GROUPS.values()) {
-            if (getFx(i) == 0)
+            if (getFx(i) == 0) {
                 break;
+            }
             JIntellitype.getInstance().registerHotKey(4000 + i,
              JIntellitype.MOD_WIN+JIntellitype.MOD_CONTROL, getFx(i));
             i++;
@@ -232,30 +239,37 @@ public class MusicKeyMaster implements HotkeyListener {
         if (random) {
             types = new LinkedList<>(DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST));
             Collections.shuffle(types);
-        }else
-            types =    new LinkedList<>() ;
+        } else {
+            types = new LinkedList<>();
+        }
 
         for (ObjType type :random?  types :DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST)) {
-            if (checkRandomGroup(type, c, tag, random))
+            if (checkRandomGroup(type, c, tag, random)) {
                 if (random) {
                     new MusicList(type).play();
                     return;
-                } else types.add(type);
+                } else {
+                    types.add(type);
+                }
+            }
         }
         ObjType type = ListChooser.chooseType(types);
-        if (type != null)
+        if (type != null) {
             new MusicList(type).play();
+        }
     }
 
     private boolean checkRandomGroup(ObjType type, Object c, boolean tag, boolean random) {
-        if (random)
+        if (random) {
             for (Pair<VALUE, String> pair : MusicCore.getFilterValues()) {
-            if (MusicCore.isFilterOut()) {
-            if (type.checkValue(pair.getKey(), pair.getValue()))
-                return false;
-            }else
-            if (!type.checkValue(pair.getKey(), pair.getValue()))
-                return false;
+                if (MusicCore.isFilterOut()) {
+                    if (type.checkValue(pair.getKey(), pair.getValue())) {
+                        return false;
+                    }
+                } else if (!type.checkValue(pair.getKey(), pair.getValue())) {
+                    return false;
+                }
+            }
         }
         AT_PROPS PROP = tag ? AT_PROPS.MUSIC_TAGS : AT_PROPS.MUSIC_TYPE;
         if (tag) {

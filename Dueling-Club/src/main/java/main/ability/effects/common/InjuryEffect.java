@@ -32,20 +32,22 @@ public class InjuryEffect extends DC_Effect {
 
     private INJURY getRandomInjury() {
         INJURY injury = new EnumMaster<INJURY>().getRandomEnumConst(INJURY.class);
-        while (!(type == null || type == injury.getType()))
+        while (!(type == null || type == injury.getType())) {
             injury = new EnumMaster<INJURY>().getRandomEnumConst(INJURY.class);
+        }
         return injury;
     }
 
     @Override
     public boolean applyThis() {
         int mod = 100 - getTarget().getIntParam(PARAMS.INJURY_RESISTANCE);
-        if (mod <= 0)
+        if (mod <= 0) {
             return true;
-        INJURY injury = null;
-        if (template != null)
+        }
+        INJURY injury;
+        if (template != null) {
             injury = template;
-        else {
+        } else {
             injury = getRandomInjury();
         }
         // check applicable
@@ -53,8 +55,9 @@ public class InjuryEffect extends DC_Effect {
                 StringMaster.getWellFormattedString(injury.toString()));
         Effects effects = EffectMaster.initParamModEffects(injury.getModString(), ref);
         // TODO ++ PROPS
-        if (mod != 100)
+        if (mod != 100) {
             effects.modifyFormula(mod);
+        }
         effects.apply(ref);
         return true;
     }

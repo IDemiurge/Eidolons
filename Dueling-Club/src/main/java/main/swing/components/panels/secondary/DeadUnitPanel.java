@@ -64,10 +64,11 @@ public class DeadUnitPanel extends G_PagedListPanel<DC_HeroObj> implements Mouse
                 cell.getCoordinates());
 
         Collection<DC_HeroObj> units = new LinkedList<>();
-        if (corpses != null)
+        if (corpses != null) {
             for (Obj obj : corpses) {
                 units.add((DC_HeroObj) obj);
             }
+        }
         return splitList(units);
     }
 
@@ -79,10 +80,12 @@ public class DeadUnitPanel extends G_PagedListPanel<DC_HeroObj> implements Mouse
     @Override
     public void mouseClicked(MouseEvent e) {
         DC_HeroObj unit = getList().getSelectedValue();
-        if (unit == null)
+        if (unit == null) {
             return;
-        if (unit.getGame().getManager().isSelecting() || SwingUtilities.isRightMouseButton(e))
+        }
+        if (unit.getGame().getManager().isSelecting() || SwingUtilities.isRightMouseButton(e)) {
             unit.getGame().getManager().objClicked(unit);
+        }
         // or if (isDialog())
 
     }

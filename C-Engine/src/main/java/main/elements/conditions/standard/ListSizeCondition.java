@@ -28,12 +28,14 @@ public class ListSizeCondition extends MicroCondition {
     public boolean check() {
 
         OBJ_TYPE TYPE = C_OBJ_TYPE.BF;
-        if (bfObj)
+        if (bfObj) {
             TYPE = C_OBJ_TYPE.BF_OBJ;
-        if (filter == null)
+        }
+        if (filter == null) {
             filter = new Filter<Entity>(ref, c, TYPE);
-        else
+        } else {
             filter.setRef(ref);
+        }
 
         int size = new Formula(sizeFormula).getInt(ref);
 

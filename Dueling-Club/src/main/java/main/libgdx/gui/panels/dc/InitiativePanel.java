@@ -93,7 +93,9 @@ public class InitiativePanel extends Group {
 
     private int getLastEmptySlot() {
         for (int i = 0; i < queue.length; i++) {
-            if (queue[i] == null) return i;
+            if (queue[i] == null) {
+                return i;
+            }
         }
         extendQueue();
         return 0;
@@ -131,7 +133,9 @@ public class InitiativePanel extends Group {
     @Override
     public Actor hit(float x, float y, boolean touchable) {
         Actor actor = super.hit(x, y, touchable);
-        if (actor == this) actor = null;
+        if (actor == this) {
+            actor = null;
+        }
         return actor;
     }
 
@@ -155,8 +159,12 @@ public class InitiativePanel extends Group {
                         queue[ip1] = cur;
                         queue[i] = next;
                         for (int y = i; y > 0; y--) {
-                            if (queue[y - 1] == null) break;
-                            if (queue[y].initiative >= queue[y - 1].initiative) break;
+                            if (queue[y - 1] == null) {
+                                break;
+                            }
+                            if (queue[y].initiative >= queue[y - 1].initiative) {
+                                break;
+                            }
                             ImageContainer buff = queue[y - 1];
                             queue[y - 1] = queue[y];
                             queue[y] = buff;
@@ -201,7 +209,9 @@ public class InitiativePanel extends Group {
 
     private ImageContainer getIfExists(int id) {
         for (int i = 0; i < queue.length; i++) {
-            if (queue[i] != null && queue[i].id == id) return queue[i];
+            if (queue[i] != null && queue[i].id == id) {
+                return queue[i];
+            }
         }
         return null;
     }

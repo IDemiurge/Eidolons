@@ -158,8 +158,9 @@ public class FAST_DC {
         if (host_client != null) {
             netGame = TestMode.launch(host_client);
             // OptionsMaster.setOption(SOUND_OPTION.VOICE_OFF, true);
-            if (!LOCALHOST)
+            if (!LOCALHOST) {
                 Player.setSwitcher(false);
+            }
             if (!host_client) {
                 requestDataFromHost();
 
@@ -176,35 +177,41 @@ public class FAST_DC {
                 PresetLauncher.PRESET_OPTION = StringMaster.getInteger(args[1]);
                 FAST_MODE = PresetLauncher.chooseLaunchOption();
             } else if (arglist.contains(PRESET_ARG)) {
-                if (arglist.size() > 1)
+                if (arglist.size() > 1) {
                     gameLauncher.PLAYER_PARTY = arglist.get(1);
-                if (arglist.size() > 2)
+                }
+                if (arglist.size() > 2) {
                     gameLauncher.ENEMY_PARTY = arglist.get(2);
-                if (arglist.size() > 3)
+                }
+                if (arglist.size() > 3) {
                     DEFAULT_DUNGEON = arglist.get(3);
+                }
 
             }
             gameLauncher.ENEMY_CODE = CODE.PRESET;
             gameLauncher.PARTY_CODE = CODE.PRESET;
         }
         gameLauncher.setDungeon(DEFAULT_DUNGEON);
-        if (!skipChoice)
+        if (!skipChoice) {
             if (BEHAVIOR_TEST_ON) {
                 SUPER_FAST_MODE = true;
             } else {
                 FAST_MODE = PresetLauncher.chooseLaunchOption();
-                if (BooleanMaster.isFalse(FAST_MODE))
+                if (BooleanMaster.isFalse(FAST_MODE)) {
                     SUPER_FAST_MODE = true;
+                }
             }
-        if (!skipChoice)
+        }
+        if (!skipChoice) {
             if (FAST_MODE != null) {
                 if (FAST_MODE || SUPER_FAST_MODE) {
                     gameLauncher.ENEMY_CODE = CODE.NONE;
                     gameLauncher.PARTY_CODE = CODE.PRESET;
                     gameLauncher.LEADER_MOVES_FIRST = true;
                     gameLauncher.VISION_HACK = SUPER_FAST_MODE;
-                    if (SUPER_FAST_MODE)
+                    if (SUPER_FAST_MODE) {
                         DungeonMaster.CHOOSE_LEVEL = false;
+                    }
                     // preset
                     ItemGenerator.setGenerationOn(!SUPER_FAST_MODE
 //                      &&!FAST_MODE
@@ -215,6 +222,7 @@ public class FAST_DC {
                 }
 
             }
+        }
         if (!CoreEngine.isSwingOn()) {
             DENIS_Launcher.main(new String[]{});
         }
@@ -222,13 +230,14 @@ public class FAST_DC {
         CoreEngine.setTEST_MODE(true);
         DC_Engine.init();
         Chronos.mark("GAME LAUNCHED");
-        if (host_client != null)
+        if (host_client != null) {
             initNetGame();
+        }
 
         game = gameLauncher.initDC_Game();
         game.setHostClient(host_client);
         game.start(true);
-        if (CoreEngine.isSwingOn())
+        if (CoreEngine.isSwingOn()) {
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
                     @Override
@@ -239,14 +248,16 @@ public class FAST_DC {
             } catch (InvocationTargetException | InterruptedException e1) {
                 e1.printStackTrace();
             }
+        }
         initKeyManager();
 
-        if (MINIMAP_TEST_ON)
+        if (MINIMAP_TEST_ON) {
             try {
                 Launcher.setView(VIEWS.MINI_MAP);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
 
         // if (BEHAVIOR_TEST_ON) {
         // WaitMaster.WAIT(500);
@@ -265,16 +276,19 @@ public class FAST_DC {
 
         if (PresetMaster.getPreset() != null) {
             String party = PresetMaster.getPreset().getValue(PRESET_DATA.ENEMY_PARTY);
-            if (party != null)
+            if (party != null) {
                 playerEnemy = new DC_Player("Client", Color.cyan, false, !host_client, party);
+            }
         }
         if (host_client) {
             game = new DC_Game(netGame, playerMe, playerEnemy);
-        } else
+        } else {
             game = new DC_Game(netGame.getConnection(), netGame.getHostedGame(), playerEnemy,
                     playerMe);
-        if (gameLauncher != null)
+        }
+        if (gameLauncher != null) {
             gameLauncher.setGame(game);
+        }
         game.setGameMode(GAME_MODES.DUEL);
     }
 
@@ -298,16 +312,19 @@ public class FAST_DC {
         HOST_CLIENT_CODES code = HOST_CLIENT_CODES.GAME_DATA_REQUEST;
         connection.send(code);
         String data = null;
-        if (new WaitingThread(code).waitForInput())
+        if (new WaitingThread(code).waitForInput()) {
             data = WaitingThread.getINPUT(code);
+        }
         if (StringMaster.isInteger(data)) {
             Integer integer = StringMaster.getInteger(data);
-            if (integer == 1)
+            if (integer == 1) {
                 SUPER_FAST_MODE = true;
-            else if (integer == 2)
+            } else if (integer == 2) {
                 SUPER_FAST_MODE = true;
-        } else
+            }
+        } else {
             initNetData(data);
+        }
     }
 
     // ////////////// GUI \\\\\\\\\\\\\\\\\\
@@ -321,8 +338,9 @@ public class FAST_DC {
     private static void initKeyManager() {
         keyManager = new DC_KeyManager(game.getManager());
         keyManager.init();
-        if (GLOBAL_HOTKEYS_ON)
+        if (GLOBAL_HOTKEYS_ON) {
             new GlobalKeys().initDC_GlobalKeys();
+        }
     }
 
     public static GameLauncher getGameLauncher() {

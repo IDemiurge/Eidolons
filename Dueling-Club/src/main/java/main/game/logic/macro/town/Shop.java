@@ -63,13 +63,16 @@ public class Shop extends TownPlace {
                             .openContainer(getProperty(MACRO_PROPS.SHOP_ITEMS)),
                     C_OBJ_TYPE.ITEMS);
         }
-        if (getIntParam(PARAMS.GOLD) == 0)
+        if (getIntParam(PARAMS.GOLD) == 0) {
             setParam(PARAMS.GOLD, ShopMaster.getBaseGold(this));
-        if (getIntParam(PARAMS.GOLD_MOD) == 0)
+        }
+        if (getIntParam(PARAMS.GOLD_MOD) == 0) {
             setParam(PARAMS.GOLD_MOD, ShopMaster.getBaseGoldCostMod(this), true);
-        if (getIntParam(MACRO_PARAMS.SHOP_INCOME) == 0)
+        }
+        if (getIntParam(MACRO_PARAMS.SHOP_INCOME) == 0) {
             setParam(MACRO_PARAMS.SHOP_INCOME,
                     ShopMaster.getBaseGoldIncome(this), true);
+        }
         items = new LinkedList<>();
         // addStandardItems(); then randomize
         PROPERTY prop = getShopType().getFilterProp();
@@ -109,10 +112,12 @@ public class Shop extends TownPlace {
             while (!Loop.loopEnded() && !pool.isEmpty()) {
                 int randomListIndex = RandomWizard.getRandomListIndex(pool);
                 ObjType t = pool.get(randomListIndex);
-                if (t == null)
+                if (t == null) {
                     continue;
-                if (!buyItem(t))
+                }
+                if (!buyItem(t)) {
                     break; // second loop based on cheapest items?
+                }
             }
         }
     }
@@ -130,11 +135,12 @@ public class Shop extends TownPlace {
 
         // TODO AND WHAT ABOUT NON-SLOT ITEMS?
         List<ObjType> filtered = new LinkedList<>();
-        for (MATERIAL material : MATERIAL.values())
+        for (MATERIAL material : MATERIAL.values()) {
             if (ShopMaster.checkMaterialAllowed(this, material)) {
                 for (ObjType t : pool) {
-                    if (!ItemGenerator.checkMaterial(t, material.getGroup()))
+                    if (!ItemGenerator.checkMaterial(t, material.getGroup())) {
                         continue;
+                    }
                     for (QUALITY_LEVEL q : ShopMaster.getQualityLevels(this)) {
                         filtered.add(ItemGenerator.getGeneratedItem(t,
                                 material, q));
@@ -142,6 +148,7 @@ public class Shop extends TownPlace {
                 }
 
             }
+        }
 
         // getShopLevel().getMaxCostFactor();
 
@@ -170,8 +177,9 @@ public class Shop extends TownPlace {
     }
 
     private void refreshGui() {
-        if (shopListsPanel == null)
+        if (shopListsPanel == null) {
             return;
+        }
         shopListsPanel.resetTab(getName());
         CharacterCreator.refreshGUI();
     }
@@ -181,8 +189,9 @@ public class Shop extends TownPlace {
 
         cost = MathMaster.addFactor(cost, getIntParam(PARAMS.GOLD_MOD));
 
-        if (cost > getIntParam(PARAMS.GOLD) * goldToSpend / 100)
+        if (cost > getIntParam(PARAMS.GOLD) * goldToSpend / 100) {
             return false;
+        }
         buyItem(t, cost);
 
         return true;
@@ -195,34 +204,38 @@ public class Shop extends TownPlace {
     }
 
     public SHOP_TYPE getShopType() {
-        if (shopType == null)
+        if (shopType == null) {
             shopType = new EnumMaster<SHOP_TYPE>().retrieveEnumConst(
                     SHOP_TYPE.class, getProperty(MACRO_PROPS.SHOP_TYPE));
+        }
         return shopType;
     }
 
     public SHOP_LEVEL getShopLevel() {
-        if (shopLevel == null)
+        if (shopLevel == null) {
             shopLevel = new EnumMaster<SHOP_LEVEL>().retrieveEnumConst(
                     SHOP_LEVEL.class, getProperty(MACRO_PROPS.SHOP_LEVEL));
+        }
         return shopLevel;
     }
 
     public SHOP_MODIFIER getShopModifier() {
-        if (shopModifier == null)
+        if (shopModifier == null) {
             shopModifier = new EnumMaster<SHOP_MODIFIER>()
                     .retrieveEnumConst(SHOP_MODIFIER.class,
                             getProperty(MACRO_PROPS.SHOP_MODIFIER));
+        }
         return shopModifier;
     }
 
     public Collection<? extends ObjType> getItems() {
-        if (items == null)
+        if (items == null) {
             try {
                 initItems();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
         return items;
     }
 

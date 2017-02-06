@@ -31,8 +31,9 @@ public class ZoneEffect extends SpecialTargetingEffect
         this.radius = radius;
         this.allyOrEnemyOnly = allyOrEnemyOnly;
         this.notSelf = notSelf;
-        if (reductionFormula != null)
+        if (reductionFormula != null) {
             this.reductionFormula = new Formula(reductionFormula);
+        }
         effects.setReconstruct(true);
     }
 
@@ -59,8 +60,10 @@ public class ZoneEffect extends SpecialTargetingEffect
         }
         if (allyOrEnemyOnly != null) // TODO target filtering - targeting
             // modifiers?
+        {
             conditions.add(allyOrEnemyOnly ? ConditionMaster.getAllyCondition() : ConditionMaster
                     .getEnemyCondition());
+        }
 
         // legacy?
         // if (allyOrEnemyOnly==null)
@@ -73,8 +76,9 @@ public class ZoneEffect extends SpecialTargetingEffect
 //            if (effects.getSpell().checkBool(STD_BOOLS.APPLY_THRU))
         this.targeting = new AutoTargeting(conditions, C_OBJ_TYPE.BF);
 
-        if (targeting == null)
+        if (targeting == null) {
             this.targeting = new AutoTargeting(conditions, C_OBJ_TYPE.BF_OBJ);
+        }
         setFilteringConditions(conditions);
     }
 

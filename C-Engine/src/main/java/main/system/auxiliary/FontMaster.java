@@ -25,8 +25,9 @@ public class FontMaster {
         while (keys.hasMoreElements()) {
             Object key = keys.nextElement();
             Object value = UIManager.get(key);
-            if (value != null && value instanceof javax.swing.plaf.FontUIResource)
+            if (value != null && value instanceof javax.swing.plaf.FontUIResource) {
                 UIManager.put(key, f);
+            }
         }
     }
 
@@ -40,8 +41,9 @@ public class FontMaster {
 
     public static Font getFont(FONT f, float size, int style) {
 
-        if (style == 0)
+        if (style == 0) {
             style = Font.PLAIN;
+        }
         // if (f.font==null )
         // return PrismFontFactory.getSystemFont(null);
         return f.font.deriveFont(style, size);
@@ -52,8 +54,9 @@ public class FontMaster {
     }
 
     public static void init() {
-        if (initialized)
+        if (initialized) {
             return;
+        }
 
         if (!CoreEngine.isArcaneVault()) {
             System.setProperty("awt.useSystemAAFontSettings", "on");

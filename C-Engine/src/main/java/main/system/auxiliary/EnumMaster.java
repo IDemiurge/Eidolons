@@ -1,7 +1,7 @@
 package main.system.auxiliary;
 
 import main.content.*;
-import main.content.CONTENT_CONSTS.CUSTOM_HERO_GROUP;
+import main.content.enums.CUSTOM_HERO_GROUP;
 import main.content.parameters.PARAMETER;
 import main.content.parameters.Param;
 import main.content.properties.G_PROPS;
@@ -40,15 +40,18 @@ public class EnumMaster<T> {
 
     private static Class<?> getContentConstantEnum(String name) {
         Class<?> CLASS = checkStdEnumClasses(name);
-        if (CLASS != null)
+        if (CLASS != null) {
             return CLASS;
+        }
 
         CLASS = getEnumClass(name, CONSTS_CLASS);
-        if (CLASS != null)
+        if (CLASS != null) {
             return CLASS;
+        }
         CLASS = getEnumClass(name, CONSTS_CLASS2);
-        if (CLASS != null)
+        if (CLASS != null) {
             return CLASS;
+        }
 
         CLASS = getEnumClass(name, getALT_CONSTS_CLASS());
 
@@ -57,9 +60,11 @@ public class EnumMaster<T> {
 
     private static Class<?> checkStdEnumClasses(String name) {
         for (Class<?> CLASS : STD_ENUM_CLASSES) {
-            if (CLASS.isEnum())
-                if (StringMaster.compare(CLASS.getSimpleName(), name, true))
+            if (CLASS.isEnum()) {
+                if (StringMaster.compare(CLASS.getSimpleName(), name, true)) {
                     return CLASS;
+                }
+            }
         }
         return null;
     }
@@ -69,41 +74,53 @@ public class EnumMaster<T> {
     }
 
     public static Class<?> getEnumClass(String name, Class<?> CONSTS_CLASS, boolean closest) {
-        if (CONSTS_CLASS == null)
+        if (CONSTS_CLASS == null) {
             return null;
-        for (Class<?> CLASS : CONSTS_CLASS.getDeclaredClasses()) {
-            if (CLASS.isEnum())
-                if (CLASS.getSimpleName().equals(name))
-                    return CLASS;
         }
         for (Class<?> CLASS : CONSTS_CLASS.getDeclaredClasses()) {
-            if (CLASS.isEnum())
-                if (CLASS.getSimpleName().equalsIgnoreCase(name))
+            if (CLASS.isEnum()) {
+                if (CLASS.getSimpleName().equals(name)) {
                     return CLASS;
+                }
+            }
         }
         for (Class<?> CLASS : CONSTS_CLASS.getDeclaredClasses()) {
-            if (CLASS.isEnum())
-                if (StringMaster.compare(name, CLASS.getSimpleName(), true))
+            if (CLASS.isEnum()) {
+                if (CLASS.getSimpleName().equalsIgnoreCase(name)) {
                     return CLASS;
+                }
+            }
         }
         for (Class<?> CLASS : CONSTS_CLASS.getDeclaredClasses()) {
-            if (CLASS.isEnum())
-                if (StringMaster.compare(name, CLASS.getSimpleName(), false))
+            if (CLASS.isEnum()) {
+                if (StringMaster.compare(name, CLASS.getSimpleName(), true)) {
                     return CLASS;
+                }
+            }
         }
-        if (closest)
+        for (Class<?> CLASS : CONSTS_CLASS.getDeclaredClasses()) {
+            if (CLASS.isEnum()) {
+                if (StringMaster.compare(name, CLASS.getSimpleName(), false)) {
+                    return CLASS;
+                }
+            }
+        }
+        if (closest) {
             return new SearchMaster<Class<?>>().findClosest(name, Arrays.asList(CONSTS_CLASS
                     .getDeclaredClasses()));
+        }
 
         return null;
     }
 
     public static List<Object> getEnumConstants(Class<?> enumClass) {
-        if (!enumClass.isEnum())
+        if (!enumClass.isEnum()) {
             return null;
+        }
         List<Object> list = new LinkedList<Object>();
-        for (Object obj : enumClass.getEnumConstants())
+        for (Object obj : enumClass.getEnumConstants()) {
             list.add(obj);
+        }
         return list;
     }
 
@@ -118,31 +135,36 @@ public class EnumMaster<T> {
             return null;
         }
         List<String> list = new LinkedList<String>();
-        for (Object obj : enumClass.getEnumConstants())
+        for (Object obj : enumClass.getEnumConstants()) {
             list.add(obj.toString());
+        }
         return list;
     }
 
     public static Object getEnumConst(Class<?> class1, String name) {
-        if (!CoreEngine.isEnumCachingOn())
+        if (!CoreEngine.isEnumCachingOn()) {
             return new EnumMaster<>().retrieveEnumConst(class1, name);
+        }
         Map<String, Object> cache = enumCache.get(class1);
         Object enumConst = null;
         if (cache == null) {
             cache = new HashMap<>();
             enumCache.put(class1, cache);
-        } else
+        } else {
             enumConst = cache.get(name);
-        if (enumConst != null)
+        }
+        if (enumConst != null) {
             return enumConst;
+        }
         enumConst = new EnumMaster<>().retrieveEnumConst(class1, name);
         cache.put(name, enumConst);
         return enumConst;
     }
 
     public static int getEnumConstIndex(Class<?> enumClass, Object CONST) {
-        if (CONST == null)
+        if (CONST == null) {
             return -1;
+        }
         return getEnumConstIndex(enumClass, CONST.toString());
     }
 
@@ -155,10 +177,12 @@ public class EnumMaster<T> {
             if (cache == null) {
                 cache = new HashMap<>();
                 enumIndexCache.put(enumClass, cache);
-            } else
+            } else {
                 index = cache.get(constName);
-            if (index != null)
+            }
+            if (index != null) {
                 return index;
+            }
         }
 
         if (!enumClass.isEnum()) {
@@ -166,8 +190,9 @@ public class EnumMaster<T> {
                 index = ContentManager.getParamList().indexOf(ContentManager.getPARAM(constName));
             } else if (enumClass == Prop.class || enumClass == PROPERTY.class) {
                 index = ContentManager.getPropList().indexOf(ContentManager.getPROP(constName));
-            } else
+            } else {
                 return 0;
+            }
         } else {
             Object[] ENUMS = enumClass.getEnumConstants();
             int i = -1;
@@ -179,11 +204,13 @@ public class EnumMaster<T> {
                 }
             }
         }
-        if (cache != null)
+        if (cache != null) {
             cache.put(constName, index);
-        if (index == -1)
-            main.system.auxiliary.LogMaster.log(1, "ENUM CONST NOT FOUND! : " + enumClass + " : "
+        }
+        if (index == -1) {
+            LogMaster.log(1, "ENUM CONST NOT FOUND! : " + enumClass + " : "
                     + constName);
+        }
 
         return index;
     }
@@ -210,10 +237,12 @@ public class EnumMaster<T> {
 
     public static List<String> findEnumConstantNames(String subgroup) {
         Class<?> names = EnumMaster.getEnumClass(subgroup);
-        if (names == null)
+        if (names == null) {
             names = EnumMaster.getEnumClass(subgroup, MACRO_CONTENT_CONSTS.class);
-        if (names == null)
+        }
+        if (names == null) {
             return new LinkedList<String>();
+        }
         try {
             return getEnumConstantNames(names);
         } catch (Exception e) {
@@ -235,10 +264,12 @@ public class EnumMaster<T> {
 
     @SuppressWarnings("unchecked")
     public T retrieveEnumConst(Class<? extends T> class1, String name, boolean findClosest) {
-        if (name == null)
+        if (name == null) {
             return null;
-        if (name.equals(""))
+        }
+        if (name.equals("")) {
             return null;
+        }
 
         T[] array = class1.getEnumConstants();
         Collection<T> list;
@@ -256,8 +287,9 @@ public class EnumMaster<T> {
             if (class1 == PARAMETER.class) {
                 list = (Collection<T>) ContentManager.getParamList();
             }
-        } else
+        } else {
             list = Arrays.asList(array);
+        }
         // name = StringMaster.getEnumFormat(name);
         T t = null;
         try {
@@ -266,31 +298,36 @@ public class EnumMaster<T> {
             e.printStackTrace();
         }
 
-        if (t != null)
+        if (t != null) {
             return t;
-        if (findClosest)
+        }
+        if (findClosest) {
             try {
                 t = new SearchMaster<T>().findClosest(name, list);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        if (t == null)
-            main.system.auxiliary.LogMaster.log(0, "ENUM NOT FOUND: " + name);
+        }
+        if (t == null) {
+            LogMaster.log(0, "ENUM NOT FOUND: " + name);
+        }
         return t;
     }
 
     public Object getEnum(String content, Object[] enumConstants) {
         for (Object CONST : enumConstants) {
-            if (CONST.toString().equals(content))
+            if (CONST.toString().equals(content)) {
                 return CONST;
+            }
         }
         return null;
     }
 
     public T getEnumOfType(String content, T[] enumConstants) {
         for (T CONST : enumConstants) {
-            if (CONST.toString().equals(content))
+            if (CONST.toString().equals(content)) {
                 return CONST;
+            }
         }
         return null;
     }
@@ -311,8 +348,9 @@ public class EnumMaster<T> {
         List<T> list = new LinkedList<>();
         for (String subString : StringMaster.openContainer(property, separator)) {
             T ENUM = retrieveEnumConst(CLASS, subString);
-            if (ENUM != null)
+            if (ENUM != null) {
                 list.add(ENUM);
+            }
         }
         return list;
     }
@@ -328,25 +366,32 @@ public class EnumMaster<T> {
             }
 
             private int compare(final Class<?> ENUM, T o1, T o2) {
-                if (ENUM == null)
+                if (ENUM == null) {
                     return 0;
-                if (o1 == null)
+                }
+                if (o1 == null) {
                     return 1;
-                if (o2 == null)
+                }
+                if (o2 == null) {
                     return -1;
+                }
                 T enumConst = (T) EnumMaster.getEnumConst(ENUM, o1.toString());
 
                 int index = getEnumConstIndex(ENUM, enumConst);
-                if (index == -1)
+                if (index == -1) {
                     return 1;
+                }
                 enumConst = (T) EnumMaster.getEnumConst(ENUM, o2.toString());
                 int index2 = getEnumConstIndex(ENUM, enumConst);
-                if (index2 == -1)
+                if (index2 == -1) {
                     return -1;
-                if (index > index2)
+                }
+                if (index > index2) {
                     return 1;
-                if (index < index2)
+                }
+                if (index < index2) {
                     return -1;
+                }
                 return 0;
             }
         };
@@ -361,8 +406,9 @@ public class EnumMaster<T> {
         // would be nice! But where other than in Unit-Deity is it really used?
         return new Comparator<String>() {
             public int compare(String o1, String o2) {
-                if (ENUM == null)
+                if (ENUM == null) {
                     return 0;
+                }
                 ObjType type1 = DataManager.getType(o1, TYPE);
                 ObjType type2 = DataManager.getType(o2, TYPE);
 
@@ -375,14 +421,17 @@ public class EnumMaster<T> {
                                     .getProperty(G_PROPS.CUSTOM_HERO_GROUP));
                     int index = EnumMaster.getEnumConstIndex(CUSTOM_HERO_GROUP.class, group);
                     int index2 = EnumMaster.getEnumConstIndex(CUSTOM_HERO_GROUP.class, group2);
-                    if (index == -1)
+                    if (index == -1) {
                         index = Integer.MAX_VALUE;
-                    if (index2 == -1)
+                    }
+                    if (index2 == -1) {
                         index2 = Integer.MAX_VALUE;
+                    }
 
                     if (index != index2) {
-                        if (index < index2)
+                        if (index < index2) {
                             return -1;
+                        }
                         return 1;
                     }
 
@@ -393,8 +442,9 @@ public class EnumMaster<T> {
                 String name = "" + enumConst;
                 int index = ListMaster.getIndexString(ListMaster.toStringList(ENUM
                         .getEnumConstants()), name, true);
-                if (index == -1)
+                if (index == -1) {
                     return 1;
+                }
                 enumConst = ""
                         + EnumMaster.getEnumConst(ENUM, subgroup ? type2.getSubGroupingKey()
                         : type2.getGroupingKey());
@@ -406,12 +456,15 @@ public class EnumMaster<T> {
                     index2 = StringMaster.getInteger(type2.getProperty(G_PROPS.ID));
 
                 }
-                if (index2 == -1)
+                if (index2 == -1) {
                     return -1;
-                if (index > index2)
+                }
+                if (index > index2) {
                     return 1;
-                if (index < index2)
+                }
+                if (index < index2) {
                     return -1;
+                }
 
                 return 0;
             }
@@ -433,14 +486,17 @@ public class EnumMaster<T> {
     }
 
     public int getEnumConstIndex(T constant) {
-        if (constant == null)
+        if (constant == null) {
             return 0;
-        if (constant.getClass().getEnumConstants() == null)
+        }
+        if (constant.getClass().getEnumConstants() == null) {
             return 0;
+        }
         int i = 0;
         for (Object o : constant.getClass().getEnumConstants()) {
-            if (o == constant)
+            if (o == constant) {
                 return i;
+            }
             i++;
         }
         return -1;

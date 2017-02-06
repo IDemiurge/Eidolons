@@ -38,8 +38,9 @@ public class CellCondition extends OccupiedCondition {
 
     @Override
     protected Coordinates getCoordinates() {
-        if (obj_ref == null)
+        if (obj_ref == null) {
             obj_ref = KEYS.MATCH.toString();
+        }
         if (direction == null) {
             return super.getCoordinates();
         }
@@ -48,8 +49,9 @@ public class CellCondition extends OccupiedCondition {
         if (obj instanceof DC_UnitObj) {
             f = ((DC_UnitObj) obj).getFacing();
         }
-        if (f == null)
+        if (f == null) {
             return null;
+        }
 
         return super.getCoordinates().getAdjacentCoordinate(
                 DirectionMaster.getDirectionByFacing(f, direction));

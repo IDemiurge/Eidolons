@@ -23,8 +23,9 @@ public class GoalManager {
     public static List<GOAL_TYPE> getGoalsForUnit(UnitAI ai) {
         DC_HeroObj unit = ai.getUnit();
         List<GOAL_TYPE> list = getBehaviorGoals(unit);
-        if (list != null)
+        if (list != null) {
             return list;
+        }
 
         list = new LinkedList<>();
         if (unit.getAiType() == AI_TYPE.SNEAK) {
@@ -40,10 +41,13 @@ public class GoalManager {
         }
         list.addAll(getDefaultGoals());
 
-        if (unit.getAiType() == AI_TYPE.CASTER || unit.getAiType() == AI_TYPE.ARCHER)
-            if (!unit.checkPassive(STANDARD_PASSIVES.FEARLESS))
-                if (PriorityManager.getMeleeDangerFactor(unit) > 0)
+        if (unit.getAiType() == AI_TYPE.CASTER || unit.getAiType() == AI_TYPE.ARCHER) {
+            if (!unit.checkPassive(STANDARD_PASSIVES.FEARLESS)) {
+                if (PriorityManager.getMeleeDangerFactor(unit) > 0) {
                     list.add(GOAL_TYPE.RETREAT);
+                }
+            }
+        }
 
         if (Analyzer.hasSpecialActions(unit)) {
             addNonEnemyGoals(list);
@@ -78,8 +82,9 @@ public class GoalManager {
 
     private static List<GOAL_TYPE> getBehaviorGoals(DC_HeroObj unit) {
         BEHAVIOR_MODE behaviorMode = unit.getUnitAI().getBehaviorMode();
-        if (behaviorMode == null)
+        if (behaviorMode == null) {
             return null;
+        }
         switch (behaviorMode) {
             case BERSERK:
                 return new ListMaster<GOAL_TYPE>().getList(GOAL_TYPE.ATTACK);

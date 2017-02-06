@@ -103,8 +103,9 @@ public class SpellTab extends HeroItemTab {
         // verbatim OR memorized
         // if (checkHero(item, false))
         // return null;
-        if (checkHero(item, true))
+        if (checkHero(item, true)) {
             return null;
+        }
         return BORDER.HIDDEN;
 
     }

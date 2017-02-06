@@ -21,8 +21,9 @@ public class DebugGuiPage extends G_Panel {
         int column = 0;
         int i = 0;
         for (DEBUG_FUNCTIONS func : list) {
-            if (func == null)
+            if (func == null) {
                 continue;
+            }
             CustomButton b = createButton(func);
             if (i + 1 == wrap) {
                 column++;

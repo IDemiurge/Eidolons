@@ -36,23 +36,27 @@ public class Chronos {
     }
 
     public static void logTimeElapsedForMark(Boolean flag, String string) {
-        if (!flag)
+        if (!flag) {
             return;
+        }
         logTimeElapsedForMark(string);
 
     }
 
     public static void logTimeElapsedForMark(String string) {
-        if (!CoreEngine.isTEST_MODE())
+        if (!CoreEngine.isTEST_MODE()) {
             return;
+        }
         long timeElapsedForMark = getTimeElapsedForMark(string);
 
-        if (timeElapsedForMark == -1)
+        if (timeElapsedForMark == -1) {
             return;
+        }
         timeMap.remove(string);
-        if (timeElapsedForMark > 500)
-            main.system.auxiliary.LogMaster.log(LogMaster.PERFORMANCE_DEBUG, string
+        if (timeElapsedForMark > 500) {
+            LogMaster.log(LogMaster.PERFORMANCE_DEBUG, string
                     + " FINISHED AFTER " + timeElapsedForMark);
+        }
     }
 
     public static long getMinTimeLogged() {

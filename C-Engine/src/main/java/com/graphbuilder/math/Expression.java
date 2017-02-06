@@ -22,19 +22,22 @@ public abstract class Expression {
         } else if (x instanceof VarNode) {
             if (varNames) {
                 VarNode v = (VarNode) x;
-                if (!b.contains(v.name))
+                if (!b.contains(v.name)) {
                     b.add(v.name);
+                }
             }
         } else if (x instanceof FuncNode) {
             FuncNode f = (FuncNode) x;
 
             if (!varNames) {
-                if (!b.contains(f.name))
+                if (!b.contains(f.name)) {
                     b.add(f.name);
+                }
             }
 
-            for (int i = 0; i < f.numChildren(); i++)
+            for (int i = 0; i < f.numChildren(); i++) {
                 getTermNames(f.child(i), b, varNames);
+            }
         }
     }
 
@@ -61,8 +64,9 @@ public abstract class Expression {
 
                 sb.append("(");
 
-                if (f.numChildren() > 0)
+                if (f.numChildren() > 0) {
                     toString(f.child(0), sb);
+                }
 
                 for (int i = 1; i < f.numChildren(); i++) {
                     sb.append(", ");
@@ -72,8 +76,9 @@ public abstract class Expression {
                 sb.append(")");
             }
 
-            if (t.getNegate())
+            if (t.getNegate()) {
                 sb.append(")");
+            }
         } else if (x instanceof ValNode) {
             sb.append(((ValNode) x).val);
         }
@@ -92,8 +97,9 @@ public abstract class Expression {
         Expression y = this;
 
         while (y != null) {
-            if (y == x)
+            if (y == x) {
                 return true;
+            }
             y = y.parent;
         }
 
@@ -114,14 +120,17 @@ public abstract class Expression {
      * @throws IllegalArgumentException If the specified expression is not accepted.
      */
     protected void checkBeforeAccept(Expression x) {
-        if (x == null)
+        if (x == null) {
             throw new IllegalArgumentException("expression cannot be null");
+        }
 
-        if (x.parent != null)
+        if (x.parent != null) {
             throw new IllegalArgumentException("expression must be removed parent");
+        }
 
-        if (isDescendent(x))
+        if (isDescendent(x)) {
             throw new IllegalArgumentException("cyclic reference");
+        }
     }
 
     /**
@@ -142,8 +151,9 @@ public abstract class Expression {
         Bag b = new Bag();
         getTermNames(this, b, varNames);
         String[] arr = new String[b.size()];
-        for (int i = 0; i < arr.length; i++)
+        for (int i = 0; i < arr.length; i++) {
             arr[i] = (String) b.get(i);
+        }
         return arr;
     }
 

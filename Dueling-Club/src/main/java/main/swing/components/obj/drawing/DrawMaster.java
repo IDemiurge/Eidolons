@@ -92,8 +92,9 @@ public class DrawMaster {
     }
 
     public boolean isFramePaintZoom() {
-        if (isEditorMode())
+        if (isEditorMode()) {
             return zoom >= 75;
+        }
         return zoom >= 65;
     }
 
@@ -139,8 +140,9 @@ public class DrawMaster {
                         compGraphics.drawString("" + obj.getOutlineType(), 0, GuiManager.getCellHeight() - 40);
 
                         String tooltip = VisibilityMaster.getTooltip(obj);
-                        if (tooltip != null)
+                        if (tooltip != null) {
                             compGraphics.drawString("" + tooltip, 0, GuiManager.getCellHeight() - 20);
+                        }
 
                         drawSightBlockInfo(cellComp, compGraphics, zoom);
                     }
@@ -151,22 +153,24 @@ public class DrawMaster {
         }
 
         // no overlays at all? Animations at least?
-        if (isFramePaintZoom())
-            if (!isMultiObj())
+        if (isFramePaintZoom()) {
+            if (!isMultiObj()) {
                 try {
                     drawCellFrame(compGraphics);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        }
 
-        if (!cellComp.isTerrain())
+        if (!cellComp.isTerrain()) {
             try {
                 drawObjComps(compGraphics);
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        else {
+        } else {
             try {
                 drawTerrainObj(compGraphics);
 
@@ -182,19 +186,22 @@ public class DrawMaster {
                 BfGridComp.getOverlayMap().put(
                         new XLine(new Point(topObj.getX(), topObj.getY()), new Point(
                                 5 - getObjCount() * 2, 0)), compOverlayImage);
-            } else
+            } else {
                 drawComponentOverlays(compGraphics);
+            }
 
         }
         drawOverlayingObjects(compGraphics, cellComp);
         // perhaps should work with Obj instead?
-        if (isAnimationPaintZoom())
-            if (cellComp.isAnimated())
+        if (isAnimationPaintZoom()) {
+            if (cellComp.isAnimated()) {
                 try {
                     drawAnimations(cellComp, compGraphics);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        }
         if (GRAPHICS_TEST_MODE) {
             drawCI(topObj, compGraphics);
         }
@@ -202,12 +209,15 @@ public class DrawMaster {
         if (GRAPHICS_TEST_MODE || isEditorMode() || DC_Game.game.isDebugMode()) {
             Coordinates coordinates = cellComp.getCoordinates();
             BfGridComp grid = cellComp.getGrid();
-            if (grid == null)
+            if (grid == null) {
                 grid = cellComp.getGame().getBattleField().getGrid().getGridComp();
-            if (coordinates.x - grid.getOffsetX() == 0)
+            }
+            if (coordinates.x - grid.getOffsetX() == 0) {
                 drawCoordinateMarkings(coordinates.y, compGraphics, false);
-            if (coordinates.y - grid.getOffsetY() == 0)
+            }
+            if (coordinates.y - grid.getOffsetY() == 0) {
                 drawCoordinateMarkings(coordinates.x, compGraphics, true);
+            }
 
             if (cellComp.isInfoSelected()) {
                 drawCoordinateMarkings(coordinates.x, compGraphics, true);
@@ -222,8 +232,9 @@ public class DrawMaster {
             if (!extended) {
                 extended = obj.getSightSpectrumCoordinates(true)
                         .contains(cellComp.getCoordinates());
-                if (!extended)
+                if (!extended) {
                     return;
+                }
             }
 
             drawSightVisualsOnCell((Graphics2D) compGraphics, extended, cellComp.getObjects().size() > 0);
@@ -237,31 +248,35 @@ public class DrawMaster {
         zoom2 = MathMaster.getMinMax(zoom * 2, 50, 100);
         if (isEditorMode() || cellComp.getGame().isDebugMode()) {
             Dungeon dungeon = cellComp.getGame().getDungeon();
-            if (dungeon.checkProperty(PROPS.PARTY_SPAWN_COORDINATES))
+            if (dungeon.checkProperty(PROPS.PARTY_SPAWN_COORDINATES)) {
                 if (cellComp.getCoordinates().equals(
                         new Coordinates(dungeon.getProperty(PROPS.PARTY_SPAWN_COORDINATES)))) {
                     Image img = ImageManager.getSizedVersion(STD_IMAGES.ENGAGER.getImage(), zoom2);
                     drawImageCentered(g, img);
                 }
-            if (dungeon.checkProperty(PROPS.ENEMY_SPAWN_COORDINATES))
+            }
+            if (dungeon.checkProperty(PROPS.ENEMY_SPAWN_COORDINATES)) {
                 if (cellComp.getCoordinates().equals(
                         new Coordinates(dungeon.getProperty(PROPS.ENEMY_SPAWN_COORDINATES)))) {
                     Image img = ImageManager.getSizedVersion(STD_IMAGES.ENGAGER.getImage(), zoom2);
                     img = ImageTransformer.flipVertically(ImageManager.getBufferedImage(img));
                     drawImageCentered(g, img);
                 }
+            }
             for (String substring : StringMaster.openContainer(dungeon
                     .getProperty(PROPS.ENCOUNTER_SPAWN_POINTS))) {
-                if (!cellComp.getCoordinates().equals(new Coordinates(substring)))
+                if (!cellComp.getCoordinates().equals(new Coordinates(substring))) {
                     continue;
+                }
                 Image img = ImageManager.getSizedVersion(STD_IMAGES.FLAG.getImage(), zoom2);
                 drawImageCentered(g, img);
                 // TODO OR STRING/CHAR
             }
             for (String substring : StringMaster.openContainer(dungeon
                     .getProperty(PROPS.ENCOUNTER_BOSS_SPAWN_POINTS))) {
-                if (!cellComp.getCoordinates().equals(new Coordinates(substring)))
+                if (!cellComp.getCoordinates().equals(new Coordinates(substring))) {
                     continue;
+                }
                 Image img = ImageManager.getSizedVersion(STD_IMAGES.ENGAGEMENT_TARGET.getImage(),
                         zoom2);
                 drawImageCentered(g, img);
@@ -289,8 +304,9 @@ public class DrawMaster {
                 return;
             }
 
-            if (cellComp.getTopObjOrCell().getBlockingCoordinate() == null)
+            if (cellComp.getTopObjOrCell().getBlockingCoordinate() == null) {
                 return;
+            }
             Font font = FontMaster.getFont(FONT.NYALA, 10 + 20 * zoom / 100, Font.PLAIN);
             g.setFont(font);
             g.setColor(isEditorMode() ? ColorManager.GOLDEN_WHITE : ColorManager.FOCUS);
@@ -306,14 +322,17 @@ public class DrawMaster {
             g.setColor(ColorManager.GOLDEN_WHITE);
 
             // if (isDrawFullBlockingInfo()){
-            if (cellComp.getTopObjOrCell().getBlockingWallCoordinate() != null)
+            if (cellComp.getTopObjOrCell().getBlockingWallCoordinate() != null) {
                 g.drawString("" + cellComp.getTopObjOrCell().getBlockingWallCoordinate(),
                         getCompWidth() * 4 / 5, getCompHeight() * 4 / 5);
-            if (cellComp.getTopObjOrCell().getBlockingWallDirection() != null)
+            }
+            if (cellComp.getTopObjOrCell().getBlockingWallDirection() != null) {
                 g.drawString("" + cellComp.getTopObjOrCell().getBlockingWallDirection(),
                         getCompWidth() * 2 / 5, getCompHeight() * 3 / 5);
-            if (cellComp.getTopObjOrCell().isBlockingDiagonalSide())
+            }
+            if (cellComp.getTopObjOrCell().isBlockingDiagonalSide()) {
                 g.drawString("left", getCompWidth() * 4 / 5, getCompHeight() * 2 / 5);
+            }
         }
     }
 
@@ -342,34 +361,41 @@ public class DrawMaster {
         // } else {
 
         for (DC_HeroObj obj : cellComp.getOverlayingObjects()) {
-            if (!isEditorMode())
-                if (VisibilityMaster.isZeroVisibility(obj))
+            if (!isEditorMode()) {
+                if (VisibilityMaster.isZeroVisibility(obj)) {
                     continue;
+                }
+            }
 
             DIRECTION d = obj.getDirection();
             // if (CoreEngine.isLevelEditor()) {
             if (d == null) {
                 Map<DC_HeroObj, DIRECTION> map = obj.getGame().getDirectionMap().get(
                         cellComp.getCoordinates());
-                if (map != null)
+                if (map != null) {
                     d = map.get(obj);
+                }
                 // }
             }
             int size = overlayingSize;
 
             int x = MigMaster.getCenteredPosition(getObjCompWidth(), size);
-            if (d != null)
-                if (d.isGrowX() == null)
+            if (d != null) {
+                if (d.isGrowX() == null) {
                     x = MigMaster.getCenteredPosition(getObjCompWidth(), size);
-                else
+                } else {
                     x = (d.isGrowX()) ? getObjCompWidth() - size : 0;
+                }
+            }
 
             int y = MigMaster.getCenteredPosition(getObjCompHeight(), size);
-            if (d != null)
-                if (d.isGrowY() == null)
+            if (d != null) {
+                if (d.isGrowY() == null) {
                     y = MigMaster.getCenteredPosition(getObjCompHeight(), size);
-                else
+                } else {
                     y = (d.isGrowY()) ? getObjCompHeight() - size : 0;
+                }
+            }
 
             drawOverlayingObj(g, cellComp, obj, x, y, size);
 
@@ -442,8 +468,9 @@ public class DrawMaster {
     }
 
     private void drawCellFrame(Graphics g) {
-        if (cellComp.isMiniCellFrame() == null)
+        if (cellComp.isMiniCellFrame() == null) {
             return;
+        }
         Image cellImage = null;
         if (!cellComp.isTerrain()) {
             if ((cellComp.getTerrainObj().isTargetHighlighted())) {
@@ -451,12 +478,13 @@ public class DrawMaster {
                         objSize);
                 cellComp.getMouseMap().put(rect, cellComp.getTopObj());
             }
-            if (isSingleObj())
+            if (isSingleObj()) {
                 if ((cellComp.getTerrainObj().isTargetHighlighted())) {
                     Rectangle rect = new Rectangle(0, 0, getCompWidth(), getCompHeight());
                     cellComp.getMouseMap().put(rect, cellComp.getTerrainObj());
                     // TODO HIGHLIGHT FRAME?
                 }
+            }
 
             cellImage = ImageManager.getCellBorderForBfObj(cellComp.isMiniCellFrame(),
                     cellComp.getObjects().get(0).getActivePlayerVisionStatus(),
@@ -471,20 +499,22 @@ public class DrawMaster {
     private int getStackOffsetX() {
         DC_HeroObj obj = cellComp.getTopObj();
         Integer stackOffsetX;
-        if (!obj.getFacing().isVertical() && obj.getFacing().isCloserToZero())
+        if (!obj.getFacing().isVertical() && obj.getFacing().isCloserToZero()) {
             stackOffsetX = getObjCount() * getXOffsetPerObj(getObjCount());
-        else
+        } else {
             stackOffsetX = 0;
+        }
         return stackOffsetX;
     }
 
     private int getStackOffsetY() {
         DC_HeroObj obj = cellComp.getTopObj();
         Integer stackOffsetY;
-        if (obj.getFacing().isVertical() && !obj.getFacing().isCloserToZero())
+        if (obj.getFacing().isVertical() && !obj.getFacing().isCloserToZero()) {
             stackOffsetY = getYOffsetPerObj(getObjCount());
-        else
+        } else {
             stackOffsetY = 0;
+        }
         return stackOffsetY;
     }
 
@@ -502,7 +532,9 @@ public class DrawMaster {
         // TODO LIGHT SPELLS SHOULD ADD "LIGHT_EMIT" PARAM AND SHADOW REDUCE IT
         if (obj == null)
             // "null obj"
+        {
             return;
+        }
         SmartText text = new SmartText(obj.getIntParam(PARAMS.LIGHT_EMISSION) + "",
                 ColorManager.GOLDEN_WHITE);
         int w = text.getWidth();
@@ -526,8 +558,9 @@ public class DrawMaster {
         drawText(g, text, p);
 
         // if (obj instanceof DC_Cell)
-        if (!FULL_GRAPHICS_TEST_MODE)
+        if (!FULL_GRAPHICS_TEST_MODE) {
             return;
+        }
         if (GRAPHICS_TEST_MODE) {
             g.setFont(FontMaster.getDefaultFont(15));
             g.drawString(obj.getVisibilityLevel().toString(), 25, 15);
@@ -536,8 +569,9 @@ public class DrawMaster {
     }
 
     private void drawItems(Graphics g) {
-        if (isEditorMode())
+        if (isEditorMode()) {
             return;
+        }
         Collection<? extends Obj> droppedItems = cellComp.getGame().getDroppedItemManager()
                 .getDroppedItems(cellComp.getTerrainObj());
         if (!droppedItems.isEmpty()) {
@@ -552,8 +586,9 @@ public class DrawMaster {
     }
 
     private void drawCorpses(Graphics g) {
-        if (isEditorMode())
+        if (isEditorMode()) {
             return;
+        }
         Coordinates coordinates = cellComp.getCoordinates();
         List<Obj> deadUnits = cellComp.getGame().getGraveyardManager().getDeadUnits(coordinates);
         if (deadUnits != null) {
@@ -567,9 +602,9 @@ public class DrawMaster {
             for (Obj corpse : deadUnits) {
                 drawImage(g, img, x, y);
                 Rectangle rect = new Rectangle(x, y, img.getWidth(null), img.getHeight(null));
-                if (isSingleObj() || cellComp.isTerrain())
+                if (isSingleObj() || cellComp.isTerrain()) {
                     cellComp.getMouseMap().put(rect, corpse);
-                else {
+                } else {
                     cellComp.getMouseMap().put(rect, INTERACTIVE_ELEMENT.CORPSES);
                     return;
                 }
@@ -602,7 +637,7 @@ public class DrawMaster {
 
     private void drawCellImage(Graphics g) {
         Image img = VisibilityMaster.getDisplayImageForUnit(cellComp.getTerrainObj());
-        if (img == null)
+        if (img == null) {
             if (cellComp.getTerrainObj().isTargetHighlighted()) {
                 img = ImageManager.getHighlightedCellIcon().getImage();
             } else {
@@ -620,23 +655,26 @@ public class DrawMaster {
                 // main.system.auxiliary.LogMaster.log(1, vl + " and " + ds +
                 // " for "
                 // + cellComp.getTerrainObj().getNameAndCoordinate());
-                if (VisibilityMaster.isZeroVisibility(cellComp.getTerrainObj()))
-                    if (ds == UNIT_TO_PLAYER_VISION.KNOWN || ds == UNIT_TO_PLAYER_VISION.DETECTED)
+                if (VisibilityMaster.isZeroVisibility(cellComp.getTerrainObj())) {
+                    if (ds == UNIT_TO_PLAYER_VISION.KNOWN || ds == UNIT_TO_PLAYER_VISION.DETECTED) {
                         img = (ImageManager.getHiddenCellIcon().getImage());
-                    else
+                    } else {
                         img = ImageManager.getUnknownCellIcon().getImage();
-                else if (vl == VISIBILITY_LEVEL.CLEAR_SIGHT)
-                    // TODO darken image based on CvsIl
-                    // if (cellComp.getTerrainObj().getUnitVisionStatus() ==
-                    // UNIT_TO_UNIT_VISION.BEYOND_SIGHT) {
-                    // if (ds == UNIT_TO_PLAYER_VISION.DETECTED) {
-                    // img = (ImageManager.getHiddenCellIcon().getImage());
-                    // } else
-                    // img = ImageManager.getUnknownCellIcon().getImage();
-                    // } else
+                    }
+                } else if (vl == VISIBILITY_LEVEL.CLEAR_SIGHT)
+                // TODO darken image based on CvsIl
+                // if (cellComp.getTerrainObj().getUnitVisionStatus() ==
+                // UNIT_TO_UNIT_VISION.BEYOND_SIGHT) {
+                // if (ds == UNIT_TO_PLAYER_VISION.DETECTED) {
+                // img = (ImageManager.getHiddenCellIcon().getImage());
+                // } else
+                // img = ImageManager.getUnknownCellIcon().getImage();
+                // } else
+                {
                     img = ImageManager.getEmptyCellIcon().getImage();
-                else
+                } else {
                     img = ImageManager.getHiddenCellIcon().getImage();
+                }
                 if (zoom != 100 || !isFramePaintZoom()) {
                     img = ImageManager.getSizedVersion(img, new Dimension(getObjCompWidth(),
                             getObjCompHeight()), true);
@@ -689,6 +727,7 @@ public class DrawMaster {
                     // g.drawImage(img, 0, 0, null);
                 }
             }
+        }
 
         g.drawImage(img, 0, 0, null);
 
@@ -706,17 +745,19 @@ public class DrawMaster {
         } else {
             // offset !
             if (cellComp.getGame().getAnimationManager().isStackAnimOverride(
-                    cellComp.getCoordinates()))
+                    cellComp.getCoordinates())) {
                 return;
+            }
             List<DC_HeroObj> objects = new LinkedList<>(cellComp.getObjects());
             int stackOffsetX = 0;
             int stackOffsetY = 0;
-            if (!(cellComp.isWall() || cellComp.isLandscape()))
+            if (!(cellComp.isWall() || cellComp.isLandscape())) {
                 drawCellImage(g);
-            else {
+            } else {
                 DC_HeroObj obj = cellComp.getWallObj();
-                if (obj == null)
+                if (obj == null) {
                     obj = cellComp.getLandscapeObj();
+                }
                 objects.remove(obj);
                 // if (objects.size() == 1) {
                 // stackOffsetX = getStackOffsetX();
@@ -744,17 +785,20 @@ public class DrawMaster {
                     Coordinates c = new Coordinates(true, x, y + getObjCount() * 3);
                     XLine xLine = new XLine(new Point(obj.getX(), obj.getY()), new Point(x, y));
 
-                    if (obj.isActiveSelected())
+                    if (obj.isActiveSelected()) {
                         BfGridComp.setStackedActiveHighlightRelativeCoordinates(c);
-                    if (obj.isInfoSelected())
+                    }
+                    if (obj.isInfoSelected()) {
                         BfGridComp.setStackedInfoHighlightRelativeCoordinates(c);
+                    }
                     // BfGridComp.getMap(obj.isInfoSelected()).put(xLine,
                     // image);
                     BfGridComp.getUnderlayMap().put(xLine, image);
                     BfGridComp.getOverlayMap().put(xLine, infoObjImage);
 
-                } else
+                } else {
                     drawImage(g, image, x, y);
+                }
                 getOffsetMap().put(obj, new Point(x, y));
                 if (obj == cellComp.getTopObj()) {
                     topObjX = x;
@@ -763,44 +807,51 @@ public class DrawMaster {
                 Rectangle rect = new Rectangle(x, y, objSize, objSize);
                 cellComp.getMouseMap().put(rect, obj);
 
-                if (getStackOffsetX() > getXOffsetPerObj(getObjCount()))
+                if (getStackOffsetX() > getXOffsetPerObj(getObjCount())) {
                     stackOffsetX -= 3 * getXOffsetPerObj(getObjCount()) / 2;
-                else
+                } else {
                     stackOffsetX += 3 * getXOffsetPerObj(getObjCount()) / 2;
+                }
                 if (getStackOffsetY() != 0) // TODO should be double or 'triple'
                     // if I want the top obj to end up
                     // with the right gap!
                     // lower objects can be above, below, ... what's the
                     // difference for us?
                     // currently if we go with 0, images will overlap!
+                {
                     stackOffsetY -= getYOffsetPerObj(getObjCount());
-                else
+                } else {
                     stackOffsetY += getYOffsetPerObj(getObjCount());
+                }
 
                 // spread evenly instead based on size...
 
             }
         }
         DC_HeroObj obj = cellComp.getWallObj();
-        if (obj == null)
+        if (obj == null) {
             obj = cellComp.getLandscapeObj();
-        if (obj != null)
+        }
+        if (obj != null) {
             if (cellComp.isWall()) {
                 drawWallOverlays(obj, g, cellComp.getCoordinates());
             }
+        }
 
     }
 
     private Map<Obj, Point> getOffsetMap() {
-        if (offsetMap == null)
+        if (offsetMap == null) {
             offsetMap = new HashMap<>();
+        }
         return offsetMap;
     }
 
     private void drawWallOverlays(DC_HeroObj obj, Graphics g, Coordinates coordinates) {
         if (VisibilityMaster.isZeroVisibility(obj)) {
-            if (obj.getActivePlayerVisionStatus() == UNIT_TO_PLAYER_VISION.UNKNOWN)
+            if (obj.getActivePlayerVisionStatus() == UNIT_TO_PLAYER_VISION.UNKNOWN) {
                 return;
+            }
         }
         List<DIRECTION> list = obj.getGame().getBattleFieldManager().getWallMap().get(coordinates);// .getCoordinates()
         boolean hasVertical = false;
@@ -814,44 +865,53 @@ public class DrawMaster {
 
         boolean darken = obj.getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT;
         String prefix = darken ? "dark" : "";
-        if (list == null)
+        if (list == null) {
             diamond = true;
-        else
+        } else {
             for (DIRECTION side : list) {
                 Image image = getWallImageFromSide(side, prefix);
                 if (side.isDiagonal()) {
-                    if (list.size() == 1)
+                    if (list.size() == 1) {
                         round = true;
+                    }
 
                     drawCorner = true;
                     if (diagonalCorner) // doens't do anything?
+                    {
                         diagonalCorner = false;
-                    else if (hasDiagonal)
+                    } else if (hasDiagonal) {
                         diagonalCorner = true;
-                    else
+                    } else {
                         hasDiagonal = true;
+                    }
                 } else {
-                    if (list.size() > 1)
+                    if (list.size() > 1) {
                         mesh = true;
+                    }
 
                     if (side.isVertical()) {
-                        if (hasVertical)
+                        if (hasVertical) {
                             drawCorner = false;
+                        }
                         hasVertical = true;
                     } else {
-                        if (hasHorizontal)
+                        if (hasHorizontal) {
                             drawCorner = false;
+                        }
                         hasHorizontal = true;
                     }
                 }
 
-                if (zoom != 100)
+                if (zoom != 100) {
                     image = ImageManager.getSizedVersion(image, zoom);
+                }
                 drawImage(g, image, 0, 0);
             }
+        }
 
-        if (hasHorizontal && hasVertical)
+        if (hasHorizontal && hasVertical) {
             drawCorner = true;
+        }
         if (diagonalCorner) {
             drawCorner = false;
             Boolean x = null;
@@ -862,15 +922,17 @@ public class DrawMaster {
                     drawCorner = true;
                     mesh = true;
                 } else {
-                    if (y != null)
+                    if (y != null) {
                         if (y == side.isGrowY()) {
                             vertical = true;
                             break;
                         } else {
-                            if (x == side.isGrowX())
+                            if (x == side.isGrowX()) {
                                 break;
+                            }
                             return;
                         }
+                    }
                     y = side.isGrowY();
                     x = side.isGrowX();
                 }
@@ -878,24 +940,28 @@ public class DrawMaster {
             // return;
             if (!mesh) {
                 Image image = STD_IMAGES.WALL_CORNER_ALMOND_H.getImage();
-                if (vertical)
+                if (vertical) {
                     image = STD_IMAGES.WALL_CORNER_ALMOND_V.getImage();
-                if (zoom != 100)
+                }
+                if (zoom != 100) {
                     image = ImageManager.getSizedVersion(image, zoom);
+                }
                 drawImageCentered(g, image);
             }
         }
         if (drawCorner) {
             Image image = STD_IMAGES.WALL_CORNER.getPathPrefixedImage(prefix);
-            if (diamond)
+            if (diamond) {
                 image = STD_IMAGES.WALL_CORNER_DIAMOND.getPathPrefixedImage(prefix);
-            else if (mesh && hasDiagonal)
+            } else if (mesh && hasDiagonal) {
                 image = STD_IMAGES.WALL_CORNER_MESH.getPathPrefixedImage(prefix);
-            else if (round)
+            } else if (round) {
                 image = STD_IMAGES.WALL_CORNER_ROUND.getPathPrefixedImage(prefix);
+            }
 
-            if (zoom != 100)
+            if (zoom != 100) {
                 image = ImageManager.getSizedVersion(image, zoom);
+            }
 
             drawImageCentered(g, image);
         }
@@ -940,19 +1006,23 @@ public class DrawMaster {
     }
 
     private int getXOffsetPerObj(int size) {
-        if (size <= 1)
+        if (size <= 1) {
             return 0;
-        if (!isFramePaintZoom())
+        }
+        if (!isFramePaintZoom()) {
             return 2 * (getCompWidth() - 2 * offsetX - objSize) / (size - 1) * 100 / zoom;
+        }
         return (getCompWidth() - 2 * offsetX - objSize) / (size - 1) * 100 / zoom;
         // return 28 - size * 4;
     }
 
     private int getYOffsetPerObj(int size) {
-        if (size <= 1)
+        if (size <= 1) {
             return 0;
-        if (!isFramePaintZoom())
+        }
+        if (!isFramePaintZoom()) {
             return 2 * (getCompHeight() - 2 * offsetY - objSize) / (size - 1) * 100 / zoom;
+        }
         return (getCompHeight() - 2 * offsetY - objSize) / (size - 1) * 100 / zoom;
         // return 12 - size * 2;
     }
@@ -963,7 +1033,7 @@ public class DrawMaster {
         offsetY = 15;
         // DrawHelper.BORDER_HEIGHT;
         objSize = GuiManager.getObjSize();
-        if (!cellComp.isTerrain())
+        if (!cellComp.isTerrain()) {
             if (!isSingleObj()) {
                 objSize += 14 - Math.round(10 * Math.sqrt(getObjCount()));
                 // Math.sqrt(cellComp.getObjects().size()
@@ -979,6 +1049,7 @@ public class DrawMaster {
                 offsetY = 0;
                 objSize = GuiManager.getCellHeight();
             }
+        }
         int height;
         int width;
         if (isFramePaintZoom()) {
@@ -990,13 +1061,16 @@ public class DrawMaster {
             objSize = GuiManager.getFullObjSize();
             offsetX = 0;
             offsetY = 0;
-            if (!isStackedIconMode())
-                if (isStackedPaintZoom())
-                    if (!cellComp.isTerrain())
+            if (!isStackedIconMode()) {
+                if (isStackedPaintZoom()) {
+                    if (!cellComp.isTerrain()) {
                         if (!isSingleObj()) {
 
                             objSize -= 2 * Math.round(getObjCount() * 3 * zoom / 100);
                         }
+                    }
+                }
+            }
         }
         compSize = new Dimension(width * zoom / 100, height * zoom / 100);
 
@@ -1051,19 +1125,24 @@ public class DrawMaster {
     }
 
     private void drawComponentOverlays(Graphics g) {
-        if (cellComp.isAnimated())
+        if (cellComp.isAnimated()) {
             return;
+        }
         DC_HeroObj obj = cellComp.getTopObj();
         if (obj.isActiveSelected()) {
             drawUnitEmblem(g, obj);
-            if (!isEditorMode())
-                if (!obj.isUnconscious())
+            if (!isEditorMode()) {
+                if (!obj.isUnconscious()) {
                     drawActiveIcons(g, obj);
+                }
+            }
         } else if (obj.isInfoSelected()) {
             drawUnitEmblem(g, obj);
-            if (!isEditorMode())
-                if (!obj.isUnconscious())
+            if (!isEditorMode()) {
+                if (!obj.isUnconscious()) {
                     drawInfoIcons(g, obj);
+                }
+            }
         }
 
         // adjust pos for stacked! TODO
@@ -1075,20 +1154,23 @@ public class DrawMaster {
             }
         }
 
-        if (isEditorMode())
+        if (isEditorMode()) {
             return;
+        }
 
-        if (!obj.isBfObj() && cellComp.isTop(obj))
+        if (!obj.isBfObj() && cellComp.isTop(obj)) {
             drawParamsInfo(g, obj);
+        }
 
         if (cellComp.getTopObj() == obj) {
             drawUnitEmblem(g, obj);
             // TODO stacked positioning adjusted to put facing comp outside
-            if (!obj.isUnconscious())
+            if (!obj.isUnconscious()) {
                 if (DrawHelper.isFacingDrawn(cellComp, obj)
                         || (!obj.isBfObj() && DC_Game.game.isDebugMode())) {
                     drawFacing(g, obj);
                 }
+            }
         }
         // if (!isEditorMode())
         // drawSpecialIcons(g, obj); // ?
@@ -1134,10 +1216,11 @@ public class DrawMaster {
 		 */
 
         DC_HeroObj engageShowUnit = obj.getGame().getManager().getInfoUnit();
-        if (engageShowUnit == null)
+        if (engageShowUnit == null) {
             engageShowUnit = obj.getGame().getManager().getActiveObj();
-        else if (engageShowUnit.isBfObj())
+        } else if (engageShowUnit.isBfObj()) {
             engageShowUnit = obj.getGame().getManager().getActiveObj();
+        }
 
         Image overlay = null;
         if (engageShowUnit.getEngagementTarget() == obj) {
@@ -1260,24 +1343,27 @@ public class DrawMaster {
             Image objImage = obj.getIcon().getImage();
             g.drawImage(objImage, 0, 0, null);
         }
-        if (obj.isUnconscious())
+        if (obj.isUnconscious()) {
             image = ImageTransformer.getGrayScale(image);
+        }
 
         FLIP flip = obj.getFlip();
         if (flip == null) {
             Map<DC_HeroObj, FLIP> map = obj.getGame().getFlipMap().get(cellComp.getCoordinates());
-            if (map != null)
+            if (map != null) {
                 flip = map.get(obj);
+            }
         }
-        if (flip != null)
+        if (flip != null) {
             image = ImageTransformer.flip(flip, image);
+        }
 
         applyVisibility(image, obj);
 
         applyHighlights(image, obj);
 
         // if (drawOverlays)
-        if (outlineImage == null)
+        if (outlineImage == null) {
             try {
                 if (obj.isInfoSelected()) {
                     infoObjImage = new BufferedImage(GuiManager.getFullObjSize(), GuiManager
@@ -1293,13 +1379,16 @@ public class DrawMaster {
 
                 } else
 
-                    // BfGridComp.getOverlayMap().put(key, value);
+                // BfGridComp.getOverlayMap().put(key, value);
 
+                {
                     drawObjectOverlays(g, obj);
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
         drawHeight(obj, g);
         g.dispose();
         objImageCache.put(obj, image);
@@ -1307,16 +1396,20 @@ public class DrawMaster {
     }
 
     private void drawHeight(DC_HeroObj obj, Graphics g) {
-        if (isEditorMode())
+        if (isEditorMode()) {
             return;
-        if (!obj.getGame().isDebugMode())
+        }
+        if (!obj.getGame().isDebugMode()) {
             return;
+        }
         // if (obj.isDetected())
         Float f = new Float(obj.getIntParam(PARAMS.HEIGHT)) / 30;
         float quotient = f % 0.1f;
-        if (quotient < 0.1)
-            if (!StringMaster.isInteger("" + f))
+        if (quotient < 0.1) {
+            if (!StringMaster.isInteger("" + f)) {
                 f = f - quotient;
+            }
+        }
         String str = f + " ft.";
 
         int fontSize = 8 + 10 * zoom / 100;
@@ -1362,8 +1455,9 @@ public class DrawMaster {
     private void applyBeyondSight(BufferedImage image, DC_HeroObj obj) {
         if (obj.getActivePlayerVisionStatus() == UNIT_TO_PLAYER_VISION.DETECTED) {
             image.getGraphics().drawImage(BORDER.CONCEALED.getImage(), 0, 0, null);
-        } else
+        } else {
             image.getGraphics().drawImage(BORDER.HIDDEN.getImage(), 0, 0, null);
+        }
 
     }
 
@@ -1414,8 +1508,9 @@ public class DrawMaster {
     }
 
     private void drawParamInfo(Graphics g, Obj obj, PARAMETER p) {
-        if (obj.isFull(p))
+        if (obj.isFull(p)) {
             return;
+        }
         PARAMETER c_p = ContentManager.getCurrentParam(p);
         VALUE_CASES CASE = SmartTextManager.getParamCase(c_p, obj);
         String string = obj.getIntParam(c_p) + "/" + obj.getIntParam(p);
@@ -1434,8 +1529,9 @@ public class DrawMaster {
     }
 
     private void drawInfoIcons(Graphics g, DC_HeroObj obj) {
-        if (obj.isBfObj())
+        if (obj.isBfObj()) {
             return;
+        }
         int size = 28; // DrawHelper.AP_ICON_SIZE * objSize
         Image image = ImageManager.getSizedVersion(STD_IMAGES.COUNTERS.getPath(), size).getImage();
         // if (isMultiObj())
@@ -1496,16 +1592,20 @@ public class DrawMaster {
     }
 
     private void drawUnitEmblem(Graphics g, DC_HeroObj obj) {
-        if (isEditorMode())
+        if (isEditorMode()) {
             return;
+        }
         //boolean unitEmblemDrawn = true;
         int size = DrawHelper.UNIT_EMBLEM_SIZE_PERC; // * objSize / 100
-        if (cellComp.isBfObj(obj))
+        if (cellComp.isBfObj(obj)) {
             return;
-        if (obj.getOwner() == Player.NEUTRAL)
+        }
+        if (obj.getOwner() == Player.NEUTRAL) {
             return;
-        if (!obj.isDetected() && !obj.isMine())
+        }
+        if (!obj.isDetected() && !obj.isMine()) {
             return;
+        }
         Image unitEmblem = DC_ImageMaster.getUnitEmblem(obj, size, false);
 
         if (unitEmblem == null) {
@@ -1540,11 +1640,15 @@ public class DrawMaster {
 
     private void drawPlayerEmblem(Graphics g, DC_Obj obj) {
         if (cellComp.isBfObj(obj)) // they *may* have an owner though, right?
+        {
             return;
-        if (obj.getOwner() == Player.NEUTRAL)
+        }
+        if (obj.getOwner() == Player.NEUTRAL) {
             return;
-        if (!obj.isDetected())
+        }
+        if (!obj.isDetected()) {
             return;
+        }
         int size = DrawHelper.PLAYER_EMBLEM_SIZE_PERC * objSize / 100;
         Image playerEmblem = DC_ImageMaster.getUnitEmblem((DC_HeroObj) obj, size, true);
 

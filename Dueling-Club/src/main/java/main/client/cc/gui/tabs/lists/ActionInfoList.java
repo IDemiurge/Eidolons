@@ -22,10 +22,11 @@ public class ActionInfoList extends ActionModePanel {
 
     @Override
     public DC_ActiveObj getAction() {
-        if (isOffhandWeaponSelected())
+        if (isOffhandWeaponSelected()) {
             action = hero.getAction(DC_ActionManager.OFFHAND_ATTACK);
-        else
+        } else {
             action = hero.getAction("Attack");
+        }
         return action;
     }
 
@@ -56,9 +57,11 @@ public class ActionInfoList extends ActionModePanel {
 
     @Override
     protected boolean isOn(DC_ActiveObj subAction) {
-        if (CharacterCreator.getInfoSelected() != null)
-            if (CharacterCreator.getInfoSelected().equals(subAction))
+        if (CharacterCreator.getInfoSelected() != null) {
+            if (CharacterCreator.getInfoSelected().equals(subAction)) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -69,19 +72,24 @@ public class ActionInfoList extends ActionModePanel {
 
     @Override
     public void refresh() {
-        if (getAction() != null)
+        if (getAction() != null) {
             initSubActions();
+        }
         super.refresh();
     }
 
     private boolean isOffhandWeaponSelected() {
-        if (CharacterCreator.getInfoSelected() != null)
-            if (CharacterCreator.getInfoSelected().equals(hero.getActiveWeapon(true).getType()))
+        if (CharacterCreator.getInfoSelected() != null) {
+            if (CharacterCreator.getInfoSelected().equals(hero.getActiveWeapon(true).getType())) {
                 return true;
-        if (hero.getAction(DC_ActionManager.OFFHAND_ATTACK) != null)
+            }
+        }
+        if (hero.getAction(DC_ActionManager.OFFHAND_ATTACK) != null) {
             if (hero.getAction(DC_ActionManager.OFFHAND_ATTACK).getSubActions().contains(
-                    CharacterCreator.getInfoSelected()))
+                    CharacterCreator.getInfoSelected())) {
                 return true;
+            }
+        }
 
         return false;
     }

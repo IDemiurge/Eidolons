@@ -93,14 +93,16 @@ public class DebugUtilities {
     }
 
     public static Map<Obj, ObjType> getNormalTypeMap() {
-        if (normalTypeMap == null)
+        if (normalTypeMap == null) {
             normalTypeMap = new HashMap<>();
+        }
         return normalTypeMap;
     }
 
     public static Map<Obj, ObjType> getGodTypeMap() {
-        if (godTypeMap == null)
+        if (godTypeMap == null) {
             godTypeMap = new HashMap<>();
+        }
         return godTypeMap;
     }
 

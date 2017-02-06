@@ -14,16 +14,18 @@ public abstract class G_Dialog {
     protected JDialog dialog;
 
     public G_Dialog() {
-        if (isReady())
+        if (isReady()) {
             init();
+        }
     }
 
     protected abstract boolean isReady();
 
     public void init() {
         Component createComponent = createComponent();
-        if (getKeyListener() != null)
+        if (getKeyListener() != null) {
             createComponent.addKeyListener(getKeyListener());
+        }
 
         JPanel p = new G_Panel();
         p.setOpaque(false);
@@ -71,8 +73,9 @@ public abstract class G_Dialog {
             return new Point(x, y);
         }
 
-        if (!isCentered())
+        if (!isCentered()) {
             return new Point(0, 0);
+        }
 
         return new Point((int) (GuiManager.getScreenWidth() - getSize().getWidth()) / 2,
                 (int) (GuiManager.getScreenHeight() - getSize().getHeight()) / 2);

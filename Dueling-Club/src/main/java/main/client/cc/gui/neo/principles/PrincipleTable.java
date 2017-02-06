@@ -70,10 +70,11 @@ public class PrincipleTable extends G_Panel {
                 // drawRow(identity, alignment, integrity, true);
             }
         } else {
-            if (items != null)
+            if (items != null) {
                 for (Entity item : items) {
-                    if (item == null)
+                    if (item == null) {
                         continue;
+                    }
                     if (selectedPrinciple == null) {
                         int n = 0;
                         List<PRINCIPLES> principles = IntegrityRule.getAffectingPrinciples(item,
@@ -90,6 +91,7 @@ public class PrincipleTable extends G_Panel {
                     drawRow(i, values, g);
                     i++;
                 }
+            }
         }
     }
 
@@ -123,8 +125,9 @@ public class PrincipleTable extends G_Panel {
             g.drawImage(img, x, y, null);
             x += img.getWidth(null);
             x = drawValues(x, y, g, column, values, true);
-        } else
+        } else {
             x = drawValues(x, y, g, column, values, false);
+        }
     }
 
     private int drawValues(int x, int y, Graphics g, int column, Integer[] values,
@@ -136,8 +139,9 @@ public class PrincipleTable extends G_Panel {
                 continue;
             }
             String str = v + "";
-            if (v > 0)
+            if (v > 0) {
                 str = "+" + v;
+            }
             g.drawString(str, x, y);
             x = x + getColumnGap(column);
         }
@@ -161,10 +165,12 @@ public class PrincipleTable extends G_Panel {
     }
 
     private int getRowHeight() {
-        if (principleData)
+        if (principleData) {
             return VISUALS.PRINCIPLE_VALUE_BOX.getHeight();
-        if (largeItems)
+        }
+        if (largeItems) {
             return GuiManager.getFullObjSize();
+        }
         return GuiManager.getSmallObjSize();
     }
 

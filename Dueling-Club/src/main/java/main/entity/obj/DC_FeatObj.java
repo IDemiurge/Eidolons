@@ -44,17 +44,19 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
         // no toBase() for feats?
         for (PARAMS param : rankParams) {
             Integer value = getIntParam(param);
-            if (value == 0)
+            if (value == 0) {
                 setParam(param, param.getDefaultValue());
+            }
         }
     }
 
     protected void initHero() {
         String TARGET_KEYWORD = getProperty(G_PROPS.KEYS);
-        if (!StringMaster.isEmpty(TARGET_KEYWORD))
+        if (!StringMaster.isEmpty(TARGET_KEYWORD)) {
             setHero((DC_HeroObj) getGame().getObjectById(ref.getId(TARGET_KEYWORD)));
-        else
+        } else {
             super.initHero();
+        }
     }
 
     @Override
@@ -62,12 +64,13 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
         if (!checkApplyReqs()) {
             return;
         }
-        if (!paramStringParsed)
+        if (!paramStringParsed) {
             try {
                 parseParamBonusString();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
 
         applyRank();
 
@@ -96,13 +99,15 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
 
     private boolean checkApplyReqs() {
 
-        if (!checkProperty(PROPS.APPLY_REQS))
+        if (!checkProperty(PROPS.APPLY_REQS)) {
             return true;
+        }
 
         for (String s : StringMaster.openContainer(getProperty(PROPS.APPLY_REQS))) {
             Condition condition = ConditionMaster.toConditions(s);
-            if (!condition.check(ref))
+            if (!condition.check(ref)) {
                 return false;
+            }
         }
 
         return true;
@@ -110,8 +115,9 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
 
     private void parseParamBonusString() {
         String prop = getProperty(PROPS.PARAMETER_BONUSES);
-        if (!prop.endsWith(";"))
+        if (!prop.endsWith(";")) {
             prop = prop + ";";
+        }
         prop = prop + getProperty(PROPS.ATTRIBUTE_BONUSES);
         for (String substring : StringMaster.openContainer(prop)) {
             // String[] array = substring.split(" ");
@@ -125,21 +131,27 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
             String paramName = VariableManager.removeVarPart(substring);
             // substring.replace(bonus, "");
             PARAMETER param = ContentManager.getPARAM(paramName);
-            if (param == null)
+            if (param == null) {
                 param = ContentManager.getMastery(paramName);
-            if (param == null)
+            }
+            if (param == null) {
                 param = ContentManager.findPARAM(paramName);
-            if (param == null)
+            }
+            if (param == null) {
                 param = ContentManager.findMastery(paramName);
-            if (param == null)
+            }
+            if (param == null) {
                 continue;
+            }
             Integer amount = StringMaster.getInteger(bonus);
-            if (amount == 0)
+            if (amount == 0) {
                 continue;
+            }
             if (mod) {
                 getModMap().put(param, bonus);
-            } else
+            } else {
                 getBonusMap().put(param, bonus);
+            }
             paramStringParsed = true;
         }
         paramStringParsed = true;
@@ -153,8 +165,9 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
 
             if (param.isAttribute()) {
                 quotientSum += d - Math.floor(d);
-            } else
+            } else {
                 amount += Math.round(d);
+            }
             getHero().modifyParameter(param, amount, getName());
         }
         if (quotientSum != 0) {
@@ -166,9 +179,10 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
                 if (paramName.contains(StringMaster.AND)) {
                     quotientSum = quotientSum / paramName.split(StringMaster.AND).length;
                 }
-            } else
+            } else {
                 paramName = StringMaster.openContainer(
                         VariableManager.removeVarPart(getProperty(PROPS.ATTRIBUTE_BONUSES))).get(0);
+            }
 
             int rounded = Math.round(quotientSum);
             getHero().modifyParameter(paramName, "" + rounded);
@@ -192,8 +206,9 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
 
     private void applyRank() {
         Integer rank = getRank();
-        if (rank == 0)
+        if (rank == 0) {
             return;
+        }
         Integer mod = rank * getRankFormulaMod();
 
         for (AbilityObj p : getPassives()) {
@@ -229,16 +244,18 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
         for (PARAMETER attr : ContentManager.getAttributes()) {
             PARAMS param = (PARAMS) attr;
             Integer value = getIntParam(param, true);
-            if (value <= 0)
+            if (value <= 0) {
                 continue;
+            }
             value += Math.round(value * mod / 100);
             setParam(param, value);
         }
         // modifyHeroParameters();
         for (PARAMETER param : DC_ContentManager.getFeatModifyingParams()) {
             Integer value = getIntParam(param, true);
-            if (value == 0)
+            if (value == 0) {
                 continue;
+            }
             value += Math.round(value * mod / 100);
             setParam(param, value);
 
@@ -267,8 +284,9 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
     public void setRef(Ref ref) {
         Integer skillId = ref.getId(KEYS.SKILL);
         super.setRef(ref);
-        if (skillId != null)
+        if (skillId != null) {
             ref.setID(KEYS.SKILL, skillId);
+        }
         ref.setID(KEYS.ACTIVE, null);
         ref.setID(KEYS.SPELL, null);
     }
@@ -297,8 +315,9 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
         } catch (NumberFormatException e) {
             amount = new Formula(getParam(param)).getInt(ref);
         }
-        if (amount != 0 && getHero() != null)
+        if (amount != 0 && getHero() != null) {
             getHero().modifyParameter(param, amount);
+        }
     }
 
     @Override
@@ -325,14 +344,16 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
     }
 
     public Map<PARAMETER, String> getModMap() {
-        if (modMap == null)
+        if (modMap == null) {
             modMap = new HashMap<PARAMETER, String>();
+        }
         return modMap;
     }
 
     public Map<PARAMETER, String> getBonusMap() {
-        if (bonusMap == null)
+        if (bonusMap == null) {
             bonusMap = new HashMap<PARAMETER, String>();
+        }
         return bonusMap;
     }
 

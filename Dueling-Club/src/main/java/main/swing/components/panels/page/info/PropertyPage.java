@@ -27,8 +27,9 @@ public class PropertyPage extends ValueInfoPage {
         Y = getDefaultY();
         i = 0;
         Z = getDefaultZ();
-        if (isAddHeader())
+        if (isAddHeader()) {
             addHeader();
+        }
         resetDisplayedValues();
         for (VALUE p : displayedValues) {
             EntityValueComponent comp = getComponent(p);
@@ -39,15 +40,18 @@ public class PropertyPage extends ValueInfoPage {
 
     private void resetDisplayedValues() {
         displayedValues = new LinkedList<>();
-        if (getEntity() == null)
+        if (getEntity() == null) {
             return;
+        }
         for (VALUE p : values) {
-            if (!getEntity().getValue(p).isEmpty())
+            if (!getEntity().getValue(p).isEmpty()) {
                 displayedValues.add(p);
+            }
         }
         if (values.remove(PROPS.PARAMETER_BONUSES)) {
-            if (getEntity().getDescription().length() < 30)
+            if (getEntity().getDescription().length() < 30) {
                 displayedValues.add(PROPS.PARAMETER_BONUSES);
+            }
         }
     }
 
@@ -81,30 +85,40 @@ public class PropertyPage extends ValueInfoPage {
     }
 
     private boolean isIconContainer(PROPERTY p) {
-        if (p == G_PROPS.STANDARD_PASSIVES)
+        if (p == G_PROPS.STANDARD_PASSIVES) {
             return true;
-        if (p == G_PROPS.PASSIVES)
+        }
+        if (p == G_PROPS.PASSIVES) {
             return true;
-        if (p == PROPS.FAVORED_SPELL_GROUPS)
+        }
+        if (p == PROPS.FAVORED_SPELL_GROUPS) {
             return true;
-        if (p == G_PROPS.CLASSIFICATIONS)
+        }
+        if (p == G_PROPS.CLASSIFICATIONS) {
             return true;
+        }
         return false;
     }
 
     private boolean isWrappedText(PROPERTY p) {
-        if (p == G_PROPS.LORE)
+        if (p == G_PROPS.LORE) {
             return true;
-        if (p == G_PROPS.DEITY)
+        }
+        if (p == G_PROPS.DEITY) {
             return false;
-        if (p == G_PROPS.MODE)
+        }
+        if (p == G_PROPS.MODE) {
             return true;
-        if (p == G_PROPS.DESCRIPTION)
+        }
+        if (p == G_PROPS.DESCRIPTION) {
             return true;
-        if (p == G_PROPS.FLAVOR)
+        }
+        if (p == G_PROPS.FLAVOR) {
             return true;
-        if (p == G_PROPS.CLASSIFICATIONS)
+        }
+        if (p == G_PROPS.CLASSIFICATIONS) {
             return false;
+        }
         return p.isContainer();
     }
 

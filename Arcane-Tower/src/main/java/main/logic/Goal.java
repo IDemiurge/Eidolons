@@ -48,9 +48,10 @@ public class Goal extends WorkItem {
 		for (Task g : ArcaneTower.getTasks()) {
 			String goal = g.getProperty(AT_PROPS.GOAL);
 			if ((g.isPending() || ArcaneTower.isTestMode())
-					&& StringMaster.compare(goal, getName()))
-				addTask(g);
-		}
+                    && StringMaster.compare(goal, getName())) {
+                addTask(g);
+            }
+        }
 	}
 
 	@Override
@@ -59,43 +60,39 @@ public class Goal extends WorkItem {
 	}
 
 	public void addTask(Task g) {
-		if (tasks.contains(g))
-			return;
-		tasks.add(g);
+        if (tasks.contains(g)) {
+            return;
+        }
+        tasks.add(g);
 		g.getRef().setID(AT_KEYS.GOAL.toString(), id);
-		if (isInitialized())
-			toBase();
-	}
+        if (isInitialized()) {
+            toBase();
+        }
+    }
 
 	public void refreshStatus() {
 		TASK_STATUS newStatus = null;
-		if (EntityMaster.checkPropertyAny(getTasks(), AT_PROPS.TASK_STATUS, TASK_STATUS.ACTIVE))
-			newStatus = TASK_STATUS.ACTIVE;
-		if (EntityMaster.checkPropertyAll(getTasks(), AT_PROPS.TASK_STATUS, TASK_STATUS.DONE))
-			newStatus = TASK_STATUS.DONE;
-		switch (newStatus) {
+        if (EntityMaster.checkPropertyAny(getTasks(), AT_PROPS.TASK_STATUS, TASK_STATUS.ACTIVE)) {
+            newStatus = TASK_STATUS.ACTIVE;
+        }
+        if (EntityMaster.checkPropertyAll(getTasks(), AT_PROPS.TASK_STATUS, TASK_STATUS.DONE)) {
+            newStatus = TASK_STATUS.DONE;
+        }
+        switch (newStatus) {
 			case ACTIVE:
-				if (getStatusEnum() != TASK_STATUS.ACTIVE)
-					started();
-				break;
+                if (getStatusEnum() != TASK_STATUS.ACTIVE) {
+                    started();
+                }
+                break;
 			case DONE:
-				if (getStatusEnum() != TASK_STATUS.DONE)
-					done();
-				break;
+                if (getStatusEnum() != TASK_STATUS.DONE) {
+                    done();
+                }
+                break;
 			case PENDING:
 				break;
 		}
 		setStatus(newStatus);
-	}
-
-	public void setStatus(TASK_STATUS status) {
-		setProperty(AT_PROPS.TASK_STATUS, "" + status, true);
-		if (getStatusEnum() == TASK_STATUS.PINNED) {
-			ArcaneTower.getSession().unpinGoals(this);
-		}
-		if (status == TASK_STATUS.DONE) {
-			done();
-		}
 	}
 
 	private void initDirection() {
@@ -149,9 +146,15 @@ public class Goal extends WorkItem {
 		return getProperty(AT_PROPS.TASK_STATUS);
 	}
 
-	public void setDirection(Direction direction) {
-		this.direction = direction;
-	}
+    public void setStatus(TASK_STATUS status) {
+        setProperty(AT_PROPS.TASK_STATUS, "" + status, true);
+        if (getStatusEnum() == TASK_STATUS.PINNED) {
+            ArcaneTower.getSession().unpinGoals(this);
+        }
+        if (status == TASK_STATUS.DONE) {
+            done();
+        }
+    }
 
 	public Direction getDirection() {
 		if (direction == null) {
@@ -159,5 +162,9 @@ public class Goal extends WorkItem {
 		}
 		return direction;
 	}
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
 
 }

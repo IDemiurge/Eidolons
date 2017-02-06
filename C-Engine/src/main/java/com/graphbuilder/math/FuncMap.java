@@ -149,8 +149,9 @@ public class FuncMap {
      */
     public Function getFunction(String funcName, int numParam) {
         for (int i = 0; i < numFunc; i++) {
-            if (func[i].acceptNumParam(numParam) && (caseSensitive && name[i].equals(funcName) || !caseSensitive && name[i].equalsIgnoreCase(funcName)))
+            if (func[i].acceptNumParam(numParam) && (caseSensitive && name[i].equals(funcName) || !caseSensitive && name[i].equalsIgnoreCase(funcName))) {
                 return func[i];
+            }
         }
 
         throw new RuntimeException("function not found: " + funcName + " " + numParam);
@@ -162,11 +163,13 @@ public class FuncMap {
      * @throws IllegalArgumentException If any of the parameters are null.
      */
     public void setFunction(String funcName, Function f) {
-        if (funcName == null)
+        if (funcName == null) {
             throw new IllegalArgumentException("function name cannot be null");
+        }
 
-        if (f == null)
+        if (f == null) {
             throw new IllegalArgumentException("function cannot be null");
+        }
 
         for (int i = 0; i < numFunc; i++) {
             if (caseSensitive && name[i].equals(funcName) || !caseSensitive && name[i].equalsIgnoreCase(funcName)) {
@@ -206,8 +209,9 @@ public class FuncMap {
     public String[] getFunctionNames() {
         String[] arr = new String[numFunc];
 
-        for (int i = 0; i < arr.length; i++)
+        for (int i = 0; i < arr.length; i++) {
             arr[i] = name[i];
+        }
 
         return arr;
     }
@@ -219,8 +223,9 @@ public class FuncMap {
     public Function[] getFunctions() {
         Function[] arr = new Function[numFunc];
 
-        for (int i = 0; i < arr.length; i++)
+        for (int i = 0; i < arr.length; i++) {
             arr[i] = func[i];
+        }
 
         return arr;
     }

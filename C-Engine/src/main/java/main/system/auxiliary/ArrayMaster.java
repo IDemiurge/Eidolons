@@ -7,8 +7,9 @@ import java.util.List;
 public class ArrayMaster<T> {
 
     public static boolean isNotEmpty(Object[] template) {
-        if (template == null)
+        if (template == null) {
             return false;
+        }
         return template.length != 0;
     }
 
@@ -26,8 +27,9 @@ public class ArrayMaster<T> {
     public int indexOf(T[] array, T item) {
         int i = 0;
         for (T item_ : array) {
-            if (item_.equals(item))
+            if (item_.equals(item)) {
                 return i;
+            }
             i++;
         }
         return -1;
@@ -35,8 +37,9 @@ public class ArrayMaster<T> {
 
     public List<List<T>> get2dList(T[][] array) {
         List<List<T>> list = new LinkedList<List<T>>();
-        for (T[] t : array)
+        for (T[] t : array) {
             list.add(Arrays.asList(t));
+        }
         return list;
     }
 }

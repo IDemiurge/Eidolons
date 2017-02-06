@@ -26,14 +26,17 @@ public class CostCondition extends MicroCondition {
 
         if (spell) {
             action = hero.getSpell(actionName);
-        } else
+        } else {
             action = hero.getAction(actionName);
-        if (action == null)
+        }
+        if (action == null) {
             return false;
+        }
 
         boolean canBeActivated = action.canBeActivated(ref, true);
-        if (!canBeActivated)
+        if (!canBeActivated) {
             return false;
+        }
         return canBeActivated;
     }
 

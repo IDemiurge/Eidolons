@@ -1,8 +1,6 @@
 package main.game.logic.dungeon.special;
 
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
 import main.content.PARAMS;
-import main.content.PROPS;
 import main.entity.Entity;
 import main.entity.obj.DC_HeroObj;
 import main.game.battlefield.ZCoordinates;
@@ -10,7 +8,6 @@ import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.Entrance;
 import main.game.logic.dungeon.building.DungeonBuilder.BLOCK_TYPE;
 import main.game.logic.dungeon.building.MapBlock;
-import main.system.math.roll.RollMaster;
 
 import java.util.*;
 
@@ -66,8 +63,9 @@ public class TrapMaster {
         List<Trap> list = new LinkedList<>();
         Set<Trap> set = trapMap.get(new ZCoordinates(unit.getCoordinates().x,
                 unit.getCoordinates().y, unit.getZ()));
-        if (set == null)
+        if (set == null) {
             return list;
+        }
         for (Trap trap : set) {
             // if (t) //visible, disarmable
             list.add(trap);

@@ -55,8 +55,9 @@ public class GameList extends GenericList<HostedGame> {
     public Vector<HostedGame> stringToVector(String input) {
 
         Vector<HostedGame> v = new Vector<HostedGame>();
-        if (input == null || input == "")
+        if (input == null || input == "") {
             return v;
+        }
 
         String[] games = input.split(StringMaster.getVarSeparator());
         for (String gameData : games) {

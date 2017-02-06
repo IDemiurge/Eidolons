@@ -26,13 +26,16 @@ public class ListObjRenderer<String> implements ListCellRenderer<String> {
     @Override
     public Component getListCellRendererComponent(JList<? extends String> list, String value,
                                                   int index, boolean isSelected, boolean cellHasFocus) {
-        if (TYPE == null)
+        if (TYPE == null) {
             return getLabel(value, isSelected);
+        }
         Entity type = null;
-        if (value != null)
+        if (value != null) {
             type = DataManager.getType(value.toString(), TYPE);
-        if (type == null)
+        }
+        if (type == null) {
             return new JLabel(value.toString());
+        }
         ListItem<Entity> item = new ListItem<Entity>(type, isSelected, cellHasFocus, 0);
         // item.setIcon(ListRenderer.getCompIcon(type, isSelected));
         if (mods != null) {

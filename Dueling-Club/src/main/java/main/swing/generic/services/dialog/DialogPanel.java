@@ -35,8 +35,9 @@ public class DialogPanel extends G_Panel {
     public DialogPanel(DC_HeroObj target) {
         setLayout(new MigLayout(getLayoutArgs()));
         this.target = target;
-        if (target != null)
+        if (target != null) {
             game = target.getGame();
+        }
         initSize();
         initLocation();
     }
@@ -47,9 +48,9 @@ public class DialogPanel extends G_Panel {
 
     protected void initLocation() {
         Point p = null;
-        if (isCentered())
+        if (isCentered()) {
             p = GuiManager.getCenterPoint(getSize());
-        else {
+        } else {
             // target
             p = getTargetLocation();
 
@@ -57,8 +58,9 @@ public class DialogPanel extends G_Panel {
                     + GuiManager.getCellHeight());
 
         }
-        if (isBfDialog())
+        if (isBfDialog()) {
             p.setLocation(p.x + DC_Builder.getBfGridPosX(), p.y + DC_Builder.getBfGridPosY());
+        }
         setLocation(p);
 
     }
@@ -87,8 +89,9 @@ public class DialogPanel extends G_Panel {
 
     public boolean checkClick(MouseEvent e) {
         Point point = e.getLocationOnScreen();
-        if (!new Rectangle(getLocation(), getPanelSize()).contains(point))
+        if (!new Rectangle(getLocation(), getPanelSize()).contains(point)) {
             return false;
+        }
         mouseClicked(e);
         refresh();
         return true;
@@ -182,8 +185,9 @@ public class DialogPanel extends G_Panel {
     }
 
     public DC_Game getGame() {
-        if (game == null)
+        if (game == null) {
             game = DC_Game.game;
+        }
         return game;
     }
 

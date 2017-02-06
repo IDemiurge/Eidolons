@@ -27,12 +27,14 @@ public abstract class MapObjComp implements MouseListener {
         comp = new G_Panel() {
             public void paint(java.awt.Graphics g) {
                 super.paint(g);
-                if (isSymbolRepresentation())
+                if (isSymbolRepresentation()) {
                     return;
+                }
                 BORDER border_ = MapObjComp.this.getBorder();
-                if (border_ != null)
+                if (border_ != null) {
                     g.drawImage(border_.getImage(), 0, 0, (int) getSize().getWidth(),
                             (int) getSize().getHeight(), null);
+                }
 
             }
 
@@ -58,8 +60,9 @@ public abstract class MapObjComp implements MouseListener {
     }
 
     protected BORDER getBorder() {
-        if (border != null)
+        if (border != null) {
             return border;
+        }
         if (isInfoSelected() || highlighted) {
             return BORDER.CIRCLE_HIGHLIGHT_96;
         }
@@ -74,8 +77,9 @@ public abstract class MapObjComp implements MouseListener {
             image = ImageManager.getImage(highlighted ? getSymbolHighlightedImagePath()
                     : getSymbolImagePath());
             Dimension size = getSymbolImageSize();
-            if (size != null)
+            if (size != null) {
                 image = ImageManager.getSizedVersion(image, size);
+            }
             return image;
         }
         // green
@@ -110,17 +114,20 @@ public abstract class MapObjComp implements MouseListener {
 
     protected Dimension getDimension() {
         if (isSymbolRepresentation()) {
-            if (image != null)
+            if (image != null) {
                 return new Dimension(image.getWidth(null), image.getHeight(null));
+            }
         }
         return getSize();
     }
 
     public Dimension getSize() {
-        if (isSymbolRepresentation())
+        if (isSymbolRepresentation()) {
             return getSymbolImageSize().getSize();
-        if (isInfoSelected())
+        }
+        if (isInfoSelected()) {
             return new Dimension(getDefaultSize() * 6 / 5, getDefaultSize() * 6 / 5);
+        }
         return new Dimension(getDefaultSize(), getDefaultSize());
     }
 

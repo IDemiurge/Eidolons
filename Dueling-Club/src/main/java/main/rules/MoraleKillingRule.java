@@ -44,34 +44,45 @@ public class MoraleKillingRule extends DC_RuleImpl {
     }
 
     public void unitDied(DC_UnitObj unit, ActiveObj animationActive) {
-        if (unit.getOwner() == Player.NEUTRAL)
+        if (unit.getOwner() == Player.NEUTRAL) {
             return;
+        }
         boostEffect.setAnimationActive(animationActive);
         reductionEffect.setAnimationActive(animationActive);
         for (DC_HeroObj u : unit.getGame().getUnits()) {
-            if (u.getOwner() == Player.NEUTRAL)
+            if (u.getOwner() == Player.NEUTRAL) {
                 continue;
+            }
             // if (!u.isLiving()) continue;
-            if (ParamAnalyzer.isMoraleIgnore(u))
+            if (ParamAnalyzer.isMoraleIgnore(u)) {
                 continue;
+            }
             if (u.checkPassive(STANDARD_PASSIVES.DISPASSIONATE)
                     || u.checkPassive(STANDARD_PASSIVES.COLD_BLOODED)
                     || u.checkPassive(STANDARD_PASSIVES.FEARLESS))
 
+            {
                 continue;
-            if (PositionMaster.getDistance(u, unit) > 1)
-                if (u != unit.getRef().getObj(KEYS.KILLER))
+            }
+            if (PositionMaster.getDistance(u, unit) > 1) {
+                if (u != unit.getRef().getObj(KEYS.KILLER)) {
                     continue;
+                }
+            }
 
             Ref ref = Ref.getSelfTargetingRefCopy(u);
             if (u.getOwner() == unit.getOwner()) {
-                if (!u.checkImmunity(IMMUNITIES.MORALE_REDUCTION_KILL))
-                    if (!u.checkImmunity(IMMUNITIES.MORALE_REDUCTION))
-                        if (!u.checkImmunity(IMMUNITIES.MIND_AFFECTION))
+                if (!u.checkImmunity(IMMUNITIES.MORALE_REDUCTION_KILL)) {
+                    if (!u.checkImmunity(IMMUNITIES.MORALE_REDUCTION)) {
+                        if (!u.checkImmunity(IMMUNITIES.MIND_AFFECTION)) {
                             reductionEffect.apply(ref);
+                        }
+                    }
+                }
             } else {
-                if (!u.checkPassive(STANDARD_PASSIVES.DISPASSIONATE))
+                if (!u.checkPassive(STANDARD_PASSIVES.DISPASSIONATE)) {
                     boostEffect.apply(ref);
+                }
             }
         }
         // Ref ref = Ref.getCopy(unit.getRef()); OLD

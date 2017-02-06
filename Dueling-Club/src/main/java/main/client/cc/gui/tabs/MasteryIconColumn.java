@@ -29,8 +29,9 @@ public class MasteryIconColumn extends G_Panel implements MouseListener {
         masteries = new LinkedList<>();
         List<PARAMETER> unlockedList = DC_MathManager.getUnlockedMasteries(hero);
         for (PARAMETER p : group.getMasteries()) {
-            if (unlockedList.contains(p))
+            if (unlockedList.contains(p)) {
                 masteries.add(p);
+            }
         }
         this.hero = hero;
         this.group = group;
@@ -42,11 +43,13 @@ public class MasteryIconColumn extends G_Panel implements MouseListener {
     private void updateMasteries() {
         List<PARAMETER> unlockedList = DC_MathManager.getUnlockedMasteries(hero);
         for (PARAMETER p : group.getMasteries()) {
-            if (masteries.contains(p))
+            if (masteries.contains(p)) {
                 continue;
+            }
             // preserve order, only *add*!
-            if (unlockedList.contains(p))
+            if (unlockedList.contains(p)) {
                 masteries.add(p);
+            }
         }
 
     }
@@ -85,8 +88,9 @@ public class MasteryIconColumn extends G_Panel implements MouseListener {
         PARAMETER param = (PARAMETER) ((GraphicComponent) e.getSource()).getDataObject();
         HC_Master.setLastClickedMastery(param);
 
-        if (e.getClickCount() > 1 || e.isAltDown())
+        if (e.getClickCount() > 1 || e.isAltDown()) {
             HC_Master.goToSkillTree(param);
+        }
         refresh();
     }
 

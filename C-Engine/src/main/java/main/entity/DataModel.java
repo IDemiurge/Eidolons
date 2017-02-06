@@ -82,10 +82,11 @@ public abstract class DataModel {
 
     public String getCustomValue(String value_ref) {
         String value = null;
-        if (getCustomParamMap().containsKey(value_ref))
+        if (getCustomParamMap().containsKey(value_ref)) {
             value = getCounter(value_ref).toString();
-        else if (getCustomPropMap().containsKey(value_ref))
+        } else if (getCustomPropMap().containsKey(value_ref)) {
             value = getCustomProperty(value_ref);
+        }
 
         return value;
     }
@@ -98,10 +99,12 @@ public abstract class DataModel {
             }
         }
 
-        if (getCustomParamMap() == null)
+        if (getCustomParamMap() == null) {
             return "";
-        if (!getCustomParamMap().containsKey(value_ref))
+        }
+        if (!getCustomParamMap().containsKey(value_ref)) {
             return "";
+        }
         main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, value_ref + " - custom prop: "
                 + getCustomParamMap().get(value_ref));
         return getCustomPropMap().get(value_ref);
@@ -109,12 +112,14 @@ public abstract class DataModel {
     }
 
     public Integer getCounter(String value_ref) {
-        if (getCustomParamMap() == null)
+        if (getCustomParamMap() == null) {
             return 0;
+        }
 
         String string = getCustomParamMap().get(value_ref);
-        if (string == null)
+        if (string == null) {
             return 0;
+        }
         LogMaster.log(LogMaster.CORE_DEBUG, value_ref + " - custom param: "
                 + string);
         return new Formula(string).getInt(ref);
@@ -132,12 +137,14 @@ public abstract class DataModel {
         String realName = new MapMaster<String, String>().getKeyForValue(getCustomParamMap(),
                 getCustomParamMap().get(name));
         if (realName == null) {
-            if (!name.contains(StringMaster.COUNTER))
+            if (!name.contains(StringMaster.COUNTER)) {
                 return setCounter(name + StringMaster.COUNTER, newValue);
+            }
             // if (!strict)
             realName = CounterMaster.findCounter(name, strict);
-            if (realName == null)
+            if (realName == null) {
                 return false;
+            }
             // else
             // return false;
         }
@@ -166,12 +173,15 @@ public abstract class DataModel {
     public boolean modifyCounter(String name, int modValue, boolean strict) {
         String realName = new MapMaster<String, String>().getKeyForValue(getCustomParamMap(),
                 getCustomParamMap().get(name));
-        if (realName == null)
+        if (realName == null) {
             realName = CounterMaster.findCounter(name, strict);
-        if (realName == null)
+        }
+        if (realName == null) {
             return false;
-        if (realName != null)
+        }
+        if (realName != null) {
             name = realName;
+        }
         // else if (!name.contains(StringMaster.COUNTER)) {
         // modifyCounter(name + StringMaster.COUNTER, modValue);
         // return;
@@ -209,16 +219,18 @@ public abstract class DataModel {
         // return Math.round((Double) n) + "";
         // if (n instanceof Float)
         // return Math.round((Float) n) + "";
-        if (base)
+        if (base) {
             return type.getIntParam(param) + "";
+        }
         return getIntParam(param) + "";
 
     }
 
     public Double getParamDouble(PARAMETER param) {
         String doubleParam = getDoubleParam(param, false);
-        if (doubleParam.isEmpty())
+        if (doubleParam.isEmpty()) {
             return 0.0;
+        }
         return StringMaster.getDouble(getDoubleParam(param, false));
     }
 
@@ -231,22 +243,26 @@ public abstract class DataModel {
     }
 
     public String getDoubleParam(PARAMETER param, boolean base) {
-        if (base)
+        if (base) {
             return getType().getDoubleParam(param, false);
+        }
         String string = paramMap.get(param);
         int index = string.indexOf('.');
-        if (index != -1)
-            if (StringMaster.isNumber(string, false))
-                if (StringMaster.isInteger(string))
+        if (index != -1) {
+            if (StringMaster.isNumber(string, false)) {
+                if (StringMaster.isInteger(string)) {
                     return string.substring(0, index);
-                else {
+                } else {
                     Double val = StringMaster.getDouble(string);
-                    if (C == null)
+                    if (C == null) {
                         C = Math.pow(10, MathMaster.NUMBERS_AFTER_PERIOD);
+                    }
                     int i = (int) (val * C);
                     val = i / C;
                     string = val.toString();
                 }
+            }
+        }
         string = string.trim();
         return string;
 
@@ -254,8 +270,9 @@ public abstract class DataModel {
 
     public Integer getIntParam(String param) {
         PARAMETER p = ContentManager.getPARAM(param);
-        if (p == null)
+        if (p == null) {
             return 0;
+        }
         return getIntParam(p);
     }
 
@@ -270,14 +287,17 @@ public abstract class DataModel {
         // if (result != null)
         // return result;
         String string = "";
-        if (base)
+        if (base) {
             string = getType().getParam(param);
-        else
+        } else {
             string = paramMap.get(param);
-        if (string == null)
+        }
+        if (string == null) {
             return 0;
-        if (string.equals(""))
+        }
+        if (string.equals("")) {
             return 0;
+        }
         result = StringMaster.getInteger(string);
         getIntegerMap(base).put(param, result);
         return result; // return new Formula(string).getInt(ref);
@@ -293,10 +313,12 @@ public abstract class DataModel {
     }
 
     protected Map<PARAMETER, Integer> getIntegerMap(boolean base) {
-        if (base)
+        if (base) {
             return type.getIntegerMap(false);
-        if (integerMap == null)
+        }
+        if (integerMap == null) {
             integerMap = new HashMap<>();
+        }
         return integerMap;
     }
 
@@ -318,10 +340,11 @@ public abstract class DataModel {
 
     public String getProperty(String prop) {
         PROPERTY property = ContentManager.getPROP(prop);
-        if (property == null)
+        if (property == null) {
             return null;
-        else
+        } else {
             return getProperty(property);
+        }
     }
 
     public String getProp(String prop) {
@@ -370,8 +393,9 @@ public abstract class DataModel {
     }
 
     public boolean checkParam(PARAMETER param, String value) {
-        if (value.isEmpty())
+        if (value.isEmpty()) {
             return true;
+        }
         int val2 = 0;
         try {
             val2 = StringMaster.getInteger(value); // Integer.valueOf(value);
@@ -402,14 +426,16 @@ public abstract class DataModel {
             getPropCache().put(p, boolCache);
         }
         Boolean result = boolCache.get(value);
-        if (result != null)
+        if (result != null) {
             return result;
-        if (base)
+        }
+        if (base) {
             result = type.checkProperty(p, value, false);
-        else if (p.isContainer()) {
+        } else if (p.isContainer()) {
             result = checkContainerProp(p, value);
-        } else
+        } else {
             result = checkSingleProp(p, value);
+        }
         boolCache.put(value, result);
         return result;
     }
@@ -419,8 +445,9 @@ public abstract class DataModel {
     }
 
     public boolean checkSingleProp(PROPERTY PROP, String value) {
-        if (StringMaster.isEmpty(getProperty(PROP)))
+        if (StringMaster.isEmpty(getProperty(PROP))) {
             return false;
+        }
         String property = getProperty(PROP);
         property = StringMaster.formatComparedProperty(property);
         value = StringMaster.formatComparedProperty(value);
@@ -434,10 +461,11 @@ public abstract class DataModel {
     public boolean checkContainerProp(PROPERTY PROP, String value, boolean any) {
         boolean result = false;
         List<String> list = ListMaster.toStringList(value);
-        if (any)
+        if (any) {
             list = StringMaster.openContainer(value);
+        }
 
-        for (String sub : list)
+        for (String sub : list) {
             for (String item : StringMaster.openContainer(getProperty(PROP))) {
                 String variable = VariableManager.getVar(item);
                 if (StringMaster.isInteger(variable)) {
@@ -448,6 +476,7 @@ public abstract class DataModel {
                     break;
                 }
             }
+        }
         return result;
 
     }
@@ -465,8 +494,9 @@ public abstract class DataModel {
     }
 
     public String getProperty(PROPERTY prop, boolean base) {
-        if (base)
+        if (base) {
             return getType().getProperty(prop);
+        }
         return propMap.get(prop);
 
     }
@@ -484,13 +514,15 @@ public abstract class DataModel {
     }
 
     public void setRef(Ref ref) {
-        if (game instanceof MicroGame)
+        if (game instanceof MicroGame) {
             ref.setGame(game);
+        }
         ref.setPlayer(owner);
         // this.ref = ref;
         this.ref = ref.getCopy(); // what does it change?
-        if (isSetThis())
+        if (isSetThis()) {
             this.ref.setID(KEYS.THIS, getId());
+        }
     }
 
     public ObjType getType() {
@@ -545,22 +577,26 @@ public abstract class DataModel {
     public boolean modifyParameter(PARAMETER param, String amountString, Integer minMax,
                                    boolean quietly, String modifierKey) {
 
-        if (amountString == null)
+        if (amountString == null) {
             return true;
-        if (amountString.isEmpty())
+        }
+        if (amountString.isEmpty()) {
             return true;
+        }
 
         if (StringMaster.isInteger(amountString)) {
-            if (StringMaster.getInteger(amountString) == 0)
+            if (StringMaster.getInteger(amountString) == 0) {
                 return true;
+            }
         }
         Number amount = new Formula(amountString).evaluate();
 
         LogMaster.log(LogMaster.VALUE_DEBUG, "modifying " + getName() + "'s "
                 + param.getName() + " by " + amount);
         if (!fireParamEvent(param, String.valueOf(amount),
-                CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED))
+                CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
             return true; // false?
+        }
 
         boolean result = true;
         try {
@@ -569,7 +605,7 @@ public abstract class DataModel {
             // } catch (Exception e) {
             // }
             Number newValue = 0;
-            if (!prevValue.isEmpty())
+            if (!prevValue.isEmpty()) {
                 try {
 
                     newValue = Formula.getFormulaByAppend(prevValue, amount).evaluate();
@@ -578,21 +614,27 @@ public abstract class DataModel {
                             quietly);
                     return true;
                 }
-            else
+            } else {
                 newValue = amount;
+            }
             // intAmount = prevValue
-            if (minMax != null)
+            if (minMax != null) {
                 if (amount.intValue() < 0) {
-                    if (StringMaster.getInteger(prevValue) < minMax)
+                    if (StringMaster.getInteger(prevValue) < minMax) {
                         return false;
-                    if (newValue.intValue() < minMax)
+                    }
+                    if (newValue.intValue() < minMax) {
                         newValue = minMax;
+                    }
                 } else {
-                    if (StringMaster.getInteger(prevValue) > minMax)
+                    if (StringMaster.getInteger(prevValue) > minMax) {
                         return false;
-                    if (newValue.intValue() > minMax)
+                    }
+                    if (newValue.intValue() > minMax) {
                         newValue = minMax;
+                    }
                 }
+            }
 
             setParam(param, newValue.toString(), quietly);
 
@@ -601,17 +643,20 @@ public abstract class DataModel {
                 map = new XLinkedMap<>();
                 getModifierMaps().put(param, map);
             }
-            if (modifierKey == null)
+            if (modifierKey == null) {
                 modifierKey = this.modifierKey;
+            }
             Double amountByModifier = map.get(modifierKey);
             this.modifierKey = null;
-            if (amountByModifier == null)
+            if (amountByModifier == null) {
                 map.put(modifierKey, amount.doubleValue());
-            else
+            } else {
                 map.put(modifierKey, amountByModifier + amount.doubleValue());
+            }
 
-            if (newValue.intValue() <= 0)
+            if (newValue.intValue() <= 0) {
                 result = false;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -619,8 +664,9 @@ public abstract class DataModel {
     }
 
     public Map<PARAMETER, Map<String, Double>> getModifierMaps() {
-        if (modifierMaps == null)
+        if (modifierMaps == null) {
             modifierMaps = new XLinkedMap<>();
+        }
         return modifierMaps;
     }
 
@@ -638,8 +684,9 @@ public abstract class DataModel {
 
     public void modifyParameter(PARAMETER param, int amount, boolean base, String modifierKey) {
         modifyParameter(param, amount, modifierKey);
-        if (base)
+        if (base) {
             type.modifyParameter(param, amount, modifierKey);
+        }
 
     }
 
@@ -670,8 +717,9 @@ public abstract class DataModel {
      * @param base if true, will calculate mod value from base value
      */
     public boolean multiplyParamByPercent(PARAMETER param, int perc, boolean base) {
-        if (perc == 100)
+        if (perc == 100) {
             return true;
+        }
         if (perc < 1000 && perc > -MathMaster.PERCENTAGE) {
             perc = MathMaster.getFullPercent(perc);
         }
@@ -686,18 +734,22 @@ public abstract class DataModel {
     }
 
     public boolean modifyParamByPercent(PARAMETER param, int perc) {
-        if (perc < 1000)
+        if (perc < 1000) {
             perc = MathMaster.getFullPercent(perc);
+        }
         return modifyParamByPercent(param, perc, false);
     }
 
     public boolean modifyParamByPercent(PARAMETER param, int perc, boolean base) {
-        if (perc == 0 || getIntParam(param, base) == 0)
+        if (perc == 0 || getIntParam(param, base) == 0) {
             return false;
-        if (perc < 1000 && perc > 0)
+        }
+        if (perc < 1000 && perc > 0) {
             perc = MathMaster.getFullPercent(perc);
-        if (perc > -1000 && perc < 0)
+        }
+        if (perc > -1000 && perc < 0) {
             perc = MathMaster.getFullPercent(perc);
+        }
         // int mod = MathManager.getFractionValue(getIntParam(param, base),
         // perc);
         float mod = MathMaster.getFractionValueFloat(getIntParam(param, base), perc);
@@ -707,19 +759,22 @@ public abstract class DataModel {
     }
 
     protected boolean firePropEvent(CONSTRUCTED_EVENT_TYPE EVENT_TYPE, String val) {
-        if (game.isSimulation() || this instanceof ObjType)
+        if (game.isSimulation() || this instanceof ObjType) {
             return true;
+        }
         Ref REF = Ref.getCopy(ref);
         REF.setTarget(id);
         return game.fireEvent(new Event(EVENT_TYPE, "" + val, REF));
     }
 
     public boolean fireParamEvent(PARAMETER param, String amount, CONSTRUCTED_EVENT_TYPE event_type) {
-        if (param.isMastery())
+        if (param.isMastery()) {
             return true; // TODO [PERFORMANCE] DEMANDS...
+        }
 
-        if (ref == null || !game.isStarted() || game.isSimulation() || this instanceof ObjType)
+        if (ref == null || !game.isStarted() || game.isSimulation() || this instanceof ObjType) {
             return true;
+        }
         Ref REF = Ref.getCopy(ref);
         REF.setAmount(amount);
         REF.setTarget(id);
@@ -732,8 +787,9 @@ public abstract class DataModel {
 
     public void setParam(PARAMETER param, int i, boolean quietly, boolean base) {
         setParam(param, "" + i, quietly);
-        if (base)
+        if (base) {
             type.setParam(param, "" + i, quietly);
+        }
     }
 
     public void setParam(PARAMETER param, int i, boolean quietly) {
@@ -760,18 +816,20 @@ public abstract class DataModel {
 
     public void setParamMax(PARAMETER p, int i) {
         int amount = getIntParam(p);
-        if (i >= amount)
+        if (i >= amount) {
             return;
-        else
+        } else {
             setParam(p, i);
+        }
     }
 
     public void setParamMin(PARAMETER p, int i) {
         int amount = getIntParam(p);
-        if (i <= amount)
+        if (i <= amount) {
             return;
-        else
+        } else {
             setParam(p, i);
+        }
     }
 
     public String getDisplayedName() {
@@ -794,14 +852,18 @@ public abstract class DataModel {
     }
 
     public boolean setParam(PARAMETER param, String value, boolean quiety) {
-        if (param == null)
+        if (param == null) {
             return false;
+        }
         if (!quiety) {
-            if (getGame() == null)
+            if (getGame() == null) {
                 return false;
-            if (getGame().isStarted())
-                if (!fireParamEvent(param, value, CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED))
+            }
+            if (getGame().isStarted()) {
+                if (!fireParamEvent(param, value, CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
                     return false;
+                }
+            }
         }
         // if (isParamSetLogged())
         LogMaster.log(0, "==========> " + getName() + "'s " + param + "  is set to" + value);
@@ -848,8 +910,9 @@ public abstract class DataModel {
     protected void resetPercentage(PARAMETER p) {
         PARAMETER c_p = ContentManager.getCurrentParam(p);
         PARAMETER c_perc = ContentManager.getPercentageParam(p);
-        if (c_perc == null || c_perc == p)
+        if (c_perc == null || c_perc == p) {
             return;
+        }
         int base_value = getIntParam(p);
         Integer c_value = getIntParam(c_p);
         int percentage = MathMaster.getPercentage(c_value, base_value);
@@ -867,8 +930,9 @@ public abstract class DataModel {
 
     public void setProperty(PROPERTY name, String value, boolean base) {
         if (base) {
-            if (type != null)
+            if (type != null) {
                 type.setProperty(name, value);
+            }
         }
         setProperty(name, value);
     }
@@ -952,26 +1016,34 @@ public abstract class DataModel {
             return true;
         }
 
-        if (!firePropEvent(CONSTRUCTED_EVENT_TYPE.PROP_BEING_ADDED, prop.getName()))
+        if (!firePropEvent(CONSTRUCTED_EVENT_TYPE.PROP_BEING_ADDED, prop.getName())) {
             return false;
+        }
 
-        if (checkSingleProp(prop, value))
+        if (checkSingleProp(prop, value)) {
             return false;
-        if (noDuplicates)
-            if (checkProperty(prop, value))
+        }
+        if (noDuplicates) {
+            if (checkProperty(prop, value)) {
                 return false;
+            }
+        }
         String prevValue = propMap.get(prop);
-        if (!StringMaster.isEmpty(prevValue))
-            if (!prevValue.endsWith(StringMaster.getContainerSeparator()))
+        if (!StringMaster.isEmpty(prevValue)) {
+            if (!prevValue.endsWith(StringMaster.getContainerSeparator())) {
                 prevValue = prevValue + StringMaster.getContainerSeparator();
+            }
+        }
 
         value = value + StringMaster.getContainerSeparator();
 
-        if (!StringMaster.isEmpty(prevValue))
-            if (addInFront)
+        if (!StringMaster.isEmpty(prevValue)) {
+            if (addInFront) {
                 value = value + prevValue;
-            else
+            } else {
                 value = prevValue + value;
+            }
+        }
         putProperty(prop, value);
         getPropCache().remove(prop);
         setDirty(true);
@@ -982,14 +1054,16 @@ public abstract class DataModel {
 
     protected void putProperty(PROPERTY prop, String value) {
 
-        if (isTypeLinked())
+        if (isTypeLinked()) {
             type.getPropMap().put(prop, value);
+        }
         propMap.put(prop, value);
     }
 
     protected void putParameter(PARAMETER param, String value) {
-        if (isTypeLinked())
+        if (isTypeLinked()) {
             type.getParamMap().put(param, value);
+        }
         paramMap.put(param, value);
     }
 
@@ -1002,8 +1076,9 @@ public abstract class DataModel {
     }
 
     public boolean clearProperty(PROPERTY prop) {
-        if (!checkProperty(prop))
+        if (!checkProperty(prop)) {
             return false;
+        }
         setProperty(prop, "");
         return true;
     }
@@ -1025,9 +1100,9 @@ public abstract class DataModel {
         // return false;
 
         boolean result = true;
-        if (prop.isContainer())
+        if (prop.isContainer()) {
             result = removeMultiProp(prop.getName(), value, all);
-        else {
+        } else {
             result = StringMaster.isEmpty(getProperty(prop));
             setProperty(prop, "");
         }
@@ -1074,17 +1149,19 @@ public abstract class DataModel {
     }
 
     public void setValue(VALUE valName, String value, boolean base) {
-        if (value == null)
+        if (value == null) {
             return;
+        }
         if (valName == G_PROPS.NAME) {
             setName(value);
         } else if (valName instanceof PROPERTY) {
             setProperty((PROPERTY) valName, value, base);
         } else if (valName instanceof PARAMETER) {
-            if (!base)
+            if (!base) {
                 setParam((PARAMETER) valName, value);
-            else
+            } else {
                 setParam((PARAMETER) valName, StringMaster.getInteger(value), false, base);
+            }
         }
         setDirty(true);
     }
@@ -1094,16 +1171,19 @@ public abstract class DataModel {
     }
 
     public void setValue(String name, String value, boolean base) {
-        if (name == null)
+        if (name == null) {
             return;
-        if (value == null)
+        }
+        if (value == null) {
             return;
+        }
         // if (valueMap==null) initValueMap();
         // valueMap.put(nodeName, nodeValue);
         if (name.equalsIgnoreCase(G_PROPS.NAME.getName())) {
             setName(value);
-        } else
+        } else {
             setValue(ContentManager.getValue(name), value, base);
+        }
 
     }
 
@@ -1157,10 +1237,11 @@ public abstract class DataModel {
         this.paramMap = cloneParamMap(type.getParamMap().getMap());
         for (VALUE exception : exceptions) {
             String value = map.get(exception);
-            if (exception instanceof PARAMETER)
+            if (exception instanceof PARAMETER) {
                 paramMap.put(exception.getName(), value);
-            else if (exception instanceof PROPERTY)
+            } else if (exception instanceof PROPERTY) {
                 propMap.put(exception.getName(), value);
+            }
         }
         setDirty(true);
     }
@@ -1184,9 +1265,11 @@ public abstract class DataModel {
     }
 
     public Integer getId() {
-        if (id == null)
-            if (game != null)
+        if (id == null) {
+            if (game != null) {
                 id = game.getIdManager().getNewId();
+            }
+        }
         return id;
     }
 
@@ -1200,8 +1283,9 @@ public abstract class DataModel {
     }
 
     public String getName() {
-        if (name == null)
+        if (name == null) {
             name = getProperty(G_PROPS.NAME);
+        }
         return name;
     }
 
@@ -1250,15 +1334,17 @@ public abstract class DataModel {
 
     public boolean checkBool(DYNAMIC_BOOLS bool) {
         String value = getProperty(G_PROPS.DYNAMIC_BOOLS);
-        if (StringMaster.isEmpty(value))
+        if (StringMaster.isEmpty(value)) {
             return false;
+        }
         return StringMaster.compareContainers(value, bool.toString(), false);
     }
 
     public boolean checkBool(STD_BOOLS bool) {
         String value = getProperty(G_PROPS.STD_BOOLS);
-        if (StringMaster.isEmpty(value))
+        if (StringMaster.isEmpty(value)) {
             return false;
+        }
         return StringMaster.compareContainers(value, bool.toString(), false);
     }
 
@@ -1299,8 +1385,9 @@ public abstract class DataModel {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Entity))
+        if (!(obj instanceof Entity)) {
             return false;
+        }
         try {
             return ((Entity) obj).getId().equals(getId());
         } catch (Exception e) {
@@ -1310,18 +1397,20 @@ public abstract class DataModel {
 
     public boolean replaceContainerPropItem(PROPERTY prop, String replacing, String replaced) {
         String value = getProperty(prop);
-        if (!value.contains(replaced))
+        if (!value.contains(replaced)) {
             return false;
+        }
         value = value.replace(replaced, replacing);
         setProperty(prop, value);
         return true;
     }
 
     public void copyValue(VALUE param, Entity entity) {
-        if (param instanceof PARAMETER)
+        if (param instanceof PARAMETER) {
             setParamDouble((PARAMETER) param, entity.getParamDouble((PARAMETER) param), false);
-        else
+        } else {
             setProperty((PROPERTY) param, entity.getProperty(param.toString()));
+        }
     }
 
     public void setModifierKey(String modifierKey) {
@@ -1340,23 +1429,27 @@ public abstract class DataModel {
     }
 
     public String getNameOrId() {
-        if (game.isSimulation())
-            if (this instanceof ObjType)
+        if (game.isSimulation()) {
+            if (this instanceof ObjType) {
                 return getName();
+            }
+        }
         return getId() + "";
     }
 
 
     public String getRawValue(VALUE value) {
         String string = getRawValues().get(value);
-        if (string == null)
+        if (string == null) {
             return getValue(value, true);
+        }
         return string;
     }
 
     public XLinkedMap<VALUE, String> getRawValues() {
-        if (rawValues == null)
+        if (rawValues == null) {
             rawValues = new XLinkedMap<>();
+        }
         return rawValues;
     }
 
@@ -1390,20 +1483,24 @@ public abstract class DataModel {
     }
 
     public ImageIcon getCustomIcon() {
-        if (customIcon == null)
-            if (game != null)
-                if (game.isSimulation())
+        if (customIcon == null) {
+            if (game != null) {
+                if (game.isSimulation()) {
                     if (ref != null) {
                         Map<String, ImageIcon> cache = ImageManager.getCustomIconCache().get(
                                 ref.getSourceObj());
-                        if (cache == null)
+                        if (cache == null) {
                             return null;
+                        }
                         return cache.get(getName()); // modified name for
                         // upgrades?
                         // or
                         // displayed only?
 
                     }
+                }
+            }
+        }
 
         return customIcon;
     }
@@ -1439,18 +1536,19 @@ public abstract class DataModel {
     }
 
     public void resetPropertyFromList(PROPERTY prop, List<? extends Entity> list) {
-        if (ListMaster.isNotEmpty(list))
+        if (ListMaster.isNotEmpty(list)) {
             setProperty(prop, StringMaster.constructContainer(ListMaster.toNameList(list)),
                     isTypeLinked());
-        else {
+        } else {
             removeProperty(prop);
             getType().removeProperty(prop);
         }
     }
 
     public HashMap<PROPERTY, Map<String, Boolean>> getPropCache() {
-        if (propCache == null)
+        if (propCache == null) {
             propCache = new HashMap<PROPERTY, Map<String, Boolean>>();
+        }
         return propCache;
     }
 }

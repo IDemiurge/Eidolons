@@ -122,9 +122,11 @@ public class MiniGrid implements Refreshable {
     public void resetOverlayingComp(MiniObjComp minicomp) {
         boolean multi = false;
         for (MiniObjComp comp : overlayingObjComps) {
-            if (comp != minicomp)
-                if (comp.getObj().getCoordinates().equals(minicomp))
+            if (comp != minicomp) {
+                if (comp.getObj().getCoordinates().equals(minicomp)) {
                     multi = true;
+                }
+            }
         }
         this.comp.add(minicomp.getComp(), getOverlayingMigString((DC_HeroObj) minicomp.getObj(),
                 multi));
@@ -147,12 +149,14 @@ public class MiniGrid implements Refreshable {
             }
         }
         DC_Cell cell = dungeon.getGame().getCellByCoordinate(obj.getCoordinates());
-        if (cell == null)
+        if (cell == null) {
             return;
+        }
         // PERHAPS REFRESH?
         // compMap.getOrCreate(obj.getCoordinates()).removeObj(obj);
-        if (compMap.get(obj.getCoordinates()).getObjects().size() <= 1)
+        if (compMap.get(obj.getCoordinates()).getObjects().size() <= 1) {
             objAdded(cell);
+        }
 
     }
 
@@ -173,8 +177,9 @@ public class MiniGrid implements Refreshable {
                 }
                 boolean multi = false;
                 for (MiniObjComp comp : overlayingObjComps) {
-                    if (comp.getObj().getCoordinates().equals(minicomp))
+                    if (comp.getObj().getCoordinates().equals(minicomp)) {
                         multi = true;
+                    }
                 }
                 this.comp.add(minicomp.getComp(), getOverlayingMigString(unit, multi));
                 overlayingObjComps.add(minicomp);
@@ -184,12 +189,14 @@ public class MiniGrid implements Refreshable {
 
         }
         minicomp = compMap.get(obj.getCoordinates());
-        if (minicomp == null)
+        if (minicomp == null) {
             return;
+        }
         if (stack) {
             minicomp.addObj(obj);
-        } else
+        } else {
             minicomp.setObj(obj);
+        }
         minicomp.refresh();
         // addObj(obj);
         // refresh();
@@ -229,8 +236,9 @@ public class MiniGrid implements Refreshable {
             // dynamically on click!
         } else // if (editMode)
         {
-            if (objComp.getComp().getMouseListeners().length != 0)
+            if (objComp.getComp().getMouseListeners().length != 0) {
                 objComp.getComp().removeMouseListener(customMouseListener);
+            }
             // if (objComp.getComp().getMouseListeners().length == 0) fails?
             objComp.getComp().addMouseListener(customMouseListener);
         }
@@ -254,10 +262,12 @@ public class MiniGrid implements Refreshable {
         int yOffset = (cellHeight - height) / 2;
         DIRECTION d = obj.getDirection();
         if (d != null) {
-            if (d.isGrowX() != null)
+            if (d.isGrowX() != null) {
                 xOffset = (d.isGrowX()) ? getCellWidth() - width : 0;
-            if (d.isGrowY() != null)
+            }
+            if (d.isGrowY() != null) {
                 yOffset = (d.isGrowY()) ? cellHeight - overlayingObjHeight : 0;
+            }
 
         }
         int w = (offsetX + c.x) * getCellWidth();
@@ -311,10 +321,11 @@ public class MiniGrid implements Refreshable {
     }
 
     public void offset(boolean xOrY, int wheelRotation) {
-        if (xOrY)
+        if (xOrY) {
             offsetX += wheelRotation;
-        else
+        } else {
             offsetY += wheelRotation;
+        }
         resetComponents();
     }
 
@@ -359,17 +370,20 @@ public class MiniGrid implements Refreshable {
     }
 
     public void refreshComp(Integer index, Coordinates c, MiniObjComp objComp) {
-        if (index != null)
+        if (index != null) {
             this.comp.setComponentZOrder(objComp.getComp(), index);
+        }
 
         DC_Obj obj = objComp.getObj();
-        if (c == null)
+        if (c == null) {
             c = obj.getCoordinates();
+        }
         List<? extends DC_Obj> objects = getGame().getObjectsOnCoordinate(c);
         LinkedList<DC_HeroObj> overlaying = new LinkedList<>();
         for (DC_HeroObj o : map.getDungeon().getGame().getObjectsOnCoordinate(c)) {
-            if (o.isOverlaying())
+            if (o.isOverlaying()) {
                 overlaying.add(o);
+            }
         }
         // TODO WHAT IF THERE ARE STACKED OBJECT + OVERLAYING??? FUTURE...
         // for non-Level Editor
@@ -440,8 +454,11 @@ public class MiniGrid implements Refreshable {
 
         for (MiniObjComp comp : overlayingObjComps)
             // if (obj.getObj().checkBool(TOP))
-            if (comp.getObj().getCoordinates().equals(coordinates))
+        {
+            if (comp.getObj().getCoordinates().equals(coordinates)) {
                 return comp.getObj();
+            }
+        }
         return getCompMap().get(coordinates).getTopObj();
     }
 

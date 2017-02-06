@@ -61,8 +61,9 @@ public abstract class WrappedContainer<E> extends G_Panel {
 
         for (G_Panel sub : comps) {
             G_Panel comp = customComps.get(i);
-            if (comp != null)
+            if (comp != null) {
                 spaceTaken = addComp(comp, true);
+            }
 
             spaceTaken = addComp(sub, false);
 
@@ -102,13 +103,14 @@ public abstract class WrappedContainer<E> extends G_Panel {
 
     protected int addComp(G_Panel panel, boolean noWrap) {
         String pos = "";
-        if (!noWrap)
+        if (!noWrap) {
             if (checkWrap(panel)) // horizontal?
             {
                 pos = "wrap";
                 spaceTaken = 0;
                 wrapped++;
             }
+        }
         add(panel, pos);
         spaceTaken += panel.getDimension(vertical);
         return spaceTaken;
@@ -133,8 +135,9 @@ public abstract class WrappedContainer<E> extends G_Panel {
         }
         sortData();
 
-        for (E d : getData())
+        for (E d : getData()) {
             comps.add(getComp(d));
+        }
     }
 
     public abstract G_Panel createComp(E e);

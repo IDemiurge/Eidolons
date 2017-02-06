@@ -66,8 +66,9 @@ public class Path {
             for (int i = nodes.size() - 1; i >= 0; i--) {
                 PathNode NODE = nodes.get(i);
                 NODES.add(NODE);
-                if (NODE == node)
+                if (NODE == node) {
                     break;
+                }
             }
             main.system.auxiliary.LogMaster
                     .log(LogMaster.COMBAT_DEBUG, "Path traversal interrupted "
@@ -125,8 +126,9 @@ public class Path {
     }
 
     public int getIntegerCost() {
-        if (cost > 1 && cost < 2)
+        if (cost > 1 && cost < 2) {
             return 2;
+        }
 
         return (int) Math.round(cost);
 

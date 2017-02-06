@@ -59,12 +59,15 @@ public class AutoTest {
     @Override
     public String toString() {
         String string = "Test ";
-        if (type != null)
+        if (type != null) {
             string += "Type: " + type + ", ";
-        if (getEntity() != null)
+        }
+        if (getEntity() != null) {
             string += "Entity: " + getEntity().getName() + ", ";
-        if (argMap != null)
+        }
+        if (argMap != null) {
             string += "argMap: " + argMap + " ";
+        }
         return string;
     }
 
@@ -107,8 +110,9 @@ public class AutoTest {
 
     public String getArg(TEST_ARGS arg) {
         String string = getArgMap().get(arg);
-        if (string == null)
+        if (string == null) {
             return arg.getDefVal();
+        }
         return string;
     }
 

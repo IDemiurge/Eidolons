@@ -25,14 +25,17 @@ public class FearsomeEffect extends ModifyValueEffect { // mod val
         formula = formula.getAppendedByFactor(-0.5);
         try {
             for (DC_HeroObj unit : ((DC_Game) game).getUnits()) {
-                if (!friendlyFire)
-                    if (unit.getOwner().equals(ref.getSourceObj().getOwner()))
+                if (!friendlyFire) {
+                    if (unit.getOwner().equals(ref.getSourceObj().getOwner())) {
                         continue;
+                    }
+                }
                 // if (!UnitAnalyzer.isLiving(unit))
                 // continue;
 
-                if (!unit.checkInSightForUnit((DC_HeroObj) ref.getSourceObj()))
+                if (!unit.checkInSightForUnit((DC_HeroObj) ref.getSourceObj())) {
                     continue;
+                }
 
                 ref.setTarget(unit.getId());
                 super.applyThis();

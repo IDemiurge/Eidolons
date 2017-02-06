@@ -35,15 +35,17 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
 
     @Override
     public void setValue(ANIM_VALUES name, String value) {
-        if (!StringMaster.isEmpty(value)) switch (name) {
-            case SPRITES:
-                value =
-                        StringMaster.addMissingPathSegments(value, PathFinder.getSpritesPath());
-                break;
-            case PARTICLE_EFFECTS:
-                value = StringMaster.addMissingPathSegments(value, PathFinder.getSfxPath());
-                break;
+        if (!StringMaster.isEmpty(value)) {
+            switch (name) {
+                case SPRITES:
+                    value =
+                            StringMaster.addMissingPathSegments(value, PathFinder.getSpritesPath());
+                    break;
+                case PARTICLE_EFFECTS:
+                    value = StringMaster.addMissingPathSegments(value, PathFinder.getSfxPath());
+                    break;
 
+            }
         }
         super.setValue(name, value);
     }

@@ -160,8 +160,9 @@ public class FunctionManager {
     public enum FUNCTIONS {
         BOOL(false, FUNC_ARGS.CONST, FUNC_ARGS.CONST, FUNC_ARGS.CONST) {
             public Object evaluate(List<Object> values) {
-                if (values.size() != 3)
+                if (values.size() != 3) {
                     return false;
+                }
                 String condition = values.get(0).toString();
                 String IF = values.get(1).toString();
                 String ELSE = values.get(2).toString();
@@ -171,11 +172,14 @@ public class FunctionManager {
         },
         RANDOM(true, FUNC_ARGS.CONST) {
             public Object evaluate(List<Object> values) {
-                if (TextParser.isInfoParsing())
+                if (TextParser.isInfoParsing()) {
                     return Integer.valueOf(values.get(0).toString()) / 2;
-                if (Game.game != null)
-                    if (Game.game.isSimulation())
+                }
+                if (Game.game != null) {
+                    if (Game.game.isSimulation()) {
                         return Integer.valueOf(values.get(0).toString()) / 2;
+                    }
+                }
                 return RandomWizard.getRandomInt(Integer.valueOf(values.get(0)
                         .toString()));
             }
@@ -276,9 +280,11 @@ public class FunctionManager {
                 } catch (Exception e) {
                     return integer;
                 }
-                if (shortDiags)
-                    if (!PositionMaster.inLine(obj1, (Obj) values.get(1)))
+                if (shortDiags) {
+                    if (!PositionMaster.inLine(obj1, (Obj) values.get(1))) {
                         integer++;
+                    }
+                }
                 return integer;
 
             }

@@ -135,11 +135,13 @@ public class LogMaster {
     }
 
     public static void log(String s) {
-        if (off)
+        if (off) {
             return;
+        }
 
-        if (APPEND_TIME)
+        if (APPEND_TIME) {
             s = TimeMaster.getFormattedTime() + " - " + s;
+        }
         System.out.println(s);
     }
 
@@ -157,10 +159,11 @@ public class LogMaster {
 
     public static void log(LOG_CHANNELS c, String s) {
         if (c.isOn()) {
-            if (isLogInNewThread())
+            if (isLogInNewThread()) {
                 logInNewThread(c.getPrefix() + s);
-            else
+            } else {
                 log(c.getPrefix() + s);
+            }
         }
         if (c.getLog() != null) {
             // TODO Game.game.getLogManager().log(c.getLog(), s);
@@ -177,7 +180,7 @@ public class LogMaster {
             if (c != null) {
                 switcher = c.isOn();
                 prefix = c.getPrefix();
-            } else
+            } else {
                 switch (priority) {
                     case THREADING_DEBUG: {
                         switcher = THREADING_DEBUG_ON;
@@ -312,11 +315,13 @@ public class LogMaster {
                         break;
                     }
                 }
+            }
             if (switcher) {
-                if (isLogInNewThread())
+                if (isLogInNewThread()) {
                     logInNewThread(prefix + s);
-                else
+                } else {
                     log(prefix + s);
+                }
                 // if (logs != null) {
                 // for (Log log : logs)
                 // log.log(prefix + s);
@@ -325,8 +330,9 @@ public class LogMaster {
                 // MicroGame.game.getLog().sysLog(s);
             }
         }
-        if (priority >= PRIORITY)
+        if (priority >= PRIORITY) {
             log(s);
+        }
 
         LogFileMaster.checkWriteToFileNewThread(priority, s);
     }
@@ -352,10 +358,11 @@ public class LogMaster {
         String path = PathFinder.getLogPath();
         String fileName = logFileName == null ? getLogFileName() : logFileName;
         // XML_Writer.write(content, path, fileName);
-        if (append)
+        if (append) {
             FileManager.appendToTextFile(content, path, fileName);
-        else
+        } else {
             FileManager.write(content, path + "\\" + fileName);
+        }
 
     }
 
@@ -374,11 +381,13 @@ public class LogMaster {
     }
 
     public static void toggle(String e) {
-        if (e == null)
+        if (e == null) {
             return;
+        }
         LOG_CHANNELS c = new EnumMaster<LOG_CHANNELS>().retrieveEnumConst(LOG_CHANNELS.class, e);
-        if (c == null)
+        if (c == null) {
             return;
+        }
         c.setOn(!c.isOn());
     }
 
@@ -448,9 +457,11 @@ public class LogMaster {
 
         public static LOG_CHANNELS getByCode(int priority) {
 
-            for (LOG_CHANNELS c : LOG_CHANNELS.values())
-                if (c.getCode() == priority)
+            for (LOG_CHANNELS c : LOG_CHANNELS.values()) {
+                if (c.getCode() == priority) {
                     return c;
+                }
+            }
             return null;
         }
 

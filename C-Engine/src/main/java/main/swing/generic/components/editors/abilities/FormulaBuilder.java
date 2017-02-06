@@ -73,8 +73,9 @@ public class FormulaBuilder implements ActionListener, ChangeListener {
         switch (arg0.getActionCommand()) {
             case INSERT: {
                 String string = getSelectedItemString();
-                if (string != null)
+                if (string != null) {
                     insert(string);
+                }
                 break;
             }
         }
@@ -90,8 +91,9 @@ public class FormulaBuilder implements ActionListener, ChangeListener {
         // if (selectedValue instanceof VALUE){
         // return ((VALUE)selectedValue).getShortName();
         // }
-        if (selectedValue == null)
+        if (selectedValue == null) {
             return null;
+        }
         return selectedValue.toString();
     }
 
@@ -105,8 +107,9 @@ public class FormulaBuilder implements ActionListener, ChangeListener {
     private void initGUI() {
         tabs = new G_TabbedPanel();
         tabs.getTabs().addChangeListener(this);
-        if (!initialized)
+        if (!initialized) {
             initTabs();
+        }
     }
 
     private void initTabs() {

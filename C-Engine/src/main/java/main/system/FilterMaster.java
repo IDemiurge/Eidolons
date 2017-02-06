@@ -74,37 +74,43 @@ public class FilterMaster {
             } else {
                 entity = DataManager.getType(l.toString(), TYPE);
             }
-            if (entity == null)
+            if (entity == null) {
                 continue;
+            }
             boolean result = false;
 
             if (prop) {
                 PROPERTY property = ContentManager.getPROP(valueName);
                 if (property.isContainer())
                     // if (!BooleanMaster.isFalse(strict_or_greater_less_equal))
+                {
                     result = entity.checkContainerProp(property, value,
                             strict_or_greater_less_equal == null);
-                else
+                } else {
                     result = StringMaster.compareByChar(entity.getProperty(property), value,
                             BooleanMaster.isTrue(strict_or_greater_less_equal));
+                }
                 // entity.checkProperty();
             } else {
                 PARAMETER param = ContentManager.getPARAM(valueName);
                 int amount = new Formula(value).getInt(new Ref(entity));
-                if (strict_or_greater_less_equal == null)
+                if (strict_or_greater_less_equal == null) {
                     result = entity.getIntParam(param) == amount;
-                else {
+                } else {
                     result = entity.checkParam(param, "" + amount);
-                    if (!strict_or_greater_less_equal)
+                    if (!strict_or_greater_less_equal) {
                         result = !result;
+                    }
                 }
             }
 
             if (filterOut) {
-                if (result)
+                if (result) {
                     filteredList.add(l);
-            } else if (!result)
+                }
+            } else if (!result) {
                 filteredList.add(l);
+            }
         }
         for (Object l : filteredList) {
             list.remove(l);
@@ -125,26 +131,31 @@ public class FilterMaster {
         filter(objList, conditions);
         List<Integer> idList = new ListMaster<>().convertToIdList(objList);
         list.clear();
-        for (Integer id : idList)
+        for (Integer id : idList) {
             list.add(id);
+        }
 
     }
 
     public static List<? extends Entity> filter(List<? extends Entity> list, Condition condition,
                                                 boolean out) {
-        if (list == null)
+        if (list == null) {
             return list;
+        }
         Collection<Entity> removeList = new LinkedList<>();
         for (Entity e : list) {
-            if (e == null)
+            if (e == null) {
                 continue;
+            }
             Ref REF = e.getRef().getCopy();
             REF.setID(KEYS.MATCH.name(), e.getId());
             boolean check = !condition.check(REF);
-            if (out)
+            if (out) {
                 check = !check;
-            if (check)
+            }
+            if (check) {
                 removeList.add(e);
+            }
         }
         list.removeAll(removeList);
         return list;
@@ -152,11 +163,14 @@ public class FilterMaster {
 
     public static void applyFilter(Collection<Obj> objects, FILTERS filter, Ref ref, boolean out) {
         List<Obj> objectsToRemove = new LinkedList<Obj>();
-        for (Obj obj : objects)
-            if ((out) == checkFilter(obj, filter, ref))
+        for (Obj obj : objects) {
+            if ((out) == checkFilter(obj, filter, ref)) {
                 objectsToRemove.add(obj);
-        for (Obj obj : objectsToRemove)
+            }
+        }
+        for (Obj obj : objectsToRemove) {
             objects.remove(obj);
+        }
     }
 
     private static boolean checkFilter(Obj obj, FILTERS filter, Ref ref) {

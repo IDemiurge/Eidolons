@@ -23,11 +23,13 @@ public class WaitRule {
     public static void checkMap() {
         for (Integer id : getWaitMap().keySet()) {
             DC_HeroObj unit = (DC_HeroObj) game.getObjectById(id);
-            if (unit == null)
+            if (unit == null) {
                 continue;
+            }
             if (checkWakeUp(unit,
-                    (DC_HeroObj) game.getObjectById(waitMap.get(id))))
+                    (DC_HeroObj) game.getObjectById(waitMap.get(id)))) {
                 wakeUp(unit);
+            }
         }
     }
 
@@ -49,8 +51,9 @@ public class WaitRule {
     }
 
     public static void addWaitingUnit(DC_HeroObj unit, DC_HeroObj target) {
-        if (game == null)
+        if (game == null) {
             game = unit.getGame();
+        }
         getWaitMap().put(unit.getId(), target.getId());
     }
 
@@ -65,29 +68,37 @@ public class WaitRule {
     }
 
     public static boolean checkWakeUp(DC_HeroObj unit, DC_HeroObj target) {
-        if (!unit.hasBuff(WAIT_BUFF))
+        if (!unit.hasBuff(WAIT_BUFF)) {
             return true;
-        if (target.hasBuff(STD_BUFF_NAMES.Channeling.name()))
+        }
+        if (target.hasBuff(STD_BUFF_NAMES.Channeling.name())) {
             return true;
-        if (target.isDead())
+        }
+        if (target.isDead()) {
             return true;
-        if (target.getOwner() != unit.getOwner())
-            if (!target.checkInSightForUnit(unit))
+        }
+        if (target.getOwner() != unit.getOwner()) {
+            if (!target.checkInSightForUnit(unit)) {
                 return true;
-        if (!target.canActNow())
+            }
+        }
+        if (!target.canActNow()) {
             return true;
+        }
         return false;
     }
 
     public static Map<Integer, Integer> getAlertMap() {
-        if (alertMap == null)
+        if (alertMap == null) {
             alertMap = new HashMap<>();
+        }
         return alertMap;
     }
 
     public static Map<Integer, Integer> getWaitMap() {
-        if (waitMap == null)
+        if (waitMap == null) {
             waitMap = new HashMap<>();
+        }
         return waitMap;
     }
 

@@ -54,9 +54,10 @@ public class LE_DataMaster {
 		String path = getMissionsWorkspacePath() + MISSIONS_WORKSPACE_NAME + ".xml";
 		File file = FileManager.getFile(path);
 		String data = FileManager.readFile(file);
-		if (!data.contains(";"))
-			return;
-		for (String missionName : StringMaster.openContainer(data)) {
+        if (!data.contains(";")) {
+            return;
+        }
+        for (String missionName : StringMaster.openContainer(data)) {
 			loadMission(getDungeonMissionFolder() + missionName);
 		}
 	}
@@ -66,9 +67,10 @@ public class LE_DataMaster {
 		String path = getLevelsWorkspacePath() + MISSIONS_WORKSPACE_NAME + ".xml";
 		File file = FileManager.getFile(path);
 		String data = FileManager.readFile(file);
-		if (!data.contains(";"))
-			return levels;
-		for (String missionPath : StringMaster.openContainer(data)) {
+        if (!data.contains(";")) {
+            return levels;
+        }
+        for (String missionPath : StringMaster.openContainer(data)) {
 			levels.add(new Level(missionPath, null, data));
 		}
 		return levels;
@@ -108,13 +110,16 @@ public class LE_DataMaster {
 			levelSaved(level);
 			if (i == 0)
 				// if (level.isBoss())
-				enterLevel = level.getPath(); // just sort them always ...
-			// if (level.isFirst())
-			else if (i == mission.getLevels().size() - 1)
-				bossLevel = level.getPath();
-			else
-				sublevels += level.getPath() + ";"; // getpath!
-			i++;
+            {
+                enterLevel = level.getPath(); // just sort them always ...
+            }
+// if (level.isFirst())
+            else if (i == mission.getLevels().size() - 1) {
+                bossLevel = level.getPath();
+            } else {
+                sublevels += level.getPath() + ";"; // getpath!
+            }
+            i++;
 			levels += level.getPath() + ";";
 		}
 		mission.getObj().setProperty(MACRO_PROPS.PRESET_SUBLEVELS, sublevels, overwrite);
@@ -122,8 +127,10 @@ public class LE_DataMaster {
 		mission.getObj().setProperty(MACRO_PROPS.ROOT_LEVEL, enterLevel, overwrite);
 		mission.getObj().setProperty(MACRO_PROPS.DUNGEON_LEVELS, levels, overwrite);
 		if (overwrite) // name changed
-			XML_Writer.writeXML_ForType(LevelEditor.getCurrentMission().getObj().getType());
-	}
+        {
+            XML_Writer.writeXML_ForType(LevelEditor.getCurrentMission().getObj().getType());
+        }
+    }
 
 	public static String getDungeonFolder() {
 		return PathFinder.getDungeonFolder();
@@ -139,13 +146,14 @@ public class LE_DataMaster {
 
 	public static void edit() {
 		ObjType type = LevelEditor.getMainPanel().getInfoPanel().getSelectedType();
-		if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.DUNGEONS)
-			editLevel();
-		else if (type.getOBJ_TYPE_ENUM() == MACRO_OBJ_TYPES.PLACE)
-			editMission();
-		else
-			editSelectedObj();
-	}
+        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.DUNGEONS) {
+            editLevel();
+        } else if (type.getOBJ_TYPE_ENUM() == MACRO_OBJ_TYPES.PLACE) {
+            editMission();
+        } else {
+            editSelectedObj();
+        }
+    }
 
 	private static void editMission() {
 		// TODO random levels,
@@ -165,13 +173,14 @@ public class LE_DataMaster {
 
 	public static void removeSelected() {
 		ObjType type = LevelEditor.getMainPanel().getInfoPanel().getSelectedType();
-		if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.DUNGEONS)
-			removeLevel(LevelEditor.getCurrentLevel());
-		else if (type.getOBJ_TYPE_ENUM() == MACRO_OBJ_TYPES.PLACE)
-			removeMission();
-		else
-			removeSelectedObj();
-	}
+        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.DUNGEONS) {
+            removeLevel(LevelEditor.getCurrentLevel());
+        } else if (type.getOBJ_TYPE_ENUM() == MACRO_OBJ_TYPES.PLACE) {
+            removeMission();
+        } else {
+            removeSelectedObj();
+        }
+    }
 
 	private static void removeSelectedObj() {
         LE_ObjMaster.removeObj(
@@ -179,8 +188,9 @@ public class LE_DataMaster {
     }
 
 	private static void removeLevel(Level level) {
-		if (LevelEditor.getMainPanel().getCurrentMission() != null)
-			LevelEditor.getMainPanel().getCurrentMission().removeLevel(level);
+        if (LevelEditor.getMainPanel().getCurrentMission() != null) {
+            LevelEditor.getMainPanel().getCurrentMission().removeLevel(level);
+        }
 
 		LevelEditor.getSimulation().destruct();
 		LevelEditor.levelRemoved(level);
@@ -201,22 +211,25 @@ public class LE_DataMaster {
 
 	public static void loadLevel() {
 		String path = LEVEL_CHOOSER.launch(getDungeonLevelFolder(), "");
-		if (path == null)
-			return;
-		loadLevel(path);
+        if (path == null) {
+            return;
+        }
+        loadLevel(path);
 	}
 
 	public static void loadLevel(String path) {
 		File file = FileManager.getFile(path);
-		if (!file.isFile())
-			return;
-		String data = FileManager.readFile(file);
+        if (!file.isFile()) {
+            return;
+        }
+        String data = FileManager.readFile(file);
 		String fileName = StringMaster.cropFormat(StringMaster.getLastPathSegment(path)); // TODO
 		String baseDungeonType = VariableManager.removeVarPart(fileName);
 		// fileName.split(DungeonLevelMaster.LEVEL_NAME_SEPARATOR)[0];
-		if (baseDungeonType.contains(NameMaster.VERSION))
-			baseDungeonType = baseDungeonType.split(NameMaster.VERSION)[0];
-		Level level = LevelEditor.newLevel(baseDungeonType, data, false);
+        if (baseDungeonType.contains(NameMaster.VERSION)) {
+            baseDungeonType = baseDungeonType.split(NameMaster.VERSION)[0];
+        }
+        Level level = LevelEditor.newLevel(baseDungeonType, data, false);
 		level.setName(fileName);
 
 		level.getDungeon().setLevelFilePath(path);
@@ -229,9 +242,10 @@ public class LE_DataMaster {
 
 	public static void loadMission() {
 		String path = MISSION_CHOOSER.launch(getDungeonMissionFolder(), "");
-		if (path == null || path.equals(getDungeonMissionFolder()))
-			return;
-		loadMission(path);
+        if (path == null || path.equals(getDungeonMissionFolder())) {
+            return;
+        }
+        loadMission(path);
 
 	}
 
@@ -248,9 +262,10 @@ public class LE_DataMaster {
 
 	public static void resetMissionWorkspace() {
 		String data = "";
-		for (Mission mission : LevelEditor.getMainPanel().getMissions())
-			data += mission.getName() + ".xml;";
-		XML_Writer.write(data, getMissionsWorkspacePath(), MISSIONS_WORKSPACE_NAME + ".xml");
+        for (Mission mission : LevelEditor.getMainPanel().getMissions()) {
+            data += mission.getName() + ".xml;";
+        }
+        XML_Writer.write(data, getMissionsWorkspacePath(), MISSIONS_WORKSPACE_NAME + ".xml");
 
 	}
 
@@ -294,9 +309,10 @@ public class LE_DataMaster {
 		String fileName = dungeon.getName();
 
 		String path = fileName;
-		if (!StringMaster.isEmpty(subFolder))
-			path = subFolder + "\\" + path;
-		if (dungeon.getWorkspaceGroup() == null) {
+        if (!StringMaster.isEmpty(subFolder)) {
+            path = subFolder + "\\" + path;
+        }
+        if (dungeon.getWorkspaceGroup() == null) {
 			dungeon.setWorkspaceGroup(WORKSPACE_GROUP.IMPLEMENT);
 
 		}
@@ -318,37 +334,42 @@ public class LE_DataMaster {
 		path += ".xml";
 		File file = FileManager.getFile(getDungeonLevelFolder() + "\\" + path); // level.getVersion()
 
-		if (file.isFile())
-			if (level.getMission() == null)
-				if (!DialogMaster.confirm("Overwrite?")) {
-					int version = 2;
-					while (true) {
-						String newPath = getDungeonLevelFolder() + fileName + NameMaster.VERSION
-								+ version + ".xml";
-						file = FileManager.getFile(newPath);
-						if (!file.isFile())
-							break;
-						version++;
-					}
-					path = StringMaster.replaceLast(path, fileName, fileName + NameMaster.VERSION
-							+ version);
-					fileName += NameMaster.VERSION + version;
-				}
-		// fileName += ".xml";
+        if (file.isFile()) {
+            if (level.getMission() == null) {
+                if (!DialogMaster.confirm("Overwrite?")) {
+                    int version = 2;
+                    while (true) {
+                        String newPath = getDungeonLevelFolder() + fileName + NameMaster.VERSION
+                                + version + ".xml";
+                        file = FileManager.getFile(newPath);
+                        if (!file.isFile()) {
+                            break;
+                        }
+                        version++;
+                    }
+                    path = StringMaster.replaceLast(path, fileName, fileName + NameMaster.VERSION
+                            + version);
+                    fileName += NameMaster.VERSION + version;
+                }
+            }
+        }
+        // fileName += ".xml";
 		level.setPath(path);
 		level.setName(fileName);
-		if (!StringMaster.isEmpty(subFolder))
-			if (!new File(getDungeonLevelFolder() + subFolder + "\\").exists()) {
-				new File(getDungeonLevelFolder() + subFolder + "\\").mkdir();
-			}
-		FileManager.write(xml, getDungeonLevelFolder() + "\\" + path);
+        if (!StringMaster.isEmpty(subFolder)) {
+            if (!new File(getDungeonLevelFolder() + subFolder + "\\").exists()) {
+                new File(getDungeonLevelFolder() + subFolder + "\\").mkdir();
+            }
+        }
+        FileManager.write(xml, getDungeonLevelFolder() + "\\" + path);
 	}
 
 	private static void deleteIncompleteVersions(String fileName) {
 		for (WORKSPACE_GROUP ws : WORKSPACE_GROUP.values()) {
-			if (ws == WORKSPACE_GROUP.FOCUS)
-				continue;
-			File file = FileManager.getFile(getDungeonLevelFolder() + "\\" + fileName
+            if (ws == WORKSPACE_GROUP.FOCUS) {
+                continue;
+            }
+            File file = FileManager.getFile(getDungeonLevelFolder() + "\\" + fileName
 					+ InfoMaster.getWorkspaceTip(ws) + ".xml"); // level.getVersion()
 			try {
 				file.delete();
@@ -376,9 +397,10 @@ public class LE_DataMaster {
 			// Level level = new Level(baseDungeonType, mission, data);
 			// level.init();
 			String dungeonType = ListChooser.chooseType(OBJ_TYPES.DUNGEONS);
-			if (dungeonType == null)
-				break;
-			Level level = new Level(dungeonType, mission, null);
+            if (dungeonType == null) {
+                break;
+            }
+            Level level = new Level(dungeonType, mission, null);
 			levels.add(level);
 		}
 		// Level surfaceLevel = new Level(dungeonType, mission);

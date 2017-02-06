@@ -22,8 +22,9 @@ public class TestMaster {
     }
 
     public static DebugProfile getProfile() {
-        if (profile == null)
+        if (profile == null) {
             initProfile();
+        }
         return profile;
     }
 

@@ -34,8 +34,9 @@ public class User extends DataUnit<USER_VALUES> {
     }
 
     public String getRelevantData() {
-        if (relevantValues == null)
+        if (relevantValues == null) {
             relevantValues = relevantUserValues;
+        }
         return getData(new HashSet<String>(Arrays.asList(relevantValues)));
 
     }
@@ -50,8 +51,9 @@ public class User extends DataUnit<USER_VALUES> {
 
     public boolean isActivated() {
         String s = getValue(USER_VALUES.ACTIVATED);
-        if (s == null)
+        if (s == null) {
             return false;
+        }
         return (s.equals("YES"));
     }
 
@@ -69,8 +71,9 @@ public class User extends DataUnit<USER_VALUES> {
     public boolean equals(Object o) {
         if (o instanceof User) {
             User user = (User) o;
-            if (user.getData().equals(this.getData()))
+            if (user.getData().equals(this.getData())) {
                 return true;
+            }
         }
         return false;
     }

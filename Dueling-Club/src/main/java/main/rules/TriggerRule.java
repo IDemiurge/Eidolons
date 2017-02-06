@@ -13,8 +13,9 @@ public abstract class TriggerRule {
     }
 
     public void init(MicroGame game) {
-        if (trigger == null)
+        if (trigger == null) {
             initTrigger();
+        }
         game.getState().addTrigger(getTrigger());
 
     }
@@ -22,8 +23,9 @@ public abstract class TriggerRule {
     public abstract void initTrigger();
 
     public void removeFrom(MicroGame game) {
-        if (trigger == null)
+        if (trigger == null) {
             initTrigger();
+        }
         game.getState().removeTrigger(getTrigger());
 
     }

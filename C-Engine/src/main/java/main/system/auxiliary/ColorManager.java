@@ -67,10 +67,12 @@ public class ColorManager {
     private static Color currentColor = OBSIDIAN;
 
     public static Color getTranslucent(Color color, int i) {
-        if (i > 255)
+        if (i > 255) {
             i = 255;
-        if (i < 0)
+        }
+        if (i < 0) {
             i = 0;
+        }
         return new Color(color.getRed(), color.getGreen(), color.getBlue(), i);
     }
 
@@ -114,8 +116,9 @@ public class ColorManager {
     public static Color getAspectColor(ObjType type, boolean alt) {
         ASPECT aspect = new EnumMaster<ASPECT>().retrieveEnumConst(ASPECT.class, type
                 .getProperty(G_PROPS.ASPECT));
-        if (aspect == null)
+        if (aspect == null) {
             aspect = ASPECT.NEUTRAL;
+        }
         switch (aspect) {
             case ARCANUM:
                 return (alt) ? MAGENTA : CYAN;
@@ -199,10 +202,12 @@ public class ColorManager {
     }
 
     public static Color getStandardColor(Boolean negative) {
-        if (negative == null)
+        if (negative == null) {
             return GOLDEN_WHITE;
-        if (negative)
+        }
+        if (negative) {
             return CRIMSON;
+        }
         return GREEN;
     }
 

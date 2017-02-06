@@ -66,13 +66,15 @@ public class WorkspaceMaster {
                 WORKSPACE_GROUP.class, type);
         switch ((OBJ_TYPES) type.getOBJ_TYPE_ENUM()) {
             case SKILLS:
-                if (ws == WORKSPACE_GROUP.COMPLETE || ws == WORKSPACE_GROUP.POLISH)
+                if (ws == WORKSPACE_GROUP.COMPLETE || ws == WORKSPACE_GROUP.POLISH) {
                     return true;
+                }
                 return completeSkillSubgroups.contains(type.getSubGroupingKey()
                         .replace(" Mastery", ""));
         }
-        if (ws == null)
+        if (ws == null) {
             return true;
+        }
         switch (ws) {
             case DESIGN:
                 return false;
@@ -100,7 +102,7 @@ public class WorkspaceMaster {
         // return BORDER.HIGHLIGHTED_RED;
         WORKSPACE_GROUP ws = new EnumMaster<WORKSPACE_GROUP>().retrieveEnumFromEntityProp(
                 WORKSPACE_GROUP.class, type);
-        if (ws != null)
+        if (ws != null) {
             switch (ws) {
                 case DESIGN:
                     return BORDER.SPEC_Q;
@@ -113,6 +115,7 @@ public class WorkspaceMaster {
                 case FIX:
                     return BORDER.SPEC_DEAD;
             }
+        }
         return null;
 
     }
@@ -120,7 +123,7 @@ public class WorkspaceMaster {
     public static boolean checkTypeIsReadyToTest(ObjType type) {
         WORKSPACE_GROUP ws = new EnumMaster<WORKSPACE_GROUP>().retrieveEnumFromEntityProp(
                 WORKSPACE_GROUP.class, type);
-        if (ws != null)
+        if (ws != null) {
             switch (ws) {
                 case DESIGN:
                     return false;
@@ -140,13 +143,14 @@ public class WorkspaceMaster {
                     return true;
 
             }
+        }
         return false;
     }
 
     public static boolean checkTypeIsGenerallyReady(ObjType type) {
         WORKSPACE_GROUP ws = new EnumMaster<WORKSPACE_GROUP>().retrieveEnumFromEntityProp(
                 WORKSPACE_GROUP.class, type);
-        if (ws != null)
+        if (ws != null) {
             switch (ws) {
                 case DESIGN:
                     return false;
@@ -162,6 +166,7 @@ public class WorkspaceMaster {
                     return isTestAllowed();
 
             }
+        }
         return true;
     }
 

@@ -24,8 +24,9 @@ public class CustomTargetEffect extends MicroEffect implements ContainerEffect {
         if (REF.getTargetObj() != null) {
             first_target = REF.getTarget();
         }
-        if (!t.select(REF))
+        if (!t.select(REF)) {
             return false;
+        }
         if (first_target != null) {
             REF.setID(KEYS.CUSTOM_TARGET, first_target);
             REF.setTarget(REF.getTarget());

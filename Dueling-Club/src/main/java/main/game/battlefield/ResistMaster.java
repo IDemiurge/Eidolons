@@ -14,17 +14,19 @@ public class ResistMaster {
         int resist = unit.getIntParam(PARAMS.RESISTANCE);
         for (DAMAGE_TYPE dmg_type : DAMAGE_TYPE.values()) {
             PARAMETER resistForDmgType = DC_ContentManager.getResistForDmgType(dmg_type);
-            if (resistForDmgType != null)
+            if (resistForDmgType != null) {
                 if (dmg_type.isMagical()) {
                     RESIST_GRADE grade = new EnumMaster<RESIST_GRADE>().retrieveEnumConst(
                             RESIST_GRADE.class, unit.getProperty(DC_ContentManager
                                     .getResistGradeForDmgType(dmg_type)));
-                    if (grade == null)
+                    if (grade == null) {
                         grade = RESIST_GRADE.Normal;
+                    }
                     int amount = resist * grade.getPercent() / 100;
                     unit.modifyParameter(resistForDmgType, amount);
 
                 }
+            }
         }
 
     }

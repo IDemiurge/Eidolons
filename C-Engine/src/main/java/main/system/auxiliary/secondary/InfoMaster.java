@@ -84,8 +84,9 @@ public class InfoMaster {
     }
 
     public static String getPropReasonString(String valName, String val) {
-        if (val.contains(NEGATIVE_CODE))
+        if (val.contains(NEGATIVE_CODE)) {
             return getNegativePropReasonString(valName, val);
+        }
         return valName + PROP_REASON_STRING + val;
     }
 
@@ -103,8 +104,9 @@ public class InfoMaster {
     }
 
     public static String getOrReasonStringFromContainer(PROPERTY p, String value) {
-        if (value.isEmpty())
+        if (value.isEmpty()) {
             return "";
+        }
 
         String string = "";
         for (String s : StringMaster.openContainer(value)) {
@@ -153,7 +155,7 @@ public class InfoMaster {
     }
 
     public static String getWorkspaceTip(WORKSPACE_GROUP ws) {
-        if (ws != null)
+        if (ws != null) {
             switch (ws) {
                 case DESIGN:
                     return "(idea)";
@@ -170,6 +172,7 @@ public class InfoMaster {
                 default:
                     break;
             }
+        }
         return "";
     }
 }

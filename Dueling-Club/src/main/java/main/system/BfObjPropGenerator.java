@@ -118,12 +118,14 @@ public class BfObjPropGenerator {
         } else if (t.getProperty(G_PROPS.NAME).toUpperCase().contains("WATER")) {
             group = BF_OBJECT_GROUP.WATER;
         }
-        if (group != null)
+        if (group != null) {
             t.setProperty(G_PROPS.BF_OBJECT_GROUP, StringMaster
                     .getWellFormattedString(group.name()));
+        }
 
-        if (type != null)
+        if (type != null) {
             t.setProperty(G_PROPS.BF_OBJECT_TYPE, StringMaster.getWellFormattedString(type.name()));
+        }
 
     }
 
@@ -152,25 +154,33 @@ public class BfObjPropGenerator {
                         qualities.add(BF_OBJ_QUALITY.THICK);
                     }
                     // later from material/armor types
-                    if (dimension == null)
+                    if (dimension == null) {
                         dimension = DIMENSION.T1_10;
-                    if (armorType == null)
+                    }
+                    if (armorType == null) {
                         armorType = OBJECT_ARMOR_TYPE.STONE;
-                    if (material == null)
+                    }
+                    if (material == null) {
                         material = BF_OBJ_MATERIAL.MARBLE;
-                    if (size == null)
+                    }
+                    if (size == null) {
                         size = BF_OBJECT_SIZE.LARGE;
+                    }
                     // weight as girth*height*material*coef ?
                     break;
                 case CONSTRUCT:
-                    if (dimension == null)
+                    if (dimension == null) {
                         dimension = DIMENSION.W2_1;
-                    if (armorType == null)
+                    }
+                    if (armorType == null) {
                         armorType = OBJECT_ARMOR_TYPE.STONE;
-                    if (material == null)
+                    }
+                    if (material == null) {
                         material = BF_OBJ_MATERIAL.GRANITE;
-                    if (size == null)
+                    }
+                    if (size == null) {
                         size = BF_OBJECT_SIZE.LARGE;
+                    }
                     break;
                 case TREASURE:
                     if (qualities.isEmpty()) {
@@ -178,28 +188,36 @@ public class BfObjPropGenerator {
                         qualities.add(BF_OBJ_QUALITY.DURABLE);
                         qualities.add(BF_OBJ_QUALITY.ARMORED);
                     }
-                    if (dimension == null)
+                    if (dimension == null) {
                         dimension = DIMENSION.W3_1;
-                    if (armorType == null)
+                    }
+                    if (armorType == null) {
                         armorType = OBJECT_ARMOR_TYPE.WOOD;
-                    if (material == null)
+                    }
+                    if (material == null) {
                         material = BF_OBJ_MATERIAL.RED_OAK;
-                    if (size == null)
+                    }
+                    if (size == null) {
                         size = BF_OBJECT_SIZE.SMALL;
+                    }
                     break;
                 case CONTAINER:
                     if (qualities.isEmpty()) {
                         qualities.add(BF_OBJ_QUALITY.RESISTANT);
                         qualities.add(BF_OBJ_QUALITY.BRITTLE);
                     }
-                    if (dimension == null)
+                    if (dimension == null) {
                         dimension = DIMENSION.W3_1;
-                    if (armorType == null)
+                    }
+                    if (armorType == null) {
                         armorType = OBJECT_ARMOR_TYPE.WOOD;
-                    if (material == null)
+                    }
+                    if (material == null) {
                         material = BF_OBJ_MATERIAL.RED_OAK;
-                    if (size == null)
+                    }
+                    if (size == null) {
                         size = BF_OBJECT_SIZE.SMALL;
+                    }
                     break;
                 case CRYSTAL:
                     if (qualities.isEmpty()) {
@@ -207,14 +225,18 @@ public class BfObjPropGenerator {
                         qualities.add(BF_OBJ_QUALITY.BRITTLE);
                         qualities.add(BF_OBJ_QUALITY.ARMORED);
                     }
-                    if (dimension == null)
+                    if (dimension == null) {
                         dimension = DIMENSION.T1_4;
-                    if (armorType == null)
+                    }
+                    if (armorType == null) {
                         armorType = OBJECT_ARMOR_TYPE.CRYSTAL;
-                    if (material == null)
+                    }
+                    if (material == null) {
                         material = BF_OBJ_MATERIAL.CRYSTAL;
-                    if (size == null)
+                    }
+                    if (size == null) {
                         size = BF_OBJECT_SIZE.MEDIUM;
+                    }
                     break;
                 case DOOR:
                     if (qualities.isEmpty()) {
@@ -222,14 +244,18 @@ public class BfObjPropGenerator {
                         qualities.add(BF_OBJ_QUALITY.DURABLE);
                         qualities.add(BF_OBJ_QUALITY.THICK);
                     }
-                    if (dimension == null)
+                    if (dimension == null) {
                         dimension = DIMENSION.T1_4;
-                    if (armorType == null)
+                    }
+                    if (armorType == null) {
                         armorType = OBJECT_ARMOR_TYPE.WOOD;
-                    if (material == null)
+                    }
+                    if (material == null) {
                         material = BF_OBJ_MATERIAL.IRONWOOD;
-                    if (size == null)
+                    }
+                    if (size == null) {
                         size = BF_OBJECT_SIZE.MEDIUM;
+                    }
                     break;
                 case DUNGEON:
                     break;
@@ -242,14 +268,18 @@ public class BfObjPropGenerator {
                         qualities.add(BF_OBJ_QUALITY.TOUGH);
                         qualities.add(BF_OBJ_QUALITY.BRITTLE);
                     }
-                    if (dimension == null)
+                    if (dimension == null) {
                         dimension = DIMENSION.T1_3;
-                    if (armorType == null)
+                    }
+                    if (armorType == null) {
                         armorType = OBJECT_ARMOR_TYPE.STONE;
-                    if (material == null)
+                    }
+                    if (material == null) {
                         material = BF_OBJ_MATERIAL.GRANITE;
-                    if (size == null)
+                    }
+                    if (size == null) {
                         size = BF_OBJECT_SIZE.MEDIUM;
+                    }
                     break;
                 case HANGING:
                     break;
@@ -266,14 +296,18 @@ public class BfObjPropGenerator {
                 case REMAINS:
                     break;
                 case ROCKS:
-                    if (dimension == null)
+                    if (dimension == null) {
                         dimension = DIMENSION.W2_1;
-                    if (armorType == null)
+                    }
+                    if (armorType == null) {
                         armorType = OBJECT_ARMOR_TYPE.STONE;
-                    if (material == null)
+                    }
+                    if (material == null) {
                         material = BF_OBJ_MATERIAL.GRANITE;
-                    if (size == null)
+                    }
+                    if (size == null) {
                         size = BF_OBJECT_SIZE.MEDIUM;
+                    }
                     break;
                 case RUINS:
                     if (qualities.isEmpty()) {
@@ -315,16 +349,20 @@ public class BfObjPropGenerator {
 
             }
         }
-        if (size != null)
+        if (size != null) {
             t.setProperty(PROPS.BF_OBJECT_SIZE, StringMaster.getWellFormattedString(size.name()));
-        if (material != null)
+        }
+        if (material != null) {
             t.setProperty(PROPS.BF_OBJ_MATERIAL, StringMaster.getWellFormattedString(material
                     .name()));
-        if (dimension != null)
+        }
+        if (dimension != null) {
             t.setProperty(PROPS.DIMENSION, StringMaster.getWellFormattedString(dimension.name()));
-        if (armorType != null)
+        }
+        if (armorType != null) {
             t.setProperty(PROPS.OBJECT_ARMOR_TYPE, StringMaster.getWellFormattedString(armorType
                     .name()));
+        }
 
     }
 

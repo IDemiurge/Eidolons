@@ -101,8 +101,9 @@ public abstract class HeroItemView extends HeroView implements BorderChecker, Ru
     }
 
     protected Filter<ObjType> getTypeFilter() {
-        if (getFilterConditions() != null)
+        if (getFilterConditions() != null) {
             return new Filter<ObjType>(hero.getGame(), getFilterConditions());
+        }
         return null;
     }
 
@@ -111,15 +112,18 @@ public abstract class HeroItemView extends HeroView implements BorderChecker, Ru
     }
 
     protected Comparator<? super ObjType> getItemSorter() {
-        if (getSortingParam() == null)
+        if (getSortingParam() == null) {
             return null;
+        }
         return new Comparator<ObjType>() {
             public int compare(ObjType o1, ObjType o2) {
 
-                if (o1.getIntParam(getSortingParam()) > o2.getIntParam(getSortingParam()))
+                if (o1.getIntParam(getSortingParam()) > o2.getIntParam(getSortingParam())) {
                     return 1;
-                if (o1.getIntParam(getSortingParam()) == o2.getIntParam(getSortingParam()))
+                }
+                if (o1.getIntParam(getSortingParam()) == o2.getIntParam(getSortingParam())) {
                     return 0;
+                }
                 return -1;
             }
         };

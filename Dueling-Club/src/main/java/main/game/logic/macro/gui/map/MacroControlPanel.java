@@ -35,13 +35,15 @@ public class MacroControlPanel extends G_Panel implements ButtonHandler {
             add(getButton(StringMaster.getWellFormattedString(command
                     .toString())), pos);
             i++;
-            if (i == 2)
+            if (i == 2) {
                 i++;
+            }
         }
-        if (MacroGame.getGame().getPlayerParty().getTown() != null)
+        if (MacroGame.getGame().getPlayerParty().getTown() != null) {
             add(getButton(TOWN));
-        else
+        } else {
             add(getButton(CAMP));
+        }
         revalidate();
 
     }

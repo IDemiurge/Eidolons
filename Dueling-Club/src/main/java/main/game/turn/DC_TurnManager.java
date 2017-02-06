@@ -71,20 +71,23 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
     }
 
     public DC_HeroObj getActiveUnit(boolean vision) {
-        if (!vision || visionInitialized)
+        if (!vision || visionInitialized) {
             return activeUnit;
+        }
 
         for (DC_HeroObj unit : getUnitQueue()) {
-            if (unit.isMine())
+            if (unit.isMine()) {
                 return unit;
+            }
         }
         return activeUnit;
     }
 
     private boolean playerHasActiveUnits() {
         for (DC_HeroObj u : getUnitQueue()) {
-            if (u.isMine() || (u.isPlayerControlled() && !game.isOffline()))
+            if (u.isMine() || (u.isPlayerControlled() && !game.isOffline())) {
                 return true;
+            }
         }
         return false;
     }
@@ -111,8 +114,9 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
 
         resetDisplayedQueue();
         result &= activeUnit.turnStarted();
-        if (!result)
+        if (!result) {
             return true; // if killed or immobilized...
+        }
         // if (game.isStarted())
         // game.getManager().refreshGUI();
         // else
@@ -130,8 +134,9 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
 
         if (isUnitAI_Controlled(activeUnit)) {
             game.getAiManager().makeAction(activeUnit);
-        } else
+        } else {
             game.getMovementManager().promptContinuePath(activeUnit);
+        }
 
         // else
         result = (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.TURN_CYCLE); // failsafe?
@@ -146,31 +151,41 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
     }
 
     private boolean isUnitAI_Controlled(DC_HeroObj activeUnit2) {
-        if (activeUnit.getMode().isBehavior())
+        if (activeUnit.getMode().isBehavior()) {
             return true;
-        if (!game.getAiManager().getAI(activeUnit).getForcedActions().isEmpty())
+        }
+        if (!game.getAiManager().getAI(activeUnit).getForcedActions().isEmpty()) {
             return true;
-        if (game.isRunning())
-            if (activeUnit.isAiControlled())
+        }
+        if (game.isRunning()) {
+            if (activeUnit.isAiControlled()) {
                 return true;
+            }
+        }
         return false;
     }
 
     public void resetCosts() {
-        if (game.getManager().getActiveObj() == null)
+        if (game.getManager().getActiveObj() == null) {
             return;
+        }
         for (ACTION_TYPE key : game.getManager().getActiveObj().getActionMap()
-                .keySet())
+                .keySet()) {
             for (DC_ActiveObj active : game.getManager().getActiveObj()
-                    .getActionMap().get(key))
+                    .getActionMap().get(key)) {
                 active.initCosts();
+            }
+        }
 
-        for (DC_ActiveObj active : game.getManager().getActiveObj().getSpells())
+        for (DC_ActiveObj active : game.getManager().getActiveObj().getSpells()) {
             active.initCosts();
+        }
 
-        for (DC_QuickItemObj item : game.getManager().getActiveObj().getQuickItems())
-            if (item.getActive() != null)
+        for (DC_QuickItemObj item : game.getManager().getActiveObj().getQuickItems()) {
+            if (item.getActive() != null) {
                 item.getActive().initCosts();
+            }
+        }
     }
 
     private void resetInitiative(boolean first) {
@@ -195,8 +210,9 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
             }
         }
         for (DC_HeroObj unit : unitQueue) {
-            if (VisionManager.checkDetectedEnemy(unit))
+            if (VisionManager.checkDetectedEnemy(unit)) {
                 displayedUnitQueue.add(unit);
+            }
         }
 
         try {
@@ -213,10 +229,13 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
         WaitRule.checkMap();
 
         for (DC_HeroObj unit : game.getUnits()) {
-            if (TestMaster.isSublevelFreezeOn())
-                if (game.getMainHero() != null)
-                    if (game.getMainHero().getZ() != unit.getZ())
+            if (TestMaster.isSublevelFreezeOn()) {
+                if (game.getMainHero() != null) {
+                    if (game.getMainHero().getZ() != unit.getZ()) {
                         continue;
+                    }
+                }
+            }
             if (unit.canActNow()) {
                 unitQueue.add(unit);
 
@@ -240,11 +259,14 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
 
         setActiveUnit(unitQueue.peek());
         try {
-            if (!game.getManager().activeSelect(getActiveUnit()))
+            if (!game.getManager().activeSelect(getActiveUnit())) {
                 return false;
-            if (CoreEngine.isSwingOn())
-                if (game.getManager().getInfoObj() == null)
+            }
+            if (CoreEngine.isSwingOn()) {
+                if (game.getManager().getInfoObj() == null) {
                     game.getManager().infoSelect(activeUnit);
+                }
+            }
 
             WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
             LogMaster.gameInfo(StringMaster.getStringXTimes(50 - getActiveUnit().toString().length(), ">")
@@ -266,15 +288,17 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
         resetInitiative(true);
         game.getRules().getTimeRule().newRound();
         Boolean result = false;
-        if (game.isStarted())
+        if (game.isStarted()) {
             SoundMaster.playStandardSound(STD_SOUNDS.DEATH);
-        else
+        } else {
             SoundMaster.playStandardSound(STD_SOUNDS.FIGHT);
+        }
         if (isStarted()) {
-            if (!playerHasActiveUnits())
-                main.system.auxiliary.LogMaster
+            if (!playerHasActiveUnits()) {
+                LogMaster
                         .log(1,
                                 "************** GAME PAUSED WHILE NO UNITS UNDER PLAYER CONTROL **************");
+            }
 
             while (!playerHasActiveUnits()) {
                 WaitMaster.WAIT(1000);
@@ -293,18 +317,20 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
                 retainActiveUnit = true;
             } else {
                 retainActiveUnit = false;
-                if (!result)
+                if (!result) {
                     break;
+                }
             }
         }
 
         try {
             game.getManager().endTurn();
         } catch (Exception e) {
-            if (e instanceof ConcurrentModificationException)
+            if (e instanceof ConcurrentModificationException) {
                 e.printStackTrace();
-            else
+            } else {
                 e.printStackTrace();
+            }
         }
         try {
             game.getState().newRound();
@@ -334,14 +360,17 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
     @Override
     public int compare(DC_HeroObj u1, DC_HeroObj u2) {
         if (game.getState().getRound() == 0) {
-            if (FAST_DC.LEADER_MOVES_FIRST)
+            if (FAST_DC.LEADER_MOVES_FIRST) {
                 if (FAST_DC.isRunning()) {
-                    if (u1.isMine() && u1.isMainHero())
+                    if (u1.isMine() && u1.isMainHero()) {
                         return -1;
-                    if (u1.isMine() && u2.isMainHero())
+                    }
+                    if (u1.isMine() && u2.isMainHero()) {
                         return 1;
+                    }
 
                 }
+            }
 
         }
         int a1 = u1.getIntParam(PARAMS.C_INITIATIVE);
@@ -355,8 +384,9 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
         // }
         //
         // }
-        if (a1 > a2)
+        if (a1 > a2) {
             return -1;
+        }
         return 1;
     }
 

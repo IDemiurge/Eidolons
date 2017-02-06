@@ -42,24 +42,28 @@ public class FilterMaster {
 			// CHOOSE TYPE? OR USE SELECTED TAB!
 			int i = DialogMaster.optionChoice(CONDITION_TEMPLATES.values(),
 					"choose filter template");
-			if (i == -1)
-				break;
-			CONDITION_TEMPLATES template = CONDITION_TEMPLATES.values()[i];
+            if (i == -1) {
+                break;
+            }
+            CONDITION_TEMPLATES template = CONDITION_TEMPLATES.values()[i];
 
 			String value = DialogMaster.inputText("Enter filter's value name");
-			if (StringMaster.isEmpty(value))
-				break;
-			VALUE val = ContentManager.findValue(value);
+            if (StringMaster.isEmpty(value)) {
+                break;
+            }
+            VALUE val = ContentManager.findValue(value);
 			value = DialogMaster.inputText("Enter filtering value");
-			if (StringMaster.isEmpty(value))
-				break;
-			conditions.add(new ConditionMaster().getConditionFromTemplate(template, StringMaster
+            if (StringMaster.isEmpty(value)) {
+                break;
+            }
+            conditions.add(new ConditionMaster().getConditionFromTemplate(template, StringMaster
 					.getValueRef(KEYS.MATCH, val), value));
 
 		}
-		if (conditions.isEmpty())
-			return;
-		if (TYPE == null) {
+        if (conditions.isEmpty()) {
+            return;
+        }
+        if (TYPE == null) {
 
 		}
 		Document node = XML_Converter.getDoc(XML_Converter.openXml("conditions")

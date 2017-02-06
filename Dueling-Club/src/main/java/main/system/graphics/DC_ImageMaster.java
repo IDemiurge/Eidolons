@@ -37,26 +37,29 @@ public class DC_ImageMaster {
 
     public static Image getUnitEmblem(DC_HeroObj obj, int size, boolean player) {
         Image unitEmblem = null;
-        if (player && obj.getOwner().getEmblem() != null)
+        if (player && obj.getOwner().getEmblem() != null) {
             unitEmblem = ImageManager.getSizedVersion(obj.getOwner().getEmblem(), new Dimension(
                     size, size));
-        else if (obj.getOBJ_TYPE_ENUM() == OBJ_TYPES.CHARS)
+        } else if (obj.getOBJ_TYPE_ENUM() == OBJ_TYPES.CHARS) {
             unitEmblem = ImageManager.getSizedIcon(obj.getProperty(G_PROPS.EMBLEM),
                     new Dimension(size, size)).getImage();
-        else {
+        } else {
             if (obj.getDeity() != null) {
                 ImageIcon icon = ImageManager.getSizedIcon(obj.getDeity().getType().getProperty(
                         G_PROPS.EMBLEM), new Dimension(size, size));
-                if (icon == null)
+                if (icon == null) {
                     icon = ImageManager.getEmptyEmblem();
+                }
                 unitEmblem = icon.getImage();
             }
         }
-        if (!ImageManager.isValidImage(unitEmblem))
+        if (!ImageManager.isValidImage(unitEmblem)) {
             unitEmblem = ImageManager.getSizedVersion(ImageManager.getEmptyEmblem().getImage(),
                     new Dimension(size, size));
-        if (obj.isSelected())
+        }
+        if (obj.isSelected()) {
             return unitEmblem;
+        }
         Image glow = ImageManager.getSizedVersion(ImageManager.getGlowFrame(obj.getOwner()
                 .getFlagColor(), 132), new Dimension(32, 32));
         BufferedImage glowAlpha = ImageManager.getBufferedImage(glow, 50);
@@ -152,23 +155,26 @@ public class DC_ImageMaster {
                 image = attack.getAttacker().getIcon().getImage();
                 return getProcessedImage(image);
             case EXTRA_ATTACK:
-                if (attack.isAttackOfOpportunity())
+                if (attack.isAttackOfOpportunity()) {
                     image = STD_IMAGES.ATTACK_OF_OPPORTUNITY.getImage();
-                else if (attack.isCounter())
+                } else if (attack.isCounter()) {
                     image = STD_IMAGES.COUNTER_ATTACK.getImage();
-                else if (attack.isInstant())
+                } else if (attack.isInstant()) {
                     image = STD_IMAGES.INSTANT_ATTACK.getImage();
+                }
                 image = ImageManager.applyBorder(image, BORDER.CIRCLE_GLOW_32);
                 return image;
 
             case RESISTANCE:
-                if (value > 0)
+                if (value > 0) {
                     return ImageManager.getValueIcon(PARAMS.RESISTANCE);
+                }
                 return ImageManager.getValueIcon(PARAMS.RESISTANCE_PENETRATION);
 
             case ARMOR:
-                if (value > 0)
+                if (value > 0) {
                     return ImageManager.getValueIcon(PARAMS.ARMOR);
+                }
                 return ImageManager.getValueIcon(PARAMS.ARMOR_PENETRATION);
 
         }

@@ -24,12 +24,13 @@ public class ActivateEffect extends DC_Effect {
     @Override
     public boolean applyThis() {
         DC_HeroObj hero = (DC_HeroObj) ref.getObj(key);
-        DC_ActiveObj active = null;
+        DC_ActiveObj active;
 
-        if (!spell)
+        if (!spell) {
             active = hero.getAction(name);
-        else
+        } else {
             active = hero.getSpell(name);
+        }
 
         active.activate(Ref.getSelfTargetingRefCopy(hero));
 

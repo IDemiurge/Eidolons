@@ -35,10 +35,11 @@ public class MacroActionPanel extends G_ListPanel<MacroAction> implements
         getList().addMouseListener(new MouseListener() {
 
             public void mouseClicked(MouseEvent e) {
-                if (SwingUtilities.isRightMouseButton(e))
+                if (SwingUtilities.isRightMouseButton(e)) {
                     getList().getSelectedValue().invokeRightClicked();
-                else
+                } else {
                     getList().getSelectedValue().invokeClicked();
+                }
 
             }
 
@@ -113,8 +114,9 @@ public class MacroActionPanel extends G_ListPanel<MacroAction> implements
     }
 
     public void setInts() {
-        if (!rdy)
+        if (!rdy) {
             return;
+        }
         sizeInfo = "w " + panelWidth * GuiManager.getSmallObjSize() + ", h "
                 + GuiManager.getSmallObjSize();
         hpolicy = JScrollPane.HORIZONTAL_SCROLLBAR_NEVER;

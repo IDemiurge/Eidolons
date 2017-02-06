@@ -1,16 +1,14 @@
 package main.io;
 
+import com.melloware.jintellitype.HotkeyListener;
+import com.melloware.jintellitype.JIntellitype;
 import main.ArcaneTower;
 import main.session.Session;
 import main.session.SessionMaster;
 import main.system.auxiliary.GuiManager;
 
+import javax.swing.*;
 import java.awt.event.KeyEvent;
-
-import javax.swing.JFrame;
-
-import com.melloware.jintellitype.HotkeyListener;
-import com.melloware.jintellitype.JIntellitype;
 
 public class AT_Keys implements HotkeyListener {
 	private static boolean globalKeysOn;
@@ -47,10 +45,10 @@ public class AT_Keys implements HotkeyListener {
 				break;
 			case 1:
 				Session session = ArcaneTower.getSessionWindow().getSession();
-				if (session.isPaused())
-					SessionMaster.sessionResumed(session);
-				else {
-					SessionMaster.sessionPaused(session);
+                if (session.isPaused()) {
+                    SessionMaster.sessionResumed(session);
+                } else {
+                    SessionMaster.sessionPaused(session);
 					onHotKey(0);
 				}
 				break;

@@ -11,10 +11,7 @@ import main.swing.generic.components.panels.G_ScrolledPanel;
 import main.swing.generic.services.listener.MouseClickListener;
 import main.system.auxiliary.StringMaster;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,23 +21,9 @@ public class MusicViewsPanel extends G_ScrolledPanel<String> {
 	// scrolled panel!
 	Map<String, MusicListPanel> viewMap = new XLinkedMap<String, MusicListPanel>();
 	MusicListPanel panel;
-	private G_Panel view;
 	String key;
-	private Integer viewIndexForCycle;
-
-	public void addView(String key, MusicListPanel panel) {
-
-		viewMap.put(key, panel);
-	}
-
-	public void addView(MusicListPanel panel) {
-		viewMap.put(panel.getView().getName(), panel);
-	}
-
-	@Override
-	public List<String> getData() {
-		return new LinkedList<>(viewMap.keySet());
-	}
+    private G_Panel view;
+    private Integer viewIndexForCycle;
 
 	public MusicViewsPanel(MusicListPanel panel) {
 		super(true, 3, new Dimension(200, 450));
@@ -61,6 +44,20 @@ public class MusicViewsPanel extends G_ScrolledPanel<String> {
 		});
 	}
 
+    public void addView(String key, MusicListPanel panel) {
+
+        viewMap.put(key, panel);
+    }
+
+    public void addView(MusicListPanel panel) {
+        viewMap.put(panel.getView().getName(), panel);
+    }
+
+    @Override
+    public List<String> getData() {
+        return new LinkedList<>(viewMap.keySet());
+    }
+
 	public void cycleView() {
 		List<String> names = new LinkedList<>(viewMap.keySet());
 
@@ -69,8 +66,9 @@ public class MusicViewsPanel extends G_ScrolledPanel<String> {
 			viewIndexForCycle = names.indexOf(name);
 		}
 		viewIndexForCycle++;
-		if (viewIndexForCycle >= viewMap.size())
-			viewIndexForCycle = 0;
+        if (viewIndexForCycle >= viewMap.size()) {
+            viewIndexForCycle = 0;
+        }
 
 		viewClicked(names.get(viewIndexForCycle));
 
@@ -78,9 +76,10 @@ public class MusicViewsPanel extends G_ScrolledPanel<String> {
 
 	public void viewClicked(String key) {
 		if (viewMap.get(key) == null) {
-			if (!key.contains("."))
-				viewClicked(key + ".ahk");
-			return;
+            if (!key.contains(".")) {
+                viewClicked(key + ".ahk");
+            }
+            return;
 		}
 		MusicListPanel wrappingPanel = viewMap.get(key);
 		view = wrappingPanel.getView();

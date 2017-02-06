@@ -57,8 +57,9 @@ public abstract class DC_AI_Logic implements AI_Logic {
         Ref ref = Ref.getCopy(unit.getRef());
         if (getTarget() == null) {
             target = initTargetId();
-            if (target == -1)
+            if (target == -1) {
                 return null;
+            }
         }
         ref.setTarget(target);
         args[1] = ref.getData();
@@ -238,8 +239,9 @@ public abstract class DC_AI_Logic implements AI_Logic {
 
     @Override
     public Set<Obj> getEnemyUnits() {
-        if (enemyUnits == null)
+        if (enemyUnits == null) {
             enemyUnits = enemy.getControlledUnits();
+        }
         return enemyUnits;
     }
 

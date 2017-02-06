@@ -41,10 +41,11 @@ public class WorkItem extends ArcaneEntity {
 	}
 
 	public void block() {
-		if (isBlocked())
-			setProperty(AT_PROPS.TASK_STATUS, "" + TASK_STATUS.PENDING);
-		else
-			setProperty(AT_PROPS.TASK_STATUS, "" + TASK_STATUS.BLOCKED);
+        if (isBlocked()) {
+            setProperty(AT_PROPS.TASK_STATUS, "" + TASK_STATUS.PENDING);
+        } else {
+            setProperty(AT_PROPS.TASK_STATUS, "" + TASK_STATUS.BLOCKED);
+        }
 
 	}
 

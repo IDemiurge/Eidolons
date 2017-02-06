@@ -51,8 +51,9 @@ public class AbilityConstructor {
                 && nodeList.get(0).getNodeName().equals(Mapper.ABILITIES)) {
             nodeList = XML_Converter.getNodeList(nodeList.get(0));
         }
-        for (Node NODE : nodeList)
+        for (Node NODE : nodeList) {
             abilities.add(constructAbility(NODE)); // return Abilities
+        }
 
         // for (Node ABILITIES : XML_Converter.getNodeList(node)) {
         // if (!ABILITIES.getFirstChild().getNodeName()
@@ -98,12 +99,15 @@ public class AbilityConstructor {
                     "null abil targeting!");
             targeting = new FixedTargeting();
         }
-        if (node.getNodeName().equals(ACTIVE_ABILITY))
+        if (node.getNodeName().equals(ACTIVE_ABILITY)) {
             return new ActiveAbility(targeting, effects);
-        if (node.getNodeName().equals(ONESHOT_ABILITY))
+        }
+        if (node.getNodeName().equals(ONESHOT_ABILITY)) {
             return new OneshotAbility(targeting, effects);
-        if (node.getNodeName().equals(PASSIVE_ABILITY))
+        }
+        if (node.getNodeName().equals(PASSIVE_ABILITY)) {
             return new PassiveAbility(targeting, effects);
+        }
 
         return null;
     }
@@ -115,8 +119,9 @@ public class AbilityConstructor {
 
     public static Effect constructEffects(Node node) {
         Effect effects = (Effect) ConstructionManager.construct(node);
-        if (effects == null)
+        if (effects == null) {
             Err.info("null effects! " + node.toString());
+        }
         // effects.setDoc(node);
         return effects;
     }
@@ -158,16 +163,19 @@ public class AbilityConstructor {
         List<String> removeList = new LinkedList<>();
         for (String s : list) {
             String varPart = VariableManager.getVarPart(s);
-            if (varPart.isEmpty())
+            if (varPart.isEmpty()) {
                 continue;
-            if (varPart.contains(","))
+            }
+            if (varPart.contains(",")) {
                 continue;
+            }
             String abilName = VariableManager.removeVarPart(s);
             // TODO WHAT IF THERE ARE SOME NON-PARAMETER ARGUMENTS OR JUST 2+ OF
             // THEM?
             for (String s1 : StringMaster.openContainer(prop.replaceFirst(abilName, ""))) {
-                if (!VariableManager.removeVarPart(s1).equalsIgnoreCase(abilName))
+                if (!VariableManager.removeVarPart(s1).equalsIgnoreCase(abilName)) {
                     continue;
+                }
                 String mergedAbility = abilName
                         + StringMaster.wrapInParenthesis(StringMaster
                         .wrapInParenthesis(StringMaster.cropParenthesises(varPart))
@@ -196,12 +204,14 @@ public class AbilityConstructor {
         List<ActiveObj> abilities = null;
         boolean action = (entity instanceof BattlefieldObj);
         if (action) {
-            if (!entity.getType().isModel())
+            if (!entity.getType().isModel()) {
                 entity.getGame().getActionManager().resetActions(entity);
+            }
         } else {
             abilities = getAbilitiesList(G_PROPS.ACTIVES, entity, false);
-            if (abilities != null)
+            if (abilities != null) {
                 entity.setActives(abilities);
+            }
         }
 
     }
@@ -212,8 +222,9 @@ public class AbilityConstructor {
 
         for (String passive : StringMaster.openContainer(entity.getProperty(G_PROPS.PASSIVES))) {
             AbilityObj abil = getPassive(passive, entity);
-            if (abil != null)
+            if (abil != null) {
                 passives.add(abil);
+            }
         }
         entity.setPassives(passives);
         Chronos.logTimeElapsedForMark(Chronos.CONSTRUCT, "construct passives for "
@@ -232,7 +243,7 @@ public class AbilityConstructor {
                 e.printStackTrace();
             }
             // if (entity.getGame().isSimulation())
-            if (ability == null || TextParser.checkHasRefs(passive))
+            if (ability == null || TextParser.checkHasRefs(passive)) {
                 try {
                     TextParser.setAbilityParsing(true);
                     entity.getRef().setID(KEYS.INFO, entity.getId());
@@ -243,23 +254,28 @@ public class AbilityConstructor {
                 } finally {
                     TextParser.setAbilityParsing(false);
                 }
-            if (ability != null)
+            }
+            if (ability != null) {
                 return ability;
-        } else
+            }
+        } else {
             abilCache.put(entity.getId(), new HashMap<String, AbilityObj>());
+        }
         return (AbilityObj) newAbility(passive, entity, true);
     }
 
     private static List<ActiveObj> getAbilitiesList(G_PROPS prop, Entity entity, boolean passive) {
-        if (entity.getProperty(prop) == "")
+        if (entity.getProperty(prop) == "") {
             return null;
+        }
         List<ActiveObj> list = new LinkedList<>();
 
         for (String abilTypeName : entity.getProperty(prop).split(StringMaster.getSeparator())) {
             ActiveObj ability;
             ability = newAbility(abilTypeName, entity, passive);
-            if (ability != null)
+            if (ability != null) {
                 list.add(ability);
+            }
         }
 
         return list;
@@ -277,17 +293,19 @@ public class AbilityConstructor {
 
     public static ActiveObj newAbility(String abilTypeName, Entity entity, boolean passive) {
         TextParser.setAbilityParsing(true);
-        if (!passive)
+        if (!passive) {
             TextParser.setActiveParsing(true);
+        }
         Ref ref = entity.getRef().getCopy();
         ref.setID(KEYS.INFO, entity.getId());
         try {
-            if (passive)
+            if (passive) {
                 abilTypeName = TextParser.parse(abilTypeName, ref, TextParser.ABILITY_PARSING_CODE,
                         TextParser.VARIABLE_PARSING_CODE);
-            else
+            } else {
                 abilTypeName = TextParser.parse(abilTypeName, ref, TextParser.ACTIVE_PARSING_CODE,
                         TextParser.VARIABLE_PARSING_CODE, TextParser.ABILITY_PARSING_CODE);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -303,8 +321,9 @@ public class AbilityConstructor {
             main.system.auxiliary.LogMaster.log(1, "Failed to create new ability: " + abilTypeName);
 
         }
-        if (type == null)
+        if (type == null) {
             return null;
+        }
         // if (type.getAbilities() == null)
         construct(type);
         Map<String, AbilityObj> map = abilCache.get(entity.getId());
@@ -317,9 +336,10 @@ public class AbilityConstructor {
             if (passive) {
                 ability = new PassiveAbilityObj(type, entity.getRef(), entity.getOwner(), entity
                         .getGame());
-            } else
+            } else {
                 ability = new ActiveAbilityObj(type, entity.getRef(), entity.getOwner(), entity
                         .getGame());
+            }
 
             entity.getGame().getState().addObject(ability);
             map.put(abilTypeName, ability);

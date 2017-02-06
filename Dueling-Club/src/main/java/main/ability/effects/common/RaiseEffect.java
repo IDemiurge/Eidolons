@@ -60,9 +60,10 @@ public class RaiseEffect extends SummonEffect {
         super(null);
         this.raiseType = new EnumMaster<RAISE_TYPE>().retrieveEnumConst(
                 RAISE_TYPE.class, RAISE_TYPE, true);
-        if (!StringMaster.isEmpty(RAISE_MODIFIER))
+        if (!StringMaster.isEmpty(RAISE_MODIFIER)) {
             this.raiseMod = new EnumMaster<RAISE_MODIFIER>().retrieveEnumConst(
                     RAISE_MODIFIER.class, RAISE_MODIFIER, true);
+        }
     }
 
     public RaiseEffect(RAISE_TYPE type, RAISE_MODIFIER mod) {
@@ -80,9 +81,10 @@ public class RaiseEffect extends SummonEffect {
     public void initCorpse() {
         corpse = ref.getGame().getGraveyardManager()
                 .getTopDeadUnit(ref.getTargetObj().getCoordinates());
-        if (corpse != null)
+        if (corpse != null) {
             humanoid = corpse.checkProperty(G_PROPS.CLASSIFICATIONS, ""
                     + CLASSIFICATIONS.HUMANOID);
+        }
     }
 
     @Override
@@ -100,8 +102,9 @@ public class RaiseEffect extends SummonEffect {
         Ref REF = Ref.getSelfTargetingRefCopy(unit);
         REF.setID(CORPSE_REF, corpse.getId());
         getRevenantBuff().apply(REF);
-        if (isEquipItems(raiseType))
+        if (isEquipItems(raiseType)) {
             equipOriginalItems();
+        }
         // skeleton mage should have same spells!
         return true;
     }
@@ -121,7 +124,7 @@ public class RaiseEffect extends SummonEffect {
             effect.add(new ModifyValueEffect(valueName,
                     MOD.MODIFY_BY_CONST, formula));
         }
-        BuffType buffType = (BuffType) new BuffType(
+        BuffType buffType = new BuffType(
                 DataManager.getType(BUFF_NAME));
         buffType.setName(BUFF_NAME + corpse.getName());
         AddBuffEffect e = new AddBuffEffect(buffType, effect);
@@ -177,10 +180,12 @@ public class RaiseEffect extends SummonEffect {
     }
 
     private boolean isEquipItems(RAISE_TYPE raiseType) {
-        if (!humanoid)
+        if (!humanoid) {
             return false;
-        if (raiseType == null)
+        }
+        if (raiseType == null) {
             return true;
+        }
         switch (raiseType) {
             case GHOST:
             case GHOUL:
@@ -194,39 +199,49 @@ public class RaiseEffect extends SummonEffect {
     }
 
     public String getUnitType() {
-        if (corpse == null)
+        if (corpse == null) {
             initCorpse();
-        if (raiseType == null)
+        }
+        if (raiseType == null) {
             return typeName;
+        }
         switch (raiseType) { // TODO ALT TYPE as per corpse type? UPGRADED as
             // per Spellpower/Mastery?
             case GHOST:
-                if (!humanoid)
+                if (!humanoid) {
                     return STD_UNIT_TYPES.WRAITH_BEAST.toString();
+                }
                 if (raiseMod == null) // ++ init raiseMod from skills?
+                {
                     return STD_UNIT_TYPES.GHOST.toString();
+                }
             case GHOUL:
-                if (!humanoid)
+                if (!humanoid) {
                     return STD_UNIT_TYPES.UNDEAD_BEAST.toString(); // ++
+                }
                 // monstrocity!
                 return STD_UNIT_TYPES.GHOUL.toString();
             case LICH:
-                if (!humanoid)
+                if (!humanoid) {
                     return STD_UNIT_TYPES.WRAITH_BEAST.toString();
+                }
                 return STD_UNIT_TYPES.LICH.toString();
             case SKELETON:
-                if (!humanoid)
+                if (!humanoid) {
                     return STD_UNIT_TYPES.SKELETAL_BEAST.toString();
+                }
                 return STD_UNIT_TYPES.SKELETON.toString();
             case VAMPIRE:
-                if (!humanoid)
+                if (!humanoid) {
                     return STD_UNIT_TYPES.VAMPIRE_BEAST.toString();
+                }
                 return STD_UNIT_TYPES.VAMPIRE.toString();
             case WRAITH_LORD:
                 return STD_UNIT_TYPES.WRAITH_MONSTROCITY.toString();
             case ZOMBIE:
-                if (!humanoid)
+                if (!humanoid) {
                     return STD_UNIT_TYPES.ZOMBIE_BEAST.toString();
+                }
                 return STD_UNIT_TYPES.ZOMBIE.toString();
         }
         // depending on corpse type? Skeleton Warrior/Mage/Rogue?

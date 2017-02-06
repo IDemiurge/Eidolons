@@ -40,10 +40,11 @@ public class ClassTab extends HeroItemTab {
     @Override
     public BORDER getBorder(ObjType value) {
         for (DC_FeatObj clazz : hero.getClasses()) {
-            if (!clazz.getName().equals(value.getName()))
+            if (!clazz.getName().equals(value.getName())) {
                 continue;
+            }
             Integer rank = clazz.getIntParam(PARAMS.RANK);
-            if (rank > 0)
+            if (rank > 0) {
                 switch (rank) {
                     case 1:
                         return BORDER.RANK_II;
@@ -54,6 +55,7 @@ public class ClassTab extends HeroItemTab {
                     case 4:
                         return BORDER.RANK_V;
                 }
+            }
         }
         return null;
     }

@@ -52,12 +52,12 @@ public class GameInfoPanel extends G_ElementPanel<GAME_OPTIONS> implements
 
     @Override
     public void refresh() {
-        if (connector != null)
+        if (connector != null) {
             connector.send(code);
-        else {
+        } else {
             ServerConnector.send(code);
         }
-        if (ServerConnector.launchInputWaitingThread(code))
+        if (ServerConnector.launchInputWaitingThread(code)) {
             SwingUtilities.invokeLater(new Runnable() {
 
                 @Override
@@ -67,6 +67,7 @@ public class GameInfoPanel extends G_ElementPanel<GAME_OPTIONS> implements
                 }
 
             });
+        }
     }
 
     @Override
@@ -131,8 +132,9 @@ public class GameInfoPanel extends G_ElementPanel<GAME_OPTIONS> implements
 
         if (gameOptions == null) {
             this.gameOptions = new GameOptions();
-        } else
+        } else {
             this.gameOptions = gameOption;
+        }
         game.setOptions(gameOptions);
         super.resetElements();
         main.system.auxiliary.LogMaster.log(2, "game options set: "

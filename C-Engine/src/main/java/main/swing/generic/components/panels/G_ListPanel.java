@@ -70,16 +70,18 @@ public abstract class G_ListPanel<E> extends G_Panel {
     public G_ListPanel(List<E> list, int obj_size, GameState state) {
         super();
         data = list;
-        if (data == null)
+        if (data == null) {
             data = getEmptyData();
+        }
         this.state = state;
         this.obj_size = obj_size;
         init();
 
         setOpaque(false);
         setBorder(new EmptyBorder(0, 0, 0, 0));
-        if (!CoreEngine.isLevelEditor())
+        if (!CoreEngine.isLevelEditor()) {
             setIgnoreRepaint(true);
+        }
         // LookAndFeel.installBorder(this, null);
     }
 
@@ -99,10 +101,11 @@ public abstract class G_ListPanel<E> extends G_Panel {
 
     @Override
     public void paint(Graphics g) {
-        if (isBordered())
+        if (isBordered()) {
             super.paint(g);
-        else
+        } else {
             list.paint(g);
+        }
     }
 
     public boolean isBordered() {
@@ -118,8 +121,9 @@ public abstract class G_ListPanel<E> extends G_Panel {
     }
 
     public void initSize() {
-        if (!isAutoSizingOn())
+        if (!isAutoSizingOn()) {
             return;
+        }
         vertical = layoutOrientation != JList.HORIZONTAL_WRAP;
         setPanelSize(new Dimension(getPanelWidth(), getPanelHeight()));
     }
@@ -157,14 +161,17 @@ public abstract class G_ListPanel<E> extends G_Panel {
     }
 
     protected void initList() {
-        if (isInitialized())
+        if (isInitialized()) {
             initSize();
+        }
         setList(createList());
 
-        if (!isCustom())
+        if (!isCustom()) {
             getList().addMouseListener(getMouseListener());
-        if (getObj_size() != 0)
+        }
+        if (getObj_size() != 0) {
             getList().setObj_size(getObj_size());
+        }
 
         getList().setSelectionMode(selection_mode);
 
@@ -181,8 +188,9 @@ public abstract class G_ListPanel<E> extends G_Panel {
     }
 
     protected G_List<E> createList() {
-        if (isCustom())
+        if (isCustom()) {
             return new CustomList<E>(data);
+        }
         return new G_List<E>(data);
     }
 
@@ -206,8 +214,9 @@ public abstract class G_ListPanel<E> extends G_Panel {
     }
 
     public MouseListener getMouseListener() {
-        if (customMouseListener != null)
+        if (customMouseListener != null) {
             return customMouseListener;
+        }
         return new ObjListMouseListener<E>(getList());
     }
 
@@ -230,9 +239,11 @@ public abstract class G_ListPanel<E> extends G_Panel {
         // if (list.getMouseListeners())
         // list.addMouseListener(m);
         // }
-        if (isInitialized())
-            if (getPanelSize() == null)
+        if (isInitialized()) {
+            if (getPanelSize() == null) {
                 initSize();
+            }
+        }
         removeAll();
         // if (isInitialized() && !permanent)
         resetData();
@@ -250,20 +261,21 @@ public abstract class G_ListPanel<E> extends G_Panel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (data == null)
+        if (data == null) {
             data = getEmptyData();
-        else {
-            if (data.isEmpty())
+        } else {
+            if (data.isEmpty()) {
                 data = getEmptyData();
-            else if (data.size() < minItems) {
+            } else if (data.size() < minItems) {
                 for (int i = data.size(); i < minItems; i++) {
                     data.add(null);
 
                 }
             }
         }
-        if (getList() != null)
+        if (getList() != null) {
             getList().setData(data);
+        }
 
         // if (obj.getOwner().isMe())
         // data = getData(obj);
@@ -284,8 +296,9 @@ public abstract class G_ListPanel<E> extends G_Panel {
 
     public void setObj(Obj obj) {
         this.obj = obj;
-        if (obj != null)
+        if (obj != null) {
             this.obj_type = obj.getOBJ_TYPE_ENUM();
+        }
         // dataChanged();
     }
 

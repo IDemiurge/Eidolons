@@ -16,8 +16,9 @@ public class PositionCondition extends MicroCondition {
     @Override
     public boolean check() {
         Obj obj = ref.getObj(key);
-        if (cell != null)
+        if (cell != null) {
             return obj.getCoordinates().equals(cell.getCoordinates());
+        }
 
         return false;
     }

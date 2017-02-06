@@ -55,8 +55,9 @@ public class ClassTreeView extends HT_View {
         // break; // TODO needed?
         // }
         for (final CLASS_GROUP classGroup : classes) {
-            if (classGroup == CLASS_GROUP.MULTICLASS)
+            if (classGroup == CLASS_GROUP.MULTICLASS) {
                 continue;
+            }
             HC_Tab tab = tabMap.get(classGroup);
             if (tab == null) {
                 G_Component comp = new G_Panel(getPanelVisuals()) {
@@ -123,11 +124,14 @@ public class ClassTreeView extends HT_View {
     }
 
     private boolean hasClass(CLASS_GROUP group) {
-        if (CoreEngine.isArcaneVault())
+        if (CoreEngine.isArcaneVault()) {
             return false;
-        for (DC_FeatObj CLASS : hero.getClasses())
-            if (CLASS.checkProperty(G_PROPS.CLASS_GROUP, group.getName()))
+        }
+        for (DC_FeatObj CLASS : hero.getClasses()) {
+            if (CLASS.checkProperty(G_PROPS.CLASS_GROUP, group.getName())) {
                 return true;
+            }
+        }
         return false;
     }
 

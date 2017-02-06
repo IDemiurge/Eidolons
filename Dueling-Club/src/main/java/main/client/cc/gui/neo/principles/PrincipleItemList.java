@@ -22,23 +22,26 @@ public class PrincipleItemList extends G_ListPanel<Entity> implements ListSelect
 
     @Override
     public void refresh() {
-        if (!initialized)
+        if (!initialized) {
             return;
+        }
         super.refresh();
     }
 
     @Override
     protected void initList() {
-        if (!initialized)
+        if (!initialized) {
             return;
+        }
         super.initList();
         getList().addListSelectionListener(this);
     }
 
     @Override
     public void setInts() {
-        if (!initialized)
+        if (!initialized) {
             return;
+        }
         sizeInfo = "h " + getCompHeight() + "!" + ", w " + getCompWidth() + "!";
         rowsVisible = getListSize() / getWrap();
         minItems = getListSize();

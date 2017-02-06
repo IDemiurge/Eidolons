@@ -75,9 +75,10 @@ public class ModelManager {
 
 	public static void findType() {
 		ObjType type = TypeFinder.findType(false);
-		if (type == null)
-			return;
-		adjustTreeTabSelection(type);
+        if (type == null) {
+            return;
+        }
+        adjustTreeTabSelection(type);
 	}
 
 	public static void adjustTreeTabSelection(ObjType type) {
@@ -115,15 +116,18 @@ public class ModelManager {
 		List<String> list = EnumMaster.findEnumConstantNames(type.getOBJ_TYPE_ENUM()
 				.getGroupingKey().getName());
 		int index = ListMaster.getIndexString(list, type.getGroupingKey(), true);
-		if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.SKILLS)
-			if (index > 5)
-				index--;
-		TabBuilder tb = ArcaneVault.getMainBuilder().getTabBuilder().getSubTabs(code);
+        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.SKILLS) {
+            if (index > 5) {
+                index--;
+            }
+        }
+        TabBuilder tb = ArcaneVault.getMainBuilder().getTabBuilder().getSubTabs(code);
 		tb.getTabbedPane().setSelectedIndex(index);
         // getOrCreate path for node? I could keep some map from type to path...
         if (!select) {
-            if (tb.getTree().getTreeSelectionListeners().length != 1)
+            if (tb.getTree().getTreeSelectionListeners().length != 1) {
                 return;
+            }
             TreeSelectionListener listener = tb.getTree().getTreeSelectionListeners()[0];
             tb.getTree().removeTreeSelectionListener(listener);
             try {
@@ -173,9 +177,10 @@ public class ModelManager {
 		}
 		String newName = DialogMaster
 				.inputText("New type's name:", node.getUserObject().toString());
-		if (newName == null)
-			return;
-		ArcaneVault.getMainBuilder().getTreeBuilder().newType(newName, node, selected,
+        if (newName == null) {
+            return;
+        }
+        ArcaneVault.getMainBuilder().getTreeBuilder().newType(newName, node, selected,
 				upgrade_parent_new);
 
 		SoundMaster.playStandardSound(STD_SOUNDS.CLOSE);
@@ -221,10 +226,10 @@ public class ModelManager {
 		if (obj_type.isTreeEditType() || obj_type == OBJ_TYPES.ABILS) {
 			AE_Manager.saveTreesIntoXML();
 		}
-		if (!auto)
-			checkTypeModifications(obj_type);
-		else {
-			if (obj_type == OBJ_TYPES.CHARS) {
+        if (!auto) {
+            checkTypeModifications(obj_type);
+        } else {
+            if (obj_type == OBJ_TYPES.CHARS) {
 				XML_Reader.checkHeroesAdded();
 			}
 		}
@@ -266,29 +271,34 @@ public class ModelManager {
 				}
 			}
 
-			if (obj_type == OBJ_TYPES.CHARS)
-				for (ObjType type : DataManager.getTypes(obj_type)) {
-					// ContentGenerator.generateArmorPerDamageType(type, null);
-					if (type.getGroup().equals("Background")) {
-						PrincipleMaster.initPrincipleIdentification(type);
-					}
-				}
-		}
+            if (obj_type == OBJ_TYPES.CHARS) {
+                for (ObjType type : DataManager.getTypes(obj_type)) {
+                    // ContentGenerator.generateArmorPerDamageType(type, null);
+                    if (type.getGroup().equals("Background")) {
+                        PrincipleMaster.initPrincipleIdentification(type);
+                    }
+                }
+            }
+        }
 		checkPrincipleProcessing(obj_type);
 
-		if (obj_type == OBJ_TYPES.PARTY)
-			ContentGenerator.adjustParties();
-		if (obj_type == OBJ_TYPES.SPELLS)
-			updateSpells();
-		if (obj_type == OBJ_TYPES.ARMOR)
-			generateNewArmorParams();
-		else if (obj_type == OBJ_TYPES.WEAPONS)
-			generateNewWeaponParams();
-		else if (obj_type == OBJ_TYPES.DEITIES) {
-			for (ObjType type : DataManager.getTypes(obj_type))
+        if (obj_type == OBJ_TYPES.PARTY) {
+            ContentGenerator.adjustParties();
+        }
+        if (obj_type == OBJ_TYPES.SPELLS) {
+            updateSpells();
+        }
+        if (obj_type == OBJ_TYPES.ARMOR) {
+            generateNewArmorParams();
+        } else if (obj_type == OBJ_TYPES.WEAPONS) {
+            generateNewWeaponParams();
+        } else if (obj_type == OBJ_TYPES.DEITIES) {
+            for (ObjType type : DataManager.getTypes(obj_type))
 				// if (type.getGroup().equals("Background"))
-				PrincipleMaster.initPrincipleIdentification(type);
-		} else if (obj_type == OBJ_TYPES.ENCOUNTERS) {
+            {
+                PrincipleMaster.initPrincipleIdentification(type);
+            }
+        } else if (obj_type == OBJ_TYPES.ENCOUNTERS) {
 			for (ObjType type : DataManager.getTypes(obj_type)) {
 				type.setParam(PARAMS.POWER_MINIMUM, EncounterMaster.getMinimumPower(type));
 				type.setParam(PARAMS.POWER_BASE, EncounterMaster.getPower(type, null));
@@ -299,33 +309,42 @@ public class ModelManager {
 				ActionGenerator.addDefaultSneakModsToAction(type);
 			}
 		} else if (obj_type == OBJ_TYPES.SKILLS) {
-			if (isSkillSdAutoAdjusting())
-				autoAdjustSkills();
+            if (isSkillSdAutoAdjusting()) {
+                autoAdjustSkills();
+            }
 
 		} else if (obj_type == OBJ_TYPES.CLASSES)
 			// if (isClassAutoAdjustingOn())
-			autoAdjustClasses();
+        {
+            autoAdjustClasses();
+        }
 
 		if (obj_type == OBJ_TYPES.ACTIONS) {
-			for (ObjType type : DataManager.getTypes(obj_type))
-				if (type.checkProperty(G_PROPS.ACTION_TYPE, ACTION_TYPE.STANDARD_ATTACK.toString()))
-					DC_ContentManager.addDefaultValues(type, false);
-		}
+            for (ObjType type : DataManager.getTypes(obj_type)) {
+                if (type.checkProperty(G_PROPS.ACTION_TYPE, ACTION_TYPE.STANDARD_ATTACK.toString())) {
+                    DC_ContentManager.addDefaultValues(type, false);
+                }
+            }
+        }
 		if (obj_type == OBJ_TYPES.SPELLS) {
 			for (ObjType type : DataManager.getTypes(obj_type))
 				// if (type.getIntParam(PARAMS.XP_COST) == 0)
-				if (!type.getGroup().equals(StringMaster.STANDARD))
-					type.setParam(PARAMS.XP_COST, type.getIntParam(PARAMS.SPELL_DIFFICULTY)
-							* DC_Formulas.XP_COST_PER_SPELL_DIFFICULTY);
-				else
-					type.setParam(PARAMS.XP_COST, type.getIntParam(PARAMS.SPELL_DIFFICULTY)
-							* DC_Formulas.XP_COST_PER_SPELL_DIFFICULTY);
-		}
+            {
+                if (!type.getGroup().equals(StringMaster.STANDARD)) {
+                    type.setParam(PARAMS.XP_COST, type.getIntParam(PARAMS.SPELL_DIFFICULTY)
+                            * DC_Formulas.XP_COST_PER_SPELL_DIFFICULTY);
+                } else {
+                    type.setParam(PARAMS.XP_COST, type.getIntParam(PARAMS.SPELL_DIFFICULTY)
+                            * DC_Formulas.XP_COST_PER_SPELL_DIFFICULTY);
+                }
+            }
+        }
 
 		if (obj_type == OBJ_TYPES.WEAPONS || obj_type == OBJ_TYPES.ARMOR) {
-			for (ObjType type : DataManager.getTypes(obj_type))
-				DC_ContentManager.addDefaultValues(type, false);
-		}
+            for (ObjType type : DataManager.getTypes(obj_type)) {
+                DC_ContentManager.addDefaultValues(type, false);
+            }
+        }
 		if (obj_type == OBJ_TYPES.BF_OBJ) {
 			generateBfObjProps();
 		}
@@ -338,39 +357,43 @@ public class ModelManager {
 			for (ObjType type : DataManager.getTypes(obj_type)) {
 
 				if (obj_type == OBJ_TYPES.CHARS) {
-					if (!type.isInitialized())
-						Game.game.initType(type);
+                    if (!type.isInitialized()) {
+                        Game.game.initType(type);
+                    }
 
 					type.setParam(PARAMS.POWER, DC_MathManager.getUnitPower(type));
-					if (StringMaster.isEmpty(type.getProperty(PROPS.OFFHAND_NATURAL_WEAPON)))
-						type.setProperty((PROPS.OFFHAND_NATURAL_WEAPON), PROPS.NATURAL_WEAPON
-								.getDefaultValue());
-					if (ArcaneVault.isSimulationOn()) {
+                    if (StringMaster.isEmpty(type.getProperty(PROPS.OFFHAND_NATURAL_WEAPON))) {
+                        type.setProperty((PROPS.OFFHAND_NATURAL_WEAPON), PROPS.NATURAL_WEAPON
+                                .getDefaultValue());
+                    }
+                    if (ArcaneVault.isSimulationOn()) {
 						int girth = 0;
 						DC_HeroObj unit = SimulationManager.getUnit(type);
 						RACE race = unit.getRace();
-						if (race != null)
-							switch (race) {
-								case DEMON:
-									girth = 200;
-									if (unit.getBackground() == BACKGROUND.INFERI_WARPBORN)
-										girth = 80;
-									break;
-								case ELF:
-									girth = 50;
-									break;
-								case GOBLINOID:
-									girth = 135;
-									break;
-								case VAMPIRE:
-								case HUMAN:
-									girth = 100;
-									break;
-								case DWARF:
-									girth = 175;
-									break;
-							}
-						if (type.getGroup().equals(StringMaster.BACKGROUND)) {
+                        if (race != null) {
+                            switch (race) {
+                                case DEMON:
+                                    girth = 200;
+                                    if (unit.getBackground() == BACKGROUND.INFERI_WARPBORN) {
+                                        girth = 80;
+                                    }
+                                    break;
+                                case ELF:
+                                    girth = 50;
+                                    break;
+                                case GOBLINOID:
+                                    girth = 135;
+                                    break;
+                                case VAMPIRE:
+                                case HUMAN:
+                                    girth = 100;
+                                    break;
+                                case DWARF:
+                                    girth = 175;
+                                    break;
+                            }
+                        }
+                        if (type.getGroup().equals(StringMaster.BACKGROUND)) {
 							LogMaster.setOff(true);
 							try {
 
@@ -381,11 +404,13 @@ public class ModelManager {
 								LogMaster.setOff(false);
 							}
 
-						} else
-							girth += DataManager.getType(HeroCreator.BASE_HERO, OBJ_TYPES.CHARS)
-									.getIntParam(PARAMS.GIRTH);
-						if (!type.getName().equals(HeroCreator.BASE_HERO))
-							type.setParam(PARAMS.GIRTH, girth);
+                        } else {
+                            girth += DataManager.getType(HeroCreator.BASE_HERO, OBJ_TYPES.CHARS)
+                                    .getIntParam(PARAMS.GIRTH);
+                        }
+                        if (!type.getName().equals(HeroCreator.BASE_HERO)) {
+                            type.setParam(PARAMS.GIRTH, girth);
+                        }
 
 					}
 				} else {
@@ -409,10 +434,11 @@ public class ModelManager {
 	private static void checkPrincipleProcessing(OBJ_TYPE obj_type) {
 		if (obj_type == OBJ_TYPES.DEITIES || obj_type == OBJ_TYPES.SKILLS
 				|| obj_type == OBJ_TYPES.CLASSES || obj_type == OBJ_TYPES.CHARS
-				|| obj_type == OBJ_TYPES.UNITS)
-			for (ObjType type : DataManager.getTypes(obj_type)) {
-				PrincipleMaster.processPrincipleValues(type);
-			}
+                || obj_type == OBJ_TYPES.UNITS) {
+            for (ObjType type : DataManager.getTypes(obj_type)) {
+                PrincipleMaster.processPrincipleValues(type);
+            }
+        }
 
 	}
 
@@ -491,10 +517,11 @@ public class ModelManager {
 		// TODO remove empty
 
 		ObjType parent = DataManager.getParent(type);
-		if (parent == null)
-			parent = DataManager.getType(type.getProperty(PROPS.BASE_CLASSES_ONE),
-					OBJ_TYPES.CLASSES);
-		if (parent != null) {
+        if (parent == null) {
+            parent = DataManager.getType(type.getProperty(PROPS.BASE_CLASSES_ONE),
+                    OBJ_TYPES.CLASSES);
+        }
+        if (parent != null) {
 			autoAdjustClass(parent);
 			type.setParam(PARAMS.CIRCLE, parent.getIntParam(PARAMS.CIRCLE) + 1);
 			// inherit principles
@@ -510,9 +537,10 @@ public class ModelManager {
 
 		resetAltBaseTypes(type);
 
-		if (idSet.contains(type))
-			return;
-		int id = StringMaster.getInteger(type.getProperty(G_PROPS.ID));
+        if (idSet.contains(type)) {
+            return;
+        }
+        int id = StringMaster.getInteger(type.getProperty(G_PROPS.ID));
 		if (id % 2 != 1) {
 			type.setProperty(G_PROPS.ID, "" + classId);
 			classId += 2;
@@ -557,9 +585,10 @@ public class ModelManager {
 		if (reqs.contains("Principles")) {
 			String cleanedReqs = reqs;
 			for (String sub : StringMaster.openContainer(reqs)) {
-				if (!sub.contains("Principles"))
-					continue;
-				cleanedReqs = cleanedReqs.replace(sub, "");
+                if (!sub.contains("Principles")) {
+                    continue;
+                }
+                cleanedReqs = cleanedReqs.replace(sub, "");
 				cleanedReqs = cleanedReqs.replace(";;", ";");
 			}
 			type.setProperty(PROPS.REQUIREMENTS, cleanedReqs);
@@ -601,17 +630,19 @@ public class ModelManager {
 
 		resetAltBaseTypes(type);
 
-		if (!type.getParamMap().get(PARAMS.RANK_MAX.getName()).isEmpty())
-			return;
+        if (!type.getParamMap().get(PARAMS.RANK_MAX.getName()).isEmpty()) {
+            return;
+        }
 
 		// updated?
-		if (circle == 0)
-			type.setParam(PARAMS.RANK_MAX, 5);
-		else if (circle == 1)
-			type.setParam(PARAMS.RANK_MAX, 3);
-		else if (circle == 2)
-			type.setParam(PARAMS.RANK_MAX, 2);
-	}
+        if (circle == 0) {
+            type.setParam(PARAMS.RANK_MAX, 5);
+        } else if (circle == 1) {
+            type.setParam(PARAMS.RANK_MAX, 3);
+        } else if (circle == 2) {
+            type.setParam(PARAMS.RANK_MAX, 2);
+        }
+    }
 
 	private static int getSdForSkillCircle(int circle, boolean min) {
 		if (!min) {
@@ -620,11 +651,13 @@ public class ModelManager {
 		int sd = 36;
 		while (true) {
 			sd--;
-			if (getMinCircle(sd) == circle)
-				break;
-			if (sd <= 0)
-				return 0;
-		}
+            if (getMinCircle(sd) == circle) {
+                break;
+            }
+            if (sd <= 0) {
+                return 0;
+            }
+        }
 		if (!min) {
 			sd--;
 		}
@@ -633,19 +666,21 @@ public class ModelManager {
 	}
 
 	private static int getMinCircle(int sd) {
-		if (sd > 48)
-			return 6;
-		if (sd > 35)
-			return 5;
-		else if (sd > 25)
-			return 4;
-		else if (sd > 18)
-			return 3;
-		else if (sd > 12)
-			return 2;
-		else if (sd > 8)
-			return 1;
-		return 0;
+        if (sd > 48) {
+            return 6;
+        }
+        if (sd > 35) {
+            return 5;
+        } else if (sd > 25) {
+            return 4;
+        } else if (sd > 18) {
+            return 3;
+        } else if (sd > 12) {
+            return 2;
+        } else if (sd > 8) {
+            return 1;
+        }
+        return 0;
 	}
 
 	private static boolean isSkillSdAutoAdjusting() {
@@ -689,17 +724,18 @@ public class ModelManager {
 	}
 
 	public static void saveAllIfDirty() {
-		if (!isAutoSaveOff())
-			if (ArcaneVault.isDirty()) {
-				auto = true;
-				try {
-					saveAll();
-				} catch (Exception e) {
-					e.printStackTrace();
-				} finally {
-					auto = false;
-				}
-			}
+        if (!isAutoSaveOff()) {
+            if (ArcaneVault.isDirty()) {
+                auto = true;
+                try {
+                    saveAll();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    auto = false;
+                }
+            }
+        }
 
 	}
 
@@ -716,9 +752,10 @@ public class ModelManager {
 
 	private static void saveAllTypes() {
 		ArcaneVault.getWorkspaceManager().save();
-		if (saving)
-			return;
-		saving = true;
+        if (saving) {
+            return;
+        }
+        saving = true;
 		try {
 			if (ArcaneVault.isMacroMode()) {
 
@@ -726,17 +763,20 @@ public class ModelManager {
 					save(MACRO_OBJ_TYPES.getType(type));
 
 				}
-			} else
-				for (String type : XML_Reader.getTypeMaps().keySet()) {
-					OBJ_TYPE objType = ContentManager.getOBJ_TYPE(type);
-					if (auto)
-						if (objType == OBJ_TYPES.PARTY) {
-							continue;
-						}
-					save(objType);
-					if (auto)
-						WaitMaster.WAIT(WAIT_PERIOD);
-				}
+            } else {
+                for (String type : XML_Reader.getTypeMaps().keySet()) {
+                    OBJ_TYPE objType = ContentManager.getOBJ_TYPE(type);
+                    if (auto) {
+                        if (objType == OBJ_TYPES.PARTY) {
+                            continue;
+                        }
+                    }
+                    save(objType);
+                    if (auto) {
+                        WaitMaster.WAIT(WAIT_PERIOD);
+                    }
+                }
+            }
 
 			SoundMaster.playStandardSound(STD_SOUNDS.CHECK);
 			ArcaneVault.setDirty(false);
@@ -748,9 +788,10 @@ public class ModelManager {
 	}
 
 	public static void checkReload() {
-		if (ArcaneVault.isDirty())
-			return;
-		reload();
+        if (ArcaneVault.isDirty()) {
+            return;
+        }
+        reload();
 	}
 
 	public static void reload() {
@@ -766,13 +807,14 @@ public class ModelManager {
 	}
 
 	public static void startSaving() {
-		if (backupOnLaunch)
-			Weaver.inNewThread(true, new Runnable() {
-				@Override
-				public void run() {
-					backUp();
-				}
-			});
+        if (backupOnLaunch) {
+            Weaver.inNewThread(true, new Runnable() {
+                @Override
+                public void run() {
+                    backUp();
+                }
+            });
+        }
 
 		TimerTaskMaster.newTimer(new ModelManager(), "saveAllIfDirty", null, null, BACK_UP_PERIOD);
 	}
@@ -783,9 +825,10 @@ public class ModelManager {
 	}
 
 	public static AV_DataManager getAV_Manager() {
-		if (manager == null)
-			manager = new AV_DataManager();
-		return manager;
+        if (manager == null) {
+            manager = new AV_DataManager();
+        }
+        return manager;
 	}
 
 	public static void setManager(AV_DataManager manager) {
@@ -819,9 +862,10 @@ public class ModelManager {
 
 	public static void undo() {
 		ObjType selectedType = ArcaneVault.getSelectedType();
-		if (selectedType != null)
-			back(selectedType);
-		refresh();
+        if (selectedType != null) {
+            back(selectedType);
+        }
+        refresh();
 
 	}
 

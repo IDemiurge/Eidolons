@@ -33,40 +33,70 @@ public class Box2dLightTest extends InputAdapter implements ApplicationListener 
 
     static final float viewportWidth = 48;
     static final float viewportHeight = 32;
-
+    private final static int MAX_FPS = 30;
+    public final static float TIME_STEP = 1f / MAX_FPS;
+    private final static int MIN_FPS = 15;
+    private final static float MAX_STEPS = 1f + MAX_FPS / MIN_FPS;
+    private final static float MAX_TIME_PER_FRAME = TIME_STEP * MAX_STEPS;
+    private final static int VELOCITY_ITERS = 6;
+    private final static int POSITION_ITERS = 2;
     OrthographicCamera camera;
-
     SpriteBatch batch;
     BitmapFont font;
     TextureRegion textureRegion;
     Texture bg;
-
     /** our box2D world **/
     World world;
-
     /** our boxes **/
     ArrayList<Body> balls = new ArrayList<Body>(BALLSNUM);
-
     /** our ground box **/
     Body groundBody;
-
     /** our mouse joint **/
     MouseJoint mouseJoint = null;
-
     /** a hit body **/
     Body hitBody = null;
-
     /** pixel perfect projection for font rendering */
     Matrix4 normalProjection = new Matrix4();
-
     boolean showText = true;
-
     /** BOX2D LIGHT STUFF */
     RayHandler rayHandler;
-
     ArrayList<Light> lights = new ArrayList<Light>(BALLSNUM);
-
     float sunDirection = -90f;
+    float physicsTimeLeft;
+    long aika;
+    int times;
+    /**
+     * we instantiate this vector and the callback here so we don't irritate the
+     * GC
+     **/
+    Vector3 testPoint = new Vector3();
+    QueryCallback callback = new QueryCallback() {
+        @Override
+        public boolean reportFixture(Fixture fixture) {
+            if (fixture.getBody() == groundBody) {
+                return true;
+            }
+
+            if (fixture.testPoint(testPoint.x, testPoint.y)) {
+                hitBody = fixture.getBody();
+                return false;
+            } else {
+                return true;
+            }
+        }
+    };
+    /**
+     * another temporary vector
+     **/
+    Vector2 target = new Vector2();
+    /**
+     * Type of lights to use:
+     * 0 - PointLight
+     * 1 - ConeLight
+     * 2 - ChainLight
+     * 3 - DirectionalLight
+     */
+    int lightsType = 0;
 
     @Override
     public void create() {
@@ -143,7 +173,9 @@ public class Box2dLightTest extends InputAdapter implements ApplicationListener 
         /** BOX2D LIGHT STUFF BEGIN */
         rayHandler.setCombinedMatrix(camera);
 
-        if (stepped) rayHandler.update();
+        if (stepped) {
+            rayHandler.update();
+        }
         rayHandler.render();
         /** BOX2D LIGHT STUFF END */
 
@@ -272,22 +304,11 @@ public class Box2dLightTest extends InputAdapter implements ApplicationListener 
         lights.add(light);
     }
 
-    private final static int MAX_FPS = 30;
-    private final static int MIN_FPS = 15;
-    public final static float TIME_STEP = 1f / MAX_FPS;
-    private final static float MAX_STEPS = 1f + MAX_FPS / MIN_FPS;
-    private final static float MAX_TIME_PER_FRAME = TIME_STEP * MAX_STEPS;
-    private final static int VELOCITY_ITERS = 6;
-    private final static int POSITION_ITERS = 2;
-
-    float physicsTimeLeft;
-    long aika;
-    int times;
-
     private boolean fixedStep(float delta) {
         physicsTimeLeft += delta;
-        if (physicsTimeLeft > MAX_TIME_PER_FRAME)
+        if (physicsTimeLeft > MAX_TIME_PER_FRAME) {
             physicsTimeLeft = MAX_TIME_PER_FRAME;
+        }
 
         boolean stepped = false;
         while (physicsTimeLeft >= TIME_STEP) {
@@ -341,25 +362,6 @@ public class Box2dLightTest extends InputAdapter implements ApplicationListener 
         ballShape.dispose();
     }
 
-    /**
-     * we instantiate this vector and the callback here so we don't irritate the
-     * GC
-     **/
-    Vector3 testPoint = new Vector3();
-    QueryCallback callback = new QueryCallback() {
-        @Override
-        public boolean reportFixture(Fixture fixture) {
-            if (fixture.getBody() == groundBody)
-                return true;
-
-            if (fixture.testPoint(testPoint.x, testPoint.y)) {
-                hitBody = fixture.getBody();
-                return false;
-            } else
-                return true;
-        }
-    };
-
     @Override
     public boolean touchDown(int x, int y, int pointer, int newParam) {
         // translate the mouse coordinates to world coordinates
@@ -389,9 +391,6 @@ public class Box2dLightTest extends InputAdapter implements ApplicationListener 
         return false;
     }
 
-    /** another temporary vector **/
-    Vector2 target = new Vector2();
-
     @Override
     public boolean touchDragged(int x, int y, int pointer) {
         camera.unproject(testPoint.set(x, y, 0));
@@ -420,15 +419,6 @@ public class Box2dLightTest extends InputAdapter implements ApplicationListener 
         rayHandler.dispose();
         world.dispose();
     }
-
-    /**
-     * Type of lights to use:
-     * 0 - PointLight
-     * 1 - ConeLight
-     * 2 - ChainLight
-     * 3 - DirectionalLight
-     */
-    int lightsType = 0;
 
     @Override
     public boolean keyDown(int keycode) {
@@ -463,18 +453,20 @@ public class Box2dLightTest extends InputAdapter implements ApplicationListener 
                 return true;
 
             case Input.Keys.F5:
-                for (Light light : lights)
+                for (Light light : lights) {
                     light.setColor(
                             MathUtils.random(),
                             MathUtils.random(),
                             MathUtils.random(),
                             1f);
+                }
                 return true;
 
             case Input.Keys.F6:
-                for (Light light : lights)
+                for (Light light : lights) {
                     light.setDistance(MathUtils.random(
                             LIGHT_DISTANCE * 0.5f, LIGHT_DISTANCE * 2f));
+                }
                 return true;
 
             case Input.Keys.F9:

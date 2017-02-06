@@ -44,10 +44,11 @@ public class ValueBox extends G_Panel {
         x = valueIcon.getWidth(null) + X_OFFSET_TEXT;
         y = Y_OFFSET_TEXT;
 
-        if (StringMaster.isEmpty(value.getDescription()))
+        if (StringMaster.isEmpty(value.getDescription())) {
             setToolTipText(value.getName());
-        else
+        } else {
             setToolTipText(value.getDescription());
+        }
     }
 
     public void setEntity(Entity entity) {
@@ -57,8 +58,9 @@ public class ValueBox extends G_Panel {
     @Override
     public void refresh() {
 
-        if (entity != null)
+        if (entity != null) {
             text = getText();
+        }
         repaint();
     }
 
@@ -68,27 +70,32 @@ public class ValueBox extends G_Panel {
 
     @Override
     public void paint(Graphics g) {
-        if (entity == null)
+        if (entity == null) {
             return;
-        if (isCheckType())
-            if (!checkType())
+        }
+        if (isCheckType()) {
+            if (!checkType()) {
                 return;
+            }
+        }
         super.paint(g);
         g.drawImage(valueIcon, X_OFFSET, Y_OFFSET, null);
         g.setFont(font);
         Color c = ColorManager.WHITE;
         if (entity instanceof Obj) {
             boolean invert = false;
-            if (!entity.getGame().isSimulation())
+            if (!entity.getGame().isSimulation()) {
                 try {
                     invert = (entity.getOwner() != entity.getGame().getManager().getActiveObj()
                             .getOwner());
                 } catch (Exception e) {
                 }
+            }
             c = (invert) ? SmartTextManager.getValueCase(value, (Obj) entity).getColor()
                     : SmartTextManager.getValueCase(value, (Obj) entity).getAltColor();
-            if (invert)
+            if (invert) {
                 c = ColorManager.getInvertedColor(c);
+            }
         }
 
         g.setColor(c);
@@ -102,8 +109,9 @@ public class ValueBox extends G_Panel {
 
     protected boolean checkType() {
         for (OBJ_TYPE type : VALID_OBJ_TYPES) {
-            if (type.equals(entity.getOBJ_TYPE_ENUM()))
+            if (type.equals(entity.getOBJ_TYPE_ENUM())) {
                 return true;
+            }
         }
 
         return false;

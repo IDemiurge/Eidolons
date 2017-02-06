@@ -7,8 +7,9 @@ public class MacroEngine {
     private static boolean initialized;
 
     public static void init() {
-        if (initialized)
+        if (initialized) {
             return;
+        }
         MacroActionManager.generateMacroActions();
         initialized = true;
     }

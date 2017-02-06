@@ -38,8 +38,9 @@ public class TavernView extends HeroChoiceView<DC_HeroObj> {
 
     @Override
     public boolean checkBlocked(DC_HeroObj e) {
-        if (!TavernMaster.checkCanHire(MacroManager.getActiveParty(), hero, tavern, e))
+        if (!TavernMaster.checkCanHire(MacroManager.getActiveParty(), hero, tavern, e)) {
             return false;
+        }
         return hero.getIntParam(PARAMS.GOLD) > e.getIntParam(MACRO_PARAMS.HIRE_COST);
     }
 
@@ -68,16 +69,18 @@ public class TavernView extends HeroChoiceView<DC_HeroObj> {
                 + MacroManager.getActiveParty().getSharedGold() + " can buy",
                 "None, actually") {
             protected void processChoice(Boolean waitForInput) {
-                if (waitForInput != null)
+                if (waitForInput != null) {
                     tavern.buyProvisions(waitForInput);
+                }
             }
         };
         add(buyProvisions, "id buyProvisions, pos 0 0");
         CustomButton rentRooms = new DialogueButton(VISUALS.BUTTON, "Rent Rooms",
                 getRentRoomsInfoText(), "Just Tonight", "As needed", "Never mind") {
             protected void processChoice(Boolean waitForInput) {
-                if (waitForInput != null)
+                if (waitForInput != null) {
                     tavern.rentRooms(waitForInput);
+                }
             }
         };
         add(rentRooms, "id rentRooms, pos 0 buyProvisions.y2");
@@ -110,10 +113,11 @@ public class TavernView extends HeroChoiceView<DC_HeroObj> {
             infoPanel.setEntity((Entity) e);
             infoPanel.refresh();
         }
-        if (!isOkBlocked())
+        if (!isOkBlocked()) {
             okButton.setVisuals(VISUALS.FORWARD); // "hire"
-        else
+        } else {
             okButton.setVisuals(VISUALS.FORWARD_BLOCKED);
+        }
 
     }
 

@@ -33,12 +33,16 @@ public class GoalContainer extends GatewayContainer<Goal> {
 
 			@Override
 			public int compare(Goal o1, Goal o2) {
-				if (getComp(o1).isExpanded())
-					if (!getComp(o2).isExpanded())
-						return 1;
-				if (!getComp(o1).isExpanded())
-					if (getComp(o2).isExpanded())
-						return -1;
+                if (getComp(o1).isExpanded()) {
+                    if (!getComp(o2).isExpanded()) {
+                        return 1;
+                    }
+                }
+                if (!getComp(o1).isExpanded()) {
+                    if (getComp(o2).isExpanded()) {
+                        return -1;
+                    }
+                }
 
 				return 0;
 			}

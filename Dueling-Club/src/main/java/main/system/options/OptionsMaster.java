@@ -19,22 +19,25 @@ public class OptionsMaster {
 
     public static String promptSetOption() {
         String name = ListChooser.chooseEnum(OPTIONS_GROUP.class);
-        if (name == null)
+        if (name == null) {
             return null;
+        }
         OPTIONS_GROUP group = new EnumMaster<OPTIONS_GROUP>().retrieveEnumConst(
                 OPTIONS_GROUP.class, name);
         Options options = getOptions(group);
 
-        if (options == null)
+        if (options == null) {
             return null;
+        }
 
         String optionName = ListChooser.chooseString(ListMaster.toStringList(options.getValues()
                 .keySet().toArray()));
         String value = DialogMaster.inputText("", options.getValue(optionName));
-        if (value == null)
+        if (value == null) {
             options.removeValue(optionName);
-        else
+        } else {
             options.setValue(optionName, value);
+        }
         return value;
     }
 
@@ -118,13 +121,15 @@ public class OptionsMaster {
                 options = new AnimationOptions();
                 break;
         }
-        if (options == null)
+        if (options == null) {
             return null;
+        }
         Class<?> clazz = getOptionGroupEnumClass(group);
         for (Object c : clazz.getEnumConstants()) {
             OptionsPanel.OPTION option = (OptionsPanel.OPTION) c;
-            if (option.getDefaultValue() == null)
+            if (option.getDefaultValue() == null) {
                 continue;
+            }
             String value = option.getDefaultValue().toString();
             options.setValue(c.toString(), value);
         }

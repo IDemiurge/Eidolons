@@ -72,33 +72,38 @@ public class MacroGameManager extends GameManager {
     }
 
     public void dataChanged() {
-        if (MacroManager.isEditMode())
+        if (MacroManager.isEditMode()) {
             MacroManager.getEditorView().refresh();
-        else
+        } else {
             MacroManager.refreshGui();
+        }
     }
 
     @Override
     public void infoSelect(Obj obj) {
-        if (MacroManager.isEditMode())
+        if (MacroManager.isEditMode()) {
             MacroManager.getEditorView().setInfoObj(obj);
-        else
+        } else {
             MacroManager.getMapView().getMacroInfoPanel().setInfoObj(obj);
-        if (getInfoObj() != null)
+        }
+        if (getInfoObj() != null) {
             getInfoObj().setInfoSelected(false);
+        }
         super.infoSelect(obj);
-        if (obj != null)
+        if (obj != null) {
             obj.setInfoSelected(true);
+        }
 
         getMapComp().refresh();
     }
 
     @Override
     public void refreshAll() {
-        if (MacroManager.isEditMode())
+        if (MacroManager.isEditMode()) {
             MacroManager.getEditorView().refresh();
-        else
+        } else {
             MacroManager.getMapView().refresh();
+        }
 
     }
 
@@ -113,8 +118,9 @@ public class MacroGameManager extends GameManager {
             }
             WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_MAP_OBJ, id);
             setSelecting(false);
-        } else
+        } else {
             infoSelect(obj);
+        }
     }
 
     public void cancelSelection() {
@@ -155,8 +161,9 @@ public class MacroGameManager extends GameManager {
     }
 
     public MapComp getMapComp() {
-        if (MacroManager.isEditMode())
+        if (MacroManager.isEditMode()) {
             return MacroManager.getEditorView().getMapComp();
+        }
         return MacroManager.getMapView().getMapComp();
     }
 

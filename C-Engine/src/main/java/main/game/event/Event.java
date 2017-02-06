@@ -209,8 +209,9 @@ public class Event implements Referred {
             if (type instanceof EventType) {
                 return false;
             }
-            if (arg.equals(""))
+            if (arg.equals("")) {
                 return (this == type);
+            }
 
             return (this == type) && (arg.equals(type.getArg()));
 

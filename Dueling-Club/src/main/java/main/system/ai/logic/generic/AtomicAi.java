@@ -52,14 +52,17 @@ public class AtomicAi {
     private static int getCellPriorityMod(Coordinates c, UnitAI ai) {
         int mod = 100;
         if (FacingMaster
-                .getSingleFacing(ai.getUnit().getFacing(), ai.getUnit().getCoordinates(), c) == FACING_SINGLE.IN_FRONT)
+                .getSingleFacing(ai.getUnit().getFacing(), ai.getUnit().getCoordinates(), c) == FACING_SINGLE.IN_FRONT) {
             mod += 35;
+        }
         if (FacingMaster
-                .getSingleFacing(ai.getUnit().getFacing(), ai.getUnit().getCoordinates(), c) == FACING_SINGLE.BEHIND)
+                .getSingleFacing(ai.getUnit().getFacing(), ai.getUnit().getCoordinates(), c) == FACING_SINGLE.BEHIND) {
             mod += -50;
+        }
         if (PositionMaster.inLine(ai.getUnit().getCoordinates(), c)) {
-            if (ai.getType() == AI_TYPE.BRUTE)
+            if (ai.getType() == AI_TYPE.BRUTE) {
                 mod += 25;
+            }
             mod += 35;
         }
         return mod;

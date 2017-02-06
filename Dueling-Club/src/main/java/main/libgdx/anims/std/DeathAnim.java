@@ -69,13 +69,16 @@ public class DeathAnim extends ActionAnim {
     @Override
     protected void dispose() {
         super.dispose();
-        if (getActor() != null)
+        if (getActor() != null) {
             getActor().remove();
+        }
     }
 
     @Override
     protected void add() {
-        if (getActor() == null) return;
+        if (getActor() == null) {
+            return;
+        }
         AnimMaster.getInstance().addActor(getActor());
         getActor().setPosition(getOrigin().x, getOrigin().y);
         AlphaAction action = ActorMaster.addFadeAction(getActor());

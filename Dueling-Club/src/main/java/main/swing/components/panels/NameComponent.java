@@ -18,11 +18,13 @@ public class NameComponent extends WrappedTextComp {
 
     @Override
     protected String getText() {
-        if (getObj() == null)
+        if (getObj() == null) {
             return "?";
+        }
         String nameIfKnown = getObj().getNameIfKnown();
-        if (!getObj().getName().equals(nameIfKnown))
+        if (!getObj().getName().equals(nameIfKnown)) {
             return nameIfKnown;
+        }
         return getObj().getDisplayedName();
     }
 
@@ -41,8 +43,9 @@ public class NameComponent extends WrappedTextComp {
 
     protected int getOffsetY() {
         int size = 0;
-        if (getTextLines() != null)
+        if (getTextLines() != null) {
             size = getTextLines().size();
+        }
         return Math.max(0, (3 - size)) * getLineHeight() + size * 2;
     }
 

@@ -63,23 +63,27 @@ public class DC_MainMenu extends View {
 
     public void setMenuView() {
         add(menu, "pos container.x2/2 container.y2/2");
-        if (DuelingClub.ADMIN_MODE)
+        if (DuelingClub.ADMIN_MODE) {
             menu.handleClick("Play");
+        }
     }
 
     public void setMainView() {
-        if (mainView == null)
+        if (mainView == null) {
             initMainView();
+        }
         add(mainView, "pos 0 0");
 
     }
 
     public void setLoginView() {
-        if (loginPanel == null)
+        if (loginPanel == null) {
             initLoginPanel();
+        }
         add(loginPanel, "pos container.x2/2-100 container.y2/2-100");
-        if (DuelingClub.ADMIN_MODE)
+        if (DuelingClub.ADMIN_MODE) {
             loginPanel.login();
+        }
     }
 
     protected void addBackground(int i) {
@@ -104,8 +108,9 @@ public class DC_MainMenu extends View {
     }
 
     private void initMainView() {
-        if (builder == null)
+        if (builder == null) {
             builder = new DC_MenuBuilder();
+        }
         this.mainView = builder.build();
     }
 

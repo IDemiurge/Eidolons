@@ -41,8 +41,9 @@ public class ListItem<E> extends JLabel {
         this.setObj(obj);
         this.isSelected = isSelected;
         this.obj_size = obj_size;
-        if (obj_size == 0)
+        if (obj_size == 0) {
             obj_size = GuiManager.getSmallObjSize();
+        }
         this.setSelected(isSelected);
         // if (item == null) {
         // if (getEmptyIcon() != null)
@@ -59,30 +60,34 @@ public class ListItem<E> extends JLabel {
 
     @Override
     public String toString() {
-        if (getValue() != null)
+        if (getValue() != null) {
             return getValue().toString();
+        }
         return "Empty List Item";
     }
 
     public void refresh() {
         if (getValue() instanceof String) {
             if (isSelected()) {
-                if (isHighlightSelected())
+                if (isHighlightSelected()) {
                     try {
                         setIcon(new ImageIcon(ImageManager.applyBorder(ImageManager
                                 .getImage((String) getValue()), BORDER.HIGHLIGHTED)));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-            } else
+                }
+            } else {
                 setIcon(ImageManager.getIcon((String) getValue()));
+            }
             return;
         }
         if ((isObj() && getObj() == null) || getValue() == null) {
-            if (getEmptyIcon() != null)
+            if (getEmptyIcon() != null) {
                 setIcon(ImageManager.getIcon(getEmptyIcon()));
-            else
+            } else {
                 setIcon(ImageManager.getEmptyIcon(obj_size));
+            }
             return;
         }
 
@@ -96,17 +101,20 @@ public class ListItem<E> extends JLabel {
             e.printStackTrace();
 
         }
-        if (!ImageManager.isValidIcon(getIcon()) || isTextShownAlways())
-            if (getValue() instanceof Entity)
+        if (!ImageManager.isValidIcon(getIcon()) || isTextShownAlways()) {
+            if (getValue() instanceof Entity) {
                 setText(getObj().getName());
-            else
+            } else {
                 setText(getValue().toString());
+            }
+        }
     }
 
     private boolean isTextShownAlways() {
-        if (getValue() instanceof Entity)
+        if (getValue() instanceof Entity) {
             return ContentManager.getInstance().isTextAlwaysShownInListItems(
                     getObj().getOBJ_TYPE_ENUM());
+        }
         return false;
     }
 
@@ -123,28 +131,32 @@ public class ListItem<E> extends JLabel {
     }
 
     protected ImageIcon getCompIcon(Entity entity, boolean isSelected) {
-        if (entity == null)
+        if (entity == null) {
             return null;
+        }
         Image img = (entity.getCustomIcon() != null ? entity.getCustomIcon().getImage()
                 : ImageManager.getImage(entity.getProperty(G_PROPS.IMAGE, true)));
         boolean noImg = false;
-        if (img == null)
+        if (img == null) {
             if (entity.getRef() != null) {
                 img = ImageManager.getImage(new Property(entity.getProperty(G_PROPS.IMAGE, true))
                         .getStr(entity.getRef()));
             }
+        }
         if (img == null) {
             noImg = true;
             img = (getEmptyIcon() != null) ? ImageManager.getImage(getEmptyIcon()) : ImageManager
                     .getEmptyIcon(getObjSize()).getImage();
         }
-        if (getObjSize() != 0)
+        if (getObjSize() != 0) {
             if (img.getHeight(null) != getObjSize() || img.getWidth(null) != getObjSize()) {
                 img = ImageManager.getSizedVersion(img, new Dimension(getObjSize(), getObjSize()));
             } else if (img.getWidth(null) > ImageManager.getMaxTypeIconSize()
-                    || img.getHeight(null) > ImageManager.getMaxTypeIconSize())
+                    || img.getHeight(null) > ImageManager.getMaxTypeIconSize()) {
                 img = ImageManager.getSizedVersion(img, new Dimension(ImageManager
                         .getMaxTypeIconSize(), ImageManager.getMaxTypeIconSize()));
+            }
+        }
 
         ImageIcon icon = new ImageIcon(img);
 
@@ -178,26 +190,33 @@ public class ListItem<E> extends JLabel {
 
     @Override
     public ImageIcon getIcon() {
-        if (super.getIcon() instanceof ImageIcon)
+        if (super.getIcon() instanceof ImageIcon) {
             return (ImageIcon) super.getIcon();
-        if (super.getIcon() == null)
+        }
+        if (super.getIcon() == null) {
             return null;
+        }
         return new ImageIcon(((ImageIcon) super.getIcon()).getImage());
     }
 
     public void initDefaultBorders() {
-        if (border == null)
+        if (border == null) {
             border = getSpecialBorder();
-        if (border != null)
+        }
+        if (border != null) {
             setIcon(new ImageIcon(ImageManager.applyBorder(getIcon().getImage(), border)));
-        if (isSelected)
-            if (isHighlightSelected())
-                if (!ImageManager.isValidImage(getImage()))
+        }
+        if (isSelected) {
+            if (isHighlightSelected()) {
+                if (!ImageManager.isValidImage(getImage())) {
                     setFont(getFont().deriveFont(15).deriveFont(Font.ITALIC).deriveFont(Font.BOLD)
                             .deriveFont(Font.HANGING_BASELINE));
-                else
+                } else {
                     setIcon(new ImageIcon(ImageManager.applyBorder(getIcon().getImage(),
                             BORDER.HIGHLIGHTED)));
+                }
+            }
+        }
     }
 
     public BORDER getSpecialBorder() {
@@ -207,8 +226,9 @@ public class ListItem<E> extends JLabel {
 
     private void initBorderConcurrently(final ListItem<E> listItem) throws Exception {
         border = borderChecker.getBorder(getObj());
-        if (border == null)
+        if (border == null) {
             return;
+        }
         listItem.setIcon(new ImageIcon(ImageManager.applyBorder(listItem.getIcon().getImage(),
                 border)));
         // listItem.initDefaultBorders(); breaks icon, doesn't it

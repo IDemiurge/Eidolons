@@ -49,11 +49,13 @@ public class OrConditions extends Conditions {
         for (int i = 0; i < this.size(); i++) {
             isTrue |= this.get(i).check(ref);
             // if ((isTrue & negative))
-            if (isTrue)
-                if (isFastFailOnCheck())
+            if (isTrue) {
+                if (isFastFailOnCheck()) {
                     break;
-                else
+                } else {
                     this.setLastCheckedCondition(get(i));
+                }
+            }
 
         }
 

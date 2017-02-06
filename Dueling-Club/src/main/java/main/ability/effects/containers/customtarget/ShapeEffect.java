@@ -54,12 +54,13 @@ public abstract class ShapeEffect extends SpecialTargetingEffect {
         Collection<Obj> objects = game.getUnitsForCoordinates(coordinates);
 
         Filter.filter(objects, targetType);
-        if (allyOrEnemyOnly != null)
+        if (allyOrEnemyOnly != null) {
             if (allyOrEnemyOnly) {
                 FilterMaster.applyFilter(objects, FILTERS.ALLY, ref, false);
             } else {
                 FilterMaster.applyFilter(objects, FILTERS.ENEMY, ref, false);
             }
+        }
         if (notSelf) {
             FilterMaster.applyFilter(objects, FILTERS.NOT_SELF, ref, false);
         }

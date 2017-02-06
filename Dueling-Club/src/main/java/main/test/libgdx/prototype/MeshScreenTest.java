@@ -2,26 +2,15 @@ package main.test.libgdx.prototype;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import main.data.filesys.PathFinder;
 
 /**
  * Created by PC on 13.11.2016.
  */
     public class MeshScreenTest implements ApplicationListener {
-
-        public static void main(String[] args) {
-            LwjglApplication app = new LwjglApplication(new MeshScreenTest(), "Mesh Tutorial 1", 800, 600);
-
-        }
 
         public static final String VERT_SHADER =
                 "attribute vec2 a_position;\n" +
@@ -32,7 +21,6 @@ import main.data.filesys.PathFinder;
                         "	vColor = a_color;\n" +
                         "	gl_Position =  u_projTrans * vec4(a_position.xy, 0.0, 1.0);\n" +
                         "}";
-
         public static final String FRAG_SHADER =
                 "#ifdef GL_ES\n" +
                         "precision mediump float;\n" +
@@ -41,46 +29,45 @@ import main.data.filesys.PathFinder;
                         "void main() {\n" +
                         "	gl_FragColor = vColor;\n" +
                         "}";
-
-        protected static ShaderProgram createMeshShader() {
-            ShaderProgram.pedantic = false;
-            ShaderProgram shader = new ShaderProgram(VERT_SHADER, FRAG_SHADER);
-            String log = shader.getLog();
-            if (!shader.isCompiled())
-                throw new GdxRuntimeException(log);
-            if (log!=null && log.length()!=0)
-                System.out.println("Shader Log: "+log);
-            return shader;
-        }
-
-        Mesh mesh;
-        OrthographicCamera cam;
-        ShaderProgram shader;
-
         //Position attribute - (x, y)
         public static final int POSITION_COMPONENTS = 2;
-
         //Color attribute - (r, g, b, a)
         public static final int COLOR_COMPONENTS = 4;
-
         //Total number of components for all attributes
         public static final int NUM_COMPONENTS = POSITION_COMPONENTS + COLOR_COMPONENTS;
-
         //The maximum number of triangles our mesh will hold
         public static final int MAX_TRIS = 1;
-
         //The maximum number of vertices our mesh will hold
         public static final int MAX_VERTS = MAX_TRIS * 3;
-
+    Mesh mesh;
+    OrthographicCamera cam;
+    ShaderProgram shader;
         //The array which holds all the data, interleaved like so:
         //    x, y, r, g, b, a
         //    x, y, r, g, b, a,
         //    x, y, r, g, b, a,
         //    ... etc ...
         private float[] verts = new float[MAX_VERTS * NUM_COMPONENTS];
-
         //The index position
         private int idx = 0;
+
+    public static void main(String[] args) {
+        LwjglApplication app = new LwjglApplication(new MeshScreenTest(), "Mesh Tutorial 1", 800, 600);
+
+    }
+
+    protected static ShaderProgram createMeshShader() {
+        ShaderProgram.pedantic = false;
+        ShaderProgram shader = new ShaderProgram(VERT_SHADER, FRAG_SHADER);
+        String log = shader.getLog();
+        if (!shader.isCompiled()) {
+            throw new GdxRuntimeException(log);
+        }
+        if (log != null && log.length() != 0) {
+            System.out.println("Shader Log: " + log);
+        }
+        return shader;
+    }
 
         @Override
         public void create() {
@@ -110,8 +97,9 @@ import main.data.filesys.PathFinder;
 
         void flush() {
             //if we've already flushed
-            if (idx==0)
+            if (idx == 0) {
                 return;
+            }
 
             //sends our vertex data to the mesh
             mesh.setVertices(verts);
@@ -150,8 +138,9 @@ import main.data.filesys.PathFinder;
         void drawTriangle(float x, float y, float width, float height, Color color) {
             //we don't want to hit any index out of bounds exception...
             //so we need to flush the batch if we can't store any more verts
-            if (idx==verts.length)
+            if (idx == verts.length) {
                 flush();
+            }
 
             //now we push the vertex data into our array
             //we are assuming (0, 0) is lower left, and Y is up

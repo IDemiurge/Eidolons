@@ -59,12 +59,14 @@ public class TravelMaster {
         Set<Route> list = new HashSet<>();
         for (Route route : party.getRegion().getRoutes()) {
             boolean result = false;
-            if (destination == null)
+            if (destination == null) {
                 result = checkAvailableRoute(party, route);
-            else
+            } else {
                 result = checkRouteForDestination(route, destination);
-            if (result)
+            }
+            if (result) {
                 list.add(route);
+            }
         }
         return list;
     }
@@ -76,8 +78,9 @@ public class TravelMaster {
 
     private static boolean checkAvailableRoute(MacroParty party, Route route) {
         if (route.getOrigin() == party.getCurrentLocation()
-                || route.getDestination() == party.getCurrentLocation())
+                || route.getDestination() == party.getCurrentLocation()) {
             return true;
+        }
         for (Route r : route.getLinkedRoutes()) {
             if (party.getCurrentRoute() == r) {
                 return true;
@@ -93,12 +96,14 @@ public class TravelMaster {
 
     public static void newTurn() {
         for (MacroParty party : MacroGame.getGame().getParties()) {
-            if (party.getStatus() != MACRO_STATUS.TRAVELING)
+            if (party.getStatus() != MACRO_STATUS.TRAVELING) {
                 return;
+            }
             // party.newTurn(); already done
             Route route = party.getCurrentRoute();
-            if (route == null)
+            if (route == null) {
                 continue;
+            }
             // TODO perhaps travel PER HOUR with a mini-message with progress
             // updates... although if 'nothing happens', it certainly should be
             // skippable
@@ -133,21 +138,23 @@ public class TravelMaster {
         int progressPercentageMade = 100 * leaguesTraveled / length;
         TimeMaster.hoursPassed(1);
         Encounter e = null;
-        if (!testMode)
+        if (!testMode) {
             try {
                 e = EncounterMaster.checkEncounter(party, progressPercentageMade);
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
+        }
         if (e != null) {
             progress = e.getProgressMadeBeforeBattle();// time instead?
             hoursToTravel = TimeMaster.getHoursPerTurn() - e.getHoursIntoTheTurn();
             boolean result = EncounterMaster.resolveEncounter(e);
-            if (result)
+            if (result) {
                 progress += party.getIntParam(MACRO_PARAMS.TRAVEL_SPEED) * mod / 100
                         * hoursToTravel;
-            else
+            } else {
                 return false;
+            }
         }
 
         progress += leaguesTraveled;
@@ -237,13 +244,15 @@ public class TravelMaster {
         boolean flyer = entity.checkProperty(G_PROPS.STANDARD_PASSIVES, ""
                 + STANDARD_PASSIVES.FLYING);
         float speed = new Float(entity.getIntParam(MACRO_PARAMS.TRAVEL_SPEED, true)); //
-        if (speed == 0)
+        if (speed == 0) {
             speed = DEFAULT_TRAVEL_SPEED;
+        }
 
         speed += MathMaster.getFractionValueCentimal(((int) speed), mod);
         speed += MathMaster.getFractionValueCentimal(((int) speed), dex_mod);
-        if (flyer)
+        if (flyer) {
             speed = speed * 3 / 2;
+        }
         return speed;
 
     }

@@ -31,17 +31,21 @@ public class BuffMaster {
     public static void applyBuff(String buffName, Effect effect, Obj target,
                                  Integer duration) {
         AddBuffEffect addBuffEffect = new AddBuffEffect(buffName, effect);
-        if (duration != null)
+        if (duration != null) {
             addBuffEffect.setDuration(duration);
+        }
         addBuffEffect.apply(Ref.getSelfTargetingRefCopy(target));
 
     }
 
     public static boolean checkBuffDispelable(BuffObj buff) {
-        if (buff.getBuffType() == BUFF_TYPE.SPELL)
-            if (!buff.isPermanent())
-                if (!buff.checkBool(STD_BOOLS.NON_DISPELABLE))
+        if (buff.getBuffType() == BUFF_TYPE.SPELL) {
+            if (!buff.isPermanent()) {
+                if (!buff.checkBool(STD_BOOLS.NON_DISPELABLE)) {
                     return true;
+                }
+            }
+        }
 
         return false;
     }
@@ -52,8 +56,9 @@ public class BuffMaster {
                 AddBuffEffect.class)) {
             ObjType buffType = ((AddBuffEffect) e).getBuffTypeLazily();
 
-            if (buffType != null)
+            if (buffType != null) {
                 buffTypes.add(buffType);
+            }
         }
 
         return buffTypes;

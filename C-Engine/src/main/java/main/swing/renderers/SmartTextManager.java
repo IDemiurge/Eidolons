@@ -28,10 +28,11 @@ public class SmartTextManager {
     public static VALUE_CASES getPropCase(PROPERTY prop, Entity obj) {
         String value = obj.getProperty(prop, true);
         String c_value = obj.getProperty(prop, false);
-        if (c_value.equals(value))
+        if (c_value.equals(value)) {
             return VALUE_CASES.NULL;
-        else
+        } else {
             return VALUE_CASES.MODIFIED;
+        }
 
     }
 
@@ -43,8 +44,9 @@ public class SmartTextManager {
         // }
 
         String value = obj.getParamRounded(param, false);
-        if (StringMaster.isEmpty(value))
+        if (StringMaster.isEmpty(value)) {
             return VALUE_CASES.DEFAULT;
+        }
 
         int amount = 0;
         // dynamic - percentage! x/y !
@@ -56,36 +58,41 @@ public class SmartTextManager {
         if (param.isDynamic()) {
             return getDynamicValueCase(param, amount, obj);
         }
-        if (obj.getParamRounded(param, true).isEmpty())
+        if (obj.getParamRounded(param, true).isEmpty()) {
             return VALUE_CASES.DEFAULT;
+        }
         int base_amount = 0;
         try {
             base_amount = Integer.valueOf(obj.getRawValue(param));
         } catch (Exception e) {
             return VALUE_CASES.DEFAULT;
         }
-        if (base_amount == amount)
+        if (base_amount == amount) {
             return VALUE_CASES.DEFAULT;
-        if (base_amount < amount)
+        }
+        if (base_amount < amount) {
             return VALUE_CASES.MODIFIED_POSITIVELY;
-        else
+        } else {
             return VALUE_CASES.MODIFIED_NEGATIVELY;
+        }
     }
 
     private static VALUE_CASES getDynamicValueCase(PARAMETER param, int amount, Entity obj) {
         // check special cases - morale, etc
         PARAMETER base_value = ContentManager.getBaseParameterFromCurrent(param);
-        if (base_value == null)
+        if (base_value == null) {
             return VALUE_CASES.VALUE_NORMAL;
+        }
         //
         Integer percentage = 0;
         int base_amount =
 
                 obj.getIntParam(base_value);
-        if (base_amount == 0)
+        if (base_amount == 0) {
             percentage = 100;
-        else
+        } else {
             percentage = amount * 100 / base_amount;
+        }
         main.system.auxiliary.LogMaster.log(0, param + ": " + amount + " out of " + base_amount
                 + " = " + percentage + "%");
         // try {
@@ -102,22 +109,28 @@ public class SmartTextManager {
     }
 
     public static VALUE_CASES getValueCase(Integer percentage) {
-        if (percentage < VALUE_CRITICAL)
+        if (percentage < VALUE_CRITICAL) {
             return VALUE_CASES.VALUE_CRITICAL;
-        if (percentage < VALUE_LOW)
+        }
+        if (percentage < VALUE_LOW) {
             return VALUE_CASES.VALUE_LOW;
-        if (percentage < VALUE_AVERAGE)
+        }
+        if (percentage < VALUE_AVERAGE) {
             return VALUE_CASES.VALUE_AVERAGE;
-        if (percentage < VALUE_FULL)
+        }
+        if (percentage < VALUE_FULL) {
             return VALUE_CASES.VALUE_BELOW;
-        if (percentage > VALUE_HIGH)
+        }
+        if (percentage > VALUE_HIGH) {
             return VALUE_CASES.VALUE_HIGH;
+        }
         return VALUE_CASES.VALUE_NORMAL;
     }
 
     public static VALUE_CASES getValueCase(VALUE value, Obj obj) {
-        if (value instanceof PROPERTY)
+        if (value instanceof PROPERTY) {
             return getValueCase(value, obj);
+        }
         return getParamCase((PARAMETER) value, obj);
     }
 
@@ -146,8 +159,9 @@ public class SmartTextManager {
         }
 
         public Color getColor() {
-            if (Game.game.isSimulation())
+            if (Game.game.isSimulation()) {
                 return ColorManager.GOLDEN_WHITE;
+            }
             return color;
         }
 
@@ -156,10 +170,12 @@ public class SmartTextManager {
         }
 
         public Color getAltColor() {
-            if (Game.game.isSimulation())
+            if (Game.game.isSimulation()) {
                 return ColorManager.GOLDEN_WHITE;
-            if (altColor == null)
+            }
+            if (altColor == null) {
                 altColor = color.brighter().brighter();
+            }
             return altColor;
         }
     }

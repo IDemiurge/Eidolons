@@ -89,16 +89,20 @@ public class DC_KeyManager
 
     private boolean checkCustomHotkey(KeyEvent e) {
 
-        if (!e.isAltDown())
+        if (!e.isAltDown()) {
             return false;
+        }
         // if (!e.isControlDown())
         // return false;
-        if (checkFunctionHelper(e))
+        if (checkFunctionHelper(e)) {
             return true;
-        if (checkValueHelper(e))
+        }
+        if (checkValueHelper(e)) {
             return true;
-        if (checkDebugMaster(e))
+        }
+        if (checkDebugMaster(e)) {
             return true;
+        }
 
         return false;
     }
@@ -106,17 +110,20 @@ public class DC_KeyManager
     private boolean checkValueHelper(KeyEvent e) {
         // if (GlobalKeys.isGlobalKeysOn())
         // return false;
-        if (e.getKeyChar() != ValueHelper.HOTKEY_CHAR)
+        if (e.getKeyChar() != ValueHelper.HOTKEY_CHAR) {
             return false;
+        }
         mngr.getGame().getValueHelper().promptSetValue();
         return true;
     }
 
     private boolean checkFunctionHelper(KeyEvent e) {
-        if (GlobalKeys.isGlobalKeysOn())
+        if (GlobalKeys.isGlobalKeysOn()) {
             return false;
-        if (e.getKeyChar() != DebugMaster.FUNCTION_HOTKEY_CHAR)
+        }
+        if (e.getKeyChar() != DebugMaster.FUNCTION_HOTKEY_CHAR) {
             return false;
+        }
 
         mngr.getGame().getDebugMaster().promptFunctionToExecute();
         return true;
@@ -125,8 +132,9 @@ public class DC_KeyManager
     private boolean checkDebugMaster(KeyEvent e) {
         // if (GlobalKeys.isGlobalKeysOn())
         // return false;
-        if (e.getKeyChar() != DebugMaster.HOTKEY_CHAR)
+        if (e.getKeyChar() != DebugMaster.HOTKEY_CHAR) {
             return false;
+        }
         mngr.getGame().getDebugMaster().showDebugWindow();
         return true;
     }
@@ -135,10 +143,12 @@ public class DC_KeyManager
     @Override
     public void keyTyped(KeyEvent e) {
         main.system.auxiliary.LogMaster.log(LogMaster.GUI_DEBUG, "key typed: " + e.getKeyChar());
-        if (mngr.getActiveObj().isAiControlled())
+        if (mngr.getActiveObj().isAiControlled()) {
             return; // play random sound!...
-        if (checkCustomHotkey(e))
+        }
+        if (checkCustomHotkey(e)) {
             return;
+        }
 
         char CHAR = (e.getKeyChar());
         int keyMod = e.getModifiers();
@@ -168,8 +178,9 @@ public class DC_KeyManager
 
         } else {
 
-            if (index == 0)
+            if (index == 0) {
                 index = 10;
+            }
 
             switch (keyMod) {
                 case ITEM_MASK:

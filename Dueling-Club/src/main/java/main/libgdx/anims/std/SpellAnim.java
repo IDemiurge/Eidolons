@@ -17,6 +17,10 @@ import java.util.List;
  */
 public class SpellAnim extends ActionAnim {
 
+    static {
+        SPELL_ANIMS.BLAST.setRemoveBaseEmitters(false);
+    }
+
     SPELL_ANIMS template;
 
     public SpellAnim(Entity active, AnimData params, SPELL_ANIMS template) {
@@ -33,7 +37,6 @@ public class SpellAnim extends ActionAnim {
         RETRACT,
 
     }
-
     public enum SPELL_ANIMS {
         RAY(activeObj -> 1),
         BLAST(active -> (active.getIntParam(G_PARAMS.RADIUS) == 0) ? 1 :
@@ -50,8 +53,9 @@ public class SpellAnim extends ActionAnim {
         ){
             @Override
             public int getAdditionalDistance(DC_ActiveObj active) {
-                if (active.getOwnerObj().getFacing().isVertical())
-                    return GridConst.CELL_H ;
+                if (active.getOwnerObj().getFacing().isVertical()) {
+                    return GridConst.CELL_H;
+                }
                 return GridConst.CELL_W ;
             }
         },
@@ -59,9 +63,9 @@ public class SpellAnim extends ActionAnim {
         RING(activeObj -> 8),
         NOVA(activeObj -> activeObj.getOwnerObj().getCoordinates().getAdjacentCoordinates().size()),;
 
+        public int speed;
         private Producer<DC_ActiveObj, Integer> numberOfEmitters;
         private boolean removeBaseEmitters=true;
-public int speed;
 
         //emitter placement templates
         SPELL_ANIMS() {
@@ -93,7 +97,4 @@ public int speed;
             this.removeBaseEmitters = removeBaseEmitters;
         }
     }
-static{
-        SPELL_ANIMS.BLAST.setRemoveBaseEmitters(false);
-}
 }

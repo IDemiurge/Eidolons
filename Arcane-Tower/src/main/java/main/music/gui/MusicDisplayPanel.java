@@ -7,14 +7,12 @@ import main.swing.components.TextComp;
 import main.swing.components.panels.page.log.WrappedTextComp;
 import main.swing.generic.components.G_Panel;
 
-import java.awt.Color;
-import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Vector;
-
-import javax.swing.JComboBox;
 
 public class MusicDisplayPanel extends G_Panel {
 	WrappedTextComp selectedComp;
@@ -36,9 +34,10 @@ public class MusicDisplayPanel extends G_Panel {
 
 		List<String> lines = DataManager
 				.toStringList(MusicMouseListener.getSelectedTracks());
-		if (lines.isEmpty())
-			lines = DataManager.toStringList(MusicMouseListener.getSelectedLists());
-		lines.add(0, "Selected: ");
+        if (lines.isEmpty()) {
+            lines = DataManager.toStringList(MusicMouseListener.getSelectedLists());
+        }
+        lines.add(0, "Selected: ");
 		selectedComp.setTextLines(lines);
 		selectedComp.setPanelSize(selectedComp.getPanelSize());
 		add(selectedComp);
@@ -63,9 +62,10 @@ public class MusicDisplayPanel extends G_Panel {
 		argComp.refresh();
 		List<String> lines = DataManager
 				.toStringList(MusicMouseListener.getSelectedTracks());
-		if (lines.isEmpty())
-			lines = DataManager.toStringList(MusicMouseListener.getSelectedLists());
-		lines.add(0, "Selected: ");
+        if (lines.isEmpty()) {
+            lines = DataManager.toStringList(MusicMouseListener.getSelectedLists());
+        }
+        lines.add(0, "Selected: ");
 		selectedComp.setTextLines(lines);
 		selectedComp.refresh();
 

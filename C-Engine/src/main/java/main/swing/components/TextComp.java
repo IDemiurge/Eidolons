@@ -71,8 +71,9 @@ public class TextComp extends G_Panel {
 
         if (standardFontType != null) {
             setDefaultFont(getStandardFont());
-        } else
+        } else {
             setDefaultFont(getDefaultFont());
+        }
     }
 
     public TextComp(Color color) {
@@ -103,8 +104,9 @@ public class TextComp extends G_Panel {
     }
 
     protected Color getColor() {
-        if (color != null)
+        if (color != null) {
             return color;
+        }
         return ColorManager.getTextColor();
     }
 
@@ -128,27 +130,32 @@ public class TextComp extends G_Panel {
 
     protected Font getStandardFont() {
 
-        if (standardFont != null)
+        if (standardFont != null) {
             return standardFont;
-        if (getDefaultFontSize() != 0)
+        }
+        if (getDefaultFontSize() != 0) {
             standardFont = FontMaster.getFont(getFontType(), getDefaultFontSize(), Font.PLAIN);
-        else
+        } else {
             standardFont = FontMaster.getFont(getFontType(), FontMaster.MEDIUM_FONT_SIZE,
                     Font.PLAIN);
+        }
         return standardFont;
     }
 
     protected FONT getFontType() {
-        if (standardFont == null)
+        if (standardFont == null) {
             return FONT.MAIN;
+        }
         return standardFontType;
     }
 
     protected Dimension getDefaultSize() {
-        if (getVisuals() != null)
-            if (getVisuals().getImage() != null)
+        if (getVisuals() != null) {
+            if (getVisuals().getImage() != null) {
                 return new Dimension(getVisuals().getImage().getWidth(null), getVisuals()
                         .getImage().getHeight(null));
+            }
+        }
         return new Dimension(getPanelWidth(), getPanelHeight());
     }
 
@@ -180,10 +187,12 @@ public class TextComp extends G_Panel {
     }
 
     protected Font getDefaultFont() {
-        if (defaultFont != null)
+        if (defaultFont != null) {
             return defaultFont;
-        if (getDefaultFontSize() != 0)
+        }
+        if (getDefaultFontSize() != 0) {
             return FontMaster.getDefaultFont(getDefaultFontSize());
+        }
         return getDefaultFontAll();
 
     }
@@ -202,8 +211,9 @@ public class TextComp extends G_Panel {
 
     public void refresh() {
         resetSize(text);
-        if (isPaintBlocked() || permanent)
+        if (isPaintBlocked() || permanent) {
             return;
+        }
         text = getText();
         repaint();
     }
@@ -214,25 +224,32 @@ public class TextComp extends G_Panel {
 
     private void resetSize(String text) {
         // GraphicsManager.isValidSize(defaultSize)
-        if (isValidSize(defaultSize))
+        if (isValidSize(defaultSize)) {
             return;
-        if (getVisuals() != null)
-            if (getVisuals().getImage() != null)
+        }
+        if (getVisuals() != null) {
+            if (getVisuals().getImage() != null) {
                 defaultSize = new Dimension(getVisuals().getImage().getWidth(null), getVisuals()
                         .getImage().getHeight(null));
-        if (isValidSize(defaultSize))
+            }
+        }
+        if (isValidSize(defaultSize)) {
             return;
+        }
 
-        if (text != null)
+        if (text != null) {
             defaultSize = initSizeFromText(text);
-        else
+        } else {
             defaultSize = initSizeFromText(getText());
+        }
 
-        if (isValidSize(defaultSize))
+        if (isValidSize(defaultSize)) {
             return;
+        }
 
-        if (defaultSize == null)
+        if (defaultSize == null) {
             defaultSize = NULL_DIMENSION;
+        }
     }
 
     protected boolean isCentering() {
@@ -240,29 +257,35 @@ public class TextComp extends G_Panel {
     }
 
     protected int recalculateX() {
-        if (!isCentering())
+        if (!isCentering()) {
             return getDefaultX();
+        }
         int newX = getCenteredX(text);
-        if (newX < 0)
+        if (newX < 0) {
             return 0;
+        }
         return newX;
     }
 
     @Override
     public int getHeight() {
-        if (visuals != null)
+        if (visuals != null) {
             return visuals.getHeight();
-        if (super.getHeight() == 0)
+        }
+        if (super.getHeight() == 0) {
             return FontMaster.getFontHeight(getDefaultFont());
+        }
         return super.getHeight();
     }
 
     @Override
     public int getWidth() {
-        if (visuals != null)
+        if (visuals != null) {
             return visuals.getWidth();
-        if (super.getWidth() == 0)
+        }
+        if (super.getWidth() == 0) {
             return FontMaster.getStringWidth(getDefaultFont(), text);
+        }
         return super.getWidth();
     }
 
@@ -291,8 +314,9 @@ public class TextComp extends G_Panel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        if (isPaintBlocked())
+        if (isPaintBlocked()) {
             return;
+        }
         g.setFont(getDefaultFont());
         g.setColor(getColor());
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,

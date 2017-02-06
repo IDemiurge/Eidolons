@@ -20,8 +20,9 @@ public class EmitterPools {
     }
 
     public static EmitterActor getEmitterActor(String path) {
-        if (!poolingOn)
+        if (!poolingOn) {
             return new EmitterActor(path);
+        }
         final String finalPath = path.toLowerCase();
         Pool<EmitterActor> pool = poolMap.get(finalPath);
         if (pool == null) {
@@ -38,8 +39,9 @@ public class EmitterPools {
 
     public static void freeEmitter(EmitterActor e) {
         Pool<EmitterActor> pool = poolMap.get(e.path.toLowerCase());
-        if (pool == null)
+        if (pool == null) {
             return;
+        }
         pool.free(e);
 
     }

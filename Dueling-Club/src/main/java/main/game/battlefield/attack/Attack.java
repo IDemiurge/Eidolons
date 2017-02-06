@@ -63,18 +63,22 @@ public class Attack {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (!offhand)
-            if (action != null)
+        if (!offhand) {
+            if (action != null) {
                 offhand = action.isOffhand();
-        if (!counter)
+            }
+        }
+        if (!counter) {
             counter = action.isCounterMode();
+        }
         this.counter = counter;
         instant = action.isInstantMode();
         attackOfOpportunity = action.isAttackOfOpportunityMode();
 
         if (this.canCounter) {
-            if (instant || attackOfOpportunity || counter)
+            if (instant || attackOfOpportunity || counter) {
                 this.canCounter = false;
+            }
         }
     }
 
@@ -110,11 +114,13 @@ public class Attack {
     }
 
     public DC_WeaponObj getWeapon() {
-        if (weapon == null)
-            if (offhand)
+        if (weapon == null) {
+            if (offhand) {
                 weapon = (DC_WeaponObj) ref.getObj(KEYS.OFFHAND);
-            else
+            } else {
                 weapon = (DC_WeaponObj) ref.getObj(KEYS.WEAPON);
+            }
+        }
         return weapon;
     }
 
@@ -295,9 +301,11 @@ public class Attack {
 
     public DC_WeaponObj getShield() {
         DC_WeaponObj weapon = attacked.getWeapon(true);
-        if (weapon != null)
-            if (weapon.isShield())
+        if (weapon != null) {
+            if (weapon.isShield()) {
                 return weapon;
+            }
+        }
         return null;
     }
 

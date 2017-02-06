@@ -42,8 +42,9 @@ public class StackingRule implements ActionRule {
     public static void applyStackingModifiers(List<DC_HeroObj> units) {
         for (DC_HeroObj unit : units) {
             for (DC_HeroObj otherUnit : units) {
-                if (unit == otherUnit)
+                if (unit == otherUnit) {
                     continue;
+                }
 
             }
         }
@@ -55,9 +56,10 @@ public class StackingRule implements ActionRule {
                                         List<? extends Entity> otherUnits) {
         if (EntityMaster.isOverlaying(unit)) {
             boolean result = DC_Game.game.getOverlayingObjects(c).size() < MAX_OVERLAYING_ON_CELL;
-            if (!result)
+            if (!result) {
                 main.system.auxiliary.LogMaster.log(1, c
                         + "******* Cell already has max number of overlaying Objects!");
+            }
 
             return result;
             // TODO limit number of overlays?
@@ -77,8 +79,9 @@ public class StackingRule implements ActionRule {
                 action.getOwnerObj().getCoordinates());
         units.remove(action.getOwnerObj());
         units.remove(target);
-        if (units.isEmpty())
+        if (units.isEmpty()) {
             return;
+        }
         Map<DC_HeroObj, Integer> map = new HashMap<DC_HeroObj, Integer>();
         for (DC_HeroObj unit : units) {
             map.put(unit, unit.getIntParam(PARAMS.GIRTH));
@@ -101,58 +104,71 @@ public class StackingRule implements ActionRule {
         Boolean result = false;
         if (bools != null) {
             result = bools.get(c);
-            if (result != null)
+            if (result != null) {
                 return result;
-        } else
+            }
+        } else {
             cache.put(unit, bools);
+        }
         bools = new HashMap<>();
 
         if (unit == null) {
             unit = DataManager.getType(HeroCreator.BASE_HERO, OBJ_TYPES.CHARS);
         }
         Obj cell = null;
-        if (!game.isSimulation())
+        if (!game.isSimulation()) {
             cell = game.getCellByCoordinate(c);
-        else
+        } else {
             cell = new DC_Cell(c, game);
-        if (cell == null)
+        }
+        if (cell == null) {
             return false;
+        }
         DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits);
 
-        if (z == null)
+        if (z == null) {
             if (unit instanceof DC_HeroObj) {
                 DC_HeroObj heroObj = (DC_HeroObj) unit;
                 z = heroObj.getZ();
             }
+        }
         // if (otherUnits == null)
         // // TODO ADD
         // otherUnits = game.getObjectsOnCoordinate(z, c, false, false, false);
         // else
         for (DC_HeroObj u : game.getObjectsOnCoordinate(z, c, false, false, false)) {
-            if (!units.contains(u))
+            if (!units.contains(u)) {
                 units.addCast(u.getType());
+            }
         }
-        if (game.isSimulation())
-            if (units.size() > 1)
+        if (game.isSimulation()) {
+            if (units.size() > 1) {
                 return false;
+            }
+        }
         // no passable/overlaying!
         int space = StringMaster.getInteger(PARAMS.SPACE.getDefaultValue());
-        if (c != null)
-            if (!game.isSimulation())
+        if (c != null) {
+            if (!game.isSimulation()) {
                 space = cell.getIntParam(PARAMS.SPACE);
+            }
+        }
 
         int girth = 0;
         for (Entity u : units) {
-            if (u == unit)
+            if (u == unit) {
                 continue;
+            }
             if (UnitAnalyzer.isDoor(u)) {
-                if (!u.checkProperty(G_PROPS.STATUS, "" + STATUS.UNLOCKED))
+                if (!u.checkProperty(G_PROPS.STATUS, "" + STATUS.UNLOCKED)) {
                     return false;
+                }
             }
             if (UnitAnalyzer.isWall(u)) {
                 // not flying
-                if (!UnitAnalyzer.isFlying(unit))
+                if (!UnitAnalyzer.isFlying(unit)) {
                     return false;
+                }
             }
             girth += u.getIntParam(PARAMS.GIRTH);
             if (DoorMaster.isDoor(u)) {
@@ -163,15 +179,17 @@ public class StackingRule implements ActionRule {
             // + "'s Girth " + u.getIntParam(PARAMS.GIRTH));
         }
         // [QUICK FIX]
-        if (unit.getIntParam(PARAMS.GIRTH) == 0)
+        if (unit.getIntParam(PARAMS.GIRTH) == 0) {
             girth += StringMaster.getInteger(PARAMS.GIRTH.getDefaultValue());
-        else
+        } else {
             girth += unit.getIntParam(PARAMS.GIRTH);
+        }
         // main.system.auxiliary.LogMaster.log(1, "****************** " + space
         // + " Space vs " + girth
         // + " Girth on " + c + " for " + unit);
-        if (space >= girth)
+        if (space >= girth) {
             result = true;
+        }
         bools.put(c, result);
         return result;
     }

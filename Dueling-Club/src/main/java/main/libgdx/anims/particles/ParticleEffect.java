@@ -47,8 +47,9 @@ public class ParticleEffect extends com.badlogic.gdx.graphics.g2d.ParticleEffect
     }
 
     private boolean checkSprite(FileHandle effectFile) {
-        if (EmitterActor.spriteEmitterTest)
+        if (EmitterActor.spriteEmitterTest) {
             return true;
+        }
         return
          EmitterPresetMaster.getInstance().getImagePath(effectFile.path()).contains("sprites");
     }
@@ -63,8 +64,12 @@ public class ParticleEffect extends com.badlogic.gdx.graphics.g2d.ParticleEffect
                 ParticleEmitter emitter = (checkSprite(effectFile)) ? new SpriteEmitter(reader
                 ) : new Emitter(reader);
                 getEmitters().add(emitter);
-                if (reader.readLine() == null) break;
-                if (reader.readLine() == null) break;
+                if (reader.readLine() == null) {
+                    break;
+                }
+                if (reader.readLine() == null) {
+                    break;
+                }
             }
         } catch (IOException ex) {
             throw new GdxRuntimeException("Error loading effect: " + effectFile, ex);
@@ -74,8 +79,9 @@ public class ParticleEffect extends com.badlogic.gdx.graphics.g2d.ParticleEffect
     }
 
     public void setImagePath(String imagePath) {
-        for (int i = 0, n = getEmitters().size; i < n; i++)
+        for (int i = 0, n = getEmitters().size; i < n; i++) {
             getEmitters().get(i).setImagePath(imagePath);
+        }
     }
 
     public void modifyParticles() {

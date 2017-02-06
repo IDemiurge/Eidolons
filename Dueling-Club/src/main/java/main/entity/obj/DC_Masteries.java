@@ -18,8 +18,9 @@ public class DC_Masteries {
 
     private void initMastery(PARAMS mastery) {
         int amount = hero.getIntParam(ContentManager.getMasteryScore(mastery));
-        if (amount <= 0)
+        if (amount <= 0) {
             return;
+        }
         switch (mastery) {
             case TACTICS_MASTERY: {
                 // boostParameter((amount), PARAMS.ORGANIZATION,

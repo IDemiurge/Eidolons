@@ -14,9 +14,11 @@ public class FactionMaster {
     private static boolean allFactions;
 
     public static Faction getFaction(String name) {
-        for (Faction f : factions)
-            if (f.getName().equalsIgnoreCase(name))
+        for (Faction f : factions) {
+            if (f.getName().equalsIgnoreCase(name)) {
                 return f;
+            }
+        }
         return null;
     }
 

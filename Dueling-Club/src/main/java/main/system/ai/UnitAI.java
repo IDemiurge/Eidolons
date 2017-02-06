@@ -114,8 +114,9 @@ public class UnitAI {
     private void initType() {
         type = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class, unit
                 .getProperty(PROPS.AI_TYPE));
-        if (type == null)
+        if (type == null) {
             type = AI_TYPE.NORMAL;
+        }
     }
 
     public synchronized DC_HeroObj getUnit() {
@@ -139,8 +140,9 @@ public class UnitAI {
     }
 
     public AI_TYPE getType() {
-        if (type == null)
+        if (type == null) {
             initType();
+        }
         return type;
     }
 
@@ -150,8 +152,9 @@ public class UnitAI {
 
     public List<Action> getForcedActions() {
 
-        if (forcedActions == null)
+        if (forcedActions == null) {
             forcedActions = new LinkedList<>();
+        }
         return forcedActions;
     }
 
@@ -170,8 +173,9 @@ public class UnitAI {
     }
 
     public Map<ObjType, Integer> getActionPriorityMods() {
-        if (actionPriorityMods == null)
+        if (actionPriorityMods == null) {
             actionPriorityMods = new XLinkedMap<ObjType, Integer>();
+        }
         return actionPriorityMods;
     }
 
@@ -180,8 +184,9 @@ public class UnitAI {
     }
 
     public Map<ObjType, Integer> getActionPriorityBonuses() {
-        if (actionPriorityBonuses == null)
+        if (actionPriorityBonuses == null) {
             actionPriorityBonuses = new XLinkedMap<ObjType, Integer>();
+        }
         return actionPriorityBonuses;
     }
 
@@ -218,15 +223,19 @@ public class UnitAI {
 
     public List<AI_BEHAVIOR_MODE> getBehaviors() {
         List<AI_BEHAVIOR_MODE> list = new LinkedList<>();
-        if (checkAmbush())
+        if (checkAmbush()) {
             list.add(AI_BEHAVIOR_MODE.AMBUSH);
-        if (checkStalk())
+        }
+        if (checkStalk()) {
             list.add(AI_BEHAVIOR_MODE.STALK);
-        if (checkAggro())
+        }
+        if (checkAggro()) {
             list.add(AI_BEHAVIOR_MODE.AGGRO);
+        }
 
-        if (new EnumMaster<ENGAGEMENT_LEVEL>().getEnumConstIndex(getEngagementLevel()) < 1)
+        if (new EnumMaster<ENGAGEMENT_LEVEL>().getEnumConstIndex(getEngagementLevel()) < 1) {
             list.add(getPassiveBehavior());
+        }
 
         return list;
     }
@@ -239,28 +248,34 @@ public class UnitAI {
 
     private boolean checkAggro() {
         int index = new EnumMaster<ENGAGEMENT_LEVEL>().getEnumConstIndex(getEngagementLevel());
-        if (index < 1)
+        if (index < 1) {
             return false;
-        if (index > 3)
+        }
+        if (index > 3) {
             return true;
+        }
         return unit.getAiType() == AI_TYPE.BRUTE;
     }
 
     private boolean checkStalk() {
         // if (getGroup().getEngagementLevel()==ENGAGEMENT_LEVEL.UNSUSPECTING)
-        if (new EnumMaster<ENGAGEMENT_LEVEL>().getEnumConstIndex(getEngagementLevel()) < 1)
+        if (new EnumMaster<ENGAGEMENT_LEVEL>().getEnumConstIndex(getEngagementLevel()) < 1) {
             return false;
+        }
         return unit.getAiType() == AI_TYPE.SNEAK;
     }
 
     private boolean checkAmbush() {
-        if (new EnumMaster<ENGAGEMENT_LEVEL>().getEnumConstIndex(getEngagementLevel()) < 1)
+        if (new EnumMaster<ENGAGEMENT_LEVEL>().getEnumConstIndex(getEngagementLevel()) < 1) {
             return false;
+        }
         // intelligence check? group check?
-        if (unit.getAiType() == AI_TYPE.ARCHER)
+        if (unit.getAiType() == AI_TYPE.ARCHER) {
             return true;
-        if (unit.getAiType() == AI_TYPE.CASTER)
+        }
+        if (unit.getAiType() == AI_TYPE.CASTER) {
             return true;
+        }
         // if (group.isAmbushing()) return true;
         // leader?
         return false;
@@ -287,11 +302,15 @@ public class UnitAI {
         // change orders
         checkOrdersChange();
 
-        if (getStandingOrders() != null)
-            if (ListMaster.isNotEmpty(getStandingOrders().getActions()))
-                if (getStandingOrders().get(0).canBeActivated())
-                    if (getStandingOrders().get(0).canBeTargeted())
+        if (getStandingOrders() != null) {
+            if (ListMaster.isNotEmpty(getStandingOrders().getActions())) {
+                if (getStandingOrders().get(0).canBeActivated()) {
+                    if (getStandingOrders().get(0).canBeTargeted()) {
                         return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 
@@ -340,8 +359,9 @@ public class UnitAI {
     }
 
     public void standingOrderActionComplete() {
-        if (standingOrders != null)
+        if (standingOrders != null) {
             standingOrders.removeFirstAction();
+        }
     }
 
     public ActionSequence getStandingOrders() {
@@ -364,13 +384,16 @@ public class UnitAI {
 
     public void checkSetOrders(ActionSequence sequence) {
         orderType = null;
-        if ((sequence.getType() == GOAL_TYPE.WANDER))
+        if ((sequence.getType() == GOAL_TYPE.WANDER)) {
             orderType = ORDER_TYPE.WANDER;
-        if ((sequence.getType() == GOAL_TYPE.PATROL))
+        }
+        if ((sequence.getType() == GOAL_TYPE.PATROL)) {
             orderType = ORDER_TYPE.PATROL;
+        }
 
-        if (orderType != null)
+        if (orderType != null) {
             standingOrders = sequence;
+        }
 
     }
 

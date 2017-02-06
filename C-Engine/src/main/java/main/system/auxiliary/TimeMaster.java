@@ -37,14 +37,16 @@ public class TimeMaster {
         String timeDelimiter = alt ? ALT_TIME_DELIMITER : TIME_DELIMITER;
         int minutes = time.getMinutes();
         String minStr = "" + minutes;
-        if (minutes / 10 == 0)
+        if (minutes / 10 == 0) {
             minStr = "0" + minutes;
+        }
         String secStr = "";
         if (secondsIn) {
             int seconds = time.getSeconds();
             secStr = timeDelimiter + seconds;
-            if (seconds / 10 == 0)
+            if (seconds / 10 == 0) {
                 secStr = "0" + seconds;
+            }
         }
 
         return time.getHours() + timeDelimiter + minStr + secStr;
@@ -80,8 +82,9 @@ public class TimeMaster {
     public static String getMonthString() {
         int month = Calendar.getInstance().getTime().getMonth() + 1;
         String string = "" + month;
-        if (month < 10)
+        if (month < 10) {
             string = "0" + month;
+        }
         return string;
     }
 
@@ -110,8 +113,9 @@ public class TimeMaster {
     }
 
     public static long getMillisInDay() {
-        if (millisInDay == null)
+        if (millisInDay == null) {
             millisInDay = 24 * 3600000;
+        }
         return millisInDay;
     }
 
@@ -119,8 +123,9 @@ public class TimeMaster {
         @SuppressWarnings("deprecation")
         int day = Calendar.getInstance().getTime().getDate() + 1;
         String string = "" + day;
-        if (day < 10)
+        if (day < 10) {
             string = "0" + day;
+        }
         return string;
     }
 
@@ -155,14 +160,16 @@ public class TimeMaster {
     }
 
     public static String getFormattedDate(boolean time, String millis) {
-        if (millis.isEmpty())
+        if (millis.isEmpty()) {
             return "";
+        }
         return getFormattedDate(time, Long.parseLong(millis));
     }
 
     public static String getFormattedDate(boolean time, long millis) {
-        if (millis <= 0)
+        if (millis <= 0) {
             return "";
+        }
         return getFormattedDate(new Date(millis), time);
     }
 
@@ -190,8 +197,9 @@ public class TimeMaster {
     }
 
     public static boolean isThisWeek(int time) {
-        if (!isThisMonth(time))
+        if (!isThisMonth(time)) {
             return false;
+        }
         long difference = TimeMaster.getTime() - time;
         return difference < TimeMaster.getMillisInDay() * 7;
     }

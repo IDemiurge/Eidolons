@@ -14,8 +14,7 @@ import main.swing.generic.components.panels.G_TabbedPagePanel;
 import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
 
-import java.awt.Color;
-import java.awt.Component;
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,21 +36,22 @@ public class GoalPages extends G_TabbedPagePanel<Goal> {
 		return GoalPanel.getWIDTH() - 80;
 	}
 
+    public VIEW_OPTION getViewOption() {
+        return viewOption;
+    }
+
 	public void setViewOption(VIEW_OPTION viewOption) {
 		this.viewOption = viewOption;
 		viewCreated = false;
 		refresh();
 	}
 
-	public VIEW_OPTION getViewOption() {
-		return viewOption;
-	}
-
 	@Override
 	public void flipPage(boolean forward) {
-		if (viewOption != null)
-			viewOption = VIEW_OPTION.OFF;
-		super.flipPage(forward);
+        if (viewOption != null) {
+            viewOption = VIEW_OPTION.OFF;
+        }
+        super.flipPage(forward);
 		ArcaneTower.selectEntity(data.get(currentIndex));
 	}
 
@@ -86,9 +86,10 @@ public class GoalPages extends G_TabbedPagePanel<Goal> {
 					case GROUP_LAST:
 					case NEW_GROUP:
 						Goal groupGoal = CreationHelper.getGroupGoal(viewOption);
-						if (groupGoal == null)
-							break;
-						session.addGoal(groupGoal);
+                        if (groupGoal == null) {
+                            break;
+                        }
+                        session.addGoal(groupGoal);
 						currentIndex = getData().size() - 1;
 						break;
 
@@ -120,9 +121,10 @@ public class GoalPages extends G_TabbedPagePanel<Goal> {
 	protected G_Component createPageComponent(List<Goal> list) {
 		G_Panel goalsPanel = new G_Panel();
 		for (Goal goal : list) {
-			if (goal == null)
-				continue;
-			GoalPanel goalPanel = new GoalPanel(goal);
+            if (goal == null) {
+                continue;
+            }
+            GoalPanel goalPanel = new GoalPanel(goal);
 			goalsPanel.add(goalPanel);
 		}
 		return goalsPanel;
@@ -130,9 +132,10 @@ public class GoalPages extends G_TabbedPagePanel<Goal> {
 
 	public GoalPanel getSelectedPanel() {
 		int i = 0;
-		if (ArcaneTower.getSelectedGoal() != null)
-			i = getData().indexOf(ArcaneTower.getSelectedGoal());
-		i = i % getPageSize();
+        if (ArcaneTower.getSelectedGoal() != null) {
+            i = getData().indexOf(ArcaneTower.getSelectedGoal());
+        }
+        i = i % getPageSize();
 		return (GoalPanel) getCurrentComponent().getComponents()[i];
 	}
 

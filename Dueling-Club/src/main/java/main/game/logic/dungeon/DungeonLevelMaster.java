@@ -31,12 +31,15 @@ public class DungeonLevelMaster {
     private static Boolean sublevelTestOn = false;
 
     public static boolean isSublevelTestOn() {
-        if (sublevelTestOn != null)
+        if (sublevelTestOn != null) {
             return sublevelTestOn;
-        if (FAST_DC.isRunning())
+        }
+        if (FAST_DC.isRunning()) {
             return true;
-        if (CoreEngine.isLevelEditor())
+        }
+        if (CoreEngine.isLevelEditor()) {
             return true;
+        }
         return false;
     }
 
@@ -66,8 +69,9 @@ public class DungeonLevelMaster {
         while (true) {
             if (isMiddle(plan, coordinates, true)) {
                 middle_center_null = true;
-                if (isCenter(plan, coordinates, true))
+                if (isCenter(plan, coordinates, true)) {
                     middle_center_null = false;
+                }
 
                 if (isCenter(plan, coordinates, false)) {
                     middle_center_null = false;
@@ -75,12 +79,13 @@ public class DungeonLevelMaster {
                 } else {
                     DIRECTION edge = CoordinatesMaster.getClosestEdge(coordinates,
                             plan.getCellsX(), plan.getCellsY());
-                    if (edge.isVertical())
+                    if (edge.isVertical()) {
                         south_north_null = (CoordinatesMaster.getClosestEdge(coordinates, plan
                                 .getCellsX(), plan.getCellsY()) == DIRECTION.DOWN);
-                    else
+                    } else {
                         east_west_null = (CoordinatesMaster.getClosestEdge(coordinates, plan
                                 .getCellsX(), plan.getCellsY()) == DIRECTION.RIGHT);
+                    }
                     break pos; // CENTER_SIDE
                 }
 
@@ -88,18 +93,19 @@ public class DungeonLevelMaster {
 
             if (isMiddle(plan, coordinates, false)) {
                 middle_center_null = true;
-                if (isCenter(plan, coordinates, false))
+                if (isCenter(plan, coordinates, false)) {
                     middle_center_null = false;
+                }
                 if (isCenter(plan, coordinates, true)) {
                     middle_center_null = true;
                     break pos; // CENTER
                 } else {
                     DIRECTION edge = CoordinatesMaster.getClosestEdge(coordinates,
                             plan.getCellsX(), plan.getCellsY());
-                    if (edge.isVertical())
+                    if (edge.isVertical()) {
                         south_north_null = (CoordinatesMaster.getClosestEdge(coordinates, plan
                                 .getCellsX(), plan.getCellsY()) == DIRECTION.DOWN);
-                    else {
+                    } else {
                         east_west_null = (CoordinatesMaster.getClosestEdge(coordinates, plan
                                 .getCellsX(), plan.getCellsY()) == DIRECTION.RIGHT);
                         break pos; // CENTER_SIDE
@@ -116,21 +122,25 @@ public class DungeonLevelMaster {
         // plan.getCellsX(), plan.getCellsY())
         // == DIRECTION.DOWN) return mi
         if (middle_center_null == null) {
-            if (east_west_null)
+            if (east_west_null) {
                 return south_north_null ? ENTRANCE_LAYOUT.SOUTH_EAST : ENTRANCE_LAYOUT.NORTH_EAST;
+            }
             return south_north_null ? ENTRANCE_LAYOUT.SOUTH_WEST : ENTRANCE_LAYOUT.NORTH_WEST;
         } else {
             if (middle_center_null) {
-                if (south_north_null != null)
+                if (south_north_null != null) {
                     return south_north_null ? ENTRANCE_LAYOUT.MIDDLE_SOUTH
                             : ENTRANCE_LAYOUT.MIDDLE_NORTH;
+                }
                 return east_west_null ? ENTRANCE_LAYOUT.MIDDLE_EAST : ENTRANCE_LAYOUT.MIDDLE_WEST;
             } else {
-                if (south_north_null != null)
+                if (south_north_null != null) {
                     return south_north_null ? ENTRANCE_LAYOUT.CENTER_SOUTH
                             : ENTRANCE_LAYOUT.CENTER_NORTH;
-                if (east_west_null == null)
+                }
+                if (east_west_null == null) {
                     return ENTRANCE_LAYOUT.CENTER;
+                }
                 return east_west_null ? ENTRANCE_LAYOUT.CENTER_EAST : ENTRANCE_LAYOUT.CENTER_WEST;
             }
         }
@@ -142,8 +152,9 @@ public class DungeonLevelMaster {
         int y = sublevel.getCellsY();
         // if (isSublevelTestOn())
         // return new Coordinates(x / 2, y / 2);
-        if (t == null)
+        if (t == null) {
             t = ENTRANCE_POINT_TEMPLATE.ZONE_RANDOM;
+        }
 
         switch (t) {
             case CENTER:
@@ -184,8 +195,9 @@ public class DungeonLevelMaster {
     }
 
     private static int getOffset(ENTRANCE_POINT_TEMPLATE t, int x, FACING_DIRECTION side) {
-        if (t != ENTRANCE_POINT_TEMPLATE.CENTER_OFFSET)
+        if (t != ENTRANCE_POINT_TEMPLATE.CENTER_OFFSET) {
             return 0;
+        }
         int perc = 0;
         switch (side) {
             case SOUTH:
@@ -205,11 +217,12 @@ public class DungeonLevelMaster {
         List<Dungeon> list = new LinkedList<>();
         for (Dungeon dungeon : DungeonMaster.getDungeons()) {
             for (Entrance e : dungeon.getEntrances()) {
-                if (e.isOpen())
+                if (e.isOpen()) {
                     if (e.getCoordinates().equals(unit.getCoordinates())) {
                         list.add(dungeon);
                         continue;
                     }
+                }
             }
         }
         return list;
@@ -219,11 +232,12 @@ public class DungeonLevelMaster {
         List<Entrance> list = new LinkedList<>();
         for (Dungeon dungeon : DungeonMaster.getDungeons()) {
             for (Entrance e : dungeon.getEntrances()) {
-                if (e.isOpen())
+                if (e.isOpen()) {
                     if (e.getCoordinates().equals(unit.getCoordinates())) {
                         list.add(e);
                         continue;
                     }
+                }
             }
         }
         return list;
@@ -240,10 +254,12 @@ public class DungeonLevelMaster {
 
     public static ENTRANCE_LAYOUT transformLayout(ENTRANCE_LAYOUT entranceLayout, Boolean flipX,
                                                   Boolean flipY, Boolean rotate) {
-        if (flipY != null)
+        if (flipY != null) {
             entranceLayout = applyFlipY(entranceLayout, flipY);
-        if (flipX != null)
+        }
+        if (flipX != null) {
             entranceLayout = applyFlipX(entranceLayout, flipX);
+        }
 
         return entranceLayout;
     }

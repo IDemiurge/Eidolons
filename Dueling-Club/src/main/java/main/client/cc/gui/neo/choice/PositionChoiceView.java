@@ -49,10 +49,11 @@ public class PositionChoiceView extends ChoiceView<DC_HeroObj> implements MouseL
         int y = c.y;
         boolean valid = true;
         if (SwingUtilities.isRightMouseButton(e)) {
-            if (e.isAltDown())
+            if (e.isAltDown()) {
                 x--;
-            else
+            } else {
                 x++;
+            }
             valid = checkValidX(x);
             if (!valid) {
                 x -= 2; // 'flip over'
@@ -63,10 +64,11 @@ public class PositionChoiceView extends ChoiceView<DC_HeroObj> implements MouseL
                 }
             }
         } else {
-            if (e.isAltDown())
+            if (e.isAltDown()) {
                 y--;
-            else
+            } else {
                 y++;
+            }
             valid = checkValidY(y);
             if (!valid) {
                 y -= 2;
@@ -87,10 +89,11 @@ public class PositionChoiceView extends ChoiceView<DC_HeroObj> implements MouseL
             SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
             return;
         }
-        if (e.isAltDown())
+        if (e.isAltDown()) {
             SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ACTIVATE);
-        else
+        } else {
             SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
+        }
 
         int i = transformCoordinateIntoIndex(newCoordinates);
         ((DefaultListModel<DC_HeroObj>) list.getModel()).set(i, obj);
@@ -115,18 +118,22 @@ public class PositionChoiceView extends ChoiceView<DC_HeroObj> implements MouseL
     }
 
     private boolean checkValidY(int y) {
-        if (y < getBaseY())
+        if (y < getBaseY()) {
             return false;
-        if (y > getBaseY() + rowCount)
+        }
+        if (y > getBaseY() + rowCount) {
             return false;
+        }
         return true;
     }
 
     private boolean checkValidX(int x) {
-        if (x < getBaseX())
+        if (x < getBaseX()) {
             return false;
-        if (x > getBaseX() + columnsCount)
+        }
+        if (x > getBaseX() + columnsCount) {
             return false;
+        }
         return true;
     }
 
@@ -167,15 +174,17 @@ public class PositionChoiceView extends ChoiceView<DC_HeroObj> implements MouseL
         // default positions?
         data = new LinkedList<>();
         ListMaster.fillWithNullElements(data, size);
-        if (partyCoordinates != null)
+        if (partyCoordinates != null) {
             for (DC_HeroObj hero : partyCoordinates.keySet()) {
-                if (hero == null)
+                if (hero == null) {
                     continue;
+                }
                 Coordinates c = partyCoordinates.get(hero);
                 hero.setCoordinates(c);
                 int i = transformCoordinateIntoIndex(c);
                 data.set(i, hero);
             }
+        }
     }
 
     private Coordinates transformIndexIntoCoordinate(int index) {
@@ -215,8 +224,9 @@ public class PositionChoiceView extends ChoiceView<DC_HeroObj> implements MouseL
 
     @Override
     protected void applyChoice() {
-        if (PartyManager.getParty() != null)
+        if (PartyManager.getParty() != null) {
             PartyManager.getParty().setPartyCoordinates(partyCoordinates);
+        }
         for (DC_HeroObj hero : data) {
             if (hero != null) {
                 hero.setCoordinates(partyCoordinates.get(hero));
@@ -226,10 +236,12 @@ public class PositionChoiceView extends ChoiceView<DC_HeroObj> implements MouseL
     }
 
     private FACING_DIRECTION getFacing(Coordinates coordinates) {
-        if (coordinates.x == getBaseX())
+        if (coordinates.x == getBaseX()) {
             return FACING_DIRECTION.WEST;
-        if (coordinates.x == getBaseX() + rowCount)
+        }
+        if (coordinates.x == getBaseX() + rowCount) {
             return FACING_DIRECTION.EAST;
+        }
         // if (coordinates.y== getBaseY()+columnsCount)
         // return FACING_DIRECTION.SOUTH;
         return FACING_DIRECTION.NORTH;

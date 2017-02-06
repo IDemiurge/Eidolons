@@ -43,10 +43,12 @@ public class TaskComp extends AT_EntityNode<Task> implements ActionListener {
 
     public static String getDirectionShorthand(ObjType type) {
         String string = StringMaster.getAbbreviation(type.getName());
-        if (string.length() > 4)
+        if (string.length() > 4) {
             string = string.substring(0, 3);
-        if (string.length() < 2)
+        }
+        if (string.length() < 2) {
             string = type.getName().substring(0, 2);
+        }
         // if (string.length()>4|| string.length()<2)
         // string = StringMaster.getFirstConsonants(type.getName(), 2);
         return string.toUpperCase();
@@ -134,9 +136,10 @@ public class TaskComp extends AT_EntityNode<Task> implements ActionListener {
 
 	protected String getValueText(VALUE v) {
 		String value = ContentManager.getFormattedValue(v, entity.getValue(v));
-		if (value.isEmpty())
-			return "";
-		return v.getName().replace("Time ", "") + ": " + value;
+        if (value.isEmpty()) {
+            return "";
+        }
+        return v.getName().replace("Time ", "") + ": " + value;
 
 	}
 
@@ -159,12 +162,15 @@ public class TaskComp extends AT_EntityNode<Task> implements ActionListener {
 
 	@Override
 	protected String getHeaderText() {
-		if (ArcaneTower.getSessionWindow() != null)
-			if (entity.getGoal() != ArcaneTower.getSession().getCurrentlyDisplayedGoal())
-				if (entity.getGoal().getDirection() != null)
-					return StringMaster.wrapInBraces(getDirectionShorthand(entity.getGoal()
-							.getDirection().getType()))
-							+ " " + super.getHeaderText();
+        if (ArcaneTower.getSessionWindow() != null) {
+            if (entity.getGoal() != ArcaneTower.getSession().getCurrentlyDisplayedGoal()) {
+                if (entity.getGoal().getDirection() != null) {
+                    return StringMaster.wrapInBraces(getDirectionShorthand(entity.getGoal()
+                            .getDirection().getType()))
+                            + " " + super.getHeaderText();
+                }
+            }
+        }
 
 		return super.getHeaderText();
 	}
@@ -182,17 +188,20 @@ public class TaskComp extends AT_EntityNode<Task> implements ActionListener {
 					.getIntParam(AT_PARAMS.GLORY));
 			entity.setParam(AT_PARAMS.GLORY, i);
 		} else if (arg0.getSource() == descrPanel) {
-			if (!SwingUtilities.isRightMouseButton(arg0))
-				if (arg0.getClickCount() == 1)
-					return;
-			String descr = DialogMaster.inputText("", entity.getProperty(G_PROPS.DESCRIPTION));
+            if (!SwingUtilities.isRightMouseButton(arg0)) {
+                if (arg0.getClickCount() == 1) {
+                    return;
+                }
+            }
+            String descr = DialogMaster.inputText("", entity.getProperty(G_PROPS.DESCRIPTION));
 			entity.setProperty(G_PROPS.DESCRIPTION, descr);
 		} else if (arg0.getSource() == headerComp) {
 			if (SwingUtilities.isRightMouseButton(arg0))
 				// handleClick(getRightClickCommand(), alt);
-				PromptMaster.fillOut(entity, !alt);
-			else if (arg0.getClickCount() > 1) {
-				// handleClick(getDoubleClickCommand(), alt);
+            {
+                PromptMaster.fillOut(entity, !alt);
+            } else if (arg0.getClickCount() > 1) {
+                // handleClick(getDoubleClickCommand(), alt);
 			}
 		}
 		// else if (arg0.getSource() == buttonPanel)

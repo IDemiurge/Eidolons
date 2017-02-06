@@ -40,8 +40,9 @@ public class GroupAI {
     public GroupAI(Wave creepGroup) {
         this.creepGroup = creepGroup;
         members = new LinkedList<>();
-        if (creepGroup == null)
+        if (creepGroup == null) {
             return;
+        }
         this.party = creepGroup.getParty();
         leader = party.getLeader();
         for (DC_HeroObj m : party.getMembers()) {
@@ -49,8 +50,9 @@ public class GroupAI {
         }
 
         originCoordinates = creepGroup.getCoordinates();
-        if (originCoordinates == null)
+        if (originCoordinates == null) {
             originCoordinates = leader.getCoordinates();
+        }
     }
 
     @Override
@@ -62,15 +64,18 @@ public class GroupAI {
     public void add(MicroObj obj) {
         if (obj instanceof DC_HeroObj) {
             DC_HeroObj unit = (DC_HeroObj) obj;
-            if (leader == null)
+            if (leader == null) {
                 leader = unit;
+            }
             UnitAI unitAI = unit.getUnitAI();
-            if (!members.contains(unit))
+            if (!members.contains(unit)) {
                 members.add(unit);
+            }
             unitAI.setGroupAI(this);
 
-            if (originCoordinates == null)
+            if (originCoordinates == null) {
                 originCoordinates = leader.getCoordinates();
+            }
         }
 
     }
@@ -78,8 +83,9 @@ public class GroupAI {
     public DC_HeroObj getLeader() {
         if (!leader.canAct()) {
             for (DC_HeroObj member : getMembers()) {
-                if (member.canAct())
+                if (member.canAct()) {
                     leader = member;
+                }
             }
         }
         return leader;
@@ -98,8 +104,9 @@ public class GroupAI {
     }
 
     public Stack<Coordinates> getWanderStepCoordinateStack() {
-        if (wanderStepCoordinateStack == null)
+        if (wanderStepCoordinateStack == null) {
             wanderStepCoordinateStack = new XStack<>();
+        }
         return wanderStepCoordinateStack;
     }
 
@@ -108,8 +115,9 @@ public class GroupAI {
     }
 
     public AI_BEHAVIOR_MODE getBehaviorPref() {
-        if (behaviorPref == null)
+        if (behaviorPref == null) {
             behaviorPref = BehaviorMaster.initGroupPref(this);
+        }
         return behaviorPref;
     }
 
@@ -118,8 +126,9 @@ public class GroupAI {
     }
 
     public DIRECTION getWanderDirection() {
-        if (wanderDirection == null)
+        if (wanderDirection == null) {
             wanderDirection = getLeader().getFacing().getDirection();
+        }
         return wanderDirection;
     }
 
@@ -168,8 +177,9 @@ public class GroupAI {
     }
 
     public ENGAGEMENT_LEVEL getEngagementLevel() {
-        if (engagementLevel == null)
+        if (engagementLevel == null) {
             engagementLevel = ENGAGEMENT_LEVEL.UNSUSPECTING;
+        }
         return engagementLevel;
     }
 

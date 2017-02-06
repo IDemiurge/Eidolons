@@ -27,8 +27,9 @@ public class ListRenderer implements ListCellRenderer<String> {
         JLabel component = null;
         component = new JLabel(getCompIcon(entity, isSelected));
         component.setToolTipText(value);
-        if (ImageManager.getImage(entity.getImagePath()) == null)
+        if (ImageManager.getImage(entity.getImagePath()) == null) {
             component.setText(value);
+        }
         return component;
     }
 
@@ -41,14 +42,16 @@ public class ListRenderer implements ListCellRenderer<String> {
             img = ImageManager.getEmptyUnitIcon().getImage();
         }
         if (img.getWidth(null) > ImageManager.getMaxTypeIconSize()
-                || img.getHeight(null) > ImageManager.getMaxTypeIconSize())
+                || img.getHeight(null) > ImageManager.getMaxTypeIconSize()) {
             img = ImageManager.getSizedVersion(img, new Dimension(ImageManager
                     .getMaxTypeIconSize(), ImageManager.getMaxTypeIconSize()));
+        }
 
         ImageIcon icon = new ImageIcon(img);
-        if (isSelected)
+        if (isSelected) {
             icon = new ImageIcon(
                     ImageManager.applyBorder(icon.getImage(), BORDER.HIGHLIGHTED));
+        }
         return icon;
     }
 
@@ -64,8 +67,9 @@ public class ListRenderer implements ListCellRenderer<String> {
             //
             // return new JLabel("No image");
             // }
-            if (type == null)
+            if (type == null) {
                 return new JLabel(value);
+            }
             component = getImgComp(isSelected, value, type);
 
         } else {

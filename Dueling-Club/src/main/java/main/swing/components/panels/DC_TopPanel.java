@@ -35,10 +35,11 @@ public class DC_TopPanel extends G_Panel {
     }
 
     private void addComps() {
-        if (game.isSimulation())
+        if (game.isSimulation()) {
             add(topComp);
-        else
+        } else {
             add(topComp, POS + ", id top");
+        }
         add(button, "pos " + (game.isSimulation() ? BUTTON_X : xOffset + BUTTON_X) + " " + BUTTON_Y);
 
         setComponentZOrder(button, 0);
@@ -53,8 +54,9 @@ public class DC_TopPanel extends G_Panel {
 
     public void toggleDebugGui() {
         refresh();
-        if (debugGui == null)
+        if (debugGui == null) {
             debugGui = new DebugGui();
+        }
         debugOn = !debugOn;
         G_Panel removed = !debugOn ? debugGui : topComp;
         G_Panel added = debugOn ? debugGui : topComp;
@@ -62,8 +64,9 @@ public class DC_TopPanel extends G_Panel {
         remove(removed);
         add(added);
         add(added, !debugOn ? "pos " + xOffset + " 0" + ", id top" : "pos 0 0");
-        if (debugOn)
+        if (debugOn) {
             setPanelSize(new Dimension(debugGui.getPanelSize()));
+        }
         // else
         // setPanelSize(topComp.getVisuals().getSize());
         setComponentZOrder(button, 0);

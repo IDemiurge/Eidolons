@@ -193,8 +193,9 @@ public class DC_ContentManager extends ContentManager {
 
     public static void initTypeDynamicValues() {
         for (ObjType t : DataManager.getTypes(OBJ_TYPES.CHARS)) {
-            if (!t.getGroup().equals(StringMaster.BACKGROUND))
+            if (!t.getGroup().equals(StringMaster.BACKGROUND)) {
                 continue;
+            }
 
         }
 
@@ -257,16 +258,20 @@ public class DC_ContentManager extends ContentManager {
     }
 
     public static Deity getDeity(Ref ref, String property) {
-        if (StringMaster.isEmpty(property))
+        if (StringMaster.isEmpty(property)) {
             return getDefaultDeity();
-        if (deities == null)
+        }
+        if (deities == null) {
             deities = new HashMap<>();
+        }
         Deity deity = deities.get(property);
-        if (deity != null)
+        if (deity != null) {
             return deity;
+        }
         ObjType type = DataManager.getType(property, OBJ_TYPES.DEITIES);
-        if (type == null)
+        if (type == null) {
             return getDefaultDeity();
+        }
         deity = new Deity(type, ref.getGame(), ref);
         deity.toBase();
         deities.put(type.getName(), deity);
@@ -283,8 +288,9 @@ public class DC_ContentManager extends ContentManager {
 
     public static PARAMETER getAlignmentForPrinciple(PRINCIPLES principle) {
         PARAMETER param = alignmentMap.get(principle);
-        if (param != null)
+        if (param != null) {
             return param;
+        }
         param = ContentManager.getPARAM(principle.toString() + StringMaster.ALIGNMENT);
         alignmentMap.put(principle, param);
         return param;
@@ -294,8 +300,9 @@ public class DC_ContentManager extends ContentManager {
         // OPTIMIZATION: having a param field on each Principle const!?
         // faster...
         PARAMETER param = identityMap.get(principle);
-        if (param != null)
+        if (param != null) {
             return param;
+        }
         param = ContentManager.getPARAM(principle.toString() + StringMaster.IDENTITY);
         identityMap.put(principle, param);
         return param;
@@ -317,8 +324,9 @@ public class DC_ContentManager extends ContentManager {
     }
 
     public static Collection<String> getInfoPanelValueList(String objType) {
-        if (objType == null)
+        if (objType == null) {
             return Collections.EMPTY_LIST;
+        }
         List<String> valueNames = ContentManager.getValueNamesMap().get(objType);
         // if (valueNames != null)
         // return valueNames;
@@ -328,10 +336,11 @@ public class DC_ContentManager extends ContentManager {
         // valueNames.remove(v.getName());
         // }
         try {
-            if (OBJ_TYPES.getCode(objType) < excludedValues.length)
+            if (OBJ_TYPES.getCode(objType) < excludedValues.length) {
                 for (VALUE v : excludedValues[OBJ_TYPES.getCode(objType)]) {
                     valueNames.remove(v.getName());
                 }
+            }
         } catch (Exception e) {
 
         }
@@ -412,8 +421,9 @@ public class DC_ContentManager extends ContentManager {
 
     public static List<PARAMETER> getBackgroundDynamicParams() {
 
-        if (backgroundDynamicParams != null)
+        if (backgroundDynamicParams != null) {
             return backgroundDynamicParams;
+        }
         backgroundDynamicParams = new LinkedList<>();
         for (PARAMETER v : ValuePages.PRINCIPLE_IDENTITIES) {
             backgroundDynamicParams.add(v);
@@ -424,8 +434,9 @@ public class DC_ContentManager extends ContentManager {
     }
 
     public static List<VALUE> getBackgroundStaticValues() {
-        if (backgroundValues != null)
+        if (backgroundValues != null) {
             return backgroundValues;
+        }
         backgroundValues = new LinkedList<>();
         for (VALUE[] list : ValuePages.BACKGROUND_VALUES) {
             for (VALUE v : list) {
@@ -453,30 +464,37 @@ public class DC_ContentManager extends ContentManager {
 
     public static void addDefaultValues(Entity entity, boolean dynamic) {
         for (VALUE VAL : ContentManager.getValueList()) {
-            if (!ContentManager.isValueForOBJ_TYPE(entity.getOBJ_TYPE_ENUM(), VAL))
+            if (!ContentManager.isValueForOBJ_TYPE(entity.getOBJ_TYPE_ENUM(), VAL)) {
                 continue;
+            }
             String value = getDefaultValueSpecial(entity, VAL);
-            if (value == null)
+            if (value == null) {
                 value = VAL.getDefaultValue();
+            }
             if (!dynamic) {
-                if (VAL.isDynamic())
+                if (VAL.isDynamic()) {
                     continue;
-                if (StringMaster.isEmpty(value))
+                }
+                if (StringMaster.isEmpty(value)) {
                     continue;
-                if (value.equals("0"))
+                }
+                if (value.equals("0")) {
                     continue;
+                }
             }
             boolean unit = C_OBJ_TYPE.UNITS_CHARS.equals(entity.getOBJ_TYPE_ENUM());
 
             if (DEFAULTED_VALUES.contains(VAL)
                     || (!unit && StringMaster.isEmpty(entity.getValue(VAL)) && !StringMaster
                     .isEmpty(value))) {
-                if (entity instanceof Obj)
+                if (entity instanceof Obj) {
                     entity.getType().setValue(VAL, value);
+                }
                 entity.setValue(VAL, value);
-                if (unit)
+                if (unit) {
                     main.system.auxiliary.LogMaster.log(1, entity + ":: Added Default Value " + ""
                             + VAL + "=" + value);
+                }
             }
 
         }
@@ -484,8 +502,9 @@ public class DC_ContentManager extends ContentManager {
     }
 
     private static String getDefaultValueSpecial(Entity entity, VALUE v) {
-        if (v.getSpecialDefault(entity.getOBJ_TYPE_ENUM()) != null)
+        if (v.getSpecialDefault(entity.getOBJ_TYPE_ENUM()) != null) {
             return v.getSpecialDefault(entity.getOBJ_TYPE_ENUM()).toString();
+        }
         return null;
     }
 
@@ -493,12 +512,14 @@ public class DC_ContentManager extends ContentManager {
 
         for (String value : DC_ContentManager.getInfoPanelValueList(entity.getOBJ_TYPE())) {
             VALUE VAL = ContentManager.getValue(value);
-            if (VAL == null)
+            if (VAL == null) {
                 continue;
+            }
             if (StringMaster.isEmpty(entity.getValue(VAL))
                     && !StringMaster.isEmptyOrZero(VAL.getDefaultValue())) {
-                if (entity instanceof Obj)
+                if (entity instanceof Obj) {
                     entity.getType().setValue(VAL, VAL.getDefaultValue());
+                }
                 entity.setValue(VAL, VAL.getDefaultValue());
             }
         }
@@ -511,8 +532,9 @@ public class DC_ContentManager extends ContentManager {
     }
 
     public static DAMAGE_TYPE getDamageForAspect(ASPECT aspect) {
-        if (aspect == null)
+        if (aspect == null) {
             return null;
+        }
         switch (aspect) {
             case ARCANUM:
                 return DAMAGE_TYPE.ARCANE;
@@ -567,44 +589,55 @@ public class DC_ContentManager extends ContentManager {
 
     public static PARAMETER[] getParams(String sparam) {
         PARAMETER[] parameters = getParameters(sparam);
-        if (parameters == null)
+        if (parameters == null) {
             return new PARAMETER[0];
+        }
         return parameters;
 
     }
 
     private static PARAMETER[] getParameters(String sparam) {
-        if (ContentManager.isParameter(sparam))
+        if (ContentManager.isParameter(sparam)) {
             return new PARAMETER[]{ContentManager.getPARAM(sparam)};
+        }
         PARAMETER param = ContentManager.getMastery(sparam);
 
-        if (param != null)
+        if (param != null) {
             return new PARAMETER[]{param};
+        }
         if (StringMaster.openContainer(sparam, StringMaster.AND_SEPARATOR).size() > 1) {
             return DC_Game.game.getValueManager().getParamsFromContainer(sparam);
-        } else
+        } else {
             return DC_Game.game.getValueManager().getValueGroupParams(sparam);
+        }
     }
 
     public static PARAMETER getPayParamFromUpkeep(PARAMETER param) {
-        if (param == PARAMS.ESS_UPKEEP)
+        if (param == PARAMS.ESS_UPKEEP) {
             return PARAMS.C_ESSENCE;
-        if (param == PARAMS.AP_UPKEEP)
+        }
+        if (param == PARAMS.AP_UPKEEP) {
             return PARAMS.C_N_OF_ACTIONS;
-        if (param == PARAMS.END_UPKEEP)
+        }
+        if (param == PARAMS.END_UPKEEP) {
             return PARAMS.C_ENDURANCE;
-        if (param == PARAMS.FOC_UPKEEP)
+        }
+        if (param == PARAMS.FOC_UPKEEP) {
             return PARAMS.C_FOCUS;
-        if (param == PARAMS.STA_UPKEEP)
+        }
+        if (param == PARAMS.STA_UPKEEP) {
             return PARAMS.C_STAMINA;
+        }
 
         return null;
     }
 
     public static boolean isParamFloatDisplayed(PARAMETER param) {
-        if (param.isAttribute())
-            if (!param.getName().contains("Base"))
+        if (param.isAttribute()) {
+            if (!param.getName().contains("Base")) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -614,13 +647,15 @@ public class DC_ContentManager extends ContentManager {
         int i = 0;
         int j = 0;
         for (WEAPON_SIZE w : WEAPON_SIZE.values()) {
-            if (weaponSize == w)
+            if (weaponSize == w) {
                 break;
+            }
             i++;
         }
         for (WEAPON_SIZE w : WEAPON_SIZE.values()) {
-            if (weaponSize2 == w)
+            if (weaponSize2 == w) {
                 break;
+            }
             j++;
         }
 
@@ -698,10 +733,12 @@ public class DC_ContentManager extends ContentManager {
             public int compare(PARAMETER o1, PARAMETER o2) {
                 Integer v1 = hero.getIntParam(o1);
                 Integer v2 = hero.getIntParam(o2);
-                if (v1 > v2)
+                if (v1 > v2) {
                     return -1;
-                if (v1 < v2)
+                }
+                if (v1 < v2) {
                     return 1;
+                }
                 return 0;
             }
         });
@@ -712,14 +749,18 @@ public class DC_ContentManager extends ContentManager {
         ContentManager.getParamsForType("chars", false);
         List<String> list = new LinkedList<>();
         for (PARAMETER p : ContentManager.getParamsForType("chars", false)) {
-            if (p.isAttribute())
+            if (p.isAttribute()) {
                 continue;
-            if (p.isMastery())
+            }
+            if (p.isMastery()) {
                 continue;
-            if (p.getName().contains("Default"))
+            }
+            if (p.getName().contains("Default")) {
                 continue;
-            if (p.getName().contains(" Resistance"))
+            }
+            if (p.getName().contains(" Resistance")) {
                 continue;
+            }
             list.add(p.getName());
         }
 
@@ -780,7 +821,7 @@ public class DC_ContentManager extends ContentManager {
 
         CLASS_GROUP group = new EnumMaster<CLASS_GROUP>().retrieveEnumConst(CLASS_GROUP.class,
                 classObj.getProperty(G_PROPS.CLASS_GROUP));
-        if (group != null)
+        if (group != null) {
             switch (group) {
                 case ACOLYTE:
                     return "Wisdom;Charisma";
@@ -807,6 +848,7 @@ public class DC_ContentManager extends ContentManager {
                     break;
 
             }
+        }
         return null;
 
     }
@@ -816,8 +858,9 @@ public class DC_ContentManager extends ContentManager {
     }
 
     public static String getFocusMasteries() {
-        if (focusMasteries != null)
+        if (focusMasteries != null) {
             return focusMasteries;
+        }
         focusMasteries = "";
         for (MASTERY m : SkillTreeView.FOCUS_WORKSPACE) {
             focusMasteries += StringMaster.getWellFormattedString(m.toString()) + ";";
@@ -826,8 +869,9 @@ public class DC_ContentManager extends ContentManager {
     }
 
     public static String getFocusClassGroups() {
-        if (focusClassGroups != null)
+        if (focusClassGroups != null) {
             return focusClassGroups;
+        }
         focusClassGroups = "";
         for (CLASS_GROUP m : ClassTreeView.FOCUS_WORKSPACE) {
             focusClassGroups += StringMaster.getWellFormattedString(m.toString()) + ";";
@@ -839,10 +883,12 @@ public class DC_ContentManager extends ContentManager {
         List<VALUE> list = new LinkedList<>();
         list.add(PARAMS.ARMOR);
         for (DAMAGE_TYPE dmg_type : DAMAGE_TYPE.values()) {
-            if (dmg_type != DAMAGE_TYPE.POISON && dmg_type != DAMAGE_TYPE.PHYSICAL)
-                if (dmg_type.isNatural() || !dmg_type.isMagical())
+            if (dmg_type != DAMAGE_TYPE.POISON && dmg_type != DAMAGE_TYPE.PHYSICAL) {
+                if (dmg_type.isNatural() || !dmg_type.isMagical()) {
                     list.add(new MultiParameter(" / ", getArmorParamForDmgType(dmg_type),
                             getArmorSelfDamageParamForDmgType(dmg_type)));
+                }
+            }
         }
         return list;
     }
@@ -877,14 +923,16 @@ public class DC_ContentManager extends ContentManager {
         ArrayList<PARAMETER> params = new ArrayList<PARAMETER>();
         params.addAll(Arrays.asList(G_PARAMS.values()));
         params.addAll(Arrays.asList(PARAMS.values()));
-        if (Launcher.isMacroMode() || CoreEngine.isArcaneVault())
+        if (Launcher.isMacroMode() || CoreEngine.isArcaneVault()) {
             params.addAll(Arrays.asList(MACRO_PARAMS.values()));
+        }
 
         ArrayList<PROPERTY> props = new ArrayList<PROPERTY>();
         props.addAll(Arrays.asList(G_PROPS.values()));
         props.addAll(Arrays.asList(PROPS.values()));
-        if (Launcher.isMacroMode() || CoreEngine.isArcaneVault())
+        if (Launcher.isMacroMode() || CoreEngine.isArcaneVault()) {
             props.addAll(Arrays.asList(MACRO_PROPS.values()));
+        }
 
         params.addAll(generateDerivedParams());
 

@@ -41,8 +41,9 @@ public class UnitLevelManager {
         newType.setName(
                 // .setProperty(G_PROPS.NAME,
                 name + LEVEL + newType.getIntParam(PARAMS.UNIT_LEVEL));
-        if (generateType)
+        if (generateType) {
             baseType.getGame().initType(newType);
+        }
         return newType;
     }
 
@@ -72,9 +73,11 @@ public class UnitLevelManager {
     }
 
     private void checkBuyPoint(ObjType type) {
-        if (StringMaster.isEmpty(type.getProperty(PROPS.SPELL_PLAN)))
-            if (StringMaster.isEmpty(type.getProperty(PROPS.XP_PLAN)))
+        if (StringMaster.isEmpty(type.getProperty(PROPS.SPELL_PLAN))) {
+            if (StringMaster.isEmpty(type.getProperty(PROPS.XP_PLAN))) {
                 buyPoints(false, type);
+            }
+        }
 
     }
 
@@ -153,8 +156,9 @@ public class UnitLevelManager {
             } catch (Exception e) {
 
             }
-            if (param == null)
+            if (param == null) {
                 continue;
+            }
             int cost = PointMaster.getPointCost(newType.getIntParam(param),
                     newType, param);
             if (points >= cost) {
@@ -178,31 +182,34 @@ public class UnitLevelManager {
             MASTERY mstr = new RandomWizard<MASTERY>().getObjectByWeight(
                     newType.getProperty(PROPS.MASTERY_PROGRESSION),
                     MASTERY.class);
-            if (mstr == null)
+            if (mstr == null) {
                 return null;
+            }
             // TODO complete the ENUM!!!
             param = ContentManager.getPARAM(mstr.toString());
 
-            if (param == null)
+            if (param == null) {
                 param = ContentManager.findPARAM(mstr.toString());
+            }
         }
         return param;
     }
 
     private String generateProgression(Entity newType, boolean attrs) {
         String progression = "";
-        if (attrs)
+        if (attrs) {
             for (ATTRIBUTE attr : ATTRIBUTE.values()) {
                 progression += attr.getParameter().getName()
                         + StringMaster.wrapInParenthesis(newType.getParam(attr
                         .getParameter())) + ";";
             }
-        else {
+        } else {
             for (PARAMETER mstr : ValuePages.MASTERIES) {
                 Integer value = newType.getIntParam(mstr);
-                if (value > 0)
+                if (value > 0) {
                     progression += mstr.getName()
                             + StringMaster.wrapInParenthesis(value + "") + ";";
+                }
             }
         }
         return progression;
@@ -231,8 +238,9 @@ public class UnitLevelManager {
             int levelUps = DC_Formulas.getLevelForXp(newType
                     .getIntParam(PARAMS.TOTAL_XP) + n)
                     - newType.getIntParam(PARAMS.LEVEL);
-            if (levelUps <= 0)
+            if (levelUps <= 0) {
                 return newType;
+            }
             return getLeveledType(newType, levelUps, true);
         }
         return newType;
@@ -252,12 +260,14 @@ public class UnitLevelManager {
         boolean success = false;
         for (String item : array) { // getOrCreate all the xp items next in line while
             // there is xp to spend
-            if (!checkItem(newType, item, xp))
+            if (!checkItem(newType, item, xp)) {
                 continue;
-            if (!tryAward(newType, item, xp))
+            }
+            if (!tryAward(newType, item, xp)) {
                 break;
-            else
+            } else {
                 success = true;
+            }
         }
         if (!success) {
             buyPoints(!xp, newType);
@@ -287,8 +297,9 @@ public class UnitLevelManager {
         int amount = DC_MathManager.getBuyCost(attr, gold, type);
 
         if (((gold) ? type.getIntParam(PARAMS.GOLD) : type
-                .getIntParam(PARAMS.XP)) < amount)
+                .getIntParam(PARAMS.XP)) < amount) {
             return false;
+        }
 
         type.modifyParameter(cost_param, -amount);
         type.modifyParameter(param, 1);
@@ -318,20 +329,26 @@ public class UnitLevelManager {
 
     private boolean checkItem(ObjType newType, String item, boolean xp) {
         if (!xp) {
-            if (newType.checkSingleProp(G_PROPS.MAIN_HAND_ITEM, item))
+            if (newType.checkSingleProp(G_PROPS.MAIN_HAND_ITEM, item)) {
                 return true;
-            if (newType.checkSingleProp(G_PROPS.OFF_HAND_ITEM, item))
+            }
+            if (newType.checkSingleProp(G_PROPS.OFF_HAND_ITEM, item)) {
                 return true;
-            if (newType.checkSingleProp(G_PROPS.ARMOR_ITEM, item))
+            }
+            if (newType.checkSingleProp(G_PROPS.ARMOR_ITEM, item)) {
                 return true;
-            if (newType.checkContainerProp(PROPS.INVENTORY, item))
+            }
+            if (newType.checkContainerProp(PROPS.INVENTORY, item)) {
                 return true;
+            }
             return newType.checkContainerProp(PROPS.QUICK_ITEMS, item);
         }
-        if (newType.checkContainerProp(PROPS.VERBATIM_SPELLS, item))
+        if (newType.checkContainerProp(PROPS.VERBATIM_SPELLS, item)) {
             return true;
-        if (newType.checkContainerProp(G_PROPS.ACTIVES, item))
+        }
+        if (newType.checkContainerProp(G_PROPS.ACTIVES, item)) {
             return true;
+        }
         return newType.checkContainerProp(PROPS.SKILLS, item);
     }
 

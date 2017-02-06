@@ -58,18 +58,20 @@ public class LinkedList {
     }
 
     protected Object removeNode(Node n) {
-        if (size == 0)
+        if (size == 0) {
             return null;
+        }
 
         Object o = n.userObject;
 
         if (n == head) {
             head = head.next;
 
-            if (head == null)
+            if (head == null) {
                 tail = null;
-            else
+            } else {
                 head.prev = null;
+            }
         } else if (n == tail) {
             tail = tail.prev;
             tail.next = null;

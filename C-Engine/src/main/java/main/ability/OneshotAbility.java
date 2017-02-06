@@ -14,8 +14,9 @@ public class OneshotAbility extends AbilityImpl {
 
     @Override
     public boolean activate(Ref ref) {
-        if (activated)
+        if (activated) {
             return false;
+        }
         activated = true;
         return super.activate(ref);
     }

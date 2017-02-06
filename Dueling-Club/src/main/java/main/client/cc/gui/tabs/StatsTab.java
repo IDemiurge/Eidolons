@@ -40,8 +40,9 @@ public class StatsTab extends HeroPanelTab implements ChangeListener {
     public void refresh() {
         // removeAll();
         if (currentTab != null) {
-            if (hero.isDirty())
+            if (hero.isDirty()) {
                 currentTab.refresh();
+            }
         }
         // initAttrPane();
         // initMasteryPane();

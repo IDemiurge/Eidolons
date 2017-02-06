@@ -22,8 +22,9 @@ public class Payment implements Serializable {
     @Override
     public String toString() {
         if (amountFormula.toString().equals("0")
-                || amountFormula.toString().equals(""))
+                || amountFormula.toString().equals("")) {
             return "";
+        }
         return "Pay: " + amountFormula.toString() + " of "
                 + valueToPay.toString();
     }

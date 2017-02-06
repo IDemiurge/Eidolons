@@ -25,8 +25,9 @@ public class ForcedActionEffect extends MicroEffect {
 
         DC_HeroObj unit = (DC_HeroObj) ref.getTargetObj();
         Ref REF = unit.getRef();
-        if (key != null)
+        if (key != null) {
             REF.setTarget(ref.getId(key));
+        }
 
         Action action = new Action(unit.getAction(actionName), REF);
         unit.getGame().getAiManager().getAI(unit).getForcedActions()

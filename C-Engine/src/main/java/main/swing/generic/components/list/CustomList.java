@@ -48,16 +48,19 @@ public class CustomList<E> extends G_List<E> {
     }
 
     private int getColumnIndex(int i) {
-        if (getWrap() == 0)
+        if (getWrap() == 0) {
             return 0;
+        }
         return isVertical() ? getColumnIndexVertical(i) : getColumnIndexHorizontal(i);
     }
 
     private int getRowIndex(int i) {
-        if (getWrap() == 0)
+        if (getWrap() == 0) {
             return 0;
-        if (getVisibleRowCount() == 0)
+        }
+        if (getVisibleRowCount() == 0) {
             return 0;
+        }
         return isVertical() ? getRowIndexVertical(i) : getRowIndexHorizontal(i);
     }
 
@@ -120,20 +123,25 @@ public class CustomList<E> extends G_List<E> {
 
     @Override
     public E getSelectedValue() {
-        if (getSelectedIndex() != -1)
-            if (getData().size() > getSelectedIndex())
+        if (getSelectedIndex() != -1) {
+            if (getData().size() > getSelectedIndex()) {
                 return new LinkedList<E>(getData()).get(getSelectedIndex());
+            }
+        }
         return null;
     }
 
     public int getVisibleColumnCount() {
         int n = getData().size();
-        if (n == 0)
+        if (n == 0) {
             return 0;
-        if (getVisibleRowCount() == 0)
+        }
+        if (getVisibleRowCount() == 0) {
             return 0;
-        if (getWrap() == 0)
+        }
+        if (getWrap() == 0) {
             return 0;
+        }
         return isVertical() ? getRowIndexHorizontal(n) : n / getVisibleRowCount();
     }
 
@@ -143,8 +151,9 @@ public class CustomList<E> extends G_List<E> {
             return;
         }
         this.data = data;
-        if (isInitialized())
+        if (isInitialized()) {
             update();
+        }
     }
 
     private void updateDisplayImage() {
@@ -162,17 +171,20 @@ public class CustomList<E> extends G_List<E> {
             if (comp instanceof ListItem) {
                 ListItem listItem = (ListItem) comp;
                 listItem.refresh();
-                if (listItem.getIcon() == null)
+                if (listItem.getIcon() == null) {
                     continue;
+                }
                 image = listItem.getImage();
             } else if (comp instanceof GraphicComponent) {
                 GraphicComponent graphicComponent = (GraphicComponent) comp;
                 image = graphicComponent.getImg();
             } else {
-                if (w == 0)
+                if (w == 0) {
                     w = 64;
-                if (h == 0)
+                }
+                if (h == 0) {
                     h = 64;
+                }
                 image = ImageManager.getNewBufferedImage(w, h);
                 Graphics g = image.getGraphics();
                 comp.paintAll(g);
@@ -222,8 +234,9 @@ public class CustomList<E> extends G_List<E> {
     }
 
     private MouseListener getMouseListener() {
-        if (panel != null)
+        if (panel != null) {
             return panel.getMouseListener();
+        }
         return mouseListener;
     }
 

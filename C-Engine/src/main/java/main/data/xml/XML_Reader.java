@@ -75,8 +75,9 @@ public class XML_Reader {
         main.system.auxiliary.LogMaster.log(LogMaster.DATA_DEBUG, "type map: " + key);
 
         Map<String, ObjType> type_map = typeMaps.get(key);
-        if (type_map == null)
+        if (type_map == null) {
             type_map = new XLinkedMap<String, ObjType>();
+        }
         // else split = true;
         typeMaps.put(key, type_map);
 
@@ -92,13 +93,15 @@ public class XML_Reader {
             for (int a = 0; a < nl1.getLength(); a++) {
                 Node typeNode = nl1.item(a);
                 String name = typeNode.getNodeName();
-                if (name.equals("#text"))
+                if (name.equals("#text")) {
                     continue;
+                }
                 ObjType type = TypeBuilder.buildType(nl1.item(a), key);
                 name = type.getName();
                 // TAB GROUPS
-                if (type.getProperty(groupingKey) == null)
+                if (type.getProperty(groupingKey) == null) {
                     type.setProperty(G_PROPS.ASPECT, aspect);
+                }
                 group_set.add(type.getProperty(groupingKey));
                 aspect = type.getProperty(groupingKey);
                 // TREE SUB GROUPS
@@ -124,10 +127,11 @@ public class XML_Reader {
             }
         }
 
-        if (tabGroupMap.get(key) == null)
+        if (tabGroupMap.get(key) == null) {
             tabGroupMap.put(key, group_set);
-        else
+        } else {
             tabGroupMap.get(key).addAll(group_set);
+        }
         // if (key.equals(StringS.ABILS.getName())) {
         // Err.info(set + "");
         // }
@@ -163,8 +167,9 @@ public class XML_Reader {
     }
 
     private static boolean checkFile(File file) {
-        if (!file.isFile())
+        if (!file.isFile()) {
             return false;
+        }
         return CoreEngine.checkReadNecessary(file.getName());
 
     }
@@ -199,8 +204,9 @@ public class XML_Reader {
 
             };
             t.start();
-        } else
+        } else {
             readFile(file);
+        }
 
     }
 
@@ -215,8 +221,9 @@ public class XML_Reader {
         threads.remove(thread);
         main.system.auxiliary.LogMaster.log(1, thread.getName() + " removed from " + threads);
 
-        if (threads.isEmpty())
+        if (threads.isEmpty()) {
             WaitMaster.receiveInput(WAIT_OPERATIONS.READING_DONE, true);
+        }
 
     }
 
@@ -233,9 +240,9 @@ public class XML_Reader {
         if (fileName.contains("-")) {
             String typeName = fileName.substring(0, fileName.indexOf("-")).trim();
             String fullText = xmlMap.get(typeName);
-            if (fullText == null)
+            if (fullText == null) {
                 xmlMap.put(typeName, text);
-            else {
+            } else {
                 fullText += text;
                 xmlMap.put(typeName, fullText);
             }
@@ -252,8 +259,9 @@ public class XML_Reader {
 
         getFiles().add(xmlFile);
 
-        if (isConcurrentReadingOn())
+        if (isConcurrentReadingOn()) {
             loadMap(fileName, text);
+        }
 
         return text;
     }
@@ -297,17 +305,22 @@ public class XML_Reader {
                         .getOBJ_TYPE_ENUM());
                 if (parent != null) {
                     type.setType(parent);
-                    for (PROPERTY prop : parent.getPropMap().keySet())
-                        if (type.getProperty(prop).isEmpty())
+                    for (PROPERTY prop : parent.getPropMap().keySet()) {
+                        if (type.getProperty(prop).isEmpty()) {
                             type.setProperty(prop, parent.getProperty(prop));
-                    for (PARAMETER param : parent.getParamMap().keySet())
-                        if (type.getParam(param).isEmpty())
+                        }
+                    }
+                    for (PARAMETER param : parent.getParamMap().keySet()) {
+                        if (type.getParam(param).isEmpty()) {
                             type.setParam(param, parent.getParam(param));
+                        }
+                    }
                 }
             }
 
-            if (overwrite)
+            if (overwrite) {
                 DataManager.overwriteType(type);
+            }
             types.add(type);
         }
         return types;
@@ -334,10 +347,11 @@ public class XML_Reader {
         if (macro) {
             loadXml(PathFinder.getMACRO_TYPES_PATH());
         } else {
-            if (customTypesPath != null)
+            if (customTypesPath != null) {
                 loadXml(customTypesPath);
-            else
+            } else {
                 loadXml(PathFinder.getTYPES_PATH());
+            }
         }
 
     }
@@ -349,14 +363,15 @@ public class XML_Reader {
     static public void readTypes(boolean macro, boolean concurrentReadingOn) {
         setMacro(macro);
         setConcurrentReadingOn(concurrentReadingOn);
-        if (CoreEngine.isArcaneVault())
+        if (CoreEngine.isArcaneVault()) {
             loadXml();
-        else {
+        } else {
             loadXml(false);
             loadXml(true);
         }
-        if (!concurrentReadingOn)
+        if (!concurrentReadingOn) {
             loadMaps();
+        }
 
     }
 
@@ -423,8 +438,9 @@ public class XML_Reader {
         if (TYPE instanceof OBJ_TYPES) {
             buffer = macro;
             macro = false;
-        } else
+        } else {
             return getSubGroups(TYPE.getName());
+        }
         Set<String> set = getSubGroups(TYPE.getName());
         macro = buffer;
         return set;
@@ -448,8 +464,9 @@ public class XML_Reader {
      * @return the tabGroupMap
      */
     public static Map<String, Set<String>> getTabGroupMap(boolean macro) {
-        if (macro)
+        if (macro) {
             return macroTabGroupMap;
+        }
         return tabGroupMap;
     }
 
@@ -459,8 +476,9 @@ public class XML_Reader {
      */
 
     public static Map<String, Set<String>> getTabGroupMap() {
-        if (macro)
+        if (macro) {
             return macroTabGroupMap;
+        }
         return tabGroupMap;
     }
 
@@ -468,14 +486,16 @@ public class XML_Reader {
      * @return the treeSubGroupMap
      */
     public static Map<String, Set<String>> getTreeSubGroupMap(boolean macro) {
-        if (macro)
+        if (macro) {
             return macroTreeSubGroupMap;
+        }
         return treeSubGroupMap;
     }
 
     public static Map<String, Set<String>> getTreeSubGroupMap() {
-        if (macro)
+        if (macro) {
             return macroTreeSubGroupMap;
+        }
         return treeSubGroupMap;
     }
 
@@ -487,8 +507,9 @@ public class XML_Reader {
     }
 
     public static Map<String, Set<String>> getTreeSubGroupedTypeMap(boolean macro) {
-        if (macro)
+        if (macro) {
             return macroTreeSubGroupedTypeMap;
+        }
         return treeSubGroupedTypeMap;
     }
 
@@ -496,8 +517,9 @@ public class XML_Reader {
      * @return the treeSubGroupedTypeMap
      */
     public static Map<String, Set<String>> getTreeSubGroupedTypeMap() {
-        if (macro)
+        if (macro) {
             return macroTreeSubGroupedTypeMap;
+        }
         return treeSubGroupedTypeMap;
     }
 
@@ -518,10 +540,11 @@ public class XML_Reader {
 
     public static void checkHeroesAdded() {
         String key = OBJ_TYPES.CHARS.getName();
-        if (originalCharTypeMap == null)
+        if (originalCharTypeMap == null) {
             originalCharTypeMap = new MapMaster<String, ObjType>().constructMap(new LinkedList<>(
                     getTypeMaps().get(key).keySet()), new LinkedList<ObjType>(getTypeMaps()
                     .get(key).values()));
+        }
 
         bufferCharTypeMap = new MapMaster<String, ObjType>().constructMap(new LinkedList<>(
                 getTypeMaps().get(key).keySet()), new LinkedList<ObjType>(getTypeMaps().get(key)
@@ -563,9 +586,11 @@ public class XML_Reader {
         Collection<ObjType> types = getTypeMaps().get(OBJ_TYPES.CHARS.getName()).values();
         for (ObjType type : types) {
             ObjType oldType = originalCharTypeMap.get(type.getName());
-            if (oldType != null)
-                if (!type.getGroup().equals(oldType.getGroup()))
+            if (oldType != null) {
+                if (!type.getGroup().equals(oldType.getGroup())) {
                     oldType = null;
+                }
+            }
             if (oldType == null) {
                 main.system.auxiliary.LogMaster.log(1, "New Hero loaded:" + type.getName());
                 bufferCharTypeMap.put(type.getName(), type);
@@ -585,8 +610,9 @@ public class XML_Reader {
 
     public static XML_File getFile(OBJ_TYPES TYPE) {
         for (XML_File file : files) {
-            if (file.getType().equals(TYPE))
+            if (file.getType().equals(TYPE)) {
                 return file;
+            }
         }
         return null;
     }

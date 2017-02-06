@@ -53,8 +53,9 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
     @Override
     protected void initHero() {
         super.initHero();
-        if (!equipped)
+        if (!equipped) {
             equipped(ref);
+        }
     }
 
     @Override
@@ -100,11 +101,13 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
     }
 
     public int reduceDurability(int amount, boolean simulation) {
-        if (amount <= 0)
+        if (amount <= 0) {
             return 0;
+        }
         amount = Math.min(amount, getIntParam(PARAMS.C_DURABILITY));
-        if (simulation)
+        if (simulation) {
             return amount;
+        }
         modifyParameter(PARAMS.C_DURABILITY, -amount, 0);
 
         if (getIntParam(PARAMS.C_DURABILITY) <= 0) {
@@ -121,11 +124,13 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
 
     public int reduceDurabilityForDamage(int damage, int armor, int mod, boolean simulation) {
         int amount = DC_MathManager.getDurabilityForDamage(damage, armor, getOBJ_TYPE_ENUM());
-        if (amount == 0)
+        if (amount == 0) {
             return 0;
+        }
         Integer integer = getIntParam(PARAMS.DURABILITY_SELF_DAMAGE_MOD);
-        if (integer != 0)
+        if (integer != 0) {
             mod = mod * integer / 100;
+        }
 
         amount = amount * mod / 100;
         return reduceDurability(amount, simulation);

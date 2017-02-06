@@ -32,8 +32,9 @@ public class GameListPanel extends G_Panel implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2 || e.isAltDown()) {
             doubleClick(e);
-        } else
+        } else {
             return;
+        }
 
     }
 

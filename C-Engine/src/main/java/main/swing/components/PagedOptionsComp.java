@@ -64,8 +64,9 @@ public class PagedOptionsComp<E> extends G_PagePanel<E> {
     }
 
     public List<OptionListener<E>> getListeners() {
-        if (listeners == null)
+        if (listeners == null) {
             listeners = new LinkedList<>();
+        }
         return listeners;
     }
 

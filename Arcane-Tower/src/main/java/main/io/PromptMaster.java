@@ -6,13 +6,7 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.enums.StatEnums.TASK_STATUS;
 import main.file.CaptureParser;
-import main.logic.AT_OBJ_TYPE;
-import main.logic.AT_PROPS;
-import main.logic.ArcaneEntity;
-import main.logic.CreationHelper;
-import main.logic.Direction;
-import main.logic.Goal;
-import main.logic.Task;
+import main.logic.*;
 import main.logic.util.AT_SortMaster;
 import main.session.Session;
 import main.swing.generic.components.editors.lists.ListChooser;
@@ -31,16 +25,19 @@ public class PromptMaster {
 		// entity.getOBJ_TYPE_ENUM();
 		for (VALUE t : CreationHelper.getRequiredValues(entity, false)) {
 			String value = entity.getValue(t);
-			if (!StringMaster.isEmpty(value))
-				if (emptyOnly)
-					continue;
-			String input = CreationHelper.getInput(t, entity, value);
-			if (!StringMaster.isEmpty(input))
-				entity.setValue(value, input, true);
-			else if (DialogMaster.confirm("Done?"))
-				break;
-			else
-				entity.setValue(value, input, true);
+            if (!StringMaster.isEmpty(value)) {
+                if (emptyOnly) {
+                    continue;
+                }
+            }
+            String input = CreationHelper.getInput(t, entity, value);
+            if (!StringMaster.isEmpty(input)) {
+                entity.setValue(value, input, true);
+            } else if (DialogMaster.confirm("Done?")) {
+                break;
+            } else {
+                entity.setValue(value, input, true);
+            }
 
 		}
 	}
@@ -61,17 +58,19 @@ public class PromptMaster {
 		// SessionMaster.getSessions()
 		ObjType directionType = DataManager.getType(session.getProperty(AT_PROPS.DIRECTION),
 				AT_OBJ_TYPE.DIRECTION);
-		if (directionType == null)
-			if (ArcaneTower.isTestMode())
-				directionType = DataManager.getTypes(AT_OBJ_TYPE.DIRECTION).get(0);
-			else {
-				directionType = directionPrompt(session);
-				if (directionType == null)
-					return;
+        if (directionType == null) {
+            if (ArcaneTower.isTestMode()) {
+                directionType = DataManager.getTypes(AT_OBJ_TYPE.DIRECTION).get(0);
+            } else {
+                directionType = directionPrompt(session);
+                if (directionType == null) {
+                    return;
+                }
 
-				taskPrompt(session);
-				goalPrompt(session);
-			}
+                taskPrompt(session);
+                goalPrompt(session);
+            }
+        }
 
 		Direction direction = (Direction) ArcaneTower.getSimulation().getInstance(directionType);
 		session.setDirection(direction);
@@ -90,9 +89,10 @@ public class PromptMaster {
 		};
 		for (VALUE v : values) {
 			String input = CreationHelper.getInput(v, session.getType(), null);
-			if (input == null)
-				return false;
-		}
+            if (input == null) {
+                return false;
+            }
+        }
 		return true;
 	}
 
@@ -111,13 +111,17 @@ public class PromptMaster {
 		for (TASK_STATUS f : filteredStatuses) {
 			for (Task task : new LinkedList<>(list)) {
 				boolean result = task.getStatusEnum() == f;
-				if (filterOut)
-					if (result)
-						list.remove(task);
-				if (!filterOut)
-					if (!result)
-						list.remove(task);
-			}
+                if (filterOut) {
+                    if (result) {
+                        list.remove(task);
+                    }
+                }
+                if (!filterOut) {
+                    if (!result) {
+                        list.remove(task);
+                    }
+                }
+            }
 		}
 		AT_SortMaster.sortTasks(list);
 		ListObjChooser<Task> listObjChooser = new ListObjChooser<Task>();

@@ -13,8 +13,8 @@ import main.system.auxiliary.GuiManager;
 import main.system.datatypes.DequeImpl;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
-import main.system.graphics.PhaseAnimation;
 import main.system.graphics.AnimationManager.MouseItem;
+import main.system.graphics.PhaseAnimation;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -62,14 +62,17 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
     public void run() {
         while (true) {
             try {
-                if (xOffset == null)
+                if (xOffset == null) {
                     xOffset = gridComp.getHolder().getDungeon().getGame().getBattleField()
                             .getBuilder().getBfGridPosX();
-                if (yOffset == null)
+                }
+                if (yOffset == null) {
                     yOffset = gridComp.getHolder().getDungeon().getGame().getBattleField()
                             .getBuilder().getBfGridPosY();
-                if (!DC_Game.game.getGUI().getWindow().isActive())
+                }
+                if (!DC_Game.game.getGUI().getWindow().isActive()) {
                     continue;
+                }
                 Point onScreen = MouseInfo.getPointerInfo().getLocation();
                 Point point = new Point(onScreen.x - xOffset, onScreen.y - yOffset);
                 if (point.x < 0 || point.x > GuiManager.getBfGridWidth() || point.y < 0
@@ -92,7 +95,9 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                     // "tooltip updated - " +
                     // text + ";point= "
                     // + point + ";cellComp= " + cellComp);
+                {
                     prevComp = cellComp;
+                }
                 MouseEvent event = new MouseEvent(component, MouseEvent.MOUSE_MOVED, System
                         .currentTimeMillis(), 0, onScreen.x, onScreen.y, 0, false);
 
@@ -106,10 +111,12 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
     }
 
     public void startTooltipUpdateThread() {
-        if (!toolTipsEnabled)
+        if (!toolTipsEnabled) {
             return;
-        if (tooltipUpdateThread == null)
+        }
+        if (tooltipUpdateThread == null) {
             tooltipUpdateThread = new Thread(this, "tooltip update thread");
+        }
         tooltipUpdateThread.start();
 
     }
@@ -148,36 +155,41 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
         if (SwingUtilities.isRightMouseButton(e)) {
 
             for (PhaseAnimation anim : animations) {
-                if (checkToggleTooltip(anim, e))
+                if (checkToggleTooltip(anim, e)) {
                     return true;
+                }
 
                 if (anim.contains(e.getPoint())) {
                     if (e.getClickCount() > 1) {
 
-                        if (anim.isPaused())
+                        if (anim.isPaused()) {
                             anim.resume();
-                        else
+                        } else {
                             anim.pause();
+                        }
                         return true;
                     }
                     AnimPhase phase = anim.getPhase();
-                    if (phase != null)
+                    if (phase != null) {
                         if (anim.subPhaseClosed()) {
                             SoundMaster.playStandardSound(STD_SOUNDS.BACK);
                             return true;
                         }
+                    }
                 }
             }
         }
         for (PhaseAnimation anim : animations) {
             if (anim.getMouseMap() != null)
 
+            {
                 for (Rectangle rect : anim.getMouseMap().keySet()) {
                     if (rect.contains(point)) {
                         MouseItem item = anim.getMouseMap().get(rect);
                         return itemClicked(item, anim);
                     }
                 }
+            }
         }
 
         return false;
@@ -204,7 +216,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
 
     private boolean itemClicked(MouseItem item, PhaseAnimation anim) {
 
-        if (item.getType() != null)
+        if (item.getType() != null) {
             switch (item.getType()) {
 
                 case THUMBNAIL:
@@ -214,8 +226,9 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                     displayTooltip(anim, item);
                     break;
                 case SUB_PHASE:
-                    if (anim.getPhase().getType().isSubPhase())
+                    if (anim.getPhase().getType().isSubPhase()) {
                         return false;
+                    }
                     if (item.getArg() == null) {
                         SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
                         return true;
@@ -231,17 +244,21 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                     return true;
 
             }
+        }
         return false;
     }
 
     private boolean checkDialogClick(MouseEvent e) {
-        if (gridComp == null)
+        if (gridComp == null) {
             return false;
-        if (gridComp.getGame().getBattleField() == null)
+        }
+        if (gridComp.getGame().getBattleField() == null) {
             return false;
+        }
         DialogPanel d = gridComp.getGame().getBattleField().getBuilder().getDialog();
-        if (d == null)
+        if (d == null) {
             return false;
+        }
         return d.checkClick(e);
     }
 
@@ -249,12 +266,15 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
     public void mouseClicked(MouseEvent e) {
         // new ToolTipManager().
         gridComp.getGame().getToolTipMaster().removeToolTips();
-        if (checkDialogClick(e))
+        if (checkDialogClick(e)) {
             return;
-        if (checkAnimationClick(e))
+        }
+        if (checkAnimationClick(e)) {
             return;
-        if (checkDynamicButtonClick(e))
+        }
+        if (checkDynamicButtonClick(e)) {
             return;
+        }
         point = e.getPoint();
 
         cellComp = gridComp.getCompByPoint(e.getPoint());
@@ -300,13 +320,16 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                                     + " vs " + object + "'s " + index2);
                             if (index > index2)
                                 // TODO so we need to keep this always sorted...
+                            {
                                 continue;
+                            }
                         }
                         DC_HeroObj unit = (DC_HeroObj) object;
                         if (unit.isOverlaying()) {
                             // corpseClicked(unit);
-                            if (unit.getVisibilityLevel() == VISIBILITY_LEVEL.CONCEALED)
+                            if (unit.getVisibilityLevel() == VISIBILITY_LEVEL.CONCEALED) {
                                 continue;
+                            }
                             objClicked = unit;
                             break;
                         } else {
@@ -317,8 +340,9 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                         if (e.isAltDown()) {
                             objClicked = (DC_Obj) object;
                             break;
-                        } else if (objClicked == null)
+                        } else if (objClicked == null) {
                             objClicked = (DC_Obj) object;
+                        }
                         continue; // ?
                     }
                 }
@@ -327,34 +351,43 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
             }
 
         }
-        if (objClicked == null)
+        if (objClicked == null) {
             objClicked = cellComp.getTopObjOrCell();
-        if (CoreEngine.isLevelEditor())
-            if (objClicked instanceof DC_Cell)
+        }
+        if (CoreEngine.isLevelEditor()) {
+            if (objClicked instanceof DC_Cell) {
                 return;
+            }
+        }
         boolean right = SwingUtilities.isRightMouseButton(e);
         if (right) {
             objClicked.invokeRightClicked();
             // gridComp.getGame().getManager().rightClicked(objClicked);
-        } else
+        } else {
             gridComp.getGame().getManager().objClicked(objClicked);
+        }
 
         boolean debugMode = gridComp.getGame().isDebugMode();
-        if (debugMode)
+        if (debugMode) {
             gridComp.getGame().getDebugMaster().setArg(objClicked);
-        if (e.isAltDown())
-            if (debugMode)
+        }
+        if (e.isAltDown()) {
+            if (debugMode) {
                 invokeAltClick(right);
-            else
+            } else {
                 new Thread(new Runnable() {
                     public void run() {
                         gridComp.getGame().getMovementManager().moveTo(objClicked);
                     }
                 }, "moveTo thread").start();
-        if (e.isShiftDown())
+            }
+        }
+        if (e.isShiftDown()) {
             invokeShiftClick(right);
-        if (e.isControlDown())
+        }
+        if (e.isControlDown()) {
             invokeControlClick(right);
+        }
 
     }
 
@@ -376,10 +409,12 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
 
     // right click?
     private DEBUG_FUNCTIONS getFunction(Boolean alt_control_shift, boolean right) {
-        if (alt_control_shift == null)
+        if (alt_control_shift == null) {
             return DEBUG_FUNCTIONS.ACTIVATE_UNIT; // set main
-        if (alt_control_shift)
+        }
+        if (alt_control_shift) {
             return right ? DEBUG_FUNCTIONS.ADD_UNIT : DEBUG_FUNCTIONS.ADD_ENEMY_UNIT;
+        }
 
         return DEBUG_FUNCTIONS.KILL_UNIT; // block/hide/reset?
     }
@@ -446,9 +481,9 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        if (gridComp.getGame().isSimulation())
+        if (gridComp.getGame().isSimulation()) {
             gridComp.zoom(e.getWheelRotation());
-        else if (!checkAnimationPageFlipped(e)) {
+        } else if (!checkAnimationPageFlipped(e)) {
             // TODO could be nice if it worked!
             // gridComp.zoom(e.getWheelRotation());
         }

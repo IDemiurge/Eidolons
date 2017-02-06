@@ -1,4 +1,4 @@
-package main.ability.effects.oneshot.containers;
+package main.ability.effects.containers;
 
 public class DummySelectEffect {
 

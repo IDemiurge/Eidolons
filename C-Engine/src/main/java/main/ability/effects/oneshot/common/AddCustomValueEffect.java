@@ -22,10 +22,11 @@ public class AddCustomValueEffect extends MicroEffect {
 
     @Override
     public boolean applyThis() {
-        if (param)
+        if (param) {
             ref.getTargetObj().addCustomParameter(name, value);
-        else
+        } else {
             ref.getTargetObj().addCustomProperty(name, value);
+        }
 
         return false;
     }

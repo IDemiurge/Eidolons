@@ -29,10 +29,12 @@ public class KnockdownRule {
 	 */
 
     public static void checkApplyProneEffect(DC_HeroObj unit) {
-        if (!unit.isBfObj())
-            if (unit.checkStatus(STATUS.PRONE))
+        if (!unit.isBfObj()) {
+            if (unit.checkStatus(STATUS.PRONE)) {
                 new ModifyValueEffect(PARAMS.DEFENSE_MOD, MOD.MODIFY_BY_PERCENT, DEFENSE_FORMULA)
                         .apply(Ref.getSelfTargetingRefCopy(unit));
+            }
+        }
     }
 
     public static void knockdown(DC_HeroObj target) {

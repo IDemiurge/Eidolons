@@ -15,8 +15,9 @@ public class InfoIconsManager {
         List<Image> list = new LinkedList<Image>();
 
         for (INFO_ICONS icon : INFO_ICONS.values()) {
-            if (checkIconConditions(icon, obj))
+            if (checkIconConditions(icon, obj)) {
                 list.add(getImage(icon));
+            }
         }
         return list;
     }

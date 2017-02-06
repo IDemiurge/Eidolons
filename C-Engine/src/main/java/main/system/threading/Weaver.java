@@ -105,13 +105,14 @@ public class Weaver {
 
     public static void inNewThread(Boolean priorityMinMax, Runnable runnable) {
         Thread thread = new Thread(runnable);
-        if (priorityMinMax != null)
+        if (priorityMinMax != null) {
             try {
                 thread.setPriority(priorityMinMax ? Thread.MIN_PRIORITY
                         : Thread.MAX_PRIORITY);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
         thread.start();
     }
 

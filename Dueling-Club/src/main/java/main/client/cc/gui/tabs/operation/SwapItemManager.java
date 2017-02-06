@@ -22,8 +22,9 @@ public class SwapItemManager extends InvListManager {
 
     @Override
     protected void removeType(Entity type, HeroListPanel hlp, PROPERTY p) {
-        if (!hasOperations())
+        if (!hasOperations()) {
             return;
+        }
 
         DC_HeroItemObj item = (DC_HeroItemObj) ObjUtilities.findObjByType(type, getHero()
                 .getInventory());
@@ -38,8 +39,9 @@ public class SwapItemManager extends InvListManager {
 
     @Override
     protected boolean addType(ObjType type, HeroListPanel hlp, boolean alt) {
-        if (!hasOperations())
+        if (!hasOperations()) {
             return false;
+        }
         boolean result = CharacterCreator.getHeroManager().addItem(getHero(), type,
                 C_OBJ_TYPE.ITEMS, PROPS.INVENTORY);
 

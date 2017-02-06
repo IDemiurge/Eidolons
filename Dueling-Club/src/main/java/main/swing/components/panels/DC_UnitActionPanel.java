@@ -106,8 +106,9 @@ public class DC_UnitActionPanel extends G_ListPanel<DC_UnitAction> implements
 
     @Override
     public void setInts() {
-        if (!rdy)
+        if (!rdy) {
             return;
+        }
         sizeInfo = "w " + panelWidth * GuiManager.getSmallObjSize() + ", h "
                 + GuiManager.getSmallObjSize();
         hpolicy = JScrollPane.HORIZONTAL_SCROLLBAR_NEVER;
@@ -141,9 +142,11 @@ public class DC_UnitActionPanel extends G_ListPanel<DC_UnitAction> implements
         }
 
         public static ACTION_DISPLAY_GROUP getDisplayGroup(ACTION_TYPE type) {
-            for (ACTION_DISPLAY_GROUP group : values())
-                if (type == group.getType())
+            for (ACTION_DISPLAY_GROUP group : values()) {
+                if (type == group.getType()) {
                     return group;
+                }
+            }
             return null;
 
         }

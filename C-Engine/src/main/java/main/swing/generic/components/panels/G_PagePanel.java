@@ -93,8 +93,9 @@ public abstract class G_PagePanel<E> extends G_Panel {
 
     public void initPages() {
         resetData();
-        if (!isDirty() && (ListMaster.isNotEmpty(pages)))
+        if (!isDirty() && (ListMaster.isNotEmpty(pages))) {
             return;
+        }
         pages = new LinkedList<>();
         empty = false;
         if (!ListMaster.isNotEmpty(pageData)) {
@@ -104,9 +105,9 @@ public abstract class G_PagePanel<E> extends G_Panel {
         } else {
             createPageIndex = 0;
             for (List<E> list : pageData) {
-                if (!ListMaster.isNotEmpty(list))
+                if (!ListMaster.isNotEmpty(list)) {
                     pages.add(createEmptyPageComponent());
-                else {
+                } else {
                     G_Component pageComponent = createPageComponent(list);
                     createPageIndex++;
                     if (pageMouseListener != null) {
@@ -137,8 +138,9 @@ public abstract class G_PagePanel<E> extends G_Panel {
         if (!new ListMaster<E>().compareNested(newData, pageData)) {
             setDirty(true);
             pageData = newData;
-        } else
+        } else {
             setDirty(false);
+        }
 
     }
 
@@ -154,8 +156,9 @@ public abstract class G_PagePanel<E> extends G_Panel {
         }
 
         List<E> lastList = lists.get(lists.size() - 1);
-        if (isFillWithNullElements())
+        if (isFillWithNullElements()) {
             ListMaster.fillWithNullElements(lastList, pageSize);
+        }
         return lists;
     }
 
@@ -175,14 +178,16 @@ public abstract class G_PagePanel<E> extends G_Panel {
 
     protected G_VisualComponent getButton(boolean forward) {
         G_VisualComponent button;
-        if (isControlPosInverted())
+        if (isControlPosInverted()) {
             forward = !forward;
-        if (isControlPosInverted())
+        }
+        if (isControlPosInverted()) {
             button = new G_VisualComponent(ImageManager.getArrowImagePath(!vertical, forward,
                     version));
-        else
+        } else {
             button = new G_VisualComponent(ImageManager.getArrowImagePath(vertical, forward,
                     version));
+        }
 
         button.addMouseListener(new PageMouseListener(this, button, forward));
         arrowWidth = button.getImageWidth();
@@ -196,8 +201,9 @@ public abstract class G_PagePanel<E> extends G_Panel {
             return;
             // TODO replace controls with other visuals?
         }
-        if (isControlsInverted())
+        if (isControlsInverted()) {
             forward = !forward;
+        }
         if (forward) {
             currentIndex++;
             if (currentIndex > pages.size() - 1) {
@@ -229,19 +235,22 @@ public abstract class G_PagePanel<E> extends G_Panel {
     }
 
     protected boolean isControlsInverted() {
-        if (isControlPosInverted())
+        if (isControlPosInverted()) {
             return !vertical;
+        }
         return vertical;
     }
 
     public void adjustPageIndexToSelectTab(E e) {
-        if (pageData == null)
+        if (pageData == null) {
             return;
+        }
         int i = 0;
 
         for (List<E> page : pageData) {
-            if (page.contains(e))
+            if (page.contains(e)) {
                 break;
+            }
             i++;
         }
         if (getCurrentIndex() != i) {
@@ -255,26 +264,30 @@ public abstract class G_PagePanel<E> extends G_Panel {
     public void refresh() {
         // if (isReinitOnRefresh() || !ListMaster.isNotEmpty(pages) ||
         // isDirty())
-        if (isReinitOnRefresh())
+        if (isReinitOnRefresh()) {
             initPages();
-        if (currentIndex >= pages.size())
+        }
+        if (currentIndex >= pages.size()) {
             currentIndex = 0;
+        }
         try {
             if (!getCurrentComponent().equals(pages.get(currentIndex))
-                    || getComponents().length == 0)
+                    || getComponents().length == 0) {
                 setDirty(true);
+            }
         } catch (Exception e) {
 
         }
         setCurrentComponent(pages.get(currentIndex));
 
-        if (currentComponent != null)
+        if (currentComponent != null) {
             if (isWheelMotionEnabled()) {
                 if (!pageWheelListener.getComponents().contains(currentComponent)) {
                     currentComponent.addMouseWheelListener(pageWheelListener);
                     pageWheelListener.getComponents().add(currentComponent);
                 }
             }
+        }
         if (!isDirty()) {
             if (getCurrentComponent() instanceof G_ListPanel) {
                 G_ListPanel listPanel = (G_ListPanel) getCurrentComponent();
@@ -305,8 +318,9 @@ public abstract class G_PagePanel<E> extends G_Panel {
             for (int i = getComponentCount() - 1; i > 0; i--) {
                 remove(i);
             }
-        } else
+        } else {
             super.removeAll();
+        }
     }
 
     protected boolean isBackedByEmptyComponent() {
@@ -324,25 +338,30 @@ public abstract class G_PagePanel<E> extends G_Panel {
     protected void addComponents() {
 
         String pos = getPagePos();
-        if (isBackedByEmptyComponent())
+        if (isBackedByEmptyComponent()) {
             add(createEmptyPageComponent(), 0);
+        }
         add(getCurrentComponent(), pos);
-        if (pages.size() > 1 || isAddControlsAlways())
+        if (pages.size() > 1 || isAddControlsAlways()) {
             addControls();
+        }
     }
 
     protected String getPagePos() {
         String x = getCompDisplacementX();
         String y = getCompDisplacementY();
         boolean vertical = this.vertical;
-        if (isControlPosInverted())
+        if (isControlPosInverted()) {
             vertical = !vertical;
+        }
 
-        if (isComponentAfterControls())
+        if (isComponentAfterControls()) {
             if (vertical) {
                 y = (isControlPosInverted() ? CONTROLS_POS_2 : CONTROLS_POS) + ".y2";
-            } else
+            } else {
                 x = (!isControlPosInverted() ? CONTROLS_POS_2 : CONTROLS_POS) + ".x2";
+            }
+        }
 
         String pos = "pos " + x + " " + y;
         return pos;
@@ -373,16 +392,19 @@ public abstract class G_PagePanel<E> extends G_Panel {
     }
 
     protected int getItemSize() {
-        if (itemSize != null)
+        if (itemSize != null) {
             return itemSize;
+        }
         return GuiManager.getSmallObjSize();
     }
 
     protected void addControls() {
-        if (forwardButton == null)
+        if (forwardButton == null) {
             forwardButton = getButton(true);
-        if (backButton == null)
+        }
+        if (backButton == null) {
             backButton = getButton(false);
+        }
 
         int x = getArrowOffsetX();
         int x2 = getArrowOffsetX2();
@@ -391,8 +413,9 @@ public abstract class G_PagePanel<E> extends G_Panel {
         boolean bothEnds = isButtonsOnBothEnds();
         boolean stickTogether = isDoubleButtons();
         boolean verticalPos = vertical;
-        if (isControlPosInverted())
+        if (isControlPosInverted()) {
             vertical = !vertical;
+        }
         if (verticalPos) {
             int w = (stickTogether) ? arrowWidth * 2 : arrowWidth;
             x += (getPanelWidth() - w) / 2;
@@ -415,19 +438,22 @@ public abstract class G_PagePanel<E> extends G_Panel {
             y2 = y;
             x2 += getPanelWidth() + arrowWidth;
         }
-        if (isControlPosInverted())
+        if (isControlPosInverted()) {
             vertical = !vertical;
+        }
         String pos = ((verticalPos) ? x + " " + y : x2 + " " + y2);
         if (bothEnds) {
             addControl(forwardButton, false, (!verticalPos) ? x2 : x, (!verticalPos) ? y2 : y);
             // add(forwardButton, "id " + CONTROLS_POS + ", pos " + pos);
             if (stickTogether) {
-                if (vertical)
+                if (vertical) {
                     pos = "btn1.x2 " + y;
-                else
+                } else {
                     pos = x + " btn1.y2";
-            } else
+                }
+            } else {
                 pos = ((vertical) ? x2 + " " + y2 : x + " " + y);
+            }
             addControl(backButton, true, (vertical) ? x2 : x, (vertical) ? y2 : y);
             // add(backButton, "id btn2, pos " + pos);
         } else {
@@ -437,16 +463,19 @@ public abstract class G_PagePanel<E> extends G_Panel {
         }
 
         if (stickTogether && bothEnds) {
-            if (forwardButton2 == null)
+            if (forwardButton2 == null) {
                 forwardButton2 = getButton(true);
-            if (backButton2 == null)
+            }
+            if (backButton2 == null) {
                 backButton2 = getButton(false);
+            }
             pos = x2 + " " + y2;
             add(backButton2, "id btn3, pos " + pos);
-            if (vertical)
+            if (vertical) {
                 pos = "btn3.x2 " + y2;
-            else
+            } else {
                 pos = x2 + " btn3.y2";
+            }
             add(forwardButton2, "id btn4, pos " + pos);
 
         }
@@ -505,10 +534,11 @@ public abstract class G_PagePanel<E> extends G_Panel {
     }
 
     public void setData(Collection<E> data) {
-        if (data instanceof List)
+        if (data instanceof List) {
             this.data = (List<E>) data;
-        else
+        } else {
             this.data = new LinkedList<>(data);
+        }
     }
 
     public Obj getObj() {
@@ -516,8 +546,9 @@ public abstract class G_PagePanel<E> extends G_Panel {
     }
 
     public void setObj(Obj obj) {
-        if (!Utilities.compare(this.obj, obj))
+        if (!Utilities.compare(this.obj, obj)) {
             setDirty(true);
+        }
         this.obj = obj;
     }
 
@@ -538,14 +569,16 @@ public abstract class G_PagePanel<E> extends G_Panel {
     }
 
     public int getArrowWidth() {
-        if (arrowWidth == 0)
+        if (arrowWidth == 0) {
             arrowWidth = getButton(true).getImageWidth();
+        }
         return arrowWidth;
     }
 
     public int getArrowHeight() {
-        if (arrowHeight == 0)
+        if (arrowHeight == 0) {
             arrowHeight = getButton(true).getImageHeight();
+        }
         return arrowHeight;
     }
 

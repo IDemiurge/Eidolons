@@ -76,12 +76,15 @@ public class CoatingRule {
         // if (weapon instanceof DC_WeaponObj) {
         // DC_WeaponObj weaponObj = (DC_WeaponObj) weapon;
         if (action.isRanged()) {
-            if (action.getRef().getObj(KEYS.RANGED) != null)
-                if (!action.isThrow())
+            if (action.getRef().getObj(KEYS.RANGED) != null) {
+                if (!action.isThrow()) {
                     if (action.getRef().getObj(KEYS.RANGED).getRef()
-                            .getObj(KEYS.AMMO) != null)
+                            .getObj(KEYS.AMMO) != null) {
                         weapon = (DC_Obj) action.getRef().getObj(KEYS.RANGED)
                                 .getRef().getObj(KEYS.AMMO);
+                    }
+                }
+            }
         }
 
         // }
@@ -100,11 +103,14 @@ public class CoatingRule {
             applyCounters(target, weapon, source, c, action, throwing);
 
             if (ranged) // TODO throwing doesn't count?
+            {
                 continue;
+            }
             // TODO apply to weapon instead? :)
             // counters could have effect on items as well, durability at least
-            if (armor != null)
+            if (armor != null) {
                 applyCounters(source, armor, target, c, action, throwing);
+            }
         }
 
     }
@@ -112,8 +118,9 @@ public class CoatingRule {
     private static void applyCounters(DC_HeroObj target, DC_Obj item,
                                       DC_HeroObj source, STD_COUNTERS c, DC_ActiveObj action,
                                       boolean throwing) {
-        if (item.getCounter(c) <= 0)
+        if (item.getCounter(c) <= 0) {
             return;
+        }
         Integer max = getMaxNumberOfCountersPerAttack(item, c);
         max = MathMaster.addFactor(max, source.getIntParam(DC_ContentManager
                 .getCoatingMaxPerHitModParam(c)));

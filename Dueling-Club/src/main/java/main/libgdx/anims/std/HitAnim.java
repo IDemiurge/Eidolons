@@ -38,9 +38,10 @@ public class HitAnim extends ActionAnim {
                    Supplier<String> imageSupplier) {
         super(active, params);
 
-        if (blood)
+        if (blood) {
             params.addValue(ANIM_VALUES.SPRITES, getHitType(getActive()).spritePath
-             + getTargetSuffix(getRef().getTargetObj()) + ".png");
+                    + getTargetSuffix(getRef().getTargetObj()) + ".png");
+        }
 
         this.textSupplier = floatingTextSupplier;
 //        this.imageSupplier = floatingTextSupplier;
@@ -60,10 +61,12 @@ public class HitAnim extends ActionAnim {
 
     @Override
     public Coordinates getOriginCoordinates() {
-        if (forcedDestination != null)
-        return forcedDestination;
-        if (getRef().getTargetObj() != null)
+        if (forcedDestination != null) {
+            return forcedDestination;
+        }
+        if (getRef().getTargetObj() != null) {
             return getRef().getTargetObj().getCoordinates();
+        }
 
         return super.getOriginCoordinates();
     }

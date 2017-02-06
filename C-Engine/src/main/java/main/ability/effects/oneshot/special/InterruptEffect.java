@@ -29,8 +29,9 @@ public class InterruptEffect extends MicroEffect {
         // if (OBJ_REF != null) {
         i = (Interruptable) REF.getObj(KEYS.ACTIVE);
         // }
-        if (i == null)
+        if (i == null) {
             return false;
+        }
         i.setInterrupted(true);
         return true;
     }

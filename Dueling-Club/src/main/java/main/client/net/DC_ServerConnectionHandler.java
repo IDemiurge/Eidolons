@@ -23,7 +23,7 @@ public class DC_ServerConnectionHandler extends ServerConnection {
     @Override
     public void handleInput(String input) {
         System.out.println(input + getLastReceivedCode().name());
-        if (getLastReceivedCode() != null)
+        if (getLastReceivedCode() != null) {
             switch ((CODES) getLastReceivedCode()) {
                 case USER_VALIDATION: {
 
@@ -58,6 +58,7 @@ public class DC_ServerConnectionHandler extends ServerConnection {
                 default:
                     break;
             }
+        }
 
     }
 

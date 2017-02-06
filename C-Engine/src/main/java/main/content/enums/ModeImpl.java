@@ -48,10 +48,12 @@ public class ModeImpl implements MODE {
 
     @Override
     public String toString() {
-        if (behaviorMode != null)
+        if (behaviorMode != null) {
             return behaviorMode.getName();
-        if (buffName != null)
+        }
+        if (buffName != null) {
             return buffName;
+        }
         return template.getName();
     }
 
@@ -77,8 +79,9 @@ public class ModeImpl implements MODE {
 
     @Override
     public boolean isWatchSupported() {
-        if (watchSupport == null)
+        if (watchSupport == null) {
             return template.isWatchSupported();
+        }
         return watchSupport;
     }
 

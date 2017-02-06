@@ -57,8 +57,9 @@ public class GraphicComponent extends JComponent {
 
     @Override
     public void paint(Graphics g) {
-        if (getImg() != null)
+        if (getImg() != null) {
             g.drawImage(getImg(), x, y, null);
+        }
     }
 
     public Image getImg() {
@@ -67,8 +68,9 @@ public class GraphicComponent extends JComponent {
 
     public void setImg(Image img) {
         this.img = img;
-        if (img != null)
+        if (img != null) {
             this.compSize = new Dimension(img.getWidth(null), img.getHeight(null));
+        }
     }
 
     public Object getDataObject() {
@@ -119,14 +121,16 @@ public class GraphicComponent extends JComponent {
         }
 
         public Image getImg() {
-            if (img == null)
+            if (img == null) {
                 img = ImageManager.getImage(getPath());
+            }
             return img;
         }
 
         public JLabel getLabel() {
-            if (img == null)
+            if (img == null) {
                 img = ImageManager.getIcon(getPath()).getImage();
+            }
             return new JLabel(new ImageIcon(img));
         }
 

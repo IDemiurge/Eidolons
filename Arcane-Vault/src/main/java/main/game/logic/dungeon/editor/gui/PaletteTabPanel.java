@@ -13,47 +13,12 @@ import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 import main.utilities.workspace.Workspace;
 
-import java.awt.Component;
+import java.awt.*;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 public class PaletteTabPanel extends HC_TabPanel {
-
-	@Override
-	public ComponentVisuals getTAB() {
-		return VISUALS.TAB_SMALL;
-	}
-
-	@Override
-	public ComponentVisuals getTAB_SELECTED() {
-		return VISUALS.TAB_SMALL_SELECTED;
-	}
-
-	@Override
-	public int getPageSize() {
-		return 20;
-	}
-
-	protected String getTabsOffsetX() {
-		return "42";
-	}
-
-	@Override
-	protected String getCompOffsetY() {
-		if (getCurrentComp() instanceof PagedPaletteTab)
-			if (((PagedPaletteTab) getCurrentComp()).getWs().getTypeList().size() > PagedPaletteTab.PAGE_SIZE)
-				return "(-16)";
-		return super.getCompOffsetX();
-	}
-
-	@Override
-	public Component generateTabComp(HC_Tab tab) {
-		HC_TabComp tabComp = (HC_TabComp) super.generateTabComp(tab);
-		tabComp.setFONT_SIZE(15);
-		tabComp.setFONT_SIZE_SELECTED(16);
-		return tabComp;
-	}
 
 	public PaletteTabPanel(UPPER_PALETTE p) {
 		if (p.TYPES != null) {
@@ -67,11 +32,12 @@ public class PaletteTabPanel extends HC_TabPanel {
 			OBJ_TYPE type = p.getTYPE();
 			List<ObjType> types = DataManager.getTypes(type);
 			DequeImpl<ObjType> deque = new DequeImpl<>();
-			if (p.filterProp == null)
-				deque.addAll(types);
-			else
-				deque.addAllCast(FilterMaster.filterByProp(new LinkedList<>(types), p.filterProp
-						.getName(), p.filterValue));
+            if (p.filterProp == null) {
+                deque.addAll(types);
+            } else {
+                deque.addAllCast(FilterMaster.filterByProp(new LinkedList<>(types), p.filterProp
+                        .getName(), p.filterValue));
+            }
 
 			for (String s : StringMaster.openContainer(p.subPalettes, ", ")) {
 				List<ObjType> typeList = p.upper ? DataManager.getTypesGroup(type, StringMaster
@@ -91,5 +57,42 @@ public class PaletteTabPanel extends HC_TabPanel {
 			}
 		}
 	}
+
+    @Override
+    public ComponentVisuals getTAB() {
+        return VISUALS.TAB_SMALL;
+    }
+
+    @Override
+    public ComponentVisuals getTAB_SELECTED() {
+        return VISUALS.TAB_SMALL_SELECTED;
+    }
+
+    @Override
+    public int getPageSize() {
+        return 20;
+    }
+
+    protected String getTabsOffsetX() {
+        return "42";
+    }
+
+    @Override
+    protected String getCompOffsetY() {
+        if (getCurrentComp() instanceof PagedPaletteTab) {
+            if (((PagedPaletteTab) getCurrentComp()).getWs().getTypeList().size() > PagedPaletteTab.PAGE_SIZE) {
+                return "(-16)";
+            }
+        }
+        return super.getCompOffsetX();
+    }
+
+    @Override
+    public Component generateTabComp(HC_Tab tab) {
+        HC_TabComp tabComp = (HC_TabComp) super.generateTabComp(tab);
+        tabComp.setFONT_SIZE(15);
+        tabComp.setFONT_SIZE_SELECTED(16);
+        return tabComp;
+    }
 
 }

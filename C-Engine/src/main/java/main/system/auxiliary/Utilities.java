@@ -5,12 +5,15 @@ import main.entity.obj.Obj;
 public class Utilities {
 
     public static boolean compare(Obj e, Obj e2) {
-        if (e == null && e2 == null)
+        if (e == null && e2 == null) {
             return true;
-        if (e == null)
+        }
+        if (e == null) {
             return false;
-        if (e2 == null)
+        }
+        if (e2 == null) {
             return false;
+        }
         return e.equals(e2);
 
     }

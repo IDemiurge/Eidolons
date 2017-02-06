@@ -44,8 +44,9 @@ public class BuildHelper {
         this.usedCoordinates = new LinkedList<>();
         this.id = 0;
         params = buildParameters;
-        if (params == null)
+        if (params == null) {
             params = new BuildParameters();
+        }
     }
 
     public BuildHelper(Dungeon dungeon) {
@@ -60,8 +61,9 @@ public class BuildHelper {
             case BATTLEFIELD:
                 return new Coordinates(0, 0);
             case ENTRANCE_ROOM:
-                if (dungeon.getMainEntrance() == null)
+                if (dungeon.getMainEntrance() == null) {
                     return new Coordinates(1, 1);
+                }
                 return dungeon.getMainEntrance().getCoordinates();
             case EXIT_ROOM:
                 return dungeon.getMainExit().getCoordinates();
@@ -74,14 +76,16 @@ public class BuildHelper {
                 - params.getIntValue(BUILD_PARAMS.WALL_WIDTH);
 
         int y = (dungeon.getCellsY() - height) / 2;
-        if (corner)
+        if (corner) {
             y = BooleanMaster.random() ? params.WALL_WIDTH : plan.getBorderY();
+        }
 
         if (!plan.isRotated()) {
-            if (corner)
+            if (corner) {
                 x = BooleanMaster.random() ? params.WALL_WIDTH : plan.getBorderX();
-            else
+            } else {
                 x = (dungeon.getCellsX() - width) / 2;
+            }
 
             y = !plan.isFlippedY() ? params.WALL_WIDTH : dungeon.getCellsY() - params.WALL_WIDTH;
         }
@@ -94,22 +98,22 @@ public class BuildHelper {
         int height = plan.getBorderY() * room.getHeightMod() / 100;
         // apply size mod to min/max?
         if (room.getMaxX() != 0) {
-            if (width > room.getMaxX())
+            if (width > room.getMaxX()) {
                 width = room.getMaxX();
-            else if (width < room.getMinX())
+            } else if (width < room.getMinX()) {
                 width = room.getMinX();
-            else {
+            } else {
                 int random = RandomWizard.getRandomIntBetween(room.getMinX(), room.getMaxX());
                 width = MathMaster.getMinMax(RandomWizard.getRandomIntBetween(width, random), room
                         .getMinX(), room.getMaxX());
             }
         }
         if (room.getMaxY() != 0) {
-            if (height > room.getMaxY())
+            if (height > room.getMaxY()) {
                 height = room.getMaxY();
-            else if (height < room.getMinY())
+            } else if (height < room.getMinY()) {
                 height = room.getMinY();
-            else {
+            } else {
                 int random = RandomWizard.getRandomIntBetween(room.getMinY(), room.getMaxY());
                 height = MathMaster.getMinMax(RandomWizard.getRandomIntBetween(height, random),
                         room.getMinY(), room.getMaxY());
@@ -145,31 +149,38 @@ public class BuildHelper {
         // Boolean lastBent =null;
         while (true) { // break CUL DE SACS?!
             c = c.getAdjacentCoordinate(direction.getDirection());
-            if (c == null)
+            if (c == null) {
                 return false;
+            }
             Boolean result = checkLinkOrReject(block, c, culdesac);
             coordinates.add(c);
             length++;
-            if (result == null)
-                if (culdesac)
+            if (result == null) {
+                if (culdesac) {
                     result = checkCulDeSacEnds(originalDirection, c, length);
+                }
+            }
             if (result != null) {
-                if (result)
+                if (result) {
                     newBlock(coordinates, culdesac ? BLOCK_TYPE.CULDESAC : BLOCK_TYPE.CORRIDOR);
-                else
+                } else {
                     return false;
+                }
                 return true;
             }
 
             if (turn == null) {
-                if (length > 1)
-                    if (bents < max_bents)
+                if (length > 1) {
+                    if (bents < max_bents) {
                         turn = checkTurn(block, length);
+                    }
+                }
                 if (turn != null) {
                     direction = FacingMaster.rotate(direction, turn);
                 }
-            } else
+            } else {
                 turn = null;
+            }
         }
 
     }
@@ -179,22 +190,26 @@ public class BuildHelper {
         // originalDirection,dungeon) == 1)
         // return true;
 
-        if (length > Math.min(plan.getCellsX(), plan.getCellsY()))
+        if (length > Math.min(plan.getCellsX(), plan.getCellsY())) {
             return true;
+        }
         return null;
     }
 
     private Coordinates getAdjacentPassage(Coordinates c, List<Coordinates> exceptions,
                                            Boolean diagonal) {
         List<Coordinates> coordinates = c.getAdjacentCoordinates(diagonal);
-        for (Coordinates c1 : coordinates)
-            if (exceptions.contains(c1))
+        for (Coordinates c1 : coordinates) {
+            if (exceptions.contains(c1)) {
                 continue;
-            else if (!usedCoordinates.contains(c1))
+            } else if (!usedCoordinates.contains(c1)) {
                 continue;
-            else
-                // TODO COULD BE MULTIPLE!!!
+            } else
+            // TODO COULD BE MULTIPLE!!!
+            {
                 return c1;
+            }
+        }
         return null;
     }
 
@@ -209,8 +224,9 @@ public class BuildHelper {
     }
 
     private MapBlock newBlock(List<Coordinates> coordinates, BLOCK_TYPE type) {
-        if (zone == null)
+        if (zone == null) {
             this.zone = plan.getZones().get(0);
+        }
         MapBlock block = new MapBlock(id, type, zone, plan, coordinates);
         plan.getBlocks().add(block);
         id++;
@@ -222,26 +238,33 @@ public class BuildHelper {
     private Boolean checkLinkOrReject(MapBlock baseBlock, Coordinates c, boolean culdesac) {
         Coordinates adjacent = getAdjacentPassage(c, baseBlock.getCoordinates(), false);
         if (adjacent != null) {
-            if (culdesac)
+            if (culdesac) {
                 return false;
+            }
             usedCoordinates.add(adjacent); // WILL BE IN LINK_COORDINATE
             c = adjacent;
         }
-        if (baseBlock.getType() == BLOCK_TYPE.CULDESAC)
+        if (baseBlock.getType() == BLOCK_TYPE.CULDESAC) {
             return null; // or false?
+        }
         MapBlock block = plan.getBlockByCoordinate(c);
-        if (block == null)
+        if (block == null) {
             return null;
-        if (block == baseBlock || culdesac)
+        }
+        if (block == baseBlock || culdesac) {
             return false;
+        }
         int links = block.getConnectedBlocks().size();
-        if (links > 2)
+        if (links > 2) {
             return false;
+        }
         // if (baseBlock.getRoomType()==) TODO
-        if (block.getType() == BLOCK_TYPE.CULDESAC)
+        if (block.getType() == BLOCK_TYPE.CULDESAC) {
             return false;
-        if (block.getConnectedBlocks().containsKey(baseBlock))
+        }
+        if (block.getConnectedBlocks().containsKey(baseBlock)) {
             return false;
+        }
         baseBlock.link(block, c);
         block.link(baseBlock, c);
         return true;
@@ -249,18 +272,21 @@ public class BuildHelper {
 
     private Boolean checkTurn(MapBlock block, int length) {
         int chance = 33; // params.
-        if (block.getType() == BLOCK_TYPE.CULDESAC)
+        if (block.getType() == BLOCK_TYPE.CULDESAC) {
             chance /= 2;
-        if (!RandomWizard.chance(chance))
+        }
+        if (!RandomWizard.chance(chance)) {
             return null;
+        }
         return RandomWizard.random();
     }
 
     public boolean tryPlaceRoom(ROOM_TYPE type, Coordinates c, int width, int height,
                                 boolean flipX, boolean flipY) {
         List<Coordinates> coordinates = getCoordinates(c, width, height, flipX, flipY);
-        if (!checkCoordinates(coordinates))
+        if (!checkCoordinates(coordinates)) {
             return false;
+        }
         newBlock(coordinates, BLOCK_TYPE.ROOM, type);
         // re-write the method?
         // width will expand down-right...
@@ -274,30 +300,39 @@ public class BuildHelper {
 
     private boolean checkCoordinates(List<Coordinates> coordinates, boolean allowAdjacent) {
         for (Coordinates c : coordinates) {
-            if (!isWithinDungeonBounds(c))
+            if (!isWithinDungeonBounds(c)) {
                 return false;
+            }
             // if (plan.isCoordinateMappedToBlock(c1))
-            if (usedCoordinates.contains(c))
+            if (usedCoordinates.contains(c)) {
                 return false;
-            if (!allowAdjacent)
-                if (checkHasAdjacentIntersections(c))
+            }
+            if (!allowAdjacent) {
+                if (checkHasAdjacentIntersections(c)) {
                     return false;
+                }
+            }
         }
         return true;
     }
 
     private boolean isWithinDungeonBounds(Coordinates c) {
-        if (c.isInvalid())
+        if (c.isInvalid()) {
             return false;
+        }
         if (!dungeon.isSurface()) {
-            if (c.x < params.getIntValue(BUILD_PARAMS.WALL_WIDTH))
+            if (c.x < params.getIntValue(BUILD_PARAMS.WALL_WIDTH)) {
                 return false;
-            if (c.x > plan.getBorderX())
+            }
+            if (c.x > plan.getBorderX()) {
                 return false;
-            if (c.y < params.getIntValue(BUILD_PARAMS.WALL_WIDTH))
+            }
+            if (c.y < params.getIntValue(BUILD_PARAMS.WALL_WIDTH)) {
                 return false;
-            if (c.y > plan.getBorderY())
+            }
+            if (c.y > plan.getBorderY()) {
                 return false;
+            }
         }
         return true;
     }
@@ -318,8 +353,9 @@ public class BuildHelper {
 
     // boolean reverseDirection
     public int getMaxLength(MapZone zone, Coordinates baseCoordinate, Boolean horizontal) {
-        if (!CoordinatesMaster.isWithinBounds(baseCoordinate, zone.x1, zone.x2, zone.y1, zone.y2))
+        if (!CoordinatesMaster.isWithinBounds(baseCoordinate, zone.x1, zone.x2, zone.y1, zone.y2)) {
             return 0;
+        }
         int max = horizontal ? zone.getWidth() : zone.getHeight();
         if (!ListMaster.isNotEmpty(zone.getBlocks())) {
             return max;
@@ -334,8 +370,9 @@ public class BuildHelper {
                 x = baseCoordinate.x;
                 y = i;
             }
-            if (!checkCoordinateValid(zone, x, y))
+            if (!checkCoordinateValid(zone, x, y)) {
                 break;
+            }
             length++;
         }
         main.system.auxiliary.LogMaster.log(1, "Max " + (horizontal ? "Length" : "Height")
@@ -346,8 +383,9 @@ public class BuildHelper {
     public boolean checkCoordinateValid(MapZone zone, int x, int y) {
         // map new Coordinates(x, y) to block - if not null...
         Coordinates coordinates = new Coordinates(x, y);
-        if (coordinates.isInvalid())
+        if (coordinates.isInvalid()) {
             return false;
+        }
         return zone.getBlock(coordinates) == null;
     }
 
@@ -374,8 +412,9 @@ public class BuildHelper {
             return new RandomWizard<Coordinates>().getRandomListItem(edgeCoordinatesFromSquare);
         }
         Boolean prefLessMoreMiddle = null;
-        if (block.getRoomType() != ROOM_TYPE.THRONE_ROOM)
+        if (block.getRoomType() != ROOM_TYPE.THRONE_ROOM) {
             prefLessMoreMiddle = BooleanMaster.random();
+        }
         Coordinates coord = CoordinatesMaster.getFarmostCoordinateInDirection(direction.getDirection(),
                 block.getCoordinates(), prefLessMoreMiddle);
 
@@ -431,8 +470,9 @@ public class BuildHelper {
             setValue(BUILD_PARAMS.CORRIDORS, "def");
             setValue(BUILD_PARAMS.MAIN_ROOMS, "");
             setValue(BUILD_PARAMS.FILLER_TYPE, "Stone Wall");
-            if (empty)
+            if (empty) {
                 setValue(BUILD_PARAMS.FILLER_TYPE, "");
+            }
 
             // setValue(BUILD_PARAMS.PREFERRED_FILL_PERCENTAGE, "" +
             // PREFERRED_FILL_PERCENTAGE);
@@ -454,8 +494,9 @@ public class BuildHelper {
         @Override
         public String getValue(BUILD_PARAMS t) {
             String value = super.getValue(t);
-            if (value == null)
+            if (value == null) {
                 return "";
+            }
             return value;
         }
 

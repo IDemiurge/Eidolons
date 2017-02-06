@@ -44,8 +44,9 @@ public class DC_Engine {
                     new DC_Engine().microInitialization();
                 }
             }).start();
-        } else
+        } else {
             new DC_Engine().microInitialization();
+        }
 
     }
 
@@ -56,8 +57,9 @@ public class DC_Engine {
                     new DC_Engine().gameInitialization();
                 }
             });
-        } else
+        } else {
             new DC_Engine().gameInitialization();
+        }
 
     }
 

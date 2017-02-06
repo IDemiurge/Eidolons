@@ -19,8 +19,9 @@ public enum HOTKEYS {
     public static HOTKEYS getHotkey(char CHAR2) {
         for (HOTKEYS hotKey : HOTKEYS.values()) {
 
-            if (hotKey.CHAR == CHAR2)
+            if (hotKey.CHAR == CHAR2) {
                 return hotKey;
+            }
 
         }
         return null;

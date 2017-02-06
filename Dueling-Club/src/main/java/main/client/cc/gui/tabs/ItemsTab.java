@@ -37,8 +37,9 @@ public class ItemsTab extends HeroItemTab {
 
     public ItemsTab(MainViewPanel mvp, DC_HeroObj hero) {
         super("Inventory", mvp, hero);
-        if (hero.getGame().isSimulation())
+        if (hero.getGame().isSimulation()) {
             getItemManager().addRemoveList(pagedListPanel); // TODO
+        }
     }
 
     public ItemsTab(DC_HeroObj hero, InvListManager invListManager) {
@@ -48,8 +49,9 @@ public class ItemsTab extends HeroItemTab {
 
     @Override
     protected ItemListManager getItemManager() {
-        if (game.isSimulation())
+        if (game.isSimulation()) {
             return super.getItemManager();
+        }
         return game.getInventoryManager().getInvListManager();
     }
 
@@ -69,8 +71,9 @@ public class ItemsTab extends HeroItemTab {
 
         addItemSlots();
         super.addComps();
-        if (isActionPanelVisible())
+        if (isActionPanelVisible()) {
             addActionPanel();
+        }
         addJewelrySlots();
         addQuickSlots();
         addWeightPool();
@@ -79,8 +82,9 @@ public class ItemsTab extends HeroItemTab {
     }
 
     private boolean isActionPanelVisible() {
-        if (!game.isSimulation())
+        if (!game.isSimulation()) {
             return false;
+        }
         return true;
         // if (CharacterCreator.getInfoSelected() == null)
         // return false;
@@ -97,10 +101,11 @@ public class ItemsTab extends HeroItemTab {
     }
 
     private void addActionPanel() {
-        if (actionPanel == null)
+        if (actionPanel == null) {
             actionPanel = new ActionInfoList(hero);
-        else
+        } else {
             actionPanel.refresh();
+        }
         String x = "0";
         // if ()
         // x = "@center_x";
@@ -110,10 +115,11 @@ public class ItemsTab extends HeroItemTab {
     }
 
     private void addItemSlots() {
-        if (slots == null)
+        if (slots == null) {
             slots = new HeroItemSlots(hero, getItemManager());
-        else
+        } else {
             slots.refresh();
+        }
 
         add(slots, "id " + SLOTS_ID + ", pos 0 0");
 
@@ -128,10 +134,11 @@ public class ItemsTab extends HeroItemTab {
     }
 
     private void addJewelrySlots() {
-        if (jewelrySlots == null)
+        if (jewelrySlots == null) {
             jewelrySlots = new JewelrySlots(hero, getItemManager());
-        else
+        } else {
             jewelrySlots.refresh();
+        }
 
         int y = GuiManager.getFullObjSize();
         // if (actionPanelVisible)
@@ -145,10 +152,11 @@ public class ItemsTab extends HeroItemTab {
     }
 
     private void addQuickSlots() {
-        if (quickSlots == null)
+        if (quickSlots == null) {
             quickSlots = new QuickItemList(hero, getItemManager());
-        else
+        } else {
             quickSlots.refresh();
+        }
 
         add(quickSlots, "id " + QUICK_ID + ", @pos center_x " + JEWELRY_ID + ".y2-15");
     }
@@ -159,8 +167,9 @@ public class ItemsTab extends HeroItemTab {
     }
 
     protected void updatePoolComp() {
-        if (poolComp == null)
+        if (poolComp == null) {
             initPoolComp();
+        }
         poolComp.setText(getWeightString());
 
     }

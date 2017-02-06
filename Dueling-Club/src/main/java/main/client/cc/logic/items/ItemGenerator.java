@@ -101,10 +101,12 @@ public class ItemGenerator {
     }
 
     public static void init() {
-        if (!isGenerationOn())
+        if (!isGenerationOn()) {
             return;
-        if (defaultGenerator != null)
+        }
+        if (defaultGenerator != null) {
             return;
+        }
 
         ContentGenerator.initMaterials();
 
@@ -221,8 +223,9 @@ public class ItemGenerator {
         type.setProperty(PROPS.JEWELRY_PASSIVE_ENCHANTMENT, string);
         int costMod = ench.getCostBase();
         if (level != null) {
-            if (level.getInt() > 0)
+            if (level.getInt() > 0) {
                 string += (level.getInt());
+            }
             costMod = costMod * level.getCostFactor();
         }
         string += ImageManager.DEFAULT_ENTITY_IMAGE_FORMAT;
@@ -243,8 +246,9 @@ public class ItemGenerator {
             ObjType newType = generateEmptyJewelryItem(ring, type, null);
             int amount = trait.getIntegers()[level.getInt()]; // double for
             // amulets?
-            if (!ring && trait.isDoubleAmulet())
+            if (!ring && trait.isDoubleAmulet()) {
                 amount = amount * 2;
+            }
             newType.setParam(p, amount);
 
             type.getGame().initType(newType);
@@ -258,23 +262,26 @@ public class ItemGenerator {
             newType.setProperty(PROPS.MAGICAL_ITEM_TRAIT, trait.toString());
             newType.setProperty(PROPS.MAGICAL_ITEM_LEVEL, level.toString());
             int costMod = trait.getCostBase() * level.getCostFactor();
-            if (!ring && trait.isDoubleAmulet())
+            if (!ring && trait.isDoubleAmulet()) {
                 costMod = costMod * 5 / 2;
+            }
 
             newType.modifyParameter(PARAMS.GOLD_COST, costMod);
             newType.modifyParamByPercent(PARAMS.GOLD_COST, JEWELRY_COST_MODIFIER);
 
             String group = DataManager.MISC;
-            if (trait == JEWELRY_ITEM_TRAIT.ATTRIBUTE_BONUS)
+            if (trait == JEWELRY_ITEM_TRAIT.ATTRIBUTE_BONUS) {
                 group = DataManager.ATTR;
+            }
 
             newType.setProperty(G_PROPS.JEWELRY_GROUP, group);
 
             String code = "" + (level.getInt());
             if (level.getInt() > 0) {
                 String img = generateImgPath(code, type);
-                if (ImageManager.isImage(img))
+                if (ImageManager.isImage(img)) {
                     newType.setProperty(G_PROPS.IMAGE, img);
+                }
             }
         }
 
@@ -288,10 +295,11 @@ public class ItemGenerator {
         if (material != null) {
             newType.modifyParameter(PARAMS.ENCHANTMENT_CAPACITY, material.getEnchantmentCapacity());
             int costMod = material.getCost();
-            if (ring)
+            if (ring) {
                 newType.modifyParameter(PARAMS.CHARISMA, material.getModifier());
-            else
+            } else {
                 newType.modifyParameter(PARAMS.CHARISMA, 2 * material.getModifier());
+            }
 
             newType.setProperty(G_PROPS.NAME, generateName(null, material, newType));
 
@@ -304,8 +312,9 @@ public class ItemGenerator {
                                       ObjType type, PARAMETER p) {
         String name = type.getName();
         int amount = trait.getIntegers()[level.getInt()];
-        if (!isRing(type) && trait.isDoubleAmulet())
+        if (!isRing(type) && trait.isDoubleAmulet()) {
             amount *= 2;
+        }
         name = level.toString() + " " + name + " of " + p.getName()
                 + StringMaster.wrapInParenthesis("+" + amount);
         return name;
@@ -326,13 +335,15 @@ public class ItemGenerator {
                 initSpecialItem(type);
                 continue;
             }
-            for (QUALITY_LEVEL quality : qualityLevels)
+            for (QUALITY_LEVEL quality : qualityLevels) {
                 for (MATERIAL material : materials) {
 
-                    if (type.isGenerated())
+                    if (type.isGenerated()) {
                         continue;
-                    if (!checkMaterial(type, group))
+                    }
+                    if (!checkMaterial(type, group)) {
                         continue;
+                    }
 
                     ObjType newType = generateItem(quality, material, type,
                             (weapon) ? WEAPON_PARAMS : ARMOR_PARAMS, (weapon) ? WEAPON_MOD_PARAMS
@@ -342,6 +353,7 @@ public class ItemGenerator {
                     DataManager.addType(newType.getName(), (weapon) ? OBJ_TYPES.WEAPONS
                             : OBJ_TYPES.ARMOR, newType);
                 }
+            }
 
         }
     }
@@ -375,23 +387,26 @@ public class ItemGenerator {
 
     public static ObjType generateItem(QUALITY_LEVEL quality, MATERIAL material, ObjType type,
                                        PARAMS[] params, PARAMS[] mod_params) {
-        if (type.isGenerated())
+        if (type.isGenerated()) {
             return null;
+        }
         ObjType newType = getNewType(type);
         initParams(quality, material, newType, params, mod_params);
 
         String name = generateName(quality, material, type);
         newType.setProperty(G_PROPS.NAME, name);
         String code = "" + material.getCode();
-        if (material.getCode() < 1)
+        if (material.getCode() < 1) {
             code = "";
+        }
         String img = generateImgPath(code, type);
 
         newType.setProperty(G_PROPS.MATERIAL, material.getName());
         newType.setProperty(G_PROPS.QUALITY_LEVEL, quality.toString());
 
-        if (img != null)
+        if (img != null) {
             newType.setProperty(G_PROPS.IMAGE, img);
+        }
 
         applyWeightPenalties(newType);
 
@@ -402,17 +417,20 @@ public class ItemGenerator {
 
     private static void applyWeightPenalties(ObjType type) {
         // TODO magical item exception!
-        if (type.getGroupingKey().equalsIgnoreCase("" + WEAPON_TYPE.NATURAL))
+        if (type.getGroupingKey().equalsIgnoreCase("" + WEAPON_TYPE.NATURAL)) {
             return;
+        }
         // robes?
         // ++ apply durability from quality?
         int w = type.getIntParam(PARAMS.WEIGHT);
 
         for (PARAMETER p : (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.WEAPONS ? DC_ContentManager
                 .getWeaponWeightPenaltyParams() : DC_ContentManager.getArmorWeightPenaltyParams())) {
-            if (type.getGroupingKey().equalsIgnoreCase("" + WEAPON_TYPE.MAGICAL))
-                if (!p.getName().contains("move") && !p.getName().contains("attack"))
+            if (type.getGroupingKey().equalsIgnoreCase("" + WEAPON_TYPE.MAGICAL)) {
+                if (!p.getName().contains("move") && !p.getName().contains("attack")) {
                     continue;
+                }
+            }
             type.modifyParameter(p, w);
         }
 
@@ -434,12 +452,14 @@ public class ItemGenerator {
         for (PARAMS p : mod_params) {
             int amount = 0;
             int modifier = material.getModifier();
-            if (p == PARAMS.DURABILITY_MODIFIER)
-                if (material.getDurabilityMod() != 0)
+            if (p == PARAMS.DURABILITY_MODIFIER) {
+                if (material.getDurabilityMod() != 0) {
                     modifier = material.getDurabilityMod();
-            if (p == PARAMS.DICE)
+                }
+            }
+            if (p == PARAMS.DICE) {
                 amount = newType.getIntParam(p) * modifier; // TODO
-            else if (p == PARAMS.ARMOR_MODIFIER) {
+            } else if (p == PARAMS.ARMOR_MODIFIER) {
                 // TODO *NEW
                 amount = newType.getIntParam(PARAMS.ARMOR_LAYERS) * modifier * ARMOR_MODIFIER;
                 // Integer cover = newType.getIntParam(PARAMS.COVER_PERCENTAGE);
@@ -508,8 +528,9 @@ public class ItemGenerator {
         }
 
         Integer mod = newType.getIntParam(PARAMS.COST_MODIFIER);
-        if (mod <= 0)
+        if (mod <= 0) {
             mod = 100;
+        }
         newType.modifyParameter(PARAMS.GOLD_COST, material.getCost() * n * mod / 100);
 
         newType.setParameter(PARAMS.HARDNESS, material.getHardness());
@@ -521,14 +542,17 @@ public class ItemGenerator {
         }
 
         mod = quality.getDurabilityMod();
-        if (mod > 0 && mod != 100)
+        if (mod > 0 && mod != 100) {
             newType.multiplyParamByPercent(PARAMS.DURABILITY, mod, false);
+        }
 
         mod = quality.getCostMod();
-        if (mod > 0 && mod != 100)
+        if (mod > 0 && mod != 100) {
             newType.multiplyParamByPercent(PARAMS.GOLD_COST, mod, false);
-        if (magicApplied)
+        }
+        if (magicApplied) {
             newType.multiplyParamByPercent(PARAMS.GOLD_COST, mod, false);
+        }
         newType.modifyParameter(PARAMS.ENCHANTMENT_CAPACITY, n * material.getEnchantmentCapacity());
 
         // PARAMS.DICE min/max? special dmg category?
@@ -571,27 +595,37 @@ public class ItemGenerator {
     public static List<ObjType> getBaseTypes(OBJ_TYPE type) {
         List<ObjType> list = new LinkedList<>();
         if (type instanceof C_OBJ_TYPE) {
-            if (type.equals(OBJ_TYPES.WEAPONS))
+            if (type.equals(OBJ_TYPES.WEAPONS)) {
                 list.addAll(baseWeaponTypes);
-            if (type.equals(OBJ_TYPES.JEWELRY))
+            }
+            if (type.equals(OBJ_TYPES.JEWELRY)) {
                 list.addAll(baseJewelryTypes);
-            if (type.equals(OBJ_TYPES.ITEMS))
+            }
+            if (type.equals(OBJ_TYPES.ITEMS)) {
                 list.addAll(baseItemTypes);
-            if (type.equals(OBJ_TYPES.ARMOR))
+            }
+            if (type.equals(OBJ_TYPES.ARMOR)) {
                 list.addAll(baseArmorTypes);
-            if (type.equals(OBJ_TYPES.GARMENT))
+            }
+            if (type.equals(OBJ_TYPES.GARMENT)) {
                 list.addAll(baseGarmentTypes);
+            }
         } else {
-            if (type.equals(OBJ_TYPES.WEAPONS))
+            if (type.equals(OBJ_TYPES.WEAPONS)) {
                 return (baseWeaponTypes);
-            if (type.equals(OBJ_TYPES.JEWELRY))
+            }
+            if (type.equals(OBJ_TYPES.JEWELRY)) {
                 return (baseJewelryTypes);
-            if (type.equals(OBJ_TYPES.ITEMS))
+            }
+            if (type.equals(OBJ_TYPES.ITEMS)) {
                 return (baseItemTypes);
-            if (type.equals(OBJ_TYPES.ARMOR))
+            }
+            if (type.equals(OBJ_TYPES.ARMOR)) {
                 return (baseArmorTypes);
-            if (type.equals(OBJ_TYPES.GARMENT))
+            }
+            if (type.equals(OBJ_TYPES.GARMENT)) {
                 return (baseGarmentTypes);
+            }
         }
 
         return list;
@@ -708,8 +742,9 @@ public class ItemGenerator {
                         ITEM_GROUP.COATING + "")
                         || type.getProperty(G_PROPS.GROUP).equals("Elixirs")) {
                     generateConcoctions(type);
-                } else
+                } else {
                     generatePotions(type);
+                }
 
             }
 
@@ -735,12 +770,15 @@ public class ItemGenerator {
                     // (leveled) ? PAS_LEVEL_JEWELRY:
                     ench.getItemTypes(), OBJ_TYPES.JEWELRY);
             for (ObjType type : types) {
-                if (type.isGenerated())
+                if (type.isGenerated()) {
                     continue;
+                }
                 boolean ring = isRing(type);
-                if (ring)
-                    if (!ench.isRing())
+                if (ring) {
+                    if (!ench.isRing()) {
                         continue;
+                    }
+                }
 
                 if (!leveled) {
                     ObjType newType = generateEmptyJewelryItem(ring, type, null);
@@ -762,8 +800,9 @@ public class ItemGenerator {
             // continue;
             for (ObjType type : DataManager.toTypeList(trait.getJewelryTypes(), OBJ_TYPES.JEWELRY)) {
 
-                if (type.isGenerated())
+                if (type.isGenerated()) {
                     continue;
+                }
                 for (MAGICAL_ITEM_LEVEL level : MAGICAL_ITEM_LEVEL.values()) {
                     boolean ring = isRing(type);
                     generateJewelryItem(ring, type, trait, level);
