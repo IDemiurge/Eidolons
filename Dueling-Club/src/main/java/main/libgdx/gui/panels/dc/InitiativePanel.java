@@ -1,6 +1,7 @@
 package main.libgdx.gui.panels.dc;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
@@ -126,6 +127,13 @@ public class InitiativePanel extends Group {
             }
         }
     }*/
+
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        Actor actor = super.hit(x, y, touchable);
+        if (actor == this) actor = null;
+        return actor;
+    }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
