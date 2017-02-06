@@ -1,6 +1,7 @@
 package main.libgdx.bf;
 
 import com.badlogic.gdx.graphics.Texture;
+import main.content.C_OBJ_TYPE;
 import main.content.OBJ_TYPES;
 import main.content.properties.G_PROPS;
 import main.entity.obj.DC_HeroObj;
@@ -112,7 +113,7 @@ public class UnitViewOptions {
 
     public final void createFromGameObject(DC_HeroObj obj) {
         this.portrateTexture = TextureManager.getOrCreate(obj.getImagePath());
-        if (obj.getOBJ_TYPE_ENUM() == OBJ_TYPES.UNITS) {
+        if (C_OBJ_TYPE.UNITS_CHARS.equals(obj.getOBJ_TYPE_ENUM())) {
             this.directionValue = obj.getFacing().getDirection().getDegrees();
             this.directionPointerTexture = TextureManager.getOrCreate("\\UI\\DIRECTION POINTER.png");
 

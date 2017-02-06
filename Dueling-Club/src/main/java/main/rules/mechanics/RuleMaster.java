@@ -10,14 +10,14 @@ public class RuleMaster {
 
     private static Map<RULE, Boolean> map = new XLinkedMap<>();
     private static Map<RULE, Boolean> mapTest = new XLinkedMap<>();
-    private static RULE_SCOPE scope = RULE_SCOPE.TEST;
+    private static RULE_SCOPE scope = RULE_SCOPE.BASIC;
 
     public static void init() {
         for (RULE r : RULE.values()) {
-            Boolean on = checkStatus(getStatusForRule(r));
+            Boolean on = checkStatus(getScopeForRule(r));
             map.put(r, on);
             if (getScope() == RULE_SCOPE.TEST)
-                if (getStatusForRule(r) == RULE_SCOPE.TEST)
+                if (getScopeForRule(r) == RULE_SCOPE.TEST)
                     mapTest.put(r, true);
         }
     }
@@ -29,33 +29,43 @@ public class RuleMaster {
                     case BASIC:
                         return true;
                     case FULL:
-                        return false;
+                        return true;
                     case TEST:
-                        return false;
+                        return true;
                 }
             case FULL:
                 switch (getScope()) {
                     case BASIC:
-                        return true;
+                        return false;
                     case FULL:
                         return true;
                     case TEST:
-                        return false;
+                        return true;
                 }
             case TEST:
                 switch (getScope()) {
                     case BASIC:
-                        return true;
+                        return false;
                     case FULL:
-                        return true;
+                        return false;
                     case TEST:
                         return true;
                 }
         }
         return null;
     }
+    public static boolean checkRuleGroupIsOn(RULE_GROUP group) {
+        return checkStatus(getScopeForRuleGroup(group));
+    }
 
-    public static RULE_SCOPE getStatusForRule(RULE r) {
+    public static RULE_SCOPE getScopeForRuleGroup(RULE_GROUP r) {
+        switch (r) {
+            case EXTRA_ATTACKS:
+                return RULE_SCOPE.FULL;
+        }
+        return RULE_SCOPE.BASIC;
+    }
+        public static RULE_SCOPE getScopeForRule(RULE r) {
         switch (r) {
             case FORCE:
             case INJURY:
@@ -78,9 +88,6 @@ public class RuleMaster {
         mapTest.put(rule, on);
     }
 
-    public static boolean checkRuleGroupIsOn(RULE_GROUP extraAttacks) {
-        return true;
-    }
 
     public static boolean isRuleOn(String id) {
         return true;
@@ -94,7 +101,7 @@ public class RuleMaster {
 
     public static boolean isRuleOn(RULE rule) {
 
-        return checkStatus(getStatusForRule(rule));
+        return checkStatus(getScopeForRule(rule));
 
     }
 
@@ -236,7 +243,7 @@ public class RuleMaster {
     public enum RULE {
         FORCE, ATTACK_OF_OPPORTUNITY, INSTANT_ATTACK, COUNTER_ATTACK, TIME, VISIBILITY, CLEAR_SHOT,
         // C
-
+DURABILITY,
         UNCONSCIOUS,
         FOCUS,
         MORALE,

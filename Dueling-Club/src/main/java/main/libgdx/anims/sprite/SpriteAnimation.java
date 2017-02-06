@@ -27,15 +27,16 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private Sprite sprite;
 
     public SpriteAnimation(String path) {
-        this(defaultFrameDuration, false, 1, path);
+        this(defaultFrameDuration, false, 1, path, false);
     }
 
-    /*
-    play_mode.
-
-     */
-    public SpriteAnimation(float frameDuration, boolean looping, int loops, String path) {
-        super(frameDuration, TextureManager.getSpriteSheetFrames(path));
+    public SpriteAnimation( String path
+     , boolean singleSprite) {
+        this(defaultFrameDuration, false, 1, path, singleSprite);
+    }
+    public SpriteAnimation(float frameDuration, boolean looping, int loops, String path
+     , boolean singleSprite) {
+        super(frameDuration, TextureManager.getSpriteSheetFrames(path, singleSprite));
         frameNumber = TextureManager.getFrameNumber(path);
         stateTime = 0;
         this.looping = looping;
@@ -146,7 +147,6 @@ if (sprite==null )
     }
 
     public void setRotation(float rotation) {
-        main.system.auxiliary.LogMaster.log(1,"ROTATION old : "+ this.rotation+"; new : "+ rotation );
         this.rotation = rotation;
     }
 

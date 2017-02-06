@@ -101,7 +101,7 @@ public class AttackAnim extends ActionAnim {
     @Override
     public void start() {
         sprites.clear();
-        sprites.add(new SpriteAnimation(getTexturePath()));
+        sprites.add(new SpriteAnimation(getTexturePath(), true));
         super.start();
         add();
     }
@@ -121,8 +121,8 @@ public class AttackAnim extends ActionAnim {
         int offsetX = 0;
         int offsetY = 0;
         if (getActive().isOffhand()) {
-            if (!getFacing().isVertical()) offsetY -= getActor().getH();
-            else offsetX -= getActor().getW();
+            if (!getFacing().isVertical()) offsetY -= getActor().getHeight();
+            else offsetX -= getActor().getWidth();
         }
 
         defaultPosition.x = getX() + offsetX;

@@ -4,14 +4,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import javafx.util.Pair;
 import main.ability.effects.MoveEffect;
 import main.entity.Entity;
+import main.entity.obj.DC_HeroObj;
 import main.game.battlefield.Coordinates;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.sprite.SpriteAnimation;
+import main.system.EventCallbackParam;
 import main.system.GuiEventType;
 import main.system.ai.logic.target.EffectMaster;
+import main.system.auxiliary.ListMaster;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -27,9 +31,19 @@ public class MoveAnimation extends ActionAnim {
 
 
     private MoveToAction action;
+    private DC_HeroObj unit;
+    static boolean on=false;
+
+    public static boolean isOn() {
+        return on;
+    }
 
     public MoveAnimation(Entity active, AnimData params) {
         super(active, params);
+        if (!ListMaster.isNotEmpty(EffectMaster.getEffectsOfClass(getActive(),
+         MoveEffect.class))) // for teleports, telekinesis etc
+           unit = (DC_HeroObj) getRef().getTargetObj();
+        unit = (DC_HeroObj) getRef().getSourceObj();
     }
 
     @Override
@@ -133,13 +147,13 @@ public class MoveAnimation extends ActionAnim {
     //getTrajectory()
 
     @Override
-    public List<GuiEventType> getEventsOnStart() {
-        return Arrays.asList(DESTROY_UNIT_MODEL);
+    public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnStart() {
+        return Arrays.asList(new Pair<>( DESTROY_UNIT_MODEL, new EventCallbackParam<>(unit)));
     }
 
     @Override
-    public List<GuiEventType> getEventsOnFinish() {
-        return Arrays.asList(UNIT_MOVED);
+    public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnFinish() {
+        return Arrays.asList(new Pair<>( UNIT_MOVED, new EventCallbackParam<>(unit)));
     }
 
     @Override

@@ -18,6 +18,8 @@ public abstract class DC_RuleImpl implements Rule {
     protected MicroGame game;
     protected Effect effects;
     private boolean initialized = false;
+    protected boolean on = true;
+
 
     public DC_RuleImpl(MicroGame game) {
         this.game = game;
@@ -76,4 +78,14 @@ public abstract class DC_RuleImpl implements Rule {
     }
 
     public abstract void initEventType();
+
+
+    @Override
+    public boolean isOn() {
+        return on;
+    }
+
+    public void setOn(boolean on) {
+        this.on = on;
+    }
 }

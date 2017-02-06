@@ -48,8 +48,8 @@ public class BleedingRule extends DC_RuleImpl {
         effects = new ModifyCounterEffect(STD_COUNTERS.Bleeding_Counter.getName(),
                 MOD.MODIFY_BY_CONST,
 
-                "{ACTIVE_PARAMS.BLEEDING_MOD}/100*"
-                        + StringMaster.wrapInParenthesis(
+//                "{ACTIVE_PARAMS.BLEEDING_MOD}/100*"+
+                         StringMaster.wrapInParenthesis(
                         // TODO formula?
                         THRESHOLD + "-" + "({TARGET_C_TOUGHNESS}*100/"
                                 + "{TARGET_TOUGHNESS})*" + MODIFIER + "/100")

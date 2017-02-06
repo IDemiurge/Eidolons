@@ -13,7 +13,9 @@ import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.anims.particles.lighting.LightingManager;
+import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.bf.mouse.GridMouseListener;
+import main.libgdx.gui.panels.dc.InitiativePanelParam;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -58,9 +60,6 @@ public class GridPanel extends Group {
     }
 
 
-
-
-
     public GridPanel init() {
         setUnitMap(new HashMap<>());
         emptyImage = TextureManager.getOrCreate(emptyCellPath);
@@ -102,7 +101,7 @@ public class GridPanel extends Group {
 
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p =
-                    (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
+             (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             Map<Borderable, Runnable> map = new HashMap<>();
             for (DC_Obj obj1 : p.getLeft()) {
                 Borderable b = unitMap.get(obj1);
@@ -115,6 +114,13 @@ public class GridPanel extends Group {
         GuiEventManager.bind(UNIT_MOVED, param -> {
             moveUnitView((DC_HeroObj) param.get());
         });
+        GuiEventManager.bind(DESTROY_UNIT_MODEL, param -> {
+            DC_HeroObj unit = (DC_HeroObj) param.get();
+            UnitView view = (UnitView) unitMap.get(unit);
+            GuiEventManager.trigger(REMOVE_FROM_INITIATIVE_PANEL,
+             new EventCallbackParam(new InitiativePanelParam(null, view.getId(), 0)));
+            removeUnitView(unit);
+        });
 
         GuiEventManager.bind(INGAME_EVENT_TRIGGERED, param -> {
             main.game.event.Event event = (main.game.event.Event) param.get();
@@ -122,14 +128,14 @@ public class GridPanel extends Group {
             boolean caught = false;
             if (event.getType() == STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED) {
                 GuiEventManager.trigger(GuiEventType.EFFECT_APPLIED,
-                        new EventCallbackParam<>(event.getRef().getEffect()));
+                 new EventCallbackParam<>(event.getRef().getEffect()));
                 caught = true;
             }
 
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED
-                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
-                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
+             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
+             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
 //                (r.getEffect() instanceof ChangeFacingEffect) nice try
             {
                 DC_HeroObj hero = (DC_HeroObj) r.getObj(KEYS.TARGET
@@ -144,6 +150,8 @@ public class GridPanel extends Group {
 
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED) {
+                if (!DeathAnim.isOn())
+                    GuiEventManager.trigger(DESTROY_UNIT_MODEL, new EventCallbackParam(r.getTargetObj()));
                 BaseView bv = removeUnitView((DC_HeroObj) r.getTargetObj());
                 if (bv instanceof UnitView) {
                     ((UnitView) bv).setVisibleVal(0);//set this val to zero remove unit from initiative queue
@@ -289,7 +297,7 @@ public class GridPanel extends Group {
     public Actor hitChildren(float x, float y, boolean touchable) {
         return super.hit(x, y, touchable);
     }
-    
+
     private void moveUnitView(DC_HeroObj heroObj) {
         int rows1 = rows - 1;
         BaseView uv = unitMap.get(heroObj);
@@ -328,6 +336,15 @@ public class GridPanel extends Group {
     public Actor hit(float x, float y, boolean touchable) {
         if (touchable && getTouchable() != Touchable.enabled) return null;
         return x >= 0 && x < getWidth() && y >= 0 && y < getHeight() ? this : null;
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        for (BaseView view : unitMap.values()) {
+            if (view.getActions().size > 0)
+                view.act(delta);
+        }
     }
 
     @Override

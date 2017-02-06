@@ -46,6 +46,7 @@ public class ModifyCounterEffect extends MicroEffect implements ResistibleEffect
         Ref REF = Ref.getCopy(ref);
         Integer amount = formula.getInt(ref);
 
+//        MODIFY_BY_CONST Counter: {ACTIVE_PARAMS.BLEEDING_MOD}/100*(20-({TARGET_C_TOUGHNESS}*100/{TARGET_TOUGHNESS})*10/100)
         if (getResistanceMod() != null) {
             amount = MathMaster.applyMod(amount, getResistanceMod());
         }

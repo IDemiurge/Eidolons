@@ -91,6 +91,7 @@ public abstract class GameState {
             return;
 
         for (Rule rule : triggerRules) {
+            if (rule.isOn())
             if (rule.check(e)) {
                 Ref ref = Ref.getCopy(e.getRef());
                 ref.setEvent(e);

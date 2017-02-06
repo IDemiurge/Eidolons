@@ -1,37 +1,106 @@
 package main.libgdx.anims.std;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
-import main.entity.Entity;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import javafx.util.Pair;
+import main.entity.Ref.KEYS;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.top.DC_ActiveObj;
+import main.game.battlefield.Coordinates;
+import main.game.event.Event;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimData;
+import main.libgdx.anims.AnimData.ANIM_VALUES;
+import main.libgdx.anims.AnimMaster;
+import main.libgdx.texture.TextureManager;
+import main.system.EventCallbackParam;
+import main.system.GuiEventType;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static main.system.GuiEventType.DESTROY_UNIT_MODEL;
 
 /**
  * Created by JustMe on 1/16/2017.
  */
 public class DeathAnim extends ActionAnim {
+    private static boolean on=true;
     DC_HeroObj unit;
     DEATH_ANIM template;
-    public DeathAnim(Entity active, AnimData params) {
-        super(active, params);
-        unit = (DC_HeroObj) getRef().getTargetObj();
-        template = getTemplate(getActive(), unit);
+    private Image skull;
 
+    public DeathAnim(Event e) {
+        super(e.getRef().getObj(KEYS.ACTIVE), getDeathAnimData(e));
+       unit = (DC_HeroObj) e.getRef().getTargetObj();
+        template = getTemplate(getActive(), unit);
+        duration=2;
     }
 
+    private static AnimData getDeathAnimData(Event e) {
+        AnimData  data=new AnimData();
+        data.setValue(ANIM_VALUES.PARTICLE_EFFECTS, "impact\\Crimson Death");
+        return data;
+    }
 
+    @Override
+    public boolean draw(Batch batch) {
+        return super.draw(batch);
+    }
+
+    @Override
+    public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnFinish() {
+        return Arrays.asList(new Pair<>( DESTROY_UNIT_MODEL, new EventCallbackParam<>(unit)));
+    }
 
     @Override
     protected Action getAction() {
+        return null ;
+    }
+
+    @Override
+    protected void dispose() {
+        super.dispose();
+        if (getActor()!=null )
+        getActor().remove();
+    }
+
+    @Override
+    protected void add() {
+        if (getActor()==null )return ;
+        AnimMaster.getInstance().addActor(getActor());
+        getActor().setPosition(getOrigin().x, getOrigin().y);
         AlphaAction action = ActorMaster.addFadeAction(getActor());
+
         action.setDuration(duration);
-        return action;
+    }
+
+    @Override
+    public Coordinates getOriginCoordinates() {
+        return unit.getCoordinates();
+    }
+
+    @Override
+    public Actor getActor() {
+        if (skull==null ){
+            skull = new Image(TextureManager.getOrCreate("UI\\Empty.png")){
+                @Override
+                public void draw(Batch batch, float parentAlpha) {
+                    act(Gdx.graphics.getDeltaTime());
+                    super.draw(batch, parentAlpha);
+                }
+            };
+        }
+//        return skull;
+        return null ;
     }
 
     private DEATH_ANIM getTemplate(DC_ActiveObj active, DC_HeroObj unit) {
-        getRef().getEvent().getRef().getDamageType();
+//        getRef().getEvent().getRef().getDamageType();
         return DEATH_ANIM.FADE;
     }
 
@@ -50,6 +119,10 @@ public class DeathAnim extends ActionAnim {
         COLLAPSE,
         ATOMIZE, SHATTER,;
         String spritePath;
+    }
+
+    public static boolean isOn() {
+        return on;
     }
 
 }

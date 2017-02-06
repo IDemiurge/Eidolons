@@ -65,7 +65,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     private boolean continuousWrapped;
     private Boolean forceStaticParse;
     private Formula originalFormula;
-    private Trigger trigger;
+    protected Trigger trigger;
     private boolean applied;
     private ActiveObj animationActive;
     private ANIM animation;
@@ -239,6 +239,11 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
             this.ref.setTarget(targetId);
             apply();
         }
+
+    }
+
+    @Override
+    public void remove() {
 
     }
 

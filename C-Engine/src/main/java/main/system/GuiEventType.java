@@ -52,6 +52,6 @@ public enum GuiEventType {
     CREATE_EMITTER,
 
 
-    SFX_PLAY_LAST();
+    SFX_PLAY_LAST(), MOUSE_HOVER;
 
 }

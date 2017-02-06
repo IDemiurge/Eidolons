@@ -40,6 +40,7 @@ public class UnitView extends BaseView {
     private Label initiativeStrVal;
     private float alpha = 1;
 
+
     public UnitView(UnitViewOptions o) {
         super(o);
         curId = lastId.getAndIncrement();
@@ -231,5 +232,8 @@ public class UnitView extends BaseView {
         } else {
             LogMaster.error("Initiative set to wrong object type != OBJ_TYPES.UNITS");
         }
+    }
+    public int getId() {
+        return curId;
     }
 }

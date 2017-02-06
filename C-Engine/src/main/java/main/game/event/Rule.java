@@ -11,4 +11,7 @@ public interface Rule {
 
     void apply(Ref ref);
 
+    boolean isOn();
+
+
 }

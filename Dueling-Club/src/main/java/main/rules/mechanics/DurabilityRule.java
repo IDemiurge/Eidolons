@@ -25,6 +25,7 @@ public class DurabilityRule extends DC_RuleImpl {
 
     public DurabilityRule(MicroGame game) {
         super(game);
+        setOn(false);
     }
 
     public static int physicalDamage(int damage, int blocked, DAMAGE_TYPE damage_type,

@@ -1,6 +1,7 @@
 package main.libgdx.anims.std;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.ability.Ability;
 import main.entity.Entity;
 import main.entity.obj.top.DC_ActiveObj;
@@ -9,7 +10,6 @@ import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimMaster;
-import main.libgdx.bf.BaseView;
 import main.libgdx.texture.TextureManager;
 
 import java.util.function.Supplier;
@@ -58,7 +58,7 @@ public class ActionAnim extends Anim {
         return (DC_ActiveObj) super.getActive();
     }
 
-    public BaseView getActor() {
+    public Actor getActor() {
         return GameScreen.getInstance().getGridPanel().getUnitMap().get(getActive().getOwnerObj());
     }
 

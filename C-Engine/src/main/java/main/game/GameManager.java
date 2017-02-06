@@ -197,6 +197,7 @@ public abstract class GameManager implements GenericGameManager {
     public void attachmentRemoved(Attachment attachment, Obj basis) {
         for (Effect e : attachment.getEffects()) {
             // TODO
+            e.remove();
             getState().removeEffect(e);
             // when addTrigger effect is removed, so is the trigger
         }
