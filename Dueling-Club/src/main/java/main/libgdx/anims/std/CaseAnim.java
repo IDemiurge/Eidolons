@@ -5,7 +5,7 @@ package main.libgdx.anims.std;
  */
 public class CaseAnim {
 
-    public enum ANIM_CASES{
+    public enum ANIM_CASES {
         BLOCK,
         DODGE,
         PARRY,

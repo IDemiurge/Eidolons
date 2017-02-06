@@ -12,11 +12,11 @@ public class MyParticleEditor extends ParticleEditor {
 
     public MyParticleEditor() {
         super();
-       new ReflectionMaster().setValue("effect", new ParticleEffect() , this);
-       instance= this;
+        new ReflectionMaster().setValue("effect", new ParticleEffect(), this);
+        instance = this;
     }
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         ParticleEditor.main(args);
 
 //        EffectPanel myEffectPanel = new EffectPanel(instance){

@@ -126,7 +126,7 @@ public class AnimationConstructor {
     private Anim getPartAnim(AnimData data, DC_ActiveObj active, ANIM_PART part) {
 
         Anim anim = createAnim(active, data, part);
-if (anim==null ) return null ;
+        if (anim == null) return null;
         if (!initAnim(data, active, part, anim)) {
             if (!(active instanceof DC_SpellObj)) {
                 return null;
@@ -141,7 +141,7 @@ if (anim==null ) return null ;
 
     private Anim createAnim(DC_ActiveObj active, AnimData data, ANIM_PART part) {
         if (active.isMove())
-            return MoveAnimation.isOn()? new MoveAnimation(active, data) : null ;
+            return MoveAnimation.isOn() ? new MoveAnimation(active, data) : null;
         if (active.isAttackAny()) {
             if (part == ANIM_PART.MAIN) {
                 if (active.isRanged())
@@ -152,7 +152,7 @@ if (anim==null ) return null ;
                 return new HitAnim(active, data);
         }
 
-            if (active.isSpell()) {
+        if (active.isSpell()) {
             if (active.isMissile()) {
                 if (part == ANIM_PART.IMPACT)
                     return new HitAnim(active, data);

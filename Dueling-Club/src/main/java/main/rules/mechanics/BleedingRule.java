@@ -49,7 +49,7 @@ public class BleedingRule extends DC_RuleImpl {
                 MOD.MODIFY_BY_CONST,
 
 //                "{ACTIVE_PARAMS.BLEEDING_MOD}/100*"+
-                         StringMaster.wrapInParenthesis(
+                StringMaster.wrapInParenthesis(
                         // TODO formula?
                         THRESHOLD + "-" + "({TARGET_C_TOUGHNESS}*100/"
                                 + "{TARGET_TOUGHNESS})*" + MODIFIER + "/100")

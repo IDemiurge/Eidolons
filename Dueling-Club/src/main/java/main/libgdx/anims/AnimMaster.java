@@ -48,35 +48,48 @@ public class AnimMaster extends Group {
         instance = this;
         continuousAnimsOn =
 //         false;
-         FAST_DC.getGameLauncher().FAST_MODE ||
-          FAST_DC.getGameLauncher().SUPER_FAST_MODE;
+                FAST_DC.getGameLauncher().FAST_MODE ||
+                        FAST_DC.getGameLauncher().SUPER_FAST_MODE;
         on = true;
         constructor = new AnimationConstructor();
 
-bindEvents();
+        bindEvents();
         stage.addActor(this);
+    }
+
+    public static boolean isOn() {
+        return on;
+
+    }
+
+    public void setOn(boolean on) {
+        this.on = on;
+    }
+
+    public static AnimMaster getInstance() {
+        return instance;
     }
 
     private void bindEvents() {
 
         GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
-            if (showBuffAnimsOnHoverLength==null )return ;
+            if (showBuffAnimsOnHoverLength == null) return;
             DC_HeroObj unit = (DC_HeroObj) p.get();
-            unit.getBuffs().forEach(buff->{
+            unit.getBuffs().forEach(buff -> {
                 BuffAnim anim = continuousAnims.get(buff);
                 if (anim != null) {
-                anim.reset();
-                anim.start();
-                anim.setDuration(showBuffAnimsOnHoverLength);
+                    anim.reset();
+                    anim.start();
+                    anim.setDuration(showBuffAnimsOnHoverLength);
                 }
             });
         });
         GuiEventManager.bind(GuiEventType.INGAME_EVENT_TRIGGERED, p -> {
-            if (showBuffAnimsOnNewRoundLength==null )return ;
+            if (showBuffAnimsOnNewRoundLength == null) return;
             Event e = (Event) p.get();
             if (e.getType() == STANDARD_EVENT_TYPE.NEW_ROUND) {
-                continuousAnims.values(). forEach(anim->{
-                    if (anim.getBuff().isVisible()){
+                continuousAnims.values().forEach(anim -> {
+                    if (anim.getBuff().isVisible()) {
                         anim.reset();
                         anim.start();
                         anim.setDuration(showBuffAnimsOnNewRoundLength);
@@ -126,7 +139,7 @@ bindEvents();
             CompositeAnim parentAnim = getParentAnim(event.getRef());
             if (parentAnim != null) {
                 main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, anim +
-                 " event anim created for: " + parentAnim);
+                        " event anim created for: " + parentAnim);
                 parentAnim.addEventAnim(anim, event); //TODO}
             }
             if (!parentAnim.isRunning()) {// check new TODO
@@ -134,32 +147,19 @@ bindEvents();
             }
         });
         GuiEventManager.bind(GuiEventType.EFFECT_APPLIED, p -> {
-             if (!isOn()) return;
-             Effect effect = (Effect) p.get();
-             Animation anim = constructor.getEffectAnim(effect);
-             if (anim == null) return;
-             CompositeAnim parentAnim = getParentAnim(effect.getRef());
-             if (parentAnim != null) {
-                 main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, anim + " created for: " + parentAnim);
-                 parentAnim.addEffectAnim(anim, effect); //TODO}
-             } else {
+                    if (!isOn()) return;
+                    Effect effect = (Effect) p.get();
+                    Animation anim = constructor.getEffectAnim(effect);
+                    if (anim == null) return;
+                    CompositeAnim parentAnim = getParentAnim(effect.getRef());
+                    if (parentAnim != null) {
+                        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, anim + " created for: " + parentAnim);
+                        parentAnim.addEffectAnim(anim, effect); //TODO}
+                    } else {
 //                        add(anim);// when to start()?
-             }
-         }
+                    }
+                }
         );
-    }
-
-    public static boolean isOn() {
-        return on;
-
-    }
-
-    public void setOn(boolean on) {
-        this.on = on;
-    }
-
-    public static AnimMaster getInstance() {
-        return instance;
     }
 
     private void updateContinuousAnims() {
@@ -228,8 +228,8 @@ bindEvents();
                 return (CompositeAnim) e;
             CompositeAnim a = new CompositeAnim();
             a.add(
-             part
-             , (Anim) e);
+                    part
+                    , (Anim) e);
             if (e.getDelay() == 0)
                 root.getAttached().get(part).set(i, a);
             else root.getTimeAttached().get(part).set(i, a);
@@ -253,7 +253,7 @@ bindEvents();
         continuousAnims.values().forEach(a -> {
             if (!a.getBuff().isDead())
                 if (a.isRunning())
-                a.draw(batch);
+                    a.draw(batch);
         });
         attachedAnims.removeIf((Animation a) -> !a.isRunning());
         attachedAnims.forEach(a -> {

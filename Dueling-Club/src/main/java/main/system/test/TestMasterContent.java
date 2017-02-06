@@ -59,7 +59,7 @@ public class TestMasterContent {
      * stuff here... the running it and seeing results logged almost
      * immediately!
      */
-    private static Boolean immortal = null ;
+    private static Boolean immortal = null;
     private static boolean forceFree;
     private static String FOCUS_LIST = "";
     private static String FIX_LIST = "";
@@ -201,8 +201,9 @@ public class TestMasterContent {
     }
 
     public static void toggleImmortal() {
-        if (immortal==null )immortal=true; else
-        immortal = !immortal;
+        if (immortal == null) immortal = true;
+        else
+            immortal = !immortal;
 
     }
 

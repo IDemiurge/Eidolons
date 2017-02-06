@@ -166,7 +166,7 @@ public class Anim extends Group implements Animation {
         batch.draw((texture), this.getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
          this.getHeight(), this.getScaleX(), this.getScaleY(),
          this.getRotation(), 0, 0,
-         texture.getWidth(), texture.getHeight(), flipX, flipY);
+                texture.getWidth(), texture.getHeight(), flipX, flipY);
 
     }
 
@@ -185,9 +185,10 @@ public class Anim extends Group implements Animation {
     protected void resetSprites() {
         //TODO
     }
+
     protected void resetEmitters() {
 
-            getEmitterList().forEach(e ->
+        getEmitterList().forEach(e ->
              {
                  if (e.isGenerated()) {
                      e.getEffect().dispose();
@@ -348,23 +349,23 @@ public class Anim extends Group implements Animation {
 
     public void initPosition() {
         origin = GridMaster
-         .getVectorForCoordinateWithOffset(getOriginCoordinates());
+                .getVectorForCoordinateWithOffset(getOriginCoordinates());
 
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-         this + " origin: " + origin);
+                this + " origin: " + origin);
 
         destination = GridMaster
-         .getVectorForCoordinateWithOffset(getDestinationCoordinates());
+                .getVectorForCoordinateWithOffset(getDestinationCoordinates());
 
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-         this + " destination: " + destination);
+                this + " destination: " + destination);
 
 
         defaultPosition = getDefaultPosition();
         setX(defaultPosition.x);
         setY(defaultPosition.y);
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-         this + " defaultPosition: " + defaultPosition);
+                this + " defaultPosition: " + defaultPosition);
     }
 
     public Coordinates getOriginCoordinates() {
@@ -463,7 +464,7 @@ public class Anim extends Group implements Animation {
 
     public List<EmitterActor> getEmitterList() {
         if (emitterList == null)
-            setEmitterList(    new LinkedList<>() );
+            setEmitterList(new LinkedList<>());
         return emitterList;
     }
 
@@ -498,7 +499,7 @@ public class Anim extends Group implements Animation {
 
     public List<SpriteAnimation> getSprites() {
         if (sprites == null)
-            setSprites(    new LinkedList<>() );
+            setSprites(new LinkedList<>());
         return sprites;
     }
 

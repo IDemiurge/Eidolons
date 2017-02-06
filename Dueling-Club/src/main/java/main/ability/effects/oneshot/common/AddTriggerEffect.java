@@ -57,7 +57,7 @@ public class AddTriggerEffect extends MultiEffect implements AttachmentEffect, C
     }
 
     public void remove() {
-        if (getTrigger()!=null )
+        if (getTrigger() != null)
             ref.getGame().getState().removeTrigger(getTrigger());
 
     }

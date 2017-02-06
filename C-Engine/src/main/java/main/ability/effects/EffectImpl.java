@@ -55,6 +55,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     protected Construct construct;
     protected boolean quietMode;
     protected Integer forcedLayer;
+    protected Trigger trigger;
     private boolean ignoreGroupTargeting;
     private GroupImpl targetGroup;
     private boolean concurrent;
@@ -65,7 +66,6 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     private boolean continuousWrapped;
     private Boolean forceStaticParse;
     private Formula originalFormula;
-    protected Trigger trigger;
     private boolean applied;
     private ActiveObj animationActive;
     private ANIM animation;

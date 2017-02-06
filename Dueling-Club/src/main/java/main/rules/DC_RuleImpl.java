@@ -17,8 +17,8 @@ public abstract class DC_RuleImpl implements Rule {
     protected Conditions conditions = new Conditions();
     protected MicroGame game;
     protected Effect effects;
-    private boolean initialized = false;
     protected boolean on = true;
+    private boolean initialized = false;
 
 
     public DC_RuleImpl(MicroGame game) {

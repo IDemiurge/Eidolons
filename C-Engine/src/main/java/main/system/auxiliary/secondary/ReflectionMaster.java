@@ -37,7 +37,7 @@ public class ReflectionMaster<T> {
         }
         field.setAccessible(true);
         try {
-              field.set(obj,value);
+            field.set(obj, value);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }

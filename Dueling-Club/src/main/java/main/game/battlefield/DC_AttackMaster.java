@@ -30,8 +30,8 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
-import main.system.graphics.PhaseAnimation;
 import main.system.graphics.AttackAnimation;
+import main.system.graphics.PhaseAnimation;
 import main.system.math.roll.RollMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
@@ -57,7 +57,7 @@ public class DC_AttackMaster {
 
     public static AttackEffect getAttackEffect(ActiveObj action) {
         AttackEffect effect = (AttackEffect) EffectMaster.getEffectsOfClass((DC_ActiveObj) action,
-         AttackEffect.class).get(0);
+                AttackEffect.class).get(0);
         return effect;
     }
 
@@ -69,18 +69,18 @@ public class DC_AttackMaster {
 
         List<Damage> list = new LinkedList<>();
         list.add(new Damage(attack.getDamageType(), attack.getDamage(), attack.getAttacked(),
-         attack.getAttacker()));
+                attack.getAttacker()));
 
         List<Effect> effects = new LinkedList<>();
         if (attack.getWeapon().getSpecialEffects() != null) {
             if (attack.getWeapon().getSpecialEffects().get(SPECIAL_EFFECTS_CASE.ON_ATTACK) != null)
                 effects.add(attack.getWeapon().getSpecialEffects().get(
-                 SPECIAL_EFFECTS_CASE.ON_ATTACK));
+                        SPECIAL_EFFECTS_CASE.ON_ATTACK));
         }
         if (attack.getAttacker().getSpecialEffects() != null) {
             if (attack.getAttacker().getSpecialEffects().get(SPECIAL_EFFECTS_CASE.ON_ATTACK) != null)
                 effects.add(attack.getAttacker().getSpecialEffects().get(
-                 SPECIAL_EFFECTS_CASE.ON_ATTACK));
+                        SPECIAL_EFFECTS_CASE.ON_ATTACK));
         }
         for (Effect e : effects) {
             // TODO ++ PARAM MOD
@@ -97,7 +97,7 @@ public class DC_AttackMaster {
 
     public static int getAttackValue(Attack attack) {
         return getAttackValue(attack.isOffhand(), attack.getAttacker(), attack.getAttacked(),
-         attack.getAction());
+                attack.getAction());
     }
 
     public static int getDefenseValue(Attack attack) {
@@ -106,8 +106,8 @@ public class DC_AttackMaster {
 
     public static Integer calculateAttackDamage(Attack attack) {
         return calculateAttackDamage(attack, attack.isCritical(), attack.isSneak(), attack
-         .isOffhand(), attack.getRef(), attack.getAction(), attack.getAttacked(), attack
-         .getAttacker(), attack.isCounter());
+                .isOffhand(), attack.getRef(), attack.getAction(), attack.getAttacked(), attack
+                .getAttacker(), attack.isCounter());
     }
 
     public static Integer calculateAttackDamage(Attack attack, boolean precalc) {
@@ -156,13 +156,13 @@ public class DC_AttackMaster {
 
     public static int getDefenseValue(DC_HeroObj attacker, DC_HeroObj attacked, DC_ActiveObj action) {
         int defense = attacked.getIntParam(PARAMS.DEFENSE)
-         - attacker.getIntParam(PARAMS.DEFENSE_PENETRATION);
+                - attacker.getIntParam(PARAMS.DEFENSE_PENETRATION);
         defense = defense * (action.getIntParam(PARAMS.DEFENSE_MOD)) / 100;
         defense += action.getIntParam(PARAMS.DEFENSE_BONUS);
         if (WatchRule.checkWatched(attacked, attacker)) {
             defense = defense
-             * (100 + 2 * WatchRule.DEFENSE_MOD + attacker
-             .getIntParam(PARAMS.WATCH_DEFENSE_MOD)) / 100;
+                    * (100 + 2 * WatchRule.DEFENSE_MOD + attacker
+                    .getIntParam(PARAMS.WATCH_DEFENSE_MOD)) / 100;
         }
         return defense;
     }
@@ -189,8 +189,8 @@ public class DC_AttackMaster {
 
         if (WatchRule.checkWatched(attacker, attacked)) {
             attack = attack
-             * (100 + 2 * WatchRule.ATTACK_MOD + attacker
-             .getIntParam(PARAMS.WATCH_ATTACK_MOD)) / 100;
+                    * (100 + 2 * WatchRule.ATTACK_MOD + attacker
+                    .getIntParam(PARAMS.WATCH_ATTACK_MOD)) / 100;
         }
 
         return attack;
@@ -218,7 +218,7 @@ public class DC_AttackMaster {
         amount += weapon.getDamageModifiers();
         amount += weapon.getIntParam(PARAMS.DAMAGE_BONUS);
         int hero_dmg_mod = unit.getIntParam((offhand) ? PARAMS.OFFHAND_DAMAGE_MOD
-         : PARAMS.DAMAGE_MOD);
+                : PARAMS.DAMAGE_MOD);
         if (hero_dmg_mod == 0)
             hero_dmg_mod = 100;
         Integer weapon_mod = weapon.getIntParam(PARAMS.DAMAGE_MOD);
@@ -255,8 +255,8 @@ public class DC_AttackMaster {
     public boolean attack(Attack attack) {
         Boolean doubleAttack = attack.isDouble();
         return attack(attack, attack.getRef(), attack.isFree(), attack.isCanCounter(), attack
-          .getOnHit(), attack.getOnKill(), attack.isOffhand(), attack.isCounter(),
-         doubleAttack);
+                        .getOnHit(), attack.getOnKill(), attack.isOffhand(), attack.isCounter(),
+                doubleAttack);
 
     }
 
@@ -284,7 +284,7 @@ public class DC_AttackMaster {
         else
             extraAttack = false;
         LogEntryNode entry = game.getLogManager().newLogEntryNode(type,
-         attack.getAttacker().getName(), attack.getAttacked().getName(), attack.getAction());
+                attack.getAttacker().getName(), attack.getAttacked().getName(), attack.getAction());
         Boolean result = false;
         try {
             attack.setSneak(checkSneak(ref));
@@ -364,17 +364,17 @@ public class DC_AttackMaster {
             if (attacked.checkPassive(STANDARD_PASSIVES.SNEAK_IMMUNE)) {
                 attack.setSneak(false);
                 log(StringMaster.MESSAGE_PREFIX_INFO + attacked.getName()
-                 + " is immune to Sneak Attacks!");
+                        + " is immune to Sneak Attacks!");
             } else {
                 log(StringMaster.MESSAGE_PREFIX_ALERT + attacker.getNameIfKnown()
-                 + " makes a Sneak Attack against " + attacked.getName());
+                        + " makes a Sneak Attack against " + attacked.getName());
             }
         if (canCounter)
             if (!attacked.canCounter(action, attack.isSneak()))
                 canCounter = false;
 
         LogMaster.log(LogMaster.ATTACKING_DEBUG, attacker.getNameIfKnown() + " attacks "
-         + attacked.getName());
+                + attacked.getName());
         // } ====> Need a common messaging interface for actions/costs
 
         String damage_mods = "";
@@ -441,7 +441,7 @@ public class DC_AttackMaster {
                 // ++ animation? *MISS* //TODO ++ true strike
                 action.setFailedLast(true);
                 if (checkEffectsInterrupt(attacked, attacker, SPECIAL_EFFECTS_CASE.ON_DODGE, ref,
-                 offhand)) {
+                        offhand)) {
                     return true;
                 }
                 if (canCounter)
@@ -452,10 +452,10 @@ public class DC_AttackMaster {
             } else {
                 if (attacked.checkPassive(STANDARD_PASSIVES.CRITICAL_IMMUNE)) {
                     log(StringMaster.MESSAGE_PREFIX_INFO + attacked.getName()
-                     + " is immune to Critical Hits!");
+                            + " is immune to Critical Hits!");
                 } else {
                     log(StringMaster.MESSAGE_PREFIX_ALERT + attacker.getNameIfKnown()
-                     + " scores a critical hit on " + attacked.getName());
+                            + " scores a critical hit on " + attacked.getName());
                     attack.setCritical(true);
 
                 }
@@ -516,17 +516,17 @@ public class DC_AttackMaster {
 
         if (!attack.isSneak() && canBlock(attacked) && !isCounter) {
             int blocked = game.getArmorMaster().getShieldDamageBlocked(final_amount, attacked,
-             attacker, action, getAttackWeapon(ref, attack.isOffhand()),
-             attack.getDamageType());
+                    attacker, action, getAttackWeapon(ref, attack.isOffhand()),
+                    attack.getDamageType());
             final_amount -= blocked;
             if (blocked > 0) {
                 Ref REF = ref.getCopy();
                 REF.setAmount(blocked);
                 if (checkEffectsInterrupt(attacked, attacker, SPECIAL_EFFECTS_CASE.ON_SHIELD_BLOCK,
-                 REF, offhand))
+                        REF, offhand))
                     return true;
                 if (checkEffectsInterrupt(attacker, attacked,
-                 SPECIAL_EFFECTS_CASE.ON_SHIELD_BLOCK_SELF, REF, offhand))
+                        SPECIAL_EFFECTS_CASE.ON_SHIELD_BLOCK_SELF, REF, offhand))
                     return true;
             }
 
@@ -563,7 +563,7 @@ public class DC_AttackMaster {
         InjuryRule.applyInjuryRule(action);
         if (attack.isCritical()) {
             checkEffectsInterrupt(attacked, attacker, SPECIAL_EFFECTS_CASE.ON_CRIT_SELF, ref,
-             offhand);
+                    offhand);
             checkEffectsInterrupt(attacker, attacked, SPECIAL_EFFECTS_CASE.ON_CRIT, ref, offhand);
         }
         if (attacked.isDead()) {
@@ -627,7 +627,7 @@ public class DC_AttackMaster {
         // TODO
         DC_WeaponObj parryWeapon = attack.getAttacked().getActiveWeapon(false);
         if (Math.abs(DC_ContentManager.compareSize(parryWeapon.getWeaponSize(), attack.getWeapon()
-         .getWeaponSize())) > 2) {
+                .getWeaponSize())) > 2) {
             if (attack.getAttacked().checkDualWielding()) {
 
             } else
@@ -653,12 +653,12 @@ public class DC_AttackMaster {
         Integer chanceRounded = Math.round(chance);
 
         game.getLogManager().newLogEntryNode(ENTRY_TYPE.PARRY, attack.getAttacked().getName(),
-         attack.getAction().getName(), attack.getAttacker().getName(),
-         chanceRounded.toString());
+                attack.getAction().getName(), attack.getAttacker().getName(),
+                chanceRounded.toString());
         if (!RandomWizard.chance(chanceRounded)) {
             log(attack.getAttacked().getName() + " fails to parry " + attack.getAction().getName()
-             + " from " + attack.getAttacker().getNameIfKnown()
-             + StringMaster.wrapInParenthesis(chanceRounded + "%"));
+                    + " from " + attack.getAttacker().getNameIfKnown()
+                    + StringMaster.wrapInParenthesis(chanceRounded + "%"));
             game.getLogManager().doneLogEntryNode();
             if (!isParryTest())
                 return false;
@@ -671,20 +671,20 @@ public class DC_AttackMaster {
         }
         int damage = attack.getDamage();
         log(attack.getAttacked().getName() + " parries " + attack.getAction().getName() + " from "
-         + attack.getAttacker().getNameIfKnown()
-         + StringMaster.wrapInParenthesis(chanceRounded + "%") + ", deflecting " + damage
-         + " " + attack.getDamageType() + " damage");
+                + attack.getAttacker().getNameIfKnown()
+                + StringMaster.wrapInParenthesis(chanceRounded + "%") + ", deflecting " + damage
+                + " " + attack.getDamageType() + " damage");
         int mod = DC_Formulas.DEFAULT_PARRY_DURABILITY_DAMAGE_MOD;
         if (dual) {
             mod /= 2;
         }
         AnimPhase animPhase = new AnimPhase(PHASE_TYPE.PARRY, chanceRounded);
         int durabilityLost = attacked.getWeapon(false).reduceDurabilityForDamage(damage, damage,
-         mod, false);
+                mod, false);
         animPhase.addArg(durabilityLost);
         if (dual) {
             durabilityLost += attacked.getWeapon(true).reduceDurabilityForDamage(damage, damage,
-             mod, false);
+                    mod, false);
             animPhase.addArg(durabilityLost);
         }
 
@@ -709,7 +709,7 @@ public class DC_AttackMaster {
     // returns true if dodged, false if critical, otherwise null
     private Boolean checkDodgedOrCrit(Attack attack) {
         return checkDodgedOrCrit(attack.getAttacker(), attack.getAttacked(), attack.getAction(),
-         attack.getRef(), attack.isOffhand(), attack.getAnimation());
+                attack.getRef(), attack.isOffhand(), attack.getAnimation());
     }
 
     private Boolean checkDodgedOrCrit(DC_HeroObj attacker, DC_HeroObj attacked,
@@ -729,8 +729,8 @@ public class DC_AttackMaster {
 
         // first check ARITHMETIC difference...
         diff = Math.abs(diff)
-         - ((crit) ? DC_Formulas.ATTACK_DMG_INCREASE_LIMIT
-         : DC_Formulas.DEFENSE_DMG_DECREASE_LIMIT);
+                - ((crit) ? DC_Formulas.ATTACK_DMG_INCREASE_LIMIT
+                : DC_Formulas.DEFENSE_DMG_DECREASE_LIMIT);
         if (diff <= 0) {
             diff = 0;
         }
@@ -751,8 +751,8 @@ public class DC_AttackMaster {
 
         chance = Math.min(100, chance);
         log(""
-         + (crit ? "...chance for critical strike: " : "..." + attacked.getName()
-         + "'s chance to dodge: ") + String.valueOf(chance) + "%");
+                + (crit ? "...chance for critical strike: " : "..." + attacked.getName()
+                + "'s chance to dodge: ") + String.valueOf(chance) + "%");
         boolean result = RandomWizard.chance(chance);
         // if (crit)
         // result = !result;
@@ -796,10 +796,10 @@ public class DC_AttackMaster {
             advantage = new Float(new Float(defense) / new Float(attack));
         if (crit) {
             return new Float(Math.min(DC_Formulas.ATTACK_PROPORTION_CRIT_MAX, Math
-             .sqrt(DC_Formulas.ATTACK_PROPORTION_CRIT_SQRT_BASE_MULTIPLIER * advantage)));
+                    .sqrt(DC_Formulas.ATTACK_PROPORTION_CRIT_SQRT_BASE_MULTIPLIER * advantage)));
         } else {
             return new Float(Math.min(DC_Formulas.DEFENSE_PROPORTION_CRIT_MAX, Math
-             .sqrt(DC_Formulas.DEFENSE_PROPORTION_CRIT_SQRT_BASE_MULTIPLIER * advantage)));
+                    .sqrt(DC_Formulas.DEFENSE_PROPORTION_CRIT_SQRT_BASE_MULTIPLIER * advantage)));
         }
     }
 
@@ -825,10 +825,10 @@ public class DC_AttackMaster {
 
         ActiveObj counter = null;
 
-        if (!attack.isCounter()&&
-          (isCounterAttackTest() ||
-         (attack.isCanCounter() && attack.getAttacked().canCounter(attack.getAction())))
-         )
+        if (!attack.isCounter() &&
+                (isCounterAttackTest() ||
+                        (attack.isCanCounter() && attack.getAttacked().canCounter(attack.getAction())))
+                )
             counter = counter(attack.getAction(), attack.getAttacked());
 
         return counter;
@@ -841,7 +841,7 @@ public class DC_AttackMaster {
 
     private ActiveObj counter(DC_ActiveObj action, DC_HeroObj attacked) {
         return game.getActionManager().activateCounterAttack(action,
-         attacked);
+                attacked);
     }
 
     private void waitForAttackAnimation(Attack attack) {

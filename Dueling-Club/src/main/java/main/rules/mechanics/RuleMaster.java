@@ -54,6 +54,7 @@ public class RuleMaster {
         }
         return null;
     }
+
     public static boolean checkRuleGroupIsOn(RULE_GROUP group) {
         return checkStatus(getScopeForRuleGroup(group));
     }
@@ -65,7 +66,8 @@ public class RuleMaster {
         }
         return RULE_SCOPE.BASIC;
     }
-        public static RULE_SCOPE getScopeForRule(RULE r) {
+
+    public static RULE_SCOPE getScopeForRule(RULE r) {
         switch (r) {
             case FORCE:
             case INJURY:
@@ -243,7 +245,7 @@ public class RuleMaster {
     public enum RULE {
         FORCE, ATTACK_OF_OPPORTUNITY, INSTANT_ATTACK, COUNTER_ATTACK, TIME, VISIBILITY, CLEAR_SHOT,
         // C
-DURABILITY,
+        DURABILITY,
         UNCONSCIOUS,
         FOCUS,
         MORALE,

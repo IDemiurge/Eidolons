@@ -30,12 +30,13 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         this(defaultFrameDuration, false, 1, path, false);
     }
 
-    public SpriteAnimation( String path
-     , boolean singleSprite) {
+    public SpriteAnimation(String path
+            , boolean singleSprite) {
         this(defaultFrameDuration, false, 1, path, singleSprite);
     }
+
     public SpriteAnimation(float frameDuration, boolean looping, int loops, String path
-     , boolean singleSprite) {
+            , boolean singleSprite) {
         super(frameDuration, TextureManager.getSpriteSheetFrames(path, singleSprite));
         frameNumber = TextureManager.getFrameNumber(path);
         stateTime = 0;
@@ -146,12 +147,12 @@ if (sprite==null )
         this.alpha = alpha;
     }
 
-    public void setRotation(float rotation) {
-        this.rotation = rotation;
-    }
-
     public float getRotation() {
         return rotation;
+    }
+
+    public void setRotation(float rotation) {
+        this.rotation = rotation;
     }
 
     public enum SPRITE_BEHAVIOR {

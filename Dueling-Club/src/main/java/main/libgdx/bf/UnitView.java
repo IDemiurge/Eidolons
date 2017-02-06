@@ -233,6 +233,7 @@ public class UnitView extends BaseView {
             LogMaster.error("Initiative set to wrong object type != OBJ_TYPES.UNITS");
         }
     }
+
     public int getId() {
         return curId;
     }

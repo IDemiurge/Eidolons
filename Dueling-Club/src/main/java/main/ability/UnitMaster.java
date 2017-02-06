@@ -17,15 +17,14 @@ public class UnitMaster {
     private static final int HUMANOID_XP_MOD = -33;
     private static final int DEFAULT_CASTER_XP_MOD = 60;
     private static boolean random;
+    private static boolean shopOn = true;
+    private static boolean spellsOn;
+    private static boolean skillsOn;
 
     static {
         // if (UnitGroupMaster.isFactionMode())
         // setRandom(false);
     }
-
-    private static boolean shopOn=true;
-    private static boolean spellsOn;
-    private static boolean skillsOn;
 
     public static void train(DC_HeroObj unit) {
         if (!FAST_DC.getGameLauncher().getFAST_MODE())

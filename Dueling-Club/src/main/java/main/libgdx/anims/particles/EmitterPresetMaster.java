@@ -34,6 +34,20 @@ public class EmitterPresetMaster {
         return instance;
     }
 
+    public static void save(EmitterActor last) {
+        String c = "";
+        Writer output = new StringWriter();
+        last.getEffect().getEmitters().forEach(e -> {
+            try {
+                e.save(output);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+        c = output.toString();
+        XML_Writer.write(c, PathFinder.getSfxPath() + "custom\\" + last.path);
+    }
+
     public String getImagePath(String path) {
 
         return
@@ -43,7 +57,7 @@ public class EmitterPresetMaster {
     public String getValueFromGroup(String path, EMITTER_VALUE_GROUP group, String value) {
         String text = getGroupTextFromPreset(path, group);
         if (text == null)
-            return "" ;
+            return "";
         if (value == null)
             return text;
         for (String substring : StringMaster.openContainer(text, "\n")) {
@@ -147,7 +161,7 @@ public class EmitterPresetMaster {
 
     public String getGroupTextFromPreset(String path, EMITTER_VALUE_GROUP group) {
         String data = getData(path);
-        if (data==null ) return null ;
+        if (data == null) return null;
         return getGroupText(data, group);
     }
 
@@ -174,7 +188,7 @@ public class EmitterPresetMaster {
         if (data == null) {
             data = FileManager.readFile(path);
             if (!StringMaster.isEmpty(data))
-            map.put(path, data);
+                map.put(path, data);
         }
         return data;
     }
@@ -203,20 +217,6 @@ public class EmitterPresetMaster {
 
 
      */
-    }
-
-    public static void save(EmitterActor last) {
-        String c = "";
-        Writer output= new StringWriter();
-        last.getEffect().getEmitters().forEach(e->{
-            try {
-                e.save(output);
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        });
-        c= output.toString();
-        XML_Writer.write(c, PathFinder.getSfxPath()+"custom\\"+ last.path);
     }
 
     public enum EMITTER_VALUE_SHORTCUTS {

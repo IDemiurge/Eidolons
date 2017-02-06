@@ -27,7 +27,6 @@ import main.game.logic.dungeon.special.LockMaster;
 import main.game.logic.dungeon.special.Trap;
 import main.game.logic.dungeon.special.TrapMaster;
 import main.game.player.Player;
-import main.libgdx.anims.AnimMaster;
 import main.rules.generic.UnitAnalyzer;
 import main.rules.mechanics.ExtraAttacksRule;
 import main.rules.mechanics.FleeRule;

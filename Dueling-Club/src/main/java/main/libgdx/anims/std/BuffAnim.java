@@ -25,18 +25,19 @@ public class BuffAnim extends ActionAnim {
     boolean playContinuous;
     boolean playOnHover;
     boolean playOnNewRound;
+
     public BuffAnim(BuffObj buff) {
         super(buff.getActive(), getBuffAnimData(buff));
         this.buff = buff;
         mods = new ANIM_MOD[]{
-         CONTINUOUS_ANIM_MODS.PENDULUM_ALPHA
+                CONTINUOUS_ANIM_MODS.PENDULUM_ALPHA
         };
         part = ANIM_PART.AFTEREFFECT;
         textureSupplier = () -> TextureManager.getOrCreate(buff.getImagePath());
 
 //setPlayContinuous(buff.checkBool());
-setPlayOnHover(true);
-initDuration();
+        setPlayOnHover(true);
+        initDuration();
 
     }
 
@@ -50,7 +51,7 @@ initDuration();
         ablaze, frozen, bleeding, wounded, charmed,
          */
         STD_BUFF_NAMES name =
-         new EnumMaster<STD_BUFF_NAMES>().retrieveEnumConst(STD_BUFF_NAMES.class, buff.getName());
+                new EnumMaster<STD_BUFF_NAMES>().retrieveEnumConst(STD_BUFF_NAMES.class, buff.getName());
         if (name == null) return data;
         String sfx = PathFinder.getSfxPath() + getStdSfx(name);
         String sprites = PathFinder.getSpritesPath() + "buffs\\razorsharp 20 1.png";

@@ -106,8 +106,8 @@ public class ContinuousEffect extends MicroEffect {
     public void remove() {
         effect.remove();
         ref.getGame().getState().removeEffect(this);
-        if (getTrigger()!=null )
-        ref.getGame().getState().removeTrigger(getTrigger());
+        if (getTrigger() != null)
+            ref.getGame().getState().removeTrigger(getTrigger());
 
     }
 

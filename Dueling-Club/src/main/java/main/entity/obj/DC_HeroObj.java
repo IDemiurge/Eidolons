@@ -600,11 +600,10 @@ public class DC_HeroObj extends DC_UnitObj {
     }
 
     private boolean isImmortalityOn() {
-if (        getGame().getTestMaster().isImmortal()!=null)
-        return
-         getGame().getTestMaster().isImmortal();
-        if (equals(getOwner().getHeroObj()))
-        {
+        if (getGame().getTestMaster().isImmortal() != null)
+            return
+                    getGame().getTestMaster().isImmortal();
+        if (equals(getOwner().getHeroObj())) {
             return game.isDummyMode();
         }
         return getGame().isDummyPlus();
