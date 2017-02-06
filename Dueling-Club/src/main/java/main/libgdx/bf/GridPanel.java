@@ -2,8 +2,6 @@ package main.libgdx.bf;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -14,10 +12,8 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
-import main.libgdx.GameScreen;
 import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.bf.mouse.GridMouseListener;
-import main.libgdx.bf.mouse.InputController;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -148,7 +144,10 @@ public class GridPanel extends Group {
 
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED) {
-                removeUnitView((DC_HeroObj) r.getTargetObj());
+                BaseView bv = removeUnitView((DC_HeroObj) r.getTargetObj());
+                if (bv instanceof UnitView) {
+                    ((UnitView) bv).setVisibleVal(0);//set this val to zero remove unit from initiative queue
+                }
                 caught = true;
             }
 
@@ -316,12 +315,13 @@ public class GridPanel extends Group {
         moveUnitView(heroObj);
     }
 
-    private void removeUnitView(DC_HeroObj obj) {
+    private BaseView removeUnitView(DC_HeroObj obj) {
         BaseView uv = unitMap.get(obj);
         GridCellContainer gridCellContainer = (GridCellContainer) uv.getParent();
         gridCellContainer.removeActor(uv);
         uv.setVisible(false);
         GuiEventManager.trigger(UPDATE_LIGHT, null);
+        return uv;
     }
 
     @Override
