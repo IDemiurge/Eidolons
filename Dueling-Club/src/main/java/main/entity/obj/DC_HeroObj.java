@@ -579,7 +579,9 @@ public class DC_HeroObj extends DC_UnitObj {
             }
 
         if (!isBfObj())
-            if (!isNeutral())
+            if (!isNeutral()) {
+                if (isImmortalityOn())
+                    addPassive(STANDARD_PASSIVES.INDESTRUCTIBLE);
                 if (game.isDummyMode()) {
                     if (getGame().isDummyPlus()) {
                         resetParam(PARAMS.C_N_OF_COUNTERS);
@@ -591,9 +593,21 @@ public class DC_HeroObj extends DC_UnitObj {
                     if (!getOwner().isMe()) {
                         setParam(PARAMS.INITIATIVE_MODIFIER, 1);
                     }
-                    if (equals(getOwner().getHeroObj()))
-                        addPassive(STANDARD_PASSIVES.INDESTRUCTIBLE);
+
+
                 }
+            }
+    }
+
+    private boolean isImmortalityOn() {
+if (        getGame().getTestMaster().isImmortal()!=null)
+        return
+         getGame().getTestMaster().isImmortal();
+        if (equals(getOwner().getHeroObj()))
+        {
+            return game.isDummyMode();
+        }
+        return getGame().isDummyPlus();
     }
 
     public void addPassive(STANDARD_PASSIVES passive) {

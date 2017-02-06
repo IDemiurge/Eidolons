@@ -98,6 +98,8 @@ public interface Effect extends Interruptable, Referred, Variable, Reconstructab
 
     void appendFormula(Object mod);
 
+    void remove();
+
     enum UPKEEP_FAIL_ACTION {
         TREASON(" turns on its summoner as he is no longer able to pay the due!"),
         DEATH(" is destroyed as its summoner is no longer able to pay the upkeep!"),

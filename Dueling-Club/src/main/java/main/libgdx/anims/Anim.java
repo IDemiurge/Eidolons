@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import javafx.util.Pair;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.game.DC_Game;
@@ -20,6 +21,7 @@ import main.libgdx.anims.particles.EmitterPools;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.bf.GridMaster;
 import main.libgdx.texture.TextureManager;
+import main.system.EventCallbackParam;
 import main.system.GuiEventType;
 import main.system.auxiliary.LogMaster;
 
@@ -31,7 +33,7 @@ import java.util.function.Supplier;
 /**
  * Created by JustMe on 1/9/2017.
  */
-public class Anim extends Group implements Animation{
+public class Anim extends Group implements Animation {
     protected Entity active;
     protected Vector2 origin;
     protected Vector2 destination;
@@ -60,11 +62,11 @@ public class Anim extends Group implements Animation{
     protected float lifecycle; //0 to 1f
     protected float lifecycleDuration;
     protected Float frameDuration;
-    protected float alpha=1f;
+    protected float alpha = 1f;
     protected float delay;
-    private boolean running;
     protected Coordinates forcedDestination;
     protected Texture texture;
+    protected boolean running;
 
 
     public Anim(Entity active, AnimData params) {
@@ -83,8 +85,9 @@ public class Anim extends Group implements Animation{
         initDuration();
         initSpeed();
         resetEmitters();
+        resetSprites();
 
-        sprites.forEach(s -> s.setX(getX()));
+        getSprites().forEach(s -> s.setX(getX()));
         sprites.forEach(s -> s.setY(getY()));
         sprites.forEach(s -> s.setOffsetX(0));
         sprites.forEach(s -> s.setOffsetY(0));
@@ -103,19 +106,20 @@ public class Anim extends Group implements Animation{
         running = true;
     }
 
+
     @Override
     public boolean draw(Batch batch) {
 //switch(template){
 //}
         float delta = Gdx.graphics.getDeltaTime();
         time += delta;
-        if (time<0) return true; //delay
+        if (time < 0) return true; //delay
         Texture currentFrame = textureSupplier.get();
         if (lifecycleDuration != 0) {
             cycles = (int) (time / lifecycleDuration);
             lifecycle = time % lifecycleDuration / lifecycleDuration;
         }
-        if (duration > 0) //|| finished //  lifecycle duration for continuous?
+        if (duration >= 0) //|| finished //  lifecycle duration for continuous?
             if (time >= duration) {
                 main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, this + " finished; duration = " + duration);
                 finished();
@@ -136,7 +140,8 @@ public class Anim extends Group implements Animation{
 //            s.setFlipX(flipX);
 //            s.setFlipX(flipY);
         });
-        applyAnimMods(); if (isDrawTexture() && getActions().size==0)
+        applyAnimMods();
+        if (isDrawTexture() && getActions().size == 0)
             draw(batch, alpha);
 
         sprites.forEach(s -> {
@@ -152,16 +157,16 @@ public class Anim extends Group implements Animation{
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        if (!isDrawTexture())return ;
+        if (!isDrawTexture()) return;
 
         Texture texture = getTexture();
 
-        if (texture==null )return ;
+        if (texture == null) return;
 
         batch.draw((texture), this.getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
          this.getHeight(), this.getScaleX(), this.getScaleY(),
          this.getRotation(), 0, 0,
-         texture.getWidth(), texture.getHeight(), flipX , flipY);
+         texture.getWidth(), texture.getHeight(), flipX, flipY);
 
     }
 
@@ -171,23 +176,26 @@ public class Anim extends Group implements Animation{
 //        time = -delay; TODO
         offsetX = 0;
         offsetY = 0;
-        alpha=1f;
+        alpha = 1f;
         initDuration();
         initSpeed();
 //if ()
     }
 
-    private void resetEmitters() {
-        if (emitterList != null)
-            emitterList.forEach(e ->
+    protected void resetSprites() {
+        //TODO
+    }
+    protected void resetEmitters() {
+
+            getEmitterList().forEach(e ->
              {
                  if (e.isGenerated()) {
                      e.getEffect().dispose();
                  }
              }
             );
-        emitterList=emitterCache;
-        emitterCache=     new LinkedList<>(emitterList);
+        emitterList = emitterCache;
+        emitterCache = new LinkedList<>(emitterList);
         emitterList.forEach(e -> {
             if (!e.isGenerated())
                 if (e.isAttached())
@@ -240,11 +248,12 @@ public class Anim extends Group implements Animation{
     }
 
     protected Texture getTexture() {
-        if (texture ==null )
-            texture = TextureManager.create( getTexturePath());
+        if (texture == null)
+            texture = TextureManager.create(getTexturePath());
         return texture;
 
     }
+
     @Override
     public void finished() {
         running = false;
@@ -265,14 +274,14 @@ public class Anim extends Group implements Animation{
 
     }
 
-    private void applyObjAnimMod(OBJ_ANIMS mod) {
+    protected void applyObjAnimMod(OBJ_ANIMS mod) {
         switch (mod) {
             case FADE_IN:
                 alpha = 0.1f + time / duration;
         }
     }
 
-    private void applyContinuousAnimMod(CONTINUOUS_ANIM_MODS mod) {
+    protected void applyContinuousAnimMod(CONTINUOUS_ANIM_MODS mod) {
         switch (mod) {
             case PENDULUM_ALPHA:
                 sprites.forEach(s -> {
@@ -325,9 +334,9 @@ public class Anim extends Group implements Animation{
     }
 
     protected void dispose() {
-        if (texture!=null )
+        if (texture != null)
             texture.dispose();
-        texture=null;
+        texture = null;
 
         emitterList.forEach(e -> {
             EmitterPools.freeEmitter(e);
@@ -339,23 +348,23 @@ public class Anim extends Group implements Animation{
 
     public void initPosition() {
         origin = GridMaster
-                .getVectorForCoordinateWithOffset(getOriginCoordinates());
+         .getVectorForCoordinateWithOffset(getOriginCoordinates());
 
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-                this + " origin: " + origin);
+         this + " origin: " + origin);
 
         destination = GridMaster
-                .getVectorForCoordinateWithOffset(getDestinationCoordinates());
+         .getVectorForCoordinateWithOffset(getDestinationCoordinates());
 
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-                this + " destination: " + destination);
+         this + " destination: " + destination);
 
 
         defaultPosition = getDefaultPosition();
         setX(defaultPosition.x);
         setY(defaultPosition.y);
         main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-                this + " defaultPosition: " + defaultPosition);
+         this + " defaultPosition: " + defaultPosition);
     }
 
     public Coordinates getOriginCoordinates() {
@@ -365,7 +374,7 @@ public class Anim extends Group implements Animation{
     }
 
     public Coordinates getDestinationCoordinates() {
-        if (forcedDestination!=null )return forcedDestination;
+        if (forcedDestination != null) return forcedDestination;
         if (getRef().getTargetObj() == null)
             return getRef().getSourceObj().getCoordinates();
         return getRef().getTargetObj().getCoordinates();
@@ -406,8 +415,10 @@ public class Anim extends Group implements Animation{
             setY(defaultPosition.y + offsetY);
         }
         sprites.forEach(s -> {
-            s.setOffsetX(offsetX);
-            s.setOffsetY(offsetY);
+            if (getActions().size == 0) {
+                s.setOffsetX(offsetX);
+                s.setOffsetY(offsetY);
+            }
             s.setRotation(getRotation());
         });
 
@@ -417,7 +428,7 @@ public class Anim extends Group implements Animation{
 
         });
 
-        if (getActions().size == 0) {
+        if (getActions().size == 0) { //TODO move it somewhere!
             setX(origin.x + getWidth() / 2);
             setY(origin.y - getHeight() / 2);
         }
@@ -451,12 +462,14 @@ public class Anim extends Group implements Animation{
     }
 
     public List<EmitterActor> getEmitterList() {
+        if (emitterList == null)
+            setEmitterList(    new LinkedList<>() );
         return emitterList;
     }
 
     public void setEmitterList(List<EmitterActor> emitterList) {
         this.emitterList = emitterList;
-        emitterCache=    new LinkedList<>(emitterList);
+        emitterCache = new LinkedList<>(emitterList);
     }
 
     public int getLightEmission() {
@@ -475,15 +488,17 @@ public class Anim extends Group implements Animation{
         this.color = color;
     }
 
-    public List<GuiEventType> getEventsOnFinish() {
+    public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnFinish() {
         return null;
     }
 
-    public List<GuiEventType> getEventsOnStart() {
+    public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnStart() {
         return null;
     }
 
     public List<SpriteAnimation> getSprites() {
+        if (sprites == null)
+            setSprites(    new LinkedList<>() );
         return sprites;
     }
 
@@ -551,15 +566,14 @@ public class Anim extends Group implements Animation{
         return delay;
     }
 
-    @Override
-    public boolean isRunning() {
-        return running;
-    }
-
     public void setDelay(float delay) {
         this.delay = delay;
     }
 
+    @Override
+    public boolean isRunning() {
+        return running;
+    }
 
     public int getPixelsPerSecond() {
         return pixelsPerSecond;

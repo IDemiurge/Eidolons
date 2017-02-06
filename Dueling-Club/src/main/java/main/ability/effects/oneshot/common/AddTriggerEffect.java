@@ -20,7 +20,6 @@ public class AddTriggerEffect extends MultiEffect implements AttachmentEffect, C
     protected EVENT_TYPE event_type;
     protected Ability ability;
     protected Condition conditions;
-    protected Trigger trigger;
     private Condition retainCondition;
 
     public AddTriggerEffect(String event_type, Condition conditions, Ability ability) {
@@ -57,6 +56,11 @@ public class AddTriggerEffect extends MultiEffect implements AttachmentEffect, C
         return true;
     }
 
+    public void remove() {
+        if (getTrigger()!=null )
+            ref.getGame().getState().removeTrigger(getTrigger());
+
+    }
     @Override
     public boolean isContinuousWrapped() {
         return true;

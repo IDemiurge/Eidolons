@@ -17,6 +17,7 @@ import java.util.List;
  */
 public class TextureManager {
     private static TextureCache cache;
+    public static String SINGLE_SPRITE="[SINGLE_SPRITE]";
 
     public static Texture getOrCreate(String p) {
         if (ImageManager.getPATH() != null)
@@ -45,8 +46,12 @@ public class TextureManager {
     }
 
 
-    public static Array<TextureRegion> getSpriteSheetFrames(String path
-    ) {
+    public static Array<TextureRegion> getSpriteSheetFrames(String path,
+                                                            boolean singleSprite) {
+       if (path.contains(SINGLE_SPRITE))
+           return getSpriteSheetFrames(path.replace(SINGLE_SPRITE,""), 1, 1);
+        if (singleSprite)
+        return getSpriteSheetFrames(path, 1, 1);
         return getSpriteSheetFrames(path, getColumns(path), getRows(path));
     }
 
@@ -55,6 +60,11 @@ public class TextureManager {
 //if (FRAME_COLS==1 && FRAME_ROWS==1){
 //    Pair<Integer, Integer> xy = get
 //}
+
+        if (FRAME_COLS==0   )
+            FRAME_COLS=1;
+        if (FRAME_ROWS==0   )
+            FRAME_ROWS=1;
         Texture sheet = TextureManager.getOrCreate(path);
         TextureRegion[][] tmp = TextureRegion.split(sheet,
                 sheet.getWidth() / FRAME_COLS,
@@ -122,8 +132,10 @@ public class TextureManager {
         //prefer square
         {
             for (int x1 : xs) {
+                if (x1==0)continue;
                 final int w = texture.getWidth() / x1;
                 for (int y1 : ys) {
+                    if (y1==0)continue;
                     int h = texture.getHeight() / y1;
                     if (w == h)
                         return new Pair<>(x1, y1);
@@ -131,6 +143,8 @@ public class TextureManager {
             }
         }
 
+        if (x ==0)x=1;
+        if (y ==0)y=1;
         return new Pair<>(x, y);
 
     }

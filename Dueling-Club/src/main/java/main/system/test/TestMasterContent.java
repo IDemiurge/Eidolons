@@ -1,6 +1,5 @@
 package main.system.test;
 
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
 import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
 import main.content.*;
 import main.content.properties.G_PROPS;
@@ -60,7 +59,7 @@ public class TestMasterContent {
      * stuff here... the running it and seeing results logged almost
      * immediately!
      */
-    private static boolean immortal = false;
+    private static Boolean immortal = null ;
     private static boolean forceFree;
     private static String FOCUS_LIST = "";
     private static String FIX_LIST = "";
@@ -70,7 +69,7 @@ public class TestMasterContent {
                     "Fire Bolt;Chaos Bolt;" +
                     "Shadow Bolt;Arcane Bolt;" +
                     "Scare;Freeze;" +
-                    "Scorching Light;Summon Lesser Demon";
+                    "Scorching Light;Summon Vampire Bat";
 
     private static String GRAPHICS_TEST_LIST = "Light;Haze;Force Field;" +
             "Summon Vampire Bat;Blink";
@@ -202,6 +201,7 @@ public class TestMasterContent {
     }
 
     public static void toggleImmortal() {
+        if (immortal==null )immortal=true; else
         immortal = !immortal;
 
     }
@@ -312,8 +312,7 @@ public class TestMasterContent {
         }
         if (!test_on)
             return;
-        if (immortal)
-            type.addProperty(G_PROPS.STANDARD_PASSIVES, "" + STANDARD_PASSIVES.INDESTRUCTIBLE);
+
         addTestSpells(type, last);
         addTestActives(full_test, type, last);
         addTestSkills(full_test, type, last);
@@ -354,7 +353,7 @@ public class TestMasterContent {
         }
     }
 
-    public static boolean isImmortal() {
+    public static Boolean isImmortal() {
         return immortal;
     }
 

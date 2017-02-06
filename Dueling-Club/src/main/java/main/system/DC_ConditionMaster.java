@@ -27,7 +27,6 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.DC_HeroObj;
 import main.game.battlefield.Coordinates.UNIT_DIRECTION;
-import main.rules.mechanics.AirborneRule;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
@@ -328,7 +327,7 @@ public class DC_ConditionMaster extends ConditionMaster {
                 ));
                 c.add(ConditionMaster.getAttackConditions());
                 c.add(getClearShotCondition(KEYS.MATCH.name()));
-                c.add(AirborneRule.getMeleeAttackCondition());
+//                c.add(AirborneRule.getMeleeAttackCondition()); TODO
                 break;
             case GRAVE_CELL:
                 c.add(new GraveCondition());

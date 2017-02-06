@@ -20,7 +20,7 @@ public class WaveEffect extends ShapeEffect {
     }
 
     protected Coordinates getBaseCoordinate() {
-        return (!expanding) ? ref.getSourceObj().getCoordinates() : ref
+        return ( expanding) ? ref.getSourceObj().getCoordinates() : ref
                 .getSourceObj().getCoordinates()
                 .getAdjacentCoordinate(getFacing().getDirection());
     }

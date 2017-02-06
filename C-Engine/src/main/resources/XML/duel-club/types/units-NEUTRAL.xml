@@ -3444,7 +3444,7 @@
                 <Resist_Grade_Light>Ineffective</Resist_Grade_Light>
                 <Durability_Grade_Piercing>Normal</Durability_Grade_Piercing>
                 <Durability_Grade_Fire>Ineffective</Durability_Grade_Fire>
-                <Passives>ParamBonus(Initiative Modifier, {level}/2);</Passives>
+                <Passives>ParamBonus(Initiative Modifier, {level}/2);Feral Senses(1);Mesmeric(2)</Passives>
                 <Resist_Grade_Piercing>Normal</Resist_Grade_Piercing>
                 <Ai_Type>archer</Ai_Type>
                 <Displayed_Name>Bandit Archer</Displayed_Name>

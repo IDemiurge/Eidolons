@@ -1,5 +1,6 @@
 package main.game;
 
+import main.ability.AbilityObj;
 import main.ability.effects.Effect;
 import main.ability.effects.EffectImpl;
 import main.ability.effects.RemoveBuffEffect;
@@ -490,6 +491,7 @@ public class DC_GameManager extends GameManager {
     }
 
     public void unitDies(Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly) {
+
         DC_HeroObj killed = (DC_HeroObj) _killed;
         DC_HeroObj killer = (DC_HeroObj) _killer;
         Ref ref = Ref.getCopy(killed.getRef());
@@ -498,6 +500,10 @@ public class DC_GameManager extends GameManager {
 
         // List<Attachment> attachments = getState().getAttachmentsMap()
         // .getOrCreate(killed);
+
+        for (AbilityObj abil : killed.getPassives()) {
+            abil.kill();
+        }
         if (killed.getBuffs() != null)
             for (Attachment attach : killed.getBuffs()) {
                 if (!attach.isRetainAfterDeath()) {

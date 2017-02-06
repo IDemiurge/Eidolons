@@ -16,6 +16,7 @@ import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.test.TestMasterContent;
 import main.test.Preset.PRESET_DATA;
 import main.test.Preset.PRESET_OPTION;
 import main.test.debug.DebugMaster;
@@ -79,6 +80,7 @@ public class PresetLauncher {
                 FAST_DC.getGameLauncher().DUMMY_MODE = true;
                 FAST_DC.getGameLauncher().DUMMY_PP = true;
                 FAST_DC.getGameLauncher().setFAST_MODE(true);
+                TestMasterContent.setImmortal(false);
                 return true;
             case "Superfast":
                 FAST_DC.getGameLauncher().DUMMY_MODE = true;

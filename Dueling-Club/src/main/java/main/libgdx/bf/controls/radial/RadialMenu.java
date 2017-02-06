@@ -434,7 +434,9 @@ public class RadialMenu extends Group {
                 text.draw(batch, parentAlpha);
             }
             if (drawChildren) {
-                for (MenuNode child : childNodes) {
+                 List<MenuNode> renderList = new LinkedList<>(childNodes);
+                Collections.reverse(renderList); //to sync with click listener; TODO rework!
+                for (MenuNode child : renderList) {
                     child.draw(batch, parentAlpha);
                 }
             }

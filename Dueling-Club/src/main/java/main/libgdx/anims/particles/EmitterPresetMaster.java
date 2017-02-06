@@ -42,6 +42,8 @@ public class EmitterPresetMaster {
 
     public String getValueFromGroup(String path, EMITTER_VALUE_GROUP group, String value) {
         String text = getGroupTextFromPreset(path, group);
+        if (text == null)
+            return "" ;
         if (value == null)
             return text;
         for (String substring : StringMaster.openContainer(text, "\n")) {
@@ -135,21 +137,6 @@ public class EmitterPresetMaster {
         return list;
     }
 
-    //    - Angle -
-//    active: true
-//    lowMin: 312.0
-//    lowMax: 312.0
-//    highMin: -115.0
-//    highMax: -360.0
-//    relative: false
-//    scalingCount: 3
-//    scaling0: 0.0
-//    scaling1: 0.6862745
-//    scaling2: 1.0
-//    timelineCount: 3
-//    timeline0: 0.0
-//    timeline1: 0.29452056
-//    timeline2: 0.84931505
     public void clone(String path, String newName) {
         String content = getData(path);
         path = StringMaster.cropLastPathSegment(path);
@@ -160,6 +147,7 @@ public class EmitterPresetMaster {
 
     public String getGroupTextFromPreset(String path, EMITTER_VALUE_GROUP group) {
         String data = getData(path);
+        if (data==null ) return null ;
         return getGroupText(data, group);
     }
 
@@ -185,6 +173,7 @@ public class EmitterPresetMaster {
         String data = map.get(path);
         if (data == null) {
             data = FileManager.readFile(path);
+            if (!StringMaster.isEmpty(data))
             map.put(path, data);
         }
         return data;

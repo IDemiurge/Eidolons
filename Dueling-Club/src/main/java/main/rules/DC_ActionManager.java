@@ -27,6 +27,7 @@ import main.game.logic.dungeon.special.LockMaster;
 import main.game.logic.dungeon.special.Trap;
 import main.game.logic.dungeon.special.TrapMaster;
 import main.game.player.Player;
+import main.libgdx.anims.AnimMaster;
 import main.rules.generic.UnitAnalyzer;
 import main.rules.mechanics.ExtraAttacksRule;
 import main.rules.mechanics.FleeRule;
@@ -238,6 +239,8 @@ public class DC_ActionManager implements ActionManager {
                 if (counterAttack.canBeTargeted(active.getOwnerObj().getId()))
                     return counterAttack;
         for (DC_ActiveObj attack : ExtraAttacksRule.getCounterAttacks(active, countering)) {
+//            if (AnimMaster.isTestMode())
+
             if (attack.canBeActivatedAsCounter())
                 if (attack.canBeTargeted(active.getOwnerObj().getId()))
                     return attack;

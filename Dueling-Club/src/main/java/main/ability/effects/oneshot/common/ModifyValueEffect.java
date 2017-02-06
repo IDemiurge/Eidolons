@@ -316,9 +316,9 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             }
             case MODIFY_BY_CONST: {
                 ref.setAmount(amount + "");
-                if (amount < 0)
-                    amount_modified = Math.min(obj.getIntParam(param), intAmount);
-                else
+//                if (amount < 0) TODO why was it here?
+//                    amount_modified = Math.min(obj.getIntParam(param), intAmount);
+//                else
                     amount_modified = (int) intAmount;
                 final_amount = obj.getParamDouble(param) + amount;
 

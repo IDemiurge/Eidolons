@@ -23,10 +23,14 @@ public class UnitMaster {
         // setRandom(false);
     }
 
+    private static boolean shopOn=true;
+    private static boolean spellsOn;
+    private static boolean skillsOn;
+
     public static void train(DC_HeroObj unit) {
         if (!FAST_DC.getGameLauncher().getFAST_MODE())
-        if (CoreEngine.isGraphicTestMode())
-            return ;
+            if (CoreEngine.isGraphicTestMode())
+                return;
 
         int perc = DEFAULT_XP_MOD;
 
@@ -47,25 +51,28 @@ public class UnitMaster {
         int skillXp = unit.getIntParam(PARAMS.XP) - spellXp;
 
         unit.setParam(PARAMS.XP, skillXp);
-        try {
-            //// TODO: 17.11.2016 improve train func execution speed
-            UnitTrainer.train(unit);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            UnitShop.buyItemsForUnit(unit);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        if (isSkillsOn())
+            try {
+                //// TODO: 17.11.2016 improve train func execution speed
+                UnitTrainer.train(unit);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        if (isShopOn())
+            try {
+                UnitShop.buyItemsForUnit(unit);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         unit.modifyParameter(PARAMS.XP, spellXp);
 
-        try {
-            UnitLibrary.learnSpellsForUnit(unit);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        if (isSpellsOn())
+            try {
+                UnitLibrary.learnSpellsForUnit(unit);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         try {
             // adjust XP/Gold as per mods and default types...
@@ -103,4 +110,27 @@ public class UnitMaster {
         UnitMaster.random = random;
     }
 
+    public static boolean isShopOn() {
+        return shopOn;
+    }
+
+    public static void setShopOn(boolean shopOn) {
+        UnitMaster.shopOn = shopOn;
+    }
+
+    public static boolean isSpellsOn() {
+        return spellsOn;
+    }
+
+    public static void setSpellsOn(boolean spellsOn) {
+        UnitMaster.spellsOn = spellsOn;
+    }
+
+    public static boolean isSkillsOn() {
+        return skillsOn;
+    }
+
+    public static void setSkillsOn(boolean skillsOn) {
+        UnitMaster.skillsOn = skillsOn;
+    }
 }
