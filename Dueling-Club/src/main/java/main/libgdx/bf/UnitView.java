@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
@@ -148,7 +149,10 @@ public class UnitView extends BaseView {
             sp.end();
             fbo.end();
 
-            TextureRegion textureRegion = new TextureRegion(fbo.getColorBufferTexture(), 0, 0, portraitTexture.getWidth(), portraitTexture.getHeight());
+            Vector2 v2 = new Vector2(portraitTexture.getWidth(), portraitTexture.getHeight());
+            v2 = getStage().stageToScreenCoordinates(v2);
+
+            TextureRegion textureRegion = new TextureRegion(fbo.getColorBufferTexture(), 0, 0, v2.x, v2.y);
             textureRegion.flip(false, true);
             imageContainer.setActor(new Image(textureRegion));
             imageContainer.width(getW()).height(getH()).bottom().left().pack();
