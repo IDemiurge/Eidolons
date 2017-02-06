@@ -11,8 +11,9 @@ import java.util.Map;
  */
 public class EmitterPools {
 
-    private static Map<String, Pool<EmitterActor>> poolMap = new HashMap<>();
-    private static boolean poolingOn;
+    private static Map<String, Pool<EmitterActor>> actorPoolMap = new HashMap<>();
+    private static Map<String, Pool<ParticleEffect>> effectPoolMap = new HashMap<>();
+    private static boolean poolingOn=true;
 
 
     public static EmitterActor getEmitterActor(SFX sfx) {
@@ -23,7 +24,7 @@ public class EmitterPools {
         if (!poolingOn)
             return new EmitterActor(path);
         final String finalPath = path.toLowerCase();
-        Pool<EmitterActor> pool = poolMap.get(finalPath);
+        Pool<EmitterActor> pool = actorPoolMap.get(finalPath);
         if (pool == null) {
             pool = new Pool<EmitterActor>() {
                 @Override
@@ -31,13 +32,37 @@ public class EmitterPools {
                     return new EmitterActor(finalPath);
                 }
             };
-            poolMap.put(finalPath, pool);
+            actorPoolMap.put(finalPath, pool);
+        }
+        return pool.obtain();
+    }
+    public static ParticleEffect getEffect(String path) {
+        if (!poolingOn)
+            return new ParticleEffect(path);
+        final String finalPath = path.toLowerCase();
+        Pool<ParticleEffect> pool = effectPoolMap.get(finalPath);
+        if (pool == null) {
+            pool = new Pool<ParticleEffect>() {
+                @Override
+                protected ParticleEffect newObject() {
+                    return new ParticleEffect(finalPath);
+                }
+            };
+            effectPoolMap.put(finalPath, pool);
         }
         return pool.obtain();
     }
 
-    public static void freeEmitter(EmitterActor e) {
-        Pool<EmitterActor> pool = poolMap.get(e.path.toLowerCase());
+    public static void freeEffect (ParticleEffect e) {
+        Pool<ParticleEffect> pool = effectPoolMap.get(e.path.toLowerCase());
+        if (pool == null)
+            return;
+        pool.free(e);
+
+    }
+
+    public static void freeActor(EmitterActor e) {
+        Pool<EmitterActor> pool = actorPoolMap.get(e.path.toLowerCase());
         if (pool == null)
             return;
         pool.free(e);

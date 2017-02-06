@@ -47,16 +47,19 @@ public class TextureManager {
 
 
     public static Array<TextureRegion> getSpriteSheetFrames(String path,
-                                                            boolean singleSprite) {
-       if (path.contains(SINGLE_SPRITE))
-           return getSpriteSheetFrames(path.replace(SINGLE_SPRITE,""), 1, 1);
+                                                            boolean singleSprite, Texture texture) {
+        if (path==null )
+            return getSpriteSheetFrames(path.replace(SINGLE_SPRITE,""), 1, 1, texture );
+        if (path.contains(SINGLE_SPRITE))
+            return getSpriteSheetFrames(path.replace(SINGLE_SPRITE,""), 1, 1, texture );
         if (singleSprite)
-        return getSpriteSheetFrames(path, 1, 1);
-        return getSpriteSheetFrames(path, getColumns(path), getRows(path));
+        return getSpriteSheetFrames(path, 1, 1, null );
+        return getSpriteSheetFrames(path, getColumns(path), getRows(path), texture );
     }
 
     public static Array<TextureRegion> getSpriteSheetFrames(String path,
-                                                            int FRAME_COLS, int FRAME_ROWS) {
+                                                            int FRAME_COLS,
+                                                            int FRAME_ROWS, Texture texture) {
 //if (FRAME_COLS==1 && FRAME_ROWS==1){
 //    Pair<Integer, Integer> xy = get
 //}
@@ -65,7 +68,7 @@ public class TextureManager {
             FRAME_COLS=1;
         if (FRAME_ROWS==0   )
             FRAME_ROWS=1;
-        Texture sheet = TextureManager.getOrCreate(path);
+        Texture sheet =path==null ? texture : TextureManager.getOrCreate(path);
         TextureRegion[][] tmp = TextureRegion.split(sheet,
                 sheet.getWidth() / FRAME_COLS,
                 sheet.getHeight() / FRAME_ROWS);

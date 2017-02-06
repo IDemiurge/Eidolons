@@ -117,6 +117,7 @@ public class GridPanel extends Group {
         GuiEventManager.bind(DESTROY_UNIT_MODEL, param -> {
             DC_HeroObj unit = (DC_HeroObj) param.get();
             UnitView view = (UnitView) unitMap.get(unit);
+//            view.setVisibleVal(0);//set this val to zero remove unit from initiative queue
             GuiEventManager.trigger(REMOVE_FROM_INITIATIVE_PANEL,
              new EventCallbackParam(new InitiativePanelParam(null, view.getId(), 0)));
             removeUnitView(unit);
@@ -152,10 +153,6 @@ public class GridPanel extends Group {
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED) {
                 if (!DeathAnim.isOn())
                     GuiEventManager.trigger(DESTROY_UNIT_MODEL, new EventCallbackParam(r.getTargetObj()));
-                BaseView bv = removeUnitView((DC_HeroObj) r.getTargetObj());
-                if (bv instanceof UnitView) {
-                    ((UnitView) bv).setVisibleVal(0);//set this val to zero remove unit from initiative queue
-                }
                 caught = true;
             }
 
@@ -328,6 +325,7 @@ public class GridPanel extends Group {
         GridCellContainer gridCellContainer = (GridCellContainer) uv.getParent();
         gridCellContainer.removeActor(uv);
         uv.setVisible(false);
+
         GuiEventManager.trigger(UPDATE_LIGHT, null);
         return uv;
     }

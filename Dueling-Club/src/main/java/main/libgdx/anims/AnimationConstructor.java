@@ -144,6 +144,8 @@ if (anim==null ) return null ;
             return MoveAnimation.isOn()? new MoveAnimation(active, data) : null ;
         if (active.isAttackAny()) {
             if (part == ANIM_PART.MAIN) {
+                if (active.isThrow())
+                    return new ThrowAnim(active);
                 if (active.isRanged())
                     return new RangedAttackAnim(active);
                 return new AttackAnim(active);

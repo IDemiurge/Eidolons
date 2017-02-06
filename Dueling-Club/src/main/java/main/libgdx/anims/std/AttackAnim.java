@@ -17,6 +17,7 @@ import main.entity.obj.DC_WeaponObj;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.FacingMaster;
 import main.libgdx.anims.AnimData;
+import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.bf.GridConst;
 import main.system.auxiliary.FileManager;
@@ -35,22 +36,49 @@ public class AttackAnim extends ActionAnim {
     protected SequenceAction sequence;
     protected String imgPath;
 
+    public AttackAnim(Entity active) {
+        this (active,ATK_ANIMS.HEAVY_SWING);
+    }
     public AttackAnim(Entity active, ATK_ANIMS... anims) {
-        super(active, getWeaponAnimData(active));
+        super(active, getWeaponAnimData(active, anims));
         this.anims = anims;
 
 
-        this.anims = new ATK_ANIMS[]{
-                ATK_ANIMS.HEAVY_SWING
-        };
+
         weapon = getActive().getActiveWeapon();
         debug();
     }
 
-    protected static AnimData getWeaponAnimData(Entity active) {
-        return new AnimData();
+    protected static AnimData getWeaponAnimData(Entity active, ATK_ANIMS... anims) {
+        AnimData   data=new AnimData();
+        float base_speed = anims[0].startSpeed;
+        if (base_speed!=0)
+            data.setValue(ANIM_VALUES.MISSILE_SPEED, String.valueOf(base_speed));
+            else
+        data.setValue(ANIM_VALUES.MISSILE_SPEED, "200");
+        return data;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @Override
+    protected void initSpeed() {
+        super.initSpeed();
+    }
     protected String findWeaponSprite(DC_WeaponObj weapon) {
         if (weapon == null) return "";
         String path = PathFinder.getSpritesPath() + "weapons\\"
@@ -154,7 +182,9 @@ public class AttackAnim extends ActionAnim {
             for (float angle : anim.targetAngles) {
                 List<Pair<MoveByAction, RotateByAction>> swings = new LinkedList<>();
                 float duration =
-                 1;
+                 this.duration;
+                if (duration<=0)
+                    duration=1;
                  //anim.durations[i];
                 totalDuration += duration;
                 float x = anim.offsetsX[i];
@@ -242,7 +272,9 @@ size - elongate
     protected void initDuration() {
 
     }
-
+static{
+        ATK_ANIMS.THROW.startSpeed=500;
+}
     public enum ATK_ANIMS {
         THRUST_LANCE,
 
@@ -252,7 +284,7 @@ size - elongate
         SLASH,
         POLE_SMASH,
         HEAVY_SWING(),
-        SHOT;
+        SHOT, THROW();
 
         //        ATK_ANIMS(float overswing, float overswing, float overswing, float overswing) {
 //

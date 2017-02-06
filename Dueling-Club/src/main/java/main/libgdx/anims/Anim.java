@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import javafx.util.Pair;
@@ -67,6 +68,7 @@ public class Anim extends Group implements Animation {
     protected Coordinates forcedDestination;
     protected Texture texture;
     protected boolean running;
+    private boolean smooth=true;
 
 
     public Anim(Entity active, AnimData params) {
@@ -121,6 +123,11 @@ public class Anim extends Group implements Animation {
         }
         if (duration >= 0) //|| finished //  lifecycle duration for continuous?
             if (time >= duration) {
+                if (isSmooth()) {
+                    duration += getTimeToFinish();
+                    emitterList.forEach(e -> e.getEffect().allowCompletion());
+                    return true;
+                }
                 main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, this + " finished; duration = " + duration);
                 finished();
                 dispose();
@@ -151,6 +158,19 @@ public class Anim extends Group implements Animation {
             e.draw(batch, 1f);
         });
         return true;
+    }
+
+    private float getTimeToFinish() {
+        float time = 0;
+        for (EmitterActor e: emitterList){
+            for (ParticleEmitter emitter: e.getEffect().getEmitters()){
+                float timeLeft = emitter.getDuration().getLowMax() * emitter.getPercentComplete();
+                if (timeLeft>time)
+                    time = timeLeft;
+            }
+        }
+        float gracePeriod = 0.25f;
+        return time+time*gracePeriod;
     }
 
     @Override
@@ -339,8 +359,9 @@ public class Anim extends Group implements Animation {
         texture = null;
 
         emitterList.forEach(e -> {
-            EmitterPools.freeEmitter(e);
+            EmitterPools.freeActor(e);
             e.remove();
+            e.getEffect().dispose();
 
         });
         sprites.forEach(s -> s.dispose());
@@ -577,5 +598,13 @@ public class Anim extends Group implements Animation {
 
     public int getPixelsPerSecond() {
         return pixelsPerSecond;
+    }
+
+    public boolean isSmooth() {
+        return smooth;
+    }
+
+    public void setSmooth(boolean smooth) {
+        this.smooth = smooth;
     }
 }

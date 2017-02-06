@@ -57,4 +57,6 @@ public class ParticleManager extends Actor {
     public static void setAmbienceOn(boolean ambienceOn) {
         ParticleManager.ambienceOn = ambienceOn;
     }
+
+
 }

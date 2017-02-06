@@ -55,7 +55,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
         try {
             if (ref.getObj(KEYS.ACTIVE).checkBool(STD_BOOLS.INVISIBLE_BUFF))
                 visible = false;
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         if (getName().contains(StringMaster.INVISIBLE_BUFF))
             visible = false;

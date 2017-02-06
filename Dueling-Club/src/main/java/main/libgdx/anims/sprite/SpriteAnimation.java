@@ -1,6 +1,7 @@
 package main.libgdx.anims.sprite;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -27,20 +28,26 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private Sprite sprite;
 
     public SpriteAnimation(String path) {
-        this(defaultFrameDuration, false, 1, path, false);
+        this(defaultFrameDuration, false, 1, path, null, false);
     }
 
     public SpriteAnimation( String path
      , boolean singleSprite) {
-        this(defaultFrameDuration, false, 1, path, singleSprite);
+        this(defaultFrameDuration, false, 1, path, null, singleSprite );
     }
-    public SpriteAnimation(float frameDuration, boolean looping, int loops, String path
+    public SpriteAnimation(float frameDuration, boolean looping, int loops,String path,
+                           Texture texture
      , boolean singleSprite) {
-        super(frameDuration, TextureManager.getSpriteSheetFrames(path, singleSprite));
+        super(frameDuration, TextureManager.getSpriteSheetFrames(path , singleSprite, texture));
+        if (path!=null )
         frameNumber = TextureManager.getFrameNumber(path);
         stateTime = 0;
         this.looping = looping;
         this.loops = loops;
+    }
+
+    public SpriteAnimation(Texture texture) {
+        this(defaultFrameDuration, false, 1, null , texture, false);
     }
 
     public void reset() {

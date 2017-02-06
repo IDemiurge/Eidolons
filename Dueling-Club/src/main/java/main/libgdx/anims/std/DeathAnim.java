@@ -122,6 +122,7 @@ public class DeathAnim extends ActionAnim {
     }
 
     public static boolean isOn() {
+        if (!AnimMaster.isOn())return false;
         return on;
     }
 

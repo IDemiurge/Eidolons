@@ -1,5 +1,7 @@
 package main.libgdx.anims.particles;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import javafx.util.Pair;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
@@ -7,6 +9,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.FileManager;
 import main.system.auxiliary.StringMaster;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -20,6 +23,7 @@ import java.util.Map;
  */
 public class EmitterPresetMaster {
     private static EmitterPresetMaster instance;
+    private static boolean spriteEmitterTest;
     String separator = " - ";
     String value_separator = ": ";
     private Map<String, String> map = new HashMap<>();
@@ -34,6 +38,92 @@ public class EmitterPresetMaster {
         return instance;
     }
 
+    public static void save(EmitterActor last) {
+        String c = "";
+        Writer output = new StringWriter();
+        last.getEffect().getEmitters().forEach(e -> {
+            try {
+                e.save(output);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+        c = output.toString();
+        XML_Writer.write(c, PathFinder.getSfxPath() + "custom\\" + last.path);
+    }
+
+    public
+    String searchImage(File directory, String imageName) {
+//search recursively
+        String imagePath=null ;
+        for ( File d : FileManager.getFilesFromDirectory(directory.getPath(), true)){
+            if (d.isDirectory())
+                imagePath = searchImage(d, imageName);
+            if (d.isFile())
+                if (d.getName().equalsIgnoreCase(imageName))
+                    imageName=d.getName();
+            if (imagePath!=null ){
+                //updatePreset();
+                return imagePath;
+            }
+        }
+        return imagePath ;
+    }
+        public
+        String findImagePath(String path) {
+        String imagePath = getImagePath(path);
+        FileHandle file = Gdx.files.internal(imagePath);
+        if (file.exists())
+            return imagePath;
+            String name = StringMaster.getLastPathSegment(imagePath);
+             //generic
+        imagePath = PathFinder.getParticleImagePath();
+        file = Gdx.files.internal(imagePath);
+        if (file.exists())
+            return imagePath;
+
+        //raw
+        String suffix = StringMaster.replaceFirst(path, PathFinder.getParticlePresetPath(), "");
+        suffix = StringMaster.cropLastPathSegment(suffix);
+        imagePath += suffix;
+        file = Gdx.files.internal(imagePath);
+        if (file.exists())
+            return imagePath;
+
+        imagePath += "particles\\";
+        file = Gdx.files.internal(imagePath);
+        if (file.exists())
+            return imagePath;
+
+        imagePath =
+         PathFinder.removeSpecificPcPrefix(
+          EmitterPresetMaster.getInstance().getImagePath(path));
+        file = Gdx.files.internal(imagePath);
+        if (file.exists())
+            return imagePath;
+
+        imagePath = StringMaster.cropLastPathSegment(imagePath);
+        file = Gdx.files.internal(imagePath);
+        if (file.exists())
+            return imagePath;
+
+        main.system.auxiliary.LogMaster.log(1, imagePath + " - NO IMAGE FOUND FOR SFX: " + path);
+
+
+        if (spriteEmitterTest) {
+//            effect.getEmitters().forEach(e -> {
+            String randomPath = FileManager.getRandomFile(PathFinder.getSpritesPath() +
+             "impact\\").getPath();
+            return randomPath;
+//        ((Emitter) e).offset(20, "scale");
+//        e.setImagePath(randomPath);
+//        e.setPremultipliedAlpha(false);
+//            });
+        }
+
+        return searchImage(FileManager.getFile(PathFinder.getSfxPath()), name);
+    }
+
     public String getImagePath(String path) {
 
         return
@@ -43,7 +133,7 @@ public class EmitterPresetMaster {
     public String getValueFromGroup(String path, EMITTER_VALUE_GROUP group, String value) {
         String text = getGroupTextFromPreset(path, group);
         if (text == null)
-            return "" ;
+            return "";
         if (value == null)
             return text;
         for (String substring : StringMaster.openContainer(text, "\n")) {
@@ -65,10 +155,10 @@ public class EmitterPresetMaster {
     public EmitterActor getModifiedEmitter(String path,
                                            boolean write, String... modvals) {
 
-        String newName =StringMaster.getLastPathSegment(path) +" modified";
+        String newName = StringMaster.getLastPathSegment(path) + " modified";
 //crop format!
 
-            clone(path, newName);
+        clone(path, newName);
 
         String data = getData(path);
         for (String sub : modvals) {
@@ -87,12 +177,12 @@ public class EmitterPresetMaster {
         }
         path = StringMaster.cropLastPathSegment(path);
 
-            XML_Writer.write(data, path, newName);
+        XML_Writer.write(data, path, newName);
 
         String newPath = path + newName;
         EmitterActor actor = EmitterPools.getEmitterActor(newPath);
 //        new EmitterActor(newPath);
-        if (!write){
+        if (!write) {
             //delete
         }
         return actor;
@@ -109,7 +199,7 @@ public class EmitterPresetMaster {
                 data = data.replace(substring, newString);
             }
         }
-        data =  data.replace(getGroupText(data, group), text);
+        data = data.replace(getGroupText(data, group), text);
         return data;
     }
 
@@ -124,7 +214,7 @@ public class EmitterPresetMaster {
                   newValue));
             }
         }
-        data =  data.replace(getGroupText(data, group), text);
+        data = data.replace(getGroupText(data, group), text);
         return data;
     }
 
@@ -147,20 +237,20 @@ public class EmitterPresetMaster {
 
     public String getGroupTextFromPreset(String path, EMITTER_VALUE_GROUP group) {
         String data = getData(path);
-        if (data==null ) return null ;
+        if (data == null) return null;
         return getGroupText(data, group);
     }
 
     public String getGroupText(String data, EMITTER_VALUE_GROUP group) {
         //TODO for multi emitters?!
         String[] parts = data.split(group.name + " - \n");
-        String valuePart=null ;
+        String valuePart = null;
 
-        if (parts.length==1)
+        if (parts.length == 1)
             parts = data.split(group.name + " -\n");
-        if (parts.length>1)
+        if (parts.length > 1)
             valuePart = parts[1];
-        if (parts.length>2){
+        if (parts.length > 2) {
             valuePart = valuePart.split("\n\n")[0];
         }
 
@@ -174,7 +264,7 @@ public class EmitterPresetMaster {
         if (data == null) {
             data = FileManager.readFile(path);
             if (!StringMaster.isEmpty(data))
-            map.put(path, data);
+                map.put(path, data);
         }
         return data;
     }
@@ -203,20 +293,6 @@ public class EmitterPresetMaster {
 
 
      */
-    }
-
-    public static void save(EmitterActor last) {
-        String c = "";
-        Writer output= new StringWriter();
-        last.getEffect().getEmitters().forEach(e->{
-            try {
-                e.save(output);
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        });
-        c= output.toString();
-        XML_Writer.write(c, PathFinder.getSfxPath()+"custom\\"+ last.path);
     }
 
     public enum EMITTER_VALUE_SHORTCUTS {
