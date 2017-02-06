@@ -37,6 +37,7 @@ public class UnitView extends BaseView {
     private Texture clockTexture;
     private boolean needRepaint = true;
     private Label initiativeStrVal;
+    private float alpha = 1;
 
     public UnitView(UnitViewOptions o) {
         super(o);
@@ -115,6 +116,13 @@ public class UnitView extends BaseView {
         border.setWidth(portraitTexture.getHeight() + 8);
     }
 
+    public void setVisibleVal(int val) {
+        val = Math.min(0, val);
+        val = Math.max(100, val);
+        alpha = val * 0.01f;
+        needRepaint = true;
+    }
+
     @Override
     public void act(float delta) {
         if (needRepaint) {
@@ -124,16 +132,18 @@ public class UnitView extends BaseView {
             Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
             sp.begin();
 
+
+            sp.setColor(1, 1, 1, 1 * alpha);
             sp.draw(portraitTexture, 0, 0, portraitTexture.getWidth(), portraitTexture.getHeight());
             if (clockTexture != null) {
                 sp.draw(clockTexture, portraitTexture.getWidth() - clockTexture.getWidth(), 0);
 
             }
             if (border != null) {
-                border.draw(sp, 1);
+                border.draw(sp, alpha);
             }
             if (initiativeStrVal != null) {
-                initiativeStrVal.draw(sp, 1);
+                initiativeStrVal.draw(sp, alpha);
             }
             sp.end();
             fbo.end();
@@ -144,8 +154,13 @@ public class UnitView extends BaseView {
             imageContainer.width(getW()).height(getH()).bottom().left().pack();
 
             if (clockTexture != null) {
-                InitiativePanelParam panelParam = new InitiativePanelParam(textureRegion, curId, clockVal);
-                GuiEventManager.trigger(GuiEventType.ADD_OR_UPDATE_INITIATIVE, new OnDemandEventCallBack(panelParam));
+                if (alpha != 0) {
+                    InitiativePanelParam panelParam = new InitiativePanelParam(textureRegion, curId, clockVal);
+                    GuiEventManager.trigger(GuiEventType.ADD_OR_UPDATE_INITIATIVE, new OnDemandEventCallBack(panelParam));
+                } else {
+                    InitiativePanelParam panelParam = new InitiativePanelParam(curId);
+                    GuiEventManager.trigger(GuiEventType.REMOVE_FROM_INITIATIVE_PANEL, new OnDemandEventCallBack(panelParam));
+                }
             }
             needRepaint = false;
         }

@@ -13,6 +13,10 @@ public class InitiativePanelParam {
         this.val = val;
     }
 
+    public InitiativePanelParam(int curId) {
+        id = curId;
+    }
+
     public TextureRegion getTextureRegion() {
         return textureRegion;
     }
