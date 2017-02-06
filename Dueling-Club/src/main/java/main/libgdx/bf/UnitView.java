@@ -56,7 +56,7 @@ public class UnitView extends BaseView {
         setHeight(baseHeight * getScaleY());
         setWidth(baseWidth * getScaleX());
 
-        fbo = new FrameBuffer(Pixmap.Format.RGB565, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+        fbo = new FrameBuffer(Pixmap.Format.RGBA4444, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         imageContainer = new Container<>();
         imageContainer.width(getW()).height(getH()).bottom().left();
         addActor(imageContainer);
@@ -128,7 +128,7 @@ public class UnitView extends BaseView {
         if (needRepaint) {
             SpriteBatch sp = new SpriteBatch(1);
             fbo.begin();
-            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClearColor(1, 1, 1, 0);
             Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
             sp.begin();
 
