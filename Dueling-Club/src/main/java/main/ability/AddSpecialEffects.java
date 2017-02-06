@@ -66,7 +66,8 @@ public class AddSpecialEffects extends MicroEffect {
             case ON_DEATH:
              return    new AddTriggerEffect(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED,
                  new RefCondition(
-                  case_type== SPECIAL_EFFECTS_CASE.ON_DEATH?  KEYS.EVENT_TARGET:  KEYS.EVENT_SOURCE ,
+                  case_type== SPECIAL_EFFECTS_CASE.ON_DEATH?
+                   KEYS.EVENT_TARGET:  KEYS.EVENT_SOURCE ,
                   KEYS.SOURCE, true),
                  new ActiveAbility(new FixedTargeting(KEYS.TARGET), getEffects())
                 );

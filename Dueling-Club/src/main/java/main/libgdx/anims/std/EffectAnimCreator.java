@@ -37,13 +37,13 @@ public class EffectAnimCreator {
             subAnim = ((CompositeAnim) anim).getMap().get(part);
         } else subAnim = (Anim) anim;
 
-        Coordinates destination=null ;
+        Coordinates destination = null;
         if (anim instanceof Anim) {
-            destination=((Anim) anim).getDestinationCoordinates();
+            destination = ((Anim) anim).getDestinationCoordinates();
         }
         Float distance =
          GridMaster.getDistance(destination,
-          e.getActiveObj().getOwnerObj(). getCoordinates()); //TODO from parent anim's origin!
+          e.getActiveObj().getOwnerObj().getCoordinates()); //TODO from parent anim's origin!
         float delay = distance / subAnim.getPixelsPerSecond();
 
 
@@ -53,20 +53,26 @@ public class EffectAnimCreator {
     public static Anim getOrCreateEffectAnim(Effect e) {
         Anim anim = map.get(e);
 
-        if (anim==null ) {
-            anim = createEffectAnim(e);
+        if (anim == null) {
+            anim = createAnim(e);
             if (cachingOn)
-            map.put(e, anim);
+                map.put(e, anim);
         }
-        if (e.getRef().getTargetObj()!=null )
-        anim.setForcedDestination(e.getRef().getTargetObj().getCoordinates());
+        if (anim == null) return null;
+        if (e.getRef().getTargetObj() != null)
+            anim.setForcedDestination(e.getRef().getTargetObj().getCoordinates());
         anim.setPart(ANIM_PART.MAIN); //TODO gotta be some way to generalize this
         return anim;
     }
-        private static Anim createEffectAnim(Effect e) {
 
+    private static Anim createAnim(Effect e) {
         DC_ActiveObj active = (DC_ActiveObj) e.getActiveObj();
-        switch (e.getClass().getSimpleName().replace("Effect", "")) {
+        return createEffectAnim(e, active, e.getClass());
+    }
+
+    private static Anim createEffectAnim(Effect e, DC_ActiveObj active, Class<?> clazz) {
+
+        switch (clazz.getSimpleName().replace("Effect", "")) {
             case "DealDamage":
                 return new HitAnim(active, getDamageAnimData((DealDamageEffect) e));
             case "Drain": // missile back?
@@ -99,6 +105,9 @@ public class EffectAnimCreator {
 
 
         }
+        Class<?> superclass = e.getClass().getSuperclass();
+        if (superclass != null)
+            return createEffectAnim(e, active, superclass);
         return null;
     }
 
