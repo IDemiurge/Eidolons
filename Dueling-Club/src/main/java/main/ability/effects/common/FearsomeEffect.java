@@ -40,7 +40,7 @@ public class FearsomeEffect extends ModifyValueEffect { // mod val
                 ref.setTarget(unit.getId());
                 super.applyThis();
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         } finally {
             formula = buffer;

@@ -2,12 +2,10 @@ package main.ability.effects;
 
 import main.ability.Ability;
 import main.ability.ActiveAbility;
-import main.ability.effects.oneshot.common.AddTriggerEffect;
 import main.elements.conditions.Condition;
 import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
-import main.game.event.Event.EVENT_TYPE;
 import main.system.ConditionMaster;
 
 public class AttackModifierEffect {

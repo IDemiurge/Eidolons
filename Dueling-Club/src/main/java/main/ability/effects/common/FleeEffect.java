@@ -1,7 +1,6 @@
 package main.ability.effects.common;
 
 import main.ability.effects.oneshot.special.InstantDeathEffect;
-import main.rules.mechanics.FleeRule;
 
 public class FleeEffect extends InstantDeathEffect {
 

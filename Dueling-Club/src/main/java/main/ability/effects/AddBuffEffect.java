@@ -124,7 +124,7 @@ public class AddBuffEffect extends MultiEffect implements ResistibleEffect, Redu
             if (getActive() == null) {
                 setActive(ref.getSourceObj());
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         getBuffTypeLazily();
         // check if continuous wrapping required

@@ -1,8 +1,6 @@
 package main.ability.effects.oneshot.rpg;
 
 import main.ability.effects.DC_Effect;
-import main.ability.effects.oneshot.common.ModifyValueEffect;
-import main.content.PARAMS;
 
 public class StunEffect extends DC_Effect {
     public StunEffect(String potential) {

@@ -136,7 +136,7 @@ public class DealDamageEffect extends DC_Effect {
         if (damage_type == null) {
             try {
                 damage_type = ((DC_Obj) ref.getObj(KEYS.ACTIVE)).getDamageType();
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
         if (damage_type == null) {

@@ -2,7 +2,6 @@ package main.ability.effects.common;
 
 import main.ability.effects.AddBuffEffect;
 import main.ability.effects.Effect;
-import main.ability.effects.oneshot.common.AddTriggerEffect;
 import main.elements.conditions.Condition;
 import main.system.math.Formula;
 
