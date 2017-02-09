@@ -87,27 +87,10 @@ public class LogPanel extends Group {
 
         scrollPanel = new ScrollPanel<>();
 
-        //scrollPanel.setBounds(15, 15, getWidth() - 30, getHeight() - 30);
-        scrollPanel.pad(15);
+        scrollPanel.pad(1, 10, 1, 10);
         scrollPanel.fill();
-        TabbedPanel tabbedPanel = new TabbedPanel(getWidth(), getHeight());
-        tabbedPanel.fill();
-        tabbedPanel.addTab(scrollPanel, "realLog");
 
-        ScrollPanel scrollPanelTemp = new ScrollPanel<>();
-        //scrollPanelTemp.setBounds(15, 15, getWidth() - 30, getHeight() - 30);
-        scrollPanelTemp.pad(15);
-        scrollPanelTemp.fill();
-        scrollPanelTemp.setColor(0, 255, 0, 1);
-        scrollPanelTemp.addElement(getTestMessage());
-        tabbedPanel.addTab(scrollPanelTemp, "realLog2");
-
-        tabbedPanel.resetCheckedTab();
-
-        tabbedPanel.fill();
-        tabbedPanel.setFillParent(true);
-
-        addActor(tabbedPanel);
+        addActor(scrollPanel);
         debug();
         bind();
     }
