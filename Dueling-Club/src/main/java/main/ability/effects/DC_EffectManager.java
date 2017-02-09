@@ -76,7 +76,7 @@ public class DC_EffectManager implements EffectManager {
             boolean resistanceChecked = spell.isResistanceChecked();
             spell.setResistanceChecked(true);
             return resistanceChecked;
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
         return false;

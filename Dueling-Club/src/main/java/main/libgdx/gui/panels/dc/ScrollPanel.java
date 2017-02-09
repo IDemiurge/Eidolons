@@ -47,7 +47,6 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
 
         table = new Table();
         table.setFillParent(true);
-        //tb.setDebug(true);
         table.align(Align.left);
 
         table.setLayoutEnabled(true);
@@ -59,7 +58,6 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         innerScrollContainer.setX(0);
         innerScrollContainer.setY(0);
         super.setActor(innerScrollContainer);
-        innerScrollContainer.setDebug(true);
 
         addCaptureListener(new InputListener() {
             private float yy;
@@ -125,7 +123,6 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
             step += instantOffsetY;
 
             cy = Math.min(cy + step * delta, 0);
-            //cy = Math.min(cy, (table.getCells().size - 1 * table.getCells().first().getActorHeight()) * -1);
 
             innerScrollContainer.setY(cy);
             if (offsetY != 0) {

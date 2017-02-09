@@ -107,7 +107,7 @@ public class AttackEffect extends MicroEffect {
             try {
                 id = (!offhand) ? attacker.getMainWeapon().getId() : attacker.getSecondWeapon()
                         .getId();
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
             if (id != null) {
                 ref.setValue(KEYS.WEAPON, "" + id);

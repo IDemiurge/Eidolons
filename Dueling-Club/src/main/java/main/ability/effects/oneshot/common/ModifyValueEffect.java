@@ -107,10 +107,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
     }
 
     private static boolean checkPercentOrConst(String percOrConst) {
-        if (StringMaster.contains(percOrConst, "mod")) {
-            return true;
-        }
-        return false;
+        return StringMaster.contains(percOrConst, "mod");
     }
 
     public static PARAMETER getMaxParameter(PARAMETER param) {
@@ -184,7 +181,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         }
         try {
             return !ref.getObj(KEYS.ACTIVE).checkBool(STD_BOOLS.C_VALUE_OVER_MAXIMUM);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         return true;
     }

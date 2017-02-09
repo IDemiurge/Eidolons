@@ -36,8 +36,7 @@ public class ModifyCounterEffect extends MicroEffect implements ResistibleEffect
     }
 
     public String toString() {
-        String string = modtype.toString() + " Counter: " + formula;
-        return string;
+        return modtype.toString() + " Counter: " + formula;
     }
 
     @Override
