@@ -28,8 +28,9 @@ public class Container extends Comp {
         this.defaultLayout = defaultLayout;
         this.comps = comps;
         initRoot();
-        if (DEBUG_MODE)
+        if (DEBUG_MODE) {
             debug();
+        }
     }
 
     public Container(String imagePath, LAYOUT defaultLayout) {
@@ -37,8 +38,9 @@ public class Container extends Comp {
     }
 
     public WidgetContainer getRoot() {
-        if (root == null)
+        if (root == null) {
             root = new Root();
+        }
         return root;
     }
 
@@ -110,7 +112,9 @@ public class Container extends Comp {
     }
 
     public LAYOUT getRootLayout() {
-        if (rootLayout == null) return defaultLayout;
+        if (rootLayout == null) {
+            return defaultLayout;
+        }
         return rootLayout;
     }
 
@@ -148,15 +152,17 @@ public class Container extends Comp {
 
         @Override
         public float getHeight() {
-            if (BooleanMaster.isTrue(verticalPercentage))
+            if (BooleanMaster.isTrue(verticalPercentage)) {
                 return getParent().getHeight() * v;
+            }
             return super.getHeight();
         }
 
         @Override
         public float getWidth() {
-            if (BooleanMaster.isFalse(verticalPercentage))
+            if (BooleanMaster.isFalse(verticalPercentage)) {
                 return getParent().getWidth() * v;
+            }
             return super.getWidth();
         }
     }

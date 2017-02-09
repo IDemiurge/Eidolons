@@ -44,8 +44,9 @@ public class Wave extends DC_Obj {
     public Wave(Coordinates c, ObjType waveType, DC_Game game, Ref ref, DC_Player player) {
         super(waveType, player, game, ref);
         this.coordinates = c;
-        if (coordinates != null)
+        if (coordinates != null) {
             setPresetCoordinate(true);
+        }
     }
 
     public Wave(ObjType waveType, DC_Game game, Ref ref, DC_Player player) {
@@ -76,8 +77,9 @@ public class Wave extends DC_Obj {
 
     @Override
     public void setCoordinates(Coordinates coordinates) {
-        if (coordinates != null)
+        if (coordinates != null) {
             setPresetCoordinate(true);
+        }
         super.setCoordinates(coordinates);
     }
 
@@ -150,8 +152,9 @@ public class Wave extends DC_Obj {
     }
 
     public Integer getPower() {
-        if (power == 0)
+        if (power == 0) {
             power = EncounterMaster.getPower(type, null);
+        }
         return power;
     }
 
@@ -175,8 +178,9 @@ public class Wave extends DC_Obj {
     }
 
     public DC_HeroObj getLeader() {
-        if (leader == null)
+        if (leader == null) {
             leader = getUnits().get(0);
+        }
         return leader;
     }
 

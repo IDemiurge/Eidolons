@@ -61,8 +61,9 @@ public abstract class MicroGame extends Game {
     }
 
     public Player getPlayer(boolean me) {
-        if (me)
+        if (me) {
             return player1;
+        }
         return player2;
     }
 

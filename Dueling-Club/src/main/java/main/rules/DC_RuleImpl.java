@@ -17,16 +17,17 @@ public abstract class DC_RuleImpl implements Rule {
     protected Conditions conditions = new Conditions();
     protected MicroGame game;
     protected Effect effects;
-    private boolean initialized = false;
     protected boolean on = true;
+    private boolean initialized = false;
 
 
     public DC_RuleImpl(MicroGame game) {
         this.game = game;
         initEventType();
         initConditions();
-        if (isFastFailConditions())
+        if (isFastFailConditions()) {
             conditions.setFastFailOnCheck(true);
+        }
     }
 
     protected boolean isFastFailConditions() {
@@ -56,16 +57,19 @@ public abstract class DC_RuleImpl implements Rule {
     @Override
     public boolean check(Event event) {
         if (event_types != null) {
-            if (!Arrays.asList(event_types).contains(event.getType()))
+            if (!Arrays.asList(event_types).contains(event.getType())) {
                 return false;
+            }
 
         } else {
-            if (!getEventType().equals(event.getType()))
+            if (!getEventType().equals(event.getType())) {
                 return false;
+            }
 
         }
-        if (conditions == null)
+        if (conditions == null) {
             return true;
+        }
         Ref ref = Ref.getCopy(event.getRef());
         ref.setEvent(event);
         main.system.auxiliary.LogMaster.log(LOG_CHANNELS.RULES_DEBUG, toString() + " checked on "

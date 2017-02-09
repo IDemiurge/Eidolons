@@ -62,8 +62,9 @@ public class SortMaster {
     public static Comparator<Integer> getNaturalIntegerComparator(final boolean descending) {
         return new Comparator<Integer>() {
             public int compare(Integer o1, Integer o2) {
-                if (o1 == o2)
+                if (o1 == o2) {
                     return 0;
+                }
                 if (o1 > o2) {
                     return descending ? -1 : 1;
                 }
@@ -95,8 +96,9 @@ public class SortMaster {
 				 * into sublists by id sort sublists by name
 				 */
                 int result = checkHeroSubList(o1, o2);
-                if (result != 0)
+                if (result != 0) {
                     return result;
+                }
                 return compareAlphabetically(o1.getName(), o2.getName());
             }
 
@@ -156,33 +158,42 @@ public class SortMaster {
                 int i = descending ? -1 : 1;
                 return i;
             }
-            if (StringMaster.getInteger(id1) == StringMaster.getInteger(id2))
+            if (StringMaster.getInteger(id1) == StringMaster.getInteger(id2)) {
                 return 0;
+            }
             return descending ? 1 : -1;
         }
-        if (descending)
+        if (descending) {
             return compareAlphabetically(id2, id1);
+        }
         return compareAlphabetically(id1, id2);
     }
 
     public static int compare(Entity o1, Entity o2, PROPERTY p, String value, boolean negative) {
         int i = 1;
-        if (negative)
+        if (negative) {
             i = -1;
-        if (o1.checkProperty(p, value))
-            if (!o2.checkProperty(p, value))
+        }
+        if (o1.checkProperty(p, value)) {
+            if (!o2.checkProperty(p, value)) {
                 return i;
-        if (o2.checkProperty(p, value))
-            if (!o1.checkProperty(p, value))
+            }
+        }
+        if (o2.checkProperty(p, value)) {
+            if (!o1.checkProperty(p, value)) {
                 return -i;
+            }
+        }
         return 0;
     }
 
     public static int compare(Entity o1, Entity o2, PARAMETER p) {
-        if (o1.getIntParam(p) == o2.getIntParam(p))
+        if (o1.getIntParam(p) == o2.getIntParam(p)) {
             return 0;
-        if (o1.getIntParam(p) > o2.getIntParam(p))
+        }
+        if (o1.getIntParam(p) > o2.getIntParam(p)) {
             return 1;
+        }
         return -1;
     }
 

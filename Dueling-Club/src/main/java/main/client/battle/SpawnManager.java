@@ -80,19 +80,23 @@ public class SpawnManager {
     public void init() {
         // this.level = battle.getIntValue(BATTLE_STATS.LEVEL);
         if (!isPlayerUnitGroupMode() // && PresetMaster.getPreset() == null
-                )
+                ) {
             initPlayerParty();
-        else
+        } else {
             playerPartyData = getGame().getPlayerParty();
-        if (playerPartyData.isEmpty())
+        }
+        if (playerPartyData.isEmpty()) {
             playerPartyData = getGame().getData().getPlayerUnitData();
+        }
 
-        if (!isEnemyUnitGroupMode() && PresetMaster.getPreset() == null)
+        if (!isEnemyUnitGroupMode() && PresetMaster.getPreset() == null) {
             initEnemyParty();
-        else
+        } else {
             enemyPartyData = getGame().getEnemyParty();
-        if (enemyPartyData.isEmpty())
+        }
+        if (enemyPartyData.isEmpty()) {
             enemyPartyData = getGame().getData().getPlayer2UnitData();
+        }
         // if (!CharacterCreator.isPartyMode())
         // waveCleared(); TODO what for???
         this.roundsToWait = arenaManager.getArenaOptions().getIntValue(
@@ -171,14 +175,16 @@ public class SpawnManager {
                 }
 
             } else { // TODO POWER PER BLOCK!
-                if (!autoSpawnOn)
+                if (!autoSpawnOn) {
                     continue;
+                }
                 // if (power < preferredPower)
                 // preferredPower = power;
                 // if (power < preferredPower / 3)
                 // break;
-                if (!checkSpawnBlock(block))
+                if (!checkSpawnBlock(block)) {
                     continue;
+                }
                 // sort blocks! by spawn priority...
                 // can be more than 1 group, right? maybe merge?
                 group = getCreepGroupForBlock(preferredPower, dungeon, block, min, max);
@@ -207,8 +213,9 @@ public class SpawnManager {
         permittedBlocks.addAllUnique(group.getBlock().getConnectedBlocks().keySet());
         int wanderBlockDistance = 1;
         for (int i = 0; i < wanderBlockDistance; i++) {
-            for (MapBlock b : group.getBlock().getConnectedBlocks().keySet())
+            for (MapBlock b : group.getBlock().getConnectedBlocks().keySet()) {
                 permittedBlocks.addAllUnique(b.getConnectedBlocks().keySet());
+            }
         }
         groupAi.setPermittedBlocks(permittedBlocks);
     }
@@ -229,18 +236,21 @@ public class SpawnManager {
         // alt? vielleicht fur einige spezielle orte...
         String property = dungeon.getProperty(PROPS.ENCOUNTERS);
         int mod = block.getSpawningPriority();
-        if (mod == 0)
+        if (mod == 0) {
             mod = 100;
+        }
         Wave wave = null;
         List<ObjType> list = DataManager.toTypeList(property, OBJ_TYPES.ENCOUNTERS);
         Collections.shuffle(list);
         ObjType type = null;
         for (ObjType t : list) {
             type = t;
-            if (EncounterMaster.getPower(type, false) < min * mod / 100)
+            if (EncounterMaster.getPower(type, false) < min * mod / 100) {
                 continue;
-            if (EncounterMaster.getPower(type, false) > max * mod / 100)
+            }
+            if (EncounterMaster.getPower(type, false) > max * mod / 100) {
                 continue;
+            }
             break;
         }
         if (type == null) {
@@ -309,12 +319,14 @@ public class SpawnManager {
 
     public void spawnParty(boolean me, String partyData) {
         boolean custom = false;
-        if (partyData == null)
+        if (partyData == null) {
             partyData = me ? playerPartyData : enemyPartyData;
-        else
+        } else {
             custom = true;
-        if (StringMaster.isEmpty(partyData))
+        }
+        if (StringMaster.isEmpty(partyData)) {
             return;
+        }
         if ((isUnitGroupMode(me)) || partyData.contains(".xml")) {
             spawnUnitGroup(me, partyData);
             return;
@@ -333,20 +345,22 @@ public class SpawnManager {
             partyData = StringMaster.convertVarStringToObjCoordinates(partyData);
         }
         List<MicroObj> list = DC_ObjInitializer.processUnitDataString(player, partyData, game);
-        if (!ListMaster.isNotEmpty(list))
+        if (!ListMaster.isNotEmpty(list)) {
             return;
+        }
         for (MicroObj unit : list) {
             FACING_DIRECTION facing = null;
             if (!game.isOffline()) {
                 // TODO not always vertical!
                 facing = FacingMaster.getFacingFromDirection(getPositioner().getClosestEdgeY(
                         unit.getCoordinates()).getDirection().flip());
-            } else if (game.getGameMode() == GAME_MODES.ARENA_ARCADE)
+            } else if (game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
                 facing = FacingMaster.getPresetFacing(me);
-            else if (me) {
+            } else if (me) {
                 facing = getPositioner().getPartyMemberFacing(unit.getCoordinates());
-            } else
+            } else {
                 facing = getPositioner().getFacingForEnemy(unit.getCoordinates());
+            }
             ((DC_UnitObj) unit).setFacing(facing);
         }
         DC_ObjInitializer.initializePartyPositions(partyData, list);
@@ -366,8 +380,9 @@ public class SpawnManager {
         String data = UnitGroupMaster.readGroupFile(partyData);
         boolean mirror = me;
         if (UnitGroupMaster.isFactionMode()) {
-            if (UnitGroupMaster.factionLeaderRequired)
+            if (UnitGroupMaster.factionLeaderRequired) {
                 data += UnitGroupMaster.getHeroData(me);
+            }
             mirror = !mirror;
         }
         UnitGroupMaster.setMirror(mirror);
@@ -387,8 +402,9 @@ public class SpawnManager {
             offsetX = -width / 2;
             offsetY = -height / 2;
         } else {
-            if (UnitGroupMaster.isMirror())
+            if (UnitGroupMaster.isMirror()) {
                 offsetY -= 1;
+            }
 
         }
         spawnCoordinates = (me) ? game.getDungeon().getPlayerSpawnCoordinates() : game.getDungeon()
@@ -450,8 +466,9 @@ public class SpawnManager {
             // hero.setCoordinates(c);
             // }
 
-            if (party.getPartyCoordinates() == null)
+            if (party.getPartyCoordinates() == null) {
                 hero.setFacing(getPositioner().getPartyMemberFacing(hero.getCoordinates()));
+            }
 
             hero.setOriginalOwner(game.getPlayer(true));
             // the player's party will be "in game" all the while, from
@@ -459,13 +476,16 @@ public class SpawnManager {
             // game.placeUnit(hero);
             // game.getState().addObject(hero);
             i++;
-            if (i == party.getMembers().size())
+            if (i == party.getMembers().size()) {
                 last = true;
-            if (game.isDebugMode())
+            }
+            if (game.isDebugMode()) {
                 TestMasterContent.addTestItems(hero.getType(), last);
+            }
             last = false;
-            if (!Launcher.isRunning())
+            if (!Launcher.isRunning()) {
                 continue;
+            }
             hero.setSpells(null);
             hero.initSpells(false);
             hero.fullReset(game);
@@ -477,10 +497,11 @@ public class SpawnManager {
     public List<Coordinates> initPartyCoordinates(List<String> partyTypes, Boolean mine_enemy_third) {
         String partyData = "";
 
-        if (positioner == null)
+        if (positioner == null) {
             setPositioner(new Positioner(this));
-        else
+        } else {
             positioner.setSpawner(this);
+        }
         List<Coordinates> coordinates = null;
 
         if (PartyManager.getParty() != null) {
@@ -492,9 +513,10 @@ public class SpawnManager {
             }
 
         }
-        if (coordinates == null)
+        if (coordinates == null) {
             coordinates = positioner.getPartyCoordinates(null, BooleanMaster
                     .isTrue(mine_enemy_third), partyTypes);
+        }
 
         int i = 0;
 
@@ -507,11 +529,13 @@ public class SpawnManager {
             subString = c + DC_ObjInitializer.COORDINATES_OBJ_SEPARATOR + subString;
             partyData += subString + DC_ObjInitializer.OBJ_SEPARATOR;
         }
-        if (mine_enemy_third != null)
-            if (mine_enemy_third)
+        if (mine_enemy_third != null) {
+            if (mine_enemy_third) {
                 playerPartyData = partyData;
-            else
+            } else {
                 enemyPartyData = partyData;
+            }
+        }
 
         return coordinates;
     }
@@ -558,13 +582,15 @@ public class SpawnManager {
         game.getLogManager().log("New encounter: " + wave.getName());
         if (game.getParty() != null) {
             DC_HeroObj randomMember = game.getParty().getRandomMember();
-            if (!randomMember.isDead())
+            if (!randomMember.isDead()) {
                 SoundMaster.playEffectSound(SOUNDS.THREAT, randomMember);
+            }
         } else {
             // active unit?
         }
-        if (positioner == null)
+        if (positioner == null) {
             setPositioner(new Positioner(this));
+        }
 
         if (unitMap == null) {
             wave.initUnitMap();
@@ -573,16 +599,19 @@ public class SpawnManager {
 
         for (ObjAtCoordinate oac : unitMap) {
             Coordinates c = oac.getCoordinates();
-            if (c == null)
+            if (c == null) {
                 continue;
-            if (c.isInvalid())
+            }
+            if (c.isInvalid()) {
                 continue;
+            }
             FACING_DIRECTION facing = getPositioner().getFacingForEnemy(c);
 
             ObjType type = oac.getType();
 
-            if (game.getBattleField().getGrid().isCoordinateObstructed(c))
+            if (game.getBattleField().getGrid().isCoordinateObstructed(c)) {
                 c = Positioner.adjustCoordinate(c, facing);
+            }
 
             DC_HeroObj unit = (DC_HeroObj) game.createUnit(type, c, wave.getOwner());
             UnitMaster.train(unit);
@@ -590,20 +619,22 @@ public class SpawnManager {
             unit.setFacing(facing);
             wave.addUnit(unit);
         }
-        if (!PartyManager.checkMergeParty(wave))
+        if (!PartyManager.checkMergeParty(wave)) {
             try {
                 PartyManager.addCreepParty(wave);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
     }
 
     public void waveCleared() {
         if (game.isStarted()) {
             game.getLogManager().log(
                     "*** Enemies cleared! Encounters left: " + getScheduledWaves().toString());
-            if (game.getParty() != null)
+            if (game.getParty() != null) {
                 SoundMaster.playEffectSound(SOUNDS.TAUNT, game.getParty().getLeader());
+            }
         }
         roundsToWait = arenaManager.getArenaOptions().getIntValue(
                 ARENA_GAME_OPTIONS.TURNS_BETWEEN_WAVES);
@@ -612,8 +643,9 @@ public class SpawnManager {
 
     public void newWave(Wave wave) {
         spawnWave(wave);
-        if (wavesOverlap)
+        if (wavesOverlap) {
             waveCleared();
+        }
     }
 
     public void newWave() {
@@ -622,21 +654,23 @@ public class SpawnManager {
 
     public void newWave(DC_Player player) {
         String type = ListChooser.chooseType(OBJ_TYPES.ENCOUNTERS);
-        if (type == null)
+        if (type == null) {
             return;
+        }
         newWave(new Wave(DataManager.getType(type, OBJ_TYPES.ENCOUNTERS), game, new Ref(game),
                 player));
     }
 
     public void newRound() {
         Map<Wave, Integer> waves = getScheduledWaves();
-        if (!waves.isEmpty())
+        if (!waves.isEmpty()) {
             for (Wave waveType : waves.keySet()) {
                 if (scheduledWaves.get(waveType) <= game.getState().getRound()) {
                     spawnWave(waveType);
                     scheduledWaves.remove(waveType);
                 }
             }
+        }
 
     }
 
@@ -645,8 +679,9 @@ public class SpawnManager {
     }
 
     public Map<Integer, FACING_DIRECTION> getMultiplayerFacingMap() {
-        if (multiplayerFacingMap == null)
+        if (multiplayerFacingMap == null) {
             multiplayerFacingMap = game.getConnector().getFacingMap();
+        }
         return multiplayerFacingMap;
     }
 
@@ -687,8 +722,9 @@ public class SpawnManager {
     }
 
     public void clear() {
-        if (getScheduledWaves() != null)
+        if (getScheduledWaves() != null) {
             getScheduledWaves().clear();
+        }
 
     }
 

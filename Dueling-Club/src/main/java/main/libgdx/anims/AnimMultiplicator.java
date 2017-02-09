@@ -48,7 +48,9 @@ public class AnimMultiplicator implements Runnable {
     }
 
     public static void checkMultiplication(Anim anim) {
-        if (!isMultiplied(anim)) return;
+        if (!isMultiplied(anim)) {
+            return;
+        }
         getInstance(anim).run();
 //        new Thread(getInstance(anim)).start();
 // concurrent modif to emitter list??
@@ -101,19 +103,22 @@ public class AnimMultiplicator implements Runnable {
             SpecialTargetingEffect targetEffect = (SpecialTargetingEffect) effect;
             coordinates = targetEffect.getCoordinates();
         }
-        if (coordinates == null)
+        if (coordinates == null) {
             if (getRef().getGroup() != null) {
                 Set<Coordinates> set = new LinkedHashSet();
                 getRef().getGroup().getObjects().forEach(o -> set.add(o.getCoordinates()));
                 coordinates = set;
             }
-        if (multiplicationMethod == MULTIPLICATION_METHOD.ANGLE)
+        }
+        if (multiplicationMethod == MULTIPLICATION_METHOD.ANGLE) {
             if (template != null) {
                 applyTemplateAngles(coordinates);
                 return;
             }
-        if (coordinates != null)
+        }
+        if (coordinates != null) {
             applyMultiplicationForCoordinates(coordinates);
+        }
 
         if (template != null) {
             if (template.isRemoveBaseEmitters()) {
@@ -128,7 +133,9 @@ public class AnimMultiplicator implements Runnable {
         filterCoordinates(template, coordinates).forEach(c ->
          {
              for (EmitterActor e : emitterList) {
-                 if (e.isGenerated()) continue;
+                 if (e.isGenerated()) {
+                     continue;
+                 }
                  EmitterActor actor = multiplicateEmitter(null, c, e);
                  list.add(actor);
              }
@@ -199,10 +206,11 @@ public class AnimMultiplicator implements Runnable {
         ActorMaster.addRemoveAfter(actor);
         GameScreen.getInstance().getAnimsStage().addActor(actor);
 
-        if (angle != null)
+        if (angle != null) {
             createAndAddEmitterActions(actor, angle, template);
-        else
+        } else {
             createAndAddEmitterActions(actor, c);
+        }
 
         return actor;
     }
@@ -216,7 +224,9 @@ public class AnimMultiplicator implements Runnable {
             int angle = 0;
             for (Coordinates coordinate : coordinates) {
 
-                if (e.isGenerated()) continue;
+                if (e.isGenerated()) {
+                    continue;
+                }
                 EmitterActor actor = multiplicateEmitter(angle, coordinate, e);
                 angle += 360 / max;
                 list.add(actor);
@@ -249,7 +259,9 @@ public class AnimMultiplicator implements Runnable {
          v, actor,speed);
 
 
-        if (action.getDuration() > this.duration) this.duration = action.getDuration();
+            if (action.getDuration() > this.duration) {
+                this.duration = action.getDuration();
+            }
 //        ActorMaster.addRemoveAfter(actor);
         actor.getEffect().setDuration((int) action.getDuration());
         anim.setDuration(duration);
@@ -283,7 +295,9 @@ public class AnimMultiplicator implements Runnable {
         Float duration = (float) (Math.sqrt(x * x + y * y) / getPixelsPerSecond());
         action.setDuration(
          duration);
-        if (duration > this.duration) this.duration = duration;
+        if (duration > this.duration) {
+            this.duration = duration;
+        }
 
         ActorMaster.addRemoveAfter(actor);
 

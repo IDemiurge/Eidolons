@@ -30,20 +30,22 @@ import static main.system.GuiEventType.UNIT_MOVED;
 public class MoveAnimation extends ActionAnim {
 
 
+    static boolean on = false;
     private MoveToAction action;
     private DC_HeroObj unit;
-    static boolean on=false;
-
-    public static boolean isOn() {
-        return on;
-    }
 
     public MoveAnimation(Entity active, AnimData params) {
         super(active, params);
         if (!ListMaster.isNotEmpty(EffectMaster.getEffectsOfClass(getActive(),
-         MoveEffect.class))) // for teleports, telekinesis etc
-           unit = (DC_HeroObj) getRef().getTargetObj();
+                MoveEffect.class))) // for teleports, telekinesis etc
+        {
+            unit = (DC_HeroObj) getRef().getTargetObj();
+        }
         unit = (DC_HeroObj) getRef().getSourceObj();
+    }
+
+    public static boolean isOn() {
+        return on;
     }
 
     @Override
@@ -53,7 +55,7 @@ public class MoveAnimation extends ActionAnim {
     }
 
     protected Action getAction() {
-        if (action == null)
+        if (action == null) {
             action = new MoveToAction() {
                 @Override
                 protected void begin() {
@@ -73,6 +75,7 @@ public class MoveAnimation extends ActionAnim {
                     return super.toString() + " on " + getActor() + " to: " + this.getX() + " " + this.getY();
                 }
             };
+        }
         action.setPosition(getDestination().x, getDestination().y);
         action.setDuration(1);
         return action;
@@ -148,12 +151,12 @@ public class MoveAnimation extends ActionAnim {
 
     @Override
     public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnStart() {
-        return Arrays.asList(new Pair<>( DESTROY_UNIT_MODEL, new EventCallbackParam<>(unit)));
+        return Arrays.asList(new Pair<>(DESTROY_UNIT_MODEL, new EventCallbackParam<>(unit)));
     }
 
     @Override
     public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnFinish() {
-        return Arrays.asList(new Pair<>( UNIT_MOVED, new EventCallbackParam<>(unit)));
+        return Arrays.asList(new Pair<>(UNIT_MOVED, new EventCallbackParam<>(unit)));
     }
 
     @Override

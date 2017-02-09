@@ -61,10 +61,11 @@ public class DC_GameData {
     }
 
     public void addType(ObjType type, boolean me) {
-        if (me)
+        if (me) {
             playerParty.add(type);
-        else
+        } else {
             enemyParty.add(type);
+        }
 
     }
 

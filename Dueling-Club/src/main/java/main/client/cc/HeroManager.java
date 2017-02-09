@@ -66,30 +66,34 @@ public class HeroManager {
 
     public static String getCost(Entity type, Entity hero, OBJ_TYPE TYPE, PROPERTY PROP,
                                  boolean buying) {
-        if (TYPE.getParam() == null)
+        if (TYPE.getParam() == null) {
             return "";
+        }
         PARAMETER costParam = ContentManager.getCostParam(TYPE.getParam());
         PARAMETER discountParam = DC_ContentManager.getCostReductionParam(costParam, PROP);
         Integer value = type.getIntParam(costParam);
         Integer mod = hero.getIntParam(discountParam);
         Formula costFormula = new Formula("" + value);
-        if (discountParam != null)
+        if (discountParam != null) {
             costFormula.applyFactor((!buying ? "" : "-")
                     + StringMaster.getValueRef(KEYS.SOURCE, discountParam));
+        }
         if (!buying) {
             costFormula.applyFactor(-DC_Formulas.getSellingPriceReduction());
         }
 
         discountParam = DC_ContentManager.getSpecialCostReductionParam(costParam, PROP);
-        if (discountParam == null)
+        if (discountParam == null) {
             return "" + costFormula;
+        }
 
         mod = hero.getIntParam(discountParam);
-        if (mod == 100)
+        if (mod == 100) {
             value = 0;
-        else
+        } else {
             costFormula.applyFactor((!buying ? "" : "-")
                     + StringMaster.getValueRef(KEYS.SOURCE, discountParam));
+        }
 
         return "(" + costFormula + ")";
     }
@@ -128,17 +132,20 @@ public class HeroManager {
     }
 
     public void stepBack(DC_HeroObj hero) {
-        if (!game.isSimulation())
+        if (!game.isSimulation()) {
             return;
+        }
         Stack<ObjType> stack = typeStacks.get(hero);
-        if (stack == null)
+        if (stack == null) {
             return;
+        }
 
         Entity type = stack.pop();
         applyChangedType(true, hero, type);
         CharacterCreator.setSelectedHeroType(hero.getType());
-        if (CharacterCreator.getPanel().isPrincipleView())
+        if (CharacterCreator.getPanel().isPrincipleView()) {
             CharacterCreator.getPanel().getPrincipleViewComp().reset();
+        }
     }
 
     public void update(DC_HeroObj hero) {
@@ -147,15 +154,18 @@ public class HeroManager {
 
     public void update(DC_HeroObj hero, boolean refresh) {
         // hero.setItemsInitialized(false);
-        if (hero == null)
+        if (hero == null) {
             return;
+        }
         for (DC_HeroSlotItem item : hero.getSlotItems()) {
-            if (item != null)
+            if (item != null) {
                 if (item.getAttachments() != null) {
                     item.getAttachments().clear();
-                    for (BuffObj buff : item.getBuffs())
+                    for (BuffObj buff : item.getBuffs()) {
                         buff.kill();
+                    }
                 }
+            }
         }
         hero.toBase();
         if (game.isSimulation()) {
@@ -163,22 +173,25 @@ public class HeroManager {
             List<Attachment> attachments = hero.getAttachments();
 
             List<Effect> secondLayerEffects = new LinkedList<>();
-            if (attachments != null)
+            if (attachments != null) {
                 for (Attachment a : attachments) {
                     try {
                         for (Effect e : a.getEffects()) {
-                            if (e.getLayer() != Effect.SECOND_LAYER)
+                            if (e.getLayer() != Effect.SECOND_LAYER) {
                                 e.apply(Ref.getSelfTargetingRefCopy(hero));
-                            else
+                            } else {
                                 secondLayerEffects.add(e);
+                            }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
+            }
 
-            for (Effect e : secondLayerEffects)
+            for (Effect e : secondLayerEffects) {
                 e.apply(Ref.getSelfTargetingRefCopy(hero));
+            }
             EffectMaster.applyAttachmentEffects(hero.getMainWeapon(), null);
             EffectMaster.applyAttachmentEffects(hero.getSecondWeapon(), null);
             EffectMaster.applyAttachmentEffects(hero.getArmor(), null);
@@ -197,64 +210,82 @@ public class HeroManager {
             }
             return;
         }
-        if (refresh)
+        if (refresh) {
             refresh(hero);
+        }
     }
 
     private void refresh(DC_HeroObj hero) {
-        if (CharacterCreator.isInitialized())
-            if (CharacterCreator.getHeroPanel(hero) != null)
+        if (CharacterCreator.isInitialized()) {
+            if (CharacterCreator.getHeroPanel(hero) != null) {
                 CharacterCreator.getHeroPanel(hero).refresh();
+            }
+        }
     }
 
     protected void refreshInvWindow() {
-        if (game.getInventoryManager().getWindow() != null)
+        if (game.getInventoryManager().getWindow() != null) {
             game.getInventoryManager().getWindow().refresh();
+        }
     }
 
     protected ITEM_SLOT getItemSlot(DC_HeroObj hero, Entity type) {
-        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.ITEMS)
+        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.ITEMS) {
             return null;
+        }
         if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.WEAPONS) {
             WEAPON_CLASS CLASS = getWeaponClass(type);
             switch (CLASS) {
                 case OFF_HAND:
-                    if (StringMaster.isEmpty(hero.getProperty(G_PROPS.MAIN_HAND_ITEM)))
+                    if (StringMaster.isEmpty(hero.getProperty(G_PROPS.MAIN_HAND_ITEM))) {
                         return ITEM_SLOT.MAIN_HAND;
+                    }
                     if (MessageManager.promptItemSwap(hero.getProperty(G_PROPS.MAIN_HAND_ITEM),
-                            hero, type))
+                            hero, type)) {
                         return ITEM_SLOT.MAIN_HAND;
+                    }
                     if (getWeaponClass(hero.getProperty(G_PROPS.MAIN_HAND_ITEM)) == WEAPON_CLASS.TWO_HANDED
-                            || getWeaponClass(hero.getProperty(G_PROPS.MAIN_HAND_ITEM)) == WEAPON_CLASS.DOUBLE)
+                            || getWeaponClass(hero.getProperty(G_PROPS.MAIN_HAND_ITEM)) == WEAPON_CLASS.DOUBLE) {
                         return null;
-                    if (StringMaster.isEmpty(hero.getProperty(G_PROPS.OFF_HAND_ITEM)))
+                    }
+                    if (StringMaster.isEmpty(hero.getProperty(G_PROPS.OFF_HAND_ITEM))) {
                         return ITEM_SLOT.OFF_HAND;
+                    }
                     if (MessageManager.promptItemSwap(hero.getProperty(G_PROPS.OFF_HAND_ITEM),
-                            hero, type))
+                            hero, type)) {
                         return ITEM_SLOT.OFF_HAND;
+                    }
                     return null;
                 case MAIN_HAND_ONLY:
-                    if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.MAIN_HAND_ITEM)))
+                    if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.MAIN_HAND_ITEM))) {
                         if (!MessageManager.promptItemSwap(
-                                hero.getProperty(G_PROPS.MAIN_HAND_ITEM), hero, type))
+                                hero.getProperty(G_PROPS.MAIN_HAND_ITEM), hero, type)) {
                             return null;
+                        }
+                    }
                     return ITEM_SLOT.MAIN_HAND;
 
                 case OFF_HAND_ONLY:
-                    if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.OFF_HAND_ITEM)))
+                    if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.OFF_HAND_ITEM))) {
                         return null;
-                    if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.MAIN_HAND_ITEM)))
-                        if (getWeaponClass(hero.getProperty(G_PROPS.MAIN_HAND_ITEM)) == WEAPON_CLASS.TWO_HANDED)
+                    }
+                    if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.MAIN_HAND_ITEM))) {
+                        if (getWeaponClass(hero.getProperty(G_PROPS.MAIN_HAND_ITEM)) == WEAPON_CLASS.TWO_HANDED) {
                             return null;
+                        }
+                    }
                     return ITEM_SLOT.OFF_HAND;
                 case DOUBLE:
                 case TWO_HANDED:
-                    if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.OFF_HAND_ITEM)))
+                    if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.OFF_HAND_ITEM))) {
                         return null;
-                    if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.MAIN_HAND_ITEM)))
+                    }
+                    if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.MAIN_HAND_ITEM))) {
                         if (!MessageManager.promptItemSwap(
-                                hero.getProperty(G_PROPS.MAIN_HAND_ITEM), hero, type))
+                                hero.getProperty(G_PROPS.MAIN_HAND_ITEM), hero, type)) {
                             return null;
+                        }
+                    }
                     return ITEM_SLOT.MAIN_HAND;
                 default:
                     return null;
@@ -294,16 +325,19 @@ public class HeroManager {
             // return ITEM_SLOT.OFF_HAND;
 
         }
-        if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.ARMOR_ITEM)))
-            if (!MessageManager.promptItemSwap(hero.getProperty(G_PROPS.ARMOR_ITEM), hero, type))
+        if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.ARMOR_ITEM))) {
+            if (!MessageManager.promptItemSwap(hero.getProperty(G_PROPS.ARMOR_ITEM), hero, type)) {
                 return null;
+            }
+        }
         return ITEM_SLOT.ARMOR;
     }
 
     protected WEAPON_CLASS getWeaponClass(String type) {
         ObjType objType = DataManager.getType(type, OBJ_TYPES.WEAPONS);
-        if (objType == null)
+        if (objType == null) {
             objType = game.getObjectById(StringMaster.getInteger(type)).getType();
+        }
         return getWeaponClass(objType);
     }
 
@@ -313,12 +347,14 @@ public class HeroManager {
     }
 
     public int addSlotItem(DC_HeroObj hero, Entity type, boolean alt) {
-        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.JEWELRY)
+        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.JEWELRY) {
             return addJewelryItem(hero, type);
+        }
 
         ITEM_SLOT slot = null;
-        if (!alt)
+        if (!alt) {
             slot = getItemSlot(hero, type);
+        }
         if (slot == null) {
             if (isQuickItem(type)) {
                 // type.getProp(G_PROPS.CUSTOM_SOUNDSET)
@@ -336,15 +372,18 @@ public class HeroManager {
         boolean hasNoAmulet = chechHasNoAmulet(hero);
         List<ObjType> sortedJewelryData = getSortedJewelry(hero);
         if (amulet) {
-            if (!hasNoAmulet)
+            if (!hasNoAmulet) {
                 if (!MessageManager.promptItemSwap(sortedJewelryData.get(JewelrySlots.AMULET_INDEX)
                         .getName(), hero, type))
-                    // makes me wonder once again why HC has to deal with types
-                    // and not objects, would it be hard to write thru to types?
-                    // Easier than have objects initiatilized like that
+                // makes me wonder once again why HC has to deal with types
+                // and not objects, would it be hard to write thru to types?
+                // Easier than have objects initiatilized like that
+                {
                     return 0;
-                else
+                } else {
                     removeJewelryItem(hero, sortedJewelryData.get(JewelrySlots.AMULET_INDEX));
+                }
+            }
 
         } else {
 
@@ -363,15 +402,17 @@ public class HeroManager {
         boolean amulet = itemType.checkProperty(G_PROPS.JEWELRY_TYPE, "" + JEWELRY_TYPE.AMULET);
         if (amulet) {
             return chechHasNoAmulet(hero);
-        } else
+        } else {
             return checkCanEquipJewelry(hero);
+        }
     }
 
     public boolean checkCanEquipJewelry(DC_HeroObj hero) {
         boolean hasNoAmulet = chechHasNoAmulet(hero);
         int size = hero.getJewelry().size();
-        if (!hasNoAmulet)
+        if (!hasNoAmulet) {
             size++;
+        }
         return size < JewelrySlots.LIST_SIZE;
     }
 
@@ -387,8 +428,9 @@ public class HeroManager {
     }
 
     public int addQuickItem(DC_HeroObj hero, Entity type) {
-        if (hero.isQuickSlotsFull())
+        if (hero.isQuickSlotsFull()) {
             return 0;
+        }
         saveHero(hero);
         addItem(hero, type, C_OBJ_TYPE.ITEMS, PROPS.QUICK_ITEMS, true, false);
         removeItem(hero, type, PROPS.INVENTORY, C_OBJ_TYPE.ITEMS, true, false);
@@ -399,13 +441,15 @@ public class HeroManager {
 
     protected boolean isQuickItem(Entity type) {
         // what about small weapons?!
-        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.ITEMS)
+        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.ITEMS) {
             return true;
+        }
         if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.WEAPONS) {
             if (type.checkSingleProp(G_PROPS.WEAPON_SIZE, WEAPON_SIZE.SMALL + "")
                     || type.checkSingleProp(G_PROPS.WEAPON_SIZE, WEAPON_SIZE.TINY + "")
-                    || type.checkSingleProp(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.AMMO + ""))
+                    || type.checkSingleProp(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.AMMO + "")) {
                 return true;
+            }
         }
         return false;
     }
@@ -422,10 +466,12 @@ public class HeroManager {
     public boolean tryIncrementRank(DC_HeroObj hero, ObjType type) {
         boolean skill = type.getOBJ_TYPE_ENUM() == OBJ_TYPES.SKILLS;
         DC_FeatObj feat = hero.getFeat(skill, type);
-        if (!checkCanIncrementRank(type, feat, hero))
+        if (!checkCanIncrementRank(type, feat, hero)) {
             return false;
-        if (!hero.incrementFeatRank(skill, type))
+        }
+        if (!hero.incrementFeatRank(skill, type)) {
             return false;
+        }
         saveHero(hero);
         hero.saveRanks(skill);
         // SoundMaster.playSkillAddSound(STD_SOUNDS.ButtonUp);
@@ -436,12 +482,14 @@ public class HeroManager {
     }
 
     protected boolean checkCanIncrementRank(ObjType type, DC_FeatObj feat, DC_HeroObj hero) {
-        if (feat == null)
+        if (feat == null) {
             return false;
+        }
         boolean skill = type.getOBJ_TYPE_ENUM() == OBJ_TYPES.SKILLS;
-        if (skill)
+        if (skill) {
             return feat.getGame().getRequirementsManager().check(hero, feat,
                     RequirementsManager.RANK_MODE) == null;
+        }
         List<String> reasons = feat.getGame().getRequirementsManager().checkRankReqs(feat);
         return reasons.isEmpty();
     }
@@ -450,8 +498,9 @@ public class HeroManager {
                            boolean free, boolean update) {
 
         if (!free && !CoreEngine.isArcaneVault()) {
-            if (!checkCost(hero, type, TYPE, PROP))
+            if (!checkCost(hero, type, TYPE, PROP)) {
                 return false;
+            }
             String s = checkRequirements(hero, type, getMode(TYPE, PROP));
             if (s != null) {
                 // alarm(s);
@@ -471,8 +520,9 @@ public class HeroManager {
         // }
         // }
 
-        if (update)
+        if (update) {
             saveHero(hero);
+        }
         // if (type.isUpgrade()) {
         // if (!addUpgrade(hero, type, PROP))
         // return false; TODO DEPRECATED!
@@ -481,7 +531,9 @@ public class HeroManager {
                 ((game.isSimulation() || trainer) ? type.getName() : type.getId() + ""),
                 checkNoDuplicates(TYPE)))
             // undoSave(hero);
+        {
             return false;
+        }
 
         if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.CLASSES) {
             classAdded(hero, type);
@@ -491,38 +543,44 @@ public class HeroManager {
             cost = subtractCost(hero, type, TYPE, PROP);
             checkShop(type, TYPE, PROP, cost, true);
         } else {
-            if (update)
+            if (update) {
                 update(hero);
+            }
 
         }
 
-        if (TYPE.equals(OBJ_TYPES.SPELLS))
+        if (TYPE.equals(OBJ_TYPES.SPELLS)) {
             if (PROP.equals(PROPS.VERBATIM_SPELLS)) {
                 SpellUpgradeMaster.removeUpgrades(hero, type);
             }
+        }
         // TODO check if hero now has the prop!
         return true;
     }
 
     private void checkShop(Entity type, OBJ_TYPE TYPE, PROPERTY PROP, int cost, boolean sold) {
-        if (C_OBJ_TYPE.ITEMS.equals(TYPE))
+        if (C_OBJ_TYPE.ITEMS.equals(TYPE)) {
             if (PROP == PROPS.INVENTORY) {
                 if (Launcher.getMainManager().isMacroMode()) {
                     String shopName = ((HeroItemView) CharacterCreator.getHeroPanel().getMvp()
                             .getCurrentViewComp()).getVendorPanel().getSelectedTabName();
                     Shop shop = MacroGame.getGame().getPlayerParty().getTown().getShop(shopName);
-                    if (sold)
+                    if (sold) {
                         shop.sellItem((ObjType) type, cost);
-                    else
+                    } else {
                         shop.buyItem((ObjType) type, cost);
+                    }
                 }
             }
+        }
     }
 
     private int getMode(OBJ_TYPE T, PROPERTY p) {
-        if (T == OBJ_TYPES.SPELLS)
-            if (p == PROPS.VERBATIM_SPELLS)
+        if (T == OBJ_TYPES.SPELLS) {
+            if (p == PROPS.VERBATIM_SPELLS) {
                 return RequirementsManager.VERBATIM_MODE;
+            }
+        }
         return RequirementsManager.NORMAL_MODE;
     }
 
@@ -535,8 +593,9 @@ public class HeroManager {
                 hero.setProperty(PROPS.FIRST_CLASS, ClassView.MULTICLASS + " "
                         + StringMaster.wrapInParenthesis(class_type.getName()), true);
                 hero.setProperty(PROPS.SECOND_CLASS, "", true);
-            } else
+            } else {
                 hero.getType().addProperty(PROPS.MULTICLASSES, class_type.getName());
+            }
 
             return;
         }
@@ -547,8 +606,9 @@ public class HeroManager {
             hero.getType().setProperty(property, group);
             return;
         }
-        if (StringMaster.compare(hero.getProperty(property), group, true))
+        if (StringMaster.compare(hero.getProperty(property), group, true)) {
             return;
+        }
 
         property = PROPS.SECOND_CLASS;
         value = hero.getProperty(property);
@@ -601,26 +661,30 @@ public class HeroManager {
                                       PROPERTY p) {
         String cost = getCost(type, hero, TYPE, p, !selling);
         Integer amount = new Formula(cost).getInt(hero.getRef());
-        if (!selling)
+        if (!selling) {
             amount *= -1;
+        }
         hero.modifyParameter(TYPE.getParam(), amount);
-        if (!selling)
+        if (!selling) {
             amount *= -1;
+        }
         return amount;
         // update(hero); TODO
     }
 
     protected boolean checkCost(DC_HeroObj hero, Entity type, OBJ_TYPE t, PROPERTY PROP) {
-        if (CoreEngine.isArcaneVault())
+        if (CoreEngine.isArcaneVault()) {
             return true;
+        }
         return hero.checkParam(t.getParam(), ""
                 + new Formula(getCost(type, hero, t, PROP)).getInt(hero.getRef()));
     }
 
     public DC_HeroObj getHero(ObjType type) {
         for (DC_HeroObj hero : typeStacks.keySet()) {
-            if (hero.getType().getName().equals(type.getName()))
+            if (hero.getType().getName().equals(type.getName())) {
                 return (hero);
+            }
         }
         return null;
     }
@@ -634,12 +698,14 @@ public class HeroManager {
     }
 
     public void saveHero(DC_HeroObj hero) {
-        if (hero == null)
+        if (hero == null) {
             return;
+        }
         final ObjType type = hero.getType();
         if (game.isSimulation()) {
-            if (typeStacks.get(hero) == null)
+            if (typeStacks.get(hero) == null) {
                 addHero(hero);
+            }
             typeStacks.get(hero).push(new ObjType(type));
         }
 
@@ -656,8 +722,9 @@ public class HeroManager {
     }
 
     public void applyChangedType(boolean dont_save, DC_HeroObj hero, Entity type) {
-        if (!dont_save)
+        if (!dont_save) {
             saveHero(hero);
+        }
         game.initType((ObjType) type);
         // hero.applyType(type);
         hero.setType((ObjType) type);
@@ -682,8 +749,9 @@ public class HeroManager {
 
         hero.getType().removeProperty(PROPS.INVENTORY, type.getNameOrId());
         update(hero, false);
-        if (hero.getGame().isSimulation())
+        if (hero.getGame().isSimulation()) {
             AbilityConstructor.constructActives(hero);
+        }
         refresh(hero);
 
         return result;
@@ -694,19 +762,23 @@ public class HeroManager {
     }
 
     public void removeSlotItem(DC_HeroObj hero, ITEM_SLOT slot, boolean save) {
-        if (save)
+        if (save) {
             saveHero(hero);
-        if (save)
+        }
+        if (save) {
             if (slot == ITEM_SLOT.MAIN_HAND) {
-                if (hero.getSecondWeapon() != null)
-                    if (hero.getSecondWeapon().isWeapon())
+                if (hero.getSecondWeapon() != null) {
+                    if (hero.getSecondWeapon().isWeapon()) {
                         if (!hero.getSecondWeapon().checkSingleProp(G_PROPS.WEAPON_CLASS,
                                 WEAPON_CLASS.OFF_HAND_ONLY + "")) {
                             removeSlotItem(hero, ITEM_SLOT.OFF_HAND, false);
                             setHeroItem(hero, slot, hero.getSecondWeapon().getType());
                             return;
                         }
+                    }
+                }
             }
+        }
 
         String prevItem = hero.getProperty(slot.getProp());
         // if (prevItem.equals(DUMMY_ITEM)) {
@@ -716,10 +788,12 @@ public class HeroManager {
 
         hero.getType().setProperty(slot.getProp(), "");
 
-        if (save)
+        if (save) {
             update(hero, false);
-        if (hero.getGame().isSimulation())
+        }
+        if (hero.getGame().isSimulation()) {
             AbilityConstructor.constructActives(hero);
+        }
         refresh(hero);
         // game.getInventoryManager().getInvListManager().operationDone();
     }
@@ -751,18 +825,21 @@ public class HeroManager {
 
     public void removeItem(DC_HeroObj hero, Entity type, PROPERTY prop, OBJ_TYPE TYPE,
                            boolean free, boolean update) {
-        if (update)
+        if (update) {
             saveHero(hero);
-        if (!hero.getType().removeProperty(prop, type.getNameOrId()))
+        }
+        if (!hero.getType().removeProperty(prop, type.getNameOrId())) {
             return;
+        }
 
         int cost = 0;
         if (!free) {
             cost = modifyCostParam(hero, type, TYPE, true, prop);
             checkShop(type, TYPE, prop, cost, false);
         }
-        if (update)
+        if (update) {
             update(hero);
+        }
 
     }
 
@@ -804,9 +881,10 @@ public class HeroManager {
 
         if (result) {
             saveHero(hero);
-            if (verbatim)
+            if (verbatim) {
                 hero.modifyParameter(PARAMS.XP, -SpellUpgradeMaster.getXpCost(entity, hero,
                         selected));
+            }
             SoundMaster.playStandardSound(STD_SOUNDS.SPELL_UPGRADE_LEARNED);
         } else {
             SoundMaster.playStandardSound(STD_SOUNDS.SPELL_UPGRADE_UNLEARNED);

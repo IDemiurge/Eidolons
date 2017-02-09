@@ -80,8 +80,9 @@ public class ListEditor implements EDITOR {
 
         String name = (String) table.getValueAt(row, 0);
         String newValue = launch(value, name);
-        if (newValue != null)
+        if (newValue != null) {
             table.setValueAt(newValue, row, 1);
+        }
 
     }
 
@@ -94,13 +95,15 @@ public class ListEditor implements EDITOR {
                 Collections.sort(listData);
             } else if (ENUM) {
                 // TODO get enum class by name (constants)
-                if (enumClass != null)
+                if (enumClass != null) {
                     listData = EnumMaster.getEnumConstantNames(enumClass);
-                else {
+                } else {
                     Class<?> ENUM_CLASS = EnumMaster.getEnumClass(name);
 
                     if (ENUM_CLASS == null)// TODO find
+                    {
                         ENUM_CLASS = EnumMaster.getEnumClass(name, MACRO_CONTENT_CONSTS.class);
+                    }
                     listData = EnumMaster.getEnumConstantNames(ENUM_CLASS);
                     StringMaster.formatList(listData);
                 }
@@ -112,7 +115,7 @@ public class ListEditor implements EDITOR {
                     if (!XML_Reader.getSubGroups(TYPE.toString()).contains(subgroup)) {
                         Err.info("No subgroup found! - " + subgroup);
                     }
-                    if (getBASE_TYPE() instanceof OBJ_TYPES)
+                    if (getBASE_TYPE() instanceof OBJ_TYPES) {
                         switch ((OBJ_TYPES) getBASE_TYPE()) {
                             case BF_OBJ:
                                 TYPE = OBJ_TYPES.ACTIONS;
@@ -128,12 +131,14 @@ public class ListEditor implements EDITOR {
                                 subgroup = null;
                                 break;
                         }
+                    }
                 }
                 listData = DataManager.getTypeNamesGroup(TYPE, subgroup);
-                if (filterGroup != null)
+                if (filterGroup != null) {
                     listData = DataManager.getTypeNamesGroup(TYPE, filterGroup);
-                else if (filterSubgroup != null)
+                } else if (filterSubgroup != null) {
                     listData = DataManager.getTypesSubGroupNames(TYPE, filterSubgroup);
+                }
 
                 if (getConditions() != null) {
                     Ref ref = new Ref(Game.game, getEntity().getId());
@@ -150,9 +155,11 @@ public class ListEditor implements EDITOR {
         } else {
 
             secondListData = new LinkedList<String>();
-            if (value != null)
-                if (!value.equals(ContentManager.getDefaultEmptyValue()))
+            if (value != null) {
+                if (!value.equals(ContentManager.getDefaultEmptyValue())) {
                     secondListData = ListMaster.toList(value.toString(), ENUM);
+                }
+            }
 
             listChooser = new ListChooser(listData, secondListData, ENUM, TYPE);
 

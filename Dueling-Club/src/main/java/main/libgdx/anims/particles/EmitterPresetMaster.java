@@ -24,8 +24,8 @@ import java.util.Map;
 public class EmitterPresetMaster {
     private static EmitterPresetMaster instance;
     private static boolean spriteEmitterTest;
-    String separator = " - ";
-    String value_separator = ": ";
+    public static String separator = " - ";
+    public static String value_separator = ": ";
     private Map<String, String> map = new HashMap<>();
     private String lowHighMinMax = "lowMin lowMax highMin highMax";
 
@@ -49,7 +49,12 @@ public class EmitterPresetMaster {
             }
         });
         c = output.toString();
-        XML_Writer.write(c, PathFinder.getSfxPath() + "custom\\" + last.path);
+        String newName =
+         FileManager.getUniqueVersion(new File(PathFinder.getSfxPath() + "custom\\" + last.path));
+        XML_Writer.write(c,PathFinder.getSfxPath()+"custom\\" +
+         StringMaster.cropLastPathSegment(StringMaster.replace(true,last.path, PathFinder.getSfxPath(), ""))+
+           newName);
+
     }
 
     public
@@ -61,7 +66,7 @@ public class EmitterPresetMaster {
                 imagePath = searchImage(d, imageName);
             if (d.isFile())
                 if (d.getName().equalsIgnoreCase(imageName))
-                    imageName=d.getName();
+                    imagePath=d.getPath();
             if (imagePath!=null ){
                 //updatePreset();
                 return imagePath;
@@ -77,18 +82,18 @@ public class EmitterPresetMaster {
             return imagePath;
             String name = StringMaster.getLastPathSegment(imagePath);
              //generic
-        imagePath = PathFinder.getParticleImagePath();
+        imagePath = PathFinder.getParticleImagePath()+"\\"+name;
         file = Gdx.files.internal(imagePath);
         if (file.exists())
             return imagePath;
 
         //raw
-        String suffix = StringMaster.replaceFirst(path, PathFinder.getParticlePresetPath(), "");
-        suffix = StringMaster.cropLastPathSegment(suffix);
-        imagePath += suffix;
-        file = Gdx.files.internal(imagePath);
-        if (file.exists())
-            return imagePath;
+//        String suffix = StringMaster.replaceFirst(path, PathFinder.getParticlePresetPath(), "");
+//        suffix = StringMaster.cropLastPathSegment(suffix);
+//        imagePath  = suffix;
+//        file = Gdx.files.internal(imagePath);
+//        if (file.exists())
+//            return imagePath;
 
         imagePath += "particles\\";
         file = Gdx.files.internal(imagePath);
@@ -135,10 +140,10 @@ public class EmitterPresetMaster {
         if (text == null)
             return "";
         if (value == null)
-            return text;
+            return text.trim();
         for (String substring : StringMaster.openContainer(text, "\n")) {
             if (substring.split(value_separator)[0].equalsIgnoreCase(value)) {
-                return substring.split(value_separator)[1];
+                return substring.split(value_separator)[1].trim();
             }
         }
         return null;
@@ -260,6 +265,7 @@ public class EmitterPresetMaster {
 
     private String getData(String path) {
         path = path.toLowerCase();
+        path =StringMaster.addMissingPathSegments(path, PathFinder.getSfxPath());
         String data = map.get(path);
         if (data == null) {
             data = FileManager.readFile(path);

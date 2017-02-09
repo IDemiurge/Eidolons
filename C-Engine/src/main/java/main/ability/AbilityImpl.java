@@ -28,9 +28,9 @@ public class AbilityImpl extends ReferredElement implements Ability {
         if (e == null) {
             main.system.auxiliary.LogMaster.log(1, "null abil effects!");
         }
-        if (e instanceof Effects)
+        if (e instanceof Effects) {
             effects = (Effects) e;
-        else {
+        } else {
             effects = new Effects(e);
         }
     }
@@ -48,8 +48,9 @@ public class AbilityImpl extends ReferredElement implements Ability {
         }
         boolean result = false;
         for (Effect effect : effects) {
-            if (effect != null)
+            if (effect != null) {
                 result |= effect.isInterrupted();
+            }
         }
         return result;
     }
@@ -74,24 +75,31 @@ public class AbilityImpl extends ReferredElement implements Ability {
     public boolean activate(Ref ref) {
         setRef(ref);
 
-        if (!(targeting instanceof AutoTargeting))
-            if (!(targeting instanceof FixedTargeting))
-                if (isForcePresetTargeting() || targeting == null)
+        if (!(targeting instanceof AutoTargeting)) {
+            if (!(targeting instanceof FixedTargeting)) {
+                if (isForcePresetTargeting() || targeting == null) {
                     if (ref.getTarget() != null || ref.getGroup() != null) {
                         return resolve();
-                    } else
+                    } else {
                         return false;
+                    }
+                }
+            }
+        }
 
         boolean selectResult = targeting.select(ref);
         ActiveObj a = ref.getActive();
         if (selectResult) {
-            if (a != null)
+            if (a != null) {
                 a.setCancelled(null);
+            }
             return resolve();
         } else {
-            if (a != null)
-                if (a.isCancelled() != null)
+            if (a != null) {
+                if (a.isCancelled() != null) {
                     a.setCancelled(true);
+                }
+            }
             return false;
         }
 
@@ -107,8 +115,9 @@ public class AbilityImpl extends ReferredElement implements Ability {
              new EventCallbackParam( this));
 
             return effects.apply(ref);
-        } else
+        } else {
             return false;
+        }
     }
 
     @Override

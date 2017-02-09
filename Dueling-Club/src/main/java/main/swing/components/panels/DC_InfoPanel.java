@@ -58,8 +58,9 @@ public class DC_InfoPanel extends G_InfoPanel implements TableModelListener {
 
     @Override
     protected Vector<Vector<String>> initData() {
-        if (infoObj instanceof ObjType)
+        if (infoObj instanceof ObjType) {
             infoObj = state.getGame().getBattleField().getInfoSelectedObj();
+        }
 
         if (infoObj == null) {
             this.displayedValues = DC_ContentManager
@@ -79,9 +80,10 @@ public class DC_InfoPanel extends G_InfoPanel implements TableModelListener {
             } catch (Exception e) {
                 // e.printStackTrace();
             }
-            if (displayedValues == null)
+            if (displayedValues == null) {
                 this.displayedValues = DC_ContentManager
                         .getInfoPanelValueList(obj_type);
+            }
         } else {
             if (!VisionManager.checkKnown(getInfoObj())) {
                 this.displayedValues = DC_ContentManager
@@ -106,8 +108,9 @@ public class DC_InfoPanel extends G_InfoPanel implements TableModelListener {
 
     @Override
     public void refresh() {
-        if (!initialized)
+        if (!initialized) {
             return;
+        }
         removeAll();
         addTable();
         if (isEditable()) {
@@ -121,9 +124,10 @@ public class DC_InfoPanel extends G_InfoPanel implements TableModelListener {
         // specVals.setBackground(Color.black);
         // specVals.setForeground(Color.white);
 
-        if (infoObj != null)
+        if (infoObj != null) {
             this.table.getTable().setDefaultRenderer(String.class,
                     new DC_InfoPanelRenderer(infoObj));
+        }
     }
 
     @Override

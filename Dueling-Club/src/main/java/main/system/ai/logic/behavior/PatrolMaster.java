@@ -21,22 +21,26 @@ public class PatrolMaster {
     // similar to wandering but all units must be to the target point
     public static Action getPatrolAction(UnitAI ai) {
         Patrol patrol = ai.getGroup().getPatrol();
-        if (patrol == null)
+        if (patrol == null) {
             initPatrol(ai.getGroup());
+        }
 
         Action action = null;
         boolean leader = ai.getGroup().getLeader() == ai.getUnit();
         if (isArrived(patrol, ai)) {
-            if (leader)
+            if (leader) {
                 if (checkNewDestination(patrol)) {
                     changeDestination(patrol);
-                } else
+                } else {
                     action = getIdleAction(patrol, ai);
+                }
+            }
         } else {
             action = getWaitAction(patrol, ai);
         }
-        if (action != null)
+        if (action != null) {
             return action;
+        }
 
         if (patrol.getReturnCoordinates() != null) {
             patrol.setDestination(patrol.getReturnCoordinates());
@@ -70,8 +74,9 @@ public class PatrolMaster {
         DC_HeroObj unit = ai.getUnit();
 
         DC_HeroObj blocker = getBlockingUnit(patrol, ai);
-        if (blocker == null)
+        if (blocker == null) {
             return null;
+        }
 
         Ref ref = new Ref(unit);
         ref.setTarget(blocker.getId());
@@ -93,10 +98,12 @@ public class PatrolMaster {
             // sort?
             DC_HeroObj blocker = (DC_HeroObj) u;
             // if (u == leader)
-            if (!blocker.isOwnedBy(ai.getUnit().getOwner()))
+            if (!blocker.isOwnedBy(ai.getUnit().getOwner())) {
                 continue;
-            if (!blocker.canMove())
+            }
+            if (!blocker.canMove()) {
                 continue;
+            }
             unitByCoordinate = blocker;
         }
         return unitByCoordinate;
@@ -187,18 +194,19 @@ public class PatrolMaster {
         Boolean prefLessMoreMiddle = null;
         Integer distance = patrol.getDistance();
         Coordinates c = null;
-        if (patrol.getBlock() != null)
+        if (patrol.getBlock() != null) {
             c = CoordinatesMaster.getFarmostCoordinateInDirection(d, patrol.getBlock()
                     .getCoordinates(), prefLessMoreMiddle);
-        else {
+        } else {
             if (distance == null) {
                 distance = WanderMaster.getMaxWanderTotalDistance(patrol.getGroup(),
                         GOAL_TYPE.PATROL);
                 patrol.setDistance(distance);
             }
-            if (distance == null)
+            if (distance == null) {
                 c = CoordinatesMaster.getFarmostCoordinateInDirection(d, patrol.getBlock()
                         .getCoordinates(), prefLessMoreMiddle);
+            }
             c = patrol.getLeadingUnit().getCoordinates();
             Integer offsetX = distance;
             Integer offsetY = distance;
@@ -206,15 +214,17 @@ public class PatrolMaster {
                 offsetX = (int) Math.round(Math.sqrt(distance));
                 offsetY = (int) Math.round(Math.sqrt(distance));
             }
-            if (d.isGrowX() == null)
+            if (d.isGrowX() == null) {
                 offsetX = 0;
-            else if (!d.isGrowX())
+            } else if (!d.isGrowX()) {
                 offsetX = -offsetX;
+            }
 
-            if (d.isGrowY() == null)
+            if (d.isGrowY() == null) {
                 offsetY = 0;
-            else if (!d.isGrowY())
+            } else if (!d.isGrowY()) {
                 offsetY = -offsetY;
+            }
 
             // check valid coordinates? limit!
 
@@ -228,11 +238,13 @@ public class PatrolMaster {
 //		if (!isArrived(patrol.getGroup()))
 //			return false;
         patrol.turnWaited();
-        if (patrol.getTurnsWaited() < patrol.getMinWaitPeriod())
+        if (patrol.getTurnsWaited() < patrol.getMinWaitPeriod()) {
             return false;
+        }
         if (patrol.getTurnsWaited() >= patrol.getMaxWaitPeriod()) {
-            if (checkCatchersUp(patrol, patrol.getTurnsWaited() - patrol.getMaxWaitPeriod()))
+            if (checkCatchersUp(patrol, patrol.getTurnsWaited() - patrol.getMaxWaitPeriod())) {
                 return true;
+            }
         }
 
         return false;

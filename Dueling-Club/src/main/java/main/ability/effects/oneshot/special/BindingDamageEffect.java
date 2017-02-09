@@ -41,26 +41,34 @@ public class BindingDamageEffect extends MicroEffect {
         // Can be initialized() just once
         GroupImpl group = ref.getGroup();
         Effects effects = new Effects();
-        STANDARD_EVENT_TYPE event_type = null;
+        STANDARD_EVENT_TYPE event_type;
         if (shareOrRedirect) {
             // TODO splitMode!
             event_type = STANDARD_EVENT_TYPE.UNIT_IS_DEALT_TOUGHNESS_DAMAGE;
-            if (spellDmgOnly != null)
-                if (spellDmgOnly)
+            if (spellDmgOnly != null) {
+                if (spellDmgOnly) {
                     event_type = STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_SPELL_DAMAGE;
-            if (physicalDmgOnly != null)
-                if (physicalDmgOnly)
+                }
+            }
+            if (physicalDmgOnly != null) {
+                if (physicalDmgOnly) {
                     event_type = STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PHYSICAL_DAMAGE;
+                }
+            }
         } else {
             effects.add(new AlteringEffect(false, formula.getNegative()
                     .toString()));
             event_type = Event.STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_DAMAGE;
-            if (spellDmgOnly != null)
-                if (spellDmgOnly)
+            if (spellDmgOnly != null) {
+                if (spellDmgOnly) {
                     event_type = STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_SPELL_DAMAGE;
-            if (physicalDmgOnly != null)
-                if (physicalDmgOnly)
+                }
+            }
+            if (physicalDmgOnly != null) {
+                if (physicalDmgOnly) {
                     event_type = STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_PHYSICAL_DAMAGE;
+                }
+            }
         }
 
         Targeting targeting_other_units = new AutoTargeting(new Conditions(

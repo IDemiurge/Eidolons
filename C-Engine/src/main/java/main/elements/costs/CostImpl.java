@@ -45,10 +45,12 @@ public class CostImpl extends ReferredElement implements Cost, Serializable {
 
     @Override
     public int compare(Cost c) {
-        if (c instanceof Costs)
+        if (c instanceof Costs) {
             return 0;
-        if (c.getCostParam() != getCostParam())
+        }
+        if (c.getCostParam() != getCostParam()) {
             return 0;
+        }
 
         return c.getPayment().getAmountFormula().getInt(ref).compareTo(
                 getPayment().getAmountFormula().getInt(ref));
@@ -62,11 +64,12 @@ public class CostImpl extends ReferredElement implements Cost, Serializable {
         Obj payee = ref.getGame().getObjectById(ref.getId(key));
 
         boolean result = true;
-        if (altCosts != null)
+        if (altCosts != null) {
             if (!canBePaid(ref, true)) {
                 paidAlt = true;
                 return altCosts.pay(ref);
             }
+        }
         for (Payment payment : toPay) {
             result &= payment.pay(payee, ref);
         }
@@ -76,17 +79,19 @@ public class CostImpl extends ReferredElement implements Cost, Serializable {
 
     public boolean canBePaid(Ref REF, boolean noAlt) {
         setRef(REF);
-        if (requirements == null)
+        if (requirements == null) {
             requirements = new CostRequirements(toPay);
+        }
         boolean result = requirements.check(ref);
         if (!result) {
-            if (!noAlt)
+            if (!noAlt) {
                 if (altCosts != null) {
                     result = altCosts.canBePaid(ref);
                     setReason(altCosts.getReason());
                     // setReasons(altCosts.getReasonList());
                     return result;
                 }
+            }
         }
         setReason(requirements.getReason());
         return result;
@@ -182,8 +187,9 @@ public class CostImpl extends ReferredElement implements Cost, Serializable {
     }
 
     public void addAltCost(Cost cost) {
-        if (altCosts == null)
+        if (altCosts == null) {
             altCosts = new Costs(new LinkedList<Cost>());
+        }
         altCosts.addCost(cost);
 
     }

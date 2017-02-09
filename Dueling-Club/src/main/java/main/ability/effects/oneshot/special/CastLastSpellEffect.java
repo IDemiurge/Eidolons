@@ -16,7 +16,6 @@ public class CastLastSpellEffect extends MicroEffect {
 
     public CastLastSpellEffect(Boolean free, Boolean chooseTarget,
                                String target_key) {
-        this.obj_ref = obj_ref;
         this.free = free;
         this.chooseTarget = chooseTarget;
         this.target_key = target_key;
@@ -35,8 +34,9 @@ public class CastLastSpellEffect extends MicroEffect {
         if (chooseTarget) {
             spell.getTargeting().select(REF);
         } else {
-            if (StringMaster.isEmpty(target_key))
+            if (StringMaster.isEmpty(target_key)) {
                 REF.setTarget(ref.getTarget());
+            }
 
             REF.setTarget(ref.getId(target_key));
         }

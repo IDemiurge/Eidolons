@@ -57,22 +57,25 @@ public class Obj extends Entity {
 
     @Override
     public OBJ_TYPES getOBJ_TYPE_ENUM() {
-        if (super.getOBJ_TYPE_ENUM() instanceof OBJ_TYPES)
+        if (super.getOBJ_TYPE_ENUM() instanceof OBJ_TYPES) {
             return (OBJ_TYPES) super.getOBJ_TYPE_ENUM();
+        }
         return null;
 
     }
 
     @Override
     public void construct() {
-        if (!added)
+        if (!added) {
             add();
+        }
         super.construct();
     }
 
     protected void add() {
-        if (added || !isMicroGameObj())
+        if (added || !isMicroGameObj()) {
             return;
+        }
         getGame().getState().addObject(get());
         added = true;
         // if (!game.isOffline())
@@ -114,7 +117,7 @@ public class Obj extends Entity {
         // return;
         // } not necessary?
         game.getManager().setActivatingPassives(true);
-        for (Active abil : passives)
+        for (Active abil : passives) {
             try {
                 if (abil != null) {
                     abil.setRef(getRef());
@@ -125,6 +128,7 @@ public class Obj extends Entity {
                 // if (game.isSimulation())
                 e.printStackTrace();
             }
+        }
         game.getManager().setActivatingPassives(false);
         // setPassivesReady(true);
         // addDynamicValues();
@@ -149,8 +153,9 @@ public class Obj extends Entity {
         // so the problem is that it doesn't seem to carry over c_ and perc_
         // values?
         for (PARAMETER p : type.getParamMap().getMap().keySet()) {
-            if (!p.isDynamic())
+            if (!p.isDynamic()) {
                 paramMap.remove(p);
+            }
         }
         for (PARAMETER p : type.getParamMap().getMap().keySet()) {
             paramMap.put(p, type.getParamMap().getMap().get(p));
@@ -160,10 +165,11 @@ public class Obj extends Entity {
 
     public void setDead(boolean dead) {
         this.dead = dead;
-        if (dead)
+        if (dead) {
             addStatus(STATUS.DEAD.toString());
-        else
+        } else {
             removeStatus(STATUS.DEAD.toString());
+        }
     }
 
     public void removeStatus(String value) {
@@ -194,15 +200,17 @@ public class Obj extends Entity {
     }
 
     public void addBuff(BuffObj buff) {
-        if (getBuffs() == null)
+        if (getBuffs() == null) {
             setBuffs(new DequeImpl<BuffObj>());
+        }
         this.getBuffs().add(buff);
 
     }
 
     public DequeImpl<BuffObj> getBuffs() {
-        if (buffs == null)
+        if (buffs == null) {
             buffs = new DequeImpl<>();
+        }
         return buffs;
     }
 
@@ -212,8 +220,9 @@ public class Obj extends Entity {
 
     public void removePassive(String abilName) {
         for (ActiveObj passive : passives) {
-            if (passive.getName().equals(abilName))
+            if (passive.getName().equals(abilName)) {
                 removePassive((PassiveAbilityObj) passive);
+            }
 
         }
 
@@ -235,8 +244,9 @@ public class Obj extends Entity {
     }
 
     public void addPassive(String abilName) {
-        if (getPassiveAbils().contains(abilName))
+        if (getPassiveAbils().contains(abilName)) {
             return;
+        }
         // getPassives().add(e);
         ActiveObj abil = AbilityConstructor.newAbility(abilName, this, true);
         this.getPassiveAbils().add(abilName);
@@ -249,8 +259,9 @@ public class Obj extends Entity {
     }
 
     public Boolean isPassable() {
-        if (passable == null)
+        if (passable == null) {
             passable = getIntParam("GIRTH") <= 0;
+        }
         return passable;
         // if (checkProperty(G_PROPS.BF_OBJECT_TAGS, "" +
         // BF_OBJECT_TAGS.PASSABLE))
@@ -259,8 +270,9 @@ public class Obj extends Entity {
     }
 
     public List<String> getPassiveAbils() {
-        if (passiveAbils == null)
+        if (passiveAbils == null) {
             passiveAbils = new LinkedList<String>();
+        }
         return passiveAbils;
     }
 
@@ -291,12 +303,13 @@ public class Obj extends Entity {
                 return buff;
             }
         }
-        if (!strict)
+        if (!strict) {
             for (BuffObj buff : buffs) {
                 if (StringMaster.contains(buff.getName(), buffName)) {
                     return buff;
                 }
             }
+        }
         main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG_1, buffName
                 + " buff not found for " + buffs);
 
@@ -309,8 +322,9 @@ public class Obj extends Entity {
 
     public void removeBuff(String buffName) {
         BuffObj buff = getBuff(buffName);
-        if (buff != null)
+        if (buff != null) {
             getGame().getManager().buffRemoved(buff);
+        }
     }
 
     public void invokeHovered() {
@@ -319,8 +333,9 @@ public class Obj extends Entity {
 
     public void invokeRightClicked() {
         game.getManager().rightClicked(this);
-        if (!isToolTipDisabled())
+        if (!isToolTipDisabled()) {
             initToolTip();
+        }
         // game.getDialogManager().displayInfo(this);
 
     }

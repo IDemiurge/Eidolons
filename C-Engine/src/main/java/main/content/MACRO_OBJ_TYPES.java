@@ -110,8 +110,9 @@ MACRO_OBJ_TYPES implements OBJ_TYPE {
 
     public static OBJ_TYPE getTypeByCode(int code) {
         for (OBJ_TYPE type : values()) {
-            if (type.getCode() == code)
+            if (type.getCode() == code) {
                 return type;
+            }
         }
         return null;
     }

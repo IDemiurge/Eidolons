@@ -54,9 +54,9 @@ public abstract class SecondaryItemList extends G_Panel {
         }
 
         if (getPoolParam() != null) {
-            if (poolComp != null)
+            if (poolComp != null) {
                 poolComp.setText(getPoolText());
-            else {
+            } else {
                 poolComp = new PoolComp(getPoolText(), getPoolTooltip(),
                         isPoolC());
 
@@ -121,11 +121,12 @@ public abstract class SecondaryItemList extends G_Panel {
         // + MigMaster.getCenteredTextPosition(getTitle()) + " "
         // + GuiManager.getSmallObjSize() / 4);
         add(list, "id list, pos 0 title.y2+" + GuiManager.getSmallObjSize() / 4);
-        if (poolComp != null)
+        if (poolComp != null) {
             add(poolComp, "id pool, pos "
                     + MigMaster.getCenteredPosition(list.getVisuals()
                     .getWidth(), poolComp.getVisuals().getWidth())
                     + " list.y2");
+        }
     }
 
     @Override

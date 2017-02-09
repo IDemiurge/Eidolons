@@ -89,8 +89,9 @@ public class DC_PriorityListPanel extends G_ListPanel<DC_HeroObj> implements
     }
 
     public TurnManager getManager() {
-        if (manager == null)
+        if (manager == null) {
             manager = state.getGame().getTurnManager();
+        }
         return manager;
     }
 

@@ -98,17 +98,21 @@ public class DC_GameHost extends GameHost implements Runnable {
 
         // TODO multiple games plz
         getGameConnector().setConnection(hcc);
-        if (testGame != null)
-            if (testGame.isTestMode())
+        if (testGame != null) {
+            if (testGame.isTestMode()) {
                 testGame.hostProceed();
+            }
+        }
         new Thread(new Runnable() {
             public void run() {
                 String data = null;
 
-                if (!testGame.isFastMode())
+                if (!testGame.isFastMode()) {
                     data = hcc.sendAndWaitForResponse(HOST_CLIENT_CODES.CLIENT_DATA_REQUEST, null);
-                if (waitDialog != null)
+                }
+                if (waitDialog != null) {
                     waitDialog.joined();
+                }
 
                 gameConnector.getGame().playerJoined(hcc, data);
                 gameConnector.send(HOST_CLIENT_CODES.RANDOM, RandomWizard.seed + "");

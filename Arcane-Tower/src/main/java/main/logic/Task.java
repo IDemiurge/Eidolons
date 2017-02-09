@@ -14,9 +14,10 @@ public class Task extends WorkItem {
 
 	public Task(ObjType type) {
 		super(type);
-		if (!checkProperty(AT_PROPS.TASK_STATUS))
-			setProperty(AT_PROPS.TASK_STATUS, "" + TASK_STATUS.IDEA);
-	}
+        if (!checkProperty(AT_PROPS.TASK_STATUS)) {
+            setProperty(AT_PROPS.TASK_STATUS, "" + TASK_STATUS.IDEA);
+        }
+    }
 
 	@Override
 	public void setRef(Ref ref) {
@@ -72,26 +73,6 @@ public class Task extends WorkItem {
 		return (Goal) getParent();
 	}
 
-	public void setStatus(TASK_STATUS status) {
-		setProperty(AT_PROPS.TASK_STATUS, "" + status, true);
-		if (getStatusEnum() == TASK_STATUS.PINNED) {
-			ArcaneTower.getSession().unpinTask(this);
-		}
-		if (status == TASK_STATUS.DONE) {
-			done();
-		}
-		if (status == TASK_STATUS.PENDING) {
-			ZeitMaster.paused(this);
-		}
-		if (status == TASK_STATUS.ACTIVE) {
-			ZeitMaster.started(this);
-		}
-		if (status == TASK_STATUS.PINNED) {
-			ArcaneTower.getSession().pinTask(this);
-		}
-		ArcaneTower.saveEntity(this, true);
-	}
-
 	public void beforeSave() {
 		super.beforeSave();
 	}
@@ -103,11 +84,12 @@ public class Task extends WorkItem {
 		// else
 		// SoundMaster.playStandardSound(STD_SOUNDS.RESUME);
 
-		if (isActive())
-			setProperty(AT_PROPS.TASK_STATUS, "" + TASK_STATUS.PENDING);
-		else
-			setProperty(AT_PROPS.TASK_STATUS, "" + TASK_STATUS.ACTIVE);
-		// TODO TOTAL TIME ACTIVE/PAUSED CALC - WHEN? KEEP INCREMENTING PER
+        if (isActive()) {
+            setProperty(AT_PROPS.TASK_STATUS, "" + TASK_STATUS.PENDING);
+        } else {
+            setProperty(AT_PROPS.TASK_STATUS, "" + TASK_STATUS.ACTIVE);
+        }
+        // TODO TOTAL TIME ACTIVE/PAUSED CALC - WHEN? KEEP INCREMENTING PER
 		// STATE
 
 	}
@@ -120,5 +102,25 @@ public class Task extends WorkItem {
 	public String getStatus() {
 		return getProperty(AT_PROPS.TASK_STATUS);
 	}
+
+    public void setStatus(TASK_STATUS status) {
+        setProperty(AT_PROPS.TASK_STATUS, "" + status, true);
+        if (getStatusEnum() == TASK_STATUS.PINNED) {
+            ArcaneTower.getSession().unpinTask(this);
+        }
+        if (status == TASK_STATUS.DONE) {
+            done();
+        }
+        if (status == TASK_STATUS.PENDING) {
+            ZeitMaster.paused(this);
+        }
+        if (status == TASK_STATUS.ACTIVE) {
+            ZeitMaster.started(this);
+        }
+        if (status == TASK_STATUS.PINNED) {
+            ArcaneTower.getSession().pinTask(this);
+        }
+        ArcaneTower.saveEntity(this, true);
+    }
 
 }

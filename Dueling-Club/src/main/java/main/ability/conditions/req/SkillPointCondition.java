@@ -25,11 +25,13 @@ public class SkillPointCondition extends MicroCondition {
     @Override
     public boolean check() {
         Entity match = ref.getMatchObj();
-        if (match == null)
+        if (match == null) {
             match = ref.getType("match");
+        }
         PARAMETER masteryParam = ContentManager.getPARAM(match.getProperty(G_PROPS.MASTERY));
-        if (masteryParam == null)
+        if (masteryParam == null) {
             masteryParam = ContentManager.getMastery(match.getProperty(G_PROPS.MASTERY));
+        }
         Integer amount = match.getIntParam(PARAMS.SKILL_DIFFICULTY);
         if (rank) {
             amount = amount * match.getIntParam(PARAMS.RANK_SD_MOD) / 100;

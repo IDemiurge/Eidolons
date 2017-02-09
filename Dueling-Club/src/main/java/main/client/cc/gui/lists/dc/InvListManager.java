@@ -39,15 +39,18 @@ public class InvListManager extends DC_ItemListManager {
         DC_HeroObj unit = getHero();
         boolean alt = false;
         DC_HeroItemObj item = null;
-        if (operation == OPERATIONS.PICK_UP)
+        if (operation == OPERATIONS.PICK_UP) {
             item = unit.getGame().getDroppedItemManager().findDroppedItem(typeName,
                     unit.getCoordinates());
+        }
 
         Boolean mode = null;
-        if (operation == OPERATIONS.UNEQUIP_QUICK_SLOT)
+        if (operation == OPERATIONS.UNEQUIP_QUICK_SLOT) {
             mode = true;
-        if (operation == OPERATIONS.EQUIP || operation == OPERATIONS.EQUIP_QUICK_SLOT)
+        }
+        if (operation == OPERATIONS.EQUIP || operation == OPERATIONS.EQUIP_QUICK_SLOT) {
             mode = false;
+        }
 
         item = unit.findItem(typeName, mode);
         Entity type = item.getType();
@@ -115,12 +118,12 @@ public class InvListManager extends DC_ItemListManager {
             return;
         }
         OPERATIONS operations = OPERATIONS.UNEQUIP;
-        if (p == PROPS.INVENTORY)
+        if (p == PROPS.INVENTORY) {
             CharacterCreator.getHeroManager().removeItem(getHero(), type, p, TYPE, true);
-        else {
-            if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.JEWELRY)
+        } else {
+            if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.JEWELRY) {
                 CharacterCreator.getHeroManager().removeJewelryItem(getHero(), type);
-            else if (p == PROPS.QUICK_ITEMS) {
+            } else if (p == PROPS.QUICK_ITEMS) {
                 CharacterCreator.getHeroManager().removeQuickSlotItem(getHero(), type);
                 operations = OPERATIONS.UNEQUIP_QUICK_SLOT;
             }

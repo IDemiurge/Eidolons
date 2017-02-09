@@ -54,11 +54,13 @@ public class AT_SortMaster {
 					return checkTaskStatus(o1, o2, TASK_STATUS.BLOCKED);
 				}
 
-				if (o1.getGlory() == o2.getGlory())
-					return 0;
-				if (o1.getGlory() > o2.getGlory())
-					return 1;
-				return -1;
+                if (o1.getGlory() == o2.getGlory()) {
+                    return 0;
+                }
+                if (o1.getGlory() > o2.getGlory()) {
+                    return 1;
+                }
+                return -1;
 			}
 
 			private int checkTaskStatus(Task o1, Task o2, TASK_STATUS status) {
@@ -69,11 +71,12 @@ public class AT_SortMaster {
 				int result;
 				result = SortMaster.compare(o1, o2, AT_PROPS.TASK_STATUS, status.toString(),
 						negative);
-				if (result != 0)
-					return result;
-				else
-					return SortMaster.compare(o1, o2, AT_PARAMS.TIME_FINISHED);
-			}
+                if (result != 0) {
+                    return result;
+                } else {
+                    return SortMaster.compare(o1, o2, AT_PARAMS.TIME_FINISHED);
+                }
+            }
 
 		});
 

@@ -67,8 +67,9 @@ public class PhaseAnim extends Group {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (dirty) {
-            if (texture != null)
+            if (texture != null) {
                 texture.dispose();
+            }
             texture = new Texture2D(w, h);
             Graphics2D g2d = texture.begin();
             anim.draw(g2d);

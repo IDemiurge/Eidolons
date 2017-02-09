@@ -22,8 +22,9 @@ public class ParamMap implements ValueMap {
 
     @Override
     public String get(VALUE valueName) {
-        if (map.get(valueName) == null)
+        if (map.get(valueName) == null) {
             return "";
+        }
 
         return map.get(valueName);
     }

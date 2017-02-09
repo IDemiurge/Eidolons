@@ -77,8 +77,9 @@ public class Level {
             this.dungeon = new Dungeon(type);
             LevelEditor.getSimulation().getDungeonMaster().setDungeon(dungeon);
             int z = 0;
-            if (LevelEditor.getCurrentLevel() != null)
+            if (LevelEditor.getCurrentLevel() != null) {
                 z = LevelEditor.getCurrentLevel().getDungeon().getZ() - 1;
+            }
             // DungeonLevelMaster.is
             dungeon.setZ(z);
         }
@@ -130,8 +131,9 @@ public class Level {
             }
             for (MapZone zone : plan.getZones()) {
                 ObjType type1 = DataManager.getType(zone.getFillerType(), OBJ_TYPES.BF_OBJ);
-                if (type1 == null)
+                if (type1 == null) {
                     continue;
+                }
                 List<Coordinates> list = zone.getCoordinates();
                 for (MapBlock b : zone.getBlocks()) {
                     list.removeAll(b.getCoordinates());
@@ -146,12 +148,13 @@ public class Level {
                 unit.setZ(dungeon.getZ());
                 addObj(unit, true);
             }
-            if (plan.getDirectionMap() != null)
+            if (plan.getDirectionMap() != null) {
                 try {
                     DC_ObjInitializer.initDirectionMap(dungeon.getZ(), plan.getDirectionMap());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
 
             // for (Coordinates c : getCoordinates()){
             // //fill
@@ -171,17 +174,19 @@ public class Level {
         // getDungeon());
         // addCell(cell);
         // } IN SIMULATION.getObj...()
-        if (map != null)
+        if (map != null) {
             for (Coordinates c : map.getMapObjects().keySet()) {
 
-                if (map.getMapObjects().get(c) != null)
+                if (map.getMapObjects().get(c) != null) {
                     LevelEditor.getObjMaster().addObj(map.getMapObjects().get(c), true, c);
+                }
                 // DC_HeroObj obj = new DC_HeroObj(map.getMapObjects().getOrCreate(c),
                 // c.x, c.y,
                 // DC_Player.NEUTRAL, LevelEditor.getSimulation(), new Ref());
                 // getMapObjects().add(obj);
                 // getTopObjMap().put(obj.getCoordinates(), obj);
             }
+        }
         // initialized = true;
     }
 
@@ -235,14 +240,17 @@ public class Level {
                     || prop == PROPS.PARTY_SPAWN_COORDINATES
                     || !value.equals(dungeon.getType().getType().getProperty(prop)))
                 // dungeon.getType().getType() - original type
+            {
                 xml += XML_Converter.wrapLeaf(prop.getName(), value);
+            }
         }
         xml += XML_Converter.closeXmlFormatted("Custom Props");
         xml += XML_Converter.openXmlFormatted("Custom Params");
         for (PARAMETER param : dungeon.getParamMap().keySet()) {
             String value = dungeon.getParam(param);
-            if (!value.equals(dungeon.getType().getType().getParam(param)))
+            if (!value.equals(dungeon.getType().getType().getParam(param))) {
                 xml += XML_Converter.wrapLeaf(param.getName(), value);
+            }
         }
         xml += XML_Converter.closeXmlFormatted("Custom Params");
 
@@ -250,12 +258,14 @@ public class Level {
         xml += XML_Converter.wrapLeaf(DungeonBuilder.WALL_OBJ_DATA_NODE, wallObjData);
 
         String facingMapData = getFacingMapData();
-        if (!facingMapData.isEmpty())
+        if (!facingMapData.isEmpty()) {
             xml += XML_Converter.wrapLeaf(DungeonBuilder.DIRECTION_MAP_NODE, facingMapData);
+        }
 
         String aiGroupData = getAiGroupData();
-        if (!aiGroupData.isEmpty())
+        if (!aiGroupData.isEmpty()) {
             xml += XML_Converter.wrapLeaf(DungeonBuilder.AI_GROUPS_NODE, aiGroupData);
+        }
 
         xml += dungeon.getPlan().getXml();
         xml += XML_Converter.closeXmlFormatted("Level");
@@ -293,8 +303,9 @@ public class Level {
                         }
 
                         list.add(u);
-                        if (list.size() > 1)
+                        if (list.size() > 1) {
                             string += list.size() + 1;
+                        }
 
                         facingMapData += RandomWizard
                                 .getWeightStringItem(string, facing.toString());
@@ -332,8 +343,9 @@ public class Level {
     }
 
     public void removeObjects(List<DC_Obj> objects) {
-        if (objects.isEmpty())
+        if (objects.isEmpty()) {
             return;
+        }
         for (DC_Obj obj : objects) {
             removeObj(obj);
         }
@@ -351,9 +363,11 @@ public class Level {
         List<DC_Obj> list = new LinkedList<>();
         for (Coordinates coordinates : c) {
             for (DC_Obj obj : getObjects(coordinates)) {
-                if (objNameFilter != null)
-                    if (!StringMaster.compare(objNameFilter, obj.getName()))
+                if (objNameFilter != null) {
+                    if (!StringMaster.compare(objNameFilter, obj.getName())) {
                         continue;
+                    }
+                }
                 list.add(obj);
             }
         }
@@ -392,38 +406,47 @@ public class Level {
 
         MapBlock b = LevelEditor.getMapMaster().getBlock();
 
-        if (b == null)
+        if (b == null) {
             b = getBlockForCoordinate(coordinates, false);
+        }
         if (b != null) {
             boolean result = !b.removeObject(obj, coordinates);
-            if (result)
-                if (unit.isLandscape())
+            if (result) {
+                if (unit.isLandscape()) {
                     b.addCoordinate(obj.getCoordinates());
+                }
+            }
         } else {
             b = LevelEditor.getMainPanel().getPlanPanel().getSelectedBlock();
-            if (b == null)
+            if (b == null) {
                 b = getBlockForCoordinate(coordinates, true);
-            else if (!CoordinatesMaster.isAdjacent(b.getCoordinates(), coordinates))
+            } else if (!CoordinatesMaster.isAdjacent(b.getCoordinates(), coordinates)) {
                 b = getBlockForCoordinate(coordinates, true);
+            }
 
-            if (b != null)
-                if (!unit.isOverlaying())
+            if (b != null) {
+                if (!unit.isOverlaying()) {
                     b.addCoordinate(obj.getCoordinates());
+                }
+            }
 
         }
-        if (unit != null)
+        if (unit != null) {
             if (!unit.isOverlaying())
-                // if (LevelEditor.isMinimapMode())
-                if (LE_MapViewComp.isMinimapMode())
+            // if (LevelEditor.isMinimapMode())
+            {
+                if (LE_MapViewComp.isMinimapMode()) {
                     LevelEditor.getMainPanel().getMiniGrid()
                             .refreshComp(null, obj.getCoordinates());
-                else {
+                } else {
                     LE_MapViewComp comp = LevelEditor.getMainPanel().getMapViewComp();
                     comp.getGrid().getCompForObject(obj).refresh();
                     comp.getGrid().refresh();
                     comp.getGrid().getCompForObject(obj).refresh();
                     comp.getGrid().getPanel().repaint();
                 }
+            }
+        }
         // TODO ADD COORDINATE!
         Chronos.logTimeElapsedForMark("removing " + obj);
 
@@ -436,18 +459,23 @@ public class Level {
     public MapBlock getBlockForCoordinate(Coordinates coordinates, boolean adjacent,
                                           List<MapBlock> exceptions) {
         MapBlock b = LevelEditor.getMainPanel().getPlanPanel().getActiveBlock();
-        if (adjacent)
-            if (b != null)
+        if (adjacent) {
+            if (b != null) {
                 if (CoordinatesMaster.isAdjacent(b.getCoordinates(), coordinates)) {
                     return b;
                 }
+            }
+        }
         for (MapBlock bl : dungeon.getPlan().getBlocks()) {
-            if (exceptions != null)
-                if (exceptions.contains(bl))
+            if (exceptions != null) {
+                if (exceptions.contains(bl)) {
                     continue;
+                }
+            }
             if (!adjacent) {
-                if (bl.getCoordinates().contains(coordinates))
+                if (bl.getCoordinates().contains(coordinates)) {
                     return bl;
+                }
             } else if (CoordinatesMaster.isAdjacent(bl.getCoordinates(), coordinates)) {
                 return bl;
             }
@@ -472,10 +500,11 @@ public class Level {
     public void addObj(DC_HeroObj obj, Coordinates c, boolean stack) {
         Chronos.mark("adding " + obj);
         obj.setZ(dungeon.getZ());
-        if (stack)
+        if (stack) {
             if (obj.isLandscape()) {
                 stack = false;
             }
+        }
         // if (!obj.isOverlaying())
         // getTopObjMap().put(c, obj);
 
@@ -516,8 +545,9 @@ public class Level {
             }
             // TODO
         } else {
-            if (!obj.isLandscape())
+            if (!obj.isLandscape()) {
                 getWallObjects().add(obj);
+            }
         }
 
         Chronos.logTimeElapsedForMark("adding " + obj);

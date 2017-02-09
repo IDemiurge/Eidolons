@@ -81,10 +81,11 @@ public class DC_Map {
             ObjType crystal = createCrystal(getCrystals().get(c));
             objMap.put(c, crystal);
         }
-        if (isTheme())
+        if (isTheme()) {
             setBackground(initThemeBackground());
-        else
+        } else {
             setBackground(initRandomBackground());
+        }
 
         mapData = new MapData(objMap, getBackground());
 
@@ -100,8 +101,9 @@ public class DC_Map {
                 key = ((DC_HeroObj) game.getPlayer(false).getHeroObj())
                         .getDeity().getName();
 
-            } else
+            } else {
                 return initRandomBackground();
+            }
         }
         return FileManager.getRandomFilePathVariant(
                 PathFinder.getThemedBgPicsPath() + key, ".jpg"); // +number TODO

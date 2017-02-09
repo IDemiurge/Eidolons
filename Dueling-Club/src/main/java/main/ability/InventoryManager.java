@@ -79,28 +79,31 @@ public class InventoryManager {
                     }
                 }
 
-                if (slot == null)
+                if (slot == null) {
                     if (i instanceof DC_WeaponObj) {
 
                         DC_WeaponObj weaponObj = (DC_WeaponObj) i;
                         if (weaponObj.getWeaponClass() == WEAPON_CLASS.MAIN_HAND_ONLY
                                 || weaponObj.getWeaponClass() == WEAPON_CLASS.TWO_HANDED
-                                || weaponObj.getWeaponClass() == WEAPON_CLASS.DOUBLE)
+                                || weaponObj.getWeaponClass() == WEAPON_CLASS.DOUBLE) {
                             slot = ITEM_SLOT.MAIN_HAND;
-                        else if (to.getMainWeapon() != null)
+                        } else if (to.getMainWeapon() != null) {
                             slot = ITEM_SLOT.OFF_HAND;
-                        else
+                        } else {
                             slot = ITEM_SLOT.MAIN_HAND;
+                        }
 
                     }
+                }
                 // ITEM_SLOT.MAIN_HAND;
                 to.getGame().getDroppedItemManager().pickedUp(i);
                 i.setRef(to.getRef());
                 // equip() !
-                if (slot == null)
+                if (slot == null) {
                     to.getQuickItems().add((DC_QuickItemObj) i);
-                else
+                } else {
                     to.equip((DC_HeroItemObj) i, slot);
+                }
             }
         }
     }
@@ -150,10 +153,12 @@ public class InventoryManager {
     }
 
     public boolean isActive() {
-        if (getWindow() == null)
+        if (getWindow() == null) {
             return false;
-        if (getWindow().getFrame() == null)
+        }
+        if (getWindow().getFrame() == null) {
             return false;
+        }
         return window.getFrame().isVisible();
     }
 

@@ -26,10 +26,12 @@ public class PathingManager {
     }
 
     public Path getPath(boolean flying, boolean agile, Coordinates c1, Coordinates c2) {
-        if (nodeGrid == null)
+        if (nodeGrid == null) {
             initNodeGrid();
-        if (alg == null)
+        }
+        if (alg == null) {
             alg = new A_StarAlgorithm(this);
+        }
         return alg.getPath(flying, agile, c1, c2);
 
     }
@@ -51,8 +53,9 @@ public class PathingManager {
 
     @Deprecated
     public boolean isDiagonallyBlocked(Coordinates c, Coordinates c2) {
-        if (!(c.x != c2.x && c.y != c2.y))
+        if (!(c.x != c2.x && c.y != c2.y)) {
             return false;
+        }
         boolean left = PositionMaster.isToTheLeft(c, c2);
         boolean top = PositionMaster.isAbove(c, c2);
         int x = (left) ? 1 : -1;
@@ -91,8 +94,9 @@ public class PathingManager {
         } catch (Exception e) {
 
         }
-        if (obj != null)
+        if (obj != null) {
             list.add(obj);
+        }
     }
 
     public List<Obj> getAdjacentObjs(Coordinates coordinates, boolean cell) {
@@ -158,8 +162,9 @@ public class PathingManager {
         } catch (Exception e) {
             node = null;
         }
-        if (node != null)
+        if (node != null) {
             nodeList.add(node);
+        }
     }
 
     public List<PathNode> getAdjacentNodes(Coordinates c) {

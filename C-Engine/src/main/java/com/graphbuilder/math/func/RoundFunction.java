@@ -16,8 +16,9 @@ public class RoundFunction implements Function {
      * the value itself is returned.
      */
     public double of(double[] d, int numParam) {
-        if (d[0] >= Long.MAX_VALUE || d[0] <= Long.MIN_VALUE)
+        if (d[0] >= Long.MAX_VALUE || d[0] <= Long.MIN_VALUE) {
             return d[0];
+        }
 
         return Math.round(d[0]);
     }

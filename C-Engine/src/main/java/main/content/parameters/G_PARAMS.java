@@ -55,8 +55,9 @@ public enum G_PARAMS implements PARAMETER {
     }
 
     public Map<OBJ_TYPE, Object> getDefaultValuesMap() {
-        if (defaultValuesMap == null)
+        if (defaultValuesMap == null) {
             defaultValuesMap = new HashMap<OBJ_TYPE, Object>();
+        }
         return defaultValuesMap;
     }
 

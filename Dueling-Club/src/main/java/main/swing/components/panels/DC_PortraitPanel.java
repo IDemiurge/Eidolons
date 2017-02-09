@@ -50,8 +50,9 @@ public class DC_PortraitPanel extends G_Panel implements MouseListener {
         ImageIcon icon = null;
         if (entity != null) {
             icon = entity.getIcon();
-            if (icon == null)
+            if (icon == null) {
                 icon = entity.getDefaultIcon();
+            }
             if (isNonUnit()) {
                 if (icon.getIconHeight() < GuiManager.getFullObjSize()) {
                     icon = ImageManager.getOffsetImage(icon.getImage(),
@@ -73,18 +74,20 @@ public class DC_PortraitPanel extends G_Panel implements MouseListener {
 
     protected void selectNewPortrait() {
         String portrait = new ImageChooser().launch("Image", getEntity().getImagePath());
-        if (portrait != null)
+        if (portrait != null) {
             if (ImageManager.isImage(portrait)) {
                 getEntity().setImage(portrait);
                 getPortrait().setIcon(getEntity().getIcon());
 
             }
+        }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (Launcher.DEV_MODE)
+        if (Launcher.DEV_MODE) {
             selectNewPortrait();
+        }
 
     }
 

@@ -289,23 +289,27 @@ public class DC_Formulas {
     }
 
     public static int getIdentityPointsForLevel(int level) {
-        if (level > 10)
+        if (level > 10) {
             return 0;
-        if (level % 2 == 0)
+        }
+        if (level % 2 == 0) {
             return 0;
+        }
         return 1;
     }
 
     public static int getXpForLevel(int level) {
-        if (level <= 0)
+        if (level <= 0) {
             return 0;
+        }
         return calculateFormula(LEVEL_XP_FORMULA, level);
 
     }
 
     public static int getGoldForLevel(int level) {
-        if (level <= 0)
+        if (level <= 0) {
             return 0;
+        }
         return calculateFormula(LEVEL_GOLD_FORMULA, level);
 
     }
@@ -368,8 +372,9 @@ public class DC_Formulas {
         Loop.startLoop(max);
         while (!Loop.loopEnded()) {
             int n = calculateFormula(formula, i);
-            if (n > result)
+            if (n > result) {
                 break;
+            }
             i++;
         }
         return i - 1;
@@ -383,8 +388,9 @@ public class DC_Formulas {
         Loop.startLoop(MAX_UNIT_LEVEL);
         while (!Loop.loopEnded()) {
             int xpForLevel = getTotalXpForLevel(i);
-            if (xpForLevel > n)
+            if (xpForLevel > n) {
                 break;
+            }
             i++;
 
         }

@@ -37,8 +37,9 @@ public class ClearShotCondition extends MicroCondition {
         Coordinates[] toCheck= pavelsAlg(source.getX(), source.getY(),
                 target.getX(), target.getY());
         for (Coordinates c: toCheck){
-            if (isBlocking(source, target, c.x, c.y))
+            if (isBlocking(source, target, c.x, c.y)) {
                 return false;
+            }
         }
         return true;
     }
@@ -60,21 +61,24 @@ public class ClearShotCondition extends MicroCondition {
         List<DC_HeroObj> units = DC_Game.game.getObjectsOnCoordinate(coordinates);
         if (units.isEmpty()) {
 
-            if (!isVision())
+            if (!isVision()) {
                 log("No unit at " + coordinates);
+            }
             return false;
         } else {
             boolean obstructing = false;
             for (DC_HeroObj unit : units) {
-                if (!isVision() || !unit.isTransparent())
+                if (!isVision() || !unit.isTransparent()) {
                     obstructing = unit.isObstructing(source, target);
+                }
                 if (obstructing) {
                     log(obstructing + " by " + unit);
                     break;
                 }
             }
-            if (obstructing)
+            if (obstructing) {
                 return true;
+            }
         }
 
         return checkWallObstruction(source, target, coordinates);
@@ -210,29 +214,34 @@ public class ClearShotCondition extends MicroCondition {
                 + mirrorRectangle + "; flippedX = " + flippedX + "; flippedY = " + flippedY);
         boolean toCheck = false;
         for (int i = 1; i < x; i++)            // don't check source
+        {
             for (int j = 0; j <= y; j++) { // don't check target
                 int x_ = source.getX(); // greater mirrorRectangle ?
                 // source.getY() :
-                if (!mirrorRectangle)
+                if (!mirrorRectangle) {
                     x_ = x_ + (flippedX ? -i : i);
-                else
+                } else {
                     x_ = x_ + (flippedX ? -j : j);
+                }
                 int y_ = source.getY();// lesser mirrorRectangle ? source.getX()
-                if (!mirrorRectangle)
+                if (!mirrorRectangle) {
                     y_ = y_ + (flippedY ? -j : j);
-                else
+                } else {
                     y_ = y_ + (flippedY ? -i : i);
+                }
 
-                if ( isBlocking(source, target,
-                             x_, y_))
-                {
-                    toCheck =true;
-                    array[i][j]=true;
-                }else
-                    array[i][j]=false;
+                if (isBlocking(source, target,
+                        x_, y_)) {
+                    toCheck = true;
+                    array[i][j] = true;
+                } else {
+                    array[i][j] = false;
+                }
             }
-        if (!toCheck)
+        }
+        if (!toCheck) {
             return true;
+        }
         log("Checking Clear Shot for " + source + " on " + target + "; obstruction array = "
                 + new ArrayMaster<Boolean>().get2dList(array));
         return checkClearShot(x, y, array);
@@ -259,23 +268,28 @@ public class ClearShotCondition extends MicroCondition {
                 // && target.getCoordinates().isAdjacent(source.getCoordinates())
                     ) {
                 if (PositionMaster.getDistance(c, target.getCoordinates()) >= PositionMaster
-                        .getDistance(source.getCoordinates(), target.getCoordinates()))
+                        .getDistance(source.getCoordinates(), target.getCoordinates())) {
                     continue;
+                }
                 if (PositionMaster.getDistance(c, source.getCoordinates()) > PositionMaster
-                        .getDistance(source.getCoordinates(), target.getCoordinates()))
+                        .getDistance(source.getCoordinates(), target.getCoordinates())) {
                     continue;
+                }
                 if (PositionMaster.getDistance(coordinates, target.getCoordinates()) > PositionMaster
-                        .getDistance(source.getCoordinates(), target.getCoordinates()))
+                        .getDistance(source.getCoordinates(), target.getCoordinates())) {
                     continue;
+                }
 
             }
             DIRECTION relativeDirection = c.isAdjacent(source.getCoordinates()) ? DirectionMaster
                     .getRelativeDirection(c, coordinates) : DirectionMaster.getRelativeDirection(
                     coordinates, c);
-            if (BooleanMaster.areOpposite(relativeDirection.isGrowX(), direction.isGrowX()))
+            if (BooleanMaster.areOpposite(relativeDirection.isGrowX(), direction.isGrowX())) {
                 continue;
-            if (BooleanMaster.areOpposite(relativeDirection.isGrowY(), direction.isGrowY()))
+            }
+            if (BooleanMaster.areOpposite(relativeDirection.isGrowY(), direction.isGrowY())) {
                 continue;
+            }
             double distance = PositionMaster.getDistanceToLine(new XLine(source.getCoordinates(),
                     target.getCoordinates()), c);
             if (distance > 1) {
@@ -313,34 +327,43 @@ public class ClearShotCondition extends MicroCondition {
 
             List<DIRECTION> list = source.getGame().getBattleFieldManager().getWallMap().get(c);
             // boolean hasDiagonal = false;
-            if (list == null)
+            if (list == null) {
                 continue;
+            }
 
             for (DIRECTION d : list) { // TODO does direction matter???
-                if (d != null)
-                    if (!d.isDiagonal())
+                if (d != null) {
+                    if (!d.isDiagonal()) {
                         continue;
+                    }
+                }
 
                 if (left) {
-                    if (BooleanMaster.areOpposite(d.isGrowX(), direction.isGrowX()))
+                    if (BooleanMaster.areOpposite(d.isGrowX(), direction.isGrowX())) {
                         continue;
-                    if (!BooleanMaster.areOpposite(d.isGrowY(), direction.isGrowY()))
+                    }
+                    if (!BooleanMaster.areOpposite(d.isGrowY(), direction.isGrowY())) {
                         continue;
+                    }
                 }
                 if (!left) {
-                    if (BooleanMaster.areOpposite(d.isGrowY(), direction.isGrowY()))
+                    if (BooleanMaster.areOpposite(d.isGrowY(), direction.isGrowY())) {
                         continue; // TODO does X/Y interchange?
-                    if (!BooleanMaster.areOpposite(d.isGrowX(), direction.isGrowX()))
+                    }
+                    if (!BooleanMaster.areOpposite(d.isGrowX(), direction.isGrowX())) {
                         continue; // TODO does X/Y interchange?
+                    }
                 }
                 if (target.getOBJ_TYPE_ENUM() == OBJ_TYPES.BF_OBJ) {
-                    if (target.isInfoSelected())
+                    if (target.isInfoSelected()) {
                         main.system.auxiliary.LogMaster.log(1, target + " vs " + coordinates
                                 + " distance: " + distance);
-                    if (target.isInfoSelected())
+                    }
+                    if (target.isInfoSelected()) {
                         main.system.auxiliary.LogMaster.log(1, angle + " vs "
                                 + (float) Math.abs(source.getX() - c.x)
                                 / Math.abs(source.getX() - c.y));
+                    }
 
                 } // if (d.isGrowX() == !left)
                 // continue;
@@ -406,8 +429,9 @@ public class ClearShotCondition extends MicroCondition {
                 - target.getY()); // dimensions
         // of final
         // rectangle
-        if (!checkClearShot(source, target, mirrorRectangle))
+        if (!checkClearShot(source, target, mirrorRectangle)) {
             return false;
+        }
         if (secondDimension > 1) {
             return checkClearShot(source, target, !mirrorRectangle);
         }
@@ -450,8 +474,9 @@ public class ClearShotCondition extends MicroCondition {
     }
 
     private void log(String str) {
-        if (!isVision())
+        if (!isVision()) {
             main.system.auxiliary.LogMaster.log(log_priority, str);
+        }
     }
 
     public boolean isVision() {

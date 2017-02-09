@@ -40,8 +40,9 @@ public class ValueBar extends G_Panel {
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-        if (getObj() == null)
+        if (getObj() == null) {
             return;
+        }
         int transparency = COLOR_TRANSPARENCY
                 + MathMaster.getCentimalPercent(percentage);
         // MathManager.getFractionValue(256, percentage)
@@ -69,8 +70,9 @@ public class ValueBar extends G_Panel {
 
     @Override
     public void refresh() {
-        if (getObj() == null)
+        if (getObj() == null) {
             return;
+        }
 
         c_val = getObj().getIntParam(c_param);
         max_val = getObj().getIntParam(param);
@@ -80,8 +82,9 @@ public class ValueBar extends G_Panel {
             c_val = max_val;
         } else {
             // ((Obj) getObj()).resetPercentages();
-            if (perc_param != null)
+            if (perc_param != null) {
                 percentage = getObj().getIntParam(perc_param);
+            }
 
         }
         super.refresh();

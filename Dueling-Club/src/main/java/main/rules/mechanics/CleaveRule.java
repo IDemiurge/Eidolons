@@ -55,8 +55,9 @@ public class CleaveRule {
         source = (DC_HeroObj) ref.getObj(KEYS.SOURCE);
         jumpsRemaining = source.getIntParam(PARAMS.CLEAVE_MAX_TARGETS);
 
-        if (!check(ref, attack))
+        if (!check(ref, attack)) {
             return;
+        }
         int mod = source.getIntParam(PARAMS.CLEAVE_DAMAGE_PERCENTAGE_TRANSFER);
 
         attack.damageDealt(attack.getRemainingDamage() * (100 - mod) / 100);
@@ -77,8 +78,9 @@ public class CleaveRule {
             boolean result = doCleave();
             mod = source.getIntParam(PARAMS.CLEAVE_DAMAGE_LOSS_PER_JUMP);
             attack.damageDealt(attack.getRemainingDamage() * (mod) / 100);
-            if (!result)
+            if (!result) {
                 break;
+            }
         }
     }
 
@@ -106,8 +108,9 @@ public class CleaveRule {
                             DirectionMaster.rotate45(direction, clockwise)),
                     true);
 
-            if (objectByCoordinate != null)
+            if (objectByCoordinate != null) {
                 currentTarget = (DC_HeroObj) objectByCoordinate;
+            }
 
         }
     }
@@ -117,31 +120,37 @@ public class CleaveRule {
         // action.multiplyParamByPercent(PARAMS.DAMAGE_MOD, damageMod, false);
         // // ??
         initNextTarget();
-        if (currentTarget == null)
+        if (currentTarget == null) {
             return true;
+        }
         attack.getRef().setTarget(currentTarget.getId());
         attack.setDamage(attack.getRemainingDamage());
         // TODO override atk logging!
         boolean result = source.getGame().getAttackMaster().attack(attack);
         // "dodged" or alive...
-        if (result)
+        if (result) {
             result = !currentTarget.isDead();
-        if (result)
+        }
+        if (result) {
             return false;
+        }
         return true;
 
     }
 
     private boolean check(Ref ref, Attack attack) {
-        if (jumpsRemaining <= 0)
+        if (jumpsRemaining <= 0) {
             return false;
+        }
         if (attack.isCounter()) {
-            if (!source.checkPassive(STANDARD_PASSIVES.CLEAVING_COUNTERS))
+            if (!source.checkPassive(STANDARD_PASSIVES.CLEAVING_COUNTERS)) {
                 return false;
+            }
         }
         if (attack.getDamageType() == DAMAGE_TYPE.SLASHING
-                || attack.getDamageType() == DAMAGE_TYPE.PHYSICAL)
+                || attack.getDamageType() == DAMAGE_TYPE.PHYSICAL) {
             return true;
+        }
         if (attack.isCritical()) {
             if (source.checkPassive(STANDARD_PASSIVES.CLEAVING_CRITICALS)) {
                 attack.setDamageType(DAMAGE_TYPE.SLASHING);

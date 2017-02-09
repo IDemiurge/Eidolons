@@ -35,8 +35,9 @@ public class WaitEffect extends MicroEffect {
 
         boolean result = new AddBuffEffect(getRetainConditions(), getBuffName(), getEffects(REF))
                 .apply(REF);
-        if (!result)
+        if (!result) {
             return false;
+        }
 
         try {
             WaitRule.addWaitingUnit((DC_HeroObj) ref.getSourceObj(), (DC_HeroObj) ref

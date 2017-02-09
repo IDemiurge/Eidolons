@@ -140,9 +140,9 @@ public class BehaviorMaster {
                 // null if waiting for catchers up or so... turning and resting
                 // etc
 
-                if (wait)
+                if (wait) {
                     action = getIdleAction(ai, type);
-                else {
+                } else {
                     // if (change) {
                     // targetCoordinates = WanderMaster.getCoordinates(type,
                     // ai);

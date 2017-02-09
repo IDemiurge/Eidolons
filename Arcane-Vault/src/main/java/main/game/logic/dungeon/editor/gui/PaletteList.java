@@ -4,13 +4,12 @@ import main.entity.type.ObjType;
 import main.game.logic.dungeon.editor.LevelEditor;
 import main.swing.generic.components.panels.G_ListPanel;
 
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
-
-import javax.swing.SwingUtilities;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 public class PaletteList extends G_ListPanel<ObjType> implements ListSelectionListener,
 		MouseListener {
@@ -43,9 +42,10 @@ public class PaletteList extends G_ListPanel<ObjType> implements ListSelectionLi
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		if (list.getSelectedValue() == null)
-			return;
-		LevelEditor.getMainPanel().getPalette().setSelectedType(list.getSelectedValue());
+        if (list.getSelectedValue() == null) {
+            return;
+        }
+        LevelEditor.getMainPanel().getPalette().setSelectedType(list.getSelectedValue());
 
 		LevelEditor.getMainPanel().getInfoPanel().selectType(list.getSelectedValue());
 		LevelEditor.getSimulation().setSelectedEntity(list.getSelectedValue());

@@ -15,16 +15,19 @@ public class SearchMaster<T> {
     public int getIndex(String name, Collection<T> list, boolean strict) {
         int i = 0;
         for (T t : list) {
-            if (StringMaster.compare(t.toString(), name, true))
+            if (StringMaster.compare(t.toString(), name, true)) {
                 return i;
+            }
             i++;
         }
-        if (strict)
+        if (strict) {
             return -1;
+        }
         i = 0;
         for (T t : list) {
-            if (StringMaster.compare(t.toString(), name, false))
+            if (StringMaster.compare(t.toString(), name, false)) {
                 return i;
+            }
             i++;
         }
 
@@ -52,22 +55,27 @@ public class SearchMaster<T> {
     public T find(String name, Collection<T> list, boolean strict) {
 
         for (T t : list) {
-            if (StringMaster.compareByChar(t.toString(), name, true))
+            if (StringMaster.compareByChar(t.toString(), name, true)) {
                 return t;
+            }
         }
-        if (strict)
+        if (strict) {
             return null;
-        for (T t : list) {
-            if (StringMaster.compareByChar(t.toString(), name, false))
-                return t;
         }
         for (T t : list) {
-            if (StringMaster.compare(t.toString(), name, true))
+            if (StringMaster.compareByChar(t.toString(), name, false)) {
                 return t;
+            }
         }
         for (T t : list) {
-            if (StringMaster.compare(t.toString(), name, false))
+            if (StringMaster.compare(t.toString(), name, true)) {
                 return t;
+            }
+        }
+        for (T t : list) {
+            if (StringMaster.compare(t.toString(), name, false)) {
+                return t;
+            }
         }
         return null;
     }

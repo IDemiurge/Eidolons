@@ -119,9 +119,9 @@ public class PointView extends HeroView implements ChangeListener,
         for (PARAMETER p : compMap.keySet()) {
             if (!getBufferType().getParam(p).equals(hero.getParam(p))) {
                 Component comp = compMap.get(p);
-                if (!editable)
+                if (!editable) {
                     ((JLabel) comp).setText(hero.getParam(p));
-                else {
+                } else {
                     ((PointComp) comp).removeChangeListener(this);
                     ((PointComp) comp).setValue(hero.getIntParam(p));
                     ((PointComp) comp).addChangeListener(this);
@@ -152,9 +152,10 @@ public class PointView extends HeroView implements ChangeListener,
 
     private void addValueComponent(PARAMETER value, int i, G_Panel valPanel) {
         String name = value.getName();
-        if (editable && attributes)
+        if (editable && attributes) {
             name = name.replace(StringMaster
                     .getWellFormattedString(StringMaster.BASE), "");
+        }
         JLabel lbl = new JLabel(name + ": ");
         valPanel.add(lbl, "id lbl" + i + ", sg lbls");
         if (editable) {
@@ -206,14 +207,16 @@ public class PointView extends HeroView implements ChangeListener,
     }
 
     private void initValues() {
-        if (params)
+        if (params) {
             return;
+        }
         this.values = new LinkedList<>();
         List<PARAMETER> list = (attributes) ? ContentManager.getAttributes()
                 : ContentManager.getMasteries();
         for (PARAMETER p : list) {
-            if (checkValue(p))
+            if (checkValue(p)) {
                 values.add(p);
+            }
         }
 
     }
@@ -253,8 +256,9 @@ public class PointView extends HeroView implements ChangeListener,
     }
 
     public ObjType getBufferType() {
-        if (bufferType == null)
+        if (bufferType == null) {
             resetBuffer();
+        }
         return bufferType;
     }
 
@@ -272,20 +276,23 @@ public class PointView extends HeroView implements ChangeListener,
     }
 
     private void initFont() {
-        if (attributes)
+        if (attributes) {
             font = (FontMaster.getDefaultFont(FontMaster.SIZE + 2));
-        else
+        } else {
             font = FontMaster.getDefaultFont();
+        }
     }
 
     private boolean checkValue(PARAMETER p) {
         if (attributes && editable) {
-            if (!p.toString().contains(StringMaster.BASE))
+            if (!p.toString().contains(StringMaster.BASE)) {
                 return false;
+            }
         } else {
             if (!params && editable) { // masteries
-                if (hero.getIntParam(p) <= 0)
+                if (hero.getIntParam(p) <= 0) {
                     return false;
+                }
             }
         }
         return true;

@@ -38,15 +38,17 @@ public class BattleCraft {
 
     public static void chooseMastery(DC_HeroObj hero, Boolean weapon_magic_misc) {
         PROPS prop = PROPS.MASTERY_GROUPS_WEAPONS;
-        if (weapon_magic_misc == null)
+        if (weapon_magic_misc == null) {
             prop = PROPS.MASTERY_GROUPS_MISC;
-        else if (!weapon_magic_misc)
+        } else if (!weapon_magic_misc) {
             prop = PROPS.MASTERY_GROUPS_MAGIC;
+        }
         String tip = " had trained with...";
-        if (weapon_magic_misc == null)
+        if (weapon_magic_misc == null) {
             tip = " had learned... ";
-        else if (!weapon_magic_misc)
+        } else if (!weapon_magic_misc) {
             tip = " had studied... ";
+        }
         for (String item : StringMaster.openContainer(hero.getProperty(prop))) {
             if (item.contains(StringMaster.OR)) {
                 String[] options = item.split(StringMaster.OR);

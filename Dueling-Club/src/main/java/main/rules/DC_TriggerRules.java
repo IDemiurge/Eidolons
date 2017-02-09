@@ -27,8 +27,9 @@ public class DC_TriggerRules {
 
     public void init() {
         for (TriggerRule rule : rules) {
-            if (!rule.isDisabled())
+            if (!rule.isDisabled()) {
                 rule.init(game);
+            }
         }
     }
 }

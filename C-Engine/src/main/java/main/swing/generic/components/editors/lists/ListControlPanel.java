@@ -61,8 +61,9 @@ public class ListControlPanel<E> extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         initSelected();
-        if (selected == null)
+        if (selected == null) {
             return;
+        }
 
         switch (((JButton) e.getSource()).getActionCommand()) {
             case "Edit": {
@@ -168,22 +169,28 @@ public class ListControlPanel<E> extends JPanel implements ActionListener {
     }
 
     public void edit() {
-        if (chooser.getMode() == SELECTION_MODE.SINGLE)
+        if (chooser.getMode() == SELECTION_MODE.SINGLE) {
             return;
-        if (getSecondList() == null)
+        }
+        if (getSecondList() == null) {
             return;
+        }
         selected = getSecondList().getSelectedValuesList();
-        if (selected.isEmpty())
+        if (selected.isEmpty()) {
             return;
-        if (selected.size() > 1)
+        }
+        if (selected.size() > 1) {
             return;
+        }
 
         E e = selected.get(0);
-        if (!(e instanceof String))
+        if (!(e instanceof String)) {
             return;
+        }
         String newValue = JOptionPane.showInputDialog("Edit element", e.toString());
-        if (newValue == null)
+        if (newValue == null) {
             return;
+        }
         ((DefaultListModel<E>) getSecondList().getModel()).set(getSecondList().getSelectedIndex(),
                 (E) newValue);
 
@@ -198,8 +205,9 @@ public class ListControlPanel<E> extends JPanel implements ActionListener {
             selected = getSecondList().getSelectedValuesList();
             if (!selected.isEmpty()) {
                 remove();
-            } else
+            } else {
                 add();
+            }
         } else {
             add();
         }
@@ -220,23 +228,27 @@ public class ListControlPanel<E> extends JPanel implements ActionListener {
 
         }
         for (E element : selected) {
-            if (getVarClass() != null)
+            if (getVarClass() != null) {
                 initVarTypes(element);
+            }
             if ((varTypes != null || checkVarTYPE()) && (element instanceof String)) {
                 String stringElement = (String) element;
 
                 String variables = getVariables(element);
 
                 List<Object> varTypes = getVarTypes();
-                if (varTypes == null)
+                if (varTypes == null) {
                     varTypes = (List<Object>) getVarTypes(stringElement);
+                }
 
-                if (StringMaster.isEmpty(variables))
+                if (StringMaster.isEmpty(variables)) {
                     variables = "variable";
+                }
 
                 String vars = VariableManager.promptInputForVariables(variables, varTypes);
-                if (vars == null)
+                if (vars == null) {
                     continue;
+                }
                 stringElement += vars;
                 element = (E) stringElement;
                 // TODO String only?
@@ -253,8 +265,9 @@ public class ListControlPanel<E> extends JPanel implements ActionListener {
     private List<?> getVarTypes(String stringElement) {
         ObjType type = DataManager.getType(stringElement, TYPE);
         String containerString = type.getProperty(G_PROPS.VARIABLE_TYPES);
-        if (StringMaster.isEmpty(containerString))
+        if (StringMaster.isEmpty(containerString)) {
             return null;
+        }
         return StringMaster.openContainer(containerString);
     }
 
@@ -266,8 +279,9 @@ public class ListControlPanel<E> extends JPanel implements ActionListener {
                 this.varHolder = (VarHolder) e;
                 varTypes = new LinkedList<Object>(Arrays.asList(varHolder.getVarClasses()));
             }
-        } else if (varClass == VariableManager.STRING_VAR_CLASS)
+        } else if (varClass == VariableManager.STRING_VAR_CLASS) {
             varTypes = new LinkedList<Object>(Arrays.asList(String.class));
+        }
     }
 
     private String getVariables(E element) {
@@ -276,8 +290,9 @@ public class ListControlPanel<E> extends JPanel implements ActionListener {
         if (newType != null) {
             variables = newType.getProperty(G_PROPS.VARIABLES);
         } else {
-            if (varHolder != null)
+            if (varHolder != null) {
                 variables = varHolder.getVariableNames();
+            }
         }
         return variables;
     }
@@ -309,11 +324,13 @@ public class ListControlPanel<E> extends JPanel implements ActionListener {
             int n =
                     // (up) ? i :
                     selectedIndices.length - 1 - i;
-            if (n > selectedIndices.length - 1 || n < 0)
+            if (n > selectedIndices.length - 1 || n < 0) {
                 break;
+            }
             int index = selectedIndices[n];
-            if (up)
+            if (up) {
                 index += i;
+            }
             E element = getSecondList().getModel().getElementAt(index);
             ((DefaultListModel<E>) getSecondList().getModel()).removeElementAt(index);
 
@@ -334,8 +351,9 @@ public class ListControlPanel<E> extends JPanel implements ActionListener {
         int i = 0;
         while (true) {
             int n = ((up) ? i : selectedIndices.length - 1 - i);
-            if (n > selectedIndices.length - 1 || n < 0)
+            if (n > selectedIndices.length - 1 || n < 0) {
                 break;
+            }
             int index = selectedIndices[n];
             E element = getSecondList().getModel().getElementAt(index);
             // try {

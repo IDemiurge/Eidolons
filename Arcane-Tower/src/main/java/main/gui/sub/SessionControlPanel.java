@@ -9,11 +9,7 @@ import main.enums.StatEnums.TASK_STATUS;
 import main.file.CaptureParser;
 import main.gui.SessionWindow.VIEW_OPTION;
 import main.io.PromptMaster;
-import main.logic.AT_OBJ_TYPE;
-import main.logic.AT_PROPS;
-import main.logic.CreationHelper;
-import main.logic.Goal;
-import main.logic.Task;
+import main.logic.*;
 import main.session.Session;
 import main.session.SessionMaster;
 import main.swing.generic.components.G_Panel;
@@ -23,12 +19,11 @@ import main.system.auxiliary.StringMaster;
 import main.system.math.MathMaster;
 import main.time.ZeitMaster;
 
-import java.awt.Component;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
-import javax.swing.JButton;
 
 public class SessionControlPanel extends G_Panel implements ActionListener {
 
@@ -80,9 +75,10 @@ public class SessionControlPanel extends G_Panel implements ActionListener {
 					type.setProperty(AT_PROPS.SESSION_TYPE, SessionMaster.TEMPLATE);
 				}
 				XML_Writer.writeXML_ForType(type);
-				if (alt)
-					DialogMaster.inform(session + " saved as Template!");
-				break;
+                if (alt) {
+                    DialogMaster.inform(session + " saved as Template!");
+                }
+                break;
 			case PIN:
 				if (alt) {
 					// TODO goals

@@ -45,8 +45,9 @@ public class CloneMaster<T> {
         ObjType newType = (ObjType) CloneMaster.deepCopy(type);
         newType.cloned();
         type.setRef(ref);
-        if (ref != null)
+        if (ref != null) {
             type.setGame(ref.getGame());
+        }
 
         return newType;
     }

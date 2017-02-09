@@ -1,14 +1,5 @@
 package main.ability.gui;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import java.awt.Dimension;
-import java.awt.Font;
-
-import javax.swing.JButton;
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import main.ability.utilities.NodeMaster;
 import main.ability.utilities.TemplateManager;
 import main.data.ability.AE_Item;
@@ -18,6 +9,12 @@ import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.ColorManager;
 import main.system.auxiliary.FontMaster;
 import main.system.auxiliary.FontMaster.FONT;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import java.awt.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class AE_EditPanel extends G_Panel {
 
@@ -42,14 +39,15 @@ public class AE_EditPanel extends G_Panel {
 		// item.getARG_List();
 	}
 
-	public Dimension getMinimumSize() {
-		if (minSize == null)
-			minSize = new Dimension(100, ArcaneVault.AE_HEIGHT);
-		return minSize;
-		// return super.getMinimumSize();
-	}
+    public AE_EditPanel() {
+    }
 
-	public AE_EditPanel() {
+	public Dimension getMinimumSize() {
+        if (minSize == null) {
+            minSize = new Dimension(100, ArcaneVault.AE_HEIGHT);
+        }
+        return minSize;
+		// return super.getMinimumSize();
 	}
 
 	// @Override
@@ -115,21 +113,22 @@ expandArg=item.getArg();
 		}
 
 		int i = 0;
-		if (item.getArgList() != null)
-			for (Argument arg : item.getArgList()) {
-				AE_Element element = new AE_Element(i, arg, nodeMaster,
-						mainPanel);
-				elements.add(element);
-				int db_index = NodeMaster.getDropBoxIndex(mainPanel
-						.getSelectedNode(), element, i);
+        if (item.getArgList() != null) {
+            for (Argument arg : item.getArgList()) {
+                AE_Element element = new AE_Element(i, arg, nodeMaster,
+                        mainPanel);
+                elements.add(element);
+                int db_index = NodeMaster.getDropBoxIndex(mainPanel
+                        .getSelectedNode(), element, i);
 
-				element.setDropBoxIndexQuietly(db_index);
-				add(element, "x 0, y " + i + "*" + AE_Element.ELEMENT_HEIGHT);
-				main.system.auxiliary.LogMaster.log(1, "ELEMENT ADDED: "
-						+ arg.name());
-				i++;
-			}
-		pos = i;
+                element.setDropBoxIndexQuietly(db_index);
+                add(element, "x 0, y " + i + "*" + AE_Element.ELEMENT_HEIGHT);
+                main.system.auxiliary.LogMaster.log(1, "ELEMENT ADDED: "
+                        + arg.name());
+                i++;
+            }
+        }
+        pos = i;
 		addControls();
 
 	}

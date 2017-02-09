@@ -58,16 +58,18 @@ public class ConcealmentRule {
         Dungeon dungeon = source.getGame().getDungeon();
         Integer illumination = target.getIntParam(PARAMS.ILLUMINATION);
         illumination += target.getIntParam(PARAMS.LIGHT_EMISSION) / 2;
-        if (dungeon != null)
+        if (dungeon != null) {
             illumination += dungeon.getGlobalIllumination();
+        }
 
         illumination += GLOBAL_ILLUMINATION;
         Integer concealment = target.getIntParam(PARAMS.CONCEALMENT);
         concealment += source.getIntParam(PARAMS.CONCEALMENT) / 2; // getOrCreate from
         // cell in
         // case?
-        if (dungeon != null)
+        if (dungeon != null) {
             concealment += dungeon.getIntParam(PARAMS.GLOBAL_CONCEALMENT);
+        }
 
         concealment += GLOBAL_CONCEALMENT;
 
@@ -81,19 +83,20 @@ public class ConcealmentRule {
         // def sight range of 5, I'd say
         Integer sight = source.getIntParam(PARAMS.SIGHT_RANGE);
         FACING_SINGLE singleFacing = FacingMaster.getSingleFacing(source, (BattlefieldObj) target);
-        if (singleFacing == FACING_SINGLE.BEHIND)
+        if (singleFacing == FACING_SINGLE.BEHIND) {
             sight = source.getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
-        else if (singleFacing == FACING_SINGLE.TO_THE_SIDE) {
+        } else if (singleFacing == FACING_SINGLE.TO_THE_SIDE) {
             sight -= source.getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
         }
         // else if (singleFacing == FACING_SINGLE.BEHIND)
         // sight = 0; // ???
         int diff = distance - sight;
 
-        if (diff > 0)
+        if (diff > 0) {
             ilMod = 100 - (diff * 10 + diff * diff * 5);
-        else
+        } else {
             ilMod = (100 - (int) (diff * 5 + Math.sqrt(diff * 100)));
+        }
 
         ilMod = Math.min(ilMod, 200);
         ilMod = Math.max(ilMod, 25);
@@ -130,11 +133,13 @@ public class ConcealmentRule {
         // + " for " + source.getNameAndCoordinate() + "; ilMod = " + ilMod +
         // " cMod=" + cMod);
 
-        if (source == target.getGame().getManager().getActiveObj())
+        if (source == target.getGame().getManager().getActiveObj()) {
             target.setGamma(gamma);
+        }
 
-        if (i > 50 && c > 50)
+        if (i > 50 && c > 50) {
             return Integer.MIN_VALUE;
+        }
         return gamma;
     }
 
@@ -162,16 +167,18 @@ public class ConcealmentRule {
     public static boolean checkMissed(DC_ActiveObj action) {
         DC_HeroObj source = action.getOwnerObj();
         Obj target = action.getRef().getTargetObj();
-        if (source == null || target == null)
+        if (source == null || target == null) {
             return false;
+        }
 
         if (source.getVisionMode() == VISION_MODE.INFRARED_VISION) {
 
         }
         int chance = getMissChance(action);
 
-        if (chance <= 0)
+        if (chance <= 0) {
             return false;
+        }
         // add cell's concealment value, but not the unit's!
 
         return RandomWizard.chance(chance);
@@ -192,8 +199,9 @@ public class ConcealmentRule {
                 // normal
                 // vision...
                 + cell.getIntParam(PARAMS.CONCEALMENT);
-        if (chance < 0)
+        if (chance < 0) {
             chance = 0;
+        }
 
         chance -= source.getIntParam(PARAMS.ILLUMINATION);
         return Math.abs(chance);

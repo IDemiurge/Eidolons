@@ -38,8 +38,9 @@ public class TextEditor implements EDITOR {
                 textField
                 // // ) .getPanel()
                 , tip, JOptionPane.OK_CANCEL_OPTION);
-        if (result != JOptionPane.OK_OPTION)
+        if (result != JOptionPane.OK_OPTION) {
             return null;
+        }
         return textField.getText();
     }
 
@@ -54,10 +55,12 @@ public class TextEditor implements EDITOR {
         // textPanel.add(formulaBuilder);
 
         boolean small = prevValue.length() < MIN_LENGTH;
-        if (forced && prevValue.length() > MIN_LENGTH / 2)
+        if (forced && prevValue.length() > MIN_LENGTH / 2) {
             small = !small;
-        if (small)
+        }
+        if (small) {
             return JOptionPane.showInputDialog("Input value", prevValue);
+        }
 
         return inputTextLargeField("Input value", prevValue);
     }

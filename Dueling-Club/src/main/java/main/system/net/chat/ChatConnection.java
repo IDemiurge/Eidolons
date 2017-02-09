@@ -46,10 +46,11 @@ public class ChatConnection extends GenericConnection {
     public void handleInput(String input) {
         if (getLastReceivedCode() == CHAT_CODES.MESSAGE) {
 
-            if (isGameHost)
+            if (isGameHost) {
                 handleInputHost(input, user);
-            else
+            } else {
                 appendToChat(input);
+            }
         } else {
             CHAT_CODES code = (CHAT_CODES) getLastReceivedCode();
             setLastReceivedCode(CHAT_CODES.MESSAGE);

@@ -27,8 +27,9 @@ public class NumberEditor implements EDITOR {
         int result = JOptionPane.showConfirmDialog(null, spinner, "Setting value for " + valueName,
 
                 JOptionPane.OK_CANCEL_OPTION);
-        if (result != JOptionPane.OK_OPTION)
+        if (result != JOptionPane.OK_OPTION) {
             return null;
+        }
         return spinner.getValue().toString();
     }
 

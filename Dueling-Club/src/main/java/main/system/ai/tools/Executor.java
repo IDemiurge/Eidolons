@@ -16,8 +16,9 @@ public class Executor {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (!result)
+        if (!result) {
             action.getActive().actionComplete();
+        }
 
         return result;
     }

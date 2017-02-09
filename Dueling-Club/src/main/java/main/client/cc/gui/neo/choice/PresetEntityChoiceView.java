@@ -45,10 +45,11 @@ public class PresetEntityChoiceView extends ChoiceView<Entity> {
 
     @Override
     protected void initData() {
-        if (entities != null)
+        if (entities != null) {
             data = new ListMaster<Entity>().getList(entities);
-        else
+        } else {
             data = new LinkedList<>();
+        }
     }
 
     @Override

@@ -32,8 +32,9 @@ public class ValueGroupCondition extends NumericCondition {
                 return true;
             }
         }
-        if (total)
+        if (total) {
             return sum <= (getComparingValue().getInt());
+        }
         return false;
     }
 

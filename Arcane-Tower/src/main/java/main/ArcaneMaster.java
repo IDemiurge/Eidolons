@@ -2,11 +2,7 @@ package main;
 
 import main.data.DataManager;
 import main.entity.Entity;
-import main.logic.AT_OBJ_TYPE;
-import main.logic.AT_PARAMS;
-import main.logic.Direction;
-import main.logic.Goal;
-import main.logic.Task;
+import main.logic.*;
 import main.session.SessionMaster;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
@@ -32,9 +28,10 @@ public class ArcaneMaster {
 
 	public static boolean checkDisplayed(Task task) {
 		if (task.isDone()) {
-			if (TimeMaster.isToday(task.getIntParam(AT_PARAMS.TIME_FINISHED)))
-				return false;
-		}
+            if (TimeMaster.isToday(task.getIntParam(AT_PARAMS.TIME_FINISHED))) {
+                return false;
+            }
+        }
 		return true;
 	}
 
@@ -52,11 +49,13 @@ public class ArcaneMaster {
 			Boolean dynamic_not_both) {
 		int i = highestPoint;
 		for (Entity type : types) {
-			if (!BooleanMaster.isFalse(dynamic_not_both))
-				type.setParam(AT_PARAMS.DYNAMIC_PRIORITY, i);
-			if (!BooleanMaster.isTrue(dynamic_not_both))
-				type.setParam(AT_PARAMS.PRIORITY, i);
-			i--;
+            if (!BooleanMaster.isFalse(dynamic_not_both)) {
+                type.setParam(AT_PARAMS.DYNAMIC_PRIORITY, i);
+            }
+            if (!BooleanMaster.isTrue(dynamic_not_both)) {
+                type.setParam(AT_PARAMS.PRIORITY, i);
+            }
+            i--;
 		}
 	}
 

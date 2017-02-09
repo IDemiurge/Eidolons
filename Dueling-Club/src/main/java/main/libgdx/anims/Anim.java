@@ -12,6 +12,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
+import main.libgdx.GameScreen;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import main.libgdx.anims.ANIM_MODS.OBJ_ANIMS;
@@ -20,8 +21,10 @@ import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.particles.EmitterPools;
 import main.libgdx.anims.sprite.SpriteAnimation;
+import main.libgdx.anims.text.FloatingText;
 import main.libgdx.bf.GridMaster;
 import main.libgdx.texture.TextureManager;
+import main.system.EventCallback;
 import main.system.EventCallbackParam;
 import main.system.GuiEventType;
 import main.system.auxiliary.LogMaster;
@@ -68,8 +71,9 @@ public class Anim extends Group implements Animation {
     protected Coordinates forcedDestination;
     protected Texture texture;
     protected boolean running;
-    private boolean smooth=true;
-
+    private boolean emittersWaitingDone;
+    EventCallback onDone;
+    private List<FloatingText> floatingText;
 
     public Anim(Entity active, AnimData params) {
         data = params;
@@ -79,10 +83,12 @@ public class Anim extends Group implements Animation {
         if (data.getIntValue(ANIM_VALUES.FRAME_DURATION) > 0)
             frameDuration = data.getIntValue(ANIM_VALUES.FRAME_DURATION) / 100f;
 //        duration= params.getIntValue(ANIM_VALUES.DURATION);
+        initEmitters();
     }
 
     @Override
     public void start() {
+        emittersWaitingDone=false;
         initPosition();
         initDuration();
         initSpeed();
@@ -116,6 +122,7 @@ public class Anim extends Group implements Animation {
         float delta = Gdx.graphics.getDeltaTime();
         time += delta;
         if (time < 0) return true; //delay
+        checkAddFloatingText();
         Texture currentFrame = textureSupplier.get();
         if (lifecycleDuration != 0) {
             cycles = (int) (time / lifecycleDuration);
@@ -123,9 +130,13 @@ public class Anim extends Group implements Animation {
         }
         if (duration >= 0) //|| finished //  lifecycle duration for continuous?
             if (time >= duration) {
-                if (isSmooth()) {
+            if (AnimMaster.isSmoothStop())
+                if (!isEmittersWaitingDone()) {
+                    emittersWaitingDone=true;
                     duration += getTimeToFinish();
+
                     emitterList.forEach(e -> e.getEffect().allowCompletion());
+
                     return true;
                 }
                 main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, this + " finished; duration = " + duration);
@@ -164,13 +175,15 @@ public class Anim extends Group implements Animation {
         float time = 0;
         for (EmitterActor e: emitterList){
             for (ParticleEmitter emitter: e.getEffect().getEmitters()){
-                float timeLeft = emitter.getDuration().getLowMax() * emitter.getPercentComplete();
+                float timeLeft = emitter.getDuration().getLowMax()/1000 *
+                 Math.max(0,                 emitter.getPercentComplete());
                 if (timeLeft>time)
-                    time = timeLeft;
-            }
+                    time = timeLeft;           }
         }
         float gracePeriod = 0.25f;
-        return time+time*gracePeriod;
+time=time+time*gracePeriod;
+        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, this+" adding TimeToFinish: " +time);
+        return time;
     }
 
     @Override
@@ -199,13 +212,19 @@ public class Anim extends Group implements Animation {
         alpha = 1f;
         initDuration();
         initSpeed();
-//if ()
     }
 
     protected void resetSprites() {
         //TODO
     }
-    protected void resetEmitters() {
+    protected void initEmitters() {
+        if (emitterList==null ){
+            if (data.getValue(ANIM_VALUES.PARTICLE_EFFECTS)!=null ){
+                setEmitterList(EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS)));
+            }
+        }
+    }
+        protected void resetEmitters() {
 
             getEmitterList().forEach(e ->
              {
@@ -221,6 +240,8 @@ public class Anim extends Group implements Animation {
                 if (e.isAttached())
                     e.setTarget(getDestinationCoordinates());
         });
+
+        getEmitterList().forEach(e-> e.reset());
     }
 
     protected void initDuration() {
@@ -371,21 +392,21 @@ public class Anim extends Group implements Animation {
         origin = GridMaster
          .getVectorForCoordinateWithOffset(getOriginCoordinates());
 
-        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-         this + " origin: " + origin);
+//        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+//         this + " origin: " + origin);
 
         destination = GridMaster
          .getVectorForCoordinateWithOffset(getDestinationCoordinates());
 
-        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-         this + " destination: " + destination);
+//        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+//         this + " destination: " + destination);
 
 
         defaultPosition = getDefaultPosition();
         setX(defaultPosition.x);
         setY(defaultPosition.y);
-        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-         this + " defaultPosition: " + defaultPosition);
+//        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+//         this + " defaultPosition: " + defaultPosition);
     }
 
     public Coordinates getOriginCoordinates() {
@@ -436,6 +457,7 @@ public class Anim extends Group implements Animation {
             setY(defaultPosition.y + offsetY);
         }
         sprites.forEach(s -> {
+            if (s.isAttached())
             if (getActions().size == 0) {
                 s.setOffsetX(offsetX);
                 s.setOffsetY(offsetY);
@@ -592,6 +614,11 @@ public class Anim extends Group implements Animation {
     }
 
     @Override
+    public void onDone(EventCallback callback, EventCallbackParam param) {
+        onDone.call(param);
+    }
+
+    @Override
     public boolean isRunning() {
         return running;
     }
@@ -600,11 +627,28 @@ public class Anim extends Group implements Animation {
         return pixelsPerSecond;
     }
 
-    public boolean isSmooth() {
-        return smooth;
+
+
+    public boolean isEmittersWaitingDone() {
+        return emittersWaitingDone;
     }
 
-    public void setSmooth(boolean smooth) {
-        this.smooth = smooth;
+    public void checkAddFloatingText() {
+       getFloatingText().forEach(floatingText1 ->  {
+            if (time>=floatingText1.getDelay())
+                floatingText1.addToStage(GameScreen.getInstance().getAnimsStage());
+        });
+    }
+
+        public void addFloatingText(FloatingText floatingText ) {
+            getFloatingText().add(floatingText);
+
+
+    }
+
+    public List<FloatingText> getFloatingText() {
+            if (floatingText==null )
+                floatingText= new LinkedList<>() ;
+        return floatingText;
     }
 }

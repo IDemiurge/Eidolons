@@ -109,8 +109,9 @@ public class MacroAction extends MacroObj implements ActiveObj {
                 MacroActionManager.setActionsBlocked(false);
             }
         } else {
-            if (MacroActionManager.isActionsBlocked())
+            if (MacroActionManager.isActionsBlocked()) {
                 getGame().getManager().cancelSelection();
+            }
             playCancelSound();
         }
     }
@@ -126,7 +127,9 @@ public class MacroAction extends MacroObj implements ActiveObj {
     public boolean canBeActivated(Ref ref) {
         if (MacroActionManager.isActionsBlocked()) // while activating
             // perhaps...
+        {
             return false;
+        }
         if (mode != null) {
             // check mode already on?
         }

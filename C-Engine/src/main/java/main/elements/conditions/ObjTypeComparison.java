@@ -26,13 +26,16 @@ public class ObjTypeComparison extends MicroCondition {
 
     @Override
     public boolean check() {
-        if (TYPE == null)
+        if (TYPE == null) {
             return true;
+        }
         Entity entity = ref.getObj(key);
-        if (entity == null)
+        if (entity == null) {
             entity = ref.getType(key);
-        if (entity == null)
+        }
+        if (entity == null) {
             return false;
+        }
         return TYPE.equals(entity.getOBJ_TYPE_ENUM());
     }
 

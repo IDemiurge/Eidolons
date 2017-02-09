@@ -34,8 +34,9 @@ public class ImageChooser extends FileChooser {
 
             if (big) {
                 size = 128;
-            } else if (small)
+            } else if (small) {
                 size = 32;
+            }
 
         }
         addPreview();
@@ -79,10 +80,11 @@ public class ImageChooser extends FileChooser {
                 File selection = (File) e.getNewValue();
                 String name;
 
-                if (selection == null)
+                if (selection == null) {
                     return;
-                else
+                } else {
                     name = selection.getAbsolutePath();
+                }
 
 				/*
                  * Make reasonably sure we have an image format that AWT can

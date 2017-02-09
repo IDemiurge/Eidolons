@@ -80,7 +80,7 @@ public class AttackEffect extends MicroEffect {
         DC_HeroObj attacker = (DC_HeroObj) ref.getSourceObj();
         DC_ActiveObj activeObj = (DC_ActiveObj) getActiveObj();
         if (!activeObj.isExtraAttackMode()) {
-            if (!activeObj.isThrow())
+            if (!activeObj.isThrow()) {
                 if (!activeObj.isRanged()) {
                     main.system.auxiliary.LogMaster.log(1, "*** MELEE ATTACK BY "
                             + activeObj.getOwnerObj().getNameAndCoordinate() + " on "
@@ -90,6 +90,7 @@ public class AttackEffect extends MicroEffect {
                         // AI_Manager.logFullInfo();
                     }
                 }
+            }
         }
         if (!offhand) {
             if (StringMaster.compare(ref.getObj(KEYS.ACTIVE).getProperty(G_PROPS.ACTION_TAGS),
@@ -99,17 +100,18 @@ public class AttackEffect extends MicroEffect {
 
         }
 
-        if (weapon != null)
+        if (weapon != null) {
             ref.setID(KEYS.WEAPON, weapon.getId());
-        else if (ref.getSourceObj() instanceof DC_HeroObj) {
+        } else if (ref.getSourceObj() instanceof DC_HeroObj) {
             Integer id = null;
             try {
                 id = (!offhand) ? attacker.getMainWeapon().getId() : attacker.getSecondWeapon()
                         .getId();
             } catch (Exception e) {
             }
-            if (id != null)
+            if (id != null) {
                 ref.setValue(KEYS.WEAPON, "" + id);
+            }
         }
 
         try {
@@ -123,8 +125,9 @@ public class AttackEffect extends MicroEffect {
     }
 
     public Attack getAttack() {
-        if (attack == null)
+        if (attack == null) {
             attack = initAttack();
+        }
         return attack;
     }
 

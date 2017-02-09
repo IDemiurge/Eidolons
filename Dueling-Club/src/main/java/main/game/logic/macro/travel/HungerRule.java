@@ -36,8 +36,9 @@ public class HungerRule extends TurnRule {
         } else {
             for (DC_HeroObj hero : p.getMembers()) {
                 int hungerSated = hero.getIntParam(MACRO_PARAMS.HUNGER);
-                if (hungerSated > p.getIntParam(MACRO_PARAMS.C_PROVISIONS))
+                if (hungerSated > p.getIntParam(MACRO_PARAMS.C_PROVISIONS)) {
                     hungerSated = p.getIntParam(MACRO_PARAMS.C_PROVISIONS);
+                }
 
                 hero.modifyParameter(MACRO_PARAMS.HUNGER, -hungerSated);
                 p.modifyParameter(MACRO_PARAMS.C_PROVISIONS, -hungerSated);

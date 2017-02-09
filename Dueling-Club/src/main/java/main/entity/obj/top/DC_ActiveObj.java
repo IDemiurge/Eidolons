@@ -134,11 +134,13 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public static void waitForAnimation(PhaseAnimation anim) {
-        if (anim != null)
-            if (anim.isStarted())
+        if (anim != null) {
+            if (anim.isStarted()) {
                 while (!anim.isFinished()) { // TODO limit?
                     WaitMaster.WAIT(80);
                 }
+            }
+        }
     }
 
     @Override
@@ -170,12 +172,14 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     protected void initTargetingMode() {
-        if (targetingMode == null)
+        if (targetingMode == null) {
             targetingMode = new EnumMaster<TARGETING_MODE>().retrieveEnumConst(
                     TARGETING_MODE.class, getType().getProperty(G_PROPS.TARGETING_MODE));
+        }
 
-        if (targetingMode == null)
+        if (targetingMode == null) {
             targetingMode = TARGETING_MODE.MULTI;
+        }
         ActivesConstructor.constructActive(targetingMode, this);
         if (targeting == null) {
             main.system.auxiliary.LogMaster.log(LOG_CHANNELS.CONSTRUCTION_DEBUG,
@@ -218,13 +222,16 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
                 || WatchRule.checkWatched(getOwnerObj(), target);
 
         if (!watch) {
-            if (pending)
+            if (pending) {
                 return false;
+            }
             return canBeActivatedAsInstant();
         }
-        if (!pending)
-            if (canBeActivatedAsInstant())
+        if (!pending) {
+            if (canBeActivatedAsInstant()) {
                 return true;
+            }
+        }
 
         return canBeActivatedAsExtraAttack(null);
 
@@ -260,12 +267,13 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     private void setExtraAttackMode(Boolean instant_counter_opportunity, boolean b) {
-        if (instant_counter_opportunity == null)
+        if (instant_counter_opportunity == null) {
             setAttackOfOpportunityMode(b);
-        else if (instant_counter_opportunity)
+        } else if (instant_counter_opportunity) {
             setInstantMode(b);
-        else
+        } else {
             setCounterMode(b);
+        }
 
     }
 
@@ -295,13 +303,14 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             highlight();
         }
         boolean result = true;
-        if (!transmit)
+        if (!transmit) {
             result = activate(ref);
-        else if (targeting == null) {
+        } else if (targeting == null) {
             try {
                 result = activate(ref);
-                if (!isCancelled())
+                if (!isCancelled()) {
                     communicate(ref);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -310,8 +319,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
                 if (selectTarget(ref)) {
                     try {
                         result = activate(ref);
-                        if (!BooleanMaster.isTrue(isCancelled()))
+                        if (!BooleanMaster.isTrue(isCancelled())) {
                             communicate(ref);
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -323,25 +333,31 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         }
 
         getGame().getManager().applyActionRules(this);
-        if (!refreshed)
+        if (!refreshed) {
             refreshVisuals();
-        if (!isTriggered())
+        }
+        if (!isTriggered()) {
             actionComplete();
+        }
         if (isAttackAny()) {
             Obj targetObj = ref.getTargetObj();
-            if (targetObj == null)
-                if (lastSubaction != null)
+            if (targetObj == null) {
+                if (lastSubaction != null) {
                     targetObj = lastSubaction.getRef().getTargetObj();
-            if (targetObj == null)
+                }
+            }
+            if (targetObj == null) {
                 game.getLogManager().doneLogEntryNode(ENTRY_TYPE.ATTACK, ownerObj.getNameIfKnown());
-            else
+            } else {
                 game.getLogManager().doneLogEntryNode(ENTRY_TYPE.ATTACK, ownerObj.getNameIfKnown(),
                         // lastSubaction.getName()
                         targetObj.getNameIfKnown());
+            }
         } else {
             game.getLogManager().doneLogEntryNode();
-            if (getEntry() != null)
+            if (getEntry() != null) {
                 getEntry().setLinkedAnimation(getAnimation());
+            }
         }
         return result;
     }
@@ -351,8 +367,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     private void refreshVisuals(boolean allowCameraPanning) {
-        if (getAnimation() != null)
+        if (getAnimation() != null) {
             getGame().getAnimationManager().updatePoints();
+        }
         game.getManager().refresh(ownerObj.getOwner().isMe());
     }
 
@@ -396,8 +413,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         setCostAnimAdded(false);
         initTimeCost();
 
-        if (!isConstructed())
+        if (!isConstructed()) {
             construct();
+        }
 
         if (targeting instanceof AutoTargeting) {
             selectTarget(ref);
@@ -427,23 +445,25 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             entry = game.getLogManager().newLogEntryNode(entryType, getOwnerObj(), this);
         }
 
-        if (logAction)
+        if (logAction) {
             game.getLogManager().log(">> " + string);
-        else if (VisionManager.checkVisible(ownerObj) && !isAttackAny()) {
+        } else if (VisionManager.checkVisible(ownerObj) && !isAttackAny()) {
             String text = " performs an action... ";
             game.getLogManager().log(">> " + ownerObj.getNameIfKnown() + text);
         }
 
         if (isCancellable()) {
             result = activated(ref, result, string, logAction);
-            if (!result)
+            if (!result) {
                 getGame().getManager().setActivatingAction(null);
+            }
         } else if (!checkExtraAttacksDoNotInterrupt(entryType)) {
             // TODO NEW ENTRY AOO?
             payCosts();
             result = false;
-        } else
+        } else {
             result = activated(ref, result, string, logAction);
+        }
         if (isCancellable()) {
             result = checkExtraAttacksDoNotInterrupt(entryType);
         }
@@ -459,8 +479,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isCancelDefault() {
-        if (isAttack())
+        if (isAttack()) {
             return true;
+        }
         return checkBool(STD_BOOLS.CANCEL_FOR_FALSE);
     }
 
@@ -476,7 +497,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         initCosts(true);// for animation phase
         getGame().getAnimationManager().newAnimation(getAnimation());
         if (getParentAction() != null) // TODO ?
+        {
             getParentAction().setAnimation(animation);
+        }
         if (isRangedTouch()) {
             int missChance = ConcealmentRule.getMissChance(this);
             boolean missed = ConcealmentRule.checkMissed(this);
@@ -493,7 +516,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
                                     + StringMaster.wrapInParenthesis("" + missChance + "%"));
                 }
 
-            } else
+            } else {
                 game.getLogManager().log(
                         StringMaster.getMessagePrefix(true, ownerObj.getOwner().isMe())
                                 + StringMaster.getPossessive(ownerObj.getName())
@@ -502,6 +525,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
                                 + " has missed due to Concealment"
                                 + StringMaster.wrapInParenthesis(""
                                 + ConcealmentRule.getMissChance(this) + "%"));
+            }
             if (missed) {
                 animation.addPhase(new AnimPhase(PHASE_TYPE.MISSED, missChance, concealment));
                 result = false;
@@ -514,22 +538,29 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             result = resolve();
             // if (result || (!checkBool(STD_BOOLS.CANCELLABLE) && mode
             // !=TARGETING_MODE.MULTI))
-            if (!result)
-                if (isCancelDefault())
+            if (!result) {
+                if (isCancelDefault()) {
                     cancelled = true;
+                }
+            }
             if (cancelled != null) {
-                if (cancelled)
+                if (cancelled) {
                     timeCost = 0;
-                else
+                } else {
                     payCosts();
-            } else
+                }
+            } else {
                 payCosts();
+            }
         }
-        if (!triggered)
-            if (!game.fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, ref)))
+        if (!triggered) {
+            if (!game.fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, ref))) {
                 result = false;
-        if (!BooleanMaster.isTrue(cancelled))
+            }
+        }
+        if (!BooleanMaster.isTrue(cancelled)) {
             refreshVisuals();
+        }
         refreshed = true;
         return result;
     }
@@ -541,8 +572,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     private void initTimeCost() {
-        if (costs.getCost(PARAMS.C_N_OF_ACTIONS) == null)
+        if (costs.getCost(PARAMS.C_N_OF_ACTIONS) == null) {
             return;
+        }
         timeCost = costs.getCost(PARAMS.C_N_OF_ACTIONS).getPayment().getAmountFormula().getInt(ref)
 
                 * ownerObj.getIntParam(PARAMS.INITIATIVE_MODIFIER);
@@ -562,11 +594,13 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         Boolean endTurn = getGame().getRules().getTimeRule().actionComplete(this, timeCost);
         if (!endTurn) {
             game.getManager().reset();
-            if (ChargeRule.checkRetainUnitTurn(this))
+            if (ChargeRule.checkRetainUnitTurn(this)) {
                 endTurn = null;
+            }
         }
-        if (endTurn != null)
+        if (endTurn != null) {
             endTurn = !endTurn;
+        }
         waitForAnimation(getAnimation());
         getGame().getManager().unitActionCompleted(this, endTurn);
 
@@ -574,8 +608,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     private void checkPendingAttacksOfOpportunity() {
         for (DC_ActiveObj attack : new LinkedList<>(getPendingAttacksOpportunity())) {
-            if (!AttackOfOpportunityRule.checkPendingAttackProceeds(getOwnerObj(), attack))
+            if (!AttackOfOpportunityRule.checkPendingAttackProceeds(getOwnerObj(), attack)) {
                 continue;
+            }
             getPendingAttacksOpportunity().remove(attack);
             Ref REF = Ref.getCopy(attack.getRef());
             REF.setTarget(getOwnerObj().getId());
@@ -585,8 +620,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     protected boolean checkExtraAttacksDoNotInterrupt(ENTRY_TYPE entryType) {
-        if (RuleMaster.checkRuleGroupIsOn(RULE_GROUP.EXTRA_ATTACKS))
+        if (RuleMaster.checkRuleGroupIsOn(RULE_GROUP.EXTRA_ATTACKS)) {
             return !ExtraAttacksRule.checkInterrupted(this, entryType);
+        }
         return true;
     }
 
@@ -598,35 +634,44 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         boolean result = true;
         if (isContinuous()) // don't remove unless a shot in the leg is
             // scheduled ... performance is fine!
+        {
             setConstructed(false);
-        if (!isConstructed())
+        }
+        if (!isConstructed()) {
             construct();
+        }
         GuiEventManager.trigger(GuiEventType.ACTION_BEING_RESOLVED,
          new EventCallbackParam(this));
-        if (animation != null)
-            if (!(animation instanceof AttackAnimation))
+        if (animation != null) {
+            if (!(animation instanceof AttackAnimation)) {
                 animation.addPhase(new AnimPhase(PHASE_TYPE.ACTION_RESOLVES, this));
+            }
+        }
         animate();
         if (abilities != null) {
             result = getAbilities().activate(ref);
         } else
             // for Multi-targeting when single-wrapped Abilities cannot be used
+        {
             for (Active active : actives) {
                 try {
                     result &= active.activate(ref);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if (!result)
+                if (!result) {
                     break;// TODO if cancelled!
-                if (!game.isStarted())
+                }
+                if (!game.isStarted()) {
                     continue;
+                }
                 // cancelled = null; TODO ???
                 if (actives.size() > 1) {
                     game.getManager().reset();
                     refreshVisuals(false);
                 }
             }
+        }
         GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, new EventCallbackParam(this));
 
         SoundMaster.playEffectSound(SOUNDS.IMPACT, this); //TODO queue on anim!
@@ -658,8 +703,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public void animate() {
-        if (checkAnimationOmitted())
+        if (checkAnimationOmitted()) {
             return;
+        }
 
         animate(this.ref);
     }
@@ -667,8 +713,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     private boolean checkAnimationOmitted() {
 
         for (String exception : ANIMATION_EXCEPTIONS) {
-            if (getName().equalsIgnoreCase(exception))
+            if (getName().equalsIgnoreCase(exception)) {
                 return true;
+            }
         }
         return false;
     }
@@ -685,8 +732,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         }
         if (energyType == null) {
             energyType = DC_ContentManager.getDamageForAspect(getAspect());
-            if (energyType == null)
+            if (energyType == null) {
                 return DAMAGE_TYPE.MAGICAL;
+            }
         }
         return energyType;
     }
@@ -700,8 +748,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public void payCosts() {
-        if (!isCostAnimAdded())
+        if (!isCostAnimAdded()) {
             addCostAnim();
+        }
 
         if (isFree()) {
 
@@ -717,8 +766,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     protected void communicate(Ref ref) {
-        if (!getGame().isOffline())
+        if (!getGame().isOffline()) {
             getGame().getCommunicator().transmitActivateCommand(this, ref);
+        }
     }
 
     @Override
@@ -762,29 +812,34 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     @Override
     public void toBase() {
-        for (DC_ActiveObj subaction : getSubActions())
+        for (DC_ActiveObj subaction : getSubActions()) {
             subaction.toBase();
+        }
         super.toBase();
-        if (getOwnerObj() == null)
+        if (getOwnerObj() == null) {
             return;
-        if (getOwnerObj().isAiControlled())
+        }
+        if (getOwnerObj().isAiControlled()) {
             resetTargetingCache();
+        }
         addCostMods();
         this.canActivate = null;
 
         initRange();
 
-        if (!StringMaster.isEmpty(getProperty(G_PROPS.PASSIVES)))
+        if (!StringMaster.isEmpty(getProperty(G_PROPS.PASSIVES))) {
             try {
                 AbilityConstructor.constructPassives(this);
             } catch (Exception e) {
             }
+        }
         // super.activatePassives(); now upon resolve()!!!
     }
 
     private void initRange() {
-        if (!isStandardAttack() && getActionType() != ACTION_TYPE.SPECIAL_ATTACK)
+        if (!isStandardAttack() && getActionType() != ACTION_TYPE.SPECIAL_ATTACK) {
             return;
+        }
         Obj weapon = ref.getObj(KEYS.RANGED);
         if (!isRanged()) {
             weapon = null;
@@ -796,17 +851,20 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         } else {
             // Ref Not Empty(ranged,AMMO,);
         }
-        if (weapon != null)
+        if (weapon != null) {
             modifyParameter(PARAMS.RANGE, weapon.getIntParam(PARAMS.RANGE));
+        }
     }
 
     protected void addCostMods() {
-        if (getActionGroup() == ACTION_TYPE_GROUPS.MODE)
+        if (getActionGroup() == ACTION_TYPE_GROUPS.MODE) {
             return;
+        }
 
         // addCustomMods(); deprecated
-        if (getActionGroup() == ACTION_TYPE_GROUPS.ITEM)
+        if (getActionGroup() == ACTION_TYPE_GROUPS.ITEM) {
             return;
+        }
         applyPenalties();
 
     }
@@ -881,8 +939,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     protected void addCustomMods() {
-        if (ownerObj.getCustomParamMap() == null)
+        if (ownerObj.getCustomParamMap() == null) {
             return;
+        }
         for (PARAMETER param : DC_ContentManager.getCostParams()) {
             addCustomMod(
                     main.content.CONTENT_CONSTS.CUSTOM_VALUE_TEMPLATE.COST_REDUCTION_ACTIVE_NAME,
@@ -897,15 +956,17 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
         String value_ref = CustomValueManager.getCustomValueName(template, param.getName(), string);
         int amount = ownerObj.getCounter(value_ref);
-        if (amount == 0)
+        if (amount == 0) {
             return;
-        if (percent)
+        }
+        if (percent) {
             modifyParamByPercent(param, amount, true);
-        else {
-            if (amount > 0)
+        } else {
+            if (amount > 0) {
                 modifyParameter(param, amount);
-            else
+            } else {
                 modifyParameter(param, amount, 1);
+            }
         }
     }
 
@@ -915,11 +976,12 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean canBeActivated(Ref ref, boolean first) {
-        if (!first || broken)
+        if (!first || broken) {
             if (canActivate != null) {
 
                 return canActivate;
             }
+        }
         if (checkStatus(STATUS.BLOCKED)) {
             return false;
         }
@@ -931,8 +993,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             result = costs.canBePaid(ref);
             broken = false;
         } catch (Exception e) {
-            if (!broken)
+            if (!broken) {
                 e.printStackTrace();
+            }
             broken = true;
         } finally {
             this.setCanActivate(result);
@@ -949,9 +1012,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public void initCosts(boolean anim) {
-        if (isFree())
+        if (isFree()) {
             costs = new Costs(new LinkedList<Cost>());
-        else {
+        } else {
             try {
                 costs = DC_CostsFactory.getCostsForSpell(this, isSpell());
             } catch (Exception e) {
@@ -961,9 +1024,10 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             Cost cp_cost = costs.getCost(PARAMS.C_N_OF_COUNTERS);
             Cost ap_cost = costs.getCost(PARAMS.C_N_OF_ACTIONS);
             boolean noCounterCost = cp_cost == null;
-            if (!noCounterCost)
+            if (!noCounterCost) {
                 noCounterCost = cp_cost.getPayment().getAmountFormula().toString().isEmpty()
                         || cp_cost.getPayment().getAmountFormula().toString().equals("0");
+            }
             if (noCounterCost) { // if not specifically set...
                 if (isExtraAttackMode()) {
                     cp_cost = new CostImpl(new Payment(PARAMS.C_N_OF_COUNTERS, ap_cost.getPayment()
@@ -974,8 +1038,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
                 }
             } else {
-                if (!(isExtraAttackMode()))
+                if (!(isExtraAttackMode())) {
                     costs.getCosts().remove(cp_cost);
+                }
             }
             if (isAttackOfOpportunityMode()) { // TODO only if watched? better
                 // here perhaps!
@@ -988,8 +1053,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
         }
         costs.setActive(this);
-        if (!isInstantMode() || isCounterMode())
+        if (!isInstantMode() || isCounterMode()) {
             setCanActivate(costs.canBePaid(ref));
+        }
 
     }
 
@@ -998,9 +1064,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     private void addCostAnim() {
-        if (getAnimation() != null)
-            if (!isSubActionOnly())
+        if (getAnimation() != null) {
+            if (!isSubActionOnly()) {
                 getAnimation().addStaticPhase(new AnimPhase(PHASE_TYPE.COSTS_PAID, costs));
+            }
+        }
         setCostAnimAdded(true);
     }
 
@@ -1046,8 +1114,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         if (cooldown <= 0) {
             setParam(PARAMS.C_COOLDOWN, cooldown); // modify by [cooldown]?
         } else {
-            if (getIntParam(PARAMS.C_COOLDOWN) > 0)
+            if (getIntParam(PARAMS.C_COOLDOWN) > 0) {
                 modifyParameter(PARAMS.C_COOLDOWN, -1, 0);
+            }
         }
     }
 
@@ -1119,10 +1188,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     @Override
     protected void addDynamicValues() {
         Integer cooldown = getIntParam(PARAMS.COOLDOWN);
-        if (cooldown < 0)
+        if (cooldown < 0) {
             setParam(PARAMS.C_COOLDOWN, cooldown);
-        else
+        } else {
             setParam(PARAMS.C_COOLDOWN, 0);
+        }
         // TODO adjust costs based on hero's skills
 
     }
@@ -1209,18 +1279,20 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             setTooltip("You do not control this unit!");
             return true;
         }
-        if (getGame().getManager().getActiveObj() != null)
+        if (getGame().getManager().getActiveObj() != null) {
             if (!getGame().getManager().getActiveObj().isMine()) {
                 setTooltip("Wait for the enemy's turn!");
                 return true;
             }
-        if (!getGame().isOffline())
+        }
+        if (!getGame().isOffline()) {
             if (getGame().isHost()) {
                 if (getGame().getConnector().isWaiting()) {
                     setTooltip("Wait for the other players to join!");
                     return true;
                 }
             }
+        }
         return false;
     }
 
@@ -1239,11 +1311,13 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     private boolean canBeManuallyActivated() {
-        if (isBlocked())
+        if (isBlocked()) {
             return false;
+        }
         Boolean checkSubActionMode = checkSubActionModeActivation();
-        if (checkSubActionMode != null)
+        if (checkSubActionMode != null) {
             return checkSubActionMode;
+        }
 
         return canBeActivated(ref, true);
     }
@@ -1251,18 +1325,21 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     private Boolean checkSubActionModeActivation() {
         // TODO triggered activation?
         DC_UnitAction action = getModeAction();
-        if (action == null)
+        if (action == null) {
             return null;
+        }
         return action.canBeActivated(ref);
 
     }
 
     public DC_UnitAction getModeAction() {
         String mode = ownerObj.getActionMode(this);
-        if (mode == null)
+        if (mode == null) {
             return null;
-        if (isAttack())
+        }
+        if (isAttack()) {
             return (DC_UnitAction) game.getActionManager().getAction(mode, ownerObj);
+        }
         return (DC_UnitAction) game.getActionManager().getAction(mode + " " + getName(), ownerObj);
     }
 
@@ -1291,8 +1368,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public Targeting getTargeting() {
-        if (!constructed)
+        if (!constructed) {
             construct();
+        }
         return targeting;
     }
 
@@ -1302,10 +1380,13 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public boolean isFree() {
 
-        if (!free)
-            if (!getOwnerObj().isAiControlled())
-                if (game.isDebugMode())
+        if (!free) {
+            if (!getOwnerObj().isAiControlled()) {
+                if (game.isDebugMode()) {
                     return getGame().getTestMaster().isActionFree(getName());
+                }
+            }
+        }
         return free;
     }
 
@@ -1346,8 +1427,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public Boolean getCanActivate() {
-        if (canActivate == null)
+        if (canActivate == null) {
             canActivate = canBeManuallyActivated();
+        }
 
         return canActivate;
     }
@@ -1383,21 +1465,25 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isThrow() {
-        if (getName().contains(ACTION_TAGS.THROW + ""))
+        if (getName().contains(ACTION_TAGS.THROW + "")) {
             return true;
+        }
         if (this instanceof DC_ItemActiveObj) {
             DC_ItemActiveObj itemActiveObj = (DC_ItemActiveObj) this;
-            if (!itemActiveObj.getItem().isAmmo())
-                if (itemActiveObj.getItem().getWrappedWeapon() != null)
+            if (!itemActiveObj.getItem().isAmmo()) {
+                if (itemActiveObj.getItem().getWrappedWeapon() != null) {
                     return true;
+                }
+            }
         }
         return checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.THROW + "")
                 || checkProperty(G_PROPS.GROUP, ACTION_TAGS.THROW + "");
     }
 
     public boolean isRanged() {
-        if (getActionGroup() != ACTION_TYPE_GROUPS.ATTACK)
+        if (getActionGroup() != ACTION_TYPE_GROUPS.ATTACK) {
             return false;
+        }
         return (checkProperty(G_PROPS.GROUP, ACTION_TAGS.RANGED + "") || checkProperty(
                 G_PROPS.ACTION_TAGS, ACTION_TAGS.RANGED + ""));
         // return false;
@@ -1405,20 +1491,24 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public ACTION_TYPE_GROUPS getActionGroup() {
-        if (actionTypeGroup == null)
+        if (actionTypeGroup == null) {
             actionTypeGroup = initActionTypeGroup();
+        }
         return actionTypeGroup;
     }
 
     private ACTION_TYPE_GROUPS initActionTypeGroup() {
-        if (isStandardAttack())
+        if (isStandardAttack()) {
             return ACTION_TYPE_GROUPS.ATTACK;
-        if (StringMaster.isEmpty(getProperty(G_PROPS.ACTION_TYPE)))
+        }
+        if (StringMaster.isEmpty(getProperty(G_PROPS.ACTION_TYPE))) {
             return ACTION_TYPE_GROUPS.SPELL;
+        }
         ACTION_TYPE type = new EnumMaster<ACTION_TYPE>().retrieveEnumConst(ACTION_TYPE.class,
                 getProperty(G_PROPS.ACTION_TYPE));
-        if (type == null)
+        if (type == null) {
             return ACTION_TYPE_GROUPS.SPELL;
+        }
         switch (type) {
             case HIDDEN:
                 return ACTION_TYPE_GROUPS.HIDDEN;
@@ -1444,8 +1534,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean selectTarget(Ref ref) {
-        if (isForcePresetTarget())
+        if (isForcePresetTarget()) {
             return true;
+        }
         if (getTargeting() == null) {
             construct();
             if (getTargeting() == null) {
@@ -1460,12 +1551,14 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
                 ref.setTarget(id);
                 result = true;
             }
-        } else
+        } else {
             result = getTargeting().select(ref);
-        if (result)
+        }
+        if (result) {
             setCancelled(null);
-        else
+        } else {
             setCancelled(true);
+        }
 
         return result;
 
@@ -1517,8 +1610,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public boolean canTargetAny() {
 
-        if (!(targeting instanceof SelectiveTargeting))
+        if (!(targeting instanceof SelectiveTargeting)) {
             return true;
+        }
         Map<FACING_DIRECTION, Boolean> map = getTargetingAnyCache().get(
                 getOwnerObj().getCoordinates());
         if (map == null) {
@@ -1527,8 +1621,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         }
 
         Boolean canTargetAny = map.get(getOwnerObj().getFacing());
-        if (canTargetAny == null)
+        if (canTargetAny == null) {
             canTargetAny = !targeting.getFilter().getObjects(ref).isEmpty();
+        }
         map.put(getOwnerObj().getFacing(), canTargetAny);
         return canTargetAny;
     }
@@ -1555,10 +1650,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             if (getActives().size() > 1) {
                 return true;
             }
-            if (!getActives().isEmpty())
+            if (!getActives().isEmpty()) {
                 if (getActives().get(0).getAbilities().getAbils().size() > 1) {
                     return true;
                 }
+            }
             return false;
         }
         Ref REF = ref.getCopy();
@@ -1567,12 +1663,16 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             // TODO ??
         }
         if (result != null) {
-            if (result)
-                if (!targeting.getFilter().getConditions().check(REF))
+            if (result) {
+                if (!targeting.getFilter().getConditions().check(REF)) {
                     return false;
-            if (!result)
-                if (targeting.getFilter().getConditions().check(REF))
+                }
+            }
+            if (!result) {
+                if (targeting.getFilter().getConditions().check(REF)) {
                     return true;
+                }
+            }
         }
         result = targeting.getFilter().getConditions().check(REF);
         map2.put(id, result);
@@ -1589,17 +1689,19 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public List<DC_ActiveObj> getSubActions() {
-        if (subActions == null)
+        if (subActions == null) {
             subActions = new LinkedList<>();
+        }
         return subActions;
     }
 
     public void setSubActions(List<DC_ActiveObj> subActions) {
         this.subActions = subActions;
-        if (subActions != null)
+        if (subActions != null) {
             for (DC_ActiveObj a : subActions) {
                 a.setParentAction(this);
             }
+        }
     }
 
     public DC_ActiveObj getParentAction() {
@@ -1618,10 +1720,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public void setForcePresetTarget(boolean b) {
         forcePresetTarget = b;
-        if (actives != null)
+        if (actives != null) {
             for (ActiveObj a : actives) {
                 a.setForcePresetTarget(b);
             }
+        }
     }
 
     public void setSpellLogic(AI_LOGIC spellLogic) {
@@ -1630,8 +1733,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     @Override
     public boolean isZone() {
-        if (zone != null)
+        if (zone != null) {
             return zone;
+        }
         if (EffectMaster.check(getAbilities(), ZoneEffect.class)) {
             zone = true;
             return true;
@@ -1646,8 +1750,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     @Override
     public boolean isMissile() {
-        if (missile != null)
+        if (missile != null) {
             return missile;
+        }
         if (checkProperty(G_PROPS.SPELL_TAGS, SPELL_TAGS.MISSILE.toString())) {
             missile = true;
             return true;
@@ -1661,9 +1766,10 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public AI_LOGIC getAiLogic() {
-        if (aiLogic == null)
+        if (aiLogic == null) {
             aiLogic = new EnumMaster<AI_LOGIC>().retrieveEnumConst(AI_LOGIC.class,
                     getProperty(PROPS.AI_LOGIC));
+        }
         return aiLogic;
     }
 
@@ -1676,8 +1782,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isMelee() {
-        if (getIntParam(PARAMS.RANGE) > 1)
+        if (getIntParam(PARAMS.RANGE) > 1) {
             return false;
+        }
         return !isRanged();
     }
 
@@ -1700,20 +1807,23 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public Map<Coordinates, Map<FACING_DIRECTION, Boolean>> getTargetingAnyCache() {
-        if (targetingAnyCache == null)
+        if (targetingAnyCache == null) {
             targetingAnyCache = new HashMap<>();
+        }
         return targetingAnyCache;
     }
 
     public Map<Coordinates, Map<FACING_DIRECTION, Map<Integer, Boolean>>> getTargetingCache() {
-        if (targetingCache == null)
+        if (targetingCache == null) {
             targetingCache = new HashMap<>();
+        }
         return targetingCache;
     }
 
     public String getActionMode() {
-        if (getOwnerObj() == null)
+        if (getOwnerObj() == null) {
             return null;
+        }
         return getOwnerObj().getActionMode(this);
     }
 
@@ -1735,8 +1845,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     private List<DC_ActiveObj> getPendingAttacksOpportunity() {
-        if (pendingAttacksOpportunity == null)
+        if (pendingAttacksOpportunity == null) {
             pendingAttacksOpportunity = new LinkedList<>();
+        }
         return pendingAttacksOpportunity;
     }
 
@@ -1745,16 +1856,18 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public Object getAnimationKey() {
-        if (animationKey != null)
+        if (animationKey != null) {
             return animationKey;
+        }
         String id = getName();
         // if (isStandardAttack()) {
         // id = getParentAction().getName();
         // }
-        if (getRef().getTargetObj() == null)
+        if (getRef().getTargetObj() == null) {
             animationKey = id + " by " + getRef().getSourceObj().getName();
-        else
+        } else {
             animationKey = id + " on " + getRef().getTargetObj().getName();
+        }
         return animationKey;
     }
 
@@ -1775,8 +1888,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public DC_WeaponObj getActiveWeapon() {
-        if (isRanged())
-            return (DC_WeaponObj)  getRef().getObj(KEYS.RANGED);
+        if (isRanged()) {
+            return (DC_WeaponObj) getRef().getObj(KEYS.RANGED);
+        }
         return (DC_WeaponObj)  getRef().getObj( isOffhand()? KEYS.OFFHAND: KEYS.WEAPON);
     }
 

@@ -30,10 +30,11 @@ public class DC_PagedBuffPanel extends G_PagePanel<BuffObj> {
     protected G_Component createPageComponent(List<BuffObj> list) {
         List<SmallItem> compList = new LinkedList<>();
         for (BuffObj buff : list) {
-            if (buff == null)
+            if (buff == null) {
                 compList.add(new SmallItem());
-            else
+            } else {
                 compList.add(new SmallItem(buff));
+            }
         }
         BuffPage buffPage = new BuffPage(compList, getItemSize(), PAGE_SIZE);
         buffPage.getList().setCellRenderer(buffPage);
@@ -57,15 +58,18 @@ public class DC_PagedBuffPanel extends G_PagePanel<BuffObj> {
 
     @Override
     protected List<List<BuffObj>> getPageData() {
-        if (obj == null)
+        if (obj == null) {
             return new LinkedList<>();
+        }
         DequeImpl<BuffObj> buffs = obj.getBuffs();
-        if (buffs == null)
+        if (buffs == null) {
             return new LinkedList<>();
+        }
         List<BuffObj> list = new LinkedList<>();
         for (BuffObj buff : buffs) {
-            if (buff.isVisible())
+            if (buff.isVisible()) {
                 list.add(buff);
+            }
         }
         Collections.sort(list, getComparator());
         return splitList(list);
@@ -90,28 +94,34 @@ public class DC_PagedBuffPanel extends G_PagePanel<BuffObj> {
                 // check group as well
 
                 if (o1.isPermanent()) {
-                    if (!o2.isPermanent())
+                    if (!o2.isPermanent()) {
                         return 1;
+                    }
 
                 }
                 if (o2.isPermanent()) {
-                    if (!o1.isPermanent())
+                    if (!o1.isPermanent()) {
                         return -1;
+                    }
                 }
 
                 if (o1.getIntParam(G_PARAMS.C_DURATION) < o2
-                        .getIntParam(G_PARAMS.C_DURATION))
+                        .getIntParam(G_PARAMS.C_DURATION)) {
                     return 1;
+                }
                 if (o1.getIntParam(G_PARAMS.C_DURATION) > o2
-                        .getIntParam(G_PARAMS.C_DURATION))
+                        .getIntParam(G_PARAMS.C_DURATION)) {
                     return -1;
+                }
 
                 if (o1.getIntParam(G_PARAMS.DURATION) < o2
-                        .getIntParam(G_PARAMS.DURATION))
+                        .getIntParam(G_PARAMS.DURATION)) {
                     return 1;
+                }
                 if (o1.getIntParam(G_PARAMS.DURATION) > o2
-                        .getIntParam(G_PARAMS.DURATION))
+                        .getIntParam(G_PARAMS.DURATION)) {
                     return -1;
+                }
 
                 return 0;
             }

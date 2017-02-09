@@ -37,8 +37,9 @@ public abstract class TargetingImpl implements Targeting
 
     @Override
     public Filter<Obj> getFilter() {
-        if (filter == null)
+        if (filter == null) {
             filter = new Filter<Obj>(getRef(), new Conditions());
+        }
         return filter;
     }
 
@@ -47,10 +48,11 @@ public abstract class TargetingImpl implements Targeting
     }
 
     public void setConditions(Conditions conditions) {
-        if (filter == null)
+        if (filter == null) {
             filter = new Filter<Obj>(getRef(), conditions);
-        else
+        } else {
             filter.setConditions(conditions);
+        }
     }
 
     public boolean isModsAdded() {

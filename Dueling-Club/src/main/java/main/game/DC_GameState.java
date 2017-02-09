@@ -61,10 +61,11 @@ public class DC_GameState extends MicroGameState {
 
     @Override
     public void gameStarted(boolean first) {
-        if (first)
+        if (first) {
             this.setRound(DEFAULT_ROUND);
-        else
+        } else {
             this.setRound(DEFAULT_ROUND - 1);
+        }
 
     }
 
@@ -81,8 +82,9 @@ public class DC_GameState extends MicroGameState {
             main.system.auxiliary.LogMaster.log(LogMaster.TRIGGER_DEBUG, triggers.toString());
             main.system.auxiliary.LogMaster.log(LogMaster.EFFECT_DEBUG, effects.toString());
 
-            if (getGame().getGameMode() == GAME_MODES.ARENA)
+            if (getGame().getGameMode() == GAME_MODES.ARENA) {
                 getGame().getArenaManager().newRound();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -97,8 +99,9 @@ public class DC_GameState extends MicroGameState {
                 try {
                     // DialogMaster.inform("Battlefield failed to construct...");
                     DialogMaster.error("Failed to initialize interface!");
-                    if (Launcher.getMainManager() != null)
+                    if (Launcher.getMainManager() != null) {
                         Launcher.getMainManager().exitToMainMenu();
+                    }
                     return;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -136,8 +139,9 @@ public class DC_GameState extends MicroGameState {
     }
 
     public void checkContinuousRules() {
-        for (DC_HeroObj unit : getGame().getUnits())
+        for (DC_HeroObj unit : getGame().getUnits()) {
             getGame().getRules().applyContinuousRules(unit);
+        }
 
     }
 
@@ -146,28 +150,33 @@ public class DC_GameState extends MicroGameState {
         Chronos.mark("RESET_ALL");
 
         super.resetAll();
-        if (game.isStarted())
+        if (game.isStarted()) {
             try {
                 checkCellBuffs();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
         Chronos.logTimeElapsedForMark("RESET_ALL");
 
     }
 
     private void checkCellBuffs() {
         for (DC_UnitObj unit : getGame().getUnits()) {
-            if (unit.isDead())
+            if (unit.isDead()) {
                 continue;
+            }
             Obj cell = game.getCellByCoordinate(unit.getCoordinates());
-            if (cell == null)
+            if (cell == null) {
                 continue;
-            if (cell.getBuffs() == null)
+            }
+            if (cell.getBuffs() == null) {
                 continue;
+            }
             for (BuffObj buff : game.getCellByCoordinate(unit.getCoordinates()).getBuffs()) {
-                if (unit.hasBuff(buff.getName()))
+                if (unit.hasBuff(buff.getName())) {
                     continue;
+                }
                 if (buff.isAppliedThrough()) {
                     Condition retainCondition = new PositionCondition(KEYS.SOURCE.toString(), cell);
                     getGame().getManager().copyBuff(buff, unit, retainCondition);
@@ -202,12 +211,13 @@ public class DC_GameState extends MicroGameState {
 
     private void applyEndOfTurnRules() {
 
-        for (RoundRule rule : getGame().getRules().getRoundRules())
+        for (RoundRule rule : getGame().getRules().getRoundRules()) {
             try {
                 rule.newTurn();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
 
         for (DC_CounterRule rule : getCounterRules()) {
             try {
@@ -220,35 +230,40 @@ public class DC_GameState extends MicroGameState {
 
     @Override
     public void checkCounterRules() {
-        if (getCounterRules() != null)
+        if (getCounterRules() != null) {
             for (DC_HeroObj unit : getGame().getUnits()) {
                 for (DC_CounterRule rule : getCounterRules()) {
                     // rule.newTurn();
                     rule.check((unit));
                 }
             }
+        }
     }
 
     private void applyEndOfTurnDamage() {
-        if (getDamageRules() != null)
+        if (getDamageRules() != null) {
             for (DC_HeroObj unit : getGame().getUnits()) {
-                for (DamageCounterRule rule : getDamageRules())
+                for (DamageCounterRule rule : getDamageRules()) {
                     rule.apply(unit);
+                }
             }
+        }
 
     }
 
     public void resetUnitObjects() {
         for (DC_HeroObj unit : getGame().getUnits()) {
-            if (!unit.isDead())
+            if (!unit.isDead()) {
                 unit.resetObjects();
+            }
         }
     }
 
     public void resetRawValues() {
         for (DC_HeroObj unit : getGame().getUnits()) {
-            if (!unit.isDead())
+            if (!unit.isDead()) {
                 unit.resetRawValues();
+            }
         }
     }
 
@@ -256,14 +271,16 @@ public class DC_GameState extends MicroGameState {
     @Override
     public void allToBase() {
         for (Obj obj : objMap.values()) {
-            if (Arrays.asList(toBaseIgnoredTypes).contains(obj.getOBJ_TYPE_ENUM()))
+            if (Arrays.asList(toBaseIgnoredTypes).contains(obj.getOBJ_TYPE_ENUM())) {
                 continue;
-            if (!obj.isDead())
+            }
+            if (!obj.isDead()) {
                 try {
                     obj.toBase();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
         }
 
         // TODO Auto-generated method stub
@@ -278,19 +295,21 @@ public class DC_GameState extends MicroGameState {
 
     public void afterEffects() {
         for (Obj obj : getGame().getUnits()) {
-            if (!obj.isDead())
+            if (!obj.isDead()) {
                 try {
                     obj.afterEffects();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
         }
-        if (PartyManager.getParty() != null)
+        if (PartyManager.getParty() != null) {
             try {
                 PartyManager.getParty().afterEffects();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
         for (Obj obj : PartyManager.getParties()) {
             try {
                 obj.afterEffects();
@@ -306,8 +325,9 @@ public class DC_GameState extends MicroGameState {
     }
 
     public void addObject(Obj obj) {
-        if (obj == null)
+        if (obj == null) {
             return;
+        }
         super.addObject(obj);
         if (obj instanceof DC_HeroObj) {
             getGame().checkAddUnit((DC_HeroObj) obj);
@@ -317,8 +337,9 @@ public class DC_GameState extends MicroGameState {
     @Override
     public void removeObject(Integer id) {
         Obj obj = getObjectById(id);
-        if (obj == null)
+        if (obj == null) {
             return;
+        }
         if (obj instanceof DC_HeroObj) {
             getGame().getUnits().remove(obj);
 
@@ -326,26 +347,32 @@ public class DC_GameState extends MicroGameState {
 
         }
         Map<Integer, Obj> map = getObjMaps().get(obj.getOBJ_TYPE_ENUM());
-        if (map != null)
+        if (map != null) {
             map.remove(id);
+        }
         super.removeObject(id);
 
     }
 
     private void removeAttachedObjects(DC_HeroObj unit) {
         for (Obj obj : getObjMap().values()) {
-            if (obj.getRef() != null)
-                if (obj.getRef().getSource() != null)
-                    if (obj != unit)
-                        if (obj.getRef().getSource().equals(unit.getId()))
+            if (obj.getRef() != null) {
+                if (obj.getRef().getSource() != null) {
+                    if (obj != unit) {
+                        if (obj.getRef().getSource().equals(unit.getId())) {
                             removeObject(obj.getId());
+                        }
+                    }
+                }
+            }
         }
 
     }
 
     public DequeImpl<DamageCounterRule> getDamageRules() {
-        if (damageRules == null)
+        if (damageRules == null) {
             damageRules = new DequeImpl<>();
+        }
 
         return damageRules;
     }
@@ -364,8 +391,9 @@ public class DC_GameState extends MicroGameState {
 
 
     public Map<DC_HeroObj, Stack<DC_ActiveObj>> getUnitActionStack() {
-        if (unitActionStack == null)
+        if (unitActionStack == null) {
             unitActionStack = new HashMap<>();
+        }
         return unitActionStack;
     }
 

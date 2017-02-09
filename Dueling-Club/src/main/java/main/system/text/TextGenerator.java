@@ -25,20 +25,23 @@ public class TextGenerator {
             boolean prop = false;
             for (VALUE v : list) {
                 if (v instanceof PARAMETER) {
-                    if (!ContentManager.isValueForOBJ_TYPE(OBJ_TYPES.CHARS, v))
+                    if (!ContentManager.isValueForOBJ_TYPE(OBJ_TYPES.CHARS, v)) {
                         continue;
+                    }
                     String amount = e.getValue(v);
                     amount = TextParser.parse(amount, e.getRef());
                     int n = new Formula(amount).getInt(e.getRef());
-                    if (n != 0)
+                    if (n != 0) {
                         string += n + " " + v.getName() + ", ";
+                    }
                 } else {
                     prop = true;
                     break;
                 }
             }
-            if (!prop && !list.equals(pages.get(pages.size() - 1)))
+            if (!prop && !list.equals(pages.get(pages.size() - 1))) {
                 string += StringMaster.NEW_LINE;
+            }
         }
         // StringMaster.replaceLast(" ," "and
         string.substring(0, string.length() - 2);

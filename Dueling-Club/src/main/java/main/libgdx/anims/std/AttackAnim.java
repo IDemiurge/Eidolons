@@ -80,24 +80,33 @@ public class AttackAnim extends ActionAnim {
         super.initSpeed();
     }
     protected String findWeaponSprite(DC_WeaponObj weapon) {
-        if (weapon == null) return "";
+        if (weapon == null) {
+            return "";
+        }
         String path = PathFinder.getSpritesPath() + "weapons\\"
                 + (weapon.isNatural() ? "natural\\" : "")
                 + (weapon.isRanged() ? "ranged\\" : "")
                 + (weapon.isAmmo() ? "ammo\\" : "");
         String file = FileManager.findFirstFile(path, weapon.getName(), false);
-        if (file == null)
+        if (file == null) {
             file = FileManager.findFirstFile(path, weapon.getProperty(G_PROPS.BASE_TYPE), false);
-        if (file == null)
+        }
+        if (file == null) {
             file = FileManager.findFirstFile(path, weapon.getWeaponGroup().toString(), false);
+        }
 
-        if (file == null)
+        if (file == null) {
             file = FileManager.findFirstFile(path, weapon.getProperty(G_PROPS.BASE_TYPE), true);
-        if (file == null)
+        }
+        if (file == null) {
             file = FileManager.findFirstFile(path, weapon.getName(), true);
-        if (file == null)
+        }
+        if (file == null) {
             file = FileManager.findFirstFile(path, weapon.getWeaponGroup().toString(), true);
-        if (file == null) return path + FileManager.getRandomFileName(path);
+        }
+        if (file == null) {
+            return path + FileManager.getRandomFileName(path);
+        }
         return path + file;
     }
 
@@ -107,7 +116,9 @@ public class AttackAnim extends ActionAnim {
 //             + (weapon.isNatural() ? "natural\\" : "")
 //             + (weapon.isRanged() ? "ranged\\" : "")
 //            ).getPath();
+        {
             imgPath = findWeaponSprite(getActive().getActiveWeapon());
+        }
         return imgPath;
 //        return PathFinder.getSpritesPath() + "weapons\\" + "scimitar.png";
     }
@@ -149,16 +160,22 @@ public class AttackAnim extends ActionAnim {
         int offsetX = 0;
         int offsetY = 0;
         if (getActive().isOffhand()) {
-            if (!getFacing().isVertical()) offsetY -= getActor().getHeight();
-            else offsetX -= getActor().getWidth();
+            if (!getFacing().isVertical()) {
+                offsetY -= getActor().getHeight();
+            } else {
+                offsetX -= getActor().getWidth();
+            }
         }
 
         defaultPosition.x = getX() + offsetX;
         defaultPosition.y = getY() + offsetY;
         setPosition(defaultPosition.x, defaultPosition.y);
 
-        if (!getFacing().isVertical()) flipY = !flipY;
-        else flipX = !flipX;
+        if (!getFacing().isVertical()) {
+            flipY = !flipY;
+        } else {
+            flipX = !flipX;
+        }
     }
 
     protected int getInitialAngle() {
@@ -235,9 +252,11 @@ size - elongate
         Boolean left = PositionMaster.isToTheLeftOr(getOriginCoordinates(), getDestinationCoordinates());
         Boolean above = PositionMaster.isAboveOr(getOriginCoordinates(), getDestinationCoordinates());
         Boolean add = null;
-        if (facing.isVertical())
+        if (facing.isVertical()) {
             add = above;
-        else add = left;
+        } else {
+            add = left;
+        }
 
         FACING_SINGLE relativeFacing = FacingMaster.getSingleFacing(
                 facing,
@@ -252,9 +271,11 @@ size - elongate
                 break;
             case TO_THE_SIDE:
 
-                if (getActive().isOffhand())
-                    if (left)
+                if (getActive().isOffhand()) {
+                    if (left) {
                         break;
+                    }
+                }
             case NONE:
                 break; //TODO on the same cell?
         }

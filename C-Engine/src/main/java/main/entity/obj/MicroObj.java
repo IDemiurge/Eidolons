@@ -59,8 +59,9 @@ public class MicroObj extends Obj {
     }
 
     public Coordinates getCoordinates() {
-        if (coordinates == null)
+        if (coordinates == null) {
             coordinates = new Coordinates(getX(), getY());
+        }
         coordinates.setX(getX());
         coordinates.setY(getY());
         // coordinates.setZ(getZ()); better use separately
@@ -94,9 +95,10 @@ public class MicroObj extends Obj {
     }
 
     public boolean isOverlaying() {
-        if (overlaying == null)
+        if (overlaying == null) {
             overlaying = checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + CONTENT_CONSTS.BF_OBJECT_TAGS.OVERLAYING)
                     || checkProperty(G_PROPS.CLASSIFICATIONS, "" + CONTENT_CONSTS.CLASSIFICATIONS.ATTACHED);
+        }
         return overlaying;
     }
 

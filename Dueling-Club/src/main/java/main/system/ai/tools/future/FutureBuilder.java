@@ -23,8 +23,9 @@ public class FutureBuilder {
         // TODO basically, I have to use a copy of the gamestate...! To make it
         // precise...
         int damage = 0;
-        if (!active.isConstructed())
+        if (!active.isConstructed()) {
             active.construct();
+        }
 
         List<Effect> effects = new LinkedList<>();
         effects = EffectMaster.getEffectsOfClass(EffectMaster.getEffectsFromSpell(active),
@@ -44,8 +45,9 @@ public class FutureBuilder {
         e.setRef(ref);
         if (e instanceof DealDamageEffect) {
             ref.setAmount(e.getFormula().getInt(ref));
-            if (((DealDamageEffect) e).getDamage_type() != null)
+            if (((DealDamageEffect) e).getDamage_type() != null) {
                 ref.setValue(KEYS.DAMAGE_TYPE, ((DealDamageEffect) e).getDamage_type().toString());
+            }
 
             damage = DamageMaster.getDamage(ref);
 

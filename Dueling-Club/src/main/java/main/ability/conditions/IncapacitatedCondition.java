@@ -17,10 +17,11 @@ public class IncapacitatedCondition extends MicroCondition {
     }
 
     public IncapacitatedCondition(Boolean match) {
-        if (match)
+        if (match) {
             key = KEYS.MATCH;
-        else
+        } else {
             key = KEYS.TARGET;
+        }
     }
 
     @Override

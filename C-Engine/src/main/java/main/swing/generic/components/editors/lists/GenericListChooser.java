@@ -97,10 +97,12 @@ public class GenericListChooser<E> implements ListSelectionListener {
     }
 
     public G_Panel getChoicePanel() {
-        if (list == null)
+        if (list == null) {
             initList();
-        if (panel == null)
+        }
+        if (panel == null) {
             initPanel();
+        }
         return panel;
     }
 
@@ -114,10 +116,9 @@ public class GenericListChooser<E> implements ListSelectionListener {
         if (result != JOptionPane.YES_OPTION) {
             return null;
         }
-        if (mode == SELECTION_MODE.SINGLE)
+        if (mode == SELECTION_MODE.SINGLE) {
             return list.getSelectedValue();
-
-        else {
+        } else {
             return getMultiValue();
         }
     }
@@ -173,8 +174,9 @@ public class GenericListChooser<E> implements ListSelectionListener {
             decorator = panelDecorator;
             panelDecorator = null;
         }
-        if (decorator != null)
+        if (decorator != null) {
             decorator.addComponents(panel);
+        }
     }
 
     protected int getPanelWidth() {
@@ -365,8 +367,9 @@ public class GenericListChooser<E> implements ListSelectionListener {
     }
 
     private int getMaxRowCountType(OBJ_TYPE TYPE) {
-        if (!(TYPE instanceof OBJ_TYPES))
+        if (!(TYPE instanceof OBJ_TYPES)) {
             return Integer.MAX_VALUE;
+        }
         for (OBJ_TYPES t : OBJ_TYPES.values()) {
             if (TYPE.equals(t)) {
                 switch (t) {
@@ -403,8 +406,9 @@ public class GenericListChooser<E> implements ListSelectionListener {
     public void valueChanged(ListSelectionEvent e) {
         if (e.getSource() == list) {
             E selectedValue = list.getSelectedValue();
-            if (selectedValue != list)
+            if (selectedValue != list) {
                 itemSelected(selectedValue.toString());
+            }
         }
 
     }

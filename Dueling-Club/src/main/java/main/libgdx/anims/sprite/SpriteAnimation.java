@@ -26,6 +26,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private float lifecycle;
     private float rotation;
     private Sprite sprite;
+    private boolean attached=true;
 
     public SpriteAnimation(String path) {
         this(defaultFrameDuration, false, 1, path, null, false);
@@ -159,6 +160,14 @@ if (sprite==null )
 
     public float getRotation() {
         return rotation;
+    }
+
+    public void setAttached(boolean attached) {
+        this.attached = attached;
+    }
+
+    public boolean isAttached() {
+        return attached;
     }
 
     public enum SPRITE_BEHAVIOR {

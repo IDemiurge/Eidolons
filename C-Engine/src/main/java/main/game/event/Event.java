@@ -119,6 +119,14 @@ public class Event implements Referred {
     }
 
     public enum STANDARD_EVENT_TYPE implements EVENT_TYPE {
+        COSTS_HAVE_BEEN_PAID,
+        COSTS_ARE_BEING_PAID,
+
+        ATTACK_CRITICAL,
+        ATTACK_DODGED,
+        ATTACK_BLOCKED,
+        ATTACK_MISSED,
+        //rolls
 
         MORALE_REDUCTION,
         MORALE_BOOST,
@@ -209,8 +217,9 @@ public class Event implements Referred {
             if (type instanceof EventType) {
                 return false;
             }
-            if (arg.equals(""))
+            if (arg.equals("")) {
                 return (this == type);
+            }
 
             return (this == type) && (arg.equals(type.getArg()));
 

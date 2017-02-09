@@ -40,8 +40,9 @@ public class AbilityObj extends Obj implements ActiveObj, Interruptable {
     public String getToolTip() {
         try {
             String property = type.getProperty(G_PROPS.DESCRIPTION);
-            if (!StringMaster.isEmpty(property))
+            if (!StringMaster.isEmpty(property)) {
                 return TextParser.parse(property, ref);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

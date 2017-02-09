@@ -25,9 +25,11 @@ public class Costs implements Cost {
 
     public List<AlternativeCost> getAlternativeCosts() {
         List<AlternativeCost> list = new LinkedList<AlternativeCost>();
-        for (Cost cost : costs)
-            if (cost instanceof AlternativeCost)
+        for (Cost cost : costs) {
+            if (cost instanceof AlternativeCost) {
                 list.add((AlternativeCost) cost);
+            }
+        }
 
         return list;
     }
@@ -37,15 +39,17 @@ public class Costs implements Cost {
     }
 
     public int getPaidAmount(int i) {
-        if (i >= 0 && i <= altCosts.size())
+        if (i >= 0 && i <= altCosts.size()) {
             return altCosts.get(i).getPaidAmount();
+        }
         return 0;
     }
 
     public List<Integer> getPaidAmountList() {
         List<Integer> list = new LinkedList<Integer>();
-        for (AlternativeCost altcost : altCosts)
+        for (AlternativeCost altcost : altCosts) {
             list.add(altcost.getPaidAmount());
+        }
         return list;
     }
 

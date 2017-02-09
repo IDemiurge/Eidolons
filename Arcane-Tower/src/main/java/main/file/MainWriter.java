@@ -18,12 +18,6 @@ public class MainWriter {
 
 	private String mainContents;
 
-	public void readMainAndInit() {
-		// mainContents = FileManager.readFile(getMainFolderPath());
-		// new StatMaster(statData);
-
-	}
-
 	private static String getMainFolderPath() {
 		return PathFinder.getXML_PATH() + "" + ArcaneTower.getAT_Path() + "\\text\\";
 	}
@@ -46,9 +40,10 @@ public class MainWriter {
 					"Select Retain", "Select Remove", "Skip", "End Cleanup", "Cancel"
 
 			);
-			if (option == -1)
-				return;
-			Boolean remove = null;
+            if (option == -1) {
+                return;
+            }
+            Boolean remove = null;
 			switch (option) {
 				case 0:
 					remove = false;
@@ -72,19 +67,29 @@ public class MainWriter {
 			// selected = ListChooser.chooseTypesAsStrings(T);
 			for (ObjType t : DataManager.getTypes(T)) {
 				if (remove != null) {
-					if (remove ^ selected.contains(t))
-						continue;
-				}
-				if (!ArcaneTower.isNonTest(t))
-					toRemove.add(t);
-			}
+                    if (remove ^ selected.contains(t)) {
+                        continue;
+                    }
+                }
+                if (!ArcaneTower.isNonTest(t)) {
+                    toRemove.add(t);
+                }
+            }
 			if (!DialogMaster.confirm("Confirm removing following types:  "
-					+ DataManager.toStringList(toRemove)))
-				continue;
-			for (ObjType t : toRemove)
-				DataManager.removeType(t);
-			toRemove = new LinkedList<>();
+                    + DataManager.toStringList(toRemove))) {
+                continue;
+            }
+            for (ObjType t : toRemove) {
+                DataManager.removeType(t);
+            }
+            toRemove = new LinkedList<>();
 			ArcaneTower.saveAll();
 		}
 	}
+
+    public void readMainAndInit() {
+        // mainContents = FileManager.readFile(getMainFolderPath());
+        // new StatMaster(statData);
+
+    }
 }

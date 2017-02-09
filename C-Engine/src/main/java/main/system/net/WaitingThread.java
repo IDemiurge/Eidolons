@@ -38,28 +38,32 @@ public class WaitingThread implements Runnable {
     }
 
     public static String waitForInput(NetCode code) {
-        if (!new WaitingThread(code).waitForInput())
+        if (!new WaitingThread(code).waitForInput()) {
             return null;
+        }
         return getINPUT(code);
 
     }
 
     public static String getINPUT(NetCode code) {
         WaitingThread w = getThread(code);
-        if (w == null)
+        if (w == null) {
             return null;
+        }
 
         String s = w.getINPUT();
-        if (s != null)
+        if (s != null) {
             threads.remove(w);
+        }
         return s;
     }
 
     private static WaitingThread getThread(NetCode code) {
-        for (WaitingThread wt : threads)
+        for (WaitingThread wt : threads) {
             if (wt.getCode() == code || wt.getCode().equals(code)) {
                 return wt;
             }
+        }
         main.system.auxiliary.LogMaster.log(0, "WAITING THREAD NOT FOUND " + code);
 
         return null;
@@ -109,10 +113,11 @@ public class WaitingThread implements Runnable {
 
     public static String waitOrGetInput(NetCode code) {
         String input = inputMap.get(code);
-        if (input != null)
+        if (input != null) {
             return input;
-        else
+        } else {
             return waitForInput(code);
+        }
     }
 
     public static XLinkedMap<NetCode, String> getInputMap() {
@@ -155,10 +160,11 @@ public class WaitingThread implements Runnable {
                     time_elapsed += WAITING_PERIOD;
                     if (time_elapsed > waitingTime) {
                         main.system.auxiliary.LogMaster.log("Waiting time expired! - " + getCode());
-                        if (isBreakOnExpired())
+                        if (isBreakOnExpired()) {
                             break;
-                        else
+                        } else {
                             time_elapsed = 0;
+                        }
                     }
                 }
             } catch (InterruptedException e) {
@@ -166,8 +172,9 @@ public class WaitingThread implements Runnable {
                 return false;
             }
         }
-        if (result == null)
+        if (result == null) {
             result = false;
+        }
         Boolean b = result;
         result = null;
         return b;
@@ -194,8 +201,9 @@ public class WaitingThread implements Runnable {
     @Override
     public void run() {
 
-        if (VIEWER != null)
+        if (VIEWER != null) {
             VIEWER.info("WAITING THREAD STARTED FOR " + getCode().name() + "; input: " + input);
+        }
         Chronos.mark("WAITING" + getCode().name());
         while (true)
         // (ServerConnector.getHandler().getStatus() ==
@@ -234,8 +242,9 @@ public class WaitingThread implements Runnable {
                 break;
             }
             if (Chronos.getTimeElapsedForMark("WAITING" + getCode().name()) > (waitingTime)) {
-                if (VIEWER != null)
+                if (VIEWER != null) {
                     VIEWER.info("WAITING THREAD " + getCode().name() + " TIMED OUT");
+                }
 
                 ServerConnector.setFailure(true, getCode());
             }
@@ -244,9 +253,10 @@ public class WaitingThread implements Runnable {
         if (!input) {
             threads.remove(this);
         }
-        if (VIEWER != null)
+        if (VIEWER != null) {
             VIEWER.info("WAITING THREAD FINISHED FOR " + getCode().name() + "; input: " + input
                     + " " + INPUT);
+        }
         main.system.auxiliary.LogMaster.log(1, "WAITING THREAD FINISHED FOR " + getCode().name()
                 + "; input: " + input + " " + INPUT);
 
@@ -258,8 +268,9 @@ public class WaitingThread implements Runnable {
 
     public String getInput() {
         String s = getINPUT();
-        if (s != null)
+        if (s != null) {
             threads.remove(code);
+        }
         return s;
     }
 

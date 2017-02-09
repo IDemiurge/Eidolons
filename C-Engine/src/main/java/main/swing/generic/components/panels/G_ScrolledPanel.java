@@ -32,8 +32,9 @@ public abstract class G_ScrolledPanel<E> extends G_Panel implements MouseWheelLi
     }
 
     boolean isArrowBlocked(boolean forward) {
-        if (!forward)
+        if (!forward) {
             return (offset == 0);
+        }
         return (comps.get(comps.size() - 1).getParent() == this);
     }
 
@@ -42,10 +43,11 @@ public abstract class G_ScrolledPanel<E> extends G_Panel implements MouseWheelLi
             SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
             return;
         }
-        if (RandomWizard.random())
+        if (RandomWizard.random()) {
             SoundMaster.playStandardSound(STD_SOUNDS.SCROLL);
-        else
+        } else {
             SoundMaster.playStandardSound(STD_SOUNDS.SCROLL2);
+        }
         int n = forward ? 1 : -1;
         offset += n;
         refresh();
@@ -92,20 +94,23 @@ public abstract class G_ScrolledPanel<E> extends G_Panel implements MouseWheelLi
         removeAll();
         resetComps();
         spaceTaken = 0;
-        if (isArrowShown(false))
+        if (isArrowShown(false)) {
             addArrows(false);
+        }
         for (int i = offset; i < comps.size(); i++) {
             G_Panel component = comps.get(i);
             int spaceRequired = vertical ? component.getPanelHeight() : component.getPanelWidth();
-            if (spaceRequired > getSpace() - spaceTaken)
+            if (spaceRequired > getSpace() - spaceTaken) {
                 break;
+            }
             String y = vertical ? "" + spaceTaken : isCentering() ? "@center_y" : "0";
             String x = !vertical ? "" + spaceTaken : isCentering() ? "@center_x" : "0";
             spaceTaken += spaceRequired;
             add(component, "pos " + x + " " + y);
         }
-        if (isArrowShown(true))
+        if (isArrowShown(true)) {
             addArrows(true);
+        }
 
         refreshComponents();
     }
@@ -137,8 +142,9 @@ public abstract class G_ScrolledPanel<E> extends G_Panel implements MouseWheelLi
     }
 
     protected int getSpace() {
-        if (vertical)
+        if (vertical) {
             return getPanelHeight();
+        }
         return getPanelWidth();
     }
 

@@ -44,8 +44,9 @@ public class XML_Parser {
         for (char c : v.toCharArray()) {
             if (!asciiEncoder.canEncode(c)) {
                 result += getCodeFromChar(c + "");
-            } else
+            } else {
                 result += c;
+            }
         }
         return result;
     }

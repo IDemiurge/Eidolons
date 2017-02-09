@@ -198,10 +198,12 @@ public class CONTENT_CONSTS2 {
 
         FACTION(String units, String group, String image, FACTION... allies) {
             this.units = units;
-            if (!group.isEmpty())
+            if (!group.isEmpty()) {
                 this.group = group;
-            if (!image.isEmpty())
+            }
+            if (!image.isEmpty()) {
                 this.image = image;
+            }
             this.allies = allies;
         }
 
@@ -318,8 +320,9 @@ public class CONTENT_CONSTS2 {
         }
 
         public Image getImage() {
-            if (image == null)
+            if (image == null) {
                 image = ImageManager.getImage(getImageFileName());
+            }
             return image;
 
         }
@@ -333,10 +336,12 @@ public class CONTENT_CONSTS2 {
         }
 
         public int getOffsetMultiplier() {
-            if (isToLeft())
+            if (isToLeft()) {
                 return -1;
-            if (isToRight())
+            }
+            if (isToRight()) {
                 return 1;
+            }
             return 0;
         }
 
@@ -355,8 +360,9 @@ public class CONTENT_CONSTS2 {
 
         public int getOffsetX() {
 
-            if (this == LINK_VARIANT.VERTICAL || this == LINK_VARIANT.VERTICAL_LONG)
+            if (this == LINK_VARIANT.VERTICAL || this == LINK_VARIANT.VERTICAL_LONG) {
                 return 32 - this.getImage().getWidth(null) / 2;
+            }
 
             int rankPoolWidth = STD_IMAGES.RANK_COMP.getWidth();
             if (this.isToLeft()) {
@@ -376,11 +382,13 @@ public class CONTENT_CONSTS2 {
         }
 
         public int getNodeOffsetX() {
-            if (this == LINK_VARIANT.VERTICAL || this == LINK_VARIANT.VERTICAL_LONG)
+            if (this == LINK_VARIANT.VERTICAL || this == LINK_VARIANT.VERTICAL_LONG) {
                 return 0;
+            }
 
-            if (isToLeft())
+            if (isToLeft()) {
                 return -32; // -getImage().getWidth(null) / 2 + 32;
+            }
             return getImage().getWidth(null) - 32;
             // getXOffsetForLink(this);
             // return nodeOffsetX;
@@ -485,10 +493,11 @@ public class CONTENT_CONSTS2 {
         STD_ACTION_MODES(String description, String addProps, String addPropValues,
                          String setProps, String setPropValues, String modParamValues, String modParams,
                          String bonusParams, String bonusParamVals, ACTION_TYPE_GROUPS... groups) {
-            if (groups == null)
+            if (groups == null) {
                 defaultActionGroups = new LinkedList<>();
-            else
+            } else {
                 defaultActionGroups = Arrays.asList(groups);
+            }
             this.description = description;
             this.addPropMap = new MapMaster<String, String>().constructMap(StringMaster
                     .openContainer(addProps), StringMaster.openContainer(addPropValues));
@@ -772,8 +781,9 @@ public class CONTENT_CONSTS2 {
                 glyphImageSelected = ImageManager.getImage(PathFinder.getSpellUpgradeGlyphsFolder()
                         + StringMaster.getWellFormattedString(name()) + " s.png");
             }
-            if (!ImageManager.isValidImage(glyphImageSelected))
+            if (!ImageManager.isValidImage(glyphImageSelected)) {
                 return glyphImage;
+            }
             return glyphImageSelected;
         }
 
@@ -782,8 +792,9 @@ public class CONTENT_CONSTS2 {
                 glyphImageActive = ImageManager.getImage(PathFinder.getSpellUpgradeGlyphsFolder()
                         + StringMaster.getWellFormattedString(name()) + " a.png");
             }
-            if (!ImageManager.isValidImage(glyphImageSelected))
+            if (!ImageManager.isValidImage(glyphImageSelected)) {
                 return glyphImage;
+            }
             return glyphImageActive;
         }
 

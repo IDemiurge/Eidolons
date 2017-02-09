@@ -15,8 +15,9 @@ public class DisplacementEffect extends SelfMoveEffect {
     public boolean applyThis() {
         c = ref.getTargetObj().getCoordinates();
         try {
-            if (!moveTarget())
+            if (!moveTarget()) {
                 return false;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -30,22 +31,25 @@ public class DisplacementEffect extends SelfMoveEffect {
         Coordinates coordinate = obj.getCoordinates().getAdjacentCoordinate(
                 obj.getFacing().getDirection());
         Boolean result = tryMove(obj, coordinate);
-        if (result != null)
+        if (result != null) {
             return result;
+        }
         boolean clockwise = RandomWizard.random();
         coordinate = obj.getCoordinates().getAdjacentCoordinate(
                 DirectionMaster.rotate45(obj.getFacing().getDirection(),
                         clockwise));
         result = tryMove(obj, coordinate);
-        if (result != null)
+        if (result != null) {
             return result;
+        }
         clockwise = !clockwise;
         coordinate = obj.getCoordinates().getAdjacentCoordinate(
                 DirectionMaster.rotate45(obj.getFacing().getDirection(),
                         clockwise));
         result = tryMove(obj, coordinate);
-        if (result == null)
+        if (result == null) {
             return false;
+        }
         return result;
     }
 

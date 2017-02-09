@@ -71,15 +71,17 @@ public class CreateItemEffect extends MicroEffect {
             TYPE = OBJ_TYPES.ARMOR;
 
             typeList = StringMaster.openContainer(STD_ARMOR_ITEMS);
-            if (extended)
+            if (extended) {
                 typeList.addAll(StringMaster
                         .openContainer(EXTENDED_ARMOR_ITEMS));
+            }
         } else {
             TYPE = OBJ_TYPES.WEAPONS;
             typeList = StringMaster.openContainer(STD_WEAPON_ITEMS);
-            if (extended)
+            if (extended) {
                 typeList.addAll(StringMaster
                         .openContainer(EXTENDED_WEAPON_ITEMS));
+            }
         }
 
         groupInitialized = true;

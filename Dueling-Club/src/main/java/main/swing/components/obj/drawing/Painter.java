@@ -19,8 +19,9 @@ public class Painter {
             int x = line.p1.x + offsetX;
             int offsetY = mod_y * Math.round(i * interval * tangentY);
             int y = line.p1.y + offsetY;
-            if (offsetX > Math.abs(diff_x) && offsetY > Math.abs(diff_y))
+            if (offsetX > Math.abs(diff_x) && offsetY > Math.abs(diff_y)) {
                 return;
+            }
             g.drawImage(image, x, y, null);
             i++;
         }

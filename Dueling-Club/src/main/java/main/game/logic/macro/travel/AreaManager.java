@@ -41,7 +41,9 @@ public class AreaManager {
                     } else {
                         if (!group.checkSetAmbush())
 
+                        {
                             group.wander();
+                        }
                     }
                 }
             }
@@ -87,8 +89,9 @@ public class AreaManager {
 
     public static Area getAreaForCoordinate(Coordinates c) {
         for (Area area : MacroManager.getActiveParty().getRegion().getAreas()) {
-            if (checkWithinAreaBoundaries(area, c))
+            if (checkWithinAreaBoundaries(area, c)) {
                 return area;
+            }
         }
         return null;
     }
@@ -96,16 +99,18 @@ public class AreaManager {
     public static boolean checkWithinAreaBoundaries(Area area,
                                                     Coordinates coordinates) {
         MacroCoordinates prevBoundary = null;
-        if (area.getBoundaries().isEmpty())
+        if (area.getBoundaries().isEmpty()) {
             return false;
+        }
         for (MacroCoordinates boundary : area.getBoundaries()) {
             if (prevBoundary == null) {
                 prevBoundary = (boundary);
                 continue;
             }
             // at least one min/max fit with each line?
-            if (!checkLine(coordinates, boundary, prevBoundary))
+            if (!checkLine(coordinates, boundary, prevBoundary)) {
                 return false;
+            }
             prevBoundary = (boundary);
         }
         return true;
@@ -118,10 +123,12 @@ public class AreaManager {
         int min_x = Math.min(c1.x, c2.x);
         int min_y = Math.min(c1.y, c2.y);
 
-        if (coordinates.x > max_x && coordinates.y > max_y)
+        if (coordinates.x > max_x && coordinates.y > max_y) {
             return false;
-        if (coordinates.x < min_x && coordinates.y < min_y)
+        }
+        if (coordinates.x < min_x && coordinates.y < min_y) {
             return false;
+        }
 
         return true;
     }
@@ -148,8 +155,9 @@ public class AreaManager {
         Loop.startLoop(MAX_GROUPS_IN_AREA);
         while (!Loop.loopEnded()) {
             if (area.checkParameter(MACRO_PARAMS.AREA_CREEP_POWER_TOTAL,
-                    totalPower))
+                    totalPower)) {
                 break;
+            }
             addRandomGroup(area);
         }
         // ENCOUNTER_GROUP
@@ -158,8 +166,9 @@ public class AreaManager {
 
     private static void addRandomGroup(Area area) {
         MacroGroup group = getRandomCreepGroup(area);
-        if (group == null)
+        if (group == null) {
             return;
+        }
         addGroup(area, group);
         Boolean min_max_normal = null;
         area.modifyParameter(MACRO_PARAMS.AREA_CREEP_POWER_TOTAL,
@@ -186,16 +195,18 @@ public class AreaManager {
             MacroCoordinates c = new MacroCoordinates(
                     RandomWizard.getRandomInt((int) x),
                     RandomWizard.getRandomInt((int) y));
-            if (checkWithinAreaBoundaries(area, c))
+            if (checkWithinAreaBoundaries(area, c)) {
                 return c;
+            }
         }
         return null;
     }
 
     public static int getTotalPower(Area area) {
         Integer mod = area.getIntParam(MACRO_PARAMS.DANGER_MOD);
-        if (mod == 0)
+        if (mod == 0) {
             mod = MINIMUM_TOTAL_POWER_MOD;
+        }
         return EncounterMaster.getMinCreepWavePower() * mod / 100;
     }
 
@@ -208,12 +219,14 @@ public class AreaManager {
                             area.getProperty(MACRO_PROPS.ENCOUNTER_SUBGROUPS),
                             ENCOUNTER_SUBGROUP.class);// TODO
             List<ObjType> pool = null;
-            if (group != null)
+            if (group != null) {
                 pool = DataManager.getTypesSubGroup(OBJ_TYPES.ENCOUNTERS,
                         group.toString());
-            else
+            } else
                 // TODO
+            {
                 pool = DataManager.getTypes(OBJ_TYPES.ENCOUNTERS);
+            }
 
             FilterMaster.filterByParam(pool, PARAMS.POWER_MINIMUM,
                     EncounterMaster.getMaxCreepWavePower(),
@@ -222,8 +235,9 @@ public class AreaManager {
                     EncounterMaster.getMinCreepWavePower(),
                     OBJ_TYPES.ENCOUNTERS, true);
             // more filter! By TYPE? TODO
-            if (pool.isEmpty())
+            if (pool.isEmpty()) {
                 continue;
+            }
             // higher probability for non-bosses?
             String waveName = new RandomWizard<ObjType>().getRandomListItem(
                     pool).getName();

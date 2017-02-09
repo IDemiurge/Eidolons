@@ -17,7 +17,9 @@ public class Boxer<T> implements Supplier<T>{
         this.supplier=supplier;
     }
     public T get(){
-        if (supplier!=null )return supplier.get();
+        if (supplier != null) {
+            return supplier.get();
+        }
         return value;
     }
 }

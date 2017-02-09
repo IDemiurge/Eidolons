@@ -40,36 +40,40 @@ public class AddSpecialEffects extends MicroEffect {
         if (effects == null) {
             effects = new AbilityEffect(abilName).getEffects();
         }
-        if (!(ref.getTargetObj() instanceof DC_Obj))
+        if (!(ref.getTargetObj() instanceof DC_Obj)) {
             return false;
+        }
         DC_Obj targetObj = (DC_Obj) ref.getTargetObj();
 
         targetObj.addSpecialEffect(case_type, effects);
-        if (triggerEffect==null )
-        {
+        if (triggerEffect == null) {
             triggerEffect = getTriggerEffect();
-            if (triggerEffect!=null )
-            triggerEffect.apply(ref);
+            if (triggerEffect != null) {
+                triggerEffect.apply(ref);
+            }
         }
         return true;
     }
+
     public void remove() {
-        if (triggerEffect!=null )
+        if (triggerEffect != null) {
             triggerEffect.remove();
+        }
 
     }
+
     private AddTriggerEffect getTriggerEffect() {
 
 
-        switch (case_type){
+        switch (case_type) {
             case ON_KILL:
             case ON_DEATH:
-             return    new AddTriggerEffect(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED,
-                 new RefCondition(
-                  case_type== SPECIAL_EFFECTS_CASE.ON_DEATH?
-                   KEYS.EVENT_TARGET:  KEYS.EVENT_SOURCE ,
-                  KEYS.SOURCE, true),
-                 new ActiveAbility(new FixedTargeting(KEYS.TARGET), getEffects())
+                return new AddTriggerEffect(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED,
+                        new RefCondition(
+                                case_type == SPECIAL_EFFECTS_CASE.ON_DEATH ?
+                                        KEYS.EVENT_TARGET : KEYS.EVENT_SOURCE,
+                                KEYS.SOURCE, true),
+                        new ActiveAbility(new FixedTargeting(KEYS.TARGET), getEffects())
                 );
             case SPELL_IMPACT:
                 break;

@@ -76,11 +76,13 @@ public class DC_Analyzer extends Analyzer {
     @Override
     public boolean checkCanHit(Obj obj) {
         DC_UnitObj unit = (DC_UnitObj) obj;
-        if (!unit.canAttack())
+        if (!unit.canAttack()) {
             return false;
+        }
         // loop thru enemy units?
-        if (checkAdjacentAttacks(unit))
+        if (checkAdjacentAttacks(unit)) {
             return true;
+        }
 
         return false;
     }
@@ -90,8 +92,9 @@ public class DC_Analyzer extends Analyzer {
         for (Obj obj : getEnemy().getControlledUnits()) {
             DC_UnitObj enemyUnit = (DC_UnitObj) obj;
             if (unit.canAttack(enemyUnit)) {
-                if (getAi().getLogic() != null)
+                if (getAi().getLogic() != null) {
                     getAi().getLogic().setTarget(enemyUnit.getId());
+                }
                 return true;
             }
         }
@@ -106,18 +109,21 @@ public class DC_Analyzer extends Analyzer {
         for (Obj obj : getEnemy().getControlledUnits()) {
             DC_UnitObj enemyUnit = (DC_UnitObj) obj;
             Obj cell = getClosestCell(enemyUnit, false);
-            if (cell == null)
+            if (cell == null) {
                 continue;
+            }
             Path path = movementManager.getPath(unit, cell);
-            if (path == null)
+            if (path == null) {
                 continue;
+            }
             if (cost > path.getIntegerCost()) {
                 enemy_unit = enemyUnit;
             }
 
         }
-        if (enemy_unit == null)
+        if (enemy_unit == null) {
             enemy_unit = enemy.getHeroObj();
+        }
 
         main.system.auxiliary.LogMaster.log(LogMaster.AI_DEBUG, enemy_unit
                 + " has been picked as closest target for "

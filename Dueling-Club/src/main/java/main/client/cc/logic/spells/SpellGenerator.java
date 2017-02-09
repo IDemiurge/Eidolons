@@ -1,7 +1,6 @@
 package main.client.cc.logic.spells;
 
 import main.content.CONTENT_CONSTS;
-import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
 import main.content.CONTENT_CONSTS2.SPELL_UPGRADE;
 import main.content.OBJ_TYPES;
 import main.content.properties.G_PROPS;
@@ -37,8 +36,9 @@ public class SpellGenerator {
             List<String> groups = StringMaster.openContainer(t
                     .getProperty(G_PROPS.SPELL_UPGRADE_GROUPS));
             // ++ spell_upgrade_modification_exceptions
-            if (groups.isEmpty())
+            if (groups.isEmpty()) {
                 continue;
+            }
             for (SPELL_UPGRADE ug : SPELL_UPGRADE.values()) {
 
                 if (!groups.contains(StringMaster.getWellFormattedString(ug.toString()))) {
@@ -79,8 +79,9 @@ public class SpellGenerator {
     public static String generateImagePath(Entity type, SPELL_UPGRADE ug) {
         String imgPath = StringMaster.cropFormat(type.getImagePath()) + ug.getImgSuffix()
                 + StringMaster.getFormat(type.getImagePath());
-        if (!ImageManager.isImage(imgPath))
+        if (!ImageManager.isImage(imgPath)) {
             return type.getImagePath();
+        }
         return imgPath;
     }
 

@@ -23,9 +23,11 @@ public class Rolls {
         boolean result = false;
         for (Roll r : rolls) {
             result |= r.roll(ref);
-            if (!result)
-                if (!or)
+            if (!result) {
+                if (!or) {
                     return false;
+                }
+            }
         }
         return result;
     }

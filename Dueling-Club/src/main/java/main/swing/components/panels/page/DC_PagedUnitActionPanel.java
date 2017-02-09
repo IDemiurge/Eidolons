@@ -37,11 +37,13 @@ public class DC_PagedUnitActionPanel extends G_PagedListPanel<DC_UnitAction> {
     @Override
     protected List<List<DC_UnitAction>> getPageData() {
         // sort spells?
-        if (getObj() == null)
+        if (getObj() == null) {
             return null;
+        }
         List<DC_UnitAction> actions = ((DC_UnitObj) getObj()).getActionMap().get(group.getType());
-        if (actions == null)
+        if (actions == null) {
             return null;
+        }
         return splitList(actions);
     }
 

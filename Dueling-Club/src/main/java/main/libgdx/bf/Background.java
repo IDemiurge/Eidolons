@@ -27,12 +27,14 @@ public class Background extends Comp {
     }
 
     public Background init() {
-        if (DC_Game.game != null)
-            if (DC_Game.game.getDungeonMaster() != null)
+        if (DC_Game.game != null) {
+            if (DC_Game.game.getDungeonMaster() != null) {
                 if (DC_Game.game.getDungeonMaster().getDungeonNeverInit() != null) {
                     setImagePath(
                             DC_Game.game.getDungeonMaster().getDungeonNeverInit().getMapBackground());
                 }
+            }
+        }
         update();
         return this;
     }

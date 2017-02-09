@@ -39,8 +39,9 @@ public class HeroLevelManager {
                 .getIntParam(PARAMS.KNOWLEDGE)));
 
         modifyValues(hero, auto);
-        if (!dc_hc_macro)
+        if (!dc_hc_macro) {
             CharacterCreator.getHeroManager().update(hero);
+        }
         resetLevelValues(type);
     }
 
@@ -58,8 +59,9 @@ public class HeroLevelManager {
     }
 
     public static void addLevels(Entity hero, int levels) {
-        for (int i = 0; i < levels; i++)
+        for (int i = 0; i < levels; i++) {
             modifyValues(hero);
+        }
     }
 
     private static void modifyValues(Entity hero) {
@@ -106,8 +108,9 @@ public class HeroLevelManager {
         for (PARAMETER p : ContentManager.getMasteries()) {
             if (hero.getIntParam(p) > 0) {
                 int amount = hero.getIntParam(ContentManager.getPerLevelValue(p.toString()));
-                if (amount > 0)
+                if (amount > 0) {
                     hero.modifyParameter(p, amount);
+                }
             }
         }
     }

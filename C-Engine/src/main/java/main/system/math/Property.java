@@ -48,14 +48,16 @@ public class Property extends DynamicValue {
                     string);
         }
         if (obj_ref == null) {
-            if (str == null)
+            if (str == null) {
                 return ref.getValue(value_ref);
+            }
             return str;
         }
 
         entity = ref.getObj(obj_ref);
-        if (entity == null)
+        if (entity == null) {
             entity = ref.getType(obj_ref);
+        }
 
         if (entity == null) {
             if (obj_ref.equalsIgnoreCase("EVENT")) {
@@ -82,15 +84,17 @@ public class Property extends DynamicValue {
     public String getStr(Ref ref) {
         setRef(ref);
         String str = getStr();
-        if (str == null)
+        if (str == null) {
             return "";
+        }
         return str.trim();
     }
 
     @Override
     public String toString() {
-        if (str != null)
+        if (str != null) {
             return str;
+        }
         return obj_ref + value_ref;
     }
 

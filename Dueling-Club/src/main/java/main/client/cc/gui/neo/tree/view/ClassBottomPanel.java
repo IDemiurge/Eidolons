@@ -51,12 +51,14 @@ public class ClassBottomPanel extends HT_BottomPanel {
             for (String req : hero.getGame().getRequirementsManager().getRequirements(selectedType,
                     0).getReqMap().keySet()) {
                 String[] parts = req.split(InfoMaster.PARAM_REASON_STRING);
-                if (parts.length < 2)
+                if (parts.length < 2) {
                     continue;
+                }
                 PARAMETER param = ContentManager.getMastery(parts[0]);
                 if (param != null) {
-                    if (param.isMastery())
+                    if (param.isMastery()) {
                         displayedMasteries.add(param);
+                    }
                 }
             }
             main.system.auxiliary.LogMaster.log(1, "displayedMasteries = " + displayedMasteries);

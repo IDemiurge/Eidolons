@@ -34,12 +34,15 @@ public class DroppedItemManager {
         unit.unequip(ITEM_SLOT.OFF_HAND);
         // drop natural weapons?
 
-        for (DC_HeroItemObj item : unit.getInventory())
+        for (DC_HeroItemObj item : unit.getInventory()) {
             drop(item, unit);
-        for (DC_HeroItemObj item : unit.getQuickItems())
+        }
+        for (DC_HeroItemObj item : unit.getQuickItems()) {
             drop(item, unit);
-        for (DC_HeroItemObj item : unit.getJewelry())
+        }
+        for (DC_HeroItemObj item : unit.getJewelry()) {
             drop(item, unit);
+        }
 
     }
 
@@ -77,8 +80,9 @@ public class DroppedItemManager {
         Obj cell = game.getCellByCoordinate(hero.getCoordinates());
         DC_HeroItemObj item = (DC_HeroItemObj) ObjUtilities.findObjByType(type,
                 getDroppedItems(cell));
-        if (item == null)
+        if (item == null) {
             return false;
+        }
         pickUp(cell, item);
         return true;
     }
@@ -94,15 +98,17 @@ public class DroppedItemManager {
         Collection<Obj> list = new LinkedList<>();
         for (String id : StringMaster.openContainer(cell.getProperty(PROPS.DROPPED_ITEMS))) {
             Obj item = game.getObjectById(StringMaster.getInteger(id));
-            if (item != null)
+            if (item != null) {
                 list.add(item);
+            }
         }
         return list;
     }
 
     public void pickedUp(Obj item) {
-        if (!(item instanceof DC_HeroItemObj))
+        if (!(item instanceof DC_HeroItemObj)) {
             return;
+        }
         Coordinates coordinates = item.getCoordinates();
         Obj cell = game.getCellByCoordinate(coordinates);
         pickUp(cell, (DC_HeroItemObj) item);

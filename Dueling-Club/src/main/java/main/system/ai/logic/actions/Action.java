@@ -57,9 +57,11 @@ public class Action {
     public boolean equals(Object obj) {
         if (obj instanceof Action) {
             Action action = (Action) obj;
-            if (action.getActive().equals(getActive()))
-                if (ObjUtilities.compare(action.getTarget(), getTarget()))
+            if (action.getActive().equals(getActive())) {
+                if (ObjUtilities.compare(action.getTarget(), getTarget())) {
                     return true;
+                }
+            }
         }
         return false;
     }
@@ -88,7 +90,7 @@ public class Action {
             active.construct();
             targeting = active.getTargeting();
         }
-        if (targeting == null)
+        if (targeting == null) {
             try {
                 targeting = TargetingMaster.findTargeting(active, SelectiveTargeting.class); // list?
                 // check
@@ -96,6 +98,7 @@ public class Action {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
         return targeting;
     }
 
@@ -143,20 +146,23 @@ public class Action {
         }
         boolean result = false;
 
-        if (getActive().isChanneling())
+        if (getActive().isChanneling()) {
             result = getActive().activate();
-        else
+        } else {
             result = getActive().activate(ref);
+        }
         getActive().actionComplete();
         return result;
     }
 
     public boolean isSingle() {
 
-        if (isDummy())
+        if (isDummy()) {
             return true;
-        if (active.getActionGroup() == ACTION_TYPE_GROUPS.MODE)
+        }
+        if (active.getActionGroup() == ACTION_TYPE_GROUPS.MODE) {
             return true;
+        }
         return false;
     }
 

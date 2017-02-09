@@ -74,7 +74,7 @@ public class PhaseAnimListener extends InputListener {
 
     private boolean itemClicked(MouseItem item) {
 
-        if (item.getType() != null)
+        if (item.getType() != null) {
             switch (item.getType()) {
 
                 case THUMBNAIL:
@@ -84,8 +84,9 @@ public class PhaseAnimListener extends InputListener {
 //                        displayTooltip(anim, item);
                     break;
                 case SUB_PHASE:
-                    if (anim.getPhase().getType().isSubPhase())
+                    if (anim.getPhase().getType().isSubPhase()) {
                         return false;
+                    }
                     if (item.getArg() == null) {
                         SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
                         return true;
@@ -101,6 +102,7 @@ public class PhaseAnimListener extends InputListener {
                     return true;
 
             }
+        }
         return false;
 
 

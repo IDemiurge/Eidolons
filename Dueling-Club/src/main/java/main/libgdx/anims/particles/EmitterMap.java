@@ -30,13 +30,8 @@ public class EmitterMap {
             return new Ambience(getFogSfx() );
         }
     };
-
-
-    private SFX getFogSfx() {
-        return SFX.SKULL2;
-    }
-
     Map<Coordinates, Ambience> fogMap = new LinkedHashMap<>();
+
     public EmitterMap() {
 
         GuiEventManager.bind(GuiEventType.UPDATE_AMBIENCE, p -> {
@@ -51,13 +46,18 @@ public class EmitterMap {
         });
     }
 
+    private SFX getFogSfx() {
+        return SFX.SKULL2;
+    }
+
 //    public boolean contains(ParticleInterface actor) {
 //        return emitters.contains(actor);
 //    }
 
-
     public void update() {
-        if (! isAmbienceOn()) return;
+        if (!isAmbienceOn()) {
+            return;
+        }
 
         cc:
         for (Coordinates c : DC_Game.game.getCoordinates()) {
@@ -87,24 +87,29 @@ public class EmitterMap {
                 }
             }
 
-            if (add)
+            if (add) {
                 addSmoke(c);
-            if (remove)
+            }
+            if (remove) {
                 removeSmoke(c);
+            }
         }
     }
 
     private void removeSmoke(Coordinates c) {
         Ambience fog = fogMap.remove(c);
-        if (fog == null) return;
+        if (fog == null) {
+            return;
+        }
         fog.remove();
         fog.setVisible(false);
         ambiencePool.free(fog);
     }
 
     private void addSmoke(Coordinates c) {
-        if (fogMap.containsKey(c))
+        if (fogMap.containsKey(c)) {
             return;
+        }
 
         Vector2 v = GridMaster.
                 getVectorForCoordinateWithOffset(c);

@@ -141,7 +141,8 @@ public class RadialMenu extends Group {
             final MenuNode menuNode = new MenuNode(
                     node.texture == null ?
                             new Image(closeTex)
-                            : new Image(node.texture), node.name
+                            : new Image(node.texture), node.name,
+             node.w, node.h
             );
             menuNode.parent = parent;
             if (node.action != null) {
@@ -172,15 +173,18 @@ public class RadialMenu extends Group {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (!isVisible() || currentNode == null) return;
+        if (!isVisible() || currentNode == null) {
+            return;
+        }
         currentNode.draw(batch, parentAlpha);
     }
 
     public void createNew(DC_Obj target) {
         DC_HeroObj source
                 = (DC_HeroObj) Game.game.getManager().getActiveObj();
-        if (source == null)
+        if (source == null) {
             return; //fix logic to avoid null value between turns!
+        }
         List<ActiveObj> activeObjs = source.getActives();
 
         List<Triple<Runnable, Texture, String>> moves = new ArrayList<>();
@@ -194,8 +198,9 @@ public class RadialMenu extends Group {
                 continue;
             }
 
-            if (obj.getTargeting() == null)
+            if (obj.getTargeting() == null) {
                 continue;
+            }
             unics.add(obj);
             if (obj.isMove()) {
                 if (obj.getTargeting() instanceof SelectiveTargeting) {
@@ -284,11 +289,11 @@ public class RadialMenu extends Group {
                     inn1.childNodes = list;
                     nn1.add(inn1);
                 }
-                if (dcActiveObj.getActiveWeapon() != null)
-                    if (dcActiveObj.getActiveWeapon().isRanged())
+                if (dcActiveObj.getActiveWeapon() != null) {
+                    if (dcActiveObj.getActiveWeapon().isRanged()) {
                         if (dcActiveObj.getRef().getObj(KEYS.AMMO) == null) {
                             for (DC_QuickItemObj ammo : dcActiveObj.getOwnerObj().getQuickItems()) {
-                                RadialMenu.CreatorNode innn = new CreatorNode();
+                                CreatorNode innn = new CreatorNode();
                                 innn.name = "Reload with " + ammo.getName();
                                 innn.texture = TextureManager.getOrCreate(ammo.getImagePath());
                                 innn.action = () -> {
@@ -297,6 +302,8 @@ public class RadialMenu extends Group {
                                 list.add(innn);
                             }
                         }
+                    }
+                }
             }
 
         }
@@ -367,6 +374,8 @@ public class RadialMenu extends Group {
         public String name;
         public List<CreatorNode> childNodes;
         public Runnable action;
+        public float w;
+        public float h;
     }
 
     public class MenuNode extends Group {
@@ -378,11 +387,18 @@ public class RadialMenu extends Group {
         private Label text = null;
 
         public MenuNode(Image image, String text) {
+            this(image, text, image.getWidth(), image.getHeight());
+        }
+        public MenuNode(Image image, String text, float w, float h) {
 //            addActor(image);
             if (text != null && text.length() > 0) {
                 this.text = new Label(text, new Label.LabelStyle(new BitmapFont(), Color.WHITE));
             }
             this.image = image;
+            if (w!=0)
+            image.setWidth(w);
+            if (h!=0)
+            image.setHeight(h);
             setHeight(image.getHeight());
             setWidth(image.getWidth());
 
@@ -434,7 +450,7 @@ public class RadialMenu extends Group {
                 text.draw(batch, parentAlpha);
             }
             if (drawChildren) {
-                 List<MenuNode> renderList = new LinkedList<>(childNodes);
+                List<MenuNode> renderList = new LinkedList<>(childNodes);
                 Collections.reverse(renderList); //to sync with click listener; TODO rework!
                 for (MenuNode child : renderList) {
                     child.draw(batch, parentAlpha);
@@ -445,7 +461,9 @@ public class RadialMenu extends Group {
         @Override
         public Actor hit(float x, float y, boolean touchable) {
             Actor a = image.hit(x - image.getX(), y - image.getY(), touchable);
-            if (a != null) a = this;
+            if (a != null) {
+                a = this;
+            }
             if (a == null && drawChildren) {
                 for (MenuNode child : childNodes) {
                     a = child.hit(x, y, touchable);

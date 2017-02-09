@@ -35,7 +35,7 @@ public class CaseAnim extends ActionAnim{
         return null;
     }
 
-    public enum ANIM_CASES{
+    public enum ANIM_CASES {
         BLOCK,
         DODGE,
         PARRY,

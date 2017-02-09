@@ -4,7 +4,6 @@ import main.ability.effects.DealDamageEffect;
 import main.ability.effects.Effect;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.content.CONTENT_CONSTS.TARGETING_MODE;
-import main.content.CONTENT_CONSTS2.SFX;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.VALUE;
@@ -187,21 +186,9 @@ if (anim==null ) return null ;
             sprites.add(new SpriteAnimation(path));
             exists = true;
         }
-        List<EmitterActor> list = new LinkedList<>();
-        for (String path :
-                StringMaster.openContainer(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS))) {
-            EmitterActor emitter = null;
-            SFX sfx = new EnumMaster<SFX>().
-                    retrieveEnumConst(SFX.class, path);
-            if (sfx == null)
-                emitter = EmitterPools.getEmitterActor(path);
-            else
-                emitter = EmitterPools.getEmitterActor(sfx);
-            if (emitter != null)
-                list.add(emitter
-                );
-            exists = true;
-        }
+        List<EmitterActor> list =EmitterPools. getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
+if (!list.isEmpty())
+    exists = true;
 
         if (!exists)
             if (active != null)
@@ -213,6 +200,8 @@ if (anim==null ) return null ;
         anim.setEmitterList(list);
         return exists;
     }
+
+
 
     private boolean checkForcedAnimation(DC_ActiveObj active, ANIM_PART part) {
         switch (part) {

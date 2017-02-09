@@ -66,10 +66,12 @@ public class Conditions extends Vector<Condition> implements Referred, Condition
 
     public static Conditions join(Condition c1, Condition c2) {
         Conditions c = new Conditions();
-        if (c1 != null)
+        if (c1 != null) {
             c.add(c1);
-        if (c2 != null)
+        }
+        if (c2 != null) {
             c.add(c2);
+        }
         return c;
     }
 
@@ -79,11 +81,13 @@ public class Conditions extends Vector<Condition> implements Referred, Condition
     // }
     @Override
     public boolean contains(Object o) {
-        if (o instanceof Condition)
+        if (o instanceof Condition) {
             for (Condition c : this) {
-                if (c.getClass().equals(o.getClass()))
+                if (c.getClass().equals(o.getClass())) {
                     return true;
+                }
             }
+        }
 
         return super.contains(o);
     }
@@ -97,8 +101,9 @@ public class Conditions extends Vector<Condition> implements Referred, Condition
     @Override
     public boolean check(Ref ref) {
         setRef(ref);
-        if (or)
+        if (or) {
             return checkAny();
+        }
         return check();
     }
 
@@ -122,14 +127,16 @@ public class Conditions extends Vector<Condition> implements Referred, Condition
 
             isTrue &= this.get(i).check(ref);
             if (!isTrue) {
-                if (isFastFailOnCheck())
+                if (isFastFailOnCheck()) {
                     break;
+                }
                 this.setLastCheckedCondition(get(i));
                 // break;
             }
         }
-        if (negative)
+        if (negative) {
             return !isTrue;
+        }
         return isTrue;
     }
 
@@ -154,8 +161,9 @@ public class Conditions extends Vector<Condition> implements Referred, Condition
 
             isTrue |= this.get(i).check(ref);
             if (isTrue) {
-                if (isFastFailOnCheck())
+                if (isFastFailOnCheck()) {
                     break;
+                }
                 this.setLastCheckedCondition(get(i));
 
             }
@@ -176,11 +184,13 @@ public class Conditions extends Vector<Condition> implements Referred, Condition
 
     @Override
     public boolean add(Condition c) {
-        if (c == null)
+        if (c == null) {
             return false;
+        }
         if (c.getClass().getName().contains("ClearShot")) {
-            if (ConditionMaster.contains(this, c.getClass()))
+            if (ConditionMaster.contains(this, c.getClass())) {
                 return false;
+            }
         }
         if (checkConditionUnwrap(c)) {
             for (Condition cond : ((Conditions) c)) {
@@ -194,10 +204,13 @@ public class Conditions extends Vector<Condition> implements Referred, Condition
     }
 
     protected boolean checkConditionUnwrap(Condition c) {
-        if (!(this instanceof OrConditions))
-            if (!(c instanceof OrConditions))
-                if (c instanceof Conditions)
+        if (!(this instanceof OrConditions)) {
+            if (!(c instanceof OrConditions)) {
+                if (c instanceof Conditions) {
                     return true;
+                }
+            }
+        }
         return false;
     }
 

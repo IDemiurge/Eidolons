@@ -31,20 +31,24 @@ public class LibraryView extends HeroItemView {
         return new Comparator<ObjType>() {
             public int compare(ObjType o1, ObjType o2) {
                 if (o1.isUpgrade()) {
-                    if (!o2.isUpgrade())
+                    if (!o2.isUpgrade()) {
                         return 1;
+                    }
 
                 } else {
-                    if (o2.isUpgrade())
+                    if (o2.isUpgrade()) {
                         return -1;
+                    }
                 }
 
                 if (o1.getIntParam(getSortingParam()) > o2
-                        .getIntParam(getSortingParam()))
+                        .getIntParam(getSortingParam())) {
                     return 1;
+                }
                 if (o1.getIntParam(getSortingParam()) == o2
-                        .getIntParam(getSortingParam()))
+                        .getIntParam(getSortingParam())) {
                     return 0;
+                }
                 return -1;
             }
         };
@@ -76,11 +80,13 @@ public class LibraryView extends HeroItemView {
     @Override
     public BORDER getBorder(ObjType value) {
         BORDER b = WorkspaceMaster.getBorderForType(value);
-        if (b != null)
+        if (b != null) {
             return b;
+        }
         if (StringMaster.checkContainer(hero.getProperty(PROPS.KNOWN_SPELLS),
-                value.getName(), true))
+                value.getName(), true)) {
             return BORDER.SPELL_HIGHLIGHTED;
+        }
         // if (StringMaster.checkContainer(hero.getProperty(getPROP2()), value
         // .getName(), true))
         // return BORDER.SPELL_HIGHLIGHTED;
@@ -89,8 +95,9 @@ public class LibraryView extends HeroItemView {
         // return BORDER.SPELL_HIGHLIGHTED;
 
         String r = hero.getGame().getRequirementsManager().check(hero, value);
-        if (r == null)
+        if (r == null) {
             return null;
+        }
 
         return BORDER.HIDDEN;
     }

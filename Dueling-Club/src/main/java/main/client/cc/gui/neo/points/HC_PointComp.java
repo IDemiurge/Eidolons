@@ -106,28 +106,32 @@ public class HC_PointComp extends G_Panel implements MouseListener {
 
     public void setEntity(Entity entity) {
         textComp.setEntity(entity);
-        if (model != null)
+        if (model != null) {
             model.setEntity(entity);
+        }
     }
 
     @Override
     public void refresh() {
-        if (icon != null)
+        if (icon != null) {
             updateIcon();
+        }
         textComp.refresh();
         removeAll();
         addComps();
         revalidate();
-        if (param.isMastery())
+        if (param.isMastery()) {
             textComp.setToolTipText(getToolTipText());
+        }
     }
 
     protected void updateIcon() {
         if (ContentManager.isBase(param)) {
             icon.setImg(HC_Master.generateValueIcon(ContentManager.getFinalAttrFromBase(param),
                     isLocked()));
-        } else
+        } else {
             icon.setImg(HC_Master.generateValueIcon(param, isLocked()));
+        }
     }
 
     protected void addComps() {
@@ -189,8 +193,9 @@ public class HC_PointComp extends G_Panel implements MouseListener {
                     e.printStackTrace();
 
                 }
-                if (!result)
+                if (!result) {
                     return;
+                }
                 refresh();
                 CharacterCreator.getHeroPanel(hero).getMiddlePanel().getScc().refreshPools();
             }
@@ -198,23 +203,27 @@ public class HC_PointComp extends G_Panel implements MouseListener {
     }
 
     protected boolean isLocked() {
-        if (textComp.getEntity() == null)
+        if (textComp.getEntity() == null) {
             return true;
-        if (!param.isAttribute())
+        }
+        if (!param.isAttribute()) {
             return textComp.getEntity().getIntParam(param) <= 0;
+        }
         return false;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) { // TODO in new thread!!!
-        if (e.getClickCount() > 1 || e.isAltDown())
+        if (e.getClickCount() > 1 || e.isAltDown()) {
             if (e.getSource() == icon) {
-                if (isTreeNagivationOn())
+                if (isTreeNagivationOn()) {
                     if (!param.isAttribute()) {
                         HC_Master.goToSkillTree(param);
                         return;
                     }
+                }
             }
+        }
         clicked();
 
         if (e.getSource() == upArrow) {
@@ -238,10 +247,11 @@ public class HC_PointComp extends G_Panel implements MouseListener {
     }
 
     protected void clicked() {
-        if (param.isMastery())
+        if (param.isMastery()) {
             HC_Master.setLastClickedMastery(param);
-        else
+        } else {
             HC_Master.setLastClickedAttribute(ContentManager.getFinalAttrFromBase(param));
+        }
     }
 
     protected void downClick() {
@@ -253,23 +263,25 @@ public class HC_PointComp extends G_Panel implements MouseListener {
     }
 
     protected void lockClick(MouseEvent e) {
-        if (!param.isMastery())
+        if (!param.isMastery()) {
             SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
-        else {
+        } else {
             if (e.getClickCount() > 1) {
                 UnlockMaster.unlock(hero, param, SwingUtilities.isRightMouseButton(e));
-            } else
+            } else {
                 promptUnlock();
+            }
         }
     }
 
     protected void infoClick() {
-        if (param.isAttribute())
+        if (param.isAttribute()) {
             CharacterCreator.getHeroPanel(hero).getMiddlePanel().getScc().getAttrPanel().setValue(
                     param);
-        else
+        } else {
             CharacterCreator.getHeroPanel(hero).getMiddlePanel().getScc().getMstrPanel().setValue(
                     param);
+        }
 
         CharacterCreator.getHeroPanel(hero).getMvp().getCurrentViewComp().refresh();
         CharacterCreator.getHeroPanel(hero).getCurrentTab().refresh();
@@ -317,8 +329,9 @@ public class HC_PointComp extends G_Panel implements MouseListener {
     }
 
     public void reset() {
-        if (model != null)
+        if (model != null) {
             model.reset();
+        }
 
     }
 
@@ -363,10 +376,12 @@ public class HC_PointComp extends G_Panel implements MouseListener {
 
         @Override
         protected String getText() {
-            if (shortened)
+            if (shortened) {
                 return "";
-            if (ContentManager.isBase(param))
+            }
+            if (ContentManager.isBase(param)) {
                 return "Base: ";
+            }
             return super.getText();
         }
 
@@ -381,8 +396,9 @@ public class HC_PointComp extends G_Panel implements MouseListener {
         }
 
         protected int getDefaultX() {
-            if (icon == null)
+            if (icon == null) {
                 return super.getDefaultX();
+            }
             return 52;
         }
 
@@ -393,8 +409,9 @@ public class HC_PointComp extends G_Panel implements MouseListener {
 
         @Override
         protected int getDefaultFontSize() {
-            if (fontSize == null)
+            if (fontSize == null) {
                 fontSize = DEFAULT_FONT_SIZE;
+            }
             return fontSize;
         }
     }

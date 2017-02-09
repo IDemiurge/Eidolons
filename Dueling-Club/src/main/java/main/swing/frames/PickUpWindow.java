@@ -23,8 +23,9 @@ public class PickUpWindow extends OperationWindow {
 
     @Override
     protected HeroItemTab getComponent() {
-        if (tabComp == null)
+        if (tabComp == null) {
             tabComp = new ItemSwapPanel(heroModel, cell);
+        }
         return tabComp;
 
     }

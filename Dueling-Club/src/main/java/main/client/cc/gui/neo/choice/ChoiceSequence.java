@@ -47,8 +47,9 @@ public class ChoiceSequence {
     }
 
     public void start() {
-        for (ChoiceView v : views)
+        for (ChoiceView v : views) {
             v.setSequence(this);
+        }
         Launcher.setView(getPanel(), VIEWS.CHOICE);
         try {
             ((HC_KeyManager) Launcher.getKeyListener(VIEWS.HC)).setSequence(this);
@@ -83,15 +84,17 @@ public class ChoiceSequence {
 
     protected void next() {
         i++;
-        if (views.size() <= i)
+        if (views.size() <= i) {
             done();
-        else {
+        } else {
             try {
                 views.get(i).activate();
                 view = views.get(i);
-                if (view.getSelectedIndex() == -1)
-                    if (view.getData().size() > 0)
+                if (view.getSelectedIndex() == -1) {
+                    if (view.getData().size() > 0) {
                         view.itemIndexSelected(0);
+                    }
+                }
                 refresh();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -138,8 +141,9 @@ public class ChoiceSequence {
             manager.cancelSelection();
 
         } else {
-            if (!results.isEmpty())
+            if (!results.isEmpty()) {
                 results.pop();
+            }
             view = views.get(i);
             try {
                 view.activate();
@@ -185,8 +189,9 @@ public class ChoiceSequence {
     }
 
     public void addView(ChoiceView choiceView) {
-        if (!views.contains(choiceView))
+        if (!views.contains(choiceView)) {
             views.add(choiceView);
+        }
     }
 
     public boolean isActive() {

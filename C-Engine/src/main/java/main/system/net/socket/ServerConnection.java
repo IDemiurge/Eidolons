@@ -44,8 +44,9 @@ public abstract class ServerConnection extends GenericConnection {
     @Override
     public void send(Object o) {
         super.send(o);
-        if (viewer != null)
+        if (viewer != null) {
             viewer.output(String.valueOf(o));
+        }
 
     }
 

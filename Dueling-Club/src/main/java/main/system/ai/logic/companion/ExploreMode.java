@@ -1,11 +1,9 @@
 package main.system.ai.logic.companion;
 
-import main.entity.obj.DC_HeroObj;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.logic.dungeon.DungeonCrawler.ENGAGEMENT_LEVEL;
-import main.swing.generic.services.dialog.DialogMaster;
 import main.system.ai.UnitAI;
 import main.system.ai.logic.actions.Action;
 
@@ -43,8 +41,9 @@ public class ExploreMode {
 
     public Action getNextAction() {
         checkDone();
-        if (done)
+        if (done) {
             return null;
+        }
 //        if (interrupted)
             return null;
 //        return action;
@@ -64,15 +63,18 @@ public class ExploreMode {
         if (!game.getRules().getStackingRule().canBeMovedOnto(ai.getUnit(), destination)) {
 
         }
-        if (checkEnemySpotted())
-            if (!isIgnoreEnemies())
+        if (checkEnemySpotted()) {
+            if (!isIgnoreEnemies()) {
                 if (promptInterrupt()) {
                     interrupted = true;
                     return;
                 }
+            }
+        }
 
-        if (ai.getUnit().getCoordinates().equals(destination))
+        if (ai.getUnit().getCoordinates().equals(destination)) {
             done = true;
+        }
 
 //        if (path == null) {
 //            failed = true;

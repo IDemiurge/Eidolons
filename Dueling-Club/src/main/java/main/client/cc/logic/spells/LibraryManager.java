@@ -32,15 +32,17 @@ public class LibraryManager {
     }
 
     public static synchronized String initSpellbook(DC_HeroObj hero) {
-        if (hero.getGame().isSimulation())
+        if (hero.getGame().isSimulation()) {
             checkNewAutoVerbatim(hero);
+        }
         List<ObjType> list = new LinkedList<>();
         for (ObjType type : DataManager.getTypes(OBJ_TYPES.SPELLS)) {
             if (checkKnown(hero, type)) {
                 // if (!hero.checkProperty(PROPS.LEARNED_SPELLS,
                 // type.getName()))
-                if (!isUpgraded(hero, type))
+                if (!isUpgraded(hero, type)) {
                     list.add(type);
+                }
 
             }
         }
@@ -53,9 +55,11 @@ public class LibraryManager {
 
         String spellbook = "";
         for (ObjType type : list) {
-            if (!hero.checkProperty(PROPS.MEMORIZED_SPELLS, type.getName()))
-                if (!hero.checkProperty(PROPS.VERBATIM_SPELLS, type.getName()))
+            if (!hero.checkProperty(PROPS.MEMORIZED_SPELLS, type.getName())) {
+                if (!hero.checkProperty(PROPS.VERBATIM_SPELLS, type.getName())) {
                     spellbook += type.getName() + StringMaster.getContainerSeparator();
+                }
+            }
         }
         hero.setProperty(PROPS.SPELLBOOK, spellbook, true);
         return spellbook;
@@ -66,19 +70,23 @@ public class LibraryManager {
     }
 
     public static boolean checkHeroHasSpell(DC_HeroObj hero, ObjType type) {
-        if (hero.checkProperty(PROPS.MEMORIZED_SPELLS, type.getName()))
+        if (hero.checkProperty(PROPS.MEMORIZED_SPELLS, type.getName())) {
             return true;
-        if (hero.checkProperty(PROPS.DIVINED_SPELLS, type.getName()))
+        }
+        if (hero.checkProperty(PROPS.DIVINED_SPELLS, type.getName())) {
             return true;
-        if (hero.checkProperty(PROPS.VERBATIM_SPELLS, type.getName()))
+        }
+        if (hero.checkProperty(PROPS.VERBATIM_SPELLS, type.getName())) {
             return true;
+        }
         return false;
     }
 
     public static DC_SpellObj getSpellFromHero(DC_HeroObj hero, String name) {
         for (DC_SpellObj s : hero.getSpells()) {
-            if (s.getName().equalsIgnoreCase(name))
+            if (s.getName().equalsIgnoreCase(name)) {
                 return s;
+            }
         }
 
         return null;
@@ -89,32 +97,41 @@ public class LibraryManager {
             boolean result = false;
             ObjType type = DataManager.getType(spell, OBJ_TYPES.SPELLS);
             if (checkStandardSpell(type)) {
-                if (checkDoubleKnowledge(hero, type))
+                if (checkDoubleKnowledge(hero, type)) {
                     result = true;
+                }
 
                 if (checkKnowledge(hero, type)) // optimize-merge!
+                {
                     if (checkMastery(hero, type)) {
                         result = true;
                     }
+                }
             }
 
             if (result) {
-                if (hero.checkProperty(PROPS.MEMORIZED_SPELLS, type.getName()))
+                if (hero.checkProperty(PROPS.MEMORIZED_SPELLS, type.getName())) {
                     hero.removeProperty(PROPS.MEMORIZED_SPELLS, type.getName(), true);
+                }
                 addVerbatimSpell(hero, type);
             }
         }
     }
 
     public static boolean checkKnown(DC_HeroObj hero, ObjType type) {
-        if (isLearned(hero, type))
+        if (isLearned(hero, type)) {
             return true;
+        }
         if (checkStandardSpell(type)) {
-            if (checkDoubleKnowledge(hero, type))
+            if (checkDoubleKnowledge(hero, type)) {
                 return true;
+            }
             if (checkKnowledge(hero, type)) // Intelligence ?
-                if (checkMastery(hero, type))
+            {
+                if (checkMastery(hero, type)) {
                     return true;
+                }
+            }
         }
         return false;
     }
@@ -128,8 +145,9 @@ public class LibraryManager {
     }
 
     public static boolean checkKnowledge(DC_HeroObj hero, ObjType type) {
-        if (type.getIntParam(PARAMS.SPELL_DIFFICULTY) == 0)
+        if (type.getIntParam(PARAMS.SPELL_DIFFICULTY) == 0) {
             return false;
+        }
         return hero.checkParam(PARAMS.KNOWLEDGE, type.getParam(PARAMS.SPELL_DIFFICULTY));
     }
 
@@ -187,13 +205,15 @@ public class LibraryManager {
             if (StringMaster.compare(spell.getSpellPool() + "", poolProp.getName(), false)) {
                 if (spell.isUpgrade()) {
                     if (spell.getProperty(G_PROPS.BASE_TYPE).equalsIgnoreCase(baseName)) {
-                        if (replace)
+                        if (replace) {
                             replaceSpell(hero, type, poolProp, spell);
+                        }
                         return true;
                     }
                 } else if (spell.getName().equalsIgnoreCase(baseName)) {
-                    if (replace)
+                    if (replace) {
                         replaceSpell(hero, type, poolProp, spell);
+                    }
                     return true;
                 }
             }

@@ -32,9 +32,10 @@ public class LogFileMaster {
      * preserve line format
      */
     private static String getGameSubfolder() {
-        if (gameSubfolder == null)
+        if (gameSubfolder == null) {
             gameSubfolder = FileManager.getUniqueFileVersion(getGameLogFileNameBase(),
                     getLogFilePath());
+        }
         return gameSubfolder;
 
     }
@@ -57,12 +58,15 @@ public class LogFileMaster {
     }
 
     public static void checkWriteToFile(LOG_CHANNELS channel, String text, boolean writeNow) {
-        if (!isWritingLogFilesOn())
+        if (!isWritingLogFilesOn()) {
             return;
-        if (channel.getLog() == null)
+        }
+        if (channel.getLog() == null) {
             return;
-        if (!isLogTypeSupported(channel.getLog()))
+        }
+        if (!isLogTypeSupported(channel.getLog())) {
             return;
+        }
         // another subfolder!
         List<String> entries = channelLogs.get(channel);
         if (entries == null) {
@@ -80,10 +84,12 @@ public class LogFileMaster {
     }
 
     public static void checkWriteToFile(int priority, String text, boolean writeNow) {
-        if (!isWritingLogFilesOn())
+        if (!isWritingLogFilesOn()) {
             return;
-        if (priority < getMinPriority())
+        }
+        if (priority < getMinPriority()) {
             return;
+        }
         List<String> entries = priorityLogs.get(priority);
         if (entries == null) {
             entries = new LinkedList<>();
@@ -124,29 +130,33 @@ public class LogFileMaster {
     }
 
     public static void checkWriteToFileNewThread(final LOG_CHANNELS channel, final String text) {
-        if (!isWritingLogFilesOn())
+        if (!isWritingLogFilesOn()) {
             return;
+        }
         new Thread(new Runnable() {
             public void run() {
                 checkWriteToFile(channel, text, !writingStarted);
             }
         }, "LogFileMaster thread").start();
 
-        if (!writingStarted)
+        if (!writingStarted) {
             startWritingThread();
+        }
     }
 
     public static void checkWriteToFileNewThread(final int priority, final String text) {
-        if (!isWritingLogFilesOn())
+        if (!isWritingLogFilesOn()) {
             return;
+        }
         new Thread(new Runnable() {
             public void run() {
                 checkWriteToFile(priority, text, !writingStarted);
             }
         }, "LogFileMaster thread").start();
 
-        if (!writingStarted)
+        if (!writingStarted) {
             startWritingThread();
+        }
     }
 
     public static boolean isDirty() {
@@ -158,10 +168,12 @@ public class LogFileMaster {
     }
 
     public void writeAll() {
-        if (LogFileMaster.writingPaused)
+        if (LogFileMaster.writingPaused) {
             return;
-        if (!LogFileMaster.isDirty())
+        }
+        if (!LogFileMaster.isDirty()) {
             return;
+        }
         for (final Integer priority : priorityLogs.keySet()) {
             final List<String> entries = channelLogs.get(priority);
             new Thread(new Runnable() {
@@ -172,8 +184,9 @@ public class LogFileMaster {
         }
         for (LOG_CHANNELS channel : channelLogs.keySet()) {
             final List<String> entries = channelLogs.get(channel);
-            if (!ListMaster.isNotEmpty(entries))
+            if (!ListMaster.isNotEmpty(entries)) {
                 continue;
+            }
             final String string = channel.getLog().toString() + "\\" + channel.toString();
             new Thread(new Runnable() {
                 public void run() {

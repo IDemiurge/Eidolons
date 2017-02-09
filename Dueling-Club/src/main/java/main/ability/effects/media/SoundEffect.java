@@ -44,17 +44,19 @@ public class SoundEffect extends DC_Effect {
 
     @Override
     public boolean applyThis() {
-        if (std_sound != null)
+        if (std_sound != null) {
             SoundMaster.playStandardSound(std_sound);
-        else if (soundset != null)
+        } else if (soundset != null) {
             SoundMaster.playEffectSound(sound_type, soundset);
-        else {
-            if (obj == null)
+        } else {
+            if (obj == null) {
                 obj = ref.getObj(key);
-            if (custom)
+            }
+            if (custom) {
                 SoundMaster.playCustomEffectSound(sound_type, obj);
-            else
+            } else {
                 SoundMaster.playEffectSound(sound_type, obj);
+            }
         }
 
         return true;

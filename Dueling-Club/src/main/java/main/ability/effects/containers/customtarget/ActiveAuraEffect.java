@@ -33,12 +33,13 @@ public class ActiveAuraEffect extends DC_Effect {
         targeting.getConditions().add(
                 ConditionMaster.getAliveCondition(KEYS.MATCH));
         if (onlyEnemiesOrAllies != null) {
-            if (onlyEnemiesOrAllies)
+            if (onlyEnemiesOrAllies) {
                 targeting.getConditions().add(
                         ConditionMaster.getEnemyCondition());
-            else
+            } else {
                 targeting.getConditions().add(
                         ConditionMaster.getAllyCondition());
+            }
 
         }
         targeting.getConditions().add(

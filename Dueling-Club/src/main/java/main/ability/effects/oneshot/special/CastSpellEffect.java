@@ -36,7 +36,7 @@ public class CastSpellEffect extends MicroEffect {
         }
         List<String> reasons = ReasonMaster.getReasonsCannotActivate(active,
                 ref);
-        if (!ListMaster.contains(reasons, "cooldown", false))
+        if (!ListMaster.contains(reasons, "cooldown", false)) {
             if (!active.canBeActivated(ref, true)) {
                 game.getLogManager().log(
                         active.getOwnerObj().getName()
@@ -45,6 +45,7 @@ public class CastSpellEffect extends MicroEffect {
                 SoundMaster.playStandardSound(STD_SOUNDS.FAIL);
                 return false;
             }
+        }
 
         if (isForceTargeting()) {
             // ref.setTarget(null);

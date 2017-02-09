@@ -33,10 +33,12 @@ public class TreeMap {
     }
 
     public static int getXOffsetForLink(LINK_VARIANT variant) {
-        if (variant.getImage() == null)
+        if (variant.getImage() == null) {
             return 0;
-        if (variant.isVertical())
+        }
+        if (variant.isVertical()) {
             return 32 - variant.getImage().getWidth(null) / 2;
+        }
 
         int rankPoolWidth = STD_IMAGES.RANK_COMP.getWidth();
         if (variant.isToLeft()) {
@@ -66,8 +68,9 @@ public class TreeMap {
     public HT_Node getNodeForType(ObjType targetType) {
         for (Point p : getNodeMap().keySet()) {
             ObjType type = getNodeMap().get(p).getValue();
-            if (type == targetType)
+            if (type == targetType) {
                 return getNodeMap().get(p);
+            }
         }
         return null;
 
@@ -75,8 +78,9 @@ public class TreeMap {
 
     public StaticTreeLink getLinkForChildType(ObjType targetType) {
         for (StaticTreeLink p : getStaticLinkMap().keySet()) {
-            if (p.getChildren().contains(targetType))
+            if (p.getChildren().contains(targetType)) {
                 return p;
+            }
         }
         return null;
     }
@@ -87,34 +91,41 @@ public class TreeMap {
 
     public StaticTreeLink getLinkForParentType(ObjType targetType, boolean searchMultiLink) {
         for (StaticTreeLink link : getStaticLinkMap().keySet()) {
-            if (searchMultiLink)
-                if (link.isManualSet())
+            if (searchMultiLink) {
+                if (link.isManualSet()) {
                     continue;
-            if (link.getSource() == targetType)
-                return link;
-        }
-        if (searchMultiLink)
-            for (StaticTreeLink link : getStaticLinkMap().keySet()) {
-                if (link.getSource() == targetType)
-                    return link;
+                }
             }
+            if (link.getSource() == targetType) {
+                return link;
+            }
+        }
+        if (searchMultiLink) {
+            for (StaticTreeLink link : getStaticLinkMap().keySet()) {
+                if (link.getSource() == targetType) {
+                    return link;
+                }
+            }
+        }
         return null;
     }
 
     public Point getPointForType(ObjType targetType) {
         for (Point p : getNodeMap().keySet()) {
             ObjType type = getNodeMap().get(p).getValue();
-            if (type == targetType)
+            if (type == targetType) {
                 return p;
+            }
         }
         return null;
     }
 
     public void addNode(Point point, HT_Node node, int size) {
         HT_Node replaced = getNodeMap().put(new PointX(point.x, point.y), node);
-        if (replaced != null)
+        if (replaced != null) {
             main.system.auxiliary.LogMaster.log(1, " !!! " + node + " replaces " + replaced
                     + " !!! ");
+        }
         getMouseMap().put(new Rectangle(point.x, point.y, size, size), node);
     }
 
@@ -164,13 +175,14 @@ public class TreeMap {
         ObjType parent = DataManager.getParent(type);
         for (Point p : getNodeMap().keySet()) {
             ObjType t = getNodeMap().get(p).getType();
-            if (t == parent)
+            if (t == parent) {
                 continue;
+            }
             // Point point = map.getPointForType(parent);
             int x = getPointForType(t).x; // ?
             int xDiff = Math.abs(x1 - x);
             boolean xOverlap = xDiff < xRange;
-            if (xOverlap)
+            if (xOverlap) {
                 if (BooleanMaster.isFalse(and_or_xor)) {
                     typesOnRow.add(t);
                     continue;
@@ -186,16 +198,20 @@ public class TreeMap {
                     // }
 
                     boolean yOverlap = yDiff < yRange;
-                    if (yOverlap)
+                    if (yOverlap) {
                         if (BooleanMaster.isFalse(and_or_xor)) {
                             typesOnRow.add(t);
                             continue;
                         }
+                    }
 
-                    if (BooleanMaster.isTrue(and_or_xor))
-                        if (yOverlap && xOverlap)
+                    if (BooleanMaster.isTrue(and_or_xor)) {
+                        if (yOverlap && xOverlap) {
                             typesOnRow.add(t);
+                        }
+                    }
                 }
+            }
 
             // alternatively, use SD to make different versions of links...
             // shorter/longer
@@ -275,30 +291,34 @@ public class TreeMap {
         }
 
         public Image getImage() {
-            if (image == null)
+            if (image == null) {
                 image = ImageManager.getImage(getImageFileName());
+            }
             return image;
 
         }
 
         public Image getSelectedImage() {
-            if (imageSelected == null)
+            if (imageSelected == null) {
                 imageSelected = ImageManager.getImage("UI\\components\\ht\\selected\\" + "LINK_"
                         + name() + " s.png");
+            }
             return imageSelected;
         }
 
         public Image getDarkenedImage() {
-            if (imageDarkened == null)
+            if (imageDarkened == null) {
                 imageDarkened = ImageManager.getImage("UI\\components\\ht\\darkened\\" + "LINK_"
                         + name() + " d.png");
+            }
             return imageDarkened;
         }
 
         public Image getAvailableImage() {
-            if (imageSelected == null)
+            if (imageSelected == null) {
                 imageSelected = ImageManager.getImage("UI\\components\\ht\\selected\\" + "LINK_"
                         + name() + " s.png");
+            }
             return imageSelected;
         }
 
@@ -317,10 +337,12 @@ public class TreeMap {
         }
 
         public int getOffsetMultiplier() {
-            if (isToLeft())
+            if (isToLeft()) {
                 return -1;
-            if (isToRight())
+            }
+            if (isToRight()) {
                 return 1;
+            }
             return 0;
         }
 
@@ -335,8 +357,9 @@ public class TreeMap {
         }
 
         public int getOffsetY() {
-            if (getImage() == null)
+            if (getImage() == null) {
                 return 0;
+            }
             return -getImage().getHeight(null);
             // return offsetY;
         }
@@ -352,23 +375,27 @@ public class TreeMap {
         }
 
         public boolean isVertical() {
-            if (vertical_horizontal == null)
+            if (vertical_horizontal == null) {
                 return false;
+            }
             return vertical_horizontal;
         }
 
         public boolean isHorizontal() {
-            if (vertical_horizontal == null)
+            if (vertical_horizontal == null) {
                 return false;
+            }
             return vertical_horizontal;
         }
 
         public int getNodeOffsetX() {
-            if (isVertical())
+            if (isVertical()) {
                 return -32 + getImage().getWidth(null) / 2;
+            }
 
-            if (isToLeft())
+            if (isToLeft()) {
                 return -32; // -getImage().getWidth(null) / 2 + 32;
+            }
             return getImage().getWidth(null) - 32;
             // getXOffsetForLink(this);
             // return nodeOffsetX;

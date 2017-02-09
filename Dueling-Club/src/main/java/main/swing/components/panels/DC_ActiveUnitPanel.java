@@ -177,7 +177,7 @@ public class DC_ActiveUnitPanel extends G_Panel implements MouseListener {
             initialized = true;
         }
 
-        if (obj != null)
+        if (obj != null) {
             if (obj.getOwner().isMe() && !obj.isAiControlled()) {
                 // lbl.setText(obj.getName());
                 pp.setEntity(obj);
@@ -197,6 +197,7 @@ public class DC_ActiveUnitPanel extends G_Panel implements MouseListener {
                 qip.refresh();
 
             }
+        }
         activeUnitNameComp.refresh();
         vop.refresh();
         bp.refresh();
@@ -248,8 +249,9 @@ public class DC_ActiveUnitPanel extends G_Panel implements MouseListener {
             SmallItem buff = (SmallItem) ((G_ListPanel) getBuffPanel().getCurrentComponent())
                     .getList().locationToItem(e.getPoint());
             game.getToolTipMaster().initBuffTooltip(buff, false);
-        } else if (getPp().contains(e.getPoint()))
+        } else if (getPp().contains(e.getPoint())) {
             DC_Game.game.getBattleField().centerCameraOn(obj);
+        }
     }
 
     @Override

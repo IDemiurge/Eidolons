@@ -9,26 +9,33 @@ public class DescriptionMaster {
 
     public static void initDescriptions() {
         for (PARAMS p : PARAMS.values()) {
-            if (!p.isMastery())
+            if (!p.isMastery()) {
                 p.setDescr(getNonMasteryDescription(p));
+            }
         }
     }
 
     public static String getMasteryRankDescription(PARAMS param, MASTERY_RANK rank) {
         switch (param) {
             case MARKSMANSHIP_MASTERY:
-                if (rank == MASTERY_RANK.NONE)
+                if (rank == MASTERY_RANK.NONE) {
                     return "You could shoot an ogre if it still stood. In the back. Up close.";
-                if (rank == MASTERY_RANK.NOVICE)
+                }
+                if (rank == MASTERY_RANK.NOVICE) {
                     return "You could hit the mark on a tree if your hands didn't shake...";
-                if (rank == MASTERY_RANK.APPRENTICE)
+                }
+                if (rank == MASTERY_RANK.APPRENTICE) {
                     return "You could hit the mark on a tree if your mind didn't wander so much...";
-                if (rank == MASTERY_RANK.ADEPT)
+                }
+                if (rank == MASTERY_RANK.ADEPT) {
                     return "Mysteries of Zen are slowly revealing themselves... ";
-                if (rank == MASTERY_RANK.ADVANCED)
+                }
+                if (rank == MASTERY_RANK.ADVANCED) {
                     return "Forget about aiming, it's all about the stance and breathing!";
-                if (rank == MASTERY_RANK.EXPERT)
+                }
+                if (rank == MASTERY_RANK.EXPERT) {
                     return "You can shoot a bird in the beak, with your eyes shut and hanging down from a tree. Shooting backwards. With hands tied.";
+                }
                 /*
 				 * DETECTION
 				 * "Your eye is so sharp you have adopted a habit of keeping it close most of the time."
@@ -55,11 +62,13 @@ public class DescriptionMaster {
 				 * 
 				 */
             case PSYCHIC_MASTERY:
-                if (rank == MASTERY_RANK.NONE)
+                if (rank == MASTERY_RANK.NONE) {
                     return "You have difficulty reading the thoughts of your  drunkard friends shouting at you and have a presence so"
                             + " fearsome that people choose not to notice you";
-                if (rank == MASTERY_RANK.GRAND_MASTER)
+                }
+                if (rank == MASTERY_RANK.GRAND_MASTER) {
                     return "No mind is too strong for you to break, no spirit too fierce to subdue, no thought too quick to intercept. ";
+                }
 
         }// You are of Character.is
         return "You have a rank of " + StringMaster.getWellFormattedString(rank.name()) + " in "

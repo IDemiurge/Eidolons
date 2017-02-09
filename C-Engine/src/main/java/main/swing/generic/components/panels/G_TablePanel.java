@@ -24,10 +24,11 @@ public class G_TablePanel extends G_Panel {
     }
 
     public G_TablePanel(Vector<?> data, boolean b, String sizeInfo) {
-        if (b)
+        if (b) {
             names = AVNames;
-        else
+        } else {
             names = emptyNames;
+        }
         table = new G_Table(new DefaultTableModel(data, new Vector<String>(
                 Arrays.asList(names))) {
             public java.lang.Class<?> getColumnClass(int arg0) {

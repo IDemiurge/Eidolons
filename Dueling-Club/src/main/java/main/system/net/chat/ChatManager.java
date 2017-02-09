@@ -30,9 +30,9 @@ public class ChatManager {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        if (socket == null)
+        if (socket == null) {
             Err.error("Failed to init chat connection!");
-        else {
+        } else {
             chathandler = new ChatConnection(chatBox, socket);
         }
     }

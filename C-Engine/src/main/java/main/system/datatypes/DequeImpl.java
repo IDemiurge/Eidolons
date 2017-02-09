@@ -27,8 +27,9 @@ public class DequeImpl<E> extends ConcurrentLinkedDeque<E>
     public int indexOf(E e) {
         int i = 0;
         for (E e1 : this) {
-            if (e.equals(e1))
+            if (e.equals(e1)) {
                 return i;
+            }
             i++;
         }
         return -1;
@@ -52,8 +53,9 @@ public class DequeImpl<E> extends ConcurrentLinkedDeque<E>
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        if (!ListMaster.isNotEmpty(c))
+        if (!ListMaster.isNotEmpty(c)) {
             return false;
+        }
         boolean result = false;
         try {
             result = super.addAll(c);
@@ -97,8 +99,9 @@ public class DequeImpl<E> extends ConcurrentLinkedDeque<E>
         size = size();
         int i = 0;
         for (E e : this) {
-            if (i == index)
+            if (i == index) {
                 return e;
+            }
             i++;
         }
 

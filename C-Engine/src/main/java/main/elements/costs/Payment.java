@@ -13,6 +13,7 @@ public class Payment implements Serializable {
     private PARAMETER valueToPay;
     private Formula amountFormula;
     private Ref ref;
+    private int lastPaid;
 
     public Payment(PARAMETER valueToPay, Formula amountFormula) {
         this.valueToPay = valueToPay;
@@ -22,8 +23,9 @@ public class Payment implements Serializable {
     @Override
     public String toString() {
         if (amountFormula.toString().equals("0")
-                || amountFormula.toString().equals(""))
+                || amountFormula.toString().equals("")) {
             return "";
+        }
         return "Pay: " + amountFormula.toString() + " of "
                 + valueToPay.toString();
     }
@@ -38,7 +40,7 @@ public class Payment implements Serializable {
                 int chance = (int) (D * 100 + 0) % 100;
                 if (chance >= 50) {
                     boolean up = RandomWizard.chance(chance);
-                    int i = (int) Math.round((n.doubleValue()));
+                    lastPaid = (int) Math.round((n.doubleValue()));
                     if (!up) {
                         try {
                             ref.getGame().getLogManager()
@@ -46,15 +48,15 @@ public class Payment implements Serializable {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        i--;
+                        lastPaid--;
                     }
-                    return payee.modifyParameter(valueToPay, -i);
+                    return payee.modifyParameter(valueToPay, -lastPaid);
                 }
             }
 
         }
-        int amount = -amountFormula.getInt(ref);
-        return payee.modifyParameter(valueToPay, amount);
+        lastPaid = amountFormula.getInt(ref);
+        return payee.modifyParameter(valueToPay, -lastPaid);
     }
 
     private boolean isRolledRounded() {
@@ -71,6 +73,10 @@ public class Payment implements Serializable {
 
     public void setAmountFormula(Formula amountFormula) {
         this.amountFormula = amountFormula;
+    }
+
+    public int getLastPaid() {
+        return lastPaid;
     }
 
     public void setValueToPay(PARAMETER valueToPay) {

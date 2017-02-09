@@ -39,8 +39,9 @@ public class ChoiceMaster {
         cs.setManager(getTypeChoiceMaster(cs, typeChoiceView));
         cs.start();
         String name = (String) WaitMaster.waitForInput(WAIT_OPERATIONS.CUSTOM_SELECT);
-        if (name == null)
+        if (name == null) {
             return null;
+        }
         return DataManager.getType(name, TYPE);
     }
 

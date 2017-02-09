@@ -16,18 +16,21 @@ public class PrinciplesCondition extends StringComparison {
     public boolean check() {
         super.check();
 
-        for (String s : StringMaster.openContainer(val1))
+        for (String s : StringMaster.openContainer(val1)) {
             for (String s2 : StringMaster.openContainer(val2)) {
                 PRINCIPLES p1 = new EnumMaster<PRINCIPLES>().retrieveEnumConst(
                         PRINCIPLES.class, s);
                 PRINCIPLES p2 = new EnumMaster<PRINCIPLES>().retrieveEnumConst(
                         PRINCIPLES.class, s2);
                 if (exclusive) {
-                    if (p1.getOpposite() == p2)
+                    if (p1.getOpposite() == p2) {
                         return false;
-                } else if (p1 == p2)
+                    }
+                } else if (p1 == p2) {
                     return true;
+                }
             }
+        }
 
         return true;
     }

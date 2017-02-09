@@ -55,8 +55,9 @@ public class ListInfoPanel extends G_InfoPanel implements ListSelectionListener 
     @Override
     public void valueChanged(ListSelectionEvent e) {
         Object value = ((JList) e.getSource()).getSelectedValue();
-        if (value == null)
+        if (value == null) {
             return;
+        }
         if (value instanceof Entity) {
             setInfoObj((Entity) value);
             return;

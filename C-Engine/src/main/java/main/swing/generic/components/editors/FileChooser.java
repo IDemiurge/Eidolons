@@ -41,8 +41,9 @@ public class FileChooser implements EDITOR {
 
     @Override
     public String launch(String valueName, String prevValue) {
-        if (multi)
+        if (multi) {
             value = prevValue;
+        }
         return launch(valueName, fc.getComponentAt(0, 0));
     }
 
@@ -55,8 +56,9 @@ public class FileChooser implements EDITOR {
         fc.setCurrentDirectory(new File(getDefaultFileLocation()));
         if (!directoryOnly) {
             fileLocation = v;
-            if (checkFile(fileLocation))
+            if (checkFile(fileLocation)) {
                 fc.setCurrentDirectory(new File(getDefaultFileLocation() + fileLocation));
+            }
         }
 
         int returnVal = fc.showOpenDialog(parent);
@@ -65,10 +67,11 @@ public class FileChooser implements EDITOR {
             File file = fc.getSelectedFile();
 
             String selected = file.getPath();
-            if (getDefaultFileLocation() != null)
+            if (getDefaultFileLocation() != null) {
                 selected = StringMaster.replaceFirst(selected,
                         getDefaultFileLocation()
                         , "");
+            }
             selected = StringMaster.replaceFirst(selected,
                     PathFinder.getEnginePathPlusNewResourceProject()
                     , "");
@@ -76,28 +79,33 @@ public class FileChooser implements EDITOR {
                     PathFinder.getEnginePath()
                     , "");
             if (multi) {
-                if (value.isEmpty())
+                if (value.isEmpty()) {
                     return selected;
+                }
                 value = value + ";" + selected;
                 return value;
             }
-            if (!directoryOnly)
-                if (file.isFile())
+            if (!directoryOnly) {
+                if (file.isFile()) {
                     fileLocation = selected;
+                }
+            }
             return selected;
         }
         return fileLocation;
     }
 
     protected boolean checkFile(String fileLocation) {
-        if (directoryOnly)
+        if (directoryOnly) {
             return new File(getDefaultFileLocation() + "\\" + fileLocation).isDirectory();
+        }
         return new File(getDefaultFileLocation() + "\\" + fileLocation).isFile();
     }
 
     protected String getDefaultFileLocation() {
-        if (defaultFileLocation != null)
+        if (defaultFileLocation != null) {
             return defaultFileLocation;
+        }
         return PathFinder.getImagePath();
     }
 
@@ -110,8 +118,9 @@ public class FileChooser implements EDITOR {
     public void launch(JTable table, int row, int column, String v) {
 
         String selected = launch(v, (String) table.getModel().getValueAt(row, 1));
-        if (table != null)
+        if (table != null) {
             table.getModel().setValueAt(selected, row, 1);
+        }
     }
 
     public String getFileLocation() {

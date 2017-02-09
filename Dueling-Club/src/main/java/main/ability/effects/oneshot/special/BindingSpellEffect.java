@@ -28,11 +28,12 @@ public class BindingSpellEffect extends DC_Effect {
 
 
         Effects effects=null;
-        if (!shareOrRedirect)
+        if (!shareOrRedirect) {
             effects = new Effects(new CustomTargetEffect(new FixedTargeting(
                     KEYS.TARGET2), new DuplicateEffect(true)),
                     new CustomTargetEffect(new FixedTargeting(KEYS.TARGET),
                             new InterruptEffect()));
+        }
 
         Effect EFFECT = new DuplicateSpellEffect(KEYS.TARGET.name(), false,
                 true);

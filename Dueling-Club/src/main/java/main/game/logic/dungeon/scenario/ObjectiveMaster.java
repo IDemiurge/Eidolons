@@ -83,8 +83,9 @@ public class ObjectiveMaster {
                 name = DC_ObjInitializer.getNameFromObjString(objectiveData);
                 for (DC_HeroObj u : DC_Game.game.getObjectsOnCoordinate(dungeon.getZ(), c, false,
                         false, false)) {
-                    if (u.getName().equals(name))
+                    if (u.getName().equals(name)) {
                         id = u.getId();
+                    }
                 }
                 ref.setID(KEY, id);
                 conditions.add(new ObjComparison(KEY, KEYS.TARGET.toString()));

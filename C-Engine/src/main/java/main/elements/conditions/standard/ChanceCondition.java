@@ -34,18 +34,19 @@ public class ChanceCondition extends ConditionImpl {
     @Override
     public boolean check() {
         boolean result;
-        if (percentage != null)
+        if (percentage != null) {
             result = RandomWizard.chance(percentage.getInt(ref));
-        else {
+        } else {
             int n1 = greater.getInt(ref);
             int n2 = than.getInt(ref);
 
             String string = "";
             ref.getGame().getLogManager().log(string);
-            if (roll_type != null)
+            if (roll_type != null) {
                 result = RandomWizard.roll(roll_type, n1, n2, ref);
-            else
+            } else {
                 result = RandomWizard.roll(n1, n2); // logging?
+            }
 
             // int result1 = RandomWizard.getRandomIntBetween(0, n1);
             // int result2 = RandomWizard.getRandomIntBetween(0, n2);

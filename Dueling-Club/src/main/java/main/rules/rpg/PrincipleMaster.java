@@ -36,8 +36,9 @@ public class PrincipleMaster {
                 autoSpendIdentityPoints(type);
                 break;
             case UNITS:
-                if (!initIdentityParams(type))
+                if (!initIdentityParams(type)) {
                     generateUnitIdentityParams(type);
+                }
                 generateUnitAlignmentParams(type);
                 break;
             case DEITIES:
@@ -88,8 +89,9 @@ public class PrincipleMaster {
     private static boolean initParams(ObjType type, boolean alignmentOrIdentity) {
         Map<PRINCIPLES, String> map = new RandomWizard<PRINCIPLES>().constructStringWeightMap(type
                 .getProperty(G_PROPS.PRINCIPLES), PRINCIPLES.class);
-        if (map.isEmpty())
+        if (map.isEmpty()) {
             return false;
+        }
         boolean result = false;
         for (PRINCIPLES principle : map.keySet()) {
             // Integer amount =StringMaster.getInteger(map.getOrCreate(principle));
@@ -121,8 +123,9 @@ public class PrincipleMaster {
         ref.setID(KEYS.INFO, type.getId());
         for (PARAMS param : map.keySet()) {
             if (!(param.getName().contains(StringMaster.ALIGNMENT) || param.getName().contains(
-                    StringMaster.IDENTITY)))
+                    StringMaster.IDENTITY))) {
                 continue;
+            }
             String string = map.get(param);
             // string = TextParser.parse(string, ref,
             // TextParser.INFO_PARSING_CODE);
@@ -147,8 +150,9 @@ public class PrincipleMaster {
     public static void initPrincipleIdentification(ObjType type) {
         String prop = type.getProperty(G_PROPS.PRINCIPLES);
 
-        if (prop.contains("("))
+        if (prop.contains("(")) {
             return;
+        }
 
         String newValue = "";
         int i = Math.min(3, StringMaster.openContainer(prop).size());

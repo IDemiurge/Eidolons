@@ -57,8 +57,9 @@ public class TopComp extends WrappedTextComp {
             } catch (Exception e) {
 
             }
-            if (name.isEmpty())
+            if (name.isEmpty()) {
                 name = StringMaster.getWellFormattedString(game.getArenaManager().getMapName());
+            }
 
             if (game.isDebugMode()) {
                 name += StringMaster.wrapInCurlyBraces("" + game.getDungeonMaster().getZ());

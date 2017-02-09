@@ -41,8 +41,9 @@ public class PanicRule extends DC_RuleImpl {
 
     @Override
     public boolean check(Event event) {
-        if (event_type.equals(event.getType()))
+        if (event_type.equals(event.getType())) {
             super.check(event);
+        }
         return super.check(event);
     }
 

@@ -73,12 +73,14 @@ public abstract class ChoiceView<E> extends G_Panel {
 
     protected void init() {
         removeAll();
-        if (!ListMaster.isNotEmpty(data))
+        if (!ListMaster.isNotEmpty(data)) {
             initData();
+        }
         addControls();
         addHeader();
-        if (isInfoPanelNeeded())
+        if (isInfoPanelNeeded()) {
             addInfoPanels();
+        }
         addSortOptionComp();
         addFilterOptionComp();
         addSelectionPages();
@@ -190,9 +192,11 @@ public abstract class ChoiceView<E> extends G_Panel {
 
     protected void addInfoPanels() {
         Entity entity = null;
-        if (data.size() > 0)
-            if (data.get(0) instanceof Entity)
+        if (data.size() > 0) {
+            if (data.get(0) instanceof Entity) {
                 entity = (Entity) data.get(0);
+            }
+        }
         infoPanel = new DC_PagedInfoPanel(entity);
         add(infoPanel, IP_POS);
         infoPanel.refresh();
@@ -212,10 +216,11 @@ public abstract class ChoiceView<E> extends G_Panel {
         if (e instanceof Entity && infoPanel != null) {
             infoPanel.select((Entity) e);
         }
-        if (!isOkBlocked())
+        if (!isOkBlocked()) {
             okButton.setVisuals(VISUALS.FORWARD);
-        else
+        } else {
             okButton.setVisuals(VISUALS.FORWARD_BLOCKED);
+        }
 
     }
 
@@ -259,16 +264,18 @@ public abstract class ChoiceView<E> extends G_Panel {
     }
 
     protected String getOkButtonPos() {
-        if (infoPanel == null)
+        if (infoPanel == null) {
             return "@id ok, pos pages.x2+width "
                     + MigMaster.getCenteredHeight(okButton.getVisuals().getHeight());
+        }
         return OK_BUTTON_POS;
     }
 
     protected String getBackButtonPos() {
-        if (infoPanel == null)
+        if (infoPanel == null) {
             return "@id back, pos pages.x-width "
                     + MigMaster.getCenteredHeight(backButton.getVisuals().getHeight());
+        }
         return BACK_BUTTON_POS;
     }
 
@@ -289,10 +296,11 @@ public abstract class ChoiceView<E> extends G_Panel {
     }
 
     public void activate() {
-        if (!isReady())
+        if (!isReady()) {
             init();
-        else
+        } else {
             initData();
+        }
     }
 
     public int getSelectedIndex() {
@@ -306,10 +314,12 @@ public abstract class ChoiceView<E> extends G_Panel {
     public abstract String getInfo();
 
     public boolean checkBlocked(int index) {
-        if (index == -1)
+        if (index == -1) {
             return true;
-        if (data.get(index) == null)
+        }
+        if (data.get(index) == null) {
             return true;
+        }
         return checkBlocked(data.get(index));
     }
 

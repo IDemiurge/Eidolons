@@ -17,20 +17,6 @@ import java.awt.*;
 import java.util.Map;
 
 public class CONTENT_CONSTS {
-    public enum CUSTOM_HERO_GROUP {
-        PLAYTEST, ERSIDRIS, EDALAR, TEST,
-
-    }
-
-    public enum DUNGEON_SUBFOLDER {
-        // ARCADE,
-        BATTLE,
-        CAMPAIGN,
-        CRAWL,
-        SKIRMISH,
-        SUBLEVELS,
-        TEST,
-    }
 
     public enum MASTERY_RANK {
         NONE(0),
@@ -411,8 +397,9 @@ public class CONTENT_CONSTS {
         }
 
         ROLL_TYPES(String s) {
-            if (StringMaster.isEmpty(s))
+            if (StringMaster.isEmpty(s)) {
                 s = StringMaster.getWellFormattedString(name());
+            }
             this.name = s;
         }
 
@@ -605,8 +592,9 @@ public class CONTENT_CONSTS {
             if (getRace() == RACE.HUMAN) {
                 BACKGROUND male = new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class,
                         name().replace("WO", ""));
-                if (male != null)
+                if (male != null) {
                     return male;
+                }
             }
             return this;
         }
@@ -617,15 +605,17 @@ public class CONTENT_CONSTS {
         }
 
         public BACKGROUND getFemale() {
-            if (isFemale() || getRace() != RACE.HUMAN || this == STRANGER)
+            if (isFemale() || getRace() != RACE.HUMAN || this == STRANGER) {
                 return this;
+            }
             return new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class, "WO" + name());
 
         }
 
         private boolean isFemale() {
-            if (getRace() != RACE.HUMAN)
+            if (getRace() != RACE.HUMAN) {
                 return false;
+            }
             return name().substring(0, 5).equalsIgnoreCase(StringMaster.WOMAN);
         }
 
@@ -905,8 +895,9 @@ public class CONTENT_CONSTS {
         }
 
         public String getText(Object... variables) {
-            if (variables.length < 1)
+            if (variables.length < 1) {
                 return text;
+            }
             return VariableManager.getVarText(text, variables);
 
         }
@@ -1112,8 +1103,9 @@ public class CONTENT_CONSTS {
         }
 
         public String getName() {
-            if (name == null)
+            if (name == null) {
                 name = StringMaster.getWellFormattedString(name());
+            }
 
             return name;
         }
@@ -1137,12 +1129,16 @@ public class CONTENT_CONSTS {
         IN_PLAIN_SIGHT, IN_SIGHT, BEYOND_SIGHT, CONCEALED;
 
         public boolean isSufficient(UNIT_TO_UNIT_VISION u_vision) {
-            if (u_vision == BEYOND_SIGHT)
-                if (this == CONCEALED)
+            if (u_vision == BEYOND_SIGHT) {
+                if (this == CONCEALED) {
                     return true;
-            if (u_vision == IN_SIGHT)
-                if (this == IN_PLAIN_SIGHT)
+                }
+            }
+            if (u_vision == IN_SIGHT) {
+                if (this == IN_PLAIN_SIGHT) {
                     return true;
+                }
+            }
             return this == u_vision;
         }
 
@@ -1517,8 +1513,9 @@ public class CONTENT_CONSTS {
         }
 
         public String getDefaultType() {
-            if (type != null)
+            if (type != null) {
                 return type;
+            }
             return name().substring(0, name().length() - 1);
         }
     }
@@ -1541,8 +1538,9 @@ public class CONTENT_CONSTS {
 
         QUALITY_LEVEL(int durability) {
             this.setDurability(durability);
-            if (durability != 100)
+            if (durability != 100) {
                 costMod = 100 - (100 - durability) * 2 / 3;
+            }
         }
 
         public String toString() {
@@ -1981,8 +1979,9 @@ public class CONTENT_CONSTS {
         }
 
         public String getToolTip() {
-            if (toolTip == null)
+            if (toolTip == null) {
                 return getName();
+            }
             return toolTip;
         }
 
@@ -2068,8 +2067,9 @@ public class CONTENT_CONSTS {
 
         public static ASPECT getAspectByCode(int code) {
             for (ASPECT a : ASPECT.values()) {
-                if (a.getCode() == code)
+                if (a.getCode() == code) {
                     return a;
+                }
             }
             return null;
         }
@@ -2467,8 +2467,9 @@ public class CONTENT_CONSTS {
         public ARCADE_REGION getNext() {
             int i = new ListMaster<ARCADE_REGION>().getList(values()).indexOf(this);
             i++;
-            if (values().length == i)
+            if (values().length == i) {
                 return null;
+            }
             return values()[i];
         }
 

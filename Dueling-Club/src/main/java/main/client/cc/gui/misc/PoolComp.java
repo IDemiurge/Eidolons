@@ -40,8 +40,9 @@ public class PoolComp extends TextCompDC {
     }
 
     public void update() {
-        if (getEntity() != null)
+        if (getEntity() != null) {
             text = getEntity().getParamRounded(param, false);
+        }
         repaint();
     }
 

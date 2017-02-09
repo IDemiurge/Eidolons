@@ -72,10 +72,11 @@ public class BackgroundChoiceView extends EntityChoiceView {
         List<VALUE> backgroundParams = DC_ContentManager.getBackgroundStaticValues();
         for (VALUE v : backgroundParams) {
             if (v instanceof PARAMETER) {
-                if (v.isWriteToType())
+                if (v.isWriteToType()) {
                     hero.modifyParameter((PARAMETER) v, bgType.getIntParam((PARAMETER) v));
-                else
+                } else {
                     type.modifyParameter((PARAMETER) v, bgType.getIntParam((PARAMETER) v));
+                }
 
                 // type.multiplyParamByPercent((PARAMETER) v, 50, false);// TODO
                 // feeble

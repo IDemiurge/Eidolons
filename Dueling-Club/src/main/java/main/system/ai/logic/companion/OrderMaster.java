@@ -44,8 +44,9 @@ public class OrderMaster {
         List<ActionSequence> sequences = ActionSequenceConstructor.getSequences(action, order
                 .getArg(), task);
         PriorityManager.setPriorities(sequences);
-        for (ActionSequence sequence : sequences)
+        for (ActionSequence sequence : sequences) {
             SpecialPriorities.applySpecialPriorities(sequence);
+        }
 
         ActionSequence sequence = PriorityManager.getByPriority(sequences);
         order.setSequence(sequence);
@@ -93,10 +94,12 @@ public class OrderMaster {
 
     public static void giveGlobalOrders(DC_HeroObj leader) {
         String type = ListChooser.chooseEnum(GLOBAL_ORDER_TYPE.class);
-        if (type == null)
+        if (type == null) {
             type = ListChooser.chooseEnum(ORDER_TYPE.class);
-        if (type == null)
+        }
+        if (type == null) {
             return;
+        }
         GroupAI group = leader.getUnitAI().getGroup();
 
 //        group.setOrder(new Order(group, type, arg));
@@ -112,8 +115,9 @@ public class OrderMaster {
     // as Action/Effect?
     public static void giveOrders(DC_HeroObj unit, DC_HeroObj leader) {
         String type = ListChooser.chooseEnum(ORDER_TYPE.class);
-        if (type == null)
+        if (type == null) {
             return;
+        }
         ORDER_TYPE TYPE = new EnumMaster<ORDER_TYPE>().retrieveEnumConst(ORDER_TYPE.class, type);
 
         Condition conditions = null;

@@ -45,11 +45,13 @@ public class CadenceRule {
     private static final Formula DURATION = new Formula("1");
 
     private static boolean checkSingleWeaponCadence(DC_HeroObj unit, DC_UnitAction action) {
-        if (unit.getActiveWeapon(action.isOffhand()).getIntParam(PARAMS.CADENCE_BONUS) > 0)
+        if (unit.getActiveWeapon(action.isOffhand()).getIntParam(PARAMS.CADENCE_BONUS) > 0) {
             return true;
+        }
 
-        if (action.getIntParam(PARAMS.CADENCE_BONUS) > 0)
+        if (action.getIntParam(PARAMS.CADENCE_BONUS) > 0) {
             return true;
+        }
 
         return false;
     }
@@ -57,27 +59,32 @@ public class CadenceRule {
     private static boolean checkFocusBonusApplies(DC_HeroObj unit, DC_UnitAction action,
                                                   boolean singleCadence) {
         BuffObj buff = unit.getBuff(buffTypeNameOffHand, false);
-        if (buff == null)
+        if (buff == null) {
             buff = unit.getBuff(buffTypeNameMainHand, false);
-        if (buff == null)
+        }
+        if (buff == null) {
             return false;
+        }
 
-        if (buff.getRef().getObj(KEYS.WEAPON) == action.getRef().getObj(KEYS.WEAPON))
+        if (buff.getRef().getObj(KEYS.WEAPON) == action.getRef().getObj(KEYS.WEAPON)) {
             return false;
+        }
         // check new weapon - ? Buff ref?
 
         return true;
     }
 
     public static void checkDualAttackCadence(DC_UnitAction action, DC_HeroObj unit) {
-        if (action.getActionGroup() != ACTION_TYPE_GROUPS.ATTACK)
+        if (action.getActionGroup() != ACTION_TYPE_GROUPS.ATTACK) {
             return;
+        }
         boolean singleCadence = checkSingleWeaponCadence(unit, action);
         if (!UnitAnalyzer.checkDualWielding(unit) && !UnitAnalyzer.checkDualNaturalWeapons(unit)
                 && !singleCadence
             // || checkSingleCadence(action)
-                )
+                ) {
             return;
+        }
         Boolean offhand = null;
         if (action.checkProperty(PROP, MAIN_HAND)) {
             offhand = false;
@@ -87,10 +94,13 @@ public class CadenceRule {
         }
         if (singleCadence)
             // offhand = !action.isOffhand();
+        {
             offhand = false;
+        }
 
-        if (offhand == null)
+        if (offhand == null) {
             return;
+        }
         main.system.auxiliary.LogMaster.log(LogMaster.RULES_DEBUG, "Cadence Rule applies! ");
 
         Ref ref = new Ref(unit.getGame(), unit.getId());
@@ -106,16 +116,18 @@ public class CadenceRule {
         // INIT COST CADENCE EFFECTS
         Effects effects = new Effects();
         String cadence = unit.getParam(PARAMS.CADENCE_AP_MOD);
-        if (cadence.isEmpty())
+        if (cadence.isEmpty()) {
             cadence = DC_Formulas.DEFAULT_CADENCE_AP_MOD + "";
+        }
         ModifyValueEffect valueEffect = new ModifyValueEffect(PARAMS.AP_COST,
                 MOD.MODIFY_BY_PERCENT, cadence);
         DC_WeaponObj weapon = unit.getActiveWeapon(offhand);
         valueEffect.modifyFormula(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
         effects.add(valueEffect);
         cadence = unit.getParam(PARAMS.CADENCE_STA_MOD);
-        if (cadence.isEmpty())
+        if (cadence.isEmpty()) {
             cadence = DC_Formulas.DEFAULT_CADENCE_STA_MOD + "";
+        }
         valueEffect = new ModifyValueEffect(PARAMS.STA_COST, MOD.MODIFY_BY_PERCENT, cadence);
         valueEffect.modifyFormula(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
 
@@ -131,8 +143,9 @@ public class CadenceRule {
                 - action.getIntParam(PARAMS.CADENCE_RETAINMENT_CHANCE)
                 - weapon.getIntParam(PARAMS.CADENCE_RETAINMENT_CHANCE);
         Conditions conditions = new Conditions(new RefCondition(KEYS.EVENT_SOURCE, KEYS.SOURCE));
-        if (percentage != 100)
+        if (percentage != 100) {
             conditions.add(new ChanceCondition(new Formula("" + percentage)));
+        }
         effects.add(new AddTriggerEffect(STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, conditions,
                 new ActiveAbility(new FixedTargeting(KEYS.BASIS),
                         new RemoveBuffEffect(buffTypeName))));
@@ -159,9 +172,10 @@ public class CadenceRule {
                 new RemoveBuffEffect(buffTypeName))));
 
         Integer param = unit.getIntParam(PARAMS.CADENCE_DEFENSE_MOD);
-        if (param != 0)
+        if (param != 0) {
             addBuffEffect.addEffect(new ModifyValueEffect(PARAMS.DEFENSE_MOD,
                     MOD.MODIFY_BY_PERCENT, "" + param));
+        }
 
         addBuffEffect.setIrresistible(true);
         addBuffEffect.apply(ref);

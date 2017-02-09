@@ -35,7 +35,9 @@ public class EffectAnimCreator {
         Anim subAnim;
         if (anim instanceof CompositeAnim) {
             subAnim = ((CompositeAnim) anim).getMap().get(part);
-        } else subAnim = (Anim) anim;
+        } else {
+            subAnim = (Anim) anim;
+        }
 
         Coordinates destination = null;
         if (anim instanceof Anim) {
@@ -43,7 +45,7 @@ public class EffectAnimCreator {
         }
         Float distance =
          GridMaster.getDistance(destination,
-          e.getActiveObj().getOwnerObj().getCoordinates()); //TODO from parent anim's origin!
+                 e.getActiveObj().getOwnerObj().getCoordinates()); //TODO from parent anim's origin!
         float delay = distance / subAnim.getPixelsPerSecond();
 
 
@@ -55,12 +57,16 @@ public class EffectAnimCreator {
 
         if (anim == null) {
             anim = createAnim(e);
-            if (cachingOn)
+            if (cachingOn) {
                 map.put(e, anim);
+            }
         }
-        if (anim == null) return null;
-        if (e.getRef().getTargetObj() != null)
+        if (anim == null) {
+            return null;
+        }
+        if (e.getRef().getTargetObj() != null) {
             anim.setForcedDestination(e.getRef().getTargetObj().getCoordinates());
+        }
         anim.setPart(ANIM_PART.MAIN); //TODO gotta be some way to generalize this
         return anim;
     }
@@ -106,8 +112,9 @@ public class EffectAnimCreator {
 
         }
         Class<?> superclass = e.getClass().getSuperclass();
-        if (superclass != null)
+        if (superclass != null) {
             return createEffectAnim(e, active, superclass);
+        }
         return null;
     }
 
@@ -134,21 +141,24 @@ public class EffectAnimCreator {
     }
 
     private static String getSfx(Effect e) {
-        if (e instanceof DealDamageEffect)
+        if (e instanceof DealDamageEffect) {
             return PathFinder.getSfxPath() + "damage\\"
-             + "fire"
+                    + "fire"
 //         + ((DealDamageEffect) e).getDamage_type().toString()
-             ;
+                    ;
+        }
         return null;
     }
 
     private static String getSprites(Effect e) {
         if (e instanceof DealDamageEffect)
 
+        {
             return PathFinder.getSpritesPath() + "damage\\"
-             + "fire"
+                    + "fire"
 //             +  ((DealDamageEffect) e).getDamage_type().toString()
-             + ".png";
+                    + ".png";
+        }
         return null;
     }
 

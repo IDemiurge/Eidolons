@@ -55,8 +55,9 @@ public class DataManager {
         List<List<String>> lists = new LinkedList<List<String>>();
 
         for (String criterion : XML_Reader.getSubGroups(type)) {
-            if (criterion == null)
+            if (criterion == null) {
                 continue;
+            }
             lists.add(getFilteredTypeNameList(criterion, ContentManager.getOBJ_TYPE(type),
                     filterValue));
         }
@@ -77,10 +78,11 @@ public class DataManager {
             } catch (Exception e) {
                 continue;
             }
-            if (type != null)
+            if (type != null) {
                 return type;
-            else
+            } else {
                 continue;
+            }
         }
         return null;
     }
@@ -108,16 +110,19 @@ public class DataManager {
                 continue;
             }
             Map<String, ObjType> map = getTypeMap(TYPE); // C_TYPES
-            if (map != null)
+            if (map != null) {
                 for (String name : map.keySet()) {
                     if (StringMaster.compareByChar(name, typeName, false)) {
                         list.add(map.get(name));
                         continue;
                     }
-                    if (!strict)
-                        if (StringMaster.compare(name, typeName, false))
+                    if (!strict) {
+                        if (StringMaster.compare(name, typeName, false)) {
                             list.add(map.get(name));
+                        }
+                    }
                 }
+            }
         }
         return list;
     }
@@ -136,15 +141,19 @@ public class DataManager {
             } catch (Exception e) {
 
             }
-            if (type != null)
+            if (type != null) {
                 return type;
+            }
         }
-        if (StringMaster.isEmpty(typeName))
+        if (StringMaster.isEmpty(typeName)) {
             return null;
+        }
         typeName = typeName.trim();
-        if (obj_type == null)
-            if (recursion)
+        if (obj_type == null) {
+            if (recursion) {
                 return getType(typeName, false);
+            }
+        }
 
         if (obj_type instanceof C_OBJ_TYPE) {
             return getConstructedType(typeName, (C_OBJ_TYPE) obj_type);
@@ -154,8 +163,9 @@ public class DataManager {
         }
 
         Map<String, ObjType> map = getTypeMap(obj_type);
-        if (map == null)
+        if (map == null) {
             return null;
+        }
         ObjType type = map.get(typeName);
         if (type == null) {
             // typeName = typeName.replace(";", " "); never needed???
@@ -166,25 +176,30 @@ public class DataManager {
             type = map.get(typeName);
         }
 
-        if (type != null)
+        if (type != null) {
             return type;
+        }
 
         if (!recursion) {
-            for (String s : map.keySet())
+            for (String s : map.keySet()) {
                 if (StringMaster
-                        .compareByChar(s.replace(" ", ""), typeName.replace(" ", ""), false))
+                        .compareByChar(s.replace(" ", ""), typeName.replace(" ", ""), false)) {
                     return map.get(s);
+                }
+            }
             main.system.auxiliary.LogMaster.log(LogMaster.DATA_DEBUG, "Type not found: " + obj_type
                     + ":" + typeName);
             return null;
         }
-        if (typeName.endsWith(";"))
+        if (typeName.endsWith(";")) {
             typeName = StringMaster.getFormattedTypeName(typeName);
+        }
         // String formattedTypeName =
         // StringMaster.getFormattedTypeName(typeName);
         type = getType(typeName, obj_type, false);
-        if (type != null)
+        if (type != null) {
             return type;
+        }
         return getType(StringMaster.getWellFormattedString(typeName), obj_type, false);
     }
 
@@ -192,8 +207,9 @@ public class DataManager {
         ObjType type = null;
         for (MACRO_OBJ_TYPES TYPE : (obj_type).getTypes()) {
             type = getType(typeName, TYPE, false);
-            if (type != null)
+            if (type != null) {
                 return type;
+            }
         }
         main.system.auxiliary.LogMaster.log(LogMaster.DATA_DEBUG, "Type not found: " + obj_type
                 + ":" + typeName);
@@ -205,8 +221,9 @@ public class DataManager {
         ObjType type = null;
         for (OBJ_TYPES TYPE : obj_type.getTypes()) {
             type = getType(typeName, TYPE, false);
-            if (type != null)
+            if (type != null) {
                 return type;
+            }
         }
         main.system.auxiliary.LogMaster.log(LogMaster.DATA_DEBUG, "Type not found: " + obj_type
                 + ":" + typeName);
@@ -215,34 +232,39 @@ public class DataManager {
 
     private static ObjType getItemType(String typeName, OBJ_TYPE obj_type) {
         ObjType type = getBaseItemType(typeName, obj_type);
-        if (type != null)
+        if (type != null) {
             return type;
+        }
 
-        if (obj_type.equals(OBJ_TYPES.JEWELRY))
+        if (obj_type.equals(OBJ_TYPES.JEWELRY)) {
             return null;
+        }
         int i = 0;
         List<String> parts = StringMaster.openContainer(typeName, " ");
         String qualityName = parts.get(0);
         QUALITY_LEVEL q = new EnumMaster<QUALITY_LEVEL>().retrieveEnumConst(QUALITY_LEVEL.class,
                 qualityName);
-        if (q == null)
+        if (q == null) {
             q = QUALITY_LEVEL.NORMAL;
-        else
+        } else {
             i++;
+        }
 
         String materialName = parts.get(i);
         MATERIAL m = new EnumMaster<MATERIAL>().retrieveEnumConst(MATERIAL.class, materialName);
         while (m == null) {
             i++;
-            if (i > parts.size() - 1)
+            if (i > parts.size() - 1) {
                 return null;
+            }
             materialName += " " + parts.get(i);
             m = new EnumMaster<MATERIAL>().retrieveEnumConst(MATERIAL.class, materialName);
         }
 
         String baseTypeName = "";
-        for (int a = i; a <= parts.size() - 1; a++)
+        for (int a = i; a <= parts.size() - 1; a++) {
             baseTypeName += parts.get(a) + " ";
+        }
 
         ObjType baseType = getBaseItemType(baseTypeName, obj_type);
 
@@ -265,36 +287,44 @@ public class DataManager {
 
     private static ObjType getBaseItemType(String string, OBJ_TYPE obj_type) {
         Collection<ObjType> list = null;
-        if (obj_type.equals(OBJ_TYPES.ARMOR))
+        if (obj_type.equals(OBJ_TYPES.ARMOR)) {
             list = (baseArmorTypes);
-        if (obj_type.equals(OBJ_TYPES.WEAPONS))
+        }
+        if (obj_type.equals(OBJ_TYPES.WEAPONS)) {
             list = (baseWeaponTypes);
-        if (obj_type.equals(OBJ_TYPES.ITEMS))
+        }
+        if (obj_type.equals(OBJ_TYPES.ITEMS)) {
             list = (baseItemTypes);
-        if (obj_type.equals(OBJ_TYPES.JEWELRY))
+        }
+        if (obj_type.equals(OBJ_TYPES.JEWELRY)) {
             list = (baseJewelryTypes);
+        }
 
         for (ObjType t : list) {
-            if (StringMaster.compareByChar(string, t.getName(), true))
+            if (StringMaster.compareByChar(string, t.getName(), true)) {
                 return t;
+            }
         }
         return null;
     }
 
     public static Map<String, ObjType> getTypeMap(String type) {
         Map<String, ObjType> map = XML_Reader.getTypeMaps().get(type);
-        if (map == null)
+        if (map == null) {
             for (String sub : XML_Reader.getTypeMaps().keySet()) {
                 if (StringMaster.compare(sub, type)) {
                     map = XML_Reader.getTypeMaps().get(sub);
                     break;
                 }
             }
+        }
         if (map == null) {
-            if (ContentManager.getOBJ_TYPE(type) == null)
+            if (ContentManager.getOBJ_TYPE(type) == null) {
                 return null;
-            if (!CoreEngine.checkReadNecessary(type))
+            }
+            if (!CoreEngine.checkReadNecessary(type)) {
                 return null;
+            }
             map = new HashMap<>();
             XML_Reader.getTypeMaps().put(type, map);
         }
@@ -307,15 +337,17 @@ public class DataManager {
 
     public static void displayData() {
         for (Map<String, ObjType> m : XML_Reader.getTypeMaps().values()) {
-            for (Entry<String, ObjType> t : m.entrySet())
-                main.system.auxiliary.LogMaster.log(0, t.getKey() + " " + t.getValue().toString());
+            for (Entry<String, ObjType> t : m.entrySet()) {
+                LogMaster.log(0, t.getKey() + " " + t.getValue().toString());
+            }
         }
     }
 
     public static ObjType getOrAddType(String name, OBJ_TYPE TYPE) {
         ObjType type = getType(name, TYPE);
-        if (type == null)
+        if (type == null) {
             type = addType(name, TYPE);
+        }
         return type;
     }
 
@@ -355,14 +387,16 @@ public class DataManager {
 
     public static PROPERTY getSubGroupingKey(String typeName) {
         OBJ_TYPE TYPE = ContentManager.getOBJ_TYPE(typeName);
-        if (TYPE == null)
+        if (TYPE == null) {
             return null;
+        }
         return TYPE.getSubGroupingKey();
     }
 
     public static ObjType getType(String key, String group) {
-        if (group == null)
+        if (group == null) {
             return getType(key);
+        }
         return getType(key, ContentManager.getOBJ_TYPE(group));
     }
 
@@ -382,8 +416,9 @@ public class DataManager {
         if (key instanceof C_OBJ_TYPE) {
 
             List<ObjType> group = getCustomObjTypeCache().get(key);
-            if (group == null)
+            if (group == null) {
                 group = new LinkedList<>();
+            }
             for (OBJ_TYPES type : ((C_OBJ_TYPE) key).getTypes()) {
                 group.addAll(getTypes(type));
             }
@@ -392,8 +427,9 @@ public class DataManager {
         }
 
         Map<String, ObjType> map = getTypeMap(key);
-        if (map == null)
+        if (map == null) {
             return new LinkedList<>();
+        }
         return new LinkedList<ObjType>(map.values());
     }
 
@@ -423,15 +459,18 @@ public class DataManager {
                     e.printStackTrace();
                     continue;
                 }
-                if (data != null)
-                    if (!data.isEmpty())
+                if (data != null) {
+                    if (!data.isEmpty()) {
                         break;
+                    }
+                }
             }
             return data;
         }
 
-        if (subgroup == null)
+        if (subgroup == null) {
             return getTypeNames(TYPE);
+        }
 
         List<String> list = getTypesSubGroups().get(TYPE).get(subgroup);
         // if (list != null)
@@ -441,9 +480,9 @@ public class DataManager {
                 .toString());
         // TODO check TYPES!
         if (groupsList.isEmpty()) {
-            if (OBJ_TYPES.isOBJ_TYPE(subgroup))
+            if (OBJ_TYPES.isOBJ_TYPE(subgroup)) {
                 groupsList = toStringList(getTypes(OBJ_TYPES.getType(subgroup)));
-            else {
+            } else {
                 if (isTypeName(subgroup)) {
                     groupsList = toStringList(getTypes(getType(subgroup).getOBJ_TYPE_ENUM()));
                 }
@@ -456,8 +495,9 @@ public class DataManager {
         Map<String, Map<String, ObjType>> map = XML_Reader.getTypeMaps();
         Collection<ObjType> set = map.get(TYPE.toString()).values();
         for (ObjType type : set) {
-            if (StringMaster.compare(type.getProperty(TYPE.getSubGroupingKey()), subgroup, true))
+            if (StringMaster.compare(type.getProperty(TYPE.getSubGroupingKey()), subgroup, true)) {
                 list.add(type.getName());
+            }
         }
         // }
 
@@ -492,8 +532,9 @@ public class DataManager {
         }
         for (ObjType objName : map.values()) {
             if (or) {
-                if (StringMaster.contains(filter, objName.getValue(filterValue)))
+                if (StringMaster.contains(filter, objName.getValue(filterValue))) {
                     list.add(objName);
+                }
             } else if (StringMaster.compare(objName.getValue(filterValue),
              filter, true)) {
                 list.add(objName);
@@ -514,43 +555,49 @@ public class DataManager {
     }
 
     public static List<ObjType> getTypesGroup(OBJ_TYPE TYPE, String group) {
-        if (group == null)
+        if (group == null) {
             return getTypes(TYPE);
+        }
         List<ObjType> list = new LinkedList<ObjType>();
         Map<String, Map<String, ObjType>> map = XML_Reader.getTypeMaps();
         Collection<ObjType> set = map.get(TYPE.toString()).values();
         for (ObjType type : set) {
-            if (StringMaster.compareByChar(type.getProperty(TYPE.getGroupingKey()), group, true))
+            if (StringMaster.compareByChar(type.getProperty(TYPE.getGroupingKey()), group, true)) {
                 list.add(type);
+            }
         }
         if (list.isEmpty()) {
             for (ObjType type : set) {
                 if (StringMaster.compareByChar(type.getProperty(TYPE.getSubGroupingKey()), group,
-                        true))
+                        true)) {
                     list.add(type);
+                }
             }
         }
         return list;
     }
 
     public static List<String> getTypeNamesGroup(OBJ_TYPE TYPE, String group) {
-        if (group == null)
+        if (group == null) {
             return getTypeNames(TYPE);
+        }
         List<String> list = new LinkedList<String>();
         Map<String, Map<String, ObjType>> map = XML_Reader.getTypeMaps();
         Collection<ObjType> set = new HashSet<>();
         if (TYPE instanceof C_OBJ_TYPE) {
             for (OBJ_TYPES T : ((C_OBJ_TYPE) TYPE).getTypes()) {
                 list = getTypeNamesGroup(T, group);
-                if (ListMaster.isNotEmpty(list))
+                if (ListMaster.isNotEmpty(list)) {
                     return list;
+                }
             }
         } else {
             set = map.get(TYPE.toString()).values();
         }
         for (ObjType type : set) {
-            if (type.getProperty(TYPE.getGroupingKey()).equalsIgnoreCase(group))
+            if (type.getProperty(TYPE.getGroupingKey()).equalsIgnoreCase(group)) {
                 list.add(type.getName());
+            }
         }
         return list;
     }
@@ -560,8 +607,9 @@ public class DataManager {
     }
 
     public static boolean isTypeName(String item, OBJ_TYPES TYPE) {
-        if (item == null)
+        if (item == null) {
             return false;
+        }
         item = VariableManager.removeVarPart(item);
         return (getType(item, TYPE) != null);
     }
@@ -576,8 +624,9 @@ public class DataManager {
                 continue;
             }
             if (StringMaster.compare(type.getProperty(ContentManager.getPROP(RES_LEVEL_PROP)),
-                    res_level))
+                    res_level)) {
                 list.add(name);
+            }
         }
         return list;
     }
@@ -587,8 +636,9 @@ public class DataManager {
     }
 
     public static List<ObjType> toTypeList(List<String> strings, OBJ_TYPE TYPE) {
-        if (strings == null)
+        if (strings == null) {
             return null;
+        }
         List<ObjType> list = new LinkedList<ObjType>();
         for (String string : strings) {
             ObjType type = getType(string, TYPE);
@@ -597,13 +647,15 @@ public class DataManager {
                     type = Game.game.getTypeById(StringMaster.getInteger(string));
                     if (type == null) {
                         Obj obj = Game.game.getObjectById(StringMaster.getInteger(string));
-                        if (obj != null)
+                        if (obj != null) {
                             type = obj.getType();
+                        }
                     }
                 }
             }
-            if (type != null)
+            if (type != null) {
                 list.add(type);
+            }
         }
         return list;
     }
@@ -623,8 +675,9 @@ public class DataManager {
     public static List<String> toStringList(Collection<? extends Entity> listTypeData) {
         List<String> list = new LinkedList<String>();
         for (Entity type : listTypeData) {
-            if (type == null)
+            if (type == null) {
                 continue;
+            }
             list.add(type.getName());
         }
         return list;
@@ -681,8 +734,9 @@ public class DataManager {
     public static void overwriteType(ObjType type) {
         ObjType oldType = getType(type.getName(), type.getOBJ_TYPE_ENUM());
         if (oldType != null) {
-            if (overwrittenTypes == null)
+            if (overwrittenTypes == null) {
                 overwrittenTypes = new LinkedList<>();
+            }
             overwrittenTypes.add(oldType);
         }
         addType(type);
@@ -690,8 +744,9 @@ public class DataManager {
     }
 
     public static void reloadOverwrittenTypes() {
-        if (overwrittenTypes == null)
+        if (overwrittenTypes == null) {
             return;
+        }
         for (ObjType type : overwrittenTypes) {
             addType(type);
         }
@@ -705,8 +760,9 @@ public class DataManager {
 
     public static List<ObjType> toTypeList(Collection<? extends Entity> data) {
         List<ObjType> list = new LinkedList<>();
-        for (Entity e : data)
+        for (Entity e : data) {
             list.add(e.getType());
+        }
         return list;
     }
 
@@ -715,8 +771,9 @@ public class DataManager {
         if (TYPE instanceof C_OBJ_TYPE) {
             for (OBJ_TYPES T : ((C_OBJ_TYPE) TYPE).getTypes()) {
                 List<String> list = getSubGroupsForTYPE(T, group);
-                if (ListMaster.isNotEmpty(list))
+                if (ListMaster.isNotEmpty(list)) {
                     return list;
+                }
             }
         }
         // if (subGroupsMaps.get(TYPE).get(group) != null)
@@ -739,18 +796,21 @@ public class DataManager {
 
     public static boolean isIdSorted(OBJ_TYPE TYPE) {
         if (TYPE instanceof OBJ_TYPES) {
-            if (TYPE == OBJ_TYPES.DEITIES)
+            if (TYPE == OBJ_TYPES.DEITIES) {
                 return true;
-            if (TYPE == OBJ_TYPES.CHARS)
+            }
+            if (TYPE == OBJ_TYPES.CHARS) {
                 return true;
+            }
         }
 
         return false;
     }
 
     public static Map<C_OBJ_TYPE, List<ObjType>> getCustomObjTypeCache() {
-        if (customObjTypeCache == null)
+        if (customObjTypeCache == null) {
             customObjTypeCache = new HashMap<>();
+        }
         return customObjTypeCache;
     }
 
@@ -805,8 +865,9 @@ public class DataManager {
     public static List<ObjType> getRootTypes(List<ObjType> data) {
         List<ObjType> list = new LinkedList<>();
         for (ObjType type : data) {
-            if (type.isUpgrade())
+            if (type.isUpgrade()) {
                 continue;
+            }
             list.add(type);
         }
         return list;
@@ -822,8 +883,9 @@ public class DataManager {
 
 
     public static List<ObjType> getSublings(ObjType type, List<ObjType> data) {
-        if (getParent(type) == null)
+        if (getParent(type) == null) {
             return getRootTypes(data);
+        }
         return getChildren(getParent(type), data);
     }
 
@@ -833,11 +895,13 @@ public class DataManager {
 
     public static ObjType getParent(ObjType type) {
         String property = type.getProperty(G_PROPS.BASE_TYPE);
-        if (property.isEmpty())
-            if (type.getOBJ_TYPE_ENUM() != OBJ_TYPES.CLASSES)
+        if (property.isEmpty()) {
+            if (type.getOBJ_TYPE_ENUM() != OBJ_TYPES.CLASSES) {
                 return null;
-            else if (type.getProp("Class Group").equals("Multiclass"))
+            } else if (type.getProp("Class Group").equals("Multiclass")) {
                 property = type.getProperty("base classes one");
+            }
+        }
         return getType(property, type.getOBJ_TYPE_ENUM());
     }
 
@@ -854,8 +918,9 @@ public class DataManager {
         for (ObjType child : data) {
             // if (!type.isUpgrade())
             // continue;
-            if (!StringMaster.compareByChar(child.getProperty(prop), type.getProperty(prop2)))
+            if (!StringMaster.compareByChar(child.getProperty(prop), type.getProperty(prop2))) {
                 continue;
+            }
             list.add(child);
         }
         return list;

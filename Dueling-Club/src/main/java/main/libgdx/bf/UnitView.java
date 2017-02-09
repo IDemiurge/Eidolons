@@ -119,8 +119,8 @@ public class UnitView extends BaseView {
     }
 
     public void setVisibleVal(int val) {
-        val = Math.min(0, val);
-        val = Math.max(100, val);
+        val = Math.max(0, val);
+        val = Math.min(100, val);
         alpha = val * 0.01f;
         needRepaint = true;
     }
@@ -135,7 +135,7 @@ public class UnitView extends BaseView {
             sp.begin();
 
 
-            sp.setColor(1, 1, 1, 1 * alpha);
+//            sp.setColor(1, 1, 1, 1 * alpha);
             sp.draw(portraitTexture, 0, 0, portraitTexture.getWidth(), portraitTexture.getHeight());
             if (clockTexture != null) {
                 sp.draw(clockTexture, portraitTexture.getWidth() - clockTexture.getWidth(), 0);
@@ -216,7 +216,9 @@ public class UnitView extends BaseView {
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
-        if (touchable && this.getTouchable() != Touchable.enabled) return null;
+        if (touchable && this.getTouchable() != Touchable.enabled) {
+            return null;
+        }
         return x >= 0 && x < getWidth() && y >= 0 && y < getHeight() ? this : null;
     }
 
@@ -233,6 +235,7 @@ public class UnitView extends BaseView {
             LogMaster.error("Initiative set to wrong object type != OBJ_TYPES.UNITS");
         }
     }
+
     public int getId() {
         return curId;
     }

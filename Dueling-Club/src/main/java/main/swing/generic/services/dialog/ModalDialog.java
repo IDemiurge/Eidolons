@@ -16,20 +16,22 @@ public abstract class ModalDialog extends G_Dialog {
     @Override
     public void show() {
         super.show();
-        if (isAutoClose())
+        if (isAutoClose()) {
             new Thread(new Runnable() {
                 public void run() {
                     WaitMaster.WAIT(50);
-                    if (isCloseConditionMet())
+                    if (isCloseConditionMet()) {
                         SwingUtilities.invokeLater(new Runnable() {
                             @Override
                             public void run() {
                                 close();
                             }
                         });
+                    }
 
                 }
             }, " thread").start();
+        }
     }
 
     protected boolean isAutoClose() {

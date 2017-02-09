@@ -16,25 +16,29 @@ public class SpellType extends ActiveObjType {
     private SPELL_POOL spellPool;
 
     public SPELL_GROUP getSpellGroup() {
-        if (spellPool == null)
+        if (spellPool == null) {
             spellGroup = new EnumMaster<SPELL_GROUP>().retrieveEnumConst(
                     SPELL_GROUP.class, getProperty(G_PROPS.SPELL_GROUP));
+        }
         return spellGroup;
     }
 
     public SPELL_TYPE getSpellType() {
-        if (spellType == null)
+        if (spellType == null) {
             spellType = new EnumMaster<SPELL_TYPE>().retrieveEnumConst(
                     SPELL_TYPE.class, getProperty(G_PROPS.SPELL_TYPE));
-        if (spellType == null)
+        }
+        if (spellType == null) {
             spellType = DEFAULT_SPELL_TYPE;
+        }
         return spellType;
     }
 
     public SPELL_POOL getSpellPool() {
-        if (spellPool == null)
+        if (spellPool == null) {
             spellPool = new EnumMaster<SPELL_POOL>().retrieveEnumConst(
                     SPELL_POOL.class, getProperty(G_PROPS.SPELL_POOL));
+        }
         return spellPool;
 
     }

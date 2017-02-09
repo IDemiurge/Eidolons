@@ -69,16 +69,19 @@ public abstract class LogManager {
     public LogEntryNode getLogEntryNode(Boolean first_last_custom, ENTRY_TYPE type, Object... args) {
         LogEntryNode lastEntry = null;
         for (LogEntryNode entry : getTopNodes()) {
-            if (entry.getType() == type)
+            if (entry.getType() == type) {
                 if (first_last_custom != null) {
-                    if (first_last_custom)
+                    if (first_last_custom) {
                         return entry;
-                    else
+                    } else {
                         lastEntry = entry;
+                    }
                 } else {
-                    if (entry.getArgs().equals(args))
+                    if (entry.getArgs().equals(args)) {
                         return entry;
+                    }
                 }
+            }
         }
         return lastEntry;
     }
@@ -88,17 +91,20 @@ public abstract class LogManager {
         if (argArray == null) {
             args = new Boolean[]{false}; // TODO quickfix logLater
         }
-        if (currentNode != null)
-            if (currentNode.getType() == type)
+        if (currentNode != null) {
+            if (currentNode.getType() == type) {
                 doneLogEntryNode();
+            }
+        }
 
         boolean top = currentNode == null;
         boolean writeToTop = type.isWriteToTop();
-        if (argArray.length > 0)
+        if (argArray.length > 0) {
             if (argArray[0] == WRITE_TO_TOP) {
                 writeToTop = true;
                 argArray = ListMaster.removeIndices(ListMaster.toList(argArray), 0).toArray();
             }
+        }
 
         LogEntryNode entry = logLater ? new LogEntryNode(currentNode, type, getDisplayedLines()
                 .size() + 1, logLater) : new LogEntryNode(currentNode, type, getDisplayedLines()
@@ -137,13 +143,15 @@ public abstract class LogManager {
             // pageIndex = topIndex;
             // calculate proper Y? Always single line per header? TODO
             getTopNodes().add(entry);
-            if (!logLater)
+            if (!logLater) {
                 addTextToDisplayed(entry.getHeader());
+            }
 
             // here!
         }
-        if (logLater)
+        if (logLater) {
             pendingEntries.put(type, entry);
+        }
 
         if (layer >= getMaxLayerSupported()) {
             currentNode.addEntry(entry);
@@ -161,8 +169,9 @@ public abstract class LogManager {
 
     public void flushFinalEntryHeader(ENTRY_TYPE type, Object... args) {
         LogEntryNode entry = pendingEntries.get(type);
-        if (entry == null)
+        if (entry == null) {
             return;
+        }
         pendingEntries.remove(type);
         entry.initHeader(args);
         addTextToDisplayed(entry.getHeader());
@@ -173,12 +182,14 @@ public abstract class LogManager {
     }
 
     public boolean log(LOG log, String entry, ENTRY_TYPE enclosingEntryType) {
-        if (entry == null || log == null)
+        if (entry == null || log == null) {
             return false;
+        }
         if (addPeriod) {
             if (!entry.endsWith(".") && !entry.endsWith("?") && !entry.endsWith("!")
-                    && !entry.endsWith("<"))
+                    && !entry.endsWith("<")) {
                 entry += ".";
+            }
         }
         // pendingEntriesMap.put(enclosingEntryType, list);
         // list.add(entry);
@@ -200,8 +211,9 @@ public abstract class LogManager {
 
         LogMaster.log(entry);
 
-        if (currentNode == null)
+        if (currentNode == null) {
             addTextToDisplayed(entry);
+        }
 
         return true;
     }
@@ -238,15 +250,17 @@ public abstract class LogManager {
         if (currentNode != null) {
             layer--;
             currentNode = currentNode.getParent();
-        } else
+        } else {
             layer = 0;
+        }
         // stackY.pop(); // TODO return to previous page level Y
         // y = stackY.peek();
     }
 
     public boolean isCaseLoggedInGame(LOG_CASES CASE) {
-        if (loggedCasesCustom != null)
+        if (loggedCasesCustom != null) {
             return loggedCasesCustom.contains(CASE);
+        }
         switch (CASE) {
 
         }
@@ -272,8 +286,9 @@ public abstract class LogManager {
     protected String getTimeStarted() {
         int minutes = Calendar.getInstance().getTime().getMinutes();
         String minStr = "" + minutes;
-        if (minutes / 10 == 0)
+        if (minutes / 10 == 0) {
             minStr = "0" + minutes;
+        }
         return "Game started at " + Calendar.getInstance().getTime().getHours() + ":" + minStr;
     }
 
@@ -324,9 +339,10 @@ public abstract class LogManager {
     public void logDamageBeingDealt(int amount, Obj attacker, Obj attacked, DAMAGE_TYPE dmg_type) {
         String entry = attacker.getNameIfKnown() + " is dealing " + amount + " damage to "
                 + attacked.getNameIfKnown() + " (" + dmg_type.getName() + ")";
-        if (attacker == attacked)
+        if (attacker == attacked) {
             entry = amount + " " + dmg_type.getName() + " damage is being dealt to "
                     + attacked.getNameIfKnown();
+        }
 
         entry = StringMaster.MESSAGE_PREFIX_MISC + entry;
 
@@ -337,9 +353,10 @@ public abstract class LogManager {
     public void logDamageDealt(int t_damage, int e_damage, Obj attacker, Obj attacked) {
         String entry = attacker.getNameIfKnown() + " has dealt " + t_damage + " / " + e_damage
                 + " damage to " + attacked.getNameIfKnown();
-        if (attacker == attacked)
+        if (attacker == attacked) {
             entry = t_damage + " / " + e_damage + " damage has been dealt to "
                     + attacked.getNameIfKnown();
+        }
 
         // if (attacked.getOwner().isMe()) {
         // entry = StringMaster.MESSAGE_PREFIX_FAIL + entry;
@@ -354,17 +371,20 @@ public abstract class LogManager {
 
     public void logValueMod(PARAMETER param, Number i, Obj obj) {
         Integer amount = StringMaster.getInteger(i.toString());
-        if (amount.toString().equals("0"))
+        if (amount.toString().equals("0")) {
             return;
+        }
 
         PARAMETER baseParameter = ContentManager.getBaseParameterFromCurrent(param);
-        if (baseParameter == null)
+        if (baseParameter == null) {
             return;
+        }
 
         boolean positive = !amount.toString().contains("-");
         String string = positive ? " gains " : " loses ";
-        if (!obj.getOwner().isMe())
+        if (!obj.getOwner().isMe()) {
             positive = !positive;
+        }
         String prefix = (positive) ? StringMaster.MESSAGE_PREFIX_SUCCESS
                 : StringMaster.MESSAGE_PREFIX_FAIL;
         String s = (obj.getNameIfKnown()) + string + " " + amount.toString().replace("-", "") + " "
@@ -483,12 +503,14 @@ public abstract class LogManager {
     }
 
     public void logGoodOrBad(boolean positive, Obj obj, String logText) {
-        if (!obj.getOwner().isMe())
+        if (!obj.getOwner().isMe()) {
             positive = !positive;
-        if (positive)
+        }
+        if (positive) {
             logGood(logText);
-        else
+        } else {
             logBad(logText);
+        }
 
     }
 
@@ -518,8 +540,9 @@ public abstract class LogManager {
     }
 
     public Map<Integer, List<LogEntryNode>> getTopEntryNodesMap() {
-        if (topNodeMap == null)
+        if (topNodeMap == null) {
             topNodeMap = new HashMap<>();
+        }
         return topNodeMap;
     }
 
@@ -529,8 +552,9 @@ public abstract class LogManager {
     // }
 
     public List<String> getDisplayedLines() {
-        if (displayedLines == null)
+        if (displayedLines == null) {
             displayedLines = new LinkedList<>();
+        }
         return displayedLines;
     }
 
@@ -557,8 +581,9 @@ public abstract class LogManager {
     }
 
     public Map<ENTRY_TYPE, List<ANIM>> getPendingAnimsToLink() {
-        if (pendingAnimsToLink == null)
+        if (pendingAnimsToLink == null) {
             pendingAnimsToLink = new XLinkedMap<>();
+        }
         return pendingAnimsToLink;
     }
 

@@ -80,8 +80,9 @@ public class AttackAnimation extends ActionAnimation {
 
     @Override
     protected boolean drawGenerics() {
-        if (!super.drawGenerics())
+        if (!super.drawGenerics()) {
             return false;
+        }
         drawGeneralAttackInfoOnSource();
         return true;
     }
@@ -89,8 +90,9 @@ public class AttackAnimation extends ActionAnimation {
     @Override
     protected boolean drawPhase(AnimPhase phase) {
 
-        if (super.drawPhase(phase))
+        if (super.drawPhase(phase)) {
             return true;
+        }
 
         this.phase = phase; // TODO mass-add as argument instead!
         switch (phase.getType()) {
@@ -131,7 +133,7 @@ public class AttackAnimation extends ActionAnimation {
     }
 
     public void playSound(AnimPhase phase) {
-        if (phase != null)
+        if (phase != null) {
             switch (phase.getType()) {
                 case PARRY:
                     DC_SoundMaster.playParrySound((DC_HeroObj) getTarget(), attack.getWeapon());
@@ -159,6 +161,7 @@ public class AttackAnimation extends ActionAnimation {
                             .getArgs()[3]);
                     break;
             }
+        }
     }
 
     protected boolean drawPreAttack(AnimPhase phase) {
@@ -207,8 +210,9 @@ public class AttackAnimation extends ActionAnimation {
         Point point = null;
         if (attack.getWeapon() != null) {
             Image image = attack.getWeapon().getIcon().getImage();
-            if (attack.isOffhand())
+            if (attack.isOffhand()) {
                 image = ImageTransformer.flipHorizontally(ImageManager.getBufferedImage(image));
+            }
             // image = ImageTransformer.getCircleCroppedImage(image);
             // image = ImageManager.applyGlowFrame(image,
             // BORDER.CIRCLE_GLOW_64.getImage());
@@ -220,12 +224,15 @@ public class AttackAnimation extends ActionAnimation {
             // drawOnSource(image, point.x, point.y);
         }
         Image specMark = null;
-        if (attack.isAttackOfOpportunity())
+        if (attack.isAttackOfOpportunity()) {
             specMark = STD_IMAGES.ATTACK_OF_OPPORTUNITY.getImage();
-        if (attack.isCounter())
+        }
+        if (attack.isCounter()) {
             specMark = STD_IMAGES.COUNTER_ATTACK.getImage();
-        if (attack.isInstant())
+        }
+        if (attack.isInstant()) {
             specMark = STD_IMAGES.INSTANT_ATTACK.getImage();
+        }
 
         if (specMark != null) {
             // Point offset =
@@ -241,8 +248,9 @@ public class AttackAnimation extends ActionAnimation {
         Image image = ImageManager.getDamageTypeImage(DAMAGE_TYPE.PHYSICAL.getName());
         Point p = GeometryMaster.getFarthestPointInRectangleForImage(w, h, image, direction.flip());
         int y = p.y; // - rawDamage.size()*20
-        if (BooleanMaster.isTrue((direction.isGrowY())))
+        if (BooleanMaster.isTrue((direction.isGrowY()))) {
             y -= 30;
+        }
         int x = p.x;
         for (Damage dmg : rawDamage) {
             int damage = dmg.getDamage();
@@ -257,10 +265,11 @@ public class AttackAnimation extends ActionAnimation {
                         PHASE_TYPE.DAMAGE_FORMULA));
                 y = y + (image.getHeight(null));
 
-                if (direction.isVertical())
+                if (direction.isVertical()) {
                     y += drawTextOnTarget(StringMaster.wrapInBraces(damage + ""), font, x, y);
-                else
+                } else {
                     drawTextOnTarget(StringMaster.wrapInBraces(damage + ""), font, x, y);
+                }
                 // x += max;
 
                 // direction = direction.rotate45(true); TODO
@@ -288,21 +297,24 @@ public class AttackAnimation extends ActionAnimation {
             String text = StringMaster.getBonusString(bonusesMap.get(id));
             // string += map.getOrCreate(s) + "" + StringMaster.wrapInParenthesis(s);
             Image image = id.getImage(bonusesMap.get(id), attack);
-            if (image == null)
+            if (image == null) {
                 image = ImageManager.getDeadIcon();
+            }
             // ImageManager.getImageForDamageFormulaKey(s);
             int height = image.getHeight(null);
             int width = image.getWidth(null);
             int y = y_base;
             int x = 0;
-            if (i == 1)
+            if (i == 1) {
                 x = MigMaster.getCenteredPosition(w, width);
-            else if (i == 2)
+            } else if (i == 2) {
                 x = w - width;
+            }
 
             drawOnTarget(image, x, y);
-            if (getSubPhaseTypeForKey(id) == null)
+            if (getSubPhaseTypeForKey(id) == null) {
                 getSubPhaseTypeForKey(id);
+            }
             addMouseItem(false, x, y, width, height, new MouseItemImpl(MOUSE_ITEM.SUB_PHASE,
                     getSubPhaseTypeForKey(id)));
 
@@ -336,8 +348,9 @@ public class AttackAnimation extends ActionAnimation {
     }
 
     protected boolean isAutoFinishDefault() {
-        if (attack.isAttackOfOpportunity())
+        if (attack.isAttackOfOpportunity()) {
             return false;
+        }
         return !attack.isInstant();
     }
 
@@ -396,8 +409,9 @@ public class AttackAnimation extends ActionAnimation {
             // image = ImageManager.applyBorder(image,
             // BORDER.DARKENING_CIRCLE_50);
             image = ImageManager.applyBorder(image, BORDER.CIRCLE_GLOW_50, false);
-        } else
+        } else {
             image = ImageManager.applyBorder(image, BORDER.SPELL_BLOCKED);
+        }
         drawOnTargetCenterX(ImageManager.getValueIcon(PARAMS.DEFENSE), y); // TODO
         // mouse
         // item!
@@ -494,10 +508,13 @@ public class AttackAnimation extends ActionAnimation {
 
     @Override
     protected boolean isGhostDrawn(Boolean target) {
-        if (target)
-            if (attack != null)
-                if (attack.isInstant() || attack.isCounter() || attack.isAttackOfOpportunity())
+        if (target) {
+            if (attack != null) {
+                if (attack.isInstant() || attack.isCounter() || attack.isAttackOfOpportunity()) {
                     return true;
+                }
+            }
+        }
 
         return super.isGhostDrawn(target);
     }
@@ -538,10 +555,11 @@ public class AttackAnimation extends ActionAnimation {
 
     @Override
     public String getArgString() {
-        if (attack != null)
+        if (attack != null) {
             return attack.toString();
-        else
+        } else {
             return super.getArgString();
+        }
     }
 
 }

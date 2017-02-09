@@ -77,8 +77,9 @@ public abstract class GameState {
     }
 
     public void checkTriggers(Event e) {
-        if (triggers.size() == 0)
+        if (triggers.size() == 0) {
             return;
+        }
         main.system.auxiliary.LogMaster.log(0, triggers.size() + "");
         for (Trigger trigger : triggers) {
 
@@ -87,15 +88,17 @@ public abstract class GameState {
     }
 
     public void checkRules(Event e) {
-        if (triggerRules.size() == 0)
+        if (triggerRules.size() == 0) {
             return;
+        }
 
         for (Rule rule : triggerRules) {
-            if (rule.isOn())
-            if (rule.check(e)) {
-                Ref ref = Ref.getCopy(e.getRef());
-                ref.setEvent(e);
-                rule.apply(ref);
+            if (rule.isOn()) {
+                if (rule.check(e)) {
+                    Ref ref = Ref.getCopy(e.getRef());
+                    ref.setEvent(e);
+                    rule.apply(ref);
+                }
             }
         }
     }
@@ -130,8 +133,9 @@ public abstract class GameState {
                 return;
             }
             Map<Integer, Obj> map = getObjMaps().get(TYPE);
-            if (map == null)
+            if (map == null) {
                 return;
+            }
             // if (!map.containsValue(obj))
             map.put(obj.getId(), obj);
         }
@@ -263,8 +267,9 @@ public abstract class GameState {
     }
 
     public void applyEffects(int layer) {
-        if (effects.size() == 0)
+        if (effects.size() == 0) {
             return;
+        }
         for (Effect effect : effects) {
             if (effect.getLayer() == layer) {
                 main.system.auxiliary.LogMaster.log(LOG_CHANNELS.EFFECT_DEBUG, layer
@@ -320,10 +325,11 @@ public abstract class GameState {
     }
 
     public void removeEffect(Effect effect) {
-        if (!effects.remove(effect))
+        if (!effects.remove(effect)) {
             LogMaster.log(LogMaster.EFFECT_DEBUG, "Effect could not be removed: " + effect);
-        else
+        } else {
             LogMaster.log(LogMaster.EFFECT_DEBUG, "Effect removed: " + effect);
+        }
 
         // setDirty(true);
         // resetAll();

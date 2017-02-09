@@ -64,8 +64,9 @@ public class PrinciplePointComp extends HC_PointComp {// do I really need to?
 
             @Override
             protected String getText() {
-                if (principle == null)
+                if (principle == null) {
                     return "";
+                }
                 text = principle.toString();
                 return text;
             }
@@ -91,16 +92,18 @@ public class PrinciplePointComp extends HC_PointComp {// do I really need to?
             @Override
             protected boolean checkUp() {
                 Integer value = buffer.getIntParam(param);
-                if (value > IntegrityRule.getMaxIdentityValue())
+                if (value > IntegrityRule.getMaxIdentityValue()) {
                     return false;
+                }
                 return super.checkUp();
             }
 
             @Override
             protected boolean checkDown() {
                 Integer value = buffer.getIntParam(param);
-                if (value < IntegrityRule.getMinIdentityValue())
+                if (value < IntegrityRule.getMinIdentityValue()) {
                     return false;
+                }
                 return super.checkDown();
             }
 
@@ -108,8 +111,9 @@ public class PrinciplePointComp extends HC_PointComp {// do I really need to?
             public void tryDown() {
                 if (!checkDown()) {
                     SoundMaster.playStandardSound(getBlockedSound());
-                } else
+                } else {
                     down();
+                }
             }
 
             @Override
@@ -122,17 +126,23 @@ public class PrinciplePointComp extends HC_PointComp {// do I really need to?
             @Override
             protected int getCost(Integer value, boolean down) {
 
-                if (modified > 0)
-                    if (down)
+                if (modified > 0) {
+                    if (down) {
                         return getCost(value - 1, !down);
-                if (modified < 0)
-                    if (!down)
+                    }
+                }
+                if (modified < 0) {
+                    if (!down) {
                         return getCost(value + 1, !down);
+                    }
+                }
                 if (value < 0) {
-                    if (!down)
+                    if (!down) {
                         return 1;
-                } else if (down)
+                    }
+                } else if (down) {
                     return -1;
+                }
                 int multiplier = down ? -1 : 1;
                 return multiplier * Math.max(1, Math.abs(value));
             }
@@ -190,12 +200,13 @@ public class PrinciplePointComp extends HC_PointComp {// do I really need to?
 
     @Override
     protected void updateIcon() {
-        if (panel.getPrinciple() != null)
+        if (panel.getPrinciple() != null) {
             if (panel.getPrinciple().equals(principle)) {
                 textComp.setVisuals(VISUALS.PRINCIPLE_VALUE_BOX_SELECTED);
             } else {
                 textComp.setVisuals(VISUALS.PRINCIPLE_VALUE_BOX);
             }
+        }
         // glow on PR. icon?
     }
 

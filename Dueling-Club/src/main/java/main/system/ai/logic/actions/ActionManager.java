@@ -98,9 +98,11 @@ public class ActionManager {
             if (a instanceof QuickItemAction) {
                 ArrayList<Action> actions = new ArrayList<>();
                 actions.add(a);
-                for (Action a1 : sequence.getActions())
-                    if (!(a1 instanceof QuickItemAction))
+                for (Action a1 : sequence.getActions()) {
+                    if (!(a1 instanceof QuickItemAction)) {
                         actions.add(a1);
+                    }
+                }
                 ActionSequence rangedSequence = new ActionSequence(actions, sequence.getTask(),
                         sequence.getAi());
                 list.add(rangedSequence);
@@ -127,10 +129,12 @@ public class ActionManager {
                 break;
 
             case ATTACK:
-                if (unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK) != null)
+                if (unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK) != null) {
                     actions.addAll(unit.getActionMap().get(ACTION_TYPE.STANDARD_ATTACK));
-                if (unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK) != null)
+                }
+                if (unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK) != null) {
                     actions.addAll(unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK));
+                }
 
                 actions.remove(getUnitAction(unit, DC_ActionManager.OFFHAND_ATTACK));
                 actions.remove(getUnitAction(unit, DC_ActionManager.THROW_MAIN));
@@ -146,21 +150,24 @@ public class ActionManager {
                 actions.add(getUnitAction(unit, "Cower"));
                 break;
             case AMBUSH:
-                if (!checkAddStealth(true, unit, actions))
+                if (!checkAddStealth(true, unit, actions)) {
                     actions.add(getUnitAction(unit, STD_MODE_ACTIONS.On_Alert.name()));
+                }
                 break;
             case STALK:
-                if (!checkAddStealth(false, unit, actions))
+                if (!checkAddStealth(false, unit, actions)) {
                     actions.add(getUnitAction(unit, "Move"));
+                }
                 break;
             case STEALTH:
                 checkAddStealth(false, unit, actions);
                 break;
             case SEARCH: // can it be MOVE?
-                if (unit.getBuff("Search Mode") == null)
+                if (unit.getBuff("Search Mode") == null) {
                     actions.add(getUnitAction(unit, "Search Mode"));
-                else
+                } else {
                     actions.add(getUnitAction(unit, "Move"));
+                }
                 break;
             case WAIT:
                 actions.add(getUnitAction(unit, STD_ACTIONS.Wait.name()));
@@ -177,8 +184,9 @@ public class ActionManager {
         }
         actions.addAll(filterActives(type, (unit.getSpells())));
         actions.addAll(filterActives(type, (unit.getQuickItemActives())));
-        if (type.isFilterByCanActivate())
+        if (type.isFilterByCanActivate()) {
             actions = filterByCanActivate(unit, actions);
+        }
         return actions;
     }
 
@@ -188,16 +196,19 @@ public class ActionManager {
 
     private static boolean checkAddStealth(boolean hidePref, DC_HeroObj unit,
                                            List<DC_ActiveObj> actions) {
-        if (unit.getBuff("Stealth Mode") != null)
+        if (unit.getBuff("Stealth Mode") != null) {
             return false;
-        if (unit.getBuff("Hide Mode") != null)
+        }
+        if (unit.getBuff("Hide Mode") != null) {
             return false;
+        }
 
-        if (!hidePref)
+        if (!hidePref) {
             if (getUnitAction(unit, "Stealth Mode") != null) {
                 actions.add(getUnitAction(unit, "Stealth Mode"));
                 return true;
             }
+        }
         if (getUnitAction(unit, "Hide Mode") != null) {
             actions.add(getUnitAction(unit, "Hide Mode"));
             return true;
@@ -213,16 +224,19 @@ public class ActionManager {
                                                           List<DC_ActiveObj> actionsList) {
         List<DC_ActiveObj> list = new LinkedList<>();
         for (DC_ActiveObj a : actionsList) {
-            if (a.canBeActivated(unit.getRef(), true) || checkException(a))
+            if (a.canBeActivated(unit.getRef(), true) || checkException(a)) {
                 list.add(a);
+            }
         }
         return list;
     }
 
     private static boolean checkException(DC_ActiveObj a) {
-        if (a.isRanged())
-            if (!a.isThrow())
+        if (a.isRanged()) {
+            if (!a.isThrow()) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -230,8 +244,9 @@ public class ActionManager {
         List<DC_ActiveObj> list = new LinkedList<>();
         list.addAll(unit.getActionMap().get(ACTION_TYPE.ADDITIONAL_MOVE));
         List<DC_UnitAction> actionList = unit.getActionMap().get(ACTION_TYPE.SPECIAL_MOVE);
-        if (ListMaster.isNotEmpty(actionList))
+        if (ListMaster.isNotEmpty(actionList)) {
             list.addAll(actionList);
+        }
         list.addAll(filterActives(GOAL_TYPE.MOVE, (unit.getSpells())));
         list.add(getUnitAction(unit, "Move"));
         return list;
@@ -247,34 +262,41 @@ public class ActionManager {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (goal != null)
-                if (goal.equals(type))
+            if (goal != null) {
+                if (goal.equals(type)) {
                     list.add(spell);
+                }
+            }
         }
         return list;
     }
 
     public static List<DC_ActiveObj> getActionObjectList(List<Action> actions) {
         List<DC_ActiveObj> activeList = new LinkedList<>();
-        if (actions != null)
-            for (Action object : actions)
-                if (object != null)
+        if (actions != null) {
+            for (Action object : actions) {
+                if (object != null) {
                     activeList.add(object.getActive());
+                }
+            }
+        }
         return activeList;
     }
 
     public static Collection<DC_ActiveObj> getSpells(AI_LOGIC logic, DC_HeroObj unit) {
         List<DC_ActiveObj> list = new LinkedList<>();
         for (DC_ActiveObj spell : unit.getSpells()) {
-            if (spell.getProperty(PROPS.AI_LOGIC).equalsIgnoreCase(logic.toString()))
+            if (spell.getProperty(PROPS.AI_LOGIC).equalsIgnoreCase(logic.toString())) {
                 list.add(spell);
-            else
+            } else {
                 try {
-                    if (SpellMaster.getSpellLogic(spell) == logic)
+                    if (SpellMaster.getSpellLogic(spell) == logic) {
                         list.add(spell);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
         }
         return list;
 
@@ -285,8 +307,9 @@ public class ActionManager {
     }
 
     public Action chooseAction(UnitAI ai) {
-        if (ai.checkStandingOrders())
+        if (ai.checkStandingOrders()) {
             return ai.getStandingOrders().get(0);
+        }
 
         ActionSequenceConstructor.clearCache(); // TODO try not to? :)
         if (unit != ai.getUnit()) {
@@ -312,8 +335,9 @@ public class ActionManager {
             return action;
         }
 
-        if (!ai.isEngaged())
+        if (!ai.isEngaged()) {
             return behaviorMaster.getBehaviorAction(ai);
+        }
 
         originalFacing = unit.getFacing();
         originalCoordinates = unit.getCoordinates();
@@ -322,10 +346,13 @@ public class ActionManager {
         try {
             // actions = createActionSequences(ai);
             for (ActionSequence a : createActionSequences(ai)) {
-                if (a.get(0).canBeActivated())
+                if (a.get(0).canBeActivated()) {
                     if (checkNotBroken(a))
-                        // if (a.getOrCreate(0).canBeTargeted())
+                    // if (a.getOrCreate(0).canBeTargeted())
+                    {
                         actions.add(a);
+                    }
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -335,27 +362,33 @@ public class ActionManager {
         }
         Action action = null;
         ActionSequence sequence = null;
-        if (ListMaster.isNotEmpty(actions))
+        if (ListMaster.isNotEmpty(actions)) {
             sequence = PriorityManager.chooseByPriority(actions);
+        }
 
         if (sequence == null) {
             action = AtomicAi.getAtomicAction(ai);
-            if (action == null)
+            if (action == null) {
                 action = getForcedAction(ai);
+            }
             return action;
         }
-        if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_NONE)
+        if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_NONE) {
             main.system.auxiliary.LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Action sequence chosen: "
                     + sequence + StringMaster.wrapInParenthesis(sequence.getPriority() + ""));
+        }
         ai.checkSetOrders(sequence);
         return sequence.getNextAction();
     }
 
     private boolean checkNotBroken(ActionSequence as) {
-        for (Action a : as.getActions())
-            for (Action ba : AI_Manager.getBrokenActions())
-                if (a.getActive().getType().getName().equals(ba.getActive().getType().getName()))
+        for (Action a : as.getActions()) {
+            for (Action ba : AI_Manager.getBrokenActions()) {
+                if (a.getActive().getType().getName().equals(ba.getActive().getType().getName())) {
                     return false;
+                }
+            }
+        }
         return true;
     }
 
@@ -401,8 +434,9 @@ public class ActionManager {
             // actions.add(sequence);
             // }
         }
-        if (actions.isEmpty())
+        if (actions.isEmpty()) {
             return getAction(unit, STD_MODE_ACTIONS.Defend.name(), null);
+        }
         ActionSequence sequence = PriorityManager.chooseByPriority(actions);
 
         return sequence.getNextAction();
@@ -416,7 +450,9 @@ public class ActionManager {
         if (obj instanceof DC_HeroObj) {
             if (((DC_HeroObj) obj).canActNow())
                 // if (!((DC_HeroObj) obj).checkStatus(STATUS.WAITING))
+            {
                 return obj.getId();
+            }
         }
         return null;
 
@@ -425,8 +461,9 @@ public class ActionManager {
     private Action getAction(DC_HeroObj unit, String name, Integer target) {
 
         Action action = new Action(getUnitAction(unit, name));
-        if (target != null)
+        if (target != null) {
             action.getRef().setTarget(target);
+        }
         return action;
     }
 
@@ -458,8 +495,9 @@ public class ActionManager {
             Chronos.mark(getChronosPrefix() + action);
             List<Task> tasks = taskManager.getTasks(goal.getTYPE(), ai, goal.isForced(), action);
             for (Task task : tasks) {
-                if (task.isBlocked())
+                if (task.isBlocked()) {
                     continue;
+                }
                 if (actionSequences.size() > 0) {
                     long time = TimeLimitMaster.getTimeLimitForAction();
                     if (Chronos.getTimeElapsedForMark(getChronosPrefix() + action) > time) {
@@ -470,8 +508,9 @@ public class ActionManager {
                 }
                 String string = task.toString();
                 Obj obj = action.getGame().getObjectById((Integer) task.getArg());
-                if (obj != null)
+                if (obj != null) {
                     string = obj.getName();
+                }
                 Chronos.mark(getChronosPrefix() + string);
                 try {
                     addSequences(task, actionSequences, action);
@@ -488,8 +527,9 @@ public class ActionManager {
     private void addSequences(Task task, List<ActionSequence> sequences, DC_ActiveObj active) {
         Ref ref = task.getUnit().getRef().getCopy();
         Integer arg = TaskManager.checkTaskArgReplacement(task, active);
-        if (arg == null)
+        if (arg == null) {
             return;
+        }
         ref.setTarget(arg);
         List<ActionSequence> newSequences = null;
         Action action = newAction(active, ref);
@@ -499,9 +539,9 @@ public class ActionManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (ListMaster.isNotEmpty(newSequences))
+        if (ListMaster.isNotEmpty(newSequences)) {
             sequences.addAll(newSequences);
-        else {
+        } else {
             // if no pathing is required/available [QUICK FIX]
             if (!action.canBeTargetedOnAny()) {
                 return;
@@ -510,8 +550,9 @@ public class ActionManager {
             if (sequence != null) {
                 if (active.isRanged()) {
                     sequences.addAll(splitRangedSequence(sequence));
-                } else
+                } else {
                     sequences.add(sequence);
+                }
             } else {
 
                 // if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_NONE)
@@ -547,10 +588,11 @@ public class ActionManager {
 
     private void checkDeactivate() {
         List<DC_UnitAction> list = unit.getActionMap().get(ACTION_TYPE.SPECIAL_ACTION);
-        if (list == null)
+        if (list == null) {
             return;
+        }
         for (DC_UnitAction a : list) {
-            if (a.isContinuousMode())
+            if (a.isContinuousMode()) {
                 if (a.checkContinuousModeDeactivate()) {
                     boolean result = false;
                     switch (a.getName()) {
@@ -565,9 +607,11 @@ public class ActionManager {
                             break;
                     }
 
-                    if (result)
+                    if (result) {
                         a.deactivate();
+                    }
                 }
+            }
         }
 
     }

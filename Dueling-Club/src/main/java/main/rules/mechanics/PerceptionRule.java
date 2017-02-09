@@ -78,12 +78,14 @@ public class PerceptionRule extends TurnRule implements ActionRule {
 
     public void perceptionEvent(PERCEPTION_STATUS status, DC_HeroObj source,
                                 DC_HeroObj target, ActiveObj action) {
-        if (status == PERCEPTION_STATUS.UNKNOWN)
+        if (status == PERCEPTION_STATUS.UNKNOWN) {
             return;
-        if (source.isAiControlled())
+        }
+        if (source.isAiControlled()) {
             perceptionEventAI(status, source, target, action);
-        else
+        } else {
             perceptionEventPlayer(status, source, target, action);
+        }
 
     }
 
@@ -156,8 +158,9 @@ public class PerceptionRule extends TurnRule implements ActionRule {
         for (DC_HeroObj u : Analyzer.getUnits((DC_HeroObj) unit, null, false,
                 false, false)) {
             int distance = PositionMaster.getDistance(u, unit);
-            if (distance == 0)
+            if (distance == 0) {
                 distance = 1;
+            }
             totalNoise += u.getIntParam(PARAMS.NOISE) / distance;
         }
         return totalNoise;

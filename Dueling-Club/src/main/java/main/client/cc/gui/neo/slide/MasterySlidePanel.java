@@ -47,10 +47,11 @@ public class MasterySlidePanel extends HeroView {
         UNLOCKED_INDEX = 3;
         tabs.addTab(UNLOCKED, views[UNLOCKED_INDEX]);
         add(tabs, "pos 0 0");
-        if (unlockedList.size() > 0)
+        if (unlockedList.size() > 0) {
             tabs.select(UNLOCKED_INDEX);
-        else
+        } else {
             tabs.select(0);
+        }
         tabs.setChangeListener(new TabChangeListener() {
             public void tabSelected(int index) {
 
@@ -58,8 +59,9 @@ public class MasterySlidePanel extends HeroView {
                     resetUnlocked();
                 }
 
-                if (tabs.getIndex() == UNLOCKED_INDEX)
+                if (tabs.getIndex() == UNLOCKED_INDEX) {
                     resetUnlocked();
+                }
 
                 refresh();
             }

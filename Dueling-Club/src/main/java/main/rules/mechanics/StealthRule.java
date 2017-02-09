@@ -54,24 +54,30 @@ public class StealthRule implements ActionRule {
     }
 
     public static boolean checkInvisible(DC_Obj unit) {
-        if (VisionManager.isVisionHacked())
+        if (VisionManager.isVisionHacked()) {
             return false;
+        }
         if (unit.checkStatus(STATUS.SPOTTED))
             // ***BY UNIT*** - if "spotter" is killed, can become invisible
             // again!!!
+        {
             return false;
+        }
         if (unit.checkStatus(STATUS.INVISIBLE))
             // TODO mind-affecting check?
+        {
             return true;
-        if (unit.checkStatus(STATUS.HIDDEN))
+        }
+        if (unit.checkStatus(STATUS.HIDDEN)) {
             return true; // TODO sight-override?
+        }
 
         // if (unit.getPlayerVisionStatus() == UNIT_TO_PLAYER_VISION.DETECTED)
         // return false; // TODO ???
 
-        if (unit.getIntParam(PARAMS.STEALTH) <= 0)
+        if (unit.getIntParam(PARAMS.STEALTH) <= 0) {
             return false;
-        else {
+        } else {
 
             boolean result = true;
             int stealth = unit.getIntParam(PARAMS.STEALTH);
@@ -95,13 +101,14 @@ public class StealthRule implements ActionRule {
 
     private static int getDetection(DC_Obj target, Obj source) {
         int distance = PositionMaster.getDistance(source, target);
-        if (distance == 0)
+        if (distance == 0) {
             distance = 1; // TODO ++ CONCEALMENT
+        }
         Integer factor = source.getIntParam(PARAMS.SIGHT_RANGE);
 
-        if (FacingMaster.getSingleFacing((DC_UnitObj) source, (BattlefieldObj) target) == FACING_SINGLE.BEHIND)
+        if (FacingMaster.getSingleFacing((DC_UnitObj) source, (BattlefieldObj) target) == FACING_SINGLE.BEHIND) {
             factor = source.getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
-        else if (FacingMaster.getSingleFacing((DC_UnitObj) source, (BattlefieldObj) target) == FACING_SINGLE.TO_THE_SIDE) {
+        } else if (FacingMaster.getSingleFacing((DC_UnitObj) source, (BattlefieldObj) target) == FACING_SINGLE.TO_THE_SIDE) {
             factor -= source.getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
         }
         int detection = factor * source.getIntParam(PARAMS.DETECTION) / distance;
@@ -116,8 +123,9 @@ public class StealthRule implements ActionRule {
     public void actionComplete(ActiveObj active) {
         DC_ActiveObj action = (DC_ActiveObj) active; // perhaps only moves?
         DC_HeroObj source = action.getOwnerObj();
-        if (VisionManager.isVisionHacked())
+        if (VisionManager.isVisionHacked()) {
             return;
+        }
         for (DC_HeroObj u : game.getUnits()) {
             if (checkHidden(source)) {
                 if (!VisibilityMaster.isZeroVisibility(source, true)) {
@@ -129,10 +137,11 @@ public class StealthRule implements ActionRule {
                 }
             }
 
-            if (checkHidden(u))
+            if (checkHidden(u)) {
                 if (ConcealmentRule.getVisibilityLevel(source, u) != VISIBILITY_LEVEL.CONCEALED) {
                     rollSpotted(source, u);
                 }
+            }
         }
 
     }
@@ -143,8 +152,9 @@ public class StealthRule implements ActionRule {
     }
 
     public boolean rollSpotted(DC_HeroObj activeUnit, DC_HeroObj target, boolean hearing) {
-        if (activeUnit.isOwnedBy(target.getOwner()))
+        if (activeUnit.isOwnedBy(target.getOwner())) {
             return false;
+        }
         // TODO if (checkDistance()) return false;
         Ref ref = activeUnit.getRef().getCopy();
         ref.setTarget(target.getId());

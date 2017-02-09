@@ -41,7 +41,9 @@ public class GridCellContainer extends GridCell {
     }
 
     private void recalcUnitViewBounds() {
-        if (unitViewCount == 0) return;
+        if (unitViewCount == 0) {
+            return;
+        }
         final int perImageOffsetX = ((int) getWidth()) / 2 / unitViewCount;
         final int perImageOffsetY = ((int) getHeight()) / 2 / unitViewCount;
         final int w = ((int) getWidth()) - perImageOffsetX * (unitViewCount - 1);
@@ -108,7 +110,9 @@ public class GridCellContainer extends GridCell {
     }
 
     public void setOverlays(List<UnitViewOptions> overlays) {
-        if (overlays.size() == 0) return;
+        if (overlays.size() == 0) {
+            return;
+        }
         final int xOffset = getW() / 3;
         final int yOffset = getH() / 3;
         Map<Coordinates, Map<DC_HeroObj, Coordinates.DIRECTION>> directionMap = DC_Game.game.getDirectionMap();

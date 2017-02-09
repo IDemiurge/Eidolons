@@ -1,6 +1,5 @@
 package main.client.cc;
 
-import main.client.battle.BattleCraft;
 import main.client.battle.arcade.PartyManager;
 import main.client.cc.gui.HeroTabsPanel;
 import main.client.cc.gui.MainPanel;
@@ -11,9 +10,9 @@ import main.client.dc.Launcher;
 import main.client.dc.Launcher.VIEWS;
 import main.client.dc.Simulation;
 import main.content.CONTENT_CONSTS.BACKGROUND;
-import main.content.CONTENT_CONSTS.CUSTOM_HERO_GROUP;
 import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
 import main.content.OBJ_TYPES;
+import main.content.enums.CUSTOM_HERO_GROUP;
 import main.content.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.xml.XML_Writer;
@@ -109,8 +108,9 @@ public class CharacterCreator {
             newVersion = true;
         } else if (!result) {
             name = getHeroName(getHero()); // TODO what if it's not the one?
-            if (name == null)
+            if (name == null) {
                 return;
+            }
             // if (!preset)
             // if (checkNameBlocked(name)) {
             // DialogMaster.error("Sorry, this name is blocked.");
@@ -124,18 +124,21 @@ public class CharacterCreator {
         newType.setProperty(G_PROPS.NAME, name);
         Simulation.getGame().initType(newType);
 
-        if (!partyMode)
+        if (!partyMode) {
             addHero(newType);
+        }
         if (preset && !newVersion) {
             newType.setGroup(StringMaster.PRESET, false);
             String value = ListChooser.chooseEnum(CUSTOM_HERO_GROUP.class);
-            if (value != null)
+            if (value != null) {
                 newType.setProperty(G_PROPS.CUSTOM_HERO_GROUP, value);
+            }
             WORKSPACE_GROUP ws = getDefaultWorkspaceGroup();
             String string = ListChooser.chooseEnum(WORKSPACE_GROUP.class);
-            if (string != null)
+            if (string != null) {
                 ws = new EnumMaster<WORKSPACE_GROUP>().retrieveEnumConst(WORKSPACE_GROUP.class,
                         string);
+            }
             newType.setWorkspaceGroup(ws);
         } else {
             newType.setGroup(getFilterGroup(), false);
@@ -147,8 +150,9 @@ public class CharacterCreator {
 
         save(newType);
         DataManager.addType(newType);
-        if (newVersion)
+        if (newVersion) {
             heroManager.applyChangedType(heroManager.getHero(type), newType);
+        }
     }
 
     public static String getFilterGroup() {
@@ -168,8 +172,9 @@ public class CharacterCreator {
     }
 
     private static boolean checkNameBlocked(String name) {
-        if (!DataManager.isTypeName(name))
+        if (!DataManager.isTypeName(name)) {
             return false;
+        }
         ObjType type = DataManager.getType(name, OBJ_TYPES.CHARS);
         return !type.getGroup().equals(StringMaster.CUSTOM);
     }
@@ -210,8 +215,9 @@ public class CharacterCreator {
         }
         setTabPanel(new HeroTabsPanel());
         getTabPanel().addHero(hero, initial);
-        if (isAV())
+        if (isAV()) {
             showInNewWindow(getTabPanel(), TITLE);
+        }
         setInitialized(true);
         saveLastPartyData();
     }
@@ -292,8 +298,9 @@ public class CharacterCreator {
     }
 
     public static DC_Game getGame() {
-        if (game == null)
+        if (game == null) {
             return DC_Game.game;
+        }
         return game;
     }
 
@@ -306,10 +313,12 @@ public class CharacterCreator {
     }
 
     public static DC_HeroObj getHero() {
-        if (hero != null)
+        if (hero != null) {
             return hero;
-        if (getTabPanel() == null)
+        }
+        if (getTabPanel() == null) {
             return null;
+        }
         return getTabPanel().getCurrentPanel().getHero();
 
     }
@@ -336,8 +345,9 @@ public class CharacterCreator {
     }
 
     public static HeroCreator getHeroCreator() {
-        if (heroCreator == null)
+        if (heroCreator == null) {
             heroCreator = new HeroCreator(getGame());
+        }
         return heroCreator;
     }
 
@@ -434,14 +444,15 @@ public class CharacterCreator {
     }
 
     public static void initNewHero(final DC_HeroObj hero, boolean newThread) {
-        if (newThread)
+        if (newThread) {
             Weaver.inNewThread(new Runnable() {
                 public void run() {
                     WaitMaster.receiveInput(WAIT_OPERATIONS.SELECTION, initHero(hero));
                 }
             });
-        else
+        } else {
             WaitMaster.receiveInput(WAIT_OPERATIONS.SELECTION, initHero(hero));
+        }
     }
 
     public static String getHeroName(Entity hero) {
@@ -452,9 +463,10 @@ public class CharacterCreator {
         if (SwingUtilities.isEventDispatchThread()) {
             DialogMaster.ask("What about the hero's name?", true, "Random", "Input", "Back");
             result = (Boolean) WaitMaster.waitForInput(DialogMaster.ASK_WAIT);
-        } else
+        } else {
             result = DialogMaster.askAndWait("What about the hero's name?", true, "Random",
                     "Input", "Back");
+        }
         if (result == null) {
             // TODO
             return null;
@@ -463,10 +475,12 @@ public class CharacterCreator {
             if (!result) {
                 name = DialogMaster.inputText(InfoMaster.INPUT_HERO_NAME, NameMaster
                         .generateName(hero));
-                if (name == null)
+                if (name == null) {
                     return null;
-                if (CharacterCreator.checkHeroName(name))
+                }
+                if (CharacterCreator.checkHeroName(name)) {
                     break;
+                }
             }
             name = NameMaster.generateName(hero);
             result = DialogMaster.askAndWait(RandomWizard.random() ? "Perhaps '" + name
@@ -495,8 +509,9 @@ public class CharacterCreator {
                 }
                 if (result) {
                     name = NameMaster.pickName(hero);
-                    if (name == null)
+                    if (name == null) {
                         continue;
+                    }
                 } else {
                     String bg = ListChooser.chooseEnum(BACKGROUND.class, SELECTION_MODE.SINGLE);
 
@@ -506,8 +521,9 @@ public class CharacterCreator {
 
                 }
             }
-            if (!result)
+            if (!result) {
                 break;
+            }
         }
         hero.setProperty(G_PROPS.BACKGROUND, hero.getType().getProperty(G_PROPS.BACKGROUND));
         return name;
@@ -515,8 +531,9 @@ public class CharacterCreator {
 
     public static boolean initHero(DC_HeroObj hero) {
         String name = getHeroName(hero);
-        if (name == null)
+        if (name == null) {
             return false;
+        }
 
         hero.setName(name);
         // if (CharacterCreator.isArcadeMode()) {
@@ -536,15 +553,17 @@ public class CharacterCreator {
     public static boolean isLevelUpEnabled(DC_HeroObj hero) {
         if (hero.getGame().getGameType() == GAME_TYPE.SKIRMISH
                 || hero.getGame().getGameType() == GAME_TYPE.SCENARIO) {
-            if (hero.getLevel() >= ScenarioMaster.getScenario().getMaxHeroLevel())
+            if (hero.getLevel() >= ScenarioMaster.getScenario().getMaxHeroLevel()) {
                 return false;
+            }
         }
         return true;
     }
 
     public static Entity getInfoSelected() {
-        if (getPanel() == null)
+        if (getPanel() == null) {
             return null;
+        }
         return getPanel().getMiddlePanel().getUpperPanel().getEntity();
     }
 
@@ -553,8 +572,9 @@ public class CharacterCreator {
     }
 
     public static void typeSelected(final Entity type) {
-        if (type != null)
+        if (type != null) {
             DC_Game.game.getValueHelper().setEntity(type);
+        }
 
         if (Launcher.getView() == VIEWS.T3) {
             HC_Master.getT3View().selected(type);

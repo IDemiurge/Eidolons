@@ -45,7 +45,7 @@ public class ChatPanel extends G_Panel {
     }
 
     private void initGameChatInputBox() {
-        if (!mainChat)
+        if (!mainChat) {
             try {
                 chatConnector.initGameChatServer();
             } catch (Exception e) {
@@ -53,14 +53,16 @@ public class ChatPanel extends G_Panel {
                         .log(5, "failed to init chat server...");
                 return;
             }
+        }
         inputBox = new InputBox(host, chatConnector);
     }
 
     private void addElements() {
         add(chatBox, "id chat, pos 0 0 container.x2 container.y2-150 ");
 
-        if (inputBox != null)
+        if (inputBox != null) {
             add(inputBox, "id input, pos 0 chat.y2 container.x2 container.y2 ");
+        }
 
     }
 

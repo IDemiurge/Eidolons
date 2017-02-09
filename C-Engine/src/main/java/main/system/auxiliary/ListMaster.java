@@ -24,8 +24,9 @@ public class ListMaster<E> {
     public static List<String> toList(String string, boolean ENUM) {
         List<String> list = new LinkedList<String>();
         for (String item : string.split(StringMaster.getSeparator())) {
-            if ((!item.isEmpty() && ENUM) || DataManager.isTypeName(item))
+            if ((!item.isEmpty() && ENUM) || DataManager.isTypeName(item)) {
                 list.add(item);
+            }
         }
         return list;
     }
@@ -33,8 +34,9 @@ public class ListMaster<E> {
     public static List<Object> toList(Object... values) {
         List<Object> list = new LinkedList<>();
         for (Object v : values) {
-            if (v != null)
+            if (v != null) {
                 list.add(v);
+            }
         }
         return list;
     }
@@ -65,11 +67,13 @@ public class ListMaster<E> {
                     if (v instanceof Object[]) {
                         Object[] objects = (Object[]) v;
                         string = StringMaster.constructContainer(toStringList(objects));
-                    } else
+                    } else {
                         string = v.toString();
+                    }
                 }
-                if (wellFormatted)
+                if (wellFormatted) {
                     string = StringMaster.getWellFormattedString(string);
+                }
                 list.add(string);
             }
         }
@@ -77,16 +81,20 @@ public class ListMaster<E> {
     }
 
     public static boolean isNotEmpty(Collection list) {
-        if (list == null)
+        if (list == null) {
             return false;
-        if (list.isEmpty())
+        }
+        if (list.isEmpty()) {
             return false;
+        }
         for (Object o : list) {
             if (o instanceof Collection) {
-                if (isNotEmpty((Collection) o))
+                if (isNotEmpty((Collection) o)) {
                     return true;
-            } else if (o != null)
+                }
+            } else if (o != null) {
                 return true;
+            }
         }
         return false;
     }
@@ -96,22 +104,26 @@ public class ListMaster<E> {
         // return list.indexOf(item);
         int i = 0;
         for (Object str : list) {
-            if (StringMaster.compareByChar(str.toString(), item, true))
+            if (StringMaster.compareByChar(str.toString(), item, true)) {
                 return i;
+            }
             i++;
         }
         i = 0;
         for (Object str : list) {
-            if (StringMaster.compare(str.toString(), item, true))
+            if (StringMaster.compare(str.toString(), item, true)) {
                 return i;
+            }
             i++;
         }
-        if (strict)
+        if (strict) {
             return -1;
+        }
         i = 0;
         for (Object str : list) {
-            if (StringMaster.compare(str.toString(), item, false))
+            if (StringMaster.compare(str.toString(), item, false)) {
                 return i;
+            }
             i++;
         }
         return -1;
@@ -159,19 +171,22 @@ public class ListMaster<E> {
 
     public static void cropLast(List<String> lines, int i) {
         int size = lines.size();
-        if (size <= i)
+        if (size <= i) {
             return;
+        }
         for (int index = i + size; i > 0; i--) {
-            if (lines.size() <= index)
+            if (lines.size() <= index) {
                 return;
+            }
             lines.remove(index);
         }
 
     }
 
     public static Object getListItem(List list, int index) {
-        if (list.size() <= index)
+        if (list.size() <= index) {
             return null;
+        }
         return list.get(index);
     }
 
@@ -179,8 +194,9 @@ public class ListMaster<E> {
         int index = 0;
         List<Integer> indexList = new LinkedList<>(Arrays.asList(indices));
         for (Object e : new LinkedList<>(list)) {
-            if (!indexList.contains(index))
+            if (!indexList.contains(index)) {
                 list.remove(e);
+            }
             index++;
         }
         return list;
@@ -190,8 +206,9 @@ public class ListMaster<E> {
         int index = 0;
         List<Integer> indexList = new LinkedList<>(Arrays.asList(indices));
         for (Object e : new LinkedList<>(list)) {
-            if (indexList.contains(index))
+            if (indexList.contains(index)) {
                 list.remove(e);
+            }
             index++;
         }
         return list;
@@ -209,17 +226,29 @@ public class ListMaster<E> {
     public static void removeNullElements(List<?> list) {
         List<Object> elements = new LinkedList<>(list);
         for (Object o : elements) {
-            if (o == null)
+            if (o == null) {
                 list.remove(o);
+            }
         }
+    }
+
+    public static void invert(List list) {
+        List inv_list = new LinkedList<>();
+
+        for (int i = list.size() - 1; i >= 0; i--) {
+            inv_list.add(list.get(i));
+        }
+        list.clear();
+        list.addAll(inv_list);
     }
 
     public List<E> toList(String string) {
         List<E> list = new LinkedList<E>();
         for (String item : string.split(StringMaster.getSeparator())) {
             E e = new EnumMaster<E>().retrieveEnumConst(clazz, item);
-            if (e != null)
+            if (e != null) {
                 list.add(e);
+            }
         }
         return list;
     }
@@ -227,64 +256,84 @@ public class ListMaster<E> {
     public List<ObjType> convertToTypeList(Collection<E> data) {
         List<ObjType> list = new LinkedList<ObjType>();
         for (E item : data) {
-            if (item instanceof Obj)
+            if (item instanceof Obj) {
                 list.add(((Obj) item).getType());
+            }
         }
         return list;
     }
 
     public List<E> openSubLists(List<List<E>> nestedList) {
         List<E> list = new LinkedList<>();
-        if (nestedList == null)
+        if (nestedList == null) {
             return list;
-        for (List<E> sublist : nestedList)
-            for (E e : sublist)
+        }
+        for (List<E> sublist : nestedList) {
+            for (E e : sublist) {
                 list.add(e);
+            }
+        }
         return list;
     }
 
     public boolean compareNested(List<List<E>> list, List<List<E>> list2) {
-        if (!isNotEmpty(list) && !isNotEmpty(list2))
+        if (!isNotEmpty(list) && !isNotEmpty(list2)) {
             return true;
-        if (!isNotEmpty(list))
+        }
+        if (!isNotEmpty(list)) {
             return false;
-        if (!isNotEmpty(list2))
+        }
+        if (!isNotEmpty(list2)) {
             return false;
+        }
 
-        if (list == list2)
+        if (list == list2) {
             return true;
-        if (list.equals(list2))
+        }
+        if (list.equals(list2)) {
             return true;
+        }
         for (List<E> sublist : list) {
-            for (List<E> sublist2 : list2)
-                if (!compare(sublist, sublist2))
+            for (List<E> sublist2 : list2) {
+                if (!compare(sublist, sublist2)) {
                     return false;
+                }
+            }
         }
         return true;
     }
 
     public boolean compare(List<E> list, List<E> list2) {
-        if (!isNotEmpty(list) && !isNotEmpty(list2))
+        if (!isNotEmpty(list) && !isNotEmpty(list2)) {
             return true;
-        if (!isNotEmpty(list))
+        }
+        if (!isNotEmpty(list)) {
             return false;
-        if (!isNotEmpty(list2))
+        }
+        if (!isNotEmpty(list2)) {
             return false;
+        }
 
-        if (list == list2)
+        if (list == list2) {
             return true;
-        if (list.equals(list2))
+        }
+        if (list.equals(list2)) {
             return true;
+        }
         for (E e : list) {
             for (E e2 : list2) {
-                if (e == null && e2 == null)
+                if (e == null && e2 == null) {
                     return true;
-                if (e == null)
+                }
+                if (e == null) {
                     return false;
-                if (e2 == null)
+                }
+                if (e2 == null) {
                     return false;
-                if (!e.equals(e2))
+                }
+                if (!e.equals(e2)) {
                     return false;
+                }
             }
         }
         return true;
@@ -297,8 +346,9 @@ public class ListMaster<E> {
     public int getIndex(Collection<E> list, E item) {
         int i = 0;
         for (E e : list) {
-            if (e.equals(item))
+            if (e.equals(item)) {
                 return i;
+            }
             i++;
         }
         return -1;
@@ -307,10 +357,12 @@ public class ListMaster<E> {
     public E findType(String typeName, List<E> types) {
         List<String> list = DataManager.toStringList((List<? extends Entity>) types);
         int i = getIndexString(list, typeName, true);
-        if (i == -1)
+        if (i == -1) {
             i = getIndexString(list, typeName, false);
-        if (i == -1)
+        }
+        if (i == -1) {
             return null;
+        }
         return types.get(i);
     }
 
@@ -319,8 +371,9 @@ public class ListMaster<E> {
     }
 
     public List<List<E>> splitList(boolean fillWithNulls, int size, Collection<E> list) {
-        if (list == null)
+        if (list == null) {
             return new LinkedList<>();
+        }
         // if (f return new LinkedList<>(fillWithNullElements(new
         // LinkedList<E>(), size));
         List<List<E>> lists = new LinkedList<>();
@@ -331,14 +384,17 @@ public class ListMaster<E> {
         for (Iterator<E> iterator = list.iterator(); iterator.hasNext(); ) {
             List<E> newList = new LinkedList<>();
             for (int i = 0; i < size; i++) {
-                if (!iterator.hasNext())
+                if (!iterator.hasNext()) {
                     break;
+                }
                 newList.add(iterator.next());
             }
-            if (fillWithNulls)
+            if (fillWithNulls) {
                 fillWithNullElements(newList, size);
-            if (!newList.isEmpty())
+            }
+            if (!newList.isEmpty()) {
                 lists.add(newList);
+            }
         }
         return lists;
     }
@@ -347,8 +403,9 @@ public class ListMaster<E> {
 
         List<E> clone = new LinkedList<>();
 
-        for (E e : list)
+        for (E e : list) {
             clone.add(e);
+        }
 
         return clone;
     }
@@ -363,16 +420,6 @@ public class ListMaster<E> {
 
     public List<E> getList(E... e) {
         return new LinkedList<E>(Arrays.asList(e));
-    }
-
-    public static void invert(List list) {
-        List inv_list = new LinkedList<>();
-
-        for (int i = list.size() - 1; i >= 0; i--) {
-            inv_list.add(list.get(i));
-        }
-        list.clear();
-        list.addAll(inv_list);
     }
 
     public List<E> invertList(List<E> list) {
@@ -393,8 +440,9 @@ public class ListMaster<E> {
         List<E> smallest = null;
         int min_size = Integer.MAX_VALUE;
         for (List<E> e : lists) {
-            if (e == null)
+            if (e == null) {
                 continue;
+            }
             if (e.size() < min_size) {
                 min_size = e.size();
                 smallest = e;
@@ -405,12 +453,14 @@ public class ListMaster<E> {
     }
 
     public E getItem(Collection<E> list, int index) {
-        if (list.size() <= index)
+        if (list.size() <= index) {
             return null;
+        }
         int i = 0;
         for (E e : list) {
-            if (index == i)
+            if (index == i) {
                 return e;
+            }
             i++;
         }
         return null;
@@ -448,19 +498,23 @@ public class ListMaster<E> {
     }
 
     private void addAll(List<E> list, List<E> result, boolean duplicates) {
-        if (list != null)
+        if (list != null) {
             for (E e : list) {
-                if (!duplicates)
-                    if (result.contains(e))
+                if (!duplicates) {
+                    if (result.contains(e)) {
                         continue;
+                    }
+                }
                 result.add(e);
             }
+        }
     }
 
     public List<E> interleave(List<E> list, int i) {
         list = new LinkedList<>(list);
-        for (int n = 0; n < list.size() - i; n++)
+        for (int n = 0; n < list.size() - i; n++) {
             Collections.swap(list, n, n + i);
+        }
         return list;
         // List<E> result = new LinkedList<>();
         //
@@ -484,8 +538,9 @@ public class ListMaster<E> {
 
     public List<E> mergeShuffle(List<E>... lists) {
         List<E> result = new LinkedList<>();
-        for (List<E> sub : lists)
+        for (List<E> sub : lists) {
             result.addAll(sub);
+        }
         Collections.shuffle(result);
         return result;
 
@@ -496,7 +551,9 @@ public class ListMaster<E> {
         for (ObjType sub : list) {
             for (E task : tasks)
 //				if (task.getType() == generic) {
+            {
                 filtered.add(task);
+            }
             break;
         }
 //		}
@@ -506,9 +563,11 @@ public class ListMaster<E> {
     public List<E> getCommonElements(List<E> l, List<E> l2) {
         List<E> result = new LinkedList<>();
 
-        for (E sub : l)
-            if (l2.contains(sub))
+        for (E sub : l) {
+            if (l2.contains(sub)) {
                 result.add(sub);
+            }
+        }
         return result;
     }
 
@@ -525,12 +584,13 @@ public class ListMaster<E> {
         int i = 0;
 
         for (E sub : new LinkedList<>(list)) {
-            if (list.get(i - 1).equals(sub))
+            if (list.get(i - 1).equals(sub)) {
                 if (!onlyPairs || i != 0) {
                     list.remove(i);
                     i = 0;
                     continue;
                 }
+            }
             i++;
 
         }
@@ -548,10 +608,11 @@ public class ListMaster<E> {
                 result.add(sub);
                 break;
             }
-            if (!list2.get(i).equals(sub))
+            if (!list2.get(i).equals(sub)) {
                 result.add(sub);
-            else
+            } else {
                 i++;
+            }
 
         }
 
@@ -565,8 +626,9 @@ public class ListMaster<E> {
     public List<E> removeNulls(List<E> list) {
         List<E> elements = new LinkedList<E>(list);
         for (Object o : elements) {
-            if (o == null)
+            if (o == null) {
                 list.remove(o);
+            }
         }
         return list;
     }
@@ -575,16 +637,18 @@ public class ListMaster<E> {
         List<Obj> objList = new LinkedList<>();
         for (Integer id : list) {
             Obj obj = game.getObjectById(id);
-            if (obj != null)
+            if (obj != null) {
                 objList.add(obj);
+            }
         }
         return objList;
     }
 
     public List<Integer> convertToIdList(List<Obj> objList) {
         List<Integer> list = new LinkedList<>();
-        for (Obj obj : objList)
+        for (Obj obj : objList) {
             list.add(obj.getId());
+        }
         return list;
     }
 

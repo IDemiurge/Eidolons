@@ -150,8 +150,9 @@ public enum MACRO_PROPS implements PROPERTY {
                 String defaultValue, int AV_ID) {
         this.shortName = shortName;
         this.fullName = StringMaster.getWellFormattedString(name());
-        if (StringMaster.isEmpty(shortName))
+        if (StringMaster.isEmpty(shortName)) {
             this.shortName = this.fullName;
+        }
         this.descr = descr;
         this.entityType = entityType;
         this.dynamic = dynamic;
@@ -161,8 +162,9 @@ public enum MACRO_PROPS implements PROPERTY {
 
     @Override
     public String getName() {
-        if (shortName == null)
+        if (shortName == null) {
             shortName = StringMaster.getWellFormattedString(name());
+        }
         return shortName;
     }
 

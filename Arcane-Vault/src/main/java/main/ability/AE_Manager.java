@@ -99,18 +99,20 @@ public class AE_Manager {
 		}
 		for (String typeName : cacheMap.keySet()) {
 			ObjType type = DataManager.getType(typeName, TYPE);
-			if (type == null)
-				continue;
-			saveTreeIntoXML(TYPE, XML_PROP, type);
+            if (type == null) {
+                continue;
+            }
+            saveTreeIntoXML(TYPE, XML_PROP, type);
 			// dirty flag can help
 			// XML_Writer.writeXML_ForType(type, TYPE);
 		}
 	}
 
 	public static void saveTreeIntoXML(ObjType type) {
-		if (type == null)
-			cacheMap.remove(type.getName());
-		PROPERTY XML_PROP;
+        if (type == null) {
+            cacheMap.remove(type.getName());
+        }
+        PROPERTY XML_PROP;
 		if (!ArcaneVault.isMacroMode()) {
 			XML_PROP = G_PROPS.ABILITIES;
 		} else {
@@ -125,9 +127,10 @@ public class AE_Manager {
 		try {
 
 			JTree tree = cacheMap.get(type.getName()).getTree();
-			if (tree == null)
-				return;
-			newXml = XML_Converter.getXMLfromTree(tree);
+            if (tree == null) {
+                return;
+            }
+            newXml = XML_Converter.getXMLfromTree(tree);
 		} catch (Exception e) {
 			e.printStackTrace();
 			main.system.auxiliary.LogMaster.log(2, type.getName()
@@ -150,8 +153,9 @@ public class AE_Manager {
 
 	public static AE_EditPanel getAE_EditPanel(AE_MainPanel mainPanel,
 			AE_Item item, int index) {
-		if (item == null)
-			return null;
+        if (item == null) {
+            return null;
+        }
         // AE_EditPanel panel = smallCache.getOrCreate(item);
         // if (panel == null) {
         // main.system.auxiliary.LogMaster
@@ -171,9 +175,11 @@ public class AE_Manager {
 		// panel.expandContainer();
 		// }
 		AE_EditPanel panel = new AE_EditPanel(item, mainPanel, index);
-		if (item.isContainer())
-			if (panel.checkContainerExpansionRequired())
-				panel.expandContainer();
-		return panel;
+        if (item.isContainer()) {
+            if (panel.checkContainerExpansionRequired()) {
+                panel.expandContainer();
+            }
+        }
+        return panel;
 	}
 }

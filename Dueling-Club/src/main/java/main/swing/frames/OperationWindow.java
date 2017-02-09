@@ -84,8 +84,9 @@ public abstract class OperationWindow extends G_Dialog {
     }
 
     public String getOperationsData() {
-        if (operationsData == null)
+        if (operationsData == null) {
             operationsData = "";
+        }
         return operationsData;
     }
 

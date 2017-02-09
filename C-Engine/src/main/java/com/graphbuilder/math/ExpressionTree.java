@@ -94,8 +94,9 @@ public class ExpressionTree {
      * @throws ExpressionParseException If the string is invalid.
      */
     public static Expression parse(String s) {
-        if (s == null)
+        if (s == null) {
             throw new ExpressionParseException("Expression string cannot be null.", -1);
+        }
 
         return build(s, 0);
     }
@@ -108,8 +109,9 @@ public class ExpressionTree {
 
         // do not remove (required condition for functions with no parameters,
         // e.g. Pi())
-        if (s.trim().length() == 0)
+        if (s.trim().length() == 0) {
             return null;
+        }
 
         Stack s1 = new Stack(); // contains expression nodes
         Stack s2 = new Stack(); // contains open brackets ( and operators
@@ -124,28 +126,30 @@ public class ExpressionTree {
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
 
-            if (c == ' ' || c == '\t' || c == '\n')
+            if (c == ' ' || c == '\t' || c == '\n') {
                 continue;
+            }
 
             if (term) {
                 if (c == '(') {
-                    if (negate)
+                    if (negate) {
                         throw new ExpressionParseException("Open bracket found after negate.", i);
+                    }
 
                     s2.push("(");
                 } else if (!signed && (c == '+' || c == '-')) {
                     signed = true;
-                    if (c == '-')
+                    if (c == '-') {
                         negate = true; // by default negate is false
+                    }
                 } else if (c >= '0' && c <= '9' || c == '.') {
 
                     int j = i + 1;
                     while (j < s.length()) {
                         c = s.charAt(j);
-                        if (c >= '0' && c <= '9' || c == '.')
+                        if (c >= '0' && c <= '9' || c == '.') {
                             j++;
-
-                            // code to account for
+                        }// code to account for
                             // "computerized scientific notation"
                         else if (c == 'e' || c == 'E') {
                             j++;
@@ -153,23 +157,26 @@ public class ExpressionTree {
                             if (j < s.length()) {
                                 c = s.charAt(j);
 
-                                if (c != '+' && c != '-' && (c < '0' || c > '9'))
+                                if (c != '+' && c != '-' && (c < '0' || c > '9')) {
                                     throw new ExpressionParseException(
                                             "Expected digit, plus sign or minus sign but found: "
                                                     + String.valueOf(c), j + indexErrorOffset);
+                                }
 
                                 j++;
                             }
 
                             while (j < s.length()) {
                                 c = s.charAt(j);
-                                if (c < '0' || c > '9')
+                                if (c < '0' || c > '9') {
                                     break;
+                                }
                                 j++;
                             }
                             break;
-                        } else
+                        } else {
                             break;
+                        }
                     }
 
                     double d = 0;
@@ -182,8 +189,9 @@ public class ExpressionTree {
                                 + indexErrorOffset);
                     }
 
-                    if (negate)
+                    if (negate) {
                         d = -d;
+                    }
                     s1.push(new ValNode(d));
                     i = j - 1;
 
@@ -196,18 +204,20 @@ public class ExpressionTree {
                     while (j < s.length()) {
                         c = s.charAt(j);
                         if (c != ',' && c != ' ' && c != '\t' && c != '\n' && c != '(' && c != ')'
-                                && c != '^' && c != '*' && c != '/' && c != '+' && c != '-')
+                                && c != '^' && c != '*' && c != '/' && c != '+' && c != '-') {
                             j++;
-                        else
+                        } else {
                             break;
+                        }
                     }
 
                     if (j < s.length()) {
                         int k = j;
                         while (c == ' ' || c == '\t' || c == '\n') {
                             k++;
-                            if (k == s.length())
+                            if (k == s.length()) {
                                 break;
+                            }
                             c = s.charAt(k);
                         }
 
@@ -282,8 +292,9 @@ public class ExpressionTree {
                                     + indexErrorOffset);
                         }
                         Object o = s2.pop();
-                        if (o.equals("("))
+                        if (o.equals("(")) {
                             break;
+                        }
                         s3.addToTail(s1.pop());
                         s4.addToTail(o);
                     }
@@ -295,10 +306,11 @@ public class ExpressionTree {
                     s2.push(String.valueOf(c));
                 } else {
                     main.system.auxiliary.LogMaster.log(1, "ExpressionParseException - " + s);
-                    if (!CoreEngine.isMinimizeLogging())
+                    if (!CoreEngine.isMinimizeLogging()) {
                         throw new ExpressionParseException(
                                 "Expected operator or close bracket but found: "
                                         + String.valueOf(c), i + indexErrorOffset);
+                    }
                 }
             }
         }

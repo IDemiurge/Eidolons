@@ -131,9 +131,10 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
 	public void tabSelected(int index) {
 
 		Mission mission = null;
-		if (!hasLevelsTab || index > 0)
-			mission = missions.get(index - 1); // "Levels" non-mission tab
-		activateMission(mission);
+        if (!hasLevelsTab || index > 0) {
+            mission = missions.get(index - 1); // "Levels" non-mission tab
+        }
+        activateMission(mission);
 
 	}
 
@@ -150,17 +151,20 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
 			LevelEditor.setMouseInfoMode(false);
 			LevelEditor.setMouseAddMode(false);
 			ip.selectType(currentMission.getObj().getType());
-			if (getCurrentLevel() != null)
-				if (getCurrentLevel().getDungeon().getPlan() != null)
-					getPlanPanel().refresh();
-		}
-		if (newMission)
-			try {
-				getMapViewComp().getTabs().select(0);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		// if (mission == null)
+            if (getCurrentLevel() != null) {
+                if (getCurrentLevel().getDungeon().getPlan() != null) {
+                    getPlanPanel().refresh();
+                }
+            }
+        }
+        if (newMission) {
+            try {
+                getMapViewComp().getTabs().select(0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        // if (mission == null)
         // activateLevel(levels.getOrCreate(0));
         // else
         // activateLevel(mission.getFirstLevel());
@@ -208,12 +212,14 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
 	}
 
 	public void setBackgroundImage(String newValue) {
-		if (!ImageManager.isImage(newValue))
-			return;
-		ImageIcon icon = ImageManager.getSizedIcon(newValue, GuiManager.DEF_DIMENSION);
-		if (icon != null)
-			background.setIcon(icon);
-	}
+        if (!ImageManager.isImage(newValue)) {
+            return;
+        }
+        ImageIcon icon = ImageManager.getSizedIcon(newValue, GuiManager.DEF_DIMENSION);
+        if (icon != null) {
+            background.setIcon(icon);
+        }
+    }
 
 	private void initBackground() {
 

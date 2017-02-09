@@ -13,20 +13,21 @@ public class Ambience extends EmitterActor {
         super(fx);
     }
 
-    public enum AMBIENT_SFX {
-        MIST,
-
-
-    }
-
     public static void setModifyParticles(boolean modifyParticles) {
         Ambience.modifyParticles = modifyParticles;
     }
 
     @Override
     public void draw(Batch spriteBatch, float delta) {
-      if (modifyParticles)
-        getEffect(). modifyParticles();
+        if (modifyParticles) {
+            getEffect().modifyParticles();
+        }
         super.draw(spriteBatch, delta);
+    }
+
+    public enum AMBIENT_SFX {
+        MIST,
+
+
     }
 }

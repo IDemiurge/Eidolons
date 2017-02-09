@@ -74,9 +74,11 @@ public abstract class Game implements Serializable { // extends Entity? ;) Props
     }
 
     public boolean fireEvent(Event event) {
-        if (event.getRef().getEffect() != null)
-            if (event.getRef().getEffect().isQuietMode())
+        if (event.getRef().getEffect() != null) {
+            if (event.getRef().getEffect().isQuietMode()) {
                 return true;
+            }
+        }
         // log.sysLog(event.getType().toString());
         return mngr.handleEvent(event);
     }
@@ -204,8 +206,9 @@ public abstract class Game implements Serializable { // extends Entity? ;) Props
 
     public void initObjTypes() {
         for (OBJ_TYPE TYPE : getOBJ_TYPES()) {
-            if (TYPE.getCode() == -1)
+            if (TYPE.getCode() == -1) {
                 continue;
+            }
             initTYPE(TYPE);
         }
 
@@ -241,9 +244,10 @@ public abstract class Game implements Serializable { // extends Entity? ;) Props
 
         if (type.isInitialized() && type.getGame() != null) {
             if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.CHARS
-                    || type.getOBJ_TYPE_ENUM() == OBJ_TYPES.PARTY)
+                    || type.getOBJ_TYPE_ENUM() == OBJ_TYPES.PARTY) {
                 LogMaster.log(0, type + " already initialized for " + type.getGame() + " with id: "
                         + type.getId());
+            }
             return;
         }
         type.setId(idManager.getNewTypeId());

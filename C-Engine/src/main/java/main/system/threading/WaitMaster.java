@@ -26,14 +26,16 @@ public class WaitMaster {
     }
 
     public static Object waitForInputIfWaiting(WAIT_OPERATIONS operation) {
-        if (getWaiters().get(operation) == null)
+        if (getWaiters().get(operation) == null) {
             return false;
+        }
         return waitForInput(operation);
     }
 
     public static Object waitForInput(WAIT_OPERATIONS operation) {
-        if (getCompleteOperations().contains(operation))
+        if (getCompleteOperations().contains(operation)) {
             return true;
+        }
         main.system.auxiliary.LogMaster.log(LOG_CHANNELS.WAIT_DEBUG, " waiting for "
                 + operation.toString());
         Waiter waiter = waiters.get(operation);
@@ -50,9 +52,10 @@ public class WaitMaster {
 
         if (remove) {
             waiters.remove(waiter);
-        } else
-            main.system.auxiliary.LogMaster.log(LogMaster.WAIT_DEBUG, "WAITER RETAINED: "
+        } else {
+            LogMaster.log(LogMaster.WAIT_DEBUG, "WAITER RETAINED: "
                     + operation.toString());
+        }
 
         return result;
     }
@@ -68,8 +71,9 @@ public class WaitMaster {
         if (waiter == null) {
             waiter = new Waiter(operation);
             waiters.put(operation, waiter);
-        } else if (removeWaiter)
+        } else if (removeWaiter) {
             waiters.remove(waiter);
+        }
         waiter.setInput(input);
 
         return true;
@@ -92,8 +96,9 @@ public class WaitMaster {
     }
 
     public static DequeImpl<WAIT_OPERATIONS> getCompleteOperations() {
-        if (completeOperations == null)
-            completeOperations = new DequeImpl<WaitMaster.WAIT_OPERATIONS>();
+        if (completeOperations == null) {
+            completeOperations = new DequeImpl<WAIT_OPERATIONS>();
+        }
         return completeOperations;
     }
 

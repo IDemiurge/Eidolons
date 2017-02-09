@@ -62,11 +62,13 @@ public class G_Table extends JTable {
     // }
 
     public boolean isCellEditable(int row, int col) {
-        if (col == 0)
+        if (col == 0) {
             return false;
+        }
 
-        if (editable != null)
+        if (editable != null) {
             return (editable);
+        }
 
         return true;
     }

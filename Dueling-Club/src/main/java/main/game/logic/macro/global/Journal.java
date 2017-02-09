@@ -36,8 +36,9 @@ public class Journal extends LogManager {
                 direction += "-";
                 direction += north_or_south ? "West" : "East";
             }
-        } else
+        } else {
             direction += north_or_south ? "West" : "East";
+        }
         // "Your party" ?
         String string = party.getDisplayedName() + " has traveled " + distance
                 + " leagues " + direction + " along the "

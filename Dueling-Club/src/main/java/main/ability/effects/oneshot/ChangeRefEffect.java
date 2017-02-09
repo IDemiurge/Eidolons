@@ -18,12 +18,13 @@ public class ChangeRefEffect extends MicroEffect {
     @Override
     public boolean applyThis() {
         // so I need the active to have ref with the ammo as AMMO, not weapon?
-        if (ref_key != null)
+        if (ref_key != null) {
             ref = ref.getObj(ref_key).getRef();
-        else {
+        } else {
             for (KEYS key : autoCheckedKeys) {
-                if (ref.getObj(key).getRef().getId(this.key) != null)
+                if (ref.getObj(key).getRef().getId(this.key) != null) {
                     ref = ref.getObj(key).getRef();
+                }
             }
         }
         Integer id = ref.getId(key);
@@ -35,10 +36,11 @@ public class ChangeRefEffect extends MicroEffect {
                 }
             }
         }
-        if (add_remove)
+        if (add_remove) {
             ref.getTargetObj().getRef().setID(key, id);
-        else
+        } else {
             ref.setValue(key, null);
+        }
         // ref.getTargetObj().getRef().setValue(key, null); ???
 
         return true;

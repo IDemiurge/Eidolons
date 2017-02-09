@@ -126,15 +126,17 @@ public class ActionModePanel extends G_Panel implements MouseListener {
 
     protected int drawActions(Graphics g, int x, int y) {
         for (DC_ActiveObj subAction : getSubActions()) {
-            if (subAction == null)
+            if (subAction == null) {
                 continue;
+            }
             boolean blocked = checkBlocked(subAction);
             boolean on_off = false;
             on_off = isOn(subAction);
             Image image = ImageManager.getModeImage(getModeFromSubAction(subAction), on_off,
                     blocked);
-            if (image == null)
+            if (image == null) {
                 continue;
+            }
             g.drawImage(image, x, y, null);
 
             if (action.getOwnerObj().getPreferredAttackOfOpportunity() == subAction) {
@@ -160,10 +162,11 @@ public class ActionModePanel extends G_Panel implements MouseListener {
 
     protected boolean isOn(DC_ActiveObj subAction) {
         boolean on_off;
-        if (action.getActionMode() == null)
+        if (action.getActionMode() == null) {
             on_off = false;
-        else
+        } else {
             on_off = action.getActionMode().equals(getModeFromSubAction(subAction));
+        }
         return on_off;
     }
 
@@ -191,24 +194,27 @@ public class ActionModePanel extends G_Panel implements MouseListener {
     protected boolean toggleAttack(MouseEvent e, DC_ActiveObj subAction) {
         boolean result = false;
         if (e.isAltDown()) {
-            if (action.getOwnerObj().getPreferredAttackOfOpportunity() == subAction)
+            if (action.getOwnerObj().getPreferredAttackOfOpportunity() == subAction) {
                 action.getOwnerObj().setPreferredAttackOfOpportunity(null);
-            else
+            } else {
                 action.getOwnerObj().setPreferredAttackOfOpportunity(subAction);
+            }
             result = true;
         }
         if (e.isControlDown()) {
-            if (action.getOwnerObj().getPreferredCounterAttack() == subAction)
+            if (action.getOwnerObj().getPreferredCounterAttack() == subAction) {
                 action.getOwnerObj().setPreferredCounterAttack(null);
-            else
+            } else {
                 action.getOwnerObj().setPreferredCounterAttack(subAction);
+            }
             result = true;
         }
         if (e.isShiftDown()) {
-            if (action.getOwnerObj().getPreferredInstantAttack() == subAction)
+            if (action.getOwnerObj().getPreferredInstantAttack() == subAction) {
                 action.getOwnerObj().setPreferredInstantAttack(null);
-            else
+            } else {
                 action.getOwnerObj().setPreferredInstantAttack(subAction);
+            }
             result = true;
         }
 
@@ -236,11 +242,12 @@ public class ActionModePanel extends G_Panel implements MouseListener {
 
             // info panel or quick info tooltip
         } else {
-            if (action.isAttack())
+            if (action.isAttack()) {
                 if (toggleAttack(e, subAction)) {
                     refresh();
                     return;
                 }
+            }
             if (!action.getGame().isSimulation()) {
                 boolean on_off = action.getOwnerObj().toggleActionMode(action,
                         getModeFromSubAction(subAction));
@@ -254,12 +261,13 @@ public class ActionModePanel extends G_Panel implements MouseListener {
                 // } else
                 tooltip = getModeFromSubAction(subAction) + (on_off ? " +on+" : " -off-");
 
-                if (on_off)
+                if (on_off) {
                     if (e.isAltDown()
                         // || action.getTargeting() instanceof SelectiveTargeting
                             ) {
                         subAction.invokeClicked();
                     }
+                }
 
                 DC_Game.game.getBattleField().getBuilder().getUap().getPanelForAction(action)
                         .getCurrentComponent().repaint();
@@ -276,14 +284,16 @@ public class ActionModePanel extends G_Panel implements MouseListener {
     }
 
     protected String getModeFromSubAction(DC_ActiveObj subAction) {
-        if (subAction.isStandardAttack())
+        if (subAction.isStandardAttack()) {
             return subAction.getName();
+        }
         return subAction.getName().replace(" " + action.getName(), "");
     }
 
     public List<DC_ActiveObj> getSubActions() {
-        if (subActions == null)
+        if (subActions == null) {
             initSubActions();
+        }
         return subActions;
     }
 
@@ -301,8 +311,9 @@ public class ActionModePanel extends G_Panel implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        if (action != null)
+        if (action != null) {
             tooltip = action.getName();
+        }
 
     }
 

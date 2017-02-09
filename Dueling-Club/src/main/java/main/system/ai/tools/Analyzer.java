@@ -27,10 +27,12 @@ public class Analyzer {
     public static List<DC_HeroObj> getAllies(UnitAI ai) {
         List<DC_HeroObj> list = new XList<DC_HeroObj>();
         for (DC_HeroObj unit : getGame().getUnits()) {
-            if (unit.getOwner() != ai.getUnit().getOwner())
+            if (unit.getOwner() != ai.getUnit().getOwner()) {
                 continue;
-            if (unit.isDead())
+            }
+            if (unit.isDead()) {
                 continue;
+            }
             list.add(unit);
         }
 
@@ -40,10 +42,12 @@ public class Analyzer {
     public static List<DC_HeroObj> getWaitUnits(UnitAI ai) {
         List<DC_HeroObj> list = new XList<DC_HeroObj>();
         for (DC_HeroObj unit : getGame().getUnits()) {
-            if (unit.equals(ai.getUnit()))
+            if (unit.equals(ai.getUnit())) {
                 continue;
-            if (!WaitingFilterCondition.canBeWaitedUpon(ai.getUnit(), unit))
+            }
+            if (!WaitingFilterCondition.canBeWaitedUpon(ai.getUnit(), unit)) {
                 continue;
+            }
             list.add(unit);
         }
 
@@ -66,22 +70,34 @@ public class Analyzer {
         List<DC_HeroObj> list = new XList<DC_HeroObj>();
         for (DC_HeroObj unit : getGame().getUnits()) {
             if (unit.getZ() != ai.getUnit().getZ())// TODO
+            {
                 continue;
-            if (!enemy)
-                if (unit.getOwner() != ai.getUnit().getOwner())
+            }
+            if (!enemy) {
+                if (unit.getOwner() != ai.getUnit().getOwner()) {
                     continue;
-            if (!ally)
-                if (unit.getOwner() == ai.getUnit().getOwner())
+                }
+            }
+            if (!ally) {
+                if (unit.getOwner() == ai.getUnit().getOwner()) {
                     continue;
-            if (!neutral)
-                if (unit.getOwner() == Player.NEUTRAL || unit.isBfObj())
+                }
+            }
+            if (!neutral) {
+                if (unit.getOwner() == Player.NEUTRAL || unit.isBfObj()) {
                     continue;
-            if (vision_no_vision)
-                if (!VisionManager.checkVisible(unit))
+                }
+            }
+            if (vision_no_vision) {
+                if (!VisionManager.checkVisible(unit)) {
                     continue;
-            if (!dead)
-                if (unit.isDead())
+                }
+            }
+            if (!dead) {
+                if (unit.isDead()) {
                     continue;
+                }
+            }
 
             list.add(unit);
         }
@@ -95,19 +111,24 @@ public class Analyzer {
     }
 
     public static boolean hasSpecialActions(DC_HeroObj unit) {
-        if (hasSpells(unit))
+        if (hasSpells(unit)) {
             return true;
-        if (unit.getQuickItems() != null)
-            if (!unit.getQuickItems().isEmpty())
+        }
+        if (unit.getQuickItems() != null) {
+            if (!unit.getQuickItems().isEmpty()) {
                 return true;
+            }
+        }
         return ListMaster.isNotEmpty(unit.getActionMap().get(
                 ACTION_DISPLAY_GROUP.SPEC_ACTIONS));
     }
 
     public static boolean hasQuickItems(DC_HeroObj unit) {
-        if (unit.getQuickItems() != null)
-            if (!unit.getQuickItems().isEmpty())
+        if (unit.getQuickItems() != null) {
+            if (!unit.getQuickItems().isEmpty()) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -116,11 +137,13 @@ public class Analyzer {
     }
 
     public static boolean canCast(DC_HeroObj target) {
-        if (!hasSpells(target))
+        if (!hasSpells(target)) {
             return false;
+        }
         for (DC_SpellObj s : target.getSpells()) {
-            if (s.canBeActivated())
+            if (s.canBeActivated()) {
                 return true;
+            }
         }
         return false;
     }
@@ -133,20 +156,23 @@ public class Analyzer {
     }
 
     public static boolean checkRangedThreat(DC_HeroObj target) {
-        if (!hasSpecialActions(target))
+        if (!hasSpecialActions(target)) {
             return false;
+        }
         return canCast(target);
 
     }
 
     public static boolean isBlockingMovement(DC_HeroObj unit, DC_HeroObj target) {
-        if (!unit.getCoordinates().isAdjacent(target.getCoordinates()))
+        if (!unit.getCoordinates().isAdjacent(target.getCoordinates())) {
             return false;
+        }
 
         Coordinates c = unit.getCoordinates().getAdjacentCoordinate(
                 unit.getFacing().getDirection());
-        if (c == null)
+        if (c == null) {
             return false;
+        }
         return c.equals(target.getCoordinates());
 
     }
@@ -166,11 +192,15 @@ public class Analyzer {
     }
 
     public static boolean isEnemy(Obj targetObj, DC_Obj source) {
-        if (targetObj != null)
-            if (!targetObj.getOwner().equals(Player.NEUTRAL))
-                if (!targetObj.getOwner().equals(source.getOwner()))
-                    if (!targetObj.getOBJ_TYPE_ENUM().equals(OBJ_TYPES.BF_OBJ))
+        if (targetObj != null) {
+            if (!targetObj.getOwner().equals(Player.NEUTRAL)) {
+                if (!targetObj.getOwner().equals(source.getOwner())) {
+                    if (!targetObj.getOBJ_TYPE_ENUM().equals(OBJ_TYPES.BF_OBJ)) {
                         return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 
@@ -200,25 +230,31 @@ public class Analyzer {
         for (Coordinates coordinates : unit.getCoordinates()
                 .getAdjacentCoordinates()) {
             Obj obj = unit.getGame().getUnitByCoordinate(coordinates);
-            if (obj == null)
+            if (obj == null) {
                 continue;
+            }
 
             DC_HeroObj enemy = (DC_HeroObj) obj;
             if (enemy_or_ally_only != null) {
-                if (enemy_or_ally_only)
-                    if (obj.getOwner().equals(unit.getOwner()))
+                if (enemy_or_ally_only) {
+                    if (obj.getOwner().equals(unit.getOwner())) {
                         continue;
-                    else if (!obj.getOwner().equals(unit.getOwner()))
+                    } else if (!obj.getOwner().equals(unit.getOwner())) {
                         continue;
+                    }
+                }
             }
 
-            if (!checkAct)
+            if (!checkAct) {
                 list.add(enemy);
-            if (enemy.canActNow())
-                if (!checkAttack)
+            }
+            if (enemy.canActNow()) {
+                if (!checkAttack) {
                     list.add(enemy);
-                else if (enemy.canAttack())
+                } else if (enemy.canAttack()) {
                     list.add(enemy);
+                }
+            }
 
         }
 
@@ -306,22 +342,28 @@ public class Analyzer {
         for (Obj obj : targetUnit.getGame().getCells()) {
             DC_Cell cell = (DC_Cell) obj;
 
-            if (adjacent)
+            if (adjacent) {
                 if (!obj.getCoordinates().isAdjacent(
-                        targetUnit.getCoordinates()))
+                        targetUnit.getCoordinates())) {
                     continue;
+                }
+            }
 
             if (free) {
                 DC_HeroObj unit = targetUnit.getGame().getUnitByCoordinate(
                         cell.getCoordinates());
                 if (unit != null) {
-                    if (VisionManager.checkVisible(unit))
+                    if (VisionManager.checkVisible(unit)) {
                         continue;
+                    }
                 }
             }
             if (detected) // TODO in sight etc
-                if (cell.getActivePlayerVisionStatus() != UNIT_TO_PLAYER_VISION.DETECTED)
+            {
+                if (cell.getActivePlayerVisionStatus() != UNIT_TO_PLAYER_VISION.DETECTED) {
                     continue;
+                }
+            }
             list.add(cell);
 
         }
@@ -347,12 +389,15 @@ public class Analyzer {
         // permittedCells = ai.getGroup().getWanderBlocks();
         List<DC_Obj> list = new LinkedList<>();
         for (DC_Cell cell : getCells(ai, false, false, true)) {
-            if (d != null)
-                if (DirectionMaster.getRelativeDirection(cell, ai.getUnit()) != d)
+            if (d != null) {
+                if (DirectionMaster.getRelativeDirection(cell, ai.getUnit()) != d) {
                     continue;
+                }
+            }
             if (PositionMaster.getDistance(cell, ai.getUnit()) <= ai
-                    .getMaxWanderDistance())
+                    .getMaxWanderDistance()) {
                 list.add(cell);
+            }
         }
         if (list.isEmpty()) {
             // change direction?
@@ -392,8 +437,9 @@ public class Analyzer {
         for (DC_Cell c : cells) {
             for (Coordinates c1 : c.getCoordinates().getAdjacentCoordinates()) {
                 DC_HeroObj enemy = unit.getGame().getUnitByCoordinate(c1);
-                if (isEnemy(enemy, unit))
+                if (isEnemy(enemy, unit)) {
                     continue loop;
+                }
             }
             remove_cells.add(c);
         }
@@ -406,10 +452,11 @@ public class Analyzer {
 
     public static List<DC_Cell> getSearchCells(UnitAI ai) {
         List<DC_Cell> cells = getLastSeenEnemyCells(ai);
-        if (!cells.isEmpty())
+        if (!cells.isEmpty()) {
             return new ListMaster<DC_Cell>()
                     .getList(new RandomWizard<DC_Cell>()
                             .getRandomListItem(cells));
+        }
         return new ListMaster<DC_Cell>().getList(ai
                 .getUnit()
                 .getGame()

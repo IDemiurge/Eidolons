@@ -99,10 +99,9 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
     private void initButtons() {
         removeAll();
         mode = HC_MODE.ARCADE;
-        if (Launcher.getMainManager().isMacroMode())
+        if (Launcher.getMainManager().isMacroMode()) {
             mode = HC_MODE.MACRO;
-
-        else if (CharacterCreator.isArcadeMode()) {
+        } else if (CharacterCreator.isArcadeMode()) {
             mode = PartyManager.getParty().getArcadeStatus() != ARCADE_STATUS.PRESTART
 
                     ? HC_MODE.ARCADE : HC_MODE.PRE_ARCADE;
@@ -127,8 +126,9 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
             String pos = "growx 100";
             add(getButton(command), pos);
             i++;
-            if (i == 2)
+            if (i == 2) {
                 i++;
+            }
         }
         revalidate();
 
@@ -181,11 +181,12 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
                 case ADD:
                     SoundMaster.playStandardSound(STD_SOUNDS.MOVE);
 
-                    if (PartyManager.checkPartySize() || Launcher.DEV_MODE)
+                    if (PartyManager.checkPartySize() || Launcher.DEV_MODE) {
                         Launcher.getMainManager().getSequenceMaster().chooseNewMember(
                                 PartyManager.getParty());
-                    else
+                    } else {
                         DialogMaster.error("Maximum party size reached!");
+                    }
                     break;
                 case REMOVE:
                     PartyManager.remove(hero);// ...
@@ -196,14 +197,17 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
                 case FIGHT_ARCADE:
                     Weaver.inNewThread(new Runnable() {
                         public void run() {
-                                if (Launcher.DEV_MODE)
-                            if (!alt && isNameGenTest()) {
+                            if (Launcher.DEV_MODE) {
+                                if (!alt && isNameGenTest()) {
                                     testFightLaunch();
 
-                                // testNameGen();
-                            } else
+                                    // testNameGen();
+                                } else
                                 // DC_Game.game.getDungeonMaster().initDungeonLevelChoice();
-                                fight();
+                                {
+                                    fight();
+                                }
+                            }
                         }
                     });
                     break;
@@ -336,21 +340,25 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
         String content = FileManager.readFile(PathFinder.getXML_PATH() + "names\\" + "names.xml");
         while (true) {
             ObjType type = ListChooser.chooseTypeObj_(OBJ_TYPES.CHARS, "Background");
-            if (type == null)
+            if (type == null) {
                 break;
+            }
             String name = "";
             while (true) {
                 name = CharacterCreator.getHeroName(type);
-                if (name == null)
+                if (name == null) {
                     break;
-                if (name.equals(NameMaster.NO_NAME))
+                }
+                if (name.equals(NameMaster.NO_NAME)) {
                     break;
+                }
                 content += name + ";";
             }
 
         }
-        if (!content.isEmpty())
+        if (!content.isEmpty()) {
             XML_Writer.write(content, PathFinder.getXML_PATH() + "names\\", "names.xml");
+        }
     }
 
     @Override

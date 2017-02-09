@@ -52,8 +52,9 @@ public class Mission {
 		LevelEditor.getMainPanel().setCurrentMission(this);
 		this.name = baseType;
 		type = DataManager.getType(name, MACRO_OBJ_TYPES.MISSIONS);
-		if (type == null)
-			throw new RuntimeException();
+        if (type == null) {
+            throw new RuntimeException();
+        }
 
 		// LevelEditor.initSimulation(this);
 
@@ -132,9 +133,10 @@ public class Mission {
 	}
 
 	public void addLevel(Level l) {
-		if (levels.contains(l))
-			return;
-		levels.add(l);
+        if (levels.contains(l)) {
+            return;
+        }
+        levels.add(l);
 	}
 
 	public String toString() {
@@ -142,9 +144,10 @@ public class Mission {
 	}
 
 	public Level getFirstLevel() {
-		if (ListMaster.isNotEmpty(levels))
-			return levels.get(0);
-		return null;
+        if (ListMaster.isNotEmpty(levels)) {
+            return levels.get(0);
+        }
+        return null;
 	}
 
 	public String getName() {

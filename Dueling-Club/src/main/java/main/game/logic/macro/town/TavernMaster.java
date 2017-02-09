@@ -41,8 +41,9 @@ public class TavernMaster {
         } else {
             amount = DialogMaster.inputInt();
         }
-        if (amount <= 0)
+        if (amount <= 0) {
             return;
+        }
         int cost = amount * tavern.getIntParam(MACRO_PARAMS.FOOD_COST);
         if (party.getSharedGold() < cost) {
             // "Well, you only got enough for " _ amount + ", interested?";

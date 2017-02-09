@@ -38,11 +38,11 @@ public class Minimap {
     public void init() {
         int borderX = editMode ? 300 : 100;
         int borderY = editMode ? 100 : 50;
-        if (!viewMode)
+        if (!viewMode) {
             size = new Dimension((int) GuiManager.getScreenWidth() - borderX, (int) GuiManager
                     .getScreenHeight()
                     - borderY);
-        else {
+        } else {
             size = new Dimension(GuiManager.getBattleFieldWidth(), GuiManager
                     .getBattleFieldHeight());
             borderX = 0;
@@ -53,10 +53,11 @@ public class Minimap {
             overlayingToLoad = grid.getOverlayingObjComps();
         }
         grid = new MiniGrid(editMode, this);
-        if (MiniGrid.isMouseDragOffsetModeOn())
+        if (MiniGrid.isMouseDragOffsetModeOn()) {
             grid.setCustomMouseListener(customMouseListener);
-        else
+        } else {
             grid.setCustomMouseListener(customMouseListener);
+        }
         grid.setMouseWheelListener(mouseWheelListener);
         grid.setOverlayingObjComps(overlayingToLoad);
         grid.init();
@@ -106,8 +107,9 @@ public class Minimap {
     }
 
     public MiniGrid getGrid() {
-        if (grid == null)
+        if (grid == null) {
             init();
+        }
         return grid;
     }
 
@@ -116,8 +118,9 @@ public class Minimap {
     }
 
     public G_Panel getComp() {
-        if (comp == null)
+        if (comp == null) {
             init();
+        }
         return comp;
     }
 

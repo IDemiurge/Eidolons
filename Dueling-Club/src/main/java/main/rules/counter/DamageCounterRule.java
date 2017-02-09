@@ -29,8 +29,9 @@ public abstract class DamageCounterRule extends DC_CounterRule {
     public abstract boolean isEnduranceOnly();
 
     public boolean apply(DC_HeroObj unit) {
-        if (!check(unit))
+        if (!check(unit)) {
             return false;
+        }
 
         Ref ref = Ref.getSelfTargetingRefCopy(unit);
         ref.setPeriodic(true);

@@ -29,15 +29,24 @@ public class ReflectionMaster<T> {
     }
 
     public void setValue(String fieldName, T value, Object obj) {
+          setValue(fieldName, value, obj, obj.getClass());
+    }
+        public void setValue(String fieldName, T value, Object obj, Class<?> clazz) {
         Field field = null;
         try {
-            field = obj.getClass(). getDeclaredField(fieldName);
+            field = clazz. getDeclaredField(fieldName);
         } catch (NoSuchFieldException e) {
+            if (clazz.getSuperclass()!=null )
+            {
+                setValue(fieldName, value, obj, clazz.getSuperclass());
+                return ;
+            }
+            else
             e.printStackTrace();
         }
         field.setAccessible(true);
         try {
-              field.set(obj,value);
+            field.set(obj, value);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }

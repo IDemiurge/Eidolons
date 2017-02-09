@@ -17,10 +17,12 @@ public class ResistanceRule {
     public static boolean checkNotResisted(Ref ref) {
         int resistance = getResistance(ref);
 
-        if (resistance >= 100)
+        if (resistance >= 100) {
             return false;
-        if (resistance <= 0)
+        }
+        if (resistance <= 0) {
             return true;
+        }
 
         if (RandomWizard.chance(resistance)) {
             ref.getGame().getLogManager().logAlert(
@@ -39,15 +41,17 @@ public class ResistanceRule {
 
     public static int getResistance(Ref ref) {
         DC_ActiveObj spell = (DC_ActiveObj) ref.getObj(KEYS.SPELL);
-        if (spell == null)
+        if (spell == null) {
             return 0;
+        }
         Obj target = ref.getTargetObj();
         Obj source = ref.getSourceObj();
         DAMAGE_TYPE type = spell.getEnergyType();
         int specResist = 0;
         PARAMETER typeResistance = DC_ContentManager.getDamageTypeResistance(type);
-        if (typeResistance != null)
+        if (typeResistance != null) {
             specResist = target.getIntParam(typeResistance);
+        }
 
         int resistance = specResist;
         // int resistance = target.getIntParam(PARAMS.RESISTANCE);

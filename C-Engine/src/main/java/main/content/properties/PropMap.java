@@ -28,10 +28,12 @@ public class PropMap implements ValueMap {
 
     @Override
     public String get(VALUE valueName) {
-        if (valueName == null)
+        if (valueName == null) {
             return "";
-        if (map.get(valueName) == null)
+        }
+        if (map.get(valueName) == null) {
             return "";
+        }
         return map.get(valueName);
     }
 

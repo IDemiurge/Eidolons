@@ -102,39 +102,48 @@ public class AnimationManager {
     // TODO
     public void paintCalledOnBfGrid() {
         for (PhaseAnimation anim : new LinkedList<>(animations)) {
-            if (!anim.isAutoHandled())
+            if (!anim.isAutoHandled()) {
                 continue;
-            if (!anim.isStarted())
+            }
+            if (!anim.isStarted()) {
                 anim.start();
+            }
             // else if (anim.checkTime())
             // animations.remove(anim);
         }
     }
 
     public boolean isStackAnimOverride(Coordinates coordinates) {
-        for (PhaseAnimation anim : animations)
-            if (anim.isDrawReady())
+        for (PhaseAnimation anim : animations) {
+            if (anim.isDrawReady()) {
                 if (anim.isStackDrawingOn()) {
-                    if (anim.getTargetCoordinates().equals(coordinates))
+                    if (anim.getTargetCoordinates().equals(coordinates)) {
                         return true;
+                    }
                 }
+            }
+        }
         return false;
     }
 
     public boolean updateAnimations() {
-        if (!changed)
+        if (!changed) {
             changed = cleanAnimations();
+        }
 
-        if (CoreEngine.isSwingOn())
+        if (CoreEngine.isSwingOn()) {
             updatePoints();
+        }
         // DequeImpl<PhaseAnimation> animsToDraw = new DequeImpl<>(animations);
         // animsToDraw.addAll(tempAnims); drawn manually!
         for (PhaseAnimation anim : animations) {
-            if (anim.isPending())
+            if (anim.isPending()) {
                 anim.run();
+            }
 
-            if (CoreEngine.isSwingOn())
+            if (CoreEngine.isSwingOn()) {
                 checkOverlapping(anim);
+            }
         }
         // drawThumbnails()
         if (changed) {
@@ -148,8 +157,9 @@ public class AnimationManager {
     public void drawAnimations(Graphics bfGraphics) {
         updateAnimations();
         // will phase have time to init via timer.start()?
-        for (PhaseAnimation anim : animations)
+        for (PhaseAnimation anim : animations) {
             anim.draw(bfGraphics);
+        }
         // check overlapping !
         // anim.getTarget()
     }
@@ -158,13 +168,16 @@ public class AnimationManager {
 
         boolean changed = false;
         for (PhaseAnimation anim : new LinkedList<>(animations)) {
-            if (anim.isFinished())
-                if (!anim.isPaused())
-                    if (!anim.isThumbnail())
+            if (anim.isFinished()) {
+                if (!anim.isPaused()) {
+                    if (!anim.isThumbnail()) {
                         if (!anim.isReplay()) {
                             removeAnimation(anim);
                             changed = true;
                         }
+                    }
+                }
+            }
         }
         return changed;
     }
@@ -177,8 +190,8 @@ public class AnimationManager {
     private void checkOverlapping(PhaseAnimation anim) {
         for (PhaseAnimation anim1 : animations) {
             int i = 0;
-            if (anim != (anim1))
-                if (anim.isVisible())
+            if (anim != (anim1)) {
+                if (anim.isVisible()) {
                     if (anim.getTargetCoordinates().equals(anim1.getTargetCoordinates())) {
                         if (!isOffsetForOverlap()) {
                             anim = getAnimBelow(anim, anim1);
@@ -197,6 +210,8 @@ public class AnimationManager {
                             }
                         }
                     }
+                }
+            }
         }
     }
 
@@ -211,23 +226,26 @@ public class AnimationManager {
 
     private void addOffsets(PhaseAnimation anim, PhaseAnimation anim1, int offset, boolean source_target_all,
                             boolean x) {
-        if (anim.getOffset(source_target_all, x) == 0)
+        if (anim.getOffset(source_target_all, x) == 0) {
             anim.addOffset(source_target_all, x, offset);
-        else
+        } else {
             anim1.addOffset(source_target_all, x, offset);
+        }
 
-        if (Math.abs(anim1.getOffset(source_target_all, x)) < offset)
+        if (Math.abs(anim1.getOffset(source_target_all, x)) < offset) {
             anim1.addOffset(source_target_all, x, offset);
-        else
+        } else {
             anim.addOffset(source_target_all, x, offset);
+        }
     }
 
     public Coordinates updatePoints() {
         bufferedOffset = game.getBattleField().getGrid().getOffsetCoordinate();
         List<PhaseAnimation> anims = new LinkedList<>();
         for (PhaseAnimation anim : animations) {
-            if (!anim.isDrawReady())
+            if (!anim.isDrawReady()) {
                 continue;
+            }
             anims.add(anim);
         }
         return updatePoints(anims);
@@ -247,11 +265,13 @@ public class AnimationManager {
                 // centering ;
             }
         }
-        if (pendingCameraAdjustmentAnims.isEmpty())
+        if (pendingCameraAdjustmentAnims.isEmpty()) {
             return bufferedOffset;
+        }
         offset = game.getBattleField().getGrid().getOffsetCoordinate();
-        if (offset == null)
+        if (offset == null) {
             offset = new Coordinates(0, 0);
+        }
         int y = offset.y;
         int x = offset.x;
         int y1 = offset.y;
@@ -288,8 +308,9 @@ public class AnimationManager {
                 }
             }
             int size = list.size();
-            if (size < minNumber)
+            if (size < minNumber) {
                 minNumber = size;
+            }
             offset = c_offset;
         }
         return minNumber;
@@ -339,16 +360,19 @@ public class AnimationManager {
 
     public PhaseAnimation getAnimation(Object key) {
         PhaseAnimation anim = getAnimation(key, animations);
-        if (anim == null)
+        if (anim == null) {
             anim = getAnimation(key, archivedAnimations);
+        }
         return anim;
     }
 
     public PhaseAnimation getAnimation(Object key, DequeImpl<PhaseAnimation> pool) {
         for (PhaseAnimation anim : pool) {
-            if (anim.getKey() != null)
-                if (anim.getKey().equals(key))
+            if (anim.getKey() != null) {
+                if (anim.getKey().equals(key)) {
                     return anim;
+                }
+            }
         }
 
         return null;
@@ -369,8 +393,9 @@ public class AnimationManager {
 
     public void animateValuesModified(Obj target) {
         List<Ref> list = modifiedValues.get(target);
-        if (list == null)
+        if (list == null) {
             return;
+        }
         int i = 0;
         for (Ref ref : list) {
             animateValueModification(ref, i);
@@ -380,17 +405,21 @@ public class AnimationManager {
 
     // TODO ++ animate counter mods! use small icons too :)
     public void animateValueModification(Ref ref, int i) {
-        if (ref.getValue() instanceof G_PARAMS)
+        if (ref.getValue() instanceof G_PARAMS) {
             return;
-        if (ref.getValue() instanceof Param)
+        }
+        if (ref.getValue() instanceof Param) {
             return;
-        if (ref.getAmount() == null)
+        }
+        if (ref.getAmount() == null) {
             return;
+        }
         PARAMS p = (PARAMS) ref.getValue();
         Color c = p.getColor();
         String text = ref.getAmount() + "";
-        if (ref.getAmount() > 0)
+        if (ref.getAmount() > 0) {
             text = "+" + ref.getAmount();
+        }
         // TODO coordinates! by i
         Point pt = OBJ_COMP_CENTER;
         if (i != 0) {
@@ -419,8 +448,9 @@ public class AnimationManager {
             if (ImageManager.isImage(ref.getValue(KEYS.IMAGE.toString()))) {
                 img = ImageManager.getIcon(ref.getValue(KEYS.IMAGE.toString()));
             }
-            if (ImageManager.isValidIcon(img))
+            if (ImageManager.isValidIcon(img)) {
                 setOverlayingImage(ref.getTargetObj(), img.getImage());
+            }
         }
     }
 
@@ -440,31 +470,33 @@ public class AnimationManager {
     // exception with std attacks - update weapon?
     public void actionResolves(DC_ActiveObj action, Ref ref) {
         ImageIcon img = action.getIcon();
-        if (img == null)
+        if (img == null) {
             return;
+        }
         // actionResolves(img, ref); TODO old
     }
 
     public void actionResolves(ImageIcon img, Ref ref) {
 
-        if (ref.getGroup() != null)
+        if (ref.getGroup() != null) {
             for (Obj obj : ref.getGroup().getObjects()) {
-                if (ListMaster.isNotEmpty(modifiedValues.get(obj)))
+                if (ListMaster.isNotEmpty(modifiedValues.get(obj))) {
                     animateValuesModified(obj);
-                else {
+                } else {
                     setOverlayingImage(obj, img.getImage());
                     animate(actionDelay, getComp(obj));
                 }
             }
-        else if (ref.getTargetObj() != null) {
-            if (ListMaster.isNotEmpty(modifiedValues.get(ref.getTargetObj())))
+        } else if (ref.getTargetObj() != null) {
+            if (ListMaster.isNotEmpty(modifiedValues.get(ref.getTargetObj()))) {
                 animateValuesModified(ref.getTargetObj());
-            else {
+            } else {
                 setOverlayingImage(ref.getTargetObj(), img.getImage());
                 animate(actionDelay, getComp(ref.getTargetObj()));
             }
-        } else
+        } else {
             return;
+        }
         clearModValues();
         // WaitMaster.waitForInput(WAIT_OPERATIONS.ANIMATION_FINISHED);
 
@@ -495,9 +527,9 @@ public class AnimationManager {
                         // + " animation, delay = " + delay);
 
                         map.remove(comp.getTopObjOrCell());
-                        if (map.isEmpty())
+                        if (map.isEmpty()) {
                             WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_FINISHED, true);
-                        else {
+                        } else {
                             WaitMaster.WAIT(delay);
                             WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_FINISHED, true);
                         }
@@ -585,12 +617,14 @@ public class AnimationManager {
     }
 
     public PhaseAnimation getActionAnimation(DC_ActiveObj action) {
-        if (action.isAttack())
+        if (action.isAttack()) {
             return null;
-        if (action.getRef().getGroup() != null)
+        }
+        if (action.getRef().getGroup() != null) {
             if (action.getRef().getGroup().getObjects().size() > 1) {
                 return wrapInMultiAnim(action);
             }
+        }
         ActionAnimation animation = new ActionAnimation(action);
         switch (action.getActionGroup()) {
             case ATTACK:
@@ -610,10 +644,12 @@ public class AnimationManager {
     }
 
     public void newAnimation(PhaseAnimation animation) {
-        if (animation == null)
+        if (animation == null) {
             return;
-        if (animations.contains(animation))
+        }
+        if (animations.contains(animation)) {
             return;
+        }
         animations.add(animation);
         changed = true;
 

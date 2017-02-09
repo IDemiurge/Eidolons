@@ -42,10 +42,11 @@ public class ListItemMouseListener<E> implements MouseListener {
             return;
         }
         if (SwingUtilities.isRightMouseButton(arg0)) {
-            if (arg0.isAltDown())
+            if (arg0.isAltDown()) {
                 buttonPanel.edit();
-            else
+            } else {
                 buttonPanel.moveOne(arg0.getClickCount() > 1);
+            }
             return;
         }
 
@@ -55,8 +56,9 @@ public class ListItemMouseListener<E> implements MouseListener {
             } else {
                 if (source == getList()) {
                     buttonPanel.add();
-                } else
+                } else {
                     buttonPanel.removeOrAdd(mode);
+                }
             }
         }
 

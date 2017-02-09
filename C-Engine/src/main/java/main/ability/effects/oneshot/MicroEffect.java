@@ -25,9 +25,9 @@ public abstract class MicroEffect extends EffectImpl {
 
         boolean result = super.apply();
 
-        if (result)
-            if (!isContinuousWrapped() || !isApplied())
-                if (!isAnimationDisabled())
+        if (result) {
+            if (!isContinuousWrapped() || !isApplied()) {
+                if (!isAnimationDisabled()) {
                     if (getAnimation() != null)
                     // if (!getAnimation().isVisible()) {
                     // TODO wait till all resolved?
@@ -37,8 +37,8 @@ public abstract class MicroEffect extends EffectImpl {
 						/*
                          * DelayedEffect will come here
 						 * Entry not yet added
-						 * Pending 
-						 * 
+						 * Pending
+						 *
 						 */
                         if (getTrigger() != null) {
                             cleanAnimation();
@@ -66,14 +66,20 @@ public abstract class MicroEffect extends EffectImpl {
                             }
                         }
                         try {
-                            if (!checkAnimDisabledForAction(getActiveObj()))
-                                if (!getAnimation().isPending())
-                                    if (!getAnimation().isFinished())
+                            if (!checkAnimDisabledForAction(getActiveObj())) {
+                                if (!getAnimation().isPending()) {
+                                    if (!getAnimation().isFinished()) {
                                         getAnimation().start();
+                                    }
+                                }
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
+                }
+            }
+        }
         return result;
     }
 
@@ -83,8 +89,9 @@ public abstract class MicroEffect extends EffectImpl {
     }
 
     private boolean checkAnimDisabledForAction(ActiveObj activeObj) {
-        if (activeObj == null)
+        if (activeObj == null) {
             return false;
+        }
 
         return activeObj.isAttack();
 
@@ -101,7 +108,7 @@ public abstract class MicroEffect extends EffectImpl {
         // newAnim.setPhaseFilter(new
         // ListMaster<PHASE_TYPE>().getList(lastPhase.getType()));
 
-        if (lastPhase != null)
+        if (lastPhase != null) {
             try { // TODO clone phase?
                 // if (lastPhase.getType() !=
                 // getAnimation().getPhases().get(
@@ -110,6 +117,7 @@ public abstract class MicroEffect extends EffectImpl {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
         newAnim.start();
 
         // ListMaster.removeIndicesAllExcept(getAnimation().getPhases(),
@@ -117,8 +125,9 @@ public abstract class MicroEffect extends EffectImpl {
     }
 
     public void wrapInBuffPhase(Object... args) {
-        if (getAnimation() != null)
+        if (getAnimation() != null) {
             getAnimation().addPhaseArgs(true, PHASE_TYPE.BUFF, args);
+        }
     }
 
     public boolean isAnimationDisabled() {

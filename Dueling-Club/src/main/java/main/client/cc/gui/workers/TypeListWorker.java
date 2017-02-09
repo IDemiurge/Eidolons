@@ -21,20 +21,24 @@ public class TypeListWorker extends SwingWorker<List<ObjType>, String> {
     protected List<ObjType> doInBackground() throws Exception {
 
         if (!panel.isResponsive()) {
-            if (!panel.checkList(listName, false))
+            if (!panel.checkList(listName, false)) {
                 return null;
+            }
         }
         if (!panel.isShowAll()) {
-            if (!panel.checkList(listName, true))
+            if (!panel.checkList(listName, true)) {
                 return null;
+            }
         }
 
         List<String> types = DataManager
                 .getTypesSubGroupNames(panel.getTYPE(), listName);
-        if (types == null)
+        if (types == null) {
             return null;
-        if (types.isEmpty())
+        }
+        if (types.isEmpty()) {
             return null;
+        }
         List<ObjType> data = DataManager.toTypeList(types, panel
                 .getTYPE());
 

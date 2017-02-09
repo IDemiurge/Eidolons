@@ -143,7 +143,9 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
     @Override
     public Actor hit(float x, float y, boolean touchable) {
         Actor a = super.hit(x, y, touchable);
-        if (a == null) return null;
+        if (a == null) {
+            return null;
+        }
         return this;
 
     }

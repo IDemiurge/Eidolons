@@ -36,8 +36,9 @@ public class FileManager {
     }
 
     public static String readFile(File file, String lineSeparator) {
-        if (!isFile(file))
+        if (!isFile(file)) {
             return "";
+        }
 
         String result = "";
 
@@ -117,8 +118,9 @@ public class FileManager {
         while (true) {
             try {
                 ZipEntry entry = in.getNextEntry();
-                if (entry == null)
+                if (entry == null) {
                     break;
+                }
                 if (entry.getName().equals("content.xml")) {
                     String xmlString = "";
                     while (true) {
@@ -127,8 +129,9 @@ public class FileManager {
                         // sure, or is this
                         // wrong?
                         int n = in.read(array);
-                        if (n <= 0)
+                        if (n <= 0) {
                             break;
+                        }
                         new Inflater().inflate(array);
                         String string = new String(array);
                         xmlString += string.substring(0, n);
@@ -206,11 +209,13 @@ public class FileManager {
             return corePath + format;
         }
         int number = (new Random().nextInt(i));
-        if (number == 1)
+        if (number == 1) {
             number++;
+        }
         String key = String.valueOf(number);
-        if (number == 0)
+        if (number == 0) {
             key = "";
+        }
 
         return corePath + key + format;
     }
@@ -256,16 +261,20 @@ public class FileManager {
 
     public static List<File> findFiles(String path, String regex) {
         File folder = getFile(path);
-        if (!folder.isDirectory())
+        if (!folder.isDirectory()) {
             return new LinkedList<>();
+        }
         return findFiles(folder, regex, false, true);
     }
 
     public static String findFirstFile(String folder, String regex, boolean closest) {
         List<File> files = getFilesFromDirectory(folder,   false);
-        if (files.isEmpty()) return null ;
-        if (closest)
-            return   SearchMaster .findClosest(regex,  getFileNames(files).toArray()).toString();
+        if (files.isEmpty()) {
+            return null;
+        }
+        if (closest) {
+            return SearchMaster.findClosest(regex, getFileNames(files).toArray()).toString();
+        }
         return  new SearchMaster<String>().find(regex,  getFileNames(files));
     }
         public static List<File> findFiles(File folder, String regex) {
@@ -276,20 +285,22 @@ public class FileManager {
         List<File> files = new LinkedList<File>();
         for (File file : folder.listFiles()) {
             if (file.isFile()) {
-                if (regex.isEmpty())
+                if (regex.isEmpty()) {
                     files.add(file);
-                else {
+                } else {
                     String fileName = cropFormat ? StringMaster.cropFormat(file.getName()) : file
                             .getName();
                     if (strict) {
                         if (StringMaster.compareByChar(StringMaster.cropFileVariant(fileName),
-                                StringMaster.cropFormat(regex), false))
+                                StringMaster.cropFormat(regex), false)) {
                             files.add(file);
+                        }
                     } else {
                         if (StringMaster.compare(StringMaster.cropFileVariant(fileName),
                                 // StringMaster.cropFormat
-                                (regex), false))
+                                (regex), false)) {
                             files.add(file);
+                        }
                     }
                 }
 
@@ -305,8 +316,9 @@ public class FileManager {
     }
 
     public static boolean write(String content, String filepath) {
-        if (!filepath.contains(":"))
+        if (!filepath.contains(":")) {
             filepath = PathFinder.getEnginePath() + "\\" + filepath;
+        }
         filepath = filepath.trim();
         try {
             File file = new File(filepath);
@@ -316,12 +328,13 @@ public class FileManager {
                 }
                 file.createNewFile();
             } else {
-                if (content.length() == 0)
+                if (content.length() == 0) {
                     if (FileManager.readFile(file).length() > content.length()) {
-                        main.system.auxiliary.LogMaster.log(1, "*Not writing empty file! "
+                        LogMaster.log(1, "*Not writing empty file! "
                                 + filepath);
                         return false;
                     }
+                }
             }
             FileWriter fw = new FileWriter(file);
 
@@ -342,17 +355,21 @@ public class FileManager {
 
     public static boolean isMusicFile(File sub) {
         String format = StringMaster.getFormat(sub.getName()).replace(".", "");
-        for (String f : StringMaster.openContainer(SoundMaster.STD_FORMATS))
-            if (format.equalsIgnoreCase(f))
+        for (String f : StringMaster.openContainer(SoundMaster.STD_FORMATS)) {
+            if (format.equalsIgnoreCase(f)) {
                 return true;
+            }
+        }
         return false;
     }
 
     public static boolean isImageFile(String name) {
         String format = StringMaster.getFormat(name);
-        for (String f : ImageManager.STD_FORMATS)
-            if (format.equalsIgnoreCase(f))
+        for (String f : ImageManager.STD_FORMATS) {
+            if (format.replaceFirst(".", ""). equalsIgnoreCase(f)) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -360,21 +377,25 @@ public class FileManager {
                                                    boolean subDirectories) {
         List<File> list = new LinkedList<>();
         File folder = new File(path);
-        if (!folder.isDirectory())
+        if (!folder.isDirectory()) {
             return list;
+        }
         for (File f : folder.listFiles()) {
             if (subDirectories) {
                 list.addAll(getFilesFromDirectory(f.getPath(), allowDirectories, subDirectories));
             }
             if (f.isDirectory()) {
-                if (!allowDirectories)
+                if (!allowDirectories) {
                     continue;
+                }
 
-            } else if (!(f.isFile()))
+            } else if (!(f.isFile())) {
                 continue;
+            }
 
-            if (f.getName().equalsIgnoreCase("desktop.ini"))
+            if (f.getName().equalsIgnoreCase("desktop.ini")) {
                 continue;
+            }
             list.add(f);
         }
         return list;
@@ -382,11 +403,15 @@ public class FileManager {
 
     public static File getRandomFile(List<File> files) {
         int randomListIndex = RandomWizard.getRandomListIndex(files);
-        if (randomListIndex == -1)
+        if (randomListIndex == -1) {
             return null;
+        }
         return files.get(randomListIndex);
     }
 
+    public static File getRandomFile(String path, boolean recursive) {
+        return getRandomFile(getFilesFromDirectory(path, false, recursive));
+    }
     public static File getRandomFile(String path) {
         return getRandomFile(getFilesFromDirectory(path, false));
     }

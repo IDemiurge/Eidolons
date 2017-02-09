@@ -26,8 +26,9 @@ public class MoistRule extends DC_CounterRule {
 
     @Override
     public boolean check(DC_HeroObj unit) {
-        if (unit.checkPassive(STANDARD_PASSIVES.IMMATERIAL))
+        if (unit.checkPassive(STANDARD_PASSIVES.IMMATERIAL)) {
             return false;
+        }
         return super.check(unit);
     }
 
@@ -49,10 +50,12 @@ public class MoistRule extends DC_CounterRule {
 
     @Override
     public int getMaxNumberOfCounters(DC_HeroObj unit) {
-        if (unit.checkClassification(CLASSIFICATIONS.SMALL))
+        if (unit.checkClassification(CLASSIFICATIONS.SMALL)) {
             return 25;
-        if (unit.checkClassification(CLASSIFICATIONS.HUGE))
+        }
+        if (unit.checkClassification(CLASSIFICATIONS.HUGE)) {
             return 100;
+        }
         return 50; // huge vs small?
         // skeletal less,
     }
@@ -73,10 +76,12 @@ public class MoistRule extends DC_CounterRule {
 
     @Override
     public int getCounterNumberReductionPerTurn(DC_HeroObj unit) {
-        if (unit.checkClassification(CLASSIFICATIONS.SMALL))
+        if (unit.checkClassification(CLASSIFICATIONS.SMALL)) {
             return 1;
-        if (unit.checkClassification(CLASSIFICATIONS.HUGE))
+        }
+        if (unit.checkClassification(CLASSIFICATIONS.HUGE)) {
             return 4;
+        }
         return 2;
     }
 

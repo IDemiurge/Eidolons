@@ -41,17 +41,20 @@ public class Entrance extends DC_HeroObj {
     }
 
     private Coordinates getOffsetCoordinates(boolean back) {
-        if (back)
+        if (back) {
             return getCoordinates(); // TODO so it's the same object for both
+        }
         // dungeons?
         int offsetX = dungeon.getCellsX() - sublevel.getCellsX();
         int offsetY = dungeon.getCellsY() - sublevel.getCellsY();
         int x = getCoordinates().x + offsetX;
         int y = getCoordinates().y + offsetY;
-        if (x < 0)
+        if (x < 0) {
             x = 0;
-        if (y < 0)
+        }
+        if (y < 0) {
             y = 0;
+        }
         return new Coordinates(x, y);
     }
 

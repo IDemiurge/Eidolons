@@ -65,8 +65,9 @@ public class PagedSelectionPanel<E> extends G_PagePanel<E> implements ListSelect
 
         page.getList().addListSelectionListener(this);
         page.getList().setObj_size(getItemSize());
-        if (getCustomRenderer() != null)
+        if (getCustomRenderer() != null) {
             page.getList().setCellRenderer(getCustomRenderer());
+        }
         return page;
     }
 
@@ -112,8 +113,9 @@ public class PagedSelectionPanel<E> extends G_PagePanel<E> implements ListSelect
 
         @Override
         public void setInts() {
-            if (!isInitialized())
+            if (!isInitialized()) {
                 return;
+            }
             layoutOrientation = (vertical) ? JList.HORIZONTAL_WRAP : JList.VERTICAL_WRAP;
             this.rowsVisible = pageSize / getWrap();
         }

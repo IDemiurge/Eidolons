@@ -38,8 +38,9 @@ public class DC_PositionMaster {
                             .getDirection(), baseCoordinate, width));
                     baseCoordinate = baseCoordinate
                             .getAdjacentCoordinate(facing.getDirection());
-                    if (baseCoordinate == null)
+                    if (baseCoordinate == null) {
                         break;
+                    }
                     width++;
                 }
 
@@ -95,11 +96,13 @@ public class DC_PositionMaster {
                                                  Coordinates baseCoordinate, int length, int width) {
         XList<Coordinates> list = new XList();
         length--;
-        if (length < 0)
+        if (length < 0) {
             return list;
+        }
         width--;
-        if (width < 0)
+        if (width < 0) {
             return list;
+        }
         List<Coordinates> line = getLine(allowInvalid,
                 lengthDirection.getDirection(), baseCoordinate, length);
         list.addAllUnique(line);
@@ -123,8 +126,9 @@ public class DC_PositionMaster {
         for (int i = 0; i < length; i++) {
 
             c = c.getAdjacentCoordinate(allowInvalid, direction);
-            if (c == null)
+            if (c == null) {
                 break;
+            }
             list.add(c);
         }
         return list;

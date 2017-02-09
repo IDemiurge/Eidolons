@@ -86,10 +86,11 @@ public class ScenarioChoiceView extends EntityChoiceView {
 
     @Override
     public String getInfo() {
-        if (ListMaster.isNotEmpty(data))
+        if (ListMaster.isNotEmpty(data)) {
             if (getSelectedIndex() >= 0) {
                 return getSelectedItem().getName();
             }
+        }
         return InfoMaster.CHOOSE_SCENARIO;
     }
 

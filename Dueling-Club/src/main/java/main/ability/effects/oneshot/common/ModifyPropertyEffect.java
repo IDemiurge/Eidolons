@@ -58,8 +58,9 @@ public class ModifyPropertyEffect extends DC_Effect implements ResistibleEffect 
         map = new XLinkedMap<>();
         boolean result = true;
         Obj obj = ref.getObj(KEYS.TARGET);
-        if (obj == null)
+        if (obj == null) {
             return false;
+        }
 
         switch (modtype) {
             case ADD:

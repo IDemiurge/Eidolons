@@ -15,4 +15,7 @@ public interface RADIAL_ITEM {
 
     String getTexturePath();
 
+    float getWidth();
+
+    float getHeight();
 }

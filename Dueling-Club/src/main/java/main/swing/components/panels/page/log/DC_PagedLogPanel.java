@@ -85,8 +85,9 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
             }
 
             public VISUALS getVisuals() {
-                if (!isEnabled())
+                if (!isEnabled()) {
                     return VISUALS.ADD_BLOCKED;
+                }
                 return super.getVisuals();
             }
 
@@ -113,11 +114,12 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
         pos = "pos 0 0";
         add(returnButton, pos);
         int i = 0;
-        if (entryNodes != null)
+        if (entryNodes != null) {
             for (final LogEntryNode node : entryNodes) {
                 int lineIndex = (node.getLineIndex()) % getRowCount();
-                if (lineIndex == 0)
+                if (lineIndex == 0) {
                     lineIndex = getRowCount();
+                }
                 Integer y = Math.min(getPanelHeight() - EntryNodeMaster.getRowHeight(isTopPage()),
                         EntryNodeMaster.getRowHeight(isTopPage()) * (lineIndex));
 
@@ -129,8 +131,9 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
                 ImageButton entryNodeButton = new ImageButton((node.getButtonImagePath())) {
                     @Override
                     public void handleClick() {
-                        if (entryNode == null)
+                        if (entryNode == null) {
                             setCachedTopPageIndex(getCurrentIndex());
+                        }
                         if (node.getLinkedAnimation() != null) {
                             for (ANIM anim : node.getLinkedAnimations()) {
                                 PhaseAnimation animation = (PhaseAnimation) anim;
@@ -166,6 +169,7 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
                 setComponentZOrder(entryNodeButton, i);
                 i++;
             }
+        }
 
         setComponentZOrder(returnButton, i);
         i++;
@@ -185,8 +189,8 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
 
         }
         boolean refreshAll = false;
-        if (entryNode != null)
-            if (entryNode.getLinkedAnimation() != null)
+        if (entryNode != null) {
+            if (entryNode.getLinkedAnimation() != null) {
                 for (ANIM anim : entryNode.getLinkedAnimations()) {
                     PhaseAnimation animation = (PhaseAnimation) anim;
                     animation.setAutoFinish(true);
@@ -197,22 +201,27 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
                         }
                     }
                 }
+            }
+        }
         if (nodeStack.isEmpty()) {
             entryNode = null;
             nodeViewMode = false;
             currentIndex = getCachedTopPageIndex();
-        } else
+        } else {
             currentIndex = entryNode.getPageIndex();
+        }
         // if null?
         if (refreshAll) {
             game.getManager().refresh(false);
-        } else
+        } else {
             refresh();
+        }
     }
 
     protected void setNodeView(LogEntryNode node) {
-        if (entryNode != null)
+        if (entryNode != null) {
             nodeStack.push(this.entryNode);
+        }
         this.entryNode = node;
         nodeViewMode = true;
         refresh();
@@ -262,7 +271,7 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
             entryNodes = game.getLogManager().getTopEntryNodesMap().get(getCurrentIndex());
             if (entryNodes == null) {
                 entryNodes = new LinkedList<>();
-                for (LogEntryNode node : game.getLogManager().getTopNodes())
+                for (LogEntryNode node : game.getLogManager().getTopNodes()) {
                     if (node.getLineIndex() > getRowCount() * getCurrentIndex()
                             && node.getLineIndex() <= (getCurrentIndex() + 1) * getRowCount())
                     // if (node.getPageIndex() == getCurrentIndex())
@@ -270,9 +279,11 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
                     {
                         entryNodes.add(node);
                     }
+                }
                 // cache into a map if page is complete
-                if (getPageData().size() - 1 > getCurrentIndex())
+                if (getPageData().size() - 1 > getCurrentIndex()) {
                     game.getLogManager().getTopEntryNodesMap().put(getCurrentIndex(), entryNodes);
+                }
             }
         }
         setDirty(true);
@@ -317,8 +328,9 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
         List<String> entries = game.getLogManager().getTopDisplayedEntries();
         for (String entry : entries) {
             for (String subString : TextWrapper.wrapIntoArray(entry, EntryNodeMaster
-                    .getWrapLength(isTopPage())))
+                    .getWrapLength(isTopPage()))) {
                 lines.add(subString);
+            }
         }
         // splitList(list)
         return new ListMaster<String>().splitList(getRowCount(), lines);
@@ -337,8 +349,9 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
             return lists;
         }
         List<String> lastList = lists.get(lists.size() - 1);
-        if (isFillWithNullElements())
+        if (isFillWithNullElements()) {
             ListMaster.fillWithNullElements(lastList, pageSize);
+        }
         return lists;
     }
 
@@ -388,10 +401,11 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
     @Override
     public void mouseClicked(MouseEvent e) {
         if (SwingUtilities.isRightMouseButton(e)) {
-            if (entryNode != null)
+            if (entryNode != null) {
                 SoundMaster.playStandardSound(STD_SOUNDS.SLING);
-            else
+            } else {
                 SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
+            }
             back();
         }
 

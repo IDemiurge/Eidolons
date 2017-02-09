@@ -75,11 +75,12 @@ public class MusicCore {
     public static void    removeFilterValue() {
 
         int i = DialogMaster.optionChoice(filterValues.toArray(), "Filter to remove?");
-        if (i == -1)
+        if (i == -1) {
             if (DialogMaster.confirm("remove all?")) {
                 filterValues.clear();
                 return;
             }
+        }
         for (Pair<VALUE, String> sub : filterValues) {
             if (i == 0) {
                 filterValues.remove(sub);
@@ -110,8 +111,9 @@ public class MusicCore {
         // listTypeMap.keySet());
         ObjType type = DataManager.findType(name, AT_OBJ_TYPE.MUSIC_LIST);
         MusicList list = getList(type.getName());
-        if (list == null)
+        if (list == null) {
             list = new MusicList(type);
+        }
         return list;
     }
 
@@ -125,8 +127,9 @@ public class MusicCore {
 
     public static MusicList getList(String name, String keyPart, String funcPart) {
         MusicList list = listTypeMap.get(name);
-        if (list != null)
+        if (list != null) {
             return list;
+        }
         ObjType type = DataManager.getOrAddType(name, AT_OBJ_TYPE.MUSIC_LIST);
         // DataManager.ge
         String tracks = getTrackStringFromList(funcPart);
@@ -149,10 +152,11 @@ public class MusicCore {
 
     public static String getTrackStringFromList(String funcPart) {
         List<String> tracks = null;
-        if (initMusicListTypes)
+        if (initMusicListTypes) {
             tracks = new TrackReader<>(String.class).getTracksFromList(funcPart);
-        else
+        } else {
             tracks = DataManager.toStringList(getTracks(funcPart));
+        }
         return StringMaster.constructContainer(tracks);
     }
 
@@ -170,8 +174,9 @@ public class MusicCore {
         if (!MusicCore.initMusicListTypes) {
             // check types read
         }
-        for (AT_OBJ_TYPE t : musicTYPEs)
+        for (AT_OBJ_TYPE t : musicTYPEs) {
             XML_Writer.writeXML_ForTypeGroup(t);
+        }
     }
 
     public static String convertTracksToM3U(String contents) {
@@ -194,14 +199,16 @@ public class MusicCore {
 
     public static Track getTrack(String name) {
         ObjType type = DataManager.getType(name, AT_OBJ_TYPE.TRACK);
-        if (type == null)
+        if (type == null) {
             type = DataManager.addType(name, AT_OBJ_TYPE.TRACK);
+        }
         return getTrack(type);
     }
 
     public static Track getTrack(ObjType type) {
-        if (type == null)
+        if (type == null) {
             return null;
+        }
         Track track = trackTypeMap.get(type.getName());
         if (track == null) {
             track = new Track(type);
@@ -228,8 +235,9 @@ public class MusicCore {
 
     public static void processData() {
         for (ObjType sub : DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST)) {
-            if (!sub.checkProperty(AT_PROPS.MUSIC_TYPE))
+            if (!sub.checkProperty(AT_PROPS.MUSIC_TYPE)) {
                 sub.setProperty(AT_PROPS.MUSIC_TYPE, MUSIC_TYPE.GYM.toString());
+            }
         }
 
     }
@@ -243,20 +251,23 @@ public class MusicCore {
         for (String substring : StringMaster.openContainer(filterVal)) {
             List<String> list = new LinkedList<>();
             for (ObjType type : DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST)) {
-                if (type.checkProperty(filterProp, substring))
+                if (type.checkProperty(filterProp, substring)) {
                     list.add(type.getProperty(G_PROPS.HOTKEY) + "::"
-                     + type.getProperty(AT_PROPS.PATH));
+                            + type.getProperty(AT_PROPS.PATH));
+                }
             }
-            if (maxSize < list.size())
+            if (maxSize < list.size()) {
                 maxSize = list.size();
+            }
             map.put(i + "", list);
             i++;
 
         }
         List<String> musicConsts = StringMaster.openContainer(filterVal);
         int customWrap = 2 + maxSize / 14;
-        if (customWrap < 0)
+        if (customWrap < 0) {
             customWrap = 0;
+        }
         G_Panel v = panel.initView(map, false, customWrap, musicConsts);
         panel.setView(v);
         panel.setName(name);
@@ -266,8 +277,9 @@ public class MusicCore {
 
     public static void newFilteredView(int option, Class<?> c) {
         MusicListPanel view = getGroupedView(option, c);
-        if (view == null)
+        if (view == null) {
             return;
+        }
         AHK_Master.getPanel().getViewsPanel().addView(view.getView().getName(), view);
         AHK_Master.getPanel().getViewsPanel().viewClicked(view.getView().getName());
 
@@ -286,8 +298,9 @@ public class MusicCore {
     }
 
     public static MusicListPanel getGroupedView(int option, Class<?> constClass) {
-        if (option == -1)
+        if (option == -1) {
             return null;
+        }
         PROPERTY filterProp = ContentManager.getPROP(constClass.getSimpleName());
         // String[] array = (AHK_Master.qwerty + " " +
         // AHK_Master.qwerty.substring(1).toUpperCase() + " 123")
@@ -313,14 +326,16 @@ public class MusicCore {
                         containerLoop:
                         for (String sub : StringMaster.openContainer(type
                          .getProperty(filterProp))) {
-                            for (String c : musicConsts)
-                                if (StringMaster.compare(c, sub))
+                            for (String c : musicConsts) {
+                                if (StringMaster.compare(c, sub)) {
                                     if (c.equalsIgnoreCase(g)) {
                                         break containerLoop;
                                     } else {
                                         multiPropMap.put(type, c);
                                         continue typeLoop;
                                     }
+                                }
+                            }
                         }
                     }
                     list.add(AHK_Master.getScriptLineForList(type));
@@ -329,12 +344,13 @@ public class MusicCore {
             map.put(g, list);
         }
         for (ObjType sub : multiPropMap.keySet()) {
-            for (String c : map.keySet())
+            for (String c : map.keySet()) {
                 if (multiPropMap.get(sub).equals(c)) {
                     map.get(c).add(AHK_Master.getScriptLineForList(sub)
 
                     );
                 }
+            }
         }
         for (String sub : map.keySet()) {
             map.put(sub, new LinkedList<>(new LinkedHashSet<>(map.get(sub))));
@@ -352,8 +368,9 @@ public class MusicCore {
 
     public static int getViewOption(Class<?> constClass, String name) {
         for (int i = 0; i < 10; i++) {
-            if (name.equals(getViewName(constClass, i)))
+            if (name.equals(getViewName(constClass, i))) {
                 return i;
+            }
         }
         return 0;
 

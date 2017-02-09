@@ -19,9 +19,11 @@ public class TreeMaster {
         List<DefaultMutableTreeNode> list = new LinkedList<DefaultMutableTreeNode>();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode nextElement = e.nextElement();
-            if (recursive)
-                if (!nextElement.isLeaf())
+            if (recursive) {
+                if (!nextElement.isLeaf()) {
                     list.addAll(getChildren(nextElement, true));
+                }
+            }
             list.add(nextElement);
         }
         return list;
@@ -43,18 +45,21 @@ public class TreeMaster {
         List<DefaultMutableTreeNode> list = new LinkedList<DefaultMutableTreeNode>();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode child = e.nextElement();
-            if (child.getUserObject().toString().equals(property))
+            if (child.getUserObject().toString().equals(property)) {
                 return child;
+            }
         }
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode child = e.nextElement();
-            if (StringMaster.compare(child.getUserObject().toString(), property))
+            if (StringMaster.compare(child.getUserObject().toString(), property)) {
                 return child;
+            }
         }
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode child = e.nextElement();
-            if (StringMaster.compare(child.getUserObject().toString(), property, false))
+            if (StringMaster.compare(child.getUserObject().toString(), property, false)) {
                 return child;
+            }
         }
         return null;
 
@@ -68,8 +73,9 @@ public class TreeMaster {
 
     public static DefaultMutableTreeNode findNode(JTree tree, String name) {
         for (DefaultMutableTreeNode n : getAllNodes(tree)) {
-            if (StringMaster.compareByChar(n.getUserObject().toString(), name, false))
+            if (StringMaster.compareByChar(n.getUserObject().toString(), name, false)) {
                 return n;
+            }
         }
         return null;
     }

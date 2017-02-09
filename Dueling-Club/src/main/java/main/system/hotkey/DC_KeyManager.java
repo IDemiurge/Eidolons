@@ -6,6 +6,7 @@ import main.content.OBJ_TYPES;
 import main.content.properties.G_PROPS;
 import main.data.DataManager;
 import main.game.DC_GameManager;
+import main.libgdx.anims.particles.controls.EmitterController;
 import main.rules.DC_ActionManager.ADDITIONAL_MOVE_ACTIONS;
 import main.rules.DC_ActionManager.STD_ACTIONS;
 import main.rules.DC_ActionManager.STD_MODE_ACTIONS;
@@ -21,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DC_KeyManager
 // extends KeyboardFocusManager
-        implements KeyListener {
+ implements KeyListener {
 
     public static final int DEFAULT_MODE = JIntellitype.MOD_CONTROL;
     public static final int ALT_MODE = JIntellitype.MOD_ALT;
@@ -59,7 +60,7 @@ public class DC_KeyManager
         int i = 0;
         for (STD_MODE_ACTIONS action : STD_MODE_ACTIONS.values()) {
             String key = DataManager.getType(action.toString(), OBJ_TYPES.ACTIONS).getProperty(
-                    G_PROPS.HOTKEY);
+             G_PROPS.HOTKEY);
             stdModeKeyMap.put(key, i);
             main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, ">> mode hotkey " + key);
             i++;
@@ -71,7 +72,7 @@ public class DC_KeyManager
         int i = 0;
         for (STD_ACTIONS action : STD_ACTIONS.values()) {
             String key = DataManager.getType(action.toString(), OBJ_TYPES.ACTIONS).getProperty(
-                    G_PROPS.HOTKEY);
+             G_PROPS.HOTKEY);
             stdActionKeyMap.put(key, i);
             main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, ">> std hotkey " + key);
             i++;
@@ -79,7 +80,7 @@ public class DC_KeyManager
         i = 0;
         for (ADDITIONAL_MOVE_ACTIONS action : ADDITIONAL_MOVE_ACTIONS.values()) {
             String key = DataManager.getType(action.toString(), OBJ_TYPES.ACTIONS).getProperty(
-                    G_PROPS.HOTKEY);
+             G_PROPS.HOTKEY);
             addMoveActionKeyMap.put(key, i);
             main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, ">> std hotkey " + key);
             i++;
@@ -88,17 +89,20 @@ public class DC_KeyManager
     }
 
     private boolean checkCustomHotkey(KeyEvent e) {
-
-        if (!e.isAltDown())
+        if (!e.isAltDown()) {
             return false;
+        }
         // if (!e.isControlDown())
         // return false;
-        if (checkFunctionHelper(e))
+        if (checkFunctionHelper(e)) {
             return true;
-        if (checkValueHelper(e))
+        }
+        if (checkValueHelper(e)) {
             return true;
-        if (checkDebugMaster(e))
+        }
+        if (checkDebugMaster(e)) {
             return true;
+        }
 
         return false;
     }
@@ -106,17 +110,20 @@ public class DC_KeyManager
     private boolean checkValueHelper(KeyEvent e) {
         // if (GlobalKeys.isGlobalKeysOn())
         // return false;
-        if (e.getKeyChar() != ValueHelper.HOTKEY_CHAR)
+        if (e.getKeyChar() != ValueHelper.HOTKEY_CHAR) {
             return false;
+        }
         mngr.getGame().getValueHelper().promptSetValue();
         return true;
     }
 
     private boolean checkFunctionHelper(KeyEvent e) {
-        if (GlobalKeys.isGlobalKeysOn())
+        if (GlobalKeys.isGlobalKeysOn()) {
             return false;
-        if (e.getKeyChar() != DebugMaster.FUNCTION_HOTKEY_CHAR)
+        }
+        if (e.getKeyChar() != DebugMaster.FUNCTION_HOTKEY_CHAR) {
             return false;
+        }
 
         mngr.getGame().getDebugMaster().promptFunctionToExecute();
         return true;
@@ -125,8 +132,9 @@ public class DC_KeyManager
     private boolean checkDebugMaster(KeyEvent e) {
         // if (GlobalKeys.isGlobalKeysOn())
         // return false;
-        if (e.getKeyChar() != DebugMaster.HOTKEY_CHAR)
+        if (e.getKeyChar() != DebugMaster.HOTKEY_CHAR) {
             return false;
+        }
         mngr.getGame().getDebugMaster().showDebugWindow();
         return true;
     }
@@ -135,17 +143,29 @@ public class DC_KeyManager
     @Override
     public void keyTyped(KeyEvent e) {
         main.system.auxiliary.LogMaster.log(LogMaster.GUI_DEBUG, "key typed: " + e.getKeyChar());
-        if (mngr.getActiveObj().isAiControlled())
+        if (mngr.getActiveObj().isAiControlled()) {
             return; // play random sound!...
-        if (checkCustomHotkey(e))
-            return;
+        }
+
 
         char CHAR = (e.getKeyChar());
         int keyMod = e.getModifiers();
 //        arrowPressed(e); TODO
         handleKeyTyped(keyMod, CHAR);
     }
+
     public void handleKeyTyped(int keyMod, char CHAR) {
+        if (EmitterController.overrideKeys) {
+            try {
+                if (EmitterController.getInstance().charTyped(CHAR))
+                    return;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
+            }
+
+        }
+
         int index = -1;
         if (numberChars.indexOf(CHAR) != -1) {
             index = Integer.valueOf(CHAR + "");
@@ -165,11 +185,11 @@ public class DC_KeyManager
             }
 
 
-
         } else {
 
-            if (index == 0)
+            if (index == 0) {
                 index = 10;
+            }
 
             switch (keyMod) {
                 case ITEM_MASK:

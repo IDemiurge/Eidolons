@@ -71,13 +71,14 @@ public abstract class DC_Obj extends MicroObj {
 
     @Override
     public String getDisplayedName() {
-        if (!isMine())
+        if (!isMine()) {
             if (getOutlineType() != null)
             // if (getOutlineType()==)
             // getToolTip();
             {
                 return StringMaster.getWellFormattedString(getOutlineType().toString());
             }
+        }
 
         return super.getDisplayedName();
     }
@@ -185,8 +186,9 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public DAMAGE_TYPE getDamageType() {
-        if (ref.getDamageType() != null)
+        if (ref.getDamageType() != null) {
             return ref.getDamageType();
+        }
 
         if (dmg_type == null) {
             String name = getProperty(PROPS.DAMAGE_TYPE);
@@ -206,8 +208,9 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public Map<SPECIAL_EFFECTS_CASE, Effect> getSpecialEffects() {
-        if (specialEffects == null)
+        if (specialEffects == null) {
             initSpecialEffects();
+        }
         return specialEffects;
     }
 
@@ -221,16 +224,19 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type, DC_UnitObj target, Ref REF) {
-        if (specialEffects == null)
+        if (specialEffects == null) {
             return;
-        if (specialEffects.get(case_type) == null)
+        }
+        if (specialEffects.get(case_type) == null) {
             return;
+        }
         Ref ref = Ref.getCopy(REF);
         ref.setTarget(target.getId());
-        if (this instanceof DC_HeroObj)
+        if (this instanceof DC_HeroObj) {
             ref.setSource(getId());
-        else
+        } else {
             ref.setID(KEYS.THIS, getId());
+        }
         Effect effect = specialEffects.get(case_type);
         effect.apply(ref);
     }
@@ -269,27 +275,35 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public void setVisibilityLevel(VISIBILITY_LEVEL visibilityLevel) {
-        if (getGame().getManager().getActiveObj() != null)
+        if (getGame().getManager().getActiveObj() != null) {
             if (getGame().getManager().getActiveObj().isMine())
-                // TODO MAIN HERO ONLY?
+            // TODO MAIN HERO ONLY?
+            {
                 setVisibilityLevelForPlayer(visibilityLevel);
+            }
+        }
         this.visibilityLevel = visibilityLevel;
     }
 
     public VISIBILITY_LEVEL getVisibilityLevel(boolean active) {
-        if (VisionManager.isVisionHacked())
+        if (VisionManager.isVisionHacked()) {
             return VISIBILITY_LEVEL.CLEAR_SIGHT;
-        if (!active)
-            if (!game.isDebugMode())
+        }
+        if (!active) {
+            if (!game.isDebugMode()) {
                 return getVisibilityLevelForPlayer();
+            }
+        }
         return visibilityLevel;
     }
 
     public VISIBILITY_LEVEL getVisibilityLevelForPlayer() {
-        if (visibilityLevelForPlayer == null)
+        if (visibilityLevelForPlayer == null) {
             return VISIBILITY_LEVEL.CONCEALED;
-        if (isDisplayEnemyVisibility())
+        }
+        if (isDisplayEnemyVisibility()) {
             return visibilityLevel;
+        }
         return visibilityLevelForPlayer;
     }
 
@@ -298,8 +312,9 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public IDENTIFICATION_LEVEL getIdentificationLevel() {
-        if (VisionManager.isVisionHacked())
+        if (VisionManager.isVisionHacked()) {
             return IDENTIFICATION_LEVEL.UNIT;
+        }
         return identificationLevel;
     }
 
@@ -335,37 +350,47 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public OUTLINE_TYPE getOutlineType() {
-        if (getGame().isSimulation())
+        if (getGame().isSimulation()) {
             return null;
-        if (VisionManager.isVisionHacked())
+        }
+        if (VisionManager.isVisionHacked()) {
             return null;
-        if (!game.isDebugMode())
+        }
+        if (!game.isDebugMode()) {
             return getOutlineTypeForPlayer();
+        }
         return outlineType;
     }
 
     public void setOutlineType(OUTLINE_TYPE outlineType) {
-        if (getGame().getManager().getActiveObj() != null)
+        if (getGame().getManager().getActiveObj() != null) {
             if (getGame().getManager().getActiveObj().isMine())
-                // TODO MAIN HERO ONLY?
+            // TODO MAIN HERO ONLY?
+            {
                 setOutlineTypeForPlayer(outlineType);
+            }
+        }
         this.outlineType = outlineType;
     }
 
     public OUTLINE_TYPE getOutlineTypeForPlayer() {
-        if (isDisplayEnemyVisibility())
+        if (isDisplayEnemyVisibility()) {
             return outlineType;
+        }
         return outlineTypeForPlayer;
     }
 
     public void setOutlineTypeForPlayer(OUTLINE_TYPE outlineTypeForPlayer) {
 
         this.outlineTypeForPlayer = outlineTypeForPlayer;
-        if (outlineTypeForPlayer == null)
-            if (getGame().getManager().getActiveObj() != null)
-                if (!getGame().getManager().getActiveObj().isMine())
+        if (outlineTypeForPlayer == null) {
+            if (getGame().getManager().getActiveObj() != null) {
+                if (!getGame().getManager().getActiveObj().isMine()) {
                     main.system.auxiliary.LogMaster.log(1, "outlineTypeForPlayer set to "
                             + outlineTypeForPlayer);
+                }
+            }
+        }
         // main.system.auxiliary.LogMaster.log(1, "outlineTypeForPlayer set to "
         // + outlineTypeForPlayer);
     }
@@ -375,14 +400,16 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public UNIT_TO_UNIT_VISION getUnitVisionStatus() {
-        if (VisionManager.isVisionHacked())
+        if (VisionManager.isVisionHacked()) {
             return UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT;
-        if (activeUnitVisionStatus == null)
+        }
+        if (activeUnitVisionStatus == null) {
             try {
                 activeUnitVisionStatus = getGame().getVisionManager().getUnitVisibilityStatus(this);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
         return activeUnitVisionStatus;
     }
 
@@ -395,24 +422,29 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public UNIT_TO_PLAYER_VISION getActivePlayerVisionStatus() {
-        if (VisionManager.isVisionHacked())
+        if (VisionManager.isVisionHacked()) {
             return UNIT_TO_PLAYER_VISION.DETECTED;
+        }
         return activeVisionStatus;
     }
 
     public UNIT_TO_PLAYER_VISION getPlayerVisionStatus(boolean active) {
-        if (VisionManager.isVisionHacked())
+        if (VisionManager.isVisionHacked()) {
             return UNIT_TO_PLAYER_VISION.DETECTED;
+        }
 
-        if (active)
+        if (active) {
             return activeVisionStatus;
+        }
         return playerVisionStatus;
     }
 
     public void setPlayerVisionStatus(UNIT_TO_PLAYER_VISION playerVisionStatus) {
-        if (getGame().getManager().getActiveObj() != null)
-            if (getGame().getManager().getActiveObj().isMine())
+        if (getGame().getManager().getActiveObj() != null) {
+            if (getGame().getManager().getActiveObj().isMine()) {
                 this.playerVisionStatus = playerVisionStatus;
+            }
+        }
 
         this.activeVisionStatus = playerVisionStatus;
         if (playerVisionStatus != null) {
@@ -427,32 +459,40 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public boolean isDetected() {
-        if (VisionManager.isVisionHacked())
+        if (VisionManager.isVisionHacked()) {
             return true;
-        if (getGame().getManager().getActiveObj() != null)
-            if (getGame().getManager().getActiveObj().isMine())
+        }
+        if (getGame().getManager().getActiveObj() != null) {
+            if (getGame().getManager().getActiveObj().isMine()) {
                 return isDetectedByPlayer();
+            }
+        }
         return detected;
     }
 
     public void setDetected(boolean b) {
-        if (!b)
+        if (!b) {
             this.detected = b;
+        }
         this.detected = b;
-        if (getGame().getManager().getActiveObj() != null)
-            if (getGame().getManager().getActiveObj().isMine())
+        if (getGame().getManager().getActiveObj() != null) {
+            if (getGame().getManager().getActiveObj().isMine()) {
                 setDetectedByPlayer(b);
+            }
+        }
     }
 
     public boolean isDetectedByPlayer() {
-        if (VisionManager.isVisionHacked())
+        if (VisionManager.isVisionHacked()) {
             return true;
+        }
         return detectedByPlayer;
     }
 
     public void setDetectedByPlayer(boolean detectedByPlayer) {
-        if (!detectedByPlayer)
+        if (!detectedByPlayer) {
             this.detectedByPlayer = detectedByPlayer;
+        }
         this.detectedByPlayer = detectedByPlayer;
     }
 

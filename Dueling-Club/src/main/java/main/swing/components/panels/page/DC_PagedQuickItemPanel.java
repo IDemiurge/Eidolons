@@ -33,8 +33,9 @@ public class DC_PagedQuickItemPanel extends G_PagedListPanel<DC_QuickItemObj> {
                     .getQuickItems();
             List<List<DC_QuickItemObj>> list = new ListMaster<DC_QuickItemObj>()
                     .splitList(PAGE_SIZE, items);
-            if (list.isEmpty())
+            if (list.isEmpty()) {
                 return list;
+            }
             List<DC_QuickItemObj> lastList = list.get(list.size() - 1);
             ListMaster.fillWithNullElements(lastList, PAGE_SIZE);
 

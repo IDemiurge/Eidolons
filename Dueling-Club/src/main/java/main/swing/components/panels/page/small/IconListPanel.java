@@ -60,8 +60,9 @@ public class IconListPanel<E> extends G_ListPanel<E> implements ListCellRenderer
     @Override
     public Component getListCellRendererComponent(JList<? extends E> list, E value, int index,
                                                   boolean isSelected, boolean cellHasFocus) {
-        if (value instanceof SmallItem)
+        if (value instanceof SmallItem) {
             return (Component) value;
+        }
         if (value == null) {
 
             return new JLabel(ImageManager.getEmptyIcon(32));

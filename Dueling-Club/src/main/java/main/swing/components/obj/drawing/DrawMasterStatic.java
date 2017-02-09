@@ -85,10 +85,11 @@ public class DrawMasterStatic {
                 g.setColor(watcher.isMine() ? ColorManager.CYAN : ColorManager.CRIMSON);
                 int offsetX = 0;
                 int offsetY = 0;
-                if (!watcher.getFacing().isVertical())
+                if (!watcher.getFacing().isVertical()) {
                     offsetX = !watcher.getFacing().isCloserToZero() ? 3 : -3;
-                else
+                } else {
                     offsetY = !watcher.getFacing().isCloserToZero() ? 3 : -3;
+                }
                 g.drawLine(p.x + offsetX, p.y + offsetY, p2.x, p2.y); // TODO
                 // punctir...
                 // visualize clear shot too?
@@ -133,26 +134,35 @@ public class DrawMasterStatic {
                 obj = DC_Game.game.getUnitByCoordinate(c);
                 continue;
             }
-            if (!CoreEngine.isLevelEditor())
-                if (!obj.isDetected())
+            if (!CoreEngine.isLevelEditor()) {
+                if (!obj.isDetected()) {
                     if (!DebugMaster.isOmnivisionOn())
-                        // obj.getPlayerVisionStatus(false) !=
-                        // UNIT_TO_PLAYER_VISION.DETECTED
+                    // obj.getPlayerVisionStatus(false) !=
+                    // UNIT_TO_PLAYER_VISION.DETECTED
+                    {
                         continue;
-            if (obj != null)
+                    }
+                }
+            }
+            if (obj != null) {
                 darken = obj.getVisibilityLevel() != ConcealmentRule.VISIBILITY_LEVEL.CLEAR_SIGHT;
+            }
             String prefix = darken ? "dark" : "";
             int x = w * (c.x - offsetX);
             int y = h * (c.y - offsetY);
-            if (x < 0)
+            if (x < 0) {
                 continue;
-            if (x > GuiManager.getBattleFieldWidth())
+            }
+            if (x > GuiManager.getBattleFieldWidth()) {
                 continue;
+            }
 
-            if (y < 0)
+            if (y < 0) {
                 continue;
-            if (y > GuiManager.getBattleFieldHeight())
+            }
+            if (y > GuiManager.getBattleFieldHeight()) {
                 continue;
+            }
             java.util.List<Coordinates.DIRECTION> list = diagonalJoints.get(c);
 
             for (Coordinates.DIRECTION side : list) {
@@ -181,8 +191,9 @@ public class DrawMasterStatic {
                 if (zoom != 100) {
                     image = ImageManager.getSizedVersion(image, zoom, true);
                 }
-                if (flipped)
+                if (flipped) {
                     image = ImageTransformer.flipHorizontally(ImageManager.getBufferedImage(image));
+                }
                 // TODO scale them!
                 drawImage(g, image, x1 - image.getWidth(null) / 2, y1 - image.getHeight(null) / 2);
 
@@ -202,8 +213,9 @@ public class DrawMasterStatic {
     }
 
     public static boolean isSightVisualsOn() {
-        if (isEditorMode())
+        if (isEditorMode()) {
             return false;
+        }
         return false;
         // return sightVisualsOn;
     }

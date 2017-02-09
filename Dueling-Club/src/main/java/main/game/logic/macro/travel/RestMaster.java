@@ -55,8 +55,9 @@ public class RestMaster {
     private static boolean checkModeValid(MacroParty party, MACRO_MODES mode) {
         if (party.getTown() != null) {
             return (mode.isTownPermitted());
-        } else
+        } else {
             return mode.isCountryPermitted();
+        }
     }
 
     private static MACRO_MODES promptMode(DC_HeroObj hero) {
@@ -113,7 +114,7 @@ public class RestMaster {
             // hero.modifyParameter(p, amount);
         }
         // applyCustomEffect
-        if (mode.isSpecEffect())
+        if (mode.isSpecEffect()) {
             switch (mode) {
                 // case STUDY:
                 // // spell points? target-spell in library/scroll? minor xp
@@ -141,6 +142,7 @@ public class RestMaster {
                 case TRAIN_WITH_WEAPONS:
                     break;
             }
+        }
     }
 
     private static String formatModeFormula(String string) {

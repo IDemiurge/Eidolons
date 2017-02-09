@@ -19,16 +19,20 @@ public class GeometryMaster {
         Boolean ySide = direction.isGrowY();
         int x = (w - width) / 2;
         int y = (h - height) / 2;
-        if (xSide != null)
-            if (xSide)
+        if (xSide != null) {
+            if (xSide) {
                 x = (w - width);
-            else
+            } else {
                 x = 0;
-        if (ySide != null)
-            if (ySide)
+            }
+        }
+        if (ySide != null) {
+            if (ySide) {
                 y = (h - height);
-            else
+            } else {
                 y = 0;
+            }
+        }
         return new Point(x, y);
     }
 

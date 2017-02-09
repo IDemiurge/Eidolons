@@ -101,8 +101,9 @@ public class AttackCalculator {
     }
 
     public void addSubPhase() {
-        if (anim == null)
+        if (anim == null) {
             anim = attack.getAnimation();
+        }
         anim.addPhase(new AnimPhase(PHASE_TYPE.ATTACK_EXTRA_MODS, extraMap));
         anim.addPhase(new AnimPhase(PHASE_TYPE.DICE_ROLL, dieList, randomMap));
         anim.addPhase(new AnimPhase(PHASE_TYPE.ATTACK_WEAPON_MODS, weaponMap));
@@ -113,8 +114,9 @@ public class AttackCalculator {
     }
 
     public void addMainPhase() {
-        if (anim == null)
+        if (anim == null) {
             anim = attack.getAnimation();
+        }
         anim.addSubPhase(new AnimPhase(PHASE_TYPE.DAMAGE_FORMULA, attack, modMap, bonusMap));
         anim.addSubPhase(new AnimPhase(PHASE_TYPE.DAMAGE_FORMULA_MODS, attack, modMap));
 
@@ -122,8 +124,9 @@ public class AttackCalculator {
 
     public int calculateFinalDamage() {
         action.toBase();
-        if (offhand)
+        if (offhand) {
             main.system.auxiliary.LogMaster.log(1, attack + " (offhand) with damage: " + bonusMap);
+        }
         initAllModifiers();
         amount = applyDamageBonuses();
         // TODO
@@ -191,8 +194,9 @@ public class AttackCalculator {
         int defense = DC_AttackMaster.getDefenseValue(attacker, attacked, action);
         int diff = attackValue - defense;
         boolean negative = false;
-        if (diff < 0)
+        if (diff < 0) {
             negative = true;
+        }
         diff = Math.abs(diff);
         float mod = (!negative) ? DC_Formulas.ATTACK_DMG_INCREASE
                 : DC_Formulas.DEFENSE_DMG_DECREASE;
@@ -200,14 +204,17 @@ public class AttackCalculator {
         float limit = (negative) ? DC_Formulas.ATTACK_DMG_INCREASE_LIMIT
                 : DC_Formulas.DEFENSE_DMG_DECREASE_LIMIT;
         diff = Math.round(Math.min(limit, diff));
-        if (negative)
+        if (negative) {
             diff = -diff;
+        }
         int bonus = Math.round(amount * (mod * diff) / 100);
-        if (!precalc)
-            if (bonus != 0)
+        if (!precalc) {
+            if (bonus != 0) {
                 attack.getAnimation().addPhase(
                         new AnimPhase(PHASE_TYPE.ATTACK_DEFENSE, attackValue, defense, diff, mod,
                                 amount, bonus, atkMap)); // special...
+            }
+        }
         // TODO atkMap - where are the atk mods from? - sneak, position, ...
         bonusMap.put(MOD_IDENTIFIER.ATK_DEF, bonus);
         return bonus;
@@ -215,17 +222,20 @@ public class AttackCalculator {
 
     private Integer getCriticalDamageBonus(Attack attack, Integer amount, DC_HeroObj attacker,
                                            DC_HeroObj attacked, DC_ActiveObj action, boolean offhand) {
-        if (attacked.checkPassive(STANDARD_PASSIVES.CRITICAL_IMMUNE))
+        if (attacked.checkPassive(STANDARD_PASSIVES.CRITICAL_IMMUNE)) {
             return 0;
+        }
         int mod = 100 + attacker.getIntParam(PARAMS.CRITICAL_MOD);
         int factor = MathMaster.getFractionValueCentimal(DC_Formulas.DEFAULT_CRITICAL_FACTOR, mod);
         mod -= attacked.getIntParam(PARAMS.CRITICAL_REDUCTION);
 
         int bonus = MathMaster.getFractionValueCentimal(amount, factor);
-        if (!precalc)
-            if (attack.getAnimation() != null)
+        if (!precalc) {
+            if (attack.getAnimation() != null) {
                 attack.getAnimation().addPhase(
                         new AnimPhase(PHASE_TYPE.ATTACK_CRITICAL, mod, bonus));
+            }
+        }
         bonusMap.put(MOD_IDENTIFIER.CRIT, bonus);
         return bonus;
     }
@@ -246,8 +256,9 @@ public class AttackCalculator {
                                   PHASE_TYPE type) {
         int amount = obj.getIntParam(dmgModifier) * ownerObj.getIntParam(value) / 100;
         // map = animation.getPhase(type).getArgs()[0];
-        if (amount != 0)
+        if (amount != 0) {
             subMap.put(value, amount);
+        }
         return (amount);
     }
 
@@ -268,8 +279,9 @@ public class AttackCalculator {
         // ACTION
         int mod = action.getIntParam(PARAMS.DAMAGE_MOD) - 100;
         if (mod > 0) {
-            if (mod >= 100)
+            if (mod >= 100) {
                 mod -= 100;
+            }
 
         } // TODO [QUICK FIX] - why 50 becomes 150?!
         modMap.put(MOD_IDENTIFIER.ACTION, mod);
@@ -294,11 +306,13 @@ public class AttackCalculator {
         bonusMap.put(MOD_IDENTIFIER.WEAPON, bonus);
         totalBonus += bonus;
         // POSITION
-        if (modMap.get(MOD_IDENTIFIER.POS) != null)
+        if (modMap.get(MOD_IDENTIFIER.POS) != null) {
             totalMod += modMap.get(MOD_IDENTIFIER.POS);
+        }
         // EXTRA - already initialized!
-        if (modMap.get(MOD_IDENTIFIER.EXTRA_ATTACK) != null)
+        if (modMap.get(MOD_IDENTIFIER.EXTRA_ATTACK) != null) {
             totalMod += modMap.get(MOD_IDENTIFIER.EXTRA_ATTACK);
+        }
 
         if (critical) {
             bonus = getCriticalDamageBonus(attack, totalBonus, attacker, attacked, action, offhand);
@@ -369,8 +383,9 @@ public class AttackCalculator {
         if (action.isThrow()) {
         } else if (action.isRanged()) {
             Obj ranged = action.getOwnerObj().getRef().getObj(KEYS.RANGED);
-            if (ranged == null)
+            if (ranged == null) {
                 return;
+            }
             DC_Obj ammo = (DC_Obj) ranged.getRef().getObj(KEYS.AMMO);
             if (ammo != null) {
                 action.modifyParameter(PARAMS.IMPACT_AREA, ammo.getIntParam(PARAMS.IMPACT_AREA));
@@ -386,12 +401,15 @@ public class AttackCalculator {
                 ref.setValue(KEYS.DAMAGE_TYPE, ammo.getProperty(PROPS.DAMAGE_TYPE));
             }
             int penalty = 0;
-            if (attacked.getUnitVisionStatus() == UNIT_TO_UNIT_VISION.IN_SIGHT)
+            if (attacked.getUnitVisionStatus() == UNIT_TO_UNIT_VISION.IN_SIGHT) {
                 penalty = applyParamMod(-20, (PARAMS.RANGED_PENALTY_MOD));
-            if (attacked.getUnitVisionStatus() == UNIT_TO_UNIT_VISION.BEYOND_SIGHT)
+            }
+            if (attacked.getUnitVisionStatus() == UNIT_TO_UNIT_VISION.BEYOND_SIGHT) {
                 penalty = applyParamMod(-35, (PARAMS.RANGED_PENALTY_MOD));
-            if (attacked.getUnitVisionStatus() == UNIT_TO_UNIT_VISION.CONCEALED)
+            }
+            if (attacked.getUnitVisionStatus() == UNIT_TO_UNIT_VISION.CONCEALED) {
                 penalty = applyParamMod(-50, (PARAMS.RANGED_PENALTY_MOD));
+            }
 
             atk_mod = MathMaster.applyModIfNotZero(atk_mod, penalty);
             atkModMap.put(MOD_IDENTIFIER.SIGHT_RANGE, penalty);
@@ -435,11 +453,13 @@ public class AttackCalculator {
             atkMap.put(identifier, atkMod);
             atk_mod += atkMod;
         }
-        if (ref.getTargetObj() == null)
-            if (attack.getAttacked() != null)
+        if (ref.getTargetObj() == null) {
+            if (attack.getAttacked() != null) {
                 ref.setTarget(attack.getAttacked().getId());
-            else
+            } else {
                 return;
+            }
+        }
         if (PositionMaster.inLineDiagonally(action.getOwnerObj().getCoordinates(), ref
                 .getTargetObj().getCoordinates())) {
             Integer diagonalMod = action.getIntParam(PARAMS.DIAGONAL_ATTACK_MOD) - 100;
@@ -473,8 +493,9 @@ public class AttackCalculator {
         }
         if (sneak) {
             int rangedMod = 100;
-            if (action.isRanged())
+            if (action.isRanged()) {
                 rangedMod = attacker.getIntParam(PARAMS.SNEAK_RANGED_MOD);
+            }
             if (rangedMod != 0) {
                 dmg_mod += initSneakMods(action, rangedMod);
                 dmg_mod += initSneakMods(weapon, rangedMod);
@@ -483,8 +504,9 @@ public class AttackCalculator {
         }
         // addToCalcMap(PARAMS. ATTACK_MOD, atkMod);
         // addToCalcMap(PARAMS. DAMAGE_MOD, dmg_mod);
-        if (dmg_mod != 0)
+        if (dmg_mod != 0) {
             modMap.put(MOD_IDENTIFIER.POS, dmg_mod);
+        }
 
         action.modifyParameter(PARAMS.ATTACK_MOD, atk_mod, false);
         // action.modifyParameter(PARAMS.DAMAGE_MOD, dmg_mod, false);
@@ -492,10 +514,11 @@ public class AttackCalculator {
 
     private void addToMap(Map<PARAMETER, Integer> calcMap, PARAMETER param, int mod) {
         Integer value = calcMap.get(param);
-        if (value != null)
+        if (value != null) {
             value += mod;
-        else
+        } else {
             value = mod;
+        }
         calcMap.put(param, value);
         main.system.auxiliary.LogMaster.log(1, " ");
     }
@@ -601,8 +624,9 @@ public class AttackCalculator {
         if (instant) {
             param = PARAMS.INSTANT_DAMAGE_MOD;
         }
-        if (param == null)
+        if (param == null) {
             return;
+        }
         if (weapon != null) {
             mod = MathMaster.applyMod(mod, weapon.getIntParam(param));
             extraMap.put(MOD_IDENTIFIER.WEAPON, weapon.getIntParam(param));
@@ -623,8 +647,9 @@ public class AttackCalculator {
     }
 
     private void initializeWeaponModifiers() {
-        if (weapon == null)
+        if (weapon == null) {
             return;
+        }
         int armor_pen = weapon.getIntParam(PARAMS.ARMOR_PENETRATION);
         int armor_mod = weapon.getIntParam(PARAMS.ARMOR_MOD);
         int atk_mod = weapon.getIntParam(PARAMS.ATTACK_MOD);
@@ -632,11 +657,13 @@ public class AttackCalculator {
         addParameter(PARAMS.ARMOR_PENETRATION, armor_pen);
         if (action.isThrow()) {
             Integer mod = weapon.getIntParam(PARAMS.THROW_DAMAGE_MOD);
-            if (mod != 0)
+            if (mod != 0) {
                 dmg_mod += mod - 100;
+            }
             mod = weapon.getIntParam(PARAMS.THROW_ATTACK_MOD);
-            if (mod != 0)
+            if (mod != 0) {
                 atk_mod += mod - 100;
+            }
             // modMap
         }
 
@@ -669,10 +696,12 @@ public class AttackCalculator {
         mod = obj.getIntParam(PARAMS.SNEAK_DEFENSE_MOD);
         if (mod > 0) {
             Integer param = attacked.getIntParam(PARAMS.SNEAK_PROTECTION);
-            if (param != 0)
+            if (param != 0) {
                 mod = mod * 100 / param;
-            if (rangedMod != 0)
+            }
+            if (rangedMod != 0) {
                 mod = mod * 100 / rangedMod;
+            }
             mod = -mod;
         }
         addModifier(PARAMS.DEFENSE_MOD, mod);
@@ -722,13 +751,14 @@ public class AttackCalculator {
         }
 
         public Image getImage(Object... values) {
-            if (imagePath == null)
+            if (imagePath == null) {
                 try {
                     return DC_ImageMaster.getImageDynamic(this, values);
                 } catch (Exception e) {
                     e.printStackTrace();
                     return ImageManager.getImage(ImageManager.getEmptyListIconSmall());
                 }
+            }
             return ImageManager.getImage(imagePath);
         }
 

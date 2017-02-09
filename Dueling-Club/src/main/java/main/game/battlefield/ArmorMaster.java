@@ -31,15 +31,17 @@ public class ArmorMaster {
     }
 
     public static int getArmorValue(DC_Obj obj, DAMAGE_TYPE dmg_type) {
-        if (dmg_type == DAMAGE_TYPE.PHYSICAL)
+        if (dmg_type == DAMAGE_TYPE.PHYSICAL) {
             return obj.getIntParam(PARAMS.ARMOR);
+        }
 
         return obj.getIntParam(DC_ContentManager.getArmorParamForDmgType(dmg_type));
     }
 
     public static boolean isArmorUnequipAllowed(DC_HeroObj hero) {
-        if (hero.getGame().isSimulation())
+        if (hero.getGame().isSimulation()) {
             return true;
+        }
         return false;
     }
 
@@ -55,15 +57,19 @@ public class ArmorMaster {
         /*
 		 * if blocks, apply armor's resistance values too
 		 */
-        if (!offhand)
+        if (!offhand) {
             offhand = action.isOffhand();
-        if (action == null)
+        }
+        if (action == null) {
             return 0;
+        }
         DC_ArmorObj armorObj = attacked.getArmor();
-        if (armorObj == null)
+        if (armorObj == null) {
             return 0;
-        if (dmg_type == null)
+        }
+        if (dmg_type == null) {
             dmg_type = action.getDamageType();
+        }
         if (simulation) {
             average = true;
             canCritOrBlock = true;
@@ -80,10 +86,11 @@ public class ArmorMaster {
         // blocked = MathMaster.applyMod(amount, mod);
         // blocked -= penetration;
         String name = "[No Weapon]";
-        if (spell)
+        if (spell) {
             name = action.getName();
-        else if (attacker.getActiveWeapon(offhand) != null)
+        } else if (attacker.getActiveWeapon(offhand) != null) {
             name = attacker.getActiveWeapon(offhand).getName();
+        }
         if (!simulation) {
             String entry = armorObj.getName() + " takes " + blockedPercentage + "% of "
                     + action.getName() + StringMaster.wrapInParenthesis(name) + " absorbing "
@@ -109,8 +116,9 @@ public class ArmorMaster {
                 }
 
             }
-            if (!simulation)
+            if (!simulation) {
                 action.getGame().getLogManager().log(LOG.GAME_INFO, entry, ENTRY_TYPE.DAMAGE);
+            }
 
         }
 
@@ -135,8 +143,9 @@ public class ArmorMaster {
 
     private DAMAGE_TYPE getDamageType(DC_ActiveObj action, DC_WeaponObj weapon) {
         DAMAGE_TYPE dmg_type = action.getDamageType();
-        if (dmg_type == null)
+        if (dmg_type == null) {
             dmg_type = weapon.getDamageType();
+        }
         return dmg_type;
     }
 
@@ -162,19 +171,22 @@ public class ArmorMaster {
         if (!spell) {
             return DurabilityRule.physicalDamage(damage, blocked, damage_type, armorObj, weapon,
                     simulation);
-        } else
+        } else {
             return DurabilityRule.spellDamage(damage, blocked, damage_type, armorObj, simulation);
+        }
 
     }
 
     public Integer getShieldBlockValue(int amount, DC_WeaponObj shield, DC_HeroObj attacked,
                                        DC_HeroObj attacker, DC_WeaponObj weapon, DC_ActiveObj action, boolean zone) {
         DAMAGE_TYPE dmg_type = action.getDamageType();
-        if (dmg_type == null)
-            if (weapon == null)
+        if (dmg_type == null) {
+            if (weapon == null) {
                 dmg_type = action.getEnergyType();
-            else
+            } else {
                 dmg_type = weapon.getDamageType();
+            }
+        }
         int blockValue = getArmorValue(shield, dmg_type);
         // if blocks, full value is applied always
 
@@ -189,9 +201,11 @@ public class ArmorMaster {
 
     public boolean checkCanShieldBlock(DC_ActiveObj active, DC_HeroObj targetObj) {
         // if (active.isMissile())
-        if (targetObj.getActiveWeapon(true) != null)
-            if (targetObj.getActiveWeapon(true).isShield())
+        if (targetObj.getActiveWeapon(true) != null) {
+            if (targetObj.getActiveWeapon(true).isShield()) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -218,8 +232,9 @@ public class ArmorMaster {
         boolean offhand = action.isOffhand();
         Integer chance = getShieldBlockChance(shield, attacked, attacker, weapon, action, offhand,
                 spell);
-        if (!zone)
+        if (!zone) {
             if (!simulation)// will be average instead
+            {
                 if (!RandomWizard.chance(chance)) {
                     message = StringMaster.getMessagePrefix(true, attacked.getOwner().isMe())
                             + attacked.getName() + " fails to use " + shield.getName()
@@ -228,6 +243,8 @@ public class ArmorMaster {
                     action.getGame().getLogManager().log(LOG.GAME_INFO, message, ENTRY_TYPE.DAMAGE);
                     return 0;
                 }
+            }
+        }
         Integer blockValue = getShieldBlockValue(damage, shield, attacked, attacker, weapon,
                 action, zone);
         int durabilityLost = reduceDurability(blockValue, shield, spell, damage_type, attacker
@@ -239,13 +256,14 @@ public class ArmorMaster {
         // .getIntParam(PARAMS.OFF_HAND_MAX_DAMAGE));
         // blockValue = blockValue * (100 +
         // attacked.getIntParam(PARAMS.SHIELD_MASTERY)) / 100;
-        if (!simulation)
+        if (!simulation) {
             if (blockValue <= 0) {
                 action.getGame().getLogManager().log(LOG.GAME_INFO,
                         shield.getName() + " is ineffective against " + action.getName() + "!",
                         ENTRY_TYPE.DAMAGE);
                 return 0;
             }
+        }
         blockValue = Math.min(blockValue, damage);
         if (!simulation) {
             DC_SoundMaster.playBlockedSound(attacker, attacked, shield, weapon, blockValue, damage);
@@ -294,7 +312,9 @@ public class ArmorMaster {
                     DC_QuickItemObj ammo = (DC_QuickItemObj) weapon.getRef().getObj(KEYS.AMMO);
                     if (ammo == null)
                         // ammo = attacker.getAmmo(weapon); TODO
+                    {
                         ammo = attacker.getQuickItems().get(0);
+                    }
                     weapon = ammo.getWrappedWeapon();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -302,18 +322,21 @@ public class ArmorMaster {
                 }
             }
         }
-        if (!spell)
+        if (!spell) {
             if (area == 0) {
                 area = weapon.getIntParam(PARAMS.IMPACT_AREA);
             }
+        }
         int maximum = covered;
         int minimum = area - uncovered;
-        if (minimum < 0)
+        if (minimum < 0) {
             minimum = 0;
+        }
 
         if (!canCritOrBlock) {
-            if (simulation || average)
+            if (simulation || average) {
                 return MathMaster.getAverage(minimum, maximum);
+            }
             return RandomWizard.getRandomIntBetween(minimum, maximum);
 
         }
@@ -351,12 +374,14 @@ public class ArmorMaster {
         // roll accuracy for minimum? or roll between minimum and maximum?
 
         // TODO OR MAKE REFLEX ROLL TO DOUBLE BLOCK CHANCE?
-        if (simulation || average)
+        if (simulation || average) {
             return (minimum + maximum) / 2;
+        }
         boolean crit_or_block = RandomWizard.chance(Math.abs(blockPercBonus));
         if (crit_or_block) {
-            if (blockPercBonus > 0)
+            if (blockPercBonus > 0) {
                 return maximum;
+            }
             return minimum;
         }
         int percentageBlocked = RandomWizard.getRandomIntBetween(minimum, maximum);

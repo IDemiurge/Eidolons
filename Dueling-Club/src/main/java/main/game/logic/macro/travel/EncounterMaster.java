@@ -94,8 +94,9 @@ public class EncounterMaster {
         if (choice == null) {
             return taunt(e);
         } else {
-            if (!choice)
+            if (!choice) {
                 return intimidate(e);
+            }
             return bribe(e);
         }
     }
@@ -125,11 +126,13 @@ public class EncounterMaster {
         if (choice == null) {
             result = parlay(e);
         } else {
-            if (!choice)
+            if (!choice) {
                 result = flee(e);
+            }
         }
-        if (result)
+        if (result) {
             return true;
+        }
 
         encounterBeingResolved = true;
         // save macro game
@@ -138,8 +141,9 @@ public class EncounterMaster {
         DC_Game game = DC_Game.game;
         // game.setPlayerParty(e.getDefendingParty().getMicroParty());
         game.getDungeonMaster().initEncounterDungeon(e);
-        if (!game.isBattleInit())
+        if (!game.isBattleInit()) {
             game.battleInit();
+        }
         game.getBattleManager().setEncounter(e);
         game.getArenaManager().getBattleConstructor().setEncounterSequence(getWaveSequence(e));
         Launcher.launchDC(e.getDefendingParty().getName(), false);
@@ -231,8 +235,9 @@ public class EncounterMaster {
         //
         // // apparently, we want to pre-initialize 'lurking enemies'!
         // }
-        if (waves.isEmpty())
+        if (waves.isEmpty()) {
             return null;
+        }
         Encounter encounter = new Encounter(route, party, (waves));
 
         encounter.setProgress(collisionPoint); // TODO
@@ -260,8 +265,9 @@ public class EncounterMaster {
     public static Integer getPower(ObjType type, Boolean min_max_normal) {
 
         PROPS prop = PROPS.PRESET_GROUP;
-        if (min_max_normal != null)
+        if (min_max_normal != null) {
             prop = min_max_normal ? PROPS.SHRUNK_PRESET_GROUP : PROPS.EXTENDED_PRESET_GROUP;
+        }
         List<String> list = StringMaster.openContainer(type.getProperty(prop));
         return getPower(list);
     }
@@ -270,8 +276,9 @@ public class EncounterMaster {
         Integer power = 0;
         for (String unit : list) {
             ObjType objType = DataManager.getType(unit, OBJ_TYPES.UNITS);
-            if (objType != null)
+            if (objType != null) {
                 power += objType.getIntParam(PARAMS.POWER);
+            }
         }
         return power;
     }

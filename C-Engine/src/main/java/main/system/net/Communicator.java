@@ -110,8 +110,9 @@ public abstract class Communicator {
     }
 
     public void setConnectionHandler(GenericConnection connectionHandler) {
-        if (connectionHandler != null)
+        if (connectionHandler != null) {
             connectionHandler.addCodes(Arrays.asList(COMMAND.values()));
+        }
         this.connectionHandler = connectionHandler;
     }
 

@@ -219,17 +219,21 @@ public class ComponentResizer extends MouseAdapter {
         Point location = e.getPoint();
         direction = 0;
 
-        if (location.x < dragInsets.left)
+        if (location.x < dragInsets.left) {
             direction += WEST;
+        }
 
-        if (location.x > source.getWidth() - dragInsets.right - 1)
+        if (location.x > source.getWidth() - dragInsets.right - 1) {
             direction += EAST;
+        }
 
-        if (location.y < dragInsets.top)
+        if (location.y < dragInsets.top) {
             direction += NORTH;
+        }
 
-        if (location.y > source.getHeight() - dragInsets.bottom - 1)
+        if (location.y > source.getHeight() - dragInsets.bottom - 1) {
             direction += SOUTH;
+        }
 
         // Mouse is no longer over a resizable border
 
@@ -263,8 +267,9 @@ public class ComponentResizer extends MouseAdapter {
     public void mousePressed(MouseEvent e) {
         // The mouseMoved event continually updates this variable
 
-        if (direction == 0)
+        if (direction == 0) {
             return;
+        }
 
         // Setup for resizing. All future dragging calculations are done based
         // on the original bounds of the component and mouse pressed location.
@@ -311,8 +316,9 @@ public class ComponentResizer extends MouseAdapter {
      */
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (resizing == false)
+        if (resizing == false) {
             return;
+        }
 
         Component source = e.getComponent();
         Point dragged = e.getPoint();
@@ -388,11 +394,13 @@ public class ComponentResizer extends MouseAdapter {
      *  Adjust the drag value to be within the minimum and maximum range.
      */
     private int getDragBounded(int drag, int snapSize, int dimension, int minimum, int maximum) {
-        while (dimension + drag < minimum)
+        while (dimension + drag < minimum) {
             drag += snapSize;
+        }
 
-        while (dimension + drag > maximum)
+        while (dimension + drag > maximum) {
             drag -= snapSize;
+        }
 
         return drag;
     }

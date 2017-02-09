@@ -27,8 +27,9 @@ public class DC_UAP_Holder extends G_Panel {
 
     public static String getX(int i, int row) {
         i = (i - 1) - row * UAP_PER_ROW;
-        if (i == -1)
+        if (i == -1) {
             return getLeftmostX(row);
+        }
 
         return "uap" + i + "" + row + ".x2+" + GAP_WIDTH;
     }
@@ -97,10 +98,12 @@ public class DC_UAP_Holder extends G_Panel {
 
                     String x = getX(i, 0);
 
-                    if (i > 0)
+                    if (i > 0) {
                         x += "+" + (((i / 2) * 2) * 2) * GAP_WIDTH;
-                    if (i == 2)
+                    }
+                    if (i == 2) {
                         x += "-" + 4 * GAP_WIDTH;
+                    }
 
                     LI += (i - row * UAP_PER_ROW) + "" + row + ", y " + 0 + "," + " x " + x;
                     break;
@@ -129,10 +132,11 @@ public class DC_UAP_Holder extends G_Panel {
             DC_PagedUnitActionPanel actionPanel = getUapMap().get(group);
             DC_UnitActionPanel panel = (DC_UnitActionPanel) actionPanel.getCurrentComponent();
             List<DC_UnitAction> data = panel.getData();
-            if (data != null)
+            if (data != null) {
                 if (data.contains(action)) {
                     return actionPanel;
                 }
+            }
         }
         return null;
     }

@@ -46,13 +46,16 @@ public class HC_InfoTextPanel extends WrappedTextComp {
 
     @Override
     public void refresh() {
-        if (value == null)
+        if (value == null) {
             return;
+        }
         text = null;
-        if (value instanceof PARAMS)
+        if (value instanceof PARAMS) {
             text = getSpecialDescription((PARAMS) value);
-        if (text == null)
+        }
+        if (text == null) {
             text = value.getDescription();
+        }
         super.refresh();
         textLines.add(0, value.getName());
     }

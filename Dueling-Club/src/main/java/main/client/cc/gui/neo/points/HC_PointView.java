@@ -87,9 +87,11 @@ public class HC_PointView extends HeroView {
         X = getDefaultX();
         Y = getDefaultY();
         i = 0;
-        if (!attributes)
-            if (editable)
+        if (!attributes) {
+            if (editable) {
                 DC_ContentManager.sortMasteries(hero, params);
+            }
+        }
         for (PARAMETER p : params) {
             boolean editable = isEditable(p);
             HC_PointComp comp = new HC_PointComp(editable, hero, buffer, p,
@@ -116,20 +118,23 @@ public class HC_PointView extends HeroView {
     }
 
     private int getDefaultY() {
-        if (all)
+        if (all) {
             return 0;
+        }
         return 170 + VISUALS.DRAGON_DIVIDER.getHeight();
     }
 
     private boolean isEditable(PARAMETER p) {
-        if (attributes)
+        if (attributes) {
             return ContentManager.isBase(p);
+        }
         return true; // check locked!!!
     }
 
     private void initValues() {
-        if (params != null)
+        if (params != null) {
             return;
+        }
 
         this.params = new LinkedList<>();
         List<PARAMETER> list = (attributes) ? ContentManager.getAttributes() : ContentManager.getMasteries();

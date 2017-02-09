@@ -23,11 +23,12 @@ public class WeightMap<E> extends XLinkedMap<E, Integer> {
         Integer greatestN = 0;
         for (E key : keySet()) {
             Integer integer = get(key);
-            if (integer != null)
+            if (integer != null) {
                 if (integer > greatestN) {
                     greatest = key;
                     greatestN = integer;
                 }
+            }
         }
         return greatest;
     }

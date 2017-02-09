@@ -18,8 +18,9 @@ public class ConstructionManager {
 
     public static Object construct(Construct construct) {
         Object result = construct.construct();
-        if (result instanceof Reconstructable)
+        if (result instanceof Reconstructable) {
             ((Reconstructable) result).setConstruct(construct);
+        }
         if (result == null) {
             return construct.construct();
         }

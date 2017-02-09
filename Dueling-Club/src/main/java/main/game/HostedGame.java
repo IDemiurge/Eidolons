@@ -24,12 +24,13 @@ public class HostedGame extends G_HostedGame {
 
     public DC_GameClient join() {
         main.system.auxiliary.LogMaster.log(1, "joining game " + getTitle());
-        if (!started)
+        if (!started) {
             if (!isFull()) {
                 this.joined = true;
 
                 return new DC_GameClient(netGame, this);
             }
+        }
         return null;
     }
 

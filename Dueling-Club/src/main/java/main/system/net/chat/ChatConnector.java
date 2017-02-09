@@ -65,7 +65,7 @@ public class ChatConnector implements Runnable {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {
                     }
-                    if (rdy)
+                    if (rdy) {
                         try {
                             chathandlers.add(new ChatConnection(
                                     varholder, lastuser, isHost, chatBox,
@@ -74,6 +74,7 @@ public class ChatConnector implements Runnable {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                    }
 
                 }
             }

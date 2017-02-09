@@ -33,8 +33,9 @@ public class AI_Controller {
         for (Obj unit : logic.getUnits()) {
             main.system.auxiliary.LogMaster
                     .log(LogMaster.AI_DEBUG, "unit chosen:" + unit);
-            if (!makeTurn(unit))
+            if (!makeTurn(unit)) {
                 return false;
+            }
 
         }
 

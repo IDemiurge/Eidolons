@@ -51,7 +51,7 @@ public class ModifyCounterEffect extends MicroEffect implements ResistibleEffect
             amount = MathMaster.applyMod(amount, getResistanceMod());
         }
         int mod = 0;
-        if (ref.getTargetObj() instanceof DC_HeroItemObj)
+        if (ref.getTargetObj() instanceof DC_HeroItemObj) {
             try {
                 mod = ref.getSourceObj().getIntParam(
                         DC_ContentManager.getCoatingAppliedModParam(CounterMaster
@@ -59,6 +59,7 @@ public class ModifyCounterEffect extends MicroEffect implements ResistibleEffect
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
         Integer modValue = MathMaster.addFactor(amount, mod);
         REF.setAmount(modValue);
         REF.setValue(KEYS.STRING, counterName);
@@ -80,8 +81,9 @@ public class ModifyCounterEffect extends MicroEffect implements ResistibleEffect
         }
         if (result) {
             getAnimation().addPhaseArgs(PHASE_TYPE.COUNTER, counterName, modtype, modValue);
-        } else
+        } else {
             return false;
+        }
         REF.setAmount(ref.getTargetObj().getCounter(counterName));
 
         return new Event(STANDARD_EVENT_TYPE.COUNTER_MODIFIED, REF).fire();

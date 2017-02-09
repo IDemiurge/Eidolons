@@ -1002,10 +1002,11 @@ public enum PARAMS implements PARAMETER {
            int AV_ID) {
         this.name = StringMaster.getWellFormattedString(name());
         this.fullName = name();
-        if (shortName == null)
+        if (shortName == null) {
             setShortName(name);
-        else
+        } else {
             this.setShortName(shortName);
+        }
         this.descr = descr;
         this.entityType = entityType;
         this.dynamic = dynamic;
@@ -1033,8 +1034,9 @@ public enum PARAMS implements PARAMETER {
     }
 
     public Map<OBJ_TYPE, Object> getDefaultValuesMap() {
-        if (defaultValuesMap == null)
+        if (defaultValuesMap == null) {
             defaultValuesMap = new HashMap<OBJ_TYPE, Object>();
+        }
         return defaultValuesMap;
     }
 

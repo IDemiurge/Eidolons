@@ -2,8 +2,12 @@ package main.libgdx.anims.particles;
 
 import com.badlogic.gdx.utils.Pool;
 import main.content.CONTENT_CONSTS2.SFX;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,7 +17,8 @@ public class EmitterPools {
 
     private static Map<String, Pool<EmitterActor>> actorPoolMap = new HashMap<>();
     private static Map<String, Pool<ParticleEffect>> effectPoolMap = new HashMap<>();
-    private static boolean poolingOn=true;
+    private static boolean effectPoolingOn=false;
+    private static boolean actorPoolingOn =true;
 
 
     public static EmitterActor getEmitterActor(SFX sfx) {
@@ -21,7 +26,7 @@ public class EmitterPools {
     }
 
     public static EmitterActor getEmitterActor(String path) {
-        if (!poolingOn)
+        if (!actorPoolingOn)
             return new EmitterActor(path);
         final String finalPath = path.toLowerCase();
         Pool<EmitterActor> pool = actorPoolMap.get(finalPath);
@@ -37,7 +42,7 @@ public class EmitterPools {
         return pool.obtain();
     }
     public static ParticleEffect getEffect(String path) {
-        if (!poolingOn)
+        if (!effectPoolingOn)
             return new ParticleEffect(path);
         final String finalPath = path.toLowerCase();
         Pool<ParticleEffect> pool = effectPoolMap.get(finalPath);
@@ -67,5 +72,23 @@ public class EmitterPools {
             return;
         pool.free(e);
 
+    }
+
+    public static  List<EmitterActor> getEmitters(String data ) {
+        List<EmitterActor> list = new LinkedList<>();
+        for (String path :
+         StringMaster.openContainer(data)) {
+            EmitterActor emitter = null;
+            SFX sfx = new EnumMaster<SFX>().
+             retrieveEnumConst(SFX.class, path);
+            if (sfx == null)
+                emitter = EmitterPools.getEmitterActor(path);
+            else
+                emitter = EmitterPools.getEmitterActor(sfx);
+            if (emitter != null)
+                list.add(emitter
+                );
+        }
+        return list;
     }
 }

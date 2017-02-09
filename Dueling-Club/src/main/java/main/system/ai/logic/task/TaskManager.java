@@ -36,10 +36,11 @@ public class TaskManager {
     public static Integer checkTaskArgReplacement(Task task, DC_ActiveObj action) {
         // "custom targeting" of sorts !
         TARGETING_MODE mode = action.getTargetingMode();
-        if (mode == null)
+        if (mode == null) {
             mode = new EnumMaster<TARGETING_MODE>().retrieveEnumConst(TARGETING_MODE.class, action
                     .getProperty(G_PROPS.TARGETING_MODE));
-        if (mode != null)
+        }
+        if (mode != null) {
             if (action.getGame().getObjectById((Integer) task.getArg()) instanceof DC_HeroObj) {
                 DC_HeroObj target = (DC_HeroObj) action.getGame().getObjectById(
                         (Integer) task.getArg());
@@ -65,8 +66,9 @@ public class TaskManager {
                     case ENEMY_ARMOR:
                         if (target.getArmor() != null) {
                             return target.getArmor().getId();
-                        } else
+                        } else {
                             return null;
+                        }
                     case ENEMY_WEAPON:
                         if (target.getMainWeapon() != null) {
                             return target.getMainWeapon().getId();
@@ -97,6 +99,7 @@ public class TaskManager {
                         break;
                 }
             }
+        }
 
         return (Integer) task.getArg();
     }
@@ -218,8 +221,9 @@ public class TaskManager {
             case COATING:
                 Set<Obj> objects = action.getTargeting().getFilter().getObjects(action.getRef());
                 for (Obj q : objects) {
-                    if (q.isOwnedBy(ai.getUnit().getOwner()))
+                    if (q.isOwnedBy(ai.getUnit().getOwner())) {
                         ids.add(q.getId());
+                    }
                 }
                 break;
 
@@ -258,15 +262,19 @@ public class TaskManager {
 		 * that, there should be some default prune logic
 		 */
         for (DC_Obj e : targets) {
-            if (!(e instanceof DC_HeroObj))
+            if (!(e instanceof DC_HeroObj)) {
                 return; // another method?
+            }
         }
         int size = targets.size();
         int toPrune = size - getPruneSize(goal);
         if (toPrune <= 0) // this is only the max size, how to ensure pruning of
             // 'valid' targets too?
-            if (action.isRanged() || action instanceof DC_SpellObj)
+        {
+            if (action.isRanged() || action instanceof DC_SpellObj) {
                 return; // TODO sometimes it's not the size, but the distance!
+            }
+        }
         // for melee...
         Boolean byCapacity = true;
         Boolean byHealth = true;
@@ -299,40 +307,46 @@ public class TaskManager {
         while ((first || pruneList.size() < toPrune) && limit < 5) {
             first = false;
             for (DC_Obj t : targets) {
-                if (pruneList.contains(t))
+                if (pruneList.contains(t)) {
                     continue;
+                }
                 boolean result = false;
                 while (true) {
                     if (byDistance) {
                         int distance = PositionMaster.getDistance(t, ai.getUnit());
-                        if (distance < minDistance)
+                        if (distance < minDistance) {
                             minDistance = distance;
-                        else
+                        } else {
                             result = (getDistancePruneFactor(limit, t, ai, action)) < distance
                                     - minDistance;
-                        if (result)
+                        }
+                        if (result) {
                             break;
+                        }
                     }
 
                     if (byCapacity) {
                         float capacity = PriorityManager.getCapacity((DC_HeroObj) t);
                         // < 0.1f
 
-                        if (result)
+                        if (result) {
                             break;
+                        }
                     }
 
                     if (byHealth) {
                         int health = PriorityManager.getHealthFactor(t, byHealth);// ?
                         result = (health < getHeathPruneFactor(limit, t, ai, action));
-                        if (result)
+                        if (result) {
                             break;
+                        }
                     }
                     if (byPower) {
                         result = t.getIntParam(PARAMS.POWER) * 100 / maxPower < getPowerFactor(
                                 limit, ai, action);
-                        if (result)
+                        if (result) {
                             break;
+                        }
                     }
                     // by danger
                     break;
@@ -347,8 +361,9 @@ public class TaskManager {
             limit++;
         }
 
-        for (DC_Obj t : pruneList)
+        for (DC_Obj t : pruneList) {
             targets.remove(t);
+        }
 
     }
 
@@ -386,8 +401,9 @@ public class TaskManager {
     }
 
     private Integer getPruneSize(GOAL_TYPE goal) {
-        if (forcedPruneSize != null)
+        if (forcedPruneSize != null) {
             return forcedPruneSize;
+        }
         return DEFAULT_PRUNE_SIZE;
     }
 

@@ -39,8 +39,9 @@ public class ControlPanel extends G_Panel implements ActionListener {
                 // )
                 ;
         i++;
-        if (gameName == null)
+        if (gameName == null) {
             return;
+        }
 
         if (NameValidator.checkGameName(gameName)) {
             DC_ServerConnector.send(CODES.NEW_GAME);

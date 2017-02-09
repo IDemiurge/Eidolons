@@ -114,24 +114,28 @@ public class ContainerIconElement extends G_PagePanel<SmallItem> implements Enti
                     .getProperty(G_PROPS.CLASSIFICATIONS))) {
                 CLASSIFICATIONS classif = new EnumMaster<CLASSIFICATIONS>().retrieveEnumConst(
                         CLASSIFICATIONS.class, subString);
-                if (classif != null)
-                    if (classif.isDisplayed())
+                if (classif != null) {
+                    if (classif.isDisplayed()) {
                         fullList.add(new SmallItem(classif, classif.getImagePath(), classif
                                 .getName(), classif.getToolTip()));
+                    }
+                }
             }
 
             for (String subString : StringMaster.openContainer(entity
                     .getProperty(G_PROPS.STANDARD_PASSIVES))) {
                 STANDARD_PASSIVES std_pas = new EnumMaster<STANDARD_PASSIVES>().retrieveEnumConst(
                         STANDARD_PASSIVES.class, subString);
-                if (std_pas != null)
+                if (std_pas != null) {
                     fullList.add(new SmallItem(std_pas, std_pas.getImagePath(), std_pas.getName(),
                             std_pas.getToolTip()));
+                }
             }
 
             for (AbilityObj passive : entity.getPassives()) {
-                if (passive == null)
+                if (passive == null) {
                     continue;
+                }
                 if (passive.getProperty(G_PROPS.ABILITY_GROUP, true).equalsIgnoreCase(
                         DISPLAYED_PASSIVES)) {
                     fullList.add(new SmallItem(passive));

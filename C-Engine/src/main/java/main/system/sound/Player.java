@@ -63,16 +63,18 @@ public class Player {
     }
 
     public void play(File file) {
-        if (file != null)
+        if (file != null) {
             play(file.getAbsolutePath());
+        }
     }
 
     public void playStandardSound(STD_SOUNDS sound) {
-        if (sound.hasAlt())
+        if (sound.hasAlt()) {
             if (RandomWizard.random()) {
                 play(sound.getAltPath());
                 return;
             }
+        }
         play(sound.getPath());
     }
 
@@ -82,12 +84,16 @@ public class Player {
 
     public void playRandomSoundVariant(String basePath, boolean alt) {
         if (!switcher) // TODO to playNow!
+        {
             return;
-        if (StringMaster.isEmpty(SoundMaster.getPath()))
+        }
+        if (StringMaster.isEmpty(SoundMaster.getPath())) {
             return;
+        }
         String format = (alt) ? ALT_FORMAT : FORMAT;
-        if (!basePath.contains(SoundMaster.getPath()))
+        if (!basePath.contains(SoundMaster.getPath())) {
             basePath = SoundMaster.getPath() + basePath;
+        }
         String sound = FileManager.getRandomFilePathVariant(basePath, format, !alt);
         if (sound == null) {
             sound = FileManager.getRandomFilePathVariant(basePath, format, alt);
@@ -107,11 +113,13 @@ public class Player {
     }
 
     public boolean playEffectSound(SOUNDS sound_type, SOUNDSET soundset) {
-        if (!SoundMaster.checkSoundTypePlayer(sound_type))
+        if (!SoundMaster.checkSoundTypePlayer(sound_type)) {
             return false;
+        }
         String sound = getRandomSound(sound_type, soundset);
-        if (sound == null)
+        if (sound == null) {
             return false;
+        }
         play(sound);
         return true;
 
@@ -122,24 +130,28 @@ public class Player {
     }
 
     public void play(final String sound, final int delay) {
-        if (!switcher)
+        if (!switcher) {
             return;
-        if (lastplayed.size() > 1)
-            if (neverRepeat)
+        }
+        if (lastplayed.size() > 1) {
+            if (neverRepeat) {
                 if (lastplayed.peek().equals(sound)
                         && !lastplayed.get(lastplayed.size() - 2).equals(sound)) {
-                    main.system.auxiliary.LogMaster.log(0, "NOT playing twice! - " + sound);
+                    LogMaster.log(0, "NOT playing twice! - " + sound);
 
                     return;
                 }
+            }
+        }
         main.system.auxiliary.LogMaster.log(0, "Playing: " + sound);
         if (!FileManager.getFile(sound).isFile()) {
-            if (sound.endsWith(FORMAT))
+            if (sound.endsWith(FORMAT)) {
                 play(sound.replace(FORMAT, "") + ALT_FORMAT);
-            else if (sound.contains(" "))
+            } else if (sound.contains(" ")) {
                 play(sound.replace(" ", "_"));
-            else
-                main.system.auxiliary.LogMaster.log(1, "Sound not found: " + sound);
+            } else {
+                LogMaster.log(1, "Sound not found: " + sound);
+            }
             return;
         }
         // if (delay == 0)
@@ -147,8 +159,9 @@ public class Player {
         // else
         new Thread(new Runnable() {
             public void run() {
-                if (delay > 0)
+                if (delay > 0) {
                     WaitMaster.WAIT(delay);
+                }
                 playNow(sound);
             }
 
@@ -202,8 +215,9 @@ public class Player {
 
         try {
             jlp player = jlp.createInstance(new String[]{sound});
-            if (player != null)
+            if (player != null) {
                 player.play();
+            }
 
         } catch (Exception ex) {
             System.err.println(ex);
@@ -271,8 +285,9 @@ public class Player {
 
             String newPath = corePath + "_" + i + FORMAT;
             file = new File(newPath);
-            if (!file.isFile())
+            if (!file.isFile()) {
                 break;
+            }
             i++;
         }
         // FileManager.getRandomFilePathVariant(corePath, FORMAT)
@@ -299,9 +314,11 @@ public class Player {
 
         String prop = obj.getProperty(G_PROPS.CUSTOM_SOUNDSET);
         if (!StringMaster.isEmpty(prop)) {
-            if (!StringMaster.isEmpty(prop))
-                if (playCustomSoundsetSound(prop, sound_type))
+            if (!StringMaster.isEmpty(prop)) {
+                if (playCustomSoundsetSound(prop, sound_type)) {
                     return;
+                }
+            }
         }
         prop = obj.getProperty(G_PROPS.SOUNDSET);
         SOUNDSET soundSet = new EnumMaster<SOUNDSET>().retrieveEnumConst(SOUNDSET.class, obj
@@ -309,8 +326,9 @@ public class Player {
         boolean result = false;
         if (soundSet == null) {
             result = playCustomSoundsetSound(prop, sound_type);
-        } else
+        } else {
             result = playEffectSound(sound_type, soundSet);
+        }
 
         if (!result) {
 
@@ -328,14 +346,16 @@ public class Player {
                         + obj.getProperty(G_PROPS.SPELL_GROUP) + "\\" + obj.getName();
 
                 result = playCustomSoundsetSound(autopath, sound_type);
-                if (result)
+                if (result) {
                     return;
+                }
                 // spell group level
                 autopath = StringMaster.cropLastPathSegment(autopath);
                 result = playCustomSoundsetSound(autopath + obj.getProperty(G_PROPS.SPELL_GROUP),
                         sound_type);
-                if (result)
+                if (result) {
                     return;
+                }
                 // aspect level
                 autopath = StringMaster.cropLastPathSegment(autopath)
                         + obj.getAspect().toString().toLowerCase();
@@ -356,8 +376,9 @@ public class Player {
     }
 
     private boolean playCustomSoundsetSound(String prop, SOUNDS sound_type) {
-        if (!prop.contains("soundsets"))
+        if (!prop.contains("soundsets")) {
             prop = "soundsets\\" + prop;
+        }
         String path = PathFinder.getSoundPath()
                 // SOUNDSET_FOLDER_PATH + "//"
                 + prop.replace(PathFinder.getSoundPath(), "");
@@ -373,14 +394,16 @@ public class Player {
         String suffix = fileName + getSoundsetSuffix(sound_type);
         List<File> files = FileManager.findFiles(folder, suffix, true, false);
         if (files.isEmpty()) {
-            if (fileName.isEmpty())
+            if (fileName.isEmpty()) {
                 suffix = sound_type.toString();
-            else
+            } else {
                 suffix = fileName + "_" + sound_type.toString();
+            }
             files = FileManager.findFiles(folder, suffix, true, false);
         }
-        if (files.isEmpty())
+        if (files.isEmpty()) {
             return false;
+        }
         File file = files.get(RandomWizard.getRandomListIndex(files, new Random()));
         try {
             play(file.getAbsolutePath());
@@ -436,8 +459,9 @@ public class Player {
 
         String string = SoundMaster.getPath()
                 + getBasePath(obj.getProperty(G_PROPS.CUSTOM_SOUNDSET), false);
-        if (add_name)
+        if (add_name) {
             string += StringMaster.FORMULA_REF_SEPARATOR + sound_type.toString();
+        }
         return string;
     }
 

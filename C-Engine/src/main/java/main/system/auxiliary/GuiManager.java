@@ -92,14 +92,16 @@ public class GuiManager {
         if (size.getWidth() >= 1920) {
             displayMode = (size.getHeight() > 1080) ? DISPLAY_MODE._1920x1200_
                     : DISPLAY_MODE._1920x1080_;
-        } else
+        } else {
             displayMode = DISPLAY_MODE._1680x1050_;
+        }
 
     }
 
     public static Dimension getPortraitSize() {
-        if (portraitSize == null)
+        if (portraitSize == null) {
             portraitSize = new Dimension(bfObjSize, bfObjSize);
+        }
         return portraitSize;
     }
 
@@ -201,8 +203,9 @@ public class GuiManager {
 
     public static JFrame inNewWindow(JComponent comp, Dimension SIZE) {
         JFrame window = inNewWindow(false, comp, "nnm", SIZE);
-        if (!window.isDisplayable())
+        if (!window.isDisplayable()) {
             window.setUndecorated(true);
+        }
         return window;
     }
 
@@ -229,8 +232,9 @@ public class GuiManager {
 
     public static void toggleFocus(JFrame window) {
         window.setAlwaysOnTop(!window.isAlwaysOnTop());
-        if (window.isAlwaysOnTop())
+        if (window.isAlwaysOnTop()) {
             window.requestFocus();
+        }
 
     }
 

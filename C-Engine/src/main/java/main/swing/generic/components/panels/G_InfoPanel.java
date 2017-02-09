@@ -30,8 +30,9 @@ public abstract class G_InfoPanel extends G_Panel {
 
     protected Vector<Vector<String>> initData() {
 
-        if (infoObj == null)
+        if (infoObj == null) {
             return getEmptyData();
+        }
         Vector<Vector<String>> data = new Vector<Vector<String>>();
 
         for (String v : displayedValues) {
@@ -58,10 +59,11 @@ public abstract class G_InfoPanel extends G_Panel {
 
     @Override
     public void refresh() {
-        if (infoObj != null)
+        if (infoObj != null) {
             pic = ImageManager.getIcon(infoObj.getImagePath());
-        else
+        } else {
             pic = ImageManager.getEmptyUnitIcon();
+        }
 
         removeAll();
 
@@ -123,8 +125,9 @@ public abstract class G_InfoPanel extends G_Panel {
 
     public void setInfoObj(Entity infoObj) {
         this.infoObj = infoObj;
-        if (infoObj != null)
+        if (infoObj != null) {
             obj_type = infoObj.getOBJ_TYPE();
+        }
         // refresh();
     }
 

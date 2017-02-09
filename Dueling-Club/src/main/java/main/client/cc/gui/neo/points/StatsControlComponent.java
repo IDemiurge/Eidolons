@@ -231,10 +231,11 @@ public class StatsControlComponent extends G_Panel {
 
     public void setValueToolTip(VALUE value) {
         panelSwitch = !panelSwitch;
-        if (panelSwitch)
+        if (panelSwitch) {
             getMstrPanel().setValue(value);
-        else
+        } else {
             getMstrPanel().setValue(value);
+        }
     }
 
     public ObjType getBufferType() {

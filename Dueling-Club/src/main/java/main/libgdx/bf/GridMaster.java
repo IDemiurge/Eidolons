@@ -38,7 +38,7 @@ public class GridMaster {
         return new Vector2(x, y);
     }
 
-    private static GridPanel getGrid() {
+    public static GridPanel getGrid() {
         return GameScreen.getInstance().getGridPanel();
     }
 

@@ -45,8 +45,9 @@ public class ThrowEffect extends AttackEffect {
             fromHand = false;
             for (DC_QuickItemObj q : hero.getQuickItems()) {
                 weapon = q.getWrappedWeapon();
-                if (weapon != null)
+                if (weapon != null) {
                     result &= throwWeapon(weapon);
+                }
             }
             return result;
         }
@@ -86,12 +87,14 @@ public class ThrowEffect extends AttackEffect {
                 hero.setSecondWeapon(null);
             } else {
                 hero.setWeapon(null);
-                if (hero.getSecondWeapon() != null)
-                    if (!hero.getSecondWeapon().isRanged())
+                if (hero.getSecondWeapon() != null) {
+                    if (!hero.getSecondWeapon().isRanged()) {
                         if (hero.getSecondWeapon().isWeapon()) {
                             hero.setWeapon(hero.getSecondWeapon());
                             hero.setSecondWeapon(null);
                         }
+                    }
+                }
             }
         }
         weapon.getGame().getDroppedItemManager().itemFalls(ref.getTargetObj().getCoordinates(),

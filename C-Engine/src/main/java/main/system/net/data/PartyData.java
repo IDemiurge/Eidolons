@@ -39,8 +39,9 @@ public class PartyData extends DataUnit<PARTY_VALUES> {
     }
 
     public ObjType getHeroObjType() {
-        if (heroObjType == null)
+        if (heroObjType == null) {
             initHeroType();
+        }
         return heroObjType;
     }
 

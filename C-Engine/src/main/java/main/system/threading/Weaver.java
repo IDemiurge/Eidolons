@@ -1,5 +1,7 @@
 package main.system.threading;
 
+import main.system.EventCallback;
+import main.system.EventCallbackParam;
 import main.system.auxiliary.Chronos;
 
 import java.lang.reflect.Method;
@@ -105,14 +107,18 @@ public class Weaver {
 
     public static void inNewThread(Boolean priorityMinMax, Runnable runnable) {
         Thread thread = new Thread(runnable);
-        if (priorityMinMax != null)
+        if (priorityMinMax != null) {
             try {
                 thread.setPriority(priorityMinMax ? Thread.MIN_PRIORITY
                         : Thread.MAX_PRIORITY);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
         thread.start();
     }
 
+    public static void newThread(String s, EventCallback callback, EventCallbackParam param) {
+        new Thread(() -> callback.call(param),s+ " thread").start();
+    }
 }

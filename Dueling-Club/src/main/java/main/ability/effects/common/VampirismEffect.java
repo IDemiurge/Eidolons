@@ -54,8 +54,9 @@ public class VampirismEffect extends MicroEffect implements AttachmentEffect {
 
     @Override
     public boolean applyThis() {
-        if (conditions == null)
+        if (conditions == null) {
             initConditions();
+        }
         // TODO Auto-generated method stub
         // endurance damage; modify endurance only? above base?
         // if (triggerEffect!=null) triggerEffect.apply(ref); else {
@@ -65,15 +66,17 @@ public class VampirismEffect extends MicroEffect implements AttachmentEffect {
         if (restoreEndurance) {
             ModifyValueEffect effect = new ModifyValueEffect(
                     PARAMS.C_ENDURANCE, code, formula.toString());
-            if (!restoreEnduranceAboveBase)
+            if (!restoreEnduranceAboveBase) {
                 effect.setMaxParam(PARAMS.ENDURANCE);
+            }
             effects.add(effect);
         }
         if (restoreToughness) {
             ModifyValueEffect effect = new ModifyValueEffect(
                     PARAMS.C_TOUGHNESS, code, formula.toString());
-            if (!restoreToughnessAboveBase)
+            if (!restoreToughnessAboveBase) {
                 effect.setMaxParam(PARAMS.TOUGHNESS);
+            }
             effects.add(effect);
         }
 

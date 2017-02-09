@@ -56,9 +56,9 @@ public class ChoicePanel<T> extends DialogPanel implements MouseListener {
 
     @Override
     protected void ok() {
-        if (lastSelected == null)
+        if (lastSelected == null) {
             WaitMaster.interrupt(getWaitOperation());
-        else {
+        } else {
             WaitMaster.receiveInput(getWaitOperation(), lastSelected);
         }
         super.ok();
@@ -74,8 +74,9 @@ public class ChoicePanel<T> extends DialogPanel implements MouseListener {
     }
 
     protected boolean isSelected(T t) {
-        if (lastSelected == t)
+        if (lastSelected == t) {
             return true;
+        }
         return false;
     }
 
@@ -137,8 +138,9 @@ public class ChoicePanel<T> extends DialogPanel implements MouseListener {
                 graphicComponent.setImg(getImage((T) graphicComponent.getDataObject()));
             }
         }
-        if (lastSelected != null)
+        if (lastSelected != null) {
             initTooltip(lastSelected);
+        }
         super.refresh();
     }
 

@@ -33,28 +33,33 @@ public class WatchActionEffect extends DC_Effect {
         } else if (!alert) {
             if (list.contains(ref.getTargetObj())) {
                 list.remove(ref.getTargetObj());
-                if (RandomWizard.random())
+                if (RandomWizard.random()) {
                     SoundMaster.playStandardSound(STD_SOUNDS.BACK);
-                else
+                } else {
                     SoundMaster.playStandardSound(STD_SOUNDS.CLOSE);
+                }
                 main.system.auxiliary.LogMaster.log(1, sourceObj.getName() + " no longer watching "
                         + ref.getTargetObj().getNameIfKnown());
                 return true;
             } else if (!list.isEmpty()) {
-                if (RandomWizard.random())
+                if (RandomWizard.random()) {
                     SoundMaster.playStandardSound(STD_SOUNDS.DIS__BLOCKED);
-                else
+                } else {
                     SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
+                }
                 // if (maxUnitsWatched<=1)
                 return false;
             }
         }
         list.add((DC_Obj) ref.getTargetObj());
-        if (!alert)
+        if (!alert) {
             if (RandomWizard.random()) // (sourceObj.isMine())
+            {
                 SoundMaster.playStandardSound(STD_SOUNDS.DIS__KNIFE);
-            else
+            } else {
                 SoundMaster.playStandardSound(STD_SOUNDS.NOTE);
+            }
+        }
         return true;
 
     }

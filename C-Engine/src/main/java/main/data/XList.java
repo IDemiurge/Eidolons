@@ -21,22 +21,26 @@ public class XList<E> extends LinkedList<E> {
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        if (c == null)
+        if (c == null) {
             return false;
+        }
         return super.removeAll(c);
     }
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        if (c == null)
+        if (c == null) {
             return false;
+        }
         return super.addAll(c);
     }
 
     public void addAllUnique(Collection<E> list) {
-        for (E e : list)
-            if (!contains(e))
+        for (E e : list) {
+            if (!contains(e)) {
                 add(e);
+            }
+        }
     }
 
 }

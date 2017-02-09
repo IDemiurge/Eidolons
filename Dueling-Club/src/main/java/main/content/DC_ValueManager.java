@@ -22,14 +22,16 @@ public class DC_ValueManager implements ValueManager {
 
     public static PARAMETER[] getGroupParams(String string) {
         VALUE_GROUP valueGroup = getValueGroup(string);
-        if (valueGroup == null)
+        if (valueGroup == null) {
             return null;
+        }
         return valueGroup.getParams();
     }
 
     public boolean checkValueGroup(String string) {
-        if (!string.contains(StringMaster.VALUE_GROUP_OPEN_CHAR))
+        if (!string.contains(StringMaster.VALUE_GROUP_OPEN_CHAR)) {
             return false;
+        }
 
         return getValueGroup(string) != null;
     }
@@ -37,8 +39,9 @@ public class DC_ValueManager implements ValueManager {
     @Override
     public PARAMETER[] getValueGroupParams(String string) {
         VALUE_GROUP valueGroup = getValueGroup(string);
-        if (valueGroup == null)
+        if (valueGroup == null) {
             return null;
+        }
         return valueGroup.getParams();
     }
 
@@ -48,12 +51,13 @@ public class DC_ValueManager implements ValueManager {
         LinkedList<PARAMETER> params = new LinkedList<>();
         for (String s : container) {
             PARAMETER param = ContentManager.getPARAM(s);
-            if (param != null)
+            if (param != null) {
                 params.add(param);
-            else {
+            } else {
                 param = ContentManager.getMastery(s);
-                if (param != null)
+                if (param != null) {
                     params.add(param);
+                }
             }
         }
         return params.toArray(new PARAMETER[params.size()]);
@@ -62,8 +66,9 @@ public class DC_ValueManager implements ValueManager {
 
     @Override
     public boolean isRolledRoundind(PARAMETER valueToPay) {
-        if (valueToPay == PARAMS.C_N_OF_ACTIONS)
+        if (valueToPay == PARAMS.C_N_OF_ACTIONS) {
             return true;
+        }
         return false;
     }
 

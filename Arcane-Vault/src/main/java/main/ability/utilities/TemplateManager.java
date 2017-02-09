@@ -1,14 +1,5 @@
 package main.ability.utilities;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import main.ability.gui.AE_Element;
 import main.ability.gui.AE_MainPanel;
 import main.data.ability.AE_Item;
@@ -16,8 +7,13 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Writer;
 import main.system.auxiliary.FileManager;
-
 import org.w3c.dom.Node;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 public class TemplateManager implements ActionListener {
 
@@ -41,12 +37,21 @@ public class TemplateManager implements ActionListener {
 		path = PathFinder.getTemplatesPath();
 	}
 
+    public static String getUseTemplateAction() {
+        return USE_TEMPLATE;
+    }
+
+    public static String getSaveTemplateAction() {
+        return SAVE_TEMPLATE;
+    }
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		if (mainPanel.getSelectedNode() == null)
-			return;
-		switch (((JButton) e.getSource()).getActionCommand()) {
+        if (mainPanel.getSelectedNode() == null) {
+            return;
+        }
+        switch (((JButton) e.getSource()).getActionCommand()) {
 		case SAVE_TEMPLATE: {
 			saveTemplate();
 			return;
@@ -78,9 +83,10 @@ public class TemplateManager implements ActionListener {
 	}
 
 	private String getFilePath(AE_Item item) {
-		if (item == null)
-			return path;
-		String templateType = item.getArg().name();
+        if (item == null) {
+            return path;
+        }
+        String templateType = item.getArg().name();
 
 		return path + "\\" + templateType;
 	}
@@ -88,18 +94,21 @@ public class TemplateManager implements ActionListener {
 	private void saveTemplate() throws java.lang.ClassCastException {
 
 		DefaultMutableTreeNode node = mainPanel.getSelectedNode();
-		if (!(node.getUserObject() instanceof AE_Item))
-			return;
-		AE_Item item = (AE_Item) node.getUserObject();
+        if (!(node.getUserObject() instanceof AE_Item)) {
+            return;
+        }
+        AE_Item item = (AE_Item) node.getUserObject();
 
 		String xml = XML_Converter.getXmlFromNode(node);
-		if (xml == null)
-			throw new java.lang.ClassCastException();
+        if (xml == null) {
+            throw new ClassCastException();
+        }
 
 		String name = JOptionPane.showInputDialog("Type template's name...");
-		if (name == null)
-			return;
-		String newPath = getFilePath(item) + "\\" + item.getName();
+        if (name == null) {
+            return;
+        }
+        String newPath = getFilePath(item) + "\\" + item.getName();
 		;
 		XML_Writer.write(xml, newPath, name + ".xml");
 
@@ -118,13 +127,5 @@ public class TemplateManager implements ActionListener {
 
 	public String getPath() {
 		return path;
-	}
-
-	public static String getUseTemplateAction() {
-		return USE_TEMPLATE;
-	}
-
-	public static String getSaveTemplateAction() {
-		return SAVE_TEMPLATE;
 	}
 }

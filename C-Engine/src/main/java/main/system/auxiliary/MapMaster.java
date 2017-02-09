@@ -9,22 +9,26 @@ public class MapMaster<E, T> {
 
     public static void addToIntegerMap(Map map, Object key, Integer n) {
         Integer i = (Integer) map.get(key);
-        if (i == null)
+        if (i == null) {
             map.put(key, n);
-        else
+        } else {
             map.put(key, new Integer(i + n));
+        }
     }
 
 
     public static void addToListMap(Map map, Object key, Object value) {
-        if (value == null) return;
+        if (value == null) {
+            return;
+        }
         Object entry = map.get(key);
         if (entry instanceof Collection) {
             Collection collection = (Collection) entry;
             if (value instanceof Collection) {
                 collection.addAll(((Collection) value));
-            } else
+            } else {
                 collection.add(value);
+            }
         } else {
 
             if (value instanceof Collection) {
@@ -49,8 +53,9 @@ public class MapMaster<E, T> {
     }
 
     public static boolean isNotEmpty(Map map) {
-        if (map == null)
+        if (map == null) {
             return false;
+        }
         return !map.isEmpty();
     }
 
@@ -70,8 +75,9 @@ public class MapMaster<E, T> {
 
     public E getKeyForValue(Map<E, T> itemMap, T value) {
         for (Entry<E, T> e : itemMap.entrySet()) {
-            if (itemMap.get(e.getKey()).equals(value))
+            if (itemMap.get(e.getKey()).equals(value)) {
                 return e.getKey();
+            }
         }
         return null;
     }
@@ -97,8 +103,9 @@ public class MapMaster<E, T> {
         List<T> inv_val_list = new LinkedList<>();
         for (E key : map.keySet()) {
             inv_list.add(0, key);
-            if (!keysetOnly)
+            if (!keysetOnly) {
                 inv_val_list.add(0, map.get(key));
+            }
         }
         return constructMap(inv_list, (keysetOnly ? new LinkedList<>(map.values()) : inv_val_list));
 
@@ -108,8 +115,9 @@ public class MapMaster<E, T> {
         Map<E, T> map = new XLinkedMap<>();
         int i = 0;
         for (E key : keys) {
-            if (values.size() <= i)
+            if (values.size() <= i) {
                 break;
+            }
             map.put(key, values.get(i));
             i++;
         }
@@ -121,21 +129,24 @@ public class MapMaster<E, T> {
     }
 
     public List<Map<E, T>> splitList(boolean fillWithNulls, int size, Map<E, T> map) {
-        if (map == null)
+        if (map == null) {
             return new LinkedList<>();
+        }
         List<Map<E, T>> lists = new LinkedList<>();
         for (Iterator<E> iterator = map.keySet().iterator(); iterator.hasNext(); ) {
             Map<E, T> newMap = new XLinkedMap<E, T>();
             for (int i = 0; i < size; i++) {
-                if (!iterator.hasNext())
+                if (!iterator.hasNext()) {
                     break;
+                }
                 E next = iterator.next();
                 newMap.put(next, map.get(next));
             }
             // if (fillWithNulls)
             // fillWithNullElements(newList, size);
-            if (!newMap.isEmpty())
+            if (!newMap.isEmpty()) {
                 lists.add(newMap);
+            }
         }
         return lists;
     }
@@ -152,13 +163,15 @@ public class MapMaster<E, T> {
          .keySet();
         for (E o : set) {
             crop--;
-            if (crop < 0)
+            if (crop < 0) {
                 break;
+            }
             removeList.add(o);
 
         }
-        for (E o : removeList)
+        for (E o : removeList) {
             map.remove(o);
+        }
 
         return map;
 

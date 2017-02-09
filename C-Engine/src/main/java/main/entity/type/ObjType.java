@@ -86,8 +86,9 @@ public class ObjType extends Entity {
     }
 
     public void initType() {
-        if (game != null && !isInitialized())
+        if (game != null && !isInitialized()) {
             game.initType(this);
+        }
     }
 
     @Override

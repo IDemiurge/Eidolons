@@ -26,19 +26,23 @@ import java.util.Set;
 
 public class InstantAttackRule {
     public static boolean checkInstantAttacksInterrupt(DC_ActiveObj action) {
-        if (!RuleMaster.isRuleOn(RULE.INSTANT_ATTACK))
+        if (!RuleMaster.isRuleOn(RULE.INSTANT_ATTACK)) {
             return false;
+        }
         Boolean retreat_passage_none = canMakeInstantAttackAgainst(action);
-        if (RuleMaster.isRuleTestOn(RULE.INSTANT_ATTACK))
+        if (RuleMaster.isRuleTestOn(RULE.INSTANT_ATTACK)) {
             retreat_passage_none = true;
-        if (!retreat_passage_none)
+        }
+        if (!retreat_passage_none) {
             return false;
+        }
         Set<DC_HeroObj> set = getPotentialInstantAttackers(action);
         for (DC_HeroObj unit : set) {
             // INSTANT_ATTACK_TYPE type = getInstantAttackType(unit, action);
             DC_ActiveObj attack = getInstantAttack(action, unit);
-            if (attack == null)
+            if (attack == null) {
                 continue;
+            }
             boolean result = triggerInstantAttack(unit, action, attack);
             if (result) {
 
@@ -59,18 +63,21 @@ public class InstantAttackRule {
         Coordinates c = DC_MovementManager.getMovementDestinationCoordinate(action);
         Coordinates c1 = action.getOwnerObj().getCoordinates();
 
-        if (c.equals(c1))
+        if (c.equals(c1)) {
             return INSTANT_ATTACK_TYPE.ENGAGEMENT;
+        }
 
         FACING_SINGLE singleFacing = FacingMaster.getSingleFacing(unit.getFacing(), c, c1);
-        if (singleFacing == FACING_SINGLE.BEHIND)
+        if (singleFacing == FACING_SINGLE.BEHIND) {
             return INSTANT_ATTACK_TYPE.PASSAGE;
+        }
 
         if (singleFacing == FACING_SINGLE.IN_FRONT) {
             singleFacing = FacingMaster.getSingleFacing(action.getOwnerObj().getFacing(), c1, c);
 
-            if (singleFacing == FACING_SINGLE.BEHIND)
+            if (singleFacing == FACING_SINGLE.BEHIND) {
                 return INSTANT_ATTACK_TYPE.FLIGHT; // 'turned your back on the
+            }
             // enemy'
             return INSTANT_ATTACK_TYPE.DISENGAGEMENT; // controlled retreat
             // backwards, facing
@@ -82,12 +89,15 @@ public class InstantAttackRule {
     public static Set<DC_HeroObj> getPotentialInstantAttackers(DC_ActiveObj action) {
         Set<DC_HeroObj> set = new HashSet<>();
         for (DC_HeroObj unit : action.getGame().getUnits()) {
-            if (!unit.isHostileTo(action.getOwner()))
+            if (!unit.isHostileTo(action.getOwner())) {
                 continue;
-            if (unit.isNeutral())
+            }
+            if (unit.isNeutral()) {
                 continue;
-            if (!unit.canCounter())
+            }
+            if (!unit.canCounter()) {
                 continue;
+            }
             set.add(unit);
         }
         return set;
@@ -101,12 +111,14 @@ public class InstantAttackRule {
         if (!attack.tryInstantActivation(action)) {
             // try other attacks? could be preferred failed somehow
             main.system.auxiliary.LogMaster.log(1, "*** Instant attack failed! " + attack);
-        } else
+        } else {
             main.system.auxiliary.LogMaster.log(1, "*** Instant attack successful! " + attack);
+        }
         INSTANT_ATTACK_TYPE type = getInstantAttackType(unit, action);
         DC_AttackMaster.getAttackEffect(attack).getAttack().setInstantAttackType(type);
-        if (type.isWakeUpAlert())
+        if (type.isWakeUpAlert()) {
             AlertRule.wakeUp(unit);
+        }
 
         return checkInterrupt(type, attack, action);
         // TODO when does it "interrupt"?
@@ -129,8 +141,9 @@ public class InstantAttackRule {
         DC_HeroObj attacker = attackAction.getOwnerObj();
         Attack a = DC_AttackMaster.getAttackFromAction(attackAction);
         int damage = a.getDamageDealt();
-        if (damage == 0)
+        if (damage == 0) {
             return 0;
+        }
         // attackAction.getIntParam(PARAMS.DAMAGE_LAST_DEALT);
         int chance = damage * 100 / attacked.getIntParam(PARAMS.TOUGHNESS);
         // TODO force vs weight?
@@ -166,10 +179,12 @@ public class InstantAttackRule {
     }
 
     public static DC_ActiveObj getInstantAttack(DC_ActiveObj action, DC_HeroObj unit) {
-        if (!canUnitMakeInstantAttack(unit))
+        if (!canUnitMakeInstantAttack(unit)) {
             return null;
-        if (!canMakeInstantAttackAgainst(action))
+        }
+        if (!canMakeInstantAttackAgainst(action)) {
             return null;
+        }
         return chooseInstantAttack(action, unit);
     }
 
@@ -192,19 +207,26 @@ public class InstantAttackRule {
 
         // how to check if jump trajectory intersects with IA range? for (c c :
         // getMovePathCells()){
-        if (unit.getPreferredInstantAttack() != null)
+        if (unit.getPreferredInstantAttack() != null) {
             return unit.getPreferredInstantAttack();
+        }
 
         for (DC_ActiveObj attack : getInstantAttacks(unit)) {
-            if (distance > getAutoAttackRange(attack))
+            if (distance > getAutoAttackRange(attack)) {
                 continue;
-            if (!unit.checkPassive(STANDARD_PASSIVES.HIND_REACH))
-                if (!attack.checkPassive(STANDARD_PASSIVES.BROAD_REACH))
-                    if (FacingMaster.getSingleFacing(unit, action.getOwnerObj()) == FACING_SINGLE.TO_THE_SIDE)
+            }
+            if (!unit.checkPassive(STANDARD_PASSIVES.HIND_REACH)) {
+                if (!attack.checkPassive(STANDARD_PASSIVES.BROAD_REACH)) {
+                    if (FacingMaster.getSingleFacing(unit, action.getOwnerObj()) == FACING_SINGLE.TO_THE_SIDE) {
                         continue;
-            if (!attack.checkPassive(STANDARD_PASSIVES.HIND_REACH))
-                if (FacingMaster.getSingleFacing(unit, action.getOwnerObj()) == FACING_SINGLE.BEHIND)
+                    }
+                }
+            }
+            if (!attack.checkPassive(STANDARD_PASSIVES.HIND_REACH)) {
+                if (FacingMaster.getSingleFacing(unit, action.getOwnerObj()) == FACING_SINGLE.BEHIND) {
                     continue;
+                }
+            }
             // TODO PICK OPTIMAL? Consider roll's cost modifier...
             return attack;
         }
@@ -218,15 +240,18 @@ public class InstantAttackRule {
         List<DC_UnitAction> attacks = new LinkedList<>(unit.getActionMap().get(
                 ACTION_TYPE.STANDARD_ATTACK));
 
-        if (unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK) != null)
+        if (unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK) != null) {
             attacks.addAll(unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK));
+        }
         for (DC_UnitAction attack : attacks) {
 
             if (checkAttackCanBeInstant(attack))
                 // if (attack
                 // .checkProperty(G_PROPS.ACTION_TAGS,
                 // ACTION_TAGS.INSTANT_ATTACK.toString()))
+            {
                 list.add(attack);
+            }
         }
         // for (DC_SpellObj s : unit.getSpells()) { haha
         // if (s.isInstant())
@@ -238,8 +263,9 @@ public class InstantAttackRule {
     }
 
     private static boolean checkAttackCanBeInstant(DC_UnitAction attack) {
-        if (attack.isAttack())
+        if (attack.isAttack()) {
             return false;
+        }
         return attack.isMelee();
     }
 

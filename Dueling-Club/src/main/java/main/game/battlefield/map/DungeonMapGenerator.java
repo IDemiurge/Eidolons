@@ -74,19 +74,21 @@ public class DungeonMapGenerator {
         map = new DC_Map();
         this.dungeon = dungeon;
 
-        if (dungeon.getPlan() == null)
+        if (dungeon.getPlan() == null) {
             try {
                 if (dungeon.checkProperty(PROPS.DUNGEON_PLAN)) {
                     this.plan = new DungeonBuilder(params).loadDungeonMap(dungeon
                             .getProperty(PROPS.DUNGEON_PLAN));
-                } else
+                } else {
                     this.plan = new DungeonBuilder(params).buildDungeonPlan(dungeon);
+                }
                 dungeon.setPlan(plan);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        else
+        } else {
             plan = dungeon.getPlan();
+        }
         template = new EnumMaster<DUNGEON_MAP_TEMPLATE>().retrieveEnumConst(
                 DUNGEON_MAP_TEMPLATE.class, dungeon.getProperty(PROPS.DUNGEON_MAP_TEMPLATE));
         mod = new EnumMaster<DUNGEON_MAP_MODIFIER>().retrieveEnumConst(DUNGEON_MAP_MODIFIER.class,
@@ -104,10 +106,11 @@ public class DungeonMapGenerator {
         }
         String background = dungeon.getProperty(PROPS.MAP_BACKGROUND);
         if (!ImageManager.isImage(background)) {
-            if (mod != null)
+            if (mod != null) {
                 background = mod.getBackground();
-            else if (template != null)
+            } else if (template != null) {
                 background = template.getBackground();
+            }
         }
         if (!ImageManager.isImage(background)) {
             background = ImageManager.DEFAULT_BACKGROUND;
@@ -122,8 +125,9 @@ public class DungeonMapGenerator {
         if (plan != null) {
             // if (plan.isPreloaded()) addObjects();
             if (!dungeon.isRandomized()) {
-                if (!plan.isLoaded())
+                if (!plan.isLoaded()) {
                     generateUndergroundObjects();
+                }
                 return;
             }
         }
@@ -132,15 +136,17 @@ public class DungeonMapGenerator {
                 ObjType objType = DataManager.getType(VariableManager.removeVarPart(s),
                         OBJ_TYPES.BF_OBJ);
                 Coordinates coordinates = new Coordinates(VariableManager.getVarPart(s));
-                if (objType != null)
+                if (objType != null) {
                     objMap.put(coordinates, objType);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        if (template == null)
+        if (template == null) {
             return;
+        }
         zones = new HashMap<MAP_ZONES, Integer>();
         List<String> objects = StringMaster.openContainer(template.getObjects());
         if (mod != null) {
@@ -167,8 +173,9 @@ public class DungeonMapGenerator {
             Integer max = StringMaster.getInteger(StringMaster.cropParenthesises(VariableManager
                     .getVarPart(s)));
 
-            if (sizeMod != null)
+            if (sizeMod != null) {
                 max = max * sizeMod / 100;
+            }
             int n = RandomWizard.getRandomIntBetween(max / 2, max, true);
             placeObjects(objTypeName, n);
         }
@@ -181,9 +188,10 @@ public class DungeonMapGenerator {
             for (List<Coordinates> list : b.getConnectedBlocks().values()) {
                 // culdesac won't be linked, that's it
                 linkCells.addAll(list);
-                for (Coordinates c : list)
+                for (Coordinates c : list) {
                     checkLinkCellObj(c, b, new MapMaster<MapBlock, List<Coordinates>>()
                             .getKeyForValue(b.getConnectedBlocks(), list));
+                }
             }
             // b.getZone().getFillerType();
             // doors/wall-spaces
@@ -196,18 +204,22 @@ public class DungeonMapGenerator {
             }
         }
         for (MapZone z : plan.getZones()) {
-            for (int i = z.getX1(); i < z.getX2(); i++)
-                coordinateLoop:for (int j = z.getY1(); j < z.getY2(); j++) {
+            for (int i = z.getX1(); i < z.getX2(); i++) {
+                coordinateLoop:
+                for (int j = z.getY1(); j < z.getY2(); j++) {
                     Coordinates c = new Coordinates(i, j);
                     if (linkCells.contains(c)) {
                         continue;
                     } // builder.getHelper().getUsedCoordinates()
-                    for (MapBlock b : z.getBlocks())
-                        if (b.getCoordinates().contains(c))
+                    for (MapBlock b : z.getBlocks()) {
+                        if (b.getCoordinates().contains(c)) {
                             continue coordinateLoop;
+                        }
+                    }
                     fill(c, z.getFillerType());
 
                 }
+            }
         }
         // addLightEmittingObjects();
         // DoorMaster.initDoors(dungeon);
@@ -240,11 +252,12 @@ public class DungeonMapGenerator {
                 int i = 0;
                 for (Coordinates adj : c.getAdjacentCoordinates()) {
                     ObjType objType = objMap.get(adj);
-                    if (objType != null)
+                    if (objType != null) {
                         if ((leTemplate.getPeripheryObjects() + leTemplate.getCenterObjects())
                                 .contains(objType.getName())) {
                             i++;
                         }
+                    }
                 }
                 if (i >= c.getAdjacentCoordinates().size() * 2 / 5) {
                     type = RandomWizard.getObjTypeByWeight(leTemplate.getCenterObjects(),
@@ -271,8 +284,9 @@ public class DungeonMapGenerator {
         int mod = 100;
         mod = mod * dungeon.getCellsY() / GuiManager.getBF_CompDisplayedCellsY()
                 * dungeon.getCellsX() / GuiManager.getBF_CompDisplayedCellsX();
-        if (mod == 100)
+        if (mod == 100) {
             return null;
+        }
         return mod;
     }
 
@@ -295,20 +309,25 @@ public class DungeonMapGenerator {
 
                 c = getRandomCoordinate();
                 zone = getZone(c);
-                if (zone == null)
+                if (zone == null) {
                     continue;
-                if (!checkCoordinate(c))
+                }
+                if (!checkCoordinate(c)) {
                     continue;
-                if (!checkLimit(zone))
+                }
+                if (!checkLimit(zone)) {
                     continue;
-                if (!rollZone(zone))
+                }
+                if (!rollZone(zone)) {
                     continue;
+                }
                 break;
             }
             n--;
             Integer integer = zones.get(zone);
-            if (integer == null)
+            if (integer == null) {
                 integer = 0;
+            }
             zones.put(zone, integer + 1);
 
             objMap.put(c, objType);
@@ -330,60 +349,76 @@ public class DungeonMapGenerator {
     }
 
     public boolean checkCoordinate(Coordinates c) {
-        if (isBlockingCorner(c))
+        if (isBlockingCorner(c)) {
             return false;
+        }
         return !objMap.containsKey(c);
 
     }
 
     private boolean isBlockingCorner(Coordinates c) {
         Boolean west_east = null;
-        if (c.x + 1 - DC_Game.game.getDungeonMaster().getLevelWidth() >= -1)
+        if (c.x + 1 - DC_Game.game.getDungeonMaster().getLevelWidth() >= -1) {
             west_east = false;
-        if (c.x == 0 || c.x == 1)
+        }
+        if (c.x == 0 || c.x == 1) {
             west_east = true;
-        if (west_east == null)
+        }
+        if (west_east == null) {
             return false;
+        }
 
         Boolean north_south = null;
-        if (c.y + 1 - DC_Game.game.getDungeonMaster().getLevelHeight() >= -1)
+        if (c.y + 1 - DC_Game.game.getDungeonMaster().getLevelHeight() >= -1) {
             north_south = false;
-        if (c.y == 0 || c.x == 1)
+        }
+        if (c.y == 0 || c.x == 1) {
             north_south = true;
-        if (north_south == null)
+        }
+        if (north_south == null) {
             return false;
+        }
         if ((c.x + c.y) % 2 == 0) //
+        {
             return false;
+        }
         Coordinates c2 = new Coordinates(c.x + (west_east ? 1 : -1), c.y + (north_south ? -1 : 1));
-        if ((c2.x + c2.y) % 2 == 0)
+        if ((c2.x + c2.y) % 2 == 0) {
             return false;
+        }
         return objMap.containsKey(c2);
     }
 
     private boolean rollZone(MAP_ZONES zone) {
-        if (zone == MAP_ZONES.CENTER)
+        if (zone == MAP_ZONES.CENTER) {
             return false;
+        }
         int chanceToPass = MathMaster.applyMod(100, zone.getChance_mod());
-        if (zones.get(zone) != null)
-            if (zones.get(zone) > 0)
+        if (zones.get(zone) != null) {
+            if (zones.get(zone) > 0) {
                 chanceToPass = chanceToPass * zone.getObj_limit() / (4 * zones.get(zone));
+            }
+        }
         return RandomWizard.chance(chanceToPass);
     }
 
     private boolean checkLimit(MAP_ZONES zone) {
         Integer integer = zones.get(zone);
-        if (integer == null)
+        if (integer == null) {
             return true;
+        }
         return integer >= zone.getObj_limit();
     }
 
     private MAP_ZONES getZone(Coordinates c) {
         for (MAP_ZONES z : MAP_ZONES.values()) {
             String coordinates = z.getCoordinates();
-            if (dungeon.isExtendedBattlefield())
+            if (dungeon.isExtendedBattlefield()) {
                 coordinates = getExtendedBfCoordinates(z);
-            if (ListMaster.toList(Coordinates.getCoordinates(coordinates)).contains(c))
+            }
+            if (ListMaster.toList(Coordinates.getCoordinates(coordinates)).contains(c)) {
                 return z;
+            }
         }
         // return MAP_ZONES.CENTER;
         return null;

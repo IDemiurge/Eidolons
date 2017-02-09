@@ -41,8 +41,9 @@ public class Java2DTest implements ApplicationListener {
 
     @Override
     public void create() {
-        if (Gdx.app.getType() != ApplicationType.Desktop)
+        if (Gdx.app.getType() != ApplicationType.Desktop) {
             throw new GdxRuntimeException("this demo only works on desktop with Java2D");
+        }
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();

@@ -30,12 +30,13 @@ public class PrincipleDescriptionPanel extends HC_InfoTextPanel {
 
     @Override
     public void refresh() {
-        if (type != null)
+        if (type != null) {
             setText(type.getProperty(G_PROPS.LORE));
-        else if (principle == null) {
+        } else if (principle == null) {
             setText(PrincipleMaster.getHelpInfo());
-        } else
+        } else {
             setText(principle.getDescription());
+        }
         wrapTextLines();
         repaint();
     }

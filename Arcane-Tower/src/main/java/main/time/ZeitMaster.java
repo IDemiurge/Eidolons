@@ -42,8 +42,9 @@ public class ZeitMaster {
         // getOrCreate last day, week, month...
         Entity era = getLatest(DataManager.getTypes(AT_OBJ_TYPE.ERA));
         boolean create = era == null;
-        if (!create)
+        if (!create) {
             create = era.checkProperty(AT_PROPS.ERA_STATUS, "Concluded");
+        }
         if (create) {
             int n = DataManager.getTypes(AT_OBJ_TYPE.ERA).size() + 1;
             String name = DialogMaster.inputText("New Era's Name?", "The " + n
@@ -72,9 +73,10 @@ public class ZeitMaster {
 		List<? extends Entity> list = DataManager.getTypes(T);
 		Entity last = getLatest(list);
 		create = last == null;
-		if (!create)
-			create = checkCreateNeeded(last, T);
-		if (create) {
+        if (!create) {
+            create = checkCreateNeeded(last, T);
+        }
+        if (create) {
 			ObjType type = new ObjType(getNameForPeriod(era, T), T);
 			initTimeOfCreation(type);
 			DataManager.addType(type);
@@ -105,12 +107,13 @@ public class ZeitMaster {
 		int time = 0;
 		long mark = 0;
 		for (String substring : StringMaster.openContainer(string)) {
-			if (!substring.contains(key))
-				if (open) {
-					time += getTimeFromMark(substring) - mark;
-					open = !open;
-				}
-			if (substring.contains(key)) {
+            if (!substring.contains(key)) {
+                if (open) {
+                    time += getTimeFromMark(substring) - mark;
+                    open = !open;
+                }
+            }
+            if (substring.contains(key)) {
 				mark = getTimeFromMark(substring);
 				open = true;
 			}
@@ -146,9 +149,10 @@ public class ZeitMaster {
 	}
 
 	public static Entity getLatest(AT_OBJ_TYPE session, boolean latestModified) {
-		if (!latestModified)
-			return getLatest(session, null);
-		return getLatest(session, AT_PARAMS.TIME_LAST_MODIFIED);
+        if (!latestModified) {
+            return getLatest(session, null);
+        }
+        return getLatest(session, AT_PARAMS.TIME_LAST_MODIFIED);
 	}
 
 	public static ObjType getLatest(OBJ_TYPE TYPE, PARAMETER p) {
@@ -166,18 +170,20 @@ public class ZeitMaster {
 			public int compare(Entity o1, Entity o2) {
 				PARAMETER param = AT_PARAMS.TIME_CREATED;
 				if (customParam != null) {
-					if (o1.checkParam(customParam) || o2.checkParam(customParam))
-						param = customParam;
-				}
+                    if (o1.checkParam(customParam) || o2.checkParam(customParam)) {
+                        param = customParam;
+                    }
+                }
 
 				return SortMaster.compare(o1, o2, param);
 				// return SortMaster.compare(o1, o2,
 				// AT_PARAMS.TIME_LAST_MODIFIED);
 			}
 		});
-		if (list.isEmpty())
-			return null;
-		return list.get(0);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
 	}
 
 	public static void finished(ArcaneEntity entity) {

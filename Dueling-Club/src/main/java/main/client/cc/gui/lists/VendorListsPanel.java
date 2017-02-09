@@ -82,21 +82,25 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
     }
 
     protected void initSorter() {
-        if (TYPE.getParam() != null)
+        if (TYPE.getParam() != null) {
             sorter = new Comparator<ObjType>() {
                 @Override
                 public int compare(ObjType o1, ObjType o2) {
-                    if (TYPE.getParam() == null)
+                    if (TYPE.getParam() == null) {
                         return 0;
+                    }
                     int i1 = o1.getIntParam(TYPE.getParam());
                     int i2 = o2.getIntParam(TYPE.getParam());
-                    if (i1 < i2)
+                    if (i1 < i2) {
                         return -1;
-                    if (i1 > i2)
+                    }
+                    if (i1 > i2) {
                         return 1;
+                    }
                     return 0;
                 }
             };
+        }
 
     }
 
@@ -112,8 +116,9 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
     }
 
     public String getSelectedTabName() {
-        if (selectedTabName == null)
+        if (selectedTabName == null) {
             return getTabGroups().get(0);
+        }
         return selectedTabName;
     }
 
@@ -141,12 +146,14 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
         tabs.setPanelSize(VENDOR_DIMENSION);
         List<String> tabGroup = getTabGroups();
         for (String tabName : tabGroup) {
-            if (checkTab(tabName))
+            if (checkTab(tabName)) {
                 addTab(tabName);
+            }
         }
         tabs.setChangeListener(this);
-        if (tabGroup.isEmpty())
+        if (tabGroup.isEmpty()) {
             return;
+        }
         initTab(tabGroup.get(0));
         tabs.select(0);
         selectedTabName = tabGroup.get(0);
@@ -154,8 +161,9 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
 
     public boolean checkTab(String tabName) {
         for (String tab : HIDDEN_GROUPS) {
-            if (tabName.equalsIgnoreCase(tab))
+            if (tabName.equalsIgnoreCase(tab)) {
                 return false;
+            }
         }
 
         return true;
@@ -178,8 +186,9 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
 
     protected List<String> getListGroup(String key) {
         // if (Arrays.asList(ItemGenerator.CUSTOM_GROUPS).contains(key))
-        if (key.equalsIgnoreCase(OBJ_TYPES.JEWELRY.getName()))
+        if (key.equalsIgnoreCase(OBJ_TYPES.JEWELRY.getName())) {
             return Arrays.asList(DataManager.CUSTOM_JEWELRY_GROUPS);
+        }
 
         List<String> group = new LinkedList<>(XML_Reader.getTreeSubGroupMap().get(key));
 
@@ -197,16 +206,18 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
             }
 
             if (!responsive) {
-                if (!checkList(listName, false))
+                if (!checkList(listName, false)) {
                     continue;
+                }
             }
             if (!showAll) {
-                if (!checkList(listName, true))
+                if (!checkList(listName, true)) {
                     continue;
+                }
             }
 
             List<String> types = DataManager.getTypesSubGroupNames(TYPE, listName);
-            if (Launcher.ILYA_MODE)
+            if (Launcher.ILYA_MODE) {
                 if (TYPE == OBJ_TYPES.SPELLS || TYPE == OBJ_TYPES.SKILLS) {
                     FilterMaster.filterByProp(types, G_PROPS.WORKSPACE_GROUP.getName(), ""
                             + WORKSPACE_GROUP.DESIGN, TYPE, true);
@@ -218,13 +229,15 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
                     // so you see, it wouldn't be hard to filter the items for
                     // each shop in macro
                 }
+            }
             if (types == null) {
                 // types = DataManager.getTypeGroupNames(TYPE, tabName); another
                 // shot in the leg!
                 continue;
             }
-            if (types.isEmpty())
+            if (types.isEmpty()) {
                 continue;
+            }
             List<ObjType> data = null;
 
             // if (checkSpecial(listName))
@@ -233,14 +246,17 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
 
             OBJ_TYPE T = TYPE;
             if (T instanceof C_OBJ_TYPE) {
-                if (tabName.equalsIgnoreCase(OBJ_TYPES.JEWELRY.getName()))
+                if (tabName.equalsIgnoreCase(OBJ_TYPES.JEWELRY.getName())) {
                     T = OBJ_TYPES.JEWELRY;
-                if (tabName.equalsIgnoreCase(ITEM_TYPE.ALCHEMY.toString()))
+                }
+                if (tabName.equalsIgnoreCase(ITEM_TYPE.ALCHEMY.toString())) {
                     T = OBJ_TYPES.ITEMS;
+                }
                 // if (TYPE != OBJ_TYPES.SPELLS)
                 if (tabName.equalsIgnoreCase(ARMOR_TYPE.LIGHT.toString())
-                        || tabName.equalsIgnoreCase(ARMOR_TYPE.HEAVY.toString()))
+                        || tabName.equalsIgnoreCase(ARMOR_TYPE.HEAVY.toString())) {
                     T = OBJ_TYPES.ARMOR;
+                }
             }
             data = DataManager.toTypeList(types, T); // TODO is there a
             // better fix?
@@ -315,12 +331,13 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
                 tab.add(map.get(listName), "wrap");
             }
             listMaps.put(title, map);
-        } else
+        } else {
             try {
                 map.values().iterator().next().getCurrentList().getList().setSelectedIndex(0);
             } catch (Exception e) {
                 // e.printStackTrace();
             }
+        }
 
     }
 
@@ -342,8 +359,9 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
     public void setBorderChecker(BorderChecker borderChecker) {
         this.borderChecker = borderChecker;
         for (Map<String, HC_PagedListPanel> map : listMaps.values()) {
-            for (HC_PagedListPanel list : map.values())
+            for (HC_PagedListPanel list : map.values()) {
                 list.setBorderChecker(this.borderChecker);
+            }
         }
     }
 

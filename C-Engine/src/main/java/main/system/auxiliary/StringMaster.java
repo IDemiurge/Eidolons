@@ -120,8 +120,9 @@ public class StringMaster {
     }
 
     public static String capitalizeFirstLetter(String string) {
-        if (!Character.isAlphabetic(string.charAt(0)))
+        if (!Character.isAlphabetic(string.charAt(0))) {
             return string;
+        }
         try {
             String first = String.valueOf(string.charAt(0));
             return string.replaceFirst(first, first.toUpperCase());
@@ -137,8 +138,9 @@ public class StringMaster {
 
     public static boolean checkContainer(String container, String string, boolean strict) {
         for (String s1 : StringMaster.openContainer(container)) {
-            if (compareByChar(s1, string, strict))
+            if (compareByChar(s1, string, strict)) {
                 return true;
+            }
         }
         return false;
 
@@ -149,14 +151,18 @@ public class StringMaster {
             string = string.toUpperCase();
             string2 = string2.toUpperCase();
         }
-        if (string.contains(string2))
+        if (string.contains(string2)) {
             return true;
-        if (strict)
+        }
+        if (strict) {
             return false;
-        if (getWellFormattedString(string).contains(string2))
+        }
+        if (getWellFormattedString(string).contains(string2)) {
             return true;
-        if (string.contains(getWellFormattedString(string2)))
+        }
+        if (string.contains(getWellFormattedString(string2))) {
             return true;
+        }
         return getWellFormattedString(string).contains(getWellFormattedString(string2));
 
     }
@@ -178,18 +184,23 @@ public class StringMaster {
         // a non-wellformatted version of compare?
 
         // Math.max(v1.length, v2.length);
-        if (anotherString == null)
+        if (anotherString == null) {
             return string == null;
-        if (string == null)
+        }
+        if (string == null) {
             return anotherString == null;
-        if (anotherString.isEmpty())
+        }
+        if (anotherString.isEmpty()) {
             return string.isEmpty();
-        if (string.isEmpty())
+        }
+        if (string.isEmpty()) {
             return anotherString.isEmpty();
+        }
 
         if (anotherString.length() != string.length()) {
-            if (strict)
+            if (strict) {
                 return false;
+            }
             // anotherString.replace("_", " "); costly!
             // string.replace("_", " ");
 
@@ -228,18 +239,24 @@ public class StringMaster {
                     // char
                     // comparison?
                     if (ignored != null) {
-                        for (String c : ignored)
-                            if (c.equalsIgnoreCase("" + v1[i]))
+                        for (String c : ignored) {
+                            if (c.equalsIgnoreCase("" + v1[i])) {
                                 continue;
-                            else if (c.equalsIgnoreCase("" + v2[j]))
+                            } else if (c.equalsIgnoreCase("" + v2[j])) {
                                 continue;
+                            }
+                        }
                     }
-                    if (v1[i] == '_')
-                        if (v2[j] == ' ')
+                    if (v1[i] == '_') {
+                        if (v2[j] == ' ') {
                             continue;
-                    if (v1[i] == ' ')
-                        if (v2[j] == '_')
+                        }
+                    }
+                    if (v1[i] == ' ') {
+                        if (v2[j] == '_') {
                             continue;
+                        }
+                    }
                     // check special chars
                     return false;
                 }
@@ -259,65 +276,83 @@ public class StringMaster {
         List<String> container = StringMaster.openContainer(val1, delimiter);
         List<String> container2 = StringMaster.openContainer(val2, delimiter);
 
-        if (container.size() != container2.size())
+        if (container.size() != container2.size()) {
             return false;
+        }
 
         for (String s1 : container) {
             boolean result = false;
-            for (String s : container2)
-                if (StringMaster.compareByChar(s1, s, strictContents))
+            for (String s : container2) {
+                if (StringMaster.compareByChar(s1, s, strictContents)) {
                     result = true;
-            if (!result)
+                }
+            }
+            if (!result) {
                 return false;
+            }
         }
         return true;
     }
 
     public static boolean compareContainers(String val1, String val2, boolean strictContents,
                                             String delimiter) {
-        for (String s1 : StringMaster.openContainer(val1, delimiter))
-            for (String s : StringMaster.openContainer(val2, delimiter))
-                if (StringMaster.compareByChar(s1, s, strictContents))
+        for (String s1 : StringMaster.openContainer(val1, delimiter)) {
+            for (String s : StringMaster.openContainer(val2, delimiter)) {
+                if (StringMaster.compareByChar(s1, s, strictContents)) {
                     return true;
+                }
+            }
+        }
         return false;
     }
 
     public static boolean compare(String string, String string2, boolean strict) {
         if (isEmpty(string2)) {
-            if (strict)
+            if (strict) {
                 return isEmpty(string);
+            }
             return true;
         }
-        if (isEmpty(string))
+        if (isEmpty(string)) {
             return isEmpty(string2);
+        }
 
         boolean result = compareByChar(string, string2, strict);
-        if (strict)
+        if (strict) {
             return result;
-        else if (result)
+        } else if (result) {
             return true;
-        else {
+        } else {
 
             if (string.contains(CONTAINER_SEPARATOR) || string2.contains(CONTAINER_SEPARATOR)) {
-                if (compareContainers(string, string2, true, CONTAINER_SEPARATOR))
+                if (compareContainers(string, string2, true, CONTAINER_SEPARATOR)) {
                     return true;
+                }
             }
             if (string.contains(AND_SEPARATOR) || string2.contains(AND_SEPARATOR)) {
-                if (compareContainers(string, string2, true, AND_SEPARATOR))
+                if (compareContainers(string, string2, true, AND_SEPARATOR)) {
                     return true;
+                }
             }
-            if (string.endsWith("s"))
-                if (removePlularEnding(string).equals(string2))
+            if (string.endsWith("s")) {
+                if (removePlularEnding(string).equals(string2)) {
                     return true;
-            if (string2.endsWith("s"))
-                if (removePlularEnding(string2).equals(string))
+                }
+            }
+            if (string2.endsWith("s")) {
+                if (removePlularEnding(string2).equals(string)) {
                     return true;
+                }
+            }
 
             if (contains(string, string2)) // TODO make it not strict if you
                 // dare!
+            {
                 return true;
-            if (contains(string2, string))
+            }
+            if (contains(string2, string)) {
                 return true;
+            }
         }
         return false;
     }
@@ -336,8 +371,9 @@ public class StringMaster {
     }
 
     public static String toFormattedString(Object o) {
-        if (o == null)
+        if (o == null) {
             return "";
+        }
 
         return getWellFormattedString(o.toString());
     }
@@ -347,8 +383,9 @@ public class StringMaster {
     }
 
     public static String getWellFormattedString(String s, boolean insertSpaceAfterCapitals) {
-        if (isEmpty(s))
+        if (isEmpty(s)) {
             return "";
+        }
         String string = "";
         // if (s.contains("_") || s.contains(" ")) {
         if (s.contains(" ")) {
@@ -370,13 +407,16 @@ public class StringMaster {
         if (insertSpaceAfterCapitals) {
             string = "";
             for (char c : s.toCharArray()) {
-                if (!string.isEmpty())
-                    if (Character.isUpperCase(c))
+                if (!string.isEmpty()) {
+                    if (Character.isUpperCase(c)) {
                         string += " ";
+                    }
+                }
                 string += c;
             }
-        } else
+        } else {
             string = capitalizeFirstLetter(s.toLowerCase());
+        }
         // }
         return string;
     }
@@ -398,14 +438,16 @@ public class StringMaster {
     }
 
     public static String getSeparator(Boolean format) {
-        if (format == null)
+        if (format == null) {
             return "";
+        }
         return format ? getSeparator() : getAltSeparator();
     }
 
     public static String getPairSeparator(Boolean format) {
-        if (format == null)
+        if (format == null) {
             return "";
+        }
         return format ? getPairSeparator() : getAltPairSeparator();
     }
 
@@ -439,20 +481,24 @@ public class StringMaster {
     }
 
     public static List<String> split(String containerString, String delimiter, boolean strict) {
-        if (isEmpty(containerString))
+        if (isEmpty(containerString)) {
             return Collections.emptyList();
-        if (!containerString.contains(delimiter))
+        }
+        if (!containerString.contains(delimiter)) {
             if (strict) {
                 LinkedList<String> linkedList = new LinkedList<>();
                 linkedList.add(containerString);
                 return linkedList;
             } else {
                 delimiter = delimiter.toUpperCase();
-                if (!containerString.contains(delimiter))
+                if (!containerString.contains(delimiter)) {
                     delimiter = delimiter.toLowerCase();
-                if (!containerString.contains(delimiter))
+                }
+                if (!containerString.contains(delimiter)) {
                     delimiter = getWellFormattedString(delimiter);
+                }
             }
+        }
 
         return new LinkedList<String>(Arrays
                 .asList(containerString.split(Pattern.quote(delimiter))));
@@ -475,21 +521,26 @@ public class StringMaster {
     }
 
     public static boolean isEmptyOrZero(String string) {
-        if (string == null)
+        if (string == null) {
             return true;
-        if (string.equals("0"))
+        }
+        if (string.equals("0")) {
             return true;
+        }
         return isEmpty(string);
     }
 
     public static boolean isEmpty(String string) {
-        if (string == null)
+        if (string == null) {
             return true;
+        }
         string = string.trim();
-        if (string.equals(ContentManager.DEFAULT_EMPTY_VALUE))
+        if (string.equals(ContentManager.DEFAULT_EMPTY_VALUE)) {
             return true;
-        if (string.equals(ContentManager.NEW_EMPTY_VALUE))
+        }
+        if (string.equals(ContentManager.NEW_EMPTY_VALUE)) {
             return true;
+        }
         return string.equals(ContentManager.OLD_EMPTY_VALUE);
     }
 
@@ -533,29 +584,39 @@ public class StringMaster {
     }
 
     public static boolean isNumber(String value, boolean integer) {
-        if (value == null)
+        if (value == null) {
             return false;
-        if (value.isEmpty())
+        }
+        if (value.isEmpty()) {
             return false;
+        }
         int i = 0;
         boolean _float = false;
         for (char c : value.toCharArray()) {
-            if (_float)
-                if (integer)
-                    if (c != '0')
+            if (_float) {
+                if (integer) {
+                    if (c != '0') {
                         return false;
+                    }
+                }
+            }
             if (!Character.isDigit(c)) {
-                if (c == '-')
-                    if (i == 0)
+                if (c == '-') {
+                    if (i == 0) {
                         continue;
+                    }
+                }
                 if (c == '.') {
                     if (_float) // no two periods
+                    {
                         return false;
+                    }
                     if (i > 0) {
                         _float = true;
                         continue;
-                    } else if (integer)
+                    } else if (integer) {
                         return false;
+                    }
                 }
 
                 return false;
@@ -568,11 +629,13 @@ public class StringMaster {
 
     public static Boolean isIntegerOrNumber(String value) {
         boolean result = isNumber(value, true);
-        if (result)
+        if (result) {
             return true;
+        }
         result = isNumber(value, false);
-        if (result)
+        if (result) {
             return false;
+        }
         return null;
 
     }
@@ -608,12 +671,13 @@ public class StringMaster {
     }
 
     public static Integer getInteger(String value) {
-        if (!isInteger(value))
+        if (!isInteger(value)) {
             try {
                 return new Formula(value).getInt();
             } catch (Exception e2) {
                 e2.printStackTrace();
             }
+        }
         if (value.contains(".")) {
             value = value.split(Pattern.quote("."))[0];
         }
@@ -622,11 +686,12 @@ public class StringMaster {
             boolean negative = false;
             for (int i = 0; i < value.length(); i++) {
                 char c = value.toCharArray()[i];
-                if (c == ('.'))
+                if (c == ('.')) {
                     break;
-                if (c == ('-'))
+                }
+                if (c == ('-')) {
                     negative = true;
-                else {
+                } else {
                     result += getInteger(c) * Math.pow(10, value.length() - i - 1);
                 }
             }
@@ -634,19 +699,21 @@ public class StringMaster {
                 result = -result; // for length
             }
             return result;
-        } else
+        } else {
             try {
                 String result = "";
                 for (char c : value.toCharArray()) {
-                    if (c == ('.'))
+                    if (c == ('.')) {
                         break;
+                    }
                     if (c == ('-') || Character.isDigit(c)) {
 
                         result += c;
                     }
                 }
-                if (!result.isEmpty())
+                if (!result.isEmpty()) {
                     return Integer.valueOf(result);
+                }
 
                 // value = value.trim();
                 // return Integer.valueOf(value);
@@ -657,6 +724,7 @@ public class StringMaster {
                 // return Integer.valueOf(value.substring(0, index));
                 e.printStackTrace();
             }
+        }
 
         return 0;
     }
@@ -667,12 +735,15 @@ public class StringMaster {
 
     public static String getOrdinalEnding(int number) {
         int lastDigit = number % 10;
-        if (lastDigit == 1)
+        if (lastDigit == 1) {
             return "st";
-        if (lastDigit == 2)
+        }
+        if (lastDigit == 2) {
             return "nd";
-        if (lastDigit == 3)
+        }
+        if (lastDigit == 3) {
             return "rd";
+        }
         return "th";
     }
 
@@ -710,8 +781,9 @@ public class StringMaster {
     }
 
     public static String clipEnding(String str, String CHAR) {
-        if (!str.contains(CHAR))
+        if (!str.contains(CHAR)) {
             return str;
+        }
         return str.substring(0, str.indexOf(CHAR));
     }
 
@@ -738,8 +810,9 @@ public class StringMaster {
     }
 
     public static String toStringForm(Object obj) {
-        if (obj == null)
+        if (obj == null) {
             return "";
+        }
         if (obj instanceof Entity) {
             Entity entity = (Entity) obj;
             return entity.getName();
@@ -752,22 +825,26 @@ public class StringMaster {
     }
 
     public static String cropFormat(String str) {
-        if (str.indexOf(".") < 1)
+        if (str.indexOf(".") < 1) {
             return str;
+        }
         return str.substring(0, str.lastIndexOf("."));
     }
 
     public static String getFormat(String str) {
-        if (str.indexOf(".") < 1)
+        if (str.indexOf(".") < 1) {
             return "";
+        }
         return str.substring(str.lastIndexOf("."));
     }
 
     public static String joinStringList(List<String> list, String divider, boolean cropLastDivider) {
-        if (list == null)
+        if (list == null) {
             return "";
-        if (list.isEmpty())
+        }
+        if (list.isEmpty()) {
             return "";
+        }
 
         String result = "";
         for (String str : list) {
@@ -810,9 +887,11 @@ public class StringMaster {
 
     public static List<String> convertToStringList(Collection<?> values) {
         List<String> list = new LinkedList<>();
-        for (Object object : values)
-            if (object != null)
+        for (Object object : values) {
+            if (object != null) {
                 list.add(object.toString());
+            }
+        }
 
         return list;
     }
@@ -820,10 +899,13 @@ public class StringMaster {
     public static List<String> convertToIdList(Collection<?> list) {
 
         List<String> idList = new LinkedList<>();
-        if (list != null)
-            for (Object object : list)
-                if (object != null)
+        if (list != null) {
+            for (Object object : list) {
+                if (object != null) {
                     idList.add(((Entity) object).getId() + "");
+                }
+            }
+        }
 
         return idList;
     }
@@ -834,19 +916,23 @@ public class StringMaster {
 
     public static List<String> convertToNameIntList(boolean base, List<? extends Entity> list) {
         List<String> nameList = new LinkedList<>();
-        if (list != null)
-            for (Entity object : list)
+        if (list != null) {
+            for (Entity object : list) {
                 if (object != null) {
                     nameList.add(base ? object.getProperty(G_PROPS.NAME, true) : object.getName());
                 }
+            }
+        }
         return nameList;
     }
 
     public static Collection<Integer> convertToIdIntList(Collection<? extends Entity> list) {
         List<Integer> idList = new LinkedList<>();
-        for (Entity object : list)
-            if (object != null)
+        for (Entity object : list) {
+            if (object != null) {
                 idList.add(object.getId());
+            }
+        }
 
         return idList;
     }
@@ -878,18 +964,21 @@ public class StringMaster {
         // for each "(" inside the string, ignore the next ")"
         // String subString = getSubString(string, "(", ")", false);
         int indexOf = string.indexOf("(");
-        if (indexOf == -1)
+        if (indexOf == -1) {
             return string;
+        }
         int endIndex = string.indexOf(")") + 1;
-        if (endIndex == 0)
+        if (endIndex == 0) {
             return string;
+        }
 
         String subString = string.substring(indexOf, endIndex);
 
         while (getCount(subString, '(') > getCount(subString, ')')) { //
             endIndex = string.indexOf(")", endIndex) + 1;
-            if (endIndex == 0)
+            if (endIndex == 0) {
                 break;
+            }
             subString = string.substring(indexOf, endIndex);
         }
         return subString;
@@ -899,8 +988,9 @@ public class StringMaster {
     private static int getCount(String subString, char c) {
         int i = 0;
         for (char CHAR : subString.toCharArray()) {
-            if (c == CHAR)
+            if (c == CHAR) {
                 i++;
+            }
         }
         return i;
     }
@@ -909,26 +999,33 @@ public class StringMaster {
                                       String close, Boolean inclusive) {
         int indexOf = string.indexOf(open);
 
-        if (indexOf == -1)
+        if (indexOf == -1) {
             return string;
-        if (inclusive == null)
+        }
+        if (inclusive == null) {
             indexOf = indexOf + open.length();
-        else if (!inclusive)
+        } else if (!inclusive) {
             indexOf++;
+        }
         int endIndex = string.indexOf(close);
-        if (endIndex == -1)
+        if (endIndex == -1) {
             return string;
-        if (inclusive != null)
-            if (inclusive)
+        }
+        if (inclusive != null) {
+            if (inclusive) {
                 endIndex++;
-
-        if (addTrailing)
-            while (string.length() > endIndex) {
-                if ((string.charAt(endIndex) + "").equals(close))
-                    endIndex++;
-                else
-                    break;
             }
+        }
+
+        if (addTrailing) {
+            while (string.length() > endIndex) {
+                if ((string.charAt(endIndex) + "").equals(close)) {
+                    endIndex++;
+                } else {
+                    break;
+                }
+            }
+        }
 
         return string.substring(indexOf, endIndex);
     }
@@ -936,11 +1033,13 @@ public class StringMaster {
     public static String getSubStringBetween(String string, String open, String close) {
         int indexOf = string.indexOf(open);
 
-        if (indexOf == -1)
+        if (indexOf == -1) {
             return string;
+        }
         int endIndex = string.indexOf(close);
-        if (endIndex == -1)
+        if (endIndex == -1) {
             return string;
+        }
 
         indexOf += open.length();
 
@@ -976,10 +1075,12 @@ public class StringMaster {
     }
 
     public static boolean getBoolean(String value) {
-        if (isEmpty(value))
+        if (isEmpty(value)) {
             return false;
-        if (value.equalsIgnoreCase("true"))
+        }
+        if (value.equalsIgnoreCase("true")) {
             return true;
+        }
         return value.equals("1");
     }
 
@@ -989,18 +1090,21 @@ public class StringMaster {
     }
 
     public static String getLastPart(String string, String separator) {
-        if (!string.contains(separator))
+        if (!string.contains(separator)) {
             return "";
+        }
         LinkedList<String> segments = new LinkedList<String>(Arrays.asList(string.split(separator)));
-        if (segments.isEmpty())
+        if (segments.isEmpty()) {
             return "";
+        }
         return segments.getLast();
     }
 
     public static String cropLastPathSegment(String path, boolean cropPathSeparator) {
         String cropped = replaceLast(path, getLastPathSegment(path), "");
-        if (!cropPathSeparator)
+        if (!cropPathSeparator) {
             return cropped;
+        }
         return replaceLast(cropped, "\\", "");
     }
 
@@ -1010,17 +1114,21 @@ public class StringMaster {
 
     public static String cropLast(String name, String string) {
         int lastIndexOf = name.lastIndexOf(string);
-        if (lastIndexOf > -1)
+        if (lastIndexOf > -1) {
             return replaceLast(name, name.substring(lastIndexOf), "");
+        }
         return name;
     }
 
     public static List<String> splitPath(String path) {
-        if (path.charAt(0)=='/')
+        if (path.charAt(0) == '/') {
             path = path.substring(1);
-        if (path.contains("/"))
-            if (!path.contains(Pattern.quote(PATH_SEPARATOR)))
+        }
+        if (path.contains("/")) {
+            if (!path.contains(Pattern.quote(PATH_SEPARATOR))) {
                 return Arrays.asList(path.split("/"));
+            }
+        }
         return Arrays.asList(path.split(Pattern.quote(PATH_SEPARATOR)));
     }
 
@@ -1038,17 +1146,22 @@ public class StringMaster {
 
     public static String replace(String string, String regex, String replacement, boolean last) {
         int index = (last) ? string.lastIndexOf(regex) : string.indexOf(regex);
-        if (index == -1)
+        if (index == -1) {
             index = (last) ? string.lastIndexOf(regex) : string.indexOf(regex.toUpperCase());
-        if (index == -1)
+        }
+        if (index == -1) {
             index = (last) ? string.lastIndexOf(regex) : string.indexOf(regex.toLowerCase());
-        if (index == -1)
+        }
+        if (index == -1) {
             index = (last) ? string.lastIndexOf(regex) : string.indexOf(regex.trim());
-        if (index == -1)
+        }
+        if (index == -1) {
             index = (last) ? string.lastIndexOf(regex) : string
                     .indexOf(getWellFormattedString(regex));
-        if (index == -1)
+        }
+        if (index == -1) {
             return string;
+        }
         String prefix = string.substring(0, index);
         String suffix = string.substring(index + regex.length(), string.length());
         return prefix + replacement + suffix;
@@ -1074,8 +1187,9 @@ public class StringMaster {
             char c = string.charAt(string.length() - 1);
             if (Character.isDigit(c) || c == 'v') {
                 string = string.substring(0, string.length() - 1);
-            } else
+            } else {
                 break;
+            }
         }
         return string;
     }
@@ -1085,8 +1199,9 @@ public class StringMaster {
             char c = string.charAt(string.length() - 1);
             if (Character.isDigit(c) || c == ' ' || c == '_' || c == '(' || c == ')') {
                 string = string.substring(0, string.length() - 1);
-            } else
+            } else {
                 break;
+            }
         }
 
         return string;
@@ -1120,18 +1235,22 @@ public class StringMaster {
     }
 
     public static String cropFirst(String str1, int i) {
-        if (isEmpty(str1))
+        if (isEmpty(str1)) {
             return str1;
-        if (str1.length() < i)
+        }
+        if (str1.length() < i) {
             return str1;
+        }
         return str1.substring(i, str1.length());
     }
 
     public static String cropLast(String str1, int i) {
-        if (isEmpty(str1))
+        if (isEmpty(str1)) {
             return str1;
-        if (str1.length() < i)
+        }
+        if (str1.length() < i) {
             return str1;
+        }
         return str1.substring(0, str1.length() - i);
     }
 
@@ -1143,10 +1262,12 @@ public class StringMaster {
         shorter = shorter.toLowerCase();
         int i = 0;
         for (char c : longer.toCharArray()) {
-            if (shorter.length() <= i)
+            if (shorter.length() <= i) {
                 break;
-            if (c == shorter.charAt(i))
+            }
+            if (c == shorter.charAt(i)) {
                 weight++;
+            }
             i++;
         }
         return weight;
@@ -1154,11 +1275,15 @@ public class StringMaster {
 
     public static boolean checkSymbolsStandard(String newName) {
         for (char c : newName.toCharArray()) {
-            if (!Character.isDigit(c))
-                if (!Character.isAlphabetic(c))
-                    if (c != ' ')
-                        if (!standard_symbols.contains(c + ""))
+            if (!Character.isDigit(c)) {
+                if (!Character.isAlphabetic(c)) {
+                    if (c != ' ') {
+                        if (!standard_symbols.contains(c + "")) {
                             return false;
+                        }
+                    }
+                }
+            }
         }
         return true;
     }
@@ -1168,14 +1293,16 @@ public class StringMaster {
     }
 
     public static Integer getWeight(String string, boolean inverse) {
-        if (inverse)
+        if (inverse) {
             return getInteger(getWeightItem(string, false));
+        }
         return getInteger(StringMaster.cropParenthesises(VariableManager.getVarPartLast(string)));
     }
 
     public static String getWeightItem(String string, boolean inverse) {
-        if (inverse)
+        if (inverse) {
             return VariableManager.getVarPartLast(string);
+        }
         return string.replace(VariableManager.getVarPartLast(string), "");
     }
 
@@ -1184,8 +1311,9 @@ public class StringMaster {
     }
 
     public static String getPossessive(String name) {
-        if (name.endsWith("s"))
+        if (name.endsWith("s")) {
             return name + "'";
+        }
         return name + "'s";
     }
 
@@ -1205,23 +1333,26 @@ public class StringMaster {
 
     public static String getModifierString(Integer mod) {
         String s = "";
-        if (mod > 0)
+        if (mod > 0) {
             s = "+";
+        }
         s += mod + "%";
         return s;
     }
 
     public static String getBonusString(Integer bonus) {
         String s = "";
-        if (bonus > 0)
+        if (bonus > 0) {
             s = "+";
+        }
         s += bonus + "";
         return s;
     }
 
     public static String cropByLength(int maxLength, String string) {
-        if (string.length() < maxLength)
+        if (string.length() < maxLength) {
             return string;
+        }
         return string.substring(0, maxLength);
     }
 
@@ -1239,8 +1370,9 @@ public class StringMaster {
 
     public static String getStringBeforeNumerals(String name) {
         int firstNumberIndex = getFirstNumberIndex(name);
-        if (firstNumberIndex == -1)
+        if (firstNumberIndex == -1) {
             firstNumberIndex = name.length() - 1;
+        }
         return name.substring(0, firstNumberIndex);
     }
 
@@ -1251,8 +1383,9 @@ public class StringMaster {
     public static int getLastAlphabeticIndex(String name) {
         int i = 0;
         for (char l : name.toCharArray()) {
-            if (!Character.isAlphabetic(l))
+            if (!Character.isAlphabetic(l)) {
                 return i;
+            }
             i++;
         }
         return name.length() - 1;
@@ -1261,8 +1394,9 @@ public class StringMaster {
     public static int getFirstNumberIndex(String name) {
         int i = 0;
         for (char l : name.toCharArray()) {
-            if (Character.isDigit(l))
+            if (Character.isDigit(l)) {
                 return i;
+            }
             i++;
         }
         return -1;
@@ -1270,14 +1404,16 @@ public class StringMaster {
 
     public static String getSegment(int i, String str, String delimiter) {
         String[] array = str.split(delimiter);
-        if (array.length < i)
+        if (array.length < i) {
             return null;
+        }
         return array[i];
     }
 
     public static String getFormattedTypeName(String typeName) {
-        if (typeName.endsWith(";"))
+        if (typeName.endsWith(";")) {
             typeName = typeName.substring(0, typeName.length() - 1);
+        }
 
         return typeName;
     }
@@ -1325,10 +1461,11 @@ public class StringMaster {
             while (digits < result.length()) {
                 result = result.substring(1);
             }
-        } else
+        } else {
             while (digits > result.length()) {
                 result = "0" + result;
             }
+        }
         return result;
     }
 
@@ -1370,8 +1507,9 @@ public class StringMaster {
     }
 
     public static String getFirstItem(String string) {
-        if (isEmpty(string))
+        if (isEmpty(string)) {
             return "";
+        }
         return openContainer(string).get(0);
     }
 
@@ -1389,8 +1527,9 @@ public class StringMaster {
         path = path.toLowerCase();
         String prefix = "";
         for (String sub : getPathSegments(path)) {
-            if (p.startsWith(sub))
+            if (p.startsWith(sub)) {
                 break;
+            }
             prefix += sub + PATH_SEPARATOR;
         }
 
@@ -1402,8 +1541,9 @@ public class StringMaster {
         path = path.toLowerCase();
         String prefix = "";
         for (String sub : getPathSegments(path)) {
-            if (p.startsWith(sub))
+            if (p.startsWith(sub)) {
                 break;
+            }
             prefix += sub + PATH_SEPARATOR;
         }
 

@@ -23,6 +23,7 @@ public class RangedAttackAnim extends AttackAnim {
 
     Texture rangedWeaponImage;
     private Obj ammo;
+    private SpriteAnimation weaponSprite;
 
     public RangedAttackAnim(Entity active) {
         super(active);
@@ -57,7 +58,9 @@ public class RangedAttackAnim extends AttackAnim {
     @Override
     public void start() {
         super.start();
-        sprites.add(new SpriteAnimation(rangedWeaponImage));
+        weaponSprite=new SpriteAnimation(rangedWeaponImage);
+        weaponSprite.setAttached(false);
+        sprites.add(weaponSprite);
     }
 
     @Override

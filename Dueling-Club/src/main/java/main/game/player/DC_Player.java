@@ -45,8 +45,9 @@ public class DC_Player extends Player {
         super(name, color, me, null);
         this.data = data;
         this.host = host;
-        if (data != null)
+        if (data != null) {
             initData(data);
+        }
     }
 
     @Override
@@ -71,8 +72,9 @@ public class DC_Player extends Player {
     }
 
     public DC_Game getGame() {
-        if (game == null)
+        if (game == null) {
             game = DC_Game.game;
+        }
         return (DC_Game) super.getGame();
     }
 
@@ -80,8 +82,9 @@ public class DC_Player extends Player {
 
         Set<Obj> units = new HashSet<Obj>();
         for (DC_HeroObj unit : (getGame().getUnits())) {
-            if (unit.getOwner() == this)
+            if (unit.getOwner() == this) {
                 units.add(unit);
+            }
         }
         return units;
 
@@ -96,8 +99,9 @@ public class DC_Player extends Player {
     }
 
     public PlayerAI getPlayerAI() {
-        if (playerAI == null)
+        if (playerAI == null) {
             playerAI = new PlayerAI(PLAYER_AI_TYPE.NORMAL);
+        }
         return playerAI;
     }
 

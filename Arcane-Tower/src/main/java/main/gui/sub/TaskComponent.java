@@ -25,14 +25,8 @@ import main.system.auxiliary.FontMaster.FONT;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Rectangle;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -40,18 +34,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JComboBox;
-import javax.swing.SwingUtilities;
-
 public class TaskComponent extends G_Panel implements ClickListenerEnum<TASK_COMMAND>,
 		ActionListener {
 
-	private Task task;
 	G_Panel buttonPanel;
-	private TextCompDC headerComp;
+    Map<Rectangle, TASK_COMMAND> mouseMap = new HashMap<>();
+    private Task task;
+    private TextCompDC headerComp;
 	private WrappedTextComp descrPanel;
 	private WrappedTextComp tipPanel;
-	Map<Rectangle, TASK_COMMAND> mouseMap = new HashMap<>();
 	private GraphicComponent imageComp;
 	private IconValueComp gloryComp;
 	private JComboBox<TASK_STATUS> comboBox;
@@ -89,9 +80,10 @@ public class TaskComponent extends G_Panel implements ClickListenerEnum<TASK_COM
 		descrPanel = new WrappedTextComp(null, true, 5, Color.black, getDescrFont(), false) {
 			@Override
 			protected String getText() {
-				if (task.getProperty(G_PROPS.DESCRIPTION).isEmpty())
-					return task.getName() + " Description";
-				return task.getProperty(G_PROPS.DESCRIPTION);
+                if (task.getProperty(G_PROPS.DESCRIPTION).isEmpty()) {
+                    return task.getName() + " Description";
+                }
+                return task.getProperty(G_PROPS.DESCRIPTION);
 			}
 
 		};
@@ -142,26 +134,30 @@ public class TaskComponent extends G_Panel implements ClickListenerEnum<TASK_COM
 					.getIntParam(AT_PARAMS.GLORY));
 			task.setParam(AT_PARAMS.GLORY, i);
 		} else if (arg0.getSource() == descrPanel) {
-			if (!SwingUtilities.isRightMouseButton(arg0))
-				if (arg0.getClickCount() == 1)
-					return;
-			String descr = DialogMaster.inputText("", task.getProperty(G_PROPS.DESCRIPTION));
+            if (!SwingUtilities.isRightMouseButton(arg0)) {
+                if (arg0.getClickCount() == 1) {
+                    return;
+                }
+            }
+            String descr = DialogMaster.inputText("", task.getProperty(G_PROPS.DESCRIPTION));
 			task.setProperty(G_PROPS.DESCRIPTION, descr);
 		} else if (arg0.getSource() == headerComp) {
 			if (SwingUtilities.isRightMouseButton(arg0))
 				// handleClick(getRightClickCommand(), alt);
-				PromptMaster.fillOut(task, !alt);
-			else if (arg0.getClickCount() > 1) {
-				handleClick(getDoubleClickCommand(), alt);
+            {
+                PromptMaster.fillOut(task, !alt);
+            } else if (arg0.getClickCount() > 1) {
+                handleClick(getDoubleClickCommand(), alt);
 			}
-		} else if (arg0.getSource() == buttonPanel)
-			for (Rectangle r : mouseMap.keySet()) {
-				if (r.contains(arg0.getPoint())) {
-					handleClick(mouseMap.get(r), alt);
-					return;
-				}
-			}
-	}
+        } else if (arg0.getSource() == buttonPanel) {
+            for (Rectangle r : mouseMap.keySet()) {
+                if (r.contains(arg0.getPoint())) {
+                    handleClick(mouseMap.get(r), alt);
+                    return;
+                }
+            }
+        }
+    }
 
 	private TASK_COMMAND getRightClickCommand() {
 		return null;
@@ -238,12 +234,14 @@ public class TaskComponent extends G_Panel implements ClickListenerEnum<TASK_COM
 		int width = getButtonMaxWidth();
 		int height = getButtonMaxHeight();
 		for (TASK_COMMAND cmd : TASK_COMMAND.values()) {
-			if (!task.checkCommandShown(cmd))
-				continue;
-			Image image = cmd.getImage();
-			if (image == null)
-				image = ImageManager.getEmptyItemIcon(true).getImage();
-			CustomButton btn = new ActionButtonEnum<TASK_COMMAND>(null, image, cmd, this);
+            if (!task.checkCommandShown(cmd)) {
+                continue;
+            }
+            Image image = cmd.getImage();
+            if (image == null) {
+                image = ImageManager.getEmptyItemIcon(true).getImage();
+            }
+            CustomButton btn = new ActionButtonEnum<TASK_COMMAND>(null, image, cmd, this);
 			i++;
 			y += height;
 			if (i >= wrap) {
@@ -268,8 +266,9 @@ public class TaskComponent extends G_Panel implements ClickListenerEnum<TASK_COM
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		if (!ArcaneTower.isSwingGraphicsMode())
-			return;
+        if (!ArcaneTower.isSwingGraphicsMode()) {
+            return;
+        }
 
 		if (isBlocked()) {
 			Graphics2D g2d = (Graphics2D) g;
@@ -280,16 +279,18 @@ public class TaskComponent extends G_Panel implements ClickListenerEnum<TASK_COM
 
 	@Override
 	public int getBorderWidth() {
-		if (isSelected())
-			return 2;
-		return 1;
+        if (isSelected()) {
+            return 2;
+        }
+        return 1;
 	}
 
 	@Override
 	public Color getBorderColor() {
-		if (isSelected())
-			return (ColorManager.ESSENCE);
-		return super.getBorderColor();
+        if (isSelected()) {
+            return (ColorManager.ESSENCE);
+        }
+        return super.getBorderColor();
 	}
 
 	private boolean isBlocked() {
@@ -298,26 +299,6 @@ public class TaskComponent extends G_Panel implements ClickListenerEnum<TASK_COM
 
 	private boolean isSelected() {
 		return ArcaneTower.getSelectedEntity() == task;
-	}
-
-	public enum TASK_COMMAND {
-		TOGGLE(STD_IMAGES.ACTIONS.getImage()),
-		BLOCK(VISUALS.CANCEL.getImage()),
-		DONE(STD_IMAGES.BAG.getImage()),
-		REMOVE(STD_IMAGES.DEATH.getImage()),
-		// INSPECT(STD_IMAGES.waSEARCH.getImage()),
-		// RESET(STD_IMAGES.FOOT.getImage())
-		;
-		private Image image;
-
-		TASK_COMMAND(Image image) {
-			this.image = image;
-		}
-
-		public Image getImage() {
-
-			return image;
-		}
 	}
 
 	@Override
@@ -357,5 +338,25 @@ public class TaskComponent extends G_Panel implements ClickListenerEnum<TASK_COM
 	private int getFontSize() {
 		return 20;
 	}
+
+    public enum TASK_COMMAND {
+        TOGGLE(STD_IMAGES.ACTIONS.getImage()),
+        BLOCK(VISUALS.CANCEL.getImage()),
+        DONE(STD_IMAGES.BAG.getImage()),
+        REMOVE(STD_IMAGES.DEATH.getImage()),
+        // INSPECT(STD_IMAGES.waSEARCH.getImage()),
+        // RESET(STD_IMAGES.FOOT.getImage())
+        ;
+        private Image image;
+
+        TASK_COMMAND(Image image) {
+            this.image = image;
+        }
+
+        public Image getImage() {
+
+            return image;
+        }
+    }
 
 }

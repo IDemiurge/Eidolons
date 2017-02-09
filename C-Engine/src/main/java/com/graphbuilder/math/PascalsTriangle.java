@@ -22,18 +22,22 @@ public final class PascalsTriangle {
      * returned.
      */
     public synchronized static double nCr(int n, int r) {
-        if (n < 0 || r < 0 || r > n) return 0;
+        if (n < 0 || r < 0 || r > n) {
+            return 0;
+        }
 
         if (n >= pt.length) {
             int d = 2 * pt.length;
             double[][] pt2 = null;
-            if (n > d)
+            if (n > d) {
                 pt2 = new double[n + 1][];
-            else
+            } else {
                 pt2 = new double[d + 1][];
+            }
 
-            for (int i = 0; i < pt.length; i++)
+            for (int i = 0; i < pt.length; i++) {
                 pt2[i] = pt[i];
+            }
 
             for (int i = pt.length; i < pt2.length; i++) {
                 pt2[i] = new double[(i / 2) + 1];
@@ -42,10 +46,11 @@ public final class PascalsTriangle {
 
                 for (int j = 1; j < pt2[i].length; j++) {
                     double x = pt2[i - 1][j - 1];
-                    if (j < pt2[i - 1].length)
+                    if (j < pt2[i - 1].length) {
                         x = x + pt2[i - 1][j];
-                    else
+                    } else {
                         x = 2 * x;
+                    }
 
                     pt2[i][j] = x;
                 }
@@ -53,8 +58,9 @@ public final class PascalsTriangle {
             pt = pt2;
         }
 
-        if (2 * r > n)
+        if (2 * r > n) {
             r = n - r;
+        }
 
         return pt[n][r];
     }

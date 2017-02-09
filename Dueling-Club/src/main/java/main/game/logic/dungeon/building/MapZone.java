@@ -63,15 +63,17 @@ public class MapZone {
 
     public MapBlock getBlock(Coordinates coordinates) {
         for (MapBlock b : blocks) {
-            if (b.getCoordinates().contains(coordinates))
+            if (b.getCoordinates().contains(coordinates)) {
                 return b;
+            }
         }
         return null; // coordinateMap.getOrCreate(coordinates)
     }
 
     public void addBlock(MapBlock block) {
-        if (blocks.contains(block))
+        if (blocks.contains(block)) {
             return;
+        }
         blocks.add(block);
         // for (Coordinates c : block.getCoordinates())
         // coordinateMap.put(c, block);
@@ -143,8 +145,9 @@ public class MapZone {
     }
 
     public List<Coordinates> getExceptions() {
-        if (exceptions == null)
+        if (exceptions == null) {
             exceptions = new LinkedList<>();
+        }
         return exceptions;
     }
 

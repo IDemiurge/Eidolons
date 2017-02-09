@@ -95,11 +95,14 @@ public class ShopMaster {
 
     public static boolean checkMaterialAllowed(Shop shop, MATERIAL material) {
         if (!ShopMaster.getMaterialsForShopLevel(shop.getShopLevel()).contains(
-                material))
+                material)) {
             if (!ShopMaster.getMaterialsForShopModifier(shop.getShopModifier())
-                    .contains(material))
-                if (!getSpecialMaterials(shop).contains(material))
+                    .contains(material)) {
+                if (!getSpecialMaterials(shop).contains(material)) {
                     return false;
+                }
+            }
+        }
 
         return true;
     }
@@ -230,8 +233,9 @@ public class ShopMaster {
                     break;
 
             }
-            if (material_level <= level)
+            if (material_level <= level) {
                 list.add(m);
+            }
         }
         return list;
     }

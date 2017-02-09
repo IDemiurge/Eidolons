@@ -76,22 +76,25 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
     }
 
     public void setIrresistible(boolean b) {
-        for (Effect effect : getEffects())
+        for (Effect effect : getEffects()) {
             effect.setIrresistible(b);
+        }
 
     }
 
     @Override
     public void setForcedLayer(Integer forcedLayer) {
-        for (Effect effect : getEffects())
+        for (Effect effect : getEffects()) {
             effect.setForcedLayer(forcedLayer);
+        }
         this.forcedLayer = forcedLayer;
     }
 
     @Override
     public void setForceStaticParse(Boolean forceStaticParse) {
-        for (Effect effect : getEffects())
+        for (Effect effect : getEffects()) {
             effect.setForceStaticParse(forceStaticParse);
+        }
     }
 
     @Override
@@ -100,7 +103,7 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
         for (Effect effect : getEffects()) {
             // result &= effect.apply(ref);
             if (isReconstruct()) {
-                if (effect.getConstruct() != null)
+                if (effect.getConstruct() != null) {
                     try {
                         result &= ((Effect) ConstructionManager.construct(effect.getConstruct()))
                                 .apply(ref);
@@ -108,10 +111,12 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
             }
             if (effect instanceof ContinuousEffect) // ?
+            {
                 result &= effect.apply(ref);
-            else {
+            } else {
                 effect.setRef(ref);
                 result &= effect.apply();
             }
@@ -140,8 +145,9 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
     }
 
     public boolean add(Effect e) {
-        if (e instanceof Effects)
+        if (e instanceof Effects) {
             return addAll(((Effects) e).getEffects());
+        }
         return getEffects().add(e);
     }
 
@@ -178,8 +184,9 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
     }
 
     public DequeImpl<Effect> getEffects() {
-        if (effects == null)
+        if (effects == null) {
             setEffects(new DequeImpl<Effect>());
+        }
         return effects;
     }
 
@@ -204,8 +211,9 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
     @Override
     public boolean isIgnoreGroupTargeting() {
         for (Effect e : this.effects) {
-            if (e.isIgnoreGroupTargeting())
+            if (e.isIgnoreGroupTargeting()) {
                 return true;
+            }
         }
         return super.isIgnoreGroupTargeting();
     }

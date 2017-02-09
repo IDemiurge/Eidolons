@@ -32,10 +32,12 @@ public class Roll {
 
     public Boolean roll(Ref ref) {
         boolean result = RollMaster.roll(type, success, fail, ref);
-        if (drawRange > 0)
+        if (drawRange > 0) {
             if (100 - Math.min(RollMaster.getRolledValue2() / RollMaster.getRolledValue(),
-                    RollMaster.getRolledValue() / RollMaster.getRolledValue2()) * 100 <= drawRange)
+                    RollMaster.getRolledValue() / RollMaster.getRolledValue2()) * 100 <= drawRange) {
                 return null;
+            }
+        }
 
         return result;
     }

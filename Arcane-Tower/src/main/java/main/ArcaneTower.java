@@ -18,14 +18,8 @@ import main.gui.GatewayWindow;
 import main.gui.SessionWindow;
 import main.io.AT_Keys;
 import main.launch.ArcaneVault;
-import main.logic.AT_OBJ_TYPE;
-import main.logic.AT_Simulation;
-import main.logic.ArcaneEntity;
-import main.logic.ArcaneRef;
+import main.logic.*;
 import main.logic.ArcaneRef.AT_KEYS;
-import main.logic.Direction;
-import main.logic.Goal;
-import main.logic.Task;
 import main.logic.entity.Day;
 import main.logic.value.AT_ContentManager;
 import main.music.ahk.AHK_Master;
@@ -38,35 +32,29 @@ import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.time.ZeitMaster;
 
-import java.awt.Color;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-
 public class ArcaneTower {
 
-	private static final String ICON_PATH = "UI\\arcane tower\\AT.png"; // glyphs\\Twilight
-
 	public static final String IMG_PATH = "tower\\";
-
-	private static GatewayWindow gateWindow;
+    private static final String ICON_PATH = "UI\\arcane tower\\AT.png"; // glyphs\\Twilight
+    private static final String[] LAUNCH_OPTIONS = {"Full", "Music Core", "Music Core",};
+    public static boolean sessionTest = false;
+    static String musicTypes = "";
+    static String workTypes = "";
+    private static GatewayWindow gateWindow;
 	private static List<Task> tasks;
 	private static List<Goal> goals;
 	private static List<Direction> directions;
 	private static AT_Simulation sim;
 	private static boolean av = false;
-	public static boolean sessionTest = false;
 	private static ArcaneRef ref;
 	private static ArcaneEntity selectedEntity;
-
 	private static boolean selectiveLaunch = true;
-	private static final String[] LAUNCH_OPTIONS = { "Full", "Music Core", "Music Core", };
-	static String musicTypes = "";
-	static String workTypes = "";
-
 	private static Day day;
 
 	private static AT_ContentManager contentManager;
@@ -119,9 +107,10 @@ public class ArcaneTower {
 		showEnterGui();
 		initGlobalKeys();
 
-		if (sessionTest)
-			getGateWindow().getButtonHandler().handleCommand(GatewayButtonHandler.CONTINUE_SESSION,
-					ActionEvent.ALT_MASK);
+        if (sessionTest) {
+            getGateWindow().getButtonHandler().handleCommand(GatewayButtonHandler.CONTINUE_SESSION,
+                    ActionEvent.ALT_MASK);
+        }
 
 		ImageIcon img = ImageManager.getIcon(ICON_PATH);
 		getGateWindow().getWindow().setIconImage(img.getImage());
@@ -230,9 +219,10 @@ public class ArcaneTower {
 	}
 
 	public static Goal getSelectedGoal() {
-		if (getSelectedEntity() == null)
-			return null;
-		Goal goal = (Goal) getSelectedEntity().getRef().getObj(AT_KEYS.GOAL);
+        if (getSelectedEntity() == null) {
+            return null;
+        }
+        Goal goal = (Goal) getSelectedEntity().getRef().getObj(AT_KEYS.GOAL);
 		return goal;
 	}
 
@@ -241,9 +231,10 @@ public class ArcaneTower {
 	}
 
 	public static Ref getRef() {
-		if (ref == null)
-			ref = new ArcaneRef(sim);
-		return ref;
+        if (ref == null) {
+            ref = new ArcaneRef(sim);
+        }
+        return ref;
 	}
 
 	public static void saveAll() {
@@ -282,18 +273,19 @@ public class ArcaneTower {
 	public static void saveEntity(ArcaneEntity entity, boolean saveVersion) {
 		entity.beforeSave();
 		XML_Writer.writeXML_ForType(entity.getType());
-		if (saveVersion)
-			VersionMaster.saveVersion(entity);
-	}
-
-	public static void setSelectedEntity(ArcaneEntity entity) {
-		selectedEntity = entity;
-
-	}
+        if (saveVersion) {
+            VersionMaster.saveVersion(entity);
+        }
+    }
 
 	public static ArcaneEntity getSelectedEntity() {
 		return selectedEntity;
 	}
+
+    public static void setSelectedEntity(ArcaneEntity entity) {
+        selectedEntity = entity;
+
+    }
 
 	public static ArcaneEntity getEntity(ObjType type) {
 		return getSimulation().getInstance(type);
@@ -341,12 +333,13 @@ public class ArcaneTower {
 		// return new ListMaster<Task>().toObjList(tasks, list);
 		List<Goal> filtered = new LinkedList<>();
 		for (ObjType sub : list) {
-			for (Goal g : getGoals())
-				if (g.getType() == sub) {
-					filtered.add(g);
-					break;
-				}
-		}
+            for (Goal g : getGoals()) {
+                if (g.getType() == sub) {
+                    filtered.add(g);
+                    break;
+                }
+            }
+        }
 		return filtered;
 	}
 
@@ -354,12 +347,13 @@ public class ArcaneTower {
 		// return new ListMaster<Task>().toObjList(tasks, list);
 		List<Task> filtered = new LinkedList<>();
 		for (ObjType sub : list) {
-			for (Task task : tasks)
-				if (task.getType() == sub) {
-					filtered.add(task);
-					break;
-				}
-		}
+            for (Task task : tasks) {
+                if (task.getType() == sub) {
+                    filtered.add(task);
+                    break;
+                }
+            }
+        }
 		return filtered;
 	}
 

@@ -15,8 +15,9 @@ public class ParsedCondition extends MicroCondition {
 
     @Override
     public boolean check() {
-        if (conditions == null)
+        if (conditions == null) {
             conditions = ConditionMaster.toConditions(string);
+        }
 
         return conditions.check(ref);
     }

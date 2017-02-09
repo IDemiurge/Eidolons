@@ -29,9 +29,11 @@ public class WaterRule extends RoundRule implements ActionRule {
     }
 
     public static boolean checkPassable(DC_HeroObj unit) {
-        if (!canSwim(unit))
-            if (!isOnSwimmingDepth(unit))
+        if (!canSwim(unit)) {
+            if (!isOnSwimmingDepth(unit)) {
                 return false;
+            }
+        }
         return true;
     }
 
@@ -52,18 +54,22 @@ public class WaterRule extends RoundRule implements ActionRule {
     }
 
     public static boolean ignoresWater(DC_HeroObj unit) {
-        if (unit.checkPassive(STANDARD_PASSIVES.IMMATERIAL))
+        if (unit.checkPassive(STANDARD_PASSIVES.IMMATERIAL)) {
             return true;
-        if (unit.isFlying())
+        }
+        if (unit.isFlying()) {
             return true;
+        }
         return false;
     }
 
     public static boolean canSwim(DC_HeroObj unit) {
-        if (unit.checkPassive(STANDARD_PASSIVES.IMMATERIAL))
+        if (unit.checkPassive(STANDARD_PASSIVES.IMMATERIAL)) {
             return false;
-        if (unit.checkClassification(CLASSIFICATIONS.MECHANICAL))
+        }
+        if (unit.checkClassification(CLASSIFICATIONS.MECHANICAL)) {
             return false;
+        }
         return true;
     }
 
@@ -95,8 +101,9 @@ public class WaterRule extends RoundRule implements ActionRule {
     }
 
     public void checkDrowning(DC_HeroObj unit) {
-        if (!isOnSwimmingDepth(unit))
+        if (!isOnSwimmingDepth(unit)) {
             return;
+        }
         // reduce endurance by percentage
     }
 

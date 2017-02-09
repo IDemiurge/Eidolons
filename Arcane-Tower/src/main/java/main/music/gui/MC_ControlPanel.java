@@ -142,21 +142,23 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 
 	public static void doDialog(boolean alt, boolean shift, boolean ctrl, MusicList list,
 			boolean last) {
-		if (!last)
+        if (!last) {
             dialogChooseOrRandom = alt || DialogMaster.confirm("Choose or random?");
+        }
         if (!last) {
             dialogListTypes = new LinkedList<>(DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST));
             dialogListTypes = filterViaDialog(dialogListTypes, ctrl, shift);
             cachedDialogListTypes = new LinkedList<>(dialogListTypes);
         }
         String result = null;
-        if (dialogChooseOrRandom)
-			result = ListChooser.chooseType(dialogListTypes).getProperty(AT_PROPS.PATH);
-		else {
-			ObjType item = new RandomWizard<ObjType>().getRandomListItem(dialogListTypes);
+        if (dialogChooseOrRandom) {
+            result = ListChooser.chooseType(dialogListTypes).getProperty(AT_PROPS.PATH);
+        } else {
+            ObjType item = new RandomWizard<ObjType>().getRandomListItem(dialogListTypes);
 			dialogListTypes.remove(item);
-			if (dialogListTypes.isEmpty())
-				dialogListTypes = new LinkedList<>(cachedDialogListTypes);
+            if (dialogListTypes.isEmpty()) {
+                dialogListTypes = new LinkedList<>(cachedDialogListTypes);
+            }
 
 			result = item.getProperty(AT_PROPS.PATH);
 		}
@@ -164,10 +166,11 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 		// )
 		// .getProperty(AT_PROPS.PATH);
 		PLAY_MODE playMode = MusicMouseListener.getPlayMode();
-		if (ctrl)
-			playMode = new EnumMaster<PLAY_MODE>().retrieveEnumConst(PLAY_MODE.class, ListChooser
-					.chooseEnum(PLAY_MODE.class));
-		MusicMouseListener.playM3uList(result, playMode);
+        if (ctrl) {
+            playMode = new EnumMaster<PLAY_MODE>().retrieveEnumConst(PLAY_MODE.class, ListChooser
+                    .chooseEnum(PLAY_MODE.class));
+        }
+        MusicMouseListener.playM3uList(result, playMode);
 	}
 
 	public static void prioritize(boolean ctrl, boolean shift) {
@@ -181,9 +184,10 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 	private static VALUE getMassEditValue() {
 		VALUE prop = null;
 		int optionChoice = DialogMaster.optionChoice(std_mass_edit_vals, "Value to set?");
-		if (optionChoice >= 0)
-			prop = std_mass_edit_vals[optionChoice];
-		return prop;
+        if (optionChoice >= 0) {
+            prop = std_mass_edit_vals[optionChoice];
+        }
+        return prop;
 	}
 
 	public static List<ObjType> filterViaDialog(List<ObjType> types, boolean ctrl, boolean shift) {
@@ -206,9 +210,10 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 			}
 			filterValue = StringMaster.constructContainer(ListMaster.toStringList(values));
 		} else {
-			if (!shift)
-				filterIn = DialogMaster.confirm("Filter In or Filter Out?");
-			filterProp = filter_vals[DialogMaster.optionChoice(filter_vals, "Filter by...?")];
+            if (!shift) {
+                filterIn = DialogMaster.confirm("Filter In or Filter Out?");
+            }
+            filterProp = filter_vals[DialogMaster.optionChoice(filter_vals, "Filter by...?")];
 			filterValue = CreationHelper.getInput(filterProp, null, null, INPUT_REQ.MULTI_ENUM);
 
 		}
@@ -221,17 +226,19 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 		// AHK_Master.getPanel().resetFilter();
 		// }
 		PROPERTY filterProp = null;
-		if (alt)
-			filterProp = AT_PROPS.MUSIC_TYPE;
-		else {
-			int choice = DialogMaster.optionChoice(filter_vals, "Value to Filter by?");
-			if (choice >= 0)
-				filterProp = filter_vals[choice];
-		}
+        if (alt) {
+            filterProp = AT_PROPS.MUSIC_TYPE;
+        } else {
+            int choice = DialogMaster.optionChoice(filter_vals, "Value to Filter by?");
+            if (choice >= 0) {
+                filterProp = filter_vals[choice];
+            }
+        }
 		String filterVal = null;
-		if (filterProp != null)
-			filterVal = CreationHelper.getInput(filterProp);
-		// strict filter
+        if (filterProp != null) {
+            filterVal = CreationHelper.getInput(filterProp);
+        }
+        // strict filter
 		if (!shift) {
 			MusicListPanel panel = MusicCore.getFilterView(filterVal, filterProp);
 			// additionalViews.put(panel.getName(), panel); TODO
@@ -294,9 +301,10 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 		// List<ObjType> types=DataManager.getTypes(AT_OBJ_TYPE. MUSIC_LIST );
 		if (!MusicMouseListener.getSelectedLists().isEmpty()) {
 			massEdit(DataManager.toTypeList(MusicMouseListener.getSelectedLists()), prop);
-		} else
-			massEdit(alt);
-	}
+        } else {
+            massEdit(alt);
+        }
+    }
 
 	public static void massEdit(boolean emptyOnly) {
 		List<ObjType> types = DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST);
@@ -305,20 +313,26 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 			String filterValue = inputMassValue(prop);
 			for (ObjType sub : new LinkedList<>(types))
 				// if (emptyOnly) {
-				if (!sub.checkContainerProp((PROPERTY) prop, filterValue, true))
-					types.remove(sub);
-			// } else if (!generic.checkValue(prop, filterValue))
+            {
+                if (!sub.checkContainerProp((PROPERTY) prop, filterValue, true)) {
+                    types.remove(sub);
+                }
+            }
+            // } else if (!generic.checkValue(prop, filterValue))
 			// types.remove(generic);
 
 		}
 		prop = getMassEditValue();
-		if (prop == null)
-			return;
-		if (emptyOnly) {
-			for (ObjType sub : new LinkedList<>(types))
-				if (sub.checkValue(prop))
-					types.remove(sub);
-		}
+        if (prop == null) {
+            return;
+        }
+        if (emptyOnly) {
+            for (ObjType sub : new LinkedList<>(types)) {
+                if (sub.checkValue(prop)) {
+                    types.remove(sub);
+                }
+            }
+        }
 		massEdit(types, prop);
 
 	}
@@ -326,12 +340,14 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 	public static void massEdit(List<ObjType> types, VALUE prop) {
 		// GenericListChooser.s
 		types = ListChooser.chooseTypes_(types);
-		if (types.isEmpty())
-			return;
-		String value = inputMassValue(prop);
-		if (StringMaster.isEmpty(value))
-			return;
-		MOD_PROP_TYPE p = new EnumMaster<MOD_PROP_TYPE>().selectEnum(MOD_PROP_TYPE.class);
+        if (types.isEmpty()) {
+            return;
+        }
+        String value = inputMassValue(prop);
+        if (StringMaster.isEmpty(value)) {
+            return;
+        }
+        MOD_PROP_TYPE p = new EnumMaster<MOD_PROP_TYPE>().selectEnum(MOD_PROP_TYPE.class);
 		// if (prop.getInputReq() == INPUT_REQ.MULTI_ENUM)
 		// if (prop instanceof PROPERTY) {
 		// add = (DialogMaster.confirm("Add() instead of set() for " +
@@ -346,9 +362,10 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 	private static VALUE getMassFilterValue() {
 		VALUE prop = null;
 		int choice = DialogMaster.optionChoice(std_mass_edit_vals, "Value to filter by?");
-		if (choice >= 0)
-			prop = std_mass_edit_vals[choice];
-		return prop;
+        if (choice >= 0) {
+            prop = std_mass_edit_vals[choice];
+        }
+        return prop;
 	}
 
     // private void playRandom() {
@@ -371,8 +388,10 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 
 		if (!alt)
 			// choose val
-			val = std_edit_vals[DialogMaster.optionChoice(std_edit_vals, "What value to edit?")];
-		// ListChooser.chooseString(stringList);
+        {
+            val = std_edit_vals[DialogMaster.optionChoice(std_edit_vals, "What value to edit?")];
+        }
+        // ListChooser.chooseString(stringList);
 		String input = CreationHelper.getInput(val, list, list.getValue(val));
 		list.setValue(val, input, true);
 	}
@@ -476,9 +495,9 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
                 doFilter(alt, shift);
                 break;
             case "Visual": //
-                if (alt)
+                if (alt) {
                     MusicCore.newGroupView(0);
-                else {
+                } else {
                     int choice = DialogMaster.optionChoice("Filtered by Music Type?"
                             // , MusicCore.std_groups
                             , "Full", "Day", "Gym", "Night");
@@ -489,8 +508,9 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 
                     choice = DialogMaster.optionChoice("Filtered by Music Tag?", "Day",
                             "Afternoon", "Dusk", "Night");
-                    if (choice > -1)
+                    if (choice > -1) {
                         MusicCore.newFilteredView(choice, MUSIC_TAGS.class);
+                    }
                 }
                 break;
             case "Random":
@@ -502,8 +522,9 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
                 MusicListMaster.newList(list, alt);
                 break;
             case "Save":
-                if (!ctrl)
+                if (!ctrl) {
                     MusicCore.saveAll();
+                }
                 if (alt) {
                     boolean export = DialogMaster.confirm("Export or process?");
                     String inputText = DialogMaster.inputText("folder relative to "
@@ -511,10 +532,10 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
                             + "\\";
                     String path = AHK_Master.SYSTEM_LISTS_FOLDER;
                     VALUE p = export ? getMassFilterValue() : getMassEditValue();
-                    if (export)
+                    if (export) {
                         M3uMaster.exportListsIntoFolder(path + "export\\" + inputText,
                                 (PROPERTY) p, !shift);
-                    else {
+                    } else {
                         M3uMaster.processMetaListFolder(path + inputText, (PROPERTY) p);
                     }
                 }
@@ -533,12 +554,15 @@ public class MC_ControlPanel extends G_Panel implements ActionListener {
 	private void
 	doAddRemoveFilters(boolean alt, boolean shift, boolean ctrl,
 					   MusicList list, boolean b) {
-		if (shift)
-			MusicCore.setFilterOut(!MusicCore.isFilterOut());
-if (!alt)
-		MusicCore.addFilterValue();else
-		MusicCore.removeFilterValue();
-	}
+        if (shift) {
+            MusicCore.setFilterOut(!MusicCore.isFilterOut());
+        }
+        if (!alt) {
+            MusicCore.addFilterValue();
+        } else {
+            MusicCore.removeFilterValue();
+        }
+    }
 
 	public void cycleSort() {
         cycle(sortBox);
@@ -550,8 +574,9 @@ if (!alt)
 
     public void cycle(JComboBox<?> box) {
         int i = box.getSelectedIndex() + 1;
-        if (i >= box.getModel().getSize())
+        if (i >= box.getModel().getSize()) {
             i = 0;
+        }
         box.setSelectedIndex(i);
 
     }

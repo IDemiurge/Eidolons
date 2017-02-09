@@ -83,16 +83,18 @@ public class AddRemoveComponent extends G_Panel {
 
     protected void addComps() {
         addBuffComps();
-        if (CharacterCreator.getInfoSelected() != null)
+        if (CharacterCreator.getInfoSelected() != null) {
             if (CharacterCreator.getInfoSelected().getOBJ_TYPE_ENUM() == OBJ_TYPES.ACTIONS) {
                 addIconComps();
                 return;
             }
+        }
         addPools();
         addIconComps();
-        if (!isBuffPanelNeeded(upperPanel.getEntity()))
+        if (!isBuffPanelNeeded(upperPanel.getEntity())) {
             add(new GraphicComponent(VISUALS.ADD_REMOVE.getImage()), "id arc, pos " + FULL_WIDTH
                     + "/2-" + VISUALS.ADD_REMOVE.getWidth() + "/2 " + GuiManager.getSmallObjSize());
+        }
 
         addRemoveComp();
         addAddComp();
@@ -188,8 +190,9 @@ public class AddRemoveComponent extends G_Panel {
     }
 
     private void addItemPool(Entity item, boolean heroItem) {
-        if (item == null)
+        if (item == null) {
             return;
+        }
         CostPoolComp pool = new CostPoolComp(item, cost_param);
         String X = "icon.x2+("
                 + (FULL_WIDTH + "-icon.x2-" + getPoolSymbol().getImg().getWidth(null)) + ")/2";
@@ -230,25 +233,29 @@ public class AddRemoveComponent extends G_Panel {
 
     protected void addIconComps() {
         String pos = "id icon, pos " + FULL_WIDTH + "/2" + "-32 buffComp.y2";
-        if (isBuffPanelNeeded(upperPanel.getEntity()))
+        if (isBuffPanelNeeded(upperPanel.getEntity())) {
             pos += "-20";
+        }
         if (upperPanel.getEntity() != null) {
             upperIcon = new JLabel(upperPanel.getEntity().getIcon());
             add((upperIcon), pos);
-        } else
+        } else {
             add(new JLabel(ImageManager.getIcon(ImageManager.getDefaultEmptyListIcon())), pos);
+        }
         pos = "id icon2, pos " + +FULL_WIDTH + "/2-" + "32 64+" + VISUALS.ADD_REMOVE.getHeight();
         if (lowerPanel.getEntity() != null) {
             lowerIcon = new JLabel(lowerPanel.getEntity().getIcon());
             add(lowerIcon, pos);
-        } else
+        } else {
             add(new JLabel(ImageManager.getIcon(ImageManager.getDefaultEmptyListIcon())), pos);
+        }
 
     }
 
     protected GraphicComponent getPoolSymbol() {
-        if (getView() == HERO_VIEWS.SHOP)
+        if (getView() == HERO_VIEWS.SHOP) {
             return new GraphicComponent(STD_COMP_IMAGES.GOLD.getImg());
+        }
         return new GraphicComponent(STD_COMP_IMAGES.XP.getImg());
     }
 
@@ -257,10 +264,11 @@ public class AddRemoveComponent extends G_Panel {
         CustomButton comp = new CustomButton((blocked ? VISUALS.ADD_BLOCKED : VISUALS.ADD)) {
             @Override
             public void handleClick() {
-                if (!isEnabled())
+                if (!isEnabled()) {
                     playDisabledSound();
-                else
+                } else {
                     arc.add();
+                }
             }
         };
         comp.setEnabled(!blocked);
@@ -272,10 +280,11 @@ public class AddRemoveComponent extends G_Panel {
         CustomButton comp = new CustomButton((blocked ? VISUALS.REMOVE_BLOCKED : VISUALS.REMOVE)) {
             @Override
             public void handleClick() {
-                if (!isEnabled())
+                if (!isEnabled()) {
                     playDisabledSound();
-                else
+                } else {
                     arc.remove();
+                }
             }
         };
         comp.setEnabled(!blocked);
@@ -293,8 +302,9 @@ public class AddRemoveComponent extends G_Panel {
     }
 
     protected PARAMETER getParam() {
-        if (getView() == HERO_VIEWS.SHOP)
+        if (getView() == HERO_VIEWS.SHOP) {
             return PARAMS.GOLD;
+        }
         return PARAMS.XP;
     }
 
@@ -329,8 +339,9 @@ public class AddRemoveComponent extends G_Panel {
 
         public CostPoolComp(Entity entity, PARAMETER p, OBJ_TYPE TYPE, PROPERTY PROP) {
             super(entity, p, p.getName(), false);
-            if (TYPE != null)
+            if (TYPE != null) {
                 heroItem = true;
+            }
             this.TYPE = TYPE;
             this.PROP = PROP;
             ready = true;
@@ -344,8 +355,9 @@ public class AddRemoveComponent extends G_Panel {
 
         @Override
         protected String getText() {
-            if (!ready)
+            if (!ready) {
                 return "";
+            }
             int discount = 0;
             discount = new Formula(getEntity().getParam(cost_param)
                     + "-"

@@ -6,8 +6,9 @@ public class Stack extends LinkedList {
     }
 
     public Object peek() {
-        if (head == null)
+        if (head == null) {
             return null;
+        }
 
         return head.userObject;
     }

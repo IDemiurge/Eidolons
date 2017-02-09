@@ -24,9 +24,9 @@ public class Place extends MapObj {
         super(game, type, ref);
 
         ObjType objType = DataManager.getType(getProperty(MACRO_PROPS.AREA), MACRO_OBJ_TYPES.AREA);
-        if (objType != null)
+        if (objType != null) {
             setArea(new Area(game, objType, ref));
-        else {
+        } else {
             // objType =
             // ref.getMacroObj(MACRO_KEYS.AREA);
 
@@ -34,10 +34,12 @@ public class Place extends MapObj {
     }
 
     public Area getArea() {
-        if (area == null)
+        if (area == null) {
             area = AreaManager.getAreaForCoordinate(getCoordinates());
-        if (area == null)
+        }
+        if (area == null) {
             area = getRegion().getDefaultArea();
+        }
         return area;
     }
 
@@ -68,10 +70,12 @@ public class Place extends MapObj {
 
     public boolean isVisible() {
         // status DISCOVERED
-        if (visibilityStatus == PLACE_VISIBILITY_STATUS.HIDDEN)
+        if (visibilityStatus == PLACE_VISIBILITY_STATUS.HIDDEN) {
             return false;
-        if (visibilityStatus == PLACE_VISIBILITY_STATUS.UNKNOWN)
+        }
+        if (visibilityStatus == PLACE_VISIBILITY_STATUS.UNKNOWN) {
             return false;
+        }
         return true;
     }
 
@@ -116,14 +120,16 @@ public class Place extends MapObj {
     }
 
     public void addRoute(Route route) {
-        if (!getRoutes().contains(route))
+        if (!getRoutes().contains(route)) {
             getRoutes().add(route);
+        }
     }
 
     public boolean isAvailable() {
         MacroParty party = getGame().getPlayerParty();
-        if (party.getCurrentLocation() == this)
+        if (party.getCurrentLocation() == this) {
             return true;
+        }
         return TravelMaster.getAvailablePlaces(party).contains(this);
     }
 

@@ -107,8 +107,9 @@ public class AV_KeyListener implements KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		if (checkCustomHotkey(e))
-			return;
+        if (checkCustomHotkey(e)) {
+            return;
+        }
 
 	}
 
@@ -120,8 +121,9 @@ public class AV_KeyListener implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_F1)
-			copyValues();
+        if (e.getKeyCode() == KeyEvent.VK_F1) {
+            copyValues();
+        }
 
 	}
 

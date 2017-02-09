@@ -47,15 +47,17 @@ public class EmblemChoiceView extends PortraitChoiceView {
         String heroAspect = hero.getProperty(G_PROPS.ASPECT);
 
         List<String> list = ImageManager.getEmblems(heroAspect);
-        if (!heroAspect.equalsIgnoreCase(ASPECT.NEUTRAL.toString()))
+        if (!heroAspect.equalsIgnoreCase(ASPECT.NEUTRAL.toString())) {
             data.addAll(list);
+        }
 
         String deityAspect = hero.getDeity().getType().getProperty(G_PROPS.ASPECT);
-        if (!deityAspect.equalsIgnoreCase(ASPECT.NEUTRAL.toString()))
+        if (!deityAspect.equalsIgnoreCase(ASPECT.NEUTRAL.toString())) {
             if (!deityAspect.equalsIgnoreCase(heroAspect)) {
                 list = ImageManager.getEmblems(deityAspect);
                 data.addAll(list);
             }
+        }
         data.addAll(ImageManager.getEmblems(ASPECT.NEUTRAL.toString()));
     }
 

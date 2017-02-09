@@ -51,10 +51,12 @@ public abstract class EntityChoiceView extends ChoiceView<ObjType> {
 
     @Override
     protected void applyChoice() {
-        if (isSaveHero())
+        if (isSaveHero()) {
             CharacterCreator.getHeroManager().saveHero(hero);
-        if (getPROP() != null)
+        }
+        if (getPROP() != null) {
             hero.setProperty(getPROP(), ((Entity) data.get(getSelectedIndex())).getName(), true);
+        }
     }
 
     protected boolean isSaveHero() {
@@ -65,20 +67,22 @@ public abstract class EntityChoiceView extends ChoiceView<ObjType> {
 
     protected void initData() {
         if (list != null) { // empty?
-            if (list.get(0) instanceof ObjType)
+            if (list.get(0) instanceof ObjType) {
                 data = new LinkedList<>(new DequeImpl<ObjType>().getAddAllCast(list));
-            else {
+            } else {
                 // TODO
             }
         } else {
 
-            if (getGroup() != null)
+            if (getGroup() != null) {
                 data = DataManager.getFilteredTypes(getGroup(), getTYPE(), getFilterValue());
-            else
+            } else {
                 data = DataManager.getTypes(getTYPE());
+            }
             Ref ref = new Ref(DC_Game.game);
-            if (hero != null)
+            if (hero != null) {
                 ref = Ref.getCopy(hero.getRef());
+            }
             if (getFilterOption() != null) {
                 WORKSPACE_GROUP ws = new EnumMaster<WORKSPACE_GROUP>().retrieveEnumConst(
                         WORKSPACE_GROUP.class, getFilterOption());

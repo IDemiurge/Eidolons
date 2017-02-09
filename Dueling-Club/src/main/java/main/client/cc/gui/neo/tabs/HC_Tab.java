@@ -74,8 +74,9 @@ public class HC_Tab {
 
     public void setIndex(int j) {
         index = j;
-        if (tabComp != null)
+        if (tabComp != null) {
             tabComp.setIndex(j);
+        }
 
     }
 

@@ -23,17 +23,19 @@ public class ObjListMouseListener<E> implements MouseListener { // ? extends
     @Override
     public void mouseClicked(MouseEvent e) {
         E selectedValue = list.getSelectedValue();
-        if (selectedValue == null)
+        if (selectedValue == null) {
             selectedValue = new LinkedList<>(list.getData())
                     .get(list.locationToIndex(e.getPoint()));
+        }
         if (!(selectedValue instanceof Entity)) {
             return;
         }
         lastSelected = selected;
         selected = (Entity) selectedValue;
 
-        if (!selected.getGame().isStarted())
+        if (!selected.getGame().isStarted()) {
             return;
+        }
         if (SwingUtilities.isRightMouseButton(e)) {
             list.setSelectedIndex(list.locationToIndex(e.getPoint()));
             if (selectedValue instanceof Obj) {

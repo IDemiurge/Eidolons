@@ -41,18 +41,21 @@ public class MapBlock {
         this.coordinates = coordinates;
         this.zone = zone;
         this.id = id;
-        if (zone != null)
+        if (zone != null) {
             zone.addBlock(this);
-        if (plan != null)
+        }
+        if (plan != null) {
             plan.addBlock(this);
+        }
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof MapBlock) {
             MapBlock mapBlock = (MapBlock) obj;
-            if (!mapBlock.getCoordinates().equals(getCoordinates()))
+            if (!mapBlock.getCoordinates().equals(getCoordinates())) {
                 return false;
+            }
             return true;
         }
         return false;
@@ -113,15 +116,17 @@ public class MapBlock {
                 if (map.containsKey(c)) {
                     ZCoordinates coordinates = new ZCoordinates(c.x, c.y, new Random().nextInt());
                     map.put(coordinates, obj);
-                } else
+                } else {
                     map.put(c, obj);
+                }
             }
             for (DC_HeroObj obj : DC_Game.game.getOverlayingObjects(c)) {
                 if (map.containsKey(c)) {
                     ZCoordinates coordinates = new ZCoordinates(c.x, c.y, new Random().nextInt());
                     map.put(coordinates, obj);
-                } else
+                } else {
                     map.put(c, obj);
+                }
             }
         }
     }
@@ -134,8 +139,9 @@ public class MapBlock {
     }
 
     public DequeImpl<Obj> getObjects() {
-        if (objects == null)
+        if (objects == null) {
             objects = new DequeImpl<>();
+        }
         return objects;
     }
 
@@ -145,8 +151,9 @@ public class MapBlock {
 
     public String getShortName() {
         String name = type.getName();
-        if (roomType != null)
+        if (roomType != null) {
             name = StringMaster.getWellFormattedString(roomType + "");
+        }
         return name + "-" + id;
     }
 
@@ -171,8 +178,9 @@ public class MapBlock {
     }
 
     public Map<MapBlock, List<Coordinates>> getConnectedBlocks() {
-        if (connectedBlocks == null)
+        if (connectedBlocks == null) {
             connectedBlocks = new XLinkedMap();
+        }
         return connectedBlocks;
     }
 
@@ -216,8 +224,9 @@ public class MapBlock {
         if (map.containsKey(c)) {
             ZCoordinates coordinates = new ZCoordinates(c.x, c.y, new Random().nextInt());
             map.put(coordinates, obj);
-        } else
+        } else {
             getMap().put(c, obj);
+        }
         getObjects().add(obj);
     }
 
@@ -248,8 +257,9 @@ public class MapBlock {
     }
 
     public void addCoordinate(Coordinates coordinate) {
-        if (!this.coordinates.contains(coordinate))
+        if (!this.coordinates.contains(coordinate)) {
             coordinates.add(coordinate);
+        }
     }
 
     public Map<Coordinates, Obj> getMap() {

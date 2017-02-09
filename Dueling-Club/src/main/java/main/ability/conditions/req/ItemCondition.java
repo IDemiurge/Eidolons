@@ -44,11 +44,13 @@ public class ItemCondition extends MicroCondition {
 
     @Override
     public boolean check() {
-        if (ref.getGame().isSimulation())
+        if (ref.getGame().isSimulation()) {
             return true;
-        if (slot == null)
+        }
+        if (slot == null) {
             slot = (weapon) ? ITEM_SLOT.MAIN_HAND.toString() : ITEM_SLOT.ARMOR
                     .toString();
+        }
         Entity item = null;
         DC_HeroObj unit = (DC_HeroObj) ref.getObj(obj_ref);
         if (slot.equalsIgnoreCase(KEYS.RANGED.toString())) {
@@ -56,15 +58,19 @@ public class ItemCondition extends MicroCondition {
         } else {
             ITEM_SLOT slotConst = new EnumMaster<ITEM_SLOT>()
                     .retrieveEnumConst(ITEM_SLOT.class, slot, true);
-            if (unit == null)
+            if (unit == null) {
                 return false;
+            }
             item = unit.getItem(slotConst);
         }
 
-        if (item == null)
+        if (item == null) {
             return false;
+        }
         if (prop == null) // any item in the slot
+        {
             return true;
+        }
         String string = item.getProp(prop);
         return new StringComparison(string, val, strict).check(ref);
 

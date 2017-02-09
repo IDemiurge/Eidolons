@@ -27,8 +27,9 @@ public class PagedDebugPanel extends G_PagePanel<DEBUG_FUNCTIONS> {
 
         setComponentZOrder(backButton, 0);
         setComponentZOrder(forwardButton, 1);
-        if (getCurrentComponent() != null)
+        if (getCurrentComponent() != null) {
             setComponentZOrder(getCurrentComponent(), 2);
+        }
     }
 
     @Override

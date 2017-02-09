@@ -13,18 +13,13 @@ import main.system.auxiliary.LogMaster;
 import main.system.images.ImageManager;
 import main.utilities.workspace.Workspace;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Image;
-import java.awt.Rectangle;
-
-import javax.swing.JLabel;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.AbstractLayoutCache.NodeDimensions;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
+import java.awt.*;
 
 public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer {
 
@@ -70,14 +65,16 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
 
 		}
 		try {
-			if (workspace != null)
-				type = DataManager.getType(typeName, workspace.getOBJ_TYPE(typeName, parent));
-			else
-				type = DataManager.getType(typeName, TYPE);
-			if (type == null) {
-				if (node.isLeaf())
-					main.system.auxiliary.LogMaster.log(1, "NULL typeName!" + " " + typeName);
-				return getDefaultComp(tree, value, selected, expanded, leaf, row, hasFocus);
+            if (workspace != null) {
+                type = DataManager.getType(typeName, workspace.getOBJ_TYPE(typeName, parent));
+            } else {
+                type = DataManager.getType(typeName, TYPE);
+            }
+            if (type == null) {
+                if (node.isLeaf()) {
+                    LogMaster.log(1, "NULL typeName!" + " " + typeName);
+                }
+                return getDefaultComp(tree, value, selected, expanded, leaf, row, hasFocus);
 			}
 			Image img = ImageManager.getImage(type.getImagePath());
 			if (img == null) {
@@ -101,8 +98,9 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
 				// }
 				lbl.setForeground(aspectColor);
 				lbl.setBackground(bgColor);
-			} else if (colorsInverted)
-				lbl.setForeground(ColorManager.GOLDEN_WHITE);
+            } else if (colorsInverted) {
+                lbl.setForeground(ColorManager.GOLDEN_WHITE);
+            }
 
 			comp.add(lbl, "pos item.x2+" + FontMaster.SIZE / 4 + " item.y2/2-" + FontMaster.SIZE
 					/ 2 + "");

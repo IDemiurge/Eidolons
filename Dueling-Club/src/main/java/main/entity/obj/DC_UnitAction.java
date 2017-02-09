@@ -42,17 +42,20 @@ public class DC_UnitAction extends DC_ActiveObj {
 
     @Override
     public boolean activate() {
-        if (checkContinuousMode())
+        if (checkContinuousMode()) {
             return true;
+        }
         return super.activate();
     }
 
     private boolean checkContinuousMode() {
         ModeEffect effect = getModeEffect();
-        if (effect == null)
+        if (effect == null) {
             return false;
-        if (effect.getMode().isContinuous())
+        }
+        if (effect.getMode().isContinuous()) {
             return false;
+        }
         if (checkContinuousModeDeactivate()) {
             deactivate();
             return true;
@@ -84,8 +87,9 @@ public class DC_UnitAction extends DC_ActiveObj {
     }
 
     public boolean checkContinuousModeDeactivate() {
-        if (getModeEffect() == null)
+        if (getModeEffect() == null) {
             return false;
+        }
         return (ownerObj.getBuff(getModeBuffName()) != null);
 
     }
@@ -96,17 +100,20 @@ public class DC_UnitAction extends DC_ActiveObj {
 
     public boolean isContinuousMode() {
         ModeEffect effect = getModeEffect();
-        if (effect == null)
+        if (effect == null) {
             return false;
+        }
         return effect.getMode().isContinuous();
     }
 
     public ModeEffect getModeEffect() {
-        if (modeEffect != null)
+        if (modeEffect != null) {
             return modeEffect;
+        }
         List<Effect> e = EffectMaster.getEffectsOfClass(this, ModeEffect.class);
-        if (!e.isEmpty())
+        if (!e.isEmpty()) {
             modeEffect = (ModeEffect) e.get(0);
+        }
         return modeEffect;
     }
 
@@ -138,17 +145,19 @@ public class DC_UnitAction extends DC_ActiveObj {
     public boolean canBeActivated(Ref ref, boolean first) {
         if (isAttack()) {
             for (DC_ActiveObj attack : getSubActions()) {
-                if (attack.canBeActivated(ref, true))
+                if (attack.canBeActivated(ref, true)) {
                     return true;
+                }
             }
             // if (getActionMode() == null) {
             // return false;
             // }
         }
-        if (isContinuousMode())
+        if (isContinuousMode()) {
             if (checkContinuousModeDeactivate()) {
                 return true;
             }
+        }
         return super.canBeActivated(ref, first);
     }
 
@@ -167,11 +176,12 @@ public class DC_UnitAction extends DC_ActiveObj {
         if (getParentAction() != null) {
             String tag = "";
             if (getParentAction().checkProperty(G_PROPS.ACTION_TAGS,
-                    ACTION_TAGS.OFF_HAND.toString()))
+                    ACTION_TAGS.OFF_HAND.toString())) {
                 tag = ACTION_TAGS.OFF_HAND.toString();
-            else if (getParentAction().checkProperty(G_PROPS.ACTION_TAGS,
-                    ACTION_TAGS.MAIN_HAND.toString()))
+            } else if (getParentAction().checkProperty(G_PROPS.ACTION_TAGS,
+                    ACTION_TAGS.MAIN_HAND.toString())) {
                 tag = ACTION_TAGS.MAIN_HAND.toString();
+            }
             setProperty(G_PROPS.ACTION_TAGS, tag);
         }
 
@@ -220,19 +230,23 @@ public class DC_UnitAction extends DC_ActiveObj {
     @Override
     public Targeting getTargeting() {
         initTargetingMode();
-        if (AI_Manager.isRunning())
+        if (AI_Manager.isRunning()) {
             return super.getTargeting();
+        }
         if (isAttack()) {
             Conditions conditions = new OrConditions();
             int maxRange = 0;
             for (DC_ActiveObj attack : getSubActions()) {
-                if (attack.isThrow())
+                if (attack.isThrow()) {
                     continue;
-                if (!attack.canBeActivated())
+                }
+                if (!attack.canBeActivated()) {
                     continue;
+                }
                 conditions.add(attack.getTargeting().getFilter().getConditions());
-                if (maxRange < attack.getRange())
+                if (maxRange < attack.getRange()) {
                     maxRange = attack.getRange();
+                }
             }
             conditions.setFastFailOnCheck(true);
             conditions = ConditionMaster.getFilteredConditions(conditions, DistanceCondition.class);

@@ -26,8 +26,9 @@ public class BuffType extends ObjType {
     }
 
     public Integer getDuration() {
-        if (getIntParam(G_PARAMS.DURATION) == 0)
+        if (getIntParam(G_PARAMS.DURATION) == 0) {
             return null;
+        }
         return getIntParam(G_PARAMS.DURATION);
     }
 

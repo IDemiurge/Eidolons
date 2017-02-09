@@ -56,13 +56,14 @@ public class RefresherImpl implements Refresher {
             }
             if (enabled) {
 
-                if (switcherCheck())
+                if (switcherCheck()) {
                     try {
                         rc.refresh();
                     } catch (Throwable e) {
                         e.printStackTrace();
                         return;
                     }
+                }
             }
             // else
             // ServerConnector.getViewer().info("SWITCHER BLOCKED: "

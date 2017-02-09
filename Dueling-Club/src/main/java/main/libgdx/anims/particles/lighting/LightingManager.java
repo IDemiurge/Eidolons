@@ -15,10 +15,9 @@ public class LightingManager {
     public static float mouse_light_distance = 450;
     public static float mouse_light_distance_to_turn_off = 10;
     public static boolean mouse_light = false;
-
-    private LightMap lightMap;
     private static boolean lightOn;
     private static boolean testMode;
+    private LightMap lightMap;
 
     public LightingManager(DequeImpl<DC_HeroObj> units, int rows, int cols) {
         lightMap = new LightMap(units, rows, cols);
@@ -44,16 +43,18 @@ public class LightingManager {
         LightingManager.lightOn = lightOn;
     }
 
-    public static void setTestMode(boolean testMode) {
-        LightingManager.testMode = testMode;
-    }
-
     public static boolean isTestMode() {
         return testMode;
     }
 
+    public static void setTestMode(boolean testMode) {
+        LightingManager.testMode = testMode;
+    }
+
     public void updateAll() {
-        if (!lightMap.isValid()) return;
+        if (!lightMap.isValid()) {
+            return;
+        }
         lightMap.updateMap();
         lightMap.updateLight();
     }

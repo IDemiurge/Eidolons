@@ -74,8 +74,9 @@ public class AutoTestMaster {
             for (OBJ_TYPES t : cTYPE.getTypes()) {
                 instance.runTests(t);
             }
-        } else
+        } else {
             instance.runTests((OBJ_TYPES) TYPE);
+        }
     }
 
     public static void testParty(ObjType partyType, List<ObjType> testedTypes) {
@@ -84,11 +85,12 @@ public class AutoTestMaster {
 
     public static void testType(ObjType selectedType) {
         TYPE = (OBJ_TYPES) selectedType.getOBJ_TYPE_ENUM();
-        if (instance == null)
+        if (instance == null) {
             main(new String[]{selectedType.getName()});
-        else
+        } else {
             instance.runAutoTest(new AutoTest(selectedType, "", instance.getFactory().getType(
                     selectedType), instance));
+        }
 
     }
 
@@ -122,8 +124,9 @@ public class AutoTestMaster {
     }
 
     public static List<String> getLogStrings() {
-        if (logStrings == null)
+        if (logStrings == null) {
             logStrings = new LinkedList<>();
+        }
         return logStrings;
     }
 
@@ -226,8 +229,9 @@ public class AutoTestMaster {
     }
 
     public Entity getTestTarget() {
-        if (target != null)
+        if (target != null) {
             return target;
+        }
         return game.getPlayer(false).getHeroObj();
     }
 

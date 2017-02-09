@@ -28,8 +28,9 @@ public class T3SkillTreePanel extends SkillTreeView {
     }
 
     protected void select(HT_Node node, ObjType type) {
-        if (CoreEngine.isArcaneVault())
+        if (CoreEngine.isArcaneVault()) {
             HC_Master.getT3View(getHero(), true).selected(left, type);
+        }
         super.select(node, type);
         // SoundMaster.playStandardSound(STD_SOUNDS.SLOT);
         // HC_Master.setSelectedTreeNode(node);

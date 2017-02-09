@@ -89,8 +89,9 @@ public class Goal {
         }
 
         public boolean isFilterByCanActivate() {
-            if (isBehavior())
+            if (isBehavior()) {
                 return false;
+            }
             return true;
         } // FOLLOW AT SAFE DISTANCE
 

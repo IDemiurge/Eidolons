@@ -21,9 +21,9 @@ public abstract class DialogEffect extends DC_Effect {
         }
 
         boolean result = showDialog();
-        if (!result)
+        if (!result) {
             ref.getActive().setCancelled(true);
-        else if (getGame().isOnline()) {
+        } else if (getGame().isOnline()) {
             if (hero.isMine()) {
                 getGame().getCommunicator().sendChoiceData(getOperationsData());
             }

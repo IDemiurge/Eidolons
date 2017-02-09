@@ -12,31 +12,38 @@ public class ParamAnalyzer {
     public static boolean isFatigued(DC_HeroObj unit) {
         int buffLevel = unit.getGame().getRules().getStaminaRule()
                 .getBuffLevel(unit);
-        if (buffLevel < 0)
+        if (buffLevel < 0) {
             return false;
+        }
         if (buffLevel == unit.getGame().getRules().getStaminaRule()
-                .getMaxLevel())
+                .getMaxLevel()) {
             return false;
+        }
         return true;
     }
 
     public static boolean isHazed(DC_HeroObj unit) {
         int buffLevel = unit.getGame().getRules().getFocusRule()
                 .getBuffLevel(unit);
-        if (buffLevel < 0)
+        if (buffLevel < 0) {
             return false;
-        if (buffLevel == unit.getGame().getRules().getFocusRule().getMaxLevel())
+        }
+        if (buffLevel == unit.getGame().getRules().getFocusRule().getMaxLevel()) {
             return false;
+        }
         return true;
     }
 
     public static boolean isParamIgnored(DC_HeroObj unit, PARAMETER p) {
-        if (p == PARAMS.C_STAMINA)
+        if (p == PARAMS.C_STAMINA) {
             return isStaminaIgnore(unit);
-        if (p == PARAMS.C_FOCUS)
+        }
+        if (p == PARAMS.C_FOCUS) {
             return isStaminaIgnore(unit);
-        if (p == PARAMS.C_MORALE)
+        }
+        if (p == PARAMS.C_MORALE) {
             return isMoraleIgnore(unit);
+        }
         return false;
 
     }
@@ -72,8 +79,9 @@ public class ParamAnalyzer {
     public static int getMaxParam(PARAMS p, List<Entity> linkedList) {
         int max = Integer.MIN_VALUE;
         for (Entity e : linkedList) {
-            if (e.getIntParam(p) > max)
+            if (e.getIntParam(p) > max) {
                 max = e.getIntParam(p);
+            }
         }
 
         return max;

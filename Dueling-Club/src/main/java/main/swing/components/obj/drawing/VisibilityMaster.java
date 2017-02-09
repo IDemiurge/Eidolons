@@ -38,14 +38,18 @@ public class VisibilityMaster {
 
     private static List<OUTLINE_HINT> getHints(DC_HeroObj unit, OUTLINE_IMAGE image) {
         List<OUTLINE_HINT> list = new LinkedList<>();
-        if (unit.isSmall())
+        if (unit.isSmall()) {
             list.add(OUTLINE_HINT.SMALL);
-        if (unit.isTall())
+        }
+        if (unit.isTall()) {
             list.add(OUTLINE_HINT.TALL);
-        if (unit.isHuge())
+        }
+        if (unit.isHuge()) {
             list.add(OUTLINE_HINT.HUGE);
-        if (unit.isShort())
+        }
+        if (unit.isShort()) {
             list.add(OUTLINE_HINT.SHORT);
+        }
         if (image != null) {
             switch (image) {
                 case BEAST:
@@ -102,16 +106,18 @@ public class VisibilityMaster {
     }
 
     public static String getTooltip(DC_Obj target) {
-        if (target.getOutlineType() == null)
+        if (target.getOutlineType() == null) {
             return null;
+        }
         if (target.getOutlineType() == OUTLINE_TYPE.THICK_DARKNESS) {
             return "Impenetrable darkness...";
         }
         if (target.getOutlineType() == OUTLINE_TYPE.BLINDING_LIGHT) {
             return "Blinding light!";
         }
-        if (target instanceof DC_HeroObj)
+        if (target instanceof DC_HeroObj) {
             return getTooltipForUnit((DC_HeroObj) target);
+        }
         return null;
     }
 
@@ -120,8 +126,9 @@ public class VisibilityMaster {
         String tooltip = StringMaster.getWellFormattedString(unit.getOutlineType().toString()) + " of something "
                 + hintString;
         DC_HeroObj activeUnit = DC_Game.game.getManager().getActiveObj();
-        if (unit.getOwner().equals(activeUnit.getOwner()))
+        if (unit.getOwner().equals(activeUnit.getOwner())) {
             return unit.getToolTip();
+        }
 
         return tooltip;
 
@@ -145,54 +152,66 @@ public class VisibilityMaster {
         // construct and cache an Outline obj per unit?
         OUTLINE_TYPE type = obj.getOutlineType();
 
-        if (type == null)
+        if (type == null) {
             return null;
-        if (type == OUTLINE_TYPE.BLOCKED_OUTLINE)
+        }
+        if (type == OUTLINE_TYPE.BLOCKED_OUTLINE) {
             return getImage(OUTLINE_TYPE.THICK_DARKNESS, obj);
-        if ((type == OUTLINE_TYPE.THICK_DARKNESS || type == OUTLINE_TYPE.BLINDING_LIGHT))
+        }
+        if ((type == OUTLINE_TYPE.THICK_DARKNESS || type == OUTLINE_TYPE.BLINDING_LIGHT)) {
             return getImage(type, obj);
-        if (obj instanceof DC_Cell)
+        }
+        if (obj instanceof DC_Cell) {
             return null;
+        }
         String outlinePath = "ui\\outlines\\" + type.toString();
         OUTLINE_IMAGE outlineImage = null;
-        if (type == OUTLINE_TYPE.VAGUE_OUTLINE)
+        if (type == OUTLINE_TYPE.VAGUE_OUTLINE) {
             outlineImage = getImageVague((DC_HeroObj) obj);
-        else
+        } else {
             outlineImage = getImageDark((DC_HeroObj) obj);
-        if (outlineImage != OUTLINE_IMAGE.UNKNOWN)
+        }
+        if (outlineImage != OUTLINE_IMAGE.UNKNOWN) {
             outlinePath += "_" + outlineImage.toString();
+        }
 
-        if (obj.isTargetHighlighted())
+        if (obj.isTargetHighlighted()) {
             outlinePath += TARGET;
-        else {
-            if (obj.isInfoSelected())
+        } else {
+            if (obj.isInfoSelected()) {
                 outlinePath += INFO;
+            }
         }
         Image image = ImageManager.getImage(outlinePath + ".jpg");
-        if (ImageManager.isValidImage(image))
+        if (ImageManager.isValidImage(image)) {
             return image;
+        }
 
         image = ImageManager.getImage(outlinePath.replace("_" + outlineImage.toString(), "") + ".jpg");
-        if (ImageManager.isValidImage(image))
+        if (ImageManager.isValidImage(image)) {
             return image;
+        }
         image = ImageManager.getImage(outlinePath.replace(INFO, "").replace(TARGET, "") + ".jpg");
-        if (ImageManager.isValidImage(image))
+        if (ImageManager.isValidImage(image)) {
             return image;
+        }
         return null;
         // DIFFERENTIATE BETWEEN RANGE, CONCEALMENT, ILL AND STEALTH
     }
 
     public static Image getImage(OUTLINE_TYPE type, DC_Obj unit) {
         String outlinePath = "ui\\outlines\\" + type.toString();
-        if (unit.isTargetHighlighted())
+        if (unit.isTargetHighlighted()) {
             outlinePath += TARGET;
-        else {
-            if (unit.isInfoSelected())
+        } else {
+            if (unit.isInfoSelected()) {
                 outlinePath += INFO;
+            }
         }
         Image image = ImageManager.getImage(outlinePath + ".jpg");
-        if (!ImageManager.isValidImage(image))
+        if (!ImageManager.isValidImage(image)) {
             image = ImageManager.getImage("ui\\outlines\\" + type.toString() + ".jpg");
+        }
         return image;
     }
 
@@ -209,39 +228,50 @@ public class VisibilityMaster {
         // if (unit.isTall()) {
         //
         // }
-        if (unit.isWall())
+        if (unit.isWall()) {
             return OUTLINE_IMAGE.WALL;
+        }
         return OUTLINE_IMAGE.UNKNOWN;
     }
 
     private static OUTLINE_IMAGE getImageDark(DC_HeroObj unit) {
         // TODO identify!
-        if (unit.isWall())
+        if (unit.isWall()) {
             return OUTLINE_IMAGE.WALL;
-        if (unit.checkClassification(CLASSIFICATIONS.ANIMAL))
+        }
+        if (unit.checkClassification(CLASSIFICATIONS.ANIMAL)) {
             return OUTLINE_IMAGE.BEAST;
-        if (unit.checkClassification(CLASSIFICATIONS.HUMANOID))
-            if (unit.getRace() == RACE.HUMAN || unit.isHero())
+        }
+        if (unit.checkClassification(CLASSIFICATIONS.HUMANOID)) {
+            if (unit.getRace() == RACE.HUMAN || unit.isHero()) {
                 return OUTLINE_IMAGE.HUMAN;
-            else if (unit.checkClassification(CLASSIFICATIONS.MONSTER))
+            } else if (unit.checkClassification(CLASSIFICATIONS.MONSTER)) {
                 return OUTLINE_IMAGE.MONSTROUS_HUMANOID;
-            else
+            } else {
                 return OUTLINE_IMAGE.HUMANLIKE;
-        if (unit.checkClassification(CLASSIFICATIONS.INSECT))
+            }
+        }
+        if (unit.checkClassification(CLASSIFICATIONS.INSECT)) {
             return OUTLINE_IMAGE.INSECT;
+        }
 
-        if (unit.checkClassification(CLASSIFICATIONS.DEMON))
+        if (unit.checkClassification(CLASSIFICATIONS.DEMON)) {
             return OUTLINE_IMAGE.HORROR;
-        if (unit.checkClassification(CLASSIFICATIONS.UNDEAD))
+        }
+        if (unit.checkClassification(CLASSIFICATIONS.UNDEAD)) {
             return OUTLINE_IMAGE.HORROR;
+        }
 
-        if (unit.checkClassification(CLASSIFICATIONS.MONSTER))
+        if (unit.checkClassification(CLASSIFICATIONS.MONSTER)) {
             return OUTLINE_IMAGE.MONSTROUS;
+        }
 
-        if (unit.checkClassification(CLASSIFICATIONS.ANIMAL))
+        if (unit.checkClassification(CLASSIFICATIONS.ANIMAL)) {
             return OUTLINE_IMAGE.MULTIPLE;
-        if (unit.checkClassification(CLASSIFICATIONS.ANIMAL))
+        }
+        if (unit.checkClassification(CLASSIFICATIONS.ANIMAL)) {
             return OUTLINE_IMAGE.INSECT;
+        }
 
         return OUTLINE_IMAGE.UNKNOWN;
     }
@@ -287,15 +317,18 @@ public class VisibilityMaster {
 
     public static OUTLINE_TYPE getType(DC_Obj unit) {
         if (unit.getGame().isDebugMode()) {
-            if (unit.isMine())
+            if (unit.isMine()) {
                 return null;
+            }
         }
         DC_HeroObj activeUnit = DC_Game.game.getTurnManager().getActiveUnit(true);
         DC_TurnManager.setVisionInitialized(true);
-        if (activeUnit == null)
+        if (activeUnit == null) {
             return null;
-        if (unit == activeUnit)
+        }
+        if (unit == activeUnit) {
             return null;
+        }
         return getType(activeUnit, unit);
     }
 
@@ -308,13 +341,16 @@ public class VisibilityMaster {
     }
 
     public static OUTLINE_TYPE getOutlineType(DC_Obj unit, DC_HeroObj activeUnit) {
-        if (DebugMaster.isOmnivisionOn())
+        if (DebugMaster.isOmnivisionOn()) {
             return null;
-        if (unit.getGame().isSimulation())
+        }
+        if (unit.getGame().isSimulation()) {
             return null;
+        }
         if (unit.isDetectedByPlayer()) {
-            if (unit instanceof DC_Cell)
+            if (unit instanceof DC_Cell) {
                 return null;
+            }
             if (unit instanceof DC_HeroObj) {
                 DC_HeroObj heroObj = (DC_HeroObj) unit;
                 if (heroObj.isWall() || heroObj.isLandscape()) {
@@ -330,9 +366,11 @@ public class VisibilityMaster {
         int gamma = ConcealmentRule.getGamma(true, activeUnit, unit);
         if (gamma == Integer.MIN_VALUE) {
             return OUTLINE_TYPE.VAGUE_LIGHT;
-        } else if (gamma >= getGammaForBlindingLight())
-            if (!activeUnit.checkPassive(STANDARD_PASSIVES.EYES_OF_LIGHT))
+        } else if (gamma >= getGammaForBlindingLight()) {
+            if (!activeUnit.checkPassive(STANDARD_PASSIVES.EYES_OF_LIGHT)) {
                 return OUTLINE_TYPE.BLINDING_LIGHT;
+            }
+        }
         // TODO LIGHT_EMISSION !
         if (gamma <= getGammaForThickDarkness()) {
 
@@ -347,7 +385,7 @@ public class VisibilityMaster {
         // Math.sqrt(diff)));
         // first check if there is enough for either... then check which is
         // relatively greater! Or "Dark Vague Outline?" :)
-        if (unit instanceof DC_Cell)
+        if (unit instanceof DC_Cell) {
             if (gamma > 50) {
 
                 // [quick fix]
@@ -357,6 +395,7 @@ public class VisibilityMaster {
                 }
                 return null;
             }
+        }
         if (gamma > 50) {// ++ dark vision!
             // flat/blocked?
 
@@ -370,8 +409,9 @@ public class VisibilityMaster {
         int distance = PositionMaster.getDistance(activeUnit, unit);
         int diff = distance - activeUnit.getIntParam(PARAMS.SIGHT_RANGE);
         // if adjacent, gamma must be
-        if (gamma < 40 - diff * 10)
+        if (gamma < 40 - diff * 10) {
             return OUTLINE_TYPE.DARK_OUTLINE;
+        }
         return OUTLINE_TYPE.VAGUE_OUTLINE;
     }
 

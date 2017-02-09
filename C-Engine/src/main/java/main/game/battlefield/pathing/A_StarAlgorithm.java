@@ -55,8 +55,9 @@ public class A_StarAlgorithm {
                 break;
             }
         }
-        if (!success)
+        if (!success) {
             return null;
+        }
         constructPath();
         return PATH;
     }
@@ -111,21 +112,25 @@ public class A_StarAlgorithm {
 
         openList.clear();
         for (PathNode node : mngr.getAdjacentNodes(C.getCoordinates())) {
-            if (!isPassable(flying, agile, node))
+            if (!isPassable(flying, agile, node)) {
                 continue;
-            if (closedList.contains(node))
+            }
+            if (closedList.contains(node)) {
                 continue;
+            }
 
             if (openList.contains(node)) {
-                if (checkBetterPath(node))
+                if (checkBetterPath(node)) {
                     C.setParent(node);
+                }
             } else {
                 openList.add(node);
             }
             setFGH(node);
         }
-        if (openList.isEmpty())
+        if (openList.isEmpty()) {
             return;
+        }
 
         PathNode nextNode = getNodeWithLowestF();
 
@@ -143,11 +148,13 @@ public class A_StarAlgorithm {
 
     private double getCost(boolean agile, boolean flying, PathNode node) {
         PathNode parent = node.getParent();
-        if (node.getX() != parent.getX() && node.getY() != parent.getY())
-            if (agile)
+        if (node.getX() != parent.getX() && node.getY() != parent.getY()) {
+            if (agile) {
                 return Math.sqrt(2);
-            else
+            } else {
                 return 2;
+            }
+        }
         return 1;
     }
 
@@ -199,13 +206,17 @@ public class A_StarAlgorithm {
     }
 
     public boolean isPassable(boolean flying, boolean agile, PathNode node) {
-        if (isFullyBlocked(node))
+        if (isFullyBlocked(node)) {
             return false;
-        if (!flying && isGroundBlocked(node))
+        }
+        if (!flying && isGroundBlocked(node)) {
             return false;
-        if (!agile)
-            if (isDiagonallyBlocked(C, node))
+        }
+        if (!agile) {
+            if (isDiagonallyBlocked(C, node)) {
                 return false;
+            }
+        }
         return true;
     }
 

@@ -52,16 +52,18 @@ public class BuyButton extends CustomButton {
     }
 
     protected void playClickSound() {
-        if (gold)
+        if (gold) {
             SoundMaster.playStandardSound(STD_SOUNDS.DIS__COINS);
-        else
+        } else {
             SoundMaster.playStandardSound(STD_SOUNDS.DIS__BOOK_OPEN);
+        }
 
     }
 
     public void handleClick() {
-        if (!isEnabled())
+        if (!isEnabled()) {
             playDisabledSound();
+        }
         buyPoints(attr, gold);
         playClickSound();
     }

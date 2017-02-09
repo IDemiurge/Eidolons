@@ -91,14 +91,16 @@ public class TextItem {
         for (Object line : lines) {
             int w = (line instanceof ImageLine) ? ((ImageLine) line).getWidth() : FontMaster
                     .getStringWidth(font, line.toString());
-            if (w > width)
+            if (w > width) {
                 width = w;
+            }
             int h = (line instanceof ImageLine) ? ((ImageLine) line).getHeight() : FontMaster
                     .getFontHeight(font);
             height += h;
         }
-        if (point == null)
+        if (point == null) {
             return new Rectangle(0, 0, width, height);
+        }
         return new Rectangle(point.x, point.y, width, height);
     }
 

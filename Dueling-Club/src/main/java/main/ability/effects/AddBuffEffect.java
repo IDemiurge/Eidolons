@@ -100,31 +100,38 @@ public class AddBuffEffect extends MultiEffect implements ResistibleEffect, Redu
         if (buff != null) {
             buff.setDuration(buff.getIntParam(G_PARAMS.DURATION));
             buff.setDead(false);
-            if (!buff.getBasis().hasBuff(buff.getName()) || checkStacking())
+            if (!buff.getBasis().hasBuff(buff.getName()) || checkStacking()) {
                 game.getManager().buffCreated(buff, buff.getBasis());
-            else // TODO and if it's continuous???
+            } else // TODO and if it's continuous???
                 if (buff.checkBool(STD_BOOLS.DURATION_ADDED)) // TODO for spells
+                {
                     buff.setDuration(baseDuration + duration);
+                }
             // apply thru? Or do all normal spells reconstruct anyway?
             return true;
         }
         try {
             setActive(game.getObjectById(ref.getId(Ref.KEYS.ACTIVE)));
-            if (getActive() == null)
-                setActive(game.getObjectById(ref.getId(Ref.KEYS.SKILL)));
-            if (getActive() == null)
-                setActive(game.getObjectById(ref.getId(Ref.KEYS.SPELL)));
-            if (getActive() == null)
-                setActive(game.getObjectById(ref.getId(Ref.KEYS.ABILITY)));
-            if (getActive() == null)
+            if (getActive() == null) {
+                setActive(game.getObjectById(ref.getId(KEYS.SKILL)));
+            }
+            if (getActive() == null) {
+                setActive(game.getObjectById(ref.getId(KEYS.SPELL)));
+            }
+            if (getActive() == null) {
+                setActive(game.getObjectById(ref.getId(KEYS.ABILITY)));
+            }
+            if (getActive() == null) {
                 setActive(ref.getSourceObj());
+            }
         } catch (Exception e) {
         }
         getBuffTypeLazily();
         // check if continuous wrapping required
         effect = ContinuousEffect.transformEffect(effect);
-        if (forcedLayer != null)
+        if (forcedLayer != null) {
             effect.setForcedLayer(forcedLayer);
+        }
         if ((getActive() instanceof DC_ActiveObj)) {
             ((DC_ActiveObj) getActive()).setContinuous(true);
         }
@@ -133,13 +140,15 @@ public class AddBuffEffect extends MultiEffect implements ResistibleEffect, Redu
         initRetainConditions();
         ref.setBasis(target);
 
-        if (!getGame().getEffectManager().checkNotResisted(this))
+        if (!getGame().getEffectManager().checkNotResisted(this)) {
             return false;
+        }
         buffType.setTransient(isTransient());
         buff = (BuffObj) game.createBuff(buffType, active, ref.getSourceObj().getOwner(), ref,
                 effect, duration, getRetainConditions());
-        if (getAnimation() != null)
+        if (getAnimation() != null) {
             getAnimation().addPhaseArgs(PHASE_TYPE.BUFF, buff);
+        }
 
         getBuffCache().put(target, buff);
         return buff != null;
@@ -147,9 +156,11 @@ public class AddBuffEffect extends MultiEffect implements ResistibleEffect, Redu
     }
 
     private boolean checkStacking() {
-        if (ref.getActive() != null)
-            if (ref.getActive().checkBool(STD_BOOLS.STACKING))
+        if (ref.getActive() != null) {
+            if (ref.getActive().checkBool(STD_BOOLS.STACKING)) {
                 return true;
+            }
+        }
         return buff.checkBool(STD_BOOLS.STACKING);
     }
 
@@ -159,8 +170,9 @@ public class AddBuffEffect extends MultiEffect implements ResistibleEffect, Redu
     }
 
     public BuffType getBuffTypeLazily() {
-        if (buffType != null)
+        if (buffType != null) {
             return buffType;
+        }
 
         this.buffType = (BuffType) DataManager.getType(getBuffTypeName(), OBJ_TYPES.BUFFS);
         if (buffType == null) {
@@ -173,44 +185,51 @@ public class AddBuffEffect extends MultiEffect implements ResistibleEffect, Redu
             }
             buffType = new BuffType(DataManager.getType(dummyBuffType, OBJ_TYPES.BUFFS));
             boolean empty = StringMaster.isEmpty(getBuffTypeName());
-            if (!empty)
+            if (!empty) {
                 empty = StringMaster.isEmpty(getBuffTypeName().trim());
-            if (!empty)
+            }
+            if (!empty) {
                 empty = EMPTY_BUFF_NAME.equals(getBuffTypeName().trim());
-            if (empty)
+            }
+            if (empty) {
                 setBuffTypeName(getActive().getName());
+            }
             buffType.setProperty(G_PROPS.NAME, buffTypeName);
             Obj spell = ref.getObj(KEYS.SPELL);
             if (spell != null) {
                 buffType.setProperty(G_PROPS.BUFF_TYPE, BUFF_TYPE.SPELL.toString());
-                if (spell.checkBool(STD_BOOLS.NON_DISPELABLE))
+                if (spell.checkBool(STD_BOOLS.NON_DISPELABLE)) {
                     buffType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.NON_DISPELABLE.toString());
+                }
                 buffType.setImage(spell.getProperty(G_PROPS.IMAGE));
             }
             buffType.setImage(getActive().getProperty(G_PROPS.IMAGE));
 
-            if (invisible)
+            if (invisible) {
                 buffType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INVISIBLE_BUFF.toString());
+            }
             // DataManager.addType(buffType); //what for?
         }
         return buffType;
     }
 
     private void initRetainConditions() {
-        if (ref.getActive() == null)
+        if (ref.getActive() == null) {
             return;
+        }
         String prop = ref.getActive().getProperty(PROPS.RETAIN_CONDITIONS, false);
         for (String s : StringMaster.openContainer(prop)) {
             RETAIN_CONDITIONS template = new EnumMaster<RETAIN_CONDITIONS>().retrieveEnumConst(
                     RETAIN_CONDITIONS.class, s);
-            Condition condition = null;
+            Condition condition;
             if (template != null) {
                 condition = DC_ConditionMaster.getRetainConditionsFromTemplate(template);
             } else {
                 condition = ConditionMaster.toConditions(s);
             }
-            if (condition != null)
+            if (condition != null) {
                 getRetainConditions().add(condition);
+            }
 
         }
 
@@ -222,16 +241,20 @@ public class AddBuffEffect extends MultiEffect implements ResistibleEffect, Redu
             return 0;
         }
         if ((getActive() instanceof DC_ActiveObj)) {
-            if (getActive().getIntParam(G_PARAMS.DURATION) != 0)
+            if (getActive().getIntParam(G_PARAMS.DURATION) != 0) {
                 duration = getActive().getIntParam(G_PARAMS.DURATION);
+            }
         }
-        if (duration == null)
-            if (durationFormula != null)
+        if (duration == null) {
+            if (durationFormula != null) {
                 duration = durationFormula.getInt(ref);
-            else
+            } else {
                 this.duration = buffType.getDuration();
-        if (duration == null)
+            }
+        }
+        if (duration == null) {
             duration = ContentManager.INFINITE_VALUE;
+        }
         // TODO if (checkSpellBuff()) ++
         if (duration != ContentManager.INFINITE_VALUE) {
             if (getResistanceMod() != null) {
@@ -259,8 +282,9 @@ public class AddBuffEffect extends MultiEffect implements ResistibleEffect, Redu
     @Override
     public String toString() {
         String string = "Buff effect: ";
-        if (effect == null)
+        if (effect == null) {
             string += effect.toString();
+        }
         return string;
 
     }
@@ -330,8 +354,9 @@ public class AddBuffEffect extends MultiEffect implements ResistibleEffect, Redu
     }
 
     public Map<Integer, BuffObj> getBuffCache() {
-        if (buffCache == null)
+        if (buffCache == null) {
             buffCache = new HashMap<>();
+        }
         return buffCache;
     }
 
@@ -351,8 +376,9 @@ public class AddBuffEffect extends MultiEffect implements ResistibleEffect, Redu
     }
 
     public Conditions getRetainConditions() {
-        if (retainConditions == null)
+        if (retainConditions == null) {
             retainConditions = new Conditions();
+        }
         return retainConditions;
     }
 

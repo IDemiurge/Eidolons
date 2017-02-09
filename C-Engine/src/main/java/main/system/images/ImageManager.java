@@ -38,6 +38,7 @@ public class ImageManager {
     public static final BORDER BORDER_ALLY_HIGHLIGHT = BORDER.HIGHLIGHTED_BLUE;
     public static final BORDER BORDER_ENEMY_HIGHLIGHT = BORDER.HIGHLIGHTED_RED;
     public static final int CENTERED = -999;
+    public static final String VALUE_ICONS_PATH = "UI\\value icons\\";
     private static final String EMPTY_LIST_ITEM = "UI\\EMPTY_ITEM.jpg";
     private static final String EMPTY_LIST_ITEM_ALT = "UI\\EMPTY_ITEM_ALT.jpg";
     private static final String EMPTY_LIST_ITEM_SMALL = "UI\\EMPTY_ITEM_SMALL.jpg";
@@ -54,7 +55,6 @@ public class ImageManager {
     private static final String DEFAULT_IMAGE_PATH = "UI\\Empty1.jpg";
     private static final int MAX_TYPE_ICON_SIZE = 256;
     public static final int LARGE_ICON = MAX_TYPE_ICON_SIZE;
-    public static final String VALUE_ICONS_PATH = "UI\\value icons\\";
     private static final String DEFAULT_CURSOR = "UI\\cursor.png";
     private static final String PORTRAIT_ROOT_PATH = "\\mini\\char\\std\\";
     private static final String EMBLEM_PATH = "UI\\emblems\\std\\";
@@ -93,33 +93,40 @@ public class ImageManager {
 
     public static CustomImageIcon getIcon(String imgName) {
         // Toolkit.getDefaultToolkit().createImage(filename)
-        if (imgName == null)
+        if (imgName == null) {
             return null;
-        if (iconCache.get(imgName) != null)
+        }
+        if (iconCache.get(imgName) != null) {
             return iconCache.get(imgName);
+        }
         // DEFAULT + f.list()[new Random().nextInt(f.list().length)]
 
         CustomImageIcon img = null;
-        if (!imgName.toLowerCase().contains(getPATH().toLowerCase()))
+        if (!imgName.toLowerCase().contains(getPATH().toLowerCase())) {
             img = new CustomImageIcon(getPATH() + imgName);
-        else
+        } else {
             img = new CustomImageIcon(imgName);
+        }
 
         if (img.getImage().getHeight(null) == -1) {
-            if (!imgName.equals(imgName.toLowerCase()))
+            if (!imgName.equals(imgName.toLowerCase())) {
                 return getIcon(imgName.toLowerCase());
+            }
             // return "broken skull" image! at least for units and list items!
             // if (imgName.contains(".")) {
-            if (!imgName.contains(getPATH()))
+            if (!imgName.contains(getPATH())) {
                 imgName = getPATH() + imgName;
+            }
             if (StringMaster.getFormat(imgName).length() < 2) {
                 for (String format : STD_FORMATS) {
                     img = new CustomImageIcon(imgName + format);
-                    if (isValidIcon(img))
+                    if (isValidIcon(img)) {
                         return img;
+                    }
                     img = new CustomImageIcon(imgName + "." + format);
-                    if (isValidIcon(img))
+                    if (isValidIcon(img)) {
                         return img;
+                    }
                 }
             }
             // }
@@ -170,15 +177,17 @@ public class ImageManager {
     }
 
     public static String getEmptyItemIconPath(boolean alt) {
-        if (alt)
+        if (alt) {
             return "UI\\EMPTY_ITEM_ALT.jpg";
+        }
         return "UI\\EMPTY_ITEM.jpg";
 
     }
 
     public static ImageIcon getEmptyItemIcon(boolean alt) {
-        if (alt)
+        if (alt) {
             return new ImageIcon(getPATH() + "UI\\EMPTY_ITEM_ALT.jpg");
+        }
         return new ImageIcon(getPATH() + "UI\\EMPTY_ITEM.jpg");
     }
 
@@ -213,8 +222,9 @@ public class ImageManager {
         }
         if (img.getWidth(observer) > border.getImage().getWidth(observer)) {
             border = border.getBiggerVersion();
-            if (border != null)
+            if (border != null) {
                 bImg = border.getImage();
+            }
         }
         try {
             return applyImage(img, bImg, 0, 0, resize, false, size);
@@ -260,15 +270,18 @@ public class ImageManager {
     public static Image applyImage(Image target, Image applied, int x, int y, Boolean resize,
                                    boolean retry, Dimension size) {
 
-        if (x == CENTERED)
+        if (x == CENTERED) {
             x = MigMaster
                     .getCenteredPosition(applied.getWidth(observer), target.getWidth(observer));
-        if (y == CENTERED)
+        }
+        if (y == CENTERED) {
             y = MigMaster.getCenteredPosition(applied.getHeight(observer), target
                     .getHeight(observer));
+        }
         // return applied;
-        if (target == null || applied == null)
+        if (target == null || applied == null) {
             throw new RuntimeException();
+        }
         try {
             BufferedImage IMG = null;
             if (resize == null && size != null) {
@@ -283,12 +296,13 @@ public class ImageManager {
             IMG = new BufferedImage(target.getWidth(observer), target.getHeight(observer),
                     BufferedImage.TYPE_INT_ARGB);
             IMG.getGraphics().drawImage(target, 0, 0, observer);
-            if (resize)
+            if (resize) {
                 if (target.getHeight(observer) != applied.getHeight(observer)) {
                     IMG.getGraphics().drawImage(applied, x, y, target.getWidth(observer),
                             target.getHeight(observer), observer);
                     return IMG;
                 }
+            }
             IMG.getGraphics().drawImage(applied, x, y, observer);
             return IMG;
         } catch (Exception e) {
@@ -313,15 +327,18 @@ public class ImageManager {
         ImageIcon icon = null;
         try {
             icon = sizedImageStringCache.get(imgName + size.getWidth() + size.getHeight());
-            if (icon == null)
+            if (icon == null) {
                 throw new Exception();
+            }
             if (icon.getImage().getHeight(null) == size.getHeight()
-                    && icon.getImage().getWidth(null) == size.getWidth())
+                    && icon.getImage().getWidth(null) == size.getWidth()) {
                 return icon;
+            }
 
         } catch (Exception e) {
-            if (!isImage(imgName))
+            if (!isImage(imgName)) {
                 return new ImageIcon(getNewBufferedImage(size.width, size.height));
+            }
             icon = new ImageIcon(getSizedVersion(getImage(imgName), size));
             sizedImageStringCache.put(imgName + size.getWidth() + size.getHeight(), icon);
 
@@ -331,20 +348,25 @@ public class ImageManager {
 
     public static Image getSizedVersion(Image img, Dimension tsize, boolean forceCache) {
         Image image = null;
-        if (checkMemoryForSizedCache() || forceCache)
+        if (checkMemoryForSizedCache() || forceCache) {
             image = sizedImageCache.get(img.hashCode() + tsize.toString());
-        if (image != null)
+        }
+        if (image != null) {
             return image;
-        if (SwingMaster.DEBUG_ON)
-            main.system.auxiliary.LogMaster.log(1, img + " to " + tsize);
+        }
+        if (SwingMaster.DEBUG_ON) {
+            LogMaster.log(1, img + " to " + tsize);
+        }
         if (img.getWidth(null) != tsize.width || img.getHeight(null) != tsize.height) {
             image = img.getScaledInstance((int) tsize.getWidth(), (int) tsize.getHeight(),
                     Image.SCALE_SMOOTH);
-            if (checkMemoryForSizedCache() || forceCache)
+            if (checkMemoryForSizedCache() || forceCache) {
                 sizedImageCache.put(img.hashCode() + tsize.toString(), image);
+            }
             return image;
-        } else
+        } else {
             return img;
+        }
     }
 
     public static Image getSizedVersion(Image img, Dimension tsize) {
@@ -394,11 +416,13 @@ public class ImageManager {
     public static String getArrowImagePath(boolean vertical, boolean forward, int version) {
         String compVersion = (version == 1) ? "" : "" + version;
         String path = "UI\\components\\";
-        if (forward)
+        if (forward) {
             path += vertical ? "up" : "right";
-        else
+        } else
             // TODO swap up/down?!
+        {
             path += vertical ? "down" : "left";
+        }
         path += compVersion + ".png";
         return path;
     }
@@ -407,11 +431,12 @@ public class ImageManager {
                                                   UNIT_TO_UNIT_VISION visibility) {
         String suffix = (!huge) ? "96" : "HUGE";
         if (detection == UNIT_TO_PLAYER_VISION.UNKNOWN
-                || detection == UNIT_TO_PLAYER_VISION.CONCEALED)
+                || detection == UNIT_TO_PLAYER_VISION.CONCEALED) {
             suffix += " unknown";
-        else if (detection == UNIT_TO_PLAYER_VISION.KNOWN
-                || visibility == UNIT_TO_UNIT_VISION.BEYOND_SIGHT)
+        } else if (detection == UNIT_TO_PLAYER_VISION.KNOWN
+                || visibility == UNIT_TO_UNIT_VISION.BEYOND_SIGHT) {
             suffix += " hidden";
+        }
         return getIcon("UI//CELL for " + suffix + ".png");
 
     }
@@ -482,8 +507,9 @@ public class ImageManager {
 
     public static JLabel getLabel(String img, int w, int h) {
         JLabel label = labelCache.get(img + w + h);
-        if (label != null)
+        if (label != null) {
             return label;
+        }
         ImageIcon image = new ImageIcon(ImageManager.getSizedVersion(
                 ((ImageManager.getImage(img) != null) ? ImageManager.getImage(img)
                         : getDefaultImage()), new Dimension(w, h)));
@@ -524,8 +550,10 @@ public class ImageManager {
             return null;
         }
         if (icon != null) {
-            if (CoreEngine.isSwingOn()) return
-                    icon.getImage();
+            if (CoreEngine.isSwingOn()) {
+                return
+                        icon.getImage();
+            }
 
             return new CustomImage(icon.imgPath, icon.getImage());
         }
@@ -537,14 +565,17 @@ public class ImageManager {
     }
 
     public static String getThemedImagePath(String imagePath, COLOR_THEME colorTheme) {
-        if (colorTheme == null)
+        if (colorTheme == null) {
             return imagePath;
-        if (noColorTheme.contains(imagePath))
+        }
+        if (noColorTheme.contains(imagePath)) {
             return imagePath;
+        }
         String imgPath = colorImgCache.get(colorTheme).get(imagePath);
-        if (imgPath == null)
+        if (imgPath == null) {
             imgPath = StringMaster.cropFormat(imagePath) + colorTheme.getSuffix()
                     + DEFAULT_ENTITY_IMAGE_FORMAT;
+        }
         if (isImage(imgPath)) {
             colorImgCache.get(colorTheme).put(imagePath, imgPath);
             return imgPath;
@@ -565,24 +596,28 @@ public class ImageManager {
         return PATH;
     }
 
-    public static String getValueIconsPath() {
-        return PATH+VALUE_ICONS_PATH;
-    }
     public static void setPATH(String pATH) {
         PATH = pATH;
     }
 
+    public static String getValueIconsPath() {
+        return PATH + VALUE_ICONS_PATH;
+    }
+
     public static boolean isValidImage(Image img) {
-        if (img == null)
+        if (img == null) {
             return false;
+        }
         return !(img.getWidth(null) <= 0 || img.getHeight(null) <= 0);
     }
 
     public static boolean isValidIcon(ImageIcon icon) {
-        if (icon == null)
+        if (icon == null) {
             return false;
-        if (icon.getImage() == null)
+        }
+        if (icon.getImage() == null) {
             return false;
+        }
 
         return !(icon.getIconWidth() <= 0 || icon.getIconHeight() <= 0);
 
@@ -593,8 +628,9 @@ public class ImageManager {
     }
 
     public static Image getPrincipleImage(PRINCIPLES principle) {
-        if (principle == null)
+        if (principle == null) {
             return getImage(VALUE_ICONS_PATH + "Principles\\principles.jpg");
+        }
         return getImage(VALUE_ICONS_PATH + "Principles\\" + principle.toString() + ".jpg");
     }
 
@@ -602,8 +638,9 @@ public class ImageManager {
         String imgPath = VALUE_ICONS_PATH + "masteries\\groups\\" + title + ".png";
         Image image = getNewBufferedImage(32, 32);
         Image masteryIcon = getImage(imgPath);
-        if (masteryIcon == null)
+        if (masteryIcon == null) {
             return getEmptyEmblem();
+        }
         // image = applyImage(image, masteryIcon, 4, 4, false);
         Graphics2D g = (Graphics2D) image.getGraphics();
         g.drawImage(masteryIcon, -4, -4, 32, 32, 0, 0, 36, 36, observer);
@@ -623,7 +660,9 @@ public class ImageManager {
     public static String getValueIconPath(VALUE value
       ) {
         Image img = getValueIcon(value);
-        if (img == null  )return "";
+        if (img == null) {
+            return "";
+        }
 return ((CustomImage)img).getImgPath();
 
     }
@@ -637,8 +676,9 @@ return ((CustomImage)img).getImgPath();
             imgPath = VALUE_ICONS_PATH + "macro\\";
         } else if (value instanceof PARAMETER) {
             PARAMETER parameter = (PARAMETER) value;
-            if (parameter.getName().contains(" Durability Mod"))
+            if (parameter.getName().contains(" Durability Mod")) {
                 return getDamageTypeImage(parameter.getName().replace(" Durability Mod", ""));
+            }
             if (parameter.getName().contains(" Armor")) {
                 return getDamageTypeImage(parameter.getName().replace(" Armor", ""));
             }
@@ -647,22 +687,28 @@ return ((CustomImage)img).getImgPath();
                 mastery = true;
                 imgPath += "masteries\\";
                 name = name.replace(" mastery", "");
-            } else if (parameter.isAttribute())
+            } else if (parameter.isAttribute()) {
                 imgPath += "attributes\\";
-            if (glowIconForDynamicIfAvailable)
-                if (parameter.isDynamic())
-                    if (!parameter.isWriteToType())
+            }
+            if (glowIconForDynamicIfAvailable) {
+                if (parameter.isDynamic()) {
+                    if (!parameter.isWriteToType()) {
                         name += " s";
+                    }
+                }
+            }
         }
-        if (!mastery)
-            name = name.replaceFirst("c ", "");
+            if (!mastery) {
+                name = name.replaceFirst("c ", "");
+            }
         imgPath += name + "."; // free format
         icon = getImage(imgPath);
         if (!isValidImage(icon)) {
-            if (mastery)
+            if (mastery) {
                 return getImage(getEmptyListIconSmall());
-            else
-                return  new CustomImage("", getNewBufferedImage(40, 40));
+            } else {
+                return new CustomImage("", getNewBufferedImage(40, 40));
+            }
         }
         return icon;
 
@@ -676,11 +722,13 @@ return ((CustomImage)img).getImgPath();
         Image image = getImage("ui\\actions\\modes\\" + mode + ".png");
         if (image == null) {
             ObjType type = DataManager.getType(mode, OBJ_TYPES.ACTIONS);
-            if (type != null)
+            if (type != null) {
                 image = type.getIcon().getImage();
+            }
         }
-        if (image == null)
+        if (image == null) {
             return null;
+        }
         if (blocked) {
             image = applyBorder(image, BORDER.DARKENING_CIRCLE_50);
         }
@@ -692,8 +740,9 @@ return ((CustomImage)img).getImgPath();
     }
 
     public static Dimension getImgSize(Image img) {
-        if (img == null)
+        if (img == null) {
             return null; // new Dimension(0, 0)
+        }
         return new Dimension(img.getWidth(null), img.getHeight(null));
     }
 
@@ -704,18 +753,22 @@ return ((CustomImage)img).getImgPath();
 
     public static boolean isImageFile(String name) {
         String format = StringMaster.getFormat(name);
-        for (String f : STD_FORMATS)
-            if (format.substring(1).equalsIgnoreCase(f))
+        for (String f : STD_FORMATS) {
+            if (format.substring(1).equalsIgnoreCase(f)) {
                 return true;
+            }
+        }
         return false;
     }
 
     public static boolean isImage(String imgPath) {
         Image image = getImage(imgPath);
-        if (image == null)
+        if (image == null) {
             return false;
-        if (image.getWidth(null) < 1)
+        }
+        if (image.getWidth(null) < 1) {
             return false;
+        }
         return image.getHeight(null) >= 1;
     }
 
@@ -746,7 +799,7 @@ return ((CustomImage)img).getImgPath();
 
     public static String getRandomHeroPortrait() {
         Loop loop = new Loop(10);
-        while (loop.continues())
+        while (loop.continues()) {
             try {
                 String bg = BACKGROUND.values()[RandomWizard.getRandomIntBetween(0, BACKGROUND
                         .values().length - 1)].toString();
@@ -757,14 +810,16 @@ return ((CustomImage)img).getImgPath();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
         return DEFAULT;
     }
 
     public static List<String> getPortraitsForBackground(String property, Boolean extended) {
         BACKGROUND bg = new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class, property);
         List<String> list = getPortraitMap(extended).get(bg);
-        if (list != null)
+        if (list != null) {
             return list;
+        }
         list = new LinkedList<>();
         File folder = null;
         List<String> paths = new LinkedList<>();
@@ -773,22 +828,25 @@ return ((CustomImage)img).getImgPath();
             case DARK_ELF:
                 paths.add(PORTRAIT_ROOT_PATH + "elf\\dark");
                 paths.add(PORTRAIT_ROOT_PATH + "elf\\drow");
-                if (!extended)
+                if (!extended) {
                     break;
+                }
                 paths.add(PORTRAIT_ROOT_PATH + "elf\\grey");
                 break;
             case FEY_ELF:
                 paths.add(PORTRAIT_ROOT_PATH + "elf\\fey");
-                if (!extended)
+                if (!extended) {
                     break;
+                }
                 paths.add(PORTRAIT_ROOT_PATH + "elf\\wood");
                 paths.add(PORTRAIT_ROOT_PATH + "elf\\ice");
                 paths.add(PORTRAIT_ROOT_PATH + "elf\\grey");
                 break;
             case GREY_ELF:
                 paths.add(PORTRAIT_ROOT_PATH + "elf\\grey");
-                if (!extended)
+                if (!extended) {
                     break;
+                }
                 paths.add(PORTRAIT_ROOT_PATH + "elf\\ice");
                 paths.add(PORTRAIT_ROOT_PATH + "elf\\fey");
                 paths.add(PORTRAIT_ROOT_PATH + "elf\\dark");
@@ -829,24 +887,27 @@ return ((CustomImage)img).getImgPath();
             case WOMAN_OF_EAGLE_REALM:
             case MAN_OF_EAGLE_REALM:
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Eagle Realm");
-                if (!extended)
+                if (!extended) {
                     break;
+                }
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\4arcane");
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\1misc");
                 break;
             case WOMAN_OF_GRIFF_REALM:
             case MAN_OF_GRIFF_REALM:
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Griff Realm");
-                if (!extended)
+                if (!extended) {
                     break;
+                }
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\3warrior");
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\1misc");
                 break;
             case WOMAN_OF_KINGS_REALM:
             case MAN_OF_KINGS_REALM:
                 paths.add(PORTRAIT_ROOT_PATH + "human\\King Realm");
-                if (!extended)
+                if (!extended) {
                     break;
+                }
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\1misc");
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\3warrior");
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\4arcane");
@@ -854,8 +915,9 @@ return ((CustomImage)img).getImgPath();
             case WOMAN_OF_RAVEN_REALM:
             case MAN_OF_RAVEN_REALM:
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Raven Realm");
-                if (!extended)
+                if (!extended) {
                     break;
+                }
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\4arcane");
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\6dark");
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\2rogue");
@@ -863,16 +925,18 @@ return ((CustomImage)img).getImgPath();
             case WOMAN_OF_WOLF_REALM:
             case MAN_OF_WOLF_REALM:
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Wolf Realm");
-                if (!extended)
+                if (!extended) {
                     break;
+                }
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\6dark");
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\2rogue");
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\3warrior");
                 break;
             case STRANGER:
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Generic");
-                if (!extended)
+                if (!extended) {
                     break;
+                }
                 paths.add(PORTRAIT_ROOT_PATH + "human\\King Realm");
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Griff Realm");
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Eagle Realm");
@@ -917,15 +981,18 @@ return ((CustomImage)img).getImgPath();
             path += "\\";
             for (String file : folder.list()) {
                 if (new File(getPATH() + path + file).isFile()) {
-                    if (!ListMaster.contains(list, file, false))
+                    if (!ListMaster.contains(list, file, false)) {
                         list.add(path + file);
-                } else if (new File(getPATH() + path + file).isDirectory())
-                    for (String subfile : new File(getPATH() + path + file).list())
-                        if (!ListMaster.contains(list, subfile, false))
+                    }
+                } else if (new File(getPATH() + path + file).isDirectory()) {
+                    for (String subfile : new File(getPATH() + path + file).list()) {
+                        if (!ListMaster.contains(list, subfile, false)) {
                             list.add(path + file + "\\" + subfile);
-                        else {
+                        } else {
                             continue;
                         }
+                    }
+                }
             }
         }
 
@@ -937,8 +1004,9 @@ return ((CustomImage)img).getImgPath();
         ASPECT A = new EnumMaster<ASPECT>().retrieveEnumConst(ASPECT.class, property);
         String path = EMBLEM_PATH;
         // if (A !=
-        if (A == null)
+        if (A == null) {
             A = ASPECT.NEUTRAL;
+        }
 
         ASPECT[] aspects = new ASPECT[]{A};
         if (A == ASPECT.NEUTRAL) {
@@ -964,12 +1032,14 @@ return ((CustomImage)img).getImgPath();
 
     public static HashMap<BACKGROUND, List<String>> getPortraitMap(Boolean extended) {
         if (extended) {
-            if (extendedPortraitMap == null)
+            if (extendedPortraitMap == null) {
                 extendedPortraitMap = new HashMap<>();
+            }
             return extendedPortraitMap;
         }
-        if (portraitMap == null)
+        if (portraitMap == null) {
             portraitMap = new HashMap<>();
+        }
         return portraitMap;
     }
 
@@ -988,8 +1058,9 @@ return ((CustomImage)img).getImgPath();
 
     public static BufferedImage getBufferedImage(String imagePath) {
         Image image = getImage(imagePath);
-        if (!isValidImage(image))
+        if (!isValidImage(image)) {
             return null;
+        }
         return getBufferedImage(image);
     }
 
@@ -1028,18 +1099,21 @@ return ((CustomImage)img).getImgPath();
 
     public static Image getDiceIcon(Boolean luck, boolean glow) {
         String luckVariant = "normal";
-        if (luck != null)
+        if (luck != null) {
             luckVariant = luck ? "good" : "bad";
+        }
         String imgPath = "UI\\Components\\small\\dice " + luckVariant;
-        if (glow)
+        if (glow) {
             imgPath += " glow";
+        }
         return getImage(imgPath);
     }
 
     public static BufferedImage getBufferedImage8bit(BufferedImage image) {
         ColorModel cm = image.getColorModel();
-        if (!(cm instanceof IndexColorModel))
+        if (!(cm instanceof IndexColorModel)) {
             return image; // sorry...
+        }
         IndexColorModel icm = (IndexColorModel) cm;
         WritableRaster raster = image.getRaster();
         int pixel = raster.getSample(0, 0, 0); // pixel is offset in ICM's palette
@@ -1083,7 +1157,7 @@ return ((CustomImage)img).getImgPath();
     }
 
     public static ImageIcon getDefaultTypeIcon(Entity entity) {
-        if (entity.getOBJ_TYPE_ENUM() instanceof OBJ_TYPES)
+        if (entity.getOBJ_TYPE_ENUM() instanceof OBJ_TYPES) {
             switch ((OBJ_TYPES) entity.getOBJ_TYPE_ENUM()) {
                 case UNITS:
                 case CHARS:
@@ -1094,12 +1168,14 @@ return ((CustomImage)img).getImgPath();
                 case BUFFS:
                     return getEmptyIcon(GuiManager.getTinyObjSize());
             }
+        }
         return getEmptyIcon(GuiManager.getSmallObjSize());
     }
 
     public static Map<Obj, Map<String, ImageIcon>> getCustomIconCache() {
-        if (customIconCache == null)
+        if (customIconCache == null) {
             customIconCache = new HashMap<>();
+        }
         return customIconCache;
     }
 
@@ -1244,15 +1320,17 @@ return ((CustomImage)img).getImgPath();
         }
 
         public Image getPathPrefixedImage(String pathPrefix) {
-            if (pathPrefix == null)
+            if (pathPrefix == null) {
                 return getImage();
+            }
             String name = StringMaster.getLastPathSegment(path);
             return ImageManager.getImage(path.replace(name, "") + pathPrefix + "\\" + name);
         }
 
         public Image getSuffixedImage(String suffix) {
-            if (suffix == null)
+            if (suffix == null) {
                 return getImage();
+            }
             String f = StringMaster.getFormat(path);
             return ImageManager.getImage(StringMaster.cropFormat(path) + suffix + f);
         }
@@ -1260,8 +1338,9 @@ return ((CustomImage)img).getImgPath();
         public Image getImage() {
             if (image == null) {
                 image = ImageManager.getImage(path);
-                if (image == null)
+                if (image == null) {
                     return null;
+                }
                 height = (image.getHeight(null));
                 width = (image.getWidth(null));
             }
@@ -1269,14 +1348,16 @@ return ((CustomImage)img).getImgPath();
         }
 
         public int getWidth() {
-            if (width == 0)
+            if (width == 0) {
                 getImage();
+            }
             return width;
         }
 
         public int getHeight() {
-            if (height == 0)
+            if (height == 0) {
                 getImage();
+            }
             return height;
         }
 
@@ -1418,8 +1499,9 @@ return ((CustomImage)img).getImgPath();
         }
 
         public Image getImage() {
-            if (img == null)
+            if (img == null) {
                 initImg();
+            }
             return img;
         }
 

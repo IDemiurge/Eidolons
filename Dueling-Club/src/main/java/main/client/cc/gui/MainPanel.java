@@ -132,8 +132,9 @@ public class MainPanel implements TabChangeListener {
 
     public void refresh() {
         for (HeroPanelTab tab : tabArray) {
-            if (tab != currentTab)
+            if (tab != currentTab) {
                 tab.setDirty(true);
+            }
         }
         controls.refresh();
         specialControls.refresh();
@@ -209,15 +210,17 @@ public class MainPanel implements TabChangeListener {
         currentTab = tabArray[index];
 
         currentTab.activate();
-        if (currentTab.isDirty())
+        if (currentTab.isDirty()) {
             currentTab.refresh();
+        }
         view = currentTab.getLinkedView();
         mvp.activateView(view);
         mp.activateView(view);
         HC_TabPanel tabbedPanel = mvp.getCurrentViewComp().getTabbedPanel();
         Launcher.getHcKeyListener().setTabPanel(tabbedPanel);
-        if (tabbedPanel != null)
+        if (tabbedPanel != null) {
             tabbedPanel.requestFocusInWindow();
+        }
         specialControls.refresh();
     }
 
@@ -271,8 +274,9 @@ public class MainPanel implements TabChangeListener {
 
     public void typeSelected(Entity type) {
         getMiddlePanel().getArc().refresh();
-        if (currentTab == itemTab)
+        if (currentTab == itemTab) {
             itemTab.getActionPanel().refresh();
+        }
     }
 
     @Override

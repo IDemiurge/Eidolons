@@ -60,10 +60,11 @@ public class M3uGenerator {
 			String param = sub.getParam(G_PARAMS.DURATION);
 			String path = sub.getProperty(AT_PROPS.PATH);
 			String property = sub.getProperty(AT_PROPS.ARTIST);
-			if (property.isEmpty())
-				property = StringMaster.getPathSegments(path).get(
-						StringMaster.getPathSegments(path).size() - 2);
-			content += M3U_TRACK_PREFIX + param + "," + property + " - " + sub.getName()
+            if (property.isEmpty()) {
+                property = StringMaster.getPathSegments(path).get(
+                        StringMaster.getPathSegments(path).size() - 2);
+            }
+            content += M3U_TRACK_PREFIX + param + "," + property + " - " + sub.getName()
 					+ StringMaster.NEW_LINE;
 
 			content += path + StringMaster.NEW_LINE;
@@ -110,9 +111,10 @@ public class M3uGenerator {
 	public static List<String> getTracks(File dir) {
 		List<String> filePaths = new LinkedList<>();
 		addMusicTracks(dir, filePaths);
-		if (filePaths.isEmpty())
-			return new LinkedList<>();
-		return filePaths;
+        if (filePaths.isEmpty()) {
+            return new LinkedList<>();
+        }
+        return filePaths;
 	}
 
 	public static String getM3uForList(MusicList musicList) {
@@ -125,26 +127,31 @@ public class M3uGenerator {
 		for (String a : array) {
 			a = a.replace("_", "");
 			a = a.trim();
-			if (StringMaster.isInteger(a))
-				continue;
-			if (StringMaster.getFirstNumberIndex(a) < 2)
-				continue;
-			a = VariableManager.removeVarPart(a);
-			if (a.length() > 20)
-				continue;
-		}
-		if (name.isEmpty())
-			name = array[0];
-		return StringMaster.getWellFormattedString(name);
+            if (StringMaster.isInteger(a)) {
+                continue;
+            }
+            if (StringMaster.getFirstNumberIndex(a) < 2) {
+                continue;
+            }
+            a = VariableManager.removeVarPart(a);
+            if (a.length() > 20) {
+                continue;
+            }
+        }
+        if (name.isEmpty()) {
+            name = array[0];
+        }
+        return StringMaster.getWellFormattedString(name);
 	}
 
 	private static void addMusicTracks(File dir, List<String> filePaths) {
 		for (File sub : FileManager.getFilesFromDirectory(dir.getPath(), true)) {
-			if (sub.isDirectory())
-				addMusicTracks(sub, filePaths);
-			else if (FileManager.isMusicFile(sub))
-				filePaths.add(sub.getPath());
-		}
+            if (sub.isDirectory()) {
+                addMusicTracks(sub, filePaths);
+            } else if (FileManager.isMusicFile(sub)) {
+                filePaths.add(sub.getPath());
+            }
+        }
 
 	}
 

@@ -66,8 +66,9 @@ public class SpectrumEffect extends DC_Effect {
         Integer range = new Formula(rangeFormula).getInt(ref);
         Integer backwardRange = 0;
         Integer sidePenalty = 0;
-        if (circular)
+        if (circular) {
             backwardRange = range;
+        }
         if (vision) {
             range = new Formula(StringMaster.getValueRef(KEYS.SOURCE, PARAMS.SIGHT_RANGE))
                     .getInt(ref);
@@ -81,8 +82,9 @@ public class SpectrumEffect extends DC_Effect {
                 range, sidePenalty, backwardRange, (DC_Obj) ref.getObj(source), vision, d));
         Chronos.logTimeElapsedForMark(source + "'s " + toString());// TODO
         // boolean x-ray ++ tall/short/etc
-        if (effects == null)
+        if (effects == null) {
             initEffects();
+        }
 
         for (Coordinates c : coordinates) {
             // TODO WHAT IF IT'S ON A DIFFERENT Z-LEVEL?
@@ -94,14 +96,17 @@ public class SpectrumEffect extends DC_Effect {
             DequeImpl<? extends Obj> objects = new DequeImpl<>(getGame().getObjectsOnCoordinate(
                     getGame().getDungeon().getZ(), c, null, true, applyThrough));
 
-            if (applyThrough)
-                objects.addCast((Obj) getGame().getCellByCoordinate(c));
+            if (applyThrough) {
+                objects.addCast(getGame().getCellByCoordinate(c));
+            }
 
             for (Obj o : objects) {
                 ref.setMatch(o.getId());
-                if (filterConditions != null)
-                    if (!filterConditions.check(ref))
+                if (filterConditions != null) {
+                    if (!filterConditions.check(ref)) {
                         continue;
+                    }
+                }
                 Integer target = o.getId();
                 // for (Effect effect : effects.getEffectsStage()) {
                 // Ref REF = Ref.getCopy(ref);

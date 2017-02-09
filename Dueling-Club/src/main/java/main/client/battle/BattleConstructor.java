@@ -98,13 +98,16 @@ public class BattleConstructor {
     public boolean construct() {
         usedSpawnCoordinates = new LinkedList<>();
         setIndex(0);
-        if (isEncounter())
+        if (isEncounter()) {
             return false;
-        if (sequences.length <= getIndex())
+        }
+        if (sequences.length <= getIndex()) {
             return false;
+        }
         Map<Wave, Integer> waves = constructWaveSequence(getEncounterTypes(getIndex()));
-        if (waves.isEmpty())
+        if (waves.isEmpty()) {
             return false;
+        }
         manager.getSpawnManager().setScheduledWaves(waves);
         manager.getSpawnManager().setPositioner(positioner);
 
@@ -113,14 +116,16 @@ public class BattleConstructor {
             encounters += type.getName() + " on " + waves.get(type) + ", ";
         }
         encounters = encounters.substring(0, encounters.length() - 2);
-        if (game.isDebugMode())
+        if (game.isDebugMode()) {
             game.getLogManager().log("Encounters scheduled: " + encounters);
+        }
         return true;
     }
 
     private ENCOUNTER_TYPE[] getEncounterTypes(int i) {
-        if (getDungeon().isBoss())
+        if (getDungeon().isBoss()) {
             return boss_sequences[i];
+        }
         return sequences[i];
     }
 
@@ -146,29 +151,32 @@ public class BattleConstructor {
             return constructEncounterGroup();
         }
 
-        if (alt != null)
+        if (alt != null) {
             alt = !alt;
-        else
+        } else {
             alt = checkAltEncounter();
+        }
         List<ObjType> waves = null;
 
         waves = getWaveTypes();
         List<ObjType> waveBuffer = new LinkedList<>(waves);
 
         for (ENCOUNTER_TYPE type : encounter_sequence) {
-            if (waveBuffer.isEmpty())
+            if (waveBuffer.isEmpty()) {
                 waveBuffer = DataManager.getTypesGroup(OBJ_TYPES.ENCOUNTERS, StringMaster
                         .getWellFormattedString(type.toString()));
+            }
             waves = new LinkedList<>(waveBuffer);
 
             Conditions conditions = new Conditions(getEncounterTypeCondition(type),
                     getPlayableCondition());
 
             List<ObjType> filteredWaves = new Filter<ObjType>(game, conditions).filter(waves);
-            if (!filteredWaves.isEmpty())
+            if (!filteredWaves.isEmpty()) {
                 waves = filteredWaves;
-            else
+            } else {
                 continue;
+            }
             ObjType waveType = getWaveType(waves, type);
 
             waveType = new ObjType(waveType);
@@ -180,8 +188,9 @@ public class BattleConstructor {
             Wave wave = new Wave(c, waveType, game, new Ref(game), game.getPlayer(false));
             wave.initUnitMap();
             map.put(wave, round);
-            if (Launcher.DEV_MODE)
+            if (Launcher.DEV_MODE) {
                 game.getLogManager().logInfo(wave.toString() + " on round #" + round);
+            }
             main.system.auxiliary.LogMaster.log(1, wave.toString() + " on round #" + round);
 
             round += getRoundsToFight(waveType, type); // TODO subtract from
@@ -205,21 +214,25 @@ public class BattleConstructor {
         for (String substring : StringMaster.openContainer(getDungeon().getProperty(
                 PROPS.ENCOUNTER_SPAWN_POINTS))) {
             Coordinates coordinates = new Coordinates(substring);
-            if (usedSpawnCoordinates.contains(coordinates))
+            if (usedSpawnCoordinates.contains(coordinates)) {
                 continue;
+            }
             for (Obj member : game.getPlayer(true).getControlledUnits()) {
                 // summoned?
                 int distance = PositionMaster.getDistance(member.getCoordinates(), coordinates);
-                if (distance > maxDistance)
+                if (distance > maxDistance) {
                     maxDistance = distance;
-                if (distance < minDistance)
+                }
+                if (distance < minDistance) {
                     minDistance = distance;
+                }
             }
             map.put(coordinates, new Point(minDistance, maxDistance));
         }
         if (map.isEmpty()) {
-            if (recursion)
+            if (recursion) {
                 return getDefaultSpawnCoordinate(type, round, waveType);
+            }
             usedSpawnCoordinates.clear();
             return pickSpawnCoordinateForWave(type, round, waveType, true);
         }
@@ -312,8 +325,9 @@ public class BattleConstructor {
             waveType = waves.get(RandomWizard.getRandomListIndex(waves));
             // could roll by power if I can getOrCreate the target power...
 
-            if (checkEncounter(waveType))
+            if (checkEncounter(waveType)) {
                 break;
+            }
         }
         return waveType;
     }
@@ -350,12 +364,15 @@ public class BattleConstructor {
 
         }
         amount += waveType.getIntParam(PARAMS.SPAWNING_DELAY_BONUS);
-        if (waveType.getIntParam(PARAMS.SPAWNING_DELAY_MOD) > 0)
+        if (waveType.getIntParam(PARAMS.SPAWNING_DELAY_MOD) > 0) {
             amount = MathMaster.applyMod(amount, waveType.getIntParam(PARAMS.SPAWNING_DELAY_MOD));
-        if (getDungeon().isBoss())
+        }
+        if (getDungeon().isBoss()) {
             amount = MathMaster.applyMod(amount, BOSS_DUNGEON_SPAWN_DELAY_MOD);
-        if (amount < 0)
+        }
+        if (amount < 0) {
             amount = 1;
+        }
         return MathMaster.applyMod(amount, game.getArenaManager().getArenaOptions().getDifficulty()
                 .getRoundsToFightMod());
 

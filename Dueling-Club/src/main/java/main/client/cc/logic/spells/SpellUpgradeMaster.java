@@ -1,18 +1,15 @@
 package main.client.cc.logic.spells;
 
-import main.content.CONTENT_CONSTS;
 import main.content.CONTENT_CONSTS2.SPELL_UPGRADE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.ValuePages;
 import main.content.parameters.PARAMETER;
 import main.content.properties.G_PROPS;
-import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_SpellObj;
-import main.entity.type.ObjType;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.GuiManager;
@@ -55,22 +52,25 @@ public class SpellUpgradeMaster {
             }
 
             boolean left_corner = !x_y_direction;
-            if (!left_corner)
+            if (!left_corner) {
                 x = size - img.getHeight(null);
-            else
+            } else {
                 x = 0;
+            }
             int i = 2;
             while (n / 2 > i) {
                 if (x_y_direction) {
-                    if (top_corner)
+                    if (top_corner) {
                         x += img.getWidth(null) + 2;
-                    else
+                    } else {
                         x -= img.getWidth(null) + 2;
+                    }
                 } else {
-                    if (top_corner)
+                    if (top_corner) {
                         y += img.getHeight(null) + 2;
-                    else
+                    } else {
                         y -= img.getHeight(null) + 2;
+                    }
                 }
                 i++;
             } // 2 corners, 2 directions
@@ -110,8 +110,9 @@ public class SpellUpgradeMaster {
 
             SPELL_UPGRADE su = new EnumMaster<SPELL_UPGRADE>().retrieveEnumConst(
                     SPELL_UPGRADE.class, s);
-            if (su != null)
+            if (su != null) {
                 list.add(su);
+            }
         }
         return list;
     }
@@ -128,16 +129,20 @@ public class SpellUpgradeMaster {
 
     public static boolean checkUpgrade(boolean verbatim, DC_HeroObj hero, Entity spell,
                                        SPELL_UPGRADE ug) {
-        if (TEST_MODE)
+        if (TEST_MODE) {
             return true;
+        }
         if (spell.getIntParam(PARAMS.MAX_SPELL_UPGRADES) < StringMaster.openContainer(
-                spell.getProperty(PROPS.SPELL_UPGRADES)).size())
+                spell.getProperty(PROPS.SPELL_UPGRADES)).size()) {
             return false;
+        }
 
-        if (!hero.checkProperty(PROPS.SPELL_UPGRADE_GROUPS, ug.toString()))
+        if (!hero.checkProperty(PROPS.SPELL_UPGRADE_GROUPS, ug.toString())) {
             return false;
-        if (verbatim)
+        }
+        if (verbatim) {
             return hero.checkParameter(PARAMS.MEMORY_REMAINING, getXpCost(spell, hero, ug));
+        }
         int sd = getSdBonus(spell, ug);
         return hero.checkParameter(PARAMS.MEMORY_REMAINING, sd);
 
@@ -155,8 +160,9 @@ public class SpellUpgradeMaster {
 
     public static void initSpellUpgrades(DC_HeroObj hero) {
         List<String> list = StringMaster.openContainer(hero.getProperty(PROPS.SPELL_UPGRADES));
-        if (list.isEmpty())
+        if (list.isEmpty()) {
             return;
+        }
         loop:
         for (DC_SpellObj spell : hero.getSpells()) {
             for (String string : list) {
@@ -184,21 +190,26 @@ public class SpellUpgradeMaster {
         boolean remove = upgrades.contains(ug.getName());
         if (remove) {
             spell.removeProperty(PROPS.SPELL_UPGRADES, ug.getName());
-            if (!spell.checkProperty(PROPS.SPELL_UPGRADES))
+            if (!spell.checkProperty(PROPS.SPELL_UPGRADES)) {
                 first_last = false;
+            }
         } else {
-            if (!spell.checkProperty(PROPS.SPELL_UPGRADES))
+            if (!spell.checkProperty(PROPS.SPELL_UPGRADES)) {
                 first_last = true;
+            }
             spell.addProperty(PROPS.SPELL_UPGRADES, ug.getName());
         }
-        if (first_last != null)
+        if (first_last != null) {
             if (!remove) {
-                if (first_last)
+                if (first_last) {
                     spell.appendProperty(G_PROPS.DESCRIPTION, "Upgrades: "
                             + StringMaster.getWellFormattedString(ug.toString()));
-            } else if (!first_last)
+                }
+            } else if (!first_last) {
                 spell.removeFromProperty(G_PROPS.DESCRIPTION, "Upgrades: "
                         + StringMaster.getWellFormattedString(ug.toString()));
+            }
+        }
         // upgrades = spell.getProperty(PROPS.SPELL_UPGRADES);
         // String spellString = spell.getName()
         // + StringMaster.wrapInParenthesis((upgrades.replace(";", ",")));
@@ -228,8 +239,9 @@ public class SpellUpgradeMaster {
     public static boolean applyUpgrades(Entity spell) {
         // TODO Auto-generated method stub
         List<SPELL_UPGRADE> upgradesFromSpell = getActiveUpgradesFromSpell(spell);
-        if (upgradesFromSpell.isEmpty())
+        if (upgradesFromSpell.isEmpty()) {
             return false;
+        }
         for (SPELL_UPGRADE ug : upgradesFromSpell) {
             applyUpgrade(spell.getGame().isSimulation() ? spell.getType() : spell, ug);
         }
@@ -245,22 +257,27 @@ for (SPELL_UPGRADE sub: ug){
         public static void applyUpgrade(Entity type, SPELL_UPGRADE ug) {
         if (ug.getAddPropMap() != null)
 
+        {
             for (String s : ug.getAddPropMap().keySet()) {
                 type.addProperty(s, ug.getAddPropMap().get(s));
             }
-        if (ug.getSetPropMap() != null)
+        }
+            if (ug.getSetPropMap() != null) {
             for (String s : ug.getSetPropMap().keySet()) {
                 type.setProperty(s, ug.getSetPropMap().get(s));
             }
-        if (ug.getParamBonusMap() != null)
+            }
+            if (ug.getParamBonusMap() != null) {
             for (String s : ug.getParamBonusMap().keySet()) {
                 type.setModifierKey(ug.getName());
                 type.modifyParameter(s, ug.getParamBonusMap().get(s));
             }
-        if (ug.getParamModMap() != null)
-            for (String s : ug.getParamModMap().keySet()) {
-                type.setModifierKey(ug.getName());
-                type.modifyParamByPercent(s, ug.getParamModMap().get(s));
+            }
+            if (ug.getParamModMap() != null) {
+                for (String s : ug.getParamModMap().keySet()) {
+                    type.setModifierKey(ug.getName());
+                    type.modifyParamByPercent(s, ug.getParamModMap().get(s));
+                }
             }
 
         type.setModifierKey(ug.getName());

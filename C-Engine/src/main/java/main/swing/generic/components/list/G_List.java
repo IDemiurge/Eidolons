@@ -103,8 +103,9 @@ public class G_List<E> extends JList<E> implements ListCellRenderer<E>, MouseLis
     }
 
     public int getWrap() {
-        if (wrap == 0)
+        if (wrap == 0) {
             return 1;
+        }
         // if (wrap != getVisibleRowCount())
         // wrap = isVertical() ? getData().size() / getVisibleRowCount()
         // : getVisibleRowCount();
@@ -130,8 +131,9 @@ public class G_List<E> extends JList<E> implements ListCellRenderer<E>, MouseLis
     }
 
     public int getObj_size() {
-        if (obj_size == 0)
+        if (obj_size == 0) {
             return GuiManager.getSmallObjSize(); // TODO [QUICK FIX]
+        }
         return obj_size;
     }
 
@@ -170,14 +172,16 @@ public class G_List<E> extends JList<E> implements ListCellRenderer<E>, MouseLis
             main.system.auxiliary.LogMaster.log(0, "NULL DATA!!! ");
             return;
         }
-        if (this.data != null && data != null)
+        if (this.data != null && data != null) {
             if (this.data.equals(data)) { // TODO
                 return;
             }
+        }
         listModel.removeAllElements();
 
-        for (E element : data)
+        for (E element : data) {
             listModel.addElement(element);
+        }
 
         this.data = data;
         revalidate();

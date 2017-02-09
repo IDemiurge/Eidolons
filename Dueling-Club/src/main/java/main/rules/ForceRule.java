@@ -31,11 +31,14 @@ public class ForceRule {
     public static int getForceFromAttack(DC_ActiveObj attack) {
         boolean offhand = attack.isOffhand();
         Obj weapon = attack.getOwnerObj().getActiveWeapon(offhand);
-        if (attack.isRanged())
-            if (!attack.isThrow())
+        if (attack.isRanged()) {
+            if (!attack.isThrow()) {
                 weapon = weapon.getRef().getObj(KEYS.AMMO);
-        if (weapon == null)
+            }
+        }
+        if (weapon == null) {
             return 0;
+        }
         Integer weightModifier = getAttackerWeightModifier(attack, weapon);
         double strengthModifier = getStrengthModifier(attack, weapon);
         int force = (int) Math.round(weightModifier * strengthModifier);
@@ -75,21 +78,25 @@ public class ForceRule {
 
     public static void applyForceEffects(DC_ActiveObj action) {
         // or spell
-        if (!RuleMaster.isRuleOn(RULE.FORCE))
+        if (!RuleMaster.isRuleOn(RULE.FORCE)) {
             return;
+        }
         int force = getForce(action);
-        if (force == 0)
+        if (force == 0) {
             return;
+        }
         DC_HeroObj target = (DC_HeroObj) action.getRef().getTargetObj();
         DC_HeroObj source = (DC_HeroObj) action.getRef().getSourceObj();
         Boolean result = RollMaster.rollForceKnockdown(target, action, force);
-        if (isTestMode())
+        if (isTestMode()) {
             result = true;
+        }
 
         if (result == null) {
             InterruptRule.interrupt(target);
-        } else if (result)
+        } else if (result) {
             KnockdownRule.knockdown(target);
+        }
         applyPush(force, action, source, target);
         if (action.isSpell()) {
             applyDamage(force, action, source, target);
@@ -116,8 +123,9 @@ public class ForceRule {
     }
 
     public static int getDamage(DC_ActiveObj action, DC_HeroObj attacker, DC_HeroObj attacked) {
-        if (!RuleMaster.isRuleOn(RULE.FORCE))
+        if (!RuleMaster.isRuleOn(RULE.FORCE)) {
             return 0;
+        }
         int force = getForceFromAttack(action);
         return getDamage(force, action, attacker, attacked);
     }
@@ -148,8 +156,9 @@ public class ForceRule {
                 .getFinalModParam(PARAMS.FORCE_PUSH_MOD)), target);
 
         if (distance == 0) {
-            if (isTestMode())
+            if (isTestMode()) {
                 distance = 1;
+            }
             return;
         }
         if (d.isDiagonal()) {
@@ -166,10 +175,11 @@ public class ForceRule {
         int x_displacement = BooleanMaster.isTrue(d.isGrowX()) ? distance : -distance;
         int y_displacement = BooleanMaster.isTrue(d.isGrowY()) ? distance : -distance;
         if (!d.isDiagonal()) {
-            if (d.isVertical())
+            if (d.isVertical()) {
                 x_displacement = 0;
-            else
+            } else {
                 y_displacement = 0;
+            }
         }
 
         Ref ref = attack.getRef().getCopy();

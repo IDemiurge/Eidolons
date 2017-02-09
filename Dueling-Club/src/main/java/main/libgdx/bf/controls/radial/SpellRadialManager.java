@@ -21,38 +21,59 @@ public class SpellRadialManager {
 
     public static List<RadialMenu.CreatorNode> getSpellNodes(DC_HeroObj source,
                                                              DC_Obj target) {
+        List<DC_SpellObj> spells = source.getSpells()
+         .stream()
+         .filter(spell -> (spell.getGame().isDebugMode() || (spell.canBeActivated() && spell.canBeTargeted(target.getId()))))
+         .collect(Collectors.toList());
+        if (spells.size() <= MAX_SPELLS_DISPLAYED) {
+            return constructPlainSpellNodes(spells, source, target);
+        }
+
+
+        return constructNestedSpellNodes(spells, source, target);
+
+    }
+
+    private static List<CreatorNode> constructNestedSpellNodes(List<DC_SpellObj> spells, DC_HeroObj source, DC_Obj target) {
+        List<RadialMenu.CreatorNode> nodes = new LinkedList<>();
+
         Set<CONTENT_CONSTS.SPELL_GROUP> spell_groups = new HashSet<>();
         List<SPELL_ASPECT> aspects = new LinkedList<>();
-        List<RadialMenu.CreatorNode> nodes = new LinkedList<>();
-        List<DC_SpellObj> spells = source.getSpells()
-                .stream()
-                .filter(spell -> (spell.getGame().isDebugMode() || (spell.canBeActivated() && spell.canBeTargeted(target.getId()))))
-                .collect(Collectors.toList());
-        if (spells.size() <= MAX_SPELLS_DISPLAYED) {
-            for (DC_SpellObj g : spells)
-                nodes.add(createNodeBranch(new EntityNode(g), source, target));
-            return nodes;
-        }
+
         for (DC_SpellObj spell : spells) {
             CONTENT_CONSTS.SPELL_GROUP group = spell.getSpellGroup();
             spell_groups.add(group);
 
-            for (SPELL_ASPECT g : SPELL_ASPECT.values())
-                if (!aspects.contains(g))
+            for (SPELL_ASPECT g : SPELL_ASPECT.values()) {
+                if (!aspects.contains(g)) {
                     if (new LinkedList<>(Arrays.asList(g.groups))
-                            .contains(spell.getSpellGroup()))
+                     .contains(spell.getSpellGroup())) {
                         aspects.add(g);
+                    }
+                }
+            }
 
         }
-        if (aspects.size() > 1)
-            for (SPELL_ASPECT g : aspects)
+        if (spell_groups.size() > 8) {
+            for (SPELL_ASPECT g : aspects) {
                 nodes.add(createNodeBranch(new RadialSpellAspect(g), source, target));
-        else {
-            for (SPELL_GROUP g : spell_groups)
+            }
+        } else {
+            for (SPELL_GROUP g : spell_groups) {
                 nodes.add(createNodeBranch(new RadialSpellGroup(g), source, target));
+            }
         }
 
         return nodes;
+    }
+
+    private static List<CreatorNode> constructPlainSpellNodes(List<DC_SpellObj> spells, DC_HeroObj source, DC_Obj target) {
+        List<RadialMenu.CreatorNode> nodes = new LinkedList<>();
+        for (DC_SpellObj g : spells) {
+            nodes.add(createNodeBranch(new EntityNode(g), source, target));
+        }
+        return nodes;
+
     }
 
     private static boolean checkForceTargeting(DC_HeroObj source,
@@ -73,9 +94,9 @@ public class SpellRadialManager {
             node.action = new Runnable() {
                 @Override
                 public void run() {
-                    if (checkForceTargeting(source, target, action))
+                    if (checkForceTargeting(source, target, action)) {
                         action.invokeClicked();
-                    else {
+                    } else {
                         action.getRef().setTarget(target.getId());
                         action.activate(action.getRef());
 
@@ -86,10 +107,11 @@ public class SpellRadialManager {
             node.childNodes = new LinkedList<>();
 
             node.texture = TextureManager.getOrCreate(object.getTexturePath());
-
+            node.w=object.getWidth();
+            node.h=object.getHeight();
             object.getItems(source).forEach(child -> {
                 node.childNodes.add(createNodeBranch(
-                        child, source, target));
+                 child, source, target));
             });
         }
         return node;
@@ -109,7 +131,7 @@ spell 'types'?
     public enum SPELL_ASPECT {
         ARCANE(SPELL_GROUP.CONJURATION, SPELL_GROUP.SORCERY, SPELL_GROUP.ENCHANTMENT),
         LIFE(SPELL_GROUP.SAVAGE, SPELL_GROUP.SYLVAN, SPELL_GROUP.FIRE
-                , SPELL_GROUP.AIR, SPELL_GROUP.EARTH, SPELL_GROUP.WATER
+         , SPELL_GROUP.AIR, SPELL_GROUP.EARTH, SPELL_GROUP.WATER
 
         ),
         CHAOS(SPELL_GROUP.DESTRUCTION, SPELL_GROUP.DEMONOLOGY, SPELL_GROUP.WARP),

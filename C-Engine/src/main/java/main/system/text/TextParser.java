@@ -39,7 +39,7 @@ public class TextParser {
     private static Entity entity;
 
     public synchronized static String parse(String text, Ref ref, Integer... parsingType) {
-        for (Integer p : parsingType)
+        for (Integer p : parsingType) {
             switch (p) {
                 case ACTIVE_PARSING_CODE:
                     activeParsing = true;
@@ -60,6 +60,7 @@ public class TextParser {
                     variableParsing = true;
                     break;
             }
+        }
         String result = null;
         try {
             result = parse(text, ref);
@@ -92,10 +93,13 @@ public class TextParser {
     }
 
     public synchronized static String parse(String text, Ref ref) {
-        if (ref == null && entity == null)
+        if (ref == null && entity == null) {
             return text;
+        }
         if (!activeParsing && !abilityParsing && !buffParsing) // TODO lame!
+        {
             infoParsing = true;
+        }
         String varPart = VariableManager.getVarPart(text);
         String buffer = text.replace(varPart, "");
         if (!StringMaster.isEmpty(varPart) && variableParsing && !xmlParsing) {
@@ -114,19 +118,21 @@ public class TextParser {
                     // StringMaster.getSubString(true, text,
                     // StringMaster.VARIABLES_OPEN_CHAR,
                     // StringMaster.VARIABLES_CLOSE_CHAR, true);
-                    if (ref_substring.equals(text))
+                    if (ref_substring.equals(text)) {
                         continue;
+                    }
                     result = parseVariables(ref_substring);
                 }
                 if (ch == StringMaster.FORMULA_REF_OPEN_CHAR.charAt(0) && !xmlParsing || xmlParsing
                         && ch == StringMaster.VAR_REF_OPEN_CHAR.charAt(0)) {
-                    if (xmlParsing)
+                    if (xmlParsing) {
                         ref_substring = StringMaster.getSubString(text,
                                 StringMaster.VAR_REF_OPEN_CHAR, StringMaster.VAR_REF_CLOSE_CHAR);
-                    else
+                    } else {
                         ref_substring = StringMaster.getSubString(text,
                                 StringMaster.FORMULA_REF_OPEN_CHAR,
                                 StringMaster.FORMULA_REF_CLOSE_CHAR);
+                    }
 
                     if (ref_substring != null) {
 
@@ -147,8 +153,9 @@ public class TextParser {
                 }
             }
 
-            if (!StringMaster.isEmpty(varPart) && variableParsing && !xmlParsing)
+            if (!StringMaster.isEmpty(varPart) && variableParsing && !xmlParsing) {
                 text = buffer + StringMaster.wrapInParenthesis(replaceVarBraceCodes(text));
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -164,10 +171,12 @@ public class TextParser {
         String enclosed = "";
         boolean opened = false;
         for (char ch : charArray) {
-            if (opened)
+            if (opened) {
                 enclosed += ch + "";
-            if (ch == '[')
+            }
+            if (ch == '[') {
                 opened = true;
+            }
             if (ch == ']') {
                 opened = false;
                 enclosed += ";";
@@ -193,8 +202,9 @@ public class TextParser {
     private static String parseVarRef(String ref_substring) {
         String value = (xmlParsing) ? StringMaster.cropVarRef(ref_substring) : StringMaster
                 .cropRef(ref_substring);
-        if (!StringMaster.isInteger(value))
+        if (!StringMaster.isInteger(value)) {
             return ref_substring;
+        }
         int index = StringMaster.getInteger(value) - 1;
         String varProp = entity.getProperty(G_PROPS.VARIABLES);
         return StringMaster.openContainer(varProp).get(index);
@@ -202,44 +212,54 @@ public class TextParser {
 
     // perhaps I should refactor into method per parse_type!
     private static String parseRef(String ref_substring, Ref ref) {
-        if (ref == null)
+        if (ref == null) {
             return parseVarRef(ref_substring);
+        }
         String value = StringMaster.cropRef(ref_substring);
-        if (!StringMaster.isInteger(value))
-            if (isAbilityParsing())
+        if (!StringMaster.isInteger(value)) {
+            if (isAbilityParsing()) {
                 return ref_substring;
+            }
+        }
         int id = 0;
         if (isActiveParsing()) {
             id = ref.getId(KEYS.ACTIVE);
-        } else
+        } else {
             try {
                 id = ref.getId(KEYS.INFO);
             } catch (Exception e) {
 
             }
+        }
         Game game = ref.getGame();
-        if (id == 0)
+        if (id == 0) {
             if (game.isRunning()) {
                 id = game.getManager().getInfoObj().getId();
             }
+        }
         // else if (CharacterCreator.isRunning())
 
         String replacement = ref_substring;
         Entity entity = ref.getInfoEntity();
-        if (entity == null)
-            if (game.isSimulation() && !isBuffParsing() && !isAbilityParsing())
+        if (entity == null) {
+            if (game.isSimulation() && !isBuffParsing() && !isAbilityParsing()) {
                 entity = game.getTypeById(id);
-            else
+            } else {
                 entity = game.getObjectById(id);
-        if (entity == null)
+            }
+        }
+        if (entity == null) {
             return ref_substring;
-        if (entity instanceof AbilityObj)
+        }
+        if (entity instanceof AbilityObj) {
             entity = entity.getType();
+        }
         if (StringMaster.isInteger(value)) {
             int index = StringMaster.getInteger(value) - 1;
             String varProp = entity.getProperty(G_PROPS.VARIABLES);
-            if (StringMaster.isEmpty(varProp))
+            if (StringMaster.isEmpty(varProp)) {
                 varProp = DEFAULT_VARS;
+            }
             boolean containerFormula = false;
 
             if (entity.getParam("FORMULA").contains(";")) {
@@ -260,8 +280,9 @@ public class TextParser {
                     replacement = openContainer.get(index);
                 }
                 if (containerFormula || val instanceof PARAMETER) {
-                    if (StringMaster.isInteger(replacement))
+                    if (StringMaster.isInteger(replacement)) {
                         return replacement;
+                    }
                     try {
                         if (isAbilityParsing())
                             // if (replacement.contains(",")) {
@@ -278,33 +299,39 @@ public class TextParser {
                             // StringMaster.COMMA_CODE);
                             // }
                             // } else
+                        {
                             return replacement.replace(",", StringMaster.COMMA_CODE);
-                        if (game.isSimulation())
+                        }
+                        if (game.isSimulation()) {
                             replacement = new Formula(replacement).getInt(ref) + " ("
                                     + formatFormula(replacement) + ")";
-                        else
+                        } else {
                             replacement = new Formula(replacement).getInt(ref) + "";
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
                 } else {
                     String result = new Property(true, replacement).getStr(ref);
-                    if (StringMaster.isEmpty(result))
+                    if (StringMaster.isEmpty(result)) {
                         replacement = new Parameter(replacement).getInt(ref) + "";
-                    else
+                    } else {
                         replacement = result;
+                    }
                 }
             }
         } else {
             if (!isAbilityParsing()) {
-                if (StringMaster.isInteger(replacement))
+                if (StringMaster.isInteger(replacement)) {
                     return replacement;
+                }
                 if (game.isSimulation() && !tooltipParsing) {
                     Integer VAL = new Formula(replacement).getInt(ref);
                     replacement = VAL + " (" + replacement + ")";
-                } else
+                } else {
                     replacement = new Formula(replacement).getInt(ref) + "";// TODO
+                }
                 // props!
             }
         }
@@ -386,18 +413,22 @@ public class TextParser {
     }
 
     public static boolean checkHasVarRefs(String baseValue) {
-        for (int i = 1; i < 10; i++)
+        for (int i = 1; i < 10; i++) {
             if (baseValue.contains(StringMaster.VAR_REF_OPEN_CHAR + i
-                    + StringMaster.VAR_REF_CLOSE_CHAR))
+                    + StringMaster.VAR_REF_CLOSE_CHAR)) {
                 return true;
+            }
+        }
         return false;
     }
 
     public static boolean checkHasValueRefs(String baseValue) {
-        for (int i = 1; i < 10; i++)
+        for (int i = 1; i < 10; i++) {
             if (baseValue.contains(StringMaster.FORMULA_REF_OPEN_CHAR + i
-                    + StringMaster.FORMULA_REF_CLOSE_CHAR))
+                    + StringMaster.FORMULA_REF_CLOSE_CHAR)) {
                 return true;
+            }
+        }
         return false;
     }
 

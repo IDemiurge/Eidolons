@@ -196,9 +196,10 @@ public class BlurUtils {
      */
     public static ByteBuffer blur(ByteBuffer inputRGBA, int width,
                                   int height, int radius, int iterations) {
-        if (inputRGBA.limit() != (width * height * 4))
+        if (inputRGBA.limit() != (width * height * 4)) {
             throw new IllegalArgumentException(
                     "inputRGBA must be in RGBA format");
+        }
         int[] pixels = pack(inputRGBA);
         int[] out = blur(pixels, width, height, radius, iterations);
         return unpack(out);
@@ -316,8 +317,9 @@ public class BlurUtils {
         newRGBA.put(blurred);
         newRGBA.flip();
 
-        if (disposePixmap)
+        if (disposePixmap) {
             pixmap.dispose();
+        }
         return newPixmap;
     }
 
@@ -345,9 +347,10 @@ public class BlurUtils {
     public static void generateBlurredMipmaps(Pixmap pixmap, int textureWidth,
                                               int textureHeight, int radius, int iterations,
                                               boolean disposePixmap) {
-        if (textureWidth != textureHeight)
+        if (textureWidth != textureHeight) {
             throw new GdxRuntimeException(
                     "texture width and height must be square when using mipmapping.");
+        }
 
         Pixmap origPixmap = pixmap;
         int width = pixmap.getWidth() / 2;

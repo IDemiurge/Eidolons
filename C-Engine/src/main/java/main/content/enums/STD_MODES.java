@@ -111,8 +111,9 @@ public enum STD_MODES implements MODE {
     }
 
     public String getBuffName() {
-        if (buffName != null)
+        if (buffName != null) {
             return buffName;
+        }
         return StringMaster.getWellFormattedString(name());
     }
 

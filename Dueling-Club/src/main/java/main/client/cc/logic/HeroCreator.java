@@ -61,8 +61,9 @@ public class HeroCreator {
     private static void newId(ObjType type) {
         int id = type.getTypeId();
         for (ObjType t : DataManager.getTypes(OBJ_TYPES.CHARS)) {
-            if (id <= t.getTypeId())
+            if (id <= t.getTypeId()) {
                 id = t.getTypeId() + 1;
+            }
         }
         type.setProperty(G_PROPS.ID, id + "");
 
@@ -95,14 +96,18 @@ public class HeroCreator {
 
     public ObjType getHeroType() {
         heroType = chooseBaseType();
-        if (heroType == null)
+        if (heroType == null) {
             return null;
+        }
         heroType = new ObjType(heroType);
         game.initType(heroType);
-        if (doChoiceSequence())
-            if (doPointDistribution())
-                if (doXpDistribution())
+        if (doChoiceSequence()) {
+            if (doPointDistribution()) {
+                if (doXpDistribution()) {
                     return heroType;
+                }
+            }
+        }
         // return back?
         return heroType;
     }
@@ -126,12 +131,14 @@ public class HeroCreator {
     }
 
     private boolean doChoiceSequence() {
-        if (!doChoice(OBJ_TYPES.DEITIES, G_PROPS.DEITY))
+        if (!doChoice(OBJ_TYPES.DEITIES, G_PROPS.DEITY)) {
             return false;
+        }
 
         // if stranger?
-        if (!doChoice(PRINCIPLES.class, G_PROPS.PRINCIPLES))
+        if (!doChoice(PRINCIPLES.class, G_PROPS.PRINCIPLES)) {
             return false;
+        }
 
         return true;
 
@@ -150,14 +157,16 @@ public class HeroCreator {
     }
 
     private boolean doChoice(List<String> options, PROPERTY prop, boolean ENUM, OBJ_TYPE TYPE) {
-        if (!StringMaster.isEmpty(heroType.getProperty(prop)))
+        if (!StringMaster.isEmpty(heroType.getProperty(prop))) {
             return true;
+        }
 
         HeroItemChooser chooser = new HeroItemChooser(heroType, options, prop, ENUM, TYPE);
         // stack.push(chooser); // to be able to return back
         String result = chooser.getString();
-        if (result == null)
+        if (result == null) {
             return false;
+        }
 
         // modify hero
         return true;

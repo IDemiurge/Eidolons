@@ -17,30 +17,24 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TreeMaster;
 import main.system.auxiliary.secondary.DefaultComparator;
 import main.utilities.workspace.Workspace;
-
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeSelectionModel;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeSelectionModel;
+import java.util.*;
+
 public class AV_Tree extends G_Panel {
-	private JTree tree;
+    private static boolean fullNodeStructureOn;
+    Workspace workspace;
+    private JTree tree;
 	private OBJ_TYPE type;
 	private boolean colorsInverted = true;
-	Workspace workspace;
 	private AV_TreeCellRenderer renderer;
 	private boolean simpleTree;
 	private DefaultMutableTreeNode parent;
 	private int i;
-	private static boolean fullNodeStructureOn;
 
 	// final DefaultTreeModel model = new DefaultTreeModel(root) {
 	//
@@ -76,6 +70,33 @@ public class AV_Tree extends G_Panel {
 		addTree();
 	}
 
+    public static boolean isFullNodeStructureOn() {
+        return fullNodeStructureOn;
+    }
+
+    public static void setFullNodeStructureOn(boolean fullNodeStructureOn2) {
+        fullNodeStructureOn = fullNodeStructureOn2;
+    }
+
+    public static DefaultMutableTreeNode build(Node e) {
+
+        DefaultMutableTreeNode result = new DefaultMutableTreeNode(e.getNodeName());
+
+        // logger.info(e.getNodeName());
+        int x = e.getChildNodes().getLength();
+
+        for (int i = 0; i < x; i++) {
+            Node child = e.getChildNodes().item(i);
+            if (child.getNodeName().contains("#text")) {
+                continue;
+            }
+
+            result.add(build(child));
+        }
+        return result;
+
+    }
+
 	private void addTree() {
 		add(tree, "pos 0 0");
 		tree.setLargeModel(true);
@@ -86,9 +107,10 @@ public class AV_Tree extends G_Panel {
 		tree.setCellRenderer(renderer);
 		if (workspace != null) {
 			renderer.setWorkspace(workspace);
-		} else
-			renderer.setTYPE(type);
-		renderer.setColorsInverted(colorsInverted);
+        } else {
+            renderer.setTYPE(type);
+        }
+        renderer.setColorsInverted(colorsInverted);
 		tree.setUI(renderer);
 	}
 
@@ -108,8 +130,9 @@ public class AV_Tree extends G_Panel {
 
 	private DefaultMutableTreeNode buildSimple(List<String> typesDoc, String name) {
 		simpleTree = true;
-		if (workspace == null)
-			Collections.sort(typesDoc, getComparator());
+        if (workspace == null) {
+            Collections.sort(typesDoc, getComparator());
+        }
 
 		DefaultMutableTreeNode result = new DefaultMutableTreeNode(name);
 		List<String> upgrades = new LinkedList<>();
@@ -127,29 +150,33 @@ public class AV_Tree extends G_Panel {
 
 		List<String> subGroups = new LinkedList<>();
 		// if (workspace!=null) workspace.getGrouping() ;
-		if (!StringMaster.isEmpty(group))
-			try {
-				Set<String> groups = XML_Reader.getTreeSubGroupMap().get(group);
-				if (groups == null)
-					groups = XML_Reader.getTreeSubGroupMap(!XML_Reader.isMacro()).get(group);
-				subGroups = new LinkedList<String>(groups);
-				Class<?> ENUM = EnumMaster.getEnumClass(type.getSubGroupingKey().getName());
-				if (ENUM != null)
-					Collections.sort(subGroups, new EnumMaster<>().getEnumSorter(ENUM));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		else if (workspace != null) {
-			subGroups = workspace.getSubgroups();
+        if (!StringMaster.isEmpty(group)) {
+            try {
+                Set<String> groups = XML_Reader.getTreeSubGroupMap().get(group);
+                if (groups == null) {
+                    groups = XML_Reader.getTreeSubGroupMap(!XML_Reader.isMacro()).get(group);
+                }
+                subGroups = new LinkedList<String>(groups);
+                Class<?> ENUM = EnumMaster.getEnumClass(type.getSubGroupingKey().getName());
+                if (ENUM != null) {
+                    Collections.sort(subGroups, new EnumMaster<>().getEnumSorter(ENUM));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (workspace != null) {
+            subGroups = workspace.getSubgroups();
 			if (subGroups == null)
 				// TODO custom *grouping* -> enum class + property!
-				if (workspace.isSearch()) {
-					subGroups = ListMaster.toStringList(OBJ_TYPES.values());
-				} else {
-					subGroups = ListMaster.toStringList(WORKSPACE_GROUP.values());
-					subGroups.add("");
-				}
-			// subGroups = workspace.getSubgroups();
+            {
+                if (workspace.isSearch()) {
+                    subGroups = ListMaster.toStringList(OBJ_TYPES.values());
+                } else {
+                    subGroups = ListMaster.toStringList(WORKSPACE_GROUP.values());
+                    subGroups.add("");
+                }
+            }
+            // subGroups = workspace.getSubgroups();
 			// subGroups = workspace.getSubgroups();
 
 		}
@@ -166,9 +193,10 @@ public class AV_Tree extends G_Panel {
 			if (workspace == null) {
 				Set<String> c = XML_Reader.getTreeSubGroupedTypeMap(XML_Reader.isMacro()).get(
 						subGroup);
-				if (!ListMaster.isNotEmpty(c))
-					c = XML_Reader.getTreeSubGroupedTypeMap(!XML_Reader.isMacro()).get(subGroup);
-				list = new LinkedList<>(c);
+                if (!ListMaster.isNotEmpty(c)) {
+                    c = XML_Reader.getTreeSubGroupedTypeMap(!XML_Reader.isMacro()).get(subGroup);
+                }
+                list = new LinkedList<>(c);
 				Collections.sort(list, getComparator());
 			} else {
 				if (workspace.isSearch()) {
@@ -179,9 +207,10 @@ public class AV_Tree extends G_Panel {
 				} else {
 
 					PROPERTY filterValue = G_PROPS.WORKSPACE_GROUP;
-					if (workspace.getSubgroupingProp() != null)
-						filterValue = workspace.getSubgroupingProp();
-					list = DataManager.toStringList(new Filter<ObjType>().filter(workspace
+                    if (workspace.getSubgroupingProp() != null) {
+                        filterValue = workspace.getSubgroupingProp();
+                    }
+                    list = DataManager.toStringList(new Filter<ObjType>().filter(workspace
 							.getTypeList(), filterValue, subGroup));
 					try {
 						Collections.sort(list, new EnumMaster<>()
@@ -193,56 +222,61 @@ public class AV_Tree extends G_Panel {
 			}
 
 			for (String typeName : list) {
-				if (!typesDoc.contains(typeName))
-					continue;
-				addNode(subNode, typeName, upgrades);
+                if (!typesDoc.contains(typeName)) {
+                    continue;
+                }
+                addNode(subNode, typeName, upgrades);
 			}
 			if (!subNode.isLeaf()) {
 				result.add(subNode);
 			} // TODO is it ok?
 			DefaultMutableTreeNode subNode2 = subNode;
-			if (isFullNodeStructureOn())
-				for (String typeName : upgrades) {
-					subNode.add(new DefaultMutableTreeNode(typeName));
-				}
-			else
-				while (true) {
-					List<String> upgrades2 = new LinkedList<>(upgrades);
-					for (String typeName : upgrades2) { // subnode could be a
-														// Type
-														// Node!
-						if (addUpgradeNode(subNode2, typeName))
-							upgrades.remove(typeName);
-					}
-					if (upgrades.isEmpty()) {
-						parent = null;
-						i = 0;
-						break;
-					}
-					/*
-					 * basically, it seems that root type count limits depth 
-					 * the check 
-					 * 
-					 * 
+            if (isFullNodeStructureOn()) {
+                for (String typeName : upgrades) {
+                    subNode.add(new DefaultMutableTreeNode(typeName));
+                }
+            } else {
+                while (true) {
+                    List<String> upgrades2 = new LinkedList<>(upgrades);
+                    for (String typeName : upgrades2) { // subnode could be a
+                        // Type
+                        // Node!
+                        if (addUpgradeNode(subNode2, typeName)) {
+                            upgrades.remove(typeName);
+                        }
+                    }
+                    if (upgrades.isEmpty()) {
+                        parent = null;
+                        i = 0;
+                        break;
+                    }
+                    /*
+                     * basically, it seems that root type count limits depth
+					 * the check
+					 *
+					 *
 					 */
-					if (parent == null)
-						if (subNode2 == null)
-							parent = subNode2;
-						else
-							parent = subNode;
-					subNode2 = getNextNode();
-					if (subNode2 == null) {
-						parent = null;
-						i = 0;
-						main.system.auxiliary.LogMaster.log(1, upgrades + " remain, parent="
-								+ parent + i);
-						for (String typeName : upgrades) {
-							subNode.add(new DefaultMutableTreeNode(typeName));
-						}
-						break;
-					}
-					// tr
-				}
+                    if (parent == null) {
+                        if (subNode2 == null) {
+                            parent = subNode2;
+                        } else {
+                            parent = subNode;
+                        }
+                    }
+                    subNode2 = getNextNode();
+                    if (subNode2 == null) {
+                        parent = null;
+                        i = 0;
+                        main.system.auxiliary.LogMaster.log(1, upgrades + " remain, parent="
+                                + parent + i);
+                        for (String typeName : upgrades) {
+                            subNode.add(new DefaultMutableTreeNode(typeName));
+                        }
+                        break;
+                    }
+                    // tr
+                }
+            }
 
 		}
 		// if (result.getChildCount() == 1)
@@ -251,27 +285,21 @@ public class AV_Tree extends G_Panel {
 
 	}
 
-	public static boolean isFullNodeStructureOn() {
-		return fullNodeStructureOn;
-	}
-
-	public static void setFullNodeStructureOn(boolean fullNodeStructureOn2) {
-		fullNodeStructureOn = fullNodeStructureOn2;
-	}
-
 	private DefaultMutableTreeNode getNextNode() {
-		if (parent.getChildCount() <= i)
-			return null;
-		i++;
+        if (parent.getChildCount() <= i) {
+            return null;
+        }
+        i++;
 		return (DefaultMutableTreeNode) parent.getChildAt(i - 1);
 	}
 
 	private boolean addUpgradeNode(DefaultMutableTreeNode subNode, String typeName) {
 		DefaultMutableTreeNode node = TreeMaster.findChildNode(subNode, DataManager.getType(
 				typeName).getProperty(G_PROPS.BASE_TYPE));
-		if (node == null)
-			return false;
-		node.add(new DefaultMutableTreeNode(typeName));
+        if (node == null) {
+            return false;
+        }
+        node.add(new DefaultMutableTreeNode(typeName));
 		return true;
 	}
 
@@ -293,14 +321,6 @@ public class AV_Tree extends G_Panel {
 		subNode.add(new DefaultMutableTreeNode(typeName));
 	}
 
-	private boolean checkUpgrade(String typeName) {
-		ObjType type = DataManager.getType(typeName);
-		if (type == null)
-			return false;
-		return !StringMaster.isEmpty(type.getProperty(G_PROPS.BASE_TYPE));
-
-	}
-
 	// public static DefaultMutableTreeNode build(List<List<String>> simpleTree,
 	// String name) {
 	// DefaultMutableTreeNode result = new DefaultMutableTreeNode(name);
@@ -315,22 +335,12 @@ public class AV_Tree extends G_Panel {
 	// return result;
 	// }
 
-	public static DefaultMutableTreeNode build(Node e) {
-
-		DefaultMutableTreeNode result = new DefaultMutableTreeNode(e.getNodeName());
-
-		// logger.info(e.getNodeName());
-		int x = e.getChildNodes().getLength();
-
-		for (int i = 0; i < x; i++) {
-			Node child = e.getChildNodes().item(i);
-			if (child.getNodeName().contains("#text")) {
-				continue;
-			}
-
-			result.add(build(child));
-		}
-		return result;
+    private boolean checkUpgrade(String typeName) {
+        ObjType type = DataManager.getType(typeName);
+        if (type == null) {
+            return false;
+        }
+        return !StringMaster.isEmpty(type.getProperty(G_PROPS.BASE_TYPE));
 
 	}
 

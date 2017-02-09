@@ -25,10 +25,12 @@ public class QuickItemListItem extends ListItem<DC_QuickItemObj> {
 
     @Override
     public BORDER getSpecialBorder() {
-        if (isHighlighted())
+        if (isHighlighted()) {
             return BORDER.HIGHLIGHTED_96;
-        if (!value.canBeActivated())
+        }
+        if (!value.canBeActivated()) {
             return BORDER.HIDDEN;
+        }
         return super.getSpecialBorder();
     }
 

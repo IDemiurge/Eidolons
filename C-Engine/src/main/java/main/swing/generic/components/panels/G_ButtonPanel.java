@@ -39,9 +39,9 @@ public abstract class G_ButtonPanel extends G_Panel implements ActionListener {
             }
         } else {
             int rows;
-            if (columns != 1)
+            if (columns != 1) {
                 rows = commands.size() / columns + 1;
-            else {
+            } else {
                 rows = Math.min(commands.size(), maxRows);
                 columns = commands.size() / rows + 1;
             }
@@ -52,12 +52,14 @@ public abstract class G_ButtonPanel extends G_Panel implements ActionListener {
                 for (int y = 0; y < rows; y++) {
                     if (iterator.hasNext()) {
                         String constr = BASE_CONSTRAINT;
-                        if (next)
+                        if (next) {
                             constr += ",wrap";
+                        }
                         addButton(iterator.next(), constr);
                         next = false;
-                    } else
+                    } else {
                         break;
+                    }
                 }
                 next = true;
             }

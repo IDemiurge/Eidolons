@@ -85,17 +85,20 @@ public class DC_GameManager extends GameManager {
     @Deprecated
     public static void removeDefendingStatus(DC_HeroObj obj) {
         // if not too heroic...
-        if (obj.removeStatus(STATUS.DEFENDING))
+        if (obj.removeStatus(STATUS.DEFENDING)) {
             removeBuffEffect.apply(Ref.getSelfTargetingRefNew(obj));
+        }
     }
 
     public static boolean checkInterrupted(Ref ref) {
 
-        if (ref.getObj(KEYS.ACTIVE) != null)
+        if (ref.getObj(KEYS.ACTIVE) != null) {
             return ((DC_ActiveObj) ref.getObj(KEYS.ACTIVE)).isInterrupted();
+        }
 
-        if (ref.getObj(KEYS.SPELL) != null)
+        if (ref.getObj(KEYS.SPELL) != null) {
             return ((DC_ActiveObj) ref.getObj(KEYS.SPELL)).isInterrupted();
+        }
 
         return false;
     }
@@ -114,8 +117,9 @@ public class DC_GameManager extends GameManager {
     }
 
     public DC_HeroObj getInfoUnit() {
-        if (getInfoObj() instanceof DC_HeroObj)
+        if (getInfoObj() instanceof DC_HeroObj) {
             return (DC_HeroObj) getInfoObj();
+        }
         return null;
     }
 
@@ -168,8 +172,9 @@ public class DC_GameManager extends GameManager {
      * @param result false if turn should end
      */
     public void unitActionCompleted(DC_ActiveObj action, Boolean result) {
-        if (action != null)
+        if (action != null) {
             getGame().getState().getUnitActionStack(action.getOwnerObj()).push(action);
+        }
         // HOSTILE_ACTION
         // SpellMaster.getSpellLogic(getActivatingAction());
         // getGame().getPlayer(false).getAI().setSituation(SITUATION.ENGAGED) ;
@@ -183,10 +188,11 @@ public class DC_GameManager extends GameManager {
         // getGame().getAnimationManager().clearModValues();
         //
         // }
-        if (result == null)
+        if (result == null) {
             WaitMaster.interrupt(WAIT_OPERATIONS.TURN_CYCLE);
-        else
+        } else {
             WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, result);
+        }
         // ++ TODO animate costs!
 
         // WaitMaster.waitForInput(WAIT_OPERATIONS.TURN_CYCLE);
@@ -194,8 +200,9 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public void reset() {
-        if (!game.isStarted())
+        if (!game.isStarted()) {
             return;
+        }
         getGame().getUnitCache().clear();
         getState().resetAll();
 
@@ -228,15 +235,17 @@ public class DC_GameManager extends GameManager {
     }
 
     public void refresh(boolean visibility) {
-        if (game.isSimulation())
+        if (game.isSimulation()) {
             return;
+        }
         try {
-            if (visibility)
+            if (visibility) {
                 try {
                     getGame().getVisionManager().refresh();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
 
             getGame().getBattleField().refresh();
 
@@ -252,15 +261,17 @@ public class DC_GameManager extends GameManager {
         boolean selectionObj = selectingSet.contains(obj);
 
         if (!selectionObj) {
-            if (C_OBJ_TYPE.BF_OBJ.equals(obj.getOBJ_TYPE_ENUM()))
+            if (C_OBJ_TYPE.BF_OBJ.equals(obj.getOBJ_TYPE_ENUM())) {
                 selectionObj = selectingSet.contains(getGame().getCellByCoordinate(
                         obj.getCoordinates()));
+            }
         }
         if (!selectionObj) {
             // if (MessageManager.confirm(CANCEL_SELECTING)) {
             ActiveObj activatingAction = getActivatingAction();
-            if (activatingAction != null)
+            if (activatingAction != null) {
                 activatingAction.playCancelSound();
+            }
             selectingStopped(true);
             return;
 
@@ -280,8 +291,9 @@ public class DC_GameManager extends GameManager {
     @Override
     public void infoSelect(Obj obj) {
         SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
-        if (!(obj instanceof DC_Obj))
+        if (!(obj instanceof DC_Obj)) {
             return;
+        }
 
         if (getInfoObj() instanceof DC_Cell) {
             if (obj instanceof DC_HeroObj) {
@@ -297,18 +309,20 @@ public class DC_GameManager extends GameManager {
             }
 
         }
-        if (getInfoObj() != null)
+        if (getInfoObj() != null) {
             getInfoObj().setInfoSelected(false);
+        }
 
         super.infoSelect(obj);
         getGame().getBattleField().selectInfoObj(obj, true);
 
-        if (game.isDebugMode())
+        if (game.isDebugMode()) {
             try {
                 getGame().getDebugMaster().getDebugPanel().refresh();
             } catch (Exception e) {
 
             }
+        }
     }
 
     public void objClicked(Obj obj) {
@@ -336,11 +350,13 @@ public class DC_GameManager extends GameManager {
     public void resetValues(Player owner) {
         for (Obj obj : getUnits()) {
             DC_HeroObj unit = null;
-            if (obj instanceof DC_HeroObj)
+            if (obj instanceof DC_HeroObj) {
                 unit = (DC_HeroObj) obj;
+            }
 
-            if (unit.getOwner() == owner)
+            if (unit.getOwner() == owner) {
                 unit.newRound();
+            }
             unit.regen();
         }
     }
@@ -349,8 +365,9 @@ public class DC_GameManager extends GameManager {
     public void resetValues() {
         for (Obj obj : getUnits()) {
             DC_HeroObj unit = null;
-            if (obj instanceof DC_HeroObj)
+            if (obj instanceof DC_HeroObj) {
                 unit = (DC_HeroObj) obj;
+            }
             unit.newRound();
         }
     }
@@ -367,17 +384,20 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public Integer select(Filter<Obj> filter, Ref ref) {
-        if (ref.getActive() instanceof DC_ActiveObj)
+        if (ref.getActive() instanceof DC_ActiveObj) {
             if (getGame().getToolTipMaster()
-                    .isTargetingTooltipShown((DC_ActiveObj) ref.getActive()))
+                    .isTargetingTooltipShown((DC_ActiveObj) ref.getActive())) {
                 getGame().getToolTipMaster().initTargetingTooltip((DC_ActiveObj) ref.getActive());
+            }
+        }
         selectingSet = filter.getObjects();
 
         if (!CoreEngine.isSwingOn()) {
             Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(selectingSet, (t) -> {
                 ref.setTarget(t.getId());
-                if (ref.getActive() != null)
+                if (ref.getActive() != null) {
                     ref.getActive().activate(ref);
+                }
             });
             GuiEventManager.trigger(SELECT_MULTI_OBJECTS, new EventCallbackParam(p));
         }
@@ -390,10 +410,13 @@ public class DC_GameManager extends GameManager {
         for (Obj obj : new LinkedList<>(selectingSet)) {
             if (obj instanceof DC_Obj) {
                 DC_Obj unit = (DC_Obj) obj;
-                if (getActiveObj() != null)
-                    if (!getActiveObj().getName().equals(DC_PagedPriorityPanel.CLOCK_UNIT))
-                        if (getActiveObj().getZ() != unit.getZ())
+                if (getActiveObj() != null) {
+                    if (!getActiveObj().getName().equals(DC_PagedPriorityPanel.CLOCK_UNIT)) {
+                        if (getActiveObj().getZ() != unit.getZ()) {
                             selectingSet.remove(unit);
+                        }
+                    }
+                }
             }
         }
         this.selectingSet = selectingSet;
@@ -406,8 +429,9 @@ public class DC_GameManager extends GameManager {
         }
         selectingInterrupted = false;
         setSelecting(true);
-        for (Obj obj : selectingSet)
+        for (Obj obj : selectingSet) {
             DrawMasterStatic.getObjImageCache().remove(obj);
+        }
         try {
             highlightsOff();
         } catch (Exception e) {
@@ -428,16 +452,18 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public void highlight(Set<Obj> set) {
-        if (CoreEngine.isSwingOn())
+        if (CoreEngine.isSwingOn()) {
             getGame().getBattleField().highlight(set);
+        }
 
 
     }
 
     @Override
     public void highlightsOff() {
-        if (CoreEngine.isSwingOn())
+        if (CoreEngine.isSwingOn()) {
             getGame().getBattleField().highlightsOff();
+        }
     }
 
     public Integer selectAwait() {
@@ -504,7 +530,7 @@ public class DC_GameManager extends GameManager {
         for (AbilityObj abil : killed.getPassives()) {
             abil.kill();
         }
-        if (killed.getBuffs() != null)
+        if (killed.getBuffs() != null) {
             for (Attachment attach : killed.getBuffs()) {
                 if (!attach.isRetainAfterDeath()) {
                     getState().getAttachmentsMap().get(killed).remove(attach);
@@ -512,6 +538,7 @@ public class DC_GameManager extends GameManager {
 
                 }
             }
+        }
         if (!leaveCorpse) {
             // leave a *ghost*?
             // destroy items?
@@ -563,12 +590,15 @@ public class DC_GameManager extends GameManager {
     }
 
     public List<DC_SpellObj> getSpells(DC_HeroObj obj, boolean reset) {
-        if (obj == null)
+        if (obj == null) {
             return new LinkedList<>();
+        }
         List<DC_SpellObj> spells = obj.getSpells();
-        if (spells != null && !reset)
-            if (!spells.isEmpty())
+        if (spells != null && !reset) {
+            if (!spells.isEmpty()) {
                 return spells;
+            }
+        }
 
         spells = new LinkedList<>(initSpellpool(obj, VERBATIM));
         spells.addAll(initSpellpool(obj, MEMORIZED));
@@ -589,8 +619,9 @@ public class DC_GameManager extends GameManager {
         for (String typeName : spellpool) {
             Ref ref = Ref.getCopy(obj.getRef());
             ObjType type = DataManager.getType(typeName, OBJ_TYPES.SPELLS);
-            if (type == null)
+            if (type == null) {
                 continue;
+            }
             Map<ObjType, MicroObj> cache = spellCache.get(obj);
             if (cache == null) {
                 cache = new HashMap<>();
@@ -604,11 +635,12 @@ public class DC_GameManager extends GameManager {
 
             SPELL_POOL spellPool = new EnumMaster<SPELL_POOL>().retrieveEnumConst(SPELL_POOL.class,
                     PROP.getName());
-            if (spellPool != null)
+            if (spellPool != null) {
                 spell.setProperty(G_PROPS.SPELL_POOL, spellPool.toString());
-            else
-                main.system.auxiliary.LogMaster.log(1, PROP.getName()
+            } else {
+                LogMaster.log(1, PROP.getName()
                         + " spell pool not found for " + typeName);
+            }
 
             spells.add((DC_SpellObj) spell);
         }
@@ -617,10 +649,11 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public void checkForChanges(boolean after) {
-        if (after)
+        if (after) {
             checkForDeaths();
-        else
+        } else {
             checkForDispels();
+        }
 
     }
 
@@ -637,19 +670,25 @@ public class DC_GameManager extends GameManager {
 
     private void checkForDeaths() {
         for (Obj unit : getState().getObjMaps().get(OBJ_TYPES.UNITS).values()) {
-            if (!unit.isDead())
-                if (DamageMaster.checkDead((DC_HeroObj) unit))
+            if (!unit.isDead()) {
+                if (DamageMaster.checkDead((DC_HeroObj) unit)) {
                     unit.kill(unit, true, false);
+                }
+            }
         }
         for (Obj unit : getState().getObjMaps().get(OBJ_TYPES.CHARS).values()) {
-            if (!unit.isDead())
-                if (DamageMaster.checkDead((DC_HeroObj) unit))
+            if (!unit.isDead()) {
+                if (DamageMaster.checkDead((DC_HeroObj) unit)) {
                     unit.kill(unit, true, false);
+                }
+            }
         }
         for (Obj unit : getState().getObjMaps().get(OBJ_TYPES.BF_OBJ).values()) {
-            if (!unit.isDead())
-                if (DamageMaster.checkDead((DC_HeroObj) unit))
+            if (!unit.isDead()) {
+                if (DamageMaster.checkDead((DC_HeroObj) unit)) {
                     unit.kill(unit, true, false);
+                }
+            }
         }
     }
 
@@ -749,38 +788,45 @@ public class DC_GameManager extends GameManager {
     }
 
     public DC_Builder getBfBuilder() {
-        if (bfBuilder == null)
+        if (bfBuilder == null) {
             bfBuilder = getGame().getBattleField().getBuilder();
+        }
         return bfBuilder;
     }
 
     public DC_HeroObj getActiveObj() {
-        if (game.isStarted())
+        if (game.isStarted()) {
             if (selectedActiveObj == null) {
                 // endTurn();
                 // SoundMaster.playStandardSound(STD_SOUNDS.FAIL);
                 return DC_PagedPriorityPanel.getClockUnit();
 
             }
+        }
         return (DC_HeroObj) selectedActiveObj;
     }
 
     public void killAllUnits(boolean retainPlayerParty) {
-        killAllUnits(false, retainPlayerParty);
+        killAllUnits(false, retainPlayerParty,
+         true);
     }
 
-    public void killAllUnits(boolean removeBfObjects, boolean retainPlayerParty) {
+    public void killAllUnits(boolean removeBfObjects, boolean retainPlayerParty, boolean quiet) {
         for (DC_HeroObj unit : getGame().getUnits()) {
-            if (!removeBfObjects)
+            if (!removeBfObjects) {
                 if (unit.isBfObj()) {
                     // if (unit.getRef().getObj(KEYS.SUMMONER) == null)
                     continue;
                 }
-            if (retainPlayerParty)
-                if (PartyManager.getParty() != null)
-                    if (PartyManager.getParty().getMembers().contains(unit))
+            }
+            if (retainPlayerParty) {
+                if (PartyManager.getParty() != null) {
+                    if (PartyManager.getParty().getMembers().contains(unit)) {
                         continue;
-            killUnitQuietly(unit);
+                    }
+                }
+            }
+            unit.kill(unit, false, quiet);
             getGame().remove(unit);
         }
         // reset();
@@ -791,12 +837,14 @@ public class DC_GameManager extends GameManager {
     public void killAll(boolean retainSelected) {
         for (DC_HeroObj unit : getGame().getUnits()) {
             if (retainSelected) {
-                if (unit.isActiveSelected())
+                if (unit.isActiveSelected()) {
                     continue;
-                if (unit.getOwner().isMe())
+                }
+                if (unit.getOwner().isMe()) {
                     if (getInfoObj().getOwner().isMe()) {
                         continue;
                     }
+                }
             }
             killUnitQuietly(unit);
         }
@@ -835,13 +883,14 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public MicroObj createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
-        if (!CoreEngine.isArcaneVault())
+        if (!CoreEngine.isArcaneVault()) {
             if (!CoreEngine.isLevelEditor()) {
                 if (!type.isGenerated()) {
                     type = new ObjType(type);
                     game.initType(type);
                 }
             }
+        }
         DC_HeroObj obj;
         if (type.checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.ENTRANCE.toString())) {
             obj = new Entrance(x, y, type, getGame().getDungeon(), null);
@@ -897,16 +946,18 @@ public class DC_GameManager extends GameManager {
             }
         }
         Obj basis = game.getObjectById(ref.getBasis());
-        if (basis == null)
+        if (basis == null) {
             return null;
+        }
         DC_BuffObj buff = (DC_BuffObj) basis.getBuff(type.getName());
         if (buff != null) {
             if (!type.checkBool(STD_BOOLS.STACKING) && !active.checkBool(STD_BOOLS.STACKING)) {
                 basis.removeBuff(type.getName());
                 // TODO duration or do nothing
             } else {
-                if (buff.isMaxStacks())
+                if (buff.isMaxStacks()) {
                     return buff;
+                }
                 buff.modifyParameter(PARAMS.BUFF_STACKS, 1);
             }
         } else {
@@ -929,11 +980,12 @@ public class DC_GameManager extends GameManager {
                     REF.setTarget(cell.getId());
                     // copy buff
                     Effect copy = effect.getCopy();
-                    if (copy == null)
+                    if (copy == null) {
                         LogMaster.error("APPLY THRU ERROR: " + effect + " HAS NO CONSTRUCT");
-                    else
+                    } else {
                         createBuff(type, active, player, REF, copy, duration, retainCondition)
                                 .setAppliedThrough(true);
+                    }
                 }
             }
         }
@@ -943,8 +995,9 @@ public class DC_GameManager extends GameManager {
     public boolean addBuff(Effect effect, String buffName) {
         Ref copy = effect.getRef().getCopy();
 
-        if (copy.getTargetObj() == null)
+        if (copy.getTargetObj() == null) {
             return false;
+        }
 
         copy.getTargetObj().getBuff(buffName);
         return true;
@@ -967,7 +1020,7 @@ public class DC_GameManager extends GameManager {
     }
 
     public void applyActionRules(DC_ActiveObj action) {
-        if (action != null)
+        if (action != null) {
             for (ActionRule a : getGame().getActionRules()) {
                 try {
                     a.actionComplete(action);
@@ -975,6 +1028,7 @@ public class DC_GameManager extends GameManager {
                     e.printStackTrace();
                 }
             }
+        }
 
     }
 

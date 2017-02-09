@@ -17,8 +17,9 @@ public class NotCondition extends ConditionImpl {
 
     @Override
     public boolean check(Ref ref) {
-        if (switcher != null)
+        if (switcher != null) {
             return (switcher) == c.check(ref);
+        }
         return !c.check(ref);
 
     }

@@ -40,17 +40,20 @@ public class ActionPath {
 
     public boolean hasAction(DC_ActiveObj action) {
         for (Choice choice : getChoices()) {
-            for (Action a : choice.getActions())
-                if (a.getActive().equals(action))
+            for (Action a : choice.getActions()) {
+                if (a.getActive().equals(action)) {
                     return true;
+                }
+            }
         }
         return false;
     }
 
     public boolean hasCoordinate(Coordinates c) {
         for (Choice choice : getChoices()) {
-            if (choice.getCoordinates().equals(c))
+            if (choice.getCoordinates().equals(c)) {
                 return true;
+            }
         }
         return false;
     }
@@ -83,8 +86,9 @@ public class ActionPath {
     }
 
     public List<Choice> getChoices() {
-        if (choices == null)
+        if (choices == null) {
             choices = new LinkedList<>();
+        }
         return choices;
     }
 

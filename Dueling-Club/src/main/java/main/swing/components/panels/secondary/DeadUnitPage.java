@@ -36,8 +36,9 @@ public class DeadUnitPage extends G_ListPanel<DC_HeroObj> implements ListCellRen
     @Override
     public Component getListCellRendererComponent(JList<? extends DC_HeroObj> list,
                                                   DC_HeroObj value, int index, boolean isSelected, boolean cellHasFocus) {
-        if (value == null)
+        if (value == null) {
             return new GraphicComponent(ImageManager.getEmptyIcon(getItemSize()).getImage());
+        }
         Image image = ImageManager.getSizedIcon(value.getImagePath(),
                 new Dimension(getItemSize(), getItemSize())).getImage();
         image = ImageTransformer.getGrayScale(ImageManager.getBufferedImage(image));
@@ -45,10 +46,11 @@ public class DeadUnitPage extends G_ListPanel<DC_HeroObj> implements ListCellRen
         if (isSelected) {
             image = ImageManager.applyBorder(image, BORDER.HIGHLIGHTED_96);
         } else if (value.isTargetHighlighted()) {
-            if (value.isMine())
+            if (value.isMine()) {
                 image = ImageManager.applyBorder(image, BORDER.HIGHLIGHTED_BLUE);
-            else
+            } else {
                 image = ImageManager.applyBorder(image, BORDER.HIGHLIGHTED_RED);
+            }
         }
         return new GraphicComponent(image);
     }

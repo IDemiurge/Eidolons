@@ -46,11 +46,13 @@ public class RefCondition extends ConditionImpl {
         setTrue(false);
         try {
             Integer id = ref.getId(id1);
-            if (id == null)
+            if (id == null) {
                 return negative;
+            }
             Integer id_ = ref.getId(id2);
-            if (id_ == null)
+            if (id_ == null) {
                 return negative;
+            }
             setTrue((id.toString().equals(id_.toString())));
         } catch (Exception e) {
             // if (ref.getMatchObj() != null)
@@ -61,8 +63,9 @@ public class RefCondition extends ConditionImpl {
             main.system.auxiliary.LogMaster.log(1, toString() + " failed on "
                     + ref);
         }
-        if (negative)
+        if (negative) {
             setTrue(!isTrue());
+        }
         return isTrue();
     }
 

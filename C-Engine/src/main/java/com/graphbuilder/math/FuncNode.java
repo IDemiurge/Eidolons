@@ -30,8 +30,9 @@ public class FuncNode extends TermNode {
         bag.insert(x, i);
         int newCap = bag.getCapacity();
 
-        if (oldCap != newCap)
+        if (oldCap != newCap) {
             of = new double[newCap];
+        }
 
         x.parent = this;
     }
@@ -42,8 +43,9 @@ public class FuncNode extends TermNode {
     public void remove(Expression x) {
         int size = bag.size();
         bag.remove(x);
-        if (size != bag.size())
+        if (size != bag.size()) {
             x.parent = null;
+        }
     }
 
     /**
@@ -69,12 +71,15 @@ public class FuncNode extends TermNode {
     public double eval(VarMap v, FuncMap f) {
         int numParam = bag.size();
 
-        for (int i = 0; i < numParam; i++)
+        for (int i = 0; i < numParam; i++) {
             of[i] = child(i).eval(v, f);
+        }
 
         double result = f.getFunction(name, numParam).of(of, numParam);
 
-        if (negate) result = -result;
+        if (negate) {
+            result = -result;
+        }
 
         return result;
     }

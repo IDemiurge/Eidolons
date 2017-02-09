@@ -21,20 +21,24 @@ public class TrackReader<E> {
 		E track = null;
 		E lastTrack = null;
 		for (String line : FileManager.readFileLines(path)) {
-			if (line.isEmpty())
-				continue;
-			if (line.equals(M3uGenerator.M3U_PREFIX))
-				continue;
-			// #EXTINF:91,Two Steps From Hell - King's Legion
+            if (line.isEmpty()) {
+                continue;
+            }
+            if (line.equals(M3uGenerator.M3U_PREFIX)) {
+                continue;
+            }
+            // #EXTINF:91,Two Steps From Hell - King's Legion
 			if (line.contains(M3uGenerator.M3U_TRACK_PREFIX_UTF8)) {
 				track = initTrack(line);
 			} else if (line.contains(M3uGenerator.M3U_TRACK_PREFIX)) {
-				if (track == null)
-					track = initTrack(line);
-			} else {
-				if (track != null)
-					addTrack(tracks, track, line);
-				track = null;
+                if (track == null) {
+                    track = initTrack(line);
+                }
+            } else {
+                if (track != null) {
+                    addTrack(tracks, track, line);
+                }
+                track = null;
 			}
 		}
 
@@ -51,17 +55,19 @@ public class TrackReader<E> {
 	}
 
 	private E getTrack(String name) {
-		if (clazz == Track.class)
-			return (E) MusicCore.getTrack(name);
-		return (E) name;
+        if (clazz == Track.class) {
+            return (E) MusicCore.getTrack(name);
+        }
+        return (E) name;
 	}
 
 	private E initTrack(String line) {
 		E track;
 		String name = line.substring(line.indexOf('-') + 1);
-		if (line.indexOf('-') == -1)
-			name = line.substring(line.indexOf(',') + 1);
-		name = name.trim();
+        if (line.indexOf('-') == -1) {
+            name = line.substring(line.indexOf(',') + 1);
+        }
+        name = name.trim();
 		track = getTrack(name);
 		if (track instanceof Track) {
 			Track trackObj = (Track) track;
@@ -71,8 +77,9 @@ public class TrackReader<E> {
 			// line.indexOf(','));
 			// track.setParam(G_PARAMS.DURATION, duration);
 			return track;
-		} else
-			return track;
-	}
+        } else {
+            return track;
+        }
+    }
 
 }

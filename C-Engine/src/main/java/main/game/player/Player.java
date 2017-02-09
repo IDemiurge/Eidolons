@@ -46,12 +46,15 @@ public class Player {
 
         setPortrait(ImageManager.getEmptyUnitIcon());
         this.p = portrait;
-        if (p != null)
-            if (!p.equals(""))
+        if (p != null) {
+            if (!p.equals("")) {
                 setPortrait(ImageManager.getIcon(p));
+            }
+        }
 
-        if (me)
+        if (me) {
             I = this;
+        }
     }
 
     public Player(PlayerData playerdata) {
@@ -113,8 +116,9 @@ public class Player {
 
     public MicroObj getHeroObj() {
         if (heroObj == null) {
-            if (getControlledUnits().size() > 0)
+            if (getControlledUnits().size() > 0) {
                 heroObj = (MicroObj) getControlledUnits().toArray()[0];
+            }
         }
         return heroObj;
     }
@@ -155,22 +159,25 @@ public class Player {
     }
 
     public Set<Obj> getControlledUnits() {
-        if (units == null)
+        if (units == null) {
             resetUnits();
+        }
         return units;
 
     }
 
     public boolean isEnemy() {
         // game.getPlayer(true)
-        if (isMe())
+        if (isMe()) {
             return false;
+        }
         return !isNeutral();
     }
 
     public boolean isHostileTo(Player player) {
-        if (equals(player))
+        if (equals(player)) {
             return false;
+        }
         return !isNeutral();
     }
 

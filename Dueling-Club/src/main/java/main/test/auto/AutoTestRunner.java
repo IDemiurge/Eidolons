@@ -74,12 +74,13 @@ public class AutoTestRunner {
             // ObjType type = DataManager.getType(typeName, OBJ_TYPES.SKILLS);
             // DC_FeatObj feat;
             // unit.getSkills().add(feat);
-            if (test.getE() != null)
+            if (test.getE() != null) {
                 master.getSource().addFeat((DC_FeatObj) test.getE());
-            else
+            } else {
                 master.getSource().addFeat(
                         (DC_FeatObj) master.getFactory().initEntity(
                                 DataManager.getType(typeName, C_OBJ_TYPE.FEATS)));
+            }
         }
         // unit.toBase();
         unit.fullReset(unit.getGame());

@@ -13,12 +13,13 @@ public class TestMode {
     protected static NetGame clientGame;
 
     public static NetGame launchThis(boolean host_client) {
-        if (host_client)
+        if (host_client) {
             hostGame = new NetGame(true);
-        else
+        } else {
             clientGame = new NetGame(false);
+        }
 
-        if (host_client)
+        if (host_client) {
             new Thread(new Runnable() {
 
                 @Override
@@ -27,7 +28,7 @@ public class TestMode {
 
                 }
             }, "HOST").start();
-        else
+        } else {
             new Thread(new Runnable() {
 
                 @Override
@@ -36,6 +37,7 @@ public class TestMode {
                     clientGame.init();
                 }
             }, "CLIENT").start();
+        }
 
         return host_client ? hostGame : clientGame;
     }
@@ -46,8 +48,9 @@ public class TestMode {
             launchThis(false);
             return hostGame;
         } else {
-            if (host_client_both)
+            if (host_client_both) {
                 return launchThis(host_client_both);
+            }
 
             clientGame = new NetGame(false);
             clientGame.init();

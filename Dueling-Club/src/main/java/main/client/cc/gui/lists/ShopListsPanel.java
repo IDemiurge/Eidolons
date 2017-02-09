@@ -35,8 +35,9 @@ public class ShopListsPanel extends VendorListsPanel {
 
     // to be used
     public Map<String, HC_PagedListPanel> initListMap(String tabName) {
-        if (!Launcher.getMainManager().isMacroMode())
+        if (!Launcher.getMainManager().isMacroMode()) {
             return super.initListMap(tabName);
+        }
         if (getTown() == null) {
             return new HashMap<>();
         }
@@ -50,11 +51,13 @@ public class ShopListsPanel extends VendorListsPanel {
         for (String group : getListGroup(tabName)) {
             List<ObjType> data = new LinkedList<>();
             for (ObjType t : items) {
-                if (checkType(t, group, shop))
+                if (checkType(t, group, shop)) {
                     data.add(t);
+                }
             }
-            if (!data.isEmpty())
+            if (!data.isEmpty()) {
                 putList(group, data, map);
+            }
         }
         // sorting?
         return map;
@@ -62,13 +65,16 @@ public class ShopListsPanel extends VendorListsPanel {
 
     private boolean checkType(ObjType t, String group, Shop shop) {
         // if (!shop.isSubgrouping())
-        if (t.getGroupingKey().equalsIgnoreCase(group))
+        if (t.getGroupingKey().equalsIgnoreCase(group)) {
             return true;
-        if (t.getSubGroupingKey().equalsIgnoreCase(group))
+        }
+        if (t.getSubGroupingKey().equalsIgnoreCase(group)) {
             return true;
+        }
         if (t.getProperty(shop.getShopType().getFilterProp()).equalsIgnoreCase(
-                group))
+                group)) {
             return true;
+        }
 
         return false;
     }
@@ -91,16 +97,19 @@ public class ShopListsPanel extends VendorListsPanel {
 
     @Override
     protected List<String> getTabGroups() {
-        if (!Launcher.getMainManager().isMacroMode())
+        if (!Launcher.getMainManager().isMacroMode()) {
             return super.getTabGroups();
-        if (getTown() == null)
+        }
+        if (getTown() == null) {
             return new LinkedList<>();
+        }
         return DataManager.toStringList(getTown().getShops());
     }
 
     protected List<String> getListGroup(String tabName) {
-        if (!Launcher.getMainManager().isMacroMode())
+        if (!Launcher.getMainManager().isMacroMode()) {
             return super.getListGroup(tabName);
+        }
         Shop shop = getTown().getShop(tabName);
         if (shop.getProperty(MACRO_PROPS.SHOP_ITEM_GROUPS).isEmpty()) {
             List<String> list = new LinkedList<>();

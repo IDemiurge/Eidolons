@@ -114,9 +114,10 @@ public class LE_InfoEditPanel extends EditViewPanel {
 	public void resetData(boolean quietly, Entity type) {
 		if (type.getOBJ_TYPE_ENUM() == MACRO_OBJ_TYPES.MISSIONS) {
 			super.resetData(quietly, LevelEditor.getCurrentMission().getObj());
-		} else
-			super.resetData(quietly, type);
-	}
+        } else {
+            super.resetData(quietly, type);
+        }
+    }
 
 	public ObjType getSelectedType() {
 		return selectedType;
@@ -126,10 +127,12 @@ public class LE_InfoEditPanel extends EditViewPanel {
 		this.selectedType = selectedType;
 		if (selectedType != null) {
 			LevelEditor.setMouseAddMode(false);
-			if (selectedType.getOBJ_TYPE_ENUM() != OBJ_TYPES.DUNGEONS)
-				if (selectedType.getOBJ_TYPE_ENUM() != MACRO_OBJ_TYPES.MISSIONS)
-					LevelEditor.setMouseInfoMode(true);
-		}
+            if (selectedType.getOBJ_TYPE_ENUM() != OBJ_TYPES.DUNGEONS) {
+                if (selectedType.getOBJ_TYPE_ENUM() != MACRO_OBJ_TYPES.MISSIONS) {
+                    LevelEditor.setMouseInfoMode(true);
+                }
+            }
+        }
 	}
 
 	public Mission getMission() {

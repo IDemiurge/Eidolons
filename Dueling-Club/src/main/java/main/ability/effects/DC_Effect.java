@@ -13,14 +13,16 @@ public abstract class DC_Effect extends MicroEffect {
     }
 
     public DC_ActiveObj getActiveObj() {
-        if (getRef().getActive() instanceof DC_ActiveObj)
+        if (getRef().getActive() instanceof DC_ActiveObj) {
             return (DC_ActiveObj) getRef().getActive();
+        }
         return null;
     }
 
     public DC_HeroObj getTarget() {
-        if (getRef().getTargetObj() instanceof DC_HeroObj)
+        if (getRef().getTargetObj() instanceof DC_HeroObj) {
             return (DC_HeroObj) getRef().getTargetObj();
+        }
         return null;
     }
 
@@ -29,8 +31,9 @@ public abstract class DC_Effect extends MicroEffect {
     }
 
     public DC_HeroObj getUnit() {
-        if (getRef().getSourceObj() instanceof DC_HeroObj)
+        if (getRef().getSourceObj() instanceof DC_HeroObj) {
             return (DC_HeroObj) getRef().getSourceObj();
+        }
         return null;
     }
 

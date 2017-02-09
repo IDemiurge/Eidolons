@@ -17,14 +17,16 @@ public class WaitingFilterCondition extends MicroCondition {
     public boolean check() {
         // TODO Auto-generated method stub
         Obj obj = ref.getMatchObj();
-        if (obj == ref.getSourceObj())
+        if (obj == ref.getSourceObj()) {
             return true;
+        }
         // if (obj.getOwner() == Player.NEUTRAL)
         // return false;
         if (obj instanceof DC_UnitObj) {
             DC_UnitObj unit = (DC_UnitObj) obj;
-            if (canBeWaitedUpon(ref.getSourceObj(), unit))
+            if (canBeWaitedUpon(ref.getSourceObj(), unit)) {
                 return true;
+            }
         }
         return false;
     }

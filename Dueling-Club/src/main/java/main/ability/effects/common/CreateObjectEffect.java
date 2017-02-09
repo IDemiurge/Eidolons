@@ -59,8 +59,9 @@ public class CreateObjectEffect extends SummonEffect {
     }
 
     private String getBuffName() {
-        if (buff_name != null)
+        if (buff_name != null) {
             return buff_name;
+        }
         return DEFAULT_BUFF_NAME;
     }
 
@@ -68,10 +69,12 @@ public class CreateObjectEffect extends SummonEffect {
     // formula for hp/armor/resistance, similar to
     @Override
     public boolean applyThis() {
-        if (!super.applyThis())
+        if (!super.applyThis()) {
             return false;
-        if (!neutral)
+        }
+        if (!neutral) {
             applyParamBuff();
+        }
 
         return true;
 

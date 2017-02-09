@@ -46,8 +46,9 @@ public class DC_Communicator extends Communicator {
 
     @Override
     public boolean transmitEndTurnCommand() {
-        if (getConnectionHandler() == null)
+        if (getConnectionHandler() == null) {
             return false;
+        }
         getConnectionHandler().send(
                 COMMAND.END_TURN + StringMaster.NETCODE_SEPARATOR + COMMAND.END_TURN);
         main.system.auxiliary.LogMaster.log(1, "end turn command sent!");
@@ -140,10 +141,11 @@ public class DC_Communicator extends Communicator {
 
     protected Active getActive(String idString) {
         Integer id = 0;
-        if (idString.contains(StringMaster.getPairSeparator()))
+        if (idString.contains(StringMaster.getPairSeparator())) {
             id = Integer.valueOf(idString.split(StringMaster.getPairSeparator())[1]);
-        else
+        } else {
             id = Integer.valueOf(idString);
+        }
         Active active = (Active) game.getObjectById(id);
         return active;
     }

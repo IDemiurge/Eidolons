@@ -60,16 +60,18 @@ public class CaptureParser {
 			direction = (Direction) ArcaneTower.getEntity(AT_OBJ_TYPE.DIRECTION,
 					CaptureParser.directionHeader);
 		} else {
-			for (Goal sub : goals)
-				if (sub.getDirection() != null) {
-					direction = sub.getDirection();
-					multiDirection = true;
-					break;
-				}
-		}
-		if (direction == null)
-			PromptMaster.chooseDirection(session);
-		session.setDirection(direction);
+            for (Goal sub : goals) {
+                if (sub.getDirection() != null) {
+                    direction = sub.getDirection();
+                    multiDirection = true;
+                    break;
+                }
+            }
+        }
+        if (direction == null) {
+            PromptMaster.chooseDirection(session);
+        }
+        session.setDirection(direction);
 		session.setGoals(goals);
 		session.setTasks(tasks);
 		session.setMultiDirection(multiDirection);
@@ -91,21 +93,26 @@ public class CaptureParser {
 	}
 
 	private static void checkAddDynamicObjToList(ObjType type) {
-		if (type.getOBJ_TYPE_ENUM() == AT_OBJ_TYPE.TASK)
-			if (tasks != null)
-				tasks.add((Task) ArcaneTower.getSimulation().getInstance(type));
+        if (type.getOBJ_TYPE_ENUM() == AT_OBJ_TYPE.TASK) {
+            if (tasks != null) {
+                tasks.add((Task) ArcaneTower.getSimulation().getInstance(type));
+            }
+        }
 
-		if (type.getOBJ_TYPE_ENUM() == AT_OBJ_TYPE.GOAL)
-			if (goals != null)
-				goals.add((Goal) ArcaneTower.getSimulation().getInstance(type));
+        if (type.getOBJ_TYPE_ENUM() == AT_OBJ_TYPE.GOAL) {
+            if (goals != null) {
+                goals.add((Goal) ArcaneTower.getSimulation().getInstance(type));
+            }
+        }
 
 	}
 
 	public static String autodetectTaskGroup(String text, AT_OBJ_TYPE TYPE) {
 		for (TASK_TYPE t : new EnumMaster<TASK_TYPE>().getEnumList(TASK_TYPE.class)) {
-			if (StringMaster.contains(text, t.name(), true, false))
-				return t.prefix + " " + text;
-		}
+            if (StringMaster.contains(text, t.name(), true, false)) {
+                return t.prefix + " " + text;
+            }
+        }
 		return text;
 
 	}
@@ -117,16 +124,18 @@ public class CaptureParser {
 		if (scope == null) {
 			AT_OBJ_TYPE[] array = { AT_OBJ_TYPE.DIRECTION, AT_OBJ_TYPE.GOAL };
 			int i = DialogMaster.optionChoice("What's the upper scope of this capture?", array);
-			if (i == -1)
-				return;
-			scope = array[i];
+            if (i == -1) {
+                return;
+            }
+            scope = array[i];
 		}
 		initScope(scope);
 		String data = DialogMaster.inputText("<Paste capture text>").trim();
 		parse(data, scope);
-		if (DialogMaster.confirm("Save now?"))
-			ArcaneTower.saveAll();
-		prioritize();
+        if (DialogMaster.confirm("Save now?")) {
+            ArcaneTower.saveAll();
+        }
+        prioritize();
 		cleanUp();
 
 	}
@@ -140,9 +149,10 @@ public class CaptureParser {
 	public static ObjType parse(String data, AT_OBJ_TYPE scope) {
 		if (scope == AT_OBJ_TYPE.DIRECTION) {
 			for (String part : StringMaster.openContainer(data, SUPER_HEADER)) {
-				if (part.isEmpty())
-					continue;
-				String[] blocks = part.split(Pattern.quote(HEADER));
+                if (part.isEmpty()) {
+                    continue;
+                }
+                String[] blocks = part.split(Pattern.quote(HEADER));
 				directionHeader = blocks[0];
 				try {
 					parse(part, AT_OBJ_TYPE.GOAL);
@@ -156,11 +166,13 @@ public class CaptureParser {
 		}
 		if (data.contains(HEADER)) {
 			for (String block : StringMaster.openContainer(data, HEADER)) {
-				if (block.isEmpty())
-					continue;
-				if (block.equals(directionHeader))
-					continue;
-				parse(block, scope);
+                if (block.isEmpty()) {
+                    continue;
+                }
+                if (block.equals(directionHeader)) {
+                    continue;
+                }
+                parse(block, scope);
 				checkAddDynamicObjToList(enclosingType);
 			}
 			return enclosingType;
@@ -171,13 +183,15 @@ public class CaptureParser {
 		// String type = TextParser.extractBraceEnclosed(header); TODO
 
 		enclosingType = getType(scope, header, null, updateMode);
-		if (enclosingType == null)
-			return null;
+        if (enclosingType == null) {
+            return null;
+        }
 
 		for (String block : blocks) {
-			if (block == blocks[0])
-				continue;
-			try {
+            if (block == blocks[0]) {
+                continue;
+            }
+            try {
 				parseBlock(block, scope, header, enclosingType);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -202,22 +216,25 @@ public class CaptureParser {
 		String group = getGroupPrefix(scope, data);
 		data = data.replace(group, "");
 		String[] parts = data.split(BLOCK_DESCRIPTION_SEPARATOR);
-		if (parts.length == 1)
-			parts = data.split(BLOCK_DESCRIPTION_SEPARATOR_ALT);
-		String name = formatBlockName(parts);
+        if (parts.length == 1) {
+            parts = data.split(BLOCK_DESCRIPTION_SEPARATOR_ALT);
+        }
+        String name = formatBlockName(parts);
 		String description = "";
-		if (parts.length > 1)
-			description = parts[1].trim();
-		// String[] lines = blockValue.split(DETAILS_SEPARATOR);
+        if (parts.length > 1) {
+            description = parts[1].trim();
+        }
+        // String[] lines = blockValue.split(DETAILS_SEPARATOR);
 		// if (lines.length > 1) {
 		// blockValue = blockValue.substring(0,
 		// blockValue.indexOf(DETAILS_SEPARATOR));
 		// }
 		String[] lines = StringMaster.getLastPart(data, DETAILS_SEPARATOR).split(";");
 		group = getGroupForPrefix(group, scope.getChildType());
-		if (data.indexOf(DETAILS_SEPARATOR) > 0)
-			data = data.substring(0, data.indexOf(DETAILS_SEPARATOR));
-		ObjType type = createType(enclosingType, scope, header, name, description, lines, group);
+        if (data.indexOf(DETAILS_SEPARATOR) > 0) {
+            data = data.substring(0, data.indexOf(DETAILS_SEPARATOR));
+        }
+        ObjType type = createType(enclosingType, scope, header, name, description, lines, group);
 
 		try {
 			XML_Converter.getDoc(XML_Writer.getTypeXML(type));
@@ -277,25 +294,30 @@ public class CaptureParser {
 		// }
 		if (StringMaster.getFirstNumberIndex(string) == 0)
 			// DUMMY_CHAR;
-			string = "Task: " + string;
-		return string;
+        {
+            string = "Task: " + string;
+        }
+        return string;
 	}
 
 	private static ObjType createType(ObjType enclosingType, AT_OBJ_TYPE scope, String header,
 			String blockName, String blockValue, String[] lines, String group) {
 		AT_OBJ_TYPE blockType = getBlockType(scope);
 		ObjType type = getType(blockType, blockName, enclosingType, updateMode);
-		if (type == null)
-			return null;
-		initGroup(type, group);
+        if (type == null) {
+            return null;
+        }
+        initGroup(type, group);
 		// copy from template type per parent
-		if (enclosingType != null)
-			type.setValue(AT_OBJ_TYPE.getParentValue(blockType), enclosingType.getName());
-		// group/generic
+        if (enclosingType != null) {
+            type.setValue(AT_OBJ_TYPE.getParentValue(blockType), enclosingType.getName());
+        }
+        // group/generic
 		for (String valString : lines) {
-			if (StringMaster.isEmpty(valString))
-				continue;
-			String[] parts = valString.split(DETAILS_VALUE_SEPARATOR);
+            if (StringMaster.isEmpty(valString)) {
+                continue;
+            }
+            String[] parts = valString.split(DETAILS_VALUE_SEPARATOR);
 			String name = parts[0];
 			String value = parts[1];
 			type.setValue(name, value);
@@ -309,8 +331,9 @@ public class CaptureParser {
 	private static String getImage(ObjType type) {
 		String imgPath = ArcaneTower.IMG_PATH + type.getOBJ_TYPE_ENUM() + "\\"
 				+ type.getGroupingKey();
-		if (!ImageManager.isImage(imgPath))
-			imgPath = ArcaneTower.IMG_PATH + type.getOBJ_TYPE_ENUM() + "\\default.";
+        if (!ImageManager.isImage(imgPath)) {
+            imgPath = ArcaneTower.IMG_PATH + type.getOBJ_TYPE_ENUM() + "\\default.";
+        }
 
 		return imgPath;// return
         // DataManager.getTypes(type.getOBJ_TYPE_ENUM()).getOrCreate(0).getImagePath();
@@ -336,26 +359,31 @@ public class CaptureParser {
 				DataManager.addType(type);
 			}
 		}
-		if (enclosingType == null)
-			if (CaptureParser.directionHeader != null) {
-				enclosingType = DataManager.getType(CaptureParser.directionHeader, scope
-						.getParentType());
-				if (enclosingType == null)
-					enclosingType = DataManager.addType(CaptureParser.directionHeader, scope
-							.getParentType());
-			} else
-			// group = CreationHelper.getInput(groupValue, type, group);
-			{
-				if (promptsMode == null)
-					promptsMode = DialogMaster.confirm(type
-							+ " has no enclosingType; choice prompts on?");
-				if (promptsMode)
-					enclosingType = ListChooser.chooseTypeFromSubgroup_(scope.getParentType(), "");
+        if (enclosingType == null) {
+            if (CaptureParser.directionHeader != null) {
+                enclosingType = DataManager.getType(CaptureParser.directionHeader, scope
+                        .getParentType());
+                if (enclosingType == null) {
+                    enclosingType = DataManager.addType(CaptureParser.directionHeader, scope
+                            .getParentType());
+                }
+            } else
+            // group = CreationHelper.getInput(groupValue, type, group);
+            {
+                if (promptsMode == null) {
+                    promptsMode = DialogMaster.confirm(type
+                            + " has no enclosingType; choice prompts on?");
+                }
+                if (promptsMode) {
+                    enclosingType = ListChooser.chooseTypeFromSubgroup_(scope.getParentType(), "");
+                }
                 // else enclosingType = DataManager.getTypes(scope).getOrCreate(0);
             }
-        if (enclosingType != null)
+        }
+        if (enclosingType != null) {
             type.setProperty(AT_OBJ_TYPE.getParentValue((AT_OBJ_TYPE) type.getOBJ_TYPE_ENUM()),
                     enclosingType.getName());
+        }
         return type;
     }
 

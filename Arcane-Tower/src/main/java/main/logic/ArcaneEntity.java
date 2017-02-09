@@ -97,6 +97,11 @@ public abstract class ArcaneEntity extends Entity {
 		return true;
 	}
 
+    @Override
+    public ArcaneRef getRef() {
+        return (ArcaneRef) super.getRef();
+    }
+
 	@Override
 	public void setRef(Ref ref) {
 		// super.setRef(ref);
@@ -104,15 +109,11 @@ public abstract class ArcaneEntity extends Entity {
 		this.ref = new ArcaneRef(this.ref);
 	}
 
-	@Override
-	public ArcaneRef getRef() {
-		return (ArcaneRef) super.getRef();
-	}
-
 	public List<ArcaneEntity> addChildrenTo(List<ArcaneEntity> branch) {
-		for (ArcaneEntity sub : getChildren())
-			sub.addChildrenTo(branch);
-		branch.add(this);
+        for (ArcaneEntity sub : getChildren()) {
+            sub.addChildrenTo(branch);
+        }
+        branch.add(this);
 		return branch;
 	}
 

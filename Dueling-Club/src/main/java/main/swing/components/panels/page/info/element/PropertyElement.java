@@ -43,13 +43,15 @@ public class PropertyElement extends ValueTextComp {
 
     @Override
     protected String getText() {
-        if (permanent)
+        if (permanent) {
             return text;
+        }
         String propertyValue = getEntity().getProperty((PROPERTY) value);
         if (isShowName()) {
-            if (value != null)
+            if (value != null) {
                 return value.getShortName() + ": "
                         + StringMaster.getFormattedContainerString(propertyValue);
+            }
         }
         return StringMaster.getFormattedContainerString(propertyValue);
     }
@@ -70,10 +72,10 @@ public class PropertyElement extends ValueTextComp {
 
     @Override
     protected String getValue() {
-        if (!getEntity().getGame().isSimulation())
+        if (!getEntity().getGame().isSimulation()) {
             if (getEntity() instanceof DC_Obj) {
                 DC_Obj obj = (DC_Obj) getEntity();
-                if (obj.getVisibilityLevel() != null)
+                if (obj.getVisibilityLevel() != null) {
                     switch (obj.getVisibilityLevel()) {
                         case CLEAR_SIGHT:
                             break;
@@ -90,7 +92,9 @@ public class PropertyElement extends ValueTextComp {
                             break;
 
                     }
+                }
             }
+        }
         return super.getValue();
     }
 

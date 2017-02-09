@@ -83,17 +83,19 @@ public class AuraEffect extends MicroEffect implements AttachmentEffect {
      * "Damage Aura"? Property Aura, e.g. demonic! :)
      */
     public boolean applyThis() {
-        if (game.isSimulation())
+        if (game.isSimulation()) {
             return false;
+        }
         if (continuous) {
             AutoTargeting targeting = new AutoTargeting(new DistanceCondition(radius.toString()));
             targeting.getConditions().add(ConditionMaster.getAliveCondition(KEYS.MATCH));
 
             if (onlyEnemiesOrAllies != null) {
-                if (onlyEnemiesOrAllies)
+                if (onlyEnemiesOrAllies) {
                     targeting.getConditions().add(ConditionMaster.getEnemyCondition());
-                else
+                } else {
                     targeting.getConditions().add(ConditionMaster.getAllyCondition());
+                }
 
             }
 
@@ -105,11 +107,12 @@ public class AuraEffect extends MicroEffect implements AttachmentEffect {
             auraEffect = new AddBuffEffect(auraEffects);
             // auraEffect.setTransient(false);
             boolean results = auraEffect.apply(ref);
-            if (results)
+            if (results) {
                 if (!notSelf) {
                     Effect copy = effect.getCopy();
                     copy.apply(Ref.getSelfTargetingRefCopy(ref.getSourceObj()));
                 }
+            }
             return results;
         }
 
@@ -137,8 +140,9 @@ public class AuraEffect extends MicroEffect implements AttachmentEffect {
         Targeting t = new FixedTargeting(KEYS.SOURCE);
 
         Conditions conditions = new Conditions();
-        if (additionalConditions != null)
+        if (additionalConditions != null) {
             conditions.add(additionalConditions);
+        }
         if (!continuous) {
             conditions.add(ConditionMaster.getSelfTriggerCondition());
 

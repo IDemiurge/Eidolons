@@ -47,8 +47,9 @@ public class Comp extends WidgetGroup {
     }
 
     public Image getImage() {
-        if (image == null || dirty)
+        if (image == null || dirty) {
             image = new Image(TextureManager.getOrCreate(imagePath));
+        }
         return image;
     }
 
@@ -60,15 +61,17 @@ public class Comp extends WidgetGroup {
 
     @Override
     public float getWidth() {
-        if (getImage() != null)
+        if (getImage() != null) {
             return getImage().getWidth();
+        }
         return super.getWidth();
     }
 
     @Override
     public float getHeight() {
-        if (getImage() != null)
+        if (getImage() != null) {
             return getImage().getHeight();
+        }
         return super.getHeight();
     }
 

@@ -59,8 +59,9 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
     // }
     @Override
     public Coordinates getCoordinates() {
-        if (hero == null)
+        if (hero == null) {
             return super.getCoordinates();
+        }
         // new Coordinates(0,0);
         return hero.getCoordinates();
     }
@@ -68,8 +69,9 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
     @Override
     public void init() {
         super.init();
-        if (isConstructOnInit())
+        if (isConstructOnInit()) {
             construct();
+        }
     }
 
     protected boolean isConstructOnInit() {
@@ -84,8 +86,9 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
     }
 
     protected DC_HeroObj getHero() {
-        if (hero == null)
+        if (hero == null) {
             initHero();
+        }
 
         return hero;
     }
@@ -98,8 +101,9 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
         for (PARAMETER p : paramMap.getMap().keySet()) {
             if (ContentManager.isValueForOBJ_TYPE(getHero().getOBJ_TYPE_ENUM(), p)) {
                 Integer amount = getIntParam(p);
-                if (amount != 0)
+                if (amount != 0) {
                     getHero().modifyParameter(p, amount);
+                }
             }
         }
 
@@ -107,11 +111,13 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
 
     @Override
     protected void activatePassives() {
-        if (ref == null)
+        if (ref == null) {
             return;
+        }
         for (String prop : StringMaster.openContainer(getProperty(G_PROPS.STANDARD_PASSIVES))) {
-            if (!new ListMaster<String>().contains(STD_PASSIVES_EXCEPTIONS, (prop), true))
+            if (!new ListMaster<String>().contains(STD_PASSIVES_EXCEPTIONS, (prop), true)) {
                 getHero().addProperty(G_PROPS.STANDARD_PASSIVES, prop);
+            }
         }
         for (String prop : StringMaster.openContainer(getProperty(G_PROPS.IMMUNITIES))) {
             getHero().addProperty(G_PROPS.IMMUNITIES, prop);
@@ -122,14 +128,16 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
             // auto-requirement
         }
         if (!isActivatePassives()) {
-            for (String prop : StringMaster.openContainer(getProperty(G_PROPS.PASSIVES)))
+            for (String prop : StringMaster.openContainer(getProperty(G_PROPS.PASSIVES))) {
                 getHero().addProperty(G_PROPS.PASSIVES, prop);
+            }
             getHero().setConstructed(false);
             return;
         }
         ref.setID(getKey(), getId());
-        if (!isConstructed())
+        if (!isConstructed()) {
             construct();
+        }
         if (passives != null) {
             for (AbilityObj abil : passives) {
                 try {
@@ -148,14 +156,16 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
     }
 
     protected void initHero() {
-        if (getGame() == null)
+        if (getGame() == null) {
             return;
+        }
         setHero((DC_HeroObj) getGame().getObjectById(heroId));
     }
 
     protected void initProp(PROPERTY prop) {
-        if (prop.isContainer())
+        if (prop.isContainer()) {
             getHero().addProperty(prop, getProperty(prop));
+        }
 
     }
 

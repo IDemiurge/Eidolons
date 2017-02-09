@@ -10,8 +10,11 @@ public class HC_PagedInfoPanel extends DC_PagedInfoPanel {
         // for spell upgrades page re-init
         if (getEntity() != null)
             // if (getCurrentIndex() > 2)
-            if (getEntity().getOBJ_TYPE_ENUM() == OBJ_TYPES.SPELLS)
+        {
+            if (getEntity().getOBJ_TYPE_ENUM() == OBJ_TYPES.SPELLS) {
                 return true;
+            }
+        }
         return super.isDirty();
     }
     // private boolean descriptionMode;

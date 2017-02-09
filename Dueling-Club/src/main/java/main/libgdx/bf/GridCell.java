@@ -95,7 +95,9 @@ public class GridCell extends Group implements Borderable {
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
-        if (touchable && getTouchable() != Touchable.enabled) return null;
+        if (touchable && getTouchable() != Touchable.enabled) {
+            return null;
+        }
         return x >= 0 && x < getWidth() && y >= 0 && y < getHeight() ? this : null;
     }
 

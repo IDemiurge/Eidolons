@@ -28,15 +28,17 @@ public class SpellPage extends G_ListPanel<DC_SpellObj> implements ListCellRende
 
     @Override
     public void refresh() {
-        if (!initialized)
+        if (!initialized) {
             return;
+        }
         super.refresh();
     }
 
     @Override
     protected void initList() {
-        if (!initialized)
+        if (!initialized) {
             return;
+        }
         super.initList();
         getList().setCellRenderer(this);
         getList().setEmptyIcon(EMPTY_SPELL);
@@ -53,8 +55,9 @@ public class SpellPage extends G_ListPanel<DC_SpellObj> implements ListCellRende
 
     @Override
     public void setInts() {
-        if (!initialized)
+        if (!initialized) {
             return;
+        }
         sizeInfo = "h " + getCompHeight() + "!" + ", w " + getCompWidth() + "!";
         rowsVisible = minItems / wrap;
         layoutOrientation = JList.HORIZONTAL_WRAP;

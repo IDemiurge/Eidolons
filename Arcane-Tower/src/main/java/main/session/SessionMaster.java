@@ -14,11 +14,7 @@ import main.file.ReportGenerator;
 import main.file.VersionMaster;
 import main.gui.SessionWindow;
 import main.io.PromptMaster;
-import main.logic.AT_OBJ_TYPE;
-import main.logic.AT_PARAMS;
-import main.logic.AT_PROPS;
-import main.logic.Goal;
-import main.logic.Task;
+import main.logic.*;
 import main.stats.StatsMaster;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -35,17 +31,22 @@ public class SessionMaster {
 
 	public static final String TEMPLATE = "Template";
 	public static final String PENDING = "Pending";
-	private static List<Session> sessions = new LinkedList<>();
 	static SessionWindow sessionWindow;
+    private static List<Session> sessions = new LinkedList<>();
+    private static VALUE[] copiedVals = {
+            // AT_PARAMS.
+    };
+    private static boolean testMode;
 
 	public static List<Session> getSessions() {
 		return sessions;
 	}
 
 	public static Session getSession() {
-		if (sessionWindow != null)
-			return sessionWindow.getSession();
-		return sessions.get(0);
+        if (sessionWindow != null) {
+            return sessionWindow.getSession();
+        }
+        return sessions.get(0);
 	}
 
 	public static void setActiveWindow(SessionWindow window) {
@@ -64,9 +65,10 @@ public class SessionMaster {
 		for (ObjType type : DataManager.getTypes(AT_OBJ_TYPE.DIRECTION)) {
 			String name = type.getName() + " Session";
 			ObjType e = DataManager.getType(name, AT_OBJ_TYPE.DIRECTION);
-			if (e != null)
-				continue;
-			e = new ObjType(name, AT_OBJ_TYPE.SESSION);
+            if (e != null) {
+                continue;
+            }
+            e = new ObjType(name, AT_OBJ_TYPE.SESSION);
 			e.setProperty(AT_PROPS.SESSION_TYPE, TEMPLATE);
 			DataManager.addType(e);
 		}
@@ -108,15 +110,11 @@ public class SessionMaster {
 
 	private static String getSessionName(String text) {
 		String name = null;
-		if (name == null)
-			name = TimeMaster.getDateString() + " Session from Capture";
-		return name;
+        if (name == null) {
+            name = TimeMaster.getDateString() + " Session from Capture";
+        }
+        return name;
 	}
-
-	private static VALUE[] copiedVals = {
-	// AT_PARAMS.
-	};
-	private static boolean testMode;
 
 	public static ObjType getLastSessionType() {
 		List<ObjType> types = DataManager.getTypes(AT_OBJ_TYPE.SESSION);
@@ -125,18 +123,23 @@ public class SessionMaster {
 			@Override
 			public int compare(ObjType arg0, ObjType arg1) {
 				// int time = t.getIntParam(AT_PARAMS.time_)
-				if (arg0.checkProperty(AT_PROPS.SESSION_STATUS, "" + SESSION_STATUS.UNFINISHED))
-					if (!arg1
-							.checkProperty(AT_PROPS.SESSION_STATUS, "" + SESSION_STATUS.UNFINISHED))
-						return -1;
-				if (!arg0.checkProperty(AT_PROPS.SESSION_STATUS, "" + SESSION_STATUS.UNFINISHED))
-					if (arg1.checkProperty(AT_PROPS.SESSION_STATUS, "" + SESSION_STATUS.UNFINISHED))
-						return 1;
-				int time = arg0.getIntParam(AT_PARAMS.TIME_LAST_MODIFIED);
+                if (arg0.checkProperty(AT_PROPS.SESSION_STATUS, "" + SESSION_STATUS.UNFINISHED)) {
+                    if (!arg1
+                            .checkProperty(AT_PROPS.SESSION_STATUS, "" + SESSION_STATUS.UNFINISHED)) {
+                        return -1;
+                    }
+                }
+                if (!arg0.checkProperty(AT_PROPS.SESSION_STATUS, "" + SESSION_STATUS.UNFINISHED)) {
+                    if (arg1.checkProperty(AT_PROPS.SESSION_STATUS, "" + SESSION_STATUS.UNFINISHED)) {
+                        return 1;
+                    }
+                }
+                int time = arg0.getIntParam(AT_PARAMS.TIME_LAST_MODIFIED);
 				int time2 = arg1.getIntParam(AT_PARAMS.TIME_LAST_MODIFIED);
-				if (time > time2)
-					return -1;
-				return 1;
+                if (time > time2) {
+                    return -1;
+                }
+                return 1;
 			}
 		});
 		return types.get(0);
@@ -153,9 +156,10 @@ public class SessionMaster {
 	}
 
 	public static Session newSession() {
-		if (ArcaneTower.isTestMode() && testMode)
-			return continueSession(true);
-		int result = DialogMaster.optionChoice("How to create your Session?", "From Capture Text",
+        if (ArcaneTower.isTestMode() && testMode) {
+            return continueSession(true);
+        }
+        int result = DialogMaster.optionChoice("How to create your Session?", "From Capture Text",
 				"From Direction", "Continue Pending", "Continue Last");
 		return newSession(result);
 	}
@@ -181,11 +185,12 @@ public class SessionMaster {
 
 	public static Session continueSession(boolean last) {
 		ObjType type = null;
-		if (last)
-			type = ZeitMaster.getLatest(AT_OBJ_TYPE.SESSION, AT_PARAMS.TIME_STARTED);
-		else
-			type = ListChooser.chooseTypeFromGroup_(AT_OBJ_TYPE.SESSION, PENDING);
-		// increment(at_params.number_of_starts);
+        if (last) {
+            type = ZeitMaster.getLatest(AT_OBJ_TYPE.SESSION, AT_PARAMS.TIME_STARTED);
+        } else {
+            type = ListChooser.chooseTypeFromGroup_(AT_OBJ_TYPE.SESSION, PENDING);
+        }
+        // increment(at_params.number_of_starts);
 		return newSession(type, false);
 	}
 
@@ -293,9 +298,10 @@ public class SessionMaster {
 		ArcaneTower.saveEntity(session, true);
 		List<Task> tasks = session.getTasks();
 		for (Task sub : new LinkedList<>(tasks)) {
-			if (sub.isDone())
-				tasks.remove(sub);
-		}
+            if (sub.isDone()) {
+                tasks.remove(sub);
+            }
+        }
 		session.resetPropertyFromList(AT_PROPS.TASKS, tasks);
 		// save
 

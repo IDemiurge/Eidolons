@@ -42,16 +42,18 @@ public class StringComparison extends ConditionImpl {
         if (val2.contains(StringMaster.AND_SEPARATOR)) {
             for (String s : StringMaster.openContainer(val2,
                     StringMaster.AND_SEPARATOR)) {
-                if (compare(val1, s, strict))
+                if (compare(val1, s, strict)) {
                     return true;
+                }
             }
         }
         if (val1.contains(StringMaster.AND_SEPARATOR))// shouldn't happen
         {
             for (String s : StringMaster.openContainer(val1,
                     StringMaster.AND_SEPARATOR)) {
-                if (compare(s, val2, strict))
+                if (compare(s, val2, strict)) {
                     return true;
+                }
             }
         }
 
@@ -62,9 +64,11 @@ public class StringComparison extends ConditionImpl {
 
     private boolean compare(String val1, String val2, boolean strict) {
         boolean result = StringMaster.compareByChar(val1, val2, false);
-        if (!result)
-            if (!strict)
+        if (!result) {
+            if (!strict) {
                 result = StringMaster.compare(val1, val2, strict);
+            }
+        }
         if (!result) {
             // LogMaster.log(LogMaster.CONDITION_DEBUG, "Comparing "
             // + ((strict) ? " strictly " : "") + this.val1 + " to "

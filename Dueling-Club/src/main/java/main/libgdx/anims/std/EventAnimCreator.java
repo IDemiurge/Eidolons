@@ -9,16 +9,16 @@ import main.libgdx.anims.AnimationConstructor.ANIM_PART;
  * Created by JustMe on 2/3/2017.
  */
 public class EventAnimCreator {
-    public static Anim getAnim(Event e){
+    public static Anim getAnim(Event e) {
 
 
-if (e.getType() instanceof STANDARD_EVENT_TYPE){
-    switch (((STANDARD_EVENT_TYPE) e.getType())){
-        case UNIT_HAS_BEEN_KILLED:
-            return new DeathAnim(e);
-    }
+        if (e.getType() instanceof STANDARD_EVENT_TYPE) {
+            switch (((STANDARD_EVENT_TYPE) e.getType())) {
+                case UNIT_HAS_BEEN_KILLED:
+                    return new DeathAnim(e);
+            }
 
-}
+        }
 //            if (part == ANIM_PART.AFTEREFFECT)
 //                if (lethal)
 //
@@ -30,7 +30,7 @@ if (e.getType() instanceof STANDARD_EVENT_TYPE){
     }
 
     public static ANIM_PART getPartToAttachTo(Event event) {
-        switch (((STANDARD_EVENT_TYPE) event.getType())){
+        switch (((STANDARD_EVENT_TYPE) event.getType())) {
             case UNIT_HAS_BEEN_KILLED:
                 return ANIM_PART.AFTEREFFECT;
         }

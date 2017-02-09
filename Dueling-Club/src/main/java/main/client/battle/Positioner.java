@@ -59,8 +59,9 @@ public class Positioner {
     }
 
     public static Coordinates adjustCoordinate(Entity entity, Coordinates c, FACING_DIRECTION facing) {
-        if (c == null)
+        if (c == null) {
             return null;
+        }
         Loop loop = new Loop(50);
         Coordinates coordinate = new Coordinates(c.x, c.y);
         while (loop.continues()) { // TODO remove from adj. list to limit
@@ -68,11 +69,14 @@ public class Positioner {
             DIRECTION direction = getRandomSpawnAdjustDirection();
             coordinate = c.getAdjacentCoordinate(direction);
             if (coordinate != null) {
-                if (!DC_Game.game.isSimulation())
-                    if (DC_Game.game.getBattleField().canMoveOnto(entity, coordinate))
+                if (!DC_Game.game.isSimulation()) {
+                    if (DC_Game.game.getBattleField().canMoveOnto(entity, coordinate)) {
                         break;
-                if (new StackingRule(DC_Game.game).canBeMovedOnto(entity, coordinate))
+                    }
+                }
+                if (new StackingRule(DC_Game.game).canBeMovedOnto(entity, coordinate)) {
                     break;
+                }
             }
         }
         loop = new Loop(50); // second layer in case first one is fully
@@ -86,15 +90,17 @@ public class Positioner {
                     .getAdjacentCoordinate(getRandomSpawnAdjustDirection());
             coordinate = adjustCoordinate(adjacentCoordinate, facing);
         }
-        if (coordinate.isInvalid())
+        if (coordinate.isInvalid()) {
             return null;
+        }
         return coordinate;
     }
 
     public static DIRECTION getRandomSpawnAdjustDirection() {
         DIRECTION direction = FacingMaster.getRandomFacing().getDirection();
-        if (RandomWizard.chance(20))
+        if (RandomWizard.chance(20)) {
             direction = DirectionMaster.rotate45(direction, RandomWizard.random());
+        }
         return direction;
     }
 
@@ -117,21 +123,24 @@ public class Positioner {
 
         List<Coordinates> list = new LinkedList<>();
         // TODO
-        if (CoreEngine.isArcaneVault() || CoreEngine.isLevelEditor())
+        if (CoreEngine.isArcaneVault() || CoreEngine.isLevelEditor()) {
             origin = new Coordinates(PositionMaster.getMiddleIndex(false), PositionMaster
                     .getMiddleIndex(true));
-        else {
+        } else {
             FACING_DIRECTION side = DEFAULT_PLAYER_SIDE;
-            if (DC_Game.game.getDungeonMaster().getDungeon().getSpawningSide() != null)
+            if (DC_Game.game.getDungeonMaster().getDungeon().getSpawningSide() != null) {
                 side = DC_Game.game.getDungeonMaster().getDungeon().getSpawningSide();
-            if (getGame().getGameType() == GAME_TYPE.SCENARIO)
+            }
+            if (getGame().getGameType() == GAME_TYPE.SCENARIO) {
                 if (getGame().getBattleManager().getEncounter() != null) {
-                    if (!getSpawner().getGame().getBattleManager().getEncounter().isSurrounded())
+                    if (!getSpawner().getGame().getBattleManager().getEncounter().isSurrounded()) {
                         side = SECOND_PLAYER_SIDE;
+                    }
                 }
+            }
             unitGroups.put(side, new LinkedHashMap<Coordinates, ObjType>());
 
-            if (me != null)
+            if (me != null) {
                 if (me) {
                     if (PartyManager.getParty() != null) {
                         DC_HeroObj mh = PartyManager.getParty().getMiddleHero();
@@ -145,12 +154,14 @@ public class Positioner {
                     }
                     origin = DC_Game.game.getDungeonMaster().getDungeon()
                             .getPlayerSpawnCoordinates(); // ??
-                    if (origin == null)
+                    if (origin == null) {
                         origin = Coordinates.getMiddleCoordinate(side);
+                    }
 
-                    if (DC_Game.game.getDungeonMaster().getDungeon().getPlayerSpawnCoordinates() != null)
+                    if (DC_Game.game.getDungeonMaster().getDungeon().getPlayerSpawnCoordinates() != null) {
                         origin = DC_Game.game.getDungeonMaster().getDungeon()
                                 .getPlayerSpawnCoordinates();
+                    }
 
                 } else {
 
@@ -163,6 +174,7 @@ public class Positioner {
                         origin = getEnemyTestPartyCoordinates();
                     }
                 }
+            }
         }
         for (String type : partyTypes) {
             ObjType objType = DataManager.getType(type, C_OBJ_TYPE.UNITS_CHARS);
@@ -170,9 +182,11 @@ public class Positioner {
             // DIRECTION.LEFT, DIRECTION.RIGHT,
             // };
             Coordinates c = getFirstLayerCenterCoordinate(origin, objType, false);
-            if (!DC_Game.game.isSimulation())
-                if (unitGroups.get(side) != null)
+            if (!DC_Game.game.isSimulation()) {
+                if (unitGroups.get(side) != null) {
                     unitGroups.get(side).put(c, objType); // facing? TODO
+                }
+            }
             list.add(c);
         }
 
@@ -186,20 +200,25 @@ public class Positioner {
 
         Coordinates playerC = DC_Game.game.getDungeonMaster().getDungeon()
                 .getPlayerSpawnCoordinates();
-        if (playerC == null)
+        if (playerC == null) {
             playerC = Coordinates.getMiddleCoordinate(Positioner.DEFAULT_PLAYER_SIDE);
+        }
         Loop.startLoop(100);
         while (Loop.loopContinues()) {
             int x = playerC.x + RandomWizard.getRandomIntBetween(-4, 4);
             int y = playerC.y + RandomWizard.getRandomIntBetween(-4, 4);
-            if (y >= GuiManager.getBattleFieldHeight() - 1)
+            if (y >= GuiManager.getBattleFieldHeight() - 1) {
                 continue;
-            if (x >= GuiManager.getBattleFieldWidth() - 1)
+            }
+            if (x >= GuiManager.getBattleFieldWidth() - 1) {
                 continue;
-            if (y <= 0)
+            }
+            if (y <= 0) {
                 continue;
-            if (x <= 0)
+            }
+            if (x <= 0) {
                 continue;
+            }
             return new Coordinates(x, y);
         }
         return null;
@@ -230,8 +249,9 @@ public class Positioner {
         } else {
             side = new EnumMaster<FACING_DIRECTION>().retrieveEnumConst(FACING_DIRECTION.class,
                     wave.getProperty(PROPS.SPAWNING_SIDE));
-            if (side == null)
+            if (side == null) {
                 nextSide();
+            }
         }
 
         unitGroups.put(side, map);
@@ -246,8 +266,9 @@ public class Positioner {
             ObjType type = new ObjType(presetGroupTypes.get(i));
             type.getGame().initType(type);
             i++;
-            if (unitLevel > 0)
+            if (unitLevel > 0) {
                 type = new UnitLevelManager().getLeveledType(type, unitLevel, false);
+            }
             ObjAtCoordinate objAtCoordinate = new ObjAtCoordinate(type, c);
             group.add(objAtCoordinate);
 
@@ -263,14 +284,16 @@ public class Positioner {
         for (ObjType type : presetGroupTypes) {
             // c = getNextSideCoordinate(getBaseCoordinate(side));
             Coordinates c = null;
-            if (custom)
+            if (custom) {
                 c = getFirstLayerCenterCoordinate(presetCenterCoordinate, type, true);
-            else
+            } else {
                 c = getNextCoordinate(side, maxUnitsPerRow);
+            }
 
             List<ObjType> units = unitCache.get(c);
-            if (units == null)
+            if (units == null) {
                 units = new LinkedList<>();
+            }
             // TODO [update] use facing with this map..
             units.add(type);
             unitCache.put(c, units);
@@ -311,8 +334,9 @@ public class Positioner {
     }
 
     private int getMaxUnitsPerRow(FACING_DIRECTION side) {
-        if (side == DEFAULT_PLAYER_SIDE)
+        if (side == DEFAULT_PLAYER_SIDE) {
             return Integer.MAX_VALUE;
+        }
         return (side.isVertical()) ? VERTICAL_MAX_UNIT_PER_ROW : HORIZONTAL_MAX_UNIT_PER_ROW;
     }
 
@@ -323,8 +347,9 @@ public class Positioner {
         while (row < ((vertical) ? GuiManager.getBF_CompDisplayedCellsY() : GuiManager
                 .getBF_CompDisplayedCellsX())) {
             c = getCoordinateInRow(row, side, maxUnitsPerRow);
-            if (c != null)
+            if (c != null) {
                 break;
+            }
             row++;
         }
         return c;
@@ -348,12 +373,15 @@ public class Positioner {
 
     private Coordinates getFirstLayerCenterCoordinate(Coordinates c, ObjType objType,
                                                       boolean randomPrefSide) {
-        if (checkBlock(c))
-            if (checkCoordinate(c, objType))
+        if (checkBlock(c)) {
+            if (checkCoordinate(c, objType)) {
                 return c;
+            }
+        }
         DIRECTION spawnSide = DEFAULT_CENTER_SPAWN_SIDE;
-        if (randomPrefSide)
+        if (randomPrefSide) {
             spawnSide = DirectionMaster.getRandomDirection();
+        }
         Coordinates adjacentCoordinate = c.getAdjacentCoordinate(spawnSide);
         if (checkCoordinate(adjacentCoordinate, objType)) {
             facingMap.put(adjacentCoordinate, FacingMaster.getFacingFromDirection(
@@ -372,8 +400,9 @@ public class Positioner {
                         true));
                 return nextCoordinate;
             }
-            if (direction == spawnSide)
+            if (direction == spawnSide) {
                 break;
+            }
         }
         direction = DirectionMaster.rotate45(spawnSide, false);
         // diagonal
@@ -403,12 +432,15 @@ public class Positioner {
             if (side == null) {
                 side = FacingMaster.getRandomFacing();
             }
-        } else
+        } else {
             side = FacingMaster.rotate180(side);
-        if (sides.contains(side))
+        }
+        if (sides.contains(side)) {
             side = FacingMaster.rotate(side, RandomWizard.random());
-        if (sides.contains(side))
+        }
+        if (sides.contains(side)) {
             side = FacingMaster.getRandomFacing();
+        }
         sides.add(side);
 
         return side;
@@ -417,8 +449,9 @@ public class Positioner {
     private FACING_DIRECTION getRandomSide() {
         while (true) {
             side = FacingMaster.getRandomFacing();
-            if (side != DEFAULT_PLAYER_SIDE)
+            if (side != DEFAULT_PLAYER_SIDE) {
                 return side;
+            }
         }
     }
 
@@ -429,11 +462,13 @@ public class Positioner {
      * the issue with current method:
      */
     private Coordinates getNextSideCoordinate(Coordinates c) {
-        if (checkCoordinate(c, null))
+        if (checkCoordinate(c, null)) {
             return c;
+        }
         Coordinates adjacentCoordinate = getAdjacentCoordinateInRow(c);
-        if (adjacentCoordinate != null)
+        if (adjacentCoordinate != null) {
             return adjacentCoordinate;
+        }
         // max per row
         // how to return from recursion and go into a new row?
 
@@ -467,19 +502,21 @@ public class Positioner {
                 - row : row;
         Coordinates coordinate = (vertical) ? new Coordinates(rowIndex, index) : new Coordinates(
                 index, rowIndex);
-        if (checkCoordinate(coordinate, null))
+        if (checkCoordinate(coordinate, null)) {
             return coordinate;
+        }
 
         boolean negative = RandomWizard.random();
         int a = 0;
-        if (negative)
+        if (negative) {
             a = 1;
+        }
         for (int i = a; i < 2 * (maxUnitsPerRow - 1); i++) {
             negative = !negative;
             int c = index;
-            if (negative)
+            if (negative) {
                 c -= i;
-            else {
+            } else {
                 i--;
                 c += i;
             }
@@ -489,8 +526,9 @@ public class Positioner {
                         - c;
             }
             coordinate = (vertical) ? new Coordinates(rowIndex, c) : new Coordinates(c, rowIndex);
-            if (checkCoordinate(coordinate, null))
+            if (checkCoordinate(coordinate, null)) {
                 return coordinate;
+            }
 
         }
 
@@ -502,12 +540,14 @@ public class Positioner {
         boolean clockwise = RandomWizard.random();
         Coordinates adjacentCoordinate = c.getAdjacentCoordinate(DirectionMaster.rotate90(side
                 .getDirection(), clockwise));
-        if (checkCoordinate(adjacentCoordinate, null))
+        if (checkCoordinate(adjacentCoordinate, null)) {
             return adjacentCoordinate;
+        }
         adjacentCoordinate = c.getAdjacentCoordinate(DirectionMaster.rotate90(side.getDirection(),
                 !clockwise));
-        if (checkCoordinate(adjacentCoordinate, null))
+        if (checkCoordinate(adjacentCoordinate, null)) {
             return adjacentCoordinate;
+        }
         return null;
     }
 
@@ -516,24 +556,29 @@ public class Positioner {
     }
 
     private boolean checkBlock(Coordinates c) {
-        for (Map<Coordinates, ObjType> group : unitDungeonGroups.values())
-            if (group.keySet().contains(c))
+        for (Map<Coordinates, ObjType> group : unitDungeonGroups.values()) {
+            if (group.keySet().contains(c)) {
                 return false;
+            }
+        }
         return true;
     }
 
     private boolean checkCoordinate(Coordinates c, Entity entityToPosition) {
-        if (c == null)
+        if (c == null) {
             return false;
+        }
 
         // for (Map<Coordinates, ObjType> group : unitGroups.values())
         // if (group.keySet().contains(c)) // TODO
         // return false;
         List<ObjType> otherUnits = null;
-        if (unitCache != null)
+        if (unitCache != null) {
             otherUnits = unitCache.get(c);
-        if (otherUnits == null)
+        }
+        if (otherUnits == null) {
             otherUnits = new LinkedList<>();
+        }
 
         try {
             return StackingRule.checkCanPlace(c, entityToPosition, otherUnits);
@@ -553,12 +598,14 @@ public class Positioner {
             // FIX]
             // getGame().getParty().getMembers()
             FACING_DIRECTION facing = FacingMaster.getRelativeFacing(c, member.getCoordinates());
-            if (facing == null)
+            if (facing == null) {
                 facing = FacingMaster.getFacingFromDirection(DirectionMaster.getRelativeDirection(
                         c, member.getCoordinates()));
+            }
             Integer i = map.get(facing);
-            if (i == null)
+            if (i == null) {
                 i = 0;
+            }
             i++;
             map.put(facing, i);
 
@@ -591,8 +638,9 @@ public class Positioner {
     }
 
     public FACING_DIRECTION getPartyMemberFacing(Coordinates c) {
-        if (getGame().getGameMode() == GAME_MODES.ARENA_ARCADE)
+        if (getGame().getGameMode() == GAME_MODES.ARENA_ARCADE) {
             return FacingMaster.getPresetFacing(true);
+        }
         if (facingMap.containsKey(c)) {
             return facingMap.get(c);
         }
@@ -605,7 +653,7 @@ public class Positioner {
                 }
             }
         }
-        if (zone != null)
+        if (zone != null) {
             switch (zone) {
                 case SIDE_EAST:
                     return FACING_DIRECTION.WEST;
@@ -616,6 +664,7 @@ public class Positioner {
                 case SIDE_WEST:
                     return FACING_DIRECTION.EAST;
             }
+        }
         return DEFAULT_ENEMY_SIDE;
     }
 
@@ -638,8 +687,9 @@ public class Positioner {
     }
 
     public SpawnManager getSpawner() {
-        if (spawner == null)
+        if (spawner == null) {
             spawner = getGame().getArenaManager().getSpawnManager();
+        }
         return spawner;
     }
 

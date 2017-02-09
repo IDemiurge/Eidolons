@@ -3,7 +3,6 @@ package main.ability.effects;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.DC_HeroObj;
-import main.entity.obj.MicroObj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.UNIT_DIRECTION;
 import main.game.battlefield.DirectionMaster;
@@ -17,11 +16,11 @@ public class MoveEffect extends DC_Effect {
     protected String obj_to_move;
     protected Formula x_displacement;
     protected Formula y_displacement;
+    protected Coordinates origin;
+    protected Coordinates destination;
     private UNIT_DIRECTION direction;
     private String relativeDirection;
     private String targetKey = KEYS.TARGET.toString();
-    protected  Coordinates origin;
-    protected  Coordinates destination;
 
     public MoveEffect() {
         movement = true;
@@ -94,9 +93,9 @@ public class MoveEffect extends DC_Effect {
         return true;
     }
     public Coordinates getCoordinates() {
-        Coordinates c=null ;
+        Coordinates c;
         if (movement) {
-            c = ((MicroObj) ref.getObj(targetKey)).getCoordinates();
+            c = ref.getObj(targetKey).getCoordinates();
         } else {
             Integer x = x_displacement.getInt(ref);
             Integer y = y_displacement.getInt(ref);
@@ -108,7 +107,9 @@ public class MoveEffect extends DC_Effect {
     }
 
     public Coordinates getDestination() {
-        if (destination==null ) return getCoordinates();
+        if (destination == null) {
+            return getCoordinates();
+        }
         return destination;
     }
 

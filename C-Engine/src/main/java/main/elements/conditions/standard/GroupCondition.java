@@ -36,12 +36,15 @@ public class GroupCondition extends ConditionImpl {
     @Override
     public boolean check() {
         Ref REF = ref;
-        if (event)
+        if (event) {
             REF = ref.getEvent().getRef();
-        if (group == null)
+        }
+        if (group == null) {
             group = REF.getGroup();
-        if (group == null)
+        }
+        if (group == null) {
             return false;
+        }
         return group.getObjectIds().contains(REF.getId(OBJ_REF));
     }
 

@@ -31,8 +31,9 @@ public class BoundaryMaster {
         List<AreaLine> relevantLines = new LinkedList<>();
         for (AreaLine line : lines) {
             boolean side = isToTheLeft(vectorLine, line.p1);
-            if (side == isToTheLeft(vectorLine, line.p2))
+            if (side == isToTheLeft(vectorLine, line.p2)) {
                 relevantLines.add(line);
+            }
         }
         List<AreaLine> crossed = new LinkedList<>();
         while (crossed.size() != 1) {
@@ -58,8 +59,9 @@ public class BoundaryMaster {
                     / new Float(line.p1.y - line.p2.y);
         }
         float xToY = new Float(p.x) / new Float(p.y);
-        if (line.slope == xToY)
+        if (line.slope == xToY) {
             return null;
+        }
         return line.slope > xToY;
     }
 

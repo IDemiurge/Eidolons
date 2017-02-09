@@ -58,18 +58,20 @@ public class ValueOrbPanel extends G_Panel {
     }
 
     public void add(Component comp, Object constraints) {
-        if (comp instanceof ValueOrb)
+        if (comp instanceof ValueOrb) {
             orbs.add((ValueOrb) comp);
+        }
         super.add(comp, constraints);
     }
 
     @Override
     public void refresh() {
         for (ValueOrb orb : orbs) {
-            if (DC_Game.game.getBattleField().getBuilder().getTopPanel().isDebugOn())
+            if (DC_Game.game.getBattleField().getBuilder().getTopPanel().isDebugOn()) {
                 orb.setObj(null);
-            else
+            } else {
                 orb.setObj(getObj());
+            }
             orb.refresh();
         }
         super.refresh();

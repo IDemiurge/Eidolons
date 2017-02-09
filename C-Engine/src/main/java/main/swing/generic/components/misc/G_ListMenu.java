@@ -27,8 +27,9 @@ public abstract class G_ListMenu extends JList<String> implements
     public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2 || e.isAltDown()) {
             handleClick(getSelectedValue());
-        } else
+        } else {
             return;
+        }
 
     }
 
@@ -36,8 +37,9 @@ public abstract class G_ListMenu extends JList<String> implements
 
     public void setData(Collection<String> data) {
         model.removeAllElements();
-        for (String element : data)
+        for (String element : data) {
             model.addElement(element);
+        }
     }
 
     public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {

@@ -26,8 +26,9 @@ public class EffectAnimation extends ActionAnimation {
 
     @Override
     protected boolean drawPhase(AnimPhase phase) {
-        if (super.drawPhase(phase))
+        if (super.drawPhase(phase)) {
             return true;
+        }
         this.phase = phase; // TODO mass-add as argument instead!
         switch (phase.getType()) {
             case ROLL:
@@ -54,8 +55,10 @@ public class EffectAnimation extends ActionAnimation {
         Boolean negative = false;
         if (counter != null)
             // counter.isNegative(); // img
+        {
             drawTextOnTarget(StringMaster.getBonusString(modValue), font, CENTERED_X, CENTERED_Y,
                     ColorManager.getStandardColor(negative));
+        }
 
         StringMaster.getBonusString(modValue);
 
@@ -64,8 +67,9 @@ public class EffectAnimation extends ActionAnimation {
 
     private boolean drawRoll(AnimPhase phase) {
         Roll roll = (Roll) phase.getArgs()[0];
-        if (roll == null)
+        if (roll == null) {
             return false;
+        }
 
         Boolean result = roll.getResult();
         Boolean negative = source.getOwner().isEnemy() && getTarget().getOwner().isMe();
@@ -118,8 +122,9 @@ public class EffectAnimation extends ActionAnimation {
     private void joinsMaps(AnimPhase phase, Map map) {
         int i = 1;
         while (true) {
-            if (phase.getArgs().length <= i)
+            if (phase.getArgs().length <= i) {
                 break;
+            }
             if (phase.getArgs()[i] instanceof Map) {
                 Map map1 = (Map) phase.getArgs()[i];
                 map.putAll(map1);
@@ -140,8 +145,9 @@ public class EffectAnimation extends ActionAnimation {
                 drawOnTargetCenterX(image, y);
                 y += image.getHeight(null);
                 Color c = getDefaultTextColor();
-                if (buff.isNegative() != null)
+                if (buff.isNegative() != null) {
                     c = getColorForModifier(buff.isNegative() ? -1 : 1);
+                }
                 y += drawTextOnTarget(buff.getName(), MigMaster.getCenteredTextPosition(buff
                         .getName(), font, w), y, c);
             }

@@ -51,9 +51,11 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     }
 
     public boolean check(Obj obj) {
-        if (!applyToBfObjs())
-            if (obj.getOBJ_TYPE_ENUM() == OBJ_TYPES.BF_OBJ)
+        if (!applyToBfObjs()) {
+            if (obj.getOBJ_TYPE_ENUM() == OBJ_TYPES.BF_OBJ) {
                 return false;
+            }
+        }
         Ref ref = obj.getRef().getCopy();
         ref.setMatch(obj.getId());
         ref.setTarget(obj.getId());
@@ -84,13 +86,15 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
             }
         }
 
-        if (getBuffConditions().check(ref))
+        if (getBuffConditions().check(ref)) {
             if (checkBuffLevel(ref)) {
-                if (checkLogged(obj))
+                if (checkLogged(obj)) {
                     log(obj);
+                }
 
                 apply(ref);
             }
+        }
         // else
         // effectCache.put(obj, new Effect[getMaxLevel()]);
 
@@ -137,8 +141,9 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
 
         boolean logged = true;
         try {
-            if (effectCache.get(obj) != null)
+            if (effectCache.get(obj) != null) {
                 logged = false;
+            }
             // else // TODO instead, set the effect's BOOLEAN_APPLIED
             // if (level != null)
             // if (level > 0)
@@ -176,8 +181,9 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
         ref.setTarget(unit.getId());
         ref.setBasis(unit.getId());
         boolean result = conditions.check(ref);
-        if (!result)
+        if (!result) {
             return -1;
+        }
         return initLevel(ref);
     }
 
@@ -186,15 +192,18 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     public void apply(Ref ref) {
         target = (DC_HeroObj) ref.getTargetObj();
         getEffect().setAnimationActive(ref.getActive());
-        if (checkAnimationDisplayed(ref))
+        if (checkAnimationDisplayed(ref)) {
             queueAnimation();
+        }
         // TODO only animate after Buff Level changes!!!
         super.apply(ref);
-        if (animationQueued)
+        if (animationQueued) {
             playAnimation(ref);
+        }
         Effect[] array = effectCache.get(ref.getTargetObj());
-        if (array == null)
+        if (array == null) {
             array = new Effect[getMaxLevel() + 1];
+        }
 
         array[level] = effects;
 
@@ -203,8 +212,9 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
 
     protected void playAnimation(Ref ref) {
         DC_ActiveObj action = (DC_ActiveObj) ref.getObj(KEYS.ACTIVE);
-        if (action == null)
+        if (action == null) {
             action = target.getDummyAction();
+        }
         EffectAnimation anim = new EffectAnimation(action);
         anim.addPhase(new AnimPhase(PHASE_TYPE.BUFF, ref.getObj(KEYS.BUFF)));
         getGame().getAnimationManager().newAnimation(anim);
@@ -217,8 +227,9 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     }
 
     protected boolean checkAnimationDisplayed(Ref ref) {
-        if (!checkLogged(ref.getSourceObj()))
+        if (!checkLogged(ref.getSourceObj())) {
             return false;
+        }
         return ref.getGame().isStarted();
     }
 
@@ -248,8 +259,9 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
 
     protected Condition getConditions(Integer level) {
         Conditions conditions = conditionsMap.get(level);
-        if (conditions != null)
+        if (conditions != null) {
             return conditions;
+        }
         conditions = new Conditions(getCondition(level));
         // less or equal than this level
         boolean reverse = isReverse(level);
@@ -282,8 +294,9 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
 
     @Override
     public boolean check(Event event) {
-        if (!super.check(event))
+        if (!super.check(event)) {
             return false;
+        }
         return checkBuffLevel(event.getRef());
     }
 

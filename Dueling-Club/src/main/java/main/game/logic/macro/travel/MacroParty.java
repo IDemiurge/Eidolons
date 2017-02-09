@@ -75,19 +75,21 @@ public class MacroParty extends MacroObj {
 
     @Override
     public void toBase() {
-        if (MacroManager.isEditMode())
+        if (MacroManager.isEditMode()) {
             return;
+        }
         super.toBase();
         if (party != null) {
             party.setMacroParty(this);
             party.toBase();
         }
         resetGoldShares();
-        for (DC_HeroObj hero : getMembers())
+        for (DC_HeroObj hero : getMembers()) {
             hero.setParam(MACRO_PARAMS.TRAVEL_SPEED,
                     "" + TravelMaster.getTravelSpeedDynamic(hero)
                     // , true //TODO
             );
+        }
         setParam(MACRO_PARAMS.TRAVEL_SPEED,
                 getMinParam(MACRO_PARAMS.TRAVEL_SPEED), true);
 
@@ -106,8 +108,9 @@ public class MacroParty extends MacroObj {
         int amount = 100;
 
         for (DC_HeroObj m : getMembers()) {
-            if (m == getLeader())
+            if (m == getLeader()) {
                 continue;
+            }
             int share = 100 / getMembers().size();
             m.setParam(MACRO_PARAMS.C_SHARED_GOLD_PERCENTAGE, share);
 
@@ -122,8 +125,9 @@ public class MacroParty extends MacroObj {
     @Override
     public void newTurn() {
         toBase();
-        if (status == MACRO_STATUS.CAMPING)
+        if (status == MACRO_STATUS.CAMPING) {
             RestMaster.applyMacroMode(this);
+        }
     }
 
     public void useTime(int hours) {
@@ -136,8 +140,9 @@ public class MacroParty extends MacroObj {
     public Integer getSharedGold() {
         Integer gold = getLeader().getIntParam(PARAMS.GOLD);
         for (DC_HeroObj m : getMembers()) {
-            if (m == getLeader())
+            if (m == getLeader()) {
                 continue;
+            }
             gold += MathMaster.applyMod(m.getIntParam(PARAMS.GOLD),
                     m.getIntParam(MACRO_PARAMS.C_SHARED_GOLD_PERCENTAGE));
         }
@@ -225,20 +230,24 @@ public class MacroParty extends MacroObj {
         Integer id = null;
         String value = "";
         setLastLocation(getCurrentLocation());
-        if (newPlace instanceof Town)
+        if (newPlace instanceof Town) {
             setTown((Town) newPlace);
-        else
+        } else {
             setTown(null);
-        if (newPlace instanceof Route)
+        }
+        if (newPlace instanceof Route) {
             setCurrentRoute((Route) newPlace);
-        else
+        } else {
             setCurrentRoute(null);
+        }
         if (newPlace != null) {
             id = newPlace.getId();
             value = newPlace.getName();
-            if (newPlace.getArea() != null)
-                if (newPlace.getArea() != getArea())
+            if (newPlace.getArea() != null) {
+                if (newPlace.getArea() != getArea()) {
                     setArea(newPlace.getArea());
+                }
+            }
         }
 
         getRef().setMacroId(MACRO_KEYS.PLACE, id);
@@ -273,8 +282,9 @@ public class MacroParty extends MacroObj {
     }
 
     public Place getLastLocation() {
-        if (lastLocation == null)
+        if (lastLocation == null) {
             return getCurrentLocation();
+        }
         return lastLocation;
     }
 
@@ -288,19 +298,23 @@ public class MacroParty extends MacroObj {
 
     public void setCurrentDestination(Place currentDestination) {
         this.currentDestination = currentDestination;
-        if (currentDestination == null)
+        if (currentDestination == null) {
             removeProperty(MACRO_PROPS.DESTINATION);
-        else
+        } else {
             setProperty(MACRO_PROPS.DESTINATION, currentDestination.getName());
+        }
     }
 
     public Area getArea() {
-        if (area == null)
+        if (area == null) {
             area = getRegion().getArea(getProperty(MACRO_PROPS.AREA));
-        if (area == null && getCurrentLocation() != null)
+        }
+        if (area == null && getCurrentLocation() != null) {
             area = getCurrentLocation().getArea();
-        if (area == null && getCurrentRoute() != null)
+        }
+        if (area == null && getCurrentRoute() != null) {
             area = getCurrentRoute().getArea();
+        }
         return area;
     }
 
@@ -316,10 +330,11 @@ public class MacroParty extends MacroObj {
 
     public void setStatus(MACRO_STATUS status) {
         this.status = status;
-        if (status == null)
+        if (status == null) {
             removeProperty(MACRO_PROPS.MACRO_STATUS);
-        else
+        } else {
             setProperty(MACRO_PROPS.MACRO_STATUS, status.toString());
+        }
     }
 
     public int getExploreCapacity() {
@@ -345,10 +360,11 @@ public class MacroParty extends MacroObj {
     }
 
     public void setCurrentExploration(Place place) {
-        if (place != null)
+        if (place != null) {
             setProperty(MACRO_PROPS.CURRENT_EXPLORATION, place.getName());
-        else
+        } else {
             removeProperty(MACRO_PROPS.CURRENT_EXPLORATION);
+        }
         this.currentExploration = place;
     }
 

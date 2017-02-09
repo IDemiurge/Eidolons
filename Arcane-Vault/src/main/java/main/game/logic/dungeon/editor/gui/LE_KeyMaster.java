@@ -1,10 +1,6 @@
 package main.game.logic.dungeon.editor.gui;
 
-import main.game.logic.dungeon.editor.gui.LE_PlanPanel.BLOCK_CONTROLS;
-import main.game.logic.dungeon.editor.gui.LE_PlanPanel.LEVEL_CONTROLS;
-import main.game.logic.dungeon.editor.gui.LE_PlanPanel.MISSION_CONTROLS;
-import main.game.logic.dungeon.editor.gui.LE_PlanPanel.OBJ_CONTROLS;
-import main.game.logic.dungeon.editor.gui.LE_PlanPanel.PLAN_CONTROLS;
+import main.game.logic.dungeon.editor.gui.LE_PlanPanel.*;
 import main.system.auxiliary.StringMaster;
 
 import java.awt.event.KeyEvent;
@@ -54,9 +50,10 @@ public class LE_KeyMaster implements KeyListener {
 
 		}
 		Integer i = StringMaster.getInteger(e.getKeyChar());
-		if (i == null)
-			return;
-		i--;
+        if (i == null) {
+            return;
+        }
+        i--;
 		switch (panel.getPlanPanel().getControlGroup()) {
 			case BLOCK:
 				panel.getPlanPanel().handleBlockControl(BLOCK_CONTROLS.values()[i]);

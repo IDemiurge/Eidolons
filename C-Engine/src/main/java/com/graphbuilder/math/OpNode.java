@@ -20,8 +20,9 @@ public abstract class OpNode extends Expression {
 
     public void setLeftChild(Expression x) {
         checkBeforeAccept(x);
-        if (leftChild != null)
+        if (leftChild != null) {
             leftChild.parent = null;
+        }
         x.parent = this;
         leftChild = x;
     }
@@ -32,8 +33,9 @@ public abstract class OpNode extends Expression {
 
     public void setRightChild(Expression x) {
         checkBeforeAccept(x);
-        if (rightChild != null)
+        if (rightChild != null) {
             rightChild.parent = null;
+        }
         x.parent = this;
         rightChild = x;
     }

@@ -25,9 +25,10 @@ public class RayEffect extends SpecialTargetingEffect {
 
     public void initTargeting() {
         Conditions conditions = new Conditions();
-        if (distance!=null )
-        conditions.add(ConditionMaster.getDistanceFilterCondition(
-                KEYS.SOURCE.toString(), distance));
+        if (distance != null) {
+            conditions.add(ConditionMaster.getDistanceFilterCondition(
+                    KEYS.SOURCE.toString(), distance));
+        }
         
         if (PositionMaster.inLine(ref.getTargetObj().getCoordinates(), ref
                 .getSourceObj().getCoordinates())) {
@@ -41,14 +42,16 @@ public class RayEffect extends SpecialTargetingEffect {
         // conditions.add(ConditionMaster.getUnitTypeCondition());
         conditions.add(ConditionMaster.getNotDeadCondition());
 
-        if (allyOrEnemyOnly != null)
+        if (allyOrEnemyOnly != null) {
             if (allyOrEnemyOnly) {
                 conditions.add(ConditionMaster.getAllyCondition());
             } else {
                 conditions.add(ConditionMaster.getEnemyCondition());
             }
-        if (ref.getObj(KEYS.ACTIVE).checkBool(STD_BOOLS.BLOCKED))
+        }
+        if (ref.getObj(KEYS.ACTIVE).checkBool(STD_BOOLS.BLOCKED)) {
             conditions.add(DC_ConditionMaster.getClearShotFilterCondition());
+        }
         this.targeting = new AutoTargeting(conditions, DataManager.BF_TYPES);
         setFilteringConditions(conditions);
 

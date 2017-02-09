@@ -66,8 +66,9 @@ public class MacroManager {
     }
 
     public static void exitGame() {
-        if (game == null)
+        if (game == null) {
             return;
+        }
         // try { save();
         game = null;
         mapView = null;
@@ -94,8 +95,9 @@ public class MacroManager {
         custom_OBJ_TYPES = new DequeImpl<>();
         for (OBJ_TYPE t : MACRO_OBJ_TYPES.values()) {
             File file = FileManager.getFile(getTypeDataPath() + t.getName() + ".xml");
-            if (!file.isFile())
+            if (!file.isFile()) {
                 continue;
+            }
             custom_OBJ_TYPES.add(t);
             String xml = FileManager.readFile(file);
             customTypes.addAll(XML_Reader.createCustomTypeList(xml, t, MacroGame.getGame(),
@@ -110,11 +112,14 @@ public class MacroManager {
     }
 
     public static ObjType getCustomType(String typeName) {
-        if (typeName == null)
+        if (typeName == null) {
             return null;
-        for (ObjType t : MacroManager.getCustomTypes())
-            if (typeName.equals(t.getName()))
+        }
+        for (ObjType t : MacroManager.getCustomTypes()) {
+            if (typeName.equals(t.getName())) {
                 return t;
+            }
+        }
 
         return null;
     }
@@ -159,8 +164,9 @@ public class MacroManager {
     }
 
     public static DequeImpl<ObjType> getRemovedTypes() {
-        if (removedTypes == null)
+        if (removedTypes == null) {
             removedTypes = new DequeImpl<>();
+        }
         return removedTypes;
 
     }
@@ -174,14 +180,16 @@ public class MacroManager {
             mapView = new MapView();
             mapView.init();
         }
-        if (mapComponent == null)
+        if (mapComponent == null) {
             mapComponent = mapView.build();
+        }
         return mapComponent;
     }
 
     public static String getWorldName() {
-        if (worldName == null)
+        if (worldName == null) {
             return defaultWorldName;
+        }
         return worldName;
     }
 
@@ -199,8 +207,9 @@ public class MacroManager {
     }
 
     public static DC_HeroObj getSelectedPartyMember() {
-        if (selectedPartyMember == null)
+        if (selectedPartyMember == null) {
             return game.getPlayerParty().getLeader();
+        }
         return selectedPartyMember;
     }
 
@@ -217,8 +226,9 @@ public class MacroManager {
     }
 
     public static String getCampaignName() {
-        if (campaignName == null)
+        if (campaignName == null) {
             return defaultCampaignName;
+        }
         return campaignName;
     }
 
@@ -228,8 +238,9 @@ public class MacroManager {
 
     public static boolean isMacroGame() {
         // return game!=null;
-        if (Launcher.getMainManager() == null)
+        if (Launcher.getMainManager() == null) {
             return false;
+        }
         return Launcher.getMainManager().isMacroMode();
     }
 
@@ -283,8 +294,9 @@ public class MacroManager {
         type.setName(name);
         type.setProperty(G_PROPS.PARENT_TYPE, parent.getName());
         getCustomTypes().add(type);
-        if (!getCustom_OBJ_TYPES().contains(type.getOBJ_TYPE_ENUM()))
+        if (!getCustom_OBJ_TYPES().contains(type.getOBJ_TYPE_ENUM())) {
             getCustom_OBJ_TYPES().add(type.getOBJ_TYPE_ENUM());
+        }
         type.setGenerated(true);
         DataManager.addType(type);
         return type;

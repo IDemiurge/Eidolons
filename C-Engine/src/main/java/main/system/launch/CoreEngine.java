@@ -18,6 +18,7 @@ public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability"};
     public static final String VERSION = "0.01";
     public static boolean swingOn = true;
+    public static boolean animationTestMode;
     private static boolean TEST_MODE = true;
     private static SoundMaster sm;
     private static boolean arcaneVault;
@@ -30,7 +31,6 @@ public class CoreEngine {
     private static boolean writingLogFilesOn;
     private static boolean arcaneTower = false;
     private static boolean graphicTestMode = true;
-    public static boolean animationTestMode;
 
     public static void dataInit(boolean newThread, final boolean macro) {
         if (newThread) {
@@ -103,31 +103,39 @@ public class CoreEngine {
 
     public static boolean checkReadNecessary(String name) {
 
-        if (selectivelyReadTypes != null)
+        if (selectivelyReadTypes != null) {
             return StringMaster.checkContainer(selectivelyReadTypes, StringMaster
                             .cropFormat(StringMaster.cropLast(name, "-"))
 
                     , false);
+        }
 
-        if (exceptionTypes != null)
+        if (exceptionTypes != null) {
             if (StringMaster.checkContainer(exceptionTypes, StringMaster
                             .cropFormat(StringMaster.cropLast(name, "-"))
-                    , false))
+                    , false)) {
                 return false;
+            }
+        }
 
         OBJ_TYPES TYPE = new EnumMaster<OBJ_TYPES>().retrieveEnumConst(OBJ_TYPES.class, name);
 
         if (isMenuScope() && !arcaneVault && !TEST_MODE) {
-            if (TYPE == OBJ_TYPES.CHARS)
+            if (TYPE == OBJ_TYPES.CHARS) {
                 return true;
-            if (TYPE == OBJ_TYPES.PARTY)
+            }
+            if (TYPE == OBJ_TYPES.PARTY) {
                 return true;
-            if (TYPE == OBJ_TYPES.DEITIES)
+            }
+            if (TYPE == OBJ_TYPES.DEITIES) {
                 return true;
-            if (TYPE == OBJ_TYPES.ARMOR)
+            }
+            if (TYPE == OBJ_TYPES.ARMOR) {
                 return true;
-            if (TYPE == OBJ_TYPES.WEAPONS)
+            }
+            if (TYPE == OBJ_TYPES.WEAPONS) {
                 return true;
+            }
             return TYPE == OBJ_TYPES.ITEMS;
         }
         return true;
@@ -179,12 +187,12 @@ public class CoreEngine {
         return graphicTestMode;
     }
 
-    public static boolean isAnimationTestMode() {
-        return animationTestMode;
-    }
-
     public static void setGraphicTestMode(boolean graphicTestMode) {
         CoreEngine.graphicTestMode = graphicTestMode;
+    }
+
+    public static boolean isAnimationTestMode() {
+        return animationTestMode;
     }
 
     public static boolean isArcaneTower() {

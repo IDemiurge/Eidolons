@@ -89,8 +89,9 @@ public class DiseaseRule extends DamageCounterRule {
     public int getCounterNumberReductionPerTurn(DC_HeroObj unit) {
         int n = 1 + unit.getIntParam(PARAMS.FORTITUDE) * unit.getIntParam(PARAMS.POISON_RESISTANCE)
                 / 100;
-        if (checkVirulent(unit))
+        if (checkVirulent(unit)) {
             n -= 10;
+        }
         return n;
     }
 

@@ -32,9 +32,10 @@ public class AiGroupData {
 	}
 
 	public void add(ObjAtCoordinate e) {
-		if (getMembers().contains(e))
-			return;
-		getMembers().add(e);
+        if (getMembers().contains(e)) {
+            return;
+        }
+        getMembers().add(e);
 	}
 
 	public void remove(ObjAtCoordinate e) {
@@ -58,9 +59,10 @@ public class AiGroupData {
 	}
 
 	public Map<AI_BEHAVIOR_MODE, String> getBehaviorsData() {
-		if (behaviorsData == null)
-			behaviorsData = new HashMap<>();
-		return behaviorsData;
+        if (behaviorsData == null) {
+            behaviorsData = new HashMap<>();
+        }
+        return behaviorsData;
 	}
 
 	public void setBehaviorsData(Map<AI_BEHAVIOR_MODE, String> behaviorsData) {
@@ -68,9 +70,10 @@ public class AiGroupData {
 	}
 
 	public Map<AI_GROUP_PARAM, String> getParamData() {
-		if (paramData == null)
-			paramData = new HashMap<>();
-		return paramData;
+        if (paramData == null) {
+            paramData = new HashMap<>();
+        }
+        return paramData;
 	}
 
 	public void setParamData(Map<AI_GROUP_PARAM, String> paramData) {

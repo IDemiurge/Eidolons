@@ -126,8 +126,9 @@ public class AnimPhase {
         }
 
         public String getLabelName(Object arg) {
-            if (labelName == null)
+            if (labelName == null) {
                 labelName = StringMaster.getWellFormattedString(name());
+            }
             return labelName;
         }
 

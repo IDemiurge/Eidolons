@@ -13,8 +13,9 @@ public class ActionButtonEnum<E> extends CustomButton {
         super(text, image);
         this.clickListener = actionListener;
         this.command = command;
-        if (text == null)
+        if (text == null) {
             setDefaultSize(new Dimension(image.getWidth(null), image.getHeight(null)));
+        }
     }
 
     @Override

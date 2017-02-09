@@ -52,10 +52,11 @@ public class ValueComp extends Container {
     @Override
     public void initComps() {
         Image valueImage = null;
-        if (iconDisplayed)
+        if (iconDisplayed) {
             valueImage = new Image(TextureManager.getOrCreate(new Boxer<>(
                     () -> ((CustomImage)
                             ImageManager.getValueIcon(value)).getImgPath())));
+        }
 
         label = new TextComp(getText(), style);
 //        if (layout)
@@ -68,8 +69,9 @@ public class ValueComp extends Container {
         if (value.isDynamic()) {
             text = ContentManager.getCurrentOutOfTotal((PARAMETER) value, obj);
         }
-        if (nameDisplayed)
+        if (nameDisplayed) {
             text = value.getName() + " :" + text;
+        }
 
         return text;
     }

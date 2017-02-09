@@ -108,37 +108,46 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     }
 
     public static boolean checkUnitDies(DC_HeroObj unit, int barrier, boolean unconscious) {
-        if (0 >= unit.getIntParam(PARAMS.C_ENDURANCE))
+        if (0 >= unit.getIntParam(PARAMS.C_ENDURANCE)) {
             return true;
+        }
         Integer toughness = unit.getIntParam(PARAMS.C_TOUGHNESS);
-        if (toughness > 0)
+        if (toughness > 0) {
             return false;
+        }
         if (!unconscious) {
-            if (!canBeAnnihilated(unit))
+            if (!canBeAnnihilated(unit)) {
                 return false;
-        } else if (!canFallUnconscious(unit))
+            }
+        } else if (!canFallUnconscious(unit)) {
             return toughness <= 0;
+        }
         // some attacks may reduce the barrier...
         Integer max_toughness = unit.getIntParam(PARAMS.TOUGHNESS);
         // TODO + PARAMS.DEATH_BARRIER_MOD
-        if (toughness < -max_toughness * barrier / 100)
+        if (toughness < -max_toughness * barrier / 100) {
             return true;
-        if (unconscious)
-            if (!unit.isUnconscious())
+        }
+        if (unconscious) {
+            if (!unit.isUnconscious()) {
                 fallUnconscious(unit);
+            }
+        }
         return false;
     }
 
     private static boolean canBeAnnihilated(DC_HeroObj unit) {
-        if (unit.checkClassification(CLASSIFICATIONS.WRAITH))
+        if (unit.checkClassification(CLASSIFICATIONS.WRAITH)) {
             return false;
+        }
         // special? vampires and such...
         return true;
     }
 
     private static boolean canFallUnconscious(DC_HeroObj unit) {
-        if (!unit.isLiving())
+        if (!unit.isLiving()) {
             return false;
+        }
         // special? vampires and such...
         return true;
     }
@@ -154,8 +163,9 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
             unit.getGame().getManager().unitDies(unit, unit, true, false);
             return false;
         }
-        if (unit.isUnconscious())
+        if (unit.isUnconscious()) {
             return checkUnitWakesUp(unit);
+        }
 
         return false;
     }
@@ -163,8 +173,9 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     @Override
     public void actionComplete(ActiveObj activeObj) {
         for (DC_HeroObj unit : game.getUnits()) {
-            if (checkStatusUpdate(unit))
+            if (checkStatusUpdate(unit)) {
                 wakeUp(unit);
+            }
         }
     }
 

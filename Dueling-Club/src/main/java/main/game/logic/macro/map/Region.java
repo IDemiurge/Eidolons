@@ -46,8 +46,9 @@ public class Region extends MacroObj {
     public DequeImpl<Place> getPlacesNoTowns() {
         DequeImpl<Place> list = new DequeImpl<>();
         for (Place p : places) {
-            if (p instanceof Town)
+            if (p instanceof Town) {
                 continue;
+            }
             list.add(p);
         }
         return list;
@@ -63,33 +64,43 @@ public class Region extends MacroObj {
     }
 
     public Place getPlace(String name) {
-        for (Place p : places)
-            if (StringMaster.compareByChar(p.getName(), name))
+        for (Place p : places) {
+            if (StringMaster.compareByChar(p.getName(), name)) {
                 return p;
-        for (Place p : towns)
-            if (StringMaster.compareByChar(p.getName(), name))
+            }
+        }
+        for (Place p : towns) {
+            if (StringMaster.compareByChar(p.getName(), name)) {
                 return p;
+            }
+        }
         return null;
     }
 
     public Town getTown(String name) {
-        for (Town p : towns)
-            if (StringMaster.compareByChar(p.getName(), name))
+        for (Town p : towns) {
+            if (StringMaster.compareByChar(p.getName(), name)) {
                 return p;
+            }
+        }
         return null;
     }
 
     public Area getArea(String name) {
-        for (Area a : areas)
-            if (StringMaster.compareByChar(a.getName(), name))
+        for (Area a : areas) {
+            if (StringMaster.compareByChar(a.getName(), name)) {
                 return a;
+            }
+        }
         return null;
     }
 
     public Route getRoute(String name) {
-        for (Route p : routes)
-            if (StringMaster.compareByChar(p.getName(), name))
+        for (Route p : routes) {
+            if (StringMaster.compareByChar(p.getName(), name)) {
                 return p;
+            }
+        }
         return null;
     }
 
@@ -101,20 +112,23 @@ public class Region extends MacroObj {
     }
 
     public void addPlace(Place place) {
-        if (!places.contains(place))
+        if (!places.contains(place)) {
             places.add(place);
+        }
     }
 
     public void addTown(Town town) {
-        if (places.contains(town))
+        if (places.contains(town)) {
             return;
+        }
         towns.add(town);
         places.add(town);
     }
 
     public void addRoute(Route route) {
-        if (!getRoutes().contains(route))
+        if (!getRoutes().contains(route)) {
             getRoutes().add(route);
+        }
     }
 
     public DequeImpl<Area> getAreas() {
@@ -122,8 +136,9 @@ public class Region extends MacroObj {
     }
 
     public void addArea(Area area) {
-        if (areas.contains(area))
+        if (areas.contains(area)) {
             return;
+        }
         areas.add(area);
 
     }

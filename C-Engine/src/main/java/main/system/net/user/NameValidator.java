@@ -18,7 +18,9 @@ public class NameValidator {
 
                     if ((password.length() < 4) && checkChars(password))
 
+                    {
                         return true;
+                    }
                 }
             }
         }

@@ -74,8 +74,9 @@ public class CellPrioritizer {
                             .getCoordinates()));
             pathMap.put(cell.getCoordinates(), paths);
         }
-        if (!ListMaster.isNotEmpty(paths))
+        if (!ListMaster.isNotEmpty(paths)) {
             return 0;
+        }
         int path_priority = paths.get(0).getPriority();
         // adjacent is only for melee... I should have getEnemies(action)
         // instead!
@@ -87,8 +88,8 @@ public class CellPrioritizer {
 
         for (Coordinates c : cell.getCoordinates().getAdjacentCoordinates()) {
             Obj targetObj = unit.getGame().getObjectByCoordinate(c, false);
-            if (targetObj != null)
-                if (targetObj.getOBJ_TYPE_ENUM() != OBJ_TYPES.BF_OBJ)
+            if (targetObj != null) {
+                if (targetObj.getOBJ_TYPE_ENUM() != OBJ_TYPES.BF_OBJ) {
                     if (Analyzer.isEnemy(targetObj, unit)) {
                         Integer cell_priority = enemyPriorityMap.get(targetObj);
                         if (cell_priority != null) {
@@ -126,6 +127,8 @@ public class CellPrioritizer {
 
                         priority += cell_priority;
                     }
+                }
+            }
         }
         priority += priority * path_priority / 100;
         return priority;
@@ -146,7 +149,7 @@ public class CellPrioritizer {
         DC_Cell priority_cell = null;
         for (DC_HeroObj enemy : Analyzer.getVisibleEnemies(ai)) {
             for (Coordinates c : enemy.getCoordinates()
-                    .getAdjacentCoordinates())
+                    .getAdjacentCoordinates()) {
                 if (!cells.contains(c)) {
                     DC_Cell cell = enemy.getGame().getCellByCoordinate(c);
                     int priority = getMeleePriorityForCell(ai.getUnit(), cell);
@@ -159,6 +162,7 @@ public class CellPrioritizer {
 
                     // cells.add(enemy.getGame().getCellByCoordinate(c));
                 }
+            }
         }
         list.add(priority_cell.getCoordinates());
         // Collections.sort(cells, getPrioritySorter(ai.getUnit()));
@@ -184,10 +188,12 @@ public class CellPrioritizer {
                     priority2 = getMeleePriorityForCell(unit, o2);
                     cellPriorityMap.put(o2, priority2);
                 }
-                if (priority > priority2)
+                if (priority > priority2) {
                     return -1;
-                if (priority < priority2)
+                }
+                if (priority < priority2) {
                     return 1;
+                }
                 return 0;
             }
         };

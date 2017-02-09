@@ -42,8 +42,9 @@ public class TemplateSelectiveTargeting extends SelectiveTargeting {
 
     @Override
     public Conditions getConditions() {
-        if (filter.getConditions() == null)
+        if (filter.getConditions() == null) {
             initTargeting();
+        }
         return super.getConditions();
     }
 

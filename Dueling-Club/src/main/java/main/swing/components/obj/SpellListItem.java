@@ -25,10 +25,12 @@ public class SpellListItem extends ListItem<DC_SpellObj> {
 
     @Override
     public BORDER getSpecialBorder() {
-        if (isHighlighted())
+        if (isHighlighted()) {
             return BORDER.SPELL_HIGHLIGHTED;
-        if (!value.canBeActivated())
+        }
+        if (!value.canBeActivated()) {
             return BORDER.HIDDEN;
+        }
 
         return super.getSpecialBorder();
     }

@@ -52,10 +52,10 @@ public class TreeViewBuilder extends Builder {
 
 	@Override
 	public void init() {
-		if (workspace == null)
-			tree = new AV_Tree(types, sub, type, ArcaneVault.isColorsInverted());
-		else {
-			tree = new AV_Tree(workspace);
+        if (workspace == null) {
+            tree = new AV_Tree(types, sub, type, ArcaneVault.isColorsInverted());
+        } else {
+            tree = new AV_Tree(workspace);
 		}
 
 		tree.getTree().expandRow(0);
@@ -83,8 +83,9 @@ public class TreeViewBuilder extends Builder {
 		// workspace
 		// listener?
 
-		if (ArcaneVault.isColorsInverted())
+        if (ArcaneVault.isColorsInverted()) {
             getTree().setBackground(ColorManager.BACKGROUND); // getOrCreate ws
+        }
         // background
     }
 
@@ -140,11 +141,12 @@ public class TreeViewBuilder extends Builder {
 		tree.refresh();
 
 		tree.setColorsInverted(ArcaneVault.isColorsInverted());
-		if (ArcaneVault.isColorsInverted())
-			getTree().setBackground(ColorManager.BACKGROUND);
-		else
-			getTree().setBackground(ColorManager.WHITE);
-	}
+        if (ArcaneVault.isColorsInverted()) {
+            getTree().setBackground(ColorManager.BACKGROUND);
+        } else {
+            getTree().setBackground(ColorManager.WHITE);
+        }
+    }
 
 	private DefaultTreeModel getTreeModel() {
 		return (DefaultTreeModel) tree.getTree().getModel();
@@ -154,11 +156,13 @@ public class TreeViewBuilder extends Builder {
 		DefaultMutableTreeNode newNode = null;
 		ObjType newType = null;
 		boolean empty = false;
-		if (node == null)
-			empty = true;
-		if (DataManager.getType(node.getUserObject().toString(), TYPE) == null)
-			empty = true;
-		if (empty) {
+        if (node == null) {
+            empty = true;
+        }
+        if (DataManager.getType(node.getUserObject().toString(), TYPE) == null) {
+            empty = true;
+        }
+        if (empty) {
 			newType = getEmptyType(TYPE, newName);
 			newNode = new DefaultMutableTreeNode(newName, true);
 		} else {
@@ -172,17 +176,19 @@ public class TreeViewBuilder extends Builder {
 		DefaultMutableTreeNode parent = ((DefaultMutableTreeNode) getTree().getSelectionPath()
 				.getLastPathComponent());
 		if (!empty) // upgrade_parent_new
-			if (upgrade == null) {
-				parent = (DefaultMutableTreeNode) parent.getParent();
-			} else {
-				if (!upgrade) {
-					parent.removeFromParent();
-					newNode.add(parent);
-					parent = (DefaultMutableTreeNode) parent.getParent();
-					parent.add(newNode);
-				}
-			}
-		newNode.removeAllChildren();
+        {
+            if (upgrade == null) {
+                parent = (DefaultMutableTreeNode) parent.getParent();
+            } else {
+                if (!upgrade) {
+                    parent.removeFromParent();
+                    newNode.add(parent);
+                    parent = (DefaultMutableTreeNode) parent.getParent();
+                    parent.add(newNode);
+                }
+            }
+        }
+        newNode.removeAllChildren();
 
 		// parent.add(newNode);
 		getTreeModel().insertNodeInto(newNode, parent, 0);
@@ -197,20 +203,21 @@ public class TreeViewBuilder extends Builder {
 			newType.setProperty(DataManager.getGroupingKey(TYPE), ArcaneVault.getMainBuilder()
 					.getSelectedSubTabName());
 		}
-		if (upgrade != null)
-			if (upgrade) {
-				newType.setProperty(G_PROPS.BASE_TYPE, node.getUserObject().toString());
-			} else {
-				// parent.getUserObject().toString()
-				parent.getParent();
+        if (upgrade != null) {
+            if (upgrade) {
+                newType.setProperty(G_PROPS.BASE_TYPE, node.getUserObject().toString());
+            } else {
+                // parent.getUserObject().toString()
+                parent.getParent();
 
-				ObjType selectedType = DataManager.getType(node.getUserObject().toString(), TYPE);
+                ObjType selectedType = DataManager.getType(node.getUserObject().toString(), TYPE);
 
-				selectedType.setProperty(G_PROPS.BASE_TYPE, newNode.getUserObject().toString());
+                selectedType.setProperty(G_PROPS.BASE_TYPE, newNode.getUserObject().toString());
 
-				newType.setProperty(G_PROPS.BASE_TYPE, parent.getUserObject().toString());
+                newType.setProperty(G_PROPS.BASE_TYPE, parent.getUserObject().toString());
 
-			}
+            }
+        }
 
 		DataManager.addType(newName, TYPE, newType);
 		Simulation.getGame().initType(newType);
@@ -223,17 +230,19 @@ public class TreeViewBuilder extends Builder {
 	private ObjType getEmptyType(String TYPE, String newName) {
 		ObjType type = new ObjType(newName);
 		OBJ_TYPE t = OBJ_TYPES.getType(TYPE);
-		if (ArcaneVault.isMacroMode())
-			t = MACRO_OBJ_TYPES.getType(TYPE);
-		// type.setObjType(t);
+        if (ArcaneVault.isMacroMode()) {
+            t = MACRO_OBJ_TYPES.getType(TYPE);
+        }
+        // type.setObjType(t);
 		Simulation.getGame().initType(type);
 		return type;
 	}
 
 	public void remove() {
-		if (ArcaneVault.getMainBuilder().getSelectedNode() == null)
-			return;
-		ArcaneVault.getMainBuilder().getSelectedNode().removeFromParent();
+        if (ArcaneVault.getMainBuilder().getSelectedNode() == null) {
+            return;
+        }
+        ArcaneVault.getMainBuilder().getSelectedNode().removeFromParent();
 		String selected = ArcaneVault.getMainBuilder().getSelectedTabName();
 		DataManager.removeType((String) ArcaneVault.getMainBuilder().getSelectedNode()
 				.getUserObject(), selected);
@@ -251,9 +260,10 @@ public class TreeViewBuilder extends Builder {
 
 	public boolean nameChanged(String oldName, String newValue) {
 		DefaultMutableTreeNode selectedNode = ArcaneVault.getMainBuilder().getSelectedNode();
-		if (!selectedNode.getUserObject().toString().equals(oldName))
-			return false;
-		selectedNode.setUserObject(newValue);
+        if (!selectedNode.getUserObject().toString().equals(oldName)) {
+            return false;
+        }
+        selectedNode.setUserObject(newValue);
 
 		getTree().updateUI();
 		return true;

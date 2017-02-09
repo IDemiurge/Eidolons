@@ -118,8 +118,9 @@ public class ScenarioMaster {
                 .getProperty(MACRO_PROPS.HERO_SELECTION_FILTER_CONDITIONS)));
 
         String level = scenario.getParam(PARAMS.LEVEL);
-        if (!level.isEmpty())
+        if (!level.isEmpty()) {
             conditions.add(new NumericCondition("{MATCH_LEVEL}", level)); // extract
+        }
         return conditions;
     }
 
@@ -136,8 +137,9 @@ public class ScenarioMaster {
     }
 
     public static Scenario getScenario() {
-        if (scenario == null)
+        if (scenario == null) {
             return SkirmishMaster.getSkirmish();
+        }
         return scenario;
     }
 
@@ -187,8 +189,9 @@ public class ScenarioMaster {
             if (StringMaster.contains(scenario.getProperty(MACRO_PROPS.HERO_CREATION_CHOICE_DATA),
                     element.toString())) {
                 if (!StringMaster.contains(scenario
-                        .getProperty(MACRO_PROPS.HERO_CREATION_CHOICE_DATA), StringMaster.OR))
+                        .getProperty(MACRO_PROPS.HERO_CREATION_CHOICE_DATA), StringMaster.OR)) {
                     return false;
+                }
             }
             return true;
         }

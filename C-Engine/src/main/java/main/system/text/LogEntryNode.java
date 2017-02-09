@@ -27,9 +27,11 @@ public class LogEntryNode {
         this.type = type;
         this.lineIndex = i;
         this.parent = parent;
-        if (args != null)
-            if (!logLater)
+        if (args != null) {
+            if (!logLater) {
                 initHeader(args);
+            }
+        }
     }
 
     public String getButtonImagePath() {
@@ -114,9 +116,11 @@ public class LogEntryNode {
     }
 
     public Object getLinkedAnimation() {
-        if (linkedAnimation == null)
-            if (!getLinkedAnimations().isEmpty())
+        if (linkedAnimation == null) {
+            if (!getLinkedAnimations().isEmpty()) {
                 linkedAnimation = linkedAnimations.get(0);
+            }
+        }
         return linkedAnimation;
     }
 
@@ -134,15 +138,17 @@ public class LogEntryNode {
     }
 
     public void addLinkedAnimations(List<ANIM> list) {
-        if (list != null)
+        if (list != null) {
             getLinkedAnimations().addAll(list);
+        }
     }
 
     public List<ANIM> getLinkedAnimations() {
         if (linkedAnimations == null) {
             linkedAnimations = new LinkedList<>();
-            if (linkedAnimation != null)
+            if (linkedAnimation != null) {
                 linkedAnimations.add(linkedAnimation);
+            }
         }
         return linkedAnimations;
     }

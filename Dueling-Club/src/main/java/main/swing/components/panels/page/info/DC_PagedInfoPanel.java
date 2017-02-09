@@ -63,24 +63,30 @@ public class DC_PagedInfoPanel extends G_PagePanel<VALUE> {
 
     @Override
     protected List<List<VALUE>> getPageData() {
-        if (getEntity() == null)
+        if (getEntity() == null) {
             return null;
+        }
 
         List<List<VALUE>> values = null;
-        if (getEntity().getGame().isSimulation())
+        if (getEntity().getGame().isSimulation()) {
             values = ValuePageManager.getValuesForHCInfoPages(getEntity().getOBJ_TYPE_ENUM());
+        }
 
-        if (values == null)
+        if (values == null) {
             values = ValuePageManager.getValuesForDCInfoPages(getEntity().getOBJ_TYPE_ENUM());
+        }
         if (values == null) {
             values = ValuePageManager.getGenericValuesForInfoPages();
         }
-        if (!getEntity().getGame().isSimulation())
-            if (getUnit() != null)
-                if (!getUnit().getOwner().isMe())
+        if (!getEntity().getGame().isSimulation()) {
+            if (getUnit() != null) {
+                if (!getUnit().getOwner().isMe()) {
                     if (getUnit().getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT) {
                         values.set(0, ValuePageManager.getOutlineValues());
                     }
+                }
+            }
+        }
 
         return values;
     }
@@ -117,15 +123,18 @@ public class DC_PagedInfoPanel extends G_PagePanel<VALUE> {
 
     private String getPageHeader() {
         String[] array = ValuePages.PAGE_NAMES;
-        if (!getEntity().getGame().isSimulation())
+        if (!getEntity().getGame().isSimulation()) {
             array = ValuePages.ALT_PAGE_NAMES;
-        else if (Launcher.getView() == VIEWS.HC)
+        } else if (Launcher.getView() == VIEWS.HC) {
             array = ValuePages.ALT_PAGE_NAMES;
-        if (array.length <= entity.getOBJ_TYPE_ENUM().getCode())
+        }
+        if (array.length <= entity.getOBJ_TYPE_ENUM().getCode()) {
             return null;
+        }
         String[] pages = array[entity.getOBJ_TYPE_ENUM().getCode()].split(";");
-        if (pages.length <= createPageIndex)
+        if (pages.length <= createPageIndex) {
             return null;
+        }
         return StringMaster.getWellFormattedString(pages[createPageIndex]);
     }
 
@@ -138,14 +147,18 @@ public class DC_PagedInfoPanel extends G_PagePanel<VALUE> {
 
     private String getParamPageHeader(VALUE value) {
         if (value instanceof PARAMETER) {
-            if (((PARAMETER) value).isAttribute())
+            if (((PARAMETER) value).isAttribute()) {
                 return ATTRIBUTES;
-            if (((PARAMETER) value).isMastery())
+            }
+            if (((PARAMETER) value).isMastery()) {
                 return MASTERIES;
-            if (value.toString().contains("Resistance"))
+            }
+            if (value.toString().contains("Resistance")) {
                 return RESISTANCES;
-            if (value.toString().equalsIgnoreCase("Armor"))
+            }
+            if (value.toString().equalsIgnoreCase("Armor")) {
                 return "Armor Values";
+            }
             return
                     // entity.getOBJ_TYPE_ENUM().getFullName()+ " " +
                     PARAMETERS;
@@ -192,8 +205,9 @@ public class DC_PagedInfoPanel extends G_PagePanel<VALUE> {
     }
 
     public DC_HeroObj getUnit() {
-        if (getEntity() instanceof DC_HeroObj)
+        if (getEntity() instanceof DC_HeroObj) {
             return (DC_HeroObj) getEntity();
+        }
         return null;
     }
 
@@ -202,10 +216,11 @@ public class DC_PagedInfoPanel extends G_PagePanel<VALUE> {
     }
 
     public void setEntity(Entity entity) {
-        if (this.entity != null && entity != null)
+        if (this.entity != null && entity != null) {
             if (entity.getOBJ_TYPE_ENUM() != this.entity.getOBJ_TYPE_ENUM()) {
                 setDirty(true);
             }
+        }
         this.entity = entity;
     }
 

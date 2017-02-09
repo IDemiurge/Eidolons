@@ -120,8 +120,9 @@ public class HC_SequenceMaster implements SequenceManager {
     public void launchEntitySelection(final OBJ_TYPES t, final String group,
                                       final Condition filteringConditions, DC_HeroObj entity, final String info) {
         Comparator<? super Entity> sorter = HC_Master.getEntitySorter();
-        if (sorter == null)
+        if (sorter == null) {
             getDefaultSorter(t, group);
+        }
 
         launchEntitySelection(t, group, filteringConditions, entity, info, sorter);
     }
@@ -209,11 +210,12 @@ public class HC_SequenceMaster implements SequenceManager {
     @Override
     public void cancelSelection() {
         WaitMaster.receiveInput(WAIT_OPERATIONS.SELECTION, SELECTION_CANCELLED);
-        if (selection != null)
+        if (selection != null) {
             switch (selection) {
                 case NEW_MEMBER_SELECTION:
                     break;
             }
+        }
 
         Launcher.resetView(VIEWS.HC);
     }
@@ -233,14 +235,15 @@ public class HC_SequenceMaster implements SequenceManager {
         final int size = PartyManager.getParty().getMembers().size();
 
         ChoiceView positionChoiceView = null;
-        if (ArenaArcadeMaster.isTestMode())
+        if (ArenaArcadeMaster.isTestMode()) {
             hero.getGame().getArenaArcadeMaster().prebattle(cs);
+        }
 
         if (PartyManager.getParty().checkTactics()
             // || ArenaArcadeMaster.isTestMode()
-                )
+                ) {
             positionChoiceView = new PositionChoiceView(cs, hero);
-        else if (list.size() > 1)
+        } else if (list.size() > 1) {
             positionChoiceView = new PresetEntityChoiceView(cs, hero, InfoMaster.MIDDLE_HERO, list) {
 
                 // ComponentVisuals getGenericVisuals() { public VISUALS
@@ -268,6 +271,7 @@ public class HC_SequenceMaster implements SequenceManager {
                 }
 
             };
+        }
         cs.addView(new EnumChoiceView<DIFFICULTY>(cs, hero, DIFFICULTY.class) {
             @Override
             protected VISUALS getBackgroundVisuals() {
@@ -280,21 +284,26 @@ public class HC_SequenceMaster implements SequenceManager {
                 DC_Game.game.getArenaManager().setDEFAULT_DIFFICULTY(getSelectedItem().toString());
             }
         });
-        if (positionChoiceView != null)
+        if (positionChoiceView != null) {
             cs.addView(positionChoiceView);
-        if (!ArenaArcadeMaster.isTestMode())
-            if (hero.getGame().getGameType() != GAME_TYPE.SCENARIO)
-                if (hero.getGame().getGameMode() == GAME_MODES.ARENA_ARCADE)
+        }
+        if (!ArenaArcadeMaster.isTestMode()) {
+            if (hero.getGame().getGameType() != GAME_TYPE.SCENARIO) {
+                if (hero.getGame().getGameMode() == GAME_MODES.ARENA_ARCADE) {
                     hero.getGame().getArenaArcadeMaster().prebattle(cs);
-                else
+                } else {
                     cs.addView(new DungeonChoiceView(cs, PartyManager.getParty()));
+                }
+            }
+        }
 
         SequenceManager manager = HC_SequenceMaster.getHC_SequenceManager();
         cs.setManager(manager);
         cs.start();
         boolean result = (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECTION);
-        if (!result)
+        if (!result) {
             manager.cancelSelection();
+        }
         return result;
 
     }

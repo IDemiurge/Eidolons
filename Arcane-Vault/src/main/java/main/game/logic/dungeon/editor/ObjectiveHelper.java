@@ -2,9 +2,7 @@ package main.game.logic.dungeon.editor;
 
 import main.content.properties.MACRO_PROPS;
 import main.entity.obj.Obj;
-import main.game.battlefield.Coordinates;
 import main.game.logic.dungeon.scenario.ObjectiveMaster.OBJECTIVE_TYPE;
-import main.game.logic.macro.utils.CoordinatesMaster;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
@@ -67,9 +65,10 @@ public class ObjectiveHelper {
 			case ITEM:
 			case BOSS:
 				Obj obj = LevelEditor.getMouseMaster().pickObject();
-				if (obj != null)
-					return obj.getNameAndCoordinate();
-			case CAPTURE_HOLD:
+                if (obj != null) {
+                    return obj.getNameAndCoordinate();
+                }
+            case CAPTURE_HOLD:
 				break;
 			case CAPTURE_HOLD_TIME:
 				break;

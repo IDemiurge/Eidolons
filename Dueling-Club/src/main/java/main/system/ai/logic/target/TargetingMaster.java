@@ -31,23 +31,28 @@ public class TargetingMaster {
     public static Targeting findTargeting(ActiveObj active,
                                           Class<SelectiveTargeting> CLASS) {
         Targeting t = active.getTargeting();
-        if (checkTargeting(CLASS, t))
+        if (checkTargeting(CLASS, t)) {
             return t;
+        }
 
         t = findTargetingInAbils(active, CLASS);
-        if (t != null)
+        if (t != null) {
             return t;
+        }
 
         for (ActiveObj a : active.getActives()) {
             if (active instanceof DC_ActiveObj)// 2 layers maximum, i hope
+            {
                 t = findTargeting(a, CLASS);
-            if (t != null)
+            }
+            if (t != null) {
                 return t;
-            else {
+            } else {
                 for (ActiveObj a2 : a.getActives()) {
                     t = findTargetingInAbils(a2, CLASS);
-                    if (t != null)
+                    if (t != null) {
                         return t;
+                    }
                 }
             }
         }
@@ -56,19 +61,25 @@ public class TargetingMaster {
 
     private static boolean checkTargeting(Class<SelectiveTargeting> CLASS,
                                           Targeting t) {
-        if (CLASS == null && t != null)
+        if (CLASS == null && t != null) {
             return true;
+        }
         return ClassMaster.isInstanceOf(t, CLASS);
     }
 
     public static Targeting findTargetingInAbils(ActiveObj active,
                                                  Class<SelectiveTargeting> CLASS) {
-        if (active.getAbilities() != null)
-            for (Ability abil : active.getAbilities())
+        if (active.getAbilities() != null) {
+            for (Ability abil : active.getAbilities()) {
                 if (abil.getTargeting() != null)
-                    // if (abil.getTargeting().getClass().equals(CLASS))
-                    if (checkTargeting(CLASS, abil.getTargeting()))
+                // if (abil.getTargeting().getClass().equals(CLASS))
+                {
+                    if (checkTargeting(CLASS, abil.getTargeting())) {
                         return abil.getTargeting();
+                    }
+                }
+            }
+        }
         return null;
     }
 

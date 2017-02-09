@@ -58,20 +58,22 @@ public class TableContainer extends Container {
         List<Actor> list = new LinkedList<>();
         int n = horizontal ? columns : rows;
         if (cellComps.size() > rows * columns) {
-            if (isScrolled())
+            if (isScrolled()) {
                 if (scrollPanel == null) {
 //                    removeActor((Actor) root);
 //                    scrollPanel = new ScrollPanel(root);
 //                    addActor(scrollPanel);
                 }
+            }
         }
         for (Actor c : cellComps) {
 //
             if (n <= 0) {
                 n = horizontal ? columns : rows;
                 list.add(new Wrap(horizontal));
-            } else
+            } else {
                 n--;
+            }
             list.add(c);
 
         }
@@ -91,8 +93,9 @@ public class TableContainer extends Container {
 
     @Override
     public void initComps() {
-        if (supplier != null)
+        if (supplier != null) {
             cellComps = supplier.get();
+        }
     }
 
     @Override

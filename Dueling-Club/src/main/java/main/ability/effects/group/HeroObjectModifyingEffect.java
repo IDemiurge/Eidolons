@@ -82,7 +82,9 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
     @Override
     public int getLayer() {
         if (buff) // ???
+        {
             return Effect.ZERO_LAYER;
+        }
         return super.getLayer();
     }
 
@@ -95,29 +97,36 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
             removeEffects();
             return false;
         }
-        if (game.isSimulation())
-            if (!checkApplyInSimulation())
+        if (game.isSimulation()) {
+            if (!checkApplyInSimulation()) {
                 return true;
+            }
+        }
         // what if the group has changed? perhaps there should be a map...
         if (prop) {
-            if (propMap == null)
+            if (propMap == null) {
                 propMap = new RandomWizard<PROPERTY>().constructStringWeightMap(modString,
                         PROPERTY.class);
-            else
+            } else {
                 main.system.auxiliary.LogMaster.log(1, "prop map " + propMap.toString());
+            }
         } else if (map == null) // TODO support PROPERTY?
+        {
             map = new RandomWizard<PARAMETER>()
                     .constructStringWeightMap(modString, PARAMETER.class);
-        else
+        } else {
             main.system.auxiliary.LogMaster.log(0, "map " + map.toString());
+        }
         List<? extends Obj> list = getObjectsToModify();
         main.system.auxiliary.LogMaster.log(0, "list " + list.toString());
         main.system.auxiliary.LogMaster.log(0, "effects " + effects.toString());
         for (Obj obj : list) {
-            if (obj == null)
+            if (obj == null) {
                 continue;
-            if (obj.isDead())
+            }
+            if (obj.isDead()) {
                 continue; // TODO clean up for owner is dead!
+            }
             Effect effect = effects.get(obj);
             if (effect != null) {
                 // if (isPermanent() && isApplied())
@@ -132,10 +141,11 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
             // map = new MapMaster<PARAMETER, String>().constructVarMap(
             // modString, PARAMETER.class);
             Effects modEffects = new Effects();
-            if (map != null)
+            if (map != null) {
                 EffectMaster.initParamModEffects(modEffects, map, ref);
-            else if (propMap != null)
+            } else if (propMap != null) {
                 EffectMaster.initPropModEffects(modEffects, propMap, ref);
+            }
 
             applied = true;
 
@@ -150,14 +160,17 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
                 buffEffect.setForcedLayer(getModEffectLayer());
                 modEffects.setForcedLayer(getModEffectLayer());
 
-                if (isPermanent())
+                if (isPermanent()) {
                     buffEffect.setDuration(ContentManager.INFINITE_VALUE);
-                if (!game.isSimulation())
+                }
+                if (!game.isSimulation()) {
                     effects.put(obj, buffEffect);
+                }
                 buffEffect.apply(REF);
             } else {
-                if (!game.isSimulation())
+                if (!game.isSimulation()) {
                     effects.put(obj, modEffects);
+                }
                 modEffects.apply(REF);
 
             }
@@ -166,7 +179,7 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
     }
 
     protected boolean checkApplyInSimulation() {
-        if (type != null)
+        if (type != null) {
             switch (type) {
                 case ACTIONS:
                 case ITEMS:
@@ -176,12 +189,14 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
                 case WEAPONS:
                     return true;
             }
+        }
         return false;
     }
 
     protected int getModEffectLayer() {
-        if (type == OBJ_TYPES.ITEMS)
+        if (type == OBJ_TYPES.ITEMS) {
             return Effect.BASE_LAYER;
+        }
         return Effect.SECOND_LAYER;
     }
 
@@ -209,7 +224,7 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
             initFilterConditions();
             DC_HeroObj hero = (DC_HeroObj) ref.getSourceObj();
             if (type != null) {
-                List<Integer> list = null;
+                List<Integer> list;
                 try {
                     list = getIdList(hero);
                 } catch (Exception e) {
@@ -241,14 +256,17 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
 
     protected List<Integer> getIdList(DC_HeroObj hero) {
         List<Integer> list = new LinkedList<>();
-        if (hero == null)
+        if (hero == null) {
             return list;
+        }
         switch (type) {
             case ACTIONS:
                 for (ACTION_TYPE a : ACTION_TYPE.values()) {
-                    if (hero.getActionMap().get(a) != null)
-                        for (DC_UnitAction action : hero.getActionMap().get(a))
+                    if (hero.getActionMap().get(a) != null) {
+                        for (DC_UnitAction action : hero.getActionMap().get(a)) {
                             list.add(action.getId());
+                        }
+                    }
                 }
                 break;
             case ARMOR:
@@ -258,25 +276,32 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
                 for (Obj i : hero.getQuickItems())
                     // if (i.getOBJ_TYPE_ENUM() != OBJ_TYPES.WEAPONS)
                     // non-weapon QI???
+                {
                     list.add(i.getId());
+                }
                 break;
             case SPELLS:
-                for (Obj i : hero.getSpells())
+                for (Obj i : hero.getSpells()) {
                     list.add(i.getId());
+                }
                 break; // hero.getGame().getManager().getSpells(hero)
             case WEAPONS:
                 Integer id = null;
-                if (hero.getActiveWeapon(true) != null)
+                if (hero.getActiveWeapon(true) != null) {
                     id = hero.getActiveWeapon(true).getId();
+                }
                 Integer id2 = 0;
-                if (hero.getActiveWeapon(false) != null)
+                if (hero.getActiveWeapon(false) != null) {
                     id2 = hero.getActiveWeapon(false).getId();
+                }
                 list = new LinkedList<>(new ListMaster<Integer>().getList(id2, id));
                 List<? extends Obj> l = new LinkedList<>(hero.getQuickItems());
 
-                for (Obj i : l)
-                    if (i.getOBJ_TYPE_ENUM() == OBJ_TYPES.WEAPONS)
+                for (Obj i : l) {
+                    if (i.getOBJ_TYPE_ENUM() == OBJ_TYPES.WEAPONS) {
                         list.add(i.getId());
+                    }
+                }
                 break;
         }
         // ListMaster.removeNullElements(list);
@@ -285,11 +310,13 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
     }
 
     protected Condition getDefaultConditions() {
-        if (type == null)
+        if (type == null) {
             type = getTYPE();
+        }
 
-        if (type == null)
+        if (type == null) {
             return new Conditions(new RefCondition(KEYS.MATCH_SOURCE, KEYS.SOURCE));
+        }
 
         return new Conditions(new ObjTypeComparison(type), new RefCondition(KEYS.MATCH_SOURCE,
                 KEYS.SOURCE));

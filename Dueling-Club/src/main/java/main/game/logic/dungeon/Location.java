@@ -67,8 +67,9 @@ public class Location {
         // prefDepth = place.getIntParam(param);
         initRootLevel();
         initBossLevel();
-        if (bossLevel != null)
+        if (bossLevel != null) {
             up = bossLevel.checkBool(STD_BOOLS.UPWARD_Z);
+        }
         // List<Dungeon> list = new LinkedList<>();
         // constructSublevels();
         return root;
@@ -78,8 +79,9 @@ public class Location {
         if (isScenario()) {
             String data = FileManager.readFile(PathFinder.getDungeonLevelFolder()
                     + getPlaceOrScenario().getProperty(MACRO_PROPS.BOSS_LEVEL));
-            if (data.isEmpty())
+            if (data.isEmpty()) {
                 return;
+            }
             DungeonPlan plan = new DungeonBuilder().loadDungeonMap(data);
             bossLevel = plan.getDungeon();
             return;
@@ -199,15 +201,17 @@ public class Location {
                 i--;
                 ObjType type = map.get(i);
 
-                if (type != prevType)
+                if (type != prevType) {
                     level = 0;
+                }
                 z = (up) ? z++ : z--;
                 level++;
                 entranceLayout = getNextEntranceLayout(entranceLayout);
                 dungeon = newSublevel(dungeon, type, z, level, entranceLayout);
                 // checkAddSecretLevels(dungeon);
-                if (i <= 0)
+                if (i <= 0) {
                     break;
+                }
                 prevType = type;
             }
         }
@@ -233,8 +237,9 @@ public class Location {
     private Dungeon newSublevel(Dungeon dungeon, ObjType type, int z, int level,
                                 ENTRANCE_LAYOUT entranceLayout) {
         ObjType dungeonType = new ObjType(type);
-        if (level != 0)
+        if (level != 0) {
             dungeonType.setName(type.getName() + ", Level " + level);
+        }
         String group = type.getSubGroupingKey();
         String path = PathFinder.getDungeonLevelFolder() + group + "\\";
 
@@ -466,8 +471,9 @@ public class Location {
     }
 
     public Entity getPlaceOrScenario() {
-        if (scenario != null)
+        if (scenario != null) {
             return scenario;
+        }
         return place;
     }
 

@@ -46,10 +46,11 @@ public class GraveyardManager {
         graveMap.get(getZCoordinate(unit.getCoordinates())).remove(unit); // ???
         battlefield.getCell(getZCoordinate(unit.getCoordinates())).setParam(G_PARAMS.N_OF_CORPSES,
                 graveMap.get(getZCoordinate(unit.getCoordinates())).size());
-        if (battlefield.getObj(getZCoordinate(unit.getCoordinates())) != null)
+        if (battlefield.getObj(getZCoordinate(unit.getCoordinates())) != null) {
             battlefield.getObj(getZCoordinate(unit.getCoordinates())).setParam(
                     G_PARAMS.N_OF_CORPSES,
                     graveMap.get(getZCoordinate(unit.getCoordinates())).size());
+        }
 
         removed.add(unit);
 
@@ -62,8 +63,9 @@ public class GraveyardManager {
 
     public void unitDies(Obj unit) {
 
-        if (unit.checkBool(STD_BOOLS.LEAVES_NO_CORPSE))
+        if (unit.checkBool(STD_BOOLS.LEAVES_NO_CORPSE)) {
             return;
+        }
         addCorpse(unit);
 
     }
@@ -73,26 +75,30 @@ public class GraveyardManager {
         Obj cell = battlefield.getCell(getZCoordinate(unit.getCoordinates()));
         cell.setParam(G_PARAMS.N_OF_CORPSES, graveMap.get(getZCoordinate(unit.getCoordinates()))
                 .size());
-        if (battlefield.getObj(getZCoordinate(unit.getCoordinates())) != null)
+        if (battlefield.getObj(getZCoordinate(unit.getCoordinates())) != null) {
             battlefield.getObj(getZCoordinate(unit.getCoordinates())).setParam(
                     G_PARAMS.N_OF_CORPSES,
                     graveMap.get(getZCoordinate(unit.getCoordinates())).size());
+        }
     }
 
     public Obj getTopDeadUnit(Coordinates c) {
         Stack<Obj> stack = graveMap.get(c);
-        if (stack == null)
+        if (stack == null) {
             return null;
-        if (stack.isEmpty())
+        }
+        if (stack.isEmpty()) {
             return null;
+        }
         return stack.peek();
     }
 
     public List<Coordinates> getCorpseCells() {
         List<Coordinates> list = new LinkedList<>();
         for (Coordinates l : graveMap.keySet()) {
-            if (!graveMap.get(l).isEmpty())
+            if (!graveMap.get(l).isEmpty()) {
                 list.add(l);
+            }
         }
         return list;
     }

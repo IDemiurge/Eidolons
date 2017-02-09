@@ -77,8 +77,9 @@ public class Viewer extends JPanel {
         add(s);
         frame.add(this);
 
-        if (isShowGui())
+        if (isShowGui()) {
             frame.setVisible(true);
+        }
 
         frame.pack();
         // setCustomIcon();
@@ -96,8 +97,9 @@ public class Viewer extends JPanel {
         String s = ta.getText() + "\n" + time / 1000 + " " + prefix + " " + type.toUpperCase()
                 + ": " + text;
         ta.setRows(i);
-        if (i < max)
+        if (i < max) {
             i++;
+        }
         ta.setText(s);
         frame.pack();
     }
@@ -106,11 +108,11 @@ public class Viewer extends JPanel {
         this.writer = writer;
         JPanel mspanel = new JPanel();
         Box box = Box.createVerticalBox();
-        if (enumClass == null)
+        if (enumClass == null) {
             for (CODES c : CODES.values()) {
                 addCodeButton(c, box, writer, this);
             }
-        else {
+        } else {
             for (String c : EnumMaster.getEnumConstantNames(enumClass)) {
                 addCodeButton(c, box, writer, this);
             }
@@ -132,10 +134,11 @@ public class Viewer extends JPanel {
                 w.print(c + "\n");
                 w.flush();
                 viewer.output(c);
-                if (connection != null)
+                if (connection != null) {
                     connection.send(c);
-                else
+                } else {
                     ServerConnector.send(c);
+                }
             }
         });
 

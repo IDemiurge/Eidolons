@@ -35,8 +35,9 @@ public class Trigger extends ReferredElement {
         setRef(abilities.getRef());
 
         Obj buff = ref.getObj("buff");
-        if (buff != null)
+        if (buff != null) {
             this.duration = ((BuffObj) buff).getDuration();
+        }
         abilities.getEffects().setTrigger(this);
 
         // ref.setID(KEYS.TRIGGER.name(), id);
@@ -57,8 +58,9 @@ public class Trigger extends ReferredElement {
         main.system.auxiliary.LogMaster.log(LogMaster.TRIGGER_DEBUG, toString()
                 + " has been triggered!");
         abilities.setForceTargeting(forceTargeting);
-        if (oneShot)
+        if (oneShot) {
             remove();
+        }
         boolean result = abilities.activate(ref);
         if (result && game.isStarted()) {
             // if (
@@ -70,27 +72,31 @@ public class Trigger extends ReferredElement {
     }
 
     public boolean check(Event event) {
-        if (retainCondition != null)
+        if (retainCondition != null) {
             if (!retainCondition.check(ref)) {
                 remove();
                 return false;
             }
-        if (!getEventType().equals(event.getType()))
+        }
+        if (!getEventType().equals(event.getType())) {
             return false;
+        }
         main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, "checking trigger for event: "
                 + event.getType().name());
         // return true;
         if (eventType.equals((event.getType()))) {
             ref.setEvent(event);
-            if (conditions == null)
+            if (conditions == null) {
                 return trigger();
+            }
             ref.getGame().getManager().setTriggerBeingChecked(true);
             try {
                 if (conditions.check(ref)) {
                     ref.getGame().getManager().setTriggerBeingActivated(true);
                     return trigger();
-                } else
+                } else {
                     return false;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
@@ -99,8 +105,9 @@ public class Trigger extends ReferredElement {
                 ref.getGame().getManager().setTriggerBeingActivated(false);
             }
 
-        } else
+        } else {
             return false;
+        }
     }
 
     public List<EVENT_TYPE> getEventTypes() {

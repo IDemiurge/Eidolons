@@ -21,27 +21,31 @@ public class PlayerAI {
     public void resetSituation() {
         // set STALLING by default and at the start of each round, then
         // engage() with visible attacks
-        if (type == PLAYER_AI_TYPE.DEFENSIVE)
+        if (type == PLAYER_AI_TYPE.DEFENSIVE) {
             situation = SITUATION.STALLING;
-        if (type == PLAYER_AI_TYPE.BRUTE)
+        }
+        if (type == PLAYER_AI_TYPE.BRUTE) {
             situation = SITUATION.ENGAGED; // brute!
-        else
+        } else {
             situation = SITUATION.PREPARING;
+        }
     }
 
     private void initSituation() {
         // check melee
         // check reinforcements for Stalling
         // check ranged threat
-        if (type == PLAYER_AI_TYPE.BRUTE)
+        if (type == PLAYER_AI_TYPE.BRUTE) {
             situation = SITUATION.ENGAGED; // brute!
-        else
+        } else {
             situation = SITUATION.PREPARING;
+        }
     }
 
     public SITUATION getSituation() {
-        if (situation == null)
+        if (situation == null) {
             initSituation();
+        }
         return situation;
     }
 

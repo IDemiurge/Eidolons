@@ -35,8 +35,9 @@ public class SelectionKeyListener implements KeyListener {
 
     private void ok() {
         // check
-        if (!manager.getSequence().getView().isOkBlocked())
+        if (!manager.getSequence().getView().isOkBlocked()) {
             manager.doneSelection();
+        }
 
     }
 

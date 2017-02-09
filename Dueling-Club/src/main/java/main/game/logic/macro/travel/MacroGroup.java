@@ -57,10 +57,11 @@ public class MacroGroup { // macro obj type?
         int size = types.size();
         for (String s : types) { // PROPS.UNIT_TYPES - all possible types?
             ObjType type = DataManager.getType(s, C_OBJ_TYPE.UNITS_CHARS);
-            if (type != null)
+            if (type != null) {
                 travelSpeed += TravelMaster.getTravelSpeed(type);
-            else
+            } else {
                 size--;
+            }
             // TODO average // min?
         }
         if (!types.isEmpty()) {
@@ -70,16 +71,20 @@ public class MacroGroup { // macro obj type?
     }
 
     public void wander() {
-        if (RandomWizard.random() || northOrSouth == null)
-            if (northOrSouth == null)
+        if (RandomWizard.random() || northOrSouth == null) {
+            if (northOrSouth == null) {
                 northOrSouth = RandomWizard.random();
-            else
+            } else {
                 northOrSouth = null;
-        if (RandomWizard.random() || westOrEast == null)
-            if (westOrEast == null)
+            }
+        }
+        if (RandomWizard.random() || westOrEast == null) {
+            if (westOrEast == null) {
                 westOrEast = RandomWizard.random();
-            else
+            } else {
                 westOrEast = null;
+            }
+        }
 
         // useful for visual scouting too - can actually update enemies on the map
         // rather realistically... although in some cases it might look weird on
@@ -93,12 +98,14 @@ public class MacroGroup { // macro obj type?
             x_offset = y_offset;
         } else if (westOrEast != null) {
             x_offset = Math.round(travelSpeed / region.getMilePerPixel());
-            if (westOrEast)
+            if (westOrEast) {
                 x_offset = -x_offset;
+            }
         } else if (northOrSouth != null) {
             y_offset = Math.round(travelSpeed / region.getMilePerPixel());
-            if (northOrSouth)
+            if (northOrSouth) {
                 y_offset = -y_offset;
+            }
         }
         int x = 0;
         int y = 0;

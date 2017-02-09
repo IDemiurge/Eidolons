@@ -17,20 +17,21 @@ public class UnitMaster {
     private static final int HUMANOID_XP_MOD = -33;
     private static final int DEFAULT_CASTER_XP_MOD = 60;
     private static boolean random;
+    private static boolean shopOn = true;
+    private static boolean spellsOn;
+    private static boolean skillsOn;
 
     static {
         // if (UnitGroupMaster.isFactionMode())
         // setRandom(false);
     }
 
-    private static boolean shopOn=true;
-    private static boolean spellsOn;
-    private static boolean skillsOn;
-
     public static void train(DC_HeroObj unit) {
-        if (!FAST_DC.getGameLauncher().getFAST_MODE())
-            if (CoreEngine.isGraphicTestMode())
+        if (!FAST_DC.getGameLauncher().getFAST_MODE()) {
+            if (CoreEngine.isGraphicTestMode()) {
                 return;
+            }
+        }
 
         int perc = DEFAULT_XP_MOD;
 
@@ -51,28 +52,31 @@ public class UnitMaster {
         int skillXp = unit.getIntParam(PARAMS.XP) - spellXp;
 
         unit.setParam(PARAMS.XP, skillXp);
-        if (isSkillsOn())
+        if (isSkillsOn()) {
             try {
                 //// TODO: 17.11.2016 improve train func execution speed
                 UnitTrainer.train(unit);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        if (isShopOn())
+        }
+        if (isShopOn()) {
             try {
                 UnitShop.buyItemsForUnit(unit);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
 
         unit.modifyParameter(PARAMS.XP, spellXp);
 
-        if (isSpellsOn())
+        if (isSpellsOn()) {
             try {
                 UnitLibrary.learnSpellsForUnit(unit);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
 
         try {
             // adjust XP/Gold as per mods and default types...

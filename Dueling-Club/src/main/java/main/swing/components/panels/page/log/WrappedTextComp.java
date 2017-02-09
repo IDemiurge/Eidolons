@@ -41,8 +41,9 @@ public class WrappedTextComp extends TextCompDC {
         this.fonts = fonts;
         this.colors = colors;
         this.centring = centring;
-        if (isAutoWrapText())
+        if (isAutoWrapText()) {
             wrapTextLines();
+        }
     }
 
     public WrappedTextComp(VISUALS v) {
@@ -76,8 +77,9 @@ public class WrappedTextComp extends TextCompDC {
     @Override
     public void refresh() {
         super.refresh();
-        if (isAutoWrapText())
+        if (isAutoWrapText()) {
             wrapTextLines();
+        }
     }
 
     protected int getWrapLength() {
@@ -101,11 +103,12 @@ public class WrappedTextComp extends TextCompDC {
         int y2 = y + getOffsetY();
         int x2 = x;
         int i = 0;
-        if (ListMaster.isNotEmpty(getTextLines()))
+        if (ListMaster.isNotEmpty(getTextLines())) {
             for (String str : getTextLines()) {
                 y2 = paintLine(g, str, x2, y2, i);
                 i++;
             }
+        }
 
         // AttributedCharacterIterator paragraph = text.getIterator();
         // paragraphStart = paragraph.getBeginIndex();
@@ -139,35 +142,43 @@ public class WrappedTextComp extends TextCompDC {
     }
 
     private Color getColor(int lineNumber) {
-        if (!ListMaster.isNotEmpty(colors))
+        if (!ListMaster.isNotEmpty(colors)) {
             return getColor();
-        if (colors.size() <= lineNumber)
+        }
+        if (colors.size() <= lineNumber) {
             return colors.get(colors.size() - 1);
+        }
         return colors.get(lineNumber);
     }
 
     protected boolean isCentering(int lineNumber) {
-        if (!ListMaster.isNotEmpty(centring))
+        if (!ListMaster.isNotEmpty(centring)) {
             return isCentering();
-        if (centring.size() <= lineNumber)
+        }
+        if (centring.size() <= lineNumber) {
             return centring.get(centring.size() - 1);
+        }
         return centring.get(lineNumber);
     }
 
     private int getGap(int lineNumber) {
-        if (!ListMaster.isNotEmpty(gaps))
+        if (!ListMaster.isNotEmpty(gaps)) {
             return 0;
-        if (gaps.size() <= lineNumber)
+        }
+        if (gaps.size() <= lineNumber) {
             return gaps.get(gaps.size() - 1);
+        }
         return gaps.get(lineNumber);
     }
 
     private Font getFont(int lineNumber) {
 
-        if (!ListMaster.isNotEmpty(fonts))
+        if (!ListMaster.isNotEmpty(fonts)) {
             return getFont();
-        if (fonts.size() <= lineNumber)
+        }
+        if (fonts.size() <= lineNumber) {
             return fonts.get(fonts.size() - 1);
+        }
         return fonts.get(lineNumber);
     }
 
@@ -179,8 +190,9 @@ public class WrappedTextComp extends TextCompDC {
 
     @Override
     public Dimension getPanelSize() {
-        if (panelSize == null)
+        if (panelSize == null) {
             return initSizeFromTextLines();
+        }
         return super.getPanelSize();
     }
 
@@ -192,8 +204,9 @@ public class WrappedTextComp extends TextCompDC {
     private int getMaxLineLength() {
         int maxLength = 0;
         for (String sub : getTextLines()) {
-            if (sub.length() > maxLength)
+            if (sub.length() > maxLength) {
                 maxLength = sub.length();
+            }
         }
         return maxLength;
     }
@@ -202,8 +215,9 @@ public class WrappedTextComp extends TextCompDC {
         int maxWidth = 0;
         for (String sub : getTextLines()) {
             int width = FontMaster.getStringWidth(getDefaultFont(), sub);
-            if (width > maxWidth)
+            if (width > maxWidth) {
                 maxWidth = width;
+            }
         }
         return maxWidth;
     }

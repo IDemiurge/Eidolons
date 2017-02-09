@@ -41,13 +41,15 @@ public class Parameter extends DynamicValue {
             }
             if (result == null) {
                 obj_ref = KEYS.SOURCE.toString();
-            } else
+            } else {
                 return result;
+            }
         }
         // else
         if (obj_ref.equalsIgnoreCase(Ref.KEYS.EVENT.name())) {
-            if (ref.getEvent().getRef().getInteger(value_ref) != null)
+            if (ref.getEvent().getRef().getInteger(value_ref) != null) {
                 return Integer.valueOf(ref.getEvent().getRef().getInteger(value_ref));
+            }
             return new Formula(value_ref).wrapObjRef().getInt(ref.getEvent().getRef());
         }
         Integer id = ref.getId(obj_ref);

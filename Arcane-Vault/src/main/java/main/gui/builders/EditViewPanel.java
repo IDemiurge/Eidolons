@@ -28,50 +28,43 @@ import main.system.auxiliary.ColorManager;
 import main.system.auxiliary.ListMaster;
 import main.system.launch.CoreEngine;
 
-import java.awt.Component;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Vector;
-
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
 
 //size? display mode and other configs? 
 public class EditViewPanel implements TableModelListener {
 
 	public static final String NAME = "Name";
 	public static final String VALUE = "Value";
-	Map<String, JTable> tableMap = new HashMap<String, JTable>();
-
-	Vector<String> names = new Vector<String>();
-	protected G_Table table;
+    public boolean AE_VIEW_TOGGLE = false;
+    public boolean AE_VIEW_TOGGLING = false;
+    protected G_Table table;
 	protected DefaultTableModel model;
 	protected G_Table secondTable;
 	protected DefaultTableModel secondModel;
 	protected boolean twoTableMode = isTwoTableModeEnabled();
 	protected boolean widthSet;
 	protected boolean AE_VIEW = false;
-	public boolean AE_VIEW_TOGGLE = false;
-	public boolean AE_VIEW_TOGGLING = false;
 	protected boolean secondTableMode;
-
 	protected AE_MainPanel ae_view;
 	protected G_Panel panel;
-
 	protected boolean heroView = false;
 	protected boolean treeView = false;
 	protected HT_View treeViewComp;
 	protected HT_View classTreeViewComp;
 	protected HT_View skillTreeViewComp;
-
 	protected boolean menuHidden;
 	protected AV_Menu menu;
 	protected JScrollPane scrollPane;
-	private TreeControlPanel treeControlPanel;
+    Map<String, JTable> tableMap = new HashMap<String, JTable>();
+    Vector<String> names = new Vector<String>();
+    private TreeControlPanel treeControlPanel;
 	private boolean dirty = true;
 
 	// protected HeroTabs heroTabs;
@@ -86,8 +79,9 @@ public class EditViewPanel implements TableModelListener {
 		names.add(VALUE);
 		initTable(false);
 		AE_VIEW = false;
-		if (isColorsInverted())
-			getPanel().setBackground(ColorManager.BACKGROUND);
+        if (isColorsInverted()) {
+            getPanel().setBackground(ColorManager.BACKGROUND);
+        }
 
 		menu = new AV_Menu();
 	}
@@ -101,27 +95,33 @@ public class EditViewPanel implements TableModelListener {
 	}
 
 	public void setTableView() {
-		if (table == null)
-			initTable(false);
-		if (twoTableMode)
-			if (secondTable == null)
-				initTable(true);
+        if (table == null) {
+            initTable(false);
+        }
+        if (twoTableMode) {
+            if (secondTable == null) {
+                initTable(true);
+            }
+        }
 
-		if (AE_VIEW)
-			setDirty(true);
-		AE_VIEW = false;
+        if (AE_VIEW) {
+            setDirty(true);
+        }
+        AE_VIEW = false;
 		refresh();
 
 	}
 
 	public void setAE_View(String abilName) {
-		if (table == null)
-			initTable(false);
+        if (table == null) {
+            initTable(false);
+        }
 
 		ae_view = AE_Manager.getAE_View(abilName);
-		if (!AE_VIEW)
-			setDirty(true);
-		AE_VIEW = true;
+        if (!AE_VIEW) {
+            setDirty(true);
+        }
+        AE_VIEW = true;
 
 		refresh();
 	}
@@ -133,9 +133,10 @@ public class EditViewPanel implements TableModelListener {
 			return;
 		}
 		getPanel().removeAll();
-		if (!isMenuHidden())
-			getPanel().add(menu.getBar(), "id menu, pos 0 0");
-		if (isHeroView()) {
+        if (!isMenuHidden()) {
+            getPanel().add(menu.getBar(), "id menu, pos 0 0");
+        }
+        if (isHeroView()) {
 			// getPanel().add(heroTabs, "pos 0 0");
 			// setHeroView(false);
 			// getPanel().revalidate();
@@ -158,18 +159,20 @@ public class EditViewPanel implements TableModelListener {
 			getPanel().add(scrollPane, "id table, pos 0 menu.y2, w  " + width + ", h " + height);
 		}
 		// add(background); setZOrder()
-		if (ArcaneVault.getMainBuilder() != null)
-			getTable().setName(ArcaneVault.getMainBuilder().getSelectedTabName());
-		setWidth(getTable());
+        if (ArcaneVault.getMainBuilder() != null) {
+            getTable().setName(ArcaneVault.getMainBuilder().getSelectedTabName());
+        }
+        setWidth(getTable());
 
 		if (AE_VIEW) {
 			JSplitPane sp = null;
 
-			if (AE_VIEW_TOGGLE)
-				sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, ae_view, scrollPane);
-			else
-				sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, ae_view);
-			sp.setDividerLocation(0.5);
+            if (AE_VIEW_TOGGLE) {
+                sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, ae_view, scrollPane);
+            } else {
+                sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, ae_view);
+            }
+            sp.setDividerLocation(0.5);
 			getPanel().add(sp, "pos 0 menu.y2 " + getWidth() * 5 / 3 + " " + ArcaneVault.AE_HEIGHT);
 
 			main.system.auxiliary.LogMaster.log(1, "AE added!");
@@ -178,24 +181,26 @@ public class EditViewPanel implements TableModelListener {
 
 				treeViewComp = ArcaneVault.getSelectedOBJ_TYPE() == OBJ_TYPES.SKILLS ? skillTreeViewComp
 						: classTreeViewComp;
-				if (treeViewComp == null)
-					treeViewComp = skillTreeViewComp;
-				if (treeViewComp != null) {
+                if (treeViewComp == null) {
+                    treeViewComp = skillTreeViewComp;
+                }
+                if (treeViewComp != null) {
 					treeViewComp.refresh();
 					getPanel().add(treeViewComp, "id secondTable, pos table.x2 menu.y2");
 
-					if (treeControlPanel == null)
-						treeControlPanel = new TreeControlPanel() {
-							@Override
-							protected void workspaceCycle(boolean alt) {
-								if (alt) {
-									ModelManager.addToWorkspace(true);
-									return;
-								}
-								super.workspaceCycle(alt);
-							}
-						};
-					treeViewComp.setBottomPanel(treeControlPanel);
+                    if (treeControlPanel == null) {
+                        treeControlPanel = new TreeControlPanel() {
+                            @Override
+                            protected void workspaceCycle(boolean alt) {
+                                if (alt) {
+                                    ModelManager.addToWorkspace(true);
+                                    return;
+                                }
+                                super.workspaceCycle(alt);
+                            }
+                        };
+                    }
+                    treeViewComp.setBottomPanel(treeControlPanel);
 					treeControlPanel.setView(treeViewComp);
 					// getPanel().add(
 					// treeControlPanel,
@@ -211,9 +216,10 @@ public class EditViewPanel implements TableModelListener {
 		}
 		getPanel().revalidate();
 		getPanel().repaint();
-		if (isTreeView())
-			setDirty(false);
-	}
+        if (isTreeView()) {
+            setDirty(false);
+        }
+    }
 
 	public boolean isDirty() {
 		return dirty;
@@ -230,6 +236,25 @@ public class EditViewPanel implements TableModelListener {
 	protected int getWidth() {
 		return ArcaneVault.TABLE_WIDTH;
 	}
+
+    protected void setWidth(JTable table) {
+        if (widthSet) {
+            return;
+        }
+        widthSet = true;
+        int width = 0;
+        for (int row = 0; row < table.getRowCount(); row++) {
+            Component comp = table.prepareRenderer(getTableRenderer(), row,
+                    TableDataManager.NAME_COLUMN);
+            width = Math.max(comp.getPreferredSize().width, width);
+        }
+
+        table.getColumn(EditViewPanel.NAME).setMaxWidth(width * 3 / 2);
+        table.getColumn(EditViewPanel.NAME).setPreferredWidth(width);
+
+        table.getColumn(EditViewPanel.NAME).setMinWidth(width);
+
+    }
 
 	protected void initTable(boolean second) {
 		secondTableMode = second;
@@ -250,30 +275,13 @@ public class EditViewPanel implements TableModelListener {
 		secondTableMode = false;
 
 		scrollPane = new JScrollPane(table);
-		if (isColorsInverted())
-			scrollPane.setBackground(ColorManager.BACKGROUND);
-	}
+        if (isColorsInverted()) {
+            scrollPane.setBackground(ColorManager.BACKGROUND);
+        }
+    }
 
 	protected AV_TableCellRenderer getTableRenderer() {
 		return new AV_TableCellRenderer(this);
-	}
-
-	protected void setWidth(JTable table) {
-		if (widthSet)
-			return;
-		widthSet = true;
-		int width = 0;
-		for (int row = 0; row < table.getRowCount(); row++) {
-			Component comp = table.prepareRenderer(getTableRenderer(), row,
-					TableDataManager.NAME_COLUMN);
-			width = Math.max(comp.getPreferredSize().width, width);
-		}
-
-		table.getColumn(EditViewPanel.NAME).setMaxWidth(width * 3 / 2);
-		table.getColumn(EditViewPanel.NAME).setPreferredWidth(width);
-
-		table.getColumn(EditViewPanel.NAME).setMinWidth(width);
-
 	}
 
 	// aha! here's all that caching and fast gui re-builds. G-ENGINE?
@@ -286,10 +294,12 @@ public class EditViewPanel implements TableModelListener {
 
 		Vector<Vector<String>> data = TableDataManager.getTypeData(type);
 		Vector<?> oldData = getModel().getDataVector();
-		if (!quietly)
-			if (secondModel != null)
-				secondModel.setDataVector(oldData, names);
-		getModel().setDataVector(data, names);
+        if (!quietly) {
+            if (secondModel != null) {
+                secondModel.setDataVector(oldData, names);
+            }
+        }
+        getModel().setDataVector(data, names);
 		refresh();
 	}
 
@@ -327,11 +337,12 @@ public class EditViewPanel implements TableModelListener {
 			ObjType type = ArcaneVault.getSelectedType();
 			// ((DefaultMutableTreeNode) path
 			// .getLastPathComponent()).toString();
-			if (secondTable != null)
-				if (source == secondTable.getModel()) {
-					secondTableMode = true;
-					type = ArcaneVault.getPreviousSelectedType();
-				}
+            if (secondTable != null) {
+                if (source == secondTable.getModel()) {
+                    secondTableMode = true;
+                    type = ArcaneVault.getPreviousSelectedType();
+                }
+            }
 
 			String typeName = type.getName();
 
@@ -339,13 +350,16 @@ public class EditViewPanel implements TableModelListener {
 					.getColumn());
 			String valName = (String) ((JTable) getTable()).getValueAt(e.getFirstRow(), e
 					.getColumn() - 1);
-			if (!modified(type, valName, newValue))
-				return;
-			if (isLevelEditor())
+            if (!modified(type, valName, newValue)) {
+                return;
+            }
+            if (isLevelEditor())
 				// grpName =
 				// LevelEditor.getSimulation().getSelectedEntity().getOBJ_TYPE();
-				return;
-			try {
+            {
+                return;
+            }
+            try {
 				ModelManager.save(type, valName);
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -360,46 +374,52 @@ public class EditViewPanel implements TableModelListener {
 			} else if (valName.equals(G_PROPS.NAME.getName())) {
 				String oldName = type.getName();
 				DataManager.renameType(type, newValue);
-				if (type.getOBJ_TYPE_ENUM().isTreeEditType())
-					AE_Manager.typeRename(newValue, oldName);
-				if (!ArcaneVault.getMainBuilder().getTreeBuilder().nameChanged(oldName, newValue)) {
+                if (type.getOBJ_TYPE_ENUM().isTreeEditType()) {
+                    AE_Manager.typeRename(newValue, oldName);
+                }
+                if (!ArcaneVault.getMainBuilder().getTreeBuilder().nameChanged(oldName, newValue)) {
 					for (TabBuilder t : ArcaneVault.getAdditionalTrees()) {
-						if (t.getTreeBuilder().nameChanged(oldName, newValue))
-							break;
-					}
+                        if (t.getTreeBuilder().nameChanged(oldName, newValue)) {
+                            break;
+                        }
+                    }
 				}
 				// ArcaneVault.getMainBuilder().getTree().setSelectionPath(path);
-			} else if (valName.equalsIgnoreCase(G_PROPS.WORKSPACE_GROUP.getName()))
-				if (ArcaneVault.getWorkspaceManager().isDefaultTypeWorkspacesOn())
-					if (ArcaneVault.getWorkspaceManager().getActiveWorkspace() != null)
-						ArcaneVault.getWorkspaceManager().getActiveWorkspace().setDirty(true);
+            } else if (valName.equalsIgnoreCase(G_PROPS.WORKSPACE_GROUP.getName())) {
+                if (ArcaneVault.getWorkspaceManager().isDefaultTypeWorkspacesOn()) {
+                    if (ArcaneVault.getWorkspaceManager().getActiveWorkspace() != null) {
+                        ArcaneVault.getWorkspaceManager().getActiveWorkspace().setDirty(true);
+                    }
+                }
+            }
 
-			if (ListMaster.isNotEmpty(ArcaneVault.getSelectedTypes()))
-				if ((ArcaneVault.getSelectedTypes()).size() > 1) {
-					for (ObjType t : ArcaneVault.getSelectedTypes()) {
-						if (alt) {
-							if (ContentManager.isParameter(valName)) {
-								int amount = Integer.valueOf(newValue);
-								t.modifyParameter(ContentManager.getPARAM(valName), amount);
+            if (ListMaster.isNotEmpty(ArcaneVault.getSelectedTypes())) {
+                if ((ArcaneVault.getSelectedTypes()).size() > 1) {
+                    for (ObjType t : ArcaneVault.getSelectedTypes()) {
+                        if (alt) {
+                            if (ContentManager.isParameter(valName)) {
+                                int amount = Integer.valueOf(newValue);
+                                t.modifyParameter(ContentManager.getPARAM(valName), amount);
 
-								t.setProperty(G_PROPS.VERSION, CoreEngine.VERSION);
-								t.setProperty(G_PROPS.LAST_EDITOR, System.getProperty("user.name"));
-							} else {
-								t.addProperty(ContentManager.getPROP(valName), newValue);
+                                t.setProperty(G_PROPS.VERSION, CoreEngine.VERSION);
+                                t.setProperty(G_PROPS.LAST_EDITOR, System.getProperty("user.name"));
+                            } else {
+                                t.addProperty(ContentManager.getPROP(valName), newValue);
 
-								t.setProperty(G_PROPS.VERSION, CoreEngine.VERSION);
-							}
-						} else {
-							t.setValue(valName, newValue);
-							t.setProperty(G_PROPS.VERSION, CoreEngine.VERSION);
-						}
-					}
-				} else {
-					type.setValue(valName, newValue);
-					type.setProperty(G_PROPS.VERSION, CoreEngine.VERSION);
+                                t.setProperty(G_PROPS.VERSION, CoreEngine.VERSION);
+                            }
+                        } else {
+                            t.setValue(valName, newValue);
+                            t.setProperty(G_PROPS.VERSION, CoreEngine.VERSION);
+                        }
+                    }
+                } else {
+                    type.setValue(valName, newValue);
+                    type.setProperty(G_PROPS.VERSION, CoreEngine.VERSION);
 
-				}
-			if (C_OBJ_TYPE.BF_OBJ.equals(type.getOBJ_TYPE_ENUM())
+                }
+            }
+            if (C_OBJ_TYPE.BF_OBJ.equals(type.getOBJ_TYPE_ENUM())
 					|| SimulationManager.isUnitType(grpName)) {
 				type.setParam(PARAMS.LEVEL,
 				// DC_MathManager.getLevelForPower(type.getIntParam(PARAMS.POWER))
@@ -413,14 +433,18 @@ public class EditViewPanel implements TableModelListener {
 					// save() instead!
 					resetData(true, type);
 				}
-			} else if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.SPELLS)
-				if (type.getIntParam(PARAMS.XP_COST) == 0)
-					if (type.getGroup().equals("Standard"))
-						// type.setParam(PARAMS.XP_COST,
-						// DC_MathManager.getSpellXpCost(type));
+            } else if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.SPELLS) {
+                if (type.getIntParam(PARAMS.XP_COST) == 0) {
+                    if (type.getGroup().equals("Standard"))
+                    // type.setParam(PARAMS.XP_COST,
+                    // DC_MathManager.getSpellXpCost(type));
 
-						secondTableMode = false;
-		} catch (ArrayIndexOutOfBoundsException ex) {
+                    {
+                        secondTableMode = false;
+                    }
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
 
 		} catch (Exception exc) {
 			exc.printStackTrace();
@@ -451,36 +475,41 @@ public class EditViewPanel implements TableModelListener {
 	}
 
 	public G_Table getTable() {
-		if (secondTableMode)
-			return secondTable;
-		else
-			return table;
-	}
+        if (secondTableMode) {
+            return secondTable;
+        } else {
+            return table;
+        }
+    }
 
 	public void setTable(G_Table table) {
-		if (secondTableMode)
-			this.secondTable = table;
-		else
-			this.table = table;
-	}
+        if (secondTableMode) {
+            this.secondTable = table;
+        } else {
+            this.table = table;
+        }
+    }
 
 	public DefaultTableModel getModel() {
-		if (secondTableMode)
-			return secondModel;
-		else
-			return model;
-	}
+        if (secondTableMode) {
+            return secondModel;
+        } else {
+            return model;
+        }
+    }
 
 	public void setModel(DefaultTableModel model) {
-		if (secondTableMode)
-			this.secondModel = model;
-		else
-			this.model = model;
-	}
+        if (secondTableMode) {
+            this.secondModel = model;
+        } else {
+            this.model = model;
+        }
+    }
 
 	public void toggleAE_VIEW() {
-		if (AE_VIEW_TOGGLING)
-			AE_VIEW_TOGGLE = !AE_VIEW_TOGGLE;
+        if (AE_VIEW_TOGGLING) {
+            AE_VIEW_TOGGLE = !AE_VIEW_TOGGLE;
+        }
 
 	}
 
@@ -491,14 +520,17 @@ public class EditViewPanel implements TableModelListener {
 
 	public void selectType(boolean fromHT, ObjType type) {
 		toggleAE_VIEW();
-		if (ArcaneVault.getSelectedType() != null)
-			if (type.getOBJ_TYPE_ENUM().isHeroTreeType())
-				if (type.getOBJ_TYPE_ENUM() != ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM()) {
-					if (getSkillTreeViewComp() == null || getClassTreeViewComp() == null)
-						setTreeView(false);
-					else
-						setDirty(true);
-				}
+        if (ArcaneVault.getSelectedType() != null) {
+            if (type.getOBJ_TYPE_ENUM().isHeroTreeType()) {
+                if (type.getOBJ_TYPE_ENUM() != ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM()) {
+                    if (getSkillTreeViewComp() == null || getClassTreeViewComp() == null) {
+                        setTreeView(false);
+                    } else {
+                        setDirty(true);
+                    }
+                }
+            }
+        }
 
 		ArcaneVault.setSelectedType(type);
 		if (fromHT) {
@@ -508,38 +540,41 @@ public class EditViewPanel implements TableModelListener {
 				e.printStackTrace();
 			}
 		} else {
-			if (isTreeView())
-				if (getTreeViewComp() != null) {
-					HT_Node node = null;
-					try {
-						node = getTreeViewComp().getTree().getMap().getNodeForType(type);
-					} catch (Exception e) {
-						e.printStackTrace();
-						setTreeView(false);
-						selectType(fromHT, type);
-					}
-					if (node != null) {
-						HC_Master.setSelectedTreeNode(node);
-						getTreeViewComp().getTree().getPanel().repaint();
-					}
-				}
-		}
+            if (isTreeView()) {
+                if (getTreeViewComp() != null) {
+                    HT_Node node = null;
+                    try {
+                        node = getTreeViewComp().getTree().getMap().getNodeForType(type);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        setTreeView(false);
+                        selectType(fromHT, type);
+                    }
+                    if (node != null) {
+                        HC_Master.setSelectedTreeNode(node);
+                        getTreeViewComp().getTree().getPanel().repaint();
+                    }
+                }
+            }
+        }
 		if (isTreeView()) {
 
 			HT_View viewComp = type.getOBJ_TYPE_ENUM() == OBJ_TYPES.SKILLS ? getSkillTreeViewComp()
 					: getClassTreeViewComp();
 			if (viewComp != null) {
 				String key = type.getSubGroupingKey();
-				if (!key.equalsIgnoreCase(viewComp.getDisplayedTabPanel().getSelectedTabName()))
-					if (!key.equalsIgnoreCase("Multiclass"))
-						try {
-							viewComp.tabSelected(key);
-							viewComp.repaint();
-							setDirty(true);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-			}
+                if (!key.equalsIgnoreCase(viewComp.getDisplayedTabPanel().getSelectedTabName())) {
+                    if (!key.equalsIgnoreCase("Multiclass")) {
+                        try {
+                            viewComp.tabSelected(key);
+                            viewComp.repaint();
+                            setDirty(true);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
 
 		}
 
@@ -550,8 +585,9 @@ public class EditViewPanel implements TableModelListener {
 		}
 		if (type.getOBJ_TYPE_ENUM().equals(OBJ_TYPES.ABILS)) {
 			setAE_View(type.getName());
-		} else
-			setTableView();
+        } else {
+            setTableView();
+        }
 
 	}
 
@@ -560,9 +596,10 @@ public class EditViewPanel implements TableModelListener {
 	}
 
 	public void setMenuHidden(boolean menuHidden) {
-		if (this.menuHidden != menuHidden)
-			setDirty(true);
-		this.menuHidden = menuHidden;
+        if (this.menuHidden != menuHidden) {
+            setDirty(true);
+        }
+        this.menuHidden = menuHidden;
 	}
 
 	public boolean isLevelEditor() {
@@ -574,9 +611,10 @@ public class EditViewPanel implements TableModelListener {
 	}
 
 	public void setTreeView(boolean treeView) {
-		if (this.treeView != treeView)
-			setDirty(true);
-		this.treeView = treeView;
+        if (this.treeView != treeView) {
+            setDirty(true);
+        }
+        this.treeView = treeView;
 
 	}
 

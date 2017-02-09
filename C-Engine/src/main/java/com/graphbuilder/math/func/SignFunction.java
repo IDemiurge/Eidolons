@@ -12,8 +12,12 @@ public class SignFunction implements Function {
      * The sign function returns 1 if the d[0] > 0, -1 if d[0] < 0, else 0.
      */
     public double of(double[] d, int numParam) {
-        if (d[0] > 0) return 1;
-        if (d[0] < 0) return -1;
+        if (d[0] > 0) {
+            return 1;
+        }
+        if (d[0] < 0) {
+            return -1;
+        }
         return 0;
     }
 

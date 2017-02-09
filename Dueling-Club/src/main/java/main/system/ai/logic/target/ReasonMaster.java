@@ -20,12 +20,14 @@ public class ReasonMaster {
     public static boolean checkReasonCannotActivate(DC_ActiveObj action, String reason) {
         List<String> reasons = ReasonMaster.getReasonsCannotActivate(action);
         for (String r : reasons) {
-            if (StringMaster.compareByChar(r, reason, false))
+            if (StringMaster.compareByChar(r, reason, false)) {
                 return true;
+            }
         }
         for (String r : reasons) {
-            if (StringMaster.compare(r, reason, false))
+            if (StringMaster.compare(r, reason, false)) {
                 return true;
+            }
         }
         return false;
     }
@@ -33,12 +35,14 @@ public class ReasonMaster {
     public static boolean checkReasonCannotActivate(Action action, String reason) {
         List<String> reasons = ReasonMaster.getReasonsCannotActivate(action);
         for (String r : reasons) {
-            if (StringMaster.compareByChar(r, reason, false))
+            if (StringMaster.compareByChar(r, reason, false)) {
                 return true;
+            }
         }
         for (String r : reasons) {
-            if (StringMaster.compare(r, reason, false))
+            if (StringMaster.compare(r, reason, false)) {
                 return true;
+            }
         }
         return false;
     }
@@ -72,8 +76,9 @@ public class ReasonMaster {
     public static List<String> getReasonsCannotActivate(DC_ActiveObj active, Ref REF) {
         List<String> reasons = new LinkedList<>();
         REF.setID(KEYS.PAYEE, REF.getSource());
-        if (active.getCosts().canBePaid(REF))
+        if (active.getCosts().canBePaid(REF)) {
             return reasons;
+        }
         return active.getCosts().getReasonList();
     }
 
@@ -84,10 +89,12 @@ public class ReasonMaster {
     public static List<FILTER_REASON> getReasonsCannotTarget(Action action) {
 
         List<FILTER_REASON> reasonsCannotTarget = getReasonsCannotTarget(action, true, false, null);
-        if (!reasonsCannotTarget.isEmpty())
+        if (!reasonsCannotTarget.isEmpty()) {
             if (reasonsCannotTarget.size() != 1
-                    && reasonsCannotTarget.get(0) != (FILTER_REASON.FACING))
+                    && reasonsCannotTarget.get(0) != (FILTER_REASON.FACING)) {
                 return reasonsCannotTarget;
+            }
+        }
 
         reasonsCannotTarget = getReasonsCannotTarget(action, true, null, null);
         return reasonsCannotTarget;
@@ -107,23 +114,30 @@ public class ReasonMaster {
         List<FILTER_REASON> reasons = new LinkedList<>();
         for (Condition c : conditions) {
             FILTER_REASON reason = getReason(c);
-            if (searchedReason != null)
-                if (reason != searchedReason)
+            if (searchedReason != null) {
+                if (reason != searchedReason) {
                     continue;
+                }
+            }
             if (checkMiscOrOnly == null) {
-                if (reason != FILTER_REASON.OTHER)
+                if (reason != FILTER_REASON.OTHER) {
                     continue;
-            } else if (!checkMiscOrOnly)
-                if (reason == FILTER_REASON.OTHER)
+                }
+            } else if (!checkMiscOrOnly) {
+                if (reason == FILTER_REASON.OTHER) {
                     continue;
+                }
+            }
             boolean result = c.isTrue();
-            if (!useConditionResultCache)
+            if (!useConditionResultCache) {
                 result = c.check(REF);
-            else
+            } else {
                 main.system.auxiliary.LogMaster.log(0, c + " uses cached result " + result);
+            }
             if (!result) {
-                if (reason != null)
+                if (reason != null) {
                     reasons.add(reason);
+                }
             }
         }
 
@@ -131,18 +145,24 @@ public class ReasonMaster {
     }
 
     private static FILTER_REASON getReason(Condition c) {
-        if (c instanceof VisibilityCondition)
+        if (c instanceof VisibilityCondition) {
             return FILTER_REASON.VISION;
+        }
 
-        if (c instanceof FacingCondition)
+        if (c instanceof FacingCondition) {
             return FILTER_REASON.FACING;
+        }
 
-        if (c instanceof DistanceCondition)
+        if (c instanceof DistanceCondition) {
             return FILTER_REASON.DISTANCE;
+        }
 
         if (c instanceof Conditions) // TODO ClassMaster
-            if (ConditionMaster.contains((Conditions) c, FacingCondition.class))
+        {
+            if (ConditionMaster.contains((Conditions) c, FacingCondition.class)) {
                 return FILTER_REASON.FACING;
+            }
+        }
         return FILTER_REASON.OTHER;
     }
 
@@ -151,8 +171,9 @@ public class ReasonMaster {
         try {
             for (Condition c : targeting.getFilter().getConditions()) {
                 if (c instanceof DistanceCondition) {
-                    if (((DistanceCondition) c).getDistance().getInt(targetAction.getRef()) == 1)
+                    if (((DistanceCondition) c).getDistance().getInt(targetAction.getRef()) == 1) {
                         return true;
+                    }
                 }
             }
         } catch (Exception e) {

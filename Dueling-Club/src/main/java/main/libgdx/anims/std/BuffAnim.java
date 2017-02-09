@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.content.CONTENT_CONSTS.STD_BUFF_NAMES;
 import main.data.filesys.PathFinder;
 import main.entity.obj.BuffObj;
+import main.game.battlefield.Coordinates;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import main.libgdx.anims.AnimData;
@@ -25,18 +26,19 @@ public class BuffAnim extends ActionAnim {
     boolean playContinuous;
     boolean playOnHover;
     boolean playOnNewRound;
+
     public BuffAnim(BuffObj buff) {
         super(buff.getActive(), getBuffAnimData(buff));
         this.buff = buff;
         mods = new ANIM_MOD[]{
-         CONTINUOUS_ANIM_MODS.PENDULUM_ALPHA
+                CONTINUOUS_ANIM_MODS.PENDULUM_ALPHA
         };
         part = ANIM_PART.AFTEREFFECT;
         textureSupplier = () -> TextureManager.getOrCreate(buff.getImagePath());
 
 //setPlayContinuous(buff.checkBool());
-setPlayOnHover(true);
-initDuration();
+        setPlayOnHover(true);
+        initDuration();
 
     }
 
@@ -50,8 +52,10 @@ initDuration();
         ablaze, frozen, bleeding, wounded, charmed,
          */
         STD_BUFF_NAMES name =
-         new EnumMaster<STD_BUFF_NAMES>().retrieveEnumConst(STD_BUFF_NAMES.class, buff.getName());
-        if (name == null) return data;
+                new EnumMaster<STD_BUFF_NAMES>().retrieveEnumConst(STD_BUFF_NAMES.class, buff.getName());
+        if (name == null) {
+            return data;
+        }
         String sfx = PathFinder.getSfxPath() + getStdSfx(name);
         String sprites = PathFinder.getSpritesPath() + "buffs\\razorsharp 20 1.png";
 //        String std = PathFinder.getSpritesPath() + getStdSprites(name);
@@ -60,8 +64,9 @@ initDuration();
 //        else
 //        sprites  =   buff.getImagePath()+TextureManager.SINGLE_SPRITE+";";;
 
-        if (sfx.split(";").length > 1 || FileManager.isFile(sfx))
+        if (sfx.split(";").length > 1 || FileManager.isFile(sfx)) {
             data.setValue(ANIM_VALUES.PARTICLE_EFFECTS, sfx);
+        }
         data.setValue(ANIM_VALUES.SPRITES, sprites);
         return data;
     }
@@ -135,8 +140,9 @@ initDuration();
         super.setSprites(sprites);
         lifecycleDuration = 0;
         for (SpriteAnimation s : getSprites()) {
-            if (s.getLifecycleDuration() > lifecycleDuration)
+            if (s.getLifecycleDuration() > lifecycleDuration) {
                 lifecycleDuration = s.getLifecycleDuration();
+            }
         }
     }
 
@@ -150,12 +156,20 @@ initDuration();
 
     @Override
     protected void initDuration() {
-        if (isPlayOnNewRound())
+        if (isPlayOnNewRound()) {
             duration = 2;
-        if (isPlayOnHover())
+        }
+        if (isPlayOnHover()) {
             duration = 3;
-        if (isPlayContinuous())
+        }
+        if (isPlayContinuous()) {
             duration = -1;
+        }
+    }
+
+    @Override
+    public Coordinates getDestinationCoordinates() {
+        return buff.getBasis().getCoordinates();
     }
 
     @Override

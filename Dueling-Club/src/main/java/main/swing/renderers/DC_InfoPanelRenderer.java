@@ -37,11 +37,13 @@ public class DC_InfoPanelRenderer implements TableCellRenderer {
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        if (!obj.isDirty())
+        if (!obj.isDirty()) {
             return getDefaultComp(table, value, isSelected, hasFocus, row, column);
+        }
 
-        if (column == 0)
+        if (column == 0) {
             return getDefaultComp(table, value, isSelected, hasFocus, row, column);
+        }
 
         // if (VALUE_ICONS.valueOf(value.toString()) == null)
         // icon = getDefaultIcon(value.toString());
@@ -49,21 +51,25 @@ public class DC_InfoPanelRenderer implements TableCellRenderer {
         // icon = VALUE_ICONS.valueOf(value.toString()).getImg();
         //
         // lbl = new JLabel(icon);
-        if (StringMaster.isEmpty(value.toString()))
+        if (StringMaster.isEmpty(value.toString())) {
             return getDefaultComp(table, value, isSelected, hasFocus, row, column);
+        }
         String VALUE = table.getValueAt(row, 0).toString();
-        if (VALUE == null)
+        if (VALUE == null) {
             return getDefaultComp(table, value, isSelected, hasFocus, row, column);
+        }
 
-        if (StringMaster.isEmpty(VALUE.toString()))
+        if (StringMaster.isEmpty(VALUE.toString())) {
             return getDefaultComp(table, value, isSelected, hasFocus, row, column);
+        }
 
         PARAMETER p = ContentManager.getPARAM(VALUE.toString());
         if (p == null) {
 
             PROPERTY prop = ContentManager.getPROP(VALUE.toString());
-            if (prop != null)
+            if (prop != null) {
                 return getPropertyValueComp(prop, value.toString(), VALUE);
+            }
 
             return getDefaultComp(table, value, isSelected, hasFocus, row, column);
         }

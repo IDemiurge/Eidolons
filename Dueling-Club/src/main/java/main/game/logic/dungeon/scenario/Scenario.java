@@ -53,8 +53,9 @@ public class Scenario extends Entity {
     }
 
     public List<DC_HeroObj> getHeroesForHire() {
-        if (heroesForHire == null)
+        if (heroesForHire == null) {
             initHeroesForHire();
+        }
         return heroesForHire;
     }
 

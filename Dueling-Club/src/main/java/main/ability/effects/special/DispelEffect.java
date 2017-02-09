@@ -34,15 +34,18 @@ public class DispelEffect extends MicroEffect {
         for (Attachment attachment : game.getState().getAttachmentsMap()
                 .get(ref.getTargetObj())) {
 
-            if (!(attachment instanceof BuffObj))
+            if (!(attachment instanceof BuffObj)) {
                 continue;
+            }
             BuffObj buff = (BuffObj) attachment;
 
-            if (!buff.isDispelable())
+            if (!buff.isDispelable()) {
                 continue;
+            }
             if (!friendlyFire) {
-                if (buff.getOwner().isMe())
+                if (buff.getOwner().isMe()) {
                     continue;
+                }
             }
             if (positiveOnly) {
                 // if (buff.getBuffType() ==)

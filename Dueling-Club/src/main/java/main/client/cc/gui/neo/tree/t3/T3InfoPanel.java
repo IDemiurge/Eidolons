@@ -34,8 +34,9 @@ public class T3InfoPanel extends G_Panel {
         }
         infoPanel = new DC_PagedInfoPanel(skill);
         ImageIcon icon = ImageManager.getEmptyItemIcon(flipped);
-        if (skill != null)
+        if (skill != null) {
             icon = skill.getIcon();
+        }
         label = new JLabel(icon);
         controlPanel = new G_Panel();
         controlPanel.setPanelSize(new Dimension(122, getPanelSize().height));

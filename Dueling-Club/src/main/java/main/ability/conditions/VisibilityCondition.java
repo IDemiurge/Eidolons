@@ -38,8 +38,9 @@ public class VisibilityCondition extends ConditionImpl {
 
     @Override
     public boolean check() {
-        if (!(ref.getObj(KEYS.MATCH) instanceof BattlefieldObj))
+        if (!(ref.getObj(KEYS.MATCH) instanceof BattlefieldObj)) {
             return false;
+        }
         DC_Obj match = (DC_Obj) ref.getObj(KEYS.MATCH);
         boolean result = false;
         if (this.match == null && this.source == null) {

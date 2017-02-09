@@ -38,12 +38,13 @@ public class PresetLauncher {
 
     public static Boolean chooseLaunchOption() {
         int i =PRESET_OPTION;
-        if (i==-1)
+        if (i == -1) {
             if (!FAST_DC.forceRunGT) {
                 i = DialogMaster.optionChoice("", LAUNCH_OPTIONS);
             } else {
                 i = 1;
             }
+        }
             Preset p =null ;
         switch (LAUNCH_OPTIONS[i]) {
             case "Last":
@@ -64,8 +65,9 @@ public class PresetLauncher {
                 FAST_DC.getGameLauncher().DUMMY_MODE = true;
                 FAST_DC.getGameLauncher().DUMMY_PP = true;
             case "Gui":
-                 if (p==null )
-                     p = PresetMaster.loadPreset("Graphics Test.xml");
+                if (p == null) {
+                    p = PresetMaster.loadPreset("Graphics Test.xml");
+                }
                 PresetMaster.setPreset(p);
                 return true;
             case "Recent":
@@ -77,6 +79,7 @@ public class PresetLauncher {
                 UnitGroupMaster.setFactionMode(DialogMaster.confirm("Faction Mode?"));
                 return null;
             case "Anims":
+                EmitterController.overrideKeys=true;
                 FAST_DC.getGameLauncher().DUMMY_MODE = true;
                 FAST_DC.getGameLauncher().DUMMY_PP = true;
                 FAST_DC.getGameLauncher().setFAST_MODE(true);
@@ -112,11 +115,13 @@ public class PresetLauncher {
             list.add(s.toString());
         }
         String result = new ListChooser(SELECTION_MODE.SINGLE, list, false).choose();
-        if (result == null)
+        if (result == null) {
             return null;
+        }
         Preset preset = PresetMaster.findPreset(result);
-        if (preset != null)
+        if (preset != null) {
             PresetMaster.setPreset(preset);
+        }
         return preset;
     }
 
@@ -124,11 +129,13 @@ public class PresetLauncher {
         Preset profile = choosePreset();
         boolean newDungeon = false;
         String oldDungeon = PresetMaster.getPreset().getValue(FIRST_DUNGEON);
-        if (!profile.getValue(FIRST_DUNGEON).equals(oldDungeon))
+        if (!profile.getValue(FIRST_DUNGEON).equals(oldDungeon)) {
             newDungeon = true; // check after launch?
+        }
         launchPreset(profile);
-        if (newDungeon)
+        if (newDungeon) {
             DC_Game.game.getDungeonMaster().initDungeonLevelChoice();
+        }
         DC_Game.game.getDebugMaster().executeDebugFunctionNewThread(DEBUG_FUNCTIONS.CLEAR);
         // check new dungeon
 
@@ -143,35 +150,36 @@ public class PresetLauncher {
         for (PRESET_DATA item : PRESET_DATA.values() ) {
 
             String value = profile.getValue(item);
-            if (value!=null )
-            switch (item) {
-                case CONTENT_SCOPE:
-                    initContentScope(value);
-                    break;
-                case OPTIONS:
-                    initOptions(value);
-                    break;
-                case PRESET_OPTION_PARAMS:
-                    initOptionParams(value);
-                    break;
-                case ENEMY_PARTY:
-                    initDefaultParty(value, false);
-                    break;
-                case ENEMIES:
-                    initEnemies(value, false);
-                    break;
-                case PLAYER_UNITS:
-                    initPlayerUnits(value, false);
-                    break;
-                case PLAYER_PARTY:
-                    initDefaultParty(value, true);
-                    break;
-                case DUNGEONS:
-                    initDungeonsList(value);
-                    break;
-                case FIRST_DUNGEON:
-                    initFirstDungeon(value);
-                    break;
+            if (value != null) {
+                switch (item) {
+                    case CONTENT_SCOPE:
+                        initContentScope(value);
+                        break;
+                    case OPTIONS:
+                        initOptions(value);
+                        break;
+                    case PRESET_OPTION_PARAMS:
+                        initOptionParams(value);
+                        break;
+                    case ENEMY_PARTY:
+                        initDefaultParty(value, false);
+                        break;
+                    case ENEMIES:
+                        initEnemies(value, false);
+                        break;
+                    case PLAYER_UNITS:
+                        initPlayerUnits(value, false);
+                        break;
+                    case PLAYER_PARTY:
+                        initDefaultParty(value, true);
+                        break;
+                    case DUNGEONS:
+                        initDungeonsList(value);
+                        break;
+                    case FIRST_DUNGEON:
+                        initFirstDungeon(value);
+                        break;
+                }
             }
         }
         /*
@@ -213,14 +221,16 @@ public class PresetLauncher {
             type = DataManager.getType(value, OBJ_TYPES.PARTY);
         }
         if (type == null) {
-            if (me)
+            if (me) {
                 DC_Game.game.setPlayerParty(value);
-            else
+            } else {
                 DC_Game.game.setEnemyParty(value);
-        } else if (me)
+            }
+        } else if (me) {
             DC_Game.game.setPlayerParty(type.getProperty(PROPS.MEMBERS));
-        else
+        } else {
             DC_Game.game.setEnemyParty(type.getProperty(PROPS.MEMBERS));
+        }
     }
 
     private static void initPlayerUnits(String value, boolean b) {

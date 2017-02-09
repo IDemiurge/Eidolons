@@ -107,8 +107,9 @@ public class HeroListPanel extends G_ListPanel<ObjType> implements ListSelection
             if (border != null) {
                 img = ImageManager.applyBorder(img, border);
             }
-            if (isSelected)
+            if (isSelected) {
                 img = ImageManager.applyBorder(img, HIGHLIGHTED_BORDER);
+            }
             ImageIcon icon = new ImageIcon(img);
             comp.setIcon(icon);
         } catch (Exception e) {
@@ -156,8 +157,9 @@ public class HeroListPanel extends G_ListPanel<ObjType> implements ListSelection
 
     private BORDER getBorder(ObjType value) {
         // TODO check hero
-        if (borderChecker == null)
+        if (borderChecker == null) {
             return DEFAULT_BORDER;
+        }
         try {
             return borderChecker.getBorder(value);
         } catch (Exception e) {
@@ -174,8 +176,9 @@ public class HeroListPanel extends G_ListPanel<ObjType> implements ListSelection
 
     @Override
     public void setInts() {
-        if (!initialized)
+        if (!initialized) {
             return;
+        }
         String w = "";
         String h = "";
         int x = !vertical ? rowsVisible : columns;
@@ -194,8 +197,9 @@ public class HeroListPanel extends G_ListPanel<ObjType> implements ListSelection
     }
 
     public int getListSlotCount() {
-        if (columns == 0)
+        if (columns == 0) {
             return DEFAULT_LIST_SLOT_COUNT;
+        }
         return columns;
     }
 

@@ -36,8 +36,9 @@ public class PrincipleInfoPanel extends HC_InfoTextPanel {
             for (PRINCIPLES p : PRINCIPLES.values()) {
                 addStatusLines(p);
             }
-        } else
+        } else {
             addStatusLines(principle);
+        }
 
         repaint();
     }
@@ -50,23 +51,27 @@ public class PrincipleInfoPanel extends HC_InfoTextPanel {
         // if (alignmentStatus != null)
         // textLines.add(alignmentStatus);
         String description = getDescription(principle);
-        if (description != null)
+        if (description != null) {
             textLines.add(description);
+        }
 
     }
 
     private String getDescription(PRINCIPLES principle) {
         ALIGNMENT_LEVEL alignmentLevel = IntegrityRule.getAlignmentLevel(principle, hero);
         String s = "";
-        if (alignmentLevel != null)
+        if (alignmentLevel != null) {
             s = "" + IntegrityRule.getAdjective(principle, alignmentLevel);
+        }
         s += " " + IntegrityRule.getNoun(principle, hero);
-        if (StringMaster.isEmpty(s))
+        if (StringMaster.isEmpty(s)) {
             return null;
+        }
         int value2 = IntegrityRule.getIntegrityMod(hero, principle);
         String value3 = value2 + " Integrity";
-        if (value2 > 0)
+        if (value2 > 0) {
             value3 = "+" + value3;
+        }
         s += StringMaster.wrapInParenthesis(value3);
         return s;
     }
@@ -75,8 +80,9 @@ public class PrincipleInfoPanel extends HC_InfoTextPanel {
 
         // StringMaster.wrapInParenthesis(hero.getParam(param))
         String s = IntegrityRule.getNoun(principle, hero);
-        if (StringMaster.isEmpty(s))
+        if (StringMaster.isEmpty(s)) {
             return null;
+        }
 
         return principle.toString() + " Associated Identity: " + s;
     }
@@ -85,8 +91,9 @@ public class PrincipleInfoPanel extends HC_InfoTextPanel {
         // TODO
         String s = principle.toString() + " Alignment Status: ";
         ALIGNMENT_LEVEL alignmentLevel = IntegrityRule.getAlignmentLevel(principle, hero);
-        if (alignmentLevel == null)
+        if (alignmentLevel == null) {
             return null;
+        }
         s += "" + IntegrityRule.getAdjective(principle, alignmentLevel);
         return s;
     }

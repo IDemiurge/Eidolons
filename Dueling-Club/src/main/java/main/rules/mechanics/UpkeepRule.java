@@ -36,12 +36,15 @@ public class UpkeepRule extends RoundRule {
 
     public static void addUpkeep(Obj payObj) {
         Obj spell = payObj.getRef().getObj(KEYS.ACTIVE);
-        if (spell == null)
+        if (spell == null) {
             return;
+        }
         Obj abil = payObj.getRef().getObj(KEYS.ABILITY);
-        if (abil != null)
-            if (abil instanceof PassiveAbilityObj)
+        if (abil != null) {
+            if (abil instanceof PassiveAbilityObj) {
                 return;
+            }
+        }
         String property = spell.getProperty(PROPS.UPKEEP_FAIL_ACTION);
         if (new EnumMaster<UPKEEP_FAIL_ACTION>().retrieveEnumConst(
                 UPKEEP_FAIL_ACTION.class, property) == null) {
@@ -50,8 +53,9 @@ public class UpkeepRule extends RoundRule {
         payObj.setProperty(PROPS.UPKEEP_FAIL_ACTION, property);
         for (PARAMETER p : ValuePages.UPKEEP_PARAMETERS) {
             Integer param = spell.getIntParam(p);
-            if (param > 0)
+            if (param > 0) {
                 payObj.getType().setParam(p, param);
+            }
         }
 
     }
@@ -66,38 +70,44 @@ public class UpkeepRule extends RoundRule {
         // TODO getOrCreate all buffs/units with this SOURCE /summoner
         List<Obj> payObjects = new LinkedList<>();
         for (DC_HeroObj u : game.getUnits()) {
-            if (u.getRef().getObj(KEYS.SUMMONER) == unit)
-                if (checkHasUpkeep(u))
+            if (u.getRef().getObj(KEYS.SUMMONER) == unit) {
+                if (checkHasUpkeep(u)) {
                     payObjects.add(u);
+                }
+            }
         }
 
         for (Obj buff : game.getObjects(OBJ_TYPES.BUFFS)) {
             try {
                 Obj spell = (Obj) buff.getRef().getActive();
-                if (spell == null)
+                if (spell == null) {
                     continue;
+                }
                 if (spell.getRef().getSourceObj() == unit) {// TODO summoner?
-                    if (checkHasUpkeep(buff))
+                    if (checkHasUpkeep(buff)) {
                         payObjects.add(buff);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
         }
-        for (Obj payObj : payObjects)
+        for (Obj payObj : payObjects) {
             if (!checkCanUpkeep(unit, payObj)) { // positive upkeep?
                 enactUpkeepFail(getFailAction(payObj),
                         Ref.getSelfTargetingRefCopy(payObj));
             } else {
                 subtractUpkeep(unit, payObj);
             }
+        }
     }
 
     private boolean checkHasUpkeep(Obj obj) {
         for (PARAMETER p : ValuePages.UPKEEP_PARAMETERS) {
-            if (obj.getIntParam(p) > 0)
+            if (obj.getIntParam(p) > 0) {
                 return true;
+            }
         }
         return false;
     }
@@ -112,7 +122,9 @@ public class UpkeepRule extends RoundRule {
         if (unit.isDead())
             // if (payObj.checkBool(DISPEL_ON_DEATH)) //only those with upkeep,
             // never fear!
+        {
             return false;
+        }
         for (PARAMETER p : ValuePages.UPKEEP_PARAMETERS) {
             PARAMETER payParamFromUpkeep = DC_ContentManager
                     .getPayParamFromUpkeep(p);
@@ -120,11 +132,13 @@ public class UpkeepRule extends RoundRule {
                     .getAppendedByModifier(
                             StringMaster.getValueRef(KEYS.SUMMONER,
                                     PARAMS.UPKEEP_MOD)).getInt(unit.getRef());
-            if (amount <= 0)
+            if (amount <= 0) {
                 continue;
+            }
             String param = amount + "";
-            if (!unit.checkParam(payParamFromUpkeep, param))
+            if (!unit.checkParam(payParamFromUpkeep, param)) {
                 return false;
+            }
         }
         return true;
     }
@@ -135,8 +149,9 @@ public class UpkeepRule extends RoundRule {
             int amount = new Formula(payObj.getParam(p)).getAppendedByModifier(
                     StringMaster.getValueRef(KEYS.SOURCE, PARAMS.UPKEEP_MOD))
                     .getInt(unit.getRef());
-            if (amount <= 0)
+            if (amount <= 0) {
                 return;
+            }
             unit.modifyParameter(payParam, -amount);
 
             unit.getGame()

@@ -41,12 +41,14 @@ public class CostRequirements extends Requirements {
         reqMap.clear();
         reqMap.putAll(additionalReqList);
         for (Payment payment : toPay) {
-            if (payment.getAmountFormula().toString().equals("0"))
+            if (payment.getAmountFormula().toString().equals("0")) {
                 continue;
+            }
             Formula amountFormula = payment.getAmountFormula();
             if (amountFormula.toString().contains(
-                    StringMaster.FORMULA_FUNC_OPEN_CHAR))
+                    StringMaster.FORMULA_FUNC_OPEN_CHAR)) {
                 continue;
+            }
             String value = "" + amountFormula.getInt(ref);
             String r = InfoMaster.getParamReasonString(value,
                     payment.getParamToPay());

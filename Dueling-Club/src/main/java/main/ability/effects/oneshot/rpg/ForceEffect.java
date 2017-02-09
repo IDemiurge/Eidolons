@@ -2,7 +2,6 @@ package main.ability.effects.oneshot.rpg;
 
 import main.ability.effects.DC_Effect;
 import main.system.math.Formula;
-import main.system.math.roll.RollMaster;
 
 public class ForceEffect extends DC_Effect {
 
@@ -19,10 +18,12 @@ public class ForceEffect extends DC_Effect {
         Boolean result = null;
         if (attack) // include stamina into this roll somehow...
 //            result = RollMaster.rollForce(getTarget(), getActiveObj(), force);
-        if (result == null) {
+        {
+            if (result == null) {
 
-        } else {
+            } else {
 
+            }
         }
         /*
 		 * TODO 

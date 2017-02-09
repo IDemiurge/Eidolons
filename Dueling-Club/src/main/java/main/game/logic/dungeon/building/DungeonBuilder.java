@@ -141,8 +141,9 @@ public class DungeonBuilder {
         }
 
         b.setCoordinates(coordinates);
-        if (objectMap == null)
+        if (objectMap == null) {
             return b;
+        }
         b.getMap().putAll(objectMap);
         b.getObjects().addAll(objectMap.values());
 
@@ -171,8 +172,9 @@ public class DungeonBuilder {
         // location = new Location(dungeon, 1);
         // dungeon.getLocation();
 
-        if (helper == null)
+        if (helper == null) {
             helper = new BuildHelper(dungeon, params);
+        }
         this.setDungeon(dungeon);
         if (StringMaster.isEmpty(helper.getParams().getValue(BUILD_PARAMS.FILLER_TYPE))) {
             {
@@ -182,16 +184,18 @@ public class DungeonBuilder {
                 plan = new DungeonPlan(testTemplate, dungeon);
                 int x1 = 0;
                 int x2 = params.getIntValue(BUILD_PARAMS.WIDTH);
-                if (x2 <= 0)
+                if (x2 <= 0) {
                     x2 = dungeon.getCellsX();
-                else
+                } else {
                     dungeon.setParam(PARAMS.BF_WIDTH, x2);
+                }
                 int y1 = 0;
                 int y2 = params.getIntValue(BUILD_PARAMS.HEIGHT);
-                if (y2 <= 0)
+                if (y2 <= 0) {
                     y2 = dungeon.getCellsY();
-                else
+                } else {
                     dungeon.setParam(PARAMS.BF_HEIGHT, y2);
+                }
                 MapZone zone = new MapZone(dungeon, 0, x1, x2, y1, y2);
                 List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesWithin(x1 - 1,
                         x2 - 1, y1 - 1, y2 - 1);
@@ -221,15 +225,17 @@ public class DungeonBuilder {
 
         template = dungeon.getTemplate();
 
-        if (testMode)
+        if (testMode) {
             template = testTemplate;
+        }
         // else if ()
         // template = new
         // RandomWizard<DUNGEON_TEMPLATES>().getObjectByWeight(dungeon
         // .getProperty(PROPS.DUNGEON_TEMPLATES), DUNGEON_TEMPLATES.class);
 
-        if (template == null)
+        if (template == null) {
             template = DUNGEON_TEMPLATES.CLASSIC;
+        }
         List<MapBlock> blocks = null;
         Map<ObjType, Coordinates> objMap = null;
         plan = new DungeonPlan(template, dungeon);
@@ -252,12 +258,15 @@ public class DungeonBuilder {
         plan.setFlippedY(dungeon.isFlippedY());
 
         placeMainRooms();
-        if (!dungeon.isSurface())
+        if (!dungeon.isSurface()) {
             placeCulDeSacs();
-        if (!dungeon.isSurface() && !helper.getParams().isNoRandomRooms())
+        }
+        if (!dungeon.isSurface() && !helper.getParams().isNoRandomRooms()) {
             placeAdditionalRooms();
-        if (!dungeon.isSurface() && !helper.getParams().isNoCorridors())
+        }
+        if (!dungeon.isSurface() && !helper.getParams().isNoCorridors()) {
             linkWithCorridors();
+        }
         // initBlockSpecials();
 
         return plan;
@@ -285,15 +294,18 @@ public class DungeonBuilder {
             // TODO
         } else
 
+        {
             list = getDefaultMainRooms(template);
+        }
         // add custom from dungeon
 
-        if (getDungeon().isSurface())
+        if (getDungeon().isSurface()) {
             placeMainRoom(ROOM_TYPE.BATTLEFIELD, template);
-        else
+        } else {
             for (ROOM_TYPE type : list) {
                 placeMainRoom(type, template);
             }
+        }
     }
 
     private void placeMainRoom(ROOM_TYPE type, DUNGEON_TEMPLATES template) {
@@ -315,8 +327,9 @@ public class DungeonBuilder {
         while (remainingAttempts > 0) {
             remainingAttempts--;
             boolean spec = false;
-            if (attempts - remainingAttempts > 6)
+            if (attempts - remainingAttempts > 6) {
                 spec = RandomWizard.chance(85);
+            }
 
             String string = getDungeon().getProperty(PROPS.ADDITIONAL_ROOM_TYPES);
             ROOM_TYPE roomType = new RandomWizard<ROOM_TYPE>().getObjectByWeight(string,
@@ -338,8 +351,9 @@ public class DungeonBuilder {
             helper.tryPlaceRoom(roomType, c, size.width, size.height, flipX, flipY);
 
             if (helper.getUsedCoordinates().size() * 100
-                    / (getDungeon().getCellsX() * getDungeon().getCellsY()) > helper.getParams().PREFERRED_FILL_PERCENTAGE)
+                    / (getDungeon().getCellsX() * getDungeon().getCellsY()) > helper.getParams().PREFERRED_FILL_PERCENTAGE) {
                 break;
+            }
         }
         // distance from other blocks?
     }
@@ -358,10 +372,12 @@ public class DungeonBuilder {
 
             FACING_DIRECTION direction = FacingMaster.getRandomFacing();
             Coordinates baseCoordinate = helper.getRandomWallCoordinate(direction, block);
-            if (helper.tryPlaceCorridor(block, baseCoordinate, direction, true))
+            if (helper.tryPlaceCorridor(block, baseCoordinate, direction, true)) {
                 n--;
-            if (n < 0)
+            }
+            if (n < 0) {
                 break;
+            }
 
         }
     }
@@ -369,9 +385,11 @@ public class DungeonBuilder {
     private void linkWithCorridors() {
         // TODO link each room, some more than once...
         List<MapBlock> blocksToLink = new LinkedList<>(plan.getBlocks()); // TODO
-        for (MapBlock b : plan.getBlocks())
-            if (b.getType() == BLOCK_TYPE.CULDESAC)
+        for (MapBlock b : plan.getBlocks()) {
+            if (b.getType() == BLOCK_TYPE.CULDESAC) {
                 blocksToLink.remove(b);
+            }
+        }
 
         Loop.startLoop(10000); // TODO fail condition? u
         while (!blocksToLink.isEmpty()) {
@@ -385,11 +403,14 @@ public class DungeonBuilder {
                 Coordinates baseCoordinate = helper.getRandomWallCoordinate(direction, block);
                 if (helper.tryPlaceCorridor(block, baseCoordinate, direction)) {
                     if (block.getConnectedBlocks().size() > 1) // TODO depends!
+                    {
                         blocksToRemove.add(block);
+                    }
                 }
             }
-            if (Loop.loopEnded())
+            if (Loop.loopEnded()) {
                 break;
+            }
             blocksToLink.removeAll(blocksToRemove);
         }
     }
@@ -419,10 +440,12 @@ public class DungeonBuilder {
                     List<Coordinates> list = CoordinatesMaster.getAdjacentToSquare(block
                             .getCoordinates());
                     c = new RandomWizard<Coordinates>().getRandomListItem(list);
-                    if (c.isInvalid())
+                    if (c.isInvalid()) {
                         continue;
-                    if (helper.getUsedCoordinates().contains(c))
+                    }
+                    if (helper.getUsedCoordinates().contains(c)) {
                         continue;
+                    }
                     return c;
                 }
             }
@@ -433,12 +456,14 @@ public class DungeonBuilder {
         while (!Loop.loopEnded()) {
             c = CoordinatesMaster.getRandomCoordinate(getDungeon().getCellsX(), getDungeon()
                     .getCellsY());
-            if (helper.getUsedCoordinates().contains(c))
+            if (helper.getUsedCoordinates().contains(c)) {
                 continue;
+            }
             // add the outer walls to usedCoordinates?
             if (corner) {
-                if (Math.min(plan.getBorderX() - c.x, c.x) + Math.min(plan.getBorderY() - c.y, c.y) > 6)
+                if (Math.min(plan.getBorderX() - c.x, c.x) + Math.min(plan.getBorderY() - c.y, c.y) > 6) {
                     continue;
+                }
             }
             break;
         }
@@ -456,8 +481,9 @@ public class DungeonBuilder {
                     path.contains(PathFinder.getDungeonLevelFolder()) ? path
                     : PathFinder.getDungeonLevelFolder() + path);
         }
-        if (data.isEmpty())
+        if (data.isEmpty()) {
             data = path;
+        }
         Document levelDocument = XML_Converter.getDoc(data, true);
 
         Node levelNode = XML_Converter.getChildAt(levelDocument, 0);
@@ -468,8 +494,9 @@ public class DungeonBuilder {
 
         if (StringMaster.compareByChar(typeNode.getNodeName(), (DUNGEON_TYPE_NODE))) {
             String name = typeNode.getTextContent();
-            if (name.contains(NameMaster.VERSION))
+            if (name.contains(NameMaster.VERSION)) {
                 name = name.split(NameMaster.VERSION)[0];
+            }
             type = DataManager.getType(name, OBJ_TYPES.DUNGEONS);
         } else {
             type = TypeBuilder.buildType(typeNode, type); // custom base type
@@ -486,9 +513,10 @@ public class DungeonBuilder {
 
                 String wallObjData = n.getTextContent();
 
-                if (!StringMaster.isEmpty(wallObjData))
+                if (!StringMaster.isEmpty(wallObjData)) {
                     plan.setWallObjects(DC_ObjInitializer.processObjData(DC_Player.NEUTRAL,
                             wallObjData));
+                }
 
             }
 
@@ -540,8 +568,9 @@ public class DungeonBuilder {
                 // block too! ... init?
                 DC_HeroObj unit = (DC_HeroObj) obj;
 
-                if (z != 0)
+                if (z != 0) {
                     unit.setZ(z);
+                }
 
             }
         }
@@ -558,21 +587,24 @@ public class DungeonBuilder {
             DC_HeroObj unit = (DC_HeroObj) obj;
             fullObjectList.add(unit);
 
-            if (z != 0)
+            if (z != 0) {
                 unit.setZ(z);
+            }
         }
-        if (plan.getDirectionMap() != null)
+        if (plan.getDirectionMap() != null) {
             try {
                 DC_ObjInitializer.initDirectionMap(z, plan.getDirectionMap());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        if (plan.getFlipMap() != null)
+        }
+        if (plan.getFlipMap() != null) {
             try {
                 DC_ObjInitializer.initFlipMap(z, plan.getFlipMap());
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
     }
 
     private void initZones(Node planNode, DungeonPlan plan) {
@@ -608,8 +640,9 @@ public class DungeonBuilder {
     private MapZone createZone(DungeonPlan plan, int zoneId, Node zoneNode) {
         String name = zoneNode.getNodeName();
         String nodeName = XML_Writer.restoreXmlNodeName(name);
-        if (!nodeName.contains(","))
+        if (!nodeName.contains(",")) {
             nodeName = XML_Writer.restoreXmlNodeNameOld(name);
+        }
         int[] c = CoordinatesMaster.getMinMaxCoordinates(nodeName.split(",")[1]);
         MapZone zone = new MapZone(plan.getDungeon(), zoneId, c[0], c[1], c[2], c[3]);
         return zone;
@@ -632,8 +665,9 @@ public class DungeonBuilder {
 
     public void setDungeon(Dungeon dungeon) {
         this.dungeon = dungeon;
-        if (dungeon != null)
+        if (dungeon != null) {
             dungeon.getGame().getDungeonMaster().setDungeon(dungeon);
+        }
     }
 
     public enum ROOM_TEMPLATE {

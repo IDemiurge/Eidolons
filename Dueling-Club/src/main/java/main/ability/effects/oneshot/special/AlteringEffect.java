@@ -10,25 +10,28 @@ public class AlteringEffect extends DC_Effect {
     private String mod;
 
     public AlteringEffect(Boolean modOrFactor, String formula) {
-        if (modOrFactor == null)
+        if (modOrFactor == null) {
             this.factor = formula;
-        else if (modOrFactor)
+        } else if (modOrFactor) {
             this.mod = formula;
-        else
+        } else {
             this.factor = formula;
+        }
     }
 
     @Override
     public boolean applyThis() {
         // ref.setAltered(true);
-        if (ref.getAmount() == null)
+        if (ref.getAmount() == null) {
             return false;
-        if (factor != null)
+        }
+        if (factor != null) {
             ref.setAmount(MathMaster.addFactor(ref.getAmount(), new Formula(
                     factor).getInt(ref)));
-        else
+        } else {
             ref.setAmount(MathMaster.applyMod(ref.getAmount(),
                     new Formula(mod).getInt(ref)));
+        }
         return true;
     }
 

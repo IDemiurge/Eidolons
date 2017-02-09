@@ -82,13 +82,16 @@ public class AutoTestFactory {
     }
 
     public String[] config() {
-        if (presetTypes != null)
+        if (presetTypes != null) {
             return presetTypes;
-        if (master.isWorkspace())
+        }
+        if (master.isWorkspace()) {
             return getWorkspaceTypes();
+        }
 
-        if (master.isSkill())
+        if (master.isSkill()) {
             return AutoTestMaster.SKILL_PRESET_TEST_TYPES.split(";");
+        }
         return AutoTestMaster.CLASS_PRESET_TEST_TYPES.split(";");
 
     }
@@ -110,8 +113,9 @@ public class AutoTestFactory {
         String args = new StringMaster().constructContainer(list);
         AUTO_TEST_TYPE t = new EnumMaster<AUTO_TEST_TYPE>().retrieveEnumConst(AUTO_TEST_TYPE.class,
                 type.getProperty(PROPS.AUTO_TEST_TYPE));
-        if (t == null)
+        if (t == null) {
             t = getType(type);
+        }
         AutoTest test = new AutoTest(type, args, t, master);
         return test;
     }
@@ -129,8 +133,9 @@ public class AutoTestFactory {
                     .getProperty(G_PROPS.PASSIVES))) {
                 if (part.contains("ActionMod(")) {
                     for (String s : StringMaster.openContainer(StringMaster.getSubString(false,
-                            part, "ActionMod(", ",", null), StringMaster.AND_SEPARATOR))
+                            part, "ActionMod(", ",", null), StringMaster.AND_SEPARATOR)) {
                         actionNames += s + ";";
+                    }
                     // find weapon that has all actions involved?
                     // ALT: find base specialization?
                     loop:
@@ -138,10 +143,11 @@ public class AutoTestFactory {
                         for (String s : StringMaster.openContainer(actionNames)) {
 
                             String actions = t.getProperty(PROPS.WEAPON_ATTACKS);
-                            if (!actions.contains(s))
+                            if (!actions.contains(s)) {
                                 continue loop;
-                            else
+                            } else {
                                 weapon = t.getName();
+                            }
                         }
                         weapon = t.getName();
                         break searchLoop;
@@ -150,11 +156,15 @@ public class AutoTestFactory {
             }
         }
         if (master.isSkill()) // TODO
+        {
             list.add(TEST_ARGS.TEST_SKILLS + StringMaster.PAIR_SEPARATOR + testType.getName());
-        if (!weapon.isEmpty())
+        }
+        if (!weapon.isEmpty()) {
             list.add(TEST_ARGS.WEAPON + StringMaster.PAIR_SEPARATOR + weapon);
-        if (!actionNames.isEmpty())
+        }
+        if (!actionNames.isEmpty()) {
             list.add(TEST_ARGS.ACTION_NAMES + StringMaster.PAIR_SEPARATOR + actionNames);
+        }
 
         // list.add(TEST_ARGS.WEAPON2 + StringMaster.PAIR_SEPARATOR + weapon);
 

@@ -18,7 +18,6 @@ import main.game.logic.macro.travel.MacroParty;
 import main.game.logic.macro.travel.RestMaster;
 import main.game.logic.macro.travel.TravelMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.graphics.ANIM;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -78,12 +77,14 @@ public class MacroActionManager {
                 // choose route? or choose current location to explore around...
                 party.setStatus(MACRO_STATUS.EXPLORING);
                 set = TravelMaster.getAvailableRoutesAsPlaces(party, null);
-                if (party.getCurrentLocation() != null)
+                if (party.getCurrentLocation() != null) {
                     set.add(party.getCurrentLocation()); // else?
+                }
                 place = selectMapObj(set);
 
-                if (place == null)
+                if (place == null) {
                     return;
+                }
                 party.setCurrentExploration(place);
 
                 break;
@@ -93,21 +94,24 @@ public class MacroActionManager {
                 set = TravelMaster.getAvailablePlaces(party);
                 // set.addAll(TravelMaster.getAvailableRoutes(party));
                 place = selectMapObj(set);
-                if (place == null)
+                if (place == null) {
                     return;
+                }
                 set = TravelMaster.getAvailableRoutesAsPlaces(party, place);
                 // MacroManager.getMapView().getMapComp().displayRoutes(set);
 
                 route = (Route) selectMapObj(set);
-                if (route == null)
+                if (route == null) {
                     return;
+                }
                 party.setCurrentDestination(place);
-                if (route.getOrigin() == place)
+                if (route.getOrigin() == place) {
                     party.addProperty(G_PROPS.DYNAMIC_BOOLS,
                             DYNAMIC_BOOLS.BACKWARDS_ROUTE_TRAVEL.toString());
-                else
+                } else {
                     party.removeProperty(G_PROPS.DYNAMIC_BOOLS,
                             DYNAMIC_BOOLS.BACKWARDS_ROUTE_TRAVEL.toString());
+                }
 
                 party.setCurrentRoute(route);
 
@@ -121,8 +125,9 @@ public class MacroActionManager {
 
     private static Place selectMapObj(Set<Place> set) {
         Integer id = MacroGame.getGame().getManager().select(set);
-        if (id == null)
+        if (id == null) {
             return null;
+        }
         Place place = (Place) MacroGame.getGame().getObjectById(id);
         return place;
     }
@@ -259,8 +264,9 @@ public class MacroActionManager {
                     String continuousParamString) {
             this.paramString = paramString;
             this.continuousParamString = continuousParamString;
-            if (imagePath.isEmpty())
+            if (imagePath.isEmpty()) {
                 imagePath = (toString());
+            }
             this.imagePath = MacroActionManager.getMacroModeImagePathPrefix()
                     + imagePath;
         }

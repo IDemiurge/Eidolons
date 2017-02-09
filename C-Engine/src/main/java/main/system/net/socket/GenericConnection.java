@@ -47,8 +47,9 @@ public abstract class GenericConnection implements Runnable {
     }
 
     private boolean checkMonoString(String input) {
-        if (!input.contains(StringMaster.NETCODE_SEPARATOR))
+        if (!input.contains(StringMaster.NETCODE_SEPARATOR)) {
             return false;
+        }
         main.system.auxiliary.LogMaster.log(1, "monostring: " + input);
 
         NetCode code = appropriateCode(input.split(StringMaster.NETCODE_SEPARATOR)[0]);
@@ -77,25 +78,28 @@ public abstract class GenericConnection implements Runnable {
             e.printStackTrace();
         }
         try {
-            if (in == null)
+            if (in == null) {
                 return false;
+            }
             if (in.ready()) {
                 try {
                     String input = in.readLine();
-                    if (checkMonoString(input))
+                    if (checkMonoString(input)) {
                         return true;
+                    }
                     NetCode code = null;
                     try {
                         code = appropriateCode(input);
                     } catch (Exception e) {
                         handleInputConcurrently(input);
                     }
-                    if (code == null)
+                    if (code == null) {
                         handleInputConcurrently(input);
-                    else {
+                    } else {
                         handleInputConcurrently(code);
-                        if (!code.isInputIrrelevant())
+                        if (!code.isInputIrrelevant()) {
                             setLastReceivedCode(code);
+                        }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -111,8 +115,9 @@ public abstract class GenericConnection implements Runnable {
     @Override
     public void run() {
         while (status == CONNECTION_STATUS.CONNECTED) {
-            if (!loop())
+            if (!loop()) {
                 break;
+            }
         }
         try {
             kill();
@@ -123,11 +128,13 @@ public abstract class GenericConnection implements Runnable {
     }
 
     public NetCode appropriateCode(String input) {
-        if (getTHIS_CODES() == null)
+        if (getTHIS_CODES() == null) {
             setCODES();
+        }
         for (NetCode c : getTHIS_CODES()) {
-            if (c.name().equals(input))
+            if (c.name().equals(input)) {
                 return c;
+            }
         }
 
         return null;
@@ -220,10 +227,11 @@ public abstract class GenericConnection implements Runnable {
     }
 
     public void send(NetCode code, String data) {
-        if (data == null)
+        if (data == null) {
             send(code.toString());
-        else
+        } else {
             send(code.toString() + StringMaster.NETCODE_SEPARATOR + data);
+        }
 
     }
 
@@ -335,10 +343,12 @@ public abstract class GenericConnection implements Runnable {
     public void addCodes(List<? extends NetCode> newCodes) {
 
         List<NetCode> list = new LinkedList<NetCode>();
-        for (NetCode code : getTHIS_CODES())
+        for (NetCode code : getTHIS_CODES()) {
             list.add(code);
-        for (NetCode code : newCodes)
+        }
+        for (NetCode code : newCodes) {
             list.add(code);
+        }
 
         setTHIS_CODES(list);
     }

@@ -143,16 +143,18 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
 	public void createObjGroup() {
 		Map<ObjType, Integer> map = new HashMap<>();
 		int optionChoice = DialogMaster.optionChoice("Choose object TYPE...", default_palette);
-		if (optionChoice == -1)
-			return;
-		OBJ_TYPE TYPE = default_palette[optionChoice];
+        if (optionChoice == -1) {
+            return;
+        }
+        OBJ_TYPE TYPE = default_palette[optionChoice];
 		Integer chance = 0;
 		boolean randomOff = false;
 		while (true) {
 			String type = ListChooser.chooseType(TYPE);
-			if (type == null)
-				break;
-			if (!randomOff) {
+            if (type == null) {
+                break;
+            }
+            if (!randomOff) {
 				chance = DialogMaster
 						.inputInt(
 								"Set chance for object to be there..."
@@ -161,12 +163,13 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
 				if (chance == null) {
 					Boolean choice = DialogMaster
 							.askAndWait("", "Continue", "Random off", "Cancel");
-					if (choice == null)
-						return;
-					if (choice)
-						chance = 0;
-					else {
-						randomOff = true;
+                    if (choice == null) {
+                        return;
+                    }
+                    if (choice) {
+                        chance = 0;
+                    } else {
+                        randomOff = true;
 						chance = 100;
 					}
 				}
@@ -197,13 +200,15 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
 			if (DialogMaster.confirm("Multi-type Palette?")) {
 				optionChoice = DialogMaster
 						.optionChoice("Choose object multi TYPE...", multi_types);
-				if (optionChoice == -1)
-					return;
-				TYPE = multi_types[optionChoice];
+                if (optionChoice == -1) {
+                    return;
+                }
+                TYPE = multi_types[optionChoice];
 				typeList = DataManager.getTypes(TYPE);
-			} else
-				return;
-		} else {
+            } else {
+                return;
+            }
+        } else {
 			TYPE = default_palette[optionChoice];
 			typeList = DataManager.getTypes(TYPE);
 		}
@@ -218,9 +223,10 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         // secondListData = DataManager.convertToStringList(ws.getTypeList());
         // }
         String data = new ListChooser(listData, secondListData, false, TYPE).choose();
-		if (data == null)
-			return;
-		List<ObjType> list = DataManager.toTypeList(data, TYPE);
+        if (data == null) {
+            return;
+        }
+        List<ObjType> list = DataManager.toTypeList(data, TYPE);
 		String name = DialogMaster.inputText();
 		imagePath = new ImageChooser().launch(imagePath, "");
 		PaletteWorkspace ws = new PaletteWorkspace(name, list, imagePath);
@@ -258,9 +264,10 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
 				new LinkedList<String>(), false, OBJ_TYPES.META).choose());
 		for (String name : chosen) {
 			for (PaletteWorkspace p : palettes) {
-				if (p.getName().equals(name))
-					chosenPalettes.add(p);
-			}
+                if (p.getName().equals(name)) {
+                    chosenPalettes.add(p);
+                }
+            }
 		}
 
 		return chosenPalettes;
@@ -268,31 +275,36 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
 	}
 
 	public void addAllWorkspaces() {
-		if (workspaces != null)
-			for (PaletteWorkspace p : workspaces)
-				addWorkspaceTab(p);
-	}
+        if (workspaces != null) {
+            for (PaletteWorkspace p : workspaces) {
+                addWorkspaceTab(p);
+            }
+        }
+    }
 
 	public void addWorkspaces() {
 		List<PaletteWorkspace> list = chooseWorkspaces();
-		for (PaletteWorkspace p : list)
-			addWorkspaceTab(p);
-	}
+        for (PaletteWorkspace p : list) {
+            addWorkspaceTab(p);
+        }
+    }
 
 	public void addWorkspaceTab(PaletteWorkspace ws) {
 		G_Component comp = new PagedPaletteTab(ws);
 		String string = ws.getImagePath();
-		if (imagePath == null)
-			string = ws.getName();
-		paletteTabs.addTab(string, comp);
+        if (imagePath == null) {
+            string = ws.getName();
+        }
+        paletteTabs.addTab(string, comp);
 		refresh();
 
 	}
 
 	public void saveWorkspaces() {
-		for (PaletteWorkspace ws : workspaces)
-			saveWorkspace(ws);
-	}
+        for (PaletteWorkspace ws : workspaces) {
+            saveWorkspace(ws);
+        }
+    }
 
 	public void saveWorkspace(PaletteWorkspace ws) {
 		String metadata = ws.getImagePath();
@@ -354,9 +366,10 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
 		for (String ws : StringMaster.openContainer(string)) {
 			int i = list.indexOf(ws);
 			paletteTabs.removeTab(i);
-			if (removeFile)
-				FileManager.getFile(getWorkspaceFolder() + ws + ".xml").delete();
-		}
+            if (removeFile) {
+                FileManager.getFile(getWorkspaceFolder() + ws + ".xml").delete();
+            }
+        }
 		// if (!removeFile) {
 		// if (DialogMaster.confirm("Remove File?"))
 		// FileManager.getFile(getWorkspaceFolder()).delete();
@@ -392,14 +405,16 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
 
 	public void setSelectedType(ObjType selectedType) {
 		this.selectedType = selectedType;
-		if (selectedType != null)
-			LevelEditor.setMouseAddMode(true);
-	}
+        if (selectedType != null) {
+            LevelEditor.setMouseAddMode(true);
+        }
+    }
 
 	public void checkRemoveOrAddToPalette(ObjType selectedType) {
-		if (activePalette == null)
-			return;
-		activePalette.addType(selectedType);
+        if (activePalette == null) {
+            return;
+        }
+        activePalette.addType(selectedType);
 		((PagedPaletteTab) paletteTabs.getSelectedTabComponent()).refresh();
 		// TODO update
 		// if (activePalette.getTypeList().contains(selectedType)) {
@@ -420,8 +435,9 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
     public void tabSelected(String name) {
         activePalette = null;
         for (PaletteWorkspace ws : workspaces) {
-            if (ws.getName().equals(name))
+            if (ws.getName().equals(name)) {
                 activePalette = ws;
+            }
         }
 
     }
@@ -492,8 +508,9 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
 
         public PaletteWorkspace(String name, List<ObjType> typeList, String imagePath) {
             super(name, typeList, false);
-            if (ImageManager.isImage(imagePath))
+            if (ImageManager.isImage(imagePath)) {
                 this.imagePath = imagePath;
+            }
         }
 
         public String getImagePath() {

@@ -87,10 +87,12 @@ public class GameStarter {
         this.hostedGame = hostedGame;
         this.connector = connector;
         this.setOptions(hostedGame.getOptions());
-        if (!hostedGame.isHost())
+        if (!hostedGame.isHost()) {
             setPlayerData(new PlayerData(hostedGame.getHost().getRelevantData()));
-        if (DC_ServerConnector.getUser() != null)
+        }
+        if (DC_ServerConnector.getUser() != null) {
             myPlayerData = new PlayerData(DC_ServerConnector.getUser().getRelevantData());
+        }
     }
 
     public static String selectHero(String res_level) {
@@ -112,8 +114,9 @@ public class GameStarter {
         enemyPartyData = new PartyData(partydata, true);
 
         player2 = initPlayer(getPlayerData(), enemyPartyData);
-        if (player1 == null)
+        if (player1 == null) {
             player1 = initPlayer(myPlayerData, myPartyData);
+        }
 
         gameData = new DC_GameData(hostedGame.getTitle(), getMyPartyData(), enemyPartyData,
                 getMyPlayer(), player2);
@@ -130,8 +133,9 @@ public class GameStarter {
     }
 
     public PartyData getMyPartyData() {
-        if (myPartyData == null)
+        if (myPartyData == null) {
             myPartyData = new PartyData(getMyHeroData());
+        }
         return myPartyData;
     }
 
@@ -151,12 +155,15 @@ public class GameStarter {
         this.myHeroData = selectHero(options.getValue(GAME_OPTIONS.RES_LEVEL));
 
         myPartyData.setValue(PARTY_VALUES.HERO_TYPE, myHeroData);
-        if (myHeroData == null)
+        if (myHeroData == null) {
             return HERO_SELECTION_CANCELLED;
-        if (myHeroData.equals(""))
+        }
+        if (myHeroData.equals("")) {
             return HERO_SELECTION_CANCELLED;
-        if (myHeroData.contains(CUSTOM_HERO_IDENTIFIER))
+        }
+        if (myHeroData.contains(CUSTOM_HERO_IDENTIFIER)) {
             return CUSTOM_HERO;
+        }
         return PRESET_HERO;
     }
 
@@ -221,8 +228,9 @@ public class GameStarter {
     }
 
     public String getMyHeroData() {
-        if (myHeroData == null)
+        if (myHeroData == null) {
             myHeroData = DataManager.getRandomType(OBJ_TYPES.CHARS, null).getName();
+        }
         return myHeroData;
     }
 
@@ -260,8 +268,9 @@ public class GameStarter {
 
     public String launchPrecombatPhase() {
         this.setPrecombatManager(new PrecombatManager(game));
-        if (DuelingClub.PRESENTATION_MODE || DuelingClub.TEST_MODE)
+        if (DuelingClub.PRESENTATION_MODE || DuelingClub.TEST_MODE) {
             return TestMode.getTestData(player1);
+        }
         getPrecombatManager().launch();
         return WaitMaster.waitForInput(WAIT_OPERATIONS.PRECOMBAT).toString();
     }
@@ -279,12 +288,14 @@ public class GameStarter {
     }
 
     public boolean hostPrecombatPhase() {
-        if (!(DuelingClub.PRESENTATION_MODE || DuelingClub.TEST_MODE))
+        if (!(DuelingClub.PRESENTATION_MODE || DuelingClub.TEST_MODE)) {
             hostPrecombatMenuInit();
+        }
 
         String clientPrecombatData = null;
-        if (new WaitingThread(HOST_CLIENT_CODES.PRECOMBAT_DATA, PRECOMBAT_TIME).waitForInput())
+        if (new WaitingThread(HOST_CLIENT_CODES.PRECOMBAT_DATA, PRECOMBAT_TIME).waitForInput()) {
             clientPrecombatData = WaitingThread.getINPUT(HOST_CLIENT_CODES.PRECOMBAT_DATA);
+        }
 
         if (clientPrecombatData.equals(PrecombatManager.ABORTED)) {
             MessageManager.alert(PLAYERS_NOT_READY);
@@ -292,14 +303,16 @@ public class GameStarter {
         }
         initEnemyPrecombatData(clientPrecombatData);
         String precombatData = TestMode.getTestData(getMyPlayer());
-        if (!(DuelingClub.PRESENTATION_MODE || DuelingClub.TEST_MODE))
+        if (!(DuelingClub.PRESENTATION_MODE || DuelingClub.TEST_MODE)) {
             precombatData = WaitMaster.waitForInput(WAIT_OPERATIONS.PRECOMBAT).toString();
+        }
 
         initMyPrecombatData(precombatData);
         connector.send(HOST_CLIENT_CODES.PRECOMBAT_DATA, precombatData);
 
-        if (precombatData.equals(PrecombatManager.ABORTED))
+        if (precombatData.equals(PrecombatManager.ABORTED)) {
             return false;
+        }
         return false;
 
     }
@@ -310,20 +323,23 @@ public class GameStarter {
 
         connector.send(HOST_CLIENT_CODES.CLIENT_READY + StringMaster.NETCODE_SEPARATOR + READY);
 
-        if (new WaitingThread(HOST_CLIENT_CODES.HOST_PARTY_DATA).waitForInput())
+        if (new WaitingThread(HOST_CLIENT_CODES.HOST_PARTY_DATA).waitForInput()) {
             enemy_partydata = WaitingThread.getINPUT(HOST_CLIENT_CODES.HOST_PARTY_DATA);
+        }
 
         connector.send(HOST_CLIENT_CODES.CLIENT_READY + StringMaster.NETCODE_SEPARATOR + READY);
 
         MapData mapData = null;
-        if (new WaitingThread(HOST_CLIENT_CODES.MAP_DATA_REQUEST).waitForInput())
+        if (new WaitingThread(HOST_CLIENT_CODES.MAP_DATA_REQUEST).waitForInput()) {
             mapData = new MapData(WaitingThread.getINPUT(HOST_CLIENT_CODES.MAP_DATA_REQUEST));
+        }
 
         setMapData(mapData);
 
         finalInit(enemy_partydata);
-        if (!(DuelingClub.PRESENTATION_MODE || DuelingClub.TEST_MODE))
+        if (!(DuelingClub.PRESENTATION_MODE || DuelingClub.TEST_MODE)) {
             clientPrecombatPhase();
+        }
 
         connector.send(HOST_CLIENT_CODES.CLIENT_READY, READY);
     }
@@ -337,8 +353,9 @@ public class GameStarter {
         initMyPrecombatData();
         connector.send(HOST_CLIENT_CODES.PRECOMBAT_DATA, precombatData);
         String hostPrecombatData = "";
-        if (new WaitingThread(HOST_CLIENT_CODES.PRECOMBAT_DATA, PRECOMBAT_TIME).waitForInput())
+        if (new WaitingThread(HOST_CLIENT_CODES.PRECOMBAT_DATA, PRECOMBAT_TIME).waitForInput()) {
             hostPrecombatData = WaitingThread.getINPUT(HOST_CLIENT_CODES.PRECOMBAT_DATA);
+        }
 
         if (hostPrecombatData.equals(PrecombatManager.ABORTED)) {
             MessageManager.alert("Host aborted!");
@@ -348,9 +365,11 @@ public class GameStarter {
     }
 
     public void startButtonClicked() {
-        if (!connector.isReady())
-            if (!connector.promptReady())
+        if (!connector.isReady()) {
+            if (!connector.promptReady()) {
                 return;
+            }
+        }
 
         if (hostInit()) {
             gameStarted();
@@ -360,8 +379,9 @@ public class GameStarter {
     }
 
     public void gameStarted() {
-        if (connector.isHost())
+        if (connector.isHost()) {
             connector.send(HOST_CLIENT_CODES.GAME_STARTED);
+        }
         main.system.auxiliary.LogMaster.log(2, "GAME STARTED!");
         // Weaver.inNewThread(getGameStarter(), "start", null);
         start();
@@ -372,8 +392,9 @@ public class GameStarter {
     public boolean hostInit() {
         connector.send(HOST_CLIENT_CODES.CHECK_READY);
         String result = "";
-        if (new WaitingThread(HOST_CLIENT_CODES.CHECK_READY).waitForInput())
+        if (new WaitingThread(HOST_CLIENT_CODES.CHECK_READY).waitForInput()) {
             result = WaitingThread.getINPUT(HOST_CLIENT_CODES.CHECK_READY);
+        }
         if (!result.equals(READY)) {
             MessageManager.alert(PLAYERS_NOT_READY);
             return false;
@@ -383,16 +404,17 @@ public class GameStarter {
         init();
         connector.send(HOST_CLIENT_CODES.HOST_READY);
 
-        if (new WaitingThread(HOST_CLIENT_CODES.CLIENT_READY).waitForInput())
+        if (new WaitingThread(HOST_CLIENT_CODES.CLIENT_READY).waitForInput()) {
             result = WaitingThread.getINPUT(HOST_CLIENT_CODES.CLIENT_READY);
+        }
         if (!result.equals(READY)) {
             MessageManager.alert(PLAYERS_NOT_READY);
             return false;
         }
         connector.send(HOST_CLIENT_CODES.CLIENT_PARTY_DATA_REQUEST);
-        if (new WaitingThread(HOST_CLIENT_CODES.CLIENT_PARTY_DATA_REQUEST).waitForInput())
+        if (new WaitingThread(HOST_CLIENT_CODES.CLIENT_PARTY_DATA_REQUEST).waitForInput()) {
             enemy_partydata = WaitingThread.getINPUT(HOST_CLIENT_CODES.CLIENT_PARTY_DATA_REQUEST);
-        else {
+        } else {
             return false;
         }
 
@@ -400,20 +422,23 @@ public class GameStarter {
 
         connector.sendPartyData();
 
-        if (new WaitingThread(HOST_CLIENT_CODES.CLIENT_READY).waitForInput())
+        if (new WaitingThread(HOST_CLIENT_CODES.CLIENT_READY).waitForInput()) {
             result = WaitingThread.getINPUT(HOST_CLIENT_CODES.CLIENT_READY);
+        }
         if (!result.equals(READY)) {
             MessageManager.alert(PLAYERS_NOT_READY);
             return false;
         }
 
         connector.sendMapData();
-        if (!(DuelingClub.PRESENTATION_MODE || DuelingClub.TEST_MODE))
+        if (!(DuelingClub.PRESENTATION_MODE || DuelingClub.TEST_MODE)) {
             hostPrecombatPhase();
+        }
 
         // "loading screen?" Waiting for the opponent?
-        if (new WaitingThread(HOST_CLIENT_CODES.CLIENT_READY).waitForInput())
+        if (new WaitingThread(HOST_CLIENT_CODES.CLIENT_READY).waitForInput()) {
             result = WaitingThread.getINPUT(HOST_CLIENT_CODES.CLIENT_READY);
+        }
         if (!result.equals(READY)) {
             MessageManager.alert(PLAYERS_NOT_READY);
             return false;

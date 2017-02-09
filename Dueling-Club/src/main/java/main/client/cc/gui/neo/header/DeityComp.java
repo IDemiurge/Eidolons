@@ -39,11 +39,13 @@ public class DeityComp extends G_CompHolder implements MouseListener {
         // if (hero.getDeity() == null) {
         ImageIcon icon = ImageManager.getIcon(hero.getProperty(G_PROPS.EMBLEM));
 
-        if (!ImageManager.isValidIcon(icon))
-            if (hero.getDeity() != null)
+        if (!ImageManager.isValidIcon(icon)) {
+            if (hero.getDeity() != null) {
                 icon = (ImageManager.getIcon(hero.getDeity().getType().getProperty(G_PROPS.EMBLEM)));
-            else
+            } else {
                 icon = ImageManager.getIcon(STD_IMAGES.DEATH.getPath());
+            }
+        }
         deityLbl = new JLabel(icon);
 
         deityLbl.addMouseListener(this);

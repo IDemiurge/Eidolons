@@ -59,12 +59,15 @@ public class MapView extends Builder {
             public void handleClick(String command, boolean alt) {
                 new Thread(new Runnable() {
                     public void run() {
-                        if (MacroManager.getActiveParty().getStatus() == null)
+                        if (MacroManager.getActiveParty().getStatus() == null) {
                             if (DialogMaster
-                                    .confirm("No orders given; should the party rest?"))
+                                    .confirm("No orders given; should the party rest?")) {
                                 if (!RestMaster.rest(MacroManager
-                                        .getActiveParty()))
+                                        .getActiveParty())) {
                                     return;
+                                }
+                            }
+                        }
                         MacroManager.endTurn();
                     }
                 }).start();

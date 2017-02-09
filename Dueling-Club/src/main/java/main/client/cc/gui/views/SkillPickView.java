@@ -46,16 +46,18 @@ public class SkillPickView extends HeroItemView {
     @Override
     public BORDER getBorder(ObjType value) {
         BORDER b = WorkspaceMaster.getBorderForType(value);
-        if (b != null)
+        if (b != null) {
             return b;
+        }
 
         if (StringMaster.checkContainer(hero.getProperty(getPROP()),
                 value.getName(), true)) {
             return BORDER.SILVER_64;
         }
         String r = hero.getGame().getRequirementsManager().check(hero, value);
-        if (r == null)
+        if (r == null) {
             return null;
+        }
 
         return BORDER.HIDDEN;
     }

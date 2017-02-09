@@ -21,10 +21,11 @@ public class SneakCondition extends MicroCondition {
     }
 
     public SneakCondition(Boolean match) {
-        if (match)
+        if (match) {
             key = KEYS.MATCH;
-        else
+        } else {
             key = KEYS.TARGET;
+        }
     }
 
     public SneakCondition(KEYS key) {
@@ -33,18 +34,23 @@ public class SneakCondition extends MicroCondition {
 
     @Override
     public boolean check() {
-        if (!(ref.getObj(key) instanceof DC_HeroObj))
+        if (!(ref.getObj(key) instanceof DC_HeroObj)) {
             return false;
+        }
         DC_HeroObj attacked = (DC_HeroObj) ref.getObj(key);
-        if (attacked.isBfObj())
+        if (attacked.isBfObj()) {
             return false;
-        if (attacked.checkPassive(STANDARD_PASSIVES.SNEAK_IMMUNE))
+        }
+        if (attacked.checkPassive(STANDARD_PASSIVES.SNEAK_IMMUNE)) {
             return false;
+        }
 
-        if (attacked.checkStatus(STATUS.IMMOBILE))
+        if (attacked.checkStatus(STATUS.IMMOBILE)) {
             return true;
-        if (attacked.checkStatus(STATUS.CHARMED))
+        }
+        if (attacked.checkStatus(STATUS.CHARMED)) {
             return true;
+        }
 
         DC_HeroObj attacker = (DC_HeroObj) ref.getSourceObj();
         DC_ActiveObj action = (DC_ActiveObj) ref.getObj(KEYS.ACTIVE);
@@ -60,16 +66,20 @@ public class SneakCondition extends MicroCondition {
 
         if (!attacker.checkInSightForUnit(attacked)) {
             if (attacked.getMode().equals(STD_MODES.ALERT)) // TODO wake up?
+            {
                 return false;
+            }
             // if (attacked.checkPassive(STANDARD_PASSIVES.VIGILANCE))
             // return false;
 
-            if (!action.isRanged())
+            if (!action.isRanged()) {
                 if (attacker.getActivePlayerVisionStatus() == UNIT_TO_PLAYER_VISION.UNKNOWN
-                        || !VisionManager.checkVisible(attacker))
+                        || !VisionManager.checkVisible(attacker)) {
                     return true;
-                else
+                } else {
                     return FacingMaster.getSingleFacing(attacker, attacked) == FACING_SINGLE.BEHIND;
+                }
+            }
         }
         return false;
     }

@@ -35,11 +35,11 @@ public class BfGridComp {
     private static Map<XLine, Image> underlayMap = new XLinkedMap<>();
     private static int stackedInfoObjSize;
     private static int stackedActiveObjSize;
+    private final DC_Game game;
     private CellComp[][] cells;
     private BufferedImage paintImage;
     private BufferedImage bufferImage;
     private G_Panel panel;
-    private final DC_Game game;
     private Map<Coordinates, CellComp> map;
     private DC_BattleFieldGrid holder;
     private BfMouseListener bfMouseListener;
@@ -75,14 +75,16 @@ public class BfGridComp {
     }
 
     private static Map<XLine, Image> getMap(boolean overOrUnder) {
-        if (overOrUnder)
+        if (overOrUnder) {
             return getOverlayMap();
+        }
         return getUnderlayMap();
     }
 
     private static Coordinates getStackedHighlightRelativeCoordinates(boolean info) {
-        if (info)
+        if (info) {
             return stackedHighlightRelativeCoordinates;
+        }
         return stackedActiveHighlightRelativeCoordinates;
     }
 
@@ -91,17 +93,19 @@ public class BfGridComp {
     }
 
     public static void setSelectedObjSize(boolean infoSelected, int objSize) {
-        if (infoSelected)
+        if (infoSelected) {
             stackedInfoObjSize = objSize;
-        else
+        } else {
             stackedActiveObjSize = objSize;
+        }
     }
 
     public static void setStackedHighlightRelativeCoordinates(Coordinates coordinates, boolean info) {
-        if (info)
+        if (info) {
             stackedHighlightRelativeCoordinates = coordinates;
-        else
+        } else {
             stackedActiveHighlightRelativeCoordinates = coordinates;
+        }
     }
 
     public static void setStackedInfoHighlightRelativeCoordinates(Coordinates coordinates) {
@@ -138,10 +142,13 @@ public class BfGridComp {
                 // Chronos
                 game.getAnimationManager().paintCalledOnBfGrid();
 
-                if (paintImage == null) return;
+                if (paintImage == null) {
+                    return;
+                }
                 g.drawImage(paintImage, 0, 0, null);
-                if (!isLevelEditor())
+                if (!isLevelEditor()) {
                     game.getAnimationManager().drawAnimations(g);
+                }
 
                 // if (isOffsetIsNotReady()) {
                 // offsetIsNotReady = false;
@@ -160,8 +167,9 @@ public class BfGridComp {
         panel.setPanelSize(new Dimension(getWidth(), getHeight()));
         bfMouseListener = new BfMouseListener(this);
         panel.addMouseListener(bfMouseListener);
-        if (customMouseListener != null)
+        if (customMouseListener != null) {
             panel.addMouseListener(customMouseListener);
+        }
         panel.addMouseMotionListener(bfMouseListener);
         panel.addMouseWheelListener(bfMouseListener);
         panel.setIgnoreRepaint(true);
@@ -183,10 +191,12 @@ public class BfGridComp {
         if (zoom != 100) {
             edge = GuiManager.getBattleFieldWidth() / getCellWidth();
         }
-        if (coordinates.getX() - getOffsetX() == 0)
+        if (coordinates.getX() - getOffsetX() == 0) {
             return true;
-        if (coordinates.getX() - getOffsetX() == edge)
+        }
+        if (coordinates.getX() - getOffsetX() == edge) {
             return false;
+        }
 
         return null;
     }
@@ -196,10 +206,12 @@ public class BfGridComp {
         if (zoom != 100) {
             edge = GuiManager.getBattleFieldHeight() / getCellHeight();
         }
-        if (coordinates.getY() - getOffsetY() == 0)
+        if (coordinates.getY() - getOffsetY() == 0) {
             return true;
-        if (coordinates.getY() - getOffsetY() == edge)
+        }
+        if (coordinates.getY() - getOffsetY() == edge) {
             return false;
+        }
 
         return null;
     }
@@ -225,19 +237,22 @@ public class BfGridComp {
     }
 
     private void drawSelectionGlowOverlay(Graphics g, Obj obj, boolean info) {
-        if (!game.isDebugMode())
-            if (!VisionManager.checkVisible((DC_Obj) obj))
+        if (!game.isDebugMode()) {
+            if (!VisionManager.checkVisible((DC_Obj) obj)) {
                 return;
+            }
+        }
         CellComp comp = getCompForObject(obj);
         if (comp == null) {
             return;
         }
-        if (comp.getTopObj() != null)
+        if (comp.getTopObj() != null) {
             if (comp.getTopObj().getOutlineType() != null) {
                 // VisibilityMaster.getImage(type, unit)
 
                 // return;
             }
+        }
         boolean single = !comp.isMultiObj();
         // check overlaying
         Image selectionFrame = info ? getInfoGlowFrame(obj)
@@ -251,8 +266,9 @@ public class BfGridComp {
 
         int offsetX = (single ? 9 : 13 + comp.getObjects().size()) * zoom / 100;
         int offsetY = (single ? 9 : 13 + comp.getObjects().size()) * zoom / 100;
-        if (single)
+        if (single) {
             setStackedHighlightRelativeCoordinates(null, info);
+        }
         if (getStackedHighlightRelativeCoordinates(info) != null) {
             offsetX -= getStackedHighlightRelativeCoordinates(info).x;
             offsetY -= getStackedHighlightRelativeCoordinates(info).y;
@@ -266,9 +282,10 @@ public class BfGridComp {
                 offsetX -= 6 * zoom / 100;
                 offsetY -= 6 * zoom / 100;
             }
-            if (size > 0)
+            if (size > 0) {
                 selectionFrame = ImageManager.getSizedVersion(selectionFrame, new Dimension(size,
                         size));
+            }
         }
         // }
         int x = getCellWidth() * (obj.getCoordinates().x - getOffsetX()) - offsetX;
@@ -278,20 +295,24 @@ public class BfGridComp {
 
     private Image getInfoGlowFrame(Obj obj) {
         // if (obj.getGame().isOnline())
-        if (!obj.isNeutral())
+        if (!obj.isNeutral()) {
             return ImageManager.getGlowFrame(obj.getOwner().getFlagColor(), GuiManager
                     .getCellWidth());
+        }
         return BORDER.NEO_INFO_SELECT_HIGHLIGHT.getImage();
     }
 
     public CellComp getCompForObject(Obj obj) {
-        if (holder != null)
+        if (holder != null) {
             return holder.getCellCompMap().get(obj.getCoordinates());
+        }
 
         for (int x = 0; x < getCellsX(); x++) {
-            for (int y = 0; y < getCellsY(); y++)
-                if (cells[x][y].getObjects().contains(obj))
+            for (int y = 0; y < getCellsY(); y++) {
+                if (cells[x][y].getObjects().contains(obj)) {
                     return cells[x][y];
+                }
+            }
         }
         return null;
     }
@@ -324,17 +345,20 @@ public class BfGridComp {
             game.getBattleFieldManager().resetWallMap(wallMap);
         }
 
-        if (getGame().getBattleField() != null)
+        if (getGame().getBattleField() != null) {
             panel.setKeyManager(getGame().getBattleField().getKeyListener());
-        if (!panel.requestFocusInWindow())
+        }
+        if (!panel.requestFocusInWindow()) {
             panel.requestFocus();
+        }
         resetBuffer();
         // resetComps();
         repaintToBuffer();
         paintImage = bufferImage;
         setDirty(false);
-        if (isLevelEditor())
+        if (isLevelEditor()) {
             getPanel().repaint();
+        }
     }
 
     private boolean isLevelEditor() {
@@ -344,12 +368,14 @@ public class BfGridComp {
     private void repaintToBuffer() {
         Graphics2D g = (Graphics2D) bufferImage.getGraphics();
         // TODO imageManager update
-        for (int i = 0; i < getDisplayedCellsX(); i++)
+        for (int i = 0; i < getDisplayedCellsX(); i++) {
             for (int j = 0; j < getDisplayedCellsY(); j++) {
-                if (i + getOffsetX() >= cells.length)
+                if (i + getOffsetX() >= cells.length) {
                     return;
-                if (j + getOffsetY() >= cells[0].length)
+                }
+                if (j + getOffsetY() >= cells[0].length) {
                     continue;
+                }
                 CellComp cellComp = cells[i + getOffsetX()][j + getOffsetY()];
                 if (editMode) {
                     Coordinates c = new Coordinates(i + getOffsetX(), j + getOffsetY());
@@ -364,6 +390,7 @@ public class BfGridComp {
 
                 g.drawImage(compImage, getX(i), getY(j), null);
             }
+        }
 
         DrawMasterStatic.drawDiagonalJoints(zoom, g, getOffsetX(), getOffsetY(), getCellWidth(),
                 getCellHeight(), getGame().getBattleFieldManager().getDiagonalJoints());
@@ -371,20 +398,23 @@ public class BfGridComp {
         DC_HeroObj activeObj = getGame().getManager().getActiveObj();
         if (activeObj != null) {
             // if (!activeObj.isAnimated())
-            if (!getGame().getAnimationManager().isStackAnimOverride(activeObj.getCoordinates()))
+            if (!getGame().getAnimationManager().isStackAnimOverride(activeObj.getCoordinates())) {
                 drawSelectionGlowOverlay(g, activeObj, false);
+            }
         }
         drawUnderlays(g);
         DC_Obj infoObj = getGame().getManager().getInfoObj();
         if (infoObj != null) {
             // if (!activeObj.isAnimated())
-            if (!getGame().getAnimationManager().isStackAnimOverride(infoObj.getCoordinates()))
+            if (!getGame().getAnimationManager().isStackAnimOverride(infoObj.getCoordinates())) {
                 drawSelectionGlowOverlay(g, infoObj, true);
+            }
         }
 
         drawOverlays(g);
-        if (!editMode)
+        if (!editMode) {
             DrawMasterStatic.drawWatchInfo(zoom, g);
+        }
     }
 
     public void offset(int offset, boolean x) {
@@ -393,16 +423,20 @@ public class BfGridComp {
         } else {
             if (x) {
                 offsetX += offset;
-                if (offsetX < 0)
+                if (offsetX < 0) {
                     offsetX = 0;
-                if (offsetX > getCellsX() - getDisplayedCellsX())
+                }
+                if (offsetX > getCellsX() - getDisplayedCellsX()) {
                     offsetX = getCellsX() - getDisplayedCellsX();
+                }
             } else {
                 offsetY += offset;
-                if (offsetY < 0)
+                if (offsetY < 0) {
                     offsetY = 0;
-                if (offsetY > getCellsY() - getDisplayedCellsY())
+                }
+                if (offsetY > getCellsY() - getDisplayedCellsY()) {
                     offsetY = getCellsY() - getDisplayedCellsY();
+                }
 
             }
             refresh();
@@ -412,8 +446,9 @@ public class BfGridComp {
     }
 
     public int getOffsetX() {
-        if (holder != null)
+        if (holder != null) {
             return holder.getOffsetX();
+        }
         return offsetX;
     }
 
@@ -422,8 +457,9 @@ public class BfGridComp {
     }
 
     public int getOffsetY() {
-        if (holder != null)
+        if (holder != null) {
             return holder.getOffsetY();
+        }
         return offsetY;
     }
 
@@ -449,8 +485,9 @@ public class BfGridComp {
     }
 
     public int getCellWidth() {
-        if (!DrawHelper.isFramePaintZoom(zoom))
+        if (!DrawHelper.isFramePaintZoom(zoom)) {
             return GuiManager.getFullObjSize() * zoom / 100;
+        }
         return GuiManager.getCellWidth() * zoom / 100;
     }
 
@@ -459,8 +496,9 @@ public class BfGridComp {
     }
 
     public int getCellHeight() {
-        if (!DrawHelper.isFramePaintZoom(zoom))
+        if (!DrawHelper.isFramePaintZoom(zoom)) {
             return GuiManager.getFullObjSize() * zoom / 100;
+        }
         return GuiManager.getCellHeight() * zoom / 100;
     }
 
@@ -477,14 +515,16 @@ public class BfGridComp {
     }
 
     private int getHeight() {
-        if (height != null)
+        if (height != null) {
             return height;
+        }
         return GuiManager.getBF_CompDisplayedCellsY() * getCellHeight();
     }
 
     private int getWidth() {
-        if (width != null)
+        if (width != null) {
             return width;
+        }
         return GuiManager.getBF_CompDisplayedCellsX() * getCellWidth();
     }
 
@@ -515,8 +555,9 @@ public class BfGridComp {
     }
 
     public Map<Coordinates, CellComp> getMap() {
-        if (map == null)
+        if (map == null) {
             map = new HashMap<>();
+        }
         return map;
     }
 

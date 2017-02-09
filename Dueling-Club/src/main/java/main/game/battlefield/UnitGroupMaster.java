@@ -108,11 +108,13 @@ public class UnitGroupMaster {
 
     public static boolean isGroupReady(String name) {
         String readyGroups = "";
-        for (File sub : FileManager.getFilesFromDirectory(getReadyGroupsPath(), false))
+        for (File sub : FileManager.getFilesFromDirectory(getReadyGroupsPath(), false)) {
             readyGroups += sub.getName() + ";";
+        }
         // TODO check units inside!
-        if (StringMaster.contains(readyGroups, name))
+        if (StringMaster.contains(readyGroups, name)) {
             return true;
+        }
         return false;
     }
 
@@ -135,14 +137,16 @@ public class UnitGroupMaster {
     }
 
     public static ObjType getLeveledType(ObjType type, Player owner, String objData) {
-        if (levelMap == null)
+        if (levelMap == null) {
             return type;
+        }
         Integer level = levelMap.get(owner).get(type);
-        if (level != null)
+        if (level != null) {
             if (level != 0) {
                 type = new UnitLevelManager().getLeveledType(type, level % 10);
                 levelMap.get(owner).put(type, level / 10);
             }
+        }
         return type;
     }
 
@@ -150,14 +154,16 @@ public class UnitGroupMaster {
         for (FACTION f : FACTION.values()) {
             DEITY deity = f.getDeity();
             ObjType faction = DataManager.getType(f.toString(), OBJ_TYPES.FACTIONS);
-            if (faction == null)
+            if (faction == null) {
                 continue;
+            }
             if (deity != null) {
                 ObjType deityType = DataManager.getType(deity.name(), OBJ_TYPES.DEITIES);
-                for (ObjType unit : DataManager.getTypes(OBJ_TYPES.UNITS))
+                for (ObjType unit : DataManager.getTypes(OBJ_TYPES.UNITS)) {
                     if (unit.getProperty(G_PROPS.DEITY).equals(deityType.getName())) {
                         faction.addProperty(PROPS.UNIT_POOL, unit.getName(), true);
                     }
+                }
             }
             // List<String> list =
             // StringMaster.openContainer(faction.getProperty(PROPS.UNIT_POOL));
@@ -169,8 +175,9 @@ public class UnitGroupMaster {
     }
 
     public static String createUnitGroup(DC_HeroObj her0) {
-        if (her0 != null)
+        if (her0 != null) {
             hero = her0.getType();
+        }
         return createUnitGroup();
     }
 
@@ -196,8 +203,9 @@ public class UnitGroupMaster {
     public static String createUnitGroup(Entity hero, ObjType factionType, int level) {
         power = 0;
         limit = getPowerForLevel(level);
-        if (CoreEngine.isArcaneVault())
+        if (CoreEngine.isArcaneVault()) {
             limit += limit / 5;
+        }
         min = 2;
         max = 5 + level / 2;
         power_limit = limit / 2;
@@ -210,19 +218,22 @@ public class UnitGroupMaster {
             {
                 if (i < min) {
                     if (!DialogMaster.confirm("You must select at least " + (min - i)
-                            + " more units, proceed or abort?"))
+                            + " more units, proceed or abort?")) {
                         return null;
+                    }
                     continue;
                 }
                 if (i >= max) {
                     if (DialogMaster.confirm("You have selected maximum number of units "
                             + (max - i) + " do you wish to proceed? Power points remaining: "
-                            + getRemainingPower()))
+                            + getRemainingPower())) {
                         break;
+                    }
                     ObjType last = getUnitList().get(getUnitList().size() - 1);
                     if (!DialogMaster.confirm("Do you wish to remove last - " + last.getName()
-                            + "?"))
+                            + "?")) {
                         break;
+                    }
                     getUnitList().remove(last);
                     power += getUnitCost(last, factionType);
                     continue;
@@ -236,8 +247,9 @@ public class UnitGroupMaster {
         String name = DialogMaster.inputText("Enter a name for this group", getNewName(factionType
                 .getName(), level));
         List<ObjAtCoordinate> units = mapPositions(getUnitList(), hero);
-        if (CoreEngine.isArcaneVault())
+        if (CoreEngine.isArcaneVault()) {
             name = "std " + name;
+        }
         return saveGroup(units, factionType.getName(), name);
     }
 
@@ -253,16 +265,18 @@ public class UnitGroupMaster {
         // posView.in
         List<DC_HeroObj> units = new LinkedList<>();
         if (hero != null) {
-            if (hero instanceof DC_HeroObj)
+            if (hero instanceof DC_HeroObj) {
                 unit = (DC_HeroObj) hero;
-            else
+            } else {
                 unit = (new DC_HeroObj((ObjType) hero));
+            }
             units.add(unit);
 
         }
         for (ObjType type : list) {
-            if (type != null)
+            if (type != null) {
                 units.add(new DC_HeroObj(type));
+            }
         }
         PositionChoiceView posView = new PositionChoiceView(sequence, unit) {
             @Override
@@ -292,8 +306,9 @@ public class UnitGroupMaster {
         boolean result = (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.CUSTOM_SELECT);
         Launcher.initMenu(MAIN_MENU_ITEMS.FACTION);
         Launcher.setView(VIEWS.MENU);
-        if (!result)
+        if (!result) {
             return null;
+        }
         SoundMaster.playStandardSound(STD_SOUNDS.OK);
         return ListMaster.toObjAtCoordinate(units);
     }
@@ -325,15 +340,18 @@ public class UnitGroupMaster {
         Map<ObjType, Integer> pool = initPool(factionType);
         List<ObjType> available = new LinkedList<>();
         for (ObjType l : pool.keySet()) {
-            if (getUnitCost(l, factionType) > power)
+            if (getUnitCost(l, factionType) > power) {
                 continue;
-            if (l.getIntParam(PARAMS.POWER) > max_power)
+            }
+            if (l.getIntParam(PARAMS.POWER) > max_power) {
                 continue;
+            }
 
             available.add(l);
         }
-        if (available.isEmpty())
+        if (available.isEmpty()) {
             return null;
+        }
         // chooseUnit();
         Map<String, String> map = new HashMap<String, String>();
         for (ObjType type : pool.keySet()) {
@@ -418,8 +436,9 @@ public class UnitGroupMaster {
                     .openContainer(factionType.getProperty(PROPS.ALLY_FACTIONS))) {
                 costMod += 5;
                 ObjType allyFactionType = DataManager.getType(f.toString(), OBJ_TYPES.FACTIONS);
-                if (allyFactionType.getProperty(PROPS.UNIT_POOL).contains(unit.getName()))
+                if (allyFactionType.getProperty(PROPS.UNIT_POOL).contains(unit.getName())) {
                     break;
+                }
             }
         }
         return unit.getIntParam(PARAMS.POWER) * costMod / 100;
@@ -446,14 +465,16 @@ public class UnitGroupMaster {
 
     public static String getGroupForLevel(String groups, int level) {
         String suffix = StringMaster.getLastPart(groups, " ");
-        if (StringMaster.isInteger(suffix))
+        if (StringMaster.isInteger(suffix)) {
             groups = groups.substring(0, groups.lastIndexOf(" "));
+        }
         return groups + " " + translateLevel(level);
     }
 
     private static String translateLevel(int level) {
-        if (level == 0)
+        if (level == 0) {
             return "";
+        }
         return "" + (level - 1);
     }
 
@@ -468,8 +489,9 @@ public class UnitGroupMaster {
     public static String chooseGroup(Entity faction, int level) {
         File groupFile = ListChooser.chooseFile(getFactionPath(faction), StringMaster
                 .wrapInBraces("" + level));
-        if (groupFile != null)
+        if (groupFile != null) {
             return groupFile.getPath();
+        }
         return null;
     }
 
@@ -482,15 +504,17 @@ public class UnitGroupMaster {
             ObjType faction = ListChooser.chooseType_(available, OBJ_TYPES.FACTIONS);
             if (factionLeaderRequired) {
                 hero = UnitGroupMaster.createGroupLeader(me, faction, powerLevel);
-                if (hero == null)
+                if (hero == null) {
                     return null;
+                }
             }
             return chooseGroup(faction, powerLevel);
 
         }
         File groupFile = ListChooser.chooseFile(PathFinder.getUnitGroupPath());
-        if (groupFile != null)
+        if (groupFile != null) {
             return groupFile.getPath();
+        }
         return null;
     }
 
@@ -505,12 +529,14 @@ public class UnitGroupMaster {
                 false)));
         String name = ListChooser.chooseType(DataManager.toStringList(list), OBJ_TYPES.CHARS);
 
-        if (name == null)
+        if (name == null) {
             return null;
-        if (me)
+        }
+        if (me) {
             myHero = name;
-        else
+        } else {
             enemyHero = name;
+        }
         return DataManager.getType(name, OBJ_TYPES.CHARS);
     }
 
@@ -595,8 +621,9 @@ public class UnitGroupMaster {
     }
 
     public static String readGroupFile(String path) {
-        if (!PathFinder.isFullPath(path))
+        if (!PathFinder.isFullPath(path)) {
             path = PathFinder.getUnitGroupPath() + "\\" + path;
+        }
         return FileManager.readFile(path);
     }
 

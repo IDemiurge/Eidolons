@@ -17,8 +17,9 @@ public class PayCostEffect extends DC_Effect {
         DC_HeroObj hero = (DC_HeroObj) ref.getTargetObj();
 
         DC_UnitAction action = hero.getAction(actionName);
-        if (action == null)
+        if (action == null) {
             return false;
+        }
         if (!force) {
             // check
         }

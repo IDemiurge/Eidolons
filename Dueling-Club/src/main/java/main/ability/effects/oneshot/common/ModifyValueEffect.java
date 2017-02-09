@@ -43,9 +43,9 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
     private String lastModValue;
 
     public ModifyValueEffect(PARAMETER param, MOD code, String formula) {
-        if (param == null)
-            main.system.auxiliary.LogMaster.log(1, "null param on " + this);
-        else {
+        if (param == null) {
+            LogMaster.log(1, "null param on " + this);
+        } else {
             this.param = param;
             this.sparam = param.getName();
         }
@@ -107,16 +107,18 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
     }
 
     private static boolean checkPercentOrConst(String percOrConst) {
-        if (StringMaster.contains(percOrConst, "mod"))
+        if (StringMaster.contains(percOrConst, "mod")) {
             return true;
+        }
         return false;
     }
 
     public static PARAMETER getMaxParameter(PARAMETER param) {
         // ContentManager TODO
         if (param.isDynamic()) {
-            if (param.isWriteToType())
+            if (param.isWriteToType()) {
                 return null; // xp, gold, points...
+            }
             return ContentManager.getBaseParameterFromCurrent(param);
         }
         return null;
@@ -124,8 +126,9 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
 
     @Override
     public String getTooltip() {
-        if (mod_type == MOD.SET)
+        if (mod_type == MOD.SET) {
             return getParamString() + " set to " + formula.getInt(ref);
+        }
         return (mod_type == MOD.MODIFY_BY_PERCENT ? StringMaster.getModifierString(formula
                 .getInt(ref)) : StringMaster.getBonusString(formula.getInt(ref)))
                 + " " + getParamString();
@@ -141,37 +144,44 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
     }
 
     private String getTargetString() {
-        if (ref == null)
+        if (ref == null) {
             return "";
+        }
         return (ref.getTargetObj() == null) ? "" : " on " + ref.getTargetObj() + ", Layer ["
                 + getLayer() + "]";
     }
 
     @Override
     public void initLayer() {
-        if (ref == null)
+        if (ref == null) {
             return;
-        if (ref.getTargetObj() == null)
+        }
+        if (ref.getTargetObj() == null) {
             return;
+        }
 
         if (ref.getTargetObj() instanceof HeroItem
             // && !(ref.getTargetObj().getOBJ_TYPE().equals(OBJ_TYPES.ARMOR
             // .getName()))
-                )
+                ) {
             setLayer(Effect.ZERO_LAYER);
-        else if (mod_type == MOD.MODIFY_BY_PERCENT) {
+        } else if (mod_type == MOD.MODIFY_BY_PERCENT) {
             if (getParam() != null) {
-                if (!getParam().isMastery() && !getParam().isAttribute())
+                if (!getParam().isMastery() && !getParam().isAttribute()) {
                     setLayer(Effect.SECOND_LAYER);
-            } else
+                }
+            } else {
                 setLayer(Effect.SECOND_LAYER);
-        } else
+            }
+        } else {
             super.initLayer();
+        }
     }
 
     public boolean checkLimit() {
-        if (isValueOverMax())
+        if (isValueOverMax()) {
             return false;
+        }
         try {
             return !ref.getObj(KEYS.ACTIVE).checkBool(STD_BOOLS.C_VALUE_OVER_MAXIMUM);
         } catch (Exception e) {
@@ -205,15 +215,18 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         }
         if (param == null) {
             this.param = ContentManager.getPARAM(sparam);
-            if (param == null)
-                if (param == null)
+            if (param == null) {
+                if (param == null) {
                     this.param = ContentManager.getMastery(sparam);
+                }
+            }
 
             if (param == null) {
                 if (StringMaster.openContainer(sparam, StringMaster.AND_SEPARATOR).size() > 1) {
                     params = game.getValueManager().getParamsFromContainer(sparam);
-                } else
+                } else {
                     params = game.getValueManager().getValueGroupParams(sparam);
+                }
             }
 
         }
@@ -233,8 +246,9 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
                 return new ModifyCounterEffect(sparam, mod_type, formula).apply(ref);
             }
             for (PARAMETER p : params) {
-                if (p == null)
+                if (p == null) {
                     continue;
+                }
                 param = p;
                 modify(obj, map);
             }
@@ -245,42 +259,50 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         // what if some part of the formula depends on the target instead?
 
         boolean result = modify(obj, map);
-        if (result)
-            if (!isAnimationDisabled())
-                if (map != null)
+        if (result) {
+            if (!isAnimationDisabled()) {
+                if (map != null) {
                     if (!map.isEmpty()) {
                         if (getAnimation() != null) {
                             if (!isContinuousWrapped()) {
                                 getAnimation().addPhaseArgs(PHASE_TYPE.PARAM_MODS, map);
 
                                 // getAnimation().start(); // TODO sync?
-                            } else
+                            } else {
                                 wrapInBuffPhase(map);
+                            }
                         }
                     }
+                }
+            }
+        }
 
         return result;
     }
 
     private boolean modify(Obj obj, Map<PARAMETER, String> map) {
         formula.setRef(ref);
-        Double amount = staticAmount;
+        Double amount;
 
         if (staticAmount == null) {
-            if (checkStaticallyParsed())
+            if (checkStaticallyParsed()) {
                 staticAmount = formula.getDouble();
+            }
         }
-        if (staticAmount != null)
+        if (staticAmount != null) {
             amount = staticAmount;
-        else
+        } else {
             amount = formula.getDouble(ref);
+        }
 
         synchronized (ref) { // ain't that stupid...
-            if (ref.getObj(KEYS.ACTIVE) != null)
+            if (ref.getObj(KEYS.ACTIVE) != null) {
                 if (ref.getObj(KEYS.ACTIVE).checkBool(STD_BOOLS.INVERT_ON_ENEMY)) {
-                    if (!obj.getOwner().equals(ref.getSourceObj().getOwner()))
+                    if (!obj.getOwner().equals(ref.getSourceObj().getOwner())) {
                         amount = -amount;
+                    }
                 }
+            }
         }
         int intAmount = (int) Math.round(amount);
         if (getResistanceMod() != null) {
@@ -299,12 +321,14 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
                         MathMaster.getFractionValueCentimalDouble(obj.getParamDouble(param, base), amount);
                 ref.setAmount(mod + "");
 
-                if (param.isDynamic())
+                if (param.isDynamic()) {
                     game.getLogManager().logValueMod(param, amount, obj);
-                if (mod < 0)
+                }
+                if (mod < 0) {
                     amount_modified = Math.min(obj.getIntParam(param), Math.abs((int) mod));
-                else
+                } else {
                     amount_modified = (int) mod;
+                }
                 final_amount = obj.getParamDouble(param) + mod;
                 // new Formula(obj.getParam(param) + "+" + mod)
                 // .getInt();
@@ -319,11 +343,12 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
 //                if (amount < 0) TODO why was it here?
 //                    amount_modified = Math.min(obj.getIntParam(param), intAmount);
 //                else
-                    amount_modified = (int) intAmount;
+                amount_modified = intAmount;
                 final_amount = obj.getParamDouble(param) + amount;
 
-                if (param.isDynamic())
+                if (param.isDynamic()) {
                     game.getLogManager().logValueMod(param, amount, obj);
+                }
 
                 LogMaster.log(LogMaster.COMBAT_DEBUG, obj.getName() + "'s " + param.getName()
                         + " is modified by " + amount);
@@ -336,13 +361,17 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             }
         }
         if (amount > 0) {
-            if (final_amount > min_max_amount)
+            if (final_amount > min_max_amount) {
                 final_amount = min_max_amount;
-            if (final_amount < obj.getIntParam(param))
+            }
+            if (final_amount < obj.getIntParam(param)) {
                 final_amount = obj.getIntParam(param);
-        } else if (amount < 0)
-            if (final_amount < min_max_amount)
+            }
+        } else if (amount < 0) {
+            if (final_amount < min_max_amount) {
                 final_amount = min_max_amount;
+            }
+        }
         switch (mod_type) {
             case MODIFY_BY_PERCENT: {
                 map.put(param, StringMaster.getModifierString((int) final_amount
@@ -358,13 +387,16 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
                 break;
 
         }
-        if (param.isMod())
-            if (obj.getIntParam(param) == 0)
+        if (param.isMod()) {
+            if (obj.getIntParam(param) == 0) {
                 final_amount += 100;
+            }
+        }
         obj.setParamDouble(param, final_amount, false);
 
-        if (mod_type != MOD.SET && !checkPassive())
+        if (mod_type != MOD.SET && !checkPassive()) {
             getGame().getAnimationManager().valueModified(Ref.getCopy(ref));
+        }
 
         lastModValue= String.valueOf(amount_modified);
         return true;
@@ -372,51 +404,66 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
 
     public int initMinMaxAmount(Obj obj, Integer amount) {
         int min_max_amount = (amount > 0) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
-        if (amount > 0)
+        if (amount > 0) {
             if (max_param != null && max_param != getParam()) {
                 min_max_amount = obj.getIntParam(getMax_param());
             }
+        }
         if (getMin_max_formula() != null) {
             min_max_amount = getMin_max_formula().getInt(ref);
         }
         if (amount > 0) // maximum
             // if (min_max_amount == Integer.MAX_VALUE)
+        {
             if (getParam() != null) {
-                if (getParam().isDynamic())
-                    if (checkLimit())
+                if (getParam().isDynamic()) {
+                    if (checkLimit()) {
                         setMaxParam(getMaxParameter(getParam()));
+                    }
+                }
                 if (getMax_param() != null) {
                     min_max_amount = obj.getIntParam(getMax_param());
                 }
             } else {
-                if (ParamAnalyzer.getParamMinValue(getParam()) != Integer.MIN_VALUE)
+                if (ParamAnalyzer.getParamMinValue(getParam()) != Integer.MIN_VALUE) {
                     return ParamAnalyzer.getParamMinValue(getParam());
+                }
             }
+        }
         return min_max_amount;
     }
 
     private boolean checkPassive() {
-        if (ref.getActive() == null)
+        if (ref.getActive() == null) {
             return true;
-        if (ref.getObj(KEYS.BUFF) != null)
-            if (ref.getObj(KEYS.BUFF).equals(ref.getThisObj()))
+        }
+        if (ref.getObj(KEYS.BUFF) != null) {
+            if (ref.getObj(KEYS.BUFF).equals(ref.getThisObj())) {
                 return true;
-        if (ref.getObj(KEYS.ABILITY) != null)
-            if (ref.getObj(KEYS.ABILITY) instanceof PassiveAbilityObj)
+            }
+        }
+        if (ref.getObj(KEYS.ABILITY) != null) {
+            if (ref.getObj(KEYS.ABILITY) instanceof PassiveAbilityObj) {
                 return true;
+            }
+        }
 
         return false;
     }
 
     private boolean checkStaticallyParsed() {
-        if (isForceStaticParse() != null)
+        if (isForceStaticParse() != null) {
             return isForceStaticParse();
+        }
 
-        if (ref.getActive() != null)
-            if (ref.getObj(KEYS.BUFF) != null || ref.getActive().getRef().getObj(KEYS.BUFF) != null)
+        if (ref.getActive() != null) {
+            if (ref.getObj(KEYS.BUFF) != null || ref.getActive().getRef().getObj(KEYS.BUFF) != null) {
                 if (ref.getActive().equals(ref.getThisObj())
-                        || ref.getObj(KEYS.BUFF).equals(ref.getThisObj()))
+                        || ref.getObj(KEYS.BUFF).equals(ref.getThisObj())) {
                     return true; // only if (?) it is a matter of spell-buff
+                }
+            }
+        }
         // and
         // {this} is {spell} (i.e. the ref given
         // come
@@ -434,14 +481,16 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
     }
 
     public PARAMETER getParam() {
-        if (param == null)
+        if (param == null) {
             this.param = ContentManager.getPARAM(sparam);
+        }
         return param;
     }
 
     public void setParam(PARAMETER param) {
-        if (param.isMastery())
+        if (param.isMastery()) {
             param = ContentManager.getMasteryScore(param);
+        }
         this.param = param;
     }
 
@@ -462,8 +511,9 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
     }
 
     public String getParamString() {
-        if (sparam == null)
+        if (sparam == null) {
             return param.getName();
+        }
         return sparam;
     }
 

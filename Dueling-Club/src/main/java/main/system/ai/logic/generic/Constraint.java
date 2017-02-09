@@ -12,8 +12,9 @@ public class Constraint {
     private Condition c;
 
     public Condition getCondition() {
-        if (c == null)
+        if (c == null) {
             c = initCondition();
+        }
         return c;
     }
 

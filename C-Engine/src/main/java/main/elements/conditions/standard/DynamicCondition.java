@@ -14,8 +14,9 @@ public class DynamicCondition extends MicroCondition {
     @Override
     public boolean check() {
         Condition c = ref.getGame().getConditionMaster().getDynamicCondition(s);
-        if (c != null)
+        if (c != null) {
             return c.check();
+        }
         return false;
     }
 

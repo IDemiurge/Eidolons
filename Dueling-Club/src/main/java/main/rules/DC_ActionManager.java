@@ -27,7 +27,6 @@ import main.game.logic.dungeon.special.LockMaster;
 import main.game.logic.dungeon.special.Trap;
 import main.game.logic.dungeon.special.TrapMaster;
 import main.game.player.Player;
-import main.libgdx.anims.AnimMaster;
 import main.rules.generic.UnitAnalyzer;
 import main.rules.mechanics.ExtraAttacksRule;
 import main.rules.mechanics.FleeRule;
@@ -114,16 +113,18 @@ public class DC_ActionManager implements ActionManager {
 
     public static List<DC_ActiveObj> filterActionsByCanBePaid(List<DC_ActiveObj> actions) {
         List<DC_ActiveObj> list = new ArrayList<>();
-        for (DC_ActiveObj action : actions)
-            if (action.canBeActivated())
+        for (DC_ActiveObj action : actions) {
+            if (action.canBeActivated()) {
                 list.add(action);
+            }
+        }
         // ++ can be targeted
         return list;
     }
 
     public static ACTION_TYPE_GROUPS getStdActionType(DC_ActiveObj activeObj) {
         for (STD_ACTIONS action : STD_ACTIONS.values()) {
-            if (action.toString().equals(activeObj.getType().getName()))
+            if (action.toString().equals(activeObj.getType().getName())) {
                 switch (action) {
                     case Attack:
                         return ACTION_TYPE_GROUPS.ATTACK;
@@ -139,9 +140,10 @@ public class DC_ActionManager implements ActionManager {
                         break;
 
                 }
+            }
         }
         for (STD_ACTIONS action : STD_ACTIONS.values()) {
-            if (activeObj.getType().getName().contains(action.toString()))
+            if (activeObj.getType().getName().contains(action.toString())) {
                 switch (action) {
                     case Attack:
                         return ACTION_TYPE_GROUPS.ATTACK;
@@ -157,6 +159,7 @@ public class DC_ActionManager implements ActionManager {
                         break;
 
                 }
+            }
         }
 
         return null;
@@ -214,8 +217,9 @@ public class DC_ActionManager implements ActionManager {
         DC_HeroObj source = (DC_HeroObj) _countering;
         DC_ActiveObj counter = (DC_ActiveObj) getCounterAttackAction(target, source,
                 (DC_ActiveObj) action);
-        if (counter == null)
+        if (counter == null) {
             return null;
+        }
         counter.setCounterMode(true);
         boolean result = false;
         try {
@@ -225,8 +229,9 @@ public class DC_ActionManager implements ActionManager {
         } finally {
             counter.setCounterMode(false);
         }
-        if (!result)
+        if (!result) {
             return null;
+        }
         // TODO ?
         return counter;
     }
@@ -234,25 +239,32 @@ public class DC_ActionManager implements ActionManager {
     private Active getCounterAttackAction(DC_HeroObj countered, DC_HeroObj countering,
                                           DC_ActiveObj active) {
         DC_ActiveObj counterAttack = countering.getPreferredCounterAttack();
-        if (counterAttack != null)
-            if (counterAttack.canBeActivatedAsCounter())
-                if (counterAttack.canBeTargeted(active.getOwnerObj().getId()))
+        if (counterAttack != null) {
+            if (counterAttack.canBeActivatedAsCounter()) {
+                if (counterAttack.canBeTargeted(active.getOwnerObj().getId())) {
                     return counterAttack;
+                }
+            }
+        }
         for (DC_ActiveObj attack : ExtraAttacksRule.getCounterAttacks(active, countering)) {
 //            if (AnimMaster.isTestMode())
 
-            if (attack.canBeActivatedAsCounter())
-                if (attack.canBeTargeted(active.getOwnerObj().getId()))
+            if (attack.canBeActivatedAsCounter()) {
+                if (attack.canBeTargeted(active.getOwnerObj().getId())) {
                     return attack;
+                }
+            }
         }
         return null;
     }
 
     private ActiveObj getStdAction(Obj obj, String _default, PROPERTY prop) {
         String abilTypeName = _default;
-        if (!StringMaster.isEmpty(obj.getProperty(prop)))
-            if (DataManager.isTypeName(obj.getProperty(prop)))
+        if (!StringMaster.isEmpty(obj.getProperty(prop))) {
+            if (DataManager.isTypeName(obj.getProperty(prop))) {
                 abilTypeName = obj.getProperty(prop);
+            }
+        }
         return getAction(abilTypeName, obj);
     }
 
@@ -263,8 +275,9 @@ public class DC_ActionManager implements ActionManager {
             map = new HashMap<>();
             actionsCache.put(entity, map);
         }
-        if (map.get(typeName) != null)
+        if (map.get(typeName) != null) {
             return (DC_UnitAction) map.get(typeName);
+        }
 
         ActionType type = (ActionType) DataManager.getType(typeName, OBJ_TYPES.ACTIONS);
         if (type == null) {
@@ -278,8 +291,9 @@ public class DC_ActionManager implements ActionManager {
 
     @Override
     public DC_ActiveObj getAction(String typeName, Entity entity) {
-        if (actionsCache.get(entity) == null)
+        if (actionsCache.get(entity) == null) {
             actionsCache.put(entity, new HashMap<String, ActiveObj>());
+        }
         ActiveObj action = actionsCache.get(entity).get(typeName);
         if (action == null) {
             action = newAction(typeName, entity);
@@ -340,12 +354,15 @@ public class DC_ActionManager implements ActionManager {
         List<DC_ActiveObj> actions = new LinkedList<>();
         for (ActiveObj active : unit.getActives()) {
             DC_ActiveObj action = (DC_ActiveObj) active;
-            if (action.getActionGroup() != group)
+            if (action.getActionGroup() != group) {
                 continue;
-            if (!StringMaster.isEmpty(action.getActionMode()))
+            }
+            if (!StringMaster.isEmpty(action.getActionMode())) {
                 continue;
-            if (action.isAttack())
+            }
+            if (action.isAttack()) {
                 continue;
+            }
             List<DC_ActiveObj> subActions = new LinkedList<>();
 
             for (STD_ACTION_MODES mode : STD_ACTION_MODES.values()) {
@@ -362,11 +379,13 @@ public class DC_ActionManager implements ActionManager {
     }
 
     private boolean checkModeForAction(DC_ActiveObj action, DC_HeroObj unit, STD_ACTION_MODES mode) {
-        if (hiddenActions.contains(action.getType()))
+        if (hiddenActions.contains(action.getType())) {
             return false;
+        }
         if (mode.getDefaultActionGroups().contains(action.getActionGroup())) {
-            if (checkStdAction(action))
+            if (checkStdAction(action)) {
                 return true;
+            }
         }
         return action.getProperty(PROPS.ACTION_MODES).contains(
                 StringMaster.getWellFormattedString(mode.toString()));
@@ -374,54 +393,69 @@ public class DC_ActionManager implements ActionManager {
     }
 
     private boolean checkStdAction(DC_ActiveObj action) {
-        for (STD_ACTIONS s : STD_ACTIONS.values())
-            if (StringMaster.compare(s.toString(), action.getName()))
+        for (STD_ACTIONS s : STD_ACTIONS.values()) {
+            if (StringMaster.compare(s.toString(), action.getName())) {
                 return true;
-        for (STD_SPEC_ACTIONS s : STD_SPEC_ACTIONS.values())
-            if (StringMaster.compare(s.toString(), action.getName()))
+            }
+        }
+        for (STD_SPEC_ACTIONS s : STD_SPEC_ACTIONS.values()) {
+            if (StringMaster.compare(s.toString(), action.getName())) {
                 return true;
-        for (ADDITIONAL_MOVE_ACTIONS s : ADDITIONAL_MOVE_ACTIONS.values())
-            if (StringMaster.compare(s.toString(), action.getName()))
+            }
+        }
+        for (ADDITIONAL_MOVE_ACTIONS s : ADDITIONAL_MOVE_ACTIONS.values()) {
+            if (StringMaster.compare(s.toString(), action.getName())) {
                 return true;
-        for (STD_MODE_ACTIONS s : STD_MODE_ACTIONS.values())
-            if (StringMaster.compare(s.toString(), action.getName()))
+            }
+        }
+        for (STD_MODE_ACTIONS s : STD_MODE_ACTIONS.values()) {
+            if (StringMaster.compare(s.toString(), action.getName())) {
                 return true;
+            }
+        }
         return false;
     }
 
     private DC_UnitAction getModeAction(DC_ActiveObj action, DC_HeroObj unit, STD_ACTION_MODES mode) {
         DC_UnitAction subAction = (DC_UnitAction) getAction(mode.getPrefix() + action.getName(),
                 unit);
-        if (subAction == null)
+        if (subAction == null) {
             subAction = (generateModeAction(mode, action));
+        }
         return subAction;
     }
 
     private DC_UnitAction generateModeAction(STD_ACTION_MODES mode, DC_ActiveObj baseAction) {
         ActionType type = new ActionType(baseAction.getType());
-        if (mode.getAddPropMap() != null)
+        if (mode.getAddPropMap() != null) {
             for (String s : mode.getAddPropMap().keySet()) {
                 type.addProperty(s, mode.getAddPropMap().get(s));
             }
-        if (mode.getSetPropMap() != null)
+        }
+        if (mode.getSetPropMap() != null) {
             for (String s : mode.getSetPropMap().keySet()) {
                 type.setProperty(s, mode.getSetPropMap().get(s));
             }
-        if (mode.getParamBonusMap() != null)
+        }
+        if (mode.getParamBonusMap() != null) {
             for (String s : mode.getParamBonusMap().keySet()) {
                 // type.setModifierKey(mode.getName());
                 type.modifyParameter(s, mode.getParamBonusMap().get(s));
             }
-        if (mode.getParamModMap() != null)
+        }
+        if (mode.getParamModMap() != null) {
             for (String s : mode.getParamModMap().keySet()) {
                 PARAMETER param = ContentManager.getPARAM(s);
-                if (type.getIntParam(param) == 0)
+                if (type.getIntParam(param) == 0) {
                     type.setParam(param, param.getDefaultValue());
+                }
                 type.modifyParamByPercent(param, StringMaster.getInteger(mode.getParamModMap().get(
                         s)), false);
             }
-        if (mode != STD_ACTION_MODES.STANDARD)
+        }
+        if (mode != STD_ACTION_MODES.STANDARD) {
             type.setName(mode.getPrefix() + baseAction.getName());
+        }
         DC_UnitAction subAction = newAction(type, new Ref(baseAction.getOwnerObj()), baseAction
                 .getOwner(), game);
         // TODO not all!..
@@ -432,8 +466,9 @@ public class DC_ActionManager implements ActionManager {
 
     @Override
     public void resetActions(Entity entity) {
-        if (!(entity instanceof DC_HeroObj))
+        if (!(entity instanceof DC_HeroObj)) {
             return;
+        }
         DC_HeroObj unit = (DC_HeroObj) entity;
         DequeImpl<ActiveObj> actives = null;
         // #1: reset prop with ids if nothing is changed
@@ -450,19 +485,20 @@ public class DC_ActionManager implements ActionManager {
         unit.setActionMap(new HashMap<ACTION_TYPE, List<DC_UnitAction>>());
 
         // if (!unit.isStandardActionsAdded())
-        if (!unit.isBfObj())
+        if (!unit.isBfObj()) {
             addStandardActions(unit, actives);
+        }
 
         for (String typeName : StringMaster.openContainer(entity.getProperty(ACTIVES))) {
             ObjType type = DataManager.getType(typeName, OBJ_TYPES.ACTIONS);
             DC_UnitAction action = null;
-            if (type == null)
+            if (type == null) {
                 try {
                     action = (DC_UnitAction) game.getObjectById(Integer.valueOf(typeName));
                 } catch (Exception e) {
                     continue;
                 }
-            else {
+            } else {
                 action = newAction(typeName, entity);
             }
             // idList.add(action.getId() + "");
@@ -475,8 +511,9 @@ public class DC_ActionManager implements ActionManager {
             e.printStackTrace();
         }
         unit.setActives(new LinkedList<>(actives));
-        if (!unit.isBfObj())
+        if (!unit.isBfObj()) {
             addHiddenActions(unit, unit.getActives());
+        }
         try {
             constructActionMaps(unit);
         } catch (Exception e) {
@@ -488,21 +525,25 @@ public class DC_ActionManager implements ActionManager {
     }
 
     private List<DC_UnitAction> getWeaponActions(DC_WeaponObj weapon) {
-        if (weapon == null)
+        if (weapon == null) {
             return new LinkedList<>();
+        }
         DC_HeroObj obj = weapon.getOwnerObj();
-        if (obj == null)
+        if (obj == null) {
             return new LinkedList<>();
+        }
         List<DC_UnitAction> list = new LinkedList<>();
         for (String typeName : StringMaster.openContainer(weapon.getProperty(PROPS.WEAPON_ATTACKS))) {
-            if (!weapon.isMainHand())
+            if (!weapon.isMainHand()) {
                 typeName = ActionGenerator.getOffhandActionName(typeName);
+            }
             DC_UnitAction action = (DC_UnitAction) getAction(typeName, obj);
 
             // action.setActionTypeGroup(ACTION_TYPE_GROUPS.HIDDEN);
             // TODO so it's inside normal attack then?
-            if (action == null)
+            if (action == null) {
                 continue;
+            }
             list.add(action);
         }
         if (checkAddThrowAction(weapon.getOwnerObj(), !weapon.isMainHand())) {
@@ -518,8 +559,9 @@ public class DC_ActionManager implements ActionManager {
         // should be another passive to deny unit even those commodities...
 
         actives.add(newAction(DUMMY_ACTION, unit));
-        if (unit.isBfObj())
+        if (unit.isBfObj()) {
             return;
+        }
 
         actives.add(newAction(MOVE_LEFT, unit));
         actives.add(newAction(MOVE_RIGHT, unit));
@@ -543,19 +585,22 @@ public class DC_ActionManager implements ActionManager {
         }
         addStandardActionsForGroup(ACTION_TYPE.STANDARD_ATTACK, actives, unit);
 
-        if (RuleMaster.checkFeature(FEATURE.USE_INVENTORY))
+        if (RuleMaster.checkFeature(FEATURE.USE_INVENTORY)) {
             if (unit.canUseItems()) {
                 actives.add(newAction(USE_INVENTORY, unit));
             }
+        }
 
-        if (RuleMaster.checkFeature(FEATURE.WATCH))
+        if (RuleMaster.checkFeature(FEATURE.WATCH)) {
             actives.add(newAction(STD_SPEC_ACTIONS.Watch.name(), unit));
+        }
 
-        if (RuleMaster.checkFeature(FEATURE.FLEE))
+        if (RuleMaster.checkFeature(FEATURE.FLEE)) {
             if (FleeRule.isFleeAllowed()) {
                 actives.add(newAction(FLEE, unit));
             }
-        if (RuleMaster.checkFeature(FEATURE.PICK_UP))
+        }
+        if (RuleMaster.checkFeature(FEATURE.PICK_UP)) {
             try {
                 if (unit.getGame().getDroppedItemManager().checkHasItemsBeneath(unit)) {
                     actives.add(newAction(PICK_UP, unit));
@@ -563,19 +608,23 @@ public class DC_ActionManager implements ActionManager {
             } catch (Exception e) {
                 // e.printStackTrace();
             }
-        if (RuleMaster.checkFeature(FEATURE.DIVINATION))
+        }
+        if (RuleMaster.checkFeature(FEATURE.DIVINATION)) {
             if (unit.canDivine()) {
                 actives.add(newAction(DIVINATION, unit));
             }
-        if (RuleMaster.checkFeature(FEATURE.TOSS_ITEM))
+        }
+        if (RuleMaster.checkFeature(FEATURE.TOSS_ITEM)) {
             if (ListMaster.isNotEmpty(unit.getQuickItems())) {
                 actives.add(newAction(TOSS_ITEM, unit));
             }
+        }
 
-        if (RuleMaster.checkFeature(FEATURE.ENTER))
+        if (RuleMaster.checkFeature(FEATURE.ENTER)) {
             for (Entrance e : DungeonLevelMaster.getAvailableDungeonEntrances(unit)) {
                 actives.add(getEnterAction(unit, e));
             }
+        }
         // for (Entity e : LockMaster.getObjectsToUnlock(unit)) {
         // actives.add(getUnlockAction(unit, e));
         // }
@@ -632,33 +681,49 @@ public class DC_ActionManager implements ActionManager {
 
     private boolean checkAddThrowAction(DC_HeroObj unit, boolean offhand) {
         DC_WeaponObj weapon = unit.getWeapon(offhand);
-        if (weapon == null)
+        if (weapon == null) {
             return false;
-        if (weapon.isShield())
-            if (weapon.getWeaponGroup() == WEAPON_GROUP.BUCKLERS)
-                if (unit.checkBool(STD_BOOLS.BUCKLER_THROWER))
+        }
+        if (weapon.isShield()) {
+            if (weapon.getWeaponGroup() == WEAPON_GROUP.BUCKLERS) {
+                if (unit.checkBool(STD_BOOLS.BUCKLER_THROWER)) {
                     return false;
-        if (!weapon.isWeapon())
+                }
+            }
+        }
+        if (!weapon.isWeapon()) {
             return false;
-        if (weapon.isRanged())
+        }
+        if (weapon.isRanged()) {
             return false;
+        }
         Integer bonus = unit.getIntParam(PARAMS.THROW_SIZE_BONUS);
 
-        if (bonus > -2)
-            if (weapon.getWeaponSize() == WEAPON_SIZE.TINY)
+        if (bonus > -2) {
+            if (weapon.getWeaponSize() == WEAPON_SIZE.TINY) {
                 return true;
-        if (bonus > -1)
-            if (weapon.getWeaponSize() == WEAPON_SIZE.SMALL)
+            }
+        }
+        if (bonus > -1) {
+            if (weapon.getWeaponSize() == WEAPON_SIZE.SMALL) {
                 return true;
-        if (bonus > 2)
-            if (weapon.getWeaponSize() == WEAPON_SIZE.HUGE)
+            }
+        }
+        if (bonus > 2) {
+            if (weapon.getWeaponSize() == WEAPON_SIZE.HUGE) {
                 return true;
-        if (bonus > 1)
-            if (weapon.getWeaponSize() == WEAPON_SIZE.LARGE)
+            }
+        }
+        if (bonus > 1) {
+            if (weapon.getWeaponSize() == WEAPON_SIZE.LARGE) {
                 return true;
-        if (bonus > 0)
-            if (weapon.getWeaponSize() == WEAPON_SIZE.MEDIUM)
+            }
+        }
+        if (bonus > 0) {
+            if (weapon.getWeaponSize() == WEAPON_SIZE.MEDIUM) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -667,8 +732,9 @@ public class DC_ActionManager implements ActionManager {
         for (ActiveObj attack : actives) {
             ObjType offhand = (DataManager.getType(ActionGenerator.getOffhandActionName(attack
                     .getName()), OBJ_TYPES.ACTIONS));
-            if (offhand == null)
+            if (offhand == null) {
                 continue;
+            }
             actives.add(getAction(offhand.getName(), unit));
         }
 
@@ -683,9 +749,11 @@ public class DC_ActionManager implements ActionManager {
         for (ACTION_TYPE type : ACTION_TYPE.values()) {
             // I could actually centralize all action-adding to HERE! Dual, INV
             // and all the future ones
-            if (type != ACTION_TYPE.HIDDEN)
-                if (type != ACTION_TYPE.STANDARD_ATTACK)
+            if (type != ACTION_TYPE.HIDDEN) {
+                if (type != ACTION_TYPE.STANDARD_ATTACK) {
                     addStandardActionsForGroup(type, actives, unit);
+                }
+            }
         }
         // checkDual(unit);
         // checkInv(unit);
@@ -707,8 +775,9 @@ public class DC_ActionManager implements ActionManager {
                 unit.getActionMap().put(type, list);
             }
             if (!list.contains(action)) {
-                if (!hiddenActions.contains(action.getType()))
+                if (!hiddenActions.contains(action.getType())) {
                     list.add(action);
+                }
             }
 
         }
@@ -716,8 +785,9 @@ public class DC_ActionManager implements ActionManager {
 
     private void addStandardActionsForGroup(ACTION_TYPE type, Collection<ActiveObj> actives,
                                             DC_HeroObj unit) {
-        if (stdActionTypes == null)
+        if (stdActionTypes == null) {
             init();
+        }
         OBJ_TYPES TYPE = OBJ_TYPES.getType(unit.getOBJ_TYPE());
         List<DC_UnitAction> actions = new LinkedList<DC_UnitAction>();
         switch (type) {

@@ -50,11 +50,13 @@ public class CollisionRule {
             // TODO adjust in a loop in case there are multiple obstacles
             // around!
             int x = 0;
-            if (left != null)
+            if (left != null) {
                 x = (left ? -1 : 1);
+            }
             int y = 0;
-            if (above != null)
+            if (above != null) {
                 y = (above ? -1 : 1);
+            }
 
             final_coordinate = new Coordinates(dest.x + x, dest.y + y);
             if (!canBeOn(moveObj, final_coordinate)) {
@@ -68,8 +70,9 @@ public class CollisionRule {
             // any action
             Boolean incomerAlive = AttackOfOpportunityRule.collisionAoO(moveObj.getDummyAction(),
                     collideObj);
-            if (!BooleanMaster.isFalse(incomerAlive))
+            if (!BooleanMaster.isFalse(incomerAlive)) {
                 InstantAttackRule.checkCollisionAttack(moveObj, activeObj, collideObj);
+            }
             // if (incomerAlive == null) {
             // if (!summon)
             // AttackOfOpportunityRule.checkAttack(moveObj,
@@ -81,10 +84,12 @@ public class CollisionRule {
         }
         // if (!VisionManager.checkVisible((DC_Obj) moveObj))
         // return false; TODO
-        if (moveObj.isDead())
+        if (moveObj.isDead()) {
             return null;
-        if (collideObj.isDead())
+        }
+        if (collideObj.isDead()) {
             return final_coordinate;
+        }
         if (force != 0) {
             new DealDamageEffect(ForceRule.getCollisionDamageFormula(moveObj, collideObj, force,
                     true), DAMAGE_TYPE.BLUDGEONING).apply(Ref.getSelfTargetingRefCopy(collideObj));
@@ -93,7 +98,9 @@ public class CollisionRule {
         }
         if (!VisionManager.checkVisible(collideObj))
             // if (moveObj.canAct())
+        {
             StealthRule.applySpotted(collideObj); // ROLL?
+        }
         return final_coordinate;
     }
 
@@ -107,8 +114,9 @@ public class CollisionRule {
         while (!Loop.loopEnded()) {
             dest = new RandomWizard<Coordinates>().getRandomListItem(adjacent);
             // dest.getAdjacentCoordinate(FacingManager.getRandomFacing().getDirection());
-            if (canBeOn(moveObj, dest))
+            if (canBeOn(moveObj, dest)) {
                 return dest;
+            }
         }
         return null;
     }

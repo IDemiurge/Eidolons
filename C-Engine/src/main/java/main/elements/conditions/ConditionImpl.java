@@ -31,16 +31,19 @@ public abstract class ConditionImpl extends ReferredElement implements Condition
     public boolean check(Ref ref) {
         setRef(ref);
         boolean logged = false;
-        if (!isLoggingBlocked())
+        if (!isLoggingBlocked()) {
             if (ref.getGame().getManager().isSelecting()
-                    || ref.getGame().getManager().isTriggerBeingChecked())
+                    || ref.getGame().getManager().isTriggerBeingChecked()) {
                 logged = true;
+            }
+        }
         // ++ trigger
         try {
             isTrue = check();
-            if (logged)
-                main.system.auxiliary.LogMaster.log((forceLog ? 1 : LogMaster.CONDITION_DEBUG),
+            if (logged) {
+                LogMaster.log((forceLog ? 1 : LogMaster.CONDITION_DEBUG),
                         toString() + " checks " + isTrue + " on " + ref);
+            }
 
         } catch (Exception e) {
             LogMaster.log(1, "*" + toString() + " failed on " + ref);

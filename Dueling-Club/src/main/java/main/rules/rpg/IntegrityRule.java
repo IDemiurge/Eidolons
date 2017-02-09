@@ -23,7 +23,7 @@ public class IntegrityRule {
     public static PARAMETER[] INTEGRITY_MODIFIED_VALUES;
 
     private static PARAMETER[] getIntegrityModifiedParameters() {
-        if (INTEGRITY_MODIFIED_VALUES == null)
+        if (INTEGRITY_MODIFIED_VALUES == null) {
             INTEGRITY_MODIFIED_VALUES = new PARAMETER[]{
                     ContentManager.getMasteryScore(PARAMS.LEADERSHIP_MASTERY),
                     ContentManager.getMasteryScore(PARAMS.DIVINATION_MASTERY), PARAMS.XP_LEVEL_MOD,
@@ -32,6 +32,7 @@ public class IntegrityRule {
                     // + Organization
                     // + Personality modifiers
             };
+        }
         return INTEGRITY_MODIFIED_VALUES;
     }
 
@@ -63,10 +64,11 @@ public class IntegrityRule {
         if (amount > 0) {
             string = "+" + string;
         }
-        if (integrity == 0)
+        if (integrity == 0) {
             list.add("No effect on Mastery Scores");
-        else
+        } else {
             list.add(string + "% to all Mastery Scores");
+        }
         String focusString = "";
         for (PARAMETER param : getIntegrityModifiedParameters()) {
             amount = getBonus(param, integrity, hero);
@@ -75,16 +77,18 @@ public class IntegrityRule {
                 string = "+" + string;
             }
 
-            if (amount == 0)
+            if (amount == 0) {
                 list.add("No effect on " + param.getName());
-            else {
+            } else {
                 if (param.getName().contains("Focus")) {
-                    if (focusString.isEmpty())
+                    if (focusString.isEmpty()) {
                         focusString += string; // w/o last
-                    else
+                    } else {
                         focusString += ", " + param.getName();
-                } else
+                    }
+                } else {
                     list.add(string);
+                }
             }
         }
         list.add(focusString);
@@ -98,14 +102,15 @@ public class IntegrityRule {
     private static int getBonus(PARAMETER param, int amount, DC_HeroObj hero) {
         String formula = MASTERY_SCORES_BONUS_FORMULA;
 
-        if (param == null)
+        if (param == null) {
             formula = MASTERY_SCORES_BONUS_FORMULA;
-        else
+        } else {
             switch (param.getName()) {
                 case "Leadership Mastery Score":
                     formula = MASTERY_SCORES_BONUS_FORMULA;
                     break;
             }
+        }
         int bonus = DC_Formulas.calculateFormula(formula, amount);
         return bonus;
     }
@@ -135,26 +140,36 @@ public class IntegrityRule {
 
     public static List<PRINCIPLES> getAffectingPrinciples(Entity item, Entity hero) {
         List<PRINCIPLES> list = new LinkedList<>();
-        for (PRINCIPLES p : PRINCIPLES.values())
-            for (Integer val : getValues(p, item, hero))
-                if (val != 0)
-                    if (!list.contains(p))
+        for (PRINCIPLES p : PRINCIPLES.values()) {
+            for (Integer val : getValues(p, item, hero)) {
+                if (val != 0) {
+                    if (!list.contains(p)) {
                         list.add(p);
+                    }
+                }
+            }
+        }
         return list;
     }
 
     public static boolean isAffectingPrinciple(Entity item, Entity hero, PRINCIPLES principle) {
         if (principle == null) {
-            for (PRINCIPLES p : PRINCIPLES.values())
-                for (Integer val : getValues(p, item, hero))
+            for (PRINCIPLES p : PRINCIPLES.values()) {
+                for (Integer val : getValues(p, item, hero)) {
                     if (val != 0) // cache affected principles?
+                    {
                         return true;
+                    }
+                }
+            }
             return false;
         }
 
-        for (Integer val : getValues(principle, item, hero))
-            if (val != 0)
+        for (Integer val : getValues(principle, item, hero)) {
+            if (val != 0) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -215,8 +230,9 @@ public class IntegrityRule {
     }
 
     public static void applyMods(Entity hero, Entity from, boolean alignment_identity) {
-        if (from == null)
+        if (from == null) {
             return;
+        }
         PARAMETER[] array = alignment_identity ? ValuePages.PRINCIPLE_ALIGNMENTS
                 : ValuePages.PRINCIPLE_IDENTITIES;
         for (PARAMETER param : array) {
@@ -235,17 +251,18 @@ public class IntegrityRule {
         ALIGNMENT_LEVEL lowestLevel = (ALIGNMENT_LEVEL) levels[3];
 
         String adjective = "";
-        if (highestPrinciple != null && highestLevel != null)
+        if (highestPrinciple != null && highestLevel != null) {
             adjective = getAdjective(highestPrinciple, highestLevel);
-        else {
-            if (lowestPrinciple != null && lowestLevel != null)
+        } else {
+            if (lowestPrinciple != null && lowestLevel != null) {
                 adjective = getAdjective(lowestPrinciple, lowestLevel);
+            }
         }
         levels = getHighestLowestLevels(false, hero);
         highestPrinciple = (PRINCIPLES) levels[0];
         IDENTITY_LEVEL highestLevel2 = (IDENTITY_LEVEL) levels[1];
         String noun = "";
-        if (highestLevel2 != null)
+        if (highestLevel2 != null) {
             switch (highestLevel2) {
                 case FONDNESS:
                     noun = getNounFond(highestPrinciple, hero);
@@ -257,6 +274,7 @@ public class IntegrityRule {
                     noun = getNounLove(highestPrinciple, hero);
                     break;
             }
+        }
 
 		/*
          * if no positive alignment,
@@ -269,8 +287,9 @@ public class IntegrityRule {
 		 * 
 		 */
         String string = noun;
-        if (!StringMaster.isEmpty(adjective))
+        if (!StringMaster.isEmpty(adjective)) {
             string = adjective + " " + noun;
+        }
         return string;
     }
 
@@ -327,12 +346,14 @@ public class IntegrityRule {
         VALUE_LEVEL level = null;
         for (VALUE_LEVEL level1 : levels) {
             if (level1.getBarrier() < 0) {
-                if (amount <= level1.getBarrier())
+                if (amount <= level1.getBarrier()) {
                     level = level1;
-            } else if (amount >= level1.getBarrier())
+                }
+            } else if (amount >= level1.getBarrier()) {
                 level = level1;
-            else
+            } else {
                 break;
+            }
         }
         return level;
     }
@@ -351,8 +372,9 @@ public class IntegrityRule {
                 return "Rebel"; // Troublemaker renegade, daredevil,
             // troublemaker, adventurer
             case HONOR:
-                if (EntityMaster.getGender(hero) == GENDER.FEMALE)
+                if (EntityMaster.getGender(hero) == GENDER.FEMALE) {
                     return "Lady";
+                }
                 return "Gentleman";
             case TREACHERY:
                 // if (EntityMaster.getGender(hero) == GENDER.FEMALE)
@@ -378,8 +400,9 @@ public class IntegrityRule {
 
     public static String getNoun(PRINCIPLES principle, Entity hero) {
         IDENTITY_LEVEL identityLevel = IntegrityRule.getIdentityLevel(principle, hero);
-        if (identityLevel == null)
+        if (identityLevel == null) {
             return null;
+        }
         String s = "";
         switch (identityLevel) {
             case CONTEMPT:
@@ -405,8 +428,9 @@ public class IntegrityRule {
             case HONOR:
                 return "Sneak";
             case TREACHERY:
-                if (EntityMaster.getGender(hero) == GENDER.FEMALE)
+                if (EntityMaster.getGender(hero) == GENDER.FEMALE) {
                     return "Lady";
+                }
                 return "Gentleman";
             case AMBITION:
                 return "Servant";
@@ -432,8 +456,9 @@ public class IntegrityRule {
                 return "Free Spirit"; // renegade, daredevil, troublemaker,
             // adventurer
             case HONOR:
-                if (EntityMaster.getGender(hero) == GENDER.FEMALE)
+                if (EntityMaster.getGender(hero) == GENDER.FEMALE) {
                     return "Lady";
+                }
                 return "Gentleman";
             case TREACHERY:
                 // if (EntityMaster.getGender(hero) == GENDER.FEMALE)
@@ -458,8 +483,9 @@ public class IntegrityRule {
     }
 
     private static String getEmptyDescription(Entity hero) {
-        if (EntityMaster.getGender(hero) == GENDER.FEMALE)
+        if (EntityMaster.getGender(hero) == GENDER.FEMALE) {
             return "Woman";
+        }
         return "Man";
     }
 

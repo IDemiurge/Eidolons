@@ -49,8 +49,9 @@ public class EntryNodeMaster {
 
     public static int getRowHeight(boolean top) {
         int fontHeight = FontMaster.getFontHeight(top ? getTopFont() : getSubNodeFont());
-        if (top)
+        if (top) {
             fontHeight = fontHeight - 2;
+        }
         return fontHeight;
     }
 

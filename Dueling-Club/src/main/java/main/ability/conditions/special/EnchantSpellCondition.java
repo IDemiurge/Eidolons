@@ -28,10 +28,13 @@ public class EnchantSpellCondition extends MicroCondition {
         // TODO I could of course leave for freedom to the player
         // - just check the *targeting mode* and if it's fitting, let him choose
         // the spell
-        if (ref.getMatchObj() instanceof DC_SpellObj)
-            for (TARGETING_MODE t : modes)
-                if (t == ((DC_SpellObj) ref.getMatchObj()).getTargetingMode())
+        if (ref.getMatchObj() instanceof DC_SpellObj) {
+            for (TARGETING_MODE t : modes) {
+                if (t == ((DC_SpellObj) ref.getMatchObj()).getTargetingMode()) {
                     return true;
+                }
+            }
+        }
 
         return false;
     }

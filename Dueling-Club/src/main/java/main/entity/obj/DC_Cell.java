@@ -32,8 +32,9 @@ public class DC_Cell extends DC_Obj implements Cell {
         this.y = j;
 
         this.dungeon = dungeon;
-        if (dungeon != null)
+        if (dungeon != null) {
             setZ(dungeon.getZ());
+        }
         addDynamicValues();
         setImage(ImageManager.getEmptyCellPath(GuiManager.getBfCellsVersion()));
     }
@@ -68,31 +69,39 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     public DIRECTION getBorderSide() {
         if (getX() + 1 == GuiManager.getCurrentLevelCellsX()) {
-            if (getY() + 1 == GuiManager.getCurrentLevelCellsY())
+            if (getY() + 1 == GuiManager.getCurrentLevelCellsY()) {
                 return DIRECTION.DOWN_RIGHT;
-            if (getY() == 0)
+            }
+            if (getY() == 0) {
                 return DIRECTION.UP_RIGHT;
+            }
             return DIRECTION.RIGHT;
         }
         if (getY() + 1 == GuiManager.getCurrentLevelCellsY()) {
-            if (getX() == 0)
+            if (getX() == 0) {
                 return DIRECTION.DOWN_LEFT;
-            if (getX() + 1 == GuiManager.getCurrentLevelCellsX())
+            }
+            if (getX() + 1 == GuiManager.getCurrentLevelCellsX()) {
                 return DIRECTION.DOWN_RIGHT;
+            }
             return DIRECTION.DOWN;
         }
         if (getY() == 0) {
-            if (getX() == 0)
+            if (getX() == 0) {
                 return DIRECTION.UP_LEFT;
-            if (getX() + 1 == GuiManager.getCurrentLevelCellsX())
+            }
+            if (getX() + 1 == GuiManager.getCurrentLevelCellsX()) {
                 return DIRECTION.UP_RIGHT;
+            }
             return DIRECTION.UP;
         }
         if (getX() == 0) {
-            if (getY() + 1 == GuiManager.getCurrentLevelCellsY())
+            if (getY() + 1 == GuiManager.getCurrentLevelCellsY()) {
                 return DIRECTION.DOWN_LEFT;
-            if (getY() == 0)
+            }
+            if (getY() == 0) {
                 return DIRECTION.UP_LEFT;
+            }
             return DIRECTION.LEFT;
         }
         return null;
@@ -112,21 +121,25 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     public String getToolTip() {
         String text = "";
-        if (getIntParam(PARAMS.LIGHT_EMISSION) != 0)
+        if (getIntParam(PARAMS.LIGHT_EMISSION) != 0) {
             text += StringMaster.getWellFormattedString("LIGHT_EMISSION - ")
                     + getParam(PARAMS.LIGHT_EMISSION);
-        if (getIntParam(PARAMS.ILLUMINATION) != 0)
+        }
+        if (getIntParam(PARAMS.ILLUMINATION) != 0) {
             text += StringMaster.getWellFormattedString(", ILLUMINATION - ")
                     + getParam(PARAMS.ILLUMINATION);
-        if (getIntParam(PARAMS.CONCEALMENT) != 0)
+        }
+        if (getIntParam(PARAMS.CONCEALMENT) != 0) {
             text += StringMaster.getWellFormattedString(", CONCEALMENT - ")
                     + getParam(PARAMS.CONCEALMENT);
+        }
 
         if (DebugMaster.isMapDebugOn()) {
             MapBlock block = getGame().getDungeonMaster().getDungeon().getPlan()
                     .getBlockByCoordinate(getCoordinates());
-            if (block != null)
+            if (block != null) {
                 return getCoordinates() + " (" + block.getShortName() + "); " + text;
+            }
             return getCoordinates() + " " + super.getToolTip()
                     + StringMaster.wrapInParenthesis(text);
         }

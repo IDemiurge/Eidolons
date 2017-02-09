@@ -17,8 +17,9 @@ public class AV_ImgChooser extends ImageChooser {
 
 	@Override
 	protected String getDefaultFileLocation() {
-		if (defaultImageLocation != null)
-			return ImageManager.getDefaultImageLocation() + defaultImageLocation;
-		return ImageManager.getDefaultImageLocation();
+        if (defaultImageLocation != null) {
+            return ImageManager.getDefaultImageLocation() + defaultImageLocation;
+        }
+        return ImageManager.getDefaultImageLocation();
 	}
 }

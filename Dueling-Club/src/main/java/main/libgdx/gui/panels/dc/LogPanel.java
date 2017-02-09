@@ -247,9 +247,13 @@ public class LogPanel extends Group {
     @Override
     public Actor hit(float x, float y, boolean touchable) {
         Actor actor = super.hit(x, y, touchable);
-        if (actor == null) return null;
+        if (actor == null) {
+            return null;
+        }
 
-        if (actor instanceof Image) return null;
+        if (actor instanceof Image) {
+            return null;
+        }
         return actor;
     }
 }

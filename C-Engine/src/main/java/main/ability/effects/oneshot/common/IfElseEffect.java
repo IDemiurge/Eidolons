@@ -16,15 +16,17 @@ public class IfElseEffect extends ConditionalEffect {
     public String getTooltip() {
         if (condition.check(ref)) {
             return effect.getTooltip();
-        } else
+        } else {
             return ELSEeffect.getTooltip();
+        }
     }
 
     @Override
     public boolean applyThis() {
         if (condition.check(ref)) {
             return effect.apply(ref);
-        } else
+        } else {
             return ELSEeffect.apply(ref);
+        }
     }
 }

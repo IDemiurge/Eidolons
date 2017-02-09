@@ -48,8 +48,9 @@ public class HC_TabPanel extends G_Panel implements MouseListener {
         panelSize = CharacterCreator.getHeroPanelSize();
         setBackground(ColorManager.BACKGROUND);
         setOpaque(true);
-        if (Launcher.getHcKeyListener() != null)
+        if (Launcher.getHcKeyListener() != null) {
             Launcher.getHcKeyListener().setTabPanel(this);
+        }
     }
 
     public HC_TabPanel() {
@@ -88,14 +89,16 @@ public class HC_TabPanel extends G_Panel implements MouseListener {
 
     public void addTab(Integer index, String title, String imgPath, G_Component comp) {
         HC_Tab tab = new HC_Tab(title, comp, tabs.size());
-        if (index != null)
+        if (index != null) {
             tabs.add(index, tab);
-        else
+        } else {
             tabs.add(tab);
+        }
         if (tabPanel == null) {
             tabPanel = new HC_PagedTabs(tabs, this);
-            if (getPageSize() != 0)
+            if (getPageSize() != 0) {
                 tabPanel.setPageSize(getPageSize());
+            }
         }
         if (ENUM != null) {
             sort();
@@ -117,8 +120,9 @@ public class HC_TabPanel extends G_Panel implements MouseListener {
     public void refresh() {
         removeAll();
         tabPanel.refresh();
-        if (Launcher.getHcKeyListener() != null)
+        if (Launcher.getHcKeyListener() != null) {
             Launcher.getHcKeyListener().setTabPanel(this);
+        }
         requestFocusInWindow();
         add(tabPanel, "id tabs, pos " + getTabsOffsetX() + " " + getTabsOffsetY());
         G_Component component = tabs.get(getIndex()).getComponent();
@@ -190,21 +194,24 @@ public class HC_TabPanel extends G_Panel implements MouseListener {
     }
 
     public void select(int newIndex) {
-        if (tabs.size() == 0)
+        if (tabs.size() == 0) {
             return;
+        }
         if (newIndex < 0) {
             newIndex = tabs.size() - 1;
         } else if (tabs.size() <= newIndex) {
             newIndex -= tabs.size();
         }
-        if (tabPanel != null)
+        if (tabPanel != null) {
             if (tabPanel.getCurrentIndex() > 0) {
                 // int pageIndex = newIndex/ tabPanel.getPageSize();
                 newIndex += tabPanel.getPageSize()
                         * (tabPanel.getCurrentIndex() - newIndex / tabPanel.getPageSize());
             }
-        if (tabs.size() > getIndex())
+        }
+        if (tabs.size() > getIndex()) {
             tabs.get(getIndex()).setSelected(false);
+        }
         setIndex(newIndex);
         currentComp = tabs.get(getIndex()).getComponent();
         tabs.get(getIndex()).setSelected(true);

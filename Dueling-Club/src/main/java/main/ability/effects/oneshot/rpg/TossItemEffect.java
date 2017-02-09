@@ -67,18 +67,21 @@ public class TossItemEffect extends DC_Effect {
         if (item instanceof DC_QuickItemObj) {
             DC_QuickItemObj quickItem = (DC_QuickItemObj) item;
             source.removeQuickItem(quickItem);
-            if (result)
+            if (result) {
                 unit.addQuickItem(quickItem);
-            else
+            } else {
                 dropped(item, unit);
+            }
 
         } else {
             source.unequip(item, null);
-            if (result)
+            if (result) {
                 unit.addItemToInventory(item); // TODO equip in hand if
-                // possible? spend AP?
-            else
+            }
+// possible? spend AP?
+            else {
                 dropped(item, unit);
+            }
 
         }
         // ref.getObj(KEYS.ITEM);
@@ -100,8 +103,9 @@ public class TossItemEffect extends DC_Effect {
         boolean result = RollMaster.roll(ROLL_TYPES.ACCURACY, "-", fail, ref, "@, missing the "
                 + item.getName() + " toss", item.getName() + " toss");
         fail = "5";
-        if (!result)
+        if (!result) {
             fail += "*2";
+        }
         REF.setTarget(unit.getId());
         result = !RollMaster.roll(ROLL_TYPES.REFLEX, "-", fail, ref, "@, dropping the tossed "
                 + item.getName(), item.getName() + " toss");
@@ -120,8 +124,9 @@ public class TossItemEffect extends DC_Effect {
                     quickItemObj.activate(Ref.getSelfTargetingRefCopy(unit)); // setForceTarget(true)
                 }
             }
-        } else
+        } else {
             unit.getGame().getDroppedItemManager().itemFalls(unit.getCoordinates(), item);
+        }
     }
 
 }

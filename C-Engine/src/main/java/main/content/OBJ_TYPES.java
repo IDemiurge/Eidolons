@@ -102,15 +102,17 @@ public enum OBJ_TYPES implements OBJ_TYPE {
 
     public static OBJ_TYPE getTypeByCode(int code) {
         for (OBJ_TYPE type : values()) {
-            if (type.getCode() == code)
+            if (type.getCode() == code) {
                 return type;
+            }
         }
         return null;
     }
 
     public static OBJ_TYPES getType(String s) {
-        if (s == null)
+        if (s == null) {
             return null;
+        }
         OBJ_TYPES type = null;
         try {
             type = valueOf(s.toUpperCase().replace(" ", "_"));
@@ -141,21 +143,25 @@ public enum OBJ_TYPES implements OBJ_TYPE {
 
     public static boolean isOBJ_TYPE(String name) {
         for (OBJ_TYPES type : OBJ_TYPES.values()) {
-            if (StringMaster.compare(type.getName(), name, true))
+            if (StringMaster.compare(type.getName(), name, true)) {
                 return true;
+            }
         }
         return false;
     }
 
     public static Object[] getXmlGroups(OBJ_TYPE TYPE) {
-        if (TYPE == OBJ_TYPES.ABILS)
+        if (TYPE == OBJ_TYPES.ABILS) {
             return ABILITY_TYPE.values();
+        }
         // if (TYPE == OBJ_TYPES.SPELLS)
         // return ASPECT.values();
-        if (TYPE == OBJ_TYPES.CHARS)
+        if (TYPE == OBJ_TYPES.CHARS) {
             return RACE.values();
-        if (TYPE == OBJ_TYPES.UNITS)
+        }
+        if (TYPE == OBJ_TYPES.UNITS) {
             return ASPECT.values();
+        }
         return null;
     }
 

@@ -71,8 +71,9 @@ public class ClassView extends HeroItemView {
             return BORDER.SILVER_64;// TODO CIRCLE CHECK!
         }
         String r = hero.getGame().getRequirementsManager().check(hero, value);
-        if (r == null)
+        if (r == null) {
             return null;
+        }
 
         return BORDER.HIDDEN;
     }
@@ -92,8 +93,9 @@ public class ClassView extends HeroItemView {
         String group = vendorPanel.getSelectedTabName();
         List<ObjType> list = getAdditionalTypesMap().get(group);
 
-        if (list != null)
+        if (list != null) {
             return list;
+        }
         String types = StringMaster.joinStringList(DataManager.getTypeNamesGroup(getTYPE(), group),
                 ";");
 
@@ -120,8 +122,9 @@ public class ClassView extends HeroItemView {
     }
 
     public Map<String, List<ObjType>> getAdditionalTypesMap() {
-        if (additionalTypesMap == null)
+        if (additionalTypesMap == null) {
             additionalTypesMap = new HashMap<>();
+        }
         return additionalTypesMap;
     }
 

@@ -60,9 +60,10 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		int modifier = 1;
 		if (e.isAltDown()) {
-			if (e.isShiftDown())
-				modifier = 5;
-			zoom(modifier * e.getWheelRotation());
+            if (e.isShiftDown()) {
+                modifier = 5;
+            }
+            zoom(modifier * e.getWheelRotation());
 			SoundMaster.playStandardSound(STD_SOUNDS.PAGE_TURNED);
 			return;
 		}
@@ -83,11 +84,12 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
 		// boolean x = !d.isVertical();
 		boolean x = isXEdgeCloserToHoverObj();
 
-		if (e.isShiftDown())
-			x = false;
-		else if (e.isControlDown())
-			x = true;
-		// boolean invert= !d.isVertical();
+        if (e.isShiftDown()) {
+            x = false;
+        } else if (e.isControlDown()) {
+            x = true;
+        }
+        // boolean invert= !d.isVertical();
 
 		SoundMaster.playStandardSound(STD_SOUNDS.MOVE);
 		offset(-modifier * e.getWheelRotation(), x);
@@ -164,9 +166,10 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
 		}
 		lastClicked = obj;
 		if (obj instanceof DC_Cell) {
-			if (mode != null)
-				return false;
-			SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
+            if (mode != null) {
+                return false;
+            }
+            SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
 			return true;
 		}
 		selectedObj = obj;
@@ -188,18 +191,21 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
 		obj = cellComp.getTopObjOrCell();
 		obj.setCoordinates(coordinates);
 		lastClicked = obj;
-		if (!right)
-			selectedObj = obj;
-		if (right)
-			setMode(null);
-		if (checkEventConsumed(obj, right)) {
+        if (!right) {
+            selectedObj = obj;
+        }
+        if (right) {
+            setMode(null);
+        }
+        if (checkEventConsumed(obj, right)) {
 			getGrid().getPanel().repaint();
 			return;
 		}
 		LevelEditor.getGrid().setDirty(true);
 		handleClick(e, right);
-		if (LevelEditor.getGrid().isDirty())
-			LevelEditor.getGrid().refresh();
+        if (LevelEditor.getGrid().isDirty()) {
+            LevelEditor.getGrid().refresh();
+        }
 
 	}
 
@@ -267,36 +273,39 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
 		if (right) {
 			ObjType selectedType = LevelEditor.getMainPanel().getPalette().getSelectedType();
 
-			if (selectedType != null)
-				if ((EntityMaster.isOverlaying(selectedType) && !EntityMaster
-						.isOverlaying(lastClicked))
-						|| ((empty || add)) && !alt) {
-					if (lastClicked != null) {
+            if (selectedType != null) {
+                if ((EntityMaster.isOverlaying(selectedType) && !EntityMaster
+                        .isOverlaying(lastClicked))
+                        || ((empty || add)) && !alt) {
+                    if (lastClicked != null) {
 
-						if (e.isShiftDown())
-							selectedType = LevelEditor.getMainPanel().getInfoPanel()
-									.getSelectedType();
-						LevelEditor.cache();
-						LevelEditor.getObjMaster().addObj(selectedType, coordinates);
-						LevelEditor.setMouseAddMode(true);
-						// if (alt) //left click instead!
-						// obj.setDirection(DirectionMaster.FLIP_DIRECTION);
-						SoundMaster.playStandardSound(STD_SOUNDS.OK);
+                        if (e.isShiftDown()) {
+                            selectedType = LevelEditor.getMainPanel().getInfoPanel()
+                                    .getSelectedType();
+                        }
+                        LevelEditor.cache();
+                        LevelEditor.getObjMaster().addObj(selectedType, coordinates);
+                        LevelEditor.setMouseAddMode(true);
+                        // if (alt) //left click instead!
+                        // obj.setDirection(DirectionMaster.FLIP_DIRECTION);
+                        SoundMaster.playStandardSound(STD_SOUNDS.OK);
 
-						// LevelEditor.getMainPanel().getPalette().checkAddToPalette(selectedType);
-					}
-					return;
-				}
-		}
-		if (selectedObj != null)
-			try {
-				selectedObj.setInfoSelected(true);
-				// LevelEditor.highlightsOff();
-				// LevelEditor.highlight(selectedObj.getCoordinates());
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-		// LevelEditor.getMainPanel().getPalette().
+                        // LevelEditor.getMainPanel().getPalette().checkAddToPalette(selectedType);
+                    }
+                    return;
+                }
+            }
+        }
+        if (selectedObj != null) {
+            try {
+                selectedObj.setInfoSelected(true);
+                // LevelEditor.highlightsOff();
+                // LevelEditor.highlight(selectedObj.getCoordinates());
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        }
+        // LevelEditor.getMainPanel().getPalette().
 		// LevelEditor.getMainPanel().getInfoPanel()
 
 	}
@@ -309,9 +318,10 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
 	public void mousePressed(MouseEvent e) {
 		pressPoint = e.getPoint();
 		// new thread
-		if (!pressOffset)
-			return;
-		new Thread(new Runnable() {
+        if (!pressOffset) {
+            return;
+        }
+        new Thread(new Runnable() {
 			public void run() {
 				WaitMaster.WAIT(500); // speed up for right click
 

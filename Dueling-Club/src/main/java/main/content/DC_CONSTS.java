@@ -295,8 +295,9 @@ public class DC_CONSTS {
             this.iconLetter = iconLetter;
             this.iconNumber = iconNumber;
             this.leveled = false;
-            if (value != null)
+            if (value != null) {
                 this.value = value.getName();
+            }
             this.prop = G_PROPS.STANDARD_PASSIVES;
 
         }

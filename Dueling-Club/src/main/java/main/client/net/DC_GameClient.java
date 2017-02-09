@@ -106,17 +106,18 @@ public class DC_GameClient implements Runnable {
 
         getGameConnector().setConnection(connection);
         // getTestGame().getHostedGame().getGame().playerJoined();
-        if (getTestGame().isFastMode())
+        if (getTestGame().isFastMode()) {
             return;
+        }
 
         gameConnector.send(HOST_CLIENT_CODES.HOST_USER_DATA_REQUEST);
         if (new WaitingThread(HOST_CLIENT_CODES.HOST_USER_DATA_REQUEST).waitForInput()) {
             this.hostData = WaitingThread.getINPUT(HOST_CLIENT_CODES.HOST_USER_DATA_REQUEST);
             initHostUser();
         }
-        if (testGame != null)
+        if (testGame != null) {
             this.gameOptions = testGame.getTestingOptions();
-        else {
+        } else {
             gameConnector.send(HOST_CLIENT_CODES.GAME_OPTIONS_REQUEST);
             if (new WaitingThread(HOST_CLIENT_CODES.GAME_OPTIONS_REQUEST).waitForInput()) {
                 this.gameOptions = WaitingThread.getINPUT(HOST_CLIENT_CODES.GAME_OPTIONS_REQUEST);

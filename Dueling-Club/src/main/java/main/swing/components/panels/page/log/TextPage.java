@@ -25,8 +25,9 @@ public class TextPage extends WrappedTextComp {
 
     @Override
     public Font getFont() {
-        if (logPanel == null)
+        if (logPanel == null) {
             return FontMaster.getDefaultFont();
+        }
         return logPanel.getFont();
     }
 

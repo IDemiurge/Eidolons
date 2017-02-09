@@ -18,44 +18,32 @@ import main.swing.generic.components.G_Panel.VISUALS;
 import main.swing.generic.components.G_TabbedPanel;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.services.layout.LayoutInfo;
-import main.system.auxiliary.Chronos;
-import main.system.auxiliary.CollectionsMaster;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.Err;
-import main.system.auxiliary.ListMaster;
-import main.system.auxiliary.MapMaster;
+import main.system.auxiliary.*;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
 import main.utilities.filter.TypeFilter;
 import main.utilities.workspace.Workspace;
 import main.utilities.workspace.WorkspaceManager;
 
-import java.awt.Component;
-import java.awt.Dimension;
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.io.File;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JTabbedPane;
-import javax.swing.JTree;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 public class TabBuilder extends Builder implements ChangeListener {
 
 	private static Class<?> TOP_ENUM_CLASS = OBJ_TYPES.class;
-	private List<String> tabNames;
+    int specialTabsAdded = 0;
+    private List<String> tabNames;
 	private boolean top;
 	private String type;
 	private PROPERTY groupingKey;
 	private XLinkedMap<String, Component> tabmap;
 	private boolean dirty = true;
-
-	int specialTabsAdded = 0;
 	private G_TabbedPanel workspaceTab;
 	private G_TabbedPanel searchTab;
 	private List<Workspace> activeWorkspaces;
@@ -71,9 +59,10 @@ public class TabBuilder extends Builder implements ChangeListener {
 		this.top = (key == null);
 		this.type = key;
 		comp = new JTabbedPane();
-		if (XML_Reader.isMacro())
-			TOP_ENUM_CLASS = MACRO_OBJ_TYPES.class;
-	}
+        if (XML_Reader.isMacro()) {
+            TOP_ENUM_CLASS = MACRO_OBJ_TYPES.class;
+        }
+    }
 
 	@Override
 	public void init() {
@@ -102,16 +91,17 @@ public class TabBuilder extends Builder implements ChangeListener {
 			}
 
 		} else {
-			if (tabNames == null)
-				try {
-					tabNames = TableDataManager.getTreeTabSubGroups(type);
-				} catch (Exception e) {
-					main.system.auxiliary.LogMaster.log(1, "Tab Sub Groups failed for " + type);
-					e.printStackTrace();
-					// throw new RuntimeException();
-					return;
-				}
-			groupingKey = DataManager.getGroupingKey(type);
+            if (tabNames == null) {
+                try {
+                    tabNames = TableDataManager.getTreeTabSubGroups(type);
+                } catch (Exception e) {
+                    main.system.auxiliary.LogMaster.log(1, "Tab Sub Groups failed for " + type);
+                    e.printStackTrace();
+                    // throw new RuntimeException();
+                    return;
+                }
+            }
+            groupingKey = DataManager.getGroupingKey(type);
 			if (!isLevelEditor())
 			// if (ArcaneVault.isMacroMode())
 			{
@@ -182,8 +172,9 @@ public class TabBuilder extends Builder implements ChangeListener {
 				component = builder.build();
 
 				tabmap.put(infoArray[i], component);
-				if (!ContentManager.getOBJ_TYPE(infoArray[i]).isHidden())
-					getTabbedPane().addTab(infoArray[i], component);
+                if (!ContentManager.getOBJ_TYPE(infoArray[i]).isHidden()) {
+                    getTabbedPane().addTab(infoArray[i], component);
+                }
 
 			} else {
 				addTab(infoArray[i], builder.build());
@@ -192,11 +183,13 @@ public class TabBuilder extends Builder implements ChangeListener {
 
 		}
 		if (top) {
-			if (!levelEditor)
-				sortTabs();
-			if (WorkspaceManager.ADD_WORKSPACE_TAB_ON_INIT)
-				initWorkspaceTabs();
-		}
+            if (!levelEditor) {
+                sortTabs();
+            }
+            if (WorkspaceManager.ADD_WORKSPACE_TAB_ON_INIT) {
+                initWorkspaceTabs();
+            }
+        }
 
 		ready = true;
 		return comp;
@@ -213,9 +206,10 @@ public class TabBuilder extends Builder implements ChangeListener {
 			// }
 		}
 		for (String tabName : tabmap.keySet()) {
-			if (ContentManager.getOBJ_TYPE(tabName).isHidden())
-				continue;
-			Component component = tabmap.get(tabName);
+            if (ContentManager.getOBJ_TYPE(tabName).isHidden()) {
+                continue;
+            }
+            Component component = tabmap.get(tabName);
 			addTypeTab(tabName, component);
 
 		}
@@ -227,9 +221,10 @@ public class TabBuilder extends Builder implements ChangeListener {
 		ImageIcon icon = ImageManager.getIcon(ContentManager.getTypeImage(tabName));
 
 		String text = "";
-		if (!ImageManager.isValidIcon(icon))
-			text = ("" + tabName.charAt(0)).toUpperCase();
-		getTabbedPane().insertTab(text, icon, component, tabName,
+        if (!ImageManager.isValidIcon(icon)) {
+            text = ("" + tabName.charAt(0)).toUpperCase();
+        }
+        getTabbedPane().insertTab(text, icon, component, tabName,
 				Math.min(code, getTabbedPane().getTabCount() - 1));
 		tabmap.put(tabName, component);
 
@@ -288,14 +283,17 @@ public class TabBuilder extends Builder implements ChangeListener {
 	}
 
 	public void addWorkspaceTab(Workspace workspace) {
-		if (getActiveWorkspaces().contains(workspace))
-			return;
-		if (workspace.isSearch()) {
-			if (searchTab == null)
-				addSearchTopTab();
-		} else if (workspaceTab == null)
-			addWorkspaceTopTab();
-		G_Panel tabComp = new G_Panel();
+        if (getActiveWorkspaces().contains(workspace)) {
+            return;
+        }
+        if (workspace.isSearch()) {
+            if (searchTab == null) {
+                addSearchTopTab();
+            }
+        } else if (workspaceTab == null) {
+            addWorkspaceTopTab();
+        }
+        G_Panel tabComp = new G_Panel();
 		tabComp.add(generateWorkspaceTree(workspace), "pos 0 0 " + ArcaneVault.TREE_WIDTH + " "
 				+ ArcaneVault.TABLE_HEIGHT + "-" + ArcaneVault.TREE_HEIGHT + "/20");
 		(workspace.isSearch() ? searchTab : workspaceTab).addTab(tabComp, workspace.getName());
@@ -319,11 +317,14 @@ public class TabBuilder extends Builder implements ChangeListener {
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		if (!top)
-			if (!isLevelEditor())
-				if (ArcaneVault.getMainBuilder().isNodesDirty())
-					rebuildTab();
-		// getSelectedTabName()
+        if (!top) {
+            if (!isLevelEditor()) {
+                if (ArcaneVault.getMainBuilder().isNodesDirty()) {
+                    rebuildTab();
+                }
+            }
+        }
+        // getSelectedTabName()
 		if (getTabbedPane().getSelectedComponent() instanceof G_TabbedPanel) {
 			G_TabbedPanel tab = (G_TabbedPanel) getTabbedPane().getSelectedComponent();
 			// if (workspaceTab != null) {
@@ -331,10 +332,12 @@ public class TabBuilder extends Builder implements ChangeListener {
 					&& (e.getSource() == tab.getTabs() || getTabbedPane().getSelectedComponent() == tab)) {
 				Workspace workspace = ArcaneVault.getWorkspaceManager().getWorkspaceByTab(
 						(G_Panel) tab.getTabs().getSelectedComponent());
-				if (workspace != null)
-					if (workspace.isDirty())
-						initSelectedWorkspace(tab);
-			}
+                if (workspace != null) {
+                    if (workspace.isDirty()) {
+                        initSelectedWorkspace(tab);
+                    }
+                }
+            }
 		}
 	}
 
@@ -380,8 +383,9 @@ public class TabBuilder extends Builder implements ChangeListener {
 
 	public String getSelectedTabName() {
 
-		if (!ready || !top)
-			return "";
+        if (!ready || !top) {
+            return "";
+        }
 
 		try {
 			String name = CollectionsMaster.getInvertedMap(tabmap).get(
@@ -402,8 +406,9 @@ public class TabBuilder extends Builder implements ChangeListener {
 			if (getTabbedPane().getSelectedIndex() >= builderArray.length) {
 				G_Panel tabComp = (G_Panel) getTabbedPane().getSelectedComponent();
 				tree = (JTree) tabComp.getComponent(0);
-			} else
-				tree = ((TabBuilder) builderArray[getTabbedPane().getSelectedIndex()]).getTree();
+            } else {
+                tree = ((TabBuilder) builderArray[getTabbedPane().getSelectedIndex()]).getTree();
+            }
 
 		} else {
 			int index = getTabbedPane().getSelectedIndex();
@@ -419,17 +424,19 @@ public class TabBuilder extends Builder implements ChangeListener {
 
 	// TODO mouselistener on filter tabs?
 	public void removeSelectedTab() {
-		if (top)
-			((TabBuilder) getBuilderArray()[getSelectedIndex()]).removeTab(getSelectedIndex());
-		else
-			removeTab(getSelectedIndex());
-	}
+        if (top) {
+            ((TabBuilder) getBuilderArray()[getSelectedIndex()]).removeTab(getSelectedIndex());
+        } else {
+            removeTab(getSelectedIndex());
+        }
+    }
 
 	public TreeViewBuilder getTreeBuilder() {
 
-		if (top)
-			return ((TabBuilder) getBuilderArray()[getSelectedIndex()]).getTreeBuilder();
-		return (TreeViewBuilder) getBuilderArray()[getSelectedIndex()];
+        if (top) {
+            return ((TabBuilder) getBuilderArray()[getSelectedIndex()]).getTreeBuilder();
+        }
+        return (TreeViewBuilder) getBuilderArray()[getSelectedIndex()];
 	}
 
 	public int getSelectedIndex() {
@@ -451,13 +458,13 @@ public class TabBuilder extends Builder implements ChangeListener {
 
 	}
 
-	public void setDirty(boolean b) {
-		dirty = b;
-	}
-
 	public boolean isDirty() {
 		return dirty;
 	}
+
+    public void setDirty(boolean b) {
+        dirty = b;
+    }
 
 	@Override
 	public void reload() {
@@ -474,9 +481,10 @@ public class TabBuilder extends Builder implements ChangeListener {
 	}
 
 	public List<Workspace> getActiveWorkspaces() {
-		if (activeWorkspaces == null)
-			activeWorkspaces = new LinkedList<>();
-		return activeWorkspaces;
+        if (activeWorkspaces == null) {
+            activeWorkspaces = new LinkedList<>();
+        }
+        return activeWorkspaces;
 	}
 
 	public G_TabbedPanel getWorkspaceTab() {
@@ -484,9 +492,10 @@ public class TabBuilder extends Builder implements ChangeListener {
 	}
 
 	public TabBuilder getSubTabs(int code) {
-		if (!top)
-			return null;
-		return (TabBuilder) getBuilderArray()[code];
+        if (!top) {
+            return null;
+        }
+        return (TabBuilder) getBuilderArray()[code];
 	}
 
 	public void removeFilter() {
@@ -508,11 +517,12 @@ public class TabBuilder extends Builder implements ChangeListener {
 			// getSubTabs(filter.getTYPE().getCode()).addFilter(filter);
 		} else {
 			List<ObjType> types = filter.getTypes();
-			if (!types.isEmpty())
-				getTabbedPane().addTab("F", new TreeViewBuilder(new Workspace("F", types)).build());
-			else
-				DialogMaster.error("No types matching " + filter.getCondition());
-		}
+            if (!types.isEmpty()) {
+                getTabbedPane().addTab("F", new TreeViewBuilder(new Workspace("F", types)).build());
+            } else {
+                DialogMaster.error("No types matching " + filter.getCondition());
+            }
+        }
 
 	}
 
@@ -524,9 +534,10 @@ public class TabBuilder extends Builder implements ChangeListener {
 			path = PathFinder.getMACRO_TYPES_PATH();
 		}
 		File file = new File(path + name + ".xml");
-		if (!file.isFile())
-			return ;
-		XML_Reader.readTypeXmlFile(file, false);
+        if (!file.isFile()) {
+            return;
+        }
+        XML_Reader.readTypeXmlFile(file, false);
 		TabBuilder tabBuilder = new TabBuilder(name);
 		JComponent tabs = tabBuilder.build();
 		builders.put(tabBuilder, null);

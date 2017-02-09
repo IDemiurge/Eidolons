@@ -12,10 +12,10 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.bf.mouse.GridMouseListener;
-import main.libgdx.gui.panels.dc.InitiativePanelParam;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -117,9 +117,9 @@ public class GridPanel extends Group {
         GuiEventManager.bind(DESTROY_UNIT_MODEL, param -> {
             DC_HeroObj unit = (DC_HeroObj) param.get();
             UnitView view = (UnitView) unitMap.get(unit);
-//            view.setVisibleVal(0);//set this val to zero remove unit from initiative queue
-            GuiEventManager.trigger(REMOVE_FROM_INITIATIVE_PANEL,
-             new EventCallbackParam(new InitiativePanelParam(null, view.getId(), 0)));
+            view.setVisibleVal(0);//set this val to zero remove unit from initiative queue
+//            GuiEventManager.trigger(REMOVE_FROM_INITIATIVE_PANEL,
+//             new EventCallbackParam(new InitiativePanelParam(null, view.getId(), 0)));
             removeUnitView(unit);
         });
 
@@ -153,6 +153,13 @@ public class GridPanel extends Group {
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED) {
                 if (!DeathAnim.isOn())
                     GuiEventManager.trigger(DESTROY_UNIT_MODEL, new EventCallbackParam(r.getTargetObj()));
+                AnimMaster.getInstance(). onDone(event,p ->
+                GuiEventManager.trigger(DESTROY_UNIT_MODEL,
+                 new EventCallbackParam(r.getTargetObj())
+                )
+                ,  new EventCallbackParam(r.getTargetObj())
+                );
+
                 caught = true;
             }
 

@@ -223,8 +223,9 @@ public enum G_PROPS implements PROPERTY {
         this.entityType = entityType;
         this.shortName = shortName;
         this.fullName = name();
-        if (StringMaster.isEmpty(shortName))
+        if (StringMaster.isEmpty(shortName)) {
             this.shortName = StringMaster.getWellFormattedString(name());
+        }
         this.name = StringMaster.getWellFormattedString(name());
         this.container = false;
         defaultValue = "";
@@ -240,8 +241,9 @@ public enum G_PROPS implements PROPERTY {
     }
 
     public Map<OBJ_TYPE, Object> getDefaultValuesMap() {
-        if (defaultValuesMap == null)
+        if (defaultValuesMap == null) {
             defaultValuesMap = new HashMap<OBJ_TYPE, Object>();
+        }
         return defaultValuesMap;
     }
 

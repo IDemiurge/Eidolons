@@ -50,14 +50,17 @@ public class ParamElement extends ValueTextComp {
             paintParamIcon(g);
         }
 
-        if (isPaintBlocked())
+        if (isPaintBlocked()) {
             return;
+        }
         paramValue = getValue();
-        if (!isMultiParameter())
-            if (paramValue.contains("."))
+        if (!isMultiParameter()) {
+            if (paramValue.contains(".")) {
                 if (!entity.getGame().isSimulation()) {
                     paramValue = "" + entity.getIntParam((PARAMETER) value);
                 }
+            }
+        }
         // now here we could use some color or so... getParam(base)
         g.drawString(paramValue + "", getDefaultX2(), getDefaultY());
     }
@@ -65,10 +68,12 @@ public class ParamElement extends ValueTextComp {
     private void paintParamIcon(Graphics g) {
         if (value instanceof MultiParameter) {
             MultiParameter multiParameter = (MultiParameter) value;
-            if (image == null)
+            if (image == null) {
                 image = ImageManager.getValueIcon(multiParameter.getParameters()[0]);
-            if (image == null)
+            }
+            if (image == null) {
                 image = ImageManager.getEmptyEmblem().getImage();
+            }
 
             g.drawImage(image, x, (getVisuals().getHeight() - image.getHeight(null)) / 2, null);
         }
@@ -89,8 +94,9 @@ public class ParamElement extends ValueTextComp {
     // else
     @Override
     protected int getDefaultFontSize() {
-        if (fontSize != null)
+        if (fontSize != null) {
             return fontSize;
+        }
         return DEFAULT_SIZE;
     }
 
@@ -133,9 +139,10 @@ public class ParamElement extends ValueTextComp {
     }
 
     protected int getDefaultX2() {
-        if (isMultiParameter())
+        if (isMultiParameter()) {
             return Math.max(image.getWidth(null), (visuals.getImage().getWidth(null) - FontMaster
                     .getStringWidth(getDefaultFont(), paramValue)) / 2);
+        }
 
         return visuals.getImage().getWidth(null) - X_1 * X_2_FACTOR;
     }

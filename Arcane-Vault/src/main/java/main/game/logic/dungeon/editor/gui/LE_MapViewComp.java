@@ -43,9 +43,10 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
 		this.mainPanel = mainPanel;
 		if (mission != null) {
 			levels = mission.getLevels();
-		} else
-			levels = new DequeImpl<>(list);
-		tabs = new HC_TabPanel();
+        } else {
+            levels = new DequeImpl<>(list);
+        }
+        tabs = new HC_TabPanel();
 		tabs.setPageSize(5);
 
 		infoComp.setWrapText(true);
@@ -96,11 +97,12 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
 	}
 
 	public void addLevel(Level level) {
-		if (mission == null)
-			levels.add(level);
-		else
-			mission.addLevel(level);
-		G_Panel panel = new G_Panel();
+        if (mission == null) {
+            levels.add(level);
+        } else {
+            mission.addLevel(level);
+        }
+        G_Panel panel = new G_Panel();
 		panel.setKeyManager(mainPanel.getKeyManager());
 		panel.addKeyListener(mainPanel.getKeyManager());
 		panel.setPanelSize(SIZE);
@@ -126,15 +128,17 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
 
 		// tabs.getCurrentComp().add(map.getComp(), "pos 0 0");
 		// revalidate();
-		if (map != null)
-			getMinigrid().refresh();
-		super.refresh();
+        if (map != null) {
+            getMinigrid().refresh();
+        }
+        super.refresh();
 
-		if (LevelEditor.getActionStatusTooltip() == null)
-			infoComp.setText("");
-		else
-			infoComp.setText(LevelEditor.getActionStatusTooltip());
-	}
+        if (LevelEditor.getActionStatusTooltip() == null) {
+            infoComp.setText("");
+        } else {
+            infoComp.setText(LevelEditor.getActionStatusTooltip());
+        }
+    }
 
 	public WrappedTextComp getInfoComp() {
 		return infoComp;
@@ -146,10 +150,11 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
 
 	@Override
 	public void tabSelected(int index) {
-		if (mission == null)
-			currentLevel = levels.get(index);
-		else
-			currentLevel = mission.getLevels().get(index);
+        if (mission == null) {
+            currentLevel = levels.get(index);
+        } else {
+            currentLevel = mission.getLevels().get(index);
+        }
 
 		LevelEditor.getMainPanel().setCurrentLevel(currentLevel);
 
@@ -190,14 +195,15 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
 		}
 		// grid.refresh();
 		if (tabs.getCurrentComp().getComponentCount() > 0) {
-			if (!isMinimapMode())
-				grid.refresh();
-			return;
+            if (!isMinimapMode()) {
+                grid.refresh();
+            }
+            return;
 		}
-		if (isMinimapMode())
-			tabs.getCurrentComp().add(map.getComp(), "pos 0 0");
-		else {
-			grid.refresh();
+        if (isMinimapMode()) {
+            tabs.getCurrentComp().add(map.getComp(), "pos 0 0");
+        } else {
+            grid.refresh();
 			tabs.getCurrentComp().add(grid.getPanel(), "pos 0 0");
 		}
 	}

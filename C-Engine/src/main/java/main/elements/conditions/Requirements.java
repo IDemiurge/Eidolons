@@ -75,10 +75,11 @@ public class Requirements implements Condition {
     }
 
     public String checkReason(Ref ref) {
-        if (check(ref, false))
+        if (check(ref, false)) {
             return null;
-        else
+        } else {
             return getReason();
+        }
 
     }
 
@@ -90,10 +91,12 @@ public class Requirements implements Condition {
         for (String r : reqMap.keySet()) {
             if (!reqMap.get(r).check(REF)) {
                 reasons.add(r);
-                if (getReason() == null)
+                if (getReason() == null) {
                     setReason(r);
-                if (!isFullCheck())
+                }
+                if (!isFullCheck()) {
                     return false;
+                }
             }
         }
         return getReason() == null;

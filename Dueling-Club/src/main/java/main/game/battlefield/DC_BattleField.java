@@ -50,8 +50,9 @@ public class DC_BattleField extends SwingBattleField {
 
     @Override
     public void init() {
-        if (map != null)
+        if (map != null) {
             getGrid().setMap(map);
+        }
 
         if (builder != null) {
             Chronos.mark("BF BUILDER INIT");
@@ -90,8 +91,9 @@ public class DC_BattleField extends SwingBattleField {
     }
 
     public boolean canMoveOnto(Entity unit, Coordinates c) {
-        if (getGrid().getCell(c) == null)
+        if (getGrid().getCell(c) == null) {
             return false;
+        }
         return cellHasSpaceForUnit(unit, c);
     }
 
@@ -117,14 +119,16 @@ public class DC_BattleField extends SwingBattleField {
             // }
         }
 
-        if (isInitialized())
+        if (isInitialized()) {
             refreshGrid();
+        }
 
     }
 
     private void refreshGrid() {
-        if (getActiveSelectedObj() != null)
+        if (getActiveSelectedObj() != null) {
             getGrid().refresh();
+        }
     }
 
     @Override
@@ -166,10 +170,12 @@ public class DC_BattleField extends SwingBattleField {
         this.setActiveSelectedObj(obj);
         getState().getGame().getVisionManager().refresh();
 
-        if (VisionManager.checkVisible((DC_Obj) obj))
+        if (VisionManager.checkVisible((DC_Obj) obj)) {
             centerCameraOn(obj); // TODO [QUICK FIX]
-        if (obj.isMine())
+        }
+        if (obj.isMine()) {
             refresh();
+        }
     }
 
     // public BattleFieldGrid getGrid() {
@@ -211,9 +217,9 @@ public class DC_BattleField extends SwingBattleField {
 
     @Override
     public void refreshSpellbook() {
-        if (CoreEngine.isSwingOn())
-        dc_builder.getSpellbookPanel().refresh();
-        else {
+        if (CoreEngine.isSwingOn()) {
+            dc_builder.getSpellbookPanel().refresh();
+        } else {
 //            TODO
         }
     }
@@ -235,14 +241,18 @@ public class DC_BattleField extends SwingBattleField {
     }
 
     public void refreshInitiativeQueue() {
-        if (dc_builder!=null )
-            if (CoreEngine.isSwingOn())
-        dc_builder.getUnitInfoPanel().getPriorityListPanel().refresh();
+        if (dc_builder != null) {
+            if (CoreEngine.isSwingOn()) {
+                dc_builder.getUnitInfoPanel().getPriorityListPanel().refresh();
+            }
+        }
 
     }
 
     public void centerCameraOn(Obj selected) {
-        if (grid==null )return ;
+        if (grid == null) {
+            return;
+        }
         grid.manualOffsetReset();
         grid.setCameraCenterCoordinates(selected.getCoordinates());
 

@@ -58,15 +58,19 @@ public class ChoiceEffect extends MicroEffect {
         String input = null;
         if (!getGame().isOffline()) {
             getGame().getCommunicator().getChoiceData();
-        } else
+        } else {
             input = ListChooser.chooseType(listData, TYPE);
-        if (input == null)
+        }
+        if (input == null) {
             return false;
+        }
         WaitMaster.receiveInput(operation, input);
 
-        if (!getGame().isOffline())
-            if (obj.isMine())
+        if (!getGame().isOffline()) {
+            if (obj.isMine()) {
                 getGame().getCommunicator().sendChoiceData(input);
+            }
+        }
 
         return true;
     }

@@ -44,11 +44,12 @@ public class SmallItem extends JLabel {
     private void initLabel() {
 
         ImageIcon icon = ImageManager.getIcon(imagePath);
-        if (!empty)
+        if (!empty) {
             if (!ImageManager.isValidIcon(icon)) {
                 imagePath = getDefaultImagePath();
                 icon = ImageManager.getIcon(imagePath);
             }
+        }
         if (!ImageManager.isValidIcon(icon)) {
             setIcon(ImageManager.getIcon(ImageManager.getEmptyListIconSmall())); // font?!
 

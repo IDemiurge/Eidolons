@@ -8,12 +8,15 @@ public class ItemMaster {
     public static boolean isBreakable(DC_HeroItemObj item) {
         if (item instanceof DC_QuickItemObj) {
             DC_QuickItemObj q = (DC_QuickItemObj) item;
-            if (q.isCoating())
+            if (q.isCoating()) {
                 return true;
-            if (q.isConcoction())
+            }
+            if (q.isConcoction()) {
                 return true;
-            if (q.isPotion())
+            }
+            if (q.isPotion()) {
                 return true;
+            }
         }
         // material - glass?
 

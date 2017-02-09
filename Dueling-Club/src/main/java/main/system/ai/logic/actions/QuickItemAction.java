@@ -20,8 +20,9 @@ public class QuickItemAction extends Action {
 
     @Override
     public boolean activate() {
-        if (ref.getTargetObj() != null)
+        if (ref.getTargetObj() != null) {
             active.setForcePresetTarget(true);
+        }
 
         getActive().setRef(ref);
         boolean result = item.activate();

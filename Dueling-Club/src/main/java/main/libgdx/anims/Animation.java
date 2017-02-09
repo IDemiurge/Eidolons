@@ -2,6 +2,8 @@ package main.libgdx.anims;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
+import main.system.EventCallback;
+import main.system.EventCallbackParam;
 
 /**
  * Created by JustMe on 1/29/2017.
@@ -25,4 +27,6 @@ public interface Animation {
     boolean isRunning();
 
     void setDelay(float delay);
+
+    void onDone(EventCallback callback, EventCallbackParam param);
 }

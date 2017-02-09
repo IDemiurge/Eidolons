@@ -90,12 +90,14 @@ public class SpellMaster {
 
         // if (logic != null)
         // return logic;
-        if (spell.isThrow())
+        if (spell.isThrow()) {
             return AI_LOGIC.DAMAGE;
+        }
         if (spell instanceof DC_ItemActiveObj) {
             DC_ItemActiveObj itemActiveObj = (DC_ItemActiveObj) spell;
-            if (itemActiveObj.getItem().isAmmo())
+            if (itemActiveObj.getItem().isAmmo()) {
                 return AI_LOGIC.OTHER;
+            }
             if (itemActiveObj.getItem().getProperty(G_PROPS.ITEM_GROUP)
                     .equalsIgnoreCase(ITEM_GROUP.COATING.toString())) {
                 return AI_LOGIC.COATING;
@@ -107,8 +109,9 @@ public class SpellMaster {
         }
 
         if (logic == null) {
-            if (!spell.isConstructed())
+            if (!spell.isConstructed()) {
                 spell.construct();
+            }
             try {
                 logic = getLogicByTargeting(spell);
             } catch (Exception e) {
@@ -129,8 +132,9 @@ public class SpellMaster {
                 main.system.auxiliary.LogMaster.log(1, spell.getName()
                         + " no Z Logic");
             }
-            if (logic != null)
+            if (logic != null) {
                 return logic;
+            }
             try {
                 logic = getBuffLogic(spell);
             } catch (Exception e) {
@@ -138,8 +142,9 @@ public class SpellMaster {
                 main.system.auxiliary.LogMaster.log(1, spell.getName()
                         + " no Buff Logic");
             }
-            if (logic != null)
+            if (logic != null) {
                 return logic;
+            }
             try {
                 logic = getModValueLogic(spell);
             } catch (Exception e) {
@@ -147,8 +152,9 @@ public class SpellMaster {
                 main.system.auxiliary.LogMaster.log(1, spell.getName()
                         + " no Mod Logic");
             }
-            if (logic != null)
+            if (logic != null) {
                 return logic;
+            }
             if (EffectMaster.check(actives, MoveEffect.class)) {
                 return AI_LOGIC.MOVE;
             }// if (EffectMaster.check(actives, MoveEffect.class)) {// return
@@ -187,22 +193,25 @@ public class SpellMaster {
         Abilities actives = spell.getAbilities();
         List<Effect> effects = EffectMaster.getEffectsOfClass(actives,
                 ModifyValueEffect.class);
-        if (effects.isEmpty())
+        if (effects.isEmpty()) {
             effects = EffectMaster.getEffectsOfClass(actives,
                     ModifyCounterEffect.class);
+        }
         if (!effects.isEmpty()) {
             Effect effect = effects.get(0);
 
             if (effect instanceof ModifyCounterEffect) {
                 ModifyCounterEffect counterEffect = (ModifyCounterEffect) effect;
-                if (isCounterEffectPositive(spell, counterEffect))
+                if (isCounterEffectPositive(spell, counterEffect)) {
                     return AI_LOGIC.RESTORE;
+                }
                 return AI_LOGIC.DEBILITATE;
             }
 
             if (effect instanceof ModifyValueEffect) {
-                if (isModifyValueEffectPositive(spell, effect))
+                if (isModifyValueEffectPositive(spell, effect)) {
                     return AI_LOGIC.RESTORE;
+                }
                 return AI_LOGIC.DEBILITATE;
             }
         }
@@ -214,10 +223,11 @@ public class SpellMaster {
         if (EffectMaster.check(actives, AddBuffEffect.class)) {
             if (((AddBuffEffect) EffectMaster.getEffectsOfClass(actives,
                     AddBuffEffect.class).get(0)).getEffect().getFormula()
-                    .getInt(spell.getOwnerObj().getRef()) > 0)
+                    .getInt(spell.getOwnerObj().getRef()) > 0) {
                 return AI_LOGIC.BUFF_POSITIVE;
-            else
+            } else {
                 return AI_LOGIC.BUFF_NEGATIVE;
+            }
         }
         return null;
     }
@@ -230,25 +240,31 @@ public class SpellMaster {
                 SpecialTargetingEffect zoneEffect = (SpecialTargetingEffect) effect;
                 if (EffectMaster.check(zoneEffect.getEffect(),
                         DealDamageEffect.class)) {
-                    if (zoneEffect instanceof WaveEffect)
+                    if (zoneEffect instanceof WaveEffect) {
                         return AI_LOGIC.AUTO_DAMAGE;
-                    if (zoneEffect instanceof ShapeEffect)
+                    }
+                    if (zoneEffect instanceof ShapeEffect) {
                         return AI_LOGIC.AUTO_DAMAGE;
-                    if (spell.getTargetingMode() == TARGETING_MODE.NOVA)
+                    }
+                    if (spell.getTargetingMode() == TARGETING_MODE.NOVA) {
                         return AI_LOGIC.AUTO_DAMAGE;
-                    if (spell.getTargetingMode() == TARGETING_MODE.SPRAY)
+                    }
+                    if (spell.getTargetingMode() == TARGETING_MODE.SPRAY) {
                         return AI_LOGIC.AUTO_DAMAGE;
-                    if (spell.getTargetingMode() == TARGETING_MODE.WAVE)
+                    }
+                    if (spell.getTargetingMode() == TARGETING_MODE.WAVE) {
                         return AI_LOGIC.AUTO_DAMAGE;
+                    }
 
                     return AI_LOGIC.DAMAGE_ZONE;
                 }
                 if (EffectMaster.check(zoneEffect.getEffect(),
                         ModifyValueEffect.class)) {
-                    if (isModifyValueEffectPositive(spell, zoneEffect))
+                    if (isModifyValueEffectPositive(spell, zoneEffect)) {
                         return AI_LOGIC.RESTORE_ZONE;
-                    else
+                    } else {
                         return AI_LOGIC.DEBILITATE_ZONE;
+                    }
                 }
 
                 // Effect e = EffectMaster.getEffectsOfClass(
@@ -261,10 +277,11 @@ public class SpellMaster {
                             zoneEffect.getEffect(), ModifyCounterEffect.class)
                             .get(0);
                     ModifyCounterEffect counterEffect = (ModifyCounterEffect) e;
-                    if (isCounterEffectPositive(spell, counterEffect))
+                    if (isCounterEffectPositive(spell, counterEffect)) {
                         return AI_LOGIC.RESTORE_ZONE;
-                    else
+                    } else {
                         return AI_LOGIC.DEBILITATE_ZONE;
+                    }
                 }
             }
         }
@@ -285,8 +302,9 @@ public class SpellMaster {
         boolean positive = CounterMaster.isCounterPositive(counterEffect
                 .getCounterName());
 
-        if (counterEffect.getFormula().getInt(spell.getOwnerObj().getRef()) < 0)
+        if (counterEffect.getFormula().getInt(spell.getOwnerObj().getRef()) < 0) {
             positive = !positive;
+        }
         return positive;
     }
 
@@ -314,19 +332,25 @@ public class SpellMaster {
                 case SELF:
                     return AI_LOGIC.SELF;
                 case ANY_ALLY:
-                    if (EffectMaster.check(actives, AddBuffEffect.class))
+                    if (EffectMaster.check(actives, AddBuffEffect.class)) {
                         return AI_LOGIC.BUFF_POSITIVE;
-                    if (EffectMaster.check(actives, ModifyValueEffect.class))
+                    }
+                    if (EffectMaster.check(actives, ModifyValueEffect.class)) {
                         return AI_LOGIC.RESTORE;
+                    }
                 case ANY_ENEMY:
-                    if (EffectMaster.check(actives, DealDamageEffect.class))
+                    if (EffectMaster.check(actives, DealDamageEffect.class)) {
                         return AI_LOGIC.DAMAGE;
-                    if (EffectMaster.check(actives, AddBuffEffect.class))
+                    }
+                    if (EffectMaster.check(actives, AddBuffEffect.class)) {
                         return AI_LOGIC.BUFF_NEGATIVE;
-                    if (EffectMaster.check(actives, ModifyValueEffect.class))
+                    }
+                    if (EffectMaster.check(actives, ModifyValueEffect.class)) {
                         return AI_LOGIC.DEBILITATE;
-                    if (EffectMaster.check(actives, DrainEffect.class))
+                    }
+                    if (EffectMaster.check(actives, DrainEffect.class)) {
                         return AI_LOGIC.DEBILITATE;
+                    }
                     break;
                 case ANY_UNIT:
 
@@ -334,16 +358,18 @@ public class SpellMaster {
                         if (((AddBuffEffect) EffectMaster.getEffectsOfClass(
                                 actives, AddBuffEffect.class).get(0))
                                 .getEffect().getFormula()
-                                .getInt(spell.getOwnerObj().getRef()) > 0)
+                                .getInt(spell.getOwnerObj().getRef()) > 0) {
                             return AI_LOGIC.BUFF_POSITIVE;
-                        else
+                        } else {
                             return AI_LOGIC.BUFF_NEGATIVE;
+                        }
                     }
                     List<Effect> effects = EffectMaster.getEffectsOfClass(
                             actives, ModifyValueEffect.class);
-                    if (effects.isEmpty())
+                    if (effects.isEmpty()) {
                         effects = EffectMaster.getEffectsOfClass(actives,
                                 ModifyCounterEffect.class);
+                    }
                     Effect effect = effects.get(0);
 
                     if (effect instanceof ModifyCounterEffect) {
@@ -351,14 +377,16 @@ public class SpellMaster {
                         boolean positive = isCounterEffectPositive(spell,
                                 counterEffect);
 
-                        if (positive)
+                        if (positive) {
                             return AI_LOGIC.RESTORE;
+                        }
                         return AI_LOGIC.DEBILITATE;
                     }
 
                     if (effect instanceof ModifyValueEffect) {
-                        if (isModifyValueEffectPositive(spell, effect))
+                        if (isModifyValueEffectPositive(spell, effect)) {
                             return AI_LOGIC.RESTORE;
+                        }
                         return AI_LOGIC.DEBILITATE;
 
                     }

@@ -11,13 +11,16 @@ public class EvasionRule {
     public static boolean checkMissed(DC_ActiveObj action) {
         DC_Obj source = action.getOwnerObj();
         Obj target = action.getRef().getTargetObj();
-        if (source == null || target == null)
+        if (source == null || target == null) {
             return false;
-        if (source.checkPassive(STANDARD_PASSIVES.TRUE_STRIKE))
+        }
+        if (source.checkPassive(STANDARD_PASSIVES.TRUE_STRIKE)) {
             return false;
+        }
         int chance = getMissChance(action);
-        if (chance <= 0)
+        if (chance <= 0) {
             return false;
+        }
         // add cell's concealment value, but not the unit's!
 
         return RandomWizard.chance(chance);

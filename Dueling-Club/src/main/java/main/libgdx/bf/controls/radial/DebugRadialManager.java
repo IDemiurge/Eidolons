@@ -65,8 +65,9 @@ public class DebugRadialManager {
                 try {
                     if (object instanceof DEBUG_CONTROL) {
                         handleDebugControl((DEBUG_CONTROL) object);
-                    } else
+                    } else {
                         handleDebugControl(object);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

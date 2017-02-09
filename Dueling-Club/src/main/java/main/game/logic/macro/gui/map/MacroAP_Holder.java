@@ -52,11 +52,12 @@ public class MacroAP_Holder extends G_Panel {
                 x = ((MacroGuiManager.getMapWidth() - comp.getPanelWidth() - GAP) / 2)
                         + "";
             } else {
-                if (group == MACRO_ACTION_GROUPS.PARTY)
+                if (group == MACRO_ACTION_GROUPS.PARTY) {
                     x = ((MacroGuiManager.getMapWidth() - comp.getPanelWidth()) - GAP)
                             + "";
-                else
+                } else {
                     x = GAP + "";
+                }
             }
             LI += ", y " + y + "," + " x " + x;
             add(comp, LI);

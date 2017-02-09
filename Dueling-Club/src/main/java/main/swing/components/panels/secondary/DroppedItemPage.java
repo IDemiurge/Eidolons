@@ -36,8 +36,9 @@ public class DroppedItemPage extends G_ListPanel<DC_HeroItemObj> implements
     @Override
     public Component getListCellRendererComponent(JList<? extends DC_HeroItemObj> list,
                                                   DC_HeroItemObj value, int index, boolean isSelected, boolean cellHasFocus) {
-        if (value == null)
+        if (value == null) {
             return new GraphicComponent(ImageManager.getGraveyardEmptyItemIconPath());
+        }
         Image image = value.getIcon().getImage();
         if (isSelected) {
             image = ImageManager.applyBorder(image, BORDER.HIGHLIGHTED_96);

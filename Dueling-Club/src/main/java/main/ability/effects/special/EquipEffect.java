@@ -31,12 +31,14 @@ public class EquipEffect extends MicroEffect {
 
     @Override
     public boolean applyThis() {
-        if (item == null)
+        if (item == null) {
             if (quickItem) {
                 item = (DC_HeroItemObj) ref.getObj(KEYS.ITEM);
-            } else
+            } else {
                 item = (DC_HeroItemObj) ref.getObj((weapon) ? KEYS.WEAPON
                         : KEYS.ARMOR);
+            }
+        }
         // check if item can be equipped at all!
 
         DC_HeroObj hero = (DC_HeroObj) ref.getTargetObj();
@@ -45,11 +47,13 @@ public class EquipEffect extends MicroEffect {
 
         boolean mainHand = true;
         // item.getProp(prop)
-        if (hero.getMainWeapon() != null && hero.getSecondWeapon() == null)
+        if (hero.getMainWeapon() != null && hero.getSecondWeapon() == null) {
             mainHand = false;
-        if (weapon || quickItem)
+        }
+        if (weapon || quickItem) {
             slot = (mainHand || quickItem) ? ITEM_SLOT.MAIN_HAND
                     : ITEM_SLOT.OFF_HAND;
+        }
 
         ref.setID((weapon || quickItem) ? KEYS.WEAPON : KEYS.ARMOR, item
                 .getId());

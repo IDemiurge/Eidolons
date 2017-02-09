@@ -118,9 +118,11 @@ public class DC_Builder extends Builder {
                 paintListOverlays(g);
                 getGrid().getGame().getToolTipMaster().drawToolTips(this);
 
-                if (dialog != null)
-                    if (dialog.isVisible())
+                if (dialog != null) {
+                    if (dialog.isVisible()) {
                         dialog.paint(g);
+                    }
+                }
 
                 // getGrid().getGame().getGuiMaster().drawDynamicButtons();
             }
@@ -136,14 +138,16 @@ public class DC_Builder extends Builder {
     }
 
     public void newDungeon(Dungeon subLevel) {
-        if (levelGrids.containsKey(subLevel))
+        if (levelGrids.containsKey(subLevel)) {
             return;
+        }
         lastGrid = grid;
         grid = new DC_BattleFieldGrid(subLevel);
         if (subLevel.isSublevel()) {
             DC_Map map = new DungeonMapGenerator().generateMap(subLevel);
-            if (map == null)
+            if (map == null) {
                 return;
+            }
             grid.setMap(map);
             // map.setBackground(getBackground());
             // map.setName(getMapName());
@@ -164,10 +168,11 @@ public class DC_Builder extends Builder {
                     add(getUnitInfoPanel(), "pos 0 0");
                 }
                 revalidate();
-                if (getUnitInfoPanel().getParent() == this)
+                if (getUnitInfoPanel().getParent() == this) {
                     getUnitInfoPanel().refresh();
-                else if (getCellInfoPanel().getParent() == this)
+                } else if (getCellInfoPanel().getParent() == this) {
                     getCellInfoPanel().refresh();
+                }
                 // TODO repaint(Rectangle r)
                 repaint();
                 // TODO repaint(x, y, width, height);
@@ -243,31 +248,38 @@ public class DC_Builder extends Builder {
 
     @Override
     public void refresh() {
-        if (refreshing)
+        if (refreshing) {
             return;
+        }
         refreshing = true;
         try {
             Dungeon dungeon = state.getGame().getManager().getActiveObj().getDungeon();
             state.getGame().getDungeonMaster().initSublevel(dungeon);
 
-            for (DC_BattleFieldGrid levelGrid : levelGrids.values())
-                if (levelGrid != null)
+            for (DC_BattleFieldGrid levelGrid : levelGrids.values()) {
+                if (levelGrid != null) {
                     getComp().remove(levelGrid.getComp());
-            for (Minimap minimap : getMinimaps().values())
-                if (minimap != null)
+                }
+            }
+            for (Minimap minimap : getMinimaps().values()) {
+                if (minimap != null) {
                     getComp().remove(minimap.getComp());
+                }
+            }
             if (minimapDisplayed) {
                 minimap = getMinimaps().get(dungeon);
                 if (minimap == null) {
                     minimap = new Minimap(dungeon);
                     minimap.init();
                     getMinimaps().put(dungeon, minimap);
-                } else
+                } else {
                     minimap.getGrid().refresh();
+                }
                 getComp().add(minimap.getComp(), getMinimapPos());
             } else {
-                if (lastGrid != grid)
+                if (lastGrid != grid) {
                     state.getGame().getManager().resetWallMap();
+                }
                 lastGrid = grid;
                 grid = levelGrids.get(dungeon);
 try{state.getGame().getGUI().resetBgIcon(grid.getMap().getBackground());
@@ -309,11 +321,13 @@ try{state.getGame().getGUI().resetBgIcon(grid.getMap().getBackground());
     }
 
     public BattleFieldGrid getGrid(Integer zLevel) {
-        if (zLevel == null)
+        if (zLevel == null) {
             return grid;
+        }
         for (Dungeon d : levelGrids.keySet()) {
-            if (d.getZ() == zLevel)
+            if (d.getZ() == zLevel) {
                 return levelGrids.get(d);
+            }
         }
         return null;
     }
@@ -347,8 +361,9 @@ try{state.getGame().getGUI().resetBgIcon(grid.getMap().getBackground());
     }
 
     public DungeonsPanel getDungeonsPanel() {
-        if (dungeonsPanel == null)
+        if (dungeonsPanel == null) {
             setDungeonsPanel(new DungeonsPanel(state.getGame()));
+        }
         return dungeonsPanel;
     }
 
@@ -361,8 +376,9 @@ try{state.getGame().getGUI().resetBgIcon(grid.getMap().getBackground());
     }
 
     public void toggleDisplayActionModePanel(DC_ActiveObj activeObj, boolean closeOnly) {
-        if (actionModePanel == null)
+        if (actionModePanel == null) {
             actionModePanel = new ActionModePanel();
+        }
         comp.repaint();
 
         if (actionModePanel.getParent() == comp) {
@@ -372,8 +388,9 @@ try{state.getGame().getGUI().resetBgIcon(grid.getMap().getBackground());
                 return;
             }
         }
-        if (closeOnly)
+        if (closeOnly) {
             return;
+        }
         SoundMaster.playStandardSound(STD_SOUNDS.DIS__OPEN_MENU);
         int column = -1;
         DC_PagedUnitActionPanel actionPanel = null;
@@ -381,14 +398,16 @@ try{state.getGame().getGUI().resetBgIcon(grid.getMap().getBackground());
             actionPanel = getUap().getUapMap().get(group);
             DC_UnitActionPanel panel = (DC_UnitActionPanel) actionPanel.getCurrentComponent();
             List<DC_UnitAction> data = panel.getData();
-            if (data != null)
+            if (data != null) {
                 if (data.contains(activeObj)) {
                     column = data.indexOf(activeObj);
                     break;
                 }
+            }
         }
-        if (column == -1)
+        if (column == -1) {
             return;
+        }
         actionModePanel.setAction(activeObj);
         int x = uap.getX()
          + actionPanel.getX()
@@ -425,8 +444,9 @@ try{state.getGame().getGUI().resetBgIcon(grid.getMap().getBackground());
 
     private void drawActionListOverlay(DC_ActiveObj activeObj, Graphics g, Image image) {
         Point p = getScreenPointForAction(activeObj);
-        if (p == null)
+        if (p == null) {
             return;
+        }
         int offsetX = image.getWidth(null) / 2 - (image.getWidth(null) - 64);
         int offsetY = -(image.getHeight(null) - 64) / 2;
         g.drawImage(image, p.x + offsetX, p.y + offsetY, null);
@@ -462,8 +482,9 @@ try{state.getGame().getGUI().resetBgIcon(grid.getMap().getBackground());
         }
         DC_PagedUnitActionPanel unitActionPanel = getUap().getPanelForAction(
          (DC_ActiveObj) activeObj);
-        if (unitActionPanel == null)
+        if (unitActionPanel == null) {
             return null;
+        }
         DC_UnitActionPanel panel = (DC_UnitActionPanel) unitActionPanel.getCurrentComponent();
         int column = panel.getData().indexOf(activeObj);
         int x = uap.getX()
@@ -498,8 +519,9 @@ try{state.getGame().getGUI().resetBgIcon(grid.getMap().getBackground());
     }
 
     public Map<Dungeon, Minimap> getMinimaps() {
-        if (minimaps == null)
+        if (minimaps == null) {
             minimaps = new HashMap<>();
+        }
         return minimaps;
     }
 

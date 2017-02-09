@@ -81,10 +81,12 @@ public class HC_Tree {
         this.arg = arg;
         bufferImage = generateTreeImage();
         backgroundImage = ImageManager.getImage(getBackGroundPath());
-        if (backgroundImage == null)
+        if (backgroundImage == null) {
             backgroundImage = ImageManager.getImage(getGroupBackgroundPath());
-        if (backgroundImage == null)
+        }
+        if (backgroundImage == null) {
             backgroundImage = ImageManager.getImage(getEmptyBackgroundPath());
+        }
         panel = new G_Panel() {
             @Override
             public void paint(Graphics g) {
@@ -93,8 +95,9 @@ public class HC_Tree {
                 if (backgroundImage != null) {
                     g.drawImage(backgroundImage, 0, 0, null);
                 }
-                if (bufferImage != null)
+                if (bufferImage != null) {
                     g.drawImage(bufferImage, 0, 0, null); // say, background//
+                }
                 // background_highlight_64
 
                 drawStaticLinks(g);
@@ -121,10 +124,12 @@ public class HC_Tree {
     }
 
     protected void drawTextBackground(Graphics g) {
-        if (textBgPoint1 == null)
+        if (textBgPoint1 == null) {
             return;
-        if (textBgPoint2 == null)
+        }
+        if (textBgPoint2 == null) {
             return;
+        }
         g.setColor(getTipBackgroundColor());
         g.fillRect(textBgPoint2.x - 6, textBgPoint1.y - 4, textBgPoint1.x - textBgPoint2.x + 6,
                 textBgPoint2.y - textBgPoint1.y + 12);
@@ -135,15 +140,18 @@ public class HC_Tree {
         // sortLinksForZ(getMap().getStaticLinkMap());
 
         for (StaticTreeLink link : getMap().getStaticLinkMap().keySet()) {
-            if (linksToHighlight != null)
-                if (linksToHighlight.contains(link))
+            if (linksToHighlight != null) {
+                if (linksToHighlight.contains(link)) {
                     continue;
+                }
+            }
             drawLink(g, link);
         }
-        if (linksToHighlight != null)
+        if (linksToHighlight != null) {
             for (StaticTreeLink link : linksToHighlight) {
                 drawLink(g, link, LIGHTING_VERSION.HIGHLIGHTED);
             }
+        }
 
         for (StaticTreeLink link : map.getAltLinks().keySet()) {
             drawLink(g, link);
@@ -179,17 +187,19 @@ public class HC_Tree {
     protected void drawLink(Graphics g, StaticTreeLink link) {
         LIGHTING_VERSION lighting = LIGHTING_VERSION.DARKENED;
         for (ObjType c : link.getChildren()) {
-            if (map.getNodeForType(c) == null)
+            if (map.getNodeForType(c) == null) {
                 continue;
+            }
             if (map.getNodeForType(c).isAcquired()) {
                 lighting = LIGHTING_VERSION.NORMAL;
                 break;
             }
-            if (!CoreEngine.isArcaneVault())
+            if (!CoreEngine.isArcaneVault()) {
                 if (map.getNodeForType(c).isAvailable()) {
                     lighting = LIGHTING_VERSION.AVAILABLE;
                     break;
                 }
+            }
             if (map.getNodeForType(c).isSelected()) {
                 lighting = LIGHTING_VERSION.HIGHLIGHTED;
                 break;
@@ -200,8 +210,9 @@ public class HC_Tree {
     }
 
     protected void drawLink(Graphics g, StaticTreeLink link, LIGHTING_VERSION variant) {
-        if (link == null)
+        if (link == null) {
             return;
+        }
         Point point = link.getPoint();
         // getXOffsetForLink(variant);
         // getXOffsetForLink(variant);
@@ -219,8 +230,9 @@ public class HC_Tree {
                 image = link.getVariant().getSelectedImage();
                 int offsetX = 0;
                 int offsetY = 0;
-                if (link.getVariant().isVertical())
+                if (link.getVariant().isVertical()) {
                     offsetX = 5;
+                }
                 // TODO selected variant
                 // offsetX=offsetX* Math.sin(getAngleForLinkVariant());
                 x = point.x - offsetX;
@@ -230,8 +242,9 @@ public class HC_Tree {
                 image = link.getVariant().getImage();
                 break;
         }
-        if (image == null)
+        if (image == null) {
             image = link.getVariant().getImage();
+        }
         g.drawImage(image, x, y, null);
 
     }
@@ -265,10 +278,12 @@ public class HC_Tree {
                 List<ObjType> overlapping = map.getTypesWithinRange(type, 0, 0, x, y, Math.max(20,
                         (width - map.getNodeSize())), fontHeight * 3 / 2);
 
-                if (y < 5)
+                if (y < 5) {
                     y = 5;
-                if (x <= offsetX)
+                }
+                if (x <= offsetX) {
                     x = offsetX;
+                }
 
                 if (overlapping.size() > 0) {
 
@@ -330,8 +345,9 @@ public class HC_Tree {
         if (isSkill()) {
             SKILL_GROUP masteryGroup = new EnumMaster<SKILL_GROUP>().retrieveEnumConst(
                     SKILL_GROUP.class, ContentManager.getMasteryGroup((PARAMETER) arg));
-            if (masteryGroup == null)
+            if (masteryGroup == null) {
                 return ColorManager.GOLDEN_WHITE;
+            }
             return ColorManager.getColorForMastery(masteryGroup);
         }
         return ColorManager.getColorForClass((CLASS_GROUP) arg);
@@ -443,22 +459,28 @@ public class HC_Tree {
     private void updateRankComponents() {
         getRankBoostMouseMap().clear();
 
-        if (mode == TREE_VIEW_MODE.INFO)
+        if (mode == TREE_VIEW_MODE.INFO) {
             return;
+        }
         for (HT_Node n : getNodes()) {
-            if (n.isGrouped())
+            if (n.isGrouped()) {
                 continue;
-            if (mode == TREE_VIEW_MODE.BASIC)
-                if (!n.isAcquired())
+            }
+            if (mode == TREE_VIEW_MODE.BASIC) {
+                if (!n.isAcquired()) {
                     continue;
+                }
+            }
             Integer max = n.getObj().getIntParam(PARAMS.RANK_MAX);
             // if (RANK_TEST_MODE)
             // max = 5 - n.getObj().getIntParam(PARAMS.CIRCLE);
-            if (max <= 0)
+            if (max <= 0) {
                 continue;
+            }
             Integer rank = 0;
-            if (hero.getFeat(isSkill(), n.getType()) != null)
+            if (hero.getFeat(isSkill(), n.getType()) != null) {
                 rank = hero.getFeat(isSkill(), n.getType()).getIntParam(PARAMS.RANK);
+            }
 
             STD_IMAGES rankComp = n.isAcquired() ? STD_IMAGES.RANK_COMP
                     : STD_IMAGES.RANK_COMP_DARKENED;
@@ -466,8 +488,9 @@ public class HC_Tree {
             int h = rankComp.getHeight();
             Image compImage = ImageManager.getNewBufferedImage(w, h);
             boolean acquired = n.isAcquired();
-            if (acquired)
+            if (acquired) {
                 rank++;
+            }
             String str = rank + "/" + max;
 
             Graphics graphics = compImage.getGraphics();
@@ -483,8 +506,9 @@ public class HC_Tree {
             x = (map.getPointForType(n.getType()).x + 40 - w / 2);
             y = map.getPointForType(n.getType()).y - h;
             Image plusImage = null;
-            if (acquired)
+            if (acquired) {
                 plusImage = ImageManager.getSizedVersion(STD_IMAGES.CROSS.getImage(), 75);
+            }
             // if (available) _HIGHLIGHTED
             if (plusImage != null) {
                 int x1 = x + w / 2 + 6;
@@ -500,8 +524,9 @@ public class HC_Tree {
 
             if (n.isSelected()) {
                 overlayMap.put(p, compImage);
-            } else
+            } else {
                 underlayMap.put(p, compImage);
+            }
 
             // map!
         }
@@ -519,19 +544,22 @@ public class HC_Tree {
         textMap.clear();
         textBgPoint1 = null;
         textBgPoint2 = null;
-        if (isViewMode())
+        if (isViewMode()) {
             return;
-        if (Launcher.DEV_MODE)
-            if (CoreEngine.isArcaneVault())
+        }
+        if (Launcher.DEV_MODE) {
+            if (CoreEngine.isArcaneVault()) {
                 return;
+            }
+        }
         // TODO selected - reqs or rank/sd costs
 
         // TODO draw black background for this!
         if (isDisplayRequirements()) {
             boolean rank = false;
-            if (reqTextType == null)
+            if (reqTextType == null) {
                 reqTextType = getSelectedType();
-            else {
+            } else {
                 rank = true;
             }
             if (types.contains(reqTextType)) {
@@ -559,9 +587,9 @@ public class HC_Tree {
                 Color color = ColorManager.CRIMSON;
                 Font font = getDefaultFont();
                 List<String> list = null;
-                if (reasons != null)
+                if (reasons != null) {
                     list = reasons;
-                else {
+                } else {
                     Ref ref = new Ref(hero);
                     ref.setMatch((reqTextType).getId());
                     reqs.check(ref);
@@ -578,7 +606,7 @@ public class HC_Tree {
                     text = text.replace(StringMaster.MASTERY + " ", "");
                     text = text.replace(" needed", "");
                     text = text.replace(" required", "");
-                    if (!text.contains(" or "))
+                    if (!text.contains(" or ")) {
                         if (text.contains(": ")) {
                             String varPart = text.split(": ")[1];
                             if (varPart.startsWith("(")
@@ -591,20 +619,25 @@ public class HC_Tree {
                                     e.printStackTrace();
                                 }
                                 if (!parsedVarPart.isEmpty())
-                                    // TextParser.parse(varPart, new
-                                    // Ref(getHero()));
+                                // TextParser.parse(varPart, new
+                                // Ref(getHero()));
+                                {
                                     text = text.replace(varPart, parsedVarPart);
+                                }
                             }
                         }
+                    }
                     reasons.add(text);
 
                 }
                 Collections.sort(reasons, new Comparator<String>() {
                     public int compare(String o1, String o2) {
-                        if (o1.length() < o2.length())
+                        if (o1.length() < o2.length()) {
                             return 1;
-                        if (o1.length() > o2.length())
+                        }
+                        if (o1.length() > o2.length()) {
                             return -1;
+                        }
                         return 0;
                     }
                 });
@@ -626,23 +659,27 @@ public class HC_Tree {
                         // x = stringWidth - originX / 2 + getPanel().getWidth()
                         // - stringWidth / 2;
                     }
-                    if (x == map.getPointForType(reqTextType).x)
+                    if (x == map.getPointForType(reqTextType).x) {
                         x = map.getPointForType(reqTextType).x - stringWidth / 4;
+                    }
                     if (x < 0) {
                         x = 0;
                     }
-                    if (above)
+                    if (above) {
                         y -= 20;
-                    else
+                    } else {
                         y += 20;
-                    if (x == null)
+                    }
+                    if (x == null) {
                         x = map.getPointForType(reqTextType).x;
+                    }
                     point = new Point(x, y);
                     textMap.put(point, smartText);
                     // TODO if above... vice versa
-                    if (textBgPoint1 == null)
+                    if (textBgPoint1 == null) {
                         textBgPoint1 = new Point(x + stringWidth, y
                                 - FontMaster.getFontHeight(font));
+                    }
                 }
                 textBgPoint2 = new Point(x, y);
                 if (above) {
@@ -660,8 +697,9 @@ public class HC_Tree {
     }
 
     private boolean isSkill() {
-        if (types.isEmpty())
+        if (types.isEmpty()) {
             return false;
+        }
         return types.get(0).getOBJ_TYPE_ENUM() == OBJ_TYPES.SKILLS;
     }
 
@@ -703,12 +741,13 @@ public class HC_Tree {
                 // Image img =
                 // BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_64.getImage();
                 // overlayMap2.put(new Point(p.x - 6, p.y - 6), img);
-            } else if (!CoreEngine.isArcaneVault())
+            } else if (!CoreEngine.isArcaneVault()) {
                 if (n.isAvailable()) {
                     Image img = BORDER.NEO_CYAN_HIGHLIGHT_SQUARE_64.getImage();
                     overlayMap2.put(new Point(p.x - 6, p.y - 6), img);
                     continue;
                 }
+            }
             if (n.isSelected()) {
                 Image img = BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_64.getImage();
                 overlayMap2.put(new Point(p.x - 6, p.y - 6), img);
@@ -722,8 +761,9 @@ public class HC_Tree {
     }
 
     private void updateLinks() {
-        if (HC_Master.getPreviousSelectedTreeNode() == HC_Master.getSelectedTreeNode())
+        if (HC_Master.getPreviousSelectedTreeNode() == HC_Master.getSelectedTreeNode()) {
             return;
+        }
 
         HT_Node node = HC_Master.getSelectedTreeNode();
         linksToHighlight = new LinkedList<StaticTreeLink>();
@@ -733,15 +773,17 @@ public class HC_Tree {
             // could cache per type too
             while (true) {
                 node = map.getNodeForType(node.getParentType());
-                if (node == null)
+                if (node == null) {
                     break;
+                }
                 selectionPathNodes.add(node);
                 StaticTreeLink link = map.getLinkForChildType(node.getType());
                 if (link == null) {
 
                 }
-                if (link == null)
+                if (link == null) {
                     continue;
+                }
                 linksToHighlight.add(link);
             }
             linksToHighlight.add(map.getLinkForChildType(type));
@@ -774,13 +816,15 @@ public class HC_Tree {
         Point selected = null;
         for (Point p : map.getNodeMap().keySet()) {
             HT_Node node = map.getNodeMap().get(p);
-            if (node == HC_Master.getSelectedTreeNode())
+            if (node == HC_Master.getSelectedTreeNode()) {
                 selected = p;
-            else
+            } else {
                 g.drawImage(node.getImage(), p.x, p.y, null);
+            }
         }
-        if (selected != null)
+        if (selected != null) {
             g.drawImage(HC_Master.getSelectedTreeNode().getImage(), selected.x, selected.y, null);
+        }
 
     }
 
@@ -837,8 +881,9 @@ public class HC_Tree {
     }
 
     public ObjType getSelectedType() {
-        if (HC_Master.getSelectedTreeNode() == null)
+        if (HC_Master.getSelectedTreeNode() == null) {
             return null;
+        }
         return HC_Master.getSelectedTreeNode().getType();
     }
 
@@ -877,8 +922,9 @@ public class HC_Tree {
     }
 
     public boolean isViewMode() {
-        if (mode == TREE_VIEW_MODE.FREE)
+        if (mode == TREE_VIEW_MODE.FREE) {
             return true;
+        }
 
         return viewMode;
     }

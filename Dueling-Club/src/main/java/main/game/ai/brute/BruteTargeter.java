@@ -20,10 +20,11 @@ public class BruteTargeter extends TargetingManager {
             case APPROACH:
                 Obj cell = logic.getAnalyzer().getClosestCell(logic.getAnalyzer()
                         .getClosestAttackTarget(), true);
-                if (cell == null)
+                if (cell == null) {
                     return id;
-                else
+                } else {
                     id = cell.getId();
+                }
                 break;
             case ATTACK:
                 id = getAttackTarget();
@@ -48,8 +49,9 @@ public class BruteTargeter extends TargetingManager {
         DC_UnitObj unit = (DC_UnitObj) logic.getUnit();
         for (Obj target : logic.getAnalyzer().getAdjacentEnemies(unit)) {
             DC_UnitObj attacked = (DC_UnitObj) target;
-            if (unit.canAttack(attacked))
+            if (unit.canAttack(attacked)) {
                 return target.getId();
+            }
         }
         return -1;
     }

@@ -59,7 +59,7 @@ public class TestMasterContent {
      * stuff here... the running it and seeing results logged almost
      * immediately!
      */
-    private static Boolean immortal = null ;
+    private static Boolean immortal = null;
     private static boolean forceFree;
     private static String FOCUS_LIST = "";
     private static String FIX_LIST = "";
@@ -106,8 +106,9 @@ public class TestMasterContent {
     private DC_Game game;
     public TestMasterContent(DC_Game game) {
         this.game = game;
-        if (auto_test_list)
+        if (auto_test_list) {
             initAutoTestList();
+        }
         initTestConfig();
     }
 
@@ -118,9 +119,11 @@ public class TestMasterContent {
     }
 
     public static boolean checkHeroForTestSpell(ObjType type, String typeName, boolean last) {
-        if (FAST_DC.FAST_MODE)
-            if (first)
+        if (FAST_DC.FAST_MODE) {
+            if (first) {
                 return true;
+            }
+        }
         try {
             return tryCheckHeroForTestSpell(type, typeName, last);
 
@@ -132,10 +135,12 @@ public class TestMasterContent {
 
     public static boolean tryCheckHeroForTestSpell(ObjType type, String typeName, boolean last) {
 
-        if (type.checkProperty(PROPS.MEMORIZED_SPELLS, typeName))
+        if (type.checkProperty(PROPS.MEMORIZED_SPELLS, typeName)) {
             return false;
-        if (!char_test_active_filtering)
+        }
+        if (!char_test_active_filtering) {
             return true;// TODO
+        }
         /*
 		 * I want to make sure that all actives are given to somebody... I can
 		 * keep a list of added actives and give all non-given to the last
@@ -144,25 +149,31 @@ public class TestMasterContent {
 		 * checkMastery() or at least aspect check class/masteries for actions
 		 */
         SpellType spellType = (SpellType) DataManager.getType(typeName, OBJ_TYPES.SPELLS);
-        if (spellType == null)
+        if (spellType == null) {
             return false;
+        }
         boolean result = false;
-        if (type.getIntParam(ContentManager.getSpellMasteryForSpell(spellType)) > 0)
+        if (type.getIntParam(ContentManager.getSpellMasteryForSpell(spellType)) > 0) {
             result = true;
-        if (type.getAspect() == spellType.getAspect())
+        }
+        if (type.getAspect() == spellType.getAspect()) {
             result = true;
+        }
         try {
             if (DataManager.getType(type.getProperty(G_PROPS.DEITY), OBJ_TYPES.DEITIES).getAspect() == spellType
-                    .getAspect())
+                    .getAspect()) {
                 result = true;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (type.getAspect() == spellType.getAspect())
+        if (type.getAspect() == spellType.getAspect()) {
             result = true;
+        }
         if (last) {
-            if (!addedSpells.contains(spellType))
+            if (!addedSpells.contains(spellType)) {
                 result = true;
+            }
         }
         if (result) {
             addedSpells.add(spellType);
@@ -201,8 +212,11 @@ public class TestMasterContent {
     }
 
     public static void toggleImmortal() {
-        if (immortal==null )immortal=true; else
-        immortal = !immortal;
+        if (immortal == null) {
+            immortal = true;
+        } else {
+            immortal = !immortal;
+        }
 
     }
 
@@ -235,31 +249,37 @@ public class TestMasterContent {
         // if (checkHeroForTestSpell(type, s, last))
         // type.addProperty(G_PROPS.ACTIVES, s, true);
 
-        if (full != null)
+        if (full != null) {
             if (full) {
                 for (ObjType s : DataManager.getTypes(OBJ_TYPES.SPELLS)) {
-                    if (s.isUpgrade())
+                    if (s.isUpgrade()) {
                         continue;
-                    if (s.getIntParam(PARAMS.SPELL_DIFFICULTY) < 1)
+                    }
+                    if (s.getIntParam(PARAMS.SPELL_DIFFICULTY) < 1) {
                         continue;
+                    }
                     type.addProperty(PROPS.VERBATIM_SPELLS, s.getName(), true);
                 }
                 for (ObjType s : DataManager.getTypes(OBJ_TYPES.SPELLS)) {
-                    if (!s.isUpgrade())
+                    if (!s.isUpgrade()) {
                         continue;
-                    if (s.getIntParam(PARAMS.SPELL_DIFFICULTY) < 1)
+                    }
+                    if (s.getIntParam(PARAMS.SPELL_DIFFICULTY) < 1) {
                         continue;
+                    }
                     type.addProperty(PROPS.MEMORIZED_SPELLS, s.getName(), true);
                 }
                 addTestActives(type, last);
                 return;
             }
+        }
     }
 
     public static void addSpells(Entity type, String list) {
-        for (String s : StringMaster.openContainer(list))
+        for (String s : StringMaster.openContainer(list)) {
             type.addProperty(PROPS.VERBATIM_SPELLS, s
                     , true);
+        }
 
     }
 
@@ -268,9 +288,10 @@ public class TestMasterContent {
     }
 
     public static void addGRAPHICS_TEST_Spells(Entity type) {
-        for (String s : StringMaster.openContainer(GRAPHICS_TEST_LIST))
+        for (String s : StringMaster.openContainer(GRAPHICS_TEST_LIST)) {
             type.addProperty(PROPS.VERBATIM_SPELLS, s
                     , true);
+        }
     }
 
     private static void addTestSpells(ObjType type, boolean last) {
@@ -280,25 +301,35 @@ public class TestMasterContent {
             type.addProperty(PROPS.VERBATIM_SPELLS, "Light", true);
             type.addProperty(PROPS.VERBATIM_SPELLS, "Haze", true);
         }
-        if (!addSpells)
+        if (!addSpells) {
             return;
-        for (String s : StringMaster.openContainer(getFOCUS_LIST()))
-            if (checkHeroForTestSpell(type, s, last))
+        }
+        for (String s : StringMaster.openContainer(getFOCUS_LIST())) {
+            if (checkHeroForTestSpell(type, s, last)) {
                 type.addProperty(PROPS.VERBATIM_SPELLS, s, true);
-        for (String s : StringMaster.openContainer(TestMasterContent.getFIX_LIST()))
-            if (checkHeroForTestSpell(type, s, last))
+            }
+        }
+        for (String s : StringMaster.openContainer(TestMasterContent.getFIX_LIST())) {
+            if (checkHeroForTestSpell(type, s, last)) {
                 type.addProperty(PROPS.VERBATIM_SPELLS, s, true);
-        for (String s : StringMaster.openContainer(getTEST_LIST()))
-            if (checkHeroForTestSpell(type, s, last))
+            }
+        }
+        for (String s : StringMaster.openContainer(getTEST_LIST())) {
+            if (checkHeroForTestSpell(type, s, last)) {
                 type.addProperty(PROPS.VERBATIM_SPELLS, s, true);
-        for (String s : StringMaster.openContainer(getPOLISH_LIST()))
-            if (checkHeroForTestSpell(type, s, last))
+            }
+        }
+        for (String s : StringMaster.openContainer(getPOLISH_LIST())) {
+            if (checkHeroForTestSpell(type, s, last)) {
                 type.addProperty(PROPS.VERBATIM_SPELLS, s, true);
+            }
+        }
     }
 
     public static void addTestActives(ObjType type, boolean last) {
-        if (!addActives)
+        if (!addActives) {
             return;
+        }
         for (ObjType s : DataManager.getTypes(OBJ_TYPES.ACTIONS)) {
             type.addProperty(G_PROPS.ACTIVES, s.getName(), true);
         }
@@ -310,8 +341,9 @@ public class TestMasterContent {
             first = true;
             last = false;
         }
-        if (!test_on)
+        if (!test_on) {
             return;
+        }
 
         addTestSpells(type, last);
         addTestActives(full_test, type, last);
@@ -320,8 +352,9 @@ public class TestMasterContent {
     }
 
     private static void addTestSkills(boolean full_test, ObjType type, boolean last) {
-        if (!addSkills)
+        if (!addSkills) {
             return;
+        }
         if (full_test) {
             for (ObjType s : DataManager.getTypes(OBJ_TYPES.SKILLS)) {
                 if (WorkspaceMaster.checkTypeIsReadyToTest(s)) {
@@ -338,8 +371,9 @@ public class TestMasterContent {
 
     private static void addTestItems(boolean full_test, ObjType type, boolean last) {
         // TODO poisons and the like
-        if (!addItems)
+        if (!addItems) {
             return;
+        }
         if (full_test) {
             for (ObjType s : DataManager.getTypes(OBJ_TYPES.ITEMS)) {
                 if (WorkspaceMaster.checkTypeIsReadyToTest(s)) {
@@ -376,17 +410,23 @@ public class TestMasterContent {
 
     public boolean isActionFree(String name) {
         DC_HeroObj activeObj = game.getManager().getActiveObj();
-        if (activeObj != null)
-            if (activeObj.getOwner().isAi())
+        if (activeObj != null) {
+            if (activeObj.getOwner().isAi()) {
                 return false;
-        if (forceFree || full_test)
+            }
+        }
+        if (forceFree || full_test) {
             return true;
-        if (getFOCUS_LIST().contains(name))
+        }
+        if (getFOCUS_LIST().contains(name)) {
             return true;
-        if (getFIX_LIST().contains(name))
+        }
+        if (getFIX_LIST().contains(name)) {
             return true;
-        if (getTEST_LIST().contains(name))
+        }
+        if (getTEST_LIST().contains(name)) {
             return true;
+        }
         // new ListMaster<>().contains(list, item, strict)
         // testConfig.getTestList().contains(name);
         return false;
@@ -408,9 +448,11 @@ public class TestMasterContent {
     private String constructTestList(OBJ_TYPE TYPE, WORKSPACE_GROUP group) {
         List<String> list; // could use some optimization :) TODO
         list = new LinkedList<>();
-        for (ObjType t : DataManager.getTypes(TYPE))
-            if (t.getProperty(G_PROPS.WORKSPACE_GROUP).equalsIgnoreCase(group.name()))
+        for (ObjType t : DataManager.getTypes(TYPE)) {
+            if (t.getProperty(G_PROPS.WORKSPACE_GROUP).equalsIgnoreCase(group.name())) {
                 list.add(t.getName());
+            }
+        }
         return StringMaster.constructContainer(list);
     }
 

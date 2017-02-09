@@ -51,8 +51,9 @@ public class GatewayEffect extends SummonEffect {
     public boolean applyThis() {
 
         typeName = getUnitType();
-        if (typeName == null)
+        if (typeName == null) {
             return false;
+        }
         boolean result = super.applyThis();
         unitType = null;
         return result;
@@ -66,8 +67,9 @@ public class GatewayEffect extends SummonEffect {
     }
 
     public String getUnitType() {
-        if (unitType != null)
+        if (unitType != null) {
             return unitType;
+        }
         Obj obj = ref.getSourceObj().getOwner().getHeroObj();
         typeList = null;
         if (prop == null) {
@@ -78,27 +80,32 @@ public class GatewayEffect extends SummonEffect {
                     .getTypes(C_OBJ_TYPE.UNITS_CHARS));
         }
 
-        if (typeList.isEmpty())
+        if (typeList.isEmpty()) {
             return null;
+        }
 
         random = ref.getObj(KEYS.ACTIVE).checkBool(STD_BOOLS.RANDOM);
-        if (!obj.getOwner().isAi())
+        if (!obj.getOwner().isAi()) {
             random = true;
+        }
 
         if (random) {
             unitType = typeList.get(RandomWizard.getRandomListIndex(typeList)).getName();
         } else {
-            if (!getGame().isOffline())
+            if (!getGame().isOffline()) {
                 if (!obj.isMine()) {
                     unitType = WaitingThread.waitOrGetInput(code);
                     return unitType;
                 }
+            }
 
             unitType = ListChooser.chooseType(DataManager.toStringList(typeList),
                     C_OBJ_TYPE.BF_OBJ);
-            if (!getGame().isOffline())
-                if (obj.isMine())
+            if (!getGame().isOffline()) {
+                if (obj.isMine()) {
                     getGame().getConnection().send(code, unitType);
+                }
+            }
         }
         return unitType;
     }

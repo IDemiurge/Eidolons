@@ -59,8 +59,9 @@ public class PartyObj extends Obj {
         this.type.setParam(PARAMS.LEVEL, leader.getParam(PARAMS.LEVEL), true);
         setParam(PARAMS.LEVEL, leader.getIntParam(PARAMS.LEVEL), true);
         setOBJ_TYPE_ENUM(OBJ_TYPES.PARTY);
-        if (leader.isHero())
+        if (leader.isHero()) {
             leader.setMainHero(true);
+        }
         leader.setLeader(true);
     }
 
@@ -70,8 +71,9 @@ public class PartyObj extends Obj {
     public PartyObj(ObjType type) {
         super(type, Player.NEUTRAL, type.getGame(), new Ref(type.getGame()));
         initMembers();
-        if (!getMembers().isEmpty())
+        if (!getMembers().isEmpty()) {
             this.leader = getMembers().get(0); // how safe is that?
+        }
         // HeroCreator.initHero(type.getProperty(PROPS.LEADER));
     }
 
@@ -177,10 +179,12 @@ public class PartyObj extends Obj {
 
     public DC_HeroObj getNextHero(DC_HeroObj hero) {
         int i = getMembers().indexOf(hero);
-        if (i == -1)
+        if (i == -1) {
             return null;
-        if (i == getMembers().size() - 1)
+        }
+        if (i == getMembers().size() - 1) {
             i = -1;
+        }
         return getMembers().get(i + 1);
     }
 
@@ -225,18 +229,22 @@ public class PartyObj extends Obj {
         int intelligence = 0;
         int i = 0;
         for (DC_HeroObj hero : members) {
-            if (hero.isDead())
+            if (hero.isDead()) {
                 continue;
+            }
             i++;
-            if (hero.getIntParam(PARAMS.TACTICS_MASTERY) > maxTactics)
+            if (hero.getIntParam(PARAMS.TACTICS_MASTERY) > maxTactics) {
                 maxTactics = hero.getIntParam(PARAMS.TACTICS_MASTERY);
+            }
 
             intelligence += hero.getIntParam(PARAMS.INTELLIGENCE);
-            if (hero.getIntParam(PARAMS.INTELLIGENCE) < minIntelligence)
+            if (hero.getIntParam(PARAMS.INTELLIGENCE) < minIntelligence) {
                 minIntelligence = hero.getIntParam(PARAMS.INTELLIGENCE);
+            }
         }
-        if (i == 0)
+        if (i == 0) {
             return;
+        }
         int avrgIntelligence = intelligence / i;
 
         int organization = Math.round(new Float(100) - (new Float(10) - new Float(maxTactics) / 5)
@@ -272,8 +280,9 @@ public class PartyObj extends Obj {
         for (DC_HeroObj hero : members) {
             // principle clash?
             // getOrCreate condition, check per unit, add up on false!
-            if (hero.isDead())
+            if (hero.isDead()) {
                 continue;
+            }
             i++;
             ref.setMatch(hero.getId());
 
@@ -281,26 +290,29 @@ public class PartyObj extends Obj {
                 Integer hero_identity = hero.getIntParam(DC_ContentManager
                         .getIdentityParamForPrinciple(principle));
                 for (DC_HeroObj m : members) {
-                    if (m == hero || m.isDead())
+                    if (m == hero || m.isDead()) {
                         continue;
+                    }
                     Integer member_identity = m.getIntParam(DC_ContentManager
                             .getIdentityParamForPrinciple(principle));
                     if (hero_identity > 0) {
-                        if (member_identity < 0)
+                        if (member_identity < 0) {
                             principleClashes += Math.min(hero_identity, Math.abs(member_identity));
-                        else
+                        } else {
                             sharedPrinciples += Math.min(hero_identity, (member_identity));
+                        }
                     } else {
-                        if (member_identity > 0)
+                        if (member_identity > 0) {
                             principleClashes += Math.min(Math.abs(hero_identity), member_identity);
-                        else
+                        } else {
                             sharedPrinciples += Math.min(Math.abs(hero_identity), Math
                                     .abs(member_identity));
+                        }
                     }
 
-                    if (m.getDeity() == hero.getDeity())
+                    if (m.getDeity() == hero.getDeity()) {
                         sharedDeities += 2;
-                    else if (m.getDeity().getAllyDeities().contains(hero.getDeity())) {
+                    } else if (m.getDeity().getAllyDeities().contains(hero.getDeity())) {
                         sharedDeities++;
                     } else if (m.getDeity().getEnemyDeities().contains(hero.getDeity())) {
                         deityClashes++;
@@ -370,25 +382,31 @@ public class PartyObj extends Obj {
     @Override
     public void toBase() {
         super.toBase();
-        if (game.isSimulation())
+        if (game.isSimulation()) {
             afterEffects();
-        else {
+        } else {
             // apply macro mode effects!
-            if (MacroManager.isMacroGame())
-                for (DC_HeroObj h : members)
+            if (MacroManager.isMacroGame()) {
+                for (DC_HeroObj h : members) {
                     RestMaster.applyMacroModeContinuous(h);
+                }
+            }
         }
         setParam(MACRO_PARAMS.CONSUMPTION, getParamSum(MACRO_PARAMS.CONSUMPTION, false));
         setParam(MACRO_PARAMS.TRAVEL_SPEED, getMinParam(MACRO_PARAMS.TRAVEL_SPEED, false));
         setParam(MACRO_PARAMS.EXPLORE_SPEED, getMaxParam(MACRO_PARAMS.EXPLORE_SPEED, false));
 
         if (macroParty != null) {
-            for (PROPERTY p : propMap.keySet())
-                if (p instanceof MACRO_PROPS)
+            for (PROPERTY p : propMap.keySet()) {
+                if (p instanceof MACRO_PROPS) {
                     macroParty.setProperty(p, getProperty(p));
-            for (PARAMETER p : paramMap.keySet())
-                if (p instanceof MACRO_PARAMS)
+                }
+            }
+            for (PARAMETER p : paramMap.keySet()) {
+                if (p instanceof MACRO_PARAMS) {
                     macroParty.setParam(p, getParam(p));
+                }
+            }
         }
         // calculateWeight();
         // calculateSpeed();
@@ -409,28 +427,34 @@ public class PartyObj extends Obj {
     public int getMinParam(PARAMETER p, boolean units) {
         int min = Integer.MAX_VALUE;
         for (DC_HeroObj hero : members) {
-            if (hero.getIntParam(p) < min)
+            if (hero.getIntParam(p) < min) {
                 min = hero.getIntParam(p);
-        }
-        if (units)
-            for (DC_HeroObj unit : getMercs()) {
-                if (unit.getIntParam(p) < min)
-                    min = unit.getIntParam(p);
             }
+        }
+        if (units) {
+            for (DC_HeroObj unit : getMercs()) {
+                if (unit.getIntParam(p) < min) {
+                    min = unit.getIntParam(p);
+                }
+            }
+        }
         return min;
     }
 
     public int getMaxParam(PARAMETER p, boolean units) {
         int max = Integer.MIN_VALUE;
         for (DC_HeroObj hero : members) {
-            if (hero.getIntParam(p) > max)
+            if (hero.getIntParam(p) > max) {
                 max = hero.getIntParam(p);
-        }
-        if (units)
-            for (DC_HeroObj unit : getMercs()) {
-                if (unit.getIntParam(p) < max)
-                    max = unit.getIntParam(p);
             }
+        }
+        if (units) {
+            for (DC_HeroObj unit : getMercs()) {
+                if (unit.getIntParam(p) < max) {
+                    max = unit.getIntParam(p);
+                }
+            }
+        }
         return max;
     }
 
@@ -439,17 +463,19 @@ public class PartyObj extends Obj {
         for (DC_HeroObj hero : members) {
             sum += hero.getIntParam(p);
         }
-        if (units)
+        if (units) {
             for (DC_HeroObj unit : getMercs()) {
                 sum += unit.getIntParam(p);
             }
+        }
         return sum;
     }
 
     public boolean checkMembersProperty(PROPS p, String value) {
         for (DC_HeroObj hero : members) {
-            if (hero.checkProperty(p, value))
+            if (hero.checkProperty(p, value)) {
                 return true;
+            }
         }
         return false;
     }

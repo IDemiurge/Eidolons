@@ -89,27 +89,30 @@ public class RollEffect extends MicroEffect implements ContainerEffect {
     }
 
     private boolean roll() {
-        if (rolls == null)
+        if (rolls == null) {
             return false;
+        }
         return rolls.roll(ref);
     }
 
     @Override
     public String toString() {
         String string = "RollEffect:";
-        if (rollString != null)
+        if (rollString != null) {
             string = rollString;
-        else if (rollType != null)
+        } else if (rollType != null) {
             string += rollType.getName();
-        if (effect != null)
+        }
+        if (effect != null) {
             string += StringMaster.wrapInParenthesis(effect.toString());
-        else if (abilityName != null)
+        } else if (abilityName != null) {
             string += StringMaster.wrapInParenthesis(abilityName);
+        }
         return string;
     }
 
     public boolean applyThis() {
-        boolean result = false;
+        boolean result;
         if (rollType == null) {
             if (success == null && fail == null) {
                 initRollString();
@@ -124,8 +127,9 @@ public class RollEffect extends MicroEffect implements ContainerEffect {
             }
 
         } else {
-            if (!RollMaster.checkRollType(rollType, ref))
+            if (!RollMaster.checkRollType(rollType, ref)) {
                 return false;
+            }
 
             // ++ event
             result =
@@ -138,17 +142,20 @@ public class RollEffect extends MicroEffect implements ContainerEffect {
         if (game.isDebugMode() || result) {
             return getEffect().apply(ref);
         } else {
-            if (getElseEffect() != null)
+            if (getElseEffect() != null) {
                 return getElseEffect().apply(ref);
+            }
         }
         return false;
     }
 
     public Effect getElseEffect() {
-        if (elseEffect != null)
+        if (elseEffect != null) {
             return elseEffect;
-        if (elseAbilityName != null)
+        }
+        if (elseAbilityName != null) {
             elseEffect = new Effects();
+        }
         for (String s : StringMaster.openContainer(elseAbilityName,
                 StringMaster.AND_SEPARATOR)) {
             ((Effects) effect).addAll(EffectMaster
@@ -206,8 +213,9 @@ public class RollEffect extends MicroEffect implements ContainerEffect {
     }
 
     public Rolls getRolls() {
-        if (rolls == null)
+        if (rolls == null) {
             initRollString();
+        }
         return rolls;
     }
 

@@ -17,8 +17,9 @@ public class DirectionMaster {
 
     public static DIRECTION getDirectionByDegree(int degrees) {
         degrees %= 360;
-        if (degrees < 0)
+        if (degrees < 0) {
             degrees += 360;
+        }
         switch (degrees) {
             case 0:
                 return DIRECTION.RIGHT;
@@ -82,58 +83,64 @@ public class DirectionMaster {
 
     public static DIRECTION getRelativeDirection(Coordinates source, Coordinates target) {
         if (PositionMaster.isAbove(source, target)) {
-            if (PositionMaster.isToTheLeft(source, target))
+            if (PositionMaster.isToTheLeft(source, target)) {
                 return DIRECTION.DOWN_RIGHT;
-            else {
-                if (PositionMaster.inXLine(source, target))
+            } else {
+                if (PositionMaster.inXLine(source, target)) {
                     return DIRECTION.DOWN;
-                else
+                } else {
                     return DIRECTION.DOWN_LEFT;
+                }
             }
         } else {
             if (PositionMaster.inYLine(source, target)) {
-                if (PositionMaster.isToTheLeft(source, target))
+                if (PositionMaster.isToTheLeft(source, target)) {
                     return DIRECTION.RIGHT;
-                else
+                } else {
                     return DIRECTION.LEFT;
+                }
             }
         }
-        if (PositionMaster.isToTheLeft(source, target))
+        if (PositionMaster.isToTheLeft(source, target)) {
             return DIRECTION.UP_RIGHT;
-        else {
-            if (PositionMaster.inXLine(source, target))
+        } else {
+            if (PositionMaster.inXLine(source, target)) {
                 return DIRECTION.UP;
-            else
+            } else {
                 return DIRECTION.UP_LEFT;
+            }
         }
 
     }
 
     public static DIRECTION getRelativeDirection(Obj source, Obj target) {
         if (PositionMaster.isAbove(source, target)) {
-            if (PositionMaster.isToTheLeft(source, target))
+            if (PositionMaster.isToTheLeft(source, target)) {
                 return DIRECTION.DOWN_RIGHT;
-            else {
-                if (PositionMaster.inXLine(source, target))
+            } else {
+                if (PositionMaster.inXLine(source, target)) {
                     return DIRECTION.DOWN;
-                else
+                } else {
                     return DIRECTION.DOWN_LEFT;
+                }
             }
         } else {
             if (PositionMaster.inYLine(source, target)) {
-                if (PositionMaster.isToTheLeft(source, target))
+                if (PositionMaster.isToTheLeft(source, target)) {
                     return DIRECTION.RIGHT;
-                else
+                } else {
                     return DIRECTION.LEFT;
+                }
             }
         }
-        if (PositionMaster.isToTheLeft(source, target))
+        if (PositionMaster.isToTheLeft(source, target)) {
             return DIRECTION.UP_RIGHT;
-        else {
-            if (PositionMaster.inXLine(source, target))
+        } else {
+            if (PositionMaster.inXLine(source, target)) {
                 return DIRECTION.UP;
-            else
+            } else {
                 return DIRECTION.UP_LEFT;
+            }
         }
 
     }

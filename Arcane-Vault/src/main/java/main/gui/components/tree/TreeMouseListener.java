@@ -1,10 +1,9 @@
 package main.gui.components.tree;
 
+import main.gui.builders.TreeViewBuilder;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
-import main.gui.builders.TreeViewBuilder;
-import main.launch.ArcaneVault;
 
 public class TreeMouseListener implements MouseListener {
 	private TreeViewBuilder view;
@@ -46,10 +45,12 @@ public class TreeMouseListener implements MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		Boolean down = null;
-		if (arg0.isAltDown())
-			down = true;
-		if (arg0.isControlDown())
-			down = false;
+        if (arg0.isAltDown()) {
+            down = true;
+        }
+        if (arg0.isControlDown()) {
+            down = false;
+        }
 //		if (down != null)
 //			view.moveNode(ArcaneVault.getMainBuilder().getSelectedNode(), down);
 	}

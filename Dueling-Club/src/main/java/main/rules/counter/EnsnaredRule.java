@@ -65,16 +65,19 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
 
     @Override
     public STATUS getStatus() {
-        if (checkEnsnared())
+        if (checkEnsnared()) {
             return STATUS.ENSNARED;
+        }
         return null;
     }
 
     private boolean checkEnsnared() {
-        if (unit.checkClassification(CLASSIFICATIONS.SMALL))
+        if (unit.checkClassification(CLASSIFICATIONS.SMALL)) {
             return getNumberOfCounters(unit) > 10;
-        if (unit.checkClassification(CLASSIFICATIONS.HUGE))
+        }
+        if (unit.checkClassification(CLASSIFICATIONS.HUGE)) {
             return getNumberOfCounters(unit) > 50;
+        }
         return getNumberOfCounters(unit) > 20;
     }
 
@@ -115,8 +118,9 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
 
     @Override
     public boolean unitBecomesActive(DC_HeroObj unit) {
-        if (getNumberOfCounters(unit) <= 0)
+        if (getNumberOfCounters(unit) <= 0) {
             return true;
+        }
         Ref ref = new Ref(unit);
         ref.setTarget(unit.getId());
         if (!RollMaster.roll(ROLL_TYPES.BODY_STRENGTH, "-",
@@ -134,10 +138,12 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
             return false;
         }
 
-        if (checkCutAway(false))
+        if (checkCutAway(false)) {
             return false;
-        if (checkCutAway(true))
+        }
+        if (checkCutAway(true)) {
             return false;
+        }
 
         // TODO ally help PLS
 
@@ -147,22 +153,26 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
     private boolean checkCutAway(boolean offhand) {
         int amount = 0;
         DC_WeaponObj weapon = unit.getWeapon(offhand);
-        if (weapon == null)
+        if (weapon == null) {
             weapon = unit.getNaturalWeapon(offhand);
+        }
 
         DC_UnitAction attack_action = unit.getAction(offhand ? "Offhand Attack"
                 : "Attack");
         if (!attack_action.canBeActivated(unit.getRef(), true)) // unit.getRef(),
             // true
+        {
             return false; // TODO log " has no strength left to cut the bonds"
+        }
 
         // Integer sta_cost = attack_action.getIntParam(PARAMS.STA_COST);
         // if (unit.getIntParam(PARAMS.C_STAMINA)<
         // sta_cost)
         // {
         // }
-        if (weapon.getDamageType() != DAMAGE_TYPE.BLUDGEONING)
+        if (weapon.getDamageType() != DAMAGE_TYPE.BLUDGEONING) {
             amount += unit.calculateDamage(offhand);
+        }
 
         amount = MathMaster.applyMod(amount, unit
                 .getIntParam(offhand ? PARAMS.OFF_HAND_ATTACK : PARAMS.ATTACK));

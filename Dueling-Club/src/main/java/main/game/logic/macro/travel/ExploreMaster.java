@@ -18,13 +18,14 @@ public class ExploreMaster {
 
     public static void newTurn() {
         for (MacroParty party : MacroGame.getGame().getParties()) {
-            if (party.getStatus() != MACRO_STATUS.TRAVELING)
+            if (party.getStatus() != MACRO_STATUS.TRAVELING) {
                 return;
+            }
 
             Place place = party.getCurrentExploration();
-            if (place instanceof Route)
+            if (place instanceof Route) {
                 ExploreMaster.exploreRoute(party, (Route) place);
-            else {
+            } else {
                 Boolean north_or_south = RandomWizard.random();
                 Boolean west_or_east = RandomWizard.random();
                 // getOrCreate available directions
@@ -70,10 +71,13 @@ public class ExploreMaster {
 
             PositionMaster.isAboveOr(dest, place);
             if (PositionMaster.checkDirection(dest, place, north_or_south,
-                    west_or_east))
+                    west_or_east)) {
                 if (checkCapacity(place, dest, party))
-                    // checkDIstance() instead - EXPLORE_SPEED
+                // checkDIstance() instead - EXPLORE_SPEED
+                {
                     list.add(dest);
+                }
+            }
 
         }
 
@@ -106,8 +110,9 @@ public class ExploreMaster {
                 maxProgress);
         Place destination = null;
         for (Place p : potentialFinds) {
-            if (!checkDiscovered(party, p, route))
+            if (!checkDiscovered(party, p, route)) {
                 continue;
+            }
             // backward?
             progress = maxProgress
                     - p.getIntParam(MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE);
@@ -120,8 +125,9 @@ public class ExploreMaster {
         if (destination != null) {
             if (destination instanceof Route) {
                 TravelMaster.enterRoute(party, (Route) destination);
-            } else
+            } else {
                 TravelMaster.enterPlace(party, destination);
+            }
             // TODO spend the "rest" of the progress there?
         }
     }
@@ -149,14 +155,18 @@ public class ExploreMaster {
                                                                 int maxProgress) {
         List<Place> potentialFinds = new LinkedList<>();
         for (Route p : route.getLinkedRoutes()) {
-            if (p.getVisibilityStatus() == PLACE_VISIBILITY_STATUS.UNKNOWN)
-                if (p.getIntParam(MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE) < maxProgress)
+            if (p.getVisibilityStatus() == PLACE_VISIBILITY_STATUS.UNKNOWN) {
+                if (p.getIntParam(MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE) < maxProgress) {
                     potentialFinds.add(p);
+                }
+            }
         }
         for (Place p : route.getLinkedPlaces()) {
-            if (p.getVisibilityStatus() == PLACE_VISIBILITY_STATUS.UNKNOWN)
-                if (p.getIntParam(MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE) < maxProgress)
+            if (p.getVisibilityStatus() == PLACE_VISIBILITY_STATUS.UNKNOWN) {
+                if (p.getIntParam(MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE) < maxProgress) {
                     potentialFinds.add(p);
+                }
+            }
         }
         return potentialFinds;
     }

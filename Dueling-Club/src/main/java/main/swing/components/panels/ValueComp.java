@@ -43,8 +43,9 @@ public abstract class ValueComp extends G_Panel {
     }
 
     public void refresh() {
-        if (getObj() == null)
+        if (getObj() == null) {
             return;
+        }
 
         c_val = getObj().getIntParam(c_param);
         max_val = getObj().getIntParam(param);
@@ -66,15 +67,17 @@ public abstract class ValueComp extends G_Panel {
 
     @Override
     public void paint(Graphics g) {
-        if (getObj() == null)
+        if (getObj() == null) {
             return;
+        }
 
         // TODO adjust for Visibility etc!
         g.drawImage(getVisuals().getImage(), 0, 0, null);
 
-        if (fillerImage == null)
+        if (fillerImage == null) {
             fillerImage = ImageManager.getBufferedImage(ImageManager.getImage(getCompPath()
                     + param.getName() + ".png"));
+        }
 
         length = fillerImage.getHeight() * percentage / MathMaster.PERCENTAGE;
         // paintNumeric = true;
@@ -139,10 +142,11 @@ public abstract class ValueComp extends G_Panel {
     protected void paintLiquid(Graphics g) {
 
         BufferedImage drawImg = getLiquidPaintImage();
-        if (isVertical())
+        if (isVertical()) {
             g.setClip(0, fillerImage.getHeight() - length, fillerImage.getWidth(), length);
-        else
+        } else {
             g.setClip(0, 0, fillerImage.getWidth() - length, fillerImage.getHeight());
+        }
         g.drawImage(drawImg, 0, 0, null);
     }
 

@@ -10,10 +10,12 @@ public class ZLevelCondition extends MicroCondition {
     }
 
     public boolean check() {
-        if (ref.getMatchObj() == null)
+        if (ref.getMatchObj() == null) {
             return defaultReturn;
-        if (ref.getSourceObj() == null)
+        }
+        if (ref.getSourceObj() == null) {
             return defaultReturn;
+        }
         return ref.getSourceObj().getZ() == ref.getMatchObj().getZ();
     }
 

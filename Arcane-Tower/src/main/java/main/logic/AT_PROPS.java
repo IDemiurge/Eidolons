@@ -61,14 +61,19 @@ public enum AT_PROPS implements PROPERTY {
 	MUSIC_GENRE("", false, "Track", "Music List"),
 	MUSIC_TAGS("", true, "Track", "Music List"), ;
 
-	private Metainfo metainfo;
+    static {
+        MUSIC_TAGS.setInputReq(INPUT_REQ.MULTI_ENUM);
+    }
+
+    boolean writeToType;
+    INPUT_REQ inputReq;
+    private Metainfo metainfo;
 	private String name;
 	private String descr;
 	private String entityType;
 	private boolean dynamic;
 	private String defaultValue;
 	private int AV_ID;
-
 	private boolean lowPriority = false;
 	private String[] entityTypes;
 	private boolean container;
@@ -76,21 +81,6 @@ public enum AT_PROPS implements PROPERTY {
 	private boolean highPriority;
 	private String fullName;
 	private String shortName;
-	boolean writeToType;
-	INPUT_REQ inputReq;
-
-	static {
-		MUSIC_TAGS.setInputReq(INPUT_REQ.MULTI_ENUM);
-	}
-
-	@Override
-	public INPUT_REQ getInputReq() {
-		return inputReq;
-	}
-
-	public void setInputReq(INPUT_REQ inputReq) {
-		this.inputReq = inputReq;
-	}
 
 	AT_PROPS(Boolean priority, String entityType, INPUT_REQ inputReq) {
 		this(entityType, inputReq);
@@ -123,9 +113,10 @@ public enum AT_PROPS implements PROPERTY {
 			String defaultValue, int AV_ID) {
 		this.name = StringMaster.getWellFormattedString(name());
 		this.shortName = shortName;
-		if (StringMaster.isEmpty(shortName))
-			this.shortName = name;
-		// this.shortName = StringMaster.capitalizeFirstLetter(name()
+        if (StringMaster.isEmpty(shortName)) {
+            this.shortName = name;
+        }
+        // this.shortName = StringMaster.capitalizeFirstLetter(name()
 		// .toLowerCase());
 		this.fullName = name();
 		this.descr = descr;
@@ -134,6 +125,15 @@ public enum AT_PROPS implements PROPERTY {
 		this.defaultValue = defaultValue;
 		this.AV_ID = AV_ID;
 	}
+
+    @Override
+    public INPUT_REQ getInputReq() {
+        return inputReq;
+    }
+
+    public void setInputReq(INPUT_REQ inputReq) {
+        this.inputReq = inputReq;
+    }
 
 	@Override
 	public String toString() {
@@ -145,14 +145,6 @@ public enum AT_PROPS implements PROPERTY {
 	 */
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * @param shortName
-	 *            the shortName to set
-	 */
-	public void setShortName(String shortName) {
-		this.shortName = shortName;
 	}
 
 	/**
@@ -292,17 +284,19 @@ public enum AT_PROPS implements PROPERTY {
 		return highPriority;
 	}
 
-	public boolean isPrinciple() {
-		for (PRINCIPLES p : PRINCIPLES.values())
-			if (p.toString().equalsIgnoreCase(getName()))
-				return true;
-		return false;
-	}
-
 	@Override
 	public void setHighPriority(boolean highPriority) {
 		this.highPriority = highPriority;
 	}
+
+    public boolean isPrinciple() {
+        for (PRINCIPLES p : PRINCIPLES.values()) {
+            if (p.toString().equalsIgnoreCase(getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 	public boolean isWriteToType() {
 		return writeToType;
@@ -315,6 +309,13 @@ public enum AT_PROPS implements PROPERTY {
 	public synchronized String getShortName() {
 		return shortName;
 	}
+
+    /**
+     * @param shortName the shortName to set
+     */
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
 
 	@Override
 	public void addSpecialDefault(OBJ_TYPE type, Object value) {

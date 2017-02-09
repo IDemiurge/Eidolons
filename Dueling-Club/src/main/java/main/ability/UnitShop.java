@@ -45,8 +45,9 @@ public class UnitShop {
         Integer mod = unit.getIntParam(PARAMS.GOLD_MOD);
         if (mod > 0 && mod < 100) {
             mod += Math.min(100, mod + mod * GOLD_COMPENSATION / 100);
-        } else if (mod == 100)
+        } else if (mod == 100) {
             mod += GOLD_COMPENSATION / 2;
+        }
 
         gold = MathMaster.applyMod(gold, mod);
         unit.setParam(PARAMS.GOLD, gold);
@@ -58,23 +59,28 @@ public class UnitShop {
         awardGold(unit);
 
         goldPercentageToSpend = unit.getIntParam(PARAMS.JEWELRY_GOLD_PERCENTAGE);
-        if (goldPercentageToSpend > 0)
+        if (goldPercentageToSpend > 0) {
             buyJewelry(); // amulet and rings separately ; how to define which
+        }
         // traits unit prefers?
         goldPercentageToSpend = unit.getIntParam(PARAMS.QUICK_ITEM_GOLD_PERCENTAGE);
-        if (goldPercentageToSpend > 0)
+        if (goldPercentageToSpend > 0) {
             buyQuickItems(); // quick slots; quality range - for potions,
+        }
         // elixirs, conc., *weapons*?
 
         Integer armorGoldPercentage = unit.getIntParam(PARAMS.ARMOR_GOLD_PERCENTAGE);
-        if (StringMaster.isEmpty(unit.getProperty(PROPS.ARMOR_REPERTOIRE)))
+        if (StringMaster.isEmpty(unit.getProperty(PROPS.ARMOR_REPERTOIRE))) {
             armorGoldPercentage = 0;
+        }
         goldPercentageToSpend = 100 - armorGoldPercentage;
-        if (!StringMaster.isEmpty(unit.getProperty(PROPS.OFF_HAND_REPERTOIRE)))
+        if (!StringMaster.isEmpty(unit.getProperty(PROPS.OFF_HAND_REPERTOIRE))) {
             goldPercentageToSpend = MathMaster.applyMod(goldPercentageToSpend, unit
                     .getIntParam(PARAMS.MAIN_HAND_GOLD_PERCENTAGE));
-        if (StringMaster.isEmpty(unit.getProperty(PROPS.MAIN_HAND_REPERTOIRE)))
+        }
+        if (StringMaster.isEmpty(unit.getProperty(PROPS.MAIN_HAND_REPERTOIRE))) {
             generateWeaponRepertoire(shopper, false);
+        }
         if (!buy(unit.getProperty(PROPS.MAIN_HAND_REPERTOIRE), unit, ITEM_SLOT.MAIN_HAND,
                 OBJ_TYPES.WEAPONS)) { // make sure main
             // hand item is
@@ -91,13 +97,15 @@ public class UnitShop {
         }
 
         goldPercentageToSpend = armorGoldPercentage;
-        if (StringMaster.isEmpty(unit.getProperty(PROPS.ARMOR_REPERTOIRE)))
+        if (StringMaster.isEmpty(unit.getProperty(PROPS.ARMOR_REPERTOIRE))) {
             generateArmorRepertoire(shopper);
+        }
         buy(unit.getProperty(PROPS.ARMOR_REPERTOIRE), unit, ITEM_SLOT.ARMOR, OBJ_TYPES.ARMOR);
 
         goldPercentageToSpend = 100;
-        if (StringMaster.isEmpty(unit.getProperty(PROPS.OFF_HAND_REPERTOIRE)))
+        if (StringMaster.isEmpty(unit.getProperty(PROPS.OFF_HAND_REPERTOIRE))) {
             generateWeaponRepertoire(shopper, true);
+        }
         buy(unit.getProperty(PROPS.OFF_HAND_REPERTOIRE), unit, ITEM_SLOT.OFF_HAND,
                 OBJ_TYPES.WEAPONS);
     }
@@ -126,10 +134,12 @@ public class UnitShop {
     private static void buyQuickItems() {
         // TODO check slots
         while (true) {
-            if (unit.getRemainingQuickSlots() <= 0)
+            if (unit.getRemainingQuickSlots() <= 0) {
                 break;
-            if (!buy(unit.getProperty(PROPS.QUICK_ITEM_REPERTOIRE), unit, null, C_OBJ_TYPE.ITEMS))
+            }
+            if (!buy(unit.getProperty(PROPS.QUICK_ITEM_REPERTOIRE), unit, null, C_OBJ_TYPE.ITEMS)) {
                 break;
+            }
         }
 
     }
@@ -137,8 +147,9 @@ public class UnitShop {
     private static void buyJewelry() {
         buyJewelry(PROPS.JEWELRY_ITEM_TRAIT_REPERTOIRE);
 
-        if (checkGoldLimit())
+        if (checkGoldLimit()) {
             buyJewelry(PROPS.JEWELRY_PASSIVE_ENCHANTMENT_REPERTOIRE);
+        }
         // buyJewelry(PROPS.JEWELRY_ATTR_TRAIT_REPERTOIRE);
     }
 
@@ -163,21 +174,27 @@ public class UnitShop {
                 // check what, exactly? quality range? proper match? (resistance
                 // could be resistance penetration... TODO check doesn't contain
                 // other trait
+            {
                 repertoire += VariableManager.removeVarPart(type.getName())
                         + VariableManager.getVarPart(trait) + ";";
+            }
 
         }
-        if (!repertoire.isEmpty())
-            while (true)
+        if (!repertoire.isEmpty()) {
+            while (true) {
                 try {
-                    if (!buy(repertoire, unit, null, OBJ_TYPES.JEWELRY))
+                    if (!buy(repertoire, unit, null, OBJ_TYPES.JEWELRY)) {
                         return;
-                    if (!checkGoldLimit())
+                    }
+                    if (!checkGoldLimit()) {
                         return;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return;
                 }
+            }
+        }
     }
 
     private static boolean buy(String repertoire, DC_HeroObj unit, ITEM_SLOT slot,
@@ -191,34 +208,42 @@ public class UnitShop {
         while (!Loop.loopEnded() && !map.isEmpty()) {
             ObjType baseType = getItem(map);
             map.remove(baseType);
-            if (baseType == null)
+            if (baseType == null) {
                 return false; // *empty*
+            }
 
             for (ObjType type : DataManager.getTypes(OBJ_TYPE_ENUM)) {
-                if (!checkItemType(type, baseType))
+                if (!checkItemType(type, baseType)) {
                     continue;
+                }
 
-                if (!checkCanEquip(baseType, unit, slot))
+                if (!checkCanEquip(baseType, unit, slot)) {
                     continue;
+                }
 
-                if (!specialCheck(unit, type))
+                if (!specialCheck(unit, type)) {
                     continue;
+                }
                 // TODO for potions/jewelry?
                 if (!checkQualityRange(type, unit)) // for potions/ammo?
+                {
                     continue;
+                }
                 itemPool.add(type);
             }
             itemPool = (List<ObjType>) SortMaster.sortByValue(itemPool, PARAMS.GOLD_COST, true);
             DC_HeroItemObj item = null;
             for (ObjType type : itemPool) {
                 // sort by cost? then go from top to bottom trying to buy...
-                if (!checkCost(type, unit))
+                if (!checkCost(type, unit)) {
                     continue;
+                }
                 item = buy(type, unit);
                 break;
             }
-            if (item == null)
+            if (item == null) {
                 continue;
+            }
             equip(unit, item, slot);
             return true;
         }
@@ -228,10 +253,11 @@ public class UnitShop {
 
     private static ObjType getItem(WeightMap<ObjType> map) {
         ObjType baseType = null;
-        if (UnitMaster.isRandom())
+        if (UnitMaster.isRandom()) {
             baseType = new RandomWizard<ObjType>().getObjectByWeight(map);
-        else
+        } else {
             baseType = (map).getGreatest();
+        }
         return baseType;
     }
 
@@ -247,12 +273,15 @@ public class UnitShop {
         String property = unit.getProperty(PROPS.ALLOWED_MATERIAL);
         if (property.isEmpty()) {
             SHOP_LEVEL shopLevel = SHOP_LEVEL.COMMON;
-            if (unit.getLevel() > 5)
+            if (unit.getLevel() > 5) {
                 shopLevel = SHOP_LEVEL.QUALITY;
-            if (unit.getLevel() > 8)
+            }
+            if (unit.getLevel() > 8) {
                 shopLevel = SHOP_LEVEL.OPULENT;
-            if (unit.getLevel() < 3)
+            }
+            if (unit.getLevel() < 3) {
                 shopLevel = SHOP_LEVEL.POOR;
+            }
             List<MATERIAL> levelMaterials = ShopMaster.getMaterialsForShopLevel(shopLevel);
             property = StringMaster.constructStringContainer(levelMaterials);
         }
@@ -269,9 +298,9 @@ public class UnitShop {
             if (item instanceof DC_JewelryObj) {
                 unit.addJewelryItem(item);
             } else {
-                if (item instanceof DC_QuickItemObj)
+                if (item instanceof DC_QuickItemObj) {
                     unit.getQuickItems().add((DC_QuickItemObj) item);
-                else {
+                } else {
                     DC_HeroItemObj itemObj = ItemFactory.createItemObj(item.getType(), unit
                             .getOriginalOwner(), unit.getGame(), unit.getRef(), true);
                     unit.getQuickItems().add((DC_QuickItemObj) itemObj);
@@ -294,8 +323,9 @@ public class UnitShop {
     }
 
     private static HeroManager getHeroManager() {
-        if (heroManager == null)
+        if (heroManager == null) {
             heroManager = new HeroManager(DC_Game.game);
+        }
         heroManager.setTrainer(true);
         return heroManager;
     }
@@ -317,14 +347,17 @@ public class UnitShop {
             boolean result = StringMaster.compareByChar(baseType
                     .getProperty(PROPS.MAGICAL_ITEM_TRAIT), type
                     .getProperty(PROPS.MAGICAL_ITEM_TRAIT));
-            if (baseType.getProperty(PROPS.MAGICAL_ITEM_TRAIT).isEmpty())
+            if (baseType.getProperty(PROPS.MAGICAL_ITEM_TRAIT).isEmpty()) {
                 result = false;
-            if (!baseType.getProperty(PROPS.JEWELRY_PASSIVE_ENCHANTMENT).isEmpty())
+            }
+            if (!baseType.getProperty(PROPS.JEWELRY_PASSIVE_ENCHANTMENT).isEmpty()) {
                 result = StringMaster.compareByChar(baseType
                         .getProperty(PROPS.JEWELRY_PASSIVE_ENCHANTMENT), type
                         .getProperty(PROPS.JEWELRY_PASSIVE_ENCHANTMENT));
-            if (!result)
+            }
+            if (!result) {
                 return false;
+            }
             return StringMaster.compareByChar(baseType.getType().getName(), type.getType()
                     .getName());
 
@@ -335,14 +368,17 @@ public class UnitShop {
     }
 
     private static boolean checkQualityRange(ObjType type, DC_HeroObj unit) {
-        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.JEWELRY)
+        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.JEWELRY) {
             return true;
-        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.ITEMS)
+        }
+        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.ITEMS) {
             return true;
+        }
         String itemProperty = type.getProperty(G_PROPS.QUALITY_LEVEL);
         String property = unit.getProperty(PROPS.QUALITY_LEVEL_RANGE);
-        if (property.isEmpty())
+        if (property.isEmpty()) {
             property = DEFAULT_QUALITY_RANGE;
+        }
         if (!property.contains(StringMaster.CONTAINER_SEPARATOR)) {
             return property.equalsIgnoreCase(itemProperty);
         }
@@ -361,8 +397,9 @@ public class UnitShop {
         } catch (Exception e) {
 
         }
-        if (max == -1)
+        if (max == -1) {
             max = min;
+        }
 
         return !(index < min || index > max);
     }

@@ -17,16 +17,18 @@ public class FlyingRule {
 
     public static int getAttackModifierd(int attack, Boolean flying_mod) {
 
-        if (BooleanMaster.isTrue(flying_mod))
+        if (BooleanMaster.isTrue(flying_mod)) {
             return MathMaster.getFractionValueCentimal(attack, FLYING_ATTACK_MOD);
-        else
+        } else {
             return -MathMaster.getFractionValueCentimal(attack, FLYING_ATTACK_MOD);
+        }
     }
 
     public static boolean checkAddMoveCostReductions(DC_HeroObj ownerObj) {
         // TODO Auto-generated method stub
-        if (!ownerObj.isFlying())
+        if (!ownerObj.isFlying()) {
             return false;
+        }
 
         ownerObj.modifyParamByPercent(PARAMS.MOVE_STA_PENALTY, MOVE_STA_COST_REDUCTION);
         ownerObj.modifyParamByPercent(PARAMS.MOVE_AP_PENALTY, MOVE_AP_COST_REDUCTION);

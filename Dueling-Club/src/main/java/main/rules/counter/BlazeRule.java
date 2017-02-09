@@ -55,8 +55,9 @@ public class BlazeRule extends DamageCounterRule {
 
     @Override
     public boolean isEnduranceOnly() {
-        if (getNumberOfCounters(unit) <= THRESHOLD)
+        if (getNumberOfCounters(unit) <= THRESHOLD) {
             return true;
+        }
         return false;
     }
 
@@ -73,8 +74,9 @@ public class BlazeRule extends DamageCounterRule {
 
     @Override
     public int getCounterNumberReductionPerTurn(DC_HeroObj unit) {
-        if (checkAblaze(unit))
+        if (checkAblaze(unit)) {
             return REDUCTION;
+        }
         return INCREASE;
     }
 
@@ -89,8 +91,9 @@ public class BlazeRule extends DamageCounterRule {
 
     @Override
     public STATUS getStatus() {
-        if (checkAblaze(unit))
+        if (checkAblaze(unit)) {
             return STATUS.ABLAZE; // panic? spreading?
+        }
         return null;
     }
 

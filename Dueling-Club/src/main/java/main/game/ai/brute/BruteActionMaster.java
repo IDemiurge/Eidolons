@@ -32,8 +32,9 @@ public class BruteActionMaster extends ActionTypeManager {
 
     private ACTION_TYPES checkCases() {
         for (ACTION_CASES CASE : DEFAULT_ACTION_CASE_PRIORITIES) {
-            if (getAnalyzer().checkActionCase(CASE))
+            if (getAnalyzer().checkActionCase(CASE)) {
                 return caseActionMap.get(CASE);
+            }
         }
 
         return DEFAULT_CASE;

@@ -24,8 +24,8 @@ import main.system.auxiliary.LogMaster;
 import main.system.auxiliary.Manager;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
-import main.system.graphics.PhaseAnimation;
 import main.system.graphics.AttackAnimation;
+import main.system.graphics.PhaseAnimation;
 import main.system.math.DC_MathManager;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.text.LogEntryNode;
@@ -35,11 +35,13 @@ public class DamageMaster extends Manager {
 
     private static int getResistanceForDamageType(int amount, DC_HeroObj attacked,
                                                   DC_HeroObj attacker, DAMAGE_TYPE type) {
-        if (type == null)
+        if (type == null) {
             return 0;
+        }
         int resistance = DC_MathManager.getDamageTypeResistance(attacked, type);
-        if (type.isMagical())
+        if (type.isMagical()) {
             resistance -= attacker.getIntParam(PARAMS.RESISTANCE_PENETRATION);
+        }
         return resistance;
     }
 
@@ -58,25 +60,29 @@ public class DamageMaster extends Manager {
 
     public static int dealDamage(Ref ref, boolean magical, DAMAGE_TYPE dmg_type) {
         Event event = new Event(STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_PHYSICAL_DAMAGE, ref);
-        if (!event.fire())
+        if (!event.fire()) {
             return -1;
+        }
         ref = Ref.getCopy(ref);
         int amount = ref.getAmount();
-        if (amount <= 0)
+        if (amount <= 0) {
             return 0;// sure?
+        }
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
         DC_HeroObj attacker = (DC_HeroObj) ref.getSourceObj();
         DC_HeroObj attacked = (DC_HeroObj) ref.getTargetObj();
-        if (dmg_type == null)
+        if (dmg_type == null) {
             dmg_type = active.getEnergyType();
+        }
         LogEntryNode entry = attacked.getGame().getLogManager().newLogEntryNode(true,
                 ENTRY_TYPE.DAMAGE);
 
         int blocked = 0;
-        if (!isPeriodic(ref))
+        if (!isPeriodic(ref)) {
             if (ref.getSource() != ref.getTarget()) {
                 blocked = getArmorReduction(amount, attacked, attacker, active);
             }
+        }
 
         int t_damage = calculateToughnessDamage(attacked, attacker, amount, magical, ref, blocked,
                 dmg_type);
@@ -92,11 +98,13 @@ public class DamageMaster extends Manager {
         ref.setAmount(e_damage);
         // TODO separate event types?
         if (!new Event(magical ? STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_ENDURANCE_DAMAGE
-                : STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_ENDURANCE_DAMAGE, ref).fire())
+                : STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_ENDURANCE_DAMAGE, ref).fire()) {
             return 0;
+        }
         ref.setAmount(t_damage);
-        if (!new Event(STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_TOUGHNESS_DAMAGE, ref).fire())
+        if (!new Event(STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_TOUGHNESS_DAMAGE, ref).fire()) {
             return 0;
+        }
 
         int result = dealPureDamage(attacked, attacker, t_damage, e_damage, ref);
         new Event(magical ? STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_SPELL_DAMAGE
@@ -113,8 +121,9 @@ public class DamageMaster extends Manager {
 
     private static PhaseAnimation getAnimation(Ref ref, DC_HeroObj obj) {
         PhaseAnimation a = getAttackAnimation(ref, obj);
-        if (a != null)
+        if (a != null) {
             return a;
+        }
         return getActionAnimation(ref, obj);
     }
 
@@ -128,23 +137,27 @@ public class DamageMaster extends Manager {
 
         ref.setAmount(amount);
         Event event = new Event(STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_SPELL_DAMAGE, ref);
-        if (!event.fire())
+        if (!event.fire()) {
             return -1;
+        }
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
 
         attacked.getGame().getLogManager().newLogEntryNode(true, ENTRY_TYPE.DAMAGE);
         DC_HeroObj attacker = (DC_HeroObj) ref.getSourceObj();
-        if (active != null)
-            if (!isPeriodic(ref))
+        if (active != null) {
+            if (!isPeriodic(ref)) {
                 if (ref.getSource() != ref.getTarget()) {
                     int blocked = getArmorReduction(amount, attacked, attacker, active);
                     amount -= blocked;
                 }
+            }
+        }
 
         ref.setAmount(amount);
 
-        if (!new Event(STANDARD_EVENT_TYPE.UNIT_IS_DEALT_SPELL_DAMAGE, ref).fire())
+        if (!new Event(STANDARD_EVENT_TYPE.UNIT_IS_DEALT_SPELL_DAMAGE, ref).fire()) {
             return 0;
+        }
         // TODO influence the amount?
         int result = dealPureDamage(attacked, attacker, amount, amount, ref);
         new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_SPELL_DAMAGE, ref).fire();
@@ -191,23 +204,26 @@ public class DamageMaster extends Manager {
         // amount *= OptionsMaster.getGameOptions.getOption(global_damage_mod) /
         // 100;
         if (!processDamageEvent(damage_type, ref, amount,
-                STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_DAMAGE))
+                STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_DAMAGE)) {
             return -1;
+        }
         // VITAL!
         amount = ref.getAmount();
         ref.getGame().getLogManager().logDamageBeingDealt(amount, attacker, targetObj, damage_type);
 
         if (!processDamageEvent(damage_type, ref, amount, new EventType(
-                CONSTRUCTED_EVENT_TYPE.UNIT_IS_DEALT_DAMAGE_OF_TYPE, damage_type.toString())))
+                CONSTRUCTED_EVENT_TYPE.UNIT_IS_DEALT_DAMAGE_OF_TYPE, damage_type.toString()))) {
             return 0;
+        }
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
         int damageLeft = 0;
         int damageDealt = 0;
-        if (damage_type == DAMAGE_TYPE.PURE || damage_type == DAMAGE_TYPE.POISON)
+        if (damage_type == DAMAGE_TYPE.PURE || damage_type == DAMAGE_TYPE.POISON) {
             damageDealt = dealPureDamage(targetObj, attacker, amount, (isPeriodic(ref) ? null
                     : amount), ref);
-        else
+        } else {
             dealDamage(ref, !isAttack(ref), damage_type);
+        }
 
         // if
         // (damage_type.isMagical()) {
@@ -218,12 +234,13 @@ public class DamageMaster extends Manager {
 
         damageLeft = amount - damageDealt;
 
-        if (!ref.isQuiet())
+        if (!ref.isQuiet()) {
             try {
                 active.getRef().setValue(KEYS.DAMAGE_DEALT, damageDealt + "");
             } catch (Exception e) {
 
             }
+        }
 
         new Event(CONSTRUCTED_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_DAMAGE_OF_TYPE,
                 damage_type.toString(), ref).fire(); // TODO
@@ -261,9 +278,10 @@ public class DamageMaster extends Manager {
                 add = true;
             }
         }
-        if (ref.isQuiet())
+        if (ref.isQuiet()) {
             return true;
-        if (ref.getActive() != null)
+        }
+        if (ref.getActive() != null) {
             try {
                 Ref REF = ref.getActive().getRef();
                 if (add) {
@@ -276,6 +294,7 @@ public class DamageMaster extends Manager {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
         Event event = new Event(event_type, ref);
         return (event.fire());
     }
@@ -303,14 +322,15 @@ public class DamageMaster extends Manager {
         boolean result = false;
         int actual_t_damage = 0;
 
-        if (t_damage > 0)
+        if (t_damage > 0) {
             if (!enduranceOnly) {
 
                 event = new Event(STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_TOUGHNESS_DAMAGE, ref);
                 ref.setAmount(t_damage);
                 result = event.fire();
-                if (DC_GameManager.checkInterrupted(ref))
+                if (DC_GameManager.checkInterrupted(ref)) {
                     return 0;
+                }
                 t_damage = ref.getAmount(); // triggers may have changed the
                 // amount!
                 actual_t_damage = Math.min(attacked.getIntParam(PARAMS.C_TOUGHNESS), t_damage);
@@ -326,6 +346,7 @@ public class DamageMaster extends Manager {
                 result = event.fire();
 
             }
+        }
 
         int actual_e_damage = 0;
         if (e_damage > 0) {
@@ -364,9 +385,10 @@ public class DamageMaster extends Manager {
             // DAMAGE_TYPE.PURE, dead);
 
             PhaseAnimation animation = getAnimation(ref, attacked);
-            if (animation != null)
+            if (animation != null) {
                 animation.addPhaseArgs(PHASE_TYPE.DAMAGE_DEALT, t_damage, e_damage, ref
                         .getDamageType());
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -411,13 +433,14 @@ public class DamageMaster extends Manager {
     private static int calculateDamage(boolean endurance, DC_HeroObj attacked, DC_HeroObj attacker,
                                        int base_damage, boolean magical, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
 
-        if (!endurance)
+        if (!endurance) {
             if (isPeriodic(ref)) {
                 // PhaseAnimation animation = getAttackAnimation(ref, attacked);
                 // animation.addPhaseArgs(PHASE_TYPE.REDUCTION_NATURAL, 0, 0,
                 // 0);
                 return 0;
             }
+        }
 
         int i = base_damage - blocked;
         int resistance = getResistanceForDamageType(i, attacked, attacker, damage_type);
@@ -425,10 +448,11 @@ public class DamageMaster extends Manager {
         int armor = ArmorMaster.getArmorValue(attacked, damage_type);
         PhaseAnimation animation = magical ? getActionAnimation(ref, attacker) : getAttackAnimation(ref,
                 attacked);
-
-        if (resistance != 0 || armor != 0)
+if (animation!=null )
+        if (resistance != 0 || armor != 0) {
             animation.addPhaseArgs(PHASE_TYPE.REDUCTION_NATURAL, armor, resistance, base_damage
                     - blocked);
+        }
         return Math.max(0, i - armor);
     }
 
@@ -445,8 +469,9 @@ public class DamageMaster extends Manager {
 
     private static int applyAverageShieldReduction(int amount, DC_HeroObj attacked,
                                                    DC_HeroObj attacker, DC_ActiveObj action, DC_WeaponObj weapon, DAMAGE_TYPE damage_type) {
-        if (!attacked.getGame().getArmorSimulator().checkCanShieldBlock(action, attacked))
+        if (!attacked.getGame().getArmorSimulator().checkCanShieldBlock(action, attacked)) {
             return 0;
+        }
         int blocked = attacked.getGame().getArmorSimulator().getShieldDamageBlocked(amount,
                 attacked, attacker, action, weapon, damage_type);
 
@@ -458,8 +483,9 @@ public class DamageMaster extends Manager {
         // if (attacked.checkPassive(STANDARD_PASSIVES.IMMATERIAL)
         // || attacker.checkPassive(STANDARD_PASSIVES.IMMATERIAL))
         // return applySpellArmorReduction(base_damage, attacked, attacker);
-        if (attacked.getArmor() == null)
+        if (attacked.getArmor() == null) {
             return 0;
+        }
         int blocked = (simulation ? attacked.getGame().getArmorSimulator() : attacked.getGame()
                 .getArmorMaster()).getArmorBlockDamage(base_damage, attacked, attacker, action);
 
@@ -484,13 +510,15 @@ public class DamageMaster extends Manager {
     public static int getDamage(Attack attack) {
         DC_HeroObj attacked = attack.getAttacked();
         DC_HeroObj attacker = attack.getAttacker();
-        if (!attacked.checkPassive(STANDARD_PASSIVES.SNEAK_IMMUNE))
+        if (!attacked.checkPassive(STANDARD_PASSIVES.SNEAK_IMMUNE)) {
             attack.setSneak(DC_AttackMaster.checkSneak(attack.getRef()));
+        }
         // TODO ref.setFuture(true) -> average dice, auto-reset action etc
         int amount = attack.getPrecalculatedDamageAmount();
         DAMAGE_TYPE dmg_type = attack.getDamageType();
-        if (dmg_type == DAMAGE_TYPE.PURE || dmg_type == DAMAGE_TYPE.POISON)
+        if (dmg_type == DAMAGE_TYPE.PURE || dmg_type == DAMAGE_TYPE.POISON) {
             return amount;
+        }
         amount -= applyAverageShieldReduction(amount, attacked, attacker, attack.getAction(),
                 attack.getWeapon(), attack.getDamageType());
         amount -= getArmorReduction(amount, attacked, attacker, attack.getAction(), true);
@@ -500,8 +528,9 @@ public class DamageMaster extends Manager {
         // if (dmg_type.isMagical()) {
         // amount = applySpellArmorReduction(amount, attacked, attacker);
         // }
-        if (attack.getAction().isAttack())
+        if (attack.getAction().isAttack()) {
             return amount;
+        }
         return amount;
     }
 
@@ -510,10 +539,12 @@ public class DamageMaster extends Manager {
     }
 
     public static boolean isLethal(int damage, Obj targetObj) {
-        if (damage >= targetObj.getIntParam(PARAMS.C_TOUGHNESS))
+        if (damage >= targetObj.getIntParam(PARAMS.C_TOUGHNESS)) {
             return true;
-        if (damage >= targetObj.getIntParam(PARAMS.C_ENDURANCE))
+        }
+        if (damage >= targetObj.getIntParam(PARAMS.C_ENDURANCE)) {
             return true;
+        }
         return false;
     }
 

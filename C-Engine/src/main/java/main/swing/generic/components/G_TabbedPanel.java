@@ -25,15 +25,15 @@ public class G_TabbedPanel extends G_Panel {
     }
 
     public void addTab(Component c, String title, Icon icon) {
-        if (icon == null)
+        if (icon == null) {
             tabs.addTab(title, c);
-        else {
+        } else {
             tabs.addTab(title, icon, c);
         }
         tabList.add(c);
-        if (panelSize == null)
+        if (panelSize == null) {
             panelSize = c.getPreferredSize();
-        else {
+        } else {
             double w = c.getPreferredSize().getWidth();
             double h = c.getPreferredSize().getHeight();
             panelSize = new Dimension((int) Math.max(panelSize.getWidth(), w),
@@ -49,8 +49,9 @@ public class G_TabbedPanel extends G_Panel {
     @Override
     public String toString() {
         String tabString = "";
-        for (Component tab : tabList)
+        for (Component tab : tabList) {
             tabString += "\n" + tab.toString();
+        }
         return tabs.getTabCount() + " TABS: " + tabString;
     }
 }

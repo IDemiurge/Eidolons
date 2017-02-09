@@ -41,8 +41,9 @@ public class ToolTipTextComp extends WrappedTextComp {
     @Override
     public void paint(Graphics g) {
         int size = 16;
-        if (textLines != null)
+        if (textLines != null) {
             size -= Math.max(0, textLines.size() - 3);
+        }
         setFont(g.getFont().deriveFont(new Float(size)));
 
         super.paint(g);
@@ -56,12 +57,14 @@ public class ToolTipTextComp extends WrappedTextComp {
     @Override
     protected int paintLine(Graphics g, String str, int x2, int y2, int i) {
         // fontMap.getOrCreate(str);
-        if (BooleanMaster.isTrue(req))
+        if (BooleanMaster.isTrue(req)) {
             g.setColor(ColorManager.CRIMSON);
-        else
+        } else {
             g.setColor(getColor());
-        if (req == null)
+        }
+        if (req == null) {
             g.setFont(g.getFont().deriveFont(Font.ITALIC));
+        }
         return super.paintLine(g, str, x2, y2, i);
     }
 
@@ -160,12 +163,15 @@ public class ToolTipTextComp extends WrappedTextComp {
                 if (!skill) {// skills also have those!
                     addReqLines(item, hero, list, RequirementsManager.RANK_MODE);
                 }
-                if (list.size() <= getMaxListSize())
+                if (list.size() <= getMaxListSize()) {
                     list.add(rankInfo);
-                if (list.size() <= getMaxListSize())
+                }
+                if (list.size() <= getMaxListSize()) {
                     list.add(rankBonus);
-                if (list.size() <= getMaxListSize())
+                }
+                if (list.size() <= getMaxListSize()) {
                     list.add(skillRanksInfo);
+                }
             }
         }
         return list.toArray(new String[list.size()]);
@@ -198,17 +204,20 @@ public class ToolTipTextComp extends WrappedTextComp {
 
         switch (CharacterCreator.getHeroPanel().getView()) {
             case CLASSES:
-                if (req == null)
+                if (req == null) {
                     return getControlTooltipLinesClass();
+                }
                 return getFeatLines(req, (ObjType) item, hero, false);
             case LIBRARY:
-                if (req == null)
+                if (req == null) {
                     return getControlTooltipLinesSpell();
+                }
                 return getSpellLines(req, item, hero);
             case SKILLS:
 
-                if (req == null)
+                if (req == null) {
                     return getControlTooltipLinesSkill();
+                }
                 return getSkillLines(req, (ObjType) item, hero);
 
         }

@@ -12,13 +12,14 @@ public class Err {
     private static List<String> errorsShown = new LinkedList<>();
 
     public static void NOTE(String s, int level) {
-        if (EXCLUSIVE != -1)
-            if (level != EXCLUSIVE)
+        if (EXCLUSIVE != -1) {
+            if (level != EXCLUSIVE) {
                 return;
-            else {
+            } else {
                 info(s);
                 return;
             }
+        }
 
         if (level >= LEVEL) {
             info(s);
@@ -27,8 +28,9 @@ public class Err {
 
     public static void error(String string) {
         // if (switcher) return;
-        if (errorsShown.contains(string))
+        if (errorsShown.contains(string)) {
             return;
+        }
         errorsShown.add(string);
         printStackTrace();
         newDialog(JOptionPane.ERROR_MESSAGE, string);
@@ -51,8 +53,9 @@ public class Err {
     }
 
     public static void info(String string) {
-        if (errorsShown.contains(string))
+        if (errorsShown.contains(string)) {
             return;
+        }
         errorsShown.add(string);
         newDialog(JOptionPane.INFORMATION_MESSAGE, string);
     }

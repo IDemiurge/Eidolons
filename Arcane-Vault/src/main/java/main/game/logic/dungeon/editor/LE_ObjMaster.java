@@ -32,14 +32,8 @@ import main.system.auxiliary.RandomWizard;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import java.util.*;
 
 public class LE_ObjMaster {
 
@@ -48,18 +42,6 @@ public class LE_ObjMaster {
 
 	public static Map<ObjType, DC_HeroObj> getObjCache() {
 		return LevelEditor.getCurrentLevel().getObjCache();
-	}
-
-	public void addEntrance() {
-
-	}
-
-	public DC_HeroObj stackObj(ObjType type, Coordinates... coordinates) {
-		return addObj(type, true, coordinates);
-	}
-
-	public DC_HeroObj addObj(ObjType type, Coordinates... coordinates) {
-		return addObj(type, false, coordinates);
 	}
 
 	public static void unitAdded(Coordinates coordinates, DC_HeroObj unit) {
@@ -99,9 +81,10 @@ public class LE_ObjMaster {
 		// Coordinates[c.size()]));
 		cachingOff = true;
 		try {
-			for (Coordinates coordinate : c)
-				removeObj(coordinate);
-		} catch (Exception e) {
+            for (Coordinates coordinate : c) {
+                removeObj(coordinate);
+            }
+        } catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			cachingOff = false;
@@ -114,16 +97,13 @@ public class LE_ObjMaster {
 		LevelEditor.getSimulation().getUnitMap().remove(coordinates);
 	}
 
-	public void removeObj(DC_Obj obj) {
-		// LevelEditor.getCurrentLevel().removeObj(obj);
-	}
-
 	public static boolean fillArea(boolean diagonal) {
 
 		List<Coordinates> coordinates = LE_MapMaster.pickCoordinates(diagonal);
-		if (!ListMaster.isNotEmpty(coordinates))
-			return false;
-		fill(coordinates, LevelEditor.getMainPanel().getPalette().getSelectedType());
+        if (!ListMaster.isNotEmpty(coordinates)) {
+            return false;
+        }
+        fill(coordinates, LevelEditor.getMainPanel().getPalette().getSelectedType());
 		return true;
 	}
 
@@ -138,29 +118,32 @@ public class LE_ObjMaster {
 
 		MAP_FILL_TEMPLATE template = new EnumMaster<MAP_FILL_TEMPLATE>().retrieveEnumConst(
 				MAP_FILL_TEMPLATE.class, ListChooser.chooseEnum(MAP_FILL_TEMPLATE.class));
-		if (template == null)
-			return false;
-		List<Coordinates> coordinates = LE_MapMaster.pickCoordinates();
+        if (template == null) {
+            return false;
+        }
+        List<Coordinates> coordinates = LE_MapMaster.pickCoordinates();
 		String data = template.getCenterObjects() + template.getPeripheryObjects();
 		for (Coordinates c : coordinates) {
 			ObjType type = null;
 			int i = 0;
 			for (Coordinates adj : c.getAdjacentCoordinates()) {
-				if (coordinates.contains(adj))
-					i++;
-				else {
-					if (data.contains(LevelEditor.getCurrentLevel().getDungeon().getGame()
-							.getObjectByCoordinate(c, true).getName()))
-						i++;
-				}
+                if (coordinates.contains(adj)) {
+                    i++;
+                } else {
+                    if (data.contains(LevelEditor.getCurrentLevel().getDungeon().getGame()
+                            .getObjectByCoordinate(c, true).getName())) {
+                        i++;
+                    }
+                }
 			}
-			if (i >= c.getAdjacentCoordinates().size() / 2)
-				type = RandomWizard.getObjTypeByWeight(template.getCenterObjects(),
-						OBJ_TYPES.BF_OBJ);
-			else
-				type = RandomWizard.getObjTypeByWeight(template.getCenterObjects(),
-						OBJ_TYPES.BF_OBJ);
-			LevelEditor.getObjMaster().addObj(type, c);
+            if (i >= c.getAdjacentCoordinates().size() / 2) {
+                type = RandomWizard.getObjTypeByWeight(template.getCenterObjects(),
+                        OBJ_TYPES.BF_OBJ);
+            } else {
+                type = RandomWizard.getObjTypeByWeight(template.getCenterObjects(),
+                        OBJ_TYPES.BF_OBJ);
+            }
+            LevelEditor.getObjMaster().addObj(type, c);
 		}
 		// keep choosing coordinates ...
 		// single click allowed... highlight... done/cancel on fill() click
@@ -173,9 +156,10 @@ public class LE_ObjMaster {
 	public static void replace() {
 		ObjType type = ArcaneVault.getSelectedType();
 		List<Coordinates> coordinates = LE_MapMaster.pickCoordinates();
-		if (!ListMaster.isNotEmpty(coordinates))
-			return;
-		ObjType type2 = ArcaneVault.getSelectedType();
+        if (!ListMaster.isNotEmpty(coordinates)) {
+            return;
+        }
+        ObjType type2 = ArcaneVault.getSelectedType();
 		if (type2 == type) {
 			type2 = DataManager.getType(ListChooser.chooseType(type.getOBJ_TYPE_ENUM()), type
 					.getOBJ_TYPE_ENUM());
@@ -190,14 +174,15 @@ public class LE_ObjMaster {
 			List<DC_HeroObj> objects = LevelEditor.getSimulation().getUnitMap().get(coordinate);
 			// LevelEditor.getGrid().getCells()[coordinate.x][coordinate.y]
 			// .getObjects();
-			if (objects != null)
-				for (DC_HeroObj obj : new LinkedList<>(objects)) {
-					if (obj.getType().equals(type)) {
-						objects.remove(obj);
-						objects.add(getObject(type2, coordinate));
-					}
-				}
-		}
+            if (objects != null) {
+                for (DC_HeroObj obj : new LinkedList<>(objects)) {
+                    if (obj.getType().equals(type)) {
+                        objects.remove(obj);
+                        objects.add(getObject(type2, coordinate));
+                    }
+                }
+            }
+        }
 		LevelEditor.getMainPanel().getMapViewComp().getGrid().refresh();
 	}
 
@@ -215,16 +200,18 @@ public class LE_ObjMaster {
 
 	public static boolean moveObjects(boolean copy, boolean mirror) {
 		List<Coordinates> coordinates = LE_MapMaster.pickCoordinates();
-		if (!ListMaster.isNotEmpty(coordinates))
-			return false;
-		return moveObjects(copy, coordinates, mirror);
+        if (!ListMaster.isNotEmpty(coordinates)) {
+            return false;
+        }
+        return moveObjects(copy, coordinates, mirror);
 	}
 
 	private static boolean moveObjects(boolean copy, List<Coordinates> coordinates, boolean mirror) {
 		Coordinates destination = LevelEditor.getMouseMaster().pickCoordinate();
-		if (destination == null)
-			return false;
-		int offsetY = destination.y - CoordinatesMaster.getMinY(coordinates);
+        if (destination == null) {
+            return false;
+        }
+        int offsetY = destination.y - CoordinatesMaster.getMinY(coordinates);
 		int offsetX = destination.x - CoordinatesMaster.getMinX(coordinates);
 		moveObjects(destination, coordinates, offsetX, offsetY, copy, mirror);
 		return true;
@@ -233,9 +220,10 @@ public class LE_ObjMaster {
 	public static void moveObjects(Coordinates destination, List<Coordinates> coordinates,
 			int offsetX, int offsetY, boolean copy, boolean mirror) {
 		cache();
-		if (!copy)
-			removeObjects(coordinates);
-		for (Coordinates coordinate : coordinates) {
+        if (!copy) {
+            removeObjects(coordinates);
+        }
+        for (Coordinates coordinate : coordinates) {
 			moveObj(coordinate, offsetX, offsetY, copy, mirror); // copy or
 																	// not...
 		}
@@ -243,9 +231,10 @@ public class LE_ObjMaster {
 	}
 
 	private static void cache() {
-		if (cachingOff)
-			return;
-		List<List<DC_HeroObj>> list = new LinkedList<>(LevelEditor.getSimulation().getUnitMap()
+        if (cachingOff) {
+            return;
+        }
+        List<List<DC_HeroObj>> list = new LinkedList<>(LevelEditor.getSimulation().getUnitMap()
 				.values());
 		Stack<Map<Coordinates, List<DC_HeroObj>>> cache = getCache();
 		cache.push(new MapMaster<Coordinates, List<DC_HeroObj>>().constructMap(LevelEditor
@@ -281,18 +270,21 @@ public class LE_ObjMaster {
 	public static void moveObj(Coordinates c, int offsetX, int offsetY, boolean copy, boolean mirror) {
 		// don't remove all - use selective
 		Map<Coordinates, List<DC_HeroObj>> unitMap = LevelEditor.getSimulation().getUnitMap();
-		if (!copy)
-			unitMap = getCache().peek();
-		List<DC_HeroObj> objects = unitMap.get(c);
-		if (!ListMaster.isNotEmpty(objects))
-			return;
-		// if (!noRemove)
+        if (!copy) {
+            unitMap = getCache().peek();
+        }
+        List<DC_HeroObj> objects = unitMap.get(c);
+        if (!ListMaster.isNotEmpty(objects)) {
+            return;
+        }
+        // if (!noRemove)
 		// LevelEditor.getSimulation().getUnitMap().put(c, new
 		// LinkedList<DC_HeroObj>());
 		Coordinates newCoordinates = new Coordinates(c.x + offsetX, c.y + offsetY);
-		if (mirror)
-			newCoordinates = new Coordinates(c.x + offsetY, c.y + offsetX);
-		LevelEditor.getSimulation().getUnitMap().put(newCoordinates, objects);
+        if (mirror) {
+            newCoordinates = new Coordinates(c.x + offsetY, c.y + offsetX);
+        }
+        LevelEditor.getSimulation().getUnitMap().put(newCoordinates, objects);
 	}
 
 	public static boolean mirror() {
@@ -308,77 +300,25 @@ public class LE_ObjMaster {
 			int height, boolean alt) {
 		List<ObjAtCoordinate> list = new LinkedList<>();
 		// TODO make sure base is actually top-left!
-		for (int x = 0; x <= width; x++)
-			for (int y = 0; y <= height; y++) {
-				List<DC_HeroObj> objects = LevelEditor.getSimulation().getObjectsOnCoordinate(
-						new Coordinates(x + baseCoordinate.x, baseCoordinate.y + y));
-				// filter out bf?
-				for (DC_HeroObj obj : objects) {
-					list.add(new ObjAtCoordinate(obj.getType(), new Coordinates(x, y)));
-				}
-			}
-		return list;
-	}
-
-	public DC_HeroObj addObj(ObjType type, boolean stack, Coordinates... coordinates) {
-		DC_HeroObj obj = null;
-		for (Coordinates c : coordinates) {
-			List<DC_HeroObj> list = LevelEditor.getSimulation().getObjectsOnCoordinate(c);
-
-			if (!StackingRule.checkCanPlace(c, type, list)) {
-				// replace cases? if 1 coordinate, prompt...
-				if (LevelEditor.getCurrentLevel().isInitialized()) {
-					SoundMaster.playStandardSound(STD_SOUNDS.DIS__BLOCKED);
-					// DialogMaster.inform(type +
-					// " cannot be placed onto wall - " + c);
-				}
-				continue;
-
-			}
-
-			obj = getObject(type, c);
-			List<DC_HeroObj> objects = LevelEditor.getSimulation().getUnitMap().get(c);
-			if (objects == null) {
-				objects = new LinkedList<>();
-				LevelEditor.getSimulation().getUnitMap().put(c, objects);
-			}
-			objects.add(obj);
-			LevelEditor.getCurrentLevel().addObj(obj, c, stack);
-			if (obj.isOverlaying())
-				LE_ObjMaster.setDirection(obj, c);
-			try {
-				if (LE_MapViewComp.isMinimapMode())
-					LevelEditor.getMainPanel().getMiniGrid().refreshComp(null, c);
-				else
-					SwingUtilities.invokeLater(new Runnable() {
-
-						@Override
-						public void run() {
-							LevelEditor.getGrid().refresh();
-
-						}
-					});
-				// LevelEditor.getGrid().repaintComp(c);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-		// Chronos.mark("Main Panel refresh");
-		// if (LevelEditor.getMainPanel().getCurrentLevel().isInitialized())
-		// LevelEditor.getMainPanel().refreshGui();
-		// Chronos.logTimeElapsedForMark("Main Panel refresh");
-
-		// check wall ?
-		return obj;
+        for (int x = 0; x <= width; x++) {
+            for (int y = 0; y <= height; y++) {
+                List<DC_HeroObj> objects = LevelEditor.getSimulation().getObjectsOnCoordinate(
+                        new Coordinates(x + baseCoordinate.x, baseCoordinate.y + y));
+                // filter out bf?
+                for (DC_HeroObj obj : objects) {
+                    list.add(new ObjAtCoordinate(obj.getType(), new Coordinates(x, y)));
+                }
+            }
+        }
+        return list;
 	}
 
 	public static DC_HeroObj getObject(ObjType type, Coordinates c) {
 		DC_HeroObj obj;
-		if (type.checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.ENTRANCE.toString()))
-			obj = new Entrance(c.x, c.y, type, LevelEditor.getCurrentLevel().getDungeon(), null);
-		else {
-			obj = getObjCache().get(type);
+        if (type.checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.ENTRANCE.toString())) {
+            obj = new Entrance(c.x, c.y, type, LevelEditor.getCurrentLevel().getDungeon(), null);
+        } else {
+            obj = getObjCache().get(type);
 			if (obj == null) {
 				obj = new DC_HeroObj(type, c.x, c.y, DC_Player.NEUTRAL,
 						LevelEditor.getSimulation(), new Ref());
@@ -392,9 +332,10 @@ public class LE_ObjMaster {
 	public static void setFlip(DC_HeroObj obj, Coordinates c) {
 		int i = DialogMaster.optionChoice("Set flip", FLIP.values());
 		FLIP d = null;
-		if (i == -1)
-			return;
-		d = FLIP.values()[i];
+        if (i == -1) {
+            return;
+        }
+        d = FLIP.values()[i];
 
 		Map<DC_HeroObj, FLIP> map = obj.getGame().getFlipMap().get(c);
 
@@ -428,6 +369,77 @@ public class LE_ObjMaster {
 		map.put(obj, d);
 
 	}
+
+    public void addEntrance() {
+
+    }
+
+    public DC_HeroObj stackObj(ObjType type, Coordinates... coordinates) {
+        return addObj(type, true, coordinates);
+    }
+
+    public DC_HeroObj addObj(ObjType type, Coordinates... coordinates) {
+        return addObj(type, false, coordinates);
+    }
+
+    public void removeObj(DC_Obj obj) {
+        // LevelEditor.getCurrentLevel().removeObj(obj);
+    }
+
+    public DC_HeroObj addObj(ObjType type, boolean stack, Coordinates... coordinates) {
+        DC_HeroObj obj = null;
+        for (Coordinates c : coordinates) {
+            List<DC_HeroObj> list = LevelEditor.getSimulation().getObjectsOnCoordinate(c);
+
+            if (!StackingRule.checkCanPlace(c, type, list)) {
+                // replace cases? if 1 coordinate, prompt...
+                if (LevelEditor.getCurrentLevel().isInitialized()) {
+                    SoundMaster.playStandardSound(STD_SOUNDS.DIS__BLOCKED);
+                    // DialogMaster.inform(type +
+                    // " cannot be placed onto wall - " + c);
+                }
+                continue;
+
+            }
+
+            obj = getObject(type, c);
+            List<DC_HeroObj> objects = LevelEditor.getSimulation().getUnitMap().get(c);
+            if (objects == null) {
+                objects = new LinkedList<>();
+                LevelEditor.getSimulation().getUnitMap().put(c, objects);
+            }
+            objects.add(obj);
+            LevelEditor.getCurrentLevel().addObj(obj, c, stack);
+            if (obj.isOverlaying()) {
+                LE_ObjMaster.setDirection(obj, c);
+            }
+            try {
+                if (LE_MapViewComp.isMinimapMode()) {
+                    LevelEditor.getMainPanel().getMiniGrid().refreshComp(null, c);
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            LevelEditor.getGrid().refresh();
+
+                        }
+                    });
+                }
+                // LevelEditor.getGrid().repaintComp(c);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Chronos.mark("Main Panel refresh");
+        // if (LevelEditor.getMainPanel().getCurrentLevel().isInitialized())
+        // LevelEditor.getMainPanel().refreshGui();
+        // Chronos.logTimeElapsedForMark("Main Panel refresh");
+
+        // check wall ?
+        return obj;
+    }
 
 	public void editObj(Obj obj) {
 
