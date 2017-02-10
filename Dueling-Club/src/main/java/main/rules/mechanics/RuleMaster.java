@@ -10,7 +10,7 @@ public class RuleMaster {
 
     private static Map<RULE, Boolean> map = new XLinkedMap<>();
     private static Map<RULE, Boolean> mapTest = new XLinkedMap<>();
-    private static RULE_SCOPE scope = RULE_SCOPE.BASIC;
+    private static RULE_SCOPE scope = RULE_SCOPE.TEST;
 
     public static void init() {
         for (RULE r : RULE.values()) {

@@ -1,6 +1,5 @@
 package main.libgdx.anims.text;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
@@ -47,11 +46,16 @@ boolean inverseAlpha;
     }
 
     public void draw(Batch batch, float parentAlpha) {
-        act(Gdx.graphics.getDeltaTime());
+//        act(Gdx.graphics.getDeltaTime());
 
         if (inverseAlpha)
             parentAlpha=1-parentAlpha;
         super.draw(batch, parentAlpha);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName()+": " + getText()+"; delay: "+ delay;
     }
 
     public void addToStage(Stage animsStage) {
@@ -96,11 +100,9 @@ if (delay!=0){
             addActor(image);
 //            image.setPosition(origin.x, origin.y);
         }
-        if (textSupplier != null) {
-            text = textSupplier.get();
-        }
+
         Label label =
-                new Label(text, StyleHolder.getDefaultLabelStyle());
+                new Label(getText(), StyleHolder.getDefaultLabelStyle());
         label.setColor(c);
         addActor(label);
 
@@ -112,6 +114,12 @@ if (delay!=0){
         afterAction.setTarget(this);
 
         return this;
+    }
+    public String getText() {
+        if (textSupplier != null) {
+            text = textSupplier.get();
+        }
+        return text;
     }
 
     public void setDisplacementX(float displacementX) {

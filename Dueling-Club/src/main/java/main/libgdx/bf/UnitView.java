@@ -134,7 +134,7 @@ public class UnitView extends BaseView {
             sp.begin();
 
 
-//            sp.setColor(1, 1, 1, 1 * alpha);
+            sp.setColor(1, 1, 1, 1 * alpha);
             sp.draw(portraitTexture, 0, 0, portraitTexture.getWidth(), portraitTexture.getHeight());
             if (clockTexture != null) {
                 sp.draw(clockTexture, portraitTexture.getWidth() - clockTexture.getWidth(), 0);

@@ -74,8 +74,11 @@ public class AnimMaster extends Group {
         return instance;
     }
 
-    public static boolean isSmoothStop() {
+    public static boolean isSmoothStop(Anim anim) {
+        if (anim.getDestination().equals(anim.getOrigin()))
         return true;
+        return false;
+        
     }
 
     private void bindEvents() {
@@ -150,15 +153,18 @@ public class AnimMaster extends Group {
                     });
                 }
             }
-            CompositeAnim parentAnim = getParentAnim(event.getRef());
-            if (parentAnim != null)
-//                floatingTextMaster.addFloatingTextForEventAnim(event, parentAnim );
-                if (floatingTextMaster.isEventDisplayable(event))
+            CompositeAnim parentAnim = null ;
+            if (floatingTextMaster.isEventDisplayable(event))
+            {
+                parentAnim =  getParentAnim(event.getRef());
+                if (parentAnim != null)
                     parentAnim.addTextEvent(event);
+            }
             Anim anim = EventAnimCreator.getAnim(event);
             if (anim == null) {
                 return;
             }
+            parentAnim =  getParentAnim(event.getRef());
             if (parentAnim != null) {
                 main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, anim +
                  " event anim created for: " + parentAnim);
@@ -234,7 +240,7 @@ public class AnimMaster extends Group {
         }
     }
 
-    private CompositeAnim getParentAnim(Ref ref) {
+    public CompositeAnim getParentAnim(Ref ref) {
         if (ref.getActive() == null) {
             //TODO
         }

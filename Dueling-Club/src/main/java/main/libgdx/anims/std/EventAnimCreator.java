@@ -9,7 +9,7 @@ import main.libgdx.anims.AnimationConstructor.ANIM_PART;
  * Created by JustMe on 2/3/2017.
  */
 public class EventAnimCreator {
-    public static Anim getAnim(Event e) {
+    public static Anim  getAnim(Event e) {
 
 
         if (e.getType() instanceof STANDARD_EVENT_TYPE) {

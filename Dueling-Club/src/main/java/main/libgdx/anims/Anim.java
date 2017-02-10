@@ -73,6 +73,7 @@ public class Anim extends Group implements Animation {
     protected boolean running;
     private boolean emittersWaitingDone;
     EventCallback onDone;
+    EventCallbackParam callbackParam;
     private List<FloatingText> floatingText;
 
     public Anim(Entity active, AnimData params) {
@@ -130,7 +131,7 @@ public class Anim extends Group implements Animation {
         }
         if (duration >= 0) //|| finished //  lifecycle duration for continuous?
             if (time >= duration) {
-            if (AnimMaster.isSmoothStop())
+            if (AnimMaster.isSmoothStop(this))
                 if (!isEmittersWaitingDone()) {
                     emittersWaitingDone=true;
                     duration += getTimeToFinish();
@@ -212,6 +213,7 @@ time=time+time*gracePeriod;
         alpha = 1f;
         initDuration();
         initSpeed();
+        floatingText=     new LinkedList<>() ;
     }
 
     protected void resetSprites() {
@@ -298,6 +300,8 @@ time=time+time*gracePeriod;
     @Override
     public void finished() {
         running = false;
+        if (onDone!=null )
+        onDone.call(callbackParam);
     }
 
 
@@ -424,6 +428,10 @@ time=time+time*gracePeriod;
 
     public void setForcedDestination(Coordinates forcedDestination) {
         this.forcedDestination = forcedDestination;
+    }
+    public void setForcedDestinationForAll(Coordinates forcedDestination) {
+        this.forcedDestination = forcedDestination;
+        AnimMaster.getInstance().getParentAnim(getRef()).setForcedDestination(forcedDestination);
     }
 
     protected Vector2 getDefaultPosition() {
@@ -615,7 +623,8 @@ time=time+time*gracePeriod;
 
     @Override
     public void onDone(EventCallback callback, EventCallbackParam param) {
-        onDone.call(param);
+       this.onDone=callback;
+        callbackParam=param;
     }
 
     @Override

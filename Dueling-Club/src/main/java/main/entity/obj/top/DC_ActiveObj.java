@@ -558,6 +558,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
                 result = false;
             }
         }
+        GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, new EventCallbackParam(this));
+
         if (!BooleanMaster.isTrue(cancelled)) {
             refreshVisuals();
         }
@@ -672,7 +674,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
                 }
             }
         }
-        GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, new EventCallbackParam(this));
 
         SoundMaster.playEffectSound(SOUNDS.IMPACT, this); //TODO queue on anim!
         return result;

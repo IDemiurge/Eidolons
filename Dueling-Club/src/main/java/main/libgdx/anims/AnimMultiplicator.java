@@ -157,7 +157,7 @@ public class AnimMultiplicator implements Runnable {
             switch (template) {
 //                template.getNumberOfEmitters(getActive())
                 case RAY:
-                    anim.setForcedDestination(farthest);
+                    anim.setForcedDestinationForAll(farthest);
 
                     return Arrays.asList(new Coordinates[]{
                      farthest

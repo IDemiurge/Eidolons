@@ -12,6 +12,8 @@ import main.libgdx.anims.CompositeAnim;
 import main.system.Producer;
 import main.system.images.ImageManager;
 
+import java.util.List;
+
 /**
  * Created by JustMe on 2/7/2017.
  */
@@ -87,15 +89,19 @@ instance=this;
         DC_ActiveObj active = (DC_ActiveObj) e.getRef().getActive();
    float delay=0;
    for (Object arg : args) {
-            FloatingText floatingText = getFloatingText(  active, CASE, arg);
-
-            floatingText.setDelay(delay);
+            FloatingText floatingText = getFloatingText(  active, CASE, arg);  floatingText.setDelay(delay);
+       floatingText.setDuration(3);
+       floatingText.setDisplacementX(80);
+       floatingText.setDisplacementY(140);
+anim.initPosition(); // TODO rework this!
        floatingText.setPosition(CASE.atOrigin ? anim.getOrigin() : anim.getDestination());
        delay+= floatingText.getDuration() /2;
 
             anim.addFloatingText(floatingText
               );
-        }
+       main.system.auxiliary.LogMaster.log(1,e+"***** adding floating text for "+anim + " : " +floatingText);
+
+   }
     }
 
     private ANIM_PART getPart(TEXT_CASES aCase) {
@@ -127,7 +133,11 @@ instance=this;
         DODGE,
         COSTS(true, (e) -> {
             DC_ActiveObj a = (DC_ActiveObj) e.getRef().getActive();
-            return a.getCosts().getCosts().toArray();
+           List<Cost> costs = a.getCosts().getCosts();
+           costs.removeIf(c-> c.getPayment().getLastPaid()==0
+//            getAmountFormula().toString().isEmpty()
+            );
+            return costs.toArray();
         }),
         STATUS,
         MODE;

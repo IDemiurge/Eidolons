@@ -18,8 +18,7 @@ public class EmitterPools {
     private static Map<String, Pool<EmitterActor>> actorPoolMap = new HashMap<>();
     private static Map<String, Pool<ParticleEffect>> effectPoolMap = new HashMap<>();
     private static boolean effectPoolingOn=false;
-    private static boolean actorPoolingOn =true;
-
+    private static boolean actorPoolingOn =false; //TODO emitters are not reset properly!
 
     public static EmitterActor getEmitterActor(SFX sfx) {
         return getEmitterActor(sfx.path);

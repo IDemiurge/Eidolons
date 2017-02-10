@@ -1,5 +1,6 @@
 package main.libgdx.bf.mouse;
 
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,6 +16,9 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.graphics.MigMaster;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by PC on 25.10.2016.
  */
@@ -29,6 +33,9 @@ public class InputController implements InputProcessor {
     boolean ctrl = false;
     private Stage bf;
     private Stage gui;
+    private char lastTyped;
+    private char lastUp;
+    private List<String> charsUp=    new LinkedList<>() ;
 
     public InputController(OrthographicCamera camera) {
         this.camera = camera;
@@ -69,8 +76,14 @@ public class InputController implements InputProcessor {
         if (i == 57) {
             alt = false;
         }
-        if (i == 129) {
+else        if (i == 129) {
             ctrl = false;
+        }
+else
+        {
+            lastUp = ((char)i);
+            String c = Keys.toString(i);//Character.valueOf((char) i);
+       if(!charsUp.contains(c))     charsUp.add(c);
         }
 
         return false;
@@ -78,6 +91,16 @@ public class InputController implements InputProcessor {
 
     @Override
     public boolean keyTyped(char c) {
+//        if (keyMap.get(c))
+        String str = String.valueOf(c).toUpperCase();
+        if (c==lastTyped)
+            if (!charsUp.contains(str))
+            {
+                return false;
+            }
+        charsUp.remove(str);
+        lastTyped = c;
+
         DC_Game.game.getBattleField().getKeyListener().handleKeyTyped(0, c);
 
         return true;
