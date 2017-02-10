@@ -140,7 +140,7 @@ public class DC_Communicator extends Communicator {
     }
 
     protected Active getActive(String idString) {
-        Integer id = 0;
+        Integer id;
         if (idString.contains(StringMaster.getPairSeparator())) {
             id = Integer.valueOf(idString.split(StringMaster.getPairSeparator())[1]);
         } else {

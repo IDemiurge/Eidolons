@@ -377,8 +377,7 @@ public class NameMaster {
             return getRandomHeroName(hero, namePool);
         }
 
-        String name = "";
-        name = names.get(RandomWizard.getRandomListIndex(names));
+        String name = names.get(RandomWizard.getRandomListIndex(names));
 
         usedNames.add(name);
         return name;
@@ -431,7 +430,7 @@ public class NameMaster {
 
     public static String getUniqueVersionedName(List<ObjType> types, String name) {
         int i = 0;
-        String newName = "";
+        String newName;
         loop:
         while (true) {
             i++;

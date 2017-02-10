@@ -36,43 +36,43 @@ public class MusicCore {
     public static final String M3U_PREFIX = "#EXTM3U";
     public static final String M3U_TRACK_PREFIX = "#EXTINF:";
     public static final MUSIC_TYPE[] types_day = {MUSIC_TYPE.PREPARATION, MUSIC_TYPE.IMMERSION,
-     MUSIC_TYPE.BATTLE, MUSIC_TYPE.WALK, MUSIC_TYPE.AFTERMATH};
+            MUSIC_TYPE.BATTLE, MUSIC_TYPE.WALK, MUSIC_TYPE.AFTERMATH};
     public static final MUSIC_TYPE[] types_gym = {MUSIC_TYPE.JOG, MUSIC_TYPE.GYM,
-     MUSIC_TYPE.GYM_MORNING, MUSIC_TYPE.GYM_NIGHT, MUSIC_TYPE.AWAKENING};
+            MUSIC_TYPE.GYM_MORNING, MUSIC_TYPE.GYM_NIGHT, MUSIC_TYPE.AWAKENING};
     public static final MUSIC_TYPE[] types_night = {MUSIC_TYPE.RUMINATION, MUSIC_TYPE.PREPARATION,
-     MUSIC_TYPE.IMMERSION, MUSIC_TYPE.BATTLE, MUSIC_TYPE.AFTERMATH,};
+            MUSIC_TYPE.IMMERSION, MUSIC_TYPE.BATTLE, MUSIC_TYPE.AFTERMATH,};
     public static final MUSIC_TYPE[][] std_groups = {types_day, types_gym, types_night,};
     public static final MUSIC_TAGS[] tags_midday = {MUSIC_TAGS.FANTASY, MUSIC_TAGS.RPG,
-     MUSIC_TAGS.GOODLY, MUSIC_TAGS.CELTIC, MUSIC_TAGS.LIGHT, MUSIC_TAGS.JOLLY,};
+            MUSIC_TAGS.GOODLY, MUSIC_TAGS.CELTIC, MUSIC_TAGS.LIGHT, MUSIC_TAGS.JOLLY,};
     public static final MUSIC_TAGS[] tags_afternoon = {MUSIC_TAGS.SHARP, MUSIC_TAGS.ACTION,
-     MUSIC_TAGS.NORTH, MUSIC_TAGS.FANTASY, MUSIC_TAGS.RPG, MUSIC_TAGS.CELTIC,};
+            MUSIC_TAGS.NORTH, MUSIC_TAGS.FANTASY, MUSIC_TAGS.RPG, MUSIC_TAGS.CELTIC,};
     public static final MUSIC_TAGS[] tags_dusk = {MUSIC_TAGS.SHARP, MUSIC_TAGS.ARCANE,
-     MUSIC_TAGS.HEAVY, MUSIC_TAGS.COOL, MUSIC_TAGS.LIGHT, MUSIC_TAGS.JOLLY,};
+            MUSIC_TAGS.HEAVY, MUSIC_TAGS.COOL, MUSIC_TAGS.LIGHT, MUSIC_TAGS.JOLLY,};
     public static final MUSIC_TAGS[] tags_night = {MUSIC_TAGS.DEEP, MUSIC_TAGS.DARK,
-     MUSIC_TAGS.SHARP, MUSIC_TAGS.TRAURIG, MUSIC_TAGS.FIERY, MUSIC_TAGS.EVIL,};
+            MUSIC_TAGS.SHARP, MUSIC_TAGS.TRAURIG, MUSIC_TAGS.FIERY, MUSIC_TAGS.EVIL,};
     public static final MUSIC_TAGS[][] std_tags = {tags_midday, tags_afternoon, tags_dusk,
-     tags_night,};
+            tags_night,};
     private static final AT_OBJ_TYPE[] musicTYPEs = {AT_OBJ_TYPE.TRACK, AT_OBJ_TYPE.MUSIC_LIST,
-     AT_OBJ_TYPE.SCRIPT};
+            AT_OBJ_TYPE.SCRIPT};
     public static boolean initMusicListTypes = false;
     static Map<String, Track> trackTypeMap = new HashMap<>();
     static Map<String, MusicList> listTypeMap = new HashMap<>();
     static List<MusicList> lastPlayed = new LinkedList<>();
     private static Map<String, MusicMouseListener> listenerMap = new HashMap<>();
     private static VALUE[] FILTER_VALUES = {
-     AT_PROPS.MUSIC_TYPE,
-     AT_PROPS.MUSIC_TAGS,
+            AT_PROPS.MUSIC_TYPE,
+            AT_PROPS.MUSIC_TAGS,
     };
     private static boolean filterOut;
     private static Set<Pair<VALUE, String>> filterValues = new HashSet<>();
 
-    public static void    addFilterValue() {
+    public static void addFilterValue() {
         int i = DialogMaster.optionChoice(FILTER_VALUES, "Filter value name?");
         String val = DialogMaster.inputText("Filter's value?");
         filterValues.add(new Pair<>(FILTER_VALUES[i], val));
     }
 
-    public static void    removeFilterValue() {
+    public static void removeFilterValue() {
 
         int i = DialogMaster.optionChoice(filterValues.toArray(), "Filter to remove?");
         if (i == -1) {
@@ -151,7 +151,7 @@ public class MusicCore {
     }
 
     public static String getTrackStringFromList(String funcPart) {
-        List<String> tracks = null;
+        List<String> tracks;
         if (initMusicListTypes) {
             tracks = new TrackReader<>(String.class).getTracksFromList(funcPart);
         } else {
@@ -186,7 +186,7 @@ public class MusicCore {
             Track track = getTrack(substring);
 
             newContents += M3U_TRACK_PREFIX + track.getDuration() + "," + track.getArtist() + " - "
-             + track.getName() + StringMaster.NEW_LINE;
+                    + track.getName() + StringMaster.NEW_LINE;
             newContents += track.getPath() + StringMaster.NEW_LINE;
 
             // #EXTM3U
@@ -222,7 +222,7 @@ public class MusicCore {
             File file = new File(type.getProperty(AT_PROPS.PATH));
             try {
                 BasicFileAttributes attr = Files.readAttributes(file.toPath(),
-                 BasicFileAttributes.class);
+                        BasicFileAttributes.class);
                 type.setParam(AT_PARAMS.TIME_CREATED, attr.creationTime().toMillis() + "");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -325,7 +325,7 @@ public class MusicCore {
                     if (filterProp.isContainer()) {
                         containerLoop:
                         for (String sub : StringMaster.openContainer(type
-                         .getProperty(filterProp))) {
+                                .getProperty(filterProp))) {
                             for (String c : musicConsts) {
                                 if (StringMaster.compare(c, sub)) {
                                     if (c.equalsIgnoreCase(g)) {
@@ -359,8 +359,8 @@ public class MusicCore {
         int wrap = 5 - map.size() / 2;
         MusicListPanel musicListPanel = new MusicListPanel("", null);
         G_Panel view =
-         // AHK_Master.getPanel()
-         musicListPanel.initView(map, false, wrap, musicConsts);
+                // AHK_Master.getPanel()
+                musicListPanel.initView(map, false, wrap, musicConsts);
         musicListPanel.setView(view);
         view.setName(viewName);
         return musicListPanel;
@@ -453,7 +453,7 @@ public class MusicCore {
 
     public static List<String> getMusicConsts(boolean group) {
         List<String> defaults = EnumMaster.getEnumConstantNames(group ? MUSIC_TYPE.class
-         : MUSIC_TAGS.class);
+                : MUSIC_TAGS.class);
         return defaults;
     }
 

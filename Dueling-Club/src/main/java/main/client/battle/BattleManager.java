@@ -4,7 +4,6 @@ import main.client.battle.arcade.PartyManager;
 import main.client.battle.gui.EndDialogue;
 import main.client.cc.CharacterCreator;
 import main.content.PARAMS;
-import main.entity.Entity;
 import main.entity.Ref.KEYS;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.Obj;
@@ -100,8 +99,8 @@ public class BattleManager {
         if (CharacterCreator.isArcadeMode()) {
             PartyManager.getParty().addGlory(glory);
 
-            PartyManager.getParty().addUnitsSlain(new LinkedList<Entity>(slainUnits));
-            PartyManager.getParty().addFallenHeroes(new LinkedList<Entity>(fallenHeroes));
+            PartyManager.getParty().addUnitsSlain(new LinkedList<>(slainUnits));
+            PartyManager.getParty().addFallenHeroes(new LinkedList<>(fallenHeroes));
             CharacterCreator.getHeroManager(true).prebattleCleanSave();
             if (game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
                 game.getArenaArcadeMaster().levelWon();

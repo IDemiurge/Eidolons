@@ -236,9 +236,9 @@ public class Coordinates {
     }
 
     public List<Coordinates> getAdjacent(boolean diagonal) {
-        List<Coordinates> list = new LinkedList<Coordinates>();
+        List<Coordinates> list = new LinkedList<>();
         Coordinates c = this;
-        Coordinates e = null;
+        Coordinates e;
         if (!diagonal) {
             e = new Coordinates(c.x, c.y - 1);
             if (!e.isInvalid()) {
@@ -290,7 +290,7 @@ public class Coordinates {
     }
 
     public List<Coordinates> getAdjacentCoordinates(Boolean diagonals_included_not_only) {
-        List<Coordinates> list = new LinkedList<Coordinates>();
+        List<Coordinates> list = new LinkedList<>();
 
         if (diagonals_included_not_only != null) {
             if (diagonals_included_not_only) {

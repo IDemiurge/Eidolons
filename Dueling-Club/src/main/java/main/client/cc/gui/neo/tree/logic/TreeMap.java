@@ -23,7 +23,7 @@ public class TreeMap {
     private List<ObjType> types;
     private Map<Point, LINK_VARIANT> staticLinks = new XLinkedMap<>();
 
-    private Map<StaticTreeLink, Point> staticLinkMap = new HashMap<StaticTreeLink, Point>();
+    private Map<StaticTreeLink, Point> staticLinkMap = new HashMap<>();
     private Map<StaticTreeLink, ObjType> altLinks = new HashMap<>();
     private int nodeSize = 64;
 

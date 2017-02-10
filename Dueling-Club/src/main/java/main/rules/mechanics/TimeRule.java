@@ -196,7 +196,7 @@ public class TimeRule {
         if (unitObj.isBfObj()) {
             return;
         }
-        AddStatusEffect effect = null;
+        AddStatusEffect effect;
         effect = new AddStatusEffect(STATUS.LATE);
         new AddBuffEffect((preliminary) ? BUFF_NAME_PRELIMINARY : BUFF_NAME, effect, 1).apply(Ref
                 .getSelfTargetingRefCopy(unitObj));

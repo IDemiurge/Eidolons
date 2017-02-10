@@ -6,7 +6,6 @@ import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.UNIT_DIRECTION;
@@ -48,7 +47,7 @@ public class CoordinateTargeting extends TargetingImpl {
         } else if (objects.size() == 1) {
             ref.setTarget(objects.get(0).getId());
         } else {
-            ref.setGroup(new GroupImpl(new LinkedList<Obj>(objects)));
+            ref.setGroup(new GroupImpl(new LinkedList<>(objects)));
         }
         return true;
     }

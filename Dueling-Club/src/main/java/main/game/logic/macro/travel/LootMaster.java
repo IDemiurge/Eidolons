@@ -71,7 +71,7 @@ public class LootMaster {
             // Claim / Leave / Contend (random?)
         }
         boolean wanted = checkItemDesired(h, item);
-        Boolean choice = null;
+        Boolean choice;
         if (wanted) {
             choice = DialogMaster.askAndWait(h.getName()
                             + ": I am going to claim " + item.getName(), true, "Sure",

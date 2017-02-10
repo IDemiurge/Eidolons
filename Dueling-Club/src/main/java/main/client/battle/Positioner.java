@@ -138,7 +138,7 @@ public class Positioner {
                     }
                 }
             }
-            unitGroups.put(side, new LinkedHashMap<Coordinates, ObjType>());
+            unitGroups.put(side, new LinkedHashMap<>());
 
             if (me != null) {
                 if (me) {
@@ -283,7 +283,7 @@ public class Positioner {
         List<Coordinates> list = new LinkedList<>();
         for (ObjType type : presetGroupTypes) {
             // c = getNextSideCoordinate(getBaseCoordinate(side));
-            Coordinates c = null;
+            Coordinates c;
             if (custom) {
                 c = getFirstLayerCenterCoordinate(presetCenterCoordinate, type, true);
             } else {
@@ -391,7 +391,7 @@ public class Positioner {
         DIRECTION direction = spawnSide;
          DirectionMaster.rotate90(spawnSide, false);
 //         = c.getAdjacentCoordinate(direction);
-        Coordinates nextCoordinate = null;// orthogonal
+        Coordinates nextCoordinate;// orthogonal
         while (true) {
             direction = DirectionMaster.rotate90(direction, false);
             nextCoordinate = c.getAdjacentCoordinate(direction);

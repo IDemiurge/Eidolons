@@ -115,7 +115,7 @@ public class CustomList<E> extends G_List<E> {
         for (Rectangle rect : mouseMap.keySet()) {
             if (rect.contains(location)) {
                 // return ListMaster.get
-                return new LinkedList<E>(getData()).indexOf(mouseMap.get(rect));
+                return new LinkedList<>(getData()).indexOf(mouseMap.get(rect));
             }
         }
         return super.locationToIndex(location);
@@ -125,7 +125,7 @@ public class CustomList<E> extends G_List<E> {
     public E getSelectedValue() {
         if (getSelectedIndex() != -1) {
             if (getData().size() > getSelectedIndex()) {
-                return new LinkedList<E>(getData()).get(getSelectedIndex());
+                return new LinkedList<>(getData()).get(getSelectedIndex());
             }
         }
         return null;
@@ -167,7 +167,7 @@ public class CustomList<E> extends G_List<E> {
             n++;
             int x = p.x;
             int y = p.y;
-            Image image = null;
+            Image image;
             if (comp instanceof ListItem) {
                 ListItem listItem = (ListItem) comp;
                 listItem.refresh();
@@ -213,7 +213,7 @@ public class CustomList<E> extends G_List<E> {
     }
 
     protected ListItem<E> getListItem(E value, boolean isSelected, boolean cellHasFocus) {
-        return new ListItem<E>(true, value, isSelected, cellHasFocus, getObj_size());
+        return new ListItem<>(true, value, isSelected, cellHasFocus, getObj_size());
     }
 
     @Override

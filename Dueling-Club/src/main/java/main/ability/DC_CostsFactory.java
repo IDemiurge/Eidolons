@@ -22,7 +22,7 @@ public class DC_CostsFactory {
     }
 
     public static Costs getCostsForSpell(DC_ActiveObj spell, boolean isSpell) {
-        List<Cost> costs = new LinkedList<Cost>();
+        List<Cost> costs = new LinkedList<>();
         Cost cost = getCost(spell, PARAMS.AP_COST, PARAMS.C_N_OF_ACTIONS);
         if (cost != null) {
             costs.add(cost);
@@ -106,7 +106,7 @@ public class DC_CostsFactory {
     public static Cost getCost(Entity obj, PARAMS cost_param, PARAMS pay_param) {
 
         String paramValue = obj.getParam(cost_param);
-        Formula formula = null;
+        Formula formula;
 
         boolean var;
         try {

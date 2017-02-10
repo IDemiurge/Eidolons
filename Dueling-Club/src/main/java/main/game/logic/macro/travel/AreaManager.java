@@ -218,7 +218,7 @@ public class AreaManager {
                     .getObjectByWeight(
                             area.getProperty(MACRO_PROPS.ENCOUNTER_SUBGROUPS),
                             ENCOUNTER_SUBGROUP.class);// TODO
-            List<ObjType> pool = null;
+            List<ObjType> pool;
             if (group != null) {
                 pool = DataManager.getTypesSubGroup(OBJ_TYPES.ENCOUNTERS,
                         group.toString());

@@ -82,7 +82,7 @@ public class StackingRule implements ActionRule {
         if (units.isEmpty()) {
             return;
         }
-        Map<DC_HeroObj, Integer> map = new HashMap<DC_HeroObj, Integer>();
+        Map<DC_HeroObj, Integer> map = new HashMap<>();
         for (DC_HeroObj unit : units) {
             map.put(unit, unit.getIntParam(PARAMS.GIRTH));
         }
@@ -115,7 +115,7 @@ public class StackingRule implements ActionRule {
         if (unit == null) {
             unit = DataManager.getType(HeroCreator.BASE_HERO, OBJ_TYPES.CHARS);
         }
-        Obj cell = null;
+        Obj cell;
         if (!game.isSimulation()) {
             cell = game.getCellByCoordinate(c);
         } else {

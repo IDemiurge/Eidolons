@@ -324,7 +324,7 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
             return new ListMaster<String>().splitList(rowCount, lines);
         }
 
-        LinkedList<String> lines = new LinkedList<String>();
+        LinkedList<String> lines = new LinkedList<>();
         List<String> entries = game.getLogManager().getTopDisplayedEntries();
         for (String entry : entries) {
             for (String subString : TextWrapper.wrapIntoArray(entry, EntryNodeMaster
@@ -343,7 +343,7 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
         // don't re-init old pages! make a cache to update
         List<List<String>> lists = new ListMaster<String>().splitList(pageSize, list);
         if (lists.isEmpty()) {
-            List<String> lastList = new LinkedList<String>();
+            List<String> lastList = new LinkedList<>();
             ListMaster.fillWithNullElements(lastList, pageSize);
             lists.add(lastList);
             return lists;

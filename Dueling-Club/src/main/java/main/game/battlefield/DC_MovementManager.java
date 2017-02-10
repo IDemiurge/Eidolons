@@ -44,7 +44,7 @@ import java.util.*;
 public class DC_MovementManager implements MovementManager {
 
     private static DC_MovementManager instance;
-    Map<DC_HeroObj, List<ActionPath>> pathCache = new HashMap<DC_HeroObj, List<ActionPath>>();
+    Map<DC_HeroObj, List<ActionPath>> pathCache = new HashMap<>();
     private DC_Game game;
     private PathingManager pathingManager;
 

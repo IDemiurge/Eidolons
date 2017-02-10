@@ -47,7 +47,7 @@ public class DialogPanel extends G_Panel {
     }
 
     protected void initLocation() {
-        Point p = null;
+        Point p;
         if (isCentered()) {
             p = GuiManager.getCenterPoint(getSize());
         } else {

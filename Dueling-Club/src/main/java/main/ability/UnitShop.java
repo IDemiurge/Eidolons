@@ -202,7 +202,7 @@ public class UnitShop {
         // Map<ObjType, Integer>
         List<ObjType> itemPool = new LinkedList<>();
         // ++ add weight! choose from repertoire!
-        WeightMap<ObjType> map = new WeightMap<ObjType>(new RandomWizard<ObjType>()
+        WeightMap<ObjType> map = new WeightMap<>(new RandomWizard<ObjType>()
                 .constructWeightMap(repertoire, ObjType.class, OBJ_TYPE_ENUM));
         Loop.startLoop(map.size());
         while (!Loop.loopEnded() && !map.isEmpty()) {
@@ -252,7 +252,7 @@ public class UnitShop {
     }
 
     private static ObjType getItem(WeightMap<ObjType> map) {
-        ObjType baseType = null;
+        ObjType baseType;
         if (UnitMaster.isRandom()) {
             baseType = new RandomWizard<ObjType>().getObjectByWeight(map);
         } else {

@@ -59,7 +59,7 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
 
             ListItem<Entity> item = itemMap.get(slot);
 
-            String pos = "";
+            String pos;
             if (posSwitch == null) {
                 pos = "@pos 32 0";
                 posSwitch = true;
@@ -100,7 +100,7 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
         }
         ListItem<Entity> item = itemMap.get(slot);
         if (item == null) {
-            item = new ListItem<Entity>(type, false, false, obj_size);
+            item = new ListItem<>(type, false, false, obj_size);
             item.addMouseListener(this);
             itemMap.put(slot, item);
         } else {

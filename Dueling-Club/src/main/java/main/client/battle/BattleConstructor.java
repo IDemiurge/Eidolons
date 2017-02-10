@@ -145,7 +145,7 @@ public class BattleConstructor {
             return SkirmishMaster.constructWaveSequences(round);
         }
 
-        Map<Wave, Integer> map = new XLinkedMap<Wave, Integer>();
+        Map<Wave, Integer> map = new XLinkedMap<>();
 
         if (!getDungeon().getProperty(PROPS.ENCOUNTER_GROUPS).isEmpty()) {
             return constructEncounterGroup();
@@ -156,7 +156,7 @@ public class BattleConstructor {
         } else {
             alt = checkAltEncounter();
         }
-        List<ObjType> waves = null;
+        List<ObjType> waves;
 
         waves = getWaveTypes();
         List<ObjType> waveBuffer = new LinkedList<>(waves);
@@ -320,7 +320,7 @@ public class BattleConstructor {
     }
 
     private ObjType getWaveType(List<ObjType> waves, ENCOUNTER_TYPE type) {
-        ObjType waveType = null;
+        ObjType waveType;
         while (true) {
             waveType = waves.get(RandomWizard.getRandomListIndex(waves));
             // could roll by power if I can getOrCreate the target power...

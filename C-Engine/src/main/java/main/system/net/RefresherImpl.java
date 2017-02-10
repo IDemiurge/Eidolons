@@ -11,7 +11,7 @@ public class RefresherImpl implements Refresher {
     public static Boolean GAMELIST_SWITCHER = true;
     public static Boolean USERLIST_SWITCHER = true;
     public static Boolean GAMEUSERLIST_SWITCHER = true;
-    private static Map<REFRESHER_TYPE, Boolean> SWITCHERS = new HashMap<REFRESHER_TYPE, Boolean>();
+    private static Map<REFRESHER_TYPE, Boolean> SWITCHERS = new HashMap<>();
 
     static {
         SWITCHERS.put(REFRESHER_TYPE.GAMELIST, GAMELIST_SWITCHER);

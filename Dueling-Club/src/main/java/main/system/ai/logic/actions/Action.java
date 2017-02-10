@@ -144,7 +144,7 @@ public class Action {
             }
 
         }
-        boolean result = false;
+        boolean result;
 
         if (getActive().isChanneling()) {
             result = getActive().activate();

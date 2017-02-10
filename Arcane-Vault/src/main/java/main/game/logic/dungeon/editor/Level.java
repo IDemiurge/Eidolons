@@ -239,7 +239,7 @@ public class Level {
             if (prop == G_PROPS.WORKSPACE_GROUP || prop == PROPS.ENEMY_SPAWN_COORDINATES
                     || prop == PROPS.PARTY_SPAWN_COORDINATES
                     || !value.equals(dungeon.getType().getType().getProperty(prop)))
-                // dungeon.getType().getType() - original type
+            // dungeon.getType().getType() - original type
             {
                 xml += XML_Converter.wrapLeaf(prop.getName(), value);
             }
@@ -282,7 +282,7 @@ public class Level {
 
     private String getFacingMapData() {
         String facingMapData = "";
-        Map<Coordinates, List<DC_HeroObj>> multiMap = new HashMap<Coordinates, List<DC_HeroObj>>();
+        Map<Coordinates, List<DC_HeroObj>> multiMap = new HashMap<>();
 
         for (Coordinates c : getDirectionMap().keySet())
 

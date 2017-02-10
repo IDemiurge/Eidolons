@@ -12,7 +12,7 @@ public class Path {
     private boolean flying;
 
     public Path(PathNode origin, PathNode destination) {
-        nodes = new DequeImpl<PathNode>();
+        nodes = new DequeImpl<>();
         this.origin = origin;
         this.destination = destination;
     }

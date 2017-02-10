@@ -15,60 +15,60 @@ import java.util.List;
 import java.util.Vector;
 
 public class MusicDisplayPanel extends G_Panel {
-	WrappedTextComp selectedComp;
-	TextComp argComp;
-	private JComboBox<MusicList> lastPlayed;
+    WrappedTextComp selectedComp;
+    TextComp argComp;
+    private JComboBox<MusicList> lastPlayed;
 
-	public MusicDisplayPanel(MusicListPanel musicListPanel) {
-		super("flowy");
+    public MusicDisplayPanel(MusicListPanel musicListPanel) {
+        super("flowy");
 
-		selectedComp = new WrappedTextComp(null, false) {
-			@Override
-			protected Color getColor() {
-				return MusicCore.getTextColor();
-			}
+        selectedComp = new WrappedTextComp(null, false) {
+            @Override
+            protected Color getColor() {
+                return MusicCore.getTextColor();
+            }
 
-		};
-		argComp = new TextComp(MusicCore.getTextColor());
-		add(argComp);
+        };
+        argComp = new TextComp(MusicCore.getTextColor());
+        add(argComp);
 
-		List<String> lines = DataManager
-				.toStringList(MusicMouseListener.getSelectedTracks());
+        List<String> lines = DataManager
+                .toStringList(MusicMouseListener.getSelectedTracks());
         if (lines.isEmpty()) {
             lines = DataManager.toStringList(MusicMouseListener.getSelectedLists());
         }
         lines.add(0, "Selected: ");
-		selectedComp.setTextLines(lines);
-		selectedComp.setPanelSize(selectedComp.getPanelSize());
-		add(selectedComp);
-		panelSize = new Dimension(210, 205);
-		selectedComp.setDefaultSize(new Dimension(210, 200));
+        selectedComp.setTextLines(lines);
+        selectedComp.setPanelSize(selectedComp.getPanelSize());
+        add(selectedComp);
+        panelSize = new Dimension(210, 205);
+        selectedComp.setDefaultSize(new Dimension(210, 200));
 
-		lastPlayed = new JComboBox<MusicList>(new Vector(MusicCore.getLastPlayed()));
-		lastPlayed.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				MusicList list = (MusicList) lastPlayed.getSelectedItem();
-				list.getMouseListener().handleClick(arg0.getModifiers(), null);
+        lastPlayed = new JComboBox<>(new Vector(MusicCore.getLastPlayed()));
+        lastPlayed.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                MusicList list = (MusicList) lastPlayed.getSelectedItem();
+                list.getMouseListener().handleClick(arg0.getModifiers(), null);
 
-			}
-		});
-		add(lastPlayed);
-	}
+            }
+        });
+        add(lastPlayed);
+    }
 
-	@Override
-	public void refresh() {
-		argComp.setText("Arg: " + MusicMouseListener.getArg());
-		argComp.refresh();
-		List<String> lines = DataManager
-				.toStringList(MusicMouseListener.getSelectedTracks());
+    @Override
+    public void refresh() {
+        argComp.setText("Arg: " + MusicMouseListener.getArg());
+        argComp.refresh();
+        List<String> lines = DataManager
+                .toStringList(MusicMouseListener.getSelectedTracks());
         if (lines.isEmpty()) {
             lines = DataManager.toStringList(MusicMouseListener.getSelectedLists());
         }
         lines.add(0, "Selected: ");
-		selectedComp.setTextLines(lines);
-		selectedComp.refresh();
+        selectedComp.setTextLines(lines);
+        selectedComp.refresh();
 
-	}
+    }
 
 }

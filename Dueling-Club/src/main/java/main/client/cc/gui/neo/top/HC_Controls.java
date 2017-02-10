@@ -109,7 +109,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
             mode = CharacterCreator.isPartyMode() ? HC_MODE.SKIRMISH : HC_MODE.FREE;
         }
         int i = 0;
-        XList<String> controls = new XList<String>(mode.getControls());
+        XList<String> controls = new XList<>(mode.getControls());
 
         if (DC_Game.game.getGameType() == GAME_TYPE.SCENARIO) {
             controls.remove(SAVE);
@@ -343,7 +343,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
             if (type == null) {
                 break;
             }
-            String name = "";
+            String name;
             while (true) {
                 name = CharacterCreator.getHeroName(type);
                 if (name == null) {

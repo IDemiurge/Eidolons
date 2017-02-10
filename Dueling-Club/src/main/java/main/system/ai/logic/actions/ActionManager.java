@@ -93,7 +93,7 @@ public class ActionManager {
     }
 
     private static List<ActionSequence> splitRangedSequence(ActionSequence sequence) {
-        ArrayList<ActionSequence> list = new ArrayList<ActionSequence>();
+        ArrayList<ActionSequence> list = new ArrayList<>();
         for (Action a : sequence.getActions()) {
             if (a instanceof QuickItemAction) {
                 ArrayList<Action> actions = new ArrayList<>();
@@ -360,7 +360,7 @@ public class ActionManager {
             unit.setCoordinates(originalCoordinates);
             unit.setFacing(originalFacing);
         }
-        Action action = null;
+        Action action;
         ActionSequence sequence = null;
         if (ListMaster.isNotEmpty(actions)) {
             sequence = PriorityManager.chooseByPriority(actions);
@@ -396,7 +396,7 @@ public class ActionManager {
         BEHAVIOR_MODE behaviorMode = ai.getBehaviorMode();
         GOAL_TYPE goal = GOAL_TYPE.PREPARE;
 
-        List<ActionSequence> actions = null;
+        List<ActionSequence> actions;
 
         if (behaviorMode == BEHAVIOR_MODE.PANIC) {
             return new Action(ai.getUnit().getAction("Cower"));

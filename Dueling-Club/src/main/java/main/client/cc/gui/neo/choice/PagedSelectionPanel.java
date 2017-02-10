@@ -61,7 +61,7 @@ public class PagedSelectionPanel<E> extends G_PagePanel<E> implements ListSelect
 
     @Override
     protected G_Component createPageComponent(List<E> list) {
-        SelectionPage<E> page = new SelectionPage<E>(list, getWrap());
+        SelectionPage<E> page = new SelectionPage<>(list, getWrap());
 
         page.getList().addListSelectionListener(this);
         page.getList().setObj_size(getItemSize());

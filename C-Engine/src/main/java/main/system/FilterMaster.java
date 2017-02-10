@@ -68,7 +68,7 @@ public class FilterMaster {
         List<Object> filteredList = new LinkedList<>();
         for (Object l : list) {
 
-            Entity entity = null;
+            Entity entity;
             if (l instanceof Entity) {
                 entity = (Entity) l;
             } else {
@@ -77,7 +77,7 @@ public class FilterMaster {
             if (entity == null) {
                 continue;
             }
-            boolean result = false;
+            boolean result;
 
             if (prop) {
                 PROPERTY property = ContentManager.getPROP(valueName);
@@ -162,7 +162,7 @@ public class FilterMaster {
     }
 
     public static void applyFilter(Collection<Obj> objects, FILTERS filter, Ref ref, boolean out) {
-        List<Obj> objectsToRemove = new LinkedList<Obj>();
+        List<Obj> objectsToRemove = new LinkedList<>();
         for (Obj obj : objects) {
             if ((out) == checkFilter(obj, filter, ref)) {
                 objectsToRemove.add(obj);
@@ -216,7 +216,7 @@ public class FilterMaster {
 
     public static Set<Obj> getPlayerControlledUnits(Player player) {
         Conditions c = new Conditions();
-        Ref ref = null;
+        Ref ref;
         if (player == Player.NEUTRAL) {
             c.add(new OwnershipCondition("MATCH", true));
             c.add(ConditionMaster.getBFObjTypesCondition());
@@ -228,7 +228,7 @@ public class FilterMaster {
         }
         // spells too?
 
-        Filter<Obj> filter = new Filter<Obj>(ref, c);
+        Filter<Obj> filter = new Filter<>(ref, c);
         Set<Obj> set = filter.getObjects();
 
         return set;

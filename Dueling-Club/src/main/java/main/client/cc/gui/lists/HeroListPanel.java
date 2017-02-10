@@ -152,7 +152,7 @@ public class HeroListPanel extends G_ListPanel<ObjType> implements ListSelection
 
     public ListItem<ObjType> getDefaulListComp(ObjType value, boolean isSelected,
                                                boolean cellHasFocus, int obj_size) {
-        return new ListItem<ObjType>(value, isSelected, cellHasFocus, obj_size);
+        return new ListItem<>(value, isSelected, cellHasFocus, obj_size);
     }
 
     private BORDER getBorder(ObjType value) {
@@ -179,8 +179,8 @@ public class HeroListPanel extends G_ListPanel<ObjType> implements ListSelection
         if (!initialized) {
             return;
         }
-        String w = "";
-        String h = "";
+        String w;
+        String h;
         int x = !vertical ? rowsVisible : columns;
         int y = vertical ? rowsVisible : columns;
         // int x = vertical ? rowsVisible : columns; //correct for custom TODO

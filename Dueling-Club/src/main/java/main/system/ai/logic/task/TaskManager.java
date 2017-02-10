@@ -6,7 +6,6 @@ import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.PARAMS;
 import main.content.properties.G_PROPS;
 import main.data.XList;
-import main.entity.Entity;
 import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.DC_SpellObj;
@@ -117,11 +116,11 @@ public class TaskManager {
     }
 
     public List<Task> getTasks(GOAL_TYPE goal, UnitAI ai, boolean forced, DC_ActiveObj action) {
-        List<Task> list = new XList<Task>();
+        List<Task> list = new XList<>();
 
-        List<Integer> ids = new LinkedList<Integer>();
-        List<? extends DC_Obj> targets = new LinkedList<DC_Obj>();
-        List<? extends DC_Obj> targets2 = new LinkedList<DC_Obj>();
+        List<Integer> ids = new LinkedList<>();
+        List<? extends DC_Obj> targets = new LinkedList<>();
+        List<? extends DC_Obj> targets2 = new LinkedList<>();
 
         BEHAVIOR_MODE behaviorMode = ai.getBehaviorMode();
         // ai.getGroup().getBehaviorPref();
@@ -300,7 +299,7 @@ public class TaskManager {
         int minDistance = 999;
         List<DC_Obj> pruneList = new LinkedList<>();
         // TODO sort() first? to be sure to cut off the tail...
-        int maxPower = ParamAnalyzer.getMaxParam(PARAMS.POWER, new LinkedList<Entity>(targets));
+        int maxPower = ParamAnalyzer.getMaxParam(PARAMS.POWER, new LinkedList<>(targets));
         int limit = 0;
         boolean first = true;
         pruneLoop:

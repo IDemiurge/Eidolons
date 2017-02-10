@@ -102,7 +102,7 @@ public abstract class HeroItemView extends HeroView implements BorderChecker, Ru
 
     protected Filter<ObjType> getTypeFilter() {
         if (getFilterConditions() != null) {
-            return new Filter<ObjType>(hero.getGame(), getFilterConditions());
+            return new Filter<>(hero.getGame(), getFilterConditions());
         }
         return null;
     }

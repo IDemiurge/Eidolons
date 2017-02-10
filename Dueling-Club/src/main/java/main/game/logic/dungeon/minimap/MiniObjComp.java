@@ -151,7 +151,7 @@ public class MiniObjComp implements Refreshable {
             Map<HIGHLIGHT, BufferedImage> highlightedImageCache = highlightedImageCacheMap
                     .get(image);
             if (highlightedImageCache == null) {
-                highlightedImageCache = new HashMap<HIGHLIGHT, BufferedImage>();
+                highlightedImageCache = new HashMap<>();
                 highlightedImageCacheMap.put(image, highlightedImageCache);
             }
             BufferedImage buffer = highlightedImageCache.get(hl);

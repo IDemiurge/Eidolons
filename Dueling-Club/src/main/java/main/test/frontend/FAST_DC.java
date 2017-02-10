@@ -9,7 +9,6 @@ import main.client.game.TestMode;
 import main.client.game.gui.DC_GameGUI;
 import main.client.net.GameConnector.HOST_CLIENT_CODES;
 import main.client.net.HostClientConnection;
-import main.data.filesys.PathFinder;
 import main.game.DC_Game;
 import main.game.DC_Game.GAME_MODES;
 import main.game.battlefield.UnitGroupMaster;
@@ -132,7 +131,6 @@ public class FAST_DC {
         CoreEngine.swingOn = false;
         CoreEngine.setExceptionTypes(exceptions);
         running = true;
-        PathFinder.init();
         DC_Engine.systemInit();
         Launcher.DEV_MODE = true;
         // CoreEngine.setWritingLogFilesOn(true);

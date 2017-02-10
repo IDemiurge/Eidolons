@@ -93,7 +93,7 @@ public class DC_RequirementsManager implements RequirementsManager {
         }
         // Chronos.mark(type.getName() + " req check");
         this.setHero(hero);
-        String reason = null;
+        String reason;
         // specialCheck(type, hero);
         // if (reason != null)
         // return reason;
@@ -207,7 +207,7 @@ public class DC_RequirementsManager implements RequirementsManager {
                 continue;
             }
             String t = "";
-            Conditions c = null;
+            Conditions c;
             if (StringMaster.contains(subString, StringMaster.OR)) {
                 // REFACTOR
                 List<String> parts = StringMaster.split(subString, StringMaster.OR, false);
@@ -223,8 +223,8 @@ public class DC_RequirementsManager implements RequirementsManager {
                 }
                 t = t.substring(0, t.length() - OR.length());
             } else {
-                String valRef = null;
-                String value = null;
+                String valRef;
+                String value;
                 boolean not = false;
 
                 if (subString.contains(NOT)) {
@@ -342,7 +342,7 @@ public class DC_RequirementsManager implements RequirementsManager {
     }
 
     private Condition getTotalCondition(String valRef, String value) {
-        List<PARAMETER> params = null;
+        List<PARAMETER> params;
         String str1 = "";
         if (valRef.contains(StringMaster.VAR_SEPARATOR)) {
             params = new LinkedList<>();
@@ -625,7 +625,7 @@ public class DC_RequirementsManager implements RequirementsManager {
                         reqTip = "";
                     }
                     Requirements modifiedReqs = modifyRankReq(feat, reqs, tipParts[i],
-                            new HashMap<String, Condition>(), c, rank);
+                            new HashMap<>(), c, rank);
                     // NumericCondition numericCondition = (NumericCondition) c;
                     // String value =
                     // StringMaster.getLastPart(numericCondition.getComparingValue()

@@ -47,7 +47,7 @@ public class PositionChoiceView extends ChoiceView<DC_HeroObj> implements MouseL
 
         int x = c.x;
         int y = c.y;
-        boolean valid = true;
+        boolean valid;
         if (SwingUtilities.isRightMouseButton(e)) {
             if (e.isAltDown()) {
                 x--;

@@ -29,7 +29,7 @@ public class Player {
     private static final String FORMAT = ".mp3";
     private static final String ALT_FORMAT = ".wav";
     private static final String SOUNDSET_FOLDER_PATH = PathFinder.getSoundPath() + SOUNDSETS;
-    static Stack<String> lastplayed = new Stack<String>();
+    static Stack<String> lastplayed = new Stack<>();
     private static boolean neverRepeat = false;
     private static boolean switcher = true;
     LinkedList<String> played;
@@ -323,7 +323,7 @@ public class Player {
         prop = obj.getProperty(G_PROPS.SOUNDSET);
         SOUNDSET soundSet = new EnumMaster<SOUNDSET>().retrieveEnumConst(SOUNDSET.class, obj
                 .getProperty(G_PROPS.SOUNDSET));
-        boolean result = false;
+        boolean result;
         if (soundSet == null) {
             result = playCustomSoundsetSound(prop, sound_type);
         } else {

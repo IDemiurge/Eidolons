@@ -95,7 +95,7 @@ public class Tavern extends TownPlace {
 
     public boolean newHero(boolean background, int xp) {
         // chance
-        DC_HeroObj hero = null;
+        DC_HeroObj hero;
         if (!background) {
             ObjType type = getRandomHeroType(xp);
             if (type == null) {

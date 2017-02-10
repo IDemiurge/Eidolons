@@ -26,7 +26,7 @@ public class ValueHelper {
     public static final char HOTKEY_CHAR = 'v';
     Map<String, VALUE> foundValues = new HashMap<>();
     Map<String, Set<VALUE>> rejectedValues = new HashMap<>();
-    Stack<String> searches = new Stack<String>();
+    Stack<String> searches = new Stack<>();
     private Entity entity;
     private Component parent;
     private Game game;
@@ -87,7 +87,7 @@ public class ValueHelper {
 
         VALUE v = getValue(valueName);
 
-        String amount = "";
+        String amount;
         if (v != null) {
             amount = getEntity().getValue(v);
             foundValues.put(valueName, v);
@@ -141,7 +141,7 @@ public class ValueHelper {
     }
 
     public VALUE getValue(String valueName) {
-        VALUE value = null;
+        VALUE value;
         value = checkFoundValues(valueName);
         if (value != null) {
             if (!checkRejectedValue(valueName, value)) {

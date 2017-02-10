@@ -131,7 +131,7 @@ public class Construct {
         main.system.auxiliary.LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
                 "...constructing primitive: " + className + " : " + content);
 
-        Object object = null;
+        Object object;
         switch (className) {
             case "FORMULA": {
                 object = new Formula(content);
@@ -183,7 +183,7 @@ public class Construct {
         }
 
         Object result = null;
-        LinkedList<Object> args = new LinkedList<Object>();
+        LinkedList<Object> args = new LinkedList<>();
         for (Construct construct : constructs) {
             Object object = construct.construct();
             if (object instanceof Reconstructable) {
@@ -195,7 +195,7 @@ public class Construct {
             args.add(object);
         }
 
-        LinkedList<Argument> argList = new LinkedList<Argument>();
+        LinkedList<Argument> argList = new LinkedList<>();
         for (Construct constr : constructs) {
             if (constr.getArg() == null) {
                 constr.setArg(Mapper.translateToArg(Mapper.getMappedClass(constr.getClassName())));

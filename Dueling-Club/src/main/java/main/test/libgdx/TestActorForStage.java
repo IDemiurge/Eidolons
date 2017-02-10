@@ -17,6 +17,8 @@ import java.util.Random;
  * Created by PC on 27.10.2016.
  */
 public class TestActorForStage extends Actor {
+    static float x_cam_pos;
+    static float y_cam_pos;
     Sprite sprite;
     Sprite spriteDirection;
     Texture texture;
@@ -34,8 +36,6 @@ public class TestActorForStage extends Actor {
     boolean test;
     int ID;
     InputListener listener;
-   static float x_cam_pos;
-    static float y_cam_pos;
 
 
     public TestActorForStage(Sprite face,float width,float height,float X,float Y,boolean Unit_Graphic_Items_Needed){
@@ -46,7 +46,6 @@ public class TestActorForStage extends Actor {
         ID = random.nextInt();
         setName("" + ID);
         setBounds(X,Y,width,height);
-        PathFinder.init();
         String path = PathFinder.getImagePath();
         sprite = new Sprite(face);
         sprite.setBounds(getX(),getY(),getWidth(),getHeight());
@@ -229,11 +228,11 @@ public class TestActorForStage extends Actor {
         portraitFrame.setBounds(getX(),getY(),getWidth(),getHeight());
     }
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
-
     public boolean isSelected() {
         return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

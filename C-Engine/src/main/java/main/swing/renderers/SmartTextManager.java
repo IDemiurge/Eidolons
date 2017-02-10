@@ -48,7 +48,7 @@ public class SmartTextManager {
             return VALUE_CASES.DEFAULT;
         }
 
-        int amount = 0;
+        int amount;
         // dynamic - percentage! x/y !
         try {
             amount = Integer.valueOf(value);
@@ -61,7 +61,7 @@ public class SmartTextManager {
         if (obj.getParamRounded(param, true).isEmpty()) {
             return VALUE_CASES.DEFAULT;
         }
-        int base_amount = 0;
+        int base_amount;
         try {
             base_amount = Integer.valueOf(obj.getRawValue(param));
         } catch (Exception e) {
@@ -84,7 +84,7 @@ public class SmartTextManager {
             return VALUE_CASES.VALUE_NORMAL;
         }
         //
-        Integer percentage = 0;
+        Integer percentage;
         int base_amount =
 
                 obj.getIntParam(base_value);

@@ -20,18 +20,18 @@ import java.util.List;
 
 public class PaletteTabPanel extends HC_TabPanel {
 
-	public PaletteTabPanel(UPPER_PALETTE p) {
-		if (p.TYPES != null) {
-			for (OBJ_TYPE t : p.TYPES) {
-				List<ObjType> types = DataManager.getTypes(t);
-				PagedPaletteTab sub = new PagedPaletteTab(new Workspace(t.getName(), types));
-				addTab(t.getName(), "", sub);
-			}
-		} else {
+    public PaletteTabPanel(UPPER_PALETTE p) {
+        if (p.TYPES != null) {
+            for (OBJ_TYPE t : p.TYPES) {
+                List<ObjType> types = DataManager.getTypes(t);
+                PagedPaletteTab sub = new PagedPaletteTab(new Workspace(t.getName(), types));
+                addTab(t.getName(), "", sub);
+            }
+        } else {
 
-			OBJ_TYPE type = p.getTYPE();
-			List<ObjType> types = DataManager.getTypes(type);
-			DequeImpl<ObjType> deque = new DequeImpl<>();
+            OBJ_TYPE type = p.getTYPE();
+            List<ObjType> types = DataManager.getTypes(type);
+            DequeImpl<ObjType> deque = new DequeImpl<>();
             if (p.filterProp == null) {
                 deque.addAll(types);
             } else {
@@ -39,24 +39,24 @@ public class PaletteTabPanel extends HC_TabPanel {
                         .getName(), p.filterValue));
             }
 
-			for (String s : StringMaster.openContainer(p.subPalettes, ", ")) {
-				List<ObjType> typeList = p.upper ? DataManager.getTypesGroup(type, StringMaster
-						.getWellFormattedString(s)) : DataManager.getTypesSubGroup(type,
-						StringMaster.getWellFormattedString(s));
-				if (typeList.isEmpty()) {
-					DequeImpl<ObjType> subdeque = new DequeImpl<>();
-					String name = p.groupProp.getName();
-					Collection<?> list = FilterMaster
-							.filterByProp(new LinkedList<>(deque), name, s);
-					subdeque.addAllCast(list);
-					typeList = new LinkedList<>(subdeque);
-				}
+            for (String s : StringMaster.openContainer(p.subPalettes, ", ")) {
+                List<ObjType> typeList = p.upper ? DataManager.getTypesGroup(type, StringMaster
+                        .getWellFormattedString(s)) : DataManager.getTypesSubGroup(type,
+                        StringMaster.getWellFormattedString(s));
+                if (typeList.isEmpty()) {
+                    DequeImpl<ObjType> subdeque = new DequeImpl<>();
+                    String name = p.groupProp.getName();
+                    Collection<?> list = FilterMaster
+                            .filterByProp(new LinkedList<>(deque), name, s);
+                    subdeque.addAllCast(list);
+                    typeList = new LinkedList<>(subdeque);
+                }
 
-				PagedPaletteTab sub = new PagedPaletteTab(new Workspace(s, typeList));
-				addTab(s, "", sub);
-			}
-		}
-	}
+                PagedPaletteTab sub = new PagedPaletteTab(new Workspace(s, typeList));
+                addTab(s, "", sub);
+            }
+        }
+    }
 
     @Override
     public ComponentVisuals getTAB() {

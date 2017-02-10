@@ -43,7 +43,7 @@ public class ChoiceSequence {
     }
 
     public ChoiceSequence() {
-        this(new LinkedList<ChoiceView>());
+        this(new LinkedList<>());
     }
 
     public void start() {

@@ -117,7 +117,7 @@ public class EnumMaster<T> {
         if (!enumClass.isEnum()) {
             return null;
         }
-        List<Object> list = new LinkedList<Object>();
+        List<Object> list = new LinkedList<>();
         for (Object obj : enumClass.getEnumConstants()) {
             list.add(obj);
         }
@@ -134,7 +134,7 @@ public class EnumMaster<T> {
             }
             return null;
         }
-        List<String> list = new LinkedList<String>();
+        List<String> list = new LinkedList<>();
         for (Object obj : enumClass.getEnumConstants()) {
             list.add(obj.toString());
         }
@@ -241,12 +241,12 @@ public class EnumMaster<T> {
             names = EnumMaster.getEnumClass(subgroup, MACRO_CONTENT_CONSTS.class);
         }
         if (names == null) {
-            return new LinkedList<String>();
+            return new LinkedList<>();
         }
         try {
             return getEnumConstantNames(names);
         } catch (Exception e) {
-            return new LinkedList<String>();
+            return new LinkedList<>();
         }
     }
 

@@ -43,7 +43,7 @@ public class DungeonsPanel {
     public void refresh() {
         getPanel().removeAll();
         Dungeon root = getGame().getDungeonMaster().getRootDungeon();
-        Map<Dungeon, Coordinates> map = new HashMap<Dungeon, Coordinates>();
+        Map<Dungeon, Coordinates> map = new HashMap<>();
         int h = GuiManager.getCellWidth();
         int w = GuiManager.getFullObjSize();
         int x = 0;

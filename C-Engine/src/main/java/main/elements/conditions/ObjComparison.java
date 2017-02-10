@@ -27,7 +27,7 @@ public class ObjComparison extends ConditionImpl {
     @Override
     public boolean check() {
 
-        Obj obj = null;
+        Obj obj;
         if (id != null) {
             obj = ref.getGame().getObjectById(id);
         } else {

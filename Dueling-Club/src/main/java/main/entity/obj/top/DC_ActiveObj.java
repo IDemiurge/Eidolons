@@ -77,7 +77,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     private static final String[] ANIMATION_EXCEPTIONS = {"Turn Clockwise", "Move",
             "Turn Anticlockwise",};
     protected Targeting targeting;
-    protected Costs costs = new Costs(new LinkedList<Cost>());
+    protected Costs costs = new Costs(new LinkedList<>());
     protected DC_HeroObj ownerObj;
     protected DamageSprite damageSprite;
     protected boolean highlighted;
@@ -87,7 +87,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     protected boolean concurrentMode = false;
     protected String focReqMod = "0";
     protected Abilities abilities;
-    protected Map<PARAMETER, String> costMods = new HashMap<PARAMETER, String>();
+    protected Map<PARAMETER, String> costMods = new HashMap<>();
     protected int timeCost = 0;
     protected boolean channeling;
     protected Costs channelingActivateCosts;
@@ -1014,7 +1014,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public void initCosts(boolean anim) {
         if (isFree()) {
-            costs = new Costs(new LinkedList<Cost>());
+            costs = new Costs(new LinkedList<>());
         } else {
             try {
                 costs = DC_CostsFactory.getCostsForSpell(this, isSpell());

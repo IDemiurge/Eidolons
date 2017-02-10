@@ -87,7 +87,7 @@ public class DC_ActionManager implements ActionManager {
     }
 
     public static void init() {
-        stdActionTypes = new LinkedList<ActionType>();
+        stdActionTypes = new LinkedList<>();
         for (STD_ACTIONS name : STD_ACTIONS.values()) {
             ActionType type = (ActionType) DataManager.getType(StringMaster
                     .getWellFormattedString(name.name()), OBJ_TYPES.ACTIONS);
@@ -95,14 +95,14 @@ public class DC_ActionManager implements ActionManager {
             stdActionTypes.add(type);
         }
 
-        modeActionTypes = new LinkedList<ActionType>();
+        modeActionTypes = new LinkedList<>();
         for (STD_MODE_ACTIONS name : STD_MODE_ACTIONS.values()) {
             ActionType type = (ActionType) DataManager.getType(StringMaster
                     .getWellFormattedString(name.name()), OBJ_TYPES.ACTIONS);
 
             modeActionTypes.add(type);
         }
-        hiddenActions = new LinkedList<ActionType>();
+        hiddenActions = new LinkedList<>();
         for (HIDDEN_ACTIONS name : HIDDEN_ACTIONS.values()) {
             ActionType type = (ActionType) DataManager.getType(StringMaster
                     .getWellFormattedString(name.name()), OBJ_TYPES.ACTIONS);
@@ -292,7 +292,7 @@ public class DC_ActionManager implements ActionManager {
     @Override
     public DC_ActiveObj getAction(String typeName, Entity entity) {
         if (actionsCache.get(entity) == null) {
-            actionsCache.put(entity, new HashMap<String, ActiveObj>());
+            actionsCache.put(entity, new HashMap<>());
         }
         ActiveObj action = actionsCache.get(entity).get(typeName);
         if (action == null) {
@@ -470,19 +470,19 @@ public class DC_ActionManager implements ActionManager {
             return;
         }
         DC_HeroObj unit = (DC_HeroObj) entity;
-        DequeImpl<ActiveObj> actives = null;
+        DequeImpl<ActiveObj> actives;
         // #1: reset prop with ids if nothing is changed
         // if (ListMaster.isNotEmpty(actives) && entity.isActivesReady()) {
         // entity.setProperty(ACTIVES, StringMaster
         // .constructContainer(StringMaster.convertToIdList(actives)));
         // return;
         // }
-        actives = new DequeImpl<ActiveObj>();
+        actives = new DequeImpl<>();
         // #2: reset the list if prop has been modified (via Add/Remove effects
         // ++ items). They should set ActivesReady to false for that.
         // or upon init
 
-        unit.setActionMap(new HashMap<ACTION_TYPE, List<DC_UnitAction>>());
+        unit.setActionMap(new HashMap<>());
 
         // if (!unit.isStandardActionsAdded())
         if (!unit.isBfObj()) {
@@ -491,7 +491,7 @@ public class DC_ActionManager implements ActionManager {
 
         for (String typeName : StringMaster.openContainer(entity.getProperty(ACTIVES))) {
             ObjType type = DataManager.getType(typeName, OBJ_TYPES.ACTIONS);
-            DC_UnitAction action = null;
+            DC_UnitAction action;
             if (type == null) {
                 try {
                     action = (DC_UnitAction) game.getObjectById(Integer.valueOf(typeName));
@@ -789,19 +789,19 @@ public class DC_ActionManager implements ActionManager {
             init();
         }
         OBJ_TYPES TYPE = OBJ_TYPES.getType(unit.getOBJ_TYPE());
-        List<DC_UnitAction> actions = new LinkedList<DC_UnitAction>();
+        List<DC_UnitAction> actions = new LinkedList<>();
         switch (type) {
             case STANDARD_ATTACK:
                 // TODO
                 DC_ActiveObj action = getAction(DC_ActionManager.ATTACK, unit);
                 List<DC_UnitAction> subActions = getWeaponActions(unit.getActiveWeapon(false));
-                action.setSubActions(new LinkedList<DC_ActiveObj>(subActions));
+                action.setSubActions(new LinkedList<>(subActions));
                 actions.addAll(subActions);
 
                 action = getAction(DC_ActionManager.OFFHAND_ATTACK, unit);
                 if (action != null) {
                     subActions = getWeaponActions(unit.getActiveWeapon(true));
-                    action.setSubActions(new LinkedList<DC_ActiveObj>(subActions));
+                    action.setSubActions(new LinkedList<>(subActions));
                     actions.addAll(subActions);
                 }
                 break;

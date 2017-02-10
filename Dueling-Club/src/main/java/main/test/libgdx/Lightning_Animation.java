@@ -1,8 +1,6 @@
 package main.test.libgdx;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.data.filesys.PathFinder;
 
 import java.util.ArrayList;
@@ -14,7 +12,6 @@ public class Lightning_Animation {
         private static ArrayList<Texture> list_of_lightnings;
 
     public Lightning_Animation(){
-        PathFinder.init();
         String path = PathFinder.getImagePath();
 
         list_of_lightnings = new ArrayList<>();

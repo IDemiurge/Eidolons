@@ -282,7 +282,7 @@ public class FileManager {
     }
 
     public static List<File> findFiles(File folder, String regex, boolean cropFormat, boolean strict) {
-        List<File> files = new LinkedList<File>();
+        List<File> files = new LinkedList<>();
         for (File file : folder.listFiles()) {
             if (file.isFile()) {
                 if (regex.isEmpty()) {

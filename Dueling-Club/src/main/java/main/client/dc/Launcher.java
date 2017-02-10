@@ -104,7 +104,6 @@ public class Launcher {
     }
 
     public static void main(String[] args) {
-        PathFinder.init();
         GuiManager.init();
         if (args != null) {
             LAUNCH_OPTION = LAUNCH_OPTIONS[0];

@@ -238,7 +238,7 @@ public class ListChooser extends GenericListChooser<String> {
 
     public static String chooseTypes(List<ObjType> types) {
         return chooseTypes(types.get(0).getOBJ_TYPE_ENUM(), DataManager.toStringList(types),
-                new LinkedList<String>());
+                new LinkedList<>());
     }
 
     public static List<ObjType> chooseTypes_(List<ObjType> types) {
@@ -398,7 +398,7 @@ public class ListChooser extends GenericListChooser<String> {
         super.initPanel();
 
         if (!ENUM) {
-            ObjType type = null;
+            ObjType type;
             if (!getListData().isEmpty()) {
                 type = DataManager.getType(getListData().get(0), TYPE);
             } else {

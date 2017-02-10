@@ -52,9 +52,9 @@ public class T3InfoPanel extends G_Panel {
     }
 
     public void addComps() {
-        Object pos = null;
-        String x = null;
-        String y = null;
+        Object pos;
+        String x;
+        String y;
         if (!flipped) {
             x = "label.x2";
             y = "0";

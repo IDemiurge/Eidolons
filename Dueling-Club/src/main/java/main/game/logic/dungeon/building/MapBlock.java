@@ -26,8 +26,8 @@ public class MapBlock {
     BLOCK_TYPE type;
     DequeImpl<Obj> objects;
     List<Coordinates> coordinates;
-    Map<Coordinates, Obj> map = new HashMap<Coordinates, Obj>();
-    Map<MapBlock, List<Coordinates>> connectedBlocks = new HashMap<MapBlock, List<Coordinates>>();
+    Map<Coordinates, Obj> map = new HashMap<>();
+    Map<MapBlock, List<Coordinates>> connectedBlocks = new HashMap<>();
     int spawningPriority;
     int treasureValue;
     private MapZone zone;

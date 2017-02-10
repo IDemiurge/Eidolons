@@ -23,27 +23,27 @@ import java.awt.*;
 
 public class AV_T3View extends ThreeTreeView {
 
-	private static AV_T3View comp;
-	private static AV_T3View classComp;
-	private static AV_T3View skillComp;
-	private static EditViewPanel table;
+    private static AV_T3View comp;
+    private static AV_T3View classComp;
+    private static AV_T3View skillComp;
+    private static EditViewPanel table;
 
-	HT_View activeTree;
-	HT_View removedTree;
+    HT_View activeTree;
+    HT_View removedTree;
 
-	public AV_T3View(DC_HeroObj hero, Boolean skill_class_spell) {
-		super(hero, skill_class_spell);
-		// infoPanel.setPanelSize(new Dimension(infoPanel.getPanelSize().width,
-		// infoPanel
-		// .getPanelSize().height - 40));
-		// infoPanel2.setPanelSize(new
-		// Dimension(infoPanel2.getPanelSize().width, infoPanel2
-		// .getPanelSize().height - 40));
-	}
+    public AV_T3View(DC_HeroObj hero, Boolean skill_class_spell) {
+        super(hero, skill_class_spell);
+        // infoPanel.setPanelSize(new Dimension(infoPanel.getPanelSize().width,
+        // infoPanel
+        // .getPanelSize().height - 40));
+        // infoPanel2.setPanelSize(new
+        // Dimension(infoPanel2.getPanelSize().width, infoPanel2
+        // .getPanelSize().height - 40));
+    }
 
-	public static void toggleEditTable() {
-		Boolean left_right_center = null;
-		HT_View relevantTree = comp.getRemovedTree();
+    public static void toggleEditTable() {
+        Boolean left_right_center = null;
+        HT_View relevantTree = comp.getRemovedTree();
         if (relevantTree == null) {
             relevantTree = comp.getActiveTree();
         }
@@ -54,24 +54,24 @@ public class AV_T3View extends ThreeTreeView {
             left_right_center = false;
         }
 
-		toggleEditTable(left_right_center);
-	}
+        toggleEditTable(left_right_center);
+    }
 
-	public static void toggleEditTable(Boolean left_right_center) {
-		// TODO for currently active tree...
-		// alt click - let choose, otherwise active...
+    public static void toggleEditTable(Boolean left_right_center) {
+        // TODO for currently active tree...
+        // alt click - let choose, otherwise active...
 
-		String pos = comp.getCenterTreePos();
-		if (left_right_center != null) {
-			pos = left_right_center ? comp.getLeftTreePos() : comp.getRightTreePos();
-		}
-		HT_View tree = comp.getCenterTree();
-		if (left_right_center != null) {
-			tree = left_right_center ? comp.getLeftTree() : comp.getRightTree();
-		}
-		if (comp.getRemovedTree() != null) {
-			comp.remove(table.getPanel());
-			comp.add(comp.getRemovedTree(), pos);
+        String pos = comp.getCenterTreePos();
+        if (left_right_center != null) {
+            pos = left_right_center ? comp.getLeftTreePos() : comp.getRightTreePos();
+        }
+        HT_View tree = comp.getCenterTree();
+        if (left_right_center != null) {
+            tree = left_right_center ? comp.getLeftTree() : comp.getRightTree();
+        }
+        if (comp.getRemovedTree() != null) {
+            comp.remove(table.getPanel());
+            comp.add(comp.getRemovedTree(), pos);
             if (left_right_center != null) {
                 if (left_right_center) {
                     comp.add(comp.getInfoPanel(), comp.getInfoPanelPos());
@@ -80,7 +80,7 @@ public class AV_T3View extends ThreeTreeView {
                 }
             }
             comp.setRemovedTree(null);
-		} else {
+        } else {
             if (table == null) {
                 table = new EditViewPanel() {
                     // no second table! sync selection!
@@ -125,14 +125,14 @@ public class AV_T3View extends ThreeTreeView {
                 }
             }
             comp.remove(tree);
-			comp.setRemovedTree(tree);
-			comp.add(table.getPanel(), pos);
-		}
-		comp.revalidate();
-		comp.repaint();
-	}
+            comp.setRemovedTree(tree);
+            comp.add(table.getPanel(), pos);
+        }
+        comp.revalidate();
+        comp.repaint();
+    }
 
-	public static void selected(String selectedTypeName, OBJ_TYPE obj_type) {
+    public static void selected(String selectedTypeName, OBJ_TYPE obj_type) {
 
         if (obj_type == OBJ_TYPES.SKILLS) {
             comp = skillComp;
@@ -144,38 +144,38 @@ public class AV_T3View extends ThreeTreeView {
         }
         comp.selected(DataManager.getType(selectedTypeName, obj_type));
 
-	}
+    }
 
-	public static JFrame showInNewWindow(boolean undecorated, boolean skill_class) {
-		GuiManager.setKeyListener(Launcher.getHcKeyListener());
+    public static JFrame showInNewWindow(boolean undecorated, boolean skill_class) {
+        GuiManager.setKeyListener(Launcher.getHcKeyListener());
 
-		ObjType type = new ObjType();
-		String image = ImageManager.getRandomHeroPortrait();
-		type.setImage(image);
-		DC_HeroObj hero = new DC_HeroObj(type);// DataManager.getRandomType(OBJ_TYPES.CHARS,
-												// null) "Background"
-		CharacterCreator.setHero(hero);
-		DC_Game.game.getRequirementsManager().setHero(hero);
-		comp = new AV_T3View(hero, skill_class);
-		if (skill_class) {
-			if (skillComp != null) {
+        ObjType type = new ObjType();
+        String image = ImageManager.getRandomHeroPortrait();
+        type.setImage(image);
+        DC_HeroObj hero = new DC_HeroObj(type);// DataManager.getRandomType(OBJ_TYPES.CHARS,
+        // null) "Background"
+        CharacterCreator.setHero(hero);
+        DC_Game.game.getRequirementsManager().setHero(hero);
+        comp = new AV_T3View(hero, skill_class);
+        if (skill_class) {
+            if (skillComp != null) {
 
-			}
-			skillComp = comp;
-		} else {
-			classComp = comp;
-		}
-		comp.init();
-		JFrame window = GuiManager.inNewWindow(undecorated, comp, "T3", GuiManager.getScreenSize());
+            }
+            skillComp = comp;
+        } else {
+            classComp = comp;
+        }
+        comp.init();
+        JFrame window = GuiManager.inNewWindow(undecorated, comp, "T3", GuiManager.getScreenSize());
 
-		// try {
-		// window.setUndecorated(true);
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
+        // try {
+        // window.setUndecorated(true);
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // }
 
-		return window;
-	}
+        return window;
+    }
 
     private void init() {
         // TODO Auto-generated method stub
@@ -261,20 +261,20 @@ public class AV_T3View extends ThreeTreeView {
         infoPanel2.repaint();
     }
 
-	public HT_View getActiveTree() {
-		return activeTree;
-	}
+    public HT_View getActiveTree() {
+        return activeTree;
+    }
 
-	public void setActiveTree(HT_View activeTree) {
-		this.activeTree = activeTree;
-	}
+    public void setActiveTree(HT_View activeTree) {
+        this.activeTree = activeTree;
+    }
 
-	public HT_View getRemovedTree() {
-		return removedTree;
-	}
+    public HT_View getRemovedTree() {
+        return removedTree;
+    }
 
-	public void setRemovedTree(HT_View removedTree) {
-		this.removedTree = removedTree;
-	}
+    public void setRemovedTree(HT_View removedTree) {
+        this.removedTree = removedTree;
+    }
 
 }

@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public abstract class MicroGameState extends GameState {
 
-    protected Map<OBJ_TYPE, List<Obj>> graveyard = new HashMap<OBJ_TYPE, List<Obj>>();
+    protected Map<OBJ_TYPE, List<Obj>> graveyard = new HashMap<>();
 
     public MicroGameState(MicroGame game) {
         super(game);
@@ -26,7 +26,7 @@ public abstract class MicroGameState extends GameState {
     protected void initTypeMaps() {
         for (OBJ_TYPE TYPE : OBJ_TYPES.values()) {
 
-            getObjMaps().put(TYPE, new HashMap<Integer, Obj>());
+            getObjMaps().put(TYPE, new HashMap<>());
         }
     }
 

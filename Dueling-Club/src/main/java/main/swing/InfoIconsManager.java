@@ -12,7 +12,7 @@ public class InfoIconsManager {
 
     public static Collection<? extends Image> getInfoIconsForObj(Obj obj) {
 
-        List<Image> list = new LinkedList<Image>();
+        List<Image> list = new LinkedList<>();
 
         for (INFO_ICONS icon : INFO_ICONS.values()) {
             if (checkIconConditions(icon, obj)) {

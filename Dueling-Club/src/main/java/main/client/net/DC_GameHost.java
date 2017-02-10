@@ -72,7 +72,7 @@ public class DC_GameHost extends GameHost implements Runnable {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
             }
-            Socket socket = null;
+            Socket socket;
             try {
                 socket = hostServer.accept();
             } catch (IOException e) {

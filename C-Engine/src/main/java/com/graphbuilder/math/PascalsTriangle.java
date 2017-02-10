@@ -28,7 +28,7 @@ public final class PascalsTriangle {
 
         if (n >= pt.length) {
             int d = 2 * pt.length;
-            double[][] pt2 = null;
+            double[][] pt2;
             if (n > d) {
                 pt2 = new double[n + 1][];
             } else {

@@ -3,7 +3,7 @@ package main.game.logic.macro.gui.party;
 import main.content.PARAMS;
 import main.content.VALUE;
 import main.content.parameters.MACRO_PARAMS;
-import main.entity.obj.*;
+import main.entity.obj.DC_HeroObj;
 import main.swing.components.panels.DC_ItemPanel;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.generic.components.G_Component;
@@ -76,15 +76,15 @@ public class HeroSlidePanel extends G_PagePanel<Object> {
     protected G_Component createPageComponent(List<Object> list) {
         switch (getCurrentSlideView()) {
             case CLASSES:
-                return new HeroObjList<DC_FeatObj>(hero.getClasses(), hero);
+                return new HeroObjList<>(hero.getClasses(), hero);
             case INVENTORY:
-                return new HeroObjList<DC_HeroItemObj>(hero.getInventory(),
+                return new HeroObjList<>(hero.getInventory(),
                         hero);
             case QUICK_ITEMS:
-                return new HeroObjList<DC_QuickItemObj>(hero.getQuickItems(),
+                return new HeroObjList<>(hero.getQuickItems(),
                         hero);
             case SPELLBOOK:
-                return new HeroObjList<DC_SpellObj>(hero.getSpells(), hero);
+                return new HeroObjList<>(hero.getSpells(), hero);
             case ACTIONS:
                 // dismiss, talk, order
                 break;

@@ -46,7 +46,7 @@ public class WatchRule implements ActionRule {
     >> No AoO's if not watched, by default?
     >> attack bonus for AoOs in spectrum?
          */
-    private static Map<DC_HeroObj, List<DC_Obj>> watchersMap = new HashMap<DC_HeroObj, List<DC_Obj>>();
+    private static Map<DC_HeroObj, List<DC_Obj>> watchersMap = new HashMap<>();
 
     private static void removeWatcher(DC_HeroObj watcher) {
         getWatchersMap().remove(watcher);

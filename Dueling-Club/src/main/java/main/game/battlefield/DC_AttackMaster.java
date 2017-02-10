@@ -297,7 +297,7 @@ public class DC_AttackMaster {
         }
         LogEntryNode entry = game.getLogManager().newLogEntryNode(type,
                 attack.getAttacker().getName(), attack.getAttacked().getName(), attack.getAction());
-        Boolean result = false;
+        Boolean result;
         try {
             attack.setSneak(checkSneak(ref));
 

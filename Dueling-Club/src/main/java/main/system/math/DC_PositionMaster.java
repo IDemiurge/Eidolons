@@ -16,7 +16,7 @@ public class DC_PositionMaster {
     public static Set<Coordinates> getShapedCoordinates(
             Coordinates baseCoordinate, FACING_DIRECTION facing, int width,
             int height, SHAPES shape) {
-        Set<Coordinates> list = new HashSet<Coordinates>();
+        Set<Coordinates> list = new HashSet<>();
         List<Coordinates> line;
         switch (shape) {
             case CROSS:

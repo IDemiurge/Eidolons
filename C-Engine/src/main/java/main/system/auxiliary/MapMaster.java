@@ -83,7 +83,7 @@ public class MapMaster<E, T> {
     }
 
     public List<T> joinMap(Map<E, List<T>> map) {
-        List<T> list = new LinkedList<T>();
+        List<T> list = new LinkedList<>();
         for (E e : map.keySet()) {
             list.addAll(map.get(e));
         }
@@ -91,7 +91,7 @@ public class MapMaster<E, T> {
     }
 
     public Map<T, E> invertMap(Map<E, T> map) {
-        XLinkedMap<T, E> newMap = new XLinkedMap<T, E>();
+        XLinkedMap<T, E> newMap = new XLinkedMap<>();
         for (E key : map.keySet()) {
             newMap.put(map.get(key), key);
         }
@@ -134,7 +134,7 @@ public class MapMaster<E, T> {
         }
         List<Map<E, T>> lists = new LinkedList<>();
         for (Iterator<E> iterator = map.keySet().iterator(); iterator.hasNext(); ) {
-            Map<E, T> newMap = new XLinkedMap<E, T>();
+            Map<E, T> newMap = new XLinkedMap<>();
             for (int i = 0; i < size; i++) {
                 if (!iterator.hasNext()) {
                     break;
@@ -152,7 +152,7 @@ public class MapMaster<E, T> {
     }
 
     public Map<Integer, T> getIdMapFromNetString(String input, Class<T> c) {
-        RandomWizard<T> wizard = new RandomWizard<T>();
+        RandomWizard<T> wizard = new RandomWizard<>();
         wizard.constructWeightMap(input, c, null, true);
         return wizard.getInvertedMap();
     }

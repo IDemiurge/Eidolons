@@ -46,7 +46,7 @@ public class ClassTreeView extends HT_View {
     @Override
     protected List<HC_Tab> initTabList() {
         List<HC_Tab> tabList = new LinkedList<>();
-        List<CLASS_GROUP> classes = new LinkedList<CLASS_GROUP>(Arrays.asList(CLASS_GROUP.values()));
+        List<CLASS_GROUP> classes = new LinkedList<>(Arrays.asList(CLASS_GROUP.values()));
         // if (mineOnly) {
         // }
         // for (CLASS_GROUP group : CLASS_GROUP.values())

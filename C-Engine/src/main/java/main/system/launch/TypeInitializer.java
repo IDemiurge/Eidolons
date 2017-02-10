@@ -10,7 +10,7 @@ public class TypeInitializer {
     private boolean xmlTreeValue = false;
 
     public ObjType getNewType(OBJ_TYPE obj_type) {
-        OBJ_TYPES OBJ_TYPE = null;
+        OBJ_TYPES OBJ_TYPE;
 
         ObjType type = new ObjType();
         if (obj_type instanceof OBJ_TYPES) {

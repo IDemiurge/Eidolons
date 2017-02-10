@@ -37,7 +37,7 @@ public class User extends DataUnit<USER_VALUES> {
         if (relevantValues == null) {
             relevantValues = relevantUserValues;
         }
-        return getData(new HashSet<String>(Arrays.asList(relevantValues)));
+        return getData(new HashSet<>(Arrays.asList(relevantValues)));
 
     }
 

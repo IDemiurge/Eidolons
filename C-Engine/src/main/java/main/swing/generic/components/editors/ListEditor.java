@@ -154,7 +154,7 @@ public class ListEditor implements EDITOR {
 
         } else {
 
-            secondListData = new LinkedList<String>();
+            secondListData = new LinkedList<>();
             if (value != null) {
                 if (!value.equals(ContentManager.getDefaultEmptyValue())) {
                     secondListData = ListMaster.toList(value.toString(), ENUM);

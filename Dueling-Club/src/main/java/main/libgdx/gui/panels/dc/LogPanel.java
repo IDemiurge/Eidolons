@@ -35,10 +35,6 @@ public class LogPanel extends Group {
         bg.setFillParent(true);
         addActor(bg);
 
-        scrollPanel = new ScrollPanel<>();
-        scrollPanel.setBounds(15, 15, getWidth() - 30, getHeight() - 30);
-        addActor(scrollPanel);
-
         movableHeader = new MovableHeader();
         movableHeader.setBounds(0, getHeight() - 10, getWidth(), 10);
         movableHeader.addCaptureListener(new InputListener() {
@@ -88,6 +84,14 @@ public class LogPanel extends Group {
         });
 
         updatePos = true;
+
+        scrollPanel = new ScrollPanel<>();
+
+        scrollPanel.pad(1, 10, 1, 10);
+        scrollPanel.fill();
+
+        addActor(scrollPanel);
+        debug();
         bind();
     }
 

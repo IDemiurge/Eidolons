@@ -296,7 +296,7 @@ public class PriorityManager {
     }
 
     public static float getCapacity(DC_HeroObj unit) {
-        float capacity = 1;
+        float capacity;
         float sta_factor = 1;
         if (!ParamAnalyzer.isStaminaIgnore(unit)) {
             sta_factor = new Float(unit.getIntParam(PARAMS.STAMINA_PERCENTAGE))
@@ -807,7 +807,7 @@ public class PriorityManager {
     }
 
     private static int getDurationMultiplier(Action action) {
-        int multiplier = 0;
+        int multiplier;
         int duration = new Formula(action.getActive().getParam(G_PARAMS.DURATION)).getInt(action
                 .getRef());
         duration = MathMaster

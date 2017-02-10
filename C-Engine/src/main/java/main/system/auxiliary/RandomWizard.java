@@ -176,7 +176,7 @@ public class RandomWizard<E> {
     }
 
     public static ObjType getRandomType(OBJ_TYPE TYPE, String group, boolean subgroup) {
-        List<ObjType> types = null;
+        List<ObjType> types;
         if (subgroup) {
             types = DataManager.getTypesSubGroup(TYPE, group);
         } else {
@@ -274,9 +274,9 @@ public class RandomWizard<E> {
 
     public WeightMap<E> constructWeightMap(String property, Class<? extends E> CLASS,
                                            OBJ_TYPE TYPE, boolean inverse) {
-        WeightMap<E> map = new WeightMap<E>();
+        WeightMap<E> map = new WeightMap<>();
         if (inverse) {
-            invertedMap = new LinkedHashMap<Integer, E>();
+            invertedMap = new LinkedHashMap<>();
         }
         for (String string : StringMaster.openContainer(property)) {
             Integer value = 0;
@@ -289,7 +289,7 @@ public class RandomWizard<E> {
                 value = 1;
             }
             string = StringMaster.getWeightItem(string, inverse);
-            E object = null;
+            E object;
 
             if (CLASS != ObjType.class) {
                 object = new EnumMaster<E>().retrieveEnumConst(CLASS, string);

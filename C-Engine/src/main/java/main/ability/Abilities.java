@@ -15,7 +15,7 @@ public class Abilities implements Ability, Iterable<Ability> {
      * Construction system: ???
      */
     public Abilities() {
-        abils = new LinkedList<Ability>();
+        abils = new LinkedList<>();
 
     }
 

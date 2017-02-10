@@ -4,7 +4,6 @@ import main.content.OBJ_TYPES;
 import main.data.DataManager;
 import main.data.ability.ARGS;
 import main.data.ability.Mapper;
-import main.data.filesys.PathFinder;
 import main.data.filesys.ResourceManager;
 import main.data.xml.XML_Reader;
 import main.system.auxiliary.*;
@@ -49,7 +48,6 @@ public class CoreEngine {
     public static void systemInit() {
 
         Chronos.mark("SYSTEM INIT");
-        PathFinder.init();
         ImageManager.init();
         FontMaster.init();
         GuiManager.init();

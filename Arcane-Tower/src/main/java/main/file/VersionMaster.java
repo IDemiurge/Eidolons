@@ -22,44 +22,44 @@ import java.util.Map;
 
 public class VersionMaster {
 
-	private static final String periodSeparator = "-";
-	private static final String MILESTONE = "BC Alpha";
-	private static final String VERSIONS = "Versions";
-	public static int version_session;
+    private static final String periodSeparator = "-";
+    private static final String MILESTONE = "BC Alpha";
+    private static final String VERSIONS = "Versions";
+    public static int version_session;
     static Map<String, Map<String, ObjType>> map;
     static String version_day;
     static String version_week;
     static String version_month;
 
-	static {
-		version_session = 1;
-		version_day = "Day " + TimeMaster.getDay();
-		version_week = "Week " + ((TimeMaster.getDay() / 7) + 1);
-		version_month = TimeMaster.getMonthName();
-	}
+    static {
+        version_session = 1;
+        version_day = "Day " + TimeMaster.getDay();
+        version_week = "Week " + ((TimeMaster.getDay() / 7) + 1);
+        version_month = TimeMaster.getMonthName();
+    }
 
-	public static String compareVersions(ArcaneEntity e, VALUE v, VERSION_PERIOD period) {
-		ObjType type = getPreviousVersion(e, period);
-		type.getValue(v);
-		if (v instanceof PARAMETER) {
-			PARAMETER parameter = (PARAMETER) v;
+    public static String compareVersions(ArcaneEntity e, VALUE v, VERSION_PERIOD period) {
+        ObjType type = getPreviousVersion(e, period);
+        type.getValue(v);
+        if (v instanceof PARAMETER) {
+            PARAMETER parameter = (PARAMETER) v;
 
-		}
-		return null;
-	}
+        }
+        return null;
+    }
 
-	private static String getAlteredVersionStamp(String stamp, VERSION_PERIOD period, int diff) {
-		// string to stamp, stamp to string
-		Version version = new Version(stamp);
-		String[] array = stamp.split(periodSeparator);
-		for (String s : array) {
+    private static String getAlteredVersionStamp(String stamp, VERSION_PERIOD period, int diff) {
+        // string to stamp, stamp to string
+        Version version = new Version(stamp);
+        String[] array = stamp.split(periodSeparator);
+        for (String s : array) {
             if (!s.contains(StringMaster.getWellFormattedString(period.name()))) {
                 continue;
             }
             Integer v = StringMaster.getInteger(StringMaster.getSegment(1, s.trim(), " ")) + diff;
-			v = getPeriodInteger(v, period, stamp);
-			// oct 1 -> sept 31
-			while (v < 0) {
+            v = getPeriodInteger(v, period, stamp);
+            // oct 1 -> sept 31
+            while (v < 0) {
                 // getOrCreate one level down
                 Integer month = version.map.get(VERSION_PERIOD.MONTH);
                 Integer daysInMonth = TimeMaster.getDaysInMonth(month);
@@ -68,85 +68,85 @@ public class VersionMaster {
                         v = daysInMonth + v;
                         MapMaster.addToIntegerMap(version.map, VERSION_PERIOD.MONTH, -1);
                         break;
-					case WEEK:
-						break; // recalculate based on days?
-					// reduce month also...
-					// int remainingDays;
+                    case WEEK:
+                        break; // recalculate based on days?
+                    // reduce month also...
+                    // int remainingDays;
 
-					case MONTH:
-						// year?
-						// MILESTONES
-						break;
-					case MILESTONE:
-						break;
-					case SESSION:
-						break;// crawl the version folders?...
-					default:
-						break;
+                    case MONTH:
+                        // year?
+                        // MILESTONES
+                        break;
+                    case MILESTONE:
+                        break;
+                    case SESSION:
+                        break;// crawl the version folders?...
+                    default:
+                        break;
 
-				}
+                }
 
-			}
-			// support period type alteration via -1 return?
+            }
+            // support period type alteration via -1 return?
 
-			// TODO what if it goes below 0?!
-			int n = 0;
-			String period_segment = StringMaster.getSegment(n, s, " ");
-			stamp.replace(s, period_segment + " " + v);
-		}
-		return null;
-	}
+            // TODO what if it goes below 0?!
+            int n = 0;
+            String period_segment = StringMaster.getSegment(n, s, " ");
+            stamp.replace(s, period_segment + " " + v);
+        }
+        return null;
+    }
 
-	private static Integer getPeriodInteger(Integer v, VERSION_PERIOD period, String version) {
-		switch (period) {
-			case DAY:
+    private static Integer getPeriodInteger(Integer v, VERSION_PERIOD period, String version) {
+        switch (period) {
+            case DAY:
                 if (v < 28) {
                     return v;
                 }
 //				if (getMonth(version).getDays() < v)
 //					return Integer.MIN_VALUE;
 
-			case MILESTONE:
-				break;
-			case MONTH:
-				break;
-			case SESSION:
-				break;
-			case WEEK:
-				break;
-			default:
-				break;
+            case MILESTONE:
+                break;
+            case MONTH:
+                break;
+            case SESSION:
+                break;
+            case WEEK:
+                break;
+            default:
+                break;
 
-		}
-		return null;
-	}
+        }
+        return null;
+    }
 
-	public static String compareVersions(VERSION_PERIOD period) {
-		// getDate();
-		// session number? Folder type name format:
-		// Milestone-weekN-dayN-sessionN
-		switch (period) {
-		}
-		return "";
-	}
+    public static String compareVersions(VERSION_PERIOD period) {
+        // getDate();
+        // session number? Folder type name format:
+        // Milestone-weekN-dayN-sessionN
+        switch (period) {
+        }
+        return "";
+    }
 
-	public static Map<VALUE, String> getVersionDifferenceMap(VERSION_PERIOD period, int n,
-			ArcaneEntity type) {
-		Map<VALUE, String> map = new XLinkedMap<>();
-		ObjType oldType = getOlderVersion(type, period, n);
-		for (PARAMETER p : oldType.getParamMap().keySet()) {
-			int diff = type.getIntParam(p) - oldType.getIntParam(p);
-			map.put(p, diff + "");
-		}
-		// for (PROPERTY p : oldType.getPropMap().keySet()) {
-		// String diff = StringMaster.getChanges( type .getProperty(p) ,
-		// oldType.getProperty(p));
-		// map.put(p, diff );
-		// }
-		// oldType.compareValues(type);
+    public static Map<VALUE, String> getVersionDifferenceMap(VERSION_PERIOD period, int n,
+                                                             ArcaneEntity type) {
+        Map<VALUE, String> map = new XLinkedMap<>();
+        ObjType oldType = getOlderVersion(type, period, n);
+        for (PARAMETER p : oldType.getParamMap().keySet()) {
+            int diff = type.getIntParam(p) - oldType.getIntParam(p);
+            map.put(p, diff + "");
+        }
+        // for (PROPERTY p : oldType.getPropMap().keySet()) {
+        // String diff = StringMaster.getChanges( type .getProperty(p) ,
+        // oldType.getProperty(p));
+        // map.put(p, diff );
+        // }
+        // oldType.compareValues(type);
 
-		return map;
-	}
+        return map;
+    }
 
     // what find() funcs do I really need?
     /*
@@ -161,106 +161,106 @@ public class VersionMaster {
 	 *  
 	 */
 
-	public static String getVersion() {
-		// TODO era?
-		return MILESTONE + periodSeparator + version_month + periodSeparator + version_week
-				+ periodSeparator + version_day + periodSeparator + " Session " + version_session;
-	}
+    public static String getVersion() {
+        // TODO era?
+        return MILESTONE + periodSeparator + version_month + periodSeparator + version_week
+                + periodSeparator + version_day + periodSeparator + " Session " + version_session;
+    }
 
-	private static String getVersionFolderPath(OBJ_TYPE t, String version) {
-		return getPath() + version + "\\" + t.getName() + ".xml";
-	}
+    private static String getVersionFolderPath(OBJ_TYPE t, String version) {
+        return getPath() + version + "\\" + t.getName() + ".xml";
+    }
 
-	private static String getPath() {
-		return ArcaneTower.getTypesPath() + VERSIONS + "\\";
-	}
+    private static String getPath() {
+        return ArcaneTower.getTypesPath() + VERSIONS + "\\";
+    }
 
-	private static String getVersion(Entity e) {
-		return e.getProperty(AT_PROPS.AT_VERSION, true);
-	}
+    private static String getVersion(Entity e) {
+        return e.getProperty(AT_PROPS.AT_VERSION, true);
+    }
 
-	public static void dayEnds() {
-		// version_day
-		saveVersionFolder();
-	}
+    public static void dayEnds() {
+        // version_day
+        saveVersionFolder();
+    }
 
-	public static void saveVersionFolder() {
-		saveVersionFolder(false);
-	}
+    public static void saveVersionFolder() {
+        saveVersionFolder(false);
+    }
 
-	public static void saveVersionFolder(boolean dirtyOnly) {
-		for (AT_OBJ_TYPE T : AT_OBJ_TYPE.values()) {
+    public static void saveVersionFolder(boolean dirtyOnly) {
+        for (AT_OBJ_TYPE T : AT_OBJ_TYPE.values()) {
             if (!T.isVersioned()) {
                 continue;
             }
             XML_Writer.setCustomPath(getPath() + getVersion());
-			XML_Writer.setDirtyOnly(dirtyOnly);
-			try {
-				XML_Writer.writeXML_ForTypeGroup(T);
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				XML_Writer.setCustomPath(null);
-				XML_Writer.setDirtyOnly(false);
-			}
-		}
+            XML_Writer.setDirtyOnly(dirtyOnly);
+            try {
+                XML_Writer.writeXML_ForTypeGroup(T);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                XML_Writer.setCustomPath(null);
+                XML_Writer.setDirtyOnly(false);
+            }
+        }
 
-	}
+    }
 
-	public static void saveVersion(ArcaneEntity entity) {
-		XML_Writer.setCustomPath(getPath() + getVersion());
-		try {
-			XML_Writer.writeXML_ForType(entity.getType());
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			XML_Writer.setCustomPath(null);
-		}
+    public static void saveVersion(ArcaneEntity entity) {
+        XML_Writer.setCustomPath(getPath() + getVersion());
+        try {
+            XML_Writer.writeXML_ForType(entity.getType());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            XML_Writer.setCustomPath(null);
+        }
 
-	}
+    }
 
-	public static void setVersionToCurrent(ObjType type) {
-		type.setProperty(AT_PROPS.AT_VERSION, getVersion());
+    public static void setVersionToCurrent(ObjType type) {
+        type.setProperty(AT_PROPS.AT_VERSION, getVersion());
 
-	}
+    }
 
-	private static ObjType getPreviousVersion(ArcaneEntity e, VERSION_PERIOD period) {
-		return getOlderVersion(e, period, 1);
-	}
+    private static ObjType getPreviousVersion(ArcaneEntity e, VERSION_PERIOD period) {
+        return getOlderVersion(e, period, 1);
+    }
 
-	private static ObjType getOlderVersion(ArcaneEntity e, VERSION_PERIOD period, int n) {
-		// previous meaning when, exactly?
+    private static ObjType getOlderVersion(ArcaneEntity e, VERSION_PERIOD period, int n) {
+        // previous meaning when, exactly?
         if (isTestMode()) {
             setVersionToCurrent(e.getType());
         }
         String version = getVersion(e);
-		String prevVersion = getAlteredVersionStamp(version, period, -n);
+        String prevVersion = getAlteredVersionStamp(version, period, -n);
         if (!map.containsKey(prevVersion)) {
             readVersionFile(e.getOBJ_TYPE_ENUM(), prevVersion);
         }
         Map<String, ObjType> idMap = map.get(prevVersion);
 
-		ObjType type = idMap.get(e.getUniqueId());
-		return type;
-	}
+        ObjType type = idMap.get(e.getUniqueId());
+        return type;
+    }
 
-	private static boolean isTestMode() {
-		return true;
-	}
+    private static boolean isTestMode() {
+        return true;
+    }
 
-	private static void readVersionFile(OBJ_TYPE t, String version) {
-		String xml = FileManager.readFile(getVersionFolderPath(t, version));
-		List<ObjType> types = XML_Reader.createCustomTypeList(xml, t, ArcaneTower.getSimulation(),
-				false, false, false);
+    private static void readVersionFile(OBJ_TYPE t, String version) {
+        String xml = FileManager.readFile(getVersionFolderPath(t, version));
+        List<ObjType> types = XML_Reader.createCustomTypeList(xml, t, ArcaneTower.getSimulation(),
+                false, false, false);
 
-		Map<String, ObjType> idMap = new XLinkedMap<String, ObjType>();
-		for (ObjType type : types) {
-			String id = type.getUniqueId();
-			idMap.put(id, type);
-		}
+        Map<String, ObjType> idMap = new XLinkedMap<>();
+        for (ObjType type : types) {
+            String id = type.getUniqueId();
+            idMap.put(id, type);
+        }
 
-		map.put(version, idMap);
-	}
+        map.put(version, idMap);
+    }
 
     public enum VERSION_PERIOD {
         MILESTONE, MONTH, WEEK, DAY, SESSION,

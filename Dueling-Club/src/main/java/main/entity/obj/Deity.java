@@ -61,7 +61,7 @@ public class Deity extends Entity {
     private void initEnemyDeities() {
 
         if (enemyDeities == null) {
-            enemyDeities = new LinkedList<Deity>();
+            enemyDeities = new LinkedList<>();
         }
         for (String type : StringMaster.openContainer(getProperty(PROPS.ENEMY_DEITIES))) {
             Deity deity = DC_ContentManager.getDeity(ref, type);
@@ -108,7 +108,7 @@ public class Deity extends Entity {
     private void initAlliedDeities() {
 
         if (alliedDeities == null) {
-            alliedDeities = new LinkedList<Deity>();
+            alliedDeities = new LinkedList<>();
         }
         for (String type : StringMaster.openContainer(getProperty(PROPS.ALLIED_DEITIES))) {
             Deity deity = DC_ContentManager.getDeity(ref, type);

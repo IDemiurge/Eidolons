@@ -13,12 +13,12 @@ import main.system.datatypes.DequeImpl;
 
 public class DC_Rules implements GameRules {
 
-    protected DequeImpl<Rule> buffRules = new DequeImpl<Rule>();
-    protected DequeImpl<DamageCounterRule> damageRules = new DequeImpl<DamageCounterRule>();
+    protected DequeImpl<Rule> buffRules = new DequeImpl<>();
+    protected DequeImpl<DamageCounterRule> damageRules = new DequeImpl<>();
     WatchRule watchRule;
     private DC_Game game;
-    private DequeImpl<DC_CounterRule> counterRules = new DequeImpl<DC_CounterRule>();
-    private DequeImpl<RoundRule> roundRules = new DequeImpl<RoundRule>();
+    private DequeImpl<DC_CounterRule> counterRules = new DequeImpl<>();
+    private DequeImpl<RoundRule> roundRules = new DequeImpl<>();
     private MoraleBuffRule moraleBuffRule;
     private StaminaBuffRule staminaRule;
     private WeightBuffRule weightRule;
@@ -37,7 +37,7 @@ public class DC_Rules implements GameRules {
     private CleaveRule cleaveRule;
     private RageRule rageRule;
     private StealthRule stealthRule;
-    private DequeImpl<ActionRule> actionRules = new DequeImpl<ActionRule>();
+    private DequeImpl<ActionRule> actionRules = new DequeImpl<>();
     private DiseaseRule diseaseRule;
     private MoistRule moistRule;
     private EnsnaredRule ensnareRule;

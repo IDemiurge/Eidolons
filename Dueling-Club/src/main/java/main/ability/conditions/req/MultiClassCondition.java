@@ -27,7 +27,7 @@ public class MultiClassCondition extends MicroCondition {
 
     @Override
     public boolean check() {
-        ObjType type = null;
+        ObjType type;
         if (className == null) {
             type = ref.getType(key.toString());
         } else {

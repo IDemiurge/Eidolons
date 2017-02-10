@@ -32,36 +32,36 @@ import java.util.*;
  */
 
 public class WorkspaceManager {
-	public static final String SEARCH_PATH = "\\searches\\";
+    public static final String SEARCH_PATH = "\\searches\\";
     // TODO rather, there must be some data on *which* workspace *is* default!
     private static final String DEFAULT_WORKSPACE_NAME = "default_workspace.xml";
     private static final boolean LAYER_DOWN = false;
-	private static final String METADATA = "METADATA: ";
+    private static final String METADATA = "METADATA: ";
     public static boolean ADD_WORKSPACE_TAB_ON_INIT = false;
     private static List<Workspace> workspaces = new LinkedList<>();
-	private Workspace activeWorkspace;
+    private Workspace activeWorkspace;
 
-	private boolean defaultTypeWorkspacesOn = true;
-	private boolean defaultGroupWorkspacesOn = true;
-	private boolean autosave = true;
-	private Boolean macro;
+    private boolean defaultTypeWorkspacesOn = true;
+    private boolean defaultGroupWorkspacesOn = true;
+    private boolean autosave = true;
+    private Boolean macro;
 
-	public WorkspaceManager(Boolean macro, Game game) {
-		this.macro = macro;
-		// TODO
-	}
+    public WorkspaceManager(Boolean macro, Game game) {
+        this.macro = macro;
+        // TODO
+    }
 
     public static String getFolderPath(boolean search) {
 
         return search ? PathFinder.getXML_PATH() + SEARCH_PATH : (PathFinder.getWorkspacePath());
     }
 
-	// should support default workspace for simplicity!
-	public void newWorkspaceForParty() {
-		ObjType party = ArcaneVault.getSelectedType();
-		Set<ObjType> set = new HashSet<ObjType>();
-		for (String sub : StringMaster.openContainer(party.getProperty(PROPS.MEMBERS))) {
-			ObjType type = DataManager.getType(sub, OBJ_TYPES.CHARS);
+    // should support default workspace for simplicity!
+    public void newWorkspaceForParty() {
+        ObjType party = ArcaneVault.getSelectedType();
+        Set<ObjType> set = new HashSet<>();
+        for (String sub : StringMaster.openContainer(party.getProperty(PROPS.MEMBERS))) {
+            ObjType type = DataManager.getType(sub, OBJ_TYPES.CHARS);
 
             for (String item : StringMaster.openContainer(type.getProperty(PROPS.SKILLS))) {
                 set.add(DataManager.getType(item, OBJ_TYPES.SKILLS));
@@ -70,21 +70,21 @@ public class WorkspaceManager {
                 set.add(DataManager.getType(item, OBJ_TYPES.CLASSES));
             }
 
-			// for (String item:
-			// StringMaster.openContainer(type.getProperty(PROPS.VERBATIM_SPELLS)))
-			// set.add(DataManager.getType(item, OBJ_TYPES. SPELLS));
-			// for (String item:
-			// StringMaster.openContainer(type.getProperty(PROPS.SPELLBOOK)))
-			// set.add(DataManager.getType(item, OBJ_TYPES. SPELLS));
-		}
-		List<ObjType> typeList = new LinkedList<>(set);
-		Workspace ws = new Workspace(party.getName(), typeList);
-		addWorkspace(ws);
-		initWorkspace(ws);
-	}
+            // for (String item:
+            // StringMaster.openContainer(type.getProperty(PROPS.VERBATIM_SPELLS)))
+            // set.add(DataManager.getType(item, OBJ_TYPES. SPELLS));
+            // for (String item:
+            // StringMaster.openContainer(type.getProperty(PROPS.SPELLBOOK)))
+            // set.add(DataManager.getType(item, OBJ_TYPES. SPELLS));
+        }
+        List<ObjType> typeList = new LinkedList<>(set);
+        Workspace ws = new Workspace(party.getName(), typeList);
+        addWorkspace(ws);
+        initWorkspace(ws);
+    }
 
-	// save all upon exit?
-	public void save() {
+    // save all upon exit?
+    public void save() {
         for (Workspace a : workspaces) {
             if (!a.isSearch()) {
                 try {
@@ -96,15 +96,15 @@ public class WorkspaceManager {
         }
     }
 
-	public void saveWorkspace(Workspace ws) {
-		saveWorkspace(null, ws, "");
-	}
+    public void saveWorkspace(Workspace ws) {
+        saveWorkspace(null, ws, "");
+    }
 
-	public void saveWorkspaceNew(Workspace ws) {
+    public void saveWorkspaceNew(Workspace ws) {
 
-	}
+    }
 
-	public void saveWorkspace(String path, Workspace ws, String metadata) {
+    public void saveWorkspace(String path, Workspace ws, String metadata) {
         if (ws == null) {
             return;
         }
@@ -113,31 +113,31 @@ public class WorkspaceManager {
         }
         XML_Writer.write(XML_Converter.getXMLFromTypeList(ws.getTypeList()) + METADATA + metadata
 
-		, path, ws.getName() + ".xml");
-	}
+                , path, ws.getName() + ".xml");
+    }
 
-	public void initWorkspace(Workspace ws) {
-		setActiveWorkspace(ws);
-		workspaces.add(ws);
+    public void initWorkspace(Workspace ws) {
+        setActiveWorkspace(ws);
+        workspaces.add(ws);
         if (ArcaneVault.getMainBuilder() != null) {
             ArcaneVault.getMainBuilder().getTabBuilder().addWorkspaceTab(ws);
         }
 
-	}
+    }
 
-	public void initSearches() {
-		for (File f : FileManager.getFilesFromDirectory(getFolderPath(true), false)) {
-			Workspace ws = loadWorkspace(f.getName(), true);
+    public void initSearches() {
+        for (File f : FileManager.getFilesFromDirectory(getFolderPath(true), false)) {
+            Workspace ws = loadWorkspace(f.getName(), true);
 
-		}
+        }
 
-	}
+    }
 
-	public Workspace loadWorkspace(String path) {
-		return loadWorkspace(path, false);
-	}
+    public Workspace loadWorkspace(String path) {
+        return loadWorkspace(path, false);
+    }
 
-	public Workspace loadWorkspace(String path, boolean search) {
+    public Workspace loadWorkspace(String path, boolean search) {
         if (!path.contains(".xml")) {
             path += ".xml";
         }
@@ -149,42 +149,42 @@ public class WorkspaceManager {
             return null;
         }
         String xml = FileManager.readFile(file);
-		List<String> parts = StringMaster.openContainer(xml, METADATA);
-		xml = parts.get(0);
-		List<ObjType> typeList = null;
-		try {
-			typeList = XML_Converter.getTypeListFromXML(xml, LAYER_DOWN);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		path = StringMaster.getLastPathSegment(path);
-		String name = StringMaster.cropFormat(path);
-		Workspace workspace = new Workspace(name, typeList);
-		initWorkspace(workspace);
+        List<String> parts = StringMaster.openContainer(xml, METADATA);
+        xml = parts.get(0);
+        List<ObjType> typeList = null;
+        try {
+            typeList = XML_Converter.getTypeListFromXML(xml, LAYER_DOWN);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        path = StringMaster.getLastPathSegment(path);
+        String name = StringMaster.cropFormat(path);
+        Workspace workspace = new Workspace(name, typeList);
+        initWorkspace(workspace);
 
         if (parts.size() > 1) {
             workspace.setMetaData(parts.get(1));
         }
         workspace.setSearch(search);
-		return workspace;
-	}
+        return workspace;
+    }
 
-	public Workspace initAutoWorkspace() {
-		List<ObjType> typeList = new LinkedList<>();
-		for (ObjType type : DataManager.getTypes()) {
+    public Workspace initAutoWorkspace() {
+        List<ObjType> typeList = new LinkedList<>();
+        for (ObjType type : DataManager.getTypes()) {
             if (checkTypeForAutoWs((OBJ_TYPES) type.getOBJ_TYPE_ENUM(), type)) {
                 typeList.add(type);
             }
         }
-		Workspace workspace = new Workspace("Auto Workspace", typeList);
-		saveWorkspace(workspace);
-		workspaces.add(workspace);
-		return workspace;
-	}
+        Workspace workspace = new Workspace("Auto Workspace", typeList);
+        saveWorkspace(workspace);
+        workspaces.add(workspace);
+        return workspace;
+    }
 
-	private boolean checkTypeForAutoWs(OBJ_TYPES TYPE, ObjType type) {
-		switch (TYPE) {
-			case ACTIONS:
+    private boolean checkTypeForAutoWs(OBJ_TYPES TYPE, ObjType type) {
+        switch (TYPE) {
+            case ACTIONS:
                 if (type.getGroupingKey().equalsIgnoreCase(ACTION_TYPE.STANDARD_ATTACK.toString())) {
                     if (type.getWorkspaceGroup() != WORKSPACE_GROUP.COMPLETE) {
                         return true;
@@ -205,52 +205,52 @@ public class WorkspaceManager {
                     }
                 }
         }
-		return false;
-	}
+        return false;
+    }
 
-	public Workspace initDefaultWorkspace() {
-		Workspace defaultWorkspace = loadWorkspace(DEFAULT_WORKSPACE_NAME);
-		if (defaultWorkspace == null) {
-			defaultWorkspace = new Workspace(DEFAULT_WORKSPACE_NAME, new LinkedList<ObjType>());
-			saveWorkspace(defaultWorkspace);
-		}
-		return defaultWorkspace;
-	}
+    public Workspace initDefaultWorkspace() {
+        Workspace defaultWorkspace = loadWorkspace(DEFAULT_WORKSPACE_NAME);
+        if (defaultWorkspace == null) {
+            defaultWorkspace = new Workspace(DEFAULT_WORKSPACE_NAME, new LinkedList<>());
+            saveWorkspace(defaultWorkspace);
+        }
+        return defaultWorkspace;
+    }
 
-	public Workspace getActiveWorkspace() {
-		return activeWorkspace;
-	}
+    public Workspace getActiveWorkspace() {
+        return activeWorkspace;
+    }
 
     public void setActiveWorkspace(Workspace activeWorkspace) {
         this.activeWorkspace = activeWorkspace;
     }
 
-	public Workspace getWorkspaceByName(String typeName) {
-		for (Workspace ws : workspaces) {
+    public Workspace getWorkspaceByName(String typeName) {
+        for (Workspace ws : workspaces) {
             if (ws.getName().equalsIgnoreCase(typeName)) {
                 return ws;
             }
         }
-		return null;
-	}
+        return null;
+    }
 
-	public Workspace getWorkspaceByTab(G_Panel tabComp) {
-		for (Workspace ws : workspaces) {
+    public Workspace getWorkspaceByTab(G_Panel tabComp) {
+        for (Workspace ws : workspaces) {
             if (ws.getTabComp() == (tabComp)) {
                 return ws;
             }
         }
-		return null;
-	}
+        return null;
+    }
 
-	public void addWorkspace(Workspace ws) {
-		getActiveWorkspaces().add(ws);
-	}
+    public void addWorkspace(Workspace ws) {
+        getActiveWorkspaces().add(ws);
+    }
 
-	public boolean addTypeToActiveWorkspace(ObjType selectedType) {
+    public boolean addTypeToActiveWorkspace(ObjType selectedType) {
 
-		if (defaultTypeWorkspacesOn) {
-			setActiveWorkspace(initTypeWorkspace(selectedType));
+        if (defaultTypeWorkspacesOn) {
+            setActiveWorkspace(initTypeWorkspace(selectedType));
         } else if (getActiveWorkspace() == null) {
             setActiveWorkspace(initDefaultWorkspace());
         }
@@ -276,38 +276,38 @@ public class WorkspaceManager {
             saveWorkspace(activeWorkspace);
         }
         return result;
-	}
+    }
 
-	private Workspace initTypeWorkspace(ObjType selectedType) {
-		DEFAULT_TYPE_WORKSPACES DTW = DEFAULT_TYPE_WORKSPACES.MISC;
-		for (DEFAULT_TYPE_WORKSPACES dtw : DEFAULT_TYPE_WORKSPACES.values()) {
-			if (dtw.checkType(selectedType.getOBJ_TYPE_ENUM())) {
-				DTW = dtw;
-				break;
-			}
-		}
-		for (Workspace ws : workspaces) {
-			DEFAULT_TYPE_WORKSPACES dtw = new EnumMaster<DEFAULT_TYPE_WORKSPACES>()
-					.retrieveEnumConst(DEFAULT_TYPE_WORKSPACES.class, ws.getName());
+    private Workspace initTypeWorkspace(ObjType selectedType) {
+        DEFAULT_TYPE_WORKSPACES DTW = DEFAULT_TYPE_WORKSPACES.MISC;
+        for (DEFAULT_TYPE_WORKSPACES dtw : DEFAULT_TYPE_WORKSPACES.values()) {
+            if (dtw.checkType(selectedType.getOBJ_TYPE_ENUM())) {
+                DTW = dtw;
+                break;
+            }
+        }
+        for (Workspace ws : workspaces) {
+            DEFAULT_TYPE_WORKSPACES dtw = new EnumMaster<DEFAULT_TYPE_WORKSPACES>()
+                    .retrieveEnumConst(DEFAULT_TYPE_WORKSPACES.class, ws.getName());
             if (dtw == DTW) {
                 return ws;
             }
         }
 
-		Workspace typeWorkspace = loadWorkspace(getTypeWorkspaceName(selectedType
-				.getOBJ_TYPE_ENUM()));
-		if (typeWorkspace == null) {
-			typeWorkspace = new Workspace(getTypeWorkspaceName(selectedType.getOBJ_TYPE_ENUM()),
-					new LinkedList<ObjType>());
-			initWorkspace(typeWorkspace);
-			saveWorkspace(typeWorkspace);
-		}
-		return typeWorkspace;
-	}
+        Workspace typeWorkspace = loadWorkspace(getTypeWorkspaceName(selectedType
+                .getOBJ_TYPE_ENUM()));
+        if (typeWorkspace == null) {
+            typeWorkspace = new Workspace(getTypeWorkspaceName(selectedType.getOBJ_TYPE_ENUM()),
+                    new LinkedList<>());
+            initWorkspace(typeWorkspace);
+            saveWorkspace(typeWorkspace);
+        }
+        return typeWorkspace;
+    }
 
-	public void initDefaultWorkspaces() {
-		for (DEFAULT_TYPE_WORKSPACES dtw : DEFAULT_TYPE_WORKSPACES.values()) {
-			if (ArcaneVault.getTypes() != null) {
+    public void initDefaultWorkspaces() {
+        for (DEFAULT_TYPE_WORKSPACES dtw : DEFAULT_TYPE_WORKSPACES.values()) {
+            if (ArcaneVault.getTypes() != null) {
                 if (dtw == DEFAULT_TYPE_WORKSPACES.MISC) {
                     continue;
                 } else if (dtw.getTypes() == null) {
@@ -318,24 +318,24 @@ public class WorkspaceManager {
                         continue;
                     }
                 }
-			}
-			loadWorkspace(dtw.getWorkspaceName());
-		}
+            }
+            loadWorkspace(dtw.getWorkspaceName());
+        }
 
-	}
+    }
 
-	private String getTypeWorkspaceName(OBJ_TYPE TYPE) {
-		for (DEFAULT_TYPE_WORKSPACES ws : DEFAULT_TYPE_WORKSPACES.values()) {
+    private String getTypeWorkspaceName(OBJ_TYPE TYPE) {
+        for (DEFAULT_TYPE_WORKSPACES ws : DEFAULT_TYPE_WORKSPACES.values()) {
             if (ws.checkType(TYPE)) {
                 return ws.getWorkspaceName();
             }
         }
-		return DEFAULT_TYPE_WORKSPACES.MISC.getWorkspaceName();
-	}
+        return DEFAULT_TYPE_WORKSPACES.MISC.getWorkspaceName();
+    }
 
-	public List<Workspace> getActiveWorkspaces() {
-		return workspaces;
-	}
+    public List<Workspace> getActiveWorkspaces() {
+        return workspaces;
+    }
 
     public boolean isDefaultTypeWorkspacesOn() {
         return defaultTypeWorkspacesOn;
@@ -353,37 +353,37 @@ public class WorkspaceManager {
         this.defaultGroupWorkspacesOn = defaultGroupWorkspacesOn;
     }
 
-	public enum DEFAULT_TYPE_WORKSPACES {
-		SPELLS(OBJ_TYPES.SPELLS), ACTIONS(OBJ_TYPES.ACTIONS), // type+group
-																// filter
-																// objects? e.g.
-																// active
-		ABILS(OBJ_TYPES.ABILS),
+    public enum DEFAULT_TYPE_WORKSPACES {
+        SPELLS(OBJ_TYPES.SPELLS), ACTIONS(OBJ_TYPES.ACTIONS), // type+group
+        // filter
+        // objects? e.g.
+        // active
+        ABILS(OBJ_TYPES.ABILS),
 
-		SKILLS(OBJ_TYPES.SKILLS),
-		CLASSES(OBJ_TYPES.CLASSES),
-		UNITS(OBJ_TYPES.UNITS, OBJ_TYPES.CHARS),
-		DUNGEONS(OBJ_TYPES.DUNGEONS),
-		ENCOUNTERS(OBJ_TYPES.ENCOUNTERS),
+        SKILLS(OBJ_TYPES.SKILLS),
+        CLASSES(OBJ_TYPES.CLASSES),
+        UNITS(OBJ_TYPES.UNITS, OBJ_TYPES.CHARS),
+        DUNGEONS(OBJ_TYPES.DUNGEONS),
+        ENCOUNTERS(OBJ_TYPES.ENCOUNTERS),
 
-		MISC;
-		private OBJ_TYPE[] types;
+        MISC;
+        private OBJ_TYPE[] types;
 
-		DEFAULT_TYPE_WORKSPACES(OBJ_TYPE... types) {
-			this.types = types;
-		}
+        DEFAULT_TYPE_WORKSPACES(OBJ_TYPE... types) {
+            this.types = types;
+        }
 
-		public boolean checkType(OBJ_TYPE TYPE) {
-			return Arrays.asList(getTypes()).contains(TYPE);
-		}
+        public boolean checkType(OBJ_TYPE TYPE) {
+            return Arrays.asList(getTypes()).contains(TYPE);
+        }
 
-		public String getWorkspaceName() {
-			return StringMaster.getWellFormattedString(name());
-		}
+        public String getWorkspaceName() {
+            return StringMaster.getWellFormattedString(name());
+        }
 
-		public OBJ_TYPE[] getTypes() {
-			return types;
-		}
-	}
+        public OBJ_TYPE[] getTypes() {
+            return types;
+        }
+    }
 
 }

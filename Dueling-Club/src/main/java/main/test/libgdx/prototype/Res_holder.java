@@ -22,7 +22,6 @@ public class Res_holder {
     static TextButton.TextButtonStyle exit_button_style;
     public static void load(){
         skin = new Skin();
-        PathFinder.init();
 //        textureAtlas = new TextureAtlas(Gdx.files.internal("D:\\NewRepos\\battlecraft\\Dueling-Club\\src\\main\\java\\main\\test\\libgdx\\resOUT\\Atlas.atlas"));
         textureAtlas = new TextureAtlas(Gdx.files.internal(PathFinder.getImagePath() + "\\myFolder\\Atlas.atlas"));
         skin.addRegions(textureAtlas);

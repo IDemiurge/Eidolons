@@ -112,7 +112,7 @@ public class DungeonBuilder {
     public static MapBlock constructBlock(Node node, int id, MapZone zone, DungeonPlan map,
                                           Dungeon dungeon) {
         List<Coordinates> coordinates = new LinkedList<>();
-        Map<Coordinates, ? extends Obj> objectMap = new HashMap<Coordinates, Obj>();
+        Map<Coordinates, ? extends Obj> objectMap = new HashMap<>();
         MapBlock b = new MapBlock(id, null, zone, map, coordinates);
         // TODO b-data, coordinates, objects
         for (Node subNode : XML_Converter.getNodeList(node)) {
@@ -614,7 +614,7 @@ public class DungeonBuilder {
         Node zonesNode = XML_Converter.getChildAt(planNode, (1));
 
         for (Node zoneNode : XML_Converter.getNodeList(zonesNode)) {
-            MapZone zone = null;
+            MapZone zone;
             try {
                 zone = createZone(plan, zoneId, zoneNode);
             } catch (Exception e) {
@@ -656,7 +656,7 @@ public class DungeonBuilder {
     }
 
     public String getMapsPath() {
-        return PathFinder.getXmlTypesFolderPath() + "dungeon maps\\";
+        return PathFinder.getTYPES_PATH() + "dungeon maps\\";
     }
 
     public Dungeon getDungeon() {

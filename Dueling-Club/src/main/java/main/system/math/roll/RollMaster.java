@@ -248,7 +248,7 @@ public class RollMaster {
             failFormula.applyFactor(getFailFactor(roll_type));
         }
 
-        Boolean result = null;
+        Boolean result;
 
         int max1 = failFormula.getInt(ref);
 

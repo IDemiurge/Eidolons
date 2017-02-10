@@ -69,7 +69,7 @@ public class Formula implements MyMathObj {
         }
         formatBuffer();
 
-        Expression expression = null;
+        Expression expression;
         try {
             expression = ExpressionTree.parse(buffer);
         } catch (Exception e) {
@@ -100,7 +100,7 @@ public class Formula implements MyMathObj {
 
     @Override
     public int getInt() {
-        Number number = 0;
+        Number number;
         try {
             number = evaluate();
         } catch (Exception e) {
@@ -171,8 +171,8 @@ public class Formula implements MyMathObj {
     }
 
     private int parseRef(String ref_substring) {
-        String obj_ref = "";
-        String param = "";
+        String obj_ref;
+        String param;
         boolean base = false;
         if (ref_substring.contains(StringMaster.FORMULA_BASE_CHAR)) {
             ref_substring = ref_substring.replace(StringMaster.FORMULA_BASE_CHAR, "");

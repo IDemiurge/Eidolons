@@ -241,7 +241,7 @@ public class XML_Writer {
     }
 
     private static void constructSubStrings() {
-        subStrings = new HashMap<String, StringBuilder>();
+        subStrings = new HashMap<>();
 
         for (String typename : map.keySet()) {
             ObjType objType = map.get(typename);

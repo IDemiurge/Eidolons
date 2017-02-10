@@ -24,43 +24,43 @@ import java.util.List;
 public class GoalPanel extends G_Panel {
     public final static int offsetX = 40;
     private Goal goal;
-	private G_ScrolledPanel<Task> tasksPanel;
+    private G_ScrolledPanel<Task> tasksPanel;
 
-	// TaskControlPanel;
+    // TaskControlPanel;
 
-	public GoalPanel(Goal goal) {
-		super("flowy");
-		// background =HC_Master.getT3View()
-		this.goal = goal;
-		panelSize = new Dimension(getWIDTH(), getHEIGHT());
-		TextCompDC header = new TextCompDC(null, goal.getName(), getFontSize(), FONT.AVQ,
-				getTextColor());
+    public GoalPanel(Goal goal) {
+        super("flowy");
+        // background =HC_Master.getT3View()
+        this.goal = goal;
+        panelSize = new Dimension(getWIDTH(), getHEIGHT());
+        TextCompDC header = new TextCompDC(null, goal.getName(), getFontSize(), FONT.AVQ,
+                getTextColor());
 
-		header.setPanelSize(panelSize);
-		add(header);
-		header.addMouseListener(new AT_EntityMouseListener(goal));
+        header.setPanelSize(panelSize);
+        add(header);
+        header.addMouseListener(new AT_EntityMouseListener(goal));
 
-		// priorityBox = new JComboBox<PRIORITY>();
-		// add(priorityBox, "pos @center_x 45");
+        // priorityBox = new JComboBox<PRIORITY>();
+        // add(priorityBox, "pos @center_x 45");
 
-		tasksPanel = new G_ScrolledPanel<Task>(true, 4, panelSize) {
-			@Override
-			public List<Task> getData() {
+        tasksPanel = new G_ScrolledPanel<Task>(true, 4, panelSize) {
+            @Override
+            public List<Task> getData() {
                 if (data == null) {
                     data = getGoal().getTasks();
                 }
                 return data;
-			}
+            }
 
-			@Override
-			protected G_Panel createComponent(Task d) {
-				return new TaskComp(d);
-			}
-		};
-		add(tasksPanel);
-		tasksPanel.refresh();
+            @Override
+            protected G_Panel createComponent(Task d) {
+                return new TaskComp(d);
+            }
+        };
+        add(tasksPanel);
+        tasksPanel.refresh();
 
-	}
+    }
 
     public static int getWIDTH() {
         return HT_MapBuilder.defTreeWidth + offsetX;
@@ -70,23 +70,23 @@ public class GoalPanel extends G_Panel {
         return HT_MapBuilder.defTreeHeight;
     }
 
-	@Override
-	public void refresh() {
-		// isSelected();
-		List<Task> tasks = getTaskData();
-		tasksPanel.setData(tasks);
-		tasksPanel.refresh();
-		if (isSelected()) {
-			// addButtons();
-		}
-		// super.refreshComponents();
-	}
+    @Override
+    public void refresh() {
+        // isSelected();
+        List<Task> tasks = getTaskData();
+        tasksPanel.setData(tasks);
+        tasksPanel.refresh();
+        if (isSelected()) {
+            // addButtons();
+        }
+        // super.refreshComponents();
+    }
 
-	private List<Task> getTaskData() {
-		List<Task> tasks = goal.getTasks();
-		if (isPinnedAppended()) {
-			for (ObjType type : DataManager.getTypes(AT_OBJ_TYPE.TASK)) {
-				Task task = (Task) ArcaneTower.getEntity(type);
+    private List<Task> getTaskData() {
+        List<Task> tasks = goal.getTasks();
+        if (isPinnedAppended()) {
+            for (ObjType type : DataManager.getTypes(AT_OBJ_TYPE.TASK)) {
+                Task task = (Task) ArcaneTower.getEntity(type);
                 if (task.getGoal() != null) {
                     if (task.getStatusEnum() == TASK_STATUS.PINNED) {
                         if (task.getGoal().getDirection() == goal.getDirection()) {
@@ -95,8 +95,8 @@ public class GoalPanel extends G_Panel {
                     }
                 }
             }
-		}
-		for (Task task : new LinkedList<>(tasks)) {
+        }
+        for (Task task : new LinkedList<>(tasks)) {
             if (!ArcaneMaster.checkDisplayed(task)) {
                 tasks.remove(task);
             }
@@ -106,7 +106,7 @@ public class GoalPanel extends G_Panel {
                     .getTasks());
         }
         return tasks;
-	}
+    }
 
 //	private void addButtons() {
 //		int i = 0;
@@ -138,46 +138,46 @@ public class GoalPanel extends G_Panel {
         return true;
     }
 
-	// buttonPanel.revalidate();
-	// descrPanel.refresh();
-	// headerComp.refresh();
-	// super.refresh();
-	// panelSize = new Dimension(getPanelWidth(), getPanelHeight());
-	private boolean isSelected() {
-		return ArcaneTower.getSelectedEntity() == goal;
-	}
+    // buttonPanel.revalidate();
+    // descrPanel.refresh();
+    // headerComp.refresh();
+    // super.refresh();
+    // panelSize = new Dimension(getPanelWidth(), getPanelHeight());
+    private boolean isSelected() {
+        return ArcaneTower.getSelectedEntity() == goal;
+    }
 
-	public Goal getGoal() {
-		return goal;
-	}
+    public Goal getGoal() {
+        return goal;
+    }
 
-	public void setGoal(Goal goal) {
-		this.goal = goal;
-	}
+    public void setGoal(Goal goal) {
+        this.goal = goal;
+    }
 
-	private Color getTextColor() {
-		return Color.black;
-	}
+    private Color getTextColor() {
+        return Color.black;
+    }
 
-	private int getFontSize() {
-		return 28;
-	}
+    private int getFontSize() {
+        return 28;
+    }
 
-	private void addTaskComps(List<Task> list) {
-		int i = 0;
-		for (Task task : list) {
-			TaskComp comp = new TaskComp(task);
-			String pos = "";
+    private void addTaskComps(List<Task> list) {
+        int i = 0;
+        for (Task task : list) {
+            TaskComp comp = new TaskComp(task);
+            String pos = "";
             if (i % 2 == 0) {
                 pos = "wrap";
             }
             add(comp, pos);
-		}
-	}
+        }
+    }
 
     public enum GOAL_COMMAND {
         TOGGLE,
 
-	}
+    }
 
 }

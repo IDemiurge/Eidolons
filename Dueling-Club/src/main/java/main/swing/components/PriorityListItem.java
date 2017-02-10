@@ -27,8 +27,8 @@ public class PriorityListItem extends G_Panel {
     private static final int X = 6;
     private static final int Y = 10;
     private static final Dimension AP_IMG_DIMENSION = new Dimension(17, 19);
-    protected Map<Point, Image> specialOverlayingImages = new ConcurrentHashMap<Point, Image>();
-    protected Map<Point, SmartText> specialOverlayingStrings = new ConcurrentHashMap<Point, SmartText>();
+    protected Map<Point, Image> specialOverlayingImages = new ConcurrentHashMap<>();
+    protected Map<Point, SmartText> specialOverlayingStrings = new ConcurrentHashMap<>();
     SmartTextManager smartMaster = new SmartTextManager();
     boolean clock;
     private DC_UnitObj unit;
@@ -151,8 +151,8 @@ public class PriorityListItem extends G_Panel {
     }
 
     private void resetSmartText() {
-        String value = null;
-        Color color = null;
+        String value;
+        Color color;
 
         if (VisionManager.checkDetectedEnemy(unit)) {
             value = unit.getParam(PARAMS.C_N_OF_ACTIONS);

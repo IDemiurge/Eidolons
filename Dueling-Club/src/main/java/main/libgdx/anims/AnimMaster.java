@@ -78,7 +78,7 @@ public class AnimMaster extends Group {
         if (anim.getDestination().equals(anim.getOrigin()))
         return true;
         return false;
-        
+
     }
 
     private void bindEvents() {

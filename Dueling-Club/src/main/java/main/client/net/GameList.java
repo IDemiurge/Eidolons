@@ -54,7 +54,7 @@ public class GameList extends GenericList<HostedGame> {
 
     public Vector<HostedGame> stringToVector(String input) {
 
-        Vector<HostedGame> v = new Vector<HostedGame>();
+        Vector<HostedGame> v = new Vector<>();
         if (input == null || input == "") {
             return v;
         }

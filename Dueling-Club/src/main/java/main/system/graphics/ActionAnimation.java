@@ -173,10 +173,10 @@ public class ActionAnimation extends PhaseAnimation {
                                               int armor) {
         // if separate, will draw two columns of reductions
         // if not, an offset column or a row...
-        int x = 0;
+        int x;
         int y = 0;
         int base_y = 0;
-        String text = null;
+        String text;
         if (left_right_center == null || BooleanMaster.isTrue(left_right_center)) {
             x = MigMaster.getCenteredPosition(w, 32);
             drawOnTarget(ImageManager.getDamageTypeImage(dmg_type.getName()), x, 0);
@@ -519,8 +519,8 @@ public class ActionAnimation extends PhaseAnimation {
     protected boolean drawCosts(AnimPhase phase) {
         int base = getDefaultIconMapOffsetY();
         boolean invert = false;
-        Boolean edge = null;
-        boolean positive = false;
+        Boolean edge;
+        boolean positive;
 
         if (getTarget() == source || phase.isDrawOnSource()) {
 
@@ -543,7 +543,7 @@ public class ActionAnimation extends PhaseAnimation {
             }
         }
         Costs costs = (Costs) phase.getArgs()[0];
-        Map<Image, String> map = new XLinkedMap<Image, String>();
+        Map<Image, String> map = new XLinkedMap<>();
         for (Cost s : costs.getCosts()) {
             if (s.isPaidAlt()) {
                 s = s.getAltCost();

@@ -52,7 +52,7 @@ public class EnumChoiceView<T extends Enum<?>> extends ChoiceView<T> implements
 
     @Override
     protected void initData() {
-        data = new LinkedList<T>(Arrays.asList(CLASS.getEnumConstants()));
+        data = new LinkedList<>(Arrays.asList(CLASS.getEnumConstants()));
     }
 
     @Override
@@ -100,6 +100,6 @@ public class EnumChoiceView<T extends Enum<?>> extends ChoiceView<T> implements
         boolean blocked = checkBlocked(value);
         VISUALS V = (isSelected) ? VISUALS.ENUM_CHOICE_COMP_SELECTED
                 : VISUALS.ENUM_CHOICE_COMP;
-        return new ListTextItem<T>(V, value, isSelected, blocked);
+        return new ListTextItem<>(V, value, isSelected, blocked);
     }
 }

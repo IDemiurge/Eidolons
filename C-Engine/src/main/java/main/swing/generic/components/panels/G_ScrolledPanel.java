@@ -63,8 +63,8 @@ public abstract class G_ScrolledPanel<E> extends G_Panel implements MouseWheelLi
     protected abstract G_Panel createComponent(E d);
 
     protected void addArrows(final boolean forward) {
-        String y = "";
-        String x = "";
+        String y;
+        String x;
         // if (forward) {
         y = vertical ? "" + spaceTaken : "center_y@";
         x = !vertical ? "" + spaceTaken : "center_x@";

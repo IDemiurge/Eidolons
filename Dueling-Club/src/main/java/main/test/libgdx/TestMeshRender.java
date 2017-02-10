@@ -21,6 +21,11 @@ public class TestMeshRender implements ApplicationListener {
 
     static final int WIDTH = 480;
     static final int HEIGHT = 320;
+    Mesh mesh;
+    Rectangle glViewport;
+    OrthographicCamera cam;
+    ShaderProgram shader;
+    private Texture cellTexture;
 
     public static void main(String[] args) throws InterruptedException, IOException {
 /*
@@ -104,12 +109,6 @@ public class TestMeshRender implements ApplicationListener {
         new LwjglApplication(r, "1", 480, 320);*/
     }
 
-    private Texture cellTexture;
-    Mesh mesh;
-    Rectangle glViewport;
-    OrthographicCamera cam;
-    ShaderProgram shader;
-
     public Mesh createQuad() {
         float[] verts = new float[]{
                 -0.5f, -0.5f, 0, 1, 1, 1, 1, 0, 1,
@@ -134,7 +133,6 @@ public class TestMeshRender implements ApplicationListener {
 
     @Override
     public void create() {
-        PathFinder.init();
         cellTexture = new Texture(PathFinder.getImagePath() + "\\UI\\cells\\Empty Cell v3.png");
         mesh = createQuad();
 

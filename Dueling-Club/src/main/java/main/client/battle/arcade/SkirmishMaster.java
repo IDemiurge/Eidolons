@@ -49,7 +49,7 @@ public class SkirmishMaster {
     }
 
     public static Map<Wave, Integer> constructWaveSequences(Integer round) {
-        Map<Wave, Integer> map = new XLinkedMap<Wave, Integer>();
+        Map<Wave, Integer> map = new XLinkedMap<>();
         // customize nemesis groups! spawn coordinates - how to specify?
         for (NEMESIS_GROUP g : skirmish.getNemesisGroups()) {
             for (ObjType type : DataManager.getTypesSubGroup(OBJ_TYPES.ENCOUNTERS, StringMaster
@@ -89,7 +89,7 @@ public class SkirmishMaster {
         String info = "";
         String data = "";
         String path = PathFinder.getDungeonLevelFolder();
-        final Map<String, File> map = new HashMap<String, File>();
+        final Map<String, File> map = new HashMap<>();
         for (File file : FileManager.getFilesFromDirectory(path, false)) {
             data += file.getName() + ";";
             map.put(file.getName(), file);
@@ -103,7 +103,7 @@ public class SkirmishMaster {
 
         };
         // filter!
-        final LinkedList<OBJECTIVE_TYPE> allowed = new LinkedList<OBJECTIVE_TYPE>();
+        final LinkedList<OBJECTIVE_TYPE> allowed = new LinkedList<>();
         EnumChoiceView<OBJECTIVE_TYPE> objectiveChoiceView = new EnumChoiceView<OBJECTIVE_TYPE>(cs,
                 null, OBJECTIVE_TYPE.class) {
             @Override

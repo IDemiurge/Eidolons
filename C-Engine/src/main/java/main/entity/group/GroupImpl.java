@@ -23,7 +23,7 @@ public class GroupImpl implements GROUP<Obj> {
         this.setIgnoreGroupTargeting(ignoreGroupTargeting);
         this.idList = Arrays.asList(idList
                 .toArray(new Integer[idList.size()]));
-        objList = new LinkedList<Obj>();
+        objList = new LinkedList<>();
         for (Integer id : idList) {
             objList.add(game.getObjectById(id));
         }
@@ -37,7 +37,7 @@ public class GroupImpl implements GROUP<Obj> {
         this.setIgnoreGroupTargeting(ignoreGroupTargeting);
         objList = Arrays.asList(objects.toArray(new Obj[objects
                 .size()]));
-        idList = new LinkedList<Integer>();
+        idList = new LinkedList<>();
         for (Obj obj : objList) {
             idList.add(obj.getId());
         }

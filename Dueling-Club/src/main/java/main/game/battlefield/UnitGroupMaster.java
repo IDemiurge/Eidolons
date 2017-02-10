@@ -185,7 +185,7 @@ public class UnitGroupMaster {
         int level = hero == null ? DialogMaster.inputInt("Power Level? (1-6)", getPowerLevel())
                 : (hero.getLevel()) / 2;
 
-        ObjType factionType = null;
+        ObjType factionType;
         //
         if (hero == null) {
             String faction = ListChooser.chooseEnum(FACTION.class);
@@ -353,7 +353,7 @@ public class UnitGroupMaster {
             return null;
         }
         // chooseUnit();
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         for (ObjType type : pool.keySet()) {
             map.put(type.getName(), "Cost: " + pool.get(type) + "; Power: "
                     + type.getIntParam(PARAMS.POWER));

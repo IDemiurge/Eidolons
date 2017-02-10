@@ -93,10 +93,10 @@ public class AutoTargeting extends TargetingImpl {
             ref.setTarget(obj.getId());
             return true;
         }
-        filter = new Filter<Obj>(ref, getConditions());
+        filter = new Filter<>(ref, getConditions());
         filter.setTYPE(TYPE);
         if (TYPES != null) {
-            LinkedList<OBJ_TYPE> types = new LinkedList<OBJ_TYPE>();
+            LinkedList<OBJ_TYPE> types = new LinkedList<>();
             for (String s : StringMaster.openContainer(TYPES)) {
                 types.add(ContentManager.getOBJ_TYPE(s));
             }

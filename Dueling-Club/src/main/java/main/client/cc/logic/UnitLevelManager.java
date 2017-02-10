@@ -171,7 +171,7 @@ public class UnitLevelManager {
     }
 
     private PARAMETER getRandomParameter(boolean attrs, Entity newType) {
-        PARAMETER param = null;
+        PARAMETER param;
         if (attrs) {
             ATTRIBUTE a = new RandomWizard<ATTRIBUTE>().getObjectByWeight(
                     newType.getProperty(PROPS.ATTRIBUTE_PROGRESSION),

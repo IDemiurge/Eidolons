@@ -46,13 +46,13 @@ public class DataManager {
     public static void init() {
         subGroupsMaps = new HashMap<>();
         for (OBJ_TYPES T : OBJ_TYPES.values()) {
-            subGroupsMaps.put(T, new HashMap<String, List<String>>());
+            subGroupsMaps.put(T, new HashMap<>());
         }
 
     }
 
     public static List<List<String>> getTabTreeData(PROPERTY filterValue, String type) {
-        List<List<String>> lists = new LinkedList<List<String>>();
+        List<List<String>> lists = new LinkedList<>();
 
         for (String criterion : XML_Reader.getSubGroups(type)) {
             if (criterion == null) {
@@ -430,7 +430,7 @@ public class DataManager {
         if (map == null) {
             return new LinkedList<>();
         }
-        return new LinkedList<ObjType>(map.values());
+        return new LinkedList<>(map.values());
     }
 
     public static List<String> getTypeNames(OBJ_TYPE TYPE) {
@@ -490,7 +490,7 @@ public class DataManager {
         }
         // if (ListMaster.contains(groupsList, subgroup, true)
         // || isCustomGroup(subgroup)) {
-        list = new LinkedList<String>();
+        list = new LinkedList<>();
 
         Map<String, Map<String, ObjType>> map = XML_Reader.getTypeMaps();
         Collection<ObjType> set = map.get(TYPE.toString()).values();
@@ -513,7 +513,12 @@ public class DataManager {
     public static List<String> getFilteredTypeNameList(String filter, OBJ_TYPE OBJ_TYPE,
                                                        VALUE filterValue) {
         Map<String, ObjType> map = XML_Reader.getTypeMaps().get(OBJ_TYPE.toString());
-        List<String> list = new LinkedList<String>();
+        if (map == null) {
+            char[] chars = OBJ_TYPE.toString().toCharArray();
+            chars[0] = Character.toUpperCase(chars[0]);
+            map = XML_Reader.getTypeMaps().get(new String(chars));
+        }
+        List<String> list = new LinkedList<>();
         for (String objName : map.keySet()) {
             if (StringMaster.compare(map.get(objName).getValue(filterValue), filter)) {
                 list.add(objName);
@@ -525,7 +530,7 @@ public class DataManager {
     public static List<ObjType> getFilteredTypes(String filter, OBJ_TYPE OBJ_TYPE, VALUE filterValue) {
         Map<String, ObjType> map = XML_Reader.getTypeMaps().get(OBJ_TYPE.toString());
 
-        List<ObjType> list = new LinkedList<ObjType>();
+        List<ObjType> list = new LinkedList<>();
         boolean or = false;
         if (filter.contains(StringMaster.OR)) {
             or = true;
@@ -558,7 +563,7 @@ public class DataManager {
         if (group == null) {
             return getTypes(TYPE);
         }
-        List<ObjType> list = new LinkedList<ObjType>();
+        List<ObjType> list = new LinkedList<>();
         Map<String, Map<String, ObjType>> map = XML_Reader.getTypeMaps();
         Collection<ObjType> set = map.get(TYPE.toString()).values();
         for (ObjType type : set) {
@@ -581,7 +586,7 @@ public class DataManager {
         if (group == null) {
             return getTypeNames(TYPE);
         }
-        List<String> list = new LinkedList<String>();
+        List<String> list = new LinkedList<>();
         Map<String, Map<String, ObjType>> map = XML_Reader.getTypeMaps();
         Collection<ObjType> set = new HashSet<>();
         if (TYPE instanceof C_OBJ_TYPE) {
@@ -615,7 +620,7 @@ public class DataManager {
     }
 
     public static List<String> getHeroList(String res_level) {
-        List<String> list = new LinkedList<String>();
+        List<String> list = new LinkedList<>();
 
         for (String name : getTypeNames(OBJ_TYPES.CHARS)) {
             ObjType type = getType(name, OBJ_TYPES.CHARS);
@@ -639,7 +644,7 @@ public class DataManager {
         if (strings == null) {
             return null;
         }
-        List<ObjType> list = new LinkedList<ObjType>();
+        List<ObjType> list = new LinkedList<>();
         for (String string : strings) {
             ObjType type = getType(string, TYPE);
             if (type == null) {
@@ -661,7 +666,7 @@ public class DataManager {
     }
 
     public static Collection<? extends Obj> toObjList(Collection<Integer> values, Game game) {
-        List<Obj> list = new LinkedList<Obj>();
+        List<Obj> list = new LinkedList<>();
         for (Integer id : values) {
             list.add(game.getObjectById(id));
         }
@@ -673,7 +678,7 @@ public class DataManager {
     }
 
     public static List<String> toStringList(Collection<? extends Entity> listTypeData) {
-        List<String> list = new LinkedList<String>();
+        List<String> list = new LinkedList<>();
         for (Entity type : listTypeData) {
             if (type == null) {
                 continue;
@@ -684,7 +689,7 @@ public class DataManager {
     }
 
     public static List<String> convertObjToStringList(Collection<? extends Obj> listTypeData) {
-        List<String> list = new LinkedList<String>();
+        List<String> list = new LinkedList<>();
         for (Entity type : listTypeData) {
             list.add(type.getName());
         }
@@ -696,7 +701,7 @@ public class DataManager {
             typesSubGroups = new HashMap<>();
             for (String sub : XML_Reader.getXmlMap().keySet()) {
                 typesSubGroups.put(ContentManager.getOBJ_TYPE(sub),
-                        new HashMap<String, List<String>>());
+                        new HashMap<>());
             }
         }
         return typesSubGroups;

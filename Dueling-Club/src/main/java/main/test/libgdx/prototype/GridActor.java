@@ -5,22 +5,20 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import main.data.filesys.PathFinder;
 import main.libgdx.bf.GridPanel;
 
 /**
  * Created by PC on 07.11.2016.
  */
 public class GridActor extends Actor {
-    private GridPanel gridPanel;
     Sprite sprite;
     int raws = 10;
     int lines = 10;
+    private GridPanel gridPanel;
     private float X;
     private float Y;
 
     public GridActor() {
-        PathFinder.init();
 
 //        sprite = new Sprite(new Texture(PathFinder.getImagePath() + "mini\\unit\\Nature\\griff.jpg"));
 //        sprite.setBounds(0,0,5,5);

@@ -16,7 +16,7 @@ public class BruteActionMaster extends ActionTypeManager {
             // ACTION_CASES.MOVE_TO_KILL,
             // ACTION_CASES.MOVE_TO_HIT,
             ACTION_CASES.HIT};
-    Map<ACTION_CASES, ACTION_TYPES> caseActionMap = new HashMap<ACTION_CASES, ACTION_TYPES>();
+    Map<ACTION_CASES, ACTION_TYPES> caseActionMap = new HashMap<>();
 
     public BruteActionMaster(AI_Logic ai) {
         super(ai);

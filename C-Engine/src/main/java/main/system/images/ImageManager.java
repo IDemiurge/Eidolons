@@ -67,9 +67,9 @@ public class ImageManager {
         }
     };
     private static Map<String, CustomImageIcon> iconCache = new HashMap<  >();
-    private static Map<String, ImageIcon> sizedImageStringCache = new HashMap<String, ImageIcon>();
-    private static Map<String, Image> sizedImageCache = new HashMap<String, Image>();
-    private static Map<String, Image[]> sprites = new HashMap<String, Image[]>();
+    private static Map<String, ImageIcon> sizedImageStringCache = new HashMap<>();
+    private static Map<String, Image> sizedImageCache = new HashMap<>();
+    private static Map<String, Image[]> sprites = new HashMap<>();
     private static Image DEFAULT_IMG;
     private static HashMap<BACKGROUND, List<String>> portraitMap;
     private static Map<COLOR_THEME, Map<String, String>> colorImgCache;
@@ -77,17 +77,17 @@ public class ImageManager {
     private static HashMap<BACKGROUND, List<String>> extendedPortraitMap;
     private static Map<Obj, Map<String, ImageIcon>> customIconCache;
     private static Map<String, JLabel> labelCache = new HashMap<>();
-    private static Map<Object, Image> valueImgCache = new HashMap<Object, Image>();
-    private static Map<Object, Image> valueImgCacheLockedSelected = new HashMap<Object, Image>();
-    private static Map<Object, Image> valueImgCacheLocked = new HashMap<Object, Image>();
-    private static Map<Object, Image> valueImgCacheSelected = new HashMap<Object, Image>();
+    private static Map<Object, Image> valueImgCache = new HashMap<>();
+    private static Map<Object, Image> valueImgCacheLockedSelected = new HashMap<>();
+    private static Map<Object, Image> valueImgCacheLocked = new HashMap<>();
+    private static Map<Object, Image> valueImgCacheSelected = new HashMap<>();
 
     public static void init() {
         setPATH(PathFinder.getImagePath());
         DEFAULT = "chars\\";
         colorImgCache = new HashMap<>();
         for (COLOR_THEME c : COLOR_THEME.values()) {
-            colorImgCache.put(c, new HashMap<String, String>());
+            colorImgCache.put(c, new HashMap<>());
         }
     }
 
@@ -101,7 +101,7 @@ public class ImageManager {
         }
         // DEFAULT + f.list()[new Random().nextInt(f.list().length)]
 
-        CustomImageIcon img = null;
+        CustomImageIcon img;
         if (!imgName.toLowerCase().contains(getPATH().toLowerCase())) {
             img = new CustomImageIcon(getPATH() + imgName);
         } else {
@@ -283,7 +283,7 @@ public class ImageManager {
             throw new RuntimeException();
         }
         try {
-            BufferedImage IMG = null;
+            BufferedImage IMG;
             if (resize == null && size != null) {
                 IMG = new BufferedImage((int) size.getWidth(), (int) size.getHeight(),
                         BufferedImage.TYPE_INT_ARGB);
@@ -324,7 +324,7 @@ public class ImageManager {
     }
 
     public static ImageIcon getSizedIcon(String imgName, Dimension size, boolean forceCache) {
-        ImageIcon icon = null;
+        ImageIcon icon;
         try {
             icon = sizedImageStringCache.get(imgName + size.getWidth() + size.getHeight());
             if (icon == null) {
@@ -541,7 +541,7 @@ public class ImageManager {
     }
 
     public static Image getImage(String imgPath) {
-        CustomImageIcon icon = null;
+        CustomImageIcon icon;
         try {
             icon = getIcon(imgPath);
         } catch (Exception e) {
@@ -821,7 +821,7 @@ return ((CustomImage)img).getImgPath();
             return list;
         }
         list = new LinkedList<>();
-        File folder = null;
+        File folder;
         List<String> paths = new LinkedList<>();
 
         switch (bg) {

@@ -48,7 +48,7 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
 
     @OmittedConstructor
     public Effects() {
-        setEffects(new DequeImpl<Effect>());
+        setEffects(new DequeImpl<>());
     }
 
     // @Override
@@ -185,7 +185,7 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
 
     public DequeImpl<Effect> getEffects() {
         if (effects == null) {
-            setEffects(new DequeImpl<Effect>());
+            setEffects(new DequeImpl<>());
         }
         return effects;
     }

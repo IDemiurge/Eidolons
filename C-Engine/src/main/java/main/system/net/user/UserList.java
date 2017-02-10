@@ -47,7 +47,7 @@ public class UserList extends GenericList<User> {
     public void setData(String input) {
         String[] usrs = input.split(StringMaster.getDataUnitSeparator());
         System.out.println("DATA: " + input);
-        Vector<User> v = new Vector<User>();
+        Vector<User> v = new Vector<>();
         for (String user : usrs) {
 
             v.add(new User(user));

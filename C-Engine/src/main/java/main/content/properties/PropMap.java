@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 public class PropMap implements ValueMap {
-    Map<PROPERTY, String> map = new HashMap<PROPERTY, String>();
+    Map<PROPERTY, String> map = new HashMap<>();
 
     @Override
     public String toString() {

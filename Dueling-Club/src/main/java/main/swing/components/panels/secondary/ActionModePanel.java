@@ -33,7 +33,7 @@ public class ActionModePanel extends G_Panel implements MouseListener {
     protected List<DC_ActiveObj> subActions;
     protected DC_ActiveObj previousAction;
     protected String tooltip = "";
-    protected Map<Rectangle, DC_ActiveObj> mouseMap = new HashMap<Rectangle, DC_ActiveObj>();
+    protected Map<Rectangle, DC_ActiveObj> mouseMap = new HashMap<>();
     protected int auto = FontMaster.getFontHeight(getTooltipFont()) / 2;
     int wrap = 5;
 
@@ -97,7 +97,7 @@ public class ActionModePanel extends G_Panel implements MouseListener {
 
         // g.setColor(Color.black);
 
-        x = drawActions(g, x, y);
+        drawActions(g, x, y);
 
         // g.drawImage(STD_IMAGES.ATTACKS.getImage(), 4, getHeight() - auto,
         // null);
@@ -130,7 +130,7 @@ public class ActionModePanel extends G_Panel implements MouseListener {
                 continue;
             }
             boolean blocked = checkBlocked(subAction);
-            boolean on_off = false;
+            boolean on_off;
             on_off = isOn(subAction);
             Image image = ImageManager.getModeImage(getModeFromSubAction(subAction), on_off,
                     blocked);

@@ -46,11 +46,11 @@ public abstract class LogManager {
 
     public LogManager(Game game) {
         this.game = game;
-        setEntryMap(new HashMap<LOG, List<String>>());
-        topDisplayedEntries = new LinkedList<String>();
+        setEntryMap(new HashMap<>());
+        topDisplayedEntries = new LinkedList<>();
         initDefaultEntries();
         for (LOG log : LOG.values()) {
-            entryMap.put(log, new LinkedList<String>());
+            entryMap.put(log, new LinkedList<>());
         }
     }
 

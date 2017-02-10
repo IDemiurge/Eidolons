@@ -48,7 +48,7 @@ public class Box2dLightTest extends InputAdapter implements ApplicationListener 
     /** our box2D world **/
     World world;
     /** our boxes **/
-    ArrayList<Body> balls = new ArrayList<Body>(BALLSNUM);
+    ArrayList<Body> balls = new ArrayList<>(BALLSNUM);
     /** our ground box **/
     Body groundBody;
     /** our mouse joint **/
@@ -60,7 +60,7 @@ public class Box2dLightTest extends InputAdapter implements ApplicationListener 
     boolean showText = true;
     /** BOX2D LIGHT STUFF */
     RayHandler rayHandler;
-    ArrayList<Light> lights = new ArrayList<Light>(BALLSNUM);
+    ArrayList<Light> lights = new ArrayList<>(BALLSNUM);
     float sunDirection = -90f;
     float physicsTimeLeft;
     long aika;

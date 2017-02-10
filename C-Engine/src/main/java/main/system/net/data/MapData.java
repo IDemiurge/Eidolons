@@ -31,7 +31,7 @@ public class MapData extends DataUnit<MAP_VALUES> {
             setValue(MAP_VALUES.MAP_OBJECTS, createObjCoordinateString(objMap, true));
             this.setObjMap(buildObjCoordinateMapFromString(getValue(MAP_VALUES.MAP_OBJECTS)));
         } else {
-            setObjMap(new HashMap<Coordinates, ObjType>());
+            setObjMap(new HashMap<>());
         }
         this.setBackground(getValue(MAP_VALUES.BF_BACKGROUND));
     }

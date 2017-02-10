@@ -15,7 +15,7 @@ public class ChatConnector implements Runnable {
     protected boolean rdy = false;
     StringBuffer buffer = new StringBuffer();
     User lastuser;
-    private ConcurrentLinkedQueue<ChatConnection> chathandlers = new ConcurrentLinkedQueue<ChatConnection>();
+    private ConcurrentLinkedQueue<ChatConnection> chathandlers = new ConcurrentLinkedQueue<>();
     private ServerSocket chatServer;
     private boolean isHost = false;
     private ChatConnection chathandler;
@@ -106,7 +106,7 @@ public class ChatConnector implements Runnable {
     public void initChatClient(String host, boolean main) {
         // if (chatBox == null)
         // chatBox = lobby.getChatBox();
-        Socket socket = null;
+        Socket socket;
         try {
             socket = new Socket(host,
                     // (host.equals(DuelingClub.SERVER_ADDRESS)

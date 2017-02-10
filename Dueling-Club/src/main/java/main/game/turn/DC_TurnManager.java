@@ -64,8 +64,8 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
     }
 
     private void initQueue() {
-        setUnitQueue(new DequeImpl<DC_HeroObj>());
-        setDisplayedUnitQueue(new DequeImpl<DC_HeroObj>());
+        setUnitQueue(new DequeImpl<>());
+        setDisplayedUnitQueue(new DequeImpl<>());
         setActiveUnit(unitQueue.peek());
         // getActiveUnit().setActiveSelected(true);
     }
@@ -101,7 +101,7 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
             return false;
         }
 
-        boolean result = true;
+        boolean result;
 
         result = chooseUnit();
 
@@ -125,7 +125,7 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
     }
 
     private Boolean waitForUnitTurn() {
-        Boolean result = true;
+        Boolean result;
         // timer
 
         while (game.isPaused()) {
@@ -242,9 +242,9 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
             }
         }
 
-        ArrayList<DC_HeroObj> list = new ArrayList<DC_HeroObj>(getUnitQueue());
+        ArrayList<DC_HeroObj> list = new ArrayList<>(getUnitQueue());
         Collections.sort(list, this);
-        setUnitQueue(new DequeImpl<DC_HeroObj>(list));
+        setUnitQueue(new DequeImpl<>(list));
     }
 
     public DC_HeroObj getActiveUnit() {

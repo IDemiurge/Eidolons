@@ -182,7 +182,7 @@ public abstract class ChoiceView<E> extends G_Panel {
     }
 
     protected PagedSelectionPanel<E> createSelectionComponent() {
-        return new PagedSelectionPanel<E>(this, getPageSize(), getItemSize(), getColumnsCount(),
+        return new PagedSelectionPanel<>(this, getPageSize(), getItemSize(), getColumnsCount(),
                 isVertical());
     }
 

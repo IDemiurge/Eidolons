@@ -15,14 +15,14 @@ public class ResourceManager {
     }
 
     public static List<String> getFilesInFolder(String path) {
-        DequeImpl<String> list = new DequeImpl<String>(
+        DequeImpl<String> list = new DequeImpl<>(
                 Arrays.asList(getResourcesInFolder(path)));
         // for (String s : list) {
         // if (!getFile(s).isFile()) {
         // list.remove(s);
         // }
         // }
-        return new LinkedList<String>(list);
+        return new LinkedList<>(list);
     }
 
     public static String[] getResourcesInFolder(String path) {

@@ -88,7 +88,7 @@ public class PresetMaster {
 
     public static void newPreset() {
         String path = new FileChooser(getPresetFolderPath()).launch("", "");
-        Preset preset = null;
+        Preset preset;
         if (path != null) {
             File file = FileManager.getFile(path);
             String data = FileManager.readFile(file);
@@ -137,9 +137,9 @@ public class PresetMaster {
 
     private static String inputValue(PRESET_DATA item) {
         String value = null;
-        ListChooser lc = null;
-        List<String> listData = null;
-        List<String> listData2 = null;
+        ListChooser lc;
+        List<String> listData;
+        List<String> listData2;
         switch (item) {
 
             case PRESET_TYPE:
@@ -251,7 +251,7 @@ public class PresetMaster {
         if (BooleanMaster.isFalse(auto)) {
             File file = FileManager.getFile(path + name + getFormat());
             if (file.isFile()) {
-                Boolean result = null;
+                Boolean result;
                 if (forceOption != null) {
                     result = forceOption;
                 } else {

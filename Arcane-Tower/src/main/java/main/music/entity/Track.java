@@ -6,23 +6,23 @@ import main.logic.AT_PROPS;
 
 public class Track extends MusicEntity {
 
-	public Track(ObjType t) {
-		super(t);
-	}
+    public Track(ObjType t) {
+        super(t);
+    }
 
-	public void setPath(String line) {
-		setProperty(AT_PROPS.PATH, line, true);
-	}
+    public String getPath() {
+        return getProperty(AT_PROPS.PATH);
+    }
 
-	public String getPath() {
-		return getProperty(AT_PROPS.PATH);
-	}
+    public void setPath(String line) {
+        setProperty(AT_PROPS.PATH, line, true);
+    }
 
-	public String getDuration() {
-		return getParam(G_PARAMS.DURATION);
-	}
+    public String getDuration() {
+        return getParam(G_PARAMS.DURATION);
+    }
 
-	public String getArtist() {
-		return getProperty(AT_PROPS.ARTIST);
-	}
+    public String getArtist() {
+        return getProperty(AT_PROPS.ARTIST);
+    }
 }

@@ -126,7 +126,7 @@ public class UnitLibrary {
 
     private static void initPool(LEARN_CASE lc) {
         LibraryManager.initSpellbook(unit);
-        spellPool = new XLinkedMap<ObjType, Integer>();
+        spellPool = new XLinkedMap<>();
         for (String substring : StringMaster.openContainer(unit.getProperty(getSourceProp(lc)))) {
             ObjType type = DataManager.getType(VariableManager.removeVarPart(substring),
                     OBJ_TYPES.SPELLS);
@@ -206,7 +206,7 @@ public class UnitLibrary {
     }
 
     private static boolean learnSpell(ObjType spellType, LEARN_CASE lc) {
-        boolean result = false;
+        boolean result;
         if (lc == LEARN_CASE.MEMORIZE) {
             result = getHeroManager().addMemorizedSpell(unit, spellType);
         } else {

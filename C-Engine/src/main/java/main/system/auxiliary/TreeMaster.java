@@ -16,7 +16,7 @@ public class TreeMaster {
     public static List<DefaultMutableTreeNode> getChildren(DefaultMutableTreeNode selectedNode,
                                                            boolean recursive) {
         Enumeration<DefaultMutableTreeNode> e = selectedNode.children();
-        List<DefaultMutableTreeNode> list = new LinkedList<DefaultMutableTreeNode>();
+        List<DefaultMutableTreeNode> list = new LinkedList<>();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode nextElement = e.nextElement();
             if (recursive) {
@@ -42,7 +42,7 @@ public class TreeMaster {
     public static DefaultMutableTreeNode findChildNode(DefaultMutableTreeNode subNode,
                                                        String property) {
         Enumeration<DefaultMutableTreeNode> e = subNode.children();
-        List<DefaultMutableTreeNode> list = new LinkedList<DefaultMutableTreeNode>();
+        List<DefaultMutableTreeNode> list = new LinkedList<>();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode child = e.nextElement();
             if (child.getUserObject().toString().equals(property)) {

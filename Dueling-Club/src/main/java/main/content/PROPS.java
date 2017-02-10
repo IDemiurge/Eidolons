@@ -649,7 +649,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     public Map<OBJ_TYPE, Object> getDefaultValuesMap() {
         if (defaultValuesMap == null) {
-            defaultValuesMap = new HashMap<OBJ_TYPE, Object>();
+            defaultValuesMap = new HashMap<>();
         }
         return defaultValuesMap;
     }

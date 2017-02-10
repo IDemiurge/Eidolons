@@ -109,7 +109,6 @@ public class FileChooser implements EDITOR {
         return PathFinder.getImagePath();
     }
 
-    // PathFinder.getEnginePath() + PathFinder.getRES_PATH() +
     public void setDefaultFileLocation(String defaultFileLocation) {
         this.defaultFileLocation = defaultFileLocation;
     }

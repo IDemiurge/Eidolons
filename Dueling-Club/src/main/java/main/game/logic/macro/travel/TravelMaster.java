@@ -58,7 +58,7 @@ public class TravelMaster {
     public static Set<Route> getAvailableRoutes(MacroParty party, Place destination) {
         Set<Route> list = new HashSet<>();
         for (Route route : party.getRegion().getRoutes()) {
-            boolean result = false;
+            boolean result;
             if (destination == null) {
                 result = checkAvailableRoute(party, route);
             } else {
@@ -219,7 +219,7 @@ public class TravelMaster {
 
     public static Set<Place> getAvailableRoutesAsPlaces(MacroParty party, Place place) {
         Set<Route> routes = getAvailableRoutes(party, place);
-        return new HashSet<Place>(routes);
+        return new HashSet<>(routes);
     }
 
     public static float getTravelSpeedDynamic(DC_HeroObj unit) {

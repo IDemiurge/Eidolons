@@ -19,7 +19,6 @@ import main.elements.conditions.Condition;
 import main.elements.conditions.NotCondition;
 import main.elements.conditions.Requirement;
 import main.elements.conditions.StringComparison;
-import main.elements.costs.Cost;
 import main.elements.costs.Costs;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -224,7 +223,7 @@ public class DC_SpellObj extends DC_ActiveObj {
     @Override
     public void initCosts() {
         if (game.isDebugMode() && getGame().getTestMaster().isActionFree(getName())) {
-            costs = new Costs(new LinkedList<Cost>());
+            costs = new Costs(new LinkedList<>());
         } else {
             costs = DC_CostsFactory.getCostsForSpell(this, isSpell());
             costs.getRequirements().add(
@@ -363,7 +362,7 @@ public class DC_SpellObj extends DC_ActiveObj {
         if (isInterrupted()) {
             return true; // TODO group effects blocked?!
         }
-        boolean result = false;
+        boolean result;
 
         applySpellpowerMod();
         SoundMaster.playEffectSound(SOUNDS.RESOLVE, this);

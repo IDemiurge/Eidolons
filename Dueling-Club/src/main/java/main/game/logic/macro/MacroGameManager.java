@@ -131,7 +131,7 @@ public class MacroGameManager extends GameManager {
 
     public Integer select(Collection<? extends Obj> objects) {
         setSelecting(true);
-        selectionSet = new HashSet<Obj>();
+        selectionSet = new HashSet<>();
         for (Obj o : objects) {
             selectionSet.add(o);
         }

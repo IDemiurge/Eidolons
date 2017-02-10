@@ -34,7 +34,7 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
     }
 
     public void addElement(T obj) {
-        table.add(obj).fill().padLeft(10).width(getWidth() - 20);
+        table.add(obj).fill();
         table.row();
         table.pack();
         offsetY = 10000;

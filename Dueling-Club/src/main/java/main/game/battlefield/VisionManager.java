@@ -73,7 +73,7 @@ public class VisionManager implements GenericVisionManager {
                 facing = unit.getFacing();
             }
         }
-        DIRECTION direction = null;
+        DIRECTION direction;
         if (facing == null) {
             facing = FacingMaster.getRandomFacing();
         }
@@ -334,8 +334,8 @@ public class VisionManager implements GenericVisionManager {
         boolean mine = activeUnit.getOwner().isMe();
 
         unit = activeUnit;
-        activeUnit.setPlainSightSpectrumCoordinates(new DequeImpl<Coordinates>());
-        activeUnit.setSightSpectrumCoordinates(new DequeImpl<Coordinates>());
+        activeUnit.setPlainSightSpectrumCoordinates(new DequeImpl<>());
+        activeUnit.setSightSpectrumCoordinates(new DequeImpl<>());
 
         Chronos.mark("UNIT VISIBILITY REFRESH");
 
@@ -467,7 +467,7 @@ public class VisionManager implements GenericVisionManager {
     }
 
     private UNIT_TO_UNIT_VISION getUnitVisionStatusPrivate(DC_Obj unit, DC_HeroObj activeUnit) {
-        UNIT_TO_UNIT_VISION status = null;
+        UNIT_TO_UNIT_VISION status;
 
         Boolean result = checkInSightSector(activeUnit, unit);
         if (result == null) {
@@ -697,7 +697,7 @@ public class VisionManager implements GenericVisionManager {
             return null;
         }
         // if (objComp.getObj().isTransparent()) return false;
-        DIRECTION direction = null;
+        DIRECTION direction;
         FACING_DIRECTION facing = source.getFacing();
         Coordinates orig = source.getCoordinates();
         Coordinates c = obj.getCoordinates();
@@ -738,8 +738,8 @@ public class VisionManager implements GenericVisionManager {
 
     private boolean checkMinorDirectShadowing(FACING_DIRECTION facing, Coordinates orig,
                                               Coordinates c) {
-        int horizontalDistance = 0;
-        int verticalDistance = 0;
+        int horizontalDistance;
+        int verticalDistance;
         if (facing.isVertical()) {
             horizontalDistance = Math.abs(orig.x - c.x);
             verticalDistance = Math.abs(orig.y - c.y);

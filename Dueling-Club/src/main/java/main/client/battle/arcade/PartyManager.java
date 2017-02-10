@@ -281,7 +281,7 @@ public class PartyManager {
     }
 
     private static String getPartyFolderPath() {
-        return PathFinder.getXmlTypesFolderPath() + PARTY_FOLDER;
+        return PathFinder.getTYPES_PATH() + PARTY_FOLDER;
     }
 
     public static List<DC_HeroObj> loadParty(String typeName) {

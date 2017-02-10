@@ -34,7 +34,7 @@ public class G_List<E> extends JList<E> implements ListCellRenderer<E>, MouseLis
     private boolean initialized;
 
     public G_List(Collection<E> data) {
-        listModel = new DefaultListModel<E>();
+        listModel = new DefaultListModel<>();
         setModel(listModel);
         setCellRenderer(this);
         setData(data);
@@ -93,7 +93,7 @@ public class G_List<E> extends JList<E> implements ListCellRenderer<E>, MouseLis
     @Override
     public Component getListCellRendererComponent(JList<? extends E> list, E value, int index,
                                                   boolean isSelected, boolean cellHasFocus) {
-        ListItem<E> item = new ListItem<E>(value, isSelected, cellHasFocus, getObj_size());
+        ListItem<E> item = new ListItem<>(value, isSelected, cellHasFocus, getObj_size());
         item.setBorderChecker(borderChecker);
         if (getEmptyIcon() != null) {
             item.setEmptyIcon(getEmptyIcon());

@@ -891,7 +891,7 @@ public class DC_Game extends MicroGame {
 
         Map<String, DC_HeroAttachedObj> cache = getSimulationCache().get(dc_HeroObj);
         if (cache == null) {
-            cache = new XLinkedMap<String, DC_HeroAttachedObj>();
+            cache = new XLinkedMap<>();
             getSimulationCache().put(dc_HeroObj, cache);
         }
         cache.put(type.getName() + prop.getShortName(), item);
@@ -900,7 +900,7 @@ public class DC_Game extends MicroGame {
 
     public Map<DC_HeroObj, Map<String, DC_HeroAttachedObj>> getSimulationCache() {
         if (simulationCache == null) {
-            simulationCache = new XLinkedMap<DC_HeroObj, Map<String, DC_HeroAttachedObj>>();
+            simulationCache = new XLinkedMap<>();
         }
         return simulationCache;
     }
@@ -1047,7 +1047,7 @@ public class DC_Game extends MicroGame {
 
     public Map<Coordinates, Map<DC_HeroObj, FLIP>> getFlipMap() {
         if (flipMap == null) {
-            flipMap = new HashMap<Coordinates, Map<DC_HeroObj, FLIP>>();
+            flipMap = new HashMap<>();
         }
         return flipMap;
     }

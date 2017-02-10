@@ -79,8 +79,8 @@ public class LightMap {
 
     public static void mouseMouseMove(float x, float y, float zoom) {
         mouseLight.setPosition(x, y);
-        boolean checkoutX = false;
-        boolean checkoutY = false;
+        boolean checkoutX;
+        boolean checkoutY;
         float x_distance_from_the_border = Math.abs(x - Gdx.graphics.getWidth());
         float y_distance_from_the_border = Math.abs(y - Gdx.graphics.getHeight());
         checkoutX = !(x_distance_from_the_border < LightingManager.mouse_light_distance_to_turn_off || x_distance_from_the_border > Gdx.graphics.getWidth() - LightingManager.mouse_light_distance_to_turn_off);

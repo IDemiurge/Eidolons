@@ -40,7 +40,7 @@ public class VariableManager {
 
     public static final String VARIABLE = "^VAR";
     private static boolean variableInputRequesting = false;
-    private static List<ObjType> varCache = new LinkedList<ObjType>();
+    private static List<ObjType> varCache = new LinkedList<>();
     private static String prevValue;
 
     public static AbilityType getVarType(String abilTypeName, boolean passive, Ref ref) {
@@ -120,7 +120,7 @@ public class VariableManager {
     public static List<String> getVarList(String vars) {
         vars = getVarPart(vars);
         vars = StringMaster.cropParenthesises(vars);
-        List<String> varList = new ArrayList<String>();
+        List<String> varList = new ArrayList<>();
 
         for (String var : vars.split(StringMaster.getVarSeparator())) {
             varList.add(var);
@@ -243,7 +243,7 @@ public class VariableManager {
         String varPart = "(";
         int i = 0;
         for (String var : StringMaster.openContainer(variables)) {
-            String value = null;
+            String value;
             if (varTypes == null) {
                 value = promptStringInput(var);
             } else {
@@ -444,7 +444,7 @@ public class VariableManager {
                         }
                     }
                 }
-                PARAMETER param = null;
+                PARAMETER param;
                 if (entity.getOBJ_TYPE_ENUM() == OBJ_TYPES.SKILLS) {
                     param = ContentManager.findMasteryScore(entity.getProperty(G_PROPS.MASTERY));
                 } else {

@@ -16,7 +16,7 @@ public abstract class G_ListMenu extends JList<String> implements
     protected DefaultListModel<String> model;
 
     public G_ListMenu(List<String> items) {
-        model = new DefaultListModel<String>();
+        model = new DefaultListModel<>();
         setModel(model);
         setData(items);
         setCellRenderer(this);

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class G_TabbedPanel extends G_Panel {
     JTabbedPane tabs;
-    private List<Component> tabList = new LinkedList<Component>();
+    private List<Component> tabList = new LinkedList<>();
 
     public G_TabbedPanel() {
         super();

@@ -12,72 +12,72 @@ import java.util.List;
 import java.util.Map;
 
 public class AiGroupData {
-	ObjAtCoordinate leader;
-	List<ObjAtCoordinate> members = new LinkedList<>();
-	Map<AI_BEHAVIOR_MODE, String> behaviorsData;
-	// patrol/wander coordinates, guard/idle prefs,
-	Map<AI_GROUP_PARAM, String> paramData;
+    ObjAtCoordinate leader;
+    List<ObjAtCoordinate> members = new LinkedList<>();
+    Map<AI_BEHAVIOR_MODE, String> behaviorsData;
+    // patrol/wander coordinates, guard/idle prefs,
+    Map<AI_GROUP_PARAM, String> paramData;
 
-	public AiGroupData(Obj obj) {
-		leader = new ObjAtCoordinate(obj.getType(), obj.getCoordinates());
-		getMembers().add(leader);
-	}
+    public AiGroupData(Obj obj) {
+        leader = new ObjAtCoordinate(obj.getType(), obj.getCoordinates());
+        getMembers().add(leader);
+    }
 
-	@Override
-	public String toString() {
-		String string = leader.toString() + ";";
-		string += StringMaster.constructStringContainer(getMembers());
-		// MapMaster.toStringForm(behaviorsData);
-		return string;
-	}
+    @Override
+    public String toString() {
+        String string = leader.toString() + ";";
+        string += StringMaster.constructStringContainer(getMembers());
+        // MapMaster.toStringForm(behaviorsData);
+        return string;
+    }
 
-	public void add(ObjAtCoordinate e) {
+    public void add(ObjAtCoordinate e) {
         if (getMembers().contains(e)) {
             return;
         }
         getMembers().add(e);
-	}
+    }
 
-	public void remove(ObjAtCoordinate e) {
-		getMembers().remove(e);
-	}
+    public void remove(ObjAtCoordinate e) {
+        getMembers().remove(e);
+    }
 
-	public ObjAtCoordinate getLeader() {
-		return leader;
-	}
+    public ObjAtCoordinate getLeader() {
+        return leader;
+    }
 
-	public void setLeader(ObjAtCoordinate leader) {
-		this.leader = leader;
-	}
+    public void setLeader(ObjAtCoordinate leader) {
+        this.leader = leader;
+    }
 
-	public List<ObjAtCoordinate> getMembers() {
-		return members;
-	}
+    public List<ObjAtCoordinate> getMembers() {
+        return members;
+    }
 
-	public void setMembers(List<ObjAtCoordinate> members) {
-		this.members = members;
-	}
+    public void setMembers(List<ObjAtCoordinate> members) {
+        this.members = members;
+    }
 
-	public Map<AI_BEHAVIOR_MODE, String> getBehaviorsData() {
+    public Map<AI_BEHAVIOR_MODE, String> getBehaviorsData() {
         if (behaviorsData == null) {
             behaviorsData = new HashMap<>();
         }
         return behaviorsData;
-	}
+    }
 
-	public void setBehaviorsData(Map<AI_BEHAVIOR_MODE, String> behaviorsData) {
-		this.behaviorsData = behaviorsData;
-	}
+    public void setBehaviorsData(Map<AI_BEHAVIOR_MODE, String> behaviorsData) {
+        this.behaviorsData = behaviorsData;
+    }
 
-	public Map<AI_GROUP_PARAM, String> getParamData() {
+    public Map<AI_GROUP_PARAM, String> getParamData() {
         if (paramData == null) {
             paramData = new HashMap<>();
         }
         return paramData;
-	}
+    }
 
-	public void setParamData(Map<AI_GROUP_PARAM, String> paramData) {
-		this.paramData = paramData;
-	}
+    public void setParamData(Map<AI_GROUP_PARAM, String> paramData) {
+        this.paramData = paramData;
+    }
 
 }

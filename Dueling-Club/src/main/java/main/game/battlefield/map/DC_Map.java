@@ -42,12 +42,12 @@ public class DC_Map {
 
     public static final String LEFT_MIDDLE = "0-2";
     public static final String RIGHT_MIDDLE = "8-2";
-    Map<Coordinates, BF_OBJ_OWNER> crystals = new HashMap<Coordinates, BF_OBJ_OWNER>();
+    Map<Coordinates, BF_OBJ_OWNER> crystals = new HashMap<>();
     private DC_Game game;
-    private Map<Coordinates, ObjType> objMap = new HashMap<Coordinates, ObjType>();
+    private Map<Coordinates, ObjType> objMap = new HashMap<>();
     private MapData mapData;
     private String background;
-    private Map<Coordinates, BF_OBJ_OWNER> gateways = new HashMap<Coordinates, BF_OBJ_OWNER>();
+    private Map<Coordinates, BF_OBJ_OWNER> gateways = new HashMap<>();
 
     private boolean theme = true;
 
@@ -92,7 +92,7 @@ public class DC_Map {
     }
 
     private String initThemeBackground() {
-        String key = "";
+        String key;
         if (game.getPlayer(true).isDefender()) {
             key = ((DC_HeroObj) game.getPlayer(true).getHeroObj()).getDeity()
                     .getName();

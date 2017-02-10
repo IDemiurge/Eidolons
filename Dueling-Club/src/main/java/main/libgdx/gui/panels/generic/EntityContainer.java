@@ -54,6 +54,6 @@ public class EntityContainer extends TableContainer {
     }
 
     public void clicked(Entity obj) {
-        event.call(new EventCallbackParam<Entity>(obj));
+        event.call(new EventCallbackParam<>(obj));
     }
 }

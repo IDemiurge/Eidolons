@@ -73,7 +73,7 @@ public class MultiTargeting extends TargetingImpl {
             Arrays.fill(targetings, targeting);
             ignoreGroupTargeting = false;
         }
-        ArrayList<Integer> IDs = new ArrayList<Integer>(targetings.length);
+        ArrayList<Integer> IDs = new ArrayList<>(targetings.length);
         for (Targeting targeting : targetings) {
             Ref REF = Ref.getCopy(ref);
             if (noDuplicates) {
@@ -96,7 +96,7 @@ public class MultiTargeting extends TargetingImpl {
             return false;
         }
 
-        Collection<Integer> ids = new LinkedList<Integer>();
+        Collection<Integer> ids = new LinkedList<>();
         for (Ref REF : refs) {
             ids.add(REF.getTarget());
         }

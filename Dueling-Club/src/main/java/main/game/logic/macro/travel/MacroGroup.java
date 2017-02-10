@@ -107,14 +107,12 @@ public class MacroGroup { // macro obj type?
                 y_offset = -y_offset;
             }
         }
-        int x = 0;
-        int y = 0;
         // check out of bounds
         if (coordinates == null) {
             setCoordinates(AreaManager.getRandomCoordinateWithinArea(getArea()));
         }
-        x = coordinates.x;
-        y = coordinates.y;
+        int x = coordinates.x;
+        int y = coordinates.y;
 
         setCoordinates(new MacroCoordinates(x + x_offset, y + y_offset));
     }

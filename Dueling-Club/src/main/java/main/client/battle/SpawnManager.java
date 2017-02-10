@@ -44,7 +44,7 @@ public class SpawnManager {
 
     private static boolean playerUnitGroupMode;
     private static boolean enemyUnitGroupMode;
-    Map<Dungeon, Map<MapBlock, Map<Coordinates, ObjType>>> specialEncounters = new HashMap<Dungeon, Map<MapBlock, Map<Coordinates, ObjType>>>();
+    Map<Dungeon, Map<MapBlock, Map<Coordinates, ObjType>>> specialEncounters = new HashMap<>();
     private ArenaManager arenaManager;
     private DC_Game game;
     private DC_Player enemy;
@@ -153,7 +153,7 @@ public class SpawnManager {
         int max = preferredPower * 3 / 2;
 
         for (MapBlock block : dungeon.getPlan().getBlocks()) {
-            Wave group = null;
+            Wave group;
 
             if (specialEncounters.get(dungeon) != null) {
                 Map<Coordinates, ObjType> specEncounters = specialEncounters.get(dungeon)
@@ -239,7 +239,7 @@ public class SpawnManager {
         if (mod == 0) {
             mod = 100;
         }
-        Wave wave = null;
+        Wave wave;
         List<ObjType> list = DataManager.toTypeList(property, OBJ_TYPES.ENCOUNTERS);
         Collections.shuffle(list);
         ObjType type = null;
@@ -349,7 +349,7 @@ public class SpawnManager {
             return;
         }
         for (MicroObj unit : list) {
-            FACING_DIRECTION facing = null;
+            FACING_DIRECTION facing;
             if (!game.isOffline()) {
                 // TODO not always vertical!
                 facing = FacingMaster.getFacingFromDirection(getPositioner().getClosestEdgeY(
@@ -390,8 +390,8 @@ public class SpawnManager {
         int width = UnitGroupMaster.maxX;
         int height = UnitGroupMaster.maxY;
 
-        Coordinates offset_coordinate = null;
-        Coordinates spawnCoordinates = null;
+        Coordinates offset_coordinate;
+        Coordinates spawnCoordinates;
         int offsetX = -width / 2;
         int offsetY = -height / 2;
         if (!UnitGroupMaster.isFactionMode()) {

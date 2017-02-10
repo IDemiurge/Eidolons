@@ -76,7 +76,7 @@ public abstract class G_ButtonPanel extends G_Panel implements ActionListener {
 
     private void addButton(String command, String constraints) {
 
-        JButton button = null;
+        JButton button;
 
         // icon =
         // if (icon !=null)

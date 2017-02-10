@@ -154,7 +154,7 @@ public class DC_ContentManager extends ContentManager {
     private static Map<String, Deity> deities;
     private static List<PARAMS> masteries;
     private static List<PARAMETER> ARMOR_MODIFYING_PARAMS_FULL;
-    private static HashMap<OBJ_TYPE, List<VALUE>> defaultValues = new HashMap<OBJ_TYPE, List<VALUE>>();
+    private static HashMap<OBJ_TYPE, List<VALUE>> defaultValues = new HashMap<>();
     private static Map<String, EDITOR> editorMap;
     private static List<VALUE> backgroundValues;
     private static List<PARAMETER> backgroundDynamicParams;
@@ -169,9 +169,9 @@ public class DC_ContentManager extends ContentManager {
         // ArrayMaster.join();
         // BG_PARAMS
 
-        LinkedList<PARAMETER> list = new LinkedList<PARAMETER>();
+        LinkedList<PARAMETER> list = new LinkedList<>();
 
-        ARMOR_MODIFYING_PARAMS_FULL = new LinkedList<PARAMETER>();
+        ARMOR_MODIFYING_PARAMS_FULL = new LinkedList<>();
 
         ARMOR_MODIFYING_PARAMS_FULL.addAll(Arrays.asList(ARMOR_MODIFYING_PARAMS));
         ARMOR_MODIFYING_PARAMS_FULL.addAll(Arrays.asList(ValuePages.RESISTANCES));
@@ -312,7 +312,7 @@ public class DC_ContentManager extends ContentManager {
         if (masteries != null) {
             return masteries;
         }
-        masteries = new LinkedList<PARAMS>();
+        masteries = new LinkedList<>();
         for (PARAMETER m : ContentManager.getMasteries()) {
             masteries.add((PARAMS) m);
         }
@@ -920,14 +920,14 @@ public class DC_ContentManager extends ContentManager {
         NO_SHOW_NAME_VALUES.addAll(Arrays.asList(ValuePages.CHARS_HEADER));
         NO_SHOW_NAME_VALUES.addAll(Arrays.asList(ValuePages.BF_OBJ_HEADER));
 
-        ArrayList<PARAMETER> params = new ArrayList<PARAMETER>();
+        ArrayList<PARAMETER> params = new ArrayList<>();
         params.addAll(Arrays.asList(G_PARAMS.values()));
         params.addAll(Arrays.asList(PARAMS.values()));
         if (Launcher.isMacroMode() || CoreEngine.isArcaneVault()) {
             params.addAll(Arrays.asList(MACRO_PARAMS.values()));
         }
 
-        ArrayList<PROPERTY> props = new ArrayList<PROPERTY>();
+        ArrayList<PROPERTY> props = new ArrayList<>();
         props.addAll(Arrays.asList(G_PROPS.values()));
         props.addAll(Arrays.asList(PROPS.values()));
         if (Launcher.isMacroMode() || CoreEngine.isArcaneVault()) {

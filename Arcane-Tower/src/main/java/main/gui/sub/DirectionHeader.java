@@ -11,57 +11,55 @@ import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.ColorManager;
 import main.system.auxiliary.FontMaster.FONT;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.*;
 
 public class DirectionHeader extends G_Panel {
-	Direction direction;
-	private Session session;
+    Direction direction;
+    private Session session;
 
-	public DirectionHeader(Session session) {
-		this.session = session;
-		panelSize = new Dimension(SessionWindow.getWidth(), 96);
-		refresh();
-		addText();
-		addMouseListener(new AT_EntityMouseListener(direction));
-		// addBackground();
-		// addArrows();
-	}
+    public DirectionHeader(Session session) {
+        this.session = session;
+        panelSize = new Dimension(SessionWindow.getWidth(), 96);
+        refresh();
+        addText();
+        addMouseListener(new AT_EntityMouseListener(direction));
+        // addBackground();
+        // addArrows();
+    }
 
-	@Override
-	public void refresh() {
-		this.direction = session.getDirection();
-		super.refresh();
-	}
+    @Override
+    public void refresh() {
+        this.direction = session.getDirection();
+        super.refresh();
+    }
 
-	private void addText() {
-		TextCompDC textComp = new TextCompDC(null, session.getName(), getFontSize(), FONT.AVQ,
-				getTextColor());
-		textComp.setDefaultSize(panelSize);
-		add(textComp, "pos @centered_x centered_y");
+    private void addText() {
+        TextCompDC textComp = new TextCompDC(null, session.getName(), getFontSize(), FONT.AVQ,
+                getTextColor());
+        textComp.setDefaultSize(panelSize);
+        add(textComp, "pos @centered_x centered_y");
 
-	}
+    }
 
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		if (session.checkProperty(AT_PROPS.SESSION_STATUS, SESSION_STATUS.ACTIVE.toString())) {
-			g.setColor(ColorManager.GREEN);
-			g.drawRect(0, 0, getPanelWidth(), getPanelHeight());
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        if (session.checkProperty(AT_PROPS.SESSION_STATUS, SESSION_STATUS.ACTIVE.toString())) {
+            g.setColor(ColorManager.GREEN);
+            g.drawRect(0, 0, getPanelWidth(), getPanelHeight());
 
-		}
+        }
 
-		// URL url = new URL("<URL to your Animated GIF>");
-		// Icon icon = new ImageIcon(url);
-		// JLabel label = new JLabel(icon);
-	}
+        // URL url = new URL("<URL to your Animated GIF>");
+        // Icon icon = new ImageIcon(url);
+        // JLabel label = new JLabel(icon);
+    }
 
-	private Color getTextColor() {
-		return Color.black;
-	}
+    private Color getTextColor() {
+        return Color.black;
+    }
 
-	private int getFontSize() {
-		return 40;
-	}
+    private int getFontSize() {
+        return 40;
+    }
 }

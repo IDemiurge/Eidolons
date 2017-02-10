@@ -59,7 +59,7 @@ public class TreeControlPanel extends G_Panel {
     // }
     private static boolean setProperty(boolean alt, ObjType selectedType) {
 
-        String name = null;
+        String name;
 
         String containerString = "Lore;Description;Flavor;Image;Actives;Passives;Attribute Bonuses;Parameter Bonuses;";
         // TODO v-flow buttons one-click!

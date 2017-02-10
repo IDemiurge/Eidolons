@@ -30,7 +30,7 @@ public class FacingCondition extends ConditionImpl {
             return false;
         }
         DC_UnitObj obj1 = (DC_UnitObj) ref.getSourceObj();
-        Obj obj2 = null;
+        Obj obj2;
 
         if (!(ref.getObj(KEYS.MATCH) instanceof BattlefieldObj)) {
             if (!(ref.getObj(KEYS.MATCH) instanceof DC_HeroSlotItem)) {

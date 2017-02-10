@@ -46,7 +46,7 @@ public class HT_MapBuilder {
     protected Object arg;
     protected Map<String, List<ObjType>> groupsMap = new HashMap<>();
     protected int column = 0;
-    protected Map<ObjType, Point> linkPosMap = new HashMap<ObjType, Point>();
+    protected Map<ObjType, Point> linkPosMap = new HashMap<>();
     Map<ObjType, Point> groupNodePosMap = new XLinkedMap<>();
     private Map<ObjType, ObjType> alteredTypeLinkMap = new HashMap<>();
     private boolean autoAdjustmentOn;
@@ -278,7 +278,7 @@ public class HT_MapBuilder {
 
     protected int addNode(int parentX, ObjType type, int i, int sublingCount, ObjType parent) {
         addLink(parentX, type, i, sublingCount, parent);
-        Point point = null;
+        Point point;
         if (parent == null) {
             // getBasePoint();
             point = new PointX(getX(parentX, i, sublingCount, type, parent), getY(type, parent));
@@ -820,7 +820,7 @@ public class HT_MapBuilder {
         } else {
             // TODO
         }
-        data = new LinkedList<ObjType>(list);
+        data = new LinkedList<>(list);
 
         // HT_DataManager.getTypeGroups(data);
         // column per BASE_TYPE? TODO

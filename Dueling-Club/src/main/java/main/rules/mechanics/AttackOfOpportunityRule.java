@@ -45,7 +45,7 @@ public class AttackOfOpportunityRule {
         }
         sim = simulation;
         if (simulation) {
-            setAttacks(new LinkedList<DC_ActiveObj>());
+            setAttacks(new LinkedList<>());
         }
 
         checkAttacks(active);

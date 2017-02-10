@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class Requirements implements Condition {
 
-    protected Map<String, Condition> reqMap = new XLinkedMap<String, Condition>();
+    protected Map<String, Condition> reqMap = new XLinkedMap<>();
     List<String> reasons = new LinkedList<>();
     private String reason;
     private boolean fullCheck = true;
