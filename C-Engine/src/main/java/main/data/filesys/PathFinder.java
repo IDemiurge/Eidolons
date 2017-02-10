@@ -12,15 +12,14 @@ public class PathFinder {
     private static final String ABILITY_TEMPLATES_PATH = MICRO_MODULE_NAME + "//templates";
     private static String MACRO_MODULE_NAME = "macro";
     private static String XML_PATH;
-    private static String FULL_PATH;
-    private static String ENGINE_PATH = "";
+    private static String ENGINE_PATH;
     private static String IMG_PATH;
     private static String SND_PATH;
     private static String FONT_PATH;
     private static String TYPES_PATH;
     private static String MACRO_TYPES_PATH;
     private static boolean PRESENTATION_MODE;
-    private static String RES_PATH = "";
+    private static String RES_PATH;
     private static Lock initLock = new ReentrantLock();
     private static volatile boolean isInitialized = false;
 
@@ -29,32 +28,9 @@ public class PathFinder {
         File temp = new File(classLoader.getResource("").getFile());
         ENGINE_PATH = new File(temp.getParentFile().toURI()) + File.separator;
 
-/*
-        if (CoreEngine.isArcaneVault()) {
-            ENGINE_PATH = ENGINE_PATH.replace("Arcane-Vault", "Dueling-Club");
-        }
-        if (CoreEngine.isArcaneTower()) {
-            ENGINE_PATH = ENGINE_PATH.replace("Arcane-Tower", "Dueling-Club");
-        }
-*/
-
-/*        FULL_PATH = System.getProperty("java.class.path");
-        LogMaster.log(LogMaster.CORE_DEBUG, FULL_PATH);
-
-        if (FULL_PATH.contains(File.separator)) {
-            setEnginePath();
-        }*/
-
         RES_PATH = "resource" + File.separator;
 
         XML_PATH = new File(temp.getParentFile() + File.separator + "XML") + File.separator;
-
-/*        if (CoreEngine.isArcaneVault() || CoreEngine.isArcaneTower()) {
-            XML_PATH = XML_PATH.replace("Arcane-Vault", "Dueling-Club");
-        }
-        if (CoreEngine.isArcaneTower()) {
-            XML_PATH = XML_PATH.replace("Arcane-Tower", "Dueling-Club");
-        }*/
 
         IMG_PATH = ENGINE_PATH + RES_PATH + "img\\";
 
@@ -69,7 +45,7 @@ public class PathFinder {
 
     }
 
-    public static void init() {
+    private static void init() {
         if (!isInitialized) {
             try {
                 initLock.lock();
@@ -82,19 +58,6 @@ public class PathFinder {
             }
         }
     }
-
-/*    private static void setEnginePath() {
-
-        for (String s : FULL_PATH.split(File.separator)) {
-
-            if (s.contains("C-Engine") && s.contains("bin")) {
-
-                ENGINE_PATH = s.substring(0, s.length() - 3);
-                break;
-            }
-        }
-
-    }*/
 
     public static String getDungeonFolder() {
         init();
