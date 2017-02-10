@@ -1,5 +1,6 @@
 package main.libgdx.anims.text;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
@@ -46,8 +47,9 @@ boolean inverseAlpha;
     }
 
     public void draw(Batch batch, float parentAlpha) {
-//        act(Gdx.graphics.getDeltaTime());
+        act(Gdx.graphics.getDeltaTime());
 
+//        new SearchMaster<MoveByAction>().findInstanceOf(MoveByAction.class, getActions());
         if (inverseAlpha)
             parentAlpha=1-parentAlpha;
         super.draw(batch, parentAlpha);
