@@ -20,110 +20,110 @@ import java.util.Arrays;
 
 public class AT_ContentManager extends ContentManager {
 
-	public AT_ContentManager(boolean dcSync) {
-		super();
-	}
+    public AT_ContentManager(boolean dcSync) {
+        super();
+    }
 
-	@Override
-	public void init() {
-		super.init();
-		contentInit();
-	}
+    @Override
+    public void init() {
+        super.init();
+        contentInit();
+    }
 
-	public enum TIME_PERIOD {
-		DAY, HOUR, WEEK, MONTH, YEAR
+    public int getPeriodMaxValueToDisplay(TIME_PERIOD v) {
+        switch (v) {
+            case DAY:
+                return 6;
+            case YEAR:
+                return 999;
+            case MONTH:
+                return 11;
+            case HOUR:
+                return 23;
+            case WEEK:
+                return 3;
+        }
+        return 0;
+    }
 
-	}
+    @Override
+    public String getFormattedVal(VALUE v, String value) {
+        if (v instanceof AT_PARAMS) {
+            AT_PARAMS param = (AT_PARAMS) v;
+            if (v.name().startsWith("TIME_")) {
+                boolean time = false;
+                return TimeMaster.getFormattedDate(time, value);
+                // " ago"
+            }
+            switch (param) {
+                case TIME_CREATED:
 
-	public int getPeriodMaxValueToDisplay(TIME_PERIOD v) {
-		switch (v) {
-			case DAY:
-				return 6;
-			case YEAR:
-				return 999;
-			case MONTH:
-				return 11;
-			case HOUR:
-				return 23;
-			case WEEK:
-				return 3;
-		}
-		return 0;
-	}
+            }
+        }
+        return super.getFormattedVal(v, value);
+    }
 
-	@Override
-	public String getFormattedVal(VALUE v, String value) {
-		if (v instanceof AT_PARAMS) {
-			AT_PARAMS param = (AT_PARAMS) v;
-			if (v.name().startsWith("TIME_")) {
-				boolean time = false;
-				return TimeMaster.getFormattedDate(time, value);
-				// " ago"
-			}
-			switch (param) {
-				case TIME_CREATED:
+    @Override
+    public boolean checkAllApplies(VALUE p, String type) {
+        if (p instanceof G_PARAMS) {
+            G_PARAMS param = (G_PARAMS) p;
+            return checkParamForType(param, type);
+        }
+        if (p instanceof G_PROPS) {
+            G_PROPS prop = (G_PROPS) p;
+            return checkPropForType(prop, type);
+        }
+        return super.checkAllApplies(p, type);
+    }
 
-			}
-		}
-		return super.getFormattedVal(v, value);
-	}
+    private boolean checkPropForType(G_PROPS prop, String type) {
+        switch (prop) {
 
-	@Override
-	public boolean checkAllApplies(VALUE p, String type) {
-		if (p instanceof G_PARAMS) {
-			G_PARAMS param = (G_PARAMS) p;
-			return checkParamForType(param, type);
-		}
-		if (p instanceof G_PROPS) {
-			G_PROPS prop = (G_PROPS) p;
-			return checkPropForType(prop, type);
-		}
-		return super.checkAllApplies(p, type);
-	}
+        }
+        return true;
+    }
 
-	private boolean checkPropForType(G_PROPS prop, String type) {
-		switch (prop) {
+    private boolean checkParamForType(G_PARAMS param, String type) {
+        switch (param) {
 
-		}
-		return true;
-	}
+        }
+        return true;
+    }
 
-	private boolean checkParamForType(G_PARAMS param, String type) {
-		switch (param) {
+    public boolean isTextAlwaysShownInListItems(OBJ_TYPE TYPE) {
+        if (TYPE instanceof AT_OBJ_TYPE) {
+            AT_OBJ_TYPE at_OBJ_TYPE = (AT_OBJ_TYPE) TYPE;
+            switch (at_OBJ_TYPE) {
+                case TASK:
+                    return true;
+                case GOAL:
+                    return true;
+            }
+        }
+        return false;
+    }
 
-		}
-		return true;
-	}
+    public void contentInit() {
 
-	public boolean isTextAlwaysShownInListItems(OBJ_TYPE TYPE) {
-		if (TYPE instanceof AT_OBJ_TYPE) {
-			AT_OBJ_TYPE at_OBJ_TYPE = (AT_OBJ_TYPE) TYPE;
-			switch (at_OBJ_TYPE) {
-				case TASK:
-					return true;
-				case GOAL:
-					return true;
-			}
-		}
-		return false;
-	}
+        ArrayList<PARAMETER> params = new ArrayList<>();
+        params.addAll(Arrays.asList(G_PARAMS.values()));
+        params.addAll(Arrays.asList(AT_PARAMS.values()));
 
-	public void contentInit() {
+        ArrayList<PROPERTY> props = new ArrayList<>();
+        props.addAll(Arrays.asList(G_PROPS.values()));
+        props.addAll(Arrays.asList(AT_PROPS.values()));
 
-		ArrayList<PARAMETER> params = new ArrayList<PARAMETER>();
-		params.addAll(Arrays.asList(G_PARAMS.values()));
-		params.addAll(Arrays.asList(AT_PARAMS.values()));
+        ContentManager.init(props, params);
+        ContentManager.setParamEnumClasses(new Class[]{G_PARAMS.class, AT_PARAMS.class});
+        ContentManager.setPropEnumClasses(new Class[]{G_PROPS.class, AT_PROPS.class});
 
-		ArrayList<PROPERTY> props = new ArrayList<PROPERTY>();
-		props.addAll(Arrays.asList(G_PROPS.values()));
-		props.addAll(Arrays.asList(AT_PROPS.values()));
+        ValuePageManager.init();
 
-		ContentManager.init(props, params);
-		ContentManager.setParamEnumClasses(new Class[] { G_PARAMS.class, AT_PARAMS.class });
-		ContentManager.setPropEnumClasses(new Class[] { G_PROPS.class, AT_PROPS.class });
+        EnumMaster.setALT_CONSTS_CLASS(StatEnums.class);
+    }
 
-		ValuePageManager.init();
+    public enum TIME_PERIOD {
+        DAY, HOUR, WEEK, MONTH, YEAR
 
-		EnumMaster.setALT_CONSTS_CLASS(StatEnums.class);
-	}
+    }
 }

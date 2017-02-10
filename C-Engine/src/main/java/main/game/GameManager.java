@@ -243,7 +243,7 @@ public abstract class GameManager implements GenericGameManager {
     public void addAttachment(Attachment attachment, Obj basis) {
         List<Attachment> list = getState().getAttachmentsMap().get(basis);
         if (list == null) {
-            list = new LinkedList<Attachment>();
+            list = new LinkedList<>();
             getState().getAttachmentsMap().put(basis, list);
         }
         if (attachment instanceof BuffObj) {
@@ -279,7 +279,7 @@ public abstract class GameManager implements GenericGameManager {
 
             List<Effect> list = getState().getAttachedEffects().get(buff);
             if (list == null) {
-                list = new LinkedList<Effect>();
+                list = new LinkedList<>();
                 getState().getAttachedEffects().put(buff, list);
             } else {
                 main.system.auxiliary.LogMaster.log(LogMaster.EFFECT_DEBUG, effect
@@ -305,14 +305,14 @@ public abstract class GameManager implements GenericGameManager {
         if (source == null) {
             source = trigger.getRef().getObj(KEYS.ABILITY);
         }
-        Attachment attachment = null;
+        Attachment attachment;
         if (source instanceof Attachment) { // passive ability?
             attachment = (Attachment) source;
 
             List<Trigger> list = getState().getAttachedTriggers().get(source);
             // TODO what if the trigger has a different BASIS than buff?
             if (list == null) {
-                list = new LinkedList<Trigger>();
+                list = new LinkedList<>();
                 getState().getAttachedTriggers().put(attachment, list);
             }
             list.add(trigger);

@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import main.data.filesys.PathFinder;
 import main.entity.obj.DC_Obj;
 import main.game.DC_Game;
 import main.libgdx.anims.AnimMaster;
@@ -70,7 +69,6 @@ public class GameScreen implements Screen {
     }
 
     public GameScreen PostConstruct() {
-        PathFinder.init();
         instance = this;
 
         gridStage = new Stage();

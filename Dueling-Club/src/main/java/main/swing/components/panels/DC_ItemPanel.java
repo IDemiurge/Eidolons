@@ -108,7 +108,7 @@ public class DC_ItemPanel extends G_ListPanel<DC_HeroAttachedObj> implements BOR
     public Collection<DC_HeroAttachedObj> getData() {
         if (obj instanceof DC_HeroObj) {
             DC_HeroObj hero = (DC_HeroObj) obj;
-            LinkedList<DC_HeroAttachedObj> items = new LinkedList<DC_HeroAttachedObj>();
+            LinkedList<DC_HeroAttachedObj> items = new LinkedList<>();
             if (hero.getMainWeapon() == null && hero.getNaturalWeapon(false) != null) {
                 items.add(hero.getNaturalWeapon(false));
             } else {

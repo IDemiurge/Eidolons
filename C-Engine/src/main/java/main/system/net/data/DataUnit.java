@@ -13,7 +13,7 @@ import java.util.*;
 public class DataUnit<T extends Enum<T>> {
     public static final String TRUE = "TRUE";
     protected Class<? extends Enum<T>> enumClass;
-    protected Map<String, String> values = new ConcurrentMap<String, String>();
+    protected Map<String, String> values = new ConcurrentMap<>();
     protected Map<String, String> removedValues;
     // Map<T, String>
     protected String[] relevantValues;
@@ -129,7 +129,7 @@ public class DataUnit<T extends Enum<T>> {
 
     public Map<Coordinates, ObjType> buildObjCoordinateMapFromString(String string) {
 
-        Map<Coordinates, ObjType> objMap = new LinkedHashMap<Coordinates, ObjType>();
+        Map<Coordinates, ObjType> objMap = new LinkedHashMap<>();
         for (String item : string.split(StringMaster.getAltSeparator())) {
 
             Coordinates c = new Coordinates(item.split(StringMaster.getAltPairSeparator())[0]);
@@ -207,7 +207,7 @@ public class DataUnit<T extends Enum<T>> {
     }
 
     public String getRelevantData() {
-        return getData(new HashSet<String>(Arrays.asList(relevantValues)));
+        return getData(new HashSet<>(Arrays.asList(relevantValues)));
 
     }
 

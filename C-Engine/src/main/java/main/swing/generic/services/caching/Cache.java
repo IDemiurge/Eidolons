@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Cache {
 
-    private static Map<Object, Object> objTypeComponents = new HashMap<Object, Object>();
+    private static Map<Object, Object> objTypeComponents = new HashMap<>();
 
     public static Map<Object, Object> getObjTypeComponents() {
         return objTypeComponents;

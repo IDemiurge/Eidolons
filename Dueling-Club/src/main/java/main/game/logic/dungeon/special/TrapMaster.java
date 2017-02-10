@@ -13,7 +13,7 @@ import java.util.*;
 
 public class TrapMaster {
 
-    private static Map<ZCoordinates, Set<Trap>> trapMap = new HashMap<ZCoordinates, Set<Trap>>();
+    private static Map<ZCoordinates, Set<Trap>> trapMap = new HashMap<>();
 
     /*
      *  dual obj - bfObj and itemObj

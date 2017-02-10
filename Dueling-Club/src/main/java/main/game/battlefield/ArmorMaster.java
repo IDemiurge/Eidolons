@@ -226,7 +226,7 @@ public class ArmorMaster {
     public int getShieldDamageBlocked(Integer damage, DC_HeroObj attacked, DC_HeroObj attacker,
                                       DC_ActiveObj action, DC_WeaponObj weapon, DAMAGE_TYPE damage_type) {
         DC_WeaponObj shield = (DC_WeaponObj) attacked.getRef().getObj(KEYS.OFFHAND);
-        String message = "";
+        String message;
         boolean spell = action.isSpell();
         boolean zone = action.isZone();
         boolean offhand = action.isOffhand();

@@ -67,9 +67,9 @@ public class ValuePageManager {
 
     // construct page maps to be used for getting page lists
     public static void init() {
-        pageMaps = new LinkedHashMap<OBJ_TYPE, Map<String, List<VALUE>>>();
+        pageMaps = new LinkedHashMap<>();
         initMaps(pageMaps, pageArray, ValuePages.PAGE_NAMES, false);
-        altPageMaps = new LinkedHashMap<OBJ_TYPE, Map<String, List<VALUE>>>();
+        altPageMaps = new LinkedHashMap<>();
         initMaps(altPageMaps, altPageArray, ValuePages.ALT_PAGE_NAMES, true);
 
     }
@@ -193,7 +193,7 @@ public class ValuePageManager {
 
     private static List<VALUE> getMergedPageList(boolean filter, boolean av, OBJ_TYPE TYPE,
                                                  List<String> pageNames) {
-        List<VALUE> list = new LinkedList<VALUE>();
+        List<VALUE> list = new LinkedList<>();
         List<List<VALUE>> pages = getPageLists(filter, av, TYPE, pageNames);
         pages.add(getAdditionalPage(av, pages, TYPE, true));
         pages.add(getAdditionalPage(av, pages, TYPE, false));
@@ -215,7 +215,7 @@ public class ValuePageManager {
 
     private static List<List<VALUE>> getPageLists(boolean filter, boolean av, OBJ_TYPE TYPE,
                                                   List<String> pageNames) {
-        List<List<VALUE>> list = new LinkedList<List<VALUE>>();
+        List<List<VALUE>> list = new LinkedList<>();
         Map<String, List<VALUE>> map = (av) ? pageMaps.get(TYPE) : altPageMaps.get(TYPE);
         if (pageNames == null) {
             return null;
@@ -265,24 +265,24 @@ public class ValuePageManager {
         if (prop) {
             if (av) {
                 if (avAdditionalPropPages == null) {
-                    avAdditionalPropPages = new HashMap<OBJ_TYPE, List<VALUE>>();
+                    avAdditionalPropPages = new HashMap<>();
                 }
                 return avAdditionalPropPages;
             } else {
                 if (additionalPropPages == null) {
-                    additionalPropPages = new HashMap<OBJ_TYPE, List<VALUE>>();
+                    additionalPropPages = new HashMap<>();
                 }
                 return additionalPropPages;
             }
         } else {
             if (av) {
                 if (avAdditionalParamPages == null) {
-                    avAdditionalParamPages = new HashMap<OBJ_TYPE, List<VALUE>>();
+                    avAdditionalParamPages = new HashMap<>();
                 }
                 return avAdditionalParamPages;
             } else {
                 if (additionalParamPages == null) {
-                    additionalParamPages = new HashMap<OBJ_TYPE, List<VALUE>>();
+                    additionalParamPages = new HashMap<>();
                 }
                 return additionalParamPages;
             }
@@ -333,7 +333,7 @@ public class ValuePageManager {
     }
 
     public static List<VALUE> getValuePage(int index, OBJ_TYPE TYPE) {
-        return new LinkedList<VALUE>(Arrays
+        return new LinkedList<>(Arrays
                 .asList((VALUE[]) pageMaps.get(TYPE).keySet().toArray()[index]));
     }
 
@@ -342,7 +342,7 @@ public class ValuePageManager {
     }
 
     public static List<List<VALUE>> getValueLists(VALUE[][] pages) {
-        List<List<VALUE>> list = new LinkedList<List<VALUE>>();
+        List<List<VALUE>> list = new LinkedList<>();
         for (VALUE[] p : pages) {
             list.add(Arrays.asList(p));
         }

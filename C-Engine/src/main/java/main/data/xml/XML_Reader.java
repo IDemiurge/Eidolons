@@ -35,29 +35,29 @@ public class XML_Reader {
     final static DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
     // private static final Logger = Logger.getLogger(XML_Reader.class);
 
-    static Map<String, String> xmlMap = new ConcurrentMap<String, String>();
-    static Map<String, Set<String>> tabGroupMap = new XLinkedMap<String, Set<String>>();
-    static Map<String, Set<String>> treeSubGroupMap = new ConcurrentMap<String, Set<String>>();
-    static Map<String, Set<String>> treeSubGroupedTypeMap = new ConcurrentMap<String, Set<String>>();
+    static Map<String, String> xmlMap = new ConcurrentMap<>();
+    static Map<String, Set<String>> tabGroupMap = new XLinkedMap<>();
+    static Map<String, Set<String>> treeSubGroupMap = new ConcurrentMap<>();
+    static Map<String, Set<String>> treeSubGroupedTypeMap = new ConcurrentMap<>();
 
-    static Map<String, Set<String>> macroTabGroupMap = new ConcurrentMap<String, Set<String>>();
-    static Map<String, Set<String>> macroTreeSubGroupMap = new ConcurrentMap<String, Set<String>>();
-    static Map<String, Set<String>> macroTreeSubGroupedTypeMap = new ConcurrentMap<String, Set<String>>();
+    static Map<String, Set<String>> macroTabGroupMap = new ConcurrentMap<>();
+    static Map<String, Set<String>> macroTreeSubGroupMap = new ConcurrentMap<>();
+    static Map<String, Set<String>> macroTreeSubGroupedTypeMap = new ConcurrentMap<>();
 
     private static Map<String, Map<String, ObjType>> typeMaps =
             new ConcurrentSkipListMap
 //     new XLinkedMap
                     <>(
             );
-    private static Map<String, ObjType> bufferCharTypeMap = new XLinkedMap<String, ObjType>(20);
+    private static Map<String, ObjType> bufferCharTypeMap = new XLinkedMap<>(20);
     private static boolean macro;
 
     private static boolean concurrentReadingOn = true;
     private static boolean superConcurrentReadingOn = true;
-    private static DequeImpl<Thread> threads = new DequeImpl<Thread>();
-    private static Map<String, XML_File> heroFiles = new HashMap<String, XML_File>();
-    private static Map<String, XML_File> partyFiles = new HashMap<String, XML_File>();
-    private static DequeImpl<XML_File> files = new DequeImpl<XML_File>();
+    private static DequeImpl<Thread> threads = new DequeImpl<>();
+    private static Map<String, XML_File> heroFiles = new HashMap<>();
+    private static Map<String, XML_File> partyFiles = new HashMap<>();
+    private static DequeImpl<XML_File> files = new DequeImpl<>();
 
     private static Map<String, ObjType> originalCharTypeMap;
 
@@ -76,13 +76,13 @@ public class XML_Reader {
 
         Map<String, ObjType> type_map = typeMaps.get(key);
         if (type_map == null) {
-            type_map = new XLinkedMap<String, ObjType>();
+            type_map = new XLinkedMap<>();
         }
         // else split = true;
         typeMaps.put(key, type_map);
 
         NodeList nl = doc.getFirstChild().getChildNodes();
-        Set<String> group_set = new LinkedHashSet<String>();
+        Set<String> group_set = new LinkedHashSet<>();
         for (int i = 0; i < nl.getLength(); i++) {
             Node node = nl.item(i);
             NodeList nl1 = node.getChildNodes();
@@ -109,14 +109,14 @@ public class XML_Reader {
 
                 subSet = treeSubGroupMap.get(aspect);
                 if (subSet == null) {
-                    subSet = new HashSet<String>();
+                    subSet = new HashSet<>();
                     treeSubGroupMap.put(aspect, subSet);
                 }
                 subSet.add(subKey);
 
                 Set<String> groupedSet = treeSubGroupedTypeMap.get(subKey);
                 if (groupedSet == null) {
-                    groupedSet = new HashSet<String>();
+                    groupedSet = new HashSet<>();
                     treeSubGroupedTypeMap.put(subKey, groupedSet);
                 }
                 groupedSet.add(name);
@@ -236,7 +236,7 @@ public class XML_Reader {
             heroFile.setFile(file);
             heroFiles.put(fileName, heroFile);
         }
-        XML_File xmlFile = null;
+        XML_File xmlFile;
         if (fileName.contains("-")) {
             String typeName = fileName.substring(0, fileName.indexOf("-")).trim();
             String fullText = xmlMap.get(typeName);
@@ -446,16 +446,16 @@ public class XML_Reader {
         return set;
     }
 
-    public static Set<String> getSubGroups(String StringS) {
+    public static Set<String> getSubGroups(String strings) {
 
-        Set<String> groups = null;
-        groups = getTabGroupMap().get(StringS);
+        Set<String> groups;
+        groups = getTabGroupMap().get(strings);
         // Err.info(key + " SUB GROUP SET" + groups);
         if (groups == null) {
-            groups = getTabGroupMap(!macro).get(StringS);
+            groups = getTabGroupMap(!macro).get(strings);
         }
         if (groups == null) {
-            main.system.auxiliary.LogMaster.log(1, "NO SUB GROUP SET!" + StringS);
+            main.system.auxiliary.LogMaster.log(1, "NO SUB GROUP SET!" + strings);
         }
         return groups;
     }
@@ -542,12 +542,12 @@ public class XML_Reader {
         String key = OBJ_TYPES.CHARS.getName();
         if (originalCharTypeMap == null) {
             originalCharTypeMap = new MapMaster<String, ObjType>().constructMap(new LinkedList<>(
-                    getTypeMaps().get(key).keySet()), new LinkedList<ObjType>(getTypeMaps()
+                    getTypeMaps().get(key).keySet()), new LinkedList<>(getTypeMaps()
                     .get(key).values()));
         }
 
         bufferCharTypeMap = new MapMaster<String, ObjType>().constructMap(new LinkedList<>(
-                getTypeMaps().get(key).keySet()), new LinkedList<ObjType>(getTypeMaps().get(key)
+                getTypeMaps().get(key).keySet()), new LinkedList<>(getTypeMaps().get(key)
                 .values()));
 
         try {

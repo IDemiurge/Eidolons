@@ -60,7 +60,7 @@ public class ScenarioMaster {
 
                 if (mode == SCENARIO_MODES.STORY_MODE) {
                     String prop = scenario.getProperty(MACRO_PROPS.MISSION_PARTY);
-                    List<DC_HeroObj> heroes = null;
+                    List<DC_HeroObj> heroes;
                     if (!DataManager.isTypeName(prop, OBJ_TYPES.PARTY)) {
                         prop = scenario.getProperty(MACRO_PROPS.MISSION_CUSTOM_PARTY);
                         heroes = new LinkedList<>();

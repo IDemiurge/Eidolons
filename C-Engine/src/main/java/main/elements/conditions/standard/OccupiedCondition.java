@@ -22,7 +22,7 @@ public class OccupiedCondition extends ConditionImpl {
         if (c == null) {
             return true;
         }
-        boolean result = false;
+        boolean result;
         if (permitCollision) {
             result = !game.getMovementManager().getPathingManager().isGroundPassable(
                     ref.getSourceObj(), c);

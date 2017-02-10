@@ -24,50 +24,50 @@ import java.util.List;
 
 public class AV_TreeSelectionListener implements TreeSelectionListener {
 
-	private EditViewPanel panel;
-	private JTree tree;
+    private EditViewPanel panel;
+    private JTree tree;
 
-	public AV_TreeSelectionListener(JTree tree) {
+    public AV_TreeSelectionListener(JTree tree) {
         if (CoreEngine.isLevelEditor()) {
             panel = LevelEditor.getMainPanel().getInfoPanel();
         } else {
             panel = ArcaneVault.getMainBuilder().getEditViewPanel();
         }
         this.tree = tree;
-		// tree.setSelectionPath(path);
-		// DefaultMutableTreeNode node = ArcaneVault.getMainBuilder()
-		// .getSelectedNode();
-		// node.getp
+        // tree.setSelectionPath(path);
+        // DefaultMutableTreeNode node = ArcaneVault.getMainBuilder()
+        // .getSelectedNode();
+        // node.getp
 
-	}
+    }
 
-	@Override
-	public void valueChanged(TreeSelectionEvent e1) {
+    @Override
+    public void valueChanged(TreeSelectionEvent e1) {
         if (e1 == null) {
             return;
         }
         tree.requestFocusInWindow();
-		boolean dtFlag = ArcaneVault.isDirty();
+        boolean dtFlag = ArcaneVault.isDirty();
         if (((JTree) e1.getSource()).getSelectionPath() == null) {
             return;
         }
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) (((JTree) e1.getSource())
-				.getSelectionPath().getLastPathComponent());
+                .getSelectionPath().getLastPathComponent());
 
         if (node == null) {
             return;
         }
 
-		String name = (String) node.getUserObject();
-		String tab = null;
+        String name = (String) node.getUserObject();
+        String tab;
         if (panel.isLevelEditor()) {
             tab = LevelEditor.getSimulation().getSelectedEntity().getOBJ_TYPE();
         } else {
             tab = ArcaneVault.getMainBuilder().getSelectedTabName();
         }
         if (tab == null) {
-			Workspace workspace = ArcaneVault.getWorkspaceManager().getWorkspaceByTab(
-					(G_Panel) SwingMaster.getParentOfClass(tree, G_Panel.class));
+            Workspace workspace = ArcaneVault.getWorkspaceManager().getWorkspaceByTab(
+                    (G_Panel) SwingMaster.getParentOfClass(tree, G_Panel.class));
             if (workspace != null) {
                 try {
                     tab = workspace.getOBJ_TYPE(name, tab).getName();
@@ -77,27 +77,27 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
             }
         }
 
-		// SoundManager.playEffectSound(SOUNDS.WHAT,
-		// DataManager.getType(name)
-		// .getProperty(PROPS.SOUNDSET));
+        // SoundManager.playEffectSound(SOUNDS.WHAT,
+        // DataManager.getType(name)
+        // .getProperty(PROPS.SOUNDSET));
 
-		if (SimulationManager.isUnitType(tab) && ArcaneVault.isSimulationOn()) {
-			try {
-				SimulationManager.initUnitObj(name);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+        if (SimulationManager.isUnitType(tab) && ArcaneVault.isSimulationOn()) {
+            try {
+                SimulationManager.initUnitObj(name);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
-		ObjType type = DataManager.getType(name, tab);
-		if (type == null) {
-			for (TabBuilder t : ArcaneVault.getAdditionalTrees()) {
-				type = DataManager.getType(name, t.getSelectedTabName());
+        ObjType type = DataManager.getType(name, tab);
+        if (type == null) {
+            for (TabBuilder t : ArcaneVault.getAdditionalTrees()) {
+                type = DataManager.getType(name, t.getSelectedTabName());
                 if (type != null) {
                     break;
                 }
             }
-		}
+        }
         if (type == null) {
             type = DataManager.getType(name);
         }
@@ -105,45 +105,45 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
             return;
         }
         selectType(type, tab);
-		List<ObjType> types = new LinkedList<>();
-		int length = 1;
-		try {
-			length = e1.getPaths().length;
-		} catch (Exception e) {
+        List<ObjType> types = new LinkedList<>();
+        int length = 1;
+        try {
+            length = e1.getPaths().length;
+        } catch (Exception e) {
 
-		}
-		if (length > 2) { // TODO
-			try {
-				for (TreePath p : e1.getPaths()) {
-					node = (DefaultMutableTreeNode) p.getLastPathComponent();
+        }
+        if (length > 2) { // TODO
+            try {
+                for (TreePath p : e1.getPaths()) {
+                    node = (DefaultMutableTreeNode) p.getLastPathComponent();
                     if (node == null) {
                         continue;
                     }
                     name = (String) node.getUserObject();
-					type = DataManager.getType(name, tab);
+                    type = DataManager.getType(name, tab);
                     if (type != null) {
                         types.add(type);
                     }
                 }
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else {
-			types.add(type);
-		}
-		ArcaneVault.setSelectedTypes(types);
-		ArcaneVault.setDirty(dtFlag);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            types.add(type);
+        }
+        ArcaneVault.setSelectedTypes(types);
+        ArcaneVault.setDirty(dtFlag);
 
-	}
+    }
 
-	public void selectType(ObjType type, String tab) {
-		panel.selectType(type);
-	}
+    public void selectType(ObjType type, String tab) {
+        panel.selectType(type);
+    }
 
-	public boolean isTreeEditType(String selected) {
-		if (ArcaneVault.isMacroMode()) {
-			return ContentManager.getOBJ_TYPE(selected).isTreeEditType();
-		}
-		return selected.equals(OBJ_TYPES.ABILS.getName());
-	}
+    public boolean isTreeEditType(String selected) {
+        if (ArcaneVault.isMacroMode()) {
+            return ContentManager.getOBJ_TYPE(selected).isTreeEditType();
+        }
+        return selected.equals(OBJ_TYPES.ABILS.getName());
+    }
 }

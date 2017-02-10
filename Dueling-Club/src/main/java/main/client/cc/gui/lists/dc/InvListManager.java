@@ -38,7 +38,7 @@ public class InvListManager extends DC_ItemListManager {
     public void execute(OPERATIONS operation, String typeName) {
         DC_HeroObj unit = getHero();
         boolean alt = false;
-        DC_HeroItemObj item = null;
+        DC_HeroItemObj item;
         if (operation == OPERATIONS.PICK_UP) {
             item = unit.getGame().getDroppedItemManager().findDroppedItem(typeName,
                     unit.getCoordinates());

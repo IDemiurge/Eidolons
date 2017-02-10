@@ -141,7 +141,7 @@ public abstract class GenericConnection implements Runnable {
     }
 
     public void setCODES() {
-        setTHIS_CODES(new LinkedList<NetCode>((List<NetCode>) Arrays.asList(codestype
+        setTHIS_CODES(new LinkedList<>((List<NetCode>) Arrays.asList(codestype
                 .getEnumConstants())));
     }
 
@@ -342,7 +342,7 @@ public abstract class GenericConnection implements Runnable {
     // ));
     public void addCodes(List<? extends NetCode> newCodes) {
 
-        List<NetCode> list = new LinkedList<NetCode>();
+        List<NetCode> list = new LinkedList<>();
         for (NetCode code : getTHIS_CODES()) {
             list.add(code);
         }

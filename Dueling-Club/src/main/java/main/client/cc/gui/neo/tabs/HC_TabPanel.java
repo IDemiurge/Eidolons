@@ -54,7 +54,7 @@ public class HC_TabPanel extends G_Panel implements MouseListener {
     }
 
     public HC_TabPanel() {
-        this(new LinkedList<HC_Tab>());
+        this(new LinkedList<>());
     }
 
     public ComponentVisuals getTAB() {

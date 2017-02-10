@@ -41,7 +41,7 @@ public class PartyHeader extends G_Panel {
     public void createComponents() {
         locationComp = new WrappedTextComp(VISUALS.VALUE_BOX_BIG, true);
 
-        header = new Header(new LinkedList<VALUE>(Arrays.asList(party_params)),
+        header = new Header(new LinkedList<>(Arrays.asList(party_params)),
                 party);
 
         add(locationComp, "@pos center_x 20, id lc");

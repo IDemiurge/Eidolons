@@ -61,9 +61,9 @@ public class MacroActionManager {
     }
 
     public static void partyAction(MACRO_PARTY_ACTIONS action, MacroParty party) {
-        Set<Place> set = null;
+        Set<Place> set;
         Route route;
-        Place place = null;
+        Place place;
         switch (action) {
             case AMBUSH:
                 party.setStatus(MACRO_STATUS.IN_AMBUSH);

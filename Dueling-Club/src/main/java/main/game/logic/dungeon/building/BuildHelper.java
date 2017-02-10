@@ -338,7 +338,7 @@ public class BuildHelper {
     }
 
     private boolean checkHasAdjacentIntersections(Coordinates c) {
-        return getAdjacentPassage(c, new LinkedList<Coordinates>(), true) != null;
+        return getAdjacentPassage(c, new LinkedList<>(), true) != null;
     }
 
     private List<Coordinates> getCoordinates(Coordinates baseCoordinate, int width, int height,

@@ -83,7 +83,7 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
         // if (ref.getObj(KEYS.ACTIVE) != null) {
         // ref.getObj(KEYS.ACTIVE).getRef().setGroup(ref.getGroup());
         // } //a sideeffect!
-        boolean result = false;
+        boolean result;
 
         result = effects.apply(ref);
         if (isLoggingWrapped()) {

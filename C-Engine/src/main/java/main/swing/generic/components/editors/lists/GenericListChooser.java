@@ -211,8 +211,8 @@ public class GenericListChooser<E> implements ListSelectionListener {
 
     protected void initList() {
 
-        list = new G_List<E>(listData);
-        list.addMouseListener(new ObjListMouseListener<E>(getList()));
+        list = new G_List<>(listData);
+        list.addMouseListener(new ObjListMouseListener<>(getList()));
         list.setSelectionMode(mode.getMode());
         list.addListSelectionListener(this);
         renderer = new ListObjRenderer(TYPE);
@@ -230,8 +230,8 @@ public class GenericListChooser<E> implements ListSelectionListener {
 
         if (mode != SELECTION_MODE.SINGLE) {
 
-            secondList = new G_List<E>(secondListData);
-            secondList.addMouseListener(new ObjListMouseListener<E>(getSecondList()));
+            secondList = new G_List<>(secondListData);
+            secondList.addMouseListener(new ObjListMouseListener<>(getSecondList()));
             secondList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
             secondList.setCellRenderer(renderer);
@@ -241,7 +241,7 @@ public class GenericListChooser<E> implements ListSelectionListener {
         }
         // if (buttonPanel == null)
         initButtonPanel();
-        setMouseListener(new ListItemMouseListener<E>(TYPE, buttonPanel, mode, list));
+        setMouseListener(new ListItemMouseListener<>(TYPE, buttonPanel, mode, list));
         list.addMouseListener(getMouseListener());
         if (secondList != null) {
             secondList.addMouseListener(getMouseListener());

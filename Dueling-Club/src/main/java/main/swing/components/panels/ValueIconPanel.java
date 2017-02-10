@@ -78,9 +78,9 @@ public class ValueIconPanel extends G_Panel {
 
     protected void createBoxes() {
         removeAll();
-        boxes = new XLinkedMap<VALUE, ValueBox>();
+        boxes = new XLinkedMap<>();
         int x = 0;
-        int y = 0;
+        int y;
         for (VALUE[] values : getValueColumns()) {
             y = 0;
             for (VALUE value : values) {

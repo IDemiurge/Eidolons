@@ -35,7 +35,7 @@ public class DeityComp extends G_CompHolder implements MouseListener {
     @Override
     public void refresh() {
         comp.removeAll();
-        JLabel deityLbl = null;
+        JLabel deityLbl;
         // if (hero.getDeity() == null) {
         ImageIcon icon = ImageManager.getIcon(hero.getProperty(G_PROPS.EMBLEM));
 

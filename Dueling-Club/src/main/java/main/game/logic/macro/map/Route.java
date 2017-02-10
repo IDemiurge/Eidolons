@@ -124,7 +124,7 @@ public class Route extends Place {
         Coordinates c2 = dest.getDefaultMapRenderPoint();
         // min max enforced from MapComp that knows display-state of Places?
         int displacement = 50;
-        int perpendicularOffset = 0;
+        int perpendicularOffset;
 
         int index = 0;
         for (Route route : orig.getRoutes()) {

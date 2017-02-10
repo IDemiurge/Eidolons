@@ -25,7 +25,7 @@ public class FocusRule extends RoundRule {
             return;
         }
         boolean restore = diff < 0;
-        int mod = 0;
+        int mod;
         if (restore) {
             mod = 25
                     // DC_Formulas.FOCUS_RESTORE_PERC

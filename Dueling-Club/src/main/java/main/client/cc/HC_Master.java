@@ -42,10 +42,10 @@ public class HC_Master {
     private static WORKSPACE_GROUP filterWorkspaceGroup = WORKSPACE_GROUP.COMPLETE;
     private static PARAMETER lastClickedMastery;
     private static PARAMETER lastClickedAttribute;
-    private static Map<Object, Image> valueImgCache = new HashMap<Object, Image>();
-    private static Map<Object, Image> valueImgCacheLockedSelected = new HashMap<Object, Image>();
-    private static Map<Object, Image> valueImgCacheLocked = new HashMap<Object, Image>();
-    private static Map<Object, Image> valueImgCacheSelected = new HashMap<Object, Image>();
+    private static Map<Object, Image> valueImgCache = new HashMap<>();
+    private static Map<Object, Image> valueImgCacheLockedSelected = new HashMap<>();
+    private static Map<Object, Image> valueImgCacheLocked = new HashMap<>();
+    private static Map<Object, Image> valueImgCacheSelected = new HashMap<>();
     private static HT_Node selectedTreeNode;
     private static HT_Node selectedTreeNodePrevious;
     private static Map<DC_HeroObj, ThreeTreeView> t3SkillMap = new HashMap<>();
@@ -278,7 +278,7 @@ public class HC_Master {
     }
 
     private static Boolean getT3Mode() {
-        Boolean skill_class_spell = null;
+        Boolean skill_class_spell;
         // if (CharacterCreator.getPanel().getMvp().getCurrentView() !=
         // HERO_VIEWS.LIBRARY) { }
         skill_class_spell = !(CharacterCreator.getPanel().getMvp().getCurrentView() == HERO_VIEWS.CLASS_TREE

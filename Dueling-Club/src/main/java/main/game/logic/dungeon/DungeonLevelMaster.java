@@ -292,7 +292,7 @@ public class DungeonLevelMaster {
     }
 
     public static Coordinates getEntranceCoordinates(ENTRANCE_LAYOUT entranceLayout, Dungeon dungeon) {
-        FACING_DIRECTION side = null;
+        FACING_DIRECTION side;
         ENTRANCE_POINT_TEMPLATE template = null;
         switch (entranceLayout) {
             case CENTER:

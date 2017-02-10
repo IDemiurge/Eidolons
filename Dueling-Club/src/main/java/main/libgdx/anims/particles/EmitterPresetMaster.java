@@ -37,7 +37,7 @@ public class EmitterPresetMaster {
     }
 
     public static void save(EmitterActor last) {
-        String c = "";
+        String c;
         Writer output = new StringWriter();
         last.getEffect().getEmitters().forEach(e -> {
             try {

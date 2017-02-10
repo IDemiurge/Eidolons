@@ -248,7 +248,7 @@ public class MapComp implements MouseListener {
     }
 
     private Coordinates getPartyPoint(MacroParty party) {
-        Coordinates c = null;
+        Coordinates c;
 
         if (party.getCurrentRoute() != null) {
             Route route = party.getCurrentRoute();

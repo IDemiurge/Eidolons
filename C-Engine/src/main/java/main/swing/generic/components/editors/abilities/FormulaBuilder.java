@@ -132,7 +132,7 @@ public class FormulaBuilder implements ActionListener, ChangeListener {
 
     private void initParamTab() {
         Collection<PARAMETER> data = ContentManager.getParamList();
-        G_List<PARAMETER> c = new G_List<PARAMETER>(data);
+        G_List<PARAMETER> c = new G_List<>(data);
         G_Panel panel = new G_Panel();
         panel.add(c, "pos 0 0");
         String title = PARAMS;
@@ -141,7 +141,7 @@ public class FormulaBuilder implements ActionListener, ChangeListener {
 
     private void initConstTab() {
         Collection<CONSTANTS> data = ConstantManager.getConstList();
-        G_List<CONSTANTS> c = new G_List<CONSTANTS>(data);
+        G_List<CONSTANTS> c = new G_List<>(data);
         String title = CONSTS;
         tabs.addTab(c, title, null);
 
@@ -149,7 +149,7 @@ public class FormulaBuilder implements ActionListener, ChangeListener {
 
     private void initFuncTab() {
         Collection<FUNCTIONS> data = FunctionManager.getFunctionList();
-        G_List<FUNCTIONS> c = new G_List<FUNCTIONS>(data);
+        G_List<FUNCTIONS> c = new G_List<>(data);
         String title = FUNCS;
         tabs.addTab(c, title, null);
     }

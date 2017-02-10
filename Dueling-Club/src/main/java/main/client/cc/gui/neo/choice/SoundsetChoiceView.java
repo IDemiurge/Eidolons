@@ -107,7 +107,7 @@ public class SoundsetChoiceView extends ChoiceView<HERO_SOUNDSET> implements
     public Component getListCellRendererComponent(JList<? extends HERO_SOUNDSET> list,
                                                   HERO_SOUNDSET value, int index, boolean isSelected, boolean cellHasFocus) {
         VISUALS V = (isSelected) ? VISUALS.ENUM_CHOICE_COMP_SELECTED : VISUALS.ENUM_CHOICE_COMP;
-        return new ListTextItem<HERO_SOUNDSET>(V, value, isSelected, false, FONT_SIZE);
+        return new ListTextItem<>(V, value, isSelected, false, FONT_SIZE);
 
     }
 

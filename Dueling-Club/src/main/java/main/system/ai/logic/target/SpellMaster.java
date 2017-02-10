@@ -408,7 +408,7 @@ public class SpellMaster {
     }
 
     public static ObjType getSummonedUnit(DC_ActiveObj active, Ref ref) {
-        ObjType type = null;
+        ObjType type;
         List<Effect> list = EffectMaster.getEffectsOfClass(
                 active.getAbilities(), GatewayEffect.class);
         if (!list.isEmpty()) {

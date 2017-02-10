@@ -93,7 +93,6 @@ public class BattleFieldScreen implements Screen {
 //        shapeRenderer =new ShapeRenderer();
 //        shapeRenderer.setAutoShapeType(true);
 
-        PathFinder.init();
        String s = PathFinder.getImagePath();
 
         img = new Texture(s+"mini\\item\\mage armor.jpg");

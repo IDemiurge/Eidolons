@@ -49,7 +49,7 @@ public class DC_PagedUnitActionPanel extends G_PagedListPanel<DC_UnitAction> {
 
     @Override
     protected G_Component createEmptyPageComponent() {
-        LinkedList<DC_UnitAction> list = new LinkedList<DC_UnitAction>();
+        LinkedList<DC_UnitAction> list = new LinkedList<>();
         ListMaster.fillWithNullElements(list, PAGE_SIZE);
         return new DC_UnitActionPanel(list);
     }

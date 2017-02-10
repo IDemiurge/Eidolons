@@ -32,7 +32,7 @@ public class ListSizeCondition extends MicroCondition {
             TYPE = C_OBJ_TYPE.BF_OBJ;
         }
         if (filter == null) {
-            filter = new Filter<Entity>(ref, c, TYPE);
+            filter = new Filter<>(ref, c, TYPE);
         } else {
             filter.setRef(ref);
         }

@@ -37,7 +37,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     protected Integer level = -1;
     protected Map<Integer, Conditions> conditionsMap = new HashMap<>();
     protected DC_HeroObj target;
-    Map<Obj, Effect[]> effectCache = new XLinkedMap<Obj, Effect[]>();
+    Map<Obj, Effect[]> effectCache = new XLinkedMap<>();
     private boolean animationQueued;
 
     public DC_BuffRule(MicroGame game) {

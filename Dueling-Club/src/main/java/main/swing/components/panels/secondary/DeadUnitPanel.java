@@ -50,7 +50,7 @@ public class DeadUnitPanel extends G_PagedListPanel<DC_HeroObj> implements Mouse
 
     @Override
     protected G_Component createEmptyPageComponent() {
-        return new DeadUnitPage(new LinkedList<DC_HeroObj>());
+        return new DeadUnitPage(new LinkedList<>());
     }
 
     @Override

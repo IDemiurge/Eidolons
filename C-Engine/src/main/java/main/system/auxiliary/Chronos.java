@@ -10,7 +10,7 @@ import java.util.Map;
 public class Chronos {
     public static final boolean CONSTRUCT = false;
     private static final Logger logger = LogMaster.getInstance();
-    private static Map<String, Calendar> timeMap = new ConcurrentMap<String, Calendar>();
+    private static Map<String, Calendar> timeMap = new ConcurrentMap<>();
 
     public static void mark(String string) {
         // if (!CoreEngine.isTEST_MODE())

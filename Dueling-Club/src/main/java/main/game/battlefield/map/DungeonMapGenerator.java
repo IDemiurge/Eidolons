@@ -120,7 +120,7 @@ public class DungeonMapGenerator {
     }
 
     private void initBfObjMap() {
-        objMap = new HashMap<Coordinates, ObjType>();
+        objMap = new HashMap<>();
         map.setObjMap(objMap);
         if (plan != null) {
             // if (plan.isPreloaded()) addObjects();
@@ -147,7 +147,7 @@ public class DungeonMapGenerator {
         if (template == null) {
             return;
         }
-        zones = new HashMap<MAP_ZONES, Integer>();
+        zones = new HashMap<>();
         List<String> objects = StringMaster.openContainer(template.getObjects());
         if (mod != null) {
             objects.addAll(StringMaster.openContainer(mod.getObjects()));

@@ -37,63 +37,63 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CreationHelper implements ValueEditor {
-	public static final String TASK_COMPILATION = "Task Group";
+    public static final String TASK_COMPILATION = "Task Group";
 
-	public static void fillOut() {
+    public static void fillOut() {
 //		if (mass) {
 //			types = ListChooser.chooseTypes(TYPE, property, group);
 //			for (ObjType type : types) {
 //				fillOut(type);
 //			}
 //		}
-	}
+    }
 
-	private static void fillOut(ObjType type) {
-		List<VALUE> requiredValues = getRequiredValues(type, false);
-		requiredValues = new ListObjChooser<VALUE>().selectMulti(requiredValues); // TODO
-																					// tooltip
-		// TODO allow adding other vals
-		for (VALUE val : requiredValues) {
-			String value = type.getValue(val);
-			if (value.isEmpty()) {
-				ListChooser.setTooltip("Set " + val.getName());
-				value = getInput(val, type, type.getValue(val));
-			}
-			type.setValue(val, value);
-		}
-	}
+    private static void fillOut(ObjType type) {
+        List<VALUE> requiredValues = getRequiredValues(type, false);
+        requiredValues = new ListObjChooser<VALUE>().selectMulti(requiredValues); // TODO
+        // tooltip
+        // TODO allow adding other vals
+        for (VALUE val : requiredValues) {
+            String value = type.getValue(val);
+            if (value.isEmpty()) {
+                ListChooser.setTooltip("Set " + val.getName());
+                value = getInput(val, type, type.getValue(val));
+            }
+            type.setValue(val, value);
+        }
+    }
 
-	// TableMouseListener!
-	public static ObjType create(AT_OBJ_TYPE TYPE) {
-		ObjType type = null;
-		// ArcaneVault.getSelectedType();
-		// if (type == null)
+    // TableMouseListener!
+    public static ObjType create(AT_OBJ_TYPE TYPE) {
+        ObjType type;
+        // ArcaneVault.getSelectedType();
+        // if (type == null)
         if (DialogMaster.confirm("Select template?")) {
             type = ListChooser.chooseType_(TYPE);
         } else {
             String name = DialogMaster.inputText("Name?");
-			type = new ObjType(name, TYPE);
-		}
+            type = new ObjType(name, TYPE);
+        }
         if (type == null) {
             return null;
         }
         fillOut(type);
-		return type;
-	}
+        return type;
+    }
 
-	public static void newTask() {
-		ObjType selected = ArcaneVault.getSelectedType();
+    public static void newTask() {
+        ObjType selected = ArcaneVault.getSelectedType();
 
-		for (VALUE val : getRequiredValues(selected, false)) {
-			String input = getInput(val, selected, selected.getValue(val));
-		}
-	}
+        for (VALUE val : getRequiredValues(selected, false)) {
+            String input = getInput(val, selected, selected.getValue(val));
+        }
+    }
 
-	public static List<VALUE> getRequiredValues(Entity t, boolean extended) {
-		AT_OBJ_TYPE TYPE = (AT_OBJ_TYPE) t.getOBJ_TYPE_ENUM();
-		List<VALUE> list = new LinkedList<>();
-		for (VALUE l : ContentManager.getValuesForType(t.getOBJ_TYPE(), false)) {
-			if (extended) {
+    public static List<VALUE> getRequiredValues(Entity t, boolean extended) {
+        AT_OBJ_TYPE TYPE = (AT_OBJ_TYPE) t.getOBJ_TYPE_ENUM();
+        List<VALUE> list = new LinkedList<>();
+        for (VALUE l : ContentManager.getValuesForType(t.getOBJ_TYPE(), false)) {
+            if (extended) {
                 if (l.isLowPriority()) {
                     continue;
                 }
@@ -106,17 +106,17 @@ public class CreationHelper implements ValueEditor {
                 }
             }
         }
-		switch (TYPE) {
-			case TASK:
-				list.add(AT_PARAMS.GLORY);
-				list.add(AT_PARAMS.TIME_ESTIMATED);
-				break;
-			case DAY:
-			case DIRECTION:
-			case GOAL:
-			case SESSION:
+        switch (TYPE) {
+            case TASK:
+                list.add(AT_PARAMS.GLORY);
+                list.add(AT_PARAMS.TIME_ESTIMATED);
+                break;
+            case DAY:
+            case DIRECTION:
+            case GOAL:
+            case SESSION:
 
-		}
+        }
         if (TYPE.getChildValue() != null) {
             list.add(TYPE.getChildValue());
         }
@@ -132,34 +132,34 @@ public class CreationHelper implements ValueEditor {
             list.add(TYPE.getSubGroupingKey());
         }
 
-		return list;
-	}
+        return list;
+    }
 
-	public static Goal getAllSessionTasks(Session session) {
-		ObjType type = new ObjType("All Session Tasks", AT_OBJ_TYPE.GOAL);
-		type.setProperty(AT_PROPS.TASKS, DataManager.toString(SessionMaster.getAllTasks(session)));
-		Goal goal = new Goal(type);
-		return goal;
-	}
+    public static Goal getAllSessionTasks(Session session) {
+        ObjType type = new ObjType("All Session Tasks", AT_OBJ_TYPE.GOAL);
+        type.setProperty(AT_PROPS.TASKS, DataManager.toString(SessionMaster.getAllTasks(session)));
+        Goal goal = new Goal(type);
+        return goal;
+    }
 
-	public static Goal getFilteredGoal(TASK_STATUS status) {
-		ObjType type = new ObjType(TASK_COMPILATION, AT_OBJ_TYPE.GOAL);
-		List<String> tasks = DataManager
-				.convertObjToStringList((Collection<? extends Obj>) FilterMaster.filterByProp(
-						new LinkedList<Task>(ArcaneTower.getTasks()), AT_PROPS.TASK_STATUS
-								.getName(), status.toString()));
-		if (status == TASK_STATUS.PINNED) {
-			String name = ArcaneTower.getSessionWindow().getSession().getName();
-			tasks = ListMaster.toStringList(FilterMaster.filterByProp(tasks,
-					AT_PROPS.SESSION.getName(), name, AT_OBJ_TYPE.TASK, false).toArray());
-		}
-		type.setProperty(AT_PROPS.TASKS, StringMaster.joinStringList(tasks, ";"));
-		Goal goal = new Goal(type);
-		return goal;
-	}
+    public static Goal getFilteredGoal(TASK_STATUS status) {
+        ObjType type = new ObjType(TASK_COMPILATION, AT_OBJ_TYPE.GOAL);
+        List<String> tasks = DataManager
+                .convertObjToStringList((Collection<? extends Obj>) FilterMaster.filterByProp(
+                        new LinkedList<>(ArcaneTower.getTasks()), AT_PROPS.TASK_STATUS
+                                .getName(), status.toString()));
+        if (status == TASK_STATUS.PINNED) {
+            String name = ArcaneTower.getSessionWindow().getSession().getName();
+            tasks = ListMaster.toStringList(FilterMaster.filterByProp(tasks,
+                    AT_PROPS.SESSION.getName(), name, AT_OBJ_TYPE.TASK, false).toArray());
+        }
+        type.setProperty(AT_PROPS.TASKS, StringMaster.joinStringList(tasks, ";"));
+        Goal goal = new Goal(type);
+        return goal;
+    }
 
-	public static Goal getGroupGoal(VIEW_OPTION viewOption) {
-		ObjType type = null;
+    public static Goal getGroupGoal(VIEW_OPTION viewOption) {
+        ObjType type = null;
         if (viewOption == VIEW_OPTION.CHOOSE_GROUP) {
             type = ListChooser.chooseTypeFromSubgroup_(AT_OBJ_TYPE.GOAL, "Task Group");
         }
@@ -168,80 +168,80 @@ public class CreationHelper implements ValueEditor {
                     "Task Group"), AT_PARAMS.TIME_LAST_MODIFIED);
         }
         if (viewOption == VIEW_OPTION.NEW_GROUP) {
-			String typeName = CreationHelper.TASK_COMPILATION + " from "
-					+ TimeMaster.getDateString();
-			typeName = NameMaster.getUniqueVersionedName(DataManager.getTypes(AT_OBJ_TYPE.GOAL),
-					typeName);
-			type = new ObjType(typeName, AT_OBJ_TYPE.GOAL);
+            String typeName = CreationHelper.TASK_COMPILATION + " from "
+                    + TimeMaster.getDateString();
+            typeName = NameMaster.getUniqueVersionedName(DataManager.getTypes(AT_OBJ_TYPE.GOAL),
+                    typeName);
+            type = new ObjType(typeName, AT_OBJ_TYPE.GOAL);
 
-			ListChooser.addMod(LC_MODS.TEXT_DISPLAYED);
-			StringMaster.constructEntityNameContainer(PromptMaster.taskPrompt());
-			String types = ListChooser.chooseTypes(AT_OBJ_TYPE.TASK, "", "");
+            ListChooser.addMod(LC_MODS.TEXT_DISPLAYED);
+            StringMaster.constructEntityNameContainer(PromptMaster.taskPrompt());
+            String types = ListChooser.chooseTypes(AT_OBJ_TYPE.TASK, "", "");
             if (types.isEmpty()) {
                 return null;
             }
             type.setProperty(AT_PROPS.TASKS, types);
-			// unique name if same day!
-			type.setProperty(AT_PROPS.GOAL_TYPE, CreationHelper.TASK_COMPILATION);
-			DataManager.addType(type);
-			ArcaneTower.saveAll();
-		}
+            // unique name if same day!
+            type.setProperty(AT_PROPS.GOAL_TYPE, CreationHelper.TASK_COMPILATION);
+            DataManager.addType(type);
+            ArcaneTower.saveAll();
+        }
 
-		return (Goal) ArcaneTower.getSimulation().getInstance(type);
-	}
+        return (Goal) ArcaneTower.getSimulation().getInstance(type);
+    }
 
-	public static String getInput(VALUE val) {
-		// return ListChooser.chooseEnum(MUSIC_TYPE.class);
-		return getInput(val, null, null);
-	}
+    public static String getInput(VALUE val) {
+        // return ListChooser.chooseEnum(MUSIC_TYPE.class);
+        return getInput(val, null, null);
+    }
 
-	public static String getInput(VALUE val, Object object, Object object2) {
-		return getInput(val, null, null, null);
-	}
+    public static String getInput(VALUE val, Object object, Object object2) {
+        return getInput(val, null, null, null);
+    }
 
-	public static String getInput(VALUE val, Entity entity, String value,
-			INPUT_REQ preferredInputMode) {
+    public static String getInput(VALUE val, Entity entity, String value,
+                                  INPUT_REQ preferredInputMode) {
 
-		Class<?> ENUM_CLASS = EnumMaster.getEnumClass(val.getName());
-		OBJ_TYPE TYPE = ContentManager.getOBJ_TYPE(val.getName());
+        Class<?> ENUM_CLASS = EnumMaster.getEnumClass(val.getName());
+        OBJ_TYPE TYPE = ContentManager.getOBJ_TYPE(val.getName());
 
-		ListChooser.setTooltip("Input for " + val.getName());
-		INPUT_REQ inputReq = preferredInputMode;
-		if (inputReq == null) {
-			inputReq = val.getInputReq();
+        ListChooser.setTooltip("Input for " + val.getName());
+        INPUT_REQ inputReq = preferredInputMode;
+        if (inputReq == null) {
+            inputReq = val.getInputReq();
             if (inputReq == null) {
                 if (ENUM_CLASS != null) {
                     inputReq = INPUT_REQ.SINGLE_ENUM;
                 }
             }
         }
-		switch (inputReq) {
-			case STRING:
-				return DialogMaster.inputText("Set value for " + val.getName(), value);
-			case INTEGER:
-				return ""
-						+ DialogMaster.inputInt("Set value for " + val.getName(), StringMaster
-								.getInteger(val.getDefaultValue()));
-			case MULTI_ENUM:
-				return ListChooser.chooseEnum(ENUM_CLASS, SELECTION_MODE.MULTIPLE);
+        switch (inputReq) {
+            case STRING:
+                return DialogMaster.inputText("Set value for " + val.getName(), value);
+            case INTEGER:
+                return ""
+                        + DialogMaster.inputInt("Set value for " + val.getName(), StringMaster
+                        .getInteger(val.getDefaultValue()));
+            case MULTI_ENUM:
+                return ListChooser.chooseEnum(ENUM_CLASS, SELECTION_MODE.MULTIPLE);
 
-			case MULTI_TYPE:
-				return ListChooser.chooseType(TYPE, SELECTION_MODE.MULTIPLE);
-			case SINGLE_ENUM:
-				return ListChooser.chooseEnum(ENUM_CLASS, SELECTION_MODE.SINGLE);
-			case SINGLE_TYPE:
-				return ListChooser.chooseType(TYPE);
-			case SINGLE_TYPE_VAR:
-				return null;
-			case MULTI_TYPE_VAR:
-				return null;
-			case MULTI_ENUM_VAR:
-				return null;
-			case SINGLE_ENUM_VAR:
-				return null;
-		}
-		return null;
-	}
+            case MULTI_TYPE:
+                return ListChooser.chooseType(TYPE, SELECTION_MODE.MULTIPLE);
+            case SINGLE_ENUM:
+                return ListChooser.chooseEnum(ENUM_CLASS, SELECTION_MODE.SINGLE);
+            case SINGLE_TYPE:
+                return ListChooser.chooseType(TYPE);
+            case SINGLE_TYPE_VAR:
+                return null;
+            case MULTI_TYPE_VAR:
+                return null;
+            case MULTI_ENUM_VAR:
+                return null;
+            case SINGLE_ENUM_VAR:
+                return null;
+        }
+        return null;
+    }
 
     @Override
     public boolean checkClickProcessed(MouseEvent e, ObjType selectedType, VALUE val, String value) {

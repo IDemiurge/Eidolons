@@ -25,6 +25,11 @@ public class TestSpriteRender implements ApplicationListener {
 
     static final int WIDTH = 480;
     static final int HEIGHT = 320;
+    Sprite sprite;
+    Rectangle glViewport;
+    OrthographicCamera cam;
+    SpriteBatch spriteBatch;
+    private Texture cellTexture;
 
     public static void main(String[] args) {
 /*
@@ -53,15 +58,8 @@ public class TestSpriteRender implements ApplicationListener {
         new LwjglApplication(r, lwjglApplicationConfiguration);
     }
 
-    private Texture cellTexture;
-    Sprite sprite;
-    Rectangle glViewport;
-    OrthographicCamera cam;
-    SpriteBatch spriteBatch;
-
     @Override
     public void create() {
-        PathFinder.init();
         cellTexture = new Texture(PathFinder.getImagePath() + "\\UI\\cells\\Empty Cell v3.png");
 
         sprite = new Sprite(cellTexture);

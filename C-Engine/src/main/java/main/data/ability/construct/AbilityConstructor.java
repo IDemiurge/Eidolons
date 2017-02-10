@@ -201,7 +201,7 @@ public class AbilityConstructor {
     }
 
     public static void constructActives(Entity entity) {
-        List<ActiveObj> abilities = null;
+        List<ActiveObj> abilities;
         boolean action = (entity instanceof BattlefieldObj);
         if (action) {
             if (!entity.getType().isModel()) {
@@ -259,7 +259,7 @@ public class AbilityConstructor {
                 return ability;
             }
         } else {
-            abilCache.put(entity.getId(), new HashMap<String, AbilityObj>());
+            abilCache.put(entity.getId(), new HashMap<>());
         }
         return (AbilityObj) newAbility(passive, entity, true);
     }

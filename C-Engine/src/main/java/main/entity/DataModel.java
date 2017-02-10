@@ -44,7 +44,7 @@ public abstract class DataModel {
     protected PropMap propMap = new PropMap();
     protected ParamMap paramMap = new ParamMap();
     protected Map<PARAMETER, Map<String, Double>> modifierMaps;
-    protected Map<VALUE, Boolean> booleanMap = new HashMap<VALUE, Boolean>();
+    protected Map<VALUE, Boolean> booleanMap = new HashMap<>();
     protected Ref ref;
     protected ObjType type;
     protected Game game;
@@ -282,11 +282,11 @@ public abstract class DataModel {
 
     public Integer getIntParam(PARAMETER param, boolean base) {
 
-        Integer result = null;
+        Integer result;
         // getIntegerMap(base).get(param);
         // if (result != null)
         // return result;
-        String string = "";
+        String string;
         if (base) {
             string = getType().getParam(param);
         } else {
@@ -396,7 +396,7 @@ public abstract class DataModel {
         if (value.isEmpty()) {
             return true;
         }
-        int val2 = 0;
+        int val2;
         try {
             val2 = StringMaster.getInteger(value); // Integer.valueOf(value);
         } catch (Exception e) {
@@ -604,7 +604,7 @@ public abstract class DataModel {
 
             // } catch (Exception e) {
             // }
-            Number newValue = 0;
+            Number newValue;
             if (!prevValue.isEmpty()) {
                 try {
 
@@ -1099,7 +1099,7 @@ public abstract class DataModel {
         // prop.getName()))
         // return false;
 
-        boolean result = true;
+        boolean result;
         if (prop.isContainer()) {
             result = removeMultiProp(prop.getName(), value, all);
         } else {
@@ -1248,7 +1248,7 @@ public abstract class DataModel {
 
     protected ParamMap cloneParamMap(Map<PARAMETER, String> map) {
         ParamMap clone = new ParamMap();
-        Map<PARAMETER, String> innerMap = new HashMap<PARAMETER, String>();
+        Map<PARAMETER, String> innerMap = new HashMap<>();
         innerMap.putAll(map);
 
         clone.setMap(innerMap);
@@ -1257,7 +1257,7 @@ public abstract class DataModel {
 
     protected PropMap clonePropMap(Map<PROPERTY, String> map) {
         PropMap clone = new PropMap();
-        Map<PROPERTY, String> innerMap = new ConcurrentHashMap<PROPERTY, String>();
+        Map<PROPERTY, String> innerMap = new ConcurrentHashMap<>();
         innerMap.putAll(map);
 
         clone.setMap(innerMap);
@@ -1354,7 +1354,7 @@ public abstract class DataModel {
 
     public Map<String, String> getCustomPropMap() {
         if (customPropMap == null) {
-            setCustomPropMap(new HashMap<String, String>());
+            setCustomPropMap(new HashMap<>());
         }
         return customPropMap;
     }
@@ -1373,7 +1373,7 @@ public abstract class DataModel {
 
     public Map<String, String> getCustomParamMap() {
         if (customParamMap == null) {
-            setCustomParamMap(new XLinkedMap<String, String>());
+            setCustomParamMap(new XLinkedMap<>());
         }
         return customParamMap;
     }
@@ -1510,7 +1510,7 @@ public abstract class DataModel {
             Map<String, ImageIcon> cache = ImageManager.getCustomIconCache()
                     .get(ref.getSourceObj());
             if (cache == null) {
-                cache = new HashMap<String, ImageIcon>();
+                cache = new HashMap<>();
                 ImageManager.getCustomIconCache().put(ref.getSourceObj(), cache);
             }
             cache.put(getName(), customIcon);
@@ -1547,7 +1547,7 @@ public abstract class DataModel {
 
     public HashMap<PROPERTY, Map<String, Boolean>> getPropCache() {
         if (propCache == null) {
-            propCache = new HashMap<PROPERTY, Map<String, Boolean>>();
+            propCache = new HashMap<>();
         }
         return propCache;
     }

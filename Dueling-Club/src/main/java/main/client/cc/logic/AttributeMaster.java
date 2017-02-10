@@ -13,7 +13,7 @@ public class AttributeMaster {
 
     public static List<String> getAttributeBonusInfoStrings(ATTRIBUTE attr, DC_HeroObj hero) {
         List<String> list = new LinkedList<>();
-        Object key = null;
+        Object key;
         key = StringMaster.getWellFormattedString(attr.name());
         for (PARAMS p : attr.getParams()) {
             Map<String, Double> map = hero.getModifierMaps().get(p);

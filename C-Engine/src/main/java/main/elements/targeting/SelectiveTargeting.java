@@ -9,7 +9,6 @@ import main.elements.Filter;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.Obj;
 import main.system.math.Formula;
 
 import java.util.Set;
@@ -39,7 +38,7 @@ public class SelectiveTargeting extends TargetingImpl {
     }
 
     public SelectiveTargeting(Condition conditions, Formula formula, OBJ_TYPE filteredType) {
-        this.filter = new Filter<Obj>();
+        this.filter = new Filter<>();
         this.filter.setConditions(conditions);
         numberOfTargets = formula;
         this.filteredType = filteredType;

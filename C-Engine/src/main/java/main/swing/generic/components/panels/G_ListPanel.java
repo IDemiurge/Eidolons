@@ -189,9 +189,9 @@ public abstract class G_ListPanel<E> extends G_Panel {
 
     protected G_List<E> createList() {
         if (isCustom()) {
-            return new CustomList<E>(data);
+            return new CustomList<>(data);
         }
-        return new G_List<E>(data);
+        return new G_List<>(data);
     }
 
     protected boolean isCustom() {
@@ -217,7 +217,7 @@ public abstract class G_ListPanel<E> extends G_Panel {
         if (customMouseListener != null) {
             return customMouseListener;
         }
-        return new ObjListMouseListener<E>(getList());
+        return new ObjListMouseListener<>(getList());
     }
 
     protected boolean isScrollable() {
@@ -225,7 +225,7 @@ public abstract class G_ListPanel<E> extends G_Panel {
     }
 
     public Collection<E> getEmptyData() {
-        Collection<E> emptyData = new LinkedList<E>();
+        Collection<E> emptyData = new LinkedList<>();
         int n = minItems;
         for (int i = 0; i < n; i++) {
             emptyData.add(null);

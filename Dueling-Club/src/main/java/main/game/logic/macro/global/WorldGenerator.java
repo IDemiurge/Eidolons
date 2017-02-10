@@ -97,7 +97,7 @@ public class WorldGenerator {
         for (String routeTypeName : StringMaster.openContainer(property)) {
             ObjType routeType = DataManager.getType(routeTypeName,
                     MACRO_OBJ_TYPES.ROUTE);
-            Route r = null;
+            Route r;
             try {
                 r = createRoute(routeType);
             } catch (Exception e) {

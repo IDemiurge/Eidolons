@@ -36,7 +36,7 @@ public class ListObjRenderer<String> implements ListCellRenderer<String> {
         if (type == null) {
             return new JLabel(value.toString());
         }
-        ListItem<Entity> item = new ListItem<Entity>(type, isSelected, cellHasFocus, 0);
+        ListItem<Entity> item = new ListItem<>(type, isSelected, cellHasFocus, 0);
         // item.setIcon(ListRenderer.getCompIcon(type, isSelected));
         if (mods != null) {
             Component component = item;

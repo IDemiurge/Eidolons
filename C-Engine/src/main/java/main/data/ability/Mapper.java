@@ -39,9 +39,9 @@ public class Mapper {
     private static final String TEXT_NODE = "#text";
     private static final String ARG_LIST_SEPARATOR = ": ";
 
-    private static Map<Argument, List<AE_Item>> map = new HashMap<Argument, List<AE_Item>>();
-    private static Map<String, AE_Item> itemMap = new HashMap<String, AE_Item>();
-    private static Map<ARGS, AE_Item> primitiveItems = new HashMap<ARGS, AE_Item>();
+    private static Map<Argument, List<AE_Item>> map = new HashMap<>();
+    private static Map<String, AE_Item> itemMap = new HashMap<>();
+    private static Map<ARGS, AE_Item> primitiveItems = new HashMap<>();
     private static List<Argument> args;
     private static List<String> classFolders;
 
@@ -100,7 +100,7 @@ public class Mapper {
     }
 
     private static List<Argument> getArgList(Class<?>[] parameterTypes) {
-        List<Argument> list = new ArrayList<Argument>();
+        List<Argument> list = new ArrayList<>();
         for (Class<?> type : parameterTypes) {
             list.add(translateToArg(type));
         }
@@ -108,7 +108,7 @@ public class Mapper {
     }
 
     private static List<Argument> getArgs(List<Node> list2) {
-        List<Argument> list = new ArrayList<Argument>();
+        List<Argument> list = new ArrayList<>();
         for (Node node : list2) {
             list.add(translateToArg(node.getNodeName()));
         }
@@ -163,7 +163,7 @@ public class Mapper {
         for (Class<?> c : classes) { // this does not cover *everything*
             // though...
             Argument a = new ArgumentImpl(c, c.getSimpleName()); // format?
-            List<AE_Item> list = new LinkedList<AE_Item>();
+            List<AE_Item> list = new LinkedList<>();
             if (!map.containsKey(a)) {
                 map.put(a, list);
             }
@@ -182,7 +182,7 @@ public class Mapper {
         args = args1;
         classFolders = classFolders1;
         for (Argument arg : args) {
-            List<AE_Item> list = new LinkedList<AE_Item>();
+            List<AE_Item> list = new LinkedList<>();
             map.put(arg, list);
         }
         compilePrimitives();
@@ -247,7 +247,7 @@ public class Mapper {
                         continue;
                     }
                 }
-                List<Argument> argList = new LinkedList<Argument>();
+                List<Argument> argList = new LinkedList<>();
 
                 for (Class<?> argType : constr.getParameterTypes()) {
                     argList.add(translateToArg(argType));

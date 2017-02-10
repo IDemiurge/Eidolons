@@ -16,8 +16,8 @@ import java.util.Random;
 public class DC_MapGenerator extends Manager {
 
     private static boolean initialized = false;
-    private static Map<BF_OBJ_OWNER, ObjType> crystalsMap = new HashMap<BF_OBJ_OWNER, ObjType>();
-    private static Map<BF_OBJ_OWNER, ObjType> gatewaysMap = new HashMap<BF_OBJ_OWNER, ObjType>();
+    private static Map<BF_OBJ_OWNER, ObjType> crystalsMap = new HashMap<>();
+    private static Map<BF_OBJ_OWNER, ObjType> gatewaysMap = new HashMap<>();
 
     public static Point getCorner(boolean left, boolean top) {
         return new Point((left) ? 0 : GuiManager.getBF_CompDisplayedCellsX(),

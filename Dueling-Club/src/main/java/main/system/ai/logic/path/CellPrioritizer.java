@@ -135,8 +135,8 @@ public class CellPrioritizer {
     }
 
     public static void reset() {
-        cellPriorityMap = new HashMap<Obj, Integer>();
-        enemyPriorityMap = new HashMap<Obj, Integer>();
+        cellPriorityMap = new HashMap<>();
+        enemyPriorityMap = new HashMap<>();
         pathMap = new HashMap<>();
     }
 

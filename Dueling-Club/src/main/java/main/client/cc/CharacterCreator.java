@@ -456,10 +456,10 @@ public class CharacterCreator {
     }
 
     public static String getHeroName(Entity hero) {
-        String name = null;
+        String name;
         NameMaster.clearNames();
 
-        Boolean result = null;
+        Boolean result;
         if (SwingUtilities.isEventDispatchThread()) {
             DialogMaster.ask("What about the hero's name?", true, "Random", "Input", "Back");
             result = (Boolean) WaitMaster.waitForInput(DialogMaster.ASK_WAIT);

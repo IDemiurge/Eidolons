@@ -11,28 +11,28 @@ import java.util.List;
 
 public class GoalContainer extends GatewayContainer<Goal> {
 
-	private Direction direction;
+    private Direction direction;
 
-	public GoalContainer(Direction d) {
-		super();
-		direction = d;
-	}
+    public GoalContainer(Direction d) {
+        super();
+        direction = d;
+    }
 
-	@Override
-	public List<Goal> initData() {
-		return direction.getGoals();
-	}
+    @Override
+    public List<Goal> initData() {
+        return direction.getGoals();
+    }
 
-	@Override
-	protected void sortData() {
-		Collections.sort(data, getSorter());
-	}
+    @Override
+    protected void sortData() {
+        Collections.sort(data, getSorter());
+    }
 
-	private Comparator<Goal> getSorter() {
-		return new Comparator<Goal>() {
+    private Comparator<Goal> getSorter() {
+        return new Comparator<Goal>() {
 
-			@Override
-			public int compare(Goal o1, Goal o2) {
+            @Override
+            public int compare(Goal o1, Goal o2) {
                 if (getComp(o1).isExpanded()) {
                     if (!getComp(o2).isExpanded()) {
                         return 1;
@@ -44,33 +44,33 @@ public class GoalContainer extends GatewayContainer<Goal> {
                     }
                 }
 
-				return 0;
-			}
-		};
-	}
+                return 0;
+            }
+        };
+    }
 
-	@Override
-	public void refresh() {
-		super.refresh();
-	}
+    @Override
+    public void refresh() {
+        super.refresh();
+    }
 
-	@Override
-	protected boolean checkCustomCompRequired(Goal sub) {
-		return getComp(sub).isExpanded();
-	}
+    @Override
+    protected boolean checkCustomCompRequired(Goal sub) {
+        return getComp(sub).isExpanded();
+    }
 
-	@Override
-	protected GoalGatewayComp getComp(Goal e) {
-		return (GoalGatewayComp) super.getComp(e);
-	}
+    @Override
+    protected GoalGatewayComp getComp(Goal e) {
+        return (GoalGatewayComp) super.getComp(e);
+    }
 
-	protected TaskContainer getCustomComp(Goal sub) {
-		return new TaskContainer(sub);
-	}
+    protected TaskContainer getCustomComp(Goal sub) {
+        return new TaskContainer(sub);
+    }
 
-	@Override
-	public G_Panel createComp(Goal e) {
-		return new GoalGatewayComp(e);
-	}
+    @Override
+    public G_Panel createComp(Goal e) {
+        return new GoalGatewayComp(e);
+    }
 
 }

@@ -169,7 +169,7 @@ public class PathBuilder {
                         try {
                             Coordinates coordinates = ((SelfMoveEffect) e).getCoordinates();
                             if (coordinates != null) {
-                                objects = new LinkedList<Obj>(Arrays.asList(unit
+                                objects = new LinkedList<>(Arrays.asList(unit
                                         .getGame().getCellByCoordinate(coordinates)));
                             }
                         } catch (Exception ex) {

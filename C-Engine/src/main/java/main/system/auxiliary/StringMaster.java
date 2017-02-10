@@ -500,7 +500,7 @@ public class StringMaster {
             }
         }
 
-        return new LinkedList<String>(Arrays
+        return new LinkedList<>(Arrays
                 .asList(containerString.split(Pattern.quote(delimiter))));
     }
 
@@ -1093,7 +1093,7 @@ public class StringMaster {
         if (!string.contains(separator)) {
             return "";
         }
-        LinkedList<String> segments = new LinkedList<String>(Arrays.asList(string.split(separator)));
+        LinkedList<String> segments = new LinkedList<>(Arrays.asList(string.split(separator)));
         if (segments.isEmpty()) {
             return "";
         }

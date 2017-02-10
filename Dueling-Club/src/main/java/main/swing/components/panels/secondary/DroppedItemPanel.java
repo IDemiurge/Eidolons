@@ -26,7 +26,7 @@ public class DroppedItemPanel extends G_PagedListPanel<DC_HeroItemObj> {
 
     @Override
     protected G_Component createEmptyPageComponent() {
-        return new DroppedItemPage(new LinkedList<DC_HeroItemObj>());
+        return new DroppedItemPage(new LinkedList<>());
     }
 
     @Override

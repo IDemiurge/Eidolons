@@ -69,7 +69,7 @@ public class XML_Converter {
     }
 
     public static List<Node> getNodeList(Node node) {
-        List<Node> list = new LinkedList<Node>();
+        List<Node> list = new LinkedList<>();
         if (node == null) {
             return list;
         }
@@ -92,7 +92,7 @@ public class XML_Converter {
     }
 
     public static List<Node> getNodeListFromFirstChild(Node node) {
-        List<Node> list = new LinkedList<Node>();
+        List<Node> list = new LinkedList<>();
         NodeList nl = node.getFirstChild().getChildNodes();
         for (int i = 0; i < nl.getLength(); i++) {
             list.add(nl.item(i));
@@ -178,7 +178,7 @@ public class XML_Converter {
 
     public static String getXmlFromNode(DefaultMutableTreeNode node)
             throws java.lang.ClassCastException {
-        String nodeName = "";
+        String nodeName;
         if (!(node.getUserObject() instanceof AE_Item)) {
             return "";
         }
@@ -344,7 +344,7 @@ public class XML_Converter {
             }
         }
         if (typeGroupsList == null) {
-            return new LinkedList<ObjType>();
+            return new LinkedList<>();
         }
         for (Node groupNode : typeGroupsList) {
             OBJ_TYPES obj_type = OBJ_TYPES.getType(groupNode.getNodeName());

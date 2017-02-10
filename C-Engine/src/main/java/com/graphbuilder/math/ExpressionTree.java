@@ -179,7 +179,7 @@ public class ExpressionTree {
                         }
                     }
 
-                    double d = 0;
+                    double d;
                     String _d = s.substring(i, j);
 
                     try {

@@ -80,7 +80,7 @@ public class DC_Player extends Player {
 
     public Set<Obj> getControlledUnits() {
 
-        Set<Obj> units = new HashSet<Obj>();
+        Set<Obj> units = new HashSet<>();
         for (DC_HeroObj unit : (getGame().getUnits())) {
             if (unit.getOwner() == this) {
                 units.add(unit);

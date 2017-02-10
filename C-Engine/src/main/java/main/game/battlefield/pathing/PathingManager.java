@@ -20,7 +20,7 @@ public class PathingManager {
     A_StarAlgorithm alg;
     private BattleFieldGrid grid; // set on game init()
     private PathNode[][] nodeGrid;
-    private List<PathNode> nodeList = new LinkedList<PathNode>();
+    private List<PathNode> nodeList = new LinkedList<>();
 
     public PathingManager() {
     }
@@ -101,7 +101,7 @@ public class PathingManager {
 
     public List<Obj> getAdjacentObjs(Coordinates coordinates, boolean cell) {
 
-        List<Obj> list = new LinkedList<Obj>();
+        List<Obj> list = new LinkedList<>();
         // for (xXx:MathMaster.permutations(bla!)){
         checkCoordinatesForObj(list, coordinates, 0, 1, cell);
         checkCoordinatesForObj(list, coordinates, 1, 0, cell);
@@ -156,7 +156,7 @@ public class PathingManager {
     }
 
     private void checkNode(List<PathNode> nodeList, int x, int y) {
-        PathNode node = null;
+        PathNode node;
         try {
             node = nodeGrid[x][y];
         } catch (Exception e) {
@@ -168,7 +168,7 @@ public class PathingManager {
     }
 
     public List<PathNode> getAdjacentNodes(Coordinates c) {
-        List<PathNode> nodeList = new LinkedList<PathNode>();
+        List<PathNode> nodeList = new LinkedList<>();
 
         checkNode(nodeList, c.x + 1, c.y - 1);
         checkNode(nodeList, c.x, c.y - 1);

@@ -53,7 +53,7 @@ public class DC_BuffPanel extends G_ListPanel<DC_BuffObj> {
             return getEmptyData();
         }
 
-        data = new LinkedList<DC_BuffObj>();
+        data = new LinkedList<>();
         for (Attachment attachment : attachments) {
             if (attachment instanceof DC_BuffObj) {
                 data.add((DC_BuffObj) attachment);

@@ -24,7 +24,7 @@ public class ListRenderer implements ListCellRenderer<String> {
     }
 
     public static JLabel getImgComp(boolean isSelected, String value, Entity entity) {
-        JLabel component = null;
+        JLabel component;
         component = new JLabel(getCompIcon(entity, isSelected));
         component.setToolTipText(value);
         if (ImageManager.getImage(entity.getImagePath()) == null) {
@@ -57,7 +57,7 @@ public class ListRenderer implements ListCellRenderer<String> {
 
     @Override
     public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
-        Component component = null;
+        Component component;
         value = VariableManager.removeVarPart(value);
         if (!ENUM) {
             ObjType type = DataManager.getType(value, TYPE);

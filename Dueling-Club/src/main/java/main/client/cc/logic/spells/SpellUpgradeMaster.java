@@ -44,7 +44,7 @@ public class SpellUpgradeMaster {
         for (SPELL_UPGRADE u : getActiveUpgradesFromSpell(spell)) {
             Image img = u.getGlyphSmallImage();
 
-            int x = 0;
+            int x;
             int y = 0;
             if (!top_corner) {
                 x = size - img.getHeight(null);

@@ -201,7 +201,7 @@ public class Obj extends Entity {
 
     public void addBuff(BuffObj buff) {
         if (getBuffs() == null) {
-            setBuffs(new DequeImpl<BuffObj>());
+            setBuffs(new DequeImpl<>());
         }
         this.getBuffs().add(buff);
 
@@ -271,7 +271,7 @@ public class Obj extends Entity {
 
     public List<String> getPassiveAbils() {
         if (passiveAbils == null) {
-            passiveAbils = new LinkedList<String>();
+            passiveAbils = new LinkedList<>();
         }
         return passiveAbils;
     }

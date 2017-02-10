@@ -22,7 +22,7 @@ public class GameConnector implements Connector {
 
     private static final String HERO_CHOICE = "Are you ready to choose your hero?";
     HostClientConnection connection;
-    ConcurrentHashMap<User, HostClientConnection> connections = new ConcurrentHashMap<User, HostClientConnection>();
+    ConcurrentHashMap<User, HostClientConnection> connections = new ConcurrentHashMap<>();
     private boolean host = false;
     private HostedGame hostedGame;
     private DC_Game game;

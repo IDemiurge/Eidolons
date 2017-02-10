@@ -184,7 +184,7 @@ public class Filter<T extends Entity> extends ReferredElement {
     public Set<Integer> getObjectIds() {
         // TYPE!
         Set<Integer> resultset;
-        resultset = new HashSet<Integer>();
+        resultset = new HashSet<>();
         if (game == null) {
             game = Game.game;
         }
@@ -207,7 +207,7 @@ public class Filter<T extends Entity> extends ReferredElement {
             return game.getObjects(TYPE);
         }
 
-        Set<Obj> filteredSet = new HashSet<Obj>();
+        Set<Obj> filteredSet = new HashSet<>();
         for (OBJ_TYPE TYPE : TYPES) {
             filteredSet.addAll(game.getObjects(TYPE));
         }
@@ -260,7 +260,7 @@ public class Filter<T extends Entity> extends ReferredElement {
     }
 
     public List<T> filter(Collection<T> objects) {
-        List<T> resultset = new LinkedList<T>();
+        List<T> resultset = new LinkedList<>();
         for (T obj : objects) {
             if (match(obj)) {
                 resultset.add(obj);
@@ -273,7 +273,7 @@ public class Filter<T extends Entity> extends ReferredElement {
 
     public Collection<Integer> getDynamicExceptions() {
         if (dynamicExceptions == null) {
-            dynamicExceptions = new DequeImpl<Integer>();
+            dynamicExceptions = new DequeImpl<>();
         }
         return dynamicExceptions;
     }

@@ -96,7 +96,7 @@ public class PrincipleChoiceView extends ChoiceView<PRINCIPLES> implements
 
     @Override
     protected void initData() {
-        data = new LinkedList<PRINCIPLES>(Arrays.asList(PRINCIPLES.values()));
+        data = new LinkedList<>(Arrays.asList(PRINCIPLES.values()));
     }
 
     protected boolean isSaveHero() {
@@ -139,7 +139,7 @@ public class PrincipleChoiceView extends ChoiceView<PRINCIPLES> implements
 
         VISUALS V = (isSelected) ? VISUALS.ENUM_CHOICE_COMP_SELECTED : VISUALS.ENUM_CHOICE_COMP;
 
-        return new ListTextItem<PRINCIPLES>(V, value, isSelected, blocked);
+        return new ListTextItem<>(V, value, isSelected, blocked);
 
     }
 

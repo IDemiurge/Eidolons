@@ -48,7 +48,7 @@ public class ConcealmentRule {
     }
 
     public static int getGamma(boolean minusForVagueLight, DC_HeroObj source, DC_Obj target) {
-        Integer gamma = null;
+        Integer gamma;
         // = cache.getOrCreate(target);
         // if (gamma != null)
         // return gamma;

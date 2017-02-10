@@ -80,7 +80,7 @@ public class DC_Builder extends Builder {
         comp = createMainComponent();
 
         comp.setBackground(ColorManager.getTranslucent(ColorManager.OBSIDIAN, 10));
-        levelGrids = new HashMap<Dungeon, DC_BattleFieldGrid>();
+        levelGrids = new HashMap<>();
         newDungeon((state.getGame().getDungeonMaster().getDungeon()));
     }
 

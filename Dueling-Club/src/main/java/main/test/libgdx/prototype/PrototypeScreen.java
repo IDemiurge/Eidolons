@@ -33,8 +33,11 @@ import static main.system.GuiEventType.CREATE_UNITS_MODEL;
  * Created by PC on 07.11.2016.
  */
 public class PrototypeScreen implements Screen {
-    World world;
+    static float mousX;
+    static float mousY;
+    private static boolean gridadded = false;
     public Stage stage;
+    World world;
     float viewport_width = Gdx.graphics.getWidth();
     float viewport_height = Gdx.graphics.getHeight();
     RayHandler rayHandler;
@@ -50,18 +53,13 @@ public class PrototypeScreen implements Screen {
     long counter = 0;
     ConeLight coneLight;
     ConeLight coneLight1;
-    private ArrayList<Texture> regions;
-    private SpriteAnimation anim;
     Sprite sprite;
     SpriteBatch batch;
     DequeImpl<MicroObj> units;
-    private static boolean gridadded = false;
     FireLightProt fireLightProt;
     ParticleInterface test;
-    static float mousX;
-    static float mousY;
-
-
+    private ArrayList<Texture> regions;
+    private SpriteAnimation anim;
 
     @Override
     public void show() {
@@ -80,7 +78,6 @@ public class PrototypeScreen implements Screen {
             units = (DequeImpl<MicroObj>) param.get();
         });
 
-        PathFinder.init();
         regions = new ArrayList<>();
         for (int i = 1;i<18;i++){
             Texture local_Texture = new Texture(PathFinder.getImagePath() + "mini\\sprites\\impact\\electro impact\\e"+i+".jpg");

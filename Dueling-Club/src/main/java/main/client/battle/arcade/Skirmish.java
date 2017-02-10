@@ -25,7 +25,7 @@ public class Skirmish extends Scenario {
 
     public Skirmish(ObjType missionType, String levelPath) {
         super(missionType);
-        ObjType type = null;
+        ObjType type;
         if (DataManager.isTypeName(levelPath)) {
             type = DataManager.getType(levelPath, OBJ_TYPES.DUNGEONS);
             dungeon = new Dungeon(type);

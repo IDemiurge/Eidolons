@@ -52,7 +52,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     }
 
     private void generateWrappedActive() {
-        String typeName = null;
+        String typeName;
         setWrappedWeapon(new DC_WeaponObj(type, owner, getGame(), ref));
 
         if (checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.AMMO + "")) {

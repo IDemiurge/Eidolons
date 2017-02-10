@@ -28,7 +28,7 @@ public class HeroChoiceSequence extends ChoiceSequence {
     }
 
     public void initDefaultHeroSequence() {
-        views = new LinkedList<ChoiceView>();
+        views = new LinkedList<>();
         if (hero.getGame().getGameType() == GAME_TYPE.SCENARIO) {
             if (ScenarioMaster.getScenario() != null) {
 

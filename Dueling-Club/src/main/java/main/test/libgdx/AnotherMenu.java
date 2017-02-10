@@ -52,7 +52,6 @@ public class AnotherMenu implements Screen {
 
 //        path = new PathFinder();
 //        String localPath = path.
-        PathFinder.init();
         String path = PathFinder.getImagePath();
         img = new Texture(path + "mini\\item\\mage armor.jpg");
 

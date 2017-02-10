@@ -217,7 +217,7 @@ public class GameStarter {
     }
 
     private void initMap() {
-        DC_Map map = null;
+        DC_Map map;
         if (getMapData() != null) {
             map = new DC_Map(game, getMapData());
         } else {

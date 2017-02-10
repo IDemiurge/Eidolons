@@ -18,8 +18,8 @@ public abstract class ServerConnector {
 
     protected static Viewer viewer;
 
-    protected static Map<NetCode, Boolean> success = new HashMap<NetCode, Boolean>();
-    protected static Map<NetCode, Boolean> failure = new HashMap<NetCode, Boolean>();
+    protected static Map<NetCode, Boolean> success = new HashMap<>();
+    protected static Map<NetCode, Boolean> failure = new HashMap<>();
 
     protected static Object TempUserName;
 
@@ -216,7 +216,7 @@ public abstract class ServerConnector {
         PING(new CODE_PROPS[]{CODE_PROPS.INPUT_IRRELEVANT}),
         USER_REGISTRATION_SUCCESS,;
 
-        public List<CODE_PROPS> props = new ArrayList<CODE_PROPS>();
+        public List<CODE_PROPS> props = new ArrayList<>();
 
         CODES() {
 

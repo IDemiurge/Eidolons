@@ -29,24 +29,24 @@ public class ContentManager {
     public static final String OLD_EMPTY_VALUE = "[...]";
     private static final String MASTERY = "_MASTERY";
 
-    private static Map<String, List<String>> valueNamesMap = new ConcurrentMap<String, List<String>>();
+    private static Map<String, List<String>> valueNamesMap = new ConcurrentMap<>();
 
-    private static Map<String, List<String>> valueNamesMapAV = new ConcurrentMap<String, List<String>>();
+    private static Map<String, List<String>> valueNamesMapAV = new ConcurrentMap<>();
 
     private static List<PROPERTY> props;
     private static List<PARAMETER> params;
     private static List<String> sprops;
     private static List<String> sparams;
-    private static Map<String, List<String>> spropListsMap = new ConcurrentMap<String, List<String>>(
-     400, 0.75f);
-    private static Map<String, List<String>> sparamListsMap = new ConcurrentMap<String, List<String>>(
-     400, 0.75f);
+    private static Map<String, List<String>> spropListsMap = new ConcurrentMap<>(
+            400, 0.75f);
+    private static Map<String, List<String>> sparamListsMap = new ConcurrentMap<>(
+            400, 0.75f);
 
-    private static Map<String, List<String>> spropListsMapAV = new ConcurrentMap<String, List<String>>();
-    private static Map<String, List<String>> sparamListsMapAV = new ConcurrentMap<String, List<String>>();
+    private static Map<String, List<String>> spropListsMapAV = new ConcurrentMap<>();
+    private static Map<String, List<String>> sparamListsMapAV = new ConcurrentMap<>();
 
-    private static Map<String, List<PROPERTY>> propListsMap = new ConcurrentMap<String, List<PROPERTY>>(
-     400, 0.75f);
+    private static Map<String, List<PROPERTY>> propListsMap = new ConcurrentMap<>(
+            400, 0.75f);
     private static Map<String, List<PARAMETER>> paramListsMap = new ConcurrentMap<>(400, 0.75f);
     private static Map<String, List<VALUE>> valueListsMap = new ConcurrentMap<>();
     private static Map<String, List<VALUE>> valueListsMapAV = new ConcurrentMap<>();
@@ -54,13 +54,13 @@ public class ContentManager {
     private static Map<String, List<PROPERTY>> propListsMapAV = new ConcurrentMap<>();
     private static Map<String, List<PARAMETER>> paramListsMapAV = new ConcurrentMap<>();
 
-    private static List<VALUE> lowPriorityValues = new ArrayList<VALUE>();
+    private static List<VALUE> lowPriorityValues = new ArrayList<>();
 
     private static List<String> highPriorityValues = new ArrayList<>();
-    private static List<VALUE> superLowPriorityValues = new ArrayList<VALUE>();
-    private static List<PARAMETER> attributes = new ArrayList<PARAMETER>();
-    private static List<PARAMETER> masteries = new ArrayList<PARAMETER>();
-    private static List<PARAMETER> masteryScores = new ArrayList<PARAMETER>();
+    private static List<VALUE> superLowPriorityValues = new ArrayList<>();
+    private static List<PARAMETER> attributes = new ArrayList<>();
+    private static List<PARAMETER> masteries = new ArrayList<>();
+    private static List<PARAMETER> masteryScores = new ArrayList<>();
 
     private static Map<String, List<VALUE>> AV_IgnoredValues;
     private static List<PARAMETER> unitParameters;
@@ -88,8 +88,8 @@ public class ContentManager {
 
         props = propz;
         params = paramz;
-        sparams = new ArrayList<String>(params.size());
-        sprops = new ArrayList<String>(props.size());
+        sparams = new ArrayList<>(params.size());
+        sprops = new ArrayList<>(props.size());
         for (PROPERTY p : props) {
             sprops.add(p.getName());
             if (p.isLowPriority()) {
@@ -182,7 +182,7 @@ public class ContentManager {
     }
 
     private static void initCharParams() {
-        charParameters = new ArrayList<PARAMETER>(getParamList().size());
+        charParameters = new ArrayList<>(getParamList().size());
         for (PARAMETER p : getParamList()) {
             if (p.getEntityType().equals(OBJ_TYPES.CHARS.getName())) {
                 charParameters.add(p);
@@ -193,7 +193,7 @@ public class ContentManager {
             }
         }
 
-        filteredCharParameters = new ArrayList<PARAMETER>(charParameters.size());
+        filteredCharParameters = new ArrayList<>(charParameters.size());
         for (PARAMETER p : charParameters) {
             if (!p.isDynamic()) {
                 if (!p.isLowPriority()) {
@@ -204,7 +204,7 @@ public class ContentManager {
     }
 
     private static void initUnitParams() {
-        unitParameters = new ArrayList<PARAMETER>(getParamList().size());
+        unitParameters = new ArrayList<>(getParamList().size());
         for (PARAMETER p : getParamList()) {
             if (p.getEntityType().equals(OBJ_TYPES.UNITS.getName())) {
                 unitParameters.add(p);
@@ -215,7 +215,7 @@ public class ContentManager {
             }
         }
 
-        filteredUnitParameters = new ArrayList<PARAMETER>(unitParameters.size());
+        filteredUnitParameters = new ArrayList<>(unitParameters.size());
         for (PARAMETER p : unitParameters) {
             if (!p.isDynamic()) {
                 if (!p.isLowPriority()) {
@@ -511,7 +511,7 @@ public class ContentManager {
         if (paramList != null) {
             return paramList;
         }
-        paramList = new LinkedList<PARAMETER>();
+        paramList = new LinkedList<>();
         for (PARAMETER param : params) {
             if (!dynamic) {
                 if (param.isDynamic() && !param.isWriteToType()) {
@@ -536,7 +536,7 @@ public class ContentManager {
         if (paramList != null) {
             return paramList;
         }
-        paramList = new LinkedList<String>();
+        paramList = new LinkedList<>();
         for (PARAMETER param : getParamsForType(entity, dynamic)) {
 
             paramList.add(param.getName());
@@ -554,7 +554,7 @@ public class ContentManager {
         if (propList != null) {
             return propList;
         }
-        propList = new LinkedList<VALUE>();
+        propList = new LinkedList<>();
 
         propList.addAll(getPropsForType(TYPE, dynamic));
         propList.addAll(getParamsForType(TYPE, dynamic));
@@ -571,7 +571,7 @@ public class ContentManager {
         if (propList != null) {
             return propList;
         }
-        propList = new LinkedList<PROPERTY>();
+        propList = new LinkedList<>();
         for (PROPERTY prop : props) {
             if (!dynamic) {
                 if (prop.isDynamic() && !prop.isWriteToType()) {
@@ -600,7 +600,7 @@ public class ContentManager {
         if (propList != null) {
             return propList;
         }
-        propList = new LinkedList<String>();
+        propList = new LinkedList<>();
         for (PROPERTY prop : getPropsForType(entity, dynamic)) {
 
             propList.add(prop.getName());
@@ -634,7 +634,7 @@ public class ContentManager {
         if (valueNames != null) {
             return valueNames;
         }
-        valueNames = new LinkedList<String>();
+        valueNames = new LinkedList<>();
         appendLast(valueNames, getParamNames(objType, !av));
         // appendLast(valueNames, masteries);
         // appendFirst(valueNames, attributes);

@@ -140,7 +140,7 @@ public class DC_PagedInfoPanel extends G_PagePanel<VALUE> {
 
     public Map<Entity, SpellUpgradePage> getSupCache() {
         if (supCache == null) {
-            supCache = new HashMap<Entity, SpellUpgradePage>();
+            supCache = new HashMap<>();
         }
         return supCache;
     }

@@ -20,7 +20,7 @@ public class RangeRule {
 
     public static int getMod(boolean dmg_atk, boolean close_long, DC_HeroObj source,
                              DC_HeroObj target, DC_WeaponObj weapon, DC_ActiveObj action) {
-        PARAMS param = null;
+        PARAMS param;
         if (close_long) {
             param = dmg_atk ? PARAMS.CLOSE_QUARTERS_DAMAGE_MOD : PARAMS.CLOSE_QUARTERS_ATTACK_MOD;
         } else {

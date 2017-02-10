@@ -12,7 +12,6 @@ import main.game.battlefield.DamageMaster;
 import main.game.battlefield.attack.Attack;
 import main.system.ai.logic.target.EffectMaster;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class FutureBuilder {
@@ -27,7 +26,7 @@ public class FutureBuilder {
             active.construct();
         }
 
-        List<Effect> effects = new LinkedList<>();
+        List<Effect> effects;
         effects = EffectMaster.getEffectsOfClass(EffectMaster.getEffectsFromSpell(active),
                 attack ? AttackEffect.class : DealDamageEffect.class);
         // TODO special effects?!
@@ -38,7 +37,7 @@ public class FutureBuilder {
     }
 
     public static int getDamage(DC_ActiveObj active, Obj targetObj, Effect e) {
-        int damage = 0;
+        int damage;
         Ref ref = active.getOwnerObj().getRef().getCopy();
         ref.setTarget(targetObj.getId());
         ref.setID(KEYS.ACTIVE, active.getId());

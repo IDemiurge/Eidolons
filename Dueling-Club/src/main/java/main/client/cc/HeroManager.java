@@ -538,7 +538,7 @@ public class HeroManager {
         if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.CLASSES) {
             classAdded(hero, type);
         }
-        int cost = 0;
+        int cost;
         if (!free) {
             cost = subtractCost(hero, type, TYPE, PROP);
             checkShop(type, TYPE, PROP, cost, true);
@@ -832,7 +832,7 @@ public class HeroManager {
             return;
         }
 
-        int cost = 0;
+        int cost;
         if (!free) {
             cost = modifyCostParam(hero, type, TYPE, true, prop);
             checkShop(type, TYPE, prop, cost, false);

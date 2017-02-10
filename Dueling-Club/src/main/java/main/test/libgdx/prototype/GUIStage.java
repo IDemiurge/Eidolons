@@ -27,7 +27,6 @@ public class GUIStage extends Stage {
 
         super(new FitViewport(viewport_width,viewport_height));
         setDebugAll(true);
-        PathFinder.init();
 //        background = new DC_GDX_Background(PathFinder.getImagePath()).init();
         topPanel = new TopPanel(PathFinder.getImagePath()).init();
         topPanel.setX(viewport_width/2-topPanel.getWidth()/2);

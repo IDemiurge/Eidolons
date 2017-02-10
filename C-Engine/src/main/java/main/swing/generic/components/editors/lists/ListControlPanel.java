@@ -277,10 +277,10 @@ public class ListControlPanel<E> extends JPanel implements ActionListener {
             Object e = EnumMaster.getEnumConst(varClass, element.toString());
             if (e instanceof VarHolder) {
                 this.varHolder = (VarHolder) e;
-                varTypes = new LinkedList<Object>(Arrays.asList(varHolder.getVarClasses()));
+                varTypes = new LinkedList<>(Arrays.asList(varHolder.getVarClasses()));
             }
         } else if (varClass == VariableManager.STRING_VAR_CLASS) {
-            varTypes = new LinkedList<Object>(Arrays.asList(String.class));
+            varTypes = new LinkedList<>(Arrays.asList(String.class));
         }
     }
 

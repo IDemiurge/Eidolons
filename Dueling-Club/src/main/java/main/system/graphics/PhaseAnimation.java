@@ -870,7 +870,7 @@ public abstract class PhaseAnimation implements ANIM {
 
     protected int drawTextColored(boolean source, Boolean negative, String str, Font font, int x,
                                   int y) {
-        Color c = null;
+        Color c;
         boolean enemy = ((source ? this.source : getTarget())).getOwner().isEnemy();
         if (negative == null) {
             c = getDefaultTextColor(); // ?
@@ -1048,7 +1048,7 @@ public abstract class PhaseAnimation implements ANIM {
     public boolean draw(Graphics g) {
         area = null;
         AnimPhase phase = this.phase;
-        mouseMap = new HashMap<Rectangle, MouseItem>();
+        mouseMap = new HashMap<>();
         if (phase == null) {
             return false;
         }
@@ -1461,7 +1461,7 @@ public abstract class PhaseAnimation implements ANIM {
 
     public Stack<AnimPhase> getBufferedPhases() {
         if (bufferedPhases == null) {
-            bufferedPhases = new Stack<AnimPhase>();
+            bufferedPhases = new Stack<>();
         }
         return bufferedPhases;
     }

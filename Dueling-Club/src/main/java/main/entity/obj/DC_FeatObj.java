@@ -172,7 +172,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
         }
         if (quotientSum != 0) {
 
-            String paramName = null;
+            String paramName;
 
             if (getOBJ_TYPE_ENUM() == OBJ_TYPES.CLASSES) {
                 paramName = DC_ContentManager.getMainAttributeForClass(this);
@@ -309,7 +309,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
     }
 
     private void modifyHeroParam(PARAMETER param) {
-        int amount = 0;
+        int amount;
         try {
             amount = getIntParam(param);
         } catch (NumberFormatException e) {
@@ -345,14 +345,14 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
 
     public Map<PARAMETER, String> getModMap() {
         if (modMap == null) {
-            modMap = new HashMap<PARAMETER, String>();
+            modMap = new HashMap<>();
         }
         return modMap;
     }
 
     public Map<PARAMETER, String> getBonusMap() {
         if (bonusMap == null) {
-            bonusMap = new HashMap<PARAMETER, String>();
+            bonusMap = new HashMap<>();
         }
         return bonusMap;
     }

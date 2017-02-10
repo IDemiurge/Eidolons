@@ -1,9 +1,8 @@
 package main.data.filesys;
 
-import main.system.auxiliary.LogMaster;
-import main.system.launch.CoreEngine;
-
 import java.io.File;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class PathFinder {
 
@@ -13,10 +12,8 @@ public class PathFinder {
     private static final String ABILITY_TEMPLATES_PATH = MICRO_MODULE_NAME + "//templates";
     private static String MACRO_MODULE_NAME = "macro";
     private static String XML_PATH;
-    private static String CLASS_PATH = "";
-    private static String fullpath;
+    private static String FULL_PATH;
     private static String ENGINE_PATH = "";
-    private static String RESOURCE_PATH = "";
     private static String IMG_PATH;
     private static String SND_PATH;
     private static String FONT_PATH;
@@ -24,50 +21,71 @@ public class PathFinder {
     private static String MACRO_TYPES_PATH;
     private static boolean PRESENTATION_MODE;
     private static String RES_PATH = "";
+    private static Lock initLock = new ReentrantLock();
+    private static volatile boolean isInitialized = false;
 
-    public static void init() {
+    private static void _init() {
         ClassLoader classLoader = PathFinder.class.getClassLoader();
         File temp = new File(classLoader.getResource("").getFile());
         ENGINE_PATH = new File(temp.getParentFile().toURI()) + File.separator;
+
+/*
         if (CoreEngine.isArcaneVault()) {
             ENGINE_PATH = ENGINE_PATH.replace("Arcane-Vault", "Dueling-Club");
         }
         if (CoreEngine.isArcaneTower()) {
             ENGINE_PATH = ENGINE_PATH.replace("Arcane-Tower", "Dueling-Club");
         }
-        fullpath = System.getProperty("java.class.path");
-        main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, fullpath);
-        // Err.info(fullpath);
+*/
 
-        if (fullpath.contains(System.getProperty("path.separator"))) {
-            setClassPath();
+/*        FULL_PATH = System.getProperty("java.class.path");
+        LogMaster.log(LogMaster.CORE_DEBUG, FULL_PATH);
+
+        if (FULL_PATH.contains(File.separator)) {
             setEnginePath();
-            setRES_PATH("resource" + File.separator);
-        }
+        }*/
 
-        setXML_PATH(new File(temp.getParentFile() + File.separator + "XML") + File.separator);
-        if (CoreEngine.isArcaneVault() || CoreEngine.isArcaneTower()) {
+        RES_PATH = "resource" + File.separator;
+
+        XML_PATH = new File(temp.getParentFile() + File.separator + "XML") + File.separator;
+
+/*        if (CoreEngine.isArcaneVault() || CoreEngine.isArcaneTower()) {
             XML_PATH = XML_PATH.replace("Arcane-Vault", "Dueling-Club");
         }
         if (CoreEngine.isArcaneTower()) {
             XML_PATH = XML_PATH.replace("Arcane-Tower", "Dueling-Club");
-        }
-        IMG_PATH = ENGINE_PATH + getRES_PATH() + "img\\";
+        }*/
 
-        SND_PATH = ENGINE_PATH + getRES_PATH() + "sound\\";
+        IMG_PATH = ENGINE_PATH + RES_PATH + "img\\";
 
-        FONT_PATH = ENGINE_PATH + getRES_PATH() + "Fonts\\";
+        SND_PATH = ENGINE_PATH + RES_PATH + "sound\\";
 
-        setMACRO_TYPES_PATH(getXML_PATH() + MACRO_MODULE_NAME + "\\types\\");
+        FONT_PATH = ENGINE_PATH + RES_PATH + "Fonts\\";
 
-        setTYPES_PATH(getXML_PATH() + MICRO_MODULE_NAME + "\\types\\"
-                + ((PRESENTATION_MODE) ? PRESENTATION : ""));
+        MACRO_TYPES_PATH = XML_PATH + MACRO_MODULE_NAME + "\\types\\";
+
+        TYPES_PATH = XML_PATH + MICRO_MODULE_NAME + "\\types\\"
+                + ((PRESENTATION_MODE) ? PRESENTATION : "");
 
     }
 
-    private static void setEnginePath() {
+    public static void init() {
+        if (!isInitialized) {
+            try {
+                initLock.lock();
+                if (!isInitialized) {
+                    _init();
+                    isInitialized = true;
+                }
+            } finally {
+                initLock.unlock();
+            }
+        }
+    }
 
-        for (String s : fullpath.split(System.getProperty("path.separator"))) {
+/*    private static void setEnginePath() {
+
+        for (String s : FULL_PATH.split(File.separator)) {
 
             if (s.contains("C-Engine") && s.contains("bin")) {
 
@@ -76,167 +94,154 @@ public class PathFinder {
             }
         }
 
-    }
-
-    private static void setClassPath() {
-
-        String str = fullpath.substring(0, fullpath.indexOf(System.getProperty("path.separator")));
-        CLASS_PATH = str.substring(0, str.length() - 3);
-
-    }
+    }*/
 
     public static String getDungeonFolder() {
-        return getXML_PATH() + "\\dungeons\\";
+        init();
+        return XML_PATH + "\\dungeons\\";
     }
 
     public static String getDungeonMissionFolder() {
-        return getXML_PATH() + "\\dungeons\\missions\\";
+        init();
+        return XML_PATH + "\\dungeons\\missions\\";
     }
 
     public static String getSkirmishBattlefieldFolder() {
+        init();
         return getDungeonLevelFolder() + "\\skirmish\\battlefields\\";
     }
 
     public static String getDungeonLevelFolder() {
-        return getXML_PATH() + "\\dungeons\\levels\\";
+        init();
+        return XML_PATH + "\\dungeons\\levels\\";
     }
 
     public static String getTextPath() {
-        return getRES_PATH() + "\\text\\";
+        init();
+        return RES_PATH + "\\text\\";
     }
 
     public static String getLogPath() {
+        init();
         return getTextPath() + "\\log\\";
     }
 
     public static String getUnitGroupPath() {
-        return getXML_PATH() + "\\groups\\";
-    }
-
-    public static String getXmlTypesFolderPath() {
-
-        return getTYPES_PATH();
+        init();
+        return XML_PATH + "\\groups\\";
     }
 
     public static String getImagePath() {
-        return IMG_PATH;
-    }
-
-    public static String getDefaultImageLocation() {
+        init();
         return IMG_PATH;
     }
 
     public static String getSoundPath() {
+        init();
         return SND_PATH;
     }
 
     public static String getFontPath() {
+        init();
         return FONT_PATH;
     }
 
     public static String getTemplatesPath() {
-        return getXML_PATH() + ABILITY_TEMPLATES_PATH;
+        init();
+        return XML_PATH + ABILITY_TEMPLATES_PATH;
     }
 
     public static String getBgPicsPath() {
+        init();
         return BG_PATH;
     }
 
     public static String getTYPES_PATH() {
+        init();
         return TYPES_PATH;
-    }
-
-    public static void setTYPES_PATH(String path) {
-        TYPES_PATH = path;
     }
 
     public static void setPresentationMode(boolean PRESENTATION) {
         PRESENTATION_MODE = PRESENTATION;
     }
 
-    public static String getClassPath() {
-        return CLASS_PATH;
-    }
-
     public static String getEnginePath() {
+        init();
         return ENGINE_PATH;
     }
 
     public static String getEnginePathPlusNewResourceProject() {
+        init();
         return ENGINE_PATH + "\\\\resource\\";
     }
+
     public static String getThemedBgPicsPath() {
-        // TODO Auto-generated method stub
+        init();
         return IMG_PATH + "\\mini\\bg\\";
     }
 
     public static String getMACRO_TYPES_PATH() {
+        init();
         return MACRO_TYPES_PATH;
     }
 
-    public static void setMACRO_TYPES_PATH(String mACRO_TYPES_PATH) {
-        MACRO_TYPES_PATH = mACRO_TYPES_PATH;
-    }
-
     public static String getPrefsPath() {
+        init();
         return PathFinder.getEnginePath() + getTextPath() + "prefs\\";
     }
 
-    // public static String getValueIconsPath() {
-    // return VALUE_ICONS_PATH;
-    // }
-
-    public static String getRES_PATH() {
-        return RES_PATH;
-    }
-
-    public static void setRES_PATH(String rES_PATH) {
-        RES_PATH = rES_PATH;
-    }
-
     public static String getWorkspacePath() {
-        return getXML_PATH() + "\\workspaces\\";
+        init();
+        return XML_PATH + "\\workspaces\\";
     }
 
     public static String getXML_PATH() {
+        init();
         return XML_PATH;
     }
 
-    public static void setXML_PATH(String xML_PATH) {
-        XML_PATH = xML_PATH;
-    }
-
     public static String getMapBlockFolderPath() {
+        init();
         return getLevelEditorPath() + "blocks\\";
     }
 
     public static String getLevelEditorPath() {
-        return getXML_PATH() + "Level Editor\\";
+        init();
+        return XML_PATH + "Level Editor\\";
     }
 
     public static String getSpellUpgradeGlyphsFolder() {
+        init();
         return getImagePath() + "ui\\glyphs\\";
     }
 
     public static boolean isFullPath(String path) {
+        init();
         return path.contains(ENGINE_PATH);
     }
+
     public static String getSfxPath() {
-        return getImagePath()+ "mini\\sfx\\";
+        init();
+        return getImagePath() + "mini\\sfx\\";
     }
+
     public static String getSpritesPath() {
-        return getImagePath()+ "mini\\sprites\\";
+        init();
+        return getImagePath() + "mini\\sprites\\";
     }
 
     public static String getParticlePresetPath() {
+        init();
         return getImagePath() + "mini\\sfx\\";
     }
 
     public static String getParticleImagePath() {
+        init();
         return getParticlePresetPath() + "images\\";
     }
 
     public static String removeSpecificPcPrefix(String imagePath) {
+        init();
         return imagePath.replace(getEnginePath(), "");
     }
 }

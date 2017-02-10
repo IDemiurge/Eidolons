@@ -50,7 +50,7 @@ public class ContainerTextElement extends WrappedTextComp implements EntityValue
             return null;
         }
         int id = entity.getId();
-        Ref ref = null;
+        Ref ref;
         // if (entity.getGame().isSimulation())
         // ref = CharacterCreator.getHeroPanel().getHero().getRef();
         // else TODO

@@ -3,7 +3,6 @@ package main.client.cc.gui;
 import main.client.battle.arcade.PartyManager;
 import main.client.cc.CharacterCreator;
 import main.client.cc.gui.neo.HeroPanel;
-import main.client.cc.gui.neo.tabs.HC_Tab;
 import main.client.cc.gui.neo.tabs.HC_TabPanel;
 import main.client.cc.gui.neo.tabs.TabChangeListener;
 import main.client.cc.logic.party.PartyObj;
@@ -35,7 +34,7 @@ public class HeroTabsPanel extends G_Panel implements TabChangeListener {
 
     public HeroTabsPanel(DC_HeroObj... heroes) {
         super();
-        tabs = new HC_TabPanel(new LinkedList<HC_Tab>());
+        tabs = new HC_TabPanel(new LinkedList<>());
         tabs.setChangeListener(this);
         top = new DC_TopPanel(CharacterCreator.getGame());
 

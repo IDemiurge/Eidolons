@@ -20,7 +20,7 @@ public class TabPage extends G_Panel {
         int i = 0;
         for (HC_Tab tab : list) {
 
-            Component comp = null;
+            Component comp;
             if (tab == null) {
                 comp = generateEmptyTabComp(i == list.size() - 1);
             } else {

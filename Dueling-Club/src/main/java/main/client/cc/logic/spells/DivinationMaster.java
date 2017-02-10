@@ -61,7 +61,7 @@ public class DivinationMaster {
                 DC_Formulas.DIVINATION_MAX_SD_FORMULA.toString(),
                 StringMaster.getValueRef(KEYS.MATCH, (PARAMS.SPELL_DIFFICULTY)));
 
-        DC_SpellObj spell = null;
+        DC_SpellObj spell;
         spellGroups = initSpellGroups();
 
         if (spellGroups.isEmpty()) {

@@ -78,7 +78,7 @@ public class ActivesConstructor {
     }
 
     public static void setAnimForEffects(DC_ActiveObj entity) {
-        List<ActiveObj> list = new LinkedList<ActiveObj>(entity.getActives());
+        List<ActiveObj> list = new LinkedList<>(entity.getActives());
         for (Active active : list) {
             for (Ability abil : ((AbilityObj) active).getAbilities().getAbils()) {
                 for (Effect effect : ((Ability) abil).getEffects().getEffects()) {
@@ -103,7 +103,7 @@ public class ActivesConstructor {
             return;
         }
 
-        List<ActiveObj> list = new LinkedList<ActiveObj>(entity.getActives());
+        List<ActiveObj> list = new LinkedList<>(entity.getActives());
 
         Effects effects = new Effects();
 
@@ -326,7 +326,7 @@ public class ActivesConstructor {
         }
 
         for (String mod : StringMaster.openContainer(property)) {
-            Condition targetingModConditions = null;
+            Condition targetingModConditions;
             TARGETING_MODIFIERS MOD = new EnumMaster<TARGETING_MODIFIERS>().retrieveEnumConst(
                     TARGETING_MODIFIERS.class, mod);
             if (MOD == null) {
@@ -517,7 +517,7 @@ public class ActivesConstructor {
         if (actives.get(0) == null) {
             return null;
         }
-        Targeting targeting = null;
+        Targeting targeting;
         try {
             targeting = ((AbilityType) ((AbilityObj) actives.get(0)).getType()).getAbilities()
                     .getTargeting();

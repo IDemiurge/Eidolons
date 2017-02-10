@@ -282,7 +282,7 @@ public class HC_PagedListPanel extends G_PagePanel<ObjType> {
     }
 
     public List<HeroListPanel> getLists() {
-        LinkedList<HeroListPanel> linkedList = new LinkedList<HeroListPanel>();
+        LinkedList<HeroListPanel> linkedList = new LinkedList<>();
         linkedList.addAll(Arrays.asList(pages.toArray(new HeroListPanel[pages.size()])));
         return linkedList;
     }

@@ -22,7 +22,7 @@ public class CostCondition extends MicroCondition {
     public boolean check() {
         DC_HeroObj hero = (DC_HeroObj) ref.getTargetObj();
 
-        DC_ActiveObj action = null;
+        DC_ActiveObj action;
 
         if (spell) {
             action = hero.getSpell(actionName);

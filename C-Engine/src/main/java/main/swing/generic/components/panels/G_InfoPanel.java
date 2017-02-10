@@ -33,10 +33,10 @@ public abstract class G_InfoPanel extends G_Panel {
         if (infoObj == null) {
             return getEmptyData();
         }
-        Vector<Vector<String>> data = new Vector<Vector<String>>();
+        Vector<Vector<String>> data = new Vector<>();
 
         for (String v : displayedValues) {
-            Vector<String> vector = new Vector<String>();
+            Vector<String> vector = new Vector<>();
             vector.add(v);
             vector.add(infoObj.getValue(ContentManager.getValue(v)));
             data.add(vector);

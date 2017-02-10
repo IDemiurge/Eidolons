@@ -58,7 +58,7 @@ public class ContainerIconElement extends G_PagePanel<SmallItem> implements Enti
     protected G_Component createEmptyPageComponent() {
         List<SmallItem> emptyList = new LinkedList<>();
         ListMaster.fillWithNullElements(emptyList, pageSize);
-        IconListPanel<SmallItem> iconListPanel = new IconListPanel<SmallItem>(
+        IconListPanel<SmallItem> iconListPanel = new IconListPanel<>(
                 // ListMaster.getEmptyList(pageSize)
                 emptyList, iconSize, pageSize);
         iconListPanel.getList().setCellRenderer(iconListPanel);
@@ -67,7 +67,7 @@ public class ContainerIconElement extends G_PagePanel<SmallItem> implements Enti
 
     @Override
     protected G_Component createPageComponent(List<SmallItem> list) {
-        IconListPanel<SmallItem> iconListPanel = new IconListPanel<SmallItem>(list, iconSize,
+        IconListPanel<SmallItem> iconListPanel = new IconListPanel<>(list, iconSize,
                 pageSize);
         iconListPanel.getList().setCellRenderer(iconListPanel);
         return iconListPanel;

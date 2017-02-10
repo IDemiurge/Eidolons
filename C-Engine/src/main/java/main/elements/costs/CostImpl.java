@@ -18,7 +18,7 @@ import java.util.List;
 public class CostImpl extends ReferredElement implements Cost, Serializable {
 
     protected CostRequirements requirements;
-    protected List<Payment> toPay = new LinkedList<Payment>();
+    protected List<Payment> toPay = new LinkedList<>();
     protected boolean variable = false;
     protected String key = Ref.SOURCE;
     protected ActiveObj activeObj;
@@ -188,7 +188,7 @@ public class CostImpl extends ReferredElement implements Cost, Serializable {
 
     public void addAltCost(Cost cost) {
         if (altCosts == null) {
-            altCosts = new Costs(new LinkedList<Cost>());
+            altCosts = new Costs(new LinkedList<>());
         }
         altCosts.addCost(cost);
 

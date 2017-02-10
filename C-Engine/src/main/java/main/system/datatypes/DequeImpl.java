@@ -5,6 +5,7 @@ import main.system.auxiliary.ListMaster;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 @SuppressWarnings("serial")
@@ -18,7 +19,7 @@ public class DequeImpl<E> extends ConcurrentLinkedDeque<E>
     }
 
     public DequeImpl(Collection<? extends E> asList) {
-        super(asList == null ? new LinkedList<E>() : asList);
+        super(asList == null ? new LinkedList<>() : asList);
     }
 
     public DequeImpl() {
@@ -35,7 +36,7 @@ public class DequeImpl<E> extends ConcurrentLinkedDeque<E>
         return -1;
     }
 
-    public DequeImpl<E> getRemoveAll(Collection<? extends E> list) {
+    public DequeImpl<E> getRemoveAll(List<? extends E> list) {
         // deque = new DequeImpl<>(asList);
         for (E e : list) {
             remove(e);

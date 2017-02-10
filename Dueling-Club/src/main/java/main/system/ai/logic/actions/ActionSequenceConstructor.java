@@ -39,13 +39,13 @@ public class ActionSequenceConstructor {
 
     static int pruneLimit = 5;
     static int defaultDistancePruneFactor = 3;
-    private static Map<List<Coordinates>, List<ActionPath>> pathCache = new HashMap<List<Coordinates>, List<ActionPath>>();
+    private static Map<List<Coordinates>, List<ActionPath>> pathCache = new HashMap<>();
     private static Game game;
     private static DC_HeroObj unit;
     private static List<Coordinates> prioritizedCells;
 
     private static List<Coordinates> pruneTargetCells(Action targetAction, List<Coordinates> list) {
-        TreeMap<Integer, Coordinates> map = new TreeMap<Integer, Coordinates>(SortMaster
+        TreeMap<Integer, Coordinates> map = new TreeMap<>(SortMaster
                 .getNaturalIntegerComparator(false));
 
         Coordinates coordinates = targetAction.getSource().getCoordinates();

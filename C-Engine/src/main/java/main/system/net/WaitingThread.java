@@ -15,9 +15,9 @@ public class WaitingThread implements Runnable {
     private static final long MAX_WAITING_TIME = 30000;
     private static final long WAITING_PERIOD = 1500;
     static int i = 0;
-    private static List<WaitingThread> threads = new LinkedList<WaitingThread>();
+    private static List<WaitingThread> threads = new LinkedList<>();
     private static Viewer VIEWER;
-    private static Set<NetCode> registeredCodes = new HashSet<NetCode>();
+    private static Set<NetCode> registeredCodes = new HashSet<>();
     private static XLinkedMap<NetCode, String> inputMap = new XLinkedMap<>();
     Boolean result = null;
     private boolean input;

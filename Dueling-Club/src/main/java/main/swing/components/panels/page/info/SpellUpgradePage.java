@@ -74,7 +74,7 @@ public class SpellUpgradePage extends InfoPage implements MouseListener {
     public void refresh() {
         for (SPELL_UPGRADE su : comps.keySet()) {
             comps.get(su).setSelected(su == selected);
-            Image glyphImage = null;
+            Image glyphImage;
             if (SpellUpgradeMaster.getActiveUpgradesFromSpell(entity).contains(su)) {
                 glyphImage = su.getGlyphImageActive(); // (su == selected) ?
             } else {

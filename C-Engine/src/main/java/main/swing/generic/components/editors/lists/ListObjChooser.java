@@ -25,7 +25,7 @@ public class ListObjChooser<T> {
 
     public List<T> select(List<T> list, SELECTION_MODE mode) {
         ListChooser.addMod(LC_MODS.TEXT_DISPLAYED);
-        String result = null;
+        String result;
         if (isEntity(list)) {
             result = ListChooser.chooseObj(list, mode);
         } else {

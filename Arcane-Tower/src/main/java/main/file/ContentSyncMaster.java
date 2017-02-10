@@ -9,30 +9,30 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ContentSyncMaster {
-	/*
-	 * AV workspace sync with AT types 
-	 * Generate/Update AT types for Content 
-	 *  
-	 */
-	OBJ_TYPES[] syncedTypes = { OBJ_TYPES.SKILLS, OBJ_TYPES.SPELLS, OBJ_TYPES.CLASSES,
-			OBJ_TYPES.DEITIES, OBJ_TYPES.ITEMS };
+    /*
+     * AV workspace sync with AT types
+     * Generate/Update AT types for Content
+     *
+     */
+    OBJ_TYPES[] syncedTypes = {OBJ_TYPES.SKILLS, OBJ_TYPES.SPELLS, OBJ_TYPES.CLASSES,
+            OBJ_TYPES.DEITIES, OBJ_TYPES.ITEMS};
 
-	public static void generateTypeForDC_Item() {
+    public static void generateTypeForDC_Item() {
 
 //		new ObjType(AT_OBJ_TYPE.TASK);
 
-	}
+    }
 
-	private static boolean checkGroupInWorkspace(String sub) {
-		// WorkspaceMaster
+    private static boolean checkGroupInWorkspace(String sub) {
+        // WorkspaceMaster
 //		scope.getGroups().contains(generic);
 //		new Workspace(name, typeList); // save
-		return false;
-	}
+        return false;
+    }
 
-	public static void generateTypesForDC_Content() {
-		XML_Reader.readTypes(false); // TODO selective?
- List<OBJ_TYPES> syncedTypes = new LinkedList<>();
+    public static void generateTypesForDC_Content() {
+        XML_Reader.readTypes(false); // TODO selective?
+        List<OBJ_TYPES> syncedTypes = new LinkedList<>();
         for (OBJ_TYPES TYPE : syncedTypes) {
             for (String sub : XML_Reader.getSubGroups(TYPE)) {
                 if (!checkGroupInWorkspace(sub)) {
@@ -57,6 +57,6 @@ public class ContentSyncMaster {
 
     public enum CONTENT_SCOPE {
 
-	}
+    }
 
 }

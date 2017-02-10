@@ -9,7 +9,7 @@ import java.util.Vector;
 
 public abstract class GenericList<E> extends JList<E> implements
         ListSelectionListener, ListCellRenderer<E>, Refreshable {
-    protected Vector<E> list = new Vector<E>();
+    protected Vector<E> list = new Vector<>();
     protected RefresherImpl refresher;
 
     public GenericList() {
@@ -29,7 +29,7 @@ public abstract class GenericList<E> extends JList<E> implements
     public abstract void refresh();
 
     public void add(E e) {
-        Vector<E> v = new Vector<E>();
+        Vector<E> v = new Vector<>();
         v.addAll(list);
         v.add(e);
 
@@ -39,7 +39,7 @@ public abstract class GenericList<E> extends JList<E> implements
 
     public void remove(E e) {
 
-        Vector<E> v = new Vector<E>();
+        Vector<E> v = new Vector<>();
         v.addAll(list);
         v.remove(e);
 

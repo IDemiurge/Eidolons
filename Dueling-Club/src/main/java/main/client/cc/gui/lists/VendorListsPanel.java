@@ -42,7 +42,7 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
     protected boolean responsive;
     protected Filter<ObjType> filter;
     protected boolean showAll;
-    protected Map<String, G_Panel> tabMap = new XLinkedMap<String, G_Panel>();
+    protected Map<String, G_Panel> tabMap = new XLinkedMap<>();
     protected BorderChecker borderChecker;
     protected Map<String, Map<String, HC_PagedListPanel>> listMaps = new XLinkedMap<>();
     protected int pageSize = DEFAULT_PAGE_SIZE;
@@ -238,7 +238,7 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
             if (types.isEmpty()) {
                 continue;
             }
-            List<ObjType> data = null;
+            List<ObjType> data;
 
             // if (checkSpecial(listName))
             // data = getSpecialData();

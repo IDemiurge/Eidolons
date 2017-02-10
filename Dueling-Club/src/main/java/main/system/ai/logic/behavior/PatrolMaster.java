@@ -193,7 +193,7 @@ public class PatrolMaster {
 
         Boolean prefLessMoreMiddle = null;
         Integer distance = patrol.getDistance();
-        Coordinates c = null;
+        Coordinates c;
         if (patrol.getBlock() != null) {
             c = CoordinatesMaster.getFarmostCoordinateInDirection(d, patrol.getBlock()
                     .getCoordinates(), prefLessMoreMiddle);

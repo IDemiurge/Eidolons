@@ -14,7 +14,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import main.data.filesys.PathFinder;
 import main.system.images.ImageManager;
 
 import java.awt.*;
@@ -27,7 +26,7 @@ public class Java2DTest implements ApplicationListener {
     private SpriteBatch batch;
     private Texture2D j2dTex;
     private TextureRegion sprite;
-    private List<java.awt.Shape> shapes = new ArrayList<java.awt.Shape>();
+    private List<java.awt.Shape> shapes = new ArrayList<>();
     private int pointer = 0;
 
     public static void main(String[] args) {
@@ -59,7 +58,6 @@ public class Java2DTest implements ApplicationListener {
         sprite = new TextureRegion(j2dTex);
 
 
-        PathFinder.init();
         ImageManager.init();
         Image image = ImageManager.getImage(ImageManager.DEFAULT_BACKGROUND);
         show(image);

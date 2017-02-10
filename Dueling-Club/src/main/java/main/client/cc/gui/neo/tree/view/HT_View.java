@@ -581,7 +581,7 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
     }
 
     private String selectAltLink(String name, String prevData) {
-        LINK_VARIANT variant = null;
+        LINK_VARIANT variant;
         variant = new EnumMaster<LINK_VARIANT>().retrieveEnumConst(LINK_VARIANT.class,
                 new ListChooser(SELECTION_MODE.SINGLE, LINK_VARIANT.class).choose());
         if (variant == null) {
@@ -619,8 +619,8 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
                 }
                 break;
             case SWAP:
-                int swapIndex1 = 0;
-                int swapIndex2 = 0;
+                int swapIndex1;
+                int swapIndex2;
                 if (size == 2) {
                     swapIndex1 = 0;
                     swapIndex2 = 1;

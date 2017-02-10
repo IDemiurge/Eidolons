@@ -165,7 +165,7 @@ public class VisibilityMaster {
             return null;
         }
         String outlinePath = "ui\\outlines\\" + type.toString();
-        OUTLINE_IMAGE outlineImage = null;
+        OUTLINE_IMAGE outlineImage;
         if (type == OUTLINE_TYPE.VAGUE_OUTLINE) {
             outlineImage = getImageVague((DC_HeroObj) obj);
         } else {

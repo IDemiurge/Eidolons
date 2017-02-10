@@ -377,7 +377,7 @@ public class ConditionMaster {
         for (String conditionString : StringMaster.openContainer(string, StringMaster.AND
 
         )) {
-            Condition c = null;
+            Condition c;
             if (conditionString.contains(StringMaster.OR)) {
                 String[] parts = conditionString.split(StringMaster.OR);
                 c = new OrConditions();

@@ -51,7 +51,7 @@ public class ItemCondition extends MicroCondition {
             slot = (weapon) ? ITEM_SLOT.MAIN_HAND.toString() : ITEM_SLOT.ARMOR
                     .toString();
         }
-        Entity item = null;
+        Entity item;
         DC_HeroObj unit = (DC_HeroObj) ref.getObj(obj_ref);
         if (slot.equalsIgnoreCase(KEYS.RANGED.toString())) {
             item = unit.getRef().getObj(KEYS.RANGED);

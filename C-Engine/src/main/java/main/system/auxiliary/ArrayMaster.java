@@ -36,7 +36,7 @@ public class ArrayMaster<T> {
     }
 
     public List<List<T>> get2dList(T[][] array) {
-        List<List<T>> list = new LinkedList<List<T>>();
+        List<List<T>> list = new LinkedList<>();
         for (T[] t : array) {
             list.add(Arrays.asList(t));
         }

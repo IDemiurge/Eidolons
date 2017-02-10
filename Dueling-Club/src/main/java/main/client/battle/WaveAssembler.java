@@ -208,7 +208,7 @@ public class WaveAssembler {
             if (objType == null) {
                 return false;
             }
-            FACING_DIRECTION side = null;
+            FACING_DIRECTION side;
             try {
                 side = positioner.getSides().get(i);
             } catch (Exception e) {

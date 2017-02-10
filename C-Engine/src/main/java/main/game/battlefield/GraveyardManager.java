@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class GraveyardManager {
     private static final String RIP = "Here lie: ";
-    private Map<ZCoordinates, Stack<Obj>> graveMap = new ConcurrentHashMap<ZCoordinates, Stack<Obj>>();
+    private Map<ZCoordinates, Stack<Obj>> graveMap = new ConcurrentHashMap<>();
     private SwingBattleField battlefield;
     private List<Obj> removed = new LinkedList<>();
 
@@ -32,7 +32,7 @@ public class GraveyardManager {
 
     public void init() {
         for (Coordinates c : battlefield.getGrid().getCoordinatesList()) {
-            graveMap.put(getZCoordinate(c), new Stack<Obj>());
+            graveMap.put(getZCoordinate(c), new Stack<>());
         }
     }
 

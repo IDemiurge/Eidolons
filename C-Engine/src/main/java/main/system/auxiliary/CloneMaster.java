@@ -9,8 +9,8 @@ import java.io.*;
 public class CloneMaster<T> {
 
     public static Object deepCopy(Object object) {
-        FileOutputStream fos = null;
-        ObjectOutputStream out = null;
+        FileOutputStream fos;
+        ObjectOutputStream out;
         try {
             fos = new FileOutputStream("somefilename");
             out = new ObjectOutputStream(fos);
@@ -20,8 +20,8 @@ public class CloneMaster<T> {
             ex.printStackTrace();
         }
 
-        FileInputStream fis = null;
-        ObjectInputStream in = null;
+        FileInputStream fis;
+        ObjectInputStream in;
         try {
             fis = new FileInputStream("somefilename");
             in = new ObjectInputStream(fis);

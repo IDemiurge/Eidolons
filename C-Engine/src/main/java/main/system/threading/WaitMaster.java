@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class WaitMaster {
     // Sync map?
-    private static Map<WAIT_OPERATIONS, Waiter> waiters = new HashMap<WAIT_OPERATIONS, Waiter>();
+    private static Map<WAIT_OPERATIONS, Waiter> waiters = new HashMap<>();
     // private static List<Waiter> activeWaiters = new LinkedList<>() ;
     private static DequeImpl<WAIT_OPERATIONS> completeOperations;
 
@@ -97,7 +97,7 @@ public class WaitMaster {
 
     public static DequeImpl<WAIT_OPERATIONS> getCompleteOperations() {
         if (completeOperations == null) {
-            completeOperations = new DequeImpl<WAIT_OPERATIONS>();
+            completeOperations = new DequeImpl<>();
         }
         return completeOperations;
     }

@@ -695,7 +695,7 @@ public class DebugMaster {
                 summon(true, OBJ_TYPES.UNITS, ref);
                 break;
             case SET_WAVE_POWER:
-                Integer forcedPower = null;
+                Integer forcedPower;
                 forcedPower = DialogMaster.inputInt();
                 if (forcedPower < 0) {
                     forcedPower = null;
@@ -858,7 +858,7 @@ public class DebugMaster {
          * alt mode: >> random >> preset >> last
 		 */
         ref.setPlayer(player);
-        String typeName = null;
+        String typeName;
         if (arg instanceof DC_HeroObj) {
             Obj obj = arg;
             typeName = (obj.getType().getName());
@@ -1017,7 +1017,7 @@ public class DebugMaster {
     public Object executeHiddenDebugFunction(HIDDEN_DEBUG_FUNCTIONS func) {
         executedFunctions.push(func.toString());
 
-        DC_HeroObj infoObj = null;
+        DC_HeroObj infoObj;
         try {
             infoObj = (DC_HeroObj) getObj();
         } catch (Exception e) {

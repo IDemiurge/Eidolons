@@ -371,7 +371,7 @@ public class AttackCalculator {
 
     private void initializeActionModifiers() {
         int dmg_bonus = getAttributeDamageBonuses(action, attacker, PHASE_TYPE.ATTACK_ACTION_MODS,
-                new XLinkedMap<PARAMETER, Integer>());
+                new XLinkedMap<>());
         Integer actionDmgMod = action.getIntParam(PARAMS.DAMAGE_MOD);
         int dmg_mod = offhand ? attacker.getIntParam(PARAMS.OFFHAND_DAMAGE_MOD) - 100
                 + actionDmgMod : actionDmgMod;
@@ -571,7 +571,7 @@ public class AttackCalculator {
     }
 
     private void initializeDefenseModifiers() {
-        Integer integer = null;
+        Integer integer;
         if (AoO) {
             integer = attacked.getIntParam(PARAMS.AOO_DEFENSE_MOD);
             addModifier(attacked, defModMap, MOD_IDENTIFIER.AOO, PARAMS.DEFENSE, integer);

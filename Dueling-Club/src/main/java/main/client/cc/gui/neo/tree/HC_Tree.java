@@ -43,11 +43,11 @@ public class HC_Tree {
     G_Panel panel;
     DC_HeroObj hero;
     TreeMap map;
-    Map<Point, Image> underlayMap = new HashMap<Point, Image>();
-    Map<Point, Image> overlayMap = new HashMap<Point, Image>();
-    Map<Point, Image> overlayMap2 = new HashMap<Point, Image>();
+    Map<Point, Image> underlayMap = new HashMap<>();
+    Map<Point, Image> overlayMap = new HashMap<>();
+    Map<Point, Image> overlayMap2 = new HashMap<>();
 
-    Map<XLine, LINK_TYPE> linkMap = new HashMap<XLine, LINK_TYPE>();
+    Map<XLine, LINK_TYPE> linkMap = new HashMap<>();
 
     Image bufferImage;
     // private ObjType selectedType;
@@ -358,7 +358,7 @@ public class HC_Tree {
     }
 
     private String getGroupBackgroundPath() {
-        String imageName = null;
+        String imageName;
         if (arg instanceof CLASS_GROUP) {
             CLASS_GROUP group = (CLASS_GROUP) arg;
 
@@ -583,10 +583,10 @@ public class HC_Tree {
                 Requirements reqs = reqTextType.getGame().getRequirementsManager().getRequirements(
                         (rank ? hero.getFeat(isSkill(), reqTextType) : reqTextType), mode);
 
-                Point point = null;
+                Point point;
                 Color color = ColorManager.CRIMSON;
                 Font font = getDefaultFont();
-                List<String> list = null;
+                List<String> list;
                 if (reasons != null) {
                     list = reasons;
                 } else {
@@ -641,7 +641,7 @@ public class HC_Tree {
                         return 0;
                     }
                 });
-                int stringWidth = 0;
+                int stringWidth;
                 for (String text : reasons) {
                     SmartText smartText = new SmartText(text, color);
                     smartText.setFont(font);
@@ -766,7 +766,7 @@ public class HC_Tree {
         }
 
         HT_Node node = HC_Master.getSelectedTreeNode();
-        linksToHighlight = new LinkedList<StaticTreeLink>();
+        linksToHighlight = new LinkedList<>();
         selectionPathNodes.clear();
         if (node != null) {
             ObjType type = node.getType();

@@ -43,7 +43,7 @@ public class UnitAI {
     AI_BEHAVIOR_MODE currentBehavior;
     private boolean inSequence;
     private List<Action> forcedActions;
-    private Map<String, Action> actions = new XLinkedMap<String, Action>();
+    private Map<String, Action> actions = new XLinkedMap<>();
     private Map<ObjType, Integer> actionPriorityMods;
     private Map<ObjType, Integer> actionPriorityBonuses;
     private Action lastAction;
@@ -174,7 +174,7 @@ public class UnitAI {
 
     public Map<ObjType, Integer> getActionPriorityMods() {
         if (actionPriorityMods == null) {
-            actionPriorityMods = new XLinkedMap<ObjType, Integer>();
+            actionPriorityMods = new XLinkedMap<>();
         }
         return actionPriorityMods;
     }
@@ -185,7 +185,7 @@ public class UnitAI {
 
     public Map<ObjType, Integer> getActionPriorityBonuses() {
         if (actionPriorityBonuses == null) {
-            actionPriorityBonuses = new XLinkedMap<ObjType, Integer>();
+            actionPriorityBonuses = new XLinkedMap<>();
         }
         return actionPriorityBonuses;
     }

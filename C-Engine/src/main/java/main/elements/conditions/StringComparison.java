@@ -38,7 +38,7 @@ public class StringComparison extends ConditionImpl {
 
         val1 = arg1.getStr(ref);
         val2 = arg2.getStr(ref);
-        boolean result = false;
+        boolean result;
         if (val2.contains(StringMaster.AND_SEPARATOR)) {
             for (String s : StringMaster.openContainer(val2,
                     StringMaster.AND_SEPARATOR)) {

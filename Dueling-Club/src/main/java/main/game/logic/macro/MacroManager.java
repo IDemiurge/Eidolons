@@ -143,11 +143,11 @@ public class MacroManager {
     }
 
     private static String getCopyTypePath() {
-        return PathFinder.getXmlTypesFolderPath() + "\\campaign\\" + campaignName + "\\";
+        return PathFinder.getTYPES_PATH() + "\\campaign\\" + campaignName + "\\";
     }
 
     private static String getTypeDataPath() {
-        return PathFinder.getXmlTypesFolderPath() + (!isSave() ? "\\campaign\\" : "\\save\\")
+        return PathFinder.getTYPES_PATH() + (!isSave() ? "\\campaign\\" : "\\save\\")
                 + getCampaignName() + "\\";
     }
 

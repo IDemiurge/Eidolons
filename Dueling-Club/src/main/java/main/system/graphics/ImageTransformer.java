@@ -53,7 +53,7 @@ public class ImageTransformer {
             alpha = 0;
         }
         if (blendedCache == null) {
-            blendedCache = new HashMap<Image, Map<Image, Map<Float, BufferedImage>>>();
+            blendedCache = new HashMap<>();
         }
         Map<Image, Map<Float, BufferedImage>> map = blendedCache.get(image1);
         if (map == null) {

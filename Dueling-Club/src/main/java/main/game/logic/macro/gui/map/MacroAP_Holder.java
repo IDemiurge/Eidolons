@@ -45,7 +45,7 @@ public class MacroAP_Holder extends G_Panel {
         for (MACRO_ACTION_GROUPS group : MACRO_ACTION_GROUPS.values()) {
             MacroActionPagedPanel comp = panelMap.get(group);
             String LI = "@id uap";
-            String x = "0";
+            String x;
             String y = "0";
             if (group == MACRO_ACTION_GROUPS.MODE) {
                 y = "" + GuiManager.getSmallObjSize();

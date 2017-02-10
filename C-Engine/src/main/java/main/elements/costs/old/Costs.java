@@ -8,8 +8,8 @@ import java.util.List;
 
 public class Costs implements Cost {
 
-    List<Cost> costs = new LinkedList<Cost>();
-    List<AlternativeCost> altCosts = new LinkedList<AlternativeCost>();
+    List<Cost> costs = new LinkedList<>();
+    List<AlternativeCost> altCosts = new LinkedList<>();
 
     public Costs(Cost[] costs) {
         this.costs = Arrays.asList(costs);
@@ -24,7 +24,7 @@ public class Costs implements Cost {
     }
 
     public List<AlternativeCost> getAlternativeCosts() {
-        List<AlternativeCost> list = new LinkedList<AlternativeCost>();
+        List<AlternativeCost> list = new LinkedList<>();
         for (Cost cost : costs) {
             if (cost instanceof AlternativeCost) {
                 list.add((AlternativeCost) cost);
@@ -46,7 +46,7 @@ public class Costs implements Cost {
     }
 
     public List<Integer> getPaidAmountList() {
-        List<Integer> list = new LinkedList<Integer>();
+        List<Integer> list = new LinkedList<>();
         for (AlternativeCost altcost : altCosts) {
             list.add(altcost.getPaidAmount());
         }

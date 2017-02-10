@@ -8,14 +8,14 @@ import main.session.Session;
 
 public class Day extends ArcaneEntity {
 
-	public Day(ObjType type) {
-		super(type);
-	}
+    public Day(ObjType type) {
+        super(type);
+    }
 
-	public void sessionDone(Session session) {
-		incrementParam(AT_PARAMS.SESSIONS_COMPLETED);
-		addProperty(AT_PROPS.DAY_SESSIONS, session.getName());
+    public void sessionDone(Session session) {
+        incrementParam(AT_PARAMS.SESSIONS_COMPLETED);
+        addProperty(AT_PROPS.DAY_SESSIONS, session.getName());
 
-	}
+    }
 
 }

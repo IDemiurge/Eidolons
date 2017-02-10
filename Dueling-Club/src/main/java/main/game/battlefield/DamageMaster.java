@@ -216,7 +216,7 @@ public class DamageMaster extends Manager {
             return 0;
         }
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
-        int damageLeft = 0;
+        int damageLeft;
         int damageDealt = 0;
         if (damage_type == DAMAGE_TYPE.PURE || damage_type == DAMAGE_TYPE.POISON) {
             damageDealt = dealPureDamage(targetObj, attacker, amount, (isPeriodic(ref) ? null
@@ -318,8 +318,8 @@ public class DamageMaster extends Manager {
         ref.setTarget(attacked.getId());
         ref.setSource(attacker.getId());
 
-        Event event = null;
-        boolean result = false;
+        Event event;
+        boolean result;
         int actual_t_damage = 0;
 
         if (t_damage > 0) {

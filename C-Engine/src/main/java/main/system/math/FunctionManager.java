@@ -188,7 +188,7 @@ public class FunctionManager {
             @Override
             public Object evaluate(List<Object> values) {
 
-                Filter<Obj> filter = new Filter<Obj>((Ref) values.get(1),
+                Filter<Obj> filter = new Filter<>((Ref) values.get(1),
                         ConditionMaster.toConditions(values.get(0).toString()));
                 return getSum(values.get(0).toString(), filter.getObjects());
 
@@ -198,7 +198,7 @@ public class FunctionManager {
             @Override
             public Object evaluate(List<Object> values) {
 
-                Filter<Obj> filter = new Filter<Obj>((Ref) values.get(1),
+                Filter<Obj> filter = new Filter<>((Ref) values.get(1),
                         getSumAdjacentConditions());
                 return getSum(values.get(0).toString(), filter.getObjects());
 
@@ -208,7 +208,7 @@ public class FunctionManager {
             @Override
             public Object evaluate(List<Object> values) {
 
-                Filter<Obj> filter = new Filter<Obj>((Ref) values.get(1),
+                Filter<Obj> filter = new Filter<>((Ref) values.get(1),
                         getAllConditions());
                 return getSum(values.get(0).toString(), filter.getObjects());
 
@@ -218,7 +218,7 @@ public class FunctionManager {
             @Override
             public Object evaluate(List<Object> values) {
 
-                Filter<Obj> filter = new Filter<Obj>((Ref) values.get(1),
+                Filter<Obj> filter = new Filter<>((Ref) values.get(1),
                         getSumEnemyConditions());
                 return getSum(values.get(0).toString(), filter.getObjects());
 
@@ -229,7 +229,7 @@ public class FunctionManager {
             @Override
             public Object evaluate(List<Object> values) {
 
-                Filter<Obj> filter = new Filter<Obj>((Ref) values.get(1),
+                Filter<Obj> filter = new Filter<>((Ref) values.get(1),
                         getSumAllyConditions());
                 return getSum(values.get(0).toString(), filter.getObjects());
 
@@ -273,7 +273,7 @@ public class FunctionManager {
 
                 Integer integer = Math.round(PositionMaster.getDistance(obj1,
                         (Obj) values.get(1)));
-                boolean shortDiags = false;
+                boolean shortDiags;
                 try {
                     shortDiags = obj1.getRef().getObj(KEYS.ACTIVE)
                             .checkBool(STD_BOOLS.SHORTEN_DIAGONALS);
@@ -305,7 +305,7 @@ public class FunctionManager {
 
         public Object evaluate(Ref ref, String[] args) {
             int i = 0;
-            List<Object> values = new LinkedList<Object>();
+            List<Object> values = new LinkedList<>();
             for (String s_arg : args) {
                 FUNC_ARGS arg = this.args[i];
                 Object value = arg.evaluate(s_arg, ref);

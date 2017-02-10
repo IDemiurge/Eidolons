@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.Map;
 
 public class IlluminationRule {
-    static Map<Obj, LightEmittingEffect> effectCache = new HashMap<Obj, LightEmittingEffect>();
+    static Map<Obj, LightEmittingEffect> effectCache = new HashMap<>();
 
     public static void initLightEmission(DC_Game game) {
-        List<Effect> effects = new LinkedList<Effect>();
+        List<Effect> effects = new LinkedList<>();
         for (Obj obj : game.getObjects(C_OBJ_TYPE.LIGHT_EMITTERS)) {
             LightEmittingEffect effect = getLightEmissionEffect(obj);
             if (effect != null) {

@@ -74,7 +74,7 @@ public class EffectAnimation extends ActionAnimation {
         Boolean result = roll.getResult();
         Boolean negative = source.getOwner().isEnemy() && getTarget().getOwner().isMe();
         Image image = roll.getType().getImage();
-        int x = 0;
+        int x;
         int y = 0;
         if (image == null) {
             String name = roll.getType().getName() + " Roll ";

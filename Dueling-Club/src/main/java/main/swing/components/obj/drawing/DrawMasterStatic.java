@@ -29,7 +29,7 @@ import java.util.Map;
 public class DrawMasterStatic {
     public static boolean GRAPHICS_TEST_MODE = false;
     public static boolean FULL_GRAPHICS_TEST_MODE = false;
-    protected static Map<Obj, BufferedImage> objImageCache = new HashMap<Obj, BufferedImage>();
+    protected static Map<Obj, BufferedImage> objImageCache = new HashMap<>();
     private static boolean sightVisualsOn = true;
 
     public static boolean isEditorMode() {

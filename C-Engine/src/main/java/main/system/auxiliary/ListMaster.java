@@ -22,7 +22,7 @@ public class ListMaster<E> {
     }
 
     public static List<String> toList(String string, boolean ENUM) {
-        List<String> list = new LinkedList<String>();
+        List<String> list = new LinkedList<>();
         for (String item : string.split(StringMaster.getSeparator())) {
             if ((!item.isEmpty() && ENUM) || DataManager.isTypeName(item)) {
                 list.add(item);
@@ -58,7 +58,7 @@ public class ListMaster<E> {
         List<String> list = new LinkedList<>();
         for (Object v : values) {
             if (v != null) {
-                String string = null;
+                String string;
                 if (v instanceof Entity && preferEntityNameOrIfNameKnown != null) {
                     Entity entity = (Entity) v;
                     string = preferEntityNameOrIfNameKnown ? entity.getName() : entity
@@ -243,7 +243,7 @@ public class ListMaster<E> {
     }
 
     public List<E> toList(String string) {
-        List<E> list = new LinkedList<E>();
+        List<E> list = new LinkedList<>();
         for (String item : string.split(StringMaster.getSeparator())) {
             E e = new EnumMaster<E>().retrieveEnumConst(clazz, item);
             if (e != null) {
@@ -254,7 +254,7 @@ public class ListMaster<E> {
     }
 
     public List<ObjType> convertToTypeList(Collection<E> data) {
-        List<ObjType> list = new LinkedList<ObjType>();
+        List<ObjType> list = new LinkedList<>();
         for (E item : data) {
             if (item instanceof Obj) {
                 list.add(((Obj) item).getType());
@@ -419,7 +419,7 @@ public class ListMaster<E> {
     }
 
     public List<E> getList(E... e) {
-        return new LinkedList<E>(Arrays.asList(e));
+        return new LinkedList<>(Arrays.asList(e));
     }
 
     public List<E> invertList(List<E> list) {
@@ -572,7 +572,7 @@ public class ListMaster<E> {
     }
 
     public void removeDuplicates(List<E> list) {
-        LinkedList<E> linkedList = new LinkedList<E>(new LinkedHashSet<E>(list));
+        LinkedList<E> linkedList = new LinkedList<>(new LinkedHashSet<>(list));
         list.clear();
         list.addAll(linkedList);
 
@@ -620,11 +620,11 @@ public class ListMaster<E> {
     }
 
     public List<E> getRemovedDuplicates(List<E> list) {
-        return new LinkedList<E>(new LinkedHashSet<E>(list));
+        return new LinkedList<>(new LinkedHashSet<>(list));
     }
 
     public List<E> removeNulls(List<E> list) {
-        List<E> elements = new LinkedList<E>(list);
+        List<E> elements = new LinkedList<>(list);
         for (Object o : elements) {
             if (o == null) {
                 list.remove(o);

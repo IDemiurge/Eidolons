@@ -610,7 +610,7 @@ public class DC_GameManager extends GameManager {
     }
 
     private LinkedList<DC_SpellObj> initSpellpool(MicroObj obj, PROPERTY PROP) {
-        LinkedList<DC_SpellObj> spells = new LinkedList<DC_SpellObj>();
+        LinkedList<DC_SpellObj> spells = new LinkedList<>();
         String spellList = obj.getProperty(PROP);
         List<String> spellpool;
 

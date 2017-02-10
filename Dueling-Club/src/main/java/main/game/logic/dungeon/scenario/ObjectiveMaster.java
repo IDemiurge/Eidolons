@@ -74,7 +74,7 @@ public class ObjectiveMaster {
         abilities.add(new ActiveAbility(new FixedTargeting(), new EndGameEffect(true)));
         Ref ref = new Ref();
         Integer id = null;
-        String name = null;
+        String name;
         switch (type) {
             case BOSS:
                 eventType = STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED;

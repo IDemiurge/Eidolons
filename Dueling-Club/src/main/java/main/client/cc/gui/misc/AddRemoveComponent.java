@@ -358,7 +358,7 @@ public class AddRemoveComponent extends G_Panel {
             if (!ready) {
                 return "";
             }
-            int discount = 0;
+            int discount;
             discount = new Formula(getEntity().getParam(cost_param)
                     + "-"
                     + (!heroItem ? HeroManager.getCost(getEntity(), hero) : HeroManager.getCost(

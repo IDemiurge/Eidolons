@@ -45,7 +45,7 @@ public class ConstructionManager {
     }
 
     private static List<Construct> getConstructs(Node node) {
-        List<Construct> list = new LinkedList<Construct>();
+        List<Construct> list = new LinkedList<>();
         for (Node NODE : XML_Converter.getNodeList(node)) {
             Construct construct = getConstruct(NODE);
             list.add(construct);

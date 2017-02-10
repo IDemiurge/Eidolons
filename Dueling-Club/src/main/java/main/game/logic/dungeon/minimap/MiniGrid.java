@@ -166,7 +166,7 @@ public class MiniGrid implements Refreshable {
 
     public void objAdded(DC_Obj obj, boolean stack) {
         // comp.remove(compMap.getOrCreate(obj.getCoordinates()).getComp());
-        MiniObjComp minicomp = null;
+        MiniObjComp minicomp;
 
         if (obj instanceof DC_HeroObj) {
             DC_HeroObj unit = (DC_HeroObj) obj;
@@ -387,7 +387,7 @@ public class MiniGrid implements Refreshable {
         }
         // TODO WHAT IF THERE ARE STACKED OBJECT + OVERLAYING??? FUTURE...
         // for non-Level Editor
-        objComp.setObjects(new DequeImpl<>(objects).getRemoveAll(overlaying));
+        objComp.setObjects(new DequeImpl(objects).getRemoveAll(overlaying));
         // sort top?
 
         objComp.setObj(obj);

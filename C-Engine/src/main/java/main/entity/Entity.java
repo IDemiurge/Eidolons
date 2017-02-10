@@ -50,8 +50,8 @@ import java.util.List;
  */
 public abstract class Entity extends DataModel implements OBJ {
 
-    protected List<AbilityObj> passives = new LinkedList<AbilityObj>();
-    protected List<ActiveObj> actives = new LinkedList<ActiveObj>();
+    protected List<AbilityObj> passives = new LinkedList<>();
+    protected List<ActiveObj> actives = new LinkedList<>();
 
     protected boolean dead = false;
     protected Player originalOwner;

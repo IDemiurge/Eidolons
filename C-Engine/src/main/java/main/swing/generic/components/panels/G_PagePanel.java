@@ -149,7 +149,7 @@ public abstract class G_PagePanel<E> extends G_Panel {
         List<List<E>> lists = new ListMaster<E>().splitList(pageSize, list);
 
         if (lists.isEmpty()) {
-            List<E> lastList = new LinkedList<E>();
+            List<E> lastList = new LinkedList<>();
             ListMaster.fillWithNullElements(lastList, pageSize);
             lists.add(lastList);
             return lists;

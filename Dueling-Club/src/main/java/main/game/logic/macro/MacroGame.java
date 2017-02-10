@@ -73,7 +73,7 @@ public class MacroGame extends Game {
         world = WorldGenerator.generateWorld(ref);
         ref.setMacroId(MACRO_KEYS.WORLD, world.getId());
         MacroManager.setWorldName(world.getName());
-        Region region = null;
+        Region region;
         region = world.getRegion(campaign.getProperty(MACRO_PROPS.REGION));
         ref.setID(MACRO_KEYS.REGION.toString(), region.getId());
         ref.setRegion(region);

@@ -92,7 +92,7 @@ public class Shop extends TownPlace {
             }
         }
         for (String group : item_groups) {
-            List<ObjType> pool = null;
+            List<ObjType> pool;
             if (prop == null) {
                 pool = DataManager.toTypeList(DataManager
                                 .getTypesSubGroupNames(C_OBJ_TYPE.ITEMS, group),

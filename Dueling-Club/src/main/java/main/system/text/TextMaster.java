@@ -227,7 +227,6 @@ public class TextMaster {
     }
 
     public static void main(String[] args) {
-        PathFinder.init();
 
         generateMissingDescrTemplate();
         // processDescriptionFile(FileManager.getFile("X:\\Dropbox\\" +

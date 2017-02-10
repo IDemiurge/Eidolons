@@ -53,7 +53,7 @@ public class SaveMaster {
         // BACKUP
         // TODO SAVE DYNAMIC VALUES - DISCOVERY STATUS, TIME, COORDINATES,
         // PROGRESS, ...
-        builders = new HashMap<OBJ_TYPE, StringBuilder>();
+        builders = new HashMap<>();
         for (Obj obj : MacroGame.getGame().getObjects()) {
             // same format as WE?
             // every object?

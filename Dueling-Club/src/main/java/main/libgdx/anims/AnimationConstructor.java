@@ -200,7 +200,7 @@ public class AnimationConstructor {
         List<EmitterActor> list = new LinkedList<>();
         for (String path :
                 StringMaster.openContainer(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS))) {
-            EmitterActor emitter = null;
+            EmitterActor emitter;
             SFX sfx = new EnumMaster<SFX>().
                     retrieveEnumConst(SFX.class, path);
             if (sfx == null) {

@@ -35,7 +35,7 @@ public class TavernMaster {
 
     public static void buyProvisions(Tavern tavern, MacroParty party,
                                      boolean max_min_all) {
-        Integer amount = 0;
+        Integer amount;
         if (max_min_all) {
             amount = tavern.getIntParam(MACRO_PARAMS.FOOD_STORE);
         } else {

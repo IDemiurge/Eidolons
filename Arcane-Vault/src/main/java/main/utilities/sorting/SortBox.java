@@ -12,33 +12,33 @@ import java.util.Vector;
 
 public class SortBox extends G_CompHolder implements ActionListener {
 
-	private static final String TEXT = "Sort by:";
-	private Vector<SORT_BY> items;
-	private TypeSorter sorter;
+    private static final String TEXT = "Sort by:";
+    private Vector<SORT_BY> items;
+    private TypeSorter sorter;
 
-	public SortBox() {
-		super();
-		this.sorter = new TypeSorter();
-	}
+    public SortBox() {
+        super();
+        this.sorter = new TypeSorter();
+    }
 
-	public void initComp() {
-		comp = new G_Panel();
-		JLabel lbl = new JLabel(TEXT);
-		comp.add(lbl);
-		initItems();
-		JComboBox<SORT_BY> dropbox = new JComboBox<SORT_BY>(items);
-		dropbox.addActionListener(this);
-		comp.add(dropbox, "");
-	}
+    public void initComp() {
+        comp = new G_Panel();
+        JLabel lbl = new JLabel(TEXT);
+        comp.add(lbl);
+        initItems();
+        JComboBox<SORT_BY> dropbox = new JComboBox<>(items);
+        dropbox.addActionListener(this);
+        comp.add(dropbox, "");
+    }
 
-	private void initItems() {
-		items = new Vector<SORT_BY>(Arrays.asList(SORT_BY.values()));
+    private void initItems() {
+        items = new Vector<>(Arrays.asList(SORT_BY.values()));
 
-	}
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
+    @Override
+    public void actionPerformed(ActionEvent e) {
 //		sorter.appendLast(items.getOrCreate(((JComboBox<SORT_BY>) e.getSource())
 //				.getSelectedIndex()));
-	}
+    }
 }

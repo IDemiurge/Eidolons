@@ -29,46 +29,46 @@ public class AV_Tree extends G_Panel {
     private static boolean fullNodeStructureOn;
     Workspace workspace;
     private JTree tree;
-	private OBJ_TYPE type;
-	private boolean colorsInverted = true;
-	private AV_TreeCellRenderer renderer;
-	private boolean simpleTree;
-	private DefaultMutableTreeNode parent;
-	private int i;
+    private OBJ_TYPE type;
+    private boolean colorsInverted = true;
+    private AV_TreeCellRenderer renderer;
+    private boolean simpleTree;
+    private DefaultMutableTreeNode parent;
+    private int i;
 
-	// final DefaultTreeModel model = new DefaultTreeModel(root) {
-	//
-	// @Override
-	// public boolean isLeaf(Object node) {
-	// if (isRoot(node)) {
-	// return false;
-	// }
-	// return super.isLeaf(node);
-	// }
-	//
-	// private boolean isRoot(Object node) {
-	// return node != null && node == getRoot();
-	// }
-	//
-	// };
+    // final DefaultTreeModel model = new DefaultTreeModel(root) {
+    //
+    // @Override
+    // public boolean isLeaf(Object node) {
+    // if (isRoot(node)) {
+    // return false;
+    // }
+    // return super.isLeaf(node);
+    // }
+    //
+    // private boolean isRoot(Object node) {
+    // return node != null && node == getRoot();
+    // }
+    //
+    // };
 
-	public AV_Tree(List<String> typesDoc, String group, String type) {
-		this(typesDoc, group, type, true);
+    public AV_Tree(List<String> typesDoc, String group, String type) {
+        this(typesDoc, group, type, true);
 
-	}
+    }
 
-	public AV_Tree(Workspace workspace) {
-		this.workspace = workspace;
-		this.tree = buildTree(DataManager.toStringList(workspace.getTypeList()), "");
-		addTree();
-	}
+    public AV_Tree(Workspace workspace) {
+        this.workspace = workspace;
+        this.tree = buildTree(DataManager.toStringList(workspace.getTypeList()), "");
+        addTree();
+    }
 
-	public AV_Tree(List<String> typesDoc, String group, String type, boolean colorsInverted) {
-		this.type = ContentManager.getOBJ_TYPE(type);
-		this.tree = buildTree(typesDoc, group);
-		this.colorsInverted = colorsInverted;
-		addTree();
-	}
+    public AV_Tree(List<String> typesDoc, String group, String type, boolean colorsInverted) {
+        this.type = ContentManager.getOBJ_TYPE(type);
+        this.tree = buildTree(typesDoc, group);
+        this.colorsInverted = colorsInverted;
+        addTree();
+    }
 
     public static boolean isFullNodeStructureOn() {
         return fullNodeStructureOn;
@@ -97,66 +97,66 @@ public class AV_Tree extends G_Panel {
 
     }
 
-	private void addTree() {
-		add(tree, "pos 0 0");
-		tree.setLargeModel(true);
-		tree.setRootVisible(false);
+    private void addTree() {
+        add(tree, "pos 0 0");
+        tree.setLargeModel(true);
+        tree.setRootVisible(false);
 
-		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
-		renderer = new AV_TreeCellRenderer();
-		tree.setCellRenderer(renderer);
-		if (workspace != null) {
-			renderer.setWorkspace(workspace);
+        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+        renderer = new AV_TreeCellRenderer();
+        tree.setCellRenderer(renderer);
+        if (workspace != null) {
+            renderer.setWorkspace(workspace);
         } else {
             renderer.setTYPE(type);
         }
         renderer.setColorsInverted(colorsInverted);
-		tree.setUI(renderer);
-	}
+        tree.setUI(renderer);
+    }
 
-	public void setColorsInverted(boolean colorsInverted) {
-		renderer.setColorsInverted(colorsInverted);
-	}
+    public void setColorsInverted(boolean colorsInverted) {
+        renderer.setColorsInverted(colorsInverted);
+    }
 
-	private JTree buildTree(List<String> simpleTree, String name) {
-		JTree tree = new JTree((build(simpleTree, name)));
-		return tree;
-	}
+    private JTree buildTree(List<String> simpleTree, String name) {
+        JTree tree = new JTree((build(simpleTree, name)));
+        return tree;
+    }
 
-	private JTree buildTree(Document doc) {
-		JTree tree = new JTree((build(doc)));
-		return tree;
-	}
+    private JTree buildTree(Document doc) {
+        JTree tree = new JTree((build(doc)));
+        return tree;
+    }
 
-	private DefaultMutableTreeNode buildSimple(List<String> typesDoc, String name) {
-		simpleTree = true;
+    private DefaultMutableTreeNode buildSimple(List<String> typesDoc, String name) {
+        simpleTree = true;
         if (workspace == null) {
             Collections.sort(typesDoc, getComparator());
         }
 
-		DefaultMutableTreeNode result = new DefaultMutableTreeNode(name);
-		List<String> upgrades = new LinkedList<>();
-		for (String node : typesDoc) {
-			addNode(result, node, upgrades);
-		}
-		for (String typeName : upgrades) {
-			addUpgradeNode(result, typeName);
-		}
-		return result;
-	}
+        DefaultMutableTreeNode result = new DefaultMutableTreeNode(name);
+        List<String> upgrades = new LinkedList<>();
+        for (String node : typesDoc) {
+            addNode(result, node, upgrades);
+        }
+        for (String typeName : upgrades) {
+            addUpgradeNode(result, typeName);
+        }
+        return result;
+    }
 
-	private DefaultMutableTreeNode build(List<String> typesDoc, String group) {
-		DefaultMutableTreeNode result = new DefaultMutableTreeNode(group);
+    private DefaultMutableTreeNode build(List<String> typesDoc, String group) {
+        DefaultMutableTreeNode result = new DefaultMutableTreeNode(group);
 
-		List<String> subGroups = new LinkedList<>();
-		// if (workspace!=null) workspace.getGrouping() ;
+        List<String> subGroups = new LinkedList<>();
+        // if (workspace!=null) workspace.getGrouping() ;
         if (!StringMaster.isEmpty(group)) {
             try {
                 Set<String> groups = XML_Reader.getTreeSubGroupMap().get(group);
                 if (groups == null) {
                     groups = XML_Reader.getTreeSubGroupMap(!XML_Reader.isMacro()).get(group);
                 }
-                subGroups = new LinkedList<String>(groups);
+                subGroups = new LinkedList<>(groups);
                 Class<?> ENUM = EnumMaster.getEnumClass(type.getSubGroupingKey().getName());
                 if (ENUM != null) {
                     Collections.sort(subGroups, new EnumMaster<>().getEnumSorter(ENUM));
@@ -166,8 +166,8 @@ public class AV_Tree extends G_Panel {
             }
         } else if (workspace != null) {
             subGroups = workspace.getSubgroups();
-			if (subGroups == null)
-				// TODO custom *grouping* -> enum class + property!
+            if (subGroups == null)
+            // TODO custom *grouping* -> enum class + property!
             {
                 if (workspace.isSearch()) {
                     subGroups = ListMaster.toStringList(OBJ_TYPES.values());
@@ -177,60 +177,60 @@ public class AV_Tree extends G_Panel {
                 }
             }
             // subGroups = workspace.getSubgroups();
-			// subGroups = workspace.getSubgroups();
+            // subGroups = workspace.getSubgroups();
 
-		}
+        }
 
-		// TODO filter generic groups
-		if (subGroups.size() <= 1) {
-			return buildSimple(typesDoc, group);
-		}
-		for (String subGroup : subGroups) {
-			DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subGroup);
+        // TODO filter generic groups
+        if (subGroups.size() <= 1) {
+            return buildSimple(typesDoc, group);
+        }
+        for (String subGroup : subGroups) {
+            DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subGroup);
 
-			List<String> upgrades = new LinkedList<>();
-			List<String> list = null;
-			if (workspace == null) {
-				Set<String> c = XML_Reader.getTreeSubGroupedTypeMap(XML_Reader.isMacro()).get(
-						subGroup);
+            List<String> upgrades = new LinkedList<>();
+            List<String> list;
+            if (workspace == null) {
+                Set<String> c = XML_Reader.getTreeSubGroupedTypeMap(XML_Reader.isMacro()).get(
+                        subGroup);
                 if (!ListMaster.isNotEmpty(c)) {
                     c = XML_Reader.getTreeSubGroupedTypeMap(!XML_Reader.isMacro()).get(subGroup);
                 }
                 list = new LinkedList<>(c);
-				Collections.sort(list, getComparator());
-			} else {
-				if (workspace.isSearch()) {
-					list = DataManager.toStringList(new Filter<ObjType>().filter(workspace
-							.getTypeList(), G_PROPS.TYPE, subGroup));
-					Collections.sort(list, new EnumMaster<>().getEnumSorter(OBJ_TYPES.class));
+                Collections.sort(list, getComparator());
+            } else {
+                if (workspace.isSearch()) {
+                    list = DataManager.toStringList(new Filter<ObjType>().filter(workspace
+                            .getTypeList(), G_PROPS.TYPE, subGroup));
+                    Collections.sort(list, new EnumMaster<>().getEnumSorter(OBJ_TYPES.class));
 
-				} else {
+                } else {
 
-					PROPERTY filterValue = G_PROPS.WORKSPACE_GROUP;
+                    PROPERTY filterValue = G_PROPS.WORKSPACE_GROUP;
                     if (workspace.getSubgroupingProp() != null) {
                         filterValue = workspace.getSubgroupingProp();
                     }
                     list = DataManager.toStringList(new Filter<ObjType>().filter(workspace
-							.getTypeList(), filterValue, subGroup));
-					try {
-						Collections.sort(list, new EnumMaster<>()
-								.getEnumSorter(WORKSPACE_GROUP.class));
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
+                            .getTypeList(), filterValue, subGroup));
+                    try {
+                        Collections.sort(list, new EnumMaster<>()
+                                .getEnumSorter(WORKSPACE_GROUP.class));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
 
-			for (String typeName : list) {
+            for (String typeName : list) {
                 if (!typesDoc.contains(typeName)) {
                     continue;
                 }
                 addNode(subNode, typeName, upgrades);
-			}
-			if (!subNode.isLeaf()) {
-				result.add(subNode);
-			} // TODO is it ok?
-			DefaultMutableTreeNode subNode2 = subNode;
+            }
+            if (!subNode.isLeaf()) {
+                result.add(subNode);
+            } // TODO is it ok?
+            DefaultMutableTreeNode subNode2 = subNode;
             if (isFullNodeStructureOn()) {
                 for (String typeName : upgrades) {
                     subNode.add(new DefaultMutableTreeNode(typeName));
@@ -278,62 +278,62 @@ public class AV_Tree extends G_Panel {
                 }
             }
 
-		}
-		// if (result.getChildCount() == 1)
-		// return (DefaultMutableTreeNode) result.getFirstChild();
-		return result;
+        }
+        // if (result.getChildCount() == 1)
+        // return (DefaultMutableTreeNode) result.getFirstChild();
+        return result;
 
-	}
+    }
 
-	private DefaultMutableTreeNode getNextNode() {
+    private DefaultMutableTreeNode getNextNode() {
         if (parent.getChildCount() <= i) {
             return null;
         }
         i++;
-		return (DefaultMutableTreeNode) parent.getChildAt(i - 1);
-	}
+        return (DefaultMutableTreeNode) parent.getChildAt(i - 1);
+    }
 
-	private boolean addUpgradeNode(DefaultMutableTreeNode subNode, String typeName) {
-		DefaultMutableTreeNode node = TreeMaster.findChildNode(subNode, DataManager.getType(
-				typeName).getProperty(G_PROPS.BASE_TYPE));
+    private boolean addUpgradeNode(DefaultMutableTreeNode subNode, String typeName) {
+        DefaultMutableTreeNode node = TreeMaster.findChildNode(subNode, DataManager.getType(
+                typeName).getProperty(G_PROPS.BASE_TYPE));
         if (node == null) {
             return false;
         }
         node.add(new DefaultMutableTreeNode(typeName));
-		return true;
-	}
+        return true;
+    }
 
-	private Comparator<? super String> getComparator() {
-		// if (sortAlphabetically){
-		return new DefaultComparator<>();
-		// }else
-		// if (sortById){
-		// return new IdComparator<ObjType>();
-		// }
-		// return null;
-	}
+    private Comparator<? super String> getComparator() {
+        // if (sortAlphabetically){
+        return new DefaultComparator<>();
+        // }else
+        // if (sortById){
+        // return new IdComparator<ObjType>();
+        // }
+        // return null;
+    }
 
-	private void addNode(DefaultMutableTreeNode subNode, String typeName, List<String> list) {
-		if (checkUpgrade(typeName)) {
-			list.add(typeName);
-			return;
-		}
-		subNode.add(new DefaultMutableTreeNode(typeName));
-	}
+    private void addNode(DefaultMutableTreeNode subNode, String typeName, List<String> list) {
+        if (checkUpgrade(typeName)) {
+            list.add(typeName);
+            return;
+        }
+        subNode.add(new DefaultMutableTreeNode(typeName));
+    }
 
-	// public static DefaultMutableTreeNode build(List<List<String>> simpleTree,
-	// String name) {
-	// DefaultMutableTreeNode result = new DefaultMutableTreeNode(name);
-	// for (List<String> list : simpleTree) {
-	// DefaultMutableTreeNode subnode=new DefaultMutableTreeNode("SUBNODE");
-	// for (String node : list)
-	// {
-	// subnode.add(new DefaultMutableTreeNode(node));
-	// }
-	// result.add(subnode);
-	// }
-	// return result;
-	// }
+    // public static DefaultMutableTreeNode build(List<List<String>> simpleTree,
+    // String name) {
+    // DefaultMutableTreeNode result = new DefaultMutableTreeNode(name);
+    // for (List<String> list : simpleTree) {
+    // DefaultMutableTreeNode subnode=new DefaultMutableTreeNode("SUBNODE");
+    // for (String node : list)
+    // {
+    // subnode.add(new DefaultMutableTreeNode(node));
+    // }
+    // result.add(subnode);
+    // }
+    // return result;
+    // }
 
     private boolean checkUpgrade(String typeName) {
         ObjType type = DataManager.getType(typeName);
@@ -342,68 +342,68 @@ public class AV_Tree extends G_Panel {
         }
         return !StringMaster.isEmpty(type.getProperty(G_PROPS.BASE_TYPE));
 
-	}
+    }
 
-	public JTree getTree() {
-		return tree;
-	}
+    public JTree getTree() {
+        return tree;
+    }
 
-	public Object getSelectedItem() {
-		return tree.getSelectionPath().getLastPathComponent();
-	}
+    public Object getSelectedItem() {
+        return tree.getSelectionPath().getLastPathComponent();
+    }
 
-	public String getSelectedItemName() {
-		return ((DefaultMutableTreeNode) tree.getSelectionPath().getLastPathComponent())
-				.getUserObject()
-				+ "";
-	}
+    public String getSelectedItemName() {
+        return ((DefaultMutableTreeNode) tree.getSelectionPath().getLastPathComponent())
+                .getUserObject()
+                + "";
+    }
 
-	public boolean isSimpleTree() {
-		return simpleTree;
-	}
+    public boolean isSimpleTree() {
+        return simpleTree;
+    }
 
-	// if (typeName.equalsIgnoreCase("Psi Archon"))
-	// typeName = "Psi Archon";
-	// if (addUpgradeNode(subNode2, typeName))
-	// upgrades.remove(typeName);
-	// }
-	// if (upgrades.isEmpty()) {
-	// parent = null;
-	// i = 0;
-	// break;
-	// }
-	// if (parent == null)
-	// if (subNode2 != null)
-	// parent = subNode2;
-	// else
-	// parent = subNode;
-	// subNode2 = getNextNode(parent, i);
-	// if (subNode2 == null) {
-	// parent = null;
-	// i = 0;
-	// break;
-	// }
-	// // tr
-	// }
-	//
-	// }
-	// // if (result.getChildCount() == 1)
-	// // return (DefaultMutableTreeNode) result.getFirstChild();
-	// return result;
-	//
-	// }
-	//
-	// private DefaultMutableTreeNode getNextNode
-	// (DefaultMutableTreeNode parent, int i) {
-	// if (parent.getChildCount() <= i)
-	// {
-	// getNextNode(parent.getChildAt(n)
-	// parent.getChildAt(n);
-	//
-	// return null;
-	// else n++;
-	// }
-	// i++;
-	// return (DefaultMutableTreeNode) parent.getChildAt(i - 1);
-	// }
+    // if (typeName.equalsIgnoreCase("Psi Archon"))
+    // typeName = "Psi Archon";
+    // if (addUpgradeNode(subNode2, typeName))
+    // upgrades.remove(typeName);
+    // }
+    // if (upgrades.isEmpty()) {
+    // parent = null;
+    // i = 0;
+    // break;
+    // }
+    // if (parent == null)
+    // if (subNode2 != null)
+    // parent = subNode2;
+    // else
+    // parent = subNode;
+    // subNode2 = getNextNode(parent, i);
+    // if (subNode2 == null) {
+    // parent = null;
+    // i = 0;
+    // break;
+    // }
+    // // tr
+    // }
+    //
+    // }
+    // // if (result.getChildCount() == 1)
+    // // return (DefaultMutableTreeNode) result.getFirstChild();
+    // return result;
+    //
+    // }
+    //
+    // private DefaultMutableTreeNode getNextNode
+    // (DefaultMutableTreeNode parent, int i) {
+    // if (parent.getChildCount() <= i)
+    // {
+    // getNextNode(parent.getChildAt(n)
+    // parent.getChildAt(n);
+    //
+    // return null;
+    // else n++;
+    // }
+    // i++;
+    // return (DefaultMutableTreeNode) parent.getChildAt(i - 1);
+    // }
 }

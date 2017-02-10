@@ -450,7 +450,7 @@ public class ItemGenerator {
 
         int i = 0;
         for (PARAMS p : mod_params) {
-            int amount = 0;
+            int amount;
             int modifier = material.getModifier();
             if (p == PARAMS.DURABILITY_MODIFIER) {
                 if (material.getDurabilityMod() != 0) {
@@ -765,7 +765,7 @@ public class ItemGenerator {
 
         for (JEWELRY_PASSIVE_ENCHANTMENT ench : JEWELRY_PASSIVE_ENCHANTMENT.values()) {
             boolean leveled = ench.isLeveled();
-            List<ObjType> types = null;
+            List<ObjType> types;
             types = DataManager.toTypeList(
                     // (leveled) ? PAS_LEVEL_JEWELRY:
                     ench.getItemTypes(), OBJ_TYPES.JEWELRY);

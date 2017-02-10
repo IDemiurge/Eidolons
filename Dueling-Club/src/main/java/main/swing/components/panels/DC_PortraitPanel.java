@@ -47,7 +47,7 @@ public class DC_PortraitPanel extends G_Panel implements MouseListener {
         // this.obj = game.getManager().getActiveObj();
         //
         // }
-        ImageIcon icon = null;
+        ImageIcon icon;
         if (entity != null) {
             icon = entity.getIcon();
             if (icon == null) {

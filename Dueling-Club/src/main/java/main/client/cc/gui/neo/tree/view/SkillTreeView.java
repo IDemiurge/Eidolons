@@ -92,7 +92,7 @@ public class SkillTreeView extends HT_View {
             array = ValuePages.MASTERIES;
         }
 
-        List<PARAMETER> masteries = new LinkedList<PARAMETER>(Arrays.asList(array));
+        List<PARAMETER> masteries = new LinkedList<>(Arrays.asList(array));
 
         if (mineOnly) {
             masteries = DC_MathManager.getUnlockedMasteries(hero);

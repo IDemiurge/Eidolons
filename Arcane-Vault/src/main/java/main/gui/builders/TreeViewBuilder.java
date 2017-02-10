@@ -27,41 +27,41 @@ import java.util.List;
 // search result as a tree or a list? 
 public class TreeViewBuilder extends Builder {
 
-	private static final int VERTICAL_SCROLL_BAR_UNIT_INCREMENT = 15;
+    private static final int VERTICAL_SCROLL_BAR_UNIT_INCREMENT = 15;
 
-	private String sub;
+    private String sub;
 
-	private List<String> types;
+    private List<String> types;
 
-	private String type = "units";
+    private String type = "units";
 
-	private AV_Tree tree;
+    private AV_Tree tree;
 
-	private Workspace workspace;
+    private Workspace workspace;
 
-	public TreeViewBuilder(List<String> typesDoc, String sub, String type) {
-		this.type = type;
-		this.types = typesDoc;
-		this.sub = sub;
+    public TreeViewBuilder(List<String> typesDoc, String sub, String type) {
+        this.type = type;
+        this.types = typesDoc;
+        this.sub = sub;
 
-	}
+    }
 
-	public TreeViewBuilder(Workspace workspace) {
-		this.workspace = workspace;
-	}
+    public TreeViewBuilder(Workspace workspace) {
+        this.workspace = workspace;
+    }
 
-	@Override
-	public void init() {
+    @Override
+    public void init() {
         if (workspace == null) {
             tree = new AV_Tree(types, sub, type, ArcaneVault.isColorsInverted());
         } else {
             tree = new AV_Tree(workspace);
-		}
+        }
 
-		tree.getTree().expandRow(0);
-		// List<DefaultMutableTreeNode> nodes = TreeMaster
-		// .getChildren((DefaultMutableTreeNode) tree.getTree().getModel()
-		// .getRoot());
+        tree.getTree().expandRow(0);
+        // List<DefaultMutableTreeNode> nodes = TreeMaster
+        // .getChildren((DefaultMutableTreeNode) tree.getTree().getModel()
+        // .getRoot());
         // nodes = TreeMaster.getChildren(nodes.getOrCreate(0));
         if (comp == null) {
             Dimension dimension = new Dimension(ArcaneVault.TREE_WIDTH, ArcaneVault.TREE_HEIGHT);
@@ -70,18 +70,18 @@ public class TreeViewBuilder extends Builder {
             // scrollPane.setSize(dimension);
             // scrollPane.setPreferredSize(dimension);
             // scrollPane.setMaximumSize(dimension);
-			comp = scrollPane;
+            comp = scrollPane;
 
-			// getTree().setSize(dimension);
-			// getTree().setPreferredSize(dimension);
-			// getTree().setMaximumSize(dimension);
-			// comp.add(scrollPane);
-			scrollPane.getVerticalScrollBar().setUnitIncrement(VERTICAL_SCROLL_BAR_UNIT_INCREMENT);
-		}
-		getTree().addTreeSelectionListener(new AV_TreeSelectionListener(tree.getTree()));
-		getTree().addMouseListener(new NodeMaster(getTree(), false)); // add
-		// workspace
-		// listener?
+            // getTree().setSize(dimension);
+            // getTree().setPreferredSize(dimension);
+            // getTree().setMaximumSize(dimension);
+            // comp.add(scrollPane);
+            scrollPane.getVerticalScrollBar().setUnitIncrement(VERTICAL_SCROLL_BAR_UNIT_INCREMENT);
+        }
+        getTree().addTreeSelectionListener(new AV_TreeSelectionListener(tree.getTree()));
+        getTree().addMouseListener(new NodeMaster(getTree(), false)); // add
+        // workspace
+        // listener?
 
         if (ArcaneVault.isColorsInverted()) {
             getTree().setBackground(ColorManager.BACKGROUND); // getOrCreate ws
@@ -89,58 +89,58 @@ public class TreeViewBuilder extends Builder {
         // background
     }
 
-	// TODO
-	public void reload() {
-		// types = DataManager.getTypesGroupNames(OBJ_TYPES.getType(type), generic);
-		// init();
-		// ((JScrollPane) comp).setViewportView(getTree());
+    // TODO
+    public void reload() {
+        // types = DataManager.getTypesGroupNames(OBJ_TYPES.getType(type), generic);
+        // init();
+        // ((JScrollPane) comp).setViewportView(getTree());
 
-		// comp.removeAll(); // JScrollPane scrollPane = new
-		// JScrollPane(getTree());
-		// scrollPane.getVerticalScrollBar().setUnitIncrement(VERTICAL_SCROLL_BAR_UNIT_INCREMENT);
-		// comp.add(scrollPane, "pos 0 0");
-		// comp.revalidate();
-		// comp.add(new AV_Tree(types, generic, type,
-		// ArcaneVault.isColorsInverted()));
-	}
+        // comp.removeAll(); // JScrollPane scrollPane = new
+        // JScrollPane(getTree());
+        // scrollPane.getVerticalScrollBar().setUnitIncrement(VERTICAL_SCROLL_BAR_UNIT_INCREMENT);
+        // comp.add(scrollPane, "pos 0 0");
+        // comp.revalidate();
+        // comp.add(new AV_Tree(types, generic, type,
+        // ArcaneVault.isColorsInverted()));
+    }
 
-	public void reload(TreeNode node) {
-		TreeModel model = new DefaultTreeModel(node);
-		tree.getTree().setModel(model);
-		tree.getTree().setSelectionRow(1);
-		refresh();
-	}
+    public void reload(TreeNode node) {
+        TreeModel model = new DefaultTreeModel(node);
+        tree.getTree().setModel(model);
+        tree.getTree().setSelectionRow(1);
+        refresh();
+    }
 
-	@Override
-	public JComponent build() {
-		super.build();
-		return comp;
-	}
+    @Override
+    public JComponent build() {
+        super.build();
+        return comp;
+    }
 
-	@Override
-	public JComponent getComp() {
-		return tree;
-	}
+    @Override
+    public JComponent getComp() {
+        return tree;
+    }
 
-	public JTree getTree() {
-		return tree.getTree();
-	}
+    public JTree getTree() {
+        return tree.getTree();
+    }
 
-	@Override
-	public synchronized void refresh() {
+    @Override
+    public synchronized void refresh() {
 
-		// ((DefaultTreeModel) getTree().getModel()).reload();
-		//
-		// TreePath path = getTree().getSelectionPath();
-		// getTree().collapsePath(path);
-		// getTree().expandPath(path);
-		// getTree().setSelectionPath(path);
-		// getTree().setModel(model);
-		getTree().revalidate();
-		getTree().updateUI();
-		tree.refresh();
+        // ((DefaultTreeModel) getTree().getModel()).reload();
+        //
+        // TreePath path = getTree().getSelectionPath();
+        // getTree().collapsePath(path);
+        // getTree().expandPath(path);
+        // getTree().setSelectionPath(path);
+        // getTree().setModel(model);
+        getTree().revalidate();
+        getTree().updateUI();
+        tree.refresh();
 
-		tree.setColorsInverted(ArcaneVault.isColorsInverted());
+        tree.setColorsInverted(ArcaneVault.isColorsInverted());
         if (ArcaneVault.isColorsInverted()) {
             getTree().setBackground(ColorManager.BACKGROUND);
         } else {
@@ -148,14 +148,14 @@ public class TreeViewBuilder extends Builder {
         }
     }
 
-	private DefaultTreeModel getTreeModel() {
-		return (DefaultTreeModel) tree.getTree().getModel();
-	}
+    private DefaultTreeModel getTreeModel() {
+        return (DefaultTreeModel) tree.getTree().getModel();
+    }
 
-	public void newType(String newName, DefaultMutableTreeNode node, String TYPE, Boolean upgrade) {
-		DefaultMutableTreeNode newNode = null;
-		ObjType newType = null;
-		boolean empty = false;
+    public void newType(String newName, DefaultMutableTreeNode node, String TYPE, Boolean upgrade) {
+        DefaultMutableTreeNode newNode;
+        ObjType newType;
+        boolean empty = false;
         if (node == null) {
             empty = true;
         }
@@ -163,19 +163,19 @@ public class TreeViewBuilder extends Builder {
             empty = true;
         }
         if (empty) {
-			newType = getEmptyType(TYPE, newName);
-			newNode = new DefaultMutableTreeNode(newName, true);
-		} else {
-			ObjType type = DataManager.getType(node.getUserObject() + "", TYPE);
-			newType = CloneMaster.getTypeCopy(type, newName, ArcaneVault.getGame(), TYPE);
-			newNode = (DefaultMutableTreeNode) CloneMaster.deepCopy(node);
+            newType = getEmptyType(TYPE, newName);
+            newNode = new DefaultMutableTreeNode(newName, true);
+        } else {
+            ObjType type = DataManager.getType(node.getUserObject() + "", TYPE);
+            newType = CloneMaster.getTypeCopy(type, newName, ArcaneVault.getGame(), TYPE);
+            newNode = (DefaultMutableTreeNode) CloneMaster.deepCopy(node);
 
-			newNode.setUserObject(newName);
-		}
+            newNode.setUserObject(newName);
+        }
 
-		DefaultMutableTreeNode parent = ((DefaultMutableTreeNode) getTree().getSelectionPath()
-				.getLastPathComponent());
-		if (!empty) // upgrade_parent_new
+        DefaultMutableTreeNode parent = ((DefaultMutableTreeNode) getTree().getSelectionPath()
+                .getLastPathComponent());
+        if (!empty) // upgrade_parent_new
         {
             if (upgrade == null) {
                 parent = (DefaultMutableTreeNode) parent.getParent();
@@ -190,19 +190,19 @@ public class TreeViewBuilder extends Builder {
         }
         newNode.removeAllChildren();
 
-		// parent.add(newNode);
-		getTreeModel().insertNodeInto(newNode, parent, 0);
+        // parent.add(newNode);
+        getTreeModel().insertNodeInto(newNode, parent, 0);
 
-		newType.setProperty(G_PROPS.NAME, newName);
-		newType.setProperty(G_PROPS.DISPLAYED_NAME, newName);
-		if (empty) {
+        newType.setProperty(G_PROPS.NAME, newName);
+        newType.setProperty(G_PROPS.DISPLAYED_NAME, newName);
+        if (empty) {
 
-			newType.setProperty(DataManager.getSubGroupingKey(TYPE), parent.getUserObject()
-					.toString());
+            newType.setProperty(DataManager.getSubGroupingKey(TYPE), parent.getUserObject()
+                    .toString());
 
-			newType.setProperty(DataManager.getGroupingKey(TYPE), ArcaneVault.getMainBuilder()
-					.getSelectedSubTabName());
-		}
+            newType.setProperty(DataManager.getGroupingKey(TYPE), ArcaneVault.getMainBuilder()
+                    .getSelectedSubTabName());
+        }
         if (upgrade != null) {
             if (upgrade) {
                 newType.setProperty(G_PROPS.BASE_TYPE, node.getUserObject().toString());
@@ -219,54 +219,54 @@ public class TreeViewBuilder extends Builder {
             }
         }
 
-		DataManager.addType(newName, TYPE, newType);
-		Simulation.getGame().initType(newType);
+        DataManager.addType(newName, TYPE, newType);
+        Simulation.getGame().initType(newType);
 
-		tree.getTree().setSelectionPath(new TreePath(newNode.getPath()));
+        tree.getTree().setSelectionPath(new TreePath(newNode.getPath()));
 
-		refresh();
-	}
+        refresh();
+    }
 
-	private ObjType getEmptyType(String TYPE, String newName) {
-		ObjType type = new ObjType(newName);
-		OBJ_TYPE t = OBJ_TYPES.getType(TYPE);
+    private ObjType getEmptyType(String TYPE, String newName) {
+        ObjType type = new ObjType(newName);
+        OBJ_TYPE t = OBJ_TYPES.getType(TYPE);
         if (ArcaneVault.isMacroMode()) {
             t = MACRO_OBJ_TYPES.getType(TYPE);
         }
         // type.setObjType(t);
-		Simulation.getGame().initType(type);
-		return type;
-	}
+        Simulation.getGame().initType(type);
+        return type;
+    }
 
-	public void remove() {
+    public void remove() {
         if (ArcaneVault.getMainBuilder().getSelectedNode() == null) {
             return;
         }
         ArcaneVault.getMainBuilder().getSelectedNode().removeFromParent();
-		String selected = ArcaneVault.getMainBuilder().getSelectedTabName();
-		DataManager.removeType((String) ArcaneVault.getMainBuilder().getSelectedNode()
-				.getUserObject(), selected);
+        String selected = ArcaneVault.getMainBuilder().getSelectedTabName();
+        DataManager.removeType((String) ArcaneVault.getMainBuilder().getSelectedNode()
+                .getUserObject(), selected);
 
-		refresh();
+        refresh();
 
-		int n = ArcaneVault.getMainBuilder().getTree().getRowCount();
-		ArcaneVault.getMainBuilder().getTree().setSelectionRow(Math.min(1, n));
-		ArcaneVault.getMainBuilder().getTree().getListeners(TreeSelectionListener.class)[0]
-				.valueChanged(new TreeSelectionEvent(tree.getTree(), null, null, null, null));
-		ArcaneVault.getMainBuilder().getEditViewPanel().refresh();
+        int n = ArcaneVault.getMainBuilder().getTree().getRowCount();
+        ArcaneVault.getMainBuilder().getTree().setSelectionRow(Math.min(1, n));
+        ArcaneVault.getMainBuilder().getTree().getListeners(TreeSelectionListener.class)[0]
+                .valueChanged(new TreeSelectionEvent(tree.getTree(), null, null, null, null));
+        ArcaneVault.getMainBuilder().getEditViewPanel().refresh();
 
-		// getTree().updateUI();
-	}
+        // getTree().updateUI();
+    }
 
-	public boolean nameChanged(String oldName, String newValue) {
-		DefaultMutableTreeNode selectedNode = ArcaneVault.getMainBuilder().getSelectedNode();
+    public boolean nameChanged(String oldName, String newValue) {
+        DefaultMutableTreeNode selectedNode = ArcaneVault.getMainBuilder().getSelectedNode();
         if (!selectedNode.getUserObject().toString().equals(oldName)) {
             return false;
         }
         selectedNode.setUserObject(newValue);
 
-		getTree().updateUI();
-		return true;
-	}
+        getTree().updateUI();
+        return true;
+    }
 
 }

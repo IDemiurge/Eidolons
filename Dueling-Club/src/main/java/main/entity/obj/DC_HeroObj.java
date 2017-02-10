@@ -262,12 +262,12 @@ public class DC_HeroObj extends DC_UnitObj {
     }
 
     public void initClasses() {
-        this.setClasses(new DequeImpl<DC_FeatObj>());
+        this.setClasses(new DequeImpl<>());
         initFeatContainer(PROPS.CLASSES, OBJ_TYPES.CLASSES, getClasses());
     }
 
     public void initSkills() {
-        this.setSkills(new DequeImpl<DC_FeatObj>());
+        this.setSkills(new DequeImpl<>());
         initFeatContainer(PROPS.SKILLS, OBJ_TYPES.SKILLS, getSkills());
     }
 
@@ -458,7 +458,7 @@ public class DC_HeroObj extends DC_UnitObj {
         if (items == getQuickItems()) {
             return;
         }
-        setQuickItems(new DequeImpl<DC_QuickItemObj>());
+        setQuickItems(new DequeImpl<>());
         for (DC_HeroItemObj e : items) {
             getQuickItems().add((DC_QuickItemObj) e);
         }
@@ -527,7 +527,7 @@ public class DC_HeroObj extends DC_UnitObj {
 
         } else {
             List<String> idList = new LinkedList<>();
-            Collection<DC_HeroItemObj> items = new LinkedList<DC_HeroItemObj>();
+            Collection<DC_HeroItemObj> items = new LinkedList<>();
             for (String subString : StringMaster.openContainer(getProperty(prop))) {
                 ObjType type = DataManager.getType(subString, C_OBJ_TYPE.ITEMS);
 
@@ -787,7 +787,7 @@ public class DC_HeroObj extends DC_UnitObj {
 
     public Integer calculateDamage(boolean offhand) {
         int dmg = DC_AttackMaster.getUnitAttackDamage(this, offhand);
-        Integer mod = 0;
+        Integer mod;
         mod = getIntParam((offhand) ? PARAMS.OFFHAND_DAMAGE_MOD : PARAMS.DAMAGE_MOD);
         if (mod != 0) {
             dmg = dmg * mod / 100;
@@ -1621,7 +1621,7 @@ public class DC_HeroObj extends DC_UnitObj {
     }
 
     public List<DC_HeroSlotItem> getSlotItems() {
-        ListMaster<DC_HeroSlotItem> listMaster = new ListMaster<DC_HeroSlotItem>();
+        ListMaster<DC_HeroSlotItem> listMaster = new ListMaster<>();
         return listMaster.removeNulls(listMaster.getList(weapon, armor, secondWeapon));
     }
 
@@ -1872,7 +1872,7 @@ public class DC_HeroObj extends DC_UnitObj {
 
     public Map<DC_ActiveObj, String> getActionModeMap() {
         if (actionModeMap == null) {
-            actionModeMap = new HashMap<DC_ActiveObj, String>();
+            actionModeMap = new HashMap<>();
         }
         return actionModeMap;
     }

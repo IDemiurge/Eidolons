@@ -25,7 +25,7 @@ import java.util.List;
 
 public class Analyzer {
     public static List<DC_HeroObj> getAllies(UnitAI ai) {
-        List<DC_HeroObj> list = new XList<DC_HeroObj>();
+        List<DC_HeroObj> list = new XList<>();
         for (DC_HeroObj unit : getGame().getUnits()) {
             if (unit.getOwner() != ai.getUnit().getOwner()) {
                 continue;
@@ -40,7 +40,7 @@ public class Analyzer {
     }
 
     public static List<DC_HeroObj> getWaitUnits(UnitAI ai) {
-        List<DC_HeroObj> list = new XList<DC_HeroObj>();
+        List<DC_HeroObj> list = new XList<>();
         for (DC_HeroObj unit : getGame().getUnits()) {
             if (unit.equals(ai.getUnit())) {
                 continue;
@@ -67,7 +67,7 @@ public class Analyzer {
                                             Boolean enemy, Boolean vision_no_vision, Boolean dead,
                                             Boolean neutral) {
 
-        List<DC_HeroObj> list = new XList<DC_HeroObj>();
+        List<DC_HeroObj> list = new XList<>();
         for (DC_HeroObj unit : getGame().getUnits()) {
             if (unit.getZ() != ai.getUnit().getZ())// TODO
             {

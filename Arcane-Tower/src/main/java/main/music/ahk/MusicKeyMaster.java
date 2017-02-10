@@ -109,7 +109,7 @@ public class MusicKeyMaster implements HotkeyListener {
         for (int i = 1; i < 60; i++) {
             int mod = getModFromHotkeyId(i);
             int keyCode = KeyEvent.getExtendedKeyCodeForChar(Character.forDigit(i == 10 ? 0
-             : i % 10, 10));
+                    : i % 10, 10));
             if (mod == JIntellitype.MOD_CONTROL) {
                 if (i % 10 == 1) {
                     continue;// eclipse :)
@@ -120,7 +120,7 @@ public class MusicKeyMaster implements HotkeyListener {
         int i = 1;// win+f1 taken by windows help...
         // GYM!
         JIntellitype.getInstance().registerHotKey(1000,
-         JIntellitype.MOD_CONTROL + JIntellitype.MOD_SHIFT, getFx(0));
+                JIntellitype.MOD_CONTROL + JIntellitype.MOD_SHIFT, getFx(0));
         for (MUSIC_TYPE n : MUSIC_TYPE.values()) {
             if (getFx(i) == 0) {
                 break;
@@ -142,7 +142,7 @@ public class MusicKeyMaster implements HotkeyListener {
                 break;
             }
             JIntellitype.getInstance().registerHotKey(3000 + i,
-             JIntellitype.MOD_WIN+JIntellitype.MOD_SHIFT, getFx(i));
+                    JIntellitype.MOD_WIN + JIntellitype.MOD_SHIFT, getFx(i));
             i++;
         }
         i = 0;
@@ -151,18 +151,18 @@ public class MusicKeyMaster implements HotkeyListener {
                 break;
             }
             JIntellitype.getInstance().registerHotKey(4000 + i,
-             JIntellitype.MOD_WIN+JIntellitype.MOD_CONTROL, getFx(i));
+                    JIntellitype.MOD_WIN + JIntellitype.MOD_CONTROL, getFx(i));
             i++;
 //            helpInfo+= "win+ctrl+" +"\nF"+i+" for random " + n;
         }
 
         JIntellitype.getInstance().registerHotKey(keyIdDialog,
-         JIntellitype.MOD_ALT + JIntellitype.MOD_WIN, KeyEvent.VK_SPACE);
+                JIntellitype.MOD_ALT + JIntellitype.MOD_WIN, KeyEvent.VK_SPACE);
         JIntellitype.getInstance().registerHotKey(keyIdDialogLast,
-         JIntellitype.MOD_ALT + JIntellitype.MOD_WIN + JIntellitype.MOD_SHIFT,
-         KeyEvent.VK_SPACE);
+                JIntellitype.MOD_ALT + JIntellitype.MOD_WIN + JIntellitype.MOD_SHIFT,
+                KeyEvent.VK_SPACE);
         JIntellitype.getInstance().registerHotKey(keyIdDialogLastToggle,
-         JIntellitype.MOD_CONTROL + JIntellitype.MOD_ALT, KeyEvent.VK_SPACE);
+                JIntellitype.MOD_CONTROL + JIntellitype.MOD_ALT, KeyEvent.VK_SPACE);
 
         JIntellitype.getInstance().registerHotKey(keyIdCycleView, getMod(4), KeyEvent.VK_SPACE);
         // JIntellitype.getInstance().registerHotKey(keyIdCyclePlayMode,
@@ -176,7 +176,7 @@ public class MusicKeyMaster implements HotkeyListener {
         // JIntellitype.getInstance().registerHotKey(keyIdCycleView, getMod(6),
         // KeyEvent.VK_SPACE);
 
-        int keyRandom  = KeyEvent.VK_MINUS;
+        int keyRandom = KeyEvent.VK_MINUS;
         JIntellitype.getInstance().registerHotKey(keyIdRandomActive, getMod(1), keyRandom);
         JIntellitype.getInstance().registerHotKey(keyIdRandomView, getMod(2), keyRandom);
         JIntellitype.getInstance().registerHotKey(keyIdRandomAll, getMod(3), keyRandom);
@@ -227,14 +227,14 @@ public class MusicKeyMaster implements HotkeyListener {
     protected void playFromGroupHotkey(int aIdentifier, boolean random) {
 
         int i = aIdentifier % 1000;
-        if (aIdentifier>=3000){
-            random=false;
-            aIdentifier-=2000;
+        if (aIdentifier >= 3000) {
+            random = false;
+            aIdentifier -= 2000;
         }
         boolean tag = aIdentifier >= 2000;
         Object c = tag ? MUSIC_TAG_GROUPS.values()[i] : MUSIC_TYPE.values()[i];
 
-        List<ObjType> types = null;
+        List<ObjType> types;
 
         if (random) {
             types = new LinkedList<>(DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST));
@@ -243,7 +243,7 @@ public class MusicKeyMaster implements HotkeyListener {
             types = new LinkedList<>();
         }
 
-        for (ObjType type :random?  types :DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST)) {
+        for (ObjType type : random ? types : DataManager.getTypes(AT_OBJ_TYPE.MUSIC_LIST)) {
             if (checkRandomGroup(type, c, tag, random)) {
                 if (random) {
                     new MusicList(type).play();
@@ -311,13 +311,13 @@ public class MusicKeyMaster implements HotkeyListener {
     }
 
     private boolean help() {
-        String helpInfo="MUSIC_TAG_GROUPS:\n";
-        for (MUSIC_TAG_GROUPS sub: MUSIC_TAG_GROUPS.values()){
-            helpInfo+=sub+" ";
+        String helpInfo = "MUSIC_TAG_GROUPS:\n";
+        for (MUSIC_TAG_GROUPS sub : MUSIC_TAG_GROUPS.values()) {
+            helpInfo += sub + " ";
         }
-        helpInfo+= "MUSIC_TYPES:\n ";
-        for (MUSIC_TYPE sub: MUSIC_TYPE.values()){
-            helpInfo+=sub+" ";
+        helpInfo += "MUSIC_TYPES:\n ";
+        for (MUSIC_TYPE sub : MUSIC_TYPE.values()) {
+            helpInfo += sub + " ";
         }
         DialogMaster.inform(helpInfo);
         return true;
@@ -365,16 +365,16 @@ public class MusicKeyMaster implements HotkeyListener {
 
     private boolean randomFromView() {
         List<JButton> list = new RandomWizard<List<JButton>>().getRandomListItem(AHK_Master
-         .getButtonLists());
+                .getButtonLists());
         new RandomWizard<JButton>().getRandomListItem(list)
 
-         .doClick();
+                .doClick();
         return false;
     }
 
     private boolean randomFromActive() {
         new RandomWizard<JButton>().getRandomListItem(AHK_Master.getButtonsFromActiveSubPanel())
-         .doClick();
+                .doClick();
         return false;
     }
 
