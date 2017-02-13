@@ -14,11 +14,11 @@ public class TabbedPanel extends Container<Table> {
     private Table buttonLayout;
     private Container<Container> panelLayout;
 
-    public TabbedPanel(float width, float height) {
+    public TabbedPanel() {
         buttonGroup.setMaxCheckCount(1);
         buttonGroup.setMinCheckCount(1);
-        this.width(width);
-        this.height(height);
+        fill();
+        left().bottom();
     }
 
     private void initContainer(float h) {
@@ -82,6 +82,6 @@ public class TabbedPanel extends Container<Table> {
     @Override
     @Deprecated
     public void setActor(Table actor) {
-        throw new UnsupportedOperationException("Use ScrollPanel#addElement.");
+        throw new UnsupportedOperationException("Use TabbedPanel#addElement.");
     }
 }
