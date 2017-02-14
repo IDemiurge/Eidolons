@@ -26,9 +26,10 @@ import main.game.DC_Game;
 import main.game.DC_Game.GAME_MODES;
 import main.game.logic.arena.Wave;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
@@ -172,7 +173,7 @@ public class PartyManager {
         try {
             XML_Writer.writeXML_ForType(type, OBJ_TYPES.PARTY);
         } catch (Exception e) {
-            main.system.auxiliary.LogMaster.log(1, " failed to save party type " + party);
+            LogMaster.log(1, " failed to save party type " + party);
         }
     }
 

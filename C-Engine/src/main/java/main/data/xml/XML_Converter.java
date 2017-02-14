@@ -8,8 +8,9 @@ import main.data.ability.AE_Item;
 import main.data.ability.Argument;
 import main.data.ability.Mapper;
 import main.entity.type.ObjType;
-import main.system.auxiliary.Err;
+import main.system.auxiliary.log.Err;
 import main.system.auxiliary.TreeMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.XMap;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -157,7 +158,7 @@ public class XML_Converter {
             document = builder.parse(new InputSource(new StringReader(myString)));
 
         } catch (Exception e) {
-            main.system.auxiliary.LogMaster.log(2,
+            LogMaster.log(2,
 
                     "failed to parse xml: " + myString);
             e.printStackTrace();

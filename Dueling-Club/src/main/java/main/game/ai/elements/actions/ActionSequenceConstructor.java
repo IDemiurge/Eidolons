@@ -34,7 +34,11 @@ import main.game.battlefield.FacingMaster;
 import main.rules.DC_ActionManager;
 import main.system.SortMaster;
 import main.system.auxiliary.*;
-import main.system.auxiliary.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.data.ArrayMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.math.Formula;
 import main.system.math.PositionMaster;
 
@@ -347,7 +351,7 @@ public class ActionSequenceConstructor {
             pathCache.put(targetCells, paths);
 
         } else {
-            main.system.auxiliary.LogMaster.log(LOG_CHANNELS.PATHING_DEBUG, "path cache success: "
+            LogMaster.log(LOG_CHANNELS.PATHING_DEBUG, "path cache success: "
                     + paths);
             return paths;
         }
@@ -363,10 +367,10 @@ public class ActionSequenceConstructor {
             // PRIORITY_CELLS
         } catch (Exception e) {
             e.printStackTrace();
-            main.system.auxiliary.LogMaster.log(1, "***Action failed to getOrCreate target cells: "
+            LogMaster.log(1, "***Action failed to getOrCreate target cells: "
                     + action);
         }
-        main.system.auxiliary.LogMaster.log(1, Chronos.getTimeElapsedForMark("getTargetCells")
+        LogMaster.log(1, Chronos.getTimeElapsedForMark("getTargetCells")
                 + " time to getOrCreate valid cells for  " + action + targetCells);
         return getPathSequences(moveActions, action, targetCells);
     }
@@ -410,7 +414,7 @@ public class ActionSequenceConstructor {
         // not very good
         Action action = actions.get(0);
         if (!action.canBeActivated()) {
-            main.system.auxiliary.LogMaster.log(1, "No sequence for "
+            LogMaster.log(1, "No sequence for "
                     + actions.get(actions.size() - 1) + " - " + action.getActive().getName() + ": "
                     + action.getActive().getCosts().getReason());
             return null;

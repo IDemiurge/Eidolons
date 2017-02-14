@@ -24,7 +24,7 @@ import main.entity.obj.Attachment;
 import main.entity.obj.Obj;
 import main.game.battlefield.attack.Attack;
 import main.system.auxiliary.ClassMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.text.TextParser;

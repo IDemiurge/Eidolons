@@ -18,7 +18,7 @@ import main.game.logic.dungeon.DungeonLevelMaster;
 import main.swing.generic.components.editors.FileChooser;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.datatypes.DequeImpl;

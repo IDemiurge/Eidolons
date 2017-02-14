@@ -5,6 +5,7 @@ import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.Coordinates.UNIT_DIRECTION;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.PositionMaster;
 
 public class DirectionMaster {
@@ -38,7 +39,7 @@ public class DirectionMaster {
             case 315:
                 return DIRECTION.DOWN_RIGHT;
         }
-        main.system.auxiliary.LogMaster.log(1, "invalid direction: " + degrees);
+        LogMaster.log(1, "invalid direction: " + degrees);
         return null;
     }
 

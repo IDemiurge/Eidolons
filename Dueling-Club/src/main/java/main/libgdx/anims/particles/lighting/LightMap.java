@@ -14,7 +14,7 @@ import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.libgdx.GameScreen;
 import main.libgdx.bf.GridConst;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.HashMap;
@@ -133,7 +133,7 @@ public class LightMap {
 
     //    public void updateMap(Map<DC_HeroObj, BaseView> units) {
     public void updateMap() {
-        main.system.auxiliary.LogMaster.log(LogMaster.VISIBILITY_DEBUG,
+        LogMaster.log(LogMaster.VISIBILITY_DEBUG,
                 "UpdateMap method was called");
         valid = false;
         if (bodyMap != null) {

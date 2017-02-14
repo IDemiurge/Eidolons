@@ -12,9 +12,9 @@ import main.game.event.Event;
 import main.game.event.Rule;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.Chronos;
-import main.system.auxiliary.LogMaster;
-import main.system.auxiliary.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 import main.system.datatypes.DequeImpl;
 
 import java.util.HashMap;
@@ -80,7 +80,7 @@ public abstract class GameState {
         if (triggers.size() == 0) {
             return;
         }
-        main.system.auxiliary.LogMaster.log(0, triggers.size() + "");
+        LogMaster.log(0, triggers.size() + "");
         for (Trigger trigger : triggers) {
 
             trigger.check(e);
@@ -104,7 +104,7 @@ public abstract class GameState {
     }
 
     public void addTrigger(Trigger t) {
-        main.system.auxiliary.LogMaster.log(LogMaster.TRIGGER_DEBUG, " added " + t);
+        LogMaster.log(LogMaster.TRIGGER_DEBUG, " added " + t);
         this.triggers.add(t);
     }
 
@@ -114,7 +114,7 @@ public abstract class GameState {
         // at
         // last!!!
         effects.add(effect);
-        main.system.auxiliary.LogMaster.log(LogMaster.EFFECT_DEBUG, effect.getClass()
+        LogMaster.log(LogMaster.EFFECT_DEBUG, effect.getClass()
                 .getSimpleName()
                 + " effect added : " + effects.size() + effects);
         // if (game.isStarted())
@@ -129,7 +129,7 @@ public abstract class GameState {
         if (!game.isSimulation()) {
             OBJ_TYPE TYPE = obj.getOBJ_TYPE_ENUM();
             if (TYPE == null) {
-                main.system.auxiliary.LogMaster.log(1, obj.toString() + " has no TYPE!");
+                LogMaster.log(1, obj.toString() + " has no TYPE!");
                 return;
             }
             Map<Integer, Obj> map = getObjMaps().get(TYPE);
@@ -143,14 +143,14 @@ public abstract class GameState {
 
     public ObjType getTypeById(Integer id) {
         if (id == null) {
-            main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG,
+            LogMaster.log(LogMaster.CORE_DEBUG,
                     "searching for type by null id");
             return null;
         }
         try {
             return typeMap.get(id);
         } catch (Exception e) {
-            main.system.auxiliary.LogMaster
+            LogMaster
                     .log(LogMaster.CORE_DEBUG_1, "no type found by id " + id);
             return null;
         }
@@ -158,14 +158,14 @@ public abstract class GameState {
 
     public Obj getObjectById(Integer id) {
         if (id == null) {
-            main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG,
+            LogMaster.log(LogMaster.CORE_DEBUG,
                     "searching for obj by null id");
             return null;
         }
         try {
             return objMap.get(id);
         } catch (Exception e) {
-            main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG_1, "no obj found by id " + id);
+            LogMaster.log(LogMaster.CORE_DEBUG_1, "no obj found by id " + id);
             return null;
         }
 
@@ -272,10 +272,10 @@ public abstract class GameState {
         }
         for (Effect effect : effects) {
             if (effect.getLayer() == layer) {
-                main.system.auxiliary.LogMaster.log(LOG_CHANNELS.EFFECT_DEBUG, layer
+                LogMaster.log(LOG_CHANNELS.EFFECT_DEBUG, layer
                         + " Layer, applying effect : " + effects);
                 if (!effect.apply()) {
-                    main.system.auxiliary.LogMaster.log(LogMaster.EFFECT_DEBUG, layer
+                    LogMaster.log(LogMaster.EFFECT_DEBUG, layer
                             + " Layer, effect failed: " + effects);
                 }
             }
@@ -320,7 +320,7 @@ public abstract class GameState {
     }
 
     public void removeTrigger(Trigger trigger) {
-        main.system.auxiliary.LogMaster.log(LogMaster.TRIGGER_DEBUG, "Trigger removed: " + trigger);
+        LogMaster.log(LogMaster.TRIGGER_DEBUG, "Trigger removed: " + trigger);
         triggers.remove(trigger);
     }
 
@@ -337,7 +337,7 @@ public abstract class GameState {
 
     public void removeObject(Integer id) {
         Obj obj = objMap.get(id);
-        main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG_1, "Obj removed: " + obj);
+        LogMaster.log(LogMaster.CORE_DEBUG_1, "Obj removed: " + obj);
         objMap.remove(id);
     }
 

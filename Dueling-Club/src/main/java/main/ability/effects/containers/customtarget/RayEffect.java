@@ -7,7 +7,7 @@ import main.data.DataManager;
 import main.elements.conditions.Conditions;
 import main.elements.targeting.AutoTargeting;
 import main.entity.Ref.KEYS;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 import main.system.DC_ConditionMaster;
 import main.system.math.PositionMaster;
 

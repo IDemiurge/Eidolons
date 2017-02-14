@@ -12,6 +12,7 @@ import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.Refreshable;
 import main.swing.generic.services.dialog.DialogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.graphics.ImageTransformer;
 import main.system.images.ImageManager;
@@ -315,7 +316,7 @@ public class MiniObjComp implements Refreshable {
         comp.revalidate();
         if (getComp().getMouseListeners() != null) {
             if (getComp().getMouseListeners().length > 0) {
-                main.system.auxiliary.LogMaster.log(1, getComp().getMouseListeners() + " on "
+                LogMaster.log(1, getComp().getMouseListeners() + " on "
                         + getComp().toString());
             }
         }

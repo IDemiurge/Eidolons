@@ -1,7 +1,8 @@
 package main.swing.generic.components;
 
 import main.swing.SwingMaster;
-import main.system.auxiliary.GuiManager;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.GuiManager;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.MigMaster;
 import main.system.images.ImageManager;
@@ -106,7 +107,7 @@ public class G_Panel extends G_Component implements VisualComponent {
         }
         super.add(comp, constraints);
         if (SwingMaster.DEBUG_ON) {
-            main.system.auxiliary.LogMaster.log(isSizeLogged() ? 1 : 0, comp.getWidth()
+            LogMaster.log(isSizeLogged() ? 1 : 0, comp.getWidth()
                     + " width, " + comp.getHeight() + " height comp at " + comp.getX() + "-"
                     + comp.getY());
         }
@@ -121,7 +122,7 @@ public class G_Panel extends G_Component implements VisualComponent {
         if (panelSize != null) {
             return panelSize;
         }
-        main.system.auxiliary.LogMaster.log(isSizeLogged() ? 1 : 0, "getMaximumSize no panel size!"
+        LogMaster.log(isSizeLogged() ? 1 : 0, "getMaximumSize no panel size!"
                 + toString());
         if (!isAutoSizingOn() || !isValid() || super.getMaximumSize().width <= 0
                 || super.getMaximumSize().height <= 0) {
@@ -146,7 +147,7 @@ public class G_Panel extends G_Component implements VisualComponent {
         if (panelSize != null) {
             return panelSize;
         }
-        main.system.auxiliary.LogMaster.log(isSizeLogged() ? 1 : 0, "getMinimumSize no panel size!"
+        LogMaster.log(isSizeLogged() ? 1 : 0, "getMinimumSize no panel size!"
                 + toString());
         if (!isAutoSizingOn() || !isValid() || super.getMinimumSize().width <= 0
                 || super.getMinimumSize().height <= 0) {
@@ -166,7 +167,7 @@ public class G_Panel extends G_Component implements VisualComponent {
         if (panelSize != null) {
             return panelSize;
         }
-        main.system.auxiliary.LogMaster.log(isSizeLogged() ? 1 : 0,
+        LogMaster.log(isSizeLogged() ? 1 : 0,
                 "getPreferredSize no panel size!" + toString());
         if (!isAutoSizingOn() || !isValid() || super.getPreferredSize().width <= 0
                 || super.getPreferredSize().height <= 0) {
@@ -192,7 +193,7 @@ public class G_Panel extends G_Component implements VisualComponent {
         if (panelSize != null) {
             return panelSize;
         }
-        main.system.auxiliary.LogMaster.log(isSizeLogged() ? 1 : 0, "getSize no panel size!"
+        LogMaster.log(isSizeLogged() ? 1 : 0, "getSize no panel size!"
                 + toString());
         if (!isAutoSizingOn() || !isValid() || super.getSize().width <= 0
                 || super.getSize().height <= 0) {

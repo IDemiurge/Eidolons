@@ -22,7 +22,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
 import main.entity.type.BuffType;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 import main.system.DC_ConditionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;

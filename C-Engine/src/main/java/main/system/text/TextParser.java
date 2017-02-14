@@ -11,7 +11,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.Game;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 import main.system.math.Parameter;
@@ -140,7 +140,7 @@ public class TextParser {
                             result = parseRef(ref_substring, ref);
                         } catch (Exception e) {
                             e.printStackTrace();
-                            main.system.auxiliary.LogMaster.log(LogMaster.MATH_DEBUG, ref_substring
+                            LogMaster.log(LogMaster.MATH_DEBUG, ref_substring
                                     + " failed to parse ref for text: " + text);
                             return buffer;
                         }

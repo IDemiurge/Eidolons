@@ -14,7 +14,7 @@ import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 

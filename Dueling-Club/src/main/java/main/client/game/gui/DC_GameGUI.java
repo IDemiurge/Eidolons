@@ -8,7 +8,8 @@ import main.swing.builders.DC_Builder;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.ImageChooser;
 import main.swing.generic.windows.G_Frame;
-import main.system.auxiliary.GuiManager;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 
 import javax.swing.*;
@@ -196,7 +197,7 @@ public class DC_GameGUI implements MouseListener {
                 path = ((DC_Builder) game.getBattleField().getBuilder()).getGrid().getMap()
                  .getBackground();
             } catch (Exception e) {
-                main.system.auxiliary.LogMaster.log(1, "failed to load background!");
+                LogMaster.log(1, "failed to load background!");
             }
             if (game.getGameMode() == GAME_MODES.ARENA) {
                 path = game.getArenaManager().getMap().getBackground();

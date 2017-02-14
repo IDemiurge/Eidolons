@@ -1,6 +1,7 @@
-package main.system.auxiliary;
+package main.system.graphics;
 
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 
 import javax.swing.*;

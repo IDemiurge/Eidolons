@@ -20,6 +20,7 @@ import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -339,7 +340,7 @@ public class GridPanel extends Group {
         BaseView uv = unitMap.get(obj);
         GridCellContainer gridCellContainer = (GridCellContainer) uv.getParent();
 if (gridCellContainer==null ){
-    main.system.auxiliary.LogMaster.log(1,obj+" IS ALREADY REMOVED!");
+    LogMaster.log(1,obj+" IS ALREADY REMOVED!");
     return uv;
 }
         gridCellContainer.removeActor(uv);

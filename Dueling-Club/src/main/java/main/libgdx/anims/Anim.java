@@ -27,7 +27,7 @@ import main.libgdx.texture.TextureManager;
 import main.system.EventCallback;
 import main.system.EventCallbackParam;
 import main.system.GuiEventType;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -140,7 +140,7 @@ public class Anim extends Group implements Animation {
 
                     return true;
                 }
-                main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, this + " finished; duration = " + duration);
+                LogMaster.log(LogMaster.ANIM_DEBUG, this + " finished; duration = " + duration);
                 finished();
                 dispose();
                 return false;
@@ -183,7 +183,7 @@ public class Anim extends Group implements Animation {
         }
         float gracePeriod = 0.25f;
 time=time+time*gracePeriod;
-        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, this+" adding TimeToFinish: " +time);
+        LogMaster.log(LogMaster.ANIM_DEBUG, this+" adding TimeToFinish: " +time);
         return time;
     }
 

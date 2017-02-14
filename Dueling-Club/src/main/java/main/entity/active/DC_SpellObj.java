@@ -31,7 +31,7 @@ import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.game.player.Player;
 import main.rules.magic.ChannelingRule;
-import main.system.auxiliary.Chronos;
+import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;

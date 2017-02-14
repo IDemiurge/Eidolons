@@ -3,7 +3,7 @@ package main.rules.mechanics;
 import main.content.CONTENT_CONSTS.STD_BUFF_NAMES;
 import main.entity.obj.unit.DC_HeroObj;
 import main.game.Game;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,7 +58,7 @@ public class WaitRule {
     }
 
     private static void wakeUp(DC_HeroObj unit) {
-        main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG_1,
+        LogMaster.log(LogMaster.CORE_DEBUG_1,
                 "waking unit up: " + unit);
         unit.removeBuff(WAIT_BUFF);
         getWaitMap().remove(unit);

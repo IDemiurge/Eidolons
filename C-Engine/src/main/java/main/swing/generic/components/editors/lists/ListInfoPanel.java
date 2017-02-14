@@ -4,7 +4,7 @@ import main.content.ContentManager;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.swing.generic.components.panels.G_InfoPanel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

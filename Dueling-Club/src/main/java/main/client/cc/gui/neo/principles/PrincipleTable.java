@@ -6,8 +6,8 @@ import main.entity.Entity;
 import main.entity.obj.unit.DC_HeroObj;
 import main.rules.rpg.IntegrityRule;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.ColorManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
 

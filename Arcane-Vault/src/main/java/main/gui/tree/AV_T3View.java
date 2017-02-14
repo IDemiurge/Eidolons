@@ -15,7 +15,7 @@ import main.game.DC_Game;
 import main.gui.builders.EditViewPanel;
 import main.gui.components.controls.ModelManager;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 
 import javax.swing.*;

@@ -15,8 +15,8 @@ import main.swing.components.panels.page.small.DC_PagedBuffPanel;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager;
 
 import javax.swing.*;

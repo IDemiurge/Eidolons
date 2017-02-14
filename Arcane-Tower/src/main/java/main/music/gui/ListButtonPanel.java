@@ -3,9 +3,10 @@ package main.music.gui;
 import main.music.ahk.AHK_Master;
 import main.swing.components.TextComp;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
-import main.system.auxiliary.GuiManager;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
+import main.system.graphics.GuiManager;
 import main.system.auxiliary.StringMaster;
 
 import javax.swing.*;
@@ -80,7 +81,7 @@ public class ListButtonPanel extends G_Panel {
                     lastLetter = letter;
                     letterAdded = n == 0;
                 } catch (Exception e) {
-                    main.system.auxiliary.LogMaster.log(1, "failed: " + line);
+                    LogMaster.log(1, "failed: " + line);
                     e.printStackTrace();
                 }
             }
@@ -94,7 +95,7 @@ public class ListButtonPanel extends G_Panel {
         List<String> list = StringMaster.openContainer(line, "::");
         String keyPart = list.get(0);
         if (list.size() < 2) {
-            main.system.auxiliary.LogMaster.log(1, " ");
+            LogMaster.log(1, " ");
             return i;
         }
         String funcPart = list.get(1).trim();

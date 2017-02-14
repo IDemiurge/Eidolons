@@ -13,8 +13,8 @@ import main.swing.generic.components.G_Panel.VISUALS;
 import main.swing.generic.components.misc.G_VisualComponent;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.swing.generic.components.misc.GraphicComponent.STD_COMP_IMAGES;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 
 import java.awt.*;
 

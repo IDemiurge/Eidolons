@@ -11,7 +11,7 @@ import main.libgdx.GameScreen;
 import main.libgdx.bf.GridMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.Chronos;
+import main.system.auxiliary.log.Chronos;
 import main.system.math.PositionMaster;
 
 import java.util.LinkedHashMap;

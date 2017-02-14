@@ -9,6 +9,7 @@ import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.system.DC_ConditionMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.math.Formula;
 
@@ -118,7 +119,7 @@ public class DC_CostsFactory {
             var = false;
         } catch (NumberFormatException e) {
             formula = new Formula(paramValue);
-            main.system.auxiliary.LogMaster.log(0, cost_param + " var cost: "
+            LogMaster.log(0, cost_param + " var cost: "
                     + paramValue);
             var = true;
 

@@ -3,7 +3,7 @@ package main.game.logic.dungeon.minimap;
 import main.game.logic.dungeon.Dungeon;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 import java.awt.*;
 import java.awt.event.MouseListener;

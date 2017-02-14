@@ -13,7 +13,7 @@ import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.texture.TextureManager;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 
 import java.util.List;
 

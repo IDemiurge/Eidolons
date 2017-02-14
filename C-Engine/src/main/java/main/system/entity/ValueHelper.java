@@ -1,4 +1,4 @@
-package main.system.util;
+package main.system.entity;
 
 import main.content.ContentManager;
 import main.content.VALUE;

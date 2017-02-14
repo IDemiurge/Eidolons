@@ -13,7 +13,7 @@ import main.elements.conditions.RefCondition;
 import main.elements.targeting.FixedTargeting;
 import main.entity.Ref.KEYS;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 
 public class TrapEffect extends TriggerEffect {
 

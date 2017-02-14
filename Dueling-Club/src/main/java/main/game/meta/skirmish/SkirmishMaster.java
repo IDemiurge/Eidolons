@@ -25,7 +25,7 @@ import main.game.logic.dungeon.scenario.ObjectiveMaster.OBJECTIVE_TYPE;
 import main.game.logic.generic.BattleOptions.DIFFICULTY;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.swing.generic.components.misc.GraphicComponent;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 import main.system.threading.WaitMaster;

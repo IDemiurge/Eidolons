@@ -9,6 +9,7 @@ import main.content.parameters.PARAMETER;
 import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.rules.rpg.IntegrityRule;
+import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -86,7 +87,7 @@ public class PrinciplePointComp extends HC_PointComp {// do I really need to?
             public void up() {
                 super.up();
                 panel.getView().refresh();
-                main.system.auxiliary.LogMaster.log(1, modified + " modified");
+                LogMaster.log(1, modified + " modified");
             }
 
             @Override
@@ -120,7 +121,7 @@ public class PrinciplePointComp extends HC_PointComp {// do I really need to?
             public void down() {
                 super.down();
                 panel.getView().refresh();
-                main.system.auxiliary.LogMaster.log(1, modified + " modified");
+                LogMaster.log(1, modified + " modified");
             }
 
             @Override

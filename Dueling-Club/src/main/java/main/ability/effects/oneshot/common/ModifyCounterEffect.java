@@ -13,7 +13,7 @@ import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
-import main.system.util.CounterMaster;
+import main.system.entity.CounterMaster;
 
 public class ModifyCounterEffect extends MicroEffect implements ResistibleEffect, ReducedEffect {
 

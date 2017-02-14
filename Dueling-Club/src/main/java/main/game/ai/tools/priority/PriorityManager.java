@@ -61,7 +61,9 @@ import main.rules.UnitAnalyzer;
 import main.rules.attack.AttackOfOpportunityRule;
 import main.system.DC_Formulas;
 import main.system.auxiliary.*;
-import main.system.auxiliary.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 import main.system.math.*;
 import main.system.math.roll.RollMaster;
 import main.system.text.TextParser;
@@ -232,7 +234,7 @@ public class PriorityManager {
         // if (behaviorMode != BEHAVIOR_MODE.PANIC)
         applyCostPenalty(as);
         applySequenceLengthPenalty(as);
-        main.system.auxiliary.LogMaster.log(1, "AI: " + priority + " priority for " + as);
+        LogMaster.log(1, "AI: " + priority + " priority for " + as);
         return priority;
 
     }
@@ -1579,7 +1581,7 @@ public class PriorityManager {
             }
         }
         Chronos.logTimeElapsedForMark("Priority sorting ");
-        main.system.auxiliary.LogMaster.log(1, unit + " has chosen" + "" + sequence
+        LogMaster.log(1, unit + " has chosen" + "" + sequence
                 + " with priorioty of " + priority);
         return sequence;
     }
@@ -1645,7 +1647,7 @@ public class PriorityManager {
                     }
                     int bonus = MathMaster.round(as2.getPriority()
                             / asGroups.get(firstAction).size() * (CONVERGING_FACTOR));
-                    main.system.auxiliary.LogMaster.log(getLogChannel(), bonus
+                    LogMaster.log(getLogChannel(), bonus
                             + " Converging Paths bonus added to " + as.getPriority()
                             + as.getActions() + " from " + as2.getPriority() + as2.getActions());
                     as.setPriority(as.getPriority() + bonus);

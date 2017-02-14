@@ -1,7 +1,11 @@
-package main.system.auxiliary;
+package main.system.auxiliary.data;
 
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.SearchMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 import main.system.sound.SoundMaster;
 import org.w3c.dom.Node;

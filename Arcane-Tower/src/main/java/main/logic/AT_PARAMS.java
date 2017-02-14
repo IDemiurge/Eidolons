@@ -4,7 +4,7 @@ import main.content.C_OBJ_TYPE;
 import main.content.Metainfo;
 import main.content.OBJ_TYPE;
 import main.content.parameters.PARAMETER;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.awt.*;

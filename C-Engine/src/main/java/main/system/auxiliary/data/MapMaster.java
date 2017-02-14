@@ -1,6 +1,8 @@
-package main.system.auxiliary;
+package main.system.auxiliary.data;
 
 import main.data.XLinkedMap;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 
 import java.util.*;
 import java.util.Map.Entry;

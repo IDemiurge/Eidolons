@@ -4,6 +4,7 @@ import main.client.game.NetGame;
 import main.client.game.options.GameOptions;
 import main.client.lobby.DC_Lobby;
 import main.client.net.DC_GameClient;
+import main.system.auxiliary.log.LogMaster;
 import main.system.net.game.G_HostedGame;
 import main.system.net.user.User;
 
@@ -23,7 +24,7 @@ public class HostedGame extends G_HostedGame {
     }
 
     public DC_GameClient join() {
-        main.system.auxiliary.LogMaster.log(1, "joining game " + getTitle());
+        LogMaster.log(1, "joining game " + getTitle());
         if (!started) {
             if (!isFull()) {
                 this.joined = true;
@@ -48,7 +49,7 @@ public class HostedGame extends G_HostedGame {
 
     public void setHost(User host) {
         this.host = host;
-        main.system.auxiliary.LogMaster.log(1, "game host: " + host.getData());
+        LogMaster.log(1, "game host: " + host.getData());
     }
 
     public DC_Lobby getLobby() {

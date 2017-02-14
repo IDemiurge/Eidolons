@@ -13,6 +13,7 @@ import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.text.TextParser;
 
 import java.util.Map;
@@ -140,7 +141,7 @@ public class PrincipleMaster {
 
             String value = param.getName() + StringMaster.wrapInParenthesis(string + "");
             type.removeProperty(PROPS.PARAMETER_BONUSES, value);
-            main.system.auxiliary.LogMaster.log(1, value + " move to parameter on " + type);
+            LogMaster.log(1, value + " move to parameter on " + type);
         }
 
         // TODO from prop to params

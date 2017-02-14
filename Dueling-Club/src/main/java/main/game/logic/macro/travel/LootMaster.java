@@ -22,7 +22,7 @@ import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.logic.dungeon.Dungeon;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.FilterMaster;
+import main.system.entity.FilterMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.DequeImpl;

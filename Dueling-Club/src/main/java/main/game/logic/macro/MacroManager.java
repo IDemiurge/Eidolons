@@ -17,8 +17,8 @@ import main.game.logic.macro.gui.WorldEditorInterface;
 import main.game.logic.macro.gui.map.MapView;
 import main.game.logic.macro.map.Region;
 import main.game.logic.macro.travel.MacroParty;
-import main.system.FilterMaster;
-import main.system.auxiliary.FileManager;
+import main.system.entity.FilterMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.datatypes.DequeImpl;
 
 import javax.swing.*;

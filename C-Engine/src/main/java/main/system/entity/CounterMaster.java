@@ -1,4 +1,4 @@
-package main.system.util;
+package main.system.entity;
 
 import main.content.CONTENT_CONSTS.STD_COUNTERS;
 import main.entity.obj.Obj;

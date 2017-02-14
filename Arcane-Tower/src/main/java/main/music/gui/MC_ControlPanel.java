@@ -26,10 +26,12 @@ import main.swing.SwingMaster;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.EntityFilter;
-import main.system.FilterMaster;
+import main.system.entity.EntityFilter;
+import main.system.entity.FilterMaster;
 import main.system.auxiliary.*;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
+import main.system.auxiliary.data.ListMaster;
 import main.system.math.MathMaster;
 
 import javax.swing.*;

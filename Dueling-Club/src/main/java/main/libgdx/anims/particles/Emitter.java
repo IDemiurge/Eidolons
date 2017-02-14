@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.Vector2;
 import main.libgdx.GameScreen;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.ReflectionMaster;
 
 import java.io.BufferedReader;
@@ -96,7 +97,7 @@ public class Emitter extends ParticleEmitter {
                  - GameScreen.getInstance().getController().getY_cam_pos();
                 Float distance = (float) (Math.sqrt(xDiff * xDiff + yDiff * yDiff));
                 if (particleLogOn) {
-                    main.system.auxiliary.LogMaster.log(1,
+                    LogMaster.log(1,
                      " Mouse x: " + pos.x
                       + " Mouse y: " + pos.y //fuck that shit
                       + " Particle x: " + (getY() + p.getX())

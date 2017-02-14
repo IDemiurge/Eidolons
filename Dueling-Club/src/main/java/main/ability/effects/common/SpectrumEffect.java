@@ -13,7 +13,7 @@ import main.game.ai.tools.target.EffectMaster;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.VisionManager;
-import main.system.auxiliary.Chronos;
+import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.math.Formula;

@@ -9,7 +9,7 @@ import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.swing.generic.components.list.ListItem;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;

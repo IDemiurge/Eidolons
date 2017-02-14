@@ -17,6 +17,9 @@ import main.game.battlefield.attack.ArmorMaster;
 import main.game.battlefield.attack.Attack;
 import main.game.battlefield.attack.AttackCalculator.MOD_IDENTIFIER;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.auxiliary.secondary.GeometryMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
@@ -429,7 +432,7 @@ public class ActionAnimation extends PhaseAnimation {
                 // string += map.getOrCreate(s) + "" +
                 // StringMaster.wrapInParenthesis(s);
                 if (image == null) {
-                    main.system.auxiliary.LogMaster.log(1, "********** null image in " + map1);
+                    LogMaster.log(1, "********** null image in " + map1);
                     continue;
                 }
                 Loop loop = new Loop(10);
@@ -437,7 +440,7 @@ public class ActionAnimation extends PhaseAnimation {
                     WaitMaster.WAIT(50);
                 }
                 if (image.getWidth(null) < 1) {
-                    main.system.auxiliary.LogMaster.log(1, "********** invalid image for " + map1.get(image));
+                    LogMaster.log(1, "********** invalid image for " + map1.get(image));
                     continue;
                 }
 

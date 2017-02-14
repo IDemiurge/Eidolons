@@ -8,7 +8,8 @@ import main.game.battlefield.Coordinates;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.LogMaster.LOG;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.auxiliary.StringMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
@@ -34,7 +35,7 @@ public class DC_LogManager extends LogManager {
         String entry = name + " has moved to a new position at " + c.toString();
 
         entry = StringMaster.MESSAGE_PREFIX_PROCEEDING + entry;
-        main.system.auxiliary.LogMaster.log(1, entry);
+        LogMaster.log(1, entry);
     }
 
     public boolean logMovement(Ref ref) {

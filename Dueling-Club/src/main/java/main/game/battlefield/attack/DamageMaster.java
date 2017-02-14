@@ -19,7 +19,7 @@ import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.game.event.EventType;
 import main.game.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.rules.round.UnconsciousRule;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.Manager;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;

@@ -9,8 +9,9 @@ import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 
 import javax.imageio.ImageIO;
@@ -83,7 +84,7 @@ public class ResourceMaster {
             ImageIO.write(bufferedImage, getNewImageFormat(), outputfile);
         } catch (IOException e) {
             e.printStackTrace();
-            main.system.auxiliary.LogMaster.log(1, "Unused image failed to write: " + f.getPath());
+            LogMaster.log(1, "Unused image failed to write: " + f.getPath());
         }
 
     }

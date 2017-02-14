@@ -19,14 +19,14 @@ import main.game.battlefield.MovementManager;
 import main.game.event.Event;
 import main.game.turn.TurnManager;
 import main.swing.generic.components.GameGUI;
-import main.system.ConditionMaster;
-import main.system.auxiliary.IdManager;
-import main.system.auxiliary.LogMaster;
+import main.system.entity.ConditionMaster;
+import main.system.entity.IdManager;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.Log;
 import main.system.math.MathMaster;
 import main.system.net.Communicator;
 import main.system.text.LogManager;
-import main.system.util.ValueHelper;
+import main.system.entity.ValueHelper;
 
 import javax.swing.*;
 import java.io.Serializable;
@@ -225,7 +225,7 @@ public abstract class Game implements Serializable { // extends Entity? ;) Props
                     initType(type);
 
                 } catch (Exception e) {
-                    main.system.auxiliary.LogMaster.log(1, "type init failed: " + type);
+                    LogMaster.log(1, "type init failed: " + type);
                     e.printStackTrace();
                     continue;
                 }
@@ -290,7 +290,7 @@ public abstract class Game implements Serializable { // extends Entity? ;) Props
     }
 
     public void setSimulation(boolean simulation) {
-        main.system.auxiliary.LogMaster.log(1, "simulation= " + simulation);
+        LogMaster.log(1, "simulation= " + simulation);
         this.simulation = simulation;
     }
 

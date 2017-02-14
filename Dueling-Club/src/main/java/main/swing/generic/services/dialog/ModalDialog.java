@@ -1,7 +1,7 @@
 package main.swing.generic.services.dialog;
 
 import main.swing.generic.components.G_Dialog;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.threading.WaitMaster;
 
 import javax.swing.*;

@@ -1,7 +1,7 @@
 package main.system;
 
 import main.data.XLinkedMap;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.LinkedList;
 import java.util.List;

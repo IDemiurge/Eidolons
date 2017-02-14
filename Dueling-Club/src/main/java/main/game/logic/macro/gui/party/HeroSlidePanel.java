@@ -8,8 +8,8 @@ import main.swing.components.panels.DC_ItemPanel;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.Arrays;

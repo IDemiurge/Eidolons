@@ -7,7 +7,7 @@ import com.graphbuilder.math.VarMap;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.Game;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.StringMaster;
 import main.system.text.TextParser;
@@ -21,6 +21,7 @@ import java.util.List;
 public class Formula implements MyMathObj {
     // FORMAT:{REF_VALUE}
     // protected static final Logger logger = Logger.getLogger(Formula.class);
+//TODO extract parsing into Parser!
 
     private static final String RESISTANCE = "{TARGET_RESISTANCE}";
     private static List<String> failedFormulas = new LinkedList<>();
@@ -88,8 +89,8 @@ public class Formula implements MyMathObj {
             }
         }
 
-        main.system.auxiliary.LogMaster.log(0, "Formula after parsing: " + formula);
-        main.system.auxiliary.LogMaster.log(0, "Result: " + result);
+        LogMaster.log(0, "Formula after parsing: " + formula);
+        LogMaster.log(0, "Result: " + result);
         return result;
     }
 
@@ -104,7 +105,7 @@ public class Formula implements MyMathObj {
         try {
             number = evaluate();
         } catch (Exception e) {
-            main.system.auxiliary.LogMaster.log(1, "Formula failed to evaluate: " + formula);
+            LogMaster.log(1, "Formula failed to evaluate: " + formula);
             e.printStackTrace();
             throw e;
         }
@@ -156,11 +157,11 @@ public class Formula implements MyMathObj {
                         result = parseRef(ref_substring);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        main.system.auxiliary.LogMaster.log(LogMaster.MATH_DEBUG, ref_substring
+                        LogMaster.log(LogMaster.MATH_DEBUG, ref_substring
                                 + " failed to parse ref for formula: " + formula);
                     }
                     formula = formula.replace(ref_substring, String.valueOf(result));
-                    main.system.auxiliary.LogMaster.log(0, "Ref parsed: " + ref_substring + " = "
+                    LogMaster.log(0, "Ref parsed: " + ref_substring + " = "
                             + result);
                     break;
                 }

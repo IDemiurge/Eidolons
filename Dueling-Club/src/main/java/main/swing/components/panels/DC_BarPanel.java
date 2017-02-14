@@ -7,8 +7,8 @@ import main.swing.generic.components.Builder;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.misc.ValueBar;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.ColorManager;
+import main.system.graphics.GuiManager;
 
 public class DC_BarPanel extends Builder {
     ValueBar staminaBar;

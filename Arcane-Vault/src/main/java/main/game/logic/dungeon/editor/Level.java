@@ -30,9 +30,10 @@ import main.game.logic.dungeon.building.MapZone;
 import main.game.logic.dungeon.editor.gui.LE_MapViewComp;
 import main.game.logic.dungeon.editor.logic.AiGroupData;
 import main.game.logic.dungeon.minimap.MiniGrid;
-import main.system.auxiliary.Chronos;
+import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -220,14 +221,14 @@ public class Level {
         // overlaying may be trouble
         // prev.getMapObjects()
         LE_Simulation c_game = (LE_Simulation) dungeon.getGame();
-        main.system.auxiliary.LogMaster.log(1, c_game.toString());
+        LogMaster.log(1, c_game.toString());
         LinkedList<DC_HeroObj> unitsCache = c_game.getUnitsCache();
         dungeon.setPlan(prev.getDungeon().getPlan().getCopy());
         LE_Simulation game = (LE_Simulation) prev.getDungeon().getGame();
         dungeon.setGame(game);
-        main.system.auxiliary.LogMaster.log(1, game.toString());
+        LogMaster.log(1, game.toString());
         game.setUnits(unitsCache);
-        main.system.auxiliary.LogMaster.log(1, game.getUnits().size() + " vs " + unitsCache.size());
+        LogMaster.log(1, game.getUnits().size() + " vs " + unitsCache.size());
     }
 
     public String getXml() {
@@ -513,12 +514,12 @@ public class Level {
                 dungeon.setMainEntrance((Entrance) obj);
                 dungeon.getPlan().setEntranceLayout(
                         DungeonLevelMaster.getLayout(dungeon.getPlan(), c));
-                main.system.auxiliary.LogMaster.log(1, "Main Entrance: " + obj + "; initComps = "
+                LogMaster.log(1, "Main Entrance: " + obj + "; initComps = "
                         + dungeon.getPlan().getEntranceLayout());
             } else if (dungeon.getMainExit() == null) {
                 dungeon.setMainExit((Entrance) obj);
                 dungeon.getPlan().setExitLayout(DungeonLevelMaster.getLayout(dungeon.getPlan(), c));
-                main.system.auxiliary.LogMaster.log(1, "Main Exit: " + obj + "; initComps = "
+                LogMaster.log(1, "Main Exit: " + obj + "; initComps = "
                         + dungeon.getPlan().getExitLayout());
             }
             dungeon.getEntrances().add((Entrance) obj);

@@ -13,7 +13,7 @@ import main.entity.Ref.KEYS;
 import main.entity.item.DC_HeroItemObj;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.unit.DC_HeroObj;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 import main.system.DC_ConditionMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;

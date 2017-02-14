@@ -14,8 +14,8 @@ import main.session.SessionMaster;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.panels.G_ScrolledPanel;
-import main.system.auxiliary.FontMaster.FONT;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.FontMaster.FONT;
+import main.system.auxiliary.data.ListMaster;
 
 import java.awt.*;
 import java.util.LinkedList;

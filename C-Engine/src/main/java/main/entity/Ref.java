@@ -12,7 +12,7 @@ import main.game.Game;
 import main.game.event.Event;
 import main.game.player.Player;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.SearchMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
@@ -196,7 +196,7 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
                 try {
                     return game.getObjectById(Integer.valueOf(getValue(key.name()))).getRef();
                 } catch (Exception e) {
-                    main.system.auxiliary.LogMaster.log(1, prefix + " + " + getStr());
+                    LogMaster.log(1, prefix + " + " + getStr());
                     e.printStackTrace();
                 }
             }

@@ -11,7 +11,11 @@ import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
 import main.game.Game;
-import main.system.auxiliary.*;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.Err;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
@@ -72,7 +76,7 @@ public class XML_Reader {
     ) {
 
         key = key.replace("_", " ");
-        main.system.auxiliary.LogMaster.log(LogMaster.DATA_DEBUG, "type map: " + key);
+        LogMaster.log(LogMaster.DATA_DEBUG, "type map: " + key);
 
         Map<String, ObjType> type_map = typeMaps.get(key);
         if (type_map == null) {
@@ -122,7 +126,7 @@ public class XML_Reader {
                 groupedSet.add(name);
 
                 type_map.put(name, type);
-                main.system.auxiliary.LogMaster.log(LogMaster.DATA_DEBUG, nl1.item(a).getNodeName()
+                LogMaster.log(LogMaster.DATA_DEBUG, nl1.item(a).getNodeName()
                         + " has been put into map as " + type);
             }
         }
@@ -212,14 +216,14 @@ public class XML_Reader {
 
     protected static void addReadingThread(Thread t) {
         threads.add(t);
-        main.system.auxiliary.LogMaster.log(LogMaster.THREADING_DEBUG, t.getName() + " added to "
+        LogMaster.log(LogMaster.THREADING_DEBUG, t.getName() + " added to "
                 + threads);
 
     }
 
     protected static void removeReadingThread(Thread thread) {
         threads.remove(thread);
-        main.system.auxiliary.LogMaster.log(1, thread.getName() + " removed from " + threads);
+        LogMaster.log(1, thread.getName() + " removed from " + threads);
 
         if (threads.isEmpty()) {
             WaitMaster.receiveInput(WAIT_OPERATIONS.READING_DONE, true);
@@ -455,7 +459,7 @@ public class XML_Reader {
             groups = getTabGroupMap(!macro).get(strings);
         }
         if (groups == null) {
-            main.system.auxiliary.LogMaster.log(1, "NO SUB GROUP SET!" + strings);
+            LogMaster.log(1, "NO SUB GROUP SET!" + strings);
         }
         return groups;
     }
@@ -573,7 +577,7 @@ public class XML_Reader {
                 loadMap(heroFile.getType().getName(), FileManager.readFile(heroFile.getFile()));
             } catch (Exception e) {
                 LogMaster.setOff(false);
-                main.system.auxiliary.LogMaster.log(1, "Hero File failed to load:" + heroFile);
+                LogMaster.log(1, "Hero File failed to load:" + heroFile);
                 e.printStackTrace();
             } finally {
                 LogMaster.setOff(false);
@@ -592,7 +596,7 @@ public class XML_Reader {
                 }
             }
             if (oldType == null) {
-                main.system.auxiliary.LogMaster.log(1, "New Hero loaded:" + type.getName());
+                LogMaster.log(1, "New Hero loaded:" + type.getName());
                 bufferCharTypeMap.put(type.getName(), type);
                 originalCharTypeMap.put(type.getName(), type);
             }

@@ -17,7 +17,7 @@ import main.entity.obj.unit.DC_HeroObj;
 import main.entity.obj.unit.DC_UnitObj;
 import main.entity.type.ObjType;
 import main.game.MicroGame;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 import main.system.DC_Formulas;
 import main.system.auxiliary.StringMaster;
 

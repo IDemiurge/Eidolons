@@ -9,7 +9,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
-import main.system.auxiliary.LogMaster.LOG;
+import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 import java.util.HashMap;

@@ -23,7 +23,11 @@ import main.entity.type.ObjType;
 import main.game.battlefield.XLine;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.*;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.ColorManager;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.graphics.MigMaster;
 import main.system.images.ImageManager;
@@ -287,7 +291,7 @@ public class HC_Tree {
 
                 if (overlapping.size() > 0) {
 
-                    main.system.auxiliary.LogMaster.log(1, type + " has " + overlapping);
+                    LogMaster.log(1, type + " has " + overlapping);
 
                     y += map.getNodeSize() + offsetY * 2;
 
@@ -299,7 +303,7 @@ public class HC_Tree {
                         }
                         overlapping = map.getTypesWithinRange(type, 0, 0, x, y, Math.max(20,
                                 (width - map.getNodeSize())), fontHeight * 3 / 2);
-                        main.system.auxiliary.LogMaster.log(1, type + " has " + overlapping);
+                        LogMaster.log(1, type + " has " + overlapping);
                     }
                     while (overlapping.size() > 0) {
                         y -= fontHeight;
@@ -309,7 +313,7 @@ public class HC_Tree {
                         }
                         overlapping = map.getTypesWithinRange(type, 0, 0, x, y, Math.max(20,
                                 (width - map.getNodeSize())), fontHeight * 3 / 2);
-                        main.system.auxiliary.LogMaster.log(1, type + " has " + overlapping);
+                        LogMaster.log(1, type + " has " + overlapping);
 
                     }
                 }

@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.StreamUtils;
 import main.data.filesys.PathFinder;
 import main.libgdx.anims.particles.Emitter.EMITTER_VALS_SCALED;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
 
 import java.io.BufferedReader;

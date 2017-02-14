@@ -59,7 +59,10 @@ import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.services.dialog.EnumChooser;
 import main.system.*;
 import main.system.auxiliary.*;
-import main.system.auxiliary.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.data.FileManager;
+import main.system.entity.ConditionMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
@@ -297,7 +300,7 @@ public class DebugMaster {
         String NULL = "Set Parameter";
         String string = "What to do with " + group + "?";
         Boolean result = DialogMaster.askAndWait(string, TRUE, FALSE, NULL);
-        main.system.auxiliary.LogMaster.log(1, " ");
+        LogMaster.log(1, " ");
         DIRECTION info = group.getWanderDirection();
 
         // TODO GLOBAL AI LOG LEVEL
@@ -436,7 +439,7 @@ public class DebugMaster {
 
                 break;
             case DUNGEON_PLAN_INFO: {
-                main.system.auxiliary.LogMaster.log(1, ""
+                LogMaster.log(1, ""
                         + game.getDungeonMaster().getDungeon().getPlan());
                 break;
             }
@@ -1139,13 +1142,13 @@ public class DebugMaster {
     }
 
     private void displayList(String string, Collection<?> list, int chunkSize) {
-        main.system.auxiliary.LogMaster.log(1, string + " list (" + list.size() + ")");
+        LogMaster.log(1, string + " list (" + list.size() + ")");
 
         int i = 0;
         String chunk = ">> ";
         for (Object o : list) {
             if (i >= chunkSize) {
-                main.system.auxiliary.LogMaster.log(1, chunk);
+                LogMaster.log(1, chunk);
                 i = 0;
                 chunk = ">> ";
 
@@ -1154,9 +1157,9 @@ public class DebugMaster {
             i++;
 
         }
-        main.system.auxiliary.LogMaster.log(1, chunk);
+        LogMaster.log(1, chunk);
 
-        main.system.auxiliary.LogMaster.log(1, string + " list (" + list.size() + ")");
+        LogMaster.log(1, string + " list (" + list.size() + ")");
     }
 
     private String getUnitInfo(DC_Obj infoObj) {
@@ -1202,7 +1205,7 @@ public class DebugMaster {
     }
 
     private void display(String str, Object obj) {
-        main.system.auxiliary.LogMaster.log(1, "" + str + obj.toString());
+        LogMaster.log(1, "" + str + obj.toString());
 
     }
 

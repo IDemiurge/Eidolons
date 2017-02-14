@@ -1,8 +1,8 @@
 package main.swing.components.panels.page.log;
 
 import main.swing.generic.components.misc.GraphicComponent.STD_COMP_IMAGES;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 
 import java.awt.*;
 import java.util.List;

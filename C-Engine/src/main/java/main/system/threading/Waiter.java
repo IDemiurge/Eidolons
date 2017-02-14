@@ -1,7 +1,7 @@
 package main.system.threading;
 
-import main.system.auxiliary.Chronos;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.LogMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.concurrent.locks.Condition;
@@ -87,7 +87,7 @@ public class Waiter implements Runnable {
             }
         }
 
-        main.system.auxiliary.LogMaster.log(LogMaster.WAITING_DEBUG, operation.name()
+        LogMaster.log(LogMaster.WAITING_DEBUG, operation.name()
                 + " WAIT LOOP EXITED WITH : " + input);
         lock.lock();
         waiting.signal();
@@ -105,7 +105,7 @@ public class Waiter implements Runnable {
 
     public void setInput(Object input) {
 
-        main.system.auxiliary.LogMaster.log(LogMaster.WAITING_DEBUG, "INPUT RECEIVED: " + input);
+        LogMaster.log(LogMaster.WAITING_DEBUG, "INPUT RECEIVED: " + input);
         if (input == null) {
             interrupt();
             return;
@@ -125,7 +125,7 @@ public class Waiter implements Runnable {
         waiting.signal();
         lock.unlock();
 
-        main.system.auxiliary.LogMaster.log(LogMaster.WAITING_DEBUG, "WAITER INTERRUPTED: "
+        LogMaster.log(LogMaster.WAITING_DEBUG, "WAITER INTERRUPTED: "
                 + operation.name());
     }
 

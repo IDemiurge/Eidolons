@@ -1,4 +1,4 @@
-package main.system.auxiliary;
+package main.system.datatypes;
 
 import main.data.XLinkedMap;
 

@@ -1,4 +1,4 @@
-package main.system;
+package main.system.entity;
 
 import main.content.CONTENT_CONSTS.CLASSIFICATIONS;
 import main.content.CONTENT_CONSTS.STATUS;
@@ -23,6 +23,7 @@ import main.entity.obj.Obj;
 import main.system.auxiliary.ClassMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 import main.system.math.PositionMaster;
 import main.system.text.TextParser;
@@ -181,7 +182,7 @@ public class ConditionMaster {
         if (PositionMaster.inYLine(obj1, obj2)) {
             return getXLineCondition(obj1, obj2, bidirectional);
         }
-        main.system.auxiliary.LogMaster.log(1, "getLineCondition: invalid obj positions!");
+        LogMaster.log(1, "getLineCondition: invalid obj positions!");
         return null;
 
     }

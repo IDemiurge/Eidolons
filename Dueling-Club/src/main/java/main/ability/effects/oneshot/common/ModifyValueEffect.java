@@ -16,8 +16,8 @@ import main.entity.obj.HeroItem;
 import main.entity.obj.Obj;
 import main.game.ai.tools.ParamAnalyzer;
 import main.game.ai.tools.target.EffectMaster;
-import main.system.auxiliary.LogMaster;
-import main.system.auxiliary.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.math.Formula;
@@ -232,7 +232,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             ((DC_Obj) obj).modified(this);
         }
         if (ref.getTargetObj() == null) {
-            main.system.auxiliary.LogMaster.log(1, "null target!" + this);
+            LogMaster.log(1, "null target!" + this);
             return false;
         }
 

@@ -24,6 +24,7 @@ import main.rules.magic.SummoningSicknessRule;
 import main.rules.round.UpkeepRule;
 import main.system.DC_Formulas;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 import main.system.math.Property;
@@ -187,9 +188,9 @@ public class SummonEffect extends MicroEffect {
                 e.printStackTrace();
             }
 
-            main.system.auxiliary.LogMaster.log(1, "Awarding xp to " + type.getName() + ": " + xp);
+            LogMaster.log(1, "Awarding xp to " + type.getName() + ": " + xp);
             type = new UnitLevelManager().awardXP(type, xp, false);
-            main.system.auxiliary.LogMaster.log(1, "Unit level: "
+            LogMaster.log(1, "Unit level: "
                     + type.getParam(PARAMS.UNIT_LEVEL));
         } catch (Exception e) {
             e.printStackTrace();

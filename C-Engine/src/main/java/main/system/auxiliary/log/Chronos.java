@@ -1,4 +1,4 @@
-package main.system.auxiliary;
+package main.system.auxiliary.log;
 
 import main.data.ConcurrentMap;
 import main.system.launch.CoreEngine;

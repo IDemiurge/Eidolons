@@ -1,6 +1,7 @@
 package main.system.graphics;
 
 import main.content.CONTENT_CONSTS.FLIP;
+import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.AniMaster.IMAGE_ANIMATION;
 import main.system.images.ImageManager;
 
@@ -91,7 +92,7 @@ public class ImageTransformer {
             return image;
         }
         float floatTransparent = new Float(finalTransparency) / 100;
-        main.system.auxiliary.LogMaster.log(1, "**********finalTransparency==" + floatTransparent);
+        LogMaster.log(1, "**********finalTransparency==" + floatTransparent);
         finalGraphics.setComposite(AlphaComposite.getInstance(rule, floatTransparent));
         finalGraphics.drawImage(buffer, 0, 0, null);
         return image;

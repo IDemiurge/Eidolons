@@ -27,7 +27,7 @@ import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.listeners.ButtonHandler;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.text.NameMaster;

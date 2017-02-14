@@ -3,7 +3,7 @@ package main.client.cc.gui.neo.principles;
 import main.client.cc.CharacterCreator;
 import main.entity.Entity;
 import main.swing.generic.components.panels.G_ListPanel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

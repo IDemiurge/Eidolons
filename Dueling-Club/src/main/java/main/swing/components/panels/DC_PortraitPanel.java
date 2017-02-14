@@ -7,7 +7,7 @@ import main.game.Game;
 import main.game.MicroGame;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.ImageChooser;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.ALIGNMENT;
 

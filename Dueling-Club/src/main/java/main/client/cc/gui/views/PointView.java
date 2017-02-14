@@ -10,9 +10,9 @@ import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.misc.PointComp;
-import main.system.auxiliary.Chronos;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.GuiManager;
+import main.system.auxiliary.log.Chronos;
+import main.system.graphics.FontMaster;
+import main.system.graphics.GuiManager;
 import main.system.auxiliary.StringMaster;
 
 import javax.swing.*;

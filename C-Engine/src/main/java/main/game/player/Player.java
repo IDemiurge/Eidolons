@@ -4,9 +4,10 @@ import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.MicroGame;
-import main.system.FilterMaster;
-import main.system.auxiliary.Chronos;
-import main.system.auxiliary.ColorManager.FLAG_COLOR;
+import main.system.auxiliary.log.LogMaster;
+import main.system.entity.FilterMaster;
+import main.system.auxiliary.log.Chronos;
+import main.system.graphics.ColorManager.FLAG_COLOR;
 import main.system.images.ImageManager;
 import main.system.net.data.PartyData;
 import main.system.net.data.PlayerData;
@@ -38,7 +39,7 @@ public class Player {
     private Set<Obj> units;
 
     public Player(String name, Color c, boolean me, String portrait) {
-        main.system.auxiliary.LogMaster.log(0, "new player - " + name);
+        LogMaster.log(0, "new player - " + name);
         this.name = name;
 
         color = c;

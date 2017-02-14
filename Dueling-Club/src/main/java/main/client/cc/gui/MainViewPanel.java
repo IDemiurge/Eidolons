@@ -12,6 +12,7 @@ import main.content.DC_ContentManager;
 import main.content.parameters.PARAMETER;
 import main.entity.obj.unit.DC_HeroObj;
 import main.swing.generic.components.G_Panel;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -120,7 +121,7 @@ public class MainViewPanel extends G_Panel {
             return;
         }
         if (heroView == null) {
-            main.system.auxiliary.LogMaster.log(1, "null hero view. Current view: "
+            LogMaster.log(1, "null hero view. Current view: "
                     + getCurrentViewComp().getClass().getSimpleName());
             return;
         }

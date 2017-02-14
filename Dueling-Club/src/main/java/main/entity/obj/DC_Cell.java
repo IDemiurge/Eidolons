@@ -13,7 +13,7 @@ import main.game.battlefield.VisionManager;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.building.MapBlock;
 import main.game.player.Player;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 import main.test.debug.DebugMaster;

@@ -10,7 +10,7 @@ import main.game.ai.AI;
 import main.game.ai.AI_Logic;
 import main.game.ai.logic.ActionTypeManager.ACTION_TYPES;
 import main.game.player.Player;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.Set;
 
@@ -107,7 +107,7 @@ public abstract class DC_AI_Logic implements AI_Logic {
     public ACTION_TYPES initAction() {
         this.action = aManager.getAction();
 
-        main.system.auxiliary.LogMaster
+        LogMaster
                 .log(LogMaster.AI_DEBUG, "Action chosen: " + action + " for "
                         + unit);
         return getAction();

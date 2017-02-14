@@ -6,8 +6,8 @@ import main.swing.components.panels.DC_UnitActionPanel;
 import main.swing.components.panels.DC_UnitActionPanel.ACTION_DISPLAY_GROUP;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagedListPanel;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.LinkedList;
 import java.util.List;

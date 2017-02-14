@@ -8,8 +8,8 @@ import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.swing.generic.components.G_Panel;
 import main.swing.renderers.SmartTextManager;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.FontMaster;
+import main.system.graphics.ColorManager;
+import main.system.graphics.FontMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 

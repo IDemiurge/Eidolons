@@ -21,7 +21,7 @@ import main.game.ai.AI_Manager;
 import main.game.ai.tools.target.EffectMaster;
 import main.game.player.Player;
 import main.rules.combat.CadenceRule;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.graphics.Sprite;
 import main.system.math.Formula;

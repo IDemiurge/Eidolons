@@ -8,8 +8,9 @@ import main.data.ability.Argument;
 import main.data.ability.Mapper;
 import main.data.ability.construct.VariableManager;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 import main.system.auxiliary.secondary.DefaultComparator;
 
 import javax.swing.*;
@@ -153,7 +154,7 @@ public class AE_Element extends G_Panel implements MouseListener {
         this.textBox = new JTextField(text, COLUMNS);
         textBox.addActionListener(nodeMaster);
         textBox.addMouseListener(this);
-        main.system.auxiliary.LogMaster.log(0, "initTextBoxElement");
+        LogMaster.log(0, "initTextBoxElement");
         add(textBox, "pos 0 " + y + ",  h " + h);
         y += h;
 
@@ -197,7 +198,7 @@ public class AE_Element extends G_Panel implements MouseListener {
     private void initCheckBoxElement() {
         this.checkBox = new Checkbox();
         checkBox.addItemListener(nodeMaster);
-        main.system.auxiliary.LogMaster.log(1, "initCheckBoxElement");
+        LogMaster.log(1, "initCheckBoxElement");
         add(checkBox, "pos 0 " + y + "" + ", h " + h);
         y += h;
     }

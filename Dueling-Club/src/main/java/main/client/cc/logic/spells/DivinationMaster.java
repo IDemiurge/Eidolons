@@ -20,8 +20,10 @@ import main.entity.active.DC_SpellObj;
 import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.system.DC_Formulas;
-import main.system.FilterMaster;
+import main.system.entity.FilterMaster;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.secondary.WorkspaceMaster;
 import main.system.math.DC_MathManager;
 

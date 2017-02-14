@@ -29,6 +29,7 @@ import main.entity.obj.unit.DC_HeroObj;
 import main.game.battlefield.Coordinates.UNIT_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.entity.ConditionMaster;
 
 import java.util.LinkedList;
 import java.util.List;

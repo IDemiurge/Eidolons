@@ -10,10 +10,10 @@ import main.data.DataManager;
 import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.WeightMap;
+import main.system.datatypes.WeightMap;
 import main.system.auxiliary.secondary.WorkspaceMaster;
 
 import java.util.List;

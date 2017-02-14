@@ -7,7 +7,7 @@ import main.game.MicroGame;
 import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.game.player.Player;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 
 public class OwnershipChangeEffect extends MicroEffect implements
         ResistibleEffect {
@@ -52,7 +52,7 @@ public class OwnershipChangeEffect extends MicroEffect implements
         if (berserker) {
 
         }
-        main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG_1, ref
+        LogMaster.log(LogMaster.CORE_DEBUG_1, ref
                 .getTargetObj().getName() + "'s new owner: " + obj.getOwner());
         return true;
     }

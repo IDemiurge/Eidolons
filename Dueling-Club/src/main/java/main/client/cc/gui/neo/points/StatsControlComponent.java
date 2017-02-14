@@ -11,6 +11,7 @@ import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.swing.generic.components.misc.GraphicComponent.STD_COMP_IMAGES;
+import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.MigMaster;
 import main.system.math.DC_MathManager;
 
@@ -155,7 +156,7 @@ public class StatsControlComponent extends G_Panel {
     }
 
     public void resetHero() {
-        main.system.auxiliary.LogMaster.log(1, "*** backupBuffer reset: " + backupBuffer);
+        LogMaster.log(1, "*** backupBuffer reset: " + backupBuffer);
         CharacterCreator.getHeroManager().applyChangedType(hero, backupBuffer);
         resetBuffer();
         resetBackupBuffer();
@@ -164,12 +165,12 @@ public class StatsControlComponent extends G_Panel {
 
     public void resetBackupBuffer() {
         backupBuffer = new ObjType(hero.getType());
-        main.system.auxiliary.LogMaster.log(1, "*** backupBuffer reset: " + backupBuffer);
+        LogMaster.log(1, "*** backupBuffer reset: " + backupBuffer);
     }
 
     public void resetBuffer() {
         setBufferType(new ObjType(hero.getType()));
-        main.system.auxiliary.LogMaster.log(1, "*** buffer reset: " + bufferType);
+        LogMaster.log(1, "*** buffer reset: " + bufferType);
         if (mp != null) {
             getMp().resetBuffer();
         }

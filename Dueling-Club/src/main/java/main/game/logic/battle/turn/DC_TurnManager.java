@@ -11,7 +11,7 @@ import main.game.turn.TurnManager;
 import main.rules.mechanics.WaitRule;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;

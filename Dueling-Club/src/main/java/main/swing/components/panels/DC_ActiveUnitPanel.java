@@ -12,7 +12,7 @@ import main.swing.components.panels.page.small.DC_PagedBuffPanel;
 import main.swing.components.panels.page.small.SmallItem;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.panels.G_ListPanel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 

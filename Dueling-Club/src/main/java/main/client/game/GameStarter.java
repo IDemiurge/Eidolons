@@ -24,6 +24,7 @@ import main.game.player.Player;
 import main.swing.builders.DC_Builder;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.net.WaitingThread;
 import main.system.net.data.MapData;
 import main.system.net.data.PartyData;
@@ -110,7 +111,7 @@ public class GameStarter {
     }
 
     public void finalInit(String partydata) {
-        main.system.auxiliary.LogMaster.log(4, "initializing game data: " + partydata);
+        LogMaster.log(4, "initializing game data: " + partydata);
         enemyPartyData = new PartyData(partydata, true);
 
         player2 = initPlayer(getPlayerData(), enemyPartyData);
@@ -256,7 +257,7 @@ public class GameStarter {
 
     public void setMapData(MapData mapData) {
         this.mapData = mapData;
-        main.system.auxiliary.LogMaster.log(4, "MAP_DATA: " + getMapData().getData());
+        LogMaster.log(4, "MAP_DATA: " + getMapData().getData());
 
     }
 
@@ -382,7 +383,7 @@ public class GameStarter {
         if (connector.isHost()) {
             connector.send(HOST_CLIENT_CODES.GAME_STARTED);
         }
-        main.system.auxiliary.LogMaster.log(2, "GAME STARTED!");
+        LogMaster.log(2, "GAME STARTED!");
         // Weaver.inNewThread(getGameStarter(), "start", null);
         start();
         initCommunicator(connector);

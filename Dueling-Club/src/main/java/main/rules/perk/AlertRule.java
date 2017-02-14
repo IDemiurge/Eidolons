@@ -13,7 +13,7 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.unit.DC_HeroObj;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.rules.action.WatchRule;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 
 public class AlertRule {
 

@@ -34,9 +34,10 @@ import main.rules.DC_ActionManager;
 import main.rules.DC_ActionManager.STD_ACTIONS;
 import main.rules.DC_ActionManager.STD_MODE_ACTIONS;
 import main.rules.action.StealthRule;
-import main.system.auxiliary.Chronos;
-import main.system.auxiliary.ListMaster;
-import main.system.auxiliary.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 import main.system.auxiliary.StringMaster;
 
 import java.util.*;
@@ -374,7 +375,7 @@ public class ActionManager {
             return action;
         }
         if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_NONE) {
-            main.system.auxiliary.LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Action sequence chosen: "
+            LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Action sequence chosen: "
                     + sequence + StringMaster.wrapInParenthesis(sequence.getPriority() + ""));
         }
         ai.checkSetOrders(sequence);
@@ -501,7 +502,7 @@ public class ActionManager {
                 if (actionSequences.size() > 0) {
                     long time = TimeLimitMaster.getTimeLimitForAction();
                     if (Chronos.getTimeElapsedForMark(getChronosPrefix() + action) > time) {
-                        main.system.auxiliary.LogMaster.log(1, "*********** TIME ELAPSED FOR  "
+                        LogMaster.log(1, "*********** TIME ELAPSED FOR  "
                                 + action + StringMaster.wrapInParenthesis(time + ""));
                         break;
                     }

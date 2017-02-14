@@ -4,8 +4,8 @@ import main.content.VALUE;
 import main.entity.obj.Obj;
 import main.swing.generic.components.Refreshable;
 import main.swing.renderers.SmartTextManager;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 
 import javax.swing.*;
 import java.awt.*;

@@ -7,7 +7,7 @@ import main.game.DC_GameState;
 import main.swing.components.panels.DC_UnitActionPanel.ACTION_DISPLAY_GROUP;
 import main.swing.components.panels.page.DC_PagedUnitActionPanel;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 import java.util.HashMap;
 import java.util.List;

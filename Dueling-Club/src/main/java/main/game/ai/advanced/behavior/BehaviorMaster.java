@@ -12,7 +12,7 @@ import main.game.ai.tools.path.ActionPath;
 import main.game.ai.tools.path.PathBuilder;
 import main.game.battlefield.Coordinates;
 import main.rules.DC_ActionManager.STD_ACTIONS;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 
 public class BehaviorMaster {
     /*

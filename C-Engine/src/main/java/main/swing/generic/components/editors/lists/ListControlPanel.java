@@ -9,7 +9,7 @@ import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.list.G_List;
-import main.system.auxiliary.ArrayMaster;
+import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import net.miginfocom.swing.MigLayout;

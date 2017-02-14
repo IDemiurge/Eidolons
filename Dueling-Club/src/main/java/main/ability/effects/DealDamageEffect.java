@@ -10,7 +10,7 @@ import main.entity.obj.unit.DC_HeroObj;
 import main.game.battlefield.attack.DamageMaster;
 import main.rules.combat.ForceRule;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.DamageSprite;
 import main.system.math.Formula;
@@ -62,7 +62,7 @@ public class DealDamageEffect extends DC_Effect {
 
         amount = applyReductions(targetObj, amount, active, spell);
 
-        main.system.auxiliary.LogMaster.log(LogMaster.COMBAT_DEBUG, "Effect is dealing damage: "
+        LogMaster.log(LogMaster.COMBAT_DEBUG, "Effect is dealing damage: "
                 + amount + " to " + ref.getTargetObj().toString());
 
         if (damage_mod != null) {

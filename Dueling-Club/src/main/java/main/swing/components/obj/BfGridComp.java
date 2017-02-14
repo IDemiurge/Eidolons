@@ -14,7 +14,7 @@ import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.swing.generic.components.G_Panel;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 import org.apache.commons.lang3.tuple.ImmutablePair;

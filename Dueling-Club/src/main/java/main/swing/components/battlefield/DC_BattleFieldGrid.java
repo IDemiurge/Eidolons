@@ -19,9 +19,9 @@ import main.swing.components.obj.BfGridComp;
 import main.swing.components.obj.CellComp;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.services.layout.LayoutInfo;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.LogMaster;
+import main.system.graphics.ColorManager;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
@@ -615,7 +615,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     }
 
     public void setOffsetCoordinate(Coordinates offsetCoordinate) {
-        main.system.auxiliary.LogMaster.log(0, "Current Offset Coordinate :" + offsetCoordinate);
+        LogMaster.log(0, "Current Offset Coordinate :" + offsetCoordinate);
         this.offsetCoordinate = offsetCoordinate;
     }
 
@@ -624,7 +624,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     }
 
     public void setNextOffsetCoordinate(Coordinates nextOffsetCoordinate) {
-        main.system.auxiliary.LogMaster.log(0, "Next Offset Coordinate :" + offsetCoordinate);
+        LogMaster.log(0, "Next Offset Coordinate :" + offsetCoordinate);
         this.nextOffsetCoordinate = nextOffsetCoordinate;
     }
 

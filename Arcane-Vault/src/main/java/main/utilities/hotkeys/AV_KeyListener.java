@@ -4,7 +4,7 @@ import main.game.Game;
 import main.gui.components.controls.AV_ButtonPanel;
 import main.gui.components.controls.ModelManager;
 import main.launch.ArcaneVault;
-import main.system.util.ValueHelper;
+import main.system.entity.ValueHelper;
 import main.utilities.filter.FilterMaster;
 import main.utilities.search.SearchMaster;
 import main.utilities.search.TypeFinder;

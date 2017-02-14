@@ -1,6 +1,7 @@
 package main.game.turn;
 
 import main.game.MicroGameState;
+import main.system.auxiliary.log.LogMaster;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -60,7 +61,7 @@ public class TurnTimer implements ActionListener {
     }
 
     public void start() {
-        main.system.auxiliary.LogMaster.log(0, "TIMER STARTED!!! seconds:"
+        LogMaster.log(0, "TIMER STARTED!!! seconds:"
                 + turnMax / 1000);
         update();
         handler.timerStarted();
@@ -96,7 +97,7 @@ public class TurnTimer implements ActionListener {
         timeLeft -= period;
         handler.updateGraphics();
         if (timeLeft <= 0) {
-            main.system.auxiliary.LogMaster.log(0, "TIMER ELAPSED!!!");
+            LogMaster.log(0, "TIMER ELAPSED!!!");
             handler.timerElapsed();
             update();
         }

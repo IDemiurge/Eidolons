@@ -14,8 +14,8 @@ import main.swing.components.panels.secondary.DeadUnitPanel;
 import main.swing.components.panels.secondary.DroppedItemPanel;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 
 public class DC_CellInfoPanel extends G_Panel {
 

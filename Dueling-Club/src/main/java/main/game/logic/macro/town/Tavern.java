@@ -22,9 +22,10 @@ import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.global.TimeMaster;
 import main.game.logic.macro.travel.MacroParty;
 import main.game.logic.macro.utils.HeroGenerator;
-import main.system.FilterMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.entity.FilterMaster;
 import main.system.auxiliary.*;
-import main.system.auxiliary.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 
 import java.util.LinkedList;
 import java.util.List;

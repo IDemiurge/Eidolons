@@ -10,7 +10,8 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.game.ai.elements.actions.Action;
-import main.system.ConditionMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.entity.ConditionMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedList;
@@ -132,7 +133,7 @@ public class ReasonMaster {
             if (!useConditionResultCache) {
                 result = c.check(REF);
             } else {
-                main.system.auxiliary.LogMaster.log(0, c + " uses cached result " + result);
+                LogMaster.log(0, c + " uses cached result " + result);
             }
             if (!result) {
                 if (reason != null) {

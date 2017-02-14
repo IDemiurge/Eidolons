@@ -6,7 +6,7 @@ import main.entity.obj.unit.DC_HeroObj;
 import main.rules.rpg.IntegrityRule;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 import java.util.LinkedList;
 import java.util.List;

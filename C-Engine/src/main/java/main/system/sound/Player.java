@@ -11,6 +11,8 @@ import main.data.filesys.PathFinder;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.log.LogMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
@@ -143,7 +145,7 @@ public class Player {
                 }
             }
         }
-        main.system.auxiliary.LogMaster.log(0, "Playing: " + sound);
+        LogMaster.log(0, "Playing: " + sound);
         if (!FileManager.getFile(sound).isFile()) {
             if (sound.endsWith(FORMAT)) {
                 play(sound.replace(FORMAT, "") + ALT_FORMAT);

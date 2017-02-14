@@ -9,7 +9,8 @@ import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
 import main.swing.components.buttons.DynamicButton;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.services.dialog.DialogPanel;
-import main.system.auxiliary.GuiManager;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.GuiManager;
 import main.system.datatypes.DequeImpl;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
@@ -316,7 +317,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                         if (objClicked != null) {
                             int index = cellComp.getObjects().indexOf(objClicked);
                             int index2 = cellComp.getObjects().indexOf(object);
-                            main.system.auxiliary.LogMaster.log(1, objClicked + "'s " + index
+                            LogMaster.log(1, objClicked + "'s " + index
                                     + " vs " + object + "'s " + index2);
                             if (index > index2)
                                 // TODO so we need to keep this always sorted...
@@ -436,13 +437,13 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
     @Override
     public void mousePressed(MouseEvent e) {
         pressPoint = e.getPoint();
-        main.system.auxiliary.LogMaster.log(0, "mouse pressed at " + pressPoint);
+        LogMaster.log(0, "mouse pressed at " + pressPoint);
     }
 
     public void mouseReleased(MouseEvent e) {
         dragging = false;
         releasePoint = e.getPoint();
-        main.system.auxiliary.LogMaster.log(0, "released from " + pressPoint.x + "," + pressPoint.y
+        LogMaster.log(0, "released from " + pressPoint.x + "," + pressPoint.y
                 + " to " + releasePoint.x + "," + releasePoint.y);
 
         int diff_x = pressPoint.x - releasePoint.x;

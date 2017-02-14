@@ -5,9 +5,9 @@ import main.client.cc.gui.neo.HeroPanel;
 import main.content.CONTENT_CONSTS.PRINCIPLES;
 import main.entity.obj.unit.DC_HeroObj;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
+import main.system.graphics.GuiManager;
 
 import java.awt.*;
 

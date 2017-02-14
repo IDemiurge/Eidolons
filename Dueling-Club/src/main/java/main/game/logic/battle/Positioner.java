@@ -24,6 +24,8 @@ import main.game.logic.dungeon.building.MapBlock;
 import main.game.logic.generic.PartyManager;
 import main.rules.action.StackingRule;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.MapMaster;
+import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 

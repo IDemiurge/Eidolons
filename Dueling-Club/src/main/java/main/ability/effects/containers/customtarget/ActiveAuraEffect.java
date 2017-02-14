@@ -10,7 +10,7 @@ import main.elements.conditions.*;
 import main.elements.targeting.AutoTargeting;
 import main.entity.Ref.KEYS;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 import main.system.math.Formula;
 
 public class ActiveAuraEffect extends DC_Effect {

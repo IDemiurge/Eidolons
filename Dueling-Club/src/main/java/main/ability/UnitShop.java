@@ -22,7 +22,8 @@ import main.system.SortMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.WeightMap;
+import main.system.auxiliary.log.LogMaster;
+import main.system.datatypes.WeightMap;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 
@@ -295,7 +296,7 @@ public class UnitShop {
     private static void equip(DC_HeroObj unit, DC_HeroItemObj item, ITEM_SLOT slot) {
         if (slot != null) {
             if (!unit.equip(item, slot)) {
-                main.system.auxiliary.LogMaster.log(1, unit.getName() + " failed to equip "
+                LogMaster.log(1, unit.getName() + " failed to equip "
                         + item.getName());
             }
         } else {

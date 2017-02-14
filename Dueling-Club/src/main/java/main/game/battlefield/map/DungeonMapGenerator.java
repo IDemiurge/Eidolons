@@ -20,6 +20,9 @@ import main.game.logic.dungeon.building.DungeonPlan;
 import main.game.logic.dungeon.building.MapBlock;
 import main.game.logic.dungeon.building.MapZone;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.data.MapMaster;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.math.MathMaster;
 

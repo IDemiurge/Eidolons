@@ -6,7 +6,7 @@ import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.DungeonMaster;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 import java.util.HashMap;
 import java.util.Map;

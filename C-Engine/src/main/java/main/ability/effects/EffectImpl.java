@@ -15,8 +15,8 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
-import main.system.auxiliary.LogMaster;
-import main.system.auxiliary.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.ANIM;
 import main.system.graphics.SpriteAnimated;
@@ -195,7 +195,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
             for (Integer id : groupIds) {
 
                 if (isConcurrent()) {
-                    main.system.auxiliary.LogMaster.log("applying concurrently: " + this);
+                    LogMaster.log("applying concurrently: " + this);
                     final int targetId = id;
                     new Thread(new Runnable() {
                         public void run() {
@@ -215,7 +215,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
                 REF.getGroup().setIgnoreGroupTargeting(true);
 
                 REF.setTarget(id);
-                main.system.auxiliary.LogMaster.log(0, "GROUP EFFECT (" + toString()
+                LogMaster.log(0, "GROUP EFFECT (" + toString()
                         + ") applied to " + game.getObjectById(id));
 
                 if (construct != null) {
@@ -266,7 +266,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 
         if (isInterrupted()) {
             setInterrupted(false);
-            main.system.auxiliary.LogMaster.log(1, "effect interrupted! - " + toString());
+            LogMaster.log(1, "effect interrupted! - " + toString());
             return false;
         }
 

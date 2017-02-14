@@ -4,7 +4,7 @@ import main.client.game.gui.DC_GameGUI;
 import main.gui.gateway.GatewayView;
 import main.swing.generic.components.CompVisuals;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 

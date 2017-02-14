@@ -37,8 +37,9 @@ import main.rules.RuleMaster.FEATURE;
 import main.rules.attack.ExtraAttacksRule;
 import main.rules.mechanics.FleeRule;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.*;
@@ -285,7 +286,7 @@ public class DC_ActionManager implements ActionManager {
 
         ActionType type = (ActionType) DataManager.getType(typeName, OBJ_TYPES.ACTIONS);
         if (type == null) {
-            main.system.auxiliary.LogMaster.log(1, "no such active: " + typeName);
+            LogMaster.log(1, "no such active: " + typeName);
             return null;
         }
         Ref ref = Ref.getCopy(entity.getRef());

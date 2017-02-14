@@ -12,7 +12,7 @@ import main.entity.group.GroupImpl;
 import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
-import main.system.FilterMaster;
+import main.system.entity.FilterMaster;
 import main.system.math.DC_PositionMaster;
 import main.system.math.Formula;
 import main.system.math.PositionMaster.SHAPES;

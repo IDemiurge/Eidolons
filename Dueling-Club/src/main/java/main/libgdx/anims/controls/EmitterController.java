@@ -22,7 +22,7 @@ import main.swing.generic.services.DialogMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedList;

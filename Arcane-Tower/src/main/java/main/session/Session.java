@@ -12,7 +12,7 @@ import main.gui.SessionWindow;
 import main.logic.*;
 import main.logic.ArcaneRef.AT_KEYS;
 import main.logic.util.AT_SortMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.time.ZeitMaster;
 
 import java.util.LinkedList;

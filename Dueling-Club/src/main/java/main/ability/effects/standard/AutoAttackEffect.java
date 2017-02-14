@@ -6,7 +6,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.DC_HeroObj;
 import main.game.ai.tools.priority.PriorityManager;
 import main.swing.generic.services.dialog.AttackChoicePanel;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.net.WaitingThread;
 
 import java.util.LinkedList;

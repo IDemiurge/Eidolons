@@ -2,6 +2,7 @@ package main.content;
 
 import main.content.parameters.PARAMETER;
 import main.content.properties.PROPERTY;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.Arrays;
 
@@ -29,7 +30,7 @@ public class C_MACRO_OBJ_TYPE implements OBJ_TYPE {
         } catch (Exception e) {
         }
         if (type == null) {
-            main.system.auxiliary.LogMaster.log(0, "OBJ_TYPE not found: " + s);
+            LogMaster.log(0, "OBJ_TYPE not found: " + s);
             // throw new RuntimeException();
         }
         return type.getType();

@@ -22,7 +22,7 @@ import main.system.EventCallback;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.test.frontend.FAST_DC;
 
@@ -170,7 +170,7 @@ public class AnimMaster extends Group {
             }
             parentAnim =  getParentAnim(event.getRef());
             if (parentAnim != null) {
-                main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, anim +
+                LogMaster.log(LogMaster.ANIM_DEBUG, anim +
                  " event anim created for: " + parentAnim);
                 parentAnim.addEventAnim(anim, event); //TODO}
             }
@@ -189,7 +189,7 @@ public class AnimMaster extends Group {
              }
              CompositeAnim parentAnim = getParentAnim(effect.getRef());
              if (parentAnim != null) {
-                 main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, anim + " created for: " + parentAnim);
+                 LogMaster.log(LogMaster.ANIM_DEBUG, anim + " created for: " + parentAnim);
                  parentAnim.addEffectAnim(anim, effect); //TODO}
              } else {
 //                        add(anim);// when to start()?

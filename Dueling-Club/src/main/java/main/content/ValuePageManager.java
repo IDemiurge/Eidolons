@@ -4,8 +4,8 @@ import main.client.dc.Launcher;
 import main.client.dc.Launcher.VIEWS;
 import main.content.ValuePages.PAGE_NAMES;
 import main.content.properties.G_PROPS;
-import main.system.auxiliary.ArrayMaster;
-import main.system.auxiliary.MapMaster;
+import main.system.auxiliary.data.ArrayMaster;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.*;

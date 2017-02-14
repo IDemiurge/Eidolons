@@ -1,6 +1,6 @@
 package main.system.net.socket;
 
-import main.system.auxiliary.Err;
+import main.system.auxiliary.log.Err;
 import main.system.net.Viewer;
 import main.system.net.socket.ServerConnector.CODES;
 import main.system.net.socket.ServerConnector.NetCode;

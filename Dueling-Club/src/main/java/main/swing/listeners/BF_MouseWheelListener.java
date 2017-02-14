@@ -4,7 +4,7 @@ import main.entity.obj.Obj;
 import main.game.DC_Game;
 import main.swing.builders.DC_Builder;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 import java.awt.*;
 import java.awt.event.MouseWheelEvent;

@@ -1,7 +1,7 @@
 package main.game.battlefield.pathing;
 
 import main.entity.obj.MicroObj;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
 public class Path {
@@ -52,7 +52,7 @@ public class Path {
             node = nodes.get(i);
 //			double cost = node.traverse(obj, this);
             if (cost == -1) {
-                main.system.auxiliary.LogMaster
+                LogMaster
                         .log(LogMaster.COMBAT_DEBUG, "Path traversal stopped at "
                                 + node.getCoordinates());
                 interrupted = true;
@@ -70,7 +70,7 @@ public class Path {
                     break;
                 }
             }
-            main.system.auxiliary.LogMaster
+            LogMaster
                     .log(LogMaster.COMBAT_DEBUG, "Path traversal interrupted "
                             + this);
             obj.getGame().getManager()

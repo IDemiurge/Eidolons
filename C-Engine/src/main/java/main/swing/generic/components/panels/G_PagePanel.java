@@ -5,8 +5,9 @@ import main.swing.SwingMaster;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.G_VisualComponent;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.Utilities;
 import main.system.images.ImageManager;
 import main.system.sound.SoundMaster;
@@ -306,7 +307,7 @@ public abstract class G_PagePanel<E> extends G_Panel {
             }
 
         } else {
-            main.system.auxiliary.LogMaster.log(1, "Null component on "
+            LogMaster.log(1, "Null component on "
                     + getClass().getSimpleName() + " with " + getData());
         }
         repaint();

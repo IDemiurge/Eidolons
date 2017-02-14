@@ -22,6 +22,7 @@ import main.rules.mechanics.CoatingRule;
 import main.swing.generic.components.editors.EDITOR;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.DC_MathManager;
 
@@ -496,7 +497,7 @@ public class DC_ContentManager extends ContentManager {
                 }
                 entity.setValue(VAL, value);
                 if (unit) {
-                    main.system.auxiliary.LogMaster.log(1, entity + ":: Added Default Value " + ""
+                    LogMaster.log(1, entity + ":: Added Default Value " + ""
                             + VAL + "=" + value);
                 }
             }

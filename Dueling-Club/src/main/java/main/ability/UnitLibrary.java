@@ -19,6 +19,7 @@ import main.rules.UnitAnalyzer;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.auxiliary.secondary.WorkspaceMaster;
 
@@ -216,7 +217,7 @@ public class UnitLibrary {
         if (!result) {
             return false;
         }
-        main.system.auxiliary.LogMaster.log(1, "SPELL TRAINING: " + unit.getName() + " learns "
+        LogMaster.log(1, "SPELL TRAINING: " + unit.getName() + " learns "
                 + spellType.getName() + " (" + lc.toString() + "), remaining xp: "
                 + unit.getIntParam(PARAMS.XP));
 

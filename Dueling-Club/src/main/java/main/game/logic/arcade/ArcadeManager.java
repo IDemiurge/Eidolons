@@ -22,7 +22,7 @@ import main.game.logic.dungeon.Dungeon;
 import main.game.logic.generic.PartyManager;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.DC_Formulas;
-import main.system.FilterMaster;
+import main.system.entity.FilterMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;

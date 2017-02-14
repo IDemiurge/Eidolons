@@ -18,7 +18,7 @@ import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.swing.generic.components.misc.GraphicComponent.STD_COMP_IMAGES;
 import main.swing.generic.services.listener.MouseClickListener;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.math.Formula;
 import main.system.text.ToolTipMaster.TOOLTIP_TYPE;

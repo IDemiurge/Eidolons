@@ -8,7 +8,7 @@ import main.client.gui.main.UserListPanel;
 import main.swing.generic.components.Builder;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.ColorManager;
+import main.system.graphics.ColorManager;
 import main.system.net.user.UserList;
 
 /**

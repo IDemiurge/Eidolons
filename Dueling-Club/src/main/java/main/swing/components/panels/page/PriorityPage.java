@@ -8,7 +8,7 @@ import main.swing.components.panels.DC_PriorityListPanel;
 import main.swing.generic.components.list.G_List;
 import main.swing.generic.components.panels.G_ListPanel;
 import main.swing.generic.services.listener.ObjListMouseListener;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 
 import javax.swing.*;

@@ -9,7 +9,8 @@ import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.swing.components.obj.CellComp;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.*;
@@ -148,7 +149,7 @@ public class LE_Simulation extends DC_Game {
         // new Thread(new Runnable() { public void run() { } },
         // " thread").start();
         if (LevelEditor.DEBUG_ON) {
-            main.system.auxiliary.LogMaster.log(1, toString() + " added "
+            LogMaster.log(1, toString() + " added "
                     + obj.getNameAndCoordinate() + ", units= " + units);
         }
     }
@@ -157,7 +158,7 @@ public class LE_Simulation extends DC_Game {
         getUnits().remove(obj);
         unitsCache = new LinkedList<>(units);
         if (LevelEditor.DEBUG_ON) {
-            main.system.auxiliary.LogMaster.log(1, toString() + " removed "
+            LogMaster.log(1, toString() + " removed "
                     + obj.getNameAndCoordinate() + ", units= " + units);
         }
     }

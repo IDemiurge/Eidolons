@@ -7,7 +7,7 @@ import main.game.MicroGameState;
 import main.rules.DC_ActionManager;
 import main.swing.components.obj.ActionListItem;
 import main.swing.generic.components.panels.G_ListPanel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 
 import javax.swing.*;

@@ -23,7 +23,7 @@ import main.swing.generic.components.editors.ImageChooser;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 import main.utilities.workspace.Workspace;

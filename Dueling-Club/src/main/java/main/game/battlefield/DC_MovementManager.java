@@ -31,12 +31,12 @@ import main.rules.DC_ActionManager;
 import main.rules.mechanics.CollisionRule;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 import main.system.CustomValueManager;
-import main.system.FilterMaster;
+import main.system.entity.FilterMaster;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.PositionMaster;
 
 import java.util.*;

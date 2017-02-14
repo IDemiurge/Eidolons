@@ -1,8 +1,8 @@
 package main.client.cc.gui.neo.choice;
 
 import main.swing.components.panels.page.info.element.TextCompDC;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 import main.system.auxiliary.StringMaster;
 
 import javax.swing.*;

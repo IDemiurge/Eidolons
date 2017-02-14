@@ -8,7 +8,7 @@ import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagedListPanel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager.BORDER;
 
 import java.util.LinkedList;

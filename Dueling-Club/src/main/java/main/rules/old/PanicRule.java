@@ -15,7 +15,7 @@ import main.game.event.Event;
 import main.game.event.EventType;
 import main.game.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.rules.DC_RuleImpl;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 
 public class PanicRule extends DC_RuleImpl {
 

@@ -3,7 +3,7 @@ package main.swing.components.panels.secondary;
 import main.entity.item.DC_HeroItemObj;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.swing.generic.components.panels.G_ListPanel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 

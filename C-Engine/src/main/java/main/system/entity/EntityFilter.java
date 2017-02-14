@@ -1,4 +1,4 @@
-package main.system;
+package main.system.entity;
 
 import main.content.OBJ_TYPE;
 import main.entity.Entity;

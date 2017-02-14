@@ -5,7 +5,7 @@ import main.content.parameters.PARAMETER;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.ColorManager;
+import main.system.graphics.ColorManager;
 import main.system.math.MathMaster;
 
 import java.awt.*;

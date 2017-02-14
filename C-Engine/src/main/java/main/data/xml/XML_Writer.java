@@ -10,10 +10,11 @@ import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.type.ObjType;
-import main.system.auxiliary.FileManager;
-import main.system.auxiliary.MapMaster;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 
 import java.io.File;
@@ -130,7 +131,7 @@ public class XML_Writer {
         }
 
         setPathForOBJ_TYPE(TYPE, group);
-        main.system.auxiliary.LogMaster.log(0, path + " - WRITING XML FOR GROUP " + TYPE);
+        LogMaster.log(0, path + " - WRITING XML FOR GROUP " + TYPE);
         stringPool = "<XML>";
 
         if (group == null) {
@@ -205,7 +206,7 @@ public class XML_Writer {
         String newTypeString = getTypeXML(type, builder);
         if (!newTypeString.isEmpty()) {
             if (XML_Converter.getDoc(newTypeString) == null) {
-                main.system.auxiliary.LogMaster.log(1, "faulty xml for " + type.getName());
+                LogMaster.log(1, "faulty xml for " + type.getName());
                 return false;
             }
         }
@@ -281,7 +282,7 @@ public class XML_Writer {
     private static void putSubGroups() {
         for (String strname : subStrings.keySet()) {
             StringBuilder subGroup = subStrings.get(strname);
-            main.system.auxiliary.LogMaster.log(0, "SUBSTRING: " + strname);
+            LogMaster.log(0, "SUBSTRING: " + strname);
             if (strname.isEmpty()) {
                 strname = "Empty";
             }
@@ -337,7 +338,7 @@ public class XML_Writer {
                 }
             }
             if (prop == null) {
-                main.system.auxiliary.LogMaster.log(1, "null key! ; value = "
+                LogMaster.log(1, "null key! ; value = "
                         + type.getPropMap().get(prop));
             }
             appendLeafNode(builder, StringMaster.capitalizeFirstLetter(prop

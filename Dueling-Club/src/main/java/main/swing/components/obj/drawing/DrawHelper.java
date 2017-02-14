@@ -7,7 +7,7 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.DC_HeroObj;
 import main.game.battlefield.VisionManager;
 import main.swing.components.obj.CellComp;
-import main.system.auxiliary.FontMaster;
+import main.system.graphics.FontMaster;
 import main.system.text.SmartText;
 
 import java.awt.*;

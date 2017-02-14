@@ -1,6 +1,9 @@
-package main.system.auxiliary;
+package main.system.auxiliary.log;
 
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.TimeMaster;
+import main.system.auxiliary.data.FileManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 

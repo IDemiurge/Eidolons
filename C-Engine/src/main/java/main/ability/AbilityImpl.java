@@ -12,7 +12,7 @@ import main.game.event.Event;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 
 public class AbilityImpl extends ReferredElement implements Ability {
 
@@ -26,7 +26,7 @@ public class AbilityImpl extends ReferredElement implements Ability {
     public AbilityImpl(Targeting t, Effect e) {
         targeting = t;
         if (e == null) {
-            main.system.auxiliary.LogMaster.log(1, "null abil effects!");
+            LogMaster.log(1, "null abil effects!");
         }
         if (e instanceof Effects) {
             effects = (Effects) e;

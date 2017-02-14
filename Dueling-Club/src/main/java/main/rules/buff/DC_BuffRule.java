@@ -22,7 +22,7 @@ import main.game.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.rules.DC_RuleImpl;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.COMBAT_RULES;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;

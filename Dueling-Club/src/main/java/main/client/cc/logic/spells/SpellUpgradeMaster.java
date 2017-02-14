@@ -12,7 +12,8 @@ import main.entity.active.DC_SpellObj;
 import main.entity.obj.unit.DC_HeroObj;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.GuiManager;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.GuiManager;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 
@@ -299,7 +300,7 @@ for (SPELL_UPGRADE sub: ug){
                 + StringMaster.getWellFormattedString(ug.toString()));
         type.setName(SpellGenerator.generateName(type));
 
-        main.system.auxiliary.LogMaster.log(1, type.getModifierMaps() + " ");
+        LogMaster.log(1, type.getModifierMaps() + " ");
     }
 
 }

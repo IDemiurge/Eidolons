@@ -13,7 +13,7 @@ import main.gui.components.tree.AV_TreeSelectionListener;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.Builder;
 import main.system.auxiliary.CloneMaster;
-import main.system.auxiliary.ColorManager;
+import main.system.graphics.ColorManager;
 import main.utilities.workspace.Workspace;
 
 import javax.swing.*;

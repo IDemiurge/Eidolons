@@ -6,9 +6,10 @@ import main.data.ability.AE_Item;
 import main.data.ability.Argument;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.ColorManager;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -102,7 +103,7 @@ public class AE_EditPanel extends G_Panel {
                                 .getChildAt(i), db_index, nodeMaster, mainPanel);
                 elements.add(element);
                 add(element, "x 0, y " + i + "*" + AE_Element.ELEMENT_HEIGHT);
-                main.system.auxiliary.LogMaster
+                LogMaster
                         .log(1, i + "CONTAINER ELEMENT ADDED with selection: "
                                 + db_index);
                 pos = i;
@@ -123,7 +124,7 @@ public class AE_EditPanel extends G_Panel {
 
                 element.setDropBoxIndexQuietly(db_index);
                 add(element, "x 0, y " + i + "*" + AE_Element.ELEMENT_HEIGHT);
-                main.system.auxiliary.LogMaster.log(1, "ELEMENT ADDED: "
+                LogMaster.log(1, "ELEMENT ADDED: "
                         + arg.name());
                 i++;
             }

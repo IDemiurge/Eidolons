@@ -15,7 +15,7 @@ import main.entity.type.ObjType;
 import main.game.Game;
 import main.swing.components.panels.page.info.ValueInfoPage;
 import main.swing.components.panels.page.log.WrappedTextComp;
-import main.system.auxiliary.FontMaster;
+import main.system.graphics.FontMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.text.TextGenerator;
 import main.system.text.TextParser;

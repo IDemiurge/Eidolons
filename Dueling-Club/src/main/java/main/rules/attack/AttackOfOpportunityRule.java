@@ -21,8 +21,8 @@ import main.rules.RuleMaster;
 import main.rules.RuleMaster.RULE;
 import main.rules.action.WatchRule;
 import main.rules.mechanics.InterruptRule;
-import main.system.ConditionMaster;
-import main.system.auxiliary.LogMaster;
+import main.system.entity.ConditionMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.PositionMaster;
 import main.system.math.roll.RollMaster;
 
@@ -252,7 +252,7 @@ public class AttackOfOpportunityRule {
     }
 
     public static void triggerAttack(DC_HeroObj attacker, DC_HeroObj attacked, boolean free) {
-        main.system.auxiliary.LogMaster.log(LogMaster.COMBAT_DEBUG, "Triggering "
+        LogMaster.log(LogMaster.COMBAT_DEBUG, "Triggering "
                 + ((free) ? "free " : "") + "Attack of Opportunity for " + attacker + " on "
                 + attacked);
 

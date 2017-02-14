@@ -6,7 +6,7 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.launch.TypeBuilder;
 
 import java.io.File;

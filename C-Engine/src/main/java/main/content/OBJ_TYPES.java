@@ -7,6 +7,7 @@ import main.content.parameters.PARAMETER;
 import main.content.properties.G_PROPS;
 import main.content.properties.PROPERTY;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.Arrays;
 import java.util.List;
@@ -119,7 +120,7 @@ public enum OBJ_TYPES implements OBJ_TYPE {
         } catch (Exception e) {
         }
         if (type == null) {
-            main.system.auxiliary.LogMaster.log(0, "OBJ_TYPE not found: " + s);
+            LogMaster.log(0, "OBJ_TYPE not found: " + s);
             // throw new RuntimeException();
         }
         return type;

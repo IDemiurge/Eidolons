@@ -2,7 +2,7 @@ package main.client.cc.gui.neo.points;
 
 import main.content.VALUE;
 import main.swing.components.panels.page.info.element.ParamElement;
-import main.system.auxiliary.ColorManager;
+import main.system.graphics.ColorManager;
 
 import java.awt.*;
 

@@ -5,7 +5,7 @@ import main.entity.obj.Obj;
 import main.game.MicroGameState;
 import main.swing.components.obj.QuickItemListItem;
 import main.swing.generic.components.panels.G_ListPanel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 import javax.swing.*;
 import java.awt.*;

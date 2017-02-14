@@ -1,10 +1,11 @@
-package main.system.auxiliary;
+package main.system.graphics;
 
 import main.content.CONTENT_CONSTS.ASPECT;
 import main.content.CONTENT_CONSTS.CLASS_GROUP;
 import main.content.CONTENT_CONSTS.SKILL_GROUP;
 import main.content.properties.G_PROPS;
 import main.entity.type.ObjType;
+import main.system.auxiliary.EnumMaster;
 
 import java.awt.*;
 

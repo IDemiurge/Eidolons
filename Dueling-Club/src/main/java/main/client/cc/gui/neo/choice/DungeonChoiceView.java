@@ -10,8 +10,8 @@ import main.content.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.swing.generic.components.CompVisuals;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 
 /*

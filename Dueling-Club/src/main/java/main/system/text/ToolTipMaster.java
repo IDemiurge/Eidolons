@@ -35,10 +35,11 @@ import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.list.CustomList;
 import main.swing.generic.components.list.G_List;
 import main.swing.generic.components.panels.G_ListPanel;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.ColorManager;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.FontMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.AnimationManager.MouseItem;
 import main.system.graphics.MigMaster;
 import main.system.graphics.PhaseAnimation;
@@ -599,7 +600,7 @@ public class ToolTipMaster {
 
     private void addTooltip(TextItem textItem) {
         toolTipTextItems.add(textItem);
-        main.system.auxiliary.LogMaster.log(1, textItem + " tooltip added");
+        LogMaster.log(1, textItem + " tooltip added");
 
     }
 

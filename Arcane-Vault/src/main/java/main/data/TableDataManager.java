@@ -10,8 +10,9 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.launch.ArcaneVault;
 import main.simulation.SimulationManager;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.*;
@@ -53,7 +54,7 @@ public class TableDataManager {
             return null;
         }
         List<String> names = AV_DataManager.getValueNames(entity.getOBJ_TYPE());
-        main.system.auxiliary.LogMaster.log(
+        LogMaster.log(
                 0,
                 "VALUE NAMES FOR TYPE " + entity.getOBJ_TYPE() + ": "
                         + names.toString());

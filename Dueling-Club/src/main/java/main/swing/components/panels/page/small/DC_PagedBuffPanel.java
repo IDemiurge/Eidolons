@@ -4,7 +4,7 @@ import main.content.parameters.G_PARAMS;
 import main.entity.obj.BuffObj;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.datatypes.DequeImpl;
 
 import java.util.Collections;

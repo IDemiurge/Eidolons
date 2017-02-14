@@ -21,9 +21,10 @@ import main.libgdx.GameScreen;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
-import main.system.FilterMaster;
-import main.system.auxiliary.FileManager;
-import main.system.auxiliary.GuiManager;
+import main.system.auxiliary.log.LogMaster;
+import main.system.entity.FilterMaster;
+import main.system.auxiliary.data.FileManager;
+import main.system.graphics.GuiManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
@@ -455,19 +456,19 @@ public class DungeonMaster {
         GuiManager.setCurrentLevelCellsX(getLevelWidth());
         GuiManager.setCurrentLevelCellsY(getLevelHeight());
         if (!ImageManager.isImage(dungeon.getMapBackground())) {
-            main.system.auxiliary.LogMaster.log(1,
+            LogMaster.log(1,
                     dungeon.getMapBackground() + " is not a valid image! >> " + dungeon);
             return;
         }
         if (GameScreen.getInstance() == null) {
-            main.system.auxiliary.LogMaster.log(1,
+            LogMaster.log(1,
                     dungeon.getMapBackground() + "failed to set as bg;" +
                             " GameScreen is not ready! >> " + dungeon);
             return;
         }
                 try {
                     GameScreen.getInstance().getBackground().setImagePath(dungeon.getMapBackground());
-                    main.system.auxiliary.LogMaster.log(1, dungeon.getMapBackground() + " bg set for " + dungeon);
+                    LogMaster.log(1, dungeon.getMapBackground() + " bg set for " + dungeon);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

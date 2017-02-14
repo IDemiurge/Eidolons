@@ -3,7 +3,7 @@ package main.client.cc.gui.neo.choice;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_ListPanel;
 import main.swing.generic.components.panels.G_PagePanel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 
 import javax.swing.*;

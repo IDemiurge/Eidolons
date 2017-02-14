@@ -29,6 +29,7 @@ import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
 import main.swing.components.obj.drawing.VisibilityMaster.OUTLINE_TYPE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.PhaseAnimation;
 import main.system.launch.CoreEngine;
 
@@ -133,7 +134,7 @@ public abstract class DC_Obj extends MicroObj {
     @Override
     public void clicked() {
         getGame().getManager().objClicked(this);
-        main.system.auxiliary.LogMaster.log(0, getName() + " - CLICKED!");
+        LogMaster.log(0, getName() + " - CLICKED!");
 
     }
 
@@ -388,7 +389,7 @@ public abstract class DC_Obj extends MicroObj {
         if (outlineTypeForPlayer == null) {
             if (getGame().getManager().getActiveObj() != null) {
                 if (!getGame().getManager().getActiveObj().isMine()) {
-                    main.system.auxiliary.LogMaster.log(1, "outlineTypeForPlayer set to "
+                    LogMaster.log(1, "outlineTypeForPlayer set to "
                             + outlineTypeForPlayer);
                 }
             }

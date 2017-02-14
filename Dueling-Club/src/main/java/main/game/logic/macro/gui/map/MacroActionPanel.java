@@ -5,7 +5,7 @@ import main.game.logic.macro.entity.MacroAction;
 import main.game.logic.macro.gui.map.MacroAP_Holder.MACRO_ACTION_GROUPS;
 import main.swing.components.obj.ActionListItem;
 import main.swing.generic.components.panels.G_ListPanel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 

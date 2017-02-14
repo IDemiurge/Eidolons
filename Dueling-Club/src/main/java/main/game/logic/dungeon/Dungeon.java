@@ -24,6 +24,7 @@ import main.game.logic.dungeon.building.DungeonPlan;
 import main.game.logic.dungeon.minimap.Minimap;
 import main.game.player.Player;
 import main.system.auxiliary.*;
+import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 

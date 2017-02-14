@@ -6,7 +6,7 @@ import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.MacroRef;
 import main.game.logic.macro.entity.MacroObj;
 import main.game.logic.macro.map.Region;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
 

@@ -4,7 +4,7 @@ import main.entity.active.DC_ActiveObj;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.tools.path.PathBuilder.Choice;
 import main.game.battlefield.Coordinates;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.Arrays;
 import java.util.LinkedList;

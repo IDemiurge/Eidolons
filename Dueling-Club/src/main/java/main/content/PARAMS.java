@@ -3,7 +3,7 @@ package main.content;
 import main.content.parameters.PARAMETER;
 import main.rules.round.UnconsciousRule;
 import main.system.DC_Formulas;
-import main.system.auxiliary.ColorManager;
+import main.system.graphics.ColorManager;
 import main.system.auxiliary.StringMaster;
 import main.system.math.DC_MathManager;
 import main.system.math.MathMaster;

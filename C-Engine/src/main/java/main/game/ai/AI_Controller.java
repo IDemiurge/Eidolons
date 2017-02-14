@@ -3,7 +3,7 @@ package main.game.ai;
 import main.entity.obj.Obj;
 import main.game.MicroGame;
 import main.game.ai.logic.ActionTypeManager.ACTION_TYPES;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.threading.WaitMaster;
 
 import java.util.Set;
@@ -31,7 +31,7 @@ public class AI_Controller {
         // while (!logic.isTurnOver()) {
         // Obj unit = logic.getPriorityUnit();
         for (Obj unit : logic.getUnits()) {
-            main.system.auxiliary.LogMaster
+            LogMaster
                     .log(LogMaster.AI_DEBUG, "unit chosen:" + unit);
             if (!makeTurn(unit)) {
                 return false;
@@ -39,7 +39,7 @@ public class AI_Controller {
 
         }
 
-        main.system.auxiliary.LogMaster.log(LogMaster.AI_DEBUG, "Turn made!");
+        LogMaster.log(LogMaster.AI_DEBUG, "Turn made!");
         return true;
     }
 
@@ -52,7 +52,7 @@ public class AI_Controller {
                 WaitMaster.WAIT(100);
             } catch (Exception e) {
                 // e.printStackTrace();
-                main.system.auxiliary.LogMaster.log(LogMaster.AI_DEBUG, unit
+                LogMaster.log(LogMaster.AI_DEBUG, unit
                         + " failed!");
                 logic.reset();
                 e.printStackTrace();
@@ -60,7 +60,7 @@ public class AI_Controller {
             }
 
         }
-        main.system.auxiliary.LogMaster.log(LogMaster.AI_DEBUG, "Unit done: "
+        LogMaster.log(LogMaster.AI_DEBUG, "Unit done: "
                 + unit);
         return true;
     }

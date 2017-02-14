@@ -2,7 +2,8 @@ package main.system.threading;
 
 import main.system.EventCallback;
 import main.system.EventCallbackParam;
-import main.system.auxiliary.Chronos;
+import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.LogMaster;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -29,7 +30,7 @@ public class Weaver {
             e.printStackTrace();
         }
         if (m == null) {
-            main.system.auxiliary.LogMaster.log(4, "failed to find method: "
+            LogMaster.log(4, "failed to find method: "
                     + methodname);
             return;
         }
@@ -49,7 +50,7 @@ public class Weaver {
             e.printStackTrace();
         }
         if (m == null) {
-            main.system.auxiliary.LogMaster.log(4, "failed to find method: "
+            LogMaster.log(4, "failed to find method: "
                     + methodname);
             return;
         }
@@ -70,7 +71,7 @@ public class Weaver {
                     obj = m.invoke(object, args);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    main.system.auxiliary.LogMaster.log(4,
+                    LogMaster.log(4,
                             "METHOD INVOCATION FAILED: " + m.getName()
                                     + " FOR ARGS "
                                     + Arrays.asList(args).toString()

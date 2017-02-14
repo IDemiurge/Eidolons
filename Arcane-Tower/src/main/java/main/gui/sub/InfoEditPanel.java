@@ -12,7 +12,7 @@ import main.gui.components.table.AV_TableCellRenderer;
 import main.launch.ArcaneVault;
 import main.logic.ArcaneEntity;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 import javax.swing.*;
 import java.awt.*;

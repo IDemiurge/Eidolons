@@ -7,7 +7,7 @@ import main.swing.SwingMaster;
 import main.swing.generic.components.editors.lists.GenericListChooser.LC_MODS;
 import main.swing.generic.components.list.ListItem;
 import main.swing.generic.components.panels.G_InfoPanel;
-import main.system.auxiliary.FontMaster;
+import main.system.graphics.FontMaster;
 
 import javax.swing.*;
 import java.awt.*;

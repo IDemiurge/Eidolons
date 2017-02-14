@@ -29,7 +29,7 @@ import main.rules.mechanics.CoatingRule;
 import main.rules.perk.FlyingRule;
 import main.system.DC_Formulas;
 import main.system.audio.DC_SoundMaster;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.AnimPhase;

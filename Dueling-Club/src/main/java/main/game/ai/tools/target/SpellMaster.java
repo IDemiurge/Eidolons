@@ -32,7 +32,8 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_ItemActiveObj;
 import main.entity.type.ObjType;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
-import main.system.util.CounterMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.entity.CounterMaster;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class SpellMaster {
         AI_LOGIC spellLogic = getSpellLogic(spell);
         spell.setSpellLogic(spellLogic);
         if (spellLogic == null) {
-            main.system.auxiliary.LogMaster.log(1, "*** No spell logic for "
+            LogMaster.log(1, "*** No spell logic for "
                     + spell.getName());
             return GOAL_TYPE.OTHER;
         }
@@ -115,7 +116,7 @@ public class SpellMaster {
             try {
                 logic = getLogicByTargeting(spell);
             } catch (Exception e) {
-                main.system.auxiliary.LogMaster.log(1, spell.getName()
+                LogMaster.log(1, spell.getName()
                         + " logic from targeting failed!");
                 e.printStackTrace();
             }
@@ -129,7 +130,7 @@ public class SpellMaster {
                 logic = getZoneLogic(spell);
             } catch (Exception e) {
                 e.printStackTrace();
-                main.system.auxiliary.LogMaster.log(1, spell.getName()
+                LogMaster.log(1, spell.getName()
                         + " no Z Logic");
             }
             if (logic != null) {
@@ -139,7 +140,7 @@ public class SpellMaster {
                 logic = getBuffLogic(spell);
             } catch (Exception e) {
                 e.printStackTrace();
-                main.system.auxiliary.LogMaster.log(1, spell.getName()
+                LogMaster.log(1, spell.getName()
                         + " no Buff Logic");
             }
             if (logic != null) {
@@ -149,7 +150,7 @@ public class SpellMaster {
                 logic = getModValueLogic(spell);
             } catch (Exception e) {
                 e.printStackTrace();
-                main.system.auxiliary.LogMaster.log(1, spell.getName()
+                LogMaster.log(1, spell.getName()
                         + " no Mod Logic");
             }
             if (logic != null) {

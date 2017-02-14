@@ -5,7 +5,7 @@ import main.entity.Entity;
 import main.entity.obj.unit.DC_HeroObj;
 import main.swing.SwingMaster;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.graphics.MigMaster;
 
 import java.awt.*;

@@ -15,8 +15,8 @@ import main.swing.components.panels.page.info.element.IconValueComp;
 import main.swing.generic.components.editors.ImageChooser;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.services.listener.MouseClickListener;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 import main.system.auxiliary.StringMaster;
 
 import javax.swing.*;

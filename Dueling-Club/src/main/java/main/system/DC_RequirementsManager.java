@@ -21,10 +21,12 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.attach.DC_FeatObj;
 import main.game.DC_Game;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
-import main.system.auxiliary.MapMaster;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.InfoMaster;
+import main.system.entity.ConditionMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 
@@ -160,7 +162,7 @@ public class DC_RequirementsManager implements RequirementsManager {
             try {
                 req.addAll(toRequirements(additionalRequirements));
             } catch (Exception e) {
-                main.system.auxiliary.LogMaster.log(1, type + "'s req failed! - "
+                LogMaster.log(1, type + "'s req failed! - "
                         + additionalRequirements);
                 // e.printStackTrace();
             }
@@ -319,7 +321,7 @@ public class DC_RequirementsManager implements RequirementsManager {
         if (template == null) {
             if (!checkSimpleValRef(valRef)) {
 
-                main.system.auxiliary.LogMaster.log(1, "requirement not found: " + valRef);
+                LogMaster.log(1, "requirement not found: " + valRef);
             }
             return getCondition(valRef, value);
         }
@@ -681,7 +683,7 @@ public class DC_RequirementsManager implements RequirementsManager {
             }
             tip = tip.replace(originalValue, value);
 
-            main.system.auxiliary.LogMaster.log(1, tip + " for " + feat + " = " + value);
+            LogMaster.log(1, tip + " for " + feat + " = " + value);
 
             numericCondition.setComparingValue(new Formula(value));
             reqs = new Requirements(new Requirement(numericCondition, tip));

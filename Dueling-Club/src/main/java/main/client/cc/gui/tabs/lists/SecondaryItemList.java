@@ -11,7 +11,7 @@ import main.data.DataManager;
 import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.graphics.MigMaster;
 
 import java.util.List;

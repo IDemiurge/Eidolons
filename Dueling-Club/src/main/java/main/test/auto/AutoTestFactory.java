@@ -15,10 +15,10 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.attach.DC_FeatObj;
 import main.entity.type.ObjType;
-import main.system.FilterMaster;
+import main.system.entity.FilterMaster;
 import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
 import main.test.auto.AutoTest.TEST_ARGS;
 

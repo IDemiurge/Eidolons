@@ -9,7 +9,7 @@ import main.elements.conditions.Conditions;
 import main.elements.conditions.NotCondition;
 import main.elements.targeting.AutoTargeting;
 import main.entity.Ref.KEYS;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 import main.system.math.Formula;
 
 public class ZoneEffect extends SpecialTargetingEffect

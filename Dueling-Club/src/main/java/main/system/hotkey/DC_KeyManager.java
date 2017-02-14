@@ -16,8 +16,8 @@ import main.rules.DC_ActionManager.STD_MODE_ACTIONS;
 import main.rules.RuleMaster;
 import main.swing.generic.components.panels.G_PagePanel;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.LogMaster;
-import main.system.util.ValueHelper;
+import main.system.auxiliary.log.LogMaster;
+import main.system.entity.ValueHelper;
 import main.test.debug.DebugMaster;
 
 import java.awt.event.KeyEvent;
@@ -70,7 +70,7 @@ public class DC_KeyManager
             String key = DataManager.getType(action.toString(), OBJ_TYPES.ACTIONS).getProperty(
              G_PROPS.HOTKEY);
             stdModeKeyMap.put(key, i);
-            main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, ">> mode hotkey " + key);
+            LogMaster.log(LogMaster.CORE_DEBUG, ">> mode hotkey " + key);
             i++;
         }
 
@@ -82,7 +82,7 @@ public class DC_KeyManager
             String key = DataManager.getType(action.toString(), OBJ_TYPES.ACTIONS).getProperty(
              G_PROPS.HOTKEY);
             stdActionKeyMap.put(key, i);
-            main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, ">> std hotkey " + key);
+            LogMaster.log(LogMaster.CORE_DEBUG, ">> std hotkey " + key);
             i++;
         }
         i = 0;
@@ -90,7 +90,7 @@ public class DC_KeyManager
             String key = DataManager.getType(action.toString(), OBJ_TYPES.ACTIONS).getProperty(
              G_PROPS.HOTKEY);
             addMoveActionKeyMap.put(key, i);
-            main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, ">> std hotkey " + key);
+            LogMaster.log(LogMaster.CORE_DEBUG, ">> std hotkey " + key);
             i++;
         }
 
@@ -152,7 +152,7 @@ public class DC_KeyManager
     // return boolean to know if success/failure and play a sound!
     @Override
     public void keyTyped(KeyEvent e) {
-        main.system.auxiliary.LogMaster.log(LogMaster.GUI_DEBUG, "key typed: " + e.getKeyChar());
+        LogMaster.log(LogMaster.GUI_DEBUG, "key typed: " + e.getKeyChar());
         if (mngr.getActiveObj().isAiControlled()) {
             return; // play random sound!...
         }

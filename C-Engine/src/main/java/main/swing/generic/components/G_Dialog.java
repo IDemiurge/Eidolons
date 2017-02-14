@@ -2,8 +2,8 @@ package main.swing.generic.components;
 
 import main.game.Game;
 import main.swing.generic.services.ComponentResizer;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.ColorManager;
+import main.system.graphics.GuiManager;
 
 import javax.swing.*;
 import java.awt.*;

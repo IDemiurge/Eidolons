@@ -8,7 +8,7 @@ import main.content.parameters.PARAMETER;
 import main.entity.obj.unit.DC_HeroObj;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_TabbedPanel;
-import main.system.auxiliary.Chronos;
+import main.system.auxiliary.log.Chronos;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

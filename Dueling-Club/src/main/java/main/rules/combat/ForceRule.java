@@ -17,6 +17,7 @@ import main.rules.RuleMaster;
 import main.rules.RuleMaster.RULE;
 import main.rules.mechanics.InterruptRule;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
@@ -48,7 +49,7 @@ public class ForceRule {
         force = force * attack.getIntParam(PARAMS.FORCE_MOD) / 100;
         attack.setParam(PARAMS.FORCE, force);
 
-        main.system.auxiliary.LogMaster.log(1, "getForceFromAttack = weightModifier"
+        LogMaster.log(1, "getForceFromAttack = weightModifier"
                 + weightModifier + "*strengthModifier" + "strengthModifier "
                 + "+ weaponWeightBonus " + weaponWeightBonus + "* "
                 + new Float(attack.getIntParam(PARAMS.FORCE_MOD)) / 100 + " = " + force);
@@ -116,7 +117,7 @@ public class ForceRule {
 
     private static int getPushDistance(int force, DC_HeroObj target) {
         int distance = Math.round(force / 10 / target.getIntParam(PARAMS.TOTAL_WEIGHT));
-        main.system.auxiliary.LogMaster.log(1, "getPushDistance = " + force + "/10/"
+        LogMaster.log(1, "getPushDistance = " + force + "/10/"
                 + target.getIntParam(PARAMS.TOTAL_WEIGHT) + " = " + distance);
         return distance;
     }

@@ -7,7 +7,8 @@ import main.game.MicroGame;
 import main.game.event.Event;
 import main.game.event.Event.EVENT_TYPE;
 import main.game.event.Rule;
-import main.system.auxiliary.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 
 import java.util.Arrays;
 
@@ -42,7 +43,7 @@ public abstract class DC_RuleImpl implements Rule {
     @Override
     public void apply(Ref ref) {
         initEffects();
-        main.system.auxiliary.LogMaster.log(LOG_CHANNELS.RULES_DEBUG, toString() + " applies! "
+        LogMaster.log(LOG_CHANNELS.RULES_DEBUG, toString() + " applies! "
                 + ref);
         effects.setReconstruct(true);
         // effects.setForcedLayer(Effect.BUFF_RULE);
@@ -72,7 +73,7 @@ public abstract class DC_RuleImpl implements Rule {
         }
         Ref ref = Ref.getCopy(event.getRef());
         ref.setEvent(event);
-        main.system.auxiliary.LogMaster.log(LOG_CHANNELS.RULES_DEBUG, toString() + " checked on "
+        LogMaster.log(LOG_CHANNELS.RULES_DEBUG, toString() + " checked on "
                 + ref.getSourceObj());
         return conditions.check(ref);
     }

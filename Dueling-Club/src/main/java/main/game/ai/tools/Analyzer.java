@@ -20,7 +20,7 @@ import main.game.battlefield.DirectionMaster;
 import main.game.battlefield.VisionManager;
 import main.game.player.Player;
 import main.swing.components.panels.DC_UnitActionPanel.ACTION_DISPLAY_GROUP;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.PositionMaster;
 

@@ -33,6 +33,9 @@ import main.game.logic.generic.PartyManager;
 import main.game.logic.macro.travel.EncounterMaster;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.MathMaster;
 import main.system.sound.SoundMaster;
@@ -437,7 +440,7 @@ public class SpawnManager {
         // }
         LogMaster.logToFile("spawnCoordinates=" + spawnCoordinates + " ;offset_coordinate="
                 + offset_coordinate + ";height=" + height + "; width=" + width);
-        main.system.auxiliary.LogMaster.log(1, "spawnCoordinates=" + spawnCoordinates
+        LogMaster.log(1, "spawnCoordinates=" + spawnCoordinates
                 + " ;offset_coordinate=" + offset_coordinate + ";height=" + height + "; width="
                 + width);
     }
@@ -525,7 +528,7 @@ public class SpawnManager {
         for (String subString : partyTypes) {
             Coordinates c = coordinates.get(i);
             if (c == null) {
-                main.system.auxiliary.LogMaster.log(1, subString + " coordinate BLAST!!!");
+                LogMaster.log(1, subString + " coordinate BLAST!!!");
             }
             i++;
             subString = c + DC_ObjInitializer.COORDINATES_OBJ_SEPARATOR + subString;

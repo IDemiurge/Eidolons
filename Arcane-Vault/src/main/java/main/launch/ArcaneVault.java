@@ -23,6 +23,9 @@ import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.util.ResourceMaster;
@@ -172,7 +175,7 @@ public class ArcaneVault {
             }
         }
 
-        main.system.auxiliary.LogMaster
+        LogMaster
                 .log(3,
                         "Welcome to Arcane Vault! \nBrace yourself to face the darkest mysteries of Edalar...");
         initialize();

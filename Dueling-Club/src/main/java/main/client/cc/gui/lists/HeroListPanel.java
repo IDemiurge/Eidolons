@@ -8,7 +8,8 @@ import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.swing.generic.components.list.ListItem;
 import main.swing.generic.components.panels.G_ListPanel;
-import main.system.auxiliary.GuiManager;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 
@@ -164,7 +165,7 @@ public class HeroListPanel extends G_ListPanel<ObjType> implements ListSelection
             return borderChecker.getBorder(value);
         } catch (Exception e) {
             e.printStackTrace();
-            main.system.auxiliary.LogMaster.log(1, "Failed to parse requirements for " + value);
+            LogMaster.log(1, "Failed to parse requirements for " + value);
             return DEFAULT_BORDER;
         }
     }

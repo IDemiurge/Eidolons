@@ -2,7 +2,7 @@ package main.elements.conditions.standard;
 
 import main.elements.conditions.Condition;
 import main.elements.conditions.MicroCondition;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 
 public class ParsedCondition extends MicroCondition {
 

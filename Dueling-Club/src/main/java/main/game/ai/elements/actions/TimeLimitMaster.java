@@ -1,8 +1,8 @@
 package main.game.ai.elements.actions;
 
 import main.game.ai.UnitAI;
-import main.system.auxiliary.Chronos;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.LogMaster;
 
 public class TimeLimitMaster {
     public static final long CRITICAL_FAIL_FACTOR = 10;

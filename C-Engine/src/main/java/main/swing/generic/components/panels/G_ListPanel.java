@@ -9,7 +9,7 @@ import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.list.CustomList;
 import main.swing.generic.components.list.G_List;
 import main.swing.generic.services.listener.ObjListMouseListener;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
 
 import javax.swing.*;

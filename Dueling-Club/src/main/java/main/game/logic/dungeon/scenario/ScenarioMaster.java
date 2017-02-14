@@ -20,7 +20,7 @@ import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.Location;
 import main.game.logic.generic.PartyManager;
 import main.game.meta.skirmish.SkirmishMaster;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedList;

@@ -8,7 +8,7 @@ import main.client.net.HostClientConnection;
 import main.data.filesys.PathFinder;
 import main.game.HostedGame;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.net.user.User;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;

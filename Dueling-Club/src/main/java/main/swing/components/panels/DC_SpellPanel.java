@@ -7,7 +7,7 @@ import main.game.DC_GameManager;
 import main.game.MicroGameState;
 import main.swing.components.obj.SpellListItem;
 import main.swing.generic.components.panels.G_ListPanel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 import javax.swing.*;
 import java.awt.*;

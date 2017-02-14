@@ -5,7 +5,7 @@ import main.client.net.GameConnector.HOST_CLIENT_CODES;
 import main.client.net.HostClientConnection;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.generic.components.G_Panel.VISUALS;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.FontMaster.FONT;
 
 import java.awt.*;
 import java.util.LinkedList;

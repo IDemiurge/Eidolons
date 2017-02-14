@@ -24,8 +24,9 @@ import main.simulation.SimulationManager;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.G_Table;
 import main.system.DC_Formulas;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.ColorManager;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 
 import javax.swing.*;
@@ -177,7 +178,7 @@ public class EditViewPanel implements TableModelListener {
             sp.setDividerLocation(0.5);
             getPanel().add(sp, "pos 0 menu.y2 " + getWidth() * 5 / 3 + " " + ArcaneVault.AE_HEIGHT);
 
-            main.system.auxiliary.LogMaster.log(1, "AE added!");
+            LogMaster.log(1, "AE added!");
         } else {
             if (isTreeView()) {
 
@@ -368,7 +369,7 @@ public class EditViewPanel implements TableModelListener {
             }
             String grpName = (secondTableMode) ? ArcaneVault.getPreviousSelectedType()
                     .getOBJ_TYPE() : ArcaneVault.getMainBuilder().getSelectedTabName();
-            main.system.auxiliary.LogMaster.log(0, valName + " = " + newValue + " for " + grpName
+            LogMaster.log(0, valName + " = " + newValue + " for " + grpName
                     + "." + typeName);
 
             if (valName.equals(G_PROPS.BASE_TYPE.getName())) {

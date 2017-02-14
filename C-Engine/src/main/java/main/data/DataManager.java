@@ -13,6 +13,8 @@ import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.Game;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.*;
@@ -187,7 +189,7 @@ public class DataManager {
                     return map.get(s);
                 }
             }
-            main.system.auxiliary.LogMaster.log(LogMaster.DATA_DEBUG, "Type not found: " + obj_type
+            LogMaster.log(LogMaster.DATA_DEBUG, "Type not found: " + obj_type
                     + ":" + typeName);
             return null;
         }
@@ -211,7 +213,7 @@ public class DataManager {
                 return type;
             }
         }
-        main.system.auxiliary.LogMaster.log(LogMaster.DATA_DEBUG, "Type not found: " + obj_type
+        LogMaster.log(LogMaster.DATA_DEBUG, "Type not found: " + obj_type
                 + ":" + typeName);
         return type;
     }
@@ -225,7 +227,7 @@ public class DataManager {
                 return type;
             }
         }
-        main.system.auxiliary.LogMaster.log(LogMaster.DATA_DEBUG, "Type not found: " + obj_type
+        LogMaster.log(LogMaster.DATA_DEBUG, "Type not found: " + obj_type
                 + ":" + typeName);
         return type;
     }

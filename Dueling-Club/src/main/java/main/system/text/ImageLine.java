@@ -1,6 +1,6 @@
 package main.system.text;
 
-import main.system.auxiliary.FontMaster;
+import main.system.graphics.FontMaster;
 
 import java.awt.*;
 

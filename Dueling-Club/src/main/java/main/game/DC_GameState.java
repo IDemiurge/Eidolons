@@ -23,8 +23,8 @@ import main.rules.counter.DamageCounterRule;
 import main.rules.mechanics.IlluminationRule;
 import main.rules.round.RoundRule;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.auxiliary.Chronos;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
@@ -84,8 +84,8 @@ public class DC_GameState extends MicroGameState {
         try {
             newTurnTick();
             getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.NEW_ROUND, game));
-            main.system.auxiliary.LogMaster.log(LogMaster.TRIGGER_DEBUG, triggers.toString());
-            main.system.auxiliary.LogMaster.log(LogMaster.EFFECT_DEBUG, effects.toString());
+            LogMaster.log(LogMaster.TRIGGER_DEBUG, triggers.toString());
+            LogMaster.log(LogMaster.EFFECT_DEBUG, effects.toString());
 
             if (getGame().getGameMode() == GAME_MODES.ARENA) {
                 getGame().getArenaManager().newRound();

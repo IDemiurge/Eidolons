@@ -14,6 +14,7 @@ import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.CompositeAnim;
 import main.system.Producer;
+import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 
 import java.util.List;
@@ -117,7 +118,7 @@ public class FloatingTextMaster {
 
             anim.addFloatingText(floatingText
             );
-            main.system.auxiliary.LogMaster.log(1, e + "***** adding floating text for " + anim + " : " + floatingText);
+            LogMaster.log(1, e + "***** adding floating text for " + anim + " : " + floatingText);
 
         }
     }

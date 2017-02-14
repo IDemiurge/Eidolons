@@ -14,9 +14,10 @@ import main.entity.item.DC_WeaponObj;
 import main.entity.type.ObjType;
 import main.game.MicroGame;
 import main.system.ContentGenerator;
-import main.system.auxiliary.Chronos;
+import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 import main.system.math.MathMaster;
@@ -348,7 +349,7 @@ public class ItemGenerator {
                     ObjType newType = generateItem(quality, material, type,
                             (weapon) ? WEAPON_PARAMS : ARMOR_PARAMS, (weapon) ? WEAPON_MOD_PARAMS
                                     : ARMOR_MOD_PARAMS);
-                    main.system.auxiliary.LogMaster.log(LOG_CHANNELS.GENERATION, "Generated: "
+                    LogMaster.log(LOG_CHANNELS.GENERATION, "Generated: "
                             + newType);
                     DataManager.addType(newType.getName(), (weapon) ? OBJ_TYPES.WEAPONS
                             : OBJ_TYPES.ARMOR, newType);

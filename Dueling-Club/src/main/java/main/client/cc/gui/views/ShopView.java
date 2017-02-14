@@ -11,7 +11,7 @@ import main.elements.conditions.*;
 import main.entity.Ref.KEYS;
 import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager.BORDER;
 

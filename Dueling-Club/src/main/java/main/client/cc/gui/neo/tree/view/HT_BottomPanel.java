@@ -11,6 +11,7 @@ import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.swing.generic.components.misc.GraphicComponent.STD_COMP_IMAGES;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.DC_MathManager;
 
 import java.awt.*;
@@ -35,7 +36,7 @@ public abstract class HT_BottomPanel extends G_Panel {
         this.arg = arg;
         this.hero = hero;
         bufferType = initBufferType();
-        main.system.auxiliary.LogMaster.log(1, " bottom buffer set: " + bufferType);
+        LogMaster.log(1, " bottom buffer set: " + bufferType);
 
         this.tree = tree;
         buyButtonGold = new BuyButtonSkillTree(true, true);
@@ -83,7 +84,7 @@ public abstract class HT_BottomPanel extends G_Panel {
     public void refresh() {
 
         bufferType = initBufferType();
-        main.system.auxiliary.LogMaster.log(1, " bottom buffer reset: " + bufferType);
+        LogMaster.log(1, " bottom buffer reset: " + bufferType);
 
         masteryPoints.refresh();
         buyButtonGold.refresh();

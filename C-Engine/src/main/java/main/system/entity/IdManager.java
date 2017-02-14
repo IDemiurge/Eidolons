@@ -1,4 +1,4 @@
-package main.system.auxiliary;
+package main.system.entity;
 
 import main.entity.Entity;
 import main.entity.type.ObjType;

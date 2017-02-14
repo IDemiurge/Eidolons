@@ -16,7 +16,7 @@ import main.game.Game;
 import main.game.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.game.player.Player;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.math.Property;
@@ -63,7 +63,7 @@ public abstract class Entity extends DataModel implements OBJ {
     public Entity(ObjType type, Player owner, Game game, Ref ref) {
         // initial party?
         if (type == null) {
-            main.system.auxiliary.LogMaster.log(1, "null type!" + ref);
+            LogMaster.log(1, "null type!" + ref);
             if (!CoreEngine.isTEST_MODE()) {
                 RuntimeException e = new RuntimeException();
                 throw (e);
@@ -244,7 +244,7 @@ public abstract class Entity extends DataModel implements OBJ {
 
     public Game getGame() {
         if (game == null) {
-            main.system.auxiliary.LogMaster.log(1, "Null game on " + toString());
+            LogMaster.log(1, "Null game on " + toString());
             if (Game.game.isSimulation()) {
                 game = Game.game;
             }

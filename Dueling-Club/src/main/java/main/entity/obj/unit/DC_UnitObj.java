@@ -43,7 +43,7 @@ import main.system.DC_Formulas;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.images.ImageManager;
@@ -336,7 +336,7 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
     }
 
     private void preventDeath() {
-        main.system.auxiliary.LogMaster.log(1, "****preventDeath for " + this);
+        LogMaster.log(1, "****preventDeath for " + this);
         setParam(PARAMS.C_ENDURANCE, Math.max(1, getIntParam(PARAMS.C_ENDURANCE)));
         setParam(PARAMS.C_TOUGHNESS, Math.max(1, getIntParam(PARAMS.C_TOUGHNESS)));
 
@@ -879,7 +879,7 @@ public class DC_UnitObj extends DC_Obj implements BattlefieldObj, Rotatable {
         }
 
         setMode(mode);
-        main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, getName() + " has mode: " + mode);
+        LogMaster.log(LogMaster.CORE_DEBUG, getName() + " has mode: " + mode);
 
     }
 

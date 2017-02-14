@@ -7,7 +7,7 @@ import main.logic.AT_OBJ_TYPE;
 import main.logic.AT_PROPS;
 import main.music.MusicCore;
 import main.music.entity.MusicList;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
 
 import java.io.File;

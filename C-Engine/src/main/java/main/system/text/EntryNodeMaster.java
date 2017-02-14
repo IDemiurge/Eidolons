@@ -3,8 +3,8 @@ package main.system.text;
 import main.data.ability.construct.VariableManager;
 import main.game.event.Event.EVENT_TYPE;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 
 import java.awt.*;
 import java.util.List;

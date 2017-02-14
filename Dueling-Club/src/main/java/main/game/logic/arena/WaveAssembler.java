@@ -17,7 +17,10 @@ import main.game.logic.dungeon.Dungeon;
 import main.game.logic.generic.BattleOptions;
 import main.game.logic.generic.BattleOptions.DIFFICULTY;
 import main.system.auxiliary.*;
-import main.system.auxiliary.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.data.ListMaster;
+import main.system.graphics.GuiManager;
 import main.system.math.MathMaster;
 
 import java.util.Collection;

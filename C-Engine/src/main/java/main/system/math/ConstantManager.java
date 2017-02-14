@@ -1,6 +1,7 @@
 package main.system.math;
 
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -13,7 +14,7 @@ public class ConstantManager {
         if (c != null) {
             return c.getValue();
         }
-        main.system.auxiliary.LogMaster.log(5, "CONST NOT FOUND! " + string);
+        LogMaster.log(5, "CONST NOT FOUND! " + string);
         return null;
     }
 

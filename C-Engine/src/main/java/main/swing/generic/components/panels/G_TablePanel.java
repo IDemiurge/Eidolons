@@ -2,7 +2,7 @@ package main.swing.generic.components.panels;
 
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.G_Table;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

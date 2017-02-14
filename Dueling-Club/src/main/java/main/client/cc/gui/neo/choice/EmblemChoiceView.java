@@ -4,7 +4,7 @@ import main.client.cc.CharacterCreator;
 import main.content.CONTENT_CONSTS.ASPECT;
 import main.content.properties.G_PROPS;
 import main.entity.obj.unit.DC_HeroObj;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.images.ImageManager;
 

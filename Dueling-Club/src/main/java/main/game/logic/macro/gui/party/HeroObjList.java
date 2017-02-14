@@ -4,7 +4,7 @@ import main.entity.obj.unit.DC_HeroObj;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_ListPanel;
 import main.swing.generic.components.panels.G_PagedListPanel;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 
 import javax.swing.*;
 import java.util.Collection;

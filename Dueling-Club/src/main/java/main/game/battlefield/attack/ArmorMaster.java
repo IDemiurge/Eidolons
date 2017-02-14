@@ -14,7 +14,7 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.DC_HeroObj;
 import main.rules.mechanics.DurabilityRule;
 import main.system.audio.DC_SoundMaster;
-import main.system.auxiliary.LogMaster.LOG;
+import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.AnimPhase;

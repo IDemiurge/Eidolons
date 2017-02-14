@@ -23,9 +23,10 @@ import main.rules.action.WatchRule;
 import main.rules.combat.ForceRule;
 import main.rules.perk.RangeRule;
 import main.system.DC_Formulas;
-import main.system.auxiliary.MapMaster;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.AttackAnimation;
@@ -129,7 +130,7 @@ public class AttackCalculator {
     public int calculateFinalDamage() {
         action.toBase();
         if (offhand) {
-            main.system.auxiliary.LogMaster.log(1, attack + " (offhand) with damage: " + bonusMap);
+            LogMaster.log(1, attack + " (offhand) with damage: " + bonusMap);
         }
         initAllModifiers();
         amount = applyDamageBonuses();
@@ -524,7 +525,7 @@ public class AttackCalculator {
             value = mod;
         }
         calcMap.put(param, value);
-        main.system.auxiliary.LogMaster.log(1, " ");
+        LogMaster.log(1, " ");
     }
 
     private void addModifier(PARAMS param, int mod) {

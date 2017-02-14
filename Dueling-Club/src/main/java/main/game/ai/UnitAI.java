@@ -23,7 +23,7 @@ import main.game.battlefield.Coordinates;
 import main.game.logic.dungeon.ai.DungeonCrawler.ENGAGEMENT_LEVEL;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;
 
 import java.util.LinkedList;

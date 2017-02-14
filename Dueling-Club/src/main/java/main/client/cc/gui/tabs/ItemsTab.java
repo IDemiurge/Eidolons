@@ -16,7 +16,7 @@ import main.content.properties.PROPERTY;
 import main.data.ability.construct.AbilityConstructor;
 import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager.BORDER;
 
 public class ItemsTab extends HeroItemTab {

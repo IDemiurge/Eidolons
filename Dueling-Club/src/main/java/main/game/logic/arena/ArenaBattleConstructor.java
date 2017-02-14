@@ -26,6 +26,7 @@ import main.game.meta.skirmish.SkirmishMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
 
@@ -193,7 +194,7 @@ public class ArenaBattleConstructor {
             if (Launcher.DEV_MODE) {
                 game.getLogManager().logInfo(wave.toString() + " on round #" + round);
             }
-            main.system.auxiliary.LogMaster.log(1, wave.toString() + " on round #" + round);
+            LogMaster.log(1, wave.toString() + " on round #" + round);
 
             round += getRoundsToFight(waveType, type); // TODO subtract from
             // total pool

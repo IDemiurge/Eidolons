@@ -12,8 +12,9 @@ import main.game.battlefield.CoordinatesMaster;
 import main.game.battlefield.ZCoordinates;
 import main.game.logic.dungeon.building.DungeonBuilder.BLOCK_TYPE;
 import main.game.logic.dungeon.building.DungeonBuilder.ROOM_TYPE;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.HashMap;
@@ -64,7 +65,7 @@ public class MapBlock {
     public void link(MapBlock lastBlock, Coordinates... coordinates) {
         List<Coordinates> list = new ListMaster<Coordinates>().getList(coordinates);
         connectedBlocks.put(lastBlock, list);
-        main.system.auxiliary.LogMaster.log(1, this + " linked to " + lastBlock.toString() + " on "
+        LogMaster.log(1, this + " linked to " + lastBlock.toString() + " on "
                 + list);
     }
 

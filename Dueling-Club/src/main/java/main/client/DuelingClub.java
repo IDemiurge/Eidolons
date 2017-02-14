@@ -6,7 +6,8 @@ import main.client.net.DC_GameClient;
 import main.client.net.DC_GameHost;
 import main.client.net.DC_ServerConnector;
 import main.data.filesys.PathFinder;
-import main.system.auxiliary.GuiManager;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.GuiManager;
 import main.system.net.socket.ServerConnection;
 import main.system.net.socket.ServerConnector;
 import main.system.net.user.User;
@@ -57,21 +58,21 @@ public class DuelingClub {
 
     public static void login(DC_MainMenu menu, String data) {
         if (ServerConnector.getSocket() == null) {
-            main.system.auxiliary.LogMaster.log(1, "login connect + " + SERVER_ADDRESS);
+            LogMaster.log(1, "login connect + " + SERVER_ADDRESS);
             handler = DC_ServerConnector.connect(SERVER_ADDRESS);
             if (handler != null) {
-                main.system.auxiliary.LogMaster.log(1, "CONNECTED");
+                LogMaster.log(1, "CONNECTED");
             } else {
                 return;
             }
         }
 
         if (ServerConnector.checkUser(data)) {
-            main.system.auxiliary.LogMaster.log(1, "USER CHECK SUCCESSFUL");
+            LogMaster.log(1, "USER CHECK SUCCESSFUL");
             if (ServerConnector.requestUserData())
 
             {
-                main.system.auxiliary.LogMaster.log(1, "USER DATA RECEIVED");
+                LogMaster.log(1, "USER DATA RECEIVED");
 
                 DC_MainMenu.setHandler(handler);
                 menu.setMainView();

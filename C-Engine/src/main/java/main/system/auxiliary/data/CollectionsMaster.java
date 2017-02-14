@@ -1,4 +1,4 @@
-package main.system.auxiliary;
+package main.system.auxiliary.data;
 
 import java.util.Collection;
 import java.util.HashMap;

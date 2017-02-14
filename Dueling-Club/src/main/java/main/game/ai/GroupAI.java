@@ -12,7 +12,7 @@ import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.logic.arena.Wave;
 import main.game.logic.dungeon.ai.DungeonCrawler.ENGAGEMENT_LEVEL;
 import main.game.logic.dungeon.building.MapBlock;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.*;
 

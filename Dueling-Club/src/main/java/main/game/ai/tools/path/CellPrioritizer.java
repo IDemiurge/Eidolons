@@ -13,7 +13,8 @@ import main.game.ai.elements.actions.ActionSequence;
 import main.game.ai.tools.Analyzer;
 import main.game.ai.tools.priority.PriorityManager;
 import main.game.battlefield.Coordinates;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.*;
 
@@ -173,7 +174,7 @@ public class CellPrioritizer {
         //
         // for (int i = 0; i < prune_threshold; i++)
         // list.add(cells.getOrCreate(i).getCoordinates());
-        main.system.auxiliary.LogMaster.log(1, "Prioritized cells: " + list);
+        LogMaster.log(1, "Prioritized cells: " + list);
         return list;
     }
 

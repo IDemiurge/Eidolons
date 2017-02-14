@@ -15,7 +15,7 @@ import main.gui.components.controls.ModelManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.util.ValueHelper;
+import main.system.entity.ValueHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 

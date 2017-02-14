@@ -1,7 +1,7 @@
 package main.swing.generic.misc;
 
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.ColorManager;
+import main.system.graphics.ColorManager;
 import main.system.images.ImageManager;
 
 import javax.swing.*;

@@ -13,6 +13,7 @@ import main.entity.item.DC_HeroItemObj;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public class CreateItemEffect extends MicroEffect {
         this.material = material;
         this.weapon = weapon;
         this.extended = extended;
-        main.system.auxiliary.LogMaster.log(1, durabilityFormula + ""
+        LogMaster.log(1, durabilityFormula + ""
                 + material);
     }
 

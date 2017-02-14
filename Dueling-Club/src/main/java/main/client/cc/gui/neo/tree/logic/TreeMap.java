@@ -5,6 +5,7 @@ import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.entity.type.ObjType;
 import main.game.battlefield.PointX;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
@@ -123,7 +124,7 @@ public class TreeMap {
     public void addNode(Point point, HT_Node node, int size) {
         HT_Node replaced = getNodeMap().put(new PointX(point.x, point.y), node);
         if (replaced != null) {
-            main.system.auxiliary.LogMaster.log(1, " !!! " + node + " replaces " + replaced
+            LogMaster.log(1, " !!! " + node + " replaces " + replaced
                     + " !!! ");
         }
         getMouseMap().put(new Rectangle(point.x, point.y, size, size), node);

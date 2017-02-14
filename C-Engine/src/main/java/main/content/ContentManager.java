@@ -10,6 +10,8 @@ import main.data.ConcurrentMap;
 import main.data.xml.XML_Reader;
 import main.entity.Entity;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.*;
 
@@ -129,8 +131,8 @@ public class ContentManager {
             }
         }
 
-        main.system.auxiliary.LogMaster.log(0, "<><><><><><><><><>props: " + sprops.toString());
-        main.system.auxiliary.LogMaster.log(0, "<><><><><><><><><>params: " + sparams.toString());
+        LogMaster.log(0, "<><><><><><><><><>props: " + sprops.toString());
+        LogMaster.log(0, "<><><><><><><><><>params: " + sparams.toString());
         // Collections.sort(props, new DefaultComparator<PROPERTY>());
         // Collections.sort(params, new DefaultComparator<PARAMETER>());
 
@@ -251,7 +253,7 @@ public class ContentManager {
         }
 
         if (param == null) {
-            main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, "PARAM NOT FOUND: "
+            LogMaster.log(LogMaster.CORE_DEBUG, "PARAM NOT FOUND: "
              + valueName + "!");
             param = G_PARAMS.EMPTY_PARAMETER;
         }

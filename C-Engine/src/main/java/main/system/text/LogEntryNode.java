@@ -1,6 +1,6 @@
 package main.system.text;
 
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.ANIM;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;

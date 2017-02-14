@@ -15,7 +15,8 @@ import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.system.EventCallbackParam;
 import main.system.GuiEventType;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -60,14 +61,14 @@ public class MoveAnimation extends ActionAnim {
                 @Override
                 protected void begin() {
                     super.begin();
-                    main.system.auxiliary.LogMaster.log(1, this + " begins! "
+                    LogMaster.log(1, this + " begins! "
                             + this.getX() + " " + this.getY());
                 }
 
                 @Override
                 protected void update(float percent) {
                     super.update(percent);
-                    main.system.auxiliary.LogMaster.log(1, this + ": " + getActor().getX() + " " + getActor().getY());
+                    LogMaster.log(1, this + ": " + getActor().getX() + " " + getActor().getY());
                 }
 
                 @Override

@@ -16,6 +16,9 @@ import main.swing.listeners.ListChooserSortOptionListener;
 import main.swing.listeners.ListChooserSortOptionListener.SORT_TEMPLATE;
 import main.system.SortMaster;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.data.ListMaster;
+import main.system.graphics.GuiManager;
 
 import javax.swing.*;
 import java.awt.*;

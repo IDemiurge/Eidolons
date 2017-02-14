@@ -6,7 +6,7 @@ import main.game.battlefield.BattleFieldGrid;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.XLine;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.auxiliary.secondary.BooleanMaster;
 
 import java.util.List;

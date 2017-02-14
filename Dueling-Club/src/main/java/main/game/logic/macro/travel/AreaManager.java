@@ -14,7 +14,7 @@ import main.game.logic.macro.gui.MacroGuiManager;
 import main.game.logic.macro.map.Area;
 import main.game.logic.macro.map.Place;
 import main.game.logic.macro.map.Region;
-import main.system.FilterMaster;
+import main.system.entity.FilterMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 

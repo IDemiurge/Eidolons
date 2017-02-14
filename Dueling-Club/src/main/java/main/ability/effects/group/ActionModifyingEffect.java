@@ -4,7 +4,7 @@ import main.content.OBJ_TYPES;
 import main.elements.conditions.Condition;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.DC_HeroObj;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedList;

@@ -17,7 +17,7 @@ import main.game.battlefield.Coordinates;
 import main.game.logic.battle.player.DC_Player;
 import main.game.player.Player;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 
 public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {

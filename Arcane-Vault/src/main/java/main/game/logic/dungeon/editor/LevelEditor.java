@@ -11,8 +11,9 @@ import main.game.logic.dungeon.editor.gui.LE_MainPanel;
 import main.swing.SwingMaster;
 import main.swing.components.obj.BfGridComp;
 import main.swing.generic.components.editors.lists.ListChooser;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import net.miginfocom.swing.MigLayout;
@@ -99,9 +100,9 @@ public class LevelEditor {
                 getMainPanel().refresh();
                 getMainPanel().getPlanPanel().getTreePanel().initTree();
                 getMainPanel().getPlanPanel().resetTree();
-                main.system.auxiliary.LogMaster.log(1, getSimulation().toString());
+                LogMaster.log(1, getSimulation().toString());
                 simulationMap.put(getCurrentLevel(), simulationMap.get(prev));
-                main.system.auxiliary.LogMaster.log(1, getSimulation().toString());
+                LogMaster.log(1, getSimulation().toString());
             }
         }
 

@@ -11,6 +11,7 @@ import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.texture.TextureManager;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.function.Supplier;
 
@@ -38,7 +39,7 @@ public class ActionAnim extends Anim {
         addAction(getAction());
         getAction().setTarget(this);
         AnimMaster.getInstance().addActor(this);
-        main.system.auxiliary.LogMaster.log(1, this + " added to stage");
+        LogMaster.log(1, this + " added to stage");
     }
     @Override
     protected void dispose() {

@@ -30,9 +30,10 @@ import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.FacingMaster;
 import main.rules.DC_ActionManager;
-import main.system.auxiliary.Chronos;
-import main.system.auxiliary.ListMaster;
-import main.system.auxiliary.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;
 
@@ -390,7 +391,7 @@ public class PathBuilder {
                 .getTimeLimitForPathBuilding()
                 * TimeLimitMaster.CRITICAL_FAIL_FACTOR) {
             Chronos.logTimeElapsedForMark(getChronosPrefix() + targetAction);
-            main.system.auxiliary.LogMaster.log(1, "*** CRITICAL_FAIL TimeLimitForPathBuilding "
+            LogMaster.log(1, "*** CRITICAL_FAIL TimeLimitForPathBuilding "
                     + targetAction);
             return false;
         }
@@ -486,7 +487,7 @@ public class PathBuilder {
     }
 
     private void log(int result) {
-        main.system.auxiliary.LogMaster.log(LOG_CHANNELS.PATHING_DEBUG, result
+        LogMaster.log(LOG_CHANNELS.PATHING_DEBUG, result
                 + " priority for path: " + path);
     }
 

@@ -6,7 +6,8 @@ import main.data.ability.AE_Item;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Writer;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.log.LogMaster;
 import org.w3c.dom.Node;
 
 import javax.swing.*;
@@ -119,7 +120,7 @@ public class TemplateManager implements ActionListener {
         String xml = FileManager.readFile(file);
         Node doc = XML_Converter.getDoc(xml);
         DefaultMutableTreeNode newNode = NodeMaster.build(doc.getFirstChild());
-        main.system.auxiliary.LogMaster.log(1, XML_Converter
+        LogMaster.log(1, XML_Converter
                 .getStringFromXML(doc));
         NodeMaster.newNode(newNode, element.getIndex(), mainPanel.getTree());
         mainPanel.getEditPanel().checkContainerExpansionRequired();

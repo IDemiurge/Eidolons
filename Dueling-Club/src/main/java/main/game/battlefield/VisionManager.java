@@ -18,8 +18,8 @@ import main.rules.action.StealthRule;
 import main.rules.mechanics.ConcealmentRule;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
 import main.swing.components.obj.drawing.VisibilityMaster;
-import main.system.auxiliary.Chronos;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
@@ -633,7 +633,7 @@ public class VisionManager implements GenericVisionManager {
             }
             result = coordinates.contains(target.getCoordinates());
             if (result) {
-                main.system.auxiliary.LogMaster.log(0, target + " is half-visible: " + coordinates);
+                LogMaster.log(0, target + " is half-visible: " + coordinates);
                 return false;
             } else {
                 return null;

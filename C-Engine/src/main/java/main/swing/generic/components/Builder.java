@@ -1,7 +1,7 @@
 package main.swing.generic.components;
 
 import main.swing.generic.services.layout.LayoutInfo;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,7 +76,7 @@ public abstract class Builder implements GameGUI {
     private void addComponents() {
         for (JComponent c : compArray) {
             String info = comps.get(c).getMiGString();
-            main.system.auxiliary.LogMaster.log(0, "adding " + c.getClass().getSimpleName()
+            LogMaster.log(0, "adding " + c.getClass().getSimpleName()
                     + " in " + getClass().getSimpleName() + " at " + info);
             add(c, info);
             getComp().setComponentZOrder(c, N);
@@ -89,7 +89,7 @@ public abstract class Builder implements GameGUI {
         for (Builder builder : builderArray) {
             String info = builders.get(builder).getMiGString();
 
-            main.system.auxiliary.LogMaster.log(LogMaster.GUI_DEBUG,
+            LogMaster.log(LogMaster.GUI_DEBUG,
 
                     "building " + builder.getClass().getSimpleName() + " for " + getClass().getSimpleName()
                             + " at " + info);

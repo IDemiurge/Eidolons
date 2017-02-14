@@ -12,6 +12,7 @@ import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.game.battlefield.attack.Attack;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.PositionMaster;
 
 public class AttackEffect extends MicroEffect {
@@ -82,11 +83,11 @@ public class AttackEffect extends MicroEffect {
         if (!activeObj.isExtraAttackMode()) {
             if (!activeObj.isThrow()) {
                 if (!activeObj.isRanged()) {
-                    main.system.auxiliary.LogMaster.log(1, "*** MELEE ATTACK BY "
+                    LogMaster.log(1, "*** MELEE ATTACK BY "
                             + activeObj.getOwnerObj().getNameAndCoordinate() + " on "
                             + ref.getTargetObj().getNameAndCoordinate());
                     if (PositionMaster.getDistance(activeObj.getOwnerObj(), ref.getTargetObj()) > 1) {
-                        main.system.auxiliary.LogMaster.log(1, "*** RANGE BUG ");
+                        LogMaster.log(1, "*** RANGE BUG ");
                         // AI_Manager.logFullInfo();
                     }
                 }

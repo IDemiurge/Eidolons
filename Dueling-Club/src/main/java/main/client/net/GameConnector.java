@@ -8,6 +8,7 @@ import main.game.HostedGame;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.event.MessageManager;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.net.Communicator;
 import main.system.net.WaitingThread;
 import main.system.net.data.PlayerData;
@@ -112,7 +113,7 @@ public class GameConnector implements Connector {
     public void sendMapData() {
         send(HOST_CLIENT_CODES.MAP_DATA_REQUEST);
         send(lobby.getGameStarter().getMapData().getData());
-        main.system.auxiliary.LogMaster.log(4, "MAP_DATA_REQUEST "
+        LogMaster.log(4, "MAP_DATA_REQUEST "
                 + lobby.getGameStarter().getMapData().getData());
 
     }
@@ -143,7 +144,7 @@ public class GameConnector implements Connector {
             return;
         }
         lobby.getUserList().setData(playerData);
-        main.system.auxiliary.LogMaster.log(4, "====>> User connected " + user.getData()
+        LogMaster.log(4, "====>> User connected " + user.getData()
                 + " player data = " + playerData);
 
         lobby.getGameStarter().setPlayerData(new PlayerData(user.getRelevantData()));

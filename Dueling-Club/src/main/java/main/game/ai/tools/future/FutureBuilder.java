@@ -11,6 +11,7 @@ import main.entity.obj.unit.DC_HeroObj;
 import main.game.ai.tools.target.EffectMaster;
 import main.game.battlefield.attack.Attack;
 import main.game.battlefield.attack.DamageMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class FutureBuilder {
             damage = DamageMaster.getDamage(attack);
         }
         // active.toBase();
-        main.system.auxiliary.LogMaster.log(1, active.getName() + " on " + targetObj.getName()
+        LogMaster.log(1, active.getName() + " on " + targetObj.getName()
                 + " - damage precalculated: " + damage);
         return damage;
     }

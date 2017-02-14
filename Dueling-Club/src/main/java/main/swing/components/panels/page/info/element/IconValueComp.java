@@ -3,7 +3,7 @@ package main.swing.components.panels.page.info.element;
 import main.content.VALUE;
 import main.entity.Entity;
 import main.game.battlefield.Coordinates.DIRECTION;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager;
 
 import java.awt.*;

@@ -21,7 +21,8 @@ import main.libgdx.anims.std.SpellAnim;
 import main.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
 import main.libgdx.anims.std.SpellAnim.ZONE_ANIM_MODS;
 import main.libgdx.bf.GridMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.GeometryMaster;
 
 import java.util.*;
@@ -90,7 +91,7 @@ public class AnimMultiplicator implements Runnable {
 //             getRef().getTargetObj().getCoordinates()
                  e.getTarget());
                 offset += 90;
-                main.system.auxiliary.LogMaster.log(1, getActive() + " is offset by " + offset);
+                LogMaster.log(1, getActive() + " is offset by " + offset);
                 e.getEffect().offsetAngle(offset);
             }
         });

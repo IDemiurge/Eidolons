@@ -7,6 +7,9 @@ import main.data.ability.Mapper;
 import main.data.filesys.ResourceManager;
 import main.data.xml.XML_Reader;
 import main.system.auxiliary.*;
+import main.system.auxiliary.log.Chronos;
+import main.system.graphics.FontMaster;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.sound.SoundMaster;
 

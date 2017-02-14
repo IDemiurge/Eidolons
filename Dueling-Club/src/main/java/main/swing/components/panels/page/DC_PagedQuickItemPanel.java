@@ -6,8 +6,8 @@ import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagedListPanel;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.List;

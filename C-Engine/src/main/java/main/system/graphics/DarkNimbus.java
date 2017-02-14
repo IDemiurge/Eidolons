@@ -1,4 +1,4 @@
-package main.system.auxiliary;
+package main.system.graphics;
 
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;

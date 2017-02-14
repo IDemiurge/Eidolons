@@ -15,8 +15,9 @@ import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.logic.dungeon.DungeonMaster;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.TimeMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.auto.AutoTest.TEST_ARGS;
@@ -216,7 +217,7 @@ public class AutoTestMaster {
     }
 
     public void log(String string) {
-        main.system.auxiliary.LogMaster.log(1, "**********************************" + string);
+        LogMaster.log(1, "**********************************" + string);
         getLogStrings().add(string);
     }
 

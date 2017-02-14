@@ -20,9 +20,10 @@ import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.utils.SaveMaster;
-import main.system.FilterMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.entity.FilterMaster;
 import main.system.auxiliary.*;
-import main.system.auxiliary.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 import main.system.math.MathMaster;
 
 import java.util.Arrays;

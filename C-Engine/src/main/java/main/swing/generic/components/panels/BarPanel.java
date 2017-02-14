@@ -5,7 +5,7 @@ import main.data.XLinkedMap;
 import main.entity.Entity;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.misc.ValueBar;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.math.MathMaster;
 
 import java.awt.*;

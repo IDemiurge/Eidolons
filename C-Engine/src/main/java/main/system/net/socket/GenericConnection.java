@@ -1,6 +1,7 @@
 package main.system.net.socket;
 
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.net.WaitingThread;
 import main.system.net.socket.ServerConnector.NetCode;
 
@@ -50,12 +51,12 @@ public abstract class GenericConnection implements Runnable {
         if (!input.contains(StringMaster.NETCODE_SEPARATOR)) {
             return false;
         }
-        main.system.auxiliary.LogMaster.log(1, "monostring: " + input);
+        LogMaster.log(1, "monostring: " + input);
 
         NetCode code = appropriateCode(input.split(StringMaster.NETCODE_SEPARATOR)[0]);
 
         if (code == null) {
-            main.system.auxiliary.LogMaster.log(4, "NO NETCODE FOUND!"
+            LogMaster.log(4, "NO NETCODE FOUND!"
                     + input.split(StringMaster.NETCODE_SEPARATOR)[0]);
             return false;
         }
@@ -64,7 +65,7 @@ public abstract class GenericConnection implements Runnable {
 
         handleInputCodeConcurrently(code);
         setLastReceivedCode(code);
-        main.system.auxiliary.LogMaster.log(4, code + " - input for code: "
+        LogMaster.log(4, code + " - input for code: "
                 + input.split(StringMaster.NETCODE_SEPARATOR)[1]);
         INPUT(INPUT, code); // waiting thread fail
 
@@ -208,7 +209,7 @@ public abstract class GenericConnection implements Runnable {
             i++;
         }
         if (!result) {
-            main.system.auxiliary.LogMaster.log(0, "FAILED TO SET INPUT: " + input + " for "
+            LogMaster.log(0, "FAILED TO SET INPUT: " + input + " for "
                     + getLastReceivedCode().name());
 
             // create that waiting thread and go?!

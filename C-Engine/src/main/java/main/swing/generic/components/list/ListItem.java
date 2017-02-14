@@ -7,7 +7,7 @@ import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.swing.generic.misc.BORDER_CHECKER;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 import main.system.math.Property;

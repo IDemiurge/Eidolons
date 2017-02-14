@@ -6,8 +6,8 @@ import main.content.CONTENT_CONSTS2.SPELL_UPGRADE;
 import main.entity.Entity;
 import main.swing.components.panels.page.log.WrappedTextComp;
 import main.swing.generic.components.misc.GraphicComponent;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

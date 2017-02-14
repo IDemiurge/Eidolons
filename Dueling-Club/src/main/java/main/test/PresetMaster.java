@@ -15,6 +15,8 @@ import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.test.Preset.PRESET_DATA;
 import main.test.Preset.PRESET_OPTION;

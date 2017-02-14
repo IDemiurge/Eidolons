@@ -11,7 +11,7 @@ import main.elements.conditions.Conditions;
 import main.elements.targeting.FixedTargeting;
 import main.entity.Ref.KEYS;
 import main.game.event.Event;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 
 public class BindingSpellEffect extends DC_Effect {
     Boolean shareOrRedirect;

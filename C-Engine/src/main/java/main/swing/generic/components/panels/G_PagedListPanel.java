@@ -2,7 +2,7 @@ package main.swing.generic.components.panels;
 
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.list.G_List;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 public abstract class G_PagedListPanel<E> extends G_PagePanel<E> {
 

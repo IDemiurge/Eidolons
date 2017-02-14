@@ -26,10 +26,13 @@ import main.game.event.Event;
 import main.game.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.game.player.Player;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
-import main.system.util.CounterMaster;
+import main.system.entity.CounterMaster;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -105,7 +108,7 @@ public abstract class DataModel {
         if (!getCustomParamMap().containsKey(value_ref)) {
             return "";
         }
-        main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, value_ref + " - custom prop: "
+        LogMaster.log(LogMaster.CORE_DEBUG, value_ref + " - custom prop: "
                 + getCustomParamMap().get(value_ref));
         return getCustomPropMap().get(value_ref);
 
@@ -901,7 +904,7 @@ public abstract class DataModel {
         int base_value = getIntParam(base_p);
         int c_value = MathMaster.getFractionValue(base_value, percentage);
         setParam(c_p, c_value, true);
-        main.system.auxiliary.LogMaster.log(LogMaster.VALUE_DEBUG, getName() + "'s "
+        LogMaster.log(LogMaster.VALUE_DEBUG, getName() + "'s "
                 + base_p.getName() + " current value reset: " + percentage + "% out of "
                 + base_value + " = " + c_value);
 
@@ -917,7 +920,7 @@ public abstract class DataModel {
         Integer c_value = getIntParam(c_p);
         int percentage = MathMaster.getPercentage(c_value, base_value);
         setParam(c_perc, percentage, true);
-        main.system.auxiliary.LogMaster.log(LogMaster.VALUE_DEBUG, getName() + "'s " + p.getName()
+        LogMaster.log(LogMaster.VALUE_DEBUG, getName() + "'s " + p.getName()
                 + " percentage reset: " + c_value + " out of " + base_value + " = " + percentage);
     }
 

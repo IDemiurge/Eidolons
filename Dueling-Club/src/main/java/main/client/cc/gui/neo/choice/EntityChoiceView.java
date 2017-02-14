@@ -17,7 +17,7 @@ import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.swing.components.PagedOptionsComp;
 import main.swing.listeners.ListChooserSortOptionListener.SORT_TEMPLATE;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.datatypes.DequeImpl;

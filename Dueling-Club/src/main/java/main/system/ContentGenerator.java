@@ -12,7 +12,7 @@ import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.rules.DC_ActionManager.WEAPON_ATTACKS;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.HashMap;

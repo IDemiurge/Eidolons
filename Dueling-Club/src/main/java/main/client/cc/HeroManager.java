@@ -36,7 +36,7 @@ import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.town.Shop;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;

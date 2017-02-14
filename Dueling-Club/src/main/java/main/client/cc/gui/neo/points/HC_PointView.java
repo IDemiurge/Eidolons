@@ -13,8 +13,8 @@ import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.swing.components.panels.page.log.WrappedTextComp;
 import main.swing.generic.components.misc.GraphicComponent;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 
 import java.awt.*;
 import java.util.LinkedList;

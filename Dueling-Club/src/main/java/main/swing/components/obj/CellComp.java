@@ -9,7 +9,7 @@ import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.swing.components.obj.drawing.DrawMaster;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import main.system.text.SmartText;
 
@@ -114,7 +114,7 @@ public class CellComp {
                     setPaintImage(bufferImage);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    main.system.auxiliary.LogMaster.log(1, toString() + " failed to draw!");
+                    LogMaster.log(1, toString() + " failed to draw!");
                 }
             }
         };

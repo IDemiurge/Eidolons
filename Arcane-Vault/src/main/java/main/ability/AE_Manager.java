@@ -16,6 +16,7 @@ import main.data.ability.construct.VariableManager;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjType;
 import main.launch.ArcaneVault;
+import main.system.auxiliary.log.LogMaster;
 import org.w3c.dom.Node;
 
 import javax.swing.*;
@@ -53,18 +54,18 @@ public class AE_Manager {
     public static AE_MainPanel getAE_View(String typeName) {
         AE_MainPanel panel = cacheMap.get(typeName);
         if (panel == null) {
-            main.system.auxiliary.LogMaster.log(0, "creating AE view ..."
+            LogMaster.log(0, "creating AE view ..."
                     + typeName);
             panel = new AE_MainPanel((typeName));
             cacheMap.put(typeName, panel);
             smallCache = new HashMap<>();
             smallCaches.put(panel, smallCache);
         } else {
-            main.system.auxiliary.LogMaster.log(0, "AE view FOUND! - "
+            LogMaster.log(0, "AE view FOUND! - "
                     + typeName);
             smallCache = smallCaches.get(panel);
             if (smallCache == null) {
-                main.system.auxiliary.LogMaster.log(0,
+                LogMaster.log(0,
                         "*** smallCache NOT FOUND! - " + typeName);
             }
         }
@@ -133,7 +134,7 @@ public class AE_Manager {
             newXml = XML_Converter.getXMLfromTree(tree);
         } catch (Exception e) {
             e.printStackTrace();
-            main.system.auxiliary.LogMaster.log(2, type.getName()
+            LogMaster.log(2, type.getName()
                     + " is not ready to be saved!");
             return;
         }

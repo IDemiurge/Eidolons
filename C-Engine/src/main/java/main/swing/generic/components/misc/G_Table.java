@@ -1,7 +1,8 @@
 package main.swing.generic.components.misc;
 
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 
 import javax.swing.*;
 import javax.swing.event.CellEditorListener;
@@ -36,7 +37,7 @@ public class G_Table extends JTable {
 
     public void setEditListener(int i, CellEditorListener l) {
 
-        main.system.auxiliary.LogMaster.log(0, getColumnName(i) + ""
+        LogMaster.log(0, getColumnName(i) + ""
                 + getColumn(getColumnName(i)).getCellEditor());
 
         getColumn(getColumnName(i)).getCellEditor().addCellEditorListener(l);

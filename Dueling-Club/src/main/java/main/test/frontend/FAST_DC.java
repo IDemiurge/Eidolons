@@ -15,7 +15,7 @@ import main.game.logic.arena.UnitGroupMaster;
 import main.game.logic.battle.player.DC_Player;
 import main.game.logic.dungeon.DungeonMaster;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.auxiliary.Chronos;
+import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.hotkey.DC_KeyManager;

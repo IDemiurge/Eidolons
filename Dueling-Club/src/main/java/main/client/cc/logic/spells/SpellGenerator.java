@@ -8,6 +8,7 @@ import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class SpellGenerator {
             // generateSpellUpgrades();
         } catch (Exception e) {
             e.printStackTrace();
-            main.system.auxiliary.LogMaster.log(1, "*** Failed to generate spell upgrades!");
+            LogMaster.log(1, "*** Failed to generate spell upgrades!");
         }
     }
 
@@ -48,7 +49,7 @@ public class SpellGenerator {
                     generateUpgradedVersion(t, ug);
                 } catch (Exception e) {
                     // e.printStackTrace();
-                    main.system.auxiliary.LogMaster.log(0, t.getName()
+                    LogMaster.log(0, t.getName()
                             + " - failed to generate spell upgrade: " + ug.toString());
                 }
             }

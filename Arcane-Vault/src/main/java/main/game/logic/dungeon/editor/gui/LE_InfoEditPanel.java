@@ -13,7 +13,7 @@ import main.game.logic.macro.gui.MacroGuiManager;
 import main.gui.builders.EditViewPanel;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 public class LE_InfoEditPanel extends EditViewPanel {
     private ObjType selectedType;

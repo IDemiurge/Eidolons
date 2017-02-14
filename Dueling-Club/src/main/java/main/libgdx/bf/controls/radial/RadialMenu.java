@@ -29,6 +29,7 @@ import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.TargetRunnable;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
+import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
@@ -410,7 +411,7 @@ public class RadialMenu extends Group {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                     if (action == null) {
-                        main.system.auxiliary.LogMaster.log(1, " ");
+                        LogMaster.log(1, " ");
                     } else {
 
                         action.run();

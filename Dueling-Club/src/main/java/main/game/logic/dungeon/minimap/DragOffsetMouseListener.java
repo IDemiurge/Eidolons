@@ -1,5 +1,6 @@
 package main.game.logic.dungeon.minimap;
 
+import main.system.auxiliary.log.LogMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
@@ -77,7 +78,7 @@ public class DragOffsetMouseListener implements MouseListener, AWTEventListener,
     @Override
     public void mouseDragged(MouseEvent e) {
         releasePoint = e.getPoint();
-        main.system.auxiliary.LogMaster.log(1, "DRAGGED " + releasePoint);
+        LogMaster.log(1, "DRAGGED " + releasePoint);
         // e.getOrCreate
         // e.getComponent();
 
@@ -85,7 +86,7 @@ public class DragOffsetMouseListener implements MouseListener, AWTEventListener,
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        main.system.auxiliary.LogMaster.log(1, "mouseMoved " + e.getPoint());
+        LogMaster.log(1, "mouseMoved " + e.getPoint());
 
     }
 

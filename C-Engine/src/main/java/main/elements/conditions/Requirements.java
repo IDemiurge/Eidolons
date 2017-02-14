@@ -4,7 +4,7 @@ import main.data.XLinkedMap;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.system.auxiliary.Err;
+import main.system.auxiliary.log.Err;
 import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedList;

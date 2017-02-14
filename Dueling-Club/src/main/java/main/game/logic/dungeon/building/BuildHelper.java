@@ -9,8 +9,9 @@ import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.building.DungeonBuilder.BLOCK_TYPE;
 import main.game.logic.dungeon.building.DungeonBuilder.DUNGEON_TEMPLATES;
 import main.game.logic.dungeon.building.DungeonBuilder.ROOM_TYPE;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.DC_PositionMaster;
 import main.system.math.MathMaster;
@@ -216,7 +217,7 @@ public class BuildHelper {
     private MapBlock newBlock(List<Coordinates> coordinates, BLOCK_TYPE type, ROOM_TYPE roomType) {
         MapBlock b = newBlock(coordinates, type);
         b.setRoomType(roomType);
-        main.system.auxiliary.LogMaster.log(1, " Room Type: " + roomType);
+        LogMaster.log(1, " Room Type: " + roomType);
         assert (b.getWidth() > 1 && b.getHeight() > 1);
 
         return b;
@@ -231,7 +232,7 @@ public class BuildHelper {
         plan.getBlocks().add(block);
         id++;
         usedCoordinates.addAll(coordinates);
-        main.system.auxiliary.LogMaster.log(1, "New Block: " + block);
+        LogMaster.log(1, "New Block: " + block);
         return block;
     }
 
@@ -375,7 +376,7 @@ public class BuildHelper {
             }
             length++;
         }
-        main.system.auxiliary.LogMaster.log(1, "Max " + (horizontal ? "Length" : "Height")
+        LogMaster.log(1, "Max " + (horizontal ? "Length" : "Height")
                 + " for " + zone + " from " + baseCoordinate + " = " + length);
         return length;
     }

@@ -23,7 +23,7 @@ import main.game.logic.macro.travel.MacroParty;
 import main.game.logic.macro.travel.RestMaster;
 import main.game.player.Player;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.math.MathMaster;

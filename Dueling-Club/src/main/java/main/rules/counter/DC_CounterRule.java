@@ -14,7 +14,7 @@ import main.entity.Ref;
 import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.rules.magic.ImmunityRule;
-import main.system.auxiliary.LogMaster.LOG;
+import main.system.auxiliary.log.LogMaster.LOG;
 
 import java.util.HashMap;
 import java.util.Map;

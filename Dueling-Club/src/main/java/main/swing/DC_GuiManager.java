@@ -1,6 +1,6 @@
 package main.swing;
 
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 import java.awt.*;
 

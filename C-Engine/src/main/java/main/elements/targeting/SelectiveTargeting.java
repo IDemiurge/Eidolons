@@ -9,6 +9,7 @@ import main.elements.Filter;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 
 import java.util.Set;
@@ -68,7 +69,7 @@ public class SelectiveTargeting extends TargetingImpl {
             return false;
         }
         ref.setTarget(target);
-        main.system.auxiliary.LogMaster.log(1, "TARGET SELECTED : "
+        LogMaster.log(1, "TARGET SELECTED : "
                 + ref.getGame().getObjectById(target));
         return true;
 

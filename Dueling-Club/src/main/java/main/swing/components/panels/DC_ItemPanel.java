@@ -11,7 +11,7 @@ import main.swing.generic.components.list.ListItem;
 import main.swing.generic.components.panels.G_ListPanel;
 import main.swing.generic.misc.BORDER_CHECKER;
 import main.swing.renderers.SlotItem;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 

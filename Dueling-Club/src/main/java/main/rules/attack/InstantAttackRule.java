@@ -15,7 +15,8 @@ import main.game.battlefield.attack.DC_AttackMaster;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.RULE;
 import main.rules.perk.AlertRule;
-import main.system.auxiliary.LogMaster.LOG;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;
@@ -112,9 +113,9 @@ public class InstantAttackRule {
 
         if (!attack.tryInstantActivation(action)) {
             // try other attacks? could be preferred failed somehow
-            main.system.auxiliary.LogMaster.log(1, "*** Instant attack failed! " + attack);
+            LogMaster.log(1, "*** Instant attack failed! " + attack);
         } else {
-            main.system.auxiliary.LogMaster.log(1, "*** Instant attack successful! " + attack);
+            LogMaster.log(1, "*** Instant attack successful! " + attack);
         }
         INSTANT_ATTACK_TYPE type = getInstantAttackType(unit, action);
         DC_AttackMaster.getAttackEffect(attack).getAttack().setInstantAttackType(type);

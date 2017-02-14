@@ -10,7 +10,8 @@ import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;
 import main.game.battlefield.XLine;
-import main.system.auxiliary.ArrayMaster;
+import main.system.auxiliary.data.ArrayMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.PositionMaster;
 
@@ -356,11 +357,11 @@ public class ClearShotCondition extends MicroCondition {
                 }
                 if (target.getOBJ_TYPE_ENUM() == OBJ_TYPES.BF_OBJ) {
                     if (target.isInfoSelected()) {
-                        main.system.auxiliary.LogMaster.log(1, target + " vs " + coordinates
+                        LogMaster.log(1, target + " vs " + coordinates
                                 + " distance: " + distance);
                     }
                     if (target.isInfoSelected()) {
-                        main.system.auxiliary.LogMaster.log(1, angle + " vs "
+                        LogMaster.log(1, angle + " vs "
                                 + (float) Math.abs(source.getX() - c.x)
                                 / Math.abs(source.getX() - c.y));
                     }
@@ -475,7 +476,7 @@ public class ClearShotCondition extends MicroCondition {
 
     private void log(String str) {
         if (!isVision()) {
-            main.system.auxiliary.LogMaster.log(log_priority, str);
+            LogMaster.log(log_priority, str);
         }
     }
 

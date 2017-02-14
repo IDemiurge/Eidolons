@@ -13,7 +13,7 @@ import main.game.Game;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
 
 import javax.swing.*;

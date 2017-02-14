@@ -1,4 +1,4 @@
-package main.system.auxiliary;
+package main.system.auxiliary.log;
 
 import javax.swing.*;
 import java.util.LinkedList;

@@ -12,9 +12,9 @@ import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.ColorManager;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 import main.system.graphics.MigMaster;
 import main.system.images.ImageManager;
 

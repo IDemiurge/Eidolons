@@ -5,7 +5,7 @@ import main.entity.Entity;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.ActiveObj;
 import main.swing.generic.components.list.ListItem;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.ImageTransformer;
 import main.system.images.ImageManager;

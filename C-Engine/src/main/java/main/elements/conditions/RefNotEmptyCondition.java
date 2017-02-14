@@ -1,5 +1,7 @@
 package main.elements.conditions;
 
+import main.system.auxiliary.log.LogMaster;
+
 public class RefNotEmptyCondition extends MicroCondition {
     private String obj;
     private String key;
@@ -20,7 +22,7 @@ public class RefNotEmptyCondition extends MicroCondition {
         try {
             return ref.getObj(obj).getRef().getObj(key) != null;
         } catch (Exception e) {
-            main.system.auxiliary.LogMaster.log(1, toString() + " failed on "
+            LogMaster.log(1, toString() + " failed on "
                     + ref);
         }
         return false;

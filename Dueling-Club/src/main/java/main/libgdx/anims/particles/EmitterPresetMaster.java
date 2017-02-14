@@ -6,8 +6,9 @@ import javafx.util.Pair;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.io.File;
 import java.io.IOException;
@@ -149,7 +150,7 @@ public class EmitterPresetMaster {
         if (StringMaster.isEmpty(imagePath))
             imagePath = searchImage(FileManager.getFile(PathFinder.getSpritesPath()), name);
         if (StringMaster.isEmpty(imagePath))
-            main.system.auxiliary.LogMaster.log(1, imagePath + " - NO IMAGE FOUND FOR SFX: " + path);
+            LogMaster.log(1, imagePath + " - NO IMAGE FOUND FOR SFX: " + path);
 
         return imagePath;
     }

@@ -17,6 +17,7 @@ import main.swing.components.obj.CellComp;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
@@ -327,11 +328,11 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
 
                 while (true) {
                     if (interrupted) {
-                        main.system.auxiliary.LogMaster.log(1, "interrupted");
+                        LogMaster.log(1, "interrupted");
                         break;
                     }
                     if (exited) {
-                        main.system.auxiliary.LogMaster.log(1, "exited");
+                        LogMaster.log(1, "exited");
                         break;
                     }
                     boolean x = isXEdgeCloserToHoverObj();

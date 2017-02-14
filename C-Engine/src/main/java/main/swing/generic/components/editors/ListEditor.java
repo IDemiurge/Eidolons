@@ -16,8 +16,8 @@ import main.game.Game;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.Err;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.log.Err;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 
 import javax.swing.*;

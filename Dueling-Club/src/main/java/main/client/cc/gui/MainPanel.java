@@ -14,8 +14,8 @@ import main.entity.Entity;
 import main.entity.obj.unit.DC_HeroObj;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
-import main.system.auxiliary.Chronos;
-import main.system.auxiliary.ColorManager;
+import main.system.auxiliary.log.Chronos;
+import main.system.graphics.ColorManager;
 import main.system.images.ImageManager;
 
 import javax.swing.*;

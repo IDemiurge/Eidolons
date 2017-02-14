@@ -4,7 +4,7 @@ import main.content.CONTENT_CONSTS.STD_COUNTERS;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.DC_HeroObj;
 import main.system.auxiliary.EnumMaster;
-import main.system.util.CounterMaster;
+import main.system.entity.CounterMaster;
 
 public class DC_CounterMaster {
 

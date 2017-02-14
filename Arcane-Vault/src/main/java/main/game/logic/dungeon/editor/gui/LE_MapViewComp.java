@@ -10,8 +10,8 @@ import main.game.logic.dungeon.minimap.Minimap;
 import main.swing.components.obj.BfGridComp;
 import main.swing.components.panels.page.log.WrappedTextComp;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 import main.system.datatypes.DequeImpl;
 import main.system.math.MathMaster;
 

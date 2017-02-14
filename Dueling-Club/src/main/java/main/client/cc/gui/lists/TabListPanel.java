@@ -3,7 +3,7 @@ package main.client.cc.gui.lists;
 import main.client.cc.CharacterCreator;
 import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 import java.util.List;
 

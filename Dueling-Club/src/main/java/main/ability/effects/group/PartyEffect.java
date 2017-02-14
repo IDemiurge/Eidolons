@@ -7,7 +7,7 @@ import main.elements.conditions.standard.EmptyCondition;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.DC_HeroObj;
-import main.system.FilterMaster;
+import main.system.entity.FilterMaster;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -22,7 +22,7 @@ import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.game.player.Player;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -282,22 +282,22 @@ public abstract class GameManager implements GenericGameManager {
                 list = new LinkedList<>();
                 getState().getAttachedEffects().put(buff, list);
             } else {
-                main.system.auxiliary.LogMaster.log(LogMaster.EFFECT_DEBUG, effect
+                LogMaster.log(LogMaster.EFFECT_DEBUG, effect
                         + " - another effect attached to " + source);
 
             }
-            main.system.auxiliary.LogMaster.log(LogMaster.EFFECT_DEBUG, effect
+            LogMaster.log(LogMaster.EFFECT_DEBUG, effect
                     + " - Effect attached to " + source);
             list.add(effect);
         } else {
-            main.system.auxiliary.LogMaster.log(1, "UNATTACHED EFFECT: " + effect);
+            LogMaster.log(1, "UNATTACHED EFFECT: " + effect);
         }
     }
 
     public void addTrigger(Trigger trigger) {
         getState().addTrigger(trigger);
         // attachTrigger(trigger);
-        main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, "trigger added!");
+        LogMaster.log(LogMaster.CORE_DEBUG, "trigger added!");
     }
 
     protected void attachTrigger(Trigger trigger) {
@@ -317,7 +317,7 @@ public abstract class GameManager implements GenericGameManager {
             }
             list.add(trigger);
         } else {
-            main.system.auxiliary.LogMaster.log(1, "UNATTACHED TRIGGER: " + trigger);
+            LogMaster.log(1, "UNATTACHED TRIGGER: " + trigger);
         }
 
     }
@@ -376,7 +376,7 @@ public abstract class GameManager implements GenericGameManager {
 
     public void setLastTraversedPath(Path path) {
         this.path = path;
-        main.system.auxiliary.LogMaster.log(LogMaster.COMBAT_DEBUG, "Path traversed " + path);
+        LogMaster.log(LogMaster.COMBAT_DEBUG, "Path traversed " + path);
     }
 
     public void clearLastTraversedPath() {

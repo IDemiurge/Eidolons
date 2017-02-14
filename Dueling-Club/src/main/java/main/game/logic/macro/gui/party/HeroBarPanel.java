@@ -4,7 +4,7 @@ import main.content.parameters.MACRO_PARAMS;
 import main.content.parameters.PARAMETER;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.panels.BarPanel;
-import main.system.auxiliary.ColorManager;
+import main.system.graphics.ColorManager;
 
 import java.awt.*;
 import java.util.List;

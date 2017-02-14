@@ -11,7 +11,7 @@ import main.content.properties.G_PROPS;
 import main.content.properties.PROPERTY;
 import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager;
 
 import java.util.LinkedList;

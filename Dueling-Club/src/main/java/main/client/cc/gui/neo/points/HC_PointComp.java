@@ -13,7 +13,7 @@ import main.swing.components.panels.page.info.element.ValueTextComp;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.swing.generic.components.misc.GraphicComponent.STD_COMP_IMAGES;
-import main.system.auxiliary.ColorManager;
+import main.system.graphics.ColorManager;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 import main.system.sound.SoundMaster;

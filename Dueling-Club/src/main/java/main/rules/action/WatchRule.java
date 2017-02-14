@@ -22,7 +22,7 @@ import main.entity.obj.unit.DC_HeroObj;
 import main.game.battlefield.FacingMaster;
 import main.game.battlefield.VisionManager;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;

@@ -1,7 +1,7 @@
 package main.system.net.chat;
 
 import main.client.DuelingClub;
-import main.system.auxiliary.Err;
+import main.system.auxiliary.log.Err;
 
 import java.io.IOException;
 import java.net.Socket;

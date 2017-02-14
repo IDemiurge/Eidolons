@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import main.system.auxiliary.ColorManager;
+import main.system.graphics.ColorManager;
 
 public class StyleHolder {
     private static Label.LabelStyle defaultLabelStyle;

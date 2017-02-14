@@ -10,7 +10,7 @@ import main.data.ability.ARGS;
 import main.data.ability.Argument;
 import main.data.ability.Mapper;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 
 import java.lang.reflect.Constructor;
@@ -31,7 +31,7 @@ public class Construct {
 
     public Construct(String className, List<Construct> constructs) {
 
-        main.system.auxiliary.LogMaster.log(LogMaster.CONSTRUCTION_DEBUG, "constructed: "
+        LogMaster.log(LogMaster.CONSTRUCTION_DEBUG, "constructed: "
                 + className + " : " + constructs);
         this.className = className;
         this.constructs = constructs;
@@ -45,7 +45,7 @@ public class Construct {
      * @param textContent
      */
     public Construct(String className, String textContent) {
-        main.system.auxiliary.LogMaster.log(LogMaster.CONSTRUCTION_DEBUG, "constructed primitive: "
+        LogMaster.log(LogMaster.CONSTRUCTION_DEBUG, "constructed primitive: "
                 + className + " : " + textContent);
         this.className = className;
         this.primitive = true;
@@ -56,7 +56,7 @@ public class Construct {
     }
 
     public Construct(String className, String textContent, boolean ENUM) {
-        main.system.auxiliary.LogMaster.log(LogMaster.CONSTRUCTION_DEBUG, "constructed enum: "
+        LogMaster.log(LogMaster.CONSTRUCTION_DEBUG, "constructed enum: "
                 + className + " : " + textContent);
         this.className = className;
         this.content = textContent;
@@ -121,14 +121,14 @@ public class Construct {
         }
         Object obj = new EnumMaster().getEnum(content, CLASS.getEnumConstants());
         if (obj == null) {
-            main.system.auxiliary.LogMaster.log(LogMaster.CONSTRUCTION_DEBUG, "*** constructEnum:"
+            LogMaster.log(LogMaster.CONSTRUCTION_DEBUG, "*** constructEnum:"
                     + content);
         }
         return obj;
     }
 
     private Object constructPrimitive() {
-        main.system.auxiliary.LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
+        LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
                 "...constructing primitive: " + className + " : " + content);
 
         Object object;
@@ -164,10 +164,10 @@ public class Construct {
         }
         if (object == null) {
 
-            main.system.auxiliary.LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
+            LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
                     "*** PRIMITIVE CONSTRUCTION FAILED! " + className);
         }
-        main.system.auxiliary.LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
+        LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
                 ">>> PRIMITIVE CONSTRUCT: " + object);
         return object;
     }
@@ -190,7 +190,7 @@ public class Construct {
                 ((Reconstructable) object).setConstruct(construct);
             }
             if (object == null) {
-                main.system.auxiliary.LogMaster.log(1, "null object in construct: " + construct);
+                LogMaster.log(1, "null object in construct: " + construct);
             }
             args.add(object);
         }
@@ -216,7 +216,7 @@ public class Construct {
         Class<?> CLASS = Mapper.getMappedClass(className);
 
         if (CLASS == null) {
-            main.system.auxiliary.LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
+            LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
                     "no class found for construct: " + className);
             return null;
         }
@@ -237,12 +237,12 @@ public class Construct {
             LogMaster.log(LogMaster.CONSTRUCTION_DEBUG, "=> constructing: " + className
                     + "'s constructor " + constructor + " with args: " + args);
             result = constructor.newInstance(args.toArray());
-            main.system.auxiliary.LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
+            LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
                     "==> instantiation successful!  ");
 
         } catch (Exception e) {
             e.printStackTrace();
-            main.system.auxiliary.LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
+            LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
                     "*** construction failed *** " + className + "'s constructor " + constructor
                             + " with args: " + args);
 

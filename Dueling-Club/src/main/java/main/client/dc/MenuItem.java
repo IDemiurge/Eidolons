@@ -2,8 +2,8 @@ package main.client.dc;
 
 import main.client.dc.MainManager.MAIN_MENU_ITEMS;
 import main.swing.components.buttons.CustomButton;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 

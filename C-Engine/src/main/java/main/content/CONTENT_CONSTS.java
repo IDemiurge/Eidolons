@@ -9,7 +9,7 @@ import main.data.ability.construct.VariableManager;
 import main.entity.Ref.KEYS;
 import main.game.battlefield.Coordinates.UNIT_DIRECTION;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 

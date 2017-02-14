@@ -40,9 +40,11 @@ import main.swing.components.panels.page.DC_PagedPriorityPanel;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.auxiliary.*;
+import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.ANIM;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
+import main.system.graphics.ColorManager;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
@@ -473,7 +475,7 @@ public class DC_GameManager extends GameManager {
     public Integer selectAwait() {
 
         // add Cancel button? add hotkey listener?
-        main.system.auxiliary.LogMaster.log(1, "***** awaiting selection from: " + selectingSet);
+        LogMaster.log(1, "***** awaiting selection from: " + selectingSet);
         Integer selectedId = (Integer) WaitMaster.waitForInput(
                 WAIT_OPERATIONS.SELECT_BF_OBJ);
         // selecting = false;
@@ -493,7 +495,7 @@ public class DC_GameManager extends GameManager {
             try {
                 setActivatingAction(null);
                 WaitMaster.interrupt(WAIT_OPERATIONS.SELECT_BF_OBJ);
-                main.system.auxiliary.LogMaster.log(1, "SELECTING CANCELLED!");
+                LogMaster.log(1, "SELECTING CANCELLED!");
             } catch (Exception e) {
                 e.printStackTrace();
                 return;
@@ -697,7 +699,7 @@ public class DC_GameManager extends GameManager {
     }
 
     public void activateMySpell(int index) {
-        main.system.auxiliary.LogMaster.log(1, "spell hotkey pressed " + index);
+        LogMaster.log(1, "spell hotkey pressed " + index);
         getMySpells().get(index).invokeClicked();
     }
 

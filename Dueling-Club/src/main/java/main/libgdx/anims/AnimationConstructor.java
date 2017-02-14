@@ -25,8 +25,8 @@ import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.anims.std.*;
 import main.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.FileManager;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.*;
@@ -237,7 +237,7 @@ if (!list.isEmpty())
     public Animation getEffectAnim(Effect e) {
 //        map
         if (!isAnimated(e)) return null;
-        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, "EFFECT ANIM CONSTRUCTED FOR " + e + e.getRef());
+        LogMaster.log(LogMaster.ANIM_DEBUG, "EFFECT ANIM CONSTRUCTED FOR " + e + e.getRef());
         Anim effectAnim = EffectAnimCreator.getOrCreateEffectAnim(e);
         initAnim(effectAnim.getData(), (DC_ActiveObj) effectAnim.getActive(),
                 effectAnim.getPart(),
@@ -314,7 +314,7 @@ if (!list.isEmpty())
             }
             String val = StringMaster.buildPath(
                     partPath, StringMaster.removePreviousPathSegments(file, pathRoot));
-            main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+            LogMaster.log(LogMaster.ANIM_DEBUG,
                     "AUTO ANIM CONSTRUCTION FOR " + spell + "-" + part + ": " + s + " is set automatically to " + val);
             data.setValue(s, val);
         }

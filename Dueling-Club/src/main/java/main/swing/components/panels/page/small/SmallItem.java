@@ -2,7 +2,7 @@ package main.swing.components.panels.page.small;
 
 import main.content.properties.G_PROPS;
 import main.entity.Entity;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 
 import javax.swing.*;

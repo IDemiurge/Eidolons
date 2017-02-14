@@ -1,5 +1,6 @@
 package main.client.net;
 
+import main.system.auxiliary.log.LogMaster;
 import main.system.net.socket.PORTS;
 import main.system.net.socket.ServerConnection;
 import main.system.net.socket.ServerConnector;
@@ -40,7 +41,7 @@ public class DC_ServerConnector extends ServerConnector {
         if (socket != null) {
 
             handler = new DC_ServerConnectionHandler(socket);
-            main.system.auxiliary.LogMaster.log(4, "new handler!");
+            LogMaster.log(4, "new handler!");
             return handler;
 
         } else {
@@ -50,7 +51,7 @@ public class DC_ServerConnector extends ServerConnector {
             if (retry != JOptionPane.YES_OPTION) {
                 return null;
             }
-            main.system.auxiliary.LogMaster
+            LogMaster
                     .log(4, "Retrying every 5 seconds...");
             while (socket == null) {
                 try {

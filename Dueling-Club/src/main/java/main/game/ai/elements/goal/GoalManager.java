@@ -11,7 +11,7 @@ import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.tools.Analyzer;
 import main.game.ai.tools.priority.PriorityManager;
 import main.game.ai.tools.target.SpellMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;
 
 import java.util.Arrays;

@@ -26,7 +26,7 @@ import main.music.ahk.AHK_Master;
 import main.session.Session;
 import main.session.SessionMaster;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;

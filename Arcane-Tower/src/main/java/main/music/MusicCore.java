@@ -23,6 +23,8 @@ import main.music.m3u.TrackReader;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.services.DialogMaster;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.data.ListMaster;
 
 import java.awt.*;
 import java.io.File;

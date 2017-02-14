@@ -8,7 +8,7 @@ import main.game.MicroGame;
 import main.game.ai.AI;
 import main.game.ai.logic.DC_AI;
 import main.game.battlefield.pathing.Path;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 
 // DECOUPLE FROM AI!!! 
 public class DC_Analyzer extends main.game.ai.logic.Analyzer {
@@ -125,7 +125,7 @@ public class DC_Analyzer extends main.game.ai.logic.Analyzer {
             enemy_unit = enemy.getHeroObj();
         }
 
-        main.system.auxiliary.LogMaster.log(LogMaster.AI_DEBUG, enemy_unit
+        LogMaster.log(LogMaster.AI_DEBUG, enemy_unit
                 + " has been picked as closest target for "
                 + ai.getLogic().getUnit());
         return enemy_unit;

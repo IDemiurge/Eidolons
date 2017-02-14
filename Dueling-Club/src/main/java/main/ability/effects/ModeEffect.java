@@ -23,6 +23,7 @@ import main.rules.mechanics.InterruptRule;
 import main.rules.perk.AlertRule;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 
 import java.util.Map;
@@ -78,7 +79,7 @@ public class ModeEffect extends MicroEffect {
             initBuffEffect();
         }
         timeModifier = getGame().getTurnManager().getTimeModifier();
-        main.system.auxiliary.LogMaster.log(1, getActiveObj() + "'s timeModifier= " + timeModifier);
+        LogMaster.log(1, getActiveObj() + "'s timeModifier= " + timeModifier);
         if (mode.isDispelOnHit()) {
             addDispelOnHitTrigger();
         }

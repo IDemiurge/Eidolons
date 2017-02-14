@@ -7,6 +7,7 @@ import main.client.net.GameConnector.HOST_CLIENT_CODES;
 import main.game.HostedGame;
 import main.swing.generic.components.Refreshable;
 import main.swing.generic.components.panels.G_ElementPanel;
+import main.system.auxiliary.log.LogMaster;
 import main.system.net.RefresherImpl;
 import main.system.net.RefresherImpl.REFRESHER_TYPE;
 import main.system.net.WaitingThread;
@@ -90,7 +91,7 @@ public class GameInfoPanel extends G_ElementPanel<GAME_OPTIONS> implements
     public JComboBox<?> addDropBoxPanel(String name, Object[] options) {
         JComboBox<?> box = super.addDropBoxPanel(name, options);
         int index = Arrays.asList(options).indexOf(gameOptions.getValue(name));
-        main.system.auxiliary.LogMaster.log(2, name
+        LogMaster.log(2, name
                 + " setting game options db index to " + index);
         setDropBoxIndexQuietly(box, index);
 
@@ -137,7 +138,7 @@ public class GameInfoPanel extends G_ElementPanel<GAME_OPTIONS> implements
         }
         game.setOptions(gameOptions);
         super.resetElements();
-        main.system.auxiliary.LogMaster.log(2, "game options set: "
+        LogMaster.log(2, "game options set: "
                 + gameOptions.getData());
     }
 

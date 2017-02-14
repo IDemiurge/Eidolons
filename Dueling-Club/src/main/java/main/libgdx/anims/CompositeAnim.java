@@ -17,8 +17,8 @@ import main.system.EventCallback;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.LogMaster;
-import main.system.auxiliary.MapMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.data.MapMaster;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -231,7 +231,7 @@ public class CompositeAnim implements Animation {
         queueGraphicEvents();
         queueTextEvents();
         running = true;
-        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, this + " started: "
+        LogMaster.log(LogMaster.ANIM_DEBUG, this + " started: "
         );
 
     }

@@ -12,9 +12,10 @@ import main.elements.Filter;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TreeMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.DefaultComparator;
 import main.utilities.workspace.Workspace;
 import org.w3c.dom.Document;
@@ -267,7 +268,7 @@ public class AV_Tree extends G_Panel {
                     if (subNode2 == null) {
                         parent = null;
                         i = 0;
-                        main.system.auxiliary.LogMaster.log(1, upgrades + " remain, parent="
+                        LogMaster.log(1, upgrades + " remain, parent="
                                 + parent + i);
                         for (String typeName : upgrades) {
                             subNode.add(new DefaultMutableTreeNode(typeName));

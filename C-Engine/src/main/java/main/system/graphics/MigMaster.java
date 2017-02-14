@@ -3,8 +3,6 @@ package main.system.graphics;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.swing.generic.components.VisualComponent;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.GuiManager;
 import main.system.images.ImageManager.ALIGNMENT;
 import net.miginfocom.swing.MigLayout;
 

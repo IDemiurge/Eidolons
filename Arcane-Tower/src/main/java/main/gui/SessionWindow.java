@@ -14,8 +14,8 @@ import main.swing.components.TextComp;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 
 import javax.swing.*;
 import java.awt.*;

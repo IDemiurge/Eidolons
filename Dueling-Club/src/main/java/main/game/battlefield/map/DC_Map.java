@@ -5,8 +5,8 @@ import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
-import main.system.auxiliary.FileManager;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.net.data.MapData;
 
@@ -113,13 +113,13 @@ public class DC_Map {
         File f = new File(ImageManager.getDefaultImageLocation()
                 + PathFinder.getBgPicsPath());
         if (!f.isDirectory()) {
-            main.system.auxiliary.LogMaster.log(4, "failed to init bg!");
+            LogMaster.log(4, "failed to init bg!");
             return "";
         }
         String[] array = f.list();
         String filename = f.list()[new Random().nextInt(array.length)];
         filename = PathFinder.getBgPicsPath() + filename;
-        main.system.auxiliary.LogMaster.log(4, "init bg! - " + filename);
+        LogMaster.log(4, "init bg! - " + filename);
         return filename;
 
     }
@@ -129,7 +129,7 @@ public class DC_Map {
         ObjType c = DC_MapGenerator.getGatewayObjType(C_TYPE);
         if (c == null) {
 
-            main.system.auxiliary.LogMaster.log(1, "" + C_TYPE);
+            LogMaster.log(1, "" + C_TYPE);
             throw new RuntimeException();
         }
         return c;
@@ -138,7 +138,7 @@ public class DC_Map {
     private ObjType createCrystal(BF_OBJ_OWNER C_TYPE) {
         ObjType c = DC_MapGenerator.getCrystalObjType(C_TYPE);
         if (c == null) {
-            main.system.auxiliary.LogMaster.log(1, "" + C_TYPE);
+            LogMaster.log(1, "" + C_TYPE);
             throw new RuntimeException();
         }
         return c;
@@ -164,27 +164,27 @@ public class DC_Map {
         BF_OBJ_OWNER TYPE;
         for (Coordinates c : Coordinates.getCoordinates(factiongateways)) {
             TYPE = BF_OBJ_OWNER.MY;
-            main.system.auxiliary.LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
+            LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
                     TYPE + " gateway at " + c);
             gateways.put(c, BF_OBJ_OWNER.MY);
         }
         for (Coordinates c : Coordinates.getCoordinates(enemygateways)) {
             TYPE = BF_OBJ_OWNER.ENEMY;
-            main.system.auxiliary.LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
+            LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
                     TYPE + " gateway at " + c);
 
             gateways.put(c, BF_OBJ_OWNER.ENEMY);
         }
         for (Coordinates c : Coordinates.getCoordinates(neutralgateways)) {
             TYPE = BF_OBJ_OWNER.NEUTRAL;
-            main.system.auxiliary.LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
+            LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
                     TYPE + " gateway at " + c);
 
             gateways.put(c, BF_OBJ_OWNER.NEUTRAL);
         }
         for (Coordinates c : Coordinates.getCoordinates(randomgateways)) {
             TYPE = BF_OBJ_OWNER.RANDOM;
-            main.system.auxiliary.LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
+            LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
                     TYPE + " gateway at " + c);
             gateways.put(c, TYPE);
         }
@@ -202,26 +202,26 @@ public class DC_Map {
 
         for (Coordinates c : Coordinates.getCoordinates(factioncrystals)) {
             TYPE = BF_OBJ_OWNER.MY;
-            main.system.auxiliary.LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
+            LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
                     TYPE + " crystal at " + c);
 
             crystals.put(c, BF_OBJ_OWNER.MY);
         }
         for (Coordinates c : Coordinates.getCoordinates(enemycrystals)) {
             TYPE = BF_OBJ_OWNER.ENEMY;
-            main.system.auxiliary.LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
+            LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
                     TYPE + " crystal at " + c);
             crystals.put(c, BF_OBJ_OWNER.ENEMY);
         }
         for (Coordinates c : Coordinates.getCoordinates(neutralcrystals)) {
             TYPE = BF_OBJ_OWNER.NEUTRAL;
-            main.system.auxiliary.LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
+            LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
                     TYPE + " crystal at " + c);
             crystals.put(c, BF_OBJ_OWNER.NEUTRAL);
         }
         for (Coordinates c : Coordinates.getCoordinates(randomcrystals)) {
             TYPE = BF_OBJ_OWNER.RANDOM;
-            main.system.auxiliary.LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
+            LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
                     TYPE + " crystal at " + c);
             crystals.put(c, BF_OBJ_OWNER.RANDOM);
         }

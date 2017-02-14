@@ -1,4 +1,4 @@
-package main.system.auxiliary;
+package main.system.auxiliary.data;
 
 import main.data.DataManager;
 import main.data.XLinkedMap;
@@ -7,6 +7,8 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.Game;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 
 import java.util.*;
 

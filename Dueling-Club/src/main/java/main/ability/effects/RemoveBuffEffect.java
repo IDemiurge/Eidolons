@@ -1,6 +1,7 @@
 package main.ability.effects;
 
 import main.ability.effects.oneshot.MicroEffect;
+import main.system.auxiliary.log.LogMaster;
 
 public class RemoveBuffEffect extends MicroEffect {
 
@@ -32,7 +33,7 @@ public class RemoveBuffEffect extends MicroEffect {
             return ref.getTargetObj().getBuff(buffName, strict).kill();
         } catch (Exception e) {
             // e.printStackTrace();
-            main.system.auxiliary.LogMaster.log(1, "removing buff named " + buffName + " failed: "
+            LogMaster.log(1, "removing buff named " + buffName + " failed: "
                     + ref);
             return false;
         }

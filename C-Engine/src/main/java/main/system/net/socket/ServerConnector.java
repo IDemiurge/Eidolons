@@ -1,6 +1,6 @@
 package main.system.net.socket;
 
-import main.system.auxiliary.Err;
+import main.system.auxiliary.log.Err;
 import main.system.net.Viewer;
 import main.system.net.WaitingThread;
 import main.system.net.user.User;

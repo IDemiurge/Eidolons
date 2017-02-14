@@ -3,7 +3,7 @@ package main.system.auxiliary.secondary;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.entity.Ref;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 
 public class VerboseChecker {
 

@@ -51,6 +51,9 @@ import main.rules.rpg.IntegrityRule;
 import main.system.DC_Constants;
 import main.system.DC_Formulas;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.math.DC_MathManager;
@@ -355,29 +358,29 @@ public class DC_HeroObj extends DC_UnitObj {
         try {
             initInventory();
         } catch (ExpressionParseException e) {
-            main.system.auxiliary.LogMaster.log(1, "failed to parse for initQuickItems "
+            LogMaster.log(1, "failed to parse for initQuickItems "
                     + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-            main.system.auxiliary.LogMaster.log(1, "failed to initInventory");
+            LogMaster.log(1, "failed to initInventory");
         }
         try {
             initJewelry();
         } catch (ExpressionParseException e) {
-            main.system.auxiliary.LogMaster.log(1, "failed to parse for initQuickItems "
+            LogMaster.log(1, "failed to parse for initQuickItems "
                     + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-            main.system.auxiliary.LogMaster.log(1, "failed to initJewelry");
+            LogMaster.log(1, "failed to initJewelry");
         }
         try {
             initQuickItems();
         } catch (ExpressionParseException e) {
-            main.system.auxiliary.LogMaster.log(1, "failed to parse for initQuickItems "
+            LogMaster.log(1, "failed to parse for initQuickItems "
                     + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-            main.system.auxiliary.LogMaster.log(1, "failed to initQuickItems");
+            LogMaster.log(1, "failed to initQuickItems");
         }
 
         setWeapon((DC_WeaponObj) initItem(weapon, G_PROPS.MAIN_HAND_ITEM, OBJ_TYPES.WEAPONS));
@@ -560,7 +563,7 @@ public class DC_HeroObj extends DC_UnitObj {
                     }
                 }
                 if (item == null) {
-                    main.system.auxiliary.LogMaster.log(1, getName()
+                    LogMaster.log(1, getName()
                             + " has null items in item container " + prop);
                 } else {
                     items.add(item);

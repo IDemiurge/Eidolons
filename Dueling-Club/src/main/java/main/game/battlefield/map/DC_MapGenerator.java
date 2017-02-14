@@ -5,7 +5,7 @@ import main.content.CONTENT_CONSTS.ASPECT;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.battlefield.map.DC_Map.BF_OBJ_OWNER;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.auxiliary.Manager;
 
 import java.awt.*;

@@ -2,7 +2,7 @@ package main.game.battlefield.pathing;
 
 import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.PositionMaster;
 
 import java.util.LinkedList;
@@ -31,7 +31,7 @@ public class A_StarAlgorithm {
     }
 
     public Path getPath(boolean flying, boolean agile, Coordinates c1, Coordinates c2) {
-        main.system.auxiliary.LogMaster
+        LogMaster
                 .log(LogMaster.PATHING_DEBUG, "building path from" + c1
                         + " to " + c2);
         N = 0;
@@ -139,7 +139,7 @@ public class A_StarAlgorithm {
         closedList.add(C);
         C.setCost(getCost(agile, flying, C));
 
-        main.system.auxiliary.LogMaster.log(LogMaster.PATHING_DEBUG, "Step #"
+        LogMaster.log(LogMaster.PATHING_DEBUG, "Step #"
                 + N + " to " + C + " with closed list " + closedList
 
         );
@@ -165,7 +165,7 @@ public class A_StarAlgorithm {
         node.setG(g);
         node.setH(h);
         node.setF(f);
-        main.system.auxiliary.LogMaster.log(LogMaster.PATHING_DEBUG, node
+        LogMaster.log(LogMaster.PATHING_DEBUG, node
                 + " has: g = " + g + " h = " +
 
                 h + " f = " + f);

@@ -12,8 +12,11 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.swing.SwingMaster;
-import main.system.auxiliary.ColorManager.FLAG_COLOR;
+import main.system.graphics.ColorManager.FLAG_COLOR;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.GuiManager;
 import main.system.graphics.MigMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
@@ -307,7 +310,7 @@ public class ImageManager {
             return IMG;
         } catch (Exception e) {
             e.printStackTrace();
-            main.system.auxiliary.LogMaster.log(1, " failed " + target.getWidth(observer) + " and "
+            LogMaster.log(1, " failed " + target.getWidth(observer) + " and "
                     + applied.getWidth(observer));
             // if (retry)
             // return applyImage(target, applied, x, y, resize, false);
@@ -521,7 +524,7 @@ public class ImageManager {
     private static Image getDefaultImage() {
         if (DEFAULT_IMG == null) {
             DEFAULT_IMG = getImage(DEFAULT_IMAGE_PATH);
-            main.system.auxiliary.LogMaster.log(1, DEFAULT_IMAGE_PATH);
+            LogMaster.log(1, DEFAULT_IMAGE_PATH);
         }
         return DEFAULT_IMG;
     }
@@ -535,7 +538,7 @@ public class ImageManager {
     }
 
     public static Image getEmblem(String property) {
-        main.system.auxiliary.LogMaster.log(1, "emblem for " + property);
+        LogMaster.log(1, "emblem for " + property);
 
         return null;
     }
@@ -545,7 +548,7 @@ public class ImageManager {
         try {
             icon = getIcon(imgPath);
         } catch (Exception e) {
-            main.system.auxiliary.LogMaster.log(LogMaster.GUI_DEBUG, "no image for " + imgPath);
+            LogMaster.log(LogMaster.GUI_DEBUG, "no image for " + imgPath);
 
             return null;
         }
@@ -1498,7 +1501,7 @@ return ((CustomImage)img).getImgPath();
                 img = ImageManager.getIcon(filename).getImage();
             } catch (Exception e) {
                 img = getNewBufferedImage(1, 1);
-                main.system.auxiliary.LogMaster.log(1, "Failed to init border! - " + filename);
+                LogMaster.log(1, "Failed to init border! - " + filename);
             }
         }
 

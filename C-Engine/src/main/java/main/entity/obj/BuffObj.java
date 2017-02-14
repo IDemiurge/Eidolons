@@ -15,7 +15,8 @@ import main.game.MicroGame;
 import main.game.event.MessageManager;
 import main.game.player.Player;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 import main.system.auxiliary.StringMaster;
 
 public class BuffObj extends MicroObj implements Attachment, AttachedObj {
@@ -84,7 +85,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
         setEffectApplied(true);
         setRef(ref);
 
-        main.system.auxiliary.LogMaster.log(0, "BUFF EFFECT (" + toString() + ") applied to "
+        LogMaster.log(0, "BUFF EFFECT (" + toString() + ") applied to "
                 + ref.getTargetObj());
         return effect.apply(ref);
     }
@@ -209,7 +210,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
         setParam(G_PARAMS.C_DURATION, duration);
         modifyParameter(G_PARAMS.TURNS_IN_GAME, 1);
 
-        main.system.auxiliary.LogMaster.log(1, getName() + " ticked! duration: " + duration);
+        LogMaster.log(1, getName() + " ticked! duration: " + duration);
         checkDuration();
 
         return duration;
@@ -238,7 +239,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
 
         if (retainConditions != null) {
             if (!retainConditions.check(ref)) {
-                main.system.auxiliary.LogMaster.log(LOG_CHANNELS.BUFF_DEBUG,
+                LogMaster.log(LOG_CHANNELS.BUFF_DEBUG,
                         "Retain conditions check false for " + getName());
                 kill();
 

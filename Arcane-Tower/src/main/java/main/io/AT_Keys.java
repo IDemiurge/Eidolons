@@ -5,7 +5,7 @@ import com.melloware.jintellitype.JIntellitype;
 import main.ArcaneTower;
 import main.session.Session;
 import main.session.SessionMaster;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;

@@ -3,7 +3,7 @@ package main.client;
 import main.client.gui.DC_MenuBuilder;
 import main.client.gui.menu.DC_Menu;
 import main.swing.View;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.net.socket.ServerConnection;
 

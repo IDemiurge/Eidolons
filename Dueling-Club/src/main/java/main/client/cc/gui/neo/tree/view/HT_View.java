@@ -35,8 +35,9 @@ import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
@@ -516,14 +517,14 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
             variant = HT_MapBuilder.getShiftedLinkVariant(variant, vertical_horizontal_manual);
         }
         if (variant == null) {
-            main.system.auxiliary.LogMaster.log(1, type + "'s LINK_VARIANT null !!! ");
+            LogMaster.log(1, type + "'s LINK_VARIANT null !!! ");
             return;
         }
         type.setProperty(PROPS.LINK_VARIANT, variant.toString());
         if (!CoreEngine.isArcaneVault()) {
             XML_Writer.writeXML_ForType(type, isSkill() ? OBJ_TYPES.SKILLS : OBJ_TYPES.CLASSES);
         }
-        main.system.auxiliary.LogMaster.log(1, type + "'s LINK_VARIANT set for " + variant);
+        LogMaster.log(1, type + "'s LINK_VARIANT set for " + variant);
 
         rebuildAndSetTree();
     }
@@ -657,8 +658,8 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
                 objType.setProperty(G_PROPS.ID, id2 + "");
                 objType2.setProperty(G_PROPS.ID, id1 + "");
 
-                main.system.auxiliary.LogMaster.log(1, id2 + " id set for " + objType);
-                main.system.auxiliary.LogMaster.log(1, id1 + " id set for " + objType2);
+                LogMaster.log(1, id2 + " id set for " + objType);
+                LogMaster.log(1, id1 + " id set for " + objType2);
 
                 if (!CoreEngine.isArcaneVault()) {
                     XML_Writer.writeXML_ForType(objType, isSkill() ? OBJ_TYPES.SKILLS

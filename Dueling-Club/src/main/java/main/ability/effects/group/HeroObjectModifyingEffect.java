@@ -22,9 +22,10 @@ import main.entity.active.DC_UnitAction;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.DC_HeroObj;
 import main.game.ai.tools.target.EffectMaster;
-import main.system.ConditionMaster;
-import main.system.FilterMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.entity.ConditionMaster;
+import main.system.entity.FilterMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.Formula;
 
@@ -108,18 +109,18 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
                 propMap = new RandomWizard<PROPERTY>().constructStringWeightMap(modString,
                         PROPERTY.class);
             } else {
-                main.system.auxiliary.LogMaster.log(1, "prop map " + propMap.toString());
+                LogMaster.log(1, "prop map " + propMap.toString());
             }
         } else if (map == null) // TODO support PROPERTY?
         {
             map = new RandomWizard<PARAMETER>()
                     .constructStringWeightMap(modString, PARAMETER.class);
         } else {
-            main.system.auxiliary.LogMaster.log(0, "map " + map.toString());
+            LogMaster.log(0, "map " + map.toString());
         }
         List<? extends Obj> list = getObjectsToModify();
-        main.system.auxiliary.LogMaster.log(0, "list " + list.toString());
-        main.system.auxiliary.LogMaster.log(0, "effects " + effects.toString());
+        LogMaster.log(0, "list " + list.toString());
+        LogMaster.log(0, "effects " + effects.toString());
         for (Obj obj : list) {
             if (obj == null) {
                 continue;
@@ -228,7 +229,7 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
                 try {
                     list = getIdList(hero);
                 } catch (Exception e) {
-                    main.system.auxiliary.LogMaster.log(1,
+                    LogMaster.log(1,
                             "Group obj effect failed to getOrCreate targets: " + this);
                     return new LinkedList<>();
                 }

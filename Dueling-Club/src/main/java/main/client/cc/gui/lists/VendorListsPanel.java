@@ -23,8 +23,8 @@ import main.elements.Filter;
 import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
-import main.system.FilterMaster;
-import main.system.auxiliary.Chronos;
+import main.system.entity.FilterMaster;
+import main.system.auxiliary.log.Chronos;
 
 import java.awt.*;
 import java.util.*;

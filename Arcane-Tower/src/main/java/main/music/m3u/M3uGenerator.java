@@ -8,9 +8,10 @@ import main.music.ahk.AHK_Master;
 import main.music.entity.MusicList;
 import main.music.entity.Track;
 import main.swing.generic.components.editors.lists.ListObjChooser;
-import main.system.auxiliary.FileManager;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -94,9 +95,9 @@ public class M3uGenerator {
 
             List<Track> differingElements = new ListMaster<Track>().getDifferingElements(tracks,
                     cleanTracks);
-            main.system.auxiliary.LogMaster.log(1, list + " has differingElements "
+            LogMaster.log(1, list + " has differingElements "
                     + differingElements);
-            main.system.auxiliary.LogMaster.log(1, list + " Clean Tracks: " + cleanTracks);
+            LogMaster.log(1, list + " Clean Tracks: " + cleanTracks);
 
             list.setTracks(cleanTracks);
             MusicCore.saveList(list);

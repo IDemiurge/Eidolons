@@ -14,7 +14,7 @@ import main.entity.type.ObjType;
 import main.game.Game;
 import main.game.battlefield.Coordinates;
 import main.game.player.Player;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.images.ImageManager.HIGHLIGHT;
@@ -293,7 +293,7 @@ public class Obj extends Entity {
 
     public BuffObj getBuff(String buffName, boolean strict) {
         if (buffs == null || buffName == null) {
-            main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG_1, buffName
+            LogMaster.log(LogMaster.CORE_DEBUG_1, buffName
                     + " buff was searched");
             return null;
         }
@@ -310,7 +310,7 @@ public class Obj extends Entity {
                 }
             }
         }
-        main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG_1, buffName
+        LogMaster.log(LogMaster.CORE_DEBUG_1, buffName
                 + " buff not found for " + buffs);
 
         return null;

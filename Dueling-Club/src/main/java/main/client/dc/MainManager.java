@@ -19,7 +19,7 @@ import main.game.logic.dungeon.scenario.ScenarioMaster;
 import main.game.logic.generic.PartyManager;
 import main.game.logic.macro.MacroManager;
 import main.game.meta.skirmish.SkirmishMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.hotkey.GlobalKeys;

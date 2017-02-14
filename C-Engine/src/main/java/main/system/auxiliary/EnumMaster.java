@@ -13,6 +13,8 @@ import main.entity.Entity;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.lists.ListChooser;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.*;

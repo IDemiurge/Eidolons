@@ -6,7 +6,7 @@ import main.content.properties.G_PROPS;
 import main.content.properties.PROPERTY;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.LinkedList;
 import java.util.List;

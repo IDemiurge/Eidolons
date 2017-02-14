@@ -4,7 +4,7 @@ import main.content.CONTENT_CONSTS.ACTION_TYPE;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.unit.DC_HeroObj;
-import main.system.auxiliary.LogMaster.LOG;
+import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.auxiliary.StringMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 

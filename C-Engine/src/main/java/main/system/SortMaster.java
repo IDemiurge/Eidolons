@@ -11,7 +11,7 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.swing.listeners.ListChooserSortOptionListener.SORT_TEMPLATE;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package main.system;
+package main.system.entity;
 
 import main.content.C_OBJ_TYPE;
 import main.content.ContentManager;
@@ -21,7 +21,7 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.Game;
 import main.game.player.Player;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.Formula;

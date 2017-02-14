@@ -21,7 +21,7 @@ import main.game.logic.dungeon.building.DungeonPlan;
 import main.game.logic.dungeon.scenario.Scenario;
 import main.game.logic.macro.map.Place;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.BooleanMaster;

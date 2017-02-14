@@ -9,6 +9,7 @@ import main.content.parameters.PARAMETER;
 import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 
 import java.awt.*;
@@ -61,7 +62,7 @@ public class ClassBottomPanel extends HT_BottomPanel {
                     }
                 }
             }
-            main.system.auxiliary.LogMaster.log(1, "displayedMasteries = " + displayedMasteries);
+            LogMaster.log(1, "displayedMasteries = " + displayedMasteries);
 
             // masteryCompsPanel.removeAll();
             for (PARAMETER p : displayedMasteries) {

@@ -8,8 +8,8 @@ import main.swing.generic.components.panels.G_ButtonPanel;
 import main.swing.generic.windows.G_Frame;
 import main.swing.panels.misc.G_InputPanel;
 import main.swing.panels.misc.G_LogPanel;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.ColorManager;
+import main.system.graphics.GuiManager;
 
 import java.awt.*;
 import java.awt.event.WindowEvent;

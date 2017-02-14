@@ -13,8 +13,8 @@ import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Dialog;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.ColorManager;
+import main.system.graphics.GuiManager;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 

@@ -1,7 +1,7 @@
 package main.system.math.roll;
 
 import main.entity.Ref;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
 

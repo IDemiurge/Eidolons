@@ -2,7 +2,7 @@ package main.swing.components.panels.page.info.element;
 
 import main.content.VALUE;
 import main.entity.Entity;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.FontMaster.FONT;
 
 import java.awt.*;
 

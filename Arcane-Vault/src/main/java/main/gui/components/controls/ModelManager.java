@@ -29,6 +29,8 @@ import main.system.BfObjPropGenerator;
 import main.system.ContentGenerator;
 import main.system.DC_Formulas;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.DC_MathManager;
 import main.system.math.Formula;
 import main.system.sound.SoundMaster;
@@ -592,7 +594,7 @@ public class ModelManager {
                 cleanedReqs = cleanedReqs.replace(";;", ";");
             }
             type.setProperty(PROPS.REQUIREMENTS, cleanedReqs);
-            main.system.auxiliary.LogMaster.log(1, reqs + "; cleanedReqs =" + cleanedReqs);
+            LogMaster.log(1, reqs + "; cleanedReqs =" + cleanedReqs);
         }
 
         ObjType parent = DataManager.getParent(type);
@@ -614,7 +616,7 @@ public class ModelManager {
                     sd--;
                 }
                 LogMaster.setOff(false);
-                main.system.auxiliary.LogMaster.log(1, type.getName() + "'s difficulty auto-set: "
+                LogMaster.log(1, type.getName() + "'s difficulty auto-set: "
                         + sd + " from " + parent.getName() + "'s " + parentSd);
                 type.setParam(PARAMS.SKILL_DIFFICULTY, sd);
 

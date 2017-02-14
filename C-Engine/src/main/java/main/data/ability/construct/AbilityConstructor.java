@@ -15,10 +15,11 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.BattlefieldObj;
-import main.system.auxiliary.Chronos;
+import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.Err;
+import main.system.auxiliary.log.Err;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.text.TextParser;
 import org.w3c.dom.Node;
 
@@ -89,13 +90,13 @@ public class AbilityConstructor {
             }
         }
         if (effects == null) {
-            main.system.auxiliary.LogMaster.log(1,
+            LogMaster.log(1,
                     "null abil effects!");
             effects = new Effects();
         }
 
         if (targeting == null) {
-            main.system.auxiliary.LogMaster.log(1,
+            LogMaster.log(1,
                     "null abil targeting!");
             targeting = new FixedTargeting();
         }
@@ -318,7 +319,7 @@ public class AbilityConstructor {
             type = getNewAbilityType(abilTypeName);
         } catch (Exception e) {
             e.printStackTrace();
-            main.system.auxiliary.LogMaster.log(1, "Failed to create new ability: " + abilTypeName);
+            LogMaster.log(1, "Failed to create new ability: " + abilTypeName);
 
         }
         if (type == null) {

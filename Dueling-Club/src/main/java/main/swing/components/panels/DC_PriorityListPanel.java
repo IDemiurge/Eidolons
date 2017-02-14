@@ -8,8 +8,8 @@ import main.game.turn.TurnManager;
 import main.swing.components.PriorityListItem;
 import main.swing.generic.components.panels.G_ListPanel;
 import main.swing.generic.services.listener.ObjListMouseListener;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager;
 import main.system.math.MathMaster;
 

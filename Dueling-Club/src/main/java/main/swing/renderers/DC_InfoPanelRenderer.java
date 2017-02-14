@@ -7,7 +7,7 @@ import main.content.properties.PROPERTY;
 import main.entity.Entity;
 import main.game.MicroGame;
 import main.swing.renderers.SmartTextManager.VALUE_CASES;
-import main.system.auxiliary.ColorManager;
+import main.system.graphics.ColorManager;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 

@@ -10,7 +10,8 @@ import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.logic.dungeon.Dungeon;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.Refreshable;
-import main.system.auxiliary.Chronos;
+import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.images.ImageManager.HIGHLIGHT;
 
@@ -68,7 +69,7 @@ public class MiniGrid implements Refreshable {
         comp.addMouseMotionListener(mouseMotionListener);
         // comp.addMouseListener(customMouseListener);
 
-        main.system.auxiliary.LogMaster.log(1, getComp().getMouseListeners() + " on "
+        LogMaster.log(1, getComp().getMouseListeners() + " on "
                 + getComp().hashCode());
         // comp.addMouseMotionListener(new DragOffsetMouseListener(this));
 

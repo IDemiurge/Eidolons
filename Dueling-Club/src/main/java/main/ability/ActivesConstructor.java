@@ -31,7 +31,8 @@ import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Active;
 import main.entity.obj.ActiveObj;
-import main.system.ConditionMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.entity.ConditionMaster;
 import main.system.DC_ConditionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -534,7 +535,7 @@ public class ActivesConstructor {
         if (abilType == null) {
             abilType = VariableManager.getVarType(abilName);
             if (abilType == null) {
-                main.system.auxiliary.LogMaster
+                LogMaster
 
                         .log(1, "getEffectsFromAbilityType: no such ability - " + abilName);
                 return null;

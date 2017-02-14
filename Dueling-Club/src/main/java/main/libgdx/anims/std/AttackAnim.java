@@ -20,7 +20,7 @@ import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.bf.GridConst;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.math.PositionMaster;
 
 import java.util.LinkedList;

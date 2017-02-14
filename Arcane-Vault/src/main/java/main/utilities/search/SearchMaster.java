@@ -4,7 +4,7 @@ import main.content.OBJ_TYPES;
 import main.entity.type.ObjType;
 import main.launch.ArcaneVault;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
 import main.utilities.workspace.Workspace;
 import main.utilities.workspace.WorkspaceManager;
