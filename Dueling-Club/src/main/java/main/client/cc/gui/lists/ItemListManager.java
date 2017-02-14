@@ -10,7 +10,7 @@ import main.content.OBJ_TYPES;
 import main.content.PROPS;
 import main.content.properties.PROPERTY;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;
 import main.system.sound.SoundMaster;

@@ -3,7 +3,7 @@ package main.swing.frames;
 import main.ability.InventoryManager;
 import main.client.cc.gui.tabs.HeroItemTab;
 import main.client.cc.gui.tabs.ItemsTab;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.generic.components.G_Panel.VISUALS;
 
 public class InventoryWindow extends OperationWindow {

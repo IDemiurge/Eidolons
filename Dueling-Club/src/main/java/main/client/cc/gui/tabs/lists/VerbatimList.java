@@ -8,7 +8,7 @@ import main.content.OBJ_TYPES;
 import main.content.PROPS;
 import main.content.parameters.PARAMETER;
 import main.content.properties.PROPERTY;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 
 public class VerbatimList extends SecondaryItemList {
 

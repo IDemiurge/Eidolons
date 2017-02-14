@@ -1,7 +1,7 @@
 package main.libgdx.anims.std;
 
 import main.entity.Ref.KEYS;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 

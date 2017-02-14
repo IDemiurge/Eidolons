@@ -4,7 +4,7 @@ import main.ability.Ability;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.ability.effects.oneshot.MicroEffect;
-import main.system.ai.logic.target.EffectMaster;
+import main.game.ai.tools.target.EffectMaster;
 import main.system.auxiliary.StringMaster;
 
 public class AbilityEffect extends MicroEffect {

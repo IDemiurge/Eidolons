@@ -7,8 +7,8 @@ import main.content.C_OBJ_TYPE;
 import main.content.PARAMS;
 import main.entity.EntityMaster;
 import main.entity.Ref;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.system.math.Formula;
 

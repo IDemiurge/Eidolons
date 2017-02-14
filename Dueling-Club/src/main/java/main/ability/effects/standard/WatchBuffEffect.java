@@ -6,9 +6,9 @@ import main.ability.effects.Effects;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.content.PARAMS;
 import main.content.enums.STD_MODES;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
-import main.rules.mechanics.WatchRule;
+import main.entity.obj.unit.DC_HeroObj;
+import main.rules.action.WatchRule;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package main.client.cc.gui.neo.choice;
 
 import main.content.ContentManager;
 import main.content.properties.PROPERTY;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.components.panels.page.info.element.ListTextItem;
 import main.system.auxiliary.StringMaster;
 

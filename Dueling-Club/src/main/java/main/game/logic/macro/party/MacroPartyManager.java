@@ -2,7 +2,7 @@ package main.game.logic.macro.party;
 
 import main.content.PARAMS;
 import main.content.parameters.MACRO_PARAMS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.logic.macro.travel.MacroParty;
 import main.system.math.MathMaster;
 

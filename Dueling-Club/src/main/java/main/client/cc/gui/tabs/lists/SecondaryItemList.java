@@ -8,7 +8,7 @@ import main.content.OBJ_TYPE;
 import main.content.parameters.PARAMETER;
 import main.content.properties.PROPERTY;
 import main.data.DataManager;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.GuiManager;

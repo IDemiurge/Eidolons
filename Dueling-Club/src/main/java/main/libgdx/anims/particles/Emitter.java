@@ -20,9 +20,17 @@ public class Emitter extends ParticleEmitter {
     public Emitter(BufferedReader reader) throws IOException {
         super(reader);
     }
+
     public void offsetColor(float offset) {
 //        float[] colors = getColorValue().getColors();
 //        getColorValue().setColors(modifiedColors);
+    }
+
+    public void toggle(String fieldName) {
+        boolean value =
+         new ReflectionMaster<Boolean>().getFieldValue(fieldName,
+          this, ParticleEmitter.class);
+        new ReflectionMaster().setValue(fieldName, !value, this, ParticleEmitter.class);
     }
 
     public void set(String fieldName, String fieldValue) {
@@ -80,30 +88,29 @@ public class Emitter extends ParticleEmitter {
 //                GridMaster.getMouseCoordinates;
                 Vector2 v = new Vector2(Gdx.input.getX(), (Gdx.graphics.getHeight() - Gdx.input.getY()));
                 Vector2 pos = GameScreen.getInstance().getGridStage().screenToStageCoordinates(v);
-            float xDiff = pos.x
-             - GameScreen.getInstance().getController().getX_cam_pos()
-             - (getX()+p.getX()) ;
-            float yDiff = pos.y //fuck that shit
-             -(getY()+p.getY())
-             - GameScreen.getInstance().getController().getY_cam_pos()
-             ;
-            Float distance = (float) (Math.sqrt(xDiff * xDiff + yDiff * yDiff));
+                float xDiff = pos.x
+                 - GameScreen.getInstance().getController().getX_cam_pos()
+                 - (getX() + p.getX());
+                float yDiff = pos.y //fuck that shit
+                 - (getY() + p.getY())
+                 - GameScreen.getInstance().getController().getY_cam_pos();
+                Float distance = (float) (Math.sqrt(xDiff * xDiff + yDiff * yDiff));
                 if (particleLogOn) {
                     main.system.auxiliary.LogMaster.log(1,
-                            " Mouse x: " + pos.x
-                                    + " Mouse y: " + pos.y //fuck that shit
-                                    + " Particle x: " + (getY() + p.getX())
-                                    + " Particle y: " + (getY() + p.getY())
-                                    + " cam x: " + (GameScreen.getInstance().getController().getX_cam_pos())
-                                    + " cam y: " + (GameScreen.getInstance().getController().getY_cam_pos())
-                                    + " distance: " + (distance)
+                     " Mouse x: " + pos.x
+                      + " Mouse y: " + pos.y //fuck that shit
+                      + " Particle x: " + (getY() + p.getX())
+                      + " Particle y: " + (getY() + p.getY())
+                      + " cam x: " + (GameScreen.getInstance().getController().getX_cam_pos())
+                      + " cam y: " + (GameScreen.getInstance().getController().getY_cam_pos())
+                      + " distance: " + (distance)
                     );
                 }
                 if (distance > 500) {
                     return;
                 }
-            p.setAlpha(1f - distance / 500);
-            p.setScale(3f-distance/250,3f-distance/250);
+                p.setAlpha(1f - distance / 500);
+                p.setScale(3f - distance / 250, 3f - distance / 250);
             }
 
 

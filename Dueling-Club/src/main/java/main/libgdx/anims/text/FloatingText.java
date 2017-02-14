@@ -20,14 +20,14 @@ import java.util.function.Supplier;
  */
 public class FloatingText extends Group {
 
-    private String text;
-    private Color c;
-    private Supplier<String> textSupplier;
-    private Supplier<String> imageSupplier;
 int alphaLoops=1;
 boolean inverseAlpha;
     float   displacementX;
     float   displacementY;
+    private String text;
+    private Color c;
+    private Supplier<String> textSupplier;
+    private Supplier<String> imageSupplier;
     private float   duration;
     private float delay;
 
@@ -82,7 +82,7 @@ boolean inverseAlpha;
             alphaActionSequence.addAction(fadeInAction);
         }
         MoveByAction moveByAction = new MoveByAction();
-        moveByAction.setAmount(x, y);
+        moveByAction.setAmount(x / 12, y / 12);
         moveByAction.setDuration(duration);
 
         RemoveActorAction removeAction = new RemoveActorAction();
@@ -132,20 +132,20 @@ if (delay!=0){
         this.displacementY = displacementY;
     }
 
-    public void setDuration(float duration) {
-        this.duration = duration;
-    }
-
     public float getDuration() {
         return duration;
     }
 
-    public void setDelay(float delay) {
-        this.delay = delay;
+    public void setDuration(float duration) {
+        this.duration = duration;
     }
 
     public float getDelay() {
         return delay;
+    }
+
+    public void setDelay(float delay) {
+        this.delay = delay;
     }
 
     public void setPosition(Vector2 origin) {

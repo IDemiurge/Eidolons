@@ -6,7 +6,7 @@ import main.ability.effects.Effects;
 import main.ability.effects.oneshot.special.AddStatusEffect;
 import main.content.CONTENT_CONSTS.STATUS;
 import main.entity.Ref;
-import main.system.ai.logic.target.EffectMaster;
+import main.game.ai.tools.target.EffectMaster;
 
 public class UnconsciousBuffEffect extends AddBuffEffect {
     private static final String BUFF_TYPE_NAME = "Unconscious";

@@ -1,7 +1,7 @@
 package main.swing.components.panels.page;
 
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.swing.components.PriorityListItem;
 import main.swing.components.panels.DC_PriorityListPanel;

@@ -5,11 +5,11 @@ import main.ability.effects.Effect;
 import main.content.CONTENT_CONSTS.BUFF_TYPE;
 import main.content.CONTENT_CONSTS.STD_BOOLS;
 import main.entity.Ref;
+import main.entity.active.DC_ActiveObj;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
-import main.entity.obj.top.DC_ActiveObj;
 import main.entity.type.ObjType;
-import main.system.ai.logic.target.EffectMaster;
+import main.game.ai.tools.target.EffectMaster;
 
 import java.util.LinkedList;
 import java.util.List;

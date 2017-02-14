@@ -3,8 +3,8 @@ package main.system;
 import main.content.CONTENT_CONSTS.CUSTOM_VALUE_TEMPLATE;
 import main.content.ContentManager;
 import main.content.parameters.PARAMETER;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.system.auxiliary.StringMaster;
 
 public class CustomValueManager {

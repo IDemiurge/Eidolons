@@ -3,7 +3,7 @@ package main.client.cc.gui.neo.tree.t3;
 import main.client.cc.HC_Master;
 import main.client.cc.gui.neo.tree.HT_Node;
 import main.client.cc.gui.neo.tree.view.SkillTreeView;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.system.launch.CoreEngine;
 

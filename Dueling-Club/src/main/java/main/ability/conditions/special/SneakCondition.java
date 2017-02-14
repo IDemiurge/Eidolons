@@ -7,8 +7,8 @@ import main.content.CONTENT_CONSTS.UNIT_TO_PLAYER_VISION;
 import main.content.enums.STD_MODES;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.battlefield.FacingMaster;
 import main.game.battlefield.VisionManager;
 

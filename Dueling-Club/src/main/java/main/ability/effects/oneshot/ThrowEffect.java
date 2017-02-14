@@ -5,9 +5,9 @@ import main.content.CONTENT_CONSTS.ACTION_TAGS;
 import main.content.properties.G_PROPS;
 import main.data.ability.AE_ConstrArgs;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_QuickItemObj;
-import main.entity.obj.DC_WeaponObj;
+import main.entity.item.DC_QuickItemObj;
+import main.entity.item.DC_WeaponObj;
+import main.entity.obj.unit.DC_HeroObj;
 
 public class ThrowEffect extends AttackEffect {
 

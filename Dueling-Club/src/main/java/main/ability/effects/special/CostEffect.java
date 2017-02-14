@@ -3,7 +3,7 @@ package main.ability.effects.special;
 import main.ability.effects.oneshot.MicroEffect;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref.KEYS;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
 
 public class CostEffect extends MicroEffect {
 

@@ -11,7 +11,7 @@ import main.client.cc.gui.neo.top.SpecialControls;
 import main.client.cc.gui.tabs.*;
 import main.client.dc.Launcher;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.Chronos;

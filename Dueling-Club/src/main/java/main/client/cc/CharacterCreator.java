@@ -1,6 +1,5 @@
 package main.client.cc;
 
-import main.client.battle.arcade.PartyManager;
 import main.client.cc.gui.HeroTabsPanel;
 import main.client.cc.gui.MainPanel;
 import main.client.cc.gui.neo.HeroPanel;
@@ -17,11 +16,12 @@ import main.content.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.xml.XML_Writer;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.DC_Game.GAME_TYPE;
 import main.game.logic.dungeon.scenario.ScenarioMaster;
+import main.game.logic.generic.PartyManager;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;

@@ -4,7 +4,7 @@ import main.client.cc.gui.misc.PoolComp;
 import main.client.cc.gui.neo.points.BuyButton;
 import main.client.cc.gui.neo.tree.HC_Tree;
 import main.content.PARAMS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.swing.components.buttons.CustomButton;
 import main.swing.components.panels.page.info.element.TextCompDC;

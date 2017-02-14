@@ -8,7 +8,7 @@ import main.content.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.elements.Filter;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.town.Shop;

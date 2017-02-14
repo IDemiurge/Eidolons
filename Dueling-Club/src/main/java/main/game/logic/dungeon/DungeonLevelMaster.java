@@ -1,11 +1,11 @@
 package main.game.logic.dungeon;
 
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
+import main.game.battlefield.CoordinatesMaster;
 import main.game.logic.dungeon.building.DungeonPlan;
-import main.game.logic.macro.utils.CoordinatesMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.launch.CoreEngine;
 import main.test.frontend.FAST_DC;

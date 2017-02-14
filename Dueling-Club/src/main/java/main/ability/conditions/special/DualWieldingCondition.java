@@ -1,8 +1,8 @@
 package main.ability.conditions.special;
 
 import main.elements.conditions.MicroCondition;
-import main.entity.obj.DC_HeroObj;
-import main.rules.generic.UnitAnalyzer;
+import main.entity.obj.unit.DC_HeroObj;
+import main.rules.UnitAnalyzer;
 
 public class DualWieldingCondition extends MicroCondition {
 

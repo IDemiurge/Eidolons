@@ -1,9 +1,9 @@
 package main.swing.components.obj;
 
 import main.entity.obj.DC_Cell;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
 import main.swing.components.buttons.DynamicButton;

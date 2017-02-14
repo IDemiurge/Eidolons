@@ -18,7 +18,7 @@ import main.data.DataManager;
 import main.elements.conditions.Requirements;
 import main.elements.conditions.RequirementsManager;
 import main.entity.Ref;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.battlefield.XLine;
 import main.swing.generic.components.G_Panel;

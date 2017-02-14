@@ -6,7 +6,7 @@ import main.ability.effects.oneshot.ContainerEffect;
 import main.ability.effects.oneshot.MicroEffect;
 import main.content.CONTENT_CONSTS.ROLL_TYPES;
 import main.data.ability.construct.VariableManager;
-import main.system.ai.logic.target.EffectMaster;
+import main.game.ai.tools.target.EffectMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.math.roll.RollMaster;

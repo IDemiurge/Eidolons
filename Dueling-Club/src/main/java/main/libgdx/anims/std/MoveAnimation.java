@@ -7,14 +7,14 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import javafx.util.Pair;
 import main.ability.effects.MoveEffect;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
+import main.game.ai.tools.target.EffectMaster;
 import main.game.battlefield.Coordinates;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.system.EventCallbackParam;
 import main.system.GuiEventType;
-import main.system.ai.logic.target.EffectMaster;
 import main.system.auxiliary.ListMaster;
 
 import java.util.Arrays;

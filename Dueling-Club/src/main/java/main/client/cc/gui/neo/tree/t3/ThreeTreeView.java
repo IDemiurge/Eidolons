@@ -2,7 +2,7 @@ package main.client.cc.gui.neo.tree.t3;
 
 import main.client.cc.gui.neo.tree.view.HT_View;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.SwingMaster;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.GuiManager;

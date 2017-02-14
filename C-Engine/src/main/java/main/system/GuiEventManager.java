@@ -1,10 +1,9 @@
 package main.system;
 
-import main.data.XLinkedMap;
-import main.system.auxiliary.LogMaster;
-import main.system.auxiliary.MapMaster;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -15,13 +14,49 @@ import java.util.concurrent.locks.ReentrantLock;
  * Time: 17:18
  * To change this template use File | Settings | File Templates.
  */
-public class GuiEventManager<T> {
-    private static Map<GuiEventType, EventCallback> eventMap = new HashMap<>();
-    private static List<Runnable> eventQueue = new ArrayList<>();
-    private static Lock lock = new ReentrantLock();
-    private static Map<GuiEventType, OnDemandCallback> onDemand = new ConcurrentHashMap<>();
+public class GuiEventManager {
+    private static GuiEventManager instance;
+    private static boolean isInitialized;
+    private static Lock initLock = new ReentrantLock();
+    private Map<GuiEventType, EventCallback> eventMap = new HashMap<>();
+    private List<Runnable> eventQueue = new ArrayList<>();
+    private Lock lock = new ReentrantLock();
+    private Map<GuiEventType, OnDemandCallback> onDemand = new ConcurrentHashMap<>();
 
     public static void bind(GuiEventType type, final EventCallback event) {
+        getInstance().bind_(type, event);
+    }
+
+    public static void trigger(final GuiEventType type, final EventCallbackParam obj) {
+        getInstance().trigger_(type, obj);
+    }
+
+    public static void processEvents() {
+        getInstance().processEvents_();
+    }
+
+    public static GuiEventManager getInstance() {
+        if (instance == null) {
+            if (!isInitialized) {
+                try {
+                    initLock.lock();
+                    if (!isInitialized) {
+                        init();
+                        isInitialized = true;
+                    }
+                } finally {
+                    initLock.unlock();
+                }
+            }
+        }
+        return instance;
+    }
+
+    private static void init() {
+        instance = new GuiEventManager();
+    }
+
+    public void bind_(GuiEventType type, final EventCallback event) {
         if (event != null) {
             if (onDemand.containsKey(type)) {
                 lock.lock();
@@ -50,7 +85,7 @@ public class GuiEventManager<T> {
         }
     }
 
-    public static void trigger(final GuiEventType type, final EventCallbackParam obj) {
+    public void trigger_(final GuiEventType type, final EventCallbackParam obj) {
 
         if (eventMap.containsKey(type)) {
             lock.lock();
@@ -68,7 +103,7 @@ public class GuiEventManager<T> {
         }
     }
 
-    public static void processEvents() {
+    public void processEvents_() {
         if (eventQueue.size() > 0) {
             lock.lock();
             List<Runnable> list = eventQueue;

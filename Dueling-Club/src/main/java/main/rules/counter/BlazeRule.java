@@ -12,7 +12,7 @@ import main.content.CONTENT_CONSTS.STD_COUNTERS;
 import main.content.PARAMS;
 import main.elements.targeting.FixedTargeting;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 
 public class BlazeRule extends DamageCounterRule {

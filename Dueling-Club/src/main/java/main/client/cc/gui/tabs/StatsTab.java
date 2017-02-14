@@ -5,7 +5,7 @@ import main.client.cc.gui.MainViewPanel.HERO_VIEWS;
 import main.client.cc.gui.views.PointView;
 import main.content.ContentManager;
 import main.content.parameters.PARAMETER;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_TabbedPanel;
 import main.system.auxiliary.Chronos;

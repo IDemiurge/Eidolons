@@ -1,7 +1,7 @@
 package main.client.cc.gui.neo.header;
 
 import main.content.properties.G_PROPS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.generic.components.G_CompHolder;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;

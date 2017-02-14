@@ -15,7 +15,7 @@ import main.elements.conditions.Condition;
 import main.elements.conditions.NotCondition;
 import main.entity.Ref.KEYS;
 import main.game.MicroGame;
-import main.rules.mechanics.RuleMaster.COMBAT_RULES;
+import main.rules.RuleMaster.COMBAT_RULES;
 import main.system.auxiliary.StringMaster;
 
 public class FocusBuffRule extends DC_BuffRule {

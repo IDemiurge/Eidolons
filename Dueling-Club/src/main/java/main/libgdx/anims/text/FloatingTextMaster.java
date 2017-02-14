@@ -1,11 +1,15 @@
 package main.libgdx.anims.text;
 
 import com.badlogic.gdx.graphics.Color;
+import main.ability.effects.ModeEffect;
+import main.ability.effects.common.ModifyStatusEffect;
 import main.elements.costs.Cost;
 import main.entity.Entity;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
+import main.game.ai.tools.target.EffectMaster;
 import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.libgdx.GdxColorMaster;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.CompositeAnim;
@@ -20,12 +24,12 @@ import java.util.List;
 public class FloatingTextMaster {
     private static FloatingTextMaster instance;
 
-    public  FloatingTextMaster() {
-instance=this;
+    public FloatingTextMaster() {
+        instance = this;
     }
 
     public static FloatingTextMaster getInstance() {
-        if (instance==null ) instance = new FloatingTextMaster();
+        if (instance == null) instance = new FloatingTextMaster();
         return instance;
     }
 
@@ -33,7 +37,13 @@ instance=this;
         FloatingTextMaster.instance = instance;
     }
 
-    private Color getColor(TEXT_CASES aCase) {
+    private Color getColor(TEXT_CASES aCase, Object arg) {
+        switch (aCase) {
+            case COSTS:
+                Cost cost = (Cost) arg;
+                return GdxColorMaster.getParamColor(cost.getPayment().getParamToPay());
+
+        }
         return Color.RED;
     }
 
@@ -54,21 +64,28 @@ instance=this;
                 break;
         }
         return null;
-    }   private String getText(Entity active, TEXT_CASES aCase, Object arg) {
-        switch (aCase) {
-            case COSTS:
-                Cost cost = (Cost) arg;
-                return  String.valueOf(-cost.getPayment().getLastPaid());
-        }
-        return null;
     }
 
-    public  boolean isEventDisplayable(Event e) {
-        return getCase(e)!=null ;
+    private String getText(Entity active, TEXT_CASES aCase, Object arg) {
+        switch (aCase) {
+            case CRITICAL:
+                return "Critical Attack!";
+            case SNEAK:
+                return "Sneak Attack!";
+            case COSTS:
+                Cost cost = (Cost) arg;
+                return String.valueOf(-cost.getPayment().getLastPaid());
+        }
+        return arg.toString();
     }
-        private TEXT_CASES getCase(Event e) {
+
+    public boolean isEventDisplayable(Event e) {
+        return getCase(e) != null;
+    }
+
+    private TEXT_CASES getCase(Event e) {
         if (e.getType() instanceof STANDARD_EVENT_TYPE) {
-            switch((STANDARD_EVENT_TYPE) e.getType()){
+            switch ((STANDARD_EVENT_TYPE) e.getType()) {
                 case COSTS_HAVE_BEEN_PAID:
                     return TEXT_CASES.COSTS;
                 case ATTACK_CRITICAL:
@@ -80,36 +97,37 @@ instance=this;
         return null;
     }
 
-        public void addFloatingTextForEventAnim(Event e, CompositeAnim compositeAnim) {
+    public void addFloatingTextForEventAnim(Event e, CompositeAnim compositeAnim) {
         TEXT_CASES CASE = getCase(e);
-        if (CASE==null )return ;
-         ANIM_PART part = getPart(CASE);
-            Anim anim = compositeAnim.getMap().get(part);
+        if (CASE == null) return;
+        ANIM_PART part = getPart(CASE);
+        Anim anim = compositeAnim.getMap().get(part);
         Object[] args = CASE.getArgs(e);
         DC_ActiveObj active = (DC_ActiveObj) e.getRef().getActive();
-   float delay=0;
-   for (Object arg : args) {
-            FloatingText floatingText = getFloatingText(  active, CASE, arg);  floatingText.setDelay(delay);
-       floatingText.setDuration(3);
-       floatingText.setDisplacementX(80);
-       floatingText.setDisplacementY(140);
-anim.initPosition(); // TODO rework this!
-       floatingText.setPosition(CASE.atOrigin ? anim.getOrigin() : anim.getDestination());
-       delay+= floatingText.getDuration() /2;
+        float delay = 0;
+        for (Object arg : args) {
+            FloatingText floatingText = getFloatingText(active, CASE, arg);
+            floatingText.setDelay(delay);
+            floatingText.setDuration(3);
+            floatingText.setDisplacementX(80);
+            floatingText.setDisplacementY(140);
+            anim.initPosition(); // TODO rework this!
+            floatingText.setPosition(CASE.atOrigin ? anim.getOrigin() : anim.getDestination());
+            delay += floatingText.getDuration() / 2;
 
             anim.addFloatingText(floatingText
-              );
-       main.system.auxiliary.LogMaster.log(1,e+"***** adding floating text for "+anim + " : " +floatingText);
+            );
+            main.system.auxiliary.LogMaster.log(1, e + "***** adding floating text for " + anim + " : " + floatingText);
 
-   }
+        }
     }
 
     private ANIM_PART getPart(TEXT_CASES aCase) {
-        switch (aCase){
+        switch (aCase) {
             case COSTS:
                 return ANIM_PART.MAIN;
         }
-                return ANIM_PART.IMPACT;
+        return ANIM_PART.IMPACT;
     }
 
 
@@ -118,7 +136,7 @@ anim.initPosition(); // TODO rework this!
         FloatingText floatingText =
          new FloatingText(
           () -> getText(active, CASE, arg), () -> getImage(active, CASE, arg)
-          , getColor(CASE));
+          , getColor(CASE, arg));
 
 
 //        floatingText.setDisplacementX(x);
@@ -131,16 +149,32 @@ anim.initPosition(); // TODO rework this!
         CRITICAL,
         SNEAK,
         DODGE,
+        BLOCK,
+        ROLL,
+
         COSTS(true, (e) -> {
             DC_ActiveObj a = (DC_ActiveObj) e.getRef().getActive();
-           List<Cost> costs = a.getCosts().getCosts();
-           costs.removeIf(c-> c.getPayment().getLastPaid()==0
+            List<Cost> costs = a.getCosts().getCosts();
+            costs.removeIf(c -> c.getPayment().getLastPaid() == 0
 //            getAmountFormula().toString().isEmpty()
             );
             return costs.toArray();
         }),
-        STATUS,
-        MODE;
+        STATUS(
+         false, (e) -> {
+            ModifyStatusEffect ef = (ModifyStatusEffect)
+             EffectMaster.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
+//                if (ef==null )
+            return ef.getValue().split(";");
+        }),
+        MODE(
+         false, (e) -> {
+            ModeEffect ef = (ModeEffect)
+             EffectMaster.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
+            return new Object[]{
+             ef.getMode()
+            };
+        });
         public boolean atOrigin;
         private Producer<Event, Object[]> producer;
 
@@ -154,6 +188,10 @@ anim.initPosition(); // TODO rework this!
         }
 
         public Object[] getArgs(Event e) {
+            if (producer == null)
+                return new Object[]{
+                 "arg!"
+                };
             return producer.produce(e);
         }
     }

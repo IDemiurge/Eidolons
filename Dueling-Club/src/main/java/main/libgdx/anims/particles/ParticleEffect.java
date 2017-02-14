@@ -114,4 +114,11 @@ public class ParticleEffect extends com.badlogic.gdx.graphics.g2d.ParticleEffect
        e.modifyParticles();
     }
     }
+
+    public void toggle(String fieldName) {
+        for (int i = 0, n = getEmitters().size; i < n; i++) {
+            Emitter e = (Emitter) getEmitters().get(i);
+            e.toggle(fieldName);
+        }
+    }
 }

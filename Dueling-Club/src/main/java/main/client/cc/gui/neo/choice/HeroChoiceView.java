@@ -1,7 +1,7 @@
 package main.client.cc.gui.neo.choice;
 
 import main.client.cc.gui.neo.choice.panels.CustomInfoPanel;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 
 public class HeroChoiceView<E> extends ChoiceView<E> {
 

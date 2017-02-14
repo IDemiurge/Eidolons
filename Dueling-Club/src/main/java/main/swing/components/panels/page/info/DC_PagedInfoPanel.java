@@ -9,7 +9,7 @@ import main.content.ValuePages;
 import main.content.parameters.PARAMETER;
 import main.content.properties.PROPERTY;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;

@@ -4,7 +4,7 @@ import main.client.cc.CharacterCreator;
 import main.client.cc.HC_Master;
 import main.client.cc.gui.neo.header.DeityComp;
 import main.client.cc.gui.neo.header.PortraitComp;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Panel;
 

@@ -4,7 +4,11 @@ import main.content.CONTENT_CONSTS.FACING_SINGLE;
 import main.content.CONTENT_CONSTS.STD_BOOLS;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref.KEYS;
-import main.entity.obj.*;
+import main.entity.item.DC_HeroSlotItem;
+import main.entity.obj.BattlefieldObj;
+import main.entity.obj.Obj;
+import main.entity.obj.attach.DC_HeroAttachedObj;
+import main.entity.obj.unit.DC_UnitObj;
 import main.game.battlefield.DirectionMaster;
 import main.game.battlefield.FacingMaster;
 

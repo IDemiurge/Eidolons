@@ -5,7 +5,7 @@ import main.client.cc.logic.HeroLevelManager;
 import main.content.PARAMS;
 import main.content.VALUE;
 import main.content.properties.G_PROPS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
 

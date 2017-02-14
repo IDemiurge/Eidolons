@@ -1,7 +1,5 @@
 package main.game.logic.dungeon.scenario;
 
-import main.client.battle.arcade.PartyManager;
-import main.client.battle.arcade.SkirmishMaster;
 import main.client.cc.gui.neo.choice.ChoiceSequence;
 import main.client.cc.gui.neo.choice.ScenarioChoiceView;
 import main.client.cc.gui.neo.choice.ScenarioModeChoiceView;
@@ -15,11 +13,13 @@ import main.data.DataManager;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.NumericCondition;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.Location;
+import main.game.logic.generic.PartyManager;
+import main.game.meta.skirmish.SkirmishMaster;
 import main.system.ConditionMaster;
 import main.system.auxiliary.StringMaster;
 

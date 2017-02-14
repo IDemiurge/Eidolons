@@ -1,7 +1,7 @@
 package main.ability.conditions;
 
 import main.elements.conditions.MicroCondition;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 
 public class ImmobilizedCondition extends MicroCondition {
 

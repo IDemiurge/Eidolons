@@ -3,8 +3,8 @@ package main.game.logic.dungeon.building;
 import main.content.PROPS;
 import main.data.xml.XML_Converter;
 import main.game.battlefield.Coordinates;
+import main.game.battlefield.CoordinatesMaster;
 import main.game.logic.dungeon.Dungeon;
-import main.game.logic.macro.utils.CoordinatesMaster;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

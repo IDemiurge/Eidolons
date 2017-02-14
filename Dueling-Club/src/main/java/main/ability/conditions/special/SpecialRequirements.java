@@ -3,7 +3,7 @@ package main.ability.conditions.special;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref;
-import main.entity.obj.DC_UnitObj;
+import main.entity.obj.unit.DC_UnitObj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;

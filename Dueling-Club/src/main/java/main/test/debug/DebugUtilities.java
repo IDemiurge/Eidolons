@@ -7,8 +7,8 @@ import main.content.parameters.PARAMETER;
 import main.content.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
-import main.entity.obj.DC_UnitObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.DC_UnitObj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 

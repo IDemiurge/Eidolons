@@ -18,7 +18,7 @@ import main.elements.conditions.*;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_FeatObj;
+import main.entity.obj.attach.DC_FeatObj;
 import main.game.DC_Game;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.ListMaster;

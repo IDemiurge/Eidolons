@@ -2,7 +2,7 @@ package main.swing.components;
 
 import main.content.PARAMS;
 import main.content.properties.G_PROPS;
-import main.entity.obj.DC_UnitObj;
+import main.entity.obj.unit.DC_UnitObj;
 import main.game.battlefield.VisionManager;
 import main.swing.components.panels.page.DC_PagedPriorityPanel;
 import main.swing.generic.components.G_Panel;

@@ -3,7 +3,7 @@ package main.libgdx.anims.std;
 import main.content.CONTENT_CONSTS.FACING_SINGLE;
 import main.content.parameters.G_PARAMS;
 import main.entity.Entity;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.FacingMaster;
 import main.libgdx.anims.AnimData;

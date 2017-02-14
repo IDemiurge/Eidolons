@@ -1,8 +1,8 @@
 package main.swing.components.panels;
 
-import main.entity.obj.DC_UnitAction;
+import main.entity.active.DC_ActiveObj;
+import main.entity.active.DC_UnitAction;
 import main.entity.obj.Obj;
-import main.entity.obj.top.DC_ActiveObj;
 import main.game.DC_GameState;
 import main.swing.components.panels.DC_UnitActionPanel.ACTION_DISPLAY_GROUP;
 import main.swing.components.panels.page.DC_PagedUnitActionPanel;

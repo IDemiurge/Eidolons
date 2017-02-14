@@ -1,7 +1,7 @@
 package main.game.logic.macro.travel;
 
 import main.content.parameters.MACRO_PARAMS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.rules.TurnRule;
 

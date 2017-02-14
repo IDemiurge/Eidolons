@@ -25,7 +25,7 @@ import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.battlefield.Coordinates.UNIT_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;

@@ -7,7 +7,7 @@ import main.content.CONTENT_CONSTS.STD_COUNTERS;
 import main.content.DC_ContentManager;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroItemObj;
+import main.entity.item.DC_HeroItemObj;
 import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.system.graphics.AnimPhase.PHASE_TYPE;

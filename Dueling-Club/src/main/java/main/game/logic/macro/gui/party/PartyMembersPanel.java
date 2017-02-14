@@ -1,6 +1,6 @@
 package main.game.logic.macro.gui.party;
 
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.travel.MacroParty;
 import main.swing.generic.components.G_Panel;

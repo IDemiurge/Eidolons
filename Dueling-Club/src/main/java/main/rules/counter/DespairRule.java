@@ -7,7 +7,7 @@ import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.content.CONTENT_CONSTS.STATUS;
 import main.content.CONTENT_CONSTS.STD_COUNTERS;
 import main.content.PARAMS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 
 public class DespairRule extends DC_CounterRule {

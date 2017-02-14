@@ -2,9 +2,9 @@ package main.game.battlefield;
 
 import main.content.CONTENT_CONSTS.FACING_SINGLE;
 import main.entity.obj.BattlefieldObj;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_UnitObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.DC_UnitObj;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;

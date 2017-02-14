@@ -6,7 +6,7 @@ import main.elements.conditions.MicroCondition;
 import main.elements.conditions.StringComparison;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.system.auxiliary.EnumMaster;
 
 public class ItemCondition extends MicroCondition {

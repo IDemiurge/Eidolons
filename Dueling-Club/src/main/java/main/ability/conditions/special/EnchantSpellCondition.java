@@ -3,7 +3,7 @@ package main.ability.conditions.special;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.CONTENT_CONSTS.TARGETING_MODE;
 import main.elements.conditions.MicroCondition;
-import main.entity.obj.DC_SpellObj;
+import main.entity.active.DC_SpellObj;
 
 public class EnchantSpellCondition extends MicroCondition {
 

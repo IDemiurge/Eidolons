@@ -382,6 +382,12 @@ public class StringMaster {
         return StringMaster.getWellFormattedString(s, false);
     }
 
+    public static String getCamelCase(String name) {
+        String formatted = StringMaster.getWellFormattedString(name);
+        return formatted.substring(0, 1).toLowerCase()
+         + formatted.substring(1).replace(" ", "");
+    }
+
     public static String getWellFormattedString(String s, boolean insertSpaceAfterCapitals) {
         if (isEmpty(s)) {
             return "";

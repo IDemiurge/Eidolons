@@ -5,7 +5,7 @@ import main.content.CONTENT_CONSTS.BACKGROUND;
 import main.content.CONTENT_CONSTS.GENDER;
 import main.content.CONTENT_CONSTS.SOUNDSET;
 import main.content.properties.G_PROPS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.graphics.MigMaster;

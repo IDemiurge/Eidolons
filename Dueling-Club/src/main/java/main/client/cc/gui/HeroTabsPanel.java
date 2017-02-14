@@ -1,14 +1,14 @@
 package main.client.cc.gui;
 
-import main.client.battle.arcade.PartyManager;
 import main.client.cc.CharacterCreator;
 import main.client.cc.gui.neo.HeroPanel;
 import main.client.cc.gui.neo.tabs.HC_TabPanel;
 import main.client.cc.gui.neo.tabs.TabChangeListener;
 import main.client.cc.logic.party.PartyObj;
 import main.content.PARAMS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
+import main.game.logic.generic.PartyManager;
 import main.swing.components.panels.DC_TopPanel;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.components.panels.page.info.element.ValueTextComp;

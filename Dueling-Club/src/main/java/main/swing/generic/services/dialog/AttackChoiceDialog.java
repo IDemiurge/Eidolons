@@ -2,11 +2,11 @@ package main.swing.generic.services.dialog;
 
 import main.ability.effects.AttackEffect;
 import main.ability.effects.Effect;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.top.DC_ActiveObj;
-import main.game.battlefield.AttackCalculator;
-import main.system.ai.logic.target.EffectMaster;
-import main.system.ai.tools.future.FutureBuilder;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.unit.DC_HeroObj;
+import main.game.ai.tools.future.FutureBuilder;
+import main.game.ai.tools.target.EffectMaster;
+import main.game.battlefield.attack.AttackCalculator;
 
 import java.util.List;
 

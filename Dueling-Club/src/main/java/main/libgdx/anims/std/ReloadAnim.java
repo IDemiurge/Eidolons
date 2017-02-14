@@ -20,7 +20,10 @@ public class ReloadAnim extends RangedAttackAnim {
         return getMoveAmmoAction();
     }
 
-
+    @Override
+    public void start() {
+        super.start();
+    }
 
     protected MoveByAction getMoveAmmoAction() {
         MoveByAction mainMove = new MoveByAction();

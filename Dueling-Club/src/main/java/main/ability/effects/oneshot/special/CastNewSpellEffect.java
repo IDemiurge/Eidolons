@@ -5,7 +5,7 @@ import main.content.OBJ_TYPES;
 import main.data.DataManager;
 import main.data.ability.AE_ConstrArgs;
 import main.entity.Ref;
-import main.entity.obj.DC_SpellObj;
+import main.entity.active.DC_SpellObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 

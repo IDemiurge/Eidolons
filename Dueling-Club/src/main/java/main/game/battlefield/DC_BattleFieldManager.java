@@ -2,9 +2,9 @@ package main.game.battlefield;
 
 import main.content.OBJ_TYPES;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates.DIRECTION;
 

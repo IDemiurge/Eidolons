@@ -1,7 +1,7 @@
 package main.game.logic.macro.gui.party;
 
 import main.client.cc.gui.neo.header.PortraitComp;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.logic.macro.MacroManager;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.generic.components.G_Panel;

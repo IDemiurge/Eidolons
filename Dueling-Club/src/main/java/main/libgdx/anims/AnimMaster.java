@@ -7,13 +7,14 @@ import main.ability.Ability;
 import main.ability.effects.Effect;
 import main.data.ConcurrentMap;
 import main.entity.Ref;
+import main.entity.active.DC_ActiveObj;
 import main.entity.obj.BuffObj;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
+import main.libgdx.anims.controls.AnimController;
 import main.libgdx.anims.std.BuffAnim;
 import main.libgdx.anims.std.EventAnimCreator;
 import main.libgdx.anims.text.FloatingTextMaster;
@@ -23,6 +24,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.LogMaster;
 import main.system.datatypes.DequeImpl;
+import main.test.frontend.FAST_DC;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -40,6 +42,7 @@ public class AnimMaster extends Group {
     boolean parallelDrawing = false;
     ConcurrentMap<BuffObj, BuffAnim> continuousAnims = new ConcurrentMap<>();
     DequeImpl<Animation> attachedAnims = new DequeImpl<>();
+    private AnimController controller;
     private FloatingTextMaster floatingTextMaster;
     private AnimationConstructor constructor;
     private boolean continuousAnimsOn;
@@ -51,12 +54,12 @@ public class AnimMaster extends Group {
         instance = this;
         floatingTextMaster = new FloatingTextMaster();
         continuousAnimsOn =
-         false;
-//                FAST_DC.getGameLauncher().FAST_MODE ||
-//                        FAST_DC.getGameLauncher().SUPER_FAST_MODE;
+//         false;
+         FAST_DC.getGameLauncher().FAST_MODE ||
+          FAST_DC.getGameLauncher().SUPER_FAST_MODE;
         on = true;
         constructor = new AnimationConstructor();
-
+        controller = new AnimController();
         bindEvents();
         stage.addActor(this);
     }
@@ -75,8 +78,8 @@ public class AnimMaster extends Group {
     }
 
     public static boolean isSmoothStop(Anim anim) {
-        if (anim.getDestination().equals(anim.getOrigin()))
-        return true;
+//        if (anim.getDestination().equals(anim.getOrigin()))
+//        return true;
         return false;
 
     }
@@ -124,6 +127,7 @@ public class AnimMaster extends Group {
                 if (parallelDrawing) {
                     animation.start();
                 }
+                controller.store(animation);
             }
         });
         GuiEventManager.bind(GuiEventType.UPDATE_BUFFS, p -> {

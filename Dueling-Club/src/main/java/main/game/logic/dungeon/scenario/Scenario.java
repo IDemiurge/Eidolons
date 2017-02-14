@@ -3,11 +3,11 @@ package main.game.logic.dungeon.scenario;
 import main.content.PARAMS;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
+import main.game.logic.battle.player.DC_Player;
 import main.game.logic.dungeon.scenario.ScenarioMaster.SCENARIO_MODES;
-import main.game.player.DC_Player;
 
 import java.util.List;
 

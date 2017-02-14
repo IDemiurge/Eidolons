@@ -2,7 +2,7 @@ package main.client.cc.gui.neo.principles;
 
 import main.client.cc.gui.neo.bars.SpecialValueBar;
 import main.content.PARAMS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.rules.rpg.IntegrityRule;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.components.panels.page.log.WrappedTextComp;

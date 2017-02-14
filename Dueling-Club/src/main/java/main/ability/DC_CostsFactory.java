@@ -6,7 +6,7 @@ import main.elements.conditions.Requirement;
 import main.elements.costs.*;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
 import main.system.DC_ConditionMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;

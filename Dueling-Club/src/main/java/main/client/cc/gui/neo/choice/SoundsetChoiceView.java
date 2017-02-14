@@ -4,7 +4,7 @@ import main.client.cc.CharacterCreator;
 import main.client.cc.logic.HeroAnalyzer;
 import main.content.CONTENT_CONSTS.HERO_SOUNDSET;
 import main.content.properties.G_PROPS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.components.panels.page.info.element.ListTextItem;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.sound.SoundMaster;

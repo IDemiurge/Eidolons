@@ -1,7 +1,5 @@
 package main.client.dc;
 
-import main.client.battle.arcade.PartyManager;
-import main.client.battle.arcade.SkirmishMaster;
 import main.client.cc.CharacterCreator;
 import main.client.cc.gui.neo.choice.ChoiceSequence;
 import main.client.cc.gui.neo.choice.HeroChoiceSequence;
@@ -11,14 +9,16 @@ import main.content.OBJ_TYPES;
 import main.data.DataManager;
 import main.elements.conditions.Condition;
 import main.elements.conditions.NumericCondition;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.game.DC_Game.GAME_MODES;
 import main.game.DC_Game.GAME_TYPE;
-import main.game.battlefield.UnitGroupMaster;
+import main.game.logic.arcade.ArenaArcadeMaster;
+import main.game.logic.arena.UnitGroupMaster;
 import main.game.logic.dungeon.scenario.ScenarioMaster;
+import main.game.logic.generic.PartyManager;
 import main.game.logic.macro.MacroManager;
-import main.game.meta.ArenaArcadeMaster;
+import main.game.meta.skirmish.SkirmishMaster;
 import main.system.auxiliary.ListMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;

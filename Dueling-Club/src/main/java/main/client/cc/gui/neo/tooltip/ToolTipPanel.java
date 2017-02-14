@@ -1,7 +1,7 @@
 package main.client.cc.gui.neo.tooltip;
 
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.generic.components.ComponentVisuals;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.secondary.BooleanMaster;

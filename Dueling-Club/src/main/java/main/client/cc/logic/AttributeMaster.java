@@ -2,7 +2,7 @@ package main.client.cc.logic;
 
 import main.content.DC_ContentManager.ATTRIBUTE;
 import main.content.PARAMS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedList;

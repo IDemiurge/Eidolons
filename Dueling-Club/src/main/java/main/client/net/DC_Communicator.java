@@ -2,10 +2,10 @@ package main.client.net;
 
 import main.client.net.GameConnector.HOST_CLIENT_CODES;
 import main.entity.Ref;
+import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Active;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.Obj;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.system.auxiliary.StringMaster;

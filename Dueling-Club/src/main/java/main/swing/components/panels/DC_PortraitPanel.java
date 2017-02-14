@@ -2,7 +2,7 @@ package main.swing.components.panels;
 
 import main.client.dc.Launcher;
 import main.entity.Entity;
-import main.entity.obj.DC_UnitObj;
+import main.entity.obj.unit.DC_UnitObj;
 import main.game.Game;
 import main.game.MicroGame;
 import main.swing.generic.components.G_Panel;

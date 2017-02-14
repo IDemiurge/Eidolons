@@ -7,14 +7,15 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.battlefield.Coordinates;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.bf.mouse.GridMouseListener;
+import main.libgdx.gui.panels.dc.InitiativePanelParam;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -117,8 +118,8 @@ public class GridPanel extends Group {
             DC_HeroObj unit = (DC_HeroObj) param.get();
             UnitView view = (UnitView) unitMap.get(unit);
             view.setVisibleVal(0);//set this val to zero remove unit from initiative queue
-//            GuiEventManager.trigger(REMOVE_FROM_INITIATIVE_PANEL,
-//             new EventCallbackParam(new InitiativePanelParam(null, view.getId(), 0)));
+            GuiEventManager.trigger(REMOVE_FROM_INITIATIVE_PANEL,
+             new EventCallbackParam(new InitiativePanelParam(null, view.getId(), 0)));
             removeUnitView(unit);
         });
 
@@ -219,6 +220,11 @@ public class GridPanel extends Group {
         GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
             DC_HeroObj hero = (DC_HeroObj) obj.get();
             BaseView view = unitMap.get(hero);
+            if (view == null) {
+                System.out.println("unitMap not initiatilized at ACTIVE_UNIT_SELECTED! "
+                );
+                return;
+            }
             if (view.getParent() instanceof GridCellContainer) {
                 ((GridCellContainer) view.getParent()).popupUnitView(view);
             }

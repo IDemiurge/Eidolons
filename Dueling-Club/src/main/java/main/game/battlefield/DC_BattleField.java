@@ -1,11 +1,11 @@
 package main.game.battlefield;
 
 import main.entity.Entity;
+import main.entity.active.DC_ActiveObj;
 import main.entity.obj.BattlefieldObj;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_GameState;
 import main.game.MicroGameState;
 import main.game.battlefield.map.DC_Map;

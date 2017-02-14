@@ -1,6 +1,7 @@
 package main.swing.generic.components.editors;
 
 import main.content.OBJ_TYPES;
+import main.data.filesys.PathFinder;
 import main.system.images.ImageManager;
 
 import javax.swing.*;
@@ -13,10 +14,16 @@ public class ImageChooser extends FileChooser {
 
     private int size;
 
-    @Override
-    protected String getDefaultFileLocation() {
-        return ImageManager.getDefaultImageLocation();
+    public ImageChooser() {
+        this(PathFinder.getImagePath());
     }
+
+    public ImageChooser(String path) {
+        super();
+        setDefaultFileLocation(path);
+    }
+
+
 
     @Override
     protected boolean checkFile(String fileLocation) {

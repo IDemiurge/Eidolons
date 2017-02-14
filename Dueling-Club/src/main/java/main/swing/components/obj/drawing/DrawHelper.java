@@ -2,9 +2,9 @@ package main.swing.components.obj.drawing;
 
 import main.content.PARAMS;
 import main.content.parameters.PARAMETER;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.battlefield.VisionManager;
 import main.swing.components.obj.CellComp;
 import main.system.auxiliary.FontMaster;

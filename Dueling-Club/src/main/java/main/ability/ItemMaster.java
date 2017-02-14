@@ -1,7 +1,7 @@
 package main.ability;
 
-import main.entity.obj.DC_HeroItemObj;
-import main.entity.obj.DC_QuickItemObj;
+import main.entity.item.DC_HeroItemObj;
+import main.entity.item.DC_QuickItemObj;
 
 public class ItemMaster {
 

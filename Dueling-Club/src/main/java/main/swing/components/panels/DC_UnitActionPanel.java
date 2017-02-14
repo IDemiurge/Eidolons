@@ -1,8 +1,8 @@
 package main.swing.components.panels;
 
 import main.content.CONTENT_CONSTS.ACTION_TYPE;
-import main.entity.obj.DC_UnitAction;
-import main.entity.obj.DC_UnitObj;
+import main.entity.active.DC_UnitAction;
+import main.entity.obj.unit.DC_UnitObj;
 import main.game.MicroGameState;
 import main.rules.DC_ActionManager;
 import main.swing.components.obj.ActionListItem;

@@ -6,7 +6,7 @@ import main.ability.UnitTrainer;
 import main.content.CONTENT_CONSTS.GENDER;
 import main.content.PARAMS;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.logic.macro.town.Tavern;

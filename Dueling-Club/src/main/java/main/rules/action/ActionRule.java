@@ -1,7 +1,7 @@
 package main.rules.action;
 
 import main.entity.obj.ActiveObj;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 
 public interface ActionRule {
 

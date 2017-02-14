@@ -6,7 +6,7 @@ import main.content.CONTENT_CONSTS.CLASS_GROUP;
 import main.content.ContentManager;
 import main.content.PARAMS;
 import main.content.parameters.PARAMETER;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.secondary.InfoMaster;

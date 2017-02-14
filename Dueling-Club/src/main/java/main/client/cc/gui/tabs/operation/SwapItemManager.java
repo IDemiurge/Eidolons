@@ -7,7 +7,7 @@ import main.content.C_OBJ_TYPE;
 import main.content.PROPS;
 import main.content.properties.PROPERTY;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroItemObj;
+import main.entity.item.DC_HeroItemObj;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.system.ObjUtilities;

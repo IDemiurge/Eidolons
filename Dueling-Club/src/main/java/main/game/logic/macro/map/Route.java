@@ -5,6 +5,7 @@ import main.content.parameters.MACRO_PARAMS;
 import main.content.properties.MACRO_PROPS;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
+import main.game.battlefield.CoordinatesMaster;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.MacroRef;
@@ -12,7 +13,6 @@ import main.game.logic.macro.gui.MacroGuiManager;
 import main.game.logic.macro.gui.map.obj.RouteComp;
 import main.game.logic.macro.town.Town;
 import main.game.logic.macro.travel.MacroParty;
-import main.game.logic.macro.utils.CoordinatesMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 

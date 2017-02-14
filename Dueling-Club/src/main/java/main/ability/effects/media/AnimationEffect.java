@@ -5,7 +5,7 @@ import main.content.C_OBJ_TYPE;
 import main.data.DataManager;
 import main.data.ability.AE_ConstrArgs;
 import main.data.ability.OmittedConstructor;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
 import main.entity.type.ObjType;
 import main.system.images.ImageManager;
 

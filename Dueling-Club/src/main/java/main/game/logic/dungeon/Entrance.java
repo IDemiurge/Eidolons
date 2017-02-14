@@ -1,9 +1,9 @@
 package main.game.logic.dungeon;
 
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
-import main.game.player.DC_Player;
+import main.game.logic.battle.player.DC_Player;
 
 //can be a door, a tunnel, a staircase, a portal... possibly trapped
 public class Entrance extends DC_HeroObj {

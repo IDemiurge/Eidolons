@@ -2,8 +2,8 @@ package main.game.logic.dungeon.editor.logic;
 
 import main.entity.obj.Obj;
 import main.entity.type.ObjAtCoordinate;
+import main.game.ai.UnitAI.AI_BEHAVIOR_MODE;
 import main.game.logic.dungeon.editor.LE_AiMaster.AI_GROUP_PARAM;
-import main.system.ai.UnitAI.AI_BEHAVIOR_MODE;
 import main.system.auxiliary.StringMaster;
 
 import java.util.HashMap;

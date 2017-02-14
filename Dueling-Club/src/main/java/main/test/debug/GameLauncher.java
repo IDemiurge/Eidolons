@@ -1,7 +1,6 @@
 package main.test.debug;
 
 import main.ability.UnitMaster;
-import main.client.battle.SpawnManager;
 import main.client.dc.Launcher;
 import main.client.game.NetGame;
 import main.content.OBJ_TYPE;
@@ -11,12 +10,13 @@ import main.content.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
-import main.game.battlefield.UnitGroupMaster;
 import main.game.battlefield.VisionManager;
+import main.game.logic.arena.UnitGroupMaster;
+import main.game.logic.battle.SpawnManager;
 import main.game.logic.dungeon.DungeonMaster;
 import main.game.logic.macro.travel.EncounterMaster;
-import main.rules.mechanics.RuleMaster;
-import main.rules.mechanics.RuleMaster.RULE_SCOPE;
+import main.rules.RuleMaster;
+import main.rules.RuleMaster.RULE_SCOPE;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -43,7 +43,7 @@ public class GameLauncher {
     // private boolean RANDOMIZE_PARTY = false;
     // private boolean RANDOMIZE_ENEMIES_PARTY = true;
     public boolean LEADER_MOVES_FIRST = false;
-    public String ENEMY_PARTY = "";//"Pirate"
+    public String ENEMY_PARTY = "Pirate";
     public String PLAYER_PARTY = "Bandit Archer";//Zail Adelwyn v4
     public boolean DUMMY_MODE = false;
     public boolean DUMMY_PP = false;
@@ -167,10 +167,11 @@ public class GameLauncher {
         }
 
         if (DUMMY_MODE) {
-            RuleMaster.setScope(RULE_SCOPE.BASIC);
             game.setDummyMode(true);
             game.setDummyPlus(DUMMY_PP);
             TestMasterContent.setForceFree(!DUMMY_PP);
+            if (DUMMY_PP)
+                RuleMaster.setScope(RULE_SCOPE.TEST);
         }
         try {
             if (PresetMaster.getPreset() == null // &&

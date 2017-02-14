@@ -16,9 +16,9 @@ import main.content.properties.G_PROPS;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_SpellObj;
+import main.entity.active.DC_SpellObj;
 import main.entity.type.BuffType;
-import main.system.ai.logic.target.EffectMaster;
+import main.game.ai.tools.target.EffectMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 

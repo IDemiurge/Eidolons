@@ -1,7 +1,7 @@
 package main.ability.effects.oneshot;
 
 import main.entity.Ref.KEYS;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
 
 public class ChangeRefEffect extends MicroEffect {
     Boolean add_remove;

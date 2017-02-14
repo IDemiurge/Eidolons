@@ -4,7 +4,7 @@ import main.client.cc.CharacterCreator;
 import main.client.cc.logic.PointMaster;
 import main.content.parameters.PARAMETER;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.components.panels.page.info.element.ValueTextComp;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;

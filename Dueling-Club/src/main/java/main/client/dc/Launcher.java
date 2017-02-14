@@ -1,7 +1,6 @@
 package main.client.dc;
 
 import main.client.DC_Engine;
-import main.client.battle.arcade.PartyManager;
 import main.client.cc.CharacterCreator;
 import main.client.cc.HC_Master;
 import main.client.cc.gui.MainPanel;
@@ -14,14 +13,15 @@ import main.content.OBJ_TYPES;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.DC_Game.GAME_MODES;
 import main.game.DC_Game.GAME_TYPE;
 import main.game.Game;
+import main.game.logic.arcade.ArenaArcadeMaster;
+import main.game.logic.generic.PartyManager;
 import main.game.logic.macro.MacroManager;
-import main.game.meta.ArenaArcadeMaster;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.windows.G_Frame;

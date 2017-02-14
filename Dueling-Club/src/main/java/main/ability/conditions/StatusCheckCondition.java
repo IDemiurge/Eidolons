@@ -3,8 +3,8 @@ package main.ability.conditions;
 import main.content.CONTENT_CONSTS.STATUS;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref;
-import main.entity.obj.DC_UnitObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.DC_UnitObj;
 
 public class StatusCheckCondition extends ConditionImpl {
 

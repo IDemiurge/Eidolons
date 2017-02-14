@@ -2,7 +2,7 @@ package main.ability.effects.containers.customtarget;
 
 import main.ability.effects.Effect;
 import main.content.OBJ_TYPE;
-import main.entity.obj.DC_UnitObj;
+import main.entity.obj.unit.DC_UnitObj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.system.math.Formula;

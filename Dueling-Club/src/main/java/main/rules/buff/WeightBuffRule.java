@@ -10,7 +10,7 @@ import main.content.PARAMS;
 import main.content.VALUE;
 import main.entity.Ref.KEYS;
 import main.game.MicroGame;
-import main.rules.mechanics.RuleMaster.COMBAT_RULES;
+import main.rules.RuleMaster.COMBAT_RULES;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 

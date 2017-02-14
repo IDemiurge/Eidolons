@@ -6,7 +6,7 @@ import main.content.parameters.PARAMETER;
 import main.content.properties.G_PROPS;
 import main.elements.conditions.MicroCondition;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.system.math.DC_MathManager;
 
 public class SkillPointCondition extends MicroCondition {

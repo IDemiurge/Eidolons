@@ -3,7 +3,7 @@ package main.game.logic.macro.gui.party;
 import main.content.PARAMS;
 import main.content.VALUE;
 import main.content.parameters.MACRO_PARAMS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.components.panels.DC_ItemPanel;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.generic.components.G_Component;

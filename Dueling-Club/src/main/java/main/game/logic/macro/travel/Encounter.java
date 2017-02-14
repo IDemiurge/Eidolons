@@ -1,6 +1,6 @@
 package main.game.logic.macro.travel;
 
-import main.client.battle.Wave;
+import main.game.logic.arena.Wave;
 import main.game.logic.macro.MacroRef;
 import main.game.logic.macro.map.Route;
 import main.system.auxiliary.StringMaster;

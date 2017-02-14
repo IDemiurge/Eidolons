@@ -2,7 +2,7 @@ package main.ability.conditions.special;
 
 import main.ability.effects.AttackEffect;
 import main.elements.conditions.MicroCondition;
-import main.system.ai.logic.target.EffectMaster;
+import main.game.ai.tools.target.EffectMaster;
 
 public class AttackCondition extends MicroCondition {
 

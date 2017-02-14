@@ -1,8 +1,8 @@
 package main.client.cc.gui.neo.principles;
 
 import main.entity.Entity;
-import main.entity.obj.DC_FeatObj;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.attach.DC_FeatObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.rules.rpg.IntegrityRule;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;

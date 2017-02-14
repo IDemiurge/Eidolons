@@ -1,8 +1,8 @@
 package main.libgdx.bf.controls.radial;
 
 import main.content.CONTENT_CONSTS.SPELL_GROUP;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_SpellObj;
+import main.entity.active.DC_SpellObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.libgdx.bf.controls.radial.SpellRadialManager.SPELL_ASPECT;
 import main.libgdx.texture.TextureManager;
 

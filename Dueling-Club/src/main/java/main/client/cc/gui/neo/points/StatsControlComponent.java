@@ -5,7 +5,7 @@ import main.client.cc.gui.MiddlePanel;
 import main.client.cc.gui.misc.PoolComp;
 import main.content.PARAMS;
 import main.content.VALUE;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Panel;

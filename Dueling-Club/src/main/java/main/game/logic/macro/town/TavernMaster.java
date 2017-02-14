@@ -3,7 +3,7 @@ package main.game.logic.macro.town;
 import main.content.CONTENT_CONSTS.BACKGROUND;
 import main.content.parameters.MACRO_PARAMS;
 import main.content.properties.MACRO_PROPS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.global.TimeMaster;
 import main.game.logic.macro.party.MacroPartyManager;

@@ -6,7 +6,7 @@ import main.content.ContentManager;
 import main.content.VALUE;
 import main.content.parameters.PARAMETER;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.swing.components.panels.page.info.element.ParamElement;
 import main.swing.components.panels.page.info.element.ValueTextComp;

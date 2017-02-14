@@ -8,7 +8,7 @@ import main.content.PARAMS;
 import main.content.parameters.MACRO_PARAMS;
 import main.content.properties.G_PROPS;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.game.logic.dungeon.Location;
 import main.game.logic.macro.MacroGame;

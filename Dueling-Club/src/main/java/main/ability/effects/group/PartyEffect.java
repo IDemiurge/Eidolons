@@ -5,8 +5,8 @@ import main.data.ability.AE_ConstrArgs;
 import main.elements.conditions.Condition;
 import main.elements.conditions.standard.EmptyCondition;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.system.FilterMaster;
 
 import java.util.LinkedList;

@@ -3,7 +3,7 @@ package main.client.cc.gui.neo.principles;
 import main.client.cc.gui.MainPanel;
 import main.client.cc.gui.neo.HeroPanel;
 import main.content.CONTENT_CONSTS.PRINCIPLES;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.FontMaster;
 import main.system.auxiliary.FontMaster.FONT;

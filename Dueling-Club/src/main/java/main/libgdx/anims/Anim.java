@@ -71,9 +71,9 @@ public class Anim extends Group implements Animation {
     protected Coordinates forcedDestination;
     protected Texture texture;
     protected boolean running;
-    private boolean emittersWaitingDone;
     EventCallback onDone;
     EventCallbackParam callbackParam;
+    private boolean emittersWaitingDone;
     private List<FloatingText> floatingText;
 
     public Anim(Entity active, AnimData params) {
@@ -214,6 +214,7 @@ time=time+time*gracePeriod;
         initDuration();
         initSpeed();
         floatingText=     new LinkedList<>() ;
+        resetEmitters();
     }
 
     protected void resetSprites() {

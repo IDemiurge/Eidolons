@@ -1,8 +1,5 @@
 package main.client.cc.gui.neo.top;
 
-import main.client.battle.arcade.ArcadeManager.ARCADE_STATUS;
-import main.client.battle.arcade.PartyManager;
-import main.client.battle.arcade.SkirmishMaster;
 import main.client.cc.CharacterCreator;
 import main.client.cc.gui.neo.choice.ChoiceSequence;
 import main.client.cc.gui.neo.choice.HeroChoiceSequence;
@@ -15,14 +12,17 @@ import main.content.OBJ_TYPES;
 import main.data.XList;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.DC_Game.GAME_TYPE;
+import main.game.logic.arcade.ArcadeManager.ARCADE_STATUS;
 import main.game.logic.dungeon.scenario.ScenarioMaster;
 import main.game.logic.dungeon.scenario.ScenarioMaster.SCENARIO_MODES;
+import main.game.logic.generic.PartyManager;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.town.Tavern;
+import main.game.meta.skirmish.SkirmishMaster;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;

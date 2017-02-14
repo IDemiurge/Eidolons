@@ -1,8 +1,8 @@
 package main.ability.conditions.req;
 
 import main.elements.conditions.MicroCondition;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.unit.DC_HeroObj;
 
 public class CostCondition extends MicroCondition {
     boolean spell;

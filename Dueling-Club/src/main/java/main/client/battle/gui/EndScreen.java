@@ -1,6 +1,6 @@
 package main.client.battle.gui;
 
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Component;

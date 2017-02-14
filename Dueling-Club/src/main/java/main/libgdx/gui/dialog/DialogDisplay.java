@@ -2,7 +2,7 @@ package main.libgdx.gui.dialog;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.particles.lighting.LightingManager;
 import main.system.GuiEventManager;

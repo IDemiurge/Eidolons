@@ -1,10 +1,8 @@
 package main.client.cc.logic.items;
 
-import main.ability.effects.common.EnchantItemEffect;
 import main.content.OBJ_TYPES;
 import main.content.PARAMS;
-import main.content.PROPS;
-import main.entity.obj.DC_SpellObj;
+import main.entity.active.DC_SpellObj;
 import main.entity.type.ObjType;
 
 import java.util.List;

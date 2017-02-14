@@ -20,7 +20,7 @@ import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.xml.XML_Reader;
 import main.elements.Filter;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
 import main.system.FilterMaster;

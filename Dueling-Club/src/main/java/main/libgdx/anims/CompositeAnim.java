@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import javafx.util.Pair;
 import main.ability.effects.Effect;
 import main.data.XLinkedMap;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
 import main.game.battlefield.Coordinates;
 import main.game.event.Event;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
@@ -174,7 +174,7 @@ public class CompositeAnim implements Animation {
         onFinishEventMap = new XLinkedMap<>();
         attached = new XLinkedMap<>();
         timeAttachedAnims = new XLinkedMap<>();
-        textEvents = new LinkedList<>();
+
     }
 
 

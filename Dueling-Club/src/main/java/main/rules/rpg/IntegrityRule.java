@@ -9,7 +9,7 @@ import main.content.ValuePages;
 import main.content.parameters.PARAMETER;
 import main.entity.Entity;
 import main.entity.EntityMaster;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.system.DC_Formulas;
 import main.system.auxiliary.StringMaster;
 

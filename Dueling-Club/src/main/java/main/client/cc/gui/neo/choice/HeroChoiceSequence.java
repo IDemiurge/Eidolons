@@ -6,10 +6,10 @@ import main.content.OBJ_TYPES;
 import main.content.PROPS;
 import main.content.VALUE;
 import main.content.properties.PROPERTY;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.DC_Game.GAME_TYPE;
-import main.game.battlefield.UnitGroupMaster;
+import main.game.logic.arena.UnitGroupMaster;
 import main.game.logic.dungeon.scenario.ScenarioMaster;
 
 import java.util.LinkedList;

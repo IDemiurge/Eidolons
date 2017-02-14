@@ -9,7 +9,7 @@ import main.content.OBJ_TYPES;
 import main.content.PARAMS;
 import main.data.DataManager;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroItemObj;
+import main.entity.item.DC_HeroItemObj;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.StringMaster;

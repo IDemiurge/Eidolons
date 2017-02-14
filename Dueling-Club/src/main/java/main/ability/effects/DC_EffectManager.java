@@ -3,12 +3,12 @@ package main.ability.effects;
 import main.ability.Abilities;
 import main.content.CONTENT_CONSTS.RESISTANCE_TYPE;
 import main.entity.Ref;
-import main.entity.obj.DC_HeroObj;
+import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
-import main.rules.mechanics.ResistanceRule;
-import main.system.ai.logic.target.EffectMaster;
+import main.game.ai.tools.target.EffectMaster;
+import main.rules.magic.ResistanceRule;
 
 public class DC_EffectManager implements EffectManager {
 

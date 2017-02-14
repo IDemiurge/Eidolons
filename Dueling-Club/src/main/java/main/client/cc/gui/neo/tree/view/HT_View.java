@@ -21,7 +21,7 @@ import main.content.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.data.xml.XML_Writer;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.swing.components.buttons.CustomButton;
 import main.swing.components.panels.page.info.element.TextCompDC;

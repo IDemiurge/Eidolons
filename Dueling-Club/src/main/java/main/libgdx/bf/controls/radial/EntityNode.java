@@ -1,7 +1,7 @@
 package main.libgdx.bf.controls.radial;
 
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 
 import java.util.List;
 

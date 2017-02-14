@@ -14,7 +14,7 @@ import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.properties.PROPERTY;
 import main.data.ability.construct.AbilityConstructor;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.GuiManager;
 import main.system.images.ImageManager.BORDER;

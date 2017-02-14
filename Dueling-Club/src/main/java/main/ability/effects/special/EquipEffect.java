@@ -4,9 +4,9 @@ import main.ability.effects.oneshot.MicroEffect;
 import main.content.CONTENT_CONSTS.ITEM_SLOT;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroItemObj;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_WeaponObj;
+import main.entity.item.DC_HeroItemObj;
+import main.entity.item.DC_WeaponObj;
+import main.entity.obj.unit.DC_HeroObj;
 
 public class EquipEffect extends MicroEffect {
 

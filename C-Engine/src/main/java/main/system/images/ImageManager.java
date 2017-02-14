@@ -715,7 +715,11 @@ return ((CustomImage)img).getImgPath();
     }
 
     public static Image getDamageTypeImage(String enumConstName) {
-        return getImage(VALUE_ICONS_PATH + "damage types\\" + enumConstName);
+        return getImage(getDamageTypeImagePath(enumConstName));
+    }
+
+    public static String getDamageTypeImagePath(String enumConstName) {
+        return (VALUE_ICONS_PATH + "damage types\\" + enumConstName + ".jpg");
     }
 
     public static Image getModeImage(String mode, Boolean on_off, boolean blocked) {

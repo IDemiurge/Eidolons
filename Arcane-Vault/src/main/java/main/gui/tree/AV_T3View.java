@@ -9,7 +9,7 @@ import main.client.dc.Launcher;
 import main.content.OBJ_TYPE;
 import main.content.OBJ_TYPES;
 import main.data.DataManager;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.gui.builders.EditViewPanel;

@@ -1,20 +1,20 @@
 package main.swing.components.battlefield;
 
-import main.client.battle.arcade.PartyManager;
 import main.content.CONTENT_CONSTS.BF_OBJECT_TAGS;
 import main.content.CONTENT_CONSTS.STD_BOOLS;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.properties.G_PROPS;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.game.battlefield.BattleFieldGrid;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.VisionManager;
 import main.game.battlefield.map.DC_Map;
 import main.game.logic.dungeon.Dungeon;
+import main.game.logic.generic.PartyManager;
 import main.swing.components.obj.BfGridComp;
 import main.swing.components.obj.CellComp;
 import main.swing.generic.components.G_Panel;

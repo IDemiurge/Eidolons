@@ -1,7 +1,7 @@
 package main.game;
 
 import main.entity.type.ObjType;
-import main.game.player.DC_Player;
+import main.game.logic.battle.player.DC_Player;
 import main.game.player.Player;
 import main.system.net.data.PartyData;
 

@@ -1,9 +1,9 @@
 package main.swing.components.panels;
 
 import main.entity.Entity;
-import main.entity.obj.DC_HeroAttachedObj;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
+import main.entity.obj.attach.DC_HeroAttachedObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.swing.generic.components.list.CustomList;
 import main.swing.generic.components.list.G_List;

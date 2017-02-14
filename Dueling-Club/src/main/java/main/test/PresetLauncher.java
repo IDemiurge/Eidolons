@@ -7,10 +7,12 @@ import main.content.PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
-import main.game.battlefield.UnitGroupMaster;
+import main.game.logic.arena.UnitGroupMaster;
+import main.libgdx.anims.controls.EmitterController;
 import main.libgdx.anims.particles.ParticleManager;
-import main.libgdx.anims.particles.controls.EmitterController;
 import main.libgdx.anims.particles.lighting.LightingManager;
+import main.rules.RuleMaster;
+import main.rules.RuleMaster.RULE_SCOPE;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -30,7 +32,7 @@ import static main.test.Preset.PRESET_DATA.FIRST_DUNGEON;
 
 public class PresetLauncher {
     public final static String[] LAUNCH_OPTIONS = {
-            "Last", "Gui", "Recent", "New", "Light", "Anims",
+     "Last", "Gui", "Logic", "Recent", "New", "Anims",
              "Emitters"
 
     };
@@ -78,6 +80,12 @@ public class PresetLauncher {
                 FAST_DC.getGameLauncher().DUMMY_PP = false;
                 UnitGroupMaster.setFactionMode(DialogMaster.confirm("Faction Mode?"));
                 return null;
+            case "Logic":
+                FAST_DC.getGameLauncher().DUMMY_MODE = true;
+                FAST_DC.getGameLauncher().DUMMY_PP = true;
+                FAST_DC.getGameLauncher().setFAST_MODE(true);
+                RuleMaster.setScope(RULE_SCOPE.TEST);
+                return true;
             case "Anims":
                 EmitterController.overrideKeys=true;
                 FAST_DC.getGameLauncher().DUMMY_MODE = true;

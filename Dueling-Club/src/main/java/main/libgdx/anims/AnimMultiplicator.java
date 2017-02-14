@@ -9,10 +9,11 @@ import main.ability.effects.oneshot.common.SpecialTargetingEffect;
 import main.content.parameters.G_PARAMS;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
+import main.game.ai.tools.target.EffectMaster;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
-import main.game.logic.macro.utils.CoordinatesMaster;
+import main.game.battlefield.CoordinatesMaster;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.particles.EmitterPools;
@@ -20,7 +21,7 @@ import main.libgdx.anims.std.SpellAnim;
 import main.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
 import main.libgdx.anims.std.SpellAnim.ZONE_ANIM_MODS;
 import main.libgdx.bf.GridMaster;
-import main.system.ai.logic.target.EffectMaster;
+import main.system.auxiliary.ListMaster;
 import main.system.auxiliary.secondary.GeometryMaster;
 
 import java.util.*;
@@ -103,20 +104,20 @@ public class AnimMultiplicator implements Runnable {
             SpecialTargetingEffect targetEffect = (SpecialTargetingEffect) effect;
             coordinates = targetEffect.getCoordinates();
         }
-        if (coordinates == null) {
-            if (getRef().getGroup() != null) {
-                Set<Coordinates> set = new LinkedHashSet();
-                getRef().getGroup().getObjects().forEach(o -> set.add(o.getCoordinates()));
-                coordinates = set;
-            }
-        }
+//        if (coordinates == null) { TODO GROUP MUST NOT BE COPIED FROM OTHER SPELLS!
+//            if (getRef().getGroup() != null) {
+//                Set<Coordinates> set = new LinkedHashSet();
+//                getRef().getGroup().getObjects().forEach(o -> set.add(o.getCoordinates()));
+//                coordinates = set;
+//            }
+//        }
         if (multiplicationMethod == MULTIPLICATION_METHOD.ANGLE) {
             if (template != null) {
                 applyTemplateAngles(coordinates);
                 return;
             }
         }
-        if (coordinates != null) {
+        if (ListMaster.isNotEmpty(coordinates)) {
             applyMultiplicationForCoordinates(coordinates);
         }
 

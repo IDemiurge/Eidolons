@@ -8,7 +8,7 @@ import main.content.PROPS;
 import main.content.properties.G_PROPS;
 import main.content.properties.PROPERTY;
 import main.data.DataManager;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.rules.DC_ActionManager.WEAPON_ATTACKS;
 import main.system.auxiliary.EnumMaster;

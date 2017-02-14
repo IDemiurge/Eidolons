@@ -4,7 +4,7 @@ import main.client.cc.CharacterCreator;
 import main.content.VALUE;
 import main.content.parameters.PARAMETER;
 import main.content.properties.G_PROPS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.components.panels.page.log.WrappedTextComp;
 
 import java.awt.*;

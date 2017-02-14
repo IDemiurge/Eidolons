@@ -5,7 +5,7 @@ import main.client.game.NetGame;
 import main.client.net.GameConnector.HOST_CLIENT_CODES;
 import main.game.HostedGame;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
-import main.game.battlefield.UnitGroupMaster;
+import main.game.logic.arena.UnitGroupMaster;
 import main.system.auxiliary.MapMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;

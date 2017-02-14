@@ -8,8 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import javafx.util.Pair;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.battlefield.Coordinates;
 import main.game.event.Event;
 import main.libgdx.anims.ActorMaster;
@@ -45,6 +45,11 @@ public class DeathAnim extends ActionAnim {
         AnimData  data=new AnimData();
         data.setValue(ANIM_VALUES.PARTICLE_EFFECTS, "impact\\Crimson Death");
         return data;
+    }
+
+    public static boolean isOn() {
+        if (!AnimMaster.isOn()) return false;
+        return on;
     }
 
     @Override
@@ -119,11 +124,6 @@ public class DeathAnim extends ActionAnim {
         COLLAPSE,
         ATOMIZE, SHATTER,;
         String spritePath;
-    }
-
-    public static boolean isOn() {
-        if (!AnimMaster.isOn())return false;
-        return on;
     }
 
 }

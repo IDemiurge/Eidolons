@@ -6,7 +6,7 @@ import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.parameters.PARAMETER;
 import main.content.properties.PROPERTY;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.WorkspaceMaster;

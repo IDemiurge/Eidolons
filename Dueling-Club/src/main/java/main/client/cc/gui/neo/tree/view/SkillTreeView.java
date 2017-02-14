@@ -9,7 +9,7 @@ import main.content.DC_ContentManager;
 import main.content.PARAMS;
 import main.content.ValuePages;
 import main.content.parameters.PARAMETER;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;

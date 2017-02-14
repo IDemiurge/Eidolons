@@ -3,7 +3,7 @@ package main.client.net;
 import main.client.DuelingClub;
 import main.client.game.TestMode;
 import main.client.net.GameConnector.HOST_CLIENT_CODES;
-import main.game.battlefield.UnitGroupMaster;
+import main.game.logic.arena.UnitGroupMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Err;
 import main.system.auxiliary.MapMaster;

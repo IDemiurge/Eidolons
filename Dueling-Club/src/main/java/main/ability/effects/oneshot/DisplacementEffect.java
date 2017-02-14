@@ -1,7 +1,7 @@
 package main.ability.effects.oneshot;
 
 import main.ability.effects.SelfMoveEffect;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.DirectionMaster;
 import main.game.battlefield.MovementManager.MOVE_MODIFIER;

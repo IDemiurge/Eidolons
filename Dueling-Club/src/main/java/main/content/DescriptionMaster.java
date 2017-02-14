@@ -2,7 +2,7 @@ package main.content;
 
 import main.content.CONTENT_CONSTS.DEITY;
 import main.content.CONTENT_CONSTS.MASTERY_RANK;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.system.auxiliary.StringMaster;
 
 public class DescriptionMaster {

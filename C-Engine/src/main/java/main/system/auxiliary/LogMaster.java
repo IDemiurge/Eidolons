@@ -193,6 +193,11 @@ public class LogMaster {
                         break;
 
                     }
+                    case WAIT_DEBUG: {
+                        switcher = WAIT_DEBUG_ON;
+                        prefix = WAIT_DEBUG_PREFIX;
+                        break;
+                    }
                     case RULES_DEBUG: {
                         switcher = RULES_DEBUG_ON;
                         prefix = RULES_DEBUG_PREFIX;
@@ -284,6 +289,11 @@ public class LogMaster {
                         break;
                     }
 
+//                    case PHASE_ANIM_DEBUG: {
+//                        switcher = PHASE_ANIM_DEBUG_ON;
+//                        prefix = PHASE_ANIM_DEBUG_PREFIX;
+//                        break;
+//                    }
                     case CORE_DEBUG_1: {
                         switcher = CORE_DEBUG_1_ON;
                         prefix = CORE_DEBUG_1_PREFIX;

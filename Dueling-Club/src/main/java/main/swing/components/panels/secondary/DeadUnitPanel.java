@@ -1,7 +1,7 @@
 package main.swing.components.panels.secondary;
 
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.components.panels.DC_CellInfoPanel;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagedListPanel;

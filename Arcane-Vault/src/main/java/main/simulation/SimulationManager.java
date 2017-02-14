@@ -4,10 +4,10 @@ import main.client.DC_Engine;
 import main.content.OBJ_TYPES;
 import main.data.DataManager;
 import main.entity.Ref;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
-import main.game.player.DC_Player;
+import main.game.logic.battle.player.DC_Player;
 import main.launch.ArcaneVault;
 
 import java.util.Arrays;

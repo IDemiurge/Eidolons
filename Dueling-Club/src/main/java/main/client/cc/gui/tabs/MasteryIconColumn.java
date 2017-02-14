@@ -4,7 +4,7 @@ import main.client.cc.HC_Master;
 import main.client.cc.gui.tabs.SkillTabNew.SKILL_DISPLAY_GROUPS;
 import main.content.parameters.PARAMETER;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.system.math.DC_MathManager;

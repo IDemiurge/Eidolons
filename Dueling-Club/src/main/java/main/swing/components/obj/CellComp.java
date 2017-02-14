@@ -2,9 +2,9 @@ package main.swing.components.obj;
 
 import main.entity.Ref;
 import main.entity.obj.DC_Cell;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.swing.components.obj.drawing.DrawMaster;

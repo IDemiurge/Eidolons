@@ -2,13 +2,13 @@ package main.swing.components.panels.page;
 
 import main.content.OBJ_TYPES;
 import main.content.properties.G_PROPS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.entity.type.UnitType;
 import main.game.DC_Game;
 import main.game.turn.TurnManager;
+import main.rules.RuleMaster.RULE;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
-import main.rules.mechanics.RuleMaster.RULE;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
 import main.system.net.DC_IdManager;

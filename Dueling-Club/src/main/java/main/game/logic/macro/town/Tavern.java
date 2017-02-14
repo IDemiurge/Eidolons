@@ -1,6 +1,5 @@
 package main.game.logic.macro.town;
 
-import main.client.battle.arcade.PartyManager;
 import main.client.cc.gui.neo.choice.ChoiceSequence;
 import main.client.cc.gui.neo.choice.TavernView;
 import main.client.cc.logic.party.PartyObj;
@@ -15,8 +14,9 @@ import main.content.properties.G_PROPS;
 import main.content.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.entity.Ref;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
+import main.game.logic.generic.PartyManager;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.global.TimeMaster;

@@ -1,8 +1,8 @@
 package main.ability.conditions;
 
 import main.elements.conditions.MicroCondition;
-import main.entity.obj.DC_HeroObj;
-import main.rules.mechanics.WatchRule;
+import main.entity.obj.unit.DC_HeroObj;
+import main.rules.action.WatchRule;
 
 public class WatchedCondition extends MicroCondition {
 

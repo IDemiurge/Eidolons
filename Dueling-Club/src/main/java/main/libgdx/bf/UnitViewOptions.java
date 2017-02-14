@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import main.content.C_OBJ_TYPE;
 import main.content.OBJ_TYPES;
 import main.content.properties.G_PROPS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.libgdx.texture.TextureManager;
 
 import java.util.Map;

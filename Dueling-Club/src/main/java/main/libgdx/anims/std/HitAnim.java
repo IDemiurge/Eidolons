@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import main.content.PARAMS;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
+import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
-import main.entity.obj.top.DC_ActiveObj;
 import main.game.battlefield.Coordinates;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.AnimData;
@@ -28,12 +28,11 @@ public class HitAnim extends ActionAnim {
 //    private DC_WeaponObj weapon;
 
 
-
-
-    public HitAnim(Entity active, AnimData params) {
+    public HitAnim(DC_ActiveObj active, AnimData params) {
         this(active, params, true, Color.RED, () -> String.valueOf(
          active.getIntParam(PARAMS.DAMAGE_LAST_DEALT)),
-         () -> ImageManager.getValueIconPath(PARAMS.TOUGHNESS));
+         () -> ImageManager.getDamageTypeImagePath(
+          active.getDamageType() == null ? "Physical" : active.getDamageType().getName()));
     }
 
     public HitAnim(Entity active, AnimData params, boolean blood, Color c,

@@ -1,6 +1,5 @@
 package main.game.logic.macro.travel;
 
-import main.client.battle.Wave;
 import main.client.dc.Launcher;
 import main.content.OBJ_TYPES;
 import main.content.PARAMS;
@@ -12,6 +11,7 @@ import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
+import main.game.logic.arena.Wave;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.MacroRef;

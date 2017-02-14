@@ -2,7 +2,7 @@ package main.game.logic.dungeon.special;
 
 import main.content.PARAMS;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.battlefield.ZCoordinates;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.Entrance;

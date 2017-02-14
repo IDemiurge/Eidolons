@@ -1,8 +1,8 @@
 package main.ability.effects;
 
 import main.ability.effects.oneshot.MicroEffect;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 
 public abstract class DC_Effect extends MicroEffect {

@@ -1,6 +1,5 @@
 package main.client.cc.logic.party;
 
-import main.client.battle.arcade.ArcadeManager.ARCADE_STATUS;
 import main.client.cc.logic.HeroCreator;
 import main.client.dc.Simulation;
 import main.content.CONTENT_CONSTS.PRINCIPLES;
@@ -14,10 +13,11 @@ import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
+import main.game.logic.arcade.ArcadeManager.ARCADE_STATUS;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.travel.MacroParty;
 import main.game.logic.macro.travel.RestMaster;

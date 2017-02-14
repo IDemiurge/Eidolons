@@ -3,7 +3,7 @@ package main.client.cc.gui.neo.principles;
 import main.client.cc.gui.neo.points.HC_InfoTextPanel;
 import main.content.CONTENT_CONSTS.PRINCIPLES;
 import main.content.PARAMS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.rules.rpg.IntegrityRule;
 import main.rules.rpg.IntegrityRule.ALIGNMENT_LEVEL;
 import main.system.auxiliary.StringMaster;

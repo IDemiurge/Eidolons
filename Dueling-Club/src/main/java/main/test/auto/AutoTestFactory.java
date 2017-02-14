@@ -13,7 +13,7 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.DC_FeatObj;
+import main.entity.obj.attach.DC_FeatObj;
 import main.entity.type.ObjType;
 import main.system.FilterMaster;
 import main.system.SortMaster;

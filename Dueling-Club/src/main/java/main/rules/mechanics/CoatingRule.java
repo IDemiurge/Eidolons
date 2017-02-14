@@ -3,11 +3,11 @@ package main.rules.mechanics;
 import main.content.CONTENT_CONSTS.STD_COUNTERS;
 import main.content.DC_ContentManager;
 import main.entity.Ref.KEYS;
+import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_ItemActiveObj;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.battlefield.attack.Attack;
 import main.system.math.MathMaster;
 

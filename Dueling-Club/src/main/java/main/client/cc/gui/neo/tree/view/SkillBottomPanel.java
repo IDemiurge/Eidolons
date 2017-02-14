@@ -7,7 +7,7 @@ import main.client.cc.gui.neo.tree.HC_Tree;
 import main.content.ContentManager;
 import main.content.PARAMS;
 import main.content.parameters.PARAMETER;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.system.math.DC_MathManager;

@@ -3,7 +3,7 @@ package main.client.cc.gui.neo.choice;
 import main.content.PARAMS;
 import main.content.parameters.MACRO_PARAMS;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.logic.dungeon.scenario.ScenarioMaster;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.town.Tavern;

@@ -7,7 +7,7 @@ import main.content.PROPS;
 import main.content.ValuePages;
 import main.content.parameters.PARAMETER;
 import main.data.DataManager;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.system.auxiliary.LogMaster;

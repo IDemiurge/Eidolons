@@ -4,7 +4,7 @@ import main.client.cc.CharacterCreator;
 import main.content.PARAMS;
 import main.content.parameters.PARAMETER;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.system.math.DC_MathManager;
 import main.system.math.MathMaster;

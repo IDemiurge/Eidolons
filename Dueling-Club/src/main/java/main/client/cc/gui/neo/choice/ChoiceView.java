@@ -3,7 +3,7 @@ package main.client.cc.gui.neo.choice;
 import main.client.cc.gui.neo.choice.PagedSelectionPanel.SelectionPage;
 import main.content.OBJ_TYPE;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.components.PagedOptionsComp;
 import main.swing.components.buttons.CustomButton;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;

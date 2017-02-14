@@ -3,7 +3,7 @@ package main.game.logic.macro;
 import main.entity.obj.Obj;
 import main.game.Game;
 import main.game.GameState;
-import main.game.logic.macro.faction.Faction;
+import main.game.logic.faction.Faction;
 import main.game.logic.macro.map.Place;
 import main.game.logic.macro.map.Region;
 import main.game.logic.macro.map.Route;

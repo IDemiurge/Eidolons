@@ -10,7 +10,7 @@ import main.content.properties.G_PROPS;
 import main.content.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;

@@ -2,7 +2,7 @@ package main.ability.effects;
 
 import main.ability.effects.oneshot.MicroEffect;
 import main.content.enums.MODE;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 
 public class SetCustomModeEffect extends MicroEffect {
 

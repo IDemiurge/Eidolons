@@ -2,9 +2,9 @@ package main.game.ai.logic;
 
 import main.entity.ActionManager;
 import main.entity.Ref;
+import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Active;
 import main.entity.obj.Obj;
-import main.entity.obj.top.DC_ActiveObj;
 import main.game.MicroGame;
 import main.game.ai.AI;
 import main.game.ai.AI_Logic;

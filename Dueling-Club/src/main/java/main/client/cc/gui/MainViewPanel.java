@@ -10,7 +10,7 @@ import main.client.cc.gui.neo.tree.view.SkillTreeView;
 import main.client.cc.gui.views.*;
 import main.content.DC_ContentManager;
 import main.content.parameters.PARAMETER;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.generic.components.G_Panel;
 
 import java.util.HashMap;

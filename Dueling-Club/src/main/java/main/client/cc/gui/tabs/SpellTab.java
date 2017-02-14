@@ -11,7 +11,7 @@ import main.content.OBJ_TYPES;
 import main.content.PROPS;
 import main.content.properties.PROPERTY;
 import main.data.DataManager;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.system.DC_RequirementsManager;
 import main.system.auxiliary.StringMaster;

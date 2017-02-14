@@ -11,7 +11,7 @@ import main.elements.targeting.FixedTargeting;
 import main.elements.triggers.Trigger;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.DC_ObjInitializer;

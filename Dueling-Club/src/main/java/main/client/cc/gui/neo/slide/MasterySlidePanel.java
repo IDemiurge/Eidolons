@@ -8,7 +8,7 @@ import main.client.cc.gui.views.HeroView;
 import main.content.PARAMS;
 import main.content.ValuePages;
 import main.content.parameters.PARAMETER;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.system.math.DC_MathManager;
 
 import java.util.Arrays;

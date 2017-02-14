@@ -6,7 +6,7 @@ import main.content.CONTENT_CONSTS2.INJURY;
 import main.content.CONTENT_CONSTS2.INJURY_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.system.ai.logic.target.EffectMaster;
+import main.game.ai.tools.target.EffectMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 

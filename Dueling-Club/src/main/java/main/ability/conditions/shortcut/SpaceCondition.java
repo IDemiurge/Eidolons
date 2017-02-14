@@ -1,7 +1,7 @@
 package main.ability.conditions.shortcut;
 
 import main.elements.conditions.MicroCondition;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 
 public class SpaceCondition extends MicroCondition {

@@ -1,9 +1,9 @@
 package main.libgdx.gui.panels.dc;
 
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_QuickItemObj;
-import main.entity.obj.DC_SpellObj;
-import main.entity.obj.DC_UnitAction;
+import main.entity.active.DC_SpellObj;
+import main.entity.active.DC_UnitAction;
+import main.entity.item.DC_QuickItemObj;
+import main.entity.obj.unit.DC_HeroObj;
 
 import java.util.Collection;
 import java.util.LinkedList;

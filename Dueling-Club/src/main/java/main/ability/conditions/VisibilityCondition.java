@@ -5,8 +5,8 @@ import main.content.CONTENT_CONSTS.UNIT_TO_UNIT_VISION;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BattlefieldObj;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 
 public class VisibilityCondition extends ConditionImpl {

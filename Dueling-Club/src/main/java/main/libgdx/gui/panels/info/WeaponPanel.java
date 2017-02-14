@@ -1,6 +1,6 @@
 package main.libgdx.gui.panels.info;
 
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.libgdx.gui.dialog.InfoDialog;
 import main.libgdx.gui.layout.LayoutParser.LAYOUT;
 import main.libgdx.gui.panels.generic.Container;

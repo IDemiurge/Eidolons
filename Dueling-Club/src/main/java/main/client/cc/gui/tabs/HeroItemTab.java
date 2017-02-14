@@ -11,7 +11,7 @@ import main.client.cc.gui.views.HeroItemView;
 import main.content.OBJ_TYPE;
 import main.content.properties.PROPERTY;
 import main.data.DataManager;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 

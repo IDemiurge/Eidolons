@@ -6,7 +6,7 @@ import main.content.OBJ_TYPES;
 import main.content.VALUE;
 import main.content.properties.G_PROPS;
 import main.content.properties.PROPERTY;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.swing.generic.components.list.ListItem;
 import main.system.auxiliary.StringMaster;

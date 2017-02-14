@@ -11,9 +11,9 @@ import main.ability.targeting.TemplateAutoTargeting;
 import main.content.CONTENT_CONSTS.STATUS;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
 import main.entity.Ref;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
-import main.rules.mechanics.ImmunityRule;
+import main.rules.magic.ImmunityRule;
 import main.system.auxiliary.LogMaster.LOG;
 
 import java.util.HashMap;

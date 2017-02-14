@@ -1,7 +1,7 @@
 package main.ability.effects.dialog;
 
 import main.ability.effects.DC_Effect;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 
 public abstract class DialogEffect extends DC_Effect {
 

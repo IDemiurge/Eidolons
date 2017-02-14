@@ -1,14 +1,16 @@
 package main.rules;
 
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.game.GameRules;
 import main.game.event.Rule;
-import main.rules.action.ActionRule;
+import main.rules.action.*;
 import main.rules.buff.*;
+import main.rules.combat.*;
 import main.rules.counter.*;
-import main.rules.generic.RoundRule;
-import main.rules.mechanics.*;
+import main.rules.mechanics.DurabilityRule;
+import main.rules.mechanics.WaitRule;
+import main.rules.round.*;
 import main.system.datatypes.DequeImpl;
 
 public class DC_Rules implements GameRules {

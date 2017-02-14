@@ -7,7 +7,7 @@ import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.content.CONTENT_CONSTS.*;
 import main.content.Constants;
 import main.content.PARAMS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 
 public class PoisonRule extends DamageCounterRule {

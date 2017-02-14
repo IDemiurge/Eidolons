@@ -1,8 +1,8 @@
 package main.swing.components.panels.page;
 
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_QuickItemObj;
+import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagedListPanel;

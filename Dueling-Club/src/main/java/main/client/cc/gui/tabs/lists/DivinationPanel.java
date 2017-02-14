@@ -7,7 +7,7 @@ import main.content.OBJ_TYPE;
 import main.content.OBJ_TYPES;
 import main.content.PROPS;
 import main.content.properties.PROPERTY;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.components.buttons.CustomButton;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;

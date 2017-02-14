@@ -1,8 +1,6 @@
 package main.test.auto;
 
-import main.content.OBJ_TYPES;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_WeaponObj;
+import main.entity.obj.unit.DC_HeroObj;
 
 public class Constraint {
 

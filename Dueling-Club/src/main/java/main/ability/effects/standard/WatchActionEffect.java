@@ -1,10 +1,10 @@
 package main.ability.effects.standard;
 
 import main.ability.effects.DC_Effect;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.rules.mechanics.WatchRule;
+import main.entity.obj.unit.DC_HeroObj;
+import main.rules.action.WatchRule;
 import main.system.auxiliary.RandomWizard;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;

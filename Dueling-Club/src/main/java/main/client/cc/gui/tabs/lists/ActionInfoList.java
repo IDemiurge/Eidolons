@@ -1,8 +1,8 @@
 package main.client.cc.gui.tabs.lists;
 
 import main.client.cc.CharacterCreator;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.rules.DC_ActionManager;
 import main.swing.SwingMaster;
 import main.swing.components.panels.secondary.ActionModePanel;

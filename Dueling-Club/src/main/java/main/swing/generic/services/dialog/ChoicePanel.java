@@ -1,7 +1,7 @@
 package main.swing.generic.services.dialog;
 
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.system.graphics.MigMaster;
 import main.system.threading.WaitMaster;

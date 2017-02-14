@@ -8,7 +8,7 @@ import main.content.parameters.MACRO_PARAMS;
 import main.content.parameters.PARAMETER;
 import main.content.properties.MACRO_PROPS;
 import main.entity.Ref;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.entity.MacroActionManager.MACRO_MODES;
 import main.game.logic.macro.global.TimeMaster;

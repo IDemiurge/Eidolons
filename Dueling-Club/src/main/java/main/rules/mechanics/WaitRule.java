@@ -1,7 +1,7 @@
 package main.rules.mechanics;
 
 import main.content.CONTENT_CONSTS.STD_BUFF_NAMES;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.Game;
 import main.system.auxiliary.LogMaster;
 

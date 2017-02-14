@@ -1,7 +1,7 @@
 package main.client.cc.gui.neo.choice;
 
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.system.auxiliary.ListMaster;
 
 import java.util.LinkedList;

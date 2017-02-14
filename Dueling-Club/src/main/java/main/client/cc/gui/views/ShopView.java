@@ -9,7 +9,7 @@ import main.content.properties.G_PROPS;
 import main.content.properties.PROPERTY;
 import main.elements.conditions.*;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.system.ConditionMaster;
 import main.system.auxiliary.StringMaster;

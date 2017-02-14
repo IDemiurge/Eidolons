@@ -1,8 +1,8 @@
 package main.system.graphics;
 
 import main.entity.Ref;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.battlefield.attack.Attack;
 import main.system.graphics.AnimationManager.ANIM_TYPE;
 

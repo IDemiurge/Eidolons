@@ -1,7 +1,7 @@
 package main.swing.components.panels.page;
 
-import main.entity.obj.DC_UnitAction;
-import main.entity.obj.DC_UnitObj;
+import main.entity.active.DC_UnitAction;
+import main.entity.obj.unit.DC_UnitObj;
 import main.swing.components.panels.DC_UnitActionPanel;
 import main.swing.components.panels.DC_UnitActionPanel.ACTION_DISPLAY_GROUP;
 import main.swing.generic.components.G_Component;

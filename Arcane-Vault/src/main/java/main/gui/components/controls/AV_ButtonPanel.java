@@ -12,7 +12,7 @@ import main.data.xml.XML_Reader;
 import main.data.xml.XML_Transformer;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
-import main.game.battlefield.UnitGroupMaster;
+import main.game.logic.arena.UnitGroupMaster;
 import main.gui.builders.EditViewPanel;
 import main.gui.builders.TabBuilder;
 import main.gui.components.table.TableMouseListener;

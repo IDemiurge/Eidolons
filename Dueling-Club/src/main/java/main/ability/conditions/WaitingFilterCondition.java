@@ -1,8 +1,8 @@
 package main.ability.conditions;
 
 import main.elements.conditions.MicroCondition;
-import main.entity.obj.DC_UnitObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.DC_UnitObj;
 
 public class WaitingFilterCondition extends MicroCondition {
     public WaitingFilterCondition() {

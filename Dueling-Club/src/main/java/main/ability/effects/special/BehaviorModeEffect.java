@@ -3,7 +3,7 @@ package main.ability.effects.special;
 import main.ability.effects.oneshot.common.ModifyPropertyEffect;
 import main.content.CONTENT_CONSTS.BEHAVIOR_MODE;
 import main.content.properties.G_PROPS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.system.auxiliary.EnumMaster;
 
 public class BehaviorModeEffect extends ModifyPropertyEffect {

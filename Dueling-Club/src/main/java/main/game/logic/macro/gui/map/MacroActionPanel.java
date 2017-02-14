@@ -1,6 +1,6 @@
 package main.game.logic.macro.gui.map;
 
-import main.entity.obj.DC_UnitObj;
+import main.entity.obj.unit.DC_UnitObj;
 import main.game.logic.macro.entity.MacroAction;
 import main.game.logic.macro.gui.map.MacroAP_Holder.MACRO_ACTION_GROUPS;
 import main.swing.components.obj.ActionListItem;

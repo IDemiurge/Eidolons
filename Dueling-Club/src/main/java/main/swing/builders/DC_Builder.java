@@ -1,11 +1,11 @@
 package main.swing.builders;
 
+import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_ItemActiveObj;
+import main.entity.active.DC_SpellObj;
+import main.entity.active.DC_UnitAction;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.DC_SpellObj;
-import main.entity.obj.DC_UnitAction;
-import main.entity.obj.top.DC_ActiveObj;
 import main.game.DC_GameState;
 import main.game.battlefield.BattleFieldGrid;
 import main.game.battlefield.map.DC_Map;

@@ -1,6 +1,6 @@
 package main.swing.components.panels;
 
-import main.entity.obj.DC_QuickItemObj;
+import main.entity.item.DC_QuickItemObj;
 import main.game.MicroGameState;
 import main.swing.generic.components.panels.G_ListPanel;
 

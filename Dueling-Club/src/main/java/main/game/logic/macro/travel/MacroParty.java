@@ -6,7 +6,7 @@ import main.content.PARAMS;
 import main.content.parameters.MACRO_PARAMS;
 import main.content.parameters.PARAMETER;
 import main.content.properties.MACRO_PROPS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.MacroManager;

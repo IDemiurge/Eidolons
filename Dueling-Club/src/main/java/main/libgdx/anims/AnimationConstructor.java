@@ -12,11 +12,12 @@ import main.content.properties.G_PROPS;
 import main.content.properties.PROPERTY;
 import main.data.filesys.PathFinder;
 import main.entity.Ref;
+import main.entity.active.DC_ActiveObj;
+import main.entity.active.DC_ItemActiveObj;
+import main.entity.active.DC_SpellObj;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.BuffObj;
 import main.entity.obj.DC_Cell;
-import main.entity.obj.DC_SpellObj;
-import main.entity.obj.top.DC_ActiveObj;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.particles.EmitterPools;
@@ -83,7 +84,7 @@ public class AnimationConstructor {
         CompositeAnim anim = map.get(active);
         if (!isReconstruct())
             if (anim != null) {
-
+                anim.reset();
                 return anim;
             }
         return construct((DC_ActiveObj) active);
@@ -141,6 +142,12 @@ if (anim==null ) return null ;
     private Anim createAnim(DC_ActiveObj active, AnimData data, ANIM_PART part) {
         if (active.isMove())
             return MoveAnimation.isOn()? new MoveAnimation(active, data) : null ;
+        if (active instanceof DC_ItemActiveObj) {
+            if (((DC_ItemActiveObj) active).getItem().isAmmo()) {
+                return new ReloadAnim(active);
+            }
+        }
+
         if (active.isAttackAny()) {
             if (part == ANIM_PART.MAIN) {
                 if (active.isThrow())

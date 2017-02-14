@@ -5,7 +5,7 @@ import main.client.cc.gui.neo.points.HC_PointComp;
 import main.content.CONTENT_CONSTS.PRINCIPLES;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 
 import javax.swing.*;

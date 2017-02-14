@@ -5,7 +5,7 @@ import main.ability.targeting.TemplateSelectiveTargeting;
 import main.content.CONTENT_CONSTS.FACING_SINGLE;
 import main.elements.conditions.Conditions;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
-import main.entity.obj.DC_UnitObj;
+import main.entity.obj.unit.DC_UnitObj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.UNIT_DIRECTION;
 import main.game.battlefield.DirectionMaster;
@@ -63,6 +63,7 @@ public class SelfMoveEffect extends MoveEffect {
         destination = game.getMovementManager().getTemplateMoveCoordinate(template, obj.getFacing(), obj,
                     ref);
     } else if (direction != null) {
+        if (origin == null) origin = obj.getCoordinates();
         destination = origin.getAdjacentCoordinate(DirectionMaster.getDirectionByFacing(obj.getFacing(),
                 direction));
     } else {

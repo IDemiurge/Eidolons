@@ -1,8 +1,8 @@
 package main.libgdx.gui.panels.dc;
 
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.libgdx.gui.panels.generic.EntityContainer;
 import main.system.EventCallback;
 

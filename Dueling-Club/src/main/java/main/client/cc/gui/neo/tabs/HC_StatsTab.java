@@ -5,7 +5,7 @@ import main.client.cc.gui.MainViewPanel.HERO_VIEWS;
 import main.client.cc.gui.neo.points.HC_PointView;
 import main.client.cc.gui.neo.slide.MasterySlidePanel;
 import main.client.cc.gui.tabs.HeroPanelTab;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 
 public class HC_StatsTab extends HeroPanelTab {
 

@@ -8,7 +8,7 @@ import main.content.CONTENT_CONSTS.STATUS;
 import main.content.CONTENT_CONSTS.STD_COUNTERS;
 import main.content.DC_ValueManager.VALUE_GROUP;
 import main.content.PARAMS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 
 public class BlightRule extends DC_CounterRule {

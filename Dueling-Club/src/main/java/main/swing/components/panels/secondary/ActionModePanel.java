@@ -1,9 +1,9 @@
 package main.swing.components.panels.secondary;
 
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
 import main.game.DC_Game;
 import main.swing.generic.components.G_Panel;
-import main.system.DC_SoundMaster;
+import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.ColorManager;
 import main.system.auxiliary.FontMaster;
 import main.system.auxiliary.FontMaster.FONT;

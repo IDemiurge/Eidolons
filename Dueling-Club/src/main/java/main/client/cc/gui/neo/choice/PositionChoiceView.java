@@ -1,10 +1,10 @@
 package main.client.cc.gui.neo.choice;
 
-import main.client.battle.Positioner;
-import main.client.battle.arcade.PartyManager;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
+import main.game.logic.battle.Positioner;
+import main.game.logic.generic.PartyManager;
 import main.swing.generic.components.list.G_List;
 import main.swing.generic.components.panels.G_ListPanel;
 import main.system.auxiliary.GuiManager;

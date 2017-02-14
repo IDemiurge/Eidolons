@@ -2,7 +2,7 @@ package main.client.cc.gui.tabs;
 
 import main.client.cc.gui.MainViewPanel;
 import main.client.cc.gui.MainViewPanel.HERO_VIEWS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.swing.generic.components.G_Panel;
 

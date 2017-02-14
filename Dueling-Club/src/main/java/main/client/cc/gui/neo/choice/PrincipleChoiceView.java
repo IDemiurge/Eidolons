@@ -6,7 +6,7 @@ import main.content.CONTENT_CONSTS.PRINCIPLES;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
 import main.content.properties.G_PROPS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.swing.components.panels.page.info.element.ListTextItem;
 import main.system.auxiliary.secondary.InfoMaster;
 

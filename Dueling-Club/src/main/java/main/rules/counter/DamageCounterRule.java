@@ -4,7 +4,7 @@ import main.ability.effects.DealDamageEffect;
 import main.content.CONTENT_CONSTS.DAMAGE_MODIFIER;
 import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
 import main.entity.Ref;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.DC_Game;
 import main.system.math.Formula;
 

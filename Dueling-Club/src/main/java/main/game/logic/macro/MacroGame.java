@@ -1,6 +1,5 @@
 package main.game.logic.macro;
 
-import main.client.battle.arcade.PartyManager;
 import main.client.cc.logic.party.PartyObj;
 import main.client.dc.Launcher;
 import main.content.MACRO_OBJ_TYPES;
@@ -12,8 +11,9 @@ import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.Game;
 import main.game.battlefield.Coordinates;
+import main.game.logic.faction.Faction;
+import main.game.logic.generic.PartyManager;
 import main.game.logic.macro.MacroRef.MACRO_KEYS;
-import main.game.logic.macro.faction.Faction;
 import main.game.logic.macro.global.*;
 import main.game.logic.macro.map.Place;
 import main.game.logic.macro.map.Region;

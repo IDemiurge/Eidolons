@@ -2,7 +2,7 @@ package main.ability.conditions;
 
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 
 public class IncapacitatedCondition extends MicroCondition {
 

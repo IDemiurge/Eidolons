@@ -3,7 +3,7 @@ package main.ability.conditions;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref.KEYS;
 import main.entity.obj.DC_Cell;
-import main.entity.obj.DC_UnitObj;
+import main.entity.obj.unit.DC_UnitObj;
 
 public class MoveCondition extends ConditionImpl {
 

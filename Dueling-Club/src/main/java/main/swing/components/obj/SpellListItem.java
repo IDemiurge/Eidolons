@@ -1,6 +1,6 @@
 package main.swing.components.obj;
 
-import main.entity.obj.DC_SpellObj;
+import main.entity.active.DC_SpellObj;
 import main.swing.generic.components.list.ListItem;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;

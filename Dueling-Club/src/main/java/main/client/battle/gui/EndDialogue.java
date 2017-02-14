@@ -1,10 +1,10 @@
 package main.client.battle.gui;
 
-import main.client.battle.BattleManager;
 import main.client.cc.CharacterCreator;
 import main.client.dc.Launcher;
 import main.client.dc.Launcher.VIEWS;
 import main.game.DC_Game;
+import main.game.logic.battle.BattleManager;
 import main.swing.components.buttons.CustomButton;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.generic.components.G_Dialog;

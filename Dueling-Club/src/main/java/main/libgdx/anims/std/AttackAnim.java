@@ -13,7 +13,7 @@ import main.content.CONTENT_CONSTS.FACING_SINGLE;
 import main.content.properties.G_PROPS;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
-import main.entity.obj.DC_WeaponObj;
+import main.entity.item.DC_WeaponObj;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.FacingMaster;
 import main.libgdx.anims.AnimData;
@@ -31,14 +31,18 @@ import java.util.List;
  */
 public class AttackAnim extends ActionAnim {
 
+    static {
+        ATK_ANIMS.THROW.startSpeed = 500;
+    }
+
     protected ATK_ANIMS[] anims;
     protected DC_WeaponObj weapon;
     protected SequenceAction sequence;
     protected String imgPath;
-
     public AttackAnim(Entity active) {
         this (active,ATK_ANIMS.HEAVY_SWING);
     }
+
     public AttackAnim(Entity active, ATK_ANIMS... anims) {
         super(active, getWeaponAnimData(active, anims));
         this.anims = anims;
@@ -59,26 +63,11 @@ public class AttackAnim extends ActionAnim {
         return data;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
     protected void initSpeed() {
         super.initSpeed();
     }
+
     protected String findWeaponSprite(DC_WeaponObj weapon) {
         if (weapon == null) {
             return "";
@@ -123,7 +112,6 @@ public class AttackAnim extends ActionAnim {
 //        return PathFinder.getSpritesPath() + "weapons\\" + "scimitar.png";
     }
 
-
     @Override
     public void draw(Batch batch, float alpha) {
         act(Gdx.graphics.getDeltaTime());
@@ -131,11 +119,11 @@ public class AttackAnim extends ActionAnim {
 
     }
 
+    //entity params?
+
     protected boolean isDrawTexture() {
         return false;
     }
-
-    //entity params?
 
     @Override
     public void start() {
@@ -154,7 +142,6 @@ public class AttackAnim extends ActionAnim {
         initOffhand();
 //            destination.x = destination.x+offsetX;
     }
-
 
     protected void initOffhand() {
         int offsetX = 0;
@@ -187,6 +174,12 @@ public class AttackAnim extends ActionAnim {
         return getActive().getOwnerObj().getFacing();
     }
 
+/*
+delayAction
+scale
+size - elongate
+ */
+    //TODO back?
 
     @Override
     protected Action getAction() {
@@ -222,13 +215,6 @@ public class AttackAnim extends ActionAnim {
         return sequence;
     }
 
-/*
-delayAction
-scale
-size - elongate
- */
-    //TODO back?
-
     protected MoveByAction getMoveAction(float x, float y, float duration) {
         MoveByAction mainMove = new MoveByAction();
         mainMove.setDuration(duration);
@@ -242,7 +228,6 @@ size - elongate
         mainMove.setAmount(x, y);
         return mainMove;
     }
-
 
     protected RotateByAction getRotateAction(float angle, float duration) {
         RotateByAction mainRotate = new RotateByAction();
@@ -293,9 +278,6 @@ size - elongate
     protected void initDuration() {
 
     }
-static{
-        ATK_ANIMS.THROW.startSpeed=500;
-}
     public enum ATK_ANIMS {
         THRUST_LANCE,
 

@@ -1,1 +1,185 @@
-<Party><Dorian_Raegsul><params><Hero_Level>3.0</Hero_Level><Damage>10</Damage><Watch_Defense_Mod>100</Watch_Defense_Mod><Stamina_Percentage>100</Stamina_Percentage><Sneak_Protection>100</Sneak_Protection><Interrupt_Damage>100</Interrupt_Damage><Focus_Recover_Req>25</Focus_Recover_Req><Charisma>5</Charisma><Base_Vitality>8.0</Base_Vitality><Attack>5</Attack><Sight_Range_Expansion>200</Sight_Range_Expansion><Initiative_Modifier>10</Initiative_Modifier><Essence>25</Essence><Essence_Percentage>100</Essence_Percentage><Counter_Mod>75</Counter_Mod><Attr_Points_Per_Level>8.0</Attr_Points_Per_Level><Toughness_Recovery>25</Toughness_Recovery><Throw_Attack_Mod>100</Throw_Attack_Mod><Sight_Range_Expansion_Sides>150</Sight_Range_Expansion_Sides><Consumption>1</Consumption><Willpower>10</Willpower><Armor_Mod>100</Armor_Mod><Summoned_Xp_Mod>100</Summoned_Xp_Mod><Watched_Attack_Mod>100</Watched_Attack_Mod><Side_Sight_Penalty>1.0</Side_Sight_Penalty><Vitality>8</Vitality><Upkeep_Mod>100</Upkeep_Mod><Xp>136</Xp><Cadence_Sta_Mod>-35</Cadence_Sta_Mod><Endurance>30</Endurance><Knowledge>11</Knowledge><C_Quick_Slots>4</C_Quick_Slots><Base_Agility>5</Base_Agility><Spellcraft_Mastery_Score>10</Spellcraft_Mastery_Score><Memorization_Cap>5</Memorization_Cap><Intelligence>8</Intelligence><Cadence_Ap_Mod>-25</Cadence_Ap_Mod><Oneness>50</Oneness><Watch_Attack_Mod>100</Watch_Attack_Mod><Sneak_Attack_Mod>125</Sneak_Attack_Mod><Watch_Ap_Penalty_Mod>100</Watch_Ap_Penalty_Mod><Base_Intelligence>8.0</Base_Intelligence><Weight>150</Weight><Watch_Attack_Others_Mod>100</Watch_Attack_Others_Mod><Spellpower>10</Spellpower><Base_Strength>6.0</Base_Strength><Focus_Percentage>100</Focus_Percentage><Power>65</Power><N_Of_Counters_Percentage>1000000</N_Of_Counters_Percentage><Wisdom>10</Wisdom><Sorcery_Mastery>11.0</Sorcery_Mastery><Base_Spellpower>10.0</Base_Spellpower><Gold>410</Gold><Initiative_Bonus>5</Initiative_Bonus><Starting_Identity_Points>5.0</Starting_Identity_Points><Aoo_Damage_Mod>100</Aoo_Damage_Mod><Dexterity>6</Dexterity><Spellcraft_Mastery>10.0</Spellcraft_Mastery><Armor_Gold_Percentage>40</Armor_Gold_Percentage><Level>5.0</Level><Base_Damage>3</Base_Damage><Toughness_Percentage>100</Toughness_Percentage><Identity_Points>5</Identity_Points><Girth>400.0</Girth><Xp_Level_Mod>115</Xp_Level_Mod><Detection>20.0</Detection><Blood_Magic_Mastery_Score>10</Blood_Magic_Mastery_Score><Gold_Mod>100</Gold_Mod><Damage_Mod>100</Damage_Mod><Combat_Readiness>50</Combat_Readiness><Integrity>100</Integrity><Offhand_Attack_Mod>50</Offhand_Attack_Mod><Morale>30</Morale><Throw_Damage_Mod>100</Throw_Damage_Mod><Demonology_Mastery>12.0</Demonology_Mastery><Free_Masteries>4.0</Free_Masteries><Offhand_Damage_Mod>75</Offhand_Damage_Mod><Identity_Points_Per_Level>50</Identity_Points_Per_Level><Memory_Remaining>4</Memory_Remaining><Engaged_Aoo_Defense_Mod>100</Engaged_Aoo_Defense_Mod><Gold_Per_Level>100</Gold_Per_Level><Initiative_Percentage>100</Initiative_Percentage><Sneak_Armor_Mod>-25</Sneak_Armor_Mod><Base_Knowledge>11.0</Base_Knowledge><Fortitude>5</Fortitude><Blood_Magic_Mastery>10.0</Blood_Magic_Mastery><N_Of_Actions_Percentage>1000000</N_Of_Actions_Percentage><Base_Charisma>5</Base_Charisma><Xp_Gain_Mod>100</Xp_Gain_Mod><Sneak_Defense_Mod>-50</Sneak_Defense_Mod><Travel_Speed>4</Travel_Speed><Demonology_Mastery_Score>12</Demonology_Mastery_Score><Ranged_Penalty_Mod>100</Ranged_Penalty_Mod><Sneak_Damage_Mod>25</Sneak_Damage_Mod><Defense_Mod>100</Defense_Mod><Toughness>15</Toughness><Resistance>15</Resistance><Agility>5</Agility><Quick_Slots>2</Quick_Slots><Battle_Spirit>100</Battle_Spirit><Attack_Mod>100</Attack_Mod><Starting_Focus>25</Starting_Focus><Stamina>10</Stamina><N_Of_Actions>4</N_Of_Actions><Extra_Attacks_Point_Cost_Mod>50</Extra_Attacks_Point_Cost_Mod><Spirit>4</Spirit><Watch_Defense_Others_Mod>100</Watch_Defense_Others_Mod><Vigor>100</Vigor><Morale_Percentage>1000000</Morale_Percentage><Strength>6</Strength><Divination_Pool_Mod>100</Divination_Pool_Mod><Defense>5</Defense><Sight_Range>3</Sight_Range><Sight_Range_Expansion_Backward>200</Sight_Range_Expansion_Backward><Engaged_Aoo_Attack_Mod>100</Engaged_Aoo_Attack_Mod><Explore_Speed>2</Explore_Speed><Base_Willpower>10.0</Base_Willpower><Motivation>50</Motivation><Endurance_Percentage>100</Endurance_Percentage><Total_Xp>651.0</Total_Xp><Engaged_Aoo_Damage_Mod>100</Engaged_Aoo_Damage_Mod><Carrying_Capacity>65.0</Carrying_Capacity><Sorcery_Mastery_Score>11</Sorcery_Mastery_Score><Divination_Max_Sd_Mod>100</Divination_Max_Sd_Mod><Force_Mod_Source_Weight>100</Force_Mod_Source_Weight><Mastery_Points>4</Mastery_Points><Organization>100</Organization><Focus>100</Focus><Mastery_Points_Per_Level>11.0</Mastery_Points_Per_Level><Height>180</Height><N_Of_Counters>1</N_Of_Counters><Base_Wisdom>10.0</Base_Wisdom><Base_Dexterity>6.0</Base_Dexterity><Main_Hand_Gold_Percentage>70</Main_Hand_Gold_Percentage><Health>100</Health><Instant_Damage_Mod>100</Instant_Damage_Mod></params><props><Id>992</Id><Unique_Id>chars Dorian Raegsul511761099857469515</Unique_Id><Offhand_Natural_Weapon>Average Fist</Offhand_Natural_Weapon><Name>Dorian Raegsul</Name><Displayed_Name>Dorian Raegsul</Displayed_Name><Standard_Passives></Standard_Passives><Natural_Weapon>Average Fist</Natural_Weapon><Quick_Items></Quick_Items><Description></Description><Classifications>Humanoid;Hero</Classifications><Emblem>UI\emblems\std\neutral\sorcer.jpg</Emblem><Rank>New Hero</Rank><Off_Hand_Item>Superior Obsidian Orb</Off_Hand_Item><Background_Type>Stranger</Background_Type><Spellbook>Dark Fury;</Spellbook><Gender>MALE</Gender><Skills>Demonblood(1);Practiced Spellcaster;Taste of Flesh;</Skills><Principles></Principles><Inventory></Inventory><Lore></Lore><Known_Spells>Demon Mark;Summon Lesser Demon;Demonic Strength;Dark Fury;Drain Life;Blood Lust;Pain;Arcane Bolt;Time Warp;</Known_Spells><Race>Human</Race><Mastery_Groups_Misc></Mastery_Groups_Misc><Base_Type>Stranger</Base_Type><Custom_Hero_Group>ERSIDRIS;</Custom_Hero_Group><Armor_Item>Superior Silk Adept Robe</Armor_Item><Mastery_Groups_Magic></Mastery_Groups_Magic><Group>Preset</Group><Aspect>Neutral</Aspect><Verbatim_Spells>Arcane Bolt;Time Warp;Pain;Blood Lust;Demon Mark;Demonic Strength;</Verbatim_Spells><Jewelry></Jewelry><Type>chars</Type><Memorized_Spells>Summon Lesser Demon;Drain Life;</Memorized_Spells><Main_Hand_Item>Steel Stiletto</Main_Hand_Item><Image>\mini\char\std\human\Generic\6dark\possessed.jpg</Image><First_Class>Sorcerer</First_Class><Classes>Apostate;</Classes><Deity>Witch King</Deity><Soundset>chars\male\blackguard\</Soundset><Version>0.05</Version><Background>Stranger</Background><Workspace_Group>COMPLETE</Workspace_Group><Mastery_Groups_Weapons></Mastery_Groups_Weapons></props></Dorian_Raegsul></Party>
+<Party>
+    <Nithris>
+        <params>
+            <Base_Intelligence>6</Base_Intelligence>
+            <Base_Willpower>6</Base_Willpower>
+            <Base_Agility>9</Base_Agility>
+            <Armor_Gold_Percentage>40</Armor_Gold_Percentage>
+            <Attack_Mod>100</Attack_Mod>
+            <Default_Wisdom>-1</Default_Wisdom>
+            <Focus_Percentage>100</Focus_Percentage>
+            <Gold_Per_Level>100</Gold_Per_Level>
+            <Spirit>4</Spirit>
+            <Engaged_Aoo_Defense_Mod>100</Engaged_Aoo_Defense_Mod>
+            <N_Of_Actions>4</N_Of_Actions>
+            <Organization>100</Organization>
+            <Engaged_Aoo_Attack_Mod>100</Engaged_Aoo_Attack_Mod>
+            <Initiative_Bonus>5</Initiative_Bonus>
+            <Carrying_Capacity>65</Carrying_Capacity>
+            <Sneak_Defense_Mod>-50</Sneak_Defense_Mod>
+            <Sneak_Protection>100</Sneak_Protection>
+            <Health>100</Health>
+            <Willpower>6</Willpower>
+            <Engaged_Aoo_Damage_Mod>100</Engaged_Aoo_Damage_Mod>
+            <Initiative_Percentage>100</Initiative_Percentage>
+            <Endurance>30</Endurance>
+            <Defense>5</Defense>
+            <Vigor>100</Vigor>
+            <Agility>9</Agility>
+            <Aoo_Damage_Mod>100</Aoo_Damage_Mod>
+            <Memory_Remaining>4</Memory_Remaining>
+            <Girth>350</Girth>
+            <Combat_Readiness>50</Combat_Readiness>
+            <Mobility_Mastery_Score>5</Mobility_Mastery_Score>
+            <Stealth_Mastery_Score>3</Stealth_Mastery_Score>
+            <Cadence_Sta_Mod>-35</Cadence_Sta_Mod>
+            <Offhand_Damage_Mod>75</Offhand_Damage_Mod>
+            <Divination_Pool_Mod>100</Divination_Pool_Mod>
+            <Attack>5</Attack>
+            <Shadow_Mastery>6</Shadow_Mastery>
+            <Xp_Level_Mod>100</Xp_Level_Mod>
+            <Base_Charisma>4</Base_Charisma>
+            <Sneak_Damage_Mod>25</Sneak_Damage_Mod>
+            <Stealth>5</Stealth>
+            <Default_Strength>1</Default_Strength>
+            <Identity_Points>3</Identity_Points>
+            <Extra_Attacks_Point_Cost_Mod>50</Extra_Attacks_Point_Cost_Mod>
+            <Summoned_Xp_Mod>100</Summoned_Xp_Mod>
+            <Shadow_Resistance>15</Shadow_Resistance>
+            <Base_Damage>3</Base_Damage>
+            <Default_Vitality>-1</Default_Vitality>
+            <Default_Intelligence>1</Default_Intelligence>
+            <Spellpower>5</Spellpower>
+            <Total_Xp>225</Total_Xp>
+            <Fortitude>5</Fortitude>
+            <Force_Mod_Source_Weight>100</Force_Mod_Source_Weight>
+            <Blade_Mastery>10</Blade_Mastery>
+            <N_Of_Actions_Percentage>1000000</N_Of_Actions_Percentage>
+            <Essence>25</Essence>
+            <Base_Strength>6</Base_Strength>
+            <Essence_Percentage>100</Essence_Percentage>
+            <Counter_Mod>75</Counter_Mod>
+            <Stamina>10</Stamina>
+            <Height>190</Height>
+            <Toughness_Recovery>25</Toughness_Recovery>
+            <Focus>100</Focus>
+            <Side_Sight_Penalty>-1</Side_Sight_Penalty>
+            <Arcane_Resistance>15</Arcane_Resistance>
+            <Travel_Speed>4</Travel_Speed>
+            <Damage>10</Damage>
+            <Main_Hand_Gold_Percentage>70</Main_Hand_Gold_Percentage>
+            <Consumption>1</Consumption>
+            <Dexterity>9</Dexterity>
+            <Throw_Damage_Mod>100</Throw_Damage_Mod>
+            <Battle_Spirit>100</Battle_Spirit>
+            <Explore_Speed>2</Explore_Speed>
+            <Base_Spellpower>5</Base_Spellpower>
+            <Watch_Ap_Penalty_Mod>100</Watch_Ap_Penalty_Mod>
+            <Psychic_Mastery_Score>1</Psychic_Mastery_Score>
+            <Sight_Range>3</Sight_Range>
+            <Strength>6</Strength>
+            <N_Of_Counters_Percentage>1000000</N_Of_Counters_Percentage>
+            <Default_Knowledge>-1</Default_Knowledge>
+            <Morale>30</Morale>
+            <Toughness_Percentage>100</Toughness_Percentage>
+            <Interrupt_Damage>100</Interrupt_Damage>
+            <Watched_Attack_Mod>100</Watched_Attack_Mod>
+            <Level>2</Level>
+            <Sneak_Attack_Mod>125</Sneak_Attack_Mod>
+            <Base_Wisdom>5</Base_Wisdom>
+            <Knowledge>6</Knowledge>
+            <Throw_Attack_Mod>100</Throw_Attack_Mod>
+            <Ranged_Penalty_Mod>100</Ranged_Penalty_Mod>
+            <Gold_Mod>100</Gold_Mod>
+            <Toughness>15</Toughness>
+            <Divination_Max_Sd_Mod>100</Divination_Max_Sd_Mod>
+            <Default_Dexterity>3</Default_Dexterity>
+            <Base_Dexterity>9</Base_Dexterity>
+            <Upkeep_Mod>100</Upkeep_Mod>
+            <Stealth_Mastery>3</Stealth_Mastery>
+            <Detection>15</Detection>
+            <Sight_Range_Expansion_Backward>200</Sight_Range_Expansion_Backward>
+            <Watch_Attack_Others_Mod>100</Watch_Attack_Others_Mod>
+            <Watch_Attack_Mod>100</Watch_Attack_Mod>
+            <Shadow_Mastery_Score>6</Shadow_Mastery_Score>
+            <Base_Vitality>8</Base_Vitality>
+            <C_Quick_Slots>4</C_Quick_Slots>
+            <Motivation>50</Motivation>
+            <Weight>125</Weight>
+            <Base_Knowledge>6</Base_Knowledge>
+            <Default_Charisma>-1</Default_Charisma>
+            <Integrity>100</Integrity>
+            <Blade_Mastery_Score>10</Blade_Mastery_Score>
+            <Gold>9</Gold>
+            <Free_Masteries>5</Free_Masteries>
+            <Damage_Mod>100</Damage_Mod>
+            <Focus_Recover_Req>25</Focus_Recover_Req>
+            <Power>22</Power>
+            <Armor_Mod>100</Armor_Mod>
+            <Default_Agility>3</Default_Agility>
+            <Cadence_Ap_Mod>-25</Cadence_Ap_Mod>
+            <Poison_Resistance>25</Poison_Resistance>
+            <Starting_Focus>25</Starting_Focus>
+            <Mobility_Mastery>5</Mobility_Mastery>
+            <Sneak_Armor_Mod>-25</Sneak_Armor_Mod>
+            <Intelligence>6</Intelligence>
+            <Charisma>4</Charisma>
+            <Vitality>8</Vitality>
+            <Mastery_Points_Per_Level>5</Mastery_Points_Per_Level>
+            <Attr_Points_Per_Level>5</Attr_Points_Per_Level>
+            <Oneness>50</Oneness>
+            <Stamina_Percentage>100</Stamina_Percentage>
+            <Psychic_Mastery>1</Psychic_Mastery>
+            <Initiative_Modifier>10</Initiative_Modifier>
+            <Xp>21</Xp>
+            <Offhand_Attack_Mod>50</Offhand_Attack_Mod>
+            <Identity_Points_Per_Level>50</Identity_Points_Per_Level>
+            <Morale_Percentage>1000000</Morale_Percentage>
+            <Sight_Range_Expansion_Sides>150</Sight_Range_Expansion_Sides>
+            <Instant_Damage_Mod>100</Instant_Damage_Mod>
+            <Sight_Range_Expansion>200</Sight_Range_Expansion>
+            <Defense_Mod>100</Defense_Mod>
+            <Watch_Defense_Others_Mod>100</Watch_Defense_Others_Mod>
+            <Wisdom>5</Wisdom>
+            <Xp_Gain_Mod>100</Xp_Gain_Mod>
+            <Starting_Identity_Points>3</Starting_Identity_Points>
+            <N_Of_Counters>1</N_Of_Counters>
+            <Endurance_Percentage>100</Endurance_Percentage>
+            <Memorization_Cap>5</Memorization_Cap>
+            <Resistance>15</Resistance>
+            <Watch_Defense_Mod>100</Watch_Defense_Mod>
+            <Quick_Slots>2</Quick_Slots>
+        </params>
+        <props>
+            <Gender>MALE</Gender>
+            <Main_Hand_Item>Inferior Iron Stiletto</Main_Hand_Item>
+            <Aspect>Darkness</Aspect>
+            <Type>chars</Type>
+            <Name>Nithris</Name>
+            <Memorized_Spells>Shadow Bolt;Haze;</Memorized_Spells>
+            <Spellbook>Dark Restoration;</Spellbook>
+            <Id>992</Id>
+            <Deity>Night Lord</Deity>
+            <Armor_Item>Inferior Tough Leather Rogue Outfit</Armor_Item>
+            <Displayed_Name>Nithris</Displayed_Name>
+            <Quick_Items>Cheap Poison Coating;Cheap Poison Coating;</Quick_Items>
+            <Jewelry></Jewelry>
+            <Image>\mini\char\std\elf\dark\Dark Elf.png</Image>
+            <Emblem>UI\emblems\std\darkness\2night lord.jpg</Emblem>
+            <Known_Spells>Shadow Bolt;Haze;Dark Restoration;</Known_Spells>
+            <Skills>Mercurial;Dagger Specialization;Sidestep;</Skills>
+            <Inventory></Inventory>
+            <Race>Elf</Race>
+            <Classifications>Humanoid;Hero</Classifications>
+            <Natural_Weapon>Average Fist</Natural_Weapon>
+            <Principles>Freedom;Treachery;</Principles>
+            <Background>Dark Elf</Background>
+            <Unique_Id>chars Nithris-7637333812385008175</Unique_Id>
+            <Group>Preset</Group>
+            <Rank>New Hero</Rank>
+            <Off_Hand_Item></Off_Hand_Item>
+            <Soundset>chars\male\rogue\</Soundset>
+            <Offhand_Natural_Weapon>Average Fist</Offhand_Natural_Weapon>
+        </props>
+    </Nithris>
+</Party>

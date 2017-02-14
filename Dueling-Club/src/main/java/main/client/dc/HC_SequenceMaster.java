@@ -1,7 +1,5 @@
 package main.client.dc;
 
-import main.client.battle.BattleOptions.DIFFICULTY;
-import main.client.battle.arcade.PartyManager;
 import main.client.cc.CharacterCreator;
 import main.client.cc.HC_Master;
 import main.client.cc.gui.neo.choice.*;
@@ -14,12 +12,14 @@ import main.content.properties.PROPERTY;
 import main.elements.conditions.*;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.DC_Game;
 import main.game.DC_Game.GAME_MODES;
 import main.game.DC_Game.GAME_TYPE;
-import main.game.meta.ArenaArcadeMaster;
+import main.game.logic.arcade.ArenaArcadeMaster;
+import main.game.logic.generic.BattleOptions.DIFFICULTY;
+import main.game.logic.generic.PartyManager;
 import main.system.ConditionMaster;
 import main.system.SortMaster;
 import main.system.auxiliary.ListMaster;

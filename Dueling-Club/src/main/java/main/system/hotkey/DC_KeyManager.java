@@ -6,11 +6,16 @@ import main.content.OBJ_TYPES;
 import main.content.properties.G_PROPS;
 import main.data.DataManager;
 import main.game.DC_GameManager;
-import main.libgdx.anims.particles.controls.EmitterController;
+import main.libgdx.anims.controls.AnimController;
+import main.libgdx.anims.controls.Controller;
+import main.libgdx.anims.controls.Controller.CONTROLLER;
+import main.libgdx.anims.controls.EmitterController;
 import main.rules.DC_ActionManager.ADDITIONAL_MOVE_ACTIONS;
 import main.rules.DC_ActionManager.STD_ACTIONS;
 import main.rules.DC_ActionManager.STD_MODE_ACTIONS;
+import main.rules.RuleMaster;
 import main.swing.generic.components.panels.G_PagePanel;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.LogMaster;
 import main.system.util.ValueHelper;
 import main.test.debug.DebugMaster;
@@ -38,12 +43,15 @@ public class DC_KeyManager
     // private Map<Integer, HotKey> keyMap;
     private DC_GameManager mngr;
     private ACTION_TYPE action_group = ACTION_TYPE.STANDARD;
+    private Controller controller;
 
     public DC_KeyManager(DC_GameManager mngr) {
         this.mngr = mngr;
         stdActionKeyMap = new ConcurrentHashMap<>();
         stdModeKeyMap = new ConcurrentHashMap<>();
         addMoveActionKeyMap = new ConcurrentHashMap<>();
+        if (EmitterController.overrideKeys)
+            controller = EmitterController.getInstance();
     }
 
     public void initHotkeysForUnit() {
@@ -89,6 +97,8 @@ public class DC_KeyManager
     }
 
     private boolean checkCustomHotkey(KeyEvent e) {
+
+
         if (!e.isAltDown()) {
             return false;
         }
@@ -154,10 +164,39 @@ public class DC_KeyManager
         handleKeyTyped(keyMod, CHAR);
     }
 
+    private boolean checkControllerHotkey(int keyMod, char e) {
+        if (e == 'T') {//CONTROLLER_TOGGLE
+//            if (keyMod==KeyEvent.SHIFT_MASK) {
+//                    chooseEnum
+            CONTROLLER c =
+             new EnumMaster<CONTROLLER>().selectEnum(CONTROLLER.class);
+            switch (c) {
+                case ACTION:
+                    controller = null;
+                    break;
+                case ANIM:
+                    controller = AnimController.getInstance();
+                    break;
+                case DEBUG:
+//                        controller = DebugMaster.getInstance();
+                    break;
+                case RULES:
+                    controller = RuleMaster.getInstance();
+                    break;
+                case EMITTER:
+                    controller = EmitterController.getInstance();
+                    break;
+            }
+            return true;
+//            }
+        }
+        return false;
+    }
     public void handleKeyTyped(int keyMod, char CHAR) {
-        if (EmitterController.overrideKeys) {
+        if (checkControllerHotkey(keyMod, CHAR)) return;
+        if (controller != null) {
             try {
-                if (EmitterController.getInstance().charTyped(CHAR))
+                if (controller.charTyped(CHAR))
                     return;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -205,6 +244,7 @@ public class DC_KeyManager
             }
         }
     }
+
 
     private void arrowPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();

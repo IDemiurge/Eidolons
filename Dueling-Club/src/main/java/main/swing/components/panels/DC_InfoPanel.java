@@ -3,7 +3,7 @@ package main.swing.components.panels;
 import main.content.*;
 import main.entity.Entity;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.DC_UnitObj;
+import main.entity.obj.unit.DC_UnitObj;
 import main.entity.type.ObjType;
 import main.game.MicroGameState;
 import main.game.battlefield.VisionManager;

@@ -16,7 +16,7 @@ import main.elements.conditions.RefCondition;
 import main.elements.targeting.FixedTargeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.game.event.Event;
 import main.game.event.Event.STANDARD_EVENT_TYPE;
 import main.rules.mechanics.WaitRule;

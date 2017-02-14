@@ -156,6 +156,7 @@ public class FileManager {
     public static boolean isFile(String file) {
         return isFile(new File(file));
     }
+
     public static boolean isFile(File file) {
         if (file == null) {
             return false;
@@ -240,9 +241,12 @@ public class FileManager {
     public static String getUniqueFileVersion(String fileName, String folder) {
         String format = StringMaster.getFormat(fileName);
         String name = StringMaster.cropFormat(fileName);
-        if (StringMaster.isInteger("" + name.charAt(name.length() - 1))) {
-            name = name.substring(0, name.lastIndexOf(getFileVersionSeparator()));
-        }
+        if (name.lastIndexOf(getFileVersionSeparator()) > 0)
+            if (StringMaster.isInteger(name.substring(
+             name.lastIndexOf(getFileVersionSeparator()), name.length() - 1
+            ))) {
+                name = name.substring(0, name.lastIndexOf(getFileVersionSeparator()));
+            }
         String originalName = name;
 
         List<String> siblings = getFileNames(getFilesFromDirectory(folder, true));
@@ -268,16 +272,17 @@ public class FileManager {
     }
 
     public static String findFirstFile(String folder, String regex, boolean closest) {
-        List<File> files = getFilesFromDirectory(folder,   false);
+        List<File> files = getFilesFromDirectory(folder, false);
         if (files.isEmpty()) {
             return null;
         }
         if (closest) {
             return SearchMaster.findClosest(regex, getFileNames(files).toArray()).toString();
         }
-        return  new SearchMaster<String>().find(regex,  getFileNames(files));
+        return new SearchMaster<String>().find(regex, getFileNames(files));
     }
-        public static List<File> findFiles(File folder, String regex) {
+
+    public static List<File> findFiles(File folder, String regex) {
         return findFiles(folder, regex, false, true);
     }
 
@@ -289,16 +294,16 @@ public class FileManager {
                     files.add(file);
                 } else {
                     String fileName = cropFormat ? StringMaster.cropFormat(file.getName()) : file
-                            .getName();
+                     .getName();
                     if (strict) {
                         if (StringMaster.compareByChar(StringMaster.cropFileVariant(fileName),
-                                StringMaster.cropFormat(regex), false)) {
+                         StringMaster.cropFormat(regex), false)) {
                             files.add(file);
                         }
                     } else {
                         if (StringMaster.compare(StringMaster.cropFileVariant(fileName),
-                                // StringMaster.cropFormat
-                                (regex), false)) {
+                         // StringMaster.cropFormat
+                         (regex), false)) {
                             files.add(file);
                         }
                     }
@@ -331,7 +336,7 @@ public class FileManager {
                 if (content.length() == 0) {
                     if (FileManager.readFile(file).length() > content.length()) {
                         LogMaster.log(1, "*Not writing empty file! "
-                                + filepath);
+                         + filepath);
                         return false;
                     }
                 }
@@ -366,7 +371,7 @@ public class FileManager {
     public static boolean isImageFile(String name) {
         String format = StringMaster.getFormat(name);
         for (String f : ImageManager.STD_FORMATS) {
-            if (format.replaceFirst(".", ""). equalsIgnoreCase(f)) {
+            if (format.replaceFirst(".", "").equalsIgnoreCase(f)) {
                 return true;
             }
         }
@@ -412,6 +417,7 @@ public class FileManager {
     public static File getRandomFile(String path, boolean recursive) {
         return getRandomFile(getFilesFromDirectory(path, false, recursive));
     }
+
     public static File getRandomFile(String path) {
         return getRandomFile(getFilesFromDirectory(path, false));
     }

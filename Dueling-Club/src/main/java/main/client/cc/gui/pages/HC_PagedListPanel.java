@@ -8,7 +8,7 @@ import main.content.ContentManager;
 import main.content.OBJ_TYPE;
 import main.content.OBJ_TYPES;
 import main.content.parameters.PARAMETER;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;

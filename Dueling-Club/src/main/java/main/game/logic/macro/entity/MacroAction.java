@@ -5,7 +5,7 @@ import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.ActiveObj;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.DC_HeroObj;
 import main.entity.type.ObjType;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.MacroRef;

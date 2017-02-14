@@ -3,8 +3,8 @@ package main.ability.effects.special;
 import main.ability.effects.oneshot.MicroEffect;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
-import main.system.ai.logic.actions.Action;
+import main.entity.obj.unit.DC_HeroObj;
+import main.game.ai.elements.actions.Action;
 
 public class ForcedActionEffect extends MicroEffect {
 

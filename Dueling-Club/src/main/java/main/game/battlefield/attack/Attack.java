@@ -4,12 +4,10 @@ import main.ability.effects.Effect;
 import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_WeaponObj;
-import main.entity.obj.top.DC_ActiveObj;
-import main.game.battlefield.DC_AttackMaster;
-import main.game.battlefield.Damage;
-import main.rules.mechanics.InstantAttackRule.INSTANT_ATTACK_TYPE;
+import main.entity.active.DC_ActiveObj;
+import main.entity.item.DC_WeaponObj;
+import main.entity.obj.unit.DC_HeroObj;
+import main.rules.attack.InstantAttackRule.INSTANT_ATTACK_TYPE;
 import main.system.graphics.AttackAnimation;
 
 import java.util.List;
