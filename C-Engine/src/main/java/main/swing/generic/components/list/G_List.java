@@ -3,8 +3,9 @@ package main.swing.generic.components.list;
 import main.swing.generic.components.panels.G_InfoPanel;
 import main.swing.generic.components.panels.G_ListPanel;
 import main.swing.generic.misc.BORDER_CHECKER;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -169,7 +170,7 @@ public class G_List<E> extends JList<E> implements ListCellRenderer<E>, MouseLis
         // setBackground(ColorManager.getCurrentColor());
 
         if (data == null) {
-            main.system.auxiliary.LogMaster.log(0, "NULL DATA!!! ");
+            LogMaster.log(0, "NULL DATA!!! ");
             return;
         }
         if (this.data != null && data != null) {

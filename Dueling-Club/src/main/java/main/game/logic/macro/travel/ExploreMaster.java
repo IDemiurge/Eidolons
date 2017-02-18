@@ -1,8 +1,8 @@
 package main.game.logic.macro.travel;
 
 import main.content.CONTENT_CONSTS2.MACRO_STATUS;
-import main.content.parameters.MACRO_PARAMS;
-import main.content.properties.MACRO_PROPS;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.properties.MACRO_PROPS;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.entity.MacroObj;
 import main.game.logic.macro.map.Place;

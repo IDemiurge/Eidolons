@@ -1,7 +1,7 @@
 package main.file;
 
 import main.ArcaneTower;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Writer;
@@ -16,6 +16,7 @@ import main.swing.generic.services.dialog.DialogMaster;
 import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 
 import java.util.LinkedList;
@@ -239,11 +240,11 @@ public class CaptureParser {
         try {
             XML_Converter.getDoc(XML_Writer.getTypeXML(type));
             DataManager.addType(type);
-            main.system.auxiliary.LogMaster.log(1, "Capture type added " + type + " from text"
+            LogMaster.log(1, "Capture type added " + type + " from text"
                     + data);
         } catch (Exception e) {
             e.printStackTrace();
-            main.system.auxiliary.LogMaster.log(1, "*********Broken Capture type from text: "
+            LogMaster.log(1, "*********Broken Capture type from text: "
                     + data);
         }
         return type;

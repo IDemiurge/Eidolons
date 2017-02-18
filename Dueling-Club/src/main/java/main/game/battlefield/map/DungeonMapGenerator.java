@@ -1,14 +1,14 @@
 package main.game.battlefield.map;
 
-import main.content.CONTENT_CONSTS.DUNGEON_MAP_MODIFIER;
-import main.content.CONTENT_CONSTS.DUNGEON_MAP_TEMPLATE;
-import main.content.CONTENT_CONSTS.MAP_FILL_TEMPLATE;
-import main.content.OBJ_TYPES;
+import main.content.enums.DungeonEnums.DUNGEON_MAP_MODIFIER;
+import main.content.enums.DungeonEnums.DUNGEON_MAP_TEMPLATE;
+import main.content.enums.DungeonEnums.MAP_FILL_TEMPLATE;
+import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.logic.dungeon.Dungeon;
@@ -20,6 +20,9 @@ import main.game.logic.dungeon.building.DungeonPlan;
 import main.game.logic.dungeon.building.MapBlock;
 import main.game.logic.dungeon.building.MapZone;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.data.MapMaster;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.math.MathMaster;
 
@@ -134,7 +137,7 @@ public class DungeonMapGenerator {
         for (String s : StringMaster.openContainer(dungeon.getProperty(PROPS.MAP_PRESET_OBJECTS))) {
             try {
                 ObjType objType = DataManager.getType(VariableManager.removeVarPart(s),
-                        OBJ_TYPES.BF_OBJ);
+                        DC_TYPE.BF_OBJ);
                 Coordinates coordinates = new Coordinates(VariableManager.getVarPart(s));
                 if (objType != null) {
                     objMap.put(coordinates, objType);
@@ -244,7 +247,7 @@ public class DungeonMapGenerator {
     }
 
     private void fill(Coordinates c, String fillerType) {
-        ObjType type = DataManager.getType(fillerType, OBJ_TYPES.BF_OBJ);
+        ObjType type = DataManager.getType(fillerType, DC_TYPE.BF_OBJ);
         if (type == null) {
             MAP_FILL_TEMPLATE leTemplate = new EnumMaster<MAP_FILL_TEMPLATE>().retrieveEnumConst(
                     MAP_FILL_TEMPLATE.class, fillerType);
@@ -261,19 +264,19 @@ public class DungeonMapGenerator {
                 }
                 if (i >= c.getAdjacentCoordinates().size() * 2 / 5) {
                     type = RandomWizard.getObjTypeByWeight(leTemplate.getCenterObjects(),
-                            OBJ_TYPES.BF_OBJ);
+                            DC_TYPE.BF_OBJ);
                     objMap.put(c, type);
                     return;
                 }
 
                 type = RandomWizard.getObjTypeByWeight(leTemplate.getPeripheryObjects(),
-                        OBJ_TYPES.BF_OBJ);
+                        DC_TYPE.BF_OBJ);
             } else {
                 // other random groups
                 DUNGEON_MAP_TEMPLATE template = new EnumMaster<DUNGEON_MAP_TEMPLATE>()
                         .retrieveEnumConst(DUNGEON_MAP_TEMPLATE.class, fillerType);
                 if (template != null) {
-                    type = RandomWizard.getObjTypeByWeight(template.getObjects(), OBJ_TYPES.BF_OBJ);
+                    type = RandomWizard.getObjTypeByWeight(template.getObjects(), DC_TYPE.BF_OBJ);
                 }
             }
         }
@@ -296,7 +299,7 @@ public class DungeonMapGenerator {
     }
 
     private void placeObjects(String objTypeName, int n) {
-        ObjType objType = DataManager.getType(objTypeName, OBJ_TYPES.BF_OBJ);
+        ObjType objType = DataManager.getType(objTypeName, DC_TYPE.BF_OBJ);
         if (objType == null) {
             return;
         }

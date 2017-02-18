@@ -1,7 +1,7 @@
 package main.system.net;
 
 import main.client.net.GameConnector.HOST_CLIENT_CODES;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.system.auxiliary.StringMaster;
 
 import java.util.Random;

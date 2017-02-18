@@ -1,9 +1,10 @@
 package main.client.net;
 
 import main.client.gui.main.GameListPanel;
-import main.game.HostedGame;
+import main.game.core.game.HostedGame;
 import main.swing.generic.components.list.GenericList;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.net.WaitingThread;
 import main.system.net.socket.ServerConnector;
 import main.system.net.socket.ServerConnector.CODES;
@@ -37,7 +38,7 @@ public class GameList extends GenericList<HostedGame> {
 
         setList(v);
         setListData(list);
-        main.system.auxiliary.LogMaster.log(0, getModel().getSize()
+        LogMaster.log(0, getModel().getSize()
                 + " Games in List: " + v);
         gameListPanel.refresh();
         this.getParent().revalidate();

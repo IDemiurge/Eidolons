@@ -1,20 +1,20 @@
 package main.swing.components.panels.page.info.element;
 
 import main.ability.AbilityObj;
-import main.content.CONTENT_CONSTS.ABILITY_GROUP;
-import main.content.CONTENT_CONSTS.CLASSIFICATIONS;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.AbilityEnums;
+import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
+import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.swing.components.panels.page.small.IconListPanel;
 import main.swing.components.panels.page.small.SmallItem;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.text.ToolTipMaster.TOOLTIP_TYPE;
 import main.system.text.TooltipMouseListener;
@@ -27,7 +27,7 @@ import java.util.List;
 public class ContainerIconElement extends G_PagePanel<SmallItem> implements EntityValueComponent {
     private static final int VERSION = 4;
     private static final String DISPLAYED_PASSIVES = StringMaster
-            .getWellFormattedString(ABILITY_GROUP.STD_PASSIVE.toString());
+            .getWellFormattedString(AbilityEnums.ABILITY_GROUP.STD_PASSIVE.toString());
     private static final int PAGE_SIZE_SMALL = 6;
     private int iconSize;
     private Entity entity;

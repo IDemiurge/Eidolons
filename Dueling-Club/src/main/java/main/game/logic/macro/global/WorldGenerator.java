@@ -1,16 +1,16 @@
 package main.game.logic.macro.global;
 
-import main.content.MACRO_OBJ_TYPES;
-import main.content.parameters.MACRO_PARAMS;
-import main.content.properties.MACRO_PROPS;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
+import main.game.logic.faction.FactionMaster;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.MacroRef;
-import main.game.logic.macro.faction.FactionMaster;
 import main.game.logic.macro.map.Area;
 import main.game.logic.macro.map.Place;
 import main.game.logic.macro.map.Region;

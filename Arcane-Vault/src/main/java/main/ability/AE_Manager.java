@@ -4,10 +4,10 @@ import main.ability.gui.AE_EditPanel;
 import main.ability.gui.AE_Element;
 import main.ability.gui.AE_MainPanel;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
-import main.content.properties.MACRO_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.MACRO_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.ability.AE_Item;
 import main.data.ability.ARGS;
@@ -16,6 +16,7 @@ import main.data.ability.construct.VariableManager;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjType;
 import main.launch.ArcaneVault;
+import main.system.auxiliary.log.LogMaster;
 import org.w3c.dom.Node;
 
 import javax.swing.*;
@@ -53,18 +54,18 @@ public class AE_Manager {
     public static AE_MainPanel getAE_View(String typeName) {
         AE_MainPanel panel = cacheMap.get(typeName);
         if (panel == null) {
-            main.system.auxiliary.LogMaster.log(0, "creating AE view ..."
+            LogMaster.log(0, "creating AE view ..."
                     + typeName);
             panel = new AE_MainPanel((typeName));
             cacheMap.put(typeName, panel);
             smallCache = new HashMap<>();
             smallCaches.put(panel, smallCache);
         } else {
-            main.system.auxiliary.LogMaster.log(0, "AE view FOUND! - "
+            LogMaster.log(0, "AE view FOUND! - "
                     + typeName);
             smallCache = smallCaches.get(panel);
             if (smallCache == null) {
-                main.system.auxiliary.LogMaster.log(0,
+                LogMaster.log(0,
                         "*** smallCache NOT FOUND! - " + typeName);
             }
         }
@@ -80,7 +81,7 @@ public class AE_Manager {
 //			DialogueType diagType = (DialogueType) type;
 //			return diagType.getDoc();
         }
-        type = DataManager.getType(typeName, OBJ_TYPES.ABILS.getName());
+        type = DataManager.getType(typeName, DC_TYPE.ABILS.getName());
         AbilityType abilType = (AbilityType) type;
         // return XML_Converter.getDoc(abilType.getProperty(G_PROPS.ABILITIES));
         return abilType.getDoc();
@@ -91,7 +92,7 @@ public class AE_Manager {
         OBJ_TYPE TYPE = null;
         PROPERTY XML_PROP = null;
         if (!ArcaneVault.isMacroMode()) {
-            TYPE = OBJ_TYPES.ABILS;
+            TYPE = DC_TYPE.ABILS;
             XML_PROP = G_PROPS.ABILITIES;
         } else {
             // TYPE = MACRO_OBJ_TYPES.DIALOGUE;
@@ -133,7 +134,7 @@ public class AE_Manager {
             newXml = XML_Converter.getXMLfromTree(tree);
         } catch (Exception e) {
             e.printStackTrace();
-            main.system.auxiliary.LogMaster.log(2, type.getName()
+            LogMaster.log(2, type.getName()
                     + " is not ready to be saved!");
             return;
         }

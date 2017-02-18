@@ -2,10 +2,10 @@ package main.gui.builders;
 
 import main.ability.utilities.NodeMaster;
 import main.client.dc.Simulation;
-import main.content.MACRO_OBJ_TYPES;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
+import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.gui.components.tree.AV_Tree;
@@ -13,7 +13,7 @@ import main.gui.components.tree.AV_TreeSelectionListener;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.Builder;
 import main.system.auxiliary.CloneMaster;
-import main.system.auxiliary.ColorManager;
+import main.system.graphics.ColorManager;
 import main.utilities.workspace.Workspace;
 
 import javax.swing.*;
@@ -229,7 +229,7 @@ public class TreeViewBuilder extends Builder {
 
     private ObjType getEmptyType(String TYPE, String newName) {
         ObjType type = new ObjType(newName);
-        OBJ_TYPE t = OBJ_TYPES.getType(TYPE);
+        OBJ_TYPE t = DC_TYPE.getType(TYPE);
         if (ArcaneVault.isMacroMode()) {
             t = MACRO_OBJ_TYPES.getType(TYPE);
         }

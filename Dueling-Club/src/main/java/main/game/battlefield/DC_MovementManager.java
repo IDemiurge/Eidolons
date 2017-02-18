@@ -2,41 +2,41 @@ package main.game.battlefield;
 
 import main.ability.effects.MoveEffect;
 import main.ability.effects.SelfMoveEffect;
-import main.content.CONTENT_CONSTS.ACTION_TYPE;
-import main.content.CONTENT_CONSTS.AI_LOGIC;
 import main.content.PARAMS;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.system.AiEnums;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.elements.Filter;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.active.DC_ActiveObj;
+import main.entity.active.DC_UnitAction;
 import main.entity.obj.DC_Cell;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_UnitAction;
 import main.entity.obj.Obj;
-import main.entity.obj.top.DC_ActiveObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
+import main.game.ai.elements.actions.Action;
+import main.game.ai.elements.actions.ActionManager;
+import main.game.ai.tools.path.ActionPath;
+import main.game.ai.tools.path.PathBuilder;
+import main.game.ai.tools.target.EffectFinder;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.Coordinates.UNIT_DIRECTION;
 import main.game.battlefield.pathing.Path;
 import main.game.battlefield.pathing.PathingManager;
-import main.game.event.Event;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
-import main.rules.DC_ActionManager;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.generic.DC_ActionManager;
 import main.rules.mechanics.CollisionRule;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 import main.system.CustomValueManager;
-import main.system.FilterMaster;
-import main.system.ai.logic.actions.Action;
-import main.system.ai.logic.actions.ActionManager;
-import main.system.ai.logic.path.ActionPath;
-import main.system.ai.logic.path.PathBuilder;
-import main.system.ai.logic.target.EffectMaster;
+import main.system.entity.FilterMaster;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.PositionMaster;
 
 import java.util.*;
@@ -44,7 +44,7 @@ import java.util.*;
 public class DC_MovementManager implements MovementManager {
 
     private static DC_MovementManager instance;
-    Map<DC_HeroObj, List<ActionPath>> pathCache = new HashMap<>();
+    Map<Unit, List<ActionPath>> pathCache = new HashMap<>();
     private DC_Game game;
     private PathingManager pathingManager;
 
@@ -56,7 +56,7 @@ public class DC_MovementManager implements MovementManager {
 
     public static Coordinates getMovementDestinationCoordinate(DC_ActiveObj active) {
         try {
-            MoveEffect effect = (MoveEffect) EffectMaster.getEffectsOfClass(active.getAbilities(),
+            MoveEffect effect = (MoveEffect) EffectFinder.getEffectsOfClass(active.getAbilities(),
                     MoveEffect.class).get(0);
             effect.setRef(active.getRef());
             if (effect instanceof SelfMoveEffect) {
@@ -70,23 +70,23 @@ public class DC_MovementManager implements MovementManager {
         return null;
     }
 
-    public static Action getFirstAction(DC_HeroObj unit, Coordinates coordinates) {
+    public static Action getFirstAction(Unit unit, Coordinates coordinates) {
         List<ActionPath> paths = instance.buildPath(unit, coordinates);
         ActionPath path = paths.get(0);
         return path.getActions().get(0);
     }
 
-    public static List<DC_ActiveObj> getMoves(DC_HeroObj unit) {
+    public static List<DC_ActiveObj> getMoves(Unit unit) {
         List<DC_ActiveObj> moveActions = new ArrayList<>();
-        List<DC_UnitAction> actions = unit.getActionMap().get(ACTION_TYPE.SPECIAL_MOVE);
+        List<DC_UnitAction> actions = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_MOVE);
         if (actions != null) {
             moveActions = new ArrayList<>(Arrays.asList(actions.toArray(new DC_ActiveObj[actions
                     .size()])));
         }
         if (moveActions.isEmpty()) {
-            moveActions.addAll(unit.getActionMap().get(ACTION_TYPE.ADDITIONAL_MOVE));
+            moveActions.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE));
         } else {
-            for (DC_UnitAction a : unit.getActionMap().get(ACTION_TYPE.ADDITIONAL_MOVE)) {
+            for (DC_UnitAction a : unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE)) {
                 String name = a.getName();
                 switch (name) { // have a switch to turn off all default moves!
                     case "Clumsy Leap":
@@ -106,7 +106,7 @@ public class DC_MovementManager implements MovementManager {
             }
         }
 
-        moveActions.addAll(ActionManager.getSpells(AI_LOGIC.MOVE, unit));
+        moveActions.addAll(ActionManager.getSpells(AiEnums.AI_LOGIC.MOVE, unit));
 
         moveActions = DC_ActionManager.filterActionsByCanBePaid(moveActions);
         return moveActions;
@@ -128,7 +128,7 @@ public class DC_MovementManager implements MovementManager {
         moveTo(path.getTargetCoordinates());
     }
 
-    public List<ActionPath> buildPath(DC_HeroObj unit, Coordinates coordinates) {
+    public List<ActionPath> buildPath(Unit unit, Coordinates coordinates) {
         List<DC_ActiveObj> moves = getMoves(unit);
         PathBuilder builder = new PathBuilder(moves, new Action(unit.getAction("Move")));
         List<ActionPath> paths = builder.build(new ListMaster<Coordinates>().getList(coordinates));
@@ -146,7 +146,7 @@ public class DC_MovementManager implements MovementManager {
     }
 
     public void moveTo(Coordinates coordinates) {
-        DC_HeroObj unit = game.getManager().getActiveObj();
+        Unit unit = game.getManager().getActiveObj();
         List<ActionPath> paths = buildPath(unit, coordinates);
         if (paths == null) {
             Coordinates adjacentCoordinate = coordinates.getAdjacentCoordinate(DirectionMaster
@@ -184,7 +184,7 @@ public class DC_MovementManager implements MovementManager {
 
     @Deprecated
     public boolean canMove(Obj obj, Obj cell) {
-        DC_HeroObj unit = (DC_HeroObj) obj;
+        Unit unit = (Unit) obj;
         int moves = 0;
         int actions = unit.getIntParam(PARAMS.C_N_OF_ACTIONS);
         if (moves == 0 || actions == 0) {
@@ -224,10 +224,10 @@ public class DC_MovementManager implements MovementManager {
 
     @Override
     public Path getPath(Obj unit, Obj cell) {
-        return getPath((DC_HeroObj) unit, cell);
+        return getPath((Unit) unit, cell);
     }
 
-    public Path getPath(DC_HeroObj unit, Obj cell) {
+    public Path getPath(Unit unit, Obj cell) {
         if (getPathingManager().isOccupied(cell.getCoordinates())) {
             return null;
         }
@@ -266,10 +266,10 @@ public class DC_MovementManager implements MovementManager {
 
     @Override
     public boolean move(Obj obj, Coordinates c, boolean free, MOVE_MODIFIER mod, Ref ref) {
-        return move((DC_HeroObj) obj, (DC_Cell) getGrid().getCell(c), free, null, mod, ref);
+        return move((Unit) obj, (DC_Cell) getGrid().getCell(c), free, null, mod, ref);
     }
 
-    public boolean move(DC_HeroObj obj, DC_Cell cell, boolean free, Path path, MOVE_MODIFIER mod,
+    public boolean move(Unit obj, DC_Cell cell, boolean free, Path path, MOVE_MODIFIER mod,
                         Ref ref) {
         // if (path == null) {
         // if (!free)
@@ -297,12 +297,12 @@ public class DC_MovementManager implements MovementManager {
         int x = cell.getX();
         int y = cell.getY();
         if (mod != MOVE_MODIFIER.TELEPORT) { // TODO UPDATE!
-            DC_HeroObj moveObj = (DC_HeroObj) getGrid().getObj(cell.getCoordinates());
+            Unit moveObj = (Unit) getGrid().getObj(cell.getCoordinates());
             if (moveObj != null) {
                 if (ref.getActive() instanceof DC_ActiveObj) {
                     DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
-                    if (moveObj instanceof DC_HeroObj) {
-                        DC_HeroObj heroObj = moveObj;
+                    if (moveObj instanceof Unit) {
+                        Unit heroObj = moveObj;
                         Coordinates c = CollisionRule.collision(ref, activeObj, moveObj, heroObj,
                                 false, activeObj.getIntParam(PARAMS.FORCE));
                         if (c != null) {// TODO UPDATE!
@@ -327,7 +327,7 @@ public class DC_MovementManager implements MovementManager {
         return game.fireEvent(event);
     }
 
-    private boolean checkCanMove(DC_HeroObj obj, DC_Cell cell, MOVE_MODIFIER mod) {
+    private boolean checkCanMove(Unit obj, DC_Cell cell, MOVE_MODIFIER mod) {
         if (pathingManager.isOccupied(cell.getCoordinates())) {
             return false;
         }

@@ -13,8 +13,16 @@ import main.ability.conditions.special.SneakCondition;
 import main.ability.conditions.special.SpellCondition;
 import main.ability.conditions.special.SpellCondition.SPELL_CHECK;
 import main.content.CONTENT_CONSTS.*;
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
+import main.content.DC_TYPE;
+import main.content.enums.*;
+import main.content.enums.entity.AbilityEnums.TARGETING_MODIFIERS;
+import main.content.enums.entity.BfObjEnums;
+import main.content.enums.entity.HeroEnums;
+import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.FACING_SINGLE;
+import main.content.enums.rules.VisionEnums;
+import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.*;
 import main.elements.conditions.standard.ClassificationCondition;
@@ -25,10 +33,11 @@ import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates.UNIT_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.entity.ConditionMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -39,7 +48,7 @@ public class DC_ConditionMaster extends ConditionMaster {
     }
 
     public static Condition getAliveFilterCondition() {
-        return new NotCondition(new StatusCheckCondition(STATUS.DEAD));
+        return new NotCondition(new StatusCheckCondition(UnitEnums.STATUS.DEAD));
     }
 
     private static Condition findConditionTemplate(String string) {
@@ -67,28 +76,28 @@ public class DC_ConditionMaster extends ConditionMaster {
             case RANGE:
                 return new RangeCondition();
             case FACING:
-                return new FacingCondition(FACING_SINGLE.IN_FRONT);
+                return new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT);
             case VISION:
-                return new VisibilityCondition(UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT);
+                return new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT);
             case NO_VISION:
-                return new NotCondition(new VisibilityCondition(UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT));
+                return new NotCondition(new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT));
             case SNEAKY:
                 return new SneakCondition();
             case ONLY_LIVING:
                 return ConditionMaster.getLivingMatchCondition();
             case NO_EVIL:
                 return new NotCondition(new OrConditions(new ClassificationCondition(
-                        CLASSIFICATIONS.UNDEAD),
-                        new ClassificationCondition(CLASSIFICATIONS.DEMON), new PropCondition(
-                        G_PROPS.PRINCIPLES, PRINCIPLES.TREACHERY)));
+                        UnitEnums.CLASSIFICATIONS.UNDEAD),
+                        new ClassificationCondition(UnitEnums.CLASSIFICATIONS.DEMON), new PropCondition(
+                        G_PROPS.PRINCIPLES, HeroEnums.PRINCIPLES.TREACHERY)));
             case ONLY_EVIL:
                 return new OrConditions(
-                        new ClassificationCondition(CLASSIFICATIONS.UNDEAD),
-                        new ClassificationCondition(CLASSIFICATIONS.DEMON), new PropCondition(
-                        G_PROPS.PRINCIPLES, PRINCIPLES.TREACHERY));
+                        new ClassificationCondition(UnitEnums.CLASSIFICATIONS.UNDEAD),
+                        new ClassificationCondition(UnitEnums.CLASSIFICATIONS.DEMON), new PropCondition(
+                        G_PROPS.PRINCIPLES, HeroEnums.PRINCIPLES.TREACHERY));
 
             case ONLY_UNDEAD:
-                return new ClassificationCondition(CLASSIFICATIONS.UNDEAD);
+                return new ClassificationCondition(UnitEnums.CLASSIFICATIONS.UNDEAD);
             case CLEAR_SHOT:
                 return getClearShotCondition(obj_ref);
             case NOT_SELF:
@@ -100,17 +109,17 @@ public class DC_ConditionMaster extends ConditionMaster {
                         + ""));
             case NO_WALLS:
             return     new NotCondition(
-                        new PropCondition(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.WALL+""));
+                        new PropCondition(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.WALL+""));
 
             case NO_WATER:  return   new NotCondition(
-                 new PropCondition(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.WATER+""));
+                 new PropCondition(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.WATER+""));
 
             case NO_NEUTRALS:
                 return new NotCondition(new OwnershipCondition(KEYS.MATCH + "", true));
             case NO_LIVING:
                 return new NotCondition(ConditionMaster.getLivingMatchCondition());
             case NO_UNDEAD:
-                return new NotCondition(new ClassificationCondition(CLASSIFICATIONS.UNDEAD));
+                return new NotCondition(new ClassificationCondition(UnitEnums.CLASSIFICATIONS.UNDEAD));
             default:
                 break;
         }
@@ -197,46 +206,46 @@ public class DC_ConditionMaster extends ConditionMaster {
 
         switch (template) {
             case ANY_ARMOR: {
-                c.add(new ObjTypeComparison(OBJ_TYPES.ARMOR));
+                c.add(new ObjTypeComparison(DC_TYPE.ARMOR));
                 break;
             }
             case ANY_WEAPON: {
-                c.add(new NotCondition(new PropCondition(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.NATURAL
+                c.add(new NotCondition(new PropCondition(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.NATURAL
                         .toString())));
-                c.add(new OrConditions(new ObjTypeComparison(OBJ_TYPES.WEAPONS), new Conditions(
-                        new PropCondition(G_PROPS.STD_BOOLS, STD_BOOLS.WRAPPED_ITEM),
-                        new ObjTypeComparison(OBJ_TYPES.ITEMS))));
+                c.add(new OrConditions(new ObjTypeComparison(DC_TYPE.WEAPONS), new Conditions(
+                        new PropCondition(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.WRAPPED_ITEM),
+                        new ObjTypeComparison(DC_TYPE.ITEMS))));
                 break;
             }
             case ANY_ITEM: {
-                c.add(new ObjTypeComparison(OBJ_TYPES.ITEMS));
+                c.add(new ObjTypeComparison(DC_TYPE.ITEMS));
                 break;
             }
             case ENEMY_ARMOR: {
-                c.add(new ObjTypeComparison(OBJ_TYPES.ARMOR));
+                c.add(new ObjTypeComparison(DC_TYPE.ARMOR));
                 c.add(ConditionMaster.getEnemyCondition());
                 break;
             }
             case ENEMY_ITEM: {
-                c.add(new ObjTypeComparison(OBJ_TYPES.ITEMS));
+                c.add(new ObjTypeComparison(DC_TYPE.ITEMS));
                 c.add(ConditionMaster.getEnemyCondition());
                 break;
             }
             case ENEMY_WEAPON: {
-                c.add(new NotCondition(new PropCondition(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.NATURAL
+                c.add(new NotCondition(new PropCondition(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.NATURAL
                         .toString())));
-                c.add(new OrConditions(new ObjTypeComparison(OBJ_TYPES.ITEMS),
-                        new ObjTypeComparison(OBJ_TYPES.WEAPONS)));
+                c.add(new OrConditions(new ObjTypeComparison(DC_TYPE.ITEMS),
+                        new ObjTypeComparison(DC_TYPE.WEAPONS)));
                 c.add(ConditionMaster.getEnemyCondition());
                 break;
             }
             case MY_ITEM: {
-                c.add(new ObjTypeComparison(OBJ_TYPES.ITEMS));
+                c.add(new ObjTypeComparison(DC_TYPE.ITEMS));
                 break;
             }
 
             case MY_SPELLBOOK:
-                c.add(ConditionMaster.getTYPECondition(OBJ_TYPES.SPELLS));
+                c.add(ConditionMaster.getTYPECondition(DC_TYPE.SPELLS));
                 c.add(new SpellCondition(SPELL_CHECK.ACTIVE));
                 c.add(new RefCondition(KEYS.MATCH_SOURCE, KEYS.SOURCE));
                 break;
@@ -247,17 +256,17 @@ public class DC_ConditionMaster extends ConditionMaster {
                 break;
             }
             case MY_WEAPON: {
-                c.add(new NotCondition(new PropCondition(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.NATURAL
+                c.add(new NotCondition(new PropCondition(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.NATURAL
                         .toString())));
-                c.add(new OrConditions(new ObjTypeComparison(OBJ_TYPES.WEAPONS), new Conditions(
-                        new PropCondition(G_PROPS.STD_BOOLS, STD_BOOLS.WRAPPED_ITEM),
-                        new ObjTypeComparison(OBJ_TYPES.ITEMS))));
+                c.add(new OrConditions(new ObjTypeComparison(DC_TYPE.WEAPONS), new Conditions(
+                        new PropCondition(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.WRAPPED_ITEM),
+                        new ObjTypeComparison(DC_TYPE.ITEMS))));
                 // c.add(new RefCondition(KEYS.MATCH_SOURCE, KEYS.SOURCE));
                 // c.add(new RefCondition(KEYS.WEAPON, KEYS.MATCH));
                 break;
             }
             case CELL: {
-                c.add(ConditionMaster.getTYPECondition(OBJ_TYPES.TERRAIN));
+                c.add(ConditionMaster.getTYPECondition(DC_TYPE.TERRAIN));
                 c.add(getRangeCondition());
                 c.add(new CellCondition(true));
                 break;
@@ -265,7 +274,7 @@ public class DC_ConditionMaster extends ConditionMaster {
             case BLAST: {
                 c.add(ConditionMaster.getUnit_Char_BfObj_TerrainTypeCondition());
                 c.add(getRangeCondition());
-                c.add(new FacingCondition(FACING_SINGLE.IN_FRONT));
+                c.add(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT));
                 c.add(new NotCondition(ConditionMaster.getSelfFilterCondition()));
                 break;
             }
@@ -273,17 +282,17 @@ public class DC_ConditionMaster extends ConditionMaster {
             case SHOT:
                 c.add(ConditionMaster.getUnit_Char_BfObjTypeCondition());
                 c.add(new NotCondition(ConditionMaster.getSelfFilterCondition()));
-                c.add(new FacingCondition(FACING_SINGLE.IN_FRONT));
+                c.add(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT));
                 c.add(getRangeCondition());
-                c.add(new OrConditions(new StdPassiveCondition(STANDARD_PASSIVES.DARKVISION),
-                        new NotCondition(new VisibilityCondition(UNIT_TO_UNIT_VISION.CONCEALED))));
+                c.add(new OrConditions(new StdPassiveCondition(UnitEnums.STANDARD_PASSIVES.DARKVISION),
+                        new NotCondition(new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.CONCEALED))));
                 c.add(getClearShotCondition(KEYS.MATCH.name())); //
                 // c.add(new NotCondition(new VisibilityCondition(
                 // UNIT_TO_PLAYER_VISION.UNKNOWN))); // ??? TODO PERHAPS MAKE
                 // ALL SHOT LIKE THIS!
                 break;
             case PRECISE_SHOT:
-                c.add(new VisibilityCondition(UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT));
+                c.add(new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT));
                 break;
             case UNOBSTRUCTED_SHOT:
                 c.add(new NotCondition(ConditionMaster.getSelfFilterCondition()));
@@ -296,7 +305,7 @@ public class DC_ConditionMaster extends ConditionMaster {
                 c.add(DC_ConditionMaster.getMoveFilterCondition());
                 break;
             case BF_OBJ:
-                c.add(ConditionMaster.getTYPECondition(OBJ_TYPES.BF_OBJ));
+                c.add(ConditionMaster.getTYPECondition(DC_TYPE.BF_OBJ));
                 break;
             case ANY_ALLY:
                 c.add(ConditionMaster.getUnit_CharTypeCondition());
@@ -311,22 +320,22 @@ public class DC_ConditionMaster extends ConditionMaster {
                 break;
 
             case ATTACK:
-                c.add(new VisibilityCondition(UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT));
+                c.add(new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT));
 
                 List<FACING_SINGLE> list = new LinkedList<>();
-                list.add(FACING_SINGLE.IN_FRONT);
+                list.add(UnitEnums.FACING_SINGLE.IN_FRONT);
 
-                c.add(new OrConditions(new FacingCondition(FACING_SINGLE.IN_FRONT),
+                c.add(new OrConditions(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT),
 
-                        new Conditions(new FacingCondition(FACING_SINGLE.IN_FRONT, FACING_SINGLE.BEHIND),
+                        new Conditions(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT, UnitEnums.FACING_SINGLE.BEHIND),
                                 new StringComparison(StringMaster.getValueRef(KEYS.SOURCE,
-                                        G_PROPS.STANDARD_PASSIVES), STANDARD_PASSIVES.HIND_REACH + "",
+                                        G_PROPS.STANDARD_PASSIVES), UnitEnums.STANDARD_PASSIVES.HIND_REACH + "",
                                         false)),
 
-                        new Conditions(new FacingCondition(FACING_SINGLE.IN_FRONT,
-                                FACING_SINGLE.TO_THE_SIDE), new StringComparison(StringMaster.getValueRef(
+                        new Conditions(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT,
+                                UnitEnums.FACING_SINGLE.TO_THE_SIDE), new StringComparison(StringMaster.getValueRef(
                                 KEYS.SOURCE, G_PROPS.STANDARD_PASSIVES),
-                                STANDARD_PASSIVES.BROAD_REACH + "", false))
+                                UnitEnums.STANDARD_PASSIVES.BROAD_REACH + "", false))
 
                 ));
                 c.add(ConditionMaster.getAttackConditions());
@@ -338,9 +347,9 @@ public class DC_ConditionMaster extends ConditionMaster {
                 break;
             case CLAIM: {
 
-                c.add(new NotCondition(new StatusCheckCondition(STATUS.CHANNELED)));
+                c.add(new NotCondition(new StatusCheckCondition(UnitEnums.STATUS.CHANNELED)));
                 c.add(new NotCondition(new OwnershipCondition(KEYS.SOURCE, KEYS.MATCH)));
-                c.add(ConditionMaster.getTYPECondition(OBJ_TYPES.BF_OBJ));
+                c.add(ConditionMaster.getTYPECondition(DC_TYPE.BF_OBJ));
                 c.add(ConditionMaster.getDistanceFilterCondition(Ref.KEYS.SOURCE.name(),
                         "{ACTIVE_RANGE}"));
 
@@ -382,12 +391,12 @@ public class DC_ConditionMaster extends ConditionMaster {
     public static Condition getRetainConditionsFromTemplate(RETAIN_CONDITIONS template) {
         switch (template) {
             case CASTER_ALIVE:
-                new NotCondition(new StringComparison("{SOURCE_STATUS}", "" + STATUS.DEAD, false));
+                new NotCondition(new StringComparison("{SOURCE_STATUS}", "" + UnitEnums.STATUS.DEAD, false));
                 break;
             case CASTER_CONSCIOUS:
                 new MicroCondition() {
                     public boolean check() {
-                        DC_HeroObj hero = (DC_HeroObj) ref.getObj(KEYS.SOURCE);
+                        Unit hero = (Unit) ref.getObj(KEYS.SOURCE);
                         return !hero.checkUncontrollable();
                     }
                 };
@@ -413,11 +422,11 @@ public class DC_ConditionMaster extends ConditionMaster {
                 return new RefCondition("source_party", "match_party");
 
             case ACTIONS:
-                return new Conditions(ConditionMaster.getTYPECondition(OBJ_TYPES.ACTIONS),
+                return new Conditions(ConditionMaster.getTYPECondition(DC_TYPE.ACTIONS),
                         new RefCondition(KEYS.SOURCE, KEYS.MATCH_SOURCE));
 
             case SPELLS:
-                return new Conditions(ConditionMaster.getTYPECondition(OBJ_TYPES.SPELLS),
+                return new Conditions(ConditionMaster.getTYPECondition(DC_TYPE.SPELLS),
                         new RefCondition(KEYS.SOURCE, KEYS.MATCH_SOURCE));
 
             case WAVE:
@@ -444,7 +453,7 @@ public class DC_ConditionMaster extends ConditionMaster {
         return null;
     }
 
-    public static boolean checkLiving(DC_HeroObj hero) {
+    public static boolean checkLiving(Unit hero) {
 
         return checkCondition(ConditionMaster.getLivingCondition(KEYS.SOURCE.toString()), hero
                 .getRef());

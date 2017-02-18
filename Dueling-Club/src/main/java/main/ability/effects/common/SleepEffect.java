@@ -7,13 +7,13 @@ import main.ability.effects.RemoveBuffEffect;
 import main.ability.effects.containers.RollEffect;
 import main.ability.effects.oneshot.common.AddTriggerEffect;
 import main.ability.effects.oneshot.special.AddStatusEffect;
-import main.content.CONTENT_CONSTS.ROLL_TYPES;
-import main.content.CONTENT_CONSTS.STATUS;
-import main.content.CONTENT_CONSTS.STD_BUFF_NAMES;
+import main.content.enums.GenericEnums;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.RefCondition;
 import main.entity.Ref.KEYS;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 
 public class SleepEffect extends DC_Effect {
 
@@ -29,7 +29,7 @@ public class SleepEffect extends DC_Effect {
         // statically parsed Spellpower/Mastery?
 
         // add roll on hit - dmg vs max toughness
-        RollEffect rollEffect = new RollEffect(ROLL_TYPES.MIND_AFFECTING,
+        RollEffect rollEffect = new RollEffect(GenericEnums.ROLL_TYPES.MIND_AFFECTING,
                 new RemoveBuffEffect(getBuffName()));
 
         Conditions conditions = new Conditions(new RefCondition(
@@ -37,7 +37,7 @@ public class SleepEffect extends DC_Effect {
 
         );
         return new AddBuffEffect(getBuffName(), new Effects(
-                new AddStatusEffect(STATUS.ASLEEP), new AddTriggerEffect(
+                new AddStatusEffect(UnitEnums.STATUS.ASLEEP), new AddTriggerEffect(
                 STANDARD_EVENT_TYPE.UNIT_IS_DEALT_TOUGHNESS_DAMAGE,
                 conditions, KEYS.EVENT_TARGET, rollEffect))).apply(ref);
         // roll ref needs to be tested!
@@ -47,6 +47,6 @@ public class SleepEffect extends DC_Effect {
         if (buffName != null) {
             return buffName;
         }
-        return STD_BUFF_NAMES.Asleep.name();
+        return MetaEnums.STD_BUFF_NAMES.Asleep.name();
     }
 }

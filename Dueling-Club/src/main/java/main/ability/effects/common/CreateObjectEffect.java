@@ -4,10 +4,10 @@ import main.ability.effects.Effects;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
-import main.game.battlefield.BuffMaster;
+import main.game.core.master.BuffMaster;
 import main.system.auxiliary.StringMaster;
 
 public class CreateObjectEffect extends SummonEffect {
@@ -82,7 +82,7 @@ public class CreateObjectEffect extends SummonEffect {
 
     @Override
     protected OBJ_TYPE getTYPE() {
-        return OBJ_TYPES.BF_OBJ;
+        return DC_TYPE.BF_OBJ;
     }
 
 }

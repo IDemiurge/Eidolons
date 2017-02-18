@@ -2,7 +2,7 @@ package main.game.logic.macro.gui.map;
 
 import main.game.logic.macro.gui.MacroGuiManager;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 import java.awt.*;
 import java.util.HashMap;

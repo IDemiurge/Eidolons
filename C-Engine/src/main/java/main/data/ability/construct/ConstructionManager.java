@@ -3,6 +3,7 @@ package main.data.ability.construct;
 import main.data.ability.AE_Item;
 import main.data.ability.Mapper;
 import main.data.xml.XML_Converter;
+import main.system.auxiliary.log.LogMaster;
 import org.w3c.dom.Node;
 
 import java.util.LinkedList;
@@ -30,13 +31,13 @@ public class ConstructionManager {
     private static Construct getConstruct(Node node) {
         AE_Item item = Mapper.getItem(node);
         if (item.isPrimitive()) {
-            main.system.auxiliary.LogMaster.log(0, "PRIMITIVE: "
+            LogMaster.log(0, "PRIMITIVE: "
                     + node.getNodeName() + node.getTextContent());
             return new Construct(node.getNodeName(), node.getTextContent());
         }
 
         if (item.isENUM()) {
-            main.system.auxiliary.LogMaster.log(0, "ENUM: "
+            LogMaster.log(0, "ENUM: "
                     + node.getNodeName() + node.getTextContent());
             return new Construct(node.getNodeName(), node.getTextContent(),
                     true);

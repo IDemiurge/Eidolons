@@ -3,14 +3,14 @@ package main.swing.frames;
 import main.ability.InventoryManager;
 import main.client.cc.gui.tabs.HeroItemTab;
 import main.client.cc.gui.tabs.operation.ItemSwapPanel;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.swing.generic.components.G_Panel.VISUALS;
 
 public class PickUpWindow extends OperationWindow {
 
     private ItemSwapPanel tabComp;
 
-    public PickUpWindow(InventoryManager inventoryManager, DC_HeroObj hero,
+    public PickUpWindow(InventoryManager inventoryManager, Unit hero,
                         Integer nOfOperations) {
         super(inventoryManager, hero, nOfOperations);
     }

@@ -2,7 +2,7 @@ package main.time;
 
 import main.ArcaneTower;
 import main.content.OBJ_TYPE;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.type.ObjType;

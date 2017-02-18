@@ -1,15 +1,18 @@
 package main.content;
 
-import main.content.CONTENT_CONSTS.MASTERY;
-import main.content.parameters.G_PARAMS;
-import main.content.parameters.PARAMETER;
-import main.content.parameters.Param;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.SkillEnums.MASTERY;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.values.parameters.G_PARAMS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.parameters.Param;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.ConcurrentMap;
 import main.data.xml.XML_Reader;
 import main.entity.Entity;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.*;
 
@@ -129,8 +132,8 @@ public class ContentManager {
             }
         }
 
-        main.system.auxiliary.LogMaster.log(0, "<><><><><><><><><>props: " + sprops.toString());
-        main.system.auxiliary.LogMaster.log(0, "<><><><><><><><><>params: " + sparams.toString());
+        LogMaster.log(0, "<><><><><><><><><>props: " + sprops.toString());
+        LogMaster.log(0, "<><><><><><><><><>params: " + sparams.toString());
         // Collections.sort(props, new DefaultComparator<PROPERTY>());
         // Collections.sort(params, new DefaultComparator<PARAMETER>());
 
@@ -184,11 +187,11 @@ public class ContentManager {
     private static void initCharParams() {
         charParameters = new ArrayList<>(getParamList().size());
         for (PARAMETER p : getParamList()) {
-            if (p.getEntityType().equals(OBJ_TYPES.CHARS.getName())) {
+            if (p.getEntityType().equals(DC_TYPE.CHARS.getName())) {
                 charParameters.add(p);
                 continue;
             }
-            if (Arrays.asList(p.getEntityTypes()).contains((OBJ_TYPES.CHARS.getName()))) {
+            if (Arrays.asList(p.getEntityTypes()).contains((DC_TYPE.CHARS.getName()))) {
                 charParameters.add(p);
             }
         }
@@ -206,11 +209,11 @@ public class ContentManager {
     private static void initUnitParams() {
         unitParameters = new ArrayList<>(getParamList().size());
         for (PARAMETER p : getParamList()) {
-            if (p.getEntityType().equals(OBJ_TYPES.UNITS.getName())) {
+            if (p.getEntityType().equals(DC_TYPE.UNITS.getName())) {
                 unitParameters.add(p);
                 continue;
             }
-            if (Arrays.asList(p.getEntityTypes()).contains((OBJ_TYPES.UNITS.getName()))) {
+            if (Arrays.asList(p.getEntityTypes()).contains((DC_TYPE.UNITS.getName()))) {
                 unitParameters.add(p);
             }
         }
@@ -251,7 +254,7 @@ public class ContentManager {
         }
 
         if (param == null) {
-            main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, "PARAM NOT FOUND: "
+            LogMaster.log(LogMaster.CORE_DEBUG, "PARAM NOT FOUND: "
              + valueName + "!");
             param = G_PARAMS.EMPTY_PARAMETER;
         }
@@ -497,7 +500,7 @@ public class ContentManager {
 
     public static List<PARAMETER> getHeroStatsTabValueList() {
         List<PARAMETER> list = new LinkedList<>();
-        for (PARAMETER p : getParamsForType(OBJ_TYPES.CHARS.getName(), false)) {
+        for (PARAMETER p : getParamsForType(DC_TYPE.CHARS.getName(), false)) {
             if (!(p.isAttribute() || p.isMastery())) {
                 list.add(p);
             }
@@ -744,7 +747,7 @@ public class ContentManager {
         OBJ_TYPE type = null;
 
         try {
-            type = OBJ_TYPES.getType(typeName);
+            type = DC_TYPE.getType(typeName);
         } catch (Exception e) {
 
         }

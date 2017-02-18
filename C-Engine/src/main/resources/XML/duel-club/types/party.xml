@@ -1,1 +1,1693 @@
-<XML><Standard><Brigands><params></params><props><Group>Standard</Group><Name>Brigands</Name><Type>party</Type></props></Brigands><Militia><params></params><props><Group>Standard</Group><Name>Militia</Name><Type>party</Type></props></Militia></Standard><Arcade><Elberen_s_Party><params><Glory>-161</Glory><Level>2</Level></params><props><Dungeons_Pending>Hidden Camp;Demon Shrine;Abandoned House;Wizard Tower;Spire;Arcane Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Image>\mini\char\std\elf\drow\Regulus Mograine.jpg</Image><Leader>Elberen</Leader><Arcade_Status>PRESTART</Arcade_Status><Name>Elberen's Party</Name><Group>Arcade</Group><Displayed_Name>Elberen's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Elberen;</Members></props></Elberen_s_Party><Julia_s_Party><params></params><props><Dungeons_Pending>Hidden Camp;Arcane Tower;Crystal Cave;Dungeon;Dwarven Halls;Abandoned House;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Image>\mini\char\std\human\Generic\1misc\w_1.jpg</Image><Leader>Julia</Leader><Arcade_Status>PRESTART</Arcade_Status><Name>Julia's Party</Name><Group>Arcade</Group><Displayed_Name>Julia's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Julia;Andahar the Wise;Sir David;Elizabeth;</Members></props></Julia_s_Party><Nakiro_s_Party><params></params><props><Dungeons_Pending>Wizard Tower;Hidden Camp;Dungeon;Demon Shrine;Spire;Arcane Tower;Crystal Cave;Witch Grove;</Dungeons_Pending><Image>\mini\char\std\elf\dark\dark_elf.jpg</Image><Leader>Nakiro</Leader><Arcade_Status>PRESTART</Arcade_Status><Name>Nakiro's Party</Name><Group>Arcade</Group><Displayed_Name>Nakiro's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Nakiro;Lia;Exilyon;Elthedar;</Members></props></Nakiro_s_Party><Al-Kifar_s_Party><params></params><props><Dungeons_Pending>Wizard Tower;Cemetary;Abandoned House;Witch Grove;Crystal Cave;Dungeon;Spire;Arcane Tower;</Dungeons_Pending><Image>\mini\char\std\human\East\al-kafar.jpg</Image><Leader>Al-Kifar</Leader><Arcade_Status>PRESTART</Arcade_Status><Name>Al-Kifar's Party</Name><Group>Arcade</Group><Displayed_Name>Al-Kifar's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Al-Kifar;</Members></props></Al-Kifar_s_Party><Orwell_s_Party><params><Level>2</Level></params><props><Dungeons_Pending>Demon Shrine;Dwarven Halls;Dungeon;Cemetary;Arcane Tower;Spire;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Image>\mini\char\std\human\Generic\1misc\Academician.jpg</Image><Leader>Orwell</Leader><Name>Orwell's Party</Name><Group>Arcade</Group><Displayed_Name>Orwell's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Orwell;</Members></props></Orwell_s_Party><Dark_Fellowship_Arcade><params></params><props><Dungeons_Pending>Hidden Camp;Arcane Tower;Demon Shrine;Abandoned House;Cemetary;Witch Grove;Spire;Dungeon;</Dungeons_Pending><Image>\mini\char\std\elf\\dark\w_DE120.jpg</Image><Leader>Lia</Leader><Name>Dark Fellowship Arcade</Name><Group>Arcade</Group><Displayed_Name>Dark Fellowship Arcade</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Lia;Malthezar;Kaleb;Demir;</Members></props></Dark_Fellowship_Arcade><Garro_Wulfen_s_Party_Arcade><params></params><props><Dungeons_Pending>Cemetary;Crystal Cave;Arcane Tower;Demon Shrine;Wizard Tower;Witch Grove;Spire;Dungeon;</Dungeons_Pending><Image>\mini\char\std\human\Wolf Realm\Count De'Mon2t.jpg</Image><Leader>Garro Wulfen</Leader><Name>Garro Wulfen's Party Arcade</Name><Group>Arcade</Group><Displayed_Name>Garro Wulfen's Party Arcade</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Garro Wulfen;Ravenna;Necrus;</Members></props></Garro_Wulfen_s_Party_Arcade><Malthezar_s_Party><params><Level>2</Level></params><props><Leader>Malthezar</Leader><Members>Malthezar;</Members><Image>\mini\char\std\human\Generic\6dark\Vampire Knight.jpg</Image><Name>Malthezar's Party</Name><Group>Arcade</Group><Arcade_Region>Dusk Dale</Arcade_Region><Displayed_Name>Malthezar's Party</Displayed_Name><Dungeons_Pending>Dungeon;Cemetary;Spire;Witch Grove;Dwarven Halls;Hidden Camp;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending></props></Malthezar_s_Party><Elsier_s_Party><params><Level>2</Level></params><props><Dungeons_Pending>Arcane Tower;Hidden Camp;Witch Grove;Abandoned House;Dungeon;Crystal Cave;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Type>party</Type><Leader>Elsier</Leader><Group>Arcade</Group><Members>Elsier;</Members><Displayed_Name>Elsier's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Name>Elsier's Party</Name><Image>\mini\char\std\human\Eagle Realm\kelsier.jpg</Image></props></Elsier_s_Party><Gori_s_Party><params></params><props><Dungeons_Pending>Abandoned House;Spire;Wizard Tower;Crystal Cave;Witch Grove;Demon Shrine;Cemetary;Hidden Camp;</Dungeons_Pending><Image>\mini\char\std\dwarf\\sadwarfy.jpg</Image><Leader>Gori</Leader><Name>Gori's Party</Name><Group>Arcade</Group><Displayed_Name>Gori's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Gori;</Members></props></Gori_s_Party><Avelyn_s_Party><params></params><props><Dungeons_Pending>Witch Grove;Crystal Cave;Abandoned House;Demon Shrine;Spire;Wizard Tower;Dungeon;Arcane Tower;</Dungeons_Pending><Image>\mini\char\std\human\Generic\1misc\w_irene.jpg</Image><Leader>Avelyn</Leader><Arcade_Status>PRESTART</Arcade_Status><Name>Avelyn's Party</Name><Group>Arcade</Group><Displayed_Name>Avelyn's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Avelyn;Elizabeth;Lethos;Leopold the True;</Members></props></Avelyn_s_Party><Sir_Uther_s_Party><params><Level>2</Level></params><props><Leader>Sir Uther</Leader><Name>Sir Uther's Party</Name><Group>Arcade</Group><Dungeons_Pending>Hidden Camp;Demon Shrine;Wizard Tower;Dungeon;Cemetary;Abandoned House;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Arcade_Region>Dusk Dale</Arcade_Region><Members>Sir Uther;</Members><Displayed_Name>Sir Uther's Party</Displayed_Name><Image>\mini\char\std\human\King Realm\a palad.jpg</Image></props></Sir_Uther_s_Party><Sir_David_s_Party><params><Level>2</Level></params><props><Arcade_Region>Dusk Dale</Arcade_Region><Leader>Sir David</Leader><Displayed_Name>Sir David's Party</Displayed_Name><Group>Arcade</Group><Dungeons_Pending>Dwarven Halls;Hidden Camp;Spire;Dungeon;Arcane Tower;Abandoned House;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Name>Sir David's Party</Name><Image>\mini\char\std\human\King Realm\knight2.jpg</Image><Members>Sir David;</Members></props></Sir_David_s_Party><Sir_Marcus__Party><params><Level>2</Level></params><props><Dungeons_Pending>Abandoned House;Wizard Tower;Dungeon;Hidden Camp;Dwarven Halls;Arcane Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Image>\mini\char\std\human\Eagle Realm\winter lord.jpg</Image><Leader>Sir Marcus</Leader><Arcade_Status>PRESTART</Arcade_Status><Name>Sir Marcus' Party</Name><Group>Arcade</Group><Displayed_Name>Sir Marcus' Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Sir Marcus;Guy Fox;Zak;Astro;</Members></props></Sir_Marcus__Party><Nethelas__Party><params></params><props><Dungeons_Pending>Crystal Cave;Dungeon;Demon Shrine;Spire;Abandoned House;Hidden Camp;Arcane Tower;Cemetary;</Dungeons_Pending><Image>\mini\char\std\elf\grey\Archont.jpg</Image><Leader>Nethelas</Leader><Name>Nethelas' Party</Name><Group>Arcade</Group><Displayed_Name>Nethelas' Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Nethelas;</Members></props></Nethelas__Party><Memnon_s_Party><params><Level>2</Level></params><props><Displayed_Name>Memnon's Party</Displayed_Name><Dungeons_Pending>Crystal Cave;Abandoned House;Hidden Camp;Spire;Demon Shrine;Cemetary;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Leader>Memnon</Leader><Type>party</Type><Image>\mini\char\std\elf\wood\L_WE_M_01.jpg</Image><Arcade_Region>Dusk Dale</Arcade_Region><Members>Memnon;</Members><Group>Arcade</Group><Name>Memnon's Party</Name></props></Memnon_s_Party><Andahar_the_Wise_s_Party><params><Level>2</Level></params><props><Leader>Andahar the Wise</Leader><Arcade_Status>PRESTART</Arcade_Status><Name>Andahar the Wise's Party</Name><Members>Andahar the Wise;Fulgrim;Bralin;Garro Wulfen;Milthir;</Members><Arcade_Region>Dusk Dale</Arcade_Region><Dungeons_Pending>Abandoned House;Arcane Tower;Cemetary;Dwarven Halls;Hidden Camp;Spire;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Group>Arcade</Group><Displayed_Name>Andahar the Wise's Party</Displayed_Name><Image>\mini\char\std\human\Generic\4arcane\magus.jpg</Image></props></Andahar_the_Wise_s_Party><Nirthas__Party><params><Level>2</Level></params><props><Name>Nirthas' Party</Name><Leader>Nirthas</Leader><Displayed_Name>Nirthas' Party</Displayed_Name><Image>\mini\char\std\human\Generic\1misc\monk.jpg</Image><Dungeons_Pending>Abandoned House;Dwarven Halls;Demon Shrine;Wizard Tower;Crystal Cave;Cemetary;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Members>Nirthas;</Members><Arcade_Region>Dusk Dale</Arcade_Region><Group>Arcade</Group></props></Nirthas__Party><Tiberius__Party><params><Level>2</Level></params><props><Dungeons_Pending>Spire;Abandoned House;Crystal Cave;Demon Shrine;Hidden Camp;Witch Grove;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Image>\mini\char\std\human\Eagle Realm\winter lord.jpg</Image><Leader>Tiberius</Leader><Name>Tiberius' Party</Name><Group>Arcade</Group><Displayed_Name>Tiberius' Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Tiberius;</Members></props></Tiberius__Party><Sir_Edwyn_s_Party><params><Level>2</Level></params><props><Image>\mini\char\std\human\King Realm\knight.jpg</Image><Name>Sir Edwyn's Party</Name><Dungeons_Pending>Hidden Camp;Dwarven Halls;Demon Shrine;Spire;Witch Grove;Abandoned House;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Members>Sir Edwyn;</Members><Leader>Sir Edwyn</Leader><Displayed_Name>Sir Edwyn's Party</Displayed_Name><Group>Arcade</Group><Arcade_Region>Dusk Dale</Arcade_Region></props></Sir_Edwyn_s_Party><Arnelion_s_Party><params><Level>2</Level></params><props><Dungeons_Pending>Cemetary;Arcane Tower;Dungeon;Abandoned House;Spire;Wizard Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Image>\mini\char\std\human\King Realm\knight.jpg</Image><Leader>Arnelion</Leader><Name>Arnelion's Party</Name><Group>Arcade</Group><Displayed_Name>Arnelion's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Arnelion;</Members></props></Arnelion_s_Party><Guldrim_s_Party><params><Level>2</Level></params><props><Dungeons_Pending>Witch Grove;Abandoned House;Dungeon;Crystal Cave;Arcane Tower;Demon Shrine;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Image>UI\Empty.jpg</Image><Leader>Guldrim</Leader><Name>Guldrim's Party</Name><Group>Arcade</Group><Displayed_Name>Guldrim's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Guldrim;</Members></props></Guldrim_s_Party><Kamil_s_Party><params><Level>2</Level></params><props><Dungeons_Pending>Wizard Tower;Demon Shrine;Spire;Cemetary;Crystal Cave;Abandoned House;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Image>\mini\char\std\human\East\w_arabeque2.jpg</Image><Leader>Kamil</Leader><Name>Kamil's Party</Name><Group>Arcade</Group><Displayed_Name>Kamil's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Kamil;</Members></props></Kamil_s_Party><Korhal_s_Party><params><Level>2</Level></params><props><Dungeons_Pending>Demon Shrine;Hidden Camp;Cemetary;Dwarven Halls;Wizard Tower;Crystal Cave;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Image>\mini\char\std\human\Generic\1misc\zwizz.jpg</Image><Leader>Korhal</Leader><Name>Korhal's Party</Name><Group>Arcade</Group><Displayed_Name>Korhal's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Korhal;</Members></props></Korhal_s_Party><Jezaine_s_Party><params></params><props><Dungeons_Pending>Abandoned House;Demon Shrine;Arcane Tower;Wizard Tower;Crystal Cave;Hidden Camp;Witch Grove;Spire;</Dungeons_Pending><Image>\mini\char\std\elf\fey\w_schemer.jpg</Image><Leader>Jezaine</Leader><Arcade_Status>PRESTART</Arcade_Status><Name>Jezaine's Party</Name><Group>Arcade</Group><Displayed_Name>Jezaine's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Jezaine;Gori Darkforge;Al-Kifar;Andahar the Wise;Demir;</Members></props></Jezaine_s_Party><Aed_Naurim_s_Party><params><Level>2</Level></params><props><Dungeons_Pending>Crystal Cave;Dwarven Halls;Witch Grove;Dungeon;Cemetary;Wizard Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Image>\mini\char\std\elf\dark\DE65.jpg</Image><Leader>Aed'Naurim</Leader><Name>Aed'Naurim's Party</Name><Group>Arcade</Group><Displayed_Name>Aed'Naurim's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Aed'Naurim;</Members></props></Aed_Naurim_s_Party><Lethos__Party><params><Level>2</Level></params><props><Dungeons_Pending>Witch Grove;Demon Shrine;Dwarven Halls;Wizard Tower;Crystal Cave;Arcane Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Image>\mini\char\std\elf\dark\elven warlock.jpg</Image><Leader>Lethos</Leader><Name>Lethos' Party</Name><Group>Arcade</Group><Displayed_Name>Lethos' Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Lethos;</Members></props></Lethos__Party><Umjula_s_Party><params><Level>2</Level></params><props><Dungeons_Pending>Hidden Camp;Abandoned House;Cemetary;Crystal Cave;Dungeon;Demon Shrine;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Image>\mini\char\std\human\East\w_arabeque2.jpg</Image><Leader>Umjula</Leader><Name>Umjula's Party</Name><Group>Arcade</Group><Displayed_Name>Umjula's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Umjula;</Members></props></Umjula_s_Party><Aeridan_s_Party><params><Level>2</Level><Glory>-66</Glory></params><props><Name>Aeridan's Party</Name><Leader>Aeridan</Leader><Displayed_Name>Aeridan's Party</Displayed_Name><Arcade_Status>PRESTART</Arcade_Status><Dungeons_Pending>Crystal Cave;Hidden Camp;Demon Shrine;Wizard Tower;Arcane Tower;Witch Grove;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Type>party</Type><Arcade_Region>Dusk Dale</Arcade_Region><Group>Arcade</Group><Image>\mini\char\std\human\Generic\4arcane\anarcanist.jpg</Image><Members>Aeridan;</Members></props></Aeridan_s_Party><Melisha_s_Party><params></params><props><Dungeons_Pending>Abandoned House;Demon Shrine;Witch Grove;Dungeon;Hidden Camp;Arcane Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Image>\mini\char\std\elf\drow\w_Drow Princess.jpg</Image><Leader>Melisha</Leader><Arcade_Status>PRESTART</Arcade_Status><Name>Melisha's Party</Name><Group>Arcade</Group><Displayed_Name>Melisha's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Melisha;Mograine;Garro Wulfen;Baron Ulanor;Gubi;</Members></props></Melisha_s_Party><Gulmog_s_Party><params></params><props><Dungeons_Pending>Hidden Camp;Wizard Tower;Witch Grove;Dwarven Halls;Spire;Cemetary;Dungeon;Crystal Cave;Valhalla;Hell;</Dungeons_Pending><Image>\mini\char\std\orc\red\orc_bartender_by_izzual-d66pqed.jpg</Image><Leader>Gulmog</Leader><Name>Gulmog's Party</Name><Group>Arcade</Group><Displayed_Name>Gulmog's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Gulmog;</Members></props></Gulmog_s_Party><Imros_the_Rangerly_s_Party><params><Level>2</Level></params><props><Dungeons_Pending>Cemetary;Dungeon;Demon Shrine;Abandoned House;Dwarven Halls;Hidden Camp;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Image>\mini\char\std\human\Generic\3warrior\ra.jpg</Image><Leader>Imros the Rangerly</Leader><Arcade_Status>PRESTART</Arcade_Status><Name>Imros the Rangerly's Party</Name><Group>Arcade</Group><Displayed_Name>Imros the Rangerly's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Imros the Rangerly;Sir David;Memnon;Jim Fletcher;Ayrynn;</Members></props></Imros_the_Rangerly_s_Party><Felgrod_s_Party><params></params><props><Dungeons_Pending>Dungeon;Demon Shrine;Abandoned House;Crystal Cave;Hidden Camp;Wizard Tower;Dwarven Halls;Cemetary;</Dungeons_Pending><Image>\mini\char\std\orc\orc\orc thug.jpg</Image><Leader>Felgrod</Leader><Arcade_Status>PRESTART</Arcade_Status><Name>Felgrod's Party</Name><Group>Arcade</Group><Displayed_Name>Felgrod's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Felgrod;</Members></props></Felgrod_s_Party><Guy_Fox_s_Party><params></params><props><Dungeons_Pending>Spire;Arcane Tower;Hidden Camp;Demon Shrine;Wizard Tower;Witch Grove;Cemetary;Crystal Cave;</Dungeons_Pending><Image>\mini\char\std\human\Generic\6dark\de.jpg</Image><Leader>Guy Fox</Leader><Arcade_Status>PRESTART</Arcade_Status><Name>Guy Fox's Party</Name><Group>Arcade</Group><Displayed_Name>Guy Fox's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Guy Fox;Jaiden;Gori;Baron Ulanor;</Members></props></Guy_Fox_s_Party><Amon_Shi_s_Party><params><Level>2</Level></params><props><Members>Amon'Shi;</Members><Arcade_Region>Dusk Dale</Arcade_Region><Displayed_Name>Amon'Shi's Party</Displayed_Name><Image>\mini\char\std\elf\drow\Regulus Mograine.jpg</Image><Leader>Amon'Shi</Leader><Group>Arcade</Group><Dungeons_Pending>Dwarven Halls;Arcane Tower;Wizard Tower;Dungeon;Demon Shrine;Witch Grove;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Name>Amon'Shi's Party</Name></props></Amon_Shi_s_Party><Fulgrim_s_Party><params><Level>2</Level></params><props><Dungeons_Pending>Hidden Camp;Crystal Cave;Witch Grove;Demon Shrine;Abandoned House;Arcane Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Members>Fulgrim;</Members><Leader>Fulgrim</Leader><Group>Arcade</Group><Displayed_Name>Fulgrim's Party</Displayed_Name><Name>Fulgrim's Party</Name><Image>\mini\char\std\human\Raven Realm\Raven Lord2.jpg</Image><Arcade_Region>Dusk Dale</Arcade_Region></props></Fulgrim_s_Party><Aeridan_Eresar_s_Party><params><Level>2</Level></params><props><Leader>Aeridan Eresar</Leader><Displayed_Name>Aeridan Eresar's Party</Displayed_Name><Name>Aeridan Eresar's Party</Name><Members>Aeridan Eresar;</Members><Dungeons_Pending>Dwarven Halls;Abandoned House;Dungeon;Crystal Cave;Demon Shrine;Arcane Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Group>Arcade</Group><Image>\mini\char\std\human\Raven Realm\Aeridan.jpg</Image><Arcade_Region>Dusk Dale</Arcade_Region></props></Aeridan_Eresar_s_Party><Aed_Faelion_s_Party><params></params><props><Dungeons_Pending>Wizard Tower;Arcane Tower;Demon Shrine;Spire;Hidden Camp;Abandoned House;Witch Grove;Dungeon;</Dungeons_Pending><Image>\mini\char\std\elf\high\high elf sorcerer.jpg</Image><Leader>Aed'Faelion</Leader><Arcade_Status>PRESTART</Arcade_Status><Name>Aed'Faelion's Party</Name><Group>Arcade</Group><Displayed_Name>Aed'Faelion's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Aed'Faelion;</Members></props></Aed_Faelion_s_Party><Tylmar_s_Party><params></params><props><Dungeons_Pending>Dungeon;Demon Shrine;Crystal Cave;Abandoned House;Spire;Arcane Tower;Wizard Tower;Witch Grove;</Dungeons_Pending><Image>\mini\char\std\elf\grey\grey watcher.jpg</Image><Leader>Tylmar</Leader><Name>Tylmar's Party</Name><Group>Arcade</Group><Displayed_Name>Tylmar's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Tylmar;</Members></props></Tylmar_s_Party><Astro_s_Party><params><Level>2</Level></params><props><Dungeons_Pending>Arcane Tower;Crystal Cave;Dwarven Halls;Wizard Tower;Demon Shrine;Witch Grove;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Image>\mini\char\std\human\Generic\1misc\tinker.jpg</Image><Leader>Astro</Leader><Name>Astro's Party</Name><Group>Arcade</Group><Displayed_Name>Astro's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Astro;</Members></props></Astro_s_Party><Kurz_s_Party><params></params><props><Dungeons_Pending>Dungeon;Cemetary;Demon Shrine;Wizard Tower;Hidden Camp;Abandoned House;Arcane Tower;Witch Grove;</Dungeons_Pending><Image>\mini\char\std\orc\pale\goplin.jpg</Image><Leader>Kurz</Leader><Name>Kurz's Party</Name><Group>Arcade</Group><Displayed_Name>Kurz's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Kurz;</Members></props></Kurz_s_Party><Gregor_s_Party><params></params><props><Dungeons_Pending>Spire;Cemetary;Demon Shrine;Dungeon;Abandoned House;Crystal Cave;Wizard Tower;Hidden Camp;</Dungeons_Pending><Image>\mini\char\std\human\Wolf Realm\Count De'Mon2t.jpg</Image><Leader>Gregor</Leader><Name>Gregor's Party</Name><Group>Arcade</Group><Displayed_Name>Gregor's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Gregor;</Members></props></Gregor_s_Party><Cornelius__Party><params></params><props><Dungeons_Pending>Abandoned House;Cemetary;Spire;Dungeon;Demon Shrine;Wizard Tower;Hidden Camp;Witch Grove;</Dungeons_Pending><Image>\mini\char\std\human\Generic\4arcane\brujo.jpg</Image><Leader>Cornelius</Leader><Name>Cornelius' Party</Name><Group>Arcade</Group><Displayed_Name>Cornelius' Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Cornelius;</Members></props></Cornelius__Party><Joanne_s_Party><params></params><props><Dungeons_Pending>Wizard Tower;Crystal Cave;Cemetary;Dungeon;Hidden Camp;Spire;Arcane Tower;Abandoned House;</Dungeons_Pending><Image>\mini\char\std\human\Generic\4arcane\w_wizard.jpg</Image><Leader>Joanne</Leader><Arcade_Status>PRESTART</Arcade_Status><Name>Joanne's Party</Name><Group>Arcade</Group><Displayed_Name>Joanne's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Joanne;</Members></props></Joanne_s_Party><Turi_Sharpeye_s_Party><params></params><props><Dungeons_Pending>Crystal Cave;Abandoned House;Witch Grove;Demon Shrine;Cemetary;Dungeon;Spire;Wizard Tower;</Dungeons_Pending><Image>\mini\char\std\dwarf\\ScenEdit 2012-01-01 14-39-06-78.jpg</Image><Leader>Turi Sharpeye</Leader><Name>Turi Sharpeye's Party</Name><Group>Arcade</Group><Displayed_Name>Turi Sharpeye's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Turi Sharpeye;</Members></props></Turi_Sharpeye_s_Party><Elthedar_s_Party><params></params><props><Dungeons_Pending>Cemetary;Abandoned House;Witch Grove;Spire;Wizard Tower;Crystal Cave;Arcane Tower;Demon Shrine;</Dungeons_Pending><Image>\mini\char\std\elf\grey\grey watcher.jpg</Image><Leader>Elthedar</Leader><Name>Elthedar's Party</Name><Group>Arcade</Group><Displayed_Name>Elthedar's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Elthedar;</Members></props></Elthedar_s_Party><Amon-Shi_s_Party><params><Level>2</Level></params><props><Displayed_Name>Amon-Shi's Party</Displayed_Name><Image>\mini\char\std\elf\drow\Regulus Mograine.jpg</Image><Group>Arcade</Group><Arcade_Region>Dusk Dale</Arcade_Region><Name>Amon-Shi's Party</Name><Leader>Amon-Shi</Leader><Members>Amon-Shi;</Members><Dungeons_Pending>Crystal Cavern;Demon Shrine;Hidden Camp;Crystal Cave;Dwarven Halls;Wizard Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending></props></Amon-Shi_s_Party><Lurtz_s_Party><params></params><props><Dungeons_Pending>Abandoned House;Witch Grove;Wizard Tower;Dungeon;Crystal Cave;Hidden Camp;Arcane Tower;Spire;</Dungeons_Pending><Image>\mini\char\std\orc\green\wild orc.jpg</Image><Leader>Lurtz</Leader><Name>Lurtz's Party</Name><Group>Arcade</Group><Displayed_Name>Lurtz's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Lurtz;</Members></props></Lurtz_s_Party><Schwarz_s_Party><params></params><props><Dungeons_Pending>Dungeon;Abandoned House;Spire;Hidden Camp;Witch Grove;Crystal Cave;Cemetary;Demon Shrine;</Dungeons_Pending><Image>\mini\char\std\orc\orc\orc thug.jpg</Image><Leader>Schwarz</Leader><Name>Schwarz's Party</Name><Group>Arcade</Group><Displayed_Name>Schwarz's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Schwarz;</Members></props></Schwarz_s_Party><Bralin_s_Party><params><Level>2</Level></params><props><Dungeons_Pending>Dwarven Halls;Cemetary;Demon Shrine;Arcane Tower;Crystal Cave;Dungeon;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Members>Bralin;</Members><Leader>Bralin</Leader><Group>Arcade</Group><Image>\mini\char\std\dwarf\\MeisterDwarf.jpg</Image><Name>Bralin's Party</Name><Displayed_Name>Bralin's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region></props></Bralin_s_Party><John_s_Party><params></params><props><Dungeons_Pending>Demon Shrine;Spire;Arcane Tower;Abandoned House;Crystal Cave;Witch Grove;Hidden Camp;Cemetary;</Dungeons_Pending><Image>\mini\char\std\human\Generic\3warrior\human soldier.jpg</Image><Leader>John</Leader><Arcade_Status>PRESTART</Arcade_Status><Name>John's Party</Name><Group>Arcade</Group><Displayed_Name>John's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>John;Amon-Shi;Milthir;Quenthedar;Julia;</Members></props></John_s_Party><Aiki_s_Party><params></params><props><Dungeons_Pending>Abandoned House;Wizard Tower;Crystal Cave;Hidden Camp;Spire;Demon Shrine;Dungeon;Witch Grove;</Dungeons_Pending><Image>\mini\char\std\human\East\ninja.jpg</Image><Leader>Aiki</Leader><Name>Aiki's Party</Name><Group>Arcade</Group><Displayed_Name>Aiki's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Aiki;</Members></props></Aiki_s_Party><Elizabeth_s_Party><params></params><props><Dungeons_Pending>Arcane Tower;Cemetary;Crystal Cave;Demon Shrine;Hidden Camp;Dungeon;Spire;Abandoned House;</Dungeons_Pending><Image>\mini\char\std\human\King Realm\w_Kathriel.jpg</Image><Leader>Elizabeth</Leader><Name>Elizabeth's Party</Name><Group>Arcade</Group><Displayed_Name>Elizabeth's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Elizabeth;</Members></props></Elizabeth_s_Party><Quenthedar_s_Party><params></params><props><Dungeons_Pending>Abandoned House;Spire;Hidden Camp;Crystal Cave;Arcane Tower;Dungeon;Demon Shrine;Wizard Tower;</Dungeons_Pending><Image>\mini\char\std\elf\high\high elf sorcerer.jpg</Image><Leader>Quenthedar</Leader><Name>Quenthedar's Party</Name><Group>Arcade</Group><Displayed_Name>Quenthedar's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Quenthedar;</Members></props></Quenthedar_s_Party><Kali_s_Party><params></params><props><Dungeons_Pending>Witch Grove;Demon Shrine;Dungeon;Crystal Cave;Arcane Tower;Spire;Abandoned House;Wizard Tower;</Dungeons_Pending><Image>\mini\char\std\elf\fey\w_Elf.jpg</Image><Leader>Kali</Leader><Arcade_Status>PRESTART</Arcade_Status><Name>Kali's Party</Name><Group>Arcade</Group><Displayed_Name>Kali's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Kali;Memnon;Tili;Exilyon;</Members></props></Kali_s_Party><Jasmine_s_Party><params></params><props><Dungeons_Pending>Wizard Tower;Hidden Camp;Crystal Cave;Arcane Tower;Demon Shrine;Dwarven Halls;Witch Grove;Spire;Valhalla;Hell;</Dungeons_Pending><Image>\mini\char\std\elf\fey\w_schemer.jpg</Image><Leader>Jasmine</Leader><Arcade_Status>PRESTART</Arcade_Status><Name>Jasmine's Party</Name><Group>Arcade</Group><Displayed_Name>Jasmine's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Jasmine;Kirvin the Sharp;Naeia;Cornelius;</Members></props></Jasmine_s_Party><Nosferatu_s_Party><params></params><props><Dungeons_Pending>Arcane Tower;Cemetary;Dungeon;Spire;Wizard Tower;Crystal Cave;Witch Grove;Demon Shrine;</Dungeons_Pending><Image>\mini\char\std\vampire\\a Nosferatu.jpg</Image><Leader>Nosferatu</Leader><Name>Nosferatu's Party</Name><Group>Arcade</Group><Displayed_Name>Nosferatu's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Type>party</Type><Members>Nosferatu;</Members></props></Nosferatu_s_Party></Arcade><CAMPAIGN><Aeridan><params><Travel_speed>2</Travel_speed></params><props><Heroes>Brawling Dwarf;Pirating Rogue;Fiery Witch;Twilight Priestess;</Heroes><Image>mini\char\Arcanum\New folder\Aeridan.png</Image><Group>CAMPAIGN</Group><Name>Aeridan</Name><Party_Leader>Aeridan</Party_Leader><Type>party</Type><Deity>Masked God</Deity></props></Aeridan><Victor><params></params><props><Heroes>Red Knight;Battle Cleric;Sky Mage Apprentice;</Heroes><Image>mini\char\Light\Archangel.jpg</Image><Group>CAMPAIGN</Group><Name>Victor</Name><Type>party</Type><Deity>Allfather</Deity></props></Victor><Gabriel><params><Travel_speed>2</Travel_speed></params><props><Image>mini\char\Darkness\Vampire Knight.jpg</Image><Group>CAMPAIGN</Group><Name>Gabriel</Name><Type>party</Type><Deity>Masked God</Deity></props></Gabriel><Ayrynn><params><Travel_speed>2</Travel_speed></params><props><Image>mini\char\Darkness\Twilight Priestess2.jpg</Image><Group>CAMPAIGN</Group><Name>Ayrynn</Name><Type>party</Type><Deity>Masked God</Deity></props></Ayrynn><Helene><params></params><props><Image>macro\companions\Helene.jpg</Image><Group>CAMPAIGN</Group><Name>Helene</Name><Type>party</Type><Deity>Masked God</Deity></props></Helene></CAMPAIGN><Custom><Isfior_ValherimUNICODE39CODEENDs_Party><params></params><props><Dungeons_Pending>Academy Vaults;Dungeon;Witch Grove;Wizard Tower;Crystal Cave;Dwarven Halls;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Displayed_Name>Isfior Valherim's Party</Displayed_Name><Name>Isfior Valherim's Party</Name><Group>Arcade</Group><Image>\mini\char\std\human\Wolf Realm\Count De'Mon2t.jpg</Image><Members>Isfior Valherim;</Members><Arcade_Region>Dusk Dale</Arcade_Region></props></Isfior_ValherimUNICODE39CODEENDs_Party><Keserim_ThornUNICODE39CODEENDs_Party><params></params><props><Displayed_Name>Keserim Thorn's Party</Displayed_Name><Group>Arcade</Group><Dungeons_Pending>Demon Shrine;Dwarven Halls;Witch Grove;Academy Vaults;Dungeon;Crystal Cave;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Arcade_Region>Dusk Dale</Arcade_Region><Name>Keserim Thorn's Party</Name><Image>\mini\char\std\human\Generic\6dark\Vampire.jpg</Image><Members>Keserim Thorn;</Members></props></Keserim_ThornUNICODE39CODEENDs_Party><Aeilar_GorthiodUNICODE39CODEENDs_Party><params></params><props><Image>\mini\char\std\human\King Realm\zweld2.jpg</Image><Displayed_Name>Aeilar Gorthiod's Party</Displayed_Name><Dungeons_Pending>Hidden Camp;Crystal Cave;Spire;Witch Grove;Academy Vaults;Dungeon;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Members>Aeilar Gorthiod;</Members><Group>Arcade</Group><Arcade_Region>Dusk Dale</Arcade_Region><Name>Aeilar Gorthiod's Party</Name></props></Aeilar_GorthiodUNICODE39CODEENDs_Party><Mesbeth_KaurimUNICODE39CODEENDs_Party><params></params><props><Name>Mesbeth Kaurim's Party</Name><Arcade_Region>Dusk Dale</Arcade_Region><Dungeons_Pending>Crystal Cavern;Hidden Camp;Academy Vaults;Abandoned House;Dungeon;Crystal Cave;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Displayed_Name>Mesbeth Kaurim's Party</Displayed_Name><Group>Arcade</Group><Members>Mesbeth Kaurim;</Members><Image>\mini\char\std\vampire\\w_void mask.jpg</Image></props></Mesbeth_KaurimUNICODE39CODEENDs_Party><Zail_Adelwyn_UNICODE39CODEENDs_Party><params></params><props><Members>Zail Adelwyn ;</Members><Group>Arcade</Group><Image>\mini\char\std\human\Generic\6dark\Vampire Knight.jpg</Image><Displayed_Name>Zail Adelwyn 's Party</Displayed_Name><Name>Zail Adelwyn 's Party</Name><Dungeons_Pending>Dwarven Halls;Witch Grove;Hidden Camp;Cemetary;Demon Shrine;Crystal Cave;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Arcade_Region>Dusk Dale</Arcade_Region></props></Zail_Adelwyn_UNICODE39CODEENDs_Party><RavennaUNICODE39CODEENDs_Party><params></params><props><Dungeons_Pending>Dungeon;Crystal Cavern;Witch Grove;Hidden Camp;Spire;Cemetary;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Members>Ravenna;</Members><Name>Ravenna's Party</Name><Image>\mini\char\std\human\Generic\6dark\w_Night Witch.jpg</Image><Group>Arcade</Group><Displayed_Name>Ravenna's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region></props></RavennaUNICODE39CODEENDs_Party><Belvenon_FaoiUNICODE39CODEENDs_Party><params></params><props><Image>\mini\char\std\elf\\wood\elf wanderer.jpg</Image><Displayed_Name>Belvenon Faoi's Party</Displayed_Name><Dungeons_Pending>Dungeon;Cemetary;Witch Grove;Shadow Keep;Demon Shrine;Dwarven Halls;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Members>Belvenon Faoi;</Members><Group>Arcade</Group><Arcade_Region>Dusk Dale</Arcade_Region><Name>Belvenon Faoi's Party</Name></props></Belvenon_FaoiUNICODE39CODEENDs_Party><Irxithor_No_nameUNICODE39CODEENDs_Party><params></params><props><Members>Irxithor No name;</Members><Dungeons_Pending>Wizard Tower;Dwarven Halls;Crystal Cave;Academy Vaults;Arcane Tower;Demon Shrine;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Image>UI\Empty.jpg</Image><Arcade_Region>Dusk Dale</Arcade_Region><Displayed_Name>Irxithor No name's Party</Displayed_Name><Group>Arcade</Group><Name>Irxithor No name's Party</Name></props></Irxithor_No_nameUNICODE39CODEENDs_Party><Utmer_Mirthud_s_Party><params><Level>2</Level></params><props><Leader>Utmer Mirthud</Leader><Arcade_Region>Dusk Dale</Arcade_Region><Image>\mini\char\std\human\Wolf Realm\wulfy.jpg</Image><Group>Arcade</Group><Dungeons_Pending>Arcane Tower;Wizard Tower;Dungeon;Cemetary;Witch Grove;Dwarven Halls;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Name>Utmer Mirthud's Party</Name><Members>Utmer Mirthud;</Members><Displayed_Name>Utmer Mirthud's Party</Displayed_Name></props></Utmer_Mirthud_s_Party><Aeridan_v4_s_Party><params><Level>2</Level></params><props><Dungeons_Pending>Spire;Dwarven Halls;Dungeon;Crystal Cave;Witch Grove;Wizard Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Group>Arcade</Group><Arcade_Region>Dusk Dale</Arcade_Region><Leader>Aeridan v4</Leader><Members>Aeridan v4;</Members><Displayed_Name>Aeridan v4's Party</Displayed_Name><Image>\mini\char\std\human\Generic\4arcane\anarcanist.jpg</Image><Name>Aeridan v4's Party</Name></props></Aeridan_v4_s_Party><Arcturus__Party><params><Level>2</Level></params><props><Dungeons_Pending>Dungeon;Arcane Tower;Witch Grove;Crystal Cavern;Spire;Hidden Camp;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Group>Arcade</Group><Arcade_Region>Dusk Dale</Arcade_Region><Leader>Arcturus</Leader><Members>Arcturus;</Members><Displayed_Name>Arcturus' Party</Displayed_Name><Image>\mini\char\std\human\Generic\1misc\Baron Ulanor.jpg</Image><Name>Arcturus' Party</Name></props></Arcturus__Party><Aeridan_v5_s_Party><params><Level>2</Level></params><props><Group>Arcade</Group><Members>Aeridan v5;</Members><Leader>Aeridan v5</Leader><Dungeons_Pending>Wizard Tower;Dungeon;Hidden Camp;Demon Shrine;Crystal Cavern;Arcane Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Name>Aeridan v5's Party</Name><Arcade_Region>Dusk Dale</Arcade_Region><Displayed_Name>Aeridan v5's Party</Displayed_Name><Image>\mini\char\std\human\Generic\4arcane\anarcanist.jpg</Image></props></Aeridan_v5_s_Party><Paul_s_Party><params><Level>2</Level></params><props><Members>Paul;</Members><Displayed_Name>Paul's Party</Displayed_Name><Leader>Paul</Leader><Name>Paul's Party</Name><Group>Arcade</Group><Image>\mini\char\std\human\Generic\3warrior\human soldier3.jpg</Image><Arcade_Region>Dusk Dale</Arcade_Region><Dungeons_Pending>Spire;Witch Grove;Dungeon;Demon Shrine;Wizard Tower;Dwarven Halls;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending></props></Paul_s_Party><Pirkust_Korbulo_s_Party><params><Level>2</Level></params><props><Arcade_Region>Dusk Dale</Arcade_Region><Dungeons_Pending>Witch Grove;Crystal Cavern;Crystal Cave;Demon Shrine;Abandoned House;Dwarven Halls;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Leader>Pirkust Korbulo</Leader><Displayed_Name>Pirkust Korbulo's Party</Displayed_Name><Name>Pirkust Korbulo's Party</Name><Members>Pirkust Korbulo;</Members><Group>Arcade</Group><Image>\mini\char\std\human\Raven Realm\Raven Lord2.jpg</Image></props></Pirkust_Korbulo_s_Party><Loerg_Korbulo_s_Party><params><Level>2</Level></params><props><Image>\mini\char\std\human\Generic\6dark\necrus.jpg</Image><Name>Loerg Korbulo's Party</Name><Members>Loerg Korbulo;</Members><Leader>Loerg Korbulo</Leader><Arcade_Region>Dusk Dale</Arcade_Region><Group>Arcade</Group><Displayed_Name>Loerg Korbulo's Party</Displayed_Name><Dungeons_Pending>Abandoned House;Dwarven Halls;Spire;Cemetary;Dungeon;Crystal Cavern;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending></props></Loerg_Korbulo_s_Party><Nertum_Volmevin_s_Party><params><Level>2</Level></params><props><Name>Nertum Volmevin's Party</Name><Leader>Nertum Volmevin</Leader><Dungeons_Pending>Witch Grove;Abandoned House;Spire;Dwarven Halls;Arcane Tower;Demon Shrine;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Group>Arcade</Group><Image>\mini\char\std\human\Generic\4arcane\Hexer.jpg</Image><Arcade_Region>Dusk Dale</Arcade_Region><Members>Nertum Volmevin;</Members><Displayed_Name>Nertum Volmevin's Party</Displayed_Name></props></Nertum_Volmevin_s_Party><Sabina_s_Party><params><Level>2</Level></params><props><Leader>Sabina</Leader><Displayed_Name>Sabina's Party</Displayed_Name><Image>\mini\char\std\human\Raven Realm\w_raven lady.jpg</Image><Group>Arcade</Group><Members>Sabina;</Members><Name>Sabina's Party</Name><Dungeons_Pending>Crystal Cavern;Abandoned House;Arcane Tower;Dwarven Halls;Spire;Dungeon;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Arcade_Region>Dusk Dale</Arcade_Region></props></Sabina_s_Party><Vuron_s_Party><params><Level>2</Level></params><props><Leader>Vuron</Leader><Dungeons_Pending>Hidden Camp;Dwarven Halls;Crystal Cave;Dungeon;Witch Grove;Spire;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Members>Vuron;</Members><Name>Vuron's Party</Name><Displayed_Name>Vuron's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Image>\mini\char\std\human\Generic\6dark\necrus.jpg</Image><Group>Arcade</Group></props></Vuron_s_Party><Gioress__Party><params><Level>2</Level></params><props><Name>Gioress' Party</Name><Members>Gioress;</Members><Leader>Gioress</Leader><Group>Arcade</Group><Displayed_Name>Gioress' Party</Displayed_Name><Image>\mini\char\std\human\Raven Realm\w_raven lady.jpg</Image><Arcade_Region>Dusk Dale</Arcade_Region><Dungeons_Pending>Crystal Cavern;Hidden Camp;Abandoned House;Dwarven Halls;Cemetary;Witch Grove;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending></props></Gioress__Party><Amril_s_Party><params><Level>2</Level></params><props><Name>Amril's Party</Name><Arcade_Region>Dusk Dale</Arcade_Region><Image>\mini\char\std\human\Generic\3warrior\w_priestess.jpg</Image><Group>Arcade</Group><Leader>Amril</Leader><Members>Amril;</Members><Dungeons_Pending>Crystal Cave;Arcane Tower;Dungeon;Crystal Cavern;Witch Grove;Demon Shrine;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Displayed_Name>Amril's Party</Displayed_Name></props></Amril_s_Party><Imlia_s_Party><params><Level>2</Level></params><props><Displayed_Name>Imlia's Party</Displayed_Name><Leader>Imlia</Leader><Dungeons_Pending>Crystal Cave;Crystal Cavern;Hidden Camp;Dungeon;Cemetary;Demon Shrine;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Group>Arcade</Group><Name>Imlia's Party</Name><Arcade_Region>Dusk Dale</Arcade_Region><Members>Imlia;</Members><Image>\mini\char\std\human\Generic\4arcane\w_human battlemage.jpg</Image></props></Imlia_s_Party><No_name_s_Party><params><Level>2</Level></params><props><Arcade_Region>Dusk Dale</Arcade_Region><Dungeons_Pending>Wizard Tower;Dwarven Halls;Cemetary;Spire;Arcane Tower;Witch Grove;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Group>Arcade</Group><Name>No name's Party</Name><Leader>No name</Leader><Members>No name;</Members><Image>\mini\char\std\human\Generic\2rogue\w_trickster.jpg</Image><Displayed_Name>No name's Party</Displayed_Name></props></No_name_s_Party><Viola_s_Party><params><Level>2</Level></params><props><Arcade_Region>Dusk Dale</Arcade_Region><Dungeons_Pending>Cemetary;Demon Shrine;Arcane Tower;Dwarven Halls;Witch Grove;Wizard Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Group>Arcade</Group><Name>Viola's Party</Name><Leader>Viola</Leader><Members>Viola;</Members><Image>\mini\char\std\human\Generic\2rogue\w_trickster.jpg</Image><Displayed_Name>Viola's Party</Displayed_Name></props></Viola_s_Party><Kesrin_s_Party><params><Level>2</Level></params><props><Group>Arcade</Group><Dungeons_Pending>Arcane Tower;Spire;Wizard Tower;Abandoned House;Dungeon;Cemetary;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Displayed_Name>Kesrin's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Image>\mini\char\std\human\Generic\2rogue\tNight Blade.jpg</Image><Leader>Kesrin</Leader><Name>Kesrin's Party</Name><Members>Kesrin;</Members></props></Kesrin_s_Party><Biantha_s_Party><params><Level>2</Level></params><props><Displayed_Name>Biantha's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Dungeons_Pending>Demon Shrine;Crystal Cave;Arcane Tower;Hidden Camp;Crystal Cavern;Spire;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Members>Biantha;</Members><Image>\mini\char\std\human\Raven Realm\w_raven lady.jpg</Image><Leader>Biantha</Leader><Group>Arcade</Group><Name>Biantha's Party</Name></props></Biantha_s_Party><Jim_Fletcher_s_Party><params><Level>2</Level></params><props><Arcade_Region>Dusk Dale</Arcade_Region><Image>\mini\char\std\human\Generic\2rogue\pirate2.jpg</Image><Members>Jim Fletcher;</Members><Dungeons_Pending>Dungeon;Spire;Demon Shrine;Arcane Tower;Dwarven Halls;Cemetary;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Displayed_Name>Jim Fletcher's Party</Displayed_Name><Name>Jim Fletcher's Party</Name><Leader>Jim Fletcher</Leader><Group>Arcade</Group></props></Jim_Fletcher_s_Party><Baron_Ulanor_s_Party><params><Level>2</Level></params><props><Image>\mini\char\std\human\Raven Realm\Duke.jpg</Image><Leader>Baron Ulanor</Leader><Dungeons_Pending>Spire;Demon Shrine;Abandoned House;Dwarven Halls;Dungeon;Witch Grove;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Name>Baron Ulanor's Party</Name><Group>Arcade</Group><Members>Baron Ulanor;</Members><Arcade_Region>Dusk Dale</Arcade_Region><Displayed_Name>Baron Ulanor's Party</Displayed_Name></props></Baron_Ulanor_s_Party><Enesse_s_Party><params><Level>2</Level></params><props><Dungeons_Pending>Cemetary;Abandoned House;Crystal Cave;Dwarven Halls;Arcane Tower;Witch Grove;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Arcade_Region>Dusk Dale</Arcade_Region><Group>Arcade</Group><Leader>Enesse</Leader><Displayed_Name>Enesse's Party</Displayed_Name><Name>Enesse's Party</Name><Members>Enesse;</Members><Image>\mini\char\std\elf\fey\w_Huntress2.jpg</Image></props></Enesse_s_Party><Drizzt_s_Party><params><Level>2</Level></params><props><Group>Arcade</Group><Displayed_Name>Drizzt's Party</Displayed_Name><Arcade_Region>Dusk Dale</Arcade_Region><Dungeons_Pending>Crystal Cave;Wizard Tower;Demon Shrine;Witch Grove;Dungeon;Hidden Camp;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Leader>Drizzt</Leader><Image>\mini\char\std\elf\drow\Drow Assassin.jpg</Image><Name>Drizzt's Party</Name><Members>Drizzt;</Members></props></Drizzt_s_Party><Kaleb_s_Party><params><Level>2</Level></params><props><Name>Kaleb's Party</Name><Image>\mini\char\std\human\Generic\2rogue\ein pirat.jpg</Image><Group>Arcade</Group><Leader>Kaleb</Leader><Dungeons_Pending>Abandoned House;Dwarven Halls;Spire;Dungeon;Hidden Camp;Wizard Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Members>Kaleb;</Members><Arcade_Region>Dusk Dale</Arcade_Region><Displayed_Name>Kaleb's Party</Displayed_Name></props></Kaleb_s_Party><Gethlin_s_Party><params><Level>2</Level></params><props><Name>Gethlin's Party</Name><Leader>Gethlin</Leader><Arcade_Status>PRESTART</Arcade_Status><Arcade_Region>Dusk Dale</Arcade_Region><Members>Gethlin;</Members><Displayed_Name>Gethlin's Party</Displayed_Name><Dungeons_Pending>Wizard Tower;Abandoned House;Hidden Camp;Spire;Arcane Tower;Crystal Cave;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Group>Arcade</Group><Image>\mini\char\std\human\Raven Realm\Wizard Apprentice.jpg</Image></props></Gethlin_s_Party><Irlath_s_Party><params><Level>2</Level></params><props><Leader>Irlath</Leader><Arcade_Region>Dusk Dale</Arcade_Region><Displayed_Name>Irlath's Party</Displayed_Name><Image>\mini\char\std\elf\dark\dark elf rogue.jpg</Image><Members>Irlath;</Members><Group>Arcade</Group><Name>Irlath's Party</Name><Dungeons_Pending>Crystal Cave;Witch Grove;Arcane Tower;Abandoned House;Hidden Camp;Demon Shrine;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending></props></Irlath_s_Party><Norette_s_Party><params><Level>2</Level></params><props><Image>\mini\char\std\human\Raven Realm\raven lord.jpg</Image><Displayed_Name>Norette's Party</Displayed_Name><Leader>Norette</Leader><Dungeons_Pending>Abandoned House;Wizard Tower;Spire;Witch Grove;Demon Shrine;Hidden Camp;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Arcade_Region>Dusk Dale</Arcade_Region><Members>Norette;</Members><Group>Arcade</Group><Name>Norette's Party</Name></props></Norette_s_Party><Elsierr_s_Party><params><Level>2</Level></params><props><Name>Elsierr's Party</Name><Displayed_Name>Elsierr's Party</Displayed_Name><Image>\mini\char\std\human\Generic\4arcane\Mechanicum Adept.jpg</Image><Dungeons_Pending>Spire;Hidden Camp;Cemetary;Demon Shrine;Dwarven Halls;Witch Grove;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Members>Elsierr;</Members><Arcade_Region>Dusk Dale</Arcade_Region><Group>Arcade</Group><Leader>Elsierr</Leader></props></Elsierr_s_Party><Gwynros__Party><params><Level>2</Level></params><props><Arcade_Region>Dusk Dale</Arcade_Region><Group>Arcade</Group><Leader>Gwynros</Leader><Dungeons_Pending>Wizard Tower;Witch Grove;Dungeon;Arcane Tower;Hidden Camp;Abandoned House;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Name>Gwynros' Party</Name><Image>\mini\char\std\human\King Realm\Human Lord.jpg</Image><Members>Gwynros;</Members><Displayed_Name>Gwynros' Party</Displayed_Name></props></Gwynros__Party><Kuipard_s_Party><params><Level>2</Level></params><props><Members>Kuipard;</Members><Group>Arcade</Group><Dungeons_Pending>Dwarven Halls;Demon Shrine;Spire;Witch Grove;Arcane Tower;Hidden Camp;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Image>\mini\char\std\human\Generic\4arcane\Aegulus.jpg</Image><Leader>Kuipard</Leader><Displayed_Name>Kuipard's Party</Displayed_Name><Name>Kuipard's Party</Name><Arcade_Region>Dusk Dale</Arcade_Region></props></Kuipard_s_Party><_Gidlau_Pirkust_Esvin_Kuigin_Kuipard_Islog_Sarnas_Genlyn_Nirligus_Avaldur_Vatiar_Ectis_Osmen_Pealet_Lotead_Nertum_Molfran_Kesrin_s_Party><params><Level>2</Level></params><props><Image>\mini\char\std\human\Generic\4arcane\Aegulus.jpg</Image><Group>Arcade</Group><Dungeons_Pending>Dwarven Halls;Abandoned House;Arcane Tower;Wizard Tower;Cemetary;Hidden Camp;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Leader> Gidlau Pirkust Esvin Kuigin Kuipard Islog Sarnas Genlyn Nirligus Avaldur Vatiar Ectis Osmen Pealet Lotead Nertum Molfran Kesrin</Leader><Arcade_Region>Dusk Dale</Arcade_Region><Members> Gidlau Pirkust Esvin Kuigin Kuipard Islog Sarnas Genlyn Nirligus Avaldur Vatiar Ectis Osmen Pealet Lotead Nertum Molfran Kesrin;</Members><Name> Gidlau Pirkust Esvin Kuigin Kuipard Islog Sarnas Genlyn Nirligus Avaldur Vatiar Ectis Osmen Pealet Lotead Nertum Molfran Kesrin's Party</Name><Displayed_Name> Gidlau Pirkust Esvin Kuigin Kuipard Islog Sarnas Genlyn Nirligus Avaldur Vatiar Ectis Osmen Pealet Lotead Nertum Molfran Kesrin's Party</Displayed_Name></props></_Gidlau_Pirkust_Esvin_Kuigin_Kuipard_Islog_Sarnas_Genlyn_Nirligus_Avaldur_Vatiar_Ectis_Osmen_Pealet_Lotead_Nertum_Molfran_Kesrin_s_Party><Eiraglen_Aemris__Party><params><Level>2</Level></params><props><Dungeons_Pending>Arcane Tower;Crystal Cave;Cemetary;Spire;Demon Shrine;Witch Grove;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;</Dungeons_Pending><Displayed_Name>Eiraglen Aemris' Party</Displayed_Name><Group>Arcade</Group><Arcade_Region>Dusk Dale</Arcade_Region><Leader>Eiraglen Aemris</Leader><Image>\mini\char\std\elf\grey\Elberen2.jpg</Image><Name>Eiraglen Aemris' Party</Name><Members>Eiraglen Aemris;</Members></props></Eiraglen_Aemris__Party></Custom></XML>
+<XML>
+    <Standard>
+        <Brigands>
+            <params></params>
+            <props>
+                <Group>Standard</Group>
+                <Name>Brigands</Name>
+                <Type>party</Type>
+            </props>
+        </Brigands>
+        <Militia>
+            <params></params>
+            <props>
+                <Group>Standard</Group>
+                <Name>Militia</Name>
+                <Type>party</Type>
+            </props>
+        </Militia>
+    </Standard>
+    <Arcade>
+        <Elberen_s_Party>
+            <params>
+                <Glory>-161</Glory>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Hidden Camp;Demon Shrine;Abandoned House;Wizard Tower;Spire;Arcane
+                    Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\elf\drow\Regulus Mograine.jpg</Image>
+                <Leader>Elberen</Leader>
+                <Arcade_Status>PRESTART</Arcade_Status>
+                <Name>Elberen's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Elberen's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Elberen;</Members>
+            </props>
+        </Elberen_s_Party>
+        <Julia_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Hidden Camp;Arcane Tower;Crystal Cave;Dungeon;Dwarven Halls;Abandoned
+                    House;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\Generic\1misc\w_1.jpg</Image>
+                <Leader>Julia</Leader>
+                <Arcade_Status>PRESTART</Arcade_Status>
+                <Name>Julia's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Julia's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Julia;Andahar the Wise;Sir David;Elizabeth;</Members>
+            </props>
+        </Julia_s_Party>
+        <Nakiro_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Wizard Tower;Hidden Camp;Dungeon;Demon Shrine;Spire;Arcane Tower;Crystal Cave;Witch
+                    Grove;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\elf\dark\dark_elf.jpg</Image>
+                <Leader>Nakiro</Leader>
+                <Arcade_Status>PRESTART</Arcade_Status>
+                <Name>Nakiro's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Nakiro's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Nakiro;Lia;Exilyon;Elthedar;</Members>
+            </props>
+        </Nakiro_s_Party>
+        <Al-Kifar_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Wizard Tower;Cemetary;Abandoned House;Witch Grove;Crystal Cave;Dungeon;Spire;Arcane
+                    Tower;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\East\al-kafar.jpg</Image>
+                <Leader>Al-Kifar</Leader>
+                <Arcade_Status>PRESTART</Arcade_Status>
+                <Name>Al-Kifar's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Al-Kifar's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Al-Kifar;</Members>
+            </props>
+        </Al-Kifar_s_Party>
+        <Orwell_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Demon Shrine;Dwarven Halls;Dungeon;Cemetary;Arcane Tower;Spire;Hell;Nordheim;Wraith
+                    Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\Generic\1misc\Academician.jpg</Image>
+                <Leader>Orwell</Leader>
+                <Name>Orwell's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Orwell's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Orwell;</Members>
+            </props>
+        </Orwell_s_Party>
+        <Dark_Fellowship_Arcade>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Hidden Camp;Arcane Tower;Demon Shrine;Abandoned House;Cemetary;Witch
+                    Grove;Spire;Dungeon;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\elf\\dark\w_DE120.jpg</Image>
+                <Leader>Lia</Leader>
+                <Name>Dark Fellowship Arcade</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Dark Fellowship Arcade</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Lia;Malthezar;Kaleb;Demir;</Members>
+            </props>
+        </Dark_Fellowship_Arcade>
+        <Garro_Wulfen_s_Party_Arcade>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Cemetary;Crystal Cave;Arcane Tower;Demon Shrine;Wizard Tower;Witch
+                    Grove;Spire;Dungeon;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\Wolf Realm\Count De'Mon2t.jpg</Image>
+                <Leader>Garro Wulfen</Leader>
+                <Name>Garro Wulfen's Party Arcade</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Garro Wulfen's Party Arcade</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Garro Wulfen;Ravenna;Necrus;</Members>
+            </props>
+        </Garro_Wulfen_s_Party_Arcade>
+        <Malthezar_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Leader>Malthezar</Leader>
+                <Members>Malthezar;</Members>
+                <Image>\mini\char\std\human\Generic\6dark\Vampire Knight.jpg</Image>
+                <Name>Malthezar's Party</Name>
+                <Group>Arcade</Group>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Displayed_Name>Malthezar's Party</Displayed_Name>
+                <Dungeons_Pending>Dungeon;Cemetary;Spire;Witch Grove;Dwarven Halls;Hidden Camp;Hell;Nordheim;Wraith
+                    Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+            </props>
+        </Malthezar_s_Party>
+        <Elsier_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Arcane Tower;Hidden Camp;Witch Grove;Abandoned House;Dungeon;Crystal
+                    Cave;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Type>party</Type>
+                <Leader>Elsier</Leader>
+                <Group>Arcade</Group>
+                <Members>Elsier;</Members>
+                <Displayed_Name>Elsier's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Name>Elsier's Party</Name>
+                <Image>\mini\char\std\human\Eagle Realm\kelsier.jpg</Image>
+            </props>
+        </Elsier_s_Party>
+        <Gori_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Abandoned House;Spire;Wizard Tower;Crystal Cave;Witch Grove;Demon
+                    Shrine;Cemetary;Hidden Camp;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\dwarf\\sadwarfy.jpg</Image>
+                <Leader>Gori</Leader>
+                <Name>Gori's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Gori's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Gori;</Members>
+            </props>
+        </Gori_s_Party>
+        <Avelyn_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Witch Grove;Crystal Cave;Abandoned House;Demon Shrine;Spire;Wizard
+                    Tower;Dungeon;Arcane Tower;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\Generic\1misc\w_irene.jpg</Image>
+                <Leader>Avelyn</Leader>
+                <Arcade_Status>PRESTART</Arcade_Status>
+                <Name>Avelyn's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Avelyn's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Avelyn;Elizabeth;Lethos;Leopold the True;</Members>
+            </props>
+        </Avelyn_s_Party>
+        <Sir_Uther_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Leader>Sir Uther</Leader>
+                <Name>Sir Uther's Party</Name>
+                <Group>Arcade</Group>
+                <Dungeons_Pending>Hidden Camp;Demon Shrine;Wizard Tower;Dungeon;Cemetary;Abandoned
+                    House;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Members>Sir Uther;</Members>
+                <Displayed_Name>Sir Uther's Party</Displayed_Name>
+                <Image>\mini\char\std\human\King Realm\a palad.jpg</Image>
+            </props>
+        </Sir_Uther_s_Party>
+        <Sir_David_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Leader>Sir David</Leader>
+                <Displayed_Name>Sir David's Party</Displayed_Name>
+                <Group>Arcade</Group>
+                <Dungeons_Pending>Dwarven Halls;Hidden Camp;Spire;Dungeon;Arcane Tower;Abandoned
+                    House;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Name>Sir David's Party</Name>
+                <Image>\mini\char\std\human\King Realm\knight2.jpg</Image>
+                <Members>Sir David;</Members>
+            </props>
+        </Sir_David_s_Party>
+        <Sir_Marcus__Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Abandoned House;Wizard Tower;Dungeon;Hidden Camp;Dwarven Halls;Arcane
+                    Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\Eagle Realm\winter lord.jpg</Image>
+                <Leader>Sir Marcus</Leader>
+                <Arcade_Status>PRESTART</Arcade_Status>
+                <Name>Sir Marcus' Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Sir Marcus' Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Sir Marcus;Guy Fox;Zak;Astro;</Members>
+            </props>
+        </Sir_Marcus__Party>
+        <Nethelas__Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Crystal Cave;Dungeon;Demon Shrine;Spire;Abandoned House;Hidden Camp;Arcane
+                    Tower;Cemetary;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\elf\grey\Archont.jpg</Image>
+                <Leader>Nethelas</Leader>
+                <Name>Nethelas' Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Nethelas' Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Nethelas;</Members>
+            </props>
+        </Nethelas__Party>
+        <Memnon_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Displayed_Name>Memnon's Party</Displayed_Name>
+                <Dungeons_Pending>Crystal Cave;Abandoned House;Hidden Camp;Spire;Demon
+                    Shrine;Cemetary;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Leader>Memnon</Leader>
+                <Type>party</Type>
+                <Image>\mini\char\std\elf\wood\L_WE_M_01.jpg</Image>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Members>Memnon;</Members>
+                <Group>Arcade</Group>
+                <Name>Memnon's Party</Name>
+            </props>
+        </Memnon_s_Party>
+        <Andahar_the_Wise_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Leader>Andahar the Wise</Leader>
+                <Arcade_Status>PRESTART</Arcade_Status>
+                <Name>Andahar the Wise's Party</Name>
+                <Members>Andahar the Wise;Fulgrim;Bralin;Garro Wulfen;Milthir;</Members>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Dungeons_Pending>Abandoned House;Arcane Tower;Cemetary;Dwarven Halls;Hidden
+                    Camp;Spire;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Group>Arcade</Group>
+                <Displayed_Name>Andahar the Wise's Party</Displayed_Name>
+                <Image>\mini\char\std\human\Generic\4arcane\magus.jpg</Image>
+            </props>
+        </Andahar_the_Wise_s_Party>
+        <Nirthas__Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Name>Nirthas' Party</Name>
+                <Leader>Nirthas</Leader>
+                <Displayed_Name>Nirthas' Party</Displayed_Name>
+                <Image>\mini\char\std\human\Generic\1misc\monk.jpg</Image>
+                <Dungeons_Pending>Abandoned House;Dwarven Halls;Demon Shrine;Wizard Tower;Crystal
+                    Cave;Cemetary;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Members>Nirthas;</Members>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Group>Arcade</Group>
+            </props>
+        </Nirthas__Party>
+        <Tiberius__Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Spire;Abandoned House;Crystal Cave;Demon Shrine;Hidden Camp;Witch
+                    Grove;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\Eagle Realm\winter lord.jpg</Image>
+                <Leader>Tiberius</Leader>
+                <Name>Tiberius' Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Tiberius' Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Tiberius;</Members>
+            </props>
+        </Tiberius__Party>
+        <Sir_Edwyn_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Image>\mini\char\std\human\King Realm\knight.jpg</Image>
+                <Name>Sir Edwyn's Party</Name>
+                <Dungeons_Pending>Hidden Camp;Dwarven Halls;Demon Shrine;Spire;Witch Grove;Abandoned
+                    House;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Members>Sir Edwyn;</Members>
+                <Leader>Sir Edwyn</Leader>
+                <Displayed_Name>Sir Edwyn's Party</Displayed_Name>
+                <Group>Arcade</Group>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </Sir_Edwyn_s_Party>
+        <Arnelion_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Cemetary;Arcane Tower;Dungeon;Abandoned House;Spire;Wizard Tower;Hell;Nordheim;Wraith
+                    Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\King Realm\knight.jpg</Image>
+                <Leader>Arnelion</Leader>
+                <Name>Arnelion's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Arnelion's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Arnelion;</Members>
+            </props>
+        </Arnelion_s_Party>
+        <Guldrim_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Witch Grove;Abandoned House;Dungeon;Crystal Cave;Arcane Tower;Demon
+                    Shrine;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Image>UI\Empty.jpg</Image>
+                <Leader>Guldrim</Leader>
+                <Name>Guldrim's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Guldrim's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Guldrim;</Members>
+            </props>
+        </Guldrim_s_Party>
+        <Kamil_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Wizard Tower;Demon Shrine;Spire;Cemetary;Crystal Cave;Abandoned
+                    House;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\East\w_arabeque2.jpg</Image>
+                <Leader>Kamil</Leader>
+                <Name>Kamil's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Kamil's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Kamil;</Members>
+            </props>
+        </Kamil_s_Party>
+        <Korhal_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Demon Shrine;Hidden Camp;Cemetary;Dwarven Halls;Wizard Tower;Crystal
+                    Cave;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\Generic\1misc\zwizz.jpg</Image>
+                <Leader>Korhal</Leader>
+                <Name>Korhal's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Korhal's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Korhal;</Members>
+            </props>
+        </Korhal_s_Party>
+        <Jezaine_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Abandoned House;Demon Shrine;Arcane Tower;Wizard Tower;Crystal Cave;Hidden Camp;Witch
+                    Grove;Spire;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\elf\fey\w_schemer.jpg</Image>
+                <Leader>Jezaine</Leader>
+                <Arcade_Status>PRESTART</Arcade_Status>
+                <Name>Jezaine's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Jezaine's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Jezaine;Gori Darkforge;Al-Kifar;Andahar the Wise;Demir;</Members>
+            </props>
+        </Jezaine_s_Party>
+        <Aed_Naurim_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Crystal Cave;Dwarven Halls;Witch Grove;Dungeon;Cemetary;Wizard
+                    Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\elf\dark\DE65.jpg</Image>
+                <Leader>Aed'Naurim</Leader>
+                <Name>Aed'Naurim's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Aed'Naurim's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Aed'Naurim;</Members>
+            </props>
+        </Aed_Naurim_s_Party>
+        <Lethos__Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Witch Grove;Demon Shrine;Dwarven Halls;Wizard Tower;Crystal Cave;Arcane
+                    Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\elf\dark\elven warlock.jpg</Image>
+                <Leader>Lethos</Leader>
+                <Name>Lethos' Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Lethos' Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Lethos;</Members>
+            </props>
+        </Lethos__Party>
+        <Umjula_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Hidden Camp;Abandoned House;Cemetary;Crystal Cave;Dungeon;Demon
+                    Shrine;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\East\w_arabeque2.jpg</Image>
+                <Leader>Umjula</Leader>
+                <Name>Umjula's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Umjula's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Umjula;</Members>
+            </props>
+        </Umjula_s_Party>
+        <Aeridan_s_Party>
+            <params>
+                <Level>2</Level>
+                <Glory>-66</Glory>
+            </params>
+            <props>
+                <Name>Aeridan's Party</Name>
+                <Leader>Aeridan</Leader>
+                <Displayed_Name>Aeridan's Party</Displayed_Name>
+                <Arcade_Status>PRESTART</Arcade_Status>
+                <Dungeons_Pending>Crystal Cave;Hidden Camp;Demon Shrine;Wizard Tower;Arcane Tower;Witch
+                    Grove;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Type>party</Type>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Group>Arcade</Group>
+                <Image>\mini\char\std\human\Generic\4arcane\anarcanist.jpg</Image>
+                <Members>Aeridan;</Members>
+            </props>
+        </Aeridan_s_Party>
+        <Melisha_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Abandoned House;Demon Shrine;Witch Grove;Dungeon;Hidden Camp;Arcane
+                    Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\elf\drow\w_Drow Princess.jpg</Image>
+                <Leader>Melisha</Leader>
+                <Arcade_Status>PRESTART</Arcade_Status>
+                <Name>Melisha's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Melisha's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Melisha;Mograine;Garro Wulfen;Baron Ulanor;Gubi;</Members>
+            </props>
+        </Melisha_s_Party>
+        <Gulmog_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Hidden Camp;Wizard Tower;Witch Grove;Dwarven Halls;Spire;Cemetary;Dungeon;Crystal
+                    Cave;Valhalla;Hell;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\orc\red\orc_bartender_by_izzual-d66pqed.jpg</Image>
+                <Leader>Gulmog</Leader>
+                <Name>Gulmog's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Gulmog's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Gulmog;</Members>
+            </props>
+        </Gulmog_s_Party>
+        <Imros_the_Rangerly_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Cemetary;Dungeon;Demon Shrine;Abandoned House;Dwarven Halls;Hidden
+                    Camp;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\Generic\3warrior\ra.jpg</Image>
+                <Leader>Imros the Rangerly</Leader>
+                <Arcade_Status>PRESTART</Arcade_Status>
+                <Name>Imros the Rangerly's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Imros the Rangerly's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Imros the Rangerly;Sir David;Memnon;Jim Fletcher;Ayrynn;</Members>
+            </props>
+        </Imros_the_Rangerly_s_Party>
+        <Felgrod_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Dungeon;Demon Shrine;Abandoned House;Crystal Cave;Hidden Camp;Wizard Tower;Dwarven
+                    Halls;Cemetary;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\orc\orc\orc thug.jpg</Image>
+                <Leader>Felgrod</Leader>
+                <Arcade_Status>PRESTART</Arcade_Status>
+                <Name>Felgrod's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Felgrod's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Felgrod;</Members>
+            </props>
+        </Felgrod_s_Party>
+        <Guy_Fox_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Spire;Arcane Tower;Hidden Camp;Demon Shrine;Wizard Tower;Witch Grove;Cemetary;Crystal
+                    Cave;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\Generic\6dark\de.jpg</Image>
+                <Leader>Guy Fox</Leader>
+                <Arcade_Status>PRESTART</Arcade_Status>
+                <Name>Guy Fox's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Guy Fox's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Guy Fox;Jaiden;Gori;Baron Ulanor;</Members>
+            </props>
+        </Guy_Fox_s_Party>
+        <Amon_Shi_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Members>Amon'Shi;</Members>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Displayed_Name>Amon'Shi's Party</Displayed_Name>
+                <Image>\mini\char\std\elf\drow\Regulus Mograine.jpg</Image>
+                <Leader>Amon'Shi</Leader>
+                <Group>Arcade</Group>
+                <Dungeons_Pending>Dwarven Halls;Arcane Tower;Wizard Tower;Dungeon;Demon Shrine;Witch
+                    Grove;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Name>Amon'Shi's Party</Name>
+            </props>
+        </Amon_Shi_s_Party>
+        <Fulgrim_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Hidden Camp;Crystal Cave;Witch Grove;Demon Shrine;Abandoned House;Arcane
+                    Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Members>Fulgrim;</Members>
+                <Leader>Fulgrim</Leader>
+                <Group>Arcade</Group>
+                <Displayed_Name>Fulgrim's Party</Displayed_Name>
+                <Name>Fulgrim's Party</Name>
+                <Image>\mini\char\std\human\Raven Realm\Raven Lord2.jpg</Image>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </Fulgrim_s_Party>
+        <Aeridan_Eresar_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Leader>Aeridan Eresar</Leader>
+                <Displayed_Name>Aeridan Eresar's Party</Displayed_Name>
+                <Name>Aeridan Eresar's Party</Name>
+                <Members>Aeridan Eresar;</Members>
+                <Dungeons_Pending>Dwarven Halls;Abandoned House;Dungeon;Crystal Cave;Demon Shrine;Arcane
+                    Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Group>Arcade</Group>
+                <Image>\mini\char\std\human\Raven Realm\Aeridan.jpg</Image>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </Aeridan_Eresar_s_Party>
+        <Aed_Faelion_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Wizard Tower;Arcane Tower;Demon Shrine;Spire;Hidden Camp;Abandoned House;Witch
+                    Grove;Dungeon;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\elf\high\high elf sorcerer.jpg</Image>
+                <Leader>Aed'Faelion</Leader>
+                <Arcade_Status>PRESTART</Arcade_Status>
+                <Name>Aed'Faelion's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Aed'Faelion's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Aed'Faelion;</Members>
+            </props>
+        </Aed_Faelion_s_Party>
+        <Tylmar_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Dungeon;Demon Shrine;Crystal Cave;Abandoned House;Spire;Arcane Tower;Wizard
+                    Tower;Witch Grove;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\elf\grey\grey watcher.jpg</Image>
+                <Leader>Tylmar</Leader>
+                <Name>Tylmar's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Tylmar's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Tylmar;</Members>
+            </props>
+        </Tylmar_s_Party>
+        <Astro_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Arcane Tower;Crystal Cave;Dwarven Halls;Wizard Tower;Demon Shrine;Witch
+                    Grove;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\Generic\1misc\tinker.jpg</Image>
+                <Leader>Astro</Leader>
+                <Name>Astro's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Astro's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Astro;</Members>
+            </props>
+        </Astro_s_Party>
+        <Kurz_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Dungeon;Cemetary;Demon Shrine;Wizard Tower;Hidden Camp;Abandoned House;Arcane
+                    Tower;Witch Grove;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\orc\pale\goplin.jpg</Image>
+                <Leader>Kurz</Leader>
+                <Name>Kurz's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Kurz's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Kurz;</Members>
+            </props>
+        </Kurz_s_Party>
+        <Gregor_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Spire;Cemetary;Demon Shrine;Dungeon;Abandoned House;Crystal Cave;Wizard Tower;Hidden
+                    Camp;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\Wolf Realm\Count De'Mon2t.jpg</Image>
+                <Leader>Gregor</Leader>
+                <Name>Gregor's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Gregor's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Gregor;</Members>
+            </props>
+        </Gregor_s_Party>
+        <Cornelius__Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Abandoned House;Cemetary;Spire;Dungeon;Demon Shrine;Wizard Tower;Hidden Camp;Witch
+                    Grove;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\Generic\4arcane\brujo.jpg</Image>
+                <Leader>Cornelius</Leader>
+                <Name>Cornelius' Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Cornelius' Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Cornelius;</Members>
+            </props>
+        </Cornelius__Party>
+        <Joanne_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Wizard Tower;Crystal Cave;Cemetary;Dungeon;Hidden Camp;Spire;Arcane Tower;Abandoned
+                    House;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\Generic\4arcane\w_wizard.jpg</Image>
+                <Leader>Joanne</Leader>
+                <Arcade_Status>PRESTART</Arcade_Status>
+                <Name>Joanne's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Joanne's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Joanne;</Members>
+            </props>
+        </Joanne_s_Party>
+        <Turi_Sharpeye_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Crystal Cave;Abandoned House;Witch Grove;Demon Shrine;Cemetary;Dungeon;Spire;Wizard
+                    Tower;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\dwarf\\ScenEdit 2012-01-01 14-39-06-78.jpg</Image>
+                <Leader>Turi Sharpeye</Leader>
+                <Name>Turi Sharpeye's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Turi Sharpeye's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Turi Sharpeye;</Members>
+            </props>
+        </Turi_Sharpeye_s_Party>
+        <Elthedar_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Cemetary;Abandoned House;Witch Grove;Spire;Wizard Tower;Crystal Cave;Arcane
+                    Tower;Demon Shrine;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\elf\grey\grey watcher.jpg</Image>
+                <Leader>Elthedar</Leader>
+                <Name>Elthedar's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Elthedar's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Elthedar;</Members>
+            </props>
+        </Elthedar_s_Party>
+        <Amon-Shi_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Displayed_Name>Amon-Shi's Party</Displayed_Name>
+                <Image>\mini\char\std\elf\drow\Regulus Mograine.jpg</Image>
+                <Group>Arcade</Group>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Name>Amon-Shi's Party</Name>
+                <Leader>Amon-Shi</Leader>
+                <Members>Amon-Shi;</Members>
+                <Dungeons_Pending>Crystal Cavern;Demon Shrine;Hidden Camp;Crystal Cave;Dwarven Halls;Wizard
+                    Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+            </props>
+        </Amon-Shi_s_Party>
+        <Lurtz_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Abandoned House;Witch Grove;Wizard Tower;Dungeon;Crystal Cave;Hidden Camp;Arcane
+                    Tower;Spire;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\orc\green\wild orc.jpg</Image>
+                <Leader>Lurtz</Leader>
+                <Name>Lurtz's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Lurtz's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Lurtz;</Members>
+            </props>
+        </Lurtz_s_Party>
+        <Schwarz_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Dungeon;Abandoned House;Spire;Hidden Camp;Witch Grove;Crystal Cave;Cemetary;Demon
+                    Shrine;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\orc\orc\orc thug.jpg</Image>
+                <Leader>Schwarz</Leader>
+                <Name>Schwarz's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Schwarz's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Schwarz;</Members>
+            </props>
+        </Schwarz_s_Party>
+        <Bralin_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Dwarven Halls;Cemetary;Demon Shrine;Arcane Tower;Crystal
+                    Cave;Dungeon;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Members>Bralin;</Members>
+                <Leader>Bralin</Leader>
+                <Group>Arcade</Group>
+                <Image>\mini\char\std\dwarf\\MeisterDwarf.jpg</Image>
+                <Name>Bralin's Party</Name>
+                <Displayed_Name>Bralin's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </Bralin_s_Party>
+        <John_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Demon Shrine;Spire;Arcane Tower;Abandoned House;Crystal Cave;Witch Grove;Hidden
+                    Camp;Cemetary;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\Generic\3warrior\human soldier.jpg</Image>
+                <Leader>John</Leader>
+                <Arcade_Status>PRESTART</Arcade_Status>
+                <Name>John's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>John's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>John;Amon-Shi;Milthir;Quenthedar;Julia;</Members>
+            </props>
+        </John_s_Party>
+        <Aiki_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Abandoned House;Wizard Tower;Crystal Cave;Hidden Camp;Spire;Demon Shrine;Dungeon;Witch
+                    Grove;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\East\ninja.jpg</Image>
+                <Leader>Aiki</Leader>
+                <Name>Aiki's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Aiki's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Aiki;</Members>
+            </props>
+        </Aiki_s_Party>
+        <Elizabeth_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Arcane Tower;Cemetary;Crystal Cave;Demon Shrine;Hidden Camp;Dungeon;Spire;Abandoned
+                    House;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\King Realm\w_Kathriel.jpg</Image>
+                <Leader>Elizabeth</Leader>
+                <Name>Elizabeth's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Elizabeth's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Elizabeth;</Members>
+            </props>
+        </Elizabeth_s_Party>
+        <Quenthedar_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Abandoned House;Spire;Hidden Camp;Crystal Cave;Arcane Tower;Dungeon;Demon
+                    Shrine;Wizard Tower;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\elf\high\high elf sorcerer.jpg</Image>
+                <Leader>Quenthedar</Leader>
+                <Name>Quenthedar's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Quenthedar's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Quenthedar;</Members>
+            </props>
+        </Quenthedar_s_Party>
+        <Kali_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Witch Grove;Demon Shrine;Dungeon;Crystal Cave;Arcane Tower;Spire;Abandoned
+                    House;Wizard Tower;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\elf\fey\w_Elf.jpg</Image>
+                <Leader>Kali</Leader>
+                <Arcade_Status>PRESTART</Arcade_Status>
+                <Name>Kali's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Kali's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Kali;Memnon;Tili;Exilyon;</Members>
+            </props>
+        </Kali_s_Party>
+        <Jasmine_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Wizard Tower;Hidden Camp;Crystal Cave;Arcane Tower;Demon Shrine;Dwarven Halls;Witch
+                    Grove;Spire;Valhalla;Hell;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\elf\fey\w_schemer.jpg</Image>
+                <Leader>Jasmine</Leader>
+                <Arcade_Status>PRESTART</Arcade_Status>
+                <Name>Jasmine's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Jasmine's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Jasmine;Kirvin the Sharp;Naeia;Cornelius;</Members>
+            </props>
+        </Jasmine_s_Party>
+        <Nosferatu_s_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Arcane Tower;Cemetary;Dungeon;Spire;Wizard Tower;Crystal Cave;Witch Grove;Demon
+                    Shrine;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\vampire\\a Nosferatu.jpg</Image>
+                <Leader>Nosferatu</Leader>
+                <Name>Nosferatu's Party</Name>
+                <Group>Arcade</Group>
+                <Displayed_Name>Nosferatu's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Type>party</Type>
+                <Members>Nosferatu;</Members>
+            </props>
+        </Nosferatu_s_Party>
+    </Arcade>
+    <CAMPAIGN>
+        <Aeridan>
+            <params>
+                <Travel_speed>2</Travel_speed>
+            </params>
+            <props>
+                <Heroes>Brawling Dwarf;Pirating Rogue;Fiery Witch;Twilight Priestess;</Heroes>
+                <Image>mini\char\Arcanum\New folder\Aeridan.png</Image>
+                <Group>CAMPAIGN</Group>
+                <Name>Aeridan</Name>
+                <Party_Leader>Aeridan</Party_Leader>
+                <Type>party</Type>
+                <Deity>Masked God</Deity>
+            </props>
+        </Aeridan>
+        <Victor>
+            <params></params>
+            <props>
+                <Heroes>Red Knight;Battle Cleric;Sky Mage Apprentice;</Heroes>
+                <Image>mini\char\Light\Archangel.jpg</Image>
+                <Group>CAMPAIGN</Group>
+                <Name>Victor</Name>
+                <Type>party</Type>
+                <Deity>Allfather</Deity>
+            </props>
+        </Victor>
+        <Gabriel>
+            <params>
+                <Travel_speed>2</Travel_speed>
+            </params>
+            <props>
+                <Image>mini\char\Darkness\Vampire Knight.jpg</Image>
+                <Group>CAMPAIGN</Group>
+                <Name>Gabriel</Name>
+                <Type>party</Type>
+                <Deity>Masked God</Deity>
+            </props>
+        </Gabriel>
+        <Ayrynn>
+            <params>
+                <Travel_speed>2</Travel_speed>
+            </params>
+            <props>
+                <Image>mini\char\Darkness\Twilight Priestess2.jpg</Image>
+                <Group>CAMPAIGN</Group>
+                <Name>Ayrynn</Name>
+                <Type>party</Type>
+                <Deity>Masked God</Deity>
+            </props>
+        </Ayrynn>
+        <Helene>
+            <params></params>
+            <props>
+                <Image>macro\companions\Helene.jpg</Image>
+                <Group>CAMPAIGN</Group>
+                <Name>Helene</Name>
+                <Type>party</Type>
+                <Deity>Masked God</Deity>
+            </props>
+        </Helene>
+    </CAMPAIGN>
+    <Custom>
+        <Isfior_ValherimUNICODE39CODEENDs_Party>
+            <params>
+                <Max_Heroes>2</Max_Heroes>
+            </params>
+            <props>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Members>Isfior Valherim;</Members>
+                <Group>Arcade</Group>
+                <Name>Isfior Valherim's Party</Name>
+                <Displayed_Name>Isfior Valherim's Party</Displayed_Name>
+                <Image>\mini\char\std\human\Wolf Realm\Count De'Mon2t.jpg</Image>
+                <Dungeons_Pending>Crystal Cavern;Shadow Keep;Academy Vaults;Dwarven Halls;Demon Shrine;Wizard
+                    Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+            </props>
+        </Isfior_ValherimUNICODE39CODEENDs_Party>
+        <Keserim_ThornUNICODE39CODEENDs_Party>
+            <params></params>
+            <props>
+                <Displayed_Name>Keserim Thorn's Party</Displayed_Name>
+                <Group>Arcade</Group>
+                <Dungeons_Pending>Demon Shrine;Dwarven Halls;Witch Grove;Academy Vaults;Dungeon;Crystal
+                    Cave;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Name>Keserim Thorn's Party</Name>
+                <Image>\mini\char\std\human\Generic\6dark\Vampire.jpg</Image>
+                <Members>Keserim Thorn;</Members>
+            </props>
+        </Keserim_ThornUNICODE39CODEENDs_Party>
+        <Aeilar_GorthiodUNICODE39CODEENDs_Party>
+            <params></params>
+            <props>
+                <Image>\mini\char\std\human\King Realm\zweld2.jpg</Image>
+                <Displayed_Name>Aeilar Gorthiod's Party</Displayed_Name>
+                <Dungeons_Pending>Hidden Camp;Crystal Cave;Spire;Witch Grove;Academy Vaults;Dungeon;Hell;Nordheim;Wraith
+                    Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Members>Aeilar Gorthiod;</Members>
+                <Group>Arcade</Group>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Name>Aeilar Gorthiod's Party</Name>
+            </props>
+        </Aeilar_GorthiodUNICODE39CODEENDs_Party>
+        <Mesbeth_KaurimUNICODE39CODEENDs_Party>
+            <params></params>
+            <props>
+                <Name>Mesbeth Kaurim's Party</Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Dungeons_Pending>Crystal Cavern;Hidden Camp;Academy Vaults;Abandoned House;Dungeon;Crystal
+                    Cave;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Displayed_Name>Mesbeth Kaurim's Party</Displayed_Name>
+                <Group>Arcade</Group>
+                <Members>Mesbeth Kaurim;</Members>
+                <Image>\mini\char\std\vampire\\w_void mask.jpg</Image>
+            </props>
+        </Mesbeth_KaurimUNICODE39CODEENDs_Party>
+        <Zail_Adelwyn_UNICODE39CODEENDs_Party>
+            <params></params>
+            <props>
+                <Members>Zail Adelwyn ;</Members>
+                <Group>Arcade</Group>
+                <Image>\mini\char\std\human\Generic\6dark\Vampire Knight.jpg</Image>
+                <Displayed_Name>Zail Adelwyn 's Party</Displayed_Name>
+                <Name>Zail Adelwyn 's Party</Name>
+                <Dungeons_Pending>Dwarven Halls;Witch Grove;Hidden Camp;Cemetary;Demon Shrine;Crystal
+                    Cave;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </Zail_Adelwyn_UNICODE39CODEENDs_Party>
+        <RavennaUNICODE39CODEENDs_Party>
+            <params></params>
+            <props>
+                <Dungeons_Pending>Dungeon;Crystal Cavern;Witch Grove;Hidden Camp;Spire;Cemetary;Hell;Nordheim;Wraith
+                    Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Members>Ravenna;</Members>
+                <Name>Ravenna's Party</Name>
+                <Image>\mini\char\std\human\Generic\6dark\w_Night Witch.jpg</Image>
+                <Group>Arcade</Group>
+                <Displayed_Name>Ravenna's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </RavennaUNICODE39CODEENDs_Party>
+        <Belvenon_FaoiUNICODE39CODEENDs_Party>
+            <params></params>
+            <props>
+                <Image>\mini\char\std\elf\\wood\elf wanderer.jpg</Image>
+                <Displayed_Name>Belvenon Faoi's Party</Displayed_Name>
+                <Dungeons_Pending>Dungeon;Cemetary;Witch Grove;Shadow Keep;Demon Shrine;Dwarven
+                    Halls;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Members>Belvenon Faoi;</Members>
+                <Group>Arcade</Group>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Name>Belvenon Faoi's Party</Name>
+            </props>
+        </Belvenon_FaoiUNICODE39CODEENDs_Party>
+        <Irxithor_No_nameUNICODE39CODEENDs_Party>
+            <params></params>
+            <props>
+                <Members>Irxithor No name;</Members>
+                <Dungeons_Pending>Wizard Tower;Dwarven Halls;Crystal Cave;Academy Vaults;Arcane Tower;Demon
+                    Shrine;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Image>UI\Empty.jpg</Image>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Displayed_Name>Irxithor No name's Party</Displayed_Name>
+                <Group>Arcade</Group>
+                <Name>Irxithor No name's Party</Name>
+            </props>
+        </Irxithor_No_nameUNICODE39CODEENDs_Party>
+        <Utmer_Mirthud_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Leader>Utmer Mirthud</Leader>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Image>\mini\char\std\human\Wolf Realm\wulfy.jpg</Image>
+                <Group>Arcade</Group>
+                <Dungeons_Pending>Arcane Tower;Wizard Tower;Dungeon;Cemetary;Witch Grove;Dwarven
+                    Halls;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Name>Utmer Mirthud's Party</Name>
+                <Members>Utmer Mirthud;</Members>
+                <Displayed_Name>Utmer Mirthud's Party</Displayed_Name>
+            </props>
+        </Utmer_Mirthud_s_Party>
+        <Aeridan_v4_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Spire;Dwarven Halls;Dungeon;Crystal Cave;Witch Grove;Wizard Tower;Hell;Nordheim;Wraith
+                    Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Group>Arcade</Group>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Leader>Aeridan v4</Leader>
+                <Members>Aeridan v4;</Members>
+                <Displayed_Name>Aeridan v4's Party</Displayed_Name>
+                <Image>\mini\char\std\human\Generic\4arcane\anarcanist.jpg</Image>
+                <Name>Aeridan v4's Party</Name>
+            </props>
+        </Aeridan_v4_s_Party>
+        <Arcturus__Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Dungeon;Arcane Tower;Witch Grove;Crystal Cavern;Spire;Hidden Camp;Hell;Nordheim;Wraith
+                    Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Group>Arcade</Group>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Leader>Arcturus</Leader>
+                <Members>Arcturus;</Members>
+                <Displayed_Name>Arcturus' Party</Displayed_Name>
+                <Image>\mini\char\std\human\Generic\1misc\Baron Ulanor.jpg</Image>
+                <Name>Arcturus' Party</Name>
+            </props>
+        </Arcturus__Party>
+        <Aeridan_v5_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Group>Arcade</Group>
+                <Members>Aeridan v5;</Members>
+                <Leader>Aeridan v5</Leader>
+                <Dungeons_Pending>Wizard Tower;Dungeon;Hidden Camp;Demon Shrine;Crystal Cavern;Arcane
+                    Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Name>Aeridan v5's Party</Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Displayed_Name>Aeridan v5's Party</Displayed_Name>
+                <Image>\mini\char\std\human\Generic\4arcane\anarcanist.jpg</Image>
+            </props>
+        </Aeridan_v5_s_Party>
+        <Paul_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Members>Paul;</Members>
+                <Displayed_Name>Paul's Party</Displayed_Name>
+                <Leader>Paul</Leader>
+                <Name>Paul's Party</Name>
+                <Group>Arcade</Group>
+                <Image>\mini\char\std\human\Generic\3warrior\human soldier3.jpg</Image>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Dungeons_Pending>Spire;Witch Grove;Dungeon;Demon Shrine;Wizard Tower;Dwarven Halls;Hell;Nordheim;Wraith
+                    Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+            </props>
+        </Paul_s_Party>
+        <Pirkust_Korbulo_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Dungeons_Pending>Witch Grove;Crystal Cavern;Crystal Cave;Demon Shrine;Abandoned House;Dwarven
+                    Halls;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Leader>Pirkust Korbulo</Leader>
+                <Displayed_Name>Pirkust Korbulo's Party</Displayed_Name>
+                <Name>Pirkust Korbulo's Party</Name>
+                <Members>Pirkust Korbulo;</Members>
+                <Group>Arcade</Group>
+                <Image>\mini\char\std\human\Raven Realm\Raven Lord2.jpg</Image>
+            </props>
+        </Pirkust_Korbulo_s_Party>
+        <Loerg_Korbulo_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Image>\mini\char\std\human\Generic\6dark\necrus.jpg</Image>
+                <Name>Loerg Korbulo's Party</Name>
+                <Members>Loerg Korbulo;</Members>
+                <Leader>Loerg Korbulo</Leader>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Group>Arcade</Group>
+                <Displayed_Name>Loerg Korbulo's Party</Displayed_Name>
+                <Dungeons_Pending>Abandoned House;Dwarven Halls;Spire;Cemetary;Dungeon;Crystal
+                    Cavern;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+            </props>
+        </Loerg_Korbulo_s_Party>
+        <Nertum_Volmevin_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Name>Nertum Volmevin's Party</Name>
+                <Leader>Nertum Volmevin</Leader>
+                <Dungeons_Pending>Witch Grove;Abandoned House;Spire;Dwarven Halls;Arcane Tower;Demon
+                    Shrine;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Group>Arcade</Group>
+                <Image>\mini\char\std\human\Generic\4arcane\Hexer.jpg</Image>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Members>Nertum Volmevin;</Members>
+                <Displayed_Name>Nertum Volmevin's Party</Displayed_Name>
+            </props>
+        </Nertum_Volmevin_s_Party>
+        <Sabina_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Leader>Sabina</Leader>
+                <Displayed_Name>Sabina's Party</Displayed_Name>
+                <Image>\mini\char\std\human\Raven Realm\w_raven lady.jpg</Image>
+                <Group>Arcade</Group>
+                <Members>Sabina;</Members>
+                <Name>Sabina's Party</Name>
+                <Dungeons_Pending>Crystal Cavern;Abandoned House;Arcane Tower;Dwarven
+                    Halls;Spire;Dungeon;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </Sabina_s_Party>
+        <Vuron_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Leader>Vuron</Leader>
+                <Dungeons_Pending>Hidden Camp;Dwarven Halls;Crystal Cave;Dungeon;Witch Grove;Spire;Hell;Nordheim;Wraith
+                    Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Members>Vuron;</Members>
+                <Name>Vuron's Party</Name>
+                <Displayed_Name>Vuron's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Image>\mini\char\std\human\Generic\6dark\necrus.jpg</Image>
+                <Group>Arcade</Group>
+            </props>
+        </Vuron_s_Party>
+        <Gioress__Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Name>Gioress' Party</Name>
+                <Members>Gioress;</Members>
+                <Leader>Gioress</Leader>
+                <Group>Arcade</Group>
+                <Displayed_Name>Gioress' Party</Displayed_Name>
+                <Image>\mini\char\std\human\Raven Realm\w_raven lady.jpg</Image>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Dungeons_Pending>Crystal Cavern;Hidden Camp;Abandoned House;Dwarven Halls;Cemetary;Witch
+                    Grove;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+            </props>
+        </Gioress__Party>
+        <Amril_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Name>Amril's Party</Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Image>\mini\char\std\human\Generic\3warrior\w_priestess.jpg</Image>
+                <Group>Arcade</Group>
+                <Leader>Amril</Leader>
+                <Members>Amril;</Members>
+                <Dungeons_Pending>Crystal Cave;Arcane Tower;Dungeon;Crystal Cavern;Witch Grove;Demon
+                    Shrine;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Displayed_Name>Amril's Party</Displayed_Name>
+            </props>
+        </Amril_s_Party>
+        <Imlia_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Displayed_Name>Imlia's Party</Displayed_Name>
+                <Leader>Imlia</Leader>
+                <Dungeons_Pending>Crystal Cave;Crystal Cavern;Hidden Camp;Dungeon;Cemetary;Demon
+                    Shrine;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Group>Arcade</Group>
+                <Name>Imlia's Party</Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Members>Imlia;</Members>
+                <Image>\mini\char\std\human\Generic\4arcane\w_human battlemage.jpg</Image>
+            </props>
+        </Imlia_s_Party>
+        <No_name_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Dungeons_Pending>Wizard Tower;Dwarven Halls;Cemetary;Spire;Arcane Tower;Witch
+                    Grove;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Group>Arcade</Group>
+                <Name>No name's Party</Name>
+                <Leader>No name</Leader>
+                <Members>No name;</Members>
+                <Image>\mini\char\std\human\Generic\2rogue\w_trickster.jpg</Image>
+                <Displayed_Name>No name's Party</Displayed_Name>
+            </props>
+        </No_name_s_Party>
+        <Viola_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Dungeons_Pending>Cemetary;Demon Shrine;Arcane Tower;Dwarven Halls;Witch Grove;Wizard
+                    Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Group>Arcade</Group>
+                <Name>Viola's Party</Name>
+                <Leader>Viola</Leader>
+                <Members>Viola;</Members>
+                <Image>\mini\char\std\human\Generic\2rogue\w_trickster.jpg</Image>
+                <Displayed_Name>Viola's Party</Displayed_Name>
+            </props>
+        </Viola_s_Party>
+        <Kesrin_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Group>Arcade</Group>
+                <Dungeons_Pending>Arcane Tower;Spire;Wizard Tower;Abandoned House;Dungeon;Cemetary;Hell;Nordheim;Wraith
+                    Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Displayed_Name>Kesrin's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Image>\mini\char\std\human\Generic\2rogue\tNight Blade.jpg</Image>
+                <Leader>Kesrin</Leader>
+                <Name>Kesrin's Party</Name>
+                <Members>Kesrin;</Members>
+            </props>
+        </Kesrin_s_Party>
+        <Biantha_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Displayed_Name>Biantha's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Dungeons_Pending>Demon Shrine;Crystal Cave;Arcane Tower;Hidden Camp;Crystal
+                    Cavern;Spire;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Members>Biantha;</Members>
+                <Image>\mini\char\std\human\Raven Realm\w_raven lady.jpg</Image>
+                <Leader>Biantha</Leader>
+                <Group>Arcade</Group>
+                <Name>Biantha's Party</Name>
+            </props>
+        </Biantha_s_Party>
+        <Jim_Fletcher_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Image>\mini\char\std\human\Generic\2rogue\pirate2.jpg</Image>
+                <Members>Jim Fletcher;</Members>
+                <Dungeons_Pending>Dungeon;Spire;Demon Shrine;Arcane Tower;Dwarven Halls;Cemetary;Hell;Nordheim;Wraith
+                    Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Displayed_Name>Jim Fletcher's Party</Displayed_Name>
+                <Name>Jim Fletcher's Party</Name>
+                <Leader>Jim Fletcher</Leader>
+                <Group>Arcade</Group>
+            </props>
+        </Jim_Fletcher_s_Party>
+        <Baron_Ulanor_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Image>\mini\char\std\human\Raven Realm\Duke.jpg</Image>
+                <Leader>Baron Ulanor</Leader>
+                <Dungeons_Pending>Spire;Demon Shrine;Abandoned House;Dwarven Halls;Dungeon;Witch
+                    Grove;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Name>Baron Ulanor's Party</Name>
+                <Group>Arcade</Group>
+                <Members>Baron Ulanor;</Members>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Displayed_Name>Baron Ulanor's Party</Displayed_Name>
+            </props>
+        </Baron_Ulanor_s_Party>
+        <Enesse_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Cemetary;Abandoned House;Crystal Cave;Dwarven Halls;Arcane Tower;Witch
+                    Grove;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Group>Arcade</Group>
+                <Leader>Enesse</Leader>
+                <Displayed_Name>Enesse's Party</Displayed_Name>
+                <Name>Enesse's Party</Name>
+                <Members>Enesse;</Members>
+                <Image>\mini\char\std\elf\fey\w_Huntress2.jpg</Image>
+            </props>
+        </Enesse_s_Party>
+        <Drizzt_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Group>Arcade</Group>
+                <Displayed_Name>Drizzt's Party</Displayed_Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Dungeons_Pending>Crystal Cave;Wizard Tower;Demon Shrine;Witch Grove;Dungeon;Hidden
+                    Camp;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Leader>Drizzt</Leader>
+                <Image>\mini\char\std\elf\drow\Drow Assassin.jpg</Image>
+                <Name>Drizzt's Party</Name>
+                <Members>Drizzt;</Members>
+            </props>
+        </Drizzt_s_Party>
+        <Kaleb_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Name>Kaleb's Party</Name>
+                <Image>\mini\char\std\human\Generic\2rogue\ein pirat.jpg</Image>
+                <Group>Arcade</Group>
+                <Leader>Kaleb</Leader>
+                <Dungeons_Pending>Abandoned House;Dwarven Halls;Spire;Dungeon;Hidden Camp;Wizard
+                    Tower;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Members>Kaleb;</Members>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Displayed_Name>Kaleb's Party</Displayed_Name>
+            </props>
+        </Kaleb_s_Party>
+        <Gethlin_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Name>Gethlin's Party</Name>
+                <Leader>Gethlin</Leader>
+                <Arcade_Status>PRESTART</Arcade_Status>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Members>Gethlin;</Members>
+                <Displayed_Name>Gethlin's Party</Displayed_Name>
+                <Dungeons_Pending>Wizard Tower;Abandoned House;Hidden Camp;Spire;Arcane Tower;Crystal
+                    Cave;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Group>Arcade</Group>
+                <Image>\mini\char\std\human\Raven Realm\Wizard Apprentice.jpg</Image>
+            </props>
+        </Gethlin_s_Party>
+        <Irlath_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Leader>Irlath</Leader>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Displayed_Name>Irlath's Party</Displayed_Name>
+                <Image>\mini\char\std\elf\dark\dark elf rogue.jpg</Image>
+                <Members>Irlath;</Members>
+                <Group>Arcade</Group>
+                <Name>Irlath's Party</Name>
+                <Dungeons_Pending>Crystal Cave;Witch Grove;Arcane Tower;Abandoned House;Hidden Camp;Demon
+                    Shrine;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+            </props>
+        </Irlath_s_Party>
+        <Norette_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Image>\mini\char\std\human\Raven Realm\raven lord.jpg</Image>
+                <Displayed_Name>Norette's Party</Displayed_Name>
+                <Leader>Norette</Leader>
+                <Dungeons_Pending>Abandoned House;Wizard Tower;Spire;Witch Grove;Demon Shrine;Hidden
+                    Camp;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Members>Norette;</Members>
+                <Group>Arcade</Group>
+                <Name>Norette's Party</Name>
+            </props>
+        </Norette_s_Party>
+        <Elsierr_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Name>Elsierr's Party</Name>
+                <Displayed_Name>Elsierr's Party</Displayed_Name>
+                <Image>\mini\char\std\human\Generic\4arcane\Mechanicum Adept.jpg</Image>
+                <Dungeons_Pending>Spire;Hidden Camp;Cemetary;Demon Shrine;Dwarven Halls;Witch Grove;Hell;Nordheim;Wraith
+                    Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Members>Elsierr;</Members>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Group>Arcade</Group>
+                <Leader>Elsierr</Leader>
+            </props>
+        </Elsierr_s_Party>
+        <Gwynros__Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Group>Arcade</Group>
+                <Leader>Gwynros</Leader>
+                <Dungeons_Pending>Wizard Tower;Witch Grove;Dungeon;Arcane Tower;Hidden Camp;Abandoned
+                    House;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Name>Gwynros' Party</Name>
+                <Image>\mini\char\std\human\King Realm\Human Lord.jpg</Image>
+                <Members>Gwynros;</Members>
+                <Displayed_Name>Gwynros' Party</Displayed_Name>
+            </props>
+        </Gwynros__Party>
+        <Kuipard_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Members>Kuipard;</Members>
+                <Group>Arcade</Group>
+                <Dungeons_Pending>Dwarven Halls;Demon Shrine;Spire;Witch Grove;Arcane Tower;Hidden
+                    Camp;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Image>\mini\char\std\human\Generic\4arcane\Aegulus.jpg</Image>
+                <Leader>Kuipard</Leader>
+                <Displayed_Name>Kuipard's Party</Displayed_Name>
+                <Name>Kuipard's Party</Name>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+            </props>
+        </Kuipard_s_Party>
+        <_Gidlau_Pirkust_Esvin_Kuigin_Kuipard_Islog_Sarnas_Genlyn_Nirligus_Avaldur_Vatiar_Ectis_Osmen_Pealet_Lotead_Nertum_Molfran_Kesrin_s_Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Image>\mini\char\std\human\Generic\4arcane\Aegulus.jpg</Image>
+                <Group>Arcade</Group>
+                <Dungeons_Pending>Dwarven Halls;Abandoned House;Arcane Tower;Wizard Tower;Cemetary;Hidden
+                    Camp;Hell;Nordheim;Wraith Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Leader>Gidlau Pirkust Esvin Kuigin Kuipard Islog Sarnas Genlyn Nirligus Avaldur Vatiar Ectis Osmen
+                    Pealet Lotead Nertum Molfran Kesrin
+                </Leader>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Members>Gidlau Pirkust Esvin Kuigin Kuipard Islog Sarnas Genlyn Nirligus Avaldur Vatiar Ectis Osmen
+                    Pealet Lotead Nertum Molfran Kesrin;
+                </Members>
+                <Name>Gidlau Pirkust Esvin Kuigin Kuipard Islog Sarnas Genlyn Nirligus Avaldur Vatiar Ectis Osmen Pealet
+                    Lotead Nertum Molfran Kesrin's Party
+                </Name>
+                <Displayed_Name>Gidlau Pirkust Esvin Kuigin Kuipard Islog Sarnas Genlyn Nirligus Avaldur Vatiar Ectis
+                    Osmen Pealet Lotead Nertum Molfran Kesrin's Party
+                </Displayed_Name>
+            </props>
+        </_Gidlau_Pirkust_Esvin_Kuigin_Kuipard_Islog_Sarnas_Genlyn_Nirligus_Avaldur_Vatiar_Ectis_Osmen_Pealet_Lotead_Nertum_Molfran_Kesrin_s_Party>
+        <Eiraglen_Aemris__Party>
+            <params>
+                <Level>2</Level>
+            </params>
+            <props>
+                <Dungeons_Pending>Arcane Tower;Crystal Cave;Cemetary;Spire;Demon Shrine;Witch Grove;Hell;Nordheim;Wraith
+                    Kingdom;City of Ancients;Castle Black;Jotunheim;
+                </Dungeons_Pending>
+                <Displayed_Name>Eiraglen Aemris' Party</Displayed_Name>
+                <Group>Arcade</Group>
+                <Arcade_Region>Dusk Dale</Arcade_Region>
+                <Leader>Eiraglen Aemris</Leader>
+                <Image>\mini\char\std\elf\grey\Elberen2.jpg</Image>
+                <Name>Eiraglen Aemris' Party</Name>
+                <Members>Eiraglen Aemris;</Members>
+            </props>
+        </Eiraglen_Aemris__Party>
+    </Custom>
+</XML>

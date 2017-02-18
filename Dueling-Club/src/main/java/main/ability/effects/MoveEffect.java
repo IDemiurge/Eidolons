@@ -2,7 +2,7 @@ package main.ability.effects;
 
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.UNIT_DIRECTION;
 import main.game.battlefield.DirectionMaster;
@@ -69,7 +69,7 @@ public class MoveEffect extends DC_Effect {
 
     @Override
     public boolean applyThis() {
-        DC_HeroObj obj = (DC_HeroObj) ref.getObj(obj_to_move);
+        Unit obj = (Unit) ref.getObj(obj_to_move);
         origin= obj.getCoordinates();
         if (direction != null) {
             destination= obj.getCoordinates().getAdjacentCoordinate(

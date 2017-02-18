@@ -2,8 +2,8 @@ package main.ability.conditions.req;
 
 import main.elements.conditions.standard.OccupiedCondition;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_UnitObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.DC_UnitModel;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.Coordinates.UNIT_DIRECTION;
@@ -46,8 +46,8 @@ public class CellCondition extends OccupiedCondition {
         }
         Obj obj = ref.getObj(obj_ref);
         FACING_DIRECTION f = null;
-        if (obj instanceof DC_UnitObj) {
-            f = ((DC_UnitObj) obj).getFacing();
+        if (obj instanceof DC_UnitModel) {
+            f = ((DC_UnitModel) obj).getFacing();
         }
         if (f == null) {
             return null;

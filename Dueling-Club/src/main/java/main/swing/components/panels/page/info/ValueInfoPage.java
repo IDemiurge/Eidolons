@@ -1,14 +1,14 @@
 package main.swing.components.panels.page.info;
 
 import main.content.VALUE;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.XLinkedMap;
 import main.entity.Entity;
 import main.swing.components.panels.page.info.element.ContainerTextElement;
 import main.swing.components.panels.page.info.element.EntityValueComponent;
 import main.swing.components.panels.page.info.element.PropertyElement;
 import main.swing.generic.components.misc.GraphicComponent;
-import main.system.auxiliary.FontMaster;
+import main.system.graphics.FontMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 
 import java.awt.*;

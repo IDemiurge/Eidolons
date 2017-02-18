@@ -1,13 +1,13 @@
 package main.swing.components.panels.page;
 
-import main.entity.obj.DC_UnitAction;
-import main.entity.obj.DC_UnitObj;
+import main.entity.active.DC_UnitAction;
+import main.entity.obj.unit.DC_UnitModel;
 import main.swing.components.panels.DC_UnitActionPanel;
 import main.swing.components.panels.DC_UnitActionPanel.ACTION_DISPLAY_GROUP;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagedListPanel;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class DC_PagedUnitActionPanel extends G_PagedListPanel<DC_UnitAction> {
         if (getObj() == null) {
             return null;
         }
-        List<DC_UnitAction> actions = ((DC_UnitObj) getObj()).getActionMap().get(group.getType());
+        List<DC_UnitAction> actions = ((DC_UnitModel) getObj()).getActionMap().get(group.getType());
         if (actions == null) {
             return null;
         }

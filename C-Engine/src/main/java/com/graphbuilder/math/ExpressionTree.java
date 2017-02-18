@@ -2,6 +2,7 @@ package com.graphbuilder.math;
 
 import com.graphbuilder.struc.Stack;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
@@ -283,7 +284,7 @@ public class ExpressionTree {
                     while (true) {
                         if (s2.isEmpty()) {
                             if (!autoresolved && MathMaster.isAutoResolveParseExceptions()) {
-                                main.system.auxiliary.LogMaster.log(1,
+                                LogMaster.log(1,
                                         "autoresolving malformed formula - crop last ')': " + s);
                                 return build(true, StringMaster.replaceLast(s, ")", ""),
                                         indexErrorOffset);
@@ -305,7 +306,7 @@ public class ExpressionTree {
                     term = true;
                     s2.push(String.valueOf(c));
                 } else {
-                    main.system.auxiliary.LogMaster.log(1, "ExpressionParseException - " + s);
+                    LogMaster.log(1, "ExpressionParseException - " + s);
                     if (!CoreEngine.isMinimizeLogging()) {
                         throw new ExpressionParseException(
                                 "Expected operator or close bracket but found: "

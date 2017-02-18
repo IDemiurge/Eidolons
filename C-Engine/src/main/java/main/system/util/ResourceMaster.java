@@ -1,16 +1,17 @@
 package main.system.util;
 
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 
 import javax.imageio.ImageIO;
@@ -29,8 +30,8 @@ public class ResourceMaster {
     private static String folderName = "Ordered";
 
     public static void createArtFolders(String arg) {
-        List<OBJ_TYPES> types = new EnumMaster<OBJ_TYPES>().getEnumList(OBJ_TYPES.class, arg);
-        for (OBJ_TYPES t : types) {
+        List<DC_TYPE> types = new EnumMaster<DC_TYPE>().getEnumList(DC_TYPE.class, arg);
+        for (DC_TYPE t : types) {
             createArtFolder(t);
         }
         boolean unused;
@@ -40,7 +41,7 @@ public class ResourceMaster {
         Map<String, ObjType> map = new XLinkedMap<>();
         // String path;
         for (PROPERTY prop : props) {
-            for (OBJ_TYPES t : OBJ_TYPES.values()) {
+            for (DC_TYPE t : DC_TYPE.values()) {
                 try {
                     createArtFolder(t, true, prop, map);
                 } catch (Exception e) {
@@ -83,7 +84,7 @@ public class ResourceMaster {
             ImageIO.write(bufferedImage, getNewImageFormat(), outputfile);
         } catch (IOException e) {
             e.printStackTrace();
-            main.system.auxiliary.LogMaster.log(1, "Unused image failed to write: " + f.getPath());
+            LogMaster.log(1, "Unused image failed to write: " + f.getPath());
         }
 
     }
@@ -92,11 +93,11 @@ public class ResourceMaster {
         return ImageManager.getImage(f.getPath());
     }
 
-    public static void createArtFolder(OBJ_TYPES TYPE) {
+    public static void createArtFolder(DC_TYPE TYPE) {
         createArtFolder(TYPE, false, G_PROPS.IMAGE, map);
     }
 
-    public static void createArtFolder(OBJ_TYPES TYPE, boolean update, PROPERTY imgProp,
+    public static void createArtFolder(DC_TYPE TYPE, boolean update, PROPERTY imgProp,
                                        Map<String, ObjType> map) {
 
         for (ObjType type : DataManager.getTypes(TYPE)) {

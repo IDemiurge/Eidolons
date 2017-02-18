@@ -3,17 +3,18 @@ package main.client.cc.gui.neo.tree.logic;
 import main.client.cc.gui.neo.tree.HT_Node;
 import main.client.cc.gui.neo.tree.logic.TreeMap.LINK_VARIANT;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
-import main.game.battlefield.PointX;
+import main.swing.PointX;
 import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.MathMaster;
 
 import java.awt.*;
@@ -133,13 +134,13 @@ public class HT_MapBuilder {
         // idea: have default id like 0, and set +/-x to go left/right
         // idea: init default ids per type#/circle ; leave space, e.g. to insert
         // between
-        main.system.auxiliary.LogMaster.log(1, ">>>>>>> before: " + children);
+        LogMaster.log(1, ">>>>>>> before: " + children);
         SortMaster.sortById(children);
-        main.system.auxiliary.LogMaster.log(1, ">>>>>>> after: " + children);
+        LogMaster.log(1, ">>>>>>> after: " + children);
     }
 
-    private OBJ_TYPES getTYPE() {
-        return (skill) ? OBJ_TYPES.SKILLS : OBJ_TYPES.CLASSES;
+    private DC_TYPE getTYPE() {
+        return (skill) ? DC_TYPE.SKILLS : DC_TYPE.CLASSES;
     }
 
     public TreeMap build() {
@@ -151,7 +152,7 @@ public class HT_MapBuilder {
         rootTypes.removeAll(customPosTypes);
         initGroups(data);
         sortDefault(rootTypes);
-        main.system.auxiliary.LogMaster.log(1, "Building tree for " + arg + "... \n rootTypes== "
+        LogMaster.log(1, "Building tree for " + arg + "... \n rootTypes== "
                 + rootTypes);
         // TODO next row of root types!
         if (rootTypes.size() > 3) {
@@ -188,7 +189,7 @@ public class HT_MapBuilder {
         }
         addAltBaseLinks();
 
-        main.system.auxiliary.LogMaster.log(1, "Tree built for " + arg + ": \n " + map);
+        LogMaster.log(1, "Tree built for " + arg + ": \n " + map);
         return map;
 
 		/*
@@ -231,7 +232,7 @@ public class HT_MapBuilder {
         i = 0;
         sortDefault(children);
 
-        main.system.auxiliary.LogMaster.log(1, root.getName() + " has children: " + children);
+        LogMaster.log(1, root.getName() + " has children: " + children);
         for (ObjType child : children) {
             sublingCount = getSublingCount(children);
             addNodeBranch(child, newParentX, i, sublingCount, root);
@@ -282,13 +283,13 @@ public class HT_MapBuilder {
         if (parent == null) {
             // getBasePoint();
             point = new PointX(getX(parentX, i, sublingCount, type, parent), getY(type, parent));
-            main.system.auxiliary.LogMaster.log(1, "Base Node added: " + "" + "" + type.getName()
+            LogMaster.log(1, "Base Node added: " + "" + "" + type.getName()
                     + " at " + point);
         } else {
             StaticTreeLink link = getStaticLink(type);
             point = getNodePointFromLink(parentX, type, i, sublingCount, parent, link);
 
-            main.system.auxiliary.LogMaster.log(1, "Node added: " + "" + type.getName() + " at "
+            LogMaster.log(1, "Node added: " + "" + type.getName() + " at "
                     + point + " with " + link);
         }
         HT_Node node = createNode(type, defSize, parent);
@@ -377,9 +378,9 @@ public class HT_MapBuilder {
             }
         }
         if (adjusted) {
-            main.system.auxiliary.LogMaster.log(1, "^v^ " + type.getName() + " adjusted to "
+            LogMaster.log(1, "^v^ " + type.getName() + " adjusted to "
                     + variant + " from " + link.getVariant());
-            main.system.auxiliary.LogMaster.log(1, "^v^ " + type.getName() + " adjusted to "
+            LogMaster.log(1, "^v^ " + type.getName() + " adjusted to "
                     + point + " from " + originalPoint);
             variant = link.getVariant();
             map.getStaticLinkMap().put(link,
@@ -412,7 +413,7 @@ public class HT_MapBuilder {
             if (abs > 0) {
                 if (finalY == y) { // just limit the diff!
 
-                    main.system.auxiliary.LogMaster.log(1, type.getName()
+                    LogMaster.log(1, type.getName()
                             + " (x adjustment) -> Y decreased by " + abs);
                     finalY += abs; // increase or decrease Y for x-change?
                 }
@@ -458,7 +459,7 @@ public class HT_MapBuilder {
                     point.x - 22, point.y + 22, 64, 64);
             // getMoreVertical(link.getVariant()).getNodeOffsetX() difference...
 
-            main.system.auxiliary.LogMaster.log(1, neighborsH + " vs " + neighborsV);
+            LogMaster.log(1, neighborsH + " vs " + neighborsV);
             v += neighborsV.size() * 16;
             h += neighborsH.size() * 16;
             // if (neighborsH.size() > neighborsV.size()) {
@@ -467,14 +468,14 @@ public class HT_MapBuilder {
             // return adjustLink(link, true);
         }
         // perhaps both? return |
-        main.system.auxiliary.LogMaster.log(1, "h= " + h + "; v= " + v);
+        LogMaster.log(1, "h= " + h + "; v= " + v);
         if (((v - h) > 15)) {
-            main.system.auxiliary.LogMaster.log(1, type.getName() + " adjusting vertically... "
+            LogMaster.log(1, type.getName() + " adjusting vertically... "
                     + point);
             return adjustLink(link, true);
         }
         if (((v - h) < -15)) {
-            main.system.auxiliary.LogMaster.log(1, type.getName() + " adjusting horizontally... "
+            LogMaster.log(1, type.getName() + " adjusting horizontally... "
                     + point);
             return adjustLink(link, false);
         }
@@ -499,7 +500,7 @@ public class HT_MapBuilder {
 
     private boolean adjustLink(StaticTreeLink link, boolean moreVertical) {
         LINK_VARIANT variant = getShiftedLinkVariant(link.getVariant(), moreVertical);
-        main.system.auxiliary.LogMaster.log(1, "***** vertical= " + moreVertical
+        LogMaster.log(1, "***** vertical= " + moreVertical
                 + " => adjusted to " + variant + "  [" + link);
         if (variant == null) {
             return false;
@@ -551,7 +552,7 @@ public class HT_MapBuilder {
                 if (StringMaster.compareByChar(link.getChildren().get(0).getProperty(
                         PROPS.TREE_NODE_GROUP), type.getProperty(PROPS.TREE_NODE_GROUP))) {
                     link.getChildren().add(type);
-                    main.system.auxiliary.LogMaster.log(1, "Group Type added: " + "" + ""
+                    LogMaster.log(1, "Group Type added: " + "" + ""
                             + type.getName() + " for " + link);
                     return;
                 }
@@ -570,7 +571,7 @@ public class HT_MapBuilder {
         }
         map.getStaticLinkMap().put(link, point);
 
-        main.system.auxiliary.LogMaster.log(1, "LINK added: " + variant + " FOR " + type.getName()
+        LogMaster.log(1, "LINK added: " + variant + " FOR " + type.getName()
                 + " at " + point);
 
     }
@@ -616,7 +617,7 @@ public class HT_MapBuilder {
                         index++;
                     }
 
-                    main.system.auxiliary.LogMaster.log(1, type.getName()
+                    LogMaster.log(1, type.getName()
                             + "*!* Link made LONG! - " + typesOnRow);
                     alteredTypeLinkMap.put(parent, type);
                     return LINK_VARIANT.VERTICAL_LONG;
@@ -715,7 +716,7 @@ public class HT_MapBuilder {
         if (sublingCount > 1) {
             x = x + i * getNodeSize(sublingCount) - defSize / 2;
         }
-        main.system.auxiliary.LogMaster.log(1, x + " X for " + i + "th of " + sublingCount + ""
+        LogMaster.log(1, x + " X for " + i + "th of " + sublingCount + ""
                 + " with size = " + getNodeSize(sublingCount) + "; from parent's " + parentX);
         return x;
     }
@@ -743,10 +744,10 @@ public class HT_MapBuilder {
         Integer circle = Math.max(parentCircle + 1, child.getIntParam(PARAMS.CIRCLE) + 1);
         // TODO will overlap if 3 skills same circle...
         int y = maxHeight - baseLineY - circle * rowGap;
-        main.system.auxiliary.LogMaster.log(1, y + " Y for " + circle + " circle");
+        LogMaster.log(1, y + " Y for " + circle + " circle");
         if (parentPosSpecial != null) {
             y = maxHeight - baseLineY - 1 * rowGap + parentPosSpecial.y;
-            main.system.auxiliary.LogMaster.log(1, y + " replaces Y;  from parent: "
+            LogMaster.log(1, y + " replaces Y;  from parent: "
                     + parent.getName());
         }
         return y;

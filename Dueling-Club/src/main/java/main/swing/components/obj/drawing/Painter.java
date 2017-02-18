@@ -1,6 +1,6 @@
 package main.swing.components.obj.drawing;
 
-import main.game.battlefield.XLine;
+import main.swing.XLine;
 
 import java.awt.*;
 

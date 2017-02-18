@@ -1,11 +1,12 @@
 package main.game.battlefield;
 
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates.DIRECTION;
 
 import java.util.HashMap;
@@ -44,7 +45,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
 
     @Override
     public boolean isCellVisiblyFree(Coordinates c) {
-        for (DC_HeroObj obj : getBattlefield().getGrid().getCellCompMap().get(c).getObjects()) {
+        for (Unit obj : getBattlefield().getGrid().getCellCompMap().get(c).getObjects()) {
             boolean free = false;
             // getBattlefield().getGrid().getObjCompMap().getOrCreate(c) == null;
             if (!free) {
@@ -70,9 +71,9 @@ public class DC_BattleFieldManager extends BattleFieldManager {
 
 
     public void resetWallMap() {
-        Map<Coordinates, DC_HeroObj> wallMap = new HashMap<>();
-        for (Obj obj : game.getObjects(OBJ_TYPES.BF_OBJ)) {
-            DC_HeroObj bfObj = (DC_HeroObj) obj;
+        Map<Coordinates, BattleFieldObject> wallMap = new HashMap<>();
+        for (Obj obj : game.getObjects(DC_TYPE.BF_OBJ)) {
+            BattleFieldObject bfObj = (BattleFieldObject) obj;
             if (bfObj.getZ() == game.getDungeonMaster().getZ()) {
                 if (bfObj.isWall()) {
                     wallMap.put(obj.getCoordinates(), bfObj);
@@ -82,11 +83,11 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         resetWallMap(wallMap);
     }
 
-    public void resetWallMap(Map<Coordinates, DC_HeroObj> wallObjects) {
+    public void resetWallMap(Map<Coordinates, BattleFieldObject> wallObjects) {
         wallMap.clear();
         LinkedList<Coordinates> coordinates = new LinkedList<>(wallObjects.keySet());
         for (Coordinates coordinate : coordinates) {
-            DC_HeroObj wall = wallObjects.get(coordinate);
+            BattleFieldObject wall = wallObjects.get(coordinate);
             if (wall.isDead()) {
                 continue;
             }
@@ -96,7 +97,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
             List<DIRECTION> list = new LinkedList<>();
 
             for (Coordinates c : coordinate.getAdjacent(false)) {
-                DC_HeroObj adjWall = wallObjects.get(c);
+                BattleFieldObject adjWall = wallObjects.get(c);
                 if (adjWall != null) {
                     if (adjWall.isWall() && !adjWall.isDead()) {
                         DIRECTION side = DirectionMaster.getRelativeDirection(coordinate, c);
@@ -106,7 +107,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
             }
             adjacent:
             for (Coordinates c : coordinate.getAdjacent(true)) {
-                DC_HeroObj adjWall = wallObjects.get(c);
+                BattleFieldObject adjWall = wallObjects.get(c);
                 if (adjWall != null) {
                     if (adjWall.isWall() && !adjWall.isDead()) {
                         DIRECTION side = DirectionMaster.getRelativeDirection(coordinate, c);

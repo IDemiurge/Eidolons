@@ -1,6 +1,6 @@
 package main.swing.components.panels.secondary;
 
-import main.entity.obj.DC_HeroItemObj;
+import main.entity.item.DC_HeroItemObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.swing.generic.components.G_Component;

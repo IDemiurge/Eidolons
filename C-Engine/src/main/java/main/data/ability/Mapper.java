@@ -7,12 +7,12 @@ import main.ability.effects.Effect;
 import main.ability.effects.EffectImpl;
 import main.ability.effects.Effects;
 import main.content.CONTENT_CONSTS;
-import main.content.parameters.Param;
-import main.content.properties.Prop;
+import main.content.values.parameters.Param;
+import main.content.values.properties.Prop;
 import main.data.xml.XML_Converter;
 import main.elements.conditions.Conditions;
 import main.system.auxiliary.ClassFinder;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.StringMaster;
 import org.w3c.dom.Node;
@@ -52,7 +52,7 @@ public class Mapper {
     public static AE_Item getItem(String itemName, List<Argument> argList) {
         AE_Item item = itemMap.get(itemName);
         if (item == null) {
-            main.system.auxiliary.LogMaster.log(1, "*** No item for " + itemName);
+            LogMaster.log(1, "*** No item for " + itemName);
             return null;
         }
         if (item.getArgList().equals(argList)) {
@@ -193,11 +193,11 @@ public class Mapper {
         for (String packageName : classFolders) {
             for (Class<?> CLASS : ClassFinder.getClasses(packageName)) {
                 if (CLASS == null) {
-                    main.system.auxiliary.LogMaster.log(1, "null class in " + packageName + "!");
+                    LogMaster.log(1, "null class in " + packageName + "!");
 
                 }
                 if (!constructAE_Item(CLASS)) {
-                    main.system.auxiliary.LogMaster.log(1, CLASS + " in " + "" + packageName
+                    LogMaster.log(1, CLASS + " in " + "" + packageName
                             + " failed to construct!");
                 }
             }
@@ -210,15 +210,15 @@ public class Mapper {
         constructENUM_AE_Items(args);
 
         sortLists();
-        main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, "ARG MAP: \n" + map);
-        main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, "ITEM MAP: \n" + itemMap);
+        LogMaster.log(LogMaster.CORE_DEBUG, "ARG MAP: \n" + map);
+        LogMaster.log(LogMaster.CORE_DEBUG, "ITEM MAP: \n" + itemMap);
     }
 
     private static void sortLists() {
         for (List<AE_Item> list : map.values()) {
-            main.system.auxiliary.LogMaster.log(0, list + "");
+            LogMaster.log(0, list + "");
             Collections.sort(list);
-            main.system.auxiliary.LogMaster.log(0, list + "");
+            LogMaster.log(0, list + "");
         }
     }
 
@@ -270,7 +270,7 @@ public class Mapper {
 
             }
         } catch (Exception e) {
-            main.system.auxiliary.LogMaster.log(1, CLASS.toString()
+            LogMaster.log(1, CLASS.toString()
                     + " failed to construct into item map");
             e.printStackTrace();
             return false;
@@ -324,7 +324,7 @@ public class Mapper {
 
         AE_Item item = itemMap.get(className);
         if (item == null) {
-            main.system.auxiliary.LogMaster.log(1, className);
+            LogMaster.log(1, className);
             return null;
         }
 

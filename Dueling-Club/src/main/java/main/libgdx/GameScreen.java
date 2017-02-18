@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.entity.obj.DC_Obj;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.anims.phased.PhaseAnimator;

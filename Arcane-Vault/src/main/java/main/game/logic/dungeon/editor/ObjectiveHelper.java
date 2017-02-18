@@ -1,6 +1,6 @@
 package main.game.logic.dungeon.editor;
 
-import main.content.properties.MACRO_PROPS;
+import main.content.values.properties.MACRO_PROPS;
 import main.entity.obj.Obj;
 import main.game.logic.dungeon.scenario.ObjectiveMaster.OBJECTIVE_TYPE;
 import main.swing.generic.components.editors.lists.ListChooser;

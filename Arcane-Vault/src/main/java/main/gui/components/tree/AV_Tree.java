@@ -1,20 +1,22 @@
 package main.gui.components.tree;
 
-import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.DC_TYPE;
+import main.content.enums.system.MetaEnums;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.xml.XML_Reader;
 import main.elements.Filter;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TreeMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.DefaultComparator;
 import main.utilities.workspace.Workspace;
 import org.w3c.dom.Document;
@@ -170,9 +172,9 @@ public class AV_Tree extends G_Panel {
             // TODO custom *grouping* -> enum class + property!
             {
                 if (workspace.isSearch()) {
-                    subGroups = ListMaster.toStringList(OBJ_TYPES.values());
+                    subGroups = ListMaster.toStringList(DC_TYPE.values());
                 } else {
-                    subGroups = ListMaster.toStringList(WORKSPACE_GROUP.values());
+                    subGroups = ListMaster.toStringList(MetaEnums.WORKSPACE_GROUP.values());
                     subGroups.add("");
                 }
             }
@@ -202,7 +204,7 @@ public class AV_Tree extends G_Panel {
                 if (workspace.isSearch()) {
                     list = DataManager.toStringList(new Filter<ObjType>().filter(workspace
                             .getTypeList(), G_PROPS.TYPE, subGroup));
-                    Collections.sort(list, new EnumMaster<>().getEnumSorter(OBJ_TYPES.class));
+                    Collections.sort(list, new EnumMaster<>().getEnumSorter(DC_TYPE.class));
 
                 } else {
 
@@ -267,7 +269,7 @@ public class AV_Tree extends G_Panel {
                     if (subNode2 == null) {
                         parent = null;
                         i = 0;
-                        main.system.auxiliary.LogMaster.log(1, upgrades + " remain, parent="
+                        LogMaster.log(1, upgrades + " remain, parent="
                                 + parent + i);
                         for (String typeName : upgrades) {
                             subNode.add(new DefaultMutableTreeNode(typeName));

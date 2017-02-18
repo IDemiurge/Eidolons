@@ -1,7 +1,8 @@
 package main.system.net;
 
 import main.data.XLinkedMap;
-import main.system.auxiliary.Chronos;
+import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.LogMaster;
 import main.system.net.socket.ServerConnector;
 import main.system.net.socket.ServerConnector.NetCode;
 
@@ -64,7 +65,7 @@ public class WaitingThread implements Runnable {
                 return wt;
             }
         }
-        main.system.auxiliary.LogMaster.log(0, "WAITING THREAD NOT FOUND " + code);
+        LogMaster.log(0, "WAITING THREAD NOT FOUND " + code);
 
         return null;
     }
@@ -75,12 +76,12 @@ public class WaitingThread implements Runnable {
         try {
             getThread(lastReceivedCode).setINPUT(INPUT);
         } catch (java.lang.NullPointerException e) {
-            main.system.auxiliary.LogMaster.log(0, INPUT + " - waiting thread not found: "
+            LogMaster.log(0, INPUT + " - waiting thread not found: "
                     + lastReceivedCode.name());
 
             return false;
         }
-        main.system.auxiliary.LogMaster.log(1, lastReceivedCode.name()
+        LogMaster.log(1, lastReceivedCode.name()
                 + " - waiting thread input set: " + INPUT);
 
         return true;
@@ -159,7 +160,7 @@ public class WaitingThread implements Runnable {
                     wait(WAITING_PERIOD);
                     time_elapsed += WAITING_PERIOD;
                     if (time_elapsed > waitingTime) {
-                        main.system.auxiliary.LogMaster.log("Waiting time expired! - " + getCode());
+                        LogMaster.log("Waiting time expired! - " + getCode());
                         if (isBreakOnExpired()) {
                             break;
                         } else {
@@ -224,7 +225,7 @@ public class WaitingThread implements Runnable {
                 continue;
             } else {
                 if (getRegisteredCodes().contains(getCode())) {
-                    main.system.auxiliary.LogMaster.log(2, "Code found! " + getCode());
+                    LogMaster.log(2, "Code found! " + getCode());
                     result = true;
                     getRegisteredCodes().remove(getCode());
                     break;
@@ -257,7 +258,7 @@ public class WaitingThread implements Runnable {
             VIEWER.info("WAITING THREAD FINISHED FOR " + getCode().name() + "; input: " + input
                     + " " + INPUT);
         }
-        main.system.auxiliary.LogMaster.log(1, "WAITING THREAD FINISHED FOR " + getCode().name()
+        LogMaster.log(1, "WAITING THREAD FINISHED FOR " + getCode().name()
                 + "; input: " + input + " " + INPUT);
 
         i++;

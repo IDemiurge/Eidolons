@@ -1,11 +1,13 @@
 package main.system.auxiliary;
 
-import main.content.CONTENT_CONSTS.ROLL_TYPES;
+import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.content.OBJ_TYPE;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.type.ObjType;
+import main.system.auxiliary.log.LogMaster;
+import main.system.datatypes.WeightMap;
 
 import java.util.*;
 
@@ -88,7 +90,7 @@ public class RandomWizard<E> {
             return false;
         }
         int res = getRandomIntBetween(0, 100, random);
-        main.system.auxiliary.LogMaster.log(0, i + " chance hits " + res);
+        LogMaster.log(0, i + " chance hits " + res);
         return res < i;
     }
 

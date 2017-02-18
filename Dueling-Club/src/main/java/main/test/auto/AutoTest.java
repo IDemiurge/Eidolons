@@ -6,8 +6,8 @@ import main.content.PROPS;
 import main.data.XLinkedMap;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
@@ -84,7 +84,7 @@ public class AutoTest {
     }
 
     public void initSource() {
-        DC_HeroObj unit = getSourceUnit();
+        Unit unit = getSourceUnit();
 //		for (Constraint constraint : constraints) {
 //			constraint.init(unit);
 //		}
@@ -92,8 +92,8 @@ public class AutoTest {
 
     }
 
-    private DC_HeroObj getSourceUnit() {
-        return (DC_HeroObj) getSource();
+    private Unit getSourceUnit() {
+        return (Unit) getSource();
     }
 
     public Obj getSource() {

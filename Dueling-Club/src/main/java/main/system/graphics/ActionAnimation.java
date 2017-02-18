@@ -1,22 +1,25 @@
 package main.system.graphics;
 
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.elements.costs.Cost;
 import main.elements.costs.Costs;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_HeroSlotItem;
+import main.entity.active.DC_ActiveObj;
+import main.entity.item.DC_HeroSlotItem;
 import main.entity.obj.Obj;
-import main.entity.obj.top.DC_ActiveObj;
-import main.game.DC_Game;
-import main.game.battlefield.ArmorMaster;
-import main.game.battlefield.AttackCalculator.MOD_IDENTIFIER;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
+import main.game.battlefield.attack.ArmorMaster;
 import main.game.battlefield.attack.Attack;
+import main.game.battlefield.attack.AttackCalculator.MOD_IDENTIFIER;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.auxiliary.secondary.GeometryMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
@@ -429,7 +432,7 @@ public class ActionAnimation extends PhaseAnimation {
                 // string += map.getOrCreate(s) + "" +
                 // StringMaster.wrapInParenthesis(s);
                 if (image == null) {
-                    main.system.auxiliary.LogMaster.log(1, "********** null image in " + map1);
+                    LogMaster.log(1, "********** null image in " + map1);
                     continue;
                 }
                 Loop loop = new Loop(10);
@@ -437,7 +440,7 @@ public class ActionAnimation extends PhaseAnimation {
                     WaitMaster.WAIT(50);
                 }
                 if (image.getWidth(null) < 1) {
-                    main.system.auxiliary.LogMaster.log(1, "********** invalid image for " + map1.get(image));
+                    LogMaster.log(1, "********** invalid image for " + map1.get(image));
                     continue;
                 }
 
@@ -555,7 +558,7 @@ public class ActionAnimation extends PhaseAnimation {
             if (image == null) {
                 continue;
             }
-            String string = "" + (-formula.getInt(action.getRef()));
+            String string = "" + (-s.getPayment().getLastPaid());
             map.put(image, string);
             List<String> list = new LinkedList<>();
             list.add(string);
@@ -640,7 +643,7 @@ public class ActionAnimation extends PhaseAnimation {
         return action.isMove();
     }
 
-    public void setSource(DC_HeroObj source) {
+    public void setSource(Unit source) {
         this.source = source;
         game = source.getGame();
         setSourceCoordinates((source.getCoordinates()));

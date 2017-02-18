@@ -2,15 +2,14 @@ package main.ability.effects;
 
 import main.ability.effects.continuous.ContinuousEffect;
 import main.ability.effects.oneshot.ContainerEffect;
-import main.content.CONTENT_CONSTS.BUFF_TYPE;
 import main.content.CONTENT_CONSTS.RETAIN_CONDITIONS;
-import main.content.CONTENT_CONSTS.STD_BOOLS;
 import main.content.ContentManager;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.parameters.G_PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.enums.GenericEnums;
+import main.content.values.parameters.G_PARAMS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.AE_ConstrArgs;
 import main.data.ability.OmittedConstructor;
@@ -18,11 +17,11 @@ import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.active.DC_ActiveObj;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
-import main.entity.obj.top.DC_ActiveObj;
 import main.entity.type.BuffType;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 import main.system.DC_ConditionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -103,7 +102,7 @@ public class AddBuffEffect extends MultiEffect implements ResistibleEffect, Redu
             if (!buff.getBasis().hasBuff(buff.getName()) || checkStacking()) {
                 game.getManager().buffCreated(buff, buff.getBasis());
             } else // TODO and if it's continuous???
-                if (buff.checkBool(STD_BOOLS.DURATION_ADDED)) // TODO for spells
+                if (buff.checkBool(GenericEnums.STD_BOOLS.DURATION_ADDED)) // TODO for spells
                 {
                     buff.setDuration(baseDuration + duration);
                 }
@@ -157,11 +156,11 @@ public class AddBuffEffect extends MultiEffect implements ResistibleEffect, Redu
 
     private boolean checkStacking() {
         if (ref.getActive() != null) {
-            if (ref.getActive().checkBool(STD_BOOLS.STACKING)) {
+            if (ref.getActive().checkBool(GenericEnums.STD_BOOLS.STACKING)) {
                 return true;
             }
         }
-        return buff.checkBool(STD_BOOLS.STACKING);
+        return buff.checkBool(GenericEnums.STD_BOOLS.STACKING);
     }
 
     @Override
@@ -174,7 +173,7 @@ public class AddBuffEffect extends MultiEffect implements ResistibleEffect, Redu
             return buffType;
         }
 
-        this.buffType = (BuffType) DataManager.getType(getBuffTypeName(), OBJ_TYPES.BUFFS);
+        this.buffType = (BuffType) DataManager.getType(getBuffTypeName(), DC_TYPE.BUFFS);
         if (buffType == null) {
             boolean invisible = getBuffTypeName().contains(StringMaster.INVISIBLE_BUFF_CODE);
             if (TextParser.checkHasRefs(getBuffTypeName())) {
@@ -183,7 +182,7 @@ public class AddBuffEffect extends MultiEffect implements ResistibleEffect, Redu
                         TextParser.BUFF_PARSING_CODE);
                 setBuffTypeName(parsedName);
             }
-            buffType = new BuffType(DataManager.getType(dummyBuffType, OBJ_TYPES.BUFFS));
+            buffType = new BuffType(DataManager.getType(dummyBuffType, DC_TYPE.BUFFS));
             boolean empty = StringMaster.isEmpty(getBuffTypeName());
             if (!empty) {
                 empty = StringMaster.isEmpty(getBuffTypeName().trim());
@@ -197,16 +196,16 @@ public class AddBuffEffect extends MultiEffect implements ResistibleEffect, Redu
             buffType.setProperty(G_PROPS.NAME, buffTypeName);
             Obj spell = ref.getObj(KEYS.SPELL);
             if (spell != null) {
-                buffType.setProperty(G_PROPS.BUFF_TYPE, BUFF_TYPE.SPELL.toString());
-                if (spell.checkBool(STD_BOOLS.NON_DISPELABLE)) {
-                    buffType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.NON_DISPELABLE.toString());
+                buffType.setProperty(G_PROPS.BUFF_TYPE, GenericEnums.BUFF_TYPE.SPELL.toString());
+                if (spell.checkBool(GenericEnums.STD_BOOLS.NON_DISPELABLE)) {
+                    buffType.addProperty(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.NON_DISPELABLE.toString());
                 }
                 buffType.setImage(spell.getProperty(G_PROPS.IMAGE));
             }
             buffType.setImage(getActive().getProperty(G_PROPS.IMAGE));
 
             if (invisible) {
-                buffType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INVISIBLE_BUFF.toString());
+                buffType.addProperty(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.INVISIBLE_BUFF.toString());
             }
             // DataManager.addType(buffType); //what for?
         }

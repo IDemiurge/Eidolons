@@ -1,8 +1,8 @@
 package main.game.logic.macro.utils;
 
 import main.content.ContentManager;
-import main.content.parameters.MACRO_PARAMS;
-import main.content.properties.MACRO_PROPS;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.properties.MACRO_PROPS;
 import main.entity.Entity;
 
 public class MacroContentManager {

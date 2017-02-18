@@ -12,7 +12,7 @@ import main.libgdx.gui.dialog.LogMessageBuilder;
 import main.libgdx.texture.TextureManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.ColorManager;
+import main.system.graphics.ColorManager;
 
 /**
  * Created by JustMe on 1/5/2017.

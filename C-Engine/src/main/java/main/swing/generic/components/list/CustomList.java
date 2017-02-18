@@ -2,7 +2,8 @@ package main.swing.generic.components.list;
 
 import main.data.XLinkedMap;
 import main.swing.generic.components.misc.GraphicComponent;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 
 import javax.swing.*;
@@ -147,7 +148,7 @@ public class CustomList<E> extends G_List<E> {
 
     public void setData(final Collection<E> data) {
         if (data == null) {
-            main.system.auxiliary.LogMaster.log(0, "NULL DATA!!! ");
+            LogMaster.log(0, "NULL DATA!!! ");
             return;
         }
         this.data = data;

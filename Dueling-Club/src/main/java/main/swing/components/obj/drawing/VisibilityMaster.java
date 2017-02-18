@@ -1,17 +1,16 @@
 package main.swing.components.obj.drawing;
 
 import main.ability.conditions.special.ClearShotCondition;
-import main.content.CONTENT_CONSTS.CLASSIFICATIONS;
-import main.content.CONTENT_CONSTS.RACE;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
 import main.content.PARAMS;
+import main.content.enums.entity.HeroEnums;
+import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.entity.obj.DC_Cell;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.game.DC_Game;
-import main.game.turn.DC_TurnManager;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
+import main.game.logic.battle.turn.DC_TurnManager;
 import main.rules.mechanics.ConcealmentRule;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
 import main.system.auxiliary.StringMaster;
@@ -36,7 +35,7 @@ public class VisibilityMaster {
     private static final String TARGET = " t";
     private static final String INFO = " s";
 
-    private static List<OUTLINE_HINT> getHints(DC_HeroObj unit, OUTLINE_IMAGE image) {
+    private static List<OUTLINE_HINT> getHints(Unit unit, OUTLINE_IMAGE image) {
         List<OUTLINE_HINT> list = new LinkedList<>();
         if (unit.isSmall()) {
             list.add(OUTLINE_HINT.SMALL);
@@ -115,17 +114,17 @@ public class VisibilityMaster {
         if (target.getOutlineType() == OUTLINE_TYPE.BLINDING_LIGHT) {
             return "Blinding light!";
         }
-        if (target instanceof DC_HeroObj) {
-            return getTooltipForUnit((DC_HeroObj) target);
+        if (target instanceof Unit) {
+            return getTooltipForUnit((Unit) target);
         }
         return null;
     }
 
-    public static String getTooltipForUnit(DC_HeroObj unit) {
+    public static String getTooltipForUnit(Unit unit) {
         String hintString = getHintsString(unit);
         String tooltip = StringMaster.getWellFormattedString(unit.getOutlineType().toString()) + " of something "
                 + hintString;
-        DC_HeroObj activeUnit = DC_Game.game.getManager().getActiveObj();
+        Unit activeUnit = DC_Game.game.getManager().getActiveObj();
         if (unit.getOwner().equals(activeUnit.getOwner())) {
             return unit.getToolTip();
         }
@@ -134,7 +133,7 @@ public class VisibilityMaster {
 
     }
 
-    public static String getHintsString(DC_HeroObj unit) {
+    public static String getHintsString(Unit unit) {
         List<OUTLINE_HINT> hints = getHints(unit, getImageDark(unit));
         String hintString = "";
         for (OUTLINE_HINT hint : hints) {
@@ -167,9 +166,9 @@ public class VisibilityMaster {
         String outlinePath = "ui\\outlines\\" + type.toString();
         OUTLINE_IMAGE outlineImage;
         if (type == OUTLINE_TYPE.VAGUE_OUTLINE) {
-            outlineImage = getImageVague((DC_HeroObj) obj);
+            outlineImage = getImageVague((Unit) obj);
         } else {
-            outlineImage = getImageDark((DC_HeroObj) obj);
+            outlineImage = getImageDark((Unit) obj);
         }
         if (outlineImage != OUTLINE_IMAGE.UNKNOWN) {
             outlinePath += "_" + outlineImage.toString();
@@ -215,7 +214,7 @@ public class VisibilityMaster {
         return image;
     }
 
-    private static OUTLINE_IMAGE getImageVague(DC_HeroObj unit) {
+    private static OUTLINE_IMAGE getImageVague(Unit unit) {
         // if (unit.isHuge()) {
         //
         // }
@@ -234,49 +233,49 @@ public class VisibilityMaster {
         return OUTLINE_IMAGE.UNKNOWN;
     }
 
-    private static OUTLINE_IMAGE getImageDark(DC_HeroObj unit) {
+    private static OUTLINE_IMAGE getImageDark(Unit unit) {
         // TODO identify!
         if (unit.isWall()) {
             return OUTLINE_IMAGE.WALL;
         }
-        if (unit.checkClassification(CLASSIFICATIONS.ANIMAL)) {
+        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.ANIMAL)) {
             return OUTLINE_IMAGE.BEAST;
         }
-        if (unit.checkClassification(CLASSIFICATIONS.HUMANOID)) {
-            if (unit.getRace() == RACE.HUMAN || unit.isHero()) {
+        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.HUMANOID)) {
+            if (unit.getRace() == HeroEnums.RACE.HUMAN || unit.isHero()) {
                 return OUTLINE_IMAGE.HUMAN;
-            } else if (unit.checkClassification(CLASSIFICATIONS.MONSTER)) {
+            } else if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.MONSTER)) {
                 return OUTLINE_IMAGE.MONSTROUS_HUMANOID;
             } else {
                 return OUTLINE_IMAGE.HUMANLIKE;
             }
         }
-        if (unit.checkClassification(CLASSIFICATIONS.INSECT)) {
+        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.INSECT)) {
             return OUTLINE_IMAGE.INSECT;
         }
 
-        if (unit.checkClassification(CLASSIFICATIONS.DEMON)) {
+        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.DEMON)) {
             return OUTLINE_IMAGE.HORROR;
         }
-        if (unit.checkClassification(CLASSIFICATIONS.UNDEAD)) {
+        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.UNDEAD)) {
             return OUTLINE_IMAGE.HORROR;
         }
 
-        if (unit.checkClassification(CLASSIFICATIONS.MONSTER)) {
+        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.MONSTER)) {
             return OUTLINE_IMAGE.MONSTROUS;
         }
 
-        if (unit.checkClassification(CLASSIFICATIONS.ANIMAL)) {
+        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.ANIMAL)) {
             return OUTLINE_IMAGE.MULTIPLE;
         }
-        if (unit.checkClassification(CLASSIFICATIONS.ANIMAL)) {
+        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.ANIMAL)) {
             return OUTLINE_IMAGE.INSECT;
         }
 
         return OUTLINE_IMAGE.UNKNOWN;
     }
 
-    public static VISIBILITY_LEVEL getVisibilityLevel(DC_Obj target, DC_HeroObj source) {
+    public static VISIBILITY_LEVEL getVisibilityLevel(DC_Obj target, Unit source) {
         return getVisibility(getOutlineType(target, source));
     }
 
@@ -321,7 +320,7 @@ public class VisibilityMaster {
                 return null;
             }
         }
-        DC_HeroObj activeUnit = DC_Game.game.getTurnManager().getActiveUnit(true);
+        Unit activeUnit = DC_Game.game.getTurnManager().getActiveUnit(true);
         DC_TurnManager.setVisionInitialized(true);
         if (activeUnit == null) {
             return null;
@@ -332,7 +331,7 @@ public class VisibilityMaster {
         return getType(activeUnit, unit);
     }
 
-    public static OUTLINE_TYPE getType(DC_HeroObj activeUnit, DC_Obj unit) {
+    public static OUTLINE_TYPE getType(Unit activeUnit, DC_Obj unit) {
         // if (unit.getVisibilityLevel() == VISIBILITY_LEVEL.CLEAR_SIGHT)
         // return null;
         // if (unit.getPlayerVisionStatus() == UNIT_TO_PLAYER_VISION.DETECTED)
@@ -340,7 +339,7 @@ public class VisibilityMaster {
         return getOutlineType(unit, activeUnit);
     }
 
-    public static OUTLINE_TYPE getOutlineType(DC_Obj unit, DC_HeroObj activeUnit) {
+    public static OUTLINE_TYPE getOutlineType(DC_Obj unit, Unit activeUnit) {
         if (DebugMaster.isOmnivisionOn()) {
             return null;
         }
@@ -351,8 +350,8 @@ public class VisibilityMaster {
             if (unit instanceof DC_Cell) {
                 return null;
             }
-            if (unit instanceof DC_HeroObj) {
-                DC_HeroObj heroObj = (DC_HeroObj) unit;
+            if (unit instanceof Unit) {
+                Unit heroObj = (Unit) unit;
                 if (heroObj.isWall() || heroObj.isLandscape()) {
 
                     return null;
@@ -367,7 +366,7 @@ public class VisibilityMaster {
         if (gamma == Integer.MIN_VALUE) {
             return OUTLINE_TYPE.VAGUE_LIGHT;
         } else if (gamma >= getGammaForBlindingLight()) {
-            if (!activeUnit.checkPassive(STANDARD_PASSIVES.EYES_OF_LIGHT)) {
+            if (!activeUnit.checkPassive(UnitEnums.STANDARD_PASSIVES.EYES_OF_LIGHT)) {
                 return OUTLINE_TYPE.BLINDING_LIGHT;
             }
         }
@@ -424,7 +423,7 @@ public class VisibilityMaster {
     }
 
     public static void resetVisibilityLevels() {
-        for (DC_HeroObj unit : DC_Game.game.getUnits()) {
+        for (Unit unit : DC_Game.game.getUnits()) {
             resetOutlineAndVisibilityLevel(unit);
         }
 

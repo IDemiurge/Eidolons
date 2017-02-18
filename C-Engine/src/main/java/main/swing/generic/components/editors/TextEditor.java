@@ -1,7 +1,7 @@
 package main.swing.generic.components.editors;
 
 import main.swing.generic.components.misc.G_Table;
-import main.system.auxiliary.FontMaster;
+import main.system.graphics.FontMaster;
 
 import javax.swing.*;
 

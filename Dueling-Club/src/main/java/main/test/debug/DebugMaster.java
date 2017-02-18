@@ -6,18 +6,17 @@ import main.ability.effects.common.CreateObjectEffect;
 import main.ability.effects.common.SummonEffect;
 import main.ability.effects.oneshot.common.ModifyPropertyEffect;
 import main.ability.effects.oneshot.common.OwnershipChangeEffect;
-import main.client.battle.Wave;
 import main.client.cc.CharacterCreator;
 import main.client.cc.logic.items.ItemGenerator;
 import main.client.cc.logic.spells.LibraryManager;
 import main.client.dc.Launcher;
-import main.content.CONTENT_CONSTS.ITEM_SLOT;
-import main.content.CONTENT_CONSTS.MATERIAL;
-import main.content.CONTENT_CONSTS.QUALITY_LEVEL;
+import main.content.enums.entity.ItemEnums.MATERIAL;
+import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.*;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.ItemEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.ability.construct.AbilityConstructor;
 import main.data.filesys.PathFinder;
@@ -27,20 +26,31 @@ import main.elements.conditions.Conditions;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.*;
+import main.entity.active.DC_SpellObj;
+import main.entity.item.DC_HeroItemObj;
+import main.entity.item.DC_QuickItemObj;
+import main.entity.item.ItemFactory;
+import main.entity.obj.ActiveObj;
+import main.entity.obj.DC_Obj;
+import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
-import main.game.DC_GameState;
+import main.game.core.game.DC_Game;
+import main.game.core.state.DC_GameState;
+import main.game.ai.AI_Manager;
+import main.game.ai.GroupAI;
+import main.game.ai.UnitAI;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.DC_ObjInitializer;
-import main.game.battlefield.UnitGroupMaster;
+import main.game.logic.arena.UnitGroupMaster;
+import main.game.logic.arena.Wave;
+import main.game.logic.battle.player.DC_Player;
 import main.game.logic.dungeon.Dungeon;
-import main.game.player.DC_Player;
-import main.game.player.Player;
-import main.libgdx.anims.particles.controls.EmitterController;
-import main.rules.DC_ActionManager;
+import main.game.logic.battle.player.Player;
+import main.libgdx.anims.controls.EmitterController;
+import main.game.logic.generic.DC_ActionManager;
 import main.swing.builders.DC_Builder;
 import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.swing.generic.components.editors.lists.ListChooser;
@@ -48,11 +58,11 @@ import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.services.dialog.EnumChooser;
 import main.system.*;
-import main.system.ai.AI_Manager;
-import main.system.ai.GroupAI;
-import main.system.ai.UnitAI;
 import main.system.auxiliary.*;
-import main.system.auxiliary.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.data.FileManager;
+import main.system.entity.ConditionMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
@@ -116,6 +126,7 @@ public class DebugMaster {
     public static final DEBUG_FUNCTIONS[] group_sfx = {
 
      DEBUG_FUNCTIONS.SFX_ADD,
+     DEBUG_FUNCTIONS.SFX_SET,
      DEBUG_FUNCTIONS.SFX_PLAY_LAST,
      DEBUG_FUNCTIONS.SFX_ADD_RANDOM,
      DEBUG_FUNCTIONS.SFX_MODIFY,
@@ -144,7 +155,7 @@ public class DebugMaster {
     private static DC_Obj target;
     public DEBUG_FUNCTIONS[] onStartFunctions = {DEBUG_FUNCTIONS.GOD_MODE,
             SPAWN_WAVE};
-    DC_HeroObj selectedTarget = null;
+    Unit selectedTarget = null;
     private String lastFunction;
     private Stack<String> executedFunctions = new Stack<>();
     private DC_Builder bf;
@@ -159,6 +170,9 @@ public class DebugMaster {
     private String lastType;
     private Obj arg;
     private String type;
+    private boolean quiet;
+    private boolean debugFunctionRunning;
+
 
     public DebugMaster(DC_GameState state, DC_Builder bf) {
         this.state = state;
@@ -278,7 +292,7 @@ public class DebugMaster {
                 : STD_SOUNDS.SPELL_UPGRADE_LEARNED);
     }
 
-    public void editAi(DC_HeroObj unit) {
+    public void editAi(Unit unit) {
         UnitAI ai = unit.getUnitAI();
         GroupAI group = ai.getGroup();
         DialogMaster.confirm("What to do with " + group);
@@ -288,7 +302,7 @@ public class DebugMaster {
         String NULL = "Set Parameter";
         String string = "What to do with " + group + "?";
         Boolean result = DialogMaster.askAndWait(string, TRUE, FALSE, NULL);
-        main.system.auxiliary.LogMaster.log(1, " ");
+        LogMaster.log(1, " ");
         DIRECTION info = group.getWanderDirection();
 
         // TODO GLOBAL AI LOG LEVEL
@@ -343,6 +357,9 @@ public class DebugMaster {
         this.setDebugPanel(new DebugPanel(this));
 
     }
+    public boolean isDebugFunctionRunning() {
+        return debugFunctionRunning;
+    }
 
     public Object executeDebugFunction(DEBUG_FUNCTIONS func) {
         executedFunctions.push(func.toString());
@@ -357,466 +374,483 @@ public class DebugMaster {
             arg = target;
         }
 
-        DC_HeroObj infoObj = target instanceof DC_HeroObj ? (DC_HeroObj) target : null;
+        Unit infoObj = target instanceof Unit ? (Unit) target : null;
         Ref ref = null;
         if (infoObj == null) {
             try {
-                infoObj = (DC_HeroObj) getObj();
+                infoObj = (Unit) getObj();
             } catch (Exception e) {
             }
         }
         if (infoObj == null) {
             infoObj = game.getManager().getActiveObj();
         }
-        try {
+       if ( game.getManager().getActiveObj()!=null )
             ref = new Ref(game, game.getManager().getActiveObj().getId());
-        } catch (Exception e) {
-        }
+       else ref = new Ref(game);
 
+        ref.setDebug(true);
         Coordinates coordinate = null;
         String data = null;
-        OBJ_TYPES TYPE;
-        switch (func) {
+        DC_TYPE TYPE;
 
-            case RUN_AUTO_TESTS:
-                AutoTestMaster.runTests();
-                break;
-            case AUTO_TEST_INPUT:
-                WaitMaster.receiveInput(WAIT_OPERATIONS.AUTO_TEST_INPUT, true);
-                break;
-            case SET_OPTION:
-                OptionsMaster.promptSetOption();
-                break;
-            case ADD_GROUP:
-                File groupFile = ListChooser.chooseFile(PathFinder.getUnitGroupPath());
-                if (groupFile == null) {
+        debugFunctionRunning=true;
+        try {
+            switch (func) {
+
+                case RUN_AUTO_TESTS:
+                    AutoTestMaster.runTests();
                     break;
-                }
-                coordinate = getGame().getBattleFieldManager().pickCoordinate();
-                if (coordinate == null) {
+                case AUTO_TEST_INPUT:
+                    WaitMaster.receiveInput(WAIT_OPERATIONS.AUTO_TEST_INPUT, true);
                     break;
-                }
-                data = FileManager.readFile(groupFile);
-
-                UnitGroupMaster.setCurrentGroupHeight(MathMaster.getMaxY(data));
-                UnitGroupMaster.setCurrentGroupWidth(MathMaster.getMaxX(data));
-                UnitGroupMaster.setMirror(isAltMode());
-                // String flip = ListChooser.chooseEnum(FLIP.class);
-                // if (flip != null)
-                // UnitGroupMaster.setFlip(new
-                // EnumMaster<FLIP>().retrieveEnumConst(FLIP.class,
-                // flip));
-                // else
-                // UnitGroupMaster.setFlip(null);
-                try {
-                    DC_ObjInitializer.processObjData(game.getPlayer(isAltMode()), data, coordinate);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    UnitGroupMaster.setMirror(false);
-                }
-
-                break;
-            case TOGGLE_DUMMY:
-                game.setDummyMode(!game.isDummyMode());
-                TestMasterContent.setForceFree(game.isDummyMode());
-                break;
-
-            case PRESET:
-                PresetMaster.handlePreset(isAltMode());
-
-                break;
-            case DUNGEON_PLAN_INFO: {
-                main.system.auxiliary.LogMaster.log(1, ""
-                        + game.getDungeonMaster().getDungeon().getPlan());
-                break;
-            }
-            case DUNGEON_BLOCK_INFO: {
-                displayList("", game.getDungeonMaster().getDungeon().getPlan().getBlocks(), 1);
-                break;
-            }
-            case DUNGEON_ZONES_INFO: {
-                break;
-            }
-            case TOGGLE_DUNGEON_DEBUG: {
-                mapDebugOn = !mapDebugOn;
-                break;
-            }
-            case DUNGEON_ADD_SUBLEVEL: {
-                Dungeon sublevel = null;
-                game.getDungeonMaster().getDungeon().getSubLevels().add(sublevel);
-
-                break;
-            }
-
-            case HIDDEN_FUNCTION: {
-                int i = DialogMaster.optionChoice(HIDDEN_DEBUG_FUNCTIONS.values(), "...");
-                if (i != -1) {
-                    executeHiddenDebugFunction(HIDDEN_DEBUG_FUNCTIONS.values()[i]);
-                }
-                break;
-            }
-            case TOGGLE_AUTO_UNIT:
-                if (!infoObj.isOwnedBy(game.getPlayer(true))) {
-                    infoObj.setOriginalOwner(game.getPlayer(true));
-                    infoObj.setOwner(game.getPlayer(true));
-                } else {
-                    infoObj.setAiControlled(!infoObj.isAiControlled());
-                }
-                WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, true);
-                break;
-
-            case ADD_DUNGEON:
-                DC_Game.game.getDungeonMaster().addDungeon();
-
-                // game.getManager().killAllUnits(isAltMode());
-                // DC_Game.game.getDungeonMaster().addDungeon();
-                // if (!isAltMode())
-                // game.getArenaManager().getSpawnManager().spawnParty(true);
-                // else {
-                // game.getArenaManager().getSpawnManager().spawnParty(false);
-                // }
-                return func;
-
-            case EDIT_AI:
-                break;
-            case LOAD_DUNGEON:
-                DC_Game.game.getDungeonMaster().reloadDungeon();
-
-                return func;
-            case PAUSE:
-                DC_Game.game.setPaused(!DC_Game.game.isPaused());
-                break;
-            case TOGGLE_OMNIVISION:
-                omnivision = !omnivision;
-                break;
-            case AUTO_COMBAT:
-                game.getPlayer(true).setAi(!game.getPlayer(true).isAi());
-                WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, true);
-                break;
-            case ADD_TEST_SPELLS:
-                TestMasterContent.addTestActives(false, infoObj.getType(), true);
-                break;
-            case ADD_ALL_SPELLS:
-                TestMasterContent.addTestActives(true, infoObj.getType(), true);
-                break;
-            case TOGGLE_GRAPHICS_TEST:
-                DrawMasterStatic.GRAPHICS_TEST_MODE = !DrawMasterStatic.GRAPHICS_TEST_MODE;
-                if (DrawMasterStatic.GRAPHICS_TEST_MODE) {
-                    DrawMasterStatic.FULL_GRAPHICS_TEST_MODE = DialogMaster.confirm("Full test on?");
-                } else {
-                    DrawMasterStatic.FULL_GRAPHICS_TEST_MODE = false;
-                }
-                break;
-            case TOGGLE_LOG: {
-                String e = ListChooser.chooseEnum(LOG_CHANNELS.class);
-                LogMaster.toggle(e);
-                break;
-            }
-
-            case TOGGLE_FREE_ACTIONS:
-                TestMasterContent.toggleFree();
-                break;
-            case GOD_MODE:
-                TestMasterContent.toggleImmortal();
-                // game.getManager().getActiveObj().setGodMode(
-                // !game.getManager().getActiveObj().isGodMode());
-                // DebugUtilities.initGodMode(game.getManager().getActiveObj(),
-                // game.getManager()
-                // .getActiveObj().isGodMode());
-                // game.getManager().refreshAll();
-                break;
-
-            case RESTART:
-                if (!altMode) {
-                    if (DialogMaster.confirm("Select anew?")) {
-                        FAST_DC.getGameLauncher().selectiveInit();
-                    }
-                }
-
-                game.getManager().killAllUnits(true, false);
-                game.getArenaManager().getSpawnManager().spawnParty(true);
-                game.getArenaManager().getSpawnManager().spawnParty(false);
-                game.getManager().refreshAll();
-                WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, true);
-                return func;
-            case CLEAR:
-                boolean respawn = !isAltMode();
-                game.getManager().killAllUnits(isAltMode());
-                if (respawn) {
-                    // /respawn!
-                    game.getArenaManager().getSpawnManager().spawnParty(true);
-                    game.getArenaManager().getSpawnManager().spawnParty(false);
-                }
-                game.getManager().refreshAll();
-
-                break;
-            case KILL_ALL_UNITS:
-                game.getManager().killAll(isAltMode());
-                break;
-
-            case ACTIVATE_UNIT:
-                if (isAltMode()) {
-                    getObj().modifyParameter(PARAMS.C_N_OF_ACTIONS, 100);
-                }
-                if (getObj().isMine()) {
-                    game.getManager().setActivatingAction(null);
-                    game.getManager().activeSelect(getObj());
-                } else {
-                    WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, true);
-                    WaitMaster.WAIT(1234);
-                    getObj().modifyParameter(PARAMS.C_N_OF_ACTIONS, 100);
-                }
-
-                game.getVisionManager().refresh();
-                break;
-
-            case ADD_ITEM:
-                if (isAltMode()) {
-                    TYPE = OBJ_TYPES.WEAPONS;
-                } else {
-                    TYPE = (OBJ_TYPES) DialogMaster.getChosenOption("Choose item type...",
-                            OBJ_TYPES.WEAPONS, OBJ_TYPES.ARMOR, OBJ_TYPES.ITEMS, OBJ_TYPES.JEWELRY);
-                }
-                if (isAltMode()) {
-                    if (!selectWeaponType()) {
+                case SET_OPTION:
+                    OptionsMaster.promptSetOption();
+                    break;
+                case ADD_GROUP:
+                    File groupFile = ListChooser.chooseFile(PathFinder.getUnitGroupPath());
+                    if (groupFile == null) {
                         break;
                     }
-                } else if (!selectType(TYPE)) {
-                    break;
-                }
-
-                if (!selectTarget(ref)) {
-                    selectedTarget = infoObj;
-                }
-                if (selectedTarget == null) {
-                    break;
-                }
-                boolean quick = false;
-                if (isAltMode()) {
-                    quick = false;
-                } else if (TYPE == OBJ_TYPES.ITEMS) {
-                    quick = true;
-                } else if (TYPE == OBJ_TYPES.WEAPONS) {
-                    quick = DialogMaster.confirm("quick slot item?");
-                }
-                DC_HeroItemObj item = ItemFactory.createItemObj(selectedType, selectedTarget.getOwner(),
-                        game, ref, quick);
-                if (!quick) {
-                    if (TYPE != OBJ_TYPES.JEWELRY) {
-                        selectedTarget.equip(item, TYPE == OBJ_TYPES.ARMOR ? ITEM_SLOT.ARMOR
-                                : ITEM_SLOT.MAIN_HAND);
-                    }
-                } else {
-                    selectedTarget.addQuickItem((DC_QuickItemObj) item);
-                }
-
-                // selectedTarget.addItemToInventory(item);
-
-                game.getManager().refreshGUI();
-                break;
-            case ADD_SPELL:
-                if (!selectType(OBJ_TYPES.SPELLS)) {
-                    break;
-                }
-                if (!selectTarget(ref)) {
-                    selectedTarget = infoObj;
-                }
-                if (selectedTarget == null) {
-                    break;
-                }
-                TestMasterContent.setTEST_LIST(TestMasterContent.getTEST_LIST()
-                        + selectedType.getName() + ";");
-
-                selectedTarget.getSpells().add(
-                        new DC_SpellObj(selectedType, selectedTarget.getOwner(), game, selectedTarget.getRef()));
-                game.getManager().refreshGUI();
-                break;
-            case ADD_SKILL:
-            case ADD_ACTIVE:
-                PROPERTY prop = G_PROPS.ACTIVES;
-                OBJ_TYPES T = OBJ_TYPES.ACTIONS;
-                if (func == DEBUG_FUNCTIONS.ADD_SKILL) {
-                    prop = PROPS.SKILLS;
-                    T = OBJ_TYPES.SKILLS;
-                }
-                String type = ListChooser.chooseType(T);
-                if (type == null) {
-                    break;
-                }
-
-                if (!new SelectiveTargeting(new Conditions(ConditionMaster
-                        .getTYPECondition(C_OBJ_TYPE.BF_OBJ))).select(ref)) {
-                    break;
-                }
-                lastType = type;
-                new AddBuffEffect(type + " hack", new ModifyPropertyEffect(prop, MOD_PROP_TYPE.ADD,
-                        type), new Formula("1")).apply(ref);
-                if (func == DEBUG_FUNCTIONS.ADD_ACTIVE) {
-                    infoObj.getActives().add(game.getActionManager().getAction(type, infoObj));
-                    ((DC_ActionManager) game.getActionManager()).constructActionMaps(infoObj);
-                }
-
-                // game.getManager().reset();
-                // instead of toBase()
-                break;
-            case ADD_PASSIVE:
-                // same method
-                infoObj.getPassives().add(
-                        AbilityConstructor.getPassive(ListChooser.chooseType(OBJ_TYPES.ABILS),
-                                infoObj));
-                infoObj.activatePassives();
-                break;
-            case CHANGE_OWNER:
-                // if already has, make permanent
-                new AddBuffEffect("ownership hack", new OwnershipChangeEffect(), new Formula("1"))
-                        .apply(ref);
-
-                break;
-
-            case END_TURN:
-                game.getManager().setActivatingAction(null);
-                WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, false);
-                return func;
-            case KILL_UNIT:
-                infoObj.kill(infoObj, !isAltMode(), isAltMode());
-                // game.getManager().killUnitQuietly((DC_UnitObj)
-                // game.getManager()
-                // .getInfoObj());
-                break;
-
-            case ADD_CHAR:
-                summon(true, OBJ_TYPES.CHARS, ref);
-                break;
-            case ADD_OBJ:
-                summon(null, OBJ_TYPES.BF_OBJ, new Ref(game));
-                break;
-            case ADD_UNIT:
-                summon(true, OBJ_TYPES.UNITS, ref);
-                break;
-            case SET_WAVE_POWER:
-                Integer forcedPower;
-                forcedPower = DialogMaster.inputInt();
-                if (forcedPower < 0) {
-                    forcedPower = null;
-                }
-                game.getArenaManager().getWaveAssembler().setForcedPower(forcedPower);
-                break;
-            case SPAWN_CUSTOM_WAVE:
-                coordinate = getGame().getBattleFieldManager().pickCoordinate();
-                ObjType waveType = ListChooser.chooseType_(OBJ_TYPES.ENCOUNTERS);
-                Wave wave = new Wave(coordinate, waveType, game, ref, game.getPlayer(!isAltMode()));
-
-                String value = new ListChooser(SELECTION_MODE.MULTIPLE, StringMaster
-                        .openContainer(wave.getProperty(PROPS.UNIT_TYPES)), OBJ_TYPES.UNITS)
-                        .choose();
-                wave.setProperty(PROPS.UNIT_TYPES, value);
-                // PROPS.EXTENDED_PRESET_GROUP
-                break;
-            case SPAWN_PARTY:
-
-                coordinate = getGame().getBattleFieldManager().pickCoordinate();
-                ObjType party = ListChooser.chooseType_(OBJ_TYPES.PARTY);
-                game.getArenaManager().getSpawnManager().spawnParty(coordinate, null, party);
-
-                break;
-            case SPAWN_WAVE:
-                if (!isAltMode()) {
                     coordinate = getGame().getBattleFieldManager().pickCoordinate();
-                } else {
-                    FACING_DIRECTION side = new EnumChooser<FACING_DIRECTION>()
-                            .choose(FACING_DIRECTION.class);
-                    // if (side== FACING_DIRECTION.NONE)
-                    game.getArenaManager().getSpawnManager().getPositioner().setForcedSide(side);
-                }
-                String typeName = ListChooser.chooseType(OBJ_TYPES.ENCOUNTERS);
-                if (typeName == null) {
-                    return func;
-                }
-                try {
-                    game.getArenaManager().getSpawnManager().spawnWave(typeName,
-                            game.getPlayer(ALT_AI_PLAYER), coordinate);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    game.getArenaManager().getSpawnManager().getPositioner().setForcedSide(null);
-                }
-                game.getManager().refreshAll();
-                break;
-            case ADD_ENEMY_UNIT:
-                summon(false, OBJ_TYPES.UNITS, new Ref(game));
-                // ref = new Ref(game
-                // // , game.getManager().getActiveObj().getId()
-                // );
-                // ref.setPlayer(game.getPlayer(false));
-                // typeName = ListChooser.chooseType(OBJ_TYPES.UNITS);
-                // if (StringMaster.isEmpty(typeName))
-                // break;
-                // new SelectiveTargeting(new Conditions(
-                // ConditionMaster.getTYPECondition(OBJ_TYPES.TERRAIN)))
-                // .select(ref);
-                // effect = new SummonEffect(typeName);
-                // effect.apply(ref);
-                // effect.getUnit().setOwner(game.getPlayer(false));
-                // game.getManager().refreshAll();
-                break;
+                    if (coordinate == null) {
+                        break;
+                    }
+                    data = FileManager.readFile(groupFile);
 
-            case TOGGLE_ALT_AI: {
-                ALT_AI_PLAYER = !ALT_AI_PLAYER;
-                break;
-            }
-            case TOGGLE_DEBUG: {
-                game.setDebugMode(!game.isDebugMode());
-                Launcher.setDEBUG_MODE(!Launcher.isDEBUG_MODE_DEFAULT());
-                break;
-            }
-            case WAITER_INPUT: {
-                String input = DialogMaster.inputText("operation");
-                WAIT_OPERATIONS operation = new EnumMaster<WAIT_OPERATIONS>().retrieveEnumConst(
-                        WAIT_OPERATIONS.class, input);
-                if (operation == null) {
-                    operation = new EnumMaster<WAIT_OPERATIONS>().retrieveEnumConst(
-                            WAIT_OPERATIONS.class, input, true);
+                    UnitGroupMaster.setCurrentGroupHeight(MathMaster.getMaxY(data));
+                    UnitGroupMaster.setCurrentGroupWidth(MathMaster.getMaxX(data));
+                    UnitGroupMaster.setMirror(isAltMode());
+                    // String flip = ListChooser.chooseEnum(FLIP.class);
+                    // if (flip != null)
+                    // UnitGroupMaster.setFlip(new
+                    // EnumMaster<FLIP>().retrieveEnumConst(FLIP.class,
+                    // flip));
+                    // else
+                    // UnitGroupMaster.setFlip(null);
+                    try {
+                        DC_ObjInitializer.processObjData(game.getPlayer(isAltMode()), data, coordinate);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        UnitGroupMaster.setMirror(false);
+                    }
+
+                    break;
+                case TOGGLE_DUMMY:
+                    game.setDummyMode(!game.isDummyMode());
+                    TestMasterContent.setForceFree(game.isDummyMode());
+                    break;
+
+                case PRESET:
+                    PresetMaster.handlePreset(isAltMode());
+
+                    break;
+                case DUNGEON_PLAN_INFO: {
+                    LogMaster.log(1, ""
+                     + game.getDungeonMaster().getDungeon().getPlan());
+                    break;
                 }
-                if (operation == null) {
-                    DialogMaster.error("no such operation");
+                case DUNGEON_BLOCK_INFO: {
+                    displayList("", game.getDungeonMaster().getDungeon().getPlan().getBlocks(), 1);
+                    break;
+                }
+                case DUNGEON_ZONES_INFO: {
+                    break;
+                }
+                case TOGGLE_DUNGEON_DEBUG: {
+                    mapDebugOn = !mapDebugOn;
+                    break;
+                }
+                case DUNGEON_ADD_SUBLEVEL: {
+                    Dungeon sublevel = null;
+                    game.getDungeonMaster().getDungeon().getSubLevels().add(sublevel);
+
+                    break;
+                }
+
+                case HIDDEN_FUNCTION: {
+                    int i = DialogMaster.optionChoice(HIDDEN_DEBUG_FUNCTIONS.values(), "...");
+                    if (i != -1) {
+                        executeHiddenDebugFunction(HIDDEN_DEBUG_FUNCTIONS.values()[i]);
+                    }
+                    break;
+                }
+                case TOGGLE_AUTO_UNIT:
+                    if (!infoObj.isOwnedBy(game.getPlayer(true))) {
+                        infoObj.setOriginalOwner(game.getPlayer(true));
+                        infoObj.setOwner(game.getPlayer(true));
+                    } else {
+                        infoObj.setAiControlled(!infoObj.isAiControlled());
+                    }
+                    WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, true);
+                    break;
+
+                case ADD_DUNGEON:
+                    DC_Game.game.getDungeonMaster().addDungeon();
+
+                    // game.getManager().killAllUnits(isAltMode());
+                    // DC_Game.game.getDungeonMaster().addDungeon();
+                    // if (!isAltMode())
+                    // game.getArenaManager().getSpawnManager().spawnParty(true);
+                    // else {
+                    // game.getArenaManager().getSpawnManager().spawnParty(false);
+                    // }
                     return func;
+
+                case EDIT_AI:
+                    break;
+                case LOAD_DUNGEON:
+                    DC_Game.game.getDungeonMaster().reloadDungeon();
+
+                    return func;
+                case PAUSE:
+                    DC_Game.game.setPaused(!DC_Game.game.isPaused());
+                    break;
+                case TOGGLE_OMNIVISION:
+                    omnivision = !omnivision;
+                    break;
+                case AUTO_COMBAT:
+                    game.getPlayer(true).setAi(!game.getPlayer(true).isAi());
+                    WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, true);
+                    break;
+                case ADD_TEST_SPELLS:
+                    TestMasterContent.addTestActives(false, infoObj.getType(), true);
+                    break;
+                case ADD_ALL_SPELLS:
+                    TestMasterContent.addTestActives(true, infoObj.getType(), true);
+                    break;
+                case TOGGLE_GRAPHICS_TEST:
+                    DrawMasterStatic.GRAPHICS_TEST_MODE = !DrawMasterStatic.GRAPHICS_TEST_MODE;
+                    if (DrawMasterStatic.GRAPHICS_TEST_MODE) {
+                        DrawMasterStatic.FULL_GRAPHICS_TEST_MODE = DialogMaster.confirm("Full test on?");
+                    } else {
+                        DrawMasterStatic.FULL_GRAPHICS_TEST_MODE = false;
+                    }
+                    break;
+                case TOGGLE_LOG: {
+                    String e = ListChooser.chooseEnum(LOG_CHANNELS.class);
+                    LogMaster.toggle(e);
+                    break;
                 }
-                input = DialogMaster.inputText("input");
-                WaitMaster.receiveInput(operation, input);
+
+                case TOGGLE_QUIET:
+                    quiet = !quiet;
+                    break;
+                case TOGGLE_FREE_ACTIONS:
+                    TestMasterContent.toggleFree();
+                    break;
+                case GOD_MODE:
+                    TestMasterContent.toggleImmortal();
+                    // game.getManager().getActiveObj().setGodMode(
+                    // !game.getManager().getActiveObj().isGodMode());
+                    // DebugUtilities.initGodMode(game.getManager().getActiveObj(),
+                    // game.getManager()
+                    // .getActiveObj().isGodMode());
+                    // game.getManager().refreshAll();
+                    break;
+
+                case RESTART:
+                    if (!altMode) {
+                        if (DialogMaster.confirm("Select anew?")) {
+                            FAST_DC.getGameLauncher().selectiveInit();
+                        }
+                    }
+
+                    game.getManager().getDeathMaster().killAllUnits(true, false, quiet);
+                    game.getArenaManager().getSpawnManager().spawnParty(true);
+                    game.getArenaManager().getSpawnManager().spawnParty(false);
+                    game.getManager().refreshAll();
+                    WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, true);
+                    return func;
+                case CLEAR:
+                    boolean respawn = isAltMode();
+                    game.getManager().getDeathMaster().killAllUnits(!isAltMode());
+                    if (respawn) {
+                        // /respawn!
+                        game.getArenaManager().getSpawnManager().spawnParty(true);
+                        game.getArenaManager().getSpawnManager().spawnParty(false);
+                    }
+                    game.getManager().refreshAll();
+
+                    break;
+                case KILL_ALL_UNITS:
+                    game.getManager().getDeathMaster().killAll(isAltMode());
+                    break;
+
+                case ACTIVATE_UNIT:
+                    if (isAltMode()) {
+                        getObj().modifyParameter(PARAMS.C_N_OF_ACTIONS, 100);
+                    }
+                    if (getObj().isMine()) {
+                        game.getManager().setActivatingAction(null);
+                        game.getManager().activeSelect(getObj());
+                    } else {
+                        WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, true);
+                        WaitMaster.WAIT(1234);
+                        getObj().modifyParameter(PARAMS.C_N_OF_ACTIONS, 100);
+                    }
+
+                    game.getVisionManager().refresh();
+                    break;
+
+                case ADD_ITEM:
+                    if (isAltMode()) {
+                        TYPE = DC_TYPE.WEAPONS;
+                    } else {
+                        TYPE = (DC_TYPE) DialogMaster.getChosenOption("Choose item type...",
+                         DC_TYPE.WEAPONS, DC_TYPE.ARMOR, DC_TYPE.ITEMS, DC_TYPE.JEWELRY);
+                    }
+                    if (isAltMode()) {
+                        if (!selectWeaponType()) {
+                            break;
+                        }
+                    } else if (!selectType(TYPE)) {
+                        break;
+                    }
+
+                    if (!selectTarget(ref)) {
+                        selectedTarget = infoObj;
+                    }
+                    if (selectedTarget == null) {
+                        break;
+                    }
+                    boolean quick = false;
+                    if (isAltMode()) {
+                        quick = false;
+                    } else if (TYPE == DC_TYPE.ITEMS) {
+                        quick = true;
+                    } else if (TYPE == DC_TYPE.WEAPONS) {
+                        quick = DialogMaster.confirm("quick slot item?");
+                    }
+                    DC_HeroItemObj item = ItemFactory.createItemObj(selectedType, selectedTarget.getOwner(),
+                     game, ref, quick);
+                    if (!quick) {
+                        if (TYPE != DC_TYPE.JEWELRY) {
+                            selectedTarget.equip(item, TYPE == DC_TYPE.ARMOR ? ItemEnums.ITEM_SLOT.ARMOR
+                             : ItemEnums.ITEM_SLOT.MAIN_HAND);
+                        }
+                    } else {
+                        selectedTarget.addQuickItem((DC_QuickItemObj) item);
+                    }
+
+                    // selectedTarget.addItemToInventory(item);
+
+                    game.getManager().refreshGUI();
+                    break;
+                case ADD_SPELL:
+                    if (!selectType(DC_TYPE.SPELLS)) {
+                        break;
+                    }
+                    if (!selectTarget(ref)) {
+                        selectedTarget = infoObj;
+                    }
+                    if (selectedTarget == null) {
+                        break;
+                    }
+                    TestMasterContent.setTEST_LIST(TestMasterContent.getTEST_LIST()
+                     + selectedType.getName() + ";");
+
+                    selectedTarget.getSpells().add(
+                     new DC_SpellObj(selectedType, selectedTarget.getOwner(), game, selectedTarget.getRef()));
+                    game.getManager().refreshGUI();
+                    break;
+                case ADD_SKILL:
+                case ADD_ACTIVE:
+                    PROPERTY prop = G_PROPS.ACTIVES;
+                    DC_TYPE T = DC_TYPE.ACTIONS;
+                    if (func == DEBUG_FUNCTIONS.ADD_SKILL) {
+                        prop = PROPS.SKILLS;
+                        T = DC_TYPE.SKILLS;
+                    }
+                    String type = ListChooser.chooseType(T);
+                    if (type == null) {
+                        break;
+                    }
+
+                    if (!new SelectiveTargeting(new Conditions(ConditionMaster
+                     .getTYPECondition(C_OBJ_TYPE.BF_OBJ))).select(ref)) {
+                        break;
+                    }
+                    lastType = type;
+                    new AddBuffEffect(type + " hack", new ModifyPropertyEffect(prop, MOD_PROP_TYPE.ADD,
+                     type), new Formula("1")).apply(ref);
+                    if (func == DEBUG_FUNCTIONS.ADD_ACTIVE) {
+                        infoObj.getActives().add(game.getActionManager().getAction(type, infoObj));
+                        ((DC_ActionManager) game.getActionManager()).constructActionMaps(infoObj);
+                    }
+
+                    // game.getManager().reset();
+                    // instead of toBase()
+                    break;
+                case ADD_PASSIVE:
+                    // same method
+                    infoObj.getPassives().add(
+                     AbilityConstructor.getPassive(ListChooser.chooseType(DC_TYPE.ABILS),
+                      infoObj));
+                    infoObj.activatePassives();
+                    break;
+                case CHANGE_OWNER:
+                    // if already has, make permanent
+                    new AddBuffEffect("ownership hack", new OwnershipChangeEffect(), new Formula("1"))
+                     .apply(ref);
+
+                    break;
+
+                case END_TURN:
+                    game.getManager().setActivatingAction(null);
+                    WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, false);
+                    return func;
+                case KILL_UNIT:
+                    if (arg != null)
+                        arg.kill(infoObj, !isAltMode(), isAltMode());
+                    else
+                        infoObj.kill(infoObj, !isAltMode(), isAltMode());
+                    // game.getManager().killUnitQuietly((DC_UnitObj)
+                    // game.getManager()
+                    // .getInfoObj());
+                    break;
+
+                case ADD_CHAR:
+                    summon(true, DC_TYPE.CHARS, ref);
+                    break;
+                case ADD_OBJ:
+                    summon(null, DC_TYPE.BF_OBJ, new Ref(game));
+                    break;
+                case ADD_UNIT:
+                    summon(true, DC_TYPE.UNITS, ref);
+                    break;
+                case SET_WAVE_POWER:
+                    Integer forcedPower;
+                    forcedPower = DialogMaster.inputInt();
+                    if (forcedPower < 0) {
+                        forcedPower = null;
+                    }
+                    game.getArenaManager().getWaveAssembler().setForcedPower(forcedPower);
+                    break;
+                case SPAWN_CUSTOM_WAVE:
+                    coordinate = getGame().getBattleFieldManager().pickCoordinate();
+                    ObjType waveType = ListChooser.chooseType_(DC_TYPE.ENCOUNTERS);
+                    Wave wave = new Wave(coordinate, waveType, game, ref, game.getPlayer(!isAltMode()));
+
+                    String value = new ListChooser(SELECTION_MODE.MULTIPLE, StringMaster
+                     .openContainer(wave.getProperty(PROPS.UNIT_TYPES)), DC_TYPE.UNITS)
+                     .choose();
+                    wave.setProperty(PROPS.UNIT_TYPES, value);
+                    // PROPS.EXTENDED_PRESET_GROUP
+                    break;
+                case SPAWN_PARTY:
+
+                    coordinate = getGame().getBattleFieldManager().pickCoordinate();
+                    ObjType party = ListChooser.chooseType_(DC_TYPE.PARTY);
+                    game.getArenaManager().getSpawnManager().spawnParty(coordinate, null, party);
+
+                    break;
+                case SPAWN_WAVE:
+                    if (!isAltMode()) {
+                        coordinate = getGame().getBattleFieldManager().pickCoordinate();
+                    } else {
+                        FACING_DIRECTION side = new EnumChooser<FACING_DIRECTION>()
+                         .choose(FACING_DIRECTION.class);
+                        // if (side== FACING_DIRECTION.NONE)
+                        game.getArenaManager().getSpawnManager().getPositioner().setForcedSide(side);
+                    }
+                    String typeName = ListChooser.chooseType(DC_TYPE.ENCOUNTERS);
+                    if (typeName == null) {
+                        return func;
+                    }
+                    try {
+                        game.getArenaManager().getSpawnManager().spawnWave(typeName,
+                         game.getPlayer(ALT_AI_PLAYER), coordinate);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        game.getArenaManager().getSpawnManager().getPositioner().setForcedSide(null);
+                    }
+                    game.getManager().refreshAll();
+                    break;
+                case ADD_ENEMY_UNIT:
+                    summon(false, DC_TYPE.UNITS, new Ref(game));
+                    // ref = new Ref(game
+                    // // , game.getManager().getActiveObj().getId()
+                    // );
+                    // ref.setPlayer(game.getPlayer(false));
+                    // typeName = ListChooser.chooseType(OBJ_TYPES.UNITS);
+                    // if (StringMaster.isEmpty(typeName))
+                    // break;
+                    // new SelectiveTargeting(new Conditions(
+                    // ConditionMaster.getTYPECondition(OBJ_TYPES.TERRAIN)))
+                    // .select(ref);
+                    // effect = new SummonEffect(typeName);
+                    // effect.apply(ref);
+                    // effect.getUnit().setOwner(game.getPlayer(false));
+                    // game.getManager().refreshAll();
+                    break;
+
+                case TOGGLE_ALT_AI: {
+                    ALT_AI_PLAYER = !ALT_AI_PLAYER;
+                    break;
+                }
+                case TOGGLE_DEBUG: {
+                    game.setDebugMode(!game.isDebugMode());
+                    Launcher.setDEBUG_MODE(!Launcher.isDEBUG_MODE_DEFAULT());
+                    break;
+                }
+                case WAITER_INPUT: {
+                    String input = DialogMaster.inputText("operation");
+                    WAIT_OPERATIONS operation = new EnumMaster<WAIT_OPERATIONS>().retrieveEnumConst(
+                     WAIT_OPERATIONS.class, input);
+                    if (operation == null) {
+                        operation = new EnumMaster<WAIT_OPERATIONS>().retrieveEnumConst(
+                         WAIT_OPERATIONS.class, input, true);
+                    }
+                    if (operation == null) {
+                        DialogMaster.error("no such operation");
+                        return func;
+                    }
+                    input = DialogMaster.inputText("input");
+                    WaitMaster.receiveInput(operation, input);
+                }
+                case REMOVE_HACKS:
+                    break;
+                case CLEAR_WAVES:
+                    game.getArenaManager().getSpawnManager().clear();
+                    game.getArenaManager().getBattleConstructor().setIndex(0);
+                    break;
+                case SCHEDULE_WAVES:
+                    game.getArenaManager().getBattleConstructor().setIndex(0);
+                    game.getArenaManager().getBattleConstructor().construct();
+                    break;
+                case TOGGLE_LIGHTING:
+                    break;
+                case TOGGLE_FOG:
+                    break;
+                case SFX_PLAY_LAST:
+                    EmitterController.getInstance();
+                    GuiEventManager.trigger(GuiEventType.SFX_PLAY_LAST, null);
+                    break;
+                case SFX_ADD:
+                    EmitterController.getInstance();
+                    GuiEventManager.trigger(GuiEventType.CREATE_EMITTER, null);
+                    break;
+                case SFX_ADD_RANDOM:
+                    EmitterController.getInstance().getInstance();
+                    GuiEventManager.trigger(GuiEventType.CREATE_EMITTER, new EventCallbackParam(true));
+                    break;
+                case SFX_MODIFY:
+                    EmitterController.getInstance().modify();
+                    break;
+                case SFX_SET:
+                    EmitterController.getInstance().setForActive();
+                    break;
+                case SFX_SAVE:
+                    EmitterController.getInstance().save();
+                    break;
             }
-            case REMOVE_HACKS:
-                break;
-            case CLEAR_WAVES:
-                game.getArenaManager().getSpawnManager().clear();
-                game.getArenaManager().getBattleConstructor().setIndex(0);
-                break;
-            case SCHEDULE_WAVES:
-                game.getArenaManager().getBattleConstructor().setIndex(0);
-                game.getArenaManager().getBattleConstructor().construct();
-                break;
-            case TOGGLE_LIGHTING:
-                break;
-            case TOGGLE_FOG:
-                break;
-            case SFX_PLAY_LAST:
-                EmitterController.getInstance();
-                GuiEventManager.trigger(GuiEventType.SFX_PLAY_LAST, null);
-                break;
-            case SFX_ADD:
-                EmitterController.getInstance();
-                GuiEventManager.trigger(GuiEventType.CREATE_EMITTER, null);
-                break;
-            case SFX_ADD_RANDOM:
-                EmitterController.getInstance();
-                GuiEventManager.trigger(GuiEventType.CREATE_EMITTER, new EventCallbackParam(true));
-                break;
-            case SFX_MODIFY:
-                EmitterController.modify();
-                break;
-            case SFX_SAVE:
-                EmitterController.save();
-                break;
+        } catch (Exception e){
+            e.printStackTrace();
+        }finally{
+            debugFunctionRunning = false;
         }
         reset();
 
@@ -831,16 +865,16 @@ public class DebugMaster {
     }
 
     private boolean selectWeaponType() {
-        MATERIAL material = MATERIAL.STEEL;
+        MATERIAL material = ItemEnums.MATERIAL.STEEL;
         // if (DialogMaster.confirm("Select material?"))
-        QUALITY_LEVEL quality = QUALITY_LEVEL.NORMAL;
+        QUALITY_LEVEL quality = ItemEnums.QUALITY_LEVEL.NORMAL;
         // if (DialogMaster.confirm("Select material?"))
         selectedType = DataManager.getWeaponItem(quality, material, ListChooser
-                .chooseType(ItemGenerator.getBaseTypes(OBJ_TYPES.WEAPONS)));
+                .chooseType(ItemGenerator.getBaseTypes(DC_TYPE.WEAPONS)));
         return selectedType != null;
     }
 
-    private void summon(Boolean me, OBJ_TYPES units, Ref ref) {
+    private void summon(Boolean me, DC_TYPE units, Ref ref) {
 
         Player player = Player.NEUTRAL;
         if (me != null) {
@@ -859,7 +893,7 @@ public class DebugMaster {
 		 */
         ref.setPlayer(player);
         String typeName;
-        if (arg instanceof DC_HeroObj) {
+        if (arg instanceof Unit) {
             Obj obj = arg;
             typeName = (obj.getType().getName());
         }
@@ -892,22 +926,22 @@ public class DebugMaster {
             ref.setTarget(game.getCellByCoordinate(obj.getCoordinates()).getId());
         } else
         if (!new SelectiveTargeting(new Conditions(ConditionMaster
-                .getTYPECondition(OBJ_TYPES.TERRAIN))).select(ref)) {
+                .getTYPECondition(DC_TYPE.TERRAIN))).select(ref)) {
             return;
         }
         lastType = typeName;
         SummonEffect effect = (me == null) ? new CreateObjectEffect(typeName, true)
                 : new SummonEffect(typeName);
-        if (units == OBJ_TYPES.UNITS)
+        if (units == DC_TYPE.UNITS)
 
         {
             if (checkAddXp()) {
                 Formula xp = new Formula(""
                         + (DC_Formulas.getTotalXpForLevel(DataManager.getType(typeName,
-                        OBJ_TYPES.UNITS).getIntParam(PARAMS.LEVEL)
+                        DC_TYPE.UNITS).getIntParam(PARAMS.LEVEL)
                         + DialogMaster.inputInt()) - DC_Formulas
                         .getTotalXpForLevel(DataManager.getType(typeName,
-                                OBJ_TYPES.UNITS).getIntParam(PARAMS.LEVEL))));
+                                DC_TYPE.UNITS).getIntParam(PARAMS.LEVEL))));
                 effect = new SummonEffect(typeName, xp);
             }
         }
@@ -938,7 +972,7 @@ public class DebugMaster {
             return false;
         }
 
-        selectedTarget = (DC_HeroObj) ref.getTargetObj();
+        selectedTarget = (Unit) ref.getTargetObj();
         return true;
     }
 
@@ -1017,9 +1051,9 @@ public class DebugMaster {
     public Object executeHiddenDebugFunction(HIDDEN_DEBUG_FUNCTIONS func) {
         executedFunctions.push(func.toString());
 
-        DC_HeroObj infoObj;
+        Unit infoObj;
         try {
-            infoObj = (DC_HeroObj) getObj();
+            infoObj = (Unit) getObj();
         } catch (Exception e) {
             infoObj = game.getManager().getActiveObj();
         }
@@ -1105,8 +1139,8 @@ public class DebugMaster {
                 break;
             case HERO_ADD_ALL_SPELLS:
 
-                for (ObjType type : DataManager.getTypes(OBJ_TYPES.SPELLS)) {
-                    DC_HeroObj hero = (DC_HeroObj) game.getManager().getInfoObj();
+                for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
+                    Unit hero = (Unit) game.getManager().getInfoObj();
                     if (LibraryManager.checkHeroHasSpell(hero, type)) {
                         continue;
                     }
@@ -1124,13 +1158,13 @@ public class DebugMaster {
     }
 
     private void displayList(String string, Collection<?> list, int chunkSize) {
-        main.system.auxiliary.LogMaster.log(1, string + " list (" + list.size() + ")");
+        LogMaster.log(1, string + " list (" + list.size() + ")");
 
         int i = 0;
         String chunk = ">> ";
         for (Object o : list) {
             if (i >= chunkSize) {
-                main.system.auxiliary.LogMaster.log(1, chunk);
+                LogMaster.log(1, chunk);
                 i = 0;
                 chunk = ">> ";
 
@@ -1139,9 +1173,9 @@ public class DebugMaster {
             i++;
 
         }
-        main.system.auxiliary.LogMaster.log(1, chunk);
+        LogMaster.log(1, chunk);
 
-        main.system.auxiliary.LogMaster.log(1, string + " list (" + list.size() + ")");
+        LogMaster.log(1, string + " list (" + list.size() + ")");
     }
 
     private String getUnitInfo(DC_Obj infoObj) {
@@ -1174,8 +1208,8 @@ public class DebugMaster {
             str += "\n";
         }
         for (PROPERTY p : ContentManager.getPropList()) {
-            if (!(ContentManager.isValueForOBJ_TYPE(OBJ_TYPES.CHARS, p) || ContentManager
-                    .isValueForOBJ_TYPE(OBJ_TYPES.UNITS, p))) {
+            if (!(ContentManager.isValueForOBJ_TYPE(DC_TYPE.CHARS, p) || ContentManager
+                    .isValueForOBJ_TYPE(DC_TYPE.UNITS, p))) {
                 continue;
             }
             str += p.toString();
@@ -1187,7 +1221,7 @@ public class DebugMaster {
     }
 
     private void display(String str, Object obj) {
-        main.system.auxiliary.LogMaster.log(1, "" + str + obj.toString());
+        LogMaster.log(1, "" + str + obj.toString());
 
     }
 
@@ -1309,6 +1343,7 @@ public class DebugMaster {
         TOGGLE_AUTO_UNIT,
         TOGGLE_GRAPHICS_TEST,
         TOGGLE_FREE_ACTIONS,
+        TOGGLE_QUIET,
         HIDDEN_FUNCTION,
         ADD_PASSIVE(true),
         GOD_MODE(true),
@@ -1332,7 +1367,7 @@ public class DebugMaster {
          SFX_ADD_RANDOM,
         SFX_MODIFY,
          SFX_SAVE,
-        SFX_PLAY_LAST;
+        SFX_PLAY_LAST, SFX_SET;
 
         boolean transmitted;
 

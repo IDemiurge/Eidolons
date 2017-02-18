@@ -1,12 +1,12 @@
 package main.game.logic.macro.town;
 
-import main.client.battle.arcade.PartyManager;
 import main.client.cc.logic.party.PartyObj;
 import main.client.dc.HC_SequenceMaster;
 import main.entity.type.ObjType;
+import main.game.logic.faction.Faction;
+import main.game.logic.generic.PartyManager;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.MacroRef;
-import main.game.logic.macro.faction.Faction;
 import main.game.logic.macro.map.Place;
 import main.system.datatypes.DequeImpl;
 import main.system.threading.WaitMaster;

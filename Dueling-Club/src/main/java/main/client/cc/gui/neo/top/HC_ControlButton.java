@@ -2,8 +2,8 @@ package main.client.cc.gui.neo.top;
 
 import main.swing.components.buttons.CustomButton;
 import main.swing.listeners.ButtonHandler;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 
 import java.awt.*;
 

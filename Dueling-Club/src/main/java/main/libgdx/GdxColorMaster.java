@@ -2,7 +2,7 @@ package main.libgdx;
 
 import com.badlogic.gdx.graphics.Color;
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 
 /**
  * Created by JustMe on 1/23/2017.

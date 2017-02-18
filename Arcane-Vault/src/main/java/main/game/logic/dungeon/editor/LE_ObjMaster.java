@@ -1,33 +1,33 @@
 package main.game.logic.dungeon.editor;
 
-import main.content.CONTENT_CONSTS.BF_OBJECT_GROUP;
 import main.content.CONTENT_CONSTS.FLIP;
-import main.content.CONTENT_CONSTS.MAP_FILL_TEMPLATE;
+import main.content.enums.entity.BfObjEnums;
+import main.content.enums.DungeonEnums.MAP_FILL_TEMPLATE;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
+import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Ref;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
+import main.game.battlefield.CoordinatesMaster;
 import main.game.battlefield.DirectionMaster;
+import main.game.logic.battle.player.DC_Player;
 import main.game.logic.dungeon.Entrance;
 import main.game.logic.dungeon.building.MapBlock;
 import main.game.logic.dungeon.editor.gui.LE_MapViewComp;
-import main.game.logic.macro.utils.CoordinatesMaster;
-import main.game.player.DC_Player;
 import main.launch.ArcaneVault;
-import main.rules.mechanics.StackingRule;
+import main.rules.action.StackingRule;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
-import main.system.auxiliary.MapMaster;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -37,17 +37,17 @@ import java.util.*;
 
 public class LE_ObjMaster {
 
-    private static Map<Level, Stack<Map<Coordinates, List<DC_HeroObj>>>> cacheMap = new HashMap<>();
+    private static Map<Level, Stack<Map<Coordinates, List<Unit>>>> cacheMap = new HashMap<>();
     private static boolean cachingOff;
 
-    public static Map<ObjType, DC_HeroObj> getObjCache() {
+    public static Map<ObjType, Unit> getObjCache() {
         return LevelEditor.getCurrentLevel().getObjCache();
     }
 
-    public static void unitAdded(Coordinates coordinates, DC_HeroObj unit) {
+    public static void unitAdded(Coordinates coordinates, Unit unit) {
         cache();
         getObjCache().put(unit.getType(), unit);
-        List<DC_HeroObj> objects = LevelEditor.getSimulation().getUnitMap().get(coordinates);
+        List<Unit> objects = LevelEditor.getSimulation().getUnitMap().get(coordinates);
         if (objects == null) {
             objects = new LinkedList<>();
             LevelEditor.getSimulation().getUnitMap().put(coordinates, objects);
@@ -138,10 +138,10 @@ public class LE_ObjMaster {
             }
             if (i >= c.getAdjacentCoordinates().size() / 2) {
                 type = RandomWizard.getObjTypeByWeight(template.getCenterObjects(),
-                        OBJ_TYPES.BF_OBJ);
+                        DC_TYPE.BF_OBJ);
             } else {
                 type = RandomWizard.getObjTypeByWeight(template.getCenterObjects(),
-                        OBJ_TYPES.BF_OBJ);
+                        DC_TYPE.BF_OBJ);
             }
             LevelEditor.getObjMaster().addObj(type, c);
         }
@@ -171,11 +171,11 @@ public class LE_ObjMaster {
     public static void replace(ObjType type, ObjType type2, List<Coordinates> coordinates) {
         cache();
         for (Coordinates coordinate : coordinates) {
-            List<DC_HeroObj> objects = LevelEditor.getSimulation().getUnitMap().get(coordinate);
+            List<Unit> objects = LevelEditor.getSimulation().getUnitMap().get(coordinate);
             // LevelEditor.getGrid().getCells()[coordinate.x][coordinate.y]
             // .getObjects();
             if (objects != null) {
-                for (DC_HeroObj obj : new LinkedList<>(objects)) {
+                for (Unit obj : new LinkedList<>(objects)) {
                     if (obj.getType().equals(type)) {
                         objects.remove(obj);
                         objects.add(getObject(type2, coordinate));
@@ -234,15 +234,15 @@ public class LE_ObjMaster {
         if (cachingOff) {
             return;
         }
-        List<List<DC_HeroObj>> list = new LinkedList<>(LevelEditor.getSimulation().getUnitMap()
+        List<List<Unit>> list = new LinkedList<>(LevelEditor.getSimulation().getUnitMap()
                 .values());
-        Stack<Map<Coordinates, List<DC_HeroObj>>> cache = getCache();
-        cache.push(new MapMaster<Coordinates, List<DC_HeroObj>>().constructMap(LevelEditor
+        Stack<Map<Coordinates, List<Unit>>> cache = getCache();
+        cache.push(new MapMaster<Coordinates, List<Unit>>().constructMap(LevelEditor
                 .getSimulation().getUnitMap().keySet(), list));
     }
 
-    private static Stack<Map<Coordinates, List<DC_HeroObj>>> getCache() {
-        Stack<Map<Coordinates, List<DC_HeroObj>>> cache = cacheMap.get(LevelEditor
+    private static Stack<Map<Coordinates, List<Unit>>> getCache() {
+        Stack<Map<Coordinates, List<Unit>>> cache = cacheMap.get(LevelEditor
                 .getCurrentLevel());
         if (cache == null) {
             cache = new Stack<>();
@@ -256,8 +256,8 @@ public class LE_ObjMaster {
             SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
             return;
         }
-        LevelEditor.getSimulation().setUnitMap(getCache().pop());
-        for (MapBlock b : LevelEditor.getCurrentLevel().getBlocks()) {
+//        LevelEditor.getSimulation().setUnitMap(getCache().pop());TODO
+        for (MapBlock b : LevelEditor.getCurrentLevel().getBlocks() ) {
             b.resetObjects();
         }
         LevelEditor.refreshGrid();
@@ -269,11 +269,11 @@ public class LE_ObjMaster {
 
     public static void moveObj(Coordinates c, int offsetX, int offsetY, boolean copy, boolean mirror) {
         // don't remove all - use selective
-        Map<Coordinates, List<DC_HeroObj>> unitMap = LevelEditor.getSimulation().getUnitMap();
+        Map<Coordinates, List<Unit>> unitMap = LevelEditor.getSimulation().getUnitMap();
         if (!copy) {
             unitMap = getCache().peek();
         }
-        List<DC_HeroObj> objects = unitMap.get(c);
+        List<Unit> objects = unitMap.get(c);
         if (!ListMaster.isNotEmpty(objects)) {
             return;
         }
@@ -302,10 +302,10 @@ public class LE_ObjMaster {
         // TODO make sure base is actually top-left!
         for (int x = 0; x <= width; x++) {
             for (int y = 0; y <= height; y++) {
-                List<DC_HeroObj> objects = LevelEditor.getSimulation().getObjectsOnCoordinate(
+                List<Unit> objects = LevelEditor.getSimulation().getObjectsOnCoordinate(
                         new Coordinates(x + baseCoordinate.x, baseCoordinate.y + y));
                 // filter out bf?
-                for (DC_HeroObj obj : objects) {
+                for (Unit obj : objects) {
                     list.add(new ObjAtCoordinate(obj.getType(), new Coordinates(x, y)));
                 }
             }
@@ -313,14 +313,14 @@ public class LE_ObjMaster {
         return list;
     }
 
-    public static DC_HeroObj getObject(ObjType type, Coordinates c) {
-        DC_HeroObj obj;
-        if (type.checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.ENTRANCE.toString())) {
+    public static Unit getObject(ObjType type, Coordinates c) {
+        Unit obj;
+        if (type.checkProperty(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.ENTRANCE.toString())) {
             obj = new Entrance(c.x, c.y, type, LevelEditor.getCurrentLevel().getDungeon(), null);
         } else {
             obj = getObjCache().get(type);
             if (obj == null) {
-                obj = new DC_HeroObj(type, c.x, c.y, DC_Player.NEUTRAL,
+                obj = new Unit(type, c.x, c.y, DC_Player.NEUTRAL,
                         LevelEditor.getSimulation(), new Ref());
 
             }
@@ -329,7 +329,7 @@ public class LE_ObjMaster {
         return obj;
     }
 
-    public static void setFlip(DC_HeroObj obj, Coordinates c) {
+    public static void setFlip(Unit obj, Coordinates c) {
         int i = DialogMaster.optionChoice("Set flip", FLIP.values());
         FLIP d;
         if (i == -1) {
@@ -337,7 +337,7 @@ public class LE_ObjMaster {
         }
         d = FLIP.values()[i];
 
-        Map<DC_HeroObj, FLIP> map = obj.getGame().getFlipMap().get(c);
+        Map<Unit, FLIP> map = obj.getGame().getFlipMap().get(c);
 
         if (map == null) {
             map = new HashMap<>();
@@ -346,7 +346,7 @@ public class LE_ObjMaster {
         map.put(obj, d);
     }
 
-    public static void setDirection(DC_HeroObj obj, Coordinates c) {
+    public static void setDirection(Unit obj, Coordinates c) {
         List list = new LinkedList<>(Arrays.asList(DIRECTION.values()));
         list.add(0, "Center");
         int i = DialogMaster.optionChoice("Set direction (none==center)", list.toArray());
@@ -360,7 +360,7 @@ public class LE_ObjMaster {
 
         }
 
-        Map<DC_HeroObj, DIRECTION> map = obj.getGame().getDirectionMap().get(c);
+        Map<Unit, DIRECTION> map = obj.getGame().getDirectionMap().get(c);
 
         if (map == null) {
             map = new HashMap<>();
@@ -374,11 +374,11 @@ public class LE_ObjMaster {
 
     }
 
-    public DC_HeroObj stackObj(ObjType type, Coordinates... coordinates) {
+    public Unit stackObj(ObjType type, Coordinates... coordinates) {
         return addObj(type, true, coordinates);
     }
 
-    public DC_HeroObj addObj(ObjType type, Coordinates... coordinates) {
+    public Unit addObj(ObjType type, Coordinates... coordinates) {
         return addObj(type, false, coordinates);
     }
 
@@ -386,10 +386,10 @@ public class LE_ObjMaster {
         // LevelEditor.getCurrentLevel().removeObj(obj);
     }
 
-    public DC_HeroObj addObj(ObjType type, boolean stack, Coordinates... coordinates) {
-        DC_HeroObj obj = null;
+    public Unit addObj(ObjType type, boolean stack, Coordinates... coordinates) {
+        Unit obj = null;
         for (Coordinates c : coordinates) {
-            List<DC_HeroObj> list = LevelEditor.getSimulation().getObjectsOnCoordinate(c);
+            List<Unit> list = LevelEditor.getSimulation().getObjectsOnCoordinate(c);
 
             if (!StackingRule.checkCanPlace(c, type, list)) {
                 // replace cases? if 1 coordinate, prompt...
@@ -403,7 +403,7 @@ public class LE_ObjMaster {
             }
 
             obj = getObject(type, c);
-            List<DC_HeroObj> objects = LevelEditor.getSimulation().getUnitMap().get(c);
+            List<Unit> objects = LevelEditor.getSimulation().getUnitMap().get(c);
             if (objects == null) {
                 objects = new LinkedList<>();
                 LevelEditor.getSimulation().getUnitMap().put(c, objects);

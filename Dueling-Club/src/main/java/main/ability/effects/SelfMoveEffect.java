@@ -2,10 +2,10 @@ package main.ability.effects;
 
 import main.ability.conditions.FacingCondition;
 import main.ability.targeting.TemplateSelectiveTargeting;
-import main.content.CONTENT_CONSTS.FACING_SINGLE;
+import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Conditions;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
-import main.entity.obj.DC_UnitObj;
+import main.entity.obj.BattleFieldObject;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.UNIT_DIRECTION;
 import main.game.battlefield.DirectionMaster;
@@ -45,7 +45,7 @@ public class SelfMoveEffect extends MoveEffect {
 
     @Override
     public boolean applyThis() {
-        DC_UnitObj obj = (DC_UnitObj) ref.getSourceObj();
+        BattleFieldObject obj = (BattleFieldObject) ref.getSourceObj();
         origin=new Coordinates(obj.getCoordinates().getX(),obj.getCoordinates().getY());
         destination = getCoordinates();
         if (destination == null) // if selective?
@@ -57,12 +57,13 @@ public class SelfMoveEffect extends MoveEffect {
     }
 @Override
     public Coordinates getCoordinates() {
-        DC_UnitObj obj = (DC_UnitObj) ref.getSourceObj();
+    BattleFieldObject obj = (BattleFieldObject) ref.getSourceObj();
     if (template != null) {
             // ++ variables
         destination = game.getMovementManager().getTemplateMoveCoordinate(template, obj.getFacing(), obj,
                     ref);
     } else if (direction != null) {
+        if (origin == null) origin = obj.getCoordinates();
         destination = origin.getAdjacentCoordinate(DirectionMaster.getDirectionByFacing(obj.getFacing(),
                 direction));
     } else {
@@ -79,7 +80,7 @@ public class SelfMoveEffect extends MoveEffect {
                 // UNIT_TO_UNIT_VISION.IN_SIGHT));
                 if (mod != MOVE_MODIFIER.TELEPORT) {
                     conditions.add(DC_ConditionMaster.getClearShotFilterCondition());
-                    conditions.add(new FacingCondition(FACING_SINGLE.IN_FRONT));
+                    conditions.add(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT));
 
                 }
             }

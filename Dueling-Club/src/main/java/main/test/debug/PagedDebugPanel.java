@@ -3,7 +3,7 @@ package main.test.debug;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 
 import java.util.List;

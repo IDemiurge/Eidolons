@@ -6,10 +6,10 @@ import main.content.DC_ContentManager;
 import main.content.PARAMS;
 import main.content.VALUE;
 import main.content.ValuePages;
-import main.content.properties.G_PROPS;
-import main.entity.obj.DC_HeroObj;
+import main.content.values.properties.G_PROPS;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.layout.LayoutParser.LAYOUT;
 import main.libgdx.gui.panels.generic.*;
@@ -44,7 +44,7 @@ public class InfoDialog extends Dialog {
     Container lore;
 
 
-    public InfoDialog(DC_HeroObj unit) {
+    public InfoDialog(Unit unit) {
         super(bgPath);
 //        VISUALS.DOUBLE_CONTAINER,
         fxAndAbils = new Container(path + "abils and fxs bg.png") {

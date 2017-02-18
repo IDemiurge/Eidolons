@@ -1,6 +1,6 @@
 package main.swing.components.menus;
 
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.services.dialog.DialogPanel;
 import main.system.auxiliary.EnumMaster;
@@ -20,7 +20,7 @@ public class OptionsPanel<T extends Enum<T>> extends DialogPanel implements Mous
         options = o;
     }
 
-    public OptionsPanel(DC_HeroObj target) {
+    public OptionsPanel(Unit target) {
         super(target);
         for (OPTIONS_GROUP group : OPTIONS_GROUP.values()) {
             Options options = OptionsMaster.getOptions(group);

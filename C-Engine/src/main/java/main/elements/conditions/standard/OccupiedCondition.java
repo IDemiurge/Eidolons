@@ -1,8 +1,8 @@
 package main.elements.conditions.standard;
 
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
+import main.content.DC_TYPE;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.properties.G_PROPS;
 import main.elements.conditions.ConditionImpl;
 import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
@@ -42,10 +42,10 @@ public class OccupiedCondition extends ConditionImpl {
                 }
                 try {
                     if (ref.getSourceObj().checkProperty(G_PROPS.STANDARD_PASSIVES,
-                            "" + STANDARD_PASSIVES.FLYING)) {
-                        if (obj.getOBJ_TYPE_ENUM() == OBJ_TYPES.BF_OBJ) {
+                            "" + UnitEnums.STANDARD_PASSIVES.FLYING)) {
+                        if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
                             if (obj.checkProperty(G_PROPS.STANDARD_PASSIVES, ""
-                                    + STANDARD_PASSIVES.TALL)) {
+                                    + UnitEnums.STANDARD_PASSIVES.TALL)) {
                                 result = false;
                             }
                             continue;

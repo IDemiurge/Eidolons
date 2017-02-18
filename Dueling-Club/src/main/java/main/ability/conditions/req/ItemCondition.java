@@ -1,12 +1,13 @@
 package main.ability.conditions.req;
 
-import main.content.CONTENT_CONSTS.ITEM_SLOT;
+import main.content.enums.entity.ItemEnums.ITEM_SLOT;
+import main.content.enums.entity.ItemEnums;
 import main.data.ability.AE_ConstrArgs;
 import main.elements.conditions.MicroCondition;
 import main.elements.conditions.StringComparison;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.system.auxiliary.EnumMaster;
 
 public class ItemCondition extends MicroCondition {
@@ -48,11 +49,11 @@ public class ItemCondition extends MicroCondition {
             return true;
         }
         if (slot == null) {
-            slot = (weapon) ? ITEM_SLOT.MAIN_HAND.toString() : ITEM_SLOT.ARMOR
+            slot = (weapon) ? ItemEnums.ITEM_SLOT.MAIN_HAND.toString() : ItemEnums.ITEM_SLOT.ARMOR
                     .toString();
         }
         Entity item;
-        DC_HeroObj unit = (DC_HeroObj) ref.getObj(obj_ref);
+        Unit unit = (Unit) ref.getObj(obj_ref);
         if (slot.equalsIgnoreCase(KEYS.RANGED.toString())) {
             item = unit.getRef().getObj(KEYS.RANGED);
         } else {

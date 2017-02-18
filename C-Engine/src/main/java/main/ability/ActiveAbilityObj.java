@@ -1,8 +1,8 @@
 package main.ability;
 
 import main.entity.Ref;
-import main.game.Game;
-import main.game.player.Player;
+import main.game.core.game.Game;
+import main.game.logic.battle.player.Player;
 
 public class ActiveAbilityObj extends AbilityObj {
 

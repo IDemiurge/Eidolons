@@ -1,7 +1,7 @@
 package main.game.battlefield.pathing;
 
 import main.entity.obj.Obj;
-import main.game.MicroGame;
+import main.game.core.game.MicroGame;
 import main.game.battlefield.Coordinates;
 
 import java.util.List;

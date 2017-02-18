@@ -5,7 +5,7 @@ import main.ability.effects.Effect;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.data.filesys.PathFinder;
 import main.entity.Ref.KEYS;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
 import main.game.battlefield.Coordinates;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;

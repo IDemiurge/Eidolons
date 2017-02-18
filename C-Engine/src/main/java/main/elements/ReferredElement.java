@@ -2,7 +2,7 @@ package main.elements;
 
 import main.entity.Ref;
 import main.entity.Referred;
-import main.game.Game;
+import main.game.core.game.Game;
 
 public class ReferredElement implements Referred {
 

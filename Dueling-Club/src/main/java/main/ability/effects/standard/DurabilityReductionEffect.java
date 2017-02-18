@@ -3,7 +3,7 @@ package main.ability.effects.standard;
 import main.ability.effects.oneshot.MicroEffect;
 import main.content.PARAMS;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroItemObj;
+import main.entity.item.DC_HeroItemObj;
 import main.entity.obj.Obj;
 
 public class DurabilityReductionEffect extends MicroEffect {

@@ -1,14 +1,15 @@
 package main.system.test;
 
-import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.*;
-import main.content.properties.G_PROPS;
+import main.content.enums.system.MetaEnums;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.entity.type.SpellType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.WorkspaceMaster;
@@ -148,7 +149,7 @@ public class TestMasterContent {
 		 *
 		 * checkMastery() or at least aspect check class/masteries for actions
 		 */
-        SpellType spellType = (SpellType) DataManager.getType(typeName, OBJ_TYPES.SPELLS);
+        SpellType spellType = (SpellType) DataManager.getType(typeName, DC_TYPE.SPELLS);
         if (spellType == null) {
             return false;
         }
@@ -160,7 +161,7 @@ public class TestMasterContent {
             result = true;
         }
         try {
-            if (DataManager.getType(type.getProperty(G_PROPS.DEITY), OBJ_TYPES.DEITIES).getAspect() == spellType
+            if (DataManager.getType(type.getProperty(G_PROPS.DEITY), DC_TYPE.DEITIES).getAspect() == spellType
                     .getAspect()) {
                 result = true;
             }
@@ -251,7 +252,7 @@ public class TestMasterContent {
 
         if (full != null) {
             if (full) {
-                for (ObjType s : DataManager.getTypes(OBJ_TYPES.SPELLS)) {
+                for (ObjType s : DataManager.getTypes(DC_TYPE.SPELLS)) {
                     if (s.isUpgrade()) {
                         continue;
                     }
@@ -260,7 +261,7 @@ public class TestMasterContent {
                     }
                     type.addProperty(PROPS.VERBATIM_SPELLS, s.getName(), true);
                 }
-                for (ObjType s : DataManager.getTypes(OBJ_TYPES.SPELLS)) {
+                for (ObjType s : DataManager.getTypes(DC_TYPE.SPELLS)) {
                     if (!s.isUpgrade()) {
                         continue;
                     }
@@ -330,7 +331,7 @@ public class TestMasterContent {
         if (!addActives) {
             return;
         }
-        for (ObjType s : DataManager.getTypes(OBJ_TYPES.ACTIONS)) {
+        for (ObjType s : DataManager.getTypes(DC_TYPE.ACTIONS)) {
             type.addProperty(G_PROPS.ACTIVES, s.getName(), true);
         }
     }
@@ -356,13 +357,13 @@ public class TestMasterContent {
             return;
         }
         if (full_test) {
-            for (ObjType s : DataManager.getTypes(OBJ_TYPES.SKILLS)) {
+            for (ObjType s : DataManager.getTypes(DC_TYPE.SKILLS)) {
                 if (WorkspaceMaster.checkTypeIsReadyToTest(s)) {
                     type.addProperty(PROPS.SKILLS, s.getName(), true);
                 }
             }
         } else {
-            for (ObjType s : DataManager.toTypeList(TEST_SKILLS, OBJ_TYPES.SKILLS)) {
+            for (ObjType s : DataManager.toTypeList(TEST_SKILLS, DC_TYPE.SKILLS)) {
                 type.addProperty(PROPS.SKILLS, s.getName(), true);
             }
         }
@@ -375,7 +376,7 @@ public class TestMasterContent {
             return;
         }
         if (full_test) {
-            for (ObjType s : DataManager.getTypes(OBJ_TYPES.ITEMS)) {
+            for (ObjType s : DataManager.getTypes(DC_TYPE.ITEMS)) {
                 if (WorkspaceMaster.checkTypeIsReadyToTest(s)) {
                     type.addProperty(PROPS.QUICK_ITEMS, s.getName(), true);
                 }
@@ -409,7 +410,7 @@ public class TestMasterContent {
     }
 
     public boolean isActionFree(String name) {
-        DC_HeroObj activeObj = game.getManager().getActiveObj();
+        Unit activeObj = game.getManager().getActiveObj();
         if (activeObj != null) {
             if (activeObj.getOwner().isAi()) {
                 return false;
@@ -433,15 +434,15 @@ public class TestMasterContent {
     }
 
     private void initAutoTestList() {
-        POLISH_LIST = constructTestList(OBJ_TYPES.SKILLS, WORKSPACE_GROUP.POLISH);
-        FOCUS_LIST = constructTestList(OBJ_TYPES.SPELLS, WORKSPACE_GROUP.FOCUS);
-        FIX_LIST = constructTestList(OBJ_TYPES.SPELLS, WORKSPACE_GROUP.FIX);
-        TEST_LIST = constructTestList(OBJ_TYPES.SPELLS, WORKSPACE_GROUP.TEST);
+        POLISH_LIST = constructTestList(DC_TYPE.SKILLS, MetaEnums.WORKSPACE_GROUP.POLISH);
+        FOCUS_LIST = constructTestList(DC_TYPE.SPELLS, MetaEnums.WORKSPACE_GROUP.FOCUS);
+        FIX_LIST = constructTestList(DC_TYPE.SPELLS, MetaEnums.WORKSPACE_GROUP.FIX);
+        TEST_LIST = constructTestList(DC_TYPE.SPELLS, MetaEnums.WORKSPACE_GROUP.TEST);
 
-        FOCUS_SKILL_LIST = constructTestList(OBJ_TYPES.SKILLS, WORKSPACE_GROUP.FOCUS);
-        FIX_SKILL_LIST = constructTestList(OBJ_TYPES.SKILLS, WORKSPACE_GROUP.FIX);
-        POLISH_SKILL_LIST = constructTestList(OBJ_TYPES.SKILLS, WORKSPACE_GROUP.POLISH);
-        TEST_SKILL_LIST = constructTestList(OBJ_TYPES.SKILLS, WORKSPACE_GROUP.TEST);
+        FOCUS_SKILL_LIST = constructTestList(DC_TYPE.SKILLS, MetaEnums.WORKSPACE_GROUP.FOCUS);
+        FIX_SKILL_LIST = constructTestList(DC_TYPE.SKILLS, MetaEnums.WORKSPACE_GROUP.FIX);
+        POLISH_SKILL_LIST = constructTestList(DC_TYPE.SKILLS, MetaEnums.WORKSPACE_GROUP.POLISH);
+        TEST_SKILL_LIST = constructTestList(DC_TYPE.SKILLS, MetaEnums.WORKSPACE_GROUP.TEST);
 
     }
 
@@ -472,7 +473,7 @@ public class TestMasterContent {
 
     public class TestCase {
         String name;
-        OBJ_TYPES type;
+        DC_TYPE type;
         boolean AI;
 
         public TestCase() {
@@ -483,7 +484,7 @@ public class TestMasterContent {
             return name;
         }
 
-        public OBJ_TYPES getType() {
+        public DC_TYPE getType() {
             return type;
         }
 

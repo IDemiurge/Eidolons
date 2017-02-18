@@ -5,19 +5,19 @@ import main.ability.effects.DC_Effect;
 import main.ability.effects.Effect;
 import main.ability.effects.ReducedEffect;
 import main.ability.effects.ResistibleEffect;
-import main.content.CONTENT_CONSTS.STD_BOOLS;
 import main.content.ContentManager;
-import main.content.parameters.PARAMETER;
+import main.content.enums.GenericEnums;
+import main.content.values.parameters.PARAMETER;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.HeroItem;
 import main.entity.obj.Obj;
-import main.system.ai.logic.target.EffectMaster;
-import main.system.ai.tools.ParamAnalyzer;
-import main.system.auxiliary.LogMaster;
-import main.system.auxiliary.LogMaster.LOG_CHANNELS;
+import main.game.ai.tools.ParamAnalyzer;
+import main.game.ai.tools.target.EffectFinder;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.math.Formula;
@@ -180,7 +180,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             return false;
         }
         try {
-            return !ref.getObj(KEYS.ACTIVE).checkBool(STD_BOOLS.C_VALUE_OVER_MAXIMUM);
+            return !ref.getObj(KEYS.ACTIVE).checkBool(GenericEnums.STD_BOOLS.C_VALUE_OVER_MAXIMUM);
         } catch (Exception ignored) {
         }
         return true;
@@ -208,7 +208,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
     @Override
     public boolean applyThis() {
         if (modString != null) {
-            return EffectMaster.initParamModEffects(modString, ref).apply(ref);
+            return EffectFinder.initParamModEffects(modString, ref).apply(ref);
         }
         if (param == null) {
             this.param = ContentManager.getPARAM(sparam);
@@ -232,7 +232,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             ((DC_Obj) obj).modified(this);
         }
         if (ref.getTargetObj() == null) {
-            main.system.auxiliary.LogMaster.log(1, "null target!" + this);
+            LogMaster.log(1, "null target!" + this);
             return false;
         }
 
@@ -294,7 +294,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
 
         synchronized (ref) { // ain't that stupid...
             if (ref.getObj(KEYS.ACTIVE) != null) {
-                if (ref.getObj(KEYS.ACTIVE).checkBool(STD_BOOLS.INVERT_ON_ENEMY)) {
+                if (ref.getObj(KEYS.ACTIVE).checkBool(GenericEnums.STD_BOOLS.INVERT_ON_ENEMY)) {
                     if (!obj.getOwner().equals(ref.getSourceObj().getOwner())) {
                         amount = -amount;
                     }

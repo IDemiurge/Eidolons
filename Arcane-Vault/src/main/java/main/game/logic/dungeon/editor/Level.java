@@ -1,20 +1,21 @@
 package main.game.logic.dungeon.editor;
 
-import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PROPS;
-import main.content.parameters.G_PARAMS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.system.MetaEnums;
+import main.content.values.parameters.G_PARAMS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.xml.XML_Converter;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
+import main.game.battlefield.CoordinatesMaster;
 import main.game.battlefield.DC_ObjInitializer;
 import main.game.battlefield.map.DC_Map;
 import main.game.battlefield.map.DungeonMapGenerator;
@@ -29,10 +30,10 @@ import main.game.logic.dungeon.building.MapZone;
 import main.game.logic.dungeon.editor.gui.LE_MapViewComp;
 import main.game.logic.dungeon.editor.logic.AiGroupData;
 import main.game.logic.dungeon.minimap.MiniGrid;
-import main.game.logic.macro.utils.CoordinatesMaster;
-import main.system.auxiliary.Chronos;
+import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -54,7 +55,7 @@ public class Level {
     private DC_Map map;
     private String name;
     private String path;
-    private Map<ObjType, DC_HeroObj> objCache = new HashMap<>();
+    private Map<ObjType, Unit> objCache = new HashMap<>();
     private List<AiGroupData> aiGroups;
     private List<DC_Obj> wallObjects = new LinkedList<>();
 
@@ -71,8 +72,8 @@ public class Level {
     public Level(String baseDungeonType, Mission mission, String data, boolean empty) {
         this.mission = mission;
         LevelEditor.getMainPanel().setCurrentLevel(this);
-        if (DataManager.getType(baseDungeonType, OBJ_TYPES.DUNGEONS) != null) {
-            ObjType type = new ObjType(DataManager.getType(baseDungeonType, OBJ_TYPES.DUNGEONS));
+        if (DataManager.getType(baseDungeonType, DC_TYPE.DUNGEONS) != null) {
+            ObjType type = new ObjType(DataManager.getType(baseDungeonType, DC_TYPE.DUNGEONS));
             LevelEditor.getSimulation().addType(type);
             this.dungeon = new Dungeon(type);
             LevelEditor.getSimulation().getDungeonMaster().setDungeon(dungeon);
@@ -117,20 +118,20 @@ public class Level {
             // obj.setZ(dungeon.getZ());
             // }
 
-            List<DC_HeroObj> fullObjectList = new LinkedList<>();
+            List<Unit> fullObjectList = new LinkedList<>();
             for (MapBlock b : plan.getBlocks()) {
                 LinkedList<Obj> objects = new LinkedList<>(b.getObjects());
                 for (Obj obj : objects) {
-                    fullObjectList.add((DC_HeroObj) obj);
+                    fullObjectList.add((Unit) obj);
                     // TODO of course - the issue was that I added an object to
                     // block too! ... init?
-                    DC_HeroObj unit = (DC_HeroObj) obj;
+                    Unit unit = (Unit) obj;
                     unit.setZ(dungeon.getZ());
                     addObj(unit, true);
                 }
             }
             for (MapZone zone : plan.getZones()) {
-                ObjType type1 = DataManager.getType(zone.getFillerType(), OBJ_TYPES.BF_OBJ);
+                ObjType type1 = DataManager.getType(zone.getFillerType(), DC_TYPE.BF_OBJ);
                 if (type1 == null) {
                     continue;
                 }
@@ -143,7 +144,7 @@ public class Level {
             }
 
             for (Obj obj : plan.getWallObjects()) {
-                DC_HeroObj unit = (DC_HeroObj) obj;
+                Unit unit = (Unit) obj;
                 fullObjectList.add(unit);
                 unit.setZ(dungeon.getZ());
                 addObj(unit, true);
@@ -164,7 +165,7 @@ public class Level {
     }
 
     private String getDefaultWorkspaceGroup() {
-        return WORKSPACE_GROUP.IMPLEMENT.toString();
+        return MetaEnums.WORKSPACE_GROUP.IMPLEMENT.toString();
     }
 
     public void init() {
@@ -220,14 +221,14 @@ public class Level {
         // overlaying may be trouble
         // prev.getMapObjects()
         LE_Simulation c_game = (LE_Simulation) dungeon.getGame();
-        main.system.auxiliary.LogMaster.log(1, c_game.toString());
-        LinkedList<DC_HeroObj> unitsCache = c_game.getUnitsCache();
+        LogMaster.log(1, c_game.toString());
+        LinkedList<Unit> unitsCache = c_game.getUnitsCache();
         dungeon.setPlan(prev.getDungeon().getPlan().getCopy());
         LE_Simulation game = (LE_Simulation) prev.getDungeon().getGame();
         dungeon.setGame(game);
-        main.system.auxiliary.LogMaster.log(1, game.toString());
+        LogMaster.log(1, game.toString());
         game.setUnits(unitsCache);
-        main.system.auxiliary.LogMaster.log(1, game.getUnits().size() + " vs " + unitsCache.size());
+        LogMaster.log(1, game.getUnits().size() + " vs " + unitsCache.size());
     }
 
     public String getXml() {
@@ -282,21 +283,21 @@ public class Level {
 
     private String getFacingMapData() {
         String facingMapData = "";
-        Map<Coordinates, List<DC_HeroObj>> multiMap = new HashMap<>();
+        Map<Coordinates, List<Unit>> multiMap = new HashMap<>();
 
         for (Coordinates c : getDirectionMap().keySet())
 
         {
-            Map<DC_HeroObj, DIRECTION> map = getDirectionMap().get(c);
+            Map<Unit, DIRECTION> map = getDirectionMap().get(c);
             for (DC_Obj obj : map.keySet()) {
-                if (obj instanceof DC_HeroObj) {
-                    DC_HeroObj u = (DC_HeroObj) obj;
+                if (obj instanceof Unit) {
+                    Unit u = (Unit) obj;
                     DIRECTION facing = map.get(u);
                     if (facing != null) {
                         u.setCoordinates(c);
                         String string = DC_ObjInitializer.getObjString(u);
 
-                        List<DC_HeroObj> list = multiMap.get(c);
+                        List<Unit> list = multiMap.get(c);
                         if (list == null) {
                             list = new LinkedList<>();
                             multiMap.put(c, list);
@@ -374,15 +375,15 @@ public class Level {
         return list;
     }
 
-    private List<DC_HeroObj> getObjects(Coordinates coordinates) {
+    private List<Unit> getObjects(Coordinates coordinates) {
         return LevelEditor.getSimulation().getObjectsOnCoordinate(coordinates);
     }
 
     public void removeObj(DC_Obj obj) {
         Chronos.mark("removing " + obj);
-        DC_HeroObj unit = null;
-        if (obj instanceof DC_HeroObj) {
-            unit = (DC_HeroObj) obj;
+        Unit unit = null;
+        if (obj instanceof Unit) {
+            unit = (Unit) obj;
         }
         if (obj instanceof Entrance) {
             if (dungeon.getMainEntrance() != null) {
@@ -483,21 +484,21 @@ public class Level {
         return null;
     }
 
-    public void stackObj(DC_HeroObj obj) {
+    public void stackObj(Unit obj) {
         addObj(obj, true);
     }
 
-    public void addObj(DC_HeroObj obj) {
+    public void addObj(Unit obj) {
         addObj(obj, false);
     }
 
     // TODO *added*
-    public void addObj(DC_HeroObj obj, boolean stack) {
+    public void addObj(Unit obj, boolean stack) {
         Coordinates c = obj.getCoordinates();
         addObj(obj, c, stack);
     }
 
-    public void addObj(DC_HeroObj obj, Coordinates c, boolean stack) {
+    public void addObj(Unit obj, Coordinates c, boolean stack) {
         Chronos.mark("adding " + obj);
         obj.setZ(dungeon.getZ());
         if (stack) {
@@ -513,12 +514,12 @@ public class Level {
                 dungeon.setMainEntrance((Entrance) obj);
                 dungeon.getPlan().setEntranceLayout(
                         DungeonLevelMaster.getLayout(dungeon.getPlan(), c));
-                main.system.auxiliary.LogMaster.log(1, "Main Entrance: " + obj + "; initComps = "
+                LogMaster.log(1, "Main Entrance: " + obj + "; initComps = "
                         + dungeon.getPlan().getEntranceLayout());
             } else if (dungeon.getMainExit() == null) {
                 dungeon.setMainExit((Entrance) obj);
                 dungeon.getPlan().setExitLayout(DungeonLevelMaster.getLayout(dungeon.getPlan(), c));
-                main.system.auxiliary.LogMaster.log(1, "Main Exit: " + obj + "; initComps = "
+                LogMaster.log(1, "Main Exit: " + obj + "; initComps = "
                         + dungeon.getPlan().getExitLayout());
             }
             dungeon.getEntrances().add((Entrance) obj);
@@ -595,7 +596,7 @@ public class Level {
         return mission;
     }
 
-    public Map<Coordinates, Map<DC_HeroObj, DIRECTION>> getDirectionMap() {
+    public Map<Coordinates, Map<Unit, DIRECTION>> getDirectionMap() {
         return LevelEditor.getSimulation(this).getDirectionMap();
     }
 
@@ -607,7 +608,7 @@ public class Level {
         this.path = path;
     }
 
-    public Map<ObjType, DC_HeroObj> getObjCache() {
+    public Map<ObjType, Unit> getObjCache() {
         return objCache;
     }
 

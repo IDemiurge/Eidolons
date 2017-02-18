@@ -1,16 +1,17 @@
 package main.game.logic.dungeon.minimap;
 
 import main.entity.obj.DC_Cell;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.logic.dungeon.Dungeon;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.Refreshable;
-import main.system.auxiliary.Chronos;
+import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.images.ImageManager.HIGHLIGHT;
 
@@ -68,7 +69,7 @@ public class MiniGrid implements Refreshable {
         comp.addMouseMotionListener(mouseMotionListener);
         // comp.addMouseListener(customMouseListener);
 
-        main.system.auxiliary.LogMaster.log(1, getComp().getMouseListeners() + " on "
+        LogMaster.log(1, getComp().getMouseListeners() + " on "
                 + getComp().hashCode());
         // comp.addMouseMotionListener(new DragOffsetMouseListener(this));
 
@@ -91,7 +92,7 @@ public class MiniGrid implements Refreshable {
         defaultOffsetY = (int) (getSize().getHeight() - cellHeight * dungeon.getCellsY()) / 2;
     }
 
-    public void addOverlayingObjToLoad(DC_HeroObj obj) {
+    public void addOverlayingObjToLoad(Unit obj) {
         MiniObjComp minicomp = new MiniObjComp(true, obj, map);
         if (editMode) {
             minicomp.getComp().addMouseListener(customMouseListener);
@@ -128,14 +129,14 @@ public class MiniGrid implements Refreshable {
                 }
             }
         }
-        this.comp.add(minicomp.getComp(), getOverlayingMigString((DC_HeroObj) minicomp.getObj(),
+        this.comp.add(minicomp.getComp(), getOverlayingMigString((Unit) minicomp.getObj(),
                 multi));
         minicomp.initSize(getSize());
     }
 
     public void objRemoved(DC_Obj obj) {
-        if (obj instanceof DC_HeroObj) {
-            DC_HeroObj unit = (DC_HeroObj) obj;
+        if (obj instanceof Unit) {
+            Unit unit = (Unit) obj;
             if (unit.isOverlaying()) {
                 for (MiniObjComp c : overlayingObjComps) {
                     if (c.getObj().equals(obj)) {
@@ -148,7 +149,7 @@ public class MiniGrid implements Refreshable {
                 return;
             }
         }
-        DC_Cell cell = dungeon.getGame().getCellByCoordinate(obj.getCoordinates());
+        DC_Cell cell = (DC_Cell) dungeon.getGame().getCellByCoordinate(obj.getCoordinates());
         if (cell == null) {
             return;
         }
@@ -168,8 +169,8 @@ public class MiniGrid implements Refreshable {
         // comp.remove(compMap.getOrCreate(obj.getCoordinates()).getComp());
         MiniObjComp minicomp;
 
-        if (obj instanceof DC_HeroObj) {
-            DC_HeroObj unit = (DC_HeroObj) obj;
+        if (obj instanceof Unit) {
+            Unit unit = (Unit) obj;
             if (unit.isOverlaying()) {
                 minicomp = new MiniObjComp(true, obj, map);
                 if (editMode) {
@@ -211,7 +212,7 @@ public class MiniGrid implements Refreshable {
             // if (!o.getCoordinates().eq)
             // continue; TODO
 
-            ((DC_HeroObj) o.getObj()).getDirection();
+            ((Unit) o.getObj()).getDirection();
 
             o.getCellSize();
             getOverlayingObjWidth();
@@ -250,7 +251,7 @@ public class MiniGrid implements Refreshable {
 
     }
 
-    private String getOverlayingMigString(DC_HeroObj obj, boolean multi) {
+    private String getOverlayingMigString(Unit obj, boolean multi) {
         Coordinates c = obj.getCoordinates();
         int width = getOverlayingObjWidth();
         int height = overlayingObjHeight;
@@ -379,8 +380,8 @@ public class MiniGrid implements Refreshable {
             c = obj.getCoordinates();
         }
         List<? extends DC_Obj> objects = getGame().getObjectsOnCoordinate(c);
-        LinkedList<DC_HeroObj> overlaying = new LinkedList<>();
-        for (DC_HeroObj o : map.getDungeon().getGame().getObjectsOnCoordinate(c)) {
+        LinkedList<Unit> overlaying = new LinkedList<>();
+        for (Unit o : map.getDungeon().getGame().getObjectsOnCoordinate(c)) {
             if (o.isOverlaying()) {
                 overlaying.add(o);
             }

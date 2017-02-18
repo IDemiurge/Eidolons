@@ -2,13 +2,14 @@ package main.system.auxiliary;
 
 import main.content.ContentManager;
 import main.content.VALUE;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.data.xml.XML_Converter;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
+import main.system.auxiliary.data.ListMaster;
 import main.system.math.Formula;
 
 import java.util.*;
@@ -78,6 +79,7 @@ public class StringMaster {
     public static final String XOR_SEPARATOR = "xor";
     public static final String CONDITION_SEPARATOR = "//";
     public static final String NET_DATA_SEPARATOR = ">><<";
+    public static final String UPGRADE_SEPARATOR = ">|<";
     public static final String SCORE = " Score";
     public static final String AND = " AND ";
     public static final String CODE_BACK_SLASH = "CODE_BACK_SLASH";
@@ -380,6 +382,12 @@ public class StringMaster {
 
     public static String getWellFormattedString(String s) {
         return StringMaster.getWellFormattedString(s, false);
+    }
+
+    public static String getCamelCase(String name) {
+        String formatted = StringMaster.getWellFormattedString(name);
+        return formatted.substring(0, 1).toLowerCase()
+         + formatted.substring(1).replace(" ", "");
     }
 
     public static String getWellFormattedString(String s, boolean insertSpaceAfterCapitals) {

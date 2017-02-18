@@ -1,15 +1,13 @@
 package main.game.logic.dungeon.special;
 
-import main.content.CONTENT_CONSTS.STATUS;
+import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
-import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
-import main.game.Game;
-import main.game.player.Player;
+import main.game.core.game.DC_Game;
+import main.game.logic.battle.player.Player;
 
-public class LockObj extends DC_HeroObj {
+public class LockObj extends Unit {
 
 
 
@@ -19,6 +17,6 @@ public class LockObj extends DC_HeroObj {
 
     public void unlock() {
 
-        addStatus(STATUS.UNLOCKED.name());
+        addStatus(UnitEnums.STATUS.UNLOCKED.name());
     }
 }

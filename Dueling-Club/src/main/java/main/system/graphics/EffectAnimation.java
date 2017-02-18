@@ -2,17 +2,16 @@ package main.system.graphics;
 
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effect.MOD_PROP_TYPE;
-import main.content.CONTENT_CONSTS.STD_COUNTERS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
-import main.entity.obj.DC_BuffObj;
-import main.entity.obj.top.DC_ActiveObj;
-import main.system.auxiliary.ColorManager;
+import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.attach.DC_BuffObj;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.images.ImageManager;
 import main.system.math.roll.Roll;
-import main.system.util.CounterMaster;
+import main.system.entity.CounterMaster;
 
 import java.awt.*;
 import java.util.List;

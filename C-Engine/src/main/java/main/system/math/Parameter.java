@@ -1,12 +1,13 @@
 package main.system.math;
 
 import main.content.ContentManager;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.VariableManager.AUTOVAR;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 
 public class Parameter extends DynamicValue {
     private PARAMETER param;
@@ -54,12 +55,12 @@ public class Parameter extends DynamicValue {
         }
         Integer id = ref.getId(obj_ref);
 
-        main.system.auxiliary.LogMaster.log(0, "Queried Obj: " + obj_ref);
+        LogMaster.log(0, "Queried Obj: " + obj_ref);
         entity = game.getObjectById(id);
         if (entity == null) {
             entity = game.getTypeById(id);
             if (entity == null) {
-                main.system.auxiliary.LogMaster.log(0, obj_ref + "'s " + value_ref
+                LogMaster.log(0, obj_ref + "'s " + value_ref
                         + " - Queried Obj not found; ref: " + ref);
                 return 0;
             }
@@ -78,14 +79,14 @@ public class Parameter extends DynamicValue {
             }
         }
 
-        main.system.auxiliary.LogMaster.log(0, "Retrieving " + getParam() + " from " +
+        LogMaster.log(0, "Retrieving " + getParam() + " from " +
 
                 obj_ref);
         int x;
 
         x = Integer.valueOf((entity).getIntParam(getParam(), ref.isBase()));
 
-        main.system.auxiliary.LogMaster.log(0, "Parameter value evaluated: " + x + " for obj "
+        LogMaster.log(0, "Parameter value evaluated: " + x + " for obj "
                 + entity.getProperty(G_PROPS.NAME));
         return x;
 

@@ -1,6 +1,6 @@
 package main.client.game;
 
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 
 public class DC_GameInitializer {
 

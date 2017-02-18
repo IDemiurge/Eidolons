@@ -6,6 +6,7 @@ import main.entity.obj.MicroObj;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
+import main.game.battlefield.CoordinatesMaster;
 import main.game.battlefield.map.DC_Map;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.DungeonLevelMaster;
@@ -14,7 +15,6 @@ import main.game.logic.dungeon.DungeonMaster;
 import main.game.logic.dungeon.building.BuildHelper.BUILD_PARAMS;
 import main.game.logic.dungeon.building.BuildHelper.BuildParameters;
 import main.game.logic.dungeon.building.DungeonBuilder.DUNGEON_TEMPLATES;
-import main.game.logic.macro.utils.CoordinatesMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.*;

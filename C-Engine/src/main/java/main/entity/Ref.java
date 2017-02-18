@@ -1,18 +1,18 @@
 package main.entity;
 
 import main.ability.effects.Effect;
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.VALUE;
 import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.Game;
-import main.game.event.Event;
-import main.game.player.Player;
+import main.game.core.game.Game;
+import main.game.logic.event.Event;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.SearchMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
@@ -42,6 +42,7 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
     protected Player player;
     protected Effect effect;
     protected boolean quiet;
+    protected boolean debug;
     protected boolean triggered;
 
     protected VALUE value;
@@ -159,6 +160,7 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
         ref.setValue(value);
         ref.setPeriodic(periodic);
         ref.setTriggered(triggered);
+        ref.setDebug(debug);
         ref.setAnimationActive(animationActive);
         // ref.setAmount(getAmount());
         // if (refClones.size() % 100 == 5)
@@ -173,6 +175,12 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
     }
 
 
+
+    protected String formatKeyString(String key) {
+        // return key;
+        return key.toUpperCase();
+        // [OPTIMIZED]
+    }
     protected Ref checkForRefReplacement() {
         String s = getStr();
         if (s.startsWith("{")) {
@@ -196,7 +204,7 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
                 try {
                     return game.getObjectById(Integer.valueOf(getValue(key.name()))).getRef();
                 } catch (Exception e) {
-                    main.system.auxiliary.LogMaster.log(1, prefix + " + " + getStr());
+                    LogMaster.log(1, prefix + " + " + getStr());
                     e.printStackTrace();
                 }
             }
@@ -277,12 +285,6 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
 
     }
 
-
-    protected String formatKeyString(String key) {
-        // return key;
-        return key.toUpperCase();
-        // [OPTIMIZED]
-    }
 
     public void setID(String key, Integer id) {
 
@@ -543,6 +545,14 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
 
     public void setFormula(Formula formula) {
         this.formula = formula;
+    }
+
+    public boolean isDebug() {
+        return debug;
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
     }
 
     public enum KEYS {

@@ -1,7 +1,7 @@
 package main.swing.components.buttons;
 
 import main.client.dc.Launcher;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;

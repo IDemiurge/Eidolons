@@ -1,7 +1,7 @@
 package main;
 
 import main.content.*;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 
@@ -31,7 +31,7 @@ public class AV_DataManager {
             List<VALUE> list = new LinkedList<>();
             list.addAll(Arrays.asList(IGNORED_FROM_ALL_VALUES));
             list.addAll(Arrays.asList(IGNORED_VALUES[code]));
-            IGNORE_MAP.put(OBJ_TYPES.getTypeByCode(code).getName(), list);
+            IGNORE_MAP.put(DC_TYPE.getTypeByCode(code).getName(), list);
         }
         ContentManager.setAV_IgnoredValues(IGNORE_MAP);
     }
@@ -39,7 +39,7 @@ public class AV_DataManager {
     public static List<String> getValueNames(String key) {
         List<VALUE> values;
         try {
-            values = ValuePageManager.getValuesForAV(OBJ_TYPES.getType(key));
+            values = ValuePageManager.getValuesForAV(DC_TYPE.getType(key));
             if (values == null) {
                 return ContentManager.getArcaneVaultValueNames(key);
             }

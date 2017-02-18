@@ -1,7 +1,7 @@
 package main.swing.generic.components.misc;
 
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.FontMaster;
+import main.system.graphics.ColorManager;
+import main.system.graphics.FontMaster;
 
 import javax.swing.*;
 import java.awt.*;

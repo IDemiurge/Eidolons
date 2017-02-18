@@ -1,18 +1,18 @@
 package main.game.logic.dungeon;
 
-import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.VALUE;
-import main.content.enums.DUNGEON_SUBFOLDER;
-import main.content.properties.G_PROPS;
-import main.content.properties.MACRO_PROPS;
+import main.content.enums.DungeonEnums.DUNGEON_SUBFOLDER;
+import main.content.enums.system.MetaEnums;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.logic.dungeon.building.DungeonBuilder;
 import main.game.logic.macro.map.Place;
@@ -21,9 +21,10 @@ import main.libgdx.GameScreen;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
-import main.system.FilterMaster;
-import main.system.auxiliary.FileManager;
-import main.system.auxiliary.GuiManager;
+import main.system.auxiliary.log.LogMaster;
+import main.system.entity.FilterMaster;
+import main.system.auxiliary.data.FileManager;
+import main.system.graphics.GuiManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
@@ -113,7 +114,7 @@ public class DungeonMaster {
             coordinates = newDungeon.getMainEntrance().getCoordinates();
         }
         // exit?
-        List<DC_HeroObj> units = new LinkedList<>();
+        List<Unit> units = new LinkedList<>();
         if (game.getParty() != null) {
             units.addAll(game.getParty().getMembers());
         } else {
@@ -180,7 +181,7 @@ public class DungeonMaster {
         }
 
         if (CoreEngine.isArcaneVault()) {
-            ObjType objType = new ObjType("Test Dungeon", OBJ_TYPES.DUNGEONS);
+            ObjType objType = new ObjType("Test Dungeon", DC_TYPE.DUNGEONS);
             objType.setParam(PARAMS.BF_WIDTH, 3);
             objType.setParam(PARAMS.BF_HEIGHT, 3);
             setDungeon(new Dungeon(objType));
@@ -204,14 +205,14 @@ public class DungeonMaster {
 
         if (type == null) {
             if (!FAST_DC.isRunning()) {
-                type = DataManager.getType(getPresetDungeonType(), OBJ_TYPES.DUNGEONS);
+                type = DataManager.getType(getPresetDungeonType(), DC_TYPE.DUNGEONS);
             } else {
                 if (RANDOM_DUNGEON) {
 
                     type =
                             pickRandomDungeon();
                 } else if (type == null) {
-                    type = DataManager.getType(ListChooser.chooseType(OBJ_TYPES.DUNGEONS));
+                    type = DataManager.getType(ListChooser.chooseType(DC_TYPE.DUNGEONS));
                 }
 
                 if (type == null) {
@@ -229,13 +230,13 @@ public class DungeonMaster {
 
     private ObjType pickRandomDungeon() {
         ObjType type;
-        List<ObjType> list = DataManager.getTypes(OBJ_TYPES.DUNGEONS);
-        FilterMaster.filterByProp(list, G_PROPS.WORKSPACE_GROUP.getName(), WORKSPACE_GROUP.COMPLETE
+        List<ObjType> list = DataManager.getTypes(DC_TYPE.DUNGEONS);
+        FilterMaster.filterByProp(list, G_PROPS.WORKSPACE_GROUP.getName(), MetaEnums.WORKSPACE_GROUP.COMPLETE
                 + "");
         if (list.isEmpty()) {
-            list = DataManager.getTypes(OBJ_TYPES.DUNGEONS);
+            list = DataManager.getTypes(DC_TYPE.DUNGEONS);
             FilterMaster.filterByProp(list, G_PROPS.WORKSPACE_GROUP.getName(),
-                    WORKSPACE_GROUP.FOCUS + "");
+                    MetaEnums.WORKSPACE_GROUP.FOCUS + "");
         }
         type = list.get(RandomWizard.getRandomListIndex(list));
         return type;
@@ -261,7 +262,7 @@ public class DungeonMaster {
         // set Dungeon obj here so that launch() will be proper
         // set some other parameters perhaps...
 
-        ObjType type = DataManager.getType(typeName, OBJ_TYPES.DUNGEONS);
+        ObjType type = DataManager.getType(typeName, DC_TYPE.DUNGEONS);
         if (type == null) {
             type = getDungeonTypeFromPlace(place);
         }
@@ -274,7 +275,7 @@ public class DungeonMaster {
     }
 
     public void initEncounterDungeon(Encounter e) {
-        ObjType type = new ObjType(e.getRoute().getName(), OBJ_TYPES.DUNGEONS);
+        ObjType type = new ObjType(e.getRoute().getName(), DC_TYPE.DUNGEONS);
         type.initType();
         String value = e.getRoute().getProperty(PROPS.MAP_BACKGROUND);
         if (!ImageManager.isImage(value)) {
@@ -296,9 +297,9 @@ public class DungeonMaster {
 
     private ObjType getDungeonTypeFromPlace(Place place) {
         // place.getProperty(prop)
-        ObjType type = DataManager.getType(place.getName(), OBJ_TYPES.DUNGEONS);
+        ObjType type = DataManager.getType(place.getName(), DC_TYPE.DUNGEONS);
         if (type == null) {
-            type = DataManager.findType(place.getName(), OBJ_TYPES.DUNGEONS);
+            type = DataManager.findType(place.getName(), DC_TYPE.DUNGEONS);
         }
         return type;
     }
@@ -455,19 +456,19 @@ public class DungeonMaster {
         GuiManager.setCurrentLevelCellsX(getLevelWidth());
         GuiManager.setCurrentLevelCellsY(getLevelHeight());
         if (!ImageManager.isImage(dungeon.getMapBackground())) {
-            main.system.auxiliary.LogMaster.log(1,
+            LogMaster.log(1,
                     dungeon.getMapBackground() + " is not a valid image! >> " + dungeon);
             return;
         }
         if (GameScreen.getInstance() == null) {
-            main.system.auxiliary.LogMaster.log(1,
+            LogMaster.log(1,
                     dungeon.getMapBackground() + "failed to set as bg;" +
                             " GameScreen is not ready! >> " + dungeon);
             return;
         }
                 try {
                     GameScreen.getInstance().getBackground().setImagePath(dungeon.getMapBackground());
-                    main.system.auxiliary.LogMaster.log(1, dungeon.getMapBackground() + " bg set for " + dungeon);
+                    LogMaster.log(1, dungeon.getMapBackground() + " bg set for " + dungeon);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

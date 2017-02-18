@@ -4,7 +4,7 @@ import main.content.PARAMS;
 import main.content.VALUE;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.logic.macro.gui.party.Header;
 import main.swing.builders.DC_Builder;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;
@@ -14,8 +14,8 @@ import main.swing.components.panels.secondary.DeadUnitPanel;
 import main.swing.components.panels.secondary.DroppedItemPanel;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 
 public class DC_CellInfoPanel extends G_Panel {
 

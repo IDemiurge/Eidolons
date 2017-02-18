@@ -2,18 +2,19 @@ package main.data.xml;
 
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.type.ObjType;
-import main.system.auxiliary.FileManager;
-import main.system.auxiliary.MapMaster;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 
 import java.io.File;
@@ -116,8 +117,8 @@ public class XML_Writer {
             return false;
         }
         if (group == null) {
-            if (OBJ_TYPES.getXmlGroups(TYPE) != null) {
-                for (Object obj : OBJ_TYPES.getXmlGroups(TYPE)) {
+            if (DC_TYPE.getXmlGroups(TYPE) != null) {
+                for (Object obj : DC_TYPE.getXmlGroups(TYPE)) {
                     String name = obj.toString();
                     List<String> types = DataManager.getTypeNamesGroup(TYPE, name);
                     map = new MapMaster<String, ObjType>().constructMap(types, DataManager
@@ -130,7 +131,7 @@ public class XML_Writer {
         }
 
         setPathForOBJ_TYPE(TYPE, group);
-        main.system.auxiliary.LogMaster.log(0, path + " - WRITING XML FOR GROUP " + TYPE);
+        LogMaster.log(0, path + " - WRITING XML FOR GROUP " + TYPE);
         stringPool = "<XML>";
 
         if (group == null) {
@@ -161,7 +162,7 @@ public class XML_Writer {
         } else if (XML_Reader.getCustomTypesPath() != null) {
             path = XML_Reader.getCustomTypesPath();
         } else {
-            path = (!OBJ_TYPES.isOBJ_TYPE(TYPE.toString()) ? PathFinder.getMACRO_TYPES_PATH()
+            path = (!DC_TYPE.isOBJ_TYPE(TYPE.toString()) ? PathFinder.getMACRO_TYPES_PATH()
                     : PathFinder.getTYPES_PATH());
         }
         if (backUp) {
@@ -205,7 +206,7 @@ public class XML_Writer {
         String newTypeString = getTypeXML(type, builder);
         if (!newTypeString.isEmpty()) {
             if (XML_Converter.getDoc(newTypeString) == null) {
-                main.system.auxiliary.LogMaster.log(1, "faulty xml for " + type.getName());
+                LogMaster.log(1, "faulty xml for " + type.getName());
                 return false;
             }
         }
@@ -281,7 +282,7 @@ public class XML_Writer {
     private static void putSubGroups() {
         for (String strname : subStrings.keySet()) {
             StringBuilder subGroup = subStrings.get(strname);
-            main.system.auxiliary.LogMaster.log(0, "SUBSTRING: " + strname);
+            LogMaster.log(0, "SUBSTRING: " + strname);
             if (strname.isEmpty()) {
                 strname = "Empty";
             }
@@ -337,7 +338,7 @@ public class XML_Writer {
                 }
             }
             if (prop == null) {
-                main.system.auxiliary.LogMaster.log(1, "null key! ; value = "
+                LogMaster.log(1, "null key! ; value = "
                         + type.getPropMap().get(prop));
             }
             appendLeafNode(builder, StringMaster.capitalizeFirstLetter(prop
@@ -359,8 +360,8 @@ public class XML_Writer {
         if (!(ContentManager.isValueForOBJ_TYPE(TYPE, val))) {
             return false;
         }
-        if (TYPE == OBJ_TYPES.SKILLS || TYPE == OBJ_TYPES.CHARS || TYPE == OBJ_TYPES.UNITS
-                || TYPE == OBJ_TYPES.SPELLS) {
+        if (TYPE == DC_TYPE.SKILLS || TYPE == DC_TYPE.CHARS || TYPE == DC_TYPE.UNITS
+                || TYPE == DC_TYPE.SPELLS) {
             if (StringMaster.isEmpty(value) || value.equals("0")) {
                 if (!val.getName().equalsIgnoreCase("CIRCLE")) {
                     return false;

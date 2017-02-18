@@ -3,11 +3,11 @@ package main.ability.utilities;
 import main.ability.gui.AE_Element;
 import main.content.ContentManager;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
-import main.content.parameters.Param;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
-import main.content.properties.Prop;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.parameters.Param;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
+import main.content.values.properties.Prop;
 import main.data.ability.AE_Item;
 import main.data.ability.ARGS;
 import main.data.ability.Argument;
@@ -15,6 +15,7 @@ import main.data.ability.Mapper;
 import main.data.ability.construct.VariableManager;
 import main.launch.ArcaneVault;
 import main.system.auxiliary.*;
+import main.system.auxiliary.log.LogMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
@@ -149,7 +150,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode();
             node.setUserObject(Mapper.getItem(child));
             result.add(build(child));
-            main.system.auxiliary.LogMaster.log(LogMaster.AV_AE, "node added: "
+            LogMaster.log(LogMaster.AV_AE, "node added: "
                     + child.getNodeName());
         }
 
@@ -159,7 +160,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
     private static int getDropBoxIndex(Object selectedItem, AE_Element element) {
         String text = selectedItem.toString();
         int index = new SearchMaster<AE_Item>().getIndex(text, element.getItemList());
-        main.system.auxiliary.LogMaster.log(1, element.getItem().getName() + selectedItem + " is "
+        LogMaster.log(1, element.getItem().getName() + selectedItem + " is "
                 + index + "th in " + element.getItemList());
         return index;
     }
@@ -198,7 +199,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 
         List<AE_Item> itemList = Mapper.getItemList(arg);
         if (!itemList.contains(item)) {
-            main.system.auxiliary.LogMaster.log(1, "indexing item not found: " + item.getName()
+            LogMaster.log(1, "indexing item not found: " + item.getName()
                     + ";  " + arg + "= " + itemList);
             return 0;
         }
@@ -299,7 +300,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
             DefaultMutableTreeNode node = newNode(element.getItem(), index);
             AE_Item item = getEnumItem(element.getArg(), cb.getSelectedItem().toString());
             if (item == null) {
-                main.system.auxiliary.LogMaster.log(2, "NULL ITEM: "
+                LogMaster.log(2, "NULL ITEM: "
                         + cb.getSelectedItem().toString());
             }
             DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(item.getName());

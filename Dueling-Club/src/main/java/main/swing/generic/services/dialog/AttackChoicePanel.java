@@ -2,15 +2,15 @@ package main.swing.generic.services.dialog;
 
 import main.ability.effects.AttackEffect;
 import main.ability.effects.Effect;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.top.DC_ActiveObj;
-import main.game.battlefield.*;
-import main.game.battlefield.attack.Attack;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.unit.Unit;
+import main.game.ai.tools.future.FutureBuilder;
+import main.game.ai.tools.target.EffectFinder;
+import main.swing.PointX;
+import main.game.battlefield.attack.*;
 import main.swing.builders.DC_Builder;
-import main.system.ai.logic.target.EffectMaster;
-import main.system.ai.tools.future.FutureBuilder;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.AttackAnimation;
@@ -35,7 +35,7 @@ public class AttackChoicePanel extends ChoicePanel<DC_ActiveObj> {
     private AttackAnimation anim;
     private TextItem costTooltip;
 
-    public AttackChoicePanel(List<DC_ActiveObj> itemData, DC_HeroObj target) {
+    public AttackChoicePanel(List<DC_ActiveObj> itemData, Unit target) {
         super(itemData, target);
 
     }
@@ -78,7 +78,7 @@ public class AttackChoicePanel extends ChoicePanel<DC_ActiveObj> {
             target.getGame().getAnimationManager().getTempAnims().clear();
         }
 
-        Attack attack = EffectMaster.getAttackFromAction(t);
+        Attack attack = EffectFinder.getAttackFromAction(t);
         AttackAnimation animation = new AttackAnimation(t);
         animation.setDrawMode(PhaseAnimation.TARGET_ONLY);
         // animation.setGenericsAbove(true);
@@ -218,7 +218,7 @@ public class AttackChoicePanel extends ChoicePanel<DC_ActiveObj> {
     protected String getTooltip(DC_ActiveObj t) {
         int damage = FutureBuilder.precalculateDamage(t, target, true);
         tooltip = "" + damage + " damage avrg.";
-        List<Effect> effect = EffectMaster.getEffectsOfClass(t, AttackEffect.class);
+        List<Effect> effect = EffectFinder.getEffectsOfClass(t, AttackEffect.class);
         if (effect.size() > 0) {
             AttackCalculator attackCalculator = new AttackCalculator(((AttackEffect) effect.get(0)).getAttack(), true);
             int chance = attackCalculator.getCritOrDodgeChance();
@@ -229,7 +229,7 @@ public class AttackChoicePanel extends ChoicePanel<DC_ActiveObj> {
             if (DamageMaster.isLethal(damage, target)) {
                 tooltip += "(lethal)"; // TODO possibly lethal
             } else {
-                if (((DC_HeroObj) target).canCounter(t)) {
+                if (((Unit) target).canCounter(t)) {
                     tooltip += "(will retaliate)"; // TODO precalc dmg?
                 }
             }

@@ -1,6 +1,6 @@
 package main.swing.generic.services.layout;
 
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 public class LayoutInfo {
 

@@ -1,17 +1,25 @@
 package main.system.hotkey;
 
 import com.melloware.jintellitype.JIntellitype;
-import main.content.CONTENT_CONSTS.ACTION_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE;
+import main.content.DC_TYPE;
+import main.content.enums.entity.ActionEnums;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
-import main.game.DC_GameManager;
-import main.rules.DC_ActionManager.ADDITIONAL_MOVE_ACTIONS;
-import main.rules.DC_ActionManager.STD_ACTIONS;
-import main.rules.DC_ActionManager.STD_MODE_ACTIONS;
+import main.game.core.game.DC_GameManager;
+import main.libgdx.anims.controls.AnimController;
+import main.libgdx.anims.controls.Controller;
+import main.libgdx.anims.controls.Controller.CONTROLLER;
+import main.libgdx.anims.controls.EmitterController;
+import main.game.logic.generic.DC_ActionManager.ADDITIONAL_MOVE_ACTIONS;
+import main.game.logic.generic.DC_ActionManager.STD_ACTIONS;
+import main.game.logic.generic.DC_ActionManager.STD_MODE_ACTIONS;
+import main.rules.RuleMaster;
 import main.swing.generic.components.panels.G_PagePanel;
-import main.system.auxiliary.LogMaster;
-import main.system.util.ValueHelper;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.entity.ValueHelper;
+import main.test.debug.DebugController;
 import main.test.debug.DebugMaster;
 
 import java.awt.event.KeyEvent;
@@ -21,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DC_KeyManager
 // extends KeyboardFocusManager
-        implements KeyListener {
+ implements KeyListener {
 
     public static final int DEFAULT_MODE = JIntellitype.MOD_CONTROL;
     public static final int ALT_MODE = JIntellitype.MOD_ALT;
@@ -36,13 +44,16 @@ public class DC_KeyManager
     private Map<String, HOTKEYS> specKeyMap;
     // private Map<Integer, HotKey> keyMap;
     private DC_GameManager mngr;
-    private ACTION_TYPE action_group = ACTION_TYPE.STANDARD;
+    private ACTION_TYPE action_group = ActionEnums.ACTION_TYPE.STANDARD;
+    private Controller controller;
 
     public DC_KeyManager(DC_GameManager mngr) {
         this.mngr = mngr;
         stdActionKeyMap = new ConcurrentHashMap<>();
         stdModeKeyMap = new ConcurrentHashMap<>();
         addMoveActionKeyMap = new ConcurrentHashMap<>();
+        if (EmitterController.overrideKeys)
+            controller = EmitterController.getInstance();
     }
 
     public void initHotkeysForUnit() {
@@ -58,10 +69,10 @@ public class DC_KeyManager
     private void initStdModeHotkeys() {
         int i = 0;
         for (STD_MODE_ACTIONS action : STD_MODE_ACTIONS.values()) {
-            String key = DataManager.getType(action.toString(), OBJ_TYPES.ACTIONS).getProperty(
-                    G_PROPS.HOTKEY);
+            String key = DataManager.getType(action.toString(), DC_TYPE.ACTIONS).getProperty(
+             G_PROPS.HOTKEY);
             stdModeKeyMap.put(key, i);
-            main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, ">> mode hotkey " + key);
+            LogMaster.log(LogMaster.CORE_DEBUG, ">> mode hotkey " + key);
             i++;
         }
 
@@ -70,24 +81,25 @@ public class DC_KeyManager
     private void initStdHotkeys() {
         int i = 0;
         for (STD_ACTIONS action : STD_ACTIONS.values()) {
-            String key = DataManager.getType(action.toString(), OBJ_TYPES.ACTIONS).getProperty(
-                    G_PROPS.HOTKEY);
+            String key = DataManager.getType(action.toString(), DC_TYPE.ACTIONS).getProperty(
+             G_PROPS.HOTKEY);
             stdActionKeyMap.put(key, i);
-            main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, ">> std hotkey " + key);
+            LogMaster.log(LogMaster.CORE_DEBUG, ">> std hotkey " + key);
             i++;
         }
         i = 0;
         for (ADDITIONAL_MOVE_ACTIONS action : ADDITIONAL_MOVE_ACTIONS.values()) {
-            String key = DataManager.getType(action.toString(), OBJ_TYPES.ACTIONS).getProperty(
-                    G_PROPS.HOTKEY);
+            String key = DataManager.getType(action.toString(), DC_TYPE.ACTIONS).getProperty(
+             G_PROPS.HOTKEY);
             addMoveActionKeyMap.put(key, i);
-            main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, ">> std hotkey " + key);
+            LogMaster.log(LogMaster.CORE_DEBUG, ">> std hotkey " + key);
             i++;
         }
 
     }
 
     private boolean checkCustomHotkey(KeyEvent e) {
+
 
         if (!e.isAltDown()) {
             return false;
@@ -142,38 +154,76 @@ public class DC_KeyManager
     // return boolean to know if success/failure and play a sound!
     @Override
     public void keyTyped(KeyEvent e) {
-        main.system.auxiliary.LogMaster.log(LogMaster.GUI_DEBUG, "key typed: " + e.getKeyChar());
+        LogMaster.log(LogMaster.GUI_DEBUG, "key typed: " + e.getKeyChar());
         if (mngr.getActiveObj().isAiControlled()) {
             return; // play random sound!...
         }
-        if (checkCustomHotkey(e)) {
-            return;
-        }
+
 
         char CHAR = (e.getKeyChar());
         int keyMod = e.getModifiers();
 //        arrowPressed(e); TODO
         handleKeyTyped(keyMod, CHAR);
     }
+
+    private boolean checkControllerHotkey(int keyMod, char e) {
+        if (e == 'T') {//CONTROLLER_TOGGLE
+//            if (keyMod==KeyEvent.SHIFT_MASK) {
+//                    chooseEnum
+            CONTROLLER c =
+             new EnumMaster<CONTROLLER>().selectEnum(CONTROLLER.class);
+            switch (c) {
+                case ACTION:
+                    controller = null;
+                    break;
+                case ANIM:
+                    controller = AnimController.getInstance();
+                    break;
+                case DEBUG:
+                        controller = DebugController.getInstance();
+                    break;
+                case RULES:
+                    controller = RuleMaster.getInstance();
+                    break;
+                case EMITTER:
+                    controller = EmitterController.getInstance();
+                    break;
+            }
+            return true;
+//            }
+        }
+        return false;
+    }
     public void handleKeyTyped(int keyMod, char CHAR) {
+        if (checkControllerHotkey(keyMod, CHAR)) return;
+        if (controller != null) {
+            try {
+                if (controller.charTyped(CHAR))
+                    return;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
+            }
+
+        }
+
         int index = -1;
         if (numberChars.indexOf(CHAR) != -1) {
             index = Integer.valueOf(CHAR + "");
         }
         if (index == -1) {
             if (stdActionKeyMap.containsKey(CHAR + "")) {
-                actionHotkey(stdActionKeyMap.get(CHAR + ""), ACTION_TYPE.STANDARD);
+                actionHotkey(stdActionKeyMap.get(CHAR + ""), ActionEnums.ACTION_TYPE.STANDARD);
                 return;
             }
             if (addMoveActionKeyMap.containsKey(CHAR + "")) {
-                actionHotkey(addMoveActionKeyMap.get(CHAR + ""), ACTION_TYPE.ADDITIONAL_MOVE);
+                actionHotkey(addMoveActionKeyMap.get(CHAR + ""), ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE);
                 return;
             }
             if (stdModeKeyMap.containsKey(CHAR + "")) {
-                actionHotkey(stdModeKeyMap.get(CHAR + ""), ACTION_TYPE.MODE);
+                actionHotkey(stdModeKeyMap.get(CHAR + ""), ActionEnums.ACTION_TYPE.MODE);
                 return;
             }
-
 
 
         } else {
@@ -196,6 +246,7 @@ public class DC_KeyManager
             }
         }
     }
+
 
     private void arrowPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
@@ -237,7 +288,7 @@ public class DC_KeyManager
     }
 
     private void itemHotkey(int index) {
-        // mngr.activateMyItem(index);
+        // manager.activateMyItem(index);
 
     }
 

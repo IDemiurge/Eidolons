@@ -1,10 +1,10 @@
 package main.entity;
 
 import main.ability.AbilityObj;
-import main.content.CONTENT_CONSTS.STD_BOOLS;
+import main.content.enums.GenericEnums.STD_BOOLS;
 import main.content.OBJ_TYPE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
 import main.entity.obj.ActiveObj;
 import main.entity.type.ObjType;
 

@@ -1,26 +1,26 @@
 package main.game.logic.dungeon.scenario;
 
-import main.client.battle.arcade.PartyManager;
-import main.client.battle.arcade.SkirmishMaster;
 import main.client.cc.gui.neo.choice.ChoiceSequence;
 import main.client.cc.gui.neo.choice.ScenarioChoiceView;
 import main.client.cc.gui.neo.choice.ScenarioModeChoiceView;
 import main.client.dc.Launcher;
 import main.client.dc.Launcher.VIEWS;
 import main.client.dc.SequenceManager;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
-import main.content.properties.MACRO_PROPS;
+import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.NumericCondition;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.Location;
-import main.system.ConditionMaster;
+import main.game.logic.generic.PartyManager;
+import main.game.meta.skirmish.SkirmishMaster;
+import main.system.entity.ConditionMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedList;
@@ -60,12 +60,12 @@ public class ScenarioMaster {
 
                 if (mode == SCENARIO_MODES.STORY_MODE) {
                     String prop = scenario.getProperty(MACRO_PROPS.MISSION_PARTY);
-                    List<DC_HeroObj> heroes;
-                    if (!DataManager.isTypeName(prop, OBJ_TYPES.PARTY)) {
+                    List<Unit> heroes;
+                    if (!DataManager.isTypeName(prop, DC_TYPE.PARTY)) {
                         prop = scenario.getProperty(MACRO_PROPS.MISSION_CUSTOM_PARTY);
                         heroes = new LinkedList<>();
                         String leaderName = prop.split(";")[0];
-                        DC_HeroObj leader = Launcher.getMainManager().initSelectedHero(leaderName);
+                        Unit leader = Launcher.getMainManager().initSelectedHero(leaderName);
                         // prop = prop.replace(leaderName, "");
                         // for (String s : StringMaster.openContainer(prop)) {
                         // }
@@ -147,7 +147,7 @@ public class ScenarioMaster {
         ScenarioMaster.scenario = scenario;
     }
 
-    public static List<DC_HeroObj> getHeroesForHire() {
+    public static List<Unit> getHeroesForHire() {
         return scenario.getHeroesForHire();
     }
 
@@ -156,7 +156,7 @@ public class ScenarioMaster {
     public void initScenarioResources() {
         Integer gold = scenario.getIntParam(PARAMS.GOLD);
         Integer xp = scenario.getIntParam(PARAMS.XP);
-        for (DC_HeroObj member : PartyManager.getParty().getMembers()) {
+        for (Unit member : PartyManager.getParty().getMembers()) {
             member.setParam(PARAMS.GOLD, gold);
         }
     }

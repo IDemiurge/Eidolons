@@ -3,7 +3,6 @@ package main.ability.effects.oneshot.common;
 import main.ability.effects.Effect;
 import main.ability.effects.oneshot.ContainerEffect;
 import main.ability.effects.oneshot.MicroEffect;
-import main.content.CONTENT_CONSTS.STD_BOOLS;
 import main.data.ability.OmittedConstructor;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.standard.ZLevelCondition;
@@ -73,12 +72,16 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
         }
         this.targeting.select(ref);
         getActiveObj().getRef().setGroup(ref.getGroup());
-        if (         (coordinates == null || getActiveObj().checkBool(STD_BOOLS.APPLY_THRU))) {
-            coordinates = new LinkedHashSet();
-            if (ref.getGroup() != null) {
+//        if (         (coordinates == null || getActiveObj().checkBool(STD_BOOLS.APPLY_THRU))) {
+        if (ref.getGroup() != null) {
+            if (!ref.getGroup().getObjects().isEmpty()) {
+                coordinates = new LinkedHashSet();
                 ref.getGroup().getObjects().forEach(o -> coordinates.add(o.getCoordinates()));
             }
+        } else {
+            getActiveObj().initAnimation();
         }
+//        }
         getActiveObj().initAnimation();
         // if (ref.getObj(KEYS.ACTIVE) != null) {
         // ref.getObj(KEYS.ACTIVE).getRef().setGroup(ref.getGroup());

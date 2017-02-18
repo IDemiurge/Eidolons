@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import main.content.ContentManager;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.entity.obj.DC_Obj;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.layout.LayoutParser.LAYOUT;

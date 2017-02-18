@@ -2,13 +2,13 @@ package main.logic;
 
 import main.ArcaneTower;
 import main.content.DC_ContentManager;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.enums.StatEnums.TASK_STATUS;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 import main.io.PromptMaster;
 import main.logic.ArcaneRef.AT_KEYS;
 import main.session.Session;

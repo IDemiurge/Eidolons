@@ -1,13 +1,14 @@
 package main.swing.components.panels;
 
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_SpellObj;
+import main.entity.active.DC_SpellObj;
 import main.entity.obj.Obj;
-import main.game.DC_GameManager;
-import main.game.MicroGameState;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_GameManager;
+import main.game.core.Eidolons;
+import main.game.core.state.MicroGameState;
 import main.swing.components.obj.SpellListItem;
 import main.swing.generic.components.panels.G_ListPanel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,12 +49,12 @@ public class DC_SpellPanel extends G_ListPanel<DC_SpellObj> implements
 
     @Override
     public Collection<DC_SpellObj> getData() {
-        if (!(obj instanceof DC_HeroObj)) {
+        if (!(obj instanceof Unit)) {
             return getEmptyData();
         }
-        DC_GameManager manager = (DC_GameManager) state.getManager();
+        DC_GameManager manager =   Eidolons.gameManager;
         List<DC_SpellObj> spellbook = new LinkedList<>(
-                manager.getSpells((DC_HeroObj) obj));
+                manager.getSpellMaster().getSpells((Unit) obj));
         // if (autosort)
         // Collections.sort(spellbook, this);
         return spellbook;

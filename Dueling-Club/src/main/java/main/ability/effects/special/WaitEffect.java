@@ -10,15 +10,15 @@ import main.ability.effects.RemoveBuffEffect;
 import main.ability.effects.oneshot.MicroEffect;
 import main.ability.effects.oneshot.common.AddTriggerEffect;
 import main.ability.effects.oneshot.special.AddStatusEffect;
-import main.content.CONTENT_CONSTS.STATUS;
+import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Condition;
 import main.elements.conditions.RefCondition;
 import main.elements.targeting.FixedTargeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
-import main.game.event.Event;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.entity.obj.unit.Unit;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.rules.mechanics.WaitRule;
 
 public class WaitEffect extends MicroEffect {
@@ -40,7 +40,7 @@ public class WaitEffect extends MicroEffect {
         }
 
         try {
-            WaitRule.addWaitingUnit((DC_HeroObj) ref.getSourceObj(), (DC_HeroObj) ref
+            WaitRule.addWaitingUnit((Unit) ref.getSourceObj(), (Unit) ref
                     .getTargetObj());
         } catch (Exception e) {
             return false;
@@ -70,7 +70,7 @@ public class WaitEffect extends MicroEffect {
     }
 
     protected String getStatus() {
-        return STATUS.WAITING.toString();
+        return UnitEnums.STATUS.WAITING.toString();
     }
 
     protected Condition getRetainConditions() {

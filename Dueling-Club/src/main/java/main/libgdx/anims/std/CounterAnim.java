@@ -1,6 +1,6 @@
 package main.libgdx.anims.std;
 
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.AnimData;
 

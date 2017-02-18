@@ -1,7 +1,7 @@
 package main.system.graphics;
 
+import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
-import main.entity.obj.top.DC_ActiveObj;
 import main.system.graphics.AnimationManager.ANIM_TYPE;
 
 import java.awt.*;

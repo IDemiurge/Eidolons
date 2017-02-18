@@ -4,11 +4,11 @@ import main.ability.effects.Effect.MOD;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.client.cc.logic.spells.DivinationMaster;
 import main.content.CONTENT_CONSTS2.MACRO_STATUS;
-import main.content.parameters.MACRO_PARAMS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.MACRO_PROPS;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.MACRO_PROPS;
 import main.entity.Ref;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.entity.MacroActionManager.MACRO_MODES;
 import main.game.logic.macro.global.TimeMaster;
@@ -34,7 +34,7 @@ public class RestMaster {
     // TODO endTurn => auto-rest? valid modes check
     public static boolean rest(MacroParty party) {
 
-        for (DC_HeroObj hero : party.getMembers()) {
+        for (Unit hero : party.getMembers()) {
             MACRO_MODES mode = hero.getMacroMode();
             if (mode == null || !checkModeValid(party, mode)) {
                 DialogMaster.inform("Choose a mode on the lowermost panel!");
@@ -60,7 +60,7 @@ public class RestMaster {
         }
     }
 
-    private static MACRO_MODES promptMode(DC_HeroObj hero) {
+    private static MACRO_MODES promptMode(Unit hero) {
         Component[] actionListItems = ((G_ListPanel) MacroManager.getMapView()
                 .getMacroActionPanel().getPanelMap()
                 .get(MACRO_ACTION_GROUPS.MODE).getCurrentComponent()).getList()
@@ -93,13 +93,13 @@ public class RestMaster {
             }
         }
 
-        for (DC_HeroObj hero : party.getMembers()) {
+        for (Unit hero : party.getMembers()) {
             RestMaster.applyMacroMode(hero);
         }
 
     }
 
-    public static void applyMacroMode(DC_HeroObj hero) {
+    public static void applyMacroMode(Unit hero) {
         MACRO_MODES mode = new EnumMaster<MACRO_MODES>().retrieveEnumConst(
                 MACRO_MODES.class, hero.getProperty(MACRO_PROPS.MACRO_MODE));
         String paramString = mode.getParamString();
@@ -156,7 +156,7 @@ public class RestMaster {
     }
 
     // upon activation
-    public static void applyMacroModeContinuous(DC_HeroObj hero) {
+    public static void applyMacroModeContinuous(Unit hero) {
         MACRO_MODES mode = new EnumMaster<MACRO_MODES>().retrieveEnumConst(
                 MACRO_MODES.class, hero.getProperty(MACRO_PROPS.MACRO_MODE));
         String paramString = mode.getContinuousParamString();

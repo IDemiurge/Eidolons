@@ -5,17 +5,20 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import javafx.util.Pair;
 import main.ability.effects.Effect;
 import main.data.XLinkedMap;
-import main.entity.obj.top.DC_ActiveObj;
-import main.game.event.Event;
+import main.entity.active.DC_ActiveObj;
+import main.game.battlefield.Coordinates;
+import main.game.logic.event.Event;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.phased.PhaseAnim;
 import main.libgdx.anims.std.EffectAnimCreator;
 import main.libgdx.anims.std.EventAnimCreator;
+import main.libgdx.anims.text.FloatingTextMaster;
+import main.system.EventCallback;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.LogMaster;
-import main.system.auxiliary.MapMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.data.MapMaster;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -25,13 +28,13 @@ import java.util.Map;
 /**
  * Created by JustMe on 1/11/2017.
  */
-public class CompositeAnim implements Animation{
+public class CompositeAnim implements Animation {
 
     Map<ANIM_PART, Anim> map = new XLinkedMap<>();
     Map<ANIM_PART, List<Pair<GuiEventType, EventCallbackParam>>> onStartEventMap;
     Map<ANIM_PART, List<Pair<GuiEventType, EventCallbackParam>>> onFinishEventMap;
     Map<ANIM_PART, List<Animation>> attached;
-    Map<ANIM_PART,List<Animation>> timeAttachedAnims  ;
+    Map<ANIM_PART, List<Animation>> timeAttachedAnims;
     ANIM_PART part;
     int index;
     PhaseAnim phaseAnim;
@@ -39,6 +42,7 @@ public class CompositeAnim implements Animation{
     private boolean running;
     private Anim currentAnim;
     private float time = 0;
+    private List<Event> textEvents;
 
     public CompositeAnim(Anim... anims) {
         this(new MapMaster<ANIM_PART, Anim>().constructMap(new LinkedList<>(Arrays.asList(ANIM_PART.values()).subList(0, anims.length)),
@@ -120,17 +124,16 @@ public class CompositeAnim implements Animation{
         if (timeAttachedAnims.get(part) == null) {
             return;
         }
-    timeAttachedAnims.get(part).  forEach(a -> {
-        if (!a.isRunning()) {
-            if (a.getDelay() <= time) {
-                a.start();
-                AnimMaster.getInstance().addAttached(a);
+        timeAttachedAnims.get(part).forEach(a -> {
+            if (!a.isRunning()) {
+                if (a.getDelay() <= time) {
+                    a.start();
+                    AnimMaster.getInstance().addAttached(a);
+                }
             }
-        }
         });
-        timeAttachedAnims.get(part).removeIf(a-> a .isRunning());
+        timeAttachedAnims.get(part).removeIf(a -> a.isRunning());
     }
-
 
 
     private void drawAttached(Batch batch) {
@@ -161,7 +164,7 @@ public class CompositeAnim implements Animation{
         index = 0;
         part = null;
         finished = true;
-        running=false;
+        running = false;
 
         resetMaps();
     }
@@ -171,6 +174,7 @@ public class CompositeAnim implements Animation{
         onFinishEventMap = new XLinkedMap<>();
         attached = new XLinkedMap<>();
         timeAttachedAnims = new XLinkedMap<>();
+
     }
 
 
@@ -225,8 +229,9 @@ public class CompositeAnim implements Animation{
             return;
         }
         queueGraphicEvents();
+        queueTextEvents();
         running = true;
-        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG, this + " started: "
+        LogMaster.log(LogMaster.ANIM_DEBUG, this + " started: "
         );
 
     }
@@ -251,7 +256,7 @@ public class CompositeAnim implements Animation{
     }
 
     public void addEffectAnim(Animation anim, Effect effect) {
-        ANIM_PART partToAddAt =anim.getPart();
+        ANIM_PART partToAddAt = anim.getPart();
         if (part == null) {
             partToAddAt = EffectAnimCreator.getPartToAttachTo(effect);
         }
@@ -274,7 +279,7 @@ public class CompositeAnim implements Animation{
     }
 
     private void attach(Animation anim, ANIM_PART partToAddAt, float delay) {
-        if (delay!=0){
+        if (delay != 0) {
             anim.setDelay(delay);
             attachDelayed(anim, partToAddAt);
         } else {
@@ -293,7 +298,8 @@ public class CompositeAnim implements Animation{
     public void attach(Animation anim, ANIM_PART part) {
         MapMaster.addToListMap(attached, part, anim);
     }
-//    private void initTimeAttachedAnims() {
+
+    //    private void initTimeAttachedAnims() {
 //        //TODO OR PLAY IMPACT-PART IN PARALLEL AND MULTIPLIED BY TARGETS
 //        if (part == ANIM_PART.MAIN) {
 //            List<Obj> targets = currentAnim.getRef().getGroup().getObjects();
@@ -372,8 +378,38 @@ public class CompositeAnim implements Animation{
     }
 
     @Override
+    public void onDone(EventCallback callback, EventCallbackParam param) {
+        if (map.isEmpty()) return;
+        Anim lastAnim = (Anim) map.values().toArray()[map.size() - 1];
+        lastAnim.onDone(callback, param);
+    }
+
+    @Override
     public boolean isRunning() {
         return running;
     }
 
+    public void addTextEvent(Event event) {
+        getTextEvents().add(event);
+    }
+
+    public void queueTextEvents() {
+        getTextEvents().forEach(event ->
+         FloatingTextMaster.getInstance().addFloatingTextForEventAnim(event, this));
+//        AnimMaster;
+    }
+
+    public List<Event> getTextEvents() {
+        if (textEvents == null) textEvents = new LinkedList<>();
+        return textEvents;
+    }
+
+    public void setForcedDestination(Coordinates forcedDestination) {
+        map.values().forEach(anim -> {
+            if (anim.getPart() != ANIM_PART.CAST)
+                if (anim.getPart() != ANIM_PART.PRECAST)
+                    if (anim.getPart() != ANIM_PART.RESOLVE)
+                        anim.setForcedDestination(forcedDestination);
+        });
+    }
 }

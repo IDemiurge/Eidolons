@@ -2,17 +2,30 @@ package main.system;
 
 import main.content.CONTENT_CONSTS.*;
 import main.content.DC_ContentManager;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
+import main.content.enums.entity.BfObjEnums.BF_OBJECT_TYPE;
+import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.GenericEnums.RESIST_GRADE;
+import main.content.enums.entity.HeroEnums;
+import main.content.enums.entity.HeroEnums.BACKGROUND;
+import main.content.enums.entity.HeroEnums.GENDER;
+import main.content.enums.entity.HeroEnums.RACE;
+import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.ItemEnums.*;
+import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.rules.DC_ActionManager.WEAPON_ATTACKS;
+import main.game.logic.generic.DC_ActionManager.WEAPON_ATTACKS;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.HashMap;
@@ -26,14 +39,14 @@ public class ContentGenerator {
 
     public static void adjustParties() {
 
-        for (ObjType type : DataManager.getTypes(OBJ_TYPES.PARTY)) {
-            ObjType leader = DataManager.getType(type.getProperty(PROPS.LEADER), OBJ_TYPES.CHARS);
+        for (ObjType type : DataManager.getTypes(DC_TYPE.PARTY)) {
+            ObjType leader = DataManager.getType(type.getProperty(PROPS.LEADER), DC_TYPE.CHARS);
             if (leader == null) {
                 List<String> members = StringMaster.openContainer(type.getProperty(PROPS.MEMBERS));
                 if (members.isEmpty()) {
                     continue;
                 }
-                leader = DataManager.getType(members.get(0), OBJ_TYPES.CHARS);
+                leader = DataManager.getType(members.get(0), DC_TYPE.CHARS);
                 if (leader == null) {
                     continue;
                 }
@@ -73,7 +86,7 @@ public class ContentGenerator {
 
     public static void initMaterials() {
 
-        for (MATERIAL material : MATERIAL.values()) {
+        for (MATERIAL material : ItemEnums.MATERIAL.values()) {
             Map<DAMAGE_TYPE, RESIST_GRADE> map = getDefaultResistMap(material.getGroup());
             // setSpecials(material, map);
             map = getDefaultSelfDamageMap(material.getGroup());
@@ -158,69 +171,69 @@ public class ContentGenerator {
 
     private static Map<DAMAGE_TYPE, RESIST_GRADE> getDefaultResistMap(ITEM_MATERIAL_GROUP group) {
         Map<DAMAGE_TYPE, RESIST_GRADE> map = new HashMap<>();
-        for (DAMAGE_TYPE dmg_type : DAMAGE_TYPE.values()) {
+        for (DAMAGE_TYPE dmg_type : GenericEnums.DAMAGE_TYPE.values()) {
             if (!dmg_type.isMagical()) {
-                map.put(dmg_type, RESIST_GRADE.Normal);
+                map.put(dmg_type, GenericEnums.RESIST_GRADE.Normal);
             } else {
-                map.put(dmg_type, RESIST_GRADE.Ineffective);
+                map.put(dmg_type, GenericEnums.RESIST_GRADE.Ineffective);
             }
         }
 
         switch (group) {
             case BONE:
-                map.put(DAMAGE_TYPE.PIERCING, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.LIGHTNING, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.SONIC, RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.PIERCING, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.LIGHTNING, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.SONIC, GenericEnums.RESIST_GRADE.Resistant);
                 break;
             case CLOTH:
             case LEATHER:
-                map.put(DAMAGE_TYPE.BLUDGEONING, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.LIGHTNING, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.SONIC, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.COLD, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.FIRE, RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.BLUDGEONING, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.LIGHTNING, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.SONIC, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.COLD, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.FIRE, GenericEnums.RESIST_GRADE.Resistant);
                 break;
             case METAL:
             case STONE:
-                map.put(DAMAGE_TYPE.FIRE, RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.FIRE, GenericEnums.RESIST_GRADE.Resistant);
                 break;
 
         }
         switch (group) {
             case BONE:
-                map.put(DAMAGE_TYPE.LIGHTNING, RESIST_GRADE.Impregnable);
+                map.put(GenericEnums.DAMAGE_TYPE.LIGHTNING, GenericEnums.RESIST_GRADE.Impregnable);
                 break;
             case CLOTH:
-                map.put(DAMAGE_TYPE.PIERCING, RESIST_GRADE.Vulnerable);
+                map.put(GenericEnums.DAMAGE_TYPE.PIERCING, GenericEnums.RESIST_GRADE.Vulnerable);
                 break;
             case LEATHER:
-                map.put(DAMAGE_TYPE.FIRE, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.SONIC, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.SLASHING, RESIST_GRADE.Vulnerable);
+                map.put(GenericEnums.DAMAGE_TYPE.FIRE, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.SONIC, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.SLASHING, GenericEnums.RESIST_GRADE.Vulnerable);
                 break;
             case METAL:
-                map.put(DAMAGE_TYPE.SLASHING, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.BLUDGEONING, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.LIGHT, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.SONIC, RESIST_GRADE.Vulnerable);
-                map.put(DAMAGE_TYPE.ACID, RESIST_GRADE.Vulnerable);
-                map.put(DAMAGE_TYPE.COLD, RESIST_GRADE.Vulnerable);
-                map.put(DAMAGE_TYPE.LIGHTNING, RESIST_GRADE.Ineffective);
+                map.put(GenericEnums.DAMAGE_TYPE.SLASHING, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.BLUDGEONING, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.LIGHT, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.SONIC, GenericEnums.RESIST_GRADE.Vulnerable);
+                map.put(GenericEnums.DAMAGE_TYPE.ACID, GenericEnums.RESIST_GRADE.Vulnerable);
+                map.put(GenericEnums.DAMAGE_TYPE.COLD, GenericEnums.RESIST_GRADE.Vulnerable);
+                map.put(GenericEnums.DAMAGE_TYPE.LIGHTNING, GenericEnums.RESIST_GRADE.Ineffective);
                 break;
             case STONE:
-                map.put(DAMAGE_TYPE.LIGHTNING, RESIST_GRADE.Impregnable);
-                map.put(DAMAGE_TYPE.PIERCING, RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.LIGHTNING, GenericEnums.RESIST_GRADE.Impregnable);
+                map.put(GenericEnums.DAMAGE_TYPE.PIERCING, GenericEnums.RESIST_GRADE.Resistant);
                 break;
             case CRYSTAL:
-                map.put(DAMAGE_TYPE.FIRE, RESIST_GRADE.Impregnable);
-                map.put(DAMAGE_TYPE.LIGHTNING, RESIST_GRADE.Impregnable);
-                map.put(DAMAGE_TYPE.PIERCING, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.SLASHING, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.ACID, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.BLUDGEONING, RESIST_GRADE.Vulnerable);
-                map.put(DAMAGE_TYPE.SONIC, RESIST_GRADE.Vulnerable);
-                map.put(DAMAGE_TYPE.COLD, RESIST_GRADE.Vulnerable);
-                map.put(DAMAGE_TYPE.LIGHT, RESIST_GRADE.Ineffective);
+                map.put(GenericEnums.DAMAGE_TYPE.FIRE, GenericEnums.RESIST_GRADE.Impregnable);
+                map.put(GenericEnums.DAMAGE_TYPE.LIGHTNING, GenericEnums.RESIST_GRADE.Impregnable);
+                map.put(GenericEnums.DAMAGE_TYPE.PIERCING, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.SLASHING, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.ACID, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.BLUDGEONING, GenericEnums.RESIST_GRADE.Vulnerable);
+                map.put(GenericEnums.DAMAGE_TYPE.SONIC, GenericEnums.RESIST_GRADE.Vulnerable);
+                map.put(GenericEnums.DAMAGE_TYPE.COLD, GenericEnums.RESIST_GRADE.Vulnerable);
+                map.put(GenericEnums.DAMAGE_TYPE.LIGHT, GenericEnums.RESIST_GRADE.Ineffective);
                 break;
 
         }
@@ -230,56 +243,56 @@ public class ContentGenerator {
 
     private static Map<DAMAGE_TYPE, RESIST_GRADE> getDefaultSelfDamageMap(ITEM_MATERIAL_GROUP group) {
         Map<DAMAGE_TYPE, RESIST_GRADE> map = new HashMap<>();
-        for (DAMAGE_TYPE dmg_type : DAMAGE_TYPE.values()) {
+        for (DAMAGE_TYPE dmg_type : GenericEnums.DAMAGE_TYPE.values()) {
             if (!dmg_type.isMagical()) {
-                map.put(dmg_type, RESIST_GRADE.Normal);
+                map.put(dmg_type, GenericEnums.RESIST_GRADE.Normal);
             } else {
-                map.put(dmg_type, RESIST_GRADE.Ineffective);
+                map.put(dmg_type, GenericEnums.RESIST_GRADE.Ineffective);
             }
         }
 
         switch (group) {
             case BONE:
-                map.put(DAMAGE_TYPE.PIERCING, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.LIGHTNING, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.SONIC, RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.PIERCING, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.LIGHTNING, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.SONIC, GenericEnums.RESIST_GRADE.Resistant);
                 break;
             case CLOTH:
             case LEATHER:
-                map.put(DAMAGE_TYPE.BLUDGEONING, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.LIGHTNING, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.SONIC, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.COLD, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.FIRE, RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.BLUDGEONING, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.LIGHTNING, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.SONIC, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.COLD, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.FIRE, GenericEnums.RESIST_GRADE.Resistant);
                 break;
             case METAL:
             case STONE:
-                map.put(DAMAGE_TYPE.FIRE, RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.FIRE, GenericEnums.RESIST_GRADE.Resistant);
                 break;
         }
         switch (group) {
             case BONE:
-                map.put(DAMAGE_TYPE.LIGHTNING, RESIST_GRADE.Impregnable);
+                map.put(GenericEnums.DAMAGE_TYPE.LIGHTNING, GenericEnums.RESIST_GRADE.Impregnable);
                 break;
             case CLOTH:
-                map.put(DAMAGE_TYPE.PIERCING, RESIST_GRADE.Vulnerable);
+                map.put(GenericEnums.DAMAGE_TYPE.PIERCING, GenericEnums.RESIST_GRADE.Vulnerable);
                 break;
             case LEATHER:
-                map.put(DAMAGE_TYPE.FIRE, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.SONIC, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.SLASHING, RESIST_GRADE.Vulnerable);
+                map.put(GenericEnums.DAMAGE_TYPE.FIRE, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.SONIC, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.SLASHING, GenericEnums.RESIST_GRADE.Vulnerable);
                 break;
             case METAL:
-                map.put(DAMAGE_TYPE.BLUDGEONING, RESIST_GRADE.Vulnerable);
-                map.put(DAMAGE_TYPE.LIGHT, RESIST_GRADE.Resistant);
-                map.put(DAMAGE_TYPE.SONIC, RESIST_GRADE.Vulnerable);
-                map.put(DAMAGE_TYPE.ACID, RESIST_GRADE.Vulnerable);
-                map.put(DAMAGE_TYPE.COLD, RESIST_GRADE.Vulnerable);
-                map.put(DAMAGE_TYPE.LIGHTNING, RESIST_GRADE.Ineffective);
+                map.put(GenericEnums.DAMAGE_TYPE.BLUDGEONING, GenericEnums.RESIST_GRADE.Vulnerable);
+                map.put(GenericEnums.DAMAGE_TYPE.LIGHT, GenericEnums.RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.SONIC, GenericEnums.RESIST_GRADE.Vulnerable);
+                map.put(GenericEnums.DAMAGE_TYPE.ACID, GenericEnums.RESIST_GRADE.Vulnerable);
+                map.put(GenericEnums.DAMAGE_TYPE.COLD, GenericEnums.RESIST_GRADE.Vulnerable);
+                map.put(GenericEnums.DAMAGE_TYPE.LIGHTNING, GenericEnums.RESIST_GRADE.Ineffective);
                 break;
             case STONE:
-                map.put(DAMAGE_TYPE.LIGHTNING, RESIST_GRADE.Impregnable);
-                map.put(DAMAGE_TYPE.PIERCING, RESIST_GRADE.Resistant);
+                map.put(GenericEnums.DAMAGE_TYPE.LIGHTNING, GenericEnums.RESIST_GRADE.Impregnable);
+                map.put(GenericEnums.DAMAGE_TYPE.PIERCING, GenericEnums.RESIST_GRADE.Resistant);
                 break;
 
         }
@@ -287,34 +300,34 @@ public class ContentGenerator {
         return map;
     }
 
-    public static String getNaturalArmorTypeForUnit(DC_HeroObj attacked) {
+    public static String getNaturalArmorTypeForUnit(Unit attacked) {
         return StringMaster.getWellFormattedString(getObjectArmorTypeForUnit(attacked).toString());
     }
 
-    public static OBJECT_ARMOR_TYPE getObjectArmorTypeForUnit(DC_HeroObj attacked) {
-        if (attacked.checkClassification(CLASSIFICATIONS.WRAITH)) {
+    public static OBJECT_ARMOR_TYPE getObjectArmorTypeForUnit(Unit attacked) {
+        if (attacked.checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH)) {
             return OBJECT_ARMOR_TYPE.ETHEREAL;
         }
-        if (attacked.checkClassification(CLASSIFICATIONS.MECHANICAL)) {
+        if (attacked.checkClassification(UnitEnums.CLASSIFICATIONS.MECHANICAL)) {
             return OBJECT_ARMOR_TYPE.METAL;
         }
-        if (attacked.checkClassification(CLASSIFICATIONS.CONSTRUCT)) {
+        if (attacked.checkClassification(UnitEnums.CLASSIFICATIONS.CONSTRUCT)) {
             return OBJECT_ARMOR_TYPE.STONE;
         }
-        if (attacked.checkClassification(CLASSIFICATIONS.ELEMENTAL)) {
+        if (attacked.checkClassification(UnitEnums.CLASSIFICATIONS.ELEMENTAL)) {
             return OBJECT_ARMOR_TYPE.CRYSTAL;
         }
-        if (attacked.checkClassification(CLASSIFICATIONS.UNDEAD)) {
+        if (attacked.checkClassification(UnitEnums.CLASSIFICATIONS.UNDEAD)) {
             return OBJECT_ARMOR_TYPE.BONE;
         }
         return OBJECT_ARMOR_TYPE.FLESH;
     }
 
     private static RESIST_GRADE getGradeForUnitType(ObjType t, DAMAGE_TYPE dmg_type) {
-        OBJECT_ARMOR_TYPE armor_type = getObjectArmorTypeForUnit(new DC_HeroObj(t));
+        OBJECT_ARMOR_TYPE armor_type = getObjectArmorTypeForUnit(new Unit(t));
         ITEM_MATERIAL_GROUP group = armor_type.getGroup();
         if (group == null) {
-            return RESIST_GRADE.Normal;
+            return GenericEnums.RESIST_GRADE.Normal;
         }
         return getDefaultResistMap(group).get(dmg_type);
     }
@@ -322,7 +335,7 @@ public class ContentGenerator {
     public static void generateArmorPerDamageType(ObjType t, MATERIAL material) {
         Integer armor = t.getIntParam(PARAMS.ARMOR);
 
-        for (DAMAGE_TYPE dmg_type : DAMAGE_TYPE.values()) {
+        for (DAMAGE_TYPE dmg_type : GenericEnums.DAMAGE_TYPE.values()) {
             RESIST_GRADE grade = (material == null) ? getGradeForUnitType(t, dmg_type) : material
                     .getResistGrade(dmg_type);
             PROPERTY prop = DC_ContentManager.getResistGradeForDmgType(dmg_type);
@@ -477,10 +490,10 @@ public class ContentGenerator {
             if (group == null) {
                 WEAPON_TYPE ty = new EnumMaster<WEAPON_TYPE>().retrieveEnumConst(WEAPON_TYPE.class,
                         t.getProperty(G_PROPS.WEAPON_TYPE));
-                if (ty == WEAPON_TYPE.NATURAL) {
+                if (ty == ItemEnums.WEAPON_TYPE.NATURAL) {
                     Integer area = 20;
                     t.setParam(PARAMS.IMPACT_AREA, area);
-                } else if (ty == WEAPON_TYPE.MAGICAL) {
+                } else if (ty == ItemEnums.WEAPON_TYPE.MAGICAL) {
                     Integer area = 15;
                     t.setParam(PARAMS.IMPACT_AREA, area);
                 }
@@ -721,7 +734,7 @@ public class ContentGenerator {
     // }
 
     public static void initHeight(ObjType t) {
-        OBJ_TYPES TYPE = (OBJ_TYPES) t.getOBJ_TYPE_ENUM();
+        DC_TYPE TYPE = (DC_TYPE) t.getOBJ_TYPE_ENUM();
         if (t.getIntParam(PARAMS.HEIGHT) != 0) {
             return;
         }
@@ -758,16 +771,16 @@ public class ContentGenerator {
                 List<CLASSIFICATIONS> c = new EnumMaster<CLASSIFICATIONS>().getEnumList(
                         CLASSIFICATIONS.class, t.getProperty(G_PROPS.CLASSIFICATIONS));
 
-                if (c.contains(CLASSIFICATIONS.GIANT)) {
+                if (c.contains(UnitEnums.CLASSIFICATIONS.GIANT)) {
                     height = 600;
 
-                } else if (c.contains(CLASSIFICATIONS.HUMANOID)) {
+                } else if (c.contains(UnitEnums.CLASSIFICATIONS.HUMANOID)) {
                     height = 180;
 
-                } else if (c.contains(CLASSIFICATIONS.TALL)) {
+                } else if (c.contains(UnitEnums.CLASSIFICATIONS.TALL)) {
                     height = 225;
 
-                } else if (c.contains(CLASSIFICATIONS.SHORT)) {
+                } else if (c.contains(UnitEnums.CLASSIFICATIONS.SHORT)) {
                     height = 125;
 
                 }
@@ -795,10 +808,10 @@ public class ContentGenerator {
                             break;
                         case HUMAN:
                             height = 180;
-                            if (bg == BACKGROUND.MAN_OF_WOLF_REALM) {
+                            if (bg == HeroEnums.BACKGROUND.MAN_OF_WOLF_REALM) {
                                 height += 10;
                             }
-                            if (bg == BACKGROUND.MAN_OF_EAGLE_REALM) {
+                            if (bg == HeroEnums.BACKGROUND.MAN_OF_EAGLE_REALM) {
                                 height += 15;
                             }
                             break;
@@ -809,7 +822,7 @@ public class ContentGenerator {
                             break;
                     }
                 }
-                if (g == GENDER.FEMALE) {
+                if (g == HeroEnums.GENDER.FEMALE) {
                     height -= height / 5;
                 }
                 break;

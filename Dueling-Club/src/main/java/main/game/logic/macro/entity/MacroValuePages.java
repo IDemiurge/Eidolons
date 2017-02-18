@@ -1,11 +1,11 @@
 package main.game.logic.macro.entity;
 
-import main.content.MACRO_OBJ_TYPES;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.VALUE;
 import main.content.ValuePageManager;
-import main.content.parameters.MACRO_PARAMS;
-import main.content.properties.G_PROPS;
-import main.content.properties.MACRO_PROPS;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.MACRO_PROPS;
 
 import java.util.List;
 

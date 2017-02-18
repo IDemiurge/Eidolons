@@ -4,14 +4,14 @@ import main.ability.AbilityObj;
 import main.ability.AbilityType;
 import main.content.ContentManager;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.game.Game;
-import main.system.auxiliary.LogMaster;
+import main.game.core.game.Game;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 import main.system.math.Parameter;
@@ -140,7 +140,7 @@ public class TextParser {
                             result = parseRef(ref_substring, ref);
                         } catch (Exception e) {
                             e.printStackTrace();
-                            main.system.auxiliary.LogMaster.log(LogMaster.MATH_DEBUG, ref_substring
+                            LogMaster.log(LogMaster.MATH_DEBUG, ref_substring
                                     + " failed to parse ref for text: " + text);
                             return buffer;
                         }

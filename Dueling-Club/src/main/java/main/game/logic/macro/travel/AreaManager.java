@@ -1,10 +1,10 @@
 package main.game.logic.macro.travel;
 
-import main.content.CONTENT_CONSTS.ENCOUNTER_SUBGROUP;
-import main.content.OBJ_TYPES;
+import main.content.enums.EncounterEnums.ENCOUNTER_SUBGROUP;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
-import main.content.parameters.MACRO_PARAMS;
-import main.content.properties.MACRO_PROPS;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
@@ -14,7 +14,7 @@ import main.game.logic.macro.gui.MacroGuiManager;
 import main.game.logic.macro.map.Area;
 import main.game.logic.macro.map.Place;
 import main.game.logic.macro.map.Region;
-import main.system.FilterMaster;
+import main.system.entity.FilterMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 
@@ -220,20 +220,20 @@ public class AreaManager {
                             ENCOUNTER_SUBGROUP.class);// TODO
             List<ObjType> pool;
             if (group != null) {
-                pool = DataManager.getTypesSubGroup(OBJ_TYPES.ENCOUNTERS,
+                pool = DataManager.getTypesSubGroup(DC_TYPE.ENCOUNTERS,
                         group.toString());
             } else
                 // TODO
             {
-                pool = DataManager.getTypes(OBJ_TYPES.ENCOUNTERS);
+                pool = DataManager.getTypes(DC_TYPE.ENCOUNTERS);
             }
 
             FilterMaster.filterByParam(pool, PARAMS.POWER_MINIMUM,
                     EncounterMaster.getMaxCreepWavePower(),
-                    OBJ_TYPES.ENCOUNTERS, false);
+                    DC_TYPE.ENCOUNTERS, false);
             FilterMaster.filterByParam(pool, PARAMS.POWER_MAXIMUM,
                     EncounterMaster.getMinCreepWavePower(),
-                    OBJ_TYPES.ENCOUNTERS, true);
+                    DC_TYPE.ENCOUNTERS, true);
             // more filter! By TYPE? TODO
             if (pool.isEmpty()) {
                 continue;

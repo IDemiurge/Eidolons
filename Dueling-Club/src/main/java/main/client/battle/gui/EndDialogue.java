@@ -1,10 +1,10 @@
 package main.client.battle.gui;
 
-import main.client.battle.BattleManager;
 import main.client.cc.CharacterCreator;
 import main.client.dc.Launcher;
 import main.client.dc.Launcher.VIEWS;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
+import main.game.logic.battle.BattleManager;
 import main.swing.components.buttons.CustomButton;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.generic.components.G_Dialog;
@@ -13,8 +13,8 @@ import main.swing.generic.components.G_Panel.VISUALS;
 import main.swing.generic.components.misc.G_VisualComponent;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.swing.generic.components.misc.GraphicComponent.STD_COMP_IMAGES;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 
 import java.awt.*;
 

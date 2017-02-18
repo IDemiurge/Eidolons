@@ -1,12 +1,12 @@
 package main.client.cc.gui.neo.header;
 
 import main.client.dc.Launcher;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.swing.generic.components.G_CompHolder;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.swing.generic.components.editors.ImageChooser;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 
 import javax.swing.*;
@@ -16,15 +16,15 @@ import java.awt.event.MouseListener;
 
 public class PortraitComp extends G_CompHolder implements MouseListener {
     public static final VISUALS border = VISUALS.PORTRAIT_BORDER;
-    private DC_HeroObj hero;
+    private Unit hero;
     private JLabel label;
     private Dimension size = new Dimension(GuiManager.getFullObjSize(), GuiManager.getFullObjSize());
 
-    public PortraitComp(DC_HeroObj hero) {
+    public PortraitComp(Unit hero) {
         this(null, hero);
     }
 
-    public PortraitComp(HeroHeader header, DC_HeroObj hero) {
+    public PortraitComp(HeroHeader header, Unit hero) {
         this.hero = hero;
         initComp();
     }

@@ -1,6 +1,6 @@
 package main.game.ai;
 
-import main.game.MicroGame;
+import main.game.core.game.MicroGame;
 import main.system.net.Communicator;
 import main.system.net.Communicator.COMMAND;
 

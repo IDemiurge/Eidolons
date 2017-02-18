@@ -2,7 +2,7 @@ package main.client.cc.gui.neo.bars;
 
 import main.content.ContentManager;
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.rules.rpg.IntegrityRule;
 import main.swing.components.panels.ValueComp;
 import main.system.DC_Formulas;

@@ -1,12 +1,12 @@
 package main.ability.conditions.req;
 
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.elements.conditions.MicroCondition;
-import main.entity.obj.DC_FeatObj;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.attach.DC_FeatObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 
 public class ClassTreeCondition extends MicroCondition {
@@ -19,11 +19,11 @@ public class ClassTreeCondition extends MicroCondition {
 
     @Override
     public boolean check() {
-        ObjType type = DataManager.getType(className, OBJ_TYPES.CLASSES);
+        ObjType type = DataManager.getType(className, DC_TYPE.CLASSES);
         if (type == null) {
             return true;
         }
-        DC_HeroObj hero = (DC_HeroObj) ref.getSourceObj();
+        Unit hero = (Unit) ref.getSourceObj();
         for (DC_FeatObj c : hero.getClasses()) {
             if (c.getType().equals(type)) {
                 return true;

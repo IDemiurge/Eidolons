@@ -1,13 +1,13 @@
 package main.music.m3u;
 
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.logic.AT_OBJ_TYPE;
 import main.logic.AT_PROPS;
 import main.music.MusicCore;
 import main.music.entity.MusicList;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
 
 import java.io.File;

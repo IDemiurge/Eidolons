@@ -1,14 +1,14 @@
 package main.entity.active;
 
-import main.content.CONTENT_CONSTS.ACTION_TYPE_GROUPS;
-import main.content.CONTENT_CONSTS.SPELL_TAGS;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.SpellEnums;
+import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
-import main.entity.obj.DC_QuickItemObj;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.item.DC_QuickItemObj;
 import main.entity.type.ObjType;
-import main.game.MicroGame;
-import main.game.player.Player;
+import main.game.core.game.MicroGame;
+import main.game.logic.battle.player.Player;
 import main.system.graphics.Sprite;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -23,7 +23,7 @@ public class DC_ItemActiveObj extends DC_ActiveObj {
 
     @Override
     public ACTION_TYPE_GROUPS getActionGroup() {
-        return ACTION_TYPE_GROUPS.ITEM;
+        return ActionEnums.ACTION_TYPE_GROUPS.ITEM;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class DC_ItemActiveObj extends DC_ActiveObj {
     @Override
     public boolean isRangedTouch() {
         return checkProperty(G_PROPS.SPELL_TAGS,
-                SPELL_TAGS.RANGED_TOUCH.toString());
+                SpellEnums.SPELL_TAGS.RANGED_TOUCH.toString());
     }
 
     @Override

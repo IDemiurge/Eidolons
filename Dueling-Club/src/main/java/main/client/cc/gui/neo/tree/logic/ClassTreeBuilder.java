@@ -6,9 +6,10 @@ import main.client.cc.gui.neo.tree.logic.TreeMap.LINK_VARIANT;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
+import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.MigMaster;
 
 import java.awt.*;
@@ -92,7 +93,7 @@ public class ClassTreeBuilder extends HT_MapBuilder {
             x = parentX + getGapWidth(circle);
 
         }
-        main.system.auxiliary.LogMaster.log(1, x + " X for " + i + "th of " + sublingCount + ""
+        LogMaster.log(1, x + " X for " + i + "th of " + sublingCount + ""
                 + " with size = " + getNodeSize(sublingCount) + "; from parent's " + parentX);
         return x;
     }
@@ -113,10 +114,10 @@ public class ClassTreeBuilder extends HT_MapBuilder {
         Integer circle = Math.max(parentCircle + 1, child.getIntParam(PARAMS.CIRCLE) + 1);
         // TODO will overlap if 3 skills same circle...
         int y = maxHeight - baseLineY - circle * rowGap;
-        main.system.auxiliary.LogMaster.log(1, y + " Y for " + circle + " circle");
+        LogMaster.log(1, y + " Y for " + circle + " circle");
         if (parentPosSpecial != null) {
             y = maxHeight - baseLineY - 1 * rowGap + parentPosSpecial.y;
-            main.system.auxiliary.LogMaster.log(1, y + " replaces Y;  from parent: "
+            LogMaster.log(1, y + " replaces Y;  from parent: "
                     + parent.getName());
         }
         return y;

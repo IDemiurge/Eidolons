@@ -1,6 +1,6 @@
 package main.ability.effects.special;
 
-import main.content.CONTENT_CONSTS.STD_BUFF_NAMES;
+import main.content.enums.system.MetaEnums;
 import main.elements.conditions.Condition;
 
 public class AlertEffect extends WaitEffect {
@@ -16,7 +16,7 @@ public class AlertEffect extends WaitEffect {
 
     @Override
     protected String getBuffName() {
-        return STD_BUFF_NAMES.On_Alert.getName();
+        return MetaEnums.STD_BUFF_NAMES.On_Alert.getName();
     }
 
     @Override

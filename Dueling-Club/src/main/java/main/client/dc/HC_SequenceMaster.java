@@ -1,28 +1,28 @@
 package main.client.dc;
 
-import main.client.battle.BattleOptions.DIFFICULTY;
-import main.client.battle.arcade.PartyManager;
 import main.client.cc.CharacterCreator;
 import main.client.cc.HC_Master;
 import main.client.cc.gui.neo.choice.*;
 import main.client.cc.logic.party.PartyObj;
 import main.client.dc.Launcher.VIEWS;
-import main.content.CONTENT_CONSTS.RACE;
+import main.content.enums.entity.HeroEnums.RACE;
 import main.content.*;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.elements.conditions.*;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
-import main.game.DC_Game.GAME_MODES;
-import main.game.DC_Game.GAME_TYPE;
-import main.game.meta.ArenaArcadeMaster;
-import main.system.ConditionMaster;
+import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_MODES;
+import main.game.core.game.DC_Game.GAME_TYPE;
+import main.game.logic.arcade.ArenaArcadeMaster;
+import main.game.logic.battle.BattleOptions.DIFFICULTY;
+import main.game.logic.generic.PartyManager;
+import main.system.entity.ConditionMaster;
 import main.system.SortMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.threading.WaitMaster;
@@ -73,7 +73,7 @@ public class HC_SequenceMaster implements SequenceManager {
 
     public void chooseNewMember(PartyObj party) {
         Conditions filterConditions = new Conditions();
-        DC_HeroObj leader = party.getLeader();
+        Unit leader = party.getLeader();
         OrConditions orConditions = new OrConditions();
 
         // StringContainersComparison principlesCondition = new
@@ -107,18 +107,18 @@ public class HC_SequenceMaster implements SequenceManager {
             filterConditions.add(lvlCondition);
         }
         filterConditions.setRef(leader.getRef());
-        launchEntitySelection(OBJ_TYPES.CHARS, MainManager.getPresetGroup(), filterConditions,
+        launchEntitySelection(DC_TYPE.CHARS, MainManager.getPresetGroup(), filterConditions,
                 leader, InfoMaster.CHOOSE_MEMBER);
 
         selection = SELECTION_TYPES.NEW_MEMBER_SELECTION;
     }
 
-    public void newEntitySelection(OBJ_TYPES party, String group, DC_HeroObj entity, String info) {
+    public void newEntitySelection(DC_TYPE party, String group, Unit entity, String info) {
         launchEntitySelection(party, group, null, entity, info);
     }
 
-    public void launchEntitySelection(final OBJ_TYPES t, final String group,
-                                      final Condition filteringConditions, DC_HeroObj entity, final String info) {
+    public void launchEntitySelection(final DC_TYPE t, final String group,
+                                      final Condition filteringConditions, Unit entity, final String info) {
         Comparator<? super Entity> sorter = HC_Master.getEntitySorter();
         if (sorter == null) {
             getDefaultSorter(t, group);
@@ -127,9 +127,9 @@ public class HC_SequenceMaster implements SequenceManager {
         launchEntitySelection(t, group, filteringConditions, entity, info, sorter);
     }
 
-    private Comparator<? super Entity> getDefaultSorter(final OBJ_TYPES t, final String group) {
+    private Comparator<? super Entity> getDefaultSorter(final DC_TYPE t, final String group) {
         Comparator<? super Entity> sorter = null;
-        if (t == OBJ_TYPES.CHARS) {
+        if (t == DC_TYPE.CHARS) {
             if (group.equalsIgnoreCase(StringMaster.BACKGROUND)) {
                 sorter = SortMaster.getSublistSorter(RACE.class);
             } else {
@@ -139,8 +139,8 @@ public class HC_SequenceMaster implements SequenceManager {
         return sorter;
     }
 
-    public void launchEntitySelection(final OBJ_TYPES t, final String group,
-                                      Condition filteringCondition, DC_HeroObj entity, final String info,
+    public void launchEntitySelection(final DC_TYPE t, final String group,
+                                      Condition filteringCondition, Unit entity, final String info,
                                       final Comparator<? super ObjType> sorter) {
         final Conditions filteringConditions = new Conditions(filteringCondition
                 // , getWorkspaceFilterCondition()
@@ -186,7 +186,7 @@ public class HC_SequenceMaster implements SequenceManager {
 
     }
 
-    public void launchEntitySelection(Collection<? extends Entity> list, DC_HeroObj hero,
+    public void launchEntitySelection(Collection<? extends Entity> list, Unit hero,
                                       String info) {
         sequence = new ChoiceSequence();
         sequence.addView(new PresetEntityChoiceView(sequence, hero, info, list
@@ -228,7 +228,7 @@ public class HC_SequenceMaster implements SequenceManager {
         this.sequence = sequence;
     }
 
-    public boolean prebattleChoiceSequence(DC_HeroObj hero) {
+    public boolean prebattleChoiceSequence(Unit hero) {
 
         final ChoiceSequence cs = new ChoiceSequence();
         List<Entity> list = ListMaster.getEntityList(PartyManager.getParty().getMembers());
@@ -266,7 +266,7 @@ public class HC_SequenceMaster implements SequenceManager {
                 }
 
                 protected void ok() {
-                    PartyManager.getParty().setMiddleHero((DC_HeroObj) getSelectedItem());
+                    PartyManager.getParty().setMiddleHero((Unit) getSelectedItem());
                     super.ok();
                 }
 

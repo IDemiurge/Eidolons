@@ -1,9 +1,9 @@
 package main.ability.effects;
 
 import main.ability.effects.oneshot.MicroEffect;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.top.DC_ActiveObj;
-import main.game.DC_Game;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 
 public abstract class DC_Effect extends MicroEffect {
 
@@ -19,20 +19,20 @@ public abstract class DC_Effect extends MicroEffect {
         return null;
     }
 
-    public DC_HeroObj getTarget() {
-        if (getRef().getTargetObj() instanceof DC_HeroObj) {
-            return (DC_HeroObj) getRef().getTargetObj();
+    public Unit getTarget() {
+        if (getRef().getTargetObj() instanceof Unit) {
+            return (Unit) getRef().getTargetObj();
         }
         return null;
     }
 
-    public DC_HeroObj getSource() {
+    public Unit getSource() {
         return getUnit();
     }
 
-    public DC_HeroObj getUnit() {
-        if (getRef().getSourceObj() instanceof DC_HeroObj) {
-            return (DC_HeroObj) getRef().getSourceObj();
+    public Unit getUnit() {
+        if (getRef().getSourceObj() instanceof Unit) {
+            return (Unit) getRef().getSourceObj();
         }
         return null;
     }

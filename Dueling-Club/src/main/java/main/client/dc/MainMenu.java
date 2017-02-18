@@ -2,7 +2,7 @@ package main.client.dc;
 
 import main.client.dc.MainManager.MAIN_MENU_ITEMS;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.graphics.MigMaster;
 
 import java.awt.*;

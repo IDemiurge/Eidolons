@@ -1,25 +1,23 @@
 package main.system.graphics;
 
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.PARAMS;
-import main.content.parameters.G_PARAMS;
-import main.content.parameters.Param;
+import main.content.values.parameters.G_PARAMS;
+import main.content.values.parameters.Param;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
-import main.entity.obj.top.DC_ActiveObj;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.options.UIOptions;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.CellComp;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.FontMaster.FONT;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
@@ -598,7 +596,7 @@ public class AnimationManager {
 
     private void setLastThumbnail(PhaseAnimation animation) {
         if (animation != null) {
-            main.system.auxiliary.LogMaster.log(1, "setLastThumbnail " + animation);
+            LogMaster.log(1, "setLastThumbnail " + animation);
             lastThumbnail = animation;
             lastThumbnail.setThumbnail(true);
         }
@@ -606,7 +604,7 @@ public class AnimationManager {
 
     private void removeLastThumbnail() {
         if (lastThumbnail != null) {
-            main.system.auxiliary.LogMaster.log(1, "removeLastThumbnail " + lastThumbnail);
+            LogMaster.log(1, "removeLastThumbnail " + lastThumbnail);
             lastThumbnail.setThumbnail(false);
             removeAnimation(lastThumbnail);
         }

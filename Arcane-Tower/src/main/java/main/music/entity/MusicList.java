@@ -9,7 +9,7 @@ import main.music.ahk.AHK_Master;
 import main.music.gui.MusicMouseListener;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListObjChooser;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedList;

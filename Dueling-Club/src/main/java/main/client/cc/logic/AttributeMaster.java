@@ -2,7 +2,7 @@ package main.client.cc.logic;
 
 import main.content.DC_ContentManager.ATTRIBUTE;
 import main.content.PARAMS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedList;
@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class AttributeMaster {
 
-    public static List<String> getAttributeBonusInfoStrings(ATTRIBUTE attr, DC_HeroObj hero) {
+    public static List<String> getAttributeBonusInfoStrings(ATTRIBUTE attr, Unit hero) {
         List<String> list = new LinkedList<>();
         Object key;
         key = StringMaster.getWellFormattedString(attr.name());

@@ -6,15 +6,15 @@ import main.client.cc.gui.lists.dc.InvListManager.OPERATIONS;
 import main.client.cc.gui.misc.PoolComp;
 import main.client.cc.gui.tabs.HeroItemTab;
 import main.content.PROPS;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Dialog;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.ColorManager;
+import main.system.graphics.GuiManager;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 
@@ -26,9 +26,9 @@ public abstract class OperationWindow extends G_Dialog {
     protected static final String INV = "Inventory";
     protected static final String OPERATION_TOOLTIP = " item actions left";
     protected G_Panel panel;
-    protected DC_HeroObj heroModel;
+    protected Unit heroModel;
     protected InventoryManager inventoryManager;
-    protected DC_HeroObj hero;
+    protected Unit hero;
     protected int nOfOperations;
     protected ObjType bufferedType;
     protected PoolComp operationsPool;
@@ -36,7 +36,7 @@ public abstract class OperationWindow extends G_Dialog {
     private String cachedValue;
     private String operationsData;
 
-    public OperationWindow(InventoryManager inventoryManager, DC_HeroObj hero, Integer nOfOperations) {
+    public OperationWindow(InventoryManager inventoryManager, Unit hero, Integer nOfOperations) {
         this.setNumberOfOperations(nOfOperations);
         this.inventoryManager = inventoryManager;
         this.setHero(hero);
@@ -137,11 +137,11 @@ public abstract class OperationWindow extends G_Dialog {
         return getNumberOfOperations() + " left";
     }
 
-    public DC_HeroObj getHero() {
+    public Unit getHero() {
         return hero;
     }
 
-    public void setHero(DC_HeroObj hero) {
+    public void setHero(Unit hero) {
         this.hero = hero;
         InventoryManager.updateType(hero);
         bufferedType = hero.getType();

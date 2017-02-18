@@ -2,21 +2,33 @@ package main.system.text;
 
 import main.ability.effects.Effect;
 import main.client.cc.CharacterCreator;
-import main.content.CONTENT_CONSTS.*;
 import main.content.ContentManager;
 import main.content.PARAMS;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.system.AiEnums.AI_LOGIC;
+import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
+import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
+import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.values.parameters.PARAMETER;
 import main.elements.conditions.Condition;
 import main.elements.costs.Costs;
 import main.entity.Entity;
-import main.entity.obj.*;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
+import main.entity.active.DC_SpellObj;
+import main.entity.active.DC_UnitAction;
+import main.entity.item.DC_QuickItemObj;
+import main.entity.obj.DC_Obj;
+import main.entity.obj.attach.DC_BuffObj;
+import main.entity.obj.attach.DC_HeroAttachedObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
-import main.game.battlefield.DamageMaster;
+import main.game.core.game.DC_Game;
+import main.game.ai.tools.future.FutureBuilder;
+import main.game.ai.tools.target.AI_SpellMaster;
+import main.game.battlefield.attack.DamageMaster;
+import main.rules.RuleMaster.RULE;
 import main.rules.mechanics.CoatingRule;
-import main.rules.mechanics.RuleMaster.RULE;
 import main.swing.builders.DC_Builder;
 import main.swing.components.obj.CellComp;
 import main.swing.components.obj.drawing.VisibilityMaster;
@@ -27,12 +39,11 @@ import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.list.CustomList;
 import main.swing.generic.components.list.G_List;
 import main.swing.generic.components.panels.G_ListPanel;
-import main.system.ai.logic.target.SpellMaster;
-import main.system.ai.tools.future.FutureBuilder;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.ColorManager;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.FontMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.AnimationManager.MouseItem;
 import main.system.graphics.MigMaster;
 import main.system.graphics.PhaseAnimation;
@@ -91,10 +102,10 @@ public class ToolTipMaster {
         }
         String tooltip = "";
         ACTION_TOOL_TIP_CASE _case = null;
-        AI_LOGIC spellLogic = SpellMaster.getSpellLogic(active);
+        AI_LOGIC spellLogic = AI_SpellMaster.getSpellLogic(active);
         if (spellLogic == null) {
             if (active instanceof DC_UnitAction) {
-                if (active.getActionGroup() == ACTION_TYPE_GROUPS.ATTACK) {
+                if (active.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK) {
                     _case = ACTION_TOOL_TIP_CASE.DAMAGE;
                 }
             }
@@ -134,7 +145,7 @@ public class ToolTipMaster {
                     tooltip += "(lethal)"; // TODO possibly lethal
                 } else {
                     if (attack) {
-                        if (((DC_HeroObj) target).canCounter(active)) {
+                        if (((Unit) target).canCounter(active)) {
                             tooltip += "(will retaliate)"; // TODO precalc dmg?
                         }
                     }
@@ -273,7 +284,7 @@ public class ToolTipMaster {
     }
 
     // attack tooltip, targeting tooltip,
-    public void initUnitTooltip(DC_HeroObj unit, boolean targeting) {
+    public void initUnitTooltip(Unit unit, boolean targeting) {
         List<Object> lines = new LinkedList<>();
         toolTipTextItems.remove(unitToolTip);
         String prefix = "";
@@ -593,7 +604,7 @@ public class ToolTipMaster {
 
     private void addTooltip(TextItem textItem) {
         toolTipTextItems.add(textItem);
-        main.system.auxiliary.LogMaster.log(1, textItem + " tooltip added");
+        LogMaster.log(1, textItem + " tooltip added");
 
     }
 

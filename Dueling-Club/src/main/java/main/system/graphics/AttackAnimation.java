@@ -1,22 +1,21 @@
 package main.system.graphics;
 
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
+import main.content.enums.GenericEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.top.DC_ActiveObj;
-import main.game.battlefield.AttackCalculator;
-import main.game.battlefield.AttackCalculator.MOD_IDENTIFIER;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates.DIRECTION;
-import main.game.battlefield.Damage;
 import main.game.battlefield.DirectionMaster;
 import main.game.battlefield.attack.Attack;
-import main.system.DC_SoundMaster;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.ListMaster;
+import main.game.battlefield.attack.AttackCalculator;
+import main.game.battlefield.attack.AttackCalculator.MOD_IDENTIFIER;
+import main.game.battlefield.attack.Damage;
+import main.system.audio.DC_SoundMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.auxiliary.secondary.GeometryMaster;
@@ -136,7 +135,7 @@ public class AttackAnimation extends ActionAnimation {
         if (phase != null) {
             switch (phase.getType()) {
                 case PARRY:
-                    DC_SoundMaster.playParrySound((DC_HeroObj) getTarget(), attack.getWeapon());
+                    DC_SoundMaster.playParrySound((Unit) getTarget(), attack.getWeapon());
                     break;
                 case PRE_ATTACK:
                     SoundMaster.playEffectSound(SOUNDS.ATTACK, source);
@@ -146,14 +145,14 @@ public class AttackAnimation extends ActionAnimation {
                     break;
                 case ATTACK_DODGED:
                     SoundMaster.playStandardSound(STD_SOUNDS.MISSED_MELEE);
-                    DC_SoundMaster.playMissedSound((DC_HeroObj) getTarget(), attack.getWeapon());
+                    DC_SoundMaster.playMissedSound((Unit) getTarget(), attack.getWeapon());
                     break;
                 case MISSED:
                     SoundMaster.playStandardSound(STD_SOUNDS.MISSED);
                     break;
                 case REDUCTION_ARMOR:
                     DC_SoundMaster.playAttackImpactSound(attack.getWeapon(), source,
-                            (DC_HeroObj) getTarget(), attack.getDamage(), (int) phase.getArgs()[1]);
+                            (Unit) getTarget(), attack.getDamage(), (int) phase.getArgs()[1]);
                     break;
                 case REDUCTION_SHIELD:
                     DC_SoundMaster.playBlockedSound(source, getTarget(), attack
@@ -193,7 +192,7 @@ public class AttackAnimation extends ActionAnimation {
         // drawOnSource(image, point.x, point.y);
         // }
         if (attack.isSneak()) {
-            Image image = ImageManager.getImage(STANDARD_PASSIVES.NO_RETALIATION.getImagePath());
+            Image image = ImageManager.getImage(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION.getImagePath());
             image = ImageTransformer.getCircleCroppedImage(image);
             image = ImageTransformer.flipHorizontally(ImageManager.getBufferedImage(image));
             int x = w - image.getWidth(null) - 4; // targetPoint.x+w-image.getWidth(null);
@@ -245,7 +244,7 @@ public class AttackAnimation extends ActionAnimation {
     }
 
     protected void drawRawDamage(List<Damage> rawDamage) {
-        Image image = ImageManager.getDamageTypeImage(DAMAGE_TYPE.PHYSICAL.getName());
+        Image image = ImageManager.getDamageTypeImage(GenericEnums.DAMAGE_TYPE.PHYSICAL.getName());
         Point p = GeometryMaster.getFarthestPointInRectangleForImage(w, h, image, direction.flip());
         int y = p.y; // - rawDamage.size()*20
         if (BooleanMaster.isTrue((direction.isGrowY()))) {
@@ -525,7 +524,7 @@ public class AttackAnimation extends ActionAnimation {
     }
 
     protected boolean drawCriticalAttack(AnimPhase phase) {
-        Image image = ImageManager.getImage(STANDARD_PASSIVES.CRITICAL_IMMUNE.getImagePath());
+        Image image = ImageManager.getImage(UnitEnums.STANDARD_PASSIVES.CRITICAL_IMMUNE.getImagePath());
         int y = 0;
         int x = 0;
         drawOnTargetCenterX(image, y);

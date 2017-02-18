@@ -2,6 +2,7 @@ package main.elements.conditions;
 
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref.KEYS;
+import main.system.auxiliary.log.LogMaster;
 
 public class RefCondition extends ConditionImpl {
     protected String id1;
@@ -60,7 +61,7 @@ public class RefCondition extends ConditionImpl {
             // isTrue = check(ref.getMatchObj().getRef());
             // } catch (Exception ex) {
             // }
-            main.system.auxiliary.LogMaster.log(1, toString() + " failed on "
+            LogMaster.log(1, toString() + " failed on "
                     + ref);
         }
         if (negative) {

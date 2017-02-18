@@ -2,9 +2,9 @@ package main.client.cc.gui.tabs;
 
 import main.client.cc.HC_Master;
 import main.client.cc.gui.tabs.SkillTabNew.SKILL_DISPLAY_GROUPS;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.system.math.DC_MathManager;
@@ -25,7 +25,7 @@ public class MasteryIconColumn extends G_Panel implements MouseListener {
     private int rows = 5;
     private Entity hero;
 
-    public MasteryIconColumn(DC_HeroObj hero, SKILL_DISPLAY_GROUPS group) {
+    public MasteryIconColumn(Unit hero, SKILL_DISPLAY_GROUPS group) {
         masteries = new LinkedList<>();
         List<PARAMETER> unlockedList = DC_MathManager.getUnlockedMasteries(hero);
         for (PARAMETER p : group.getMasteries()) {

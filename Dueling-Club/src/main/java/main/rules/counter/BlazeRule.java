@@ -5,15 +5,16 @@ import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.continuous.CustomTargetEffect;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
-import main.content.CONTENT_CONSTS.STATUS;
-import main.content.CONTENT_CONSTS.STD_BUFF_NAMES;
-import main.content.CONTENT_CONSTS.STD_COUNTERS;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.GenericEnums;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.PARAMS;
+import main.content.enums.entity.UnitEnums;
 import main.elements.targeting.FixedTargeting;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 
 public class BlazeRule extends DamageCounterRule {
 
@@ -45,7 +46,7 @@ public class BlazeRule extends DamageCounterRule {
 
     @Override
     public DAMAGE_TYPE getDamageType() {
-        return DAMAGE_TYPE.FIRE;
+        return GenericEnums.DAMAGE_TYPE.FIRE;
     }
 
     @Override
@@ -63,36 +64,36 @@ public class BlazeRule extends DamageCounterRule {
 
     @Override
     protected String getClashingCounter() {
-        return STD_COUNTERS.Freeze_Counter.getName();
+        return UnitEnums.STD_COUNTERS.Freeze_Counter.getName();
     }
 
     @Override
     public String getCounterName() {
-        return STD_COUNTERS.Blaze_Counter.getName();
+        return UnitEnums.STD_COUNTERS.Blaze_Counter.getName();
 
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(DC_HeroObj unit) {
+    public int getCounterNumberReductionPerTurn(Unit unit) {
         if (checkAblaze(unit)) {
             return REDUCTION;
         }
         return INCREASE;
     }
 
-    private boolean checkAblaze(DC_HeroObj unit) {
+    private boolean checkAblaze(Unit unit) {
         return getNumberOfCounters(unit) <= THRESHOLD;
     }
 
     @Override
     public String getBuffName() { // different while burning slow?
-        return STD_BUFF_NAMES.Ablaze.getName();
+        return MetaEnums.STD_BUFF_NAMES.Ablaze.getName();
     }
 
     @Override
     public STATUS getStatus() {
         if (checkAblaze(unit)) {
-            return STATUS.ABLAZE; // panic? spreading?
+            return UnitEnums.STATUS.ABLAZE; // panic? spreading?
         }
         return null;
     }

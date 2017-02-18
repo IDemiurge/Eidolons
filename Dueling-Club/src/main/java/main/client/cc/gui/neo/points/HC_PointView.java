@@ -7,14 +7,14 @@ import main.content.ContentManager;
 import main.content.DC_ContentManager;
 import main.content.DC_ContentManager.ATTRIBUTE;
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.components.panels.page.log.WrappedTextComp;
 import main.swing.generic.components.misc.GraphicComponent;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -39,18 +39,18 @@ public class HC_PointView extends HeroView {
     private boolean all;
     private WrappedTextComp paramBonusInfoComp;
 
-    public HC_PointView(List<PARAMETER> params, DC_HeroObj hero) {
+    public HC_PointView(List<PARAMETER> params, Unit hero) {
         this(params, hero, false);
     }
 
-    public HC_PointView(List<PARAMETER> params, DC_HeroObj hero, boolean all) {
+    public HC_PointView(List<PARAMETER> params, Unit hero, boolean all) {
         super(hero);
         this.params = params;
         this.all = all;
         init();
     }
 
-    public HC_PointView(boolean attributes, DC_HeroObj hero) {
+    public HC_PointView(boolean attributes, Unit hero) {
         super(hero);
         this.attributes = attributes;
         init();

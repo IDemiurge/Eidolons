@@ -1,6 +1,6 @@
 package main.swing.components.obj.drawing;
 
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.swing.components.buttons.DynamicButton;
 import main.system.images.ImageManager.STD_IMAGES;
 

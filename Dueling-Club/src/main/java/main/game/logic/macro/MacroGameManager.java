@@ -1,7 +1,7 @@
 package main.game.logic.macro;
 
 import main.ability.effects.Effect;
-import main.content.parameters.MACRO_PARAMS;
+import main.content.values.parameters.MACRO_PARAMS;
 import main.elements.Filter;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
@@ -10,7 +10,7 @@ import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.entity.type.BuffType;
 import main.entity.type.ObjType;
-import main.game.GameManager;
+import main.game.core.game.GameManager;
 import main.game.logic.macro.entity.MacroActionManager;
 import main.game.logic.macro.entity.MacroObj;
 import main.game.logic.macro.global.TimeMaster;
@@ -20,7 +20,7 @@ import main.game.logic.macro.travel.AreaManager;
 import main.game.logic.macro.travel.MacroParty;
 import main.game.logic.macro.travel.TravelMaster;
 import main.game.logic.macro.utils.SaveMaster;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
@@ -145,16 +145,15 @@ public class MacroGameManager extends GameManager {
 
     @Override
     public Integer select(Filter<Obj> filter, Ref ref) {
+//        highlight();
         return select(filter.getObjects(ref));
     }
 
-    @Override
     public void highlight(Set<Obj> set) {
         getMapComp().highlight(set);
 
     }
 
-    @Override
     public void highlightsOff() {
         getMapComp().highlightsOff();
 
@@ -183,6 +182,11 @@ public class MacroGameManager extends GameManager {
 
     public void win(Player winningPlayer) {
         // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void buffCreated(BuffObj buff, Obj basis) {
 
     }
 

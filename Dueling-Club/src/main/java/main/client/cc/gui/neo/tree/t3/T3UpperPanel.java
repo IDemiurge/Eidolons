@@ -4,7 +4,7 @@ import main.client.cc.CharacterCreator;
 import main.client.cc.HC_Master;
 import main.client.cc.gui.neo.header.DeityComp;
 import main.client.cc.gui.neo.header.PortraitComp;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Panel;
 
@@ -58,18 +58,18 @@ public class T3UpperPanel extends G_Panel {
     // VISUALS.BACK, VISUALS.NEXT_HERO,
     //
     // };
-    private DC_HeroObj hero;
+    private Unit hero;
     private ThreeTreeView view;
     private String[] controls;
 
-    public T3UpperPanel(String[] controls, DC_HeroObj hero, ThreeTreeView view) {
+    public T3UpperPanel(String[] controls, Unit hero, ThreeTreeView view) {
         this.hero = hero;
         this.view = view;
         this.controls = controls;
         lastInstance = this;
     }
 
-    public T3UpperPanel(DC_HeroObj hero, ThreeTreeView view) {
+    public T3UpperPanel(Unit hero, ThreeTreeView view) {
         this(STD_CONTROLS, hero, view);
         // if (isSkill()) {
         //

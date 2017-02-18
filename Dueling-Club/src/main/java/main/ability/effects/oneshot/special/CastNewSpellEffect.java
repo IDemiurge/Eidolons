@@ -1,11 +1,11 @@
 package main.ability.effects.oneshot.special;
 
 import main.ability.effects.oneshot.MicroEffect;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.ability.AE_ConstrArgs;
 import main.entity.Ref;
-import main.entity.obj.DC_SpellObj;
+import main.entity.active.DC_SpellObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 
@@ -44,7 +44,7 @@ public class CastNewSpellEffect extends MicroEffect {
 
     @Override
     public boolean applyThis() {
-        ObjType type = DataManager.getType(spelltype, OBJ_TYPES.SPELLS);
+        ObjType type = DataManager.getType(spelltype, DC_TYPE.SPELLS);
         Ref REF = new Ref(ref.getGame(), ref.getSource());
 
         Obj obj = game.createSpell(type, ref.getSourceObj().getOwner(), REF);

@@ -1,7 +1,7 @@
 package main.ability.effects.oneshot.special;
 
 import main.ability.effects.oneshot.MicroEffect;
-import main.content.CONTENT_CONSTS.STATUS;
+import main.content.enums.entity.UnitEnums.STATUS;
 
 public class AddStatusEffect extends MicroEffect {
     protected String status;

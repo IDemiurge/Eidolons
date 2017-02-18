@@ -1,14 +1,16 @@
 package main.elements.targeting;
 
 import main.ability.PassiveAbilityObj;
-import main.content.CONTENT_CONSTS.TARGETING_MODE;
+import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.C_OBJ_TYPE;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
+import main.content.enums.entity.AbilityEnums;
 import main.elements.Filter;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 
 import java.util.Set;
@@ -67,8 +69,9 @@ public class SelectiveTargeting extends TargetingImpl {
         if (target == null) {
             return false;
         }
+        if (target>0)
         ref.setTarget(target);
-        main.system.auxiliary.LogMaster.log(1, "TARGET SELECTED : "
+        LogMaster.log(1, "TARGET SELECTED : "
                 + ref.getGame().getObjectById(target));
         return true;
 
@@ -87,7 +90,7 @@ public class SelectiveTargeting extends TargetingImpl {
             case ANY_UNIT:
                 return C_OBJ_TYPE.UNITS_CHARS;
             case ANY_WEAPON:
-                return OBJ_TYPES.WEAPONS;
+                return DC_TYPE.WEAPONS;
             case ATTACK:
                 return C_OBJ_TYPE.BF_OBJ;
             case BF_OBJ:
@@ -95,27 +98,27 @@ public class SelectiveTargeting extends TargetingImpl {
             case BLAST:
                 return C_OBJ_TYPE.BF;
             case CELL:
-                return OBJ_TYPES.TERRAIN;
+                return DC_TYPE.TERRAIN;
             case ENEMY_ARMOR:
-                return OBJ_TYPES.ARMOR;
+                return DC_TYPE.ARMOR;
             case ENEMY_ITEM:
                 return C_OBJ_TYPE.ITEMS;
             case ENEMY_SPELLBOOK:
-                return OBJ_TYPES.SPELLS;
+                return DC_TYPE.SPELLS;
             case ENEMY_WEAPON:
-                return OBJ_TYPES.WEAPONS;
+                return DC_TYPE.WEAPONS;
             case GRAVE_CELL:
                 return C_OBJ_TYPE.BF;
             case MOVE:
-                return OBJ_TYPES.TERRAIN;
+                return DC_TYPE.TERRAIN;
             case MY_ARMOR:
-                return OBJ_TYPES.ARMOR;
+                return DC_TYPE.ARMOR;
             case MY_ITEM:
                 return C_OBJ_TYPE.ITEMS;
             case MY_SPELLBOOK:
-                return OBJ_TYPES.SPELLS;
+                return DC_TYPE.SPELLS;
             case MY_WEAPON:
-                return OBJ_TYPES.WEAPONS;
+                return DC_TYPE.WEAPONS;
             case PRECISE_SHOT:
                 return C_OBJ_TYPE.BF_OBJ;
             case RAY:
@@ -173,23 +176,23 @@ public class SelectiveTargeting extends TargetingImpl {
         public TARGETING_MODE getMode() {
             switch (this) {
                 case ANY_ALLY:
-                    return TARGETING_MODE.ANY_ALLY;
+                    return AbilityEnums.TARGETING_MODE.ANY_ALLY;
                 case ANY_ENEMY:
-                    return TARGETING_MODE.ANY_ENEMY;
+                    return AbilityEnums.TARGETING_MODE.ANY_ENEMY;
                 case ANY_UNIT:
-                    return TARGETING_MODE.ANY_UNIT;
+                    return AbilityEnums.TARGETING_MODE.ANY_UNIT;
                 case ATTACK:
-                    return TARGETING_MODE.ANY_ENEMY;
+                    return AbilityEnums.TARGETING_MODE.ANY_ENEMY;
                 case BLAST:
-                    return TARGETING_MODE.CELL;
+                    return AbilityEnums.TARGETING_MODE.CELL;
                 case CELL:
-                    return TARGETING_MODE.CELL;
+                    return AbilityEnums.TARGETING_MODE.CELL;
                 case RAY:
-                    return TARGETING_MODE.ANY_ENEMY;
+                    return AbilityEnums.TARGETING_MODE.ANY_ENEMY;
                 case SHOT:
-                    return TARGETING_MODE.ANY_UNIT;
+                    return AbilityEnums.TARGETING_MODE.ANY_UNIT;
                 case UNOBSTRUCTED_SHOT:
-                    return TARGETING_MODE.ANY_UNIT;
+                    return AbilityEnums.TARGETING_MODE.ANY_UNIT;
                 default:
                     break;
             }

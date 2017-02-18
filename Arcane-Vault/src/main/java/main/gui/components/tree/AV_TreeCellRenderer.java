@@ -6,10 +6,10 @@ import main.entity.type.ObjType;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.list.ListItem;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.LogMaster;
+import main.system.graphics.ColorManager;
+import main.system.graphics.FontMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.utilities.workspace.Workspace;
 
@@ -52,7 +52,7 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
                                                   boolean expanded, boolean leaf, int row, boolean hasFocus) {
 
         if (tree == null) {
-            main.system.auxiliary.LogMaster.log(1, "NULL TREE!");
+            LogMaster.log(1, "NULL TREE!");
             return null;
         }
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
@@ -121,7 +121,7 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
 
     private Component getDefaultComp(JTree tree, Object value, boolean selected, boolean expanded,
                                      boolean leaf, int row, boolean hasFocus) {
-        main.system.auxiliary.LogMaster.log(LogMaster.GUI_DEBUG, "drawing default lbl: " + value);
+        LogMaster.log(LogMaster.GUI_DEBUG, "drawing default lbl: " + value);
         Component treeCellRendererComponent = defRenderer.getTreeCellRendererComponent(tree, value,
                 selected, expanded, leaf, row, hasFocus);
         ;

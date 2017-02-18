@@ -1,7 +1,7 @@
 package main.client.cc.gui.neo.principles;
 
-import main.content.CONTENT_CONSTS.PRINCIPLES;
-import main.entity.obj.DC_HeroObj;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
+import main.entity.obj.unit.Unit;
 import main.swing.generic.components.G_Panel;
 import main.system.images.ImageManager;
 
@@ -14,7 +14,7 @@ public class PrincipleItemPanel extends G_Panel {
     PRINCIPLES principle;
     private JLabel principleIcon;
 
-    public PrincipleItemPanel(DC_HeroObj hero) {
+    public PrincipleItemPanel(Unit hero) {
         super(VISUALS.PRINCIPLE_PANEL_FRAME);
         table = new PrincipleTable(hero, false);
         list = new PrincipleItemPagedListPanel(hero, table);

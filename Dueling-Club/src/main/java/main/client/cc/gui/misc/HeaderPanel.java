@@ -4,8 +4,8 @@ import main.client.cc.CharacterCreator;
 import main.client.cc.logic.HeroLevelManager;
 import main.content.PARAMS;
 import main.content.VALUE;
-import main.content.properties.G_PROPS;
-import main.entity.obj.DC_HeroObj;
+import main.content.values.properties.G_PROPS;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
 
@@ -32,7 +32,7 @@ public class HeaderPanel extends G_Panel implements MouseListener,
     VALUE[] displayedValuesTop = {G_PROPS.RACE, G_PROPS.RANK,};
     VALUE[] displayedValuesBottom = {PARAMS.HERO_LEVEL, G_PROPS.DEITY,
             G_PROPS.PRINCIPLES,}; // classes
-    private DC_HeroObj hero;
+    private Unit hero;
     private JLabel portrait;
     private JLabel emblem;
     private JLabel title;
@@ -42,7 +42,7 @@ public class HeaderPanel extends G_Panel implements MouseListener,
     private G_Panel bottomValues;
     private G_Panel topValues;
 
-    public HeaderPanel(DC_HeroObj hero) {
+    public HeaderPanel(Unit hero) {
         super("flowy");
         this.hero = hero;
         refresh();

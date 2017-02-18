@@ -2,9 +2,9 @@ package main.logic;
 
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 
 public enum AT_OBJ_TYPE implements OBJ_TYPE {
     TASK("Task", AT_PROPS.TASK_TYPE, 0, true, AT_PROPS.TASK_STATUS),

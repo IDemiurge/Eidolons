@@ -1,6 +1,6 @@
 package main.system.datatypes;
 
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.Arrays;
 import java.util.Collection;

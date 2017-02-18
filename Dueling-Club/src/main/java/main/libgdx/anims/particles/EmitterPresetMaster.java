@@ -1,12 +1,16 @@
 package main.libgdx.anims.particles;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import javafx.util.Pair;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -19,9 +23,11 @@ import java.util.Map;
  * Created by JustMe on 1/26/2017.
  */
 public class EmitterPresetMaster {
+    public static String separator = " - ";
+    public static String value_separator = ": ";
     private static EmitterPresetMaster instance;
-    String separator = " - ";
-    String value_separator = ": ";
+    private static boolean spriteEmitterTest;
+    private static Map<EmitterActor, String> mods = new HashMap<>();
     private Map<String, String> map = new HashMap<>();
     private String lowHighMinMax = "lowMin lowMax highMin highMax";
 
@@ -30,13 +36,15 @@ public class EmitterPresetMaster {
     }
 
     public static EmitterPresetMaster getInstance() {
-        if (instance == null) {
-            instance = new EmitterPresetMaster();
-        }
+        if (instance == null) instance = new EmitterPresetMaster();
         return instance;
     }
 
-    public static void save(EmitterActor last) {
+    public static String save(EmitterActor last, String prefix) {
+        return save(last, prefix, null);
+    }
+
+    public static String save(EmitterActor last, String prefix, String name) {
         String c;
         Writer output = new StringWriter();
         last.getEffect().getEmitters().forEach(e -> {
@@ -47,7 +55,104 @@ public class EmitterPresetMaster {
             }
         });
         c = output.toString();
-        XML_Writer.write(c, PathFinder.getSfxPath() + "custom\\" + last.path);
+        String suffix = mods.get(last);
+        if (suffix == null) suffix = "";
+        else {
+            String buffer = suffix;
+            suffix = " ";
+            for (String substring : StringMaster.openContainer(buffer, value_separator)) {
+                suffix += StringMaster.cropFormat(
+                 StringMaster.getLastPathSegment(substring)) + " ";
+            }
+        }
+        String newName = (name != null) ? name :
+         FileManager.getUniqueVersion(new File(PathFinder.getSfxPath() + prefix +
+          "\\" + last.path + suffix));
+
+        String path = StringMaster.replace(true, last.path,
+         PathFinder.getSfxPath(), "").replace(prefix, "");
+        String pathAndName = PathFinder.getSfxPath() + prefix +
+         "\\" +
+         StringMaster.cropLastPathSegment(path) +
+         newName;
+        XML_Writer.write(c, pathAndName);
+
+        return pathAndName;
+    }
+
+    public String searchImage(File directory, String imageName) {
+//search recursively
+        String imagePath = null;
+        for (File d : FileManager.getFilesFromDirectory(directory.getPath(), true)) {
+            if (d.isDirectory())
+                imagePath = searchImage(d, imageName);
+            if (d.isFile())
+                if (d.getName().equalsIgnoreCase(imageName))
+                    imagePath = d.getPath();
+            if (imagePath != null) {
+                //updatePreset();
+                return imagePath;
+            }
+        }
+        return imagePath;
+    }
+
+    public String findImagePath(String path) {
+        String imagePath = getImagePath(path);
+        FileHandle file = Gdx.files.internal(imagePath);
+        if (file.exists())
+            return imagePath;
+        String name = StringMaster.getLastPathSegment(imagePath);
+        //generic
+        imagePath = PathFinder.getParticleImagePath() + "\\" + name;
+        file = Gdx.files.internal(imagePath);
+        if (file.exists())
+            return imagePath;
+
+        //raw
+//        String suffix = StringMaster.replaceFirst(path, PathFinder.getParticlePresetPath(), "");
+//        suffix = StringMaster.cropLastPathSegment(suffix);
+//        imagePath  = suffix;
+//        file = Gdx.files.internal(imagePath);
+//        if (file.exists())
+//            return imagePath;
+
+        imagePath += "particles\\";
+        file = Gdx.files.internal(imagePath);
+        if (file.exists())
+            return imagePath;
+
+        imagePath =
+         PathFinder.removeSpecificPcPrefix(
+          EmitterPresetMaster.getInstance().getImagePath(path));
+        file = Gdx.files.internal(imagePath);
+        if (file.exists())
+            return imagePath;
+
+        imagePath = StringMaster.cropLastPathSegment(imagePath);
+        file = Gdx.files.internal(imagePath);
+        if (file.exists())
+            return imagePath;
+
+
+        if (spriteEmitterTest) {
+//            effect.getEmitters().forEach(e -> {
+            String randomPath = FileManager.getRandomFile(PathFinder.getSpritesPath() +
+             "impact\\").getPath();
+            return randomPath;
+//        ((Emitter) e).offset(20, "scale");
+//        e.setImagePath(randomPath);
+//        e.setPremultipliedAlpha(false);
+//            });
+        }
+
+        imagePath = searchImage(FileManager.getFile(PathFinder.getSfxPath()), name);
+        if (StringMaster.isEmpty(imagePath))
+            imagePath = searchImage(FileManager.getFile(PathFinder.getSpritesPath()), name);
+        if (StringMaster.isEmpty(imagePath))
+            LogMaster.log(1, imagePath + " - NO IMAGE FOUND FOR SFX: " + path);
+
+        return imagePath;
     }
 
     public String getImagePath(String path) {
@@ -58,63 +163,53 @@ public class EmitterPresetMaster {
 
     public String getValueFromGroup(String path, EMITTER_VALUE_GROUP group, String value) {
         String text = getGroupTextFromPreset(path, group);
-        if (text == null) {
+        if (text == null)
             return "";
-        }
-        if (value == null) {
-            return text;
-        }
+        if (value == null)
+            return text.trim();
         for (String substring : StringMaster.openContainer(text, "\n")) {
             if (substring.split(value_separator)[0].equalsIgnoreCase(value)) {
-                return substring.split(value_separator)[1];
+                return substring.split(value_separator)[1].trim();
             }
         }
         return null;
     }
 
     public EmitterActor getModifiedEmitter(String path, int offset, EMITTER_VALUE_GROUP... groups) {
-        String[] array = new String[groups.length];
+        String mods = "";
         for (int i = 0; i < groups.length; i++) {
-            array[i] = groups[i].name + value_separator + offset;
+            mods += groups[i].name + value_separator + offset + ";";
         }
-        return getModifiedEmitter(path, false, array);
+        return getModifiedEmitter(path, false, mods);
     }
 
     public EmitterActor getModifiedEmitter(String path,
-                                           boolean write, String... modvals) {
+                                           boolean write, String modvals) {
+        EmitterActor actor = EmitterPools.getEmitterActor(path);
 
-        String newName =StringMaster.getLastPathSegment(path) +" modified";
-//crop format!
-
-            clone(path, newName);
-
-        String data = getData(path);
-        for (String sub : modvals) {
-
+        for (String sub : StringMaster.openContainer(modvals)) {
             String name = sub.split(value_separator)[0];
             String val = sub.split(value_separator)[1];
-
             EMITTER_VALUE_GROUP group = new EnumMaster<EMITTER_VALUE_GROUP>().retrieveEnumConst(EMITTER_VALUE_GROUP.class, name);
+            name = group.getFieldName();
             if (group != null) {
                 if (group.container) {
-                    data = offsetValue(group, StringMaster.getDouble(val), data);
-                } else {
-                    data = setValue(group, val, data);
+                    if (!val.contains("set")) {
+                        actor.getEffect().offset(name, val);
+                        continue;
+                    } else
+                        val.replace("set", "");
                 }
+                actor.getEffect().set(name, val);
+
             }
         }
-        path = StringMaster.cropLastPathSegment(path);
 
-            XML_Writer.write(data, path, newName);
-
-        String newPath = path + newName;
-        EmitterActor actor = EmitterPools.getEmitterActor(newPath);
-//        new EmitterActor(newPath);
-        if (!write){
-            //delete
-        }
+        String newPath = save(actor, "modified");
+        actor = EmitterPools.getEmitterActor(newPath);
+//        if (!write) delete();
+        mods.put(actor, modvals);
         return actor;
-
     }
 
     private String setValue(EMITTER_VALUE_GROUP group, String val, String data) {
@@ -127,7 +222,7 @@ public class EmitterPresetMaster {
                 data = data.replace(substring, newString);
             }
         }
-        data =  data.replace(getGroupText(data, group), text);
+        data = data.replace(getGroupText(data, group), text);
         return data;
     }
 
@@ -142,7 +237,7 @@ public class EmitterPresetMaster {
                   newValue));
             }
         }
-        data =  data.replace(getGroupText(data, group), text);
+        data = data.replace(getGroupText(data, group), text);
         return data;
     }
 
@@ -165,24 +260,20 @@ public class EmitterPresetMaster {
 
     public String getGroupTextFromPreset(String path, EMITTER_VALUE_GROUP group) {
         String data = getData(path);
-        if (data == null) {
-            return null;
-        }
+        if (data == null) return null;
         return getGroupText(data, group);
     }
 
     public String getGroupText(String data, EMITTER_VALUE_GROUP group) {
         //TODO for multi emitters?!
         String[] parts = data.split(group.name + " - \n");
-        String valuePart=null ;
+        String valuePart = null;
 
-        if (parts.length == 1) {
+        if (parts.length == 1)
             parts = data.split(group.name + " -\n");
-        }
-        if (parts.length > 1) {
+        if (parts.length > 1)
             valuePart = parts[1];
-        }
-        if (parts.length>2){
+        if (parts.length > 2) {
             valuePart = valuePart.split("\n\n")[0];
         }
 
@@ -192,12 +283,12 @@ public class EmitterPresetMaster {
 
     private String getData(String path) {
         path = path.toLowerCase();
+        path = StringMaster.addMissingPathSegments(path, PathFinder.getSfxPath());
         String data = map.get(path);
         if (data == null) {
             data = FileManager.readFile(path);
-            if (!StringMaster.isEmpty(data)) {
+            if (!StringMaster.isEmpty(data))
                 map.put(path, data);
-            }
         }
         return data;
     }
@@ -239,8 +330,10 @@ public class EmitterPresetMaster {
         Image_Path(),
         Angle(true),
         Rotation(true),
-        Scale,;
-        private Boolean container;
+        Scale,
+        Premultiplied_Alpha,
+        Percentage_Of_Lagging_Particles;
+        private boolean container;
         private String name;
 
         EMITTER_VALUE_GROUP() {
@@ -250,6 +343,10 @@ public class EmitterPresetMaster {
         EMITTER_VALUE_GROUP(Boolean container) {
             this();
             this.container = container;
+        }
+
+        public String getFieldName() {
+            return StringMaster.getCamelCase(name());
         }
     }
 }

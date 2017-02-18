@@ -1,10 +1,10 @@
 package main.swing.renderers;
 
-import main.content.CONTENT_CONSTS.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.STD_COUNTERS;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroAttachedObj;
 import main.entity.obj.Obj;
+import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.rules.mechanics.CoatingRule;
 import main.swing.generic.components.list.ListItem;
 import main.system.graphics.ImageTransformer;

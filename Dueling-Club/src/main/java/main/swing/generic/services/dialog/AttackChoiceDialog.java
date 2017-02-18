@@ -2,19 +2,19 @@ package main.swing.generic.services.dialog;
 
 import main.ability.effects.AttackEffect;
 import main.ability.effects.Effect;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.top.DC_ActiveObj;
-import main.game.battlefield.AttackCalculator;
-import main.system.ai.logic.target.EffectMaster;
-import main.system.ai.tools.future.FutureBuilder;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.unit.Unit;
+import main.game.ai.tools.future.FutureBuilder;
+import main.game.ai.tools.target.EffectFinder;
+import main.game.battlefield.attack.AttackCalculator;
 
 import java.util.List;
 
 public class AttackChoiceDialog extends EntityChoiceDialog<DC_ActiveObj> {
 
-    private DC_HeroObj target;
+    private Unit target;
 
-    public AttackChoiceDialog(List<DC_ActiveObj> data, DC_HeroObj target) {
+    public AttackChoiceDialog(List<DC_ActiveObj> data, Unit target) {
         super(data);
         this.target = target;
     }
@@ -39,7 +39,7 @@ public class AttackChoiceDialog extends EntityChoiceDialog<DC_ActiveObj> {
     @Override
     protected void initTooltip(DC_ActiveObj active) {
         FutureBuilder.precalculateDamage(active, target, true);
-        List<Effect> effect = EffectMaster.getEffectsOfClass(active, AttackEffect.class);
+        List<Effect> effect = EffectFinder.getEffectsOfClass(active, AttackEffect.class);
         if (effect.size() > 0) {
             AttackCalculator attackCalculator = new AttackCalculator(((AttackEffect) effect.get(0))
                     .getAttack(), true);
@@ -51,7 +51,7 @@ public class AttackChoiceDialog extends EntityChoiceDialog<DC_ActiveObj> {
         super.initTooltip(active);
     }
 
-    public DC_HeroObj getTarget() {
+    public Unit getTarget() {
         return target;
     }
 

@@ -4,12 +4,12 @@ import main.client.cc.CharacterCreator;
 import main.client.cc.gui.lists.ItemListManager;
 import main.client.cc.gui.pages.HC_PagedListPanel.HC_LISTS;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
-import main.entity.obj.DC_HeroObj;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
+import main.entity.obj.unit.Unit;
 
 public class MemorizedList extends SecondaryItemList {
 
@@ -19,7 +19,7 @@ public class MemorizedList extends SecondaryItemList {
     private static final String POOL_TOOLTIP = "Memorization points (by Spell Difficulty, from Hero's Intelligence)";
     private static int SPELL_SLOTS_COLUMNS = CharacterCreator.STD_COLUMN_NUMBER;
 
-    public MemorizedList(DC_HeroObj hero, ItemListManager itemListManager) {
+    public MemorizedList(Unit hero, ItemListManager itemListManager) {
         super(hero, itemListManager);
         itemListManager.addRemoveList(list);
     }
@@ -57,7 +57,7 @@ public class MemorizedList extends SecondaryItemList {
 
     @Override
     protected OBJ_TYPE getTYPE() {
-        return OBJ_TYPES.SPELLS;
+        return DC_TYPE.SPELLS;
     }
 
     @Override

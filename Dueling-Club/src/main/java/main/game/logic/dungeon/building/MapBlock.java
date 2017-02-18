@@ -1,19 +1,20 @@
 package main.game.logic.dungeon.building;
 
-import main.content.parameters.G_PARAMS;
+import main.content.values.parameters.G_PARAMS;
 import main.data.XLinkedMap;
 import main.data.xml.XML_Converter;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
+import main.game.battlefield.CoordinatesMaster;
 import main.game.battlefield.ZCoordinates;
 import main.game.logic.dungeon.building.DungeonBuilder.BLOCK_TYPE;
 import main.game.logic.dungeon.building.DungeonBuilder.ROOM_TYPE;
-import main.game.logic.macro.utils.CoordinatesMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.HashMap;
@@ -64,7 +65,7 @@ public class MapBlock {
     public void link(MapBlock lastBlock, Coordinates... coordinates) {
         List<Coordinates> list = new ListMaster<Coordinates>().getList(coordinates);
         connectedBlocks.put(lastBlock, list);
-        main.system.auxiliary.LogMaster.log(1, this + " linked to " + lastBlock.toString() + " on "
+        LogMaster.log(1, this + " linked to " + lastBlock.toString() + " on "
                 + list);
     }
 
@@ -112,7 +113,7 @@ public class MapBlock {
         setObjects(getObjectsByCoordinates());
         map.clear();
         for (Coordinates c : getCoordinates()) {
-            for (DC_HeroObj obj : DC_Game.game.getObjectsOnCoordinate(c)) {
+            for (Unit obj : DC_Game.game.getObjectsOnCoordinate(c)) {
                 if (map.containsKey(c)) {
                     ZCoordinates coordinates = new ZCoordinates(c.x, c.y, new Random().nextInt());
                     map.put(coordinates, obj);
@@ -120,7 +121,7 @@ public class MapBlock {
                     map.put(c, obj);
                 }
             }
-            for (DC_HeroObj obj : DC_Game.game.getOverlayingObjects(c)) {
+            for (Unit obj : DC_Game.game.getOverlayingObjects(c)) {
                 if (map.containsKey(c)) {
                     ZCoordinates coordinates = new ZCoordinates(c.x, c.y, new Random().nextInt());
                     map.put(coordinates, obj);
@@ -219,7 +220,7 @@ public class MapBlock {
         this.roomType = roomType;
     }
 
-    public void addObject(DC_HeroObj obj, Coordinates c) {
+    public void addObject(Unit obj, Coordinates c) {
 
         if (map.containsKey(c)) {
             ZCoordinates coordinates = new ZCoordinates(c.x, c.y, new Random().nextInt());

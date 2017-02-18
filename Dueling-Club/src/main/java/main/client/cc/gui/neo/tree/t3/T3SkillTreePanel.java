@@ -3,7 +3,7 @@ package main.client.cc.gui.neo.tree.t3;
 import main.client.cc.HC_Master;
 import main.client.cc.gui.neo.tree.HT_Node;
 import main.client.cc.gui.neo.tree.view.SkillTreeView;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.system.launch.CoreEngine;
 
@@ -12,7 +12,7 @@ import java.awt.event.MouseEvent;
 public class T3SkillTreePanel extends SkillTreeView {
     private Boolean left;
 
-    public T3SkillTreePanel(Boolean left, Object arg, DC_HeroObj hero) {
+    public T3SkillTreePanel(Boolean left, Object arg, Unit hero) {
         super(arg, hero);
         this.left = left;
     }

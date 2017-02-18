@@ -7,18 +7,21 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.bf.mouse.GridMouseListener;
+import main.libgdx.gui.panels.dc.InitiativePanelParam;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -44,10 +47,10 @@ public class GridPanel extends Group {
     protected Texture highlightImage;
     protected Texture unknownImage;
     protected Texture cellBorderTexture;
-    protected DequeImpl<DC_HeroObj> units;
+    protected DequeImpl<BattleFieldObject> units;
     protected GridCell[][] cells;
     private CellBorderManager cellBorderManager;
-    private Map<DC_HeroObj, BaseView> unitMap;
+    private Map<BattleFieldObject, BaseView> unitMap;
     private int cols;
     private int rows;
     private LightingManager lightingManager;
@@ -100,38 +103,46 @@ public class GridPanel extends Group {
 
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p =
-                    (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
+             (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             Map<Borderable, Runnable> map = new HashMap<>();
             for (DC_Obj obj1 : p.getLeft()) {
                 Borderable b = unitMap.get(obj1);
-                if (b == null) {
+                if (b == null)
                     b = cells[obj1.getX()][rows - 1 - obj1.getY()];
-                }
                 map.put(b, () -> p.getRight().run(obj1));
             }
             GuiEventManager.trigger(SHOW_BLUE_BORDERS, new EventCallbackParam(map));
         });
         GuiEventManager.bind(UNIT_MOVED, param -> {
-            moveUnitView((DC_HeroObj) param.get());
+            moveUnitView((BattleFieldObject) param.get());
+        });
+        GuiEventManager.bind(DESTROY_UNIT_MODEL, param -> {
+            BattleFieldObject unit = (BattleFieldObject)  param.get();
+            UnitView view = (UnitView) unitMap.get(unit);
+            view.setVisibleVal(0);//set this val to zero remove unit from initiative queue
+            GuiEventManager.trigger(REMOVE_FROM_INITIATIVE_PANEL,
+             new EventCallbackParam(new InitiativePanelParam(null, view.getId(), 0)));
+            removeUnitView(unit);
         });
 
         GuiEventManager.bind(INGAME_EVENT_TRIGGERED, param -> {
-            main.game.event.Event event = (main.game.event.Event) param.get();
-            Ref r = event.getRef();
+            main.game.logic.event.Event event = (main.game.logic.event.Event) param.get();
+            Ref ref = event.getRef();
+
             boolean caught = false;
             if (event.getType() == STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED) {
                 GuiEventManager.trigger(GuiEventType.EFFECT_APPLIED,
-                        new EventCallbackParam<>(event.getRef().getEffect()));
+                 new EventCallbackParam<>(event.getRef().getEffect()));
                 caught = true;
             }
 
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED
-                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
-                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
+             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
+             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
 //                (r.getEffect() instanceof ChangeFacingEffect) nice try
             {
-                DC_HeroObj hero = (DC_HeroObj) r.getObj(KEYS.TARGET
+                BattleFieldObject hero = (BattleFieldObject)  ref.getObj(KEYS.TARGET
                 );
                 BaseView view = unitMap.get(hero);
                 if (view instanceof UnitView) {
@@ -143,28 +154,34 @@ public class GridPanel extends Group {
 
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED) {
-                if (!DeathAnim.isOn()) {
-                    GuiEventManager.trigger(DESTROY_UNIT_MODEL, new EventCallbackParam(r.getTargetObj()));
-                }
 
-                BaseView bv = removeUnitView((DC_HeroObj) r.getTargetObj());
-                if (bv instanceof UnitView) {
-                    ((UnitView) bv).setVisibleVal(0);//set this val to zero remove unit from initiative queue
+                if (!DeathAnim.isOn() || ref.isDebug())
+                {
+                    GuiEventManager.trigger(DESTROY_UNIT_MODEL,
+                     new EventCallbackParam(ref.getTargetObj()));
                 }
+//                else //TODO make it work instead of onFinishEvents!
+//                AnimMaster.getInstance(). onDone(event,p ->
+//                GuiEventManager.trigger(DESTROY_UNIT_MODEL,
+//                 new EventCallbackParam(r.getTargetObj())
+//                )
+//                ,  new EventCallbackParam(r.getTargetObj())
+//                );
+
                 caught = true;
             }
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
-                removeUnitView((DC_HeroObj) r.getSourceObj());
+                removeUnitView((BattleFieldObject)  ref.getSourceObj());
                 caught = true;
             }
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING) {
-                moveUnitView((DC_HeroObj) r.getSourceObj());
+                moveUnitView((BattleFieldObject)  ref.getSourceObj());
                 caught = true;
             }
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_SUMMONED) {
-                addUnitView((DC_HeroObj) r.getObj(KEYS.SUMMONED));
+                addUnitView((BattleFieldObject)  ref.getObj(KEYS.SUMMONED));
                 caught = true;
             }
 
@@ -176,23 +193,20 @@ public class GridPanel extends Group {
                         break;
                 }*/
             }
-            if (event.getType().name().startsWith("PROP_")) {
+            if (event.getType().name().startsWith("PROP_"))
                 caught = true;
-            }
-            if (event.getType().name().startsWith("ABILITY_")) {
+            if (event.getType().name().startsWith("ABILITY_"))
                 caught = true;
-            }
-            if (event.getType().name().startsWith("EFFECT_")) {
+            if (event.getType().name().startsWith("EFFECT_"))
                 caught = true;
-            }
 
             if (event.getType().name().startsWith("PARAM_MODIFIED")) {
                 switch (event.getType().getArg()) {
                     case "Illumination":
                         if (lightingManager != null) {
                             Obj o = event.getRef().getTargetObj();
-                            if (o instanceof DC_HeroObj) {
-                                lightingManager.updateObject((DC_HeroObj) event.getRef().getTargetObj());
+                            if (o instanceof Unit) {
+                                lightingManager.updateObject((BattleFieldObject)  event.getRef().getTargetObj());
                             }
                         }
                         caught = true;
@@ -201,17 +215,21 @@ public class GridPanel extends Group {
 
                 caught = true;
             }
-            if (!muteEventLog) {
+            if (!muteEventLog)
                 if (!caught) {
                     System.out.println("catch ingame event: " + event.getType() + " in " + event.getRef());
                 }
-            }
         });
 
 
         GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
-            DC_HeroObj hero = (DC_HeroObj) obj.get();
+            BattleFieldObject hero = (BattleFieldObject)  obj.get();
             BaseView view = unitMap.get(hero);
+            if (view == null) {
+                System.out.println("unitMap not initiatilized at ACTIVE_UNIT_SELECTED! "
+                );
+                return;
+            }
             if (view.getParent() instanceof GridCellContainer) {
                 ((GridCellContainer) view.getParent()).popupUnitView(view);
             }
@@ -223,17 +241,17 @@ public class GridPanel extends Group {
         });
 
         GuiEventManager.bind(CREATE_UNITS_MODEL, param -> {
-            units = (DequeImpl<DC_HeroObj>) param.get();
+            units = (DequeImpl<BattleFieldObject>) param.get();
 
             lightingManager = new LightingManager(units, rows, cols);
 
-            Map<Coordinates, List<DC_HeroObj>> map = new HashMap<>();
-            for (DC_HeroObj object : units) {
+            Map<Coordinates, List<BattleFieldObject>> map = new HashMap<>();
+            for (BattleFieldObject object : units) {
                 Coordinates c = object.getCoordinates();
                 if (!map.containsKey(c)) {
                     map.put(c, new ArrayList<>());
                 }
-                List<DC_HeroObj> list = map.get(c);
+                List<BattleFieldObject> list = map.get(c);
                 list.add(object);
             }
 
@@ -241,7 +259,7 @@ public class GridPanel extends Group {
                 List<UnitViewOptions> options = new ArrayList<>();
                 List<UnitViewOptions> overlays = new ArrayList<>();
 
-                for (DC_HeroObj object : map.get(coordinates)) {
+                for (BattleFieldObject object : map.get(coordinates)) {
                     if (!object.isOverlaying()) {
                         options.add(new UnitViewOptions(object, unitMap));
                     } else {
@@ -257,7 +275,7 @@ public class GridPanel extends Group {
             }
 
             GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
-                Pair<DC_HeroObj, Integer> p = (Pair<DC_HeroObj, Integer>) obj.get();
+                Pair<Unit, Integer> p = (Pair<Unit, Integer>) obj.get();
                 UnitView uv = (UnitView) unitMap.get(p.getLeft());
                 uv.updateInitiative(p.getRight());
             });
@@ -297,7 +315,7 @@ public class GridPanel extends Group {
         return super.hit(x, y, touchable);
     }
 
-    private void moveUnitView(DC_HeroObj heroObj) {
+    private void moveUnitView(BattleFieldObject heroObj) {
         int rows1 = rows - 1;
         BaseView uv = unitMap.get(heroObj);
         Coordinates c = heroObj.getCoordinates();
@@ -316,26 +334,29 @@ public class GridPanel extends Group {
         }
     }
 
-    private void addUnitView(DC_HeroObj heroObj) {
+    private void addUnitView(BattleFieldObject heroObj) {
         UnitViewOptions uvo = new UnitViewOptions(heroObj, unitMap);
         new UnitView(uvo);
         moveUnitView(heroObj);
     }
 
-    private BaseView removeUnitView(DC_HeroObj obj) {
+    private BaseView removeUnitView(BattleFieldObject obj) {
         BaseView uv = unitMap.get(obj);
         GridCellContainer gridCellContainer = (GridCellContainer) uv.getParent();
+if (gridCellContainer==null ){
+    LogMaster.log(1,obj+" IS ALREADY REMOVED!");
+    return uv;
+}
         gridCellContainer.removeActor(uv);
         uv.setVisible(false);
+
         GuiEventManager.trigger(UPDATE_LIGHT, null);
         return uv;
     }
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
-        if (touchable && getTouchable() != Touchable.enabled) {
-            return null;
-        }
+        if (touchable && getTouchable() != Touchable.enabled) return null;
         return x >= 0 && x < getWidth() && y >= 0 && y < getHeight() ? this : null;
     }
 
@@ -343,9 +364,8 @@ public class GridPanel extends Group {
     public void act(float delta) {
         super.act(delta);
         for (BaseView view : unitMap.values()) {
-            if (view.getActions().size > 0) {
+            if (view.getActions().size > 0)
                 view.act(delta);
-            }
         }
     }
 
@@ -372,11 +392,11 @@ public class GridPanel extends Group {
         this.cellBorderManager = cellBorderManager;
     }
 
-    public Map<DC_HeroObj, BaseView> getUnitMap() {
+    public Map<BattleFieldObject, BaseView> getUnitMap() {
         return unitMap;
     }
 
-    public void setUnitMap(Map<DC_HeroObj, BaseView> unitMap) {
+    public void setUnitMap(Map<BattleFieldObject, BaseView> unitMap) {
         this.unitMap = unitMap;
     }
 

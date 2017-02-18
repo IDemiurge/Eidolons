@@ -2,7 +2,7 @@ package main.client.dc;
 
 import main.client.cc.CharacterCreator;
 import main.client.game.DC_GameInitializer;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 
 public class Simulation {
     private static DC_Game game;

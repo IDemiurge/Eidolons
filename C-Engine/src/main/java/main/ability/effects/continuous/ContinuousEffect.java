@@ -8,6 +8,7 @@ import main.ability.effects.oneshot.common.AttachmentEffect;
 import main.content.ContentManager;
 import main.entity.Ref;
 import main.entity.obj.Attachment;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 
 public class ContinuousEffect extends MicroEffect {
@@ -33,7 +34,7 @@ public class ContinuousEffect extends MicroEffect {
                 if (!(e instanceof ContinuousEffect) && !(e instanceof AttachmentEffect)) {
                     {
                         ((Effects) effect).remove(e);
-                        main.system.auxiliary.LogMaster.log("effect wrapped " + e);
+                        LogMaster.log("effect wrapped " + e);
                         e = transformEffect(e);
                         ((Effects) effect).add(e);
 
@@ -129,7 +130,7 @@ public class ContinuousEffect extends MicroEffect {
     }
 
     public boolean apply() {
-        main.system.auxiliary.LogMaster.log(0, "CONTINUOUS EFFECT (" + toString() + ") applied to "
+        LogMaster.log(0, "CONTINUOUS EFFECT (" + toString() + ") applied to "
                 + ref.getTargetObj());
         return getEffect().apply();
     }

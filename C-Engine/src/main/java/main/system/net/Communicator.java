@@ -2,8 +2,9 @@ package main.system.net;
 
 import main.entity.Ref;
 import main.entity.obj.Active;
-import main.game.MicroGame;
+import main.game.core.game.MicroGame;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.net.socket.GenericConnection;
 import main.system.net.socket.ServerConnector.NetCode;
 
@@ -36,11 +37,11 @@ public abstract class Communicator {
     }
 
     public void awaitCommand(NetCode commandCode) {
-        main.system.auxiliary.LogMaster.log(4, "awaiting input for command: " + commandCode);
+        LogMaster.log(4, "awaiting input for command: " + commandCode);
         // if (commandCode.isInputIrrelevant())
 
         if (!new WaitingThread(commandCode).waitForInput()) {
-            main.system.auxiliary.LogMaster.log("NO INPUT EVER CAME! - " + commandCode);
+            LogMaster.log("NO INPUT EVER CAME! - " + commandCode);
             // TODO request to resend data!!!
             return;
         }
@@ -50,7 +51,7 @@ public abstract class Communicator {
     }
 
     protected void executeCommand(String string) {
-        main.system.auxiliary.LogMaster.log("COMMAND: " + string);
+        LogMaster.log("COMMAND: " + string);
         COMMAND cmd = COMMAND.valueOf(string.split(CMD_SEPARATOR)[0]);
         if (string.split(CMD_SEPARATOR).length == 1) {
             executeCommand(cmd, null);
@@ -82,7 +83,7 @@ public abstract class Communicator {
     }
 
     public boolean activate(Active active, Ref ref) {
-        main.system.auxiliary.LogMaster.log("Activating: " + active + "\nREF: " + ref);
+        LogMaster.log("Activating: " + active + "\nREF: " + ref);
         active.setRef(ref);
         return active.activate(false);
     }

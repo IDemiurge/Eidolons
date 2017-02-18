@@ -1,15 +1,15 @@
 package main.swing.components.obj.drawing;
 
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.DirectionMaster;
+import main.rules.action.WatchRule;
 import main.rules.mechanics.ConcealmentRule;
-import main.rules.mechanics.WatchRule;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.ColorManager;
+import main.system.graphics.GuiManager;
 import main.system.graphics.ImageTransformer;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
@@ -51,16 +51,16 @@ public class DrawMasterStatic {
 
     public static void drawWatchInfo(int zoom, Graphics g) {
         DC_Obj info = DC_Game.game.getManager().getInfoObj();
-        if (info instanceof DC_HeroObj) {
+        if (info instanceof Unit) {
             java.util.List<DC_Obj> watchedObjects = WatchRule.getWatchersMap().get(info);
             if (watchedObjects != null) {
-                drawWatchVisuals(watchedObjects, (DC_HeroObj) info, g, zoom, watchedObjects, false,
+                drawWatchVisuals(watchedObjects, (Unit) info, g, zoom, watchedObjects, false,
                         true);
-                drawWatchVisuals(watchedObjects, (DC_HeroObj) info, g, zoom, watchedObjects, false,
+                drawWatchVisuals(watchedObjects, (Unit) info, g, zoom, watchedObjects, false,
                         false);
             }
         } else {
-            DC_HeroObj active = DC_Game.game.getManager().getActiveObj();
+            Unit active = DC_Game.game.getManager().getActiveObj();
             if (active.isMine()) {
                 java.util.List<DC_Obj> watchedObjects = WatchRule.getWatchersMap().get(active);
                 if (watchedObjects != null) {
@@ -71,7 +71,7 @@ public class DrawMasterStatic {
         }
     }
 
-    private static void drawWatchVisuals(java.util.List<DC_Obj> watchedObjects, DC_HeroObj watcher,
+    private static void drawWatchVisuals(java.util.List<DC_Obj> watchedObjects, Unit watcher,
                                          Graphics g, int zoom, java.util.List<DC_Obj> list, boolean active, boolean lines_images) {
         int w = ImageManager.STD_IMAGES.WATCHER.getWidth() * zoom / 100;
         int h = ImageManager.STD_IMAGES.WATCHER.getHeight() * zoom / 100;
@@ -128,7 +128,7 @@ public class DrawMasterStatic {
                                           int h, Map<Coordinates, java.util.List<Coordinates.DIRECTION>> diagonalJoints) {
         for (Coordinates c : diagonalJoints.keySet()) {
             boolean darken = false;
-            DC_HeroObj obj = DC_Game.game.getUnitByCoordinate(c);
+            Unit obj = DC_Game.game.getUnitByCoordinate(c);
             // TODO CHECK WALL
             if (obj == null) {
                 obj = DC_Game.game.getUnitByCoordinate(c);

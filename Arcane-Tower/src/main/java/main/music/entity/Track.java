@@ -1,6 +1,6 @@
 package main.music.entity;
 
-import main.content.parameters.G_PARAMS;
+import main.content.values.parameters.G_PARAMS;
 import main.entity.type.ObjType;
 import main.logic.AT_PROPS;
 

@@ -7,8 +7,8 @@ import main.elements.conditions.MicroCondition;
 import main.entity.Entity;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
-import main.system.ConditionMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.entity.ConditionMaster;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
 import java.util.Set;

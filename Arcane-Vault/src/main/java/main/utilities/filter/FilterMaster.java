@@ -8,8 +8,8 @@ import main.elements.conditions.Conditions;
 import main.entity.Ref.KEYS;
 import main.launch.ArcaneVault;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.ConditionMaster;
-import main.system.ConditionMaster.CONDITION_TEMPLATES;
+import main.system.entity.ConditionMaster;
+import main.system.entity.ConditionMaster.CONDITION_TEMPLATES;
 import main.system.auxiliary.StringMaster;
 import org.w3c.dom.Document;
 

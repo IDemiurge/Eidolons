@@ -1,13 +1,13 @@
 package main.game.logic.dungeon.editor.gui;
 
-import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
-import main.content.properties.MACRO_PROPS;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.MACRO_PROPS;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjAtCoordinate;
 import main.game.battlefield.Coordinates;
 import main.game.logic.dungeon.Entrance;
@@ -199,9 +199,9 @@ public class LE_PlanPanel extends G_Panel {
 
                 break;
             case POSITIONING:
-                if (obj instanceof DC_HeroObj) {
-                    LE_ObjMaster.setDirection((DC_HeroObj) obj, obj.getCoordinates());
-                    LE_ObjMaster.setFlip((DC_HeroObj) obj, obj.getCoordinates());
+                if (obj instanceof Unit) {
+                    LE_ObjMaster.setDirection((Unit) obj, obj.getCoordinates());
+                    LE_ObjMaster.setFlip((Unit) obj, obj.getCoordinates());
                     LevelEditor.getMainPanel().getMapViewComp().getMinigrid().resetOverlayingComp(
                             obj);
                 }

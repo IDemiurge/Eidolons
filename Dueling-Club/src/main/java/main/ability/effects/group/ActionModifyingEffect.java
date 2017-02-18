@@ -1,10 +1,10 @@
 package main.ability.effects.group;
 
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.elements.conditions.Condition;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.Obj;
-import main.system.auxiliary.ListMaster;
+import main.entity.obj.unit.Unit;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedList;
@@ -22,7 +22,7 @@ public class ActionModifyingEffect extends HeroObjectModifyingEffect {
 
     @Override
     protected List<Obj> getObjectsByName(String objName) {
-        DC_HeroObj hero = (DC_HeroObj) ref.getSourceObj();
+        Unit hero = (Unit) ref.getSourceObj();
         if (objName.contains(StringMaster.AND_SEPARATOR)) {
             List<Obj> list = new LinkedList<>();
             for (String sub : StringMaster.openContainer(objName)) {
@@ -39,7 +39,7 @@ public class ActionModifyingEffect extends HeroObjectModifyingEffect {
     }
 
     @Override
-    protected OBJ_TYPES getTYPE() {
-        return OBJ_TYPES.ACTIONS;
+    protected DC_TYPE getTYPE() {
+        return DC_TYPE.ACTIONS;
     }
 }

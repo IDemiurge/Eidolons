@@ -1,6 +1,6 @@
 package main.elements.conditions.standard;
 
-import main.content.CONTENT_CONSTS.ROLL_TYPES;
+import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.elements.conditions.ConditionImpl;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.Formula;

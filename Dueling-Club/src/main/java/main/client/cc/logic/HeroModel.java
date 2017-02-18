@@ -4,9 +4,9 @@ import main.ability.AbilityObj;
 import main.client.cc.gui.MainPanel;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
-import main.content.parameters.ParamMap;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.parameters.ParamMap;
+import main.content.values.properties.PROPERTY;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 

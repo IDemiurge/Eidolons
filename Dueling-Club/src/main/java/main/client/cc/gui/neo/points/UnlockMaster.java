@@ -2,9 +2,9 @@ package main.client.cc.gui.neo.points;
 
 import main.client.cc.CharacterCreator;
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.system.math.DC_MathManager;
 import main.system.math.MathMaster;
@@ -26,7 +26,7 @@ public class UnlockMaster {
         masteriesUnlocked -= DC_MathManager.getMasteryDiscount(entity);
         // 25 75 150 250 400 500 [500]?
 
-        DC_HeroObj hero = CharacterCreator.getHeroManager().getHero((ObjType) entity);
+        Unit hero = CharacterCreator.getHeroManager().getHero((ObjType) entity);
 
         int xpCost = getXpCost(entity, masteriesUnlocked, hero);
         int goldCost = getGoldCost(entity, masteriesUnlocked, hero);
@@ -59,7 +59,7 @@ public class UnlockMaster {
         return true;
     }
 
-    private static int getGoldCost(Entity entity, int masteriesUnlocked, DC_HeroObj hero) {
+    private static int getGoldCost(Entity entity, int masteriesUnlocked, Unit hero) {
         int goldCost = (int) Math.min(MAX_GOLD_COST, GOLD_FACTOR
                 + (GOLD_FACTOR * Math.pow(2, masteriesUnlocked)));
 
@@ -72,7 +72,7 @@ public class UnlockMaster {
         return goldCost;
     }
 
-    private static int getXpCost(Entity entity, int masteriesUnlocked, DC_HeroObj hero) {
+    private static int getXpCost(Entity entity, int masteriesUnlocked, Unit hero) {
         int xpCost = (int) Math.min(MAX_XP_COST, XP_FACTOR
                 + (XP_FACTOR * Math.pow(2, masteriesUnlocked)));
         int xpFactor = -hero.getIntParam(PARAMS.XP_COST_REDUCTION)
@@ -88,7 +88,7 @@ public class UnlockMaster {
         int masteriesUnlocked = DC_MathManager.getMasteriesUnlocked(entity);
         masteriesUnlocked -= DC_MathManager.getMasteryDiscount(entity);
         // 25 75 150 250 400 500 [500]?
-        DC_HeroObj hero = CharacterCreator.getHeroManager().getHero((ObjType) entity);
+        Unit hero = CharacterCreator.getHeroManager().getHero((ObjType) entity);
 
         int cost = gold ? getGoldCost(entity, masteriesUnlocked, hero) : getXpCost(entity,
                 masteriesUnlocked, hero);
@@ -99,7 +99,7 @@ public class UnlockMaster {
 
         CharacterCreator.getHeroManager().saveType((ObjType) entity);
 
-        DC_HeroObj hero = CharacterCreator.getHeroManager().getHero((ObjType) entity);
+        Unit hero = CharacterCreator.getHeroManager().getHero((ObjType) entity);
         ObjType type = hero.getType();
         type.modifyParameter(param, 1);
 

@@ -2,15 +2,16 @@ package main.system.launch;
 
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.MACRO_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.MACRO_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.XmlDocHolder;
 import main.data.xml.XML_Converter;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -35,7 +36,7 @@ public class TypeBuilder {
     public static ObjType buildType(Node node, ObjType type) {
 
         NodeList nl = node.getChildNodes();
-        main.system.auxiliary.LogMaster.log(0, "building type: " +
+        LogMaster.log(0, "building type: " +
 
                 node.getNodeName());
         for (int i = 0; i < nl.getLength(); i++) {
@@ -100,7 +101,7 @@ public class TypeBuilder {
             }
             PROPERTY prop = ContentManager.getPROP(child.getNodeName());
             if (prop == null) {
-                main.system.auxiliary.LogMaster.log(1, "no such prop: " + child.getNodeName());
+                LogMaster.log(1, "no such prop: " + child.getNodeName());
                 prop = ContentManager.getPROP(child.getNodeName());
                 continue;
             }
@@ -126,7 +127,7 @@ public class TypeBuilder {
             }
             PARAMETER param = ContentManager.getPARAM(child.getNodeName());
             if (param == null) {
-                main.system.auxiliary.LogMaster.log(1, "no such param: " + child.getNodeName());
+                LogMaster.log(1, "no such param: " + child.getNodeName());
                 continue;
             }
 

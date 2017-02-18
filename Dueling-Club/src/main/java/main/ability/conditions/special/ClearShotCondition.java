@@ -1,16 +1,17 @@
 package main.ability.conditions.special;
 
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;
-import main.game.battlefield.XLine;
-import main.system.auxiliary.ArrayMaster;
+import main.swing.XLine;
+import main.game.core.Eidolons;
+import main.system.auxiliary.data.ArrayMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.PositionMaster;
 
@@ -58,7 +59,7 @@ public class ClearShotCondition extends MicroCondition {
                                int x_, int y_ ) {
 
         Coordinates coordinates = new Coordinates(x_, y_);
-        List<DC_HeroObj> units = DC_Game.game.getObjectsOnCoordinate(coordinates);
+        List<Unit> units = Eidolons.gameMaster.getObjectsOnCoordinate(coordinates);
         if (units.isEmpty()) {
 
             if (!isVision()) {
@@ -67,7 +68,7 @@ public class ClearShotCondition extends MicroCondition {
             return false;
         } else {
             boolean obstructing = false;
-            for (DC_HeroObj unit : units) {
+            for (Unit unit : units) {
                 if (!isVision() || !unit.isTransparent()) {
                     obstructing = unit.isObstructing(source, target);
                 }
@@ -354,13 +355,13 @@ public class ClearShotCondition extends MicroCondition {
                         continue; // TODO does X/Y interchange?
                     }
                 }
-                if (target.getOBJ_TYPE_ENUM() == OBJ_TYPES.BF_OBJ) {
+                if (target.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
                     if (target.isInfoSelected()) {
-                        main.system.auxiliary.LogMaster.log(1, target + " vs " + coordinates
+                        LogMaster.log(1, target + " vs " + coordinates
                                 + " distance: " + distance);
                     }
                     if (target.isInfoSelected()) {
-                        main.system.auxiliary.LogMaster.log(1, angle + " vs "
+                        LogMaster.log(1, angle + " vs "
                                 + (float) Math.abs(source.getX() - c.x)
                                 / Math.abs(source.getX() - c.y));
                     }
@@ -475,7 +476,7 @@ public class ClearShotCondition extends MicroCondition {
 
     private void log(String str) {
         if (!isVision()) {
-            main.system.auxiliary.LogMaster.log(log_priority, str);
+            LogMaster.log(log_priority, str);
         }
     }
 

@@ -1,8 +1,8 @@
 package main.client.cc.gui.neo.principles;
 
 import main.client.cc.gui.neo.points.HC_InfoTextPanel;
-import main.content.CONTENT_CONSTS.PRINCIPLES;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
+import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;
 import main.rules.rpg.PrincipleMaster;
 

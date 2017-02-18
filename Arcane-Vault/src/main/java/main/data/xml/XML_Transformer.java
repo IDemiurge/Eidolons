@@ -1,21 +1,21 @@
 package main.data.xml;
 
-import main.content.CONTENT_CONSTS.BUFF_TYPE;
-import main.content.CONTENT_CONSTS.CLASSIFICATIONS;
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.*;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.GenericEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.elements.conditions.*;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
-import main.game.Game;
+import main.game.core.game.Game;
 import main.gui.components.controls.ModelManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.util.ValueHelper;
+import main.system.entity.ValueHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -73,10 +73,10 @@ public class XML_Transformer {
     }
 
     public static void transformBuffTypes() {
-        for (ObjType t : DataManager.getTypes(OBJ_TYPES.BUFFS)) {
+        for (ObjType t : DataManager.getTypes(DC_TYPE.BUFFS)) {
             if (StringMaster.contains(t.getProperty(G_PROPS.BUFF_TYPE), "buff")) {
                 t.setProperty(G_PROPS.BUFF_TYPE, StringMaster
-                        .getWellFormattedString(BUFF_TYPE.SPELL.name()));
+                        .getWellFormattedString(GenericEnums.BUFF_TYPE.SPELL.name()));
             }
         }
     }
@@ -106,7 +106,7 @@ public class XML_Transformer {
             int psionic = chaos / 2 + dark / 2 + arcane / 2;
             int death = dark / 2 + earth / 2;
 
-            if (t.checkProperty(G_PROPS.CLASSIFICATIONS, CLASSIFICATIONS.CONSTRUCT.toString())) {
+            if (t.checkProperty(G_PROPS.CLASSIFICATIONS, UnitEnums.CLASSIFICATIONS.CONSTRUCT.toString())) {
                 psionic = Math.min(100, psionic + 50);
                 death = Math.min(100, death + 50);
                 cold = Math.min(100, cold + 25);
@@ -136,7 +136,7 @@ public class XML_Transformer {
         // .getValueRef(KEYS.SOURCE, G_PROPS.RACE), "Human", true));
         c.add(new NotCondition(new StringComparison(StringMaster.getValueRef(KEYS.SOURCE,
                 G_PROPS.GROUP), "Background", true)));
-        filterTypes(c, OBJ_TYPES.CHARS);
+        filterTypes(c, DC_TYPE.CHARS);
     }
 
     public static void filterTypes(Condition c, OBJ_TYPE... TYPES) {

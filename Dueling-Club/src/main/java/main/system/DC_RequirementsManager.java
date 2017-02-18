@@ -7,24 +7,27 @@ import main.ability.conditions.req.ValueGroupCondition;
 import main.client.cc.CharacterCreator;
 import main.client.cc.HeroManager;
 import main.client.cc.gui.views.ClassView;
-import main.content.CONTENT_CONSTS.MASTERY_RANK;
+import main.content.enums.entity.SkillEnums.MASTERY_RANK;
 import main.content.*;
 import main.content.DC_ValueManager.VALUE_GROUP;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.SkillEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.XLinkedMap;
 import main.elements.conditions.*;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_FeatObj;
-import main.game.DC_Game;
+import main.entity.obj.attach.DC_FeatObj;
+import main.game.core.game.DC_Game;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
-import main.system.auxiliary.MapMaster;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.InfoMaster;
+import main.system.entity.ConditionMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 
@@ -51,8 +54,8 @@ public class DC_RequirementsManager implements RequirementsManager {
     }
 
     private static MASTERY_RANK getRank(Integer score) {
-        MASTERY_RANK rank = MASTERY_RANK.NONE;
-        for (MASTERY_RANK r : MASTERY_RANK.values()) {
+        MASTERY_RANK rank = SkillEnums.MASTERY_RANK.NONE;
+        for (MASTERY_RANK r : SkillEnums.MASTERY_RANK.values()) {
             if (r.getMasteryReq() > score) {
                 break;
             }
@@ -122,8 +125,8 @@ public class DC_RequirementsManager implements RequirementsManager {
 
         Requirements req = null;
         OBJ_TYPE TYPE = type.getOBJ_TYPE_ENUM();
-        if (TYPE instanceof OBJ_TYPES) {
-            switch ((OBJ_TYPES) TYPE) {
+        if (TYPE instanceof DC_TYPE) {
+            switch ((DC_TYPE) TYPE) {
 
                 case ARMOR:
                     req = generateItemRequirements(type, mode);
@@ -160,7 +163,7 @@ public class DC_RequirementsManager implements RequirementsManager {
             try {
                 req.addAll(toRequirements(additionalRequirements));
             } catch (Exception e) {
-                main.system.auxiliary.LogMaster.log(1, type + "'s req failed! - "
+                LogMaster.log(1, type + "'s req failed! - "
                         + additionalRequirements);
                 // e.printStackTrace();
             }
@@ -319,7 +322,7 @@ public class DC_RequirementsManager implements RequirementsManager {
         if (template == null) {
             if (!checkSimpleValRef(valRef)) {
 
-                main.system.auxiliary.LogMaster.log(1, "requirement not found: " + valRef);
+                LogMaster.log(1, "requirement not found: " + valRef);
             }
             return getCondition(valRef, value);
         }
@@ -681,7 +684,7 @@ public class DC_RequirementsManager implements RequirementsManager {
             }
             tip = tip.replace(originalValue, value);
 
-            main.system.auxiliary.LogMaster.log(1, tip + " for " + feat + " = " + value);
+            LogMaster.log(1, tip + " for " + feat + " = " + value);
 
             numericCondition.setComparingValue(new Formula(value));
             reqs = new Requirements(new Requirement(numericCondition, tip));

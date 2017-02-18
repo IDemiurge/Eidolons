@@ -1,22 +1,23 @@
 package main.game.logic.dungeon.editor;
 
-import main.content.parameters.G_PARAMS;
+import main.content.values.parameters.G_PARAMS;
 import main.entity.EntityMaster;
 import main.entity.obj.DC_Cell;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
+import main.game.battlefield.CoordinatesMaster;
 import main.game.logic.dungeon.minimap.MiniObjComp;
-import main.game.logic.macro.utils.CoordinatesMaster;
 import main.launch.ArcaneVault;
 import main.swing.components.obj.BfGridComp;
 import main.swing.components.obj.CellComp;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
@@ -230,7 +231,7 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
         if (e.getClickCount() > 1 || (alt && !empty)) {
             if (right) {
                 // choose if stacked?
-                List<DC_HeroObj> objectsOnCoordinate = LevelEditor.getSimulation()
+                List<Unit> objectsOnCoordinate = LevelEditor.getSimulation()
                         .getObjectsOnCoordinate(null, lastClicked.getCoordinates(), false, false,
                                 false);
                 LevelEditor.cache();
@@ -327,11 +328,11 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
 
                 while (true) {
                     if (interrupted) {
-                        main.system.auxiliary.LogMaster.log(1, "interrupted");
+                        LogMaster.log(1, "interrupted");
                         break;
                     }
                     if (exited) {
-                        main.system.auxiliary.LogMaster.log(1, "exited");
+                        LogMaster.log(1, "exited");
                         break;
                     }
                     boolean x = isXEdgeCloserToHoverObj();

@@ -1,7 +1,7 @@
 package main.system;
 
 import main.data.XLinkedMap;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -10,7 +10,9 @@ import java.util.Map;
 /**
  * Created by JustMe on 2/1/2017.
  */
-public class AnimEventMaster {
+public class AnimEventMaster extends GuiEventManager {
+//    private static AnimEventMaster instance;
+
     private static Map<main.system.GuiEventType, List<EventCallbackParam>> queue = new XLinkedMap<>();
     private static List<main.system.GuiEventType> waiting = new LinkedList<>();
 

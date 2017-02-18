@@ -1,9 +1,9 @@
 package main.game.logic.macro.gui.party;
 
 import main.content.VALUE;
-import main.content.parameters.MACRO_PARAMS;
-import main.content.properties.MACRO_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.properties.MACRO_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.game.logic.macro.travel.MacroParty;
 import main.swing.components.panels.ValueBox;
 import main.swing.components.panels.page.info.PropertyPage;

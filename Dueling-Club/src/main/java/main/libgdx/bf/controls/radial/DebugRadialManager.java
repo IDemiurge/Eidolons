@@ -1,8 +1,8 @@
 package main.libgdx.bf.controls.radial;
 
 import main.entity.obj.DC_Obj;
-import main.game.DC_Game;
-import main.game.Game;
+import main.game.core.game.DC_Game;
+import main.game.core.game.Game;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;

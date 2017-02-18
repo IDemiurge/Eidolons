@@ -2,12 +2,12 @@ package main.ability.effects.containers.customtarget;
 
 import main.ability.effects.Effect;
 import main.ability.effects.oneshot.common.SpecialTargetingEffect;
-import main.content.CONTENT_CONSTS.STD_BOOLS;
+import main.content.enums.GenericEnums;
 import main.data.DataManager;
 import main.elements.conditions.Conditions;
 import main.elements.targeting.AutoTargeting;
 import main.entity.Ref.KEYS;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 import main.system.DC_ConditionMaster;
 import main.system.math.PositionMaster;
 
@@ -49,7 +49,7 @@ public class RayEffect extends SpecialTargetingEffect {
                 conditions.add(ConditionMaster.getEnemyCondition());
             }
         }
-        if (ref.getObj(KEYS.ACTIVE).checkBool(STD_BOOLS.BLOCKED)) {
+        if (ref.getObj(KEYS.ACTIVE).checkBool(GenericEnums.STD_BOOLS.BLOCKED)) {
             conditions.add(DC_ConditionMaster.getClearShotFilterCondition());
         }
         this.targeting = new AutoTargeting(conditions, DataManager.BF_TYPES);

@@ -4,13 +4,14 @@ import main.client.cc.gui.misc.PoolComp;
 import main.client.cc.gui.neo.points.BuyButton;
 import main.client.cc.gui.neo.tree.HC_Tree;
 import main.content.PARAMS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.components.buttons.CustomButton;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.swing.generic.components.misc.GraphicComponent.STD_COMP_IMAGES;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.DC_MathManager;
 
 import java.awt.*;
@@ -26,16 +27,16 @@ public abstract class HT_BottomPanel extends G_Panel {
     protected CustomButton buyButtonXp;
     protected PoolComp costGold;
     protected PoolComp costXp;
-    protected DC_HeroObj hero;
+    protected Unit hero;
     protected ObjType bufferType;
     protected Object arg;
     // TextComp pointCost;
     // TextComp rank;
-    public HT_BottomPanel(final Object arg, final DC_HeroObj hero, final HC_Tree tree) {
+    public HT_BottomPanel(final Object arg, final Unit hero, final HC_Tree tree) {
         this.arg = arg;
         this.hero = hero;
         bufferType = initBufferType();
-        main.system.auxiliary.LogMaster.log(1, " bottom buffer set: " + bufferType);
+        LogMaster.log(1, " bottom buffer set: " + bufferType);
 
         this.tree = tree;
         buyButtonGold = new BuyButtonSkillTree(true, true);
@@ -83,7 +84,7 @@ public abstract class HT_BottomPanel extends G_Panel {
     public void refresh() {
 
         bufferType = initBufferType();
-        main.system.auxiliary.LogMaster.log(1, " bottom buffer reset: " + bufferType);
+        LogMaster.log(1, " bottom buffer reset: " + bufferType);
 
         masteryPoints.refresh();
         buyButtonGold.refresh();
@@ -103,11 +104,11 @@ public abstract class HT_BottomPanel extends G_Panel {
         this.selectedType = selectedType;
     }
 
-    public DC_HeroObj getHero() {
+    public Unit getHero() {
         return hero;
     }
 
-    public void setHero(DC_HeroObj hero) {
+    public void setHero(Unit hero) {
         this.hero = hero;
     }
 

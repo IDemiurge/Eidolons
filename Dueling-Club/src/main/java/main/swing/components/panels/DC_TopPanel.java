@@ -1,7 +1,7 @@
 package main.swing.components.panels;
 
 import main.client.cc.gui.misc.HC_TopComp;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.swing.components.buttons.MenuButton;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.VisualComponent;

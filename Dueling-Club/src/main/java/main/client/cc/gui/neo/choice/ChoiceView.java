@@ -3,17 +3,17 @@ package main.client.cc.gui.neo.choice;
 import main.client.cc.gui.neo.choice.PagedSelectionPanel.SelectionPage;
 import main.content.OBJ_TYPE;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.swing.components.PagedOptionsComp;
 import main.swing.components.buttons.CustomButton;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.generic.components.G_Panel;
 import main.swing.listeners.ListChooserSortOptionListener.SORT_TEMPLATE;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.MigMaster;
 
 import java.awt.*;
@@ -41,7 +41,7 @@ public abstract class ChoiceView<E> extends G_Panel {
     protected List<E> data;
     protected OBJ_TYPE TYPE;
     protected DC_PagedInfoPanel infoPanel;
-    protected DC_HeroObj hero;
+    protected Unit hero;
 
     protected CustomButton backButton;
     protected CustomButton okButton;
@@ -50,11 +50,11 @@ public abstract class ChoiceView<E> extends G_Panel {
     protected PagedOptionsComp<SORT_TEMPLATE> sortOptionsComp;
     protected PagedOptionsComp filterOptionsComp;
 
-    public ChoiceView(ChoiceSequence sequence, DC_HeroObj hero) {
+    public ChoiceView(ChoiceSequence sequence, Unit hero) {
         this(null, null, sequence, hero);
     }
 
-    public ChoiceView(List<E> data, OBJ_TYPE TYPE, ChoiceSequence sequence, DC_HeroObj hero) {
+    public ChoiceView(List<E> data, OBJ_TYPE TYPE, ChoiceSequence sequence, Unit hero) {
         setPanelSize(GuiManager.DEF_DIMENSION);
         this.hero = hero;
         this.TYPE = TYPE;

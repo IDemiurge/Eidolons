@@ -6,7 +6,7 @@ import main.ability.effects.Effects;
 import main.ability.effects.oneshot.MicroEffect;
 import main.data.ability.AE_ConstrArgs;
 import main.data.ability.OmittedConstructor;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 

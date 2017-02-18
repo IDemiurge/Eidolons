@@ -2,8 +2,8 @@ package main.entity.obj;
 
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.Game;
-import main.game.player.Player;
+import main.game.core.game.Game;
+import main.game.logic.battle.player.Player;
 
 public abstract class ActiveObjImpl extends Obj implements ActiveObj {
 

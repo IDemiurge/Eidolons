@@ -4,10 +4,12 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
-import main.content.CONTENT_CONSTS.*;
 import main.content.PARAMS;
-import main.entity.obj.DC_HeroObj;
-import main.game.DC_Game;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.STATUS;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 
 public class MoistRule extends DC_CounterRule {
 
@@ -25,8 +27,8 @@ public class MoistRule extends DC_CounterRule {
     }
 
     @Override
-    public boolean check(DC_HeroObj unit) {
-        if (unit.checkPassive(STANDARD_PASSIVES.IMMATERIAL)) {
+    public boolean check(Unit unit) {
+        if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
             return false;
         }
         return super.check(unit);
@@ -49,11 +51,11 @@ public class MoistRule extends DC_CounterRule {
     }
 
     @Override
-    public int getMaxNumberOfCounters(DC_HeroObj unit) {
-        if (unit.checkClassification(CLASSIFICATIONS.SMALL)) {
+    public int getMaxNumberOfCounters(Unit unit) {
+        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.SMALL)) {
             return 25;
         }
-        if (unit.checkClassification(CLASSIFICATIONS.HUGE)) {
+        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.HUGE)) {
             return 100;
         }
         return 50; // huge vs small?
@@ -66,20 +68,20 @@ public class MoistRule extends DC_CounterRule {
     }
 
     protected String getClashingCounter() {
-        return STD_COUNTERS.Blaze_Counter.getName();
+        return UnitEnums.STD_COUNTERS.Blaze_Counter.getName();
     }
 
     @Override
     public String getCounterName() {
-        return STD_COUNTERS.Moist_Counter.getName();
+        return UnitEnums.STD_COUNTERS.Moist_Counter.getName();
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(DC_HeroObj unit) {
-        if (unit.checkClassification(CLASSIFICATIONS.SMALL)) {
+    public int getCounterNumberReductionPerTurn(Unit unit) {
+        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.SMALL)) {
             return 1;
         }
-        if (unit.checkClassification(CLASSIFICATIONS.HUGE)) {
+        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.HUGE)) {
             return 4;
         }
         return 2;
@@ -87,12 +89,12 @@ public class MoistRule extends DC_CounterRule {
 
     @Override
     public String getBuffName() {
-        return STD_BUFF_NAMES.Soaked.name();
+        return MetaEnums.STD_BUFF_NAMES.Soaked.name();
     }
 
     @Override
     public STATUS getStatus() {
-        return STATUS.SOAKED;
+        return UnitEnums.STATUS.SOAKED;
     }
 
 }

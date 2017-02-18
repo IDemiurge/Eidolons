@@ -2,6 +2,7 @@ package main.system.net.user;
 
 import main.swing.generic.components.list.GenericList;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.net.RefresherImpl;
 import main.system.net.RefresherImpl.REFRESHER_TYPE;
 import main.system.net.WaitingThread;
@@ -68,7 +69,7 @@ public class UserList extends GenericList<User> {
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        main.system.auxiliary.LogMaster.log(1, ((UserList) e.getSource())
+        LogMaster.log(1, ((UserList) e.getSource())
                 .getSelectedValue().getData().replace(";", "\n"));
 
     }

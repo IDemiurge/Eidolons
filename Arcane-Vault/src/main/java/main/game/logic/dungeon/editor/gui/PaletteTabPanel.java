@@ -8,7 +8,7 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.logic.dungeon.editor.gui.LE_Palette.UPPER_PALETTE;
 import main.swing.generic.components.ComponentVisuals;
-import main.system.FilterMaster;
+import main.system.entity.FilterMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 import main.utilities.workspace.Workspace;

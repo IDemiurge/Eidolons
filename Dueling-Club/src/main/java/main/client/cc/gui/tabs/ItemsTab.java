@@ -12,11 +12,11 @@ import main.client.cc.gui.tabs.lists.QuickItemList;
 import main.content.OBJ_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.AbilityConstructor;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager.BORDER;
 
 public class ItemsTab extends HeroItemTab {
@@ -31,18 +31,18 @@ public class ItemsTab extends HeroItemTab {
     private JewelrySlots jewelrySlots;
     private ActionInfoList actionPanel;
 
-    public ItemsTab(DC_HeroObj hero) {
+    public ItemsTab(Unit hero) {
         this(null, hero);
     }
 
-    public ItemsTab(MainViewPanel mvp, DC_HeroObj hero) {
+    public ItemsTab(MainViewPanel mvp, Unit hero) {
         super("Inventory", mvp, hero);
         if (hero.getGame().isSimulation()) {
             getItemManager().addRemoveList(pagedListPanel); // TODO
         }
     }
 
-    public ItemsTab(DC_HeroObj hero, InvListManager invListManager) {
+    public ItemsTab(Unit hero, InvListManager invListManager) {
         this(null, hero);
 
     }
@@ -126,7 +126,7 @@ public class ItemsTab extends HeroItemTab {
     }
 
     @Override
-    public void setHero(DC_HeroObj hero) {
+    public void setHero(Unit hero) {
         super.setHero(hero);
         jewelrySlots.setHero(hero);
         slots.setHero(hero);

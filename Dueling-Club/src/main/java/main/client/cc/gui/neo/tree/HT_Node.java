@@ -1,15 +1,15 @@
 package main.client.cc.gui.neo.tree;
 
 import main.client.cc.CharacterCreator;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.swing.generic.components.list.ListItem;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
@@ -130,7 +130,7 @@ public class HT_Node extends ListItem<ObjType> {
     }
 
     public boolean isSkill() {
-        return getType().getOBJ_TYPE_ENUM() == OBJ_TYPES.SKILLS;
+        return getType().getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS;
     }
 
     private int drawVertically(Image image, Image img, int y) {

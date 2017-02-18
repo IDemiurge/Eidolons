@@ -1,6 +1,6 @@
 package main.system.sound;
 
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;

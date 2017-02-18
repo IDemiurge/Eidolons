@@ -1,7 +1,7 @@
 package main.ability.effects.oneshot;
 
 import main.ability.effects.SelfMoveEffect;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.DirectionMaster;
 import main.game.battlefield.MovementManager.MOVE_MODIFIER;
@@ -26,7 +26,7 @@ public class DisplacementEffect extends SelfMoveEffect {
     }
 
     private boolean moveTarget() {
-        DC_HeroObj obj = (DC_HeroObj) ref.getTargetObj();
+        Unit obj = (Unit) ref.getTargetObj();
         origin= obj.getCoordinates();
         Coordinates coordinate = obj.getCoordinates().getAdjacentCoordinate(
                 obj.getFacing().getDirection());
@@ -53,7 +53,7 @@ public class DisplacementEffect extends SelfMoveEffect {
         return result;
     }
 
-    private Boolean tryMove(DC_HeroObj obj, Coordinates coordinate) {
+    private Boolean tryMove(Unit obj, Coordinates coordinate) {
         Boolean result = null;
         if (game.getBattleFieldManager().isCellVisiblyFree(coordinate)) {
             try {

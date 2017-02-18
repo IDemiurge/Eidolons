@@ -6,15 +6,15 @@ import main.client.cc.gui.misc.BorderChecker;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.parameters.PARAMETER;
-import main.entity.obj.DC_HeroObj;
+import main.content.DC_TYPE;
+import main.content.values.parameters.PARAMETER;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.ColorManager;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 import main.system.graphics.MigMaster;
 import main.system.images.ImageManager;
 
@@ -31,7 +31,7 @@ public class HC_PagedListPanel extends G_PagePanel<ObjType> {
     private static final int H_OFFSET_Y = 48;
     private static final int V_OFFSET_X = 23;
     private HC_LISTS list_type;
-    private DC_HeroObj hero;
+    private Unit hero;
     private ItemListManager itemListManager;
     private BorderChecker borderChecker;
     private String listName;
@@ -39,7 +39,7 @@ public class HC_PagedListPanel extends G_PagePanel<ObjType> {
     private OBJ_TYPE TYPE;
     private Image img;
 
-    public HC_PagedListPanel(HC_LISTS list_type, DC_HeroObj hero, ItemListManager itemListManager,
+    public HC_PagedListPanel(HC_LISTS list_type, Unit hero, ItemListManager itemListManager,
                              List<ObjType> data, String listName) {
         super(list_type.getTemplate().getPageSize(), list_type.getTemplate().isVertical(),
                 list_type.getTemplate().getControlsVersion());
@@ -93,7 +93,7 @@ public class HC_PagedListPanel extends G_PagePanel<ObjType> {
                     if (TYPE instanceof C_OBJ_TYPE) {
 
                     } else {
-                        switch ((OBJ_TYPES) TYPE) {
+                        switch ((DC_TYPE) TYPE) {
                             case SPELLS:
                             case SKILLS:
                                 img = ImageManager.getValueIcon(mastery);

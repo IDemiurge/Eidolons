@@ -1,9 +1,9 @@
 package main.libgdx.anims.std;
 
-import main.content.CONTENT_CONSTS.FACING_SINGLE;
-import main.content.parameters.G_PARAMS;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.parameters.G_PARAMS;
 import main.entity.Entity;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.FacingMaster;
 import main.libgdx.anims.AnimData;
@@ -47,7 +47,7 @@ public class SpellAnim extends ActionAnim {
              getAdjacentCoordinates();
             list.removeIf(coordinates ->
              FacingMaster.getSingleFacing(active.getOwnerObj().getFacing(),
-              active.getOwnerObj().getCoordinates(), coordinates) != FACING_SINGLE.IN_FRONT);
+              active.getOwnerObj().getCoordinates(), coordinates) != UnitEnums.FACING_SINGLE.IN_FRONT);
             return list.size();
         }
         ){

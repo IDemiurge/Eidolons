@@ -4,14 +4,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
 import main.content.CONTENT_CONSTS2.SFX;
 import main.content.PARAMS;
-import main.entity.obj.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.libgdx.GameScreen;
 import main.libgdx.bf.GridMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.Chronos;
+import main.system.auxiliary.log.Chronos;
 import main.system.math.PositionMaster;
 
 import java.util.LinkedHashMap;
@@ -67,7 +67,7 @@ public class EmitterMap {
 //             continue ;  если апдейт был бы быстрый, можно было бы не пре-создавать там где не видно
 
             //нужно оптимизировать!
-            for (DC_HeroObj unit : DC_Game.game.getUnits()) {
+            for (Unit unit : DC_Game.game.getUnits()) {
                 if ((unit.isActiveSelected() ||
                  unit.checkParam(PARAMS.LIGHT_EMISSION)) &&
                  PositionMaster.getDistance(unit.getCoordinates(), c) <

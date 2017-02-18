@@ -2,7 +2,7 @@ package main.test.debug;
 
 import main.swing.generic.components.panels.G_ButtonPanel;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 import main.test.debug.DebugMaster.HIDDEN_DEBUG_FUNCTIONS;
 

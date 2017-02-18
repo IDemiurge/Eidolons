@@ -2,7 +2,7 @@ package main.game.logic.macro.utils;
 
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Reader;
@@ -10,7 +10,7 @@ import main.data.xml.XML_Writer;
 import main.entity.obj.Obj;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.MacroManager;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.threading.Weaver;
 import org.w3c.dom.Node;
 

@@ -2,10 +2,10 @@ package main.swing.components.obj;
 
 import main.content.CONTENT_CONSTS.FLIP;
 import main.entity.Entity;
+import main.entity.active.DC_UnitAction;
 import main.entity.obj.ActiveObj;
-import main.entity.obj.DC_UnitAction;
 import main.swing.generic.components.list.ListItem;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.ImageTransformer;
 import main.system.images.ImageManager;

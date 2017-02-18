@@ -4,9 +4,9 @@ import main.client.net.GameConnector;
 import main.client.net.GameConnector.HOST_CLIENT_CODES;
 import main.entity.Entity;
 import main.entity.type.ObjType;
-import main.game.Game;
-import main.game.MicroGame;
-import main.system.auxiliary.IdManager;
+import main.game.core.game.Game;
+import main.game.core.game.MicroGame;
+import main.system.entity.IdManager;
 
 public class DC_IdManager implements IdManager {
 

@@ -1,7 +1,7 @@
 package main.client.cc.gui.neo.header;
 
-import main.content.properties.G_PROPS;
-import main.entity.obj.DC_HeroObj;
+import main.content.values.properties.G_PROPS;
+import main.entity.obj.unit.Unit;
 import main.swing.generic.components.G_CompHolder;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
@@ -19,10 +19,10 @@ public class DeityComp extends G_CompHolder implements MouseListener {
     int emblemSize = 32;
 
     boolean faithless;
-    private DC_HeroObj hero;
+    private Unit hero;
     private HeroHeader header;
 
-    public DeityComp(HeroHeader header, DC_HeroObj hero) {
+    public DeityComp(HeroHeader header, Unit hero) {
         this.header = header;
         this.hero = hero;
         // TODO display description if selected? Aye!

@@ -6,10 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.RotateByAction;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_QuickItemObj;
-import main.entity.obj.DC_WeaponObj;
+import main.entity.active.DC_ActiveObj;
+import main.entity.item.DC_QuickItemObj;
+import main.entity.item.DC_WeaponObj;
 import main.entity.obj.Obj;
-import main.entity.obj.top.DC_ActiveObj;
+import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.texture.TextureManager;
 
 import java.util.LinkedList;
@@ -22,6 +23,7 @@ public class RangedAttackAnim extends AttackAnim {
 
     Texture rangedWeaponImage;
     private Obj ammo;
+    private SpriteAnimation weaponSprite;
 
     public RangedAttackAnim(Entity active) {
         super(active);
@@ -54,6 +56,14 @@ public class RangedAttackAnim extends AttackAnim {
     }
 
     @Override
+    public void start() {
+        super.start();
+        weaponSprite = new SpriteAnimation(getRangedWeaponImage(getActive()));
+        weaponSprite.setAttached(false);
+        sprites.add(weaponSprite);
+    }
+
+    @Override
     protected int getInitialAngle() {
         return super.getInitialAngle() - 90;
     }
@@ -81,10 +91,10 @@ public class RangedAttackAnim extends AttackAnim {
     @Override
     public void draw(Batch batch, float alpha) {
         super.draw(batch, alpha);
-        Texture texture = rangedWeaponImage;
-        batch.draw(texture, origin.x, origin.y, this.getOriginX(), this.getOriginY(), this.getWidth(),
-                this.getHeight(), this.getScaleX(), this.getScaleY(), initialAngle + this.getRotation(), 0, 0,
-                texture.getWidth(), texture.getHeight(), flipX, flipY);
+//        Texture texture = rangedWeaponImage;
+//        batch.draw(texture, origin.x, origin.y, this.getOriginX(), this.getOriginY(), this.getWidth(),
+//                this.getHeight(), this.getScaleX(), this.getScaleY(), initialAngle + this.getRotation(), 0, 0,
+//                texture.getWidth(), texture.getHeight(), flipX, flipY);
 
     }
 

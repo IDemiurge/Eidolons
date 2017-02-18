@@ -1,11 +1,11 @@
 package main.game.logic.macro.gui.party;
 
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.swing.components.panels.ValueBox;
 import main.swing.components.panels.ValueIconPanel;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
 

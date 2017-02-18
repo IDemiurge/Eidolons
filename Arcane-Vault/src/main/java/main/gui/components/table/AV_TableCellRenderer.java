@@ -1,12 +1,12 @@
 package main.gui.components.table;
 
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.TableDataManager;
 import main.gui.builders.EditViewPanel;
 import main.launch.ArcaneVault;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.ColorManager;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 

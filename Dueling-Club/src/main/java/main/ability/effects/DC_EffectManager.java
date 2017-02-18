@@ -1,14 +1,14 @@
 package main.ability.effects;
 
 import main.ability.Abilities;
-import main.content.CONTENT_CONSTS.RESISTANCE_TYPE;
+import main.content.enums.entity.SpellEnums;
 import main.entity.Ref;
-import main.entity.obj.DC_HeroObj;
+import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
-import main.entity.obj.top.DC_ActiveObj;
-import main.game.DC_Game;
-import main.rules.mechanics.ResistanceRule;
-import main.system.ai.logic.target.EffectMaster;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
+import main.game.ai.tools.target.EffectFinder;
+import main.rules.magic.ResistanceRule;
 
 public class DC_EffectManager implements EffectManager {
 
@@ -20,7 +20,7 @@ public class DC_EffectManager implements EffectManager {
 
     @Override
     public void setEffectRefs(Abilities abilities, Ref ref) {
-        Effects effects = EffectMaster.getEffectsFromAbilities(abilities);
+        Effects effects = EffectFinder.getEffectsFromAbilities(abilities);
         for (Effect e : effects) {
             e.setRef(ref);
         }
@@ -50,8 +50,8 @@ public class DC_EffectManager implements EffectManager {
                 if (spell == null) {
                     return true;
                 }
-                if (spell.getResistanceType() != RESISTANCE_TYPE.IRRESISTIBLE) {
-                    if (spell.getResistanceType() != RESISTANCE_TYPE.CHANCE_TO_BLOCK) {
+                if (spell.getResistanceType() != SpellEnums.RESISTANCE_TYPE.IRRESISTIBLE) {
+                    if (spell.getResistanceType() != SpellEnums.RESISTANCE_TYPE.CHANCE_TO_BLOCK) {
                         int mod = ResistanceRule.getResistanceMod(ref);
                         ((ReducedEffect) effect).setResistanceMod(mod);
                         return true;
@@ -84,7 +84,7 @@ public class DC_EffectManager implements EffectManager {
 
     private boolean checkTargeting(Effect effect) {
         Obj targetObj = effect.getRef().getTargetObj();
-        if (!(targetObj instanceof DC_HeroObj)) {
+        if (!(targetObj instanceof Unit)) {
             return false;
         }
         return targetObj.getOwner() != effect.getRef().getSourceObj()

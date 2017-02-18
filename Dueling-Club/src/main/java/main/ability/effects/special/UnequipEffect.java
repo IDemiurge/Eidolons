@@ -1,8 +1,8 @@
 package main.ability.effects.special;
 
 import main.ability.effects.oneshot.MicroEffect;
-import main.content.CONTENT_CONSTS.ITEM_SLOT;
-import main.entity.obj.DC_HeroObj;
+import main.content.enums.entity.ItemEnums.ITEM_SLOT;
+import main.entity.obj.unit.Unit;
 
 public class UnequipEffect extends MicroEffect {
 
@@ -16,7 +16,7 @@ public class UnequipEffect extends MicroEffect {
 
     @Override
     public boolean applyThis() {
-        DC_HeroObj target = (DC_HeroObj) ref.getTargetObj();
+        Unit target = (Unit) ref.getTargetObj();
         target.unequip(slot, drop);
         return true;
     }

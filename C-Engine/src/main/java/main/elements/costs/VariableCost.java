@@ -1,6 +1,6 @@
 package main.elements.costs;
 
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.entity.obj.Obj;
 import main.system.math.Formula;
 

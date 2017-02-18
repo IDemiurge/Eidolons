@@ -1,26 +1,28 @@
 package main.game.battlefield;
 
 import main.ability.UnitMaster;
-import main.client.battle.Positioner;
-import main.client.battle.arcade.PartyManager;
 import main.client.cc.logic.UnitLevelManager;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.C_OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
-import main.game.DC_GameData;
+import main.game.core.game.DC_Game;
+import main.game.core.game.DC_GameData;
 import main.game.battlefield.Coordinates.DIRECTION;
+import main.game.logic.arena.UnitGroupMaster;
+import main.game.logic.generic.Positioner;
+import main.game.logic.battle.player.DC_Player;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.building.MapBlock;
-import main.game.player.DC_Player;
-import main.game.player.Player;
+import main.game.logic.generic.PartyManager;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
@@ -261,7 +263,7 @@ public class DC_ObjInitializer {
                     } else {
                         owner = DC_Player.NEUTRAL;
                     }
-                    if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.ENCOUNTERS) {
+                    if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
                         if (!game.isSimulation()) {
                             game.getArenaManager().getSpawnManager().addDungeonEncounter(c_dungeon,
                                     block, c, type);
@@ -293,12 +295,12 @@ public class DC_ObjInitializer {
                 }
                 last = false;
                 //todo optimize create unit func it too slow
-                MicroObj unit = game.createUnit(type, c, owner);
-                DC_HeroObj hero = (DC_HeroObj) unit;
+                BattleFieldObject unit = (BattleFieldObject) game.createUnit(type, c, owner);
+
 
                 if (!game.isOffline()) {
                     if (!game.isHost()) {
-                        hero.setFacing(hero.getGame().getArenaManager().getSpawnManager()
+                        unit.setFacing(unit.getGame().getArenaManager().getSpawnManager()
                                 .getMultiplayerFacingForUnit(unit));
                     }
                 } else if (FAST_DC.isRunning()) {
@@ -306,6 +308,7 @@ public class DC_ObjInitializer {
                         creeps = true;
                     } else {
                         try {
+                            Unit hero = (Unit) unit;
                             if (first) {
                                 PartyManager.newParty(hero);
                             } else {
@@ -327,11 +330,11 @@ public class DC_ObjInitializer {
                 }
 
                 if (!CoreEngine.isLevelEditor() && unit.getOBJ_TYPE_ENUM() != null) {
-                    if (unit.getOBJ_TYPE_ENUM() == OBJ_TYPES.UNITS) {
+                    if (unit.getOBJ_TYPE_ENUM() == DC_TYPE.UNITS) {
                         // if (!owner.isMe() || game.isDebugMode()) TODO why
                         // not?
                         //todo optimize train func it too slow
-                        UnitMaster.train((DC_HeroObj) unit);
+                        UnitMaster.train((Unit) unit);
                     }
                 }
             } catch (Exception e) {
@@ -380,7 +383,7 @@ public class DC_ObjInitializer {
                 if (unit.getType().getName().equals(typeName)) {
 
                     if (!DC_Game.game.getRules().getStackingRule().canBeMovedOnto(
-                            (DC_HeroObj) unit, c)) {
+                            (Unit) unit, c)) {
                         // TODO tactics?
                         c = Positioner.adjustCoordinate(c, FacingMaster.getRandomFacing()); // direction
                         // preference?
@@ -398,7 +401,7 @@ public class DC_ObjInitializer {
             for (String data : flipMap.keySet()) {
                 Coordinates c = getCoordinatesFromObjString(data);
                 FLIP d = flipMap.get(data);
-                for (DC_HeroObj obj : DC_Game.game.getObjectsOnCoordinate(z, c, null, false, false)) {
+                for (Unit obj : DC_Game.game.getObjectsOnCoordinate(z, c, null, false, false)) {
                     String name = getNameFromObjString(data);
                     if (name.contains(MULTI_DIRECTION_SUFFIX)) {
                         name = name.split(MULTI_DIRECTION_SUFFIX)[0];
@@ -406,7 +409,7 @@ public class DC_ObjInitializer {
                     if (!name.equals(obj.getName())) {
                         continue;
                     }
-                    Map<DC_HeroObj, FLIP> map = obj.getGame().getFlipMap().get(c);
+                    Map<Unit, FLIP> map = obj.getGame().getFlipMap().get(c);
                     if (map == null) {
                         map = new HashMap<>();
                         obj.getGame().getFlipMap().put(c, map);
@@ -421,7 +424,7 @@ public class DC_ObjInitializer {
         for (String data : directionMap.keySet()) {
             Coordinates c = getCoordinatesFromObjString(data);
             DIRECTION d = directionMap.get(data);
-            for (DC_HeroObj obj : DC_Game.game.getObjectsOnCoordinate(z, c, null, false, false)) {
+            for (Unit obj : DC_Game.game.getObjectsOnCoordinate(z, c, null, false, false)) {
 
                 String name = getNameFromObjString(data);
                 if (name.contains(MULTI_DIRECTION_SUFFIX)) {
@@ -430,7 +433,7 @@ public class DC_ObjInitializer {
                 if (!name.equals(obj.getName())) {
                     continue;
                 }
-                Map<DC_HeroObj, DIRECTION> map = obj.getGame().getDirectionMap().get(c);
+                Map<Unit, DIRECTION> map = obj.getGame().getDirectionMap().get(c);
                 if (map == null) {
                     map = new HashMap<>();
                     obj.getGame().getDirectionMap().put(c, map);

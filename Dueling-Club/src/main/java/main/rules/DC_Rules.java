@@ -1,20 +1,24 @@
 package main.rules;
 
-import main.entity.obj.DC_HeroObj;
-import main.game.DC_Game;
-import main.game.GameRules;
-import main.game.event.Rule;
-import main.rules.action.ActionRule;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
+import main.game.core.game.GameRules;
+import main.game.logic.event.Rule;
+import main.rules.action.*;
 import main.rules.buff.*;
+import main.rules.combat.*;
 import main.rules.counter.*;
-import main.rules.generic.RoundRule;
-import main.rules.mechanics.*;
+import main.rules.mechanics.DurabilityRule;
+import main.rules.mechanics.WaitRule;
+import main.rules.round.*;
 import main.system.datatypes.DequeImpl;
 
 public class DC_Rules implements GameRules {
 
     protected DequeImpl<Rule> buffRules = new DequeImpl<>();
     protected DequeImpl<DamageCounterRule> damageRules = new DequeImpl<>();
+
+
     WatchRule watchRule;
     private DC_Game game;
     private DequeImpl<DC_CounterRule> counterRules = new DequeImpl<>();
@@ -56,7 +60,7 @@ public class DC_Rules implements GameRules {
         init();
     }
 
-    public void applyContinuousRules(DC_HeroObj unit) {
+    public void applyContinuousRules(Unit unit) {
         KnockdownRule.checkApplyProneEffect(unit);
     }
 
@@ -100,7 +104,6 @@ public class DC_Rules implements GameRules {
         damageRules.add(bleedingRule);
         poisonRule = new PoisonRule(game);
         damageRules.add(poisonRule);
-        game.getState().setDamageRules(damageRules);
         diseaseRule = new DiseaseRule(game);
 
         damageRules.add(diseaseRule);
@@ -124,7 +127,6 @@ public class DC_Rules implements GameRules {
         counterRules.add(blazeRule);
         counterRules.add(ensnareRule);
         counterRules.addAll(damageRules);
-        game.getState().setCounterRules(counterRules); // ???
 
         lateActionsRule = new TimeRule(getGame());
         moraleBuffRule = new MoraleBuffRule(getGame());

@@ -6,13 +6,13 @@ import main.client.cc.gui.lists.ItemListManager;
 import main.client.cc.gui.pages.HC_PagedListPanel;
 import main.client.cc.gui.pages.HC_PagedListPanel.HC_LISTS;
 import main.content.*;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
-import main.entity.obj.DC_FeatObj;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.attach.DC_FeatObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager.BORDER;
@@ -27,7 +27,7 @@ public class SkillTabNew extends HeroItemTab {
     List<HC_PagedListPanel> listPages;
     List<MasteryIconColumn> iconColumns;
 
-    public SkillTabNew(MainViewPanel mvp, DC_HeroObj hero) {
+    public SkillTabNew(MainViewPanel mvp, Unit hero) {
         super("Skills", mvp, hero);
         // TODO Auto-generated constructor stub
     }
@@ -152,7 +152,7 @@ public class SkillTabNew extends HeroItemTab {
 
     @Override
     protected OBJ_TYPE getTYPE() {
-        return OBJ_TYPES.SKILLS;
+        return DC_TYPE.SKILLS;
     }
 
     @Override
@@ -186,7 +186,7 @@ public class SkillTabNew extends HeroItemTab {
     }
 
     private final class HC_SkillPagedListPanel extends HC_PagedListPanel {
-        private HC_SkillPagedListPanel(HC_LISTS list_type, DC_HeroObj hero,
+        private HC_SkillPagedListPanel(HC_LISTS list_type, Unit hero,
                                        ItemListManager itemListManager, List<ObjType> data, String listName) {
             super(list_type, hero, itemListManager, data, listName);
         }

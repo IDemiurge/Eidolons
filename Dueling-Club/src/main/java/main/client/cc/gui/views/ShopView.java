@@ -2,16 +2,17 @@ package main.client.cc.gui.views;
 
 import main.client.cc.gui.lists.ShopListsPanel;
 import main.client.cc.gui.lists.VendorListsPanel;
-import main.content.CONTENT_CONSTS.QUALITY_LEVEL;
+import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.*;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.ItemEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.elements.conditions.*;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager.BORDER;
 
@@ -20,15 +21,15 @@ import java.util.List;
 
 public class ShopView extends HeroItemView {
     public static final QUALITY_LEVEL[] DEFAULT_QUALITY_LEVELS = {
-            QUALITY_LEVEL.INFERIOR, QUALITY_LEVEL.NORMAL,
-            QUALITY_LEVEL.SUPERIOR};
+            ItemEnums.QUALITY_LEVEL.INFERIOR, ItemEnums.QUALITY_LEVEL.NORMAL,
+            ItemEnums.QUALITY_LEVEL.SUPERIOR};
     private QUALITY_LEVEL[] qualityLevels;
 
-    public ShopView(DC_HeroObj hero) {
+    public ShopView(Unit hero) {
         this(hero, true, true);
     }
 
-    public ShopView(DC_HeroObj hero, boolean responsive, boolean showAll) {
+    public ShopView(Unit hero, boolean responsive, boolean showAll) {
         super(hero, responsive, showAll);
         setQualityLevels(DEFAULT_QUALITY_LEVELS);
     }
@@ -98,10 +99,10 @@ public class ShopView extends HeroItemView {
         // (KEYS.MATCH, PROPS.MAGICAL_ITEM_TRAIT), "", true));
 
         OrConditions specialConditions = new OrConditions(
-                ConditionMaster.getTYPECondition(OBJ_TYPES.JEWELRY),
+                ConditionMaster.getTYPECondition(DC_TYPE.JEWELRY),
                 new Conditions(new NotCondition(new StringComparison("{MATCH_"
                         + G_PROPS.QUALITY_LEVEL + "}", "", true)),
-                        ConditionMaster.getTYPECondition(OBJ_TYPES.ITEMS)));
+                        ConditionMaster.getTYPECondition(DC_TYPE.ITEMS)));
 
         Conditions conditions = new Conditions(new NotCondition(
                 new StringComparison("{MATCH_" + G_PROPS.MATERIAL + "}", "",

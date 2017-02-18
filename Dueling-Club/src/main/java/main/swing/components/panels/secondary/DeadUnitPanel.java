@@ -1,7 +1,7 @@
 package main.swing.components.panels.secondary;
 
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.swing.components.panels.DC_CellInfoPanel;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagedListPanel;
@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DeadUnitPanel extends G_PagedListPanel<DC_HeroObj> implements MouseListener {
+public class DeadUnitPanel extends G_PagedListPanel<Unit> implements MouseListener {
     public static final int PAGE_SIZE = 6;
     /*
      * not all corpses are available/visible - stacking rule should apply here too!
@@ -54,19 +54,19 @@ public class DeadUnitPanel extends G_PagedListPanel<DC_HeroObj> implements Mouse
     }
 
     @Override
-    protected G_Component createPageComponent(List<DC_HeroObj> list) {
+    protected G_Component createPageComponent(List<Unit> list) {
         return new DeadUnitPage(list);
     }
 
     @Override
-    protected List<List<DC_HeroObj>> getPageData() {
+    protected List<List<Unit>> getPageData() {
         List<Obj> corpses = getCell().getGame().getGraveyardManager().getDeadUnits(
                 cell.getCoordinates());
 
-        Collection<DC_HeroObj> units = new LinkedList<>();
+        Collection<Unit> units = new LinkedList<>();
         if (corpses != null) {
             for (Obj obj : corpses) {
-                units.add((DC_HeroObj) obj);
+                units.add((Unit) obj);
             }
         }
         return splitList(units);
@@ -79,7 +79,7 @@ public class DeadUnitPanel extends G_PagedListPanel<DC_HeroObj> implements Mouse
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        DC_HeroObj unit = getList().getSelectedValue();
+        Unit unit = getList().getSelectedValue();
         if (unit == null) {
             return;
         }

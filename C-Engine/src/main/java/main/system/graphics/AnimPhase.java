@@ -1,7 +1,7 @@
 package main.system.graphics;
 
 import main.entity.Entity;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.Arrays;

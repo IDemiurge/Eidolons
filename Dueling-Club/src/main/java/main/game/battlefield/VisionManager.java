@@ -1,24 +1,29 @@
 package main.game.battlefield;
 
 import main.ability.conditions.special.ClearShotCondition;
-import main.content.CONTENT_CONSTS.*;
 import main.content.C_OBJ_TYPE;
 import main.content.PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.BfObjEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
+import main.content.enums.rules.VisionEnums.VISION_MODE;
+import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.obj.*;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
+import main.game.logic.battle.player.DC_Player;
 import main.game.logic.dungeon.Entrance;
-import main.game.player.DC_Player;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
+import main.rules.action.StealthRule;
 import main.rules.mechanics.ConcealmentRule;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
-import main.rules.mechanics.StealthRule;
 import main.swing.components.obj.drawing.VisibilityMaster;
-import main.system.auxiliary.Chronos;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
@@ -31,12 +36,12 @@ import java.util.*;
 public class VisionManager implements GenericVisionManager {
 
     private static ClearShotCondition clearShotCondition;
-    private static DC_HeroObj unit;
+    private static Unit unit;
     private static boolean visionHacked;
     private DC_Game game;
     private Map<DC_Obj, DequeImpl<Coordinates>> cache = new HashMap<>();
     private Map<DC_Obj, DequeImpl<Coordinates>> cacheSecondary = new HashMap<>();
-    private DC_HeroObj activeUnit;
+    private Unit activeUnit;
     private boolean fastMode;
 
     public VisionManager(DC_Game game) {
@@ -63,10 +68,10 @@ public class VisionManager implements GenericVisionManager {
                                                                 FACING_DIRECTION facing,
                                                                 boolean extended) {
         DequeImpl<Coordinates> list = new DequeImpl<>();
-        DC_HeroObj unit = null;
+        Unit unit = null;
         Coordinates orig = source.getCoordinates();
-        if (source instanceof DC_HeroObj) {
-            unit = (DC_HeroObj) source;
+        if (source instanceof Unit) {
+            unit = (Unit) source;
         }
         if (facing == null) {
             if (unit != null) {
@@ -127,11 +132,11 @@ public class VisionManager implements GenericVisionManager {
         return list;
     }
 
-    private static void addSpecial(DequeImpl<Coordinates> list, DC_HeroObj source,
+    private static void addSpecial(DequeImpl<Coordinates> list, Unit source,
                                    FACING_DIRECTION facing) {
         for (Obj obj : source.getGame().getObjects(C_OBJ_TYPE.BF)) {
-            if (FacingMaster.getSingleFacing(source, (BattlefieldObj) obj) == FACING_SINGLE.IN_FRONT) {
-                if (obj.getProperty(G_PROPS.BF_OBJECT_GROUP).equals(BF_OBJECT_GROUP.WALL)) {
+            if (FacingMaster.getSingleFacing(source, (BfObj) obj) == UnitEnums.FACING_SINGLE.IN_FRONT) {
+                if (obj.getProperty(G_PROPS.BF_OBJECT_GROUP).equals(BfObjEnums.BF_OBJECT_GROUP.WALL)) {
                     list.add(obj.getCoordinates());
                 }
                 // if (((DC_HeroObj ) obj).isHuge()
@@ -241,7 +246,7 @@ public class VisionManager implements GenericVisionManager {
 
     public static boolean checkDetectedForPlayer(DC_Obj obj) {
 
-        return obj.getPlayerVisionStatus(false) == UNIT_TO_PLAYER_VISION.DETECTED;
+        return obj.getPlayerVisionStatus(false) == VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED;
     }
 
     public static boolean checkDetected(DC_Obj obj, boolean enemy) {
@@ -255,7 +260,7 @@ public class VisionManager implements GenericVisionManager {
                 }
             }
         }
-        return obj.getPlayerVisionStatus(!enemy) == UNIT_TO_PLAYER_VISION.DETECTED;
+        return obj.getPlayerVisionStatus(!enemy) == VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED;
     }
 
     public static boolean checkVisible(DC_Obj obj) {
@@ -285,13 +290,13 @@ public class VisionManager implements GenericVisionManager {
         // return true;
 
         if (VisibilityMaster.isZeroVisibility(obj, active)) {
-            if (obj.getPlayerVisionStatus(active) == UNIT_TO_PLAYER_VISION.UNKNOWN) {
+            if (obj.getPlayerVisionStatus(active) == VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN) {
                 return false;
             }
         }
 
-        if (obj.getPlayerVisionStatus(active) == UNIT_TO_PLAYER_VISION.INVISIBLE
-                || obj.getPlayerVisionStatus(active) == UNIT_TO_PLAYER_VISION.INVISIBLE_ALLY) {
+        if (obj.getPlayerVisionStatus(active) == VisionEnums.UNIT_TO_PLAYER_VISION.INVISIBLE
+                || obj.getPlayerVisionStatus(active) == VisionEnums.UNIT_TO_PLAYER_VISION.INVISIBLE_ALLY) {
             return false;
         }
 
@@ -319,13 +324,13 @@ public class VisionManager implements GenericVisionManager {
             }
         }
 
-        return (obj.getActivePlayerVisionStatus() == UNIT_TO_PLAYER_VISION.KNOWN);
+        return (obj.getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN);
     }
 
     public void resetVisibilityStatuses() {
         ConcealmentRule.clearCache();
         WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
-        activeUnit = (DC_HeroObj) game.getTurnManager().getActiveUnit(true);
+        activeUnit = (Unit) game.getTurnManager().getActiveUnit(true);
 
         if (activeUnit == null) {
             LogMaster.log(0, "null active unit for visibility!");
@@ -384,14 +389,14 @@ public class VisionManager implements GenericVisionManager {
         // setVisibilityLevel(Player.NEUTRAL.getControlledUnits());
         // setVisibilityLevel(cells);
 
-        activeUnit.setUnitVisionStatus(UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT);
+        activeUnit.setUnitVisionStatus(VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT);
         activeUnit.setVisibilityLevel(VISIBILITY_LEVEL.CLEAR_SIGHT);
         resetLastKnownCoordinates();
         Chronos.logTimeElapsedForMark("PLAYER VISIBILITY REFRESH");
     }
 
     private void resetLastKnownCoordinates() {
-        for (DC_HeroObj u : game.getUnits()) {
+        for (Unit u : game.getUnits()) {
             if (checkVisible(u)) {
                 u.setLastKnownCoordinates(u.getCoordinates());
             }
@@ -414,9 +419,9 @@ public class VisionManager implements GenericVisionManager {
             // UNIT_TO_PLAYER_VISION.DETECTED;
 
             if (!activeUnit.isMine()) {
-                if (unit.getActivePlayerVisionStatus() == UNIT_TO_PLAYER_VISION.INVISIBLE) {
-                    if (status == UNIT_TO_UNIT_VISION.CONCEALED) {
-                        status = UNIT_TO_UNIT_VISION.BEYOND_SIGHT;
+                if (unit.getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.INVISIBLE) {
+                    if (status == VisionEnums.UNIT_TO_UNIT_VISION.CONCEALED) {
+                        status = VisionEnums.UNIT_TO_UNIT_VISION.BEYOND_SIGHT;
                     }
                     // detectionStatus = UNIT_TO_PLAYER_VISION.INVISIBLE_ALLY;
                 }
@@ -441,7 +446,7 @@ public class VisionManager implements GenericVisionManager {
     // }
     // }
 
-    private void setRelativeActiveUnitVisibility(DC_HeroObj activeUnit, Set<Obj> units) {
+    private void setRelativeActiveUnitVisibility(Unit activeUnit, Set<Obj> units) {
         for (Obj obj : units) {
             DC_Obj unit = (DC_Obj) obj;
 
@@ -454,7 +459,7 @@ public class VisionManager implements GenericVisionManager {
         }
     }
 
-    public UNIT_TO_UNIT_VISION getUnitVisibilityStatus(DC_Obj unit, DC_HeroObj activeUnit) {
+    public UNIT_TO_UNIT_VISION getUnitVisibilityStatus(DC_Obj unit, Unit activeUnit) {
         clearCacheForUnit(activeUnit);
         return getUnitVisionStatusPrivate(unit, activeUnit);
     }
@@ -466,14 +471,14 @@ public class VisionManager implements GenericVisionManager {
         return getUnitVisibilityStatus(unit, activeUnit);
     }
 
-    private UNIT_TO_UNIT_VISION getUnitVisionStatusPrivate(DC_Obj unit, DC_HeroObj activeUnit) {
+    private UNIT_TO_UNIT_VISION getUnitVisionStatusPrivate(DC_Obj unit, Unit activeUnit) {
         UNIT_TO_UNIT_VISION status;
 
         Boolean result = checkInSightSector(activeUnit, unit);
         if (result == null) {
-            status = UNIT_TO_UNIT_VISION.BEYOND_SIGHT;
+            status = VisionEnums.UNIT_TO_UNIT_VISION.BEYOND_SIGHT;
         } else {
-            status = (result) ? UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT : UNIT_TO_UNIT_VISION.IN_SIGHT;
+            status = (result) ? VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT : VisionEnums.UNIT_TO_UNIT_VISION.IN_SIGHT;
         }
 
         // if (status == UNIT_TO_UNIT_VISION.IN_SIGHT)
@@ -491,7 +496,7 @@ public class VisionManager implements GenericVisionManager {
             DC_Obj target = (DC_Obj) obj;
             if (DebugMaster.isOmnivisionOn()) {
                 if (player.isMe()) {
-                    target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.DETECTED);
+                    target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED);
                     return;
                 }
             }
@@ -501,10 +506,10 @@ public class VisionManager implements GenericVisionManager {
 
             Chronos.mark("checkInvisible " + target);
             if (checkInvisible(target)) {
-                if (target.getActivePlayerVisionStatus() != UNIT_TO_PLAYER_VISION.INVISIBLE) {
+                if (target.getActivePlayerVisionStatus() != VisionEnums.UNIT_TO_PLAYER_VISION.INVISIBLE) {
                     player.getLastSeenCache().put(target, target.getCoordinates());
                 }
-                target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.INVISIBLE);
+                target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.INVISIBLE);
                 if (Chronos.getTimeElapsedForMark("checkInvisible " + target) > 5) {
                     Chronos.logTimeElapsedForMark("checkInvisible " + target);
                 }
@@ -525,7 +530,7 @@ public class VisionManager implements GenericVisionManager {
                 if (obj1 != activeUnit) {
                     continue;
                 }
-                DC_HeroObj source = (DC_HeroObj) obj1;
+                Unit source = (Unit) obj1;
                 Chronos.mark("getUnitVisibilityLevel " + target);
                 VISIBILITY_LEVEL status = getUnitVisibilityLevel(target, source);
                 if (Chronos.getTimeElapsedForMark("getUnitVisibilityLevel " + target) > 5) {
@@ -549,14 +554,14 @@ public class VisionManager implements GenericVisionManager {
                 if (player.isMe()) {
                     target.setDetectedByPlayer(true);
                 }
-                target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.DETECTED);
+                target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED);
                 player.getLastSeenCache().put(target, target.getCoordinates());
             } else if (!VisibilityMaster.isZeroVisibility(target)) {
                 if (player.isMe()) {
                     if (obj instanceof DC_Cell) {
                         target.setDetectedByPlayer(true);
                     } else {
-                        DC_HeroObj unit = (DC_HeroObj) obj;
+                        Unit unit = (Unit) obj;
                         if (unit.isWall() || unit.isLandscape()) {
                             target.setDetectedByPlayer(true);
                         }
@@ -567,9 +572,9 @@ public class VisionManager implements GenericVisionManager {
                         // TODO only walls? || (obj.getOwner() == Player.NEUTRAL &&
                         // obj.getOBJ_TYPE_ENUM() == OBJ_TYPES.BF_OBJ)
                             ) {
-                        target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.KNOWN);
+                        target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN);
                     } else {
-                        target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.UNKNOWN);
+                        target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN);
                     }
                     // //Chronos.logTimeElapsedForMark("checkInvisible " + obj);
                 }
@@ -579,7 +584,7 @@ public class VisionManager implements GenericVisionManager {
 
     }
 
-    private VISIBILITY_LEVEL getUnitVisibilityLevel(DC_Obj target, DC_HeroObj source) {
+    private VISIBILITY_LEVEL getUnitVisibilityLevel(DC_Obj target, Unit source) {
         VISIBILITY_LEVEL visibilityLevel = VisibilityMaster.getVisibilityLevel(target, source);
 
         return visibilityLevel;
@@ -612,7 +617,7 @@ public class VisionManager implements GenericVisionManager {
         // }
     }
 
-    private Boolean checkInSightSector(DC_HeroObj source, DC_Obj target) {
+    private Boolean checkInSightSector(Unit source, DC_Obj target) {
         if (isVisionHacked()) {
             return true;
         }
@@ -632,7 +637,7 @@ public class VisionManager implements GenericVisionManager {
             }
             result = coordinates.contains(target.getCoordinates());
             if (result) {
-                main.system.auxiliary.LogMaster.log(0, target + " is half-visible: " + coordinates);
+                LogMaster.log(0, target + " is half-visible: " + coordinates);
                 return false;
             } else {
                 return null;
@@ -657,15 +662,15 @@ public class VisionManager implements GenericVisionManager {
         Chronos.logTimeElapsedForMark("VISIBILITY REFRESH");
     }
 
-    private DequeImpl<Coordinates> getVisibleCoordinatesSecondary(DC_HeroObj source) {
+    private DequeImpl<Coordinates> getVisibleCoordinatesSecondary(Unit source) {
         return getVisibleCoordinates(source, true);
     }
 
-    private DequeImpl<Coordinates> getVisibleCoordinates(DC_HeroObj source) {
+    private DequeImpl<Coordinates> getVisibleCoordinates(Unit source) {
         return getVisibleCoordinates(source, false);
     }
 
-    private DequeImpl<Coordinates> getVisibleCoordinates(DC_HeroObj source, boolean extended) {
+    private DequeImpl<Coordinates> getVisibleCoordinates(Unit source, boolean extended) {
         VISION_MODE mode = source.getVisionMode();
         switch (mode) {
             case INFRARED_VISION:
@@ -682,7 +687,7 @@ public class VisionManager implements GenericVisionManager {
         return null;
     }
 
-    public DequeImpl<Coordinates> getVisibleCoordinatesNormalSight(DC_HeroObj source,
+    public DequeImpl<Coordinates> getVisibleCoordinatesNormalSight(Unit source,
                                                                     boolean extended) {
         DequeImpl<Coordinates> coordinates = source.getSightSpectrumCoordinates(extended);
         if (!coordinates.isEmpty()) {
@@ -692,7 +697,7 @@ public class VisionManager implements GenericVisionManager {
     }
 
     // returns direction of the shadowing
-    private DIRECTION getShadowingDirection(DC_HeroObj source, DC_Obj obj) {
+    private DIRECTION getShadowingDirection(Unit source, DC_Obj obj) {
         if (obj.isTransparent()) {
             return null;
         }

@@ -1,17 +1,17 @@
 package main.game.logic.macro.travel;
 
-import main.client.battle.Wave;
 import main.client.dc.Launcher;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.parameters.MACRO_PARAMS;
+import main.content.values.parameters.MACRO_PARAMS;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
+import main.game.logic.arena.Wave;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.MacroRef;
@@ -157,7 +157,7 @@ public class EncounterMaster {
         Map<Wave, Integer> waves = new XLinkedMap<>();
         int i = 0;
         for (String typeName : StringMaster.openContainer(e.getTypeNames())) {
-            ObjType waveType = DataManager.getType(typeName, OBJ_TYPES.ENCOUNTERS);
+            ObjType waveType = DataManager.getType(typeName, DC_TYPE.ENCOUNTERS);
             Wave wave = new Wave(waveType, DC_Game.game, new Ref(), DC_Game.game.getPlayer(false));
             wave.initUnitMap(); // TODO is the field ready for coordinates?
             int j = i
@@ -275,7 +275,7 @@ public class EncounterMaster {
     public static Integer getPower(List<String> list) {
         Integer power = 0;
         for (String unit : list) {
-            ObjType objType = DataManager.getType(unit, OBJ_TYPES.UNITS);
+            ObjType objType = DataManager.getType(unit, DC_TYPE.UNITS);
             if (objType != null) {
                 power += objType.getIntParam(PARAMS.POWER);
             }

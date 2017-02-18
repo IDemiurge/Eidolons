@@ -1,6 +1,7 @@
 package main.client.gui.main;
 
 import main.swing.generic.components.G_Panel;
+import main.system.auxiliary.log.LogMaster;
 import main.system.net.chat.ChatBox;
 import main.system.net.chat.ChatConnection;
 import main.system.net.chat.ChatConnector;
@@ -49,7 +50,7 @@ public class ChatPanel extends G_Panel {
             try {
                 chatConnector.initGameChatServer();
             } catch (Exception e) {
-                main.system.auxiliary.LogMaster
+                LogMaster
                         .log(5, "failed to init chat server...");
                 return;
             }

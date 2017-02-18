@@ -8,8 +8,8 @@ import main.logic.Direction;
 import main.session.Session;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.ColorManager;
+import main.system.graphics.FontMaster.FONT;
 
 import java.awt.*;
 

@@ -3,9 +3,9 @@ package main.ability.effects.oneshot.special;
 import main.ability.effects.oneshot.MicroEffect;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref.KEYS;
-import main.entity.obj.top.DC_ActiveObj;
-import main.system.ai.logic.target.ReasonMaster;
-import main.system.auxiliary.ListMaster;
+import main.entity.active.DC_ActiveObj;
+import main.game.ai.tools.target.ReasonMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 

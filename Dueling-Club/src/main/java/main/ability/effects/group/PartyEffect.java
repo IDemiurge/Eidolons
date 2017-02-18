@@ -5,9 +5,9 @@ import main.data.ability.AE_ConstrArgs;
 import main.elements.conditions.Condition;
 import main.elements.conditions.standard.EmptyCondition;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.Obj;
-import main.system.FilterMaster;
+import main.entity.obj.unit.Unit;
+import main.system.entity.FilterMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -37,13 +37,13 @@ public class PartyEffect extends GroupObjModifyEffect {
     protected List<Obj> getObjectsToModify() {
         PartyObj party = (PartyObj) ref.getSourceObj().getRef()
                 .getObj(KEYS.PARTY);
-        List<DC_HeroObj> list = party.getMembers();
+        List<Unit> list = party.getMembers();
 
         initFilterConditions();
         FilterMaster.filter(list, conditions);
 
         List<Obj> objList = new LinkedList<>();
-        for (DC_HeroObj j : list) {
+        for (Unit j : list) {
             objList.add(j);
         }
         return objList;

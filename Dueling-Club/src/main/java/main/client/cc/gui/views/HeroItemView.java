@@ -5,11 +5,11 @@ import main.client.cc.gui.lists.VendorListsPanel;
 import main.client.cc.gui.misc.BorderChecker;
 import main.client.cc.gui.neo.tabs.HC_TabPanel;
 import main.content.OBJ_TYPE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
 import main.elements.Filter;
 import main.elements.conditions.Condition;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;
 
@@ -23,7 +23,7 @@ public abstract class HeroItemView extends HeroView implements BorderChecker, Ru
     private boolean showAll;
     private boolean responsive;
 
-    public HeroItemView(DC_HeroObj hero, boolean responsive, boolean showAll) {
+    public HeroItemView(Unit hero, boolean responsive, boolean showAll) {
         super(hero);
         this.responsive = responsive;
         this.showAll = showAll;

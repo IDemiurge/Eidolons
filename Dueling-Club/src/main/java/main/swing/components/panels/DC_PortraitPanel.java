@@ -2,12 +2,12 @@ package main.swing.components.panels;
 
 import main.client.dc.Launcher;
 import main.entity.Entity;
-import main.entity.obj.DC_UnitObj;
-import main.game.Game;
-import main.game.MicroGame;
+import main.entity.obj.unit.DC_UnitModel;
+import main.game.core.game.Game;
+import main.game.core.game.MicroGame;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.ImageChooser;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.ALIGNMENT;
 
@@ -35,7 +35,7 @@ public class DC_PortraitPanel extends G_Panel implements MouseListener {
     }
 
     private boolean isNonUnit() {
-        return !(entity instanceof DC_UnitObj);
+        return !(entity instanceof DC_UnitModel);
     }
 
     @Override

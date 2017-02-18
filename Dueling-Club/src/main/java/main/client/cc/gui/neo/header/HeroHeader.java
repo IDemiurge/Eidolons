@@ -1,9 +1,9 @@
 package main.client.cc.gui.neo.header;
 
 import main.client.cc.gui.neo.HeroPanel;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 import java.awt.*;
 import java.beans.Transient;
@@ -23,7 +23,7 @@ public class HeroHeader extends G_Panel {
     // TextComp integrityComp;
     // fix h/v bounds for text comps on name, bg and level!!!
 
-    public HeroHeader(DC_HeroObj hero, HeroPanel heroPanel) {
+    public HeroHeader(Unit hero, HeroPanel heroPanel) {
         primeClass = new ClassLine(true, true, hero);
         secondClass = new ClassLine(true, false, hero);
         textComp = new HeroTextComp(hero);

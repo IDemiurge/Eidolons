@@ -1,20 +1,21 @@
 package main.swing.components.obj;
 
 import main.data.XLinkedMap;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.VisionManager;
-import main.game.battlefield.XLine;
+import main.swing.XLine;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.drawing.DrawHelper;
 import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.swing.generic.components.G_Panel;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -332,10 +333,11 @@ public class BfGridComp {
         if (isLevelEditor()) {
             getUnderlayMap().clear();
             getOverlayMap().clear();
-            Map<Coordinates, DC_HeroObj> wallMap = new HashMap<>();
+            Map<Coordinates, BattleFieldObject> wallMap = new HashMap<>();
 
             for (Coordinates c : game.getUnitMap().keySet()) {
-                for (DC_HeroObj obj : game.getUnitMap().get(c)) {
+                for (BattleFieldObject obj : game.getStructures()) {
+                    if (obj.getCoordinates().equals(c))
                     if (obj.isWall()) {
                         wallMap.put(c, obj);
                     }
@@ -395,7 +397,7 @@ public class BfGridComp {
         DrawMasterStatic.drawDiagonalJoints(zoom, g, getOffsetX(), getOffsetY(), getCellWidth(),
                 getCellHeight(), getGame().getBattleFieldManager().getDiagonalJoints());
 
-        DC_HeroObj activeObj = getGame().getManager().getActiveObj();
+        Unit activeObj = getGame().getManager().getActiveObj();
         if (activeObj != null) {
             // if (!activeObj.isAnimated())
             if (!getGame().getAnimationManager().isStackAnimOverride(activeObj.getCoordinates())) {

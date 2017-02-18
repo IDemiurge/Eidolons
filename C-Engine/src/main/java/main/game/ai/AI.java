@@ -1,9 +1,9 @@
 package main.game.ai;
 
 import main.entity.obj.Obj;
-import main.game.MicroGame;
+import main.game.core.game.MicroGame;
 import main.game.ai.logic.ActionTypeManager.ACTION_TYPES;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 import main.system.net.Communicator;
 
 import java.util.Set;

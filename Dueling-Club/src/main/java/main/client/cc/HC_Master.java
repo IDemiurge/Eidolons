@@ -9,22 +9,23 @@ import main.client.cc.gui.neo.tree.view.HT_View;
 import main.client.cc.gui.neo.tree.view.SkillTreeView;
 import main.client.dc.Launcher;
 import main.client.dc.Launcher.VIEWS;
-import main.content.CONTENT_CONSTS.CLASS_GROUP;
-import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
+import main.content.enums.entity.HeroEnums.CLASS_GROUP;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.*;
 import main.content.DC_ContentManager.ATTRIBUTE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.enums.system.MetaEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
-import main.entity.obj.DC_FeatObj;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.attach.DC_FeatObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
@@ -39,7 +40,7 @@ import java.util.List;
 
 public class HC_Master {
 
-    private static WORKSPACE_GROUP filterWorkspaceGroup = WORKSPACE_GROUP.COMPLETE;
+    private static WORKSPACE_GROUP filterWorkspaceGroup = MetaEnums.WORKSPACE_GROUP.COMPLETE;
     private static PARAMETER lastClickedMastery;
     private static PARAMETER lastClickedAttribute;
     private static Map<Object, Image> valueImgCache = new HashMap<>();
@@ -48,8 +49,8 @@ public class HC_Master {
     private static Map<Object, Image> valueImgCacheSelected = new HashMap<>();
     private static HT_Node selectedTreeNode;
     private static HT_Node selectedTreeNodePrevious;
-    private static Map<DC_HeroObj, ThreeTreeView> t3SkillMap = new HashMap<>();
-    private static Map<DC_HeroObj, ThreeTreeView> t3ClassMap = new HashMap<>();
+    private static Map<Unit, ThreeTreeView> t3SkillMap = new HashMap<>();
+    private static Map<Unit, ThreeTreeView> t3ClassMap = new HashMap<>();
     private static ThreeTreeView t3View;
     private static JFrame avTreeWindow;
     private static HT_View avTreeView;
@@ -88,12 +89,12 @@ public class HC_Master {
                     continue;
                 } else {
                     for (String s1 : StringMaster.openContainer(s, StringMaster.OR)) {
-                        list.add(DataManager.getType(s1, OBJ_TYPES.SKILLS));
+                        list.add(DataManager.getType(s1, DC_TYPE.SKILLS));
                     }
                 }
             }
 
-            list.add(DataManager.getType(s, OBJ_TYPES.SKILLS));
+            list.add(DataManager.getType(s, DC_TYPE.SKILLS));
         }
         return list;
 
@@ -105,7 +106,7 @@ public class HC_Master {
     }
 
     public static Image generateClassIcon(CLASS_GROUP classGroup, boolean selected, boolean locked,
-                                          DC_HeroObj hero) {
+                                          Unit hero) {
         if (CoreEngine.isArcaneVault()) {
             locked = false;
         }
@@ -131,7 +132,7 @@ public class HC_Master {
 
     }
 
-    public static Image getClassIcon(CLASS_GROUP classGroup, DC_HeroObj hero) {
+    public static Image getClassIcon(CLASS_GROUP classGroup, Unit hero) {
         if (hero == null) {
             hero = CharacterCreator.getHero();
         }
@@ -254,8 +255,8 @@ public class HC_Master {
     }
 
     public static void nextHero() {
-        DC_HeroObj hero = CharacterCreator.getHero();
-        DC_HeroObj nextHero = CharacterCreator.getParty().getNextHero(hero);
+        Unit hero = CharacterCreator.getHero();
+        Unit nextHero = CharacterCreator.getParty().getNextHero(hero);
         if (hero == nextHero) {
             return;
         }
@@ -286,7 +287,7 @@ public class HC_Master {
         return skill_class_spell;
     }
 
-    public static ThreeTreeView getT3View(DC_HeroObj hero, Boolean skill_class_spell) {
+    public static ThreeTreeView getT3View(Unit hero, Boolean skill_class_spell) {
         t3View = getT3Map(skill_class_spell).get(hero);
         if (t3View == null) {
             t3View = new ThreeTreeView(hero, skill_class_spell);
@@ -295,7 +296,7 @@ public class HC_Master {
         return t3View;
     }
 
-    public static Map<DC_HeroObj, ThreeTreeView> getT3Map(Boolean skill_class_spell) {
+    public static Map<Unit, ThreeTreeView> getT3Map(Boolean skill_class_spell) {
         if (skill_class_spell == null) {
             return t3SkillMap;
         }
@@ -346,7 +347,7 @@ public class HC_Master {
     }
 
     public static void initTreeArg(ObjType selectedType) {
-        skill = selectedType.getOBJ_TYPE_ENUM() == OBJ_TYPES.SKILLS;
+        skill = selectedType.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS;
         if (skill) {
             treeArg = ContentManager.getPARAM(selectedType.getProperty(G_PROPS.MASTERY));
         } else {
@@ -356,7 +357,7 @@ public class HC_Master {
     }
 
     public static void initTreeView() {
-        DC_HeroObj hero = new DC_HeroObj(new ObjType(DC_Game.game));// CharacterCreator.getNewHero();
+        Unit hero = new Unit(new ObjType(DC_Game.game));// CharacterCreator.getNewHero();
         DC_Game.game.getRequirementsManager().setHero(hero);
         CharacterCreator.setHero(hero);
 

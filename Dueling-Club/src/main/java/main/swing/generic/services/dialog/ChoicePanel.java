@@ -1,7 +1,7 @@
 package main.swing.generic.services.dialog;
 
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.unit.Unit;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.system.graphics.MigMaster;
 import main.system.threading.WaitMaster;
@@ -22,7 +22,7 @@ public class ChoicePanel<T> extends DialogPanel implements MouseListener {
     List<T> data;
     private Map<Rectangle, T> mouseMap = new HashMap<>();
 
-    public ChoicePanel(List<T> itemData, DC_HeroObj target) {
+    public ChoicePanel(List<T> itemData, Unit target) {
         super(target);
         this.data = itemData;
         initSize();

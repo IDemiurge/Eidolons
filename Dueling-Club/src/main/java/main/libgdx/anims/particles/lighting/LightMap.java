@@ -8,13 +8,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import main.content.PARAMS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.MicroObj;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.libgdx.GameScreen;
 import main.libgdx.bf.GridConst;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.HashMap;
@@ -42,13 +42,13 @@ public class LightMap {
     private int cols;
     private Map<Integer, FireLightProt> fireLightProtMap;
     private boolean valid;
-    private DequeImpl<DC_HeroObj> units;
+    private DequeImpl<BattleFieldObject>  units;
     private PARAMS lightParam;
     private PARAMS darkParam;
     private int LIGHT_MULTIPLIER = 30;
 
 
-    public LightMap(DequeImpl<DC_HeroObj> units, int rows, int cols) {
+    public LightMap(DequeImpl<BattleFieldObject>  units, int rows, int cols) {
         World world = new World(new Vector2(0, 0), true);
         init(units, world, new RayHandler(world), GridConst.CELL_W, GridConst.CELL_H, rows, cols);
     }
@@ -97,7 +97,7 @@ public class LightMap {
     }
 
     //
-    private void init(DequeImpl<DC_HeroObj> units, World world,
+    private void init(DequeImpl<BattleFieldObject>  units, World world,
                       RayHandler rayHandler, float cellWidth, float cellHeight, int rows, int cols) {
 
         testA = 1600;
@@ -133,7 +133,7 @@ public class LightMap {
 
     //    public void updateMap(Map<DC_HeroObj, BaseView> units) {
     public void updateMap() {
-        main.system.auxiliary.LogMaster.log(LogMaster.VISIBILITY_DEBUG,
+        LogMaster.log(LogMaster.VISIBILITY_DEBUG,
                 "UpdateMap method was called");
         valid = false;
         if (bodyMap != null) {
@@ -156,7 +156,7 @@ public class LightMap {
 
         fireLightProtMap = new HashMap<>();
         bodyMap = new HashMap<>();
-        this.units = DC_Game.game.getUnits();
+        this.units = DC_Game.game.getBfObjects();
 
         for (int i = 0; i < units.size(); i++) {
             BodyDef bdef = new BodyDef();
@@ -164,7 +164,7 @@ public class LightMap {
             Body body = world.createBody(bdef);
             lightParam = PARAMS.LIGHT_EMISSION; //ILLUMINATION
             darkParam = PARAMS.CONCEALMENT;
-            DC_HeroObj unit = units.get(i);
+            BattleFieldObject unit = units.get(i);
             int lightStrength = unit.getIntParam(lightParam) - unit.getIntParam(darkParam);
             if (lightStrength > 0) {
 //                emitters.add(unit);
@@ -218,7 +218,7 @@ public class LightMap {
         }
     }
 
-    public void updateObject(DC_HeroObj heroObj) {
+    public void updateObject(BattleFieldObject heroObj) {
         // TODO: 12.12.2016 pointlighter around the mouse - 35 ligth emission and arround active Unite - (his emission +20) (DC_Game.game.getManager.getActiveUnit()
     }
 

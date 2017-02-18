@@ -1,7 +1,7 @@
 package main.ability.effects.special;
 
 import main.ability.effects.oneshot.MicroEffect;
-import main.content.CONTENT_CONSTS.STATUS;
+import main.content.enums.entity.UnitEnums;
 import main.entity.obj.Obj;
 
 public class ManipulateSpellEffect extends MicroEffect {
@@ -26,12 +26,12 @@ public class ManipulateSpellEffect extends MicroEffect {
                 // menojeur!!!
                 break;
             case PREPARE:
-                spell.addStatus(STATUS.PREPARED.name());
+                spell.addStatus(UnitEnums.STATUS.PREPARED.name());
 
                 break;
 
             case BLOCK:
-                spell.addStatus(STATUS.BLOCKED.name());
+                spell.addStatus(UnitEnums.STATUS.BLOCKED.name());
                 break;
             case OBLIVIATE:
                 break;
@@ -40,7 +40,7 @@ public class ManipulateSpellEffect extends MicroEffect {
                 // change owner and that's it!
                 break;
             case UNBLOCK:
-                spell.removeStatus(STATUS.BLOCKED.name());
+                spell.removeStatus(UnitEnums.STATUS.BLOCKED.name());
                 break;
             default:
                 break;

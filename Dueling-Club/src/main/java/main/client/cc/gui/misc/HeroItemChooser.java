@@ -1,7 +1,7 @@
 package main.client.cc.gui.misc;
 
 import main.content.OBJ_TYPE;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.lists.ListChooser;
 

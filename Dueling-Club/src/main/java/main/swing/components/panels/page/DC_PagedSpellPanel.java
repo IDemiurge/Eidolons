@@ -1,14 +1,14 @@
 package main.swing.components.panels.page;
 
 import main.client.cc.gui.misc.BorderChecker;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_SpellObj;
+import main.entity.active.DC_SpellObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagedListPanel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager.BORDER;
 
 import java.util.LinkedList;
@@ -52,8 +52,8 @@ public class DC_PagedSpellPanel extends G_PagedListPanel<DC_SpellObj> implements
     @Override
     protected List<List<DC_SpellObj>> getPageData() {
         // sort spells?
-        List<DC_SpellObj> spells = new LinkedList<>(game.getManager().getSpells(
-                (DC_HeroObj) getObj()));
+        List<DC_SpellObj> spells = new LinkedList<>(game.getManager().getSpellMaster().getSpells(
+                (Unit) getObj()));
         // List<List<DC_SpellObj>> list = new ListMaster<DC_SpellObj>()
         // .splitList(PAGE_SIZE, spells);
         // if (list.isEmpty())

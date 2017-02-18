@@ -6,13 +6,14 @@ import main.client.cc.gui.neo.tree.view.HT_View;
 import main.client.cc.logic.items.ItemGenerator;
 import main.client.dc.Simulation;
 import main.content.*;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
-import main.game.Game;
-import main.game.battlefield.UnitGroupMaster;
+import main.game.core.game.DC_Game;
+import main.game.core.game.Game;
+import main.game.logic.arena.UnitGroupMaster;
 import main.gui.builders.MainBuilder;
 import main.gui.builders.TabBuilder;
 import main.gui.components.controls.AV_ButtonPanel;
@@ -23,6 +24,9 @@ import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.util.ResourceMaster;
@@ -120,9 +124,9 @@ public class ArcaneVault {
                 types = presetTypes;
                 switch (LAUNCH_OPTIONS[init]) {
                     case "Battlecraft":
-                        List<OBJ_TYPES> enumList = new EnumMaster<OBJ_TYPES>()
-                                .getEnumList(OBJ_TYPES.class);
-                        for (OBJ_TYPES sub : OBJ_TYPES.values()) {
+                        List<DC_TYPE> enumList = new EnumMaster<DC_TYPE>()
+                                .getEnumList(DC_TYPE.class);
+                        for (DC_TYPE sub : DC_TYPE.values()) {
                             if (sub.isNonBattlecraft()) {
                                 enumList.remove(sub);
                             }
@@ -140,7 +144,7 @@ public class ArcaneVault {
 
                         break;
                     case "Selective Custom":
-                        types = ListChooser.chooseEnum(OBJ_TYPES.class, SELECTION_MODE.MULTIPLE);
+                        types = ListChooser.chooseEnum(DC_TYPE.class, SELECTION_MODE.MULTIPLE);
                         FileManager.write(types, getLastTypesFilePath());
                         break;
                     case "Selective":
@@ -172,7 +176,7 @@ public class ArcaneVault {
             }
         }
 
-        main.system.auxiliary.LogMaster
+        LogMaster
                 .log(3,
                         "Welcome to Arcane Vault! \nBrace yourself to face the darkest mysteries of Edalar...");
         initialize();
@@ -187,7 +191,7 @@ public class ArcaneVault {
         mainBuilder = new MainBuilder();
         mainBuilder.setKeyListener(new AV_KeyListener(getGame()));
         if (!isCustomLaunch()) {
-            if (XML_Reader.getTypeMaps().keySet().contains(OBJ_TYPES.FACTIONS.getName())) {
+            if (XML_Reader.getTypeMaps().keySet().contains(DC_TYPE.FACTIONS.getName())) {
                 UnitGroupMaster.modifyFactions();
             }
         }
@@ -231,7 +235,7 @@ public class ArcaneVault {
     }
 
     private static void initSkillLaunch() {
-        ObjType type = DataManager.getType("Controlled Engagement", OBJ_TYPES.SKILLS);
+        ObjType type = DataManager.getType("Controlled Engagement", DC_TYPE.SKILLS);
         getMainBuilder().getEditViewPanel().selectType(true, type);
         getMainBuilder().getButtonPanel().handleButtonClick(false, AV_ButtonPanel.NEW_TREE);
         // HC_Master.getAvTreeView().getBottomPanel().getOrCreate;
@@ -251,7 +255,7 @@ public class ArcaneVault {
 
         workspaceManager = new WorkspaceManager(macroMode, getGame());
 
-        if (XML_Reader.getTypeMaps().keySet().size() + 3 < OBJ_TYPES.values().length) {
+        if (XML_Reader.getTypeMaps().keySet().size() + 3 < DC_TYPE.values().length) {
             testMode = true;
         }
 

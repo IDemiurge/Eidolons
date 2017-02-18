@@ -1,11 +1,11 @@
 package main.system.math;
 
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.Obj;
-import main.game.Game;
-import main.game.MicroGame;
+import main.game.core.game.Game;
+import main.game.core.game.MicroGame;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 
@@ -194,6 +194,15 @@ public abstract class MathMaster {
     }
 
     public static int getMinMax(int i, int min, int max) {
+        if (i >= max) {
+            return max;
+        }
+        if (i <= min) {
+            return min;
+        }
+        return i;
+    }
+    public static float minMax(float i, float min, float max) {
         if (i >= max) {
             return max;
         }

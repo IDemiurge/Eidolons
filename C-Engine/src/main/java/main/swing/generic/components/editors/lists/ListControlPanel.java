@@ -1,15 +1,15 @@
 package main.swing.generic.components.editors.lists;
 
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
+import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VarHolder;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.list.G_List;
-import main.system.auxiliary.ArrayMaster;
+import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import net.miginfocom.swing.MigLayout;
@@ -259,7 +259,7 @@ public class ListControlPanel<E> extends JPanel implements ActionListener {
     }
 
     private boolean checkVarTYPE() {
-        return TYPE == OBJ_TYPES.ABILS;
+        return TYPE == DC_TYPE.ABILS;
     }
 
     private List<?> getVarTypes(String stringElement) {

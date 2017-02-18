@@ -16,8 +16,8 @@ import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
-import main.system.ConditionMaster;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.entity.ConditionMaster;
 import main.system.math.Formula;
 
 public class AuraEffect extends MicroEffect implements AttachmentEffect {

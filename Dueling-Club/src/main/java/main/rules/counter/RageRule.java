@@ -8,15 +8,15 @@ import main.ability.effects.oneshot.common.ConditionalEffect;
 import main.ability.effects.oneshot.common.ModifyPropertyEffect;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.ability.effects.special.BehaviorModeEffect;
-import main.content.CONTENT_CONSTS.BEHAVIOR_MODE;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
-import main.content.CONTENT_CONSTS.STATUS;
-import main.content.CONTENT_CONSTS.STD_BUFF_NAMES;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.enums.system.AiEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.properties.G_PROPS;
 import main.elements.conditions.NumericCondition;
-import main.entity.obj.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 
 public class RageRule extends DC_CounterRule {
     // can
@@ -57,8 +57,8 @@ public class RageRule extends DC_CounterRule {
                 new NumericCondition(getCounterRef(), BERSERK_THRESHOLD),
                 new Effects(new ModifyPropertyEffect(
                         G_PROPS.STANDARD_PASSIVES, MOD_PROP_TYPE.ADD,
-                        STANDARD_PASSIVES.BERSERKER + ""),
-                        new BehaviorModeEffect(BEHAVIOR_MODE.BERSERK)))
+                        UnitEnums.STANDARD_PASSIVES.BERSERKER + ""),
+                        new BehaviorModeEffect(AiEnums.BEHAVIOR_MODE.BERSERK)))
 
         );
     }
@@ -70,7 +70,7 @@ public class RageRule extends DC_CounterRule {
 
     @Override
     public String getBuffName() {
-        return STD_BUFF_NAMES.Enraged.getName();
+        return MetaEnums.STD_BUFF_NAMES.Enraged.getName();
     }
 
     @Override
@@ -79,13 +79,13 @@ public class RageRule extends DC_CounterRule {
     }
 
     @Override
-    public int getMaxNumberOfCounters(DC_HeroObj unit) {
-        return (unit.checkPassive(STANDARD_PASSIVES.BERSERKER)) ? MAX_BERSERK
+    public int getMaxNumberOfCounters(Unit unit) {
+        return (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.BERSERKER)) ? MAX_BERSERK
                 : MAX;
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(DC_HeroObj unit) {
+    public int getCounterNumberReductionPerTurn(Unit unit) {
         return 1;
     }
 

@@ -1,6 +1,6 @@
 package main.client.cc.gui.pages;
 
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;
 
 public class HC_PagedInfoPanel extends DC_PagedInfoPanel {
@@ -11,7 +11,7 @@ public class HC_PagedInfoPanel extends DC_PagedInfoPanel {
         if (getEntity() != null)
             // if (getCurrentIndex() > 2)
         {
-            if (getEntity().getOBJ_TYPE_ENUM() == OBJ_TYPES.SPELLS) {
+            if (getEntity().getOBJ_TYPE_ENUM() == DC_TYPE.SPELLS) {
                 return true;
             }
         }

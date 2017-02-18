@@ -1,20 +1,21 @@
 package main.system.text;
 
 import main.client.DC_Engine;
-import main.content.CONTENT_CONSTS.PRINCIPLES;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.DC_ContentManager.ATTRIBUTE;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.HeroEnums;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 
@@ -30,12 +31,12 @@ public class TextMaster {
     private static String locale = "english";
     private static Map<OBJ_TYPE, List<String>> extractedTypesMap = new XLinkedMap<>();
     private static PROPERTY[] extract_props = {G_PROPS.DESCRIPTION, G_PROPS.LORE, G_PROPS.TOOLTIP,};
-    private static OBJ_TYPE[] extractedTypes = {OBJ_TYPES.CHARS, OBJ_TYPES.UNITS,
-            OBJ_TYPES.CLASSES, OBJ_TYPES.SKILLS, OBJ_TYPES.SPELLS, OBJ_TYPES.DEITIES,};
+    private static OBJ_TYPE[] extractedTypes = {DC_TYPE.CHARS, DC_TYPE.UNITS,
+            DC_TYPE.CLASSES, DC_TYPE.SKILLS, DC_TYPE.SPELLS, DC_TYPE.DEITIES,};
     private static String[] extractedTypeGroups = {"Background"};
 
     public static void generateMissingDescrTemplate() {
-        OBJ_TYPES TYPE = OBJ_TYPES.SKILLS;
+        DC_TYPE TYPE = DC_TYPE.SKILLS;
         generateMissingDescrTemplate(TYPE, 1, null, false);
         generateMissingDescrTemplate(TYPE, 1, null, true);
         Map<String, Set<String>> tabGroupMap = XML_Reader.getTabGroupMap();
@@ -47,7 +48,7 @@ public class TextMaster {
         }
     }
 
-    public static void generateMissingDescrTemplate(OBJ_TYPES TYPE, int circle, String groups,
+    public static void generateMissingDescrTemplate(DC_TYPE TYPE, int circle, String groups,
                                                     boolean appendLogic) {
         List<ObjType> list = new LinkedList<>();
         List<ObjType> incomplete = new LinkedList<>();
@@ -202,7 +203,7 @@ public class TextMaster {
             FileManager.write(p.getParameter().getDescription(), getParamsPath() + "attributes\\"
                     + p.toString() + ".txt");
         }
-        for (PRINCIPLES p : PRINCIPLES.values()) {
+        for (PRINCIPLES p : HeroEnums.PRINCIPLES.values()) {
             FileManager.write(p.getDescription(), getPropsPath() + "principles\\" + p.toString()
                     + ".txt");
         }
@@ -214,7 +215,7 @@ public class TextMaster {
             if (!dir.isDirectory()) {
                 continue;
             }
-            OBJ_TYPES T = OBJ_TYPES.getType(dir.getName());
+            DC_TYPE T = DC_TYPE.getType(dir.getName());
             for (File file : FileManager.getFilesFromDirectory(filepath + dir.getName(), false)) {
 
                 ObjType type = DataManager.getType(file.getName(), T);

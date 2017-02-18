@@ -3,11 +3,11 @@ package main.ability.effects.oneshot.common;
 import main.ability.effects.ResistibleEffect;
 import main.ability.effects.oneshot.MicroEffect;
 import main.entity.obj.Obj;
-import main.game.MicroGame;
-import main.game.event.Event;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
-import main.game.player.Player;
-import main.system.auxiliary.LogMaster;
+import main.game.core.game.MicroGame;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.battle.player.Player;
+import main.system.auxiliary.log.LogMaster;
 
 public class OwnershipChangeEffect extends MicroEffect implements
         ResistibleEffect {
@@ -52,7 +52,7 @@ public class OwnershipChangeEffect extends MicroEffect implements
         if (berserker) {
 
         }
-        main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG_1, ref
+        LogMaster.log(LogMaster.CORE_DEBUG_1, ref
                 .getTargetObj().getName() + "'s new owner: " + obj.getOwner());
         return true;
     }

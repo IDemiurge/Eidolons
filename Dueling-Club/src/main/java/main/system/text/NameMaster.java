@@ -1,10 +1,10 @@
 package main.system.text;
 
-import main.content.CONTENT_CONSTS.BACKGROUND;
-import main.content.CONTENT_CONSTS.GENDER;
-import main.content.CONTENT_CONSTS.RACE;
+import main.content.enums.entity.HeroEnums.BACKGROUND;
+import main.content.enums.entity.HeroEnums.RACE;
 import main.content.OBJ_TYPE;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.HeroEnums;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.EntityMaster;
@@ -178,7 +178,7 @@ public class NameMaster {
 
     private static String generateName(Entity hero, String backgroundNameGroups,
                                        boolean secondIncluded) {
-        boolean female = EntityMaster.getGender(hero) == GENDER.FEMALE;
+        boolean female = EntityMaster.getGender(hero) == HeroEnums.GENDER.FEMALE;
         String name = null;
 
         for (String nameGroup : StringMaster.openContainer(backgroundNameGroups, " ")) {
@@ -388,7 +388,7 @@ public class NameMaster {
         List<String> list = new LinkedList<>();
         for (String nameGroup : nameGroups) {
             list.addAll(StringMaster.openContainer(getNamesForGroup(nameGroup, EntityMaster
-                    .getGender(hero) == GENDER.FEMALE), " "));
+                    .getGender(hero) == HeroEnums.GENDER.FEMALE), " "));
         }
         String name = new ListChooser(SELECTION_MODE.MULTIPLE, list, false).choose();
         if (name != null) {

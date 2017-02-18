@@ -1,15 +1,13 @@
 package main.game.battlefield.attack;
 
 import main.ability.effects.Effect;
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_WeaponObj;
-import main.entity.obj.top.DC_ActiveObj;
-import main.game.battlefield.DC_AttackMaster;
-import main.game.battlefield.Damage;
-import main.rules.mechanics.InstantAttackRule.INSTANT_ATTACK_TYPE;
+import main.entity.active.DC_ActiveObj;
+import main.entity.item.DC_WeaponObj;
+import main.entity.obj.unit.Unit;
+import main.rules.attack.InstantAttackRule.INSTANT_ATTACK_TYPE;
 import main.system.graphics.AttackAnimation;
 
 import java.util.List;
@@ -33,8 +31,8 @@ public class Attack {
     private Effect onAttack;
     private Ref ref;
     private DC_ActiveObj action;
-    private DC_HeroObj attacker;
-    private DC_HeroObj attacked;
+    private Unit attacker;
+    private Unit attacked;
     private boolean countered;
     private Integer damage = DAMAGE_NOT_SET;
     private Integer remainingDamage;
@@ -56,8 +54,8 @@ public class Attack {
 
         this.ref = ref;
         try {
-            attacker = (DC_HeroObj) ref.getSourceObj();
-            attacked = (DC_HeroObj) ref.getTargetObj();
+            attacker = (Unit) ref.getSourceObj();
+            attacked = (Unit) ref.getTargetObj();
             action = (DC_ActiveObj) ref.getActive();
             // sneak = DC_AttackMaster.checkSneak(ref); elsewhere
         } catch (Exception e) {
@@ -244,19 +242,19 @@ public class Attack {
         this.action = action;
     }
 
-    public DC_HeroObj getAttacker() {
+    public Unit getAttacker() {
         return attacker;
     }
 
-    public void setAttacker(DC_HeroObj attacker) {
+    public void setAttacker(Unit attacker) {
         this.attacker = attacker;
     }
 
-    public DC_HeroObj getAttacked() {
+    public Unit getAttacked() {
         return attacked;
     }
 
-    public void setAttacked(DC_HeroObj attacked) {
+    public void setAttacked(Unit attacked) {
         this.attacked = attacked;
     }
 

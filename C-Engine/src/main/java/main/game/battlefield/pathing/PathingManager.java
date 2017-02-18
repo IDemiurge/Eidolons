@@ -4,7 +4,7 @@ import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.game.battlefield.BattleFieldGrid;
 import main.game.battlefield.Coordinates;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.math.PositionMaster;
 
 import java.util.LinkedList;

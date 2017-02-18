@@ -1,7 +1,6 @@
 package main.client.dc;
 
 import main.client.DC_Engine;
-import main.client.battle.arcade.PartyManager;
 import main.client.cc.CharacterCreator;
 import main.client.cc.HC_Master;
 import main.client.cc.gui.MainPanel;
@@ -10,23 +9,28 @@ import main.client.dc.MainManager.MAIN_MENU_ITEMS;
 import main.client.game.gui.DC_GameGUI;
 import main.client.gui.key.MenuKeyListener;
 import main.client.gui.key.SelectionKeyListener;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
-import main.game.DC_Game.GAME_MODES;
-import main.game.DC_Game.GAME_TYPE;
-import main.game.Game;
+import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_MODES;
+import main.game.core.game.DC_Game.GAME_TYPE;
+import main.game.core.game.Game;
+import main.game.logic.arcade.ArenaArcadeMaster;
+import main.game.logic.generic.PartyManager;
 import main.game.logic.macro.MacroManager;
-import main.game.meta.ArenaArcadeMaster;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.windows.G_Frame;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.InfoMaster;
+import main.system.graphics.ColorManager;
+import main.system.graphics.GuiManager;
 import main.system.hotkey.HC_KeyManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
@@ -180,7 +184,7 @@ public class Launcher {
             setView(MacroManager.getMacroViewComponent(), VIEWS.MAP);
         } else if (preset != null || HC_TEST_MODE || CHOICE_TEST_MODE) {
             getMainManager().setCurrentItem(MAIN_MENU_ITEMS.PRESET_HERO);
-            getMainManager().launchSelection(OBJ_TYPES.CHARS, StringMaster.PRESET,
+            getMainManager().launchSelection(DC_TYPE.CHARS, StringMaster.PRESET,
                     InfoMaster.CHOOSE_HERO);
             if (preset != null) {
                 initPreset();
@@ -244,7 +248,7 @@ public class Launcher {
 
     private static void initPreset() {
         for (String typeName : StringMaster.openContainer(preset)) {
-            ObjType presetHero = DataManager.getType(typeName, OBJ_TYPES.CHARS);
+            ObjType presetHero = DataManager.getType(typeName, DC_TYPE.CHARS);
             if (getView() != VIEWS.CHOICE) {
                 getMainManager().getSequenceMaster().chooseNewMember(PartyManager.getParty());
             }
@@ -475,14 +479,14 @@ public class Launcher {
 
     }
 
-    public static void launchHC(boolean arcadeMode, DC_HeroObj... heroes) {
+    public static void launchHC(boolean arcadeMode, Unit... heroes) {
 Game.game.setSimulation(true);
         if (!isDataInitialized()) {
             initFullData();
             // simulationInit();
         }
         CharacterCreator.setPartyMode(true);
-        for (DC_HeroObj hero : heroes) {
+        for (Unit hero : heroes) {
             CharacterCreator.addHero(hero, true);
         }
         setView(CharacterCreator.getTabPanel(), VIEWS.HC);

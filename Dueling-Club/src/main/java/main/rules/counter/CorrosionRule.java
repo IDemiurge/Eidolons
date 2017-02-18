@@ -5,14 +5,14 @@ import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.continuous.CustomTargetEffect;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
-import main.content.CONTENT_CONSTS.STATUS;
-import main.content.CONTENT_CONSTS.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.DC_ValueManager.VALUE_GROUP;
 import main.content.PARAMS;
+import main.content.enums.entity.UnitEnums;
 import main.elements.targeting.FixedTargeting;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 
 public class CorrosionRule extends DC_CounterRule {
     private static final String DURABILITY_PER_COUNTER = "(-0.5)";
@@ -29,11 +29,11 @@ public class CorrosionRule extends DC_CounterRule {
 
     @Override
     public String getCounterName() {
-        return STD_COUNTERS.Corrosion_Counter.getName();
+        return UnitEnums.STD_COUNTERS.Corrosion_Counter.getName();
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(DC_HeroObj unit) {
+    public int getCounterNumberReductionPerTurn(Unit unit) {
         return 0;
     }
 

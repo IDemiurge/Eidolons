@@ -6,6 +6,7 @@ import main.ability.utilities.TemplateManager;
 import main.data.ability.AE_Item;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.G_Panel;
+import main.system.auxiliary.log.LogMaster;
 import org.w3c.dom.Node;
 
 import javax.swing.*;
@@ -39,7 +40,7 @@ public class AE_MainPanel extends G_Panel implements TreeSelectionListener,
             initComponents();
             addComponents();
         } catch (Exception e) {
-            main.system.auxiliary.LogMaster.log(1,
+            LogMaster.log(1,
                     "AE tree failed to build for type: " + typeName);
             // e.printStackTrace();
         }

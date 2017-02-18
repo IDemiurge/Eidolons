@@ -3,7 +3,7 @@ package main.elements.conditions;
 import main.elements.ReferredElement;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.StringMaster;
 
 public abstract class ConditionImpl extends ReferredElement implements Condition {

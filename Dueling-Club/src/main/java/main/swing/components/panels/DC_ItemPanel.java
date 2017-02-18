@@ -1,17 +1,17 @@
 package main.swing.components.panels;
 
 import main.entity.Entity;
-import main.entity.obj.DC_HeroAttachedObj;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
-import main.game.DC_Game;
+import main.entity.obj.attach.DC_HeroAttachedObj;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.swing.generic.components.list.CustomList;
 import main.swing.generic.components.list.G_List;
 import main.swing.generic.components.list.ListItem;
 import main.swing.generic.components.panels.G_ListPanel;
 import main.swing.generic.misc.BORDER_CHECKER;
 import main.swing.renderers.SlotItem;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 
@@ -106,8 +106,8 @@ public class DC_ItemPanel extends G_ListPanel<DC_HeroAttachedObj> implements BOR
 
     @Override
     public Collection<DC_HeroAttachedObj> getData() {
-        if (obj instanceof DC_HeroObj) {
-            DC_HeroObj hero = (DC_HeroObj) obj;
+        if (obj instanceof Unit) {
+            Unit hero = (Unit) obj;
             LinkedList<DC_HeroAttachedObj> items = new LinkedList<>();
             if (hero.getMainWeapon() == null && hero.getNaturalWeapon(false) != null) {
                 items.add(hero.getNaturalWeapon(false));

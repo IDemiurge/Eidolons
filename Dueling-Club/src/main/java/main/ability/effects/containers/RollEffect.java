@@ -4,9 +4,9 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.ability.effects.oneshot.ContainerEffect;
 import main.ability.effects.oneshot.MicroEffect;
-import main.content.CONTENT_CONSTS.ROLL_TYPES;
+import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.data.ability.construct.VariableManager;
-import main.system.ai.logic.target.EffectMaster;
+import main.game.ai.tools.target.EffectFinder;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.math.roll.RollMaster;
@@ -158,7 +158,7 @@ public class RollEffect extends MicroEffect implements ContainerEffect {
         }
         for (String s : StringMaster.openContainer(elseAbilityName,
                 StringMaster.AND_SEPARATOR)) {
-            ((Effects) effect).addAll(EffectMaster
+            ((Effects) effect).addAll(EffectFinder
                     .getEffectsFromAbilityType(VariableManager.getVarType(s,
                             false, ref)));
         }
@@ -173,7 +173,7 @@ public class RollEffect extends MicroEffect implements ContainerEffect {
             effect = new Effects();
             for (String s : StringMaster.openContainer(abilityName,
                     StringMaster.AND_SEPARATOR)) {
-                ((Effects) effect).addAll(EffectMaster
+                ((Effects) effect).addAll(EffectFinder
                         .getEffectsFromAbilityType(VariableManager.getVarType(
                                 s, false, ref)));
             }

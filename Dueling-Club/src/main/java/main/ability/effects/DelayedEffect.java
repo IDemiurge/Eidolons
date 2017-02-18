@@ -6,7 +6,7 @@ import main.elements.conditions.Condition;
 import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.Targeting;
 import main.entity.Ref.KEYS;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 
 public class DelayedEffect extends AddTriggerEffect {
 

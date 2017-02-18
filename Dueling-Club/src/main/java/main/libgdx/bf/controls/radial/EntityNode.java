@@ -1,7 +1,7 @@
 package main.libgdx.bf.controls.radial;
 
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class EntityNode implements RADIAL_ITEM {
     }
 
     @Override
-    public List<RADIAL_ITEM> getItems(DC_HeroObj source) {
+    public List<RADIAL_ITEM> getItems(Unit source) {
         return null;
     }
 
@@ -28,5 +28,15 @@ public class EntityNode implements RADIAL_ITEM {
     @Override
     public String getTexturePath() {
         return ((Entity) getContents()).getImagePath();
+    }
+
+    @Override
+    public float getWidth() {
+        return 0;
+    }
+
+    @Override
+    public float getHeight() {
+        return 0;
     }
 }

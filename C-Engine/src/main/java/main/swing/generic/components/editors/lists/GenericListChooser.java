@@ -1,14 +1,14 @@
 package main.swing.generic.components.editors.lists;
 
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.swing.components.TextComp;
 import main.swing.generic.Decorator;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.list.G_List;
 import main.swing.generic.services.listener.ObjListMouseListener;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -367,10 +367,10 @@ public class GenericListChooser<E> implements ListSelectionListener {
     }
 
     private int getMaxRowCountType(OBJ_TYPE TYPE) {
-        if (!(TYPE instanceof OBJ_TYPES)) {
+        if (!(TYPE instanceof DC_TYPE)) {
             return Integer.MAX_VALUE;
         }
-        for (OBJ_TYPES t : OBJ_TYPES.values()) {
+        for (DC_TYPE t : DC_TYPE.values()) {
             if (TYPE.equals(t)) {
                 switch (t) {
                     case SPELLS:

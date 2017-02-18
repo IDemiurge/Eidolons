@@ -6,8 +6,8 @@ import main.game.logic.macro.entity.MacroActionManager;
 import main.game.logic.macro.gui.map.MacroAP_Holder.MACRO_ACTION_GROUPS;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagedListPanel;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
 

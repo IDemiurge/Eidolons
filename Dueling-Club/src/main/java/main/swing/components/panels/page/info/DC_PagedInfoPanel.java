@@ -6,10 +6,10 @@ import main.content.PROPS;
 import main.content.VALUE;
 import main.content.ValuePageManager;
 import main.content.ValuePages;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
@@ -204,9 +204,9 @@ public class DC_PagedInfoPanel extends G_PagePanel<VALUE> {
         return VISUALS.INFO_PANEL.getImage().getHeight(null);
     }
 
-    public DC_HeroObj getUnit() {
-        if (getEntity() instanceof DC_HeroObj) {
-            return (DC_HeroObj) getEntity();
+    public Unit getUnit() {
+        if (getEntity() instanceof Unit) {
+            return (Unit) getEntity();
         }
         return null;
     }

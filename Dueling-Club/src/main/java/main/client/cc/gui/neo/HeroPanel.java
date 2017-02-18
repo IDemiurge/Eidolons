@@ -4,8 +4,8 @@ import main.client.cc.CharacterCreator;
 import main.client.cc.gui.neo.bars.SpecialValueBar;
 import main.client.cc.gui.neo.header.HeroHeader;
 import main.content.PARAMS;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.rules.rpg.IntegrityRule;
 import main.swing.components.panels.DC_ItemPanel;
 import main.swing.components.panels.ValueIconPanel;
@@ -15,8 +15,8 @@ import main.swing.components.panels.page.small.DC_PagedBuffPanel;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager;
 
 import javax.swing.*;
@@ -36,14 +36,14 @@ public class HeroPanel extends G_Panel {
     private ValueIconPanel values;
     // for selected deity/class? By default - ???
     private DC_PagedInfoPanel lowerPanel;
-    private DC_HeroObj hero;
+    private Unit hero;
     private Obj selectedObj;
     private G_Component[] comps;
     private boolean deityMode;
     private Component deityComp;
     private DC_PagedBuffPanel buffPanel;
 
-    public HeroPanel(DC_HeroObj hero) {
+    public HeroPanel(Unit hero) {
         super(HERO_PANEL_FRAME);
         this.hero = hero;
         this.panelSize = HERO_PANEL_FRAME.getSize();

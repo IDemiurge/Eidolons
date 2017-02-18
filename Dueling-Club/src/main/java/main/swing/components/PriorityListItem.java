@@ -1,16 +1,16 @@
 package main.swing.components;
 
 import main.content.PARAMS;
-import main.content.properties.G_PROPS;
-import main.entity.obj.DC_UnitObj;
+import main.content.values.properties.G_PROPS;
+import main.entity.obj.unit.DC_UnitModel;
 import main.game.battlefield.VisionManager;
 import main.swing.components.panels.page.DC_PagedPriorityPanel;
 import main.swing.generic.components.G_Panel;
 import main.swing.renderers.SmartTextManager;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.ColorManager;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
+import main.system.graphics.GuiManager;
 import main.system.graphics.MigMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
@@ -31,7 +31,7 @@ public class PriorityListItem extends G_Panel {
     protected Map<Point, SmartText> specialOverlayingStrings = new ConcurrentHashMap<>();
     SmartTextManager smartMaster = new SmartTextManager();
     boolean clock;
-    private DC_UnitObj unit;
+    private DC_UnitModel unit;
     private JLabel lbl;
     private Image img;
     private SmartText apText;
@@ -40,7 +40,7 @@ public class PriorityListItem extends G_Panel {
     private SmartText initText;
     private String emptyIcon = ImageManager.getAltEmptyListIcon();
 
-    public PriorityListItem(DC_UnitObj unit) {
+    public PriorityListItem(DC_UnitModel unit) {
         this.unit = unit;
         if (unit != null) {
             if (unit.getName().equals(DC_PagedPriorityPanel.CLOCK_UNIT)) {

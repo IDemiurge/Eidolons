@@ -1,8 +1,8 @@
 package main.swing.generic.components.editors.abilities;
 
 import main.content.ContentManager;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_TabbedPanel;
 import main.swing.generic.components.list.G_List;

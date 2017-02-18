@@ -1,13 +1,13 @@
 package main.ability.conditions;
 
-import main.content.CONTENT_CONSTS.UNIT_TO_PLAYER_VISION;
-import main.content.CONTENT_CONSTS.UNIT_TO_UNIT_VISION;
+import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref.KEYS;
-import main.entity.obj.BattlefieldObj;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.BfObj;
 import main.entity.obj.DC_Obj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 
 public class VisibilityCondition extends ConditionImpl {
 
@@ -38,7 +38,7 @@ public class VisibilityCondition extends ConditionImpl {
 
     @Override
     public boolean check() {
-        if (!(ref.getObj(KEYS.MATCH) instanceof BattlefieldObj)) {
+        if (!(ref.getObj(KEYS.MATCH) instanceof BfObj)) {
             return false;
         }
         DC_Obj match = (DC_Obj) ref.getObj(KEYS.MATCH);
@@ -54,12 +54,12 @@ public class VisibilityCondition extends ConditionImpl {
         }
 
         if (p_vision != null) {
-            DC_HeroObj unit = (DC_HeroObj) ref.getObj(source);
+            Unit unit = (Unit) ref.getObj(source);
             result = unit.getActivePlayerVisionStatus() == p_vision;
         } else if (u_vision != null) {
             match = (DC_Obj) ref.getObj(this.match);
             // if (((DC_Game) game).getManager().isAI_Turn()) { what's the idea?
-            DC_HeroObj activeObj = (DC_HeroObj) ref.getObj(source);
+            Unit activeObj = (Unit) ref.getObj(source);
             result = ((DC_Game) game).getVisionManager().getUnitVisibilityStatus(match, activeObj)
                     .isSufficient(u_vision);
             // }

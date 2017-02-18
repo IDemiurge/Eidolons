@@ -1,11 +1,15 @@
 package main.libgdx.anims.particles;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.StreamUtils;
+import main.data.filesys.PathFinder;
 import main.libgdx.anims.particles.Emitter.EMITTER_VALS_SCALED;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.StringMaster;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,8 +21,28 @@ import java.io.InputStreamReader;
  */
 public class ParticleEffect extends com.badlogic.gdx.graphics.g2d.ParticleEffect {
 
-    public void offset(String offset, String value) {
-        offset(Float.valueOf(offset), new EnumMaster<EMITTER_VALS_SCALED>().retrieveEnumConst(EMITTER_VALS_SCALED.class, value));
+    public String path;
+
+    public ParticleEffect(String path) {
+        this.path=path;
+        String imagePath =EmitterPresetMaster.getInstance(). findImagePath(path) ;
+        if (FileManager.isImageFile(StringMaster.getLastPathSegment(imagePath)))
+           imagePath= StringMaster.cropLastPathSegment(imagePath);
+
+             load(Gdx.files.internal(
+         StringMaster.addMissingPathSegments(
+          path, PathFinder.getParticlePresetPath())),
+         Gdx.files.internal(imagePath));
+
+    }
+
+    public ParticleEffect() {
+        super();
+    }
+
+    public void offset(String value, String offset) {
+        offset(Float.valueOf(offset),
+         new EnumMaster<EMITTER_VALS_SCALED>().retrieveEnumConst(EMITTER_VALS_SCALED.class, value));
     }
 
     public void offset(float offset, EMITTER_VALS_SCALED value) {
@@ -39,10 +63,10 @@ public class ParticleEffect extends com.badlogic.gdx.graphics.g2d.ParticleEffect
 
 
 
-    public void set(String choice, String value) {
+    public void set(String valName, String value) {
         for (ParticleEmitter e : getEmitters()) {
             Emitter emitter = (Emitter) e;
-            emitter.set(choice, value.toLowerCase());
+            emitter.set(valName, value.toLowerCase());
         }
     }
 
@@ -89,5 +113,12 @@ public class ParticleEffect extends com.badlogic.gdx.graphics.g2d.ParticleEffect
          Emitter e = (Emitter) getEmitters().get(i);
        e.modifyParticles();
     }
+    }
+
+    public void toggle(String fieldName) {
+        for (int i = 0, n = getEmitters().size; i < n; i++) {
+            Emitter e = (Emitter) getEmitters().get(i);
+            e.toggle(fieldName);
+        }
     }
 }

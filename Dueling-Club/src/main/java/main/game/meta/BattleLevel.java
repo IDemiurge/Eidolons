@@ -1,5 +1,7 @@
 package main.game.meta;
 
+import main.game.logic.arcade.ArenaArcade;
+
 public class BattleLevel {
 
     private ArenaArcade arcade;

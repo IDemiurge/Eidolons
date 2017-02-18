@@ -2,11 +2,11 @@ package main.ability.conditions.req;
 
 import main.content.ContentManager;
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.elements.conditions.MicroCondition;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.system.math.DC_MathManager;
 
 public class SkillPointCondition extends MicroCondition {
@@ -38,7 +38,7 @@ public class SkillPointCondition extends MicroCondition {
         }
         pointsRequired = amount
                 - DC_MathManager
-                .getFreeMasteryPoints((DC_HeroObj) ref.getSourceObj(), masteryParam);
+                .getFreeMasteryPoints((Unit) ref.getSourceObj(), masteryParam);
 
         return pointsRequired <= 0;
     }

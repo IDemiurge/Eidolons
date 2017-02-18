@@ -1,16 +1,16 @@
 package main.entity.type;
 
-import main.content.CONTENT_CONSTS;
-import main.content.CONTENT_CONSTS.SPELL_GROUP;
-import main.content.CONTENT_CONSTS.SPELL_POOL;
-import main.content.CONTENT_CONSTS.SPELL_TYPE;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.SpellEnums.SPELL_GROUP;
+import main.content.enums.entity.SpellEnums.SPELL_POOL;
+import main.content.enums.entity.SpellEnums.SPELL_TYPE;
+import main.content.enums.entity.SpellEnums;
+import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.system.auxiliary.EnumMaster;
 
 public class SpellType extends ActiveObjType {
 
-    private static final SPELL_TYPE DEFAULT_SPELL_TYPE = SPELL_TYPE.SORCERY;
+    private static final SPELL_TYPE DEFAULT_SPELL_TYPE = SpellEnums.SPELL_TYPE.SORCERY;
     private SPELL_GROUP spellGroup;
     private SPELL_TYPE spellType;
     private SPELL_POOL spellPool;
@@ -53,19 +53,19 @@ public class SpellType extends ActiveObjType {
 
     public boolean isSorcery() {
 
-        return getSpellType() == SPELL_TYPE.SORCERY;
+        return getSpellType() == SpellEnums.SPELL_TYPE.SORCERY;
     }
 
     public boolean isEnchantment() {
 
         return checkSingleProp(G_PROPS.SPELL_TYPE,
-                CONTENT_CONSTS.SPELL_TYPE.ENCHANTMENT.name());
+                SpellEnums.SPELL_TYPE.ENCHANTMENT.name());
     }
 
     public boolean isSummoning() {
 
         return checkSingleProp(G_PROPS.SPELL_TYPE,
-                CONTENT_CONSTS.SPELL_TYPE.SUMMONING.name());
+                SpellEnums.SPELL_TYPE.SUMMONING.name());
     }
 
     @Override

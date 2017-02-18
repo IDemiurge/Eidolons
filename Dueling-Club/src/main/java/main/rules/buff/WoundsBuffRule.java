@@ -7,15 +7,15 @@ import main.ability.effects.Effects;
 import main.ability.effects.oneshot.common.IfElseEffect;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.ability.effects.special.BehaviorModeEffect;
-import main.content.CONTENT_CONSTS.BEHAVIOR_MODE;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
-import main.content.CONTENT_CONSTS.STD_BUFF_NAMES;
 import main.content.PARAMS;
 import main.content.VALUE;
+import main.content.enums.system.AiEnums;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.NotCondition;
 import main.entity.Ref.KEYS;
-import main.game.MicroGame;
-import main.rules.mechanics.RuleMaster.COMBAT_RULES;
+import main.game.core.game.MicroGame;
+import main.rules.RuleMaster.COMBAT_RULES;
 import main.system.auxiliary.StringMaster;
 
 /**
@@ -28,8 +28,8 @@ public class WoundsBuffRule extends DC_BuffRule {
 
     private String[] formulas = {getMaxEndurance() + "/10", getMaxEndurance() + "/5"};
 
-    private String[] buffTypeNames = {STD_BUFF_NAMES.Critically_Wounded.getName(),
-            STD_BUFF_NAMES.Wounded.getName(),};
+    private String[] buffTypeNames = {MetaEnums.STD_BUFF_NAMES.Critically_Wounded.getName(),
+            MetaEnums.STD_BUFF_NAMES.Wounded.getName(),};
 
     public WoundsBuffRule(MicroGame game) {
         super(game);
@@ -42,10 +42,10 @@ public class WoundsBuffRule extends DC_BuffRule {
                 ModifyValueEffect modifyValueEffect = new ModifyValueEffect(PARAMS.N_OF_ACTIONS,
                         MOD.MODIFY_BY_PERCENT, getCriticalApPenalty());
                 return new IfElseEffect(modifyValueEffect, new NotCondition(
-                        new StdPassiveCondition(STANDARD_PASSIVES.BERSERKER)), new Effects(
+                        new StdPassiveCondition(UnitEnums.STANDARD_PASSIVES.BERSERKER)), new Effects(
                         new ModifyValueEffect(PARAMS.DAMAGE_MOD, MOD.MODIFY_BY_PERCENT,
                                 BERSERK_WOUNDS_DAMAGE_MOD), new BehaviorModeEffect(
-                        BEHAVIOR_MODE.BERSERK)));
+                        AiEnums.BEHAVIOR_MODE.BERSERK)));
 
             }
             case 1: {
@@ -54,7 +54,7 @@ public class WoundsBuffRule extends DC_BuffRule {
                 ModifyValueEffect modifyValueEffect2 = new ModifyValueEffect(PARAMS.DAMAGE_MOD,
                         MOD.MODIFY_BY_PERCENT, BERSERK_WOUNDS_DAMAGE_MOD);
                 return new IfElseEffect(modifyValueEffect, new NotCondition(
-                        new StdPassiveCondition(STANDARD_PASSIVES.BERSERKER)), modifyValueEffect2);
+                        new StdPassiveCondition(UnitEnums.STANDARD_PASSIVES.BERSERKER)), modifyValueEffect2);
             }
         }
 

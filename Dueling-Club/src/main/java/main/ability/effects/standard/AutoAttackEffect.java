@@ -2,11 +2,11 @@ package main.ability.effects.standard;
 
 import main.ability.effects.DC_Effect;
 import main.client.net.GameConnector.HOST_CLIENT_CODES;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.unit.Unit;
+import main.game.ai.tools.priority.DC_PriorityManager;
 import main.swing.generic.services.dialog.AttackChoicePanel;
-import main.system.ai.logic.priority.PriorityManager;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.net.WaitingThread;
 
 import java.util.LinkedList;
@@ -42,8 +42,8 @@ public class AutoAttackEffect extends DC_Effect {
         return true;
     }
 
-    private int calculatePriority(DC_ActiveObj attack, DC_HeroObj target) {
-        return PriorityManager.getAttackPriority(attack, target);
+    private int calculatePriority(DC_ActiveObj attack, Unit target) {
+        return DC_PriorityManager.getAttackPriority(attack, target);
     }
 
     private DC_ActiveObj pickAttack() {

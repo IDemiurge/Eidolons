@@ -1,8 +1,8 @@
 package main.client.cc.gui.neo.choice;
 
 import main.content.ContentManager;
-import main.content.properties.PROPERTY;
-import main.entity.obj.DC_HeroObj;
+import main.content.values.properties.PROPERTY;
+import main.entity.obj.unit.Unit;
 import main.swing.components.panels.page.info.element.ListTextItem;
 import main.system.auxiliary.StringMaster;
 
@@ -19,7 +19,7 @@ public class EnumChoiceView<T extends Enum<?>> extends ChoiceView<T> implements
     private Class<T> CLASS;
     private PROPERTY prop;
 
-    public EnumChoiceView(ChoiceSequence sequence, DC_HeroObj hero,
+    public EnumChoiceView(ChoiceSequence sequence, Unit hero,
                           Class<T> CLASS) {
         super(sequence, hero);
         this.CLASS = CLASS;

@@ -3,16 +3,17 @@ package main.game.logic.macro.town;
 import main.client.cc.CharacterCreator;
 import main.client.cc.gui.lists.ShopListsPanel;
 import main.client.cc.logic.items.ItemGenerator;
-import main.content.CONTENT_CONSTS.MATERIAL;
-import main.content.CONTENT_CONSTS.QUALITY_LEVEL;
+import main.content.enums.entity.ItemEnums.MATERIAL;
+import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
 import main.content.CONTENT_CONSTS2.SHOP_MODIFIER;
 import main.content.CONTENT_CONSTS2.SHOP_TYPE;
 import main.content.C_OBJ_TYPE;
 import main.content.PARAMS;
-import main.content.parameters.MACRO_PARAMS;
-import main.content.properties.MACRO_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.ItemEnums;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.properties.MACRO_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.xml.XML_Writer;
 import main.elements.conditions.PropCondition;
@@ -20,9 +21,10 @@ import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.utils.SaveMaster;
-import main.system.FilterMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.entity.FilterMaster;
 import main.system.auxiliary.*;
-import main.system.auxiliary.LogMaster.LOG_CHANNELS;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 import main.system.math.MathMaster;
 
 import java.util.Arrays;
@@ -135,7 +137,7 @@ public class Shop extends TownPlace {
 
         // TODO AND WHAT ABOUT NON-SLOT ITEMS?
         List<ObjType> filtered = new LinkedList<>();
-        for (MATERIAL material : MATERIAL.values()) {
+        for (MATERIAL material : ItemEnums.MATERIAL.values()) {
             if (ShopMaster.checkMaterialAllowed(this, material)) {
                 for (ObjType t : pool) {
                     if (!ItemGenerator.checkMaterial(t, material.getGroup())) {

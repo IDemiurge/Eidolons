@@ -7,9 +7,9 @@ import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
-import main.game.event.Event;
-import main.game.event.Event.EVENT_TYPE;
-import main.system.auxiliary.LogMaster;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.EVENT_TYPE;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.List;
 
@@ -55,7 +55,7 @@ public class Trigger extends ReferredElement {
     }
 
     public boolean trigger() {
-        main.system.auxiliary.LogMaster.log(LogMaster.TRIGGER_DEBUG, toString()
+        LogMaster.log(LogMaster.TRIGGER_DEBUG, toString()
                 + " has been triggered!");
         abilities.setForceTargeting(forceTargeting);
         if (oneShot) {
@@ -81,7 +81,7 @@ public class Trigger extends ReferredElement {
         if (!getEventType().equals(event.getType())) {
             return false;
         }
-        main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, "checking trigger for event: "
+        LogMaster.log(LogMaster.CORE_DEBUG, "checking trigger for event: "
                 + event.getType().name());
         // return true;
         if (eventType.equals((event.getType()))) {

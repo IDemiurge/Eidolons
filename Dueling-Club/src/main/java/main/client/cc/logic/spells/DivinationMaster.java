@@ -4,24 +4,26 @@ import main.ability.effects.AddBuffEffect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
-import main.content.CONTENT_CONSTS.SPELL_GROUP;
-import main.content.CONTENT_CONSTS.SPELL_POOL;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
-import main.content.CONTENT_CONSTS.STD_BOOLS;
-import main.content.OBJ_TYPES;
+import main.content.enums.GenericEnums;
+import main.content.enums.entity.SpellEnums.SPELL_GROUP;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.SpellEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.elements.conditions.NumericCondition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_SpellObj;
+import main.entity.active.DC_SpellObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.system.DC_Formulas;
-import main.system.FilterMaster;
+import main.system.entity.FilterMaster;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.secondary.WorkspaceMaster;
 import main.system.math.DC_MathManager;
 
@@ -30,16 +32,16 @@ import java.util.*;
 public class DivinationMaster {
     public static final String BUFF_FAVORED = "Favored";
     private static final int MAX_SPELL_DIVINE_CHANCE = 20;
-    private static DC_HeroObj hero;
+    private static Unit hero;
     private static List<ObjType> spellPool;
     private static NumericCondition sdCondition;
     private static int pool;
     private static Map<SPELL_GROUP, Integer> spellGroups;
 
-    public static void removeDivination(DC_HeroObj hero) {
+    public static void removeDivination(Unit hero) {
         List<DC_SpellObj> spellsToRemove = new LinkedList<>();
         for (DC_SpellObj spell : hero.getSpells()) {
-            if (spell.getSpellPool() == SPELL_POOL.DIVINED) {
+            if (spell.getSpellPool() == SpellEnums.SPELL_POOL.DIVINED) {
                 spellsToRemove.add(spell);
             }
         }
@@ -47,11 +49,11 @@ public class DivinationMaster {
         hero.setProperty(PROPS.DIVINED_SPELLS, "");
     }
 
-    public static void divine(DC_HeroObj hero, int h) {
+    public static void divine(Unit hero, int h) {
 
     }
 
-    public static List<DC_SpellObj> divine(DC_HeroObj diviningHero) {
+    public static List<DC_SpellObj> divine(Unit diviningHero) {
         hero = diviningHero;
         List<DC_SpellObj> list = new LinkedList<>();
         pool = DC_MathManager.getDivinationPool(hero);
@@ -108,7 +110,7 @@ public class DivinationMaster {
                 }
             }
             pool -= spell.getIntParam(PARAMS.SPELL_DIFFICULTY);
-            spell.setProperty(G_PROPS.SPELL_POOL, SPELL_POOL.DIVINED.toString());
+            spell.setProperty(G_PROPS.SPELL_POOL, SpellEnums.SPELL_POOL.DIVINED.toString());
             hero.addProperty(PROPS.DIVINED_SPELLS, spell.getName());
             return spell;
 
@@ -118,7 +120,7 @@ public class DivinationMaster {
     }
 
     private static void applyKnownSpellDivinationEffect(DC_SpellObj spell) {
-        if (hero.checkPassive(STANDARD_PASSIVES.DRUIDIC_VISIONS)) {
+        if (hero.checkPassive(UnitEnums.STANDARD_PASSIVES.DRUIDIC_VISIONS)) {
             Ref ref = Ref.getSelfTargetingRefCopy(hero);
             ref.setID(KEYS.SPELL, spell.getId());
             new ModifyValueEffect(PARAMS.C_ESSENCE,
@@ -127,7 +129,7 @@ public class DivinationMaster {
             return;
         }
 
-        if (hero.checkPassive(STANDARD_PASSIVES.HOLY_PRAYER)) {
+        if (hero.checkPassive(UnitEnums.STANDARD_PASSIVES.HOLY_PRAYER)) {
             Ref ref = Ref.getSelfTargetingRefCopy(hero);
             ref.setID(KEYS.SPELL, spell.getId());
             new ModifyValueEffect(PARAMS.C_MORALE, MOD.MODIFY_BY_CONST,
@@ -154,7 +156,7 @@ public class DivinationMaster {
                 hero.getIntParam(PARAMS.DIVINATION_MASTERY)) / 5);
 
         buffEffect.getBuff().setProperty(G_PROPS.STD_BOOLS,
-                "" + STD_BOOLS.STACKING, true);
+                "" + GenericEnums.STD_BOOLS.STACKING, true);
     }
 
     private static boolean checkSpell(ObjType spellType) {
@@ -183,9 +185,9 @@ public class DivinationMaster {
                 .getObjectByWeight(spellGroups);
         List<ObjType> types = DataManager.toTypeList(
                 DataManager
-                        .getTypesSubGroupNames(OBJ_TYPES.SPELLS, StringMaster
+                        .getTypesSubGroupNames(DC_TYPE.SPELLS, StringMaster
                                 .getWellFormattedString(chosenGroup.name())),
-                OBJ_TYPES.SPELLS);
+                DC_TYPE.SPELLS);
         FilterMaster.filterOut(types, sdCondition);
         Collections.sort(types, getComparator());
         spellPool.addAll(types);
@@ -207,7 +209,7 @@ public class DivinationMaster {
         if (forced) {
             return map;
         }
-        if (hero.checkBool(STD_BOOLS.DIVINATION_SPELL_GROUPS_INVERTED)) {
+        if (hero.checkBool(GenericEnums.STD_BOOLS.DIVINATION_SPELL_GROUPS_INVERTED)) {
             map = new MapMaster<SPELL_GROUP, Integer>().invertMapOrder(map, true);
         }
         // TODO ++ USE

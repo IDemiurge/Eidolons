@@ -1,6 +1,6 @@
 package main.game.logic.macro.map;
 
-import main.content.properties.MACRO_PROPS;
+import main.content.values.properties.MACRO_PROPS;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.logic.macro.MacroGame;

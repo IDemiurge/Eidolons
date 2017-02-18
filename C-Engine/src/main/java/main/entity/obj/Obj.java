@@ -2,19 +2,19 @@ package main.entity.obj;
 
 import main.ability.AbilityObj;
 import main.ability.PassiveAbilityObj;
-import main.content.CONTENT_CONSTS.STATUS;
 import main.content.ContentManager;
-import main.content.OBJ_TYPES;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.DC_TYPE;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.AbilityConstructor;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.Game;
+import main.game.core.game.Game;
 import main.game.battlefield.Coordinates;
-import main.game.player.Player;
-import main.system.auxiliary.LogMaster;
+import main.game.logic.battle.player.Player;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.images.ImageManager.HIGHLIGHT;
@@ -56,9 +56,9 @@ public class Obj extends Entity {
     }
 
     @Override
-    public OBJ_TYPES getOBJ_TYPE_ENUM() {
-        if (super.getOBJ_TYPE_ENUM() instanceof OBJ_TYPES) {
-            return (OBJ_TYPES) super.getOBJ_TYPE_ENUM();
+    public DC_TYPE getOBJ_TYPE_ENUM() {
+        if (super.getOBJ_TYPE_ENUM() instanceof DC_TYPE) {
+            return (DC_TYPE) super.getOBJ_TYPE_ENUM();
         }
         return null;
 
@@ -166,9 +166,9 @@ public class Obj extends Entity {
     public void setDead(boolean dead) {
         this.dead = dead;
         if (dead) {
-            addStatus(STATUS.DEAD.toString());
+            addStatus(UnitEnums.STATUS.DEAD.toString());
         } else {
-            removeStatus(STATUS.DEAD.toString());
+            removeStatus(UnitEnums.STATUS.DEAD.toString());
         }
     }
 
@@ -293,7 +293,7 @@ public class Obj extends Entity {
 
     public BuffObj getBuff(String buffName, boolean strict) {
         if (buffs == null || buffName == null) {
-            main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG_1, buffName
+            LogMaster.log(LogMaster.CORE_DEBUG_1, buffName
                     + " buff was searched");
             return null;
         }
@@ -310,7 +310,7 @@ public class Obj extends Entity {
                 }
             }
         }
-        main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG_1, buffName
+        LogMaster.log(LogMaster.CORE_DEBUG_1, buffName
                 + " buff not found for " + buffs);
 
         return null;

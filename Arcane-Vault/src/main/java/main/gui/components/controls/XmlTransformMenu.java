@@ -1,7 +1,7 @@
 package main.gui.components.controls;
 
 import main.content.PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.xml.XML_Transformer;
 import main.entity.type.ObjType;
@@ -9,7 +9,7 @@ import main.launch.ArcaneVault;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.panels.G_ButtonPanel;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

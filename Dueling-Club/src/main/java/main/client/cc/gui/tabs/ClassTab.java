@@ -3,14 +3,14 @@ package main.client.cc.gui.tabs;
 import main.client.cc.gui.MainViewPanel;
 import main.client.cc.gui.MainViewPanel.HERO_VIEWS;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
-import main.entity.obj.DC_FeatObj;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.attach.DC_FeatObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager.BORDER;
@@ -19,7 +19,7 @@ import java.util.LinkedList;
 
 public class ClassTab extends HeroItemTab {
 
-    public ClassTab(MainViewPanel mvp, DC_HeroObj hero) {
+    public ClassTab(MainViewPanel mvp, Unit hero) {
         super("Classes", mvp, hero);
     }
 
@@ -62,7 +62,7 @@ public class ClassTab extends HeroItemTab {
 
     @Override
     protected OBJ_TYPE getTYPE() {
-        return OBJ_TYPES.CLASSES;
+        return DC_TYPE.CLASSES;
     }
 
     @Override

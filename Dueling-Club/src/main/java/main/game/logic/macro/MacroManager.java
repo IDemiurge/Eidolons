@@ -1,15 +1,15 @@
 package main.game.logic.macro;
 
 import main.client.dc.Launcher;
-import main.content.MACRO_OBJ_TYPES;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.OBJ_TYPE;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Reader;
 import main.data.xml.XML_Writer;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.logic.macro.global.Campaign;
 import main.game.logic.macro.global.TimeMaster;
@@ -17,8 +17,8 @@ import main.game.logic.macro.gui.WorldEditorInterface;
 import main.game.logic.macro.gui.map.MapView;
 import main.game.logic.macro.map.Region;
 import main.game.logic.macro.travel.MacroParty;
-import main.system.FilterMaster;
-import main.system.auxiliary.FileManager;
+import main.system.entity.FilterMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.datatypes.DequeImpl;
 
 import javax.swing.*;
@@ -40,7 +40,7 @@ public class MacroManager {
     private static MacroGame game;
     private static String campaignName;
     private static String worldName;
-    private static DC_HeroObj selectedPartyMember;
+    private static Unit selectedPartyMember;
     private static boolean editMode;
     private static WorldEditorInterface editorView;
     private static DequeImpl<OBJ_TYPE> custom_OBJ_TYPES;
@@ -206,14 +206,14 @@ public class MacroManager {
 
     }
 
-    public static DC_HeroObj getSelectedPartyMember() {
+    public static Unit getSelectedPartyMember() {
         if (selectedPartyMember == null) {
             return game.getPlayerParty().getLeader();
         }
         return selectedPartyMember;
     }
 
-    public static void setSelectedPartyMember(DC_HeroObj selectedPartyMember) {
+    public static void setSelectedPartyMember(Unit selectedPartyMember) {
         MacroManager.selectedPartyMember = selectedPartyMember;
     }
 

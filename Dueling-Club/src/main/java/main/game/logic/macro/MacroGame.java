@@ -1,19 +1,19 @@
 package main.game.logic.macro;
 
-import main.client.battle.arcade.PartyManager;
 import main.client.cc.logic.party.PartyObj;
 import main.client.dc.Launcher;
-import main.content.MACRO_OBJ_TYPES;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.OBJ_TYPE;
-import main.content.properties.MACRO_PROPS;
+import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
-import main.game.Game;
+import main.game.core.game.DC_Game;
+import main.game.core.game.Game;
 import main.game.battlefield.Coordinates;
+import main.game.logic.faction.Faction;
+import main.game.logic.generic.PartyManager;
 import main.game.logic.macro.MacroRef.MACRO_KEYS;
-import main.game.logic.macro.faction.Faction;
 import main.game.logic.macro.global.*;
 import main.game.logic.macro.map.Place;
 import main.game.logic.macro.map.Region;
@@ -59,7 +59,7 @@ public class MacroGame extends Game {
     public void init() {
         ref = new MacroRef(this);
         state = new MacroGameState(this);
-        mngr = new MacroGameManager(this);
+        manager = new MacroGameManager(this);
         logManager = new Journal(this);
         idManager = new DC_IdManager();
         turnRules = new DequeImpl<>();
@@ -125,7 +125,7 @@ public class MacroGame extends Game {
 
     @Override
     public void start(boolean host) {
-        state.resetAll();
+        getManager().getStateManager().resetAll();
 
     }
 

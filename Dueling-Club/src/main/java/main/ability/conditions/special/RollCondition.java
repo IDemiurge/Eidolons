@@ -1,6 +1,6 @@
 package main.ability.conditions.special;
 
-import main.content.CONTENT_CONSTS.ROLL_TYPES;
+import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.elements.conditions.MicroCondition;
 import main.system.math.roll.RollMaster;
 

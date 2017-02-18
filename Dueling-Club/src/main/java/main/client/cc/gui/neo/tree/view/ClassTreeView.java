@@ -5,12 +5,13 @@ import main.client.cc.gui.neo.tabs.HC_Tab;
 import main.client.cc.gui.neo.tabs.HC_TabPanel;
 import main.client.cc.gui.neo.tree.logic.ClassTreeBuilder;
 import main.client.cc.gui.neo.tree.logic.TreeMap;
-import main.content.CONTENT_CONSTS.CLASS_GROUP;
-import main.content.OBJ_TYPES;
+import main.content.enums.entity.HeroEnums.CLASS_GROUP;
+import main.content.DC_TYPE;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
-import main.entity.obj.DC_FeatObj;
-import main.entity.obj.DC_HeroObj;
+import main.content.enums.entity.HeroEnums;
+import main.content.values.properties.G_PROPS;
+import main.entity.obj.attach.DC_FeatObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.G_Panel;
@@ -26,10 +27,10 @@ import java.util.List;
 
 public class ClassTreeView extends HT_View {
 
-    public static CLASS_GROUP[] FOCUS_WORKSPACE = {CLASS_GROUP.FIGHTER, CLASS_GROUP.KNIGHT,
-            CLASS_GROUP.RANGER, CLASS_GROUP.ROGUE, CLASS_GROUP.TRICKSTER};
+    public static CLASS_GROUP[] FOCUS_WORKSPACE = {HeroEnums.CLASS_GROUP.FIGHTER, HeroEnums.CLASS_GROUP.KNIGHT,
+            HeroEnums.CLASS_GROUP.RANGER, HeroEnums.CLASS_GROUP.ROGUE, HeroEnums.CLASS_GROUP.TRICKSTER};
 
-    public ClassTreeView(Object arg, DC_HeroObj hero) {
+    public ClassTreeView(Object arg, Unit hero) {
         super(arg, hero);
     }
 
@@ -39,14 +40,14 @@ public class ClassTreeView extends HT_View {
     }
 
     @Override
-    protected OBJ_TYPES getTYPE() {
-        return OBJ_TYPES.CLASSES;
+    protected DC_TYPE getTYPE() {
+        return DC_TYPE.CLASSES;
     }
 
     @Override
     protected List<HC_Tab> initTabList() {
         List<HC_Tab> tabList = new LinkedList<>();
-        List<CLASS_GROUP> classes = new LinkedList<>(Arrays.asList(CLASS_GROUP.values()));
+        List<CLASS_GROUP> classes = new LinkedList<>(Arrays.asList(HeroEnums.CLASS_GROUP.values()));
         // if (mineOnly) {
         // }
         // for (CLASS_GROUP group : CLASS_GROUP.values())
@@ -55,7 +56,7 @@ public class ClassTreeView extends HT_View {
         // break; // TODO needed?
         // }
         for (final CLASS_GROUP classGroup : classes) {
-            if (classGroup == CLASS_GROUP.MULTICLASS) {
+            if (classGroup == HeroEnums.CLASS_GROUP.MULTICLASS) {
                 continue;
             }
             HC_Tab tab = tabMap.get(classGroup);
@@ -152,7 +153,7 @@ public class ClassTreeView extends HT_View {
 
     @Override
     protected int getTabPageSize() {
-        return CLASS_GROUP.values().length;
+        return HeroEnums.CLASS_GROUP.values().length;
     }
 
     @Override

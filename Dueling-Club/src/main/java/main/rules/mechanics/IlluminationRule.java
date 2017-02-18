@@ -2,14 +2,14 @@ package main.rules.mechanics;
 
 import main.ability.effects.Effect;
 import main.ability.effects.common.LightEmittingEffect;
-import main.content.CONTENT_CONSTS.STD_BOOLS;
 import main.content.C_OBJ_TYPE;
 import main.content.PARAMS;
+import main.content.enums.GenericEnums;
 import main.entity.EntityMaster;
 import main.entity.Ref;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.system.math.Formula;
 
 import java.util.HashMap;
@@ -55,10 +55,10 @@ public class IlluminationRule {
         LightEmittingEffect effect = effectCache.get(source);
         // if (effect == null) {
         Boolean circular = true;
-        if (source.checkBool(STD_BOOLS.SPECTRUM_LIGHT)) {
+        if (source.checkBool(GenericEnums.STD_BOOLS.SPECTRUM_LIGHT)) {
             circular = false;
         } else if (EntityMaster.isOverlaying(source)) {
-            DC_HeroObj dc_Obj = (DC_HeroObj) source;
+            BattleFieldObject dc_Obj = (BattleFieldObject) source;
             if (dc_Obj.getDirection() != null) {
                 circular = false;
             }

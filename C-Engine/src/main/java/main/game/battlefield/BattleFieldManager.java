@@ -1,9 +1,9 @@
 package main.game.battlefield;
 
 import main.entity.obj.MicroObj;
-import main.game.GameManager;
-import main.game.MicroGame;
-import main.game.MicroGameState;
+import main.game.core.game.GameManager;
+import main.game.core.game.MicroGame;
+import main.game.core.state.MicroGameState;
 
 public abstract class BattleFieldManager {
 

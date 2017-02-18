@@ -1,7 +1,7 @@
 package main.music.ahk;
 
 import main.ArcaneTower;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.XLinkedMap;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
@@ -11,8 +11,8 @@ import main.music.MusicCore;
 import main.music.gui.MusicListPanel;
 import main.music.gui.MusicMouseListener;
 import main.music.m3u.M3uGenerator;
-import main.system.auxiliary.FileManager;
-import main.system.auxiliary.GuiManager;
+import main.system.auxiliary.data.FileManager;
+import main.system.graphics.GuiManager;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;

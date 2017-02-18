@@ -1,17 +1,18 @@
 package main.ability.effects;
 
 import main.ability.effects.oneshot.MicroEffect;
-import main.content.CONTENT_CONSTS.ACTION_TAGS;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.ActionEnums;
+import main.content.values.properties.G_PROPS;
 import main.data.ability.AE_ConstrArgs;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_WeaponObj;
-import main.entity.obj.top.DC_ActiveObj;
-import main.game.DC_Game;
+import main.entity.active.DC_ActiveObj;
+import main.entity.item.DC_WeaponObj;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.attack.Attack;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.PositionMaster;
 
 public class AttackEffect extends MicroEffect {
@@ -77,16 +78,16 @@ public class AttackEffect extends MicroEffect {
     public boolean applyThis() {
         // new Attack(target, source).execute(effects); => to State's history!
         attack = null;
-        DC_HeroObj attacker = (DC_HeroObj) ref.getSourceObj();
+        Unit attacker = (Unit) ref.getSourceObj();
         DC_ActiveObj activeObj = (DC_ActiveObj) getActiveObj();
         if (!activeObj.isExtraAttackMode()) {
             if (!activeObj.isThrow()) {
                 if (!activeObj.isRanged()) {
-                    main.system.auxiliary.LogMaster.log(1, "*** MELEE ATTACK BY "
+                    LogMaster.log(1, "*** MELEE ATTACK BY "
                             + activeObj.getOwnerObj().getNameAndCoordinate() + " on "
                             + ref.getTargetObj().getNameAndCoordinate());
                     if (PositionMaster.getDistance(activeObj.getOwnerObj(), ref.getTargetObj()) > 1) {
-                        main.system.auxiliary.LogMaster.log(1, "*** RANGE BUG ");
+                        LogMaster.log(1, "*** RANGE BUG ");
                         // AI_Manager.logFullInfo();
                     }
                 }
@@ -94,7 +95,7 @@ public class AttackEffect extends MicroEffect {
         }
         if (!offhand) {
             if (StringMaster.compare(ref.getObj(KEYS.ACTIVE).getProperty(G_PROPS.ACTION_TAGS),
-                    ACTION_TAGS.OFF_HAND + "")) {
+                    ActionEnums.ACTION_TAGS.OFF_HAND + "")) {
                 offhand = true;
             }
 
@@ -102,7 +103,7 @@ public class AttackEffect extends MicroEffect {
 
         if (weapon != null) {
             ref.setID(KEYS.WEAPON, weapon.getId());
-        } else if (ref.getSourceObj() instanceof DC_HeroObj) {
+        } else if (ref.getSourceObj() instanceof Unit) {
             Integer id = null;
             try {
                 id = (!offhand) ? attacker.getMainWeapon().getId() : attacker.getSecondWeapon()

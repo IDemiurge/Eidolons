@@ -1,8 +1,8 @@
 package main.ability.effects.common;
 
 import main.ability.effects.DC_Effect;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_UnitAction;
+import main.entity.active.DC_UnitAction;
+import main.entity.obj.unit.Unit;
 
 public class PayCostEffect extends DC_Effect {
     boolean force;
@@ -14,7 +14,7 @@ public class PayCostEffect extends DC_Effect {
 
     @Override
     public boolean applyThis() {
-        DC_HeroObj hero = (DC_HeroObj) ref.getTargetObj();
+        Unit hero = (Unit) ref.getTargetObj();
 
         DC_UnitAction action = hero.getAction(actionName);
         if (action == null) {

@@ -4,16 +4,20 @@ import main.client.cc.CharacterCreator;
 import main.client.cc.DC_HeroManager;
 import main.client.cc.HeroManager;
 import main.client.cc.gui.lists.dc.InvListManager;
-import main.content.CONTENT_CONSTS.ITEM_SLOT;
-import main.content.CONTENT_CONSTS.WEAPON_CLASS;
-import main.content.OBJ_TYPES;
+import main.content.enums.entity.ItemEnums.ITEM_SLOT;
+import main.content.DC_TYPE;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.ItemEnums;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.entity.Ref.KEYS;
-import main.entity.obj.*;
+import main.entity.item.DC_HeroItemObj;
+import main.entity.item.DC_QuickItemObj;
+import main.entity.item.DC_WeaponObj;
+import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.swing.frames.InventoryWindow;
 import main.swing.frames.OperationWindow;
 import main.swing.frames.PickUpWindow;
@@ -37,7 +41,7 @@ public class InventoryManager {
         setInvListManager(new InvListManager(game));
     }
 
-    public static void updateType(DC_HeroObj hero) {
+    public static void updateType(Unit hero) {
         hero.setType(new ObjType(hero.getType()));
         // TODO init type?
         ObjType type = hero.getType();
@@ -63,19 +67,19 @@ public class InventoryManager {
         }
     }
 
-    public static void equipOriginalItems(DC_HeroObj to, Obj from) {
+    public static void equipOriginalItems(Unit to, Obj from) {
         for (Obj i : to.getGame().getDroppedItemManager().getDroppedItems(
                 to.getGame().getCellByCoordinate(to.getCoordinates()))) {
             if (i.getRef().getSourceObj() == from) {
                 ITEM_SLOT slot = null;
 
-                if (i.getOBJ_TYPE_ENUM() == OBJ_TYPES.ARMOR) {
-                    slot = ITEM_SLOT.ARMOR;
+                if (i.getOBJ_TYPE_ENUM() == DC_TYPE.ARMOR) {
+                    slot = ItemEnums.ITEM_SLOT.ARMOR;
                 } else {
                     if (from.getRef().getObj(KEYS.WEAPON) == i) {
-                        slot = ITEM_SLOT.MAIN_HAND;
+                        slot = ItemEnums.ITEM_SLOT.MAIN_HAND;
                     } else if (from.getRef().getObj(KEYS.OFFHAND) == i) {
-                        slot = ITEM_SLOT.OFF_HAND;
+                        slot = ItemEnums.ITEM_SLOT.OFF_HAND;
                     }
                 }
 
@@ -83,14 +87,14 @@ public class InventoryManager {
                     if (i instanceof DC_WeaponObj) {
 
                         DC_WeaponObj weaponObj = (DC_WeaponObj) i;
-                        if (weaponObj.getWeaponClass() == WEAPON_CLASS.MAIN_HAND_ONLY
-                                || weaponObj.getWeaponClass() == WEAPON_CLASS.TWO_HANDED
-                                || weaponObj.getWeaponClass() == WEAPON_CLASS.DOUBLE) {
-                            slot = ITEM_SLOT.MAIN_HAND;
+                        if (weaponObj.getWeaponClass() == ItemEnums.WEAPON_CLASS.MAIN_HAND_ONLY
+                                || weaponObj.getWeaponClass() == ItemEnums.WEAPON_CLASS.TWO_HANDED
+                                || weaponObj.getWeaponClass() == ItemEnums.WEAPON_CLASS.DOUBLE) {
+                            slot = ItemEnums.ITEM_SLOT.MAIN_HAND;
                         } else if (to.getMainWeapon() != null) {
-                            slot = ITEM_SLOT.OFF_HAND;
+                            slot = ItemEnums.ITEM_SLOT.OFF_HAND;
                         } else {
-                            slot = ITEM_SLOT.MAIN_HAND;
+                            slot = ItemEnums.ITEM_SLOT.MAIN_HAND;
                         }
 
                     }
@@ -108,12 +112,12 @@ public class InventoryManager {
         }
     }
 
-    public boolean showInvWindow(DC_HeroObj hero, Integer nOfOperations) {
+    public boolean showInvWindow(Unit hero, Integer nOfOperations) {
         return showInvWindow(hero, nOfOperations, false);
 
     }
 
-    public boolean showInvWindow(DC_HeroObj hero, Integer nOfOperations, boolean pickUp) {
+    public boolean showInvWindow(Unit hero, Integer nOfOperations, boolean pickUp) {
         // if (window == null)
         window = (pickUp) ? new PickUpWindow(this, hero, nOfOperations) : new InventoryWindow(this,
                 hero, nOfOperations);
@@ -142,7 +146,7 @@ public class InventoryManager {
         this.invListManager = invListManager;
     }
 
-    public void resetHero(DC_HeroObj hero, ObjType bufferedType) {
+    public void resetHero(Unit hero, ObjType bufferedType) {
 
         hero.resetObjectContainers(true);
 

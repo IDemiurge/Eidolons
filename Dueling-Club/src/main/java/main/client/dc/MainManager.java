@@ -1,25 +1,25 @@
 package main.client.dc;
 
-import main.client.battle.arcade.PartyManager;
-import main.client.battle.arcade.SkirmishMaster;
 import main.client.cc.CharacterCreator;
 import main.client.cc.gui.neo.choice.ChoiceSequence;
 import main.client.cc.gui.neo.choice.HeroChoiceSequence;
 import main.client.cc.logic.HeroCreator;
 import main.client.dc.Launcher.VIEWS;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.elements.conditions.Condition;
 import main.elements.conditions.NumericCondition;
-import main.entity.obj.DC_HeroObj;
-import main.game.DC_Game;
-import main.game.DC_Game.GAME_MODES;
-import main.game.DC_Game.GAME_TYPE;
-import main.game.battlefield.UnitGroupMaster;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_MODES;
+import main.game.core.game.DC_Game.GAME_TYPE;
+import main.game.logic.arcade.ArenaArcadeMaster;
+import main.game.logic.arena.UnitGroupMaster;
 import main.game.logic.dungeon.scenario.ScenarioMaster;
+import main.game.logic.generic.PartyManager;
 import main.game.logic.macro.MacroManager;
-import main.game.meta.ArenaArcadeMaster;
-import main.system.auxiliary.ListMaster;
+import main.game.meta.skirmish.SkirmishMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.hotkey.GlobalKeys;
@@ -40,7 +40,7 @@ public class MainManager implements SequenceManager {
     MAIN_MENU_ITEMS previousItem;
     MainMenu menuComp;
     HC_KeyManager keyManager;
-    private DC_HeroObj hero;
+    private Unit hero;
     private ChoiceSequence sequence;
     private HC_SequenceMaster sequenceMaster;
     private GlobalKeys globalKeys;
@@ -112,7 +112,7 @@ public class MainManager implements SequenceManager {
             case NEW: {
                 ScenarioMaster.newScenario();
                 if (ScenarioMaster.isPresetHero()) {
-                    List<DC_HeroObj> heroes = null;
+                    List<Unit> heroes = null;
                     // init party
                     launchHC(heroes);
                 }
@@ -130,7 +130,7 @@ public class MainManager implements SequenceManager {
                 if (DC_Game.game.getGameType() == GAME_TYPE.SCENARIO) {
                     // TODO
                 } else {
-                    List<DC_HeroObj> party = PartyManager.loadParty(PartyManager
+                    List<Unit> party = PartyManager.loadParty(PartyManager
                             .readLastPartyType());
                     if (DC_Game.game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
                         DC_Game.game.getArenaArcadeMaster().continueArcade(PartyManager.getParty());
@@ -147,7 +147,7 @@ public class MainManager implements SequenceManager {
             }
             case LOAD_ADVENTURE: {
                 setMacroMode(true);
-                launchSelection(OBJ_TYPES.CHARS, StringMaster.ADVENTURE, InfoMaster.CHOOSE_HERO);
+                launchSelection(DC_TYPE.CHARS, StringMaster.ADVENTURE, InfoMaster.CHOOSE_HERO);
                 break;
             }
 
@@ -165,29 +165,29 @@ public class MainManager implements SequenceManager {
                 break;
 
             case SELECT_PRESET_PARTY:
-                launchSelection(OBJ_TYPES.PARTY, getPresetGroup(), InfoMaster.CHOOSE_PARTY);
+                launchSelection(DC_TYPE.PARTY, getPresetGroup(), InfoMaster.CHOOSE_PARTY);
                 break;
 
             case SELECT_ARCADE:
-                launchSelection(OBJ_TYPES.PARTY, StringMaster.ARCADE, InfoMaster.CHOOSE_ARCADE);
+                launchSelection(DC_TYPE.PARTY, StringMaster.ARCADE, InfoMaster.CHOOSE_ARCADE);
                 DC_Game.game.getArcadeManager().initializeArcade(PartyManager.getParty());
                 break;
             case PRESET_HERO:
-                launchSelection(OBJ_TYPES.CHARS, getPresetGroup(), InfoMaster.CHOOSE_HERO);
+                launchSelection(DC_TYPE.CHARS, getPresetGroup(), InfoMaster.CHOOSE_HERO);
                 break;
             case MY_HERO:
-                launchSelection(OBJ_TYPES.CHARS, StringMaster.CUSTOM, InfoMaster.CHOOSE_HERO);
+                launchSelection(DC_TYPE.CHARS, StringMaster.CUSTOM, InfoMaster.CHOOSE_HERO);
                 break;
             case SELECT_PARTY:
                 break;
 
             case SELECT_MY_PARTY:
-                launchSelection(OBJ_TYPES.PARTY, StringMaster.CUSTOM, InfoMaster.CHOOSE_PARTY);
+                launchSelection(DC_TYPE.PARTY, StringMaster.CUSTOM, InfoMaster.CHOOSE_PARTY);
                 break;
             case NEW_ARCADE:
                 CharacterCreator.setArcadeMode(true);
                 if (alt) {
-                    launchHC(new ListMaster<DC_HeroObj>().getList(getDefaultEmptyHero()));
+                    launchHC(new ListMaster<Unit>().getList(getDefaultEmptyHero()));
                 } else if (ArenaArcadeMaster.isTestMode()) {
                     DC_Game.game.setGameMode(GAME_MODES.ARENA_ARCADE);
                     DC_Game.game.setGameType(GAME_TYPE.ARCADE);
@@ -233,7 +233,7 @@ public class MainManager implements SequenceManager {
         refresh();
     }
 
-    private DC_HeroObj getDefaultEmptyHero() {
+    private Unit getDefaultEmptyHero() {
 
         return null;
     }
@@ -260,9 +260,9 @@ public class MainManager implements SequenceManager {
         Launcher.setView(menuComp, VIEWS.MENU);
     }
 
-    public void launchSelection(final OBJ_TYPES t, final String group, String info) {
+    public void launchSelection(final DC_TYPE t, final String group, String info) {
         Condition c = null;
-        if (t == OBJ_TYPES.CHARS) {
+        if (t == DC_TYPE.CHARS) {
             if (CharacterCreator.isArcadeMode()) {
                 c = new NumericCondition("1", "{match_hero_level}");
             } else {
@@ -295,7 +295,7 @@ public class MainManager implements SequenceManager {
         hero = initSelectedHero(sequence.getValue());
     }
 
-    public DC_HeroObj initSelectedHero(String value) {
+    public Unit initSelectedHero(String value) {
         hero = HeroCreator.initHero(value);
         return hero;
     }
@@ -382,9 +382,9 @@ public class MainManager implements SequenceManager {
         Launcher.launchDC(value);
     }
 
-    public void launchHC(List<DC_HeroObj> heroes) {
+    public void launchHC(List<Unit> heroes) {
 
-        Launcher.launchHC(true, heroes.toArray(new DC_HeroObj[heroes.size()]));
+        Launcher.launchHC(true, heroes.toArray(new Unit[heroes.size()]));
     }
 
     public void launchHC() {

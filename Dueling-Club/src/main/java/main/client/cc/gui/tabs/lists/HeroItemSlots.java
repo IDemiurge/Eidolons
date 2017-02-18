@@ -5,18 +5,19 @@ import main.client.cc.gui.MainPanel;
 import main.client.cc.gui.lists.ItemListManager;
 import main.client.cc.gui.lists.dc.InvListManager;
 import main.client.cc.gui.lists.dc.InvListManager.OPERATIONS;
-import main.content.CONTENT_CONSTS.ITEM_SLOT;
+import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.C_OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
+import main.content.enums.entity.ItemEnums;
 import main.data.DataManager;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.Obj;
-import main.game.battlefield.ArmorMaster;
+import main.entity.obj.unit.Unit;
+import main.game.battlefield.attack.ArmorMaster;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.list.ListItem;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.MapMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.MigMaster;
 import main.system.sound.SoundMaster;
@@ -32,7 +33,7 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
 
     private static final int WHITE_SPACES = 18;
 
-    private DC_HeroObj hero;
+    private Unit hero;
 
     private Map<ITEM_SLOT, ListItem<Entity>> itemMap = new HashMap<>();
     private ItemListManager itemListManager;
@@ -40,7 +41,7 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
 
     int ARMOR_OFFSET = obj_size * 2 / 3;
 
-    public HeroItemSlots(DC_HeroObj hero, ItemListManager itemListManager) {
+    public HeroItemSlots(Unit hero, ItemListManager itemListManager) {
         super("flowy");
         this.hero = hero;
         this.itemListManager = itemListManager;
@@ -55,7 +56,7 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
     private void addComps() {
         Boolean posSwitch = null;
 
-        for (ITEM_SLOT slot : ITEM_SLOT.values()) {
+        for (ITEM_SLOT slot : ItemEnums.ITEM_SLOT.values()) {
 
             ListItem<Entity> item = itemMap.get(slot);
 
@@ -71,10 +72,10 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
             }
 
             if (item == null) {
-                if (slot != ITEM_SLOT.ARMOR)
+                if (slot != ItemEnums.ITEM_SLOT.ARMOR)
 
                 {
-                    boolean offhand = slot == ITEM_SLOT.OFF_HAND;
+                    boolean offhand = slot == ItemEnums.ITEM_SLOT.OFF_HAND;
                     if (hero.getNaturalWeapon(offhand) != null) {
                         item = initItem(slot, hero.getNaturalWeapon(offhand).getType());
                     }
@@ -111,17 +112,17 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
     }
 
     public void init() {
-        for (ITEM_SLOT slot : ITEM_SLOT.values()) {
+        for (ITEM_SLOT slot : ItemEnums.ITEM_SLOT.values()) {
             Entity type = null;
             switch (slot) {
                 case ARMOR:
-                    type = getType(slot, OBJ_TYPES.ARMOR);
+                    type = getType(slot, DC_TYPE.ARMOR);
                     break;
                 case MAIN_HAND:
-                    type = getType(slot, OBJ_TYPES.WEAPONS);
+                    type = getType(slot, DC_TYPE.WEAPONS);
                     break;
                 case OFF_HAND:
-                    type = getType(slot, OBJ_TYPES.WEAPONS);
+                    type = getType(slot, DC_TYPE.WEAPONS);
                     break;
             }
             initItem(slot, type);
@@ -129,7 +130,7 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
 
     }
 
-    private Entity getType(ITEM_SLOT slot, OBJ_TYPES TYPE) {
+    private Entity getType(ITEM_SLOT slot, DC_TYPE TYPE) {
         if (hero.getItem(slot) != null) {
             return hero.getItem(slot);
         }
@@ -158,7 +159,7 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
         }
     }
 
-    public void setHero(DC_HeroObj hero2) {
+    public void setHero(Unit hero2) {
         hero = hero2;
     }
 
@@ -178,7 +179,7 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
 
         if (e.getClickCount() > 1 || SwingUtilities.isRightMouseButton(e)) {
             // TODO remove item
-            boolean armor = clickedItem == itemMap.get(ITEM_SLOT.ARMOR);
+            boolean armor = clickedItem == itemMap.get(ItemEnums.ITEM_SLOT.ARMOR);
             if (armor) {
                 if (!ArmorMaster.isArmorUnequipAllowed(hero)) {
                     SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);

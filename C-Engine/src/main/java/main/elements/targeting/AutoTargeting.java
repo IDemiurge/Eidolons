@@ -1,8 +1,9 @@
 package main.elements.targeting;
 
-import main.content.CONTENT_CONSTS.TARGETING_MODE;
+import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
+import main.content.enums.entity.AbilityEnums;
 import main.data.ability.OmittedConstructor;
 import main.elements.Filter;
 import main.elements.conditions.Condition;
@@ -161,7 +162,7 @@ public class AutoTargeting extends TargetingImpl {
         public TARGETING_MODE getMode() {
             switch (this) {
                 case ADJACENT:
-                    return TARGETING_MODE.NOVA;
+                    return AbilityEnums.TARGETING_MODE.NOVA;
                 case ALL:
                     break;
                 case ALL_ALLIES:
@@ -171,9 +172,9 @@ public class AutoTargeting extends TargetingImpl {
                 case ALL_UNITS:
                     break;
                 case SELF:
-                    return TARGETING_MODE.SELF;
+                    return AbilityEnums.TARGETING_MODE.SELF;
                 case WAVE:
-                    return TARGETING_MODE.SPRAY;
+                    return AbilityEnums.TARGETING_MODE.SPRAY;
                 default:
                     break;
 

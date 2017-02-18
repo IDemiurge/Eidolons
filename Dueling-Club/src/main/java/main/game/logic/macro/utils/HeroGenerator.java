@@ -3,12 +3,12 @@ package main.game.logic.macro.utils;
 import main.ability.UnitLibrary;
 import main.ability.UnitShop;
 import main.ability.UnitTrainer;
-import main.content.CONTENT_CONSTS.GENDER;
 import main.content.PARAMS;
+import main.content.enums.entity.HeroEnums;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.logic.macro.town.Tavern;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
@@ -21,12 +21,12 @@ import java.util.List;
 
 public class HeroGenerator {
 
-    public static DC_HeroObj generateHero(ObjType type, int xp, Tavern tavern) {
+    public static Unit generateHero(ObjType type, int xp, Tavern tavern) {
         type = new ObjType(type);
         type.initType();
         // apply random changes to base
         applyBackgroundChanges(type, getMaxApplied(xp, true) + 1);
-        DC_HeroObj hero = new DC_HeroObj(type, DC_Game.game);
+        Unit hero = new Unit(type, DC_Game.game);
         // set XP/gold percentages and plans!
         UnitTrainer.train(hero); // award classes!
         UnitLibrary.learnSpellsForUnit(hero);
@@ -60,7 +60,7 @@ public class HeroGenerator {
         return (int) Math.round((Math.sqrt(new Double(xp)) / 25));
     }
 
-    public static void alterHero(DC_HeroObj hero) {
+    public static void alterHero(Unit hero) {
         // TODO sell and re-buy items
         // alter end-point skills
         // alter magic school
@@ -79,7 +79,7 @@ public class HeroGenerator {
         hero.setName(name);
     }
 
-    private static boolean applyTemplateChange(DC_HeroObj hero,
+    private static boolean applyTemplateChange(Unit hero,
                                                PRESET_CHANGE_TEMPLATES t) {
         switch (t) {
             case ALTER_ATTRIBUTE:
@@ -115,7 +115,7 @@ public class HeroGenerator {
                         if (!ImageManager.getImage(newPortrait).equals(
                                 hero.getIcon().getImage())) {
                             if (StringMaster.isFemalePortrait(newPortrait)) {
-                                if (hero.getGender() != GENDER.FEMALE) {
+                                if (hero.getGender() != HeroEnums.GENDER.FEMALE) {
                                     continue;
                                 }
                             }
@@ -138,7 +138,7 @@ public class HeroGenerator {
 
     }
 
-    private static void applyPresetChanges(DC_HeroObj type, int max) {
+    private static void applyPresetChanges(Unit type, int max) {
         List<PRESET_CHANGE_TEMPLATES> applied = new LinkedList<>();
         int n = 0;
         while (true) {

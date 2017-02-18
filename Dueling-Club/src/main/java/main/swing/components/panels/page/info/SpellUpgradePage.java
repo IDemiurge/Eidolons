@@ -2,12 +2,13 @@ package main.swing.components.panels.page.info;
 
 import main.client.cc.CharacterCreator;
 import main.client.cc.logic.spells.SpellUpgradeMaster;
-import main.content.CONTENT_CONSTS2.SPELL_UPGRADE;
+import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
+import main.content.enums.entity.SpellEnums;
 import main.entity.Entity;
 import main.swing.components.panels.page.log.WrappedTextComp;
 import main.swing.generic.components.misc.GraphicComponent;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -30,16 +31,16 @@ public class SpellUpgradePage extends InfoPage implements MouseListener {
         // new PropertyPage(list, entity)
         List<SPELL_UPGRADE> upgrades = SpellUpgradeMaster.getAvailableUpgradesFromSpell(entity);
         if (upgrades.isEmpty()) {
-            upgrades = new ListMaster<SPELL_UPGRADE>().getList(SPELL_UPGRADE.APHOTIC,
-                    SPELL_UPGRADE.DRAINING, SPELL_UPGRADE.VAMPIRIC, SPELL_UPGRADE.PUTRID,
-                    SPELL_UPGRADE.TWILIGHT, SPELL_UPGRADE.GHOSTLY, SPELL_UPGRADE.VINDICATION,
+            upgrades = new ListMaster<SPELL_UPGRADE>().getList(SpellEnums.SPELL_UPGRADE.APHOTIC,
+                    SpellEnums.SPELL_UPGRADE.DRAINING, SpellEnums.SPELL_UPGRADE.VAMPIRIC, SpellEnums.SPELL_UPGRADE.PUTRID,
+                    SpellEnums.SPELL_UPGRADE.TWILIGHT, SpellEnums.SPELL_UPGRADE.GHOSTLY, SpellEnums.SPELL_UPGRADE.VINDICATION,
 
                     // SPELL_UPGRADES.PSIONIC, SPELL_UPGRADES.ACIDIC,
                     // SPELL_UPGRADES.PUTRID,
                     // SPELL_UPGRADES.GHOSTLY, SPELL_UPGRADES.ASTRAL,
                     // SPELL_UPGRADES.VINDICATION,
                     // SPELL_UPGRADES.PALE,
-                    SPELL_UPGRADE.BLIGHT
+                    SpellEnums.SPELL_UPGRADE.BLIGHT
 
             );
         }

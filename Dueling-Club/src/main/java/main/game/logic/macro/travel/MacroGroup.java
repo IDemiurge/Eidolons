@@ -1,7 +1,7 @@
 package main.game.logic.macro.travel;
 
 import main.content.C_OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -29,7 +29,7 @@ public class MacroGroup { // macro obj type?
 
     public MacroGroup(String name, Area area) {
         this.groupName = name;
-        encounterType = DataManager.getType(name, OBJ_TYPES.ENCOUNTERS);
+        encounterType = DataManager.getType(name, DC_TYPE.ENCOUNTERS);
         this.area = area;
         this.region = area.getRegion();
         initParams();

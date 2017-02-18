@@ -8,9 +8,9 @@ import main.elements.conditions.RefCondition;
 import main.elements.targeting.FixedTargeting;
 import main.entity.Ref.KEYS;
 import main.entity.obj.DC_Obj;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 
 public class AddSpecialEffects extends MicroEffect {
     private Effect effects;
@@ -22,7 +22,7 @@ public class AddSpecialEffects extends MicroEffect {
     public AddSpecialEffects(SPECIAL_EFFECTS_CASE case_type, Effect effects) {
         this.effects = effects;
         this.case_type = case_type;
-        main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG, "add-special effect");
+        LogMaster.log(LogMaster.CORE_DEBUG, "add-special effect");
 
     }
 

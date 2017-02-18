@@ -6,25 +6,23 @@ import main.client.cc.gui.neo.tabs.TabChangeListener;
 import main.client.cc.gui.pages.HC_PagedListPanel;
 import main.client.cc.gui.pages.HC_PagedListPanel.HC_LISTS;
 import main.client.dc.Launcher;
-import main.content.CONTENT_CONSTS.ARMOR_TYPE;
-import main.content.CONTENT_CONSTS.ITEM_SHOP_CATEGORY;
-import main.content.CONTENT_CONSTS.ITEM_TYPE;
-import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
 import main.content.C_OBJ_TYPE;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.ItemEnums;
+import main.content.enums.system.MetaEnums;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.xml.XML_Reader;
 import main.elements.Filter;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
-import main.system.FilterMaster;
-import main.system.auxiliary.Chronos;
+import main.system.entity.FilterMaster;
+import main.system.auxiliary.log.Chronos;
 
 import java.awt.*;
 import java.util.*;
@@ -38,7 +36,7 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
     protected static final String[] HIDDEN_GROUPS = {"Natural", "Perk", "Exotic",};
     protected static final String[] HIDDEN_SUBGROUPS = {"Multiclass", "Void",};
 
-    protected DC_HeroObj hero;
+    protected Unit hero;
     protected boolean responsive;
     protected Filter<ObjType> filter;
     protected boolean showAll;
@@ -57,12 +55,12 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
     int rowsPerList = 2;
     ItemListManager manager;
 
-    public VendorListsPanel(DC_HeroObj hero, OBJ_TYPE TYPE, PROPERTY prop, boolean responsive,
+    public VendorListsPanel(Unit hero, OBJ_TYPE TYPE, PROPERTY prop, boolean responsive,
                             boolean showAll, ItemListManager manager) {
         this(hero, TYPE, prop, responsive, showAll, manager, null);
     }
 
-    public VendorListsPanel(DC_HeroObj hero, OBJ_TYPE TYPE, PROPERTY prop, boolean responsive,
+    public VendorListsPanel(Unit hero, OBJ_TYPE TYPE, PROPERTY prop, boolean responsive,
                             boolean showAll, ItemListManager manager, Filter<ObjType> filter) {
         this.hero = hero;
         this.TYPE = TYPE;
@@ -186,7 +184,7 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
 
     protected List<String> getListGroup(String key) {
         // if (Arrays.asList(ItemGenerator.CUSTOM_GROUPS).contains(key))
-        if (key.equalsIgnoreCase(OBJ_TYPES.JEWELRY.getName())) {
+        if (key.equalsIgnoreCase(DC_TYPE.JEWELRY.getName())) {
             return Arrays.asList(DataManager.CUSTOM_JEWELRY_GROUPS);
         }
 
@@ -218,14 +216,14 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
 
             List<String> types = DataManager.getTypesSubGroupNames(TYPE, listName);
             if (Launcher.ILYA_MODE) {
-                if (TYPE == OBJ_TYPES.SPELLS || TYPE == OBJ_TYPES.SKILLS) {
+                if (TYPE == DC_TYPE.SPELLS || TYPE == DC_TYPE.SKILLS) {
                     FilterMaster.filterByProp(types, G_PROPS.WORKSPACE_GROUP.getName(), ""
-                            + WORKSPACE_GROUP.DESIGN, TYPE, true);
+                            + MetaEnums.WORKSPACE_GROUP.DESIGN, TYPE, true);
                     FilterMaster.filterByProp(types, G_PROPS.WORKSPACE_GROUP.getName(), ""
-                            + WORKSPACE_GROUP.IMPLEMENT, TYPE, true);
+                            + MetaEnums.WORKSPACE_GROUP.IMPLEMENT, TYPE, true);
 
                     FilterMaster.filterByProp(types, PROPS.ITEM_SHOP_CATEGORY.getName(), ""
-                            + ITEM_SHOP_CATEGORY.SPECIAL, TYPE, true);
+                            + ItemEnums.ITEM_SHOP_CATEGORY.SPECIAL, TYPE, true);
                     // so you see, it wouldn't be hard to filter the items for
                     // each shop in macro
                 }
@@ -246,16 +244,16 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
 
             OBJ_TYPE T = TYPE;
             if (T instanceof C_OBJ_TYPE) {
-                if (tabName.equalsIgnoreCase(OBJ_TYPES.JEWELRY.getName())) {
-                    T = OBJ_TYPES.JEWELRY;
+                if (tabName.equalsIgnoreCase(DC_TYPE.JEWELRY.getName())) {
+                    T = DC_TYPE.JEWELRY;
                 }
-                if (tabName.equalsIgnoreCase(ITEM_TYPE.ALCHEMY.toString())) {
-                    T = OBJ_TYPES.ITEMS;
+                if (tabName.equalsIgnoreCase(ItemEnums.ITEM_TYPE.ALCHEMY.toString())) {
+                    T = DC_TYPE.ITEMS;
                 }
                 // if (TYPE != OBJ_TYPES.SPELLS)
-                if (tabName.equalsIgnoreCase(ARMOR_TYPE.LIGHT.toString())
-                        || tabName.equalsIgnoreCase(ARMOR_TYPE.HEAVY.toString())) {
-                    T = OBJ_TYPES.ARMOR;
+                if (tabName.equalsIgnoreCase(ItemEnums.ARMOR_TYPE.LIGHT.toString())
+                        || tabName.equalsIgnoreCase(ItemEnums.ARMOR_TYPE.HEAVY.toString())) {
+                    T = DC_TYPE.ARMOR;
                 }
             }
             data = DataManager.toTypeList(types, T); // TODO is there a

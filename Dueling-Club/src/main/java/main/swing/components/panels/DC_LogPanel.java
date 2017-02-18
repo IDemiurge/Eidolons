@@ -2,8 +2,8 @@ package main.swing.components.panels;
 
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.misc.LogPane;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.LogMaster.LOGS;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.log.LogMaster.LOGS;
 import main.system.auxiliary.secondary.Log;
 
 import javax.swing.*;

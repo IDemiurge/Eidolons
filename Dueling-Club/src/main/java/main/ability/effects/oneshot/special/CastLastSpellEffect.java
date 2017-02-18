@@ -3,7 +3,7 @@ package main.ability.effects.oneshot.special;
 import main.ability.effects.oneshot.MicroEffect;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_SpellObj;
+import main.entity.active.DC_SpellObj;
 import main.entity.obj.Obj;
 import main.system.auxiliary.StringMaster;
 

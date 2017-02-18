@@ -1,19 +1,19 @@
 package main.ability;
 
 import main.client.cc.HeroManager;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.ValuePages;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.data.DataManager;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
-import main.system.auxiliary.LogMaster;
+import main.game.core.game.DC_Game;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.WeightMap;
+import main.system.datatypes.WeightMap;
 import main.system.auxiliary.secondary.WorkspaceMaster;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class UnitTrainer {
 
     private static HeroManager heroManager;
 
-    public static void train(DC_HeroObj trainee) {
+    public static void train(Unit trainee) {
         WeightMap<ObjType> pool = initXpItemPool(trainee);
 
         for (int i = 0; i < 100; i++) {
@@ -50,19 +50,19 @@ public class UnitTrainer {
         getHeroManager().update(trainee);
     }
 
-    private static boolean isDeterministicMode(DC_HeroObj trainee) {
+    private static boolean isDeterministicMode(Unit trainee) {
         return trainee.getGame().isDummyMode();
 
     }
 
-    private static ObjType getSkill(DC_HeroObj trainee, WeightMap<ObjType> pool) {
+    private static ObjType getSkill(Unit trainee, WeightMap<ObjType> pool) {
         if (isDeterministicMode(trainee)) {
             return pool.getGreatest();
         }
         return new RandomWizard<ObjType>().getObjectByWeight(pool);
     }
 
-    private static void generateSkillPlan(DC_HeroObj trainee) {
+    private static void generateSkillPlan(Unit trainee) {
 		/*
 		 * weights per mastery level and skill difficulty TODO
 		 */
@@ -78,7 +78,7 @@ public class UnitTrainer {
                 continue;
             }
             List<ObjType> types = DataManager.toTypeList(DataManager.getTypesSubGroupNames(
-                    OBJ_TYPES.SKILLS, mastery.getName()), OBJ_TYPES.SKILLS);
+                    DC_TYPE.SKILLS, mastery.getName()), DC_TYPE.SKILLS);
             for (ObjType t : types) {
                 if (plan.contains(t.getName())) {
                     continue;
@@ -95,8 +95,8 @@ public class UnitTrainer {
         trainee.setProperty(PROPS.XP_PLAN, plan, true);
     }
 
-    private static void learn(ObjType newSkill, DC_HeroObj trainee) {
-        if (getHeroManager().addItem(trainee, newSkill, OBJ_TYPES.SKILLS, PROPS.SKILLS)) {
+    private static void learn(ObjType newSkill, Unit trainee) {
+        if (getHeroManager().addItem(trainee, newSkill, DC_TYPE.SKILLS, PROPS.SKILLS)) {
             LogMaster.log(1,
                     "SKILL TRAINING: " + trainee.getName() + " learns " + newSkill.getName()
                             + ", remaining xp: " + trainee.getIntParam(PARAMS.XP));
@@ -112,13 +112,13 @@ public class UnitTrainer {
         return heroManager;
     }
 
-    private static WeightMap<ObjType> initXpItemPool(DC_HeroObj trainee) {
+    private static WeightMap<ObjType> initXpItemPool(Unit trainee) {
         if (StringMaster.isEmpty(getPlan(trainee)) || getPlan(trainee).contains(StringMaster.BASE_CHAR)) {
             generateSkillPlan(trainee);
         }
         WeightMap<ObjType> pool = new WeightMap<>();
         Map<ObjType, Integer> map = new RandomWizard<ObjType>().constructWeightMap(getPlan(trainee),
-                ObjType.class, OBJ_TYPES.SKILLS);
+                ObjType.class, DC_TYPE.SKILLS);
 
         for (ObjType type : map.keySet()) {
 
@@ -144,7 +144,7 @@ public class UnitTrainer {
         return pool;
     }
 
-    private static String getPlan(DC_HeroObj trainee) {
+    private static String getPlan(Unit trainee) {
         return trainee.getProperty(PROPS.XP_PLAN);
     }
 

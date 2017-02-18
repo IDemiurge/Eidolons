@@ -1,8 +1,5 @@
 package main.client.cc.gui.neo.top;
 
-import main.client.battle.arcade.ArcadeManager.ARCADE_STATUS;
-import main.client.battle.arcade.PartyManager;
-import main.client.battle.arcade.SkirmishMaster;
 import main.client.cc.CharacterCreator;
 import main.client.cc.gui.neo.choice.ChoiceSequence;
 import main.client.cc.gui.neo.choice.HeroChoiceSequence;
@@ -11,23 +8,26 @@ import main.client.cc.logic.HeroLevelManager;
 import main.client.dc.Launcher;
 import main.client.dc.Launcher.VIEWS;
 import main.client.dc.SequenceManager;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.data.XList;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
-import main.game.DC_Game.GAME_TYPE;
+import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_TYPE;
+import main.game.logic.arcade.ArcadeManager.ARCADE_STATUS;
 import main.game.logic.dungeon.scenario.ScenarioMaster;
 import main.game.logic.dungeon.scenario.ScenarioMaster.SCENARIO_MODES;
+import main.game.logic.generic.PartyManager;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.town.Tavern;
+import main.game.meta.skirmish.SkirmishMaster;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.listeners.ButtonHandler;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.text.NameMaster;
@@ -80,11 +80,11 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
     // mode?
     private static final String ID = "btn";
     HC_ControlButton buttons;
-    private DC_HeroObj hero;
-    private DC_HeroObj newHero;
+    private Unit hero;
+    private Unit newHero;
     private boolean processing;
     private HC_MODE mode;
-    public HC_Controls(DC_HeroObj hero) {
+    public HC_Controls(Unit hero) {
 
         super("fillx");
         this.hero = hero;
@@ -339,7 +339,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
     private void testNameGen() {
         String content = FileManager.readFile(PathFinder.getXML_PATH() + "names\\" + "names.xml");
         while (true) {
-            ObjType type = ListChooser.chooseTypeObj_(OBJ_TYPES.CHARS, "Background");
+            ObjType type = ListChooser.chooseTypeObj_(DC_TYPE.CHARS, "Background");
             if (type == null) {
                 break;
             }

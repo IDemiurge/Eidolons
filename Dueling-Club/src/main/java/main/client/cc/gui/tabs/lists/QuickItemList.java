@@ -7,9 +7,9 @@ import main.content.C_OBJ_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
-import main.entity.obj.DC_HeroObj;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
+import main.entity.obj.unit.Unit;
 
 public class QuickItemList extends SecondaryItemList {
 
@@ -17,7 +17,7 @@ public class QuickItemList extends SecondaryItemList {
     private static final int QUICK_SLOTS_COLUMNS = CharacterCreator.STD_COLUMN_NUMBER;
     private static final String POOL_TOOLTIP = "Remaining quick slots";
 
-    public QuickItemList(DC_HeroObj hero, ItemListManager itemListManager) {
+    public QuickItemList(Unit hero, ItemListManager itemListManager) {
         super(hero, itemListManager);
         itemListManager.setQuickItemsList(list);
     }

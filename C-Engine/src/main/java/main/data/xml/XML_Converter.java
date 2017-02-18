@@ -1,15 +1,16 @@
 package main.data.xml;
 
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.VALUE;
 import main.data.DataManager;
 import main.data.ability.AE_Item;
 import main.data.ability.Argument;
 import main.data.ability.Mapper;
 import main.entity.type.ObjType;
-import main.system.auxiliary.Err;
+import main.system.auxiliary.log.Err;
 import main.system.auxiliary.TreeMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.XMap;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -157,7 +158,7 @@ public class XML_Converter {
             document = builder.parse(new InputSource(new StringReader(myString)));
 
         } catch (Exception e) {
-            main.system.auxiliary.LogMaster.log(2,
+            LogMaster.log(2,
 
                     "failed to parse xml: " + myString);
             e.printStackTrace();
@@ -347,7 +348,7 @@ public class XML_Converter {
             return new LinkedList<>();
         }
         for (Node groupNode : typeGroupsList) {
-            OBJ_TYPES obj_type = OBJ_TYPES.getType(groupNode.getNodeName());
+            DC_TYPE obj_type = DC_TYPE.getType(groupNode.getNodeName());
             for (Node typeNode : getNodeList(groupNode)) {
                 ObjType type = DataManager.getType(typeNode.getNodeName(), obj_type);
                 if (type != null) // TODO find?

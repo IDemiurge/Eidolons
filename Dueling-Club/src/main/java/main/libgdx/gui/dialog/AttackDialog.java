@@ -1,6 +1,6 @@
 package main.libgdx.gui.dialog;
 
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
 import main.libgdx.gui.panels.generic.Container;
 
 /**

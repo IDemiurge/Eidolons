@@ -5,8 +5,9 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.MapMaster;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.*;
 
@@ -109,7 +110,7 @@ public class DataUnit<T extends Enum<T>> {
         for (String entry : entries) {
             String[] pair = entry.split(getPairSeparator(std_alt_map));
             if (pair.length != 2) {
-                main.system.auxiliary.LogMaster.log(4, "malformed data:" + data);
+                LogMaster.log(4, "malformed data:" + data);
                 continue;
             }
 

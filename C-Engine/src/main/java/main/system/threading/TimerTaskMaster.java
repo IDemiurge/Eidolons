@@ -1,5 +1,7 @@
 package main.system.threading;
 
+import main.system.auxiliary.log.LogMaster;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Timer;
@@ -14,18 +16,18 @@ public class TimerTaskMaster {
         try {
             final Method method = object.getClass().getMethod(methodName, params);
             if (method == null) {
-                main.system.auxiliary.LogMaster.log(1, "*** Timer cannot find method: "
+                LogMaster.log(1, "*** Timer cannot find method: "
                         + methodName);
                 return null;
             }
-            main.system.auxiliary.LogMaster.log(1, "Timer started for " + methodName);
+            LogMaster.log(1, "Timer started for " + methodName);
 
             TimerTask task = new TimerTask() {
 
                 @Override
                 public void run() {
                     try {
-                        main.system.auxiliary.LogMaster.log(0, "Invoking " + methodName);
+                        LogMaster.log(0, "Invoking " + methodName);
                         if (args == null) {
                             method.invoke(null);
                         } else {

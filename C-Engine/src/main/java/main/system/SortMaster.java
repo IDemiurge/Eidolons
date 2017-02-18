@@ -1,17 +1,17 @@
 package main.system;
 
-import main.content.CONTENT_CONSTS.BACKGROUND;
+import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.swing.listeners.ListChooserSortOptionListener.SORT_TEMPLATE;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.Collections;

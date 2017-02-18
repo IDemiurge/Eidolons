@@ -1,13 +1,13 @@
 package main.swing.generic.components.list;
 
 import main.content.ContentManager;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.swing.generic.misc.BORDER_CHECKER;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 import main.system.math.Property;

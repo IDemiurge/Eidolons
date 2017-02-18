@@ -5,10 +5,10 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.content.PARAMS;
-import main.content.enums.STD_MODES;
-import main.entity.obj.DC_HeroObj;
+import main.content.mode.STD_MODES;
 import main.entity.obj.DC_Obj;
-import main.rules.mechanics.WatchRule;
+import main.entity.obj.unit.Unit;
+import main.rules.action.WatchRule;
 
 import java.util.List;
 
@@ -16,9 +16,9 @@ public class WatchBuffEffect extends AddBuffEffect {
 
     public static final String BUFF_TYPE_NAME = "Watching";
     private List<DC_Obj> list;
-    private DC_HeroObj watcher;
+    private Unit watcher;
 
-    public WatchBuffEffect(DC_HeroObj watcher, List<DC_Obj> list) {
+    public WatchBuffEffect(Unit watcher, List<DC_Obj> list) {
         super(BUFF_TYPE_NAME, generateEffects(watcher, list), true);
         this.watcher = watcher;
         this.list = list;
@@ -31,7 +31,7 @@ public class WatchBuffEffect extends AddBuffEffect {
         return BUFF_TYPE_NAME + " Multiple";
     }
 
-    private static Effect generateEffects(DC_HeroObj watcher, List<DC_Obj> list) {
+    private static Effect generateEffects(Unit watcher, List<DC_Obj> list) {
         // some triggers? for the list...
         // check specials per watcher!
         Effects e = new Effects();

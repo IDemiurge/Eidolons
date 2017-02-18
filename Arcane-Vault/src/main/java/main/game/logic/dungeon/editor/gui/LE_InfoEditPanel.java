@@ -1,7 +1,7 @@
 package main.game.logic.dungeon.editor.gui;
 
-import main.content.MACRO_OBJ_TYPES;
-import main.content.OBJ_TYPES;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.entity.Entity;
@@ -13,7 +13,7 @@ import main.game.logic.macro.gui.MacroGuiManager;
 import main.gui.builders.EditViewPanel;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 
 public class LE_InfoEditPanel extends EditViewPanel {
     private ObjType selectedType;
@@ -70,7 +70,7 @@ public class LE_InfoEditPanel extends EditViewPanel {
     }
 
     protected boolean modified(ObjType type, String valName, String newValue) {
-        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.DUNGEONS) {
+        if (type.getOBJ_TYPE_ENUM() == DC_TYPE.DUNGEONS) {
             // if (valName.equalsIgnoreCase(G_PROPS.NAME.getName())) {
             // String prevName =
             // LevelEditor.getCurrentLevel().getDungeon().getOriginalName();
@@ -125,7 +125,7 @@ public class LE_InfoEditPanel extends EditViewPanel {
         this.selectedType = selectedType;
         if (selectedType != null) {
             LevelEditor.setMouseAddMode(false);
-            if (selectedType.getOBJ_TYPE_ENUM() != OBJ_TYPES.DUNGEONS) {
+            if (selectedType.getOBJ_TYPE_ENUM() != DC_TYPE.DUNGEONS) {
                 if (selectedType.getOBJ_TYPE_ENUM() != MACRO_OBJ_TYPES.MISSIONS) {
                     LevelEditor.setMouseInfoMode(true);
                 }

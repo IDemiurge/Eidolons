@@ -1,7 +1,7 @@
 package main.game.logic.macro.travel;
 
-import main.content.parameters.MACRO_PARAMS;
-import main.entity.obj.DC_HeroObj;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.entity.obj.unit.Unit;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.rules.TurnRule;
 
@@ -29,12 +29,12 @@ public class HungerRule extends TurnRule {
             // reduces foc/def/ess
             // increase speed, reduce
             // stealth/detection
-            for (DC_HeroObj hero : p.getMembers()) {
+            for (Unit hero : p.getMembers()) {
                 hero.modifyParameter(MACRO_PARAMS.HUNGER, hungerAmount);
                 applyHunger(hero);
             }
         } else {
-            for (DC_HeroObj hero : p.getMembers()) {
+            for (Unit hero : p.getMembers()) {
                 int hungerSated = hero.getIntParam(MACRO_PARAMS.HUNGER);
                 if (hungerSated > p.getIntParam(MACRO_PARAMS.C_PROVISIONS)) {
                     hungerSated = p.getIntParam(MACRO_PARAMS.C_PROVISIONS);
@@ -48,7 +48,7 @@ public class HungerRule extends TurnRule {
 
     }
 
-    private void applyHunger(DC_HeroObj hero) {
+    private void applyHunger(Unit hero) {
         int hunger = hero.getIntParam(MACRO_PARAMS.HUNGER);
 
         // continuous vs oneshot ... each turn

@@ -1,6 +1,7 @@
 package main.libgdx.anims.particles.lighting;
 
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.BattleFieldObject;
+import main.entity.obj.unit.Unit;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.datatypes.DequeImpl;
@@ -19,7 +20,7 @@ public class LightingManager {
     private static boolean testMode;
     private LightMap lightMap;
 
-    public LightingManager(DequeImpl<DC_HeroObj> units, int rows, int cols) {
+    public LightingManager(DequeImpl<BattleFieldObject>  units, int rows, int cols) {
         lightMap = new LightMap(units, rows, cols);
         GuiEventManager.bind(GuiEventType.GRID_CREATED, p -> {
             //TODO init emitterMap and lightMap
@@ -63,11 +64,11 @@ public class LightingManager {
         lightMap.updateLight();
     }
 
-    public void updatePos(DC_HeroObj obj) {
+    public void updatePos(BattleFieldObject obj) {
         lightMap.updatePos(obj);
     }
 
-    public void updateObject(DC_HeroObj targetObj) {
+    public void updateObject(BattleFieldObject targetObj) {
         lightMap.updateObject(targetObj);
     }
 }

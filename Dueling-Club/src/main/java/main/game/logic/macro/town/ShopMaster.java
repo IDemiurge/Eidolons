@@ -1,9 +1,10 @@
 package main.game.logic.macro.town;
 
-import main.content.CONTENT_CONSTS.MATERIAL;
-import main.content.CONTENT_CONSTS.QUALITY_LEVEL;
+import main.content.enums.entity.ItemEnums.MATERIAL;
+import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
 import main.content.CONTENT_CONSTS2.SHOP_MODIFIER;
+import main.content.enums.entity.ItemEnums;
 import main.system.math.MathMaster;
 
 import java.util.Arrays;
@@ -65,30 +66,30 @@ public class ShopMaster {
         List<QUALITY_LEVEL> list = new LinkedList<>();
         switch (shop.getShopLevel()) {
             case COMMON:
-                list.add(QUALITY_LEVEL.INFERIOR);
-                list.add(QUALITY_LEVEL.OLD);
-                list.add(QUALITY_LEVEL.NORMAL);
+                list.add(ItemEnums.QUALITY_LEVEL.INFERIOR);
+                list.add(ItemEnums.QUALITY_LEVEL.OLD);
+                list.add(ItemEnums.QUALITY_LEVEL.NORMAL);
                 break;
             case OPULENT:
-                list.add(QUALITY_LEVEL.SUPERB);
-                list.add(QUALITY_LEVEL.MASTERPIECE);
+                list.add(ItemEnums.QUALITY_LEVEL.SUPERB);
+                list.add(ItemEnums.QUALITY_LEVEL.MASTERPIECE);
                 break;
             case POOR:
-                list.add(QUALITY_LEVEL.INFERIOR);
-                list.add(QUALITY_LEVEL.DAMAGED);
-                list.add(QUALITY_LEVEL.OLD);
+                list.add(ItemEnums.QUALITY_LEVEL.INFERIOR);
+                list.add(ItemEnums.QUALITY_LEVEL.DAMAGED);
+                list.add(ItemEnums.QUALITY_LEVEL.OLD);
                 break;
             case QUALITY:
-                list.add(QUALITY_LEVEL.SUPERIOR);
-                list.add(QUALITY_LEVEL.NORMAL);
+                list.add(ItemEnums.QUALITY_LEVEL.SUPERIOR);
+                list.add(ItemEnums.QUALITY_LEVEL.NORMAL);
         }
         switch (shop.getShopModifier()) {
             case UNDERGROUND:
-                list.add(QUALITY_LEVEL.ANCIENT);
+                list.add(ItemEnums.QUALITY_LEVEL.ANCIENT);
         }
         switch (shop.getShopType()) {
             case BLACK_MARKET:
-                list.add(QUALITY_LEVEL.ANCIENT);
+                list.add(ItemEnums.QUALITY_LEVEL.ANCIENT);
         }
         return list;
     }
@@ -118,49 +119,49 @@ public class ShopMaster {
         List<MATERIAL> list = new LinkedList<>();
         switch (shopModifier) {
             case DARK:
-                list.add(MATERIAL.WRAITH_STEEL);
-                list.add(MATERIAL.WARP_STEEL);
-                list.add(MATERIAL.BILEWOOD);
-                list.add(MATERIAL.PALE_STEEL);
-                list.add(MATERIAL.DARK_STEEL);
-                list.add(MATERIAL.DEMON_STEEL);
-                list.add(MATERIAL.SOULSTONE);
-                list.add(MATERIAL.MAN_BONE);
-                list.add(MATERIAL.TROLL_SKIN);
+                list.add(ItemEnums.MATERIAL.WRAITH_STEEL);
+                list.add(ItemEnums.MATERIAL.WARP_STEEL);
+                list.add(ItemEnums.MATERIAL.BILEWOOD);
+                list.add(ItemEnums.MATERIAL.PALE_STEEL);
+                list.add(ItemEnums.MATERIAL.DARK_STEEL);
+                list.add(ItemEnums.MATERIAL.DEMON_STEEL);
+                list.add(ItemEnums.MATERIAL.SOULSTONE);
+                list.add(ItemEnums.MATERIAL.MAN_BONE);
+                list.add(ItemEnums.MATERIAL.TROLL_SKIN);
                 break;
             case DWARVEN:
-                array = new MATERIAL[]{MATERIAL.IRON, MATERIAL.IRONWOOD,
-                        MATERIAL.STEEL, MATERIAL.ADAMANTIUM, MATERIAL.MITHRIL,
-                        MATERIAL.METEORITE, MATERIAL.DRAGONHIDE,};
-                list.add(MATERIAL.DRAGON_BONE);
+                array = new MATERIAL[]{ItemEnums.MATERIAL.IRON, ItemEnums.MATERIAL.IRONWOOD,
+                        ItemEnums.MATERIAL.STEEL, ItemEnums.MATERIAL.ADAMANTIUM, ItemEnums.MATERIAL.MITHRIL,
+                        ItemEnums.MATERIAL.METEORITE, ItemEnums.MATERIAL.DRAGONHIDE,};
+                list.add(ItemEnums.MATERIAL.DRAGON_BONE);
                 break;
             case ELVEN:
-                array = new MATERIAL[]{MATERIAL.PALEWOOD, MATERIAL.MITHRIL,
-                        MATERIAL.MOON_SILVER, MATERIAL.BRONZE,
-                        MATERIAL.FEYWOOD, MATERIAL.LIZARD_SKIN,};
+                array = new MATERIAL[]{ItemEnums.MATERIAL.PALEWOOD, ItemEnums.MATERIAL.MITHRIL,
+                        ItemEnums.MATERIAL.MOON_SILVER, ItemEnums.MATERIAL.BRONZE,
+                        ItemEnums.MATERIAL.FEYWOOD, ItemEnums.MATERIAL.LIZARD_SKIN,};
                 break;
             case HOLY:
-                list.add(MATERIAL.BRIGHT_STEEL);
-                list.add(MATERIAL.MOON_SILVER);
+                list.add(ItemEnums.MATERIAL.BRIGHT_STEEL);
+                list.add(ItemEnums.MATERIAL.MOON_SILVER);
                 break;
             case HUMAN:
-                array = new MATERIAL[]{MATERIAL.IRON, MATERIAL.IRONWOOD,
-                        MATERIAL.STEEL, MATERIAL.BRASS, MATERIAL.THICK_LEATHER,};
+                array = new MATERIAL[]{ItemEnums.MATERIAL.IRON, ItemEnums.MATERIAL.IRONWOOD,
+                        ItemEnums.MATERIAL.STEEL, ItemEnums.MATERIAL.BRASS, ItemEnums.MATERIAL.THICK_LEATHER,};
                 break;
             case UNDERGROUND:
-                list.add(MATERIAL.WAILWOOD);
-                list.add(MATERIAL.SOULSTONE);
-                list.add(MATERIAL.MAN_BONE);
-                list.add(MATERIAL.TROLL_SKIN);
-                list.add(MATERIAL.DARK_STEEL);
-                list.add(MATERIAL.DRAGON_BONE);
+                list.add(ItemEnums.MATERIAL.WAILWOOD);
+                list.add(ItemEnums.MATERIAL.SOULSTONE);
+                list.add(ItemEnums.MATERIAL.MAN_BONE);
+                list.add(ItemEnums.MATERIAL.TROLL_SKIN);
+                list.add(ItemEnums.MATERIAL.DARK_STEEL);
+                list.add(ItemEnums.MATERIAL.DRAGON_BONE);
                 break;
             case WIZARDING:
-                list.add(MATERIAL.STAR_EMBER);
-                list.add(MATERIAL.CRYSTAL);
-                list.add(MATERIAL.ELDRITCH_STEEL);
-                list.add(MATERIAL.FEYWOOD);
-                list.add(MATERIAL.DRAGON_BONE);
+                list.add(ItemEnums.MATERIAL.STAR_EMBER);
+                list.add(ItemEnums.MATERIAL.CRYSTAL);
+                list.add(ItemEnums.MATERIAL.ELDRITCH_STEEL);
+                list.add(ItemEnums.MATERIAL.FEYWOOD);
+                list.add(ItemEnums.MATERIAL.DRAGON_BONE);
                 break;
         }
         list.addAll(Arrays.asList(array));
@@ -184,7 +185,7 @@ public class ShopMaster {
 
         }
         List<MATERIAL> list = new LinkedList<>();
-        for (MATERIAL m : MATERIAL.values()) {
+        for (MATERIAL m : ItemEnums.MATERIAL.values()) {
             int material_level = 1;
             switch (m) {
                 case CRYSTAL:

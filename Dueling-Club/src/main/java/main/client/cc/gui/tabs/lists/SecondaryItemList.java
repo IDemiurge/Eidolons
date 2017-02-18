@@ -5,13 +5,13 @@ import main.client.cc.gui.misc.PoolComp;
 import main.client.cc.gui.pages.HC_PagedListPanel;
 import main.client.cc.gui.pages.HC_PagedListPanel.HC_LISTS;
 import main.content.OBJ_TYPE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.graphics.MigMaster;
 
 import java.util.List;
@@ -19,11 +19,11 @@ import java.util.List;
 public abstract class SecondaryItemList extends G_Panel {
     protected HC_PagedListPanel list;
     protected ItemListManager itemListManager;
-    protected DC_HeroObj hero;
+    protected Unit hero;
     protected PoolComp poolComp;
     protected List<ObjType> data;
 
-    public SecondaryItemList(DC_HeroObj hero, ItemListManager itemListManager) {
+    public SecondaryItemList(Unit hero, ItemListManager itemListManager) {
         super("flowy");
         this.hero = hero;
         this.itemListManager = itemListManager;
@@ -147,11 +147,11 @@ public abstract class SecondaryItemList extends G_Panel {
 
     protected abstract HC_LISTS getTemplate();
 
-    public DC_HeroObj getHero() {
+    public Unit getHero() {
         return hero;
     }
 
-    public void setHero(DC_HeroObj hero) {
+    public void setHero(Unit hero) {
         this.hero = hero;
     }
 

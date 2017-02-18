@@ -4,13 +4,14 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.ability.Ability;
 import main.entity.Entity;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.active.DC_ActiveObj;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.texture.TextureManager;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.function.Supplier;
 
@@ -38,7 +39,7 @@ public class ActionAnim extends Anim {
         addAction(getAction());
         getAction().setTarget(this);
         AnimMaster.getInstance().addActor(this);
-        main.system.auxiliary.LogMaster.log(1, this + " added to stage");
+        LogMaster.log(1, this + " added to stage");
     }
     @Override
     protected void dispose() {
@@ -59,7 +60,8 @@ public class ActionAnim extends Anim {
     }
 
     public Actor getActor() {
-        return GameScreen.getInstance().getGridPanel().getUnitMap().get(getActive().getOwnerObj());
+        return GameScreen.getInstance().getGridPanel().getUnitMap()
+         .get(getActive().getOwnerObj());
     }
 
 //for triggers!

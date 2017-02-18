@@ -2,7 +2,7 @@ package main.ability.conditions;
 
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref.KEYS;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 
 public class IncapacitatedCondition extends MicroCondition {
 
@@ -26,7 +26,7 @@ public class IncapacitatedCondition extends MicroCondition {
 
     @Override
     public boolean check() {
-        DC_HeroObj unit = (DC_HeroObj) getRef().getObj(key);
+        Unit unit = (Unit) getRef().getObj(key);
         return unit.isIncapacitated();
     }
 

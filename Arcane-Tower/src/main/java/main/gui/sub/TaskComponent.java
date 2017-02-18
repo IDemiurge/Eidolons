@@ -1,7 +1,7 @@
 package main.gui.sub;
 
 import main.ArcaneTower;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.enums.StatEnums.TASK_STATUS;
 import main.gui.sub.TaskComponent.TASK_COMMAND;
 import main.io.AT_EntityMouseListener;
@@ -19,9 +19,9 @@ import main.swing.generic.components.misc.GraphicComponent;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.services.listener.ClickListenerEnum;
 import main.swing.generic.services.listener.MouseClickListener;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.ColorManager;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
 

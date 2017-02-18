@@ -18,7 +18,7 @@ import main.libgdx.gui.panels.dc.InitiativePanelParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.OnDemandEventCallBack;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

@@ -1,14 +1,14 @@
 package main.client.cc.gui.neo.choice;
 
 import main.client.cc.gui.neo.choice.panels.CustomInfoPanel;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 
 public class HeroChoiceView<E> extends ChoiceView<E> {
 
     CustomInfoPanel cip;
     ChoiceHeroSidePanel chesp;
 
-    public HeroChoiceView(ChoiceSequence sequence, DC_HeroObj hero) {
+    public HeroChoiceView(ChoiceSequence sequence, Unit hero) {
         super(sequence, hero);
     }
 

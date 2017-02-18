@@ -2,12 +2,12 @@ package main.swing.components.panels;
 
 import main.entity.obj.Attachment;
 import main.entity.obj.BuffObj;
-import main.entity.obj.DC_BuffObj;
-import main.game.DC_Game;
-import main.game.MicroGameState;
-import main.game.player.Player;
+import main.entity.obj.attach.DC_BuffObj;
+import main.game.core.game.DC_Game;
+import main.game.core.state.MicroGameState;
+import main.game.logic.battle.player.Player;
 import main.swing.generic.components.panels.G_ListPanel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.datatypes.DequeImpl;
 
 import javax.swing.*;

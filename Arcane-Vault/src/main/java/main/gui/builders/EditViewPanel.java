@@ -8,9 +8,9 @@ import main.client.cc.gui.neo.tree.view.HT_View;
 import main.client.cc.gui.neo.tree.view.TreeControlPanel;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentManager;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.TableDataManager;
 import main.entity.Entity;
@@ -24,8 +24,9 @@ import main.simulation.SimulationManager;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.G_Table;
 import main.system.DC_Formulas;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.ColorManager;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 
 import javax.swing.*;
@@ -177,11 +178,11 @@ public class EditViewPanel implements TableModelListener {
             sp.setDividerLocation(0.5);
             getPanel().add(sp, "pos 0 menu.y2 " + getWidth() * 5 / 3 + " " + ArcaneVault.AE_HEIGHT);
 
-            main.system.auxiliary.LogMaster.log(1, "AE added!");
+            LogMaster.log(1, "AE added!");
         } else {
             if (isTreeView()) {
 
-                treeViewComp = ArcaneVault.getSelectedOBJ_TYPE() == OBJ_TYPES.SKILLS ? skillTreeViewComp
+                treeViewComp = ArcaneVault.getSelectedOBJ_TYPE() == DC_TYPE.SKILLS ? skillTreeViewComp
                         : classTreeViewComp;
                 if (treeViewComp == null) {
                     treeViewComp = skillTreeViewComp;
@@ -368,7 +369,7 @@ public class EditViewPanel implements TableModelListener {
             }
             String grpName = (secondTableMode) ? ArcaneVault.getPreviousSelectedType()
                     .getOBJ_TYPE() : ArcaneVault.getMainBuilder().getSelectedTabName();
-            main.system.auxiliary.LogMaster.log(0, valName + " = " + newValue + " for " + grpName
+            LogMaster.log(0, valName + " = " + newValue + " for " + grpName
                     + "." + typeName);
 
             if (valName.equals(G_PROPS.BASE_TYPE.getName())) {
@@ -435,7 +436,7 @@ public class EditViewPanel implements TableModelListener {
                     // save() instead!
                     resetData(true, type);
                 }
-            } else if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.SPELLS) {
+            } else if (type.getOBJ_TYPE_ENUM() == DC_TYPE.SPELLS) {
                 if (type.getIntParam(PARAMS.XP_COST) == 0) {
                     if (type.getGroup().equals("Standard"))
                     // type.setParam(PARAMS.XP_COST,
@@ -561,7 +562,7 @@ public class EditViewPanel implements TableModelListener {
         }
         if (isTreeView()) {
 
-            HT_View viewComp = type.getOBJ_TYPE_ENUM() == OBJ_TYPES.SKILLS ? getSkillTreeViewComp()
+            HT_View viewComp = type.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS ? getSkillTreeViewComp()
                     : getClassTreeViewComp();
             if (viewComp != null) {
                 String key = type.getSubGroupingKey();
@@ -585,7 +586,7 @@ public class EditViewPanel implements TableModelListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (type.getOBJ_TYPE_ENUM().equals(OBJ_TYPES.ABILS)) {
+        if (type.getOBJ_TYPE_ENUM().equals(DC_TYPE.ABILS)) {
             setAE_View(type.getName());
         } else {
             setTableView();

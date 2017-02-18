@@ -1,19 +1,19 @@
 package main.ability.effects.group;
 
-import main.content.OBJ_TYPES;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
+import main.content.DC_TYPE;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
 import main.data.ability.AE_ConstrArgs;
 import main.elements.conditions.Condition;
 import main.entity.obj.Obj;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.List;
 
 public class GroupObjModifyEffect extends HeroObjectModifyingEffect {
 
-    public GroupObjModifyEffect(OBJ_TYPES type, String conditionString,
+    public GroupObjModifyEffect(DC_TYPE type, String conditionString,
                                 String modString) {
         super(type, "string" + StringMaster.wrapInParenthesis(conditionString),
                 modString);
@@ -21,7 +21,7 @@ public class GroupObjModifyEffect extends HeroObjectModifyingEffect {
 
     @AE_ConstrArgs(argNames = {"perc or const?", "obj type", "filter prop",
             "filter value", " param", " amount", "add buff?"})
-    public GroupObjModifyEffect(Boolean mod, OBJ_TYPES type, String prop,
+    public GroupObjModifyEffect(Boolean mod, DC_TYPE type, String prop,
                                 String value, String p, String amount, Boolean buff) {
         this(type, prop, value, p, amount, buff, false);
         code = (mod ? MOD.MODIFY_BY_PERCENT
@@ -30,7 +30,7 @@ public class GroupObjModifyEffect extends HeroObjectModifyingEffect {
 
     @AE_ConstrArgs(argNames = {"obj type", "filter prop", "filter value",
             " param", " amount", "add buff?", "prop?", "filter conditions"})
-    public GroupObjModifyEffect(OBJ_TYPES type, String prop, String value,
+    public GroupObjModifyEffect(DC_TYPE type, String prop, String value,
                                 String p, String amount, Boolean buff, Boolean propEffect,
                                 Condition c) {
         super(type, "string"
@@ -42,7 +42,7 @@ public class GroupObjModifyEffect extends HeroObjectModifyingEffect {
 
     @AE_ConstrArgs(argNames = {"obj type", "filter prop", "filter value",
             " param", " amount", "add buff?", "prop?"})
-    public GroupObjModifyEffect(OBJ_TYPES type, String prop, String value,
+    public GroupObjModifyEffect(DC_TYPE type, String prop, String value,
                                 String p, String amount, Boolean buff, Boolean propEffect) {
         super(type, "string"
                 + StringMaster.wrapInParenthesis("{"
@@ -52,7 +52,7 @@ public class GroupObjModifyEffect extends HeroObjectModifyingEffect {
 
     @AE_ConstrArgs(argNames = {"obj type", "filter prop", "filter value",
             " param", " amount", "add buff?"})
-    public GroupObjModifyEffect(OBJ_TYPES type, String prop, String value,
+    public GroupObjModifyEffect(DC_TYPE type, String prop, String value,
                                 String p, String amount, Boolean buff) {
         this(type, prop, value, p, amount, buff, false);
     }
@@ -61,7 +61,7 @@ public class GroupObjModifyEffect extends HeroObjectModifyingEffect {
 
     @AE_ConstrArgs(argNames = {"obj type", "filter prop", "filter value",
             "buff name", " param", " amount", "property?"})
-    public GroupObjModifyEffect(OBJ_TYPES type, String prop, String value,
+    public GroupObjModifyEffect(DC_TYPE type, String prop, String value,
                                 String buffName, String p, String amount, Boolean propEffect) {
         this(type, prop, value, p, amount, !StringMaster.isEmpty(buffName),
                 propEffect);
@@ -71,7 +71,7 @@ public class GroupObjModifyEffect extends HeroObjectModifyingEffect {
 
     @AE_ConstrArgs(argNames = {"obj type", "filter prop", "filter value",
             " param", " amount", "add buff?"})
-    public GroupObjModifyEffect(OBJ_TYPES type, PROPERTY prop, String value,
+    public GroupObjModifyEffect(DC_TYPE type, PROPERTY prop, String value,
                                 PARAMETER p, String amount, Boolean buff) {
         this(type, prop.getName(), value, p.getName(), amount, buff);
     }

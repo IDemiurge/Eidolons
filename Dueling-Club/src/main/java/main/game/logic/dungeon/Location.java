@@ -1,10 +1,10 @@
 package main.game.logic.dungeon;
 
-import main.content.CONTENT_CONSTS.STD_BOOLS;
-import main.content.CONTENT_CONSTS.SUBDUNGEON_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.enums.DungeonEnums.SUBDUNGEON_TYPE;
+import main.content.DC_TYPE;
 import main.content.PROPS;
-import main.content.properties.MACRO_PROPS;
+import main.content.enums.GenericEnums;
+import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
@@ -12,6 +12,7 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
+import main.game.battlefield.CoordinatesMaster;
 import main.game.battlefield.DirectionMaster;
 import main.game.battlefield.map.DungeonMapGenerator;
 import main.game.logic.dungeon.DungeonLevelMaster.ENTRANCE_LAYOUT;
@@ -19,9 +20,8 @@ import main.game.logic.dungeon.building.DungeonBuilder;
 import main.game.logic.dungeon.building.DungeonPlan;
 import main.game.logic.dungeon.scenario.Scenario;
 import main.game.logic.macro.map.Place;
-import main.game.logic.macro.utils.CoordinatesMaster;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
@@ -68,7 +68,7 @@ public class Location {
         initRootLevel();
         initBossLevel();
         if (bossLevel != null) {
-            up = bossLevel.checkBool(STD_BOOLS.UPWARD_Z);
+            up = bossLevel.checkBool(GenericEnums.STD_BOOLS.UPWARD_Z);
         }
         // List<Dungeon> list = new LinkedList<>();
         // constructSublevels();
@@ -87,7 +87,7 @@ public class Location {
             return;
         } else {
             ObjType type = RandomWizard.getObjTypeByWeight(getPlaceOrScenario().getProperty(
-                    MACRO_PROPS.BOSS_LEVEL_POOL), OBJ_TYPES.DUNGEONS);
+                    MACRO_PROPS.BOSS_LEVEL_POOL), DC_TYPE.DUNGEONS);
             bossLevel = new Dungeon(type);
         }
 
@@ -104,7 +104,7 @@ public class Location {
             return;
         } else {
             ObjType type = RandomWizard.getObjTypeByWeight(getPlaceOrScenario().getProperty(
-                    MACRO_PROPS.ROOT_POOL), OBJ_TYPES.DUNGEONS);
+                    MACRO_PROPS.ROOT_POOL), DC_TYPE.DUNGEONS);
             root = new Dungeon(type);
         }
     }
@@ -193,7 +193,7 @@ public class Location {
 
             int i = maxLevel;
             List<ObjType> typePool = DataManager.toTypeList(getPlaceOrScenario()
-                    .getProperty(MACRO_PROPS.SUBLEVEL_POOL), OBJ_TYPES.DUNGEONS);
+                    .getProperty(MACRO_PROPS.SUBLEVEL_POOL), DC_TYPE.DUNGEONS);
             Map<Integer, ObjType> map = distributeLevels(typePool, maxLevel);
             ObjType prevType = null;
             int level = 0;

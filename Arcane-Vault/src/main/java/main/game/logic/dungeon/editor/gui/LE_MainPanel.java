@@ -10,8 +10,8 @@ import main.game.logic.dungeon.editor.LevelEditor;
 import main.game.logic.dungeon.editor.Mission;
 import main.game.logic.dungeon.minimap.MiniGrid;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager;
 
 import javax.swing.*;

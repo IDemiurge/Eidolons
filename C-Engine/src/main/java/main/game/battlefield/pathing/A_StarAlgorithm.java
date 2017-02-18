@@ -2,7 +2,7 @@ package main.game.battlefield.pathing;
 
 import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.PositionMaster;
 
 import java.util.LinkedList;
@@ -31,7 +31,7 @@ public class A_StarAlgorithm {
     }
 
     public Path getPath(boolean flying, boolean agile, Coordinates c1, Coordinates c2) {
-        main.system.auxiliary.LogMaster
+        LogMaster
                 .log(LogMaster.PATHING_DEBUG, "building path from" + c1
                         + " to " + c2);
         N = 0;
@@ -139,7 +139,7 @@ public class A_StarAlgorithm {
         closedList.add(C);
         C.setCost(getCost(agile, flying, C));
 
-        main.system.auxiliary.LogMaster.log(LogMaster.PATHING_DEBUG, "Step #"
+        LogMaster.log(LogMaster.PATHING_DEBUG, "Step #"
                 + N + " to " + C + " with closed list " + closedList
 
         );
@@ -165,7 +165,7 @@ public class A_StarAlgorithm {
         node.setG(g);
         node.setH(h);
         node.setF(f);
-        main.system.auxiliary.LogMaster.log(LogMaster.PATHING_DEBUG, node
+        LogMaster.log(LogMaster.PATHING_DEBUG, node
                 + " has: g = " + g + " h = " +
 
                 h + " f = " + f);
@@ -238,11 +238,11 @@ public class A_StarAlgorithm {
 
 // private boolean isBlocked() {
 // Coordinates c;
-// for (Obj cell : mngr.getAdjacentObjs(C, true)) {
+// for (Obj cell : manager.getAdjacentObjs(C, true)) {
 // c = cell.getCoordinates();
 // if (!prevList.contains(c))
 // if (!agile) {
-// if (!mngr.isDiagonalBlocked(c, C))
+// if (!manager.isDiagonalBlocked(c, C))
 // return false;
 // }
 // return false;
@@ -254,7 +254,7 @@ public class A_StarAlgorithm {
 // return -1;
 //
 // // check if finished
-// if (mngr.isAdjacent(C, dest)) {
+// if (manager.isAdjacent(C, dest)) {
 // return -1;
 // }
 // // count the path
@@ -263,7 +263,7 @@ public class A_StarAlgorithm {
 // }
 // if (agile) {
 // path++;
-// } else if (mngr.isDiagonalBlocked(C, dest)) {
+// } else if (manager.isDiagonalBlocked(C, dest)) {
 // return -1;
 //
 // } else
@@ -297,7 +297,7 @@ public class A_StarAlgorithm {
 // prevList = new LinkedList<Coordinates>();
 // paths = new LinkedList<Integer>();
 //
-// List<Obj> adjacentCells = mngr.getAdjacentObjs(c1, true);
+// List<Obj> adjacentCells = manager.getAdjacentObjs(c1, true);
 // if (adjacentCells.isEmpty())
 // return -1;
 //

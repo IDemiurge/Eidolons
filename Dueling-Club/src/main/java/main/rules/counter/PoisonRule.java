@@ -4,20 +4,24 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
-import main.content.CONTENT_CONSTS.*;
-import main.content.Constants;
+import main.content.consts.Constants;
 import main.content.PARAMS;
-import main.entity.obj.DC_HeroObj;
-import main.game.DC_Game;
+import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.STATUS;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 
 public class PoisonRule extends DamageCounterRule {
 
     private static final String DAMAGE_PER_COUNTER = "1";
-    private static final String HALLUNICATE = STD_BUFF_NAMES.Hallucinogetic_Poison.getName();
+    private static final String HALLUNICATE = MetaEnums.STD_BUFF_NAMES.Hallucinogetic_Poison.getName();
     private static final String HALLUNICATE_FOCUS_PER_COUNTER = "(-0.2)";
-    private static final String WEAKEN = STD_BUFF_NAMES.Weakening_Poison.getName();
+    private static final String WEAKEN = MetaEnums.STD_BUFF_NAMES.Weakening_Poison.getName();
     private static final String WEAKEN_STAMINA_PER_COUNTER = Constants.WEAKEN_STAMINA_PER_COUNTER;
-    private static final String PARALYZING = STD_BUFF_NAMES.Paralyzing_Poison.getName();
+    private static final String PARALYZING = MetaEnums.STD_BUFF_NAMES.Paralyzing_Poison.getName();
     private static final String PARALYZING_INITIATIVE_PER_COUNTER = "(-2.5)";
     private static final Integer REDUCTION_FACTOR = 5;
 
@@ -25,7 +29,7 @@ public class PoisonRule extends DamageCounterRule {
         super(game);
     }
 
-    public boolean checkApplies(DC_HeroObj unit) {
+    public boolean checkApplies(Unit unit) {
         return unit.isLiving();
     }
 
@@ -50,7 +54,7 @@ public class PoisonRule extends DamageCounterRule {
 
     @Override
     public DAMAGE_TYPE getDamageType() {
-        return DAMAGE_TYPE.POISON;
+        return GenericEnums.DAMAGE_TYPE.POISON;
     }
 
     @Override
@@ -65,23 +69,23 @@ public class PoisonRule extends DamageCounterRule {
 
     @Override
     public String getCounterName() {
-        return STD_COUNTERS.Poison_Counter.toString();
+        return UnitEnums.STD_COUNTERS.Poison_Counter.toString();
     }
 
     @Override
     public String getBuffName() {
-        if (unit.checkPassive(STANDARD_PASSIVES.WEAKENING_POISON)) {
-            return STD_BUFF_NAMES.Weakening_Poison.toString();
+        if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.WEAKENING_POISON)) {
+            return MetaEnums.STD_BUFF_NAMES.Weakening_Poison.toString();
         }
-        if (unit.checkPassive(STANDARD_PASSIVES.HALLUCINOGETIC_POISON)) {
-            return STD_BUFF_NAMES.Hallucinogetic_Poison.toString();
+        if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.HALLUCINOGETIC_POISON)) {
+            return MetaEnums.STD_BUFF_NAMES.Hallucinogetic_Poison.toString();
         }
-        return STD_BUFF_NAMES.Poison.toString();
+        return MetaEnums.STD_BUFF_NAMES.Poison.toString();
     }
 
     @Override
     public STATUS getStatus() {
-        return STATUS.POISONED;
+        return UnitEnums.STATUS.POISONED;
     }
 
     @Override
@@ -91,7 +95,7 @@ public class PoisonRule extends DamageCounterRule {
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(DC_HeroObj unit) {
+    public int getCounterNumberReductionPerTurn(Unit unit) {
         return 1 + unit.getIntParam(PARAMS.FORTITUDE) * unit.getIntParam(PARAMS.POISON_RESISTANCE)
                 / 100;
     }

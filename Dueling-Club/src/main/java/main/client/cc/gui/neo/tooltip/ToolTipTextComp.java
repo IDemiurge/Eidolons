@@ -6,16 +6,16 @@ import main.content.ContentManager;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.VALUE;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.elements.conditions.RequirementsManager;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.DC_FeatObj;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.attach.DC_FeatObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.components.panels.page.log.WrappedTextComp;
 import main.system.DC_Formulas;
-import main.system.auxiliary.ColorManager;
+import main.system.graphics.ColorManager;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.text.TextParser;
 import main.system.text.TextWrapper;
@@ -28,7 +28,7 @@ import java.util.List;
 public class ToolTipTextComp extends WrappedTextComp {
     private Boolean req;
     private Entity item;
-    private DC_HeroObj hero;
+    private Unit hero;
 
     /*
      * to be used in trees and dc?
@@ -96,7 +96,7 @@ public class ToolTipTextComp extends WrappedTextComp {
         return new String[]{learn, verbatim, memorize, dememorize};
     }
 
-    private String[] getSpellLines(Boolean req, Entity item, DC_HeroObj hero) {
+    private String[] getSpellLines(Boolean req, Entity item, Unit hero) {
         int sd = item.getIntParam(PARAMS.SPELL_DIFFICULTY);
         int amount = (int) (sd * DC_Formulas.KNOWLEDGE_ANY_SPELL_FACTOR);
         String mastery = ContentManager.findMastery(item.getProperty(G_PROPS.SPELL_GROUP))
@@ -129,11 +129,11 @@ public class ToolTipTextComp extends WrappedTextComp {
         return strings;
     }
 
-    private String[] getSkillLines(Boolean req, ObjType item, DC_HeroObj hero) {
+    private String[] getSkillLines(Boolean req, ObjType item, Unit hero) {
         return getFeatLines(req, item, hero, true);
     }
 
-    private String[] getFeatLines(Boolean req, ObjType item, DC_HeroObj hero, boolean skill) {
+    private String[] getFeatLines(Boolean req, ObjType item, Unit hero, boolean skill) {
 
         List<String> list = new LinkedList<>();
         PROPS p = skill ? PROPS.SKILLS : PROPS.CLASSES;
@@ -181,7 +181,7 @@ public class ToolTipTextComp extends WrappedTextComp {
         return 7;
     }
 
-    private void addReqLines(ObjType item, DC_HeroObj hero, List<String> list, int mode) {
+    private void addReqLines(ObjType item, Unit hero, List<String> list, int mode) {
         String reqs = hero.getGame().getRequirementsManager().getRequirements(item, mode)
                 .getInfoStrings();
         reqs = TextParser.parse(reqs, new Ref(hero), TextParser.VARIABLE_PARSING_CODE);
@@ -200,7 +200,7 @@ public class ToolTipTextComp extends WrappedTextComp {
         textLines = Arrays.asList(getLines(req, item, hero));
     }
 
-    public String[] getLines(Boolean req, Entity item, DC_HeroObj hero) {
+    public String[] getLines(Boolean req, Entity item, Unit hero) {
 
         switch (CharacterCreator.getHeroPanel().getView()) {
             case CLASSES:
@@ -241,11 +241,11 @@ public class ToolTipTextComp extends WrappedTextComp {
         this.item = entity;
     }
 
-    public DC_HeroObj getHero() {
+    public Unit getHero() {
         return hero;
     }
 
-    public void setHero(DC_HeroObj hero) {
+    public void setHero(Unit hero) {
         this.hero = hero;
     }
 

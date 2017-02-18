@@ -4,8 +4,8 @@ import main.elements.targeting.TargetingImpl;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.UNIT_DIRECTION;
@@ -37,11 +37,11 @@ public class CoordinateTargeting extends TargetingImpl {
         DC_Obj obj = (DC_Obj) ref.getObj(key);
         DIRECTION used_direction = direction;
         if (unitDirection != null) {
-            DC_HeroObj unit = (DC_HeroObj) obj;
+            Unit unit = (Unit) obj;
             used_direction = DirectionMaster.getDirectionByFacing(unit.getFacing(), unitDirection);
         }
         Coordinates coordinate = obj.getCoordinates().getAdjacentCoordinate(used_direction);
-        List<DC_HeroObj> objects = obj.getGame().getObjectsOnCoordinate(coordinate);
+        List<Unit> objects = obj.getGame().getObjectsOnCoordinate(coordinate);
         if (objects.size() == 0) {
             ref.setTarget(obj.getGame().getCellByCoordinate(coordinate).getId());
         } else if (objects.size() == 1) {

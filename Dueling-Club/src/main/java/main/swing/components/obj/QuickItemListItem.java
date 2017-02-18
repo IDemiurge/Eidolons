@@ -1,6 +1,6 @@
 package main.swing.components.obj;
 
-import main.entity.obj.DC_QuickItemObj;
+import main.entity.item.DC_QuickItemObj;
 import main.swing.generic.components.list.ListItem;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;

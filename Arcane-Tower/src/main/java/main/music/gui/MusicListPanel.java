@@ -1,8 +1,8 @@
 package main.music.gui;
 
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.entity.type.ObjType;
@@ -12,8 +12,8 @@ import main.music.MusicCore;
 import main.music.ahk.AHK_Master;
 import main.swing.generic.components.G_Panel;
 import main.system.SortMaster;
-import main.system.auxiliary.FileManager;
-import main.system.auxiliary.GuiManager;
+import main.system.auxiliary.data.FileManager;
+import main.system.graphics.GuiManager;
 import main.system.auxiliary.StringMaster;
 
 import javax.swing.*;

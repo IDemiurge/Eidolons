@@ -4,7 +4,7 @@ import main.ability.Ability;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.ability.effects.oneshot.MicroEffect;
-import main.system.ai.logic.target.EffectMaster;
+import main.game.ai.tools.target.EffectFinder;
 import main.system.auxiliary.StringMaster;
 
 public class AbilityEffect extends MicroEffect {
@@ -36,7 +36,7 @@ public class AbilityEffect extends MicroEffect {
             separator = StringMaster.AND_SEPARATOR;
         }
         for (String s : StringMaster.openContainer(abilName, separator)) {
-            effects.addAll(EffectMaster.getEffectsFromAbilityType(s, ref));
+            effects.addAll(EffectFinder.getEffectsFromAbilityType(s, ref));
         }
         return effects;
     }

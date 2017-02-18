@@ -3,7 +3,7 @@ package main.ability.effects.containers.customtarget;
 import main.ability.effects.Effect;
 import main.ability.effects.oneshot.common.SpecialTargetingEffect;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.elements.Filter;
 import main.elements.Filter.FILTERS;
 import main.elements.conditions.Conditions;
@@ -12,7 +12,7 @@ import main.entity.group.GroupImpl;
 import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
-import main.system.FilterMaster;
+import main.system.entity.FilterMaster;
 import main.system.math.DC_PositionMaster;
 import main.system.math.Formula;
 import main.system.math.PositionMaster.SHAPES;
@@ -64,7 +64,7 @@ public abstract class ShapeEffect extends SpecialTargetingEffect {
         if (notSelf) {
             FilterMaster.applyFilter(objects, FILTERS.NOT_SELF, ref, false);
         }
-        if (targetType.equals(OBJ_TYPES.TERRAIN)) {
+        if (targetType.equals(DC_TYPE.TERRAIN)) {
             objects.addAll(game.getCellsForCoordinates(coordinates));
         }
         targeting = new AutoTargeting(new GroupImpl(objects));

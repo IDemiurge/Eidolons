@@ -1,11 +1,13 @@
 package main.content;
 
-import main.content.CONTENT_CONSTS.ATTRIBUTE;
-import main.content.CONTENT_CONSTS.QUALITY_LEVEL;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
+import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.SkillEnums;
+import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.system.auxiliary.StringMaster;
 
 public class DC_CONSTS {
@@ -55,9 +57,9 @@ public class DC_CONSTS {
     }
 
     public enum CONCOCTION_LEVEL {
-        CHEAP(50, 40, "", QUALITY_LEVEL.INFERIOR),
-        NORMAL(100, 100, "1", QUALITY_LEVEL.NORMAL),
-        POTENT(200, 300, "2", QUALITY_LEVEL.SUPERIOR),;
+        CHEAP(50, 40, "", ItemEnums.QUALITY_LEVEL.INFERIOR),
+        NORMAL(100, 100, "1", ItemEnums.QUALITY_LEVEL.NORMAL),
+        POTENT(200, 300, "2", ItemEnums.QUALITY_LEVEL.SUPERIOR),;
         private int mod;
         private String imgCode;
         private int cost;
@@ -97,9 +99,9 @@ public class DC_CONSTS {
     }
 
     public enum POTION_LEVEL {
-        MINOR(1, 100, "", QUALITY_LEVEL.INFERIOR),
-        AVERAGE(2, 225, "1", QUALITY_LEVEL.NORMAL),
-        GREATER(3, 400, "2", QUALITY_LEVEL.SUPERIOR);
+        MINOR(1, 100, "", ItemEnums.QUALITY_LEVEL.INFERIOR),
+        AVERAGE(2, 225, "1", ItemEnums.QUALITY_LEVEL.NORMAL),
+        GREATER(3, 400, "2", ItemEnums.QUALITY_LEVEL.SUPERIOR);
 
         private int charges;
         private String imgCode;
@@ -159,7 +161,7 @@ public class DC_CONSTS {
     public enum JEWELRY_ITEM_TRAIT {
         ATTRIBUTE_BONUS(5, "", 2, 4, 8, 15, 25, "Amulet;Power Ring", ContentManager
                 .getFinalAttributes().toArray(
-                        new PARAMETER[ATTRIBUTE.values().length])),
+                        new PARAMETER[SkillEnums.ATTRIBUTE.values().length])),
         // TODO names!
         MAGIC_RESISTANCES(7, "", 15, 25, 40, 60, 85, "Magic Ring", ValuePages.MAGIC_RESISTANCES),
         PHYSICAL_RESISTANCES(10, "", 12, 18, 25, 35, 50, "Bracer", ValuePages.PHYSICAL_RESISTANCES),
@@ -268,13 +270,13 @@ public class DC_CONSTS {
     }
 
     public enum JEWELRY_PASSIVE_ENCHANTMENT { // for amulets only?
-        GRACE(400, true, STANDARD_PASSIVES.DEXTEROUS, "_b", "", "Necklace"),
-        SNAKE(400, true, STANDARD_PASSIVES.FIRST_STRIKE, "_c", "", "Necklace"),
-        FLIGHT(400, true, STANDARD_PASSIVES.FLYING, "_b", "", "Pendant"),
-        SWIFTNESS(400, true, STANDARD_PASSIVES.NO_RETALIATION, "_b", "", "Amulet"),
-        DARKVISION(400, true, STANDARD_PASSIVES.DARKVISION, "_b", "", "Amulet"),
-        PHANTOMS(400, true, STANDARD_PASSIVES.IMMATERIAL, "_b", "", "Pendant"),
-        VIGILANCE(400, true, STANDARD_PASSIVES.VIGILANCE, "_d", "", "Pendant"),
+        GRACE(400, true, UnitEnums.STANDARD_PASSIVES.DEXTEROUS, "_b", "", "Necklace"),
+        SNAKE(400, true, UnitEnums.STANDARD_PASSIVES.FIRST_STRIKE, "_c", "", "Necklace"),
+        FLIGHT(400, true, UnitEnums.STANDARD_PASSIVES.FLYING, "_b", "", "Pendant"),
+        SWIFTNESS(400, true, UnitEnums.STANDARD_PASSIVES.NO_RETALIATION, "_b", "", "Amulet"),
+        DARKVISION(400, true, UnitEnums.STANDARD_PASSIVES.DARKVISION, "_b", "", "Amulet"),
+        PHANTOMS(400, true, UnitEnums.STANDARD_PASSIVES.IMMATERIAL, "_b", "", "Pendant"),
+        VIGILANCE(400, true, UnitEnums.STANDARD_PASSIVES.VIGILANCE, "_d", "", "Pendant"),
         VAMPIRISM(15, true, "Life Steal", 15, 25, 50, 75, 100, "_c", "", "Pendant"),;
         private String iconLetter;
         private String iconNumber;

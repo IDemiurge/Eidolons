@@ -4,15 +4,15 @@ import main.client.cc.CharacterCreator;
 import main.client.cc.HC_Master;
 import main.client.cc.logic.items.ItemGenerator;
 import main.content.*;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.xml.XML_Reader;
 import main.data.xml.XML_Transformer;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
-import main.game.battlefield.UnitGroupMaster;
+import main.game.logic.arena.UnitGroupMaster;
 import main.gui.builders.EditViewPanel;
 import main.gui.builders.TabBuilder;
 import main.gui.components.table.TableMouseListener;
@@ -22,8 +22,8 @@ import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.panels.G_ButtonPanel;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -117,12 +117,12 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 String playerParty = null;
                 ObjType type = null;
 
-                if (ArcaneVault.getSelectedOBJ_TYPE() == OBJ_TYPES.PARTY) {
+                if (ArcaneVault.getSelectedOBJ_TYPE() == DC_TYPE.PARTY) {
                     type = ArcaneVault.getSelectedType();
                     playerParty = type.getProperty(PROPS.MEMBERS);
                 } else if (ArcaneVault.getWorkspaceManager().getActiveWorkspace() != null) {
                     type = DataManager.getType(ArcaneVault.getWorkspaceManager()
-                            .getActiveWorkspace().getName(), OBJ_TYPES.PARTY);
+                            .getActiveWorkspace().getName(), DC_TYPE.PARTY);
                     playerParty = type.getProperty(PROPS.MEMBERS);
                     // default
                     // for selected type(s)
@@ -158,7 +158,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 // types = new LinkedList<>(Arrays.asList( OBJ_TYPES.values()));
                 // }
                 // types.removeAll( XML_Reader.getXmlMap().keySet());
-                Class<?> ENUM_CLASS = OBJ_TYPES.class;
+                Class<?> ENUM_CLASS = DC_TYPE.class;
                 String toAdd = ListChooser.chooseEnum(ENUM_CLASS,
                         SELECTION_MODE.MULTIPLE);
 
@@ -207,13 +207,13 @@ public class AV_ButtonPanel extends G_ButtonPanel {
             }
             case NEW_TREE: {
                 OBJ_TYPE TYPE = ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM();
-                if (TYPE == OBJ_TYPES.SKILLS || (TYPE == OBJ_TYPES.CLASSES)) {
+                if (TYPE == DC_TYPE.SKILLS || (TYPE == DC_TYPE.CLASSES)) {
                     if (!alt) {
                         HC_Master.initTreeArg(ArcaneVault.getSelectedType());
                         HC_Master.initTreeView();
 
                         EditViewPanel panel = ArcaneVault.getMainBuilder().getEditViewPanel();
-                        if (TYPE == OBJ_TYPES.SKILLS) {
+                        if (TYPE == DC_TYPE.SKILLS) {
                             panel.setSkillTreeViewComp(HC_Master.getAvTreeView());
                         } else {
                             panel.setClassTreeViewComp(HC_Master.getAvTreeView());
@@ -223,14 +223,14 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                         panel.refresh();
                         launchSelectionListeningThread(TYPE, null);
                     } else {
-                        JFrame window = AV_T3View.showInNewWindow(true, TYPE == OBJ_TYPES.SKILLS);
+                        JFrame window = AV_T3View.showInNewWindow(true, TYPE == DC_TYPE.SKILLS);
                         // HC_Master.showHeroTreeInWindow(ArcaneVault
                         // .getSelectedType());
 
                         launchSelectionListeningThread(TYPE, window);
 
                     }
-                    if (TYPE == OBJ_TYPES.SKILLS) {
+                    if (TYPE == DC_TYPE.SKILLS) {
                         if (skillSelectionListeningThreadRunning) {
                             return;
                         }
@@ -307,12 +307,12 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 if (values == null) {
                     break;
                 }
-                String input = ListChooser.chooseEnum(OBJ_TYPES.class);
+                String input = ListChooser.chooseEnum(DC_TYPE.class);
                 if (input == null) {
                     break;
                 }
                 for (String typeName : StringMaster.openContainer(input)) {
-                    OBJ_TYPES TYPE = OBJ_TYPES.getType(typeName);
+                    DC_TYPE TYPE = DC_TYPE.getType(typeName);
                     for (String valName : StringMaster.openContainer(values)) {
                         VALUE val = ContentManager.getValue(valName);
                         boolean emptyOnly = JOptionPane.showConfirmDialog(null, "Empty only?") == JOptionPane.YES_OPTION;
@@ -430,7 +430,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
     private void launchSelectionListeningThread(final OBJ_TYPE TYPE, final JFrame window) {
         new Thread(new Runnable() {
             public void run() {
-                boolean skill = TYPE == OBJ_TYPES.SKILLS;
+                boolean skill = TYPE == DC_TYPE.SKILLS;
                 WAIT_OPERATIONS operation = skill ? WAIT_OPERATIONS.SELECTION
                         : WAIT_OPERATIONS.CUSTOM_SELECT;
                 if (skill) {

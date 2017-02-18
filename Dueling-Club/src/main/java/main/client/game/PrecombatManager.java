@@ -3,10 +3,10 @@ package main.client.game;
 import main.client.game.logic.PrecombatData;
 import main.client.game.logic.PrecombatData.PRECOMBAT_VALUES;
 import main.content.PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.entity.obj.Obj;
-import main.game.DC_Game;
-import main.game.player.Player;
+import main.game.core.game.DC_Game;
+import main.game.logic.battle.player.Player;
 
 @Deprecated
 public class PrecombatManager {

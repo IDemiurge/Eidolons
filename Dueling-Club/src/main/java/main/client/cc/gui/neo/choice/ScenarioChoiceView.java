@@ -1,13 +1,13 @@
 package main.client.cc.gui.neo.choice;
 
-import main.content.MACRO_OBJ_TYPES;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 
 public class ScenarioChoiceView extends EntityChoiceView {

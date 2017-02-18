@@ -1,15 +1,15 @@
 package main.ability.effects;
 
 import main.ability.effects.oneshot.MicroEffect;
-import main.content.CONTENT_CONSTS.FACING_SINGLE;
+import main.content.enums.entity.UnitEnums;
 import main.entity.Ref.KEYS;
-import main.entity.obj.BattlefieldObj;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.BfObj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.FacingMaster;
-import main.game.event.Event;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 
 public class ChangeFacingEffect extends MicroEffect {
 
@@ -28,10 +28,10 @@ public class ChangeFacingEffect extends MicroEffect {
 
     @Override
     public boolean applyThis() {
-        if (!(ref.getTargetObj() instanceof DC_HeroObj)) {
+        if (!(ref.getTargetObj() instanceof Unit)) {
             return false;
         }
-        DC_HeroObj obj = (DC_HeroObj) ref.getTargetObj();
+        Unit obj = (Unit) ref.getTargetObj();
 
         FACING_DIRECTION oldDirection = obj.getFacing();
 
@@ -43,7 +43,7 @@ public class ChangeFacingEffect extends MicroEffect {
                     return false;
                 }
                 if (FacingMaster.getSingleFacing(f, obj,
-                        (BattlefieldObj) active.getRef().getTargetObj()) == FACING_SINGLE.IN_FRONT) {
+                        (BfObj) active.getRef().getTargetObj()) == UnitEnums.FACING_SINGLE.IN_FRONT) {
                     newDirection = f;
                     break;
                 }

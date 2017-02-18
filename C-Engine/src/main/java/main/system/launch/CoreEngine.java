@@ -1,12 +1,15 @@
 package main.system.launch;
 
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.ability.ARGS;
 import main.data.ability.Mapper;
 import main.data.filesys.ResourceManager;
 import main.data.xml.XML_Reader;
 import main.system.auxiliary.*;
+import main.system.auxiliary.log.Chronos;
+import main.system.graphics.FontMaster;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.sound.SoundMaster;
 
@@ -116,25 +119,25 @@ public class CoreEngine {
             }
         }
 
-        OBJ_TYPES TYPE = new EnumMaster<OBJ_TYPES>().retrieveEnumConst(OBJ_TYPES.class, name);
+        DC_TYPE TYPE = new EnumMaster<DC_TYPE>().retrieveEnumConst(DC_TYPE.class, name);
 
         if (isMenuScope() && !arcaneVault && !TEST_MODE) {
-            if (TYPE == OBJ_TYPES.CHARS) {
+            if (TYPE == DC_TYPE.CHARS) {
                 return true;
             }
-            if (TYPE == OBJ_TYPES.PARTY) {
+            if (TYPE == DC_TYPE.PARTY) {
                 return true;
             }
-            if (TYPE == OBJ_TYPES.DEITIES) {
+            if (TYPE == DC_TYPE.DEITIES) {
                 return true;
             }
-            if (TYPE == OBJ_TYPES.ARMOR) {
+            if (TYPE == DC_TYPE.ARMOR) {
                 return true;
             }
-            if (TYPE == OBJ_TYPES.WEAPONS) {
+            if (TYPE == DC_TYPE.WEAPONS) {
                 return true;
             }
-            return TYPE == OBJ_TYPES.ITEMS;
+            return TYPE == DC_TYPE.ITEMS;
         }
         return true;
     }

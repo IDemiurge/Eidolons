@@ -1,13 +1,13 @@
 package main.swing.renderers;
 
 import main.content.ContentManager;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
-import main.game.MicroGame;
+import main.game.core.game.MicroGame;
 import main.swing.renderers.SmartTextManager.VALUE_CASES;
-import main.system.auxiliary.ColorManager;
+import main.system.graphics.ColorManager;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 

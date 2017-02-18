@@ -1,9 +1,9 @@
 package main.swing.components.panels;
 
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.Obj;
-import main.game.DC_Game;
-import main.game.MicroGame;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
+import main.game.core.game.MicroGame;
 import main.swing.builders.DC_Builder;
 import main.swing.components.buttons.CustomButton;
 import main.swing.components.panels.page.DC_PagedQuickItemPanel;
@@ -12,7 +12,7 @@ import main.swing.components.panels.page.small.DC_PagedBuffPanel;
 import main.swing.components.panels.page.small.SmallItem;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.panels.G_ListPanel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
@@ -34,19 +34,19 @@ public class DC_ActiveUnitPanel extends G_Panel implements MouseListener {
     // private JLabel lbl;
     NameComponent activeUnitNameComp;
     private DC_Game game;
-    private DC_HeroObj obj;
+    private Unit obj;
     private CustomButton sbButton;
     private CustomButton qiButton;
     private CustomButton sbButton2;
     private CustomButton qiButton2;
-    private DC_HeroObj prevObj;
+    private Unit prevObj;
 
     // UsableItemPanel
     // SpellBookPanel
 
     public DC_ActiveUnitPanel(MicroGame game) {
         this.game = (DC_Game) game;
-        obj = (DC_HeroObj) game.getPlayer(game.isHost() || game.isOffline()).getHeroObj();
+        obj = (Unit) game.getPlayer(game.isHost() || game.isOffline()).getHeroObj();
         sbp = new DC_PagedSpellPanel((DC_Game) game);
         qip = new DC_PagedQuickItemPanel((DC_Game) game);
 

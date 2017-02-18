@@ -1,8 +1,8 @@
 package main.libgdx.bf.controls.radial;
 
-import main.content.CONTENT_CONSTS.SPELL_GROUP;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_SpellObj;
+import main.content.enums.entity.SpellEnums.SPELL_GROUP;
+import main.entity.active.DC_SpellObj;
+import main.entity.obj.unit.Unit;
 import main.system.images.ImageManager;
 
 import java.util.LinkedList;
@@ -21,7 +21,7 @@ public class RadialSpellGroup implements RADIAL_ITEM {
     }
 
     @Override
-    public List<RADIAL_ITEM> getItems(DC_HeroObj source) {
+    public List<RADIAL_ITEM> getItems(Unit source) {
         LinkedList<RADIAL_ITEM> nodes = new LinkedList<>();
         List<DC_SpellObj> spells = source.getSpells()
                 .stream()
@@ -43,5 +43,15 @@ public class RadialSpellGroup implements RADIAL_ITEM {
     public String getTexturePath() {
         return ImageManager.getValueIconsPath() + "masteries\\"
                 + group.toString() + ".png";
+    }
+
+    @Override
+    public float getWidth() {
+        return 42;
+    }
+
+    @Override
+    public float getHeight() {
+        return 42;
     }
 }

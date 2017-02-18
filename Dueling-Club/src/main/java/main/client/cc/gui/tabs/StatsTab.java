@@ -4,11 +4,11 @@ import main.client.cc.gui.MainViewPanel;
 import main.client.cc.gui.MainViewPanel.HERO_VIEWS;
 import main.client.cc.gui.views.PointView;
 import main.content.ContentManager;
-import main.content.parameters.PARAMETER;
-import main.entity.obj.DC_HeroObj;
+import main.content.values.parameters.PARAMETER;
+import main.entity.obj.unit.Unit;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_TabbedPanel;
-import main.system.auxiliary.Chronos;
+import main.system.auxiliary.log.Chronos;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -30,7 +30,7 @@ public class StatsTab extends HeroPanelTab implements ChangeListener {
     private HERO_VIEWS[] viewsArray;
     private PointView currentTab;
 
-    public StatsTab(MainViewPanel mvp, DC_HeroObj hero) {
+    public StatsTab(MainViewPanel mvp, Unit hero) {
         super("Stats", mvp, hero);
         initTabs();
         add(tabs, "pos 0 0");

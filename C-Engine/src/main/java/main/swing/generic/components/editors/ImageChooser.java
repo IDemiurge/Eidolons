@@ -1,6 +1,7 @@
 package main.swing.generic.components.editors;
 
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
+import main.data.filesys.PathFinder;
 import main.system.images.ImageManager;
 
 import javax.swing.*;
@@ -13,10 +14,16 @@ public class ImageChooser extends FileChooser {
 
     private int size;
 
-    @Override
-    protected String getDefaultFileLocation() {
-        return ImageManager.getDefaultImageLocation();
+    public ImageChooser() {
+        this(PathFinder.getImagePath());
     }
+
+    public ImageChooser(String path) {
+        super();
+        setDefaultFileLocation(path);
+    }
+
+
 
     @Override
     protected boolean checkFile(String fileLocation) {
@@ -27,10 +34,10 @@ public class ImageChooser extends FileChooser {
     public void launch(JTable table, int row, int column, String v) {
         size = 64;
         if (table.getName() != null) {
-            boolean big = table.getName().equals(OBJ_TYPES.CHARS.getName())
-                    || table.getName().equals(OBJ_TYPES.UNITS.getName());
-            boolean small = table.getName().equals(OBJ_TYPES.ABILS.getName())
-                    || table.getName().equals(OBJ_TYPES.BUFFS.getName());
+            boolean big = table.getName().equals(DC_TYPE.CHARS.getName())
+                    || table.getName().equals(DC_TYPE.UNITS.getName());
+            boolean small = table.getName().equals(DC_TYPE.ABILS.getName())
+                    || table.getName().equals(DC_TYPE.BUFFS.getName());
 
             if (big) {
                 size = 128;

@@ -1,11 +1,12 @@
 package main.ability.effects.standard;
 
 import main.ability.effects.DC_Effect;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.rules.mechanics.WatchRule;
+import main.entity.obj.unit.Unit;
+import main.rules.action.WatchRule;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.log.LogMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
@@ -29,7 +30,7 @@ public class WatchActionEffect extends DC_Effect {
         List<DC_Obj> list = WatchRule.getWatchersMap().get(sourceObj);
         if (list == null) {
             list = new LinkedList<>();
-            WatchRule.getWatchersMap().put((DC_HeroObj) sourceObj, list);
+            WatchRule.getWatchersMap().put((Unit) sourceObj, list);
         } else if (!alert) {
             if (list.contains(ref.getTargetObj())) {
                 list.remove(ref.getTargetObj());
@@ -38,7 +39,7 @@ public class WatchActionEffect extends DC_Effect {
                 } else {
                     SoundMaster.playStandardSound(STD_SOUNDS.CLOSE);
                 }
-                main.system.auxiliary.LogMaster.log(1, sourceObj.getName() + " no longer watching "
+                LogMaster.log(1, sourceObj.getName() + " no longer watching "
                         + ref.getTargetObj().getNameIfKnown());
                 return true;
             } else if (!list.isEmpty()) {

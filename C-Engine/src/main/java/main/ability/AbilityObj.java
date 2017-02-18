@@ -1,14 +1,14 @@
 package main.ability;
 
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.AbilityConstructor;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
-import main.game.Game;
-import main.game.player.Player;
+import main.game.core.game.Game;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.ANIM;
 import main.system.text.TextParser;

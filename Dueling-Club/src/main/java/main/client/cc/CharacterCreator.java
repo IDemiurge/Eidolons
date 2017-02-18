@@ -1,6 +1,5 @@
 package main.client.cc;
 
-import main.client.battle.arcade.PartyManager;
 import main.client.cc.gui.HeroTabsPanel;
 import main.client.cc.gui.MainPanel;
 import main.client.cc.gui.neo.HeroPanel;
@@ -9,25 +8,29 @@ import main.client.cc.logic.party.PartyObj;
 import main.client.dc.Launcher;
 import main.client.dc.Launcher.VIEWS;
 import main.client.dc.Simulation;
-import main.content.CONTENT_CONSTS.BACKGROUND;
-import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
-import main.content.OBJ_TYPES;
-import main.content.enums.CUSTOM_HERO_GROUP;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.HeroEnums.BACKGROUND;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
+import main.content.DC_TYPE;
+import main.content.enums.entity.HeroEnums.CUSTOM_HERO_GROUP;
+import main.content.enums.system.MetaEnums;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.xml.XML_Writer;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
-import main.game.DC_Game.GAME_TYPE;
+import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.logic.dungeon.scenario.ScenarioMaster;
+import main.game.logic.generic.PartyManager;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.secondary.InfoMaster;
+import main.system.graphics.GuiManager;
 import main.system.text.NameMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -56,7 +59,7 @@ public class CharacterCreator {
     private static boolean arcadeMode;
     private static boolean AV;
     private static HeroManager dc_HeroManager;
-    private static DC_HeroObj hero;
+    private static Unit hero;
 
     public static void init() {
         setHeroCreator(new HeroCreator(getGame()));
@@ -160,7 +163,7 @@ public class CharacterCreator {
     }
 
     public static WORKSPACE_GROUP getDoneWorkspaceGroup() {
-        return WORKSPACE_GROUP.COMPLETE;
+        return MetaEnums.WORKSPACE_GROUP.COMPLETE;
     }
 
     public static CUSTOM_HERO_GROUP getDefaultSpecGroup() {
@@ -168,14 +171,14 @@ public class CharacterCreator {
     }
 
     public static WORKSPACE_GROUP getDefaultWorkspaceGroup() {
-        return WORKSPACE_GROUP.IMPLEMENT;
+        return MetaEnums.WORKSPACE_GROUP.IMPLEMENT;
     }
 
     private static boolean checkNameBlocked(String name) {
         if (!DataManager.isTypeName(name)) {
             return false;
         }
-        ObjType type = DataManager.getType(name, OBJ_TYPES.CHARS);
+        ObjType type = DataManager.getType(name, DC_TYPE.CHARS);
         return !type.getGroup().equals(StringMaster.CUSTOM);
     }
 
@@ -201,11 +204,11 @@ public class CharacterCreator {
 
     }
 
-    public static void addHero(final DC_HeroObj hero) {
+    public static void addHero(final Unit hero) {
         addHero(hero, false);
     }
 
-    public static void addHero(final DC_HeroObj hero, boolean initial) {
+    public static void addHero(final Unit hero, boolean initial) {
 
         getHeroManager().addHero(hero);
         setSelectedHeroType(hero.getType());
@@ -222,12 +225,12 @@ public class CharacterCreator {
         saveLastPartyData();
     }
 
-    public static DC_HeroObj getNewHero() {
+    public static Unit getNewHero() {
         return getHeroCreator().newHero();
     }
 
     public static void addNewHero() {
-        DC_HeroObj hero = getHeroCreator().newHero();
+        Unit hero = getHeroCreator().newHero();
 
         if (hero != null) {
             addHero(hero);
@@ -312,7 +315,7 @@ public class CharacterCreator {
         return getTabPanel().getCurrentPanel();
     }
 
-    public static DC_HeroObj getHero() {
+    public static Unit getHero() {
         if (hero != null) {
             return hero;
         }
@@ -323,11 +326,11 @@ public class CharacterCreator {
 
     }
 
-    public static void setHero(DC_HeroObj hero) {
+    public static void setHero(Unit hero) {
         CharacterCreator.hero = hero;
     }
 
-    public static MainPanel getHeroPanel(DC_HeroObj hero) {
+    public static MainPanel getHeroPanel(Unit hero) {
         return getTabPanel().getPanels().get(hero);
     }
 
@@ -403,7 +406,7 @@ public class CharacterCreator {
         CharacterCreator.arcadeMode = arcadeMode;
     }
 
-    public static void partyMemberAdded(DC_HeroObj hero) {
+    public static void partyMemberAdded(Unit hero) {
         addHero(hero);
         saveLastPartyData();
     }
@@ -412,12 +415,12 @@ public class CharacterCreator {
         FileManager.write(PartyManager.getParty().getMemberString(), Launcher.getLastPresetPath());
     }
 
-    public static void partyMemberRemoved(DC_HeroObj hero) {
+    public static void partyMemberRemoved(Unit hero) {
         closeHero(hero);
         saveLastPartyData();
     }
 
-    private static void closeHero(DC_HeroObj hero) {
+    private static void closeHero(Unit hero) {
         tabPanel.removeHero(hero);
     }
 
@@ -439,11 +442,11 @@ public class CharacterCreator {
 
     }
 
-    public static void initNewHero(final DC_HeroObj hero) {
+    public static void initNewHero(final Unit hero) {
         initNewHero(hero, true);
     }
 
-    public static void initNewHero(final DC_HeroObj hero, boolean newThread) {
+    public static void initNewHero(final Unit hero, boolean newThread) {
         if (newThread) {
             Weaver.inNewThread(new Runnable() {
                 public void run() {
@@ -529,7 +532,7 @@ public class CharacterCreator {
         return name;
     }
 
-    public static boolean initHero(DC_HeroObj hero) {
+    public static boolean initHero(Unit hero) {
         String name = getHeroName(hero);
         if (name == null) {
             return false;
@@ -550,7 +553,7 @@ public class CharacterCreator {
         return true;
     }
 
-    public static boolean isLevelUpEnabled(DC_HeroObj hero) {
+    public static boolean isLevelUpEnabled(Unit hero) {
         if (hero.getGame().getGameType() == GAME_TYPE.SKIRMISH
                 || hero.getGame().getGameType() == GAME_TYPE.SCENARIO) {
             if (hero.getLevel() >= ScenarioMaster.getScenario().getMaxHeroLevel()) {

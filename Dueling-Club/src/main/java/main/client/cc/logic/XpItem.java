@@ -2,8 +2,8 @@ package main.client.cc.logic;
 
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 

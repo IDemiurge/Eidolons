@@ -17,14 +17,19 @@ import main.elements.targeting.SelectiveTargeting;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.*;
-import main.entity.obj.top.DC_ActiveObj;
-import main.game.DC_Game;
-import main.game.Game;
+import main.entity.active.DC_ActiveObj;
+import main.entity.item.DC_QuickItemObj;
+import main.entity.obj.ActiveObj;
+import main.entity.obj.DC_Obj;
+import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
+import main.game.core.game.Game;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.TargetRunnable;
 import main.libgdx.texture.TextureManager;
 import main.system.EventCallbackParam;
+import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
@@ -141,7 +146,8 @@ public class RadialMenu extends Group {
             final MenuNode menuNode = new MenuNode(
                     node.texture == null ?
                             new Image(closeTex)
-                            : new Image(node.texture), node.name
+                            : new Image(node.texture), node.name,
+             node.w, node.h
             );
             menuNode.parent = parent;
             if (node.action != null) {
@@ -179,8 +185,8 @@ public class RadialMenu extends Group {
     }
 
     public void createNew(DC_Obj target) {
-        DC_HeroObj source
-                = (DC_HeroObj) Game.game.getManager().getActiveObj();
+        Unit source
+                = (Unit) Game.game.getManager().getActiveObj();
         if (source == null) {
             return; //fix logic to avoid null value between turns!
         }
@@ -373,6 +379,8 @@ public class RadialMenu extends Group {
         public String name;
         public List<CreatorNode> childNodes;
         public Runnable action;
+        public float w;
+        public float h;
     }
 
     public class MenuNode extends Group {
@@ -384,11 +392,18 @@ public class RadialMenu extends Group {
         private Label text = null;
 
         public MenuNode(Image image, String text) {
+            this(image, text, image.getWidth(), image.getHeight());
+        }
+        public MenuNode(Image image, String text, float w, float h) {
 //            addActor(image);
             if (text != null && text.length() > 0) {
                 this.text = new Label(text, new Label.LabelStyle(new BitmapFont(), Color.WHITE));
             }
             this.image = image;
+            if (w!=0)
+            image.setWidth(w);
+            if (h!=0)
+            image.setHeight(h);
             setHeight(image.getHeight());
             setWidth(image.getWidth());
 
@@ -396,7 +411,7 @@ public class RadialMenu extends Group {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                     if (action == null) {
-                        main.system.auxiliary.LogMaster.log(1, " ");
+                        LogMaster.log(1, " ");
                     } else {
 
                         action.run();

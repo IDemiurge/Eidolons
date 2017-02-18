@@ -2,14 +2,14 @@ package main.game.logic.macro.travel;
 
 import main.client.dc.Launcher;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
 import main.content.CONTENT_CONSTS2.MACRO_STATUS;
 import main.content.PARAMS;
-import main.content.parameters.MACRO_PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.logic.dungeon.Location;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.MacroManager;
@@ -222,7 +222,7 @@ public class TravelMaster {
         return new HashSet<>(routes);
     }
 
-    public static float getTravelSpeedDynamic(DC_HeroObj unit) {
+    public static float getTravelSpeedDynamic(Unit unit) {
         // reset unit? for HC ... maybe that's why those valueIcons are base[]
         // sometimes
         int mod = 100 * unit.getIntParam(PARAMS.CARRYING_CAPACITY) / 2
@@ -242,7 +242,7 @@ public class TravelMaster {
         mod = Math.min(mod, 200);
 
         boolean flyer = entity.checkProperty(G_PROPS.STANDARD_PASSIVES, ""
-                + STANDARD_PASSIVES.FLYING);
+                + UnitEnums.STANDARD_PASSIVES.FLYING);
         float speed = new Float(entity.getIntParam(MACRO_PARAMS.TRAVEL_SPEED, true)); //
         if (speed == 0) {
             speed = DEFAULT_TRAVEL_SPEED;

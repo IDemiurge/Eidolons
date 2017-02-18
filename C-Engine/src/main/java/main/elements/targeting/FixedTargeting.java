@@ -3,6 +3,7 @@ package main.elements.targeting;
 import main.data.ability.AE_ConstrArgs;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.system.auxiliary.log.LogMaster;
 
 public class FixedTargeting extends TargetingImpl {
     private String keyword;
@@ -45,14 +46,14 @@ public class FixedTargeting extends TargetingImpl {
                 ref.setTarget(ref.getId(keyword));
                 return true;
             } else {
-                main.system.auxiliary.LogMaster.log(1,
+                LogMaster.log(1,
                         "keyword returned non-Integer: " + keyword);
 
                 return false;
             }
 
         } else {
-            main.system.auxiliary.LogMaster.log(1, "keyword returned null: "
+            LogMaster.log(1, "keyword returned null: "
                     + keyword);
             return false;
         }

@@ -1,14 +1,15 @@
 package main.gui.components.table;
 
-import main.content.CONTENT_CONSTS.ATTRIBUTE;
+import main.content.enums.entity.SkillEnums.ATTRIBUTE;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
-import main.content.CONTENT_CONSTS.SPELL_GROUP;
-import main.content.CONTENT_CONSTS.WEAPON_TYPE;
+import main.content.enums.entity.SpellEnums.SPELL_GROUP;
 import main.content.*;
 import main.content.DC_ValueManager.VALUE_GROUP;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.MACRO_PROPS;
+import main.content.enums.entity.ItemEnums;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.MACRO_PROPS;
 import main.data.TableDataManager;
 import main.data.XLinkedMap;
 import main.data.ability.construct.VariableManager;
@@ -25,9 +26,9 @@ import main.launch.ArcaneVault;
 import main.swing.generic.components.editors.*;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.misc.G_Table;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 
 import javax.swing.*;
@@ -160,40 +161,40 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             PROPS.ALLIED_DEITIES.name(), PROPS.FRIEND_DEITIES.name(), PROPS.ENEMY_DEITIES.name(),
 
     };
-    public static final OBJ_TYPE[] MULTI_TYPE_LIST = {OBJ_TYPES.CHARS, OBJ_TYPES.DUNGEONS,
-            OBJ_TYPES.DUNGEONS, OBJ_TYPES.FACTIONS, OBJ_TYPES.UNITS,
+    public static final OBJ_TYPE[] MULTI_TYPE_LIST = {DC_TYPE.CHARS, DC_TYPE.DUNGEONS,
+            DC_TYPE.DUNGEONS, DC_TYPE.FACTIONS, DC_TYPE.UNITS,
             MACRO_OBJ_TYPES.AREA,
-            OBJ_TYPES.DEITIES,
-            OBJ_TYPES.SPELLS,
-            OBJ_TYPES.SPELLS,
-            OBJ_TYPES.SPELLS,
+            DC_TYPE.DEITIES,
+            DC_TYPE.SPELLS,
+            DC_TYPE.SPELLS,
+            DC_TYPE.SPELLS,
             // OBJ_TYPES.JEWELRY,
-            OBJ_TYPES.WEAPONS, OBJ_TYPES.ARMOR,
-            OBJ_TYPES.WEAPONS,
-            OBJ_TYPES.ITEMS,
-            OBJ_TYPES.ENCOUNTERS,
-            OBJ_TYPES.ENCOUNTERS,
+            DC_TYPE.WEAPONS, DC_TYPE.ARMOR,
+            DC_TYPE.WEAPONS,
+            DC_TYPE.ITEMS,
+            DC_TYPE.ENCOUNTERS,
+            DC_TYPE.ENCOUNTERS,
 
-            OBJ_TYPES.CLASSES,
+            DC_TYPE.CLASSES,
             C_OBJ_TYPE.ITEMS,
             C_OBJ_TYPE.QUICK_ITEMS,
-            OBJ_TYPES.SKILLS,
+            DC_TYPE.SKILLS,
 
             // C_OBJ_TYPE.UNITS, C_OBJ_TYPE.UNITS, C_OBJ_TYPE.UNITS,
             // C_OBJ_TYPE.UNITS, C_OBJ_TYPE.UNITS,
-            OBJ_TYPES.UNITS, OBJ_TYPES.UNITS, OBJ_TYPES.UNITS, OBJ_TYPES.UNITS, OBJ_TYPES.UNITS,
-            MACRO_OBJ_TYPES.PLACE, OBJ_TYPES.SKILLS, OBJ_TYPES.SKILLS, OBJ_TYPES.SKILLS,
-            OBJ_TYPES.SPELLS, OBJ_TYPES.SPELLS, OBJ_TYPES.SPELLS, OBJ_TYPES.SPELLS,
-            OBJ_TYPES.UNITS, OBJ_TYPES.UNITS, OBJ_TYPES.DEITIES, OBJ_TYPES.DEITIES,
-            OBJ_TYPES.DEITIES,};
+            DC_TYPE.UNITS, DC_TYPE.UNITS, DC_TYPE.UNITS, DC_TYPE.UNITS, DC_TYPE.UNITS,
+            MACRO_OBJ_TYPES.PLACE, DC_TYPE.SKILLS, DC_TYPE.SKILLS, DC_TYPE.SKILLS,
+            DC_TYPE.SPELLS, DC_TYPE.SPELLS, DC_TYPE.SPELLS, DC_TYPE.SPELLS,
+            DC_TYPE.UNITS, DC_TYPE.UNITS, DC_TYPE.DEITIES, DC_TYPE.DEITIES,
+            DC_TYPE.DEITIES,};
 
     public static final String[] SINGLE_TYPE_LIST_IDS = {PROPS.FIRST_CLASS.getName(),
             PROPS.SECOND_CLASS.getName(),
 
             PROPS.BOSS_TYPE.getName(), G_PROPS.MAIN_HAND_ITEM.name(), G_PROPS.OFF_HAND_ITEM.name(),
             G_PROPS.ARMOR_ITEM.name(),};
-    public static final OBJ_TYPE[] SINGLE_TYPE_LIST = {OBJ_TYPES.CLASSES, OBJ_TYPES.CLASSES,
-            OBJ_TYPES.UNITS, OBJ_TYPES.WEAPONS, OBJ_TYPES.WEAPONS, OBJ_TYPES.ARMOR,};
+    public static final OBJ_TYPE[] SINGLE_TYPE_LIST = {DC_TYPE.CLASSES, DC_TYPE.CLASSES,
+            DC_TYPE.UNITS, DC_TYPE.WEAPONS, DC_TYPE.WEAPONS, DC_TYPE.ARMOR,};
     public static final String[] MAP_EDITOR_IDS = {MACRO_PROPS.AREA.name(),};
     public static final String[] MULTI_VAR_TYPE_IDS = {MACRO_PROPS.INTERNAL_ROUTES.getName(),};
     public static final Object[][] MULTI_VAR_TYPES = {new Object[]{MACRO_OBJ_TYPES.ROUTE,
@@ -214,7 +215,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
     private static final String[] FILTER_SUBGROUPS = {"Background",};
     static AV_ImgChooser imageChooser = new AV_ImgChooser();
     static ListEditor multiListEditor = new ListEditor(false);
-    static ListEditor abilsListEditor = new ListEditor(false, OBJ_TYPES.ABILS);
+    static ListEditor abilsListEditor = new ListEditor(false, DC_TYPE.ABILS);
     static TextEditor textEditor = new TextEditor();
     // static NumberEditor numberEditor = new NumberEditor();
     private static Map<String, EDITOR> editorMap = new XLinkedMap<>();
@@ -451,7 +452,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
     private static Condition getMultiTypeCondition(String id) {
         if (isWeightedType(id)) {
             return new Conditions(new NotCondition(new StringComparison(StringMaster.getValueRef(
-                    KEYS.MATCH, G_PROPS.WEAPON_TYPE), "" + WEAPON_TYPE.NATURAL, true)),
+                    KEYS.MATCH, G_PROPS.WEAPON_TYPE), "" + ItemEnums.WEAPON_TYPE.NATURAL, true)),
                     ConditionMaster.getItemBaseTypeFilterCondition());
         }
         return null;

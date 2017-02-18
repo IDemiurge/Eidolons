@@ -1,18 +1,19 @@
 package main.client.cc.logic.spells;
 
-import main.content.CONTENT_CONSTS2.SPELL_UPGRADE;
+import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.ValuePages;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_SpellObj;
+import main.entity.active.DC_SpellObj;
+import main.entity.obj.unit.Unit;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.GuiManager;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.GuiManager;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 
@@ -127,7 +128,7 @@ public class SpellUpgradeMaster {
 	 * 
 	 */
 
-    public static boolean checkUpgrade(boolean verbatim, DC_HeroObj hero, Entity spell,
+    public static boolean checkUpgrade(boolean verbatim, Unit hero, Entity spell,
                                        SPELL_UPGRADE ug) {
         if (TEST_MODE) {
             return true;
@@ -148,7 +149,7 @@ public class SpellUpgradeMaster {
 
     }
 
-    public static int getXpCost(Entity entity, DC_HeroObj hero, SPELL_UPGRADE ug) {
+    public static int getXpCost(Entity entity, Unit hero, SPELL_UPGRADE ug) {
         // hero.getIntParam(PARAMS.XP_COST_REDUCTION_SPELL_UPGRADES);
         int sd = getSdBonus(entity, ug);
         return sd * 10;
@@ -158,7 +159,7 @@ public class SpellUpgradeMaster {
         return entity.getIntParam(PARAMS.SPELL_DIFFICULTY, true) * ug.getSpellDifficultyMod() / 100;
     }
 
-    public static void initSpellUpgrades(DC_HeroObj hero) {
+    public static void initSpellUpgrades(Unit hero) {
         List<String> list = StringMaster.openContainer(hero.getProperty(PROPS.SPELL_UPGRADES));
         if (list.isEmpty()) {
             return;
@@ -176,7 +177,7 @@ public class SpellUpgradeMaster {
         }
     }
 
-    public static void removeUpgrades(DC_HeroObj hero, Entity spell) {
+    public static void removeUpgrades(Unit hero, Entity spell) {
         DC_SpellObj spellObj = hero.getSpell(spell.getName());
         if (spellObj != null) {
             spellObj.removeProperty(PROPS.SPELL_UPGRADES);
@@ -184,7 +185,7 @@ public class SpellUpgradeMaster {
         }
     }
 
-    public static boolean toggleUpgrade(DC_HeroObj hero, Entity spell, SPELL_UPGRADE ug) {
+    public static boolean toggleUpgrade(Unit hero, Entity spell, SPELL_UPGRADE ug) {
         Boolean first_last = null;
         String upgrades = spell.getProperty(PROPS.SPELL_UPGRADES);
         boolean remove = upgrades.contains(ug.getName());
@@ -299,7 +300,7 @@ for (SPELL_UPGRADE sub: ug){
                 + StringMaster.getWellFormattedString(ug.toString()));
         type.setName(SpellGenerator.generateName(type));
 
-        main.system.auxiliary.LogMaster.log(1, type.getModifierMaps() + " ");
+        LogMaster.log(1, type.getModifierMaps() + " ");
     }
 
 }

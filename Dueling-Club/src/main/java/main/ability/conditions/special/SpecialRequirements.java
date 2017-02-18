@@ -3,7 +3,7 @@ package main.ability.conditions.special;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref;
-import main.entity.obj.DC_UnitObj;
+import main.entity.obj.unit.DC_UnitModel;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;
@@ -25,7 +25,7 @@ public class SpecialRequirements extends ConditionImpl {
     @Override
     public boolean check() {
         Coordinates c;
-        DC_UnitObj unit;
+        DC_UnitModel unit;
         switch (template) {
             case FREE_CELL:
                 break;
@@ -47,7 +47,7 @@ public class SpecialRequirements extends ConditionImpl {
     }
 
     private boolean checkCellPassible(int rotation, int length) {
-        DC_UnitObj unit = (DC_UnitObj) ref.getSourceObj();
+        DC_UnitModel unit = (DC_UnitModel) ref.getSourceObj();
         DIRECTION direction = unit.getDirection();
         if (rotation != 0) {
             direction = DirectionMaster.getDirectionByDegree(direction

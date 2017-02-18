@@ -2,9 +2,9 @@ package main.gui.builders;
 
 import main.content.C_OBJ_TYPE;
 import main.content.ContentManager;
-import main.content.MACRO_OBJ_TYPES;
-import main.content.OBJ_TYPES;
-import main.content.properties.PROPERTY;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.DC_TYPE;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.TableDataManager;
 import main.data.XLinkedMap;
@@ -19,6 +19,12 @@ import main.swing.generic.components.G_TabbedPanel;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.services.layout.LayoutInfo;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.CollectionsMaster;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.Err;
+import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
 import main.utilities.filter.TypeFilter;
@@ -36,7 +42,7 @@ import java.util.List;
 
 public class TabBuilder extends Builder implements ChangeListener {
 
-    private static Class<?> TOP_ENUM_CLASS = OBJ_TYPES.class;
+    private static Class<?> TOP_ENUM_CLASS = DC_TYPE.class;
     int specialTabsAdded = 0;
     private List<String> tabNames;
     private boolean top;
@@ -80,7 +86,7 @@ public class TabBuilder extends Builder implements ChangeListener {
             {
                 Collections.sort(tabNames, new EnumMaster<>().getEnumSorter(TOP_ENUM_CLASS));
 
-                main.system.auxiliary.LogMaster.log(1,
+                LogMaster.log(1,
                         "                                  <><><><><>  after sort " + tabNames);
             }
             for (String sub : tabNames) {
@@ -95,7 +101,7 @@ public class TabBuilder extends Builder implements ChangeListener {
                 try {
                     tabNames = TableDataManager.getTreeTabSubGroups(type);
                 } catch (Exception e) {
-                    main.system.auxiliary.LogMaster.log(1, "Tab Sub Groups failed for " + type);
+                    LogMaster.log(1, "Tab Sub Groups failed for " + type);
                     e.printStackTrace();
                     // throw new RuntimeException();
                     return;
@@ -110,11 +116,11 @@ public class TabBuilder extends Builder implements ChangeListener {
                     sortBySubgroupEnum();
                     Chronos.logTimeElapsedForMark("sortBySubgroupEnum " + groupingKey.getName());
 
-                    main.system.auxiliary.LogMaster.log(1, "sortBySubgroupEnum SUCCESS on "
+                    LogMaster.log(1, "sortBySubgroupEnum SUCCESS on "
                             + tabNames + " by " + groupingKey.getName());
                 } catch (Exception e) {
                     e.printStackTrace();
-                    main.system.auxiliary.LogMaster.log(1, "sortBySubgroupEnum FAILED on "
+                    LogMaster.log(1, "sortBySubgroupEnum FAILED on "
                             + tabNames + " by " + groupingKey.getName());
                 }
             }
@@ -125,7 +131,7 @@ public class TabBuilder extends Builder implements ChangeListener {
 
             }
         }
-        main.system.auxiliary.LogMaster.log(0, "Tabs: " + TableDataManager.getTreeTabGroups());
+        LogMaster.log(0, "Tabs: " + TableDataManager.getTreeTabGroups());
 
         infoArray = new String[tabNames.size()];
 
@@ -158,7 +164,7 @@ public class TabBuilder extends Builder implements ChangeListener {
         for (Builder builder : builderArray) {
 
             i++;
-            main.system.auxiliary.LogMaster.log(0,
+            LogMaster.log(0,
 
                     "building tab: " + builder.getClass().getSimpleName() + infoArray[i]);
             if (top) {

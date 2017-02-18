@@ -6,12 +6,12 @@ import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.oneshot.common.ConditionalEffect;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
-import main.content.CONTENT_CONSTS.STATUS;
-import main.content.CONTENT_CONSTS.STD_BUFF_NAMES;
-import main.content.CONTENT_CONSTS.STD_COUNTERS;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.PARAMS;
-import main.entity.obj.DC_HeroObj;
-import main.game.DC_Game;
+import main.content.enums.entity.UnitEnums;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.system.auxiliary.StringMaster;
 
 /*
@@ -54,7 +54,7 @@ public class FreezeRule extends DC_CounterRule {
                         + INITIATIVE_PER_COUNTER));
         // if (checkIsFrozen(unit)) {
         effects.add(new ConditionalEffect(new StatusCheckCondition(
-                STATUS.FROZEN),
+                UnitEnums.STATUS.FROZEN),
 
                 new ModifyValueEffect(PARAMS.SLASHING_RESISTANCE.getName() + "|"
                         + PARAMS.PIERCING_RESISTANCE.getName(),
@@ -71,17 +71,17 @@ public class FreezeRule extends DC_CounterRule {
 
     @Override
     protected String getClashingCounter() {
-        return STD_COUNTERS.Blaze_Counter.getName();
+        return UnitEnums.STD_COUNTERS.Blaze_Counter.getName();
     }
 
     @Override
     public String getCounterName() {
-        return STD_COUNTERS.Freeze_Counter.getName();
+        return UnitEnums.STD_COUNTERS.Freeze_Counter.getName();
     }
 
     @Override
     public String getBuffName() {
-        return STD_BUFF_NAMES.Frost.getName();
+        return MetaEnums.STD_BUFF_NAMES.Frost.getName();
     }
 
     @Override
@@ -92,23 +92,23 @@ public class FreezeRule extends DC_CounterRule {
 
     @Override
     public STATUS getStatus() {
-        return !checkIsFrozen(unit) ? STATUS.FREEZING : STATUS.FROZEN;
+        return !checkIsFrozen(unit) ? UnitEnums.STATUS.FREEZING : UnitEnums.STATUS.FROZEN;
     }
 
-    private boolean checkIsFrozen(DC_HeroObj unit) {
+    private boolean checkIsFrozen(Unit unit) {
         return unit.getIntParam(PARAMS.INITIATIVE_MODIFIER) <= StringMaster
                 .getInteger(INITIATIVE_PER_COUNTER)
                 * -getNumberOfCounters(unit);
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(DC_HeroObj unit) {
+    public int getCounterNumberReductionPerTurn(Unit unit) {
         if (checkIsFrozen(unit)) {
             return FROZEN_PER_TURN_REDUCTION;
         }
         return COUNTERS_PER_TURN
                 - Math.min(getNumberOfCounters(unit),
-                (unit.getCounter(STD_COUNTERS.Moist_Counter.getName())));
+                (unit.getCounter(UnitEnums.STD_COUNTERS.Moist_Counter.getName())));
     }
 
 }

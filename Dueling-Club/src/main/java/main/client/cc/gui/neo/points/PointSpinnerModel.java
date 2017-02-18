@@ -2,9 +2,9 @@ package main.client.cc.gui.neo.points;
 
 import main.client.cc.CharacterCreator;
 import main.client.cc.logic.PointMaster;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.swing.components.panels.page.info.element.ValueTextComp;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
@@ -17,9 +17,9 @@ public class PointSpinnerModel {
     protected PARAMETER pool;
 
     protected int modified;
-    protected DC_HeroObj hero;
+    protected Unit hero;
 
-    public PointSpinnerModel(ValueTextComp comp, DC_HeroObj hero, Entity buffer, PARAMETER param,
+    public PointSpinnerModel(ValueTextComp comp, Unit hero, Entity buffer, PARAMETER param,
                              PARAMETER pool) {
         this.hero = hero;
         this.buffer = buffer;

@@ -3,7 +3,7 @@ package main.ability.effects.oneshot;
 import main.ability.effects.EffectImpl;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
-import main.game.MicroGame;
+import main.game.core.game.MicroGame;
 import main.system.graphics.ANIM;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;

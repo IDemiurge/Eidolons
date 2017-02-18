@@ -3,9 +3,9 @@ package main.data.ability.construct;
 import main.ability.AbilityType;
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.DC_TYPE;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.xml.XML_Converter;
 import main.entity.Entity;
@@ -58,7 +58,7 @@ public class VariableManager {
 
         String vars = getVarPart(abilTypeName);
         abilTypeName = abilTypeName.replace(vars, "");
-        AbilityType type = (AbilityType) DataManager.getType(abilTypeName, OBJ_TYPES.ABILS);
+        AbilityType type = (AbilityType) DataManager.getType(abilTypeName, DC_TYPE.ABILS);
         if (type == null) {
             return null;
         }
@@ -445,7 +445,7 @@ public class VariableManager {
                     }
                 }
                 PARAMETER param;
-                if (entity.getOBJ_TYPE_ENUM() == OBJ_TYPES.SKILLS) {
+                if (entity.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS) {
                     param = ContentManager.findMasteryScore(entity.getProperty(G_PROPS.MASTERY));
                 } else {
 
@@ -467,7 +467,7 @@ public class VariableManager {
         },
         RANDOM_PARAMETER {
             public Object evaluate(Entity obj, String s) {
-                if (obj.getOBJ_TYPE_ENUM() == OBJ_TYPES.CHARS) {
+                if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.CHARS) {
                     return ContentManager.getRandomCharParameter().getName();
                 } else {
                     return ContentManager.getRandomUnitParameter().getName();

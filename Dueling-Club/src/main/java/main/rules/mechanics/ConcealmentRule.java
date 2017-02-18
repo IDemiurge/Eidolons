@@ -1,18 +1,20 @@
 package main.rules.mechanics;
 
-import main.content.CONTENT_CONSTS.FACING_SINGLE;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
-import main.content.CONTENT_CONSTS.VISION_MODE;
 import main.content.PARAMS;
-import main.entity.obj.BattlefieldObj;
-import main.entity.obj.DC_HeroObj;
+import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.FACING_SINGLE;
+import main.content.enums.rules.VisionEnums;
+import main.entity.active.DC_ActiveObj;
+import main.entity.obj.BfObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.top.DC_ActiveObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.FacingMaster;
 import main.game.logic.dungeon.Dungeon;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;
+import main.system.text.LogManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +34,7 @@ public class ConcealmentRule {
     private static Integer GLOBAL_CONCEALMENT = 0;
     private static Integer GLOBAL_ILLUMINATION = 70;
 
-    public static VISIBILITY_LEVEL getVisibilityLevel(DC_HeroObj source, DC_Obj target) {
+    public static VISIBILITY_LEVEL getVisibilityLevel(Unit source, DC_Obj target) {
         return getVisibilityLevel(source, target, null);
     }
 
@@ -43,11 +45,11 @@ public class ConcealmentRule {
         cache.clear();
     }
 
-    public static int getGamma(DC_HeroObj source, DC_Obj target, Boolean status) {
+    public static int getGamma(Unit source, DC_Obj target, Boolean status) {
         return getGamma(false, source, target);
     }
 
-    public static int getGamma(boolean minusForVagueLight, DC_HeroObj source, DC_Obj target) {
+    public static int getGamma(boolean minusForVagueLight, Unit source, DC_Obj target) {
         Integer gamma;
         // = cache.getOrCreate(target);
         // if (gamma != null)
@@ -82,10 +84,10 @@ public class ConcealmentRule {
         // from 200 to 25 on diff of 8 to -5
         // def sight range of 5, I'd say
         Integer sight = source.getIntParam(PARAMS.SIGHT_RANGE);
-        FACING_SINGLE singleFacing = FacingMaster.getSingleFacing(source, (BattlefieldObj) target);
-        if (singleFacing == FACING_SINGLE.BEHIND) {
+        FACING_SINGLE singleFacing = FacingMaster.getSingleFacing(source, (BfObj) target);
+        if (singleFacing == UnitEnums.FACING_SINGLE.BEHIND) {
             sight = source.getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
-        } else if (singleFacing == FACING_SINGLE.TO_THE_SIDE) {
+        } else if (singleFacing == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
             sight -= source.getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
         }
         // else if (singleFacing == FACING_SINGLE.BEHIND)
@@ -106,7 +108,7 @@ public class ConcealmentRule {
 
         // idea - accumulate C thru all the cells in the line of sight to obj!
         // source.getVisionMode() - alter rules! :)
-        if (source.checkPassive(STANDARD_PASSIVES.DARKVISION)) { // maybe it
+        if (source.checkPassive(UnitEnums.STANDARD_PASSIVES.DARKVISION)) { // maybe it
             // should
             // inverse
             // formula?
@@ -148,7 +150,7 @@ public class ConcealmentRule {
 
     }
 
-    public static VISIBILITY_LEVEL getVisibilityLevel(DC_HeroObj source, DC_Obj target, Boolean status) {
+    public static VISIBILITY_LEVEL getVisibilityLevel(Unit source, DC_Obj target, Boolean status) {
         int value = getGamma(source, target, status);
         // if (!new ClearShotCondition(str1, str2).check(ref))
         // return VISIBILITY_LEVEL.CONCEALED;
@@ -165,13 +167,13 @@ public class ConcealmentRule {
     }
 
     public static boolean checkMissed(DC_ActiveObj action) {
-        DC_HeroObj source = action.getOwnerObj();
+        Unit source = action.getOwnerObj();
         Obj target = action.getRef().getTargetObj();
         if (source == null || target == null) {
             return false;
         }
 
-        if (source.getVisionMode() == VISION_MODE.INFRARED_VISION) {
+        if (source.getVisionMode() == VisionEnums.VISION_MODE.INFRARED_VISION) {
 
         }
         int chance = getMissChance(action);
@@ -207,6 +209,17 @@ public class ConcealmentRule {
         return Math.abs(chance);
     }
 
+    public static void logMissed(LogManager logManager, DC_ActiveObj activeObj) {
+        logManager.log(StringMaster.getMessagePrefix(true,
+         activeObj.getOwnerObj().getOwner().isMe())
+         + StringMaster.getPossessive(activeObj.getOwnerObj().getName())
+         + " "
+         +  activeObj.getDisplayedName()
+         + " has missed due to Concealment"
+         + StringMaster.wrapInParenthesis(""
+         +  getMissChance(activeObj) + "%")) ;
+
+    }
     public enum IDENTIFICATION_LEVEL {
 
         SHAPE, // size and 'shape' (monster, humanoid, strange shape, animal,

@@ -5,24 +5,25 @@ import main.ability.effects.oneshot.common.ModifyPropertyEffect;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.content.ContentManager;
 import main.content.PARAMS;
-import main.content.enums.MODE;
-import main.content.enums.ModeImpl;
-import main.content.enums.STD_MODES;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.mode.MODE;
+import main.content.mode.ModeImpl;
+import main.content.mode.STD_MODES;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.ability.AE_ConstrArgs;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.Condition;
 import main.elements.conditions.RefCondition;
 import main.elements.conditions.StringComparison;
 import main.entity.Ref.KEYS;
-import main.entity.obj.top.DC_ActiveObj;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
-import main.rules.mechanics.AlertRule;
+import main.entity.active.DC_ActiveObj;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.rules.mechanics.InterruptRule;
+import main.rules.perk.AlertRule;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 
 import java.util.Map;
@@ -78,7 +79,7 @@ public class ModeEffect extends MicroEffect {
             initBuffEffect();
         }
         timeModifier = getGame().getTurnManager().getTimeModifier();
-        main.system.auxiliary.LogMaster.log(1, getActiveObj() + "'s timeModifier= " + timeModifier);
+        LogMaster.log(1, getActiveObj() + "'s timeModifier= " + timeModifier);
         if (mode.isDispelOnHit()) {
             addDispelOnHitTrigger();
         }

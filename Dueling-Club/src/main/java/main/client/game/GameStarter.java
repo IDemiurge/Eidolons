@@ -8,22 +8,23 @@ import main.client.game.options.GameOptions;
 import main.client.net.DC_ServerConnector;
 import main.client.net.GameConnector;
 import main.client.net.GameConnector.HOST_CLIENT_CODES;
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
+import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Ref;
-import main.entity.obj.DC_HeroObj;
-import main.entity.obj.DC_UnitObj;
-import main.game.DC_Game;
-import main.game.DC_GameData;
-import main.game.HostedGame;
+import main.entity.obj.unit.Unit;
+import main.entity.obj.unit.DC_UnitModel;
+import main.game.core.game.DC_Game;
+import main.game.core.game.DC_GameData;
+import main.game.core.game.HostedGame;
 import main.game.battlefield.map.DC_Map;
 import main.game.battlefield.map.DC_Map.MAP_TEMPLATE;
-import main.game.event.MessageManager;
-import main.game.player.Player;
+import main.game.logic.event.MessageManager;
+import main.game.logic.battle.player.Player;
 import main.swing.builders.DC_Builder;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.net.WaitingThread;
 import main.system.net.data.MapData;
 import main.system.net.data.PartyData;
@@ -97,7 +98,7 @@ public class GameStarter {
 
     public static String selectHero(String res_level) {
         List<String> listData = DataManager.getHeroList(res_level);
-        ListChooser lc = new ListChooser(listData, false, OBJ_TYPES.CHARS);
+        ListChooser lc = new ListChooser(listData, false, DC_TYPE.CHARS);
         lc.setColumns(3);
         return lc.getString();
     }
@@ -110,7 +111,7 @@ public class GameStarter {
     }
 
     public void finalInit(String partydata) {
-        main.system.auxiliary.LogMaster.log(4, "initializing game data: " + partydata);
+        LogMaster.log(4, "initializing game data: " + partydata);
         enemyPartyData = new PartyData(partydata, true);
 
         player2 = initPlayer(getPlayerData(), enemyPartyData);
@@ -210,8 +211,8 @@ public class GameStarter {
 
     }
 
-    private DC_UnitObj createHeroUnit(Player player) {
-        return new DC_HeroObj(player.getHeroObjType(), (player == player1) ? HERO_X1 : HERO_X2,
+    private DC_UnitModel createHeroUnit(Player player) {
+        return new Unit(player.getHeroObjType(), (player == player1) ? HERO_X1 : HERO_X2,
                 (player == player1) ? HERO_Y1 : HERO_Y2, player, game, new Ref());
 
     }
@@ -229,7 +230,7 @@ public class GameStarter {
 
     public String getMyHeroData() {
         if (myHeroData == null) {
-            myHeroData = DataManager.getRandomType(OBJ_TYPES.CHARS, null).getName();
+            myHeroData = DataManager.getRandomType(DC_TYPE.CHARS, null).getName();
         }
         return myHeroData;
     }
@@ -256,7 +257,7 @@ public class GameStarter {
 
     public void setMapData(MapData mapData) {
         this.mapData = mapData;
-        main.system.auxiliary.LogMaster.log(4, "MAP_DATA: " + getMapData().getData());
+        LogMaster.log(4, "MAP_DATA: " + getMapData().getData());
 
     }
 
@@ -382,7 +383,7 @@ public class GameStarter {
         if (connector.isHost()) {
             connector.send(HOST_CLIENT_CODES.GAME_STARTED);
         }
-        main.system.auxiliary.LogMaster.log(2, "GAME STARTED!");
+        LogMaster.log(2, "GAME STARTED!");
         // Weaver.inNewThread(getGameStarter(), "start", null);
         start();
         initCommunicator(connector);

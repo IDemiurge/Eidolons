@@ -1,13 +1,14 @@
 package main.swing.components.panels;
 
-import main.content.CONTENT_CONSTS.ACTION_TYPE;
-import main.entity.obj.DC_UnitAction;
-import main.entity.obj.DC_UnitObj;
-import main.game.MicroGameState;
-import main.rules.DC_ActionManager;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE;
+import main.content.enums.entity.ActionEnums;
+import main.entity.active.DC_UnitAction;
+import main.entity.obj.unit.DC_UnitModel;
+import main.game.core.state.MicroGameState;
+import main.game.logic.generic.DC_ActionManager;
 import main.swing.components.obj.ActionListItem;
 import main.swing.generic.components.panels.G_ListPanel;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 
 import javax.swing.*;
@@ -100,8 +101,8 @@ public class DC_UnitActionPanel extends G_ListPanel<DC_UnitAction> implements
     }
 
     @Override
-    public DC_UnitObj getObj() {
-        return (DC_UnitObj) super.getObj();
+    public DC_UnitModel getObj() {
+        return (DC_UnitModel) super.getObj();
     }
 
     @Override
@@ -119,12 +120,12 @@ public class DC_UnitActionPanel extends G_ListPanel<DC_UnitAction> implements
     }
 
     public enum ACTION_DISPLAY_GROUP {
-        STD_MODES(DC_ActionManager.STD_ACTION_N, ACTION_TYPE.MODE, false),
-        STD_ACTIONS(DC_ActionManager.STD_ACTION_N, ACTION_TYPE.STANDARD, false),
-        ADDITIONAL_MOVES(DC_ActionManager.STD_ACTION_N, ACTION_TYPE.ADDITIONAL_MOVE, false),
-        SPEC_ACTIONS(SPECIAL_W, ACTION_TYPE.SPECIAL_ACTION, true),
-        SPEC_ATTACKS(SPECIAL_W, ACTION_TYPE.SPECIAL_ATTACK, true),
-        SPEC_MOVES(SPECIAL_W, ACTION_TYPE.SPECIAL_MOVE, true),
+        STD_MODES(DC_ActionManager.STD_ACTION_N, ActionEnums.ACTION_TYPE.MODE, false),
+        STD_ACTIONS(DC_ActionManager.STD_ACTION_N, ActionEnums.ACTION_TYPE.STANDARD, false),
+        ADDITIONAL_MOVES(DC_ActionManager.STD_ACTION_N, ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE, false),
+        SPEC_ACTIONS(SPECIAL_W, ActionEnums.ACTION_TYPE.SPECIAL_ACTION, true),
+        SPEC_ATTACKS(SPECIAL_W, ActionEnums.ACTION_TYPE.SPECIAL_ATTACK, true),
+        SPEC_MOVES(SPECIAL_W, ActionEnums.ACTION_TYPE.SPECIAL_MOVE, true),
 
         // USABLE_ITEMS?
         ;

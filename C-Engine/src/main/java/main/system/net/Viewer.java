@@ -1,7 +1,7 @@
 package main.system.net;
 
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.Err;
+import main.system.auxiliary.log.Err;
 import main.system.images.ImageManager;
 import main.system.net.socket.GenericConnection;
 import main.system.net.socket.ServerConnector;

@@ -7,7 +7,7 @@ import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.MacroRef;
 import main.game.logic.macro.map.Region;
 import main.game.logic.macro.utils.MacroContentManager;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 
 public class MacroObj extends Obj {
 

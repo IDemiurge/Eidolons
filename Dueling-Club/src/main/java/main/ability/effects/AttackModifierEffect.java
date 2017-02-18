@@ -6,7 +6,7 @@ import main.elements.conditions.Condition;
 import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
-import main.system.ConditionMaster;
+import main.system.entity.ConditionMaster;
 
 public class AttackModifierEffect {
 

@@ -1,5 +1,7 @@
 package main.system.auxiliary;
 
+import main.system.auxiliary.data.ListMaster;
+
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;

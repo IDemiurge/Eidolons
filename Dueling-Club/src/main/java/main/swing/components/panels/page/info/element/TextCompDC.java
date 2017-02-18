@@ -3,9 +3,9 @@ package main.swing.components.panels.page.info.element;
 import main.swing.SwingMaster;
 import main.swing.generic.components.ComponentVisuals;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.ColorManager;
-import main.system.auxiliary.FontMaster;
-import main.system.auxiliary.FontMaster.FONT;
+import main.system.graphics.ColorManager;
+import main.system.graphics.FontMaster;
+import main.system.graphics.FontMaster.FONT;
 
 import java.awt.*;
 import java.beans.Transient;

@@ -7,11 +7,11 @@ import main.client.cc.gui.tabs.lists.DivinationPanel;
 import main.client.cc.gui.tabs.lists.MemorizedList;
 import main.client.cc.gui.tabs.lists.VerbatimList;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.system.DC_RequirementsManager;
 import main.system.auxiliary.StringMaster;
@@ -29,7 +29,7 @@ public class SpellTab extends HeroItemTab {
     private VerbatimList verbatim;
     private DivinationPanel divination;
 
-    public SpellTab(MainViewPanel mvp, DC_HeroObj hero) {
+    public SpellTab(MainViewPanel mvp, Unit hero) {
         super("Spellbook", mvp, hero);
     }
 
@@ -80,7 +80,7 @@ public class SpellTab extends HeroItemTab {
 
     @Override
     protected OBJ_TYPE getTYPE() {
-        return OBJ_TYPES.SPELLS;
+        return DC_TYPE.SPELLS;
     }
 
     @Override

@@ -5,7 +5,7 @@ import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.type.ObjType;
-import main.system.auxiliary.FontMaster;
+import main.system.graphics.FontMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 

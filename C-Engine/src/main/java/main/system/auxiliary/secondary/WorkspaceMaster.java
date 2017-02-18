@@ -1,13 +1,15 @@
 package main.system.auxiliary.secondary;
 
-import main.content.CONTENT_CONSTS.MASTERY;
-import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
-import main.content.OBJ_TYPES;
+import main.content.enums.entity.SkillEnums.MASTERY;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
+import main.content.DC_TYPE;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.entity.SkillEnums;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.game.Game;
+import main.game.core.game.Game;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager.BORDER;
 
 import java.util.List;
@@ -15,12 +17,12 @@ import java.util.List;
 public class WorkspaceMaster {
 
     public static final boolean FILTER_UNITS_LIST = false;
-    private static final MASTERY[] SKILL_CONTENT_SCOPE = new MASTERY[]{MASTERY.DEFENSE_MASTERY,
-            MASTERY.DISCIPLINE_MASTERY, MASTERY.ARMORER_MASTERY, MASTERY.STEALTH_MASTERY,
-            MASTERY.DETECTION_MASTERY, MASTERY.TWO_HANDED_MASTERY, MASTERY.DUAL_WIELDING_MASTERY,
-            MASTERY.MOBILITY_MASTERY, MASTERY.ATHLETICS_MASTERY, MASTERY.BLADE_MASTERY,
-            MASTERY.AXE_MASTERY, MASTERY.BLUNT_MASTERY, MASTERY.POLEARM_MASTERY,
-            MASTERY.MARKSMANSHIP_MASTERY, MASTERY.UNARMED_MASTERY,};
+    private static final MASTERY[] SKILL_CONTENT_SCOPE = new MASTERY[]{SkillEnums.MASTERY.DEFENSE_MASTERY,
+            SkillEnums.MASTERY.DISCIPLINE_MASTERY, SkillEnums.MASTERY.ARMORER_MASTERY, SkillEnums.MASTERY.STEALTH_MASTERY,
+            SkillEnums.MASTERY.DETECTION_MASTERY, SkillEnums.MASTERY.TWO_HANDED_MASTERY, SkillEnums.MASTERY.DUAL_WIELDING_MASTERY,
+            SkillEnums.MASTERY.MOBILITY_MASTERY, SkillEnums.MASTERY.ATHLETICS_MASTERY, SkillEnums.MASTERY.BLADE_MASTERY,
+            SkillEnums.MASTERY.AXE_MASTERY, SkillEnums.MASTERY.BLUNT_MASTERY, SkillEnums.MASTERY.POLEARM_MASTERY,
+            SkillEnums.MASTERY.MARKSMANSHIP_MASTERY, SkillEnums.MASTERY.UNARMED_MASTERY,};
     private static boolean testAllowed;
     private static boolean polishAllowed;
     private static boolean implAllowed;
@@ -39,7 +41,7 @@ public class WorkspaceMaster {
 
     public static void generateAutoWorkspace() {
         for (String f : completeSkillSubgroups) {
-            DataManager.getTypesSubGroup(OBJ_TYPES.SKILLS, f);
+            DataManager.getTypesSubGroup(DC_TYPE.SKILLS, f);
         }
     }
 
@@ -64,9 +66,9 @@ public class WorkspaceMaster {
     public static boolean checkTypeIsReadyForUse(ObjType type) {
         WORKSPACE_GROUP ws = new EnumMaster<WORKSPACE_GROUP>().retrieveEnumFromEntityProp(
                 WORKSPACE_GROUP.class, type);
-        switch ((OBJ_TYPES) type.getOBJ_TYPE_ENUM()) {
+        switch ((DC_TYPE) type.getOBJ_TYPE_ENUM()) {
             case SKILLS:
-                if (ws == WORKSPACE_GROUP.COMPLETE || ws == WORKSPACE_GROUP.POLISH) {
+                if (ws == MetaEnums.WORKSPACE_GROUP.COMPLETE || ws == MetaEnums.WORKSPACE_GROUP.POLISH) {
                     return true;
                 }
                 return completeSkillSubgroups.contains(type.getSubGroupingKey()

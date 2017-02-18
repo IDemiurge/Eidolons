@@ -5,13 +5,13 @@ import main.client.cc.gui.MainViewPanel.HERO_VIEWS;
 import main.client.cc.gui.neo.points.HC_PointView;
 import main.client.cc.gui.neo.slide.MasterySlidePanel;
 import main.client.cc.gui.tabs.HeroPanelTab;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 
 public class HC_StatsTab extends HeroPanelTab {
 
     private HC_PointView view;
 
-    public HC_StatsTab(MainViewPanel mvp, DC_HeroObj hero) {
+    public HC_StatsTab(MainViewPanel mvp, Unit hero) {
         super("Stats", mvp, hero);
         setView(new HC_PointView(true, hero));
         add(getView(), "pos 0 0");

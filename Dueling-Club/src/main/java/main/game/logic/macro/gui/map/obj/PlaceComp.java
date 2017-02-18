@@ -1,7 +1,7 @@
 package main.game.logic.macro.gui.map.obj;
 
 import main.game.logic.macro.map.Place;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 
 import java.awt.*;

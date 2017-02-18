@@ -1,15 +1,15 @@
 package main.rules.rpg;
 
-import main.content.CONTENT_CONSTS.GENDER;
-import main.content.CONTENT_CONSTS.PRINCIPLES;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.ContentManager;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
 import main.content.ValuePages;
-import main.content.parameters.PARAMETER;
+import main.content.enums.entity.HeroEnums;
+import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.entity.EntityMaster;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.system.DC_Formulas;
 import main.system.auxiliary.StringMaster;
 
@@ -56,7 +56,7 @@ public class IntegrityRule {
         return -20;
     }
 
-    public static List<String> getIntegrityBonusInfo(DC_HeroObj hero) {
+    public static List<String> getIntegrityBonusInfo(Unit hero) {
         List<String> list = new LinkedList<>();
         int integrity = hero.getIntParam(PARAMS.INTEGRITY);
         int amount = getMasteryScoresBonus(integrity, hero);
@@ -95,11 +95,11 @@ public class IntegrityRule {
         return list;
     }
 
-    private static int getMasteryScoresBonus(int amount, DC_HeroObj hero) {
+    private static int getMasteryScoresBonus(int amount, Unit hero) {
         return getBonus(null, amount, hero);
     }
 
-    private static int getBonus(PARAMETER param, int amount, DC_HeroObj hero) {
+    private static int getBonus(PARAMETER param, int amount, Unit hero) {
         String formula = MASTERY_SCORES_BONUS_FORMULA;
 
         if (param == null) {
@@ -115,10 +115,10 @@ public class IntegrityRule {
         return bonus;
     }
 
-    public static void resetIntegrity(DC_HeroObj hero) {
+    public static void resetIntegrity(Unit hero) {
         resetAlignment(hero);
         resetIdentification(hero);
-        for (PRINCIPLES principle : PRINCIPLES.values()) {
+        for (PRINCIPLES principle : HeroEnums.PRINCIPLES.values()) {
             int product = getIntegrityMod(hero, principle);
             hero.modifyParameter(PARAMS.INTEGRITY, product);
 
@@ -140,7 +140,7 @@ public class IntegrityRule {
 
     public static List<PRINCIPLES> getAffectingPrinciples(Entity item, Entity hero) {
         List<PRINCIPLES> list = new LinkedList<>();
-        for (PRINCIPLES p : PRINCIPLES.values()) {
+        for (PRINCIPLES p : HeroEnums.PRINCIPLES.values()) {
             for (Integer val : getValues(p, item, hero)) {
                 if (val != 0) {
                     if (!list.contains(p)) {
@@ -154,7 +154,7 @@ public class IntegrityRule {
 
     public static boolean isAffectingPrinciple(Entity item, Entity hero, PRINCIPLES principle) {
         if (principle == null) {
-            for (PRINCIPLES p : PRINCIPLES.values()) {
+            for (PRINCIPLES p : HeroEnums.PRINCIPLES.values()) {
                 for (Integer val : getValues(p, item, hero)) {
                     if (val != 0) // cache affected principles?
                     {
@@ -186,20 +186,20 @@ public class IntegrityRule {
                 getIntegrityProduct(hero.getIntParam(identity_param), alignment)};
     }
 
-    private static void resetAlignment(DC_HeroObj hero) {
+    private static void resetAlignment(Unit hero) {
 
         // for (DC_FeatObj c : hero.getClasses()) { TODO automatic now
         // applyAlignmentMods(hero, c);
         // }
     }
 
-    private static void resetIdentification(DC_HeroObj hero) {
+    private static void resetIdentification(Unit hero) {
         // TODO background, deity, choice, from skills/classes t ...
 
         applyIdentityMods(hero, hero.getDeity());
     }
 
-    public static void applyIntegrity(DC_HeroObj hero) {
+    public static void applyIntegrity(Unit hero) {
         // TODO revamp and fix when ready...
 
         // Integer mod = hero.getIntParam(PARAMS.INTEGRITY);
@@ -312,7 +312,7 @@ public class IntegrityRule {
         Integer lowestAmount = 0;
         PRINCIPLES lowestPrinciple = null;
         VALUE_LEVEL lowestLevel = null;
-        for (PRINCIPLES principle : PRINCIPLES.values()) {
+        for (PRINCIPLES principle : HeroEnums.PRINCIPLES.values()) {
             Integer amount = hero
                     .getIntParam(DC_ContentManager.getAlignmentForPrinciple(principle));
             VALUE_LEVEL level = alignment ? getAlignmentLevel(amount) : getIdentityLevel(amount);
@@ -372,7 +372,7 @@ public class IntegrityRule {
                 return "Rebel"; // Troublemaker renegade, daredevil,
             // troublemaker, adventurer
             case HONOR:
-                if (EntityMaster.getGender(hero) == GENDER.FEMALE) {
+                if (EntityMaster.getGender(hero) == HeroEnums.GENDER.FEMALE) {
                     return "Lady";
                 }
                 return "Gentleman";
@@ -428,7 +428,7 @@ public class IntegrityRule {
             case HONOR:
                 return "Sneak";
             case TREACHERY:
-                if (EntityMaster.getGender(hero) == GENDER.FEMALE) {
+                if (EntityMaster.getGender(hero) == HeroEnums.GENDER.FEMALE) {
                     return "Lady";
                 }
                 return "Gentleman";
@@ -456,7 +456,7 @@ public class IntegrityRule {
                 return "Free Spirit"; // renegade, daredevil, troublemaker,
             // adventurer
             case HONOR:
-                if (EntityMaster.getGender(hero) == GENDER.FEMALE) {
+                if (EntityMaster.getGender(hero) == HeroEnums.GENDER.FEMALE) {
                     return "Lady";
                 }
                 return "Gentleman";
@@ -483,7 +483,7 @@ public class IntegrityRule {
     }
 
     private static String getEmptyDescription(Entity hero) {
-        if (EntityMaster.getGender(hero) == GENDER.FEMALE) {
+        if (EntityMaster.getGender(hero) == HeroEnums.GENDER.FEMALE) {
             return "Woman";
         }
         return "Man";

@@ -1,13 +1,13 @@
 package main.game.ai.logic;
 
 import main.entity.obj.Obj;
-import main.game.MicroGame;
+import main.game.core.game.MicroGame;
 import main.game.ai.AI;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.MovementManager;
 import main.game.battlefield.pathing.Path;
-import main.game.player.Player;
-import main.system.auxiliary.LogMaster;
+import main.game.logic.battle.player.Player;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.PositionMaster;
 
 import java.util.Collection;
@@ -80,13 +80,13 @@ public abstract class Analyzer {
             }
         }
         if (cell == null) {
-            main.system.auxiliary.LogMaster
+            LogMaster
                     .log(LogMaster.AI_DEBUG, "failed to find a cell for : "
                             + getAi().getUnit() + " to attack " + targetUnit);
             // throw new RuntimeException();
         }
 
-        main.system.auxiliary.LogMaster.log(LogMaster.AI_DEBUG, cell
+        LogMaster.log(LogMaster.AI_DEBUG, cell
                 + " is the closest cell to " + targetUnit);
         return cell;
 
@@ -112,7 +112,7 @@ public abstract class Analyzer {
             }
             Path path = movementManager.getPath(targetUnit, adjCell);
             if (path == null) {
-                main.system.auxiliary.LogMaster.log(LogMaster.AI_DEBUG, ai
+                LogMaster.log(LogMaster.AI_DEBUG, ai
                         .getLogic().getUnit() + " has no path to " + adjCell);
 
                 continue;

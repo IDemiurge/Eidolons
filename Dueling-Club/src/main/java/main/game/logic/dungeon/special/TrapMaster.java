@@ -2,7 +2,7 @@ package main.game.logic.dungeon.special;
 
 import main.content.PARAMS;
 import main.entity.Entity;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.ZCoordinates;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.Entrance;
@@ -23,7 +23,7 @@ public class TrapMaster {
      *
      *
      */
-    public static boolean unitMoves(DC_HeroObj unit) {
+    public static boolean unitMoves(Unit unit) {
         // trajectory? some traps would trigger even if 'jumped over'
 //        List<DC_HeroObj> objects = unit.getGame().getPassableObjectsForCoordinate(
 //                unit.getCoordinates());
@@ -54,12 +54,12 @@ public class TrapMaster {
         }
     }
 
-    public static Set<Trap> getTraps(DC_HeroObj unit) {
+    public static Set<Trap> getTraps(Unit unit) {
         return trapMap.get(new ZCoordinates(unit.getCoordinates().x, unit.getCoordinates().y, unit
                 .getZ()));
     }
 
-    public static List<Trap> getTrapsToDisarm(DC_HeroObj unit) {
+    public static List<Trap> getTrapsToDisarm(Unit unit) {
         List<Trap> list = new LinkedList<>();
         Set<Trap> set = trapMap.get(new ZCoordinates(unit.getCoordinates().x,
                 unit.getCoordinates().y, unit.getZ()));
@@ -74,7 +74,7 @@ public class TrapMaster {
         return list;
     }
 
-    public static boolean checkTrapTriggers(DC_HeroObj unit, Trap trap) {
+    public static boolean checkTrapTriggers(Unit unit, Trap trap) {
         // by weight, by unit type...
 
 //        trap.getUnitVisionStatus();

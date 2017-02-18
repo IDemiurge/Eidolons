@@ -1,15 +1,16 @@
 package main.swing.components.obj;
 
 import main.entity.obj.DC_Cell;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
 import main.swing.components.buttons.DynamicButton;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.services.dialog.DialogPanel;
-import main.system.auxiliary.GuiManager;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.GuiManager;
 import main.system.datatypes.DequeImpl;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
@@ -312,11 +313,11 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
 
                     // break ;
                 } else if (object instanceof Obj) {
-                    if (object instanceof DC_HeroObj) {
+                    if (object instanceof Unit) {
                         if (objClicked != null) {
                             int index = cellComp.getObjects().indexOf(objClicked);
                             int index2 = cellComp.getObjects().indexOf(object);
-                            main.system.auxiliary.LogMaster.log(1, objClicked + "'s " + index
+                            LogMaster.log(1, objClicked + "'s " + index
                                     + " vs " + object + "'s " + index2);
                             if (index > index2)
                                 // TODO so we need to keep this always sorted...
@@ -324,7 +325,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                                 continue;
                             }
                         }
-                        DC_HeroObj unit = (DC_HeroObj) object;
+                        Unit unit = (Unit) object;
                         if (unit.isOverlaying()) {
                             // corpseClicked(unit);
                             if (unit.getVisibilityLevel() == VISIBILITY_LEVEL.CONCEALED) {
@@ -436,13 +437,13 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
     @Override
     public void mousePressed(MouseEvent e) {
         pressPoint = e.getPoint();
-        main.system.auxiliary.LogMaster.log(0, "mouse pressed at " + pressPoint);
+        LogMaster.log(0, "mouse pressed at " + pressPoint);
     }
 
     public void mouseReleased(MouseEvent e) {
         dragging = false;
         releasePoint = e.getPoint();
-        main.system.auxiliary.LogMaster.log(0, "released from " + pressPoint.x + "," + pressPoint.y
+        LogMaster.log(0, "released from " + pressPoint.x + "," + pressPoint.y
                 + " to " + releasePoint.x + "," + releasePoint.y);
 
         int diff_x = pressPoint.x - releasePoint.x;

@@ -1,8 +1,8 @@
 package main.entity.type;
 
-import main.content.OBJ_TYPES;
-import main.content.parameters.G_PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.DC_TYPE;
+import main.content.values.parameters.G_PARAMS;
+import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 
 public class BuffType extends ObjType {
@@ -15,14 +15,14 @@ public class BuffType extends ObjType {
 
     public BuffType() {
         super();
-        setProperty(G_PROPS.TYPE, OBJ_TYPES.BUFFS.getName());
-        setOBJ_TYPE_ENUM(OBJ_TYPES.BUFFS);
+        setProperty(G_PROPS.TYPE, DC_TYPE.BUFFS.getName());
+        setOBJ_TYPE_ENUM(DC_TYPE.BUFFS);
     }
 
     public BuffType(Ref ref) {
         super(ref);
-        setProperty(G_PROPS.TYPE, OBJ_TYPES.BUFFS.getName());
-        setOBJ_TYPE_ENUM(OBJ_TYPES.BUFFS);
+        setProperty(G_PROPS.TYPE, DC_TYPE.BUFFS.getName());
+        setOBJ_TYPE_ENUM(DC_TYPE.BUFFS);
     }
 
     public Integer getDuration() {

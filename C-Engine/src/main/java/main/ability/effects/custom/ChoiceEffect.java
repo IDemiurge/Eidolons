@@ -2,7 +2,7 @@ package main.ability.effects.custom;
 
 import main.ability.effects.oneshot.MicroEffect;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.ability.OmittedConstructor;
 import main.entity.obj.Obj;
@@ -21,7 +21,7 @@ public class ChoiceEffect extends MicroEffect {
     private OBJ_TYPE TYPE;
 
     public ChoiceEffect(String obj_type) {
-        this.TYPE = OBJ_TYPES.getType(obj_type);
+        this.TYPE = DC_TYPE.getType(obj_type);
     }
 
     public ChoiceEffect() {

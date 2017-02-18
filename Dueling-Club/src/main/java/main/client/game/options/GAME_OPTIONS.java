@@ -4,7 +4,7 @@ import main.client.game.options.GameOptions.GAME_OPTION;
 import main.client.game.options.GameOptions.GAME_WORLD;
 import main.client.game.options.GameOptions.MAP_TYPE;
 import main.content.CONTENT_CONSTS.RANK;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.system.auxiliary.EnumMaster;
 
 public enum GAME_OPTIONS implements GAME_OPTION {

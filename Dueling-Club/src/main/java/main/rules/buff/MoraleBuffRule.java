@@ -7,24 +7,24 @@ import main.ability.effects.Effects;
 import main.ability.effects.oneshot.common.ConditionalEffect;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.ability.effects.special.BehaviorModeEffect;
-import main.content.CONTENT_CONSTS.BEHAVIOR_MODE;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
-import main.content.CONTENT_CONSTS.STD_BUFF_NAMES;
 import main.content.PARAMS;
 import main.content.VALUE;
+import main.content.enums.system.AiEnums;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Condition;
 import main.elements.conditions.NotCondition;
 import main.entity.Ref.KEYS;
-import main.game.MicroGame;
-import main.rules.mechanics.RuleMaster.COMBAT_RULES;
+import main.game.core.game.MicroGame;
+import main.rules.RuleMaster.COMBAT_RULES;
 import main.system.auxiliary.StringMaster;
 
 public class MoraleBuffRule extends DC_BuffRule {
-    private String[] buffNames = {STD_BUFF_NAMES.Panic.getName(),
+    private String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Panic.getName(),
             // STD_TYPE_NAMES.Terrified.getName(), // panic -> auto-run away,
             // disable
             // counters
-            STD_BUFF_NAMES.Fearful.getName(), STD_BUFF_NAMES.Inspired.getName()};
+            MetaEnums.STD_BUFF_NAMES.Fearful.getName(), MetaEnums.STD_BUFF_NAMES.Inspired.getName()};
     private String[] formulas = {"1", "10", "100",}; // make
     // fearful
     // and
@@ -50,18 +50,18 @@ public class MoraleBuffRule extends DC_BuffRule {
         switch (level) {
             case 0: {
                 return new ConditionalEffect(new NotCondition(new StdPassiveCondition(
-                        STANDARD_PASSIVES.FEARLESS)),
+                        UnitEnums.STANDARD_PASSIVES.FEARLESS)),
 
                         new Effects(new ModifyValueEffect(parameterStringPanic,
                                 MOD.MODIFY_BY_PERCENT, "("
                                 + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-"
                                 + formulas[1] + ")*2"), new BehaviorModeEffect(
-                                BEHAVIOR_MODE.PANIC)));
+                                AiEnums.BEHAVIOR_MODE.PANIC)));
                 // return new OwnershipChangeEffect();
             }
             case 1: {
                 return new ConditionalEffect(new NotCondition(new StdPassiveCondition(
-                        STANDARD_PASSIVES.FEARLESS)), new Effects(new ModifyValueEffect(
+                        UnitEnums.STANDARD_PASSIVES.FEARLESS)), new Effects(new ModifyValueEffect(
                         parameterString, MOD.MODIFY_BY_PERCENT, "("
                         + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-"
                         + formulas[1] + ")*2")));
@@ -78,7 +78,7 @@ public class MoraleBuffRule extends DC_BuffRule {
     }
 
     protected Condition getBuffConditions() {
-        return new NotCondition(new StdPassiveCondition(STANDARD_PASSIVES.DISPASSIONATE));
+        return new NotCondition(new StdPassiveCondition(UnitEnums.STANDARD_PASSIVES.DISPASSIONATE));
 
     }
 

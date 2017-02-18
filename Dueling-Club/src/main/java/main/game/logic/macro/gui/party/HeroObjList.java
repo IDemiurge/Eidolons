@@ -1,10 +1,10 @@
 package main.game.logic.macro.gui.party;
 
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_ListPanel;
 import main.swing.generic.components.panels.G_PagedListPanel;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.data.ListMaster;
 
 import javax.swing.*;
 import java.util.Collection;
@@ -14,7 +14,7 @@ public class HeroObjList<T> extends G_PagedListPanel<T> {
 
     private Collection<T> data;
 
-    public HeroObjList(Collection<T> data, DC_HeroObj hero) {
+    public HeroObjList(Collection<T> data, Unit hero) {
         super(6, false, 4);
         this.data = data;
         refresh();

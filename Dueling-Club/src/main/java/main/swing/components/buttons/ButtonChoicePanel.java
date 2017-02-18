@@ -4,7 +4,7 @@ import main.swing.generic.components.ComponentVisuals;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
-import main.system.auxiliary.GuiManager;
+import main.system.graphics.GuiManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 

@@ -5,9 +5,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.libgdx.bf.GridMaster;
 import main.system.GuiEventManager;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -100,7 +101,7 @@ public class PhaseAnimator extends Group {
 
             anim.setX(x);
             anim.setY(y);
-            main.system.auxiliary.LogMaster.shout("Added anim : "
+            LogMaster.shout("Added anim : "
                     + anim + "at " + x + " - " + y);
 //    anim.getAnim().getMouseMap()
         });
@@ -115,7 +116,7 @@ public class PhaseAnimator extends Group {
                     getAnimations().contains(anim.getAnim())) {
                 try {
                     getAnims().remove(anim);
-                    main.system.auxiliary.LogMaster.shout("Removed anim : " + anim);
+                    LogMaster.shout("Removed anim : " + anim);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

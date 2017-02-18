@@ -1,9 +1,10 @@
 package main.libgdx.anims.std;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import main.content.CONTENT_CONSTS.STD_BUFF_NAMES;
+import main.content.enums.system.MetaEnums.STD_BUFF_NAMES;
 import main.data.filesys.PathFinder;
 import main.entity.obj.BuffObj;
+import main.game.battlefield.Coordinates;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import main.libgdx.anims.AnimData;
@@ -12,7 +13,7 @@ import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.sprite.SpriteAnimation;
 import main.libgdx.texture.TextureManager;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.FileManager;
+import main.system.auxiliary.data.FileManager;
 
 import java.util.List;
 
@@ -164,6 +165,11 @@ public class BuffAnim extends ActionAnim {
         if (isPlayContinuous()) {
             duration = -1;
         }
+    }
+
+    @Override
+    public Coordinates getDestinationCoordinates() {
+        return buff.getBasis().getCoordinates();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package main.game.battlefield;
 
-import main.system.auxiliary.GuiManager;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.GuiManager;
 import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;
 
@@ -163,7 +164,7 @@ public class Coordinates {
         }
         this.x = w - 1 - x;
         this.y = h - 1 - y;
-        main.system.auxiliary.LogMaster.log(2, "Inverted to " + toString());
+        LogMaster.log(2, "Inverted to " + toString());
         return this;
     }
 

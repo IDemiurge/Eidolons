@@ -1,9 +1,9 @@
 package main.rules.mechanics;
 
-import main.content.CONTENT_CONSTS.STD_BUFF_NAMES;
-import main.entity.obj.DC_HeroObj;
-import main.game.Game;
-import main.system.auxiliary.LogMaster;
+import main.content.enums.system.MetaEnums;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.Game;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,18 +22,18 @@ public class WaitRule {
 
     public static void checkMap() {
         for (Integer id : getWaitMap().keySet()) {
-            DC_HeroObj unit = (DC_HeroObj) game.getObjectById(id);
+            Unit unit = (Unit) game.getObjectById(id);
             if (unit == null) {
                 continue;
             }
             if (checkWakeUp(unit,
-                    (DC_HeroObj) game.getObjectById(waitMap.get(id)))) {
+                    (Unit) game.getObjectById(waitMap.get(id)))) {
                 wakeUp(unit);
             }
         }
     }
 
-    public static void addAlertUnit(DC_HeroObj unit, DC_HeroObj target) {
+    public static void addAlertUnit(Unit unit, Unit target) {
         /*
 		 * wake up if a unit comes close
 		 * 
@@ -50,15 +50,15 @@ public class WaitRule {
 
     }
 
-    public static void addWaitingUnit(DC_HeroObj unit, DC_HeroObj target) {
+    public static void addWaitingUnit(Unit unit, Unit target) {
         if (game == null) {
             game = unit.getGame();
         }
         getWaitMap().put(unit.getId(), target.getId());
     }
 
-    private static void wakeUp(DC_HeroObj unit) {
-        main.system.auxiliary.LogMaster.log(LogMaster.CORE_DEBUG_1,
+    private static void wakeUp(Unit unit) {
+        LogMaster.log(LogMaster.CORE_DEBUG_1,
                 "waking unit up: " + unit);
         unit.removeBuff(WAIT_BUFF);
         getWaitMap().remove(unit);
@@ -67,11 +67,11 @@ public class WaitRule {
 
     }
 
-    public static boolean checkWakeUp(DC_HeroObj unit, DC_HeroObj target) {
+    public static boolean checkWakeUp(Unit unit, Unit target) {
         if (!unit.hasBuff(WAIT_BUFF)) {
             return true;
         }
-        if (target.hasBuff(STD_BUFF_NAMES.Channeling.name())) {
+        if (target.hasBuff(MetaEnums.STD_BUFF_NAMES.Channeling.name())) {
             return true;
         }
         if (target.isDead()) {

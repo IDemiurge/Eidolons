@@ -1,9 +1,9 @@
 package main.content;
 
-import main.content.parameters.G_PARAMS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.G_PARAMS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 
 import java.lang.reflect.Field;
 
@@ -623,6 +623,13 @@ public class ValuePages {
      PARAMS.REDEMPTION_MASTERY, PARAMS.CELESTIAL_MASTERY, PARAMS.BENEDICTION_MASTERY,
      PARAMS.WARP_MASTERY, PARAMS.DESTRUCTION_MASTERY, PARAMS.DEMONOLOGY_MASTERY,};
 
+    public static final PARAMETER[] MAIN_UNIT_INFO_PARAMETERS = {
+     PARAMS.RESISTANCE,
+     PARAMS.DEFENSE,
+     PARAMS.ARMOR,
+     PARAMS.FORTITUDE,
+     PARAMS.SPIRIT,
+    };
     public static final VALUE[][] UNIT_INFO_PARAMS_PHYSICAL = {
      {
       PARAMS.INITIATIVE_MODIFIER, PARAMS.INITIATIVE,
@@ -673,6 +680,9 @@ public class ValuePages {
 
 
      },
+    };
+    public static final String[] INFO_TABLE_NAMES = {
+     "Physical", "Combat", "Magic", "Misc", "Rolls", "Mods"
     };
     private static final VALUE[] DC_SPELL_PARAMETERS = {
 
@@ -788,14 +798,10 @@ public class ValuePages {
       PARAMS.DETECTION_ROLL_SAVE_BONUS, PARAMS.DETECTION_ROLL_BEAT_BONUS,
      },
     };
-
     private static final VALUE[][] UNIT_INFO_PARAMS_MAGIC = {
      {
       PARAMS.RESISTANCE_PENETRATION,
      },
-    };
-    public static final String[] INFO_TABLE_NAMES = {
-     "Physical", "Combat", "Magic", "Misc", "Rolls", "Mods"
     };
     public static final VALUE[][][] UNIT_INFO_PARAMS = {
      UNIT_INFO_PARAMS_PHYSICAL,

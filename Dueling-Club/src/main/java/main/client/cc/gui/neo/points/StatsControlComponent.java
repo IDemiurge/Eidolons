@@ -5,12 +5,13 @@ import main.client.cc.gui.MiddlePanel;
 import main.client.cc.gui.misc.PoolComp;
 import main.content.PARAMS;
 import main.content.VALUE;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.swing.generic.components.misc.GraphicComponent.STD_COMP_IMAGES;
+import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.MigMaster;
 import main.system.math.DC_MathManager;
 
@@ -33,7 +34,7 @@ public class StatsControlComponent extends G_Panel {
     private PoolComp mstrGoldCostPool;
     private PoolComp attrXpCostPool;
     private PoolComp attrGoldCostPool;
-    private DC_HeroObj hero;
+    private Unit hero;
     private HC_InfoTextPanel attrPanel;
     private HC_InfoTextPanel mstrPanel;
     private CustomButton okButton;
@@ -47,7 +48,7 @@ public class StatsControlComponent extends G_Panel {
 
     private boolean panelSwitch;
 
-    public StatsControlComponent(DC_HeroObj hero) {
+    public StatsControlComponent(Unit hero) {
         this.hero = hero;
         bufferType = new ObjType(hero.getType());
         backupBuffer = new ObjType(hero.getType());
@@ -155,7 +156,7 @@ public class StatsControlComponent extends G_Panel {
     }
 
     public void resetHero() {
-        main.system.auxiliary.LogMaster.log(1, "*** backupBuffer reset: " + backupBuffer);
+        LogMaster.log(1, "*** backupBuffer reset: " + backupBuffer);
         CharacterCreator.getHeroManager().applyChangedType(hero, backupBuffer);
         resetBuffer();
         resetBackupBuffer();
@@ -164,12 +165,12 @@ public class StatsControlComponent extends G_Panel {
 
     public void resetBackupBuffer() {
         backupBuffer = new ObjType(hero.getType());
-        main.system.auxiliary.LogMaster.log(1, "*** backupBuffer reset: " + backupBuffer);
+        LogMaster.log(1, "*** backupBuffer reset: " + backupBuffer);
     }
 
     public void resetBuffer() {
         setBufferType(new ObjType(hero.getType()));
-        main.system.auxiliary.LogMaster.log(1, "*** buffer reset: " + bufferType);
+        LogMaster.log(1, "*** buffer reset: " + bufferType);
         if (mp != null) {
             getMp().resetBuffer();
         }

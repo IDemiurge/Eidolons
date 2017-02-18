@@ -1,18 +1,19 @@
 package main.game.logic.dungeon.editor;
 
 import main.client.DC_Engine;
-import main.content.MACRO_OBJ_TYPES;
-import main.content.OBJ_TYPES;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.VisionManager;
 import main.game.logic.dungeon.editor.gui.LE_MainPanel;
 import main.swing.SwingMaster;
 import main.swing.components.obj.BfGridComp;
 import main.swing.generic.components.editors.lists.ListChooser;
-import main.system.auxiliary.GuiManager;
-import main.system.auxiliary.ListMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.GuiManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import net.miginfocom.swing.MigLayout;
@@ -99,9 +100,9 @@ public class LevelEditor {
                 getMainPanel().refresh();
                 getMainPanel().getPlanPanel().getTreePanel().initTree();
                 getMainPanel().getPlanPanel().resetTree();
-                main.system.auxiliary.LogMaster.log(1, getSimulation().toString());
+                LogMaster.log(1, getSimulation().toString());
                 simulationMap.put(getCurrentLevel(), simulationMap.get(prev));
-                main.system.auxiliary.LogMaster.log(1, getSimulation().toString());
+                LogMaster.log(1, getSimulation().toString());
             }
         }
 
@@ -191,7 +192,7 @@ public class LevelEditor {
     }
 
     public static void newLevel(boolean alt) {
-        String name = ListChooser.chooseType(OBJ_TYPES.DUNGEONS);
+        String name = ListChooser.chooseType(DC_TYPE.DUNGEONS);
         if (name == null) {
             return;
         }
@@ -281,7 +282,7 @@ public class LevelEditor {
     }
 
     public static boolean isLevelSelected() {
-        return getMainPanel().getInfoPanel().getSelectedType().getOBJ_TYPE_ENUM() == OBJ_TYPES.DUNGEONS;
+        return getMainPanel().getInfoPanel().getSelectedType().getOBJ_TYPE_ENUM() == DC_TYPE.DUNGEONS;
     }
 
     public static boolean isMissionSelected() {
@@ -289,7 +290,7 @@ public class LevelEditor {
     }
 
     public static ObjType checkSubstitute(ObjType type) {
-        if (type.getOBJ_TYPE_ENUM() != OBJ_TYPES.DUNGEONS) {
+        if (type.getOBJ_TYPE_ENUM() != DC_TYPE.DUNGEONS) {
             return type;
         }
         // if (type.getType() == null)

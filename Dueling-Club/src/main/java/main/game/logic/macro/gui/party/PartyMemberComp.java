@@ -1,7 +1,7 @@
 package main.game.logic.macro.gui.party;
 
 import main.client.cc.gui.neo.header.PortraitComp;
-import main.entity.obj.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.logic.macro.MacroManager;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.generic.components.G_Panel;
@@ -13,13 +13,13 @@ import java.awt.event.MouseListener;
 
 public class PartyMemberComp extends G_Panel implements MouseListener {
 
-    private DC_HeroObj hero;
+    private Unit hero;
     private TextCompDC nameComp;
     private PortraitComp portrait;
     private HeroSlidePanel slidePanel; // items, full info
     private PartyMembersPanel membersPanel;
 
-    public PartyMemberComp(PartyMembersPanel membersPanel, DC_HeroObj m) {
+    public PartyMemberComp(PartyMembersPanel membersPanel, Unit m) {
         hero = m;
         this.membersPanel = membersPanel;
         init();

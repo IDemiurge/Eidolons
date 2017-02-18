@@ -1,22 +1,22 @@
 package main.entity;
 
 import main.ability.AbilityObj;
-import main.content.CONTENT_CONSTS.ASPECT;
-import main.content.CONTENT_CONSTS.STATUS;
-import main.content.CONTENT_CONSTS.STD_BOOLS;
+import main.content.enums.GenericEnums.ASPECT;
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.GenericEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.AbilityConstructor;
 import main.entity.obj.ActiveObj;
 import main.entity.type.ObjType;
-import main.game.Game;
-import main.game.event.EventType.CONSTRUCTED_EVENT_TYPE;
-import main.game.player.Player;
+import main.game.core.game.Game;
+import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.LogMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.math.Property;
@@ -63,7 +63,7 @@ public abstract class Entity extends DataModel implements OBJ {
     public Entity(ObjType type, Player owner, Game game, Ref ref) {
         // initial party?
         if (type == null) {
-            main.system.auxiliary.LogMaster.log(1, "null type!" + ref);
+            LogMaster.log(1, "null type!" + ref);
             if (!CoreEngine.isTEST_MODE()) {
                 RuntimeException e = new RuntimeException();
                 throw (e);
@@ -201,7 +201,7 @@ public abstract class Entity extends DataModel implements OBJ {
     protected void resetStatus() {
         setProperty(G_PROPS.STATUS, "");
         if (isDead()) {
-            addStatus(STATUS.DEAD.toString());
+            addStatus(UnitEnums.STATUS.DEAD.toString());
         }
     }
 
@@ -244,7 +244,7 @@ public abstract class Entity extends DataModel implements OBJ {
 
     public Game getGame() {
         if (game == null) {
-            main.system.auxiliary.LogMaster.log(1, "Null game on " + toString());
+            LogMaster.log(1, "Null game on " + toString());
             if (Game.game.isSimulation()) {
                 game = Game.game;
             }
@@ -314,7 +314,7 @@ public abstract class Entity extends DataModel implements OBJ {
     }
 
     public boolean isUpgrade() {
-        if (checkBool(STD_BOOLS.NON_REPLACING)) {
+        if (checkBool(GenericEnums.STD_BOOLS.NON_REPLACING)) {
             return false;
         }
         return !getProperty(G_PROPS.BASE_TYPE).isEmpty();

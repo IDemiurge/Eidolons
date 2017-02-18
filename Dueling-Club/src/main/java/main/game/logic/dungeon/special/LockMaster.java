@@ -1,13 +1,13 @@
 package main.game.logic.dungeon.special;
 
-import main.content.CONTENT_CONSTS.ROLL_TYPES;
-import main.content.CONTENT_CONSTS.STATUS;
 import main.content.PARAMS;
+import main.content.enums.GenericEnums;
+import main.content.enums.entity.UnitEnums;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.DC_HeroObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.system.math.Formula;
@@ -19,7 +19,7 @@ import java.util.List;
 public class LockMaster {
     // Map<DC_Obj, List<>> map;
 
-    public static void initLocks(DC_HeroObj mapObj) {
+    public static void initLocks(Unit mapObj) {
 //        mapObj.getProperty(PROPS.LOCK_TYPE);
         mapObj.getIntParam(PARAMS.LOCK_LEVEL);
         ObjType type;
@@ -38,12 +38,12 @@ public class LockMaster {
         // will add *unlock* action
     }
 
-    public static boolean tryUnlock(Entity lockedObj, DC_HeroObj lockPicker) {
+    public static boolean tryUnlock(Entity lockedObj, Unit lockPicker) {
         return tryUnlock(lockedObj, lockPicker, null);
 
     }
 
-    public static boolean tryUnlock(Entity lockedObj, DC_HeroObj lockPicker, Formula formula) {
+    public static boolean tryUnlock(Entity lockedObj, Unit lockPicker, Formula formula) {
         boolean result = TrapMaster.checkTrapOnLock(lockedObj);
         if (!result) {
             return false;
@@ -54,7 +54,7 @@ public class LockMaster {
         if (formula != null) {
             // TODO
         } else {
-            result = RollMaster.roll(ROLL_TYPES.UNLOCK, ref);
+            result = RollMaster.roll(GenericEnums.ROLL_TYPES.UNLOCK, ref);
         }
         // roll
         lockedObj.getIntParam(PARAMS.LOCK_LEVEL);
@@ -62,7 +62,7 @@ public class LockMaster {
         return result;
     }
 
-    public static List<Obj> getObjectsToUnlock(DC_HeroObj unit) {
+    public static List<Obj> getObjectsToUnlock(Unit unit) {
         List<Obj> list = new LinkedList<>();
         if (unit.getGame().getObjectByCoordinate(unit.getCoordinates(), false) != null) {
             list.add(unit.getGame().getObjectByCoordinate(unit.getCoordinates(), false));
@@ -77,8 +77,8 @@ public class LockMaster {
     }
 
     public static void unlock(Entity lockedObj) {
-        lockedObj.removeStatus(STATUS.LOCKED + "");
-        lockedObj.addStatus(STATUS.UNLOCKED + "");
+        lockedObj.removeStatus(UnitEnums.STATUS.LOCKED + "");
+        lockedObj.addStatus(UnitEnums.STATUS.UNLOCKED + "");
 
     }
 

@@ -1,7 +1,7 @@
 package main.system.math;
 
-import main.content.CONTENT_CONSTS.STD_BOOLS;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
+import main.content.enums.GenericEnums;
 import main.data.ability.construct.VariableManager;
 import main.data.ability.construct.VariableManager.AUTOVAR;
 import main.elements.Filter;
@@ -12,9 +12,9 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.Game;
-import main.system.ConditionMaster;
-import main.system.auxiliary.LogMaster;
+import main.game.core.game.Game;
+import main.system.entity.ConditionMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.text.TextParser;
@@ -82,7 +82,7 @@ public class FunctionManager {
 
     public static Condition getSumAdjacentConditions() {
         Conditions c = new Conditions(
-                ConditionMaster.getTYPECondition(OBJ_TYPES.TERRAIN));
+                ConditionMaster.getTYPECondition(DC_TYPE.TERRAIN));
         c.add(ConditionMaster.getAdjacentCondition());
         return c;
     }
@@ -276,7 +276,7 @@ public class FunctionManager {
                 boolean shortDiags;
                 try {
                     shortDiags = obj1.getRef().getObj(KEYS.ACTIVE)
-                            .checkBool(STD_BOOLS.SHORTEN_DIAGONALS);
+                            .checkBool(GenericEnums.STD_BOOLS.SHORTEN_DIAGONALS);
                 } catch (Exception e) {
                     return integer;
                 }
