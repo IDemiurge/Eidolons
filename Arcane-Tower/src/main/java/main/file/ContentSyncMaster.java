@@ -1,6 +1,6 @@
 package main.file;
 
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
@@ -14,8 +14,8 @@ public class ContentSyncMaster {
      * Generate/Update AT types for Content
      *
      */
-    OBJ_TYPES[] syncedTypes = {OBJ_TYPES.SKILLS, OBJ_TYPES.SPELLS, OBJ_TYPES.CLASSES,
-            OBJ_TYPES.DEITIES, OBJ_TYPES.ITEMS};
+    DC_TYPE[] syncedTypes = {DC_TYPE.SKILLS, DC_TYPE.SPELLS, DC_TYPE.CLASSES,
+            DC_TYPE.DEITIES, DC_TYPE.ITEMS};
 
     public static void generateTypeForDC_Item() {
 
@@ -32,8 +32,8 @@ public class ContentSyncMaster {
 
     public static void generateTypesForDC_Content() {
         XML_Reader.readTypes(false); // TODO selective?
-        List<OBJ_TYPES> syncedTypes = new LinkedList<>();
-        for (OBJ_TYPES TYPE : syncedTypes) {
+        List<DC_TYPE> syncedTypes = new LinkedList<>();
+        for (DC_TYPE TYPE : syncedTypes) {
             for (String sub : XML_Reader.getSubGroups(TYPE)) {
                 if (!checkGroupInWorkspace(sub)) {
                     continue;
@@ -42,7 +42,7 @@ public class ContentSyncMaster {
             }
         }
 
-        for (OBJ_TYPES t : OBJ_TYPES.values()) {
+        for (DC_TYPE t : DC_TYPE.values()) {
             for (ObjType type : DataManager.getTypes(t)) {
                 // XML_Reader.getTypeMaps()
 

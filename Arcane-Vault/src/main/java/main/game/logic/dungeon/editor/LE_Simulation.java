@@ -4,9 +4,9 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.swing.components.obj.CellComp;
 import main.system.auxiliary.data.ListMaster;
@@ -24,7 +24,7 @@ public class LE_Simulation extends DC_Game {
 
     private Entity selectedEntity;
 
-    private LinkedList<DC_HeroObj> unitsCache;
+    private LinkedList<Unit> unitsCache;
 
     private Set<Obj> cells;
 
@@ -36,10 +36,10 @@ public class LE_Simulation extends DC_Game {
     }
 
     @Override
-    public DC_HeroObj getUnitByCoordinate(Coordinates coordinates) {
+    public Unit getUnitByCoordinate(Coordinates coordinates) {
         Obj obj = getObjectByCoordinate(coordinates, false);
-        if (obj instanceof DC_HeroObj) {
-            return (DC_HeroObj) obj;
+        if (obj instanceof Unit) {
+            return (Unit) obj;
         }
         return null;
     }
@@ -139,46 +139,47 @@ public class LE_Simulation extends DC_Game {
     public void remove(Obj obj) {
         state.removeObject(obj.getId());
         // obj.removed();
-        if (obj instanceof DC_HeroObj) {
-            removeUnit((DC_HeroObj) obj);
+        if (obj instanceof Unit) {
+            removeUnit((Unit) obj);
         }
     }
 
-    private void unitAdded(DC_HeroObj obj) {
-        unitsCache = new LinkedList<>(units);
+    private void unitAdded(Unit obj) {
+        unitsCache = new LinkedList<>(getUnits());
         // new Thread(new Runnable() { public void run() { } },
         // " thread").start();
         if (LevelEditor.DEBUG_ON) {
             LogMaster.log(1, toString() + " added "
-                    + obj.getNameAndCoordinate() + ", units= " + units);
+                    + obj.getNameAndCoordinate() + ", units= " + getUnits());
         }
     }
 
-    public void removeUnit(DC_HeroObj obj) {
+    public void removeUnit(Unit obj) {
         getUnits().remove(obj);
-        unitsCache = new LinkedList<>(units);
+        unitsCache = new LinkedList<>(getUnits());
         if (LevelEditor.DEBUG_ON) {
             LogMaster.log(1, toString() + " removed "
-                    + obj.getNameAndCoordinate() + ", units= " + units);
+                    + obj.getNameAndCoordinate() + ", units= " + getUnits());
         }
     }
 
     @Override
-    public DequeImpl<DC_HeroObj> getUnits() {
+    public DequeImpl<Unit> getUnits() {
         return super.getUnits();
     }
 
-    public void setUnits(Collection<DC_HeroObj> unitsCache) {
+    public void setUnits(Collection<Unit> unitsCache) {
         // state.removeObject(id)
-        this.units = new DequeImpl<>(unitsCache);
+        getUnits().clear();
+        getUnits().addAll(unitsCache);
         // state.addObject(obj)
     }
 
-    public LinkedList<DC_HeroObj> getUnitsCache() {
+    public LinkedList<Unit> getUnitsCache() {
         return unitsCache;
     }
 
-    public void setUnitsCache(LinkedList<DC_HeroObj> unitsCache) {
+    public void setUnitsCache(LinkedList<Unit> unitsCache) {
         this.unitsCache = unitsCache;
     }
 
@@ -191,13 +192,13 @@ public class LE_Simulation extends DC_Game {
     }
 
     @Override
-    public List<DC_HeroObj> getObjectsOnCoordinate(Coordinates c) {
-        List<DC_HeroObj> list = getUnitMap().get(c);
+    public List<Unit> getObjectsOnCoordinate(Coordinates c) {
+        List<Unit> list = getUnitMap().get(c);
         if (list == null) {
             return new LinkedList<>();
         }
-        List<DC_HeroObj> objects = new LinkedList<>();
-        for (DC_HeroObj obj : list) {
+        List<Unit> objects = new LinkedList<>();
+        for (Unit obj : list) {
             if (!obj.isOverlaying()) {
                 objects.add(obj);
             }
@@ -208,14 +209,14 @@ public class LE_Simulation extends DC_Game {
     }
 
     @Override
-    public List<DC_HeroObj> getObjectsOnCoordinate(Integer z, Coordinates c,
-                                                   Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
-        List<DC_HeroObj> list = getUnitMap().get(c);
+    public List<Unit> getObjectsOnCoordinate(Integer z, Coordinates c,
+                                             Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
+        List<Unit> list = getUnitMap().get(c);
         if (list == null) {
             return new LinkedList<>();
         }
-        List<DC_HeroObj> objects = new LinkedList<>();
-        for (DC_HeroObj obj : list) {
+        List<Unit> objects = new LinkedList<>();
+        for (Unit obj : list) {
             if (overlayingIncluded != null) {
                 if (overlayingIncluded) {
                     if (!obj.isOverlaying()) {
@@ -232,16 +233,16 @@ public class LE_Simulation extends DC_Game {
 
     }
 
-    public List<DC_HeroObj> getOverlayingObjects(Coordinates c) {
+    public List<Unit> getOverlayingObjects(Coordinates c) {
         // return getObjectsOnCoordinate(getLevel().getDungeon().getZ(), c,
         // true, true, false);
-        List<DC_HeroObj> list = getUnitMap().get(c);
+        List<Unit> list = getUnitMap().get(c);
         if (list == null) {
             return new LinkedList<>();
         }
 
-        List<DC_HeroObj> objects = new LinkedList<>();
-        for (DC_HeroObj obj : list) {
+        List<Unit> objects = new LinkedList<>();
+        for (Unit obj : list) {
             if (obj.isOverlaying()) {
                 objects.add(obj);
             }
@@ -250,9 +251,9 @@ public class LE_Simulation extends DC_Game {
     }
 
     public Obj getObjectByCoordinate(Coordinates c, boolean cellsIncluded) {
-        List<DC_HeroObj> unitObjects = getUnitMap().get(c);
+        List<Unit> unitObjects = getUnitMap().get(c);
         if (ListMaster.isNotEmpty(unitObjects)) {
-            for (DC_HeroObj o : unitObjects) {
+            for (Unit o : unitObjects) {
                 if (!o.isOverlaying()) {
                     return o;
                 }

@@ -2,19 +2,19 @@ package main.system.launch;
 
 import main.ability.AbilityType;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
+import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
 import main.entity.type.*;
 
 public class TypeInitializer {
     private boolean xmlTreeValue = false;
 
     public ObjType getNewType(OBJ_TYPE obj_type) {
-        OBJ_TYPES OBJ_TYPE;
+        DC_TYPE OBJ_TYPE;
 
         ObjType type = new ObjType();
-        if (obj_type instanceof OBJ_TYPES) {
-            OBJ_TYPE = (OBJ_TYPES) obj_type;
+        if (obj_type instanceof DC_TYPE) {
+            OBJ_TYPE = (DC_TYPE) obj_type;
             switch (OBJ_TYPE) {
                 case ABILS:
                     type = new AbilityType();

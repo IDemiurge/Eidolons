@@ -8,9 +8,9 @@ import main.client.cc.gui.neo.tree.view.HT_View;
 import main.client.cc.gui.neo.tree.view.TreeControlPanel;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentManager;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.TableDataManager;
 import main.entity.Entity;
@@ -182,7 +182,7 @@ public class EditViewPanel implements TableModelListener {
         } else {
             if (isTreeView()) {
 
-                treeViewComp = ArcaneVault.getSelectedOBJ_TYPE() == OBJ_TYPES.SKILLS ? skillTreeViewComp
+                treeViewComp = ArcaneVault.getSelectedOBJ_TYPE() == DC_TYPE.SKILLS ? skillTreeViewComp
                         : classTreeViewComp;
                 if (treeViewComp == null) {
                     treeViewComp = skillTreeViewComp;
@@ -436,7 +436,7 @@ public class EditViewPanel implements TableModelListener {
                     // save() instead!
                     resetData(true, type);
                 }
-            } else if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.SPELLS) {
+            } else if (type.getOBJ_TYPE_ENUM() == DC_TYPE.SPELLS) {
                 if (type.getIntParam(PARAMS.XP_COST) == 0) {
                     if (type.getGroup().equals("Standard"))
                     // type.setParam(PARAMS.XP_COST,
@@ -562,7 +562,7 @@ public class EditViewPanel implements TableModelListener {
         }
         if (isTreeView()) {
 
-            HT_View viewComp = type.getOBJ_TYPE_ENUM() == OBJ_TYPES.SKILLS ? getSkillTreeViewComp()
+            HT_View viewComp = type.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS ? getSkillTreeViewComp()
                     : getClassTreeViewComp();
             if (viewComp != null) {
                 String key = type.getSubGroupingKey();
@@ -586,7 +586,7 @@ public class EditViewPanel implements TableModelListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (type.getOBJ_TYPE_ENUM().equals(OBJ_TYPES.ABILS)) {
+        if (type.getOBJ_TYPE_ENUM().equals(DC_TYPE.ABILS)) {
             setAE_View(type.getName());
         } else {
             setTableView();

@@ -4,7 +4,7 @@ import main.client.game.GameStarter;
 import main.client.net.DC_GameClient;
 import main.client.net.DC_GameHost;
 import main.client.net.GameConnector;
-import main.game.HostedGame;
+import main.game.core.game.HostedGame;
 import main.system.graphics.GuiManager;
 import main.system.net.user.User;
 import main.system.net.user.UserList;

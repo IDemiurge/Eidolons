@@ -1,7 +1,7 @@
 package main.content;
 
-import main.content.parameters.PARAMETER;
-import main.game.DC_Game;
+import main.content.values.parameters.PARAMETER;
+import main.game.core.game.DC_Game;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 

@@ -1,8 +1,8 @@
 package main.rules.round;
 
 import main.content.PARAMS;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.ai.tools.ParamAnalyzer;
 
 public class MoraleRule extends RoundRule {
@@ -12,12 +12,12 @@ public class MoraleRule extends RoundRule {
     }
 
     @Override
-    public boolean check(DC_HeroObj unit) {
+    public boolean check(Unit unit) {
         return !ParamAnalyzer.isMoraleIgnore(unit);
     }
 
     @Override
-    public void apply(DC_HeroObj unit) {
+    public void apply(Unit unit) {
         int diff = unit.getIntParam(PARAMS.C_MORALE)
                 - unit.getIntParam(PARAMS.MORALE);
         if (diff == 0) {

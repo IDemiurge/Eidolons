@@ -5,20 +5,21 @@ import main.ability.AE_Manager;
 import main.ability.ActionGenerator;
 import main.client.cc.CharacterCreator;
 import main.client.cc.logic.HeroCreator;
-import main.content.CONTENT_CONSTS.ACTION_TYPE;
-import main.content.CONTENT_CONSTS.BACKGROUND;
-import main.content.CONTENT_CONSTS.RACE;
-import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
+import main.content.enums.entity.HeroEnums.RACE;
 import main.content.CONTENT_CONSTS2.FACTION;
 import main.content.*;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.HeroEnums;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.data.xml.XML_Reader;
 import main.data.xml.XML_Writer;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.Game;
+import main.game.core.game.Game;
 import main.game.logic.macro.travel.EncounterMaster;
 import main.gui.builders.TabBuilder;
 import main.launch.ArcaneVault;
@@ -94,12 +95,12 @@ public class ModelManager {
             newType.setProperty(PROPS.UNIT_POOL, u.getUnits());
             newType.setProperty(PROPS.UNIT_TYPES, u.getUnits());
             newType.setProperty(G_PROPS.NAME, u.toString());
-            newType.setProperty(G_PROPS.TYPE, OBJ_TYPES.FACTIONS.toString());
+            newType.setProperty(G_PROPS.TYPE, DC_TYPE.FACTIONS.toString());
             newType.setImage(u.getImage());
             // newType.setProperty(PROPS.ALLY_FACTIONS, u.getAllyFactions());
             newType.setProperty(G_PROPS.FACTION_GROUP, u.getGroup());
             newType.setProperty(G_PROPS.GROUP, u.getGroup());
-            DataManager.addType(u.toString(), OBJ_TYPES.FACTIONS, newType);
+            DataManager.addType(u.toString(), DC_TYPE.FACTIONS, newType);
 
         }
     }
@@ -118,7 +119,7 @@ public class ModelManager {
         List<String> list = EnumMaster.findEnumConstantNames(type.getOBJ_TYPE_ENUM()
                 .getGroupingKey().getName());
         int index = ListMaster.getIndexString(list, type.getGroupingKey(), true);
-        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.SKILLS) {
+        if (type.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS) {
             if (index > 5) {
                 index--;
             }
@@ -174,7 +175,7 @@ public class ModelManager {
         DefaultMutableTreeNode node = ArcaneVault.getMainBuilder().getSelectedNode();
         String selected = ArcaneVault.getMainBuilder().getSelectedTabName();
 
-        if (ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM() == OBJ_TYPES.ABILS) {
+        if (ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM() == DC_TYPE.ABILS) {
             AE_Manager.saveTreeIntoXML(ArcaneVault.getSelectedType());
         }
         String newName = DialogMaster
@@ -225,13 +226,13 @@ public class ModelManager {
 
     public static void save(OBJ_TYPE obj_type) {
 
-        if (obj_type.isTreeEditType() || obj_type == OBJ_TYPES.ABILS) {
+        if (obj_type.isTreeEditType() || obj_type == DC_TYPE.ABILS) {
             AE_Manager.saveTreesIntoXML();
         }
         if (!auto) {
             checkTypeModifications(obj_type);
         } else {
-            if (obj_type == OBJ_TYPES.CHARS) {
+            if (obj_type == DC_TYPE.CHARS) {
                 XML_Reader.checkHeroesAdded();
             }
         }
@@ -246,34 +247,34 @@ public class ModelManager {
     }
 
     private static void generateNewArmorParams() {
-        for (ObjType type : DataManager.getTypes(OBJ_TYPES.ARMOR)) {
+        for (ObjType type : DataManager.getTypes(DC_TYPE.ARMOR)) {
             ContentGenerator.generateArmorParams(type);
         }
     }
 
     private static void updateSpells() {
-        for (ObjType type : DataManager.getTypes(OBJ_TYPES.SPELLS)) {
+        for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
             ContentGenerator.generateSpellParams(type);
         }
     }
 
     private static void generateNewWeaponParams() {
-        for (ObjType type : DataManager.getTypes(OBJ_TYPES.WEAPONS)) {
+        for (ObjType type : DataManager.getTypes(DC_TYPE.WEAPONS)) {
             ContentGenerator.generateWeaponParams(type);
         }
     }
 
     private static void checkTypeModifications(OBJ_TYPE obj_type) {
-        if (obj_type == OBJ_TYPES.CHARS || obj_type == OBJ_TYPES.BF_OBJ
-                || obj_type == OBJ_TYPES.UNITS) {
+        if (obj_type == DC_TYPE.CHARS || obj_type == DC_TYPE.BF_OBJ
+                || obj_type == DC_TYPE.UNITS) {
 
-            if (obj_type == OBJ_TYPES.CHARS || obj_type == OBJ_TYPES.UNITS) {
+            if (obj_type == DC_TYPE.CHARS || obj_type == DC_TYPE.UNITS) {
                 for (ObjType type : DataManager.getTypes(obj_type)) {
                     DC_ContentManager.addDefaultValues(type, false);
                 }
             }
 
-            if (obj_type == OBJ_TYPES.CHARS) {
+            if (obj_type == DC_TYPE.CHARS) {
                 for (ObjType type : DataManager.getTypes(obj_type)) {
                     // ContentGenerator.generateArmorPerDamageType(type, null);
                     if (type.getGroup().equals("Background")) {
@@ -284,51 +285,51 @@ public class ModelManager {
         }
         checkPrincipleProcessing(obj_type);
 
-        if (obj_type == OBJ_TYPES.PARTY) {
+        if (obj_type == DC_TYPE.PARTY) {
             ContentGenerator.adjustParties();
         }
-        if (obj_type == OBJ_TYPES.SPELLS) {
+        if (obj_type == DC_TYPE.SPELLS) {
             updateSpells();
         }
-        if (obj_type == OBJ_TYPES.ARMOR) {
+        if (obj_type == DC_TYPE.ARMOR) {
             generateNewArmorParams();
-        } else if (obj_type == OBJ_TYPES.WEAPONS) {
+        } else if (obj_type == DC_TYPE.WEAPONS) {
             generateNewWeaponParams();
-        } else if (obj_type == OBJ_TYPES.DEITIES) {
+        } else if (obj_type == DC_TYPE.DEITIES) {
             for (ObjType type : DataManager.getTypes(obj_type))
             // if (type.getGroup().equals("Background"))
             {
                 PrincipleMaster.initPrincipleIdentification(type);
             }
-        } else if (obj_type == OBJ_TYPES.ENCOUNTERS) {
+        } else if (obj_type == DC_TYPE.ENCOUNTERS) {
             for (ObjType type : DataManager.getTypes(obj_type)) {
                 type.setParam(PARAMS.POWER_MINIMUM, EncounterMaster.getMinimumPower(type));
                 type.setParam(PARAMS.POWER_BASE, EncounterMaster.getPower(type, null));
                 type.setParam(PARAMS.POWER_MAXIMUM, EncounterMaster.getPower(type, false));
             }
-        } else if (obj_type == OBJ_TYPES.ACTIONS) {
+        } else if (obj_type == DC_TYPE.ACTIONS) {
             for (ObjType type : DataManager.getTypes(obj_type)) {
                 ActionGenerator.addDefaultSneakModsToAction(type);
             }
-        } else if (obj_type == OBJ_TYPES.SKILLS) {
+        } else if (obj_type == DC_TYPE.SKILLS) {
             if (isSkillSdAutoAdjusting()) {
                 autoAdjustSkills();
             }
 
-        } else if (obj_type == OBJ_TYPES.CLASSES)
+        } else if (obj_type == DC_TYPE.CLASSES)
         // if (isClassAutoAdjustingOn())
         {
             autoAdjustClasses();
         }
 
-        if (obj_type == OBJ_TYPES.ACTIONS) {
+        if (obj_type == DC_TYPE.ACTIONS) {
             for (ObjType type : DataManager.getTypes(obj_type)) {
-                if (type.checkProperty(G_PROPS.ACTION_TYPE, ACTION_TYPE.STANDARD_ATTACK.toString())) {
+                if (type.checkProperty(G_PROPS.ACTION_TYPE, ActionEnums.ACTION_TYPE.STANDARD_ATTACK.toString())) {
                     DC_ContentManager.addDefaultValues(type, false);
                 }
             }
         }
-        if (obj_type == OBJ_TYPES.SPELLS) {
+        if (obj_type == DC_TYPE.SPELLS) {
             for (ObjType type : DataManager.getTypes(obj_type))
             // if (type.getIntParam(PARAMS.XP_COST) == 0)
             {
@@ -342,23 +343,23 @@ public class ModelManager {
             }
         }
 
-        if (obj_type == OBJ_TYPES.WEAPONS || obj_type == OBJ_TYPES.ARMOR) {
+        if (obj_type == DC_TYPE.WEAPONS || obj_type == DC_TYPE.ARMOR) {
             for (ObjType type : DataManager.getTypes(obj_type)) {
                 DC_ContentManager.addDefaultValues(type, false);
             }
         }
-        if (obj_type == OBJ_TYPES.BF_OBJ) {
+        if (obj_type == DC_TYPE.BF_OBJ) {
             generateBfObjProps();
         }
-        if (obj_type.isTreeEditType() || obj_type == OBJ_TYPES.CHARS || obj_type == OBJ_TYPES.UNITS) {
+        if (obj_type.isTreeEditType() || obj_type == DC_TYPE.CHARS || obj_type == DC_TYPE.UNITS) {
 
-            if (obj_type == OBJ_TYPES.CHARS) {
+            if (obj_type == DC_TYPE.CHARS) {
                 // XML_Reader.checkHeroesAdded();
             }
 
             for (ObjType type : DataManager.getTypes(obj_type)) {
 
-                if (obj_type == OBJ_TYPES.CHARS) {
+                if (obj_type == DC_TYPE.CHARS) {
                     if (!type.isInitialized()) {
                         Game.game.initType(type);
                     }
@@ -370,13 +371,13 @@ public class ModelManager {
                     }
                     if (ArcaneVault.isSimulationOn()) {
                         int girth = 0;
-                        DC_HeroObj unit = SimulationManager.getUnit(type);
+                        Unit unit = SimulationManager.getUnit(type);
                         RACE race = unit.getRace();
                         if (race != null) {
                             switch (race) {
                                 case DEMON:
                                     girth = 200;
-                                    if (unit.getBackground() == BACKGROUND.INFERI_WARPBORN) {
+                                    if (unit.getBackground() == HeroEnums.BACKGROUND.INFERI_WARPBORN) {
                                         girth = 80;
                                     }
                                     break;
@@ -407,7 +408,7 @@ public class ModelManager {
                             }
 
                         } else {
-                            girth += DataManager.getType(HeroCreator.BASE_HERO, OBJ_TYPES.CHARS)
+                            girth += DataManager.getType(HeroCreator.BASE_HERO, DC_TYPE.CHARS)
                                     .getIntParam(PARAMS.GIRTH);
                         }
                         if (!type.getName().equals(HeroCreator.BASE_HERO)) {
@@ -434,9 +435,9 @@ public class ModelManager {
     }
 
     private static void checkPrincipleProcessing(OBJ_TYPE obj_type) {
-        if (obj_type == OBJ_TYPES.DEITIES || obj_type == OBJ_TYPES.SKILLS
-                || obj_type == OBJ_TYPES.CLASSES || obj_type == OBJ_TYPES.CHARS
-                || obj_type == OBJ_TYPES.UNITS) {
+        if (obj_type == DC_TYPE.DEITIES || obj_type == DC_TYPE.SKILLS
+                || obj_type == DC_TYPE.CLASSES || obj_type == DC_TYPE.CHARS
+                || obj_type == DC_TYPE.UNITS) {
             for (ObjType type : DataManager.getTypes(obj_type)) {
                 PrincipleMaster.processPrincipleValues(type);
             }
@@ -445,7 +446,7 @@ public class ModelManager {
     }
 
     private static void generateBfObjProps() {
-        for (ObjType t : DataManager.getTypes(OBJ_TYPES.BF_OBJ)) {
+        for (ObjType t : DataManager.getTypes(DC_TYPE.BF_OBJ)) {
             BfObjPropGenerator.generateBfObjProps(t);
         }
     }
@@ -461,7 +462,7 @@ public class ModelManager {
         classId = 0;
         idSet.clear();
         // getChildren(), parentCirlce
-        for (ObjType type : DataManager.getTypes(OBJ_TYPES.CLASSES)) {
+        for (ObjType type : DataManager.getTypes(DC_TYPE.CLASSES)) {
             autoAdjustClass(type);
         }
     }
@@ -521,7 +522,7 @@ public class ModelManager {
         ObjType parent = DataManager.getParent(type);
         if (parent == null) {
             parent = DataManager.getType(type.getProperty(PROPS.BASE_CLASSES_ONE),
-                    OBJ_TYPES.CLASSES);
+                    DC_TYPE.CLASSES);
         }
         if (parent != null) {
             autoAdjustClass(parent);
@@ -570,7 +571,7 @@ public class ModelManager {
     }
 
     public static void autoAdjustSkills() {
-        for (ObjType type : DataManager.getTypes(OBJ_TYPES.SKILLS)) {
+        for (ObjType type : DataManager.getTypes(DC_TYPE.SKILLS)) {
             autoAdjustSkill(type);
         }
     }
@@ -690,7 +691,7 @@ public class ModelManager {
     }
 
     public static void save() {
-        if (ArcaneVault.getSelectedOBJ_TYPE() == OBJ_TYPES.ABILS) {
+        if (ArcaneVault.getSelectedOBJ_TYPE() == DC_TYPE.ABILS) {
             VariableManager.setVariableInputRequesting(JOptionPane.showConfirmDialog(null,
                     "Do you want to set variables manually?") == JOptionPane.YES_OPTION);
         }
@@ -715,7 +716,7 @@ public class ModelManager {
     }
 
     private static void removeType() {
-        if (ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM() == OBJ_TYPES.ABILS) {
+        if (ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM() == DC_TYPE.ABILS) {
             AE_Manager.typeRemoved(ArcaneVault.getSelectedType());
         }
         ArcaneVault.getMainBuilder().getTreeBuilder().remove();
@@ -769,7 +770,7 @@ public class ModelManager {
                 for (String type : XML_Reader.getTypeMaps().keySet()) {
                     OBJ_TYPE objType = ContentManager.getOBJ_TYPE(type);
                     if (auto) {
-                        if (objType == OBJ_TYPES.PARTY) {
+                        if (objType == DC_TYPE.PARTY) {
                             continue;
                         }
                     }
@@ -852,7 +853,7 @@ public class ModelManager {
     public static void addToWorkspace(boolean alt) {
         ObjType selectedType = ArcaneVault.getSelectedType();
         if (alt) {
-            selectedType.setWorkspaceGroup(WORKSPACE_GROUP.FOCUS);
+            selectedType.setWorkspaceGroup(MetaEnums.WORKSPACE_GROUP.FOCUS);
         }
         boolean result = ArcaneVault.getWorkspaceManager().addTypeToActiveWorkspace(selectedType);
         if (!result) {

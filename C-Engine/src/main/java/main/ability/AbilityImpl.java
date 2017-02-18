@@ -8,7 +8,7 @@ import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
-import main.game.event.Event;
+import main.game.logic.event.Event;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

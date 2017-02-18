@@ -3,7 +3,7 @@ package main.elements.conditions.standard;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 
 public class OwnershipCondition extends ConditionImpl {
 

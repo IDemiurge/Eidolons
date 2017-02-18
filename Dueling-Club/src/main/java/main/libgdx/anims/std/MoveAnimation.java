@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import javafx.util.Pair;
 import main.ability.effects.MoveEffect;
 import main.entity.Entity;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.ai.tools.target.EffectMaster;
+import main.entity.obj.unit.Unit;
+import main.game.ai.tools.target.EffectFinder;
 import main.game.battlefield.Coordinates;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.particles.EmitterActor;
@@ -33,16 +33,16 @@ public class MoveAnimation extends ActionAnim {
 
     static boolean on = false;
     private MoveToAction action;
-    private DC_HeroObj unit;
+    private Unit unit;
 
     public MoveAnimation(Entity active, AnimData params) {
         super(active, params);
-        if (!ListMaster.isNotEmpty(EffectMaster.getEffectsOfClass(getActive(),
+        if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
                 MoveEffect.class))) // for teleports, telekinesis etc
         {
-            unit = (DC_HeroObj) getRef().getTargetObj();
+            unit = (Unit) getRef().getTargetObj();
         }
-        unit = (DC_HeroObj) getRef().getSourceObj();
+        unit = (Unit) getRef().getSourceObj();
     }
 
     public static boolean isOn() {
@@ -123,7 +123,7 @@ public class MoveAnimation extends ActionAnim {
 //         MoveEffect.class))) // for teleports, telekinesis etc
 //            return getRef().getTargetObj().getCoordinates();
 //        return super.getOriginCoordinates();
-        MoveEffect e = (MoveEffect) EffectMaster.getFirstEffectOfClass(getActive(),
+        MoveEffect e = (MoveEffect) EffectFinder.getFirstEffectOfClass(getActive(),
                 MoveEffect.class);
         return e.getOrigin();
 
@@ -133,7 +133,7 @@ public class MoveAnimation extends ActionAnim {
     public Coordinates getDestinationCoordinates() {
 
 
-        MoveEffect e = (MoveEffect) EffectMaster.getFirstEffectOfClass(getActive(),
+        MoveEffect e = (MoveEffect) EffectFinder.getFirstEffectOfClass(getActive(),
                 MoveEffect.class); //TODO could be 2+?
         return e.getDestination();
 //            if (e.getDirection() != null) {

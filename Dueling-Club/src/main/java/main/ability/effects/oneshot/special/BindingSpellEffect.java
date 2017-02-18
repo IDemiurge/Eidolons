@@ -4,13 +4,13 @@ import main.ability.effects.DC_Effect;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.ability.effects.continuous.CustomTargetEffect;
-import main.content.CONTENT_CONSTS.SPELL_TAGS;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.SpellEnums;
+import main.content.values.properties.G_PROPS;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.targeting.FixedTargeting;
 import main.entity.Ref.KEYS;
-import main.game.event.Event;
+import main.game.logic.event.Event;
 import main.system.entity.ConditionMaster;
 
 public class BindingSpellEffect extends DC_Effect {
@@ -41,7 +41,7 @@ public class BindingSpellEffect extends DC_Effect {
         effects = new Effects(EFFECT);
         Event.STANDARD_EVENT_TYPE event_type = Event.STANDARD_EVENT_TYPE.SPELL_RESOLVED;
         conditions.add(ConditionMaster.getPropCondition("EVENT_SPELL",
-                G_PROPS.SPELL_TAGS, SPELL_TAGS.MIND_AFFECTING.name()));
+                G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.MIND_AFFECTING.name()));
         return false;
     }
 }

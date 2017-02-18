@@ -3,7 +3,7 @@ package main.game.ai;
 import main.client.cc.logic.party.PartyObj;
 import main.data.XStack;
 import main.entity.obj.MicroObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI.AI_BEHAVIOR_MODE;
 import main.game.ai.advanced.behavior.BehaviorMaster;
 import main.game.ai.advanced.behavior.Patrol;
@@ -17,8 +17,8 @@ import main.system.auxiliary.data.ListMaster;
 import java.util.*;
 
 public class GroupAI {
-    private DC_HeroObj leader;
-    private List<DC_HeroObj> members;
+    private Unit leader;
+    private List<Unit> members;
     private PartyObj party;
     private Wave creepGroup;
     private ENGAGEMENT_LEVEL engagementLevel;
@@ -29,8 +29,8 @@ public class GroupAI {
     private List<MapBlock> permittedBlocks;
     private int wanderDistance;
     private List<Coordinates> knownEnemyCoordinates;
-    private Map<DC_HeroObj, Coordinates> knownEnemyCoordinatesMap;
-    private Map<DC_HeroObj, List<Coordinates>> suspectedEnemyCoordinatesMap;
+    private Map<Unit, Coordinates> knownEnemyCoordinatesMap;
+    private Map<Unit, List<Coordinates>> suspectedEnemyCoordinatesMap;
     private Coordinates originCoordinates;
     private Stack<Coordinates> wanderStepCoordinateStack;
     private boolean clockwisePatrol;
@@ -45,7 +45,7 @@ public class GroupAI {
         }
         this.party = creepGroup.getParty();
         leader = party.getLeader();
-        for (DC_HeroObj m : party.getMembers()) {
+        for (Unit m : party.getMembers()) {
             add(m);
         }
 
@@ -62,8 +62,8 @@ public class GroupAI {
     }
 
     public void add(MicroObj obj) {
-        if (obj instanceof DC_HeroObj) {
-            DC_HeroObj unit = (DC_HeroObj) obj;
+        if (obj instanceof Unit) {
+            Unit unit = (Unit) obj;
             if (leader == null) {
                 leader = unit;
             }
@@ -80,9 +80,9 @@ public class GroupAI {
 
     }
 
-    public DC_HeroObj getLeader() {
+    public Unit getLeader() {
         if (!leader.canAct()) {
-            for (DC_HeroObj member : getMembers()) {
+            for (Unit member : getMembers()) {
                 if (member.canAct()) {
                     leader = member;
                 }
@@ -91,7 +91,7 @@ public class GroupAI {
         return leader;
     }
 
-    public void setLeader(DC_HeroObj leader) {
+    public void setLeader(Unit leader) {
         this.leader = leader;
     }
 
@@ -110,7 +110,7 @@ public class GroupAI {
         return wanderStepCoordinateStack;
     }
 
-    public List<DC_HeroObj> getMembers() {
+    public List<Unit> getMembers() {
         return members;
     }
 
@@ -196,11 +196,11 @@ public class GroupAI {
         return knownEnemyCoordinates;
     }
 
-    public Map<DC_HeroObj, Coordinates> getKnownEnemyCoordinatesMap() {
+    public Map<Unit, Coordinates> getKnownEnemyCoordinatesMap() {
         return knownEnemyCoordinatesMap;
     }
 
-    public void setKnownEnemyCoordinatesMap(Map<DC_HeroObj, Coordinates> knownEnemyCoordinatesMap) {
+    public void setKnownEnemyCoordinatesMap(Map<Unit, Coordinates> knownEnemyCoordinatesMap) {
         this.knownEnemyCoordinatesMap = knownEnemyCoordinatesMap;
     }
 
@@ -229,12 +229,12 @@ public class GroupAI {
         this.backAndForth = backAndForth;
     }
 
-    public Map<DC_HeroObj, List<Coordinates>> getSuspectedEnemyCoordinatesMap() {
+    public Map<Unit, List<Coordinates>> getSuspectedEnemyCoordinatesMap() {
         return suspectedEnemyCoordinatesMap;
     }
 
     public void setSuspectedEnemyCoordinatesMap(
-            Map<DC_HeroObj, List<Coordinates>> suspectedEnemyCoordinatesMap) {
+            Map<Unit, List<Coordinates>> suspectedEnemyCoordinatesMap) {
         this.suspectedEnemyCoordinatesMap = suspectedEnemyCoordinatesMap;
     }
 

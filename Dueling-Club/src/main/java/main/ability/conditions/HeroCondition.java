@@ -1,13 +1,13 @@
 package main.ability.conditions;
 
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
+import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
 import main.elements.conditions.ConditionImpl;
 import main.elements.conditions.StringComparison;
 
 public class HeroCondition extends ConditionImpl {
 
-    private final String hero = OBJ_TYPES.CHARS.getName();
+    private final String hero = DC_TYPE.CHARS.getName();
     private StringComparison c;
 
     public HeroCondition(String obj_ref) {

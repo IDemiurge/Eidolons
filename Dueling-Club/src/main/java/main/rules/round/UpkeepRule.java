@@ -9,15 +9,15 @@ import main.ability.effects.oneshot.common.OwnershipChangeEffect;
 import main.ability.effects.oneshot.special.InstantDeathEffect;
 import main.ability.effects.special.BehaviorModeEffect;
 import main.ability.effects.special.ImmobilizeEffect;
-import main.content.CONTENT_CONSTS.BEHAVIOR_MODE;
 import main.content.*;
-import main.content.parameters.PARAMETER;
+import main.content.enums.system.AiEnums;
+import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
@@ -60,15 +60,15 @@ public class UpkeepRule extends RoundRule {
     }
 
     @Override
-    public boolean check(DC_HeroObj unit) {
+    public boolean check(Unit unit) {
         return true;
     }
 
     @Override
-    public void apply(DC_HeroObj unit) {
+    public void apply(Unit unit) {
         // TODO getOrCreate all buffs/units with this SOURCE /summoner
         List<Obj> payObjects = new LinkedList<>();
-        for (DC_HeroObj u : game.getUnits()) {
+        for (Unit u : game.getUnits()) {
             if (u.getRef().getObj(KEYS.SUMMONER) == unit) {
                 if (checkHasUpkeep(u)) {
                     payObjects.add(u);
@@ -76,7 +76,7 @@ public class UpkeepRule extends RoundRule {
             }
         }
 
-        for (Obj buff : game.getObjects(OBJ_TYPES.BUFFS)) {
+        for (Obj buff : game.getObjects(DC_TYPE.BUFFS)) {
             try {
                 Obj spell = (Obj) buff.getRef().getActive();
                 if (spell == null) {
@@ -117,7 +117,7 @@ public class UpkeepRule extends RoundRule {
                 payObj.getProperty(PROPS.UPKEEP_FAIL_ACTION));
     }
 
-    private boolean checkCanUpkeep(DC_HeroObj unit, Obj payObj) {
+    private boolean checkCanUpkeep(Unit unit, Obj payObj) {
         if (unit.isDead())
             // if (payObj.checkBool(DISPEL_ON_DEATH)) //only those with upkeep,
             // never fear!
@@ -142,7 +142,7 @@ public class UpkeepRule extends RoundRule {
         return true;
     }
 
-    public void subtractUpkeep(DC_HeroObj unit, Obj payObj) {
+    public void subtractUpkeep(Unit unit, Obj payObj) {
         for (PARAMETER p : ValuePages.UPKEEP_PARAMETERS) {
             PARAMETER payParam = DC_ContentManager.getPayParamFromUpkeep(p);
             int amount = new Formula(payObj.getParam(p)).getAppendedByModifier(
@@ -167,10 +167,10 @@ public class UpkeepRule extends RoundRule {
         switch (ufa) {
             case BERSERK:
                 return new AddBuffEffect(new BehaviorModeEffect(
-                        BEHAVIOR_MODE.BERSERK));
+                        AiEnums.BEHAVIOR_MODE.BERSERK));
             case CONFUSION:
                 return new AddBuffEffect(new BehaviorModeEffect(
-                        BEHAVIOR_MODE.CONFUSED));
+                        AiEnums.BEHAVIOR_MODE.CONFUSED));
             case DEATH:
                 return new InstantDeathEffect(false, false);
             case STASIS:

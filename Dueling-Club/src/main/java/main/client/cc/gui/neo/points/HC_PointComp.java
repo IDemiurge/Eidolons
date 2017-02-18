@@ -4,9 +4,9 @@ import main.client.cc.CharacterCreator;
 import main.client.cc.HC_Master;
 import main.content.ContentManager;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.components.panels.page.info.element.ParamElement;
 import main.swing.components.panels.page.info.element.ValueTextComp;
@@ -39,23 +39,23 @@ public class HC_PointComp extends G_Panel implements MouseListener {
 
     protected int arrowWidth;
     protected boolean editable;
-    protected DC_HeroObj hero;
+    protected Unit hero;
     protected PARAMETER param;
     protected GraphicComponent lock;
     protected GraphicComponent icon;
     boolean locked;
 
-    public HC_PointComp(boolean editable, final DC_HeroObj hero, ObjType buffer,
+    public HC_PointComp(boolean editable, final Unit hero, ObjType buffer,
                         final PARAMETER param, PARAMETER pool, VISUALS V) {
         this(editable, hero, buffer, param, pool, V, false);
     }
 
-    public HC_PointComp(boolean editable, final DC_HeroObj hero, ObjType buffer,
+    public HC_PointComp(boolean editable, final Unit hero, ObjType buffer,
                         final PARAMETER param, PARAMETER pool) {
         this(editable, hero, buffer, param, pool, VALUE_BOX);
     }
 
-    public HC_PointComp(boolean editable, final DC_HeroObj hero, ObjType buffer,
+    public HC_PointComp(boolean editable, final Unit hero, ObjType buffer,
                         final PARAMETER param, PARAMETER pool, VISUALS V, boolean principle) {
         arrowWidth = STD_COMP_IMAGES.ARROW_4_UP.getImg().getWidth(null);
         this.hero = hero;
@@ -87,7 +87,7 @@ public class HC_PointComp extends G_Panel implements MouseListener {
         panelSize = V.getSize();
     }
 
-    protected PointSpinnerModel createModel(final DC_HeroObj hero, ObjType buffer,
+    protected PointSpinnerModel createModel(final Unit hero, ObjType buffer,
                                             final PARAMETER param, PARAMETER pool) {
         return new PointSpinnerModel(textComp, hero, buffer, param, pool);
     }
@@ -335,11 +335,11 @@ public class HC_PointComp extends G_Panel implements MouseListener {
 
     }
 
-    public DC_HeroObj getHero() {
+    public Unit getHero() {
         return hero;
     }
 
-    public void setHero(DC_HeroObj hero) {
+    public void setHero(Unit hero) {
         this.hero = hero;
     }
 

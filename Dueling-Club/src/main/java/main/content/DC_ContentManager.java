@@ -3,11 +3,20 @@ package main.content;
 import main.client.cc.gui.neo.tree.view.ClassTreeView;
 import main.client.cc.gui.neo.tree.view.SkillTreeView;
 import main.client.dc.Launcher;
-import main.content.CONTENT_CONSTS.*;
-import main.content.parameters.*;
-import main.content.properties.G_PROPS;
-import main.content.properties.MACRO_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.ASPECT;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.HeroEnums.CLASS_GROUP;
+import main.content.enums.entity.HeroEnums.CLASS_TYPE;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
+import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
+import main.content.enums.entity.SkillEnums;
+import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.values.parameters.*;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.MACRO_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.Deity;
 import main.entity.Entity;
@@ -15,9 +24,9 @@ import main.entity.Ref;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.Obj;
 import main.entity.obj.attach.DC_FeatObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.rules.mechanics.CoatingRule;
 import main.swing.generic.components.editors.EDITOR;
 import main.system.auxiliary.EnumMaster;
@@ -58,8 +67,8 @@ public class DC_ContentManager extends ContentManager {
             PARAMS.MOVE_AP_PENALTY, PARAMS.MOVE_STA_PENALTY,
 
     };
-    private static final OBJ_TYPES[] BF_OBJ_TYPES = {OBJ_TYPES.CHARS, OBJ_TYPES.BF_OBJ,
-            OBJ_TYPES.UNITS};
+    private static final DC_TYPE[] BF_OBJ_TYPES = {DC_TYPE.CHARS, DC_TYPE.BF_OBJ,
+            DC_TYPE.UNITS};
     private static final Integer[] defaultUnitParams = null;
     // dynamic will be sorted out if need be
 
@@ -197,7 +206,7 @@ public class DC_ContentManager extends ContentManager {
     }
 
     public static void initTypeDynamicValues() {
-        for (ObjType t : DataManager.getTypes(OBJ_TYPES.CHARS)) {
+        for (ObjType t : DataManager.getTypes(DC_TYPE.CHARS)) {
             if (!t.getGroup().equals(StringMaster.BACKGROUND)) {
                 continue;
             }
@@ -273,7 +282,7 @@ public class DC_ContentManager extends ContentManager {
         if (deity != null) {
             return deity;
         }
-        ObjType type = DataManager.getType(property, OBJ_TYPES.DEITIES);
+        ObjType type = DataManager.getType(property, DC_TYPE.DEITIES);
         if (type == null) {
             return getDefaultDeity();
         }
@@ -341,8 +350,8 @@ public class DC_ContentManager extends ContentManager {
         // valueNames.remove(v.getName());
         // }
         try {
-            if (OBJ_TYPES.getCode(objType) < excludedValues.length) {
-                for (VALUE v : excludedValues[OBJ_TYPES.getCode(objType)]) {
+            if (DC_TYPE.getCode(objType) < excludedValues.length) {
+                for (VALUE v : excludedValues[DC_TYPE.getCode(objType)]) {
                     valueNames.remove(v.getName());
                 }
             }
@@ -367,7 +376,7 @@ public class DC_ContentManager extends ContentManager {
         return FEAT_MODIFYING_PARAMS;
     }
 
-    public static OBJ_TYPES[] getBF_TYPES() {
+    public static DC_TYPE[] getBF_TYPES() {
         return BF_OBJ_TYPES;
     }
 
@@ -542,17 +551,17 @@ public class DC_ContentManager extends ContentManager {
         }
         switch (aspect) {
             case ARCANUM:
-                return DAMAGE_TYPE.ARCANE;
+                return GenericEnums.DAMAGE_TYPE.ARCANE;
             case CHAOS:
-                return DAMAGE_TYPE.CHAOS;
+                return GenericEnums.DAMAGE_TYPE.CHAOS;
             case DARKNESS:
-                return DAMAGE_TYPE.SHADOW;
+                return GenericEnums.DAMAGE_TYPE.SHADOW;
             case DEATH:
-                return DAMAGE_TYPE.DEATH;
+                return GenericEnums.DAMAGE_TYPE.DEATH;
             case LIFE:
                 break;
             case LIGHT:
-                return DAMAGE_TYPE.HOLY;
+                return GenericEnums.DAMAGE_TYPE.HOLY;
             case NEUTRAL:
                 break;
             default:
@@ -651,13 +660,13 @@ public class DC_ContentManager extends ContentManager {
 
         int i = 0;
         int j = 0;
-        for (WEAPON_SIZE w : WEAPON_SIZE.values()) {
+        for (WEAPON_SIZE w : ItemEnums.WEAPON_SIZE.values()) {
             if (weaponSize == w) {
                 break;
             }
             i++;
         }
-        for (WEAPON_SIZE w : WEAPON_SIZE.values()) {
+        for (WEAPON_SIZE w : ItemEnums.WEAPON_SIZE.values()) {
             if (weaponSize2 == w) {
                 break;
             }
@@ -695,7 +704,7 @@ public class DC_ContentManager extends ContentManager {
     }
 
     public static ObjType getBaseClassType(CLASS_GROUP classGroup) {
-        return DataManager.getType(getBaseClassTypeName(classGroup), OBJ_TYPES.CLASSES);
+        return DataManager.getType(getBaseClassTypeName(classGroup), DC_TYPE.CLASSES);
     }
 
     private static String getBaseClassTypeName(CLASS_GROUP classGroup) {
@@ -727,13 +736,13 @@ public class DC_ContentManager extends ContentManager {
         return classGroup.getName();
     }
 
-    public static PARAMETER getHighestMastery(DC_HeroObj hero) {
+    public static PARAMETER getHighestMastery(Unit hero) {
         List<PARAMETER> masteries = DC_MathManager.getUnlockedMasteries(hero);
         sortMasteries(hero, masteries);
         return masteries.get(0);
     }
 
-    public static void sortMasteries(final DC_HeroObj hero, List<PARAMETER> params) {
+    public static void sortMasteries(final Unit hero, List<PARAMETER> params) {
         Collections.sort(params, new Comparator<PARAMETER>() {
             public int compare(PARAMETER o1, PARAMETER o2) {
                 Integer v1 = hero.getIntParam(o1);
@@ -779,14 +788,14 @@ public class DC_ContentManager extends ContentManager {
         return list;
     }
 
-    public static CLASS_GROUP getMainClassGroup(DC_HeroObj hero) {
+    public static CLASS_GROUP getMainClassGroup(Unit hero) {
         return new EnumMaster<CLASS_GROUP>().retrieveEnumConst(CLASS_GROUP.class, hero
                 .getProperty(PROPS.FIRST_CLASS));
 
     }
 
     public static List<ObjType> getMulticlassTypes() {
-        return DataManager.getTypesSubGroup(OBJ_TYPES.CLASSES, "Multiclass");
+        return DataManager.getTypesSubGroup(DC_TYPE.CLASSES, "Multiclass");
     }
 
     public static boolean isMulticlass(ObjType type) {
@@ -815,7 +824,7 @@ public class DC_ContentManager extends ContentManager {
     public static List<String> getStandardDeities() {
         // Collections.sort(list,new
         // EnumMaster().getEnumSorter(STD_DEITY_TYPE_NAMES ))
-        return DataManager.getTypesGroupNames(OBJ_TYPES.DEITIES, "Playable");
+        return DataManager.getTypesGroupNames(DC_TYPE.DEITIES, "Playable");
     }
 
     public static String getStandardDeitiesString(String separator) {
@@ -858,7 +867,7 @@ public class DC_ContentManager extends ContentManager {
 
     }
 
-    public static DC_WeaponObj getDefaultWeapon(DC_HeroObj heroObj) {
+    public static DC_WeaponObj getDefaultWeapon(Unit heroObj) {
         return new DC_WeaponObj(DataManager.getType(DEFAULT_WEAPON), heroObj);
     }
 
@@ -867,7 +876,7 @@ public class DC_ContentManager extends ContentManager {
             return focusMasteries;
         }
         focusMasteries = "";
-        for (MASTERY m : SkillTreeView.FOCUS_WORKSPACE) {
+        for (SkillEnums.MASTERY m : SkillTreeView.FOCUS_WORKSPACE) {
             focusMasteries += StringMaster.getWellFormattedString(m.toString()) + ";";
         }
         return focusMasteries;
@@ -887,8 +896,8 @@ public class DC_ContentManager extends ContentManager {
     public static List<VALUE> getArmorGradeMultiParams() {
         List<VALUE> list = new LinkedList<>();
         list.add(PARAMS.ARMOR);
-        for (DAMAGE_TYPE dmg_type : DAMAGE_TYPE.values()) {
-            if (dmg_type != DAMAGE_TYPE.POISON && dmg_type != DAMAGE_TYPE.PHYSICAL) {
+        for (DAMAGE_TYPE dmg_type : GenericEnums.DAMAGE_TYPE.values()) {
+            if (dmg_type != GenericEnums.DAMAGE_TYPE.POISON && dmg_type != GenericEnums.DAMAGE_TYPE.PHYSICAL) {
                 if (dmg_type.isNatural() || !dmg_type.isMagical()) {
                     list.add(new MultiParameter(" / ", getArmorParamForDmgType(dmg_type),
                             getArmorSelfDamageParamForDmgType(dmg_type)));

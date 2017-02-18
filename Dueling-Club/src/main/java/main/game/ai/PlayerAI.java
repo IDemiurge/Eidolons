@@ -1,6 +1,7 @@
 package main.game.ai;
 
-import main.content.CONTENT_CONSTS.PLAYER_AI_TYPE;
+import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
+import main.content.enums.system.AiEnums;
 
 public class PlayerAI {
     private PLAYER_AI_TYPE type;
@@ -21,10 +22,10 @@ public class PlayerAI {
     public void resetSituation() {
         // set STALLING by default and at the start of each round, then
         // engage() with visible attacks
-        if (type == PLAYER_AI_TYPE.DEFENSIVE) {
+        if (type == AiEnums.PLAYER_AI_TYPE.DEFENSIVE) {
             situation = SITUATION.STALLING;
         }
-        if (type == PLAYER_AI_TYPE.BRUTE) {
+        if (type == AiEnums.PLAYER_AI_TYPE.BRUTE) {
             situation = SITUATION.ENGAGED; // brute!
         } else {
             situation = SITUATION.PREPARING;
@@ -35,7 +36,7 @@ public class PlayerAI {
         // check melee
         // check reinforcements for Stalling
         // check ranged threat
-        if (type == PLAYER_AI_TYPE.BRUTE) {
+        if (type == AiEnums.PLAYER_AI_TYPE.BRUTE) {
             situation = SITUATION.ENGAGED; // brute!
         } else {
             situation = SITUATION.PREPARING;

@@ -1,6 +1,6 @@
 package main.client.cc.gui.misc;
 
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.system.graphics.ColorManager;

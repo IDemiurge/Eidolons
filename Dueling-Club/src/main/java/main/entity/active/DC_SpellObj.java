@@ -7,14 +7,18 @@ import main.ability.effects.Effect.SPELL_MANIPULATION;
 import main.client.cc.logic.HeroAnalyzer;
 import main.client.cc.logic.spells.DivinationMaster;
 import main.client.cc.logic.spells.SpellUpgradeMaster;
-import main.content.CONTENT_CONSTS;
-import main.content.CONTENT_CONSTS.*;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.SpellEnums;
+import main.content.enums.entity.SpellEnums.SPELL_GROUP;
+import main.content.enums.entity.SpellEnums.SPELL_POOL;
+import main.content.enums.entity.SpellEnums.SPELL_TYPE;
+import main.content.enums.entity.UnitEnums;
+import main.content.enums.system.MetaEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.elements.conditions.Condition;
 import main.elements.conditions.NotCondition;
 import main.elements.conditions.Requirement;
@@ -22,18 +26,19 @@ import main.elements.conditions.StringComparison;
 import main.elements.costs.Costs;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.entity.obj.unit.DC_UnitObj;
+import main.entity.obj.unit.DC_UnitModel;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
-import main.game.event.Event;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
-import main.game.player.Player;
+import main.game.core.game.DC_Game;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.battle.player.Player;
 import main.rules.magic.ChannelingRule;
-import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.graphics.Sprite;
 import main.system.math.MathMaster;
@@ -46,7 +51,7 @@ import java.util.LinkedList;
 
 public class DC_SpellObj extends DC_ActiveObj {
 
-    private static final SPELL_TYPE DEFAULT_SPELL_TYPE = SPELL_TYPE.SORCERY;
+    private static final SPELL_TYPE DEFAULT_SPELL_TYPE = SpellEnums.SPELL_TYPE.SORCERY;
     private SPELL_TYPE spellType;
     private SPELL_POOL spellPool;
     private SPELL_GROUP spellGroup;
@@ -60,7 +65,7 @@ public class DC_SpellObj extends DC_ActiveObj {
 
     @Override
     public boolean isRangedTouch() {
-        return checkProperty(G_PROPS.SPELL_TAGS, SPELL_TAGS.RANGED_TOUCH.toString());
+        return checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.RANGED_TOUCH.toString());
     }
 
     @Override
@@ -87,20 +92,20 @@ public class DC_SpellObj extends DC_ActiveObj {
 
         for (PARAMETER param : DC_ContentManager.getCostParams()) {
             addCustomMod(
-                    main.content.CONTENT_CONSTS.CUSTOM_VALUE_TEMPLATE.COST_REDUCTION_SPELL_GROUP,
+                    MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_REDUCTION_SPELL_GROUP,
                     getSpellGroup().toString(), param, false);
             addCustomMod(
-                    main.content.CONTENT_CONSTS.CUSTOM_VALUE_TEMPLATE.COST_REDUCTION_SPELL_POOL,
+                    MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_REDUCTION_SPELL_POOL,
                     getSpellPool().toString(), param, false);
             addCustomMod(
-                    main.content.CONTENT_CONSTS.CUSTOM_VALUE_TEMPLATE.COST_REDUCTION_SPELL_TYPE,
+                    MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_REDUCTION_SPELL_TYPE,
                     getSpellType().toString(), param, false);
 
-            addCustomMod(main.content.CONTENT_CONSTS.CUSTOM_VALUE_TEMPLATE.COST_MOD_SPELL_GROUP,
+            addCustomMod(MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_MOD_SPELL_GROUP,
                     getSpellGroup().toString(), param, true);
-            addCustomMod(main.content.CONTENT_CONSTS.CUSTOM_VALUE_TEMPLATE.COST_MOD_SPELL_POOL,
+            addCustomMod(MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_MOD_SPELL_POOL,
                     getSpellPool().toString(), param, true);
-            addCustomMod(main.content.CONTENT_CONSTS.CUSTOM_VALUE_TEMPLATE.COST_MOD_SPELL_TYPE,
+            addCustomMod(MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_MOD_SPELL_TYPE,
                     getSpellType().toString(), param, true);
         }
     }
@@ -229,7 +234,7 @@ public class DC_SpellObj extends DC_ActiveObj {
         } else {
             costs = DC_CostsFactory.getCostsForSpell(this, isSpell());
             costs.getRequirements().add(
-                    new Requirement(new NotCondition(new StatusCheckCondition(STATUS.SILENCED)),
+                    new Requirement(new NotCondition(new StatusCheckCondition(UnitEnums.STATUS.SILENCED)),
                             InfoMaster.SILENCE));
         }
         costs.setActive(this);
@@ -322,7 +327,7 @@ public class DC_SpellObj extends DC_ActiveObj {
 
         super.actionComplete();
 
-        if (getSpellPool() == SPELL_POOL.DIVINED) {
+        if (getSpellPool() == SpellEnums.SPELL_POOL.DIVINED) {
             if (DivinationMaster.rollRemove(this)) {
                 if (getBuff(DivinationMaster.BUFF_FAVORED) != null) {
                     removeBuff(DivinationMaster.BUFF_FAVORED);
@@ -335,7 +340,7 @@ public class DC_SpellObj extends DC_ActiveObj {
     }
 
     private void remove() {
-        ((DC_HeroObj) ownerObj).getSpells().remove(this);
+        ((Unit) ownerObj).getSpells().remove(this);
         ownerObj.removeProperty(getSpellProp(), getName());
 
     }
@@ -398,14 +403,14 @@ public class DC_SpellObj extends DC_ActiveObj {
 
         // TODO spell itself should also have special effects available and
         // separate from unit's!
-        if (ref.getTargetObj() instanceof DC_UnitObj) {
-            ownerObj.applySpecialEffects(case_type, (DC_UnitObj) ref.getTargetObj(), ref);
+        if (ref.getTargetObj() instanceof DC_UnitModel) {
+            ownerObj.applySpecialEffects(case_type, (BattleFieldObject) ref.getTargetObj(), ref);
         }
         if (ref.getGroup() != null) {
             for (Obj unit : ref.getGroup().getObjects()) {
                 if (unit != ref.getTargetObj()) {
-                    if (unit instanceof DC_UnitObj) {
-                        ownerObj.applySpecialEffects(case_type, (DC_UnitObj) unit, ref);
+                    if (unit instanceof DC_UnitModel) {
+                        ownerObj.applySpecialEffects(case_type, (BattleFieldObject) unit, ref);
                     }
                 }
             }
@@ -424,11 +429,11 @@ public class DC_SpellObj extends DC_ActiveObj {
     }
 
     public boolean isInstant() {
-        return checkProperty(G_PROPS.SPELL_TAGS, SPELL_TAGS.INSTANT.toString());
+        return checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.INSTANT.toString());
     }
 
     public boolean isChanneling() {
-        return checkProperty(G_PROPS.SPELL_TAGS, SPELL_TAGS.CHANNELING.toString());
+        return checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.CHANNELING.toString());
         // fix
         // return getIntParam(PARAMS.CHANNELING) > 0;
     }
@@ -455,17 +460,17 @@ public class DC_SpellObj extends DC_ActiveObj {
 
     public boolean isSorcery() {
 
-        return getSpellType() == SPELL_TYPE.SORCERY;
+        return getSpellType() == SpellEnums.SPELL_TYPE.SORCERY;
     }
 
     public boolean isEnchantment() {
 
-        return checkSingleProp(G_PROPS.SPELL_TYPE, CONTENT_CONSTS.SPELL_TYPE.ENCHANTMENT.name());
+        return checkSingleProp(G_PROPS.SPELL_TYPE, SpellEnums.SPELL_TYPE.ENCHANTMENT.name());
     }
 
     public boolean isSummoning() {
 
-        return checkSingleProp(G_PROPS.SPELL_TYPE, CONTENT_CONSTS.SPELL_TYPE.SUMMONING.name());
+        return checkSingleProp(G_PROPS.SPELL_TYPE, SpellEnums.SPELL_TYPE.SUMMONING.name());
     }
 
     // public String getToolTip() {

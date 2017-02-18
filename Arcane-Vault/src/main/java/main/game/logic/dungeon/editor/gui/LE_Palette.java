@@ -5,9 +5,9 @@ import main.client.cc.gui.neo.tabs.HC_TabPanel;
 import main.client.cc.gui.neo.tabs.TabChangeListener;
 import main.content.C_OBJ_TYPE;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
@@ -36,9 +36,9 @@ import java.util.List;
 import java.util.Map;
 
 public class LE_Palette extends G_Panel implements TabChangeListener {
-    static final OBJ_TYPES[] default_palette = {OBJ_TYPES.BF_OBJ, OBJ_TYPES.UNITS,
-            OBJ_TYPES.CHARS, OBJ_TYPES.ENCOUNTERS, OBJ_TYPES.ITEMS, OBJ_TYPES.ARMOR,
-            OBJ_TYPES.WEAPONS, OBJ_TYPES.JEWELRY,};
+    static final DC_TYPE[] default_palette = {DC_TYPE.BF_OBJ, DC_TYPE.UNITS,
+            DC_TYPE.CHARS, DC_TYPE.ENCOUNTERS, DC_TYPE.ITEMS, DC_TYPE.ARMOR,
+            DC_TYPE.WEAPONS, DC_TYPE.JEWELRY,};
     static final C_OBJ_TYPE[] multi_types = {C_OBJ_TYPE.UNITS_CHARS, C_OBJ_TYPE.BF_OBJ,
             C_OBJ_TYPE.ITEMS, C_OBJ_TYPE.SLOT_ITEMS,};
     private static final int PAGE_SIZE = 11;
@@ -65,7 +65,7 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         paletteTabs = new HC_TabPanel();
         paletteTabs.setPageSize(PAGE_SIZE);
         initPalettes();
-        List<OBJ_TYPES> mergedTypes = new LinkedList<>();
+        List<DC_TYPE> mergedTypes = new LinkedList<>();
         // for (OBJ_TYPES type : default_palette) {
         // // G_Panel panel = new G_Panel();
         // // panel.add(new JScrollPane(new PaletteList(DataManager
@@ -123,7 +123,7 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
     }
 
     // true/false/null - grouped, merged, solo
-    Boolean getTypeGrouping(OBJ_TYPES type) {
+    Boolean getTypeGrouping(DC_TYPE type) {
         switch (type) {
             case ENCOUNTERS:
                 return null;
@@ -256,12 +256,12 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         List<PaletteWorkspace> chosenPalettes = new LinkedList<>();
         for (PaletteWorkspace ws : workspaces) {
             ObjType type = new ObjType(ws.getName());
-            type.setOBJ_TYPE_ENUM(OBJ_TYPES.META);
+            type.setOBJ_TYPE_ENUM(DC_TYPE.META);
             type.setImage(imagePath);
             list.add(type.getName());
         }
         List<String> chosen = StringMaster.openContainer(new ListChooser(list,
-                new LinkedList<>(), false, OBJ_TYPES.META).choose());
+                new LinkedList<>(), false, DC_TYPE.META).choose());
         for (String name : chosen) {
             for (PaletteWorkspace p : palettes) {
                 if (p.getName().equals(name)) {
@@ -452,14 +452,14 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         // Units(OBJ_TYPES.UNITS, G_PROPS.DEITY,
         // DC_ContentManager.getStandardDeitiesString(", ")),
 
-        Units(OBJ_TYPES.UNITS, G_PROPS.ASPECT, "Neutral", G_PROPS.UNIT_GROUP, "Humans, Knights, Bandits, Greenskins, Dwarves, Undead, Dark, Demons, Animals, "
+        Units(DC_TYPE.UNITS, G_PROPS.ASPECT, "Neutral", G_PROPS.UNIT_GROUP, "Humans, Knights, Bandits, Greenskins, Dwarves, Undead, Dark, Demons, Animals, "
                 + "Light, Constructs, Magi, North, Critters, Dungeon"),
-        Chars(OBJ_TYPES.CHARS, G_PROPS.GROUP, "Preset", G_PROPS.RACE, "Human, Dwarf, Elf, Demon, "
+        Chars(DC_TYPE.CHARS, G_PROPS.GROUP, "Preset", G_PROPS.RACE, "Human, Dwarf, Elf, Demon, "
                 + "Goblinoid, Vampire"),
         // ENCOUNTER_SUBGROUP
-        All(OBJ_TYPES.UNITS, OBJ_TYPES.ENCOUNTERS, OBJ_TYPES.CHARS),
+        All(DC_TYPE.UNITS, DC_TYPE.ENCOUNTERS, DC_TYPE.CHARS),
         // CHARS(OBJ_TYPES.UNITS, OBJ_TYPES.ENCOUNTERS, OBJ_TYPES.CHARS),
-        Items(OBJ_TYPES.WEAPONS, OBJ_TYPES.ARMOR, OBJ_TYPES.ITEMS, OBJ_TYPES.JEWELRY),;
+        Items(DC_TYPE.WEAPONS, DC_TYPE.ARMOR, DC_TYPE.ITEMS, DC_TYPE.JEWELRY),;
 
         public PROPERTY groupProp;
         public String subPalettes;
@@ -467,13 +467,13 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         public String filterValue;
         public OBJ_TYPE[] TYPES;
         public boolean upper;
-        OBJ_TYPES TYPE = OBJ_TYPES.BF_OBJ;
+        DC_TYPE TYPE = DC_TYPE.BF_OBJ;
 
         UPPER_PALETTE(PROPERTY filterProp, String filterValue, PROPERTY prop, String subPalettes) {
-            this(OBJ_TYPES.BF_OBJ, filterProp, filterValue, prop, subPalettes);
+            this(DC_TYPE.BF_OBJ, filterProp, filterValue, prop, subPalettes);
         }
 
-        UPPER_PALETTE(OBJ_TYPES TYPE, PROPERTY filterProp, String filterValue, PROPERTY prop,
+        UPPER_PALETTE(DC_TYPE TYPE, PROPERTY filterProp, String filterValue, PROPERTY prop,
                       String subPalettes) {
             this.groupProp = prop;
             this.subPalettes = subPalettes;
@@ -482,14 +482,14 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
             this.TYPE = TYPE;
         }
 
-        UPPER_PALETTE(OBJ_TYPES TYPE, PROPERTY prop, String subPalettes) {
+        UPPER_PALETTE(DC_TYPE TYPE, PROPERTY prop, String subPalettes) {
             this(null, null, prop, subPalettes);
             upper = true;
             this.TYPE = TYPE;
         }
 
         UPPER_PALETTE(PROPERTY prop, String subPalettes) {
-            this(OBJ_TYPES.BF_OBJ, prop, subPalettes);
+            this(DC_TYPE.BF_OBJ, prop, subPalettes);
         }
 
         UPPER_PALETTE(OBJ_TYPE... TYPES) {

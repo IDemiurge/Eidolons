@@ -1,11 +1,12 @@
 package main.gui.components.tree;
 
-import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.DC_TYPE;
+import main.content.enums.system.MetaEnums;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.xml.XML_Reader;
 import main.elements.Filter;
@@ -171,9 +172,9 @@ public class AV_Tree extends G_Panel {
             // TODO custom *grouping* -> enum class + property!
             {
                 if (workspace.isSearch()) {
-                    subGroups = ListMaster.toStringList(OBJ_TYPES.values());
+                    subGroups = ListMaster.toStringList(DC_TYPE.values());
                 } else {
-                    subGroups = ListMaster.toStringList(WORKSPACE_GROUP.values());
+                    subGroups = ListMaster.toStringList(MetaEnums.WORKSPACE_GROUP.values());
                     subGroups.add("");
                 }
             }
@@ -203,7 +204,7 @@ public class AV_Tree extends G_Panel {
                 if (workspace.isSearch()) {
                     list = DataManager.toStringList(new Filter<ObjType>().filter(workspace
                             .getTypeList(), G_PROPS.TYPE, subGroup));
-                    Collections.sort(list, new EnumMaster<>().getEnumSorter(OBJ_TYPES.class));
+                    Collections.sort(list, new EnumMaster<>().getEnumSorter(DC_TYPE.class));
 
                 } else {
 

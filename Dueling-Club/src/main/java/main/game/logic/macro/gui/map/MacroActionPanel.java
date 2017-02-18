@@ -1,6 +1,6 @@
 package main.game.logic.macro.gui.map;
 
-import main.entity.obj.unit.DC_UnitObj;
+import main.entity.obj.unit.DC_UnitModel;
 import main.game.logic.macro.entity.MacroAction;
 import main.game.logic.macro.gui.map.MacroAP_Holder.MACRO_ACTION_GROUPS;
 import main.swing.components.obj.ActionListItem;
@@ -109,8 +109,8 @@ public class MacroActionPanel extends G_ListPanel<MacroAction> implements
         return data;
     }
 
-    public DC_UnitObj getObj() {
-        return (DC_UnitObj) super.getObj();
+    public DC_UnitModel getObj() {
+        return (DC_UnitModel) super.getObj();
     }
 
     public void setInts() {

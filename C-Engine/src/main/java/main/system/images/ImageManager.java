@@ -1,10 +1,19 @@
 package main.system.images;
 
 import main.content.CONTENT_CONSTS.*;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.VALUE;
-import main.content.parameters.MACRO_PARAMS;
-import main.content.parameters.PARAMETER;
+import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.ASPECT;
+import main.content.enums.entity.HeroEnums;
+import main.content.enums.entity.HeroEnums.BACKGROUND;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
+import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.parameters.PARAMETER;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
@@ -433,11 +442,11 @@ public class ImageManager {
     public static ImageIcon getCellBorderForBfObj(boolean huge, UNIT_TO_PLAYER_VISION detection,
                                                   UNIT_TO_UNIT_VISION visibility) {
         String suffix = (!huge) ? "96" : "HUGE";
-        if (detection == UNIT_TO_PLAYER_VISION.UNKNOWN
-                || detection == UNIT_TO_PLAYER_VISION.CONCEALED) {
+        if (detection == VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN
+                || detection == VisionEnums.UNIT_TO_PLAYER_VISION.CONCEALED) {
             suffix += " unknown";
-        } else if (detection == UNIT_TO_PLAYER_VISION.KNOWN
-                || visibility == UNIT_TO_UNIT_VISION.BEYOND_SIGHT) {
+        } else if (detection == VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN
+                || visibility == VisionEnums.UNIT_TO_UNIT_VISION.BEYOND_SIGHT) {
             suffix += " hidden";
         }
         return getIcon("UI//CELL for " + suffix + ".png");
@@ -728,7 +737,7 @@ return ((CustomImage)img).getImgPath();
     public static Image getModeImage(String mode, Boolean on_off, boolean blocked) {
         Image image = getImage("ui\\actions\\modes\\" + mode + ".png");
         if (image == null) {
-            ObjType type = DataManager.getType(mode, OBJ_TYPES.ACTIONS);
+            ObjType type = DataManager.getType(mode, DC_TYPE.ACTIONS);
             if (type != null) {
                 image = type.getIcon().getImage();
             }
@@ -808,7 +817,7 @@ return ((CustomImage)img).getImgPath();
         Loop loop = new Loop(10);
         while (loop.continues()) {
             try {
-                String bg = BACKGROUND.values()[RandomWizard.getRandomIntBetween(0, BACKGROUND
+                String bg = HeroEnums.BACKGROUND.values()[RandomWizard.getRandomIntBetween(0, HeroEnums.BACKGROUND
                         .values().length - 1)].toString();
                 List<String> portraitsForBackground = ImageManager.getPortraitsForBackground(bg);
                 int index = RandomWizard.getRandomListIndex(portraitsForBackground);
@@ -1012,13 +1021,13 @@ return ((CustomImage)img).getImgPath();
         String path = EMBLEM_PATH;
         // if (A !=
         if (A == null) {
-            A = ASPECT.NEUTRAL;
+            A = GenericEnums.ASPECT.NEUTRAL;
         }
 
         ASPECT[] aspects = new ASPECT[]{A};
-        if (A == ASPECT.NEUTRAL) {
-            aspects = new ASPECT[]{ASPECT.NEUTRAL, ASPECT.LIGHT, ASPECT.ARCANUM, ASPECT.LIFE,
-                    ASPECT.DARKNESS, ASPECT.CHAOS, ASPECT.DEATH,
+        if (A == GenericEnums.ASPECT.NEUTRAL) {
+            aspects = new ASPECT[]{GenericEnums.ASPECT.NEUTRAL, GenericEnums.ASPECT.LIGHT, GenericEnums.ASPECT.ARCANUM, GenericEnums.ASPECT.LIFE,
+                    GenericEnums.ASPECT.DARKNESS, GenericEnums.ASPECT.CHAOS, GenericEnums.ASPECT.DEATH,
 
             };
         }
@@ -1164,8 +1173,8 @@ return ((CustomImage)img).getImgPath();
     }
 
     public static ImageIcon getDefaultTypeIcon(Entity entity) {
-        if (entity.getOBJ_TYPE_ENUM() instanceof OBJ_TYPES) {
-            switch ((OBJ_TYPES) entity.getOBJ_TYPE_ENUM()) {
+        if (entity.getOBJ_TYPE_ENUM() instanceof DC_TYPE) {
+            switch ((DC_TYPE) entity.getOBJ_TYPE_ENUM()) {
                 case UNITS:
                 case CHARS:
                     return getEmptyIcon(GuiManager.getObjSize());

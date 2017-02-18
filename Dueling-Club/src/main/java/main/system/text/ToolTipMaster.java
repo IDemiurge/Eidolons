@@ -2,11 +2,15 @@ package main.system.text;
 
 import main.ability.effects.Effect;
 import main.client.cc.CharacterCreator;
-import main.content.CONTENT_CONSTS.*;
 import main.content.ContentManager;
 import main.content.PARAMS;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.system.AiEnums.AI_LOGIC;
+import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
+import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
+import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.values.parameters.PARAMETER;
 import main.elements.conditions.Condition;
 import main.elements.costs.Costs;
 import main.entity.Entity;
@@ -17,11 +21,11 @@ import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.attach.DC_BuffObj;
 import main.entity.obj.attach.DC_HeroAttachedObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.ai.tools.future.FutureBuilder;
-import main.game.ai.tools.target.SpellMaster;
+import main.game.ai.tools.target.AI_SpellMaster;
 import main.game.battlefield.attack.DamageMaster;
 import main.rules.RuleMaster.RULE;
 import main.rules.mechanics.CoatingRule;
@@ -98,10 +102,10 @@ public class ToolTipMaster {
         }
         String tooltip = "";
         ACTION_TOOL_TIP_CASE _case = null;
-        AI_LOGIC spellLogic = SpellMaster.getSpellLogic(active);
+        AI_LOGIC spellLogic = AI_SpellMaster.getSpellLogic(active);
         if (spellLogic == null) {
             if (active instanceof DC_UnitAction) {
-                if (active.getActionGroup() == ACTION_TYPE_GROUPS.ATTACK) {
+                if (active.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK) {
                     _case = ACTION_TOOL_TIP_CASE.DAMAGE;
                 }
             }
@@ -141,7 +145,7 @@ public class ToolTipMaster {
                     tooltip += "(lethal)"; // TODO possibly lethal
                 } else {
                     if (attack) {
-                        if (((DC_HeroObj) target).canCounter(active)) {
+                        if (((Unit) target).canCounter(active)) {
                             tooltip += "(will retaliate)"; // TODO precalc dmg?
                         }
                     }
@@ -280,7 +284,7 @@ public class ToolTipMaster {
     }
 
     // attack tooltip, targeting tooltip,
-    public void initUnitTooltip(DC_HeroObj unit, boolean targeting) {
+    public void initUnitTooltip(Unit unit, boolean targeting) {
         List<Object> lines = new LinkedList<>();
         toolTipTextItems.remove(unitToolTip);
         String prefix = "";

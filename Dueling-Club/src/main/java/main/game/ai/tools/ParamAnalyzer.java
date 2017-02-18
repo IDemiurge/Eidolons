@@ -1,15 +1,15 @@
 package main.game.ai.tools;
 
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 
 import java.util.List;
 
 public class ParamAnalyzer {
 
-    public static boolean isFatigued(DC_HeroObj unit) {
+    public static boolean isFatigued(Unit unit) {
         int buffLevel = unit.getGame().getRules().getStaminaRule()
                 .getBuffLevel(unit);
         if (buffLevel < 0) {
@@ -22,7 +22,7 @@ public class ParamAnalyzer {
         return true;
     }
 
-    public static boolean isHazed(DC_HeroObj unit) {
+    public static boolean isHazed(Unit unit) {
         int buffLevel = unit.getGame().getRules().getFocusRule()
                 .getBuffLevel(unit);
         if (buffLevel < 0) {
@@ -34,7 +34,7 @@ public class ParamAnalyzer {
         return true;
     }
 
-    public static boolean isParamIgnored(DC_HeroObj unit, PARAMETER p) {
+    public static boolean isParamIgnored(Unit unit, PARAMETER p) {
         if (p == PARAMS.C_STAMINA) {
             return isStaminaIgnore(unit);
         }
@@ -48,15 +48,15 @@ public class ParamAnalyzer {
 
     }
 
-    public static boolean isMoraleIgnore(DC_HeroObj unit) {
+    public static boolean isMoraleIgnore(Unit unit) {
         return !unit.getGame().getRules().getMoraleRule().check(unit);
     }
 
-    public static boolean isStaminaIgnore(DC_HeroObj unit) {
+    public static boolean isStaminaIgnore(Unit unit) {
         return !unit.getGame().getRules().getStaminaRule().check(unit);
     }
 
-    public static boolean isFocusIgnore(DC_HeroObj unit) {
+    public static boolean isFocusIgnore(Unit unit) {
         return !unit.getGame().getRules().getFocusRule().check(unit);
     }
 

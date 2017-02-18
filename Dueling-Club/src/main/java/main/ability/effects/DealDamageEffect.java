@@ -1,12 +1,13 @@
 package main.ability.effects;
 
-import main.content.CONTENT_CONSTS.DAMAGE_MODIFIER;
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
+import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.GenericEnums;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.attack.DamageMaster;
 import main.rules.combat.ForceRule;
 import main.system.auxiliary.EnumMaster;
@@ -50,10 +51,10 @@ public class DealDamageEffect extends DC_Effect {
         if (ref.getTargetObj() == null) {
             return false;
         }
-        if (!(ref.getTargetObj() instanceof DC_HeroObj)) {
+        if (!(ref.getTargetObj() instanceof Unit)) {
             return true; // TODO if cell, apply damage to corpses?
         }
-        DC_HeroObj targetObj = (DC_HeroObj) ref.getTargetObj();
+        Unit targetObj = (Unit) ref.getTargetObj();
         int amount = formula.getAppendedByModifier(ref.getFormula()).getInt(ref);
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
         boolean spell = active instanceof DC_SpellObj;
@@ -104,16 +105,16 @@ public class DealDamageEffect extends DC_Effect {
 
     }
 
-    private int applyReductions(DC_HeroObj targetObj, int amount, DC_ActiveObj active, boolean spell) {
+    private int applyReductions(Unit targetObj, int amount, DC_ActiveObj active, boolean spell) {
         if (getGame().getArmorMaster().checkCanShieldBlock(active, targetObj)) {
             int shieldBlock = getGame().getArmorMaster().getShieldDamageBlocked(amount, targetObj,
-                    (DC_HeroObj) ref.getSourceObj(), active, null, damage_type);
+                    (Unit) ref.getSourceObj(), active, null, damage_type);
             // event?
             amount -= shieldBlock;
         }
 
         if (damage_mod != null) {
-            if (damage_mod == DAMAGE_MODIFIER.QUIET) {
+            if (damage_mod == GenericEnums.DAMAGE_MODIFIER.QUIET) {
                 ref.setQuiet(true);
             } else {
                 ref.setQuiet(false);
@@ -141,9 +142,9 @@ public class DealDamageEffect extends DC_Effect {
         }
         if (damage_type == null) {
             if (magical) {
-                damage_type = DAMAGE_TYPE.MAGICAL;
+                damage_type = GenericEnums.DAMAGE_TYPE.MAGICAL;
             } else {
-                damage_type = DAMAGE_TYPE.PHYSICAL;
+                damage_type = GenericEnums.DAMAGE_TYPE.PHYSICAL;
             }
         }
     }

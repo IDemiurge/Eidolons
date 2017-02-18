@@ -1,12 +1,12 @@
 package main.entity.item;
 
 import main.content.ContentManager;
-import main.content.OBJ_TYPES;
-import main.content.parameters.PARAMETER;
+import main.content.DC_TYPE;
+import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.MicroGame;
-import main.game.player.Player;
+import main.game.core.game.MicroGame;
+import main.game.logic.battle.player.Player;
 
 public class DC_JewelryObj extends DC_HeroItemObj {
 
@@ -15,7 +15,7 @@ public class DC_JewelryObj extends DC_HeroItemObj {
     }
 
     private static PARAMETER[] getJewelryParams() {
-        String entity = OBJ_TYPES.CHARS.getName();
+        String entity = DC_TYPE.CHARS.getName();
         return ContentManager.getParamsForType(entity, false).toArray(
                 new PARAMETER[ContentManager.getParamsForType("chars", false)
                         .size()]);

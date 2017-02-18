@@ -1,10 +1,11 @@
 package main.logic;
 
-import main.content.CONTENT_CONSTS.PRINCIPLES;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.ContentManager;
 import main.content.Metainfo;
 import main.content.OBJ_TYPE;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.HeroEnums;
+import main.content.values.properties.PROPERTY;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 
@@ -284,7 +285,7 @@ public enum AT_PROPS implements PROPERTY {
     }
 
     public boolean isPrinciple() {
-        for (PRINCIPLES p : PRINCIPLES.values()) {
+        for (PRINCIPLES p : HeroEnums.PRINCIPLES.values()) {
             if (p.toString().equalsIgnoreCase(getName())) {
                 return true;
             }

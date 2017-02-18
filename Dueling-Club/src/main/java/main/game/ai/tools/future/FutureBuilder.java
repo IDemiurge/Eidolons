@@ -7,8 +7,8 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.ai.tools.target.EffectMaster;
+import main.entity.obj.unit.Unit;
+import main.game.ai.tools.target.EffectFinder;
 import main.game.battlefield.attack.Attack;
 import main.game.battlefield.attack.DamageMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -28,7 +28,7 @@ public class FutureBuilder {
         }
 
         List<Effect> effects;
-        effects = EffectMaster.getEffectsOfClass(EffectMaster.getEffectsFromSpell(active),
+        effects = EffectFinder.getEffectsOfClass(EffectFinder.getEffectsFromSpell(active),
                 attack ? AttackEffect.class : DealDamageEffect.class);
         // TODO special effects?!
         for (Effect e : effects) {
@@ -68,7 +68,7 @@ public class FutureBuilder {
 	 * initiative sequence
 	 */
 
-    public static DC_HeroObj getClone(DC_HeroObj source) {
+    public static Unit getClone(Unit source) {
         // TODO Auto-generated method stub
         return null;
     }

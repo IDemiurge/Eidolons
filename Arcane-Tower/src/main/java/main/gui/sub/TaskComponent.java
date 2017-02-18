@@ -1,7 +1,7 @@
 package main.gui.sub;
 
 import main.ArcaneTower;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.enums.StatEnums.TASK_STATUS;
 import main.gui.sub.TaskComponent.TASK_COMMAND;
 import main.io.AT_EntityMouseListener;

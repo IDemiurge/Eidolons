@@ -3,12 +3,12 @@ package main.client.cc.gui.lists;
 import main.client.cc.gui.pages.HC_PagedListPanel;
 import main.client.dc.Launcher;
 import main.content.OBJ_TYPE;
-import main.content.properties.MACRO_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.MACRO_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.elements.Filter;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.town.Shop;
@@ -20,13 +20,13 @@ import java.util.*;
 
 public class ShopListsPanel extends VendorListsPanel {
 
-    public ShopListsPanel(DC_HeroObj hero, OBJ_TYPE TYPE, PROPERTY prop,
+    public ShopListsPanel(Unit hero, OBJ_TYPE TYPE, PROPERTY prop,
                           boolean responsive, boolean showAll, ItemListManager manager) {
         super(hero, TYPE, prop, responsive, showAll, manager);
         refresh();
     }
 
-    public ShopListsPanel(DC_HeroObj hero, OBJ_TYPE TYPE, PROPERTY prop,
+    public ShopListsPanel(Unit hero, OBJ_TYPE TYPE, PROPERTY prop,
                           boolean responsive, boolean showAll, ItemListManager manager,
                           Filter<ObjType> typeFilter) {
         super(hero, TYPE, prop, responsive, showAll, manager, typeFilter);

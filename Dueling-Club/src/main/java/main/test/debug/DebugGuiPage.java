@@ -1,6 +1,6 @@
 package main.test.debug;
 
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.StringMaster;

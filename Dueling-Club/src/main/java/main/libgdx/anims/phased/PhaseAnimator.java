@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.libgdx.bf.GridMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;

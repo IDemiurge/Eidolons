@@ -2,9 +2,9 @@ package main.client.cc.gui.neo.header;
 
 import main.client.cc.CharacterCreator;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.entity.obj.unit.Unit;
 import main.swing.components.panels.page.log.WrappedTextComp;
 
 import java.awt.*;
@@ -16,7 +16,7 @@ import java.util.List;
 public class HeroTextComp extends WrappedTextComp implements MouseListener {
 
     private static final VALUE[] VALUES = {G_PROPS.NAME, G_PROPS.BACKGROUND};
-    private DC_HeroObj hero;
+    private Unit hero;
 
     public HeroTextComp() {
         super(null);
@@ -24,7 +24,7 @@ public class HeroTextComp extends WrappedTextComp implements MouseListener {
 
     }
 
-    public HeroTextComp(DC_HeroObj hero) {
+    public HeroTextComp(Unit hero) {
         super(null);
         this.hero = hero;
         refresh();

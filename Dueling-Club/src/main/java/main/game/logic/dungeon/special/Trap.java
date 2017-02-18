@@ -1,12 +1,12 @@
 package main.game.logic.dungeon.special;
 
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 
 public class Trap {
     // actives -> upon trigger (spec effects!)
 
 
-    public void disarmed(DC_HeroObj trapper) {
+    public void disarmed(Unit trapper) {
 
     }
 

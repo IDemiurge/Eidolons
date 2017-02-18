@@ -1,14 +1,16 @@
 package main.ability.conditions;
 
-import main.content.CONTENT_CONSTS.FACING_SINGLE;
-import main.content.CONTENT_CONSTS.STD_BOOLS;
+import main.content.enums.GenericEnums;
+import main.content.enums.entity.UnitEnums.FACING_SINGLE;
+import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref.KEYS;
 import main.entity.item.DC_HeroSlotItem;
-import main.entity.obj.BattlefieldObj;
+import main.entity.obj.BattleFieldObject;
+import main.entity.obj.BfObj;
 import main.entity.obj.Obj;
 import main.entity.obj.attach.DC_HeroAttachedObj;
-import main.entity.obj.unit.DC_UnitObj;
+import main.entity.obj.unit.DC_UnitModel;
 import main.game.battlefield.DirectionMaster;
 import main.game.battlefield.FacingMaster;
 
@@ -30,13 +32,13 @@ public class FacingCondition extends ConditionImpl {
 
     @Override
     public boolean check() {
-        if (!(ref.getSourceObj() instanceof DC_UnitObj)) {
+        if (!(ref.getSourceObj() instanceof DC_UnitModel)) {
             return false;
         }
-        DC_UnitObj obj1 = (DC_UnitObj) ref.getSourceObj();
+        BattleFieldObject obj1 = (BattleFieldObject) ref.getSourceObj();
         Obj obj2;
 
-        if (!(ref.getObj(KEYS.MATCH) instanceof BattlefieldObj)) {
+        if (!(ref.getObj(KEYS.MATCH) instanceof BfObj)) {
             if (!(ref.getObj(KEYS.MATCH) instanceof DC_HeroSlotItem)) {
                 return false;
             }
@@ -49,12 +51,12 @@ public class FacingCondition extends ConditionImpl {
         boolean result = false;
 
         if (getTemplate() != null) {
-            FACING_SINGLE facing = FacingMaster.getSingleFacing(obj1, (BattlefieldObj) obj2);
+            FACING_SINGLE facing = FacingMaster.getSingleFacing(obj1, (BfObj) obj2);
             result = Arrays.asList(templates).contains(facing);
-            if (facing == FACING_SINGLE.TO_THE_SIDE) {
+            if (facing == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
                 if (result) {
                     if (left_right == null) {
-                        left_right = obj1.checkBool(STD_BOOLS.LEFT_RIGHT_REACH);
+                        left_right = obj1.checkBool(GenericEnums.STD_BOOLS.LEFT_RIGHT_REACH);
                     }
                     if (left_right) {
                         int degrees = obj1.getFacing().getDirection().getDegrees();

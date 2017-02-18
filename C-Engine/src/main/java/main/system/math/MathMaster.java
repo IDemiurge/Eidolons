@@ -1,11 +1,11 @@
 package main.system.math;
 
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.Obj;
-import main.game.Game;
-import main.game.MicroGame;
+import main.game.core.game.Game;
+import main.game.core.game.MicroGame;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 

@@ -1,13 +1,13 @@
 package main.client.cc.gui.neo.header;
 
 import main.client.cc.gui.views.ClassView;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.obj.attach.DC_FeatObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.list.ListItem;
@@ -21,9 +21,9 @@ public class ClassLine extends G_Panel {
     public static final int MAX_CLASSES = 4;
     boolean vertical;
     boolean prime;
-    DC_HeroObj hero;
+    Unit hero;
 
-    public ClassLine(boolean vertical, boolean prime, DC_HeroObj hero) {
+    public ClassLine(boolean vertical, boolean prime, Unit hero) {
         this.vertical = vertical;
         this.prime = prime;
         this.hero = hero;
@@ -44,7 +44,7 @@ public class ClassLine extends G_Panel {
         // TODO empty items?
         for (String string : StringMaster.openContainer(hero.getProperty(PROPS.CLASSES))) {
             string = VariableManager.removeVarPart(string);
-            ObjType type = DataManager.getType(string, OBJ_TYPES.CLASSES);
+            ObjType type = DataManager.getType(string, DC_TYPE.CLASSES);
 
             if (!StringMaster.isEmpty(hero.getProperty(PROPS.SECOND_CLASS))) {
                 String property = (prime) ? hero.getProperty(PROPS.FIRST_CLASS) : hero

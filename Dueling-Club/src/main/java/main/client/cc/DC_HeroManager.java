@@ -1,16 +1,17 @@
 package main.client.cc;
 
-import main.content.CONTENT_CONSTS.ITEM_SLOT;
-import main.content.CONTENT_CONSTS.STD_BOOLS;
+import main.content.enums.GenericEnums;
+import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.OBJ_TYPE;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.ItemEnums;
+import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
 import main.entity.item.DC_HeroItemObj;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.system.ObjUtilities;
 
 public class DC_HeroManager extends HeroManager {
@@ -21,7 +22,7 @@ public class DC_HeroManager extends HeroManager {
     }
 
     @Override
-    protected int addJewelryItem(DC_HeroObj hero, Entity type) {
+    protected int addJewelryItem(Unit hero, Entity type) {
         DC_HeroItemObj item = (DC_HeroItemObj) ObjUtilities
                 .findObjByType(type, hero.getInventory());
         int result = super.addJewelryItem(hero, type);
@@ -35,7 +36,7 @@ public class DC_HeroManager extends HeroManager {
     }
 
     @Override
-    public void removeJewelryItem(DC_HeroObj hero, Entity type) {
+    public void removeJewelryItem(Unit hero, Entity type) {
         DC_HeroItemObj item = (DC_HeroItemObj) ObjUtilities.findObjByType(type, hero.getJewelry());
         hero.removeJewelryItem(item);
         hero.addItemToInventory(item);
@@ -43,7 +44,7 @@ public class DC_HeroManager extends HeroManager {
     }
 
     @Override
-    public boolean addItem(DC_HeroObj hero, Entity type, OBJ_TYPE TYPE, PROPERTY PROP) {
+    public boolean addItem(Unit hero, Entity type, OBJ_TYPE TYPE, PROPERTY PROP) {
         Obj cell = game.getCellByCoordinate(hero.getCoordinates());
         DC_HeroItemObj item = (DC_HeroItemObj) ObjUtilities.findObjByType(type, hero.getGame()
                 .getDroppedItemManager().getDroppedItems(cell));
@@ -61,7 +62,7 @@ public class DC_HeroManager extends HeroManager {
     }
 
     @Override
-    public void removeItem(DC_HeroObj hero, Entity type, PROPERTY prop, OBJ_TYPE TYPE, boolean free) {
+    public void removeItem(Unit hero, Entity type, PROPERTY prop, OBJ_TYPE TYPE, boolean free) {
         // TODO drop from inventory
         for (DC_HeroItemObj item : hero.getInventory()) {
             if (item.getType() == type) {
@@ -75,9 +76,9 @@ public class DC_HeroManager extends HeroManager {
     }
 
     @Override
-    public void removeSlotItem(DC_HeroObj hero, ITEM_SLOT slot) {
-        if (slot == ITEM_SLOT.ARMOR) {
-            if (!hero.checkBool(STD_BOOLS.ARMOR_CHANGE)) {
+    public void removeSlotItem(Unit hero, ITEM_SLOT slot) {
+        if (slot == ItemEnums.ITEM_SLOT.ARMOR) {
+            if (!hero.checkBool(GenericEnums.STD_BOOLS.ARMOR_CHANGE)) {
                 return;
             }
         }
@@ -86,7 +87,7 @@ public class DC_HeroManager extends HeroManager {
     }
 
     @Override
-    public void removeQuickSlotItem(DC_HeroObj hero, Entity type) {
+    public void removeQuickSlotItem(Unit hero, Entity type) {
         for (DC_QuickItemObj itemObj : hero.getQuickItems()) {
             if (itemObj.getType() == type) {
                 hero.removeQuickItem(itemObj);
@@ -100,7 +101,7 @@ public class DC_HeroManager extends HeroManager {
     }
 
     @Override
-    public int addQuickItem(DC_HeroObj hero, Entity type) {
+    public int addQuickItem(Unit hero, Entity type) {
         if (hero.isQuickSlotsFull()) {
             return 0;
         }
@@ -124,11 +125,11 @@ public class DC_HeroManager extends HeroManager {
     }
 
     @Override
-    public int setHeroItem(DC_HeroObj hero, ITEM_SLOT slot, Entity type) {
+    public int setHeroItem(Unit hero, ITEM_SLOT slot, Entity type) {
 
         int result = 0;
-        if (slot == ITEM_SLOT.ARMOR) {
-            if (!hero.checkBool(STD_BOOLS.ARMOR_CHANGE)) {
+        if (slot == ItemEnums.ITEM_SLOT.ARMOR) {
+            if (!hero.checkBool(GenericEnums.STD_BOOLS.ARMOR_CHANGE)) {
                 return 0;
             }
             result++;

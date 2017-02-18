@@ -1,14 +1,14 @@
 package main.test.debug;
 
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_UnitObj;
+import main.entity.obj.unit.DC_UnitModel;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 
@@ -33,7 +33,7 @@ public class DebugUtilities {
 
     private static String godSpells = "Leap into Darkness;Teleport;Shadow Bolt;";
 
-    public static void initGodMode(DC_UnitObj obj, boolean on) {
+    public static void initGodMode(DC_UnitModel obj, boolean on) {
         if (!on) {
             ObjType oldType = getNormalTypeMap().get(obj);
             obj.applyType(oldType);
@@ -71,7 +71,7 @@ public class DebugUtilities {
 
     private static void setGodActions(Entity entity) {
         String actions = StringMaster.constructContainer(DataManager
-                .getTypeNames(OBJ_TYPES.ACTIONS));
+                .getTypeNames(DC_TYPE.ACTIONS));
         entity.setProperty(G_PROPS.ACTIVES, actions);
 
     }

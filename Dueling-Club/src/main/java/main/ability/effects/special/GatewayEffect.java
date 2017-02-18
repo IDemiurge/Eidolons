@@ -2,17 +2,17 @@ package main.ability.effects.special;
 
 import main.ability.effects.common.SummonEffect;
 import main.client.net.GameConnector.HOST_CLIENT_CODES;
-import main.content.CONTENT_CONSTS.STD_BOOLS;
 import main.content.C_OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.properties.PROPERTY;
+import main.content.DC_TYPE;
+import main.content.enums.GenericEnums;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.elements.Filter;
 import main.elements.conditions.StringComparison;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.RandomWizard;
@@ -73,8 +73,8 @@ public class GatewayEffect extends SummonEffect {
         Obj obj = ref.getSourceObj().getOwner().getHeroObj();
         typeList = null;
         if (prop == null) {
-            typeList = DataManager.toTypeList(((DC_HeroObj) obj).getDeity().getUnitPool(),
-                    OBJ_TYPES.UNITS);
+            typeList = DataManager.toTypeList(((Unit) obj).getDeity().getUnitPool(),
+                    DC_TYPE.UNITS);
         } else {
             typeList = new Filter<ObjType>(ref, getCondition()).filter(DataManager
                     .getTypes(C_OBJ_TYPE.UNITS_CHARS));
@@ -84,7 +84,7 @@ public class GatewayEffect extends SummonEffect {
             return null;
         }
 
-        random = ref.getObj(KEYS.ACTIVE).checkBool(STD_BOOLS.RANDOM);
+        random = ref.getObj(KEYS.ACTIVE).checkBool(GenericEnums.STD_BOOLS.RANDOM);
         if (!obj.getOwner().isAi()) {
             random = true;
         }

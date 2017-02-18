@@ -5,7 +5,8 @@ import main.ability.effects.Effects;
 import main.ability.effects.continuous.CustomTargetEffect;
 import main.ability.effects.oneshot.MicroEffect;
 import main.ability.effects.oneshot.common.AddTriggerEffect;
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.GenericEnums;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.RefCondition;
 import main.elements.conditions.standard.GroupCondition;
@@ -15,8 +16,8 @@ import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
-import main.game.event.Event;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 
@@ -24,7 +25,7 @@ public class BindingDamageEffect extends MicroEffect {
     Boolean shareOrRedirect;
     Boolean spellDmgOnly;
     Boolean physicalDmgOnly;
-    DAMAGE_TYPE dmg_type = DAMAGE_TYPE.PURE;
+    DAMAGE_TYPE dmg_type = GenericEnums.DAMAGE_TYPE.PURE;
     private Conditions conditions;
 
     public BindingDamageEffect(Boolean shareOrRedirect, Formula formula,
@@ -75,7 +76,7 @@ public class BindingDamageEffect extends MicroEffect {
                 new GroupCondition(Ref.KEYS.MATCH.name(), group),
                 new RefCondition(KEYS.EVENT_TARGET, KEYS.MATCH, true)));// negative
         effects.add(new CustomTargetEffect(targeting_other_units,
-                new DealDamageEffect(getDamageFormula(), DAMAGE_TYPE.PURE)));
+                new DealDamageEffect(getDamageFormula(), GenericEnums.DAMAGE_TYPE.PURE)));
 
 		/*
          * ensure there is no deadlock

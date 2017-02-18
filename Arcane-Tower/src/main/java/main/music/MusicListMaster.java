@@ -1,6 +1,6 @@
 package main.music;
 
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.logic.AT_OBJ_TYPE;

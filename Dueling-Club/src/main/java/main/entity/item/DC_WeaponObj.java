@@ -2,21 +2,26 @@ package main.entity.item;
 
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
-import main.content.CONTENT_CONSTS.*;
 import main.content.ContentManager;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.enums.GenericEnums;
+import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.ItemEnums.WEAPON_CLASS;
+import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
+import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
+import main.content.enums.entity.ItemEnums.WEAPON_TYPE;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ItemActiveObj;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.entity.obj.unit.DC_UnitObj;
+import main.entity.obj.unit.Unit;
+import main.entity.obj.unit.DC_UnitModel;
 import main.entity.type.ObjType;
-import main.game.MicroGame;
-import main.game.player.Player;
+import main.game.core.game.MicroGame;
+import main.game.logic.battle.player.Player;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -36,12 +41,12 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         this.setMainHand(main_hand);
     }
 
-    public DC_WeaponObj(ObjType type, DC_HeroObj heroObj) {
+    public DC_WeaponObj(ObjType type, Unit heroObj) {
         this(type, heroObj.getOwner(), heroObj.getGame(), heroObj.getRef(), true);
     }
 
     @Override
-    public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type, DC_UnitObj target, Ref REF) {
+    public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type, DC_UnitModel target, Ref REF) {
         if (REF.getActive() instanceof DC_ItemActiveObj) {
             DC_Obj weapon = (DC_Obj) REF.getActive().getRef().getObj(KEYS.ITEM);
             if (weapon != null) {
@@ -151,9 +156,9 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         // return true;
         // }
         return checkProperty(G_PROPS.WEAPON_CLASS, StringMaster
-                .getWellFormattedString(WEAPON_CLASS.DOUBLE.name()))
+                .getWellFormattedString(ItemEnums.WEAPON_CLASS.DOUBLE.name()))
                 || checkProperty(G_PROPS.WEAPON_CLASS, StringMaster
-                .getWellFormattedString(WEAPON_CLASS.TWO_HANDED.name()));
+                .getWellFormattedString(ItemEnums.WEAPON_CLASS.TWO_HANDED.name()));
     }
 
     public void applyUnarmedMasteryBonus() {
@@ -171,7 +176,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
         getHero().modifyParameter((mainHand) ? PARAMS.ATTACK : PARAMS.OFF_HAND_ATTACK,
                 DC_Formulas.getAttackFromWeaponMastery(getHero().getIntParam(getMastery())));
-        if (isTwoHanded() || getWeaponSize() == WEAPON_SIZE.HUGE) {
+        if (isTwoHanded() || getWeaponSize() == ItemEnums.WEAPON_SIZE.HUGE) {
             if (!isRanged()) {
                 getHero().modifyParameter(
                         PARAMS.DAMAGE_MOD,
@@ -196,7 +201,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     private boolean isDouble() {
         return checkProperty(G_PROPS.WEAPON_CLASS, StringMaster
-                .getWellFormattedString(WEAPON_CLASS.DOUBLE.name()));
+                .getWellFormattedString(ItemEnums.WEAPON_CLASS.DOUBLE.name()));
     }
 
     private PARAMETER getMastery() {
@@ -281,13 +286,13 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     }
 
     public boolean isWeapon() {
-        if (checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.NATURAL.toString())) {
+        if (checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.NATURAL.toString())) {
             return false;
         }
-        if (checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.MAGICAL.toString())) {
+        if (checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.MAGICAL.toString())) {
             return false;
         }
-        if (checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.SHIELD.toString())) {
+        if (checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.SHIELD.toString())) {
             return false;
         }
         return true;
@@ -295,7 +300,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     @Override
     public int reduceDurabilityForDamage(int damage, int armor, int mod, boolean sim) {
-        if (checkBool(STD_BOOLS.INDESTRUCTIBLE)) {
+        if (checkBool(GenericEnums.STD_BOOLS.INDESTRUCTIBLE)) {
             return 0;
         }
         return super.reduceDurabilityForDamage(damage, armor, mod, sim);
@@ -306,22 +311,22 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         return PARAMS.DAMAGE_BONUS;
     }
     public boolean isNatural() {
-        return checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.NATURAL.toString(), true);
+        return checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.NATURAL.toString(), true);
     }
 
     public boolean isShield() {
-        return checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.SHIELD.toString());
+        return checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.SHIELD.toString());
     }
 
-    public boolean isAmmo() { return checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.AMMO.toString());
+    public boolean isAmmo() { return checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO.toString());
 
     }
     public boolean isMagical() {
-        return checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.MAGICAL.toString());
+        return checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.MAGICAL.toString());
     }
 
     public boolean isRanged() {
-        return checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.RANGED.toString(), true);
+        return checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.RANGED.toString(), true);
     }
 
     public WEAPON_TYPE getWeaponType() {

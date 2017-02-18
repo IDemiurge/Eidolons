@@ -1,7 +1,7 @@
 package main.swing.components.panels;
 
 import main.client.dc.Launcher.VIEWS;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.DungeonMaster;
 import main.swing.builders.DC_Builder;
@@ -66,7 +66,7 @@ public class GameControlPanel extends G_Panel {
             List<String> convertToNameIntList = StringMaster.convertToNameIntList(true,
                     DungeonMaster.getDungeons());
             String result = new ListChooser(SELECTION_MODE.SINGLE, convertToNameIntList,
-                    OBJ_TYPES.DUNGEONS).choose();
+                    DC_TYPE.DUNGEONS).choose();
             SoundMaster.playStandardSound(STD_SOUNDS.SLING);
             for (Dungeon d : DungeonMaster.getDungeons()) {
                 if (d.getType().getName().equals(result)) {

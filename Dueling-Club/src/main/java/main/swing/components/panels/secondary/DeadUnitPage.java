@@ -1,6 +1,6 @@
 package main.swing.components.panels.secondary;
 
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.swing.generic.components.panels.G_ListPanel;
 import main.system.graphics.GuiManager;
@@ -12,9 +12,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class DeadUnitPage extends G_ListPanel<DC_HeroObj> implements ListCellRenderer<DC_HeroObj> {
+public class DeadUnitPage extends G_ListPanel<Unit> implements ListCellRenderer<Unit> {
 
-    public DeadUnitPage(List<DC_HeroObj> list) {
+    public DeadUnitPage(List<Unit> list) {
         super(list);
         getList().setCellRenderer(this);
     }
@@ -34,8 +34,8 @@ public class DeadUnitPage extends G_ListPanel<DC_HeroObj> implements ListCellRen
     }
 
     @Override
-    public Component getListCellRendererComponent(JList<? extends DC_HeroObj> list,
-                                                  DC_HeroObj value, int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList<? extends Unit> list,
+                                                  Unit value, int index, boolean isSelected, boolean cellHasFocus) {
         if (value == null) {
             return new GraphicComponent(ImageManager.getEmptyIcon(getItemSize()).getImage());
         }

@@ -1,9 +1,9 @@
 package main.game.logic.macro.town;
 
-import main.content.CONTENT_CONSTS.BACKGROUND;
-import main.content.parameters.MACRO_PARAMS;
-import main.content.properties.MACRO_PROPS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.enums.entity.HeroEnums;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.properties.MACRO_PROPS;
+import main.entity.obj.unit.Unit;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.global.TimeMaster;
 import main.game.logic.macro.party.MacroPartyManager;
@@ -67,13 +67,13 @@ public class TavernMaster {
                 true, "all patrons!", "all of us", "myself");
 
 //        int quality = tavern.getIntParam(MACRO_PARAMS.DRINK_QUALITY);
-        List<DC_HeroObj> drinkers = party.getMembers();
+        List<Unit> drinkers = party.getMembers();
         if (result) {
             tavern.getHeroesForHire();
         } else {
-            drinkers = new ListMaster<DC_HeroObj>().getList(party.getLeader());
+            drinkers = new ListMaster<Unit>().getList(party.getLeader());
         }
-        for (DC_HeroObj member : drinkers) {
+        for (Unit member : drinkers) {
 //            member.modifyParamByPercent(MACRO_PARAMS.COMBAT_READINESS,
 //                    quality - 100);
         }
@@ -128,8 +128,8 @@ public class TavernMaster {
 		 */
     }
 
-    public static boolean checkCanHire(MacroParty macroParty, DC_HeroObj hero,
-                                       Tavern tavern, DC_HeroObj e) {
+    public static boolean checkCanHire(MacroParty macroParty, Unit hero,
+                                       Tavern tavern, Unit e) {
         // TODO principles, party size,
         return macroParty.getMembers().size() <= 4;
     }
@@ -156,32 +156,32 @@ public class TavernMaster {
             case RAVEN_REALM: {
                 // (var-chance)? could still work as a filter string, and then
                 // help with randoms
-                backgrounds += BACKGROUND.MAN_OF_RAVEN_REALM.toString()
+                backgrounds += HeroEnums.BACKGROUND.MAN_OF_RAVEN_REALM.toString()
                         + "(50);";
-                backgrounds += BACKGROUND.WOMAN_OF_RAVEN_REALM.toString()
+                backgrounds += HeroEnums.BACKGROUND.WOMAN_OF_RAVEN_REALM.toString()
                         + "(35);";
-                backgrounds += BACKGROUND.STONESHIELD_DWARF.toString()
+                backgrounds += HeroEnums.BACKGROUND.STONESHIELD_DWARF.toString()
                         + "(20);";
-                backgrounds += BACKGROUND.STRANGER.toString() + "(20);";
-                backgrounds += BACKGROUND.ELF.toString() + "(15);";
-                backgrounds += BACKGROUND.DWARF.toString() + "(15);";
-                backgrounds += BACKGROUND.FEY_ELF.toString() + "(15);";
-                backgrounds += BACKGROUND.EASTERLING.toString() + "(10);";
-                backgrounds += BACKGROUND.MAN_OF_WOLF_REALM.toString()
+                backgrounds += HeroEnums.BACKGROUND.STRANGER.toString() + "(20);";
+                backgrounds += HeroEnums.BACKGROUND.ELF.toString() + "(15);";
+                backgrounds += HeroEnums.BACKGROUND.DWARF.toString() + "(15);";
+                backgrounds += HeroEnums.BACKGROUND.FEY_ELF.toString() + "(15);";
+                backgrounds += HeroEnums.BACKGROUND.EASTERLING.toString() + "(10);";
+                backgrounds += HeroEnums.BACKGROUND.MAN_OF_WOLF_REALM.toString()
                         + "(20);";
-                backgrounds += BACKGROUND.WOMAN_OF_WOLF_REALM.toString()
+                backgrounds += HeroEnums.BACKGROUND.WOMAN_OF_WOLF_REALM.toString()
                         + "(15);";
-                backgrounds += BACKGROUND.MAN_OF_KINGS_REALM.toString()
+                backgrounds += HeroEnums.BACKGROUND.MAN_OF_KINGS_REALM.toString()
                         + "(15);";
-                backgrounds += BACKGROUND.WOMAN_OF_KINGS_REALM.toString()
+                backgrounds += HeroEnums.BACKGROUND.WOMAN_OF_KINGS_REALM.toString()
                         + "(12);";
-                backgrounds += BACKGROUND.MAN_OF_EAGLE_REALM.toString()
+                backgrounds += HeroEnums.BACKGROUND.MAN_OF_EAGLE_REALM.toString()
                         + "(10);";
-                backgrounds += BACKGROUND.WOMAN_OF_EAGLE_REALM.toString()
+                backgrounds += HeroEnums.BACKGROUND.WOMAN_OF_EAGLE_REALM.toString()
                         + "(7);";
-                backgrounds += BACKGROUND.WOMAN_OF_KINGS_REALM.toString()
+                backgrounds += HeroEnums.BACKGROUND.WOMAN_OF_KINGS_REALM.toString()
                         + "(15);";
-                backgrounds += BACKGROUND.WOLFSBANE_DWARF.toString() + "(5);";
+                backgrounds += HeroEnums.BACKGROUND.WOLFSBANE_DWARF.toString() + "(5);";
 
                 break;
             }

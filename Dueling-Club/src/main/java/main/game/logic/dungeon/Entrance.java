@@ -1,12 +1,12 @@
 package main.game.logic.dungeon;
 
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.game.logic.battle.player.DC_Player;
 
 //can be a door, a tunnel, a staircase, a portal... possibly trapped
-public class Entrance extends DC_HeroObj {
+public class Entrance extends Unit {
     Dungeon dungeon, sublevel;
 
     public Entrance(int x, int y, ObjType type, Dungeon dungeon,
@@ -25,7 +25,7 @@ public class Entrance extends DC_HeroObj {
         // bfObjType.setImage(sublevel.getImagePath()); // default
     }
 
-    public void enter(DC_HeroObj unit, Coordinates coordinates) {
+    public void enter(Unit unit, Coordinates coordinates) {
         // each unit can really be independent; refresh will update... but
         // admittedly, with gameplay as it is now, it could be a hassle...
 

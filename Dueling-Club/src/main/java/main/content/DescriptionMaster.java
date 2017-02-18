@@ -1,8 +1,9 @@
 package main.content;
 
 import main.content.CONTENT_CONSTS.DEITY;
-import main.content.CONTENT_CONSTS.MASTERY_RANK;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.enums.entity.SkillEnums.MASTERY_RANK;
+import main.content.enums.entity.SkillEnums;
+import main.entity.obj.unit.Unit;
 import main.system.auxiliary.StringMaster;
 
 public class DescriptionMaster {
@@ -18,22 +19,22 @@ public class DescriptionMaster {
     public static String getMasteryRankDescription(PARAMS param, MASTERY_RANK rank) {
         switch (param) {
             case MARKSMANSHIP_MASTERY:
-                if (rank == MASTERY_RANK.NONE) {
+                if (rank == SkillEnums.MASTERY_RANK.NONE) {
                     return "You could shoot an ogre if it still stood. In the back. Up close.";
                 }
-                if (rank == MASTERY_RANK.NOVICE) {
+                if (rank == SkillEnums.MASTERY_RANK.NOVICE) {
                     return "You could hit the mark on a tree if your hands didn't shake...";
                 }
-                if (rank == MASTERY_RANK.APPRENTICE) {
+                if (rank == SkillEnums.MASTERY_RANK.APPRENTICE) {
                     return "You could hit the mark on a tree if your mind didn't wander so much...";
                 }
-                if (rank == MASTERY_RANK.ADEPT) {
+                if (rank == SkillEnums.MASTERY_RANK.ADEPT) {
                     return "Mysteries of Zen are slowly revealing themselves... ";
                 }
-                if (rank == MASTERY_RANK.ADVANCED) {
+                if (rank == SkillEnums.MASTERY_RANK.ADVANCED) {
                     return "Forget about aiming, it's all about the stance and breathing!";
                 }
-                if (rank == MASTERY_RANK.EXPERT) {
+                if (rank == SkillEnums.MASTERY_RANK.EXPERT) {
                     return "You can shoot a bird in the beak, with your eyes shut and hanging down from a tree. Shooting backwards. With hands tied.";
                 }
                 /*
@@ -62,11 +63,11 @@ public class DescriptionMaster {
 				 * 
 				 */
             case PSYCHIC_MASTERY:
-                if (rank == MASTERY_RANK.NONE) {
+                if (rank == SkillEnums.MASTERY_RANK.NONE) {
                     return "You have difficulty reading the thoughts of your  drunkard friends shouting at you and have a presence so"
                             + " fearsome that people choose not to notice you";
                 }
-                if (rank == MASTERY_RANK.GRAND_MASTER) {
+                if (rank == SkillEnums.MASTERY_RANK.GRAND_MASTER) {
                     return "No mind is too strong for you to break, no spirit too fierce to subdue, no thought too quick to intercept. ";
                 }
 
@@ -275,7 +276,7 @@ public class DescriptionMaster {
 
     }
 
-    public static String getAttributeQualityDescription(DC_HeroObj hero, PARAMS attribute) {
+    public static String getAttributeQualityDescription(Unit hero, PARAMS attribute) {
         switch (attribute) {
             case AGILITY:
                 // return "" +

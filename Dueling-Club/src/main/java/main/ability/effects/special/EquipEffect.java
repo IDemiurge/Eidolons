@@ -1,12 +1,13 @@
 package main.ability.effects.special;
 
 import main.ability.effects.oneshot.MicroEffect;
-import main.content.CONTENT_CONSTS.ITEM_SLOT;
+import main.content.enums.entity.ItemEnums.ITEM_SLOT;
+import main.content.enums.entity.ItemEnums;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref.KEYS;
 import main.entity.item.DC_HeroItemObj;
 import main.entity.item.DC_WeaponObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 
 public class EquipEffect extends MicroEffect {
 
@@ -41,8 +42,8 @@ public class EquipEffect extends MicroEffect {
         }
         // check if item can be equipped at all!
 
-        DC_HeroObj hero = (DC_HeroObj) ref.getTargetObj();
-        ITEM_SLOT slot = ITEM_SLOT.ARMOR;
+        Unit hero = (Unit) ref.getTargetObj();
+        ITEM_SLOT slot = ItemEnums.ITEM_SLOT.ARMOR;
         // check if main hand is occupied
 
         boolean mainHand = true;
@@ -51,8 +52,8 @@ public class EquipEffect extends MicroEffect {
             mainHand = false;
         }
         if (weapon || quickItem) {
-            slot = (mainHand || quickItem) ? ITEM_SLOT.MAIN_HAND
-                    : ITEM_SLOT.OFF_HAND;
+            slot = (mainHand || quickItem) ? ItemEnums.ITEM_SLOT.MAIN_HAND
+                    : ItemEnums.ITEM_SLOT.OFF_HAND;
         }
 
         ref.setID((weapon || quickItem) ? KEYS.WEAPON : KEYS.ARMOR, item

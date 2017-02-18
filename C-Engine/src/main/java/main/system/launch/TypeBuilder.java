@@ -2,10 +2,10 @@ package main.system.launch;
 
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.MACRO_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.MACRO_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.XmlDocHolder;
 import main.data.xml.XML_Converter;
 import main.entity.Entity;

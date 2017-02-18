@@ -2,7 +2,7 @@ package main.rules.buff;
 
 import main.ability.effects.AddBuffEffect;
 import main.ability.effects.Effect;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.VALUE;
 import main.data.XLinkedMap;
 import main.elements.conditions.Condition;
@@ -13,12 +13,12 @@ import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
-import main.game.MicroGame;
-import main.game.event.Event;
-import main.game.event.EventType;
-import main.game.event.EventType.CONSTRUCTED_EVENT_TYPE;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
+import main.game.core.game.MicroGame;
+import main.game.logic.event.Event;
+import main.game.logic.event.EventType;
+import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.rules.DC_RuleImpl;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.COMBAT_RULES;
@@ -36,7 +36,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     protected static final KEYS OBJ_REF = KEYS.SOURCE;
     protected Integer level = -1;
     protected Map<Integer, Conditions> conditionsMap = new HashMap<>();
-    protected DC_HeroObj target;
+    protected Unit target;
     Map<Obj, Effect[]> effectCache = new XLinkedMap<>();
     private boolean animationQueued;
 
@@ -52,7 +52,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
 
     public boolean check(Obj obj) {
         if (!applyToBfObjs()) {
-            if (obj.getOBJ_TYPE_ENUM() == OBJ_TYPES.BF_OBJ) {
+            if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
                 return false;
             }
         }
@@ -67,7 +67,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     }
 
     public boolean apply(Obj obj) {
-        target = (DC_HeroObj) obj;
+        target = (Unit) obj;
         Ref ref = obj.getRef().getCopy();
 
         ref.setMatch(obj.getId());
@@ -175,7 +175,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
         return new Conditions();
     }
 
-    public int getBuffLevel(DC_HeroObj unit) {
+    public int getBuffLevel(Unit unit) {
         Ref ref = unit.getRef().getCopy();
         ref.setMatch(unit.getId());
         ref.setTarget(unit.getId());
@@ -190,7 +190,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     // protected abstract String getLogText(Integer level);
     @Override
     public void apply(Ref ref) {
-        target = (DC_HeroObj) ref.getTargetObj();
+        target = (Unit) ref.getTargetObj();
         getEffect().setAnimationActive(ref.getActive());
         if (checkAnimationDisplayed(ref)) {
             queueAnimation();

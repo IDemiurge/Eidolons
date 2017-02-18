@@ -6,9 +6,9 @@ import main.ability.effects.common.ModifyStatusEffect;
 import main.elements.costs.Cost;
 import main.entity.Entity;
 import main.entity.active.DC_ActiveObj;
-import main.game.ai.tools.target.EffectMaster;
-import main.game.event.Event;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.game.ai.tools.target.EffectFinder;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
@@ -164,14 +164,14 @@ public class FloatingTextMaster {
         STATUS(
          false, (e) -> {
             ModifyStatusEffect ef = (ModifyStatusEffect)
-             EffectMaster.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
+             EffectFinder.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
 //                if (ef==null )
             return ef.getValue().split(";");
         }),
         MODE(
          false, (e) -> {
             ModeEffect ef = (ModeEffect)
-             EffectMaster.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
+             EffectFinder.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
             return new Object[]{
              ef.getMode()
             };

@@ -3,7 +3,7 @@ package main.client.cc.gui.neo.top;
 import main.client.cc.HC_Master;
 import main.client.cc.gui.MainViewPanel;
 import main.client.cc.gui.MainViewPanel.HERO_VIEWS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Panel;
 
@@ -12,12 +12,12 @@ import java.awt.*;
 public class SpecialControls extends G_Panel {
 
     CustomButton toggleTreeViewButton;
-    private DC_HeroObj hero;
+    private Unit hero;
     private MainViewPanel mvp;
     private CustomButton toggleAltModeButton;
     private CustomButton toggleT3ViewButton;
 
-    public SpecialControls(DC_HeroObj hero, final MainViewPanel mvp) {
+    public SpecialControls(Unit hero, final MainViewPanel mvp) {
         this.hero = hero;
         this.mvp = mvp;
         panelSize = new Dimension(180, 32);

@@ -5,7 +5,7 @@ import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.ActiveObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.MacroRef;
@@ -62,7 +62,7 @@ public class MacroAction extends MacroObj implements ActiveObj {
     public boolean activateThis(MacroRef ref) {
         if (mode != null) { // ref from where, exactly? ActiveSelected obj,
             // perhaps, by clicking Members?
-            DC_HeroObj hero = MacroManager.getSelectedPartyMember();
+            Unit hero = MacroManager.getSelectedPartyMember();
             hero.setMacroMode(mode);
             MacroManager.getMapView().getMacroActionPanel().refresh();
             return true;
@@ -230,7 +230,7 @@ public class MacroAction extends MacroObj implements ActiveObj {
     }
 
     @Override
-    public DC_HeroObj getOwnerObj() {
+    public Unit getOwnerObj() {
         return MacroManager.getSelectedPartyMember();
     }
 

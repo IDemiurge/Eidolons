@@ -12,7 +12,7 @@ import main.client.cc.gui.neo.tooltip.ToolTipPanel;
 import main.client.cc.gui.pages.HC_PagedInfoPanel;
 import main.client.cc.gui.views.HeroItemView;
 import main.entity.Entity;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;
 import main.swing.generic.components.G_Panel;
 
@@ -26,10 +26,10 @@ public class MiddlePanel extends G_Panel {
     private MainViewPanel mvp;
     private HERO_VIEWS view;
     private StatsControlComponent scc;
-    private DC_HeroObj hero;
+    private Unit hero;
     private ToolTipPanel toolTipPanel;
 
-    public MiddlePanel(MainViewPanel mvp, DC_HeroObj hero) {
+    public MiddlePanel(MainViewPanel mvp, Unit hero) {
         this.hero = hero;
         this.mvp = mvp;
         upperPanel = new HC_PagedInfoPanel();
@@ -166,7 +166,7 @@ public class MiddlePanel extends G_Panel {
         return scc;
     }
 
-    public DC_HeroObj getHero() {
+    public Unit getHero() {
         return hero;
     }
 

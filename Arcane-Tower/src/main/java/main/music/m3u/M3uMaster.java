@@ -1,6 +1,6 @@
 package main.music.m3u;
 
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.logic.AT_OBJ_TYPE;

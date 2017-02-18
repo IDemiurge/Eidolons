@@ -2,7 +2,7 @@ package main.swing.components.panels;
 
 import main.content.PARAMS;
 import main.entity.obj.Obj;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.swing.generic.components.G_Panel;
 import main.system.graphics.ColorManager;
 import main.system.text.ToolTipMaster.TOOLTIP_TYPE;

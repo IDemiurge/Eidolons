@@ -1,18 +1,19 @@
 package main.system.math.roll;
 
 import main.ability.effects.containers.RollEffect;
-import main.content.CONTENT_CONSTS.ROLL_TYPES;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
+import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.content.ContentManager;
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.enums.GenericEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.rules.action.WatchRule;
 import main.rules.combat.ForceRule;
 import main.system.auxiliary.EnumMaster;
@@ -333,10 +334,10 @@ public class RollMaster {
     }
 
     private static boolean checkRollLogged(ROLL_TYPES roll_type, Boolean result) {
-        if (roll_type == ROLL_TYPES.STEALTH) {
+        if (roll_type == GenericEnums.ROLL_TYPES.STEALTH) {
             return result;
         }
-        if (roll_type == ROLL_TYPES.DETECTION) {
+        if (roll_type == GenericEnums.ROLL_TYPES.DETECTION) {
             return result;
         }
 
@@ -368,14 +369,14 @@ public class RollMaster {
     }
 
     public static boolean checkRollType(ROLL_TYPES rollType, Ref ref) {
-        DC_HeroObj unit = (DC_HeroObj) ref.getTargetObj();
+        Unit unit = (Unit) ref.getTargetObj();
         if (unit == null) {
             return false;
         }
         boolean result = true;
         switch (rollType) {
             case MASS:
-                if (unit.checkPassive(STANDARD_PASSIVES.IMMATERIAL)) {
+                if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
                     result = false;
                 }
                 break;
@@ -384,7 +385,7 @@ public class RollMaster {
                 if (!unit.isLiving()) {
                     result = false;
                 }
-                if (unit.checkPassive(STANDARD_PASSIVES.MIND_AFFECTING_IMMUNE)) {
+                if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.MIND_AFFECTING_IMMUNE)) {
                     result = false;
                 }
                 break;
@@ -446,22 +447,22 @@ public class RollMaster {
          resist if reflex win
          draw if strength win
      */
-    public static Boolean rollForceKnockdown(DC_HeroObj target, DC_ActiveObj attack, int force) {
-        ROLL_TYPES roll_type = ROLL_TYPES.FORCE;
+    public static Boolean rollForceKnockdown(Unit target, DC_ActiveObj attack, int force) {
+        ROLL_TYPES roll_type = GenericEnums.ROLL_TYPES.FORCE;
 
-        String success = "3*" + getStdFormula(ROLL_TYPES.BODY_STRENGTH, true);
+        String success = "3*" + getStdFormula(GenericEnums.ROLL_TYPES.BODY_STRENGTH, true);
         String fail = "" + force / ForceRule.ROLL_FACTOR;
 
         // Ref ref = Ref.getSelfTargetingRefCopy(target);
         // ref.setSource(attack.getRef().getSource());
-        Boolean result = new Roll(ROLL_TYPES.FORCE, success, fail, 25).roll(attack.getRef());
+        Boolean result = new Roll(GenericEnums.ROLL_TYPES.FORCE, success, fail, 25).roll(attack.getRef());
         if (result == null) {
 
         }
         return result;
     }
 
-    public static Boolean makeReactionRoll(DC_HeroObj unit, DC_ActiveObj action, DC_ActiveObj attack) {
+    public static Boolean makeReactionRoll(Unit unit, DC_ActiveObj action, DC_ActiveObj attack) {
         String fail = StringMaster.getValueRef(KEYS.TARGET, PARAMS.INITIATIVE_MODIFIER) + "/"
                 + (1 + action.getIntParam(PARAMS.AP_COST)) + "*"
                 + getDexterousModifier(unit, action);
@@ -471,7 +472,7 @@ public class RollMaster {
                 + getVigilanceModifier(unit, action);
         String successTooltip = "to avoid Attack of Opportunity";
 
-        Roll dex = new Roll(ROLL_TYPES.REACTION, success, fail, 25);
+        Roll dex = new Roll(GenericEnums.ROLL_TYPES.REACTION, success, fail, 25);
         Ref ref = action.getRef().getCopy();
         ref.setTarget(unit.getId());
         boolean result = !dex.roll(ref);
@@ -481,12 +482,12 @@ public class RollMaster {
         return result;
     }
 
-    public static int getDexterousModifier(DC_HeroObj unit, DC_ActiveObj action) {
+    public static int getDexterousModifier(Unit unit, DC_ActiveObj action) {
         int mod = 25;
-        if (action.checkPassive(STANDARD_PASSIVES.DEXTEROUS)) {
+        if (action.checkPassive(UnitEnums.STANDARD_PASSIVES.DEXTEROUS)) {
             mod += 25;
         }
-        if (action.getOwnerObj().checkPassive(STANDARD_PASSIVES.DEXTEROUS)) {
+        if (action.getOwnerObj().checkPassive(UnitEnums.STANDARD_PASSIVES.DEXTEROUS)) {
             mod += 25;
         }
         if (WatchRule.checkWatched(action.getOwnerObj(), unit)) {
@@ -500,9 +501,9 @@ public class RollMaster {
 
     }
 
-    public static int getVigilanceModifier(DC_HeroObj unit, DC_ActiveObj action) {
+    public static int getVigilanceModifier(Unit unit, DC_ActiveObj action) {
         int mod = 10;
-        if (unit.checkPassive(STANDARD_PASSIVES.VIGILANCE)) {
+        if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.VIGILANCE)) {
             mod += 40;
         }
         if (WatchRule.checkWatched(unit, action.getOwnerObj())) {

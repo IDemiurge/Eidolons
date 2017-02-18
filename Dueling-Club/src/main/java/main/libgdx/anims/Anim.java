@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import javafx.util.Pair;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;

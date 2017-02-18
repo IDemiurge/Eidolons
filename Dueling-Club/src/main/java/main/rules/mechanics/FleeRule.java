@@ -2,8 +2,8 @@ package main.rules.mechanics;
 
 import main.entity.Ref;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class FleeRule {
 	 * distaster!
 	 */
 
-    private List<DC_HeroObj> fledUnits = new LinkedList<>();
+    private List<Unit> fledUnits = new LinkedList<>();
     private DC_Game game;
 
     public FleeRule(DC_Game game) {

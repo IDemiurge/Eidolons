@@ -2,10 +2,10 @@ package main.game.ai.logic.types.brute;
 
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_UnitObj;
+import main.entity.obj.unit.DC_UnitModel;
 import main.game.ai.logic.DC_AI;
 import main.game.ai.logic.DC_AI_Logic;
-import main.rules.DC_ActionManager;
+import main.game.logic.generic.DC_ActionManager;
 
 public class BruteAI extends DC_AI_Logic {
 
@@ -35,7 +35,7 @@ public class BruteAI extends DC_AI_Logic {
             case ATTACK:
                 active = (DC_ActiveObj) actionManager
                         .getAction(DC_ActionManager.ATTACK, unit);
-                if (((DC_UnitObj) unit).isHero()) {
+                if (((DC_UnitModel) unit).isHero()) {
                     active = (DC_ActiveObj) actionManager
                             .getAction(DC_ActionManager.STD_ACTIONS.Attack.name(), unit);
                 }
@@ -65,14 +65,14 @@ public class BruteAI extends DC_AI_Logic {
     public boolean isTurnOver() {
         boolean result = true;
         for (Obj obj : units) {
-            result &= ((DC_UnitObj) obj).isDone();
+            result &= ((DC_UnitModel) obj).isDone();
         }
         return result;
     }
 
     @Override
     public boolean isUnitDone(Obj unit) {
-        return ((DC_UnitObj) unit).isDone();
+        return ((DC_UnitModel) unit).isDone();
     }
 
     @Override

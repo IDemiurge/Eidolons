@@ -60,7 +60,8 @@ public class ActionAnim extends Anim {
     }
 
     public Actor getActor() {
-        return GameScreen.getInstance().getGridPanel().getUnitMap().get(getActive().getOwnerObj());
+        return GameScreen.getInstance().getGridPanel().getUnitMap()
+         .get(getActive().getOwnerObj());
     }
 
 //for triggers!

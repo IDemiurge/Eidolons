@@ -1,7 +1,7 @@
 package main.game.battlefield;
 
-import main.content.CONTENT_CONSTS.STD_BOOLS;
-import main.content.parameters.G_PARAMS;
+import main.content.enums.GenericEnums;
+import main.content.values.parameters.G_PARAMS;
 import main.entity.obj.Obj;
 
 import java.util.LinkedList;
@@ -63,7 +63,7 @@ public class GraveyardManager {
 
     public void unitDies(Obj unit) {
 
-        if (unit.checkBool(STD_BOOLS.LEAVES_NO_CORPSE)) {
+        if (unit.checkBool(GenericEnums.STD_BOOLS.LEAVES_NO_CORPSE)) {
             return;
         }
         addCorpse(unit);

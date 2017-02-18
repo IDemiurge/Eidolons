@@ -1,8 +1,8 @@
 package main.swing.components.panels.page;
 
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.swing.components.PriorityListItem;
 import main.swing.components.panels.DC_PriorityListPanel;
 import main.swing.generic.components.list.G_List;
@@ -16,9 +16,9 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-public class PriorityPage extends G_ListPanel<DC_HeroObj> implements ListCellRenderer<DC_HeroObj> {
+public class PriorityPage extends G_ListPanel<Unit> implements ListCellRenderer<Unit> {
 
-    public PriorityPage(List<DC_HeroObj> list) {
+    public PriorityPage(List<Unit> list) {
         super(list);
         getList().setCellRenderer(this);
         panelSize = new Dimension(GuiManager.getSmallObjSize(), DC_PriorityListPanel.PLP_MIN_ITEMS
@@ -39,7 +39,7 @@ public class PriorityPage extends G_ListPanel<DC_HeroObj> implements ListCellRen
     }
 
     @Override
-    protected G_List<DC_HeroObj> createList() {
+    protected G_List<Unit> createList() {
         return new G_List<>(data);
     }
 
@@ -49,8 +49,8 @@ public class PriorityPage extends G_ListPanel<DC_HeroObj> implements ListCellRen
     }
 
     @Override
-    public ObjListMouseListener<DC_HeroObj> getMouseListener() {
-        return new ObjListMouseListener<DC_HeroObj>(getList()) {
+    public ObjListMouseListener<Unit> getMouseListener() {
+        return new ObjListMouseListener<Unit>(getList()) {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 if (SwingUtilities.isRightMouseButton(e)) { // to avoid this if
@@ -72,8 +72,8 @@ public class PriorityPage extends G_ListPanel<DC_HeroObj> implements ListCellRen
     }
 
     @Override
-    public Component getListCellRendererComponent(JList<? extends DC_HeroObj> list,
-                                                  DC_HeroObj value, int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList<? extends Unit> list,
+                                                  Unit value, int index, boolean isSelected, boolean cellHasFocus) {
         /**
          * TODO emblem AP highlight? highlight when infoselected on bf
          */

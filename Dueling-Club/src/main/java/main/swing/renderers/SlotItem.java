@@ -1,6 +1,6 @@
 package main.swing.renderers;
 
-import main.content.CONTENT_CONSTS.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.STD_COUNTERS;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;

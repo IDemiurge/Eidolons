@@ -1,15 +1,15 @@
 package main.entity.item;
 
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.MicroGame;
-import main.game.player.Player;
+import main.game.core.game.MicroGame;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 
-import static main.content.CONTENT_CONSTS.GARMENT_TYPE;
+import static main.content.enums.entity.ItemEnums.GARMENT_TYPE;
 
 public class Garment extends DC_HeroSlotItem {
     /*

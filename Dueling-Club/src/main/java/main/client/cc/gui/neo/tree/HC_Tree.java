@@ -8,19 +8,19 @@ import main.client.cc.gui.neo.tree.logic.TreeLink;
 import main.client.cc.gui.neo.tree.logic.TreeMap;
 import main.client.cc.gui.neo.tree.logic.TreeMap.LINK_VARIANT;
 import main.client.dc.Launcher;
-import main.content.CONTENT_CONSTS.CLASS_GROUP;
-import main.content.CONTENT_CONSTS.SKILL_GROUP;
+import main.content.enums.entity.HeroEnums.CLASS_GROUP;
+import main.content.enums.entity.SkillEnums.SKILL_GROUP;
 import main.content.ContentManager;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.data.DataManager;
 import main.elements.conditions.Requirements;
 import main.elements.conditions.RequirementsManager;
 import main.entity.Ref;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.battlefield.XLine;
+import main.swing.XLine;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.*;
 import main.system.auxiliary.log.LogMaster;
@@ -45,7 +45,7 @@ import java.util.List;
 
 public class HC_Tree {
     G_Panel panel;
-    DC_HeroObj hero;
+    Unit hero;
     TreeMap map;
     Map<Point, Image> underlayMap = new HashMap<>();
     Map<Point, Image> overlayMap = new HashMap<>();
@@ -78,7 +78,7 @@ public class HC_Tree {
 	 */
     private ObjType reqTextType;
 
-    public HC_Tree(DC_HeroObj hero, TreeMap map, Object arg) {
+    public HC_Tree(Unit hero, TreeMap map, Object arg) {
         this.map = map;
         this.types = map.getTypes();
         this.hero = hero;
@@ -704,7 +704,7 @@ public class HC_Tree {
         if (types.isEmpty()) {
             return false;
         }
-        return types.get(0).getOBJ_TYPE_ENUM() == OBJ_TYPES.SKILLS;
+        return types.get(0).getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS;
     }
 
     public ObjType getReqTextType() {
@@ -895,7 +895,7 @@ public class HC_Tree {
         return panel;
     }
 
-    public DC_HeroObj getHero() {
+    public Unit getHero() {
         return hero;
     }
 

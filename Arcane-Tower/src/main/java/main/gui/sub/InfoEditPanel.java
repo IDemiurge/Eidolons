@@ -3,7 +3,7 @@ package main.gui.sub;
 import main.ArcaneTower;
 import main.content.ContentManager;
 import main.content.VALUE;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.game.logic.macro.gui.MacroGuiManager;

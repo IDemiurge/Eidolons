@@ -9,11 +9,10 @@ import main.ability.effects.continuous.CustomTargetEffect;
 import main.ability.effects.oneshot.common.AddTriggerEffect;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.ability.targeting.TemplateAutoTargeting;
-import main.content.CONTENT_CONSTS.ACTION_TAGS;
-import main.content.CONTENT_CONSTS.ACTION_TYPE_GROUPS;
-import main.content.CONTENT_CONSTS.STD_BUFF_NAMES;
 import main.content.PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.system.MetaEnums;
+import main.content.values.properties.G_PROPS;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.RefCondition;
@@ -24,10 +23,10 @@ import main.elements.targeting.FixedTargeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BuffObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.active.DC_UnitAction;
 import main.entity.item.DC_WeaponObj;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.rules.UnitAnalyzer;
 import main.system.DC_Formulas;
 import main.system.auxiliary.log.LogMaster;
@@ -35,16 +34,16 @@ import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 
 public class CadenceRule {
-    public static final String MAIN_HAND = ACTION_TAGS.MAIN_HAND.toString();
-    public static final String OFF_HAND = ACTION_TAGS.OFF_HAND.toString();
+    public static final String MAIN_HAND = ActionEnums.ACTION_TAGS.MAIN_HAND.toString();
+    public static final String OFF_HAND = ActionEnums.ACTION_TAGS.OFF_HAND.toString();
     private static final G_PROPS PROP = G_PROPS.ACTION_TAGS;
     // private static final String DEFAULT_STA_REDUCTION = "-25";
     // private static final String DEFAULT_AP_REDUCTION = "-33";
-    private static final String buffTypeNameOffHand = STD_BUFF_NAMES.Off_Hand_Cadence.name();
-    private static final String buffTypeNameMainHand = STD_BUFF_NAMES.Main_Hand_Cadence.name();
+    private static final String buffTypeNameOffHand = MetaEnums.STD_BUFF_NAMES.Off_Hand_Cadence.name();
+    private static final String buffTypeNameMainHand = MetaEnums.STD_BUFF_NAMES.Main_Hand_Cadence.name();
     private static final Formula DURATION = new Formula("1");
 
-    private static boolean checkSingleWeaponCadence(DC_HeroObj unit, DC_UnitAction action) {
+    private static boolean checkSingleWeaponCadence(Unit unit, DC_UnitAction action) {
         if (unit.getActiveWeapon(action.isOffhand()).getIntParam(PARAMS.CADENCE_BONUS) > 0) {
             return true;
         }
@@ -56,7 +55,7 @@ public class CadenceRule {
         return false;
     }
 
-    private static boolean checkFocusBonusApplies(DC_HeroObj unit, DC_UnitAction action,
+    private static boolean checkFocusBonusApplies(Unit unit, DC_UnitAction action,
                                                   boolean singleCadence) {
         BuffObj buff = unit.getBuff(buffTypeNameOffHand, false);
         if (buff == null) {
@@ -74,8 +73,8 @@ public class CadenceRule {
         return true;
     }
 
-    public static void checkDualAttackCadence(DC_UnitAction action, DC_HeroObj unit) {
-        if (action.getActionGroup() != ACTION_TYPE_GROUPS.ATTACK) {
+    public static void checkDualAttackCadence(DC_UnitAction action, Unit unit) {
+        if (action.getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.ATTACK) {
             return;
         }
         boolean singleCadence = checkSingleWeaponCadence(unit, action);

@@ -1,15 +1,16 @@
 package main.game.ai;
 
-import main.content.CONTENT_CONSTS.AI_TYPE;
-import main.content.CONTENT_CONSTS.PLAYER_AI_TYPE;
+import main.content.enums.system.AiEnums;
+import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
 import main.data.XLinkedMap;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.actions.ActionManager;
 import main.game.ai.elements.goal.GoalManager;
 import main.game.ai.elements.task.TaskManager;
 import main.game.ai.tools.Executor;
+import main.game.ai.tools.priority.DC_PriorityManager;
 import main.game.ai.tools.priority.PriorityManager;
 
 import java.util.HashSet;
@@ -27,12 +28,12 @@ public class AI_Manager {
     private GoalManager goalManager;
     private Executor executor;
     private TaskManager taskManager;
-    private Map<DC_HeroObj, UnitAI> aiMap = new XLinkedMap<>();
-    private PLAYER_AI_TYPE type = PLAYER_AI_TYPE.BRUTE;
+    private Map<Unit, UnitAI> aiMap = new XLinkedMap<>();
+    private PLAYER_AI_TYPE type = AiEnums.PLAYER_AI_TYPE.BRUTE;
     public AI_Manager(DC_Game game) {
 
         this.game = game;
-        priorityManager = new PriorityManager(game);
+        priorityManager =  DC_PriorityManager.init();
         taskManager = new TaskManager();
         executor = new Executor(game);
     }
@@ -45,20 +46,20 @@ public class AI_Manager {
         return brokenActions;
     }
 
-    public static DC_HeroObj chooseEnemyToEngage(DC_HeroObj obj, List<DC_HeroObj> units) {
-        if (obj.getAiType() == AI_TYPE.CASTER) {
+    public static Unit chooseEnemyToEngage(Unit obj, List<Unit> units) {
+        if (obj.getAiType() == AiEnums.AI_TYPE.CASTER) {
             return null;
         }
-        if (obj.getAiType() == AI_TYPE.ARCHER) {
+        if (obj.getAiType() == AiEnums.AI_TYPE.ARCHER) {
             return null;
         }
-        if (obj.getAiType() == AI_TYPE.SNEAK) {
+        if (obj.getAiType() == AiEnums.AI_TYPE.SNEAK) {
             return null;
         }
-        DC_HeroObj topPriorityUnit = null;
+        Unit topPriorityUnit = null;
         int topPriority = -1;
-        for (DC_HeroObj u : units) {
-            int priority = PriorityManager.getUnitPriority(u, true);
+        for (Unit u : units) {
+            int priority = DC_PriorityManager.getUnitPriority(u, true);
             if (priority > topPriority) {
                 topPriority = priority;
                 topPriorityUnit = u;
@@ -79,7 +80,7 @@ public class AI_Manager {
         game.getPlayer(false).setPlayerAI(new PlayerAI(getType()));
     }
 
-    public boolean makeAction(final DC_HeroObj unit) {
+    public boolean makeAction(final Unit unit) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -126,7 +127,7 @@ public class AI_Manager {
 
     }
 
-    public UnitAI getAI(DC_HeroObj unit) {
+    public UnitAI getAI(Unit unit) {
         return unit.getUnitAI();
     }
 
@@ -134,7 +135,7 @@ public class AI_Manager {
         return game;
     }
 
-    public PriorityManager getPriorityManager() {
+    public  PriorityManager getPriorityManager() {
         return priorityManager;
     }
 

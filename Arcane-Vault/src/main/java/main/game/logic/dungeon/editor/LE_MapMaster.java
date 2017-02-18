@@ -1,6 +1,6 @@
 package main.game.logic.dungeon.editor;
 
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.data.DataManager;
@@ -350,7 +350,7 @@ public class LE_MapMaster {
         LevelEditor.getObjMaster().removeObjects(block.getCoordinates());
 
         LE_ObjMaster.fill(block.getCoordinates(), DataManager.getType(block.getZone()
-                .getFillerType(), OBJ_TYPES.BF_OBJ));
+                .getFillerType(), DC_TYPE.BF_OBJ));
         for (MapBlock b : getPlan().getBlocks()) {
             b.getConnectedBlocks().remove(block);// connected
         }

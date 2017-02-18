@@ -1,6 +1,6 @@
 package main.ability.conditions;
 
-import main.content.CONTENT_CONSTS.TARGETING_MODIFIERS;
+import main.content.enums.entity.AbilityEnums.TARGETING_MODIFIERS;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.MicroCondition;

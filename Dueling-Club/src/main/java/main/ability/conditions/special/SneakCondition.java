@@ -1,14 +1,12 @@
 package main.ability.conditions.special;
 
-import main.content.CONTENT_CONSTS.FACING_SINGLE;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
-import main.content.CONTENT_CONSTS.STATUS;
-import main.content.CONTENT_CONSTS.UNIT_TO_PLAYER_VISION;
-import main.content.enums.STD_MODES;
+import main.content.enums.entity.UnitEnums;
+import main.content.enums.rules.VisionEnums;
+import main.content.mode.STD_MODES;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.FacingMaster;
 import main.game.battlefield.VisionManager;
 
@@ -34,25 +32,25 @@ public class SneakCondition extends MicroCondition {
 
     @Override
     public boolean check() {
-        if (!(ref.getObj(key) instanceof DC_HeroObj)) {
+        if (!(ref.getObj(key) instanceof Unit)) {
             return false;
         }
-        DC_HeroObj attacked = (DC_HeroObj) ref.getObj(key);
+        Unit attacked = (Unit) ref.getObj(key);
         if (attacked.isBfObj()) {
             return false;
         }
-        if (attacked.checkPassive(STANDARD_PASSIVES.SNEAK_IMMUNE)) {
+        if (attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.SNEAK_IMMUNE)) {
             return false;
         }
 
-        if (attacked.checkStatus(STATUS.IMMOBILE)) {
+        if (attacked.checkStatus(UnitEnums.STATUS.IMMOBILE)) {
             return true;
         }
-        if (attacked.checkStatus(STATUS.CHARMED)) {
+        if (attacked.checkStatus(UnitEnums.STATUS.CHARMED)) {
             return true;
         }
 
-        DC_HeroObj attacker = (DC_HeroObj) ref.getSourceObj();
+        Unit attacker = (Unit) ref.getSourceObj();
         DC_ActiveObj action = (DC_ActiveObj) ref.getObj(KEYS.ACTIVE);
 
         // if (attacked.checkPassive(STANDARD_PASSIVES.VIGILANCE))
@@ -73,11 +71,11 @@ public class SneakCondition extends MicroCondition {
             // return false;
 
             if (!action.isRanged()) {
-                if (attacker.getActivePlayerVisionStatus() == UNIT_TO_PLAYER_VISION.UNKNOWN
+                if (attacker.getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN
                         || !VisionManager.checkVisible(attacker)) {
                     return true;
                 } else {
-                    return FacingMaster.getSingleFacing(attacker, attacked) == FACING_SINGLE.BEHIND;
+                    return FacingMaster.getSingleFacing(attacker, attacked) == UnitEnums.FACING_SINGLE.BEHIND;
                 }
             }
         }

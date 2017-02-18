@@ -1,9 +1,9 @@
 package main.game.battlefield.map;
 
 import main.data.filesys.PathFinder;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
@@ -94,11 +94,11 @@ public class DC_Map {
     private String initThemeBackground() {
         String key;
         if (game.getPlayer(true).isDefender()) {
-            key = ((DC_HeroObj) game.getPlayer(true).getHeroObj()).getDeity()
+            key = ((Unit) game.getPlayer(true).getHeroObj()).getDeity()
                     .getName();
         } else {
             if (game.getPlayer(false).isDefender()) {
-                key = ((DC_HeroObj) game.getPlayer(false).getHeroObj())
+                key = ((Unit) game.getPlayer(false).getHeroObj())
                         .getDeity().getName();
 
             } else {

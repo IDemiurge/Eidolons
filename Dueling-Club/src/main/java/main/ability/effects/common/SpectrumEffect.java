@@ -9,7 +9,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.game.ai.tools.target.EffectMaster;
+import main.game.ai.tools.target.EffectFinder;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.VisionManager;
@@ -145,7 +145,7 @@ public class SpectrumEffect extends DC_Effect {
     // }
     private void initEffects() {
         ref.setID(KEYS.INFO, ref.getId(KEYS.ACTIVE));
-        effects = EffectMaster.initParamModEffects(paramString, ref);
+        effects = EffectFinder.initParamModEffects(paramString, ref);
     }
 
     public String getRangeFormula() {

@@ -1,16 +1,16 @@
 package main.system.graphics;
 
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.elements.costs.Cost;
 import main.elements.costs.Costs;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_HeroSlotItem;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.attack.ArmorMaster;
@@ -643,7 +643,7 @@ public class ActionAnimation extends PhaseAnimation {
         return action.isMove();
     }
 
-    public void setSource(DC_HeroObj source) {
+    public void setSource(Unit source) {
         this.source = source;
         game = source.getGame();
         setSourceCoordinates((source.getCoordinates()));

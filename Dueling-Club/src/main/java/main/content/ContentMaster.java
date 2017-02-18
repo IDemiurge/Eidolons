@@ -1,6 +1,6 @@
 package main.content;
 
-import main.content.CONTENT_CONSTS.RACE;
+import main.content.enums.entity.HeroEnums;
 import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -23,7 +23,7 @@ public class ContentMaster {
     // items in HC...
     public boolean isTypeVersionBlocked(ObjType type, GAME_VERSION version) {
 
-        switch ((OBJ_TYPES) type.getOBJ_TYPE_ENUM()) {
+        switch ((DC_TYPE) type.getOBJ_TYPE_ENUM()) {
             case ARMOR:
             case WEAPONS:
             case GARMENT:
@@ -54,7 +54,7 @@ public class ContentMaster {
     }
 
     private boolean checkHeroBackgroundBlocked(ObjType type, GAME_VERSION version) {
-        if (type.getGroupingKey().equalsIgnoreCase(RACE.HUMAN.toString())) {
+        if (type.getGroupingKey().equalsIgnoreCase(HeroEnums.RACE.HUMAN.toString())) {
             if (!type.getName().contains("Realm")) {
                 return true;
             } else {
@@ -67,13 +67,13 @@ public class ContentMaster {
 
     private boolean checkItemBlocked(ObjType type, GAME_VERSION version) {
         if (version == GAME_VERSION.BATTLECRAFT_PROMO) {
-            if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.JEWELRY) {
+            if (type.getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY) {
                 return true;
             }
         }
         if (isAboveBasic(version)) {
 
-            List<String> blockedList = getBlockedTypeGroupsBasic((OBJ_TYPES) type
+            List<String> blockedList = getBlockedTypeGroupsBasic((DC_TYPE) type
                     .getOBJ_TYPE_ENUM());
 
             for (String blocked : blockedList) {
@@ -86,7 +86,7 @@ public class ContentMaster {
         return false;
     }
 
-    private List<String> getBlockedTypeGroupsBasic(OBJ_TYPES TYPE) {
+    private List<String> getBlockedTypeGroupsBasic(DC_TYPE TYPE) {
         switch (TYPE) {
             case WEAPONS:
             case GARMENT:

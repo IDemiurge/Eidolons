@@ -1,6 +1,6 @@
 package main.game.logic.faction;
 
-import main.content.properties.MACRO_PROPS;
+import main.content.values.properties.MACRO_PROPS;
 import main.game.logic.macro.MacroRef;
 import main.system.datatypes.DequeImpl;
 

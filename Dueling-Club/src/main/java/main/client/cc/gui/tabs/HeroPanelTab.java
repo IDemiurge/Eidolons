@@ -2,20 +2,20 @@ package main.client.cc.gui.tabs;
 
 import main.client.cc.gui.MainViewPanel;
 import main.client.cc.gui.MainViewPanel.HERO_VIEWS;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.swing.generic.components.G_Panel;
 
 public abstract class HeroPanelTab extends G_Panel {
 
-    protected DC_HeroObj hero;
+    protected Unit hero;
     protected HERO_VIEWS linkedView;
     protected MainViewPanel mvp;
     protected DC_Game game;
     protected String title;
     private boolean dirty;
 
-    public HeroPanelTab(String title, MainViewPanel mvp, DC_HeroObj hero) {
+    public HeroPanelTab(String title, MainViewPanel mvp, Unit hero) {
         this.title = title;
         this.hero = hero;
         this.mvp = mvp;
@@ -45,7 +45,7 @@ public abstract class HeroPanelTab extends G_Panel {
         this.linkedView = linkedView;
     }
 
-    public void setHero(DC_HeroObj hero) {
+    public void setHero(Unit hero) {
         this.hero = hero;
     }
 

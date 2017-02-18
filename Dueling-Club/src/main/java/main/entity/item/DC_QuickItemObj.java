@@ -1,21 +1,20 @@
 package main.entity.item;
 
-import main.content.CONTENT_CONSTS.ITEM_GROUP;
-import main.content.CONTENT_CONSTS.STD_BOOLS;
-import main.content.CONTENT_CONSTS.WEAPON_TYPE;
 import main.content.*;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.enums.GenericEnums;
+import main.content.enums.entity.ItemEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ItemActiveObj;
 import main.entity.obj.HeroItem;
 import main.entity.type.ObjType;
-import main.game.MicroGame;
+import main.game.core.game.MicroGame;
 import main.game.logic.dungeon.special.Trap;
-import main.game.player.Player;
-import main.rules.DC_ActionManager;
+import main.game.logic.battle.player.Player;
+import main.game.logic.generic.DC_ActionManager;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 import main.system.launch.TypeInitializer;
@@ -41,7 +40,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     public DC_QuickItemObj(ObjType type, Player owner, MicroGame game, Ref ref, boolean wrapped) {
         super(type, owner, game, ref, null);
         this.wrapped = wrapped;
-        type.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.WRAPPED_ITEM + "", true);
+        type.addProperty(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.WRAPPED_ITEM + "", true);
         // durability into charges?
 
         // generate active
@@ -56,7 +55,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         String typeName;
         setWrappedWeapon(new DC_WeaponObj(type, owner, getGame(), ref));
 
-        if (checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.AMMO + "")) {
+        if (checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "")) {
             this.ammo = true;
             typeName = DC_ActionManager.RELOAD + " " + type.getGroup();
             ref.setID(KEYS.AMMO, id);
@@ -76,7 +75,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
             setParam(PARAMS.C_CHARGES, 1);
         }
 
-        ObjType type = new ObjType(DataManager.getType(typeName, OBJ_TYPES.ACTIONS));
+        ObjType type = new ObjType(DataManager.getType(typeName, DC_TYPE.ACTIONS));
         type.setProperty(G_PROPS.IMAGE, getImagePath());
         type.setProperty(G_PROPS.NAME, type.getName() + ""
                 + StringMaster.wrapInParenthesis(getName()));
@@ -138,7 +137,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     }
 
     private ObjType initActiveType() {
-        ObjType type = new TypeInitializer().getNewType(OBJ_TYPES.ACTIONS);
+        ObjType type = new TypeInitializer().getNewType(DC_TYPE.ACTIONS);
         type.setProperty(G_PROPS.IMAGE, getImagePath());
         type.setProperty(G_PROPS.NAME, getName() + "'s active");
         type.setGame(game);
@@ -259,7 +258,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     }
 
     private void outOfCharges() {
-        if (!checkBool(STD_BOOLS.PERMANENT_ITEM)) {
+        if (!checkBool(GenericEnums.STD_BOOLS.PERMANENT_ITEM)) {
             getHero().removeQuickItem(this);
         }
 
@@ -381,15 +380,15 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     }
 
     public boolean isConcoction() {
-        return checkProperty(G_PROPS.ITEM_GROUP, ITEM_GROUP.CONCOCTIONS.toString());
+        return checkProperty(G_PROPS.ITEM_GROUP, ItemEnums.ITEM_GROUP.CONCOCTIONS.toString());
     }
 
     public boolean isCoating() {
-        return checkProperty(G_PROPS.ITEM_GROUP, ITEM_GROUP.COATING.toString());
+        return checkProperty(G_PROPS.ITEM_GROUP, ItemEnums.ITEM_GROUP.COATING.toString());
     }
 
     public boolean isPotion() {
-        return checkProperty(G_PROPS.ITEM_GROUP, ITEM_GROUP.POTIONS.toString());
+        return checkProperty(G_PROPS.ITEM_GROUP, ItemEnums.ITEM_GROUP.POTIONS.toString());
     }
 
 }

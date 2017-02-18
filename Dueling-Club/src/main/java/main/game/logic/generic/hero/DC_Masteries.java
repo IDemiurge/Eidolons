@@ -6,14 +6,14 @@ import main.content.ContentManager;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
 import main.entity.Ref;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.system.DC_Formulas;
 
 public class DC_Masteries {
 
-    private DC_HeroObj hero;
+    private Unit hero;
 
-    public DC_Masteries(DC_HeroObj hero) {
+    public DC_Masteries(Unit hero) {
         this.hero = hero;
     }
 

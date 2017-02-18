@@ -2,9 +2,9 @@ package main.ability.effects.common;
 
 import main.ability.InventoryManager;
 import main.ability.effects.DC_Effect;
-import main.content.CONTENT_CONSTS.STATUS;
 import main.content.PARAMS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.enums.entity.UnitEnums;
+import main.entity.obj.unit.Unit;
 import main.system.math.Formula;
 
 public class ResurrectEffect extends DC_Effect {
@@ -22,9 +22,9 @@ public class ResurrectEffect extends DC_Effect {
     }
 
     public boolean applyThis() {
-        DC_HeroObj target = (DC_HeroObj) ref.getTargetObj();
+        Unit target = (Unit) ref.getTargetObj();
         InventoryManager.equipOriginalItems(target, target);
-        target.removeStatus(STATUS.DEAD);
+        target.removeStatus(UnitEnums.STATUS.DEAD);
 
         getGame().getBattleField().createUnit(target);
 

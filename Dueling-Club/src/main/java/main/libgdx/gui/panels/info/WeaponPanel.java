@@ -1,6 +1,6 @@
 package main.libgdx.gui.panels.info;
 
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.libgdx.gui.dialog.InfoDialog;
 import main.libgdx.gui.layout.LayoutParser.LAYOUT;
 import main.libgdx.gui.panels.generic.Container;
@@ -14,7 +14,7 @@ import main.libgdx.gui.panels.generic.TextComp;
 public class WeaponPanel extends Container {
     static String imagePath = InfoDialog.path + "weapon bg.png";
 
-    public WeaponPanel(DC_HeroObj unit, boolean offhand) {
+    public WeaponPanel(Unit unit, boolean offhand) {
         super(imagePath, LAYOUT.VERTICAL);
 //        if (offhand) flip();
 

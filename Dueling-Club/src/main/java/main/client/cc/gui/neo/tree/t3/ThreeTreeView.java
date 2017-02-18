@@ -2,7 +2,7 @@ package main.client.cc.gui.neo.tree.t3;
 
 import main.client.cc.gui.neo.tree.view.HT_View;
 import main.entity.Entity;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.swing.SwingMaster;
 import main.swing.generic.components.G_Panel;
 import main.system.graphics.GuiManager;
@@ -11,7 +11,7 @@ import main.system.graphics.MigMaster;
 import java.awt.*;
 
 public class ThreeTreeView extends G_Panel {
-    protected DC_HeroObj hero;
+    protected Unit hero;
     protected T3InfoPanel infoPanel;
     protected T3InfoPanel infoPanel2;
     protected T3UpperPanel upperPanel;
@@ -27,7 +27,7 @@ public class ThreeTreeView extends G_Panel {
      * let's say they're just all same for now!
 	 */
 
-    public ThreeTreeView(DC_HeroObj hero, Boolean skill_class_spell) {
+    public ThreeTreeView(Unit hero, Boolean skill_class_spell) {
         setBackground(Color.black);
         setOpaque(true);
         this.hero = hero; // masteries.getOrCreate(0)
@@ -45,7 +45,7 @@ public class ThreeTreeView extends G_Panel {
         return new Dimension(GuiManager.getScreenWidthInt(), GuiManager.getScreenHeightInt());
     }
 
-    protected void initTrees(DC_HeroObj hero, Boolean skill_class_spell) {
+    protected void initTrees(Unit hero, Boolean skill_class_spell) {
         treeSize = getTreeSize();
         if (skill_class_spell != null) {
             leftTree = (!skill_class_spell) ? new T3ClassTreePanel(true, null, hero)
@@ -75,7 +75,7 @@ public class ThreeTreeView extends G_Panel {
         rightTree.tabSelected(2);
     }
 
-    protected void initUpperPanel(DC_HeroObj hero) {
+    protected void initUpperPanel(Unit hero) {
         upperPanel = new T3UpperPanel(hero, this);
         upperPanel.setPanelSize(new Dimension(treeSize.width, panelSize.height - treeSize.height));
         upperPanel.init();
@@ -137,11 +137,11 @@ public class ThreeTreeView extends G_Panel {
         refreshComponents();
     }
 
-    public DC_HeroObj getHero() {
+    public Unit getHero() {
         return hero;
     }
 
-    public void setHero(DC_HeroObj hero) {
+    public void setHero(Unit hero) {
         this.hero = hero; // panel per hero perhaps...
         // upperPanel.setHero(hero);
         // leftTree.setHero(hero);

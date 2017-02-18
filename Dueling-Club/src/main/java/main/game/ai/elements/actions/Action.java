@@ -1,6 +1,6 @@
 package main.game.ai.elements.actions;
 
-import main.content.CONTENT_CONSTS.ACTION_TYPE_GROUPS;
+import main.content.enums.entity.ActionEnums;
 import main.elements.targeting.AutoTargeting;
 import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.SelectiveTargeting;
@@ -11,7 +11,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.ai.tools.target.TargetingMaster;
 import main.system.ObjUtilities;
 import main.system.auxiliary.StringMaster;
@@ -160,7 +160,7 @@ public class Action {
         if (isDummy()) {
             return true;
         }
-        if (active.getActionGroup() == ACTION_TYPE_GROUPS.MODE) {
+        if (active.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MODE) {
             return true;
         }
         return false;
@@ -180,9 +180,9 @@ public class Action {
         }
     }
 
-    public DC_HeroObj getSource() {
+    public Unit getSource() {
         try {
-            return (DC_HeroObj) ref.getSourceObj();
+            return (Unit) ref.getSourceObj();
         } catch (Exception e) {
             return null;
         }

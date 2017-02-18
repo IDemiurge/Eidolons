@@ -1,19 +1,20 @@
 package main.rules;
 
-import main.content.CONTENT_CONSTS.AI_TYPE;
+import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.ValuePages;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.enums.system.AiEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.entity.obj.ActiveObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.system.auxiliary.EnumMaster;
 
 public class UnitAnalyzer {
 
-    public static boolean checkIsCaster(DC_HeroObj unit) {
+    public static boolean checkIsCaster(Unit unit) {
         for (PARAMETER mastery : ValuePages.MASTERIES_MAGIC_SCHOOLS) {
             if (unit.getIntParam(mastery) > 0) {
                 return true;
@@ -22,7 +23,7 @@ public class UnitAnalyzer {
         return false;
     }
 
-    public static boolean checkOffhand(DC_HeroObj unit) {
+    public static boolean checkOffhand(Unit unit) {
         if (unit.getActiveWeapon(true) == null) {
             return false;
         }
@@ -77,7 +78,7 @@ public class UnitAnalyzer {
         return false;
     }
 
-    public static boolean checkDualWielding(DC_HeroObj unit) {
+    public static boolean checkDualWielding(Unit unit) {
         if (unit.getSecondWeapon() == null || unit.getMainWeapon() == null) {
             return false;
         }
@@ -91,7 +92,7 @@ public class UnitAnalyzer {
 
     }
 
-    public static boolean checkDualNaturalWeapons(DC_HeroObj unit) {
+    public static boolean checkDualNaturalWeapons(Unit unit) {
         if (unit.getMainWeapon() == null && unit.getSecondWeapon() == null) {
             if (unit.getNaturalWeapon(false) != null && unit.getNaturalWeapon(true) != null) {
                 return true;
@@ -100,7 +101,7 @@ public class UnitAnalyzer {
         return false;
     }
 
-    public static boolean hasFocusBlockedActions(DC_HeroObj unit) {
+    public static boolean hasFocusBlockedActions(Unit unit) {
         int focus = unit.getIntParam(PARAMS.C_FOCUS);
 
         for (ActiveObj a : unit.getActives()) {
@@ -115,10 +116,10 @@ public class UnitAnalyzer {
     public static boolean isMeleePreferred(Entity unit) {
         AI_TYPE ai_type = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class, unit
                 .getProperty(PROPS.AI_TYPE));
-        if (ai_type == AI_TYPE.CASTER) {
+        if (ai_type == AiEnums.AI_TYPE.CASTER) {
             return false;
         }
-        if (ai_type == AI_TYPE.ARCHER) {
+        if (ai_type == AiEnums.AI_TYPE.ARCHER) {
             return false;
         }
         return true;
@@ -127,7 +128,7 @@ public class UnitAnalyzer {
     public static boolean isOffensePreferred(Entity unit) {
         AI_TYPE ai_type = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class, unit
                 .getProperty(PROPS.AI_TYPE));
-        if (ai_type == AI_TYPE.TANK) {
+        if (ai_type == AiEnums.AI_TYPE.TANK) {
             return false;
         }
         return true;

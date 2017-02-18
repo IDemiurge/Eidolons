@@ -2,7 +2,7 @@ package main.client.cc.logic;
 
 import main.content.ContentManager;
 import main.content.DC_ContentManager;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 
 public class PointMaster {

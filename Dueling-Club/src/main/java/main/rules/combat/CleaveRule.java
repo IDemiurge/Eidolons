@@ -1,15 +1,15 @@
 package main.rules.combat;
 
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
 import main.content.PARAMS;
+import main.content.enums.GenericEnums;
+import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.active.DC_ActiveObj;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;
 import main.game.battlefield.attack.Attack;
@@ -19,9 +19,9 @@ public class CleaveRule {
     private static final int DEFAULT_CRITICAL_DAMAGE_PERCENTAGE_TRANSFER = 75;
     private static final String DEFAULT_CRITICAL_DAMAGE_LOSS_PER_JUMP = "50 -{Strength}";
     Boolean clockwise;
-    private DC_HeroObj originalTarget;
+    private Unit originalTarget;
     private DC_Obj currentTarget;
-    private DC_HeroObj source;
+    private Unit source;
     private Integer jumpsRemaining;
     private DC_ActiveObj action;
     private Attack attack;
@@ -33,7 +33,7 @@ public class CleaveRule {
         this.game = game;
     }
 
-    public static void addCriticalCleave(DC_HeroObj attacker) {
+    public static void addCriticalCleave(Unit attacker) {
         attacker.modifyParameter(PARAMS.CLEAVE_MAX_TARGETS,
                 DEFAULT_CRITICAL_JUMPS);
         attacker.modifyParameter(PARAMS.CLEAVE_DAMAGE_PERCENTAGE_TRANSFER,
@@ -50,9 +50,9 @@ public class CleaveRule {
         attack.setCanCounter(false);
         attack.setCounter(false);
 
-        originalTarget = (DC_HeroObj) ref.getObj(KEYS.TARGET);
+        originalTarget = (Unit) ref.getObj(KEYS.TARGET);
         currentTarget = originalTarget;
-        source = (DC_HeroObj) ref.getObj(KEYS.SOURCE);
+        source = (Unit) ref.getObj(KEYS.SOURCE);
         jumpsRemaining = source.getIntParam(PARAMS.CLEAVE_MAX_TARGETS);
 
         if (!check(ref, attack)) {
@@ -98,8 +98,8 @@ public class CleaveRule {
         Obj objectByCoordinate = game.getObjectByCoordinate(
                 source.getCoordinates().getAdjacentCoordinate(
                         DirectionMaster.rotate45(direction, clockwise)), true);
-        if (objectByCoordinate instanceof DC_HeroObj) {
-            currentTarget = (DC_HeroObj) objectByCoordinate;
+        if (objectByCoordinate instanceof Unit) {
+            currentTarget = (Unit) objectByCoordinate;
 
         } else if (first) {
             clockwise = false;
@@ -109,7 +109,7 @@ public class CleaveRule {
                     true);
 
             if (objectByCoordinate != null) {
-                currentTarget = (DC_HeroObj) objectByCoordinate;
+                currentTarget = (Unit) objectByCoordinate;
             }
 
         }
@@ -143,17 +143,17 @@ public class CleaveRule {
             return false;
         }
         if (attack.isCounter()) {
-            if (!source.checkPassive(STANDARD_PASSIVES.CLEAVING_COUNTERS)) {
+            if (!source.checkPassive(UnitEnums.STANDARD_PASSIVES.CLEAVING_COUNTERS)) {
                 return false;
             }
         }
-        if (attack.getDamageType() == DAMAGE_TYPE.SLASHING
-                || attack.getDamageType() == DAMAGE_TYPE.PHYSICAL) {
+        if (attack.getDamageType() == GenericEnums.DAMAGE_TYPE.SLASHING
+                || attack.getDamageType() == GenericEnums.DAMAGE_TYPE.PHYSICAL) {
             return true;
         }
         if (attack.isCritical()) {
-            if (source.checkPassive(STANDARD_PASSIVES.CLEAVING_CRITICALS)) {
-                attack.setDamageType(DAMAGE_TYPE.SLASHING);
+            if (source.checkPassive(UnitEnums.STANDARD_PASSIVES.CLEAVING_CRITICALS)) {
+                attack.setDamageType(GenericEnums.DAMAGE_TYPE.SLASHING);
                 return true;
             }
         }

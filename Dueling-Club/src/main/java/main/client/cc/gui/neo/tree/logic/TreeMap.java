@@ -4,7 +4,7 @@ import main.client.cc.gui.neo.tree.HT_Node;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.entity.type.ObjType;
-import main.game.battlefield.PointX;
+import main.swing.PointX;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.images.ImageManager;

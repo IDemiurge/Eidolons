@@ -1,16 +1,16 @@
 package main.game.logic.arcade;
 
 import main.client.cc.logic.party.PartyObj;
-import main.content.CONTENT_CONSTS.ARCADE_LOOT_TYPE;
-import main.content.CONTENT_CONSTS.LOOT_GROUP;
+import main.content.enums.rules.ArcadeEnums.ARCADE_LOOT_TYPE;
+import main.content.enums.rules.ArcadeEnums.LOOT_GROUP;
 import main.content.DC_CONSTS.MAGICAL_ITEM_LEVEL;
 import main.content.DC_CONSTS.MAGIC_ITEM_PASSIVE_ENCHANTMENT;
 import main.content.DC_CONSTS.MAGIC_ITEM_PASSIVE_TRAIT;
 import main.content.PARAMS;
-import main.content.parameters.MACRO_PARAMS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.logic.dungeon.Dungeon;
 
 public class LootManager {
@@ -74,7 +74,7 @@ public class LootManager {
         // party's gold - for the leader? "Give gold" option, without
         // "take gold"?
         // perhaps if Loyalty is high enough...
-        for (DC_HeroObj m : party.getMembers()) {
+        for (Unit m : party.getMembers()) {
             if (m == party.getLeader()) {
                 continue;
             }

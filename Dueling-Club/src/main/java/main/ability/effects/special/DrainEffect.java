@@ -2,7 +2,7 @@ package main.ability.effects.special;
 
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.content.ContentManager;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.system.math.Formula;
 
 public class DrainEffect extends ModifyValueEffect {

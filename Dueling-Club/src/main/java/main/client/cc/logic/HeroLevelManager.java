@@ -4,9 +4,9 @@ import main.client.cc.CharacterCreator;
 import main.content.ContentManager;
 import main.content.PARAMS;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.system.DC_Formulas;
 
@@ -17,11 +17,11 @@ public class HeroLevelManager {
     public static final VALUE[] LEVEL_RELEVANT_VALUES = {PARAMS.XP_LEVEL_MOD,};
     private static Map<VALUE, String> buffer = new HashMap<>();
 
-    public static void levelUp(DC_HeroObj hero) {
+    public static void levelUp(Unit hero) {
         levelUp(hero, false);
     }
 
-    public static void levelUp(DC_HeroObj hero, Boolean dc_hc_macro) {
+    public static void levelUp(Unit hero, Boolean dc_hc_macro) {
         boolean auto = false;
         if (dc_hc_macro == null) {
             auto = true;
@@ -51,7 +51,7 @@ public class HeroLevelManager {
         }
     }
 
-    private static void copyLevelValues(DC_HeroObj hero, ObjType type) {
+    private static void copyLevelValues(Unit hero, ObjType type) {
         for (VALUE v : LEVEL_RELEVANT_VALUES) {
             buffer.put(v, type.getValue(v));
             type.setValue(v, hero.getValue(v));

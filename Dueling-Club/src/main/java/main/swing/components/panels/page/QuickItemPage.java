@@ -2,7 +2,7 @@ package main.swing.components.panels.page;
 
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.Obj;
-import main.game.MicroGameState;
+import main.game.core.state.MicroGameState;
 import main.swing.components.obj.QuickItemListItem;
 import main.swing.generic.components.panels.G_ListPanel;
 import main.system.graphics.GuiManager;

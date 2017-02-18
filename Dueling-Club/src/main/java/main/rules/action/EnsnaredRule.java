@@ -4,14 +4,17 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
-import main.content.CONTENT_CONSTS.*;
 import main.content.PARAMS;
+import main.content.enums.GenericEnums;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.STATUS;
 import main.entity.Ref;
 import main.entity.active.DC_UnitAction;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.ActiveObj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.rules.counter.DC_CounterRule;
 import main.system.math.MathMaster;
 import main.system.math.roll.RollMaster;
@@ -39,7 +42,7 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
         super(game);
     }
 
-    public static void applied(DC_HeroObj unit) {
+    public static void applied(Unit unit) {
 
         // TODO Auto-generated method stub
 
@@ -53,11 +56,11 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
 
     @Override
     public String getCounterName() {
-        return STD_COUNTERS.Ensnared_Counter.getName();
+        return UnitEnums.STD_COUNTERS.Ensnared_Counter.getName();
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(DC_HeroObj unit) {
+    public int getCounterNumberReductionPerTurn(Unit unit) {
         // unit spends all of his AP to reduce the counter count?
         // this can be dynamic i suppose
         return 0;
@@ -66,16 +69,16 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
     @Override
     public STATUS getStatus() {
         if (checkEnsnared()) {
-            return STATUS.ENSNARED;
+            return UnitEnums.STATUS.ENSNARED;
         }
         return null;
     }
 
     private boolean checkEnsnared() {
-        if (unit.checkClassification(CLASSIFICATIONS.SMALL)) {
+        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.SMALL)) {
             return getNumberOfCounters(unit) > 10;
         }
-        if (unit.checkClassification(CLASSIFICATIONS.HUGE)) {
+        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.HUGE)) {
             return getNumberOfCounters(unit) > 50;
         }
         return getNumberOfCounters(unit) > 20;
@@ -83,7 +86,7 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
 
     @Override
     public String getBuffName() {
-        return STD_BUFF_NAMES.Entangled.getName();
+        return MetaEnums.STD_BUFF_NAMES.Entangled.getName();
     }
 
     @Override
@@ -117,13 +120,13 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
     }
 
     @Override
-    public boolean unitBecomesActive(DC_HeroObj unit) {
+    public boolean unitBecomesActive(Unit unit) {
         if (getNumberOfCounters(unit) <= 0) {
             return true;
         }
         Ref ref = new Ref(unit);
         ref.setTarget(unit.getId());
-        if (!RollMaster.roll(ROLL_TYPES.BODY_STRENGTH, "-",
+        if (!RollMaster.roll(GenericEnums.ROLL_TYPES.BODY_STRENGTH, "-",
                 getNumberOfCounters(unit) + "*1.5", ref, " and breaks free!",
                 "Entanglement")) {
             unit.setCounter(getCounterName(), 0);
@@ -131,7 +134,7 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
             return false;
         }
 
-        if (RollMaster.roll(ROLL_TYPES.QUICK_WIT, "-",
+        if (RollMaster.roll(GenericEnums.ROLL_TYPES.QUICK_WIT, "-",
                 getNumberOfCounters(unit) + "/2.5", ref,
                 "@, unable to figure out how to cut free...", "Entanglement")) {
             unit.modifyParameter(PARAMS.C_N_OF_ACTIONS, -1);
@@ -170,7 +173,7 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
         // sta_cost)
         // {
         // }
-        if (weapon.getDamageType() != DAMAGE_TYPE.BLUDGEONING) {
+        if (weapon.getDamageType() != GenericEnums.DAMAGE_TYPE.BLUDGEONING) {
             amount += unit.calculateDamage(offhand);
         }
 

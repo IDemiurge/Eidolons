@@ -1,6 +1,6 @@
 package main.client.cc.logic.items;
 
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.entity.active.DC_SpellObj;
 import main.entity.type.ObjType;
@@ -30,7 +30,7 @@ public class Enchanter {
         // add some standard passive with variables perhaps
         // or perhaps I could initiative the enchantment in-game,
         // and let the type only have Enchantment = SpellName
-        switch ((OBJ_TYPES) type.getOBJ_TYPE_ENUM()) {
+        switch ((DC_TYPE) type.getOBJ_TYPE_ENUM()) {
             case ARMOR:
                 // add on hit
                 break;

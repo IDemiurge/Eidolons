@@ -2,11 +2,12 @@ package main.client.cc.gui.neo.choice;
 
 import main.client.cc.CharacterCreator;
 import main.client.cc.gui.neo.points.HC_CustomInfoPanel;
-import main.content.CONTENT_CONSTS.PRINCIPLES;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
-import main.content.properties.G_PROPS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.enums.entity.HeroEnums;
+import main.content.values.properties.G_PROPS;
+import main.entity.obj.unit.Unit;
 import main.swing.components.panels.page.info.element.ListTextItem;
 import main.system.auxiliary.secondary.InfoMaster;
 
@@ -22,18 +23,18 @@ public class PrincipleChoiceView extends ChoiceView<PRINCIPLES> implements
     private HC_CustomInfoPanel customIp;
     private boolean blocked = false;
 
-    public PrincipleChoiceView(ChoiceSequence choiceSequence, DC_HeroObj hero,
+    public PrincipleChoiceView(ChoiceSequence choiceSequence, Unit hero,
                                boolean secondPrinciple) {
         super(choiceSequence, hero);
         this.secondPrinciple = secondPrinciple;
     }
 
-    public PrincipleChoiceView(ChoiceSequence choiceSequence, DC_HeroObj hero) {
+    public PrincipleChoiceView(ChoiceSequence choiceSequence, Unit hero) {
         this(choiceSequence, hero, false);
     }
 
     protected int getPageSize() {
-        return PRINCIPLES.values().length;
+        return HeroEnums.PRINCIPLES.values().length;
     }
 
     @Override
@@ -96,7 +97,7 @@ public class PrincipleChoiceView extends ChoiceView<PRINCIPLES> implements
 
     @Override
     protected void initData() {
-        data = new LinkedList<>(Arrays.asList(PRINCIPLES.values()));
+        data = new LinkedList<>(Arrays.asList(HeroEnums.PRINCIPLES.values()));
     }
 
     protected boolean isSaveHero() {

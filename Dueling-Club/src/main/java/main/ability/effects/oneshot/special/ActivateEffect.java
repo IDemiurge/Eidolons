@@ -4,7 +4,7 @@ import main.ability.effects.DC_Effect;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 
 public class ActivateEffect extends DC_Effect {
     private KEYS key;
@@ -23,7 +23,7 @@ public class ActivateEffect extends DC_Effect {
 
     @Override
     public boolean applyThis() {
-        DC_HeroObj hero = (DC_HeroObj) ref.getObj(key);
+        Unit hero = (Unit) ref.getObj(key);
         DC_ActiveObj active;
 
         if (!spell) {

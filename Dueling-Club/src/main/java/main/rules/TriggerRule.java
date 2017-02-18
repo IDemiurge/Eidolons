@@ -1,7 +1,7 @@
 package main.rules;
 
 import main.elements.triggers.Trigger;
-import main.game.MicroGame;
+import main.game.core.game.MicroGame;
 
 public abstract class TriggerRule {
 

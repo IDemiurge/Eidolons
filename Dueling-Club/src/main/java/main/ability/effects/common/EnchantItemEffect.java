@@ -11,14 +11,14 @@ import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.ability.targeting.TemplateSelectiveTargeting;
 import main.client.cc.logic.items.Enchanter;
 import main.content.PARAMS;
-import main.content.parameters.G_PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.values.parameters.G_PARAMS;
+import main.content.values.properties.G_PROPS;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_SpellObj;
 import main.entity.type.BuffType;
-import main.game.ai.tools.target.EffectMaster;
+import main.game.ai.tools.target.EffectFinder;
 import main.system.auxiliary.StringMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 
@@ -72,7 +72,7 @@ public class EnchantItemEffect extends MicroEffect {
 
         spell = (DC_SpellObj) ref.getTargetObj();
 
-        Effects effects = EffectMaster.getEffectsFromSpell(spell);
+        Effects effects = EffectFinder.getEffectsFromSpell(spell);
         effects.add(new AnimationEffect(spell));
         effects.add(new SoundEffect(SOUNDS.IMPACT, ref.getTargetObj()));
         // TODO fail sound on energy lapse?

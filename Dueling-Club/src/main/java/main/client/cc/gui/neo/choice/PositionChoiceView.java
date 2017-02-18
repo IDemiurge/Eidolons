@@ -1,9 +1,9 @@
 package main.client.cc.gui.neo.choice;
 
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
-import main.game.logic.battle.Positioner;
+import main.game.logic.generic.Positioner;
 import main.game.logic.generic.PartyManager;
 import main.swing.generic.components.list.G_List;
 import main.swing.generic.components.panels.G_ListPanel;
@@ -20,17 +20,17 @@ import java.awt.event.MouseListener;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class PositionChoiceView extends ChoiceView<DC_HeroObj> implements MouseListener {
+public class PositionChoiceView extends ChoiceView<Unit> implements MouseListener {
 
     private static final int DEFAULT_SIZE = 9;
     private static final int DEFAULT_COLUMNS_COUNT = 3;
-    G_List<DC_HeroObj> list;
+    G_List<Unit> list;
     FACING_DIRECTION side;
-    private Map<DC_HeroObj, Coordinates> partyCoordinates;
+    private Map<Unit, Coordinates> partyCoordinates;
     private int size;
     private int columnsCount;
     private int rowCount;
-    public PositionChoiceView(ChoiceSequence sequence, DC_HeroObj hero) {
+    public PositionChoiceView(ChoiceSequence sequence, Unit hero) {
         super(sequence, hero);
     }
 
@@ -42,7 +42,7 @@ public class PositionChoiceView extends ChoiceView<DC_HeroObj> implements MouseL
     @Override
     public void mouseClicked(MouseEvent e) {
 
-        DC_HeroObj obj = list.locationToItem(e.getPoint()); // list.getSelectedValue();
+        Unit obj = list.locationToItem(e.getPoint()); // list.getSelectedValue();
         Coordinates c = partyCoordinates.get(obj);
 
         int x = c.x;
@@ -81,7 +81,7 @@ public class PositionChoiceView extends ChoiceView<DC_HeroObj> implements MouseL
         }
         Coordinates newCoordinates = new Coordinates(x, y);
         if (partyCoordinates.get(newCoordinates) != null) {
-            DC_HeroObj swappedHero = new MapMaster<DC_HeroObj, Coordinates>().getKeyForValue(
+            Unit swappedHero = new MapMaster<Unit, Coordinates>().getKeyForValue(
                     partyCoordinates, newCoordinates);
             partyCoordinates.put(swappedHero, c);
         }
@@ -96,7 +96,7 @@ public class PositionChoiceView extends ChoiceView<DC_HeroObj> implements MouseL
         }
 
         int i = transformCoordinateIntoIndex(newCoordinates);
-        ((DefaultListModel<DC_HeroObj>) list.getModel()).set(i, obj);
+        ((DefaultListModel<Unit>) list.getModel()).set(i, obj);
         // transformIndexIntoCoordinate(list.getSelectedIndex());
         partyCoordinates.remove(obj);
         partyCoordinates.put(obj, newCoordinates);
@@ -154,7 +154,7 @@ public class PositionChoiceView extends ChoiceView<DC_HeroObj> implements MouseL
                 PartyManager.getParty().setPartyCoordinates(partyCoordinates);
 
             }
-            for (DC_HeroObj hero : partyCoordinates.keySet()) {
+            for (Unit hero : partyCoordinates.keySet()) {
                 hero.setCoordinates(partyCoordinates.get(hero));
             }
         }
@@ -175,7 +175,7 @@ public class PositionChoiceView extends ChoiceView<DC_HeroObj> implements MouseL
         data = new LinkedList<>();
         ListMaster.fillWithNullElements(data, size);
         if (partyCoordinates != null) {
-            for (DC_HeroObj hero : partyCoordinates.keySet()) {
+            for (Unit hero : partyCoordinates.keySet()) {
                 if (hero == null) {
                     continue;
                 }
@@ -227,7 +227,7 @@ public class PositionChoiceView extends ChoiceView<DC_HeroObj> implements MouseL
         if (PartyManager.getParty() != null) {
             PartyManager.getParty().setPartyCoordinates(partyCoordinates);
         }
-        for (DC_HeroObj hero : data) {
+        for (Unit hero : data) {
             if (hero != null) {
                 hero.setCoordinates(partyCoordinates.get(hero));
                 hero.setFacing(getFacing(hero.getCoordinates()));
@@ -269,13 +269,13 @@ public class PositionChoiceView extends ChoiceView<DC_HeroObj> implements MouseL
     public void mouseExited(MouseEvent e) {
     }
 
-    public Map<DC_HeroObj, Coordinates> getPartyCoordinates() {
+    public Map<Unit, Coordinates> getPartyCoordinates() {
         return partyCoordinates;
     }
 
-    public void setPartyCoordinates(Map<DC_HeroObj, Coordinates> partyCoordinates) {
+    public void setPartyCoordinates(Map<Unit, Coordinates> partyCoordinates) {
         this.partyCoordinates = partyCoordinates;
-        for (DC_HeroObj hero : partyCoordinates.keySet()) {
+        for (Unit hero : partyCoordinates.keySet()) {
             hero.setCoordinates(partyCoordinates.get(hero));
         }
     }

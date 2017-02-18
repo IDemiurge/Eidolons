@@ -10,9 +10,9 @@ import main.elements.targeting.FixedTargeting;
 import main.elements.triggers.Trigger;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.game.event.Event;
-import main.game.event.Event.EVENT_TYPE;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.EVENT_TYPE;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
 
 public class AddTriggerEffect extends MultiEffect implements AttachmentEffect, ContainerEffect {

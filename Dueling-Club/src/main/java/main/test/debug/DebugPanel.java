@@ -1,7 +1,7 @@
 package main.test.debug;
 
 import main.client.cc.CharacterCreator;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.swing.components.panels.DC_InfoPanel;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.panels.G_ButtonPanel;

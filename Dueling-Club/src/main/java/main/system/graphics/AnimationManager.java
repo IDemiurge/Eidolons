@@ -1,14 +1,14 @@
 package main.system.graphics;
 
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.PARAMS;
-import main.content.parameters.G_PARAMS;
-import main.content.parameters.Param;
+import main.content.values.parameters.G_PARAMS;
+import main.content.values.parameters.Param;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.options.UIOptions;
 import main.swing.components.battlefield.DC_BattleFieldGrid;

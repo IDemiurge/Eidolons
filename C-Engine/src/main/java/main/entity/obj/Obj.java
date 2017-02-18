@@ -2,18 +2,18 @@ package main.entity.obj;
 
 import main.ability.AbilityObj;
 import main.ability.PassiveAbilityObj;
-import main.content.CONTENT_CONSTS.STATUS;
 import main.content.ContentManager;
-import main.content.OBJ_TYPES;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.DC_TYPE;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.AbilityConstructor;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.Game;
+import main.game.core.game.Game;
 import main.game.battlefield.Coordinates;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
@@ -56,9 +56,9 @@ public class Obj extends Entity {
     }
 
     @Override
-    public OBJ_TYPES getOBJ_TYPE_ENUM() {
-        if (super.getOBJ_TYPE_ENUM() instanceof OBJ_TYPES) {
-            return (OBJ_TYPES) super.getOBJ_TYPE_ENUM();
+    public DC_TYPE getOBJ_TYPE_ENUM() {
+        if (super.getOBJ_TYPE_ENUM() instanceof DC_TYPE) {
+            return (DC_TYPE) super.getOBJ_TYPE_ENUM();
         }
         return null;
 
@@ -166,9 +166,9 @@ public class Obj extends Entity {
     public void setDead(boolean dead) {
         this.dead = dead;
         if (dead) {
-            addStatus(STATUS.DEAD.toString());
+            addStatus(UnitEnums.STATUS.DEAD.toString());
         } else {
-            removeStatus(STATUS.DEAD.toString());
+            removeStatus(UnitEnums.STATUS.DEAD.toString());
         }
     }
 

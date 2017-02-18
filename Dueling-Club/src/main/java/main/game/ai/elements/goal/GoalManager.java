@@ -1,16 +1,16 @@
 package main.game.ai.elements.goal;
 
-import main.content.CONTENT_CONSTS.AI_TYPE;
-import main.content.CONTENT_CONSTS.BEHAVIOR_MODE;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
+import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
+import main.content.enums.system.AiEnums;
+import main.content.enums.entity.UnitEnums;
 import main.entity.active.DC_ActiveObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.tools.Analyzer;
-import main.game.ai.tools.priority.PriorityManager;
-import main.game.ai.tools.target.SpellMaster;
+import main.game.ai.tools.priority.DC_PriorityManager;
+import main.game.ai.tools.target.AI_SpellMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;
 
@@ -21,14 +21,14 @@ import java.util.List;
 public class GoalManager {
 
     public static List<GOAL_TYPE> getGoalsForUnit(UnitAI ai) {
-        DC_HeroObj unit = ai.getUnit();
+        Unit unit = ai.getUnit();
         List<GOAL_TYPE> list = getBehaviorGoals(unit);
         if (list != null) {
             return list;
         }
 
         list = new LinkedList<>();
-        if (unit.getAiType() == AI_TYPE.SNEAK) {
+        if (unit.getAiType() == AiEnums.AI_TYPE.SNEAK) {
             list.add(GOAL_TYPE.STEALTH);
         }
         if (Analyzer.getVisibleEnemies(unit.getUnitAI()).isEmpty()) {
@@ -41,9 +41,9 @@ public class GoalManager {
         }
         list.addAll(getDefaultGoals());
 
-        if (unit.getAiType() == AI_TYPE.CASTER || unit.getAiType() == AI_TYPE.ARCHER) {
-            if (!unit.checkPassive(STANDARD_PASSIVES.FEARLESS)) {
-                if (PriorityManager.getMeleeDangerFactor(unit) > 0) {
+        if (unit.getAiType() == AiEnums.AI_TYPE.CASTER || unit.getAiType() == AiEnums.AI_TYPE.ARCHER) {
+            if (!unit.checkPassive(UnitEnums.STANDARD_PASSIVES.FEARLESS)) {
+                if (DC_PriorityManager.getMeleeDangerFactor(unit) > 0) {
                     list.add(GOAL_TYPE.RETREAT);
                 }
             }
@@ -80,7 +80,7 @@ public class GoalManager {
         list.add(GOAL_TYPE.COATING);
     }
 
-    private static List<GOAL_TYPE> getBehaviorGoals(DC_HeroObj unit) {
+    private static List<GOAL_TYPE> getBehaviorGoals(Unit unit) {
         BEHAVIOR_MODE behaviorMode = unit.getUnitAI().getBehaviorMode();
         if (behaviorMode == null) {
             return null;
@@ -129,7 +129,7 @@ public class GoalManager {
                 break;
 
         }
-        GOAL_TYPE goal = SpellMaster.getGoal(a);
+        GOAL_TYPE goal = AI_SpellMaster.getGoal(a);
 
         return goal;
     }

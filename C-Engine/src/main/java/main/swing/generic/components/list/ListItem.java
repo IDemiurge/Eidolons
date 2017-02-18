@@ -1,7 +1,7 @@
 package main.swing.generic.components.list;
 
 import main.content.ContentManager;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.obj.Obj;

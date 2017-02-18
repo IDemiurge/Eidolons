@@ -2,7 +2,7 @@ package main.system.net;
 
 import main.entity.Ref;
 import main.entity.obj.Active;
-import main.game.MicroGame;
+import main.game.core.game.MicroGame;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.net.socket.GenericConnection;

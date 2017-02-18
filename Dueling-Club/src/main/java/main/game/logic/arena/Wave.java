@@ -1,16 +1,16 @@
 package main.game.logic.arena;
 
 import main.client.cc.logic.party.PartyObj;
-import main.content.CONTENT_CONSTS.ENCOUNTER_TYPE;
+import main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.ai.GroupAI;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
@@ -28,8 +28,8 @@ public class Wave extends DC_Obj {
     private List<ObjAtCoordinate> unitMap;
     private ENCOUNTER_TYPE waveType;
     private Integer power;
-    private List<DC_HeroObj> units = new LinkedList<>();
-    private DC_HeroObj leader;
+    private List<Unit> units = new LinkedList<>();
+    private Unit leader;
     private PartyObj party;
     private MapBlock block;
     private int preferredPower;
@@ -172,23 +172,23 @@ public class Wave extends DC_Obj {
                 getProperty(G_PROPS.ENCOUNTER_TYPE));
     }
 
-    public void addUnit(DC_HeroObj unit) {
+    public void addUnit(Unit unit) {
         units.add(unit);
 
     }
 
-    public DC_HeroObj getLeader() {
+    public Unit getLeader() {
         if (leader == null) {
             leader = getUnits().get(0);
         }
         return leader;
     }
 
-    public List<DC_HeroObj> getUnits() {
+    public List<Unit> getUnits() {
         return units;
     }
 
-    public void setUnits(List<DC_HeroObj> units) {
+    public void setUnits(List<Unit> units) {
         this.units = units;
     }
 
@@ -220,7 +220,7 @@ public class Wave extends DC_Obj {
     }
 
     public void setAi(GroupAI groupAi) {
-        for (DC_HeroObj unit : units) {
+        for (Unit unit : units) {
             unit.getUnitAI().setGroupAI(groupAi);
         }
     }

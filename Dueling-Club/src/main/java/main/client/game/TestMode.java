@@ -2,7 +2,7 @@ package main.client.game;
 
 import main.client.game.logic.PrecombatData;
 import main.client.game.logic.PrecombatData.PRECOMBAT_VALUES;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 import main.system.net.user.User;
 
 public class TestMode {

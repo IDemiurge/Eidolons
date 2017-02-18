@@ -2,11 +2,11 @@ package main.test;
 
 import main.ability.UnitMaster;
 import main.client.cc.logic.items.ItemGenerator;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.logic.arena.UnitGroupMaster;
 import main.libgdx.anims.controls.EmitterController;
 import main.libgdx.anims.particles.ParticleManager;
@@ -226,7 +226,7 @@ public class PresetLauncher {
     private static void initDefaultParty(String value, boolean me) {
         ObjType type = null;
         if (!value.contains(StringMaster.getSeparator())) {
-            type = DataManager.getType(value, OBJ_TYPES.PARTY);
+            type = DataManager.getType(value, DC_TYPE.PARTY);
         }
         if (type == null) {
             if (me) {

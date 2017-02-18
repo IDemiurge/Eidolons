@@ -1,17 +1,17 @@
 package main.game.ai.tools.path;
 
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.actions.ActionSequence;
 import main.game.ai.tools.Analyzer;
-import main.game.ai.tools.priority.PriorityManager;
+import main.game.ai.tools.priority.DC_PriorityManager;
 import main.game.battlefield.Coordinates;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -36,7 +36,7 @@ public class CellPrioritizer {
 
     private static Map<Coordinates, List<ActionPath>> pathMap;
 
-    public static int getMeleePriorityForCell(DC_HeroObj unit, Obj cell) {
+    public static int getMeleePriorityForCell(Unit unit, Obj cell) {
         return getPriorityForCell(unit, cell, null);
     }
 
@@ -61,7 +61,7 @@ public class CellPrioritizer {
     /*
      * Perhaps one could feed an action to this method!.. Or actions...
      */
-    public static int getPriorityForCell(DC_HeroObj unit, Obj cell,
+    public static int getPriorityForCell(Unit unit, Obj cell,
                                          DC_ActiveObj targetAcsdftion) {
 		/*
          * getOrCreate attack priority for each adjacent enemy...
@@ -94,17 +94,17 @@ public class CellPrioritizer {
         for (Coordinates c : cell.getCoordinates().getAdjacentCoordinates()) {
             Obj targetObj = unit.getGame().getObjectByCoordinate(c, false);
             if (targetObj != null) {
-                if (targetObj.getOBJ_TYPE_ENUM() != OBJ_TYPES.BF_OBJ) {
+                if (targetObj.getOBJ_TYPE_ENUM() != DC_TYPE.BF_OBJ) {
                     if (Analyzer.isEnemy(targetObj, unit)) {
                         Integer cell_priority = enemyPriorityMap.get(targetObj);
                         if (cell_priority != null) {
                             priority += cell_priority;
                             continue;
                         }
-                        DC_HeroObj enemy = (DC_HeroObj) targetObj;
-                        cell_priority = PriorityManager
+                        Unit enemy = (Unit) targetObj;
+                        cell_priority = DC_PriorityManager
                                 .getUnitPriority(targetObj);
-                        cell_priority -= PriorityManager.getMeleeThreat(enemy); // "now"?
+                        cell_priority -= DC_PriorityManager.getMeleeThreat(enemy); // "now"?
                         // should all AI-units *be afraid*? :) Maybe memory map
                         // will do nicely here?
                         // if ()
@@ -114,7 +114,7 @@ public class CellPrioritizer {
 
                         // PriorityManager.getDamagePriority(action, targetObj,
                         // false);
-                        priority += PriorityManager
+                        priority += DC_PriorityManager
                                 .getAttackPriority(new ActionSequence(action));
                         DC_UnitAction offhand_attack = unit
                                 .getAction("offhand attack");
@@ -122,7 +122,7 @@ public class CellPrioritizer {
                         // use its priority?
                         if (offhand_attack != null) {
                             action = new Action(offhand_attack, enemy);
-                            priority += PriorityManager
+                            priority += DC_PriorityManager
                                     .getAttackPriority(new ActionSequence(
                                             action));
                         }
@@ -146,13 +146,13 @@ public class CellPrioritizer {
     }
 
     public static List<Coordinates> getMeleePriorityCellsForUnit(UnitAI ai) {
-        PriorityManager.setUnit_ai(ai);
+//        DC_PriorityManager.setUnit_ai(ai);
 
         List<Coordinates> list = new LinkedList<>();
         List<Obj> cells = new ArrayList<>(50);
         int max_priority = Integer.MIN_VALUE;
         DC_Cell priority_cell = null;
-        for (DC_HeroObj enemy : Analyzer.getVisibleEnemies(ai)) {
+        for (Unit enemy : Analyzer.getVisibleEnemies(ai)) {
             for (Coordinates c : enemy.getCoordinates()
                     .getAdjacentCoordinates()) {
                 if (!cells.contains(c)) {
@@ -179,7 +179,7 @@ public class CellPrioritizer {
     }
 
     private static Comparator<? super Obj> getPrioritySorter(
-            final DC_HeroObj unit) {
+            final Unit unit) {
         return new Comparator<Obj>() {
 
             public int compare(Obj o1, Obj o2) {

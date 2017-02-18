@@ -6,11 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import main.ability.effects.Effect;
 import main.ability.effects.oneshot.common.SpecialTargetingEffect;
-import main.content.parameters.G_PARAMS;
+import main.content.values.parameters.G_PARAMS;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
-import main.game.ai.tools.target.EffectMaster;
+import main.game.ai.tools.target.EffectFinder;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.CoordinatesMaster;
@@ -99,7 +99,7 @@ public class AnimMultiplicator implements Runnable {
 
     public void applyTemplate() {
 
-        Effect effect = EffectMaster.getFirstEffectOfClass(getActive(), SpecialTargetingEffect.class);
+        Effect effect = EffectFinder.getFirstEffectOfClass(getActive(), SpecialTargetingEffect.class);
         Set<Coordinates> coordinates = null;
         if (effect != null) {
             SpecialTargetingEffect targetEffect = (SpecialTargetingEffect) effect;

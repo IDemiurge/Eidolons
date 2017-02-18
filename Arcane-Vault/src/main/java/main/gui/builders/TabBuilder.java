@@ -2,9 +2,9 @@ package main.gui.builders;
 
 import main.content.C_OBJ_TYPE;
 import main.content.ContentManager;
-import main.content.MACRO_OBJ_TYPES;
-import main.content.OBJ_TYPES;
-import main.content.properties.PROPERTY;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.DC_TYPE;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.TableDataManager;
 import main.data.XLinkedMap;
@@ -42,7 +42,7 @@ import java.util.List;
 
 public class TabBuilder extends Builder implements ChangeListener {
 
-    private static Class<?> TOP_ENUM_CLASS = OBJ_TYPES.class;
+    private static Class<?> TOP_ENUM_CLASS = DC_TYPE.class;
     int specialTabsAdded = 0;
     private List<String> tabNames;
     private boolean top;

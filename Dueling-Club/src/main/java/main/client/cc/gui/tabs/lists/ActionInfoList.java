@@ -2,8 +2,8 @@ package main.client.cc.gui.tabs.lists;
 
 import main.client.cc.CharacterCreator;
 import main.entity.active.DC_ActiveObj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.rules.DC_ActionManager;
+import main.entity.obj.unit.Unit;
+import main.game.logic.generic.DC_ActionManager;
 import main.swing.SwingMaster;
 import main.swing.components.panels.secondary.ActionModePanel;
 
@@ -12,10 +12,10 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class ActionInfoList extends ActionModePanel {
-    private DC_HeroObj hero;
+    private Unit hero;
     private List<DC_ActiveObj> data;
 
-    public ActionInfoList(DC_HeroObj hero) {
+    public ActionInfoList(Unit hero) {
         this.hero = hero;
 
     }

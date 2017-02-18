@@ -1,9 +1,9 @@
 package main.rules.attack;
 
-import main.content.CONTENT_CONSTS.ACTION_TYPE;
+import main.content.enums.entity.ActionEnums;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.auxiliary.StringMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -48,12 +48,12 @@ public class ExtraAttacksRule {
     }
 
     public static List<DC_ActiveObj> getCounterAttacks(DC_ActiveObj triggeringAction,
-                                                       DC_HeroObj unit) {
+                                                       Unit unit) {
         List<DC_ActiveObj> list = new LinkedList<>();
-        if (unit.getActionMap().get(ACTION_TYPE.STANDARD_ATTACK) == null) {
+        if (unit.getActionMap().get(ActionEnums.ACTION_TYPE.STANDARD_ATTACK) == null) {
             return list;
         }
-        for (DC_UnitAction a : unit.getActionMap().get(ACTION_TYPE.STANDARD_ATTACK)) {
+        for (DC_UnitAction a : unit.getActionMap().get(ActionEnums.ACTION_TYPE.STANDARD_ATTACK)) {
             // offhand?
             if (a.isMelee())
                 // auto-atk range?

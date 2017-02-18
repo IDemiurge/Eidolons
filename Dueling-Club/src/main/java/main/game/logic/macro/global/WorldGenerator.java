@@ -1,8 +1,8 @@
 package main.game.logic.macro.global;
 
-import main.content.MACRO_OBJ_TYPES;
-import main.content.parameters.MACRO_PARAMS;
-import main.content.properties.MACRO_PROPS;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;

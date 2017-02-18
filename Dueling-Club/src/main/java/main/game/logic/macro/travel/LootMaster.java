@@ -1,25 +1,26 @@
 package main.game.logic.macro.travel;
 
 import main.client.cc.logic.party.PartyObj;
-import main.content.CONTENT_CONSTS.ARMOR_TYPE;
-import main.content.CONTENT_CONSTS.LOOT_GROUP;
-import main.content.CONTENT_CONSTS.WEAPON_TYPE;
+import main.content.enums.entity.ItemEnums.ARMOR_TYPE;
+import main.content.enums.rules.ArcadeEnums.LOOT_GROUP;
+import main.content.enums.entity.ItemEnums.WEAPON_TYPE;
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
-import main.content.parameters.MACRO_PARAMS;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.ItemEnums;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
 import main.entity.item.DC_HeroItemObj;
 import main.entity.item.ItemFactory;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.logic.dungeon.Dungeon;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.entity.FilterMaster;
@@ -36,20 +37,20 @@ public class LootMaster {
 
     public static void battleIsWon(DC_Game game) {
         PartyObj party = game.getParty();
-        DequeImpl<DC_HeroObj> enemiesSlain = game.getBattleManager()
+        DequeImpl<Unit> enemiesSlain = game.getBattleManager()
                 .getSlainEnemies();
         Dungeon dungeon = game.getDungeonMaster().getDungeon();
         // additional choice for leader - share more, share equal, claim all
         int lootValue = calculateLootValue(dungeon, enemiesSlain);
         List<Entity> loot = generateLoot(lootValue, dungeon);
         for (Entity item : new LinkedList<>(loot)) {
-            for (DC_HeroObj h : party.getMembers()) {
+            for (Unit h : party.getMembers()) {
 //				if (checkAwardLootItem(h, item, loot))
                 break;
             }
         }
 
-        for (DC_HeroObj h : party.getMembers()) {
+        for (Unit h : party.getMembers()) {
             int xpAwarded = awardXp(enemiesSlain, h, party);
             for (Entity item : new LinkedList<>(loot)) {
                 checkAwardLootItem(h, item, loot);
@@ -65,7 +66,7 @@ public class LootMaster {
 
     }
 
-    private static void checkAwardLootItem(DC_HeroObj h, Entity item,
+    private static void checkAwardLootItem(Unit h, Entity item,
                                            List<? extends Entity> loot) {
         if (h.isLeader()) {
             // Claim / Leave / Contend (random?)
@@ -91,12 +92,12 @@ public class LootMaster {
 
     }
 
-    private static List<DC_HeroObj> checkItemDesired(MacroParty party,
-                                                     Entity item) {
+    private static List<Unit> checkItemDesired(MacroParty party,
+                                               Entity item) {
         return null;
     }
 
-    private static boolean checkItemDesired(DC_HeroObj h, Entity item) {
+    private static boolean checkItemDesired(Unit h, Entity item) {
         // TODO h.getProperty( WANTED_ITEM_TYPES)
 //		for (String s :  StringMaster.openContainer(string )){
 //			prop = wanted.split()[0];
@@ -105,17 +106,17 @@ public class LootMaster {
         return false;
     }
 
-    private static int awardGold(int lootValue, DC_HeroObj h) {
+    private static int awardGold(int lootValue, Unit h) {
         h.getIntParam(MACRO_PARAMS.C_GOLD_SHARE);
 
         return 0;
     }
 
-    private static int awardXp(DequeImpl<DC_HeroObj> enemiesSlain,
-                               DC_HeroObj her, PartyObj party) {
-        for (DC_HeroObj unit : enemiesSlain) {
+    private static int awardXp(DequeImpl<Unit> enemiesSlain,
+                               Unit her, PartyObj party) {
+        for (Unit unit : enemiesSlain) {
             Obj killer = unit.getRef().getObj(KEYS.KILLER);
-            for (DC_HeroObj h : party.getMembers()) {
+            for (Unit h : party.getMembers()) {
 //				if (killer.equals(h))
 //					percent = 100;
 //				else
@@ -155,7 +156,7 @@ public class LootMaster {
         return type.getIntParam(PARAMS.GOLD_COST);
     }
 
-    private static void awardLoot(ObjType type, DC_HeroObj h) {
+    private static void awardLoot(ObjType type, Unit h) {
         DC_HeroItemObj item = ItemFactory.createItemObj(type,
                 h.getOriginalOwner(), h.getGame(), h.getRef(), false);
         h.addItemToInventory(item);
@@ -169,9 +170,9 @@ public class LootMaster {
     }
 
     private static int calculateLootValue(Dungeon dungeon,
-                                          DequeImpl<DC_HeroObj> enemiesSlain) {
+                                          DequeImpl<Unit> enemiesSlain) {
         int value = 0;
-        for (DC_HeroObj h : enemiesSlain) {
+        for (Unit h : enemiesSlain) {
             value += h.getIntParam(PARAMS.POWER);
         }
         return value;
@@ -192,14 +193,14 @@ public class LootMaster {
     public static Object[] getFilteringValues(LOOT_GROUP group) {
         switch (group) {
             case AMMO:
-                return new WEAPON_TYPE[]{WEAPON_TYPE.AMMO};
+                return new WEAPON_TYPE[]{ItemEnums.WEAPON_TYPE.AMMO};
             case ARMOR:
 
                 break;
             case CONCONCTIONS:
                 break;
             case HEAVY_ARMOR:
-                return new ARMOR_TYPE[]{ARMOR_TYPE.HEAVY};
+                return new ARMOR_TYPE[]{ItemEnums.ARMOR_TYPE.HEAVY};
             case HEAVY_WEAPONS:
                 break;
             case JEWELRY:
@@ -240,43 +241,43 @@ public class LootMaster {
     private static OBJ_TYPE getTYPE(LOOT_GROUP group) {
         switch (group) {
             case AMMO:
-                return OBJ_TYPES.WEAPONS;
+                return DC_TYPE.WEAPONS;
             case ARMOR:
-                return OBJ_TYPES.ARMOR;
+                return DC_TYPE.ARMOR;
             case CONCONCTIONS:
-                return OBJ_TYPES.ITEMS;
+                return DC_TYPE.ITEMS;
             case HEAVY_ARMOR:
-                return OBJ_TYPES.ARMOR;
+                return DC_TYPE.ARMOR;
             case HEAVY_WEAPONS:
-                return OBJ_TYPES.WEAPONS;
+                return DC_TYPE.WEAPONS;
             case JEWELRY:
-                return OBJ_TYPES.JEWELRY;
+                return DC_TYPE.JEWELRY;
             case JEWELRY_SPECIAL:
-                return OBJ_TYPES.JEWELRY;
+                return DC_TYPE.JEWELRY;
             case LIGHT_ARMOR:
-                return OBJ_TYPES.ARMOR;
+                return DC_TYPE.ARMOR;
             case LIGHT_WEAPONS:
-                return OBJ_TYPES.WEAPONS;
+                return DC_TYPE.WEAPONS;
             case MAGIC_ARMOR:
-                return OBJ_TYPES.ARMOR;
+                return DC_TYPE.ARMOR;
             case MAGIC_ITEMS:
-                return OBJ_TYPES.ITEMS;
+                return DC_TYPE.ITEMS;
             case MAGIC_MATERIAL_WEAPONS:
-                return OBJ_TYPES.WEAPONS;
+                return DC_TYPE.WEAPONS;
             case MAGIC_WEAPONS:
-                return OBJ_TYPES.WEAPONS;
+                return DC_TYPE.WEAPONS;
             case POISONS:
-                return OBJ_TYPES.ITEMS;
+                return DC_TYPE.ITEMS;
             case POTIONS:
-                return OBJ_TYPES.ITEMS;
+                return DC_TYPE.ITEMS;
             case WEAPONS:
-                return OBJ_TYPES.WEAPONS;
+                return DC_TYPE.WEAPONS;
             case WEIRD_ARMOR:
-                return OBJ_TYPES.ARMOR;
+                return DC_TYPE.ARMOR;
             case WEIRD_ITEMS:
-                return OBJ_TYPES.ITEMS;
+                return DC_TYPE.ITEMS;
             case WEIRD_WEAPONS:
-                return OBJ_TYPES.WEAPONS;
+                return DC_TYPE.WEAPONS;
 
         }
         return null;

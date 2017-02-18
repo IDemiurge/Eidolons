@@ -1,13 +1,12 @@
 package main.game.logic.battle.turn;
 
-import main.content.CONTENT_CONSTS.ACTION_TYPE;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.PARAMS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_QuickItemObj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.VisionManager;
-import main.game.turn.TurnManager;
 import main.rules.mechanics.WaitRule;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -36,12 +35,12 @@ import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
  * rebuilds Queue and makes the top unit Active.
  */
 
-public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
+public class DC_TurnManager implements TurnManager, Comparator<Unit> {
     private static boolean visionInitialized;
-    private DequeImpl<DC_HeroObj> unitQueue;
-    private DequeImpl<DC_HeroObj> displayedUnitQueue;
+    private DequeImpl<Unit> unitQueue;
+    private DequeImpl<Unit> displayedUnitQueue;
     private DC_Game game;
-    private DC_HeroObj activeUnit;
+    private Unit activeUnit;
     private boolean retainActiveUnit;
     private boolean started;
 
@@ -71,12 +70,12 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
         // getActiveUnit().setActiveSelected(true);
     }
 
-    public DC_HeroObj getActiveUnit(boolean vision) {
+    public Unit getActiveUnit(boolean vision) {
         if (!vision || visionInitialized) {
             return activeUnit;
         }
 
-        for (DC_HeroObj unit : getUnitQueue()) {
+        for (Unit unit : getUnitQueue()) {
             if (unit.isMine()) {
                 return unit;
             }
@@ -85,7 +84,7 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
     }
 
     private boolean playerHasActiveUnits() {
-        for (DC_HeroObj u : getUnitQueue()) {
+        for (Unit u : getUnitQueue()) {
             if (u.isMine() || (u.isPlayerControlled() && !game.isOffline())) {
                 return true;
             }
@@ -151,7 +150,7 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
         return result;
     }
 
-    private boolean isUnitAI_Controlled(DC_HeroObj activeUnit2) {
+    private boolean isUnitAI_Controlled(Unit activeUnit2) {
         if (activeUnit.getMode().isBehavior()) {
             return true;
         }
@@ -190,7 +189,7 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
     }
 
     private void resetInitiative(boolean first) {
-        for (DC_HeroObj unit : game.getUnits()) {resetInitiative(unit, first);
+        for (Unit unit : game.getUnits()) {resetInitiative(unit, first);
 //            int before = unit.getIntParam(PARAMS.C_INITIATIVE);
 //            int after = unit.getIntParam(PARAMS.C_INITIATIVE);
 //            if (before == after) return;
@@ -210,7 +209,7 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
                 unitQueue.addFirst(activeUnit);
             }
         }
-        for (DC_HeroObj unit : unitQueue) {
+        for (Unit unit : unitQueue) {
             if (VisionManager.checkDetectedEnemy(unit)) {
                 displayedUnitQueue.add(unit);
             }
@@ -229,7 +228,7 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
         unitQueue.clear();
         WaitRule.checkMap();
 
-        for (DC_HeroObj unit : game.getUnits()) {
+        for (Unit unit : game.getUnits()) {
             if (TestMaster.isSublevelFreezeOn()) {
                 if (game.getMainHero() != null) {
                     if (game.getMainHero().getZ() != unit.getZ()) {
@@ -243,16 +242,16 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
             }
         }
 
-        ArrayList<DC_HeroObj> list = new ArrayList<>(getUnitQueue());
+        ArrayList<Unit> list = new ArrayList<>(getUnitQueue());
         Collections.sort(list, this);
         setUnitQueue(new DequeImpl<>(list));
     }
 
-    public DC_HeroObj getActiveUnit() {
+    public Unit getActiveUnit() {
         return activeUnit;
     }
 
-    public void setActiveUnit(DC_HeroObj activeUnit) {
+    public void setActiveUnit(Unit activeUnit) {
         this.activeUnit = activeUnit;
     }
 
@@ -334,7 +333,7 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
             }
         }
         try {
-            game.getState().newRound();
+            game.getStateManager().newRound();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -345,7 +344,7 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
         return game.getState().getRound() > 1;
     }
 
-    private void resetInitiative(DC_HeroObj unit, boolean first) {
+    private void resetInitiative(Unit unit, boolean first) {
         if (first) {
             int amplitude = unit.getIntParam(PARAMS.INITIATIVE_BONUS);
             int initiativeBonus = RandomWizard.getRandomInt(amplitude);
@@ -359,7 +358,7 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
     }
 
     @Override
-    public int compare(DC_HeroObj u1, DC_HeroObj u2) {
+    public int compare(Unit u1, Unit u2) {
         if (game.getState().getRound() == 0) {
             if (FAST_DC.LEADER_MOVES_FIRST) {
                 if (FAST_DC.isRunning()) {
@@ -392,20 +391,20 @@ public class DC_TurnManager implements TurnManager, Comparator<DC_HeroObj> {
     }
 
     @Override
-    public DequeImpl<DC_HeroObj> getUnitQueue() {
+    public DequeImpl<Unit> getUnitQueue() {
         return unitQueue;
     }
 
-    public void setUnitQueue(DequeImpl<DC_HeroObj> unitQueue) {
+    public void setUnitQueue(DequeImpl<Unit> unitQueue) {
         this.unitQueue = unitQueue;
     }
 
     @Override
-    public DequeImpl<DC_HeroObj> getDisplayedUnitQueue() {
+    public DequeImpl<Unit> getDisplayedUnitQueue() {
         return displayedUnitQueue;
     }
 
-    public void setDisplayedUnitQueue(DequeImpl<DC_HeroObj> displayedUnitQueue) {
+    public void setDisplayedUnitQueue(DequeImpl<Unit> displayedUnitQueue) {
         this.displayedUnitQueue = displayedUnitQueue;
     }
 

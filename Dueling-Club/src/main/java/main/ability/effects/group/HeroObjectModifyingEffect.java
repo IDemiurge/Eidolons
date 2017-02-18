@@ -4,11 +4,12 @@ import main.ability.effects.AddBuffEffect;
 import main.ability.effects.DC_Effect;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
-import main.content.CONTENT_CONSTS.ACTION_TYPE;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.ContentManager;
-import main.content.OBJ_TYPES;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
+import main.content.DC_TYPE;
+import main.content.enums.entity.ActionEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
 import main.data.ConcurrentMap;
 import main.data.ability.OmittedConstructor;
 import main.elements.conditions.Condition;
@@ -20,8 +21,8 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.ai.tools.target.EffectMaster;
+import main.entity.obj.unit.Unit;
+import main.game.ai.tools.target.EffectFinder;
 import main.system.auxiliary.log.LogMaster;
 import main.system.entity.ConditionMaster;
 import main.system.entity.FilterMaster;
@@ -38,7 +39,7 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
     protected String modString;
     protected String conditionString;
     protected String objName;
-    protected OBJ_TYPES type;
+    protected DC_TYPE type;
     protected MOD code = MOD.MODIFY_BY_CONST;
     protected boolean buff = true;
     protected String buffName = "@";
@@ -52,7 +53,7 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
     protected Condition specialConditions;
 
     @OmittedConstructor
-    public HeroObjectModifyingEffect(OBJ_TYPES type, String conditionString, String modString,
+    public HeroObjectModifyingEffect(DC_TYPE type, String conditionString, String modString,
                                      Boolean buff, Boolean prop, Condition c) {
         this.type = type;
         this.conditionString = conditionString;
@@ -64,13 +65,13 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
     }
 
     @OmittedConstructor
-    public HeroObjectModifyingEffect(OBJ_TYPES type, String conditionString, String modString,
+    public HeroObjectModifyingEffect(DC_TYPE type, String conditionString, String modString,
                                      Boolean buff, Boolean prop) {
         this(type, conditionString, modString, buff, prop, null);
     }
 
     @OmittedConstructor
-    public HeroObjectModifyingEffect(OBJ_TYPES type, String conditionString, String modString) {
+    public HeroObjectModifyingEffect(DC_TYPE type, String conditionString, String modString) {
         this(type, conditionString, modString, true, false);
     }
 
@@ -143,9 +144,9 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
             // modString, PARAMETER.class);
             Effects modEffects = new Effects();
             if (map != null) {
-                EffectMaster.initParamModEffects(modEffects, map, ref);
+                EffectFinder.initParamModEffects(modEffects, map, ref);
             } else if (propMap != null) {
-                EffectMaster.initPropModEffects(modEffects, propMap, ref);
+                EffectFinder.initPropModEffects(modEffects, propMap, ref);
             }
 
             applied = true;
@@ -195,7 +196,7 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
     }
 
     protected int getModEffectLayer() {
-        if (type == OBJ_TYPES.ITEMS) {
+        if (type == DC_TYPE.ITEMS) {
             return Effect.BASE_LAYER;
         }
         return Effect.SECOND_LAYER;
@@ -223,7 +224,7 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
             Ref REF = ref.getCopy(); // TODO simple condition format - prop,
             // value"
             initFilterConditions();
-            DC_HeroObj hero = (DC_HeroObj) ref.getSourceObj();
+            Unit hero = (Unit) ref.getSourceObj();
             if (type != null) {
                 List<Integer> list;
                 try {
@@ -255,14 +256,14 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
         }
     }
 
-    protected List<Integer> getIdList(DC_HeroObj hero) {
+    protected List<Integer> getIdList(Unit hero) {
         List<Integer> list = new LinkedList<>();
         if (hero == null) {
             return list;
         }
         switch (type) {
             case ACTIONS:
-                for (ACTION_TYPE a : ACTION_TYPE.values()) {
+                for (ACTION_TYPE a : ActionEnums.ACTION_TYPE.values()) {
                     if (hero.getActionMap().get(a) != null) {
                         for (DC_UnitAction action : hero.getActionMap().get(a)) {
                             list.add(action.getId());
@@ -299,7 +300,7 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
                 List<? extends Obj> l = new LinkedList<>(hero.getQuickItems());
 
                 for (Obj i : l) {
-                    if (i.getOBJ_TYPE_ENUM() == OBJ_TYPES.WEAPONS) {
+                    if (i.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS) {
                         list.add(i.getId());
                     }
                 }
@@ -323,7 +324,7 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
                 KEYS.SOURCE));
     }
 
-    protected OBJ_TYPES getTYPE() {
+    protected DC_TYPE getTYPE() {
         return type;
     }
 

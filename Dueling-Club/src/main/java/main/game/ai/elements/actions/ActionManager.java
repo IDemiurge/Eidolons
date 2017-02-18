@@ -1,10 +1,11 @@
 package main.game.ai.elements.actions;
 
-import main.content.CONTENT_CONSTS.ACTION_TYPE;
-import main.content.CONTENT_CONSTS.AI_LOGIC;
-import main.content.CONTENT_CONSTS.BEHAVIOR_MODE;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.PROPS;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.system.AiEnums;
+import main.content.enums.system.AiEnums.AI_LOGIC;
+import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.data.XList;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
@@ -12,7 +13,7 @@ import main.entity.active.DC_ItemActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.ai.AI_Manager;
 import main.game.ai.UnitAI;
 import main.game.ai.advanced.behavior.BehaviorMaster;
@@ -25,20 +26,21 @@ import main.game.ai.logic.types.atomic.AtomicAi;
 import main.game.ai.tools.Analyzer;
 import main.game.ai.tools.ParamAnalyzer;
 import main.game.ai.tools.path.CellPrioritizer;
+import main.game.ai.tools.priority.DC_PriorityManager;
 import main.game.ai.tools.priority.PriorityManager;
-import main.game.ai.tools.target.SpellMaster;
+import main.game.ai.tools.target.AI_SpellMaster;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.logic.dungeon.ai.DungeonCrawler;
-import main.rules.DC_ActionManager;
-import main.rules.DC_ActionManager.STD_ACTIONS;
-import main.rules.DC_ActionManager.STD_MODE_ACTIONS;
+import main.game.logic.generic.DC_ActionManager;
+import main.game.logic.generic.DC_ActionManager.STD_ACTIONS;
+import main.game.logic.generic.DC_ActionManager.STD_MODE_ACTIONS;
 import main.rules.action.StealthRule;
-import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
-import main.system.auxiliary.StringMaster;
 
 import java.util.*;
 
@@ -49,7 +51,7 @@ public class ActionManager {
     private GoalManager goalManager;
     private PriorityManager priorityManager;
     private TaskManager taskManager;
-    private DC_HeroObj unit;
+    private Unit unit;
     private Coordinates originalCoordinates;
     private FACING_DIRECTION originalFacing;
     private List<DC_ActiveObj> actions;
@@ -81,7 +83,7 @@ public class ActionManager {
             ActionSequence sequence = new ActionSequence(type, new Action(a, obj));
             sequence.setAi(a.getOwnerObj().getUnitAI());
             sequence.setType(type);
-            int priority = PriorityManager.getPriority(sequence);
+            int priority = DC_PriorityManager.getPriority(sequence);
             if (priority > max_priority) {
                 target = obj;
                 max_priority = priority;
@@ -115,7 +117,7 @@ public class ActionManager {
         return list;
     }
 
-    public static List<DC_ActiveObj> getFullActionList(GOAL_TYPE type, DC_HeroObj unit) {
+    public static List<DC_ActiveObj> getFullActionList(GOAL_TYPE type, Unit unit) {
         // cache
         List<DC_ActiveObj> actions = new XList<>();
         switch (type) {
@@ -130,11 +132,11 @@ public class ActionManager {
                 break;
 
             case ATTACK:
-                if (unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK) != null) {
-                    actions.addAll(unit.getActionMap().get(ACTION_TYPE.STANDARD_ATTACK));
+                if (unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK) != null) {
+                    actions.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.STANDARD_ATTACK));
                 }
-                if (unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK) != null) {
-                    actions.addAll(unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK));
+                if (unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK) != null) {
+                    actions.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK));
                 }
 
                 actions.remove(getUnitAction(unit, DC_ActionManager.OFFHAND_ATTACK));
@@ -174,7 +176,7 @@ public class ActionManager {
                 actions.add(getUnitAction(unit, STD_ACTIONS.Wait.name()));
                 break;
             case PREPARE:
-                actions.addAll(unit.getActionMap().get(ACTION_TYPE.MODE));
+                actions.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.MODE));
                 if (!unit.isLiving()) {
                     actions.remove(getUnitAction(unit, STD_MODE_ACTIONS.Defend.name()));
 
@@ -191,11 +193,11 @@ public class ActionManager {
         return actions;
     }
 
-    private static DC_UnitAction getUnitAction(DC_HeroObj unit, String name) {
+    private static DC_UnitAction getUnitAction(Unit unit, String name) {
         return unit.getAction(name, true);
     }
 
-    private static boolean checkAddStealth(boolean hidePref, DC_HeroObj unit,
+    private static boolean checkAddStealth(boolean hidePref, Unit unit,
                                            List<DC_ActiveObj> actions) {
         if (unit.getBuff("Stealth Mode") != null) {
             return false;
@@ -221,7 +223,7 @@ public class ActionManager {
 
     }
 
-    private static List<DC_ActiveObj> filterByCanActivate(DC_HeroObj unit,
+    private static List<DC_ActiveObj> filterByCanActivate(Unit unit,
                                                           List<DC_ActiveObj> actionsList) {
         List<DC_ActiveObj> list = new LinkedList<>();
         for (DC_ActiveObj a : actionsList) {
@@ -241,10 +243,10 @@ public class ActionManager {
         return false;
     }
 
-    public static List<DC_ActiveObj> getMoveActions(DC_HeroObj unit) {
+    public static List<DC_ActiveObj> getMoveActions(Unit unit) {
         List<DC_ActiveObj> list = new LinkedList<>();
-        list.addAll(unit.getActionMap().get(ACTION_TYPE.ADDITIONAL_MOVE));
-        List<DC_UnitAction> actionList = unit.getActionMap().get(ACTION_TYPE.SPECIAL_MOVE);
+        list.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE));
+        List<DC_UnitAction> actionList = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_MOVE);
         if (ListMaster.isNotEmpty(actionList)) {
             list.addAll(actionList);
         }
@@ -259,7 +261,7 @@ public class ActionManager {
         for (DC_ActiveObj spell : spells) {
             GOAL_TYPE goal = null;
             try {
-                goal = SpellMaster.getGoal(spell);
+                goal = AI_SpellMaster.getGoal(spell);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -284,14 +286,14 @@ public class ActionManager {
         return activeList;
     }
 
-    public static Collection<DC_ActiveObj> getSpells(AI_LOGIC logic, DC_HeroObj unit) {
+    public static Collection<DC_ActiveObj> getSpells(AI_LOGIC logic, Unit unit) {
         List<DC_ActiveObj> list = new LinkedList<>();
         for (DC_ActiveObj spell : unit.getSpells()) {
             if (spell.getProperty(PROPS.AI_LOGIC).equalsIgnoreCase(logic.toString())) {
                 list.add(spell);
             } else {
                 try {
-                    if (SpellMaster.getSpellLogic(spell) == logic) {
+                    if (AI_SpellMaster.getSpellLogic(spell) == logic) {
                         list.add(spell);
                     }
                 } catch (Exception e) {
@@ -364,7 +366,7 @@ public class ActionManager {
         Action action;
         ActionSequence sequence = null;
         if (ListMaster.isNotEmpty(actions)) {
-            sequence = PriorityManager.chooseByPriority(actions);
+            sequence = DC_PriorityManager.chooseByPriority(actions);
         }
 
         if (sequence == null) {
@@ -399,13 +401,13 @@ public class ActionManager {
 
         List<ActionSequence> actions;
 
-        if (behaviorMode == BEHAVIOR_MODE.PANIC) {
+        if (behaviorMode == AiEnums.BEHAVIOR_MODE.PANIC) {
             return new Action(ai.getUnit().getAction("Cower"));
         }
-        if (behaviorMode == BEHAVIOR_MODE.CONFUSED) {
+        if (behaviorMode == AiEnums.BEHAVIOR_MODE.CONFUSED) {
             return new Action(ai.getUnit().getAction("Stumble"));
         }
-        if (behaviorMode == BEHAVIOR_MODE.BERSERK) {
+        if (behaviorMode == AiEnums.BEHAVIOR_MODE.BERSERK) {
             return new Action(ai.getUnit().getAction("Rage"));
         }
 
@@ -438,7 +440,7 @@ public class ActionManager {
         if (actions.isEmpty()) {
             return getAction(unit, STD_MODE_ACTIONS.Defend.name(), null);
         }
-        ActionSequence sequence = PriorityManager.chooseByPriority(actions);
+        ActionSequence sequence = DC_PriorityManager.chooseByPriority(actions);
 
         return sequence.getNextAction();
     }
@@ -448,8 +450,8 @@ public class ActionManager {
         Coordinates c = unit.getCoordinates()
                 .getAdjacentCoordinate(unit.getFacing().getDirection());
         Obj obj = unit.getGame().getObjectVisibleByCoordinate(c);
-        if (obj instanceof DC_HeroObj) {
-            if (((DC_HeroObj) obj).canActNow())
+        if (obj instanceof Unit) {
+            if (((Unit) obj).canActNow())
                 // if (!((DC_HeroObj) obj).checkStatus(STATUS.WAITING))
             {
                 return obj.getId();
@@ -459,7 +461,7 @@ public class ActionManager {
 
     }
 
-    private Action getAction(DC_HeroObj unit, String name, Integer target) {
+    private Action getAction(Unit unit, String name, Integer target) {
 
         Action action = new Action(getUnitAction(unit, name));
         if (target != null) {
@@ -468,7 +470,7 @@ public class ActionManager {
         return action;
     }
 
-    private Action getAction(DC_HeroObj unit, String name) {
+    private Action getAction(Unit unit, String name) {
         return new Action(getUnitAction(unit, name));
     }
 
@@ -588,7 +590,7 @@ public class ActionManager {
     }
 
     private void checkDeactivate() {
-        List<DC_UnitAction> list = unit.getActionMap().get(ACTION_TYPE.SPECIAL_ACTION);
+        List<DC_UnitAction> list = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ACTION);
         if (list == null) {
             return;
         }

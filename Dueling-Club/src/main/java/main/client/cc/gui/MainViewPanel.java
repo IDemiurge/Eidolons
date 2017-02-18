@@ -9,8 +9,8 @@ import main.client.cc.gui.neo.tree.view.HT_View;
 import main.client.cc.gui.neo.tree.view.SkillTreeView;
 import main.client.cc.gui.views.*;
 import main.content.DC_ContentManager;
-import main.content.parameters.PARAMETER;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.values.parameters.PARAMETER;
+import main.entity.obj.unit.Unit;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.log.LogMaster;
 
@@ -21,13 +21,13 @@ public class MainViewPanel extends G_Panel {
     Map<HERO_VIEWS, HeroView> viewsMap = new HashMap<>();
     private HeroView currentViewComp;
     private HERO_VIEWS currentView;
-    private DC_HeroObj hero;
+    private Unit hero;
     private ItemListManager itemListManager;
     private Object treeArg;
     private HT_View treeView;
     private boolean treeViewMode;
 
-    public MainViewPanel(DC_HeroObj hero) {
+    public MainViewPanel(Unit hero) {
         this.hero = hero;
         // this.setVisuals(VISUALS.MAIN);
 
@@ -112,7 +112,7 @@ public class MainViewPanel extends G_Panel {
         return viewsMap.get(VIEW);
     }
 
-    private boolean checkTemplate(DC_HeroObj hero) {
+    private boolean checkTemplate(Unit hero) {
         return true;
     }
 

@@ -4,20 +4,20 @@ import main.ability.effects.DC_Effect;
 import main.ability.effects.DelayedEffect;
 import main.ability.effects.Effect;
 import main.ability.effects.RemoveBuffEffect;
-import main.content.enums.STD_MODES;
+import main.content.mode.STD_MODES;
 import main.elements.conditions.*;
 import main.elements.conditions.standard.GroupCondition;
 import main.elements.conditions.standard.ListSizeCondition;
 import main.elements.conditions.standard.OwnershipCondition;
 import main.entity.Ref.KEYS;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.entity.obj.unit.Unit;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.rules.action.WatchRule;
 import main.system.entity.ConditionMaster;
 
 public class AlertRule {
 
-    public static void wakeUp(DC_HeroObj unit) {
+    public static void wakeUp(Unit unit) {
         unit.removeBuff(STD_MODES.ALERT.getBuffName());
         WatchRule.getWatchersMap().remove(unit);
     }

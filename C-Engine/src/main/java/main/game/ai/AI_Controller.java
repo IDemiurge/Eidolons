@@ -1,7 +1,7 @@
 package main.game.ai;
 
 import main.entity.obj.Obj;
-import main.game.MicroGame;
+import main.game.core.game.MicroGame;
 import main.game.ai.logic.ActionTypeManager.ACTION_TYPES;
 import main.system.auxiliary.log.LogMaster;
 import main.system.threading.WaitMaster;

@@ -3,8 +3,8 @@ package main.data.ability.construct;
 import main.ability.*;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
-import main.content.CONTENT_CONSTS.TARGETING_MODE;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
+import main.content.values.properties.G_PROPS;
 import main.data.XLinkedMap;
 import main.data.ability.Mapper;
 import main.data.xml.XML_Converter;
@@ -14,7 +14,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.ActiveObj;
-import main.entity.obj.BattlefieldObj;
+import main.entity.obj.BfObj;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.Err;
@@ -203,7 +203,7 @@ public class AbilityConstructor {
 
     public static void constructActives(Entity entity) {
         List<ActiveObj> abilities;
-        boolean action = (entity instanceof BattlefieldObj);
+        boolean action = (entity instanceof BfObj);
         if (action) {
             if (!entity.getType().isModel()) {
                 entity.getGame().getActionManager().resetActions(entity);

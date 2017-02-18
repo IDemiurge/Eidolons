@@ -1,9 +1,10 @@
 package main.client.cc.logic.spells;
 
-import main.content.CONTENT_CONSTS;
-import main.content.CONTENT_CONSTS2.SPELL_UPGRADE;
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
+import main.content.DC_TYPE;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.entity.SpellEnums;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.type.ObjType;
@@ -33,14 +34,14 @@ public class SpellGenerator {
     }
 
     public static void generateSpellUpgrades() {
-        for (ObjType t : DataManager.getTypes(OBJ_TYPES.SPELLS)) {
+        for (ObjType t : DataManager.getTypes(DC_TYPE.SPELLS)) {
             List<String> groups = StringMaster.openContainer(t
                     .getProperty(G_PROPS.SPELL_UPGRADE_GROUPS));
             // ++ spell_upgrade_modification_exceptions
             if (groups.isEmpty()) {
                 continue;
             }
-            for (SPELL_UPGRADE ug : SPELL_UPGRADE.values()) {
+            for (SPELL_UPGRADE ug : SpellEnums.SPELL_UPGRADE.values()) {
 
                 if (!groups.contains(StringMaster.getWellFormattedString(ug.toString()))) {
                     continue;
@@ -66,7 +67,7 @@ public class SpellGenerator {
         SpellUpgradeMaster.applyUpgrade(type, ug);
         type.setImage(generateImagePath(type, ug));
         type.setGroup("Upgrade", false);
-        type.setProperty(G_PROPS.WORKSPACE_GROUP, CONTENT_CONSTS.WORKSPACE_GROUP.POLISH + ""); // TODO
+        type.setProperty(G_PROPS.WORKSPACE_GROUP, MetaEnums.WORKSPACE_GROUP.POLISH + ""); // TODO
         DataManager.addType(type);
         return type;
     }

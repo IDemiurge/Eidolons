@@ -1,11 +1,11 @@
 package main.ability.effects.special;
 
 import main.ability.effects.oneshot.special.AddStatusEffect;
-import main.content.CONTENT_CONSTS.STATUS;
+import main.content.enums.entity.UnitEnums;
 
 public class SilenceEffect extends AddStatusEffect {
     public SilenceEffect() {
-        super(STATUS.SILENCED.name());
+        super(UnitEnums.STATUS.SILENCED.name());
 
     }
 

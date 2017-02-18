@@ -1,17 +1,16 @@
 package main.system.entity;
 
-import main.content.CONTENT_CONSTS.CLASSIFICATIONS;
-import main.content.CONTENT_CONSTS.STATUS;
-import main.content.CONTENT_CONSTS.TARGETING_MODE;
-import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
+import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.parameters.G_PARAMS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.DC_TYPE;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.parameters.G_PARAMS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.*;
 import main.elements.conditions.standard.ClassificationCondition;
@@ -57,7 +56,7 @@ public class ConditionMaster {
 
     public static Condition getNotDeadCondition() {
         return new NotCondition(getStatusMatchCondition(StringMaster
-                .getWellFormattedString(STATUS.DEAD.name())));
+                .getWellFormattedString(UnitEnums.STATUS.DEAD.name())));
     }
 
     public static Condition getAliveAndConsciousFilterCondition() {
@@ -70,7 +69,7 @@ public class ConditionMaster {
     }
 
     public static Condition getAliveCondition(KEYS key) {
-        return new NotCondition(getStatusCondition(key, STATUS.DEAD.toString()));
+        return new NotCondition(getStatusCondition(key, UnitEnums.STATUS.DEAD.toString()));
     }
 
     public static Condition getBFObjTypesCondition() {
@@ -269,7 +268,7 @@ public class ConditionMaster {
 
     public static Condition getGraveConditions() {
         Conditions c = new Conditions();
-        c.add(getTYPECondition(OBJ_TYPES.TERRAIN));
+        c.add(getTYPECondition(DC_TYPE.TERRAIN));
         c.add(new NumericCondition("{MATCH_" + G_PARAMS.N_OF_CORPSES + "}", "0", false));
         return c;
     }
@@ -278,7 +277,7 @@ public class ConditionMaster {
         Conditions conditions = new Conditions();
         conditions.add(ConditionMaster.getPropCondition("MATCH", G_PROPS.BF_OBJECT_TYPE,
                 BF_OBJECT_TYPE));
-        conditions.add(ConditionMaster.getTYPECondition(OBJ_TYPES.BF_OBJ));
+        conditions.add(ConditionMaster.getTYPECondition(DC_TYPE.BF_OBJ));
 
         conditions.add(new OwnershipCondition(KEYS.MATCH, KEYS.SOURCE));
 
@@ -352,13 +351,13 @@ public class ConditionMaster {
     // public static final String
 
     public static Condition getLivingCondition(String key) { // TODO |
-        return new NotCondition(new OrConditions(new ClassificationCondition(CLASSIFICATIONS.WRAITH
+        return new NotCondition(new OrConditions(new ClassificationCondition(UnitEnums.CLASSIFICATIONS.WRAITH
                 .toString(), key), new OrConditions(new ClassificationCondition(
-                CLASSIFICATIONS.CONSTRUCT.toString(), key), new ClassificationCondition(
-                CLASSIFICATIONS.ELEMENTAL.toString(), key), new ClassificationCondition(
-                CLASSIFICATIONS.STRUCTURE.toString(), key), new ClassificationCondition(
-                CLASSIFICATIONS.UNDEAD.toString(), key), new ClassificationCondition(
-                CLASSIFICATIONS.MECHANICAL.toString(), key))));
+                UnitEnums.CLASSIFICATIONS.CONSTRUCT.toString(), key), new ClassificationCondition(
+                UnitEnums.CLASSIFICATIONS.ELEMENTAL.toString(), key), new ClassificationCondition(
+                UnitEnums.CLASSIFICATIONS.STRUCTURE.toString(), key), new ClassificationCondition(
+                UnitEnums.CLASSIFICATIONS.UNDEAD.toString(), key), new ClassificationCondition(
+                UnitEnums.CLASSIFICATIONS.MECHANICAL.toString(), key))));
     }
 
     public static Condition getLivingMatchCondition() {

@@ -7,12 +7,12 @@ import main.ability.effects.RemoveBuffEffect;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.ability.effects.standard.UnconsciousBuffEffect;
 import main.ability.effects.standard.UnconsciousFallEffect;
-import main.content.CONTENT_CONSTS.CLASSIFICATIONS;
 import main.content.PARAMS;
+import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.rules.action.ActionRule;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
@@ -49,7 +49,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         super(game);
     }
 
-    public static boolean checkUnitWakesUp(DC_HeroObj unit) {
+    public static boolean checkUnitWakesUp(Unit unit) {
         // toughness barrier... ++ focus? ++status?
         if (unit.getIntParam(PARAMS.TOUGHNESS_PERCENTAGE) >= 25) {
             if (unit.getIntParam(PARAMS.C_FOCUS) >= unit.getIntParam(PARAMS.FOCUS_RECOVER_REQ)
@@ -62,7 +62,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         return false;
     }
 
-    private static void wakeUp(DC_HeroObj unit) {
+    private static void wakeUp(Unit unit) {
         // unit.removeBuff(BUFF_NAME);
         getWakeUpEffect(unit).apply(); // remove buff pretty much
         unit.getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.CONSCIOUS, unit);
@@ -71,7 +71,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 
     }
 
-    private static Effect getWakeUpEffect(DC_HeroObj unit) {
+    private static Effect getWakeUpEffect(Unit unit) {
         Effects e = new Effects();
         e.add(new ModifyValueEffect(PARAMS.C_N_OF_ACTIONS, MOD.MODIFY_BY_CONST, "-" + AP_PENALTY));
         e.add(new ModifyValueEffect(PARAMS.C_INITIATIVE_BONUS, MOD.MODIFY_BY_CONST, "-"
@@ -81,7 +81,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         return e;
     }
 
-    private static Effect getUnconsciousEffect(DC_HeroObj unit) {
+    private static Effect getUnconsciousEffect(Unit unit) {
         Effects e = new Effects();
         // Effects effects = new Effects(new
         // AddStatusEffect(STATUS.UNCONSCIOUS));
@@ -93,7 +93,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         return e;
     }
 
-    private static void fallUnconscious(DC_HeroObj unit) {
+    private static void fallUnconscious(Unit unit) {
         SoundMaster.playEffectSound(SOUNDS.DEATH, unit);
         SoundMaster.playEffectSound(SOUNDS.FALL, unit);
         getUnconsciousEffect(unit).apply();
@@ -102,11 +102,11 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         // may be reset, others reduced, others regen
     }
 
-    public static boolean checkUnitDies(DC_HeroObj unit) {
+    public static boolean checkUnitDies(Unit unit) {
         return checkUnitDies(unit, DEFAULT_DEATH_BARRIER, true);
     }
 
-    public static boolean checkUnitDies(DC_HeroObj unit, int barrier, boolean unconscious) {
+    public static boolean checkUnitDies(Unit unit, int barrier, boolean unconscious) {
         if (0 >= unit.getIntParam(PARAMS.C_ENDURANCE)) {
             return true;
         }
@@ -135,15 +135,15 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         return false;
     }
 
-    private static boolean canBeAnnihilated(DC_HeroObj unit) {
-        if (unit.checkClassification(CLASSIFICATIONS.WRAITH)) {
+    private static boolean canBeAnnihilated(Unit unit) {
+        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH)) {
             return false;
         }
         // special? vampires and such...
         return true;
     }
 
-    private static boolean canFallUnconscious(DC_HeroObj unit) {
+    private static boolean canFallUnconscious(Unit unit) {
         if (!unit.isLiving()) {
             return false;
         }
@@ -151,10 +151,10 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         return true;
     }
 
-    public boolean checkStatusUpdate(DC_HeroObj unit) {
+    public boolean checkStatusUpdate(Unit unit) {
         if (unit.isDead()) {
             if (checkUnitDies(unit, DEFAULT_ANNIHILATION_BARRIER, false)) {
-                unit.getGame().getManager().unitAnnihilated(unit, unit);
+                unit.getGame().getManager().getDeathMaster(). unitAnnihilated(unit, unit);
                 return false;
             }
         }
@@ -171,7 +171,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 
     @Override
     public void actionComplete(ActiveObj activeObj) {
-        for (DC_HeroObj unit : game.getUnits()) {
+        for (Unit unit : game.getUnits()) {
             if (checkStatusUpdate(unit)) {
                 wakeUp(unit);
             }
@@ -179,17 +179,17 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     }
 
     @Override
-    public boolean unitBecomesActive(DC_HeroObj unit) {
+    public boolean unitBecomesActive(Unit unit) {
         return true;
     }
 
     @Override
-    public boolean check(DC_HeroObj unit) {
+    public boolean check(Unit unit) {
         return checkStatusUpdate(unit);
     }
 
     @Override
-    public void apply(DC_HeroObj unit) {
+    public void apply(Unit unit) {
         wakeUp(unit);
     }
 

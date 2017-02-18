@@ -2,17 +2,17 @@ package main.rules.combat;
 
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.oneshot.common.ModifyCounterEffect;
-import main.content.CONTENT_CONSTS.STD_COUNTERS;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
+import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.NotCondition;
 import main.elements.conditions.NumericCondition;
 import main.elements.conditions.ObjTypeComparison;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.game.MicroGame;
-import main.game.event.Event;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.game.core.game.MicroGame;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.rules.DC_RuleImpl;
 import main.system.entity.ConditionMaster;
 import main.system.auxiliary.StringMaster;
@@ -45,7 +45,7 @@ public class BleedingRule extends DC_RuleImpl {
     @Override
     public void initEffects() {
         // LIMIT BY MAX
-        effects = new ModifyCounterEffect(STD_COUNTERS.Bleeding_Counter.getName(),
+        effects = new ModifyCounterEffect(UnitEnums.STD_COUNTERS.Bleeding_Counter.getName(),
                 MOD.MODIFY_BY_CONST,
 
 //                "{ACTIVE_PARAMS.BLEEDING_MOD}/100*"+
@@ -62,7 +62,7 @@ public class BleedingRule extends DC_RuleImpl {
         // DAMAGE TYPE CHECK? event_damage_type?
         conditions = new Conditions(ConditionMaster.getAliveCondition(KEYS.TARGET), ConditionMaster
                 .getLivingCondition("target"), new NotCondition(new ObjTypeComparison(
-                OBJ_TYPES.BF_OBJ, "target")), new NumericCondition("{TARGET_TOUGHNESS}*"
+                DC_TYPE.BF_OBJ, "target")), new NumericCondition("{TARGET_TOUGHNESS}*"
                 + THRESHOLD + "/100"
 
                 , "{TARGET_C_TOUGHNESS}"));

@@ -1,6 +1,6 @@
 package main.system.entity;
 
-import main.content.CONTENT_CONSTS.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.STD_COUNTERS;
 import main.entity.obj.Obj;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;

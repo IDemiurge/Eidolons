@@ -3,8 +3,8 @@ package main.logic;
 import main.content.OBJ_TYPE;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.Game;
-import main.game.GameState;
+import main.game.core.game.Game;
+import main.game.core.state.GameState;
 import main.game.battlefield.Coordinates;
 import main.session.Session;
 import main.system.net.DC_IdManager;
@@ -107,47 +107,6 @@ public class AT_Simulation extends Game {
             }
         }
 
-        @Override
-        public void checkContinuousRules() {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void checkCounterRules() {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void endTurn() {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void newRound() {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void allToBase() {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        protected void resetCurrentValues() {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        protected void applyMods() {
-            // TODO Auto-generated method stub
-
-        }
 
     }
 

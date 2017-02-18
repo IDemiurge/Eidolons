@@ -9,9 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import javafx.util.Pair;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
-import main.game.event.Event;
+import main.game.logic.event.Event;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
@@ -30,13 +30,13 @@ import static main.system.GuiEventType.DESTROY_UNIT_MODEL;
  */
 public class DeathAnim extends ActionAnim {
     private static boolean on=true;
-    DC_HeroObj unit;
+    Unit unit;
     DEATH_ANIM template;
     private Image skull;
 
     public DeathAnim(Event e) {
         super(e.getRef().getObj(KEYS.ACTIVE), getDeathAnimData(e));
-       unit = (DC_HeroObj) e.getRef().getTargetObj();
+       unit = (Unit) e.getRef().getTargetObj();
         template = getTemplate(getActive(), unit);
         duration=2;
     }
@@ -104,7 +104,7 @@ public class DeathAnim extends ActionAnim {
         return null ;
     }
 
-    private DEATH_ANIM getTemplate(DC_ActiveObj active, DC_HeroObj unit) {
+    private DEATH_ANIM getTemplate(DC_ActiveObj active, Unit unit) {
 //        getRef().getEvent().getRef().getDamageType();
         return DEATH_ANIM.FADE;
     }

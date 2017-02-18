@@ -3,7 +3,7 @@ package main.content;
 import main.client.dc.Launcher;
 import main.client.dc.Launcher.VIEWS;
 import main.content.ValuePages.PAGE_NAMES;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.StringMaster;
@@ -76,7 +76,7 @@ public class ValuePageManager {
 
     private static void initMaps(Map<OBJ_TYPE, Map<String, List<VALUE>>> pageMaps,
                                  VALUE[][][] pageArray, String[] PAGE_NAMES, boolean alt) {
-        for (OBJ_TYPES TYPE : OBJ_TYPES.values()) {
+        for (DC_TYPE TYPE : DC_TYPE.values()) {
             int i = TYPE.getCode();
             if (pageArray.length <= i) {
                 break;
@@ -113,10 +113,10 @@ public class ValuePageManager {
 
     public static List<List<VALUE>> getValuesForHCInfoPages(OBJ_TYPE TYPE) {
         VALUE[][] pages = null;
-        if (TYPE == OBJ_TYPES.DEITIES) {
+        if (TYPE == DC_TYPE.DEITIES) {
             pages = HC_ValuePages.DEITY_PAGES;
         }
-        if (TYPE == OBJ_TYPES.CHARS) {
+        if (TYPE == DC_TYPE.CHARS) {
             if (Launcher.getMainManager().getSequence() == null) {
                 pages = HC_ValuePages.CHAR_PAGES;
             } else if (Launcher.getView() == VIEWS.CHOICE
@@ -128,25 +128,25 @@ public class ValuePageManager {
                 pages = HC_ValuePages.CHAR_PAGES;
             }
         }
-        if (TYPE == OBJ_TYPES.ACTIONS) {
+        if (TYPE == DC_TYPE.ACTIONS) {
             pages = HC_ValuePages.ACTION_PAGES;
         }
-        if (TYPE == OBJ_TYPES.JEWELRY) {
+        if (TYPE == DC_TYPE.JEWELRY) {
             pages = ValuePages.JEWELRY_PAGES;
         }
-        if (TYPE == OBJ_TYPES.WEAPONS) {
+        if (TYPE == DC_TYPE.WEAPONS) {
             pages = HC_ValuePages.WEAPONS_PAGES;
         }
-        if (TYPE == OBJ_TYPES.ARMOR) {
+        if (TYPE == DC_TYPE.ARMOR) {
             pages = HC_ValuePages.ARMOR_PAGES;
         }
-        if (TYPE == OBJ_TYPES.PARTY) {
+        if (TYPE == DC_TYPE.PARTY) {
             pages = HC_ValuePages.PARTY_PAGES;
         }
-        if (TYPE == OBJ_TYPES.SKILLS) {
+        if (TYPE == DC_TYPE.SKILLS) {
             pages = HC_ValuePages.SKILL_PAGES;
         }
-        if (TYPE == OBJ_TYPES.CLASSES) {
+        if (TYPE == DC_TYPE.CLASSES) {
             pages = HC_ValuePages.CLASS_PAGES;
         }
         if (pages == null) {

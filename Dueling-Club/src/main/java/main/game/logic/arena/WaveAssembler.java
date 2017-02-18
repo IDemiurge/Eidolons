@@ -1,21 +1,22 @@
 package main.game.logic.arena;
 
 import main.client.cc.logic.UnitLevelManager;
-import main.content.CONTENT_CONSTS.ENCOUNTER_TYPE;
-import main.content.CONTENT_CONSTS.GROWTH_PRIORITIES;
+import main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
+import main.content.enums.EncounterEnums.GROWTH_PRIORITIES;
 import main.content.C_OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
+import main.content.enums.EncounterEnums;
 import main.data.DataManager;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
-import main.game.logic.battle.Positioner;
+import main.game.logic.generic.Positioner;
 import main.game.logic.dungeon.Dungeon;
-import main.game.logic.generic.BattleOptions;
-import main.game.logic.generic.BattleOptions.DIFFICULTY;
+import main.game.logic.battle.BattleOptions;
+import main.game.logic.battle.BattleOptions.DIFFICULTY;
 import main.system.auxiliary.*;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
@@ -256,7 +257,7 @@ public class WaveAssembler {
         ObjType objType = null;
 
         if (RandomWizard.isWeightMap(list) || list.contains("@")) {
-            objType = RandomWizard.getObjTypeByWeight(list, OBJ_TYPES.UNITS);
+            objType = RandomWizard.getObjTypeByWeight(list, DC_TYPE.UNITS);
         }
 
         if (objType == null) {
@@ -361,7 +362,7 @@ public class WaveAssembler {
 
         Integer mod = wave.getIntParam(PARAMS.POWER_MOD);
         if (mod == 0) {
-            if (wave.getEncounterType() == ENCOUNTER_TYPE.BOSS) {
+            if (wave.getEncounterType() == EncounterEnums.ENCOUNTER_TYPE.BOSS) {
                 mod = ENCOUNTER_DEFAULT_BOSS_POWER_MOD;
             } else {
                 mod = 100;

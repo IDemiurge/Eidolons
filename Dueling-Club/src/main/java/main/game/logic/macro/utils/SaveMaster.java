@@ -2,7 +2,7 @@ package main.game.logic.macro.utils;
 
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Reader;

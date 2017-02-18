@@ -4,7 +4,7 @@ import main.content.C_OBJ_TYPE;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.obj.attach.DC_FeatObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.RULE_SCOPE;
 import main.system.auxiliary.EnumMaster;
@@ -22,7 +22,7 @@ public class AutoTestRunner {
     }
 
     public void run() {
-        DC_HeroObj unit = master.getSource();
+        Unit unit = master.getSource();
         RuleMaster.setScope(RULE_SCOPE.TEST);
         if (test.getArg(TEST_ARGS.RULE_SCOPE) != null) {
             RuleMaster.setScope(new EnumMaster<RULE_SCOPE>().retrieveEnumConst(RULE_SCOPE.class,
@@ -51,7 +51,7 @@ public class AutoTestRunner {
     private void runActionSkillTest() {
         String actionNames = test.getArgMap().get(TEST_ARGS.ACTION_NAMES);
         Ref ref = test.getRef();
-        DC_HeroObj unit = master.getSource();
+        Unit unit = master.getSource();
         for (String actionName : StringMaster.openContainer(actionNames)) {
             actionTest(actionName, ref, unit);
         }
@@ -61,14 +61,14 @@ public class AutoTestRunner {
         }
     }
 
-    private void actionTest(String name, Ref ref, DC_HeroObj unit) {
+    private void actionTest(String name, Ref ref, Unit unit) {
         unit.getAction(name).setRef(ref);
         unit.getAction(name).activate(false);
         logMeasurements();
         logAssertions();
     }
 
-    private void addTestTypes(DC_HeroObj unit) {
+    private void addTestTypes(Unit unit) {
         for (String typeName : StringMaster.openContainer(test.getArgMap().get(
                 TEST_ARGS.TEST_SKILLS))) {
             // ObjType type = DataManager.getType(typeName, OBJ_TYPES.SKILLS);

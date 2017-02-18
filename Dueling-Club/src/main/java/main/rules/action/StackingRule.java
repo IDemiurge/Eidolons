@@ -1,20 +1,20 @@
 package main.rules.action;
 
 import main.client.cc.logic.HeroCreator;
-import main.content.CONTENT_CONSTS.STATUS;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.EntityMaster;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.DC_Cell;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.obj.Obj;
 import main.entity.active.DC_ActiveObj;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.logic.dungeon.special.DoorMaster;
 import main.rules.UnitAnalyzer;
@@ -39,9 +39,9 @@ public class StackingRule implements ActionRule {
         instance = this;
     }
 
-    public static void applyStackingModifiers(List<DC_HeroObj> units) {
-        for (DC_HeroObj unit : units) {
-            for (DC_HeroObj otherUnit : units) {
+    public static void applyStackingModifiers(List<Unit> units) {
+        for (Unit unit : units) {
+            for (Unit otherUnit : units) {
                 if (unit == otherUnit) {
                     continue;
                 }
@@ -75,18 +75,18 @@ public class StackingRule implements ActionRule {
     public static void actionMissed(DC_ActiveObj action) {
         Ref ref = action.getRef();
         Obj target = ref.getTargetObj();
-        List<DC_HeroObj> units = action.getGame().getObjectsOnCoordinate(
+        List<Unit> units = action.getGame().getObjectsOnCoordinate(
                 action.getOwnerObj().getCoordinates());
         units.remove(action.getOwnerObj());
         units.remove(target);
         if (units.isEmpty()) {
             return;
         }
-        Map<DC_HeroObj, Integer> map = new HashMap<>();
-        for (DC_HeroObj unit : units) {
+        Map<Unit, Integer> map = new HashMap<>();
+        for (Unit unit : units) {
             map.put(unit, unit.getIntParam(PARAMS.GIRTH));
         }
-        DC_HeroObj randomTarget = new RandomWizard<DC_HeroObj>().getObjectByWeight(map);
+        Unit randomTarget = new RandomWizard<Unit>().getObjectByWeight(map);
         ref.setTarget(randomTarget.getId());
         // action.addProperty(G_PROPS.DYNAMIC_BOOLS,
         // DYNAMIC_BOOLS.MISSED_ALREADY); //NO RESTRAINTS! :)
@@ -113,7 +113,7 @@ public class StackingRule implements ActionRule {
         bools = new HashMap<>();
 
         if (unit == null) {
-            unit = DataManager.getType(HeroCreator.BASE_HERO, OBJ_TYPES.CHARS);
+            unit = DataManager.getType(HeroCreator.BASE_HERO, DC_TYPE.CHARS);
         }
         Obj cell;
         if (!game.isSimulation()) {
@@ -127,8 +127,8 @@ public class StackingRule implements ActionRule {
         DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits);
 
         if (z == null) {
-            if (unit instanceof DC_HeroObj) {
-                DC_HeroObj heroObj = (DC_HeroObj) unit;
+            if (unit instanceof Unit) {
+                Unit heroObj = (Unit) unit;
                 z = heroObj.getZ();
             }
         }
@@ -136,7 +136,7 @@ public class StackingRule implements ActionRule {
         // // TODO ADD
         // otherUnits = game.getObjectsOnCoordinate(z, c, false, false, false);
         // else
-        for (DC_HeroObj u : game.getObjectsOnCoordinate(z, c, false, false, false)) {
+        for (Unit u : game.getObjectsOnCoordinate(z, c, false, false, false)) {
             if (!units.contains(u)) {
                 units.addCast(u.getType());
             }
@@ -160,7 +160,7 @@ public class StackingRule implements ActionRule {
                 continue;
             }
             if (UnitAnalyzer.isDoor(u)) {
-                if (!u.checkProperty(G_PROPS.STATUS, "" + STATUS.UNLOCKED)) {
+                if (!u.checkProperty(G_PROPS.STATUS, "" + UnitEnums.STATUS.UNLOCKED)) {
                     return false;
                 }
             }
@@ -205,7 +205,7 @@ public class StackingRule implements ActionRule {
     }
 
     @Override
-    public boolean unitBecomesActive(DC_HeroObj unit) {
+    public boolean unitBecomesActive(Unit unit) {
         return true;
     }
 

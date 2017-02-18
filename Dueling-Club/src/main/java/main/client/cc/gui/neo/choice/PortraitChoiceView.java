@@ -1,11 +1,11 @@
 package main.client.cc.gui.neo.choice;
 
 import main.client.cc.CharacterCreator;
-import main.content.CONTENT_CONSTS.BACKGROUND;
-import main.content.CONTENT_CONSTS.GENDER;
+import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.CONTENT_CONSTS.SOUNDSET;
-import main.content.properties.G_PROPS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.enums.entity.HeroEnums;
+import main.content.values.properties.G_PROPS;
+import main.entity.obj.unit.Unit;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.graphics.MigMaster;
@@ -13,7 +13,7 @@ import main.system.images.ImageManager;
 
 public class PortraitChoiceView extends ChoiceView<String> {
 
-    public PortraitChoiceView(ChoiceSequence sequence, DC_HeroObj hero) {
+    public PortraitChoiceView(ChoiceSequence sequence, Unit hero) {
         super(sequence, hero);
     }
 
@@ -96,7 +96,7 @@ public class PortraitChoiceView extends ChoiceView<String> {
 
         if (female) {
             BACKGROUND bg = hero.getBackground().getFemale();
-            hero.setProperty(G_PROPS.GENDER, GENDER.FEMALE.toString(), true);
+            hero.setProperty(G_PROPS.GENDER, HeroEnums.GENDER.FEMALE.toString(), true);
             hero.setProperty(G_PROPS.BACKGROUND, bg.toString(), true);
             // int i = 0;
             // if (bg.getRace() != RACE.HUMAN || bg == BACKGROUND.STRANGER)
@@ -105,7 +105,7 @@ public class PortraitChoiceView extends ChoiceView<String> {
             hero.setProperty(G_PROPS.SOUNDSET, SOUNDSET.FEMALE.toString(), true);
         } else {
             BACKGROUND bg = hero.getBackground().getMale();
-            hero.setProperty(G_PROPS.GENDER, GENDER.MALE.toString(), true);
+            hero.setProperty(G_PROPS.GENDER, HeroEnums.GENDER.MALE.toString(), true);
             hero.setProperty(G_PROPS.BACKGROUND, bg.toString(), true);
         }
     }

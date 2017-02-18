@@ -1,12 +1,14 @@
 package main.system.auxiliary;
 
 import main.content.*;
-import main.content.enums.CUSTOM_HERO_GROUP;
-import main.content.parameters.PARAMETER;
-import main.content.parameters.Param;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
-import main.content.properties.Prop;
+import main.content.enums.entity.HeroEnums.CUSTOM_HERO_GROUP;
+import main.content.enums.macro.MACRO_CONTENT_CONSTS;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.parameters.Param;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
+import main.content.values.properties.Prop;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager.VARIABLE_TYPES;
 import main.entity.Entity;
@@ -17,22 +19,26 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 
+import java.io.IOException;
 import java.util.*;
 
 public class EnumMaster<T> {
+    public static final String ENUM_FOLDER = "main.content.enums";
     public static final Class<?> CONSTS_CLASS = CONTENT_CONSTS.class;
     public static final Class<?> CONSTS_CLASS2 = CONTENT_CONSTS2.class;
     private static final Class<?>[] STD_ENUM_CLASSES = {KEYS.class, VARIABLE_TYPES.class,
-            OBJ_TYPES.class, MACRO_OBJ_TYPES.class
+     DC_TYPE.class, MACRO_OBJ_TYPES.class
 
     };
     public static Class<?> ALT_CONSTS_CLASS; // set dynamically
     private static Map<Class, Map<String, Object>> enumCache = new HashMap<>();
     private static Map<Class, Map<String, Integer>> enumIndexCache = new HashMap<>();
+    private static Class[] enumClasses;
+    private static Map<String, Class> enumMap = new HashMap<>();
 
     // private static final Logger = Logger.getLogger(EnumMaster.class);
     public static Class<?> getEnumClass(String name) {
-        Class<?> CLASS = getContentConstantEnum(name);
+        Class<?> CLASS = getAndMapEnumConstant(name);
         if (CLASS == null) {
 
         }
@@ -40,12 +46,12 @@ public class EnumMaster<T> {
 
     }
 
-    private static Class<?> getContentConstantEnum(String name) {
+    private static Class<?> getAndMapEnumConstant(String name) {
+
         Class<?> CLASS = checkStdEnumClasses(name);
         if (CLASS != null) {
             return CLASS;
         }
-
         CLASS = getEnumClass(name, CONSTS_CLASS);
         if (CLASS != null) {
             return CLASS;
@@ -54,6 +60,26 @@ public class EnumMaster<T> {
         if (CLASS != null) {
             return CLASS;
         }
+        Class mappedClass = enumMap.get(name.toUpperCase());
+        if (mappedClass != null)
+            return getEnumClass(name, mappedClass);
+
+        if (enumClasses == null)
+            try {
+                enumClasses = ClassFinder.getClasses(ENUM_FOLDER);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        for (Class c : enumClasses) {
+            CLASS = getEnumClass(name, c);
+            if (CLASS != null) {
+                enumMap.put(name.toUpperCase(), c);
+                return CLASS;
+            }
+        }
+
 
         CLASS = getEnumClass(name, getALT_CONSTS_CLASS());
 
@@ -109,7 +135,7 @@ public class EnumMaster<T> {
         }
         if (closest) {
             return new SearchMaster<Class<?>>().findClosest(name, Arrays.asList(CONSTS_CLASS
-                    .getDeclaredClasses()));
+             .getDeclaredClasses()));
         }
 
         return null;
@@ -211,7 +237,7 @@ public class EnumMaster<T> {
         }
         if (index == -1) {
             LogMaster.log(1, "ENUM CONST NOT FOUND! : " + enumClass + " : "
-                    + constName);
+             + constName);
         }
 
         return index;
@@ -279,9 +305,9 @@ public class EnumMaster<T> {
             list = new LinkedList<>();
             if (class1 == VALUE.class) {
                 list = (Collection<T>) new LinkedList<>(Arrays.asList(ContentManager.getPropList()
-                        .toArray(new VALUE[ContentManager.getPropList().size()])));
+                 .toArray(new VALUE[ContentManager.getPropList().size()])));
                 list.addAll((Collection<T>) Arrays.asList(ContentManager.getParamList().toArray(
-                        new VALUE[ContentManager.getParamList().size()])));
+                 new VALUE[ContentManager.getParamList().size()])));
             }
             if (class1 == PROPERTY.class) {
                 list = (Collection<T>) ContentManager.getPropList();
@@ -401,7 +427,7 @@ public class EnumMaster<T> {
 
     public Comparator<? super String> getEnumTypesSorter(final boolean subgroup, final OBJ_TYPE TYPE) {
         String name = subgroup ? TYPE.getSubGroupingKey().getName() : TYPE.getGroupingKey()
-                .getName();
+         .getName();
         final Class<?> ENUM = EnumMaster.getEnumClass(name);
         // OBJ_TYPES ST = new EnumMaster<OBJ_TYPES>().retrieveEnumConst(
         // OBJ_TYPES.class, name, true);
@@ -414,13 +440,13 @@ public class EnumMaster<T> {
                 ObjType type1 = DataManager.getType(o1, TYPE);
                 ObjType type2 = DataManager.getType(o2, TYPE);
 
-                if (TYPE == OBJ_TYPES.CHARS) {
+                if (TYPE == DC_TYPE.CHARS) {
                     CUSTOM_HERO_GROUP group = new EnumMaster<CUSTOM_HERO_GROUP>()
-                            .retrieveEnumConst(CUSTOM_HERO_GROUP.class, type1
-                                    .getProperty(G_PROPS.CUSTOM_HERO_GROUP));
+                     .retrieveEnumConst(CUSTOM_HERO_GROUP.class, type1
+                      .getProperty(G_PROPS.CUSTOM_HERO_GROUP));
                     CUSTOM_HERO_GROUP group2 = new EnumMaster<CUSTOM_HERO_GROUP>()
-                            .retrieveEnumConst(CUSTOM_HERO_GROUP.class, type2
-                                    .getProperty(G_PROPS.CUSTOM_HERO_GROUP));
+                     .retrieveEnumConst(CUSTOM_HERO_GROUP.class, type2
+                      .getProperty(G_PROPS.CUSTOM_HERO_GROUP));
                     int index = EnumMaster.getEnumConstIndex(CUSTOM_HERO_GROUP.class, group);
                     int index2 = EnumMaster.getEnumConstIndex(CUSTOM_HERO_GROUP.class, group2);
                     if (index == -1) {
@@ -440,19 +466,19 @@ public class EnumMaster<T> {
                 }
 
                 Object enumConst = EnumMaster.getEnumConst(ENUM, subgroup ? type1
-                        .getSubGroupingKey() : type1.getGroupingKey());
+                 .getSubGroupingKey() : type1.getGroupingKey());
                 String name = "" + enumConst;
                 int index = ListMaster.getIndexString(ListMaster.toStringList(ENUM
-                        .getEnumConstants()), name, true);
+                 .getEnumConstants()), name, true);
                 if (index == -1) {
                     return 1;
                 }
                 enumConst = ""
-                        + EnumMaster.getEnumConst(ENUM, subgroup ? type2.getSubGroupingKey()
-                        : type2.getGroupingKey());
+                 + EnumMaster.getEnumConst(ENUM, subgroup ? type2.getSubGroupingKey()
+                 : type2.getGroupingKey());
                 name = "" + enumConst;
                 int index2 = ListMaster.getIndexString(ListMaster.toStringList(ENUM
-                        .getEnumConstants()), name, true);
+                 .getEnumConstants()), name, true);
                 if (index == index2) {
                     index = StringMaster.getInteger(type1.getProperty(G_PROPS.ID));
                     index2 = StringMaster.getInteger(type2.getProperty(G_PROPS.ID));

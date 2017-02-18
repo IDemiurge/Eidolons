@@ -5,8 +5,8 @@ import main.client.cc.logic.PointMaster;
 import main.content.ContentManager;
 import main.content.DC_ContentManager.ATTRIBUTE;
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.values.parameters.PARAMETER;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.misc.PointComp;
@@ -40,7 +40,7 @@ public class PointView extends HeroView implements ChangeListener,
     private Font font;
     private Map<PARAMETER, Component> compMap = new HashMap<>();
 
-    public PointView(DC_HeroObj hero, List<PARAMETER> values) {
+    public PointView(Unit hero, List<PARAMETER> values) {
         super(hero);
         setVisuals(VISUALS.INFO_PANEL);
         this.values = values;
@@ -49,7 +49,7 @@ public class PointView extends HeroView implements ChangeListener,
         refresh();
     }
 
-    public PointView(boolean editable, boolean attributes, DC_HeroObj hero) {
+    public PointView(boolean editable, boolean attributes, Unit hero) {
         super(hero);
         this.editable = editable;
         this.attributes = attributes;

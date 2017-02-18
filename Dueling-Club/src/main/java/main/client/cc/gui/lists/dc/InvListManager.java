@@ -2,14 +2,14 @@ package main.client.cc.gui.lists.dc;
 
 import main.client.cc.CharacterCreator;
 import main.client.cc.gui.lists.HeroListPanel;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
 import main.entity.item.DC_HeroItemObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.sound.SoundMaster;
@@ -36,7 +36,7 @@ public class InvListManager extends DC_ItemListManager {
     }
 
     public void execute(OPERATIONS operation, String typeName) {
-        DC_HeroObj unit = getHero();
+        Unit unit = getHero();
         boolean alt = false;
         DC_HeroItemObj item;
         if (operation == OPERATIONS.PICK_UP) {
@@ -121,7 +121,7 @@ public class InvListManager extends DC_ItemListManager {
         if (p == PROPS.INVENTORY) {
             CharacterCreator.getHeroManager().removeItem(getHero(), type, p, TYPE, true);
         } else {
-            if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.JEWELRY) {
+            if (type.getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY) {
                 CharacterCreator.getHeroManager().removeJewelryItem(getHero(), type);
             } else if (p == PROPS.QUICK_ITEMS) {
                 CharacterCreator.getHeroManager().removeQuickSlotItem(getHero(), type);

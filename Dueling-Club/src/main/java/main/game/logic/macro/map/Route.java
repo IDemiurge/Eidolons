@@ -1,8 +1,8 @@
 package main.game.logic.macro.map;
 
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
-import main.content.parameters.MACRO_PARAMS;
-import main.content.properties.MACRO_PROPS;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.properties.MACRO_PROPS;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.CoordinatesMaster;

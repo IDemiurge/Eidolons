@@ -8,10 +8,10 @@ import main.client.cc.gui.tabs.HeroItemTab;
 import main.content.C_OBJ_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager.BORDER;
@@ -26,7 +26,7 @@ public class ItemSwapPanel extends HeroItemTab {
     private HC_PagedListPanel itemPool;
     private SwapItemManager swapManager;
 
-    public ItemSwapPanel(DC_HeroObj hero, DC_Obj obj) {
+    public ItemSwapPanel(Unit hero, DC_Obj obj) {
         super(TITLE, null, hero);
         this.obj = obj;
         setSwapManager(new SwapItemManager(hero.getGame()));

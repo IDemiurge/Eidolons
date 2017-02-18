@@ -1,6 +1,6 @@
 package main.swing.generic.misc;
 
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 
 import javax.swing.*;
 

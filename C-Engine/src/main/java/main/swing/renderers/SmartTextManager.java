@@ -2,11 +2,11 @@ package main.swing.renderers;
 
 import main.content.ContentManager;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
 import main.entity.obj.Obj;
-import main.game.Game;
+import main.game.core.game.Game;
 import main.system.graphics.ColorManager;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;

@@ -12,8 +12,8 @@ import main.elements.conditions.RefCondition;
 import main.elements.targeting.FixedTargeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.game.event.Event;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 
 public class BlockEffect extends MicroEffect implements AttachmentEffect {
     protected STANDARD_EVENT_TYPE event_type;

@@ -7,8 +7,8 @@ import main.client.cc.gui.neo.tabs.TabChangeListener;
 import main.client.cc.gui.views.HeroView;
 import main.content.PARAMS;
 import main.content.ValuePages;
-import main.content.parameters.PARAMETER;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.values.parameters.PARAMETER;
+import main.entity.obj.unit.Unit;
 import main.system.math.DC_MathManager;
 
 import java.util.Arrays;
@@ -28,7 +28,7 @@ public class MasterySlidePanel extends HeroView {
     private List<PARAMETER> unlockedList;
     private HC_PointView[] views;
 
-    public MasterySlidePanel(final DC_HeroObj hero) {
+    public MasterySlidePanel(final Unit hero) {
         super(hero);
         initLists();
         views = new HC_PointView[]{

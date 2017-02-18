@@ -1,9 +1,9 @@
 package main.client.cc.gui.neo.choice;
 
 import main.content.PARAMS;
-import main.content.parameters.MACRO_PARAMS;
+import main.content.values.parameters.MACRO_PARAMS;
 import main.entity.Entity;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.logic.dungeon.scenario.ScenarioMaster;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.town.Tavern;
@@ -18,7 +18,7 @@ import main.system.threading.Weaver;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TavernView extends HeroChoiceView<DC_HeroObj> {
+public class TavernView extends HeroChoiceView<Unit> {
 
     private Tavern tavern;
 
@@ -37,7 +37,7 @@ public class TavernView extends HeroChoiceView<DC_HeroObj> {
     }
 
     @Override
-    public boolean checkBlocked(DC_HeroObj e) {
+    public boolean checkBlocked(Unit e) {
         if (!TavernMaster.checkCanHire(MacroManager.getActiveParty(), hero, tavern, e)) {
             return false;
         }
@@ -108,7 +108,7 @@ public class TavernView extends HeroChoiceView<DC_HeroObj> {
 
     public void itemIndexSelected(int i) {
         this.setIndex(i);
-        DC_HeroObj e = data.get(getSelectedIndex());
+        Unit e = data.get(getSelectedIndex());
         if (e instanceof Entity && infoPanel != null) {
             infoPanel.setEntity((Entity) e);
             infoPanel.refresh();
@@ -121,7 +121,7 @@ public class TavernView extends HeroChoiceView<DC_HeroObj> {
 
     }
 
-    public void itemSelected(DC_HeroObj i) {
+    public void itemSelected(Unit i) {
         itemIndexSelected(data.indexOf(i));
         // init dialogue or set description text with Gold Share and other hire
         // infos
@@ -136,7 +136,7 @@ public class TavernView extends HeroChoiceView<DC_HeroObj> {
         data = getData();
     }
 
-    public List<DC_HeroObj> getData() {
+    public List<Unit> getData() {
         if (tavern == null) {
             if (ScenarioMaster.getScenario() != null) {
 

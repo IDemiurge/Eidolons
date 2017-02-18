@@ -2,7 +2,7 @@ package main.client.cc.gui.neo.tree.logic;
 
 import main.client.cc.gui.neo.tree.HC_Tree.LINK_TYPE;
 import main.client.cc.gui.neo.tree.HT_Node;
-import main.game.battlefield.XLine;
+import main.swing.XLine;
 
 public class TreeLink {
     LINK_TYPE type;

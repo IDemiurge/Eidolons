@@ -2,7 +2,7 @@ package main.ability.conditions.special;
 
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref.KEYS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 
 public class FleeCondition extends MicroCondition {
 
@@ -18,10 +18,10 @@ public class FleeCondition extends MicroCondition {
 
     @Override
     public boolean check() {
-        if (!(ref.getObj(key) instanceof DC_HeroObj)) {
+        if (!(ref.getObj(key) instanceof Unit)) {
             return false;
         }
-        DC_HeroObj obj = (DC_HeroObj) ref.getObj(key);
+        Unit obj = (Unit) ref.getObj(key);
 
         if (!(obj.getX() == obj.getGame().getBattleField().getGrid().getWidth() - 1 || obj
                 .getX() == 0)) {

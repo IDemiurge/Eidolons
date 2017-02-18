@@ -12,8 +12,8 @@ import main.elements.conditions.NumericCondition;
 import main.elements.conditions.StringComparison;
 import main.elements.conditions.standard.OwnershipCondition;
 import main.entity.Ref.KEYS;
-import main.game.MicroGame;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.game.core.game.MicroGame;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.rules.DC_RuleImpl;
 
 /**

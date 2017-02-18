@@ -3,8 +3,8 @@ package main.libgdx.bf;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 
 import java.util.List;
@@ -115,8 +115,8 @@ public class GridCellContainer extends GridCell {
         }
         final int xOffset = getW() / 3;
         final int yOffset = getH() / 3;
-        Map<Coordinates, Map<DC_HeroObj, Coordinates.DIRECTION>> directionMap = DC_Game.game.getDirectionMap();
-        Map<DC_HeroObj, Coordinates.DIRECTION> heroObjDIRECTIONMap = directionMap.get(new Coordinates(getGridX(), getGridY()));
+        Map<Coordinates, Map<Unit, Coordinates.DIRECTION>> directionMap = DC_Game.game.getDirectionMap();
+        Map<Unit, Coordinates.DIRECTION> heroObjDIRECTIONMap = directionMap.get(new Coordinates(getGridX(), getGridY()));
         overlays.forEach(unitViewOptions -> {
             Coordinates.DIRECTION direction = null;
             if (heroObjDIRECTIONMap != null) {
@@ -160,7 +160,7 @@ public class GridCellContainer extends GridCell {
 
             OverlayView view = new OverlayView(unitViewOptions);
             view.setBounds(calcXOffset, calcYOffset, xOffset, yOffset);
-            view.setScale(.333f, .333f);
+            view.setScale(OverlayView.SCALE, OverlayView.SCALE);
             addActor(view);
             overlayCount++;
         });

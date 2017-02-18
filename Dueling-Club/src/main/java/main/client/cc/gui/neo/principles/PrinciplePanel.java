@@ -3,9 +3,10 @@ package main.client.cc.gui.neo.principles;
 import main.client.cc.CharacterCreator;
 import main.client.cc.gui.misc.PoolComp;
 import main.client.cc.gui.neo.points.HC_PointComp;
-import main.content.CONTENT_CONSTS.PRINCIPLES;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.PARAMS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.enums.entity.HeroEnums;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
@@ -20,7 +21,7 @@ import java.util.List;
 
 public class PrinciplePanel extends G_Panel implements MouseListener {
 
-    private DC_HeroObj hero;
+    private Unit hero;
     private PRINCIPLES principle;
     private PrincipleView view;
     private List<PrinciplePointComp> pointComps = new LinkedList<>();
@@ -29,7 +30,7 @@ public class PrinciplePanel extends G_Panel implements MouseListener {
     private GraphicComponent principlesIcon;
     private GraphicComponent helpIcon;
 
-    public PrinciplePanel(DC_HeroObj hero, PrincipleView view) {
+    public PrinciplePanel(Unit hero, PrincipleView view) {
         super(VISUALS.PRINCIPLE_PANEL_FRAME);
         this.hero = hero;
         this.view = view;
@@ -61,7 +62,7 @@ public class PrinciplePanel extends G_Panel implements MouseListener {
         add(table, "pos pool.x2 pool.y");
         int height = VISUALS.PRINCIPLE_VALUE_BOX.getHeight();
         int y = 0;
-        for (PRINCIPLES p : PRINCIPLES.values()) {
+        for (PRINCIPLES p : HeroEnums.PRINCIPLES.values()) {
             PrinciplePointComp pointComp = new PrinciplePointComp(this, p, hero, this, getBuffer());
             pointComps.add(pointComp);
             y += height;

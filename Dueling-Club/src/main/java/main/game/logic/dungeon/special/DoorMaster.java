@@ -1,7 +1,7 @@
 package main.game.logic.dungeon.special;
 
 import main.entity.Entity;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.logic.dungeon.Dungeon;
 
@@ -29,7 +29,7 @@ public class DoorMaster {
 
     }
 
-    public static boolean openDoor(DC_HeroObj door) {
+    public static boolean openDoor(Unit door) {
 //        door.addStatus(value);
         return true;
 

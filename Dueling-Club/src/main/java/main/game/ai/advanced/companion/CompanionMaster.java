@@ -1,6 +1,6 @@
 package main.game.ai.advanced.companion;
 
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 
 public class CompanionMaster {
     /*
@@ -13,7 +13,7 @@ public class CompanionMaster {
      *  enemy preferences
      *
      */
-    public static void initCompanionAiParams(DC_HeroObj hero) {
+    public static void initCompanionAiParams(Unit hero) {
         // prefs, ai type, ...
     }
 

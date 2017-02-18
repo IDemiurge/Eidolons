@@ -1,16 +1,15 @@
 package main.rules.action;
 
-import main.content.CONTENT_CONSTS.ACTION_TAGS;
-import main.content.CONTENT_CONSTS.ACTION_TYPE_GROUPS;
-import main.content.CONTENT_CONSTS.SPELL_TAGS;
-import main.content.CONTENT_CONSTS.STATUS;
 import main.content.PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.SpellEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.properties.G_PROPS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.ai.AI_Manager;
 import main.game.battlefield.attack.Attack;
 import main.rules.attack.AttackOfOpportunityRule;
@@ -49,17 +48,17 @@ public class EngagedRule implements ActionRule {
         return true;
     }
 
-    public static void applyMods(DC_HeroObj heroObj) {
+    public static void applyMods(Unit heroObj) {
         // TODO add status (buff?) and
 
         heroObj.modifyParameter(PARAMS.DEFENSE_MOD, -(DEFENSE_MOD - DEFENSE_MOD
                 * heroObj.getIntParam(PARAMS.ENGAGEMENT_DEFENSE_REDUCTION_MOD) / 100));
-        heroObj.addStatus(STATUS.ENGAGED.toString());
+        heroObj.addStatus(UnitEnums.STATUS.ENGAGED.toString());
         // bonus against ET!
 
     }
 
-    public boolean unitMoved(DC_HeroObj obj, int x, int y) {
+    public boolean unitMoved(Unit obj, int x, int y) {
         return true;
         // List<DC_HeroObj> units = obj.getGame().getObjectsOnCoordinate(new
         // Coordinates(x, y));
@@ -91,17 +90,17 @@ public class EngagedRule implements ActionRule {
         // return true;
     }
 
-    private DC_HeroObj chooseEngagedUnit(DC_HeroObj obj, List<DC_HeroObj> units) {
+    private Unit chooseEngagedUnit(Unit obj, List<Unit> units) {
         // if (isAutoEngageOff(obj))
         if (obj.isAiControlled()) {
             return AI_Manager.chooseEnemyToEngage(obj, units);
         }
-        return (DC_HeroObj) DialogMaster.objChoice("Choose an enemy to engage...", units
+        return (Unit) DialogMaster.objChoice("Choose an enemy to engage...", units
                 .toArray(new Obj[units.size()]));
 
     }
 
-    public boolean checkCanDisengage(DC_HeroObj disengager) {
+    public boolean checkCanDisengage(Unit disengager) {
         return disengager.getIntParam(PARAMS.C_N_OF_ACTIONS) >= 1 + getEngagers(disengager).size();
         // getDisengageCost(disengager).canBePaid();
         // new Costs(map) //check provoke
@@ -110,9 +109,9 @@ public class EngagedRule implements ActionRule {
         // NESW on cells? for directional blocking
     }
 
-    public List<DC_HeroObj> getEngagers(DC_HeroObj engaged) {
-        List<DC_HeroObj> list = new LinkedList<>();
-        for (DC_HeroObj u : engaged.getGame().getUnits()) {
+    public List<Unit> getEngagers(Unit engaged) {
+        List<Unit> list = new LinkedList<>();
+        for (Unit u : engaged.getGame().getUnits()) {
             if (u.getEngagementTarget() == engaged) {
                 list.add(u);
             }
@@ -125,16 +124,16 @@ public class EngagedRule implements ActionRule {
             return false;
         }
 
-        DC_HeroObj unit = action.getOwnerObj();
+        Unit unit = action.getOwnerObj();
         boolean prompt = !unit.isAiControlled()
-                && action.getActionGroup() != ACTION_TYPE_GROUPS.MODE
-                && action.getActionGroup() != ACTION_TYPE_GROUPS.ATTACK;
+                && action.getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.MODE
+                && action.getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.ATTACK;
         if (prompt) {
             if (action.getRef().getTargetObj() == null || action.getRef().getTargetObj() == unit) {
                 // self-targeting or misc instants shouldn't bother
-                if (action.checkProperty(G_PROPS.SPELL_TAGS, SPELL_TAGS.INSTANT.toString())) {
+                if (action.checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.INSTANT.toString())) {
                     prompt = false;
-                } else if (action.checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.INSTANT.toString())) {
+                } else if (action.checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.INSTANT.toString())) {
                     prompt = false;
                 }
 
@@ -155,8 +154,8 @@ public class EngagedRule implements ActionRule {
             disengaged(action);
             return true;
         }
-        DC_HeroObj disengager = action.getOwnerObj();
-        List<DC_HeroObj> engagers = getEngagers(disengager);
+        Unit disengager = action.getOwnerObj();
+        List<Unit> engagers = getEngagers(disengager);
         // remove if not aoo
         String units = StringMaster.getStringFromEntityList(engagers).replace(";", ", ");
         units = StringMaster.replaceLast(units, ", ", "");
@@ -192,13 +191,13 @@ public class EngagedRule implements ActionRule {
     }
 
     @Override
-    public boolean unitBecomesActive(DC_HeroObj unit) {
+    public boolean unitBecomesActive(Unit unit) {
         return true;
     }
 
     public void updateEngagementTargets() {
-        for (DC_HeroObj unit : game.getUnits()) {
-            DC_HeroObj engagementTarget = unit.getEngagementTarget();
+        for (Unit unit : game.getUnits()) {
+            Unit engagementTarget = unit.getEngagementTarget();
             boolean disengage = false;
             if (engagementTarget != null) {
                 if (!engagementTarget.isDead() || engagementTarget.isUnconscious()
@@ -213,7 +212,7 @@ public class EngagedRule implements ActionRule {
             }
             if (disengage) {
                 unit.setEngagementTarget(null);
-                for (DC_HeroObj unit1 : getEngagers(unit)) {
+                for (Unit unit1 : getEngagers(unit)) {
                     unit1.setEngagementTarget(null);
                 }
             }
@@ -224,8 +223,8 @@ public class EngagedRule implements ActionRule {
     public void disengaged(DC_ActiveObj action) {
         // disengager.getGame().fireEvent(new
         // Event(STANDARD_EVENT_TYPE.DISENGAGED, disengager.getRef()));
-        DC_HeroObj disengaged = action.getOwnerObj();
-        for (DC_HeroObj unit : action.getGame().getUnits()) {
+        Unit disengaged = action.getOwnerObj();
+        for (Unit unit : action.getGame().getUnits()) {
             if (unit.getEngagementTarget() == disengaged) {
                 checkAoO(action, unit);
                 if (PositionMaster.getDistance(unit, disengaged) >= 1) {
@@ -236,7 +235,7 @@ public class EngagedRule implements ActionRule {
         disengaged.setEngagementTarget(null);
     }
 
-    public void engage(DC_HeroObj engager, DC_HeroObj engaged) {
+    public void engage(Unit engager, Unit engaged) {
         // when moved, instead of Collision perhaps... though in some cases
         // getting pushed out is OK
         engager.setEngagementTarget(engaged);
@@ -253,16 +252,16 @@ public class EngagedRule implements ActionRule {
 
     }
 
-    private boolean isAutoEngageOff(DC_HeroObj engaged) {
+    private boolean isAutoEngageOff(Unit engaged) {
         // TODO std bool? std passive? experienced"
         return false;
     }
 
-    public boolean isEngaged(DC_HeroObj unit) {
+    public boolean isEngaged(Unit unit) {
         return getEngagers(unit) != null;
     }
 
-    public void checkAoO(DC_ActiveObj action, DC_HeroObj unit) {
+    public void checkAoO(DC_ActiveObj action, Unit unit) {
         try {
             AttackOfOpportunityRule.triggerAttack(unit, action.getOwnerObj(), true);
         } catch (Exception e) {

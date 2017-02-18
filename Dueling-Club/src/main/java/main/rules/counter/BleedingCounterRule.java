@@ -1,14 +1,15 @@
 package main.rules.counter;
 
 import main.ability.effects.Effect;
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
-import main.content.CONTENT_CONSTS.STATUS;
-import main.content.CONTENT_CONSTS.STD_BUFF_NAMES;
-import main.content.CONTENT_CONSTS.STD_COUNTERS;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.GenericEnums;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.PARAMS;
+import main.content.enums.entity.UnitEnums;
 import main.entity.Ref.KEYS;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.system.auxiliary.StringMaster;
 
 public class BleedingCounterRule extends DamageCounterRule {
@@ -21,12 +22,12 @@ public class BleedingCounterRule extends DamageCounterRule {
 
     @Override
     public String getCounterName() {
-        return STD_COUNTERS.Bleeding_Counter.toString();
+        return UnitEnums.STD_COUNTERS.Bleeding_Counter.toString();
     }
 
     @Override
     public DAMAGE_TYPE getDamageType() {
-        return DAMAGE_TYPE.PURE;
+        return GenericEnums.DAMAGE_TYPE.PURE;
     }
 
     @Override
@@ -36,7 +37,7 @@ public class BleedingCounterRule extends DamageCounterRule {
     }
 
     @Override
-    public int getMaxNumberOfCounters(DC_HeroObj unit) {
+    public int getMaxNumberOfCounters(Unit unit) {
         return 50;
     }
 
@@ -47,16 +48,16 @@ public class BleedingCounterRule extends DamageCounterRule {
 
     @Override
     public String getBuffName() {
-        return STD_BUFF_NAMES.Bleeding.toString();
+        return MetaEnums.STD_BUFF_NAMES.Bleeding.toString();
     }
 
     @Override
     public STATUS getStatus() {
-        return STATUS.BLEEDING;
+        return UnitEnums.STATUS.BLEEDING;
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(DC_HeroObj unit) {
+    public int getCounterNumberReductionPerTurn(Unit unit) {
         return unit.getIntParam(PARAMS.FORTITUDE);
     }
 

@@ -2,11 +2,11 @@ package main.client.cc.gui.neo.principles;
 
 import main.client.cc.gui.neo.points.HC_PointComp;
 import main.client.cc.gui.neo.points.PointSpinnerModel;
-import main.content.CONTENT_CONSTS.PRINCIPLES;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.values.parameters.PARAMETER;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.rules.rpg.IntegrityRule;
 import main.system.auxiliary.log.LogMaster;
@@ -22,7 +22,7 @@ public class PrinciplePointComp extends HC_PointComp {// do I really need to?
     private PRINCIPLES principle;
     private PrinciplePanel panel;
 
-    public PrinciplePointComp(PrinciplePanel panel, PRINCIPLES principle, DC_HeroObj hero,
+    public PrinciplePointComp(PrinciplePanel panel, PRINCIPLES principle, Unit hero,
                               PrinciplePanel principlePanel, ObjType buffer) {
         super(true, hero, buffer, DC_ContentManager.getIdentityParamForPrinciple(principle),
                 PARAMS.IDENTITY_POINTS, VISUALS.PRINCIPLE_VALUE_BOX, true);
@@ -80,7 +80,7 @@ public class PrinciplePointComp extends HC_PointComp {// do I really need to?
     }
 
     @Override
-    protected PointSpinnerModel createModel(DC_HeroObj hero, ObjType buffer, PARAMETER param,
+    protected PointSpinnerModel createModel(Unit hero, ObjType buffer, PARAMETER param,
                                             PARAMETER pool) {
         return new PointSpinnerModel(textComp, hero, buffer, param, pool) {
             @Override

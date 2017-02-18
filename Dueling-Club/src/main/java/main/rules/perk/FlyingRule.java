@@ -1,7 +1,7 @@
 package main.rules.perk;
 
 import main.content.PARAMS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.MathMaster;
 
@@ -24,7 +24,7 @@ public class FlyingRule {
         }
     }
 
-    public static boolean checkAddMoveCostReductions(DC_HeroObj ownerObj) {
+    public static boolean checkAddMoveCostReductions(Unit ownerObj) {
         // TODO Auto-generated method stub
         if (!ownerObj.isFlying()) {
             return false;

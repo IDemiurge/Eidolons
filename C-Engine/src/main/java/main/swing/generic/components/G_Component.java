@@ -1,6 +1,6 @@
 package main.swing.generic.components;
 
-import main.game.battlefield.PointX;
+import main.swing.PointX;
 import main.swing.Painted;
 
 import javax.swing.*;

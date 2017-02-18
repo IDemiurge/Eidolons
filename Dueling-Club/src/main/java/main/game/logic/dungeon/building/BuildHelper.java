@@ -4,7 +4,7 @@ import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.CoordinatesMaster;
 import main.game.battlefield.FacingMaster;
-import main.game.battlefield.XDimension;
+import main.swing.XDimension;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.building.DungeonBuilder.BLOCK_TYPE;
 import main.game.logic.dungeon.building.DungeonBuilder.DUNGEON_TEMPLATES;

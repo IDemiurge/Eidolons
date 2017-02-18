@@ -1,8 +1,8 @@
 package main.swing.components;
 
 import main.content.VALUE;
-import main.content.parameters.MACRO_PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.properties.G_PROPS;
 import main.entity.obj.Obj;
 
 public class HeroInfoTable extends InfoTable {

@@ -4,13 +4,14 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
-import main.content.CONTENT_CONSTS.STATUS;
-import main.content.CONTENT_CONSTS.STD_BUFF_NAMES;
-import main.content.CONTENT_CONSTS.STD_COUNTERS;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.GenericEnums;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.PARAMS;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.content.enums.entity.UnitEnums;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.system.math.Formula;
 
 /*
@@ -33,14 +34,14 @@ public class DiseaseRule extends DamageCounterRule {
     }
 
     @Override
-    public boolean check(DC_HeroObj unit) {
+    public boolean check(Unit unit) {
         // TODO Auto-generated method stub
         return super.check(unit);
     }
 
     @Override
     public DAMAGE_TYPE getDamageType() {
-        return DAMAGE_TYPE.POISON;
+        return GenericEnums.DAMAGE_TYPE.POISON;
     }
 
     @Override
@@ -76,7 +77,7 @@ public class DiseaseRule extends DamageCounterRule {
 
     @Override
     public String getCounterName() {
-        return STD_COUNTERS.Disease_Counter.getName();
+        return UnitEnums.STD_COUNTERS.Disease_Counter.getName();
     }
 
     // @Override
@@ -86,7 +87,7 @@ public class DiseaseRule extends DamageCounterRule {
     // return REDUCTION;
     // }
     @Override
-    public int getCounterNumberReductionPerTurn(DC_HeroObj unit) {
+    public int getCounterNumberReductionPerTurn(Unit unit) {
         int n = 1 + unit.getIntParam(PARAMS.FORTITUDE) * unit.getIntParam(PARAMS.POISON_RESISTANCE)
                 / 100;
         if (checkVirulent(unit)) {
@@ -95,18 +96,18 @@ public class DiseaseRule extends DamageCounterRule {
         return n;
     }
 
-    private boolean checkVirulent(DC_HeroObj unit) {
-        return unit.checkStatus(STATUS.VIRULENT);
+    private boolean checkVirulent(Unit unit) {
+        return unit.checkStatus(UnitEnums.STATUS.VIRULENT);
     }
 
     @Override
     public String getBuffName() {
-        return STD_BUFF_NAMES.Contaminated.getName();
+        return MetaEnums.STD_BUFF_NAMES.Contaminated.getName();
     }
 
     @Override
     public STATUS getStatus() {
-        return STATUS.CONTAMINATED;
+        return UnitEnums.STATUS.CONTAMINATED;
     }
 
     @Override

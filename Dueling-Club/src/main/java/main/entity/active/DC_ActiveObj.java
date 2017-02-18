@@ -10,14 +10,29 @@ import main.ability.effects.containers.customtarget.ShapeEffect;
 import main.ability.effects.containers.customtarget.ZoneEffect;
 import main.ability.effects.special.ManipulateSpellEffect;
 import main.client.cc.logic.HeroAnalyzer;
-import main.content.CONTENT_CONSTS.*;
 import main.content.DC_ContentManager;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.enums.STD_MODES;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.enums.*;
+import main.content.enums.entity.AbilityEnums;
+import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
+import main.content.enums.entity.SpellEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.enums.system.AiEnums.AI_LOGIC;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.system.MetaEnums.CUSTOM_VALUE_TEMPLATE;
+import main.content.enums.entity.SpellEnums.RESISTANCE_TYPE;
+import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
+import main.content.mode.STD_MODES;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.AbilityConstructor;
 import main.elements.conditions.Condition;
 import main.elements.costs.Cost;
@@ -32,16 +47,16 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.*;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.Game;
+import main.game.core.game.Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.VisionManager;
-import main.game.event.Event;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
-import main.game.player.Player;
-import main.rules.DC_ActionManager;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.battle.player.Player;
+import main.game.logic.generic.DC_ActionManager;
 import main.rules.action.StackingRule;
 import main.rules.action.WatchRule;
 import main.rules.attack.AttackOfOpportunityRule;
@@ -60,7 +75,7 @@ import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.game.ai.elements.actions.ActionManager;
-import main.game.ai.tools.target.EffectMaster;
+import main.game.ai.tools.target.EffectFinder;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
@@ -82,13 +97,16 @@ import java.util.*;
 
 public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interruptable,
         SpriteAnimated, AttachedObj {
-    protected static final String BLOCKED = STATUS.BLOCKED.name();
+
+
+
+    protected static final String BLOCKED = UnitEnums.STATUS.BLOCKED.name();
     protected static final String CANNOT_ACTIVATE = "Cannot activate";
     private static final String[] ANIMATION_EXCEPTIONS = {"Turn Clockwise", "Move",
             "Turn Anticlockwise",};
     protected Targeting targeting;
     protected Costs costs = new Costs(new LinkedList<>());
-    protected DC_HeroObj ownerObj;
+    protected Unit ownerObj;
     protected DamageSprite damageSprite;
     protected boolean highlighted;
     protected boolean interrupted;
@@ -140,7 +158,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public DC_ActiveObj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
         setRef(ref);
-        this.ownerObj = (DC_HeroObj) ref.getSourceObj();
+        this.ownerObj = (Unit) ref.getSourceObj();
     }
 
     public static void waitForAnimation(PhaseAnimation anim) {
@@ -188,7 +206,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         }
 
         if (targetingMode == null) {
-            targetingMode = TARGETING_MODE.MULTI;
+            targetingMode = AbilityEnums.TARGETING_MODE.MULTI;
         }
         ActivesConstructor.constructActive(targetingMode, this);
         if (targeting == null) {
@@ -227,7 +245,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return canBeActivatedAsExtraAttack(true);
     }
 
-    public boolean canBeActivatedAsAttackOfOpportunity(boolean pending, DC_HeroObj target) {
+    public boolean canBeActivatedAsAttackOfOpportunity(boolean pending, Unit target) {
         boolean watch = getOwnerObj().getMode().equals(STD_MODES.ALERT)
                 || WatchRule.checkWatched(getOwnerObj(), target);
 
@@ -438,16 +456,36 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         if (getGame().getRules().getEngagedRule().checkDisengagingActionCancelled(this)) {
             // return false; TODO
         }
+        ENTRY_TYPE entryType =log();
 
+        if (isCancellable()) {
+            result = activated(ref  );
+            if (!result) {
+                getGame().getManager().setActivatingAction(null);
+            }
+        } else if (!checkExtraAttacksDoNotInterrupt(entryType)) {
+            // TODO NEW ENTRY AOO?
+            payCosts();
+            result = false;
+        } else {
+            result = activated(ref  );
+        }
+        if (isCancellable()) {
+            result = checkExtraAttacksDoNotInterrupt(entryType);
+        }
+        return result;
+    }
+
+    private ENTRY_TYPE log() {
         // TODO *player's* detection, not AI's!
         String string = ownerObj.getNameIfKnown() + " is activating " + getDisplayedName();
         LogMaster.gameInfo(StringMaster.getStringXTimes(80 - string.length(), ">") + string);
 
         boolean logAction = ownerObj.getVisibilityLevel() == VISIBILITY_LEVEL.CLEAR_SIGHT
-                && !isAttackAny();
+         && !isAttackAny();
         entry = null;
         ENTRY_TYPE entryType = ENTRY_TYPE.ACTION;
-        if (getActionGroup() == ACTION_TYPE_GROUPS.MOVE) {
+        if (getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MOVE) {
             entryType = ENTRY_TYPE.MOVE;
             logAction = true;
         }
@@ -461,47 +499,25 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             String text = " performs an action... ";
             game.getLogManager().log(">> " + ownerObj.getNameIfKnown() + text);
         }
-
-        if (isCancellable()) {
-            result = activated(ref, result, string, logAction);
-            if (!result) {
-                getGame().getManager().setActivatingAction(null);
-            }
-        } else if (!checkExtraAttacksDoNotInterrupt(entryType)) {
-            // TODO NEW ENTRY AOO?
-            payCosts();
-            result = false;
-        } else {
-            result = activated(ref, result, string, logAction);
-        }
-        if (isCancellable()) {
-            result = checkExtraAttacksDoNotInterrupt(entryType);
-        }
-        return result;
+return entryType;
     }
 
     public boolean isAttackAny() {
-        return getActionGroup() == ACTION_TYPE_GROUPS.ATTACK || isAttack() || isStandardAttack();
+        return getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK || isAttack() || isStandardAttack();
     }
 
     public boolean isCancellable() {
-        return checkBool(STD_BOOLS.CANCELLABLE);
+        return checkBool(GenericEnums.STD_BOOLS.CANCELLABLE);
     }
 
     public boolean isCancelDefault() {
         if (isAttack()) {
             return true;
         }
-        return checkBool(STD_BOOLS.CANCEL_FOR_FALSE);
+        return checkBool(GenericEnums.STD_BOOLS.CANCEL_FOR_FALSE);
     }
 
-    private boolean activated(Ref ref, boolean result, String string, boolean logAction) {
-        // if (!isStandardAttack())
-        // animation = (ActionAnimation)
-        // getGame().getAnimationManager().getAnimation(
-        // getAnimationKey());
-        // TODO could be activated w/o generic Attack!!!
-        // else
+    private boolean activated(Ref ref) {
 
         initAnimation();
         initCosts(true);// for animation phase
@@ -510,6 +526,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         {
             getParentAction().setAnimation(animation);
         }
+        boolean result=true;
         if (isRangedTouch()) {
             int missChance = ConcealmentRule.getMissChance(this);
             boolean missed = ConcealmentRule.checkMissed(this);
@@ -518,24 +535,12 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
                 concealment = false;
                 missed = EvasionRule.checkMissed(this);
                 if (missed) {
-                    missChance = EvasionRule.getMissChance(this);
-                    game.getLogManager().log(
-                            StringMaster.getMessagePrefix(true, ownerObj.getOwner().isMe())
-                                    + StringMaster.getPossessive(ownerObj.getName()) + " "
-                                    + getDisplayedName() + " has been dodged "
-                                    + StringMaster.wrapInParenthesis("" + missChance + "%"));
+                    EvasionRule .logDodged( game.getLogManager(), this);
                 }
 
             } else {
-                game.getLogManager().log(
-                        StringMaster.getMessagePrefix(true, ownerObj.getOwner().isMe())
-                                + StringMaster.getPossessive(ownerObj.getName())
-                                + " "
-                                + getDisplayedName()
-                                + " has missed due to Concealment"
-                                + StringMaster.wrapInParenthesis(""
-                                + ConcealmentRule.getMissChance(this) + "%"));
-            }
+                ConcealmentRule .logMissed( game.getLogManager(), this);
+                 }
             if (missed) {
                 animation.addPhase(new AnimPhase(PHASE_TYPE.MISSED, missChance, concealment));
                 result = false;
@@ -733,7 +738,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public boolean isResistible() {
 
-        return getResistanceType() == RESISTANCE_TYPE.CHANCE_TO_BLOCK;
+        return getResistanceType() == SpellEnums.RESISTANCE_TYPE.CHANCE_TO_BLOCK;
     }
 
     public DAMAGE_TYPE getEnergyType() {
@@ -744,7 +749,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         if (energyType == null) {
             energyType = DC_ContentManager.getDamageForAspect(getAspect());
             if (energyType == null) {
-                return DAMAGE_TYPE.MAGICAL;
+                return GenericEnums.DAMAGE_TYPE.MAGICAL;
             }
         }
         return energyType;
@@ -848,7 +853,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     private void initRange() {
-        if (!isStandardAttack() && getActionType() != ACTION_TYPE.SPECIAL_ATTACK) {
+        if (!isStandardAttack() && getActionType() != ActionEnums.ACTION_TYPE.SPECIAL_ATTACK) {
             return;
         }
         Obj weapon = ref.getObj(KEYS.RANGED);
@@ -868,12 +873,12 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     protected void addCostMods() {
-        if (getActionGroup() == ACTION_TYPE_GROUPS.MODE) {
+        if (getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MODE) {
             return;
         }
 
         // addCustomMods(); deprecated
-        if (getActionGroup() == ACTION_TYPE_GROUPS.ITEM) {
+        if (getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ITEM) {
             return;
         }
         applyPenalties();
@@ -955,9 +960,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         }
         for (PARAMETER param : DC_ContentManager.getCostParams()) {
             addCustomMod(
-                    main.content.CONTENT_CONSTS.CUSTOM_VALUE_TEMPLATE.COST_REDUCTION_ACTIVE_NAME,
+                    MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_REDUCTION_ACTIVE_NAME,
                     getName(), param, false);
-            addCustomMod(main.content.CONTENT_CONSTS.CUSTOM_VALUE_TEMPLATE.COST_MOD_ACTIVE_NAME,
+            addCustomMod(MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_MOD_ACTIVE_NAME,
                     getName(), param, true);
         }
     }
@@ -981,6 +986,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         }
     }
 
+    public boolean canBeActivated() {
+
+        return canBeActivated(ref);
+    }
+
     @Override
     public boolean canBeActivated(Ref ref) {
         return canBeActivated(ref, false);
@@ -993,7 +1003,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
                 return canActivate;
             }
         }
-        if (checkStatus(STATUS.BLOCKED)) {
+        if (checkStatus(UnitEnums.STATUS.BLOCKED)) {
             return false;
         }
         // toBase();
@@ -1108,16 +1118,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isSpell() {
-        return TYPE_ENUM == OBJ_TYPES.SPELLS;
+        return TYPE_ENUM == DC_TYPE.SPELLS;
     }
 
     public String getSpecialRequirements() {
         return getProperty(G_PROPS.SPECIAL_REQUIREMENTS);
-    }
-
-    public boolean canBeActivated() {
-
-        return canBeActivated(ref);
     }
 
     public void tick() {
@@ -1226,7 +1231,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         REF.setID(Ref.KEYS.ACTIVE, getId());
         super.setRef(REF);
         ref.setTriggered(false);
-        setOwnerObj((DC_HeroObj) ref.getObj(KEYS.SOURCE));
+        setOwnerObj((Unit) ref.getObj(KEYS.SOURCE));
         this.ref.setGroup(null ); // GROUP MUST NOT BE COPIED FROM OTHER SPELLS!
     }
 
@@ -1460,11 +1465,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return ownerObj.getActivePlayerVisionStatus();
     }
 
-    public synchronized DC_HeroObj getOwnerObj() {
+    public synchronized Unit getOwnerObj() {
         return ownerObj;
     }
 
-    public synchronized void setOwnerObj(DC_HeroObj ownerObj) {
+    public synchronized void setOwnerObj(Unit ownerObj) {
         this.ownerObj = ownerObj;
     }
 
@@ -1477,7 +1482,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isThrow() {
-        if (getName().contains(ACTION_TAGS.THROW + "")) {
+        if (getName().contains(ActionEnums.ACTION_TAGS.THROW + "")) {
             return true;
         }
         if (this instanceof DC_ItemActiveObj) {
@@ -1488,16 +1493,16 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
                 }
             }
         }
-        return checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.THROW + "")
-                || checkProperty(G_PROPS.GROUP, ACTION_TAGS.THROW + "");
+        return checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.THROW + "")
+                || checkProperty(G_PROPS.GROUP, ActionEnums.ACTION_TAGS.THROW + "");
     }
 
     public boolean isRanged() {
-        if (getActionGroup() != ACTION_TYPE_GROUPS.ATTACK) {
+        if (getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.ATTACK) {
             return false;
         }
-        return (checkProperty(G_PROPS.GROUP, ACTION_TAGS.RANGED + "") || checkProperty(
-                G_PROPS.ACTION_TAGS, ACTION_TAGS.RANGED + ""));
+        return (checkProperty(G_PROPS.GROUP, ActionEnums.ACTION_TAGS.RANGED + "") || checkProperty(
+                G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.RANGED + ""));
         // return false;
         // return getIntParam(PARAMS.RANGE) > 1;
     }
@@ -1511,34 +1516,34 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     private ACTION_TYPE_GROUPS initActionTypeGroup() {
         if (isStandardAttack()) {
-            return ACTION_TYPE_GROUPS.ATTACK;
+            return ActionEnums.ACTION_TYPE_GROUPS.ATTACK;
         }
         if (StringMaster.isEmpty(getProperty(G_PROPS.ACTION_TYPE))) {
-            return ACTION_TYPE_GROUPS.SPELL;
+            return ActionEnums.ACTION_TYPE_GROUPS.SPELL;
         }
         ACTION_TYPE type = new EnumMaster<ACTION_TYPE>().retrieveEnumConst(ACTION_TYPE.class,
                 getProperty(G_PROPS.ACTION_TYPE));
         if (type == null) {
-            return ACTION_TYPE_GROUPS.SPELL;
+            return ActionEnums.ACTION_TYPE_GROUPS.SPELL;
         }
         switch (type) {
             case HIDDEN:
-                return ACTION_TYPE_GROUPS.HIDDEN;
+                return ActionEnums.ACTION_TYPE_GROUPS.HIDDEN;
             case MODE:
-                return ACTION_TYPE_GROUPS.MODE;
+                return ActionEnums.ACTION_TYPE_GROUPS.MODE;
             case SPECIAL_ACTION:
-                return ACTION_TYPE_GROUPS.SPECIAL;
+                return ActionEnums.ACTION_TYPE_GROUPS.SPECIAL;
             case SPECIAL_ATTACK:
-                return ACTION_TYPE_GROUPS.ATTACK;
+                return ActionEnums.ACTION_TYPE_GROUPS.ATTACK;
             case ADDITIONAL_MOVE:
-                return ACTION_TYPE_GROUPS.MOVE;
+                return ActionEnums.ACTION_TYPE_GROUPS.MOVE;
             case SPECIAL_MOVE:
-                return ACTION_TYPE_GROUPS.MOVE;
+                return ActionEnums.ACTION_TYPE_GROUPS.MOVE;
             case STANDARD:
                 return DC_ActionManager.getStdActionType(this);
 
         }
-        return ACTION_TYPE_GROUPS.SPELL;
+        return ActionEnums.ACTION_TYPE_GROUPS.SPELL;
     }
 
     public void setActionTypeGroup(ACTION_TYPE_GROUPS action_type) {
@@ -1748,11 +1753,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         if (zone != null) {
             return zone;
         }
-        if (EffectMaster.check(getAbilities(), ZoneEffect.class)) {
+        if (EffectFinder.check(getAbilities(), ZoneEffect.class)) {
             zone = true;
             return true;
         }
-        if (EffectMaster.check(getAbilities(), ShapeEffect.class)) {
+        if (EffectFinder.check(getAbilities(), ShapeEffect.class)) {
             zone = true;
             return true;
         }
@@ -1765,11 +1770,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         if (missile != null) {
             return missile;
         }
-        if (checkProperty(G_PROPS.SPELL_TAGS, SPELL_TAGS.MISSILE.toString())) {
+        if (checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.MISSILE.toString())) {
             missile = true;
             return true;
         }
-        if (checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.MISSILE.toString())) {
+        if (checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.MISSILE.toString())) {
             missile = true;
             return true;
         }
@@ -1786,11 +1791,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isMove() {
-        return getActionGroup() == ACTION_TYPE_GROUPS.MOVE;
+        return getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MOVE;
     }
 
     public boolean isTurn() {
-        return getActionGroup() == ACTION_TYPE_GROUPS.TURN;
+        return getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.TURN;
     }
 
     public boolean isMelee() {
@@ -1801,7 +1806,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isStandardAttack() {
-        return getActionType() == ACTION_TYPE.STANDARD_ATTACK;
+        return getActionType() == ActionEnums.ACTION_TYPE.STANDARD_ATTACK;
     }
 
     public ACTION_TYPE getActionType() {
@@ -1815,7 +1820,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isOffhand() {
-        return checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.OFF_HAND + "");
+        return checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.OFF_HAND + "");
     }
 
     public Map<Coordinates, Map<FACING_DIRECTION, Boolean>> getTargetingAnyCache() {

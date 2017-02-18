@@ -2,10 +2,10 @@ package main.ability.effects.special;
 
 import main.ability.effects.oneshot.MicroEffect;
 import main.client.cc.logic.items.ItemGenerator;
-import main.content.CONTENT_CONSTS.MATERIAL;
-import main.content.CONTENT_CONSTS.QUALITY_LEVEL;
+import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.data.DataManager;
 import main.entity.Ref.KEYS;
@@ -69,7 +69,7 @@ public class CreateItemEffect extends MicroEffect {
         }
         if (!weapon) {
 
-            TYPE = OBJ_TYPES.ARMOR;
+            TYPE = DC_TYPE.ARMOR;
 
             typeList = StringMaster.openContainer(STD_ARMOR_ITEMS);
             if (extended) {
@@ -77,7 +77,7 @@ public class CreateItemEffect extends MicroEffect {
                         .openContainer(EXTENDED_ARMOR_ITEMS));
             }
         } else {
-            TYPE = OBJ_TYPES.WEAPONS;
+            TYPE = DC_TYPE.WEAPONS;
             typeList = StringMaster.openContainer(STD_WEAPON_ITEMS);
             if (extended) {
                 typeList.addAll(StringMaster
@@ -97,7 +97,7 @@ public class CreateItemEffect extends MicroEffect {
         typeName = typeName.trim();
         if (!DataManager.isTypeName(material.getName() + " " + typeName)) {
             ItemGenerator.getDefaultGenerator().generateItem(
-                    QUALITY_LEVEL.NORMAL, material,
+                    ItemEnums.QUALITY_LEVEL.NORMAL, material,
                     DataManager.getType(typeName, TYPE));
         }
 

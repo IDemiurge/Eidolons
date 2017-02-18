@@ -1,11 +1,13 @@
 package main.rules.perk;
 
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
 import main.content.PARAMS;
+import main.content.enums.entity.UnitEnums;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
+import main.system.text.LogManager;
 
 public class EvasionRule {
     public static boolean checkMissed(DC_ActiveObj action) {
@@ -14,7 +16,7 @@ public class EvasionRule {
         if (source == null || target == null) {
             return false;
         }
-        if (source.checkPassive(STANDARD_PASSIVES.TRUE_STRIKE)) {
+        if (source.checkPassive(UnitEnums.STANDARD_PASSIVES.TRUE_STRIKE)) {
             return false;
         }
         int chance = getMissChance(action);
@@ -34,4 +36,18 @@ public class EvasionRule {
                 - source.getIntParam(PARAMS.ACCURACY);
         return chance;
     }
+
+    public static void logDodged(LogManager logManager, DC_ActiveObj activeObj) {
+        logManager.log(StringMaster.getMessagePrefix(true,
+         activeObj.getOwnerObj().getOwner().isMe())
+         + StringMaster.getPossessive(activeObj.getOwnerObj().getName())
+         + " "
+         + activeObj.getDisplayedName()
+         + " has beed dodged"
+         + StringMaster.wrapInParenthesis(""
+         +  getMissChance(activeObj) + "%")) ;
+
+    }
+
+
 }

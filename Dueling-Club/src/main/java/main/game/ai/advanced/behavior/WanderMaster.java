@@ -2,7 +2,7 @@ package main.game.ai.advanced.behavior;
 
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.ai.GroupAI;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
@@ -10,7 +10,7 @@ import main.game.ai.tools.Analyzer;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;
-import main.game.logic.battle.Positioner;
+import main.game.logic.generic.Positioner;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.building.DungeonBuilder.BLOCK_TYPE;
 import main.system.auxiliary.Loop;
@@ -144,7 +144,7 @@ public class WanderMaster {
             change = true;
         } else {
             List<UnitAI> forwards = new LinkedList<>();
-            for (DC_HeroObj unit : group.getMembers()) {
+            for (Unit unit : group.getMembers()) {
                 UnitAI ai = unit.getUnitAI();
                 boolean done = checkUnitArrived(ai, type);
                 if (!done) {
@@ -246,7 +246,7 @@ public class WanderMaster {
 
     public static Coordinates getCoordinates(GOAL_TYPE type, UnitAI ai) {
         Coordinates targetCoordinates = WanderMaster.getWanderTargetCoordinatesCell(ai, type);
-        DC_HeroObj unit = ai.getUnit();
+        Unit unit = ai.getUnit();
         GroupAI group = ai.getGroup();
         boolean adjust = targetCoordinates == null;
         if (!adjust) {

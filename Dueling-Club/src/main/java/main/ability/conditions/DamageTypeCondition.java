@@ -1,6 +1,6 @@
 package main.ability.conditions;
 
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;

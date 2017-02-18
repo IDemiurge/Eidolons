@@ -1,6 +1,6 @@
 package main.swing.generic.components.panels;
 
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.entity.Entity;
 import main.swing.generic.components.G_Panel;

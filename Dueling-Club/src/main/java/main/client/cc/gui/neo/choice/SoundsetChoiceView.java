@@ -2,9 +2,10 @@ package main.client.cc.gui.neo.choice;
 
 import main.client.cc.CharacterCreator;
 import main.client.cc.logic.HeroAnalyzer;
-import main.content.CONTENT_CONSTS.HERO_SOUNDSET;
-import main.content.properties.G_PROPS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.enums.entity.HeroEnums.HERO_SOUNDSET;
+import main.content.enums.entity.HeroEnums;
+import main.content.values.properties.G_PROPS;
+import main.entity.obj.unit.Unit;
 import main.swing.components.panels.page.info.element.ListTextItem;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.sound.SoundMaster;
@@ -21,7 +22,7 @@ public class SoundsetChoiceView extends ChoiceView<HERO_SOUNDSET> implements
     private static final int X_OFFSET = -200;
     private static final Integer FONT_SIZE = 40;
 
-    public SoundsetChoiceView(ChoiceSequence sequence, DC_HeroObj hero) {
+    public SoundsetChoiceView(ChoiceSequence sequence, Unit hero) {
         super(sequence, hero);
     }
 
@@ -55,7 +56,7 @@ public class SoundsetChoiceView extends ChoiceView<HERO_SOUNDSET> implements
     @Override
     protected void initData() {
         data = new LinkedList<>();
-        for (HERO_SOUNDSET s : HERO_SOUNDSET.values()) {
+        for (HERO_SOUNDSET s : HeroEnums.HERO_SOUNDSET.values()) {
             if ((s.isFemale() != HeroAnalyzer.isFemale(hero))) {
                 continue;
             }

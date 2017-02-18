@@ -9,10 +9,10 @@ import main.data.ConcurrentMap;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.BuffObj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
-import main.game.event.Event;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.controls.AnimController;
 import main.libgdx.anims.std.BuffAnim;
@@ -87,10 +87,11 @@ public class AnimMaster extends Group {
     private void bindEvents() {
 
         GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
+            if (!(p.get() instanceof Unit)) return;
             if (showBuffAnimsOnHoverLength == null) {
                 return;
             }
-            DC_HeroObj unit = (DC_HeroObj) p.get();
+            Unit unit = (Unit) p.get();
             unit.getBuffs().forEach(buff -> {
                 BuffAnim anim = continuousAnims.get(buff);
                 if (anim != null) {
@@ -146,6 +147,8 @@ public class AnimMaster extends Group {
                 return;
             }
             Event event = (Event) p.get();
+            if (event.getRef().isDebug())
+                return ;
             if (event.getType() == STANDARD_EVENT_TYPE.NEW_ROUND) {
                 if (showBuffAnimsOnNewRoundLength != null) {
                     continuousAnims.values().forEach(anim -> {
@@ -157,10 +160,9 @@ public class AnimMaster extends Group {
                     });
                 }
             }
-            CompositeAnim parentAnim = null ;
-            if (floatingTextMaster.isEventDisplayable(event))
-            {
-                parentAnim =  getParentAnim(event.getRef());
+            CompositeAnim parentAnim = null;
+            if (floatingTextMaster.isEventDisplayable(event)) {
+                parentAnim = getParentAnim(event.getRef());
                 if (parentAnim != null)
                     parentAnim.addTextEvent(event);
             }
@@ -168,7 +170,7 @@ public class AnimMaster extends Group {
             if (anim == null) {
                 return;
             }
-            parentAnim =  getParentAnim(event.getRef());
+            parentAnim = getParentAnim(event.getRef());
             if (parentAnim != null) {
                 LogMaster.log(LogMaster.ANIM_DEBUG, anim +
                  " event anim created for: " + parentAnim);

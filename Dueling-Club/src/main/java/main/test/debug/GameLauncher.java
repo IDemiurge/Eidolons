@@ -4,15 +4,15 @@ import main.ability.UnitMaster;
 import main.client.dc.Launcher;
 import main.client.game.NetGame;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.VisionManager;
 import main.game.logic.arena.UnitGroupMaster;
-import main.game.logic.battle.SpawnManager;
+import main.game.logic.generic.SpawnManager;
 import main.game.logic.dungeon.DungeonMaster;
 import main.game.logic.macro.travel.EncounterMaster;
 import main.rules.RuleMaster;
@@ -303,19 +303,19 @@ public class GameLauncher {
 
     private String chooseParty() {
         ObjType party = ListChooser.chooseType_(DataManager
-                .getTypesGroup(OBJ_TYPES.PARTY, "Preset"), OBJ_TYPES.PARTY);
+                .getTypesGroup(DC_TYPE.PARTY, "Preset"), DC_TYPE.PARTY);
         return party.getProperty(PROPS.MEMBERS);
     }
 
     public String chooseCharacters() {
-        return choose(OBJ_TYPES.CHARS);
+        return choose(DC_TYPE.CHARS);
     }
 
     public String chooseUnits() {
-        return choose(OBJ_TYPES.UNITS);
+        return choose(DC_TYPE.UNITS);
     }
 
-    public String choose(OBJ_TYPES type) {
+    public String choose(DC_TYPE type) {
         String filterGroup = getFilterGroup(type);
         List<String> data = DataManager.getTypeNames(type);
         if (!filterGroup.isEmpty()) {
@@ -327,17 +327,17 @@ public class GameLauncher {
     }
 
     // TODO DIFFERENT PER MODE!
-    private String getFilterGroup(OBJ_TYPES type) {
-        if (type == OBJ_TYPES.CHARS) {
+    private String getFilterGroup(DC_TYPE type) {
+        if (type == DC_TYPE.CHARS) {
             return StringMaster.BATTLE_READY;
         }
-        if (type == OBJ_TYPES.UNITS) {
+        if (type == DC_TYPE.UNITS) {
             return "";
         }
-        if (type == OBJ_TYPES.ENCOUNTERS) {
+        if (type == DC_TYPE.ENCOUNTERS) {
             return StringMaster.BATTLE_READY;
         }
-        if (type == OBJ_TYPES.PARTY) {
+        if (type == DC_TYPE.PARTY) {
             return StringMaster.BATTLE_READY;
         }
         return StringMaster.PRESET;
@@ -353,10 +353,10 @@ public class GameLauncher {
                 SpawnManager.setEnemyUnitGroupMode(true);
                 return UnitGroupMaster.chooseGroup(false);
             case 1:
-                encounterName = ListChooser.chooseType(OBJ_TYPES.ENCOUNTERS);
+                encounterName = ListChooser.chooseType(DC_TYPE.ENCOUNTERS);
                 if (encounterName != null) {
                     return getEnemiesFromWave(DataManager.getType(encounterName,
-                            OBJ_TYPES.ENCOUNTERS));
+                            DC_TYPE.ENCOUNTERS));
                 }
             case 2:
                 return chooseCharacters();
@@ -377,7 +377,7 @@ public class GameLauncher {
     }
 
     private String randomizeEnemies() {
-        ObjType type = DataManager.getRandomType(OBJ_TYPES.ENCOUNTERS, null);
+        ObjType type = DataManager.getRandomType(DC_TYPE.ENCOUNTERS, null);
         return getEnemiesFromWave(type);
     }
 
@@ -397,7 +397,7 @@ public class GameLauncher {
         ObjType mainHero = null;
         Loop.startLoop(100);
         while (Loop.loopContinues()) {
-            ObjType type = RandomWizard.getRandomType(OBJ_TYPES.CHARS);
+            ObjType type = RandomWizard.getRandomType(DC_TYPE.CHARS);
             if (maxLevel != null) {
                 if (type.getLevel() > maxLevel) {
                     continue;
@@ -413,7 +413,7 @@ public class GameLauncher {
         String party = mainHero.getName() + ";";
         Loop.startLoop(100);
         while (unitCount > 0 && Loop.loopContinues()) {
-            OBJ_TYPE TYPE = OBJ_TYPES.UNITS;
+            OBJ_TYPE TYPE = DC_TYPE.UNITS;
             boolean subgroup = true;
             String property = mainHero.getProperty(G_PROPS.DEITY);
 
@@ -429,7 +429,7 @@ public class GameLauncher {
         while (heroesCount > 0 && Loop.loopContinues()) {
             // party += RandomWizard.getRandomType(OBJ_TYPES.CHARS).getName() +
             // ";";
-            if (addRandomUnit(OBJ_TYPES.CHARS, null, false, party, minLevel, maxLevel)) {
+            if (addRandomUnit(DC_TYPE.CHARS, null, false, party, minLevel, maxLevel)) {
                 heroesCount--;
             }
         }

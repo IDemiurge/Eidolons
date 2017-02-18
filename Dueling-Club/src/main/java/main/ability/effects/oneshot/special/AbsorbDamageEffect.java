@@ -1,7 +1,7 @@
 package main.ability.effects.oneshot.special;
 
 import main.ability.effects.DC_Effect;
-import main.game.event.Event.EVENT_TYPE;
+import main.game.logic.event.Event.EVENT_TYPE;
 import main.system.math.Formula;
 
 public class AbsorbDamageEffect extends DC_Effect {

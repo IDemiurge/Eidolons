@@ -1,6 +1,6 @@
 package main.elements.costs;
 
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.elements.ReferredElement;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;

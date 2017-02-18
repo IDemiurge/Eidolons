@@ -3,9 +3,9 @@ package main.swing.components.panels;
 import main.content.*;
 import main.entity.Entity;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.unit.DC_UnitObj;
+import main.entity.obj.unit.DC_UnitModel;
 import main.entity.type.ObjType;
-import main.game.MicroGameState;
+import main.game.core.state.MicroGameState;
 import main.game.battlefield.VisionManager;
 import main.swing.generic.components.panels.G_InfoPanel;
 import main.swing.renderers.DC_InfoPanelRenderer;
@@ -74,7 +74,7 @@ public class DC_InfoPanel extends G_InfoPanel implements TableModelListener {
                 || isEditable()) {
             try {
                 displayedValues = null;
-                List<VALUE> values = ValuePageManager.getValuesForDC(OBJ_TYPES
+                List<VALUE> values = ValuePageManager.getValuesForDC(DC_TYPE
                         .getType(obj_type));
                 displayedValues = StringMaster.convertToStringList(values);
             } catch (Exception e) {
@@ -99,7 +99,7 @@ public class DC_InfoPanel extends G_InfoPanel implements TableModelListener {
     }
 
     private boolean isNonUnit() {
-        return !(infoObj instanceof DC_UnitObj);
+        return !(infoObj instanceof DC_UnitModel);
     }
 
     public DC_Obj getInfoObj() {

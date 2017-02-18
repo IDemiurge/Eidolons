@@ -1,8 +1,12 @@
 package main.entity;
 
-import main.content.CONTENT_CONSTS.*;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.BfObjEnums;
+import main.content.enums.entity.HeroEnums.BACKGROUND;
+import main.content.enums.entity.HeroEnums.GENDER;
+import main.content.enums.entity.HeroEnums.RACE;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.system.auxiliary.EnumMaster;
 
 import java.util.List;
@@ -31,8 +35,8 @@ public class EntityMaster {
         if (entity == null) {
             return false;
         }
-        return entity.checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BF_OBJECT_TAGS.OVERLAYING)
-                || entity.checkProperty(G_PROPS.CLASSIFICATIONS, "" + CLASSIFICATIONS.ATTACHED);
+        return entity.checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BfObjEnums.BF_OBJECT_TAGS.OVERLAYING)
+                || entity.checkProperty(G_PROPS.CLASSIFICATIONS, "" + UnitEnums.CLASSIFICATIONS.ATTACHED);
     }
 
     public static BACKGROUND getBackground(Entity hero) {

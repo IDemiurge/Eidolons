@@ -3,15 +3,13 @@ package main.rules.round;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
-import main.content.CONTENT_CONSTS.BF_OBJECT_TAGS;
-import main.content.CONTENT_CONSTS.CLASSIFICATIONS;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
-import main.content.CONTENT_CONSTS.STD_COUNTERS;
 import main.content.PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.BfObjEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.properties.G_PROPS;
 import main.entity.obj.ActiveObj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.rules.action.ActionRule;
 import main.system.math.Formula;
 
@@ -21,13 +19,13 @@ public class WaterRule extends RoundRule implements ActionRule {
 
     private static final float SWIM_FACTOR = 0.25f;
     private static final float SWIM_FORCE_FACTOR = 0.9f;
-    private static DC_HeroObj waterObj;
+    private static Unit waterObj;
 
     public WaterRule(DC_Game game) {
         super(game);
     }
 
-    public static boolean checkPassable(DC_HeroObj unit) {
+    public static boolean checkPassable(Unit unit) {
         if (!canSwim(unit)) {
             if (!isOnSwimmingDepth(unit)) {
                 return false;
@@ -36,24 +34,24 @@ public class WaterRule extends RoundRule implements ActionRule {
         return true;
     }
 
-    private static boolean isForceSwimmingDepth(DC_HeroObj unit) {
+    private static boolean isForceSwimmingDepth(Unit unit) {
         float heightFactor = getSubmergedFactor(unit);
         return heightFactor > SWIM_FORCE_FACTOR;
     }
 
-    private static boolean isOnSwimmingDepth(DC_HeroObj unit) {
+    private static boolean isOnSwimmingDepth(Unit unit) {
         float heightFactor = getSubmergedFactor(unit);
         return heightFactor > SWIM_FACTOR;
     }
 
-    private static float getSubmergedFactor(DC_HeroObj unit) {
+    private static float getSubmergedFactor(Unit unit) {
         float heightFactor = Math.abs(waterObj.getIntParam(PARAMS.HEIGHT))
                 / unit.getIntParam(PARAMS.HEIGHT);
         return heightFactor;
     }
 
-    public static boolean ignoresWater(DC_HeroObj unit) {
-        if (unit.checkPassive(STANDARD_PASSIVES.IMMATERIAL)) {
+    public static boolean ignoresWater(Unit unit) {
+        if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
             return true;
         }
         if (unit.isFlying()) {
@@ -62,44 +60,44 @@ public class WaterRule extends RoundRule implements ActionRule {
         return false;
     }
 
-    public static boolean canSwim(DC_HeroObj unit) {
-        if (unit.checkPassive(STANDARD_PASSIVES.IMMATERIAL)) {
+    public static boolean canSwim(Unit unit) {
+        if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
             return false;
         }
-        if (unit.checkClassification(CLASSIFICATIONS.MECHANICAL)) {
+        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.MECHANICAL)) {
             return false;
         }
         return true;
     }
 
-    public static int getWaterMoveApMod(DC_HeroObj unit) {
+    public static int getWaterMoveApMod(Unit unit) {
         return Math.round(waterObj.getIntParam(PARAMS.MOVE_AP_PENALTY) * getSubmergedFactor(unit));
 
     }
 
-    public static int getWaterMoveStaMod(DC_HeroObj unit) {
+    public static int getWaterMoveStaMod(Unit unit) {
         return Math.round(waterObj.getIntParam(PARAMS.MOVE_STA_PENALTY) * getSubmergedFactor(unit));
 
     }
 
-    private static boolean isWater(DC_HeroObj u) {
-        return (u.checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BF_OBJECT_TAGS.WATER));
+    private static boolean isWater(Unit u) {
+        return (u.checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BfObjEnums.BF_OBJECT_TAGS.WATER));
     }
 
-    public static DC_HeroObj getWaterObj() {
+    public static Unit getWaterObj() {
         return waterObj;
     }
 
-    public static void setWaterObj(DC_HeroObj waterObj) {
+    public static void setWaterObj(Unit waterObj) {
         WaterRule.waterObj = waterObj;
     }
 
-    public boolean checkSwimming(DC_HeroObj unit) {
+    public boolean checkSwimming(Unit unit) {
         return false;
         // apply status?
     }
 
-    public void checkDrowning(DC_HeroObj unit) {
+    public void checkDrowning(Unit unit) {
         if (!isOnSwimmingDepth(unit)) {
             return;
         }
@@ -107,7 +105,7 @@ public class WaterRule extends RoundRule implements ActionRule {
     }
 
     @Override
-    public void apply(DC_HeroObj unit) {
+    public void apply(Unit unit) {
         // addMoistCounters(unit);
         //
         // float factor = Math.max(1, getSubmergedFactor(unit));
@@ -132,22 +130,22 @@ public class WaterRule extends RoundRule implements ActionRule {
         return effects;
     }
 
-    private void addMoistCounters(DC_HeroObj unit) {
+    private void addMoistCounters(Unit unit) {
         float factor = Math.min(1, getSubmergedFactor(unit));
         // new effect?
-        int counters = unit.getCounter(STD_COUNTERS.Moist_Counter);
+        int counters = unit.getCounter(UnitEnums.STD_COUNTERS.Moist_Counter);
         int max = Math.round(factor * 100);
         int mod = Math.round(factor * 50);
         int newValue = Math.min(max, counters + mod);
-        unit.setCounter(STD_COUNTERS.Moist_Counter.getName(), newValue);
+        unit.setCounter(UnitEnums.STD_COUNTERS.Moist_Counter.getName(), newValue);
 
     }
 
     @Override
-    public boolean check(DC_HeroObj unit) {
-        List<DC_HeroObj> units = game.getObjectsOnCoordinate(unit.getCoordinates());
+    public boolean check(Unit unit) {
+        List<Unit> units = game.getObjectsOnCoordinate(unit.getCoordinates());
 
-        for (DC_HeroObj u : units) {
+        for (Unit u : units) {
             if (isWater(u)) {
                 waterObj = u;
                 return true;
@@ -164,7 +162,7 @@ public class WaterRule extends RoundRule implements ActionRule {
     }
 
     @Override
-    public boolean unitBecomesActive(DC_HeroObj unit) {
+    public boolean unitBecomesActive(Unit unit) {
         // TODO Auto-generated method stub
         return true;
     }

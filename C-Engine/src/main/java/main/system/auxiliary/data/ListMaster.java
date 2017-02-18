@@ -6,7 +6,7 @@ import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
-import main.game.Game;
+import main.game.core.game.Game;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 

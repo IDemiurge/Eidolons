@@ -2,19 +2,19 @@ package main.ability;
 
 import main.client.cc.HeroManager;
 import main.client.cc.logic.spells.LibraryManager;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.ValuePages;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.RequirementsManager;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.rules.UnitAnalyzer;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
@@ -28,11 +28,11 @@ import java.util.Map;
 
 public class UnitLibrary {
     private static Map<ObjType, Integer> spellPool;
-    private static DC_HeroObj unit;
+    private static Unit unit;
     private static Integer xpPercentageToSpend;
     private static HeroManager heroManager;
 
-    public static void learnSpellsForUnit(DC_HeroObj learner) {
+    public static void learnSpellsForUnit(Unit learner) {
         unit = learner;
         // a better approach: iterate thru new/memo/verb until <...>
         // at each iteration, learn 1 new spell if possible, memorize max and
@@ -78,7 +78,7 @@ public class UnitLibrary {
             if (score <= 0) {
                 continue;
             }
-            List<ObjType> types = DataManager.getTypesGroup(OBJ_TYPES.SPELLS, mastery.getName());
+            List<ObjType> types = DataManager.getTypesGroup(DC_TYPE.SPELLS, mastery.getName());
             for (ObjType t : types) {
                 if (plan.contains(t.getName())) {
                     continue;
@@ -130,7 +130,7 @@ public class UnitLibrary {
         spellPool = new XLinkedMap<>();
         for (String substring : StringMaster.openContainer(unit.getProperty(getSourceProp(lc)))) {
             ObjType type = DataManager.getType(VariableManager.removeVarPart(substring),
-                    OBJ_TYPES.SPELLS);
+                    DC_TYPE.SPELLS);
             if (checkCanLearnSpell(type, lc)) {
                 Integer weight = StringMaster.getWeight(substring);
                 if (weight <= 0) {
@@ -211,7 +211,7 @@ public class UnitLibrary {
         if (lc == LEARN_CASE.MEMORIZE) {
             result = getHeroManager().addMemorizedSpell(unit, spellType);
         } else {
-            result = getHeroManager().addItem(unit, spellType, OBJ_TYPES.SPELLS, getTargetProp(lc),
+            result = getHeroManager().addItem(unit, spellType, DC_TYPE.SPELLS, getTargetProp(lc),
                     false, false);
         }
         if (!result) {

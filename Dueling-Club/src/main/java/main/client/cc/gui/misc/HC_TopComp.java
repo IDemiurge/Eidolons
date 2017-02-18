@@ -1,6 +1,6 @@
 package main.client.cc.gui.misc;
 
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.swing.components.panels.TopComp;
 
 import java.util.Arrays;

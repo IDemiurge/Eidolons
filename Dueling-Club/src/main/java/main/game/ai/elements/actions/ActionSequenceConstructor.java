@@ -4,7 +4,12 @@ import main.ability.conditions.FacingCondition;
 import main.content.CONTENT_CONSTS.*;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.DC_ContentManager;
-import main.content.parameters.PARAMETER;
+import main.content.enums.system.AiEnums;
+import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
+import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.FACING_SINGLE;
+import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
@@ -18,8 +23,8 @@ import main.entity.item.DC_QuickItemObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.Game;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.elements.task.Task;
@@ -31,7 +36,7 @@ import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.DC_MovementManager;
 import main.game.battlefield.FacingMaster;
-import main.rules.DC_ActionManager;
+import main.game.logic.generic.DC_ActionManager;
 import main.system.SortMaster;
 import main.system.auxiliary.*;
 import main.system.auxiliary.log.Chronos;
@@ -50,7 +55,7 @@ public class ActionSequenceConstructor {
     static int defaultDistancePruneFactor = 3;
     private static Map<List<Coordinates>, List<ActionPath>> pathCache = new HashMap<>();
     private static Game game;
-    private static DC_HeroObj unit;
+    private static Unit unit;
     private static List<Coordinates> prioritizedCells;
 
     private static List<Coordinates> pruneTargetCells(Action targetAction, List<Coordinates> list) {
@@ -177,7 +182,7 @@ public class ActionSequenceConstructor {
         game = action.getRef().getGame();
         unit = action.getSource();
 
-        if (task.getAI().getBehaviorMode() == BEHAVIOR_MODE.PANIC) {
+        if (task.getAI().getBehaviorMode() == AiEnums.BEHAVIOR_MODE.PANIC) {
             // target action = FLEE;
         }
         if (task.getType() == GOAL_TYPE.RETREAT) {
@@ -228,16 +233,16 @@ public class ActionSequenceConstructor {
                 return null;
             }
 
-            if (task.getAI().getBehaviorMode() == BEHAVIOR_MODE.BERSERK) {
+            if (task.getAI().getBehaviorMode() == AiEnums.BEHAVIOR_MODE.BERSERK) {
                 return null;
             }
-            if ((!action.getActive().isRanged() && task.getAI().getType() == AI_TYPE.ARCHER)
-                    || (task.getAI().getType() == AI_TYPE.CASTER && !unit.getSpells().isEmpty())) {
+            if ((!action.getActive().isRanged() && task.getAI().getType() == AiEnums.AI_TYPE.ARCHER)
+                    || (task.getAI().getType() == AiEnums.AI_TYPE.CASTER && !unit.getSpells().isEmpty())) {
                 return null;
             }
         }
 
-        DC_HeroObj unit = (DC_HeroObj) action.getRef().getSourceObj();
+        Unit unit = (Unit) action.getRef().getSourceObj();
         List<DC_ActiveObj> moveActions = getMoveActions(action);
 
         if (!ListMaster.isNotEmpty(moveActions)) {
@@ -288,11 +293,11 @@ public class ActionSequenceConstructor {
         List<QuickItemAction> list = new ArrayList<>();
         if (weapon instanceof DC_WeaponObj) {
             DC_WeaponObj dc_WeaponObj = (DC_WeaponObj) weapon;
-            if (dc_WeaponObj.getWeaponGroup() == WEAPON_GROUP.BOWS) {
-                weapon_group = WEAPON_GROUP.ARROWS;
+            if (dc_WeaponObj.getWeaponGroup() == ItemEnums.WEAPON_GROUP.BOWS) {
+                weapon_group = ItemEnums.WEAPON_GROUP.ARROWS;
             }
-            if (dc_WeaponObj.getWeaponGroup() == WEAPON_GROUP.CROSSBOWS) {
-                weapon_group = WEAPON_GROUP.BOLTS;
+            if (dc_WeaponObj.getWeaponGroup() == ItemEnums.WEAPON_GROUP.CROSSBOWS) {
+                weapon_group = ItemEnums.WEAPON_GROUP.BOLTS;
             }
 
             for (DC_QuickItemObj ammo : action.getSource().getQuickItems()) {
@@ -463,13 +468,13 @@ public class ActionSequenceConstructor {
         return list;
     }
 
-    private static Coordinates getNextClosestCoordinate(DC_HeroObj unit, Action targetAction) {
+    private static Coordinates getNextClosestCoordinate(Unit unit, Action targetAction) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Deprecated
-    public static List<Action> getTurnSequence(DC_HeroObj unit, Coordinates targetCoordinates) {
+    public static List<Action> getTurnSequence(Unit unit, Coordinates targetCoordinates) {
         List<Action> list = new ArrayList<>();
         // this will only work if there are no obstacles to the sides
         // in reality, we need to check from which *empty* *adjacent* cell the
@@ -480,7 +485,7 @@ public class ActionSequenceConstructor {
         facing = FacingMaster.rotate(facing, clockwise);
         // action.getActive().getTargeting().getFilter()
         if (FacingMaster.getSingleFacing(FacingMaster.rotate(facing, clockwise), unit
-                .getCoordinates(), targetCoordinates) == FACING_SINGLE.IN_FRONT) {
+                .getCoordinates(), targetCoordinates) == UnitEnums.FACING_SINGLE.IN_FRONT) {
             return list;
         }
 
@@ -491,7 +496,7 @@ public class ActionSequenceConstructor {
         list.add(getTurnAction(clockwise, unit));
         facing = FacingMaster.rotate(facing, clockwise);
         if (FacingMaster.getSingleFacing(FacingMaster.rotate(facing, clockwise), unit
-                .getCoordinates(), targetCoordinates) == FACING_SINGLE.IN_FRONT) {
+                .getCoordinates(), targetCoordinates) == UnitEnums.FACING_SINGLE.IN_FRONT) {
             return list;
         }
         list.add(getTurnAction(clockwise, unit));
@@ -506,7 +511,7 @@ public class ActionSequenceConstructor {
         FacingCondition condition = null;
         FACING_SINGLE template = null;
         DC_Obj target = action.getTarget();
-        DC_HeroObj source = (DC_HeroObj) action.getRef().getSourceObj();
+        Unit source = (Unit) action.getRef().getSourceObj();
         for (Condition c : conditions) {
             if (c instanceof FacingCondition) {
                 condition = (FacingCondition) c;
@@ -514,20 +519,20 @@ public class ActionSequenceConstructor {
             }
             List<Object> list = ClassMaster.getInstances(c, FacingCondition.class);
             if (!list.isEmpty()) {
-                List<Action> front_sequence = getTurnSequence(FACING_SINGLE.IN_FRONT, source,
+                List<Action> front_sequence = getTurnSequence(UnitEnums.FACING_SINGLE.IN_FRONT, source,
                         target.getCoordinates());
                 List<Action> side_sequence = null;
                 if (action.getSource().hasBroadReach()
-                        || action.getActive().checkPassive(STANDARD_PASSIVES.BROAD_REACH))
+                        || action.getActive().checkPassive(UnitEnums.STANDARD_PASSIVES.BROAD_REACH))
                     // front_sequence.remove(front_sequence.size() - 1);
                 {
-                    side_sequence = getTurnSequence(FACING_SINGLE.TO_THE_SIDE, source, target
+                    side_sequence = getTurnSequence(UnitEnums.FACING_SINGLE.TO_THE_SIDE, source, target
                             .getCoordinates());
                 }
                 List<Action> hind_sequence = null;
                 if (action.getSource().hasHindReach()
-                        || action.getActive().checkPassive(STANDARD_PASSIVES.HIND_REACH)) {
-                    hind_sequence = getTurnSequence(FACING_SINGLE.BEHIND, source, target
+                        || action.getActive().checkPassive(UnitEnums.STANDARD_PASSIVES.HIND_REACH)) {
+                    hind_sequence = getTurnSequence(UnitEnums.FACING_SINGLE.BEHIND, source, target
                             .getCoordinates());
                 }
 
@@ -553,7 +558,7 @@ public class ActionSequenceConstructor {
 
     }
 
-    public static List<Action> getTurnSequence(FACING_SINGLE template, DC_HeroObj source,
+    public static List<Action> getTurnSequence(FACING_SINGLE template, Unit source,
                                                Coordinates target) {
 
         FACING_DIRECTION original_facing = source.getFacing();
@@ -603,7 +608,7 @@ public class ActionSequenceConstructor {
                 : anticlockwise_list;
     }
 
-    private static Action getTurnAction(boolean clockwise, DC_HeroObj source) {
+    private static Action getTurnAction(boolean clockwise, Unit source) {
         DC_UnitAction specAction = source.getAction("Quick Turn "
                 + (clockwise ? "Clockwise" : "Anticlockwise"));
         if (specAction != null) {

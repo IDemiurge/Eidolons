@@ -1,6 +1,6 @@
 package main.swing.components.panels.page.info.element;
 
-import main.content.CONTENT_CONSTS2.SPELL_UPGRADE;
+import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.CompVisuals;
 import main.swing.generic.components.ComponentVisuals;

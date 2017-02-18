@@ -1,7 +1,7 @@
 package main.client.cc.gui.neo.tooltip;
 
 import main.entity.Entity;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.swing.generic.components.ComponentVisuals;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.secondary.BooleanMaster;
@@ -11,7 +11,7 @@ import java.awt.*;
 public class ToolTipPanel extends G_Panel {
 
     Entity item;
-    DC_HeroObj hero;
+    Unit hero;
     ToolTipTextComp text;
     private Boolean prompted;
 
@@ -52,11 +52,11 @@ public class ToolTipPanel extends G_Panel {
         this.item = item;
     }
 
-    public DC_HeroObj getHero() {
+    public Unit getHero() {
         return hero;
     }
 
-    public void setHero(DC_HeroObj hero) {
+    public void setHero(Unit hero) {
         this.hero = hero;
     }
 

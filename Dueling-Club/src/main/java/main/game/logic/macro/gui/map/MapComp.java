@@ -1,6 +1,6 @@
 package main.game.logic.macro.gui.map;
 
-import main.content.parameters.MACRO_PARAMS;
+import main.content.values.parameters.MACRO_PARAMS;
 import main.entity.obj.Obj;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.CoordinatesMaster;

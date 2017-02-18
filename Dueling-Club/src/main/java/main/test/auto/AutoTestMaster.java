@@ -2,7 +2,7 @@ package main.test.auto;
 
 import main.content.C_OBJ_TYPE;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.ability.construct.AbilityConstructor;
 import main.data.filesys.PathFinder;
@@ -11,9 +11,9 @@ import main.entity.Ref;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.MicroObj;
 import main.entity.obj.attach.DC_FeatObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.logic.dungeon.DungeonMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.TimeMaster;
@@ -72,11 +72,11 @@ public class AutoTestMaster {
         instance = new AutoTestMaster();
         if (TYPE instanceof C_OBJ_TYPE) {
             C_OBJ_TYPE cTYPE = (C_OBJ_TYPE) TYPE;
-            for (OBJ_TYPES t : cTYPE.getTypes()) {
+            for (DC_TYPE t : cTYPE.getTypes()) {
                 instance.runTests(t);
             }
         } else {
-            instance.runTests((OBJ_TYPES) TYPE);
+            instance.runTests((DC_TYPE) TYPE);
         }
     }
 
@@ -85,7 +85,7 @@ public class AutoTestMaster {
     }
 
     public static void testType(ObjType selectedType) {
-        TYPE = (OBJ_TYPES) selectedType.getOBJ_TYPE_ENUM();
+        TYPE = (DC_TYPE) selectedType.getOBJ_TYPE_ENUM();
         if (instance == null) {
             main(new String[]{selectedType.getName()});
         } else {
@@ -135,7 +135,7 @@ public class AutoTestMaster {
         return running;
     }
 
-    public void runTests(OBJ_TYPES t) {
+    public void runTests(DC_TYPE t) {
         // if (tests == null)
         // if (args.length < 1)
 
@@ -174,16 +174,16 @@ public class AutoTestMaster {
         int y = game.getDungeon().getCellsY() / 2;
         String arg = test.getArg(TEST_ARGS.SOURCE);
 
-        source = DC_Game.game.createUnit(DataManager.getType(arg, OBJ_TYPES.CHARS), x, y, game
+        source = DC_Game.game.createUnit(DataManager.getType(arg, DC_TYPE.CHARS), x, y, game
                 .getPlayer(true), new Ref(game));
 
         y--;
         arg = test.getArg(TEST_ARGS.TARGET);
-        target = DC_Game.game.createUnit(DataManager.getType(arg, OBJ_TYPES.CHARS), x, y, game
+        target = DC_Game.game.createUnit(DataManager.getType(arg, DC_TYPE.CHARS), x, y, game
                 .getPlayer(true), new Ref(game));
 
         arg = test.getArg(TEST_ARGS.WEAPON);
-        ObjType weaponType = DataManager.getType(arg, OBJ_TYPES.WEAPONS);
+        ObjType weaponType = DataManager.getType(arg, DC_TYPE.WEAPONS);
         if (weaponType != null) {
             getSource().setWeapon(new DC_WeaponObj(weaponType, getSource()));
             AbilityConstructor.constructActives(source);
@@ -197,7 +197,7 @@ public class AutoTestMaster {
     }
 
     public Entity initEntity(ObjType type) {
-        switch ((OBJ_TYPES) type.getOBJ_TYPE_ENUM()) {
+        switch ((DC_TYPE) type.getOBJ_TYPE_ENUM()) {
             case CLASSES:
             case SKILLS:
                 return new DC_FeatObj(type, new Ref(getSource()));
@@ -206,7 +206,7 @@ public class AutoTestMaster {
     }
 
     private void clear() {
-        DC_Game.game.getManager().killAll(false);
+        DC_Game.game.getManager().getDeathMaster().killAll(false);
         // DC_Game.game.getArenaManager().getSpawnManager().
         // DC_Game.game.getDebugMaster().setArg(arg)
 
@@ -221,9 +221,9 @@ public class AutoTestMaster {
         getLogStrings().add(string);
     }
 
-    public DC_HeroObj getSource() {
+    public Unit getSource() {
         // if (source != null)
-        return (DC_HeroObj) source;
+        return (Unit) source;
         // return (DC_HeroObj)
         // DC_Game.game.getPlayer(true).getControlledUnits().toArray()[0];
         // return DC_Game.game.getMainHero();

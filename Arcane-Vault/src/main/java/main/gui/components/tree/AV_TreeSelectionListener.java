@@ -1,7 +1,7 @@
 package main.gui.components.tree;
 
 import main.content.ContentManager;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.logic.dungeon.editor.LevelEditor;
@@ -144,6 +144,6 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
         if (ArcaneVault.isMacroMode()) {
             return ContentManager.getOBJ_TYPE(selected).isTreeEditType();
         }
-        return selected.equals(OBJ_TYPES.ABILS.getName());
+        return selected.equals(DC_TYPE.ABILS.getName());
     }
 }

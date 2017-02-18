@@ -3,21 +3,27 @@ package main.game.logic.arcade;
 import main.client.cc.logic.HeroLevelManager;
 import main.client.cc.logic.party.PartyObj;
 import main.client.dc.Launcher;
-import main.content.CONTENT_CONSTS.*;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
+import main.content.enums.rules.ArcadeEnums;
+import main.content.enums.rules.ArcadeEnums.ARCADE_REGION;
+import main.content.enums.rules.ArcadeEnums.ARCADE_ROUTE;
+import main.content.enums.DungeonEnums;
+import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.ItemEnums.MATERIAL;
+import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.OrConditions;
 import main.elements.conditions.StringComparison;
 import main.entity.Ref.KEYS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
-import main.game.DC_Game.GAME_MODES;
+import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.generic.PartyManager;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -75,7 +81,7 @@ public class ArcadeManager {
 	 * 
 	 */
 
-    private static final ARCADE_REGION STARTING_REGION = ARCADE_REGION.DUSK_DALE;
+    private static final ARCADE_REGION STARTING_REGION = ArcadeEnums.ARCADE_REGION.DUSK_DALE;
     private DC_Game game;
 
 	/*
@@ -106,7 +112,7 @@ public class ArcadeManager {
     }
 
     public static void checkPartyLevelUps() {
-        for (DC_HeroObj hero : PartyManager.getParty().getMembers()) {
+        for (Unit hero : PartyManager.getParty().getMembers()) {
             int xpForLevel = DC_Formulas.getXpForLevel(hero.getLevel());
             if (hero.getIntParam(PARAMS.XP) > xpForLevel) {
                 HeroLevelManager.levelUp(hero, null);
@@ -120,10 +126,10 @@ public class ArcadeManager {
     }
 
     public void initializeSkirmish(PartyObj party) {
-        List<String> fullPool = DataManager.getTypeNames(OBJ_TYPES.DUNGEONS);
+        List<String> fullPool = DataManager.getTypeNames(DC_TYPE.DUNGEONS);
 
         FilterMaster.filterByProp(fullPool, G_PROPS.GROUP.getName(), StringMaster.ARCADE,
-                OBJ_TYPES.DUNGEONS);
+                DC_TYPE.DUNGEONS);
 
         party.setProperty(G_PROPS.DUNGEONS_PENDING, StringMaster.constructContainer(fullPool), true);
     }
@@ -191,11 +197,11 @@ public class ArcadeManager {
 
         String pool = "";
         // region.getDungeonPool();
-        List<String> fullPool = DataManager.getTypesGroupNames(OBJ_TYPES.DUNGEONS, region
+        List<String> fullPool = DataManager.getTypesGroupNames(DC_TYPE.DUNGEONS, region
                 .toString());
 
         FilterMaster.filterByProp(fullPool, G_PROPS.GROUP.getName(), StringMaster.ARCADE);
-        FilterMaster.filterByProp(fullPool, G_PROPS.DUNGEON_TYPE.getName(), DUNGEON_TYPE.BOSS + "",
+        FilterMaster.filterByProp(fullPool, G_PROPS.DUNGEON_TYPE.getName(), DungeonEnums.DUNGEON_TYPE.BOSS + "",
                 true);
 
         // StringMaster.openContainer(region
@@ -206,9 +212,9 @@ public class ArcadeManager {
             fullPool.remove(dungeonName);
         }
 
-        List<String> bossPool = DataManager.getTypesGroupNames(OBJ_TYPES.DUNGEONS, region
+        List<String> bossPool = DataManager.getTypesGroupNames(DC_TYPE.DUNGEONS, region
                 .toString());
-        FilterMaster.filterByProp(bossPool, G_PROPS.DUNGEON_TYPE.getName(), DUNGEON_TYPE.BOSS
+        FilterMaster.filterByProp(bossPool, G_PROPS.DUNGEON_TYPE.getName(), DungeonEnums.DUNGEON_TYPE.BOSS
                 .toString());
         pool += StringMaster.constructContainer(bossPool);
         party.setProperty(G_PROPS.DUNGEONS_PENDING, pool, true);
@@ -280,7 +286,7 @@ public class ArcadeManager {
         }
         if (dungeon != null) {
             if (dungeon.getProperty(G_PROPS.DUNGEON_TYPE).equalsIgnoreCase(
-                    DUNGEON_TYPE.BOSS.toString())) {
+                    DungeonEnums.DUNGEON_TYPE.BOSS.toString())) {
                 if (DialogMaster
                         .confirm("Are you ready to lay down your sword and feast in Valhalla?")) {
                     victory();
@@ -313,9 +319,9 @@ public class ArcadeManager {
             case MISTY_SHORES:
                 break;
             case BLIGHTSTONE_DESERT:
-                qualities = new QUALITY_LEVEL[]{QUALITY_LEVEL.ANCIENT, QUALITY_LEVEL.OLD,
-                        QUALITY_LEVEL.MASTERPIECE,};
-                materials = new MATERIAL[]{MATERIAL.ADAMANTIUM};
+                qualities = new QUALITY_LEVEL[]{ItemEnums.QUALITY_LEVEL.ANCIENT, ItemEnums.QUALITY_LEVEL.OLD,
+                        ItemEnums.QUALITY_LEVEL.MASTERPIECE,};
+                materials = new MATERIAL[]{ItemEnums.MATERIAL.ADAMANTIUM};
                 break;
 
         }

@@ -1,7 +1,7 @@
 package main.game.logic.arcade;
 
 import main.client.cc.logic.party.PartyObj;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.data.DataManager;
 import main.swing.generic.components.G_Panel;
@@ -21,13 +21,13 @@ public class HallOfFame {
     private static List<String> getSortedArcadeParties() {
         // TODO filter the *finishers*
         return SortMaster.sortByValue(DataManager.getTypesSubGroupNames(
-                OBJ_TYPES.PARTY, StringMaster.ARCADE), PARAMS.GLORY,
-                OBJ_TYPES.PARTY, false);
+                DC_TYPE.PARTY, StringMaster.ARCADE), PARAMS.GLORY,
+                DC_TYPE.PARTY, false);
     }
 
     public static int getPlace(PartyObj party) {
         return DataManager.toTypeList(getSortedArcadeParties(),
-                OBJ_TYPES.PARTY).indexOf(party) + 1;
+                DC_TYPE.PARTY).indexOf(party) + 1;
     }
 
     public static String getComment(int place) {

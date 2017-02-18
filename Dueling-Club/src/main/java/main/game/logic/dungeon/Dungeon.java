@@ -1,19 +1,19 @@
 package main.game.logic.dungeon;
 
 import main.content.CONTENT_CONSTS.COLOR_THEME;
-import main.content.CONTENT_CONSTS.DUNGEON_TAGS;
-import main.content.CONTENT_CONSTS.DUNGEON_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.enums.DungeonEnums.DUNGEON_TYPE;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.parameters.G_PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.enums.DungeonEnums;
+import main.content.values.parameters.G_PARAMS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.map.DC_Map;
@@ -22,7 +22,7 @@ import main.game.logic.dungeon.building.BuildHelper.BuildParameters;
 import main.game.logic.dungeon.building.DungeonBuilder.DUNGEON_TEMPLATES;
 import main.game.logic.dungeon.building.DungeonPlan;
 import main.game.logic.dungeon.minimap.Minimap;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.*;
 import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
@@ -75,7 +75,7 @@ public class Dungeon extends Entity {
     }
 
     public Dungeon(String typeName, boolean sublevel) {
-        this(DataManager.getType(typeName, OBJ_TYPES.DUNGEONS), sublevel);
+        this(DataManager.getType(typeName, DC_TYPE.DUNGEONS), sublevel);
     }
 
     public boolean isCurrentLevel() {
@@ -120,7 +120,7 @@ public class Dungeon extends Entity {
     }
 
     public boolean isBoss() {
-        return getDungeonType() == DUNGEON_TYPE.BOSS;
+        return getDungeonType() == DungeonEnums.DUNGEON_TYPE.BOSS;
     }
 
     public List<Entrance> getEntrances() {
@@ -288,7 +288,7 @@ public class Dungeon extends Entity {
     }
 
     public boolean isUnderground() {
-        return checkProperty(G_PROPS.DUNGEON_TYPE, DUNGEON_TYPE.UNDERGROUND + "");
+        return checkProperty(G_PROPS.DUNGEON_TYPE, DungeonEnums.DUNGEON_TYPE.UNDERGROUND + "");
     }
 
     public DungeonPlan getPlan() {
@@ -320,7 +320,7 @@ public class Dungeon extends Entity {
         if (template == null)
         // if (getProperty(PROPS.DUNGEON_TEMPLATES).isEmpty())
         {
-            if (getDungeonType() == DUNGEON_TYPE.BOSS) {
+            if (getDungeonType() == DungeonEnums.DUNGEON_TYPE.BOSS) {
                 // to be set upon sublevel generation?
                 template = DUNGEON_TEMPLATES.GREAT_ROOM;
             }
@@ -375,7 +375,7 @@ public class Dungeon extends Entity {
 
     public boolean isSurface() {
         // return true;
-        return checkProperty(PROPS.DUNGEON_TAGS, DUNGEON_TAGS.SURFACE + "");
+        return checkProperty(PROPS.DUNGEON_TAGS, DungeonEnums.DUNGEON_TAGS.SURFACE + "");
     }
 
     public int getSquare() {

@@ -1,7 +1,8 @@
 package main.content;
 
-import main.content.CONTENT_CONSTS.PRINCIPLES;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
+import main.content.enums.entity.HeroEnums;
+import main.content.values.properties.PROPERTY;
 import main.system.auxiliary.StringMaster;
 
 import java.util.HashMap;
@@ -393,9 +394,9 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
         PERCEPTION_STATUS_PLAYER.setDynamic(true);
         PERCEPTION_STATUS.setDynamic(true);
 
-        OBJ_TYPES.SPELLS.setUpgradeRequirementProp(KNOWN_SPELLS);
-        OBJ_TYPES.CLASSES.setUpgradeRequirementProp(CLASSES);
-        OBJ_TYPES.SKILLS.setUpgradeRequirementProp(SKILLS);
+        DC_TYPE.SPELLS.setUpgradeRequirementProp(KNOWN_SPELLS);
+        DC_TYPE.CLASSES.setUpgradeRequirementProp(CLASSES);
+        DC_TYPE.SKILLS.setUpgradeRequirementProp(SKILLS);
 
         // DYNAMIC CONTAINERS
 
@@ -620,7 +621,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     }
 
     public boolean isPrinciple() {
-        for (PRINCIPLES p : PRINCIPLES.values()) {
+        for (PRINCIPLES p : HeroEnums.PRINCIPLES.values()) {
             if (p.toString().equalsIgnoreCase(getName())) {
                 return true;
             }

@@ -3,7 +3,7 @@ package main.client;
 import main.content.DC_ContentManager;
 import main.data.DataManager;
 import main.entity.obj.DC_Cell;
-import main.rules.DC_ActionManager;
+import main.game.logic.generic.DC_ActionManager;
 import main.swing.DC_GuiManager;
 import main.swing.components.obj.drawing.DrawHelper;
 import main.system.entity.ConditionMaster;

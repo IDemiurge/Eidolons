@@ -9,12 +9,12 @@ import main.client.dc.MainManager.MAIN_MENU_ITEMS;
 import main.client.dc.SequenceManager;
 import main.content.CONTENT_CONSTS.DEITY;
 import main.content.CONTENT_CONSTS.FLIP;
-import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
 import main.content.CONTENT_CONSTS2.FACTION;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
+import main.content.enums.system.MetaEnums;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
@@ -24,13 +24,13 @@ import main.elements.conditions.NumericCondition;
 import main.elements.conditions.StringComparison;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.DC_ObjInitializer;
-import main.game.logic.battle.Positioner;
-import main.game.player.Player;
+import main.game.logic.generic.Positioner;
+import main.game.logic.battle.player.Player;
 import main.swing.components.panels.page.log.WrappedTextComp;
 import main.swing.generic.Decorator;
 import main.swing.generic.components.G_Panel;
@@ -154,13 +154,13 @@ public class UnitGroupMaster {
     public static void modifyFactions() {
         for (FACTION f : FACTION.values()) {
             DEITY deity = f.getDeity();
-            ObjType faction = DataManager.getType(f.toString(), OBJ_TYPES.FACTIONS);
+            ObjType faction = DataManager.getType(f.toString(), DC_TYPE.FACTIONS);
             if (faction == null) {
                 continue;
             }
             if (deity != null) {
-                ObjType deityType = DataManager.getType(deity.name(), OBJ_TYPES.DEITIES);
-                for (ObjType unit : DataManager.getTypes(OBJ_TYPES.UNITS)) {
+                ObjType deityType = DataManager.getType(deity.name(), DC_TYPE.DEITIES);
+                for (ObjType unit : DataManager.getTypes(DC_TYPE.UNITS)) {
                     if (unit.getProperty(G_PROPS.DEITY).equals(deityType.getName())) {
                         faction.addProperty(PROPS.UNIT_POOL, unit.getName(), true);
                     }
@@ -175,7 +175,7 @@ public class UnitGroupMaster {
 
     }
 
-    public static String createUnitGroup(DC_HeroObj her0) {
+    public static String createUnitGroup(Unit her0) {
         if (her0 != null) {
             hero = her0.getType();
         }
@@ -191,12 +191,12 @@ public class UnitGroupMaster {
         if (hero == null) {
             String faction = ListChooser.chooseEnum(FACTION.class);
             factionType = DataManager.getType(faction.toString().replace(";", ""),
-                    OBJ_TYPES.FACTIONS);
+                    DC_TYPE.FACTIONS);
         } else {
             List<String> list = new LinkedList<>();
 
-            factionType = DataManager.getType(ListChooser.chooseType(list, OBJ_TYPES.FACTIONS),
-                    OBJ_TYPES.FACTIONS);
+            factionType = DataManager.getType(ListChooser.chooseType(list, DC_TYPE.FACTIONS),
+                    DC_TYPE.FACTIONS);
         }
         return createUnitGroup(hero, factionType, level);
     }
@@ -261,22 +261,22 @@ public class UnitGroupMaster {
 
     private static List<ObjAtCoordinate> mapPositions(List<ObjType> list, Entity hero) {
         ChoiceSequence sequence = new ChoiceSequence();
-        DC_HeroObj unit = null;
+        Unit unit = null;
 
         // posView.in
-        List<DC_HeroObj> units = new LinkedList<>();
+        List<Unit> units = new LinkedList<>();
         if (hero != null) {
-            if (hero instanceof DC_HeroObj) {
-                unit = (DC_HeroObj) hero;
+            if (hero instanceof Unit) {
+                unit = (Unit) hero;
             } else {
-                unit = (new DC_HeroObj((ObjType) hero));
+                unit = (new Unit((ObjType) hero));
             }
             units.add(unit);
 
         }
         for (ObjType type : list) {
             if (type != null) {
-                units.add(new DC_HeroObj(type));
+                units.add(new Unit(type));
             }
         }
         PositionChoiceView posView = new PositionChoiceView(sequence, unit) {
@@ -286,7 +286,7 @@ public class UnitGroupMaster {
             }
         };
         sequence.addView(posView);
-        Map<DC_HeroObj, Coordinates> map = new Positioner().getPartyCoordinates(units);
+        Map<Unit, Coordinates> map = new Positioner().getPartyCoordinates(units);
         posView.setPartyCoordinates(map);
         sequence.setManager(new SequenceManager() {
 
@@ -402,7 +402,7 @@ public class UnitGroupMaster {
         });
         ListChooser.setTooltipMapForComponent(map);
         ListChooser.setSortingDisabled(true);
-        return ListChooser.chooseType_(available, OBJ_TYPES.UNITS);
+        return ListChooser.chooseType_(available, DC_TYPE.UNITS);
 
         // gui - a list per ally
     }
@@ -415,7 +415,7 @@ public class UnitGroupMaster {
         Map<ObjType, Integer> map = new XLinkedMap<>();
         addUnits(factionType, map, factionType);
         for (String f : StringMaster.openContainer(factionType.getProperty(PROPS.ALLY_FACTIONS))) {
-            ObjType allyFactionType = DataManager.getType(f.toString(), OBJ_TYPES.FACTIONS);
+            ObjType allyFactionType = DataManager.getType(f.toString(), DC_TYPE.FACTIONS);
             addUnits(factionType, map, allyFactionType);
         }
         return map;
@@ -424,7 +424,7 @@ public class UnitGroupMaster {
     private static void addUnits(ObjType factionType, Map<ObjType, Integer> map,
                                  ObjType allyFactionType) {
         for (String unit : StringMaster.openContainer(allyFactionType.getProperty(PROPS.UNIT_POOL))) {
-            ObjType type = DataManager.getType(unit, OBJ_TYPES.UNITS);
+            ObjType type = DataManager.getType(unit, DC_TYPE.UNITS);
             map.put(type, getUnitCost(type, factionType));
         }
     }
@@ -436,7 +436,7 @@ public class UnitGroupMaster {
             for (String f : StringMaster
                     .openContainer(factionType.getProperty(PROPS.ALLY_FACTIONS))) {
                 costMod += 5;
-                ObjType allyFactionType = DataManager.getType(f.toString(), OBJ_TYPES.FACTIONS);
+                ObjType allyFactionType = DataManager.getType(f.toString(), DC_TYPE.FACTIONS);
                 if (allyFactionType.getProperty(PROPS.UNIT_POOL).contains(unit.getName())) {
                     break;
                 }
@@ -498,11 +498,11 @@ public class UnitGroupMaster {
 
     public static String chooseGroup(boolean me) {
         if (factionMode) {
-            List<ObjType> available = new LinkedList<>(DataManager.getTypes(OBJ_TYPES.FACTIONS));
+            List<ObjType> available = new LinkedList<>(DataManager.getTypes(DC_TYPE.FACTIONS));
             // DC_HeroObj
             FilterMaster.filterByProp(available, G_PROPS.WORKSPACE_GROUP.getName(), ""
-                    + WORKSPACE_GROUP.COMPLETE);
-            ObjType faction = ListChooser.chooseType_(available, OBJ_TYPES.FACTIONS);
+                    + MetaEnums.WORKSPACE_GROUP.COMPLETE);
+            ObjType faction = ListChooser.chooseType_(available, DC_TYPE.FACTIONS);
             if (factionLeaderRequired) {
                 hero = UnitGroupMaster.createGroupLeader(me, faction, powerLevel);
                 if (hero == null) {
@@ -521,14 +521,14 @@ public class UnitGroupMaster {
 
     public static ObjType createGroupLeader(boolean me, Entity faction, int unitGroupLevel) {
         // type =
-        List<ObjType> list = DataManager.getTypesSubGroup(OBJ_TYPES.CHARS, StringMaster.PRESET);
+        List<ObjType> list = DataManager.getTypesSubGroup(DC_TYPE.CHARS, StringMaster.PRESET);
         String backgrounds = faction.getProperty(PROPS.HERO_BACKGROUNDS);
         FilterMaster.filterOut(list, new NotCondition(new StringComparison(backgrounds,
                 StringMaster.getValueRef(KEYS.MATCH, G_PROPS.BACKGROUND), false)));
         FilterMaster.filterOut(list, new NotCondition(new NumericCondition("2", "abs("
                 + StringMaster.getValueRef(KEYS.MATCH, PARAMS.LEVEL) + "-" + unitGroupLevel + ")",
                 false)));
-        String name = ListChooser.chooseType(DataManager.toStringList(list), OBJ_TYPES.CHARS);
+        String name = ListChooser.chooseType(DataManager.toStringList(list), DC_TYPE.CHARS);
 
         if (name == null) {
             return null;
@@ -538,7 +538,7 @@ public class UnitGroupMaster {
         } else {
             enemyHero = name;
         }
-        return DataManager.getType(name, OBJ_TYPES.CHARS);
+        return DataManager.getType(name, DC_TYPE.CHARS);
     }
 
     public static boolean isMirror() {

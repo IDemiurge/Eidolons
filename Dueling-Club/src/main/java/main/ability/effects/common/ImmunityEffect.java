@@ -1,8 +1,8 @@
 package main.ability.effects.common;
 
 import main.ability.effects.oneshot.common.ModifyPropertyEffect;
-import main.content.CONTENT_CONSTS.IMMUNITIES;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.UnitEnums.IMMUNITIES;
+import main.content.values.properties.G_PROPS;
 
 public class ImmunityEffect extends ModifyPropertyEffect {
 

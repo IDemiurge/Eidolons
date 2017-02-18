@@ -1,7 +1,7 @@
 package main.game.logic.macro.global;
 
 import main.entity.Ref;
-import main.game.Game;
+import main.game.core.game.Game;
 import main.game.logic.macro.map.Place;
 import main.game.logic.macro.map.Route;
 import main.game.logic.macro.travel.MacroParty;

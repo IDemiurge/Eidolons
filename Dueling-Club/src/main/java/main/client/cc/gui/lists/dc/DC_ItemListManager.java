@@ -4,11 +4,11 @@ import main.client.cc.gui.lists.HeroListPanel;
 import main.client.cc.gui.lists.ItemListManager;
 import main.client.cc.gui.lists.dc.InvListManager.OPERATIONS;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PROPS;
-import main.content.properties.PROPERTY;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.content.values.properties.PROPERTY;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 
 /**
  * Inventory, spellbook...
@@ -21,12 +21,12 @@ public class DC_ItemListManager extends ItemListManager {
     protected Integer numberOfOperations;
 
     public DC_ItemListManager(DC_Game game, boolean inv) {
-        this(game.getManager().getActiveObj(), (inv) ? OBJ_TYPES.ITEMS : OBJ_TYPES.SPELLS,
+        this(game.getManager().getActiveObj(), (inv) ? DC_TYPE.ITEMS : DC_TYPE.SPELLS,
                 (inv) ? PROPS.INVENTORY : PROPS.MEMORIZED_SPELLS);
 
     }
 
-    public DC_ItemListManager(DC_HeroObj hero, OBJ_TYPE TYPE, PROPERTY PROP) {
+    public DC_ItemListManager(Unit hero, OBJ_TYPE TYPE, PROPERTY PROP) {
         super(hero, TYPE, PROP);
     }
 

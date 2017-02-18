@@ -2,7 +2,7 @@ package main.ability.effects.containers.customtarget;
 
 import main.ability.effects.Effect;
 import main.content.OBJ_TYPE;
-import main.entity.obj.unit.DC_UnitObj;
+import main.entity.obj.BattleFieldObject;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.system.math.Formula;
@@ -27,7 +27,7 @@ public class WaveEffect extends ShapeEffect {
 
     @Override
     protected FACING_DIRECTION getFacing() {
-        return ((DC_UnitObj) ref.getSourceObj()).getFacing();
+        return ((BattleFieldObject) ref.getSourceObj()).getFacing();
     }
 
     @Override

@@ -4,21 +4,20 @@ import main.ability.effects.RemoveBuffEffect;
 import main.ability.effects.common.SpectrumEffect;
 import main.ability.effects.standard.WatchActionEffect;
 import main.ability.effects.standard.WatchBuffEffect;
-import main.content.CONTENT_CONSTS.ACTION_TYPE_GROUPS;
-import main.content.CONTENT_CONSTS.FACING_SINGLE;
-import main.content.CONTENT_CONSTS.STATUS;
 import main.content.PARAMS;
-import main.content.enums.STD_MODES;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.mode.STD_MODES;
 import main.elements.conditions.standard.OwnershipCondition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.ActiveObj;
-import main.entity.obj.BattlefieldObj;
+import main.entity.obj.BfObj;
 import main.entity.obj.BuffObj;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.FacingMaster;
 import main.game.battlefield.VisionManager;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
@@ -50,21 +49,21 @@ public class WatchRule implements ActionRule {
     >> No AoO's if not watched, by default?
     >> attack bonus for AoOs in spectrum?
          */
-    private static Map<DC_HeroObj, List<DC_Obj>> watchersMap = new HashMap<>();
+    private static Map<Unit, List<DC_Obj>> watchersMap = new HashMap<>();
 
-    private static void removeWatcher(DC_HeroObj watcher) {
+    private static void removeWatcher(Unit watcher) {
         getWatchersMap().remove(watcher);
     }
 
-    public static void breakWatch(DC_HeroObj watcher, DC_Obj watched) {
+    public static void breakWatch(Unit watcher, DC_Obj watched) {
         List<DC_Obj> list = getWatchersMap().get(watcher);
         if (list != null) {
             list.remove(watched);
         }
     }
 
-    private static boolean checkValidWatchPairTarget(DC_HeroObj watcher, DC_Obj watched) {
-        if (FacingMaster.getSingleFacing(watcher, (BattlefieldObj) watched) != FACING_SINGLE.IN_FRONT) {
+    private static boolean checkValidWatchPairTarget(Unit watcher, DC_Obj watched) {
+        if (FacingMaster.getSingleFacing(watcher, (BfObj) watched) != UnitEnums.FACING_SINGLE.IN_FRONT) {
             // some may have side-vision enough?
             return false;
         }
@@ -76,9 +75,9 @@ public class WatchRule implements ActionRule {
         return true;
     }
 
-    public static boolean checkActionWatched(DC_ActiveObj action, DC_HeroObj watcher) {
+    public static boolean checkActionWatched(DC_ActiveObj action, Unit watcher) {
         // AoO and Defense
-        if (FacingMaster.getSingleFacing(watcher, action.getOwnerObj()) == FACING_SINGLE.IN_FRONT) {
+        if (FacingMaster.getSingleFacing(watcher, action.getOwnerObj()) == UnitEnums.FACING_SINGLE.IN_FRONT) {
             return true;
         }
         return false;
@@ -102,15 +101,15 @@ public class WatchRule implements ActionRule {
         // return true;
     }
 
-    private static void checkWatcherModeReducesApOnTurnEnd(DC_HeroObj watcher) {
+    private static void checkWatcherModeReducesApOnTurnEnd(Unit watcher) {
 
     }
 
-    private static boolean checkValidWatcher(DC_HeroObj watcher) {
+    private static boolean checkValidWatcher(Unit watcher) {
         if (watcher.getBehaviorMode() != null) {
             return false;
         }
-        if (watcher.checkStatus(STATUS.CHARMED)) {
+        if (watcher.checkStatus(UnitEnums.STATUS.CHARMED)) {
             return false;
         }
         if (watcher.checkStatusPreventsActions()) {
@@ -131,16 +130,16 @@ public class WatchRule implements ActionRule {
         if (checkActionBreaksWatch(action, watched)) {
             return true;
         }
-        if (action.getActionGroup() == ACTION_TYPE_GROUPS.TURN) {
+        if (action.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.TURN) {
             return true; // TODO detailed check!
         }
-        if (action.getActionGroup() == ACTION_TYPE_GROUPS.MODE) {
+        if (action.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MODE) {
             return true; //
         }
-        if (action.getActionGroup() == ACTION_TYPE_GROUPS.MOVE) {
+        if (action.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MOVE) {
             // getDestination() -> check relative facing to watch
         }
-        if (action.getActionGroup() == ACTION_TYPE_GROUPS.SPELL) {
+        if (action.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.SPELL) {
             // getDestination() -> check relative facing to watch
             if (action instanceof DC_SpellObj) {
                 DC_SpellObj spellObj = (DC_SpellObj) action;
@@ -148,7 +147,7 @@ public class WatchRule implements ActionRule {
                 return spellObj.isChanneling();
             }
         }
-        if (action.getActionGroup() == ACTION_TYPE_GROUPS.SPECIAL) {
+        if (action.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.SPECIAL) {
             // special property like aoo
         }
 
@@ -159,7 +158,7 @@ public class WatchRule implements ActionRule {
 
     public static boolean checkActionBreaksWatch(DC_ActiveObj action, DC_Obj watched) {
         // only no-state actions, others will break on checkValid()
-        if (action.getActionGroup() == ACTION_TYPE_GROUPS.ATTACK) {
+        if (action.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK) {
             // other target ; special skill may allow retain watch
             if (action.getRef().getTargetObj() != watched) {
                 return true;
@@ -168,7 +167,7 @@ public class WatchRule implements ActionRule {
         return false;
     }
 
-    public static boolean checkWatched(DC_HeroObj watcher, DC_Obj watched) {
+    public static boolean checkWatched(Unit watcher, DC_Obj watched) {
         List<DC_Obj> list = getWatchersMap().get(watcher);
         if (list != null) {
             return list.contains(watched);
@@ -176,15 +175,15 @@ public class WatchRule implements ActionRule {
         return false;
     }
 
-    private static WatchBuffEffect getWatchBuffEffect(DC_HeroObj watcher, List<DC_Obj> list) {
+    private static WatchBuffEffect getWatchBuffEffect(Unit watcher, List<DC_Obj> list) {
         return new WatchBuffEffect(watcher, list);
     }
 
-    public static Map<DC_HeroObj, List<DC_Obj>> getWatchersMap() {
+    public static Map<Unit, List<DC_Obj>> getWatchersMap() {
         return watchersMap;
     }
 
-    public static String getDefenseModVsOthers(DC_HeroObj watcher, List<DC_Obj> list) {
+    public static String getDefenseModVsOthers(Unit watcher, List<DC_Obj> list) {
         String mod = StringMaster.wrapInParenthesis(""
                 + MathMaster.applyModIfNotZero(DEFENSE_MOD_OTHERS, watcher
                 .getIntParam(PARAMS.WATCH_DEFENSE_OTHERS_MOD)));
@@ -194,7 +193,7 @@ public class WatchRule implements ActionRule {
         return mod;
     }
 
-    public static String getApPenaltyMod(DC_HeroObj watcher, List<DC_Obj> list) {
+    public static String getApPenaltyMod(Unit watcher, List<DC_Obj> list) {
         String mod = StringMaster.wrapInParenthesis(""
                 + MathMaster.applyModIfNotZero(AP_PENALTY, watcher
                 .getIntParam(PARAMS.WATCH_AP_PENALTY_MOD)));
@@ -204,7 +203,7 @@ public class WatchRule implements ActionRule {
         return mod;
     }
 
-    public static String getDefenseModVsWatched(DC_HeroObj watcher, List<DC_Obj> list) {
+    public static String getDefenseModVsWatched(Unit watcher, List<DC_Obj> list) {
         String mod = StringMaster.wrapInParenthesis(""
                 + MathMaster.applyModIfNotZero(DEFENSE_MOD, watcher
                 .getIntParam(PARAMS.WATCH_DEFENSE_MOD)));
@@ -212,7 +211,7 @@ public class WatchRule implements ActionRule {
         return mod;
     }
 
-    public static String getAttackModVsWatched(DC_HeroObj watcher, List<DC_Obj> list) {
+    public static String getAttackModVsWatched(Unit watcher, List<DC_Obj> list) {
         String mod = StringMaster.wrapInParenthesis(""
                 + MathMaster.applyModIfNotZero(ATTACK_MOD, watcher
                 .getIntParam(PARAMS.WATCH_ATTACK_MOD)));
@@ -220,7 +219,7 @@ public class WatchRule implements ActionRule {
         return mod;
     }
 
-    public static String getAttackModVsOthers(DC_HeroObj watcher, List<DC_Obj> list) {
+    public static String getAttackModVsOthers(Unit watcher, List<DC_Obj> list) {
         String mod = StringMaster.wrapInParenthesis(""
                 + MathMaster.applyModIfNotZero(ATTACK_MOD_OTHERS, watcher
                 .getIntParam(PARAMS.WATCH_ATTACK_OTHERS_MOD)));
@@ -238,12 +237,12 @@ public class WatchRule implements ActionRule {
 
     // what about Alert?
     public void updateWatchStatuses() {
-        for (DC_HeroObj watcher : getWatchersMap().keySet()) {
+        for (Unit watcher : getWatchersMap().keySet()) {
             updateWatchStatus(watcher);
         }
     }
 
-    public void updateWatchStatus(DC_HeroObj watcher) {
+    public void updateWatchStatus(Unit watcher) {
         List<DC_Obj> list = getWatchersMap().get(watcher);
         boolean invalid = false;
         if (list != null) {
@@ -294,7 +293,7 @@ public class WatchRule implements ActionRule {
     }
 
     @Override
-    public boolean unitBecomesActive(DC_HeroObj unit) {
+    public boolean unitBecomesActive(Unit unit) {
         // TODO ??
         // applyWatcherBuffs();
         return true;

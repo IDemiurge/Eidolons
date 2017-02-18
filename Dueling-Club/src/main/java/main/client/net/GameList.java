@@ -1,7 +1,7 @@
 package main.client.net;
 
 import main.client.gui.main.GameListPanel;
-import main.game.HostedGame;
+import main.game.core.game.HostedGame;
 import main.swing.generic.components.list.GenericList;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;

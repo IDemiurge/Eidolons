@@ -1,12 +1,12 @@
 package main.system.graphics;
 
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_SpellObj;
 import main.entity.active.DC_UnitAction;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.attack.Attack;
 import main.game.battlefield.attack.AttackCalculator.MOD_IDENTIFIER;
 import main.system.auxiliary.StringMaster;
@@ -35,12 +35,12 @@ public class DC_ImageMaster {
         return base_image;
     }
 
-    public static Image getUnitEmblem(DC_HeroObj obj, int size, boolean player) {
+    public static Image getUnitEmblem(Unit obj, int size, boolean player) {
         Image unitEmblem = null;
         if (player && obj.getOwner().getEmblem() != null) {
             unitEmblem = ImageManager.getSizedVersion(obj.getOwner().getEmblem(), new Dimension(
                     size, size));
-        } else if (obj.getOBJ_TYPE_ENUM() == OBJ_TYPES.CHARS) {
+        } else if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.CHARS) {
             unitEmblem = ImageManager.getSizedIcon(obj.getProperty(G_PROPS.EMBLEM),
                     new Dimension(size, size)).getImage();
         } else {

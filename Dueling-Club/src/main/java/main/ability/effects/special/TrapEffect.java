@@ -6,13 +6,13 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.ability.effects.containers.TriggerEffect;
 import main.ability.effects.oneshot.special.AddStatusEffect;
-import main.content.CONTENT_CONSTS.STATUS;
+import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.RefCondition;
 import main.elements.targeting.FixedTargeting;
 import main.entity.Ref.KEYS;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.entity.ConditionMaster;
 
 public class TrapEffect extends TriggerEffect {
@@ -32,7 +32,7 @@ public class TrapEffect extends TriggerEffect {
 
     @Override
     public boolean applyThis() {
-        Effect effect = new AddStatusEffect(STATUS.TRAPPED.name());
+        Effect effect = new AddStatusEffect(UnitEnums.STATUS.TRAPPED.name());
         new AddBuffEffect(effect).apply(ref);
         return super.applyThis();
     }

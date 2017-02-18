@@ -1,8 +1,8 @@
 package main.rules.round;
 
 import main.content.PARAMS;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.ai.tools.ParamAnalyzer;
 import main.system.math.DC_MathManager;
 
@@ -12,11 +12,11 @@ public class FocusRule extends RoundRule {
         super(game);
     }
 
-    public boolean check(DC_HeroObj unit) {
+    public boolean check(Unit unit) {
         return !ParamAnalyzer.isFocusIgnore(unit);
     }
 
-    public void apply(DC_HeroObj unit) {
+    public void apply(Unit unit) {
 
         int diff = unit.getIntParam(PARAMS.C_FOCUS)
                 - DC_MathManager.getStartingFocus(unit);

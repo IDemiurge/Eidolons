@@ -1,14 +1,14 @@
 package main.swing.components.battlefield;
 
-import main.content.CONTENT_CONSTS.BF_OBJECT_TAGS;
-import main.content.CONTENT_CONSTS.STD_BOOLS;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.BfObjEnums;
+import main.content.enums.GenericEnums;
+import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.BattleFieldGrid;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.VisionManager;
@@ -47,8 +47,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     private Coordinates offsetCoordinate;
     private int manualOffsetX = 0;
     private int manualOffsetY = 0;
-    private DC_HeroObj activeObj;
-    private DC_HeroObj lastActiveObj;
+    private Unit activeObj;
+    private Unit lastActiveObj;
     private Dungeon dungeon;
     private Obj cameraCenterObj;
     private BfGridComp gridComp;
@@ -79,7 +79,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     public boolean isOccupied(Coordinates c) {
         // TODO cellCondition also takes into account visiblity, flyers etc...
         // this here is just about obj being present...
-        for (DC_HeroObj obj : gridComp.getMap().get(c).getObjects()) {
+        for (Unit obj : gridComp.getMap().get(c).getObjects()) {
             if (obj.isPassable()) {
                 continue;
             }
@@ -143,17 +143,17 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
                 int x = i + getOffsetX();
                 int y = j + getOffsetY();
                 Coordinates c = new Coordinates(x, y);
-                List<DC_HeroObj> objects = game.getObjectsOnCoordinate(getZ(), c, false, true,
+                List<Unit> objects = game.getObjectsOnCoordinate(getZ(), c, false, true,
                         false);
-                List<DC_HeroObj> overlayingObjects = new LinkedList<>(new DequeImpl(game
+                List<Unit> overlayingObjects = new LinkedList<>(new DequeImpl(game
                         .getObjectsOnCoordinate(getZ(), c, true, true, false))
                         .getRemoveAll(objects));
 
                 // visibility check!
 
                 CellComp comp = gridComp.getCells()[x][y];
-                List<DC_HeroObj> list = new LinkedList<>();
-                for (DC_HeroObj obj : objects) {
+                List<Unit> list = new LinkedList<>();
+                for (Unit obj : objects) {
                     if (VisionManager.checkVisible(obj)) {
                         list.add(obj);
                     }
@@ -216,9 +216,9 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         }
         if (getOffsetCoordinate() == null) {
             // TODO initial camera
-            DC_HeroObj obj = getActiveObj();
+            Unit obj = getActiveObj();
             if (obj == null || !VisionManager.checkDetectedEnemy(obj)) {
-                obj = (DC_HeroObj) getGame().getPlayer(true).getHeroObj();
+                obj = (Unit) getGame().getPlayer(true).getHeroObj();
             }
             return obj.getCoordinates().getXorY(x);
             // return (getFullCells(x) - getDisplayedCells(x)) / 2;
@@ -308,10 +308,10 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
 
 
     public boolean checkPassable(Obj obj) {
-        if (obj.checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BF_OBJECT_TAGS.PASSABLE)) {
+        if (obj.checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BfObjEnums.BF_OBJECT_TAGS.PASSABLE)) {
             return true;
         }
-        return obj.checkBool(STD_BOOLS.PASSABLE);
+        return obj.checkBool(GenericEnums.STD_BOOLS.PASSABLE);
     }
 
     private boolean checkSetNoBorderImg(int i, int j) {
@@ -381,8 +381,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
                 break;
             }
             Coordinates c = new Coordinates(X, Y);
-            List<DC_HeroObj> objects = game.getObjectsOnCoordinate(c);
-            for (DC_HeroObj obj : objects) {
+            List<Unit> objects = game.getObjectsOnCoordinate(c);
+            for (Unit obj : objects) {
                 if (obj.isObstructing(source, game.getCellByCoordinate(c))) {
                     return false;
                 }
@@ -403,8 +403,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         }
         for (int i = min + 1; i < max; i++) {
             Coordinates c = (x_y) ? new Coordinates(xy, i) : new Coordinates(i, xy);
-            List<DC_HeroObj> objects = game.getObjectsOnCoordinate(c);
-            for (DC_HeroObj obj : objects) {
+            List<Unit> objects = game.getObjectsOnCoordinate(c);
+            for (Unit obj : objects) {
                 if (obj.isObstructing(source, game.getCellByCoordinate(c))) {
                     return false;
                 }
@@ -670,18 +670,18 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
 
     }
 
-    private DC_HeroObj getActiveObj() {
+    private Unit getActiveObj() {
         if (activeObj == null) {
             if (PartyManager.getParty() != null) {
                 setActiveObj(PartyManager.getParty().getLeader());
             } else {
-                setActiveObj((DC_HeroObj) game.getPlayer(true).getHeroObj());
+                setActiveObj((Unit) game.getPlayer(true).getHeroObj());
             }
         }
         return activeObj;
     }
 
-    private void setActiveObj(DC_HeroObj activeObj) {
+    private void setActiveObj(Unit activeObj) {
         this.activeObj = activeObj;
     }
 

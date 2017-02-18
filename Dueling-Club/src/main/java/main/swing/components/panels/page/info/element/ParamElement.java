@@ -1,8 +1,8 @@
 package main.swing.components.panels.page.info.element;
 
 import main.content.VALUE;
-import main.content.parameters.MultiParameter;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.MultiParameter;
+import main.content.values.parameters.PARAMETER;
 import main.system.graphics.FontMaster;
 import main.system.images.ImageManager;
 

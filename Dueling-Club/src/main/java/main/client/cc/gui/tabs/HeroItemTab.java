@@ -9,9 +9,9 @@ import main.client.cc.gui.pages.HC_PagedListPanel;
 import main.client.cc.gui.pages.HC_PagedListPanel.HC_LISTS;
 import main.client.cc.gui.views.HeroItemView;
 import main.content.OBJ_TYPE;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 
@@ -24,7 +24,7 @@ public abstract class HeroItemTab extends HeroPanelTab implements BorderChecker 
 
     // HC_LIST list
 
-    public HeroItemTab(String title, MainViewPanel mvp, DC_HeroObj hero) {
+    public HeroItemTab(String title, MainViewPanel mvp, Unit hero) {
         super(title, mvp, hero);
         setPanelSize(MainPanel.SIZE);
         if (isReady()) {

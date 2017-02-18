@@ -3,17 +3,17 @@ package main.rules.old;
 import main.ability.conditions.StatusCheckCondition;
 import main.ability.effects.AddBuffEffect;
 import main.ability.effects.special.ImmobilizeEffect;
-import main.content.CONTENT_CONSTS.STATUS;
 import main.content.PARAMS;
+import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.NotCondition;
 import main.elements.conditions.NumericCondition;
 import main.entity.Ref;
-import main.game.MicroGame;
-import main.game.event.Event;
-import main.game.event.EventType;
-import main.game.event.EventType.CONSTRUCTED_EVENT_TYPE;
+import main.game.core.game.MicroGame;
+import main.game.logic.event.Event;
+import main.game.logic.event.EventType;
+import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.rules.DC_RuleImpl;
 import main.system.entity.ConditionMaster;
 
@@ -28,7 +28,7 @@ public class PanicRule extends DC_RuleImpl {
             "{TARGET_C_MORALE}", TreasonRule.TREASON);
     private static final String MORALE = PARAMS.C_MORALE.name();
     private static final Condition CONDITION0 = new NotCondition(
-            new StatusCheckCondition(Ref.KEYS.TARGET.name(), STATUS.IMMOBILE));
+            new StatusCheckCondition(Ref.KEYS.TARGET.name(), UnitEnums.STATUS.IMMOBILE));
 
     private String buffTypeName = "Panic";
     private Conditions retain_conditions;

@@ -1,9 +1,10 @@
 package main.system.graphics;
 
-import main.content.CONTENT_CONSTS.ASPECT;
-import main.content.CONTENT_CONSTS.CLASS_GROUP;
-import main.content.CONTENT_CONSTS.SKILL_GROUP;
-import main.content.properties.G_PROPS;
+import main.content.enums.GenericEnums.ASPECT;
+import main.content.enums.GenericEnums;
+import main.content.enums.entity.HeroEnums.CLASS_GROUP;
+import main.content.enums.entity.SkillEnums.SKILL_GROUP;
+import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
 
@@ -118,7 +119,7 @@ public class ColorManager {
         ASPECT aspect = new EnumMaster<ASPECT>().retrieveEnumConst(ASPECT.class, type
                 .getProperty(G_PROPS.ASPECT));
         if (aspect == null) {
-            aspect = ASPECT.NEUTRAL;
+            aspect = GenericEnums.ASPECT.NEUTRAL;
         }
         switch (aspect) {
             case ARCANUM:

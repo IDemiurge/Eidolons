@@ -1,11 +1,11 @@
 package main.entity.item;
 
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.MicroGame;
-import main.game.player.Player;
+import main.game.core.game.MicroGame;
+import main.game.logic.battle.player.Player;
 
 public class ItemFactory {
 
@@ -15,7 +15,7 @@ public class ItemFactory {
             return null;
         }
         OBJ_TYPE TYPE = type.getOBJ_TYPE_ENUM();
-        switch ((OBJ_TYPES) TYPE) {
+        switch ((DC_TYPE) TYPE) {
             case TRAP:
                 return new DC_QuickItemObj(type, originalOwner, game, ref, true);
             case ARMOR:

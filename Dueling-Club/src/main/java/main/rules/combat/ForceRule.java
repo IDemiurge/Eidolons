@@ -2,15 +2,15 @@ package main.rules.combat;
 
 import main.ability.effects.DealDamageEffect;
 import main.ability.effects.MoveEffect;
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
 import main.content.PARAMS;
+import main.content.enums.GenericEnums;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;
 import main.rules.RuleMaster;
@@ -85,8 +85,8 @@ public class ForceRule {
         if (force == 0) {
             return;
         }
-        DC_HeroObj target = (DC_HeroObj) action.getRef().getTargetObj();
-        DC_HeroObj source = (DC_HeroObj) action.getRef().getSourceObj();
+        Unit target = (Unit) action.getRef().getTargetObj();
+        Unit source = (Unit) action.getRef().getSourceObj();
         Boolean result = RollMaster.rollForceKnockdown(target, action, force);
         if (isTestMode()) {
             result = true;
@@ -115,14 +115,14 @@ public class ForceRule {
         return getForceFromAttack(attack);
     }
 
-    private static int getPushDistance(int force, DC_HeroObj target) {
+    private static int getPushDistance(int force, Unit target) {
         int distance = Math.round(force / 10 / target.getIntParam(PARAMS.TOTAL_WEIGHT));
         LogMaster.log(1, "getPushDistance = " + force + "/10/"
                 + target.getIntParam(PARAMS.TOTAL_WEIGHT) + " = " + distance);
         return distance;
     }
 
-    public static int getDamage(DC_ActiveObj action, DC_HeroObj attacker, DC_HeroObj attacked) {
+    public static int getDamage(DC_ActiveObj action, Unit attacker, Unit attacked) {
         if (!RuleMaster.isRuleOn(RULE.FORCE)) {
             return 0;
         }
@@ -130,7 +130,7 @@ public class ForceRule {
         return getDamage(force, action, attacker, attacked);
     }
 
-    private static int getDamage(int force, Entity attack, Entity source, DC_HeroObj attacked) {
+    private static int getDamage(int force, Entity attack, Entity source, Unit attacked) {
         int damage = Math.round(force / DAMAGE_FACTOR);
         damage = damage
 
@@ -144,8 +144,8 @@ public class ForceRule {
     }
 
     // TODO into PushEffect! With std knockdown on "landing" or damage!
-    public static void applyPush(int force, DC_ActiveObj attack, DC_HeroObj source,
-                                 DC_HeroObj target) {
+    public static void applyPush(int force, DC_ActiveObj attack, Unit source,
+                                 Unit target) {
         DIRECTION d = DirectionMaster.getRelativeDirection(source, target);
 
         if (attack.isSpell()) {
@@ -195,7 +195,7 @@ public class ForceRule {
 
     }
 
-    public static Formula getCollisionDamageFormula(DC_HeroObj moveObj, DC_HeroObj collideObj,
+    public static Formula getCollisionDamageFormula(Unit moveObj, Unit collideObj,
                                                     int force, boolean forCollide) {
         int weight = (forCollide ? moveObj : collideObj).getIntParam(PARAMS.TOTAL_WEIGHT);
         // Math.min(, b);
@@ -203,18 +203,18 @@ public class ForceRule {
         return null;
     }
 
-    public static void applyDamage(int force, DC_ActiveObj attack, DC_HeroObj source,
-                                   DC_HeroObj target) {
+    public static void applyDamage(int force, DC_ActiveObj attack, Unit source,
+                                   Unit target) {
         int damage = getDamage(force, target, target, target);
         // attack.modifyParameter(PARAMS.BASE_DAMAGE, damage);
         // if (target.getShield()!=null )
         Ref ref = attack.getRef().getCopy();
         ref.setTarget(target.getId());
-        new DealDamageEffect(new Formula(damage + ""), DAMAGE_TYPE.BLUDGEONING).apply(ref);
+        new DealDamageEffect(new Formula(damage + ""), GenericEnums.DAMAGE_TYPE.BLUDGEONING).apply(ref);
     }
 
-    public static void tryKnockdown(int force, DC_ActiveObj attack, DC_HeroObj source,
-                                    DC_HeroObj target, boolean pushed) {
+    public static void tryKnockdown(int force, DC_ActiveObj attack, Unit source,
+                                    Unit target, boolean pushed) {
         // Boolean result = RollMaster.rollForceKnockdown(target, attack,
         // force);
         // if (pushed) {

@@ -4,11 +4,11 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
-import main.content.CONTENT_CONSTS.STATUS;
-import main.content.CONTENT_CONSTS.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.PARAMS;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.content.enums.entity.UnitEnums;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 
 public class DespairRule extends DC_CounterRule {
     /*
@@ -29,11 +29,11 @@ public class DespairRule extends DC_CounterRule {
 
     @Override
     public String getCounterName() {
-        return STD_COUNTERS.Despair_Counter.getName();
+        return UnitEnums.STD_COUNTERS.Despair_Counter.getName();
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(DC_HeroObj unit) {
+    public int getCounterNumberReductionPerTurn(Unit unit) {
         return unit.getIntParam(PARAMS.SPIRIT) / 2;
     }
 

@@ -1,6 +1,6 @@
 package main.content;
 
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 
 import java.util.List;
 
@@ -69,8 +69,8 @@ public class HC_ValuePages {
     };
     public static final VALUE[][] CLASS_PAGES = {CLASS_HEADER, ValuePages.ATTRIBUTES, CLASS_PARAMS};
 
-    public static final OBJ_TYPES[] TYPES = {OBJ_TYPES.CHARS, OBJ_TYPES.CLASSES, OBJ_TYPES.ARMOR,
-            OBJ_TYPES.WEAPONS,};
+    public static final DC_TYPE[] TYPES = {DC_TYPE.CHARS, DC_TYPE.CLASSES, DC_TYPE.ARMOR,
+            DC_TYPE.WEAPONS,};
     public static final String[] PAGE_NAMES = {
 
     };
@@ -140,7 +140,7 @@ public class HC_ValuePages {
             ValuePages.ACTION_PARAMS_DC2, ValuePages.DESCRIPTION, ValuePages.COSTS,
             ValuePages.ACTION_PROPS_DC,};
 
-    public static List<List<VALUE>> getPageLists(OBJ_TYPES TYPE) {
+    public static List<List<VALUE>> getPageLists(DC_TYPE TYPE) {
         VALUE[][] pages = null;
         switch (TYPE) {
             case CHARS:

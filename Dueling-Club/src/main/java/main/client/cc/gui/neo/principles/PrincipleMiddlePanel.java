@@ -2,7 +2,7 @@ package main.client.cc.gui.neo.principles;
 
 import main.client.cc.gui.neo.bars.SpecialValueBar;
 import main.content.PARAMS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.rules.rpg.IntegrityRule;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.components.panels.page.log.WrappedTextComp;
@@ -19,12 +19,12 @@ import java.awt.*;
 
 public class PrincipleMiddlePanel extends G_Panel {
 
-    private DC_HeroObj hero;
+    private Unit hero;
     private WrappedTextComp bonusTextComp;
     private TextCompDC rpgDescription;
     private SpecialValueBar integrityBar;
 
-    public PrincipleMiddlePanel(DC_HeroObj hero) {
+    public PrincipleMiddlePanel(Unit hero) {
         this.hero = hero;
         panelSize = new Dimension(VISUALS.INFO_PANEL_LARGE.getWidth(), 230);
     }

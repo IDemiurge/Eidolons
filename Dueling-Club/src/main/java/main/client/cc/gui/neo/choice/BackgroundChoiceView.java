@@ -3,13 +3,13 @@ package main.client.cc.gui.neo.choice;
 import main.client.cc.CharacterCreator;
 import main.content.DC_ContentManager;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.elements.conditions.Condition;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class BackgroundChoiceView extends EntityChoiceView {
 
-    public BackgroundChoiceView(ChoiceSequence choiceSequence, DC_HeroObj hero) {
+    public BackgroundChoiceView(ChoiceSequence choiceSequence, Unit hero) {
         super(choiceSequence, hero);
     }
 
@@ -54,7 +54,7 @@ public class BackgroundChoiceView extends EntityChoiceView {
 
     @Override
     protected OBJ_TYPE getTYPE() {
-        return OBJ_TYPES.CHARS;
+        return DC_TYPE.CHARS;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class BackgroundChoiceView extends EntityChoiceView {
         applyBackground(hero, type);
     }
 
-    private void applyBackground(DC_HeroObj hero, ObjType bgType) {
+    private void applyBackground(Unit hero, ObjType bgType) {
         ObjType type = hero.getType();
         type.setProperty(G_PROPS.BASE_TYPE, bgType.getName());
         type.setProperty(G_PROPS.BACKGROUND_TYPE, bgType.getName());

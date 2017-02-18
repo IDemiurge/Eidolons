@@ -2,7 +2,7 @@ package main.client.cc.gui.neo.principles;
 
 import main.entity.Entity;
 import main.entity.obj.attach.DC_FeatObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.rules.rpg.IntegrityRule;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
@@ -14,10 +14,10 @@ import java.util.List;
 public class PrincipleItemPagedListPanel extends G_PagePanel<Entity> {
 
     private static final int PAGE_SIZE = 10;
-    private DC_HeroObj hero;
+    private Unit hero;
     private PrincipleTable table;
 
-    public PrincipleItemPagedListPanel(DC_HeroObj hero, PrincipleTable table) {
+    public PrincipleItemPagedListPanel(Unit hero, PrincipleTable table) {
         super(PAGE_SIZE, true, 3);
         this.hero = hero;
         this.table = table;

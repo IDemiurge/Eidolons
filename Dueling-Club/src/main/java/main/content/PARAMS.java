@@ -1,6 +1,7 @@
 package main.content;
 
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
+import main.content.text.Descriptions;
 import main.rules.round.UnconsciousRule;
 import main.system.DC_Formulas;
 import main.system.graphics.ColorManager;
@@ -783,7 +784,7 @@ public enum PARAMS implements PARAMETER {
     ;
 
     static {
-        COUNTER_MOD.addSpecialDefault(OBJ_TYPES.ACTIONS, 75);
+        COUNTER_MOD.addSpecialDefault(DC_TYPE.ACTIONS, 75);
 
         C_TOUGHNESS.setColor(ColorManager.TOUGHNESS);
         C_ENDURANCE.setColor(ColorManager.ENDURANCE);
@@ -806,14 +807,14 @@ public enum PARAMS implements PARAMETER {
         MASTERY_POINTS.setWriteToType(true);
         IDENTITY_POINTS.setWriteToType(true);
 
-        OBJ_TYPES.ARMOR.setParam(PARAMS.GOLD);
-        OBJ_TYPES.JEWELRY.setParam(PARAMS.GOLD);
-        OBJ_TYPES.ITEMS.setParam(PARAMS.GOLD);
-        OBJ_TYPES.WEAPONS.setParam(PARAMS.GOLD);
-        OBJ_TYPES.UNITS.setParam(PARAMS.GOLD);
-        OBJ_TYPES.SKILLS.setParam(PARAMS.XP);
-        OBJ_TYPES.SPELLS.setParam(PARAMS.XP);
-        OBJ_TYPES.CLASSES.setParam(PARAMS.XP);
+        DC_TYPE.ARMOR.setParam(PARAMS.GOLD);
+        DC_TYPE.JEWELRY.setParam(PARAMS.GOLD);
+        DC_TYPE.ITEMS.setParam(PARAMS.GOLD);
+        DC_TYPE.WEAPONS.setParam(PARAMS.GOLD);
+        DC_TYPE.UNITS.setParam(PARAMS.GOLD);
+        DC_TYPE.SKILLS.setParam(PARAMS.XP);
+        DC_TYPE.SPELLS.setParam(PARAMS.XP);
+        DC_TYPE.CLASSES.setParam(PARAMS.XP);
 
         LEVEL.setHighPriority(true);
         CIRCLE.setHighPriority(true);

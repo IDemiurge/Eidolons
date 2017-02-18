@@ -1,7 +1,7 @@
 package main.content;
 
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
 
 public interface OBJ_TYPE {
 

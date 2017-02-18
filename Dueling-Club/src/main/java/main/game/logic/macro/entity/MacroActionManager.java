@@ -2,11 +2,11 @@ package main.game.logic.macro.entity;
 
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.CONTENT_CONSTS2.MACRO_STATUS;
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
+import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
 import main.data.ConcurrentMap;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.MacroManager;
@@ -44,7 +44,7 @@ public class MacroActionManager {
 
     public static List<MacroAction> getMacroActions(MACRO_ACTION_GROUPS group,
                                                     MacroParty playerParty) {
-        DC_HeroObj hero = MacroManager.getSelectedPartyMember();
+        Unit hero = MacroManager.getSelectedPartyMember();
         switch (group) {
             case CHARACTER:
                 return getHeroActions(hero);
@@ -146,7 +146,7 @@ public class MacroActionManager {
         return list;
     }
 
-    private static List<MacroAction> getModeActions(DC_HeroObj hero) {
+    private static List<MacroAction> getModeActions(Unit hero) {
         List<MacroAction> modeActions = new LinkedList<>();
         // String actions = hero.getProp("macro actions");
         for (MACRO_MODES m : MACRO_MODES.values()) {
@@ -156,7 +156,7 @@ public class MacroActionManager {
         return modeActions;
     }
 
-    private static List<MacroAction> getHeroActions(DC_HeroObj hero) {
+    private static List<MacroAction> getHeroActions(Unit hero) {
         // TODO macro spells and tricks
 
         // init per hero
@@ -179,7 +179,7 @@ public class MacroActionManager {
     private static ObjType getBaseType() {
         if (type == null) {
             type = new ObjType(MacroGame.getGame());
-            type.setOBJ_TYPE_ENUM(OBJ_TYPES.ACTIONS);
+            type.setOBJ_TYPE_ENUM(DC_TYPE.ACTIONS);
             type.setName("Base Action Type");
             // type.setOBJ_TYPE_ENUM(MACRO_OBJ_TYPES.MACRO_ACTION);
         }

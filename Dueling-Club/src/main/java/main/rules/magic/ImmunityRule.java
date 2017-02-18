@@ -1,6 +1,6 @@
 package main.rules.magic;
 
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.entity.obj.Obj;
 import main.system.auxiliary.StringMaster;
 

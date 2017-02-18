@@ -5,15 +5,14 @@ import main.client.cc.CharacterCreator;
 import main.content.PARAMS;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
-import main.game.DC_Game.GAME_MODES;
-import main.game.logic.generic.Battle;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.logic.generic.PartyManager;
 import main.game.logic.macro.travel.Encounter;
 import main.game.logic.macro.travel.EncounterMaster;
 import main.game.logic.macro.travel.LootMaster;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 import main.system.audio.MusicMaster;
 import main.system.audio.MusicMaster.MUSIC_MOMENT;
 import main.system.datatypes.DequeImpl;
@@ -32,10 +31,10 @@ public class BattleManager {
     Battle battle;
     private DC_Game game;
     private int glory;
-    private DequeImpl<DC_HeroObj> slainUnits = new DequeImpl<>();
-    private DequeImpl<DC_HeroObj> ratedEnemyUnitsSlain = new DequeImpl<>();
-    private DequeImpl<DC_HeroObj> fallenHeroes = new DequeImpl<>();
-    private DequeImpl<DC_HeroObj> slainPlayerUnits = new DequeImpl<>();
+    private DequeImpl<Unit> slainUnits = new DequeImpl<>();
+    private DequeImpl<Unit> ratedEnemyUnitsSlain = new DequeImpl<>();
+    private DequeImpl<Unit> fallenHeroes = new DequeImpl<>();
+    private DequeImpl<Unit> slainPlayerUnits = new DequeImpl<>();
     private Encounter encounter;
 
     public BattleManager(DC_Game game) {
@@ -138,10 +137,10 @@ public class BattleManager {
 
     private int calculateGlory(boolean outcome) {
         int glory = 0;
-        for (DC_HeroObj unit : game.getBattleManager().getSlainEnemies()) {
+        for (Unit unit : game.getBattleManager().getSlainEnemies()) {
             glory += unit.getIntParam(PARAMS.POWER);
         }
-        for (DC_HeroObj unit : game.getBattleManager().getSlainHeroes()) {
+        for (Unit unit : game.getBattleManager().getSlainHeroes()) {
             glory -= unit.getIntParam(PARAMS.POWER);
         }
 
@@ -196,7 +195,7 @@ public class BattleManager {
         new EndDialogue(this).show();
     }
 
-    public DequeImpl<DC_HeroObj> getSlainEnemies() {
+    public DequeImpl<Unit> getSlainEnemies() {
         // TODO remember the killer too
         // filter enemy units?
         return slainUnits;
@@ -208,7 +207,7 @@ public class BattleManager {
     // // Launcher.resetView(screen.getPanel(), VIEWS.END);
     // }
 
-    public void unitDies(DC_HeroObj killed) {
+    public void unitDies(Unit killed) {
         if (killed.getGame().isDummyMode())
             return;
         if (killed.getOriginalOwner().isMe()) {
@@ -240,11 +239,11 @@ public class BattleManager {
 
     }
 
-    public DequeImpl<DC_HeroObj> getRatedEnemyUnitsSlain() {
+    public DequeImpl<Unit> getRatedEnemyUnitsSlain() {
         return ratedEnemyUnitsSlain;
     }
 
-    private boolean isRated(DC_HeroObj killed) {
+    private boolean isRated(Unit killed) {
         // TODO not summoned
         return killed.getRef().getObj(KEYS.SUMMONER) == null;
     }
@@ -319,11 +318,11 @@ public class BattleManager {
         return battle;
     }
 
-    public DequeImpl<DC_HeroObj> getSlainHeroes() {
+    public DequeImpl<Unit> getSlainHeroes() {
         return fallenHeroes;
     }
 
-    public DequeImpl<DC_HeroObj> getSlainPlayerUnits() {
+    public DequeImpl<Unit> getSlainPlayerUnits() {
         return slainPlayerUnits;
     }
 

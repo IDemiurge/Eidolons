@@ -2,17 +2,18 @@ package main.swing.components.panels.page.info.element;
 
 import main.client.cc.CharacterCreator;
 import main.client.cc.logic.HeroCreator;
-import main.content.CONTENT_CONSTS.PRINCIPLES;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.DC_ContentManager;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.HeroEnums;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
-import main.game.Game;
+import main.game.core.game.Game;
 import main.swing.components.panels.page.info.ValueInfoPage;
 import main.swing.components.panels.page.log.WrappedTextComp;
 import main.system.graphics.FontMaster;
@@ -56,8 +57,8 @@ public class ContainerTextElement extends WrappedTextComp implements EntityValue
         // else TODO
         ref = entity.getRef();
 
-        if (entity.getOBJ_TYPE_ENUM() instanceof OBJ_TYPES) {
-            switch ((OBJ_TYPES) entity.getOBJ_TYPE_ENUM()) {
+        if (entity.getOBJ_TYPE_ENUM() instanceof DC_TYPE) {
+            switch ((DC_TYPE) entity.getOBJ_TYPE_ENUM()) {
                 case UNITS:
                 case CHARS:
                     ref = entity.getRef();
@@ -132,7 +133,7 @@ public class ContainerTextElement extends WrappedTextComp implements EntityValue
         propertyValue = StringMaster.getFormattedContainerString(propertyValue);
         if (property == G_PROPS.PRINCIPLES) {
             String formattedValue = "";
-            for (PRINCIPLES principle : PRINCIPLES.values()) {
+            for (PRINCIPLES principle : HeroEnums.PRINCIPLES.values()) {
                 // for (String pr :
                 // StringMaster.openFormattedContainer(propertyValue)) {
                 // PRINCIPLES principle = new
@@ -152,7 +153,7 @@ public class ContainerTextElement extends WrappedTextComp implements EntityValue
             propertyValue = StringMaster.cropLast(formattedValue, 2);
         } else if (property == PROPS.REQUIREMENTS) {
             propertyValue = TextParser.formatRequirements(propertyValue);
-            if (entity.getOBJ_TYPE_ENUM() == OBJ_TYPES.CLASSES) {
+            if (entity.getOBJ_TYPE_ENUM() == DC_TYPE.CLASSES) {
                 propertyValue += StringMaster.NEW_LINE
                         + TextGenerator.generatePerkParamBonuses(entity);
             }

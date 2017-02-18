@@ -1,6 +1,6 @@
 package main.elements.conditions;
 
-import main.content.CONTENT_CONSTS.PRINCIPLES;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 

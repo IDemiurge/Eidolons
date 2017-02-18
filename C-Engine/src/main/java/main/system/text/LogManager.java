@@ -1,20 +1,20 @@
 package main.system.text;
 
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
-import main.content.CONTENT_CONSTS.ROLL_TYPES;
-import main.content.CONTENT_CONSTS.STD_COUNTERS;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.GenericEnums.ROLL_TYPES;
+import main.content.enums.entity.UnitEnums.STD_COUNTERS;
 import main.content.ContentManager;
-import main.content.OBJ_TYPES;
-import main.content.parameters.PARAMETER;
+import main.content.DC_TYPE;
+import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.entity.DataModel;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
-import main.game.Game;
-import main.game.event.Event;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.game.core.game.Game;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
@@ -478,7 +478,7 @@ public abstract class LogManager {
 
         String text = " finishes ";
         ActiveObj active = ref.getActive();
-        if (active.getOBJ_TYPE_ENUM() == OBJ_TYPES.SPELLS) {
+        if (active.getOBJ_TYPE_ENUM() == DC_TYPE.SPELLS) {
             text = " casts ";
             if (StringMaster.compare(active.getProp("spell tags"), "channeling", false)) {
                 text = " channels ";

@@ -3,7 +3,7 @@ package main.system.math;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Referred;
-import main.game.Game;
+import main.game.core.game.Game;
 
 public abstract class DynamicValue implements Referred {
 

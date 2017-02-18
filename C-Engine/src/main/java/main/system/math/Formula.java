@@ -6,7 +6,7 @@ import com.graphbuilder.math.FuncMap;
 import com.graphbuilder.math.VarMap;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.game.Game;
+import main.game.core.game.Game;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.StringMaster;

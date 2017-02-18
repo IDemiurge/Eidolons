@@ -3,7 +3,7 @@ package main.swing.components.panels;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.Obj;
-import main.game.DC_GameState;
+import main.game.core.state.DC_GameState;
 import main.swing.components.panels.DC_UnitActionPanel.ACTION_DISPLAY_GROUP;
 import main.swing.components.panels.page.DC_PagedUnitActionPanel;
 import main.swing.generic.components.G_Panel;
@@ -49,7 +49,7 @@ public class DC_UAP_Holder extends G_Panel {
     @Override
     public void refresh() {
 
-        Obj activeObj = state.getManager().getActiveObj();
+        Obj activeObj = null ;//state.getManager().getActiveObj();
         if (activeObj != null) {
             if (activeObj.getOwner().isAi() || !activeObj.getOwner().isMe()) {
                 for (DC_PagedUnitActionPanel uap : uapMap.values()) {

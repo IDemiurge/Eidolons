@@ -1,7 +1,7 @@
 package main.game.logic.macro.entity;
 
-import main.content.parameters.G_PARAMS;
-import main.content.parameters.MACRO_PARAMS;
+import main.content.values.parameters.G_PARAMS;
+import main.content.values.parameters.MACRO_PARAMS;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.game.logic.macro.MacroGame;

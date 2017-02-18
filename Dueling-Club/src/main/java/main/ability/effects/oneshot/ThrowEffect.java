@@ -1,13 +1,13 @@
 package main.ability.effects.oneshot;
 
 import main.ability.effects.AttackEffect;
-import main.content.CONTENT_CONSTS.ACTION_TAGS;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.ActionEnums;
+import main.content.values.properties.G_PROPS;
 import main.data.ability.AE_ConstrArgs;
 import main.entity.Ref.KEYS;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.item.DC_WeaponObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 
 public class ThrowEffect extends AttackEffect {
 
@@ -41,7 +41,7 @@ public class ThrowEffect extends AttackEffect {
                 result = throwWeapon(weapon);
             }
 
-            DC_HeroObj hero = (DC_HeroObj) ref.getObj(KEYS.SOURCE);
+            Unit hero = (Unit) ref.getObj(KEYS.SOURCE);
             fromHand = false;
             for (DC_QuickItemObj q : hero.getQuickItems()) {
                 weapon = q.getWrappedWeapon();
@@ -55,7 +55,7 @@ public class ThrowEffect extends AttackEffect {
         try {
             if (offhand
                     || ref.getObj(KEYS.ACTIVE).checkProperty(G_PROPS.ACTION_TAGS,
-                    "" + ACTION_TAGS.OFF_HAND)) {
+                    "" + ActionEnums.ACTION_TAGS.OFF_HAND)) {
                 weapon = (DC_WeaponObj) ref.getObj(KEYS.OFFHAND);
                 offhand = true;
             }
@@ -82,7 +82,7 @@ public class ThrowEffect extends AttackEffect {
         setOffhand(offhand);
         boolean result = super.applyThis();
         if (fromHand) {
-            DC_HeroObj hero = (DC_HeroObj) ref.getSourceObj();
+            Unit hero = (Unit) ref.getSourceObj();
             if (offhand) {
                 hero.setSecondWeapon(null);
             } else {

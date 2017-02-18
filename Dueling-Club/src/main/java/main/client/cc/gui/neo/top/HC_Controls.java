@@ -8,14 +8,14 @@ import main.client.cc.logic.HeroLevelManager;
 import main.client.dc.Launcher;
 import main.client.dc.Launcher.VIEWS;
 import main.client.dc.SequenceManager;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.data.XList;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
-import main.game.DC_Game.GAME_TYPE;
+import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.logic.arcade.ArcadeManager.ARCADE_STATUS;
 import main.game.logic.dungeon.scenario.ScenarioMaster;
 import main.game.logic.dungeon.scenario.ScenarioMaster.SCENARIO_MODES;
@@ -80,11 +80,11 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
     // mode?
     private static final String ID = "btn";
     HC_ControlButton buttons;
-    private DC_HeroObj hero;
-    private DC_HeroObj newHero;
+    private Unit hero;
+    private Unit newHero;
     private boolean processing;
     private HC_MODE mode;
-    public HC_Controls(DC_HeroObj hero) {
+    public HC_Controls(Unit hero) {
 
         super("fillx");
         this.hero = hero;
@@ -339,7 +339,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
     private void testNameGen() {
         String content = FileManager.readFile(PathFinder.getXML_PATH() + "names\\" + "names.xml");
         while (true) {
-            ObjType type = ListChooser.chooseTypeObj_(OBJ_TYPES.CHARS, "Background");
+            ObjType type = ListChooser.chooseTypeObj_(DC_TYPE.CHARS, "Background");
             if (type == null) {
                 break;
             }

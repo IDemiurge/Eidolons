@@ -238,11 +238,11 @@ public class A_StarAlgorithm {
 
 // private boolean isBlocked() {
 // Coordinates c;
-// for (Obj cell : mngr.getAdjacentObjs(C, true)) {
+// for (Obj cell : manager.getAdjacentObjs(C, true)) {
 // c = cell.getCoordinates();
 // if (!prevList.contains(c))
 // if (!agile) {
-// if (!mngr.isDiagonalBlocked(c, C))
+// if (!manager.isDiagonalBlocked(c, C))
 // return false;
 // }
 // return false;
@@ -254,7 +254,7 @@ public class A_StarAlgorithm {
 // return -1;
 //
 // // check if finished
-// if (mngr.isAdjacent(C, dest)) {
+// if (manager.isAdjacent(C, dest)) {
 // return -1;
 // }
 // // count the path
@@ -263,7 +263,7 @@ public class A_StarAlgorithm {
 // }
 // if (agile) {
 // path++;
-// } else if (mngr.isDiagonalBlocked(C, dest)) {
+// } else if (manager.isDiagonalBlocked(C, dest)) {
 // return -1;
 //
 // } else
@@ -297,7 +297,7 @@ public class A_StarAlgorithm {
 // prevList = new LinkedList<Coordinates>();
 // paths = new LinkedList<Integer>();
 //
-// List<Obj> adjacentCells = mngr.getAdjacentObjs(c1, true);
+// List<Obj> adjacentCells = manager.getAdjacentObjs(c1, true);
 // if (adjacentCells.isEmpty())
 // return -1;
 //

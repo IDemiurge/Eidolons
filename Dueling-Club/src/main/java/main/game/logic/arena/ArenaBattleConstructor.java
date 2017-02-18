@@ -1,11 +1,12 @@
 package main.game.logic.arena;
 
 import main.client.dc.Launcher;
-import main.content.CONTENT_CONSTS.ENCOUNTER_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
+import main.content.enums.EncounterEnums;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.elements.Filter;
@@ -15,13 +16,13 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
-import main.game.logic.battle.Positioner;
+import main.game.logic.generic.Positioner;
 import main.game.logic.dungeon.Dungeon;
-import main.game.logic.generic.BattleOptions;
-import main.game.logic.generic.BattleOptions.ARENA_GAME_OPTIONS;
+import main.game.logic.battle.BattleOptions;
+import main.game.logic.battle.BattleOptions.ARENA_GAME_OPTIONS;
 import main.game.meta.skirmish.SkirmishMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
@@ -37,8 +38,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ArenaBattleConstructor {
-    public static final ENCOUNTER_TYPE[] default_encounter_sequence_1 = {ENCOUNTER_TYPE.REGULAR,
-            ENCOUNTER_TYPE.ELITE,
+    public static final ENCOUNTER_TYPE[] default_encounter_sequence_1 = {EncounterEnums.ENCOUNTER_TYPE.REGULAR,
+            EncounterEnums.ENCOUNTER_TYPE.ELITE,
             // ENCOUNTER_TYPE.REGULAR,
     };
     // let's switch on DIFFICULTY - neophyte could have r/r/e/b, avatar -
@@ -47,11 +48,11 @@ public class ArenaBattleConstructor {
     // Victorous party for fun...
     public static final ENCOUNTER_TYPE[] default_encounter_sequence_2 = {
             // ENCOUNTER_TYPE.ELITE,
-            ENCOUNTER_TYPE.BOSS};
+            EncounterEnums.ENCOUNTER_TYPE.BOSS};
 
-    public static final ENCOUNTER_TYPE[] boss_encounter_sequence_1 = {ENCOUNTER_TYPE.REGULAR,
-            ENCOUNTER_TYPE.ELITE, ENCOUNTER_TYPE.REGULAR, ENCOUNTER_TYPE.ELITE, ENCOUNTER_TYPE.BOSS};
-    public static final ENCOUNTER_TYPE[] boss_encounter_sequence_2 = {ENCOUNTER_TYPE.BOSS};
+    public static final ENCOUNTER_TYPE[] boss_encounter_sequence_1 = {EncounterEnums.ENCOUNTER_TYPE.REGULAR,
+            EncounterEnums.ENCOUNTER_TYPE.ELITE, EncounterEnums.ENCOUNTER_TYPE.REGULAR, EncounterEnums.ENCOUNTER_TYPE.ELITE, EncounterEnums.ENCOUNTER_TYPE.BOSS};
+    public static final ENCOUNTER_TYPE[] boss_encounter_sequence_2 = {EncounterEnums.ENCOUNTER_TYPE.BOSS};
 
     // public static final ENCOUNTER_TYPE[] default_encounter_sequence_1 = {
     // ENCOUNTER_TYPE.REGULAR, ENCOUNTER_TYPE.REGULAR,
@@ -166,7 +167,7 @@ public class ArenaBattleConstructor {
 
         for (ENCOUNTER_TYPE type : encounter_sequence) {
             if (waveBuffer.isEmpty()) {
-                waveBuffer = DataManager.getTypesGroup(OBJ_TYPES.ENCOUNTERS, StringMaster
+                waveBuffer = DataManager.getTypesGroup(DC_TYPE.ENCOUNTERS, StringMaster
                         .getWellFormattedString(type.toString()));
             }
             waves = new LinkedList<>(waveBuffer);
@@ -291,12 +292,12 @@ public class ArenaBattleConstructor {
         // }
         ObjType dungeonType = getDungeon().getType();
         waves = DataManager.toTypeList(dungeonType.getProperty(alt ? PROPS.ALT_ENCOUNTERS
-                : PROPS.ENCOUNTERS), OBJ_TYPES.ENCOUNTERS);
+                : PROPS.ENCOUNTERS), DC_TYPE.ENCOUNTERS);
         // TODO need a better check...
         if (waves.size() < 3) {
             waves = DataManager.toTypeList(dungeonType
                             .getProperty(!alt ? PROPS.ALT_ENCOUNTERS : PROPS.ENCOUNTERS),
-                    OBJ_TYPES.ENCOUNTERS);
+                    DC_TYPE.ENCOUNTERS);
         }
         return waves;
     }

@@ -7,11 +7,11 @@ import main.client.cc.gui.neo.tree.t3.ThreeTreeView;
 import main.client.cc.gui.neo.tree.view.HT_View;
 import main.client.dc.Launcher;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.data.DataManager;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.gui.builders.EditViewPanel;
 import main.gui.components.controls.ModelManager;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -31,7 +31,7 @@ public class AV_T3View extends ThreeTreeView {
     HT_View activeTree;
     HT_View removedTree;
 
-    public AV_T3View(DC_HeroObj hero, Boolean skill_class_spell) {
+    public AV_T3View(Unit hero, Boolean skill_class_spell) {
         super(hero, skill_class_spell);
         // infoPanel.setPanelSize(new Dimension(infoPanel.getPanelSize().width,
         // infoPanel
@@ -134,7 +134,7 @@ public class AV_T3View extends ThreeTreeView {
 
     public static void selected(String selectedTypeName, OBJ_TYPE obj_type) {
 
-        if (obj_type == OBJ_TYPES.SKILLS) {
+        if (obj_type == DC_TYPE.SKILLS) {
             comp = skillComp;
         } else {
             comp = classComp;
@@ -152,7 +152,7 @@ public class AV_T3View extends ThreeTreeView {
         ObjType type = new ObjType();
         String image = ImageManager.getRandomHeroPortrait();
         type.setImage(image);
-        DC_HeroObj hero = new DC_HeroObj(type);// DataManager.getRandomType(OBJ_TYPES.CHARS,
+        Unit hero = new Unit(type);// DataManager.getRandomType(OBJ_TYPES.CHARS,
         // null) "Background"
         CharacterCreator.setHero(hero);
         DC_Game.game.getRequirementsManager().setHero(hero);
@@ -199,7 +199,7 @@ public class AV_T3View extends ThreeTreeView {
      *
      */
     @Override
-    protected void initUpperPanel(DC_HeroObj hero) {
+    protected void initUpperPanel(Unit hero) {
         upperPanel = new T3UpperPanel(T3UpperPanel.AV_CONTROLS, hero, this) {
             public void handleControl(String c, boolean alt) {
                 switch (c) {

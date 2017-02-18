@@ -4,18 +4,18 @@ import main.ability.conditions.req.ItemCondition;
 import main.ability.effects.Effects;
 import main.ability.effects.oneshot.common.ConditionalEffect;
 import main.ability.effects.standard.DurabilityReductionEffect;
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
-import main.content.CONTENT_CONSTS.ITEM_SLOT;
-import main.content.CONTENT_CONSTS.MATERIAL;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.DC_ContentManager;
+import main.content.enums.entity.ItemEnums;
 import main.elements.conditions.OrConditions;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.item.DC_HeroSlotItem;
 import main.entity.item.DC_WeaponObj;
-import main.game.MicroGame;
-import main.game.event.Event;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.game.core.game.MicroGame;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.rules.DC_RuleImpl;
 import main.system.math.MathMaster;
 
@@ -77,9 +77,9 @@ public class DurabilityRule extends DC_RuleImpl {
         String target_ref = "{EVENT_TARGET}";
 
         return new Effects(new ConditionalEffect(new OrConditions(new ItemCondition(source_ref,
-                ITEM_SLOT.MAIN_HAND.getProp().getName()), new ItemCondition(source_ref,
-                ITEM_SLOT.OFF_HAND.getProp().getName())), new DurabilityReductionEffect(true,
-                amount)), new ConditionalEffect(new ItemCondition(target_ref, ITEM_SLOT.ARMOR
+                ItemEnums.ITEM_SLOT.MAIN_HAND.getProp().getName()), new ItemCondition(source_ref,
+                ItemEnums.ITEM_SLOT.OFF_HAND.getProp().getName())), new DurabilityReductionEffect(true,
+                amount)), new ConditionalEffect(new ItemCondition(target_ref, ItemEnums.ITEM_SLOT.ARMOR
                 .getProp().getName()), new DurabilityReductionEffect(false, amount)));
     }
 

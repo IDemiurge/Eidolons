@@ -1,6 +1,6 @@
 package main.system.graphics;
 
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.system.graphics.AnimationManager.ANIM_TYPE;

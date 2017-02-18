@@ -1,12 +1,12 @@
 package main.swing.components.panels.page;
 
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.entity.type.UnitType;
-import main.game.DC_Game;
-import main.game.turn.TurnManager;
+import main.game.core.game.DC_Game;
+import main.game.logic.battle.turn.TurnManager;
 import main.rules.RuleMaster.RULE;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
 import main.swing.generic.components.G_Component;
@@ -16,13 +16,13 @@ import main.system.net.DC_IdManager;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DC_PagedPriorityPanel extends G_PagePanel<DC_HeroObj> {
+public class DC_PagedPriorityPanel extends G_PagePanel<Unit> {
 
     public static final int PLP_MIN_ITEMS = 12;
     public static final String CLOCK_IMAGE = "UI\\custom\\Time.JPG";
     public static final String CLOCK_UNIT = "Time";
     private static final int VERSION = 3;
-    private static DC_HeroObj clockUnit;
+    private static Unit clockUnit;
     ObjType clockType;
     private TurnManager manager;
 
@@ -30,14 +30,14 @@ public class DC_PagedPriorityPanel extends G_PagePanel<DC_HeroObj> {
         super(PLP_MIN_ITEMS, true, VERSION);
         manager = game.getTurnManager();
         clockType = new UnitType();
-        clockType.setProperty(G_PROPS.TYPE, OBJ_TYPES.META.getName());
+        clockType.setProperty(G_PROPS.TYPE, DC_TYPE.META.getName());
         // type.setTYPE_ENUM(obj_type);
         clockType.setName(CLOCK_UNIT);
         clockType.setImage(CLOCK_IMAGE);
         game.initType(clockType);
         game.getIdManager().setSpecialTypeId(clockType, DC_IdManager.TIME_ID);
 
-        clockUnit = new DC_HeroObj(clockType, game) {
+        clockUnit = new Unit(clockType, game) {
             @Override
             public void construct() {
             }
@@ -88,7 +88,7 @@ public class DC_PagedPriorityPanel extends G_PagePanel<DC_HeroObj> {
 
     }
 
-    public static DC_HeroObj getClockUnit() {
+    public static Unit getClockUnit() {
         return clockUnit;
     }
 
@@ -128,16 +128,16 @@ public class DC_PagedPriorityPanel extends G_PagePanel<DC_HeroObj> {
     }
 
     @Override
-    protected G_Component createPageComponent(List<DC_HeroObj> list) {
+    protected G_Component createPageComponent(List<Unit> list) {
         return new PriorityPage(list);
     }
 
     @Override
-    protected List<List<DC_HeroObj>> getPageData() {
+    protected List<List<Unit>> getPageData() {
         pageSize--;
-        List<List<DC_HeroObj>> lists = splitList(new LinkedList(manager.getDisplayedUnitQueue()));
+        List<List<Unit>> lists = splitList(new LinkedList(manager.getDisplayedUnitQueue()));
 
-        for (List<DC_HeroObj> list : lists) {
+        for (List<Unit> list : lists) {
             list.add(clockUnit);
         }
 

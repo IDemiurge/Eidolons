@@ -1,14 +1,14 @@
 package main.system.graphics;
 
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
-import main.game.battlefield.PointX;
+import main.swing.PointX;
 import main.game.battlefield.attack.Attack;
 import main.game.battlefield.attack.AttackCalculator.MOD_IDENTIFIER;
 import main.libgdx.anims.phased.PhaseAnim;
@@ -75,7 +75,7 @@ public abstract class PhaseAnimation implements ANIM {
     protected int offsetX;
     protected int offsetY;
     protected Graphics g;
-    protected DC_HeroObj source;
+    protected Unit source;
     protected Obj target;
     protected Point sourcePoint;
     protected Point targetPoint;
@@ -499,10 +499,10 @@ public abstract class PhaseAnimation implements ANIM {
         if (isGhostDrawn(true)) //
             // TODO draw on origin cell for move anims
         {
-            if (getTarget() instanceof DC_HeroObj) {
+            if (getTarget() instanceof Unit) {
                 if (!getTarget().getCoordinates().equals(getTargetCoordinates())
                         || getTarget().isDead()) {
-                    drawGhost((DC_HeroObj) getTarget(), getTargetCoordinates());
+                    drawGhost((Unit) getTarget(), getTargetCoordinates());
                 }
             }
         }
@@ -521,7 +521,7 @@ public abstract class PhaseAnimation implements ANIM {
         return true;
     }
 
-    protected void drawGhost(DC_HeroObj unit, Coordinates c) {
+    protected void drawGhost(Unit unit, Coordinates c) {
         Image image = ImageTransformer.getTransparentImage(ImageManager
                 .getBufferedImage(ImageManager.getSizedVersion(unit.getImagePath(),
                         GuiManager.getCellHeight()).getImage()), 0.33);
@@ -1100,7 +1100,7 @@ public abstract class PhaseAnimation implements ANIM {
     }
 
     protected void checkStackedDrawing() {
-        if (getTarget() instanceof DC_HeroObj) {
+        if (getTarget() instanceof Unit) {
             if (!getTarget().equals(getSource())) {
                 if (getTargetCoordinates().equals(getSourceCoordinates())) {
                     initStackedDrawing();
@@ -1200,8 +1200,8 @@ public abstract class PhaseAnimation implements ANIM {
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         source.setAnimation(this);
-        if (getTarget() instanceof DC_HeroObj) {
-            DC_HeroObj unit = (DC_HeroObj) getTarget();
+        if (getTarget() instanceof Unit) {
+            Unit unit = (Unit) getTarget();
             unit.setAnimation(this);
         }
         this.g = g;
@@ -1419,7 +1419,7 @@ public abstract class PhaseAnimation implements ANIM {
         return true;
     }
 
-    public DC_HeroObj getSource() {
+    public Unit getSource() {
         return source;
     }
 

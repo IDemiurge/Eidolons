@@ -1,6 +1,6 @@
 package main.system.net.data;
 
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
@@ -34,7 +34,7 @@ public class PartyData extends DataUnit<PARTY_VALUES> {
 
     private void initHeroType() {
         setHeroObjType(DataManager
-                .getType(getValue(PARTY_VALUES.HERO_TYPE), OBJ_TYPES.CHARS));
+                .getType(getValue(PARTY_VALUES.HERO_TYPE), DC_TYPE.CHARS));
 
     }
 

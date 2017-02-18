@@ -2,9 +2,9 @@ package main.client.cc.gui.lists;
 
 import main.client.cc.CharacterCreator;
 import main.client.cc.gui.misc.BorderChecker;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.generic.components.list.ListItem;
 import main.swing.generic.components.panels.G_ListPanel;
@@ -29,24 +29,24 @@ public class HeroListPanel extends G_ListPanel<ObjType> implements ListSelection
     private static final BORDER DEFAULT_BORDER = null;
     private static final BORDER HIGHLIGHTED_BORDER = BORDER.HIGHLIGHTED;
     PROPERTY highlightedGroup;
-    private DC_HeroObj hero;
+    private Unit hero;
     private boolean vertical;
     private boolean responsive;
     private BorderChecker borderChecker;
     private int columns = 0;
     private String emptyIcon = ImageManager.getAltEmptyListIcon();
 
-    public HeroListPanel(String title, DC_HeroObj hero, boolean responsive, boolean v,
+    public HeroListPanel(String title, Unit hero, boolean responsive, boolean v,
                          int rowCount, int obj_size, List<ObjType> data) {
         this(title, hero, responsive, v, rowCount, obj_size, data, 0);
     }
 
-    public HeroListPanel(DC_HeroObj hero, boolean vertical, int rows, int columns,
+    public HeroListPanel(Unit hero, boolean vertical, int rows, int columns,
                          List<ObjType> data) {
         this("", hero, true, vertical, rows, GuiManager.getSmallObjSize(), data, columns);
     }
 
-    public HeroListPanel(String title, DC_HeroObj hero, boolean responsive, boolean v,
+    public HeroListPanel(String title, Unit hero, boolean responsive, boolean v,
                          int rowCount, int obj_size, List<ObjType> data, int columns) {
         super(null, obj_size);
         this.hero = hero;

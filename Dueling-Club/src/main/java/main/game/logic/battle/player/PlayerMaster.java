@@ -1,7 +1,7 @@
 package main.game.logic.battle.player;
 
 import main.client.net.HostClientConnection;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.system.graphics.ColorManager.FLAG_COLOR;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;

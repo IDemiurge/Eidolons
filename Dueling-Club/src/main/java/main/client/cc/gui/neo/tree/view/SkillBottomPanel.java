@@ -6,8 +6,8 @@ import main.client.cc.gui.neo.points.HC_PointComp;
 import main.client.cc.gui.neo.tree.HC_Tree;
 import main.content.ContentManager;
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.values.parameters.PARAMETER;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.system.math.DC_MathManager;
@@ -20,7 +20,7 @@ public class SkillBottomPanel extends HT_BottomPanel {
 
     // TextComp pointCost;
     // TextComp rank;
-    public SkillBottomPanel(final PARAMS mastery, final DC_HeroObj hero, final HC_Tree tree) {
+    public SkillBottomPanel(final PARAMS mastery, final Unit hero, final HC_Tree tree) {
         super(mastery, hero, tree);
     }
 

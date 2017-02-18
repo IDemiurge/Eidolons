@@ -1,8 +1,8 @@
 package main.system.math;
 
 import main.content.ContentManager;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.VariableManager.AUTOVAR;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;

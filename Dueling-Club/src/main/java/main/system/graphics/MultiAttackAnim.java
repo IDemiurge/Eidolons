@@ -2,7 +2,7 @@ package main.system.graphics;
 
 import main.entity.Ref;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.attack.Attack;
 import main.system.graphics.AnimationManager.ANIM_TYPE;
 
@@ -17,7 +17,7 @@ public class MultiAttackAnim extends MultiAnim {
         for (Obj obj : ref.getGroup().getObjects()) {
             AttackAnimation anim = new AttackAnimation(attack);
             animations.add(anim);
-            anim.setTarget((DC_HeroObj) obj);
+            anim.setTarget((Unit) obj);
         }
     }
 

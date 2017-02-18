@@ -1,16 +1,17 @@
 package main.game.logic.dungeon.building;
 
 import main.content.CONTENT_CONSTS.FLIP;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.parameters.G_PARAMS;
+import main.content.values.parameters.G_PARAMS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Writer;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlefield.*;
 import main.game.battlefield.Coordinates.DIRECTION;
@@ -21,6 +22,7 @@ import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.DungeonMaster;
 import main.game.logic.dungeon.building.BuildHelper.BUILD_PARAMS;
 import main.game.logic.dungeon.building.BuildHelper.BuildParameters;
+import main.swing.XDimension;
 import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
@@ -495,7 +497,7 @@ public class DungeonBuilder {
             if (name.contains(NameMaster.VERSION)) {
                 name = name.split(NameMaster.VERSION)[0];
             }
-            type = DataManager.getType(name, OBJ_TYPES.DUNGEONS);
+            type = DataManager.getType(name, DC_TYPE.DUNGEONS);
         } else {
             type = TypeBuilder.buildType(typeNode, type); // custom base type
         }
@@ -556,15 +558,15 @@ public class DungeonBuilder {
     }
 
     private void initDynamicObjData(DungeonPlan plan) {
-        List<DC_HeroObj> fullObjectList = new LinkedList<>();
+        List<BattleFieldObject> fullObjectList = new LinkedList<>();
         int z = getDungeon().getIntParam(G_PARAMS.Z_LEVEL);
         for (MapBlock b : plan.getBlocks()) {
             LinkedList<Obj> objects = new LinkedList<>(b.getObjects());
             for (Obj obj : objects) {
-                fullObjectList.add((DC_HeroObj) obj);
+                fullObjectList.add((BattleFieldObject) obj);
                 // TODO of course - the issue was that I added an object to
                 // block too! ... init?
-                DC_HeroObj unit = (DC_HeroObj) obj;
+                BattleFieldObject unit = (BattleFieldObject) obj;
 
                 if (z != 0) {
                     unit.setZ(z);
@@ -573,7 +575,7 @@ public class DungeonBuilder {
             }
         }
         for (MapZone zone : plan.getZones()) {
-            ObjType type1 = DataManager.getType(zone.getFillerType(), OBJ_TYPES.BF_OBJ);
+            ObjType type1 = DataManager.getType(zone.getFillerType(), DC_TYPE.BF_OBJ);
             List<Coordinates> list = zone.getCoordinates();
             for (MapBlock b : zone.getBlocks()) {
                 list.removeAll(b.getCoordinates());
@@ -582,7 +584,7 @@ public class DungeonBuilder {
         }
 
         for (Obj obj : plan.getWallObjects()) {
-            DC_HeroObj unit = (DC_HeroObj) obj;
+            Unit unit = (Unit) obj;
             fullObjectList.add(unit);
 
             if (z != 0) {

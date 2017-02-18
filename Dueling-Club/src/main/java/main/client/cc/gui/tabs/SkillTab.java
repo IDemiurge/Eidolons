@@ -3,16 +3,16 @@ package main.client.cc.gui.tabs;
 import main.client.cc.gui.MainViewPanel;
 import main.client.cc.gui.MainViewPanel.HERO_VIEWS;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PROPS;
-import main.content.properties.PROPERTY;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.values.properties.PROPERTY;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.system.images.ImageManager.BORDER;
 
 public class SkillTab extends HeroItemTab {
 
-    public SkillTab(MainViewPanel mvp, DC_HeroObj hero) {
+    public SkillTab(MainViewPanel mvp, Unit hero) {
         super("Skills", mvp, hero);
     }
 
@@ -36,7 +36,7 @@ public class SkillTab extends HeroItemTab {
 
     @Override
     protected OBJ_TYPE getTYPE() {
-        return OBJ_TYPES.SKILLS;
+        return DC_TYPE.SKILLS;
     }
 
     @Override

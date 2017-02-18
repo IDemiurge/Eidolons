@@ -2,7 +2,7 @@ package main.system.auxiliary;
 
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.Game;
+import main.game.core.game.Game;
 import main.system.auxiliary.log.LogMaster;
 
 import java.io.*;

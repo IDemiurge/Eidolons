@@ -2,8 +2,8 @@ package main.swing.generic.services.dialog;
 
 import main.data.XLinkedMap;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.swing.builders.DC_Builder;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
@@ -32,7 +32,7 @@ public class DialogPanel extends G_Panel {
         this(null);
     }
 
-    public DialogPanel(DC_HeroObj target) {
+    public DialogPanel(Unit target) {
         setLayout(new MigLayout(getLayoutArgs()));
         this.target = target;
         if (target != null) {

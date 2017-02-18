@@ -1,6 +1,6 @@
 package main.game.logic.macro.global;
 
-import main.content.parameters.MACRO_PARAMS;
+import main.content.values.parameters.MACRO_PARAMS;
 import main.game.logic.macro.MacroGame;
 
 public class TimeMaster {

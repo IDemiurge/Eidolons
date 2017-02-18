@@ -7,22 +7,22 @@ import main.client.cc.gui.neo.choice.ListChoiceView;
 import main.client.dc.Launcher;
 import main.client.dc.Launcher.VIEWS;
 import main.client.dc.SequenceManager;
-import main.content.MACRO_OBJ_TYPES;
-import main.content.OBJ_TYPES;
-import main.content.properties.MACRO_PROPS;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.DC_TYPE;
+import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
-import main.game.DC_Game.GAME_TYPE;
+import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.logic.arena.Wave;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.building.DungeonBuilder;
 import main.game.logic.dungeon.scenario.ObjectiveMaster.OBJECTIVE_TYPE;
-import main.game.logic.generic.BattleOptions.DIFFICULTY;
+import main.game.logic.battle.BattleOptions.DIFFICULTY;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.system.auxiliary.data.FileManager;
@@ -52,7 +52,7 @@ public class SkirmishMaster {
         Map<Wave, Integer> map = new XLinkedMap<>();
         // customize nemesis groups! spawn coordinates - how to specify?
         for (NEMESIS_GROUP g : skirmish.getNemesisGroups()) {
-            for (ObjType type : DataManager.getTypesSubGroup(OBJ_TYPES.ENCOUNTERS, StringMaster
+            for (ObjType type : DataManager.getTypesSubGroup(DC_TYPE.ENCOUNTERS, StringMaster
                     .getWellFormattedString(g.toString()))) {
                 Wave wave = new Wave(type, DC_Game.game, new Ref(), DC_Game.game.getPlayer(false));
                 map.put(wave, round);
@@ -163,14 +163,14 @@ public class SkirmishMaster {
     protected static Component getBattlefieldImageAndText(File file, String value,
                                                           boolean isSelected) {
         String typeName = value;
-        ObjType type = DataManager.getType(typeName, OBJ_TYPES.DUNGEONS);
+        ObjType type = DataManager.getType(typeName, DC_TYPE.DUNGEONS);
         if (type == null) {
             String data = FileManager.readFile(file);
             int beginIndex = data.indexOf(XML_Converter.openXmlFormatted(DungeonBuilder.DUNGEON_TYPE_NODE));
             int endIndex = data.indexOf(XML_Converter.closeXmlFormatted(DungeonBuilder.DUNGEON_TYPE_NODE));
             if (beginIndex != -1 && endIndex != -1) {
                 typeName = data.substring(beginIndex, endIndex);
-                type = DataManager.getType(typeName, OBJ_TYPES.DUNGEONS);
+                type = DataManager.getType(typeName, DC_TYPE.DUNGEONS);
             }
         }
         // crop entrance suffix etc

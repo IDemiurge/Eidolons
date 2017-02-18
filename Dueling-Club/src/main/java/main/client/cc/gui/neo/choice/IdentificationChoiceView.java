@@ -2,10 +2,10 @@ package main.client.cc.gui.neo.choice;
 
 import main.client.cc.gui.misc.PoolComp;
 import main.client.cc.gui.neo.points.HC_PointComp;
-import main.content.CONTENT_CONSTS.PRINCIPLES;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 
 import javax.swing.*;
@@ -13,7 +13,7 @@ import java.awt.*;
 
 public class IdentificationChoiceView extends PrincipleChoiceView {
 
-    public IdentificationChoiceView(ChoiceSequence sequence, DC_HeroObj hero) {
+    public IdentificationChoiceView(ChoiceSequence sequence, Unit hero) {
         super(sequence, hero);
 
     }
@@ -36,7 +36,7 @@ public class IdentificationChoiceView extends PrincipleChoiceView {
 
     public class PrincipleIdentificationComp extends HC_PointComp {
 
-        public PrincipleIdentificationComp(boolean editable, DC_HeroObj hero, ObjType buffer,
+        public PrincipleIdentificationComp(boolean editable, Unit hero, ObjType buffer,
                                            PRINCIPLES principle) {
             // if using Renderer technique, gonna have to cache model to support
             // down()

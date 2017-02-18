@@ -1,6 +1,6 @@
 package main.elements.conditions;
 
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.StringMaster;
 

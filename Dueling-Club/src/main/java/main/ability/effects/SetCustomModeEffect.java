@@ -1,8 +1,8 @@
 package main.ability.effects;
 
 import main.ability.effects.oneshot.MicroEffect;
-import main.content.enums.MODE;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.mode.MODE;
+import main.entity.obj.unit.Unit;
 
 public class SetCustomModeEffect extends MicroEffect {
 
@@ -14,7 +14,7 @@ public class SetCustomModeEffect extends MicroEffect {
 
     @Override
     public boolean applyThis() {
-        ((DC_HeroObj) ref.getTargetObj()).setMode(mode);
+        ((Unit) ref.getTargetObj()).setMode(mode);
 
         return true;
     }

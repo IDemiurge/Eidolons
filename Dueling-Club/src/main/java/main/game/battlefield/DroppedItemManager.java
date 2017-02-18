@@ -1,12 +1,12 @@
 package main.game.battlefield;
 
-import main.content.CONTENT_CONSTS.ITEM_SLOT;
 import main.content.PROPS;
+import main.content.enums.entity.ItemEnums;
 import main.entity.Entity;
 import main.entity.item.DC_HeroItemObj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.system.ObjUtilities;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
@@ -23,15 +23,15 @@ public class DroppedItemManager {
         this.game = game;
     }
 
-    public boolean checkHasItemsBeneath(DC_HeroObj unit) {
+    public boolean checkHasItemsBeneath(Unit unit) {
         Obj cell = game.getCellByCoordinate(unit.getCoordinates());
         return checkHasItems(cell);
     }
 
-    public void dropDead(DC_HeroObj unit) {
-        unit.unequip(ITEM_SLOT.ARMOR);
-        unit.unequip(ITEM_SLOT.MAIN_HAND);
-        unit.unequip(ITEM_SLOT.OFF_HAND);
+    public void dropDead(Unit unit) {
+        unit.unequip(ItemEnums.ITEM_SLOT.ARMOR);
+        unit.unequip(ItemEnums.ITEM_SLOT.MAIN_HAND);
+        unit.unequip(ItemEnums.ITEM_SLOT.OFF_HAND);
         // drop natural weapons?
 
         for (DC_HeroItemObj item : unit.getInventory()) {
@@ -56,17 +56,17 @@ public class DroppedItemManager {
 
     }
 
-    public void remove(DC_HeroItemObj item, DC_HeroObj heroObj) {
+    public void remove(DC_HeroItemObj item, Unit heroObj) {
         game.getCellByCoordinate(heroObj.getCoordinates()).removeProperty(PROPS.DROPPED_ITEMS,
                 "" + item.getId());
     }
 
-    public void remove(DC_HeroObj heroObj, Entity item) {
+    public void remove(Unit heroObj, Entity item) {
         game.getCellByCoordinate(heroObj.getCoordinates()).removeProperty(PROPS.DROPPED_ITEMS,
                 "" + item.getId());
     }
 
-    public void drop(DC_HeroItemObj item, DC_HeroObj heroObj) {
+    public void drop(DC_HeroItemObj item, Unit heroObj) {
         game.getCellByCoordinate(heroObj.getCoordinates()).addProperty(PROPS.DROPPED_ITEMS,
                 "" + item.getId());
     }
@@ -76,7 +76,7 @@ public class DroppedItemManager {
         return true;
     }
 
-    public boolean pickUp(DC_HeroObj hero, Entity type) {
+    public boolean pickUp(Unit hero, Entity type) {
         Obj cell = game.getCellByCoordinate(hero.getCoordinates());
         DC_HeroItemObj item = (DC_HeroItemObj) ObjUtilities.findObjByType(type,
                 getDroppedItems(cell));

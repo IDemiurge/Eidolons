@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.libgdx.StyleHolder;
 
 public class GridCell extends Group implements Borderable {

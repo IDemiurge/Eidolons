@@ -1,7 +1,7 @@
 package main.client.cc.gui.neo.choice;
 
 import main.entity.Entity;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.LinkedList;
@@ -12,12 +12,12 @@ public class PresetEntityChoiceView extends ChoiceView<Entity> {
     private Entity[] entities;
     private String info;
 
-    public PresetEntityChoiceView(ChoiceSequence choiceSequence, DC_HeroObj hero, String info,
+    public PresetEntityChoiceView(ChoiceSequence choiceSequence, Unit hero, String info,
                                   List<Entity> entities) {
         this(choiceSequence, hero, info, entities.toArray(new Entity[entities.size()]));
     }
 
-    public PresetEntityChoiceView(ChoiceSequence choiceSequence, DC_HeroObj hero, String info,
+    public PresetEntityChoiceView(ChoiceSequence choiceSequence, Unit hero, String info,
                                   Entity... entities) {
         super(choiceSequence, hero);
         this.info = info;

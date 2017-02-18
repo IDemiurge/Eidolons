@@ -1,6 +1,6 @@
 package main.game.meta.skirmish;
 
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.logic.dungeon.Dungeon;
@@ -27,7 +27,7 @@ public class Skirmish extends Scenario {
         super(missionType);
         ObjType type;
         if (DataManager.isTypeName(levelPath)) {
-            type = DataManager.getType(levelPath, OBJ_TYPES.DUNGEONS);
+            type = DataManager.getType(levelPath, DC_TYPE.DUNGEONS);
             dungeon = new Dungeon(type);
         } else {
             dungeon = new DungeonBuilder().loadDungeon(levelPath);

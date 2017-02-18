@@ -1,6 +1,6 @@
 package main.game.ai.tools.group;
 
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjAtCoordinate;
 import main.game.ai.GroupAI;
 import main.game.battlefield.Coordinates;
@@ -23,7 +23,7 @@ public class GroupManager {
         // go thru them, but make groups via adjacency
         int blockWidth = dungeon.getCellsX() / factor;
         int blockHeight = dungeon.getCellsY() / factor;
-        List<DC_HeroObj> units = new LinkedList<>();
+        List<Unit> units = new LinkedList<>();
         GroupAI group = new GroupAI(null);
         // minimum group area...
         for (int n = 0; n < factor; n++) {

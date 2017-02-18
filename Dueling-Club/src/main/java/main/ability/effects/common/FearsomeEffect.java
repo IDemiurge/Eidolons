@@ -2,8 +2,8 @@ package main.ability.effects.common;
 
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.content.PARAMS;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.system.math.Formula;
 
 public class FearsomeEffect extends ModifyValueEffect { // mod val
@@ -24,7 +24,7 @@ public class FearsomeEffect extends ModifyValueEffect { // mod val
         Formula buffer = new Formula(formula.toString());
         formula = formula.getAppendedByFactor(-0.5);
         try {
-            for (DC_HeroObj unit : ((DC_Game) game).getUnits()) {
+            for (Unit unit : ((DC_Game) game).getUnits()) {
                 if (!friendlyFire) {
                     if (unit.getOwner().equals(ref.getSourceObj().getOwner())) {
                         continue;
@@ -33,7 +33,7 @@ public class FearsomeEffect extends ModifyValueEffect { // mod val
                 // if (!UnitAnalyzer.isLiving(unit))
                 // continue;
 
-                if (!unit.checkInSightForUnit((DC_HeroObj) ref.getSourceObj())) {
+                if (!unit.checkInSightForUnit((Unit) ref.getSourceObj())) {
                     continue;
                 }
 

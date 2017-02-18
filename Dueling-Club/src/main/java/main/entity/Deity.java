@@ -1,15 +1,15 @@
 package main.entity;
 
 import main.content.DC_ContentManager;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.AbilityConstructor;
 import main.entity.obj.ActiveObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.Game;
+import main.game.core.game.Game;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 
@@ -31,7 +31,7 @@ public class Deity extends Entity {
     private void initUnitPool() {
         // String value = deity.getProperty(DC_PROPS.FOLLOWER_UNITS);
         // this.unitPool = ListMaster.toList(value.toString(), false);
-        unitPool = (DataManager.getTypesSubGroupNames(OBJ_TYPES.UNITS, getName()));
+        unitPool = (DataManager.getTypesSubGroupNames(DC_TYPE.UNITS, getName()));
         // for (ObjType type : alliedDeities) {
         // // value = type.getProperty(DC_PROPS.FOLLOWER_UNITS);
         // // unitPool.addAll(ListMaster.toList(value.toString(), false));
@@ -162,7 +162,7 @@ public class Deity extends Entity {
         this.emblem = emblem;
     }
 
-    public void applyHeroBonuses(DC_HeroObj hero) {
+    public void applyHeroBonuses(Unit hero) {
         if (!isConstructed()) {
             construct();
         }

@@ -6,7 +6,7 @@ import main.content.CONTENT_CONSTS2.INJURY;
 import main.content.CONTENT_CONSTS2.INJURY_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.game.ai.tools.target.EffectMaster;
+import main.game.ai.tools.target.EffectFinder;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
@@ -53,7 +53,7 @@ public class InjuryEffect extends DC_Effect {
         // check applicable
         getTarget().addProperty(PROPS.INJURIES,
                 StringMaster.getWellFormattedString(injury.toString()));
-        Effects effects = EffectMaster.initParamModEffects(injury.getModString(), ref);
+        Effects effects = EffectFinder.initParamModEffects(injury.getModString(), ref);
         // TODO ++ PROPS
         if (mod != 100) {
             effects.modifyFormula(mod);

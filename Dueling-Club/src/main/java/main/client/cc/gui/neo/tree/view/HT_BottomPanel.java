@@ -4,7 +4,7 @@ import main.client.cc.gui.misc.PoolComp;
 import main.client.cc.gui.neo.points.BuyButton;
 import main.client.cc.gui.neo.tree.HC_Tree;
 import main.content.PARAMS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.components.buttons.CustomButton;
 import main.swing.components.panels.page.info.element.TextCompDC;
@@ -27,12 +27,12 @@ public abstract class HT_BottomPanel extends G_Panel {
     protected CustomButton buyButtonXp;
     protected PoolComp costGold;
     protected PoolComp costXp;
-    protected DC_HeroObj hero;
+    protected Unit hero;
     protected ObjType bufferType;
     protected Object arg;
     // TextComp pointCost;
     // TextComp rank;
-    public HT_BottomPanel(final Object arg, final DC_HeroObj hero, final HC_Tree tree) {
+    public HT_BottomPanel(final Object arg, final Unit hero, final HC_Tree tree) {
         this.arg = arg;
         this.hero = hero;
         bufferType = initBufferType();
@@ -104,11 +104,11 @@ public abstract class HT_BottomPanel extends G_Panel {
         this.selectedType = selectedType;
     }
 
-    public DC_HeroObj getHero() {
+    public Unit getHero() {
         return hero;
     }
 
-    public void setHero(DC_HeroObj hero) {
+    public void setHero(Unit hero) {
         this.hero = hero;
     }
 

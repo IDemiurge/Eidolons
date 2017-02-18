@@ -1,10 +1,10 @@
 package main.rules.mechanics;
 
 import main.ability.effects.DealDamageEffect;
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
+import main.content.enums.GenericEnums;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.VisionManager;
 import main.rules.action.StealthRule;
@@ -28,18 +28,18 @@ public class CollisionRule {
 	 * be defined
 	 */
 
-    public static Coordinates collision(Ref ref, DC_ActiveObj activeObj, DC_HeroObj moveObj,
-                                        DC_HeroObj collideObj) {
+    public static Coordinates collision(Ref ref, DC_ActiveObj activeObj, Unit moveObj,
+                                        Unit collideObj) {
         return collision(ref, activeObj, moveObj, collideObj, false);
     }
 
-    public static Coordinates collision(Ref ref, DC_ActiveObj activeObj, DC_HeroObj moveObj,
-                                        DC_HeroObj collideObj, boolean summon) {
+    public static Coordinates collision(Ref ref, DC_ActiveObj activeObj, Unit moveObj,
+                                        Unit collideObj, boolean summon) {
         return collision(ref, activeObj, moveObj, collideObj, summon, 0);
     }
 
-    public static Coordinates collision(Ref ref, DC_ActiveObj activeObj, DC_HeroObj moveObj,
-                                        DC_HeroObj collideObj, boolean summon, int force) {
+    public static Coordinates collision(Ref ref, DC_ActiveObj activeObj, Unit moveObj,
+                                        Unit collideObj, boolean summon, int force) {
         // ++ AoO!
         // permit auto-retreat ? maybe some skill will make hidden unit
         // *passable* ;)
@@ -95,9 +95,9 @@ public class CollisionRule {
         }
         if (force != 0) {
             new DealDamageEffect(ForceRule.getCollisionDamageFormula(moveObj, collideObj, force,
-                    true), DAMAGE_TYPE.BLUDGEONING).apply(Ref.getSelfTargetingRefCopy(collideObj));
+                    true), GenericEnums.DAMAGE_TYPE.BLUDGEONING).apply(Ref.getSelfTargetingRefCopy(collideObj));
             new DealDamageEffect(ForceRule.getCollisionDamageFormula(moveObj, collideObj, force,
-                    false), DAMAGE_TYPE.BLUDGEONING).apply(Ref.getSelfTargetingRefCopy(moveObj));
+                    false), GenericEnums.DAMAGE_TYPE.BLUDGEONING).apply(Ref.getSelfTargetingRefCopy(moveObj));
         }
         if (!VisionManager.checkVisible(collideObj))
             // if (moveObj.canAct())
@@ -107,11 +107,11 @@ public class CollisionRule {
         return final_coordinate;
     }
 
-    private static boolean canBeOn(DC_HeroObj moveObj, Coordinates coordinates) {
+    private static boolean canBeOn(Unit moveObj, Coordinates coordinates) {
         return moveObj.getGame().getRules().getStackingRule().canBeMovedOnto(moveObj, coordinates);
     }
 
-    private static Coordinates adjustCoordinateRandomly(Coordinates dest, DC_HeroObj moveObj) {
+    private static Coordinates adjustCoordinateRandomly(Coordinates dest, Unit moveObj) {
         List<Coordinates> adjacent = dest.getAdjacentCoordinates();
         Loop.startLoop(adjacent.size());
         while (!Loop.loopEnded()) {

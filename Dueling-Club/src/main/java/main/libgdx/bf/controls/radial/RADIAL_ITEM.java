@@ -1,6 +1,6 @@
 package main.libgdx.bf.controls.radial;
 
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface RADIAL_ITEM {
 
-    List<RADIAL_ITEM> getItems(DC_HeroObj heroObj);
+    List<RADIAL_ITEM> getItems(Unit heroObj);
 
     Object getContents();
 

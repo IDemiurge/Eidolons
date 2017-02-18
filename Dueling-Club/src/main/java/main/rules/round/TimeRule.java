@@ -2,13 +2,13 @@ package main.rules.round;
 
 import main.ability.effects.AddBuffEffect;
 import main.ability.effects.oneshot.special.AddStatusEffect;
-import main.content.CONTENT_CONSTS.STATUS;
 import main.content.PARAMS;
+import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
@@ -60,7 +60,7 @@ public class TimeRule {
     private int maxTime;
     private int timeRemaining;
     private int baseTime;
-    private DC_HeroObj speedyUnit;
+    private Unit speedyUnit;
     private Integer threshold;
 
     public TimeRule(DC_Game game) {
@@ -71,7 +71,7 @@ public class TimeRule {
         active = false;
         threshold = null;
         int totalTime = 0;
-        for (DC_HeroObj unit : game.getUnits()) {
+        for (Unit unit : game.getUnits()) {
             Integer totalInitiative = unit.getIntParam(PARAMS.C_INITIATIVE)
                     - unit.getIntParam(PARAMS.C_INITIATIVE_BONUS);
             if (totalInitiative > totalTime) {
@@ -108,7 +108,7 @@ public class TimeRule {
 
     }
 
-    public void checkRunningLate(DC_HeroObj unit) {
+    public void checkRunningLate(Unit unit) {
         boolean result = getTimeThreshold() > unit.getIntParam(PARAMS.C_INITIATIVE);
         if (result) {
             addBuff(unit, true);
@@ -123,10 +123,10 @@ public class TimeRule {
     }
 
     public boolean checkEndTurn() {
-        List<DC_HeroObj> lateUnits = new LinkedList<>();
+        List<Unit> lateUnits = new LinkedList<>();
         // TODO just remove all laters and see if it's over
         // boolean result =true;
-        for (DC_HeroObj unit : game.getUnits()) {
+        for (Unit unit : game.getUnits()) {
             if (unit.canActNow()) {
                 if (unit.getBuff(BUFF_NAME_PRELIMINARY) == null) {
                     return false;
@@ -136,7 +136,7 @@ public class TimeRule {
             }
         }
 
-        for (DC_HeroObj unit : lateUnits) {
+        for (Unit unit : lateUnits) {
             // transferInitiative(unit);
             unit.setParam(PARAMS.C_INITIATIVE_TRANSFER, Math.max(0, unit
                     .getIntParam(PARAMS.C_INITIATIVE)));
@@ -184,7 +184,7 @@ public class TimeRule {
         // game.getLogManager().log(
         // "***" + action.getOwnerObj().getName()
         // + " is out of time for this round");
-        for (DC_HeroObj unit : game.getUnits()) {
+        for (Unit unit : game.getUnits()) {
             checkRunningLate(unit);
         }
 
@@ -192,12 +192,12 @@ public class TimeRule {
 
     }
 
-    private void addBuff(DC_HeroObj unitObj, boolean preliminary) {
+    private void addBuff(Unit unitObj, boolean preliminary) {
         if (unitObj.isBfObj()) {
             return;
         }
         AddStatusEffect effect;
-        effect = new AddStatusEffect(STATUS.LATE);
+        effect = new AddStatusEffect(UnitEnums.STATUS.LATE);
         new AddBuffEffect((preliminary) ? BUFF_NAME_PRELIMINARY : BUFF_NAME, effect, 1).apply(Ref
                 .getSelfTargetingRefCopy(unitObj));
 

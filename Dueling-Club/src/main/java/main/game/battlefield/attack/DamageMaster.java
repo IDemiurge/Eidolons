@@ -1,23 +1,24 @@
 package main.game.battlefield.attack;
 
-import main.content.CONTENT_CONSTS.ACTION_TYPE_GROUPS;
-import main.content.CONTENT_CONSTS.DAMAGE_MODIFIER;
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.GenericEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_WeaponObj;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_GameManager;
-import main.game.event.Event;
-import main.game.event.Event.EVENT_TYPE;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
-import main.game.event.EventType;
-import main.game.event.EventType.CONSTRUCTED_EVENT_TYPE;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_GameManager;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.EVENT_TYPE;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.event.EventType;
+import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.rules.round.UnconsciousRule;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.Manager;
@@ -32,8 +33,8 @@ import main.system.text.LogEntryNode;
 //NOT MULTITHREADED
 public class DamageMaster extends Manager {
 
-    private static int getResistanceForDamageType(int amount, DC_HeroObj attacked,
-                                                  DC_HeroObj attacker, DAMAGE_TYPE type) {
+    private static int getResistanceForDamageType(int amount, Unit attacked,
+                                                  Unit attacker, DAMAGE_TYPE type) {
         if (type == null) {
             return 0;
         }
@@ -68,8 +69,8 @@ public class DamageMaster extends Manager {
             return 0;// sure?
         }
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
-        DC_HeroObj attacker = (DC_HeroObj) ref.getSourceObj();
-        DC_HeroObj attacked = (DC_HeroObj) ref.getTargetObj();
+        Unit attacker = (Unit) ref.getSourceObj();
+        Unit attacked = (Unit) ref.getTargetObj();
         if (dmg_type == null) {
             dmg_type = active.getEnergyType();
         }
@@ -113,12 +114,12 @@ public class DamageMaster extends Manager {
         return result;
     }
 
-    private static AttackAnimation getAttackAnimation(Ref ref, DC_HeroObj obj) {
+    private static AttackAnimation getAttackAnimation(Ref ref, Unit obj) {
         return (AttackAnimation) obj.getGame().getAnimationManager().getAnimation(
                 AttackAnimation.generateKey((DC_ActiveObj) ref.getActive()));
     }
 
-    private static PhaseAnimation getAnimation(Ref ref, DC_HeroObj obj) {
+    private static PhaseAnimation getAnimation(Ref ref, Unit obj) {
         PhaseAnimation a = getAttackAnimation(ref, obj);
         if (a != null) {
             return a;
@@ -126,13 +127,13 @@ public class DamageMaster extends Manager {
         return getActionAnimation(ref, obj);
     }
 
-    private static PhaseAnimation getActionAnimation(Ref ref, DC_HeroObj obj) {
+    private static PhaseAnimation getActionAnimation(Ref ref, Unit obj) {
         return obj.getGame().getAnimationManager().getAnimation(
                 ((DC_ActiveObj) ref.getActive()).getAnimationKey());
     }
 
     @Deprecated
-    public static int magicalDamage(DC_HeroObj attacked, Ref ref, int amount) {
+    public static int magicalDamage(Unit attacked, Ref ref, int amount) {
 
         ref.setAmount(amount);
         Event event = new Event(STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_SPELL_DAMAGE, ref);
@@ -142,7 +143,7 @@ public class DamageMaster extends Manager {
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
 
         attacked.getGame().getLogManager().newLogEntryNode(true, ENTRY_TYPE.DAMAGE);
-        DC_HeroObj attacker = (DC_HeroObj) ref.getSourceObj();
+        Unit attacker = (Unit) ref.getSourceObj();
         if (active != null) {
             if (!isPeriodic(ref)) {
                 if (ref.getSource() != ref.getTarget()) {
@@ -166,8 +167,8 @@ public class DamageMaster extends Manager {
 
     }
 
-    public static int dealDamageOfType(DAMAGE_TYPE damage_type, DC_HeroObj targetObj,
-                                       DC_HeroObj attacker, int amount) {
+    public static int dealDamageOfType(DAMAGE_TYPE damage_type, Unit targetObj,
+                                       Unit attacker, int amount) {
         Ref ref = Ref.getSelfTargetingRefNew(targetObj);
         ref.setSource(attacker.getId());
         return dealDamageOfType(damage_type, targetObj, ref, amount);
@@ -184,11 +185,11 @@ public class DamageMaster extends Manager {
                 damageType = activeObj.getDamageType();
             }
         }
-        DC_HeroObj sourceObj = (DC_HeroObj) ref.getSourceObj();
-        Damage damage = new Damage(damageType, amount, sourceObj, (DC_HeroObj) ref.getTargetObj());
+        Unit sourceObj = (Unit) ref.getSourceObj();
+        Damage damage = new Damage(damageType, amount, sourceObj, (Unit) ref.getTargetObj());
         int blocked = sourceObj.getGame().getArmorSimulator().getArmorBlockDamage(damage);
         amount -= blocked;
-        amount = getResistanceForDamageType(amount, (DC_HeroObj) ref.getTargetObj(), sourceObj,
+        amount = getResistanceForDamageType(amount, (Unit) ref.getTargetObj(), sourceObj,
                 damageType);
 
         return amount;// applySpellArmorReduction(amount, (DC_HeroObj)
@@ -196,9 +197,9 @@ public class DamageMaster extends Manager {
 
     }
 
-    public static int dealDamageOfType(DAMAGE_TYPE damage_type, DC_HeroObj targetObj, Ref ref,
+    public static int dealDamageOfType(DAMAGE_TYPE damage_type, Unit targetObj, Ref ref,
                                        int amount) {
-        DC_HeroObj attacker = (DC_HeroObj) ref.getSourceObj();
+        Unit attacker = (Unit) ref.getSourceObj();
         // if (global_damage_mod != 0)
         // amount *= OptionsMaster.getGameOptions.getOption(global_damage_mod) /
         // 100;
@@ -217,7 +218,7 @@ public class DamageMaster extends Manager {
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
         int damageLeft;
         int damageDealt = 0;
-        if (damage_type == DAMAGE_TYPE.PURE || damage_type == DAMAGE_TYPE.POISON) {
+        if (damage_type == GenericEnums.DAMAGE_TYPE.PURE || damage_type == GenericEnums.DAMAGE_TYPE.POISON) {
             damageDealt = dealPureDamage(targetObj, attacker, amount, (isPeriodic(ref) ? null
                     : amount), ref);
         } else {
@@ -249,7 +250,7 @@ public class DamageMaster extends Manager {
 
     private static boolean isAttack(Ref ref) {
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
-        if (active.getActionGroup() == ACTION_TYPE_GROUPS.ATTACK) {
+        if (active.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK) {
             return true;
         }
         return false;
@@ -298,7 +299,7 @@ public class DamageMaster extends Manager {
         return (event.fire());
     }
 
-    public static int dealPureDamage(DC_HeroObj attacked, DC_HeroObj attacker, Integer e_damage,
+    public static int dealPureDamage(Unit attacked, Unit attacker, Integer e_damage,
                                      Integer t_damage, Ref ref) {
         // apply Absorption here?
 
@@ -416,11 +417,11 @@ public class DamageMaster extends Manager {
     }
 
     private static boolean isPeriodic(Ref ref) {
-        return StringMaster.compare(ref.getValue(KEYS.DAMAGE_SOURCE), DAMAGE_MODIFIER.PERIODIC
+        return StringMaster.compare(ref.getValue(KEYS.DAMAGE_SOURCE), GenericEnums.DAMAGE_MODIFIER.PERIODIC
                 .toString());
     }
 
-    private static int calculateToughnessDamage(DC_HeroObj attacked, DC_HeroObj attacker,
+    private static int calculateToughnessDamage(Unit attacked, Unit attacker,
                                                 int base_damage, boolean magical, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
         // if (attacker.hasVorpal())
         // return base_damage;
@@ -429,7 +430,7 @@ public class DamageMaster extends Manager {
                 damage_type);
     }
 
-    private static int calculateDamage(boolean endurance, DC_HeroObj attacked, DC_HeroObj attacker,
+    private static int calculateDamage(boolean endurance, Unit attacked, Unit attacker,
                                        int base_damage, boolean magical, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
 
         if (!endurance) {
@@ -455,19 +456,19 @@ if (animation!=null )
         return Math.max(0, i - armor);
     }
 
-    private static int calculateEnduranceDamage(DC_HeroObj attacked, DC_HeroObj attacker,
+    private static int calculateEnduranceDamage(Unit attacked, Unit attacker,
                                                 int base_damage, boolean magical, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
         return calculateDamage(true, attacked, attacker, base_damage, magical, ref, blocked,
                 damage_type);
     }
 
-    private static int getArmorReduction(int base_damage, DC_HeroObj attacked, DC_HeroObj attacker,
+    private static int getArmorReduction(int base_damage, Unit attacked, Unit attacker,
                                          DC_ActiveObj action) {
         return getArmorReduction(base_damage, attacked, attacker, action, false);
     }
 
-    private static int applyAverageShieldReduction(int amount, DC_HeroObj attacked,
-                                                   DC_HeroObj attacker, DC_ActiveObj action, DC_WeaponObj weapon, DAMAGE_TYPE damage_type) {
+    private static int applyAverageShieldReduction(int amount, Unit attacked,
+                                                   Unit attacker, DC_ActiveObj action, DC_WeaponObj weapon, DAMAGE_TYPE damage_type) {
         if (!attacked.getGame().getArmorSimulator().checkCanShieldBlock(action, attacked)) {
             return 0;
         }
@@ -477,7 +478,7 @@ if (animation!=null )
         return blocked;
     }
 
-    private static int getArmorReduction(int base_damage, DC_HeroObj attacked, DC_HeroObj attacker,
+    private static int getArmorReduction(int base_damage, Unit attacked, Unit attacker,
                                          DC_ActiveObj action, boolean simulation) {
         // if (attacked.checkPassive(STANDARD_PASSIVES.IMMATERIAL)
         // || attacker.checkPassive(STANDARD_PASSIVES.IMMATERIAL))
@@ -507,15 +508,15 @@ if (animation!=null )
     }
 
     public static int getDamage(Attack attack) {
-        DC_HeroObj attacked = attack.getAttacked();
-        DC_HeroObj attacker = attack.getAttacker();
-        if (!attacked.checkPassive(STANDARD_PASSIVES.SNEAK_IMMUNE)) {
+        Unit attacked = attack.getAttacked();
+        Unit attacker = attack.getAttacker();
+        if (!attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.SNEAK_IMMUNE)) {
             attack.setSneak(DC_AttackMaster.checkSneak(attack.getRef()));
         }
         // TODO ref.setFuture(true) -> average dice, auto-reset action etc
         int amount = attack.getPrecalculatedDamageAmount();
         DAMAGE_TYPE dmg_type = attack.getDamageType();
-        if (dmg_type == DAMAGE_TYPE.PURE || dmg_type == DAMAGE_TYPE.POISON) {
+        if (dmg_type == GenericEnums.DAMAGE_TYPE.PURE || dmg_type == GenericEnums.DAMAGE_TYPE.POISON) {
             return amount;
         }
         amount -= applyAverageShieldReduction(amount, attacked, attacker, attack.getAction(),
@@ -533,8 +534,16 @@ if (animation!=null )
         return amount;
     }
 
-    public static boolean checkDead(DC_HeroObj unit) {
-        return UnconsciousRule.checkUnitDies(unit);
+    public static boolean checkDead(BattleFieldObject unit) {
+        if (unit instanceof Unit)
+        return UnconsciousRule.checkUnitDies((Unit) unit);
+        if (0 >= unit.getIntParam(PARAMS.C_ENDURANCE)) {
+            return true;
+        }
+        if (0 >= unit.getIntParam(PARAMS.C_TOUGHNESS)) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isLethal(int damage, Obj targetObj) {

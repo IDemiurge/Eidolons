@@ -1,7 +1,7 @@
 package main.ability.effects.oneshot.special;
 
 import main.ability.effects.oneshot.MicroEffect;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
+import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 
 /* 
  * filter passives, getOrCreate a list of names to remove and generate ModifyPropertyEffect

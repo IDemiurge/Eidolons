@@ -1,11 +1,11 @@
 package main.client.cc.gui.neo.tree.view;
 
 import main.client.cc.HC_Master;
-import main.content.CONTENT_CONSTS.MASTERY;
+import main.content.enums.entity.SkillEnums.MASTERY;
 import main.content.ContentManager;
 import main.content.DC_ContentManager;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.entity.type.ObjType;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Panel;

@@ -1,18 +1,19 @@
 package main.game.ai;
 
-import main.content.CONTENT_CONSTS.AI_TYPE;
-import main.content.CONTENT_CONSTS.BEHAVIOR_MODE;
+import main.content.enums.system.AiEnums.AI_TYPE;
+import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.CONTENT_CONSTS2.ORDER_TYPE;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentManager;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PROPS;
+import main.content.enums.system.AiEnums;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.entity.obj.DC_Cell;
-import main.entity.obj.unit.DC_HeroObj;
-import main.entity.obj.unit.DC_UnitObj;
+import main.entity.obj.unit.Unit;
+import main.entity.obj.unit.DC_UnitModel;
 import main.entity.type.ObjType;
 import main.game.ai.advanced.companion.Order;
 import main.game.ai.elements.actions.Action;
@@ -37,7 +38,7 @@ public class UnitAI {
     public static final int LOG_LEVEL_RESULTS = 0;
     public static final int LOG_LEVEL_NONE = -1;
     private static final Integer DEFAULT_VERBATIM_MOD = null;
-    DC_HeroObj unit;
+    Unit unit;
     AI_TYPE type;
     Executor executor;
     AI_BEHAVIOR_MODE currentBehavior;
@@ -56,7 +57,7 @@ public class UnitAI {
     private boolean pathBlocked;
     private int logLevel = LOG_LEVEL_RESULTS;
     private Order currentOrder;
-    public UnitAI(DC_HeroObj unit, AI_Manager ai_Manager) {
+    public UnitAI(Unit unit, AI_Manager ai_Manager) {
         this.unit = unit;
         initType();
         setOriginalCoordinates(unit.getCoordinates());
@@ -64,8 +65,8 @@ public class UnitAI {
         // this.ai_Manager = ai_Manager;
     }
 
-    public UnitAI(DC_UnitObj unit) {
-        this.unit = (DC_HeroObj) unit;
+    public UnitAI(DC_UnitModel unit) {
+        this.unit = (Unit) unit;
         initType();
         setOriginalCoordinates(unit.getCoordinates());
 
@@ -97,7 +98,7 @@ public class UnitAI {
                 .getProperty(PROPS.ACTION_PRIORITY_MODS), C_OBJ_TYPE.ACTIVE);
 
         for (ObjType spell : DataManager.toTypeList(unit.getProperty(PROPS.VERBATIM_SPELLS),
-                OBJ_TYPES.SPELLS)) {
+                DC_TYPE.SPELLS)) {
             Integer mastery = unit.getIntParam(ContentManager.getSpellMasteryForSpell(spell));
 
             // WHY VERBATIM? MAYBE FROM *TYPE*, YES...
@@ -115,11 +116,11 @@ public class UnitAI {
         type = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class, unit
                 .getProperty(PROPS.AI_TYPE));
         if (type == null) {
-            type = AI_TYPE.NORMAL;
+            type = AiEnums.AI_TYPE.NORMAL;
         }
     }
 
-    public synchronized DC_HeroObj getUnit() {
+    public synchronized Unit getUnit() {
         return unit;
     }
 
@@ -254,7 +255,7 @@ public class UnitAI {
         if (index > 3) {
             return true;
         }
-        return unit.getAiType() == AI_TYPE.BRUTE;
+        return unit.getAiType() == AiEnums.AI_TYPE.BRUTE;
     }
 
     private boolean checkStalk() {
@@ -262,7 +263,7 @@ public class UnitAI {
         if (new EnumMaster<ENGAGEMENT_LEVEL>().getEnumConstIndex(getEngagementLevel()) < 1) {
             return false;
         }
-        return unit.getAiType() == AI_TYPE.SNEAK;
+        return unit.getAiType() == AiEnums.AI_TYPE.SNEAK;
     }
 
     private boolean checkAmbush() {
@@ -270,10 +271,10 @@ public class UnitAI {
             return false;
         }
         // intelligence check? group check?
-        if (unit.getAiType() == AI_TYPE.ARCHER) {
+        if (unit.getAiType() == AiEnums.AI_TYPE.ARCHER) {
             return true;
         }
-        if (unit.getAiType() == AI_TYPE.CASTER) {
+        if (unit.getAiType() == AiEnums.AI_TYPE.CASTER) {
             return true;
         }
         // if (group.isAmbushing()) return true;

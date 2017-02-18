@@ -1,25 +1,26 @@
 package main.game.logic.arena;
 
-import main.content.CONTENT_CONSTS.MAP_BACKGROUND;
+import main.content.enums.DungeonEnums.MAP_BACKGROUND;
 import main.content.PARAMS;
+import main.content.enums.DungeonEnums;
 import main.data.XLinkedMap;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
-import main.game.DC_Game.GAME_MODES;
+import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.DC_ObjInitializer;
 import main.game.battlefield.map.DC_Map;
-import main.game.logic.battle.SpawnManager;
+import main.game.logic.generic.SpawnManager;
 import main.game.logic.battle.player.DC_Player;
 import main.game.logic.dungeon.Dungeon;
-import main.game.logic.generic.Battle;
-import main.game.logic.generic.Battle.BATTLE_STATS;
-import main.game.logic.generic.BattleOptions;
-import main.game.logic.generic.BattleOptions.ARENA_GAME_OPTIONS;
-import main.game.logic.generic.BattleOptions.DIFFICULTY;
-import main.game.player.Player;
+import main.game.logic.battle.Battle;
+import main.game.logic.battle.Battle.BATTLE_STATS;
+import main.game.logic.battle.BattleOptions;
+import main.game.logic.battle.BattleOptions.ARENA_GAME_OPTIONS;
+import main.game.logic.battle.BattleOptions.DIFFICULTY;
+import main.game.logic.battle.player.Player;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.auxiliary.data.ListMaster;
@@ -100,7 +101,7 @@ public class ArenaManager {
     }
 
     private String getRandomBackground() {
-        MAP_BACKGROUND[] array = MAP_BACKGROUND.values();
+        MAP_BACKGROUND[] array = DungeonEnums.MAP_BACKGROUND.values();
         MAP_BACKGROUND map = array[RandomWizard.getRandomInt(array.length)];
         return map.getBackgroundFilePath();
     }
@@ -139,7 +140,8 @@ public class ArenaManager {
         }
 
 //        WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
-        GuiEventManager.trigger(CREATE_UNITS_MODEL, new EventCallbackParam(game.getUnits()));
+        GuiEventManager.trigger(CREATE_UNITS_MODEL,
+         new EventCallbackParam(game.getBfObjects()));
 
         if (!game.isOffline()) {
             saveFacing();
@@ -165,7 +167,7 @@ public class ArenaManager {
 
     private void saveFacing() {
         Map<Integer, FACING_DIRECTION> map = new XLinkedMap<>();
-        for (DC_HeroObj u : game.getUnits()) {
+        for (Unit u : game.getUnits()) {
             map.put(u.getId(), u.getFacing());
         }
         spawnManager.setMultiplayerFacingMap(map);

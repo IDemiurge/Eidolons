@@ -2,16 +2,16 @@ package main.entity.item;
 
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
-import main.content.CONTENT_CONSTS.MATERIAL;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.ItemEnums.MATERIAL;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BuffObj;
-import main.entity.obj.unit.DC_UnitObj;
+import main.entity.obj.unit.DC_UnitModel;
 import main.entity.type.ObjType;
-import main.game.MicroGame;
-import main.game.player.Player;
+import main.game.core.game.MicroGame;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 
 public abstract class DC_HeroSlotItem extends DC_HeroItemObj {
@@ -45,7 +45,7 @@ public abstract class DC_HeroSlotItem extends DC_HeroItemObj {
                 getProperty(G_PROPS.MATERIAL));
     }
 
-    public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type, DC_UnitObj target, Ref REF) {
+    public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type, DC_UnitModel target, Ref REF) {
         if (specialEffects == null) {
             return;
         }

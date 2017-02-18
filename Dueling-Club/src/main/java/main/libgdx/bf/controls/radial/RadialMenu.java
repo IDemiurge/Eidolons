@@ -22,9 +22,9 @@ import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
-import main.game.Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
+import main.game.core.game.Game;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.TargetRunnable;
 import main.libgdx.texture.TextureManager;
@@ -185,8 +185,8 @@ public class RadialMenu extends Group {
     }
 
     public void createNew(DC_Obj target) {
-        DC_HeroObj source
-                = (DC_HeroObj) Game.game.getManager().getActiveObj();
+        Unit source
+                = (Unit) Game.game.getManager().getActiveObj();
         if (source == null) {
             return; //fix logic to avoid null value between turns!
         }

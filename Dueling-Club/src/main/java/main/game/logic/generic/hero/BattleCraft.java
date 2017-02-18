@@ -2,9 +2,9 @@ package main.game.logic.generic.hero;
 
 import main.content.DC_ValueManager.VALUE_GROUP;
 import main.content.PROPS;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.data.ability.construct.VariableManager;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -30,13 +30,13 @@ public class BattleCraft {
      * Meta Dev Saving Log into txt would be great! Waiter time limit  at least
      * optional
      */
-    public static void chooseMasteryGroups(DC_HeroObj hero) {
+    public static void chooseMasteryGroups(Unit hero) {
         chooseMastery(hero, true);
         chooseMastery(hero, false);
         chooseMastery(hero, null);
     }
 
-    public static void chooseMastery(DC_HeroObj hero, Boolean weapon_magic_misc) {
+    public static void chooseMastery(Unit hero, Boolean weapon_magic_misc) {
         PROPS prop = PROPS.MASTERY_GROUPS_WEAPONS;
         if (weapon_magic_misc == null) {
             prop = PROPS.MASTERY_GROUPS_MISC;

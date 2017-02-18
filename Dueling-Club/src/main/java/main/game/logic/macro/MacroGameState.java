@@ -1,8 +1,8 @@
 package main.game.logic.macro;
 
 import main.entity.obj.Obj;
-import main.game.Game;
-import main.game.GameState;
+import main.game.core.game.Game;
+import main.game.core.state.GameState;
 import main.game.logic.faction.Faction;
 import main.game.logic.macro.map.Place;
 import main.game.logic.macro.map.Region;
@@ -51,15 +51,6 @@ public class MacroGameState extends GameState {
         super.addObject(obj);
     }
 
-    @Override
-    public void resetAll() {
-        // TODO
-        // afterEffects?
-
-        allToBase();
-    }
-
-    @Override
     public void allToBase() {
         for (MacroParty p : parties) {
             p.toBase();
@@ -74,41 +65,6 @@ public class MacroGameState extends GameState {
 
     }
 
-    @Override
-    public void checkContinuousRules() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void checkCounterRules() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void endTurn() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void newRound() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    protected void resetCurrentValues() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    protected void applyMods() {
-        // TODO Auto-generated method stub
-
-    }
 
     public DequeImpl<Faction> getFactions() {
         return factions;

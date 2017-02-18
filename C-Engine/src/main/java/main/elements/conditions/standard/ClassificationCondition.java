@@ -1,7 +1,7 @@
 package main.elements.conditions.standard;
 
-import main.content.CONTENT_CONSTS.CLASSIFICATIONS;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
+import main.content.values.properties.G_PROPS;
 import main.elements.conditions.ConditionImpl;
 import main.elements.conditions.StringComparison;
 import main.elements.conditions.StringContainersComparison;

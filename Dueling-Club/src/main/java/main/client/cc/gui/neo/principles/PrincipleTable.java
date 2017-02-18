@@ -1,9 +1,10 @@
 package main.client.cc.gui.neo.principles;
 
-import main.content.CONTENT_CONSTS.PRINCIPLES;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.PARAMS;
+import main.content.enums.entity.HeroEnums;
 import main.entity.Entity;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.rules.rpg.IntegrityRule;
 import main.swing.generic.components.G_Panel;
 import main.system.graphics.ColorManager;
@@ -18,12 +19,12 @@ public class PrincipleTable extends G_Panel {
 
     private List<Entity> items;
     private boolean principleData;
-    private DC_HeroObj hero;
+    private Unit hero;
     private Font defaultFont;
     private PRINCIPLES selectedPrinciple;
     private boolean largeItems;
 
-    public PrincipleTable(DC_HeroObj hero, boolean principleData) {
+    public PrincipleTable(Unit hero, boolean principleData) {
         this.principleData = principleData;
         this.hero = hero;
         panelSize = new Dimension(215, 729);
@@ -62,7 +63,7 @@ public class PrincipleTable extends G_Panel {
         drawValueIcons(g);
         int i = 0;
         if (principleData) {
-            for (PRINCIPLES p : PRINCIPLES.values()) {
+            for (PRINCIPLES p : HeroEnums.PRINCIPLES.values()) {
                 Integer[] values = IntegrityRule.getValues(p, null, hero);
 
                 drawRow(i, values, g);

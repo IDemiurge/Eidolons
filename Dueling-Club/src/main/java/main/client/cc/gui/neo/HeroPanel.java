@@ -5,7 +5,7 @@ import main.client.cc.gui.neo.bars.SpecialValueBar;
 import main.client.cc.gui.neo.header.HeroHeader;
 import main.content.PARAMS;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.rules.rpg.IntegrityRule;
 import main.swing.components.panels.DC_ItemPanel;
 import main.swing.components.panels.ValueIconPanel;
@@ -36,14 +36,14 @@ public class HeroPanel extends G_Panel {
     private ValueIconPanel values;
     // for selected deity/class? By default - ???
     private DC_PagedInfoPanel lowerPanel;
-    private DC_HeroObj hero;
+    private Unit hero;
     private Obj selectedObj;
     private G_Component[] comps;
     private boolean deityMode;
     private Component deityComp;
     private DC_PagedBuffPanel buffPanel;
 
-    public HeroPanel(DC_HeroObj hero) {
+    public HeroPanel(Unit hero) {
         super(HERO_PANEL_FRAME);
         this.hero = hero;
         this.panelSize = HERO_PANEL_FRAME.getSize();

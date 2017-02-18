@@ -1,13 +1,14 @@
 package main.rules.mechanics;
 
-import main.content.CONTENT_CONSTS.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.STD_COUNTERS;
 import main.content.DC_ContentManager;
+import main.content.enums.entity.UnitEnums;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_ItemActiveObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.attack.Attack;
 import main.system.math.MathMaster;
 
@@ -27,10 +28,10 @@ public class CoatingRule {
 	 */
 
     public static final STD_COUNTERS[] COATING_COUNTERS = {
-            STD_COUNTERS.Poison_Counter, STD_COUNTERS.Disease_Counter,
-            STD_COUNTERS.Blight_Counter, STD_COUNTERS.Corrosion_Counter,
-            STD_COUNTERS.Blaze_Counter, STD_COUNTERS.Freeze_Counter,
-            STD_COUNTERS.Moist_Counter,};
+            UnitEnums.STD_COUNTERS.Poison_Counter, UnitEnums.STD_COUNTERS.Disease_Counter,
+            UnitEnums.STD_COUNTERS.Blight_Counter, UnitEnums.STD_COUNTERS.Corrosion_Counter,
+            UnitEnums.STD_COUNTERS.Blaze_Counter, UnitEnums.STD_COUNTERS.Freeze_Counter,
+            UnitEnums.STD_COUNTERS.Moist_Counter,};
     public static final Integer RANGED_MOD = 2;
     public static final Integer THROWING_MOD = 5;
 
@@ -69,7 +70,7 @@ public class CoatingRule {
         return 1;
     }
 
-    public static void unitIsHit(DC_HeroObj target, DC_HeroObj source,
+    public static void unitIsHit(Unit target, Unit source,
                                  boolean offhand, DC_ActiveObj action, Attack attack, DC_Obj weapon) {
         boolean throwing = false;
 
@@ -115,8 +116,8 @@ public class CoatingRule {
 
     }
 
-    private static void applyCounters(DC_HeroObj target, DC_Obj item,
-                                      DC_HeroObj source, STD_COUNTERS c, DC_ActiveObj action,
+    private static void applyCounters(Unit target, DC_Obj item,
+                                      Unit source, STD_COUNTERS c, DC_ActiveObj action,
                                       boolean throwing) {
         if (item.getCounter(c) <= 0) {
             return;

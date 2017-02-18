@@ -1,8 +1,8 @@
 package main.swing.generic.components.editors.lists;
 
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
+import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VarHolder;
 import main.data.ability.construct.VariableManager;
@@ -259,7 +259,7 @@ public class ListControlPanel<E> extends JPanel implements ActionListener {
     }
 
     private boolean checkVarTYPE() {
-        return TYPE == OBJ_TYPES.ABILS;
+        return TYPE == DC_TYPE.ABILS;
     }
 
     private List<?> getVarTypes(String stringElement) {

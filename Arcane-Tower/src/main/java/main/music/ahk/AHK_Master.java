@@ -1,7 +1,7 @@
 package main.music.ahk;
 
 import main.ArcaneTower;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.XLinkedMap;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;

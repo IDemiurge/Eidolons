@@ -3,9 +3,9 @@ package main.system.entity;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
+import main.content.DC_TYPE;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.elements.Filter;
 import main.elements.Filter.FILTERS;
@@ -19,8 +19,8 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.Game;
-import main.game.player.Player;
+import main.game.core.game.Game;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
@@ -48,7 +48,7 @@ public class FilterMaster {
     }
 
     public static Collection<?> filterByProp(Collection<?> list, String prop, String value,
-                                             OBJ_TYPES TYPE) {
+                                             DC_TYPE TYPE) {
         return filterByProp(list, prop, value, TYPE, false);
     }
 
@@ -209,7 +209,7 @@ public class FilterMaster {
         Conditions conditions = new Conditions();
         conditions.add(ConditionMaster.getDistanceFilterCondition("SOURCE", radius, true));
         conditions.add(new NotCondition(new OccupiedCondition("MATCH")));
-        Set<Obj> set = new Filter<Obj>(centerObj.getRef(), conditions, OBJ_TYPES.TERRAIN)
+        Set<Obj> set = new Filter<Obj>(centerObj.getRef(), conditions, DC_TYPE.TERRAIN)
                 .getObjects();
         return set;
     }

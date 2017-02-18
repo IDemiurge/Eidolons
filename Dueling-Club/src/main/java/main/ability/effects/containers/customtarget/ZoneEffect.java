@@ -3,7 +3,7 @@ package main.ability.effects.containers.customtarget;
 import main.ability.effects.Effect;
 import main.ability.effects.oneshot.common.SpecialTargetingEffect;
 import main.content.C_OBJ_TYPE;
-import main.content.parameters.G_PARAMS;
+import main.content.values.parameters.G_PARAMS;
 import main.data.ability.AE_ConstrArgs;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.NotCondition;

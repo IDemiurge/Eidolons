@@ -1,12 +1,12 @@
 package main.test;
 
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.DC_ObjInitializer;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.DungeonMaster;
@@ -295,7 +295,7 @@ public class PresetMaster {
         String dungeons = "";
         boolean partyType = false;
         ObjType encounterType = DataManager.getType(preset.getValue(PRESET_DATA.ENEMY_PARTY),
-                OBJ_TYPES.ENCOUNTERS);
+                DC_TYPE.ENCOUNTERS);
         // String enemyUnits = preset.getValue(PRESET_DATA.ENEMY_PARTY);
         if (encounterType != null) {
             ENEMY_PARTY = encounterType.getName();

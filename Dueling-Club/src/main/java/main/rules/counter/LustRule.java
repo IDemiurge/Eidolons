@@ -1,11 +1,11 @@
 package main.rules.counter;
 
 import main.ability.effects.Effect;
-import main.content.CONTENT_CONSTS.STATUS;
-import main.content.CONTENT_CONSTS.STD_COUNTERS;
+import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.PARAMS;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.content.enums.entity.UnitEnums;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 
 public class LustRule extends DC_CounterRule {
 
@@ -15,11 +15,11 @@ public class LustRule extends DC_CounterRule {
 
     @Override
     public String getCounterName() {
-        return STD_COUNTERS.Lust_Counter.getName();
+        return UnitEnums.STD_COUNTERS.Lust_Counter.getName();
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(DC_HeroObj unit) {
+    public int getCounterNumberReductionPerTurn(Unit unit) {
         // TODO Auto-generated method stub
         return unit.getIntParam(PARAMS.SPIRIT);
     }

@@ -1,12 +1,12 @@
 package main.rules.attack;
 
-import main.content.CONTENT_CONSTS.ACTION_TYPE;
-import main.content.CONTENT_CONSTS.FACING_SINGLE;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
+import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.PARAMS;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.UnitEnums;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.DC_MovementManager;
 import main.game.battlefield.FacingMaster;
@@ -39,8 +39,8 @@ public class InstantAttackRule {
         if (!retreat_passage_none) {
             return false;
         }
-        Set<DC_HeroObj> set = getPotentialInstantAttackers(action);
-        for (DC_HeroObj unit : set) {
+        Set<Unit> set = getPotentialInstantAttackers(action);
+        for (Unit unit : set) {
             // INSTANT_ATTACK_TYPE type = getInstantAttackType(unit, action);
             DC_ActiveObj attack = getInstantAttack(action, unit);
             if (attack == null) {
@@ -56,13 +56,13 @@ public class InstantAttackRule {
         return false;
     }
 
-    public static void checkCollisionAttack(DC_HeroObj moveObj, DC_ActiveObj activeObj,
-                                            DC_HeroObj collideObj) {
+    public static void checkCollisionAttack(Unit moveObj, DC_ActiveObj activeObj,
+                                            Unit collideObj) {
         // TODO Auto-generated method stub
 
     }
 
-    private static INSTANT_ATTACK_TYPE getInstantAttackType(DC_HeroObj unit, DC_ActiveObj action) {
+    private static INSTANT_ATTACK_TYPE getInstantAttackType(Unit unit, DC_ActiveObj action) {
         Coordinates c = DC_MovementManager.getMovementDestinationCoordinate(action);
         Coordinates c1 = action.getOwnerObj().getCoordinates();
 
@@ -71,14 +71,14 @@ public class InstantAttackRule {
         }
 
         FACING_SINGLE singleFacing = FacingMaster.getSingleFacing(unit.getFacing(), c, c1);
-        if (singleFacing == FACING_SINGLE.BEHIND) {
+        if (singleFacing == UnitEnums.FACING_SINGLE.BEHIND) {
             return INSTANT_ATTACK_TYPE.PASSAGE;
         }
 
-        if (singleFacing == FACING_SINGLE.IN_FRONT) {
+        if (singleFacing == UnitEnums.FACING_SINGLE.IN_FRONT) {
             singleFacing = FacingMaster.getSingleFacing(action.getOwnerObj().getFacing(), c1, c);
 
-            if (singleFacing == FACING_SINGLE.BEHIND) {
+            if (singleFacing == UnitEnums.FACING_SINGLE.BEHIND) {
                 return INSTANT_ATTACK_TYPE.FLIGHT; // 'turned your back on the
             }
             // enemy'
@@ -89,9 +89,9 @@ public class InstantAttackRule {
         return INSTANT_ATTACK_TYPE.STUMBLE;
     }
 
-    public static Set<DC_HeroObj> getPotentialInstantAttackers(DC_ActiveObj action) {
-        Set<DC_HeroObj> set = new HashSet<>();
-        for (DC_HeroObj unit : action.getGame().getUnits()) {
+    public static Set<Unit> getPotentialInstantAttackers(DC_ActiveObj action) {
+        Set<Unit> set = new HashSet<>();
+        for (Unit unit : action.getGame().getUnits()) {
             if (!unit.isHostileTo(action.getOwner())) {
                 continue;
             }
@@ -107,7 +107,7 @@ public class InstantAttackRule {
 
     }
 
-    public static boolean triggerInstantAttack(DC_HeroObj unit, DC_ActiveObj action,
+    public static boolean triggerInstantAttack(Unit unit, DC_ActiveObj action,
                                                DC_ActiveObj attack) {
         // if (WatchedCondition) //bonus ?
 
@@ -140,8 +140,8 @@ public class InstantAttackRule {
     }
 
     private static int getInterruptChance(INSTANT_ATTACK_TYPE type, DC_ActiveObj attackAction,
-                                          DC_HeroObj attacked) {
-        DC_HeroObj attacker = attackAction.getOwnerObj();
+                                          Unit attacked) {
+        Unit attacker = attackAction.getOwnerObj();
         Attack a = DC_AttackMaster.getAttackFromAction(attackAction);
         int damage = a.getDamageDealt();
         if (damage == 0) {
@@ -181,7 +181,7 @@ public class InstantAttackRule {
         return chance - pass + stop;
     }
 
-    public static DC_ActiveObj getInstantAttack(DC_ActiveObj action, DC_HeroObj unit) {
+    public static DC_ActiveObj getInstantAttack(DC_ActiveObj action, Unit unit) {
         if (!canUnitMakeInstantAttack(unit)) {
             return null;
         }
@@ -198,12 +198,12 @@ public class InstantAttackRule {
         return false;
     }
 
-    public static boolean canUnitMakeInstantAttack(DC_HeroObj unit) {
+    public static boolean canUnitMakeInstantAttack(Unit unit) {
         return unit.canCounter(); // checkAlertCounter - is that right?
     }
 
     // 3 seconds to choose then automatic! :)
-    public static DC_ActiveObj chooseInstantAttack(DC_ActiveObj action, DC_HeroObj unit) {
+    public static DC_ActiveObj chooseInstantAttack(DC_ActiveObj action, Unit unit) {
         int distance = (PositionMaster.getDistance(DC_MovementManager
                 .getMovementDestinationCoordinate(action), unit.getCoordinates()));
         // TODO moving away from same-cell ?
@@ -218,15 +218,15 @@ public class InstantAttackRule {
             if (distance > getAutoAttackRange(attack)) {
                 continue;
             }
-            if (!unit.checkPassive(STANDARD_PASSIVES.HIND_REACH)) {
-                if (!attack.checkPassive(STANDARD_PASSIVES.BROAD_REACH)) {
-                    if (FacingMaster.getSingleFacing(unit, action.getOwnerObj()) == FACING_SINGLE.TO_THE_SIDE) {
+            if (!unit.checkPassive(UnitEnums.STANDARD_PASSIVES.HIND_REACH)) {
+                if (!attack.checkPassive(UnitEnums.STANDARD_PASSIVES.BROAD_REACH)) {
+                    if (FacingMaster.getSingleFacing(unit, action.getOwnerObj()) == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
                         continue;
                     }
                 }
             }
-            if (!attack.checkPassive(STANDARD_PASSIVES.HIND_REACH)) {
-                if (FacingMaster.getSingleFacing(unit, action.getOwnerObj()) == FACING_SINGLE.BEHIND) {
+            if (!attack.checkPassive(UnitEnums.STANDARD_PASSIVES.HIND_REACH)) {
+                if (FacingMaster.getSingleFacing(unit, action.getOwnerObj()) == UnitEnums.FACING_SINGLE.BEHIND) {
                     continue;
                 }
             }
@@ -238,13 +238,13 @@ public class InstantAttackRule {
     }
 
     // could be a spell?..
-    public static List<DC_ActiveObj> getInstantAttacks(DC_HeroObj unit) {
+    public static List<DC_ActiveObj> getInstantAttacks(Unit unit) {
         List<DC_ActiveObj> list = new LinkedList<>();
         List<DC_UnitAction> attacks = new LinkedList<>(unit.getActionMap().get(
-                ACTION_TYPE.STANDARD_ATTACK));
+                ActionEnums.ACTION_TYPE.STANDARD_ATTACK));
 
-        if (unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK) != null) {
-            attacks.addAll(unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK));
+        if (unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK) != null) {
+            attacks.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK));
         }
         for (DC_UnitAction attack : attacks) {
 

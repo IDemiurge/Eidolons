@@ -1,7 +1,7 @@
 package main.entity.group;
 
 import main.entity.obj.Obj;
-import main.game.Game;
+import main.game.core.game.Game;
 
 import java.util.Arrays;
 import java.util.Collection;

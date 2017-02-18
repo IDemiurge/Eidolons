@@ -8,13 +8,19 @@ import main.ability.effects.containers.customtarget.WaveEffect;
 import main.ability.effects.containers.customtarget.ZoneEffect;
 import main.ability.targeting.TemplateAutoTargeting;
 import main.ability.targeting.TemplateSelectiveTargeting;
-import main.content.CONTENT_CONSTS.*;
 import main.content.C_OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.parameters.G_PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.AbilityEnums;
+import main.content.enums.entity.AbilityEnums.EFFECTS_WRAP;
+import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
+import main.content.enums.entity.AbilityEnums.TARGETING_MODIFIERS;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.ROLL_TYPES;
+import main.content.values.parameters.G_PARAMS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.AbilityConstructor;
 import main.data.ability.construct.VariableManager;
@@ -93,11 +99,11 @@ public class ActivesConstructor {
     }
 
     public static void constructActive(TARGETING_MODE mode, DC_ActiveObj entity) {
-        if (mode == TARGETING_MODE.MULTI) {
+        if (mode == AbilityEnums.TARGETING_MODE.MULTI) {
             addMultiTargetingMods(entity);
             return;
         }
-        if (entity.checkBool(STD_BOOLS.MULTI_TARGETING)) {
+        if (entity.checkBool(GenericEnums.STD_BOOLS.MULTI_TARGETING)) {
             return; // constructMultiAbilities(entity);
         }
         if (entity.getActives() == null) {
@@ -307,17 +313,17 @@ public class ActivesConstructor {
     public static void addTargetingMods(Targeting targeting, DC_ActiveObj obj) {
         Conditions c = new Conditions();
         String property = obj.getProperty(PROPS.TARGETING_MODIFIERS);
-        if (obj.getActionGroup() == ACTION_TYPE_GROUPS.MOVE) {
+        if (obj.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MOVE) {
             // if (!(obj instanceof DC_SpellObj))
             // SPELL_TAGS.TELEPORT
-            if (!obj.checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.FLYING.toString())) {
-                if (!obj.checkProperty(PROPS.TARGETING_MODIFIERS, TARGETING_MODIFIERS.CLEAR_SHOT
+            if (!obj.checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.FLYING.toString())) {
+                if (!obj.checkProperty(PROPS.TARGETING_MODIFIERS, AbilityEnums.TARGETING_MODIFIERS.CLEAR_SHOT
                         .toString())) {
-                    property += TARGETING_MODIFIERS.CLEAR_SHOT.toString();
+                    property += AbilityEnums.TARGETING_MODIFIERS.CLEAR_SHOT.toString();
                 }
-                if (!obj.checkProperty(PROPS.TARGETING_MODIFIERS, TARGETING_MODIFIERS.SPACE
+                if (!obj.checkProperty(PROPS.TARGETING_MODIFIERS, AbilityEnums.TARGETING_MODIFIERS.SPACE
                         .toString())) {
-                    property += TARGETING_MODIFIERS.SPACE.toString();
+                    property += AbilityEnums.TARGETING_MODIFIERS.SPACE.toString();
                 }
             }
         }
@@ -365,13 +371,13 @@ public class ActivesConstructor {
     public static Effect wrapEffects(EFFECTS_WRAP wrap, Effect effects, Entity entity) {
         Formula radius = new Formula(entity.getParam(G_PARAMS.RADIUS));
         Boolean allyOrEnemyOnly = null ;
-        if (entity.checkBool(STD_BOOLS.NO_FRIENDLY_FIRE)) {
+        if (entity.checkBool(GenericEnums.STD_BOOLS.NO_FRIENDLY_FIRE)) {
             allyOrEnemyOnly = false;
         }
-        if (entity.checkBool(STD_BOOLS.NO_ENEMY_FIRE)) {
+        if (entity.checkBool(GenericEnums.STD_BOOLS.NO_ENEMY_FIRE)) {
             allyOrEnemyOnly = true;
         }
-        boolean notSelf = entity.checkBool(STD_BOOLS.NO_SELF_FIRE);
+        boolean notSelf = entity.checkBool(GenericEnums.STD_BOOLS.NO_SELF_FIRE);
         switch (wrap) {
             case CHAIN:
                 break;
@@ -431,21 +437,21 @@ public class ActivesConstructor {
         Formula radius = new Formula(entity.getParam(G_PARAMS.RADIUS));
         Formula range = new Formula(entity.getParam(PARAMS.RANGE));
         Boolean allyOrEnemyOnly = null;
-        if (entity.checkBool(STD_BOOLS.NO_FRIENDLY_FIRE)) {
+        if (entity.checkBool(GenericEnums.STD_BOOLS.NO_FRIENDLY_FIRE)) {
             allyOrEnemyOnly = false;
         }
-        if (entity.checkBool(STD_BOOLS.NO_ENEMY_FIRE)) {
+        if (entity.checkBool(GenericEnums.STD_BOOLS.NO_ENEMY_FIRE)) {
             allyOrEnemyOnly = true;
         }
-        boolean notSelf = entity.checkBool(STD_BOOLS.NO_SELF_FIRE);
+        boolean notSelf = entity.checkBool(GenericEnums.STD_BOOLS.NO_SELF_FIRE);
         switch (mode) {
             case SPRAY:
                 effects = new WaveEffect(effects, radius, range, allyOrEnemyOnly, true, false,
-                        entity.checkBool(STD_BOOLS.APPLY_THRU) ? C_OBJ_TYPE.BF : C_OBJ_TYPE.BF_OBJ);
+                        entity.checkBool(GenericEnums.STD_BOOLS.APPLY_THRU) ? C_OBJ_TYPE.BF : C_OBJ_TYPE.BF_OBJ);
                 break;
             case WAVE:
                 effects = new WaveEffect(effects, radius, range, allyOrEnemyOnly, true, true,
-                        entity.checkBool(STD_BOOLS.APPLY_THRU) ? C_OBJ_TYPE.BF : C_OBJ_TYPE.BF_OBJ); // expanding
+                        entity.checkBool(GenericEnums.STD_BOOLS.APPLY_THRU) ? C_OBJ_TYPE.BF : C_OBJ_TYPE.BF_OBJ); // expanding
                 // -
                 // targeting
                 // modifier?
@@ -531,7 +537,7 @@ public class ActivesConstructor {
 
     public static Effect getEffectsFromAbilityType(String abilName) {
 
-        AbilityType abilType = (AbilityType) DataManager.getType(abilName, OBJ_TYPES.ABILS);
+        AbilityType abilType = (AbilityType) DataManager.getType(abilName, DC_TYPE.ABILS);
         if (abilType == null) {
             abilType = VariableManager.getVarType(abilName);
             if (abilType == null) {

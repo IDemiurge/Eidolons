@@ -8,11 +8,11 @@ import main.ability.effects.continuous.CustomTargetEffect;
 import main.ability.effects.oneshot.common.ModifyCounterEffect;
 import main.ability.effects.oneshot.special.AddStatusEffect;
 import main.ability.targeting.TemplateAutoTargeting;
-import main.content.CONTENT_CONSTS.STATUS;
+import main.content.enums.entity.UnitEnums.STATUS;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
 import main.entity.Ref;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.rules.magic.ImmunityRule;
 import main.system.auxiliary.log.LogMaster.LOG;
 
@@ -31,8 +31,8 @@ public abstract class DC_CounterRule {
     protected DC_Game game;
     // protected Map<Entity, BuffObj> buffCache = new HashMap<Entity,
     // BuffObj>();
-    protected DC_HeroObj unit;
-    protected Map<DC_HeroObj, AddBuffEffect> effectCache;
+    protected Unit unit;
+    protected Map<Unit, AddBuffEffect> effectCache;
 
     public DC_CounterRule(DC_Game game) {
         this.game = game;
@@ -40,9 +40,9 @@ public abstract class DC_CounterRule {
 
     public abstract String getCounterName();
 
-    public abstract int getCounterNumberReductionPerTurn(DC_HeroObj unit);
+    public abstract int getCounterNumberReductionPerTurn(Unit unit);
 
-    public int getMaxNumberOfCounters(DC_HeroObj unit) {
+    public int getMaxNumberOfCounters(Unit unit) {
         return Integer.MAX_VALUE;
     }
 
@@ -105,7 +105,7 @@ public abstract class DC_CounterRule {
     }
 
     public void newTurn() {
-        for (DC_HeroObj unit : game.getUnits()) {
+        for (Unit unit : game.getUnits()) {
             if (getNumberOfCounters(unit) <= 0) {
                 continue;
             }
@@ -123,11 +123,11 @@ public abstract class DC_CounterRule {
         }
     }
 
-    public boolean checkApplies(DC_HeroObj unit) {
+    public boolean checkApplies(Unit unit) {
         return true;
     }
 
-    public boolean check(DC_HeroObj unit) {
+    public boolean check(Unit unit) {
         if (!checkApplies(unit)) {
             return false;
         }
@@ -171,7 +171,7 @@ public abstract class DC_CounterRule {
 
     }
 
-    protected boolean checkAlreadyApplied(DC_HeroObj unit) {
+    protected boolean checkAlreadyApplied(Unit unit) {
         return unit.getBuff(getBuffName()) != null;
     }
 
@@ -184,7 +184,7 @@ public abstract class DC_CounterRule {
         return null;
     }
 
-    protected void applyCountersClash(DC_HeroObj unit) {
+    protected void applyCountersClash(Unit unit) {
         if (getClashingCounter() != null) {
             int c = unit.getCounter(getClashingCounter());
             unit.modifyCounter(getClashingCounter(), -c);
@@ -198,17 +198,17 @@ public abstract class DC_CounterRule {
 
     public abstract STATUS getStatus();
 
-    protected Integer getNumberOfCounters(DC_HeroObj unit) {
+    protected Integer getNumberOfCounters(Unit unit) {
         return Math.min(getMaxNumberOfCounters(unit),
                 unit.getCounter(getCounterName()));
         // return unit.getCounter(getCounterName());
     }
 
-    protected void removeBuff(DC_HeroObj unit) {
+    protected void removeBuff(Unit unit) {
         unit.removeBuff(getBuffName());
     }
 
-    protected void addBuff(DC_HeroObj unit) {
+    protected void addBuff(Unit unit) {
         if (unit.hasBuff(getBuffName())) {
             unit.removeBuff(getBuffName());
         }
@@ -245,7 +245,7 @@ public abstract class DC_CounterRule {
         return true;
     }
 
-    public Map<DC_HeroObj, AddBuffEffect> getEffectCache() {
+    public Map<Unit, AddBuffEffect> getEffectCache() {
         if (effectCache == null) {
             effectCache = new HashMap<>();
         }

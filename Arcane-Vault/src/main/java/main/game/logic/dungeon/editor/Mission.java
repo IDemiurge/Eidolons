@@ -1,10 +1,10 @@
 package main.game.logic.dungeon.editor;
 
-import main.content.MACRO_OBJ_TYPES;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.MACRO_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.MACRO_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
@@ -12,7 +12,7 @@ import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.logic.dungeon.Location;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;

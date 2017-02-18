@@ -3,7 +3,7 @@ package main.swing.components.panels;
 import main.entity.Entity;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
 import main.swing.components.panels.page.DC_PagedPriorityPanel;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;

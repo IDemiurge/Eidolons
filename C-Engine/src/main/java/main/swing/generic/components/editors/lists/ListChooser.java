@@ -1,9 +1,9 @@
 package main.swing.generic.components.editors.lists;
 
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.VALUE;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.elements.Filter;
 import main.elements.conditions.Condition;
@@ -360,12 +360,12 @@ public class ListChooser extends GenericListChooser<String> {
         } else {
             // Collections.sort(listData);
         }
-        if (getTYPE() instanceof OBJ_TYPES) {
-            checkSpecialSort((OBJ_TYPES) getTYPE());
+        if (getTYPE() instanceof DC_TYPE) {
+            checkSpecialSort((DC_TYPE) getTYPE());
         }
     }
 
-    private void checkSpecialSort(OBJ_TYPES type) {
+    private void checkSpecialSort(DC_TYPE type) {
         switch (type) {
             case CHARS:
 
@@ -375,10 +375,10 @@ public class ListChooser extends GenericListChooser<String> {
     }
 
     private boolean isGroupSorted() {
-        if (TYPE == OBJ_TYPES.ABILS) {
+        if (TYPE == DC_TYPE.ABILS) {
             return false;
         }
-        return TYPE instanceof OBJ_TYPES;
+        return TYPE instanceof DC_TYPE;
         // return TYPE == OBJ_TYPES.SPELLS;
     }
 

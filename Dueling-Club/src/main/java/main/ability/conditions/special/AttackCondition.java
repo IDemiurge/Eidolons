@@ -2,7 +2,7 @@ package main.ability.conditions.special;
 
 import main.ability.effects.AttackEffect;
 import main.elements.conditions.MicroCondition;
-import main.game.ai.tools.target.EffectMaster;
+import main.game.ai.tools.target.EffectFinder;
 
 public class AttackCondition extends MicroCondition {
 
@@ -19,7 +19,7 @@ public class AttackCondition extends MicroCondition {
             attackEffect = (AttackEffect) ref.getEffect();
         } else {
             try {
-                attackEffect = (AttackEffect) EffectMaster.getEffectsOfClass(
+                attackEffect = (AttackEffect) EffectFinder.getEffectsOfClass(
                         ref.getActive().getAbilities(), AttackEffect.class)
                         .get(0);
             } catch (Exception e) {

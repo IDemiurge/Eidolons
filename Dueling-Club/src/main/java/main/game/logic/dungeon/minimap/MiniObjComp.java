@@ -1,11 +1,12 @@
 package main.game.logic.dungeon.minimap;
 
-import main.content.CONTENT_CONSTS.UNIT_TO_PLAYER_VISION;
-import main.content.CONTENT_CONSTS.UNIT_TO_UNIT_VISION;
+import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
+import main.content.enums.rules.VisionEnums;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.logic.dungeon.Dungeon;
 import main.rules.action.PerceptionRule.PERCEPTION_STATUS;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
@@ -81,7 +82,7 @@ public class MiniObjComp implements Refreshable {
         if (objects == null) {
             objects = new DequeImpl<>();
         }
-        if (obj instanceof DC_HeroObj) {
+        if (obj instanceof Unit) {
             if (!objects.contains(obj)) {
                 objects.add(obj);
             }
@@ -101,7 +102,7 @@ public class MiniObjComp implements Refreshable {
         PERCEPTION_STATUS perception = obj.getPerceptionStatus();
         // ++ TARGETING HL
         boolean hidden = false; // draw image / info icons
-        if (detection == UNIT_TO_PLAYER_VISION.UNKNOWN) {
+        if (detection == VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN) {
             image = (ImageManager.getHiddenCellIcon()).getImage();
             obj.setImage("UI//cells//Hidden Cell v" + 1 + ".png");
             return;
@@ -125,8 +126,8 @@ public class MiniObjComp implements Refreshable {
 
         boolean terrain = (obj instanceof DC_Cell);
 
-        if (vision != UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT) {
-            if (detection == UNIT_TO_PLAYER_VISION.DETECTED) {
+        if (vision != VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT) {
+            if (detection == VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED) {
                 image = !terrain ? ImageManager
                         .applyBorder(image, ImageManager.BORDER_BEYOND_SIGHT) : (ImageManager
                         .getHiddenCellIcon()).getImage();

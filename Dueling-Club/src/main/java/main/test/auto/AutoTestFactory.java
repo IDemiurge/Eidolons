@@ -1,13 +1,13 @@
 package main.test.auto;
 
-import main.content.CONTENT_CONSTS.WEAPON_GROUP;
-import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
+import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
 import main.content.CONTENT_CONSTS2.AUTO_TEST_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.enums.system.MetaEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
@@ -28,7 +28,7 @@ import java.util.List;
 
 public class AutoTestFactory {
     AutoTestMaster master;
-    private OBJ_TYPES TYPE;
+    private DC_TYPE TYPE;
     private List<ObjType> testTypes;
     private String[] presetTypes;
 
@@ -45,11 +45,11 @@ public class AutoTestFactory {
 
     private ObjType getWeaponTypeForGroup(String group) {
         return DataManager.getType(new EnumMaster<WEAPON_GROUP>().retrieveEnumConst(
-                WEAPON_GROUP.class, group).getDefaultType(), OBJ_TYPES.WEAPONS);
+                WEAPON_GROUP.class, group).getDefaultType(), DC_TYPE.WEAPONS);
     }
 
     public Entity initEntity(ObjType type) {
-        switch ((OBJ_TYPES) type.getOBJ_TYPE_ENUM()) {
+        switch ((DC_TYPE) type.getOBJ_TYPE_ENUM()) {
             case CLASSES:
             case SKILLS:
                 return new DC_FeatObj(type, new Ref(master.getSource()));
@@ -67,14 +67,14 @@ public class AutoTestFactory {
             e.printStackTrace();
         }
         testTypes = (List<ObjType>) FilterMaster.filterByProp(testTypes, G_PROPS.WORKSPACE_GROUP
-                .getName(), WORKSPACE_GROUP.TEST.name());
+                .getName(), MetaEnums.WORKSPACE_GROUP.TEST.name());
         testTypes = (List<ObjType>) SortMaster.sortByValue(testTypes, getSortValue(getTYPE()),
                 false);
         testTypes = (List<ObjType>) SortMaster.sortByValue(testTypes, PARAMS.AUTO_TEST_ID, true);
         return DataManager.toStringList(testTypes).toArray(new String[testTypes.size()]);
     }
 
-    private PARAMETER getSortValue(OBJ_TYPES TYPE) {
+    private PARAMETER getSortValue(DC_TYPE TYPE) {
         switch (TYPE) {
 
         }
@@ -139,7 +139,7 @@ public class AutoTestFactory {
                     // find weapon that has all actions involved?
                     // ALT: find base specialization?
                     loop:
-                    for (ObjType t : DataManager.getTypes(OBJ_TYPES.WEAPONS)) {
+                    for (ObjType t : DataManager.getTypes(DC_TYPE.WEAPONS)) {
                         for (String s : StringMaster.openContainer(actionNames)) {
 
                             String actions = t.getProperty(PROPS.WEAPON_ATTACKS);
@@ -178,11 +178,11 @@ public class AutoTestFactory {
         this.presetTypes = presetTypes;
     }
 
-    public OBJ_TYPES getTYPE() {
+    public DC_TYPE getTYPE() {
         return TYPE;
     }
 
-    public void setTYPE(OBJ_TYPES tYPE) {
+    public void setTYPE(DC_TYPE tYPE) {
         TYPE = tYPE;
     }
 

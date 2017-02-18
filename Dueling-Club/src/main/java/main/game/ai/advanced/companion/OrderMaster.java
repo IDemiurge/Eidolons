@@ -5,7 +5,7 @@ import main.content.CONTENT_CONSTS2.ORDER_TYPE;
 import main.elements.conditions.Condition;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.ai.GroupAI;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
@@ -13,7 +13,7 @@ import main.game.ai.elements.actions.ActionSequence;
 import main.game.ai.elements.actions.ActionSequenceConstructor;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.elements.task.Task;
-import main.game.ai.tools.priority.PriorityManager;
+import main.game.ai.tools.priority.DC_PriorityManager;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.EnumMaster;
 
@@ -43,12 +43,12 @@ public class OrderMaster {
         Task task = new Task(order.getAi(), getGoalType(order.getType()), order.getArg());
         List<ActionSequence> sequences = ActionSequenceConstructor.getSequences(action, order
                 .getArg(), task);
-        PriorityManager.setPriorities(sequences);
+        DC_PriorityManager.setPriorities(sequences);
         for (ActionSequence sequence : sequences) {
             SpecialPriorities.applySpecialPriorities(sequence);
         }
 
-        ActionSequence sequence = PriorityManager.getByPriority(sequences);
+        ActionSequence sequence = DC_PriorityManager.chooseByPriority(sequences);
         order.setSequence(sequence);
         // special prioritizing? companion ai...
     }
@@ -92,7 +92,7 @@ public class OrderMaster {
         return true;
     }
 
-    public static void giveGlobalOrders(DC_HeroObj leader) {
+    public static void giveGlobalOrders(Unit leader) {
         String type = ListChooser.chooseEnum(GLOBAL_ORDER_TYPE.class);
         if (type == null) {
             type = ListChooser.chooseEnum(ORDER_TYPE.class);
@@ -103,7 +103,7 @@ public class OrderMaster {
         GroupAI group = leader.getUnitAI().getGroup();
 
 //        group.setOrder(new Order(group, type, arg));
-        for (DC_HeroObj member :
+        for (Unit member :
                 group.getMembers()) {
 //            member.getUnitAI().setCurrentBehavior(currentBehavior);
         }
@@ -113,7 +113,7 @@ public class OrderMaster {
     // step-sequence: choose order type, select arg!
 
     // as Action/Effect?
-    public static void giveOrders(DC_HeroObj unit, DC_HeroObj leader) {
+    public static void giveOrders(Unit unit, Unit leader) {
         String type = ListChooser.chooseEnum(ORDER_TYPE.class);
         if (type == null) {
             return;

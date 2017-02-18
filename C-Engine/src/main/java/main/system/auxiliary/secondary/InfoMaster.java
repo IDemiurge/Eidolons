@@ -1,12 +1,12 @@
 package main.system.auxiliary.secondary;
 
-import main.content.CONTENT_CONSTS.MASTERY_RANK;
-import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
+import main.content.enums.entity.SkillEnums.MASTERY_RANK;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.ContentManager;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;

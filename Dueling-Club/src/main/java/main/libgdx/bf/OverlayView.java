@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class OverlayView extends BaseView {
+    public static final float SCALE =0.5F ;
     private Image image;
 
     public OverlayView(UnitViewOptions viewOptions) {

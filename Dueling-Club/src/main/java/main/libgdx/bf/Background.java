@@ -1,6 +1,6 @@
 package main.libgdx.bf;
 
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.libgdx.gui.panels.generic.Comp;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;

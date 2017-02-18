@@ -1,6 +1,6 @@
 package main.gui.components.table;
 
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.TableDataManager;
 import main.gui.builders.EditViewPanel;
 import main.launch.ArcaneVault;

@@ -2,7 +2,7 @@ package main.game.logic.macro.gui.party;
 
 import main.content.PARAMS;
 import main.content.VALUE;
-import main.content.parameters.MACRO_PARAMS;
+import main.content.values.parameters.MACRO_PARAMS;
 import main.game.logic.macro.travel.MacroParty;
 
 import java.util.Arrays;

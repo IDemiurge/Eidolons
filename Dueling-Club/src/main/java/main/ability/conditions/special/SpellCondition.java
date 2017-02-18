@@ -2,7 +2,7 @@ package main.ability.conditions.special;
 
 import main.elements.conditions.MicroCondition;
 import main.entity.active.DC_SpellObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 
 public class SpellCondition extends MicroCondition {
 
@@ -17,7 +17,7 @@ public class SpellCondition extends MicroCondition {
             return false;
         }
         DC_SpellObj spell = (DC_SpellObj) ref.getMatchObj();
-        DC_HeroObj hero = (DC_HeroObj) ref.getSourceObj();
+        Unit hero = (Unit) ref.getSourceObj();
         if (!hero.getSpells().contains(spell)) {
             return false;
         }

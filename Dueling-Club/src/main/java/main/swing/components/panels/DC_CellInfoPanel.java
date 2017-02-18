@@ -4,7 +4,7 @@ import main.content.PARAMS;
 import main.content.VALUE;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.logic.macro.gui.party.Header;
 import main.swing.builders.DC_Builder;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;

@@ -1,7 +1,7 @@
 package main.game.ai.logic.types.brute;
 
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_UnitObj;
+import main.entity.obj.unit.DC_UnitModel;
 import main.game.ai.AI_Logic;
 import main.game.ai.logic.TargetingManager;
 
@@ -46,9 +46,9 @@ public class BruteTargeter extends TargetingManager {
     }
 
     private int getAttackTarget() {
-        DC_UnitObj unit = (DC_UnitObj) logic.getUnit();
+        DC_UnitModel unit = (DC_UnitModel) logic.getUnit();
         for (Obj target : logic.getAnalyzer().getAdjacentEnemies(unit)) {
-            DC_UnitObj attacked = (DC_UnitObj) target;
+            DC_UnitModel attacked = (DC_UnitModel) target;
             if (unit.canAttack(attacked)) {
                 return target.getId();
             }

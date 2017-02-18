@@ -1,12 +1,12 @@
 package main.client.cc.gui.views;
 
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.WorkspaceMaster;
@@ -16,7 +16,7 @@ import java.util.Comparator;
 
 public class LibraryView extends HeroItemView {
 
-    public LibraryView(DC_HeroObj hero) {
+    public LibraryView(Unit hero) {
         super(hero, true, true);
         init();
         itemManager.setPROP2(getPROP2());
@@ -65,7 +65,7 @@ public class LibraryView extends HeroItemView {
 
     @Override
     protected OBJ_TYPE getTYPE() {
-        return OBJ_TYPES.SPELLS;
+        return DC_TYPE.SPELLS;
     }
 
     @Override

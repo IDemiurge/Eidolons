@@ -1,9 +1,9 @@
 package main.utilities.workspace;
 
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.data.ListMaster;
@@ -79,8 +79,8 @@ public class Workspace {
         for (ObjType type : getTypeList()) {
             if (type.getName().equals(typeName)) {
                 TYPE = type.getOBJ_TYPE_ENUM();
-                if (OBJ_TYPES.getType(parent) != null) {
-                    if (TYPE == OBJ_TYPES.getType(parent)) {
+                if (DC_TYPE.getType(parent) != null) {
+                    if (TYPE == DC_TYPE.getType(parent)) {
                         return TYPE;
                     }
                 }

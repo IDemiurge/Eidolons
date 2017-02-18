@@ -1,7 +1,7 @@
 package main.ability.conditions.shortcut;
 
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
+import main.content.values.properties.G_PROPS;
 import main.elements.conditions.StringComparison;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.StringMaster;

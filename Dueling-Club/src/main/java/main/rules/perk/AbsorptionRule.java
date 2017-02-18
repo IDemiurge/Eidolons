@@ -1,10 +1,12 @@
 package main.rules.perk;
 
 import main.ability.effects.Effect;
-import main.content.CONTENT_CONSTS;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.STATUS;
 import main.entity.Ref;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.rules.counter.DC_CounterRule;
 
 /**
@@ -18,17 +20,17 @@ public class AbsorptionRule extends DC_CounterRule{
         super(game);
     }
 
-    public void damageDealt(CONTENT_CONSTS.DAMAGE_TYPE type, int amount, Ref ref){
+    public void damageDealt(DAMAGE_TYPE type, int amount, Ref ref){
 //        check
     }
 
     @Override
     public String getCounterName() {
-        return CONTENT_CONSTS.STD_COUNTERS.Blaze_Counter.getName();
+        return UnitEnums.STD_COUNTERS.Blaze_Counter.getName();
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(DC_HeroObj unit) {
+    public int getCounterNumberReductionPerTurn(Unit unit) {
         return 0;
     }
 
@@ -43,7 +45,7 @@ public class AbsorptionRule extends DC_CounterRule{
     }
 
     @Override
-    public CONTENT_CONSTS.STATUS getStatus() {
+    public STATUS getStatus() {
         return null;
     }
 }

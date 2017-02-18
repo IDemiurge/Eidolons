@@ -7,10 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.content.PARAMS;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
 import main.game.battlefield.Coordinates;
+import main.game.core.Eidolons;
 import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.bf.*;
 import main.libgdx.bf.mouse.ToolTipManager.ToolTipRecordOption;
@@ -32,9 +32,9 @@ import static main.system.GuiEventType.*;
 public class GridMouseListener extends ClickListener {
     private GridPanel gridPanel;
     private GridCell[][] cells;
-    private Map<DC_HeroObj, BaseView> unitViewMap;
+    private Map<BattleFieldObject, BaseView> unitViewMap;
 
-    public GridMouseListener(GridPanel gridPanel, GridCell[][] cells, Map<DC_HeroObj, BaseView> unitViewMap) {
+    public GridMouseListener(GridPanel gridPanel, GridCell[][] cells, Map<BattleFieldObject, BaseView> unitViewMap) {
         this.gridPanel = gridPanel;
         this.cells = cells;
         this.unitViewMap = unitViewMap;
@@ -52,7 +52,7 @@ public class GridMouseListener extends ClickListener {
             Actor a = innerDrawable.hit(x, y, true);
             if (a != null && a instanceof BaseView) {
                 BaseView uv = (BaseView) a;
-                DC_HeroObj hero = unitViewMap.entrySet().stream()
+                BattleFieldObject hero = unitViewMap.entrySet().stream()
                         .filter(entry -> entry.getValue() == uv).findFirst()
                         .get().getKey();
 
@@ -132,23 +132,23 @@ public class GridMouseListener extends ClickListener {
             if (cell.getInnerDrawable() != null) {
                 Actor unit = cell.getInnerDrawable().hit(x, y, true);
                 if (unit != null && unit instanceof BaseView) {
-                    DC_HeroObj heroObj = unitViewMap.entrySet()
+                    BattleFieldObject obj = unitViewMap.entrySet()
                             .stream().filter(entry -> entry.getValue() == unit).findFirst()
                             .get().getKey();
 
                     switch (event.getButton()) {
                         case Input.Buttons.RIGHT:
                             //TODO map the click to the right object in the stack?
-                            GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(heroObj));
+                            GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(obj));
                             break;
                         default:
                             if (FAST_DC.getGameLauncher().SUPER_FAST_MODE || Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
-                                GuiEventManager.trigger(SHOW_INFO_DIALOG, new EventCallbackParam(heroObj));
+                                GuiEventManager.trigger(SHOW_INFO_DIALOG, new EventCallbackParam(obj));
                             }
                     }
                 }
             } else if (event.getButton() == Input.Buttons.RIGHT) {
-                DC_Obj dc_cell = DC_Game.game.getCellByCoordinate(new Coordinates(cell.getGridX(), cell.getGridY()));
+                DC_Obj dc_cell = Eidolons.gameMaster.getCellByCoordinate(new Coordinates(cell.getGridX(), cell.getGridY()));
                 GuiEventManager.trigger(CREATE_RADIAL_MENU, new EventCallbackParam(dc_cell));
             }
             event.stop();

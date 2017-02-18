@@ -4,9 +4,10 @@ import main.ability.conditions.special.SneakCondition;
 import main.ability.effects.ChangeFacingEffect;
 import main.ability.effects.Effect;
 import main.ability.effects.SelfMoveEffect;
-import main.content.CONTENT_CONSTS.ACTION_TYPE_GROUPS;
-import main.content.CONTENT_CONSTS.FACING_SINGLE;
+import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.PARAMS;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.UnitEnums;
 import main.elements.costs.Costs;
 import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.Targeting;
@@ -15,21 +16,21 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.actions.ActionManager;
 import main.game.ai.elements.actions.ActionSequenceConstructor;
 import main.game.ai.elements.actions.TimeLimitMaster;
 import main.game.ai.elements.actions.TimeLimitMaster.METRIC;
-import main.game.ai.tools.priority.PriorityManager;
+import main.game.ai.tools.priority.DC_PriorityManager;
 import main.game.ai.tools.target.ReasonMaster;
 import main.game.ai.tools.target.ReasonMaster.FILTER_REASON;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.FacingMaster;
-import main.rules.DC_ActionManager;
+import main.game.logic.generic.DC_ActionManager;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -45,7 +46,7 @@ public class PathBuilder {
     private DC_UnitAction stdMove;
     private List<DC_ActiveObj> moveActions; // only special here?
     private Action targetAction;
-    private DC_HeroObj unit;
+    private Unit unit;
     private Coordinates c_coordinate;
     private FACING_DIRECTION c_facing;
     private Coordinates targetCoordinate;
@@ -107,7 +108,7 @@ public class PathBuilder {
         FACING_SINGLE facing = FacingMaster.getSingleFacing(c_facing, c_coordinate,
                 targetCoordinate);
         Action moveAction = getMoveAction();
-        if (facing == FACING_SINGLE.IN_FRONT) {
+        if (facing == UnitEnums.FACING_SINGLE.IN_FRONT) {
             if (firstStep) {
                 if (!moveAction.canBeActivated()) {
                     return null;
@@ -117,7 +118,7 @@ public class PathBuilder {
         }
         adjustUnit();
         Collection<Action> actions = ActionSequenceConstructor.getTurnSequence(
-                FACING_SINGLE.IN_FRONT, unit, targetCoordinate);
+                UnitEnums.FACING_SINGLE.IN_FRONT, unit, targetCoordinate);
         actions.add(moveAction);
         // resetUnit();// TODO is that right?
         Choice choice = new Choice(targetCoordinate, c_coordinate, actions
@@ -378,7 +379,7 @@ public class PathBuilder {
         applyChoice(choice);
         path.add(choice);
         if (checkFinished()) {
-            if (targetAction.getActive().getActionGroup() != ACTION_TYPE_GROUPS.MOVE) {
+            if (targetAction.getActive().getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.MOVE) {
                 checkAddFaceTurn(); // TODO better check?
             }
             if (checkFailed()) {
@@ -511,7 +512,7 @@ public class PathBuilder {
 
     private Integer getPathPriority() {
         Costs cost = getPathCosts(path);
-        int result = PriorityManager.getCostFactor(cost, unit);
+        int result = DC_PriorityManager.getCostFactor(cost, unit);
         try {
             // result += getAoOPenalty(); TODO instant atks check !
         } catch (Exception e) {

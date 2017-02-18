@@ -3,7 +3,7 @@ package main.libgdx.anims.phased;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import main.game.battlefield.PointX;
+import main.swing.PointX;
 import main.libgdx.bf.GridMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.AnimationManager.MouseItem;

@@ -6,8 +6,8 @@ import main.client.cc.gui.neo.tabs.HC_TabPanel;
 import main.client.cc.gui.neo.tabs.TabChangeListener;
 import main.client.cc.logic.party.PartyObj;
 import main.content.PARAMS;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.logic.generic.PartyManager;
 import main.swing.components.panels.DC_TopPanel;
 import main.swing.components.panels.page.info.element.TextCompDC;
@@ -28,18 +28,18 @@ public class HeroTabsPanel extends G_Panel implements TabChangeListener {
     HC_TabPanel tabs;
     DC_TopPanel top;
     private Dimension iconSize = new Dimension(32, 32);
-    private Map<DC_HeroObj, MainPanel> panels = new LinkedHashMap<>();
+    private Map<Unit, MainPanel> panels = new LinkedHashMap<>();
     private List<MainPanel> panelList = new LinkedList<>();
     private PartyHeader header;
 
-    public HeroTabsPanel(DC_HeroObj... heroes) {
+    public HeroTabsPanel(Unit... heroes) {
         super();
         tabs = new HC_TabPanel(new LinkedList<>());
         tabs.setChangeListener(this);
         top = new DC_TopPanel(CharacterCreator.getGame());
 
         if (heroes.length > 0) {
-            for (DC_HeroObj hero : heroes) {
+            for (Unit hero : heroes) {
                 addHero(hero, true);
             }
             tabs.refresh();
@@ -94,11 +94,11 @@ public class HeroTabsPanel extends G_Panel implements TabChangeListener {
         super.refresh();
     }
 
-    public void addHero(DC_HeroObj hero) {
+    public void addHero(Unit hero) {
         addHero(hero, false);
     }
 
-    public void removeHero(DC_HeroObj hero) {
+    public void removeHero(Unit hero) {
         MainPanel o = panels.get(hero);
         panels.remove(hero);
         int i = panelList.indexOf(o);
@@ -107,7 +107,7 @@ public class HeroTabsPanel extends G_Panel implements TabChangeListener {
         header.refresh();
     }
 
-    public void addHero(DC_HeroObj hero, boolean quiet) {
+    public void addHero(Unit hero, boolean quiet) {
         MainPanel panel = new MainPanel(hero);
 
         panels.put(hero, panel);
@@ -144,11 +144,11 @@ public class HeroTabsPanel extends G_Panel implements TabChangeListener {
         this.iconSize = iconSize;
     }
 
-    public synchronized Map<DC_HeroObj, MainPanel> getPanels() {
+    public synchronized Map<Unit, MainPanel> getPanels() {
         return panels;
     }
 
-    public synchronized void setPanels(Map<DC_HeroObj, MainPanel> panels) {
+    public synchronized void setPanels(Map<Unit, MainPanel> panels) {
         this.panels = panels;
     }
 

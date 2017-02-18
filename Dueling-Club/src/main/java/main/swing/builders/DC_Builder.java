@@ -6,13 +6,14 @@ import main.entity.active.DC_SpellObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
-import main.game.DC_GameState;
+import main.game.core.state.DC_GameState;
 import main.game.battlefield.BattleFieldGrid;
 import main.game.battlefield.map.DC_Map;
 import main.game.battlefield.map.DungeonMapGenerator;
+import main.game.core.Eidolons;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.minimap.Minimap;
-import main.game.turn.TurnTimer;
+import main.game.logic.battle.turn.TurnTimer;
 import main.swing.SwingMaster;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.panels.*;
@@ -27,9 +28,9 @@ import main.swing.generic.components.G_Component;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.swing.generic.services.dialog.DialogPanel;
+import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.ColorManager;
 import main.system.graphics.GuiManager;
-import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 import main.system.sound.SoundMaster;
@@ -40,7 +41,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Deprecated
 public class DC_Builder extends Builder {
 
     public static final int OFFSET_X = 18;
@@ -162,7 +163,7 @@ public class DC_Builder extends Builder {
             @Override
             public void refresh() {
                 removeAll();
-                if (state.getManager().getInfoObj() instanceof DC_Cell) {
+                if (Eidolons.gameManager.getInfoObj() instanceof DC_Cell) {
                     add(getCellInfoPanel(), "pos " + getInfoPanelOffsetX() + " 0");
                 } else {
                     add(getUnitInfoPanel(), "pos 0 0");
@@ -429,13 +430,13 @@ try{state.getGame().getGUI().resetBgIcon(grid.getMap().getBackground());
     protected void paintListOverlays(Graphics g) {
         // [OPTIMIZE] - why not set x/y for non-unit objects to their screen
         // coordinates?
-        if (state.getManager().getInfoObj() instanceof DC_ActiveObj) {
-            DC_ActiveObj activeObj = (DC_ActiveObj) state.getManager().getInfoObj();
+        if (Eidolons.gameManager.getInfoObj() instanceof DC_ActiveObj) {
+            DC_ActiveObj activeObj = (DC_ActiveObj) Eidolons.gameManager.getInfoObj();
             Image image = BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_64.getImage();
             drawActionListOverlay(activeObj, g, image);
         }
-        if (state.getManager().getActivatingAction() instanceof DC_ActiveObj) {
-            DC_ActiveObj activeObj = (DC_ActiveObj) state.getManager().getActivatingAction();
+        if (Eidolons.gameManager.getActivatingAction() instanceof DC_ActiveObj) {
+            DC_ActiveObj activeObj = (DC_ActiveObj) Eidolons.gameManager.getActivatingAction();
             Image image = BORDER.NEO_CYAN_HIGHLIGHT_SQUARE_64.getImage();
             drawActionListOverlay(activeObj, g, image); // offset here
         }

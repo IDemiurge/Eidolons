@@ -4,7 +4,7 @@ import main.ability.effects.DC_Effect;
 import main.ability.effects.Effect;
 import main.ability.effects.ResistibleEffect;
 import main.content.ContentManager;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.data.XLinkedMap;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;

@@ -1,6 +1,6 @@
 package main.utilities.hotkeys;
 
-import main.game.Game;
+import main.game.core.game.Game;
 import main.gui.components.controls.AV_ButtonPanel;
 import main.gui.components.controls.ModelManager;
 import main.launch.ArcaneVault;

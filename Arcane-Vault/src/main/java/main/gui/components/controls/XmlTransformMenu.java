@@ -1,7 +1,7 @@
 package main.gui.components.controls;
 
 import main.content.PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.xml.XML_Transformer;
 import main.entity.type.ObjType;

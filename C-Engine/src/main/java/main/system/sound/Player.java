@@ -1,12 +1,12 @@
 package main.system.sound;
 
 import javazoom.jl.player.jlp;
-import main.content.CONTENT_CONSTS.HERO_SOUNDSET;
+import main.content.enums.entity.HeroEnums.HERO_SOUNDSET;
 import main.content.CONTENT_CONSTS.SOUNDSET;
 import main.content.ContentManager;
-import main.content.OBJ_TYPES;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.DC_TYPE;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
@@ -334,7 +334,7 @@ public class Player {
 
         if (!result) {
 
-            if (obj.getOBJ_TYPE_ENUM() == OBJ_TYPES.UNITS) {
+            if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.UNITS) {
 				/*
 				 * by aspect -- deity? unit soundset folders...
 				 *
@@ -342,7 +342,7 @@ public class Player {
 				 * anything other than unit's name...
 				 */
             }
-            if (obj.getOBJ_TYPE_ENUM() == OBJ_TYPES.SPELLS) {
+            if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.SPELLS) {
                 String autopath = SOUNDSET_FOLDER_PATH + "\\spells\\"
                         + obj.getAspect().toString().toLowerCase() + "\\"
                         + obj.getProperty(G_PROPS.SPELL_GROUP) + "\\" + obj.getName();

@@ -1,7 +1,7 @@
 package main.system.math;
 
 import main.content.ContentManager;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.entity.Ref;
 import main.system.auxiliary.StringMaster;
 import main.system.math.FunctionManager.FUNCTIONS;

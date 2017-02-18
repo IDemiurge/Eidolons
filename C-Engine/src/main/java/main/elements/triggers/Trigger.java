@@ -7,8 +7,8 @@ import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
-import main.game.event.Event;
-import main.game.event.Event.EVENT_TYPE;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.EVENT_TYPE;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.List;

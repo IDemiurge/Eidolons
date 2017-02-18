@@ -1,17 +1,17 @@
 package main.entity.item;
 
-import main.content.CONTENT_CONSTS.STATUS;
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.entity.Ref;
 import main.entity.obj.BuffObj;
 import main.entity.obj.HeroItem;
 import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.entity.type.ObjType;
-import main.game.MicroGame;
-import main.game.player.Player;
+import main.game.core.game.MicroGame;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.StringMaster;
 import main.system.math.DC_MathManager;
 
@@ -114,7 +114,7 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
         modifyParameter(PARAMS.C_DURABILITY, -amount, 0);
 
         if (getIntParam(PARAMS.C_DURABILITY) <= 0) {
-            setProperty(G_PROPS.STATUS, STATUS.BROKEN.toString());
+            setProperty(G_PROPS.STATUS, UnitEnums.STATUS.BROKEN.toString());
             getHero().unequip(this, false);
             game.getLogManager()
                     .log(StringMaster.MESSAGE_PREFIX_ALERT + getHero().getName() + "'s " + getName() + " is broken!");

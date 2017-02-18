@@ -5,23 +5,31 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.ability.effects.Effects;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
-import main.content.CONTENT_CONSTS.*;
+import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.DC_ContentManager;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
+import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
+import main.content.enums.entity.UnitEnums.STATUS;
+import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
+import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.unit.DC_HeroObj;
-import main.entity.obj.unit.DC_UnitObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
-import main.game.Game;
+import main.game.core.game.DC_Game;
+import main.game.core.game.Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;
 import main.game.battlefield.VisionManager;
 import main.game.logic.battle.player.DC_Player;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 import main.rules.action.PerceptionRule.PERCEPTION_STATUS;
 import main.rules.action.PerceptionRule.PERCEPTION_STATUS_PLAYER;
 import main.rules.mechanics.ConcealmentRule.IDENTIFICATION_LEVEL;
@@ -63,8 +71,8 @@ public abstract class DC_Obj extends MicroObj {
         super(type, owner, game, ref);
         // [QUICK FIX] - ought to have "NO_OUTLINE" const
         if (!CoreEngine.isLevelEditor()) {
-            if ((this instanceof DC_Cell) || (this instanceof DC_HeroObj)) {
-                playerVisionStatus = UNIT_TO_PLAYER_VISION.CONCEALED;
+            if ((this instanceof DC_Cell) || (this instanceof Unit)) {
+                playerVisionStatus = VisionEnums.UNIT_TO_PLAYER_VISION.CONCEALED;
                 outlineTypeForPlayer = (this instanceof DC_Cell) ? OUTLINE_TYPE.THICK_DARKNESS
                         : OUTLINE_TYPE.DARK_OUTLINE;
                 visibilityLevelForPlayer = VISIBILITY_LEVEL.CONCEALED;
@@ -109,11 +117,11 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public boolean checkInSight() {
-        return getUnitVisionStatus() == UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT;
+        return getUnitVisionStatus() == VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT;
     }
 
-    public boolean checkInSightForUnit(DC_HeroObj unit) {
-        return getGame().getVisionManager().getUnitVisibilityStatus(this, unit) == UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT;
+    public boolean checkInSightForUnit(Unit unit) {
+        return getGame().getVisionManager().getUnitVisibilityStatus(this, unit) == VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT;
     }
 
     @Override
@@ -158,33 +166,33 @@ public abstract class DC_Obj extends MicroObj {
 
     // boolean map instead?
     public boolean isAgile() {
-        return checkPassive(STANDARD_PASSIVES.DEXTEROUS);
+        return checkPassive(UnitEnums.STANDARD_PASSIVES.DEXTEROUS);
     }
 
     public boolean isFlying() {
-        return checkPassive(STANDARD_PASSIVES.FLYING);
+        return checkPassive(UnitEnums.STANDARD_PASSIVES.FLYING);
     }
 
     // StringMaster.getWellFormattedString
 
     public boolean hasDoubleCounter() {
-        return checkPassive(STANDARD_PASSIVES.DOUBLE_RETALIATION);
+        return checkPassive(UnitEnums.STANDARD_PASSIVES.DOUBLE_RETALIATION);
     }
 
     public boolean hasBludgeoning() {
-        return checkPassive(STANDARD_PASSIVES.BLUDGEONING);
+        return checkPassive(UnitEnums.STANDARD_PASSIVES.BLUDGEONING);
     }
 
     public boolean hasNoRetaliation() {
-        return checkPassive(STANDARD_PASSIVES.NO_RETALIATION);
+        return checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION);
     }
 
     public boolean hasFirstStrike() {
-        return checkPassive(STANDARD_PASSIVES.FIRST_STRIKE);
+        return checkPassive(UnitEnums.STANDARD_PASSIVES.FIRST_STRIKE);
     }
 
     public boolean hasNoMeleePenalty() {
-        return checkPassive(STANDARD_PASSIVES.NO_MELEE_PENALTY);
+        return checkPassive(UnitEnums.STANDARD_PASSIVES.NO_MELEE_PENALTY);
 
     }
 
@@ -226,7 +234,8 @@ public abstract class DC_Obj extends MicroObj {
 
     }
 
-    public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type, DC_UnitObj target, Ref REF) {
+    public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type,
+                                    BattleFieldObject target, Ref REF) {
         if (specialEffects == null) {
             return;
         }
@@ -235,7 +244,7 @@ public abstract class DC_Obj extends MicroObj {
         }
         Ref ref = Ref.getCopy(REF);
         ref.setTarget(target.getId());
-        if (this instanceof DC_HeroObj) {
+        if (this instanceof Unit) {
             ref.setSource(getId());
         } else {
             ref.setID(KEYS.THIS, getId());
@@ -342,8 +351,8 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public boolean isFlippedImage() {
-        if (this instanceof DC_HeroObj) {
-            DC_HeroObj heroObj = (DC_HeroObj) this;
+        if (this instanceof Unit) {
+            Unit heroObj = (Unit) this;
 
             checkBool(DYNAMIC_BOOLS.FLIPPED);
 
@@ -404,7 +413,7 @@ public abstract class DC_Obj extends MicroObj {
 
     public UNIT_TO_UNIT_VISION getUnitVisionStatus() {
         if (VisionManager.isVisionHacked()) {
-            return UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT;
+            return VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT;
         }
         if (activeUnitVisionStatus == null) {
             try {
@@ -426,14 +435,14 @@ public abstract class DC_Obj extends MicroObj {
 
     public UNIT_TO_PLAYER_VISION getActivePlayerVisionStatus() {
         if (VisionManager.isVisionHacked()) {
-            return UNIT_TO_PLAYER_VISION.DETECTED;
+            return VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED;
         }
         return activeVisionStatus;
     }
 
     public UNIT_TO_PLAYER_VISION getPlayerVisionStatus(boolean active) {
         if (VisionManager.isVisionHacked()) {
-            return UNIT_TO_PLAYER_VISION.DETECTED;
+            return VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED;
         }
 
         if (active) {

@@ -3,8 +3,8 @@ package main.swing.components.obj;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
 import main.swing.components.buttons.DynamicButton;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -313,7 +313,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
 
                     // break ;
                 } else if (object instanceof Obj) {
-                    if (object instanceof DC_HeroObj) {
+                    if (object instanceof Unit) {
                         if (objClicked != null) {
                             int index = cellComp.getObjects().indexOf(objClicked);
                             int index2 = cellComp.getObjects().indexOf(object);
@@ -325,7 +325,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                                 continue;
                             }
                         }
-                        DC_HeroObj unit = (DC_HeroObj) object;
+                        Unit unit = (Unit) object;
                         if (unit.isOverlaying()) {
                             // corpseClicked(unit);
                             if (unit.getVisibilityLevel() == VISIBILITY_LEVEL.CONCEALED) {

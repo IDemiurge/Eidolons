@@ -6,21 +6,21 @@ import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.ModeEffect;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
-import main.content.CONTENT_CONSTS.STD_BUFF_NAMES;
 import main.content.PARAMS;
 import main.content.VALUE;
-import main.content.enums.STD_MODES;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.mode.STD_MODES;
 import main.elements.conditions.Condition;
 import main.elements.conditions.NotCondition;
 import main.entity.Ref.KEYS;
-import main.game.MicroGame;
+import main.game.core.game.MicroGame;
 import main.rules.RuleMaster.COMBAT_RULES;
 import main.system.auxiliary.StringMaster;
 
 public class StaminaBuffRule extends DC_BuffRule {
-    private String[] buffNames = {STD_BUFF_NAMES.Exhausted.getName(),
-            STD_BUFF_NAMES.Fatigued.getName(), STD_BUFF_NAMES.Energized.getName()};
+    private String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Exhausted.getName(),
+            MetaEnums.STD_BUFF_NAMES.Fatigued.getName(), MetaEnums.STD_BUFF_NAMES.Energized.getName()};
     private String[] formulas = {"1", "10", "100",};
 
     public StaminaBuffRule(MicroGame game) {
@@ -70,7 +70,7 @@ public class StaminaBuffRule extends DC_BuffRule {
     }
 
     protected Condition getBuffConditions() {
-        return new NotCondition(new StdPassiveCondition(STANDARD_PASSIVES.RELENTLESS));
+        return new NotCondition(new StdPassiveCondition(UnitEnums.STANDARD_PASSIVES.RELENTLESS));
 
     }
 

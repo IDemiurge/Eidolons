@@ -1,7 +1,7 @@
 package main.game.logic.macro.gui;
 
 import main.content.HC_ValuePages;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.VALUE;
 import main.entity.Entity;
 import main.entity.obj.Obj;
@@ -24,8 +24,8 @@ public class MacroInfoPanel extends G_Panel {
                 if (getObj() == null) {
                     return new LinkedList<>();
                 }
-                if (getObj().getOBJ_TYPE_ENUM() instanceof OBJ_TYPES) {
-                    return HC_ValuePages.getPageLists((OBJ_TYPES) getObj()
+                if (getObj().getOBJ_TYPE_ENUM() instanceof DC_TYPE) {
+                    return HC_ValuePages.getPageLists((DC_TYPE) getObj()
                             .getOBJ_TYPE_ENUM());
                 }
 return null ;

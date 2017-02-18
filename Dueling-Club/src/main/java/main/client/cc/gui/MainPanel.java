@@ -11,7 +11,7 @@ import main.client.cc.gui.neo.top.SpecialControls;
 import main.client.cc.gui.tabs.*;
 import main.client.dc.Launcher;
 import main.entity.Entity;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.log.Chronos;
@@ -39,7 +39,7 @@ public class MainPanel implements TabChangeListener {
     private HeroPanel heroPanel;
     private HC_TabPanel tabs; // sizes?
 
-    private DC_HeroObj hero;
+    private Unit hero;
 
     private HC_StatsTab statsTab;
     private SpellTab spellTab;
@@ -56,7 +56,7 @@ public class MainPanel implements TabChangeListener {
     private int index;
     private HERO_VIEWS view;
     private boolean principleView;
-    public MainPanel(DC_HeroObj hero) {
+    public MainPanel(Unit hero) {
         this.setHero(hero);
         this.comp = createMainPanel();
         heroPanel = new HeroPanel(getHero());
@@ -232,11 +232,11 @@ public class MainPanel implements TabChangeListener {
         return index;
     }
 
-    public DC_HeroObj getHero() {
+    public Unit getHero() {
         return hero;
     }
 
-    private void setHero(DC_HeroObj hero) {
+    private void setHero(Unit hero) {
         this.hero = hero;
     }
 

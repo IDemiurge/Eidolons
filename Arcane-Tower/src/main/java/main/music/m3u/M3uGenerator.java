@@ -1,6 +1,6 @@
 package main.music.m3u;
 
-import main.content.parameters.G_PARAMS;
+import main.content.values.parameters.G_PARAMS;
 import main.data.ability.construct.VariableManager;
 import main.logic.AT_PROPS;
 import main.music.MusicCore;

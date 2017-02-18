@@ -1,7 +1,7 @@
 package main.game.logic.macro.gui.party;
 
-import main.content.parameters.MACRO_PARAMS;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.parameters.PARAMETER;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.panels.BarPanel;
 import main.system.graphics.ColorManager;

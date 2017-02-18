@@ -1,6 +1,6 @@
 package main.swing.components.panels;
 
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.swing.components.panels.page.log.WrappedTextComp;
 import main.system.graphics.FontMaster;
 import main.system.auxiliary.StringMaster;

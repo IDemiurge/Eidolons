@@ -1,22 +1,26 @@
 package main.rules.attack;
 
 import main.ability.conditions.VisibilityCondition;
-import main.content.CONTENT_CONSTS.*;
 import main.content.PROPS;
-import main.content.enums.STD_MODES;
-import main.content.properties.G_PROPS;
+import main.content.enums.*;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.SpellEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.enums.rules.VisionEnums;
+import main.content.mode.STD_MODES;
+import main.content.values.properties.G_PROPS;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.active.DC_UnitAction;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.DC_MovementManager;
 import main.game.battlefield.FacingMaster;
 import main.game.battlefield.VisionManager;
-import main.rules.DC_ActionManager;
+import main.game.logic.generic.DC_ActionManager;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.RULE;
 import main.rules.action.WatchRule;
@@ -85,9 +89,9 @@ public class AttackOfOpportunityRule {
      *
      *
      */
-    private static Set<DC_HeroObj> getPotentialAttackers(DC_ActiveObj active) {
-        Set<DC_HeroObj> set = new HashSet<>();
-        for (DC_HeroObj unit : active.getGame().getUnits()) {
+    private static Set<Unit> getPotentialAttackers(DC_ActiveObj active) {
+        Set<Unit> set = new HashSet<>();
+        for (Unit unit : active.getGame().getUnits()) {
             if (!unit.getOwner().isHostileTo(active.getOwner())) {
                 continue;
             }
@@ -109,12 +113,12 @@ public class AttackOfOpportunityRule {
         // Filter<DC_HeroObj>(active.getOwnerObj().getRef(),
         // getConditions(), C_OBJ_TYPE.UNITS_CHARS);
         // filter.getObjects();
-        Set<DC_HeroObj> units = getPotentialAttackers(active);
+        Set<Unit> units = getPotentialAttackers(active);
         if (units.size() <= 0) {
             return;
         }
 
-        for (DC_HeroObj unit : units) {
+        for (Unit unit : units) {
 
             try {
                 checkAttack(unit, active);
@@ -141,11 +145,11 @@ public class AttackOfOpportunityRule {
 
     }
 
-    public static Boolean checkAttack(DC_HeroObj unit, DC_ActiveObj active) {
+    public static Boolean checkAttack(Unit unit, DC_ActiveObj active) {
         return checkAttack(unit, active, false, false);
     }
 
-    public static Boolean checkAttack(DC_HeroObj unit, DC_ActiveObj active, boolean stealthAoO,
+    public static Boolean checkAttack(Unit unit, DC_ActiveObj active, boolean stealthAoO,
                                       boolean force) {
         // if (!getConditions().check(unit)) return;
         boolean free = false;
@@ -160,7 +164,7 @@ public class AttackOfOpportunityRule {
         if (!RuleMaster.isRuleTestOn(RULE.ATTACK_OF_OPPORTUNITY)) {
             if (!stealthAoO) {
                 if (!VisionManager.checkVisible(unit)) {
-                    if (!unit.checkBool(STD_BOOLS.STEALTHY_AOOS)) {
+                    if (!unit.checkBool(GenericEnums.STD_BOOLS.STEALTHY_AOOS)) {
                         return null;
                     }
                 }
@@ -170,7 +174,7 @@ public class AttackOfOpportunityRule {
             int distance = PositionMaster.getDistance(active.getOwnerObj().getCoordinates(), unit
                     .getCoordinates());
 
-            if (active.getActionGroup() == ACTION_TYPE_GROUPS.MOVE) {
+            if (active.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MOVE) {
                 distance = Math.max(distance, PositionMaster.getDistance(DC_MovementManager
                         .getMovementDestinationCoordinate(active), unit.getCoordinates()));
             }
@@ -178,12 +182,12 @@ public class AttackOfOpportunityRule {
             if (distance > getAoOMaxDistance(unit, active)) {
                 return null;
             }
-            if (FacingMaster.getSingleFacing(unit, (DC_HeroObj) active.getOwnerObj()) == FACING_SINGLE.BEHIND) {
+            if (FacingMaster.getSingleFacing(unit, (Unit) active.getOwnerObj()) == UnitEnums.FACING_SINGLE.BEHIND) {
                 return null; // vigilance?
             }
-            if (active.getActionGroup() == ACTION_TYPE_GROUPS.MOVE) {
+            if (active.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MOVE) {
 
-                result = unit.checkPassive(STANDARD_PASSIVES.VIGILANCE);
+                result = unit.checkPassive(UnitEnums.STANDARD_PASSIVES.VIGILANCE);
             }
         }
         // free = checkFreeAttackCase(active, unit); TODO
@@ -211,7 +215,7 @@ public class AttackOfOpportunityRule {
 
     }
 
-    private static int getAoOMaxDistance(DC_HeroObj unit, DC_ActiveObj active) {
+    private static int getAoOMaxDistance(Unit unit, DC_ActiveObj active) {
         if (active.isMove()) {
             return 0;
         }
@@ -223,12 +227,12 @@ public class AttackOfOpportunityRule {
             conditions = new Conditions(ConditionMaster.getAliveAndConsciousFilterCondition(),
                     ConditionMaster.getUnit_CharTypeCondition(), ConditionMaster
                     .getEnemyCondition(), new VisibilityCondition(KEYS.MATCH, KEYS.SOURCE,
-                    UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT));
+                    VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT));
         }
         return conditions;
     }
 
-    private static DC_ActiveObj getAoO(DC_HeroObj unit, boolean free) {
+    private static DC_ActiveObj getAoO(Unit unit, boolean free) {
         return unit.getAction(free ? DC_ActionManager.FREE_ATTACK_OF_OPPORTUNITY
                 : DC_ActionManager.ATTACK_OF_OPPORTUNITY);
     }
@@ -242,16 +246,16 @@ public class AttackOfOpportunityRule {
         return list;
     }
 
-    public static Boolean collisionAoO(DC_ActiveObj active, DC_HeroObj collidedUnit) {
+    public static Boolean collisionAoO(DC_ActiveObj active, Unit collidedUnit) {
         return checkAttack(collidedUnit, active, true, true);
 
     }
 
-    public static void triggerAttack(DC_HeroObj unit, DC_ActiveObj active, boolean free) {
+    public static void triggerAttack(Unit unit, DC_ActiveObj active, boolean free) {
         triggerAttack(unit, active.getOwnerObj(), free);
     }
 
-    public static void triggerAttack(DC_HeroObj attacker, DC_HeroObj attacked, boolean free) {
+    public static void triggerAttack(Unit attacker, Unit attacked, boolean free) {
         LogMaster.log(LogMaster.COMBAT_DEBUG, "Triggering "
                 + ((free) ? "free " : "") + "Attack of Opportunity for " + attacker + " on "
                 + attacked);
@@ -279,10 +283,10 @@ public class AttackOfOpportunityRule {
     private static boolean checkMove(DC_ActiveObj active) {
         // agile
         if (active.getOwnerObj().checkProperty(G_PROPS.STANDARD_PASSIVES,
-                STANDARD_PASSIVES.DEXTEROUS.getName())) {
+                UnitEnums.STANDARD_PASSIVES.DEXTEROUS.getName())) {
             return false;
         }
-        if (active.checkProperty(PROPS.STANDARD_ACTION_PASSIVES, STANDARD_ACTION_PASSIVES.DEXTEROUS
+        if (active.checkProperty(PROPS.STANDARD_ACTION_PASSIVES, ActionEnums.STANDARD_ACTION_PASSIVES.DEXTEROUS
                 .toString())) {
             return false;
         }
@@ -291,20 +295,20 @@ public class AttackOfOpportunityRule {
     }
 
     private static boolean checkSpell(DC_ActiveObj active) {
-        if (active.checkProperty(G_PROPS.SPELL_TAGS, SPELL_TAGS.INSTANT.toString())) {
+        if (active.checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.INSTANT.toString())) {
             return false;
         }
         return true;
     }
 
     private static boolean checkSpecial(DC_ActiveObj active) {
-        return active.checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.ATTACK_OF_OPPORTUNITY + "");
+        return active.checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.ATTACK_OF_OPPORTUNITY + "");
         // return true;
     }
 
     private static boolean checkSource(DC_ActiveObj active) {
         try {
-            DC_HeroObj source = (DC_HeroObj) active.getOwnerObj();
+            Unit source = (Unit) active.getOwnerObj();
             // if (!source.canAct()) a good idea, but there is a bug in it I
             // guess
             if (source.isImmobilized()) {
@@ -339,8 +343,8 @@ public class AttackOfOpportunityRule {
 
     public static Boolean checkAttacksOfOpportunityInterrupt(DC_ActiveObj action) {
 
-        List<DC_HeroObj> set = getPotentialAttackersOfOpportunity(action);
-        for (DC_HeroObj unit : set) {
+        List<Unit> set = getPotentialAttackersOfOpportunity(action);
+        for (Unit unit : set) {
             DC_ActiveObj attack = getAttackOfOpportunity(action, unit);
             if (attack == null) {
                 continue;
@@ -359,7 +363,7 @@ public class AttackOfOpportunityRule {
         return false;
     }
 
-    private static boolean triggerAttackOfOpportunityAttack(DC_HeroObj unit, DC_ActiveObj action,
+    private static boolean triggerAttackOfOpportunityAttack(Unit unit, DC_ActiveObj action,
                                                             DC_ActiveObj attack) {
         // TODO Attack bonus
         if (!attack.tryOpportunityActivation(action)) {
@@ -368,7 +372,7 @@ public class AttackOfOpportunityRule {
         return false; // interrupts when?
     }
 
-    private static DC_ActiveObj getAttackOfOpportunity(DC_ActiveObj action, DC_HeroObj unit) {
+    private static DC_ActiveObj getAttackOfOpportunity(DC_ActiveObj action, Unit unit) {
         // TODO AutoAttackRange?
 
         if (unit.getPreferredAttackOfOpportunity() != null) {
@@ -378,7 +382,7 @@ public class AttackOfOpportunityRule {
             }
         }
 
-        DC_HeroObj target = action.getOwnerObj();
+        Unit target = action.getOwnerObj();
         int distance = (PositionMaster.getDistance(target.getCoordinates(), unit.getCoordinates()));
 
         for (DC_ActiveObj attack : getAttacksOfOpportunity(unit)) {
@@ -389,13 +393,13 @@ public class AttackOfOpportunityRule {
             if (!canMakeAttackOfOpportunityAgainst(action, attack, unit)) {
                 continue;
             }
-            if (FacingMaster.getSingleFacing(unit, target) == FACING_SINGLE.TO_THE_SIDE) {
-                if (!attack.checkPassive(STANDARD_PASSIVES.BROAD_REACH)) {
+            if (FacingMaster.getSingleFacing(unit, target) == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
+                if (!attack.checkPassive(UnitEnums.STANDARD_PASSIVES.BROAD_REACH)) {
                     continue;
                 }
             }
-            if (FacingMaster.getSingleFacing(unit, target) == FACING_SINGLE.BEHIND) {
-                if (!attack.checkPassive(STANDARD_PASSIVES.HIND_REACH)) {
+            if (FacingMaster.getSingleFacing(unit, target) == UnitEnums.FACING_SINGLE.BEHIND) {
+                if (!attack.checkPassive(UnitEnums.STANDARD_PASSIVES.HIND_REACH)) {
                     continue;
                 }
             }
@@ -416,18 +420,18 @@ public class AttackOfOpportunityRule {
         return 0;
     }
 
-    private static List<DC_ActiveObj> getAttacksOfOpportunity(DC_HeroObj unit) {
+    private static List<DC_ActiveObj> getAttacksOfOpportunity(Unit unit) {
         List<DC_ActiveObj> list = new LinkedList<>();
-        List<DC_UnitAction> attacks = unit.getActionMap().get(ACTION_TYPE.STANDARD_ATTACK);
+        List<DC_UnitAction> attacks = unit.getActionMap().get(ActionEnums.ACTION_TYPE.STANDARD_ATTACK);
         if (attacks == null) {
             attacks = new LinkedList<>();
         }
-        if (unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK) != null) {
-            attacks.addAll(unit.getActionMap().get(ACTION_TYPE.SPECIAL_ATTACK));
+        if (unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK) != null) {
+            attacks.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK));
         }
         for (DC_UnitAction attack : attacks) {
             if (attack // TODO same tag?!
-                    .checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.ATTACK_OF_OPPORTUNITY_ACTION
+                    .checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.ATTACK_OF_OPPORTUNITY_ACTION
                             .toString())) {
                 list.add(attack);
             }
@@ -436,7 +440,7 @@ public class AttackOfOpportunityRule {
         return list;
     }
 
-    public static boolean checkPendingAttackProceeds(DC_HeroObj target, DC_ActiveObj attack) {
+    public static boolean checkPendingAttackProceeds(Unit target, DC_ActiveObj attack) {
         // TODO
         if (target.isDead()) {
             return false;
@@ -449,11 +453,11 @@ public class AttackOfOpportunityRule {
         return false;
     }
 
-    private static List<DC_HeroObj> getPotentialAttackersOfOpportunity(DC_ActiveObj action) {
+    private static List<Unit> getPotentialAttackersOfOpportunity(DC_ActiveObj action) {
         // TODO all? anyone could have *some* action to make against certain
         // cases...
-        List<DC_HeroObj> list = new LinkedList<>();
-        for (DC_HeroObj unit : action.getGame().getUnits()) {
+        List<Unit> list = new LinkedList<>();
+        for (Unit unit : action.getGame().getUnits()) {
             if (unit.isOwnedBy(action.getGame().getPlayer(!action.getOwner().isMe())))
                 // if (!VisionManager.checkVisibileForUnit(unit,
                 // action.getOwnerObj())) TODO
@@ -465,39 +469,39 @@ public class AttackOfOpportunityRule {
     }
 
     private static boolean canMakeAttackOfOpportunityAgainst(DC_ActiveObj action,
-                                                             DC_ActiveObj attack, DC_HeroObj attacker) {
+                                                             DC_ActiveObj attack, Unit attacker) {
         // TODO
         if (!action.getOwnerObj().checkVisible()) {
-            return attacker.checkPassive(STANDARD_PASSIVES.BLIND_FIGHTER);
+            return attacker.checkPassive(UnitEnums.STANDARD_PASSIVES.BLIND_FIGHTER);
         }
         if (action instanceof DC_SpellObj) {
             DC_SpellObj spellObj = (DC_SpellObj) action;
             if (spellObj.isChanneling()) {
                 return true;
             }
-            if (attacker.checkPassive(STANDARD_PASSIVES.OPPORTUNIST)) {
+            if (attacker.checkPassive(UnitEnums.STANDARD_PASSIVES.OPPORTUNIST)) {
                 if (!spellObj.isInstant()) {
                     return true;
                 }
             }
         }
-        if (action.getActionGroup() == ACTION_TYPE_GROUPS.TURN) {
+        if (action.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.TURN) {
             // if (distance==0)
             // if (singleFacing == behind)
         }
-        if (action.getActionGroup() == ACTION_TYPE_GROUPS.MOVE) {
+        if (action.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MOVE) {
 
         }
-        if (action.getActionGroup() == ACTION_TYPE_GROUPS.ATTACK) {
+        if (action.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK) {
             // interceptor
         }
         // if (action.getActionGroup() == ACTION_TYPE_GROUPS.MODE)
-        if (attacker.checkPassive(STANDARD_PASSIVES.OPPORTUNIST)) {
-            if (action.checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.RESTORATION.toString())) {
+        if (attacker.checkPassive(UnitEnums.STANDARD_PASSIVES.OPPORTUNIST)) {
+            if (action.checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.RESTORATION.toString())) {
                 return true;
             }
         }
-        return action.checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.ATTACK_OF_OPPORTUNITY
+        return action.checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.ATTACK_OF_OPPORTUNITY
                 .toString());
     }
 

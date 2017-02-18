@@ -2,14 +2,14 @@ package main.game.battlefield;
 
 import main.entity.Entity;
 import main.entity.active.DC_ActiveObj;
-import main.entity.obj.BattlefieldObj;
+import main.entity.obj.BfObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_GameState;
-import main.game.MicroGameState;
+import main.entity.obj.unit.Unit;
+import main.game.core.state.DC_GameState;
+import main.game.core.state.MicroGameState;
 import main.game.battlefield.map.DC_Map;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 import main.swing.builders.DC_Builder;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.drawing.DrawMasterStatic;
@@ -101,7 +101,7 @@ public class DC_BattleField extends SwingBattleField {
         return getGrid().getGame().getRules().getStackingRule().canBeMovedOnto(unit, c);
     }
 
-    public void createUnit(DC_HeroObj obj) {
+    public void createUnit(Unit obj) {
         if (obj.getRef().getActive() instanceof DC_ActiveObj) {
             // if (!canMoveOnto(obj, obj.getCoordinates())) {
             // DC_HeroObj collideObj = (DC_HeroObj)
@@ -133,7 +133,7 @@ public class DC_BattleField extends SwingBattleField {
 
     @Override
     public void createObj(Obj obj) {
-        createUnit((DC_HeroObj) obj);
+        createUnit((Unit) obj);
     }
 
     @Override
@@ -142,7 +142,7 @@ public class DC_BattleField extends SwingBattleField {
         // DrawMaster.getObjImageCache().remove(obj);
         this.setInfoSelectedObj(obj);
         // grid.setCameraCenterCoordinates(obj.getCoordinates());
-        if (obj instanceof BattlefieldObj) {
+        if (obj instanceof BfObj) {
             getBuilder().refresh();
 
             // getGrid().getGridComp().getPanel().repaint();

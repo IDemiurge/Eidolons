@@ -1,7 +1,7 @@
 package main.swing.components.panels.page;
 
 import main.entity.active.DC_UnitAction;
-import main.entity.obj.unit.DC_UnitObj;
+import main.entity.obj.unit.DC_UnitModel;
 import main.swing.components.panels.DC_UnitActionPanel;
 import main.swing.components.panels.DC_UnitActionPanel.ACTION_DISPLAY_GROUP;
 import main.swing.generic.components.G_Component;
@@ -40,7 +40,7 @@ public class DC_PagedUnitActionPanel extends G_PagedListPanel<DC_UnitAction> {
         if (getObj() == null) {
             return null;
         }
-        List<DC_UnitAction> actions = ((DC_UnitObj) getObj()).getActionMap().get(group.getType());
+        List<DC_UnitAction> actions = ((DC_UnitModel) getObj()).getActionMap().get(group.getType());
         if (actions == null) {
             return null;
         }

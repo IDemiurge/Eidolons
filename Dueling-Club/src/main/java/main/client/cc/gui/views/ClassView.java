@@ -1,13 +1,13 @@
 package main.client.cc.gui.views;
 
-import main.content.CONTENT_CONSTS.CLASS_GROUP;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.HeroEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.elements.Filter;
 import main.elements.conditions.Conditions;
@@ -15,7 +15,7 @@ import main.elements.conditions.NotCondition;
 import main.elements.conditions.OrConditions;
 import main.elements.conditions.StringComparison;
 import main.entity.Entity;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager.BORDER;
@@ -27,17 +27,17 @@ import java.util.Map;
 
 public class ClassView extends HeroItemView {
 
-    public static final String MULTICLASS = CLASS_GROUP.MULTICLASS.toString();
+    public static final String MULTICLASS = HeroEnums.CLASS_GROUP.MULTICLASS.toString();
     private Map<String, List<ObjType>> additionalTypesMap;
 
-    public ClassView(DC_HeroObj hero) {
+    public ClassView(Unit hero) {
         super(hero, true, true);
         // init();
     }
 
     public static boolean isMulticlass(Entity type) {
         return type.getProperty(G_PROPS.CLASS_GROUP).equalsIgnoreCase(
-                CLASS_GROUP.MULTICLASS.toString());
+                HeroEnums.CLASS_GROUP.MULTICLASS.toString());
     }
 
     @Override
@@ -56,7 +56,7 @@ public class ClassView extends HeroItemView {
 
     @Override
     protected OBJ_TYPE getTYPE() {
-        return OBJ_TYPES.CLASSES;
+        return DC_TYPE.CLASSES;
     }
 
     @Override
@@ -114,7 +114,7 @@ public class ClassView extends HeroItemView {
 
                 new StringComparison("{Match_}" + PROPS.BASE_CLASSES_ONE, types, false),
                 new StringComparison("{Match_}" + PROPS.BASE_CLASSES_TWO, types, false))),
-                OBJ_TYPES.CLASSES);
+                DC_TYPE.CLASSES);
         list = new LinkedList<>(filter.getTypes());
         getAdditionalTypesMap().put(vendorPanel.getSelectedTabName(), list);
         return list;

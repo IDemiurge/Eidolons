@@ -5,14 +5,14 @@ import main.data.ability.construct.Reconstructable;
 import main.elements.triggers.Trigger;
 import main.entity.Ref;
 import main.entity.Referred;
-import main.entity.Variable;
 import main.entity.group.GroupImpl;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.system.graphics.ANIM;
 import main.system.math.Formula;
 
-public interface Effect extends Interruptable, Referred, Variable, Reconstructable<Effect> {
+public interface Effect extends Interruptable, Referred,
+  Reconstructable<Effect> {
     int BASE_LAYER = 0;
     int SECOND_LAYER = 1;
     int ZERO_LAYER = -1;

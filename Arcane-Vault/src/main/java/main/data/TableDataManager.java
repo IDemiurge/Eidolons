@@ -2,9 +2,10 @@ package main.data;
 
 import main.AV_DataManager;
 import main.content.*;
-import main.content.parameters.G_PARAMS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.values.parameters.G_PARAMS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
 import main.data.xml.XML_Reader;
 import main.entity.Entity;
 import main.entity.type.ObjType;
@@ -37,7 +38,7 @@ public class TableDataManager {
     public static List<String> getTreeTabGroups() {
         List<String> set = new LinkedList<>();
         for (OBJ_TYPE type : (ArcaneVault.isMacroMode()) ? MACRO_OBJ_TYPES
-                .getTypeGroups() : OBJ_TYPES.getTypeGroups()) {
+                .getTypeGroups() : DC_TYPE.getTypeGroups()) {
             if (type.getCode() != -1) {
                 set.add(type.getName());
             }

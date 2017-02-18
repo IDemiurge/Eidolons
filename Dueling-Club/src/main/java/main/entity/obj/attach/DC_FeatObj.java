@@ -5,16 +5,16 @@ import main.ability.AbilityObj;
 import main.ability.effects.Effect;
 import main.content.*;
 import main.content.DC_ContentManager.ATTRIBUTE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.MicroGame;
-import main.game.player.Player;
+import main.game.core.game.MicroGame;
+import main.game.logic.battle.player.Player;
 import main.system.entity.ConditionMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager.BORDER;
@@ -22,7 +22,7 @@ import main.system.math.Formula;
 
 import java.util.HashMap;
 import java.util.Map;
-
+// Includes Skills and Classes
 public class DC_FeatObj extends DC_HeroAttachedObj {
 
     public static PARAMS[] rankParams = {PARAMS.RANK_XP_MOD, PARAMS.RANK_SD_MOD,
@@ -54,7 +54,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
     protected void initHero() {
         String TARGET_KEYWORD = getProperty(G_PROPS.KEYS);
         if (!StringMaster.isEmpty(TARGET_KEYWORD)) {
-            setHero((DC_HeroObj) getGame().getObjectById(ref.getId(TARGET_KEYWORD)));
+            setHero((Unit) getGame().getObjectById(ref.getId(TARGET_KEYWORD)));
         } else {
             super.initHero();
         }
@@ -175,7 +175,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
 
             String paramName;
 
-            if (getOBJ_TYPE_ENUM() == OBJ_TYPES.CLASSES) {
+            if (getOBJ_TYPE_ENUM() == DC_TYPE.CLASSES) {
                 paramName = DC_ContentManager.getMainAttributeForClass(this);
                 if (paramName.contains(StringMaster.AND)) {
                     quotientSum = quotientSum / paramName.split(StringMaster.AND).length;

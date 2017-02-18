@@ -2,9 +2,9 @@ package main.system.graphics;
 
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effect.MOD_PROP_TYPE;
-import main.content.CONTENT_CONSTS.STD_COUNTERS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.attach.DC_BuffObj;
 import main.system.auxiliary.StringMaster;

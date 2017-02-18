@@ -1,10 +1,10 @@
 package main.system;
 
-import main.content.CONTENT_CONSTS.CUSTOM_VALUE_TEMPLATE;
+import main.content.enums.system.MetaEnums.CUSTOM_VALUE_TEMPLATE;
 import main.content.ContentManager;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.entity.active.DC_ActiveObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.system.auxiliary.StringMaster;
 
 public class CustomValueManager {
@@ -40,7 +40,7 @@ public class CustomValueManager {
         return null;
     }
 
-    public static void processCustomValues(DC_HeroObj unit) {
+    public static void processCustomValues(Unit unit) {
         // TODO tags CV's for costs, Spellpower etc
         // how best to override the actives' toBase()?
         // modMap(valueName, value) per Active?

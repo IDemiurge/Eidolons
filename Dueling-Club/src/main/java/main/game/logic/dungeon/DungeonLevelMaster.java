@@ -1,6 +1,6 @@
 package main.game.logic.dungeon;
 
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
@@ -213,7 +213,7 @@ public class DungeonLevelMaster {
     }
 
     // boolean trap, boolean door
-    public static List<Dungeon> getAvailableDungeons(DC_HeroObj unit) {
+    public static List<Dungeon> getAvailableDungeons(Unit unit) {
         List<Dungeon> list = new LinkedList<>();
         for (Dungeon dungeon : DungeonMaster.getDungeons()) {
             for (Entrance e : dungeon.getEntrances()) {
@@ -228,7 +228,7 @@ public class DungeonLevelMaster {
         return list;
     }
 
-    public static List<Entrance> getAvailableDungeonEntrances(DC_HeroObj unit) {
+    public static List<Entrance> getAvailableDungeonEntrances(Unit unit) {
         List<Entrance> list = new LinkedList<>();
         for (Dungeon dungeon : DungeonMaster.getDungeons()) {
             for (Entrance e : dungeon.getEntrances()) {

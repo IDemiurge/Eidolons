@@ -3,10 +3,10 @@ package main.game.logic.macro.travel;
 import main.client.cc.logic.party.PartyObj;
 import main.content.CONTENT_CONSTS2.MACRO_STATUS;
 import main.content.PARAMS;
-import main.content.parameters.MACRO_PARAMS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.MACRO_PROPS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.MACRO_PROPS;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.MacroManager;
@@ -19,7 +19,7 @@ import main.game.logic.macro.map.Place;
 import main.game.logic.macro.map.Region;
 import main.game.logic.macro.map.Route;
 import main.game.logic.macro.town.Town;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.math.MathMaster;
 
@@ -84,7 +84,7 @@ public class MacroParty extends MacroObj {
             party.toBase();
         }
         resetGoldShares();
-        for (DC_HeroObj hero : getMembers()) {
+        for (Unit hero : getMembers()) {
             hero.setParam(MACRO_PARAMS.TRAVEL_SPEED,
                     "" + TravelMaster.getTravelSpeedDynamic(hero)
                     // , true //TODO
@@ -107,7 +107,7 @@ public class MacroParty extends MacroObj {
     public void resetGoldShares() {
         int amount = 100;
 
-        for (DC_HeroObj m : getMembers()) {
+        for (Unit m : getMembers()) {
             if (m == getLeader()) {
                 continue;
             }
@@ -131,7 +131,7 @@ public class MacroParty extends MacroObj {
     }
 
     public void useTime(int hours) {
-        for (DC_HeroObj h : getMembers()) {
+        for (Unit h : getMembers()) {
             h.getMacroMode();
         }
 
@@ -139,7 +139,7 @@ public class MacroParty extends MacroObj {
 
     public Integer getSharedGold() {
         Integer gold = getLeader().getIntParam(PARAMS.GOLD);
-        for (DC_HeroObj m : getMembers()) {
+        for (Unit m : getMembers()) {
             if (m == getLeader()) {
                 continue;
             }
@@ -185,24 +185,24 @@ public class MacroParty extends MacroObj {
         return party.getOriginalOwner();
     }
 
-    public void addMember(DC_HeroObj hero) {
+    public void addMember(Unit hero) {
         party.addMember(hero);
 
     }
 
-    public void removeMember(DC_HeroObj hero) {
+    public void removeMember(Unit hero) {
         party.removeMember(hero);
     }
 
-    public List<DC_HeroObj> getMembers() {
+    public List<Unit> getMembers() {
         return party.getMembers();
     }
 
-    public DC_HeroObj getLeader() {
+    public Unit getLeader() {
         return party.getLeader();
     }
 
-    public List<DC_HeroObj> getMercs() {
+    public List<Unit> getMercs() {
         return party.getMercs();
     }
 
@@ -340,7 +340,7 @@ public class MacroParty extends MacroObj {
     public int getExploreCapacity() {
         int capacity = party.getMaxParam(PARAMS.DETECTION);
         // ++ speed;
-        for (DC_HeroObj m : getMembers()) {
+        for (Unit m : getMembers()) {
             capacity += m.getIntParam(PARAMS.DETECTION) / 2;
         }
         return capacity;

@@ -1,7 +1,7 @@
 package main.data.xml;
 
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.VALUE;
 import main.data.DataManager;
 import main.data.ability.AE_Item;
@@ -348,7 +348,7 @@ public class XML_Converter {
             return new LinkedList<>();
         }
         for (Node groupNode : typeGroupsList) {
-            OBJ_TYPES obj_type = OBJ_TYPES.getType(groupNode.getNodeName());
+            DC_TYPE obj_type = DC_TYPE.getType(groupNode.getNodeName());
             for (Node typeNode : getNodeList(groupNode)) {
                 ObjType type = DataManager.getType(typeNode.getNodeName(), obj_type);
                 if (type != null) // TODO find?

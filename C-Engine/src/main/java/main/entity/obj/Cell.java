@@ -1,5 +1,5 @@
 package main.entity.obj;
 
-public interface Cell extends BattlefieldObj {
+public interface Cell extends BfObj {
 
 }

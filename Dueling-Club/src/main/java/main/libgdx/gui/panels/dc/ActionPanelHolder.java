@@ -3,7 +3,7 @@ package main.libgdx.gui.panels.dc;
 import main.entity.active.DC_SpellObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.item.DC_QuickItemObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -13,7 +13,7 @@ import java.util.List;
  * Created by JustMe on 1/5/2017.
  */
 public class ActionPanelHolder {
-    DC_HeroObj hero;
+    Unit hero;
 
     ActionPanel itemPanel;
     ActionPanel centerPanel;

@@ -2,7 +2,7 @@ package main.game.ai.advanced.behavior;
 
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.ai.GroupAI;
 import main.game.ai.UnitAI;
 import main.game.ai.UnitAI.AI_BEHAVIOR_MODE;
@@ -11,7 +11,7 @@ import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.tools.path.ActionPath;
 import main.game.ai.tools.path.PathBuilder;
 import main.game.battlefield.Coordinates;
-import main.rules.DC_ActionManager.STD_ACTIONS;
+import main.game.logic.generic.DC_ActionManager.STD_ACTIONS;
 import main.system.auxiliary.data.ListMaster;
 
 public class BehaviorMaster {
@@ -82,7 +82,7 @@ public class BehaviorMaster {
         Integer target = null;
 
         // doesn't the group have standing orders as a whole?..
-        DC_HeroObj unit = ai.getUnit();
+        Unit unit = ai.getUnit();
         Ref ref = new Ref(unit);
         GroupAI group = ai.getGroup();
         // checkBehaviorChange(group); where does that happen?

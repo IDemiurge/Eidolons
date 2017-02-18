@@ -2,8 +2,8 @@ package main.client.cc.gui.neo.principles;
 
 import main.client.cc.gui.MainPanel;
 import main.client.cc.gui.neo.HeroPanel;
-import main.content.CONTENT_CONSTS.PRINCIPLES;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
+import main.entity.obj.unit.Unit;
 import main.swing.generic.components.G_Panel;
 import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
@@ -19,10 +19,10 @@ public class PrincipleView extends G_Panel {
     PrincipleMiddlePanel middlePanel;
     PrincipleItemPanel itemPanel;
     private PRINCIPLES principle;
-    private DC_HeroObj hero;
+    private Unit hero;
     private PrincipleDescriptionPanel descriptionPanel;
 
-    public PrincipleView(DC_HeroObj hero) {
+    public PrincipleView(Unit hero) {
         this.setHero(hero);
     }
 
@@ -82,11 +82,11 @@ public class PrincipleView extends G_Panel {
         this.principle = principle;
     }
 
-    public DC_HeroObj getHero() {
+    public Unit getHero() {
         return hero;
     }
 
-    public void setHero(DC_HeroObj hero) {
+    public void setHero(Unit hero) {
         this.hero = hero;
     }
 

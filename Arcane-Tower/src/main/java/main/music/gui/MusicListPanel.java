@@ -1,8 +1,8 @@
 package main.music.gui;
 
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.entity.type.ObjType;

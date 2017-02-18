@@ -6,11 +6,11 @@ import main.client.cc.gui.views.HeroItemView;
 import main.client.cc.logic.HeroCreator;
 import main.content.C_OBJ_TYPE;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;
 import main.system.sound.SoundMaster;
@@ -33,13 +33,13 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
     protected HeroItemView view;
     protected HC_PagedListPanel quickItemsList;
     protected PROPERTY prop2;
-    private DC_HeroObj hero;
+    private Unit hero;
     private DC_PagedInfoPanel itemInfoPanel;
     private DC_PagedInfoPanel heroInfoPanel;
 
     private boolean infoPanelSwitch = false;
 
-    public ItemListManager(DC_HeroObj hero, OBJ_TYPE TYPE, PROPERTY PROP) {
+    public ItemListManager(Unit hero, OBJ_TYPE TYPE, PROPERTY PROP) {
 
         this.setHero(hero);
         this.TYPE = TYPE;
@@ -67,16 +67,16 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
     }
 
     protected boolean addType(ObjType type, HeroListPanel hlp, boolean alt) {
-        if (isQuickItemList(hlp, type.getOBJ_TYPE_ENUM() == OBJ_TYPES.ITEMS ? PROPS.QUICK_ITEMS
+        if (isQuickItemList(hlp, type.getOBJ_TYPE_ENUM() == DC_TYPE.ITEMS ? PROPS.QUICK_ITEMS
                 : null)) {
             return false;
         }
         if (hlp != null) {
             if (isHeroList(hlp)) {
-                if (TYPE == OBJ_TYPES.JEWELRY) {
+                if (TYPE == DC_TYPE.JEWELRY) {
                     return false;
                 }
-                if (TYPE == OBJ_TYPES.SKILLS) {
+                if (TYPE == DC_TYPE.SKILLS) {
                     return false;
                 }
                 if (C_OBJ_TYPE.ITEMS.equals(TYPE))
@@ -85,7 +85,7 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
                     return CharacterCreator.getHeroManager().addSlotItem(getHero(), type, alt) > 0;
                 }
 
-                if (TYPE == OBJ_TYPES.SPELLS) {
+                if (TYPE == DC_TYPE.SPELLS) {
                     if (!alt) {
                         return CharacterCreator.getHeroManager().addItem(getHero(), type, TYPE,
                                 PROPS.VERBATIM_SPELLS);
@@ -107,7 +107,7 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
         // if (!lists.getOrCreate(list).isResponsive())
         // return;
 
-        if (TYPE == OBJ_TYPES.CLASSES || TYPE == OBJ_TYPES.SKILLS) {
+        if (TYPE == DC_TYPE.CLASSES || TYPE == DC_TYPE.SKILLS) {
             if (hero.getFeat(type) != null) {
                 return CharacterCreator.getHeroManager().tryIncrementRank(hero, type);
             }
@@ -210,7 +210,7 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
 
         if (isQuickItemList(hlp, p)) {
             CharacterCreator.getHeroManager().removeQuickSlotItem(getHero(), type);
-        } else if (free && type.getOBJ_TYPE_ENUM() == OBJ_TYPES.JEWELRY) {
+        } else if (free && type.getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY) {
             CharacterCreator.getHeroManager().removeJewelryItem(getHero(), type);
         } else {
             CharacterCreator.getHeroManager().removeItem(getHero(), type, p, TYPE, free);
@@ -273,7 +273,7 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
         if (C_OBJ_TYPE.ITEMS.equals(TYPE)) {
             return STD_SOUNDS.DIS__COINS;
         }
-        if (OBJ_TYPES.SPELLS.equals(TYPE)) {
+        if (DC_TYPE.SPELLS.equals(TYPE)) {
             return STD_SOUNDS.DIS__BOOK_CLOSE;
         }
 
@@ -285,13 +285,13 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
         if (C_OBJ_TYPE.ITEMS.equals(TYPE)) {
             return STD_SOUNDS.DIS__COINS;
         }
-        if (OBJ_TYPES.SPELLS.equals(TYPE)) {
+        if (DC_TYPE.SPELLS.equals(TYPE)) {
             return STD_SOUNDS.DIS__BOOK_OPEN;
         }
-        if (OBJ_TYPES.SKILLS.equals(TYPE)) {// TODO
+        if (DC_TYPE.SKILLS.equals(TYPE)) {// TODO
             return STD_SOUNDS.FIGHT;
         }
-        if (OBJ_TYPES.CLASSES.equals(TYPE)) {
+        if (DC_TYPE.CLASSES.equals(TYPE)) {
             return STD_SOUNDS.DIS__KNIFE;
         }
         return STD_SOUNDS.CLICK_ACTIVATE;
@@ -372,11 +372,11 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
 
     }
 
-    public DC_HeroObj getHero() {
+    public Unit getHero() {
         return hero;
     }
 
-    public void setHero(DC_HeroObj hero) {
+    public void setHero(Unit hero) {
         this.hero = hero;
     }
 

@@ -1,11 +1,12 @@
 package main.system.math;
 
 import main.client.cc.logic.PointMaster;
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.*;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.enums.GenericEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.elements.Filter;
 import main.elements.conditions.Conditions;
 import main.entity.Entity;
@@ -13,10 +14,10 @@ import main.entity.Ref;
 import main.entity.item.DC_HeroItemObj;
 import main.entity.obj.Obj;
 import main.entity.obj.attach.DC_FeatObj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.entity.obj.unit.DC_UnitObj;
+import main.entity.obj.unit.Unit;
+import main.entity.obj.unit.DC_UnitModel;
 import main.entity.type.ObjType;
-import main.game.MicroGame;
+import main.game.core.game.MicroGame;
 import main.system.entity.ConditionMaster;
 import main.system.DC_Formulas;
 import main.system.auxiliary.StringMaster;
@@ -41,9 +42,9 @@ public class DC_MathManager extends MathMaster {
     }
 
     public static int getDurabilityForDamage(int damage, int armor, OBJ_TYPE TYPE) {
-        if (TYPE == OBJ_TYPES.WEAPONS) {
+        if (TYPE == DC_TYPE.WEAPONS) {
             return getWeaponDurabilityForDamage(damage, armor);
-        } else if (TYPE == OBJ_TYPES.ARMOR) {
+        } else if (TYPE == DC_TYPE.ARMOR) {
             return getArmorDurabilityForDamage(damage, armor);
         }
         return 0;
@@ -86,23 +87,23 @@ public class DC_MathManager extends MathMaster {
         return 0;
     }
 
-    public static int getDamageTypeResistance(DC_UnitObj attacked, DAMAGE_TYPE type) {
+    public static int getDamageTypeResistance(DC_UnitModel attacked, DAMAGE_TYPE type) {
 
         if (type == null) {
             return 0;
         }
-        if (type == DAMAGE_TYPE.PHYSICAL) {
+        if (type == GenericEnums.DAMAGE_TYPE.PHYSICAL) {
             return MathMaster.getAverage(attacked.getIntParam(PARAMS.SLASHING_RESISTANCE),
                     attacked.getIntParam(PARAMS.PIERCING_RESISTANCE), attacked.getIntParam(PARAMS.SLASHING_RESISTANCE));
         }
         // AETHER/ASTRAL -> average of all elemental/astral TODO
-        if (type == DAMAGE_TYPE.PURE) {
+        if (type == GenericEnums.DAMAGE_TYPE.PURE) {
             return 0;
         }
-        if (!type.isMagical() && attacked.checkPassive(STANDARD_PASSIVES.IMMATERIAL)) {
-            type = DAMAGE_TYPE.MAGICAL;
+        if (!type.isMagical() && attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
+            type = GenericEnums.DAMAGE_TYPE.MAGICAL;
         }
-        if (type == DAMAGE_TYPE.MAGICAL) {
+        if (type == GenericEnums.DAMAGE_TYPE.MAGICAL) {
             return attacked.getIntParam(PARAMS.RESISTANCE);
         }
         return attacked.getIntParam(DC_ContentManager.getDamageTypeResistance(type));
@@ -154,11 +155,11 @@ public class DC_MathManager extends MathMaster {
         return entity.getIntParam(PARAMS.FREE_MASTERIES);
     }
 
-    public static int getFreeMasteryPoints(DC_HeroObj hero, PARAMETER masteryParam) {
+    public static int getFreeMasteryPoints(Unit hero, PARAMETER masteryParam) {
         return getMasteryPoints(hero, masteryParam) - calculateUsedMasteryPoints(hero, masteryParam);
     }
 
-    public static int getMasteryPoints(DC_HeroObj hero, PARAMETER masteryParam) {
+    public static int getMasteryPoints(Unit hero, PARAMETER masteryParam) {
         int pts = 0;
         for (int i = 0; i <= hero.getIntParam(masteryParam); i++) {
             pts += PointMaster.getPointCost(i, hero, masteryParam);
@@ -166,7 +167,7 @@ public class DC_MathManager extends MathMaster {
         return pts;
     }
 
-    public static int calculateUsedMasteryPoints(DC_HeroObj hero, PARAMETER masteryParam) {
+    public static int calculateUsedMasteryPoints(Unit hero, PARAMETER masteryParam) {
         int points = 0;
         for (DC_FeatObj skill : hero.getSkills()) {
             if (StringMaster.compare(skill.getProperty(G_PROPS.MASTERY), masteryParam.getName(), true)) {
@@ -182,11 +183,11 @@ public class DC_MathManager extends MathMaster {
 
     }
 
-    public static int getMaxDivinationSD(DC_HeroObj hero) {
+    public static int getMaxDivinationSD(Unit hero) {
         return DC_Formulas.DIVINATION_MAX_SD_FORMULA.getInt(hero.getRef());
     }
 
-    public static int getDivinationPool(DC_HeroObj hero) {
+    public static int getDivinationPool(Unit hero) {
         Formula divinationPoolFormula = DC_Formulas.DIVINATION_POOL_FORMULA;
         String property = hero.getProperty(PROPS.DIVINATION_PARAMETER);
         if (!property.isEmpty()) {
@@ -213,7 +214,7 @@ public class DC_MathManager extends MathMaster {
                 ;
     }
 
-    public static int getParamPercentage(DC_HeroObj unit, PARAMETER p) {
+    public static int getParamPercentage(Unit unit, PARAMETER p) {
         return unit.getIntParam(ContentManager.getPercentageParam(p));
     }
 

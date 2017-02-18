@@ -7,10 +7,10 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BuffObj;
 import main.entity.type.BuffType;
-import main.game.DC_Game;
-import main.game.MicroGame;
-import main.game.battlefield.BuffMaster;
-import main.game.player.Player;
+import main.game.core.game.DC_Game;
+import main.game.core.game.MicroGame;
+import main.game.core.master.BuffMaster;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.StringMaster;
 
 public class DC_BuffObj extends BuffObj {

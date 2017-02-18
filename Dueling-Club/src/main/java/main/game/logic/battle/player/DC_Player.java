@@ -1,14 +1,13 @@
 package main.game.logic.battle.player;
 
 import main.client.net.HostClientConnection;
-import main.content.CONTENT_CONSTS.PLAYER_AI_TYPE;
+import main.content.enums.system.AiEnums;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.ai.PlayerAI;
 import main.game.battlefield.Coordinates;
-import main.game.player.Player;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -82,7 +81,7 @@ public class DC_Player extends Player {
     public Set<Obj> getControlledUnits() {
 
         Set<Obj> units = new HashSet<>();
-        for (DC_HeroObj unit : (getGame().getUnits())) {
+        for (Unit unit : (getGame().getUnits())) {
             if (unit.getOwner() == this) {
                 units.add(unit);
             }
@@ -101,7 +100,7 @@ public class DC_Player extends Player {
 
     public PlayerAI getPlayerAI() {
         if (playerAI == null) {
-            playerAI = new PlayerAI(PLAYER_AI_TYPE.NORMAL);
+            playerAI = new PlayerAI(AiEnums.PLAYER_AI_TYPE.NORMAL);
         }
         return playerAI;
     }

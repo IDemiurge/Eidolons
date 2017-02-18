@@ -10,7 +10,7 @@ import main.elements.conditions.*;
 import main.elements.conditions.standard.OwnershipCondition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 
 public class InterruptRule {
 
@@ -38,7 +38,7 @@ public class InterruptRule {
 
     }
 
-    public static void interrupt(DC_HeroObj target) {
+    public static void interrupt(Unit target) {
         getEffect().apply(Ref.getSelfTargetingRefCopy(target));
         new InterruptEffect().apply(Ref.getSelfTargetingRefCopy(target));
     }

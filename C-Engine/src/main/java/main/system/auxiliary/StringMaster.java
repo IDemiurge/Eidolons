@@ -2,7 +2,7 @@ package main.system.auxiliary;
 
 import main.content.ContentManager;
 import main.content.VALUE;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.data.xml.XML_Converter;
@@ -79,6 +79,7 @@ public class StringMaster {
     public static final String XOR_SEPARATOR = "xor";
     public static final String CONDITION_SEPARATOR = "//";
     public static final String NET_DATA_SEPARATOR = ">><<";
+    public static final String UPGRADE_SEPARATOR = ">|<";
     public static final String SCORE = " Score";
     public static final String AND = " AND ";
     public static final String CODE_BACK_SLASH = "CODE_BACK_SLASH";

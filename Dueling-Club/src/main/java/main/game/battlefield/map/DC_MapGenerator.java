@@ -1,7 +1,6 @@
 package main.game.battlefield.map;
 
-import main.content.CONTENT_CONSTS;
-import main.content.CONTENT_CONSTS.ASPECT;
+import main.content.enums.GenericEnums;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.battlefield.map.DC_Map.BF_OBJ_OWNER;
@@ -31,11 +30,11 @@ public class DC_MapGenerator extends Manager {
         ObjType type;
         type = gatewaysMap.get(TYPE);
         if (TYPE == BF_OBJ_OWNER.NEUTRAL) {
-            type = DataManager.getType(ASPECT.NEUTRAL.getGateway());
+            type = DataManager.getType(GenericEnums.ASPECT.NEUTRAL.getGateway());
         }
         if (TYPE == BF_OBJ_OWNER.RANDOM) {
-            type = DataManager.getType(ASPECT.getAspectByCode(new Random()
-                    .nextInt(ASPECT.values().length)).getGateway());
+            type = DataManager.getType(GenericEnums.ASPECT.getAspectByCode(new Random()
+                    .nextInt(GenericEnums.ASPECT.values().length)).getGateway());
         }
 
         return type;
@@ -48,11 +47,11 @@ public class DC_MapGenerator extends Manager {
         ObjType type;
         type = crystalsMap.get(TYPE);
         if (TYPE == BF_OBJ_OWNER.NEUTRAL) {
-            type = DataManager.getType(ASPECT.NEUTRAL.getCrystalName());
+            type = DataManager.getType(GenericEnums.ASPECT.NEUTRAL.getCrystalName());
         }
         if (TYPE == BF_OBJ_OWNER.RANDOM) {
-            type = DataManager.getType(ASPECT.getAspectByCode(new Random()
-                    .nextInt(ASPECT.values().length)).getCrystalName());
+            type = DataManager.getType(GenericEnums.ASPECT.getAspectByCode(new Random()
+                    .nextInt(GenericEnums.ASPECT.values().length)).getCrystalName());
         }
 
         return type;
@@ -61,17 +60,17 @@ public class DC_MapGenerator extends Manager {
     private static void init() {
         initialized = true;
         crystalsMap.put(BF_OBJ_OWNER.MY, DataManager
-                .getType(CONTENT_CONSTS.ASPECT.getAspect(game.getPlayer(true)
+                .getType(GenericEnums.ASPECT.getAspect(game.getPlayer(true)
                         .getAllegiance()).getCrystalName()));
         crystalsMap.put(BF_OBJ_OWNER.ENEMY, DataManager
-                .getType(CONTENT_CONSTS.ASPECT.getAspect(game.getPlayer(false)
+                .getType(GenericEnums.ASPECT.getAspect(game.getPlayer(false)
                         .getAllegiance()).getCrystalName()));
 
         gatewaysMap.put(BF_OBJ_OWNER.MY, DataManager
-                .getType(CONTENT_CONSTS.ASPECT.getAspect(game.getPlayer(true)
+                .getType(GenericEnums.ASPECT.getAspect(game.getPlayer(true)
                         .getAllegiance()).getGateway()));
         gatewaysMap.put(BF_OBJ_OWNER.ENEMY, DataManager
-                .getType(CONTENT_CONSTS.ASPECT.getAspect(game.getPlayer(false)
+                .getType(GenericEnums.ASPECT.getAspect(game.getPlayer(false)
                         .getAllegiance()).getGateway()));
 
     }

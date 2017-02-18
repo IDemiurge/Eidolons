@@ -1,6 +1,6 @@
 package main.content;
 
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 
 public interface ValueManager {
 

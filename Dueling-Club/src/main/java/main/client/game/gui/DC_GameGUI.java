@@ -2,8 +2,8 @@ package main.client.game.gui;
 
 import main.client.DuelingClub;
 import main.client.dc.Launcher;
-import main.game.DC_Game;
-import main.game.DC_Game.GAME_MODES;
+import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_MODES;
 import main.swing.builders.DC_Builder;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.ImageChooser;

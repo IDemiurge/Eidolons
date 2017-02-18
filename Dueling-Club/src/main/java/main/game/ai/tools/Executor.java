@@ -1,6 +1,6 @@
 package main.game.ai.tools;
 
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.ai.elements.actions.Action;
 
 public class Executor {

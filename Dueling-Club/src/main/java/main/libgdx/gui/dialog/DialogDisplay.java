@@ -2,7 +2,7 @@ package main.libgdx.gui.dialog;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.particles.lighting.LightingManager;
 import main.system.GuiEventManager;
@@ -22,7 +22,7 @@ public class DialogDisplay extends Group {
 
     public DialogDisplay() {
         GuiEventManager.bind(SHOW_INFO_DIALOG, obj -> {
-            DC_HeroObj unit = (DC_HeroObj) obj.get();
+            Unit unit = (Unit) obj.get();
             clearChildren();
             try {
                 dialog = new InfoDialog(unit);

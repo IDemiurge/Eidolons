@@ -1,8 +1,8 @@
 package main.system.text;
 
 import main.data.ability.construct.VariableManager;
-import main.game.event.Event.EVENT_TYPE;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.event.Event.EVENT_TYPE;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
 

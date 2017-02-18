@@ -1,9 +1,9 @@
 package main.swing.generic.components.editors;
 
 import main.content.ContentManager;
-import main.content.MACRO_CONTENT_CONSTS;
+import main.content.enums.macro.MACRO_CONTENT_CONSTS;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.filesys.ResourceManager;
 import main.data.xml.XML_Reader;
@@ -12,7 +12,7 @@ import main.elements.conditions.Condition;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.Game;
+import main.game.core.game.Game;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.system.auxiliary.EnumMaster;
@@ -109,25 +109,25 @@ public class ListEditor implements EDITOR {
                 }
             } else {
                 if (TYPE == null) {
-                    TYPE = OBJ_TYPES.ABILS;
+                    TYPE = DC_TYPE.ABILS;
 
                     subgroup = name;
                     if (!XML_Reader.getSubGroups(TYPE.toString()).contains(subgroup)) {
                         Err.info("No subgroup found! - " + subgroup);
                     }
-                    if (getBASE_TYPE() instanceof OBJ_TYPES) {
-                        switch ((OBJ_TYPES) getBASE_TYPE()) {
+                    if (getBASE_TYPE() instanceof DC_TYPE) {
+                        switch ((DC_TYPE) getBASE_TYPE()) {
                             case BF_OBJ:
-                                TYPE = OBJ_TYPES.ACTIONS;
+                                TYPE = DC_TYPE.ACTIONS;
                                 subgroup = null;
                                 break;
 
                             case CHARS:
-                                TYPE = OBJ_TYPES.ACTIONS;
+                                TYPE = DC_TYPE.ACTIONS;
                                 subgroup = null;
                                 break;
                             case UNITS:
-                                TYPE = OBJ_TYPES.ACTIONS;
+                                TYPE = DC_TYPE.ACTIONS;
                                 subgroup = null;
                                 break;
                         }
@@ -165,7 +165,7 @@ public class ListEditor implements EDITOR {
 
         }
 
-        if (ENUM || TYPE == OBJ_TYPES.UNITS || TYPE == OBJ_TYPES.CHARS || TYPE == OBJ_TYPES.DEITIES) {
+        if (ENUM || TYPE == DC_TYPE.UNITS || TYPE == DC_TYPE.CHARS || TYPE == DC_TYPE.DEITIES) {
             columns = 1;
         }
         listChooser.setColumns(columns);

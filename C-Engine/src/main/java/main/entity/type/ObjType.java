@@ -1,11 +1,11 @@
 package main.entity.type;
 
 import main.content.OBJ_TYPE;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.game.Game;
+import main.game.core.game.Game;
 
 import javax.swing.*;
 

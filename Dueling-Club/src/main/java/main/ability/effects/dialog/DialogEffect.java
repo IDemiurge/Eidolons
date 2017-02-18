@@ -1,15 +1,15 @@
 package main.ability.effects.dialog;
 
 import main.ability.effects.DC_Effect;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 
 public abstract class DialogEffect extends DC_Effect {
 
-    protected DC_HeroObj hero;
+    protected Unit hero;
 
     @Override
     public boolean applyThis() {
-        hero = (DC_HeroObj) ref.getTargetObj();
+        hero = (Unit) ref.getTargetObj();
         if (!ref.getSourceObj().isMine() || hero.isAiControlled()) {
             if (getGame().isOnline() && !hero.isAiControlled()) {
                 String string = getGame().getCommunicator().getChoiceData();

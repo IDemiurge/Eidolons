@@ -5,21 +5,25 @@ import main.ability.effects.AttackEffect;
 import main.ability.effects.DealDamageEffect;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
-import main.content.CONTENT_CONSTS.*;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.properties.G_PROPS;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.ActiveObj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
-import main.game.ai.tools.target.EffectMaster;
-import main.game.event.Event;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
+import main.game.ai.tools.target.EffectFinder;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.rules.action.StackingRule;
 import main.rules.action.WatchRule;
 import main.rules.combat.CleaveRule;
@@ -60,7 +64,7 @@ public class DC_AttackMaster {
     }
 
     public static AttackEffect getAttackEffect(ActiveObj action) {
-        AttackEffect effect = (AttackEffect) EffectMaster.getEffectsOfClass((DC_ActiveObj) action,
+        AttackEffect effect = (AttackEffect) EffectFinder.getEffectsOfClass((DC_ActiveObj) action,
                 AttackEffect.class).get(0);
         return effect;
     }
@@ -90,7 +94,7 @@ public class DC_AttackMaster {
         }
         for (Effect e : effects) {
             // TODO ++ PARAM MOD
-            for (Effect dmgEffect : EffectMaster.getEffectsOfClass(e, DealDamageEffect.class)) {
+            for (Effect dmgEffect : EffectFinder.getEffectsOfClass(e, DealDamageEffect.class)) {
                 int amount = dmgEffect.getFormula().getInt(attack.getRef());
                 DAMAGE_TYPE damageType = ((DealDamageEffect) dmgEffect).getDamage_type();
                 list.add(new Damage(damageType, amount, attack.getAttacked(), attack.getAttacker()));
@@ -135,8 +139,8 @@ public class DC_AttackMaster {
     }
 
     public static Integer calculateAttackDamage(Attack attack, boolean critical, boolean sneak,
-                                                boolean offhand, Ref ref, DC_ActiveObj action, DC_HeroObj attacked,
-                                                DC_HeroObj attacker, boolean counter) {
+                                                boolean offhand, Ref ref, DC_ActiveObj action, Unit attacked,
+                                                Unit attacker, boolean counter) {
         AttackCalculator calculator = new AttackCalculator(attack, false);
         return calculator.calculateFinalDamage();
         // Integer amount = 0;
@@ -160,7 +164,7 @@ public class DC_AttackMaster {
         // return amount;
     }
 
-    public static int getDefenseValue(DC_HeroObj attacker, DC_HeroObj attacked, DC_ActiveObj action) {
+    public static int getDefenseValue(Unit attacker, Unit attacked, DC_ActiveObj action) {
         int defense = attacked.getIntParam(PARAMS.DEFENSE)
                 - attacker.getIntParam(PARAMS.DEFENSE_PENETRATION);
         defense = defense * (action.getIntParam(PARAMS.DEFENSE_MOD)) / 100;
@@ -173,7 +177,7 @@ public class DC_AttackMaster {
         return defense;
     }
 
-    public static int getAttackValue(boolean offhand, DC_HeroObj attacker, DC_HeroObj attacked,
+    public static int getAttackValue(boolean offhand, Unit attacker, Unit attacked,
                                      DC_ActiveObj action) {
         int attack = attacker.getIntParam((offhand) ? PARAMS.OFF_HAND_ATTACK : PARAMS.ATTACK);
         Boolean flying_mod = null;
@@ -222,7 +226,7 @@ public class DC_AttackMaster {
         return getAttackWeapon(ref, ref.getActive().isOffhand());
     }
 
-    private static int initializeDamageModifiers(int amount, boolean offhand, DC_HeroObj unit,
+    private static int initializeDamageModifiers(int amount, boolean offhand, Unit unit,
                                                  DC_WeaponObj weapon) {
         amount += weapon.getDamageModifiers();
         amount += weapon.getIntParam(PARAMS.DAMAGE_BONUS);
@@ -241,7 +245,7 @@ public class DC_AttackMaster {
         return amount;
     }
 
-    public static Integer getUnitAttackDamage(DC_HeroObj unit, boolean offhand) {
+    public static Integer getUnitAttackDamage(Unit unit, boolean offhand) {
         int amount = unit.getIntParam(PARAMS.BASE_DAMAGE);
         DC_WeaponObj weapon = unit.getWeapon(offhand);
         if (weapon == null) {
@@ -367,13 +371,13 @@ public class DC_AttackMaster {
      */
     public Boolean attackNow(Attack attack, Ref ref, boolean free, boolean canCounter,
                              Effect onHit, Effect onKill, boolean offhand, boolean isCounter) {
-        if (!(ref.getTargetObj() instanceof DC_HeroObj)) {
+        if (!(ref.getTargetObj() instanceof Unit)) {
             return true;
         }
         // PhaseAnimation animation =
         // game.getAnimationManager().getAnimation(attack.getAction().getAnimationKey());
         DC_ActiveObj action = (DC_ActiveObj) ref.getObj(KEYS.ACTIVE);
-        if (action.checkProperty(G_PROPS.ACTION_TAGS, "" + ACTION_TAGS.OFF_HAND)) {
+        if (action.checkProperty(G_PROPS.ACTION_TAGS, "" + ActionEnums.ACTION_TAGS.OFF_HAND)) {
             offhand = true;
         }
         if (!offhand) {
@@ -386,10 +390,10 @@ public class DC_AttackMaster {
             }
         }
 
-        DC_HeroObj attacked = (DC_HeroObj) ref.getTargetObj();
-        DC_HeroObj attacker = (DC_HeroObj) ref.getSourceObj();
+        Unit attacked = (Unit) ref.getTargetObj();
+        Unit attacker = (Unit) ref.getSourceObj();
         if (attack.isSneak()) {
-            if (attacked.checkPassive(STANDARD_PASSIVES.SNEAK_IMMUNE)) {
+            if (attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.SNEAK_IMMUNE)) {
                 attack.setSneak(false);
                 log(StringMaster.MESSAGE_PREFIX_INFO + attacked.getName()
                         + " is immune to Sneak Attacks!");
@@ -487,7 +491,7 @@ public class DC_AttackMaster {
                     }
                 }
             } else {
-                if (attacked.checkPassive(STANDARD_PASSIVES.CRITICAL_IMMUNE)) {
+                if (attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.CRITICAL_IMMUNE)) {
                     log(StringMaster.MESSAGE_PREFIX_INFO + attacked.getName()
                             + " is immune to Critical Hits!");
                 } else {
@@ -524,10 +528,10 @@ public class DC_AttackMaster {
         DAMAGE_TYPE dmg_type = ref.getDamageType();
 
         if (attack.isCritical()) {
-            if (attacker.checkPassive(STANDARD_PASSIVES.CLEAVING_CRITICALS)) {
+            if (attacker.checkPassive(UnitEnums.STANDARD_PASSIVES.CLEAVING_CRITICALS)) {
                 // TODO add default cleave?
                 CleaveRule.addCriticalCleave(attacker);
-                dmg_type = DAMAGE_TYPE.SLASHING;
+                dmg_type = GenericEnums.DAMAGE_TYPE.SLASHING;
             }
         }
 
@@ -639,7 +643,7 @@ public class DC_AttackMaster {
 
     }
 
-    private boolean checkEffectsInterrupt(DC_HeroObj target, DC_HeroObj source,
+    private boolean checkEffectsInterrupt(Unit target, Unit source,
                                           SPECIAL_EFFECTS_CASE case_type, Ref REF, boolean offhand) {
         source.applySpecialEffects(case_type, target, REF, offhand);
         if (target.isDead()) {
@@ -649,7 +653,7 @@ public class DC_AttackMaster {
         return false;
     }
 
-    private boolean checkDeathEffects(DC_HeroObj source, DC_HeroObj target, Effect onKill, Ref ref,
+    private boolean checkDeathEffects(Unit source, Unit target, Effect onKill, Ref ref,
                                       SPECIAL_EFFECTS_CASE CASE) {
         if (target.isDead()) {
             return false;
@@ -676,10 +680,10 @@ public class DC_AttackMaster {
         if (attack.isRanged()) {
             return false;
         }
-        if (attack.getWeapon().getWeaponType() == WEAPON_TYPE.NATURAL) {
+        if (attack.getWeapon().getWeaponType() == ItemEnums.WEAPON_TYPE.NATURAL) {
             return false;
         }
-        if (attack.getWeapon().getWeaponType() == WEAPON_TYPE.BLUNT) {
+        if (attack.getWeapon().getWeaponType() == ItemEnums.WEAPON_TYPE.BLUNT) {
             return false;
         }
         // if (attack.getWeapon().getWeaponSize() == WEAPON_SIZE.TINY)
@@ -727,8 +731,8 @@ public class DC_AttackMaster {
                 return false;
             }
         }
-        DC_HeroObj attacked = attack.getAttacked();
-        DC_HeroObj attacker = attack.getAttacker();
+        Unit attacked = attack.getAttacked();
+        Unit attacker = attack.getAttacker();
         boolean dual = false;
         if (attacked.checkDualWielding()) {
             dual = true;
@@ -776,11 +780,11 @@ public class DC_AttackMaster {
                 attack.getRef(), attack.isOffhand(), attack.getAnimation());
     }
 
-    private Boolean checkDodgedOrCrit(DC_HeroObj attacker, DC_HeroObj attacked,
+    private Boolean checkDodgedOrCrit(Unit attacker, Unit attacked,
                                       DC_ActiveObj action, Ref ref, boolean offhand, PhaseAnimation animation) {
-        if (attacked.checkPassive(STANDARD_PASSIVES.IMMATERIAL)) {
-            if (!attacker.checkPassive(STANDARD_PASSIVES.IMMATERIAL)) {
-                if (!RollMaster.roll(ROLL_TYPES.IMMATERIAL, ref)) {
+        if (attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
+            if (!attacker.checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
+                if (!RollMaster.roll(GenericEnums.ROLL_TYPES.IMMATERIAL, ref)) {
                     return true; // TODO ANIM
                 }
             }
@@ -810,7 +814,7 @@ public class DC_AttackMaster {
         if (crit) {
             // TODO chance modifiers?
         } else {
-            if (attacker.checkPassive(STANDARD_PASSIVES.TRUE_STRIKE)) {
+            if (attacker.checkPassive(UnitEnums.STANDARD_PASSIVES.TRUE_STRIKE)) {
                 chance = 0;
             }
             chance += attacked.getIntParam(PARAMS.EVASION) - attacker.getIntParam(PARAMS.ACCURACY);
@@ -875,7 +879,7 @@ public class DC_AttackMaster {
     }
 
     // similarly for parry!
-    private boolean canBlock(DC_HeroObj attacked) {
+    private boolean canBlock(Unit attacked) {
         // if (attacked.getIntParam(PARAMS.BLOCK_CHANCE) <= 0)
         // return false; not a chance!
         try {
@@ -913,7 +917,7 @@ public class DC_AttackMaster {
         return true;
     }
 
-    private ActiveObj counter(DC_ActiveObj action, DC_HeroObj attacked) {
+    private ActiveObj counter(DC_ActiveObj action, Unit attacked) {
         return game.getActionManager().activateCounterAttack(action,
                 attacked);
     }

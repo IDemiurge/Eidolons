@@ -6,15 +6,15 @@ import main.client.cc.logic.party.PartyObj;
 import main.client.dc.HC_SequenceMaster;
 import main.client.dc.Launcher;
 import main.client.dc.Launcher.VIEWS;
-import main.content.CONTENT_CONSTS.BACKGROUND;
-import main.content.OBJ_TYPES;
+import main.content.enums.entity.HeroEnums.BACKGROUND;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
-import main.content.parameters.MACRO_PARAMS;
-import main.content.properties.G_PROPS;
-import main.content.properties.MACRO_PROPS;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.entity.Ref;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.logic.generic.PartyManager;
 import main.game.logic.macro.MacroGame;
@@ -32,9 +32,9 @@ import java.util.List;
 
 public class Tavern extends TownPlace {
     private TOWN_PLACE_TYPE TYPE;
-    private List<DC_HeroObj> heroes = new LinkedList<>();
+    private List<Unit> heroes = new LinkedList<>();
     // buy drinks...
-    private List<DC_HeroObj> mercs;
+    private List<Unit> mercs;
     private List<PartyObj> stayingParties;
     private TAVERN_MODIFIER modifier;
     public Tavern(MacroGame game, ObjType type, Ref ref) {
@@ -96,13 +96,13 @@ public class Tavern extends TownPlace {
 
     public boolean newHero(boolean background, int xp) {
         // chance
-        DC_HeroObj hero;
+        Unit hero;
         if (!background) {
             ObjType type = getRandomHeroType(xp);
             if (type == null) {
                 return false;
             }
-            hero = new DC_HeroObj(type);
+            hero = new Unit(type);
             initHeroHireParams(hero);
             HeroGenerator.alterHero(hero);
         } else {
@@ -121,20 +121,20 @@ public class Tavern extends TownPlace {
         return true;
     }
 
-    private DC_HeroObj generateHeroFromBackground(ObjType type, int xp) {
-        DC_HeroObj hero = HeroGenerator.generateHero(type, xp, this);
+    private Unit generateHeroFromBackground(ObjType type, int xp) {
+        Unit hero = HeroGenerator.generateHero(type, xp, this);
         initHeroHireParams(hero); // random?
         return hero;
     }
 
-    private void initHeroHireParams(DC_HeroObj hero) {
+    private void initHeroHireParams(Unit hero) {
         int cost = hero.calculatePower() * 5; // TODO
         hero.setParam(MACRO_PARAMS.HIRE_COST, cost, true);
         int share = 100;
         hero.setParam(MACRO_PARAMS.GOLD_SHARE, share, true);
     }
 
-    private boolean addHero(DC_HeroObj hero) {
+    private boolean addHero(Unit hero) {
         modifyParameter(MACRO_PARAMS.C_HERO_POWER_POOL,
                 -hero.getIntParam(PARAMS.TOTAL_XP));
         heroes.add(hero);
@@ -176,13 +176,13 @@ public class Tavern extends TownPlace {
     }
 
     private ObjType getRandomHeroBackground() {
-        List<ObjType> list = DataManager.getTypesGroup(OBJ_TYPES.CHARS,
+        List<ObjType> list = DataManager.getTypesGroup(DC_TYPE.CHARS,
                 StringMaster.BACKGROUND);
         String prop = new RandomWizard<BACKGROUND>().getObjectByWeight(
                 getHeroBackgrounds(), BACKGROUND.class).toString();
 
         FilterMaster.filter(list, G_PROPS.BACKGROUND.getName(), prop,
-                OBJ_TYPES.CHARS, true, false, false);
+                DC_TYPE.CHARS, true, false, false);
         return new RandomWizard<ObjType>().getRandomListItem(list);
     }
 
@@ -199,15 +199,15 @@ public class Tavern extends TownPlace {
         int minXp = xp / 3 * 2;
         int maxXp = xp * 3 / 2;
         List<ObjType> list = DataManager.toTypeList(DataManager
-                        .getTypesSubGroupNames(OBJ_TYPES.CHARS, StringMaster.PRESET),
-                OBJ_TYPES.CHARS);
+                        .getTypesSubGroupNames(DC_TYPE.CHARS, StringMaster.PRESET),
+                DC_TYPE.CHARS);
         // DataManager.getTypesSubGroup(OBJ_TYPES.CHARS,
         // StringMaster.PRESET);
         // background allowed
         FilterMaster.filterByParam(list, PARAMS.TOTAL_XP, minXp,
-                OBJ_TYPES.CHARS, true);
+                DC_TYPE.CHARS, true);
         FilterMaster.filterByParam(list, PARAMS.TOTAL_XP, maxXp,
-                OBJ_TYPES.CHARS, false);
+                DC_TYPE.CHARS, false);
 
         Loop.startLoop(25);
         while (!Loop.loopEnded()) {
@@ -215,7 +215,7 @@ public class Tavern extends TownPlace {
             String prop = new RandomWizard<BACKGROUND>().getObjectByWeight(
                     getHeroBackgrounds(), BACKGROUND.class).toString();
             FilterMaster.filter(bufferList, G_PROPS.BACKGROUND.getName(),
-                    prop, OBJ_TYPES.CHARS, true, false, false);
+                    prop, DC_TYPE.CHARS, true, false, false);
             if (!bufferList.isEmpty()) {
                 list = bufferList;
                 break;
@@ -248,18 +248,18 @@ public class Tavern extends TownPlace {
         TavernMaster.buyProvisions(this, party, max_min_all);
     }
 
-    public List<DC_HeroObj> getHeroesForHire() {
+    public List<Unit> getHeroesForHire() {
         // getHeroJoinConditions(hero){
         // simplified version w/o dialogues - just a list of available heroes
         // with their conditions
         return heroes;
     }
 
-    public void hired(DC_HeroObj hero) {
+    public void hired(Unit hero) {
         hired(false, MacroManager.getActiveParty(), hero);
     }
 
-    public void hired(boolean merc, MacroParty party, DC_HeroObj hero) {
+    public void hired(boolean merc, MacroParty party, Unit hero) {
         party.getLeader().modifyParameter(PARAMS.GOLD,
                 -hero.getIntParam(MACRO_PARAMS.HIRE_COST));
         // TODO shared gold?
@@ -276,7 +276,7 @@ public class Tavern extends TownPlace {
         HC_SequenceMaster sm = new HC_SequenceMaster() {
             public void doneSelection() {
                 getSequence().getValue();
-                DC_HeroObj hero = (DC_HeroObj) getSequence().getResults()
+                Unit hero = (Unit) getSequence().getResults()
                         .get(0);
                 hired(hero);
                 Launcher.resetView(VIEWS.HC);

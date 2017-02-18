@@ -1,10 +1,10 @@
 package main.game.logic.dungeon.editor.gui;
 
-import main.content.CONTENT_CONSTS.PALETTE;
-import main.content.OBJ_TYPES;
+import main.content.enums.system.MetaEnums.PALETTE;
+import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.game.battlefield.XDimension;
+import main.swing.XDimension;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagedListPanel;
 import main.system.auxiliary.EnumMaster;
@@ -19,11 +19,11 @@ public class PagedPaletteTab extends G_PagedListPanel<ObjType> {
 
     public static final int PAGE_SIZE = 60;
     XDimension objSize;
-    private OBJ_TYPES type;
+    private DC_TYPE type;
     private String[] groups;
     private Workspace ws;
 
-    public PagedPaletteTab(OBJ_TYPES type) {
+    public PagedPaletteTab(DC_TYPE type) {
         super(PAGE_SIZE, true, 3);
         this.type = type;
         // this.groups = groups;
@@ -82,7 +82,7 @@ public class PagedPaletteTab extends G_PagedListPanel<ObjType> {
         return true;
     }
 
-    public OBJ_TYPES getType() {
+    public DC_TYPE getType() {
         return type;
     }
 

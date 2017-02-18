@@ -3,7 +3,7 @@ package main.file;
 import main.ArcaneTower;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.data.xml.XML_Reader;
 import main.data.xml.XML_Writer;

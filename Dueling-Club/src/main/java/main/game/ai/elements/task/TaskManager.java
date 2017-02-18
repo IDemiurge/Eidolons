@@ -1,23 +1,24 @@
 package main.game.ai.elements.task;
 
-import main.content.CONTENT_CONSTS.BEHAVIOR_MODE;
-import main.content.CONTENT_CONSTS.TARGETING_MODE;
+import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
+import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.enums.system.AiEnums;
+import main.content.values.properties.G_PROPS;
 import main.data.XList;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.ActionManager;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.tools.Analyzer;
 import main.game.ai.tools.ParamAnalyzer;
 import main.game.ai.tools.path.CellPrioritizer;
-import main.game.ai.tools.priority.PriorityManager;
+import main.game.ai.tools.priority.DC_PriorityManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.PositionMaster;
@@ -40,8 +41,8 @@ public class TaskManager {
                     .getProperty(G_PROPS.TARGETING_MODE));
         }
         if (mode != null) {
-            if (action.getGame().getObjectById((Integer) task.getArg()) instanceof DC_HeroObj) {
-                DC_HeroObj target = (DC_HeroObj) action.getGame().getObjectById(
+            if (action.getGame().getObjectById((Integer) task.getArg()) instanceof Unit) {
+                Unit target = (Unit) action.getGame().getObjectById(
                         (Integer) task.getArg());
                 switch (mode) {
 
@@ -162,7 +163,7 @@ public class TaskManager {
                 targets = Analyzer.getSearchCells(ai);
                 break;
             case RETREAT:
-                if (ai.getBehaviorMode() == BEHAVIOR_MODE.PANIC) {
+                if (ai.getBehaviorMode() == AiEnums.BEHAVIOR_MODE.PANIC) {
                     // only border cells => flee
                 }
                 targets = Analyzer.getSafeCells(ai);
@@ -191,7 +192,7 @@ public class TaskManager {
             case DEBILITATE:
             case DEBUFF:
             case ATTACK:
-                if (behaviorMode == BEHAVIOR_MODE.BERSERK || behaviorMode == BEHAVIOR_MODE.CONFUSED) {
+                if (behaviorMode == AiEnums.BEHAVIOR_MODE.BERSERK || behaviorMode == AiEnums.BEHAVIOR_MODE.CONFUSED) {
                     targets = (Analyzer.getUnits(ai, true, true, true, false));
                 } else {
                     // if (forced)
@@ -230,7 +231,7 @@ public class TaskManager {
                 list.add(new Task(forced, ai, goal, null));
                 break;
         }
-        if (behaviorMode == BEHAVIOR_MODE.CONFUSED) {
+        if (behaviorMode == AiEnums.BEHAVIOR_MODE.CONFUSED) {
             DC_Obj target = targets.get(new RandomWizard<>().getRandomListIndex(targets));
             List<Task> tasks = new LinkedList<>();
             tasks.add(new Task(forced, ai, goal, target.getId()));
@@ -261,7 +262,7 @@ public class TaskManager {
 		 * that, there should be some default prune logic
 		 */
         for (DC_Obj e : targets) {
-            if (!(e instanceof DC_HeroObj)) {
+            if (!(e instanceof Unit)) {
                 return; // another method?
             }
         }
@@ -325,7 +326,7 @@ public class TaskManager {
                     }
 
                     if (byCapacity) {
-                        float capacity = PriorityManager.getCapacity((DC_HeroObj) t);
+                        float capacity = DC_PriorityManager.getCapacity((Unit) t);
                         // < 0.1f
 
                         if (result) {
@@ -334,7 +335,7 @@ public class TaskManager {
                     }
 
                     if (byHealth) {
-                        int health = PriorityManager.getHealthFactor(t, byHealth);// ?
+                        int health = DC_PriorityManager.getHealthFactor(t, byHealth);// ?
                         result = (health < getHeathPruneFactor(limit, t, ai, action));
                         if (result) {
                             break;

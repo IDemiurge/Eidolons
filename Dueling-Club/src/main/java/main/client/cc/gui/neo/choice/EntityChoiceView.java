@@ -3,18 +3,18 @@ package main.client.cc.gui.neo.choice;
 import main.client.cc.CharacterCreator;
 import main.client.cc.gui.neo.choice.utility.FilterOptionListener;
 import main.client.cc.gui.neo.choice.utility.SortOptionListener;
-import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.elements.Filter;
 import main.elements.conditions.Condition;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.swing.components.PagedOptionsComp;
 import main.swing.listeners.ListChooserSortOptionListener.SORT_TEMPLATE;
 import main.system.entity.ConditionMaster;
@@ -29,17 +29,17 @@ public abstract class EntityChoiceView extends ChoiceView<ObjType> {
     private Comparator<? super ObjType> sorter;
     private List<? extends Entity> list;
 
-    public EntityChoiceView(ChoiceSequence choiceSequence, DC_HeroObj hero) {
+    public EntityChoiceView(ChoiceSequence choiceSequence, Unit hero) {
         super(choiceSequence, hero);
     }
 
-    public EntityChoiceView(ChoiceSequence choiceSequence, DC_HeroObj hero,
+    public EntityChoiceView(ChoiceSequence choiceSequence, Unit hero,
                             List<? extends Entity> entities) {
         super(choiceSequence, hero);
         list = entities;
     }
 
-    public EntityChoiceView(ChoiceSequence choiceSequence, DC_HeroObj hero, Entity... entities) {
+    public EntityChoiceView(ChoiceSequence choiceSequence, Unit hero, Entity... entities) {
         super(choiceSequence, hero);
         list = Arrays.asList(entities);
     }

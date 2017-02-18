@@ -5,11 +5,11 @@ import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.ability.effects.special.ImmobilizeEffect;
-import main.content.CONTENT_CONSTS.STD_BUFF_NAMES;
 import main.content.PARAMS;
 import main.content.VALUE;
+import main.content.enums.system.MetaEnums;
 import main.entity.Ref.KEYS;
-import main.game.MicroGame;
+import main.game.core.game.MicroGame;
 import main.rules.RuleMaster.COMBAT_RULES;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
@@ -19,14 +19,14 @@ public class WeightBuffRule extends DC_BuffRule {
     private static final String FORMULA = StringMaster.getValueRef(KEYS.SOURCE,
             PARAMS.C_CARRYING_WEIGHT)
             + "-" + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.CARRYING_CAPACITY);
-    private String[] buffNames = {STD_BUFF_NAMES.Immobilized.getName(), // TODO
+    private String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Immobilized.getName(), // TODO
             // there
             // must
             // be
             // "drop item"
             // action!
             // :)
-            STD_BUFF_NAMES.Overburdened.getName(), STD_BUFF_NAMES.Encumbered.getName(),};
+            MetaEnums.STD_BUFF_NAMES.Overburdened.getName(), MetaEnums.STD_BUFF_NAMES.Encumbered.getName(),};
     private String[] formulas = {getCarryingCapacity() + "*2",
 
             getCarryingCapacity() + "*3/2", getCarryingCapacity(),};

@@ -1,10 +1,11 @@
 package main.game.battlefield;
 
-import main.content.CONTENT_CONSTS.FACING_SINGLE;
-import main.entity.obj.BattlefieldObj;
+import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.FACING_SINGLE;
+import main.entity.obj.BattleFieldObject;
+import main.entity.obj.BfObj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.entity.obj.unit.DC_UnitObj;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
@@ -31,63 +32,63 @@ public class FacingMaster {
         return oldDirection;
     }
 
-    public static FACING_SINGLE getSingleFacing(DC_UnitObj obj1, BattlefieldObj obj2) {
+    public static FACING_SINGLE getSingleFacing(BattleFieldObject obj1, BfObj obj2) {
         return getSingleFacing(obj1.getFacing(), obj1, obj2);
     }
 
-    public static FACING_SINGLE getSingleFacing(FACING_DIRECTION facing, DC_UnitObj obj1,
-                                                BattlefieldObj obj2) {
+    public static FACING_SINGLE getSingleFacing(FACING_DIRECTION facing, BattleFieldObject obj1,
+                                                BfObj obj2) {
         return getSingleFacing(facing, obj1.getCoordinates(), obj2.getCoordinates());
     }
 
     public static FACING_SINGLE getSingleFacing(FACING_DIRECTION facing, Coordinates c1,
                                                 Coordinates c2) {
         if (c1.equals(c2)) {
-            return FACING_SINGLE.IN_FRONT;
+            return UnitEnums.FACING_SINGLE.IN_FRONT;
         }
         switch (facing) {
             case NONE:
-                return FACING_SINGLE.NONE;
+                return UnitEnums.FACING_SINGLE.NONE;
             case EAST:
                 if (c1.getX() == c2.getX()) {
-                    return FACING_SINGLE.TO_THE_SIDE;
+                    return UnitEnums.FACING_SINGLE.TO_THE_SIDE;
                 }
                 if (!PositionMaster.isToTheLeft(c1, c2)) {
-                    return FACING_SINGLE.BEHIND;
+                    return UnitEnums.FACING_SINGLE.BEHIND;
                 } else {
-                    return FACING_SINGLE.IN_FRONT;
+                    return UnitEnums.FACING_SINGLE.IN_FRONT;
                 }
 
             case NORTH:
                 if (c1.getY() == c2.getY()) {
-                    return FACING_SINGLE.TO_THE_SIDE;
+                    return UnitEnums.FACING_SINGLE.TO_THE_SIDE;
                 }
                 if (PositionMaster.isAbove(c1, c2)) {
-                    return FACING_SINGLE.BEHIND;
+                    return UnitEnums.FACING_SINGLE.BEHIND;
                 } else {
-                    return FACING_SINGLE.IN_FRONT;
+                    return UnitEnums.FACING_SINGLE.IN_FRONT;
                 }
             case SOUTH:
                 if (c1.getY() == c2.getY()) {
-                    return FACING_SINGLE.TO_THE_SIDE;
+                    return UnitEnums.FACING_SINGLE.TO_THE_SIDE;
                 }
                 if (!PositionMaster.isAbove(c1, c2)) {
-                    return FACING_SINGLE.BEHIND;
+                    return UnitEnums.FACING_SINGLE.BEHIND;
                 } else {
-                    return FACING_SINGLE.IN_FRONT;
+                    return UnitEnums.FACING_SINGLE.IN_FRONT;
                 }
             case WEST:
                 if (c1.getX() == c2.getX()) {
-                    return FACING_SINGLE.TO_THE_SIDE;
+                    return UnitEnums.FACING_SINGLE.TO_THE_SIDE;
                 }
                 if (PositionMaster.isToTheLeft(c1, c2)) {
-                    return FACING_SINGLE.BEHIND;
+                    return UnitEnums.FACING_SINGLE.BEHIND;
                 } else {
-                    return FACING_SINGLE.IN_FRONT;
+                    return UnitEnums.FACING_SINGLE.IN_FRONT;
                 }
 
         }
-        return FACING_SINGLE.NONE;
+        return UnitEnums.FACING_SINGLE.NONE;
 
     }
 
@@ -151,7 +152,7 @@ public class FacingMaster {
         return null;
     }
 
-    public static FACING_DIRECTION getRelativeFacing(DC_HeroObj wall, DC_HeroObj adjWall) {
+    public static FACING_DIRECTION getRelativeFacing(Unit wall, Unit adjWall) {
         return getRelativeFacing(wall.getCoordinates(), adjWall.getCoordinates());
     }
 
@@ -201,8 +202,8 @@ public class FacingMaster {
     }
 
     public static FACING_DIRECTION getFacing(Obj sourceObj) {
-        if (sourceObj instanceof DC_HeroObj) {
-            return ((DC_HeroObj) sourceObj).getFacing();
+        if (sourceObj instanceof Unit) {
+            return ((Unit) sourceObj).getFacing();
         }
         return null;
     }

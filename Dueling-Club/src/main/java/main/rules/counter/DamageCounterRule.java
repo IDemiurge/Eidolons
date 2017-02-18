@@ -1,11 +1,11 @@
 package main.rules.counter;
 
 import main.ability.effects.DealDamageEffect;
-import main.content.CONTENT_CONSTS.DAMAGE_MODIFIER;
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.GenericEnums;
 import main.entity.Ref;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.system.math.Formula;
 
 public abstract class DamageCounterRule extends DC_CounterRule {
@@ -28,7 +28,7 @@ public abstract class DamageCounterRule extends DC_CounterRule {
 
     public abstract boolean isEnduranceOnly();
 
-    public boolean apply(DC_HeroObj unit) {
+    public boolean apply(Unit unit) {
         if (!check(unit)) {
             return false;
         }
@@ -40,7 +40,7 @@ public abstract class DamageCounterRule extends DC_CounterRule {
                 + getDamagePerCounterFormula() + ")"),
 
                 getDamageType().toString(),
-                isEnduranceOnly() ? DAMAGE_MODIFIER.PERIODIC : null).apply(ref);
+                isEnduranceOnly() ? GenericEnums.DAMAGE_MODIFIER.PERIODIC : null).apply(ref);
     }
 
 }

@@ -1,6 +1,6 @@
 package main.ability;
 
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.AbilityConstructor;
 import main.data.ability.construct.XmlDocHolder;
 import main.data.xml.XML_Converter;

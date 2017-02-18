@@ -1,23 +1,22 @@
 package main.game.battlefield.attack;
 
-import main.content.CONTENT_CONSTS.FACING_SINGLE;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
-import main.content.CONTENT_CONSTS.UNIT_TO_UNIT_VISION;
 import main.content.ContentManager;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.parameters.PARAMETER;
+import main.content.enums.entity.UnitEnums;
+import main.content.enums.rules.VisionEnums;
+import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_WeaponObj;
-import main.entity.obj.BattlefieldObj;
+import main.entity.obj.BfObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.ai.tools.target.EffectMaster;
+import main.entity.obj.unit.Unit;
+import main.game.ai.tools.target.EffectFinder;
 import main.game.battlefield.FacingMaster;
 import main.rules.action.WatchRule;
 import main.rules.combat.ForceRule;
@@ -68,8 +67,8 @@ public class AttackCalculator {
     boolean precalc;
     DC_AttackMaster master;
     private DC_ActiveObj action;
-    private DC_HeroObj attacker;
-    private DC_HeroObj attacked;
+    private Unit attacker;
+    private Unit attacked;
     private DC_WeaponObj weapon;
     private boolean counter;
     private boolean offhand;
@@ -100,7 +99,7 @@ public class AttackCalculator {
     }
 
     public AttackCalculator(DC_ActiveObj t, AttackAnimation animation) {
-        this(EffectMaster.getAttackFromAction(t), true);
+        this(EffectFinder.getAttackFromAction(t), true);
         this.anim = animation;
         attack.setAnimation(animation);
     }
@@ -192,8 +191,8 @@ public class AttackCalculator {
 
     }
 
-    private Integer getAttackDefenseDamageBonus(Attack attack, Integer amount, DC_HeroObj attacker,
-                                                DC_HeroObj attacked, DC_ActiveObj action, boolean offhand) {
+    private Integer getAttackDefenseDamageBonus(Attack attack, Integer amount, Unit attacker,
+                                                Unit attacked, DC_ActiveObj action, boolean offhand) {
         int attackValue = DC_AttackMaster.getAttackValue(offhand, attacker, attacked, action);
         // TODO
         int defense = DC_AttackMaster.getDefenseValue(attacker, attacked, action);
@@ -225,9 +224,9 @@ public class AttackCalculator {
         return bonus;
     }
 
-    private Integer getCriticalDamageBonus(Attack attack, Integer amount, DC_HeroObj attacker,
-                                           DC_HeroObj attacked, DC_ActiveObj action, boolean offhand) {
-        if (attacked.checkPassive(STANDARD_PASSIVES.CRITICAL_IMMUNE)) {
+    private Integer getCriticalDamageBonus(Attack attack, Integer amount, Unit attacker,
+                                           Unit attacked, DC_ActiveObj action, boolean offhand) {
+        if (attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.CRITICAL_IMMUNE)) {
             return 0;
         }
         int mod = 100 + attacker.getIntParam(PARAMS.CRITICAL_MOD);
@@ -245,7 +244,7 @@ public class AttackCalculator {
         return bonus;
     }
 
-    private int getAttributeDamageBonuses(Obj obj, DC_HeroObj ownerObj, PHASE_TYPE type,
+    private int getAttributeDamageBonuses(Obj obj, Unit ownerObj, PHASE_TYPE type,
                                           Map<PARAMETER, Integer> map) {
         int result = 0;
         subMap = map;
@@ -257,7 +256,7 @@ public class AttackCalculator {
         return result;
     }
 
-    private int getDamageModifier(PARAMS dmgModifier, PARAMS value, DC_HeroObj ownerObj, Obj obj,
+    private int getDamageModifier(PARAMS dmgModifier, PARAMS value, Unit ownerObj, Obj obj,
                                   PHASE_TYPE type) {
         int amount = obj.getIntParam(dmgModifier) * ownerObj.getIntParam(value) / 100;
         // map = animation.getPhase(type).getArgs()[0];
@@ -406,13 +405,13 @@ public class AttackCalculator {
                 ref.setValue(KEYS.DAMAGE_TYPE, ammo.getProperty(PROPS.DAMAGE_TYPE));
             }
             int penalty = 0;
-            if (attacked.getUnitVisionStatus() == UNIT_TO_UNIT_VISION.IN_SIGHT) {
+            if (attacked.getUnitVisionStatus() == VisionEnums.UNIT_TO_UNIT_VISION.IN_SIGHT) {
                 penalty = applyParamMod(-20, (PARAMS.RANGED_PENALTY_MOD));
             }
-            if (attacked.getUnitVisionStatus() == UNIT_TO_UNIT_VISION.BEYOND_SIGHT) {
+            if (attacked.getUnitVisionStatus() == VisionEnums.UNIT_TO_UNIT_VISION.BEYOND_SIGHT) {
                 penalty = applyParamMod(-35, (PARAMS.RANGED_PENALTY_MOD));
             }
-            if (attacked.getUnitVisionStatus() == UNIT_TO_UNIT_VISION.CONCEALED) {
+            if (attacked.getUnitVisionStatus() == VisionEnums.UNIT_TO_UNIT_VISION.CONCEALED) {
                 penalty = applyParamMod(-50, (PARAMS.RANGED_PENALTY_MOD));
             }
 
@@ -480,8 +479,8 @@ public class AttackCalculator {
                 posMap.put(MOD_IDENTIFIER.DIAGONAL_ATTACK, diagonalMod);
             }
             // TODO DO FOR WEAPONS AND MAKE A SUB MAP!
-        } else if (FacingMaster.getSingleFacing(action.getOwnerObj(), (BattlefieldObj) ref
-                .getTargetObj()) == FACING_SINGLE.TO_THE_SIDE) {
+        } else if (FacingMaster.getSingleFacing(action.getOwnerObj(), (BfObj) ref
+                .getTargetObj()) == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
             Integer sideMod = action.getIntParam(PARAMS.SIDE_ATTACK_MOD) - 100;
             if (sideMod != 0 && sideMod != -100) {
                 atk_mod += sideMod;

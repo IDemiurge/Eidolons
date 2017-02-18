@@ -2,18 +2,18 @@ package main.client.cc.logic;
 
 import main.client.cc.gui.misc.HeroItemChooser;
 import main.client.dc.Simulation;
-import main.content.CONTENT_CONSTS.PRINCIPLES;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.CONTENT_CONSTS.RANK;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.DC_Player;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.EnumMaster;
@@ -34,22 +34,22 @@ public class HeroCreator {
     public HeroCreator(DC_Game game) {
         this.setGame(game);
         try {
-            ROOT_TYPE = DataManager.getType(BASE_HERO, OBJ_TYPES.CHARS);
+            ROOT_TYPE = DataManager.getType(BASE_HERO, DC_TYPE.CHARS);
         } catch (Exception e) {
             e.printStackTrace();
             ROOT_TYPE = DataManager.getTypes().get(0);
         }
     }
 
-    public static DC_HeroObj initHero(String typeName) {
-        ObjType type = new ObjType(DataManager.getType(typeName, OBJ_TYPES.CHARS));
+    public static Unit initHero(String typeName) {
+        ObjType type = new ObjType(DataManager.getType(typeName, DC_TYPE.CHARS));
         Simulation.getGame().initType(type);
 
         return createHeroObj(type);
     }
 
-    public static DC_HeroObj createHeroObj(ObjType type) {
-        DC_HeroObj hero = new DC_HeroObj(type, 0, 0, DC_Player.NEUTRAL, Simulation.getGame(),
+    public static Unit createHeroObj(ObjType type) {
+        Unit hero = new Unit(type, 0, 0, DC_Player.NEUTRAL, Simulation.getGame(),
                 new Ref(Simulation.getGame()));
         newId(type);
         Simulation.getGame().getState().addObject(hero);
@@ -60,7 +60,7 @@ public class HeroCreator {
 
     private static void newId(ObjType type) {
         int id = type.getTypeId();
-        for (ObjType t : DataManager.getTypes(OBJ_TYPES.CHARS)) {
+        for (ObjType t : DataManager.getTypes(DC_TYPE.CHARS)) {
             if (id <= t.getTypeId()) {
                 id = t.getTypeId() + 1;
             }
@@ -69,8 +69,8 @@ public class HeroCreator {
 
     }
 
-    public static Entity getObjForType(DC_HeroObj hero, ObjType type) {
-        switch ((OBJ_TYPES) type.getOBJ_TYPE_ENUM()) {
+    public static Entity getObjForType(Unit hero, ObjType type) {
+        switch ((DC_TYPE) type.getOBJ_TYPE_ENUM()) {
             case SPELLS:
                 return hero.getSpell(type.getName());
             case ACTIONS:
@@ -86,11 +86,11 @@ public class HeroCreator {
         return null;
     }
 
-    public DC_HeroObj newHero() {
+    public Unit newHero() {
         return newHero(false);
     }
 
-    public DC_HeroObj newHero(boolean levelUp) {
+    public Unit newHero(boolean levelUp) {
         return createHeroObj(new ObjType(ROOT_TYPE));
     }
 
@@ -124,14 +124,14 @@ public class HeroCreator {
 
     public ObjType chooseBaseType() {
         List<String> listData = DataManager.getHeroList(RANK.NEW_HERO.toString());
-        ListChooser lc = new ListChooser(listData, false, OBJ_TYPES.CHARS);
+        ListChooser lc = new ListChooser(listData, false, DC_TYPE.CHARS);
         lc.setColumns(3);
         String name = lc.getString();
-        return DataManager.getType(name, OBJ_TYPES.CHARS);
+        return DataManager.getType(name, DC_TYPE.CHARS);
     }
 
     private boolean doChoiceSequence() {
-        if (!doChoice(OBJ_TYPES.DEITIES, G_PROPS.DEITY)) {
+        if (!doChoice(DC_TYPE.DEITIES, G_PROPS.DEITY)) {
             return false;
         }
 
@@ -144,7 +144,7 @@ public class HeroCreator {
 
     }
 
-    private boolean doChoice(OBJ_TYPES TYPE, PROPERTY prop) {
+    private boolean doChoice(DC_TYPE TYPE, PROPERTY prop) {
         List<String> options = DataManager.getTypeNames(TYPE);
         return doChoice(options, prop, false, TYPE);
 

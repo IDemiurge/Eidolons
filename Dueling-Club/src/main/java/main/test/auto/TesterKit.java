@@ -1,14 +1,14 @@
 package main.test.auto;
 
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 
 public class TesterKit {
 
-    public void endTurn(DC_HeroObj active) {
+    public void endTurn(Unit active) {
 
     }
 
-    public void removeUnitAndCompensate(DC_HeroObj unit) {
+    public void removeUnitAndCompensate(Unit unit) {
 
         // report(unit);
 

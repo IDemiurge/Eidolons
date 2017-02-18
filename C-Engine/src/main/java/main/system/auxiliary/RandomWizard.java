@@ -1,6 +1,6 @@
 package main.system.auxiliary;
 
-import main.content.CONTENT_CONSTS.ROLL_TYPES;
+import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.content.OBJ_TYPE;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;

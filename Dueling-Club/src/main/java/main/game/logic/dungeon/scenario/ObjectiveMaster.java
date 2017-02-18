@@ -11,12 +11,12 @@ import main.elements.targeting.FixedTargeting;
 import main.elements.triggers.Trigger;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.DC_ObjInitializer;
-import main.game.event.Event.EVENT_TYPE;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.event.Event.EVENT_TYPE;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.Location;
 import main.system.auxiliary.EnumMaster;
@@ -81,7 +81,7 @@ public class ObjectiveMaster {
                 Coordinates c = DC_ObjInitializer.getCoordinatesFromObjString(objectiveData);
                 // new Coordinates(s);
                 name = DC_ObjInitializer.getNameFromObjString(objectiveData);
-                for (DC_HeroObj u : DC_Game.game.getObjectsOnCoordinate(dungeon.getZ(), c, false,
+                for (Unit u : DC_Game.game.getObjectsOnCoordinate(dungeon.getZ(), c, false,
                         false, false)) {
                     if (u.getName().equals(name)) {
                         id = u.getId();

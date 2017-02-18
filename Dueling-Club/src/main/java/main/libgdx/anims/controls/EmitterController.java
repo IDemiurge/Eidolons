@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import main.data.filesys.PathFinder;
 import main.entity.obj.ActiveObj;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.CompositeAnim;

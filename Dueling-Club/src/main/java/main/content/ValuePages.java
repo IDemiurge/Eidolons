@@ -1,9 +1,9 @@
 package main.content;
 
-import main.content.parameters.G_PARAMS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.G_PARAMS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 
 import java.lang.reflect.Field;
 

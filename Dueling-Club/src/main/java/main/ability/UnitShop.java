@@ -1,21 +1,22 @@
 package main.ability;
 
 import main.client.cc.HeroManager;
-import main.content.CONTENT_CONSTS.ITEM_SLOT;
-import main.content.CONTENT_CONSTS.MATERIAL;
-import main.content.CONTENT_CONSTS.QUALITY_LEVEL;
+import main.content.enums.entity.ItemEnums.ITEM_SLOT;
+import main.content.enums.entity.ItemEnums.MATERIAL;
+import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
 import main.content.*;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.ItemEnums;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.item.DC_HeroItemObj;
 import main.entity.item.DC_JewelryObj;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.item.ItemFactory;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.logic.macro.town.ShopMaster;
 import main.system.DC_Formulas;
 import main.system.SortMaster;
@@ -37,14 +38,14 @@ public class UnitShop {
     private static final Integer GOLD_COMPENSATION = 35;
     private static int goldPercentageToSpend;
     private static int goldOriginalAmount;
-    private static DC_HeroObj unit;
+    private static Unit unit;
     private static HeroManager heroManager;
 
     // MATERIAL[] DEFAULT_MATERIALS_1 = {
     // };
 
     // TODO quick items - ammunition, poisons, even potions!
-    public static void awardGold(DC_HeroObj unit) {
+    public static void awardGold(Unit unit) {
         int gold = DC_Formulas.getGoldForLevel(unit.getIntParam(PARAMS.LEVEL));
 
         Integer mod = unit.getIntParam(PARAMS.GOLD_MOD);
@@ -59,7 +60,7 @@ public class UnitShop {
         goldOriginalAmount = gold;
     }
 
-    public static void buyItemsForUnit(DC_HeroObj shopper) {
+    public static void buyItemsForUnit(Unit shopper) {
         unit = shopper;
         awardGold(unit);
 
@@ -86,17 +87,17 @@ public class UnitShop {
         if (StringMaster.isEmpty(unit.getProperty(PROPS.MAIN_HAND_REPERTOIRE))) {
             generateWeaponRepertoire(shopper, false);
         }
-        if (!buy(unit.getProperty(PROPS.MAIN_HAND_REPERTOIRE), unit, ITEM_SLOT.MAIN_HAND,
-                OBJ_TYPES.WEAPONS)) { // make sure main
+        if (!buy(unit.getProperty(PROPS.MAIN_HAND_REPERTOIRE), unit, ItemEnums.ITEM_SLOT.MAIN_HAND,
+                DC_TYPE.WEAPONS)) { // make sure main
             // hand item is
             // bought, maybe not
             // for tanks...
             goldPercentageToSpend = 100 - armorGoldPercentage;
-            if (!buy(unit.getProperty(PROPS.MAIN_HAND_REPERTOIRE), unit, ITEM_SLOT.MAIN_HAND,
-                    OBJ_TYPES.WEAPONS)) {
+            if (!buy(unit.getProperty(PROPS.MAIN_HAND_REPERTOIRE), unit, ItemEnums.ITEM_SLOT.MAIN_HAND,
+                    DC_TYPE.WEAPONS)) {
                 goldPercentageToSpend = 100;
-                buy(unit.getProperty(PROPS.MAIN_HAND_REPERTOIRE), unit, ITEM_SLOT.MAIN_HAND,
-                        OBJ_TYPES.WEAPONS);
+                buy(unit.getProperty(PROPS.MAIN_HAND_REPERTOIRE), unit, ItemEnums.ITEM_SLOT.MAIN_HAND,
+                        DC_TYPE.WEAPONS);
                 return;
             }
         }
@@ -105,17 +106,17 @@ public class UnitShop {
         if (StringMaster.isEmpty(unit.getProperty(PROPS.ARMOR_REPERTOIRE))) {
             generateArmorRepertoire(shopper);
         }
-        buy(unit.getProperty(PROPS.ARMOR_REPERTOIRE), unit, ITEM_SLOT.ARMOR, OBJ_TYPES.ARMOR);
+        buy(unit.getProperty(PROPS.ARMOR_REPERTOIRE), unit, ItemEnums.ITEM_SLOT.ARMOR, DC_TYPE.ARMOR);
 
         goldPercentageToSpend = 100;
         if (StringMaster.isEmpty(unit.getProperty(PROPS.OFF_HAND_REPERTOIRE))) {
             generateWeaponRepertoire(shopper, true);
         }
-        buy(unit.getProperty(PROPS.OFF_HAND_REPERTOIRE), unit, ITEM_SLOT.OFF_HAND,
-                OBJ_TYPES.WEAPONS);
+        buy(unit.getProperty(PROPS.OFF_HAND_REPERTOIRE), unit, ItemEnums.ITEM_SLOT.OFF_HAND,
+                DC_TYPE.WEAPONS);
     }
 
-    private static void generateWeaponRepertoire(DC_HeroObj hero, boolean offhand) {
+    private static void generateWeaponRepertoire(Unit hero, boolean offhand) {
         // TODO just add per mastery plus magical if caster...
         // let the weights be determined by weight vs strength!
         // common classes first, then as per offhand
@@ -127,7 +128,7 @@ public class UnitShop {
 
     }
 
-    private static void generateArmorRepertoire(DC_HeroObj hero) {
+    private static void generateArmorRepertoire(Unit hero) {
         // TODO
         /*
 		 * if has armorer... if isn't caster... check robe per mastery... check
@@ -174,7 +175,7 @@ public class UnitShop {
         for (String trait : StringMaster.openContainer(prop)) {
             // DataManager.getTypesSubGroup(OBJ_TYPES.JEWELRY, subgroup);
             ObjType type = DataManager.findType(VariableManager.removeVarPart(trait),
-                    OBJ_TYPES.JEWELRY);
+                    DC_TYPE.JEWELRY);
             if (type != null)
                 // check what, exactly? quality range? proper match? (resistance
                 // could be resistance penetration... TODO check doesn't contain
@@ -188,7 +189,7 @@ public class UnitShop {
         if (!repertoire.isEmpty()) {
             while (true) {
                 try {
-                    if (!buy(repertoire, unit, null, OBJ_TYPES.JEWELRY)) {
+                    if (!buy(repertoire, unit, null, DC_TYPE.JEWELRY)) {
                         return;
                     }
                     if (!checkGoldLimit()) {
@@ -202,7 +203,7 @@ public class UnitShop {
         }
     }
 
-    private static boolean buy(String repertoire, DC_HeroObj unit, ITEM_SLOT slot,
+    private static boolean buy(String repertoire, Unit unit, ITEM_SLOT slot,
                                OBJ_TYPE OBJ_TYPE_ENUM) {
         // Map<ObjType, Integer>
         List<ObjType> itemPool = new LinkedList<>();
@@ -266,12 +267,12 @@ public class UnitShop {
         return baseType;
     }
 
-    private static boolean specialCheck(DC_HeroObj unit, ObjType type) {
-        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.JEWELRY) {
+    private static boolean specialCheck(Unit unit, ObjType type) {
+        if (type.getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY) {
             // TODO
             return true;
         }
-        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.ITEMS) {
+        if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ITEMS) {
             // TODO
             return true;
         }
@@ -293,7 +294,7 @@ public class UnitShop {
         return StringMaster.compare(type.getProperty(G_PROPS.MATERIAL), property, false);
     }
 
-    private static void equip(DC_HeroObj unit, DC_HeroItemObj item, ITEM_SLOT slot) {
+    private static void equip(Unit unit, DC_HeroItemObj item, ITEM_SLOT slot) {
         if (slot != null) {
             if (!unit.equip(item, slot)) {
                 LogMaster.log(1, unit.getName() + " failed to equip "
@@ -315,9 +316,9 @@ public class UnitShop {
 
     }
 
-    private static boolean checkCanEquip(ObjType type, DC_HeroObj unit, ITEM_SLOT slot) {
+    private static boolean checkCanEquip(ObjType type, Unit unit, ITEM_SLOT slot) {
         if (slot == null) {
-            if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.JEWELRY) {
+            if (type.getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY) {
                 return getHeroManager().checkCanEquipJewelry(unit, type);
             } else {
                 // return !unit.isQuickSlotsFull(); just don't
@@ -335,20 +336,20 @@ public class UnitShop {
         return heroManager;
     }
 
-    private static DC_HeroItemObj buy(ObjType type, DC_HeroObj unit) {
+    private static DC_HeroItemObj buy(ObjType type, Unit unit) {
         unit.modifyParameter(PARAMS.GOLD, -type.getIntParam(PARAMS.GOLD_COST));
         return ItemFactory.createItemObj(type, unit.getOwner(), unit.getGame(), unit.getRef(),
                 false);
 
     }
 
-    private static boolean checkCost(ObjType type, DC_HeroObj unit) {
+    private static boolean checkCost(ObjType type, Unit unit) {
         int cost = new Formula(HeroManager.getCost(type, unit)).getInt(unit.getRef());
         return unit.checkParam(PARAMS.GOLD, cost + "*100/" + goldPercentageToSpend);
     }
 
     private static boolean checkItemType(ObjType type, ObjType baseType) {
-        if (baseType.getOBJ_TYPE_ENUM() == OBJ_TYPES.JEWELRY) {
+        if (baseType.getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY) {
             boolean result = StringMaster.compareByChar(baseType
                     .getProperty(PROPS.MAGICAL_ITEM_TRAIT), type
                     .getProperty(PROPS.MAGICAL_ITEM_TRAIT));
@@ -372,11 +373,11 @@ public class UnitShop {
 
     }
 
-    private static boolean checkQualityRange(ObjType type, DC_HeroObj unit) {
-        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.JEWELRY) {
+    private static boolean checkQualityRange(ObjType type, Unit unit) {
+        if (type.getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY) {
             return true;
         }
-        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.ITEMS) {
+        if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ITEMS) {
             return true;
         }
         String itemProperty = type.getProperty(G_PROPS.QUALITY_LEVEL);
@@ -387,18 +388,18 @@ public class UnitShop {
         if (!property.contains(StringMaster.CONTAINER_SEPARATOR)) {
             return property.equalsIgnoreCase(itemProperty);
         }
-        QUALITY_LEVEL quality = QUALITY_LEVEL.valueOf(StringMaster.getEnumFormat(itemProperty));
-        int index = Arrays.asList(QUALITY_LEVEL.values()).indexOf(quality);
+        QUALITY_LEVEL quality = ItemEnums.QUALITY_LEVEL.valueOf(StringMaster.getEnumFormat(itemProperty));
+        int index = Arrays.asList(ItemEnums.QUALITY_LEVEL.values()).indexOf(quality);
 
         List<String> range = StringMaster.openContainer(property);
 
-        int min = Arrays.asList(QUALITY_LEVEL.values()).indexOf(
-                QUALITY_LEVEL.valueOf(StringMaster.getEnumFormat(range.get(0))));
+        int min = Arrays.asList(ItemEnums.QUALITY_LEVEL.values()).indexOf(
+                ItemEnums.QUALITY_LEVEL.valueOf(StringMaster.getEnumFormat(range.get(0))));
         int max = -1;
 
         try {
-            max = Arrays.asList(QUALITY_LEVEL.values()).indexOf(
-                    QUALITY_LEVEL.valueOf(StringMaster.getEnumFormat(range.get(1))));
+            max = Arrays.asList(ItemEnums.QUALITY_LEVEL.values()).indexOf(
+                    ItemEnums.QUALITY_LEVEL.valueOf(StringMaster.getEnumFormat(range.get(1))));
         } catch (Exception e) {
 
         }

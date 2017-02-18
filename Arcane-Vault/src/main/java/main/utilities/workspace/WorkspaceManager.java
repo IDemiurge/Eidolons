@@ -1,15 +1,15 @@
 package main.utilities.workspace;
 
-import main.content.CONTENT_CONSTS.ACTION_TYPE;
-import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
 import main.content.*;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.system.MetaEnums;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
-import main.game.Game;
+import main.game.core.game.Game;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.EnumMaster;
@@ -61,13 +61,13 @@ public class WorkspaceManager {
         ObjType party = ArcaneVault.getSelectedType();
         Set<ObjType> set = new HashSet<>();
         for (String sub : StringMaster.openContainer(party.getProperty(PROPS.MEMBERS))) {
-            ObjType type = DataManager.getType(sub, OBJ_TYPES.CHARS);
+            ObjType type = DataManager.getType(sub, DC_TYPE.CHARS);
 
             for (String item : StringMaster.openContainer(type.getProperty(PROPS.SKILLS))) {
-                set.add(DataManager.getType(item, OBJ_TYPES.SKILLS));
+                set.add(DataManager.getType(item, DC_TYPE.SKILLS));
             }
             for (String item : StringMaster.openContainer(type.getProperty(PROPS.CLASSES))) {
-                set.add(DataManager.getType(item, OBJ_TYPES.CLASSES));
+                set.add(DataManager.getType(item, DC_TYPE.CLASSES));
             }
 
             // for (String item:
@@ -172,7 +172,7 @@ public class WorkspaceManager {
     public Workspace initAutoWorkspace() {
         List<ObjType> typeList = new LinkedList<>();
         for (ObjType type : DataManager.getTypes()) {
-            if (checkTypeForAutoWs((OBJ_TYPES) type.getOBJ_TYPE_ENUM(), type)) {
+            if (checkTypeForAutoWs((DC_TYPE) type.getOBJ_TYPE_ENUM(), type)) {
                 typeList.add(type);
             }
         }
@@ -182,11 +182,11 @@ public class WorkspaceManager {
         return workspace;
     }
 
-    private boolean checkTypeForAutoWs(OBJ_TYPES TYPE, ObjType type) {
+    private boolean checkTypeForAutoWs(DC_TYPE TYPE, ObjType type) {
         switch (TYPE) {
             case ACTIONS:
-                if (type.getGroupingKey().equalsIgnoreCase(ACTION_TYPE.STANDARD_ATTACK.toString())) {
-                    if (type.getWorkspaceGroup() != WORKSPACE_GROUP.COMPLETE) {
+                if (type.getGroupingKey().equalsIgnoreCase(ActionEnums.ACTION_TYPE.STANDARD_ATTACK.toString())) {
+                    if (type.getWorkspaceGroup() != MetaEnums.WORKSPACE_GROUP.COMPLETE) {
                         return true;
                     }
                 }
@@ -259,15 +259,15 @@ public class WorkspaceManager {
                 if (!activeWorkspace.getTypeList().contains(selectedType)) {
                     int option = JOptionPane.showOptionDialog(null, "Workspace group?",
                             "Select...", JOptionPane.OK_CANCEL_OPTION,
-                            JOptionPane.QUESTION_MESSAGE, null, WORKSPACE_GROUP.values(),
-                            WORKSPACE_GROUP.FOCUS);
+                            JOptionPane.QUESTION_MESSAGE, null, MetaEnums.WORKSPACE_GROUP.values(),
+                            MetaEnums.WORKSPACE_GROUP.FOCUS);
 
                     if (option == JOptionPane.CLOSED_OPTION) {
                         return true;
                     }
 
                     selectedType.setProperty(G_PROPS.WORKSPACE_GROUP, StringMaster
-                            .getWellFormattedString("" + WORKSPACE_GROUP.values()[option]));
+                            .getWellFormattedString("" + MetaEnums.WORKSPACE_GROUP.values()[option]));
                 }
             }
         }
@@ -354,17 +354,17 @@ public class WorkspaceManager {
     }
 
     public enum DEFAULT_TYPE_WORKSPACES {
-        SPELLS(OBJ_TYPES.SPELLS), ACTIONS(OBJ_TYPES.ACTIONS), // type+group
+        SPELLS(DC_TYPE.SPELLS), ACTIONS(DC_TYPE.ACTIONS), // type+group
         // filter
         // objects? e.g.
         // active
-        ABILS(OBJ_TYPES.ABILS),
+        ABILS(DC_TYPE.ABILS),
 
-        SKILLS(OBJ_TYPES.SKILLS),
-        CLASSES(OBJ_TYPES.CLASSES),
-        UNITS(OBJ_TYPES.UNITS, OBJ_TYPES.CHARS),
-        DUNGEONS(OBJ_TYPES.DUNGEONS),
-        ENCOUNTERS(OBJ_TYPES.ENCOUNTERS),
+        SKILLS(DC_TYPE.SKILLS),
+        CLASSES(DC_TYPE.CLASSES),
+        UNITS(DC_TYPE.UNITS, DC_TYPE.CHARS),
+        DUNGEONS(DC_TYPE.DUNGEONS),
+        ENCOUNTERS(DC_TYPE.ENCOUNTERS),
 
         MISC;
         private OBJ_TYPE[] types;

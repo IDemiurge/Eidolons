@@ -2,8 +2,8 @@ package main.swing.components.panels.page;
 
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagedListPanel;
 import main.system.graphics.GuiManager;
@@ -28,8 +28,8 @@ public class DC_PagedQuickItemPanel extends G_PagedListPanel<DC_QuickItemObj> {
 
     @Override
     protected List<List<DC_QuickItemObj>> getPageData() {
-        if (obj instanceof DC_HeroObj) {
-            DequeImpl<DC_QuickItemObj> items = ((DC_HeroObj) obj)
+        if (obj instanceof Unit) {
+            DequeImpl<DC_QuickItemObj> items = ((Unit) obj)
                     .getQuickItems();
             List<List<DC_QuickItemObj>> list = new ListMaster<DC_QuickItemObj>()
                     .splitList(PAGE_SIZE, items);

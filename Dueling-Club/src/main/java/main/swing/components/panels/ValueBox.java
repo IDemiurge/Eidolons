@@ -2,7 +2,7 @@ package main.swing.components.panels;
 
 import main.content.C_OBJ_TYPE;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.VALUE;
 import main.entity.Entity;
 import main.entity.obj.Obj;
@@ -21,7 +21,7 @@ public class ValueBox extends G_Panel {
     protected static final int X_OFFSET_TEXT = 8;
     protected static final int Y_OFFSET_TEXT = 24;
     protected static final int SIZE = 17;
-    protected static final OBJ_TYPE[] VALID_OBJ_TYPES = {C_OBJ_TYPE.UNITS_CHARS, OBJ_TYPES.BF_OBJ,};
+    protected static final OBJ_TYPE[] VALID_OBJ_TYPES = {C_OBJ_TYPE.UNITS_CHARS, DC_TYPE.BF_OBJ,};
     protected Entity entity;
     protected String text;
     protected int x;

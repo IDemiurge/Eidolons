@@ -4,13 +4,13 @@ import main.client.cc.CharacterCreator;
 import main.client.cc.HeroManager;
 import main.client.cc.gui.MainViewPanel.HERO_VIEWS;
 import main.content.*;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.battlefield.PointX;
+import main.swing.PointX;
 import main.swing.components.buttons.CustomButton;
 import main.swing.components.panels.DC_BuffPanel;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;
@@ -84,7 +84,7 @@ public class AddRemoveComponent extends G_Panel {
     protected void addComps() {
         addBuffComps();
         if (CharacterCreator.getInfoSelected() != null) {
-            if (CharacterCreator.getInfoSelected().getOBJ_TYPE_ENUM() == OBJ_TYPES.ACTIONS) {
+            if (CharacterCreator.getInfoSelected().getOBJ_TYPE_ENUM() == DC_TYPE.ACTIONS) {
                 addIconComps();
                 return;
             }
@@ -292,12 +292,12 @@ public class AddRemoveComponent extends G_Panel {
     }
 
     public void add() {
-        CharacterCreator.getHeroPanel((DC_HeroObj) hero).getMvp().getItemManager().addType(
+        CharacterCreator.getHeroPanel((Unit) hero).getMvp().getItemManager().addType(
                 (ObjType) upperPanel.getEntity());
     }
 
     public void remove() {
-        CharacterCreator.getHeroPanel((DC_HeroObj) hero).getMvp().getItemManager().removeType(
+        CharacterCreator.getHeroPanel((Unit) hero).getMvp().getItemManager().removeType(
                 lowerPanel.getEntity());
     }
 

@@ -1,12 +1,12 @@
 package main.game.logic.dungeon.building;
 
-import main.content.parameters.G_PARAMS;
+import main.content.values.parameters.G_PARAMS;
 import main.data.XLinkedMap;
 import main.data.xml.XML_Converter;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.CoordinatesMaster;
 import main.game.battlefield.ZCoordinates;
@@ -113,7 +113,7 @@ public class MapBlock {
         setObjects(getObjectsByCoordinates());
         map.clear();
         for (Coordinates c : getCoordinates()) {
-            for (DC_HeroObj obj : DC_Game.game.getObjectsOnCoordinate(c)) {
+            for (Unit obj : DC_Game.game.getObjectsOnCoordinate(c)) {
                 if (map.containsKey(c)) {
                     ZCoordinates coordinates = new ZCoordinates(c.x, c.y, new Random().nextInt());
                     map.put(coordinates, obj);
@@ -121,7 +121,7 @@ public class MapBlock {
                     map.put(c, obj);
                 }
             }
-            for (DC_HeroObj obj : DC_Game.game.getOverlayingObjects(c)) {
+            for (Unit obj : DC_Game.game.getOverlayingObjects(c)) {
                 if (map.containsKey(c)) {
                     ZCoordinates coordinates = new ZCoordinates(c.x, c.y, new Random().nextInt());
                     map.put(coordinates, obj);
@@ -220,7 +220,7 @@ public class MapBlock {
         this.roomType = roomType;
     }
 
-    public void addObject(DC_HeroObj obj, Coordinates c) {
+    public void addObject(Unit obj, Coordinates c) {
 
         if (map.containsKey(c)) {
             ZCoordinates coordinates = new ZCoordinates(c.x, c.y, new Random().nextInt());

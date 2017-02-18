@@ -3,7 +3,7 @@ package main.client.cc.gui.neo.tree.t3;
 import main.client.cc.HC_Master;
 import main.client.cc.gui.neo.tree.HT_Node;
 import main.client.cc.gui.neo.tree.view.ClassTreeView;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 
 import java.awt.event.MouseEvent;
@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 public class T3ClassTreePanel extends ClassTreeView {
     private Boolean left;
 
-    public T3ClassTreePanel(Boolean left, Object arg, DC_HeroObj hero) {
+    public T3ClassTreePanel(Boolean left, Object arg, Unit hero) {
         super(arg, hero);
         this.left = left;
     }

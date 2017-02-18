@@ -2,10 +2,10 @@ package main.swing.components.panels;
 
 import main.content.PARAMS;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.entity.Entity;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.swing.generic.components.G_Panel;
 import main.system.text.ToolTipMaster;
 

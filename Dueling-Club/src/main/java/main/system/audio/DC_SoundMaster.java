@@ -1,13 +1,12 @@
 package main.system.audio;
 
-import main.content.CONTENT_CONSTS.WEAPON_GROUP;
-import main.content.CONTENT_CONSTS.WEAPON_SIZE;
 import main.content.PROPS;
+import main.content.enums.entity.ItemEnums;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.system.ContentGenerator;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.RandomWizard;
@@ -22,10 +21,10 @@ import java.util.Random;
 public class DC_SoundMaster {
     public static void playRangedAttack(DC_WeaponObj weapon) {
         // TODO double weapon sound
-        if (weapon.getWeaponGroup() == WEAPON_GROUP.CROSSBOWS) {
+        if (weapon.getWeaponGroup() == ItemEnums.WEAPON_GROUP.CROSSBOWS) {
             SoundMaster
                     .playRandomSoundVariant("weapon\\crossbow\\" + weapon.getWeaponSize(), false);
-        } else if (weapon.getWeaponGroup() == WEAPON_GROUP.BOLTS) {
+        } else if (weapon.getWeaponGroup() == ItemEnums.WEAPON_GROUP.BOLTS) {
             SoundMaster.playRandomSoundVariant("weapon\\bow\\" + weapon.getWeaponSize(), false);
         } else {
             SoundMaster.playRandomSoundVariant("weapon\\throw\\" + weapon.getWeaponSize(), false);
@@ -33,14 +32,14 @@ public class DC_SoundMaster {
 
     }
 
-    public static void playMissedSound(DC_HeroObj attacker, DC_WeaponObj attackWeapon) {
+    public static void playMissedSound(Unit attacker, DC_WeaponObj attackWeapon) {
 
         SoundMaster.playRandomSoundVariant("weapon\\miss\\"
                 + attackWeapon.getWeaponSize().toString().toLowerCase(), false);
 
     }
 
-    public static void playParrySound(DC_HeroObj attacked, DC_WeaponObj attackWeapon) {
+    public static void playParrySound(Unit attacked, DC_WeaponObj attackWeapon) {
         // TODO double weapon sound
         DC_WeaponObj parryWeapon = attacked.getActiveWeapon(true);
 
@@ -53,8 +52,8 @@ public class DC_SoundMaster {
     public static void playBlockedSound(Obj attacker, Obj attacked, DC_WeaponObj shield,
                                         DC_WeaponObj weaponObj, Integer blockValue, Integer damage) {
 
-        if (shield.getWeaponSize() == WEAPON_SIZE.TINY
-                || shield.getWeaponSize() == WEAPON_SIZE.SMALL) {
+        if (shield.getWeaponSize() == ItemEnums.WEAPON_SIZE.TINY
+                || shield.getWeaponSize() == ItemEnums.WEAPON_SIZE.SMALL) {
             if (RandomWizard.chance(75, new Random())) {
                 SoundMaster.playRandomSoundVariant(
                         "armor\\buckler\\s " + weaponObj.getDamageType(), false);
@@ -74,8 +73,8 @@ public class DC_SoundMaster {
 
     }
 
-    public static void playAttackImpactSound(DC_WeaponObj weapon, final DC_HeroObj attacker,
-                                             final DC_HeroObj attacked, Integer final_amount, int blocked) {
+    public static void playAttackImpactSound(DC_WeaponObj weapon, final Unit attacker,
+                                             final Unit attacked, Integer final_amount, int blocked) {
         // TODO getDamageSeverity(fin
         String armor_type = attacked.getProperty(PROPS.OBJECT_ARMOR_TYPE);
         // int volume = 100;
@@ -122,7 +121,7 @@ public class DC_SoundMaster {
 
     }
 
-    private static void playArmorSound(final DC_HeroObj attacked, String armor_type,
+    private static void playArmorSound(final Unit attacked, String armor_type,
                                        String damage_type, boolean natural) {
         String path = SoundMaster.getPath() + "soundsets\\" + (natural ? "obj\\" : "armor\\")
                 + armor_type;

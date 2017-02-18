@@ -1,6 +1,6 @@
 package main.utilities.search;
 
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.entity.type.ObjType;
 import main.launch.ArcaneVault;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -62,7 +62,7 @@ public class SearchMaster {
         if (!StringMaster.isEmpty(typeName)) {
             list = TypeFinder.findTypes(typeName,
                     // types.toArray(TYPES)
-                    OBJ_TYPES.values());
+                    DC_TYPE.values());
         } else {
             // TypeFilter.filter(filter, groupingValue); //should be separate I
             // guess

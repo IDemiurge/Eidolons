@@ -2,9 +2,9 @@ package main.swing.components.panels.page.info;
 
 import main.content.PROPS;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
 import main.swing.components.panels.page.info.element.*;
 import main.swing.generic.components.misc.GraphicComponent.STD_COMP_IMAGES;

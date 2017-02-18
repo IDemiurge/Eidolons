@@ -4,10 +4,10 @@ import main.client.cc.gui.lists.ItemListManager;
 import main.client.cc.gui.pages.HC_PagedListPanel.HC_LISTS;
 import main.client.cc.logic.spells.DivinationMaster;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PROPS;
-import main.content.properties.PROPERTY;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.values.properties.PROPERTY;
+import main.entity.obj.unit.Unit;
 import main.swing.components.buttons.CustomButton;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -15,7 +15,7 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 // display max sd, total sd... 
 
 public class DivinationPanel extends SecondaryItemList {
-    public DivinationPanel(DC_HeroObj hero, ItemListManager itemManager) {
+    public DivinationPanel(Unit hero, ItemListManager itemManager) {
         super(hero, itemManager);
 
     }
@@ -71,7 +71,7 @@ public class DivinationPanel extends SecondaryItemList {
 
     @Override
     protected OBJ_TYPE getTYPE() {
-        return OBJ_TYPES.SPELLS;
+        return DC_TYPE.SPELLS;
     }
 
     @Override

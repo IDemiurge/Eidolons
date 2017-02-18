@@ -1,6 +1,6 @@
 package main.swing.components.panels.page.small;
 
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;

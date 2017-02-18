@@ -2,26 +2,27 @@ package main.client.cc.logic.party;
 
 import main.client.cc.logic.HeroCreator;
 import main.client.dc.Simulation;
-import main.content.CONTENT_CONSTS.PRINCIPLES;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.*;
-import main.content.parameters.MACRO_PARAMS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.MACRO_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.HeroEnums;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.MACRO_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.game.logic.arcade.ArcadeManager.ARCADE_STATUS;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.travel.MacroParty;
 import main.game.logic.macro.travel.RestMaster;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;
@@ -40,16 +41,16 @@ public class PartyObj extends Obj {
     // used in dc dynamically and in hc as well; to be save into xml and loaded
     // back
 
-    public List<DC_HeroObj> members = new LinkedList<>();
-    public List<DC_HeroObj> mercs = new LinkedList<>();
-    public DC_HeroObj leader;
-    private DC_HeroObj middleHero;
-    private Map<DC_HeroObj, Coordinates> partyCoordinates;
+    public List<Unit> members = new LinkedList<>();
+    public List<Unit> mercs = new LinkedList<>();
+    public Unit leader;
+    private Unit middleHero;
+    private Map<Unit, Coordinates> partyCoordinates;
     private MacroParty macroParty;
 
     // private ARCADE_STATUS arcadeStatus;
 
-    public PartyObj(ObjType type, DC_HeroObj hero) {
+    public PartyObj(ObjType type, Unit hero) {
         super(type, hero.getOwner(), type.getGame(), new Ref(type.getGame()));
         this.leader = hero;
         addMember(leader);
@@ -58,7 +59,7 @@ public class PartyObj extends Obj {
         setProperty(PROPS.LEADER, leader.getProperty(G_PROPS.NAME), true);
         this.type.setParam(PARAMS.LEVEL, leader.getParam(PARAMS.LEVEL), true);
         setParam(PARAMS.LEVEL, leader.getIntParam(PARAMS.LEVEL), true);
-        setOBJ_TYPE_ENUM(OBJ_TYPES.PARTY);
+        setOBJ_TYPE_ENUM(DC_TYPE.PARTY);
         if (leader.isHero()) {
             leader.setMainHero(true);
         }
@@ -99,19 +100,19 @@ public class PartyObj extends Obj {
     }
 
     public void resetMembers() {
-        for (DC_HeroObj hero : members) {
+        for (Unit hero : members) {
             hero.fullReset(Simulation.getGame());
         }
     }
 
-    public void addMember(DC_HeroObj hero) {
+    public void addMember(Unit hero) {
         members.add(hero);
         addProperty(PROPS.MEMBERS, hero.getName());
         type.addProperty(PROPS.MEMBERS, hero.getName());
         hero.getRef().setID(KEYS.PARTY, getId());
     }
 
-    public void removeMember(DC_HeroObj hero) {
+    public void removeMember(Unit hero) {
         removeProperty(PROPS.MEMBERS, hero.getName());
         type.removeProperty(PROPS.MEMBERS, hero.getName());
         members.remove(hero);
@@ -133,19 +134,19 @@ public class PartyObj extends Obj {
 
     }
 
-    public List<DC_HeroObj> getMembers() {
+    public List<Unit> getMembers() {
         return members;
     }
 
-    public void setMembers(List<DC_HeroObj> members) {
+    public void setMembers(List<Unit> members) {
         this.members = members;
     }
 
-    public DC_HeroObj getLeader() {
+    public Unit getLeader() {
         return leader;
     }
 
-    public void setLeader(DC_HeroObj leader) {
+    public void setLeader(Unit leader) {
         this.leader = leader;
     }
 
@@ -164,20 +165,20 @@ public class PartyObj extends Obj {
         return getIntParam(PARAMS.GLORY);
     }
 
-    public DC_HeroObj getRandomMember() {
+    public Unit getRandomMember() {
 
         return members.get(RandomWizard.getRandomListIndex(members));
     }
 
-    public DC_HeroObj getMiddleHero() {
+    public Unit getMiddleHero() {
         return middleHero;
     }
 
-    public void setMiddleHero(DC_HeroObj middleHero) {
+    public void setMiddleHero(Unit middleHero) {
         this.middleHero = middleHero;
     }
 
-    public DC_HeroObj getNextHero(DC_HeroObj hero) {
+    public Unit getNextHero(Unit hero) {
         int i = getMembers().indexOf(hero);
         if (i == -1) {
             return null;
@@ -204,7 +205,7 @@ public class PartyObj extends Obj {
         setParam(PARAMS.ORGANIZATION, 100);
         setParam(PARAMS.BATTLE_SPIRIT, 100);
 
-        for (DC_HeroObj m : members) {
+        for (Unit m : members) {
             m.setParam(PARAMS.ORGANIZATION,
                     // Math.min(
                     // DC_Formulas.INTELLIGENCE_ORGANIZATION_CAP_MOD
@@ -228,7 +229,7 @@ public class PartyObj extends Obj {
         int maxTactics = Integer.MIN_VALUE;
         int intelligence = 0;
         int i = 0;
-        for (DC_HeroObj hero : members) {
+        for (Unit hero : members) {
             if (hero.isDead()) {
                 continue;
             }
@@ -277,7 +278,7 @@ public class PartyObj extends Obj {
         int sp_mod = 100;
         int dc_mod = 100;
         int sd_mod = 100;
-        for (DC_HeroObj hero : members) {
+        for (Unit hero : members) {
             // principle clash?
             // getOrCreate condition, check per unit, add up on false!
             if (hero.isDead()) {
@@ -286,10 +287,10 @@ public class PartyObj extends Obj {
             i++;
             ref.setMatch(hero.getId());
 
-            for (PRINCIPLES principle : PRINCIPLES.values()) {
+            for (PRINCIPLES principle : HeroEnums.PRINCIPLES.values()) {
                 Integer hero_identity = hero.getIntParam(DC_ContentManager
                         .getIdentityParamForPrinciple(principle));
-                for (DC_HeroObj m : members) {
+                for (Unit m : members) {
                     if (m == hero || m.isDead()) {
                         continue;
                     }
@@ -387,7 +388,7 @@ public class PartyObj extends Obj {
         } else {
             // apply macro mode effects!
             if (MacroManager.isMacroGame()) {
-                for (DC_HeroObj h : members) {
+                for (Unit h : members) {
                     RestMaster.applyMacroModeContinuous(h);
                 }
             }
@@ -426,13 +427,13 @@ public class PartyObj extends Obj {
 
     public int getMinParam(PARAMETER p, boolean units) {
         int min = Integer.MAX_VALUE;
-        for (DC_HeroObj hero : members) {
+        for (Unit hero : members) {
             if (hero.getIntParam(p) < min) {
                 min = hero.getIntParam(p);
             }
         }
         if (units) {
-            for (DC_HeroObj unit : getMercs()) {
+            for (Unit unit : getMercs()) {
                 if (unit.getIntParam(p) < min) {
                     min = unit.getIntParam(p);
                 }
@@ -443,13 +444,13 @@ public class PartyObj extends Obj {
 
     public int getMaxParam(PARAMETER p, boolean units) {
         int max = Integer.MIN_VALUE;
-        for (DC_HeroObj hero : members) {
+        for (Unit hero : members) {
             if (hero.getIntParam(p) > max) {
                 max = hero.getIntParam(p);
             }
         }
         if (units) {
-            for (DC_HeroObj unit : getMercs()) {
+            for (Unit unit : getMercs()) {
                 if (unit.getIntParam(p) < max) {
                     max = unit.getIntParam(p);
                 }
@@ -460,11 +461,11 @@ public class PartyObj extends Obj {
 
     public int getParamSum(PARAMETER p, boolean units) {
         int sum = 0;
-        for (DC_HeroObj hero : members) {
+        for (Unit hero : members) {
             sum += hero.getIntParam(p);
         }
         if (units) {
-            for (DC_HeroObj unit : getMercs()) {
+            for (Unit unit : getMercs()) {
                 sum += unit.getIntParam(p);
             }
         }
@@ -472,7 +473,7 @@ public class PartyObj extends Obj {
     }
 
     public boolean checkMembersProperty(PROPS p, String value) {
-        for (DC_HeroObj hero : members) {
+        for (Unit hero : members) {
             if (hero.checkProperty(p, value)) {
                 return true;
             }
@@ -480,19 +481,19 @@ public class PartyObj extends Obj {
         return false;
     }
 
-    public List<DC_HeroObj> getMercs() {
+    public List<Unit> getMercs() {
         return mercs;
     }
 
-    public void setMercs(List<DC_HeroObj> mercs) {
+    public void setMercs(List<Unit> mercs) {
         this.mercs = mercs;
     }
 
-    public Map<DC_HeroObj, Coordinates> getPartyCoordinates() {
+    public Map<Unit, Coordinates> getPartyCoordinates() {
         return partyCoordinates;
     }
 
-    public void setPartyCoordinates(Map<DC_HeroObj, Coordinates> partyCoordinates) {
+    public void setPartyCoordinates(Map<Unit, Coordinates> partyCoordinates) {
         this.partyCoordinates = partyCoordinates;
     }
 

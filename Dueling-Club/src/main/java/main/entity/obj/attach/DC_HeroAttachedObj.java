@@ -1,30 +1,30 @@
 package main.entity.obj.attach;
 
 import main.ability.AbilityObj;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
 import main.content.ContentManager;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.AttachedObj;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.MicroGame;
+import main.game.core.game.MicroGame;
 import main.game.battlefield.Coordinates;
 import main.game.logic.battle.player.DC_Player;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 
 public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
-    private static final String[] STD_PASSIVES_EXCEPTIONS = {STANDARD_PASSIVES.INDESTRUCTIBLE
+    private static final String[] STD_PASSIVES_EXCEPTIONS = {UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE
             .getName(),};
 
-    protected DC_HeroObj hero;
+    protected Unit hero;
 
     protected Integer heroId;
 
@@ -48,7 +48,7 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
     }
 
     @Override
-    public DC_HeroObj getOwnerObj() {
+    public Unit getOwnerObj() {
         return getHero();
     }
 
@@ -88,7 +88,7 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
         activatePassives();
     }
 
-    protected DC_HeroObj getHero() {
+    protected Unit getHero() {
         if (hero == null) {
             initHero();
         }
@@ -96,7 +96,7 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
         return hero;
     }
 
-    public void setHero(DC_HeroObj hero) {
+    public void setHero(Unit hero) {
         this.hero = hero;
     }
 
@@ -162,7 +162,7 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
         if (getGame() == null) {
             return;
         }
-        setHero((DC_HeroObj) getGame().getObjectById(heroId));
+        setHero((Unit) getGame().getObjectById(heroId));
     }
 
     protected void initProp(PROPERTY prop) {

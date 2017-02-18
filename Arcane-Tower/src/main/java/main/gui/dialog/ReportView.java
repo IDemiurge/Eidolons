@@ -1,7 +1,7 @@
 package main.gui.sub;
 
 import main.content.OBJ_TYPE;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.PROPERTY;
 import main.entity.type.ObjType;
 import main.file.ReportGenerator.REPORT_TYPE;
 import main.logic.AT_OBJ_TYPE;

@@ -4,7 +4,7 @@ import main.content.ContentManager;
 import main.content.DC_ContentManager;
 import main.content.DC_ContentManager.ATTRIBUTE;
 import main.content.PARAMS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.system.DC_ConditionMaster;
 import main.system.DC_Formulas;
 import main.system.auxiliary.StringMaster;
@@ -12,9 +12,9 @@ import main.system.math.MathMaster;
 
 public class DC_Attributes {
 
-    private DC_HeroObj hero;
+    private Unit hero;
 
-    public DC_Attributes(DC_HeroObj hero) {
+    public DC_Attributes(Unit hero) {
         this.hero = hero;
     }
 

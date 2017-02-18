@@ -1,6 +1,6 @@
 package main.game.logic.macro.gui.party;
 
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.travel.MacroParty;
 import main.swing.generic.components.G_Panel;
@@ -12,8 +12,8 @@ import java.util.Map;
 public class PartyMembersPanel implements Refreshable {
     private G_Panel panel;
     private MacroParty party;
-    private DC_HeroObj selectedPartyMember;
-    private Map<DC_HeroObj, PartyMemberComp> memberComps = new HashMap<>();
+    private Unit selectedPartyMember;
+    private Map<Unit, PartyMemberComp> memberComps = new HashMap<>();
 
     public PartyMembersPanel() {
         panel = new G_Panel();
@@ -23,7 +23,7 @@ public class PartyMembersPanel implements Refreshable {
     public void refresh() {
         party = MacroGame.getGame().getPlayerParty();
         panel.removeAll();
-        for (DC_HeroObj m : party.getMembers()) {
+        for (Unit m : party.getMembers()) {
             PartyMemberComp memberComp = memberComps.get(m);
             if (memberComp == null) {
                 memberComp = new PartyMemberComp(this, m);
@@ -53,11 +53,11 @@ public class PartyMembersPanel implements Refreshable {
         this.party = party;
     }
 
-    public DC_HeroObj getSelectedPartyMember() {
+    public Unit getSelectedPartyMember() {
         return selectedPartyMember;
     }
 
-    public void setSelectedPartyMember(DC_HeroObj selectedPartyMember) {
+    public void setSelectedPartyMember(Unit selectedPartyMember) {
         this.selectedPartyMember = selectedPartyMember;
     }
 }

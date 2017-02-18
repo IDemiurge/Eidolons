@@ -1,10 +1,10 @@
 package main.game.logic.dungeon.ai;
 
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.ai.UnitAI;
 import main.game.battlefield.VisionManager;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +17,7 @@ public class DungeonCrawler {
     }
 
     public static boolean checkEngaged(UnitAI ai) {
-        DC_HeroObj unit = ai.getUnit();
+        Unit unit = ai.getUnit();
         // PERCEPTION_STATUS_PLAYER status =
         // ai.getGroup().getPerceptionStatus();
 
@@ -26,8 +26,8 @@ public class DungeonCrawler {
         // don't see you
         // HEARING would be an important factor...
         // for (DC_HeroObj unit : getCreeps()) {
-        List<DC_HeroObj> relevantEnemies = getRelevantEnemies(unit);
-        for (DC_HeroObj hero : relevantEnemies) {
+        List<Unit> relevantEnemies = getRelevantEnemies(unit);
+        for (Unit hero : relevantEnemies) {
             // check detections - perhaps it's really just about making a check
             // before AS-constr.
 
@@ -47,9 +47,9 @@ public class DungeonCrawler {
 
     }
 
-    private static List<DC_HeroObj> getRelevantEnemies(DC_HeroObj unit) {
-        List<DC_HeroObj> list = new LinkedList<>();
-        for (DC_HeroObj enemy : unit.getGame().getUnits()) {
+    private static List<Unit> getRelevantEnemies(Unit unit) {
+        List<Unit> list = new LinkedList<>();
+        for (Unit enemy : unit.getGame().getUnits()) {
             if (enemy.getOwner().equals(Player.NEUTRAL) || enemy.getOwner().equals(unit.getOwner())) {
                 continue;
             }
@@ -62,9 +62,9 @@ public class DungeonCrawler {
 
     }
 
-    private static List<DC_HeroObj> getCreeps() {
-        List<DC_HeroObj> list = new LinkedList<>();
-        for (DC_HeroObj unit : DC_Game.game.getUnits()) {
+    private static List<Unit> getCreeps() {
+        List<Unit> list = new LinkedList<>();
+        for (Unit unit : DC_Game.game.getUnits()) {
 
         }
 

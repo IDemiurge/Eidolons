@@ -1,9 +1,9 @@
 package main.ability.effects.special;
 
 import main.ability.effects.oneshot.common.ModifyPropertyEffect;
-import main.content.CONTENT_CONSTS.BEHAVIOR_MODE;
-import main.content.properties.G_PROPS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
+import main.content.values.properties.G_PROPS;
+import main.entity.obj.unit.Unit;
 import main.system.auxiliary.EnumMaster;
 
 public class BehaviorModeEffect extends ModifyPropertyEffect {
@@ -24,8 +24,8 @@ public class BehaviorModeEffect extends ModifyPropertyEffect {
 
     @Override
     public boolean applyThis() {
-        if (ref.getTargetObj() instanceof DC_HeroObj) {
-            DC_HeroObj unit = (DC_HeroObj) ref.getTargetObj();
+        if (ref.getTargetObj() instanceof Unit) {
+            Unit unit = (Unit) ref.getTargetObj();
             if (unit.isUnconscious()) {
                 return false;
             }

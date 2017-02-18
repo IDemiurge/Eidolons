@@ -4,7 +4,7 @@ import main.client.game.options.GAME_OPTIONS;
 import main.client.game.options.GameOptions;
 import main.client.net.GameConnector;
 import main.client.net.GameConnector.HOST_CLIENT_CODES;
-import main.game.HostedGame;
+import main.game.core.game.HostedGame;
 import main.swing.generic.components.Refreshable;
 import main.swing.generic.components.panels.G_ElementPanel;
 import main.system.auxiliary.log.LogMaster;

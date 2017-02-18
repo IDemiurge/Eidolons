@@ -2,9 +2,9 @@ package main.game.ai.tools;
 
 import main.content.PARAMS;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_UnitObj;
-import main.game.DC_Game;
-import main.game.MicroGame;
+import main.entity.obj.unit.DC_UnitModel;
+import main.game.core.game.DC_Game;
+import main.game.core.game.MicroGame;
 import main.game.ai.AI;
 import main.game.ai.logic.DC_AI;
 import main.game.battlefield.pathing.Path;
@@ -42,7 +42,7 @@ public class DC_Analyzer extends main.game.ai.logic.Analyzer {
     public Obj getEnemyWithinMovingRange(Obj obj) {
 
         for (Obj enemyObj : getEnemy().getControlledUnits()) { // getPrioritizedEnemyList!
-            DC_UnitObj enemyUnit = (DC_UnitObj) enemyObj;
+            DC_UnitModel enemyUnit = (DC_UnitModel) enemyObj;
             for (Obj cell : getAi().getGame().getMovementManager()
                     .getAdjacentObjs(enemyUnit, true)) {
                 Path path = getAi().getGame().getMovementManager()
@@ -75,7 +75,7 @@ public class DC_Analyzer extends main.game.ai.logic.Analyzer {
 
     @Override
     public boolean checkCanHit(Obj obj) {
-        DC_UnitObj unit = (DC_UnitObj) obj;
+        DC_UnitModel unit = (DC_UnitModel) obj;
         if (!unit.canAttack()) {
             return false;
         }
@@ -88,9 +88,9 @@ public class DC_Analyzer extends main.game.ai.logic.Analyzer {
     }
 
     // should return top priority target
-    private boolean checkAdjacentAttacks(DC_UnitObj unit) {
+    private boolean checkAdjacentAttacks(DC_UnitModel unit) {
         for (Obj obj : getEnemy().getControlledUnits()) {
-            DC_UnitObj enemyUnit = (DC_UnitObj) obj;
+            DC_UnitModel enemyUnit = (DC_UnitModel) obj;
             if (unit.canAttack(enemyUnit)) {
                 if (getAi().getLogic() != null) {
                     getAi().getLogic().setTarget(enemyUnit.getId());
@@ -103,11 +103,11 @@ public class DC_Analyzer extends main.game.ai.logic.Analyzer {
 
     @Override
     public Obj getClosestAttackTarget() {
-        DC_UnitObj unit = (DC_UnitObj) ai.getLogic().getUnit();
+        DC_UnitModel unit = (DC_UnitModel) ai.getLogic().getUnit();
         Obj enemy_unit = null;
         int cost = Integer.MAX_VALUE;
         for (Obj obj : getEnemy().getControlledUnits()) {
-            DC_UnitObj enemyUnit = (DC_UnitObj) obj;
+            DC_UnitModel enemyUnit = (DC_UnitModel) obj;
             Obj cell = getClosestCell(enemyUnit, false);
             if (cell == null) {
                 continue;

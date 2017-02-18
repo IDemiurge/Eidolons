@@ -3,7 +3,7 @@ package main.system.hotkey;
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
 import main.client.dc.Launcher;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 
 import java.awt.event.KeyEvent;
 

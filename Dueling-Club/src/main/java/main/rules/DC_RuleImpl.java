@@ -3,10 +3,10 @@ package main.rules;
 import main.ability.effects.Effect;
 import main.elements.conditions.Conditions;
 import main.entity.Ref;
-import main.game.MicroGame;
-import main.game.event.Event;
-import main.game.event.Event.EVENT_TYPE;
-import main.game.event.Rule;
+import main.game.core.game.MicroGame;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.EVENT_TYPE;
+import main.game.logic.event.Rule;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 

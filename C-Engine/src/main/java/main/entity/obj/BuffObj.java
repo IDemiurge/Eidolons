@@ -2,18 +2,18 @@ package main.entity.obj;
 
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
-import main.content.CONTENT_CONSTS.BUFF_TYPE;
-import main.content.CONTENT_CONSTS.STD_BOOLS;
+import main.content.enums.GenericEnums.BUFF_TYPE;
 import main.content.ContentManager;
-import main.content.parameters.G_PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.enums.GenericEnums;
+import main.content.values.parameters.G_PARAMS;
+import main.content.values.properties.G_PROPS;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.type.BuffType;
-import main.game.MicroGame;
-import main.game.event.MessageManager;
-import main.game.player.Player;
+import main.game.core.game.MicroGame;
+import main.game.logic.event.MessageManager;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
@@ -51,10 +51,10 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
         this.basis = game.getObjectById(ref.getBasis());
         addDynamicValues();
         setTransient(type.isTransient());
-        if (checkBool(STD_BOOLS.INVISIBLE_BUFF))
+        if (checkBool(GenericEnums.STD_BOOLS.INVISIBLE_BUFF))
             visible = false;
         try {
-            if (ref.getObj(KEYS.ACTIVE).checkBool(STD_BOOLS.INVISIBLE_BUFF))
+            if (ref.getObj(KEYS.ACTIVE).checkBool(GenericEnums.STD_BOOLS.INVISIBLE_BUFF))
                 visible = false;
         } catch (Exception ignored) {
         }
@@ -228,9 +228,9 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     public boolean checkRetainCondition() {
         try {
             if (ref.getSourceObj().isDead()) {
-                if (checkBool(STD_BOOLS.SOURCE_DEPENDENT))
+                if (checkBool(GenericEnums.STD_BOOLS.SOURCE_DEPENDENT))
                     kill();
-                if (getActive().checkBool(STD_BOOLS.SOURCE_DEPENDENT))
+                if (getActive().checkBool(GenericEnums.STD_BOOLS.SOURCE_DEPENDENT))
                     kill();
 
             }
@@ -271,11 +271,11 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     }
 
     public boolean isDispelable() {
-        return super.checkBool(STD_BOOLS.DISPELABLE);
+        return super.checkBool(GenericEnums.STD_BOOLS.DISPELABLE);
     }
 
     public boolean isStacking() {
-        return super.checkBool(STD_BOOLS.STACKING);
+        return super.checkBool(GenericEnums.STD_BOOLS.STACKING);
     }
 
     public boolean isEffectApplied() {

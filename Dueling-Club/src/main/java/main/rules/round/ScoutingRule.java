@@ -1,10 +1,10 @@
 package main.rules.round;
 
-import main.content.CONTENT_CONSTS.ROLL_TYPES;
+import main.content.enums.GenericEnums;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.logic.arena.Wave;
 import main.game.logic.generic.PartyManager;
 import main.game.logic.macro.travel.Encounter;
@@ -24,7 +24,7 @@ public class ScoutingRule extends RoundRule {
         return StringMaster.openContainer(e.getTypeNames());
     }
 
-    public void checkEnemiesDetected(DC_HeroObj hero) {
+    public void checkEnemiesDetected(Unit hero) {
         // pre-define spawning side!
         // roll each turn -
         // "detection roll vs least stealth among the wave units?"
@@ -46,7 +46,7 @@ public class ScoutingRule extends RoundRule {
                 // String success =detection+ "*" + l.getDifficulty();
                 String fail = distance + "*" + l.getDifficulty(); // TODO
                 try {
-                    if (RollMaster.roll(ROLL_TYPES.DETECTION, fail, "-", ref)) {
+                    if (RollMaster.roll(GenericEnums.ROLL_TYPES.DETECTION, fail, "-", ref)) {
                         level = l;
                         break;
                     }
@@ -63,7 +63,7 @@ public class ScoutingRule extends RoundRule {
     }
 
     @Override
-    public boolean check(DC_HeroObj unit) {
+    public boolean check(Unit unit) {
         if (PartyManager.getParty() == null) {
             if (unit.isHero()) {
                 if (unit.getOwner().isMe()) {
@@ -77,7 +77,7 @@ public class ScoutingRule extends RoundRule {
     }
 
     @Override
-    public void apply(DC_HeroObj hero) {
+    public void apply(Unit hero) {
         // checkEnemiesDetected(hero); TODO
     }
 

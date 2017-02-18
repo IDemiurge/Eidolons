@@ -1,10 +1,10 @@
 package main.swing.components.panels;
 
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
-import main.game.MicroGameState;
-import main.game.turn.TurnManager;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
+import main.game.core.state.MicroGameState;
+import main.game.logic.battle.turn.TurnManager;
 import main.swing.components.PriorityListItem;
 import main.swing.generic.components.panels.G_ListPanel;
 import main.swing.generic.services.listener.ObjListMouseListener;
@@ -22,8 +22,8 @@ import java.util.LinkedList;
 /**
  * Selection => info select on BF (or redirect click?) Render: display AP
  */
-public class DC_PriorityListPanel extends G_ListPanel<DC_HeroObj> implements
-        ListCellRenderer<DC_HeroObj> {
+public class DC_PriorityListPanel extends G_ListPanel<Unit> implements
+        ListCellRenderer<Unit> {
 
     public static final int PLP_MIN_ITEMS = MathMaster.getMinMax(GuiManager
             .getBF_CompDisplayedCellsY() * 2, 8, 12);
@@ -35,8 +35,8 @@ public class DC_PriorityListPanel extends G_ListPanel<DC_HeroObj> implements
     }
 
     @Override
-    public ObjListMouseListener<DC_HeroObj> getMouseListener() {
-        return new ObjListMouseListener<DC_HeroObj>(getList()) {
+    public ObjListMouseListener<Unit> getMouseListener() {
+        return new ObjListMouseListener<Unit>(getList()) {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 if (SwingUtilities.isRightMouseButton(e)) { // to avoid this if
@@ -70,16 +70,16 @@ public class DC_PriorityListPanel extends G_ListPanel<DC_HeroObj> implements
 
     @SuppressWarnings("unchecked")
     @Override
-    public Collection<DC_HeroObj> getData() {
-        LinkedList<DC_HeroObj> newData = new LinkedList(getManager().getDisplayedUnitQueue());
+    public Collection<Unit> getData() {
+        LinkedList<Unit> newData = new LinkedList(getManager().getDisplayedUnitQueue());
         ListMaster.fillWithNullElements(newData, PLP_MIN_ITEMS);
         // newData.pop();
         return newData;
     }
 
     @Override
-    public Component getListCellRendererComponent(JList<? extends DC_HeroObj> list,
-                                                  DC_HeroObj value, int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList<? extends Unit> list,
+                                                  Unit value, int index, boolean isSelected, boolean cellHasFocus) {
         /**
          * TODO emblem AP highlight? highlight when infoselected on bf
          */

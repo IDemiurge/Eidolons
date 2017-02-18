@@ -1,14 +1,15 @@
 package main.entity.obj;
 
-import main.content.CONTENT_CONSTS;
-import main.content.parameters.G_PARAMS;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.BfObjEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.parameters.G_PARAMS;
+import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.Game;
-import main.game.MicroGame;
+import main.game.core.game.Game;
+import main.game.core.game.MicroGame;
 import main.game.battlefield.Coordinates;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 
 public class MicroObj extends Obj {
 
@@ -96,8 +97,8 @@ public class MicroObj extends Obj {
 
     public boolean isOverlaying() {
         if (overlaying == null) {
-            overlaying = checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + CONTENT_CONSTS.BF_OBJECT_TAGS.OVERLAYING)
-                    || checkProperty(G_PROPS.CLASSIFICATIONS, "" + CONTENT_CONSTS.CLASSIFICATIONS.ATTACHED);
+            overlaying = checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BfObjEnums.BF_OBJECT_TAGS.OVERLAYING)
+                    || checkProperty(G_PROPS.CLASSIFICATIONS, "" + UnitEnums.CLASSIFICATIONS.ATTACHED);
         }
         return overlaying;
     }

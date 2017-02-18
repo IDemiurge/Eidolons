@@ -3,14 +3,14 @@ package main.client.cc.gui.neo.tree.logic;
 import main.client.cc.gui.neo.tree.HT_Node;
 import main.client.cc.gui.neo.tree.logic.TreeMap.LINK_VARIANT;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
-import main.game.battlefield.PointX;
+import main.swing.PointX;
 import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -139,8 +139,8 @@ public class HT_MapBuilder {
         LogMaster.log(1, ">>>>>>> after: " + children);
     }
 
-    private OBJ_TYPES getTYPE() {
-        return (skill) ? OBJ_TYPES.SKILLS : OBJ_TYPES.CLASSES;
+    private DC_TYPE getTYPE() {
+        return (skill) ? DC_TYPE.SKILLS : DC_TYPE.CLASSES;
     }
 
     public TreeMap build() {

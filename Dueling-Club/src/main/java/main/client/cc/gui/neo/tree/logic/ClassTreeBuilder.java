@@ -6,7 +6,7 @@ import main.client.cc.gui.neo.tree.logic.TreeMap.LINK_VARIANT;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.auxiliary.log.LogMaster;

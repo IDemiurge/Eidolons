@@ -3,15 +3,15 @@ package main.game.logic.arcade;
 import main.client.cc.gui.neo.choice.ChoiceSequence;
 import main.client.cc.logic.party.PartyObj;
 import main.client.dc.Launcher;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.data.DataManager;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.logic.arena.UnitGroupMaster;
-import main.game.logic.battle.SpawnManager;
+import main.game.logic.generic.SpawnManager;
 import main.game.logic.generic.PartyManager;
 import main.game.meta.BattleLevel;
 import main.system.auxiliary.RandomWizard;
@@ -83,7 +83,7 @@ public class ArenaArcadeMaster {
     }
 
     public ArenaArcade constructArcade(String data) {
-        ObjType type = DataManager.getType(data, OBJ_TYPES.ARCADES);
+        ObjType type = DataManager.getType(data, DC_TYPE.ARCADES);
         return new ArenaArcade(type, game);
     }
 

@@ -1,9 +1,9 @@
 package main.client.cc.gui.neo.choice;
 
 import main.client.cc.CharacterCreator;
-import main.content.CONTENT_CONSTS.ASPECT;
-import main.content.properties.G_PROPS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.enums.GenericEnums;
+import main.content.values.properties.G_PROPS;
+import main.entity.obj.unit.Unit;
 import main.system.graphics.GuiManager;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.images.ImageManager;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class EmblemChoiceView extends PortraitChoiceView {
 
-    public EmblemChoiceView(ChoiceSequence sequence, DC_HeroObj hero) {
+    public EmblemChoiceView(ChoiceSequence sequence, Unit hero) {
         super(sequence, hero);
     }
 
@@ -47,18 +47,18 @@ public class EmblemChoiceView extends PortraitChoiceView {
         String heroAspect = hero.getProperty(G_PROPS.ASPECT);
 
         List<String> list = ImageManager.getEmblems(heroAspect);
-        if (!heroAspect.equalsIgnoreCase(ASPECT.NEUTRAL.toString())) {
+        if (!heroAspect.equalsIgnoreCase(GenericEnums.ASPECT.NEUTRAL.toString())) {
             data.addAll(list);
         }
 
         String deityAspect = hero.getDeity().getType().getProperty(G_PROPS.ASPECT);
-        if (!deityAspect.equalsIgnoreCase(ASPECT.NEUTRAL.toString())) {
+        if (!deityAspect.equalsIgnoreCase(GenericEnums.ASPECT.NEUTRAL.toString())) {
             if (!deityAspect.equalsIgnoreCase(heroAspect)) {
                 list = ImageManager.getEmblems(deityAspect);
                 data.addAll(list);
             }
         }
-        data.addAll(ImageManager.getEmblems(ASPECT.NEUTRAL.toString()));
+        data.addAll(ImageManager.getEmblems(GenericEnums.ASPECT.NEUTRAL.toString()));
     }
 
     @Override

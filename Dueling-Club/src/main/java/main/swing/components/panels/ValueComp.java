@@ -2,7 +2,7 @@ package main.swing.components.panels;
 
 import main.content.ContentManager;
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.entity.obj.Obj;
 import main.swing.generic.components.G_Panel;
 import main.system.graphics.ColorManager;

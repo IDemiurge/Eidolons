@@ -1,8 +1,8 @@
 package main.swing.components.panels.page.log;
 
-import main.content.properties.G_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.entity.obj.Obj;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.swing.components.ImageButton;
 import main.swing.components.buttons.CustomButton;

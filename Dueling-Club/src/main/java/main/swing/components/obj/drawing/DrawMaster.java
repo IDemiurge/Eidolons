@@ -1,25 +1,25 @@
 package main.swing.components.obj.drawing;
 
-import main.content.CONTENT_CONSTS.BF_OBJECT_SIZE;
-import main.content.CONTENT_CONSTS.BF_OBJECT_TAGS;
 import main.content.CONTENT_CONSTS.FLIP;
-import main.content.CONTENT_CONSTS.UNIT_TO_PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.content.ContentManager;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.BfObjEnums;
+import main.content.enums.rules.VisionEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.data.XLinkedMap;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
-import main.game.battlefield.XLine;
+import main.swing.XLine;
 import main.game.logic.dungeon.Dungeon;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
 import main.swing.components.obj.BfGridComp;
 import main.swing.components.obj.BfMouseListener.INTERACTIVE_ELEMENT;
@@ -124,7 +124,7 @@ public class DrawMaster {
         initSizes();
         Map<Rectangle, Object> mouseMap = new XLinkedMap<>();
         cellComp.setMouseMap(mouseMap);
-        DC_HeroObj topObj = cellComp.getTopObj();
+        Unit topObj = cellComp.getTopObj();
         if (isSingleObj()) {
             Image image = VisibilityMaster.getDisplayImageForUnit(topObj);
             if (image != null) {
@@ -225,7 +225,7 @@ public class DrawMaster {
             }
         }
         if (isSightVisualsOn()) {
-            DC_HeroObj obj = cellComp.getGame().getManager().getActiveObj();
+            Unit obj = cellComp.getGame().getManager().getActiveObj();
             // if (!obj.isMine()) return ;
             boolean extended = !obj.getSightSpectrumCoordinates(false).contains(
                     cellComp.getCoordinates());
@@ -360,7 +360,7 @@ public class DrawMaster {
         // drawOverlayingObj(g, cellComp, obj, x, y, overlayingSize);
         // } else {
 
-        for (DC_HeroObj obj : cellComp.getOverlayingObjects()) {
+        for (Unit obj : cellComp.getOverlayingObjects()) {
             if (!isEditorMode()) {
                 if (VisibilityMaster.isZeroVisibility(obj)) {
                     continue;
@@ -370,7 +370,7 @@ public class DrawMaster {
             DIRECTION d = obj.getDirection();
             // if (CoreEngine.isLevelEditor()) {
             if (d == null) {
-                Map<DC_HeroObj, DIRECTION> map = obj.getGame().getDirectionMap().get(
+                Map<Unit, DIRECTION> map = obj.getGame().getDirectionMap().get(
                         cellComp.getCoordinates());
                 if (map != null) {
                     d = map.get(obj);
@@ -405,20 +405,20 @@ public class DrawMaster {
 
     }
 
-    private void drawOverlayingObj(Graphics g, CellComp cellComp, DC_HeroObj obj, int x, int y,
+    private void drawOverlayingObj(Graphics g, CellComp cellComp, Unit obj, int x, int y,
                                    int size) {
         Image img = VisibilityMaster.getDisplayImageForUnit(obj);
         if (img != null) {
             img = ImageManager.getSizedVersion(img, size);
         } else {
 
-            if (obj.checkProperty(PROPS.BF_OBJECT_SIZE, BF_OBJECT_SIZE.LARGE.name())) {
+            if (obj.checkProperty(PROPS.BF_OBJECT_SIZE, BfObjEnums.BF_OBJECT_SIZE.LARGE.name())) {
                 size += size / 2;
-            } else if (obj.checkProperty(PROPS.BF_OBJECT_SIZE, BF_OBJECT_SIZE.HUGE.name())) {
+            } else if (obj.checkProperty(PROPS.BF_OBJECT_SIZE, BfObjEnums.BF_OBJECT_SIZE.HUGE.name())) {
                 size += size;
-            } else if (obj.checkProperty(G_PROPS.BF_OBJECT_TAGS, BF_OBJECT_TAGS.LARGE.name())) {
+            } else if (obj.checkProperty(G_PROPS.BF_OBJECT_TAGS, BfObjEnums.BF_OBJECT_TAGS.LARGE.name())) {
                 size += size;
-            } else if (obj.checkProperty(G_PROPS.BF_OBJECT_TAGS, BF_OBJECT_TAGS.HUGE.name())) {
+            } else if (obj.checkProperty(G_PROPS.BF_OBJECT_TAGS, BfObjEnums.BF_OBJECT_TAGS.HUGE.name())) {
                 size += size;
             }
             int h = size;
@@ -497,7 +497,7 @@ public class DrawMaster {
     }
 
     private int getStackOffsetX() {
-        DC_HeroObj obj = cellComp.getTopObj();
+        Unit obj = cellComp.getTopObj();
         Integer stackOffsetX;
         if (!obj.getFacing().isVertical() && obj.getFacing().isCloserToZero()) {
             stackOffsetX = getObjCount() * getXOffsetPerObj(getObjCount());
@@ -508,7 +508,7 @@ public class DrawMaster {
     }
 
     private int getStackOffsetY() {
-        DC_HeroObj obj = cellComp.getTopObj();
+        Unit obj = cellComp.getTopObj();
         Integer stackOffsetY;
         if (obj.getFacing().isVertical() && !obj.getFacing().isCloserToZero()) {
             stackOffsetY = getYOffsetPerObj(getObjCount());
@@ -656,7 +656,7 @@ public class DrawMaster {
                 // " for "
                 // + cellComp.getTerrainObj().getNameAndCoordinate());
                 if (VisibilityMaster.isZeroVisibility(cellComp.getTerrainObj())) {
-                    if (ds == UNIT_TO_PLAYER_VISION.KNOWN || ds == UNIT_TO_PLAYER_VISION.DETECTED) {
+                    if (ds == VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN || ds == VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED) {
                         img = (ImageManager.getHiddenCellIcon().getImage());
                     } else {
                         img = ImageManager.getUnknownCellIcon().getImage();
@@ -748,13 +748,13 @@ public class DrawMaster {
                     cellComp.getCoordinates())) {
                 return;
             }
-            List<DC_HeroObj> objects = new LinkedList<>(cellComp.getObjects());
+            List<Unit> objects = new LinkedList<>(cellComp.getObjects());
             int stackOffsetX = 0;
             int stackOffsetY = 0;
             if (!(cellComp.isWall() || cellComp.isLandscape())) {
                 drawCellImage(g);
             } else {
-                DC_HeroObj obj = cellComp.getWallObj();
+                Unit obj = cellComp.getWallObj();
                 if (obj == null) {
                     obj = cellComp.getLandscapeObj();
                 }
@@ -774,7 +774,7 @@ public class DrawMaster {
             }
 
             // sort cellComp.getObjects() by Z-Order
-            for (DC_HeroObj obj : objects) {
+            for (Unit obj : objects) {
                 Image image = getObjDrawImage(obj, true); // TODO selective! Not
                 // all of them...
                 image = ImageManager.getSizedVersion(image, new Dimension(objSize, objSize));
@@ -828,7 +828,7 @@ public class DrawMaster {
 
             }
         }
-        DC_HeroObj obj = cellComp.getWallObj();
+        Unit obj = cellComp.getWallObj();
         if (obj == null) {
             obj = cellComp.getLandscapeObj();
         }
@@ -847,9 +847,9 @@ public class DrawMaster {
         return offsetMap;
     }
 
-    private void drawWallOverlays(DC_HeroObj obj, Graphics g, Coordinates coordinates) {
+    private void drawWallOverlays(Unit obj, Graphics g, Coordinates coordinates) {
         if (VisibilityMaster.isZeroVisibility(obj)) {
-            if (obj.getActivePlayerVisionStatus() == UNIT_TO_PLAYER_VISION.UNKNOWN) {
+            if (obj.getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN) {
                 return;
             }
         }
@@ -1128,7 +1128,7 @@ public class DrawMaster {
         if (cellComp.isAnimated()) {
             return;
         }
-        DC_HeroObj obj = cellComp.getTopObj();
+        Unit obj = cellComp.getTopObj();
         if (obj.isActiveSelected()) {
             drawUnitEmblem(g, obj);
             if (!isEditorMode()) {
@@ -1179,7 +1179,7 @@ public class DrawMaster {
 
     }
 
-    private void drawObjectOverlays(Graphics g, DC_HeroObj obj) {
+    private void drawObjectOverlays(Graphics g, Unit obj) {
         // if (!isEditorMode())
         // drawSpecialIcons(obj);
 
@@ -1209,13 +1209,13 @@ public class DrawMaster {
         // }
     }
 
-    private void drawSpecialIcons(DC_HeroObj obj) {
+    private void drawSpecialIcons(Unit obj) {
         // obj.getEngagementTarget();
 		/*
 		 * when drawing stacked objects, draw a red arrow/sword towards the ET
 		 */
 
-        DC_HeroObj engageShowUnit = obj.getGame().getManager().getInfoUnit();
+        Unit engageShowUnit = obj.getGame().getManager().getInfoUnit();
         if (engageShowUnit == null) {
             engageShowUnit = obj.getGame().getManager().getActiveObj();
         } else if (engageShowUnit.isBfObj()) {
@@ -1254,11 +1254,11 @@ public class DrawMaster {
 
     }
 
-    private int getOffsetY(DC_HeroObj obj) {
+    private int getOffsetY(Unit obj) {
         return (int) getOffsetMap().get(obj).getY();
     }
 
-    private int getOffsetX(DC_HeroObj obj) {
+    private int getOffsetX(Unit obj) {
         return (int) getOffsetMap().get(obj).getX();
     }
 
@@ -1270,7 +1270,7 @@ public class DrawMaster {
         return isSingleObj() ? getCompHeight() : objSize;
     }
 
-    private void drawFacing(Graphics g, DC_HeroObj obj) {
+    private void drawFacing(Graphics g, Unit obj) {
         FACING_DIRECTION facing = obj.getFacing();
         Image img = ImageManager.getFacingImage(facing);
         int x = 0;
@@ -1321,7 +1321,7 @@ public class DrawMaster {
         drawImage(g, img, x, y);
     }
 
-    private BufferedImage getObjDrawImage(DC_HeroObj obj, boolean drawOverlays) {
+    private BufferedImage getObjDrawImage(Unit obj, boolean drawOverlays) {
         BufferedImage image;
         //image = objImageCache.getOrCreate(obj);
         // if (image != null)
@@ -1349,7 +1349,7 @@ public class DrawMaster {
 
         FLIP flip = obj.getFlip();
         if (flip == null) {
-            Map<DC_HeroObj, FLIP> map = obj.getGame().getFlipMap().get(cellComp.getCoordinates());
+            Map<Unit, FLIP> map = obj.getGame().getFlipMap().get(cellComp.getCoordinates());
             if (map != null) {
                 flip = map.get(obj);
             }
@@ -1395,7 +1395,7 @@ public class DrawMaster {
         return image;
     }
 
-    private void drawHeight(DC_HeroObj obj, Graphics g) {
+    private void drawHeight(Unit obj, Graphics g) {
         if (isEditorMode()) {
             return;
         }
@@ -1417,7 +1417,7 @@ public class DrawMaster {
         drawText(g, new SmartText(str, ColorManager.GOLDEN_WHITE), new Point(fontSize, fontSize));
     }
 
-    private void applyVisibility(BufferedImage image, DC_HeroObj obj) {
+    private void applyVisibility(BufferedImage image, Unit obj) {
         // if (GRAPHICS_TEST_MODE)
         // main.system.auxiliary.LogMaster.log(1, obj.getVisibilityLevel() +
         // " and "
@@ -1452,8 +1452,8 @@ public class DrawMaster {
 
     }
 
-    private void applyBeyondSight(BufferedImage image, DC_HeroObj obj) {
-        if (obj.getActivePlayerVisionStatus() == UNIT_TO_PLAYER_VISION.DETECTED) {
+    private void applyBeyondSight(BufferedImage image, Unit obj) {
+        if (obj.getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED) {
             image.getGraphics().drawImage(BORDER.CONCEALED.getImage(), 0, 0, null);
         } else {
             image.getGraphics().drawImage(BORDER.HIDDEN.getImage(), 0, 0, null);
@@ -1528,7 +1528,7 @@ public class DrawMaster {
         g.drawString(text.getText(), c.x, c.y);
     }
 
-    private void drawInfoIcons(Graphics g, DC_HeroObj obj) {
+    private void drawInfoIcons(Graphics g, Unit obj) {
         if (obj.isBfObj()) {
             return;
         }
@@ -1591,7 +1591,7 @@ public class DrawMaster {
         return cellComp.getObjects().size();
     }
 
-    private void drawUnitEmblem(Graphics g, DC_HeroObj obj) {
+    private void drawUnitEmblem(Graphics g, Unit obj) {
         if (isEditorMode()) {
             return;
         }
@@ -1650,7 +1650,7 @@ public class DrawMaster {
             return;
         }
         int size = DrawHelper.PLAYER_EMBLEM_SIZE_PERC * objSize / 100;
-        Image playerEmblem = DC_ImageMaster.getUnitEmblem((DC_HeroObj) obj, size, true);
+        Image playerEmblem = DC_ImageMaster.getUnitEmblem((Unit) obj, size, true);
 
         if (playerEmblem == null) {
             return;

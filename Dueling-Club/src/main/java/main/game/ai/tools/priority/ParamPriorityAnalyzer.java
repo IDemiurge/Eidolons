@@ -1,16 +1,16 @@
 package main.game.ai.tools.priority;
 
-import main.content.CONTENT_CONSTS.AI_TYPE;
-import main.content.CONTENT_CONSTS.PLAYER_AI_TYPE;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
-import main.content.CONTENT_CONSTS.STD_COUNTERS;
+import main.content.enums.system.AiEnums.AI_TYPE;
+import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
+import main.content.enums.entity.UnitEnums.STD_COUNTERS;
 import main.content.PARAMS;
-import main.content.parameters.PARAMETER;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.ai.PlayerAI.SITUATION;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
@@ -22,10 +22,10 @@ public class ParamPriorityAnalyzer {
 
     public static int getParamPriority(PARAMETER param, Obj target) {
         int factor = 100;
-        if (target instanceof DC_HeroObj) {
+        if (target instanceof Unit) {
             if (param == PARAMS.C_STAMINA || param == PARAMS.C_FOCUS
                     || param == PARAMS.C_MORALE || param == PARAMS.C_ESSENCE) {
-                factor = getUnitParamRelevance(param, (DC_HeroObj) target);
+                factor = getUnitParamRelevance(param, (Unit) target);
             }
         }
         return MathMaster.getFractionValueCentimal(
@@ -58,7 +58,7 @@ public class ParamPriorityAnalyzer {
         return 0;
     }
 
-    private static int getUnitParamRelevance(PARAMETER param, DC_HeroObj unit) {
+    private static int getUnitParamRelevance(PARAMETER param, Unit unit) {
         if (ParamAnalyzer.isParamIgnored(unit, param)) {
             return 0;
         }
@@ -75,83 +75,83 @@ public class ParamPriorityAnalyzer {
         if (param instanceof PARAMS) {
             switch ((PARAMS) param) {
                 case C_ENDURANCE:
-                    if (target.checkPassive(STANDARD_PASSIVES.INDESTRUCTIBLE)) {
+                    if (target.checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
                         return 0;
                     }
                     return 2;
                 case C_TOUGHNESS:
-                    if (target.checkPassive(STANDARD_PASSIVES.INDESTRUCTIBLE)) {
+                    if (target.checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
                         return 0;
                     }
                     return 4;
                 case TOUGHNESS:
-                    if (target.checkPassive(STANDARD_PASSIVES.INDESTRUCTIBLE)) {
+                    if (target.checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
                         return 0;
                     }
                     return 6.5f;
                 case ENDURANCE:
-                    if (target.checkPassive(STANDARD_PASSIVES.INDESTRUCTIBLE)) {
+                    if (target.checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
                         return 0;
                     }
                     return 3.5f;
                 case C_STAMINA:
-                    if (target instanceof DC_HeroObj) {
-                        if (ParamAnalyzer.isStaminaIgnore((DC_HeroObj) target)) {
+                    if (target instanceof Unit) {
+                        if (ParamAnalyzer.isStaminaIgnore((Unit) target)) {
                             return 0;
                         }
                     }
                     return 8;
                 case C_FOCUS:
-                    if (target instanceof DC_HeroObj) {
-                        if (ParamAnalyzer.isFocusIgnore((DC_HeroObj) target)) {
+                    if (target instanceof Unit) {
+                        if (ParamAnalyzer.isFocusIgnore((Unit) target)) {
                             return 0;
                         }
                     }
                     return 6;
                 case C_MORALE:
-                    if (target instanceof DC_HeroObj) {
-                        if (ParamAnalyzer.isMoraleIgnore((DC_HeroObj) target)) {
+                    if (target instanceof Unit) {
+                        if (ParamAnalyzer.isMoraleIgnore((Unit) target)) {
                             return 0;
                         }
                     }
                     return 3;
                 case C_ESSENCE:
-                    if (target instanceof DC_HeroObj) {
-                        if (!UnitAnalyzer.checkIsCaster((DC_HeroObj) target)) {
+                    if (target instanceof Unit) {
+                        if (!UnitAnalyzer.checkIsCaster((Unit) target)) {
                             return 0;
                         }
                     }
                     return 4;
 
                 case C_N_OF_ACTIONS:
-                    if (target instanceof DC_HeroObj) {
-                        DC_HeroObj heroObj = (DC_HeroObj) target;
+                    if (target instanceof Unit) {
+                        Unit heroObj = (Unit) target;
                         if (heroObj.isImmobilized()) {
                             return 10;
                         }
                     }
                     return 50;
                 case C_N_OF_COUNTERS:
-                    if (target instanceof DC_HeroObj) {
-                        DC_HeroObj heroObj = (DC_HeroObj) target;
+                    if (target instanceof Unit) {
+                        Unit heroObj = (Unit) target;
                         if (!heroObj.canCounter()) {
                             return 0;
                         }
                     }
                     return 30;
                 case SPIRIT:
-                    if (target instanceof DC_HeroObj) {
-                        DC_HeroObj heroObj = (DC_HeroObj) target;
+                    if (target instanceof Unit) {
+                        Unit heroObj = (Unit) target;
                         if (!heroObj.isLiving()) {
                             return 0;
                         }
                     }
                     return 30;
                 case CONCEALMENT:
-                    if (target instanceof DC_HeroObj) {
+                    if (target instanceof Unit) {
                         // TODO ownership!
-                        DC_HeroObj heroObj = (DC_HeroObj) target;
-                        if (!heroObj.checkPassive(STANDARD_PASSIVES.DARKVISION)) {
+                        Unit heroObj = (Unit) target;
+                        if (!heroObj.checkPassive(UnitEnums.STANDARD_PASSIVES.DARKVISION)) {
                             if (target.getOwner().isMe()) {
                                 return 3;
                             } else {
@@ -167,7 +167,7 @@ public class ParamPriorityAnalyzer {
                     }
                     return 0;
                 case C_INITIATIVE_BONUS:
-                    if (!((DC_HeroObj) target).canActNow()) {
+                    if (!((Unit) target).canActNow()) {
                         return 0;
                     }
                     if (target.getGame().getTurnManager().getUnitQueue().size() <= 2) {
@@ -177,7 +177,7 @@ public class ParamPriorityAnalyzer {
                             target.getGame().getTurnManager().getActiveUnit()
                                     .getOwner())) {
                         if (target.getGame().getTurnManager().getUnitQueue()
-                                .indexOf((DC_HeroObj) target) > 1) {
+                                .indexOf((Unit) target) > 1) {
                             return 1;
                         }
                         return 0;
@@ -218,45 +218,45 @@ public class ParamPriorityAnalyzer {
                     return target.getIntParam(PARAMS.DAMAGE) * 3 / 100;
 
                 case STAMINA:
-                    if (target instanceof DC_HeroObj) {
-                        if (ParamAnalyzer.isStaminaIgnore((DC_HeroObj) target)) {
+                    if (target instanceof Unit) {
+                        if (ParamAnalyzer.isStaminaIgnore((Unit) target)) {
                             return 0;
                         }
                     }
                     return 12;
                 case FOCUS:
-                    if (target instanceof DC_HeroObj) {
-                        if (ParamAnalyzer.isFocusIgnore((DC_HeroObj) target)) {
+                    if (target instanceof Unit) {
+                        if (ParamAnalyzer.isFocusIgnore((Unit) target)) {
                             return 0;
                         }
                     }
                     return 9;
                 case MORALE:
-                    if (target instanceof DC_HeroObj) {
-                        if (ParamAnalyzer.isMoraleIgnore((DC_HeroObj) target)) {
+                    if (target instanceof Unit) {
+                        if (ParamAnalyzer.isMoraleIgnore((Unit) target)) {
                             return 0;
                         }
                     }
                     return 5;
                 case ESSENCE:
-                    if (target instanceof DC_HeroObj) {
-                        if (!UnitAnalyzer.checkIsCaster((DC_HeroObj) target)) {
+                    if (target instanceof Unit) {
+                        if (!UnitAnalyzer.checkIsCaster((Unit) target)) {
                             return 0;
                         }
                     }
                     return 6;
 
                 case N_OF_ACTIONS:
-                    if (target instanceof DC_HeroObj) {
-                        DC_HeroObj heroObj = (DC_HeroObj) target;
+                    if (target instanceof Unit) {
+                        Unit heroObj = (Unit) target;
                         if (heroObj.isImmobilized()) {
                             return 10;
                         }
                     }
                     return 80;
                 case N_OF_COUNTERS:
-                    if (target instanceof DC_HeroObj) {
-                        DC_HeroObj heroObj = (DC_HeroObj) target;
+                    if (target instanceof Unit) {
+                        Unit heroObj = (Unit) target;
                         if (!heroObj.canCounter()) {
                             return 0;
                         }
@@ -277,7 +277,7 @@ public class ParamPriorityAnalyzer {
 
     }
 
-    public static int getUnitLifeFactor(DC_HeroObj unit) {
+    public static int getUnitLifeFactor(Unit unit) {
         int e = unit.getIntParam(PARAMS.ENDURANCE_PERCENTAGE)
                 / MathMaster.MULTIPLIER;
         int t = unit.getIntParam(PARAMS.TOUGHNESS_PERCENTAGE)

@@ -4,10 +4,10 @@ import main.ability.gui.AE_EditPanel;
 import main.ability.gui.AE_Element;
 import main.ability.gui.AE_MainPanel;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
-import main.content.properties.MACRO_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.MACRO_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.ability.AE_Item;
 import main.data.ability.ARGS;
@@ -81,7 +81,7 @@ public class AE_Manager {
 //			DialogueType diagType = (DialogueType) type;
 //			return diagType.getDoc();
         }
-        type = DataManager.getType(typeName, OBJ_TYPES.ABILS.getName());
+        type = DataManager.getType(typeName, DC_TYPE.ABILS.getName());
         AbilityType abilType = (AbilityType) type;
         // return XML_Converter.getDoc(abilType.getProperty(G_PROPS.ABILITIES));
         return abilType.getDoc();
@@ -92,7 +92,7 @@ public class AE_Manager {
         OBJ_TYPE TYPE = null;
         PROPERTY XML_PROP = null;
         if (!ArcaneVault.isMacroMode()) {
-            TYPE = OBJ_TYPES.ABILS;
+            TYPE = DC_TYPE.ABILS;
             XML_PROP = G_PROPS.ABILITIES;
         } else {
             // TYPE = MACRO_OBJ_TYPES.DIALOGUE;

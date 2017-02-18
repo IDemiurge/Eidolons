@@ -4,7 +4,7 @@ import main.client.DuelingClub;
 import main.client.net.DC_GameHost;
 import main.client.net.DC_ServerConnector;
 import main.client.net.GameConnector;
-import main.game.HostedGame;
+import main.game.core.game.HostedGame;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.log.Err;
 import main.system.net.WaitingThread;

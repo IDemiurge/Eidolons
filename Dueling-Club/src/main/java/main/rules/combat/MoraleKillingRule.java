@@ -3,19 +3,18 @@ package main.rules.combat;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
-import main.content.CONTENT_CONSTS.IMMUNITIES;
-import main.content.CONTENT_CONSTS.STANDARD_PASSIVES;
 import main.content.PARAMS;
+import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Conditions;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.ActiveObj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.entity.obj.unit.DC_UnitObj;
-import main.game.MicroGame;
+import main.entity.obj.unit.Unit;
+import main.entity.obj.unit.DC_UnitModel;
+import main.game.core.game.MicroGame;
 import main.game.ai.tools.ParamAnalyzer;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
-import main.game.player.Player;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.battle.player.Player;
 import main.rules.DC_RuleImpl;
 import main.system.math.PositionMaster;
 
@@ -41,16 +40,16 @@ public class MoraleKillingRule extends DC_RuleImpl {
 
     @Override
     public void apply(Ref ref) {
-        unitDied((DC_UnitObj) ref.getSourceObj(), ref.getAnimationActive());
+        unitDied((DC_UnitModel) ref.getSourceObj(), ref.getAnimationActive());
     }
 
-    public void unitDied(DC_UnitObj unit, ActiveObj animationActive) {
+    public void unitDied(DC_UnitModel unit, ActiveObj animationActive) {
         if (unit.getOwner() == Player.NEUTRAL) {
             return;
         }
         boostEffect.setAnimationActive(animationActive);
         reductionEffect.setAnimationActive(animationActive);
-        for (DC_HeroObj u : unit.getGame().getUnits()) {
+        for (Unit u : unit.getGame().getUnits()) {
             if (u.getOwner() == Player.NEUTRAL) {
                 continue;
             }
@@ -58,9 +57,9 @@ public class MoraleKillingRule extends DC_RuleImpl {
             if (ParamAnalyzer.isMoraleIgnore(u)) {
                 continue;
             }
-            if (u.checkPassive(STANDARD_PASSIVES.DISPASSIONATE)
-                    || u.checkPassive(STANDARD_PASSIVES.COLD_BLOODED)
-                    || u.checkPassive(STANDARD_PASSIVES.FEARLESS))
+            if (u.checkPassive(UnitEnums.STANDARD_PASSIVES.DISPASSIONATE)
+                    || u.checkPassive(UnitEnums.STANDARD_PASSIVES.COLD_BLOODED)
+                    || u.checkPassive(UnitEnums.STANDARD_PASSIVES.FEARLESS))
 
             {
                 continue;
@@ -73,15 +72,15 @@ public class MoraleKillingRule extends DC_RuleImpl {
 
             Ref ref = Ref.getSelfTargetingRefCopy(u);
             if (u.getOwner() == unit.getOwner()) {
-                if (!u.checkImmunity(IMMUNITIES.MORALE_REDUCTION_KILL)) {
-                    if (!u.checkImmunity(IMMUNITIES.MORALE_REDUCTION)) {
-                        if (!u.checkImmunity(IMMUNITIES.MIND_AFFECTION)) {
+                if (!u.checkImmunity(UnitEnums.IMMUNITIES.MORALE_REDUCTION_KILL)) {
+                    if (!u.checkImmunity(UnitEnums.IMMUNITIES.MORALE_REDUCTION)) {
+                        if (!u.checkImmunity(UnitEnums.IMMUNITIES.MIND_AFFECTION)) {
                             reductionEffect.apply(ref);
                         }
                     }
                 }
             } else {
-                if (!u.checkPassive(STANDARD_PASSIVES.DISPASSIONATE)) {
+                if (!u.checkPassive(UnitEnums.STANDARD_PASSIVES.DISPASSIONATE)) {
                     boostEffect.apply(ref);
                 }
             }

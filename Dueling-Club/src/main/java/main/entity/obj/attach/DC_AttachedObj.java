@@ -3,8 +3,8 @@ package main.entity.obj.attach;
 import main.entity.Ref;
 import main.entity.obj.DC_Obj;
 import main.entity.type.ObjType;
-import main.game.MicroGame;
-import main.game.player.Player;
+import main.game.core.game.MicroGame;
+import main.game.logic.battle.player.Player;
 
 public abstract class DC_AttachedObj extends DC_Obj {
 

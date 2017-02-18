@@ -2,11 +2,11 @@ package main.entity.active;
 
 import main.ability.effects.Effect;
 import main.ability.effects.ModeEffect;
-import main.content.CONTENT_CONSTS.ACTION_TAGS;
-import main.content.CONTENT_CONSTS.ACTION_TYPE;
-import main.content.CONTENT_CONSTS.SPELL_TAGS;
-import main.content.enums.STD_MODES;
-import main.content.properties.G_PROPS;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.SpellEnums;
+import main.content.mode.STD_MODES;
+import main.content.values.properties.G_PROPS;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.DistanceCondition;
 import main.elements.conditions.OrConditions;
@@ -14,12 +14,12 @@ import main.elements.targeting.SelectiveTargeting;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.MicroGame;
+import main.game.core.game.MicroGame;
 import main.game.ai.AI_Manager;
-import main.game.ai.tools.target.EffectMaster;
-import main.game.player.Player;
+import main.game.ai.tools.target.EffectFinder;
+import main.game.logic.battle.player.Player;
 import main.rules.combat.CadenceRule;
 import main.system.entity.ConditionMaster;
 import main.system.auxiliary.EnumMaster;
@@ -110,7 +110,7 @@ public class DC_UnitAction extends DC_ActiveObj {
         if (modeEffect != null) {
             return modeEffect;
         }
-        List<Effect> e = EffectMaster.getEffectsOfClass(this, ModeEffect.class);
+        List<Effect> e = EffectFinder.getEffectsOfClass(this, ModeEffect.class);
         if (!e.isEmpty()) {
             modeEffect = (ModeEffect) e.get(0);
         }
@@ -119,7 +119,7 @@ public class DC_UnitAction extends DC_ActiveObj {
 
     @Override
     public boolean isRangedTouch() {
-        return checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.RANGED_TOUCH.toString());
+        return checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.RANGED_TOUCH.toString());
     }
 
     public void playActivateSound() {
@@ -127,7 +127,7 @@ public class DC_UnitAction extends DC_ActiveObj {
     }
 
     public boolean isChanneling() {
-        return checkProperty(G_PROPS.ACTION_TAGS, SPELL_TAGS.CHANNELING.toString());
+        return checkProperty(G_PROPS.ACTION_TAGS, SpellEnums.SPELL_TAGS.CHANNELING.toString());
     }
 
     @Override
@@ -137,7 +137,7 @@ public class DC_UnitAction extends DC_ActiveObj {
 
     @Override
     public void actionComplete() {
-        CadenceRule.checkDualAttackCadence(this, (DC_HeroObj) ownerObj);
+        CadenceRule.checkDualAttackCadence(this, (Unit) ownerObj);
         super.actionComplete();
     }
 
@@ -176,11 +176,11 @@ public class DC_UnitAction extends DC_ActiveObj {
         if (getParentAction() != null) {
             String tag = "";
             if (getParentAction().checkProperty(G_PROPS.ACTION_TAGS,
-                    ACTION_TAGS.OFF_HAND.toString())) {
-                tag = ACTION_TAGS.OFF_HAND.toString();
+                    ActionEnums.ACTION_TAGS.OFF_HAND.toString())) {
+                tag = ActionEnums.ACTION_TAGS.OFF_HAND.toString();
             } else if (getParentAction().checkProperty(G_PROPS.ACTION_TAGS,
-                    ACTION_TAGS.MAIN_HAND.toString())) {
-                tag = ACTION_TAGS.MAIN_HAND.toString();
+                    ActionEnums.ACTION_TAGS.MAIN_HAND.toString())) {
+                tag = ActionEnums.ACTION_TAGS.MAIN_HAND.toString();
             }
             setProperty(G_PROPS.ACTION_TAGS, tag);
         }

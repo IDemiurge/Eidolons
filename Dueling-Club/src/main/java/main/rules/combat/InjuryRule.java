@@ -6,7 +6,7 @@ import main.content.CONTENT_CONSTS2.INJURY;
 import main.content.CONTENT_CONSTS2.INJURY_TYPE;
 import main.content.PROPS;
 import main.entity.Ref;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.active.DC_ActiveObj;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -24,7 +24,7 @@ public class InjuryRule {
 
     }
 
-    public static void applyOldWounds(DC_HeroObj hero) {
+    public static void applyOldWounds(Unit hero) {
         Effects effects = new Effects();
         for (String substring : StringMaster.openContainer(hero.getProperty(PROPS.INJURIES))) {
             INJURY template = new EnumMaster<INJURY>().retrieveEnumConst(INJURY.class, substring);

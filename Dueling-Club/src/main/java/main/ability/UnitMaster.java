@@ -1,11 +1,11 @@
 package main.ability;
 
 import main.client.cc.logic.UnitLevelManager;
-import main.content.CONTENT_CONSTS.CLASSIFICATIONS;
 import main.content.PARAMS;
 import main.content.ValuePages;
-import main.content.parameters.PARAMETER;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.parameters.PARAMETER;
+import main.entity.obj.unit.Unit;
 import main.rules.UnitAnalyzer;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
@@ -26,7 +26,7 @@ public class UnitMaster {
         // setRandom(false);
     }
 
-    public static void train(DC_HeroObj unit) {
+    public static void train(Unit unit) {
         if (!FAST_DC.getGameLauncher().getFAST_MODE()) {
             if (CoreEngine.isGraphicTestMode()) {
                 return;
@@ -35,7 +35,7 @@ public class UnitMaster {
 
         int perc = DEFAULT_XP_MOD;
 
-        if (unit.checkClassification(CLASSIFICATIONS.HUMANOID)) {
+        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.HUMANOID)) {
             perc += HUMANOID_XP_MOD;
         }
         unit.modifyParamByPercent(PARAMS.XP, perc);
@@ -93,7 +93,7 @@ public class UnitMaster {
         }
     }
 
-    public static Integer getSpellXpPercentage(DC_HeroObj unit) {
+    public static Integer getSpellXpPercentage(Unit unit) {
         Integer mastery = 0;
         for (PARAMETER m : ValuePages.MASTERIES) {
             mastery += (unit.getIntParam(m));

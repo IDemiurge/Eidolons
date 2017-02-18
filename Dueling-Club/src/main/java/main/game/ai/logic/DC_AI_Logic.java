@@ -1,15 +1,15 @@
 package main.game.ai.logic;
 
-import main.entity.ActionManager;
+import main.game.logic.generic.ActionManager;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Active;
 import main.entity.obj.Obj;
-import main.game.MicroGame;
+import main.game.core.game.MicroGame;
 import main.game.ai.AI;
 import main.game.ai.AI_Logic;
 import main.game.ai.logic.ActionTypeManager.ACTION_TYPES;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.Set;

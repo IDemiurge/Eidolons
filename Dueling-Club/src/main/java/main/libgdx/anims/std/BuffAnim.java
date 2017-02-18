@@ -1,7 +1,7 @@
 package main.libgdx.anims.std;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import main.content.CONTENT_CONSTS.STD_BUFF_NAMES;
+import main.content.enums.system.MetaEnums.STD_BUFF_NAMES;
 import main.data.filesys.PathFinder;
 import main.entity.obj.BuffObj;
 import main.game.battlefield.Coordinates;

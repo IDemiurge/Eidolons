@@ -1,7 +1,7 @@
 package main.ability.conditions.req;
 
 import main.content.DC_ValueManager.VALUE_GROUP;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.elements.conditions.NumericCondition;
 import main.system.entity.ConditionMaster;
 

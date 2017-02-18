@@ -1,7 +1,7 @@
 package main.rules;
 
 import main.data.XLinkedMap;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.libgdx.anims.controls.Controller;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
@@ -133,7 +133,7 @@ public class RuleMaster implements Controller {
         return true;
     }
 
-    public static void applyCompensation(DC_HeroObj unit) {
+    public static void applyCompensation(Unit unit) {
 
     }
 
@@ -253,7 +253,7 @@ public class RuleMaster implements Controller {
     @Override
     public boolean charTyped(char c) {
         switch (c) {
-            case 'c':
+            case 's':
                 RULE_SCOPE scope = new EnumMaster<RULE_SCOPE>().selectEnum(RULE_SCOPE.class);
                 if (scope != null)
                     setScope(scope);

@@ -7,19 +7,20 @@ import main.ability.conditions.req.ValueGroupCondition;
 import main.client.cc.CharacterCreator;
 import main.client.cc.HeroManager;
 import main.client.cc.gui.views.ClassView;
-import main.content.CONTENT_CONSTS.MASTERY_RANK;
+import main.content.enums.entity.SkillEnums.MASTERY_RANK;
 import main.content.*;
 import main.content.DC_ValueManager.VALUE_GROUP;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.enums.entity.SkillEnums;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.XLinkedMap;
 import main.elements.conditions.*;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.attach.DC_FeatObj;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
@@ -53,8 +54,8 @@ public class DC_RequirementsManager implements RequirementsManager {
     }
 
     private static MASTERY_RANK getRank(Integer score) {
-        MASTERY_RANK rank = MASTERY_RANK.NONE;
-        for (MASTERY_RANK r : MASTERY_RANK.values()) {
+        MASTERY_RANK rank = SkillEnums.MASTERY_RANK.NONE;
+        for (MASTERY_RANK r : SkillEnums.MASTERY_RANK.values()) {
             if (r.getMasteryReq() > score) {
                 break;
             }
@@ -124,8 +125,8 @@ public class DC_RequirementsManager implements RequirementsManager {
 
         Requirements req = null;
         OBJ_TYPE TYPE = type.getOBJ_TYPE_ENUM();
-        if (TYPE instanceof OBJ_TYPES) {
-            switch ((OBJ_TYPES) TYPE) {
+        if (TYPE instanceof DC_TYPE) {
+            switch ((DC_TYPE) TYPE) {
 
                 case ARMOR:
                     req = generateItemRequirements(type, mode);

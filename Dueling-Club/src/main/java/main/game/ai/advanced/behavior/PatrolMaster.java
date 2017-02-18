@@ -2,7 +2,7 @@ package main.game.ai.advanced.behavior;
 
 import main.entity.Ref;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.ai.GroupAI;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
@@ -11,7 +11,7 @@ import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.CoordinatesMaster;
 import main.game.battlefield.DirectionMaster;
-import main.rules.DC_ActionManager.STD_ACTIONS;
+import main.game.logic.generic.DC_ActionManager.STD_ACTIONS;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -71,9 +71,9 @@ public class PatrolMaster {
     }
 
     private static Action getWaitAction(Patrol patrol, UnitAI ai) {
-        DC_HeroObj unit = ai.getUnit();
+        Unit unit = ai.getUnit();
 
-        DC_HeroObj blocker = getBlockingUnit(patrol, ai);
+        Unit blocker = getBlockingUnit(patrol, ai);
         if (blocker == null) {
             return null;
         }
@@ -84,19 +84,19 @@ public class PatrolMaster {
         return null;
     }
 
-    private static DC_HeroObj getBlockingUnit(Patrol patrol, UnitAI ai) {
-        DC_HeroObj unit = ai.getUnit();
+    private static Unit getBlockingUnit(Patrol patrol, UnitAI ai) {
+        Unit unit = ai.getUnit();
         DIRECTION direction = DirectionMaster.getRelativeDirection(unit.getCoordinates(), patrol
                 .getDestination());
         // paths.getOrCreate(unit);
         Coordinates coordinates = unit.getCoordinates().getAdjacentCoordinate(direction);
         // TODO more than 1 coordinate?
-        DC_HeroObj unitByCoordinate = null;// unit.getGame().getUnitByCoordinate(coordinates);
+        Unit unitByCoordinate = null;// unit.getGame().getUnitByCoordinate(coordinates);
         // check leader?
         Collection<Obj> units = unit.getGame().getUnitsForCoordinates(coordinates);
         for (Obj u : units) {
             // sort?
-            DC_HeroObj blocker = (DC_HeroObj) u;
+            Unit blocker = (Unit) u;
             // if (u == leader)
             if (!blocker.isOwnedBy(ai.getUnit().getOwner())) {
                 continue;
@@ -122,14 +122,14 @@ public class PatrolMaster {
 
         }
 
-        DC_HeroObj unit = getBlockingUnit(patrol, ai);
+        Unit unit = getBlockingUnit(patrol, ai);
 
         return unit.isOwnedBy(ai.getUnit().getOwner());
 
     }
 
     public static boolean isArrived(Patrol patrol, UnitAI ai) {
-        DC_HeroObj unit = ai.getUnit();
+        Unit unit = ai.getUnit();
 //		boolean blocked = isBlocked(patrol, ai.getGroup().getLeader());
 
         return false;
@@ -137,7 +137,7 @@ public class PatrolMaster {
 
     public static boolean isArrived(Patrol patrol, GroupAI group) {
         Coordinates destination = patrol.getDestination();
-        DC_HeroObj obj = group.getLeader();
+        Unit obj = group.getLeader();
         isBlocked(destination, obj);
         return false;
 
@@ -148,12 +148,12 @@ public class PatrolMaster {
         return false;
     }
 
-    private static void isBlocked(Coordinates destination, DC_HeroObj obj) {
+    private static void isBlocked(Coordinates destination, Unit obj) {
         boolean blocked = obj.getGame().getBattleField().canMoveOnto(obj, destination);
     }
 
     private static boolean checkCatchersUp(Patrol patrol, int i) {
-        for (DC_HeroObj m : patrol.getGroup().getMembers()) {
+        for (Unit m : patrol.getGroup().getMembers()) {
 
         }
         return false;

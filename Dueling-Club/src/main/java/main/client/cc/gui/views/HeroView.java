@@ -3,21 +3,21 @@ package main.client.cc.gui.views;
 import main.client.cc.gui.misc.PoolComp;
 import main.client.cc.gui.neo.tabs.HC_TabPanel;
 import main.content.PARAMS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.swing.generic.components.G_Panel;
 
 public abstract class HeroView extends G_Panel {
     protected static final String POOL = "Points to spend";
 
     // +description text
-    protected DC_HeroObj hero;
+    protected Unit hero;
     protected PoolComp poolComp;
     protected boolean editable = false;
     private boolean dirty = false;
 
     // size
 
-    public HeroView(DC_HeroObj hero) {
+    public HeroView(Unit hero) {
         this.hero = hero;
         initPoolComp();
     }
@@ -62,11 +62,11 @@ public abstract class HeroView extends G_Panel {
         this.dirty = dirty;
     }
 
-    public DC_HeroObj getHero() {
+    public Unit getHero() {
         return hero;
     }
 
-    public void setHero(DC_HeroObj hero) {
+    public void setHero(Unit hero) {
         this.hero = hero;
     }
 

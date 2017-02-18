@@ -1,9 +1,9 @@
 package main.system.text;
 
-import main.content.CONTENT_CONSTS.UNIT_TO_PLAYER_VISION;
+import main.content.enums.rules.VisionEnums;
 import main.entity.Ref;
 import main.entity.obj.DC_Obj;
-import main.game.Game;
+import main.game.core.game.Game;
 import main.game.battlefield.Coordinates;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -24,7 +24,7 @@ public class DC_LogManager extends LogManager {
      * log and control its filtering?
      */
     public void logMovement(DC_Obj obj, Coordinates c) {
-        if (obj.getActivePlayerVisionStatus() == UNIT_TO_PLAYER_VISION.INVISIBLE) {
+        if (obj.getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.INVISIBLE) {
             return;
         }
         String name = obj.getName();

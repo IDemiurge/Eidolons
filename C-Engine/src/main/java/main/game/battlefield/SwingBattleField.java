@@ -1,9 +1,9 @@
 package main.game.battlefield;
 
 import main.entity.obj.Obj;
-import main.game.MicroGame;
-import main.game.MicroGameState;
-import main.game.player.Player;
+import main.game.core.game.MicroGame;
+import main.game.core.state.MicroGameState;
+import main.game.logic.battle.player.Player;
 import main.swing.generic.components.Builder;
 import main.system.launch.CoreEngine;
 

@@ -1,8 +1,8 @@
 package main.libgdx.bf.controls.radial;
 
-import main.content.CONTENT_CONSTS.SPELL_GROUP;
+import main.content.enums.entity.SpellEnums.SPELL_GROUP;
 import main.entity.active.DC_SpellObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.libgdx.bf.controls.radial.SpellRadialManager.SPELL_ASPECT;
 import main.libgdx.texture.TextureManager;
 
@@ -21,7 +21,7 @@ public class RadialSpellAspect implements RADIAL_ITEM {
     }
 
     @Override
-    public List<RADIAL_ITEM> getItems(DC_HeroObj source) {
+    public List<RADIAL_ITEM> getItems(Unit source) {
         LinkedList<RADIAL_ITEM> list = new LinkedList<>();
         List<DC_SpellObj> spells = new LinkedList<>(source.getSpells());
         if (spells.size()<maxPlainSize){

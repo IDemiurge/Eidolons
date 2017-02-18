@@ -6,20 +6,21 @@ import main.ability.effects.oneshot.MicroEffect;
 import main.client.cc.logic.UnitLevelManager;
 import main.content.C_OBJ_TYPE;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.data.DataManager;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
-import main.game.event.Event;
-import main.game.event.Event.STANDARD_EVENT_TYPE;
-import main.game.player.Player;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.battle.player.Player;
 import main.rules.magic.SummoningSicknessRule;
 import main.rules.round.UpkeepRule;
 import main.system.DC_Formulas;
@@ -35,7 +36,7 @@ public class SummonEffect extends MicroEffect {
 
     protected String typeName;
     protected Effect effects;
-    protected DC_HeroObj unit;
+    protected BattleFieldObject unit;
     protected String automataApFormula;
     boolean summoningSickness;
     private Formula summonedUnitXp;
@@ -100,15 +101,17 @@ public class SummonEffect extends MicroEffect {
             type = DataManager.getType(str);
 
         }
-        if (type.getOBJ_TYPE_ENUM() != OBJ_TYPES.CHARS) {
+        if (type.getOBJ_TYPE_ENUM() != DC_TYPE.CHARS) {
             type = addXp(type);
         }
         if (owner == null) {
             owner = ref.getSourceObj().getOwner();
         }
-        setUnit((DC_HeroObj) game.createUnit(type, c.x, c.y, owner, ref.getCopy()));
-        if (!unit.isHero()) {
-            UnitMaster.train(unit);
+        setUnit((BattleFieldObject) game.createUnit(type, c.x, c.y, owner, ref.getCopy()));
+        if (unit instanceof Unit) {
+             if (!((Unit) unit).isHero()) {
+            UnitMaster.train((Unit) unit);
+        }
         }
 
         getUnit().getRef().setID(KEYS.SUMMONER, ref.getSource());
@@ -118,53 +121,18 @@ public class SummonEffect extends MicroEffect {
         game.fireEvent(new Event(getEventTypeDone(), REF));
 
         unit.getRef().setID(KEYS.ACTIVE, ref.getId(KEYS.ACTIVE));
-        addUpkeep();
 
-        // if (spell!=null){
-        // if (spell.checkBool(STD_BOOLS.DISPELABLE)){
-        // // unit.modifyParamByPercent(params.initiative_modifier, -50);
-        // }
-        // } TODO
-        // ADD FOCUS/ESS UPKEEP!
-        // unit.getGame().getTurnManager().
-        applySickness();
+        UpkeepRule.addUpkeep(unit);
+        if (unit instanceof Unit)
+            SummoningSicknessRule.apply((Unit) unit);
 
-		/*
-         * upkeep rule - RoundRule plus an event "cannot_support" to be handled
-		 * manually
-		 */
-
-        //GuiEventManager.trigger(CELL_UPDATE, new EventCallbackParam<>(getUnit().getCoordinates()));
         if (effects != null) {
-
             REF.setTarget(getUnit().getId());
             return effects.apply(REF);
         }
         SoundMaster.playEffectSound(SOUNDS.READY, unit);
         return true;
     }
-
-    private void applySickness() {
-        if (isApplySicknessRule(unit)) {
-            SummoningSicknessRule.apply(unit);
-        }
-    }
-
-    private void addUpkeep() {
-        if (isAddUpkeep(unit)) {
-            UpkeepRule.addUpkeep(unit);
-        }
-    }
-
-    protected boolean isApplySicknessRule(DC_HeroObj unit2) {
-        return true;
-    }
-
-    protected boolean isAddUpkeep(DC_HeroObj unit2) {
-        return true;
-
-    }
-
     public STANDARD_EVENT_TYPE getEventTypeDone() {
         return STANDARD_EVENT_TYPE.UNIT_SUMMONED;
     }
@@ -221,7 +189,7 @@ public class SummonEffect extends MicroEffect {
         return unit;
     }
 
-    public void setUnit(DC_HeroObj unit) {
+    public void setUnit(BattleFieldObject unit) {
         this.unit = unit;
     }
 

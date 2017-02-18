@@ -3,8 +3,8 @@ package main.rules.action;
 import main.content.PARAMS;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.ai.tools.Analyzer;
 import main.game.battlefield.Coordinates;
 import main.game.logic.dungeon.ai.DungeonCrawler.ENGAGEMENT_LEVEL;
@@ -23,11 +23,11 @@ public class PerceptionRule extends TurnRule implements ActionRule {
     }
 
     public void actionComplete(ActiveObj activeObj) {
-        DC_HeroObj unit = (DC_HeroObj) activeObj.getOwnerObj();
+        Unit unit = (Unit) activeObj.getOwnerObj();
         PERCEPTION_STATUS status;
         int actionNoise = activeObj.getIntParam(PARAMS.NOISE, false)
                 + activeObj.getOwnerObj().getIntParam(PARAMS.NOISE, false);
-        for (DC_HeroObj source : getUnits(activeObj)) {
+        for (Unit source : getUnits(activeObj)) {
 //			status = getPerceptionStatus(source, activeObj, actionNoise);
             // map of statuses would be nice...
             // statusMap.getOrCreate(source).put(unit, status);
@@ -41,8 +41,8 @@ public class PerceptionRule extends TurnRule implements ActionRule {
 
     }
 
-    private void perceptionEventAI(PERCEPTION_STATUS status, DC_HeroObj source,
-                                   DC_HeroObj target, ActiveObj action) {
+    private void perceptionEventAI(PERCEPTION_STATUS status, Unit source,
+                                   Unit target, ActiveObj action) {
         switch (status) {
             case KNOWN_TO_BE_SOMEWHERE:
                 source.getUnitAI().getGroup()
@@ -75,8 +75,8 @@ public class PerceptionRule extends TurnRule implements ActionRule {
         }
     }
 
-    public void perceptionEvent(PERCEPTION_STATUS status, DC_HeroObj source,
-                                DC_HeroObj target, ActiveObj action) {
+    public void perceptionEvent(PERCEPTION_STATUS status, Unit source,
+                                Unit target, ActiveObj action) {
         if (status == PERCEPTION_STATUS.UNKNOWN) {
             return;
         }
@@ -89,7 +89,7 @@ public class PerceptionRule extends TurnRule implements ActionRule {
     }
 
     private void perceptionEventPlayer(PERCEPTION_STATUS status,
-                                       DC_HeroObj source, DC_HeroObj target, ActiveObj action) {
+                                       Unit source, Unit target, ActiveObj action) {
         String message = source.getName() + ": ";
         // text anim over the source
         source.getGame().getLogManager().log(message);
@@ -103,7 +103,7 @@ public class PerceptionRule extends TurnRule implements ActionRule {
     }
 
     private void checkResetPlayerPerceptionStatus(PERCEPTION_STATUS status,
-                                                  DC_HeroObj source, DC_HeroObj unit) {
+                                                  Unit source, Unit unit) {
         if (source.isAiControlled()) {
 //			PERCEPTION_STATUS_PLAYER s = source.getUnitAI().getGroup()
 //					.getPerceptionStatus();
@@ -154,7 +154,7 @@ public class PerceptionRule extends TurnRule implements ActionRule {
 
     private int getNoiseBarrier(Obj unit) {
         int totalNoise = 0;
-        for (DC_HeroObj u : Analyzer.getUnits((DC_HeroObj) unit, null, false,
+        for (Unit u : Analyzer.getUnits((Unit) unit, null, false,
                 false, false)) {
             int distance = PositionMaster.getDistance(u, unit);
             if (distance == 0) {
@@ -165,28 +165,28 @@ public class PerceptionRule extends TurnRule implements ActionRule {
         return totalNoise;
     }
 
-    private Collection<DC_HeroObj> getUnits(ActiveObj activeObj) {
+    private Collection<Unit> getUnits(ActiveObj activeObj) {
         // TODO max distance?
-        List<DC_HeroObj> list = new LinkedList<>();
+        List<Unit> list = new LinkedList<>();
         for (Obj unit : DC_Game.game
                 .getPlayer(activeObj.getOwnerObj().isMine())
                 .getControlledUnits()) {
-            list.add((DC_HeroObj) unit);
+            list.add((Unit) unit);
         }
         return list;
     }
 
-    private Integer getNoiseMod(DC_HeroObj unit, ActiveObj activeObj) {
+    private Integer getNoiseMod(Unit unit, ActiveObj activeObj) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private int getNoiseBarrier(DC_HeroObj unit) {
+    private int getNoiseBarrier(Unit unit) {
         // TODO Auto-generated method stub
         return 0;
     }
 
-    public boolean unitBecomesActive(DC_HeroObj unit) {
+    public boolean unitBecomesActive(Unit unit) {
         return false;
     }
 

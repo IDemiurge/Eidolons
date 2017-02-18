@@ -17,7 +17,7 @@ public class TargetingMaster {
     }
 
     public static Targeting getZoneEffect(DC_ActiveObj active) {
-        List<Effect> zoneEffects = EffectMaster.getEffectsOfClass(active,
+        List<Effect> zoneEffects = EffectFinder.getEffectsOfClass(active,
                 SpecialTargetingEffect.class);
         if (!zoneEffects.isEmpty()) {
             SpecialTargetingEffect zoneEffect = (SpecialTargetingEffect) zoneEffects

@@ -2,9 +2,9 @@ package main.libgdx.bf;
 
 import com.badlogic.gdx.graphics.Texture;
 import main.content.C_OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.properties.G_PROPS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
+import main.entity.obj.BattleFieldObject;
 import main.libgdx.texture.TextureManager;
 
 import java.util.Map;
@@ -28,12 +28,12 @@ public class UnitViewOptions {
     private boolean hideBorder;
     private boolean overlaying;
 
-    private DC_HeroObj obj;
+    private BattleFieldObject obj;
 
     private Map unitMap;
 
 
-    public UnitViewOptions(DC_HeroObj obj, Map unitMap) {
+    public UnitViewOptions(BattleFieldObject obj, Map unitMap) {
         this.obj = obj;
         this.unitMap = unitMap;
         this.createFromGameObject(this.obj);
@@ -111,7 +111,7 @@ public class UnitViewOptions {
         this.overlaying = var1;
     }
 
-    public final void createFromGameObject(DC_HeroObj obj) {
+    public final void createFromGameObject(BattleFieldObject obj) {
         this.portrateTexture = TextureManager.getOrCreate(obj.getImagePath());
         if (C_OBJ_TYPE.UNITS_CHARS.equals(obj.getOBJ_TYPE_ENUM())) {
             this.directionValue = obj.getFacing().getDirection().getDegrees();
@@ -127,17 +127,17 @@ public class UnitViewOptions {
             this.portrateTexture = TextureManager.getOrCreate(obj.getImagePath());
         }
 
-        if (obj.getOBJ_TYPE_ENUM() == OBJ_TYPES.BF_OBJ) {
+        if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
             this.hideBorder = true;
         }
 
     }
 
-    public final DC_HeroObj getObj() {
+    public final BattleFieldObject getObj() {
         return this.obj;
     }
 
-    public final void setObj(DC_HeroObj var1) {
+    public final void setObj(BattleFieldObject var1) {
         this.obj = var1;
     }
 

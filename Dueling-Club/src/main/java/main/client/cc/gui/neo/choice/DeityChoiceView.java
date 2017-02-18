@@ -2,11 +2,11 @@ package main.client.cc.gui.neo.choice;
 
 import main.client.cc.CharacterCreator;
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.VALUE;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.generic.components.list.ListItem;
 import main.system.auxiliary.StringMaster;
@@ -22,7 +22,7 @@ public class DeityChoiceView extends EntityChoiceView implements
 
     private static final String FAITHLESS = "Faithless";
 
-    public DeityChoiceView(ChoiceSequence choiceSequence, DC_HeroObj hero) {
+    public DeityChoiceView(ChoiceSequence choiceSequence, Unit hero) {
         super(choiceSequence, hero);
     }
 
@@ -84,7 +84,7 @@ public class DeityChoiceView extends EntityChoiceView implements
 
     @Override
     protected OBJ_TYPE getTYPE() {
-        return OBJ_TYPES.DEITIES;
+        return DC_TYPE.DEITIES;
     }
 
     @Override

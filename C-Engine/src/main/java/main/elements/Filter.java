@@ -2,8 +2,8 @@ package main.elements;
 
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
-import main.content.parameters.PARAMETER;
-import main.content.properties.PROPERTY;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.elements.conditions.Condition;
@@ -14,7 +14,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
 import main.entity.obj.Obj;
-import main.game.Game;
+import main.game.core.game.Game;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 

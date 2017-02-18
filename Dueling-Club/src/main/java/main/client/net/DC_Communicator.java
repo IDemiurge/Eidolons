@@ -5,8 +5,8 @@ import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Active;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -115,7 +115,7 @@ public class DC_Communicator extends Communicator {
     }
 
     private void newAction(Object[] args) {
-        DC_HeroObj sourceObj = (DC_HeroObj) game.getObjectById(Integer.valueOf(args[0].toString()));
+        Unit sourceObj = (Unit) game.getObjectById(Integer.valueOf(args[0].toString()));
         int actionNumber = Integer.valueOf(args[1].toString());
         // ActionType actionType = (ActionType) game.getActionManager()
         // .getUnitActions(sourceObj).getOrCreate(actionNumber);

@@ -1,12 +1,13 @@
 package main.game.logic.dungeon.editor;
 
-import main.content.CONTENT_CONSTS.WORKSPACE_GROUP;
-import main.content.MACRO_OBJ_TYPES;
-import main.content.OBJ_TYPES;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PROPS;
-import main.content.enums.DUNGEON_SUBFOLDER;
-import main.content.properties.G_PROPS;
-import main.content.properties.MACRO_PROPS;
+import main.content.enums.DungeonEnums.DUNGEON_SUBFOLDER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.MACRO_PROPS;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
@@ -146,7 +147,7 @@ public class LE_DataMaster {
 
     public static void edit() {
         ObjType type = LevelEditor.getMainPanel().getInfoPanel().getSelectedType();
-        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.DUNGEONS) {
+        if (type.getOBJ_TYPE_ENUM() == DC_TYPE.DUNGEONS) {
             editLevel();
         } else if (type.getOBJ_TYPE_ENUM() == MACRO_OBJ_TYPES.PLACE) {
             editMission();
@@ -173,7 +174,7 @@ public class LE_DataMaster {
 
     public static void removeSelected() {
         ObjType type = LevelEditor.getMainPanel().getInfoPanel().getSelectedType();
-        if (type.getOBJ_TYPE_ENUM() == OBJ_TYPES.DUNGEONS) {
+        if (type.getOBJ_TYPE_ENUM() == DC_TYPE.DUNGEONS) {
             removeLevel(LevelEditor.getCurrentLevel());
         } else if (type.getOBJ_TYPE_ENUM() == MACRO_OBJ_TYPES.PLACE) {
             removeMission();
@@ -313,12 +314,12 @@ public class LE_DataMaster {
             path = subFolder + "\\" + path;
         }
         if (dungeon.getWorkspaceGroup() == null) {
-            dungeon.setWorkspaceGroup(WORKSPACE_GROUP.IMPLEMENT);
+            dungeon.setWorkspaceGroup(MetaEnums.WORKSPACE_GROUP.IMPLEMENT);
 
         }
         fileName += InfoMaster.getWorkspaceTip(dungeon);
         if (dungeon.getWorkspaceGroup() == null
-                || dungeon.getWorkspaceGroup() == WORKSPACE_GROUP.COMPLETE) {
+                || dungeon.getWorkspaceGroup() == MetaEnums.WORKSPACE_GROUP.COMPLETE) {
             deleteIncompleteVersions(fileName);
         }
         // if (level.getDungeon().isSurface()) {
@@ -365,8 +366,8 @@ public class LE_DataMaster {
     }
 
     private static void deleteIncompleteVersions(String fileName) {
-        for (WORKSPACE_GROUP ws : WORKSPACE_GROUP.values()) {
-            if (ws == WORKSPACE_GROUP.FOCUS) {
+        for (WORKSPACE_GROUP ws : MetaEnums.WORKSPACE_GROUP.values()) {
+            if (ws == MetaEnums.WORKSPACE_GROUP.FOCUS) {
                 continue;
             }
             File file = FileManager.getFile(getDungeonLevelFolder() + "\\" + fileName
@@ -396,7 +397,7 @@ public class LE_DataMaster {
             // data = loadLevel();
             // Level level = new Level(baseDungeonType, mission, data);
             // level.init();
-            String dungeonType = ListChooser.chooseType(OBJ_TYPES.DUNGEONS);
+            String dungeonType = ListChooser.chooseType(DC_TYPE.DUNGEONS);
             if (dungeonType == null) {
                 break;
             }

@@ -2,23 +2,23 @@ package main.game.ai.tools;
 
 import main.ability.conditions.WaitingFilterCondition;
 import main.ability.effects.common.RaiseEffect;
-import main.content.CONTENT_CONSTS.UNIT_TO_PLAYER_VISION;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
+import main.content.enums.rules.VisionEnums;
 import main.data.XList;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.DC_HeroObj;
-import main.game.DC_Game;
+import main.entity.obj.unit.Unit;
+import main.game.core.game.DC_Game;
 import main.game.ai.UnitAI;
-import main.game.ai.tools.target.EffectMaster;
+import main.game.ai.tools.target.EffectFinder;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;
 import main.game.battlefield.VisionManager;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 import main.swing.components.panels.DC_UnitActionPanel.ACTION_DISPLAY_GROUP;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;
@@ -28,9 +28,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Analyzer {
-    public static List<DC_HeroObj> getAllies(UnitAI ai) {
-        List<DC_HeroObj> list = new XList<>();
-        for (DC_HeroObj unit : getGame().getUnits()) {
+    public static List<Unit> getAllies(UnitAI ai) {
+        List<Unit> list = new XList<>();
+        for (Unit unit : getGame().getUnits()) {
             if (unit.getOwner() != ai.getUnit().getOwner()) {
                 continue;
             }
@@ -43,9 +43,9 @@ public class Analyzer {
         return list;
     }
 
-    public static List<DC_HeroObj> getWaitUnits(UnitAI ai) {
-        List<DC_HeroObj> list = new XList<>();
-        for (DC_HeroObj unit : getGame().getUnits()) {
+    public static List<Unit> getWaitUnits(UnitAI ai) {
+        List<Unit> list = new XList<>();
+        for (Unit unit : getGame().getUnits()) {
             if (unit.equals(ai.getUnit())) {
                 continue;
             }
@@ -58,21 +58,21 @@ public class Analyzer {
         return list;
     }
 
-    public static List<DC_HeroObj> getVisibleEnemies(UnitAI ai) {
+    public static List<Unit> getVisibleEnemies(UnitAI ai) {
         return getUnits(ai, false, true, true, false);
     }
 
-    public static List<DC_HeroObj> getUnits(UnitAI ai, Boolean ally,
-                                            Boolean enemy, Boolean vision_no_vision, Boolean dead) {
+    public static List<Unit> getUnits(UnitAI ai, Boolean ally,
+                                      Boolean enemy, Boolean vision_no_vision, Boolean dead) {
         return getUnits(ai, ally, enemy, vision_no_vision, dead, false);
     }
 
-    public static List<DC_HeroObj> getUnits(UnitAI ai, Boolean ally,
-                                            Boolean enemy, Boolean vision_no_vision, Boolean dead,
-                                            Boolean neutral) {
+    public static List<Unit> getUnits(UnitAI ai, Boolean ally,
+                                      Boolean enemy, Boolean vision_no_vision, Boolean dead,
+                                      Boolean neutral) {
 
-        List<DC_HeroObj> list = new XList<>();
-        for (DC_HeroObj unit : getGame().getUnits()) {
+        List<Unit> list = new XList<>();
+        for (Unit unit : getGame().getUnits()) {
             if (unit.getZ() != ai.getUnit().getZ())// TODO
             {
                 continue;
@@ -114,7 +114,7 @@ public class Analyzer {
 
     }
 
-    public static boolean hasSpecialActions(DC_HeroObj unit) {
+    public static boolean hasSpecialActions(Unit unit) {
         if (hasSpells(unit)) {
             return true;
         }
@@ -127,7 +127,7 @@ public class Analyzer {
                 ACTION_DISPLAY_GROUP.SPEC_ACTIONS));
     }
 
-    public static boolean hasQuickItems(DC_HeroObj unit) {
+    public static boolean hasQuickItems(Unit unit) {
         if (unit.getQuickItems() != null) {
             if (!unit.getQuickItems().isEmpty()) {
                 return true;
@@ -136,11 +136,11 @@ public class Analyzer {
         return false;
     }
 
-    public static boolean hasSpells(DC_HeroObj unit) {
+    public static boolean hasSpells(Unit unit) {
         return !unit.getSpells().isEmpty();
     }
 
-    public static boolean canCast(DC_HeroObj target) {
+    public static boolean canCast(Unit target) {
         if (!hasSpells(target)) {
             return false;
         }
@@ -152,14 +152,14 @@ public class Analyzer {
         return false;
     }
 
-    public static boolean isBlocking(DC_HeroObj unit, DC_HeroObj target) {
+    public static boolean isBlocking(Unit unit, Unit target) {
         // TODO melee vs ranged
 
         return false;
 
     }
 
-    public static boolean checkRangedThreat(DC_HeroObj target) {
+    public static boolean checkRangedThreat(Unit target) {
         if (!hasSpecialActions(target)) {
             return false;
         }
@@ -167,7 +167,7 @@ public class Analyzer {
 
     }
 
-    public static boolean isBlockingMovement(DC_HeroObj unit, DC_HeroObj target) {
+    public static boolean isBlockingMovement(Unit unit, Unit target) {
         if (!unit.getCoordinates().isAdjacent(target.getCoordinates())) {
             return false;
         }
@@ -199,7 +199,7 @@ public class Analyzer {
         if (targetObj != null) {
             if (!targetObj.getOwner().equals(Player.NEUTRAL)) {
                 if (!targetObj.getOwner().equals(source.getOwner())) {
-                    if (!targetObj.getOBJ_TYPE_ENUM().equals(OBJ_TYPES.BF_OBJ)) {
+                    if (!targetObj.getOBJ_TYPE_ENUM().equals(DC_TYPE.BF_OBJ)) {
                         return true;
                     }
                 }
@@ -208,29 +208,29 @@ public class Analyzer {
         return false;
     }
 
-    public static List<? extends DC_Obj> getMeleeEnemies(DC_HeroObj unit) {
+    public static List<? extends DC_Obj> getMeleeEnemies(Unit unit) {
         return getAdjacentEnemies(unit, true);
     }
 
-    public static List<? extends DC_Obj> getAdjacentEnemies(DC_HeroObj unit,
+    public static List<? extends DC_Obj> getAdjacentEnemies(Unit unit,
                                                             boolean checkAttack) {
         return getAdjacentEnemies(unit, false, checkAttack);
     }
 
-    public static List<? extends DC_Obj> getAdjacentEnemies(DC_HeroObj unit,
+    public static List<? extends DC_Obj> getAdjacentEnemies(Unit unit,
                                                             boolean checkAct, boolean checkAttack) {
         return getEnemies(unit, checkAct, checkAttack, true);
     }
 
-    public static List<? extends DC_Obj> getEnemies(DC_HeroObj unit,
+    public static List<? extends DC_Obj> getEnemies(Unit unit,
                                                     boolean checkAct, boolean checkAttack, boolean adjacentOnly) {
         return getUnits(unit, true, checkAct, checkAttack, adjacentOnly);
     }
 
-    public static List<DC_HeroObj> getUnits(DC_HeroObj unit,
-                                            Boolean enemy_or_ally_only, boolean checkAct, boolean checkAttack,
-                                            boolean adjacentOnly) {
-        List<DC_HeroObj> list = new LinkedList<>();
+    public static List<Unit> getUnits(Unit unit,
+                                      Boolean enemy_or_ally_only, boolean checkAct, boolean checkAttack,
+                                      boolean adjacentOnly) {
+        List<Unit> list = new LinkedList<>();
         for (Coordinates coordinates : unit.getCoordinates()
                 .getAdjacentCoordinates()) {
             Obj obj = unit.getGame().getUnitByCoordinate(coordinates);
@@ -238,7 +238,7 @@ public class Analyzer {
                 continue;
             }
 
-            DC_HeroObj enemy = (DC_HeroObj) obj;
+            Unit enemy = (Unit) obj;
             if (enemy_or_ally_only != null) {
                 if (enemy_or_ally_only) {
                     if (obj.getOwner().equals(unit.getOwner())) {
@@ -340,7 +340,7 @@ public class Analyzer {
         return getCells(ai.getUnit(), adjacent, detected, free);
     }
 
-    public static List<DC_Cell> getCells(DC_HeroObj targetUnit,
+    public static List<DC_Cell> getCells(Unit targetUnit,
                                          boolean adjacent, boolean detected, boolean free) {
         List<DC_Cell> list = new LinkedList<>();
         for (Obj obj : targetUnit.getGame().getCells()) {
@@ -354,7 +354,7 @@ public class Analyzer {
             }
 
             if (free) {
-                DC_HeroObj unit = targetUnit.getGame().getUnitByCoordinate(
+                Unit unit = targetUnit.getGame().getUnitByCoordinate(
                         cell.getCoordinates());
                 if (unit != null) {
                     if (VisionManager.checkVisible(unit)) {
@@ -364,7 +364,7 @@ public class Analyzer {
             }
             if (detected) // TODO in sight etc
             {
-                if (cell.getActivePlayerVisionStatus() != UNIT_TO_PLAYER_VISION.DETECTED) {
+                if (cell.getActivePlayerVisionStatus() != VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED) {
                     continue;
                 }
             }
@@ -411,7 +411,7 @@ public class Analyzer {
 
     public static List<DC_Cell> getSummonCells(UnitAI ai, DC_ActiveObj action) {
 
-        if (EffectMaster.check(action, RaiseEffect.class)) {
+        if (EffectFinder.check(action, RaiseEffect.class)) {
             return getCorpseCells(ai.getUnit());
         }
         List<DC_Cell> cells = getCells(ai, true, true, true);
@@ -419,7 +419,7 @@ public class Analyzer {
         // try{
         // } check melee TODO
         if (melee) {
-            for (DC_HeroObj e : getVisibleEnemies(ai)) {
+            for (Unit e : getVisibleEnemies(ai)) {
                 // e.getCoordinates().getAdjacentCoordinates()
                 cells.addAll(getCells(e, true, false, true));
             }
@@ -428,19 +428,19 @@ public class Analyzer {
         return cells;
     }
 
-    private static List<DC_Cell> getCorpseCells(DC_HeroObj unit) {
+    private static List<DC_Cell> getCorpseCells(Unit unit) {
 
         return unit.getGame().getCellsForCoordinates(
                 unit.getGame().getGraveyardManager().getCorpseCells());
     }
 
-    public static List<? extends DC_Obj> getZoneDamageCells(DC_HeroObj unit) {
+    public static List<? extends DC_Obj> getZoneDamageCells(Unit unit) {
         List<DC_Cell> cells = getCells(unit.getUnitAI(), false, false, true);
         List<DC_Cell> remove_cells = new LinkedList<>();
         loop:
         for (DC_Cell c : cells) {
             for (Coordinates c1 : c.getCoordinates().getAdjacentCoordinates()) {
-                DC_HeroObj enemy = unit.getGame().getUnitByCoordinate(c1);
+                Unit enemy = unit.getGame().getUnitByCoordinate(c1);
                 if (isEnemy(enemy, unit)) {
                     continue loop;
                 }

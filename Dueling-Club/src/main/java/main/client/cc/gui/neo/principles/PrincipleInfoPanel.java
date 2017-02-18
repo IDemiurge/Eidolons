@@ -1,9 +1,10 @@
 package main.client.cc.gui.neo.principles;
 
 import main.client.cc.gui.neo.points.HC_InfoTextPanel;
-import main.content.CONTENT_CONSTS.PRINCIPLES;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.PARAMS;
-import main.entity.obj.unit.DC_HeroObj;
+import main.content.enums.entity.HeroEnums;
+import main.entity.obj.unit.Unit;
 import main.rules.rpg.IntegrityRule;
 import main.rules.rpg.IntegrityRule.ALIGNMENT_LEVEL;
 import main.system.auxiliary.StringMaster;
@@ -14,7 +15,7 @@ public class PrincipleInfoPanel extends HC_InfoTextPanel {
 
     private PRINCIPLES principle;
 
-    public PrincipleInfoPanel(DC_HeroObj hero) {
+    public PrincipleInfoPanel(Unit hero) {
         super(VISUALS.INFO_PANEL_TEXT_SMALL, hero, null);
 
     }
@@ -33,7 +34,7 @@ public class PrincipleInfoPanel extends HC_InfoTextPanel {
     public void refresh() {
         textLines = new LinkedList<>();
         if (principle == null) {
-            for (PRINCIPLES p : PRINCIPLES.values()) {
+            for (PRINCIPLES p : HeroEnums.PRINCIPLES.values()) {
                 addStatusLines(p);
             }
         } else {

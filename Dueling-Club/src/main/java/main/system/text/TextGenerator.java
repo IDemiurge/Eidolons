@@ -1,10 +1,10 @@
 package main.system.text;
 
 import main.content.ContentManager;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.VALUE;
 import main.content.ValuePageManager;
-import main.content.parameters.PARAMETER;
+import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
@@ -25,7 +25,7 @@ public class TextGenerator {
             boolean prop = false;
             for (VALUE v : list) {
                 if (v instanceof PARAMETER) {
-                    if (!ContentManager.isValueForOBJ_TYPE(OBJ_TYPES.CHARS, v)) {
+                    if (!ContentManager.isValueForOBJ_TYPE(DC_TYPE.CHARS, v)) {
                         continue;
                     }
                     String amount = e.getValue(v);

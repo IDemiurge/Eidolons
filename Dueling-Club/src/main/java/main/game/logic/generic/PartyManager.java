@@ -7,11 +7,11 @@ import main.client.cc.logic.HeroLevelManager;
 import main.client.cc.logic.party.PartyObj;
 import main.client.dc.MetaManager;
 import main.client.dc.Simulation;
-import main.content.OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
@@ -20,10 +20,10 @@ import main.data.xml.XML_Writer;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.PrinciplesCondition;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
-import main.game.DC_Game.GAME_MODES;
+import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.logic.arena.Wave;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.data.FileManager;
@@ -52,7 +52,7 @@ public class PartyManager {
         return FileManager.getFile(getPartyFolderPath() + "\\" + typeName + ".xml");
     }
 
-    public static void addMember(DC_HeroObj hero) {
+    public static void addMember(Unit hero) {
         getParty().addMember(hero);
         if (hero.getGame().isSimulation()) {
             CharacterCreator.partyMemberAdded(hero);
@@ -71,7 +71,7 @@ public class PartyManager {
         }
     }
 
-    public static PartyObj newParty(DC_HeroObj hero) {
+    public static PartyObj newParty(Unit hero) {
         String newName = "";
 
         if (CharacterCreator.isArcadeMode()) {
@@ -100,11 +100,11 @@ public class PartyManager {
         return party;
     }
 
-    public static PartyObj createParty(DC_HeroObj hero) {
+    public static PartyObj createParty(Unit hero) {
         return createParty(getType(), hero);
     }
 
-    public static PartyObj createParty(ObjType type, DC_HeroObj hero) {
+    public static PartyObj createParty(ObjType type, Unit hero) {
         party = newParty(type);
         party.setLeader(hero);
         party.addMember(hero);
@@ -148,7 +148,7 @@ public class PartyManager {
         String xml = XML_Writer.openXML(XML_ROOT);
         xml += XML_Writer.getTypeXML(party.getType(), new StringBuilder(XML_Writer.STR_CAPACITY));
         String names = "";
-        for (DC_HeroObj hero : party.getMembers()) {
+        for (Unit hero : party.getMembers()) {
             // durability persistence?
 
             ObjType type = hero.getType();
@@ -167,11 +167,11 @@ public class PartyManager {
             type = new ObjType(type, true);
             Simulation.getGame().initType(type);
         }
-        DataManager.addType(type.getName(), OBJ_TYPES.PARTY, type);
+        DataManager.addType(type.getName(), DC_TYPE.PARTY, type);
 
         XML_Writer.write(xml, getPartyFolderPath(), getFileName(party));
         try {
-            XML_Writer.writeXML_ForType(type, OBJ_TYPES.PARTY);
+            XML_Writer.writeXML_ForType(type, DC_TYPE.PARTY);
         } catch (Exception e) {
             LogMaster.log(1, " failed to save party type " + party);
         }
@@ -285,21 +285,21 @@ public class PartyManager {
         return PathFinder.getTYPES_PATH() + PARTY_FOLDER;
     }
 
-    public static List<DC_HeroObj> loadParty(String typeName) {
+    public static List<Unit> loadParty(String typeName) {
         return loadParty(typeName, Simulation.getGame());
     }
 
-    public static List<DC_HeroObj> loadParty(String typeName, DC_Game game) {
+    public static List<Unit> loadParty(String typeName, DC_Game game) {
         // invoke before obj init, to getOrCreate full obj string
         File file = getPartyFile(typeName);
         String xml = FileManager.readFile(file);
         if (xml.contains(XML_Converter.openXmlFormatted(typeName))) {
             String partyTypeData = StringMaster.getXmlNode(xml, typeName);
             xml = xml.replace(partyTypeData, "");
-            XML_Reader.createCustomTypeList(partyTypeData, OBJ_TYPES.PARTY, game, true);
+            XML_Reader.createCustomTypeList(partyTypeData, DC_TYPE.PARTY, game, true);
         }
-        XML_Reader.readCustomTypeFile(file, OBJ_TYPES.CHARS, game);
-        ObjType partyType = DataManager.getType(typeName, OBJ_TYPES.PARTY);
+        XML_Reader.readCustomTypeFile(file, DC_TYPE.CHARS, game);
+        ObjType partyType = DataManager.getType(typeName, DC_TYPE.PARTY);
         setParty(newParty(partyType));
         party.toBase();
         return party.getMembers();
@@ -312,7 +312,7 @@ public class PartyManager {
         }
     }
 
-    public static void remove(DC_HeroObj hero) {
+    public static void remove(Unit hero) {
         if (hero == getParty().getLeader()) {
             return;
         }
@@ -345,7 +345,7 @@ public class PartyManager {
         getParty().getGame().setSimulation(true);
         getParty().modifyParameter(PARAMS.LEVEL, 1, true);
         try {
-            for (DC_HeroObj hero : getParty().getMembers()) {
+            for (Unit hero : getParty().getMembers()) {
                 HeroLevelManager.levelUp(hero, true);
             }
         } catch (Exception e) {
@@ -356,7 +356,7 @@ public class PartyManager {
     }
 
     public static PartyObj initParty(String last) {
-        ObjType type = DataManager.getType(last, OBJ_TYPES.PARTY);
+        ObjType type = DataManager.getType(last, DC_TYPE.PARTY);
 
         return newParty(type);
     }
@@ -389,7 +389,7 @@ public class PartyManager {
 
     public static Conditions getPrincipleConditions(PartyObj party) {
         Conditions principlesConditions = new Conditions();
-        for (DC_HeroObj m : party.getMembers()) {
+        for (Unit m : party.getMembers()) {
             String principles = m.getProperty(G_PROPS.PRINCIPLES);
             Condition principlesCondition = new PrinciplesCondition(principles, "{MATCH_"
                     + G_PROPS.PRINCIPLES + "}", true);
@@ -405,19 +405,19 @@ public class PartyManager {
 
     public static void addCreepParty(Wave wave) {
         DC_Game game = wave.getGame();
-        DC_HeroObj leader = wave.getLeader();
+        Unit leader = wave.getLeader();
         String name = wave.getName();
-        List<DC_HeroObj> units = wave.getUnits();
+        List<Unit> units = wave.getUnits();
         ObjType newType = new ObjType(game);
         wave.setParty(addCreepParty(leader, name, units, newType));
 
     }
 
-    public static PartyObj addCreepParty(DC_HeroObj leader, String name, List<DC_HeroObj> units,
+    public static PartyObj addCreepParty(Unit leader, String name, List<Unit> units,
                                          ObjType newType) {
         newType.setName(name);
         PartyObj p = createParty(newType, leader);
-        for (DC_HeroObj unit : units) {
+        for (Unit unit : units) {
             p.addMember(unit);
         }
         parties.add(p);
@@ -432,7 +432,7 @@ public class PartyManager {
     public static ObjType getType() {
         // if (type == null) {
         ObjType type = (new ObjType(DEFAULT_TYPE_NAME));
-        type.setOBJ_TYPE_ENUM(OBJ_TYPES.PARTY);
+        type.setOBJ_TYPE_ENUM(DC_TYPE.PARTY);
         // DataManager.getType(DEFAULT_TYPE_NAME, OBJ_TYPES.PARTY);
         type.setGame(DC_Game.game);
         // }

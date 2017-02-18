@@ -1,16 +1,16 @@
 package main.data.xml;
 
 import main.content.OBJ_TYPE;
-import main.content.OBJ_TYPES;
-import main.content.parameters.PARAMETER;
-import main.content.properties.G_PROPS;
-import main.content.properties.PROPERTY;
+import main.content.DC_TYPE;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.ConcurrentMap;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
-import main.game.Game;
+import main.game.core.game.Game;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.Chronos;
@@ -234,8 +234,8 @@ public class XML_Reader {
     public static String readFile(File file) {
         String text = FileManager.readFile(file);
         String fileName = file.getName().replace(".xml", "");
-        if (fileName.contains(OBJ_TYPES.CHARS.getName())) {
-            XML_File heroFile = new XML_File(OBJ_TYPES.CHARS, fileName, "", // TODO
+        if (fileName.contains(DC_TYPE.CHARS.getName())) {
+            XML_File heroFile = new XML_File(DC_TYPE.CHARS, fileName, "", // TODO
                     macro, text);
             heroFile.setFile(file);
             heroFiles.put(fileName, heroFile);
@@ -251,12 +251,12 @@ public class XML_Reader {
                 xmlMap.put(typeName, fullText);
             }
 
-            xmlFile = new XML_File(OBJ_TYPES.getType(typeName), fileName, fileName.substring(
+            xmlFile = new XML_File(DC_TYPE.getType(typeName), fileName, fileName.substring(
                     fileName.indexOf("-") + 1, fileName.length()), macro, text);
 
             fileName = typeName;
         } else {
-            xmlFile = new XML_File(OBJ_TYPES.getType(fileName), fileName, null, macro, text);
+            xmlFile = new XML_File(DC_TYPE.getType(fileName), fileName, null, macro, text);
 
             xmlMap.put(fileName, text);
         }
@@ -394,7 +394,7 @@ public class XML_Reader {
         }
         // xmlMap.put(name, text);
         Chronos.mark("TYPE MAPPING " + name);
-        if (OBJ_TYPES.isOBJ_TYPE(name)) {
+        if (DC_TYPE.isOBJ_TYPE(name)) {
             try {
                 constructTypeMap(XML_Converter.getDoc(text), name, tabGroupMap, treeSubGroupMap,
                         treeSubGroupedTypeMap);
@@ -439,7 +439,7 @@ public class XML_Reader {
 
     public static Set<String> getSubGroups(OBJ_TYPE TYPE) {
         boolean buffer;
-        if (TYPE instanceof OBJ_TYPES) {
+        if (TYPE instanceof DC_TYPE) {
             buffer = macro;
             macro = false;
         } else {
@@ -543,7 +543,7 @@ public class XML_Reader {
     }
 
     public static void checkHeroesAdded() {
-        String key = OBJ_TYPES.CHARS.getName();
+        String key = DC_TYPE.CHARS.getName();
         if (originalCharTypeMap == null) {
             originalCharTypeMap = new MapMaster<String, ObjType>().constructMap(new LinkedList<>(
                     getTypeMaps().get(key).keySet()), new LinkedList<>(getTypeMaps()
@@ -587,7 +587,7 @@ public class XML_Reader {
     }
 
     private static void checkNewHeroes() {
-        Collection<ObjType> types = getTypeMaps().get(OBJ_TYPES.CHARS.getName()).values();
+        Collection<ObjType> types = getTypeMaps().get(DC_TYPE.CHARS.getName()).values();
         for (ObjType type : types) {
             ObjType oldType = originalCharTypeMap.get(type.getName());
             if (oldType != null) {
@@ -612,7 +612,7 @@ public class XML_Reader {
         XML_Reader.files = files;
     }
 
-    public static XML_File getFile(OBJ_TYPES TYPE) {
+    public static XML_File getFile(DC_TYPE TYPE) {
         for (XML_File file : files) {
             if (file.getType().equals(TYPE)) {
                 return file;

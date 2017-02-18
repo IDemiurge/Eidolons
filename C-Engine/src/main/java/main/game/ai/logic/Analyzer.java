@@ -1,12 +1,12 @@
 package main.game.ai.logic;
 
 import main.entity.obj.Obj;
-import main.game.MicroGame;
+import main.game.core.game.MicroGame;
 import main.game.ai.AI;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.MovementManager;
 import main.game.battlefield.pathing.Path;
-import main.game.player.Player;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.PositionMaster;
 

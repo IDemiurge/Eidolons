@@ -1,13 +1,13 @@
 package main.game.ai.elements.task;
 
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 
 public class Task {
     private GOAL_TYPE type;
     private Object arg;
-    private DC_HeroObj unit;
+    private Unit unit;
     private UnitAI ai;
     private boolean blocked;
     private boolean forced;
@@ -35,7 +35,7 @@ public class Task {
         return ai;
     }
 
-    public DC_HeroObj getUnit() {
+    public Unit getUnit() {
         return unit;
     }
 

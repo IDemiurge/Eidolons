@@ -1,6 +1,6 @@
 package main.swing.components.panels;
 
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.swing.generic.components.panels.G_ButtonPanel;
 
 import java.awt.event.ActionEvent;

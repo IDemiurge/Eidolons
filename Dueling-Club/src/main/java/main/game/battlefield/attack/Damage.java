@@ -1,8 +1,8 @@
 package main.game.battlefield.attack;
 
-import main.content.CONTENT_CONSTS.DAMAGE_TYPE;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.active.DC_ActiveObj;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 
 public class Damage {
     public boolean shield;
@@ -10,8 +10,8 @@ public class Damage {
     public boolean canCritOrBlock;
     public boolean average;
     public Integer damage;
-    public DC_HeroObj attacked;
-    public DC_HeroObj attacker;
+    public Unit attacked;
+    public Unit attacker;
     public boolean offhand;
     public DAMAGE_TYPE dmg_type;
     public DC_ActiveObj action;
@@ -20,7 +20,7 @@ public class Damage {
 
     }
 
-    public Damage(DAMAGE_TYPE damageType, int amount, DC_HeroObj attacker, DC_HeroObj attacked) {
+    public Damage(DAMAGE_TYPE damageType, int amount, Unit attacker, Unit attacked) {
         this.attacker = attacker;
         this.attacked = attacked;
         this.dmg_type = damageType;
@@ -47,11 +47,11 @@ public class Damage {
         return damage;
     }
 
-    public DC_HeroObj getAttacked() {
+    public Unit getAttacked() {
         return attacked;
     }
 
-    public DC_HeroObj getAttacker() {
+    public Unit getAttacker() {
         return attacker;
     }
 

@@ -1,6 +1,6 @@
 package main.game.ai.advanced.behavior;
 
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.game.ai.GroupAI;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
@@ -41,7 +41,7 @@ public class Patrol {
         turnsWaited++;
     }
 
-    public DC_HeroObj getLeadingUnit() {
+    public Unit getLeadingUnit() {
 
         return getGroup().getLeader();
 

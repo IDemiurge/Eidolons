@@ -3,9 +3,9 @@ package main.game.logic.dungeon.scenario;
 import main.content.PARAMS;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.unit.DC_HeroObj;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.DC_Game;
+import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.DC_Player;
 import main.game.logic.dungeon.scenario.ScenarioMaster.SCENARIO_MODES;
 
@@ -14,7 +14,7 @@ import java.util.List;
 public class Scenario extends Entity {
 
     private SCENARIO_MODES mode;
-    private List<DC_HeroObj> heroesForHire;
+    private List<Unit> heroesForHire;
 
     public Scenario(ObjType type) {
         super(type, DC_Player.NEUTRAL, DC_Game.game, new Ref());
@@ -52,7 +52,7 @@ public class Scenario extends Entity {
         this.mode = mode;
     }
 
-    public List<DC_HeroObj> getHeroesForHire() {
+    public List<Unit> getHeroesForHire() {
         if (heroesForHire == null) {
             initHeroesForHire();
         }

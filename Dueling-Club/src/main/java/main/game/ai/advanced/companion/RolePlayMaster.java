@@ -1,7 +1,7 @@
 package main.game.ai.advanced.companion;
 
 import main.entity.Ref;
-import main.game.event.Event;
+import main.game.logic.event.Event;
 
 public class RolePlayMaster {
 
