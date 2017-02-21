@@ -14,11 +14,11 @@ public class TabbedPanel extends Container<Table> {
     private Table buttonLayout;
     private Container<Container> panelLayout;
 
-    public TabbedPanel(float width, float height) {
+    public TabbedPanel() {
         buttonGroup.setMaxCheckCount(1);
         buttonGroup.setMinCheckCount(1);
-        this.width(width);
-        this.height(height);
+        fill();
+        left().bottom();
     }
 
     private void initContainer(float h) {
@@ -38,7 +38,7 @@ public class TabbedPanel extends Container<Table> {
     }
 
     public void addTab(Container container, String tabName) {
-        TextButton b = new TextButton(tabName, StyleHolder.getTextButtonStyle());
+        TextButton b = new TextButton(tabName, getButtonStyle());
 
         if (buttonLayout == null) {
             initContainer(b.getHeight());
@@ -61,7 +61,7 @@ public class TabbedPanel extends Container<Table> {
         container.setFillParent(true);
         container.setHeight(getHeight() - b.getHeight());
         panelLayout.setActor(container);
-        panelLayout.debug();
+        panelLayout.fill().align(container.getAlign());
         buttonGroup.setChecked(tabName);
     }
 
@@ -82,6 +82,10 @@ public class TabbedPanel extends Container<Table> {
     @Override
     @Deprecated
     public void setActor(Table actor) {
-        throw new UnsupportedOperationException("Use ScrollPanel#addElement.");
+        throw new UnsupportedOperationException("Use TabbedPanel#addElement.");
+    }
+
+    protected TextButton.TextButtonStyle getButtonStyle() {
+        return StyleHolder.getTextButtonStyle();
     }
 }

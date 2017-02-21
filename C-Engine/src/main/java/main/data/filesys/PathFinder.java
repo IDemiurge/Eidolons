@@ -150,7 +150,7 @@ public class PathFinder {
 
     public static String getPrefsPath() {
         init();
-        return PathFinder.getEnginePath() + getTextPath() + "prefs\\";
+        return ENGINE_PATH + getTextPath() + "prefs\\";
     }
 
     public static String getWorkspacePath() {

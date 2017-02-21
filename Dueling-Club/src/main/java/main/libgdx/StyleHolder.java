@@ -6,6 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import main.system.graphics.ColorManager;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class StyleHolder {
     private static Label.LabelStyle defaultLabelStyle;
     private static Label.LabelStyle avqLabelStyle;
@@ -13,15 +16,19 @@ public class StyleHolder {
 
     private static TextButton.TextButtonStyle defaultTextButtonStyle;
 
-    public static Label.LabelStyle getDefaultLabelStyle() {
-        if (defaultLabelStyle == null) {
-            defaultLabelStyle = new Label.LabelStyle(new BitmapFont(),
-                    defaultColor);
+    private static Map<Color, Label.LabelStyle> colorLabelStyleMap = new HashMap<>();
+
+    public static Label.LabelStyle getDefaultLabelStyle(Color color) {
+        if (!colorLabelStyleMap.containsKey(color)) {
+            Label.LabelStyle style = new Label.LabelStyle(new BitmapFont(), color);
+            style.font.getData().markupEnabled = true;
+            colorLabelStyleMap.put(color, style);
         }
+        return colorLabelStyleMap.get(color);
+    }
 
-        defaultLabelStyle.font.getData().markupEnabled = true;
-
-        return defaultLabelStyle;
+    public static Label.LabelStyle getDefaultLabelStyle() {
+        return getDefaultLabelStyle(defaultColor);
     }
 
     public static Label.LabelStyle getAVQLabelStyle() {

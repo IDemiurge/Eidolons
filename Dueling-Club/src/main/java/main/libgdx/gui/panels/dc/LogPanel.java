@@ -91,7 +91,6 @@ public class LogPanel extends Group {
         scrollPanel.fill();
 
         addActor(scrollPanel);
-        debug();
         bind();
     }
 
