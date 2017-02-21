@@ -9,6 +9,7 @@ import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -63,7 +64,7 @@ public class AbilityImpl extends ReferredElement implements Ability {
 
     @Override
     public boolean activate() {
-        return activate(ref);
+        return activatedOn(ref);
     }
 
     @Override
@@ -72,7 +73,7 @@ public class AbilityImpl extends ReferredElement implements Ability {
     }
 
     @Override
-    public boolean activate(Ref ref) {
+    public boolean activatedOn(Ref ref) {
         setRef(ref);
 
         if (!(targeting instanceof AutoTargeting)) {
@@ -108,7 +109,7 @@ public class AbilityImpl extends ReferredElement implements Ability {
     @Override
     public boolean resolve() {
         LogMaster.log(0, "ABILITY_BEING_RESOLVED " + getClass().getSimpleName());
-        Event event = new Event("ABILITY_BEING_RESOLVED", ref);
+        Event event = new Event(STANDARD_EVENT_TYPE.ABILITY_BEING_RESOLVED, ref);
         if (game.fireEvent(event)) {
 
             GuiEventManager.trigger(GuiEventType.ABILITY_RESOLVES,

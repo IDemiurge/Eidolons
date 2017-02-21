@@ -167,7 +167,7 @@ public class Deity extends Entity {
             construct();
         }
         for (ActiveObj active : getActives()) {
-            active.activate(Ref.getSelfTargetingRefCopy(hero));
+            active.activatedOn(Ref.getSelfTargetingRefCopy(hero));
         }
     }
 

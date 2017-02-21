@@ -24,7 +24,7 @@ public class AutoAttackEffect extends DC_Effect {
         if (attack == null) {
             return false;
         }
-        boolean result = attack.activate(ref);
+        boolean result = attack.activatedOn(ref);
         if (result) {
             if (getActiveObj().getParentAction() != null) {
                 getActiveObj().getParentAction().setLastSubaction(attack);

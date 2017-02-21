@@ -13,6 +13,15 @@ public class Eidolons {
     public static   DC_GameManager gameManager;
     public static DC_GameMaster gameMaster;
     public static  DC_StateManager stateManager;
+    private static ActionThread actionThread;
+
+
+    public static ActionThread getActionThread() {
+        if (actionThread==null )
+            actionThread = new ActionThread();
+        return actionThread;
+    }
+
 
 
 }

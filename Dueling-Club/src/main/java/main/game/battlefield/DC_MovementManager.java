@@ -178,7 +178,7 @@ public class DC_MovementManager implements MovementManager {
         if (action.getActive().isMove()) {
             ref.setTarget(game.getCellByCoordinate(coordinates).getId());
         }
-        action.getActive().activate(ref);
+        action.getActive().activatedOn(ref);
         action.getActive().actionComplete();
     }
 

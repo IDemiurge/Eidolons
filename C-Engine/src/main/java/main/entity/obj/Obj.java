@@ -253,7 +253,7 @@ public class Obj extends Entity {
         this.passives.add((AbilityObj) abil);
         addProperty(G_PROPS.PASSIVES, abilName);
         addProperty(G_PROPS.STANDARD_PASSIVES, abilName);
-        abil.activate(ref);
+        abil.activatedOn(ref);
         game.getManager().addAttachment((PassiveAbilityObj) abil, this);
         // add continuous PASSIVES' modifying effect?!
     }

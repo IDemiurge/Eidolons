@@ -212,7 +212,7 @@ public class RadialMenu extends Group {
                     moves.add(new ImmutableTriple<>(() -> {
                         Ref ref = obj.getRef();
                         ref.setTarget(target.getId());
-                        obj.activate(ref);
+                        obj.activatedOn(ref);
                     }, TextureManager.getOrCreate(((Entity) obj).getImagePath()), obj.getName()));
                 } else {
                     moves.add(new ImmutableTriple<>(
@@ -259,9 +259,8 @@ public class RadialMenu extends Group {
                         });
                         if (objects.size() > 0) {
                             Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(objects, (t) -> {
-                                Ref ref = dc_activeObj.getRef();
-                                ref.setTarget(t.getId());
-                                dc_activeObj.activate(ref);
+                                dc_activeObj.activateOn(t);
+
                             });
                             RadialMenu.CreatorNode innn = new CreatorNode();
                             innn.name = dc_activeObj.getName();
@@ -285,9 +284,7 @@ public class RadialMenu extends Group {
                         innn.name = dc_activeObj.getName();
                         innn.texture = TextureManager.getOrCreate(dc_activeObj.getImagePath());
                         innn.action = () -> {
-                            Ref ref = dc_activeObj.getRef();
-                            ref.setTarget(target.getId());
-                            dc_activeObj.activate(ref);
+                            dc_activeObj.activateOn(target);
                         };
                         list.add(innn);
                     }

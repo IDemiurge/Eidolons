@@ -144,7 +144,7 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
         if (passives != null) {
             for (AbilityObj abil : passives) {
                 try {
-                    abil.activate(ref);
+                    abil.activatedOn(ref);
 
                 } catch (Exception e) {
                     e.printStackTrace();

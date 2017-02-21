@@ -280,7 +280,7 @@ public class DC_SpellObj extends DC_ActiveObj {
     }
 
     @Override
-    public boolean activate(Ref ref) {
+    public boolean activatedOn(Ref ref) {
         if (getGame().isOnline()) {
             if (getOwnerObj().isActiveSelected()) {
                 if (!channeling) {
@@ -297,7 +297,7 @@ public class DC_SpellObj extends DC_ActiveObj {
                 return false;
             }
         }
-        return super.activate(ref);
+        return super.activatedOn(ref);
     }
 
     @Override

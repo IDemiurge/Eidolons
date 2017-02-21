@@ -54,13 +54,13 @@ public class CastNewSpellEffect extends MicroEffect {
         if (group) {
             REF.setGroup(ref.getGroup());
 
-            return spell.activate(REF);
+            return spell.activatedOn(REF);
         }
         if (chooseTarget) {
             spell.getTargeting().select(REF);
         } else {
             REF.setTarget(ref.getId(target_key));
         }
-        return spell.activate(REF);
+        return spell.activatedOn(REF);
     }
 }

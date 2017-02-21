@@ -33,6 +33,7 @@ public class CoreEngine {
     private static boolean writingLogFilesOn;
     private static boolean arcaneTower = false;
     private static boolean graphicTestMode = true;
+    private static boolean graphicsOff=true;
 
     public static void dataInit(boolean newThread, final boolean macro) {
         if (newThread) {
@@ -206,6 +207,14 @@ public class CoreEngine {
 
     public static boolean isSwingOn() {
         return swingOn;
+    }
+
+    public static boolean isGraphicsOff() {
+        return graphicsOff;
+    }
+
+    public static void setGraphicsOff(boolean graphicsOff) {
+        CoreEngine.graphicsOff = graphicsOff;
     }
 
     public void dataInit(boolean macro) {

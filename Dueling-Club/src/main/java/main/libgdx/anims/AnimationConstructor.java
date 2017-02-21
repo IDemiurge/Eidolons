@@ -38,21 +38,21 @@ public class AnimationConstructor {
     VALUE[] anim_vals = {
 //     PROPS.ANIM_MODS,
 //
-            PROPS.ANIM_SPRITE_CAST,
-            PROPS.ANIM_SPRITE_RESOLVE,
-            PROPS.ANIM_SPRITE_MAIN,
-            PROPS.ANIM_SPRITE_IMPACT,
-            PROPS.ANIM_SPRITE_AFTEREFFECT,
-            PROPS.ANIM_MISSILE_SPRITE,
-            PROPS.ANIM_MODS_SPRITE,
-            PROPS.ANIM_MISSILE_SFX,
+     PROPS.ANIM_SPRITE_CAST,
+     PROPS.ANIM_SPRITE_RESOLVE,
+     PROPS.ANIM_SPRITE_MAIN,
+     PROPS.ANIM_SPRITE_IMPACT,
+     PROPS.ANIM_SPRITE_AFTEREFFECT,
+     PROPS.ANIM_MISSILE_SPRITE,
+     PROPS.ANIM_MODS_SPRITE,
+     PROPS.ANIM_MISSILE_SFX,
 //
-            PROPS.ANIM_SFX_CAST,
-            PROPS.ANIM_SFX_RESOLVE,
-            PROPS.ANIM_SFX_MAIN,
-            PROPS.ANIM_SFX_IMPACT,
-            PROPS.ANIM_SFX_AFTEREFFECT,
-            PROPS.ANIM_MODS_SFX,
+     PROPS.ANIM_SFX_CAST,
+     PROPS.ANIM_SFX_RESOLVE,
+     PROPS.ANIM_SFX_MAIN,
+     PROPS.ANIM_SFX_IMPACT,
+     PROPS.ANIM_SFX_AFTEREFFECT,
+     PROPS.ANIM_MODS_SFX,
 //
 //
 //     PROPS.ANIM_SPRITE_COLOR,
@@ -71,8 +71,8 @@ public class AnimationConstructor {
 //     PARAMS.ANIM_LIGHT_TARGET,
 //
 //     PARAMS.ANIM_MAGNITUDE,
-            PARAMS.ANIM_SPEED,
-            PARAMS.ANIM_FRAME_DURATION,
+     PARAMS.ANIM_SPEED,
+     PARAMS.ANIM_FRAME_DURATION,
 //     PARAMS.ANIM_SIZE,
     };
     Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
@@ -87,7 +87,13 @@ public class AnimationConstructor {
                 anim.reset();
                 return anim;
             }
-        return construct((DC_ActiveObj) active);
+        try {
+            anim =
+             construct((DC_ActiveObj) active);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return anim;
     }
 
     CompositeAnim construct(DC_ActiveObj active) {
@@ -117,7 +123,7 @@ public class AnimationConstructor {
         AnimData data = new AnimData();
         for (VALUE val : anim_vals) {
             if (val instanceof PARAMETER || //TODO add filtering
-                    StringMaster.contains(val.getName(), part.toString()))
+             StringMaster.contains(val.getName(), part.toString()))
                 data.add(val, active.getValue(val));
         }
         return getPartAnim(data, active, part);
@@ -126,7 +132,7 @@ public class AnimationConstructor {
     private Anim getPartAnim(AnimData data, DC_ActiveObj active, ANIM_PART part) {
 
         Anim anim = createAnim(active, data, part);
-if (anim==null ) return null ;
+        if (anim == null) return null;
         if (!initAnim(data, active, part, anim)) {
             if (!(active instanceof DC_SpellObj)) {
                 return null;
@@ -141,7 +147,7 @@ if (anim==null ) return null ;
 
     private Anim createAnim(DC_ActiveObj active, AnimData data, ANIM_PART part) {
         if (active.isMove())
-            return MoveAnimation.isOn()? new MoveAnimation(active, data) : null ;
+            return MoveAnimation.isOn() ? new MoveAnimation(active, data) : null;
         if (active instanceof DC_ItemActiveObj) {
             if (((DC_ItemActiveObj) active).getItem().isAmmo()) {
                 return new ReloadAnim(active);
@@ -160,7 +166,7 @@ if (anim==null ) return null ;
                 return new HitAnim(active, data);
         }
 
-            if (active.isSpell()) {
+        if (active.isSpell()) {
             if (active.isMissile()) {
                 if (part == ANIM_PART.IMPACT)
                     return new HitAnim(active, data);
@@ -189,13 +195,13 @@ if (anim==null ) return null ;
         boolean exists = false;
         List<SpriteAnimation> sprites = new LinkedList<>();
         for (String path :
-                StringMaster.openContainer(data.getValue(ANIM_VALUES.SPRITES))) {
+         StringMaster.openContainer(data.getValue(ANIM_VALUES.SPRITES))) {
             sprites.add(new SpriteAnimation(path));
             exists = true;
         }
-        List<EmitterActor> list =EmitterPools. getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
-if (!list.isEmpty())
-    exists = true;
+        List<EmitterActor> list = EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
+        if (!list.isEmpty())
+            exists = true;
 
         if (!exists)
             if (active != null)
@@ -207,7 +213,6 @@ if (!list.isEmpty())
         anim.setEmitterList(list);
         return exists;
     }
-
 
 
     private boolean checkForcedAnimation(DC_ActiveObj active, ANIM_PART part) {
@@ -240,8 +245,8 @@ if (!list.isEmpty())
         LogMaster.log(LogMaster.ANIM_DEBUG, "EFFECT ANIM CONSTRUCTED FOR " + e + e.getRef());
         Anim effectAnim = EffectAnimCreator.getOrCreateEffectAnim(e);
         initAnim(effectAnim.getData(), (DC_ActiveObj) effectAnim.getActive(),
-                effectAnim.getPart(),
-                effectAnim);
+         effectAnim.getPart(),
+         effectAnim);
         if (!isValid(effectAnim)) return null;
 
         return effectAnim;
@@ -254,10 +259,10 @@ if (!list.isEmpty())
 
     private boolean isAnimated(Effect e) {
         if (e.getActiveObj() == null) return false;
-        if (!isCellAnimated(e))if (e.getRef().getTargetObj() instanceof DC_Cell){
+        if (!isCellAnimated(e)) if (e.getRef().getTargetObj() instanceof DC_Cell) {
 
-    return false;
-}
+            return false;
+        }
         if (e instanceof DealDamageEffect) {
             return true;
         }
@@ -289,16 +294,16 @@ if (!list.isEmpty())
             size = " small";
 
         ANIM_VALUES[] values = {
-                ANIM_VALUES.SPRITES,
-                ANIM_VALUES.PARTICLE_EFFECTS,
+         ANIM_VALUES.SPRITES,
+         ANIM_VALUES.PARTICLE_EFFECTS,
         };
 //         getValuesForPart(part);
         PROPERTY[] props = {
-                G_PROPS.NAME,
-                G_PROPS.ASPECT,
-                G_PROPS.SPELL_TYPE,
-                G_PROPS.SPELL_GROUP,
-                PROPS.DAMAGE_TYPE,
+         G_PROPS.NAME,
+         G_PROPS.ASPECT,
+         G_PROPS.SPELL_TYPE,
+         G_PROPS.SPELL_GROUP,
+         PROPS.DAMAGE_TYPE,
         };
         for (ANIM_VALUES s : values) {
 
@@ -313,9 +318,9 @@ if (!list.isEmpty())
                     continue;
             }
             String val = StringMaster.buildPath(
-                    partPath, StringMaster.removePreviousPathSegments(file, pathRoot));
+             partPath, StringMaster.removePreviousPathSegments(file, pathRoot));
             LogMaster.log(LogMaster.ANIM_DEBUG,
-                    "AUTO ANIM CONSTRUCTION FOR " + spell + "-" + part + ": " + s + " is set automatically to " + val);
+             "AUTO ANIM CONSTRUCTION FOR " + spell + "-" + part + ": " + s + " is set automatically to " + val);
             data.setValue(s, val);
         }
 //        for (String substring : StringMaster.openContainer(
@@ -333,7 +338,7 @@ if (!list.isEmpty())
                                         PROPERTY[] props, String pathRoot,
                                         boolean closest) {
         String path = StringMaster.buildPath(
-                pathRoot, partPath);
+         pathRoot, partPath);
 //        spell.getTargeting();
         String file = null;
         for (PROPERTY p : props) {

@@ -58,7 +58,7 @@ public class CastSpellEffect extends MicroEffect {
                 return false;
             }
         }
-        boolean activate = active.activate(ref);
+        boolean activate = active.activatedOn(ref);
         // if (activate)
         active.actionComplete();
         return activate;

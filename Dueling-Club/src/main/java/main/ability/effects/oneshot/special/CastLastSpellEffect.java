@@ -40,7 +40,7 @@ public class CastLastSpellEffect extends MicroEffect {
 
             REF.setTarget(ref.getId(target_key));
         }
-        boolean res = spell.activate(REF);
+        boolean res = spell.activatedOn(REF);
         spell.setFree(false);
         return res;
     }

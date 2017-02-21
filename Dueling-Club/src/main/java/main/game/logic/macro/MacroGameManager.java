@@ -146,7 +146,7 @@ public class MacroGameManager extends GameManager {
     @Override
     public Integer select(Filter<Obj> filter, Ref ref) {
 //        highlight();
-        return select(filter.getObjects(ref));
+        return select(filter.getObjects(ref), ref);
     }
 
     public void highlight(Set<Obj> set) {
@@ -229,8 +229,9 @@ public class MacroGameManager extends GameManager {
     }
 
     @Override
-    public Integer select(Set<Obj> selectingSet) {
+    public Integer select(Set<Obj> selectingSet, Ref ref) {
         return null;
     }
+
 
 }

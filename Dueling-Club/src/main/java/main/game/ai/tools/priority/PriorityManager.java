@@ -31,9 +31,6 @@ public interface PriorityManager {
     int getPriority(ActionSequence sequence);
 
 
-    int getCowerPriority(Unit unit);
-
-    int getStealthPriority(Action action);
 
     //custom formula may be set for action/spell in AV!
     int evaluatePriorityFormula(Action action, String property);
@@ -71,6 +68,10 @@ public interface PriorityManager {
     int getRetreatPriority(ActionSequence as);
 
     float getCowardiceFactor(Unit coward);
+
+    int getCowerPriority(Unit unit);
+
+    int getStealthPriority(Action action);
 
     int getDangerFactorByMemory(Unit unit2); //TODO
 

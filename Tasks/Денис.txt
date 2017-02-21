@@ -1,7 +1,0 @@
-*Project setup
-:: Upload Executable Jar for FAST_DC in Dueling-Club/target 
-:: Resource copying fix
-:: Сделать статичные ресурсы (картинки, шрифты...) отдельно от xml данных 
-
-*LibGdx setup 
-:: Сделать Battlecraft graphics на LibGdx - выглядеть должно так же, но использовать LibGdx и gpu 

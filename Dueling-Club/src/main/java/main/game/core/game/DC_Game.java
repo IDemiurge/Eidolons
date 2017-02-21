@@ -201,10 +201,11 @@ public class DC_Game extends MicroGame {
         game = this;
 
         setState(new DC_GameState(this));
-        if (!CoreEngine.isArcaneVault()) //TODO FIX classdefnotfound!
-        manager = new DC_GameManager(getState(), this);
         master = new DC_GameMaster(this);
+//        if (!CoreEngine.isArcaneVault()) {
+        manager = new DC_GameManager(getState(), this);
         manager.init();
+//        } //TODO FIX classdefnotfound!
         this.setIdManager(new DC_IdManager(getConnector(), this));
         guiMaster = new GuiMaster(this);
         armorMaster = new ArmorMaster(false);
@@ -290,7 +291,7 @@ public class DC_Game extends MicroGame {
         }
         // if (battlefield == null) {
         battlefield = new DC_BattleField(map, player1, player2, getState());
-        setGraveyardManager(new GraveyardManager(battlefield));
+        setGraveyardManager(new DC_GraveyardManager(this));
         battleFieldManager = new DC_BattleFieldManager(this, battlefield);
         movementManager.setGrid(battlefield.getGrid());
         // }
@@ -368,7 +369,7 @@ public class DC_Game extends MicroGame {
         }
 
         arenaManager.startGame();
-        game.getGraveyardManager().init();
+       getGraveyardManager().init();
 
         getState().gameStarted(first);
 
@@ -400,6 +401,9 @@ public class DC_Game extends MicroGame {
 
                 @Override
                 public void run() {
+                    if (!CoreEngine.isGraphicsOff())
+                        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
+
                     while (true) {
                         try {
                             getStateManager().newRound();
@@ -962,6 +966,11 @@ public class DC_Game extends MicroGame {
     @Override
     public List<Unit> getObjectsOnCoordinate(Coordinates c) {
         return getMaster().getObjectsOnCoordinate(c);
+    }
+
+    public Obj getObjectByCoordinate(Coordinates
+                                         c) {
+        return getObjectByCoordinate(c, false);
     }
 
     public enum GAME_TYPE {

@@ -53,7 +53,7 @@ public class MacroAction extends MacroObj implements ActiveObj {
     }
 
     @Override
-    public boolean activate(Ref ref) {
+    public boolean activatedOn(Ref ref) {
         // set hero/party
         setRef(ref);
         return activateThis((MacroRef) ref);
@@ -120,7 +120,7 @@ public class MacroAction extends MacroObj implements ActiveObj {
     public boolean activate() {
         MacroRef ref = new MacroRef(MacroManager.getSelectedPartyMember());
         ref.setParty(MacroManager.getActiveParty());
-        return activate(ref);
+        return activatedOn(ref);
     }
 
     @Override

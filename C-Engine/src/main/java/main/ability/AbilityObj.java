@@ -77,7 +77,7 @@ public class AbilityObj extends Obj implements ActiveObj, Interruptable {
     }
 
     @Override
-    public boolean activate(Ref ref) {
+    public boolean activatedOn(Ref ref) {
         setRef(ref);
         return activate();
 
@@ -109,7 +109,7 @@ public class AbilityObj extends Obj implements ActiveObj, Interruptable {
     @Override
     public boolean activate() {
 
-        return getAbilities().activate(ref);
+        return getAbilities().activatedOn(ref);
     }
 
     public Abilities getAbilities() {

@@ -16,15 +16,15 @@ import main.entity.obj.*;
 import main.entity.obj.unit.Unit;
 import main.entity.type.BuffType;
 import main.entity.type.ObjType;
-import main.game.core.state.DC_GameState;
-import main.game.core.state.DC_StateManager;
 import main.game.battlefield.Coordinates;
 import main.game.core.Eidolons;
 import main.game.core.master.*;
-import main.game.logic.event.Event;
-import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.core.state.DC_GameState;
+import main.game.core.state.DC_StateManager;
 import main.game.core.state.MicroGameState;
 import main.game.logic.battle.player.Player;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.bf.TargetRunnable;
 import main.rules.action.ActionRule;
 import main.rules.mechanics.IlluminationRule;
@@ -288,7 +288,9 @@ public class DC_GameManager extends GameManager {
         }
 
         super.infoSelect(obj);
-        getGame().getBattleField().selectInfoObj(obj, true);
+        if (
+         getGame().getBattleField() != null)
+            getGame().getBattleField().selectInfoObj(obj, true);
 
         if (game.isDebugMode()) {
             try {
@@ -338,21 +340,20 @@ public class DC_GameManager extends GameManager {
         }
         selectingSet = filter.getObjects();
 
+
+        return select(selectingSet, ref);
+    }
+
+    @Override
+    public Integer select(Set<Obj> selectingSet, Ref ref) {
         if (!CoreEngine.isSwingOn()) {
             Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(selectingSet, (t) -> {
-                ref.setTarget(t.getId());
-                if (ref.getActive() != null) {
-                    ref.getActive().activate(ref);
+                if (ref.getActive() instanceof DC_ActiveObj) {
+                    ((DC_ActiveObj) ref.getActive()).activateOn(t);
                 }
             });
             GuiEventManager.trigger(SELECT_MULTI_OBJECTS, new EventCallbackParam(p));
         }
-        return select(selectingSet);
-    }
-
-    @Override
-    public Integer select(Set<Obj> selectingSet) {
-
         for (Obj obj : new LinkedList<>(selectingSet)) {
             if (obj instanceof DC_Obj) {
                 DC_Obj unit = (DC_Obj) obj;
@@ -379,7 +380,10 @@ public class DC_GameManager extends GameManager {
         }
 
         Integer id = selectAwait();
-
+        if (id == 0)
+            if (ref.getTarget() != 0) {
+                return ref.getTarget();
+            }
         return id;
     }
 
@@ -554,7 +558,8 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public boolean handleEvent(Event event) {
-        event.getRef().setDebug(getGame().getDebugMaster().isDebugFunctionRunning());
+        if (getGame().getDebugMaster() != null)
+            event.getRef().setDebug(getGame().getDebugMaster().isDebugFunctionRunning());
 
         return super.handleEvent(event);
     }

@@ -596,6 +596,7 @@ public abstract class DataModel {
 
         LogMaster.log(LogMaster.VALUE_DEBUG, "modifying " + getName() + "'s "
                 + param.getName() + " by " + amount);
+
         if (!fireParamEvent(param, String.valueOf(amount),
                 CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
             return true; // false?
@@ -762,15 +763,24 @@ public abstract class DataModel {
     }
 
     protected boolean firePropEvent(CONSTRUCTED_EVENT_TYPE EVENT_TYPE, String val) {
-        if (game.isSimulation() || this instanceof ObjType) {
+        if (!isValueEventsOn())
             return true;
-        }
+
         Ref REF = Ref.getCopy(ref);
         REF.setTarget(id);
         return game.fireEvent(new Event(EVENT_TYPE, "" + val, REF));
     }
 
+    private boolean isValueEventsOn() {
+        if (game.isSimulation() || this instanceof ObjType) {
+            return false;
+        }
+        return false;
+    }
+
     public boolean fireParamEvent(PARAMETER param, String amount, CONSTRUCTED_EVENT_TYPE event_type) {
+      if (!isValueEventsOn())
+          return true;
         if (param.isMastery()) {
             return true; // TODO [PERFORMANCE] DEMANDS...
         }

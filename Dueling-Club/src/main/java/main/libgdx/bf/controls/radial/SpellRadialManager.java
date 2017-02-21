@@ -98,7 +98,7 @@ public class SpellRadialManager {
                         action.invokeClicked();
                     } else {
                         action.getRef().setTarget(target.getId());
-                        action.activate(action.getRef());
+                        action.activatedOn(action.getRef());
 
                     }
                 }

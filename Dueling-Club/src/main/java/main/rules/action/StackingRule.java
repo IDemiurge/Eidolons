@@ -90,7 +90,7 @@ public class StackingRule implements ActionRule {
         ref.setTarget(randomTarget.getId());
         // action.addProperty(G_PROPS.DYNAMIC_BOOLS,
         // DYNAMIC_BOOLS.MISSED_ALREADY); //NO RESTRAINTS! :)
-        action.activate(ref);
+        action.activatedOn(ref);
 
     }
 

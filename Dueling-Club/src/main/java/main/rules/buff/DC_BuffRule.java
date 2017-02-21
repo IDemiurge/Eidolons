@@ -131,9 +131,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
         return null;
     }
 
-    protected boolean isPositive() {
-        return isReverse(level);
-    }
+
 
     protected boolean checkLogged(Obj obj) {
 
@@ -264,7 +262,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
         }
         conditions = new Conditions(getCondition(level));
         // less or equal than this level
-        boolean reverse = isReverse(level);
+        boolean reverse = isConditionGreater(level);
         conditions.setNegative(reverse);
 
         // is this really necessary?
@@ -288,7 +286,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
                 getValue()));
     }
 
-    protected boolean isReverse(Integer level) {
+    protected boolean isConditionGreater(Integer level) {
         return false;
     }
 
@@ -339,7 +337,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
 
     public String getFormula(Integer level) {
         try {
-            return getFormulas()[level];
+            return getConditionFormulas()[level];
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -359,7 +357,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
 
     protected abstract VALUE getValue();
 
-    protected abstract String[] getFormulas();
+    protected abstract String[] getConditionFormulas();
 
     protected abstract String[] getBuffNames();
 }

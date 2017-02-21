@@ -36,12 +36,12 @@ public class Abilities implements Ability, Iterable<Ability> {
     // AbilityConstructor.construct(abilsDoc);
     //
     // }
-    public boolean activate(Ref ref) {
+    public boolean activatedOn(Ref ref) {
         for (Ability abil : abils) {
             // if (checkBool)
             // abil.activate(ref);
 
-            if (!abil.activate(ref)) {
+            if (!abil.activatedOn(ref)) {
                 if (abil instanceof OneshotAbility) {
                     continue;
                 }

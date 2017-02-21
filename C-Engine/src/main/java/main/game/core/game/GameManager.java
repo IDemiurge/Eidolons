@@ -265,7 +265,7 @@ public abstract class GameManager implements GenericGameManager {
     }
 
     public void dataChanged() {
-        getGame().getGui().dataChanged();
+        if (    getGame().getGui() != null)     getGame().getGui().dataChanged();
     }
 
     public boolean handleEvent(Event event) {
@@ -392,7 +392,8 @@ public abstract class GameManager implements GenericGameManager {
     }
 
 
-    public abstract Integer select(Set<Obj> selectingSet);
+
+    public abstract Integer select(Set<Obj> selectingSet, Ref ref);
 
     public void addAttachment(PassiveAbilityObj abil, Obj obj) {
     }

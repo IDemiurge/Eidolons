@@ -2,7 +2,10 @@ package main.game.battlefield;
 
 import main.content.enums.GenericEnums;
 import main.content.values.parameters.G_PARAMS;
+import main.entity.obj.BfObj;
+import main.entity.obj.Cell;
 import main.entity.obj.Obj;
+import main.game.core.game.Game;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,112 +23,32 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @param unit
  */
-public class GraveyardManager {
-    private static final String RIP = "Here lie: ";
-    private Map<ZCoordinates, Stack<Obj>> graveMap = new ConcurrentHashMap<>();
-    private SwingBattleField battlefield;
-    private List<Obj> removed = new LinkedList<>();
+public interface GraveyardManager {
+      int GRAVE_ROWS = 4;
 
-    public GraveyardManager(SwingBattleField battlefield) {
-        this.battlefield = battlefield;
-    }
+    String getRipString(Obj obj);
 
-    public void init() {
-        for (Coordinates c : battlefield.getGrid().getCoordinatesList()) {
-            graveMap.put(getZCoordinate(c), new Stack<>());
-        }
-    }
+    void init();
 
-    private ZCoordinates getZCoordinate(Coordinates c) {
-        return new ZCoordinates(c.x, c.y, battlefield.getGrid().getZ());
-    }
+    ZCoordinates getZCoordinate(Coordinates c);
 
-    public Obj removeCorpse(Obj unit) {
-        // this does not tell us which corpse has been removed???
+    Obj removeCorpse(Obj unit);
 
-        graveMap.get(getZCoordinate(unit.getCoordinates())).remove(unit); // ???
-        battlefield.getCell(getZCoordinate(unit.getCoordinates())).setParam(G_PARAMS.N_OF_CORPSES,
-                graveMap.get(getZCoordinate(unit.getCoordinates())).size());
-        if (battlefield.getObj(getZCoordinate(unit.getCoordinates())) != null) {
-            battlefield.getObj(getZCoordinate(unit.getCoordinates())).setParam(
-                    G_PARAMS.N_OF_CORPSES,
-                    graveMap.get(getZCoordinate(unit.getCoordinates())).size());
-        }
+    void unitDies(Obj unit);
 
-        removed.add(unit);
+    void addCorpse(Obj unit);
 
-        return unit;
-    }
+    void updateGraveIndices();
 
-    public void unitReturns(Obj unit) {
-        removed.remove(unit);
-    }
+    int getGraveIndex(BfObj obj);
 
-    public void unitDies(Obj unit) {
+    Obj getTopDeadUnit(Coordinates c);
 
-        if (unit.checkBool(GenericEnums.STD_BOOLS.LEAVES_NO_CORPSE)) {
-            return;
-        }
-        addCorpse(unit);
+    List<Coordinates> getCorpseCells();
 
-    }
+    List<Obj> getDeadUnits(Coordinates c);
 
-    public void addCorpse(Obj unit) {
-        graveMap.get(getZCoordinate(unit.getCoordinates())).push(unit);
-        Obj cell = battlefield.getCell(getZCoordinate(unit.getCoordinates()));
-        cell.setParam(G_PARAMS.N_OF_CORPSES, graveMap.get(getZCoordinate(unit.getCoordinates()))
-                .size());
-        if (battlefield.getObj(getZCoordinate(unit.getCoordinates())) != null) {
-            battlefield.getObj(getZCoordinate(unit.getCoordinates())).setParam(
-                    G_PARAMS.N_OF_CORPSES,
-                    graveMap.get(getZCoordinate(unit.getCoordinates())).size());
-        }
-    }
+    Obj destroyTopCorpse(Coordinates c);
 
-    public Obj getTopDeadUnit(Coordinates c) {
-        Stack<Obj> stack = graveMap.get(c);
-        if (stack == null) {
-            return null;
-        }
-        if (stack.isEmpty()) {
-            return null;
-        }
-        return stack.peek();
-    }
-
-    public List<Coordinates> getCorpseCells() {
-        List<Coordinates> list = new LinkedList<>();
-        for (Coordinates l : graveMap.keySet()) {
-            if (!graveMap.get(l).isEmpty()) {
-                list.add(l);
-            }
-        }
-        return list;
-    }
-
-    public List<Obj> getDeadUnits(Coordinates c) {
-        return graveMap.get(c);
-    }
-
-    public Obj destroyTopCorpse(Coordinates c) {
-        return removeCorpse(getTopDeadUnit(c));
-    }
-
-    public boolean checkForCorpses(Obj obj) {
-        try {
-            return !getDeadUnits(getZCoordinate(obj.getCoordinates())).isEmpty();
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public String getRipString(Obj obj) {
-        String result = RIP;
-        for (Obj corpse : getDeadUnits(getZCoordinate(obj.getCoordinates()))) {
-            result += corpse.getName() + ", ";
-        }
-        result = result.substring(0, result.length() - 2);
-        return result;
-    }
-
+    boolean checkForCorpses(Obj obj);
 }

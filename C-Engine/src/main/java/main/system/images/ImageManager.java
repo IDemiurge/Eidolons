@@ -62,7 +62,7 @@ public class ImageManager {
     private static final String CONCEALED_CELL = "UI\\HIDDEN_CELL.png";
     private static final String UNSEEN_CELL = "UI\\UNDETECTED_CELL.png";
     private static final String CELL = "UI\\EMPTY CELL2.png";
-    private static final String DEAD_ICON = "UI\\dead.png";
+    public static final String DEAD_ICON = "UI\\dead.png";
     private static final BORDER ALLY_TARGET = BORDER.HIGHLIGHTED_BLUE;
     private static final String DEFAULT_IMAGE_PATH = "UI\\Empty1.jpg";
     private static final int MAX_TYPE_ICON_SIZE = 256;

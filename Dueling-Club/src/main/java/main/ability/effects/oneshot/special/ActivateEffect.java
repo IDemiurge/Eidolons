@@ -32,7 +32,7 @@ public class ActivateEffect extends DC_Effect {
             active = hero.getSpell(name);
         }
 
-        active.activate(Ref.getSelfTargetingRefCopy(hero));
+        active.activatedOn(Ref.getSelfTargetingRefCopy(hero));
 
         return true;
     }

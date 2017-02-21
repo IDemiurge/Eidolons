@@ -24,7 +24,7 @@ public interface Ability extends Referred, Interruptable, Active {
 
     void setTargeting(Targeting targeting);
 
-    boolean activate(Ref ref);
+    boolean activatedOn(Ref ref);
 
     void setForceTargeting(boolean forceTargeting);
 

@@ -210,7 +210,7 @@ public class DC_ActionManager implements ActionManager {
         Ref ref = source.getRef().getCopy();
         ref.setTarget(target.getId());
         ref.setTriggered(true);
-        return action.activate(ref);
+        return action.activatedOn(ref);
     }
 
     public boolean activateAttackOfOpportunity(ActiveObj action, Obj countering, boolean free) {

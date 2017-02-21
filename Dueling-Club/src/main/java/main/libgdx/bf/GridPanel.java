@@ -12,6 +12,7 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
+import main.game.core.Eidolons;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.anims.std.DeathAnim;
@@ -23,6 +24,8 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
@@ -55,6 +58,14 @@ public class GridPanel extends Group {
     private int rows;
     private LightingManager lightingManager;
     private boolean muteEventLog = true;
+
+    public void updateGraves(){
+
+        unitMap.keySet(). forEach(obj->{
+            UnitView uv = (UnitView) unitMap.get(obj);
+            uv.setGraveIndex(  Eidolons.game.getGraveyardManager().getGraveIndex(obj) );
+        });
+    }
 
     public GridPanel(int cols, int rows) {
         this.cols = cols;
@@ -101,7 +112,10 @@ public class GridPanel extends Group {
     private void bindEvents() {
 
 
-        GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
+        GuiEventManager.bind(UPDATE_GUI, obj -> {
+updateGraves();
+        });
+            GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p =
              (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             Map<Borderable, Runnable> map = new HashMap<>();
@@ -125,7 +139,8 @@ public class GridPanel extends Group {
             removeUnitView(unit);
         });
 
-        GuiEventManager.bind(INGAME_EVENT_TRIGGERED, param -> {
+
+            GuiEventManager.bind(INGAME_EVENT_TRIGGERED, param -> {
             main.game.logic.event.Event event = (main.game.logic.event.Event) param.get();
             Ref ref = event.getRef();
 
@@ -137,7 +152,7 @@ public class GridPanel extends Group {
             }
 
 
-            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED
+            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING
              || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
              || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
 //                (r.getEffect() instanceof ChangeFacingEffect) nice try
@@ -180,10 +195,10 @@ public class GridPanel extends Group {
                 moveUnitView((BattleFieldObject)  ref.getSourceObj());
                 caught = true;
             }
-            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_SUMMONED) {
-                addUnitView((BattleFieldObject)  ref.getObj(KEYS.SUMMONED));
-                caught = true;
-            }
+//            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_SUMMONED) {
+//                GuiEventManager.trigger(UNIT_CREATED, new EventCallbackParam(ref.getObj(KEYS.SUMMONED)));
+//                caught = true; now in ObjCreator
+//            }
 
             if (event.getType().name().startsWith("PARAM_BEING_MODIFIED")) {
                 caught = true;
@@ -258,7 +273,8 @@ public class GridPanel extends Group {
             for (Coordinates coordinates : map.keySet()) {
                 List<UnitViewOptions> options = new ArrayList<>();
                 List<UnitViewOptions> overlays = new ArrayList<>();
-
+// TODO how can it throw NullPointer? (21.02)
+                if (map.get(coordinates)==null ) continue;
                 for (BattleFieldObject object : map.get(coordinates)) {
                     if (!object.isOverlaying()) {
                         options.add(new UnitViewOptions(object, unitMap));
@@ -279,6 +295,12 @@ public class GridPanel extends Group {
                 UnitView uv = (UnitView) unitMap.get(p.getLeft());
                 uv.updateInitiative(p.getRight());
             });
+            GuiEventManager.bind(UNIT_CREATED, p -> {
+                addUnitView((BattleFieldObject)  p.get());
+            });
+
+            WaitMaster.receiveInput(WAIT_OPERATIONS.GUI_READY, true);
+            WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
         });
 
        /* GuiEventManager.bind(CELL_UPDATE, param -> {

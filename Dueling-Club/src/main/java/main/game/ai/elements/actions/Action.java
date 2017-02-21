@@ -149,7 +149,7 @@ public class Action {
         if (getActive().isChanneling()) {
             result = getActive().activate();
         } else {
-            result = getActive().activate(ref);
+            result = getActive().activatedOn(ref);
         }
         getActive().actionComplete();
         return result;

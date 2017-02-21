@@ -53,12 +53,24 @@ LogMaster.log(1,"MoveTo " +
         return action;
     }
 
-    public static AlphaAction addFadeAction(Actor actor) {
+    public static AlphaAction addFadeInOrOut(Actor actor, float duration) {
+        float alpha = actor.getColor().a;
+        AlphaAction action = new AlphaAction();
+        action.setAlpha(1-alpha);
+        action.setDuration(duration);
+        action.setTarget(actor   );
+        return action;
+    }
+        public static AlphaAction getFadeAction(Actor actor) {
         AlphaAction action = new AlphaAction();
         action.setAlpha(0);
         action.setDuration(3);
-        actor.addAction(action);
         action.setTarget(actor   );
+        return action;
+    }
+    public static AlphaAction addFadeAction(Actor actor) {
+        AlphaAction action = getFadeAction(actor);
+        actor.addAction(action);
         return action;
     }
 

@@ -3,6 +3,7 @@ package main.logic;
 import main.content.OBJ_TYPE;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.game.core.game.DC_GameMaster;
 import main.game.core.game.Game;
 import main.game.core.state.GameState;
 import main.game.battlefield.Coordinates;
@@ -26,6 +27,7 @@ public class AT_Simulation extends Game {
         game = this;
         idManager = new DC_IdManager();
         state = new AT_State(this);
+        master = new DC_GameMaster(null );
     }
 
     @Override

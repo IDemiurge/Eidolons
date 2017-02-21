@@ -100,6 +100,8 @@ public class ThrowEffect extends AttackEffect {
         weapon.getGame().getDroppedItemManager().itemFalls(ref.getTargetObj().getCoordinates(),
                 weapon);
 
+        getActiveObj().getRef().setID(offhand ? KEYS.OFFHAND : KEYS.WEAPON, null);
+
         return result;
     }
 

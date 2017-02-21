@@ -11,6 +11,7 @@ import main.data.xml.XML_Writer;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
+import main.enums.StatEnums;
 import main.file.VersionMaster;
 import main.game.core.game.Game;
 import main.gui.GatewayButtonHandler;
@@ -26,8 +27,8 @@ import main.music.ahk.AHK_Master;
 import main.session.Session;
 import main.session.SessionMaster;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.time.ZeitMaster;
@@ -121,6 +122,8 @@ public class ArcaneTower {
     }
 
     public static void genericInit(boolean av) {
+
+        EnumMaster.getAdditionalEnumClasses().add(StatEnums.class);
 
         ContentManager.setTypeMaster(new TypeMaster() {
             public OBJ_TYPE getOBJ_TYPE(String typeName) {

@@ -2,36 +2,45 @@ package main.rules.buff;
 
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
-import main.ability.effects.Effects;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.ability.effects.special.ImmobilizeEffect;
 import main.content.PARAMS;
 import main.content.VALUE;
+import main.content.ValuePages;
 import main.content.enums.system.MetaEnums;
 import main.entity.Ref.KEYS;
 import main.game.core.game.MicroGame;
 import main.rules.RuleMaster.COMBAT_RULES;
 import main.system.auxiliary.StringMaster;
-import main.system.math.Formula;
 
+import java.util.Arrays;
+
+/*
+For each pound of weight over your max. carrying capacity, you suffer 1% penalty to all Move costs
+If the weight reaches 150% of your capacity, penalty also applies to all other actions
+With 200%+, unit is Immobilized.
+
+ */
 public class WeightBuffRule extends DC_BuffRule {
-    private static final String penalty_factor = "0.02";
+    // integral effect
     private static final String FORMULA = StringMaster.getValueRef(KEYS.SOURCE,
             PARAMS.C_CARRYING_WEIGHT)
             + "-" + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.CARRYING_CAPACITY);
-    private String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Immobilized.getName(), // TODO
-            // there
-            // must
-            // be
-            // "drop item"
-            // action!
-            // :)
-            MetaEnums.STD_BUFF_NAMES.Overburdened.getName(), MetaEnums.STD_BUFF_NAMES.Encumbered.getName(),};
-    private String[] formulas = {getCarryingCapacity() + "*2",
+    private static final String PARAMETERS_MODIFIED_1 =
+     StringMaster.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MOVE), StringMaster.AND_SEPARATOR);
+    private static final String PARAMETERS_MODIFIED_2 =
+     StringMaster.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MAIN), StringMaster.AND_SEPARATOR);
 
+    private String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Immobilized.getName(), // TODO
+            MetaEnums.STD_BUFF_NAMES.Overburdened.getName(), MetaEnums.STD_BUFF_NAMES.Encumbered.getName(),};
+    private String[] conditionFormulas = {getCarryingCapacity() + "*2",
             getCarryingCapacity() + "*3/2", getCarryingCapacity(),};
 
-    // reverse means MORE THAN {THIS} and
+
+    @Override
+    protected boolean isConditionGreater(Integer level) {
+        return true;
+    }
     public WeightBuffRule(MicroGame game) {
         super(game);
     }
@@ -47,27 +56,16 @@ public class WeightBuffRule extends DC_BuffRule {
                 return new ImmobilizeEffect();
             }
             case 1: {
-                return new Effects(new ModifyValueEffect(PARAMS.FOCUS_PENALTY,
-                        MOD.MODIFY_BY_CONST, new Formula(FORMULA)
-                        .getAppendedByFactor(penalty_factor)
-                        + ""),
-
-                        new ModifyValueEffect(PARAMS.ESSENCE_PENALTY, MOD.MODIFY_BY_CONST,
-                                new Formula(FORMULA).getAppendedByFactor(penalty_factor) + ""),
-
-                        new ModifyValueEffect(PARAMS.STAMINA_PENALTY, MOD.MODIFY_BY_CONST,
-                                new Formula(FORMULA).getAppendedByFactor(penalty_factor) + ""),
-                        new ModifyValueEffect(PARAMS.AP_PENALTY, MOD.MODIFY_BY_CONST,
-                                new Formula(FORMULA).getAppendedByFactor(penalty_factor) + ""));
+                return
+                 new ModifyValueEffect(
+                  PARAMETERS_MODIFIED_2,
+                  MOD.MODIFY_BY_CONST, FORMULA );
             }
             case 2: {
-                return new Effects(new ModifyValueEffect(PARAMS.FOCUS_PENALTY,
-                        MOD.MODIFY_BY_CONST, FORMULA), new ModifyValueEffect(
-                        PARAMS.ESSENCE_PENALTY, MOD.MODIFY_BY_CONST, FORMULA),
-
-                        new ModifyValueEffect(PARAMS.STAMINA_PENALTY, MOD.MODIFY_BY_CONST,
-                                FORMULA), new ModifyValueEffect(PARAMS.AP_PENALTY,
-                        MOD.MODIFY_BY_CONST, FORMULA));
+                return
+                 new ModifyValueEffect(
+                  PARAMETERS_MODIFIED_1,
+                        MOD.MODIFY_BY_CONST, FORMULA );
             }
         }
         return null;
@@ -76,11 +74,6 @@ public class WeightBuffRule extends DC_BuffRule {
     @Override
     public void initConditions() {
         // TODO applies to non-living
-    }
-
-    @Override
-    protected boolean isReverse(Integer level) {
-        return true;
     }
 
     @Override
@@ -93,9 +86,8 @@ public class WeightBuffRule extends DC_BuffRule {
         return PARAMS.C_CARRYING_WEIGHT;
     }
 
-    @Override
-    protected String[] getFormulas() {
-        return formulas;
+    protected String[] getConditionFormulas() {
+        return conditionFormulas;
     }
 
     @Override

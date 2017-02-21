@@ -14,22 +14,22 @@ import main.content.DC_ContentManager;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.enums.*;
+import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.AbilityEnums;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
-import main.content.enums.entity.SpellEnums;
-import main.content.enums.entity.UnitEnums;
-import main.content.enums.system.AiEnums.AI_LOGIC;
-import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
-import main.content.enums.system.MetaEnums;
-import main.content.enums.system.MetaEnums.CUSTOM_VALUE_TEMPLATE;
+import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.SpellEnums.RESISTANCE_TYPE;
+import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
+import main.content.enums.system.AiEnums.AI_LOGIC;
+import main.content.enums.system.MetaEnums;
+import main.content.enums.system.MetaEnums.CUSTOM_VALUE_TEMPLATE;
 import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -49,24 +49,28 @@ import main.entity.item.DC_WeaponObj;
 import main.entity.obj.*;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.core.game.Game;
+import main.game.ai.elements.actions.ActionManager;
+import main.game.ai.tools.target.EffectFinder;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.VisionManager;
+import main.game.core.Eidolons;
+import main.game.core.game.Game;
+import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.game.logic.battle.player.Player;
 import main.game.logic.generic.DC_ActionManager;
+import main.rules.RuleMaster;
+import main.rules.RuleMaster.RULE_GROUP;
 import main.rules.action.StackingRule;
 import main.rules.action.WatchRule;
 import main.rules.attack.AttackOfOpportunityRule;
 import main.rules.attack.ExtraAttacksRule;
 import main.rules.combat.ChargeRule;
-import main.rules.RuleMaster;
 import main.rules.magic.ChannelingRule;
-import main.rules.mechanics.*;
+import main.rules.mechanics.ConcealmentRule;
 import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
-import main.rules.RuleMaster.RULE_GROUP;
+import main.rules.mechanics.TerrainRule;
 import main.rules.perk.EvasionRule;
 import main.rules.perk.FlyingRule;
 import main.swing.generic.components.list.ListItem;
@@ -74,12 +78,10 @@ import main.system.CustomValueManager;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.game.ai.elements.actions.ActionManager;
-import main.game.ai.tools.target.EffectFinder;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.graphics.*;
@@ -283,7 +285,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         try {
             if (canBeActivated(ref, true)) {
                 ref.setTarget(triggeringAction.getOwnerObj().getId());
-                activate(ref);
+                activatedOn(ref);
             }
 
         } catch (Exception e) {
@@ -318,6 +320,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
      * default self-activation
      */
     public boolean activate() {
+//        return executor.activate();
         return activate(true);
     }
 
@@ -332,10 +335,10 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         }
         boolean result = true;
         if (!transmit) {
-            result = activate(ref);
+            result = activatedOn(ref);
         } else if (targeting == null) {
             try {
-                result = activate(ref);
+                result = activatedOn(ref);
                 if (!isCancelled()) {
                     communicate(ref);
                 }
@@ -343,10 +346,10 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
                 e.printStackTrace();
             }
         } else {
-            synchronized (ref) { // ?
+
                 if (selectTarget(ref)) {
                     try {
-                        result = activate(ref);
+                        result = activatedOn(ref);
                         if (!BooleanMaster.isTrue(isCancelled())) {
                             communicate(ref);
                         }
@@ -357,7 +360,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
                     getGame().getManager().setActivatingAction(null);
                     return false;
                 }
-            }
         }
 
         getGame().getManager().applyActionRules(this);
@@ -386,6 +388,64 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             if (getEntry() != null) {
                 getEntry().setLinkedAnimation(getAnimation());
             }
+        }
+        return result;
+    }
+
+    public void activateOn(Obj t) {
+        Ref ref = getOwnerObj().getRef();
+        ref.setTarget(t.getId());
+
+        if (Thread.currentThread()!= Eidolons.getActionThread()){
+            Eidolons.getActionThread().setAction(this);
+            Eidolons.getActionThread().start();
+        }
+      else
+        activate();
+    }
+    @Override
+    public boolean activatedOn(Ref ref) {
+
+        ownerObj.getRef().setID(KEYS.ACTIVE, getId());
+
+        triggered = ref.isTriggered();
+        setEffectSoundPlayed(false);
+        cancelled = false;
+        refreshed = false;
+        setCostAnimAdded(false);
+        initTimeCost();
+
+        if (!isConstructed()) {
+            construct();
+        }
+//TODO why here?
+        if (targeting instanceof AutoTargeting) {
+            selectTarget(ref);
+        }
+
+        setRef(ref);
+
+        boolean result = false;
+
+        if (getGame().getRules().getEngagedRule().checkDisengagingActionCancelled(this)) {
+            // return false; TODO
+        }
+        ENTRY_TYPE entryType =log();
+
+        if (isCancellable()) {
+            result = activated(ref  );
+            if (!result) {
+                getGame().getManager().setActivatingAction(null);
+            }
+        } else if (!checkExtraAttacksDoNotInterrupt(entryType)) {
+            // TODO NEW ENTRY AOO?
+            payCosts();
+            result = false;
+        } else {
+            result = activated(ref  );
+        }
+        if (isCancellable()) {
+            result = checkExtraAttacksDoNotInterrupt(entryType);
         }
         return result;
     }
@@ -427,53 +487,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public void setContinuous(boolean continuous) {
         this.continuous = continuous;
-    }
-
-    @Override
-    public boolean activate(Ref ref) {
-
-        ownerObj.getRef().setID(KEYS.ACTIVE, getId());
-
-        triggered = ref.isTriggered();
-        setEffectSoundPlayed(false);
-        cancelled = false;
-        refreshed = false;
-        setCostAnimAdded(false);
-        initTimeCost();
-
-        if (!isConstructed()) {
-            construct();
-        }
-
-        if (targeting instanceof AutoTargeting) {
-            selectTarget(ref);
-        }
-
-        setRef(ref);
-
-        boolean result = false;
-
-        if (getGame().getRules().getEngagedRule().checkDisengagingActionCancelled(this)) {
-            // return false; TODO
-        }
-        ENTRY_TYPE entryType =log();
-
-        if (isCancellable()) {
-            result = activated(ref  );
-            if (!result) {
-                getGame().getManager().setActivatingAction(null);
-            }
-        } else if (!checkExtraAttacksDoNotInterrupt(entryType)) {
-            // TODO NEW ENTRY AOO?
-            payCosts();
-            result = false;
-        } else {
-            result = activated(ref  );
-        }
-        if (isCancellable()) {
-            result = checkExtraAttacksDoNotInterrupt(entryType);
-        }
-        return result;
     }
 
     private ENTRY_TYPE log() {
@@ -574,7 +587,7 @@ return entryType;
             }
         }
         GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, new EventCallbackParam(this));
-
+if (CoreEngine.isSwingOn())
         if (!BooleanMaster.isTrue(cancelled)) {
             refreshVisuals();
         }
@@ -631,7 +644,7 @@ return entryType;
             getPendingAttacksOpportunity().remove(attack);
             Ref REF = Ref.getCopy(attack.getRef());
             REF.setTarget(getOwnerObj().getId());
-            attack.activate(REF);
+            attack.activatedOn(REF);
         }
 
     }
@@ -666,13 +679,13 @@ return entryType;
         }
         animate();
         if (abilities != null) {
-            result = getAbilities().activate(ref);
+            result = getAbilities().activatedOn(ref);
         } else
             // for Multi-targeting when single-wrapped Abilities cannot be used
         {
             for (Active active : actives) {
                 try {
-                    result &= active.activate(ref);
+                    result &= active.activatedOn(ref);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1918,4 +1931,6 @@ return entryType;
     public void setFailedLast(boolean failedLast) {
         this.failedLast = failedLast;
     }
+
+
 }

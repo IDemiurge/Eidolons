@@ -74,7 +74,7 @@ public class SpellType extends ActiveObjType {
     }
 
     @Override
-    public boolean activate(Ref ref) {
+    public boolean activatedOn(Ref ref) {
         // TODO Auto-generated method stub
         return false;
     }

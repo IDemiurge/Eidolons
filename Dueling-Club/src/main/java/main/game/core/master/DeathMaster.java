@@ -13,6 +13,9 @@ import main.game.core.game.DC_Game;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.generic.PartyManager;
+import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.datatypes.DequeImpl;
 import main.system.graphics.ANIM;
 import main.system.graphics.AnimPhase;
@@ -23,6 +26,9 @@ import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.text.LogEntryNode;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by JustMe on 2/16/2017.
@@ -107,8 +113,9 @@ if (killed instanceof Unit){
             game.getLogManager().logDeath(killed, killer);
             getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED, REF));
             game.getLogManager().doneLogEntryNode();
-        }
-        //GuiEventManager.trigger(CELL_UPDATE, new EventCallbackParam<>(killed.getCoordinates()));
+        } else
+        GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL,
+         new EventCallbackParam<>(killed));
         // refreshAll();
     }
 
@@ -135,6 +142,7 @@ if (killed instanceof Unit){
 
     public void killAllUnits(boolean removeBfObjects, boolean retainPlayerParty, boolean quiet) {
         DequeImpl<BattleFieldObject> list = new DequeImpl();
+        List<BattleFieldObject> toRemove = new LinkedList<>();
         list.addAll(getGame().getUnits());
         if ( removeBfObjects)
             list.addAll(getGame().getStructures());
@@ -146,8 +154,15 @@ if (killed instanceof Unit){
                         continue;
                     }
                 }
+//                if (unit.isMine())
+//                    continue;
             }
             unit.kill(unit, false, quiet);
+         toRemove.add(unit);
+
+        }
+        //if (remove)
+        for (BattleFieldObject unit : toRemove) {
             getGame().remove(unit);
         }
         // reset();

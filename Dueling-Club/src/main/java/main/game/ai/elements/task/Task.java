@@ -27,7 +27,11 @@ public class Task {
 
     @Override
     public String toString() {
-        return ai.getUnit().getName() + "'s " + type + " Task - " + (arg != null ? arg : "");
+        return ai.getUnit().getName() + "'s " + type + " Task - "
+         +
+         (arg instanceof Integer ?
+          getUnit().getGame().getObjectById((Integer) arg) :
+          arg==null ? "" : arg);
 
     }
 

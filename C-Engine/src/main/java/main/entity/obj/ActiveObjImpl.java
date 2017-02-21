@@ -13,7 +13,7 @@ public abstract class ActiveObjImpl extends Obj implements ActiveObj {
     }
 
     @Override
-    public boolean activate(Ref ref) {
+    public boolean activatedOn(Ref ref) {
         // TODO Auto-generated method stub
         return false;
     }

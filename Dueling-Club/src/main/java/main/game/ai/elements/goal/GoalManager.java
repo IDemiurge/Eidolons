@@ -59,6 +59,10 @@ public class GoalManager {
         return list;
     }
 
+    public static List<GOAL_TYPE> getDefaultGoals() {
+        return new LinkedList<>(Arrays.asList(new GOAL_TYPE[]{GOAL_TYPE.PREPARE,
+         GOAL_TYPE.DEFEND, GOAL_TYPE.ATTACK, GOAL_TYPE.WAIT,}));
+    }
     private static void addEnemyGoals(List<GOAL_TYPE> list) {
         list.add(GOAL_TYPE.DEBUFF);
         list.add(GOAL_TYPE.CUSTOM_HOSTILE);
@@ -102,10 +106,6 @@ public class GoalManager {
         return null;
     }
 
-    public static List<GOAL_TYPE> getDefaultGoals() {
-        return new LinkedList<>(Arrays.asList(new GOAL_TYPE[]{GOAL_TYPE.PREPARE,
-                GOAL_TYPE.DEFEND, GOAL_TYPE.ATTACK, GOAL_TYPE.WAIT,}));
-    }
 
     public static GOAL_TYPE getGoalFromAction(DC_ActiveObj a) {
         switch (a.getActionGroup()) {

@@ -61,7 +61,7 @@ public class Trigger extends ReferredElement {
         if (oneShot) {
             remove();
         }
-        boolean result = abilities.activate(ref);
+        boolean result = abilities.activatedOn(ref);
         if (result && game.isStarted()) {
             // if (
             game.getManager().checkForChanges(true);

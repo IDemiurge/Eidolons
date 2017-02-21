@@ -13,16 +13,16 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
+import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_GameData;
-import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.logic.arena.UnitGroupMaster;
-import main.game.logic.generic.Positioner;
 import main.game.logic.battle.player.DC_Player;
+import main.game.logic.battle.player.Player;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.building.MapBlock;
 import main.game.logic.generic.PartyManager;
-import main.game.logic.battle.player.Player;
+import main.game.logic.generic.Positioner;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
@@ -176,7 +176,7 @@ public class DC_ObjInitializer {
             if (mapBlockMode) {
                 if (item.contains("%")) {
                     Integer chance = StringMaster.getInteger(VariableManager.getVarPart(item)
-                            .replace("%", " "));
+                     .replace("%", " "));
                     if (chance < 0) {
                         chance = -chance;
                         excludeCoordinate = true;
@@ -185,6 +185,8 @@ public class DC_ObjInitializer {
                         continue;
                     }
                 }
+
+
             }
             try {
                 String typeName = getNameFromObjString(item, alt);
@@ -195,14 +197,13 @@ public class DC_ObjInitializer {
                 int level = 0;
                 if (typeName.contains(UnitGroupMaster.TYPE_LEVEL_SEPARATOR)) {
                     level = StringMaster.getInteger(StringMaster.getLastPart(typeName,
-                            UnitGroupMaster.TYPE_LEVEL_SEPARATOR));
+                     UnitGroupMaster.TYPE_LEVEL_SEPARATOR));
 
                 }
                 ObjType type = DataManager.getType(typeName, C_OBJ_TYPE.BF_OBJ);
                 if (level != 0) {
                     type = new UnitLevelManager().getLeveledType(type, level);
                 }
-                // type = UnitGroupMaster.getLeveledType(type, owner, objData);
 
                 Coordinates c = null;
                 if (!item.contains("null=")) {
@@ -212,6 +213,7 @@ public class DC_ObjInitializer {
                         e.printStackTrace();
                     }
                 }
+
                 int height = UnitGroupMaster.getGroupSizeY(owner);// UnitGroupMaster.getCurrentGroupHeight();
                 int width = UnitGroupMaster.getGroupSizeX(owner);
 
@@ -227,7 +229,7 @@ public class DC_ObjInitializer {
                 }
                 if (UnitGroupMaster.isMirror()) {
                     if (UnitGroupMaster.getFlip() == FLIP.CW90
-                            || UnitGroupMaster.getFlip() == FLIP.CCW90) {
+                     || UnitGroupMaster.getFlip() == FLIP.CCW90) {
                         c.setX(width - c.x);
                     } else {
 
@@ -251,30 +253,26 @@ public class DC_ObjInitializer {
                     if (excludedCoordinates.contains(c)) {
                         continue;
                     }
-                }
-                if (excludeCoordinate) {
-                    excludedCoordinates.add(c);
-                }
+                    if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
+                        if (!game.isSimulation()) {
+                            game.getArenaManager().getSpawnManager().addDungeonEncounter(c_dungeon,
+                             block, c, type);
+                        }
+                        continue;
+                    }
 
-                if (mapBlockMode) {
                     if (!CoreEngine.isLevelEditor()
-                            && C_OBJ_TYPE.UNITS_CHARS.equals(type.getOBJ_TYPE_ENUM())) {
+                     && C_OBJ_TYPE.UNITS_CHARS.equals(type.getOBJ_TYPE_ENUM())) {
                         owner = game.getPlayer(false);
                     } else {
                         owner = DC_Player.NEUTRAL;
                     }
-                    if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
-                        if (!game.isSimulation()) {
-                            game.getArenaManager().getSpawnManager().addDungeonEncounter(c_dungeon,
-                                    block, c, type);
-
-                        }
-                        continue;
-                    }
                     if (C_OBJ_TYPE.ITEMS.equals(type.getOBJ_TYPE_ENUM())) {
                         // TODO 'treasure'?
                     }
-                    // TODO ownership data ought to be in the Map Plan!
+                }
+                if (excludeCoordinate) {
+                    excludedCoordinates.add(c);
                 }
 
                 if (type == null) {
@@ -301,7 +299,7 @@ public class DC_ObjInitializer {
                 if (!game.isOffline()) {
                     if (!game.isHost()) {
                         unit.setFacing(unit.getGame().getArenaManager().getSpawnManager()
-                                .getMultiplayerFacingForUnit(unit));
+                         .getMultiplayerFacingForUnit(unit));
                     }
                 } else if (FAST_DC.isRunning()) {
                     if (!owner.isMe()) {

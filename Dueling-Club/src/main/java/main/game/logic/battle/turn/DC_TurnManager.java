@@ -268,7 +268,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
                 }
             }
 
-            WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
+//            WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
             LogMaster.gameInfo(StringMaster.getStringXTimes(50 - getActiveUnit().toString().length(), ">")
                     + "Active unit: " + getActiveUnit());
             GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, new EventCallbackParam(activeUnit));

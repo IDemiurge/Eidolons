@@ -199,8 +199,13 @@ size - elongate
                 totalDuration += duration;
                 float x = anim.offsetsX[i];
                 float y = anim.offsetsY[i];
-                MoveByAction mainMove = getMoveAction(x, y, duration);
-                RotateByAction mainRotate = getRotateAction(angle, duration);
+                MoveByAction mainMove =null ;
+                try{        mainMove =     getMoveAction(x, y, duration);
+                }catch(Exception e){                e.printStackTrace();
+                }
+                if (mainMove==null )
+               return null ;
+                    RotateByAction mainRotate = getRotateAction(angle, duration);
 
                 swings.add(new Pair<>(mainMove, mainRotate));
                 swings.forEach(swing -> {

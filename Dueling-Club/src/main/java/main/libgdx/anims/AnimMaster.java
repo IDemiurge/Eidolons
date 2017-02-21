@@ -24,7 +24,6 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
-import main.test.frontend.FAST_DC;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -54,9 +53,9 @@ public class AnimMaster extends Group {
         instance = this;
         floatingTextMaster = new FloatingTextMaster();
         continuousAnimsOn =
-//         false;
-         FAST_DC.getGameLauncher().FAST_MODE ||
-          FAST_DC.getGameLauncher().SUPER_FAST_MODE;
+         false;
+//         FAST_DC.getGameLauncher().FAST_MODE ||
+//          FAST_DC.getGameLauncher().SUPER_FAST_MODE;
         on = true;
         constructor = new AnimationConstructor();
         controller = new AnimController();
@@ -223,7 +222,8 @@ public class AnimMaster extends Group {
                         //TODO cache!
                         if (anim != null) {
                             continuousAnims.put(buff, anim);
-                            anim.start();
+                    try{                        anim.start();
+                    }catch(Exception e){                e.printStackTrace();            }
                         }
                     }
                 }

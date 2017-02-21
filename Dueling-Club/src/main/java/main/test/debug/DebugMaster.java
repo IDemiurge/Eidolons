@@ -31,6 +31,7 @@ import main.entity.item.DC_HeroItemObj;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.item.ItemFactory;
 import main.entity.obj.ActiveObj;
+import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
@@ -412,6 +413,8 @@ public class DebugMaster {
                     if (groupFile == null) {
                         break;
                     }
+                    if (arg instanceof DC_Cell)
+                        coordinate = arg.getCoordinates(); else
                     coordinate = getGame().getBattleFieldManager().pickCoordinate();
                     if (coordinate == null) {
                         break;

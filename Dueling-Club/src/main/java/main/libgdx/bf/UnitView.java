@@ -13,12 +13,15 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import main.game.battlefield.GraveyardManager;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.panels.dc.InitiativePanelParam;
+import main.libgdx.texture.TextureManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.OnDemandEventCallBack;
 import main.system.auxiliary.log.LogMaster;
+import main.system.images.ImageManager;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -38,6 +41,8 @@ public class UnitView extends BaseView {
     private boolean needRepaint = true;
     private Label initiativeStrVal;
     private float alpha = 1f;
+    private boolean dead;
+    private int graveIndex;
 
 
     public UnitView(UnitViewOptions o) {
@@ -66,8 +71,8 @@ public class UnitView extends BaseView {
             this.clockTexture = clockTexture;
             initiativeStrVal = new Label("[#00FF00FF]" + String.valueOf(clockVal) + "[]", StyleHolder.getDefaultLabelStyle());
             initiativeStrVal.setPosition(
-                    getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
-                    clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
+             getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
+             clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
         }
 
         if (arrowTexture != null) {
@@ -133,8 +138,19 @@ public class UnitView extends BaseView {
             Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
             sp.begin();
 
-
             sp.setColor(1, 1, 1, 1 * alpha);
+            //TODO  BLACK AND WHITE IF UNCONSCIOUS
+
+            if (isDead()) {
+                Texture skullTexture = TextureManager.getOrCreate(ImageManager.DEAD_ICON);
+                int x = 4 + skullTexture.getWidth()
+                 * graveIndex /
+                 GraveyardManager.GRAVE_ROWS;
+                int y = 3 + skullTexture.getHeight()
+                 *graveIndex%
+                 GraveyardManager.GRAVE_ROWS;
+                sp.draw(skullTexture, x, y, skullTexture.getWidth(), skullTexture.getHeight());
+            }
             sp.draw(portraitTexture, 0, 0, portraitTexture.getWidth(), portraitTexture.getHeight());
             if (clockTexture != null) {
                 sp.draw(clockTexture, portraitTexture.getWidth() - clockTexture.getWidth(), 0);
@@ -192,8 +208,8 @@ public class UnitView extends BaseView {
 
         if (initiativeStrVal != null) {
             initiativeStrVal.setPosition(
-                    portraitTexture.getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
-                    clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
+             portraitTexture.getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
+             clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
         }
 
         if (imageContainer != null) {
@@ -224,8 +240,8 @@ public class UnitView extends BaseView {
             clockVal = val;
             initiativeStrVal.setText("[#00FF00FF]" + String.valueOf(val) + "[]");
             initiativeStrVal.setPosition(
-                    portraitTexture.getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
-                    clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
+             portraitTexture.getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
+             clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
 
             needRepaint = true;
         } else {
@@ -235,5 +251,17 @@ public class UnitView extends BaseView {
 
     public int getId() {
         return curId;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
+    }
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public void setGraveIndex(int graveIndex) {
+        this.graveIndex = graveIndex;
     }
 }

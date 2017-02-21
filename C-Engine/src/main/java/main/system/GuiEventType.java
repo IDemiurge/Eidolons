@@ -11,6 +11,8 @@ package main.system;
 //}
 public enum GuiEventType {
 
+ADD_CORPSE,
+    REMOVE_CORPSE,
 
     GRID_CREATED,
     CREATE_RADIAL_MENU,
@@ -52,6 +54,6 @@ public enum GuiEventType {
     CREATE_EMITTER,
 
 
-    SFX_PLAY_LAST(), MOUSE_HOVER;
+    SFX_PLAY_LAST(), MOUSE_HOVER, UNIT_CREATED;
 
 }

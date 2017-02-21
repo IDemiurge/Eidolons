@@ -75,11 +75,11 @@ public class StaminaBuffRule extends DC_BuffRule {
     }
 
     @Override
-    protected boolean isReverse(Integer level) {
+    protected boolean isConditionGreater(Integer level) {
         if (level == getMaxLevel()) {
             return true;
         }
-        return super.isReverse(level);
+        return super.isConditionGreater(level);
     }
 
     @Override
@@ -92,8 +92,7 @@ public class StaminaBuffRule extends DC_BuffRule {
         return PARAMS.C_STAMINA;
     }
 
-    @Override
-    protected String[] getFormulas() {
+    protected String[] getConditionFormulas() {
         return formulas;
     }
 

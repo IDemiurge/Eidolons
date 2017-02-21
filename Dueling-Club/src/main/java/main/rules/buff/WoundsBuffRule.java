@@ -94,8 +94,7 @@ public class WoundsBuffRule extends DC_BuffRule {
         return PARAMS.C_ENDURANCE;
     }
 
-    @Override
-    protected String[] getFormulas() {
+    protected String[] getConditionFormulas() {
         return formulas;
     }
 

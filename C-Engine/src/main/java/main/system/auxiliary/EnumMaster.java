@@ -33,8 +33,9 @@ public class EnumMaster<T> {
     public static Class<?> ALT_CONSTS_CLASS; // set dynamically
     private static Map<Class, Map<String, Object>> enumCache = new HashMap<>();
     private static Map<Class, Map<String, Integer>> enumIndexCache = new HashMap<>();
-    private static Class[] enumClasses;
+    private static List<Class > enumClasses;
     private static Map<String, Class> enumMap = new HashMap<>();
+    private static List<Class<?>> additionalEnumClasses=    new LinkedList<>() ;
 
     // private static final Logger = Logger.getLogger(EnumMaster.class);
     public static Class<?> getEnumClass(String name) {
@@ -64,14 +65,19 @@ public class EnumMaster<T> {
         if (mappedClass != null)
             return getEnumClass(name, mappedClass);
 
-        if (enumClasses == null)
+        if (enumClasses == null) {
+            enumClasses = new LinkedList<>();
             try {
-                enumClasses = ClassFinder.getClasses(ENUM_FOLDER);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+                enumClasses.addAll(
+                Arrays.asList(ClassFinder.getClasses(ENUM_FOLDER)));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
+            if (!additionalEnumClasses.isEmpty()) {
+                enumClasses.addAll(additionalEnumClasses
+                );
+            }
+        }
         for (Class c : enumClasses) {
             CLASS = getEnumClass(name, c);
             if (CLASS != null) {
@@ -84,6 +90,10 @@ public class EnumMaster<T> {
         CLASS = getEnumClass(name, getALT_CONSTS_CLASS());
 
         return CLASS;
+    }
+
+    public static List<Class<?>> getAdditionalEnumClasses() {
+        return additionalEnumClasses;
     }
 
     private static Class<?> checkStdEnumClasses(String name) {

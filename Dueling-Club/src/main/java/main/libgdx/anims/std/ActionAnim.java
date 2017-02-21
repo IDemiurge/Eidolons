@@ -20,6 +20,8 @@ import java.util.function.Supplier;
  * Created by JustMe on 1/9/2017.
  */
 public class ActionAnim extends Anim {
+    protected Action action;
+
     public ActionAnim(Entity active, AnimData params) {
         super(active, params);
     }
@@ -36,7 +38,9 @@ public class ActionAnim extends Anim {
     }
 
     protected void add() {
-        addAction(getAction());
+        action=getAction();
+        if(action==null) return;
+        addAction(action);
         getAction().setTarget(this);
         AnimMaster.getInstance().addActor(this);
         LogMaster.log(1, this + " added to stage");

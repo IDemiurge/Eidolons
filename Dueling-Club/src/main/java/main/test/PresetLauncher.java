@@ -32,8 +32,9 @@ import static main.test.Preset.PRESET_DATA.FIRST_DUNGEON;
 
 public class PresetLauncher {
     public final static String[] LAUNCH_OPTIONS = {
-     "Last", "Gui", "Logic", "Recent", "New", "Anims",
-             "Emitters"
+     "AI", "Gui", "Logic", "Recent", "New", "Anims",
+     "Emitters",
+     "Last"
 
     };
     public static int PRESET_OPTION = -1;
@@ -79,6 +80,13 @@ public class PresetLauncher {
                 FAST_DC.getGameLauncher().DUMMY_MODE = false;
                 FAST_DC.getGameLauncher().DUMMY_PP = false;
                 UnitGroupMaster.setFactionMode(DialogMaster.confirm("Faction Mode?"));
+                return null;
+            case "AI":
+                FAST_DC.getGameLauncher().DUMMY_MODE = false;
+                FAST_DC.getGameLauncher().DUMMY_PP = false;
+                RuleMaster.setScope(RULE_SCOPE.FULL);
+                p = PresetMaster.loadPreset("ai.xml");
+                PresetMaster.setPreset(p);
                 return null;
             case "Logic":
                 FAST_DC.getGameLauncher().DUMMY_MODE = true;

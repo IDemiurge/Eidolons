@@ -2,12 +2,13 @@ package main.game.battlefield;
 
 import main.content.DC_TYPE;
 import main.entity.Entity;
+import main.entity.Ref;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates.DIRECTION;
+import main.game.core.game.DC_Game;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -34,7 +35,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
     }
 
     public Coordinates pickCoordinate() {
-        Integer id = game.getManager().select(game.getCells());
+        Integer id = game.getManager().select(game.getCells(), new Ref(game));
 
         if (id == null) {
             return null;

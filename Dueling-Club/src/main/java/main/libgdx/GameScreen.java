@@ -93,8 +93,6 @@ public class GameScreen implements Screen {
 
         WaitMaster.receiveInput(WAIT_OPERATIONS.GDX_READY, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.GDX_READY);
-        WaitMaster.receiveInput(WAIT_OPERATIONS.GUI_READY, true);
-        WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
 
         return this;
     }

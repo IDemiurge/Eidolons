@@ -49,6 +49,11 @@ public class EventType implements EVENT_TYPE {
     }
 
     public enum CONSTRUCTED_EVENT_TYPE {
+        //rolls
+        UNIT_IS_MAKING_ROLL,
+        UNIT_WINS_ROLL,
+        UNIT_LOSES_ROLL,
+
         PARAM_BEING_MODIFIED,
         PARAM_MODIFIED,
         PROP_BEING_ADDED,

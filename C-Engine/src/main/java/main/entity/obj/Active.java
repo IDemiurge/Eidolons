@@ -7,7 +7,7 @@ public interface Active extends Referred {
 
     boolean activate(boolean transmit);
 
-    boolean activate(Ref ref);
+    boolean activatedOn(Ref ref);
 
     boolean resolve();
 

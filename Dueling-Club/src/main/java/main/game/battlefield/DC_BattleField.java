@@ -75,8 +75,7 @@ public class DC_BattleField extends SwingBattleField {
         getGrid().getGridComp().getBfMouseListener().startTooltipUpdateThread();
 
         getGrid().getGridComp().getBfMouseListener().setComponent(c);
-        WaitMaster.receiveInput(WAIT_OPERATIONS.GUI_READY, true);
-        WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
+
         // [Deprecated]
         // addMouseWheelListener(new BF_MouseWheelListener(dc_builder));
 

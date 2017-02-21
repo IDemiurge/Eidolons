@@ -10,8 +10,11 @@ import main.entity.obj.Structure;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
-import main.game.logic.dungeon.Entrance;
 import main.game.logic.battle.player.Player;
+import main.game.logic.dungeon.Entrance;
+import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
 
 /**
@@ -42,6 +45,7 @@ public class ObjCreator extends Master{
         } else {
             obj = new Unit(type, x, y, owner, getGame(), ref);
         }
+        GuiEventManager.trigger(GuiEventType.UNIT_CREATED, new EventCallbackParam(obj));
         game.getState().addObject(obj);
 
         if (CoreEngine.isLevelEditor()) {
@@ -55,4 +59,5 @@ public class ObjCreator extends Master{
         return obj;
 
     }
+
 }

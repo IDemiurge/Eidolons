@@ -13,6 +13,7 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.math.Formula;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 public class StringMaster {
@@ -348,7 +349,7 @@ public class StringMaster {
             }
 
             if (contains(string, string2)) // TODO make it not strict if you
-                // dare!
+            // dare!
             {
                 return true;
             }
@@ -394,34 +395,42 @@ public class StringMaster {
         if (isEmpty(s)) {
             return "";
         }
-        String string = "";
+        String string = null;
+
         // if (s.contains("_") || s.contains(" ")) {
         if (s.contains(" ")) {
+            StringBuilder builder = new StringBuilder(s.length() + 5);
             s = s.trim();
             for (String str : pattern_space.split(s)) {
-                string += getWellFormattedString(str) + " ";
+                builder.append(getWellFormattedString(str) + " ");
             }
+            string = builder.toString();
             string = string.substring(0, string.length() - 1);
             return string;
         }
         if (s.contains("_")) {
+            StringBuilder builder = new StringBuilder(s.length() + 5);
             for (String str : pattern_.split(s)) {
-                string += getWellFormattedString(str) + " ";
+                builder.append(getWellFormattedString(str) + " ");
             }
+            string = builder.toString();
             string = string.substring(0, string.length() - 1);
             return string;
         }
         // } else {
         if (insertSpaceAfterCapitals) {
+            StringBuilder builder = new StringBuilder(s.length() + 5);
             string = "";
             for (char c : s.toCharArray()) {
                 if (!string.isEmpty()) {
                     if (Character.isUpperCase(c)) {
-                        string += " ";
+                        builder.append(" ");
+
                     }
                 }
-                string += c;
+                builder.append(String.valueOf(c));
             }
+            string = builder.toString();
         } else {
             string = capitalizeFirstLetter(s.toLowerCase());
         }
@@ -509,7 +518,7 @@ public class StringMaster {
         }
 
         return new LinkedList<>(Arrays
-                .asList(containerString.split(Pattern.quote(delimiter))));
+         .asList(containerString.split(Pattern.quote(delimiter))));
     }
 
     public static List<String> openContainer(String containerString, String separator) {
@@ -689,6 +698,7 @@ public class StringMaster {
         if (value.contains(".")) {
             value = value.split(Pattern.quote("."))[0];
         }
+
         if (isFAST_INTEGER_MODE()) {
             int result = 0;
             boolean negative = false;
@@ -796,12 +806,12 @@ public class StringMaster {
     }
 
     public static String getStringXTimes(int i, String s) {
-        String string = "";
+        StringBuilder string = new StringBuilder();
         while (i > 0) {
-            string += s;
+            string.append(s);
             i--;
         }
-        return string;
+        return string.toString();
     }
 
     public static String getWhiteSpaces(int i) {
@@ -853,11 +863,12 @@ public class StringMaster {
         if (list.isEmpty()) {
             return "";
         }
+        StringBuilder builder = new StringBuilder();
 
-        String result = "";
         for (String str : list) {
-            result += str + divider;
+            builder.append(str + divider);
         }
+        String result = builder.toString();
         return (cropLastDivider) ? result.substring(0, result.lastIndexOf(divider)) : result;
     }
 
@@ -871,7 +882,7 @@ public class StringMaster {
 
     public static String getValueRef(String objRef, String valRef) {
         return FORMULA_REF_OPEN_CHAR + objRef + FORMULA_REF_SEPARATOR + valRef
-                + FORMULA_REF_CLOSE_CHAR;
+         + FORMULA_REF_CLOSE_CHAR;
     }
 
     public static String constructContainer(List<String> list) {
@@ -890,7 +901,7 @@ public class StringMaster {
 
     ) {
         return joinStringList(ListMaster.toStringList(true, list.toArray()),
-                getContainerSeparator(), false);
+         getContainerSeparator(), false);
     }
 
     public static List<String> convertToStringList(Collection<?> values) {
@@ -950,7 +961,7 @@ public class StringMaster {
             container = container.substring(0, container.length() - 1);
         }
         return container.replace(StringMaster.getContainerSeparator(),
-                getFormattedContainerSeparator());
+         getFormattedContainerSeparator());
     }
 
     public static String getFormattedContainerSeparator() {
@@ -1165,7 +1176,7 @@ public class StringMaster {
         }
         if (index == -1) {
             index = (last) ? string.lastIndexOf(regex) : string
-                    .indexOf(getWellFormattedString(regex));
+             .indexOf(getWellFormattedString(regex));
         }
         if (index == -1) {
             return string;
@@ -1179,8 +1190,8 @@ public class StringMaster {
         if (all) {
             try {
                 return string.replace(regex, replacement).replace(getWellFormattedString(regex),
-                        replacement).replace(regex.toLowerCase(), replacement).replace(
-                        regex.toUpperCase(), replacement);
+                 replacement).replace(regex.toLowerCase(), replacement).replace(
+                 regex.toUpperCase(), replacement);
             } catch (Exception e) {
                 return string.replace(Pattern.quote(regex), replacement);
             }
@@ -1214,12 +1225,13 @@ public class StringMaster {
 
         return string;
     }
+
     public static String buildPath(String... strings) {
         String result = "";
         for (String s : strings) {
             result += s + PATH_SEPARATOR;
         }
-        return result.substring(0, result.length()-1);
+        return result.substring(0, result.length() - 1);
     }
 
     public static String build(String... strings) {
@@ -1429,7 +1441,7 @@ public class StringMaster {
     public static String getXmlNode(String xml, String nodeName) {
         String closeXmlFormatted = XML_Converter.closeXmlFormatted(nodeName);
         xml = xml.substring(xml.indexOf(XML_Converter.openXmlFormatted(nodeName)),
-                closeXmlFormatted.length() + xml.lastIndexOf(closeXmlFormatted));
+         closeXmlFormatted.length() + xml.lastIndexOf(closeXmlFormatted));
         return xml;
     }
 
@@ -1530,45 +1542,59 @@ public class StringMaster {
         return null;
     }
 
-    public static String removePreviousPathSegments(String p, String path) {
-        p = p.toLowerCase();
+    public static String removePreviousPathSegments(String string, String path) {
+//        p = p.toLowerCase();
+//        path = path.toLowerCase();
+//        String prefix = "";
+//        for (String sub : getPathSegments(path)) {
+//            if (p.startsWith(sub)) {
+//                break;
+//            }
+//            prefix += sub + PATH_SEPARATOR;
+//        }
+        final String p = string.toLowerCase();
         path = path.toLowerCase();
-        String prefix = "";
-        for (String sub : getPathSegments(path)) {
-            if (p.startsWith(sub)) {
-                break;
-            }
-            prefix += sub + PATH_SEPARATOR;
-        }
+        String prefix = buildPartsIf(getPathSegments(path),
+         PATH_SEPARATOR, true, (String sub) -> p.startsWith(sub));
 
         return p.replace(prefix, "");
     }
 
-    public static String addMissingPathSegments(String p, String path) {
-        p = p.toLowerCase();
+    public static String addMissingPathSegments(String string, String path) {
+        final String p = string.toLowerCase();
         path = path.toLowerCase();
-        String prefix = "";
-        for (String sub : getPathSegments(path)) {
-            if (p.startsWith(sub)) {
-                break;
-            }
-            prefix += sub + PATH_SEPARATOR;
-        }
+        String prefix = buildPartsIf(getPathSegments(path),
+         PATH_SEPARATOR, true, (String sub) -> p.startsWith(sub));
 
         return prefix + p;
+    }
+
+    private static String buildPartsIf(List<String> segments,
+                                       String separator,
+                                       boolean breakOnFalse,
+                                       Predicate<String> predicate) {
+        StringBuilder builder = new StringBuilder(50);
+        for (String sub : segments) {
+            if (predicate.test(sub)) {
+                if (breakOnFalse) break;
+                else continue;
+            }
+            builder.append(sub + separator);
+        }
+        return builder.toString();
     }
 
     public static String wrap(String wrap, String string) {
         return wrap + string + wrap;
     }
 
-    public enum STD_TYPE_NAMES {
-        Cell
+    public enum STD_DEITY_TYPE_NAMES {
+        Faithless
 
     }
 
-    public enum STD_DEITY_TYPE_NAMES {
-        Faithless
+    public enum STD_TYPE_NAMES {
+        Cell
 
     }
 

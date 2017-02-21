@@ -7,6 +7,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import main.client.dc.Launcher;
 import main.libgdx.GameScreen;
+import main.system.launch.CoreEngine;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,6 +20,7 @@ public class DENIS_Launcher implements ApplicationListener {
     Screen screen;
 
     public static void main(String[] args) {
+        CoreEngine.setGraphicsOff(false);
         new LwjglApplication(new DENIS_Launcher(), getConf());
     }
 

@@ -32,6 +32,7 @@ public class ListItem<E> extends JLabel {
     protected boolean isSelected;
     boolean visible;
     private boolean obj;
+    private boolean noImage;
 
     public ListItem(E item, boolean isSelected, boolean cellHasFocus, int obj_size) {
         this(false, item, isSelected, cellHasFocus, obj_size);
@@ -134,17 +135,21 @@ public class ListItem<E> extends JLabel {
         if (entity == null) {
             return null;
         }
-        Image img = (entity.getCustomIcon() != null ? entity.getCustomIcon().getImage()
-                : ImageManager.getImage(entity.getProperty(G_PROPS.IMAGE, true)));
-        boolean noImg = false;
+        Image img =null ;
+        if (!noImage)
+        try{img = (entity.getCustomIcon() != null ? entity.getCustomIcon().getImage()
+         : ImageManager.getImage(entity.getProperty(G_PROPS.IMAGE, true)));
+        }catch(Exception e){                e.printStackTrace();  
+        }
         if (img == null) {
+            noImage=true;
             if (entity.getRef() != null) {
                 img = ImageManager.getImage(new Property(entity.getProperty(G_PROPS.IMAGE, true))
                         .getStr(entity.getRef()));
             }
         }
         if (img == null) {
-            noImg = true;
+
             img = (getEmptyIcon() != null) ? ImageManager.getImage(getEmptyIcon()) : ImageManager
                     .getEmptyIcon(getObjSize()).getImage();
         }
