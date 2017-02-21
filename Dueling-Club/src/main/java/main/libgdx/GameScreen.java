@@ -22,6 +22,7 @@ import main.libgdx.bf.mouse.ToolTipManager;
 import main.libgdx.gui.dialog.DialogDisplay;
 import main.libgdx.gui.panels.dc.InitiativePanel;
 import main.libgdx.gui.panels.dc.LogPanel;
+import main.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -140,6 +141,10 @@ public class GameScreen implements Screen {
         LogPanel ld = new LogPanel();
         guiStage.addActor(ld);
         ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
+
+        UnitInfoPanel infoPanel = new UnitInfoPanel();
+        guiStage.addActor(infoPanel);
+        infoPanel.setPosition(0, 0);
     }
 
     private void bindEvents() {

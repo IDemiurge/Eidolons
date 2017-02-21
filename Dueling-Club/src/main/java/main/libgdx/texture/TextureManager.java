@@ -16,16 +16,21 @@ import java.util.List;
  * Created by JustMe on 12/30/2016.
  */
 public class TextureManager {
-    private static TextureCache cache;
     public static String SINGLE_SPRITE="[SINGLE_SPRITE]";
+    private static TextureCache cache;
+
+    public static TextureRegion getOrCreateR(String p) {
+        return new TextureRegion(getOrCreate(p));
+    }
 
     public static Texture getOrCreate(String p) {
         if (ImageManager.getPATH() != null)
             if (!ImageManager.isImage(p)) {
                 p = StringMaster.addMissingPathSegments(p, ImageManager.getPATH());
                 p = StringMaster.removePreviousPathSegments(p, ImageManager.getPATH());
-                if (!ImageManager.isImage(p))
+                if (!ImageManager.isImage(p)) {
                     return getCache().get(ImageManager.getAltEmptyListIcon());
+                }
                 // don't cache if missing!
             }
         return getCache().getOrCreate(p);
