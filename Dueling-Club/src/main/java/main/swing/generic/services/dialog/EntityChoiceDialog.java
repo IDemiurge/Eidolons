@@ -28,12 +28,7 @@ public class EntityChoiceDialog<T extends Entity> extends G_Dialog implements Mo
     }
 
     public T chooseEntity() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                show();
-            }
-        });
+        SwingUtilities.invokeLater(this::show);
         T waitForInput = (T) WaitMaster.waitForInput(getWaitOperation());
         close();
         return waitForInput;

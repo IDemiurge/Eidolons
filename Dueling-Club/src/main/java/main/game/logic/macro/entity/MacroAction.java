@@ -78,11 +78,6 @@ public class MacroAction extends MacroObj implements ActiveObj {
     }
 
     @Override
-    public boolean resolve() {
-        return false;
-    }
-
-    @Override
     public void invokeRightClicked() {
         game.getManager().infoSelect(this);
 
