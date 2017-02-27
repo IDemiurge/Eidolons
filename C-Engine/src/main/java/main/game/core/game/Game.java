@@ -343,7 +343,7 @@ public abstract class Game  implements Serializable { // extends Entity? ;) Prop
         return conditionMaster;
     }
 
-    public GenericVisionManager getVisionManager() {
+    public GenericVisionManager getVisionMaster() {
         return null;
     }
 

@@ -81,8 +81,8 @@ public class AutoAttackEffect extends DC_Effect {
     }
 
     private boolean isPickAutomaticallyOn() {
-        // return getActiveObj().isSwitchOn();
-        return getActiveObj().isSwitchOn();
+        // return getActiveObj().isAutoSelectionOn();
+        return getActiveObj().isAutoSelectionOn();
     }
 
     private DC_ActiveObj pickManually(List<DC_ActiveObj> subActions) {

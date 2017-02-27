@@ -30,16 +30,15 @@ import main.entity.type.ObjType;
 import main.game.ai.UnitAI;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
-import main.game.battlefield.VisionManager;
+import main.game.battlefield.vision.VisionManager;
 import main.game.core.game.DC_Game;
+import main.game.logic.battle.player.DC_Player;
+import main.game.logic.battle.player.Player;
+import main.game.logic.dungeon.building.MapBlock;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.game.logic.battle.player.DC_Player;
-import main.game.logic.dungeon.building.MapBlock;
-import main.game.logic.battle.player.Player;
-import main.libgdx.bf.Rotatable;
 import main.game.logic.generic.DC_ActionManager;
-import main.swing.components.obj.drawing.VisibilityMaster;
+import main.libgdx.bf.Rotatable;
 import main.system.DC_Constants;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -111,7 +110,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements  Rotatab
             // return "Something huge";
             // if (isSmall())
             // return "Something small";
-            return "Something " + VisibilityMaster.getHintsString((Unit) this);
+            return "Something " + getGame().getVisionMaster().getHintMaster().getHintsString((Unit) this);
         }
         return getName();
     }
@@ -165,9 +164,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements  Rotatab
             }
             return getCoordinates() + " " + getName();
         }
-        if (!VisionManager.checkKnown(this)) {
-            return "?";
-        }
+//        if (!VisionManager.checkKnown(this)) {
+//            return "?";
+//        }
         return getName();
     }
 
@@ -554,6 +553,10 @@ public abstract class DC_UnitModel extends BattleFieldObject implements  Rotatab
     }
 
     public boolean canActNow() {
+        if (getGame().isDummyPlus()) {
+            if(!isMine())
+             return false;
+        }
         if (owner == Player.NEUTRAL) {
             return false;
         }

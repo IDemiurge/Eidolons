@@ -1,18 +1,17 @@
 package main.game.logic.battle.turn;
 
-import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.PARAMS;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
-import main.game.battlefield.VisionManager;
 import main.rules.mechanics.WaitRule;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
@@ -204,13 +203,13 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
     private void resetDisplayedQueue() {
         displayedUnitQueue.clear();
         if (retainActiveUnit) {
-            if (VisionManager.checkDetectedEnemy(activeUnit)) {
+            if (game.getVisionMaster().checkDetectedEnemy(activeUnit)) {
                 unitQueue.remove(activeUnit);
                 unitQueue.addFirst(activeUnit);
             }
         }
         for (Unit unit : unitQueue) {
-            if (VisionManager.checkDetectedEnemy(unit)) {
+            if (game.getVisionMaster() .checkDetectedEnemy(unit)) {
                 displayedUnitQueue.add(unit);
             }
         }

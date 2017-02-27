@@ -17,7 +17,7 @@ import main.game.ai.tools.target.EffectFinder;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;
-import main.game.battlefield.VisionManager;
+import main.game.battlefield.vision.VisionManager;
 import main.game.logic.battle.player.Player;
 import main.swing.components.panels.DC_UnitActionPanel.ACTION_DISPLAY_GROUP;
 import main.system.auxiliary.data.ListMaster;

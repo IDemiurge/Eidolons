@@ -11,7 +11,7 @@ import main.system.auxiliary.EnumMaster;
 
 import java.util.List;
 
-public class EntityMaster {
+public class EntityCheckMaster {
 
     public static boolean checkPropertyAny(List<? extends Entity> list, PROPERTY prop, Object value) {
         for (Entity sub : list) {

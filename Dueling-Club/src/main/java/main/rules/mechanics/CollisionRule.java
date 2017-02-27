@@ -6,7 +6,7 @@ import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
-import main.game.battlefield.VisionManager;
+import main.game.battlefield.vision.VisionManager;
 import main.rules.action.StealthRule;
 import main.rules.attack.AttackOfOpportunityRule;
 import main.rules.attack.InstantAttackRule;

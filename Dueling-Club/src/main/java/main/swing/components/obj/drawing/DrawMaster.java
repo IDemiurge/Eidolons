@@ -1,41 +1,36 @@
 package main.swing.components.obj.drawing;
 
 import main.content.CONTENT_CONSTS.FLIP;
-import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.content.ContentManager;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.XLinkedMap;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
-import main.swing.XLine;
-import main.game.logic.dungeon.Dungeon;
+import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
-import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
+import main.game.logic.dungeon.Dungeon;
+import main.swing.XLine;
 import main.swing.components.obj.BfGridComp;
 import main.swing.components.obj.BfMouseListener.INTERACTIVE_ELEMENT;
 import main.swing.components.obj.CellComp;
-import main.swing.components.obj.drawing.VisibilityMaster.OUTLINE_TYPE;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.swing.renderers.SmartTextManager;
 import main.swing.renderers.SmartTextManager.VALUE_CASES;
-import main.system.graphics.ColorManager;
-import main.system.graphics.FontMaster;
-import main.system.graphics.FontMaster.FONT;
-import main.system.graphics.GuiManager;
 import main.system.auxiliary.StringMaster;
-import main.system.graphics.DC_ImageMaster;
-import main.system.graphics.ImageTransformer;
-import main.system.graphics.MigMaster;
+import main.system.graphics.*;
+import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 import main.system.images.ImageManager.STD_IMAGES;
@@ -126,7 +121,7 @@ public class DrawMaster {
         cellComp.setMouseMap(mouseMap);
         Unit topObj = cellComp.getTopObj();
         if (isSingleObj()) {
-            Image image = VisibilityMaster.getDisplayImageForUnit(topObj);
+            Image image = cellComp.getGame().getVisionMaster().getVisibilityMaster().getDisplayImageForUnit(topObj);
             if (image != null) {
                 compGraphics.drawImage(image, 0, 0, null);
                 if (topObj.isWall()) {
@@ -139,7 +134,7 @@ public class DrawMaster {
                     if (FULL_GRAPHICS_TEST_MODE) {
                         compGraphics.drawString("" + obj.getOutlineType(), 0, GuiManager.getCellHeight() - 40);
 
-                        String tooltip = VisibilityMaster.getTooltip(obj);
+                        String tooltip = cellComp.getGame().getVisionMaster().getHintMaster().getTooltip(obj);
                         if (tooltip != null) {
                             compGraphics.drawString("" + tooltip, 0, GuiManager.getCellHeight() - 20);
                         }
@@ -181,11 +176,11 @@ public class DrawMaster {
         if (!cellComp.isTerrain()) {
             if (topObj.isInfoSelected() || topObj.isActiveSelected()) {
                 BufferedImage compOverlayImage = ImageManager.getNewBufferedImage(getCompWidth(),
-                        getCompHeight());
+                 getCompHeight());
                 drawComponentOverlays(compOverlayImage.getGraphics());
                 BfGridComp.getOverlayMap().put(
-                        new XLine(new Point(topObj.getX(), topObj.getY()), new Point(
-                                5 - getObjCount() * 2, 0)), compOverlayImage);
+                 new XLine(new Point(topObj.getX(), topObj.getY()), new Point(
+                  5 - getObjCount() * 2, 0)), compOverlayImage);
             } else {
                 drawComponentOverlays(compGraphics);
             }
@@ -228,10 +223,10 @@ public class DrawMaster {
             Unit obj = cellComp.getGame().getManager().getActiveObj();
             // if (!obj.isMine()) return ;
             boolean extended = !obj.getSightSpectrumCoordinates(false).contains(
-                    cellComp.getCoordinates());
+             cellComp.getCoordinates());
             if (!extended) {
                 extended = obj.getSightSpectrumCoordinates(true)
-                        .contains(cellComp.getCoordinates());
+                 .contains(cellComp.getCoordinates());
                 if (!extended) {
                     return;
                 }
@@ -250,21 +245,21 @@ public class DrawMaster {
             Dungeon dungeon = cellComp.getGame().getDungeon();
             if (dungeon.checkProperty(PROPS.PARTY_SPAWN_COORDINATES)) {
                 if (cellComp.getCoordinates().equals(
-                        new Coordinates(dungeon.getProperty(PROPS.PARTY_SPAWN_COORDINATES)))) {
+                 new Coordinates(dungeon.getProperty(PROPS.PARTY_SPAWN_COORDINATES)))) {
                     Image img = ImageManager.getSizedVersion(STD_IMAGES.ENGAGER.getImage(), zoom2);
                     drawImageCentered(g, img);
                 }
             }
             if (dungeon.checkProperty(PROPS.ENEMY_SPAWN_COORDINATES)) {
                 if (cellComp.getCoordinates().equals(
-                        new Coordinates(dungeon.getProperty(PROPS.ENEMY_SPAWN_COORDINATES)))) {
+                 new Coordinates(dungeon.getProperty(PROPS.ENEMY_SPAWN_COORDINATES)))) {
                     Image img = ImageManager.getSizedVersion(STD_IMAGES.ENGAGER.getImage(), zoom2);
                     img = ImageTransformer.flipVertically(ImageManager.getBufferedImage(img));
                     drawImageCentered(g, img);
                 }
             }
             for (String substring : StringMaster.openContainer(dungeon
-                    .getProperty(PROPS.ENCOUNTER_SPAWN_POINTS))) {
+             .getProperty(PROPS.ENCOUNTER_SPAWN_POINTS))) {
                 if (!cellComp.getCoordinates().equals(new Coordinates(substring))) {
                     continue;
                 }
@@ -273,12 +268,12 @@ public class DrawMaster {
                 // TODO OR STRING/CHAR
             }
             for (String substring : StringMaster.openContainer(dungeon
-                    .getProperty(PROPS.ENCOUNTER_BOSS_SPAWN_POINTS))) {
+             .getProperty(PROPS.ENCOUNTER_BOSS_SPAWN_POINTS))) {
                 if (!cellComp.getCoordinates().equals(new Coordinates(substring))) {
                     continue;
                 }
                 Image img = ImageManager.getSizedVersion(STD_IMAGES.ENGAGEMENT_TARGET.getImage(),
-                        zoom2);
+                 zoom2);
                 drawImageCentered(g, img);
                 // TODO OR STRING/CHAR
             }
@@ -294,7 +289,7 @@ public class DrawMaster {
                 int percentage = zoom;
                 try {
                     int distance = PositionMaster.getDistance(cellComp.getGame().getManager()
-                            .getActiveObj().getCoordinates(), cellComp.getCoordinates());
+                     .getActiveObj().getCoordinates(), cellComp.getCoordinates());
                     percentage = (int) Math.round(percentage / Math.sqrt(distance));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -312,7 +307,7 @@ public class DrawMaster {
             g.setColor(isEditorMode() ? ColorManager.GOLDEN_WHITE : ColorManager.FOCUS);
 
             g.drawString("" + cellComp.getTopObjOrCell().getBlockingCoordinate(),
-                    getCompWidth() / 2, getCompHeight() / 2);
+             getCompWidth() / 2, getCompHeight() / 2);
 
             drawCoordinateMarkings(cellComp.getCoordinates().x, g, true);
             drawCoordinateMarkings(cellComp.getCoordinates().y, g, false);
@@ -324,11 +319,11 @@ public class DrawMaster {
             // if (isDrawFullBlockingInfo()){
             if (cellComp.getTopObjOrCell().getBlockingWallCoordinate() != null) {
                 g.drawString("" + cellComp.getTopObjOrCell().getBlockingWallCoordinate(),
-                        getCompWidth() * 4 / 5, getCompHeight() * 4 / 5);
+                 getCompWidth() * 4 / 5, getCompHeight() * 4 / 5);
             }
             if (cellComp.getTopObjOrCell().getBlockingWallDirection() != null) {
                 g.drawString("" + cellComp.getTopObjOrCell().getBlockingWallDirection(),
-                        getCompWidth() * 2 / 5, getCompHeight() * 3 / 5);
+                 getCompWidth() * 2 / 5, getCompHeight() * 3 / 5);
             }
             if (cellComp.getTopObjOrCell().isBlockingDiagonalSide()) {
                 g.drawString("left", getCompWidth() * 4 / 5, getCompHeight() * 2 / 5);
@@ -362,7 +357,7 @@ public class DrawMaster {
 
         for (Unit obj : cellComp.getOverlayingObjects()) {
             if (!isEditorMode()) {
-                if (VisibilityMaster.isZeroVisibility(obj)) {
+                if (cellComp.getGame().getVisionMaster().getVisibilityMaster().isZeroVisibility(obj)) {
                     continue;
                 }
             }
@@ -371,7 +366,7 @@ public class DrawMaster {
             // if (CoreEngine.isLevelEditor()) {
             if (d == null) {
                 Map<Unit, DIRECTION> map = obj.getGame().getDirectionMap().get(
-                        cellComp.getCoordinates());
+                 cellComp.getCoordinates());
                 if (map != null) {
                     d = map.get(obj);
                 }
@@ -407,7 +402,7 @@ public class DrawMaster {
 
     private void drawOverlayingObj(Graphics g, CellComp cellComp, Unit obj, int x, int y,
                                    int size) {
-        Image img = VisibilityMaster.getDisplayImageForUnit(obj);
+        Image img = cellComp.getGame().getVisionMaster().getVisibilityMaster().getDisplayImageForUnit(obj);
         if (img != null) {
             img = ImageManager.getSizedVersion(img, size);
         } else {
@@ -475,7 +470,7 @@ public class DrawMaster {
         if (!cellComp.isTerrain()) {
             if ((cellComp.getTerrainObj().isTargetHighlighted())) {
                 Rectangle rect = new Rectangle(getStackOffsetX(), getStackOffsetY(), objSize,
-                        objSize);
+                 objSize);
                 cellComp.getMouseMap().put(rect, cellComp.getTopObj());
             }
             if (isSingleObj()) {
@@ -487,10 +482,10 @@ public class DrawMaster {
             }
 
             cellImage = ImageManager.getCellBorderForBfObj(cellComp.isMiniCellFrame(),
-                    cellComp.getObjects().get(0).getActivePlayerVisionStatus(),
-                    cellComp.getObjects().get(0).getUnitVisionStatus()
-                    // cellComp.getObjects().getOrCreate(0).getVisibilityLevel()
-                    // getVisibility(cellComp.getObjects().getOrCreate(0))
+             cellComp.getObjects().get(0).getActivePlayerVisionStatus(),
+             cellComp.getObjects().get(0).getUnitVisionStatus()
+             // cellComp.getObjects().getOrCreate(0).getVisibilityLevel()
+             // getVisibility(cellComp.getObjects().getOrCreate(0))
             ).getImage();
         }
         g.drawImage(cellImage, 0, 0, null);
@@ -531,12 +526,12 @@ public class DrawMaster {
     private void drawCI(DC_Obj obj, Graphics g) {
         // TODO LIGHT SPELLS SHOULD ADD "LIGHT_EMIT" PARAM AND SHADOW REDUCE IT
         if (obj == null)
-            // "null obj"
+        // "null obj"
         {
             return;
         }
         SmartText text = new SmartText(obj.getIntParam(PARAMS.LIGHT_EMISSION) + "",
-                ColorManager.GOLDEN_WHITE);
+         ColorManager.GOLDEN_WHITE);
         int w = text.getWidth();
         int h = text.getHeight();
         // text.setFont(font)
@@ -573,7 +568,7 @@ public class DrawMaster {
             return;
         }
         Collection<? extends Obj> droppedItems = cellComp.getGame().getDroppedItemManager()
-                .getDroppedItems(cellComp.getTerrainObj());
+         .getDroppedItems(cellComp.getTerrainObj());
         if (!droppedItems.isEmpty()) {
             Image img = STD_IMAGES.BAG.getImage();
             int x = getCompWidth() - img.getWidth(null) - 10;
@@ -636,7 +631,7 @@ public class DrawMaster {
     }
 
     private void drawCellImage(Graphics g) {
-        Image img = VisibilityMaster.getDisplayImageForUnit(cellComp.getTerrainObj());
+        Image img = cellComp.getGame().getVisionMaster().getVisibilityMaster().getDisplayImageForUnit(cellComp.getTerrainObj());
         if (img == null) {
             if (cellComp.getTerrainObj().isTargetHighlighted()) {
                 img = ImageManager.getHighlightedCellIcon().getImage();
@@ -655,7 +650,7 @@ public class DrawMaster {
                 // main.system.auxiliary.LogMaster.log(1, vl + " and " + ds +
                 // " for "
                 // + cellComp.getTerrainObj().getNameAndCoordinate());
-                if (VisibilityMaster.isZeroVisibility(cellComp.getTerrainObj())) {
+                if (cellComp.getGame().getVisionMaster().getVisibilityMaster().isZeroVisibility(cellComp.getTerrainObj())) {
                     if (ds == VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN || ds == VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED) {
                         img = (ImageManager.getHiddenCellIcon().getImage());
                     } else {
@@ -677,7 +672,7 @@ public class DrawMaster {
                 }
                 if (zoom != 100 || !isFramePaintZoom()) {
                     img = ImageManager.getSizedVersion(img, new Dimension(getObjCompWidth(),
-                            getObjCompHeight()), true);
+                     getObjCompHeight()), true);
                 }
 
                 // float factor = new Float(gammaMod) / 100;
@@ -745,7 +740,7 @@ public class DrawMaster {
         } else {
             // offset !
             if (cellComp.getGame().getAnimationManager().isStackAnimOverride(
-                    cellComp.getCoordinates())) {
+             cellComp.getCoordinates())) {
                 return;
             }
             List<Unit> objects = new LinkedList<>(cellComp.getObjects());
@@ -813,11 +808,11 @@ public class DrawMaster {
                     stackOffsetX += 3 * getXOffsetPerObj(getObjCount()) / 2;
                 }
                 if (getStackOffsetY() != 0) // TODO should be double or 'triple'
-                    // if I want the top obj to end up
-                    // with the right gap!
-                    // lower objects can be above, below, ... what's the
-                    // difference for us?
-                    // currently if we go with 0, images will overlap!
+                // if I want the top obj to end up
+                // with the right gap!
+                // lower objects can be above, below, ... what's the
+                // difference for us?
+                // currently if we go with 0, images will overlap!
                 {
                     stackOffsetY -= getYOffsetPerObj(getObjCount());
                 } else {
@@ -848,7 +843,7 @@ public class DrawMaster {
     }
 
     private void drawWallOverlays(Unit obj, Graphics g, Coordinates coordinates) {
-        if (VisibilityMaster.isZeroVisibility(obj)) {
+        if (cellComp.getGame().getVisionMaster().getVisibilityMaster().isZeroVisibility(obj)) {
             if (obj.getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN) {
                 return;
             }
@@ -1167,7 +1162,7 @@ public class DrawMaster {
             // TODO stacked positioning adjusted to put facing comp outside
             if (!obj.isUnconscious()) {
                 if (DrawHelper.isFacingDrawn(cellComp, obj)
-                        || (!obj.isBfObj() && DC_Game.game.isDebugMode())) {
+                 || (!obj.isBfObj() && DC_Game.game.isDebugMode())) {
                     drawFacing(g, obj);
                 }
             }
@@ -1233,12 +1228,12 @@ public class DrawMaster {
         }
         if (overlay != null) {
             BufferedImage image = ImageManager.getNewBufferedImage(getObjCompWidth(),
-                    getObjCompHeight());
+             getObjCompHeight());
             Graphics g = image.getGraphics();
             drawImage(g, overlay, 24, 24);
             BfGridComp.getOverlayMap().put(
-                    new XLine(obj.getCoordinates(), new Coordinates(getOffsetX(obj),
-                            getOffsetY(obj))), image);
+             new XLine(obj.getCoordinates(), new Coordinates(getOffsetX(obj),
+              getOffsetY(obj))), image);
 
         }
         if (obj.isUnconscious()) {
@@ -1327,13 +1322,13 @@ public class DrawMaster {
         // if (image != null)
         // return image;
         image = new BufferedImage(GuiManager.getFullObjSize(), GuiManager.getFullObjSize(),
-                BufferedImage.TYPE_INT_ARGB);
+         BufferedImage.TYPE_INT_ARGB);
         Graphics g = image.getGraphics();
         // Image img = ImageManager.getSizedVersion(obj.getIcon().getImage(),
         // new Dimension(objSize,
         // objSize));
 
-        Image outlineImage = VisibilityMaster.getDisplayImageForUnit(obj);
+        Image outlineImage = cellComp.getGame().getVisionMaster().getVisibilityMaster().getDisplayImageForUnit(obj);
         if (outlineImage != null) {
             g.drawImage(outlineImage, 0, 0, null);
             if (obj.isWall()) {
@@ -1367,13 +1362,13 @@ public class DrawMaster {
             try {
                 if (obj.isInfoSelected()) {
                     infoObjImage = new BufferedImage(GuiManager.getFullObjSize(), GuiManager
-                            .getFullObjSize(), BufferedImage.TYPE_INT_ARGB);
+                     .getFullObjSize(), BufferedImage.TYPE_INT_ARGB);
                     g = infoObjImage.getGraphics();
                     drawObjectOverlays(g, obj);
 
                 } else if (obj.isActiveSelected()) {
                     BufferedImage activeObjImage = new BufferedImage(GuiManager.getFullObjSize(), GuiManager
-                            .getFullObjSize(), BufferedImage.TYPE_INT_ARGB);
+                     .getFullObjSize(), BufferedImage.TYPE_INT_ARGB);
                     g = activeObjImage.getGraphics();
                     drawObjectOverlays(g, obj);
 
@@ -1478,14 +1473,14 @@ public class DrawMaster {
     private void applyHighlights(BufferedImage image, Obj obj) {
         Graphics g = image.getGraphics();
         if (isSingleObj() && cellComp.getTerrainObj().isTargetHighlighted()
-                || (obj.isTargetHighlighted())) {
+         || (obj.isTargetHighlighted())) {
             BORDER border = obj.isMine() ? ImageManager.BORDER_ALLY_HIGHLIGHT
-                    : ImageManager.BORDER_ENEMY_HIGHLIGHT;
+             : ImageManager.BORDER_ENEMY_HIGHLIGHT;
             g.drawImage(
-                    // ImageManager.getSizedVersion(border.getImage(), new
-                    // Dimension(objSize,
-                    // objSize))
-                    border.getImage(), 0, 0, null);
+             // ImageManager.getSizedVersion(border.getImage(), new
+             // Dimension(objSize,
+             // objSize))
+             border.getImage(), 0, 0, null);
         } else
         // if (obj.isInfoSelected()) {
         // if (obj.getGame().getManager().getInfoObj() == obj) {
@@ -1522,7 +1517,7 @@ public class DrawMaster {
 
     private void drawText(Graphics g, SmartText text, Point c) {
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g.setColor(text.getColor());
         g.setFont(text.getFont());
         g.drawString(text.getText(), c.x, c.y);
@@ -1543,10 +1538,10 @@ public class DrawMaster {
         String string = obj.getParam(PARAMS.C_N_OF_COUNTERS);
         SmartText text = new SmartText(string, CASE.getColor());
         Point c =
-                // DrawHelper.getPointForCounters(size, text, getWidth(),
-                // getHeight());
-                new Point(getCompWidth() - FontMaster.getStringWidth(text.getFont(), text.getText()), size
-                        + FontMaster.getFontHeight(text.getFont()));
+         // DrawHelper.getPointForCounters(size, text, getWidth(),
+         // getHeight());
+         new Point(getCompWidth() - FontMaster.getStringWidth(text.getFont(), text.getText()), size
+          + FontMaster.getFontHeight(text.getFont()));
         drawText(g, text, c);
     }
 
@@ -1572,7 +1567,7 @@ public class DrawMaster {
         int width = getCompWidth();
         int height = getCompHeight();
         Point c = new Point(width - FontMaster.getStringWidth(text.getFont(), text.getText()),
-                height - FontMaster.getFontHeight(text.getFont()) / 2);
+         height - FontMaster.getFontHeight(text.getFont()) / 2);
         drawText(g, text, c);
         // TODO after sizing down stacked objects, this becomes invalid!!!
         Rectangle rect = new Rectangle(x, y, size, size);

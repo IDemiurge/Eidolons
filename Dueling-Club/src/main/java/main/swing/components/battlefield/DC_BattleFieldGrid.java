@@ -11,7 +11,7 @@ import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.game.battlefield.BattleFieldGrid;
 import main.game.battlefield.Coordinates;
-import main.game.battlefield.VisionManager;
+import main.game.battlefield.vision.VisionManager;
 import main.game.battlefield.map.DC_Map;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.generic.PartyManager;
@@ -191,7 +191,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
                 change = true;
             } else if (getActiveObj().getOwner().isMe()) {
                 change = true;
-            } else if (VisionManager.checkDetectedEnemy(getActiveObj())) {
+            } else if (getGame().getVisionMaster().checkDetectedEnemy(getActiveObj())) {
                 change = true;
             }
             if (change) {
@@ -217,7 +217,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         if (getOffsetCoordinate() == null) {
             // TODO initial camera
             Unit obj = getActiveObj();
-            if (obj == null || !VisionManager.checkDetectedEnemy(obj)) {
+            if (obj == null || !getGame().getVisionMaster().checkDetectedEnemy(obj)) {
                 obj = (Unit) getGame().getPlayer(true).getHeroObj();
             }
             return obj.getCoordinates().getXorY(x);

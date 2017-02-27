@@ -594,7 +594,7 @@ public class DebugMaster {
                         getObj().modifyParameter(PARAMS.C_N_OF_ACTIONS, 100);
                     }
 
-                    game.getVisionManager().refresh();
+                    game.getVisionMaster().refresh();
                     break;
 
                 case ADD_ITEM:

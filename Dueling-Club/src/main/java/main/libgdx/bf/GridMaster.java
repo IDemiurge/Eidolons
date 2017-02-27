@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.game.battlefield.Coordinates;
+import main.game.battlefield.vision.VisionManager;
 import main.libgdx.GameScreen;
 import main.libgdx.bf.mouse.InputController;
 
@@ -12,6 +13,8 @@ import main.libgdx.bf.mouse.InputController;
  * Created by JustMe on 1/29/2017.
  */
 public class GridMaster {
+
+    private static boolean gammaOn=true;
 
     public static boolean isCoordinateVisible(Coordinates c) {
         Vector2 v = GridMaster.getVectorForCoordinateWithOffset(c);
@@ -78,5 +81,14 @@ public class GridMaster {
 
 
          */
+    }
+
+    public static void setGammaOn(boolean gammaOn) {
+        GridMaster.gammaOn = gammaOn;
+    }
+
+    public static boolean isGammaOn() {
+        if (VisionManager.isVisionHacked()) return false;
+        return gammaOn;
     }
 }

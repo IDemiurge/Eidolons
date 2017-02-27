@@ -3,6 +3,7 @@ package main.entity.obj.attach;
 import main.ability.AbilityObj;
 import main.content.ContentManager;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -12,13 +13,12 @@ import main.entity.obj.AttachedObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.core.game.MicroGame;
 import main.game.battlefield.Coordinates;
+import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.DC_Player;
 import main.game.logic.battle.player.Player;
-import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 
 public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
     private static final String[] STD_PASSIVES_EXCEPTIONS = {UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE
@@ -113,7 +113,7 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
     }
 
     @Override
-    protected void activatePassives() {
+    public void activatePassives() {
         if (ref == null) {
             return;
         }

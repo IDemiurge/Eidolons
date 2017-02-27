@@ -2,7 +2,7 @@ package main.game.core.game;
 
 import main.ability.ActionGenerator;
 import main.ability.InventoryManager;
-import main.ability.UnitMaster;
+import main.ability.UnitTrainingMaster;
 import main.ability.effects.DC_EffectManager;
 import main.client.cc.logic.items.ItemGenerator;
 import main.client.cc.logic.party.PartyObj;
@@ -28,6 +28,8 @@ import main.entity.obj.*;
 import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.game.battlefield.vision.VisionManager;
+import main.game.battlefield.vision.VisionMaster;
 import main.game.core.state.DC_GameState;
 import main.game.core.state.DC_StateManager;
 import main.game.ai.AI_Manager;
@@ -93,7 +95,7 @@ public class DC_Game extends MicroGame {
     public static DC_Game game;
 
     private DC_GameManager manager;
-    private VisionManager visionManager;
+    private VisionMaster visionMaster;
     private DebugMaster debugMaster;
     private TestMasterContent testMaster;
     private ArenaManager arenaManager;
@@ -213,7 +215,7 @@ public class DC_Game extends MicroGame {
         toolTipMaster = new ToolTipMaster(this);
         requirementsManager = new DC_RequirementsManager(this);
         valueManager = new DC_ValueManager(this);
-        visionManager = new VisionManager(this);
+        visionMaster =  VisionManager.getMaster();
         actionManager = new DC_ActionManager(this);
         turnManager = new DC_TurnManager(this);
         movementManager = new DC_MovementManager(this);
@@ -617,8 +619,8 @@ public class DC_Game extends MicroGame {
 
 
 
-    public VisionManager getVisionManager() {
-        return visionManager;
+    public VisionMaster getVisionMaster() {
+        return visionMaster;
     }
 
     @Override
@@ -926,7 +928,7 @@ public class DC_Game extends MicroGame {
     public void setHostClient(Boolean hostClient) {
         this.hostClient = hostClient;
         if (hostClient != null) {
-            UnitMaster.setRandom(false);
+            UnitTrainingMaster.setRandom(false);
         }
     }
 

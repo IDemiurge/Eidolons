@@ -41,7 +41,6 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-@Deprecated
 public class DC_Builder extends Builder {
 
     public static final int OFFSET_X = 18;

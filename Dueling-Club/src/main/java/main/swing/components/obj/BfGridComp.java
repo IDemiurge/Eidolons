@@ -7,7 +7,7 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
-import main.game.battlefield.VisionManager;
+import main.game.battlefield.vision.VisionManager;
 import main.swing.XLine;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.drawing.DrawHelper;

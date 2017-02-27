@@ -81,7 +81,8 @@ public class Attack {
     }
 
     public static Object getAnimationKey(DC_ActiveObj action) {
-        return "Attack anim for " + action.getAnimationKey();
+        return "Attack anim for "
+         + action.getAnimator(). getAnimationKey();
     }
 
     @Override

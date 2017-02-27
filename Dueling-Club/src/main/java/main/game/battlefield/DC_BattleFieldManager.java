@@ -8,6 +8,7 @@ import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates.DIRECTION;
+import main.game.battlefield.vision.VisionManager;
 import main.game.core.game.DC_Game;
 
 import java.util.HashMap;

@@ -15,26 +15,28 @@ import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.entity.UnitEnums.STD_COUNTERS;
 import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.IDENTIFICATION_LEVEL;
 import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
+import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
+import main.entity.tools.DC_ObjMaster;
+import main.entity.tools.EntityMaster;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
-import main.game.core.game.Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;
-import main.game.battlefield.VisionManager;
+import main.game.battlefield.vision.VisionManager;
+import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.game.core.game.DC_Game;
+import main.game.core.game.Game;
 import main.game.logic.battle.player.DC_Player;
 import main.game.logic.battle.player.Player;
 import main.rules.action.PerceptionRule.PERCEPTION_STATUS;
 import main.rules.action.PerceptionRule.PERCEPTION_STATUS_PLAYER;
-import main.rules.mechanics.ConcealmentRule.IDENTIFICATION_LEVEL;
-import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
-import main.swing.components.obj.drawing.VisibilityMaster.OUTLINE_TYPE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -73,11 +75,16 @@ public abstract class DC_Obj extends MicroObj {
         if (!CoreEngine.isLevelEditor()) {
             if ((this instanceof DC_Cell) || (this instanceof Unit)) {
                 playerVisionStatus = VisionEnums.UNIT_TO_PLAYER_VISION.CONCEALED;
-                outlineTypeForPlayer = (this instanceof DC_Cell) ? OUTLINE_TYPE.THICK_DARKNESS
-                        : OUTLINE_TYPE.DARK_OUTLINE;
+                outlineTypeForPlayer = (this instanceof DC_Cell) ? VisionEnums.OUTLINE_TYPE.THICK_DARKNESS
+                        : VisionEnums.OUTLINE_TYPE.DARK_OUTLINE;
                 visibilityLevelForPlayer = VISIBILITY_LEVEL.CONCEALED;
             }
         }
+    }
+
+    @Override
+    protected EntityMaster initMaster() {
+        return new DC_ObjMaster(this);
     }
 
     @Override
@@ -121,7 +128,7 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public boolean checkInSightForUnit(Unit unit) {
-        return getGame().getVisionManager().getUnitVisibilityStatus(this, unit) == VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT;
+        return getGame().getVisionMaster().getUnitVisibilityStatus(this, unit) == VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT;
     }
 
     @Override
@@ -417,7 +424,8 @@ public abstract class DC_Obj extends MicroObj {
         }
         if (activeUnitVisionStatus == null) {
             try {
-                activeUnitVisionStatus = getGame().getVisionManager().getUnitVisibilityStatus(this);
+                activeUnitVisionStatus = getGame().getVisionMaster()
+                 .getUnitVisibilityStatus(this);
             } catch (Exception e) {
                 e.printStackTrace();
             }

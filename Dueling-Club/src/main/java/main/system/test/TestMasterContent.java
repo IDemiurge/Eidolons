@@ -68,7 +68,7 @@ public class TestMasterContent {
     private static String ANIM_TEST_LIST = //Gust of Wind
             "Searing Light;Sorcerous Flame;Ray of Arcanum;Chaos Shockwave;" +
                     "Fire Bolt;Chaos Bolt;" +
-                    "Shadow Bolt;Arcane Bolt;" +
+                    "Light;Haze;" +
                     "Scare;Freeze;" +
                     "Scorching Light;Summon Vampire Bat";
 

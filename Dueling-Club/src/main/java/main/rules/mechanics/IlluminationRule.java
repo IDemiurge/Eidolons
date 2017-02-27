@@ -5,7 +5,7 @@ import main.ability.effects.common.LightEmittingEffect;
 import main.content.C_OBJ_TYPE;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
-import main.entity.EntityMaster;
+import main.entity.EntityCheckMaster;
 import main.entity.Ref;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
@@ -57,7 +57,7 @@ public class IlluminationRule {
         Boolean circular = true;
         if (source.checkBool(GenericEnums.STD_BOOLS.SPECTRUM_LIGHT)) {
             circular = false;
-        } else if (EntityMaster.isOverlaying(source)) {
+        } else if (EntityCheckMaster.isOverlaying(source)) {
             BattleFieldObject dc_Obj = (BattleFieldObject) source;
             if (dc_Obj.getDirection() != null) {
                 circular = false;

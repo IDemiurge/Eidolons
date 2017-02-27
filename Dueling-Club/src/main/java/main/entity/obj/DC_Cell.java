@@ -9,7 +9,7 @@ import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
-import main.game.battlefield.VisionManager;
+import main.game.battlefield.vision.VisionManager;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.building.MapBlock;
 import main.game.logic.battle.player.Player;

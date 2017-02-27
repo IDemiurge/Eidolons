@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BattleFieldObject;
@@ -59,19 +60,48 @@ public class GridPanel extends Group {
     private LightingManager lightingManager;
     private boolean muteEventLog = true;
 
-    public void updateGraves(){
-
-        unitMap.keySet(). forEach(obj->{
-            UnitView uv = (UnitView) unitMap.get(obj);
-            uv.setGraveIndex(  Eidolons.game.getGraveyardManager().getGraveIndex(obj) );
-        });
-    }
-
     public GridPanel(int cols, int rows) {
         this.cols = cols;
         this.rows = rows;
     }
 
+    public void updateOutlines() {
+        unitMap.keySet().forEach(obj -> {
+            OUTLINE_TYPE outline = obj.getOutlineType();
+            UnitView uv = (UnitView) unitMap.get(obj);
+            Texture texture = null;
+            if (outline != null)
+                texture = TextureManager.getOrCreate(
+                 Eidolons.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj));
+
+            uv.setOutlineTexture(texture);
+        });
+    }
+
+    public void updateGamma() {
+        if ( Eidolons.game.getManager().getActiveObj()==null )return ;
+        if ( !Eidolons.game.getManager().getActiveObj().isMine())return ;
+        int x = 0;
+        int y = 0;
+        for (GridCell[] cellRow : (cells)) {
+            for (GridCell cell : cellRow) {
+                x++;
+                float gamma =
+                 Eidolons.game.getVisionMaster().getGammaMaster().getGammaForCell(x, y);
+                cell.setGamma(gamma);
+            }
+            y++;
+        }
+
+    }
+
+    public void updateGraves() {
+
+        unitMap.keySet().forEach(obj -> {
+            UnitView uv = (UnitView) unitMap.get(obj);
+            uv.setGraveIndex(Eidolons.game.getGraveyardManager().getGraveIndex(obj));
+        });
+    }
 
     public GridPanel init() {
         setUnitMap(new HashMap<>());
@@ -113,9 +143,11 @@ public class GridPanel extends Group {
 
 
         GuiEventManager.bind(UPDATE_GUI, obj -> {
-updateGraves();
+            updateOutlines();
+            updateGamma();
+//            updateGraves();
         });
-            GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
+        GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p =
              (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             Map<Borderable, Runnable> map = new HashMap<>();
@@ -131,7 +163,7 @@ updateGraves();
             moveUnitView((BattleFieldObject) param.get());
         });
         GuiEventManager.bind(DESTROY_UNIT_MODEL, param -> {
-            BattleFieldObject unit = (BattleFieldObject)  param.get();
+            BattleFieldObject unit = (BattleFieldObject) param.get();
             UnitView view = (UnitView) unitMap.get(unit);
             view.setVisibleVal(0);//set this val to zero remove unit from initiative queue
             GuiEventManager.trigger(REMOVE_FROM_INITIATIVE_PANEL,
@@ -140,7 +172,7 @@ updateGraves();
         });
 
 
-            GuiEventManager.bind(INGAME_EVENT_TRIGGERED, param -> {
+        GuiEventManager.bind(INGAME_EVENT_TRIGGERED, param -> {
             main.game.logic.event.Event event = (main.game.logic.event.Event) param.get();
             Ref ref = event.getRef();
 
@@ -157,7 +189,7 @@ updateGraves();
              || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
 //                (r.getEffect() instanceof ChangeFacingEffect) nice try
             {
-                BattleFieldObject hero = (BattleFieldObject)  ref.getObj(KEYS.TARGET
+                BattleFieldObject hero = (BattleFieldObject) ref.getObj(KEYS.TARGET
                 );
                 BaseView view = unitMap.get(hero);
                 if (view instanceof UnitView) {
@@ -170,8 +202,7 @@ updateGraves();
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED) {
 
-                if (!DeathAnim.isOn() || ref.isDebug())
-                {
+                if (!DeathAnim.isOn() || ref.isDebug()) {
                     GuiEventManager.trigger(DESTROY_UNIT_MODEL,
                      new EventCallbackParam(ref.getTargetObj()));
                 }
@@ -187,12 +218,12 @@ updateGraves();
             }
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
-                removeUnitView((BattleFieldObject)  ref.getSourceObj());
+                removeUnitView((BattleFieldObject) ref.getSourceObj());
                 caught = true;
             }
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING) {
-                moveUnitView((BattleFieldObject)  ref.getSourceObj());
+                moveUnitView((BattleFieldObject) ref.getSourceObj());
                 caught = true;
             }
 //            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_SUMMONED) {
@@ -221,7 +252,7 @@ updateGraves();
                         if (lightingManager != null) {
                             Obj o = event.getRef().getTargetObj();
                             if (o instanceof Unit) {
-                                lightingManager.updateObject((BattleFieldObject)  event.getRef().getTargetObj());
+                                lightingManager.updateObject((BattleFieldObject) event.getRef().getTargetObj());
                             }
                         }
                         caught = true;
@@ -238,7 +269,7 @@ updateGraves();
 
 
         GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
-            BattleFieldObject hero = (BattleFieldObject)  obj.get();
+            BattleFieldObject hero = (BattleFieldObject) obj.get();
             BaseView view = unitMap.get(hero);
             if (view == null) {
                 System.out.println("unitMap not initiatilized at ACTIVE_UNIT_SELECTED! "
@@ -274,7 +305,7 @@ updateGraves();
                 List<UnitViewOptions> options = new ArrayList<>();
                 List<UnitViewOptions> overlays = new ArrayList<>();
 // TODO how can it throw NullPointer? (21.02)
-                if (map.get(coordinates)==null ) continue;
+                if (map.get(coordinates) == null) continue;
                 for (BattleFieldObject object : map.get(coordinates)) {
                     if (!object.isOverlaying()) {
                         options.add(new UnitViewOptions(object, unitMap));
@@ -296,7 +327,7 @@ updateGraves();
                 uv.updateInitiative(p.getRight());
             });
             GuiEventManager.bind(UNIT_CREATED, p -> {
-                addUnitView((BattleFieldObject)  p.get());
+                addUnitView((BattleFieldObject) p.get());
             });
 
             WaitMaster.receiveInput(WAIT_OPERATIONS.GUI_READY, true);
@@ -365,10 +396,10 @@ updateGraves();
     private BaseView removeUnitView(BattleFieldObject obj) {
         BaseView uv = unitMap.get(obj);
         GridCellContainer gridCellContainer = (GridCellContainer) uv.getParent();
-if (gridCellContainer==null ){
-    LogMaster.log(1,obj+" IS ALREADY REMOVED!");
-    return uv;
-}
+        if (gridCellContainer == null) {
+            LogMaster.log(1, obj + " IS ALREADY REMOVED!");
+            return uv;
+        }
         gridCellContainer.removeActor(uv);
         uv.setVisible(false);
 

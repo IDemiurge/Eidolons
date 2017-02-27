@@ -34,6 +34,8 @@ public class CoreEngine {
     private static boolean arcaneTower = false;
     private static boolean graphicTestMode = true;
     private static boolean graphicsOff=true;
+    private static boolean guiTestMode;
+    private static boolean actionTargetingFiltersOff;
 
     public static void dataInit(boolean newThread, final boolean macro) {
         if (newThread) {
@@ -188,6 +190,13 @@ public class CoreEngine {
     public static boolean isGraphicTestMode() {
         return graphicTestMode;
     }
+    public static boolean isGuiTestMode() {
+        return guiTestMode;
+    }
+
+    public static void setGuiTestMode(boolean guiTestMode) {
+        CoreEngine.guiTestMode = guiTestMode;
+    }
 
     public static void setGraphicTestMode(boolean graphicTestMode) {
         CoreEngine.graphicTestMode = graphicTestMode;
@@ -215,6 +224,14 @@ public class CoreEngine {
 
     public static void setGraphicsOff(boolean graphicsOff) {
         CoreEngine.graphicsOff = graphicsOff;
+    }
+
+    public static boolean isActionTargetingFiltersOff() {
+        return actionTargetingFiltersOff;
+    }
+
+    public static void setActionTargetingFiltersOff(boolean actionTargetingFiltersOff) {
+        CoreEngine.actionTargetingFiltersOff = actionTargetingFiltersOff;
     }
 
     public void dataInit(boolean macro) {

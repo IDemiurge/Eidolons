@@ -1,10 +1,10 @@
 package main.swing.components.panels;
 
+import main.content.enums.rules.VisionEnums;
 import main.entity.Entity;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.game.core.game.DC_Game;
-import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
 import main.swing.components.panels.page.DC_PagedPriorityPanel;
 import main.swing.components.panels.page.info.DC_PagedInfoPanel;
 import main.swing.components.panels.page.log.DC_PagedLogPanel;
@@ -133,7 +133,7 @@ public class DC_UnitInfoPanel extends G_Panel implements MouseListener {
         if (obj instanceof DC_Obj) {
             DC_Obj dcObj = (DC_Obj) obj;
             if (!dcObj.isMine()) {
-                if (dcObj.getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT) {
+                if (dcObj.getVisibilityLevel() != VisionEnums.VISIBILITY_LEVEL.CLEAR_SIGHT) {
                     // if (dcObj.getVisibilityLevel() ==
                     // VISIBILITY_LEVEL.OUTLINE) {
                     bp.setObj(null);

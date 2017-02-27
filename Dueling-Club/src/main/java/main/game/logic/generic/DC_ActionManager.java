@@ -648,7 +648,7 @@ public class DC_ActionManager implements ActionManager {
         DC_UnitAction action = new DC_UnitAction(DataManager.getType(DISARM, DC_TYPE.ACTIONS),
                 hero.getOwner(), game, hero.getRef().getCopy()) {
             public boolean resolve() {
-                animate(); // pass std icon as param?
+//                animate(); // pass std icon as param?
                 TrapMaster.tryDisarmTrap(trap);
                 // false if dead as result?
                 game.getManager().reset();
@@ -664,7 +664,7 @@ public class DC_ActionManager implements ActionManager {
         DC_UnitAction action = new DC_UnitAction(DataManager.getType(UNLOCK, DC_TYPE.ACTIONS),
                 hero.getOwner(), game, hero.getRef().getCopy()) {
             public boolean resolve() {
-                animate(); // pass std icon as param?
+//                animate(); // pass std icon as param?
                 LockMaster.tryUnlock(e, hero);
                 game.getManager().reset();
                 game.getManager().refresh(ownerObj.getOwner().isMe());
@@ -679,7 +679,7 @@ public class DC_ActionManager implements ActionManager {
         DC_UnitAction action = new DC_UnitAction(DataManager.getType(ENTER, DC_TYPE.ACTIONS),
                 hero.getOwner(), game, hero.getRef().getCopy()) {
             public boolean resolve() {
-                animate();
+//                animate();
                 e.enter(hero, coordinates);
                 game.getManager().reset();
                 game.getManager().refresh(ownerObj.getOwner().isMe());

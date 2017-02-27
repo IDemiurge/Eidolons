@@ -1,11 +1,11 @@
 package main.swing.components.obj;
 
+import main.content.enums.rules.VisionEnums;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
-import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
 import main.swing.components.buttons.DynamicButton;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.services.dialog.DialogPanel;
@@ -328,7 +328,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                         Unit unit = (Unit) object;
                         if (unit.isOverlaying()) {
                             // corpseClicked(unit);
-                            if (unit.getVisibilityLevel() == VISIBILITY_LEVEL.CONCEALED) {
+                            if (unit.getVisibilityLevel() == VisionEnums.VISIBILITY_LEVEL.CONCEALED) {
                                 continue;
                             }
                             objClicked = unit;

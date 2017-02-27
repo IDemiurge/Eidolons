@@ -203,6 +203,7 @@ public class DC_GameManager extends GameManager {
             ((DC_Obj) u).setOutlineType(null);
         }
 
+        GuiEventManager.trigger(GuiEventType.UPDATE_GUI, null);
         GuiEventManager.trigger(GuiEventType.UPDATE_LIGHT, null);
         GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, null);
         GuiEventManager.trigger(GuiEventType.UPDATE_EMITTERS, null);
@@ -228,7 +229,7 @@ public class DC_GameManager extends GameManager {
         try {
             if (visibility) {
                 try {
-                    getGame().getVisionManager().refresh();
+                    getGame().getVisionMaster().refresh();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

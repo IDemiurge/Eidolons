@@ -129,7 +129,7 @@ public class DamageMaster extends Manager {
 
     private static PhaseAnimation getActionAnimation(Ref ref, Unit obj) {
         return obj.getGame().getAnimationManager().getAnimation(
-                ((DC_ActiveObj) ref.getActive()).getAnimationKey());
+                ((DC_ActiveObj) ref.getActive()). getAnimationKey());
     }
 
     @Deprecated

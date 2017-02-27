@@ -315,7 +315,7 @@ public abstract class DataModel {
         // }
     }
 
-    protected Map<PARAMETER, Integer> getIntegerMap(boolean base) {
+    public Map<PARAMETER, Integer> getIntegerMap(boolean base) {
         if (base) {
             return type.getIntegerMap(false);
         }

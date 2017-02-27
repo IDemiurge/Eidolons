@@ -10,12 +10,14 @@ import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.AbilityConstructor;
 import main.entity.Entity;
 import main.entity.Ref;
+import main.entity.tools.EntityMaster;
+import main.entity.tools.ObjMaster;
 import main.entity.type.ObjType;
-import main.game.core.game.Game;
 import main.game.battlefield.Coordinates;
+import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.images.ImageManager.HIGHLIGHT;
 import main.system.launch.CoreEngine;
@@ -44,6 +46,11 @@ public class Obj extends Entity {
                 // modification...
                 , owner, game, ref);
         // init();
+    }
+
+    @Override
+    protected EntityMaster initMaster() {
+        return new ObjMaster(this);
     }
 
     public String getNameAndCoordinate() {
@@ -107,7 +114,7 @@ public class Obj extends Entity {
         return this;
     }
 
-    protected void activatePassives() {
+    public void activatePassives() {
         if (passives == null) {
             game.getManager().setActivatingPassives(false);
             return;

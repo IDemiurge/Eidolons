@@ -13,15 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import main.game.battlefield.GraveyardManager;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.panels.dc.InitiativePanelParam;
-import main.libgdx.texture.TextureManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.OnDemandEventCallBack;
 import main.system.auxiliary.log.LogMaster;
-import main.system.images.ImageManager;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -43,6 +40,7 @@ public class UnitView extends BaseView {
     private float alpha = 1f;
     private boolean dead;
     private int graveIndex;
+    private Texture outlineTexture;
 
 
     public UnitView(UnitViewOptions o) {
@@ -141,26 +139,33 @@ public class UnitView extends BaseView {
             sp.setColor(1, 1, 1, 1 * alpha);
             //TODO  BLACK AND WHITE IF UNCONSCIOUS
 
-            if (isDead()) {
-                Texture skullTexture = TextureManager.getOrCreate(ImageManager.DEAD_ICON);
-                int x = 4 + skullTexture.getWidth()
-                 * graveIndex /
-                 GraveyardManager.GRAVE_ROWS;
-                int y = 3 + skullTexture.getHeight()
-                 *graveIndex%
-                 GraveyardManager.GRAVE_ROWS;
-                sp.draw(skullTexture, x, y, skullTexture.getWidth(), skullTexture.getHeight());
+//            if (isDead()) {
+//                Texture skullTexture = TextureManager.getOrCreate(ImageManager.DEAD_ICON);
+//                int x = 4 + skullTexture.getWidth()
+//                 * graveIndex /
+//                 GraveyardManager.GRAVE_ROWS;
+//                int y = 3 + skullTexture.getHeight()
+//                 *graveIndex%
+//                 GraveyardManager.GRAVE_ROWS;
+//                sp.draw(skullTexture, x, y, skullTexture.getWidth(), skullTexture.getHeight());
+//            }
+            Texture texture=portraitTexture;
+            if (outlineTexture!=null ){
+                texture = outlineTexture;
             }
-            sp.draw(portraitTexture, 0, 0, portraitTexture.getWidth(), portraitTexture.getHeight());
-            if (clockTexture != null) {
-                sp.draw(clockTexture, portraitTexture.getWidth() - clockTexture.getWidth(), 0);
+            sp.draw(texture, 0, 0, GridConst.CELL_W, GridConst.CELL_H);
 
-            }
             if (border != null) {
                 border.draw(sp, 1);
             }
-            if (initiativeStrVal != null) {
-                initiativeStrVal.draw(sp, alpha);
+            if (isDrawOverlays()) {
+                if (clockTexture != null) {
+                    sp.draw(clockTexture, portraitTexture.getWidth() - clockTexture.getWidth(), 0);
+
+                }
+                if (initiativeStrVal != null) {
+                    initiativeStrVal.draw(sp, alpha);
+                }
             }
             sp.end();
             fbo.end();
@@ -171,7 +176,7 @@ public class UnitView extends BaseView {
 
             imageContainer.width(getWidth()).height(getHeight()).bottom().left().pack();
 
-            if (clockTexture != null) {
+            if (clockTexture != null) { // ???
                 if (alpha != 0) {
                     InitiativePanelParam panelParam = new InitiativePanelParam(textureRegion, curId, clockVal);
                     GuiEventManager.trigger(GuiEventType.ADD_OR_UPDATE_INITIATIVE, new OnDemandEventCallBack(panelParam));
@@ -182,11 +187,17 @@ public class UnitView extends BaseView {
             }
             needRepaint = false;
         }
-
-        if (arrow != null) {
-            arrow.setOrigin(arrow.getWidth() / 2, getHeight() / 2);
-            arrow.setRotation(arrowRotation);
+        if (isDrawOverlays()) {
+            if (arrow != null) {
+                arrow.setOrigin(arrow.getWidth() / 2, getHeight() / 2);
+                arrow.setRotation(arrowRotation);
+            }
         }
+    }
+
+    private boolean isDrawOverlays() {
+        if (outlineTexture!=null )return false;
+        return true;
     }
 
     @Override
@@ -263,5 +274,13 @@ public class UnitView extends BaseView {
 
     public void setGraveIndex(int graveIndex) {
         this.graveIndex = graveIndex;
+    }
+
+    public void setOutlineTexture(Texture outlineTexture) {
+        this.outlineTexture = outlineTexture;
+    }
+
+    public Texture getOutlineTexture() {
+        return outlineTexture;
     }
 }

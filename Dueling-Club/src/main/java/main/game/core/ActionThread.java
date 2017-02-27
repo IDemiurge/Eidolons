@@ -1,23 +1,34 @@
 package main.game.core;
 
-import main.entity.active.DC_ActiveObj;
+import main.entity.tools.active.Executor;
 
 /**
  * Created by JustMe on 2/21/2017.
  */
 public class ActionThread extends Thread {
-    DC_ActiveObj action;
+    private Executor executor;
 
-    public DC_ActiveObj getAction() {
-        return action;
-    }
-
-    public void setAction(DC_ActiveObj action) {
-        this.action = action;
-    }
 
     @Override
     public void run() {
-        action.activate();
+        while (true) {
+            if (getExecutor() != null) {
+                try {
+                    getExecutor().activate();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    executor = null;
+                }
+            }
+        }
+    }
+
+    public Executor getExecutor() {
+        return executor;
+    }
+
+    public void setExecutor(Executor executor) {
+        this.executor = executor;
     }
 }

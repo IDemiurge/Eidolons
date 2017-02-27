@@ -18,11 +18,7 @@ public abstract class ActiveObjImpl extends Obj implements ActiveObj {
         return false;
     }
 
-    @Override
-    public boolean resolve() {
-        // TODO Auto-generated method stub
-        return false;
-    }
+
 
     @Override
     public boolean activate() {

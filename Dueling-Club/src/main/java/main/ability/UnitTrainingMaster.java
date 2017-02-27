@@ -11,7 +11,7 @@ import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.test.frontend.FAST_DC;
 
-public class UnitMaster {
+public class UnitTrainingMaster {
 
     private static final int DEFAULT_XP_MOD = -33;
     private static final int HUMANOID_XP_MOD = -33;
@@ -111,7 +111,7 @@ public class UnitMaster {
     }
 
     public static void setRandom(boolean random) {
-        UnitMaster.random = random;
+        UnitTrainingMaster.random = random;
     }
 
     public static boolean isShopOn() {
@@ -119,7 +119,7 @@ public class UnitMaster {
     }
 
     public static void setShopOn(boolean shopOn) {
-        UnitMaster.shopOn = shopOn;
+        UnitTrainingMaster.shopOn = shopOn;
     }
 
     public static boolean isSpellsOn() {
@@ -127,7 +127,7 @@ public class UnitMaster {
     }
 
     public static void setSpellsOn(boolean spellsOn) {
-        UnitMaster.spellsOn = spellsOn;
+        UnitTrainingMaster.spellsOn = spellsOn;
     }
 
     public static boolean isSkillsOn() {
@@ -135,6 +135,6 @@ public class UnitMaster {
     }
 
     public static void setSkillsOn(boolean skillsOn) {
-        UnitMaster.skillsOn = skillsOn;
+        UnitTrainingMaster.skillsOn = skillsOn;
     }
 }

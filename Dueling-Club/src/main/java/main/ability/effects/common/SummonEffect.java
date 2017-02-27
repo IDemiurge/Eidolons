@@ -1,6 +1,6 @@
 package main.ability.effects.common;
 
-import main.ability.UnitMaster;
+import main.ability.UnitTrainingMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.oneshot.MicroEffect;
 import main.client.cc.logic.UnitLevelManager;
@@ -110,7 +110,7 @@ public class SummonEffect extends MicroEffect {
         setUnit((BattleFieldObject) game.createUnit(type, c.x, c.y, owner, ref.getCopy()));
         if (unit instanceof Unit) {
              if (!((Unit) unit).isHero()) {
-            UnitMaster.train((Unit) unit);
+            UnitTrainingMaster.train((Unit) unit);
         }
         }
 

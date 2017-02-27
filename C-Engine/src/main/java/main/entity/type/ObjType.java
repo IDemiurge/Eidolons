@@ -5,6 +5,7 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
 import main.entity.Ref;
+import main.entity.tools.EntityMaster;
 import main.game.core.game.Game;
 
 import javax.swing.*;
@@ -19,6 +20,11 @@ public class ObjType extends Entity {
 
     public ObjType() {
         this(Game.game);
+    }
+
+    @Override
+    protected EntityMaster initMaster() {
+        return null;
     }
 
     public ObjType(ObjType type) {

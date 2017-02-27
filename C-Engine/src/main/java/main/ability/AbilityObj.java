@@ -100,11 +100,6 @@ public class AbilityObj extends Obj implements ActiveObj, Interruptable {
 
     }
 
-    @Override
-    public boolean resolve() {
-        // TODO Auto-generated method stub
-        return false;
-    }
 
     @Override
     public boolean activate() {

@@ -555,6 +555,12 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
         this.debug = debug;
     }
 
+    public Ref getTargetingRef(Obj target) {
+        Ref ref = (Ref) clone();
+        ref.setTarget(target.getId());
+        return ref;
+    }
+
     public enum KEYS {
         GAME,
         THIS,

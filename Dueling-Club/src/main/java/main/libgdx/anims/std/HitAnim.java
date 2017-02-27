@@ -77,7 +77,7 @@ public class HitAnim extends ActionAnim {
     public void start() {
         super.start();
         floatingText.init(GameScreen.getInstance().getAnimsStage()
-         , destination, 64, 128, 1.5f);
+         , destination, 0, 128, 1.5f);
     }
 
     private String getTargetSuffix(Obj targetObj) {

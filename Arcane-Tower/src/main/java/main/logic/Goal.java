@@ -2,7 +2,7 @@ package main.logic;
 
 import main.ArcaneTower;
 import main.data.DataManager;
-import main.entity.EntityMaster;
+import main.entity.EntityCheckMaster;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.enums.StatEnums.TASK_STATUS;
@@ -72,10 +72,10 @@ public class Goal extends WorkItem {
 
     public void refreshStatus() {
         TASK_STATUS newStatus = null;
-        if (EntityMaster.checkPropertyAny(getTasks(), AT_PROPS.TASK_STATUS, TASK_STATUS.ACTIVE)) {
+        if (EntityCheckMaster.checkPropertyAny(getTasks(), AT_PROPS.TASK_STATUS, TASK_STATUS.ACTIVE)) {
             newStatus = TASK_STATUS.ACTIVE;
         }
-        if (EntityMaster.checkPropertyAll(getTasks(), AT_PROPS.TASK_STATUS, TASK_STATUS.DONE)) {
+        if (EntityCheckMaster.checkPropertyAll(getTasks(), AT_PROPS.TASK_STATUS, TASK_STATUS.DONE)) {
             newStatus = TASK_STATUS.DONE;
         }
         switch (newStatus) {

@@ -60,7 +60,7 @@ public class VisibilityCondition extends ConditionImpl {
             match = (DC_Obj) ref.getObj(this.match);
             // if (((DC_Game) game).getManager().isAI_Turn()) { what's the idea?
             Unit activeObj = (Unit) ref.getObj(source);
-            result = ((DC_Game) game).getVisionManager().getUnitVisibilityStatus(match, activeObj)
+            result = ((DC_Game) game).getVisionMaster().getUnitVisibilityStatus(match, activeObj)
                     .isSufficient(u_vision);
             // }
         }

@@ -34,7 +34,7 @@ public class OccupiedCondition extends ConditionImpl {
         // .getObjCompMap().get(c);
         if (result) {
             for (Obj obj : game.getObjectsOnCoordinate(c)) {
-                if (game.getVisionManager().checkInvisible(obj)) {
+                if (game.getVisionMaster().checkInvisible(obj)) {
                     if (permitInvisCollision) {
                         result = false;
                         continue;

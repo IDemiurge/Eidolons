@@ -82,7 +82,7 @@ boolean inverseAlpha;
             alphaActionSequence.addAction(fadeInAction);
         }
         MoveByAction moveByAction = new MoveByAction();
-        moveByAction.setAmount(x / 12, y / 12);
+        moveByAction.setAmount(x  , y  );
         moveByAction.setDuration(duration);
 
         RemoveActorAction removeAction = new RemoveActorAction();
@@ -97,7 +97,8 @@ if (delay!=0){
 }else
     parallelAction=new ParallelAction(alphaActionSequence, moveByAction);
 
-        if (imageSupplier != null) {
+        if (imageSupplier != null)
+            if (!imageSupplier.get().isEmpty()){
             Image image = new Image(TextureManager.getOrCreate(imageSupplier.get()));
             addActor(image);
 //            image.setPosition(origin.x, origin.y);

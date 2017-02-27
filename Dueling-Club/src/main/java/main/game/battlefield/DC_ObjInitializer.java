@@ -1,6 +1,6 @@
 package main.game.battlefield;
 
-import main.ability.UnitMaster;
+import main.ability.UnitTrainingMaster;
 import main.client.cc.logic.UnitLevelManager;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.C_OBJ_TYPE;
@@ -332,7 +332,7 @@ public class DC_ObjInitializer {
                         // if (!owner.isMe() || game.isDebugMode()) TODO why
                         // not?
                         //todo optimize train func it too slow
-                        UnitMaster.train((Unit) unit);
+                        UnitTrainingMaster.train((Unit) unit);
                     }
                 }
             } catch (Exception e) {

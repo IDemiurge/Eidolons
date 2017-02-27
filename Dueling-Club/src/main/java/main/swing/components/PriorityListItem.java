@@ -3,7 +3,6 @@ package main.swing.components;
 import main.content.PARAMS;
 import main.content.values.properties.G_PROPS;
 import main.entity.obj.unit.DC_UnitModel;
-import main.game.battlefield.VisionManager;
 import main.swing.components.panels.page.DC_PagedPriorityPanel;
 import main.swing.generic.components.G_Panel;
 import main.swing.renderers.SmartTextManager;
@@ -154,7 +153,7 @@ public class PriorityListItem extends G_Panel {
         String value;
         Color color;
 
-        if (VisionManager.checkDetectedEnemy(unit)) {
+        if (unit. getGame().getVisionMaster().getDetectionMaster().checkDetectedEnemy(unit)) {
             value = unit.getParam(PARAMS.C_N_OF_ACTIONS);
             color = SmartTextManager.getParamCase(PARAMS.C_N_OF_ACTIONS, unit).getColor();
         } else {
@@ -163,7 +162,7 @@ public class PriorityListItem extends G_Panel {
         }
         apText = new SmartText(value, color);
 
-        if (VisionManager.checkDetectedEnemy(unit)) {
+        if (unit. getGame().getVisionMaster().getDetectionMaster().checkDetectedEnemy(unit)) {
             value = unit.getParam(PARAMS.C_INITIATIVE);
             color = SmartTextManager.getParamCase(PARAMS.C_INITIATIVE, unit).getColor();
         } else {

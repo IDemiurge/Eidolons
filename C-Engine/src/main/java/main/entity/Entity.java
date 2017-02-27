@@ -1,20 +1,19 @@
 package main.entity;
 
 import main.ability.AbilityObj;
-import main.content.enums.GenericEnums.ASPECT;
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
 import main.content.enums.GenericEnums;
-import main.content.enums.entity.UnitEnums;
+import main.content.enums.GenericEnums.ASPECT;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
-import main.data.ability.construct.AbilityConstructor;
 import main.entity.obj.ActiveObj;
+import main.entity.tools.*;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
-import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.game.logic.battle.player.Player;
+import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
@@ -56,6 +55,10 @@ public abstract class Entity extends DataModel implements OBJ {
     protected boolean dead = false;
     protected Player originalOwner;
 
+    EntityMaster master;
+
+
+
     public Entity() {
 
     }
@@ -80,11 +83,61 @@ public abstract class Entity extends DataModel implements OBJ {
             LogMaster.log(-1, id + " - NEW ID for " + type.getName());
 
             setRef(ref);
+        master = initMaster();
             init();
         }
     }
 
+    protected EntityMaster initMaster() {
+        return new EntityMaster(this) {
+            @Override
+            protected EntityAnimator createEntityAnimator() {
+                return null;
+            }
+
+            @Override
+            protected EntityLogger createEntityLogger() {
+                return null;
+            }
+
+            @Override
+            protected EntityInitializer createInitializer() {
+                return new EntityInitializer(getEntity(), this);
+            }
+
+            @Override
+            protected EntityChecker createEntityChecker() {
+                return null;
+            }
+
+            @Override
+            protected EntityResetter createResetter() {
+                return new EntityResetter(getEntity(), this);
+            }
+
+            @Override
+            protected EntityCalculator createCalculator() {
+                return null;
+            }
+
+            @Override
+            protected EntityHandler createHandler() {
+                return null;
+            }
+        };
+    }
+
+    public EntityMaster getMaster() {
+        return master;
+    }
+
     public void toBase() {
+        if (getMaster() != null)
+        if (getResetter() != null) {
+        getResetter().toBase();
+        return ;
+        }
+
         getPropCache().clear();
         getIntegerMap(false).clear(); // TODO [OPTIMIZED] no need to clear
         // type's map?
@@ -153,7 +206,7 @@ public abstract class Entity extends DataModel implements OBJ {
             }
 
         }
-        resetStatus();
+//        resetStatus();
         setDirty(false);
 
     }
@@ -172,38 +225,21 @@ public abstract class Entity extends DataModel implements OBJ {
     }
 
     public void construct() {
-
-        if (!isConstructed() || game.isSimulation() || isConstructAlways()) {
-            try {
-                setRef(ref); // potential threat
-                AbilityConstructor.constructObj(this);
-                if (!game.isSimulation()) {
-                    setConstructed(true);
-                }
-                constructing = false;
-            } catch (Exception e) {
-                // if (game.isSimulation())
-                e.printStackTrace();
-                LogMaster.log(1
-                        // LogMaster.CORE_DEBUG
-                        , "Error on construction: " + getName());
-                // if (!game.isSimulation())
-                // setConstructed(true);
-            }
-        }
+//TODO temp
+        if (getInitializer()!=null )
+      getInitializer().construct();
 
     }
 
-    protected boolean isConstructAlways() {
+    public boolean isConstructAlways() {
         return false;
     }
 
-    protected void resetStatus() {
-        setProperty(G_PROPS.STATUS, "");
-        if (isDead()) {
-            addStatus(UnitEnums.STATUS.DEAD.toString());
-        }
+    public void resetRef() {
+        setRef(ref);
     }
+
+
 
     public void addStatus(String value) {
         addProperty(G_PROPS.STATUS, value);
@@ -403,5 +439,33 @@ public abstract class Entity extends DataModel implements OBJ {
 
     public String getGroupingKey() {
         return getProperty(getOBJ_TYPE_ENUM().getGroupingKey());
+    }
+
+    public EntityAnimator getAnimator() {
+        return getMaster().getAnimator();
+    }
+
+    public EntityLogger getLogger() {
+        return getMaster().getLogger();
+    }
+
+    public EntityInitializer getInitializer() {
+        return getMaster().getInitializer();
+    }
+
+    public EntityCalculator getCalculator() {
+        return getMaster().getCalculator();
+    }
+
+    public EntityChecker getChecker() {
+        return getMaster().getChecker();
+    }
+
+    public EntityHandler getHandler() {
+        return getMaster().getHandler();
+    }
+
+    public EntityResetter getResetter() {
+        return getMaster().getResetter();
     }
 }

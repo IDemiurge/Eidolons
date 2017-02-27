@@ -1,6 +1,7 @@
 package main.swing.components.panels.page;
 
 import main.content.DC_TYPE;
+import main.content.enums.rules.VisionEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
@@ -8,7 +9,7 @@ import main.entity.type.UnitType;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.turn.TurnManager;
 import main.rules.RuleMaster.RULE;
-import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
+import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
 import main.system.net.DC_IdManager;
@@ -66,7 +67,7 @@ public class DC_PagedPriorityPanel extends G_PagePanel<Unit> {
 
             @Override
             public VISIBILITY_LEVEL getVisibilityLevel() {
-                return VISIBILITY_LEVEL.CONCEALED;
+                return VisionEnums.VISIBILITY_LEVEL.CONCEALED;
             }
 
             @Override

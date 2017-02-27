@@ -19,7 +19,7 @@ import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.DC_MovementManager;
 import main.game.battlefield.FacingMaster;
-import main.game.battlefield.VisionManager;
+import main.game.battlefield.vision.VisionManager;
 import main.game.logic.generic.DC_ActionManager;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.RULE;

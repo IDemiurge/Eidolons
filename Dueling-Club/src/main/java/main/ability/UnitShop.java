@@ -259,7 +259,7 @@ public class UnitShop {
 
     private static ObjType getItem(WeightMap<ObjType> map) {
         ObjType baseType;
-        if (UnitMaster.isRandom()) {
+        if (UnitTrainingMaster.isRandom()) {
             baseType = new RandomWizard<ObjType>().getObjectByWeight(map);
         } else {
             baseType = (map).getGreatest();

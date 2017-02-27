@@ -110,7 +110,7 @@ public class FloatingTextMaster {
             FloatingText floatingText = getFloatingText(active, CASE, arg);
             floatingText.setDelay(delay);
             floatingText.setDuration(3);
-            floatingText.setDisplacementX(80);
+            floatingText.setDisplacementX(0);
             floatingText.setDisplacementY(140);
             anim.initPosition(); // TODO rework this!
             floatingText.setPosition(CASE.atOrigin ? anim.getOrigin() : anim.getDestination());
@@ -147,6 +147,8 @@ public class FloatingTextMaster {
     }
 
     public enum TEXT_CASES {
+        DEFAULT,
+        REQUIREMENT,
         CRITICAL,
         SNEAK,
         DODGE,

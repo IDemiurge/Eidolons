@@ -214,7 +214,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     }
 
     @Override
-    protected void activatePassives() {
+    public void activatePassives() {
         if (getActive() != null) {
             ref.setID(KEYS.ACTIVE, getActive().getId());
         }

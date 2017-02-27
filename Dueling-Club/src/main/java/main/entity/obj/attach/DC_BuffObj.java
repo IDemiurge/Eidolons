@@ -6,6 +6,8 @@ import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BuffObj;
+import main.entity.tools.DC_ObjMaster;
+import main.entity.tools.EntityMaster;
 import main.entity.type.BuffType;
 import main.game.core.game.DC_Game;
 import main.game.core.game.MicroGame;
@@ -19,6 +21,11 @@ public class DC_BuffObj extends BuffObj {
                       int duration, Condition retainCondition) {
         super(type, owner, game, ref, effect, duration, retainCondition);
 
+    }
+
+    @Override
+    protected EntityMaster initMaster() {
+        return new DC_ObjMaster(this) ;
     }
 
     @Override

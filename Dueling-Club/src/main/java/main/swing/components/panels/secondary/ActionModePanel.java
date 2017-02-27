@@ -103,7 +103,7 @@ public class ActionModePanel extends G_Panel implements MouseListener {
         // null);
 
         if (isDrawAuto()) {
-            String string = action.isSwitchOn() ? AUTO_ON : AUTO_OFF;
+            String string = action.isAutoSelectionOn() ? AUTO_ON : AUTO_OFF;
             g.setColor(getTextColor());
             g.drawString(string, MigMaster.getCenteredTextPosition(string, getTooltipFont(),
                     getWidth()), getHeight() - auto);
@@ -175,7 +175,7 @@ public class ActionModePanel extends G_Panel implements MouseListener {
     }
 
     protected void toggleAuto() {
-        action.setAutoSelectionOn(!action.isSwitchOn());
+        action.setAutoSelectionOn(!action.isAutoSelectionOn());
         refresh();
     }
 

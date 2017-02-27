@@ -58,7 +58,7 @@ public class ActionAnimation extends PhaseAnimation {
     }
 
     public Object generateKey() {
-        return action.getAnimationKey();
+        return action.getAnimator(). getAnimationKey();
     }
 
     @Override

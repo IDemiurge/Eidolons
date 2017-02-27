@@ -7,7 +7,7 @@ import main.content.enums.entity.HeroEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
-import main.entity.EntityMaster;
+import main.entity.EntityCheckMaster;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
@@ -178,7 +178,7 @@ public class NameMaster {
 
     private static String generateName(Entity hero, String backgroundNameGroups,
                                        boolean secondIncluded) {
-        boolean female = EntityMaster.getGender(hero) == HeroEnums.GENDER.FEMALE;
+        boolean female = EntityCheckMaster.getGender(hero) == HeroEnums.GENDER.FEMALE;
         String name = null;
 
         for (String nameGroup : StringMaster.openContainer(backgroundNameGroups, " ")) {
@@ -316,8 +316,8 @@ public class NameMaster {
     }
 
     public static String generateName(Entity hero) {
-        RACE race = EntityMaster.getRace(hero);
-        BACKGROUND bg = EntityMaster.getBackground(hero);
+        RACE race = EntityCheckMaster.getRace(hero);
+        BACKGROUND bg = EntityCheckMaster.getBackground(hero);
         switch (race) {
             case HUMAN:
                 if (bg.toString().contains("Raven")) {
@@ -387,7 +387,7 @@ public class NameMaster {
         List<String> nameGroups = StringMaster.openContainer(getNamesGroups(getBg(hero)), " ");
         List<String> list = new LinkedList<>();
         for (String nameGroup : nameGroups) {
-            list.addAll(StringMaster.openContainer(getNamesForGroup(nameGroup, EntityMaster
+            list.addAll(StringMaster.openContainer(getNamesForGroup(nameGroup, EntityCheckMaster
                     .getGender(hero) == HeroEnums.GENDER.FEMALE), " "));
         }
         String name = new ListChooser(SELECTION_MODE.MULTIPLE, list, false).choose();

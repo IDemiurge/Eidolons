@@ -6,6 +6,7 @@ import main.entity.obj.BfObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.battlefield.vision.VisionManager;
 import main.game.core.state.DC_GameState;
 import main.game.core.state.MicroGameState;
 import main.game.battlefield.map.DC_Map;
@@ -17,8 +18,6 @@ import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.hotkey.DC_KeyManager;
 import main.system.launch.CoreEngine;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.Set;
 
@@ -167,7 +166,7 @@ public class DC_BattleField extends SwingBattleField {
     public void selectActiveObj(Obj obj, boolean b) {
         obj.setActiveSelected(true);
         this.setActiveSelectedObj(obj);
-        getState().getGame().getVisionManager().refresh();
+        getState().getGame().getVisionMaster().refresh();
 
         if (VisionManager.checkVisible((DC_Obj) obj)) {
             centerCameraOn(obj); // TODO [QUICK FIX]

@@ -6,11 +6,11 @@ import main.content.PROPS;
 import main.content.VALUE;
 import main.content.ValuePageManager;
 import main.content.ValuePages;
+import main.content.enums.rules.VisionEnums;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
-import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
 import main.system.auxiliary.StringMaster;
@@ -81,7 +81,7 @@ public class DC_PagedInfoPanel extends G_PagePanel<VALUE> {
         if (!getEntity().getGame().isSimulation()) {
             if (getUnit() != null) {
                 if (!getUnit().getOwner().isMe()) {
-                    if (getUnit().getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT) {
+                    if (getUnit().getVisibilityLevel() != VisionEnums.VISIBILITY_LEVEL.CLEAR_SIGHT) {
                         values.set(0, ValuePageManager.getOutlineValues());
                     }
                 }

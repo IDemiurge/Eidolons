@@ -44,20 +44,22 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.attach.DC_FeatObj;
+import main.entity.tools.EntityMaster;
+import main.entity.tools.unit.UnitMaster;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
 import main.game.ai.tools.ParamAnalyzer;
 import main.game.battlefield.CoordinatesMaster;
 import main.game.battlefield.attack.DC_AttackMaster;
 import main.game.battlefield.attack.ResistMaster;
+import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.DC_Player;
+import main.game.logic.battle.player.Player;
 import main.game.logic.dungeon.Dungeon;
+import main.game.logic.generic.DC_ActionManager;
 import main.game.logic.generic.hero.DC_Attributes;
 import main.game.logic.generic.hero.DC_Masteries;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.entity.MacroActionManager.MACRO_MODES;
-import main.game.logic.battle.player.Player;
-import main.game.logic.generic.DC_ActionManager;
 import main.rules.action.EngagedRule;
 import main.rules.rpg.IntegrityRule;
 import main.system.DC_Constants;
@@ -145,6 +147,11 @@ public class Unit extends DC_UnitModel {
         if (MacroManager.isMacroGame()) {
             // macro params? or maybe just out of 100
         }
+    }
+
+    @Override
+    protected EntityMaster initMaster() {
+        return new UnitMaster(this);
     }
 
     @Override

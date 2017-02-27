@@ -1,6 +1,6 @@
 package main.game.logic.generic;
 
-import main.ability.UnitMaster;
+import main.ability.UnitTrainingMaster;
 import main.client.cc.logic.party.PartyObj;
 import main.client.dc.Launcher;
 import main.content.DC_TYPE;
@@ -619,7 +619,7 @@ public class SpawnManager {
             }
 
             Unit unit = (Unit) game.createUnit(type, c, wave.getOwner());
-            UnitMaster.train(unit);
+            UnitTrainingMaster.train(unit);
 
             unit.setFacing(facing);
             wave.addUnit(unit);

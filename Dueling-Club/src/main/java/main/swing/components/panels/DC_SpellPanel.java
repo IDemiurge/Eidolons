@@ -103,7 +103,7 @@ public class DC_SpellPanel extends G_ListPanel<DC_SpellObj> implements
     public void highlightsOff() {
         for (DC_SpellObj spell : data) {
             if (spell != null) {
-                spell.setHighlighted(false);
+//                spell.setHighlighted(false);
             }
         }
         refresh();
@@ -112,7 +112,7 @@ public class DC_SpellPanel extends G_ListPanel<DC_SpellObj> implements
     public void highlight(Set<Obj> set) {
         for (DC_SpellObj spell : getSpellObjs()) {
             if (set.contains(spell)) {
-                spell.setHighlighted(true);
+//                spell.setHighlighted(true);
             }
 
         }
@@ -121,26 +121,15 @@ public class DC_SpellPanel extends G_ListPanel<DC_SpellObj> implements
 
     @Override
     public int compare(DC_SpellObj o1, DC_SpellObj o2) {
-        if (o1 == o2) {
-            return 0;
-        }
-        if (o1.isPrepared() == o2.isPrepared()) {
-            return closeComparison(o1, o2);
-        }
-        return (o1.isPrepared()) ? -1 : 1;
+        return 0;
+//        if (o1 == o2) {
+//            return 0;
+//        }
+//        if (o1.isPrepared() == o2.isPrepared()) {
+//            return closeComparison(o1, o2);
+//        }
+//        return (o1.isPrepared()) ? -1 : 1;
     }
 
-    private int closeComparison(DC_SpellObj o1, DC_SpellObj o2) {
-        if (o1.isHighlighted() == o2.isHighlighted()) {
-            return closerComparison(o1, o2);
-        }
-        return (o1.isHighlighted()) ? -1 : 1;
-    }
 
-    private int closerComparison(DC_SpellObj o1, DC_SpellObj o2) {
-        if (o1.getCircle() == o2.getCircle()) {
-            return (o1.getEssenceCost() < o2.getEssenceCost()) ? -1 : 1;
-        }
-        return (o1.getCircle() < o2.getCircle()) ? -1 : 1;
-    }
 }

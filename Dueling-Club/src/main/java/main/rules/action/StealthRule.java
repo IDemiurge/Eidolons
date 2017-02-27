@@ -5,21 +5,19 @@ import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.BfObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.obj.unit.Unit;
 import main.entity.obj.unit.DC_UnitModel;
+import main.entity.obj.unit.Unit;
+import main.game.battlefield.FacingMaster;
+import main.game.battlefield.vision.VisionManager;
 import main.game.core.game.DC_Game;
 import main.game.core.master.BuffMaster;
-import main.game.battlefield.FacingMaster;
-import main.game.battlefield.VisionManager;
-import main.rules.mechanics.ConcealmentRule;
-import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
-import main.swing.components.obj.drawing.VisibilityMaster;
 import main.system.math.PositionMaster;
 import main.system.math.roll.RollMaster;
 
@@ -132,7 +130,7 @@ public class StealthRule implements ActionRule {
         }
         for (Unit u : game.getUnits()) {
             if (checkHidden(source)) {
-                if (!VisibilityMaster.isZeroVisibility(source, true)) {
+                if (!game.getVisionMaster().getVisibilityMaster().isZeroVisibility(source, true)) {
                     // if (ConcealmentRule.getVisibilityLevel(u, source,
                     // source.checkInSightForUnit(u)) !=
                     // VISIBILITY_LEVEL.CONCEALED) {
@@ -142,7 +140,7 @@ public class StealthRule implements ActionRule {
             }
 
             if (checkHidden(u)) {
-                if (ConcealmentRule.getVisibilityLevel(source, u) != VISIBILITY_LEVEL.CONCEALED) {
+                if (game.getVisionMaster().getVisibilityMaster().getVisibilityLevel(source, u) != VISIBILITY_LEVEL.CONCEALED) {
                     rollSpotted(source, u);
                 }
             }

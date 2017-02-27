@@ -6,10 +6,10 @@ import main.content.ContentManager;
 import main.content.PARAMS;
 import main.content.VALUE;
 import main.content.enums.entity.ActionEnums;
-import main.content.enums.system.AiEnums.AI_LOGIC;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.enums.system.AiEnums.AI_LOGIC;
 import main.content.values.parameters.PARAMETER;
 import main.elements.conditions.Condition;
 import main.elements.costs.Costs;
@@ -23,15 +23,15 @@ import main.entity.obj.attach.DC_BuffObj;
 import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
 import main.game.ai.tools.future.FutureBuilder;
 import main.game.ai.tools.target.AI_SpellMaster;
 import main.game.battlefield.attack.DamageMaster;
+import main.game.core.Eidolons;
+import main.game.core.game.DC_Game;
 import main.rules.RuleMaster.RULE;
 import main.rules.mechanics.CoatingRule;
 import main.swing.builders.DC_Builder;
 import main.swing.components.obj.CellComp;
-import main.swing.components.obj.drawing.VisibilityMaster;
 import main.swing.components.panels.ValueIconPanel;
 import main.swing.components.panels.page.info.PropertyPage;
 import main.swing.components.panels.page.small.SmallItem;
@@ -39,14 +39,10 @@ import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.list.CustomList;
 import main.swing.generic.components.list.G_List;
 import main.swing.generic.components.panels.G_ListPanel;
-import main.system.graphics.ColorManager;
-import main.system.auxiliary.log.LogMaster;
-import main.system.graphics.FontMaster;
-import main.system.graphics.GuiManager;
 import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.AnimationManager.MouseItem;
-import main.system.graphics.MigMaster;
-import main.system.graphics.PhaseAnimation;
+import main.system.graphics.*;
 import main.system.images.ImageManager;
 import main.system.math.MathMaster;
 import main.system.text.TextItem.TEXT_TYPE;
@@ -88,7 +84,7 @@ public class ToolTipMaster {
     }
 
     public static String getObjTooltip(DC_Obj target) {
-        String tooltip = VisibilityMaster.getTooltip(target);
+        String tooltip = Eidolons.game.getVisionMaster().getHintMaster(). getTooltip(target);
         if (tooltip != null) {
             return tooltip;
         }

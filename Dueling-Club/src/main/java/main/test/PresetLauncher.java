@@ -1,6 +1,6 @@
 package main.test;
 
-import main.ability.UnitMaster;
+import main.ability.UnitTrainingMaster;
 import main.client.cc.logic.items.ItemGenerator;
 import main.content.DC_TYPE;
 import main.content.PROPS;
@@ -18,6 +18,7 @@ import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
 import main.system.test.TestMasterContent;
 import main.test.Preset.PRESET_DATA;
 import main.test.Preset.PRESET_OPTION;
@@ -38,9 +39,10 @@ public class PresetLauncher {
 
     };
     public static int PRESET_OPTION = -1;
+    static LAUNCH launch;
 
     public static Boolean chooseLaunchOption() {
-        int i =PRESET_OPTION;
+        int i = PRESET_OPTION;
         if (i == -1) {
             if (!FAST_DC.forceRunGT) {
                 i = DialogMaster.optionChoice("", LAUNCH_OPTIONS);
@@ -48,18 +50,20 @@ public class PresetLauncher {
                 i = 1;
             }
         }
-            Preset p =null ;
+        Preset p = null;
+        initLaunch(LAUNCH_OPTIONS[i]);
         switch (LAUNCH_OPTIONS[i]) {
             case "Last":
                 Preset lastPreset = PresetMaster.loadLastPreset();
                 UnitGroupMaster.setFactionMode(false);
-                UnitMaster.setRandom(false);
+                UnitTrainingMaster.setRandom(false);
                 PresetMaster.setPreset(lastPreset);
                 break;
             case "Light":
                 LightingManager.setLightOn(true);
                 LightingManager.setTestMode(true);
-                    p = PresetMaster.loadPreset("Light Test.xml");
+                p = PresetMaster.loadPreset("Light Test.xml");
+                CoreEngine.setActionTargetingFiltersOff(true);
             case "Emitters":
                 ParticleManager.setAmbienceOn(true);
 //                if (p==null )
@@ -67,11 +71,14 @@ public class PresetLauncher {
                 EmitterController.setTestMode(true);
                 FAST_DC.getGameLauncher().DUMMY_MODE = true;
                 FAST_DC.getGameLauncher().DUMMY_PP = true;
+                CoreEngine.setActionTargetingFiltersOff(true);
             case "Gui":
                 if (p == null) {
                     p = PresetMaster.loadPreset("Graphics Test.xml");
                 }
+                CoreEngine.setGuiTestMode(true);
                 PresetMaster.setPreset(p);
+                CoreEngine.setActionTargetingFiltersOff(true);
                 return true;
             case "Recent":
                 chooseRecentPreset();
@@ -87,6 +94,7 @@ public class PresetLauncher {
                 RuleMaster.setScope(RULE_SCOPE.FULL);
                 p = PresetMaster.loadPreset("ai.xml");
                 PresetMaster.setPreset(p);
+
                 return null;
             case "Logic":
                 FAST_DC.getGameLauncher().DUMMY_MODE = true;
@@ -95,16 +103,18 @@ public class PresetLauncher {
                 RuleMaster.setScope(RULE_SCOPE.TEST);
                 return true;
             case "Anims":
-                EmitterController.overrideKeys=true;
+                EmitterController.overrideKeys = true;
                 FAST_DC.getGameLauncher().DUMMY_MODE = true;
                 FAST_DC.getGameLauncher().DUMMY_PP = true;
                 FAST_DC.getGameLauncher().setFAST_MODE(true);
                 TestMasterContent.setImmortal(false);
+
+                CoreEngine.setActionTargetingFiltersOff(true);
                 return true;
             case "Superfast":
                 FAST_DC.getGameLauncher().DUMMY_MODE = true;
                 FAST_DC.getGameLauncher().DUMMY_PP = true;
-                FAST_DC.getGameLauncher().setSUPER_FAST_MODE( true);
+                FAST_DC.getGameLauncher().setSUPER_FAST_MODE(true);
                 return false;
             case "Load":
                 // if (choosePreset()==null)
@@ -113,6 +123,15 @@ public class PresetLauncher {
 
         }
         return null;
+    }
+
+    public static LAUNCH getLaunch() {
+        return launch;
+    }
+
+    public static void initLaunch(String option) {
+        launch = new EnumMaster<LAUNCH>().retrieveEnumConst(LAUNCH.class, option);
+
     }
 
     public static Preset chooseRecentPreset() {
@@ -163,7 +182,7 @@ public class PresetLauncher {
 
     public static void launchPreset(Preset profile) {
         PresetMaster.setPreset(profile);
-        for (PRESET_DATA item : PRESET_DATA.values() ) {
+        for (PRESET_DATA item : PRESET_DATA.values()) {
 
             String value = profile.getValue(item);
             if (value != null) {
@@ -199,14 +218,14 @@ public class PresetLauncher {
             }
         }
         /*
-		 * set dungeon, layer, encounter, party, options, ... 
+         * set dungeon, layer, encounter, party, options, ...
 		 */
     }
 
     private static void initOptions(String value) {
         for (String optionString : StringMaster.openContainer(value)) {
             PRESET_OPTION option = new EnumMaster<PRESET_OPTION>().retrieveEnumConst(
-                    PRESET_OPTION.class, optionString);
+             PRESET_OPTION.class, optionString);
             switch (option) {
                 case DEBUG:
                     DC_Game.game.setDebugMode(true);
@@ -277,5 +296,49 @@ public class PresetLauncher {
     private static void initContentScope(String value) {
         // TODO Auto-generated method stub
 
+    }
+static {
+    LAUNCH.Gui.visionHacked=true;
+    LAUNCH.Anims.visionHacked=true;
+}
+    public enum LAUNCH {
+AI, Gui, Logic,  Anims,
+ Emitters,
+        ;
+
+        public String preset;
+        public RULE_SCOPE ruleScope;
+        public boolean dummy;
+        public boolean dummy_pp;
+        public boolean visionHacked;
+        public boolean fast;
+        public boolean actionTargetingFiltersOff;
+        public boolean freeActions;
+        public boolean itemGenerationOff;
+        public boolean deterministicUnitTraining;
+        LAUNCH() {
+
+        }
+        LAUNCH(String preset,
+               RULE_SCOPE ruleScope,
+               boolean dummy,
+               boolean dummy_pp,
+               boolean visionHacked,
+               boolean fast,
+               boolean actionTargetingFiltersOff,
+               boolean freeActions,
+               boolean itemGenerationOff,
+               boolean deterministicUnitTraining) {
+            this.preset = preset;
+            this.ruleScope = ruleScope;
+            this.dummy = dummy;
+            this.dummy_pp = dummy_pp;
+            this.visionHacked = visionHacked;
+            this.fast = fast;
+            this.actionTargetingFiltersOff = actionTargetingFiltersOff;
+            this.freeActions = freeActions;
+            this.itemGenerationOff = itemGenerationOff;
+            this.deterministicUnitTraining = deterministicUnitTraining;
+        }
     }
 }

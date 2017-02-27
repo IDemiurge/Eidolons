@@ -8,7 +8,7 @@ import main.content.ValuePages;
 import main.content.enums.entity.HeroEnums;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
-import main.entity.EntityMaster;
+import main.entity.EntityCheckMaster;
 import main.entity.obj.unit.Unit;
 import main.system.DC_Formulas;
 import main.system.auxiliary.StringMaster;
@@ -372,7 +372,7 @@ public class IntegrityRule {
                 return "Rebel"; // Troublemaker renegade, daredevil,
             // troublemaker, adventurer
             case HONOR:
-                if (EntityMaster.getGender(hero) == HeroEnums.GENDER.FEMALE) {
+                if (EntityCheckMaster.getGender(hero) == HeroEnums.GENDER.FEMALE) {
                     return "Lady";
                 }
                 return "Gentleman";
@@ -428,7 +428,7 @@ public class IntegrityRule {
             case HONOR:
                 return "Sneak";
             case TREACHERY:
-                if (EntityMaster.getGender(hero) == HeroEnums.GENDER.FEMALE) {
+                if (EntityCheckMaster.getGender(hero) == HeroEnums.GENDER.FEMALE) {
                     return "Lady";
                 }
                 return "Gentleman";
@@ -456,7 +456,7 @@ public class IntegrityRule {
                 return "Free Spirit"; // renegade, daredevil, troublemaker,
             // adventurer
             case HONOR:
-                if (EntityMaster.getGender(hero) == HeroEnums.GENDER.FEMALE) {
+                if (EntityCheckMaster.getGender(hero) == HeroEnums.GENDER.FEMALE) {
                     return "Lady";
                 }
                 return "Gentleman";
@@ -483,7 +483,7 @@ public class IntegrityRule {
     }
 
     private static String getEmptyDescription(Entity hero) {
-        if (EntityMaster.getGender(hero) == HeroEnums.GENDER.FEMALE) {
+        if (EntityCheckMaster.getGender(hero) == HeroEnums.GENDER.FEMALE) {
             return "Woman";
         }
         return "Man";

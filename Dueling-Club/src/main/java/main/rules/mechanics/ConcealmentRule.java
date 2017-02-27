@@ -1,23 +1,14 @@
 package main.rules.mechanics;
 
 import main.content.PARAMS;
-import main.content.enums.entity.UnitEnums;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.rules.VisionEnums;
 import main.entity.active.DC_ActiveObj;
-import main.entity.obj.BfObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.battlefield.FacingMaster;
-import main.game.logic.dungeon.Dungeon;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.math.PositionMaster;
 import main.system.text.LogManager;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ConcealmentRule {
     /*
@@ -30,141 +21,6 @@ public class ConcealmentRule {
 	 * passive or tag or classif.
 	 */
 
-    private static Map<DC_Obj, Integer> cache = new HashMap<>();
-    private static Integer GLOBAL_CONCEALMENT = 0;
-    private static Integer GLOBAL_ILLUMINATION = 70;
-
-    public static VISIBILITY_LEVEL getVisibilityLevel(Unit source, DC_Obj target) {
-        return getVisibilityLevel(source, target, null);
-    }
-
-    // public static String getOutlinePicture(VISIBILITY_LEVEL vl, DC_HeroObj
-    // obj) {
-    // }
-    public static void clearCache() {
-        cache.clear();
-    }
-
-    public static int getGamma(Unit source, DC_Obj target, Boolean status) {
-        return getGamma(false, source, target);
-    }
-
-    public static int getGamma(boolean minusForVagueLight, Unit source, DC_Obj target) {
-        Integer gamma;
-        // = cache.getOrCreate(target);
-        // if (gamma != null)
-        // return gamma;
-        if (source == null) {
-            source = target.getGame().getManager().getActiveObj();
-        }
-        Dungeon dungeon = source.getGame().getDungeon();
-        Integer illumination = target.getIntParam(PARAMS.ILLUMINATION);
-        illumination += target.getIntParam(PARAMS.LIGHT_EMISSION) / 2;
-        if (dungeon != null) {
-            illumination += dungeon.getGlobalIllumination();
-        }
-
-        illumination += GLOBAL_ILLUMINATION;
-        Integer concealment = target.getIntParam(PARAMS.CONCEALMENT);
-        concealment += source.getIntParam(PARAMS.CONCEALMENT) / 2; // getOrCreate from
-        // cell in
-        // case?
-        if (dungeon != null) {
-            concealment += dungeon.getIntParam(PARAMS.GLOBAL_CONCEALMENT);
-        }
-
-        concealment += GLOBAL_CONCEALMENT;
-
-        // main.system.auxiliary.LogMaster.log(0, "***" + target +
-        // "'s illumination= " + illumination
-        // + " ; concealment=" + concealment);
-        Integer ilMod = 100;
-        Integer cMod = 100;
-        int distance = PositionMaster.getDistance(source, target);
-        // from 200 to 25 on diff of 8 to -5
-        // def sight range of 5, I'd say
-        Integer sight = source.getIntParam(PARAMS.SIGHT_RANGE);
-        FACING_SINGLE singleFacing = FacingMaster.getSingleFacing(source, (BfObj) target);
-        if (singleFacing == UnitEnums.FACING_SINGLE.BEHIND) {
-            sight = source.getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
-        } else if (singleFacing == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
-            sight -= source.getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
-        }
-        // else if (singleFacing == FACING_SINGLE.BEHIND)
-        // sight = 0; // ???
-        int diff = distance - sight;
-
-        if (diff > 0) {
-            ilMod = 100 - (diff * 10 + diff * diff * 5);
-        } else {
-            ilMod = (100 - (int) (diff * 5 + Math.sqrt(diff * 100)));
-        }
-
-        ilMod = Math.min(ilMod, 200);
-        ilMod = Math.max(ilMod, 25);
-        // main.system.auxiliary.LogMaster.log(0, "**" + target + "'s ilMod= " +
-        // ilMod + " ; diff="
-        // + diff);
-
-        // idea - accumulate C thru all the cells in the line of sight to obj!
-        // source.getVisionMode() - alter rules! :)
-        if (source.checkPassive(UnitEnums.STANDARD_PASSIVES.DARKVISION)) { // maybe it
-            // should
-            // inverse
-            // formula?
-            // can be custom param instead of 50!
-            cMod -= cMod * 50 / 100;
-        }
-        // if (status == null)
-        // status = target.getUnitVisionStatus() ==
-        // UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT;
-        // if (status)
-        // distance/sight range?
-        // if (illumination < 75)
-        // ilMod += ilMod * 25 / 100;
-
-        // TODO DISTANCE FACTOR?
-
-        int i = illumination * ilMod / 100;
-        int c = concealment * cMod / 100;
-        gamma = i - c;
-        cache.put(target, gamma);
-
-        // main.system.auxiliary.LogMaster.log(1, gamma + " gamma on " +
-        // target.getNameAndCoordinate()
-        // + " for " + source.getNameAndCoordinate() + "; ilMod = " + ilMod +
-        // " cMod=" + cMod);
-
-        if (source == target.getGame().getManager().getActiveObj()) {
-            target.setGamma(gamma);
-        }
-
-        if (i > 50 && c > 50) {
-            return Integer.MIN_VALUE;
-        }
-        return gamma;
-    }
-
-    public static VISIBILITY_LEVEL getIdentificationLevel(DC_Obj target) {
-        return null;
-
-    }
-
-    public static VISIBILITY_LEVEL getVisibilityLevel(Unit source, DC_Obj target, Boolean status) {
-        int value = getGamma(source, target, status);
-        // if (!new ClearShotCondition(str1, str2).check(ref))
-        // return VISIBILITY_LEVEL.CONCEALED;
-        // detection
-        // distance
-
-        VISIBILITY_LEVEL vLevel = null;
-        for (VISIBILITY_LEVEL vLvl : VISIBILITY_LEVEL.values()) {
-            vLevel = vLvl;
-            // if (value > vLvl.getIlluminationBarrier())
-            // break;
-        }
-        return vLevel;
-    }
 
     public static boolean checkMissed(DC_ActiveObj action) {
         Unit source = action.getOwnerObj();
@@ -219,42 +75,6 @@ public class ConcealmentRule {
          + StringMaster.wrapInParenthesis(""
          +  getMissChance(activeObj) + "%")) ;
 
-    }
-    public enum IDENTIFICATION_LEVEL {
-
-        SHAPE, // size and 'shape' (monster, humanoid, strange shape, animal,
-        // avian...)
-        TYPE, // classifications
-        GROUP, // lesser demon, ++ race
-        UNIT, DETAILED, // special for rangers? All value pages available... Can
-        // be a
-        // spell too!
-        ;
-    }
-
-    public enum VISIBILITY_LEVEL {
-        // Distance based - Outline?
-        CLEAR_SIGHT(), OUTLINE(), VAGUE_OUTLINE(), CONCEALED(), BLOCKED;
-        // for info-panel, objComp... as an addition to UNIT_VISIBILITY?
-        // what is the default? is this linked to Perception?
-        // DETECTED vs KNOWN
-        // IN_SIGHT vs BEYOND_SIGHT
-        private int illuminationBarrier;
-
-        VISIBILITY_LEVEL() {
-
-        }
-        // VISIBILITY_LEVEL(int illuminationBarrier) {
-        // this.setIlluminationBarrier(illuminationBarrier);
-        // }
-        //
-        // public int getIlluminationBarrier() {
-        // return illuminationBarrier;
-        // }
-        //
-        // public void setIlluminationBarrier(int illuminationBarrier) {
-        // this.illuminationBarrier = illuminationBarrier;
-        // }
     }
 
 }

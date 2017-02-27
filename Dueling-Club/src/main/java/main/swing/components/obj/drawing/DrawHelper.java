@@ -5,7 +5,7 @@ import main.content.values.parameters.PARAMETER;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.battlefield.VisionManager;
+import main.game.core.Eidolons;
 import main.swing.components.obj.CellComp;
 import main.system.graphics.FontMaster;
 import main.system.text.SmartText;
@@ -92,7 +92,7 @@ public class DrawHelper {
         int y = 0;
         if (p == PARAMS.TOUGHNESS) {
             x = (int) (compSize.getWidth() - FontMaster.getStringWidth(text.getFont(), text
-                    .getText()));
+             .getText()));
             y = FontMaster.getFontHeight(text.getFont());
         }
         if (p == PARAMS.ENDURANCE) {
@@ -117,7 +117,7 @@ public class DrawHelper {
     public static boolean isFacingDrawn(CellComp cellComp, Obj obj) {
         if (obj instanceof Unit) {
             Unit unit = (Unit) obj;
-            if (!VisionManager.checkDetectedEnemy((DC_Obj) obj)) {
+            if (!Eidolons.game.getVisionMaster().checkDetectedEnemy((DC_Obj) obj)) {
                 return false;
             }
             if (unit.isBfObj()) {

@@ -1,15 +1,15 @@
 package main.game.logic.dungeon.minimap;
 
+import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
-import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.logic.dungeon.Dungeon;
 import main.rules.action.PerceptionRule.PERCEPTION_STATUS;
-import main.rules.mechanics.ConcealmentRule.VISIBILITY_LEVEL;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.Refreshable;
 import main.swing.generic.services.dialog.DialogMaster;

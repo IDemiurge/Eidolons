@@ -7,7 +7,7 @@ import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
-import main.entity.EntityMaster;
+import main.entity.EntityCheckMaster;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.DC_Cell;
@@ -54,7 +54,7 @@ public class StackingRule implements ActionRule {
 
     public static boolean checkCanPlace(Coordinates c, Entity unit,
                                         List<? extends Entity> otherUnits) {
-        if (EntityMaster.isOverlaying(unit)) {
+        if (EntityCheckMaster.isOverlaying(unit)) {
             boolean result = DC_Game.game.getOverlayingObjects(c).size() < MAX_OVERLAYING_ON_CELL;
             if (!result) {
                 LogMaster.log(1, c

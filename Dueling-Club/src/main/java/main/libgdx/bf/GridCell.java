@@ -18,6 +18,7 @@ public class GridCell extends Group implements Borderable {
     private GridCell innerDrawable;
     private Image border = null;
     private Label cordsText;
+    private float gamma;
 
     public GridCell(Texture backTexture, int gridX, int gridY) {
         this.backTexture = backTexture;
@@ -64,6 +65,13 @@ public class GridCell extends Group implements Borderable {
     public void updateInnerDrawable(GridCell cell) {
         addInnerDrawable(null);
         addInnerDrawable(cell);
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+if (GridMaster.isGammaOn())
+        backImage.setColor(gamma,gamma, gamma, 1-gamma/2);
     }
 
     @Override
@@ -149,5 +157,9 @@ public class GridCell extends Group implements Borderable {
 
     public void setGridY(int gridY) {
         this.gridY = gridY;
+    }
+
+    public void setGamma(float gamma) {
+        this.gamma = gamma;
     }
 }

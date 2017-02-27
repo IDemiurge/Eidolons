@@ -36,7 +36,7 @@ public class CellBorderManager extends Group {
 
         blueBorderTexture = TextureManager.getOrCreate(bluePath);
 
-        initCallbacks();
+        bindEvents();
     }
 
     public boolean isBlueBorderActive() {
@@ -50,7 +50,7 @@ public class CellBorderManager extends Group {
         blueBorderOwners = new HashMap<>();
     }
 
-    private void initCallbacks() {
+    private void bindEvents() {
 
         GuiEventManager.bind(SHOW_GREEN_BORDER, obj -> {
             if (obj != null) {

@@ -1,5 +1,6 @@
 package main.swing.components.obj.drawing;
 
+import main.content.enums.rules.VisionEnums;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
@@ -7,7 +8,6 @@ import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.DirectionMaster;
 import main.rules.action.WatchRule;
-import main.rules.mechanics.ConcealmentRule;
 import main.system.graphics.ColorManager;
 import main.system.graphics.GuiManager;
 import main.system.graphics.ImageTransformer;
@@ -145,7 +145,7 @@ public class DrawMasterStatic {
                 }
             }
             if (obj != null) {
-                darken = obj.getVisibilityLevel() != ConcealmentRule.VISIBILITY_LEVEL.CLEAR_SIGHT;
+                darken = obj.getVisibilityLevel() != VisionEnums.VISIBILITY_LEVEL.CLEAR_SIGHT;
             }
             String prefix = darken ? "dark" : "";
             int x = w * (c.x - offsetX);

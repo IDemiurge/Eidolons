@@ -201,7 +201,8 @@ size - elongate
                 float y = anim.offsetsY[i];
                 MoveByAction mainMove =null ;
                 try{        mainMove =     getMoveAction(x, y, duration);
-                }catch(Exception e){                e.printStackTrace();
+                }catch(Exception e){
+                    e.printStackTrace();
                 }
                 if (mainMove==null )
                return null ;

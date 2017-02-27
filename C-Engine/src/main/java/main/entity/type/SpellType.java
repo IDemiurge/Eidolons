@@ -79,11 +79,7 @@ public class SpellType extends ActiveObjType {
         return false;
     }
 
-    @Override
-    public boolean resolve() {
-        // TODO Auto-generated method stub
-        return false;
-    }
+
 
     @Override
     public boolean activate() {

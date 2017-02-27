@@ -1,11 +1,12 @@
 package main.entity.active;
 
-import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.SpellEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.item.DC_QuickItemObj;
+import main.entity.tools.active.item.ItemActiveMaster;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
@@ -27,18 +28,39 @@ public class DC_ItemActiveObj extends DC_ActiveObj {
     }
 
     @Override
-    protected void applyPenalties() {
+    public ItemActiveMaster initMaster() {
+        return new ItemActiveMaster(this);
     }
 
     @Override
     public boolean isRangedTouch() {
         return checkProperty(G_PROPS.SPELL_TAGS,
-                SpellEnums.SPELL_TAGS.RANGED_TOUCH.toString());
+         SpellEnums.SPELL_TAGS.RANGED_TOUCH.toString());
     }
 
     @Override
     public void playCancelSound() {
         SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
+    }
+
+    @Override
+    public boolean isEffectSoundPlayed() {
+        return false;
+    }
+
+    @Override
+    public void setEffectSoundPlayed(boolean effectSoundPlayed) {
+
+    }
+
+    @Override
+    public boolean isForcePresetTarget() {
+        return false;
+    }
+
+    @Override
+    public void setForcePresetTarget(boolean b) {
+
     }
 
     public DC_QuickItemObj getItem() {
@@ -53,4 +75,25 @@ public class DC_ItemActiveObj extends DC_ActiveObj {
     public Sprite getSprite() {
         return null;
     }
+
+    @Override
+    public void setCancelled(Boolean c) {
+
+    }
+
+    @Override
+    public Boolean isCancelled() {
+        return null;
+    }
+
+    @Override
+    public boolean activate(boolean transmit) {
+        return false;
+    }
+
+    @Override
+    public boolean activatedOn(Ref ref) {
+        return false;
+    }
+
 }

@@ -1,7 +1,7 @@
 package main.game.logic.dungeon.editor;
 
 import main.content.values.parameters.G_PARAMS;
-import main.entity.EntityMaster;
+import main.entity.EntityCheckMaster;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
@@ -275,7 +275,7 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
             ObjType selectedType = LevelEditor.getMainPanel().getPalette().getSelectedType();
 
             if (selectedType != null) {
-                if ((EntityMaster.isOverlaying(selectedType) && !EntityMaster
+                if ((EntityCheckMaster.isOverlaying(selectedType) && !EntityCheckMaster
                         .isOverlaying(lastClicked))
                         || ((empty || add)) && !alt) {
                     if (lastClicked != null) {

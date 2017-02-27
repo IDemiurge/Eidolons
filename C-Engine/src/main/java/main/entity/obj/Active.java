@@ -9,8 +9,6 @@ public interface Active extends Referred {
 
     boolean activatedOn(Ref ref);
 
-    boolean resolve();
-
     boolean activate();
 
     boolean canBeActivated(Ref ref);
