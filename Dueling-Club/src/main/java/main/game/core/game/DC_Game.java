@@ -408,7 +408,7 @@ public class DC_Game extends MicroGame {
 
                     while (true) {
                         try {
-                            getStateManager().newround();
+                            getStateManager().newRound();
                             Thread.sleep(0);//release remains time quota
                         } catch (Exception e) {
                             e.printStackTrace();
