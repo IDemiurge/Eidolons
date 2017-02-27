@@ -15,7 +15,8 @@ import main.libgdx.texture.TextureManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UnitInfoPanel extends TablePanel {
+public class UnitInfoPanel extends Container<TablePanel> {
+
     public UnitInfoPanel() {
         TextureRegion textureRegion = TextureManager.getOrCreateR("/UI/components/infopanel/background.png");
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
@@ -23,6 +24,17 @@ public class UnitInfoPanel extends TablePanel {
         setWidth(textureRegion.getRegionWidth());
         setHeight(Gdx.graphics.getHeight());
 
+        TablePanel tablePanel = new TablePanel();
+        tablePanel.fill();
+        fill().left().bottom().pad(20);
+        setActor(tablePanel);
+
+        initInnerPanels();
+
+        initListeners();
+    }
+
+    private void initInnerPanels() {
         MainWeaponPanel mainWeaponPanel = new MainWeaponPanel();
         addElement(mainWeaponPanel);
 
@@ -32,7 +44,7 @@ public class UnitInfoPanel extends TablePanel {
         }
 
         ResourcePanel resourcePanel = new ResourcePanel(resourceValues);
-        addElement(resourcePanel.left().bottom().padLeft(20));
+        addElement(resourcePanel.left().bottom());
 
         List<ValueContainer> valueContainers = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
@@ -41,7 +53,7 @@ public class UnitInfoPanel extends TablePanel {
 
         MainParamPanel mainParamPanel = new MainParamPanel(valueContainers);
 
-        addElement(mainParamPanel.left().bottom().padLeft(20));
+        addElement(mainParamPanel.left().bottom());
 
 
         List<TextureRegion> abils = new ArrayList<>();
@@ -55,9 +67,11 @@ public class UnitInfoPanel extends TablePanel {
 
         EffectAndAbilitiesPanel effectAndAbilitiesPanel = new EffectAndAbilitiesPanel(abils, effects);
 
-        addElement(effectAndAbilitiesPanel.left().bottom().padLeft(20).padBottom(20));
+        addElement(effectAndAbilitiesPanel.left().bottom());
+
 
         addCol();
+
 
         AvatarPanel avatarPanel = new AvatarPanel(TextureManager.getOrCreateR("/UI/Empty5.jpg"), "Elf", "level 80", "code name: \"Legolas\"");
         addElement(avatarPanel);
@@ -103,25 +117,44 @@ public class UnitInfoPanel extends TablePanel {
 
         List<ValueContainer> statsValues = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
-            ValueContainer valueContainer = new ValueContainer("param" + i, "over9000");
-            valueContainer.padLeft(10);
+            ValueContainer valueContainer = new ValueContainer("Combat param" + i, "9000");
             valueContainer.setBorder(TextureManager.getOrCreateR("UI/components/infopanel/simple_value_border.png"), true);
             statsValues.add(valueContainer);
         }
 
-        StatsPanel statsPanel = new StatsPanel(statsValues);
-        StatsPanel statsPanel2 = new StatsPanel(statsValues);
-        StatsPanel statsPanel3 = new StatsPanel(statsValues);
+        //StatsPanel statsPanel = new StatsPanel(statsValues);
+
+        List<ValueContainer> statsValues2 = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            ValueContainer valueContainer = new ValueContainer("Magic param" + i, "9000");
+            valueContainer.setBorder(TextureManager.getOrCreateR("UI/components/infopanel/simple_value_border.png"), true);
+            statsValues2.add(valueContainer);
+        }
+        //StatsPanel statsPanel2 = new StatsPanel(statsValues);
+
+        List<ValueContainer> statsValues3 = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            ValueContainer valueContainer = new ValueContainer("Misc param" + i, "9000");
+            valueContainer.setBorder(TextureManager.getOrCreateR("UI/components/infopanel/simple_value_border.png"), true);
+            statsValues3.add(valueContainer);
+        }
+        StatsPanel statsPanel3 = new StatsPanel(statsValues, statsValues2, statsValues3);
 
 
-        tabsPanel2.addTab(statsPanel, "Combat");
-        tabsPanel2.addTab(statsPanel2, "Magic");
-        tabsPanel2.addTab(statsPanel3, "Misc");
+        tabsPanel2.addTab(statsPanel3, "Combat");
+/*        tabsPanel2.addTab(statsPanel2, "Magic");
+        tabsPanel2.addTab(statsPanel3, "Misc");*/
 
         tabsPanel2.resetCheckedTab();
         addElement(tabsPanel2);
+    }
 
-        initListeners();
+    private void addCol() {
+        getActor().addCol();
+    }
+
+    private <T extends Container> void addElement(T panel) {
+        getActor().addElement(panel);
     }
 
     private void initListeners() {

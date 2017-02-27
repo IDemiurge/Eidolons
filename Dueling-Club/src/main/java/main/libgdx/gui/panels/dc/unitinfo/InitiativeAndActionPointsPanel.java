@@ -16,8 +16,9 @@ public class InitiativeAndActionPointsPanel extends TablePanel {
         actionContainer.fill().right().bottom();
 
         Table innerTable = new Table();
-        innerTable.add(initiativeContainer, actionContainer);
+        innerTable.add(initiativeContainer).fill().left().bottom();
+        innerTable.add(actionContainer).fill().right().bottom();
 
-        addElement(new Container(innerTable).fill().left().bottom());
+        addElement(new Container(innerTable).fill().center().bottom());
     }
 }
