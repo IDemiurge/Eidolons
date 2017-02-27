@@ -21,7 +21,7 @@ public class TabbedPanel extends Container<Table> {
         left().bottom();
     }
 
-    private void initContainer(float h) {
+    private void initContainer(float h, float prefHeight) {
         buttonLayout = new Table();
         //buttonLayout.setDebug(true);
         buttonLayout.left();
@@ -32,7 +32,8 @@ public class TabbedPanel extends Container<Table> {
         panelLayout = new Container<>();
         panelLayout.height(getPrefHeight());
         panelLayout.width(getPrefWidth());
-        container.add(panelLayout).fill().bottom();
+        panelLayout.fill().bottom().center();
+        container.add(panelLayout).fill().bottom().center().height(prefHeight);
 
         super.setActor(container);
     }
@@ -41,7 +42,7 @@ public class TabbedPanel extends Container<Table> {
         TextButton b = new TextButton(tabName, getButtonStyle());
 
         if (buttonLayout == null) {
-            initContainer(b.getHeight());
+            initContainer(b.getHeight(), container.getPrefHeight());
         }
 
         int indx = tabs.size();

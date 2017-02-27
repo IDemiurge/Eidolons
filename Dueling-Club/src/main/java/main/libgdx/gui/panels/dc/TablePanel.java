@@ -24,10 +24,8 @@ public class TablePanel extends Container<Table> {
     public TablePanel() {
         cols = new ArrayList<>();
         inner = new Table();
-        inner.setFillParent(true);
         inner.left().bottom();
-        fill();
-        left().bottom();
+        fill().left().bottom();
         super.setActor(inner);
     }
 

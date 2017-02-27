@@ -19,6 +19,6 @@ public class ResistPanel extends TablePanel {
         }
 
         setHeight(getPrefHeight());
-        fill().left().bottom().debug();
+        fill().center().bottom();
     }
 }
