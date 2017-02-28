@@ -39,9 +39,9 @@ public class Targeter extends ActiveHandler {
     public void initTarget() {
 
 
-        if (presetTarget != null)
+        if (presetTarget != null) {
             getRef().setTarget(presetTarget.getId());
-        else {
+        } else {
             if (getEntity().getTargeting() != null) {
                 if (!isForcePresetTarget()) {
                     if (!selectTarget(getRef())) {

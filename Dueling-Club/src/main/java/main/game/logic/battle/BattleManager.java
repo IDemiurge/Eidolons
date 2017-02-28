@@ -8,11 +8,11 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
+import main.game.logic.battle.player.Player;
 import main.game.logic.generic.PartyManager;
 import main.game.logic.macro.travel.Encounter;
 import main.game.logic.macro.travel.EncounterMaster;
 import main.game.logic.macro.travel.LootMaster;
-import main.game.logic.battle.player.Player;
 import main.system.audio.MusicMaster;
 import main.system.audio.MusicMaster.MUSIC_MOMENT;
 import main.system.datatypes.DequeImpl;
@@ -208,8 +208,9 @@ public class BattleManager {
     // }
 
     public void unitDies(Unit killed) {
-        if (killed.getGame().isDummyMode())
+        if (killed.getGame().isDummyMode()) {
             return;
+        }
         if (killed.getOriginalOwner().isMe()) {
             if (killed.isHero() && isRated(killed)) {
                 if (!fallenHeroes.contains(killed)) {

@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.gui.panels.dc.TablePanel;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 
 import java.util.Iterator;
 import java.util.List;
@@ -22,7 +22,7 @@ public class IconGrid extends TablePanel {
             h = b;
         }
 
-        TextureRegion emptyCell = new TextureRegion(TextureManager.getOrCreate(cellBackImage));
+        TextureRegion emptyCell = new TextureRegion(TextureCache.getOrCreate(cellBackImage));
 
         Iterator<TextureRegion> iter = images.iterator();
         for (int y = 0; y < w; y++) {

@@ -56,10 +56,11 @@ public class AttackAnim extends ActionAnim {
     protected static AnimData getWeaponAnimData(Entity active, ATK_ANIMS... anims) {
         AnimData   data=new AnimData();
         float base_speed = anims[0].startSpeed;
-        if (base_speed!=0)
+        if (base_speed != 0) {
             data.setValue(ANIM_VALUES.MISSILE_SPEED, String.valueOf(base_speed));
-            else
-        data.setValue(ANIM_VALUES.MISSILE_SPEED, "200");
+        } else {
+            data.setValue(ANIM_VALUES.MISSILE_SPEED, "200");
+        }
         return data;
     }
 
@@ -193,8 +194,9 @@ size - elongate
                 List<Pair<MoveByAction, RotateByAction>> swings = new LinkedList<>();
                 float duration =
                  this.duration;
-                if (duration<=0)
-                    duration=1;
+                if (duration <= 0) {
+                    duration = 1;
+                }
                  //anim.durations[i];
                 totalDuration += duration;
                 float x = anim.offsetsX[i];
@@ -204,8 +206,9 @@ size - elongate
                 }catch(Exception e){
                     e.printStackTrace();
                 }
-                if (mainMove==null )
-               return null ;
+                if (mainMove == null) {
+                    return null;
+                }
                     RotateByAction mainRotate = getRotateAction(angle, duration);
 
                 swings.add(new Pair<>(mainMove, mainRotate));

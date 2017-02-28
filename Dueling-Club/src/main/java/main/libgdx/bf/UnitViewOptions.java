@@ -5,7 +5,7 @@ import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.entity.obj.BattleFieldObject;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 
 import java.util.Map;
 
@@ -112,19 +112,19 @@ public class UnitViewOptions {
     }
 
     public final void createFromGameObject(BattleFieldObject obj) {
-        this.portrateTexture = TextureManager.getOrCreate(obj.getImagePath());
+        this.portrateTexture = TextureCache.getOrCreate(obj.getImagePath());
         if (C_OBJ_TYPE.UNITS_CHARS.equals(obj.getOBJ_TYPE_ENUM())) {
             this.directionValue = obj.getFacing().getDirection().getDegrees();
-            this.directionPointerTexture = TextureManager.getOrCreate("\\UI\\DIRECTION POINTER.png");
+            this.directionPointerTexture = TextureCache.getOrCreate("\\UI\\DIRECTION POINTER.png");
 
-            this.clockTexture = TextureManager.getOrCreate("\\UI\\value icons\\actions.png");
+            this.clockTexture = TextureCache.getOrCreate("\\UI\\value icons\\actions.png");
             String emblem = obj.getProperty(G_PROPS.EMBLEM, true);
             this.clockValue = obj.getIntParam(C_INITIATIVE);
         }
 
         if (obj.isOverlaying()) {
             this.overlaying = true;
-            this.portrateTexture = TextureManager.getOrCreate(obj.getImagePath());
+            this.portrateTexture = TextureCache.getOrCreate(obj.getImagePath());
         }
 
         if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {

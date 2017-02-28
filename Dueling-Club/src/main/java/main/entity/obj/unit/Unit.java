@@ -81,10 +81,10 @@ import main.test.debug.GameLauncher;
 import java.util.*;
 
 public class Unit extends DC_UnitModel {
-    private DC_WeaponObj weapon;
-    private DC_WeaponObj secondWeapon;
     protected DC_WeaponObj offhandNaturalWeapon;
     protected DC_WeaponObj naturalWeapon;
+    private DC_WeaponObj weapon;
+    private DC_WeaponObj secondWeapon;
     // private Footwear boots;
     // private Helmet helmet;
     // private Gloves gloves;
@@ -677,10 +677,11 @@ public class Unit extends DC_UnitModel {
     }
 
     private boolean isImmortalityOn() {
-        if (isMine())
+        if (isMine()) {
             if (equals(getOwner().getHeroObj())) {
                 return game.isDummyMode();
             }
+        }
         if (getGame().getTestMaster().isImmortal() != null) {
             return
              getGame().getTestMaster().isImmortal();

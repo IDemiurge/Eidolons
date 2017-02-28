@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.VerticalValueContainer;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 
 import java.util.Iterator;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 public class ResourcePanel extends TablePanel {
 
     public ResourcePanel(List<VerticalValueContainer> values) {
-        TextureRegion textureRegion = new TextureRegion(TextureManager.getOrCreate("/UI/components/infopanel/main_resource_panel.png"));
+        TextureRegion textureRegion = new TextureRegion(TextureCache.getOrCreate("/UI/components/infopanel/main_resource_panel.png"));
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         background(drawable);
         setWidth(textureRegion.getRegionWidth());

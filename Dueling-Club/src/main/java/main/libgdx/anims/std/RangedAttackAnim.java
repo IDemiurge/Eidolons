@@ -11,7 +11,7 @@ import main.entity.item.DC_QuickItemObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.Obj;
 import main.libgdx.anims.sprite.SpriteAnimation;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class RangedAttackAnim extends AttackAnim {
         //draw bow on the source, ammo as missile
 
         //another actor? separate sprite?
-        rangedWeaponImage = TextureManager.getOrCreate(getRangedWeaponImage(getActive()));
+        rangedWeaponImage = TextureCache.getOrCreate(getRangedWeaponImage(getActive()));
         ammo = weapon.getRef().getObj(KEYS.AMMO);
         ammo = weapon.getRef().getLastRemovedObj(KEYS.AMMO);
         if (ammo instanceof DC_QuickItemObj) {

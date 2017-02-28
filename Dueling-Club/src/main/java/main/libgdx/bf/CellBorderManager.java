@@ -3,7 +3,7 @@ package main.libgdx.bf;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -29,12 +29,12 @@ public class CellBorderManager extends Group {
     private Map<Borderable, Runnable> blueBorderOwners = new HashMap<>();
 
     public CellBorderManager() {
-        greenBorder = new Image(TextureManager.getOrCreate(cyanPath));
+        greenBorder = new Image(TextureCache.getOrCreate(cyanPath));
         greenBorder.setBounds(2, 2, 4, 4);
 
-        redBorder = new Image(TextureManager.getOrCreate(redPath));
+        redBorder = new Image(TextureCache.getOrCreate(redPath));
 
-        blueBorderTexture = TextureManager.getOrCreate(bluePath);
+        blueBorderTexture = TextureCache.getOrCreate(bluePath);
 
         bindEvents();
     }

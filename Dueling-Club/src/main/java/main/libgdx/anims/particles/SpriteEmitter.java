@@ -48,7 +48,9 @@ public class SpriteEmitter extends Emitter {
 
 
         for (Particle p : getParticles()) {
-            if (p == null) continue;
+            if (p == null) {
+                continue;
+            }
             if (percentageOfLaggingParticles > 0) {
                 if (RandomWizard.chance(percentageOfLaggingParticles)) {
                     texture = animation.getPrevious(texture);

@@ -63,7 +63,9 @@ public class SelfMoveEffect extends MoveEffect {
         destination = game.getMovementManager().getTemplateMoveCoordinate(template, obj.getFacing(), obj,
                     ref);
     } else if (direction != null) {
-        if (origin == null) origin = obj.getCoordinates();
+        if (origin == null) {
+            origin = obj.getCoordinates();
+        }
         destination = origin.getAdjacentCoordinate(DirectionMaster.getDirectionByFacing(obj.getFacing(),
                 direction));
     } else {

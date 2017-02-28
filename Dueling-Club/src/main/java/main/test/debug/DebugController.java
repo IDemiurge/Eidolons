@@ -11,8 +11,9 @@ public class DebugController implements Controller{
     private static Controller instance;
 
     public static Controller getInstance() {
-        if (instance==null )
+        if (instance == null) {
             instance = new DebugController();
+        }
         return instance;
     }
 

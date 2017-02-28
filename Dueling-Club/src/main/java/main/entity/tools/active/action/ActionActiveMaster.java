@@ -46,8 +46,9 @@ public class ActionActiveMaster extends ActiveMaster {
                      ActionEnums.ACTION_TAGS.MAIN_HAND.toString())) {
                         tag = ActionEnums.ACTION_TAGS.MAIN_HAND.toString();
                     }
-                    if (!tag.isEmpty())
+                    if (!tag.isEmpty()) {
                         getEntity().addProperty(G_PROPS.ACTION_TAGS, tag);
+                    }
                 }
             }
         };

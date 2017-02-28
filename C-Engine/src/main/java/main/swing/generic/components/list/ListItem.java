@@ -136,10 +136,13 @@ public class ListItem<E> extends JLabel {
             return null;
         }
         Image img =null ;
-        if (!noImage)
-        try{img = (entity.getCustomIcon() != null ? entity.getCustomIcon().getImage()
-         : ImageManager.getImage(entity.getProperty(G_PROPS.IMAGE, true)));
-        }catch(Exception e){                e.printStackTrace();  
+        if (!noImage) {
+            try {
+                img = (entity.getCustomIcon() != null ? entity.getCustomIcon().getImage()
+                        : ImageManager.getImage(entity.getProperty(G_PROPS.IMAGE, true)));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         if (img == null) {
             noImage=true;

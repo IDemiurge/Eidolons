@@ -2,7 +2,7 @@ package main.libgdx.gui.panels.generic;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 import main.system.images.ImageManager;
 
 import java.util.function.Supplier;
@@ -35,7 +35,7 @@ public class Comp extends WidgetGroup {
         }
         if (ImageManager.isImage(imagePath)) {
             removeActor(image);
-            image = new Image(TextureManager.getOrCreate(imagePath));
+            image = new Image(TextureCache.getOrCreate(imagePath));
             addActorAt(0, image);
         }
         if (image == null) {
@@ -48,7 +48,7 @@ public class Comp extends WidgetGroup {
 
     public Image getImage() {
         if (image == null || dirty) {
-            image = new Image(TextureManager.getOrCreate(imagePath));
+            image = new Image(TextureCache.getOrCreate(imagePath));
         }
         return image;
     }

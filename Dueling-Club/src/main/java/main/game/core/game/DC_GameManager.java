@@ -290,8 +290,9 @@ public class DC_GameManager extends GameManager {
 
         super.infoSelect(obj);
         if (
-         getGame().getBattleField() != null)
+                getGame().getBattleField() != null) {
             getGame().getBattleField().selectInfoObj(obj, true);
+        }
 
         if (game.isDebugMode()) {
             try {
@@ -381,10 +382,11 @@ public class DC_GameManager extends GameManager {
         }
 
         Integer id = selectAwait();
-        if (id == 0)
+        if (id == 0) {
             if (ref.getTarget() != 0) {
                 return ref.getTarget();
             }
+        }
         return id;
     }
 
@@ -559,8 +561,9 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public boolean handleEvent(Event event) {
-        if (getGame().getDebugMaster() != null)
+        if (getGame().getDebugMaster() != null) {
             event.getRef().setDebug(getGame().getDebugMaster().isDebugFunctionRunning());
+        }
 
         return super.handleEvent(event);
     }

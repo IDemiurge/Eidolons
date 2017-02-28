@@ -1,13 +1,13 @@
 package main.libgdx.bf.controls.radial;
 
-import main.content.enums.entity.SpellEnums.SPELL_GROUP;
 import main.content.enums.entity.SpellEnums;
+import main.content.enums.entity.SpellEnums.SPELL_GROUP;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.libgdx.bf.controls.radial.RadialMenu.CreatorNode;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
 
 import java.util.*;
@@ -89,7 +89,7 @@ public class SpellRadialManager {
         if (object instanceof EntityNode) {
             final DC_ActiveObj action = (DC_ActiveObj) object.getContents();
 
-            node.texture = TextureManager.getOrCreate(action.getImagePath());
+            node.texture = TextureCache.getOrCreate(action.getImagePath());
             node.name = action.getName();
             node.action = new Runnable() {
                 @Override
@@ -106,7 +106,7 @@ public class SpellRadialManager {
         } else {
             node.childNodes = new LinkedList<>();
 
-            node.texture = TextureManager.getOrCreate(object.getTexturePath());
+            node.texture = TextureCache.getOrCreate(object.getTexturePath());
             node.w=object.getWidth();
             node.h=object.getHeight();
             object.getItems(source).forEach(child -> {

@@ -6,8 +6,8 @@ import javafx.util.Pair;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 
 import java.io.File;
@@ -36,7 +36,9 @@ public class EmitterPresetMaster {
     }
 
     public static EmitterPresetMaster getInstance() {
-        if (instance == null) instance = new EmitterPresetMaster();
+        if (instance == null) {
+            instance = new EmitterPresetMaster();
+        }
         return instance;
     }
 
@@ -56,8 +58,9 @@ public class EmitterPresetMaster {
         });
         c = output.toString();
         String suffix = mods.get(last);
-        if (suffix == null) suffix = "";
-        else {
+        if (suffix == null) {
+            suffix = "";
+        } else {
             String buffer = suffix;
             suffix = " ";
             for (String substring : StringMaster.openContainer(buffer, value_separator)) {
@@ -84,11 +87,14 @@ public class EmitterPresetMaster {
 //search recursively
         String imagePath = null;
         for (File d : FileManager.getFilesFromDirectory(directory.getPath(), true)) {
-            if (d.isDirectory())
+            if (d.isDirectory()) {
                 imagePath = searchImage(d, imageName);
-            if (d.isFile())
-                if (d.getName().equalsIgnoreCase(imageName))
+            }
+            if (d.isFile()) {
+                if (d.getName().equalsIgnoreCase(imageName)) {
                     imagePath = d.getPath();
+                }
+            }
             if (imagePath != null) {
                 //updatePreset();
                 return imagePath;
@@ -100,14 +106,16 @@ public class EmitterPresetMaster {
     public String findImagePath(String path) {
         String imagePath = getImagePath(path);
         FileHandle file = Gdx.files.internal(imagePath);
-        if (file.exists())
+        if (file.exists()) {
             return imagePath;
+        }
         String name = StringMaster.getLastPathSegment(imagePath);
         //generic
         imagePath = PathFinder.getParticleImagePath() + "\\" + name;
         file = Gdx.files.internal(imagePath);
-        if (file.exists())
+        if (file.exists()) {
             return imagePath;
+        }
 
         //raw
 //        String suffix = StringMaster.replaceFirst(path, PathFinder.getParticlePresetPath(), "");
@@ -119,20 +127,23 @@ public class EmitterPresetMaster {
 
         imagePath += "particles\\";
         file = Gdx.files.internal(imagePath);
-        if (file.exists())
+        if (file.exists()) {
             return imagePath;
+        }
 
         imagePath =
          PathFinder.removeSpecificPcPrefix(
           EmitterPresetMaster.getInstance().getImagePath(path));
         file = Gdx.files.internal(imagePath);
-        if (file.exists())
+        if (file.exists()) {
             return imagePath;
+        }
 
         imagePath = StringMaster.cropLastPathSegment(imagePath);
         file = Gdx.files.internal(imagePath);
-        if (file.exists())
+        if (file.exists()) {
             return imagePath;
+        }
 
 
         if (spriteEmitterTest) {
@@ -147,10 +158,12 @@ public class EmitterPresetMaster {
         }
 
         imagePath = searchImage(FileManager.getFile(PathFinder.getSfxPath()), name);
-        if (StringMaster.isEmpty(imagePath))
+        if (StringMaster.isEmpty(imagePath)) {
             imagePath = searchImage(FileManager.getFile(PathFinder.getSpritesPath()), name);
-        if (StringMaster.isEmpty(imagePath))
+        }
+        if (StringMaster.isEmpty(imagePath)) {
             LogMaster.log(1, imagePath + " - NO IMAGE FOUND FOR SFX: " + path);
+        }
 
         return imagePath;
     }
@@ -163,10 +176,12 @@ public class EmitterPresetMaster {
 
     public String getValueFromGroup(String path, EMITTER_VALUE_GROUP group, String value) {
         String text = getGroupTextFromPreset(path, group);
-        if (text == null)
+        if (text == null) {
             return "";
-        if (value == null)
+        }
+        if (value == null) {
             return text.trim();
+        }
         for (String substring : StringMaster.openContainer(text, "\n")) {
             if (substring.split(value_separator)[0].equalsIgnoreCase(value)) {
                 return substring.split(value_separator)[1].trim();
@@ -197,8 +212,9 @@ public class EmitterPresetMaster {
                     if (!val.contains("set")) {
                         actor.getEffect().offset(name, val);
                         continue;
-                    } else
+                    } else {
                         val.replace("set", "");
+                    }
                 }
                 actor.getEffect().set(name, val);
 
@@ -260,7 +276,9 @@ public class EmitterPresetMaster {
 
     public String getGroupTextFromPreset(String path, EMITTER_VALUE_GROUP group) {
         String data = getData(path);
-        if (data == null) return null;
+        if (data == null) {
+            return null;
+        }
         return getGroupText(data, group);
     }
 
@@ -269,10 +287,12 @@ public class EmitterPresetMaster {
         String[] parts = data.split(group.name + " - \n");
         String valuePart = null;
 
-        if (parts.length == 1)
+        if (parts.length == 1) {
             parts = data.split(group.name + " -\n");
-        if (parts.length > 1)
+        }
+        if (parts.length > 1) {
             valuePart = parts[1];
+        }
         if (parts.length > 2) {
             valuePart = valuePart.split("\n\n")[0];
         }
@@ -287,8 +307,9 @@ public class EmitterPresetMaster {
         String data = map.get(path);
         if (data == null) {
             data = FileManager.readFile(path);
-            if (!StringMaster.isEmpty(data))
+            if (!StringMaster.isEmpty(data)) {
                 map.put(path, data);
+            }
         }
         return data;
     }

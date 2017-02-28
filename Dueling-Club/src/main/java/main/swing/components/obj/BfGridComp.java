@@ -5,9 +5,9 @@ import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.vision.VisionManager;
+import main.game.core.game.DC_Game;
 import main.swing.XLine;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.swing.components.obj.drawing.DrawHelper;
@@ -337,9 +337,10 @@ public class BfGridComp {
 
             for (Coordinates c : game.getUnitMap().keySet()) {
                 for (BattleFieldObject obj : game.getStructures()) {
-                    if (obj.getCoordinates().equals(c))
-                    if (obj.isWall()) {
-                        wallMap.put(c, obj);
+                    if (obj.getCoordinates().equals(c)) {
+                        if (obj.isWall()) {
+                            wallMap.put(c, obj);
+                        }
                     }
                 }
 

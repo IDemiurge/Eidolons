@@ -83,7 +83,9 @@ else
         {
             lastUp = ((char)i);
             String c = Keys.toString(i);//Character.valueOf((char) i);
-       if(!charsUp.contains(c))     charsUp.add(c);
+            if (!charsUp.contains(c)) {
+                charsUp.add(c);
+            }
         }
 
         return false;
@@ -93,11 +95,11 @@ else
     public boolean keyTyped(char c) {
 //        if (keyMap.get(c))
         String str = String.valueOf(c).toUpperCase();
-        if (c==lastTyped)
-            if (!charsUp.contains(str))
-            {
+        if (c == lastTyped) {
+            if (!charsUp.contains(str)) {
                 return false;
             }
+        }
         charsUp.remove(str);
         lastTyped = c;
 

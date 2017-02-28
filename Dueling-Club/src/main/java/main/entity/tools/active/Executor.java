@@ -92,8 +92,9 @@ public class Executor extends ActiveHandler {
     private void activateOnActionThread() {
         if (Thread.currentThread() != Eidolons.getActionThread()) {
             Eidolons.getActionThread().setExecutor(this);
-        } else
+        } else {
             activate();
+        }
     }
 
 
@@ -105,20 +106,24 @@ public class Executor extends ActiveHandler {
             return result;
         }
         getTargeter().initTarget();
-        if (interrupted)
+        if (interrupted) {
             return result;
+        }
         beingActivated();
-        if (interrupted)
+        if (interrupted) {
             return result;
+        }
         activated();
-        if (interrupted)
+        if (interrupted) {
             return result;
+        }
         resolve();
-        if (!BooleanMaster.isTrue(cancelled))
+        if (!BooleanMaster.isTrue(cancelled)) {
             payCosts();
-        else {
-            if (BooleanMaster.isFalse(cancelled))
+        } else {
+            if (BooleanMaster.isFalse(cancelled)) {
                 cancelled();
+            }
         }
         //TODO BEFORE RESOLVE???
         GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, new EventCallbackParam(getAction()));
@@ -280,16 +285,18 @@ public class Executor extends ActiveHandler {
 
     private void fireEvent(STANDARD_EVENT_TYPE type, boolean interrupting) {
         boolean result = getGame().fireEvent(new Event(type, getRef()));
-        if (interrupting)
+        if (interrupting) {
             interrupted = !result;
+        }
 //        if (cancel)
 //            this.result=result;
     }
 
     public void activationOver() {
         getGame().getManager().setActivatingAction(null);
-        if (result)
+        if (result) {
             actionComplete();
+        }
     }
 
     public void actionComplete() {
@@ -426,18 +433,25 @@ public class Executor extends ActiveHandler {
     }
 
     public void setExtraAttackMode(Boolean instant_counter_opportunity, boolean b) {
-        if (instant_counter_opportunity == null)
+        if (instant_counter_opportunity == null) {
             setAttackOfOpportunityMode(b);
-        else if (instant_counter_opportunity)
+        } else if (instant_counter_opportunity) {
             setInstantMode(b);
-        else
+        } else {
             setCounterMode(b);
+        }
     }
 
     public boolean isExtraAttackMode() {
-        if (isAttackOfOpportunityMode()) return true;
-        if (isCounterMode()) return true;
-        if (isInstantMode()) return true;
+        if (isAttackOfOpportunityMode()) {
+            return true;
+        }
+        if (isCounterMode()) {
+            return true;
+        }
+        if (isInstantMode()) {
+            return true;
+        }
         return false;
     }
 }

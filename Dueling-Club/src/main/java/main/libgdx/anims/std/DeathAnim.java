@@ -16,7 +16,7 @@ import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.AnimMaster;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.GuiEventType;
 
@@ -48,7 +48,9 @@ public class DeathAnim extends ActionAnim {
     }
 
     public static boolean isOn() {
-        if (!AnimMaster.isOn()) return false;
+        if (!AnimMaster.isOn()) {
+            return false;
+        }
         return on;
     }
 
@@ -70,13 +72,16 @@ public class DeathAnim extends ActionAnim {
     @Override
     protected void dispose() {
         super.dispose();
-        if (getActor()!=null )
-        getActor().remove();
+        if (getActor() != null) {
+            getActor().remove();
+        }
     }
 
     @Override
     protected void add() {
-        if (getActor()==null )return ;
+        if (getActor() == null) {
+            return;
+        }
         AnimMaster.getInstance().addActor(getActor());
         getActor().setPosition(getOrigin().x, getOrigin().y);
         AlphaAction action = ActorMaster.addFadeAction(getActor());
@@ -92,7 +97,7 @@ public class DeathAnim extends ActionAnim {
     @Override
     public Actor getActor() {
         if (skull==null ){
-            skull = new Image(TextureManager.getOrCreate("UI\\Empty.png")){
+            skull = new Image(TextureCache.getOrCreate("UI\\Empty.png")) {
                 @Override
                 public void draw(Batch batch, float parentAlpha) {
                     act(Gdx.graphics.getDeltaTime());

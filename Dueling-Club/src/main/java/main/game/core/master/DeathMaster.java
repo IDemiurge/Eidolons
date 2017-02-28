@@ -74,11 +74,12 @@ public class DeathMaster extends Master{
             // destroy items?
         } else {
 
-            if (killed instanceof Unit)
-            try {
-                getGame().getDroppedItemManager().dropDead((Unit) killed);
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (killed instanceof Unit) {
+                try {
+                    getGame().getDroppedItemManager().dropDead((Unit) killed);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             try {
                 getGame().getGraveyardManager().unitDies(killed);
@@ -113,9 +114,10 @@ if (killed instanceof Unit){
             game.getLogManager().logDeath(killed, killer);
             getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED, REF));
             game.getLogManager().doneLogEntryNode();
-        } else
-        GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL,
-         new EventCallbackParam<>(killed));
+        } else {
+            GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL,
+                    new EventCallbackParam<>(killed));
+        }
         // refreshAll();
     }
 
@@ -144,8 +146,9 @@ if (killed instanceof Unit){
         DequeImpl<BattleFieldObject> list = new DequeImpl();
         List<BattleFieldObject> toRemove = new LinkedList<>();
         list.addAll(getGame().getUnits());
-        if ( removeBfObjects)
+        if (removeBfObjects) {
             list.addAll(getGame().getStructures());
+        }
         for (BattleFieldObject unit : list) {
 
             if (retainPlayerParty) {

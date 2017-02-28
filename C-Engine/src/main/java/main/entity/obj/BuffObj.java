@@ -2,9 +2,9 @@ package main.entity.obj;
 
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
-import main.content.enums.GenericEnums.BUFF_TYPE;
 import main.content.ContentManager;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.BUFF_TYPE;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.G_PROPS;
 import main.elements.conditions.Condition;
@@ -12,12 +12,12 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.type.BuffType;
 import main.game.core.game.MicroGame;
-import main.game.logic.event.MessageManager;
 import main.game.logic.battle.player.Player;
+import main.game.logic.event.MessageManager;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
-import main.system.auxiliary.StringMaster;
 
 public class BuffObj extends MicroObj implements Attachment, AttachedObj {
 
@@ -51,15 +51,18 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
         this.basis = game.getObjectById(ref.getBasis());
         addDynamicValues();
         setTransient(type.isTransient());
-        if (checkBool(GenericEnums.STD_BOOLS.INVISIBLE_BUFF))
+        if (checkBool(GenericEnums.STD_BOOLS.INVISIBLE_BUFF)) {
             visible = false;
+        }
         try {
-            if (ref.getObj(KEYS.ACTIVE).checkBool(GenericEnums.STD_BOOLS.INVISIBLE_BUFF))
+            if (ref.getObj(KEYS.ACTIVE).checkBool(GenericEnums.STD_BOOLS.INVISIBLE_BUFF)) {
                 visible = false;
+            }
         } catch (Exception ignored) {
         }
-        if (getName().contains(StringMaster.INVISIBLE_BUFF))
+        if (getName().contains(StringMaster.INVISIBLE_BUFF)) {
             visible = false;
+        }
     }
 
     @Override
@@ -68,8 +71,9 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     }
 
     public Effects getEffects() {
-        if (!(effect instanceof Effects))
+        if (!(effect instanceof Effects)) {
             effect = new Effects(effect);
+        }
         return (Effects) effect;
     }
 
@@ -98,8 +102,9 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
 
     @Override
     public void setRef(Ref ref) {
-        if (basis != null)
+        if (basis != null) {
             ref.setID(KEYS.BASIS, basis.getId());
+        }
         ref.setID(KEYS.BUFF, id);
         super.setRef(ref);
         //
@@ -118,8 +123,9 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
 
     @Override
     public boolean kill() {
-        if (isDead())
+        if (isDead()) {
             return false;
+        }
 
         // if (!game.fireEvent(new Event(STANDARD_EVENT_TYPE.BUFF_BEING_REMOVED,
         // REF)))
@@ -127,10 +133,11 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
 
         setDead(true);
         game.getManager().buffRemoved(this);
-        if (dispelEffects != null)
+        if (dispelEffects != null) {
             dispelEffects.apply(ref
                     // Ref.getSelfTargetingRefCopy(ref.getSourceObj())
             );
+        }
         // game.fireEvent(new Event(STANDARD_EVENT_TYPE.BUFF_REMOVED, REF));
         return true;
 
@@ -145,15 +152,18 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     @Override
     public String getToolTip() {
 
-        if (counterName == null)
-            if (!getProperty(G_PROPS.CUSTOM_PROPS).isEmpty())
+        if (counterName == null) {
+            if (!getProperty(G_PROPS.CUSTOM_PROPS).isEmpty()) {
                 counterName = getProperty(G_PROPS.CUSTOM_PROPS);
+            }
+        }
 
         if (counterName != null) {
             return super.getToolTip() + " (" + basis.getCounter(counterName) + ")";
         }
-        if (!permanent)
+        if (!permanent) {
             return super.getToolTip() + " duration: " + duration;
+        }
         return super.getToolTip();
     }
 
@@ -164,8 +174,9 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
 
     @Override
     public String getDescription() {
-        if (StringMaster.isEmpty(super.getDescription()))
+        if (StringMaster.isEmpty(super.getDescription())) {
             return getName() + " with " + getEffect();
+        }
         return super.getDescription();
     }
 
@@ -204,8 +215,9 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     @Override
     public int tick() {
 
-        if (permanent)
+        if (permanent) {
             return duration;
+        }
         duration--;
         setParam(G_PARAMS.C_DURATION, duration);
         modifyParameter(G_PARAMS.TURNS_IN_GAME, 1);
@@ -228,10 +240,12 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     public boolean checkRetainCondition() {
         try {
             if (ref.getSourceObj().isDead()) {
-                if (checkBool(GenericEnums.STD_BOOLS.SOURCE_DEPENDENT))
+                if (checkBool(GenericEnums.STD_BOOLS.SOURCE_DEPENDENT)) {
                     kill();
-                if (getActive().checkBool(GenericEnums.STD_BOOLS.SOURCE_DEPENDENT))
+                }
+                if (getActive().checkBool(GenericEnums.STD_BOOLS.SOURCE_DEPENDENT)) {
                     kill();
+                }
 
             }
         } catch (Exception e) {
@@ -256,8 +270,9 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     }
 
     public void modifyDuration(Integer amount) {
-        if (!permanent)
+        if (!permanent) {
             duration += amount;
+        }
     }
 
     @Override
@@ -328,9 +343,10 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     }
 
     public BUFF_TYPE getBuffType() {
-        if (buffType == null)
+        if (buffType == null) {
             buffType = new EnumMaster<BUFF_TYPE>().retrieveEnumConst(BUFF_TYPE.class,
                     getProperty(G_PROPS.BUFF_TYPE));
+        }
         return buffType;
     }
 

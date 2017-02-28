@@ -5,8 +5,8 @@ import main.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
 import main.entity.obj.Structure;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.battlefield.Coordinates;
+import main.game.core.game.DC_Game.GAME_TYPE;
 import main.system.datatypes.DequeImpl;
 
 import java.util.*;
@@ -256,12 +256,14 @@ public class DC_GameMaster extends GameMaster {
 
     public void checkAddUnit(Obj obj) {
         if (obj instanceof Unit) {
-         if (!getUnits().contains(obj))
-             getUnits().add((Unit) obj);
+            if (!getUnits().contains(obj)) {
+                getUnits().add((Unit) obj);
+            }
         }
         if (obj instanceof Structure) {
-            if (!getStructures().contains(obj))
-            getStructures().add((Structure) obj);
+            if (!getStructures().contains(obj)) {
+                getStructures().add((Structure) obj);
+            }
         }
     }
 }

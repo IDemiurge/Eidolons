@@ -4,14 +4,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.libgdx.gui.panels.dc.TablePanel;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 
 import java.util.List;
 
 public class EffectAndAbilitiesPanel extends TablePanel {
 
     public EffectAndAbilitiesPanel(List<TextureRegion> abilities, List<TextureRegion> effects) {
-        TextureRegion textureRegion = new TextureRegion(TextureManager.getOrCreate("/UI/components/infopanel/effects_and_abilities_panel.png"));
+        TextureRegion textureRegion = new TextureRegion(TextureCache.getOrCreate("/UI/components/infopanel/effects_and_abilities_panel.png"));
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         background(drawable);
         setWidth(textureRegion.getRegionWidth());

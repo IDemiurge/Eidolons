@@ -25,8 +25,9 @@ public class EmitterPools {
     }
 
     public static EmitterActor getEmitterActor(String path) {
-        if (!actorPoolingOn)
+        if (!actorPoolingOn) {
             return new EmitterActor(path);
+        }
         final String finalPath = path.toLowerCase();
         Pool<EmitterActor> pool = actorPoolMap.get(finalPath);
         if (pool == null) {
@@ -41,8 +42,9 @@ public class EmitterPools {
         return pool.obtain();
     }
     public static ParticleEffect getEffect(String path) {
-        if (!effectPoolingOn)
+        if (!effectPoolingOn) {
             return new ParticleEffect(path);
+        }
         final String finalPath = path.toLowerCase();
         Pool<ParticleEffect> pool = effectPoolMap.get(finalPath);
         if (pool == null) {
@@ -59,16 +61,18 @@ public class EmitterPools {
 
     public static void freeEffect (ParticleEffect e) {
         Pool<ParticleEffect> pool = effectPoolMap.get(e.path.toLowerCase());
-        if (pool == null)
+        if (pool == null) {
             return;
+        }
         pool.free(e);
 
     }
 
     public static void freeActor(EmitterActor e) {
         Pool<EmitterActor> pool = actorPoolMap.get(e.path.toLowerCase());
-        if (pool == null)
+        if (pool == null) {
             return;
+        }
         pool.free(e);
 
     }
@@ -80,13 +84,15 @@ public class EmitterPools {
             EmitterActor emitter = null;
             SFX sfx = new EnumMaster<SFX>().
              retrieveEnumConst(SFX.class, path);
-            if (sfx == null)
+            if (sfx == null) {
                 emitter = EmitterPools.getEmitterActor(path);
-            else
+            } else {
                 emitter = EmitterPools.getEmitterActor(sfx);
-            if (emitter != null)
+            }
+            if (emitter != null) {
                 list.add(emitter
                 );
+            }
         }
         return list;
     }

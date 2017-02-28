@@ -12,9 +12,9 @@ import main.entity.obj.*;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
+import main.game.core.game.GameManager;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.game.core.game.GameManager;
 import main.game.logic.generic.PartyManager;
 import main.rules.counter.DC_CounterRule;
 import main.rules.counter.DamageCounterRule;
@@ -298,10 +298,12 @@ public class DC_StateManager extends StateManager{
             return;
         }
         if (obj instanceof BattleFieldObject) {
-            if (obj instanceof Structure)
-            getGame().getStructures().remove(obj);
-            if (obj instanceof Unit)
-            getGame().getUnits().remove(obj);
+            if (obj instanceof Structure) {
+                getGame().getStructures().remove(obj);
+            }
+            if (obj instanceof Unit) {
+                getGame().getUnits().remove(obj);
+            }
 
             removeAttachedObjects((Unit) obj);
 

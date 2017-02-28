@@ -164,9 +164,9 @@ public class MoveAnimation extends ActionAnim {
     protected Texture getTexture() {
 //        if (ListMaster.isNotEmpty(EffectMaster.getEffectsOfClass(getActive(),
 //         MoveEffect.class))) {
-//            return TextureManager.getOrCreate(getRef().getSourceObj().getImagePath());
+//            return TextureCache.getOrCreate(getRef().getSourceObj().getImagePath());
 //        }
-//        return TextureManager.getOrCreate(getRef().getTargetObj().getImagePath());
+//        return TextureCache.getOrCreate(getRef().getTargetObj().getImagePath());
         return null;
     }
 }

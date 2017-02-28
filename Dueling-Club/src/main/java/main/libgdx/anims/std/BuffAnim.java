@@ -11,7 +11,7 @@ import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.sprite.SpriteAnimation;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.FileManager;
 
@@ -34,7 +34,7 @@ public class BuffAnim extends ActionAnim {
                 CONTINUOUS_ANIM_MODS.PENDULUM_ALPHA
         };
         part = ANIM_PART.AFTEREFFECT;
-        textureSupplier = () -> TextureManager.getOrCreate(buff.getImagePath());
+        textureSupplier = () -> TextureCache.getOrCreate(buff.getImagePath());
 
 //setPlayContinuous(buff.checkBool());
         setPlayOnHover(true);

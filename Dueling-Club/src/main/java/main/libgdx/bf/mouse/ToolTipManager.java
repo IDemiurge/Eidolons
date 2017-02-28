@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.libgdx.StyleHolder;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class ToolTipManager extends Group {
     private List<ToolTip> toolTips;
 
     public ToolTipManager() {
-        Texture imageTexture = TextureManager.getOrCreate("UI\\components\\VALUE_BOX_BIG111.png");
+        Texture imageTexture = TextureCache.getOrCreate("UI\\components\\VALUE_BOX_BIG111.png");
         single = new TextureRegion(imageTexture, 0, 0, 240, 45);
         top = new TextureRegion(imageTexture, 0, 45, 240, 45);
         middle = new TextureRegion(imageTexture, 0, 90, 240, 45);

@@ -16,12 +16,12 @@ import main.entity.type.ObjType;
 import main.game.ai.AI;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.pathing.Path;
-import main.game.logic.event.Event;
-import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.core.state.GameState;
 import main.game.core.state.MicroGameState;
 import main.game.core.state.StateManager;
 import main.game.logic.battle.player.Player;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
@@ -265,7 +265,9 @@ public abstract class GameManager implements GenericGameManager {
     }
 
     public void dataChanged() {
-        if (    getGame().getGui() != null)     getGame().getGui().dataChanged();
+        if (getGame().getGui() != null) {
+            getGame().getGui().dataChanged();
+        }
     }
 
     public boolean handleEvent(Event event) {

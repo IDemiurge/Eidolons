@@ -14,7 +14,7 @@ import main.game.core.Eidolons;
 import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.bf.*;
 import main.libgdx.bf.mouse.ToolTipManager.ToolTipRecordOption;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.test.frontend.FAST_DC;
@@ -68,7 +68,7 @@ public class GridMouseListener extends ClickListener {
                     recordOption.curVal = hero.getIntParam(entry.getKey());
                     recordOption.maxVal = hero.getIntParam(entry.getValue());
                     recordOption.name = entry.getValue();
-                    recordOption.recordImage = TextureManager.getOrCreate("UI\\value icons\\" + entry.getValue().replaceAll("_", " ") + ".png");
+                    recordOption.recordImage = TextureCache.getOrCreate("UI\\value icons\\" + entry.getValue().replaceAll("_", " ") + ".png");
                     recordOptions.add(recordOption);
                 });
 

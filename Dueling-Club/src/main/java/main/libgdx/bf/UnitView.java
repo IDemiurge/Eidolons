@@ -140,7 +140,7 @@ public class UnitView extends BaseView {
             //TODO  BLACK AND WHITE IF UNCONSCIOUS
 
 //            if (isDead()) {
-//                Texture skullTexture = TextureManager.getOrCreate(ImageManager.DEAD_ICON);
+//                Texture skullTexture = TextureCache.getOrCreate(ImageManager.DEAD_ICON);
 //                int x = 4 + skullTexture.getWidth()
 //                 * graveIndex /
 //                 GraveyardManager.GRAVE_ROWS;
@@ -196,7 +196,9 @@ public class UnitView extends BaseView {
     }
 
     private boolean isDrawOverlays() {
-        if (outlineTexture!=null )return false;
+        if (outlineTexture != null) {
+            return false;
+        }
         return true;
     }
 
@@ -264,23 +266,23 @@ public class UnitView extends BaseView {
         return curId;
     }
 
-    public void setDead(boolean dead) {
-        this.dead = dead;
-    }
-
     public boolean isDead() {
         return dead;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
     }
 
     public void setGraveIndex(int graveIndex) {
         this.graveIndex = graveIndex;
     }
 
-    public void setOutlineTexture(Texture outlineTexture) {
-        this.outlineTexture = outlineTexture;
-    }
-
     public Texture getOutlineTexture() {
         return outlineTexture;
+    }
+
+    public void setOutlineTexture(Texture outlineTexture) {
+        this.outlineTexture = outlineTexture;
     }
 }

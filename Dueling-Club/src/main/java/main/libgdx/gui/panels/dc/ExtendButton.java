@@ -3,13 +3,13 @@ package main.libgdx.gui.panels.dc;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 
 public class ExtendButton extends Group {
     private final static String extendButtonImagePath = "UI\\components\\extend_button.png";
 
     public ExtendButton() {
-        Image back = new Image(TextureManager.getOrCreate(extendButtonImagePath));
+        Image back = new Image(TextureCache.getOrCreate(extendButtonImagePath));
         setHeight(back.getHeight());
         setWidth(back.getWidth());
         addActor(back);

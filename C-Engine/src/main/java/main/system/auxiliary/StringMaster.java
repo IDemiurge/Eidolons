@@ -1576,8 +1576,11 @@ public class StringMaster {
         StringBuilder builder = new StringBuilder(50);
         for (String sub : segments) {
             if (predicate.test(sub)) {
-                if (breakOnFalse) break;
-                else continue;
+                if (breakOnFalse) {
+                    break;
+                } else {
+                    continue;
+                }
             }
             builder.append(sub + separator);
         }

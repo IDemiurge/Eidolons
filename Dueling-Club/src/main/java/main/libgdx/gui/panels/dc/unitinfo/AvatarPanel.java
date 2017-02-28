@@ -7,11 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.panels.dc.TablePanel;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 
 public class AvatarPanel extends TablePanel {
     public AvatarPanel(TextureRegion avatar, String name, String param1, String param2) {
-        TextureRegion textureRegion = TextureManager.getOrCreateR("/UI/components/infopanel/avatar-panel.png");
+        TextureRegion textureRegion = TextureCache.getOrCreateR("/UI/components/infopanel/avatar-panel.png");
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         background(drawable);
         setWidth(textureRegion.getRegionWidth());

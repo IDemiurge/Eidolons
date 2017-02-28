@@ -1,19 +1,19 @@
 package main.system.hotkey;
 
 import com.melloware.jintellitype.JIntellitype;
-import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.game.core.game.DC_GameManager;
+import main.game.logic.generic.DC_ActionManager.ADDITIONAL_MOVE_ACTIONS;
+import main.game.logic.generic.DC_ActionManager.STD_ACTIONS;
+import main.game.logic.generic.DC_ActionManager.STD_MODE_ACTIONS;
 import main.libgdx.anims.controls.AnimController;
 import main.libgdx.anims.controls.Controller;
 import main.libgdx.anims.controls.Controller.CONTROLLER;
 import main.libgdx.anims.controls.EmitterController;
-import main.game.logic.generic.DC_ActionManager.ADDITIONAL_MOVE_ACTIONS;
-import main.game.logic.generic.DC_ActionManager.STD_ACTIONS;
-import main.game.logic.generic.DC_ActionManager.STD_MODE_ACTIONS;
 import main.rules.RuleMaster;
 import main.swing.generic.components.panels.G_PagePanel;
 import main.system.auxiliary.EnumMaster;
@@ -52,8 +52,9 @@ public class DC_KeyManager
         stdActionKeyMap = new ConcurrentHashMap<>();
         stdModeKeyMap = new ConcurrentHashMap<>();
         addMoveActionKeyMap = new ConcurrentHashMap<>();
-        if (EmitterController.overrideKeys)
+        if (EmitterController.overrideKeys) {
             controller = EmitterController.getInstance();
+        }
     }
 
     public void initHotkeysForUnit() {
@@ -195,11 +196,14 @@ public class DC_KeyManager
         return false;
     }
     public void handleKeyTyped(int keyMod, char CHAR) {
-        if (checkControllerHotkey(keyMod, CHAR)) return;
+        if (checkControllerHotkey(keyMod, CHAR)) {
+            return;
+        }
         if (controller != null) {
             try {
-                if (controller.charTyped(CHAR))
+                if (controller.charTyped(CHAR)) {
                     return;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 return;

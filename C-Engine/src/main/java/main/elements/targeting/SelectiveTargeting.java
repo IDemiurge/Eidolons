@@ -1,11 +1,11 @@
 package main.elements.targeting;
 
 import main.ability.PassiveAbilityObj;
-import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.C_OBJ_TYPE;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.enums.entity.AbilityEnums;
+import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.elements.Filter;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
@@ -69,8 +69,9 @@ public class SelectiveTargeting extends TargetingImpl {
         if (target == null) {
             return false;
         }
-        if (target>0)
-        ref.setTarget(target);
+        if (target > 0) {
+            ref.setTarget(target);
+        }
         LogMaster.log(1, "TARGET SELECTED : "
                 + ref.getGame().getObjectById(target));
         return true;
