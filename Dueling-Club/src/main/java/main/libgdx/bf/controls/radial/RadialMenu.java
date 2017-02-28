@@ -2,6 +2,7 @@ package main.libgdx.bf.controls.radial;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -30,6 +31,7 @@ import main.libgdx.bf.TargetRunnable;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.GreyscaleUtils;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -82,10 +84,10 @@ public class RadialMenu extends Group {
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
         setBounds(
-         v2.x - currentNode.getWidth() / 2,
-         v2.y - currentNode.getHeight() / 2,
-         currentNode.getWidth(),
-         currentNode.getHeight()
+                v2.x - currentNode.getWidth() / 2,
+                v2.y - currentNode.getHeight() / 2,
+                currentNode.getWidth(),
+                currentNode.getHeight()
         );
 
         currentNode.setX(getX());
@@ -145,10 +147,10 @@ public class RadialMenu extends Group {
         List<MenuNode> menuNodes = new ArrayList<>();
         for (final CreatorNode node : creatorNodes) {
             final MenuNode menuNode = new MenuNode(
-             node.texture == null ?
-              new Image(closeTex)
-              : new Image(node.texture), node.name,
-             node.w, node.h
+                    node.texture == null ?
+                            new Image(closeTex)
+                            : new Image(node.texture), node.name,
+                    node.w, node.h
             );
             menuNode.parent = parent;
             if (node.action != null) {
@@ -187,15 +189,30 @@ public class RadialMenu extends Group {
     }
 
     private Texture getTextureForActive(ActiveObj obj, Ref ref) {
+        Texture t = TextureCache.getOrCreate(((Entity) obj).getImagePath());
         if (obj.canBeActivated(ref)) {
-//            TextureCache.getOrCreateDarkened(((Entity) obj).getImagePath());
+
         }
-        return TextureCache.getOrCreate(((Entity) obj).getImagePath());
+
+        if (!t.getTextureData().isPrepared()) {
+            t.getTextureData().prepare();
+        }
+        Pixmap pixmap2 = new Pixmap(t.getWidth(), t.getHeight(), t.getTextureData().getFormat());
+        Pixmap pixmap = t.getTextureData().consumePixmap();
+
+        for (int i = 0; i < t.getWidth(); i++) {
+            for (int j = 0; j < t.getHeight(); j++) {
+                int c = pixmap.getPixel(i, j);
+                pixmap2.drawPixel(i, j, GreyscaleUtils.lightness(c));
+            }
+        }
+
+        Texture result = new Texture(pixmap2);
+        return result;
     }
 
     public void createNew(DC_Obj target) {
-        Unit source
-         = (Unit) Game.game.getManager().getActiveObj();
+        Unit source = (Unit) Game.game.getManager().getActiveObj();
         if (source == null) {
             return; //fix logic to avoid null value between turns!
         }
@@ -220,18 +237,18 @@ public class RadialMenu extends Group {
             DC_ActiveObj active = ((DC_ActiveObj) obj);
             actives.add(active);
             ImmutableTriple<Runnable, Texture, String> triple = new ImmutableTriple<>(
-             ((Entity) obj)::invokeClicked,
-             getTextureForActive(obj,
-              obj.getOwnerObj().getRef().getTargetingRef(target)),
-             obj.getName()
+                    ((Entity) obj)::invokeClicked,
+                    getTextureForActive(obj,
+                            obj.getOwnerObj().getRef().getTargetingRef(target)),
+                    obj.getName()
             );
             if (obj.isMove()) {
                 if (obj.getTargeting() instanceof SelectiveTargeting) {
                     moves.add(new ImmutableTriple<>(() -> {
-                        active.activateOn(  target);
+                        active.activateOn(target);
                     },
                             TextureCache.getOrCreate(((Entity) obj).getImagePath()),
-                     obj.getName()));
+                            obj.getName()));
                 } else {
                     moves.add(triple);
                 }

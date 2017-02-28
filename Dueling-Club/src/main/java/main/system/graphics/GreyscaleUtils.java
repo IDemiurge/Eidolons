@@ -31,6 +31,6 @@ public class GreyscaleUtils {
     }
 
     private static int toGrayscaleRGBA(int gray) {
-        return gray << 24 | gray << 16 | gray << 8 | 1;
+        return gray << 24 | gray << 16 | gray << 8 | 255;
     }
 }

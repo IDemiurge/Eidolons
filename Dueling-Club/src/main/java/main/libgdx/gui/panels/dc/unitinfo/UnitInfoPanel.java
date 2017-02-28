@@ -32,6 +32,8 @@ public class UnitInfoPanel extends Container<TablePanel> {
         initInnerPanels();
 
         initListeners();
+
+        setVisible(false);
     }
 
     private void initInnerPanels() {

@@ -22,19 +22,31 @@ public class TextureCache {
         this.cache = new HashMap<>();
     }
 
+    private static void init() {
+        try {
+            creationLock.lock();
+            if (textureCache == null) {
+                textureCache = new TextureCache();
+            }
+        } finally {
+            creationLock.unlock();
+        }
+    }
+
     public static Texture getOrCreate(String path) {
         if (textureCache == null) {
-            try {
-                creationLock.lock();
-                if (textureCache == null) {
-                    textureCache = new TextureCache();
-                }
-            } finally {
-                creationLock.unlock();
-            }
+            init();
         }
 
         return textureCache._getOrCreate(path);
+    }
+
+    public static void put(Texture texture, String path) {
+        if (textureCache == null) {
+            init();
+        }
+
+        textureCache.cache.put(path, texture);
     }
 
     public static TextureRegion getOrCreateR(String path) {
@@ -42,8 +54,8 @@ public class TextureCache {
     }
 
     private Texture _getOrCreate(String path) {
-        Path p = Paths.get(imagePath, path);
         if (!this.cache.containsKey(path)) {
+            Path p = Paths.get(imagePath, path);
             Texture t = new Texture(p.toString());
             this.cache.put(path, t);
         }
