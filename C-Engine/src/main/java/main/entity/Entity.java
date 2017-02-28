@@ -132,10 +132,11 @@ public abstract class Entity extends DataModel implements OBJ {
     }
 
     public void toBase() {
-        if (getMaster() != null)
-        if (getResetter() != null) {
-        getResetter().toBase();
-        return ;
+        if (getMaster() != null) {
+            if (getResetter() != null) {
+                getResetter().toBase();
+                return;
+            }
         }
 
         getPropCache().clear();
@@ -226,8 +227,9 @@ public abstract class Entity extends DataModel implements OBJ {
 
     public void construct() {
 //TODO temp
-        if (getInitializer()!=null )
-      getInitializer().construct();
+        if (getInitializer() != null) {
+            getInitializer().construct();
+        }
 
     }
 

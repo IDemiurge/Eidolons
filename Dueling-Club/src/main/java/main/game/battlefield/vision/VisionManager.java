@@ -31,8 +31,9 @@ public class VisionManager {
 
 
     public static VisionMaster getMaster() {
-        if (master==null )
+        if (master == null) {
             master = new VisionMaster(Eidolons.game);
+        }
         return master;
     }
 

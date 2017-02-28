@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.bf.mouse.MovableHeader;
 import main.libgdx.gui.dialog.LogMessage;
 import main.libgdx.gui.dialog.LogMessageBuilder;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.graphics.ColorManager;
@@ -31,7 +31,7 @@ public class LogPanel extends Group {
 
     public LogPanel() {
         setSize(400, 250);
-        Image bg = new Image(TextureManager.getOrCreate(bgPath));
+        Image bg = new Image(TextureCache.getOrCreate(bgPath));
         bg.setFillParent(true);
         addActor(bg);
 

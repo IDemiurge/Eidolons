@@ -70,10 +70,8 @@ public abstract class DC_UnitModel extends BattleFieldObject implements  Rotatab
     protected Map<ACTION_TYPE, List<DC_UnitAction>> actionMap;
 
     protected boolean standardActionsAdded;
-
-    private boolean hidden;
-
     protected Deity deity;
+    private boolean hidden;
     private ImageIcon emblem;
     private UnitAI unitAI;
     private DC_ActiveObj preferredInstantAttack;
@@ -554,8 +552,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements  Rotatab
 
     public boolean canActNow() {
         if (getGame().isDummyPlus()) {
-            if(!isMine())
-             return false;
+            if (!isMine()) {
+                return false;
+            }
         }
         if (owner == Player.NEUTRAL) {
             return false;

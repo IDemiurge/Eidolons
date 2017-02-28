@@ -10,7 +10,7 @@ import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimMaster;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.function.Supplier;
@@ -30,7 +30,7 @@ public class ActionAnim extends Anim {
                       ANIM_MOD[] anim_mods) {
         super(active, animData);
         mods = anim_mods;
-        this.textureSupplier = () -> TextureManager.getOrCreate(imagePath.get());
+        this.textureSupplier = () -> TextureCache.getOrCreate(imagePath.get());
     }
 
     protected Action getAction() {
@@ -39,7 +39,9 @@ public class ActionAnim extends Anim {
 
     protected void add() {
         action=getAction();
-        if(action==null) return;
+        if (action == null) {
+            return;
+        }
         addAction(action);
         getAction().setTarget(this);
         AnimMaster.getInstance().addActor(this);

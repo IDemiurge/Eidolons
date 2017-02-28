@@ -10,10 +10,10 @@ import main.client.cc.CharacterCreator;
 import main.client.cc.logic.items.ItemGenerator;
 import main.client.cc.logic.spells.LibraryManager;
 import main.client.dc.Launcher;
-import main.content.enums.entity.ItemEnums.MATERIAL;
-import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.*;
 import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.ItemEnums.MATERIAL;
+import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -36,8 +36,6 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
-import main.game.core.state.DC_GameState;
 import main.game.ai.AI_Manager;
 import main.game.ai.GroupAI;
 import main.game.ai.UnitAI;
@@ -45,24 +43,31 @@ import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.DC_ObjInitializer;
+import main.game.core.game.DC_Game;
+import main.game.core.state.DC_GameState;
 import main.game.logic.arena.UnitGroupMaster;
 import main.game.logic.arena.Wave;
 import main.game.logic.battle.player.DC_Player;
-import main.game.logic.dungeon.Dungeon;
 import main.game.logic.battle.player.Player;
-import main.libgdx.anims.controls.EmitterController;
+import main.game.logic.dungeon.Dungeon;
 import main.game.logic.generic.DC_ActionManager;
+import main.libgdx.anims.controls.EmitterController;
 import main.swing.builders.DC_Builder;
 import main.swing.components.obj.drawing.DrawMasterStatic;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.services.dialog.EnumChooser;
-import main.system.*;
-import main.system.auxiliary.*;
+import main.system.DC_Formulas;
+import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
-import main.system.auxiliary.data.FileManager;
 import main.system.entity.ConditionMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
@@ -386,9 +391,11 @@ public class DebugMaster {
         if (infoObj == null) {
             infoObj = game.getManager().getActiveObj();
         }
-       if ( game.getManager().getActiveObj()!=null )
+        if (game.getManager().getActiveObj() != null) {
             ref = new Ref(game, game.getManager().getActiveObj().getId());
-       else ref = new Ref(game);
+        } else {
+            ref = new Ref(game);
+        }
 
         ref.setDebug(true);
         Coordinates coordinate = null;
@@ -413,9 +420,11 @@ public class DebugMaster {
                     if (groupFile == null) {
                         break;
                     }
-                    if (arg instanceof DC_Cell)
-                        coordinate = arg.getCoordinates(); else
-                    coordinate = getGame().getBattleFieldManager().pickCoordinate();
+                    if (arg instanceof DC_Cell) {
+                        coordinate = arg.getCoordinates();
+                    } else {
+                        coordinate = getGame().getBattleFieldManager().pickCoordinate();
+                    }
                     if (coordinate == null) {
                         break;
                     }
@@ -705,10 +714,11 @@ public class DebugMaster {
                     WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, false);
                     return func;
                 case KILL_UNIT:
-                    if (arg != null)
+                    if (arg != null) {
                         arg.kill(infoObj, !isAltMode(), isAltMode());
-                    else
+                    } else {
                         infoObj.kill(infoObj, !isAltMode(), isAltMode());
+                    }
                     // game.getManager().killUnitQuietly((DC_UnitObj)
                     // game.getManager()
                     // .getInfoObj());

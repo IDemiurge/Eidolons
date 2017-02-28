@@ -17,8 +17,8 @@ import main.system.EventCallback;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -379,7 +379,9 @@ public class CompositeAnim implements Animation {
 
     @Override
     public void onDone(EventCallback callback, EventCallbackParam param) {
-        if (map.isEmpty()) return;
+        if (map.isEmpty()) {
+            return;
+        }
         Anim lastAnim = (Anim) map.values().toArray()[map.size() - 1];
         lastAnim.onDone(callback, param);
     }
@@ -400,16 +402,21 @@ public class CompositeAnim implements Animation {
     }
 
     public List<Event> getTextEvents() {
-        if (textEvents == null) textEvents = new LinkedList<>();
+        if (textEvents == null) {
+            textEvents = new LinkedList<>();
+        }
         return textEvents;
     }
 
     public void setForcedDestination(Coordinates forcedDestination) {
         map.values().forEach(anim -> {
-            if (anim.getPart() != ANIM_PART.CAST)
-                if (anim.getPart() != ANIM_PART.PRECAST)
-                    if (anim.getPart() != ANIM_PART.RESOLVE)
+            if (anim.getPart() != ANIM_PART.CAST) {
+                if (anim.getPart() != ANIM_PART.PRECAST) {
+                    if (anim.getPart() != ANIM_PART.RESOLVE) {
                         anim.setForcedDestination(forcedDestination);
+                    }
+                }
+            }
         });
     }
 }

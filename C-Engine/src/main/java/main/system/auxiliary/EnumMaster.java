@@ -19,7 +19,6 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 
-import java.io.IOException;
 import java.util.*;
 
 public class EnumMaster<T> {
@@ -62,8 +61,9 @@ public class EnumMaster<T> {
             return CLASS;
         }
         Class mappedClass = enumMap.get(name.toUpperCase());
-        if (mappedClass != null)
+        if (mappedClass != null) {
             return getEnumClass(name, mappedClass);
+        }
 
         if (enumClasses == null) {
             enumClasses = new LinkedList<>();

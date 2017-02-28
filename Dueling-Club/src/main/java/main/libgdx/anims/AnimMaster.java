@@ -86,7 +86,9 @@ public class AnimMaster extends Group {
     private void bindEvents() {
 
         GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
-            if (!(p.get() instanceof Unit)) return;
+            if (!(p.get() instanceof Unit)) {
+                return;
+            }
             if (showBuffAnimsOnHoverLength == null) {
                 return;
             }
@@ -146,8 +148,9 @@ public class AnimMaster extends Group {
                 return;
             }
             Event event = (Event) p.get();
-            if (event.getRef().isDebug())
-                return ;
+            if (event.getRef().isDebug()) {
+                return;
+            }
             if (event.getType() == STANDARD_EVENT_TYPE.NEW_ROUND) {
                 if (showBuffAnimsOnNewRoundLength != null) {
                     continuousAnims.values().forEach(anim -> {
@@ -162,8 +165,9 @@ public class AnimMaster extends Group {
             CompositeAnim parentAnim = null;
             if (floatingTextMaster.isEventDisplayable(event)) {
                 parentAnim = getParentAnim(event.getRef());
-                if (parentAnim != null)
+                if (parentAnim != null) {
                     parentAnim.addTextEvent(event);
+                }
             }
             Anim anim = EventAnimCreator.getAnim(event);
             if (anim == null) {

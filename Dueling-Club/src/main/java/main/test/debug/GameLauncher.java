@@ -3,17 +3,17 @@ package main.test.debug;
 import main.ability.UnitTrainingMaster;
 import main.client.dc.Launcher;
 import main.client.game.NetGame;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.PROPS;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
 import main.game.battlefield.vision.VisionManager;
+import main.game.core.game.DC_Game;
 import main.game.logic.arena.UnitGroupMaster;
-import main.game.logic.generic.SpawnManager;
 import main.game.logic.dungeon.DungeonMaster;
+import main.game.logic.generic.SpawnManager;
 import main.game.logic.macro.travel.EncounterMaster;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.RULE_SCOPE;
@@ -171,8 +171,9 @@ public class GameLauncher {
             game.setDummyMode(true);
             game.setDummyPlus(DUMMY_PP);
             TestMasterContent.setForceFree(!DUMMY_PP);
-            if (DUMMY_PP)
+            if (DUMMY_PP) {
                 RuleMaster.setScope(RULE_SCOPE.TEST);
+            }
         }
         try {
             if (PresetMaster.getPreset() == null // &&
@@ -201,9 +202,11 @@ public class GameLauncher {
         }
         DC_Game.setGame(game);
         // select code?
-        if (!VISION_HACK)
-            if (PresetLauncher.getLaunch()!=null  )
-        VISION_HACK= PresetLauncher.getLaunch().visionHacked;
+        if (!VISION_HACK) {
+            if (PresetLauncher.getLaunch() != null) {
+                VISION_HACK = PresetLauncher.getLaunch().visionHacked;
+            }
+        }
 
         VisionManager.setVisionHacked(VISION_HACK);
         DebugMaster.setOmnivisionOn(VISION_HACK);

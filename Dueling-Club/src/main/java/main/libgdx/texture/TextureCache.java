@@ -1,42 +1,50 @@
 package main.libgdx.texture;
 
 import com.badlogic.gdx.graphics.Texture;
-import main.system.auxiliary.StringMaster;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import main.data.filesys.PathFinder;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class TextureCache {
+    private static TextureCache textureCache;
+    private static Lock creationLock = new ReentrantLock();
     private Map<String, Texture> cache;
     private String imagePath;
 
-
-    public TextureCache(String imagePath) {
-        this.imagePath = imagePath;
+    private TextureCache() {
+        this.imagePath = PathFinder.getImagePath();
         this.cache = new HashMap<>();
     }
 
-    public final Texture getOrCreate(String path) {
-        return this.get(path, true);
-    }
-
-    public final Texture get(String path) {
-        return this.get(path, false);
-    }
-
-    public final Texture create(String path) {
-        return new Texture( StringMaster.addMissingPathSegments(path, this.imagePath));
-    }
-        public final Texture get(String path, boolean save) {
-            Texture t = create(path);
-//        String p =
-//                StringMaster.addMissingPathSegments(path, this.imagePath);
-        if (!this.cache.containsKey(path)) {
-
-            if (!save) {
-                return t;
+    public static Texture getOrCreate(String path) {
+        if (textureCache == null) {
+            try {
+                creationLock.lock();
+                if (textureCache == null) {
+                    textureCache = new TextureCache();
+                }
+            } finally {
+                creationLock.unlock();
             }
+        }
 
+        return textureCache._getOrCreate(path);
+    }
+
+    public static TextureRegion getOrCreateR(String path) {
+        return new TextureRegion(getOrCreate(path));
+    }
+
+    private Texture _getOrCreate(String path) {
+        Path p = Paths.get(imagePath, path);
+        if (!this.cache.containsKey(path)) {
+            Texture t = new Texture(p.toString());
             this.cache.put(path, t);
         }
 

@@ -46,8 +46,9 @@ public class SpriteAnimation extends Animation<TextureRegion> {
                            Texture texture
      , boolean singleSprite) {
         super(frameDuration, TextureManager.getSpriteSheetFrames(path, singleSprite, texture));
-        if (path != null)
+        if (path != null) {
             frameNumber = TextureManager.getFrameNumber(path);
+        }
         stateTime = 0;
         this.looping = looping;
         this.loops = loops;
@@ -67,9 +68,9 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     private void checkReverse() {
-        if (backAndForth)
-            if (cycles != -1)
-                if (getLifecycleDuration() != 0)
+        if (backAndForth) {
+            if (cycles != -1) {
+                if (getLifecycleDuration() != 0) {
                     if ((int) (stateTime / getLifecycleDuration()) > cycles) {
                         if (getPlayMode() == PlayMode.LOOP_REVERSED) {
                             setPlayMode(originalPlayMode);
@@ -78,6 +79,9 @@ public class SpriteAnimation extends Animation<TextureRegion> {
                             setPlayMode(PlayMode.LOOP_REVERSED);
                         }
                     }
+                }
+            }
+        }
     }
 
     public boolean draw(Batch batch) {
@@ -98,10 +102,11 @@ public class SpriteAnimation extends Animation<TextureRegion> {
             lifecycle = stateTime % getLifecycleDuration() / getLifecycleDuration();
         }
 
-        if (sprite == null)
+        if (sprite == null) {
             sprite = new Sprite(currentFrame);
-        else
+        } else {
             sprite.setRegion(currentFrame);
+        }
         sprite.setAlpha(alpha);
 
         sprite.setRotation(rotation);

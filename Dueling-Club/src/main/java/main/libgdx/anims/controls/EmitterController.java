@@ -22,8 +22,8 @@ import main.swing.generic.services.DialogMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -81,7 +81,9 @@ public class EmitterController implements Controller {
     public void create() {
         String presetPath =
          new FileChooser(PathFinder.getSfxPath()).launch("", "");
-        if (presetPath == null) return;
+        if (presetPath == null) {
+            return;
+        }
         ImageChooser ic = new ImageChooser();
         ic.setDefaultFileLocation(PathFinder.getSfxPath() + "images//");
         String imagePath = ic
@@ -101,7 +103,9 @@ public class EmitterController implements Controller {
 
 
     public void replay() {
-        if (last == null) return;
+        if (last == null) {
+            return;
+        }
         last.reset();
         add(last, null);
 
@@ -134,8 +138,9 @@ public class EmitterController implements Controller {
 
     public void add(EmitterActor actor, Vector2 v) {
         GameScreen.getInstance().getAnimsStage().addActor(actor);
-        if (v == null)
+        if (v == null) {
             v = GridMaster.getMouseCoordinates();
+        }
         actor.setPosition(v.x, v.y);
 
 //        int speed = 500;

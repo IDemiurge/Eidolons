@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.libgdx.StyleHolder;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
 
 import java.util.function.Supplier;
@@ -51,8 +51,9 @@ boolean inverseAlpha;
         act(Gdx.graphics.getDeltaTime());
 
 //        new SearchMaster<MoveByAction>().findInstanceOf(MoveByAction.class, getActions());
-        if (inverseAlpha)
-            parentAlpha=1-parentAlpha;
+        if (inverseAlpha) {
+            parentAlpha = 1 - parentAlpha;
+        }
         super.draw(batch, parentAlpha);
     }
 
@@ -75,7 +76,9 @@ boolean inverseAlpha;
             fadeOutAction.setAlpha(  0.0f);
             fadeOutAction.setDuration(duration/alphaLoops);
             alphaActionSequence.addAction(fadeOutAction);
-            if (alphaLoops==1) break;
+            if (alphaLoops == 1) {
+                break;
+            }
             i--; // twice
             AlphaAction fadeInAction = new AlphaAction();
             fadeOutAction.setAlpha(  1);
@@ -95,14 +98,17 @@ if (delay!=0){
     parallelAction=new DelayAction();
     ((DelayAction)parallelAction).setTime(delay);
     ((DelayAction)parallelAction).setAction(new ParallelAction(alphaActionSequence, moveByAction));
-}else
-    parallelAction=new ParallelAction(alphaActionSequence, moveByAction);
+} else {
+    parallelAction = new ParallelAction(alphaActionSequence, moveByAction);
+}
 
-        if (imageSupplier != null)
+
+        if (imageSupplier != null) {
             if (!StringMaster.isEmpty(imageSupplier.get())){
-            Image image = new Image(TextureManager.getOrCreate(imageSupplier.get()));
-            addActor(image);
+                Image image = new Image(TextureCache.getOrCreate(imageSupplier.get()));
+                addActor(image);
 //            image.setPosition(origin.x, origin.y);
+            }
         }
 
         Label label =

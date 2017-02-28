@@ -1,9 +1,9 @@
 package main.game.battlefield.attack;
 
-import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.PARAMS;
-import main.content.enums.entity.ActionEnums;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
@@ -20,9 +20,9 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.EventType;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.rules.round.UnconsciousRule;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.Manager;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.AttackAnimation;
 import main.system.graphics.PhaseAnimation;
@@ -448,10 +448,11 @@ public class DamageMaster extends Manager {
         int armor = ArmorMaster.getArmorValue(attacked, damage_type);
         PhaseAnimation animation = magical ? getActionAnimation(ref, attacker) : getAttackAnimation(ref,
                 attacked);
-if (animation!=null )
-        if (resistance != 0 || armor != 0) {
-            animation.addPhaseArgs(PHASE_TYPE.REDUCTION_NATURAL, armor, resistance, base_damage
-                    - blocked);
+        if (animation != null) {
+            if (resistance != 0 || armor != 0) {
+                animation.addPhaseArgs(PHASE_TYPE.REDUCTION_NATURAL, armor, resistance, base_damage
+                        - blocked);
+            }
         }
         return Math.max(0, i - armor);
     }
@@ -535,8 +536,9 @@ if (animation!=null )
     }
 
     public static boolean checkDead(BattleFieldObject unit) {
-        if (unit instanceof Unit)
-        return UnconsciousRule.checkUnitDies((Unit) unit);
+        if (unit instanceof Unit) {
+            return UnconsciousRule.checkUnitDies((Unit) unit);
+        }
         if (0 >= unit.getIntParam(PARAMS.C_ENDURANCE)) {
             return true;
         }

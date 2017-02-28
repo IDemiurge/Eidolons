@@ -5,8 +5,8 @@ import main.ability.effects.Effect;
 import main.ability.effects.oneshot.MicroEffect;
 import main.client.cc.logic.UnitLevelManager;
 import main.content.C_OBJ_TYPE;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.PARAMS;
 import main.data.DataManager;
 import main.data.ability.OmittedConstructor;
@@ -18,9 +18,9 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
+import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.game.logic.battle.player.Player;
 import main.rules.magic.SummoningSicknessRule;
 import main.rules.round.UpkeepRule;
 import main.system.DC_Formulas;
@@ -123,8 +123,9 @@ public class SummonEffect extends MicroEffect {
         unit.getRef().setID(KEYS.ACTIVE, ref.getId(KEYS.ACTIVE));
 
         UpkeepRule.addUpkeep(unit);
-        if (unit instanceof Unit)
+        if (unit instanceof Unit) {
             SummoningSicknessRule.apply((Unit) unit);
+        }
 
         if (effects != null) {
             REF.setTarget(getUnit().getId());

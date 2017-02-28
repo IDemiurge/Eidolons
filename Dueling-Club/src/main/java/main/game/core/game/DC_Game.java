@@ -377,8 +377,9 @@ public class DC_Game extends MicroGame {
 
         startGameLoop();
 
-        if (BooleanMaster.isFalse(hostClient))
-                getConnection().send(HOST_CLIENT_CODES.CHECK_READY, getPlayer(true).getName());
+        if (BooleanMaster.isFalse(hostClient)) {
+            getConnection().send(HOST_CLIENT_CODES.CHECK_READY, getPlayer(true).getName());
+        }
 
         if (playerMaster == null) {
             playerMaster = new PlayerMaster(game, getPlayer(true), getPlayer(false));
@@ -398,8 +399,9 @@ public class DC_Game extends MicroGame {
         setRunning(true);
         if (getGameLoopThread() == null) {
             setGameLoopThread(new Thread(() -> {
-                if (!CoreEngine.isGraphicsOff())
+                if (!CoreEngine.isGraphicsOff()) {
                     WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
+                }
 
                 while (true) {
                     try {

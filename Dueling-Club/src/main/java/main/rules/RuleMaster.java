@@ -66,8 +66,9 @@ public class RuleMaster implements Controller {
     }
 
     public static boolean checkRuleGroupIsOn(RULE_GROUP group) {
-        if (overrideMap.containsKey(group))
+        if (overrideMap.containsKey(group)) {
             return overrideMap.get(group);
+        }
         return checkStatus(getScopeForRuleGroup(group));
     }
 
@@ -115,8 +116,9 @@ public class RuleMaster implements Controller {
     }
 
     public static boolean isRuleOn(RULE rule) {
-        if (overrideMap.containsKey(rule))
+        if (overrideMap.containsKey(rule)) {
             return overrideMap.get(rule);
+        }
         return checkStatus(getScopeForRule(rule));
 
     }
@@ -242,7 +244,9 @@ public class RuleMaster implements Controller {
     }
 
     public static RuleMaster getInstance() {
-        if (instance == null) instance = new RuleMaster();
+        if (instance == null) {
+            instance = new RuleMaster();
+        }
         return instance;
     }
 
@@ -255,8 +259,9 @@ public class RuleMaster implements Controller {
         switch (c) {
             case 's':
                 RULE_SCOPE scope = new EnumMaster<RULE_SCOPE>().selectEnum(RULE_SCOPE.class);
-                if (scope != null)
+                if (scope != null) {
                     setScope(scope);
+                }
                 return true;
             case 'r':
                 clearOverrides();

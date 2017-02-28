@@ -2,10 +2,10 @@ package main.system.auxiliary.data;
 
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.SearchMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.sound.SoundMaster;
 import org.w3c.dom.Node;
@@ -256,12 +256,13 @@ public class FileManager {
     public static String getUniqueFileVersion(String fileName, String folder) {
         String format = StringMaster.getFormat(fileName);
         String name = StringMaster.cropFormat(fileName);
-        if (name.lastIndexOf(getFileVersionSeparator()) > 0)
+        if (name.lastIndexOf(getFileVersionSeparator()) > 0) {
             if (StringMaster.isInteger(name.substring(
-             name.lastIndexOf(getFileVersionSeparator()), name.length() - 1
+                    name.lastIndexOf(getFileVersionSeparator()), name.length() - 1
             ))) {
                 name = name.substring(0, name.lastIndexOf(getFileVersionSeparator()));
             }
+        }
         String originalName = name;
 
         List<String> siblings = getFileNames(getFilesFromDirectory(folder, true));

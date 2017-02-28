@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.VerticalValueContainer;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 public class UnitInfoPanel extends Container<TablePanel> {
 
     public UnitInfoPanel() {
-        TextureRegion textureRegion = TextureManager.getOrCreateR("/UI/components/infopanel/background.png");
+        TextureRegion textureRegion = TextureCache.getOrCreateR("/UI/components/infopanel/background.png");
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         background(drawable);
         setWidth(textureRegion.getRegionWidth());
@@ -40,7 +40,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
 
         List<VerticalValueContainer> resourceValues = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            resourceValues.add(new VerticalValueContainer(TextureManager.getOrCreateR("UI/value icons/morale.png"), "param" + i, "146%"));
+            resourceValues.add(new VerticalValueContainer(TextureCache.getOrCreateR("UI/value icons/morale.png"), "param" + i, "146%"));
         }
 
         ResourcePanel resourcePanel = new ResourcePanel(resourceValues);
@@ -48,7 +48,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
 
         List<ValueContainer> valueContainers = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            valueContainers.add(new ValueContainer(TextureManager.getOrCreateR("/UI/abils.jpg"), "param" + i, "146%"));
+            valueContainers.add(new ValueContainer(TextureCache.getOrCreateR("/UI/abils.jpg"), "param" + i, "146%"));
         }
 
         MainParamPanel mainParamPanel = new MainParamPanel(valueContainers);
@@ -58,11 +58,11 @@ public class UnitInfoPanel extends Container<TablePanel> {
 
         List<TextureRegion> abils = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            abils.add(TextureManager.getOrCreateR("/UI/abils.jpg"));
+            abils.add(TextureCache.getOrCreateR("/UI/abils.jpg"));
         }
         List<TextureRegion> effects = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            effects.add(TextureManager.getOrCreateR("/UI/buffs.jpg"));
+            effects.add(TextureCache.getOrCreateR("/UI/buffs.jpg"));
         }
 
         EffectAndAbilitiesPanel effectAndAbilitiesPanel = new EffectAndAbilitiesPanel(abils, effects);
@@ -73,7 +73,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
         addCol();
 
 
-        AvatarPanel avatarPanel = new AvatarPanel(TextureManager.getOrCreateR("/UI/Empty5.jpg"), "Elf", "level 80", "code name: \"Legolas\"");
+        AvatarPanel avatarPanel = new AvatarPanel(TextureCache.getOrCreateR("/UI/Empty5.jpg"), "Elf", "level 80", "code name: \"Legolas\"");
         addElement(avatarPanel);
 
         InitiativeAndActionPointsPanel pointsPanel = new InitiativeAndActionPointsPanel("50/50", "9999");
@@ -84,7 +84,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
         List<ValueContainer> armorParams = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             ValueContainer valueContainer = new ValueContainer("param" + i, "14/88");
-            valueContainer.setBorder(TextureManager.getOrCreateR("UI/components/infopanel/simple_value_border.png"));
+            valueContainer.setBorder(TextureCache.getOrCreateR("UI/components/infopanel/simple_value_border.png"));
             armorParams.add(valueContainer);
         }
 
@@ -95,7 +95,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
 
         List<ValueContainer> resists = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
-            resists.add(new ValueContainer(TextureManager.getOrCreateR("UI/value icons/resistance.jpg"), "146%"));
+            resists.add(new ValueContainer(TextureCache.getOrCreateR("UI/value icons/resistance.jpg"), "146%"));
         }
 
         ResistPanel resistPanel = new ResistPanel(resists);
@@ -118,7 +118,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
         List<ValueContainer> statsValues = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             ValueContainer valueContainer = new ValueContainer("Combat param" + i, "9000");
-            valueContainer.setBorder(TextureManager.getOrCreateR("UI/components/infopanel/simple_value_border.png"), true);
+            valueContainer.setBorder(TextureCache.getOrCreateR("UI/components/infopanel/simple_value_border.png"), true);
             statsValues.add(valueContainer);
         }
 
@@ -127,7 +127,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
         List<ValueContainer> statsValues2 = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             ValueContainer valueContainer = new ValueContainer("Magic param" + i, "9000");
-            valueContainer.setBorder(TextureManager.getOrCreateR("UI/components/infopanel/simple_value_border.png"), true);
+            valueContainer.setBorder(TextureCache.getOrCreateR("UI/components/infopanel/simple_value_border.png"), true);
             statsValues2.add(valueContainer);
         }
         //StatsPanel statsPanel2 = new StatsPanel(statsValues);
@@ -135,7 +135,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
         List<ValueContainer> statsValues3 = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             ValueContainer valueContainer = new ValueContainer("Misc param" + i, "9000");
-            valueContainer.setBorder(TextureManager.getOrCreateR("UI/components/infopanel/simple_value_border.png"), true);
+            valueContainer.setBorder(TextureCache.getOrCreateR("UI/components/infopanel/simple_value_border.png"), true);
             statsValues3.add(valueContainer);
         }
         StatsPanel statsPanel3 = new StatsPanel(statsValues, statsValues2, statsValues3);
@@ -175,7 +175,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
 
     private void addPanelSeparator() {
         Container<Image> panelSeparator = new Container<>();
-        Image image = new Image(TextureManager.getOrCreateR("/UI/components/infopanel/panel_separator.png"));
+        Image image = new Image(TextureCache.getOrCreateR("/UI/components/infopanel/panel_separator.png"));
         panelSeparator.setActor(image);
         panelSeparator.fill().center().bottom();
         addElement(panelSeparator);

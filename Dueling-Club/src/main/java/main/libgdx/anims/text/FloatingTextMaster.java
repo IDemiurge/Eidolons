@@ -30,7 +30,9 @@ public class FloatingTextMaster {
     }
 
     public static FloatingTextMaster getInstance() {
-        if (instance == null) instance = new FloatingTextMaster();
+        if (instance == null) {
+            instance = new FloatingTextMaster();
+        }
         return instance;
     }
 
@@ -100,7 +102,9 @@ public class FloatingTextMaster {
 
     public void addFloatingTextForEventAnim(Event e, CompositeAnim compositeAnim) {
         TEXT_CASES CASE = getCase(e);
-        if (CASE == null) return;
+        if (CASE == null) {
+            return;
+        }
         ANIM_PART part = getPart(CASE);
         Anim anim = compositeAnim.getMap().get(part);
         Object[] args = CASE.getArgs(e);
@@ -191,10 +195,11 @@ public class FloatingTextMaster {
         }
 
         public Object[] getArgs(Event e) {
-            if (producer == null)
+            if (producer == null) {
                 return new Object[]{
-                 "arg!"
+                        "arg!"
                 };
+            }
             return producer.produce(e);
         }
     }

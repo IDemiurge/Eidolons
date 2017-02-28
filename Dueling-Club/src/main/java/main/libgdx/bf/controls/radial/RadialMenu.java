@@ -27,7 +27,7 @@ import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.TargetRunnable;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
@@ -188,9 +188,9 @@ public class RadialMenu extends Group {
 
     private Texture getTextureForActive(ActiveObj obj, Ref ref) {
         if (obj.canBeActivated(ref)) {
-//            TextureManager.getOrCreateDarkened(((Entity) obj).getImagePath());
+//            TextureCache.getOrCreateDarkened(((Entity) obj).getImagePath());
         }
-        return TextureManager.getOrCreate(((Entity) obj).getImagePath());
+        return TextureCache.getOrCreate(((Entity) obj).getImagePath());
     }
 
     public void createNew(DC_Obj target) {
@@ -214,8 +214,9 @@ public class RadialMenu extends Group {
             if (obj.getTargeting() == null) {
                 continue;
             }
-            if (!(obj instanceof DC_ActiveObj))
+            if (!(obj instanceof DC_ActiveObj)) {
                 continue;
+            }
             DC_ActiveObj active = ((DC_ActiveObj) obj);
             actives.add(active);
             ImmutableTriple<Runnable, Texture, String> triple = new ImmutableTriple<>(
@@ -229,7 +230,7 @@ public class RadialMenu extends Group {
                     moves.add(new ImmutableTriple<>(() -> {
                         active.activateOn(  target);
                     },
-                     TextureManager.getOrCreate(((Entity) obj).getImagePath()),
+                            TextureCache.getOrCreate(((Entity) obj).getImagePath()),
                      obj.getName()));
                 } else {
                     moves.add(triple);
@@ -245,7 +246,7 @@ public class RadialMenu extends Group {
             if (obj.isAttack()) {
                 RadialMenu.CreatorNode inn1 = new CreatorNode();
                 try {
-                    inn1.texture = TextureManager.getOrCreate(((Entity) obj).getImagePath());
+                    inn1.texture = TextureCache.getOrCreate(((Entity) obj).getImagePath());
                 } catch (Exception e) {
                     e.printStackTrace();
 
@@ -276,7 +277,7 @@ public class RadialMenu extends Group {
                             });
                             RadialMenu.CreatorNode innn = new CreatorNode();
                             innn.name = active1.getName();
-                            innn.texture = TextureManager.getOrCreate(active1.getImagePath());
+                            innn.texture = TextureCache.getOrCreate(active1.getImagePath());
                             innn.action = () -> {
                                 trigger(SELECT_MULTI_OBJECTS, new EventCallbackParam(p));
                             };
@@ -294,7 +295,7 @@ public class RadialMenu extends Group {
                     for (DC_ActiveObj dc_activeObj : active.getSubActions()) {
                         RadialMenu.CreatorNode innn = new CreatorNode();
                         innn.name = dc_activeObj.getName();
-                        innn.texture = TextureManager.getOrCreate(dc_activeObj.getImagePath());
+                        innn.texture = TextureCache.getOrCreate(dc_activeObj.getImagePath());
                         innn.action = () -> {
                             dc_activeObj.activateOn(target);
                         };
@@ -309,7 +310,7 @@ public class RadialMenu extends Group {
                             for (DC_QuickItemObj ammo : active.getOwnerObj().getQuickItems()) {
                                 CreatorNode innn = new CreatorNode();
                                 innn.name = "Reload with " + ammo.getName();
-                                innn.texture = TextureManager.getOrCreate(ammo.getImagePath());
+                                innn.texture = TextureCache.getOrCreate(ammo.getImagePath());
                                 innn.action = () -> {
                                     ammo.invokeClicked();
                                 };
@@ -323,9 +324,9 @@ public class RadialMenu extends Group {
         }
 
 
-        Texture moveAction = TextureManager.getOrCreate("\\UI\\actions\\Move gold.jpg");
-        Texture turnAction = TextureManager.getOrCreate("\\UI\\actions\\turn anticlockwise quick2 - Copy.jpg");
-        Texture attackAction = TextureManager.getOrCreate("\\mini\\actions\\New folder\\Achievement_Arena_2v2_2.jpg");
+        Texture moveAction = TextureCache.getOrCreate("\\UI\\actions\\Move gold.jpg");
+        Texture turnAction = TextureCache.getOrCreate("\\UI\\actions\\turn anticlockwise quick2 - Copy.jpg");
+        Texture attackAction = TextureCache.getOrCreate("\\mini\\actions\\New folder\\Achievement_Arena_2v2_2.jpg");
         Texture yellow = new Texture(GridPanel.class.getResource("/data/marble_yellow.png").getPath());
         Texture red = new Texture(GridPanel.class.getResource("/data/marble_red.png").getPath());
         Texture green = new Texture(GridPanel.class.getResource("/data/marble_green.png").getPath());
@@ -355,7 +356,7 @@ public class RadialMenu extends Group {
         }
         if (getDebug() || !source.getSpells().isEmpty()) {
             RadialMenu.CreatorNode spellNode = new RadialMenu.CreatorNode();
-            spellNode.texture = TextureManager.getOrCreate(ImageManager.getRadialSpellIconPath());
+            spellNode.texture = TextureCache.getOrCreate(ImageManager.getRadialSpellIconPath());
             spellNode.childNodes = SpellRadialManager.getSpellNodes(source, target);
             spellNode.name = "Spells";
             if (spellNode.childNodes.size() == 0) {
@@ -411,10 +412,12 @@ public class RadialMenu extends Group {
                 this.text = new Label(text, new Label.LabelStyle(new BitmapFont(), Color.WHITE));
             }
             this.image = image;
-            if (w != 0)
+            if (w != 0) {
                 image.setWidth(w);
-            if (h != 0)
+            }
+            if (h != 0) {
                 image.setHeight(h);
+            }
             setHeight(image.getHeight());
             setWidth(image.getWidth());
 

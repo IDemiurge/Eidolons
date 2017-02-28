@@ -4,7 +4,7 @@ import main.content.enums.entity.SpellEnums.SPELL_GROUP;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.unit.Unit;
 import main.libgdx.bf.controls.radial.SpellRadialManager.SPELL_ASPECT;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -33,8 +33,9 @@ public class RadialSpellAspect implements RADIAL_ITEM {
         for (SPELL_GROUP g : aspect.groups) {
             List<DC_SpellObj> group = new LinkedList<>(spells);
             group.removeIf(spell -> !spell.getSpellGroup().equals(g));
-            if (group.size()>0)
-            list.add(new RadialSpellGroup(g));
+            if (group.size() > 0) {
+                list.add(new RadialSpellGroup(g));
+            }
         }
         return list;
 
@@ -52,13 +53,13 @@ public class RadialSpellAspect implements RADIAL_ITEM {
 
     @Override
     public float getWidth() {
-//        return Math.min(100, TextureManager.getOrCreate(getTexturePath()).getWidth());
-        return   TextureManager.getOrCreate(getTexturePath()).getWidth()*0.66f;
+//        return Math.min(100, TextureCache.getOrCreate(getTexturePath()).getWidth());
+        return TextureCache.getOrCreate(getTexturePath()).getWidth() * 0.66f;
     }
 
     @Override
     public float getHeight() {
-        return   TextureManager.getOrCreate(getTexturePath()).getHeight()*0.66f;
+        return TextureCache.getOrCreate(getTexturePath()).getHeight() * 0.66f;
     }
     //        ASPECT
 

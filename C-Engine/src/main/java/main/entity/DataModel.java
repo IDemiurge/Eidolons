@@ -2,11 +2,11 @@ package main.entity;
 
 import main.ability.effects.Effect.MOD_PROP_TYPE;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
-import main.content.enums.GenericEnums.STD_BOOLS;
-import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
+import main.content.enums.GenericEnums.STD_BOOLS;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.parameters.MultiParameter;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.parameters.ParamMap;
@@ -22,17 +22,18 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.game.core.game.MicroGame;
+import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
-import main.game.logic.battle.player.Player;
-import main.system.auxiliary.*;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.entity.CounterMaster;
 import main.system.images.ImageManager;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
-import main.system.entity.CounterMaster;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -763,8 +764,9 @@ public abstract class DataModel {
     }
 
     protected boolean firePropEvent(CONSTRUCTED_EVENT_TYPE EVENT_TYPE, String val) {
-        if (!isValueEventsOn())
+        if (!isValueEventsOn()) {
             return true;
+        }
 
         Ref REF = Ref.getCopy(ref);
         REF.setTarget(id);
@@ -779,8 +781,9 @@ public abstract class DataModel {
     }
 
     public boolean fireParamEvent(PARAMETER param, String amount, CONSTRUCTED_EVENT_TYPE event_type) {
-      if (!isValueEventsOn())
-          return true;
+        if (!isValueEventsOn()) {
+            return true;
+        }
         if (param.isMastery()) {
             return true; // TODO [PERFORMANCE] DEMANDS...
         }

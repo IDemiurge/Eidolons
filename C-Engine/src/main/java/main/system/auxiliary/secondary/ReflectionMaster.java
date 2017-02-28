@@ -40,9 +40,9 @@ public class ReflectionMaster<T> {
             {
                 setValue(fieldName, value, obj, clazz.getSuperclass());
                 return ;
+            } else {
+                e.printStackTrace();
             }
-            else
-            e.printStackTrace();
         }
         field.setAccessible(true);
         try {

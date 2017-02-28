@@ -83,12 +83,14 @@ public class GridMaster {
          */
     }
 
-    public static void setGammaOn(boolean gammaOn) {
-        GridMaster.gammaOn = gammaOn;
+    public static boolean isGammaOn() {
+        if (VisionManager.isVisionHacked()) {
+            return false;
+        }
+        return gammaOn;
     }
 
-    public static boolean isGammaOn() {
-        if (VisionManager.isVisionHacked()) return false;
-        return gammaOn;
+    public static void setGammaOn(boolean gammaOn) {
+        GridMaster.gammaOn = gammaOn;
     }
 }

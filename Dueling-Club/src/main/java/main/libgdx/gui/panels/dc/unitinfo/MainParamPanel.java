@@ -4,14 +4,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 
 import java.util.Iterator;
 import java.util.List;
 
 public class MainParamPanel extends TablePanel {
     public MainParamPanel(List<ValueContainer> values) {
-        TextureRegion textureRegion = TextureManager.getOrCreateR("/UI/components/infopanel/main_param_panel.png");
+        TextureRegion textureRegion = TextureCache.getOrCreateR("/UI/components/infopanel/main_param_panel.png");
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         background(drawable);
         setWidth(textureRegion.getRegionWidth());

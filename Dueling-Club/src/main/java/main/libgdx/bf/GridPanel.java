@@ -19,7 +19,7 @@ import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.bf.mouse.GridMouseListener;
 import main.libgdx.gui.panels.dc.InitiativePanelParam;
-import main.libgdx.texture.TextureManager;
+import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -70,18 +70,22 @@ public class GridPanel extends Group {
             OUTLINE_TYPE outline = obj.getOutlineType();
             UnitView uv = (UnitView) unitMap.get(obj);
             Texture texture = null;
-            if (outline != null)
-                texture = TextureManager.getOrCreate(
-                 Eidolons.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj));
+            if (outline != null) {
+                texture = TextureCache.getOrCreate(
+                        Eidolons.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj));
+            }
 
             uv.setOutlineTexture(texture);
         });
     }
 
     public void updateGamma() {
-        if (!GridMaster.isGammaOn())return ;
-        if ( Eidolons.game.getManager().getActiveObj()==null )return ;
-        if ( !Eidolons.game.getManager().getActiveObj().isMine())return ;
+        if (Eidolons.game.getManager().getActiveObj() == null) {
+            return;
+        }
+        if (!Eidolons.game.getManager().getActiveObj().isMine()) {
+            return;
+        }
         int x = 0;
         int y = 0;
         for (GridCell[] cellRow : (cells)) {
@@ -106,11 +110,11 @@ public class GridPanel extends Group {
 
     public GridPanel init() {
         setUnitMap(new HashMap<>());
-        emptyImage = TextureManager.getOrCreate(emptyCellPath);
-        hiddenImage = TextureManager.getOrCreate(hiddenCellPath);
-        highlightImage = TextureManager.getOrCreate(highlightCellPath);
-        unknownImage = TextureManager.getOrCreate(unknownCellPath);
-        cellBorderTexture = TextureManager.getOrCreate(cellBorderPath);
+        emptyImage = TextureCache.getOrCreate(emptyCellPath);
+        hiddenImage = TextureCache.getOrCreate(hiddenCellPath);
+        highlightImage = TextureCache.getOrCreate(highlightCellPath);
+        unknownImage = TextureCache.getOrCreate(unknownCellPath);
+        cellBorderTexture = TextureCache.getOrCreate(cellBorderPath);
 
         cells = (new GridCell[cols][rows]);
 
@@ -154,8 +158,9 @@ public class GridPanel extends Group {
             Map<Borderable, Runnable> map = new HashMap<>();
             for (DC_Obj obj1 : p.getLeft()) {
                 Borderable b = unitMap.get(obj1);
-                if (b == null)
+                if (b == null) {
                     b = cells[obj1.getX()][rows - 1 - obj1.getY()];
+                }
                 map.put(b, () -> p.getRight().run(obj1));
             }
             GuiEventManager.trigger(SHOW_BLUE_BORDERS, new EventCallbackParam(map));
@@ -240,12 +245,15 @@ public class GridPanel extends Group {
                         break;
                 }*/
             }
-            if (event.getType().name().startsWith("PROP_"))
+            if (event.getType().name().startsWith("PROP_")) {
                 caught = true;
-            if (event.getType().name().startsWith("ABILITY_"))
+            }
+            if (event.getType().name().startsWith("ABILITY_")) {
                 caught = true;
-            if (event.getType().name().startsWith("EFFECT_"))
+            }
+            if (event.getType().name().startsWith("EFFECT_")) {
                 caught = true;
+            }
 
             if (event.getType().name().startsWith("PARAM_MODIFIED")) {
                 switch (event.getType().getArg()) {
@@ -262,10 +270,11 @@ public class GridPanel extends Group {
 
                 caught = true;
             }
-            if (!muteEventLog)
+            if (!muteEventLog) {
                 if (!caught) {
                     System.out.println("catch ingame event: " + event.getType() + " in " + event.getRef());
                 }
+            }
         });
 
 
@@ -306,7 +315,9 @@ public class GridPanel extends Group {
                 List<UnitViewOptions> options = new ArrayList<>();
                 List<UnitViewOptions> overlays = new ArrayList<>();
 // TODO how can it throw NullPointer? (21.02)
-                if (map.get(coordinates) == null) continue;
+                if (map.get(coordinates) == null) {
+                    continue;
+                }
                 for (BattleFieldObject object : map.get(coordinates)) {
                     if (!object.isOverlaying()) {
                         options.add(new UnitViewOptions(object, unitMap));
@@ -410,7 +421,9 @@ public class GridPanel extends Group {
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
-        if (touchable && getTouchable() != Touchable.enabled) return null;
+        if (touchable && getTouchable() != Touchable.enabled) {
+            return null;
+        }
         return x >= 0 && x < getWidth() && y >= 0 && y < getHeight() ? this : null;
     }
 
@@ -418,8 +431,9 @@ public class GridPanel extends Group {
     public void act(float delta) {
         super.act(delta);
         for (BaseView view : unitMap.values()) {
-            if (view.getActions().size > 0)
+            if (view.getActions().size > 0) {
                 view.act(delta);
+            }
         }
     }
 

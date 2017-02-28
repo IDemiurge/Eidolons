@@ -8,10 +8,6 @@ import main.content.values.parameters.PARAMETER;
 import main.entity.obj.DC_Obj;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.layout.LayoutParser.LAYOUT;
-import main.libgdx.texture.TextureManager;
-import main.system.datatypes.Boxer;
-import main.system.images.CustomImage;
-import main.system.images.ImageManager;
 import main.system.images.ImageManager.ALIGNMENT;
 
 /**
@@ -52,11 +48,13 @@ public class ValueComp extends Container {
     @Override
     public void initComps() {
         Image valueImage = null;
+/*
         if (iconDisplayed) {
-            valueImage = new Image(TextureManager.getOrCreate(new Boxer<>(
+            valueImage = new Image(TextureCache.getOrCreate(new Boxer<>(
                     () -> ((CustomImage)
                             ImageManager.getValueIcon(value)).getImgPath())));
         }
+*/
 
         label = new TextComp(getText(), style);
 //        if (layout)
