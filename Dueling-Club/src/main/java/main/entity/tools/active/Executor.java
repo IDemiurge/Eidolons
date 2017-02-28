@@ -89,15 +89,15 @@ public class Executor extends ActiveHandler {
 
     }
 
-    private void activateOnActionThread() {
-        if (Thread.currentThread() != Eidolons.getActionThread()) {
+    public void activateOnActionThread() {
             Eidolons.getActionThread().setExecutor(this);
-        } else
-            activate();
+        Eidolons.getExecutorService() .execute(Eidolons.getActionThread());
     }
 
 
-    public boolean activate() {
+
+        public boolean activate() {
+
         reset();
         if (!getActivator().canBeManuallyActivated())
         {
@@ -134,6 +134,8 @@ public class Executor extends ActiveHandler {
          ": " +getEntity().getCosts().getReasonsString());
         FloatingText f = FloatingTextMaster.getInstance().getFloatingText(getEntity(),
          TEXT_CASES.REQUIREMENT ,getEntity().getCosts().getReasonsString() );
+f.setDisplacementY(100);
+f.setDuration(3);
       f.addToStage(GameScreen.getInstance().getAnimsStage(),
        GridMaster.getVectorForCoordinateWithOffset(getEntity().getOwnerObj().getCoordinates()));
     }
@@ -308,13 +310,13 @@ public class Executor extends ActiveHandler {
             if (ChargeRule.checkRetainUnitTurn(getAction())) {
                 endTurn = null;
             }
-//        }
+        }
             if (endTurn != null) {
                 endTurn = !endTurn;
             }
             getAnimator().waitForAnimation();
             getGame().getManager().unitActionCompleted(getAction(), endTurn);
-        }
+
     }
 
     public Activator getActivator() {

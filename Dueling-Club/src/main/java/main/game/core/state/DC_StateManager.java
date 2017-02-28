@@ -140,7 +140,6 @@ public class DC_StateManager extends StateManager{
         getGameManager().reset();
         game.getLogManager().doneLogEntryNode();
         // if (!activePlayer.isMe())
-
     }
 
     private GameManager getGameManager() {

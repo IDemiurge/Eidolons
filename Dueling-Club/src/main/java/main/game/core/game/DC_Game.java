@@ -28,10 +28,6 @@ import main.entity.obj.*;
 import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.battlefield.vision.VisionManager;
-import main.game.battlefield.vision.VisionMaster;
-import main.game.core.state.DC_GameState;
-import main.game.core.state.DC_StateManager;
 import main.game.ai.AI_Manager;
 import main.game.ai.tools.DC_Analyzer;
 import main.game.battlefield.*;
@@ -41,20 +37,24 @@ import main.game.battlefield.attack.DC_AttackMaster;
 import main.game.battlefield.map.DC_Map;
 import main.game.battlefield.options.UIOptions;
 import main.game.battlefield.pathing.PathingManager;
+import main.game.battlefield.vision.VisionManager;
+import main.game.battlefield.vision.VisionMaster;
+import main.game.core.state.DC_GameState;
+import main.game.core.state.DC_StateManager;
 import main.game.logic.arcade.ArcadeManager;
 import main.game.logic.arcade.ArenaArcadeMaster;
 import main.game.logic.arena.ArenaManager;
+import main.game.logic.battle.Battle;
 import main.game.logic.battle.BattleManager;
+import main.game.logic.battle.BattleOptions;
 import main.game.logic.battle.player.DC_Player;
+import main.game.logic.battle.player.Player;
 import main.game.logic.battle.player.PlayerMaster;
 import main.game.logic.battle.turn.DC_TurnManager;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.DungeonMaster;
-import main.game.logic.battle.Battle;
-import main.game.logic.battle.BattleOptions;
-import main.game.logic.battle.player.Player;
-import main.libgdx.GameScreen;
 import main.game.logic.generic.DC_ActionManager;
+import main.libgdx.GameScreen;
 import main.rules.DC_Rules;
 import main.rules.action.ActionRule;
 import main.rules.mechanics.WaitRule;
@@ -93,7 +93,9 @@ import java.util.*;
  */
 public class DC_Game extends MicroGame {
     public static DC_Game game;
-
+    protected DC_AttackMaster attackMaster;
+    protected ArmorMaster armorMaster;
+    protected ArmorMaster armorSimulator;
     private DC_GameManager manager;
     private VisionMaster visionMaster;
     private DebugMaster debugMaster;
@@ -111,10 +113,6 @@ public class DC_Game extends MicroGame {
     private AnimationManager animationManager;
     private DroppedItemManager droppedItemManager;
     private DungeonMaster dungeonMaster;
-    protected DC_AttackMaster attackMaster;
-    protected ArmorMaster armorMaster;
-    protected ArmorMaster armorSimulator;
-
     private GameConnector connector;
     private HostedGame hostedGame;
     private DC_GameGUI GUI;
@@ -399,20 +397,16 @@ public class DC_Game extends MicroGame {
     private void startGameLoop() {
         setRunning(true);
         if (getGameLoopThread() == null) {
-            setGameLoopThread(new Thread(new Runnable() {
+            setGameLoopThread(new Thread(() -> {
+                if (!CoreEngine.isGraphicsOff())
+                    WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
 
-                @Override
-                public void run() {
-                    if (!CoreEngine.isGraphicsOff())
-                        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
-
-                    while (true) {
-                        try {
-                            getStateManager().newRound();
-                            Thread.sleep(0);//release remains time quota
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                while (true) {
+                    try {
+                        getStateManager().newRound();
+                        Thread.sleep(0);//release remains time quota
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }, "Game Loop"));

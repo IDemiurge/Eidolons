@@ -168,6 +168,17 @@ public class FileManager {
         return file.isFile();
     }
 
+    public static boolean isDirectory(String file) {
+        return isDirectory(new File(file));
+    }
+
+    public static boolean isDirectory(File file) {
+        if (file == null) {
+            return false;
+        }
+        return file.isDirectory();
+    }
+
     public static File getFile(String path) {
         return getFile(path, true);
     }

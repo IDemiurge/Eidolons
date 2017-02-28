@@ -79,6 +79,7 @@ public class GridPanel extends Group {
     }
 
     public void updateGamma() {
+        if (!GridMaster.isGammaOn())return ;
         if ( Eidolons.game.getManager().getActiveObj()==null )return ;
         if ( !Eidolons.game.getManager().getActiveObj().isMine())return ;
         int x = 0;

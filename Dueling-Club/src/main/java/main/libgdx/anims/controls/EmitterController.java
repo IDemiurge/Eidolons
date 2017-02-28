@@ -41,6 +41,7 @@ public class EmitterController implements Controller {
     boolean cursorAttached;
     private LinkedList<EmitterActor> sfx;
     private SFX_MODIFICATION_PRESET lastPreset;
+    private String randomSfxPath = "templates\\work\\";
 
     public EmitterController() {
         sfx = new LinkedList<>();
@@ -67,12 +68,16 @@ public class EmitterController implements Controller {
 
     private void removeLast() {
         last.remove();
-        last = sfx.pop();
+        if (!sfx.isEmpty())
+        last = sfx.pollLast();
+        if (!sfx.isEmpty())
+        last = sfx.peekLast();
     }
 
     private void saveAs() {
         EmitterPresetMaster.save(last, "custom", DialogMaster.inputText("name?"));
     }
+
     public void create() {
         String presetPath =
          new FileChooser(PathFinder.getSfxPath()).launch("", "");
@@ -85,9 +90,10 @@ public class EmitterController implements Controller {
     }
 
     public void addRandom() {
-        String presetPath = FileManager.getRandomFilePath(PathFinder.getSfxPath()
-         + "templates\\work\\"
-        );
+        String presetPath =
+         FileManager.getRandomFilePath(PathFinder.getSfxPath()
+          + randomSfxPath
+         );
         add(presetPath, null);
 
 //        add(presetPath,imagePath,destination);
@@ -138,6 +144,7 @@ public class EmitterController implements Controller {
         actor.getEffect().start();
         last = actor;
         sfx.add(last);
+        last.getEffect().getEmitters().forEach(e -> e.setContinuous(true));
     }
 
     public void clear() {
@@ -148,9 +155,6 @@ public class EmitterController implements Controller {
         sfx.clear();
     }
 
-    public void lastModify() {
-        modify(lastPreset);
-    }
 
     public void modify() {
         boolean random = false;
@@ -315,6 +319,9 @@ public class EmitterController implements Controller {
 
     public boolean charTyped(char c) {
         switch (c) {
+            case 'f':
+                pickFunction();
+                return true;
             case 'd':
                 addRandom();
                 return true;
@@ -322,7 +329,7 @@ public class EmitterController implements Controller {
                 create();
                 return true;
             case 'M':
-                lastModify();
+                lastModification();
                 return true;
             case 'm':
                 modify();
@@ -344,6 +351,70 @@ public class EmitterController implements Controller {
                 return true;
         }
         return false;
+    }
+
+    private void pickFunction() {
+        EMITTER_CONTROLLER_FUNCTIONS func = new EnumMaster<EMITTER_CONTROLLER_FUNCTIONS>().selectEnum(EMITTER_CONTROLLER_FUNCTIONS.class);
+        if (func == null) return;
+        executeFunction(func);
+    }
+
+    private void executeFunction(EMITTER_CONTROLLER_FUNCTIONS func) {
+        switch (func) {
+
+            case ADD:
+                create();
+                break;
+            case ADD_RANDOM:
+                addRandom();
+                break;
+            case MODIFY:
+                modify();
+                break;
+            case MODIFY_LAST:
+                lastModification();
+                break;
+            case REMOVE:
+                removeLast();
+                break;
+            case REMOVE_ALL:
+                clear();
+                break;
+            case SAVE:
+                save();
+                break;
+            case SAVE_AS:
+                saveAs();
+                break;
+            case SAVE_ALL:
+                break;
+            case SET_DEFAULT_ADD_PATH:
+                String result = new FileChooser(true, PathFinder.getSfxPath() ).launch("", "");
+                if (result != null) {
+                    if (FileManager.isDirectory(PathFinder.getSfxPath() + result))
+                        randomSfxPath = result;
+                }
+                break;
+            case PICK_SFX:
+                break;
+        }
+    }
+
+    public enum EMITTER_CONTROLLER_FUNCTIONS {
+
+        SET_DEFAULT_ADD_PATH,
+        PICK_SFX,
+        ADD,
+        ADD_RANDOM,
+        MODIFY,
+        MODIFY_LAST,
+        REMOVE,
+        REMOVE_ALL,
+        SAVE,
+        SAVE_AS,
+        SAVE_ALL,
+
+
     }
 
 

@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.libgdx.StyleHolder;
 import main.libgdx.texture.TextureManager;
+import main.system.auxiliary.StringMaster;
 
 import java.util.function.Supplier;
 
@@ -98,7 +99,7 @@ if (delay!=0){
     parallelAction=new ParallelAction(alphaActionSequence, moveByAction);
 
         if (imageSupplier != null)
-            if (!imageSupplier.get().isEmpty()){
+            if (!StringMaster.isEmpty(imageSupplier.get())){
             Image image = new Image(TextureManager.getOrCreate(imageSupplier.get()));
             addActor(image);
 //            image.setPosition(origin.x, origin.y);

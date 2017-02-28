@@ -152,7 +152,7 @@ public class DC_GameManager extends GameManager {
     public void deselectActive() {
         if (selectedActiveObj != null) {
             getGame().getBattleField().deselectActiveObj(selectedActiveObj, true);
-            setSelectedActiveObj(null);
+//            setSelectedActiveObj(null); TODO null activeObj is source of many bugs!
         }
     }
 
@@ -317,7 +317,7 @@ public class DC_GameManager extends GameManager {
             BattleFieldObject unit = null;
             if (obj instanceof BattleFieldObject) {
                 unit = (BattleFieldObject) obj;
-                if (unit.getOwner() == null || unit.getOwner() == owner) {
+                if (owner == null || unit.getOwner() == owner) {
                     unit.newRound();
                 }
             }

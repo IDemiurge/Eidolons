@@ -11,22 +11,10 @@ public class ActionThread extends Thread {
 
     @Override
     public void run() {
-//        ExecutorService executorService = Executors.newSingleThreadExecutor();
-//        executorService.execute();
-//        new ThreadPoolExecutor().
 
         // TODO TO GAMELOOP!
-        while (true) {
-            if (getExecutor() != null) {
-                try {
                     getExecutor().activate();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    executor = null;
-                }
-            }
-        }
+
     }
 
     public Executor getExecutor() {

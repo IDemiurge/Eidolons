@@ -77,7 +77,6 @@ public class MacroAction extends MacroObj implements ActiveObj {
         return false;
     }
 
-
     @Override
     public void invokeRightClicked() {
         game.getManager().infoSelect(this);

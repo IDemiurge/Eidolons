@@ -55,9 +55,9 @@ import main.test.debug.DebugMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import javax.swing.*;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static main.system.GuiEventType.INITIATIVE_CHANGED;
 
@@ -792,7 +792,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements  Rotatab
 
     public Map<ACTION_TYPE, List<DC_UnitAction>> getActionMap() {
         if (actionMap == null) {
-            actionMap = new HashMap<>();
+            actionMap = new ConcurrentHashMap<>();
         }
         return actionMap;
     }

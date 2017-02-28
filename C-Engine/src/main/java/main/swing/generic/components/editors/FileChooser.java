@@ -28,7 +28,7 @@ public class FileChooser implements EDITOR {
     public FileChooser(boolean directoryOnly, boolean multi) {
         this.directoryOnly = directoryOnly;
         this.multi = multi;
-        if (directoryOnly) {
+         if (directoryOnly) {
             fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             fc.setAcceptAllFileFilterUsed(false);
         }
@@ -37,6 +37,11 @@ public class FileChooser implements EDITOR {
     public FileChooser(String folder) {
         this(false);
         setDefaultFileLocation(folder);
+    }
+
+    public FileChooser(boolean directoryOnly, String path) {
+        this(directoryOnly);
+        setDefaultFileLocation(path);
     }
 
     @Override
