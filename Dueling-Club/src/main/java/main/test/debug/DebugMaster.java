@@ -87,8 +87,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Stack;
 
-import static main.test.debug.DebugMaster.DEBUG_FUNCTIONS.KILL_ALL_UNITS;
-import static main.test.debug.DebugMaster.DEBUG_FUNCTIONS.SPAWN_WAVE;
+import static main.test.debug.DebugMaster.DEBUG_FUNCTIONS.*;
 
 /**
  * @author JustMe
@@ -112,14 +111,21 @@ public class DebugMaster {
             DEBUG_FUNCTIONS.CLEAR,
             DEBUG_FUNCTIONS.RESTART,
             DEBUG_FUNCTIONS.KILL_ALL_UNITS,
-            DEBUG_FUNCTIONS.CLEAR_WAVES,
-            DEBUG_FUNCTIONS.LOAD_DUNGEON,
+     DEBUG_FUNCTIONS.END_TURN,
+//            DEBUG_FUNCTIONS.CLEAR_WAVES,
+//            DEBUG_FUNCTIONS.LOAD_DUNGEON,
     };
     public static final DEBUG_FUNCTIONS[] group_basic = {
             DEBUG_FUNCTIONS.END_TURN,
-            DEBUG_FUNCTIONS.TOGGLE_DEBUG,
-            DEBUG_FUNCTIONS.TOGGLE_OMNIVISION,
             DEBUG_FUNCTIONS.PAUSE,
+    };
+    public static final DEBUG_FUNCTIONS[] group_toggle = {
+     TOGGLE_DUMMY,
+     TOGGLE_DUMMY_PLUS,
+     TOGGLE_FREE_ACTIONS,
+     TOGGLE_OMNIVISION,
+//     TOGGLE_LIGHTING,
+//     TOGGLE_FOG,
     };
     public static final DEBUG_FUNCTIONS[] group_add = {
             DEBUG_FUNCTIONS.ADD_DUNGEON,

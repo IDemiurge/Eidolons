@@ -16,6 +16,7 @@ import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ItemActiveObj;
+import main.entity.active.DC_UnitAction;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.obj.unit.DC_UnitModel;
@@ -27,10 +28,13 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.math.MathMaster;
 
+import java.util.List;
+
 public class DC_WeaponObj extends DC_HeroSlotItem {
 
     private boolean mainHand;
     private boolean natural;
+    private List<DC_UnitAction> attackActions;
 
     public DC_WeaponObj(ObjType type, Player owner, MicroGame game, Ref ref) {
         this(type, owner, game, ref, false);
@@ -249,6 +253,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     public void equipped(Ref ref) {
         this.equipped = true;
+        setAttackActions(null );
         if (ref == null) {
             return;
         }
@@ -365,4 +370,11 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     }
 
+    public List<DC_UnitAction> getAttackActions() {
+        return attackActions;
+    }
+
+    public void setAttackActions(List<DC_UnitAction> attackActions) {
+        this.attackActions = attackActions;
+    }
 }

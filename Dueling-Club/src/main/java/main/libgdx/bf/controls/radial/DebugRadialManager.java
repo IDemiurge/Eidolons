@@ -162,19 +162,20 @@ public class DebugRadialManager {
             }
         },
 
+        FUNC_TOGGLE(DebugMaster.group_toggle),
         FUNC_STANDARD(DebugMaster.group_basic),
         FUNC_ADD_BF(DebugMaster.group_add_bf_obj),
         FUNC_ADD_NON_BF(DebugMaster.group_add),
         FUNC_GLOBAL(DebugMaster.group_bf),
-        FUNC_GRAPHICS(DebugMaster.group_graphics),
-        FUNC_SFX(DebugMaster.group_sfx),
+//        FUNC_GRAPHICS(DebugMaster.group_graphics),
+//        FUNC_SFX(DebugMaster.group_sfx),
         FUNC_OTHER(
         ),
         PICK(),
         TYPE(),
         PICK_HIDDEN(),
         FUNCTION(FUNC_STANDARD, FUNC_ADD_BF, FUNC_ADD_NON_BF, FUNC_GLOBAL,
-                FUNC_OTHER,FUNC_SFX,
+                FUNC_OTHER,
                 PICK, TYPE, PICK_HIDDEN) {
             @Override
             public boolean isRoot() {

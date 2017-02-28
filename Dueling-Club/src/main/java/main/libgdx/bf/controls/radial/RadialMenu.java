@@ -185,11 +185,7 @@ public class RadialMenu extends Group {
 
     }
 
-    private Texture getTextureForActive(DC_ActiveObj obj, Ref ref) {
-        return !obj.canBeActivated(ref) ?
-                TextureCache.getOrCreateGrayscale(obj.getImagePath())
-                : TextureCache.getOrCreate(obj.getImagePath());
-    }
+
 
     public void createNew(DC_Obj target) {
         Unit source = (Unit) Game.game.getManager().getActiveObj();
@@ -229,7 +225,7 @@ public class RadialMenu extends Group {
                     moves.add(new ImmutableTriple<>(
                             dcActiveObj::invokeClicked,
                             getTextureForActive(dcActiveObj,
-                                    dcActiveObj.getOwnerObj().getRef().getTargetingRef(target)),
+                                   target),
                             dcActiveObj.getName()
                     ));
                 }
@@ -240,8 +236,7 @@ public class RadialMenu extends Group {
             if (dcActiveObj.isTurn()) {
                 turns.add(new ImmutableTriple<>(
                         dcActiveObj::invokeClicked,
-                        getTextureForActive(dcActiveObj,
-                                dcActiveObj.getOwnerObj().getRef().getTargetingRef(target)),
+                        getTextureForActive(dcActiveObj,target ),
                         dcActiveObj.getName()
                 ));
             }
@@ -249,7 +244,7 @@ public class RadialMenu extends Group {
             if (dcActiveObj.isAttack()) {
                 RadialMenu.CreatorNode inn1 = new CreatorNode();
                 try {
-                    inn1.texture = TextureCache.getOrCreate(dcActiveObj.getImagePath());
+                    inn1.texture = getTextureForActive(dcActiveObj,target );
                 } catch (Exception e) {
                     e.printStackTrace();
 
@@ -378,6 +373,10 @@ public class RadialMenu extends Group {
         };
         n4.childNodes = createNodes("nn4:", red);
         init(list);
+    }
+
+    private Texture getTextureForActive(DC_ActiveObj dcActiveObj, DC_Obj target) {
+        return RadialManager.getTextureForActive(dcActiveObj, target);
     }
 
 

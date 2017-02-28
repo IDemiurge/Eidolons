@@ -89,7 +89,8 @@ public class SpellRadialManager {
         if (object instanceof EntityNode) {
             final DC_ActiveObj action = (DC_ActiveObj) object.getContents();
 
-            node.texture = TextureCache.getOrCreate(action.getImagePath());
+            node.texture =
+            RadialManager.getTextureForActive(action, target);
             node.name = action.getName();
             node.action = new Runnable() {
                 @Override
@@ -107,6 +108,7 @@ public class SpellRadialManager {
             node.childNodes = new LinkedList<>();
 
             node.texture = TextureCache.getOrCreate(object.getTexturePath());
+
             node.w=object.getWidth();
             node.h=object.getHeight();
             object.getItems(source).forEach(child -> {

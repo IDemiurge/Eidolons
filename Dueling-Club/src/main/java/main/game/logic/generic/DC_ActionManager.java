@@ -535,7 +535,7 @@ public class DC_ActionManager implements ActionManager {
         entity.setActivesReady(true);
     }
 
-    private List<DC_UnitAction> getWeaponActions(DC_WeaponObj weapon) {
+    public List<DC_UnitAction> getOrCreateWeaponActions(DC_WeaponObj weapon) {
         if (weapon == null) {
             return new LinkedList<>();
         }
@@ -543,7 +543,9 @@ public class DC_ActionManager implements ActionManager {
         if (obj == null) {
             return new LinkedList<>();
         }
-        List<DC_UnitAction> list = new LinkedList<>();
+        List<DC_UnitAction> list =weapon.getAttackActions();
+        if (list!=null ) return list;
+            list =  new LinkedList<>();
         for (String typeName : StringMaster.openContainer(weapon.getProperty(PROPS.WEAPON_ATTACKS))) {
             if (!weapon.isMainHand()) {
                 typeName = ActionGenerator.getOffhandActionName(typeName);
@@ -563,6 +565,7 @@ public class DC_ActionManager implements ActionManager {
             throwAction.setName("Throw " + weapon.getName());
             list.add((DC_UnitAction) throwAction);
         }
+        weapon.setAttackActions(list);
         return list;
     }
 
@@ -805,13 +808,13 @@ public class DC_ActionManager implements ActionManager {
             case STANDARD_ATTACK:
                 // TODO
                 DC_ActiveObj action = getAction(DC_ActionManager.ATTACK, unit);
-                List<DC_UnitAction> subActions = getWeaponActions(unit.getActiveWeapon(false));
+                List<DC_UnitAction> subActions = getOrCreateWeaponActions(unit.getActiveWeapon(false));
                 action.setSubActions(new LinkedList<>(subActions));
                 actions.addAll(subActions);
 
                 action = getAction(DC_ActionManager.OFFHAND_ATTACK, unit);
                 if (action != null) {
-                    subActions = getWeaponActions(unit.getActiveWeapon(true));
+                    subActions = getOrCreateWeaponActions(unit.getActiveWeapon(true));
                     action.setSubActions(new LinkedList<>(subActions));
                     actions.addAll(subActions);
                 }
