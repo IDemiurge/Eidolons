@@ -1543,19 +1543,46 @@ public class StringMaster {
     }
 
     public static String removePreviousPathSegments(String string, String path) {
-//        p = p.toLowerCase();
-//        path = path.toLowerCase();
-//        String prefix = "";
+        String p = string.toLowerCase();
+        path = path.toLowerCase();
+        String prefix = "";
+        if (p.contains(path)) {
+            prefix = path;
+        } else {
+            for (String sub : getPathSegments(path)) {
+                if (p.contains(path)) {
+                    prefix = path;
+                    break;
+                }
+
+                path = cropFirstSegment(path, PATH_SEPARATOR);
+
+            }
+        }
+
+
 //        for (String sub : getPathSegments(path)) {
 //            if (p.startsWith(sub)) {
 //                break;
 //            }
 //            prefix += sub + PATH_SEPARATOR;
 //        }
-        final String p = string.toLowerCase();
-        path = path.toLowerCase();
-        String prefix = buildPartsIf(getPathSegments(path),
-         PATH_SEPARATOR, true, (String sub) -> p.startsWith(sub));
+
+
+//        if (string.startsWith(PATH_SEPARATOR)) {
+//            string = string.substring(1);
+//        }
+//        final String p = string.toLowerCase();
+//        path = path.toLowerCase();
+//        final List<String> segments = getPathSegments(path);
+//        String prefix = buildPartsIf(segments,
+//         PATH_SEPARATOR, false, (String sub) ->
+//          getPathSegments(p).indexOf(sub) < 0
+//           ||
+//           getPathSegments(p).indexOf(sub) < segments.indexOf(sub)
+//         //TODO THIS IS NOT GUARANTEED TO WORK!!
+//
+//        );
 
         return p.replace(prefix, "");
     }
@@ -1578,9 +1605,7 @@ public class StringMaster {
             if (predicate.test(sub)) {
                 if (breakOnFalse) {
                     break;
-                } else {
-                    continue;
-                }
+                } else continue;
             }
             builder.append(sub + separator);
         }

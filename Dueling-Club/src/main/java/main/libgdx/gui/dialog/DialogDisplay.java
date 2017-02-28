@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import main.entity.obj.unit.Unit;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.particles.lighting.LightingManager;
+import main.libgdx.old.framework.InfoDialog;
 import main.system.GuiEventManager;
 import main.system.graphics.MigMaster;
 

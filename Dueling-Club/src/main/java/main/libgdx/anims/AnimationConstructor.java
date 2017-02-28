@@ -209,7 +209,8 @@ public class AnimationConstructor {
         List<SpriteAnimation> sprites = new LinkedList<>();
         for (String path :
          StringMaster.openContainer(data.getValue(ANIM_VALUES.SPRITES))) {
-            sprites.add(new SpriteAnimation(path));
+       if (path.isEmpty()) continue;
+       sprites.add(new SpriteAnimation(path));
             exists = true;
         }
         List<EmitterActor> list = EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));

@@ -28,6 +28,7 @@ import main.system.EventCallback;
 import main.system.EventCallbackParam;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
+import main.system.images.ImageManager;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -329,6 +330,7 @@ time=time+time*gracePeriod;
 
     protected Texture getTexture() {
         if (texture == null) {
+            if (ImageManager.isImage(getTexturePath()))
             texture = TextureCache.getOrCreate(getTexturePath());
         }
         return texture;

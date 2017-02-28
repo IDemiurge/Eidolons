@@ -1,7 +1,7 @@
 package main.libgdx.gui.panels.info;
 
 import main.entity.obj.unit.Unit;
-import main.libgdx.gui.dialog.InfoDialog;
+import main.libgdx.old.framework.InfoDialog;
 import main.libgdx.gui.layout.LayoutParser.LAYOUT;
 import main.libgdx.gui.panels.generic.Container;
 import main.libgdx.gui.panels.generic.EntityComp;
