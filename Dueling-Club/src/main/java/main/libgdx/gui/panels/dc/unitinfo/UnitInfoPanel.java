@@ -11,6 +11,8 @@ import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.VerticalValueContainer;
 import main.libgdx.texture.TextureCache;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +35,6 @@ public class UnitInfoPanel extends Container<TablePanel> {
 
         initListeners();
 
-        setVisible(false);
     }
 
     private void initInnerPanels() {
@@ -172,6 +173,10 @@ public class UnitInfoPanel extends Container<TablePanel> {
                 event.stop();
                 return super.mouseMoved(event, x, y);
             }
+        });
+
+        GuiEventManager.bind(GuiEventType.SHOW_INFO_PANEL, (obj) -> {
+
         });
     }
 
