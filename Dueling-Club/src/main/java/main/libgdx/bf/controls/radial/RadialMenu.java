@@ -2,7 +2,6 @@ package main.libgdx.bf.controls.radial;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -15,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import main.elements.Filter;
 import main.elements.targeting.SelectiveTargeting;
-import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
@@ -31,7 +29,6 @@ import main.libgdx.bf.TargetRunnable;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.auxiliary.log.LogMaster;
-import main.system.graphics.GreyscaleUtils;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -188,27 +185,10 @@ public class RadialMenu extends Group {
 
     }
 
-    private Texture getTextureForActive(ActiveObj obj, Ref ref) {
-        Texture t = TextureCache.getOrCreate(((Entity) obj).getImagePath());
-        if (obj.canBeActivated(ref)) {
-
-        }
-
-        if (!t.getTextureData().isPrepared()) {
-            t.getTextureData().prepare();
-        }
-        Pixmap pixmap2 = new Pixmap(t.getWidth(), t.getHeight(), t.getTextureData().getFormat());
-        Pixmap pixmap = t.getTextureData().consumePixmap();
-
-        for (int i = 0; i < t.getWidth(); i++) {
-            for (int j = 0; j < t.getHeight(); j++) {
-                int c = pixmap.getPixel(i, j);
-                pixmap2.drawPixel(i, j, GreyscaleUtils.lightness(c));
-            }
-        }
-
-        Texture result = new Texture(pixmap2);
-        return result;
+    private Texture getTextureForActive(DC_ActiveObj obj, Ref ref) {
+        return !obj.canBeActivated(ref) ?
+                TextureCache.getOrCreateGrayscale(obj.getImagePath())
+                : TextureCache.getOrCreate(obj.getImagePath());
     }
 
     public void createNew(DC_Obj target) {
@@ -234,49 +214,55 @@ public class RadialMenu extends Group {
             if (!(obj instanceof DC_ActiveObj)) {
                 continue;
             }
-            DC_ActiveObj active = ((DC_ActiveObj) obj);
-            actives.add(active);
-            ImmutableTriple<Runnable, Texture, String> triple = new ImmutableTriple<>(
-                    ((Entity) obj)::invokeClicked,
-                    getTextureForActive(obj,
-                            obj.getOwnerObj().getRef().getTargetingRef(target)),
-                    obj.getName()
-            );
-            if (obj.isMove()) {
-                if (obj.getTargeting() instanceof SelectiveTargeting) {
+
+            DC_ActiveObj dcActiveObj = ((DC_ActiveObj) obj);
+            actives.add(dcActiveObj);
+
+            if (dcActiveObj.isMove()) {
+                if (dcActiveObj.getTargeting() instanceof SelectiveTargeting) {
                     moves.add(new ImmutableTriple<>(() -> {
-                        active.activateOn(target);
+                        dcActiveObj.activateOn(target);
                     },
-                            TextureCache.getOrCreate(((Entity) obj).getImagePath()),
-                            obj.getName()));
+                            TextureCache.getOrCreate(dcActiveObj.getImagePath()),
+                            dcActiveObj.getName()));
                 } else {
-                    moves.add(triple);
+                    moves.add(new ImmutableTriple<>(
+                            dcActiveObj::invokeClicked,
+                            getTextureForActive(dcActiveObj,
+                                    dcActiveObj.getOwnerObj().getRef().getTargetingRef(target)),
+                            dcActiveObj.getName()
+                    ));
                 }
 
                 //add this filter later
-                //obj.getTargeting().getFilter().getObjects().contains(Game.game.getCellByCoordinate(new Coordinates(0, 0)));
+                //dcActiveObj.getTargeting().getFilter().getObjects().contains(Game.game.getCellByCoordinate(new Coordinates(0, 0)));
             }
-            if (obj.isTurn()) {
-                turns.add(triple);
+            if (dcActiveObj.isTurn()) {
+                turns.add(new ImmutableTriple<>(
+                        dcActiveObj::invokeClicked,
+                        getTextureForActive(dcActiveObj,
+                                dcActiveObj.getOwnerObj().getRef().getTargetingRef(target)),
+                        dcActiveObj.getName()
+                ));
             }
 
-            if (obj.isAttack()) {
+            if (dcActiveObj.isAttack()) {
                 RadialMenu.CreatorNode inn1 = new CreatorNode();
                 try {
-                    inn1.texture = TextureCache.getOrCreate(((Entity) obj).getImagePath());
+                    inn1.texture = TextureCache.getOrCreate(dcActiveObj.getImagePath());
                 } catch (Exception e) {
                     e.printStackTrace();
 
                 }
 
-                inn1.name = obj.getName();
+                inn1.name = dcActiveObj.getName();
                 inn1.action = null;
                 List<RadialMenu.CreatorNode> list = new ArrayList<>();
-                if (obj.getRef().getSourceObj() == target) {
-                    for (DC_ActiveObj active1 : active.getSubActions()) {
-                        Ref ref1 = active.getRef();
+                if (dcActiveObj.getRef().getSourceObj() == target) {
+                    for (DC_ActiveObj active1 : dcActiveObj.getSubActions()) {
+                        Ref ref1 = dcActiveObj.getRef();
                         ref1.setMatch(target.getId());
-                        Filter<Obj> filter = active.getTargeting().getFilter();
+                        Filter<Obj> filter = dcActiveObj.getTargeting().getFilter();
                         filter.setRef(ref1);
                         Set<Obj> objects = new HashSet<>();
                         if (CoreEngine.isActionTargetingFiltersOff()) {
@@ -288,16 +274,11 @@ public class RadialMenu extends Group {
                         }
 
                         if (objects.size() > 0) {
-                            Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(objects, (t) -> {
-                                active1.activateOn(t);
-
-                            });
+                            Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(objects, active1::activateOn);
                             RadialMenu.CreatorNode innn = new CreatorNode();
                             innn.name = active1.getName();
                             innn.texture = TextureCache.getOrCreate(active1.getImagePath());
-                            innn.action = () -> {
-                                trigger(SELECT_MULTI_OBJECTS, new EventCallbackParam(p));
-                            };
+                            innn.action = () -> trigger(SELECT_MULTI_OBJECTS, new EventCallbackParam(p));
                             list.add(innn);
                         } else {
                             int debug = 10;
@@ -308,8 +289,8 @@ public class RadialMenu extends Group {
 
                     inn1.childNodes = list;
                     nn1.add(inn1);
-                } else if (obj.getTargeting() instanceof SelectiveTargeting) {
-                    for (DC_ActiveObj dc_activeObj : active.getSubActions()) {
+                } else if (dcActiveObj.getTargeting() instanceof SelectiveTargeting) {
+                    for (DC_ActiveObj dc_activeObj : dcActiveObj.getSubActions()) {
                         RadialMenu.CreatorNode innn = new CreatorNode();
                         innn.name = dc_activeObj.getName();
                         innn.texture = TextureCache.getOrCreate(dc_activeObj.getImagePath());
@@ -321,16 +302,14 @@ public class RadialMenu extends Group {
                     inn1.childNodes = list;
                     nn1.add(inn1);
                 }
-                if (active.getActiveWeapon() != null) {
-                    if (active.getActiveWeapon().isRanged()) {
-                        if (active.getRef().getObj(KEYS.AMMO) == null) {
-                            for (DC_QuickItemObj ammo : active.getOwnerObj().getQuickItems()) {
+                if (dcActiveObj.getActiveWeapon() != null) {
+                    if (dcActiveObj.getActiveWeapon().isRanged()) {
+                        if (dcActiveObj.getRef().getObj(KEYS.AMMO) == null) {
+                            for (DC_QuickItemObj ammo : dcActiveObj.getOwnerObj().getQuickItems()) {
                                 CreatorNode innn = new CreatorNode();
                                 innn.name = "Reload with " + ammo.getName();
                                 innn.texture = TextureCache.getOrCreate(ammo.getImagePath());
-                                innn.action = () -> {
-                                    ammo.invokeClicked();
-                                };
+                                innn.action = ammo::invokeClicked;
                                 list.add(innn);
                             }
                         }
