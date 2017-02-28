@@ -90,17 +90,15 @@ public class Executor extends ActiveHandler {
     }
 
     public void activateOnActionThread() {
-            Eidolons.getActionThread().setExecutor(this);
-        Eidolons.getExecutorService() .execute(Eidolons.getActionThread());
+        Eidolons.getActionThread().setExecutor(this);
+        Eidolons.getExecutorService().execute(Eidolons.getActionThread());
     }
 
 
-
-        public boolean activate() {
+    public boolean activate() {
 
         reset();
-        if (!getActivator().canBeManuallyActivated())
-        {
+        if (!getActivator().canBeManuallyActivated()) {
             cannotActivate();
             return result;
         }
@@ -129,15 +127,15 @@ public class Executor extends ActiveHandler {
     }
 
     private void cannotActivate() {
-        main.system.auxiliary.log.LogMaster.log(1,"Cannot Activate " +
+        main.system.auxiliary.log.LogMaster.log(1, "Cannot Activate " +
          getEntity().getName() +
-         ": " +getEntity().getCosts().getReasonsString());
+         ": " + getEntity().getCosts().getReasonsString());
         FloatingText f = FloatingTextMaster.getInstance().getFloatingText(getEntity(),
-         TEXT_CASES.REQUIREMENT ,getEntity().getCosts().getReasonsString() );
-f.setDisplacementY(100);
-f.setDuration(3);
-      f.addToStage(GameScreen.getInstance().getAnimsStage(),
-       GridMaster.getVectorForCoordinateWithOffset(getEntity().getOwnerObj().getCoordinates()));
+         TEXT_CASES.REQUIREMENT, getEntity().getCosts().getReasonsString());
+        f.setDisplacementY(100);
+        f.setDuration(3);
+        f.addToStage(GameScreen.getInstance().getAnimsStage(),
+         GridMaster.getVectorForCoordinateWithOffset(getEntity().getOwnerObj().getCoordinates()));
     }
 
     private void cancelled() {
@@ -311,11 +309,11 @@ f.setDuration(3);
                 endTurn = null;
             }
         }
-            if (endTurn != null) {
-                endTurn = !endTurn;
-            }
-            getAnimator().waitForAnimation();
-            getGame().getManager().unitActionCompleted(getAction(), endTurn);
+        if (endTurn != null) {
+            endTurn = !endTurn;
+        }
+        getAnimator().waitForAnimation();
+        getGame().getManager().unitActionCompleted(getAction(), endTurn);
 
     }
 

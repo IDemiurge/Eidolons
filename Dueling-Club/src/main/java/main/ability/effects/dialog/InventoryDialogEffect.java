@@ -17,13 +17,15 @@ public class InventoryDialogEffect extends DialogEffect {
 
     @Override
     protected String getOperationsData() {
-        return hero.getGame().getInventoryManager().getWindow().getOperationsData();
+        return hero.getGame().getInventoryManager()
+         .getWindow().getOperationsData();
     }
 
     @Override
     protected boolean showDialog() {
         Integer nOfOperations = numberOfOperations.getInt(ref);
-        return hero.getGame().getInventoryManager().showInvWindow(hero, nOfOperations, isPickUp());
+        return hero.getGame().
+         getInventoryManager().showInvWindow(hero, nOfOperations, isPickUp());
     }
 
     protected boolean isPickUp() {
@@ -33,7 +35,8 @@ public class InventoryDialogEffect extends DialogEffect {
     @Override
     protected void processOperationCommand(String string) {
         hero.getGame().getInventoryManager().getInvListManager().setHero(hero);
-        hero.getGame().getInventoryManager().getInvListManager().processOperationCommand(string);
+        hero.getGame().getInventoryManager().getInvListManager()
+         .processOperationCommand(string);
 
     }
 

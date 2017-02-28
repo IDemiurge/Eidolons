@@ -453,6 +453,10 @@ public class DebugMaster {
                     game.setDummyMode(!game.isDummyMode());
                     TestMasterContent.setForceFree(game.isDummyMode());
                     break;
+                case TOGGLE_DUMMY_PLUS:
+                    game.setDummyPlus(!game.isDummyPlus());
+                    TestMasterContent.setForceFree(game.isDummyMode());
+                    break;
 
                 case PRESET:
                     PresetMaster.handlePreset(isAltMode());
@@ -1337,6 +1341,7 @@ public class DebugMaster {
         CLEAR_WAVES,
         ACTIVATE_UNIT(true),
         TOGGLE_DUMMY(true),
+        TOGGLE_DUMMY_PLUS(true),
 
         SPAWN_PARTY(true),
         SPAWN_CUSTOM_WAVE(true),
