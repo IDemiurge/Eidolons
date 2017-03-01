@@ -188,12 +188,17 @@ public class UnitInfoPanel extends Container<TablePanel> {
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
                 event.stop();
-                return super.mouseMoved(event, x, y);
+                return false;
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 System.out.println("mouse exit form");
+            }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                //GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, new EventCallbackParam(null));
             }
         });
 

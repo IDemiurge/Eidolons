@@ -23,10 +23,10 @@ public class UnitInfoDTO {
     private AvatarDTO avatar;
     private boolean isSetAvatar;
 
-    private CounterAndActionPointsDTO initiativeAndAction;
+    private InitiativeAndActionPointsDTO initiativeAndAction;
     private boolean isSetInitiativeAndAction;
 
-    private UnknownParamDTO unknownParam;
+    private SimpleParamsDTO unknownParam;
     private boolean isSetUnknownParam;
 
     private ArmorDTO armor;
@@ -136,11 +136,11 @@ public class UnitInfoDTO {
         return isSetAvatar;
     }
 
-    public CounterAndActionPointsDTO getInitiativeAndAction() {
+    public InitiativeAndActionPointsDTO getInitiativeAndAction() {
         return initiativeAndAction;
     }
 
-    public void setInitiativeAndAction(CounterAndActionPointsDTO initiativeAndAction) {
+    public void setInitiativeAndAction(InitiativeAndActionPointsDTO initiativeAndAction) {
         isSetInitiativeAndAction = true;
         this.initiativeAndAction = initiativeAndAction;
     }
@@ -149,11 +149,11 @@ public class UnitInfoDTO {
         return isSetInitiativeAndAction;
     }
 
-    public UnknownParamDTO getUnknownParam() {
+    public SimpleParamsDTO getUnknownParam() {
         return unknownParam;
     }
 
-    public void setUnknownParam(UnknownParamDTO unknownParam) {
+    public void setUnknownParam(SimpleParamsDTO unknownParam) {
         isSetUnknownParam = true;
         this.unknownParam = unknownParam;
     }
