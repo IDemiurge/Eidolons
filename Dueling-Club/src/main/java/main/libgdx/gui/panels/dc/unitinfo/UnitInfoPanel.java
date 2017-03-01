@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UnitInfoPanel extends Container<TablePanel> {
+    private Actor outside;
 
     public UnitInfoPanel() {
         TextureRegion textureRegion = TextureCache.getOrCreateR("/UI/components/infopanel/background.png");
@@ -26,6 +28,17 @@ public class UnitInfoPanel extends Container<TablePanel> {
         background(drawable);
         setWidth(textureRegion.getRegionWidth());
         setHeight(Gdx.graphics.getHeight());
+
+        outside = new Actor();
+        outside.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        outside.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                UnitInfoPanel.this.setVisible(false);
+                outside.setTouchable(Touchable.disabled);
+                return false;
+            }
+        });
 
         TablePanel tablePanel = new TablePanel();
         tablePanel.fill();
@@ -37,6 +50,8 @@ public class UnitInfoPanel extends Container<TablePanel> {
         initListeners();
 
         setVisible(false);
+        setClip(true);
+        setTouchable(Touchable.enabled);
     }
 
     private void initInnerPanels() {
@@ -184,6 +199,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
 
         GuiEventManager.bind(GuiEventType.SHOW_UNIT_INFO_PANEL, (obj) -> {
             setVisible(true);
+            outside.setTouchable(Touchable.enabled);
         });
     }
 
@@ -193,5 +209,14 @@ public class UnitInfoPanel extends Container<TablePanel> {
         panelSeparator.setActor(image);
         panelSeparator.fill().center().bottom();
         addElement(panelSeparator);
+    }
+
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        Actor actor = super.hit(x, y, touchable);
+        if (actor == null) {
+            actor = outside;
+        }
+        return actor;
     }
 }
