@@ -131,10 +131,15 @@ public class Event implements Referred {
         UNIT_IS_BEING_ATTACKED,
         UNIT_HAS_BEEN_ATTACKED,
         ATTACK_CRITICAL,
+        ATTACK_SNEAK,
         ATTACK_DODGED,
+        ATTACK_PARRIED,
         ATTACK_BLOCKED,
         ATTACK_MISSED,
 
+        ATTACK_OF_OPPORTUNITY,
+        ATTACK_COUNTER,
+        ATTACK_INSTANT,
 
         UNIT_HAS_BEEN_KILLED,
         UNIT_HAS_CHANGED_FACING,

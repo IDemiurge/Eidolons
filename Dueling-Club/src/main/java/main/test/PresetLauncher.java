@@ -32,6 +32,9 @@ import java.util.List;
 import static main.test.Preset.PRESET_DATA.FIRST_DUNGEON;
 
 public class PresetLauncher {
+    static{
+        //init options
+    }
     public final static String[] LAUNCH_OPTIONS = {
      "AI", "Gui", "Logic", "Recent", "New", "Anims",
      "Emitters",
@@ -308,6 +311,7 @@ AI, Gui, Logic,  Anims,
 
         public String preset;
         public RULE_SCOPE ruleScope;
+        public boolean debugMode;
         public boolean dummy;
         public boolean dummy_pp;
         public boolean visionHacked;

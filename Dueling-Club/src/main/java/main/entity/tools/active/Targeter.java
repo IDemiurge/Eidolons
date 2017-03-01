@@ -113,6 +113,7 @@ public class Targeter extends ActiveHandler {
     public void resetTargetingCache() {
         getTargetingAnyCache().clear();
         getTargetingCache().clear();
+        setForcePresetTarget(false);
     }
 
     public boolean canTargetAny() {

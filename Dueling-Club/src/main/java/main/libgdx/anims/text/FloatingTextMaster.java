@@ -14,6 +14,8 @@ import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.CompositeAnim;
 import main.system.Producer;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 
@@ -52,11 +54,11 @@ public class FloatingTextMaster {
 
     private String getImage(Entity active, TEXT_CASES aCase, Object arg) {
         switch (aCase) {
-            case CRITICAL:
+            case ATTACK_CRITICAL:
                 break;
-            case SNEAK:
+            case ATTACK_SNEAK:
                 break;
-            case DODGE:
+            case ATTACK_DODGED:
                 break;
             case COSTS:
                 Cost cost = (Cost) arg;
@@ -71,15 +73,19 @@ public class FloatingTextMaster {
 
     private String getText(Entity active, TEXT_CASES aCase, Object arg) {
         switch (aCase) {
-            case CRITICAL:
+            case ATTACK_CRITICAL:
                 return "Critical Attack!";
-            case SNEAK:
+            case ATTACK_SNEAK:
                 return "Sneak Attack!";
             case COSTS:
                 Cost cost = (Cost) arg;
                 return String.valueOf(-cost.getPayment().getLastPaid());
         }
+        if (arg!=null )
+        if (!StringMaster.isEmpty(arg.toString()))
         return arg.toString();
+
+        return aCase.getText();
     }
 
     public boolean isEventDisplayable(Event e) {
@@ -87,14 +93,16 @@ public class FloatingTextMaster {
     }
 
     private TEXT_CASES getCase(Event e) {
+        TEXT_CASES CASE = new EnumMaster<TEXT_CASES>().retrieveEnumConst(TEXT_CASES.class, e.getType().toString());
+        if (CASE!=null )return CASE;
         if (e.getType() instanceof STANDARD_EVENT_TYPE) {
             switch ((STANDARD_EVENT_TYPE) e.getType()) {
                 case COSTS_HAVE_BEEN_PAID:
                     return TEXT_CASES.COSTS;
                 case ATTACK_CRITICAL:
-                    return TEXT_CASES.CRITICAL;
+                    return TEXT_CASES.ATTACK_CRITICAL;
                 case ATTACK_DODGED:
-                    return TEXT_CASES.DODGE;
+                    return TEXT_CASES.ATTACK_DODGED;
             }
         }
         return null;
@@ -153,10 +161,19 @@ public class FloatingTextMaster {
     public enum TEXT_CASES {
         DEFAULT,
         REQUIREMENT,
-        CRITICAL,
-        SNEAK,
-        DODGE,
-        BLOCK,
+        
+        ATTACK_CRITICAL,
+        ATTACK_SNEAK,
+        
+        ATTACK_DODGED,
+        ATTACK_BLOCKED,
+        ATTACK_PARRIED,
+        ATTACK_MISSED,
+
+        ATTACK_OF_OPPORTUNITY,
+        ATTACK_COUNTER,
+        ATTACK_INSTANT,
+        
         ROLL,
 
         COSTS(true, (e) -> {
@@ -183,24 +200,27 @@ public class FloatingTextMaster {
             };
         });
         public boolean atOrigin;
-        private Producer<Event, Object[]> producer;
+        private Producer<Event, Object[]> argProducer;
 
         TEXT_CASES() {
 
         }
 
+        public String getText( ) {
+            return  StringMaster.getWellFormattedString(name());
+        }
         TEXT_CASES(boolean atOrigin, Producer<Event, Object[]> producer) {
             this.atOrigin = atOrigin;
-            this.producer = producer;
+            this.argProducer = producer;
         }
 
         public Object[] getArgs(Event e) {
-            if (producer == null) {
+            if (argProducer == null) {
                 return new Object[]{
                         "arg!"
                 };
             }
-            return producer.produce(e);
+            return argProducer.produce(e);
         }
     }
 

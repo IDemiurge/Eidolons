@@ -79,7 +79,7 @@ public class SpellRadialManager {
     private static boolean checkForceTargeting(Unit source,
                                                DC_Obj target, DC_ActiveObj action) {
 
-        return false;
+        return false; //TODO
     }
 
     private static CreatorNode createNodeBranch(RADIAL_ITEM object,
@@ -92,14 +92,16 @@ public class SpellRadialManager {
             node.texture =
             RadialManager.getTextureForActive(action, target);
             node.name = action.getName();
+            if (node.name.equalsIgnoreCase("Summon Vampire Bat")) {
+int i =1;
+            }
             node.action = new Runnable() {
                 @Override
                 public void run() {
                     if (checkForceTargeting(source, target, action)) {
-                        action.invokeClicked();
+                        action.activate();
                     } else {
-                        action.getRef().setTarget(target.getId());
-                        action.activatedOn(action.getRef());
+                        action.activateOn(target);
 
                     }
                 }

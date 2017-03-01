@@ -1,6 +1,7 @@
 package main.test.debug;
 
 import main.ability.UnitTrainingMaster;
+import main.client.cc.logic.items.ItemGenerator;
 import main.client.dc.Launcher;
 import main.client.game.NetGame;
 import main.content.DC_TYPE;
@@ -50,6 +51,7 @@ public class GameLauncher {
     public boolean DUMMY_PP = false;
     public boolean FAST_MODE;
     public boolean SUPER_FAST_MODE;
+    private Boolean DEBUG_MODE;
     private Integer PLAYER_CHOICE_OPTION = null;
     private Integer ENEMY_CHOICE_OPTION = 0;
     private Boolean host_client;
@@ -150,8 +152,12 @@ public class GameLauncher {
     public DC_Game initDC_Game() {
 
         initData();
+if (DEBUG_MODE!=null ){
+    game.setDebugMode(DEBUG_MODE);
+}
         if (PresetMaster.getPreset() == null) {
 
+            if (DEBUG_MODE==null )
             game.setDebugMode(Launcher.isDEBUG_MODE_DEFAULT());
             initPlayerParties();
             if (PARTY_CODE != CODE.NONE) {
@@ -197,16 +203,25 @@ public class GameLauncher {
         game.setPlayerParty(PLAYER_PARTY);
         game.setEnemyParty(ENEMY_PARTY);
 
+        if (PresetLauncher.getLaunch() != null) {
+            if (!VISION_HACK) {
+                VISION_HACK = PresetLauncher.getLaunch().visionHacked;
+            }
+            DUMMY_MODE=            PresetLauncher.getLaunch().dummy;
+            DUMMY_MODE=            PresetLauncher.getLaunch().dummy_pp;
+            DEBUG_MODE=            PresetLauncher.getLaunch().debugMode;
+            FAST_MODE=            PresetLauncher.getLaunch().fast;
+
+            ItemGenerator.setGenerationOn(!PresetLauncher.getLaunch().itemGenerationOff);
+            TestMasterContent.setForceFree(  PresetLauncher.getLaunch().freeActions);
+
+        }
         if (host_client != null) {
             initMultiplayerFlags();
         }
         DC_Game.setGame(game);
         // select code?
-        if (!VISION_HACK) {
-            if (PresetLauncher.getLaunch() != null) {
-                VISION_HACK = PresetLauncher.getLaunch().visionHacked;
-            }
-        }
+
 
         VisionManager.setVisionHacked(VISION_HACK);
         DebugMaster.setOmnivisionOn(VISION_HACK);
