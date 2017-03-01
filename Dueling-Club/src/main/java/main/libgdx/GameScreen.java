@@ -140,11 +140,12 @@ public class GameScreen implements Screen {
         LogPanel ld = new LogPanel();
         guiStage.addActor(ld);
         ld.setPosition(Gdx.graphics.getWidth() - ld.getWidth(), 0);
-if (CoreEngine. isGuiTestMode()){
-        UnitInfoPanel infoPanel = new UnitInfoPanel();
-        guiStage.addActor(infoPanel);
-        infoPanel.setPosition(0, 0);
-    }}
+        if (CoreEngine.isGuiTestMode()) {
+            UnitInfoPanel infoPanel = new UnitInfoPanel();
+            guiStage.addActor(infoPanel);
+            infoPanel.setPosition(0, 0);
+        }
+    }
 
     private void bindEvents() {
         GuiEventManager.bind(GRID_CREATED, param -> {

@@ -2,6 +2,7 @@ package main.libgdx.gui.panels.dc.unitinfo;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
@@ -35,6 +36,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
 
         initListeners();
 
+        setVisible(false);
     }
 
     private void initInnerPanels() {
@@ -173,10 +175,15 @@ public class UnitInfoPanel extends Container<TablePanel> {
                 event.stop();
                 return super.mouseMoved(event, x, y);
             }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                System.out.println("mouse exit form");
+            }
         });
 
-        GuiEventManager.bind(GuiEventType.SHOW_INFO_PANEL, (obj) -> {
-
+        GuiEventManager.bind(GuiEventType.SHOW_UNIT_INFO_PANEL, (obj) -> {
+            setVisible(true);
         });
     }
 

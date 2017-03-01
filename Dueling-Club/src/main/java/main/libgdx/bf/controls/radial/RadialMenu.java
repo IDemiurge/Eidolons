@@ -28,6 +28,8 @@ import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.TargetRunnable;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
@@ -120,8 +122,8 @@ public class RadialMenu extends Group {
 
         for (int i = 0; i < currentNode.childNodes.size(); i++) {
             pos = i * step;
-            int y = (int) (r * Math.sin(Math.toRadians(pos)));
-            int x = (int) (r * Math.cos(Math.toRadians(pos)));
+            int y = (int) (r * Math.sin(Math.toRadians(pos + 90)));
+            int x = (int) (r * Math.cos(Math.toRadians(pos + 90)));
             currentNode.childNodes.get(i).setX(x + currentNode.getX());
             currentNode.childNodes.get(i).setY(y + currentNode.getY());
         }
@@ -185,8 +187,6 @@ public class RadialMenu extends Group {
 
     }
 
-
-
     public void createNew(DC_Obj target) {
         Unit source = (Unit) Game.game.getManager().getActiveObj();
         if (source == null) {
@@ -216,16 +216,14 @@ public class RadialMenu extends Group {
 
             if (dcActiveObj.isMove()) {
                 if (dcActiveObj.getTargeting() instanceof SelectiveTargeting) {
-                    moves.add(new ImmutableTriple<>(() -> {
-                        dcActiveObj.activateOn(target);
-                    },
+                    moves.add(new ImmutableTriple<>(() -> dcActiveObj.activateOn(target),
                             TextureCache.getOrCreate(dcActiveObj.getImagePath()),
                             dcActiveObj.getName()));
                 } else {
                     moves.add(new ImmutableTriple<>(
                             dcActiveObj::invokeClicked,
                             getTextureForActive(dcActiveObj,
-                                   target),
+                                    target),
                             dcActiveObj.getName()
                     ));
                 }
@@ -236,7 +234,7 @@ public class RadialMenu extends Group {
             if (dcActiveObj.isTurn()) {
                 turns.add(new ImmutableTriple<>(
                         dcActiveObj::invokeClicked,
-                        getTextureForActive(dcActiveObj,target ),
+                        getTextureForActive(dcActiveObj, target),
                         dcActiveObj.getName()
                 ));
             }
@@ -244,7 +242,7 @@ public class RadialMenu extends Group {
             if (dcActiveObj.isAttack()) {
                 RadialMenu.CreatorNode inn1 = new CreatorNode();
                 try {
-                    inn1.texture = getTextureForActive(dcActiveObj,target );
+                    inn1.texture = getTextureForActive(dcActiveObj, target);
                 } catch (Exception e) {
                     e.printStackTrace();
 
@@ -281,7 +279,6 @@ public class RadialMenu extends Group {
                         }
                     }
 
-
                     inn1.childNodes = list;
                     nn1.add(inn1);
                 } else if (dcActiveObj.getTargeting() instanceof SelectiveTargeting) {
@@ -289,9 +286,7 @@ public class RadialMenu extends Group {
                         RadialMenu.CreatorNode innn = new CreatorNode();
                         innn.name = dc_activeObj.getName();
                         innn.texture = TextureCache.getOrCreate(dc_activeObj.getImagePath());
-                        innn.action = () -> {
-                            dc_activeObj.activateOn(target);
-                        };
+                        innn.action = () -> dc_activeObj.activateOn(target);
                         list.add(innn);
                     }
                     inn1.childNodes = list;
@@ -314,17 +309,23 @@ public class RadialMenu extends Group {
 
         }
 
-
-        Texture moveAction = TextureCache.getOrCreate("\\UI\\actions\\Move gold.jpg");
-        Texture turnAction = TextureCache.getOrCreate("\\UI\\actions\\turn anticlockwise quick2 - Copy.jpg");
-        Texture attackAction = TextureCache.getOrCreate("\\mini\\actions\\New folder\\Achievement_Arena_2v2_2.jpg");
+        Texture examineTexture = TextureCache.getOrCreate("UI/actions/examine.png");
+        Texture moveAction = TextureCache.getOrCreate("/UI/actions/Move gold.jpg");
+        Texture turnAction = TextureCache.getOrCreate("/UI/actions/turn anticlockwise quick2 - Copy.jpg");
+        Texture attackAction = TextureCache.getOrCreate("/mini/actions/New folder/Achievement_Arena_2v2_2.jpg");
         Texture yellow = new Texture(GridPanel.class.getResource("/data/marble_yellow.png").getPath());
         Texture red = new Texture(GridPanel.class.getResource("/data/marble_red.png").getPath());
         Texture green = new Texture(GridPanel.class.getResource("/data/marble_green.png").getPath());
 
-
         List<RadialMenu.CreatorNode> list = new LinkedList<>();
 
+        RadialMenu.CreatorNode examine = new RadialMenu.CreatorNode();
+        examine.texture = examineTexture;
+        examine.action = () -> {
+            GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL, new EventCallbackParam(null));
+        };
+        examine.name = "examine";
+        list.add(examine);
 
         RadialMenu.CreatorNode attM = new RadialMenu.CreatorNode();
         attM.texture = nn1.get(0).texture;
@@ -464,9 +465,7 @@ public class RadialMenu extends Group {
                 text.draw(batch, parentAlpha);
             }
             if (drawChildren) {
-                List<MenuNode> renderList = new LinkedList<>(childNodes);
-                Collections.reverse(renderList); //to sync with click listener; TODO rework!
-                for (MenuNode child : renderList) {
+                for (MenuNode child : childNodes) {
                     child.draw(batch, parentAlpha);
                 }
             }

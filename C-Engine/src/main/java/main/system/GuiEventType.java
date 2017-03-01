@@ -30,7 +30,7 @@ public enum GuiEventType {
 
     INITIATIVE_CHANGED,
 
-    SHOW_INFO_PANEL,
+    SHOW_UNIT_INFO_PANEL,
 
     SHOW_GREEN_BORDER,
     SHOW_RED_BORDER,
