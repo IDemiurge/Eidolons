@@ -58,7 +58,6 @@ public abstract class Entity extends DataModel implements OBJ {
     EntityMaster master;
 
 
-
     public Entity() {
 
     }
@@ -83,7 +82,7 @@ public abstract class Entity extends DataModel implements OBJ {
             LogMaster.log(-1, id + " - NEW ID for " + type.getName());
 
             setRef(ref);
-        master = initMaster();
+            master = initMaster();
             init();
         }
     }
@@ -240,7 +239,6 @@ public abstract class Entity extends DataModel implements OBJ {
     public void resetRef() {
         setRef(ref);
     }
-
 
 
     public void addStatus(String value) {

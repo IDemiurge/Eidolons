@@ -29,6 +29,7 @@ import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
 
+import static main.libgdx.bf.controls.radial.RadialManager.createNew;
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
 import static main.system.GuiEventType.GRID_CREATED;
 
@@ -160,7 +161,7 @@ public class GameScreen implements Screen {
             if (Gdx.input.isButtonPressed(0) || Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
                 radialMenu.init(DebugRadialManager.getDebugNodes(dc_obj));
             } else {
-                radialMenu.createNew(dc_obj);
+                radialMenu.init(createNew(dc_obj));
             }
         });
     }
