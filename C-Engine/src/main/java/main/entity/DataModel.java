@@ -538,7 +538,10 @@ public abstract class DataModel {
 
     }
 
-    public String getValue(VALUE valName) {
+    public String getValue(String valName) {
+        return getValue(ContentManager.getValue(valName));
+    }
+        public String getValue(VALUE valName) {
         return getValue(valName, false);
     }
 
