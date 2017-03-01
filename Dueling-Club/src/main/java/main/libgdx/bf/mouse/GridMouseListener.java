@@ -47,7 +47,7 @@ public class GridMouseListener extends ClickListener {
         int cell = (int) (x / cells[0][0].getWidth());
         int row = (int) (y / cells[0][0].getHeight());
         GridCell gridCell = cells[cell][row];
-        if (gridCell.getInnerDrawable() != null) {
+        if (gridCell.getInnerDrawable() != null && !event.isStopped()) {
             GridCellContainer innerDrawable = (GridCellContainer) gridCell.getInnerDrawable();
             Actor a = innerDrawable.hit(x, y, true);
             if (a != null && a instanceof BaseView) {
@@ -90,8 +90,7 @@ public class GridMouseListener extends ClickListener {
                     recordOption.curVal = hero.getIntParam(PARAMS.LIGHT_EMISSION);
                     recordOptions.add(recordOption);
                 }
-                if (
-                        hero.getCustomParamMap() != null) {
+                if (hero.getCustomParamMap() != null) {
                     hero.getCustomParamMap().keySet().forEach(counter -> {
                         ToolTipRecordOption option = new ToolTipRecordOption();
                         option.name = counter + " " + hero.getCustomParamMap().get(counter);
