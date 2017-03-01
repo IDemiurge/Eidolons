@@ -10,7 +10,6 @@ import main.libgdx.texture.TextureCache;
 import main.system.images.ImageManager;
 
 import java.util.Collection;
-import java.util.LinkedList;
 
 /**
  * Created by JustMe on 3/1/2017.
@@ -26,13 +25,7 @@ public class DTO_Master {
         return grid;
 
     }
-    public static TabsDTO getTabs(Entity unit,
-                                  VALUE[][][]
-//                                  Collection<Collection<Collection<VALUE>>>
-                                   parameters) {
-        list2D =     new LinkedList<>() ;
-
-    }
+    
 
     public static TabsDTO getTabs(Entity unit,
                                   Collection<Collection<VALUE>> parameters) {
