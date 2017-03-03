@@ -1,22 +1,15 @@
 package main.game.ai.elements.actions.sequence;
 
-import main.ability.conditions.FacingCondition;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
-import main.content.enums.entity.UnitEnums;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums;
-import main.elements.conditions.Condition;
-import main.elements.conditions.Conditions;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
-import main.entity.active.DC_UnitAction;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.item.DC_WeaponObj;
-import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
@@ -36,15 +29,10 @@ import main.game.ai.tools.target.ReasonMaster.FILTER_REASON;
 import main.game.ai.tools.target.TargetingMaster;
 import main.game.ai.tools.time.TimeLimitMaster;
 import main.game.battlefield.Coordinates;
-import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.DC_MovementManager;
-import main.game.battlefield.FacingMaster;
 import main.game.core.game.Game;
 import main.game.logic.generic.DC_ActionManager;
-import main.system.auxiliary.ClassMaster;
-import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
@@ -55,18 +43,66 @@ import java.util.List;
 
 public class ActionSequenceConstructor extends AiHandler {
 
-    static int defaultDistancePruneFactor = 3;
-    private static Game game;
-    private static Unit unit;
-    private static List<Coordinates> prioritizedCells;
-    private static PathSequenceConstructor pathSequenceConstructor;
-    TurnSequenceConstructor turnSequenceConstructor;
+      int defaultDistancePruneFactor = 3;
+    private   Game game;
+    private   Unit unit;
+    private   List<Coordinates> prioritizedCells;
 
     public ActionSequenceConstructor(AiHandler master) {
         super(master);
     }
 
-    private static void addSequences(Task task, List<ActionSequence> sequences, DC_ActiveObj active) {
+
+    public List<ActionSequence> createActionSequences(UnitAI ai ) {
+        List<ActionSequence> list = new ArrayList<>();
+        getActionSequenceConstructor().setPrioritizedCells(null);
+        for (GOAL_TYPE type : GoalManager.getGoalsForUnit(ai)) {
+            list.addAll(createActionSequences(  new Goal(type, null // ???
+             , ai), ai));
+        }
+        return list;
+    }
+    private String getChronosPrefix() {
+        return "TIMED AI ACTION ";
+    }
+    public List<ActionSequence> createActionSequences(  Goal goal, UnitAI ai) {
+        List<ActionSequence> actionSequences = new LinkedList<>();
+        List<DC_ActiveObj> actions = AiUnitActionMaster.getFullActionList(goal.getTYPE(), ai.getUnit());
+        actions.addAll(addSubactions(actions));
+        for (DC_ActiveObj action : actions) {
+            Chronos.mark(getChronosPrefix() + action);
+            List<Task> tasks = taskManager.getTasks(goal.getTYPE(), ai, goal.isForced(), action);
+            for (Task task : tasks) {
+                if (task.isBlocked()) {
+                    continue;
+                }
+                if (actionSequences.size() > 0) {
+                    long time = TimeLimitMaster.getTimeLimitForAction();
+                    if (Chronos.getTimeElapsedForMark(getChronosPrefix() + action) > time) {
+                        LogMaster.log(1, "*********** TIME ELAPSED FOR  "
+                         + action + StringMaster.wrapInParenthesis(time + ""));
+                        break;
+                    }
+                }
+                String string = task.toString();
+                Obj obj = action.getGame().getObjectById((Integer) task.getArg());
+                if (obj != null) {
+                    string = obj.getName();
+                }
+                Chronos.mark(getChronosPrefix() + string);
+                try {
+                    addSequences(task, actionSequences, action);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Chronos.logTimeElapsedForMark(getChronosPrefix() + string);
+            }
+            Chronos.logTimeElapsedForMark(getChronosPrefix() + action);
+        }
+        return actionSequences;
+    }
+
+    private   void addSequences(Task task, List<ActionSequence> sequences, DC_ActiveObj active) {
         Ref ref = task.getUnit().getRef().getCopy();
         Integer arg = TaskManager.checkTaskArgReplacement(task, active);
         if (arg == null) {
@@ -77,7 +113,7 @@ public class ActionSequenceConstructor extends AiHandler {
         Action action = ActionFactory.newAction(active, ref);
 
         try {
-            newSequences = ActionSequenceConstructor.getSequences(action, task.getArg(), task);
+            newSequences =  getSequences(action, task.getArg(), task);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,7 +124,7 @@ public class ActionSequenceConstructor extends AiHandler {
             if (!action.canBeTargetedOnAny()) {
                 return;
             }
-            ActionSequence sequence = ActionSequenceConstructor.getSequence(action, task);
+            ActionSequence sequence = getSequence(action, task);
             if (sequence != null) {
                 if (active.isRanged()) {
                     sequences.addAll(AiUnitActionMaster.splitRangedSequence(sequence));
@@ -108,7 +144,18 @@ public class ActionSequenceConstructor extends AiHandler {
         }
     }
 
-    public static List<ActionSequence> getSequences(Action action, Object arg, Task task) {
+
+    private List<DC_ActiveObj> addSubactions(List<DC_ActiveObj> actions) {
+        List<DC_ActiveObj> subactions = new LinkedList<>();
+        for (DC_ActiveObj a : actions) {
+            subactions.addAll(a.getSubActions());
+        }
+        return subactions;
+    }
+
+
+
+    public   List<ActionSequence> getSequences(Action action, Object arg, Task task) {
         List<ActionSequence> list = new ArrayList<>();
         game = action.getRef().getGame();
         unit = action.getSource();
@@ -193,12 +240,11 @@ public class ActionSequenceConstructor extends AiHandler {
 
         List<ActionPath> paths = pathSequenceConstructor.getPathSequences(moveActions, action);
         list = getSequencesFromPaths(paths, task, action);
-
         return list;
 
     }
 
-    private static List<ActionSequence> getSequencesFromPaths(List<ActionPath> paths, Task task,
+    private   List<ActionSequence> getSequencesFromPaths(List<ActionPath> paths, Task task,
                                                               Action action) {
         List<ActionSequence> list = new ArrayList<>();
         for (ActionPath path : paths) {
@@ -218,7 +264,7 @@ public class ActionSequenceConstructor extends AiHandler {
         return list;
     }
 
-    private static List<QuickItemAction> getRangedReloadAction(Action action) {
+    private   List<QuickItemAction> getRangedReloadAction(Action action) {
         Obj weapon = action.getActive().getRef().getObj(KEYS.RANGED);
         WEAPON_GROUP weapon_group = null;
         List<QuickItemAction> list = new ArrayList<>();
@@ -248,7 +294,7 @@ public class ActionSequenceConstructor extends AiHandler {
         return list;
     }
 
-    private static List<DC_ActiveObj> getMoveActions(Action action) {
+    private   List<DC_ActiveObj> getMoveActions(Action action) {
 
         // QUICK FIX
         if (ReasonMaster.checkReasonCannotTarget(FILTER_REASON.FACING, action)) {
@@ -257,7 +303,7 @@ public class ActionSequenceConstructor extends AiHandler {
         return DC_MovementManager.getMoves(unit);
     }
 
-    public static ActionSequence getSequence(Action targetAction, Task task) {
+    public   ActionSequence getSequence(Action targetAction, Task task) {
         List<Action> actions = new ArrayList<>();
         UnitAI ai = task.getAI();
         targetAction.getRef().setID(KEYS.ACTIVE, targetAction.getActive().getId());
@@ -268,7 +314,7 @@ public class ActionSequenceConstructor extends AiHandler {
             }
             case DEBUFF:
             case BUFF:
-                actions.addAll(getTurnSequence(targetAction));
+                actions.addAll(TurnSequenceConstructor.getTurnSequence(targetAction));
                 actions.add(targetAction);
                 break;
             // case RETREAT:
@@ -300,7 +346,7 @@ public class ActionSequenceConstructor extends AiHandler {
         return new ActionSequence(actions, task, ai);
     }
 
-    private static List<Action> getAttackSequence(Action targetAction, Task task) {
+    private   List<Action> getAttackSequence(Action targetAction, Task task) {
         List<Action> list = new ArrayList<>();
         if (task.getArg() instanceof Integer) {
             Integer id = (Integer) task.getArg();
@@ -329,7 +375,7 @@ public class ActionSequenceConstructor extends AiHandler {
                     return list;
                 }
                 if (reasons.contains(FILTER_REASON.FACING)) {
-                    list.addAll(getTurnSequence(targetAction));
+                    list.addAll(TurnSequenceConstructor.getTurnSequence(targetAction));
                     list.add(targetAction);
                 } else if (targetAction.getActive().isRanged()) {
                     list.add(targetAction);
@@ -340,188 +386,17 @@ public class ActionSequenceConstructor extends AiHandler {
         return list;
     }
 
-    private static Coordinates getNextClosestCoordinate(Unit unit, Action targetAction) {
+    private   Coordinates getNextClosestCoordinate(Unit unit, Action targetAction) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Deprecated
-    public static List<Action> getTurnSequence(Unit unit, Coordinates targetCoordinates) {
-        List<Action> list = new ArrayList<>();
-        // this will only work if there are no obstacles to the sides
-        // in reality, we need to check from which *empty* *adjacent* cell the
-        // enemy is closer
-        FACING_DIRECTION facing = unit.getFacing();
-        boolean clockwise = RandomWizard.random();
-        list.add(getTurnAction(clockwise, unit));
-        facing = FacingMaster.rotate(facing, clockwise);
-        // action.getActive().getTargeting().getFilter()
-        if (FacingMaster.getSingleFacing(FacingMaster.rotate(facing, clockwise), unit
-                .getCoordinates(), targetCoordinates) == UnitEnums.FACING_SINGLE.IN_FRONT) {
-            return list;
-        }
 
-        clockwise = !clockwise;
-        facing = unit.getFacing();
-        list.clear();
-
-        list.add(getTurnAction(clockwise, unit));
-        facing = FacingMaster.rotate(facing, clockwise);
-        if (FacingMaster.getSingleFacing(FacingMaster.rotate(facing, clockwise), unit
-                .getCoordinates(), targetCoordinates) == UnitEnums.FACING_SINGLE.IN_FRONT) {
-            return list;
-        }
-        list.add(getTurnAction(clockwise, unit));
-        facing = FacingMaster.rotate(facing, clockwise);
-
-        return list;
-
-    }
-
-    public static List<Action> getTurnSequence(Action action) {
-        Conditions conditions = (action.getTargeting().getFilter().getConditions());
-        FacingCondition condition = null;
-        FACING_SINGLE template = null;
-        DC_Obj target = action.getTarget();
-        Unit source = (Unit) action.getRef().getSourceObj();
-        for (Condition c : conditions) {
-            if (c instanceof FacingCondition) {
-                condition = (FacingCondition) c;
-                break;
-            }
-            List<Object> list = ClassMaster.getInstances(c, FacingCondition.class);
-            if (!list.isEmpty()) {
-                List<Action> front_sequence = getTurnSequence(UnitEnums.FACING_SINGLE.IN_FRONT, source,
-                        target.getCoordinates());
-                List<Action> side_sequence = null;
-                if (action.getSource().hasBroadReach()
-                        || action.getActive().checkPassive(UnitEnums.STANDARD_PASSIVES.BROAD_REACH))
-                // front_sequence.remove(front_sequence.size() - 1);
-                {
-                    side_sequence = getTurnSequence(UnitEnums.FACING_SINGLE.TO_THE_SIDE, source, target
-                            .getCoordinates());
-                }
-                List<Action> hind_sequence = null;
-                if (action.getSource().hasHindReach()
-                        || action.getActive().checkPassive(UnitEnums.STANDARD_PASSIVES.HIND_REACH)) {
-                    hind_sequence = getTurnSequence(UnitEnums.FACING_SINGLE.BEHIND, source, target
-                            .getCoordinates());
-                }
-
-                return new ListMaster<Action>().getSmallest(front_sequence, hind_sequence,
-                        side_sequence);
-            }
-
-        }
-        // if (c instanceof OrConditions) {
-        // if
-        // (action.getActive().checkPassive(STANDARD_PASSIVES.BROAD_REACH))
-        // // template = TODO
-        // break;
-        // }
-        // }
-        if (condition == null) {
-            return new ArrayList<>();
-        }
-        if (ArrayMaster.isNotEmpty(condition.getTemplate())) {
-            template = condition.getTemplate()[0];
-        }
-        return getTurnSequence(template, source, target.getCoordinates());
-
-    }
-
-    public static List<Action> getTurnSequence(FACING_SINGLE template, Unit source,
-                                               Coordinates target) {
-
-        FACING_DIRECTION original_facing = source.getFacing();
-        FACING_DIRECTION facing = original_facing;
-
-        boolean clockwise = true;
-        int i = 0;
-        List<Action> clockwise_list = new ArrayList<>();
-
-        if (template == FacingMaster.getSingleFacing(FacingMaster.rotate180(facing), source
-                .getCoordinates(), target)) {
-            DC_UnitAction specAction = source.getAction("Turn About "
-                    + (RandomWizard.random() ? "anti" : "") + "clockwise");
-            if (specAction != null) {
-                clockwise_list.add(new Action(specAction));
-                return clockwise_list;
-            }
-        }
-
-        while (true) {
-            if (template == FacingMaster.getSingleFacing(facing, source.getCoordinates(), target)) {
-                break;
-            }
-            facing = FacingMaster.rotate(facing, clockwise);
-            clockwise_list.add(getTurnAction(clockwise, source));
-            i++;
-            if (i > 2) {
-                break;
-            }
-        }
-        clockwise = false;
-        i = 0;
-        List<Action> anticlockwise_list = new ArrayList<>();
-        facing = original_facing;
-        while (true) {
-            if (template == FacingMaster.getSingleFacing(facing, source.getCoordinates(), target)) {
-                break;
-            }
-            facing = FacingMaster.rotate(facing, clockwise);
-            anticlockwise_list.add(getTurnAction(clockwise, source));
-            i++;
-            if (i > 2) {
-                break;
-            }
-        }
-        return (anticlockwise_list.size() > clockwise_list.size()) ? clockwise_list
-                : anticlockwise_list;
-    }
-
-    private static Action getTurnAction(boolean clockwise, Unit source) {
-        DC_UnitAction specAction = source.getAction("Quick Turn "
-                + (clockwise ? "Clockwise" : "Anticlockwise"));
-        if (specAction != null) {
-            if (specAction.canBeActivated(source.getRef(), true)) {
-                return new Action(specAction, Ref.getSelfTargetingRefCopy(source));
-            }
-        }
-
-        return new Action(source.getAction(""
-                + ((clockwise) ? DC_ActionManager.STD_ACTIONS.Turn_Clockwise
-                : DC_ActionManager.STD_ACTIONS.Turn_Anticlockwise)), Ref
-                .getSelfTargetingRefCopy(source));
-
-    }
-
-    public static List<Coordinates> getPrioritizedCells() {
-        return prioritizedCells;
-    }
-
-    public static void setPrioritizedCells(List<Coordinates> prioritizedCells) {
-        ActionSequenceConstructor.prioritizedCells = prioritizedCells;
-    }
-
-    public List<ActionSequence> createActionSequences(UnitAI ai) {
-        List<ActionSequence> list = new ArrayList<>();
-        ActionSequenceConstructor.setPrioritizedCells(null);
-        for (GOAL_TYPE type : GoalManager.getGoalsForUnit(ai)) {
-            list.addAll(createActionSequences(new Goal(type, null // ???
-                    , ai), ai));
-        }
-        return list;
-    }
-
-    private String getChronosPrefix() {
-        return "TIMED AI ACTION ";
-    }
 
 
     // getOrCreate the *best* move sequence? create all then auto-compare via priority
     // manager
-    // private static Collection<? extends Action> getMoveSequence(Action
+    // private   Collection<? extends Action> getMoveSequence(Action
     // action) {
     // Conditions conditions = (action.getActive()
     // .getTargeting().getFilter().getConditions());
@@ -565,7 +440,7 @@ public class ActionSequenceConstructor extends AiHandler {
     // .getActions();
     // }
     //
-    // private static ActionSequence generateMoveSequence(Coordinates
+    // private   ActionSequence generateMoveSequence(Coordinates
     // source_coordinates, Coordinates target_coordinates, List<DC_ActiveObj>
     // moveActions) {
     // // how do I simulate special moves best?
@@ -595,49 +470,12 @@ public class ActionSequenceConstructor extends AiHandler {
     // return null;
     // }
 
-    public List<ActionSequence> createActionSequences(Goal goal, UnitAI ai) {
-        List<ActionSequence> actionSequences = new LinkedList<>();
-        List<DC_ActiveObj> actions = AiUnitActionMaster.getFullActionList(goal.getTYPE(), ai.getUnit());
-        actions.addAll(addSubactions(actions));
-        for (DC_ActiveObj action : actions) {
-            Chronos.mark(getChronosPrefix() + action);
-            List<Task> tasks = taskManager.getTasks(goal.getTYPE(), ai, goal.isForced(), action);
-            for (Task task : tasks) {
-                if (task.isBlocked()) {
-                    continue;
-                }
-                if (actionSequences.size() > 0) {
-                    long time = TimeLimitMaster.getTimeLimitForAction();
-                    if (Chronos.getTimeElapsedForMark(getChronosPrefix() + action) > time) {
-                        LogMaster.log(1, "*********** TIME ELAPSED FOR  "
-                                + action + StringMaster.wrapInParenthesis(time + ""));
-                        break;
-                    }
-                }
-                String string = task.toString();
-                Obj obj = action.getGame().getObjectById((Integer) task.getArg());
-                if (obj != null) {
-                    string = obj.getName();
-                }
-                Chronos.mark(getChronosPrefix() + string);
-                try {
-                    addSequences(task, actionSequences, action);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Chronos.logTimeElapsedForMark(getChronosPrefix() + string);
-            }
-            Chronos.logTimeElapsedForMark(getChronosPrefix() + action);
-        }
-        return actionSequences;
+    public   List<Coordinates> getPrioritizedCells() {
+        return prioritizedCells;
     }
 
-    private List<DC_ActiveObj> addSubactions(List<DC_ActiveObj> actions) {
-        List<DC_ActiveObj> subactions = new LinkedList<>();
-        for (DC_ActiveObj a : actions) {
-            subactions.addAll(a.getSubActions());
-        }
-        return subactions;
+    public   void setPrioritizedCells(List<Coordinates> prioritizedCells) {
+       this.prioritizedCells = prioritizedCells;
     }
 
     // perhaps it should build a move sequence for each cell *from which*

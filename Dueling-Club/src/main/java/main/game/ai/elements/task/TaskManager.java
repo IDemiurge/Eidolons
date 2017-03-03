@@ -13,6 +13,7 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
+import main.game.ai.elements.generic.AiHandler;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.tools.Analyzer;
 import main.game.ai.tools.ParamAnalyzer;
@@ -26,23 +27,25 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-public class TaskManager {
-    // include non-targeted actions as well, zone and so on
-
+public class TaskManager extends AiHandler {
     private static final Integer DEFAULT_PRUNE_SIZE = 5;
+    // include non-targeted actions as well, zone and so on
     private static Integer forcedPruneSize;
+    public TaskManager(AiHandler master) {
+        super(master);
+    }
 
     public static Integer checkTaskArgReplacement(Task task, DC_ActiveObj action) {
         // "custom targeting" of sorts !
         TARGETING_MODE mode = action.getTargetingMode();
         if (mode == null) {
             mode = new EnumMaster<TARGETING_MODE>().retrieveEnumConst(TARGETING_MODE.class, action
-                    .getProperty(G_PROPS.TARGETING_MODE));
+             .getProperty(G_PROPS.TARGETING_MODE));
         }
         if (mode != null) {
             if (action.getGame().getObjectById((Integer) task.getArg()) instanceof Unit) {
                 Unit target = (Unit) action.getGame().getObjectById(
-                        (Integer) task.getArg());
+                 (Integer) task.getArg());
                 switch (mode) {
 
                     case ANY_ITEM:
@@ -148,7 +151,7 @@ public class TaskManager {
                 // ai.getGroup().getKnownEnemies
                 break;
             case APPROACH:
-                targets = CellPrioritizer.getApproachCells(ai);
+                targets = getCellPrioritizer().getApproachCells(ai);
                 break;
 
             case SEARCH:
@@ -317,7 +320,7 @@ public class TaskManager {
                             minDistance = distance;
                         } else {
                             result = (getDistancePruneFactor(limit, t, ai, action)) < distance
-                                    - minDistance;
+                             - minDistance;
                         }
                         if (result) {
                             break;
@@ -342,7 +345,7 @@ public class TaskManager {
                     }
                     if (byPower) {
                         result = t.getIntParam(PARAMS.POWER) * 100 / maxPower < getPowerFactor(
-                                limit, ai, action);
+                         limit, ai, action);
                         if (result) {
                             break;
                         }

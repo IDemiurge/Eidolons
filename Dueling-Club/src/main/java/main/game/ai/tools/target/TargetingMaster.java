@@ -11,6 +11,7 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.actions.sequence.ActionSequence;
+import main.game.ai.elements.generic.AiHandler;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.elements.goal.GoalManager;
 import main.game.ai.tools.priority.DC_PriorityManager;
@@ -21,7 +22,11 @@ import main.system.auxiliary.ClassMaster;
 import java.util.List;
 import java.util.Set;
 
-public class TargetingMaster {
+public class TargetingMaster extends AiHandler{
+    public TargetingMaster(AiHandler master) {
+        super(master);
+    }
+
     public static int pruneLimit = 5;
 
     public static Targeting findTargeting(ActiveObj active) {

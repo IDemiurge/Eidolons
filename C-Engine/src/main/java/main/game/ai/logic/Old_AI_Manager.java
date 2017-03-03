@@ -52,7 +52,7 @@ public class Old_AI_Manager {
     }
 
     public TargetingManager gettManager() {
-        return logic.gettManager();
+        return logic.getTargetingManager();
     }
 
     public OldPriorityManager getpManager() {

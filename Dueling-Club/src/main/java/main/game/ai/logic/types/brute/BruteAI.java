@@ -15,7 +15,7 @@ public class BruteAI extends DC_AI_Logic {
 
     @Override
     public void init() {
-        tManager = new BruteTargeter(this);
+        targetingManager = new BruteTargeter(this);
         aManager = new BruteActionMaster(this);
         pManager = new BrutePrioritizer(this);
 

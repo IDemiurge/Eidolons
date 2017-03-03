@@ -2,6 +2,7 @@ package main.game.ai.tools.prune;
 
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.game.ai.elements.actions.Action;
+import main.game.ai.elements.generic.AiHandler;
 import main.game.ai.tools.target.TargetingMaster;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.FacingMaster;
@@ -15,7 +16,10 @@ import java.util.TreeMap;
 /**
  * Created by JustMe on 3/3/2017.
  */
-public class PruneMaster {
+public class PruneMaster  extends AiHandler {
+    public PruneMaster(AiHandler master) {
+        super(master);
+    }
     public static List<Coordinates> pruneTargetCells(Action targetAction, List<Coordinates> list) {
         TreeMap<Integer, Coordinates> map = new TreeMap<>(SortMaster
                 .getNaturalIntegerComparator(false));

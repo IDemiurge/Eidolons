@@ -10,6 +10,7 @@ import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.actions.sequence.ActionSequence;
+import main.game.ai.elements.generic.AiHandler;
 import main.game.ai.tools.Analyzer;
 import main.game.ai.tools.priority.DC_PriorityManager;
 import main.game.battlefield.Coordinates;
@@ -18,29 +19,33 @@ import main.system.auxiliary.log.LogMaster;
 
 import java.util.*;
 
-public class CellPrioritizer {
+public class CellPrioritizer extends AiHandler{
+    public CellPrioritizer(AiHandler master) {
+        super(master);
+    }
+
     /*
-     * precalculate priority for cells and prune paths by destination!
-     *
-     * alternatively, I could prioritize path's cells
-     */
-    public static final int prune_threshold = 2; // increase if there aren't too
+         * precalculate priority for cells and prune paths by destination!
+         *
+         * alternatively, I could prioritize path's cells
+         */
+    public   final int prune_threshold = 2; // increase if there aren't too
     // many actions?
 
-    protected static Map<Obj, Integer> cellPriorityMap;
-    protected static Map<Obj, Integer> enemyPriorityMap;
+    protected   Map<Obj, Integer> cellPriorityMap;
+    protected   Map<Obj, Integer> enemyPriorityMap;
 
-    private static Action targetAction;
+    private   Action targetAction;
 
-    private static List<DC_ActiveObj> moves;
+    private   List<DC_ActiveObj> moves;
 
-    private static Map<Coordinates, List<ActionPath>> pathMap;
+    private   Map<Coordinates, List<ActionPath>> pathMap;
 
-    public static int getMeleePriorityForCell(Unit unit, Obj cell) {
+    public   int getMeleePriorityForCell(Unit unit, Obj cell) {
         return getPriorityForCell(unit, cell, null);
     }
 
-    public static List<? extends DC_Obj> getApproachCells(UnitAI ai) {
+    public   List<? extends DC_Obj> getApproachCells(UnitAI ai) {
         /*
          * TODO
 		 * 
@@ -61,7 +66,7 @@ public class CellPrioritizer {
     /*
      * Perhaps one could feed an action to this method!.. Or actions...
      */
-    public static int getPriorityForCell(Unit unit, Obj cell,
+    public   int getPriorityForCell(Unit unit, Obj cell,
                                          DC_ActiveObj targetAcsdftion) {
 		/*
          * getOrCreate attack priority for each adjacent enemy...
@@ -74,7 +79,7 @@ public class CellPrioritizer {
         int priority = 0;
         List<ActionPath> paths = pathMap.get(cell.getCoordinates());
         if (paths == null) {
-            paths = new PathBuilder(moves, targetAction)
+            paths = getPathBuilder().init(moves, targetAction)
                     .build(new ListMaster<Coordinates>().getList(cell
                             .getCoordinates()));
             pathMap.put(cell.getCoordinates(), paths);
@@ -139,13 +144,13 @@ public class CellPrioritizer {
         return priority;
     }
 
-    public static void reset() {
+    public   void reset() {
         cellPriorityMap = new HashMap<>();
         enemyPriorityMap = new HashMap<>();
         pathMap = new HashMap<>();
     }
 
-    public static List<Coordinates> getMeleePriorityCellsForUnit(UnitAI ai) {
+    public   List<Coordinates> getMeleePriorityCellsForUnit(UnitAI ai) {
 //        DC_PriorityManager.setUnit_ai(ai);
 
         List<Coordinates> list = new LinkedList<>();
@@ -178,7 +183,7 @@ public class CellPrioritizer {
         return list;
     }
 
-    private static Comparator<? super Obj> getPrioritySorter(
+    private   Comparator<? super Obj> getPrioritySorter(
             final Unit unit) {
         return new Comparator<Obj>() {
 
@@ -204,14 +209,14 @@ public class CellPrioritizer {
         };
     }
 
-    public static List<Coordinates> getPriorityCellsForUnit(UnitAI unitAI,
+    public   List<Coordinates> getPriorityCellsForUnit(UnitAI unitAI,
                                                             List<DC_ActiveObj> moveActions, Action action) {
         moves = moveActions;
         targetAction = action;
         return getMeleePriorityCellsForUnit(unitAI);
     }
 
-    public static Map<Coordinates, List<ActionPath>> getPathMap() {
+    public   Map<Coordinates, List<ActionPath>> getPathMap() {
         return pathMap;
     }
 

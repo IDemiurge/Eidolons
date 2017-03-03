@@ -4,10 +4,14 @@ import main.content.PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
+import main.game.ai.elements.generic.AiHandler;
 
 import java.util.List;
 
-public class ParamAnalyzer {
+public class ParamAnalyzer  extends AiHandler {
+    public ParamAnalyzer(AiHandler master) {
+        super(master);
+    }
 
     public static boolean isFatigued(Unit unit) {
         int buffLevel = unit.getGame().getRules().getStaminaRule()
