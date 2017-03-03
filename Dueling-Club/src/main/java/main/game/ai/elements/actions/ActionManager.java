@@ -41,7 +41,6 @@ import java.util.List;
 public class ActionManager extends AiHandler{
 
     BehaviorMaster behaviorMaster;
-    private Unit unit;
 
     public ActionManager(AiHandler master) {
         super(master);

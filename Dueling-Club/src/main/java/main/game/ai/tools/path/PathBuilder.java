@@ -78,6 +78,7 @@ public class PathBuilder extends AiHandler {
     public PathBuilder init(List<DC_ActiveObj> moveActions, Action targetAction) {
         this.targetAction = targetAction;
         this.moveActions = moveActions;
+        init();
         return this;
     }
     private void init() {

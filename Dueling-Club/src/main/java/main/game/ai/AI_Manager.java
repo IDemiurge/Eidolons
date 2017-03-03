@@ -44,6 +44,7 @@ public class AI_Manager extends AiMaster {
             public void run() {
                 Action action = null;
                 running = true;
+                setUnit(unit);
                 try {
                     action = actionManager.chooseAction(getAI(unit));
                 } catch (Exception e) {
@@ -84,6 +85,8 @@ public class AI_Manager extends AiMaster {
         return true;
 
     }
+
+
 
 
     public static Unit chooseEnemyToEngage(Unit obj, List<Unit> units) {

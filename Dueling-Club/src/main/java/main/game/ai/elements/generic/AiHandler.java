@@ -17,6 +17,9 @@ import main.game.ai.tools.prune.PruneMaster;
 import main.game.ai.tools.target.TargetingMaster;
 import main.game.core.game.DC_Game;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by JustMe on 3/3/2017.
  */
@@ -38,6 +41,7 @@ public class AiHandler {
     protected   Unit unit;
     protected   PathSequenceConstructor pathSequenceConstructor;
     protected   TurnSequenceConstructor turnSequenceConstructor;
+    private List<AiHandler> handlers;
 
     public AiHandler(DC_Game game) {
         this.game = game;
@@ -87,6 +91,11 @@ public class AiHandler {
         this.targetingMaster = master.targetingMaster;
         this.analyzer = master.analyzer;
         this.paramAnalyzer = master.paramAnalyzer;
+        master.handlerInitialized(this);
+    }
+
+    private void handlerInitialized(AiHandler handler) {
+        getHandlers().add(handler);
     }
 
     public ActionSequenceConstructor getActionSequenceConstructor() {
@@ -209,5 +218,14 @@ public class AiHandler {
 
     public TurnSequenceConstructor getTurnSequenceConstructor() {
         return turnSequenceConstructor;
+    }
+
+    public List<AiHandler> getHandlers() {
+        if (handlers==null )handlers = new LinkedList<>(); 
+        return handlers;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 }
