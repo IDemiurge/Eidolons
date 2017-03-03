@@ -1,6 +1,7 @@
 package main.system.auxiliary.data;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,6 +40,15 @@ public class ArrayMaster<T> {
         List<List<T>> list = new LinkedList<>();
         for (T[] t : array) {
             list.add(Arrays.asList(t));
+        }
+        return list;
+    }
+    public Collection<Collection<T>> get2dListFrom3dArray(T[][][] array) {
+        Collection<Collection<T>> list = new LinkedList<>();
+        for (T[][] t : array) {
+            for (T[] t1 : t) {
+                 list.add(Arrays.asList(t1));
+            }
         }
         return list;
     }

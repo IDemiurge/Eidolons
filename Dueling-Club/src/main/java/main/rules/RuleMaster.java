@@ -2,7 +2,7 @@ package main.rules;
 
 import main.data.XLinkedMap;
 import main.entity.obj.unit.Unit;
-import main.libgdx.anims.controls.Controller;
+import main.system.controls.Controller;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 

@@ -5,7 +5,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
-import main.game.ai.elements.actions.ActionSequence;
+import main.game.ai.elements.actions.sequence.ActionSequence;
 
 import java.util.List;
 

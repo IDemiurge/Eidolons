@@ -43,9 +43,15 @@ public class TextureManager {
             FRAME_ROWS = 1;
         }
         Texture sheet = path == null ? texture : TextureCache.getOrCreate(path);
-        TextureRegion[][] tmp = TextureRegion.split(sheet,
-                sheet.getWidth() / FRAME_COLS,
-                sheet.getHeight() / FRAME_ROWS);
+        TextureRegion[][] tmp = null;
+        try {
+            tmp =
+             TextureRegion.split(sheet,
+              sheet.getWidth() / FRAME_COLS,
+              sheet.getHeight() / FRAME_ROWS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         TextureRegion[] frames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
         int index = 0;
@@ -81,8 +87,8 @@ public class TextureManager {
             return StringMaster.getInteger(x);
         }
         return xOrY ?
-                getXY(origPath).getKey() :
-                getXY(origPath).getValue();
+         getXY(origPath).getKey() :
+         getXY(origPath).getValue();
     }
 
     public static float getFrameNumber(String path) {

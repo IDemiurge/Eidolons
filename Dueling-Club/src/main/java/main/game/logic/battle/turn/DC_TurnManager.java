@@ -1,9 +1,6 @@
 package main.game.logic.battle.turn;
 
 import main.content.PARAMS;
-import main.content.enums.entity.ActionEnums.ACTION_TYPE;
-import main.entity.active.DC_ActiveObj;
-import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.rules.mechanics.WaitRule;
@@ -18,7 +15,6 @@ import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import main.system.threading.Weaver;
 import main.test.TestMaster;
 import main.test.frontend.FAST_DC;
 
@@ -91,7 +87,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         return false;
     }
 
-    public boolean doCycle() {
+    public boolean doUnitAction() {
         // game.getState().newRound();
         resetQueue();
 
@@ -104,12 +100,9 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
 
         result = chooseUnit();
 
+        game.getActionManager().resetCostsInNewThread();
 
-        Weaver.inNewThread(new Runnable() {
-            public void run() {
-                resetCosts();
-            }
-        });
+
 
         resetDisplayedQueue();
         result &= activeUnit.turnStarted();
@@ -120,10 +113,10 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         // game.getManager().refreshGUI();
         // else
 
-        return waitForUnitTurn();
+        return waitForUnitAction();
     }
 
-    private Boolean waitForUnitTurn() {
+    private Boolean waitForUnitAction() {
         Boolean result;
         // timer
 
@@ -138,7 +131,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         }
 
         // else
-        result = (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.TURN_CYCLE); // failsafe?
+        result = (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_COMPLETE); // failsafe?
 
         // == INTERRUPTED ANOTHER_TURN NORMAL
         if (game.isStarted()) {
@@ -164,28 +157,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         return false;
     }
 
-    public void resetCosts() {
-        if (game.getManager().getActiveObj() == null) {
-            return;
-        }
-        for (ACTION_TYPE key : game.getManager().getActiveObj().getActionMap()
-                .keySet()) {
-            for (DC_ActiveObj active : game.getManager().getActiveObj()
-                    .getActionMap().get(key)) {
-                active.initCosts();
-            }
-        }
 
-        for (DC_ActiveObj active : game.getManager().getActiveObj().getSpells()) {
-            active.initCosts();
-        }
-
-        for (DC_QuickItemObj item : game.getManager().getActiveObj().getQuickItems()) {
-            if (item.getActive() != null) {
-                item.getActive().initCosts();
-            }
-        }
-    }
 
     private void resetInitiative(boolean first) {
         for (Unit unit : game.getUnits()) {resetInitiative(unit, first);
@@ -306,7 +278,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         }
         while (true) {
             try {
-                result = doCycle();
+                result = doUnitAction();
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {

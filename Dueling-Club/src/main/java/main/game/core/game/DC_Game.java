@@ -414,7 +414,7 @@ public class DC_Game extends MicroGame {
             }, "Game Loop"));
             getGameLoopThread().start();
         } else {
-            WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, false);
+            WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_COMPLETE, false);
         }
 
     }

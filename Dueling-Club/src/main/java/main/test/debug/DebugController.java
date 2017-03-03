@@ -1,7 +1,7 @@
 package main.test.debug;
 
 import main.game.core.Eidolons;
-import main.libgdx.anims.controls.Controller;
+import main.system.controls.Controller;
 
 /**
  * Created by JustMe on 2/16/2017.

@@ -1,6 +1,6 @@
 package main.libgdx.gui.panels.dc.unitinfo.dto;
 
-public class StatsDTO {
+public class AttributesDTO {
 
     private String strength;
     private String vitality;
@@ -13,7 +13,11 @@ public class StatsDTO {
     private String wisdom;
     private String charisma;
 
-    public StatsDTO(String strength, String vitality, String agility, String dexterity, String willpower, String spellpower, String intelligence, String knowledge, String wisdom, String charisma) {
+    public AttributesDTO(String strength, String vitality,
+                         String agility, String dexterity,
+                         String willpower, String spellpower,
+                         String intelligence, String knowledge,
+                         String wisdom, String charisma) {
         this.strength = strength;
         this.vitality = vitality;
         this.agility = agility;

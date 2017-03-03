@@ -53,16 +53,6 @@ public class DC_ItemActiveObj extends DC_ActiveObj {
 
     }
 
-    @Override
-    public boolean isForcePresetTarget() {
-        return false;
-    }
-
-    @Override
-    public void setForcePresetTarget(boolean b) {
-
-    }
-
     public DC_QuickItemObj getItem() {
         return item;
     }
@@ -76,24 +66,5 @@ public class DC_ItemActiveObj extends DC_ActiveObj {
         return null;
     }
 
-    @Override
-    public void setCancelled(Boolean c) {
-
-    }
-
-    @Override
-    public Boolean isCancelled() {
-        return null;
-    }
-
-    @Override
-    public boolean activate(boolean transmit) {
-        return false;
-    }
-
-    @Override
-    public boolean activatedOn(Ref ref) {
-        return false;
-    }
 
 }

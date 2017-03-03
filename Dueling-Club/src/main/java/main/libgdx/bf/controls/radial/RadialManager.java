@@ -214,7 +214,10 @@ public class RadialManager {
         Triple<Runnable, Texture, String> result;
         if (dcActiveObj.getTargeting() instanceof SelectiveTargeting) {
             result = new ImmutableTriple<>(
-                    () -> dcActiveObj.activateOn(target),
+                    () -> {
+                        if (dcActiveObj.getTargeter().canBeTargeted(target.getId()))
+                        dcActiveObj.activateOn(target);
+                    },
                     TextureCache.getOrCreate(dcActiveObj.getImagePath()),
                     dcActiveObj.getName()
             );

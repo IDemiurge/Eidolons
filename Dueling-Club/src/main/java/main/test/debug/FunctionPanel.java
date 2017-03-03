@@ -19,6 +19,7 @@ public class FunctionPanel extends G_ButtonPanel {
     public FunctionPanel(DebugMaster master) {
         super(getFunctions());
         this.master = master;
+
     }
 
     public static List<String> getFunctions() {

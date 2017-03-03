@@ -108,6 +108,15 @@ public class DequeImpl<E> extends ConcurrentLinkedDeque<E>
 
         return null;
     }
+
+    public DequeImpl<E> addAllChained(Collection<E> e) {
+        addAll(e);
+        return this;
+    }
+        public DequeImpl<E> addChained(E e) {
+        add(e);
+        return this;
+    }
     //
     // @Override
     // public boolean addAll(int index, Collection<? extends E> c) {

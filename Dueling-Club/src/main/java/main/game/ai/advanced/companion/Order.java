@@ -3,7 +3,7 @@ package main.game.ai.advanced.companion;
 import main.content.CONTENT_CONSTS2.ORDER_TYPE;
 import main.game.ai.GroupAI;
 import main.game.ai.UnitAI;
-import main.game.ai.elements.actions.ActionSequence;
+import main.game.ai.elements.actions.sequence.ActionSequence;
 
 public class Order {
     ORDER_TYPE type;

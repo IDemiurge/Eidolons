@@ -18,6 +18,9 @@ import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.controls.Controller.CONTROLLER;
 import main.system.launch.CoreEngine;
 import main.system.test.TestMasterContent;
 import main.test.Preset.PRESET_DATA;
@@ -40,6 +43,12 @@ public class PresetLauncher {
     };
     public static int PRESET_OPTION = -1;
     static LAUNCH launch;
+    private static boolean isInitLaunch=true;
+
+    static {
+        //init options
+    }
+
 
     public static Boolean chooseLaunchOption() {
         int i = PRESET_OPTION;
@@ -51,7 +60,8 @@ public class PresetLauncher {
             }
         }
         Preset p = null;
-        initLaunch(LAUNCH_OPTIONS[i]);
+        if (isInitLaunch)
+            initLaunch(LAUNCH_OPTIONS[i]);
         switch (LAUNCH_OPTIONS[i]) {
             case "Last":
                 Preset lastPreset = PresetMaster.loadLastPreset();
@@ -125,6 +135,99 @@ public class PresetLauncher {
         return null;
     }
 
+    static {
+        LAUNCH.Gui.visionHacked = true;
+        LAUNCH.Anims.visionHacked = true;
+        LAUNCH.Anims.logChannelsOn =new LogMaster.LOG_CHANNELS[] {
+         LOG_CHANNELS.ANIM_DEBUG
+        };
+        LAUNCH.AI.logChannelsOn =new LogMaster.LOG_CHANNELS[] {
+         LOG_CHANNELS.AI_DEBUG,
+         LOG_CHANNELS.AI_DEBUG2,
+        };
+    }
+    public enum LAUNCH {
+        AI("ai.xml", RULE_SCOPE.FULL, false),
+        Gui("graphics test.xml", RULE_SCOPE.BASIC, true),
+        Logic("ai full.xml", RULE_SCOPE.FULL, true),
+        Anims(true),
+        Emitters(true),;
+        public Boolean immortal;
+    public CONTROLLER controller;
+        LOG_CHANNELS[] logChannelsOn;
+        LOG_CHANNELS[] logChannelsOff;
+        public String preset;
+        public RULE_SCOPE ruleScope;
+        public boolean debugMode;
+        public boolean dummy;
+        public boolean dummy_pp;
+        public boolean visionHacked;
+        public boolean fast;
+        public boolean actionTargetingFiltersOff;
+        public boolean freeActions;
+        public boolean itemGenerationOff;
+        public boolean deterministicUnitTraining;
+
+        LAUNCH() {
+
+        }
+
+        LAUNCH(String preset, RULE_SCOPE ruleScope, boolean dummyPlus) {
+            this.preset = preset;
+            this.ruleScope = ruleScope;
+            if (dummyPlus) {
+                initDummyFlags();
+            }
+        }
+
+        LAUNCH(boolean dummyPlus) {
+            if (dummyPlus) {
+                initDummyPlusFlags();
+            } else {
+                initDummyFlags();
+
+            }
+        }
+
+        private void initDummyFlags() {
+            this.debugMode = true;
+            this.dummy = true;
+            this.fast = true;
+            ruleScope = RULE_SCOPE.TEST;
+
+        }
+            private void initDummyPlusFlags() {
+            this.debugMode = true;
+            this.dummy = true;
+            this.dummy_pp = true;
+            this.visionHacked = true;
+            this.freeActions = true;
+            this.fast = true;
+            ruleScope = RULE_SCOPE.TEST;
+        }
+        LAUNCH(String preset,
+               RULE_SCOPE ruleScope,
+               boolean dummy,
+               boolean dummy_pp,
+               boolean visionHacked,
+               boolean fast,
+               boolean actionTargetingFiltersOff,
+               boolean freeActions,
+               boolean itemGenerationOff,
+               boolean deterministicUnitTraining) {
+            this.preset = preset;
+            this.ruleScope = ruleScope;
+            this.dummy = dummy;
+            this.dummy_pp = dummy_pp;
+            this.visionHacked = visionHacked;
+            this.fast = fast;
+            this.actionTargetingFiltersOff = actionTargetingFiltersOff;
+            this.freeActions = freeActions;
+            this.itemGenerationOff = itemGenerationOff;
+            this.deterministicUnitTraining = deterministicUnitTraining;
+        }
+
+    }
     public static LAUNCH getLaunch() {
         return launch;
     }
@@ -297,48 +400,5 @@ public class PresetLauncher {
         // TODO Auto-generated method stub
 
     }
-static {
-    LAUNCH.Gui.visionHacked=true;
-    LAUNCH.Anims.visionHacked=true;
-}
-    public enum LAUNCH {
-AI, Gui, Logic,  Anims,
- Emitters,
-        ;
 
-        public String preset;
-        public RULE_SCOPE ruleScope;
-        public boolean dummy;
-        public boolean dummy_pp;
-        public boolean visionHacked;
-        public boolean fast;
-        public boolean actionTargetingFiltersOff;
-        public boolean freeActions;
-        public boolean itemGenerationOff;
-        public boolean deterministicUnitTraining;
-        LAUNCH() {
-
-        }
-        LAUNCH(String preset,
-               RULE_SCOPE ruleScope,
-               boolean dummy,
-               boolean dummy_pp,
-               boolean visionHacked,
-               boolean fast,
-               boolean actionTargetingFiltersOff,
-               boolean freeActions,
-               boolean itemGenerationOff,
-               boolean deterministicUnitTraining) {
-            this.preset = preset;
-            this.ruleScope = ruleScope;
-            this.dummy = dummy;
-            this.dummy_pp = dummy_pp;
-            this.visionHacked = visionHacked;
-            this.fast = fast;
-            this.actionTargetingFiltersOff = actionTargetingFiltersOff;
-            this.freeActions = freeActions;
-            this.itemGenerationOff = itemGenerationOff;
-            this.deterministicUnitTraining = deterministicUnitTraining;
-        }
-    }
 }

@@ -10,8 +10,8 @@ public class UnitInfoDTO {
     private ResourceDTO resource;
     private boolean isSetResource;
 
-    private StatsDTO stats;
-    private boolean isSetStats;
+    private AttributesDTO attributes;
+    private boolean isSetAttributes;
 
     private IconGridDTO effects;
     private boolean isSetEffects;
@@ -26,8 +26,8 @@ public class UnitInfoDTO {
     private InitiativeAndActionPointsDTO initiativeAndAction;
     private boolean isSetInitiativeAndAction;
 
-    private SimpleParamsDTO unknownParam;
-    private boolean isSetUnknownParam;
+    private MainParamsDTO mainParams;
+    private boolean isSetMainParam;
 
     private ArmorDTO armor;
     private boolean isSetArmor;
@@ -84,17 +84,17 @@ public class UnitInfoDTO {
         return isSetResource;
     }
 
-    public StatsDTO getStats() {
-        return stats;
+    public AttributesDTO getAttributes() {
+        return attributes;
     }
 
-    public void setStats(StatsDTO stats) {
-        isSetStats = true;
-        this.stats = stats;
+    public void setAttributes(AttributesDTO attributes) {
+        isSetAttributes = true;
+        this.attributes = attributes;
     }
 
-    public boolean isSetStats() {
-        return isSetStats;
+    public boolean isSetAttributes() {
+        return isSetAttributes;
     }
 
     public IconGridDTO getEffects() {
@@ -149,17 +149,17 @@ public class UnitInfoDTO {
         return isSetInitiativeAndAction;
     }
 
-    public SimpleParamsDTO getUnknownParam() {
-        return unknownParam;
+    public MainParamsDTO getMainParams() {
+        return mainParams;
     }
 
-    public void setUnknownParam(SimpleParamsDTO unknownParam) {
-        isSetUnknownParam = true;
-        this.unknownParam = unknownParam;
+    public void setMainParams(MainParamsDTO mainParams) {
+        isSetMainParam = true;
+        this.mainParams = mainParams;
     }
 
-    public boolean isSetUnknownParam() {
-        return isSetUnknownParam;
+    public boolean isSetMainParam() {
+        return isSetMainParam;
     }
 
     public ArmorDTO getArmor() {

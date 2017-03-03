@@ -120,15 +120,19 @@ public class StatEnums {
 //	}
 
     public enum MUSIC_TYPE {
+        //+1 for win+f1 help
         GYM_MORNING,
         GYM_NIGHT,
         JOG,
+
         BATTLE,
         PREPARATION,
         IMMERSION,
+
         RUMINATION,
         AFTERMATH,
         WALK,
+
         AWAKENING,
         GYM,
     }

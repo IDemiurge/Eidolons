@@ -118,7 +118,7 @@ public class LogMaster {
     public static boolean BUFF_DEBUG_ON = true;
     public static boolean WAVE_ASSEMBLING_DEBUG_ON = true;
     public static boolean LOGIC_DEBUG_ON = true;
-    public static boolean EFFECT_SPECIFIC_DEBUG_ON = true;
+    public static boolean EFFECT_SPECIFIC_DEBUG_ON = false;
     public static boolean EFFECT_PASSIVE_DEBUG_ON = !true;
     public static boolean MACRO_DYNAMICS_ON = true;
     public static boolean GENERATION_ON = false;

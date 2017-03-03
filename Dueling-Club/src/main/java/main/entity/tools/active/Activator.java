@@ -6,6 +6,11 @@ import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.unit.Unit;
+import main.libgdx.GameScreen;
+import main.libgdx.anims.text.FloatingText;
+import main.libgdx.anims.text.FloatingTextMaster;
+import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
+import main.libgdx.bf.GridMaster;
 import main.rules.action.WatchRule;
 import main.system.auxiliary.secondary.BooleanMaster;
 
@@ -76,6 +81,17 @@ public class Activator extends ActiveHandler{
         }
 
         return canBeActivated(getRef(), true);
+    }
+    public void cannotActivate() {
+        main.system.auxiliary.log.LogMaster.log(1, "Cannot Activate " +
+         getEntity().getName() +
+         ": " + getEntity().getCosts().getReasonsString());
+        FloatingText f = FloatingTextMaster.getInstance().getFloatingText(getEntity(),
+         TEXT_CASES.REQUIREMENT, getEntity().getCosts().getReasonsString());
+        f.setDisplacementY(100);
+        f.setDuration(3);
+        f.addToStage(GameScreen.getInstance().getAnimsStage(),
+         GridMaster.getVectorForCoordinateWithOffset(getEntity().getOwnerObj().getCoordinates()));
     }
     public DC_UnitAction getModeAction() {
         String mode = ownerObj.getActionMode(getEntity());

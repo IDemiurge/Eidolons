@@ -96,6 +96,7 @@ import static main.test.debug.DebugMaster.DEBUG_FUNCTIONS.*;
 public class DebugMaster {
     public static final char HOTKEY_CHAR = 'd';
     public static final char FUNCTION_HOTKEY_CHAR = 'f';
+
     public static final DEBUG_FUNCTIONS[] group_add_bf_obj = {
             DEBUG_FUNCTIONS.ADD_UNIT,
             DEBUG_FUNCTIONS.ADD_ENEMY_UNIT,
@@ -159,6 +160,13 @@ public class DebugMaster {
             HIDDEN_DEBUG_FUNCTIONS.DISPLAY_UNITS,
             HIDDEN_DEBUG_FUNCTIONS.DISPLAY_REF,
             HIDDEN_DEBUG_FUNCTIONS.DISPLAY_UNIT_INFO,
+    };
+    public static final Object[][] groups={
+     group_add_bf_obj,
+     group_bf,
+     group_display,
+     group_add,
+     group_toggle,
     };
     public static boolean ALT_AI_PLAYER;
     private static boolean omnivision;
@@ -505,7 +513,7 @@ public class DebugMaster {
                     } else {
                         infoObj.setAiControlled(!infoObj.isAiControlled());
                     }
-                    WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, true);
+                    WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_COMPLETE, true);
                     break;
 
                 case ADD_DUNGEON:
@@ -534,7 +542,7 @@ public class DebugMaster {
                     break;
                 case AUTO_COMBAT:
                     game.getPlayer(true).setAi(!game.getPlayer(true).isAi());
-                    WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, true);
+                    WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_COMPLETE, true);
                     break;
                 case ADD_TEST_SPELLS:
                     TestMasterContent.addTestActives(false, infoObj.getType(), true);
@@ -583,7 +591,7 @@ public class DebugMaster {
                     game.getArenaManager().getSpawnManager().spawnParty(true);
                     game.getArenaManager().getSpawnManager().spawnParty(false);
                     game.getManager().refreshAll();
-                    WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, true);
+                    WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_COMPLETE, true);
                     return func;
                 case CLEAR:
                     boolean respawn = isAltMode();
@@ -608,7 +616,7 @@ public class DebugMaster {
                         game.getManager().setActivatingAction(null);
                         game.getManager().activeSelect(getObj());
                     } else {
-                        WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, true);
+                        WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_COMPLETE, true);
                         WaitMaster.WAIT(1234);
                         getObj().modifyParameter(PARAMS.C_N_OF_ACTIONS, 100);
                     }
@@ -721,7 +729,7 @@ public class DebugMaster {
 
                 case END_TURN:
                     game.getManager().setActivatingAction(null);
-                    WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, false);
+                    WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_COMPLETE, false);
                     return func;
                 case KILL_UNIT:
                     if (arg != null) {

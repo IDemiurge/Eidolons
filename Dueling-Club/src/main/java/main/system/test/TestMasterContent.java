@@ -392,7 +392,7 @@ public class TestMasterContent {
         return immortal;
     }
 
-    public static void setImmortal(boolean immortal) {
+    public static void setImmortal(Boolean immortal) {
         TestMasterContent.immortal = immortal;
     }
 

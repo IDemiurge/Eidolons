@@ -170,7 +170,7 @@ if (killed instanceof Unit){
         }
         // reset();
         // refreshAll();
-        // WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, true);
+        // WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_COMPLETE, true);
     }
 
     public void killAll(boolean retainSelected) {
@@ -189,7 +189,7 @@ if (killed instanceof Unit){
         }
       getGameManager().  reset();
         getGameManager(). refreshAll();
-        WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, true);
+        WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_COMPLETE, true);
     }
 
     public void killUnitQuietly(Unit unit) {

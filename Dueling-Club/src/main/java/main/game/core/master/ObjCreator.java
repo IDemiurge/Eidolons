@@ -45,7 +45,8 @@ public class ObjCreator extends Master{
         } else {
             obj = new Unit(type, x, y, owner, getGame(), ref);
         }
-        GuiEventManager.trigger(GuiEventType.UNIT_CREATED, new EventCallbackParam(obj));
+        GuiEventManager.trigger(GuiEventType.UNIT_CREATED,
+         new EventCallbackParam(obj));
         game.getState().addObject(obj);
 
         if (CoreEngine.isLevelEditor()) {
