@@ -36,7 +36,7 @@ public class FleeRule {
 
     // public void comeBack(){ }
     public void flee(Obj obj, boolean permanent) {
-		/*
+        /*
 		 * should it take some time? ;)
 		 *
 		 * Yes it should...

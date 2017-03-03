@@ -102,7 +102,7 @@ public class TavernMaster {
         tavern.modifyParameter(MACRO_PARAMS.RENT_DURATION, rentDuration);
 
         // offer rented rooms when resting in this town?
-		/*
+        /*
          * note that while in town, not all members are 'together'... how to control this?
 		 * 
 		 * you still getOrCreate to choose what to *do* - study, rest and meditation are better in Rooms

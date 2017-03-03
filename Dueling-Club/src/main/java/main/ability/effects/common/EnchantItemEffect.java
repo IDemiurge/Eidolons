@@ -132,7 +132,7 @@ public class EnchantItemEffect extends MicroEffect {
         return true;
     }
     /*
-	 * must have a passive to transfer that will add SpecialEffects
+     * must have a passive to transfer that will add SpecialEffects
 	 */
 
 }

@@ -17,7 +17,6 @@ import main.game.ai.elements.generic.AiHandler;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.tools.Analyzer;
 import main.game.ai.tools.ParamAnalyzer;
-import main.game.ai.tools.path.CellPrioritizer;
 import main.game.ai.tools.priority.DC_PriorityManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
@@ -31,6 +30,7 @@ public class TaskManager extends AiHandler {
     private static final Integer DEFAULT_PRUNE_SIZE = 5;
     // include non-targeted actions as well, zone and so on
     private static Integer forcedPruneSize;
+
     public TaskManager(AiHandler master) {
         super(master);
     }
@@ -40,12 +40,12 @@ public class TaskManager extends AiHandler {
         TARGETING_MODE mode = action.getTargetingMode();
         if (mode == null) {
             mode = new EnumMaster<TARGETING_MODE>().retrieveEnumConst(TARGETING_MODE.class, action
-             .getProperty(G_PROPS.TARGETING_MODE));
+                    .getProperty(G_PROPS.TARGETING_MODE));
         }
         if (mode != null) {
             if (action.getGame().getObjectById((Integer) task.getArg()) instanceof Unit) {
                 Unit target = (Unit) action.getGame().getObjectById(
-                 (Integer) task.getArg());
+                        (Integer) task.getArg());
                 switch (mode) {
 
                     case ANY_ITEM:
@@ -320,7 +320,7 @@ public class TaskManager extends AiHandler {
                             minDistance = distance;
                         } else {
                             result = (getDistancePruneFactor(limit, t, ai, action)) < distance
-                             - minDistance;
+                                    - minDistance;
                         }
                         if (result) {
                             break;
@@ -345,7 +345,7 @@ public class TaskManager extends AiHandler {
                     }
                     if (byPower) {
                         result = t.getIntParam(PARAMS.POWER) * 100 / maxPower < getPowerFactor(
-                         limit, ai, action);
+                                limit, ai, action);
                         if (result) {
                             break;
                         }

@@ -33,10 +33,46 @@ public class AI_Manager extends AiMaster {
         priorityManager = DC_PriorityManager.init(this);
     }
 
+    public static Unit chooseEnemyToEngage(Unit obj, List<Unit> units) {
+        if (obj.getAiType() == AiEnums.AI_TYPE.CASTER) {
+            return null;
+        }
+        if (obj.getAiType() == AiEnums.AI_TYPE.ARCHER) {
+            return null;
+        }
+        if (obj.getAiType() == AiEnums.AI_TYPE.SNEAK) {
+            return null;
+        }
+        Unit topPriorityUnit = null;
+        int topPriority = -1;
+        for (Unit u : units) {
+            int priority = DC_PriorityManager.getUnitPriority(u, true);
+            if (priority > topPriority) {
+                topPriority = priority;
+                topPriorityUnit = u;
+            }
+        }
+        return topPriorityUnit;
+    }
+
+    public static GroupAI getCustomUnitGroup() {
+        if (customGroup == null) {
+            customGroup = new GroupAI(null);
+        }
+        return customGroup;
+    }
+
+    public static boolean isRunning() {
+        return running;
+    }
+
+    public static Set<Action> getBrokenActions() {
+        return brokenActions;
+    }
+
     public void init() {
         game.getPlayer(false).setPlayerAI(new PlayerAI(getType()));
     }
-
 
     public boolean makeAction(final Unit unit) {
         new Thread(new Runnable() {
@@ -85,42 +121,6 @@ public class AI_Manager extends AiMaster {
 
     }
 
-
-    public static Unit chooseEnemyToEngage(Unit obj, List<Unit> units) {
-        if (obj.getAiType() == AiEnums.AI_TYPE.CASTER) {
-            return null;
-        }
-        if (obj.getAiType() == AiEnums.AI_TYPE.ARCHER) {
-            return null;
-        }
-        if (obj.getAiType() == AiEnums.AI_TYPE.SNEAK) {
-            return null;
-        }
-        Unit topPriorityUnit = null;
-        int topPriority = -1;
-        for (Unit u : units) {
-            int priority = DC_PriorityManager.getUnitPriority(u, true);
-            if (priority > topPriority) {
-                topPriority = priority;
-                topPriorityUnit = u;
-            }
-        }
-        return topPriorityUnit;
-    }
-
-    public static GroupAI getCustomUnitGroup() {
-        if (customGroup == null) {
-            customGroup = new GroupAI(null);
-        }
-        return customGroup;
-    }
-    public static boolean isRunning() {
-        return running;
-    }
-
-    public static Set<Action> getBrokenActions() {
-        return brokenActions;
-    }
     public UnitAI getAI(Unit unit) {
         return unit.getUnitAI();
     }

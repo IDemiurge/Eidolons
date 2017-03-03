@@ -16,10 +16,11 @@ import java.util.TreeMap;
 /**
  * Created by JustMe on 3/3/2017.
  */
-public class PruneMaster  extends AiHandler {
+public class PruneMaster extends AiHandler {
     public PruneMaster(AiHandler master) {
         super(master);
     }
+
     public static List<Coordinates> pruneTargetCells(Action targetAction, List<Coordinates> list) {
         TreeMap<Integer, Coordinates> map = new TreeMap<>(SortMaster
                 .getNaturalIntegerComparator(false));

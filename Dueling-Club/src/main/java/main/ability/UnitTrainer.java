@@ -63,7 +63,7 @@ public class UnitTrainer {
     }
 
     private static void generateSkillPlan(Unit trainee) {
-		/*
+        /*
 		 * weights per mastery level and skill difficulty TODO
 		 */
         String plan = getPlan(trainee).replace(StringMaster.BASE_CHAR, "");

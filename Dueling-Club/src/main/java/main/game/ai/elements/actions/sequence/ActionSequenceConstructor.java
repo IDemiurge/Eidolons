@@ -43,29 +43,31 @@ import java.util.List;
 
 public class ActionSequenceConstructor extends AiHandler {
 
-      int defaultDistancePruneFactor = 3;
-    private   Game game;
-    private   Unit unit;
-    private   List<Coordinates> prioritizedCells;
+    int defaultDistancePruneFactor = 3;
+    private Game game;
+    private Unit unit;
+    private List<Coordinates> prioritizedCells;
 
     public ActionSequenceConstructor(AiHandler master) {
         super(master);
     }
 
 
-    public List<ActionSequence> createActionSequences(UnitAI ai ) {
+    public List<ActionSequence> createActionSequences(UnitAI ai) {
         List<ActionSequence> list = new ArrayList<>();
         getActionSequenceConstructor().setPrioritizedCells(null);
         for (GOAL_TYPE type : GoalManager.getGoalsForUnit(ai)) {
-            list.addAll(createActionSequences(  new Goal(type, null // ???
-             , ai), ai));
+            list.addAll(createActionSequences(new Goal(type, null // ???
+                    , ai), ai));
         }
         return list;
     }
+
     private String getChronosPrefix() {
         return "TIMED AI ACTION ";
     }
-    public List<ActionSequence> createActionSequences(  Goal goal, UnitAI ai) {
+
+    public List<ActionSequence> createActionSequences(Goal goal, UnitAI ai) {
         List<ActionSequence> actionSequences = new LinkedList<>();
         List<DC_ActiveObj> actions = AiUnitActionMaster.getFullActionList(goal.getTYPE(), ai.getUnit());
         actions.addAll(addSubactions(actions));
@@ -80,7 +82,7 @@ public class ActionSequenceConstructor extends AiHandler {
                     long time = TimeLimitMaster.getTimeLimitForAction();
                     if (Chronos.getTimeElapsedForMark(getChronosPrefix() + action) > time) {
                         LogMaster.log(1, "*********** TIME ELAPSED FOR  "
-                         + action + StringMaster.wrapInParenthesis(time + ""));
+                                + action + StringMaster.wrapInParenthesis(time + ""));
                         break;
                     }
                 }
@@ -102,7 +104,7 @@ public class ActionSequenceConstructor extends AiHandler {
         return actionSequences;
     }
 
-    private   void addSequences(Task task, List<ActionSequence> sequences, DC_ActiveObj active) {
+    private void addSequences(Task task, List<ActionSequence> sequences, DC_ActiveObj active) {
         Ref ref = task.getUnit().getRef().getCopy();
         Integer arg = TaskManager.checkTaskArgReplacement(task, active);
         if (arg == null) {
@@ -113,7 +115,7 @@ public class ActionSequenceConstructor extends AiHandler {
         Action action = ActionFactory.newAction(active, ref);
 
         try {
-            newSequences =  getSequences(action, task.getArg(), task);
+            newSequences = getSequences(action, task.getArg(), task);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -154,8 +156,7 @@ public class ActionSequenceConstructor extends AiHandler {
     }
 
 
-
-    public   List<ActionSequence> getSequences(Action action, Object arg, Task task) {
+    public List<ActionSequence> getSequences(Action action, Object arg, Task task) {
         List<ActionSequence> list = new ArrayList<>();
         game = action.getRef().getGame();
         unit = action.getSource();
@@ -244,8 +245,8 @@ public class ActionSequenceConstructor extends AiHandler {
 
     }
 
-    private   List<ActionSequence> getSequencesFromPaths(List<ActionPath> paths, Task task,
-                                                              Action action) {
+    private List<ActionSequence> getSequencesFromPaths(List<ActionPath> paths, Task task,
+                                                       Action action) {
         List<ActionSequence> list = new ArrayList<>();
         for (ActionPath path : paths) {
             ActionSequence sequence = new ActionSequence(path.getActions(), task, task.getAI());
@@ -264,7 +265,7 @@ public class ActionSequenceConstructor extends AiHandler {
         return list;
     }
 
-    private   List<QuickItemAction> getRangedReloadAction(Action action) {
+    private List<QuickItemAction> getRangedReloadAction(Action action) {
         Obj weapon = action.getActive().getRef().getObj(KEYS.RANGED);
         WEAPON_GROUP weapon_group = null;
         List<QuickItemAction> list = new ArrayList<>();
@@ -294,7 +295,7 @@ public class ActionSequenceConstructor extends AiHandler {
         return list;
     }
 
-    private   List<DC_ActiveObj> getMoveActions(Action action) {
+    private List<DC_ActiveObj> getMoveActions(Action action) {
 
         // QUICK FIX
         if (ReasonMaster.checkReasonCannotTarget(FILTER_REASON.FACING, action)) {
@@ -303,7 +304,7 @@ public class ActionSequenceConstructor extends AiHandler {
         return DC_MovementManager.getMoves(unit);
     }
 
-    public   ActionSequence getSequence(Action targetAction, Task task) {
+    public ActionSequence getSequence(Action targetAction, Task task) {
         List<Action> actions = new ArrayList<>();
         UnitAI ai = task.getAI();
         targetAction.getRef().setID(KEYS.ACTIVE, targetAction.getActive().getId());
@@ -346,7 +347,7 @@ public class ActionSequenceConstructor extends AiHandler {
         return new ActionSequence(actions, task, ai);
     }
 
-    private   List<Action> getAttackSequence(Action targetAction, Task task) {
+    private List<Action> getAttackSequence(Action targetAction, Task task) {
         List<Action> list = new ArrayList<>();
         if (task.getArg() instanceof Integer) {
             Integer id = (Integer) task.getArg();
@@ -386,12 +387,10 @@ public class ActionSequenceConstructor extends AiHandler {
         return list;
     }
 
-    private   Coordinates getNextClosestCoordinate(Unit unit, Action targetAction) {
+    private Coordinates getNextClosestCoordinate(Unit unit, Action targetAction) {
         // TODO Auto-generated method stub
         return null;
     }
-
-
 
 
     // getOrCreate the *best* move sequence? create all then auto-compare via priority
@@ -470,12 +469,12 @@ public class ActionSequenceConstructor extends AiHandler {
     // return null;
     // }
 
-    public   List<Coordinates> getPrioritizedCells() {
+    public List<Coordinates> getPrioritizedCells() {
         return prioritizedCells;
     }
 
-    public   void setPrioritizedCells(List<Coordinates> prioritizedCells) {
-       this.prioritizedCells = prioritizedCells;
+    public void setPrioritizedCells(List<Coordinates> prioritizedCells) {
+        this.prioritizedCells = prioritizedCells;
     }
 
     // perhaps it should build a move sequence for each cell *from which*

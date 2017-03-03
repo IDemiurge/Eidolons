@@ -26,14 +26,14 @@ import java.util.List;
 /**
  * Created by JustMe on 3/3/2017.
  */
-public class TurnSequenceConstructor extends AiHandler{
+public class TurnSequenceConstructor extends AiHandler {
     public TurnSequenceConstructor(AiHandler master) {
         super(master);
     }
 
     private static Action getTurnAction(boolean clockwise, Unit source) {
         DC_UnitAction specAction = source.getAction("Quick Turn "
-         + (clockwise ? "Clockwise" : "Anticlockwise"));
+                + (clockwise ? "Clockwise" : "Anticlockwise"));
         if (specAction != null) {
             if (specAction.canBeActivated(source.getRef(), true)) {
                 return new Action(specAction, Ref.getSelfTargetingRefCopy(source));
@@ -41,9 +41,9 @@ public class TurnSequenceConstructor extends AiHandler{
         }
 
         return new Action(source.getAction(""
-         + ((clockwise) ? DC_ActionManager.STD_ACTIONS.Turn_Clockwise
-         : DC_ActionManager.STD_ACTIONS.Turn_Anticlockwise)), Ref
-         .getSelfTargetingRefCopy(source));
+                + ((clockwise) ? DC_ActionManager.STD_ACTIONS.Turn_Clockwise
+                : DC_ActionManager.STD_ACTIONS.Turn_Anticlockwise)), Ref
+                .getSelfTargetingRefCopy(source));
 
     }
 
@@ -65,7 +65,7 @@ public class TurnSequenceConstructor extends AiHandler{
                 List<Action> side_sequence = null;
                 if (action.getSource().hasBroadReach()
                         || action.getActive().checkPassive(UnitEnums.STANDARD_PASSIVES.BROAD_REACH))
-                    // front_sequence.remove(front_sequence.size() - 1);
+                // front_sequence.remove(front_sequence.size() - 1);
                 {
                     side_sequence = getTurnSequence(FACING_SINGLE.TO_THE_SIDE, source, target
                             .getCoordinates());
@@ -150,10 +150,6 @@ public class TurnSequenceConstructor extends AiHandler{
     }
 
 
-
-
-
-
     @Deprecated
     public static List<Action> getTurnSequence(Unit unit, Coordinates targetCoordinates) {
         List<Action> list = new ArrayList<>();
@@ -166,7 +162,7 @@ public class TurnSequenceConstructor extends AiHandler{
         facing = FacingMaster.rotate(facing, clockwise);
         // action.getActive().getTargeting().getFilter()
         if (FacingMaster.getSingleFacing(FacingMaster.rotate(facing, clockwise), unit
-         .getCoordinates(), targetCoordinates) == UnitEnums.FACING_SINGLE.IN_FRONT) {
+                .getCoordinates(), targetCoordinates) == UnitEnums.FACING_SINGLE.IN_FRONT) {
             return list;
         }
 
@@ -177,7 +173,7 @@ public class TurnSequenceConstructor extends AiHandler{
         list.add(getTurnAction(clockwise, unit));
         facing = FacingMaster.rotate(facing, clockwise);
         if (FacingMaster.getSingleFacing(FacingMaster.rotate(facing, clockwise), unit
-         .getCoordinates(), targetCoordinates) == UnitEnums.FACING_SINGLE.IN_FRONT) {
+                .getCoordinates(), targetCoordinates) == UnitEnums.FACING_SINGLE.IN_FRONT) {
             return list;
         }
         list.add(getTurnAction(clockwise, unit));

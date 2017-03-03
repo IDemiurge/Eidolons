@@ -24,7 +24,7 @@ import java.util.List;
  * @author JustMe
  */
 
-public class DC_PriorityManager  {
+public class DC_PriorityManager {
 
 
     private static PriorityManager impl;

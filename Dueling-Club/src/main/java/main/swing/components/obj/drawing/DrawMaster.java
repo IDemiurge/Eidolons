@@ -1206,7 +1206,7 @@ public class DrawMaster {
 
     private void drawSpecialIcons(Unit obj) {
         // obj.getEngagementTarget();
-		/*
+        /*
 		 * when drawing stacked objects, draw a red arrow/sword towards the ET
 		 */
 

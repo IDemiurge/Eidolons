@@ -111,7 +111,7 @@ public class BehaviorMaster extends AiHandler {
                     // maybe go meet leader if blocked... or something like it
                     if (change) {
                         group.getWanderStepCoordinateStack().push(
-                         group.getLeader().getCoordinates());
+                                group.getLeader().getCoordinates());
                         WanderMaster.changeGroupMoveDirection(group, type);
                     }
                 }
@@ -129,14 +129,14 @@ public class BehaviorMaster extends AiHandler {
                     // if (!unit.getAction(action).canBeActivated()) {
                     // }
                     ActionPath path =
-                     getPathBuilder().init(
-                      new ListMaster<DC_ActiveObj>()
-                       .getList(unit.getAction(action)),
-                      new Action(unit.getAction(action),
-                       new Ref(unit))
-                     ).getPathByPriority(
-                      new ListMaster<Coordinates>()
-                       .getList(targetCoordinates));
+                            getPathBuilder().init(
+                                    new ListMaster<DC_ActiveObj>()
+                                            .getList(unit.getAction(action)),
+                                    new Action(unit.getAction(action),
+                                            new Ref(unit))
+                            ).getPathByPriority(
+                                    new ListMaster<Coordinates>()
+                                            .getList(targetCoordinates));
                     if (path == null) {
 
                         ai.setPathBlocked(true); // TODO check if path

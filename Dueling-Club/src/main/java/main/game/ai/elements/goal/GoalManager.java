@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GoalManager  extends AiHandler {
+public class GoalManager extends AiHandler {
     public GoalManager(AiHandler master) {
         super(master);
     }

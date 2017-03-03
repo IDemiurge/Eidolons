@@ -59,7 +59,7 @@ public class AbsorbDamageEffect extends DC_Effect {
         // new AddTriggerEffect(event_type, conditions, effects).apply(ref);
 
 		/*
-		 * Percentage Doesn't matter when or where, I must cut the damage by %
+         * Percentage Doesn't matter when or where, I must cut the damage by %
 		 * In fact it does - it should happen before events like
 		 * damage_being_dealt, otherwise...
 		 */
