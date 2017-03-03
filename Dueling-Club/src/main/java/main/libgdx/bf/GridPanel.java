@@ -345,35 +345,6 @@ public class GridPanel extends Group {
             WaitMaster.receiveInput(WAIT_OPERATIONS.GUI_READY, true);
             WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
         });
-
-       /* GuiEventManager.bind(CELL_UPDATE, param -> {
-            Coordinates cords = (Coordinates) param.get();
-
-            List<DC_HeroObj> objList = units.stream()
-                    .filter(microObj -> microObj.getCoordinates().equals(cords))
-                    .collect(Collectors.toList());
-
-            List<UnitViewOptions> options = new ArrayList<>();
-            for (DC_HeroObj microObj : objList) {
-                options.add(new UnitViewOptions(microObj, unitMap));
-            }
-
-            if (options.size() == 0) {
-                cells[cords.getX()][cords.getY()].addInnerDrawable(null);
-            } else {
-                GridCellContainer cellContainer = new GridCellContainer(cellBorderTexture, cords.getX(), cords.getY()).init();
-                cellContainer.setObjects(options);
-
-                if (cells[cords.getX()][cords.getY()].getInnerDrawable() != null) {
-                    cells[cords.getX()][cords.getY()].addInnerDrawable(cellContainer);
-                } else {
-                    cells[cords.getX()][cords.getY()].updateInnerDrawable(cellContainer);
-                }
-            }
-
-        });
-*/
-
     }
 
     public Actor hitChildren(float x, float y, boolean touchable) {
