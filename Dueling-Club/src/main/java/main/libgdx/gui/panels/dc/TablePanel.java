@@ -59,10 +59,15 @@ public class TablePanel extends Container<Table> {
     }
 
     public void addCol() {
-        if (rowDirection == TOP_DOWN || cols.size() == 0) {
+        if (cols.size() == 0) {
             createNewCol();
         }
-        if (rowDirection == TOP_RIGHT) {
+
+        if (rowDirection == TOP_DOWN) {
+            createNewCol();
+        }
+
+        if (rowDirection == TOP_RIGHT || rowDirection == TOP_LEFT) {
             lastCol.row();
         }
     }

@@ -6,9 +6,4 @@ import java.util.List;
 
 public class WeaponInfoDTO {
 
-    Texture weaponIcon;
-    List<Texture> actions;
-
-    Texture naturalWeaponIcon;
-    List<Texture> unarmedActions;
 }
