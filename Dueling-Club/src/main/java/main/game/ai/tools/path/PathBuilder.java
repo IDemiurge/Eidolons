@@ -20,9 +20,10 @@ import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.actions.ActionManager;
-import main.game.ai.elements.actions.ActionSequenceConstructor;
-import main.game.ai.elements.actions.TimeLimitMaster;
-import main.game.ai.elements.actions.TimeLimitMaster.METRIC;
+import main.game.ai.elements.actions.sequence.ActionSequenceConstructor;
+import main.game.ai.elements.actions.AiUnitActionMaster;
+import main.game.ai.tools.time.TimeLimitMaster;
+import main.game.ai.tools.time.TimeLimitMaster.METRIC;
 import main.game.ai.tools.priority.DC_PriorityManager;
 import main.game.ai.tools.target.ReasonMaster;
 import main.game.ai.tools.target.ReasonMaster.FILTER_REASON;
@@ -527,7 +528,7 @@ public class PathBuilder {
     }
 
     public Costs getPathCosts(ActionPath path) {
-        return ActionSequenceConstructor.getTotalCost(path.getActions());
+        return ActionManager.getTotalCost(path.getActions());
     }
 
     public ActionPath getPathByPriority(List<Coordinates> targetCoordinates) {
@@ -674,7 +675,7 @@ public class PathBuilder {
             if (actions.size() == 1) {
                 return actions.get(0).getActive().getName() + " to " + coordinates;
             }
-            return StringMaster.joinStringList(StringMaster.convertToNameIntList(ActionManager
+            return StringMaster.joinStringList(StringMaster.convertToNameIntList(AiUnitActionMaster
                     .getActionObjectList(actions)), ", ")
                     + " to " + coordinates;
         }

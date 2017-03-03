@@ -1,10 +1,10 @@
 package main.game.ai.elements.task;
 
-import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
-import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.PARAMS;
+import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.enums.system.AiEnums;
+import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.values.properties.G_PROPS;
 import main.data.XList;
 import main.entity.active.DC_ActiveObj;
@@ -13,7 +13,6 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
-import main.game.ai.elements.actions.ActionManager;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.tools.Analyzer;
 import main.game.ai.tools.ParamAnalyzer;
@@ -248,7 +247,7 @@ public class TaskManager {
                 list.add(new Task(forced, ai, goal, id));
             }
         }
-        ActionManager.setTargetPool(targets);
+//        ActionManager.setTargetPool(targets); ???
 
         return list;
     }

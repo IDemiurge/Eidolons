@@ -5,17 +5,15 @@ import main.content.values.properties.G_PROPS;
 import main.data.XLinkedMap;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
-import main.enums.StatEnums;
 import main.logic.AT_OBJ_TYPE;
 import main.logic.AT_PROPS;
 import main.music.MusicCore;
 import main.music.gui.MusicListPanel;
 import main.music.gui.MusicMouseListener;
 import main.music.m3u.M3uGenerator;
-import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.GuiManager;
-import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 
@@ -137,7 +135,7 @@ public class AHK_Master {
 
         setPanel(new MusicListPanel(fileName, getScriptViewMap(fileName)));
         panel.init();
-        JFrame window = GuiManager.inNewWindow(getPanel(), fileName, GuiManager.getScreenSize());
+        JFrame window = GuiManager.inNewWindow(getPanel(), "Music Core", GuiManager.getScreenSize());
 
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Image image = ImageManager.getImage(UI_ARCANE_TOWER_KEY_PNG);

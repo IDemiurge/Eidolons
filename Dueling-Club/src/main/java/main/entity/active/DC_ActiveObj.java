@@ -242,6 +242,10 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public void invokeClicked() {
+        if (!getActivator().canBeManuallyActivated()) {
+            getActivator().cannotActivate();
+            return ;
+        }
         getHandler().activateOnActionThread();
 //        activate();
 //     TODO is any of it useful?

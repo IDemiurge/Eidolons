@@ -4,38 +4,43 @@ import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
 import main.data.XLinkedMap;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.actions.ActionManager;
+import main.game.ai.elements.actions.sequence.ActionSequenceConstructor;
+import main.game.ai.elements.generic.AiHandler;
 import main.game.ai.elements.goal.GoalManager;
 import main.game.ai.elements.task.TaskManager;
-import main.game.ai.tools.Executor;
+import main.game.ai.tools.AiExecutor;
 import main.game.ai.tools.priority.DC_PriorityManager;
 import main.game.ai.tools.priority.PriorityManager;
+import main.game.core.game.DC_Game;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class AI_Manager {
+public class AI_Manager extends AiHandler{
     static Set<Action> brokenActions = new HashSet<>();
     private static GroupAI customGroup;
     private static boolean running;
+    private ActionSequenceConstructor actionSequenceConstructor;
     private DC_Game game;
     private PriorityManager priorityManager;
     private ActionManager actionManager;
     private GoalManager goalManager;
-    private Executor executor;
+    private AiExecutor executor;
     private TaskManager taskManager;
     private Map<Unit, UnitAI> aiMap = new XLinkedMap<>();
     private PLAYER_AI_TYPE type = AiEnums.PLAYER_AI_TYPE.BRUTE;
+
     public AI_Manager(DC_Game game) {
 
         this.game = game;
         priorityManager =  DC_PriorityManager.init();
         taskManager = new TaskManager();
-        executor = new Executor(game);
+        executor = new AiExecutor(game);
+        actionSequenceConstructor= new ActionSequenceConstructor(this);
     }
 
     public static boolean isRunning() {
@@ -147,7 +152,11 @@ public class AI_Manager {
         return goalManager;
     }
 
-    public Executor getExecutor() {
+    public ActionSequenceConstructor getActionSequenceConstructor() {
+        return actionSequenceConstructor;
+    }
+
+    public AiExecutor getExecutor() {
         return executor;
     }
 

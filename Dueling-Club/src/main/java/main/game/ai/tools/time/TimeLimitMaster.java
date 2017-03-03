@@ -1,4 +1,4 @@
-package main.game.ai.elements.actions;
+package main.game.ai.tools.time;
 
 import main.game.ai.UnitAI;
 import main.system.auxiliary.log.Chronos;

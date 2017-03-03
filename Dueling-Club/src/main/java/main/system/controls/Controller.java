@@ -1,4 +1,4 @@
-package main.libgdx.anims.controls;
+package main.system.controls;
 
 /**
  * Created by JustMe on 2/10/2017.

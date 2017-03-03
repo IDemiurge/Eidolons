@@ -17,9 +17,9 @@ import main.entity.obj.unit.DC_UnitModel;
 import main.entity.type.ObjType;
 import main.game.ai.advanced.companion.Order;
 import main.game.ai.elements.actions.Action;
-import main.game.ai.elements.actions.ActionSequence;
+import main.game.ai.elements.actions.sequence.ActionSequence;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
-import main.game.ai.tools.Executor;
+import main.game.ai.tools.AiExecutor;
 import main.game.battlefield.Coordinates;
 import main.game.logic.dungeon.ai.DungeonCrawler.ENGAGEMENT_LEVEL;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -40,7 +40,7 @@ public class UnitAI {
     private static final Integer DEFAULT_VERBATIM_MOD = null;
     Unit unit;
     AI_TYPE type;
-    Executor executor;
+    AiExecutor executor;
     AI_BEHAVIOR_MODE currentBehavior;
     private boolean inSequence;
     private List<Action> forcedActions;
@@ -132,11 +132,11 @@ public class UnitAI {
         this.inSequence = inSequence;
     }
 
-    public synchronized Executor getExecutor() {
+    public synchronized AiExecutor getExecutor() {
         return executor;
     }
 
-    public synchronized void setExecutor(Executor executor) {
+    public synchronized void setExecutor(AiExecutor executor) {
         this.executor = executor;
     }
 

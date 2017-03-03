@@ -14,7 +14,7 @@ import java.util.Collection;
 /**
  * Created by JustMe on 3/1/2017.
  */
-public class DTO_Master {
+public class DtoMaster {
 
     public static IconGridDTO getIconGrid(Collection<? extends Entity> items) {
 
@@ -25,7 +25,7 @@ public class DTO_Master {
         return grid;
 
     }
-    
+
 
     public static TabsDTO getTabs(Entity unit,
                                   Collection<Collection<VALUE>> parameters) {

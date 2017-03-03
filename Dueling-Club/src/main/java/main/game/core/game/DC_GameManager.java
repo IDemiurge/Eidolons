@@ -131,7 +131,7 @@ public class DC_GameManager extends GameManager {
             }
         }
         if (!result) {
-            // WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, true);
+            // WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_COMPLETE, true);
             return false;
         }
 
@@ -173,9 +173,9 @@ public class DC_GameManager extends GameManager {
             getGame().getState().getUnitActionStack(action.getOwnerObj()).push(action);
         }
         if (result == null) {
-            WaitMaster.interrupt(WAIT_OPERATIONS.TURN_CYCLE);
+            WaitMaster.interrupt(WAIT_OPERATIONS.ACTION_COMPLETE);
         } else {
-            WaitMaster.receiveInput(WAIT_OPERATIONS.TURN_CYCLE, result);
+            WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_COMPLETE, result);
         }
     }
 

@@ -12,7 +12,7 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
-import main.game.ai.elements.actions.ActionSequence;
+import main.game.ai.elements.actions.sequence.ActionSequence;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 
 import java.util.List;

@@ -46,8 +46,9 @@ import main.entity.type.ObjType;
 import main.game.ai.PlayerAI.SITUATION;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
-import main.game.ai.elements.actions.ActionSequence;
-import main.game.ai.elements.actions.ActionSequenceConstructor;
+import main.game.ai.elements.actions.ActionManager;
+import main.game.ai.elements.actions.sequence.ActionSequence;
+import main.game.ai.elements.actions.sequence.ActionSequenceConstructor;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.tools.Analyzer;
 import main.game.ai.tools.ParamAnalyzer;
@@ -1100,7 +1101,7 @@ public class PriorityManagerImpl implements PriorityManager{
 
     @Override
     public void applyCostPenalty(ActionSequence as) {
-        Costs cost = ActionSequenceConstructor.getTotalCost(as.getActions());
+        Costs cost = ActionManager.getTotalCost(as.getActions());
         int cost_penalty = getCostFactor(cost, unit);
         String string = "cost";
         try {

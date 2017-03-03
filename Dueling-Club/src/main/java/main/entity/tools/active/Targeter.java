@@ -12,7 +12,7 @@ import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
-import main.game.ai.elements.actions.ActionManager;
+import main.game.ai.tools.target.TargetingMaster;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
@@ -71,7 +71,7 @@ public class Targeter extends ActiveHandler {
         }
         boolean result = false;
         if (getTargeting() instanceof SelectiveTargeting && getOwnerObj().isAiControlled()) {
-            Integer id = ActionManager.selectTargetForAction(getEntity());
+            Integer id = TargetingMaster.selectTargetForAction(getEntity());
             if (id != null) {
                 getRef().setTarget(id);
                 result = true;

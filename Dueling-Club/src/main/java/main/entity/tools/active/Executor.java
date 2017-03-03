@@ -11,11 +11,6 @@ import main.entity.obj.Obj;
 import main.game.core.Eidolons;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.libgdx.GameScreen;
-import main.libgdx.anims.text.FloatingText;
-import main.libgdx.anims.text.FloatingTextMaster;
-import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
-import main.libgdx.bf.GridMaster;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.RULE_GROUP;
 import main.rules.action.StackingRule;
@@ -95,13 +90,11 @@ public class Executor extends ActiveHandler {
     }
 
 
-    public boolean activate() {
+
+        public boolean activate() {
 
         reset();
-        if (!getActivator().canBeManuallyActivated()) {
-            cannotActivate();
-            return result;
-        }
+
         getTargeter().initTarget();
         if (interrupted)
             return result;
@@ -126,17 +119,7 @@ public class Executor extends ActiveHandler {
         return result;
     }
 
-    private void cannotActivate() {
-        main.system.auxiliary.log.LogMaster.log(1, "Cannot Activate " +
-         getEntity().getName() +
-         ": " + getEntity().getCosts().getReasonsString());
-        FloatingText f = FloatingTextMaster.getInstance().getFloatingText(getEntity(),
-         TEXT_CASES.REQUIREMENT, getEntity().getCosts().getReasonsString());
-        f.setDisplacementY(100);
-        f.setDuration(3);
-        f.addToStage(GameScreen.getInstance().getAnimsStage(),
-         GridMaster.getVectorForCoordinateWithOffset(getEntity().getOwnerObj().getCoordinates()));
-    }
+
 
     private void cancelled() {
         timeCost = 0;

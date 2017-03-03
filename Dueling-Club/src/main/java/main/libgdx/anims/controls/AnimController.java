@@ -2,6 +2,7 @@ package main.libgdx.anims.controls;
 
 import main.libgdx.anims.Animation;
 import main.libgdx.anims.CompositeAnim;
+import main.system.controls.Controller;
 
 import java.util.Stack;
 

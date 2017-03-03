@@ -3,9 +3,9 @@ package main.game.ai.tools;
 import main.game.core.game.DC_Game;
 import main.game.ai.elements.actions.Action;
 
-public class Executor {
+public class AiExecutor {
 
-    public Executor(DC_Game game) {
+    public AiExecutor(DC_Game game) {
         // TODO Auto-generated constructor stub
     }
 

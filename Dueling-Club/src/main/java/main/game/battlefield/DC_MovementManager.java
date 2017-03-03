@@ -15,9 +15,9 @@ import main.entity.active.DC_UnitAction;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.ai.elements.actions.AiUnitActionMaster;
 import main.game.core.game.DC_Game;
 import main.game.ai.elements.actions.Action;
-import main.game.ai.elements.actions.ActionManager;
 import main.game.ai.tools.path.ActionPath;
 import main.game.ai.tools.path.PathBuilder;
 import main.game.ai.tools.target.EffectFinder;
@@ -106,7 +106,7 @@ public class DC_MovementManager implements MovementManager {
             }
         }
 
-        moveActions.addAll(ActionManager.getSpells(AiEnums.AI_LOGIC.MOVE, unit));
+        moveActions.addAll(AiUnitActionMaster.getSpells(AiEnums.AI_LOGIC.MOVE, unit));
 
         moveActions = DC_ActionManager.filterActionsByCanBePaid(moveActions);
         return moveActions;

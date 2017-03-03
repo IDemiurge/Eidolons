@@ -4,7 +4,7 @@ import main.content.PARAMS;
 import main.content.VALUE;
 import main.content.ValuePages;
 import main.entity.obj.unit.Unit;
-import main.libgdx.gui.panels.dc.dto.DTO_Master;
+import main.libgdx.gui.panels.dc.dto.DtoMaster;
 import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.data.ArrayMaster;
 import main.system.datatypes.DequeImpl;
@@ -15,7 +15,7 @@ import java.util.Collection;
 /**
  * Created by JustMe on 3/1/2017.
  */
-public class UnitDTO_Master {
+public class UnitDtoMaster {
     public static UnitInfoDTO createDTO(Unit unit) {
         UnitInfoDTO dto = new UnitInfoDTO();
         dto.setAvatar(getAvatar(unit));
@@ -23,8 +23,8 @@ public class UnitDTO_Master {
         dto.setAttributes(getStats(unit));
         dto.setCombatStats(getStatTabs(unit));
         dto.setResistTabs(getResistTabs(unit));
-        dto.setAbilities(DTO_Master.getIconGrid(unit.getPassives()));
-        dto.setEffects(DTO_Master.getIconGrid(unit.getBuffs()));
+        dto.setAbilities(DtoMaster.getIconGrid(unit.getPassives()));
+        dto.setEffects(DtoMaster.getIconGrid(unit.getBuffs()));
         return dto;
     }
 
@@ -39,14 +39,15 @@ public class UnitDTO_Master {
     private static MainParamsDTO getMainParams(Unit unit) {
         return new MainParamsDTO(
           unit.getParam(PARAMS. RESISTANCE),
-          unit.getParam(PARAMS. DEFENSE),  unit.getParam(PARAMS. ARMOR),
+          unit.getParam(PARAMS. DEFENSE),
+         unit.getParam(PARAMS. ARMOR),
           unit.getParam(PARAMS. FORTITUDE),
           unit.getParam(PARAMS. SPIRIT));
       
     }
 
     private static TabsDTO getResistTabs(Unit unit) {
-        return DTO_Master.getTabs(unit,
+        return DtoMaster.getTabs(unit,
          new DequeImpl<Collection<VALUE>>().addChained(
           Arrays.asList(ValuePages.RESISTANCES)));
     }
@@ -56,7 +57,7 @@ public class UnitDTO_Master {
          new ArrayMaster<VALUE>().
           get2dListFrom3dArray(ValuePages.UNIT_INFO_PARAMS);
 
-        return DTO_Master.getTabs(unit, list);
+        return DtoMaster.getTabs(unit, list);
     }
 
     private static AttributesDTO getStats(Unit unit) {

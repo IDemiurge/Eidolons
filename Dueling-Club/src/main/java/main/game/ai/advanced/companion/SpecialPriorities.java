@@ -2,7 +2,7 @@ package main.game.ai.advanced.companion;
 
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
-import main.game.ai.elements.actions.ActionSequence;
+import main.game.ai.elements.actions.sequence.ActionSequence;
 
 public class SpecialPriorities {
 

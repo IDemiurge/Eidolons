@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.StringMaster;
 import main.system.graphics.GreyscaleUtils;
 
 import java.nio.file.Path;
@@ -84,7 +85,7 @@ public class TextureCache {
 
 
 
-//        path = StringMaster.removePreviousPathSegments(path, imagePath);
+        path = StringMaster.removePreviousPathSegments(path, imagePath);
         if (!this.cache.containsKey(path)) {
             Path p = null;
             try {

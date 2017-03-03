@@ -26,6 +26,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.auxiliary.secondary.WorkspaceMaster;
+import main.system.hotkey.DC_KeyManager;
 import main.system.launch.CoreEngine;
 import main.system.test.TestMasterContent;
 import main.test.Preset;
@@ -203,6 +204,7 @@ if (DEBUG_MODE!=null ){
         game.setPlayerParty(PLAYER_PARTY);
         game.setEnemyParty(ENEMY_PARTY);
 
+
         if (PresetLauncher.getLaunch() != null) {
             if (!VISION_HACK) {
                 VISION_HACK = PresetLauncher.getLaunch().visionHacked;
@@ -215,6 +217,8 @@ if (DEBUG_MODE!=null ){
             ItemGenerator.setGenerationOn(!PresetLauncher.getLaunch().itemGenerationOff);
             TestMasterContent.setForceFree(  PresetLauncher.getLaunch().freeActions);
 
+            TestMasterContent.setImmortal(PresetLauncher.getLaunch().immortal);
+            DC_KeyManager.DEFAULT_CONTROLLER = PresetLauncher.getLaunch().controller;
         }
         if (host_client != null) {
             initMultiplayerFlags();

@@ -9,7 +9,7 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
-import main.game.ai.elements.actions.ActionSequence;
+import main.game.ai.elements.actions.sequence.ActionSequence;
 import main.game.ai.tools.Analyzer;
 import main.game.ai.tools.priority.DC_PriorityManager;
 import main.game.battlefield.Coordinates;

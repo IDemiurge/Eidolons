@@ -6,10 +6,10 @@ import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
+import main.content.enums.GenericEnums;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
-import main.content.enums.GenericEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
@@ -22,6 +22,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
+import main.entity.item.DC_QuickItemObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.Active;
 import main.entity.obj.ActiveObj;
@@ -30,23 +31,25 @@ import main.entity.obj.attach.DC_FeatObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ActionType;
 import main.entity.type.ObjType;
+import main.game.core.game.DC_Game;
 import main.game.core.game.MicroGame;
+import main.game.logic.battle.player.Player;
 import main.game.logic.dungeon.DungeonLevelMaster;
 import main.game.logic.dungeon.Entrance;
 import main.game.logic.dungeon.special.LockMaster;
 import main.game.logic.dungeon.special.Trap;
 import main.game.logic.dungeon.special.TrapMaster;
-import main.game.logic.battle.player.Player;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.FEATURE;
 import main.rules.UnitAnalyzer;
 import main.rules.attack.ExtraAttacksRule;
 import main.rules.mechanics.FleeRule;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.threading.Weaver;
 
 import java.util.*;
 
@@ -535,6 +538,7 @@ public class DC_ActionManager implements ActionManager {
         entity.setActivesReady(true);
     }
 
+
     public List<DC_UnitAction> getOrCreateWeaponActions(DC_WeaponObj weapon) {
         if (weapon == null) {
             return new LinkedList<>();
@@ -847,6 +851,32 @@ public class DC_ActionManager implements ActionManager {
         }
     }
 
+    @Override
+    public void resetCostsInNewThread() {
+        Weaver.inNewThread(()-> {
+            DC_Game game= (DC_Game) this.game;
+            if (game.getManager().getActiveObj() == null) {
+                return;
+            }
+            for (ACTION_TYPE key : game.getManager().getActiveObj().getActionMap()
+             .keySet()) {
+                for (DC_ActiveObj active : game.getManager().getActiveObj()
+                 .getActionMap().get(key)) {
+                    active.initCosts();
+                }
+            }
+
+            for (DC_ActiveObj active : game.getManager().getActiveObj().getSpells()) {
+                active.initCosts();
+            }
+
+            for (DC_QuickItemObj item : game.getManager().getActiveObj().getQuickItems()) {
+                if (item.getActive() != null) {
+                    item.getActive().initCosts();
+                }
+            }
+        });
+    }
     public enum STD_MODE_ACTIONS {
         Defend, Concentrate, Rest, Meditate, On_Alert;
 

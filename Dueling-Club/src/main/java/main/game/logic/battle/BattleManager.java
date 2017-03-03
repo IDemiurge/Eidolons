@@ -208,7 +208,10 @@ public class BattleManager {
     // }
 
     public void unitDies(Unit killed) {
-        if (killed.getGame().isDummyMode()) {
+        if (killed.getGame().isDummyMode()
+         // TODO until fixed
+         || true
+         ) {
             return;
         }
         if (killed.getOriginalOwner().isMe()) {

@@ -4,7 +4,6 @@ import main.client.cc.CharacterCreator;
 import main.game.core.game.DC_Game;
 import main.swing.components.panels.DC_InfoPanel;
 import main.swing.generic.components.G_Panel;
-import main.swing.generic.components.panels.G_ButtonPanel;
 import main.swing.generic.windows.G_Frame;
 import main.swing.panels.misc.G_InputPanel;
 import main.swing.panels.misc.G_LogPanel;
@@ -18,7 +17,7 @@ import java.awt.event.WindowListener;
 public class DebugPanel {
 
     G_LogPanel logPanel;
-    G_ButtonPanel buttonPanel;
+    Component buttonPanel;
     G_InputPanel inputPanel;
     private G_Frame frame;
     private DebugMaster master;
