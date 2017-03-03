@@ -1,11 +1,11 @@
 package main.rules.rpg;
 
-import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.ContentManager;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
 import main.content.ValuePages;
 import main.content.enums.entity.HeroEnums;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.entity.EntityCheckMaster;

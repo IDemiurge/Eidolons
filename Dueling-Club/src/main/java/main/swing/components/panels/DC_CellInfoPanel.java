@@ -14,8 +14,8 @@ import main.swing.components.panels.secondary.DeadUnitPanel;
 import main.swing.components.panels.secondary.DroppedItemPanel;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
-import main.system.graphics.GuiManager;
 import main.system.auxiliary.data.ListMaster;
+import main.system.graphics.GuiManager;
 
 public class DC_CellInfoPanel extends G_Panel {
 
@@ -33,7 +33,7 @@ public class DC_CellInfoPanel extends G_Panel {
 
     // TrapsInfoPanel t;
     /*
-	 * CI info
+     * CI info
 	 * allow to select cell underneath with alt-click? 
 	 * 
 	 *  last seen

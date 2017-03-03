@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ContentMaster {
     /*
-	 * additional version dependencies: 
+     * additional version dependencies:
 	 * >> Hero personality and life traits...
 	 * >> 
 	 */

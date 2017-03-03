@@ -11,17 +11,17 @@ import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.ai.UnitAI;
 import main.game.ai.tools.target.EffectFinder;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;
 import main.game.battlefield.vision.VisionManager;
+import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
 import main.swing.components.panels.DC_UnitActionPanel.ACTION_DISPLAY_GROUP;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.ListMaster;
 import main.system.math.PositionMaster;
 
 import java.util.LinkedList;
@@ -385,7 +385,7 @@ public class Analyzer {
 //                list.add(cell);
 //        }
 //        return list;
-        return null ;
+        return null;
     }
 
     public static List<? extends DC_Obj> getWanderCells(UnitAI ai) {

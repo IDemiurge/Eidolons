@@ -216,7 +216,7 @@ public class RadialManager {
             result = new ImmutableTriple<>(
                     () -> {
                         if (dcActiveObj.getTargeter().canBeTargeted(target.getId()))
-                        dcActiveObj.activateOn(target);
+                            dcActiveObj.activateOn(target);
                     },
                     TextureCache.getOrCreate(dcActiveObj.getImagePath()),
                     dcActiveObj.getName()

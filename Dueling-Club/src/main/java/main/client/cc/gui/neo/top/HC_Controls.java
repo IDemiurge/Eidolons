@@ -84,6 +84,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
     private Unit newHero;
     private boolean processing;
     private HC_MODE mode;
+
     public HC_Controls(Unit hero) {
 
         super("fillx");

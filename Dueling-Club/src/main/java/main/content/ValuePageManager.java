@@ -4,9 +4,9 @@ import main.client.dc.Launcher;
 import main.client.dc.Launcher.VIEWS;
 import main.content.ValuePages.PAGE_NAMES;
 import main.content.values.properties.G_PROPS;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.data.MapMaster;
-import main.system.auxiliary.StringMaster;
 
 import java.util.*;
 //UNITS 
@@ -121,7 +121,7 @@ public class ValuePageManager {
                 pages = HC_ValuePages.CHAR_PAGES;
             } else if (Launcher.getView() == VIEWS.CHOICE
                     && Launcher.getMainManager().getSequence().isActive())
-                // Launcher.getMainManager().getSequenceMaster()
+            // Launcher.getMainManager().getSequenceMaster()
             {
                 pages = HC_ValuePages.BACKGROUND_CHAR_PAGES;
             } else {

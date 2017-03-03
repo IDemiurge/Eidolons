@@ -17,8 +17,8 @@ public class EmitterPools {
 
     private static Map<String, Pool<EmitterActor>> actorPoolMap = new HashMap<>();
     private static Map<String, Pool<ParticleEffect>> effectPoolMap = new HashMap<>();
-    private static boolean effectPoolingOn=false;
-    private static boolean actorPoolingOn =false; //TODO emitters are not reset properly!
+    private static boolean effectPoolingOn = false;
+    private static boolean actorPoolingOn = false; //TODO emitters are not reset properly!
 
     public static EmitterActor getEmitterActor(SFX sfx) {
         return getEmitterActor(sfx.path);
@@ -41,6 +41,7 @@ public class EmitterPools {
         }
         return pool.obtain();
     }
+
     public static ParticleEffect getEffect(String path) {
         if (!effectPoolingOn) {
             return new ParticleEffect(path);
@@ -59,7 +60,7 @@ public class EmitterPools {
         return pool.obtain();
     }
 
-    public static void freeEffect (ParticleEffect e) {
+    public static void freeEffect(ParticleEffect e) {
         Pool<ParticleEffect> pool = effectPoolMap.get(e.path.toLowerCase());
         if (pool == null) {
             return;
@@ -77,13 +78,13 @@ public class EmitterPools {
 
     }
 
-    public static  List<EmitterActor> getEmitters(String data ) {
+    public static List<EmitterActor> getEmitters(String data) {
         List<EmitterActor> list = new LinkedList<>();
         for (String path :
-         StringMaster.openContainer(data)) {
+                StringMaster.openContainer(data)) {
             EmitterActor emitter = null;
             SFX sfx = new EnumMaster<SFX>().
-             retrieveEnumConst(SFX.class, path);
+                    retrieveEnumConst(SFX.class, path);
             if (sfx == null) {
                 emitter = EmitterPools.getEmitterActor(path);
             } else {

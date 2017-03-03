@@ -199,7 +199,7 @@ public class TravelMaster {
         party.setCurrentDestination(null);
         party.setCurrentRoute(null);
         /*
-		 * init dialogue 
+         * init dialogue
 		 * 1) Entering
 		 * 2) Info 
 		 * 3) Choices 

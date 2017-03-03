@@ -1,8 +1,8 @@
 package main.system.graphics;
 
-import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
@@ -15,8 +15,8 @@ import main.game.battlefield.attack.AttackCalculator;
 import main.game.battlefield.attack.AttackCalculator.MOD_IDENTIFIER;
 import main.game.battlefield.attack.Damage;
 import main.system.audio.DC_SoundMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.auxiliary.secondary.GeometryMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;

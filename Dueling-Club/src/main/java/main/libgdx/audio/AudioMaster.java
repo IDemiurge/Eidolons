@@ -12,6 +12,7 @@ import java.io.File;
  */
 public class AudioMaster {
     Audio audio = Gdx.audio;
+
     public AudioMaster() {
         Sound sound = audio.newSound(new FileHandle(new File("")));
 //        sound.setVolume(id, volume);

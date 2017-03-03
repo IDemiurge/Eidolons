@@ -286,7 +286,7 @@ public class WatchRule implements ActionRule {
 
         list = getWatchersMap().get(watcher);
         if (ListMaster.isNotEmpty(list))
-            // TODO alert???
+        // TODO alert???
         {
             getWatchBuffEffect(watcher, list).apply(Ref.getSelfTargetingRefCopy(watcher));
         }

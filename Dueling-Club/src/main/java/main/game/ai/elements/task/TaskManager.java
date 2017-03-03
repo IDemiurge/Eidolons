@@ -255,7 +255,7 @@ public class TaskManager {
     private void checkPrune(List<? extends DC_Obj> targets, GOAL_TYPE goal, UnitAI ai,
                             DC_ActiveObj action) {
         /*
-		 * cache for each goal?
+         * cache for each goal?
 		 *
 		 * the 'pruneSize' must be a minimum of targets to prune... and beyond
 		 * that, there should be some default prune logic
@@ -268,7 +268,7 @@ public class TaskManager {
         int size = targets.size();
         int toPrune = size - getPruneSize(goal);
         if (toPrune <= 0) // this is only the max size, how to ensure pruning of
-            // 'valid' targets too?
+        // 'valid' targets too?
         {
             if (action.isRanged() || action instanceof DC_SpellObj) {
                 return; // TODO sometimes it's not the size, but the distance!

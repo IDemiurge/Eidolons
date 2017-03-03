@@ -84,7 +84,6 @@ public class TextureCache {
     private Texture _getOrCreate(String path) {
 
 
-
         path = StringMaster.removePreviousPathSegments(path, imagePath);
         if (!this.cache.containsKey(path)) {
             Path p = null;
@@ -97,7 +96,8 @@ public class TextureCache {
             try {
                 t = new Texture(p.toString());
             } catch (Exception e) {
-                e.printStackTrace();return  null ;
+                e.printStackTrace();
+                return null;
 //                return _getOrCreate(ImageManager.getEmptyItemIconPath(false));
             }
 

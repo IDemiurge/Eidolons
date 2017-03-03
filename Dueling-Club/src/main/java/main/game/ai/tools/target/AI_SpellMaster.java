@@ -20,12 +20,12 @@ import main.ability.effects.special.DrainEffect;
 import main.ability.effects.special.GatewayEffect;
 import main.ability.targeting.TemplateAutoTargeting;
 import main.ability.targeting.TemplateSelectiveTargeting;
-import main.content.enums.entity.AbilityEnums;
-import main.content.enums.system.AiEnums.AI_LOGIC;
-import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.C_OBJ_TYPE;
-import main.content.enums.system.AiEnums;
+import main.content.enums.entity.AbilityEnums;
+import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.enums.entity.ItemEnums;
+import main.content.enums.system.AiEnums;
+import main.content.enums.system.AiEnums.AI_LOGIC;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.elements.targeting.Targeting;
@@ -106,7 +106,7 @@ public class AI_SpellMaster {
                 return AiEnums.AI_LOGIC.COATING;
             }
             /*
-			 * self for potions essentially, targeting mode should be available
+             * self for potions essentially, targeting mode should be available
 			 * here as well!
 			 */
         }

@@ -84,7 +84,7 @@ public class ToolTipMaster {
     }
 
     public static String getObjTooltip(DC_Obj target) {
-        String tooltip = Eidolons.game.getVisionMaster().getHintMaster(). getTooltip(target);
+        String tooltip = Eidolons.game.getVisionMaster().getHintMaster().getTooltip(target);
         if (tooltip != null) {
             return tooltip;
         }

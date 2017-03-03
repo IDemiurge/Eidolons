@@ -45,7 +45,7 @@ public class HeroChoiceView<E> extends ChoiceView<E> {
         return null;
     }
     /*
-	 * has right-side panel, left-side heroPanel and visuals for the middle
+     * has right-side panel, left-side heroPanel and visuals for the middle
 	 * pages
 	 */
 }

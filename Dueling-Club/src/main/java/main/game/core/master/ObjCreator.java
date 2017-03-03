@@ -20,7 +20,7 @@ import main.system.launch.CoreEngine;
 /**
  * Created by JustMe on 2/16/2017.
  */
-public class ObjCreator extends Master{
+public class ObjCreator extends Master {
 
     public ObjCreator(DC_Game game) {
         super(game);
@@ -46,7 +46,7 @@ public class ObjCreator extends Master{
             obj = new Unit(type, x, y, owner, getGame(), ref);
         }
         GuiEventManager.trigger(GuiEventType.UNIT_CREATED,
-         new EventCallbackParam(obj));
+                new EventCallbackParam(obj));
         game.getState().addObject(obj);
 
         if (CoreEngine.isLevelEditor()) {

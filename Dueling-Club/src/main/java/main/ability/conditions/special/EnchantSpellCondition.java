@@ -1,8 +1,8 @@
 package main.ability.conditions.special;
 
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
-import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.enums.entity.AbilityEnums;
+import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.elements.conditions.MicroCondition;
 import main.entity.active.DC_SpellObj;
 

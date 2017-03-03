@@ -1,9 +1,9 @@
 package main.client.cc.gui.neo.choice;
 
 import main.client.dc.SequenceManager;
-import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.type.ObjType;

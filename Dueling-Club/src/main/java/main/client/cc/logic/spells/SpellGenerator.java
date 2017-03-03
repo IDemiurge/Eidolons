@@ -1,9 +1,9 @@
 package main.client.cc.logic.spells;
 
-import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
 import main.content.DC_TYPE;
-import main.content.enums.system.MetaEnums;
 import main.content.enums.entity.SpellEnums;
+import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
+import main.content.enums.system.MetaEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
@@ -56,12 +56,12 @@ public class SpellGenerator {
             }
         }
         /*
-		 * let's have a dummy Spell Type per UG! Use its fields...
+         * let's have a dummy Spell Type per UG! Use its fields...
 		 */
 
     }
 
-//TODO support varargs! SPELL_UPGRADE...
+    //TODO support varargs! SPELL_UPGRADE...
     public static ObjType generateUpgradedVersion(ObjType t, SPELL_UPGRADE ug) {
         ObjType type = getNewType(t);
         SpellUpgradeMaster.applyUpgrade(type, ug);

@@ -16,41 +16,41 @@ import main.system.text.LogEntryNode;
 /**
  * Created by JustMe on 2/23/2017.
  */
-public class ActiveLogger  extends EntityLogger<DC_ActiveObj> {
+public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
 
     private Unit ownerObj;
+    private LogEntryNode entry;
 
     public ActiveLogger(DC_ActiveObj entity, EntityMaster<DC_ActiveObj> entityMaster) {
         super(entity, entityMaster);
-        ownerObj=entity.getOwnerObj();
+        ownerObj = entity.getOwnerObj();
 
     }
-    private LogEntryNode entry;
-
 
     public LogEntryNode getEntry() {
         return entry;
     }
+
     public void logCompletion() {
 
-        if (getMaster().getChecker().isAttackAny()){
+        if (getMaster().getChecker().isAttackAny()) {
             Obj targetObj = getRef().getTargetObj();
             if (targetObj == null) {
-                if (getEntity().  getLastSubaction() != null) {
-                    targetObj = getEntity().  getLastSubaction().getRef().getTargetObj();
+                if (getEntity().getLastSubaction() != null) {
+                    targetObj = getEntity().getLastSubaction().getRef().getTargetObj();
                 }
             }
             if (targetObj == null) {
                 game.getLogManager().doneLogEntryNode(ENTRY_TYPE.ATTACK, ownerObj.getNameIfKnown());
             } else {
                 game.getLogManager().doneLogEntryNode(ENTRY_TYPE.ATTACK, ownerObj.getNameIfKnown(),
-                 // lastSubaction.getName()
-                 targetObj.getNameIfKnown());
+                        // lastSubaction.getName()
+                        targetObj.getNameIfKnown());
             }
         } else {
             game.getLogManager().doneLogEntryNode();
             if (getEntry() != null) {
-                getEntry().setLinkedAnimation(getMaster(). getAnimator(). getAnimation());
+                getEntry().setLinkedAnimation(getMaster().getAnimator().getAnimation());
             }
         }
     }
@@ -58,19 +58,19 @@ public class ActiveLogger  extends EntityLogger<DC_ActiveObj> {
     public ENTRY_TYPE log() {
         // TODO *player's* detection, not AI's!
         String string = ownerObj.getNameIfKnown() + " is activating "
-         +getEntity(). getDisplayedName();
+                + getEntity().getDisplayedName();
         LogMaster.gameInfo(StringMaster.getStringXTimes(80 - string.length(), ">") + string);
 
         boolean logAction = ownerObj.getVisibilityLevel() == VISIBILITY_LEVEL.CLEAR_SIGHT
-         && !getMaster().getChecker().isAttackAny();
+                && !getMaster().getChecker().isAttackAny();
         entry = null;
         ENTRY_TYPE entryType = ENTRY_TYPE.ACTION;
         if (getMaster().getChecker().getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MOVE) {
             entryType = ENTRY_TYPE.MOVE;
             logAction = true;
         }
-        if (! getMaster().getChecker(). isAttackAny()) {
-            entry = game.getLogManager().newLogEntryNode(entryType,  ownerObj , this);
+        if (!getMaster().getChecker().isAttackAny()) {
+            entry = game.getLogManager().newLogEntryNode(entryType, ownerObj, this);
         }
 
         if (logAction) {
@@ -85,8 +85,9 @@ public class ActiveLogger  extends EntityLogger<DC_ActiveObj> {
     public ENTRY_TYPE getEntryType() {
         return ENTRY_TYPE.ACTION;
     }
+
     @Override
-    public ActiveMaster  getMaster() {
+    public ActiveMaster getMaster() {
         return (ActiveMaster) super.getMaster();
     }
 

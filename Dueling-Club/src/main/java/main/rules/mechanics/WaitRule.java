@@ -35,7 +35,7 @@ public class WaitRule {
 
     public static void addAlertUnit(Unit unit, Unit target) {
         /*
-		 * wake up if a unit comes close
+         * wake up if a unit comes close
 		 * 
 		 * wake up if targeted by a hostile action
 		 * 

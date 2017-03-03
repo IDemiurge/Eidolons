@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class RadialSpellAspect implements RADIAL_ITEM {
     private SPELL_ASPECT aspect;
-    private int maxPlainSize= 12;
+    private int maxPlainSize = 12;
 
     public RadialSpellAspect(SPELL_ASPECT aspect) {
         this.aspect = aspect;
@@ -24,7 +24,7 @@ public class RadialSpellAspect implements RADIAL_ITEM {
     public List<RADIAL_ITEM> getItems(Unit source) {
         LinkedList<RADIAL_ITEM> list = new LinkedList<>();
         List<DC_SpellObj> spells = new LinkedList<>(source.getSpells());
-        if (spells.size()<maxPlainSize){
+        if (spells.size() < maxPlainSize) {
             spells.forEach(spell -> list.add(new EntityNode(spell)));
             return list;
         }

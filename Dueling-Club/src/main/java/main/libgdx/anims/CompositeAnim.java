@@ -46,7 +46,7 @@ public class CompositeAnim implements Animation {
 
     public CompositeAnim(Anim... anims) {
         this(new MapMaster<ANIM_PART, Anim>().constructMap(new LinkedList<>(Arrays.asList(ANIM_PART.values()).subList(0, anims.length)),
-         new LinkedList<>(Arrays.asList(anims))));
+                new LinkedList<>(Arrays.asList(anims))));
 
     }
 
@@ -202,9 +202,9 @@ public class CompositeAnim implements Animation {
 
     private void addEvents(ANIM_PART part, Anim anim) {
         MapMaster.addToListMap(onFinishEventMap,
-         part, anim.getEventsOnFinish());
+                part, anim.getEventsOnFinish());
         MapMaster.addToListMap(onStartEventMap,
-         part, anim.getEventsOnStart());
+                part, anim.getEventsOnStart());
     }
 
     public void reset() {
@@ -397,7 +397,7 @@ public class CompositeAnim implements Animation {
 
     public void queueTextEvents() {
         getTextEvents().forEach(event ->
-         FloatingTextMaster.getInstance().addFloatingTextForEventAnim(event, this));
+                FloatingTextMaster.getInstance().addFloatingTextForEventAnim(event, this));
 //        AnimMaster;
     }
 

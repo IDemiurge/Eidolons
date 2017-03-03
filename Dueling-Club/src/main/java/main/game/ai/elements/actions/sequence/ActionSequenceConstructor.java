@@ -66,55 +66,6 @@ public class ActionSequenceConstructor extends AiHandler {
         super(master);
     }
 
-    public List<ActionSequence> createActionSequences(UnitAI ai ) {
-        List<ActionSequence> list = new ArrayList<>();
-        ActionSequenceConstructor.setPrioritizedCells(null);
-        for (GOAL_TYPE type : GoalManager.getGoalsForUnit(ai)) {
-            list.addAll(createActionSequences(  new Goal(type, null // ???
-             , ai), ai));
-        }
-        return list;
-    }
-    private String getChronosPrefix() {
-        return "TIMED AI ACTION ";
-    }
-    public List<ActionSequence> createActionSequences(  Goal goal, UnitAI ai) {
-        List<ActionSequence> actionSequences = new LinkedList<>();
-        List<DC_ActiveObj> actions = AiUnitActionMaster.getFullActionList(goal.getTYPE(), ai.getUnit());
-        actions.addAll(addSubactions(actions));
-        for (DC_ActiveObj action : actions) {
-            Chronos.mark(getChronosPrefix() + action);
-            List<Task> tasks = taskManager.getTasks(goal.getTYPE(), ai, goal.isForced(), action);
-            for (Task task : tasks) {
-                if (task.isBlocked()) {
-                    continue;
-                }
-                if (actionSequences.size() > 0) {
-                    long time = TimeLimitMaster.getTimeLimitForAction();
-                    if (Chronos.getTimeElapsedForMark(getChronosPrefix() + action) > time) {
-                        LogMaster.log(1, "*********** TIME ELAPSED FOR  "
-                         + action + StringMaster.wrapInParenthesis(time + ""));
-                        break;
-                    }
-                }
-                String string = task.toString();
-                Obj obj = action.getGame().getObjectById((Integer) task.getArg());
-                if (obj != null) {
-                    string = obj.getName();
-                }
-                Chronos.mark(getChronosPrefix() + string);
-                try {
-                    addSequences(task, actionSequences, action);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Chronos.logTimeElapsedForMark(getChronosPrefix() + string);
-            }
-            Chronos.logTimeElapsedForMark(getChronosPrefix() + action);
-        }
-        return actionSequences;
-    }
-
     private static void addSequences(Task task, List<ActionSequence> sequences, DC_ActiveObj active) {
         Ref ref = task.getUnit().getRef().getCopy();
         Integer arg = TaskManager.checkTaskArgReplacement(task, active);
@@ -156,17 +107,6 @@ public class ActionSequenceConstructor extends AiHandler {
             }
         }
     }
-
-
-    private List<DC_ActiveObj> addSubactions(List<DC_ActiveObj> actions) {
-        List<DC_ActiveObj> subactions = new LinkedList<>();
-        for (DC_ActiveObj a : actions) {
-            subactions.addAll(a.getSubActions());
-        }
-        return subactions;
-    }
-
-
 
     public static List<ActionSequence> getSequences(Action action, Object arg, Task task) {
         List<ActionSequence> list = new ArrayList<>();
@@ -456,7 +396,7 @@ public class ActionSequenceConstructor extends AiHandler {
                 List<Action> side_sequence = null;
                 if (action.getSource().hasBroadReach()
                         || action.getActive().checkPassive(UnitEnums.STANDARD_PASSIVES.BROAD_REACH))
-                    // front_sequence.remove(front_sequence.size() - 1);
+                // front_sequence.remove(front_sequence.size() - 1);
                 {
                     side_sequence = getTurnSequence(UnitEnums.FACING_SINGLE.TO_THE_SIDE, source, target
                             .getCoordinates());
@@ -556,6 +496,28 @@ public class ActionSequenceConstructor extends AiHandler {
 
     }
 
+    public static List<Coordinates> getPrioritizedCells() {
+        return prioritizedCells;
+    }
+
+    public static void setPrioritizedCells(List<Coordinates> prioritizedCells) {
+        ActionSequenceConstructor.prioritizedCells = prioritizedCells;
+    }
+
+    public List<ActionSequence> createActionSequences(UnitAI ai) {
+        List<ActionSequence> list = new ArrayList<>();
+        ActionSequenceConstructor.setPrioritizedCells(null);
+        for (GOAL_TYPE type : GoalManager.getGoalsForUnit(ai)) {
+            list.addAll(createActionSequences(new Goal(type, null // ???
+                    , ai), ai));
+        }
+        return list;
+    }
+
+    private String getChronosPrefix() {
+        return "TIMED AI ACTION ";
+    }
+
 
     // getOrCreate the *best* move sequence? create all then auto-compare via priority
     // manager
@@ -633,12 +595,49 @@ public class ActionSequenceConstructor extends AiHandler {
     // return null;
     // }
 
-    public static List<Coordinates> getPrioritizedCells() {
-        return prioritizedCells;
+    public List<ActionSequence> createActionSequences(Goal goal, UnitAI ai) {
+        List<ActionSequence> actionSequences = new LinkedList<>();
+        List<DC_ActiveObj> actions = AiUnitActionMaster.getFullActionList(goal.getTYPE(), ai.getUnit());
+        actions.addAll(addSubactions(actions));
+        for (DC_ActiveObj action : actions) {
+            Chronos.mark(getChronosPrefix() + action);
+            List<Task> tasks = taskManager.getTasks(goal.getTYPE(), ai, goal.isForced(), action);
+            for (Task task : tasks) {
+                if (task.isBlocked()) {
+                    continue;
+                }
+                if (actionSequences.size() > 0) {
+                    long time = TimeLimitMaster.getTimeLimitForAction();
+                    if (Chronos.getTimeElapsedForMark(getChronosPrefix() + action) > time) {
+                        LogMaster.log(1, "*********** TIME ELAPSED FOR  "
+                                + action + StringMaster.wrapInParenthesis(time + ""));
+                        break;
+                    }
+                }
+                String string = task.toString();
+                Obj obj = action.getGame().getObjectById((Integer) task.getArg());
+                if (obj != null) {
+                    string = obj.getName();
+                }
+                Chronos.mark(getChronosPrefix() + string);
+                try {
+                    addSequences(task, actionSequences, action);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Chronos.logTimeElapsedForMark(getChronosPrefix() + string);
+            }
+            Chronos.logTimeElapsedForMark(getChronosPrefix() + action);
+        }
+        return actionSequences;
     }
 
-    public static void setPrioritizedCells(List<Coordinates> prioritizedCells) {
-        ActionSequenceConstructor.prioritizedCells = prioritizedCells;
+    private List<DC_ActiveObj> addSubactions(List<DC_ActiveObj> actions) {
+        List<DC_ActiveObj> subactions = new LinkedList<>();
+        for (DC_ActiveObj a : actions) {
+            subactions.addAll(a.getSubActions());
+        }
+        return subactions;
     }
 
     // perhaps it should build a move sequence for each cell *from which*

@@ -70,16 +70,16 @@ public class MoveEffect extends DC_Effect {
     @Override
     public boolean applyThis() {
         Unit obj = (Unit) ref.getObj(obj_to_move);
-        origin= obj.getCoordinates();
+        origin = obj.getCoordinates();
         if (direction != null) {
-            destination= obj.getCoordinates().getAdjacentCoordinate(
+            destination = obj.getCoordinates().getAdjacentCoordinate(
                     DirectionMaster.getDirectionByFacing(obj.getFacing(),
                             direction));
             game.getMovementManager().move(obj, destination, free,
                     MOVE_MODIFIER.DISPLACEMENT, ref);
             return true;
         }
-        destination= getCoordinates();
+        destination = getCoordinates();
 
         game.getMovementManager().move(obj, destination, free,
                 MOVE_MODIFIER.DISPLACEMENT, ref);
@@ -87,11 +87,12 @@ public class MoveEffect extends DC_Effect {
         //
         // FacingManager.
 
-         Coordinates.FACING_DIRECTION facing = obj.getFacing();
+        Coordinates.FACING_DIRECTION facing = obj.getFacing();
 //         direction = DirectionMaster.getDirectionByFacing(facing, d);
 
         return true;
     }
+
     public Coordinates getCoordinates() {
         Coordinates c;
         if (movement) {
@@ -101,7 +102,7 @@ public class MoveEffect extends DC_Effect {
             Integer y = y_displacement.getInt(ref);
             // TODO direction?!
             c = new Coordinates(ref.getObj(obj_to_move).getCoordinates().getX() + x, ref.getObj(obj_to_move)
-             .getCoordinates().getY() + y);
+                    .getCoordinates().getY() + y);
         }
         return c;
     }

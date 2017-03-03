@@ -6,9 +6,9 @@ import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagedListPanel;
-import main.system.graphics.GuiManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.graphics.GuiManager;
 
 import java.util.List;
 import java.util.Set;

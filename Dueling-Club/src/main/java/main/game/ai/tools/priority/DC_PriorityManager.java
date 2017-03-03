@@ -81,7 +81,6 @@ public class DC_PriorityManager {
     }
 
 
-
     public static void setPriorities(List<ActionSequence> actions) {
         impl.setPriorities(actions);
     }

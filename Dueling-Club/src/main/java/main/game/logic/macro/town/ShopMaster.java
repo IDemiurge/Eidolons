@@ -1,10 +1,10 @@
 package main.game.logic.macro.town;
 
-import main.content.enums.entity.ItemEnums.MATERIAL;
-import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
 import main.content.CONTENT_CONSTS2.SHOP_MODIFIER;
 import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.ItemEnums.MATERIAL;
+import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.system.math.MathMaster;
 
 import java.util.Arrays;

@@ -30,6 +30,7 @@ public abstract class HT_BottomPanel extends G_Panel {
     protected Unit hero;
     protected ObjType bufferType;
     protected Object arg;
+
     // TextComp pointCost;
     // TextComp rank;
     public HT_BottomPanel(final Object arg, final Unit hero, final HC_Tree tree) {

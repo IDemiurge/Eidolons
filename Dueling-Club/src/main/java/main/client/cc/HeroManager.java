@@ -8,12 +8,12 @@ import main.client.cc.gui.views.HeroItemView;
 import main.client.cc.logic.spells.LibraryManager;
 import main.client.cc.logic.spells.SpellUpgradeMaster;
 import main.client.dc.Launcher;
-import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
 import main.content.*;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.enums.entity.ItemEnums.WEAPON_CLASS;
 import main.content.enums.entity.SpellEnums;
+import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -31,16 +31,16 @@ import main.entity.obj.BuffObj;
 import main.entity.obj.attach.DC_FeatObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
 import main.game.ai.tools.target.EffectFinder;
+import main.game.core.game.DC_Game;
 import main.game.logic.event.MessageManager;
 import main.game.logic.generic.PartyManager;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.town.Shop;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 import main.system.sound.SoundMaster;
@@ -539,7 +539,7 @@ public class HeroManager {
         if (!hero.getType().addProperty(PROP,
                 ((game.isSimulation() || trainer) ? type.getName() : type.getId() + ""),
                 checkNoDuplicates(TYPE)))
-            // undoSave(hero);
+        // undoSave(hero);
         {
             return false;
         }

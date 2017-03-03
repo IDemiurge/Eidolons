@@ -1,8 +1,8 @@
 package main.rules.counter;
 
 import main.ability.effects.DealDamageEffect;
-import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;

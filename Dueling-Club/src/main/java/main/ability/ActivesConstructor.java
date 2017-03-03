@@ -12,13 +12,13 @@ import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
+import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.content.enums.entity.AbilityEnums;
 import main.content.enums.entity.AbilityEnums.EFFECTS_WRAP;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODIFIERS;
 import main.content.enums.entity.ActionEnums;
-import main.content.enums.GenericEnums;
-import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
@@ -37,11 +37,11 @@ import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.Active;
 import main.entity.obj.ActiveObj;
-import main.system.auxiliary.log.LogMaster;
-import main.system.entity.ConditionMaster;
 import main.system.DC_ConditionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.entity.ConditionMaster;
 import main.system.math.Formula;
 
 import java.util.LinkedList;
@@ -370,7 +370,7 @@ public class ActivesConstructor {
 
     public static Effect wrapEffects(EFFECTS_WRAP wrap, Effect effects, Entity entity) {
         Formula radius = new Formula(entity.getParam(G_PARAMS.RADIUS));
-        Boolean allyOrEnemyOnly = null ;
+        Boolean allyOrEnemyOnly = null;
         if (entity.checkBool(GenericEnums.STD_BOOLS.NO_FRIENDLY_FIRE)) {
             allyOrEnemyOnly = false;
         }
@@ -471,10 +471,10 @@ public class ActivesConstructor {
 
             case BLAST:
                 if (entity.getIntParam(G_PARAMS.RADIUS) > 0) // ideally, I
-                    // shouldn't mix
-                    // up targeting
-                    // and effect
-                    // wrapping
+                // shouldn't mix
+                // up targeting
+                // and effect
+                // wrapping
                 {
                     effects = new ZoneEffect(effects, radius, allyOrEnemyOnly, notSelf);
                 }

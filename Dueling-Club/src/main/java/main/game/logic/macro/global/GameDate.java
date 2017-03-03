@@ -25,6 +25,7 @@ public class GameDate extends DataUnit<TIME_UNITS> {
     private int hour;
     private boolean day_or_night; // pm or am
     private boolean humanMonthsDisplayed = true;
+
     // midnight
     public GameDate(String era, int year, MONTH month, int day,
                     boolean day_or_night) {
@@ -87,12 +88,12 @@ public class GameDate extends DataUnit<TIME_UNITS> {
         return era;
     }
 
-    public void setEra(int era) {
-        this.era = era + StringMaster.getOrdinalEnding(era) + " Era";
-    }
-
     public void setEra(String era) {
         this.era = era;
+    }
+
+    public void setEra(int era) {
+        this.era = era + StringMaster.getOrdinalEnding(era) + " Era";
     }
 
     public int getYear() {

@@ -5,9 +5,9 @@ import main.entity.Entity;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.DC_UnitModel;
 import main.entity.type.ObjType;
+import main.game.battlefield.vision.VisionManager;
 import main.game.core.game.DC_Game;
 import main.game.core.state.MicroGameState;
-import main.game.battlefield.vision.VisionManager;
 import main.swing.generic.components.panels.G_InfoPanel;
 import main.swing.renderers.DC_InfoPanelRenderer;
 import main.system.auxiliary.StringMaster;
@@ -86,14 +86,14 @@ public class DC_InfoPanel extends G_InfoPanel implements TableModelListener {
                         .getInfoPanelValueList(obj_type);
             }
         } else {
-            if (!((DC_Game)infoObj.getGame()).getVisionMaster()
-             .getDetectionMaster().checkKnown(getInfoObj())) {
+            if (!((DC_Game) infoObj.getGame()).getVisionMaster()
+                    .getDetectionMaster().checkKnown(getInfoObj())) {
                 this.displayedValues = DC_ContentManager
-                 .getLimitedInfoPanelValueList(obj_type);
+                        .getLimitedInfoPanelValueList(obj_type);
             } else {
                 infoObj = (getInfoObj().getType());
                 this.displayedValues = DC_ContentManager
-                 .getInfoPanelValueList(obj_type);
+                        .getInfoPanelValueList(obj_type);
             }
         }
 

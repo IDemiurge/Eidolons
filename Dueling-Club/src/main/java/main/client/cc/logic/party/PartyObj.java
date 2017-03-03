@@ -2,9 +2,9 @@ package main.client.cc.logic.party;
 
 import main.client.cc.logic.HeroCreator;
 import main.client.dc.Simulation;
-import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.*;
 import main.content.enums.entity.HeroEnums;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -19,14 +19,14 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.game.logic.arcade.ArcadeManager.ARCADE_STATUS;
+import main.game.logic.battle.player.Player;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.travel.MacroParty;
 import main.game.logic.macro.travel.RestMaster;
-import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.math.MathMaster;
 
 import java.util.Collection;
@@ -266,7 +266,6 @@ public class PartyObj extends Obj {
         // setParam(PARAMS.BATTLE_SPIRIT, 100);
         // return;
         // }
-
 
 
         int principleClashes = 0;

@@ -4,13 +4,13 @@ import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.CoordinatesMaster;
 import main.game.battlefield.FacingMaster;
-import main.swing.XDimension;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.building.DungeonBuilder.BLOCK_TYPE;
 import main.game.logic.dungeon.building.DungeonBuilder.DUNGEON_TEMPLATES;
 import main.game.logic.dungeon.building.DungeonBuilder.ROOM_TYPE;
-import main.system.auxiliary.data.ListMaster;
+import main.swing.XDimension;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.DC_PositionMaster;
@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class BuildHelper {
     /*
-	 * 1) Get Required room-types 
+     * 1) Get Required room-types
 	 * 2) 
 	 * 
 	 * random wall VS always down-OR-right 

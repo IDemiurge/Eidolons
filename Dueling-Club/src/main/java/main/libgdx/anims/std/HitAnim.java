@@ -30,9 +30,9 @@ public class HitAnim extends ActionAnim {
 
     public HitAnim(DC_ActiveObj active, AnimData params) {
         this(active, params, true, Color.RED, () -> String.valueOf(
-         active.getIntParam(PARAMS.DAMAGE_LAST_DEALT)),
-         () -> ImageManager.getDamageTypeImagePath(
-          active.getDamageType() == null ? "Physical" : active.getDamageType().getName()));
+                active.getIntParam(PARAMS.DAMAGE_LAST_DEALT)),
+                () -> ImageManager.getDamageTypeImagePath(
+                        active.getDamageType() == null ? "Physical" : active.getDamageType().getName()));
     }
 
     public HitAnim(Entity active, AnimData params, boolean blood, Color c,
@@ -54,9 +54,9 @@ public class HitAnim extends ActionAnim {
         addAction(fade);
         setLoops(1);
         floatingText =
-         new FloatingText(
-          floatingTextSupplier, imageSupplier
-          , c);
+                new FloatingText(
+                        floatingTextSupplier, imageSupplier
+                        , c);
         part = ANIM_PART.IMPACT;
 
     }
@@ -77,7 +77,7 @@ public class HitAnim extends ActionAnim {
     public void start() {
         super.start();
         floatingText.init(GameScreen.getInstance().getAnimsStage()
-         , destination, 0, 128, 1.5f);
+                , destination, 0, 128, 1.5f);
     }
 
     private String getTargetSuffix(Obj targetObj) {

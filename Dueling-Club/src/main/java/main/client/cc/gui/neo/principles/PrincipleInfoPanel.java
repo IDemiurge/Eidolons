@@ -1,9 +1,9 @@
 package main.client.cc.gui.neo.principles;
 
 import main.client.cc.gui.neo.points.HC_InfoTextPanel;
-import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.PARAMS;
 import main.content.enums.entity.HeroEnums;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.entity.obj.unit.Unit;
 import main.rules.rpg.IntegrityRule;
 import main.rules.rpg.IntegrityRule.ALIGNMENT_LEVEL;

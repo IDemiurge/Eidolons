@@ -35,9 +35,11 @@ public class AnotherMenu implements Screen {
     boolean time_to_change_backgroud;
     Dark_Impact_Animation dark_impact_animation;
     BattleFieldScreen battleFieldScreen;
-    public AnotherMenu(BattleFieldScreen menu){
+
+    public AnotherMenu(BattleFieldScreen menu) {
         this.battleFieldScreen = menu;
     }
+
     @Override
     public void dispose() {
 
@@ -61,7 +63,7 @@ public class AnotherMenu implements Screen {
 //        sprite.scale(0.05f);
 
 
-        img_X =200;
+        img_X = 200;
         img_Y = 200;
         img_Width = 50;
         img_Height = 50;
@@ -71,7 +73,7 @@ public class AnotherMenu implements Screen {
         shape_Y = 150;
         shape_Width = 100;
         shape_Height = 85;
-        sprite.setPosition(img_X,img_Y);
+        sprite.setPosition(img_X, img_Y);
 
         color1 = 0;
         color2 = 0;
@@ -83,17 +85,16 @@ public class AnotherMenu implements Screen {
 
     @Override
     public void render(float v) {
-        Gdx.gl.glClearColor(color1,color2,color3,color4); // color for cleaning the screen,as for now its black
+        Gdx.gl.glClearColor(color1, color2, color3, color4); // color for cleaning the screen,as for now its black
 ////        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT );// method that deletes previous scene and make all pixels getOrCreate Clear Color
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
         time_Of_Each_FPS_delay += Gdx.graphics.getDeltaTime();
         timer_for_input_listen += Gdx.graphics.getDeltaTime();
         batch.begin();
-        if (time_Of_Each_FPS_delay >=0.4f){
+        if (time_Of_Each_FPS_delay >= 0.4f) {
             time_Of_Each_FPS_delay = 0;
         }
         System.out.println(time_Of_Each_FPS_delay);
-
 
 
         sprite.setTexture(dark_impact_animation.getTexture(time_Of_Each_FPS_delay));
@@ -103,8 +104,8 @@ public class AnotherMenu implements Screen {
 
         batch.end();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.A)){
-            if (timer_for_input_listen > 1){
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            if (timer_for_input_listen > 1) {
                 battleFieldScreen.myGame.setScreen(new BattleFieldScreen(battleFieldScreen.myGame));
                 timer_for_input_listen = 0;
             }

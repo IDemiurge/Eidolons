@@ -1,7 +1,5 @@
 package main.game.ai;
 
-import main.content.enums.system.AiEnums.AI_TYPE;
-import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.CONTENT_CONSTS2.ORDER_TYPE;
 import main.content.C_OBJ_TYPE;
@@ -9,11 +7,13 @@ import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.content.enums.system.AiEnums;
+import main.content.enums.system.AiEnums.AI_TYPE;
+import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.entity.obj.DC_Cell;
-import main.entity.obj.unit.Unit;
 import main.entity.obj.unit.DC_UnitModel;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.ai.advanced.companion.Order;
 import main.game.ai.elements.actions.Action;
@@ -24,8 +24,8 @@ import main.game.battlefield.Coordinates;
 import main.game.logic.dungeon.ai.DungeonCrawler.ENGAGEMENT_LEVEL;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -57,6 +57,7 @@ public class UnitAI {
     private boolean pathBlocked;
     private int logLevel = LOG_LEVEL_RESULTS;
     private Order currentOrder;
+
     public UnitAI(Unit unit, AI_Manager ai_Manager) {
         this.unit = unit;
         initType();
@@ -108,7 +109,7 @@ public class UnitAI {
         }
         // default additions?
         /*
-		 * verbatim spell list per mastery
+         * verbatim spell list per mastery
 		 */
     }
 

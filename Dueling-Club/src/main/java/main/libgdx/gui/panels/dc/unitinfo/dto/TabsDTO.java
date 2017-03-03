@@ -8,13 +8,12 @@ public class TabsDTO {
     private List<ValueDTO> current;
 
 
-
     public TabsDTO() {
         tabs = new ArrayList<>();
     }
 
 
-        public TabsDTO newTab() {
+    public TabsDTO newTab() {
         current = new ArrayList<>();
         tabs.add(current);
         return this;

@@ -19,9 +19,9 @@ public class ActiveCalculator extends EntityCalculator<DC_ActiveObj> {
         if (getEntity().getCosts().getCost(PARAMS.C_N_OF_ACTIONS) == null) {
             return 0;
         }
-        return  getEntity().getCosts().getCost(PARAMS.C_N_OF_ACTIONS).getPayment()
-         .getAmountFormula().getInt(getRef())
-         * getEntity().getOwnerObj().getIntParam(PARAMS.INITIATIVE_MODIFIER);
+        return getEntity().getCosts().getCost(PARAMS.C_N_OF_ACTIONS).getPayment()
+                .getAmountFormula().getInt(getRef())
+                * getEntity().getOwnerObj().getIntParam(PARAMS.INITIATIVE_MODIFIER);
 
     }
 }

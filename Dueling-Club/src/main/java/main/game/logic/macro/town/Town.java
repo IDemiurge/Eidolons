@@ -41,7 +41,7 @@ public class Town extends Place {
             return;
         }
         /*
-		 * setting shops for a town... > SHOT_TYPE? could be relatively easy...
+         * setting shops for a town... > SHOT_TYPE? could be relatively easy...
 		 */
         super.init();
         TownInitializer.initTownPlaces(this);

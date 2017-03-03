@@ -1,15 +1,15 @@
 package main.game.ai.advanced.companion;
 
-import main.game.core.game.DC_Game;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
+import main.game.core.game.DC_Game;
 import main.game.logic.dungeon.ai.DungeonCrawler.ENGAGEMENT_LEVEL;
 
 public class ExploreMode {
     /*
-	 * unit is given a coordinate to go to
+     * unit is given a coordinate to go to
 	 * build path...
 	 * 
 	 */
@@ -45,7 +45,7 @@ public class ExploreMode {
             return null;
         }
 //        if (interrupted)
-            return null;
+        return null;
 //        return action;
     }
 

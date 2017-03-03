@@ -22,6 +22,17 @@ public class TEST_JFRAME_LIBGDX_INTEGRATION extends JFrame {
         initComponents();
     }
 
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                TEST_JFRAME_LIBGDX_INTEGRATION javaLibgdx = new TEST_JFRAME_LIBGDX_INTEGRATION();
+                javaLibgdx.setVisible(true);
+            }
+        });
+    }
+
     private void initComponents() {
 
         JMenuBar menuBar = new JMenuBar();
@@ -79,16 +90,5 @@ public class TEST_JFRAME_LIBGDX_INTEGRATION extends JFrame {
         );
 
         pack();
-    }
-
-    public static void main(String[] args) {
-
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                TEST_JFRAME_LIBGDX_INTEGRATION javaLibgdx = new TEST_JFRAME_LIBGDX_INTEGRATION();
-                javaLibgdx.setVisible(true);
-            }
-        });
     }
 }

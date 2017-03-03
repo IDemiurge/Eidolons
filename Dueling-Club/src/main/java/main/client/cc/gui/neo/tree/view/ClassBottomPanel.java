@@ -2,9 +2,9 @@ package main.client.cc.gui.neo.tree.view;
 
 import main.client.cc.gui.neo.points.HC_PointComp;
 import main.client.cc.gui.neo.tree.HC_Tree;
-import main.content.enums.entity.HeroEnums.CLASS_GROUP;
 import main.content.ContentManager;
 import main.content.PARAMS;
+import main.content.enums.entity.HeroEnums.CLASS_GROUP;
 import main.content.values.parameters.PARAMETER;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;

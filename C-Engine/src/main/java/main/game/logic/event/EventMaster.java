@@ -9,9 +9,10 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
  */
 public class EventMaster {
     public static boolean fireStandard(STANDARD_EVENT_TYPE type, Ref ref) {
-        return fire (type, ref) ;
+        return fire(type, ref);
     }
-    public static boolean fire (EVENT_TYPE type, Ref ref) {
+
+    public static boolean fire(EVENT_TYPE type, Ref ref) {
         return ref.getGame().fireEvent(new Event(type, ref));
     }
 }

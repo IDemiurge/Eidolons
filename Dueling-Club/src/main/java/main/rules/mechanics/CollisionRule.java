@@ -20,7 +20,7 @@ import java.util.List;
 
 public class CollisionRule {
     /*
-	 * move action targets a cell with invisible unit on it...
+     * move action targets a cell with invisible unit on it...
 	 * 
 	 * outcomes: 1) stop short 2) displace 3) step over without noticing
 	 * 
@@ -100,7 +100,7 @@ public class CollisionRule {
                     false), GenericEnums.DAMAGE_TYPE.BLUDGEONING).apply(Ref.getSelfTargetingRefCopy(moveObj));
         }
         if (!VisionManager.checkVisible(collideObj))
-            // if (moveObj.canAct())
+        // if (moveObj.canAct())
         {
             StealthRule.applySpotted(collideObj); // ROLL?
         }

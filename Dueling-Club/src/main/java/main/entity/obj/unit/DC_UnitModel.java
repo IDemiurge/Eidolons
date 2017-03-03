@@ -61,7 +61,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static main.system.GuiEventType.INITIATIVE_CHANGED;
 
-public abstract class DC_UnitModel extends BattleFieldObject implements  Rotatable {
+public abstract class DC_UnitModel extends BattleFieldObject implements Rotatable {
 
     protected VISION_MODE vision_mode;
 
@@ -200,7 +200,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements  Rotatab
             setParam(PARAMS.IDENTITY_POINTS, getIntParam(PARAMS.STARTING_IDENTITY_POINTS));
         } else if (!isBfObj()) {
             int xp = MathMaster.getFractionValueCentimal(getIntParam(PARAMS.TOTAL_XP),
-             getIntParam(PARAMS.XP_LEVEL_MOD));
+                    getIntParam(PARAMS.XP_LEVEL_MOD));
             // for training
             setParam(PARAMS.XP, xp);
         }
@@ -209,6 +209,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements  Rotatab
     public boolean isBfObj() {
         return false;
     }
+
     protected void addDefaultValues() {
 
         super.addDefaultValues();
@@ -319,7 +320,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements  Rotatab
     }
 
     public void recalculateInitiative() {
-        int before =  getIntParam(PARAMS.C_INITIATIVE);
+        int before = getIntParam(PARAMS.C_INITIATIVE);
         int initiative = getIntParam(PARAMS.C_N_OF_ACTIONS)
                 * getIntParam(PARAMS.INITIATIVE_MODIFIER);
 
@@ -344,7 +345,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements  Rotatab
         setParam(PARAMS.INITIATIVE, base_initiative, true);
         resetPercentage(PARAMS.INITIATIVE);
 
-        int after =  getIntParam(PARAMS.C_INITIATIVE);
+        int after = getIntParam(PARAMS.C_INITIATIVE);
         if (before == after) {
             return;
         }
@@ -352,7 +353,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements  Rotatab
 
         if (diff != 0) {
             GuiEventManager.trigger(INITIATIVE_CHANGED,
-             new EventCallbackParam(new ImmutablePair<>(this, after)));
+                    new EventCallbackParam(new ImmutablePair<>(this, after)));
 
         }
     }
@@ -699,7 +700,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements  Rotatab
         super.setRef(ref);
         this.ref.setTarget(null);
     }
-
 
 
     public FACING_DIRECTION getFacingOrNull() {

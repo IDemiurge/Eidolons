@@ -3,9 +3,9 @@ package main.client.cc.gui.neo.choice;
 import main.client.cc.CharacterCreator;
 import main.client.cc.gui.neo.choice.utility.FilterOptionListener;
 import main.client.cc.gui.neo.choice.utility.SortOptionListener;
-import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.elements.Filter;
@@ -17,10 +17,10 @@ import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.swing.components.PagedOptionsComp;
 import main.swing.listeners.ListChooserSortOptionListener.SORT_TEMPLATE;
-import main.system.entity.ConditionMaster;
 import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.entity.ConditionMaster;
 
 import java.util.*;
 

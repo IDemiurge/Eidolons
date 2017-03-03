@@ -60,7 +60,9 @@ public class DC_GameState extends MicroGameState {
     @Override
     public DC_Game getGame() {
         return (DC_Game) super.getGame();
-    }  public void store() {
+    }
+
+    public void store() {
         // TODO stateStack.push(serialize());
 
     }

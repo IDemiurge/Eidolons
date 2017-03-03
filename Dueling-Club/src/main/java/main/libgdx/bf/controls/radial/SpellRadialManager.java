@@ -22,9 +22,9 @@ public class SpellRadialManager {
     public static List<RadialMenu.CreatorNode> getSpellNodes(Unit source,
                                                              DC_Obj target) {
         List<DC_SpellObj> spells = source.getSpells()
-         .stream()
-         .filter(spell -> (spell.getGame().isDebugMode() || (spell.canBeActivated() && spell.canBeTargeted(target.getId()))))
-         .collect(Collectors.toList());
+                .stream()
+                .filter(spell -> (spell.getGame().isDebugMode() || (spell.canBeActivated() && spell.canBeTargeted(target.getId()))))
+                .collect(Collectors.toList());
         if (spells.size() <= MAX_SPELLS_DISPLAYED) {
             return constructPlainSpellNodes(spells, source, target);
         }
@@ -47,7 +47,7 @@ public class SpellRadialManager {
             for (SPELL_ASPECT g : SPELL_ASPECT.values()) {
                 if (!aspects.contains(g)) {
                     if (new LinkedList<>(Arrays.asList(g.groups))
-                     .contains(spell.getSpellGroup())) {
+                            .contains(spell.getSpellGroup())) {
                         aspects.add(g);
                     }
                 }
@@ -90,10 +90,10 @@ public class SpellRadialManager {
             final DC_ActiveObj action = (DC_ActiveObj) object.getContents();
 
             node.texture =
-            RadialManager.getTextureForActive(action, target);
+                    RadialManager.getTextureForActive(action, target);
             node.name = action.getName();
             if (node.name.equalsIgnoreCase("Summon Vampire Bat")) {
-int i =1;
+                int i = 1;
             }
             node.action = new Runnable() {
                 @Override
@@ -111,11 +111,11 @@ int i =1;
 
             node.texture = TextureCache.getOrCreate(object.getTexturePath());
 
-            node.w=object.getWidth();
-            node.h=object.getHeight();
+            node.w = object.getWidth();
+            node.h = object.getHeight();
             object.getItems(source).forEach(child -> {
                 node.childNodes.add(createNodeBranch(
-                 child, source, target));
+                        child, source, target));
             });
         }
         return node;
@@ -135,7 +135,7 @@ spell 'types'?
     public enum SPELL_ASPECT {
         ARCANE(SpellEnums.SPELL_GROUP.CONJURATION, SpellEnums.SPELL_GROUP.SORCERY, SpellEnums.SPELL_GROUP.ENCHANTMENT),
         LIFE(SpellEnums.SPELL_GROUP.SAVAGE, SpellEnums.SPELL_GROUP.SYLVAN, SpellEnums.SPELL_GROUP.FIRE
-         , SpellEnums.SPELL_GROUP.AIR, SpellEnums.SPELL_GROUP.EARTH, SpellEnums.SPELL_GROUP.WATER
+                , SpellEnums.SPELL_GROUP.AIR, SpellEnums.SPELL_GROUP.EARTH, SpellEnums.SPELL_GROUP.WATER
 
         ),
         CHAOS(SpellEnums.SPELL_GROUP.DESTRUCTION, SpellEnums.SPELL_GROUP.DEMONOLOGY, SpellEnums.SPELL_GROUP.WARP),

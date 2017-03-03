@@ -18,20 +18,20 @@ import main.game.core.game.DC_Game;
  * Created by JustMe on 3/3/2017.
  */
 public class AiHandler {
-   protected TaskManager taskManager;
-    protected  GoalManager goalManager;
-    protected  ActionManager actionManager;
-    protected  PriorityManager priorityManager;
-    protected  PruneMaster pruneMaster;
-    protected  PathBuilder pathBuilder;
-    protected  TargetingMaster targetingMaster;
-    protected  Analyzer analyzer;
-    protected  ParamAnalyzer paramAnalyzer;
-    protected   AI_Logic logic;
-    protected   ActionSequenceConstructor actionSequenceConstructor;
-    protected    AiHandler master;
-    protected   DC_Game game;
-    protected   Unit unit;
+    protected TaskManager taskManager;
+    protected GoalManager goalManager;
+    protected ActionManager actionManager;
+    protected PriorityManager priorityManager;
+    protected PruneMaster pruneMaster;
+    protected PathBuilder pathBuilder;
+    protected TargetingMaster targetingMaster;
+    protected Analyzer analyzer;
+    protected ParamAnalyzer paramAnalyzer;
+    protected AI_Logic logic;
+    protected ActionSequenceConstructor actionSequenceConstructor;
+    protected AiHandler master;
+    protected DC_Game game;
+    protected Unit unit;
 
     public AiHandler() {
         this.master = this;

@@ -8,10 +8,10 @@ import main.content.values.properties.PROPERTY;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.attach.DC_BuffObj;
 import main.system.auxiliary.StringMaster;
+import main.system.entity.CounterMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.images.ImageManager;
 import main.system.math.roll.Roll;
-import main.system.entity.CounterMaster;
 
 import java.awt.*;
 import java.util.List;
@@ -53,7 +53,7 @@ public class EffectAnimation extends ActionAnimation {
 
         Boolean negative = false;
         if (counter != null)
-            // counter.isNegative(); // img
+        // counter.isNegative(); // img
         {
             drawTextOnTarget(StringMaster.getBonusString(modValue), font, CENTERED_X, CENTERED_Y,
                     ColorManager.getStandardColor(negative));

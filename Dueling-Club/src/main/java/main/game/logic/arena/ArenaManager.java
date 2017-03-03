@@ -1,32 +1,32 @@
 package main.game.logic.arena;
 
-import main.content.enums.DungeonEnums.MAP_BACKGROUND;
 import main.content.PARAMS;
 import main.content.enums.DungeonEnums;
+import main.content.enums.DungeonEnums.MAP_BACKGROUND;
 import main.data.XLinkedMap;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
-import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.DC_ObjInitializer;
 import main.game.battlefield.map.DC_Map;
-import main.game.logic.generic.SpawnManager;
-import main.game.logic.battle.player.DC_Player;
-import main.game.logic.dungeon.Dungeon;
+import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.logic.battle.Battle;
 import main.game.logic.battle.Battle.BATTLE_STATS;
 import main.game.logic.battle.BattleOptions;
 import main.game.logic.battle.BattleOptions.ARENA_GAME_OPTIONS;
 import main.game.logic.battle.BattleOptions.DIFFICULTY;
+import main.game.logic.battle.player.DC_Player;
 import main.game.logic.battle.player.Player;
+import main.game.logic.dungeon.Dungeon;
+import main.game.logic.generic.SpawnManager;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
-import main.system.auxiliary.data.ListMaster;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.net.data.MapData;
 
 import java.awt.*;
@@ -141,7 +141,7 @@ public class ArenaManager {
 
 //        WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
         GuiEventManager.trigger(CREATE_UNITS_MODEL,
-         new EventCallbackParam(game.getBfObjects()));
+                new EventCallbackParam(game.getBfObjects()));
 
         if (!game.isOffline()) {
             saveFacing();

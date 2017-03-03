@@ -1,16 +1,16 @@
 package main.swing.components.panels;
 
 import main.content.C_OBJ_TYPE;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.swing.generic.components.G_Panel;
 import main.swing.renderers.SmartTextManager;
+import main.system.auxiliary.StringMaster;
 import main.system.graphics.ColorManager;
 import main.system.graphics.FontMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 
 import java.awt.*;

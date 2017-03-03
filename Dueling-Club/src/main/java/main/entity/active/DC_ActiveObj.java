@@ -41,7 +41,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interruptable,
- SpriteAnimated, AttachedObj {
+        SpriteAnimated, AttachedObj {
 
     protected Unit ownerObj;
     protected Targeting targeting;
@@ -95,7 +95,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
 
-
     /**
      * default self-activation
      */
@@ -103,6 +102,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return getMaster().getHandler().activate();
 
     }
+
     @Override
     public boolean activate(boolean transmit) {
         return getHandler().activate();
@@ -122,7 +122,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public DAMAGE_TYPE getEnergyType() {
         if (energyType == null) {
             energyType = (new EnumMaster<DAMAGE_TYPE>().retrieveEnumConst(DAMAGE_TYPE.class,
-             getProperty(PROPS.DAMAGE_TYPE)));
+                    getProperty(PROPS.DAMAGE_TYPE)));
         }
         if (energyType == null) {
             energyType = DC_ContentManager.getDamageForAspect(getAspect());
@@ -136,7 +136,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public RESISTANCE_TYPE getResistanceType() {
         if (resistType == null) {
             resistType = (new EnumMaster<RESISTANCE_TYPE>().retrieveEnumConst(
-             RESISTANCE_TYPE.class, getProperty(PROPS.RESISTANCE_TYPE)));
+                    RESISTANCE_TYPE.class, getProperty(PROPS.RESISTANCE_TYPE)));
         }
         return resistType;
     }
@@ -244,7 +244,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public void invokeClicked() {
         if (!getActivator().canBeManuallyActivated()) {
             getActivator().cannotActivate();
-            return ;
+            return;
         }
         getHandler().activateOnActionThread();
 //        activate();
@@ -444,14 +444,14 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public AI_LOGIC getAiLogic() {
         if (aiLogic == null) {
             aiLogic = new EnumMaster<AI_LOGIC>().retrieveEnumConst(AI_LOGIC.class,
-             getProperty(PROPS.AI_LOGIC));
+                    getProperty(PROPS.AI_LOGIC));
         }
         return aiLogic;
     }
 
     public ACTION_TYPE getActionType() {
         return new EnumMaster<ACTION_TYPE>().retrieveEnumConst(ACTION_TYPE.class,
-         getProperty(G_PROPS.ACTION_TYPE));
+                getProperty(G_PROPS.ACTION_TYPE));
     }
 
     public String getActionMode() {
@@ -493,8 +493,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     //DELEGATES
     //
-
-
 
 
     //RESET
@@ -794,20 +792,20 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         this.channelingResolveCosts = channelingResolveCosts;
     }
 
-    public void setContinuous(boolean continuous) {
-        this.continuous = continuous;
-    }
-
     public boolean isContinuous() {
         return continuous;
     }
 
-    public void setResistanceChecked(boolean resistanceChecked) {
-        this.resistanceChecked = resistanceChecked;
+    public void setContinuous(boolean continuous) {
+        this.continuous = continuous;
     }
 
     public boolean isResistanceChecked() {
         return resistanceChecked;
+    }
+
+    public void setResistanceChecked(boolean resistanceChecked) {
+        this.resistanceChecked = resistanceChecked;
     }
 
     public Object getAnimationKey() {
@@ -823,6 +821,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public void setForcePresetTarget(boolean b) {
         getTargeter().setForcePresetTarget(b);
     }
+
     @Override
     public void setCancelled(Boolean c) {
         getHandler().setCancelled(c);

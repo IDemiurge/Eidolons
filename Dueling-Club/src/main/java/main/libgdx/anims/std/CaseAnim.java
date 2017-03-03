@@ -8,15 +8,15 @@ import main.libgdx.anims.AnimData.ANIM_VALUES;
 /**
  * Created by JustMe on 2/5/2017.
  */
-public class CaseAnim extends ActionAnim{
+public class CaseAnim extends ActionAnim {
 
     public CaseAnim(DC_ActiveObj active,
                     ANIM_CASES CASE) {
-        super(active, getAnimData(active, CASE) );
+        super(active, getAnimData(active, CASE));
     }
 
     private static AnimData getAnimData(DC_ActiveObj active, ANIM_CASES aCase) {
-        AnimData   data=new AnimData();
+        AnimData data = new AnimData();
         String sprite = getSprite(active, aCase);
         data.setValue(ANIM_VALUES.SPRITES, sprite);
         return data;

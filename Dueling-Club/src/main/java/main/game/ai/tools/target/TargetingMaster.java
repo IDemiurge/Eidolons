@@ -98,7 +98,7 @@ public class TargetingMaster {
     public static boolean isValidTargetingCell(Action targetAction, Coordinates c, Unit unit) {
 
         return unit.getGame().getBattleFieldManager()
-         .canMoveOnto(targetAction.getSource(), c);
+                .canMoveOnto(targetAction.getSource(), c);
     }
 
     public static boolean canBeTargeted(Action action) {

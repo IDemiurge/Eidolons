@@ -28,7 +28,7 @@ public class SaveMaster {
 
     public static void load(String fileName) {
         /*
-		 * load types... init world from save - 
+         * load types... init world from save -
 		 * dynamic values - can they be set for Type? 
 		 */
         String content = FileManager.readFile(new File(getSavePath() + fileName + ".xml"));

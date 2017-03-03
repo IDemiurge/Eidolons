@@ -82,7 +82,7 @@ public class WorldGenerator {
         generateRoutes();
         return region;
         /*
-		 * r.getProperty(MACRO_PROPS.PLACES) Places - Power level ++ will be
+         * r.getProperty(MACRO_PROPS.PLACES) Places - Power level ++ will be
 		 * appearing as the game progresses
 		 * 
 		 * Routes - there should be at least 1 between each 2 places as

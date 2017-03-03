@@ -9,11 +9,11 @@ import main.client.cc.gui.neo.tree.view.HT_View;
 import main.client.cc.gui.neo.tree.view.SkillTreeView;
 import main.client.dc.Launcher;
 import main.client.dc.Launcher.VIEWS;
-import main.content.enums.entity.HeroEnums.CLASS_GROUP;
-import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.*;
 import main.content.DC_ContentManager.ATTRIBUTE;
+import main.content.enums.entity.HeroEnums.CLASS_GROUP;
 import main.content.enums.system.MetaEnums;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
@@ -24,9 +24,9 @@ import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.EnumMaster;
-import main.system.graphics.GuiManager;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 import main.system.launch.CoreEngine;
@@ -175,8 +175,8 @@ public class HC_Master {
         // return img;
         img = ImageManager.getNewBufferedImage(40, 40);
         if (selected)
-            // img = ImageManager.applyBorder(img,
-            // BORDER.BACKGROUND_HIGHLIGHT_32);
+        // img = ImageManager.applyBorder(img,
+        // BORDER.BACKGROUND_HIGHLIGHT_32);
         {
             img = ImageManager.applyImage(img, BORDER.BACKGROUND_HIGHLIGHT_32.getImage(), 1, 1,
                     false);
@@ -190,7 +190,7 @@ public class HC_Master {
                 (CLASS_GROUP) arg, null);
         img = ImageManager.applyImage(img, valueIcon, 1, 1, false);
         if (locked)
-            // additional darkening?
+        // additional darkening?
         {
             img = ImageManager.applyBorder(img, BORDER.DARKENING_32);
         }

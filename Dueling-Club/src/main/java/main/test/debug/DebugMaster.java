@@ -112,7 +112,7 @@ public class DebugMaster {
             DEBUG_FUNCTIONS.CLEAR,
             DEBUG_FUNCTIONS.RESTART,
             DEBUG_FUNCTIONS.KILL_ALL_UNITS,
-     DEBUG_FUNCTIONS.END_TURN,
+            DEBUG_FUNCTIONS.END_TURN,
 //            DEBUG_FUNCTIONS.CLEAR_WAVES,
 //            DEBUG_FUNCTIONS.LOAD_DUNGEON,
     };
@@ -121,10 +121,10 @@ public class DebugMaster {
             DEBUG_FUNCTIONS.PAUSE,
     };
     public static final DEBUG_FUNCTIONS[] group_toggle = {
-     TOGGLE_DUMMY,
-     TOGGLE_DUMMY_PLUS,
-     TOGGLE_FREE_ACTIONS,
-     TOGGLE_OMNIVISION,
+            TOGGLE_DUMMY,
+            TOGGLE_DUMMY_PLUS,
+            TOGGLE_FREE_ACTIONS,
+            TOGGLE_OMNIVISION,
 //     TOGGLE_LIGHTING,
 //     TOGGLE_FOG,
     };
@@ -138,12 +138,12 @@ public class DebugMaster {
     };
     public static final DEBUG_FUNCTIONS[] group_sfx = {
 
-     DEBUG_FUNCTIONS.SFX_ADD,
-     DEBUG_FUNCTIONS.SFX_SET,
-     DEBUG_FUNCTIONS.SFX_PLAY_LAST,
-     DEBUG_FUNCTIONS.SFX_ADD_RANDOM,
-     DEBUG_FUNCTIONS.SFX_MODIFY,
-     DEBUG_FUNCTIONS.SFX_SAVE,
+            DEBUG_FUNCTIONS.SFX_ADD,
+            DEBUG_FUNCTIONS.SFX_SET,
+            DEBUG_FUNCTIONS.SFX_PLAY_LAST,
+            DEBUG_FUNCTIONS.SFX_ADD_RANDOM,
+            DEBUG_FUNCTIONS.SFX_MODIFY,
+            DEBUG_FUNCTIONS.SFX_SAVE,
     };
     public static final DEBUG_FUNCTIONS[] group_graphics = {
             DEBUG_FUNCTIONS.TOGGLE_LIGHTING,
@@ -161,12 +161,12 @@ public class DebugMaster {
             HIDDEN_DEBUG_FUNCTIONS.DISPLAY_REF,
             HIDDEN_DEBUG_FUNCTIONS.DISPLAY_UNIT_INFO,
     };
-    public static final Object[][] groups={
-     group_add_bf_obj,
-     group_bf,
-     group_display,
-     group_add,
-     group_toggle,
+    public static final Object[][] groups = {
+            group_add_bf_obj,
+            group_bf,
+            group_display,
+            group_add,
+            group_toggle,
     };
     public static boolean ALT_AI_PLAYER;
     private static boolean omnivision;
@@ -377,6 +377,7 @@ public class DebugMaster {
         this.setDebugPanel(new DebugPanel(this));
 
     }
+
     public boolean isDebugFunctionRunning() {
         return debugFunctionRunning;
     }
@@ -416,7 +417,7 @@ public class DebugMaster {
         String data = null;
         DC_TYPE TYPE;
 
-        debugFunctionRunning=true;
+        debugFunctionRunning = true;
         try {
             switch (func) {
 
@@ -478,7 +479,7 @@ public class DebugMaster {
                     break;
                 case DUNGEON_PLAN_INFO: {
                     LogMaster.log(1, ""
-                     + game.getDungeonMaster().getDungeon().getPlan());
+                            + game.getDungeonMaster().getDungeon().getPlan());
                     break;
                 }
                 case DUNGEON_BLOCK_INFO: {
@@ -629,7 +630,7 @@ public class DebugMaster {
                         TYPE = DC_TYPE.WEAPONS;
                     } else {
                         TYPE = (DC_TYPE) DialogMaster.getChosenOption("Choose item type...",
-                         DC_TYPE.WEAPONS, DC_TYPE.ARMOR, DC_TYPE.ITEMS, DC_TYPE.JEWELRY);
+                                DC_TYPE.WEAPONS, DC_TYPE.ARMOR, DC_TYPE.ITEMS, DC_TYPE.JEWELRY);
                     }
                     if (isAltMode()) {
                         if (!selectWeaponType()) {
@@ -654,11 +655,11 @@ public class DebugMaster {
                         quick = DialogMaster.confirm("quick slot item?");
                     }
                     DC_HeroItemObj item = ItemFactory.createItemObj(selectedType, selectedTarget.getOwner(),
-                     game, ref, quick);
+                            game, ref, quick);
                     if (!quick) {
                         if (TYPE != DC_TYPE.JEWELRY) {
                             selectedTarget.equip(item, TYPE == DC_TYPE.ARMOR ? ItemEnums.ITEM_SLOT.ARMOR
-                             : ItemEnums.ITEM_SLOT.MAIN_HAND);
+                                    : ItemEnums.ITEM_SLOT.MAIN_HAND);
                         }
                     } else {
                         selectedTarget.addQuickItem((DC_QuickItemObj) item);
@@ -679,10 +680,10 @@ public class DebugMaster {
                         break;
                     }
                     TestMasterContent.setTEST_LIST(TestMasterContent.getTEST_LIST()
-                     + selectedType.getName() + ";");
+                            + selectedType.getName() + ";");
 
                     selectedTarget.getSpells().add(
-                     new DC_SpellObj(selectedType, selectedTarget.getOwner(), game, selectedTarget.getRef()));
+                            new DC_SpellObj(selectedType, selectedTarget.getOwner(), game, selectedTarget.getRef()));
                     game.getManager().refreshGUI();
                     break;
                 case ADD_SKILL:
@@ -699,12 +700,12 @@ public class DebugMaster {
                     }
 
                     if (!new SelectiveTargeting(new Conditions(ConditionMaster
-                     .getTYPECondition(C_OBJ_TYPE.BF_OBJ))).select(ref)) {
+                            .getTYPECondition(C_OBJ_TYPE.BF_OBJ))).select(ref)) {
                         break;
                     }
                     lastType = type;
                     new AddBuffEffect(type + " hack", new ModifyPropertyEffect(prop, MOD_PROP_TYPE.ADD,
-                     type), new Formula("1")).apply(ref);
+                            type), new Formula("1")).apply(ref);
                     if (func == DEBUG_FUNCTIONS.ADD_ACTIVE) {
                         infoObj.getActives().add(game.getActionManager().getAction(type, infoObj));
                         ((DC_ActionManager) game.getActionManager()).constructActionMaps(infoObj);
@@ -716,14 +717,14 @@ public class DebugMaster {
                 case ADD_PASSIVE:
                     // same method
                     infoObj.getPassives().add(
-                     AbilityConstructor.getPassive(ListChooser.chooseType(DC_TYPE.ABILS),
-                      infoObj));
+                            AbilityConstructor.getPassive(ListChooser.chooseType(DC_TYPE.ABILS),
+                                    infoObj));
                     infoObj.activatePassives();
                     break;
                 case CHANGE_OWNER:
                     // if already has, make permanent
                     new AddBuffEffect("ownership hack", new OwnershipChangeEffect(), new Formula("1"))
-                     .apply(ref);
+                            .apply(ref);
 
                     break;
 
@@ -765,8 +766,8 @@ public class DebugMaster {
                     Wave wave = new Wave(coordinate, waveType, game, ref, game.getPlayer(!isAltMode()));
 
                     String value = new ListChooser(SELECTION_MODE.MULTIPLE, StringMaster
-                     .openContainer(wave.getProperty(PROPS.UNIT_TYPES)), DC_TYPE.UNITS)
-                     .choose();
+                            .openContainer(wave.getProperty(PROPS.UNIT_TYPES)), DC_TYPE.UNITS)
+                            .choose();
                     wave.setProperty(PROPS.UNIT_TYPES, value);
                     // PROPS.EXTENDED_PRESET_GROUP
                     break;
@@ -782,7 +783,7 @@ public class DebugMaster {
                         coordinate = getGame().getBattleFieldManager().pickCoordinate();
                     } else {
                         FACING_DIRECTION side = new EnumChooser<FACING_DIRECTION>()
-                         .choose(FACING_DIRECTION.class);
+                                .choose(FACING_DIRECTION.class);
                         // if (side== FACING_DIRECTION.NONE)
                         game.getArenaManager().getSpawnManager().getPositioner().setForcedSide(side);
                     }
@@ -792,7 +793,7 @@ public class DebugMaster {
                     }
                     try {
                         game.getArenaManager().getSpawnManager().spawnWave(typeName,
-                         game.getPlayer(ALT_AI_PLAYER), coordinate);
+                                game.getPlayer(ALT_AI_PLAYER), coordinate);
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
@@ -830,10 +831,10 @@ public class DebugMaster {
                 case WAITER_INPUT: {
                     String input = DialogMaster.inputText("operation");
                     WAIT_OPERATIONS operation = new EnumMaster<WAIT_OPERATIONS>().retrieveEnumConst(
-                     WAIT_OPERATIONS.class, input);
+                            WAIT_OPERATIONS.class, input);
                     if (operation == null) {
                         operation = new EnumMaster<WAIT_OPERATIONS>().retrieveEnumConst(
-                         WAIT_OPERATIONS.class, input, true);
+                                WAIT_OPERATIONS.class, input, true);
                     }
                     if (operation == null) {
                         DialogMaster.error("no such operation");
@@ -878,9 +879,9 @@ public class DebugMaster {
                     EmitterController.getInstance().save();
                     break;
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             debugFunctionRunning = false;
         }
         reset();
@@ -955,8 +956,7 @@ public class DebugMaster {
 
             Obj obj = arg;
             ref.setTarget(game.getCellByCoordinate(obj.getCoordinates()).getId());
-        } else
-        if (!new SelectiveTargeting(new Conditions(ConditionMaster
+        } else if (!new SelectiveTargeting(new Conditions(ConditionMaster
                 .getTYPECondition(DC_TYPE.TERRAIN))).select(ref)) {
             return;
         }
@@ -1316,6 +1316,7 @@ public class DebugMaster {
     public void setArg(Obj arg) {
         this.arg = arg;
     }
+
     public enum SIMULATION_FUNCTIONS {
         REMAP,
 
@@ -1395,10 +1396,10 @@ public class DebugMaster {
 
 
         TOGGLE_LIGHTING,
-        TOGGLE_FOG,SFX_ADD,
-         SFX_ADD_RANDOM,
+        TOGGLE_FOG, SFX_ADD,
+        SFX_ADD_RANDOM,
         SFX_MODIFY,
-         SFX_SAVE,
+        SFX_SAVE,
         SFX_PLAY_LAST, SFX_SET;
 
         boolean transmitted;

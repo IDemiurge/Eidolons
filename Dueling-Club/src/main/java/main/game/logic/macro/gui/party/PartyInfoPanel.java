@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 public class PartyInfoPanel extends Header {
     /*
-	 * 1000 pixel height?
+     * 1000 pixel height?
 	 */
 
     public final static VALUE[] party_info_values = {MACRO_PARAMS.PROVISIONS,

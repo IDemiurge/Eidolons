@@ -21,7 +21,7 @@ public class ItemActiveMaster extends ActiveMaster {
 
     @Override
     protected EntityResetter<DC_ActiveObj> createResetter() {
-        return new ActiveResetter(getEntity(), this){
+        return new ActiveResetter(getEntity(), this) {
             @Override
             protected void applyPenalties() {
             }

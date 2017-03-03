@@ -5,8 +5,8 @@ import main.content.VALUE;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.entity.obj.DC_Obj;
-import main.system.graphics.FontMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.graphics.FontMaster;
 
 import java.awt.*;
 

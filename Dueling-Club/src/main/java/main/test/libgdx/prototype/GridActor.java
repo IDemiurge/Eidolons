@@ -25,13 +25,13 @@ public class GridActor extends Actor {
 
         //gridPanel = new GridPanel(PathFinder.getImagePath(), raws, lines).init();
 //        LightMap lightmap = new LightMap(gridPanel.getUnits());
-        setBounds(gridPanel.getX(),gridPanel.getY(),gridPanel.getWidth(),gridPanel.getHeight());
-        addListener(new ClickListener(){
+        setBounds(gridPanel.getX(), gridPanel.getY(), gridPanel.getWidth(), gridPanel.getHeight());
+        addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 System.out.println("GRID touch detected");
                 System.out.println("Mouse touch is on: " + x + " " + y);
-                System.out.println(" Cell with coords : " + (int)x/132 + " _ " + (int)y/113);
+                System.out.println(" Cell with coords : " + (int) x / 132 + " _ " + (int) y / 113);
                 return super.touchDown(event, x, y, pointer, button);
             }
         });

@@ -6,7 +6,7 @@ import main.system.math.Formula;
 
 public class AbsorbDamageEffect extends DC_Effect {
     /*
-	 * Yes, I suppose we could do this via counters or a parameter
+     * Yes, I suppose we could do this via counters or a parameter
 	 * DAMAGE_ABSORPTION ... The question is, how to control it? The type/source
 	 * of dmg it blocks...
 	 */

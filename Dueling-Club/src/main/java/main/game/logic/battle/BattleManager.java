@@ -52,8 +52,8 @@ public class BattleManager {
         if (EncounterMaster.isEncounterBeingResolved()) {
             WaitMaster.receiveInput(WAIT_OPERATIONS.BATTLE_FINISHED, outcome);
         }// boolean override = (boolean) WaitMaster
-            // .waitForInputIfWaiting(WAIT_OPERATIONS.BATTLE_FINISHED);
-            // if (!override)
+        // .waitForInputIfWaiting(WAIT_OPERATIONS.BATTLE_FINISHED);
+        // if (!override)
         else {
             initDialogue();
         }
@@ -209,9 +209,9 @@ public class BattleManager {
 
     public void unitDies(Unit killed) {
         if (killed.getGame().isDummyMode()
-         // TODO until fixed
-         || true
-         ) {
+                // TODO until fixed
+                || true
+                ) {
             return;
         }
         if (killed.getOriginalOwner().isMe()) {

@@ -2,9 +2,9 @@ package main.rules;
 
 import main.data.XLinkedMap;
 import main.entity.obj.unit.Unit;
-import main.system.controls.Controller;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.controls.Controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +20,7 @@ public class RuleMaster implements Controller {
     private RuleMaster() {
         instance = this;
     }
+
     public static void init() {
         for (RULE r : RULE.values()) {
             Boolean on = checkStatus(getScopeForRule(r));

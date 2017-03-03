@@ -10,7 +10,6 @@ import main.game.logic.battle.player.Player;
 public class LockObj extends Unit {
 
 
-
     public LockObj(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
     }

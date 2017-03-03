@@ -35,7 +35,7 @@ public class InputController implements InputProcessor {
     private Stage gui;
     private char lastTyped;
     private char lastUp;
-    private List<String> charsUp=    new LinkedList<>() ;
+    private List<String> charsUp = new LinkedList<>();
 
     public InputController(OrthographicCamera camera) {
         this.camera = camera;
@@ -75,13 +75,10 @@ public class InputController implements InputProcessor {
     public boolean keyUp(int i) {
         if (i == 57) {
             alt = false;
-        }
-else        if (i == 129) {
+        } else if (i == 129) {
             ctrl = false;
-        }
-else
-        {
-            lastUp = ((char)i);
+        } else {
+            lastUp = ((char) i);
             String c = Keys.toString(i);//Character.valueOf((char) i);
             if (!charsUp.contains(c)) {
                 charsUp.add(c);

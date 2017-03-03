@@ -6,15 +6,17 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
 import main.game.battlefield.DC_ObjInitializer;
+import main.game.core.game.DC_Game;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.DungeonMaster;
 import main.swing.generic.components.editors.FileChooser;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.auxiliary.*;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
@@ -465,8 +467,9 @@ public class PresetMaster {
     }
 
     public static Preset loadPreset(String relativePath) {
-        return loadPreset(new File(getPresetFolderPath()+ relativePath));
+        return loadPreset(new File(getPresetFolderPath() + relativePath));
     }
+
     public static Preset loadPreset(File file) {
         String data = FileManager.readFile(file);
         String path = file.getPath().replace(getPresetFolderPath(), "").replace(file.getName(), "");

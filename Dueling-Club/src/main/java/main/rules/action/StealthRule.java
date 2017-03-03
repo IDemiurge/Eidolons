@@ -23,7 +23,7 @@ import main.system.math.roll.RollMaster;
 
 public class StealthRule implements ActionRule {
     /*
-	 * After each action by the stealthy unit or the spotter
+     * After each action by the stealthy unit or the spotter
 	 */
 
     public static final String SPOTTED = "Spotted";
@@ -60,13 +60,13 @@ public class StealthRule implements ActionRule {
             return false;
         }
         if (unit.checkStatus(UnitEnums.STATUS.SPOTTED))
-            // ***BY UNIT*** - if "spotter" is killed, can become invisible
-            // again!!!
+        // ***BY UNIT*** - if "spotter" is killed, can become invisible
+        // again!!!
         {
             return false;
         }
         if (unit.checkStatus(UnitEnums.STATUS.INVISIBLE))
-            // TODO mind-affecting check?
+        // TODO mind-affecting check?
         {
             return true;
         }

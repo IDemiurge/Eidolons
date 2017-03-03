@@ -43,11 +43,12 @@ public class ArrayMaster<T> {
         }
         return list;
     }
+
     public Collection<Collection<T>> get2dListFrom3dArray(T[][][] array) {
         Collection<Collection<T>> list = new LinkedList<>();
         for (T[][] t : array) {
             for (T[] t1 : t) {
-                 list.add(Arrays.asList(t1));
+                list.add(Arrays.asList(t1));
             }
         }
         return list;

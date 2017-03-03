@@ -213,7 +213,7 @@ public class DC_Game extends MicroGame {
         toolTipMaster = new ToolTipMaster(this);
         requirementsManager = new DC_RequirementsManager(this);
         valueManager = new DC_ValueManager(this);
-        visionMaster =  VisionManager.getMaster();
+        visionMaster = VisionManager.getMaster();
         actionManager = new DC_ActionManager(this);
         turnManager = new DC_TurnManager(this);
         movementManager = new DC_MovementManager(this);
@@ -346,7 +346,7 @@ public class DC_Game extends MicroGame {
 //            WaitMaster.receiveInput(WAIT_OPERATIONS.GUI_READY, true);
 //            WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
         } else if (!battlefield.isInitialized())
-            // gui starts building while logic is getting ready TODO
+        // gui starts building while logic is getting ready TODO
         {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
@@ -359,7 +359,7 @@ public class DC_Game extends MicroGame {
                 }
             });
         } else
-            // when is this really called? TODO
+        // when is this really called? TODO
         {
             battlefield.init();
         }
@@ -369,7 +369,7 @@ public class DC_Game extends MicroGame {
         }
 
         arenaManager.startGame();
-       getGraveyardManager().init();
+        getGraveyardManager().init();
 
         getState().gameStarted(first);
 
@@ -391,8 +391,6 @@ public class DC_Game extends MicroGame {
         }
         Chronos.logTimeElapsedForMark("GAME_START");
     }
-
-
 
 
     private void startGameLoop() {
@@ -524,7 +522,6 @@ public class DC_Game extends MicroGame {
     }
 
 
-
     public Obj getObjectByCoordinate(Integer z, Coordinates c, boolean cellsIncluded, boolean passableIncluded, boolean overlayingIncluded) {
         return getMaster().getObjectByCoordinate(z, c, cellsIncluded, passableIncluded, overlayingIncluded);
     }
@@ -613,8 +610,6 @@ public class DC_Game extends MicroGame {
     }
 
 
-
-
     public VisionMaster getVisionMaster() {
         return visionMaster;
     }
@@ -632,7 +627,7 @@ public class DC_Game extends MicroGame {
     public synchronized DebugMaster getDebugMaster() {
         if (debugMaster == null) {
             if (getBattleField() != null) {
-                debugMaster=  new DebugMaster(getState(), getBattleField().getBuilder());
+                debugMaster = new DebugMaster(getState(), getBattleField().getBuilder());
             }
         }
         return debugMaster;
@@ -745,7 +740,6 @@ public class DC_Game extends MicroGame {
         }
         return simulationCache;
     }
-
 
 
     public BattleManager getBattleManager() {
@@ -908,7 +902,6 @@ public class DC_Game extends MicroGame {
     }
 
 
-
     public ToolTipMaster getToolTipMaster() {
         return toolTipMaster;
     }
@@ -955,8 +948,8 @@ public class DC_Game extends MicroGame {
 
     public DequeImpl<BattleFieldObject> getBfObjects() {
         DequeImpl<BattleFieldObject> list = new DequeImpl();
-        list.addAll( getUnits());
-            list.addAll( getStructures());
+        list.addAll(getUnits());
+        list.addAll(getStructures());
 
         return list;
     }
@@ -967,7 +960,7 @@ public class DC_Game extends MicroGame {
     }
 
     public Obj getObjectByCoordinate(Coordinates
-                                         c) {
+                                             c) {
         return getObjectByCoordinate(c, false);
     }
 

@@ -154,7 +154,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     public boolean checkStatusUpdate(Unit unit) {
         if (unit.isDead()) {
             if (checkUnitDies(unit, DEFAULT_ANNIHILATION_BARRIER, false)) {
-                unit.getGame().getManager().getDeathMaster(). unitAnnihilated(unit, unit);
+                unit.getGame().getManager().getDeathMaster().unitAnnihilated(unit, unit);
                 return false;
             }
         }

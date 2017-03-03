@@ -1,7 +1,7 @@
 package main.swing.components.panels;
 
-import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.unit.DC_UnitModel;
 import main.game.core.state.MicroGameState;

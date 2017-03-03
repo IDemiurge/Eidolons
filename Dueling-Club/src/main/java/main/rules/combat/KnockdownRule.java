@@ -22,7 +22,7 @@ public class KnockdownRule {
 
     // add trigger
     /*
-	 * check on UnitTurn()
+     * check on UnitTurn()
 	 * 
 	 * NextRoundAP parameter!
 	 * 

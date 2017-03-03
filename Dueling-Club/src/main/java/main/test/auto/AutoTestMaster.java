@@ -1,8 +1,8 @@
 package main.test.auto;
 
 import main.content.C_OBJ_TYPE;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.data.DataManager;
 import main.data.ability.construct.AbilityConstructor;
 import main.data.filesys.PathFinder;
@@ -15,8 +15,8 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.logic.dungeon.DungeonMaster;
-import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.TimeMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;

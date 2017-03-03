@@ -1,26 +1,28 @@
 package main.game.logic.arena;
 
 import main.client.cc.logic.UnitLevelManager;
-import main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
-import main.content.enums.EncounterEnums.GROWTH_PRIORITIES;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.enums.EncounterEnums;
+import main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
+import main.content.enums.EncounterEnums.GROWTH_PRIORITIES;
 import main.data.DataManager;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
-import main.game.logic.generic.Positioner;
-import main.game.logic.dungeon.Dungeon;
 import main.game.logic.battle.BattleOptions;
 import main.game.logic.battle.BattleOptions.DIFFICULTY;
-import main.system.auxiliary.*;
+import main.game.logic.dungeon.Dungeon;
+import main.game.logic.generic.Positioner;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.Loop;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
-import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.GuiManager;
 import main.system.math.MathMaster;
 

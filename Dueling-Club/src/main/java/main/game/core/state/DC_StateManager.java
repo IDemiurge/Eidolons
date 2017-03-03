@@ -28,7 +28,7 @@ import java.util.Map;
 /**
  * Created by JustMe on 2/15/2017.
  */
-public class DC_StateManager extends StateManager{
+public class DC_StateManager extends StateManager {
 
     private OBJ_TYPE[] toBaseIgnoredTypes = {DC_TYPE.SPELLS, DC_TYPE.ACTIONS};
 
@@ -47,6 +47,7 @@ public class DC_StateManager extends StateManager{
             }
         }
     }
+
     protected void applyMods() {
         for (Unit obj : getGame().getUnits()) {
             obj.afterBuffRuleEffects();
@@ -99,6 +100,7 @@ public class DC_StateManager extends StateManager{
         newRound();
 
     }
+
     public void newRound() {
         getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.NEW_ROUND, state.getRound());
 
@@ -143,7 +145,7 @@ public class DC_StateManager extends StateManager{
     }
 
     private GameManager getGameManager() {
-      return   getGame().getManager();
+        return getGame().getManager();
     }
 
     @Override
@@ -171,7 +173,6 @@ public class DC_StateManager extends StateManager{
     }
 
 
-
     public void checkCounterRules() {
         if (getGame().getRules().getCounterRules() != null) {
             for (Unit unit : getGame().getUnits()) {
@@ -184,7 +185,7 @@ public class DC_StateManager extends StateManager{
     }
 
     private void applyEndOfTurnDamage() {
-        if (getGame().getRules(). getDamageRules() != null) {
+        if (getGame().getRules().getDamageRules() != null) {
             for (Unit unit : getGame().getUnits()) {
                 for (DamageCounterRule rule : getGame().getRules().getDamageRules()) {
                     rule.apply(unit);
@@ -281,18 +282,17 @@ public class DC_StateManager extends StateManager{
     }
 
 
-
     public void addObject(Obj obj) {
         if (obj == null) {
             return;
         }
         super.addObject(obj);
-        getGame().getMaster(). checkAddUnit( obj);
+        getGame().getMaster().checkAddUnit(obj);
 
     }
 
     public void removeObject(Integer id) {
-        Obj obj =game. getObjectById(id);
+        Obj obj = game.getObjectById(id);
         if (obj == null) {
             return;
         }
@@ -316,7 +316,7 @@ public class DC_StateManager extends StateManager{
     }
 
     private void removeAttachedObjects(BattleFieldObject unit) {
-        for (Obj obj :state. getObjMap().values()) {
+        for (Obj obj : state.getObjMap().values()) {
             if (obj.getRef() != null) {
                 if (obj.getRef().getSource() != null) {
                     if (obj != unit) {

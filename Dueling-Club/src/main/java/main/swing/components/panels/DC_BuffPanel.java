@@ -7,8 +7,8 @@ import main.game.core.game.DC_Game;
 import main.game.core.state.MicroGameState;
 import main.game.logic.battle.player.Player;
 import main.swing.generic.components.panels.G_ListPanel;
-import main.system.graphics.GuiManager;
 import main.system.datatypes.DequeImpl;
+import main.system.graphics.GuiManager;
 
 import javax.swing.*;
 import java.util.Collection;

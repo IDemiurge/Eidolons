@@ -11,8 +11,8 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.list.ListItem;
-import main.system.graphics.GuiManager;
 import main.system.auxiliary.StringMaster;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager.BORDER;
 
 import java.awt.*;

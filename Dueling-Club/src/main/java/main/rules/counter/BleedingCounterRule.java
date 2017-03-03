@@ -1,12 +1,12 @@
 package main.rules.counter;
 
 import main.ability.effects.Effect;
-import main.content.enums.GenericEnums.DAMAGE_TYPE;
-import main.content.enums.GenericEnums;
-import main.content.enums.system.MetaEnums;
-import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.PARAMS;
+import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.STATUS;
+import main.content.enums.system.MetaEnums;
 import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;

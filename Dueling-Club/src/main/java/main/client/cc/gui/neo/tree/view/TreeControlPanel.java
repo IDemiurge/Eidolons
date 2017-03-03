@@ -1,9 +1,9 @@
 package main.client.cc.gui.neo.tree.view;
 
 import main.client.cc.HC_Master;
-import main.content.enums.entity.SkillEnums.MASTERY;
 import main.content.ContentManager;
 import main.content.DC_ContentManager;
+import main.content.enums.entity.SkillEnums.MASTERY;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.entity.type.ObjType;

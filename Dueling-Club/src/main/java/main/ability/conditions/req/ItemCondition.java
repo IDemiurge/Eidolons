@@ -1,7 +1,7 @@
 package main.ability.conditions.req;
 
-import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.data.ability.AE_ConstrArgs;
 import main.elements.conditions.MicroCondition;
 import main.elements.conditions.StringComparison;

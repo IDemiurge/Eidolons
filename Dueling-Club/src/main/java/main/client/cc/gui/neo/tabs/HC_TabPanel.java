@@ -6,9 +6,9 @@ import main.swing.SwingMaster;
 import main.swing.generic.components.ComponentVisuals;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.G_Panel;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.graphics.ColorManager;
-import main.system.auxiliary.EnumMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 

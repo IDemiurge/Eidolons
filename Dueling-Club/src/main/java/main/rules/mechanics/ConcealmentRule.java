@@ -12,7 +12,7 @@ import main.system.text.LogManager;
 
 public class ConcealmentRule {
     /*
-	 * add buff with a passive dodge ability addPassive effect?
+     * add buff with a passive dodge ability addPassive effect?
 	 * trigger/continuous effect to be removed...
 	 * 
 	 * or maybe I could hard-code it somewhere almost like resistance?
@@ -67,13 +67,13 @@ public class ConcealmentRule {
 
     public static void logMissed(LogManager logManager, DC_ActiveObj activeObj) {
         logManager.log(StringMaster.getMessagePrefix(true,
-         activeObj.getOwnerObj().getOwner().isMe())
-         + StringMaster.getPossessive(activeObj.getOwnerObj().getName())
-         + " "
-         +  activeObj.getDisplayedName()
-         + " has missed due to Concealment"
-         + StringMaster.wrapInParenthesis(""
-         +  getMissChance(activeObj) + "%")) ;
+                activeObj.getOwnerObj().getOwner().isMe())
+                + StringMaster.getPossessive(activeObj.getOwnerObj().getName())
+                + " "
+                + activeObj.getDisplayedName()
+                + " has missed due to Concealment"
+                + StringMaster.wrapInParenthesis(""
+                + getMissChance(activeObj) + "%"));
 
     }
 

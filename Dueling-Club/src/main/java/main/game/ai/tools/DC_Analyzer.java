@@ -3,11 +3,11 @@ package main.game.ai.tools;
 import main.content.PARAMS;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.DC_UnitModel;
-import main.game.core.game.DC_Game;
-import main.game.core.game.MicroGame;
 import main.game.ai.AI;
 import main.game.ai.logic.DC_AI;
 import main.game.battlefield.pathing.Path;
+import main.game.core.game.DC_Game;
+import main.game.core.game.MicroGame;
 import main.system.auxiliary.log.LogMaster;
 
 // DECOUPLE FROM AI!!! 

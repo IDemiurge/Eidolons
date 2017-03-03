@@ -1,8 +1,8 @@
 package main.game.logic.macro.travel;
 
-import main.content.enums.EncounterEnums.ENCOUNTER_SUBGROUP;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
+import main.content.enums.EncounterEnums.ENCOUNTER_SUBGROUP;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
@@ -14,9 +14,9 @@ import main.game.logic.macro.gui.MacroGuiManager;
 import main.game.logic.macro.map.Area;
 import main.game.logic.macro.map.Place;
 import main.game.logic.macro.map.Region;
-import main.system.entity.FilterMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
+import main.system.entity.FilterMaster;
 
 import java.util.List;
 
@@ -223,7 +223,7 @@ public class AreaManager {
                 pool = DataManager.getTypesSubGroup(DC_TYPE.ENCOUNTERS,
                         group.toString());
             } else
-                // TODO
+            // TODO
             {
                 pool = DataManager.getTypes(DC_TYPE.ENCOUNTERS);
             }

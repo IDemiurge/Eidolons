@@ -10,8 +10,8 @@ import com.badlogic.gdx.utils.Array;
 import main.content.PARAMS;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.MicroObj;
-import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
+import main.game.core.game.DC_Game;
 import main.libgdx.GameScreen;
 import main.libgdx.bf.GridConst;
 import main.system.auxiliary.log.LogMaster;
@@ -42,13 +42,13 @@ public class LightMap {
     private int cols;
     private Map<Integer, FireLightProt> fireLightProtMap;
     private boolean valid;
-    private DequeImpl<BattleFieldObject>  units;
+    private DequeImpl<BattleFieldObject> units;
     private PARAMS lightParam;
     private PARAMS darkParam;
     private int LIGHT_MULTIPLIER = 30;
 
 
-    public LightMap(DequeImpl<BattleFieldObject>  units, int rows, int cols) {
+    public LightMap(DequeImpl<BattleFieldObject> units, int rows, int cols) {
         World world = new World(new Vector2(0, 0), true);
         init(units, world, new RayHandler(world), GridConst.CELL_W, GridConst.CELL_H, rows, cols);
     }
@@ -97,7 +97,7 @@ public class LightMap {
     }
 
     //
-    private void init(DequeImpl<BattleFieldObject>  units, World world,
+    private void init(DequeImpl<BattleFieldObject> units, World world,
                       RayHandler rayHandler, float cellWidth, float cellHeight, int rows, int cols) {
 
         testA = 1600;

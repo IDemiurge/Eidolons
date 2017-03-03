@@ -3,8 +3,8 @@ package main.game.logic.macro.gui.map;
 import main.game.logic.macro.global.GameDate;
 import main.swing.components.panels.page.log.WrappedTextComp;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 
 public class TimeComp extends G_Panel {
     GameDate date;

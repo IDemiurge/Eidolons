@@ -119,8 +119,8 @@ public class UpkeepRule extends RoundRule {
 
     private boolean checkCanUpkeep(Unit unit, Obj payObj) {
         if (unit.isDead())
-            // if (payObj.checkBool(DISPEL_ON_DEATH)) //only those with upkeep,
-            // never fear!
+        // if (payObj.checkBool(DISPEL_ON_DEATH)) //only those with upkeep,
+        // never fear!
         {
             return false;
         }

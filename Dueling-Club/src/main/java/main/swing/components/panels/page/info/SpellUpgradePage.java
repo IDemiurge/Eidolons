@@ -2,13 +2,13 @@ package main.swing.components.panels.page.info;
 
 import main.client.cc.CharacterCreator;
 import main.client.cc.logic.spells.SpellUpgradeMaster;
-import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
 import main.content.enums.entity.SpellEnums;
+import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
 import main.entity.Entity;
 import main.swing.components.panels.page.log.WrappedTextComp;
 import main.swing.generic.components.misc.GraphicComponent;
-import main.system.graphics.GuiManager;
 import main.system.auxiliary.data.ListMaster;
+import main.system.graphics.GuiManager;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

@@ -64,6 +64,7 @@ public class AddTriggerEffect extends MultiEffect implements AttachmentEffect, C
         }
 
     }
+
     @Override
     public boolean isContinuousWrapped() {
         return true;

@@ -42,8 +42,6 @@ public class DC_UnitAction extends DC_ActiveObj {
     }
 
 
-
-
     public String getModeBuffName() {
         return getModeEffect().getMode().getBuffName();
     }
@@ -86,9 +84,10 @@ public class DC_UnitAction extends DC_ActiveObj {
                 getProperty(G_PROPS.ACTION_TYPE));
 
     }
+
     @Override
     public String getToolTip() {
-        if (getHandler(). checkContinuousModeDeactivate()) {
+        if (getHandler().checkContinuousModeDeactivate()) {
             return "Deactivate " + getName();
         }
         return super.getToolTip();
@@ -97,6 +96,7 @@ public class DC_UnitAction extends DC_ActiveObj {
     public boolean isChanneling() {
         return checkProperty(G_PROPS.ACTION_TAGS, SpellEnums.SPELL_TAGS.CHANNELING.toString());
     }
+
     @Override
     public boolean isRangedTouch() {
         return checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.RANGED_TOUCH.toString());
@@ -134,20 +134,17 @@ public class DC_UnitAction extends DC_ActiveObj {
     public ActionExecutor getHandler() {
         return (ActionExecutor) super.getHandler();
     }
+
     public void deactivate() {
         getHandler().deactivate();
     }
     // TODO DEPRECATED METHODS!
 
 
-
-
     @Override
     public Sprite getSprite() {
         return null;
     }
-
-
 
 
 }

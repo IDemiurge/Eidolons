@@ -29,6 +29,7 @@ public abstract class ActiveHandler extends EntityHandler<DC_ActiveObj> {
     public DC_ActiveObj getAction() {
         return super.getEntity();
     }
+
     @Override
     public Executor getHandler() {
         return getMaster().getHandler();

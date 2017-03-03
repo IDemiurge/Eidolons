@@ -92,7 +92,7 @@ public class GridPanel extends Group {
             for (GridCell cell : cellRow) {
                 x++;
                 float gamma =
-                 Eidolons.game.getVisionMaster().getGammaMaster().getGammaForCell(x, y);
+                        Eidolons.game.getVisionMaster().getGammaMaster().getGammaForCell(x, y);
                 cell.setGamma(gamma);
             }
             y++;
@@ -154,7 +154,7 @@ public class GridPanel extends Group {
         });
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p =
-             (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
+                    (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             Map<Borderable, Runnable> map = new HashMap<>();
             for (DC_Obj obj1 : p.getLeft()) {
                 Borderable b = unitMap.get(obj1);
@@ -173,7 +173,7 @@ public class GridPanel extends Group {
             UnitView view = (UnitView) unitMap.get(unit);
             view.setVisibleVal(0);//set this val to zero remove unit from initiative queue
             GuiEventManager.trigger(REMOVE_FROM_INITIATIVE_PANEL,
-             new EventCallbackParam(new InitiativePanelParam(null, view.getId(), 0)));
+                    new EventCallbackParam(new InitiativePanelParam(null, view.getId(), 0)));
             removeUnitView(unit);
         });
 
@@ -185,14 +185,14 @@ public class GridPanel extends Group {
             boolean caught = false;
             if (event.getType() == STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED) {
                 GuiEventManager.trigger(GuiEventType.EFFECT_APPLIED,
-                 new EventCallbackParam<>(event.getRef().getEffect()));
+                        new EventCallbackParam<>(event.getRef().getEffect()));
                 caught = true;
             }
 
 
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING
-             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
-             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
+                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
+                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE)
 //                (r.getEffect() instanceof ChangeFacingEffect) nice try
             {
                 BattleFieldObject hero = (BattleFieldObject) ref.getObj(KEYS.TARGET
@@ -210,7 +210,7 @@ public class GridPanel extends Group {
 
                 if (!DeathAnim.isOn() || ref.isDebug()) {
                     GuiEventManager.trigger(DESTROY_UNIT_MODEL,
-                     new EventCallbackParam(ref.getTargetObj()));
+                            new EventCallbackParam(ref.getTargetObj()));
                 }
 //                else //TODO make it work instead of onFinishEvents!
 //                AnimMaster.getInstance(). onDone(event,p ->

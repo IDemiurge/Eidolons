@@ -1,15 +1,15 @@
 package main.system;
 
-import main.content.CONTENT_CONSTS.*;
+import main.content.CONTENT_CONSTS.OBJECT_ARMOR_TYPE;
 import main.content.DC_ContentManager;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
-import main.content.enums.entity.BfObjEnums.BF_OBJECT_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.GenericEnums.RESIST_GRADE;
+import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
+import main.content.enums.entity.BfObjEnums.BF_OBJECT_TYPE;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.enums.entity.HeroEnums.GENDER;
@@ -25,8 +25,8 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.logic.generic.DC_ActionManager.WEAPON_ATTACKS;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.HashMap;
 import java.util.LinkedList;

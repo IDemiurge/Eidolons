@@ -22,15 +22,15 @@ import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
 import main.elements.targeting.FixedTargeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.BuffObj;
-import main.entity.obj.unit.Unit;
 import main.entity.active.DC_UnitAction;
 import main.entity.item.DC_WeaponObj;
+import main.entity.obj.BuffObj;
+import main.entity.obj.unit.Unit;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.rules.UnitAnalyzer;
 import main.system.DC_Formulas;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 
 public class CadenceRule {
@@ -92,7 +92,7 @@ public class CadenceRule {
             offhand = true;
         }
         if (singleCadence)
-            // offhand = !action.isOffhand();
+        // offhand = !action.isOffhand();
         {
             offhand = false;
         }

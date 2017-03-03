@@ -42,7 +42,7 @@ public class CellPrioritizer {
 
     public static List<? extends DC_Obj> getApproachCells(UnitAI ai) {
         /*
-		 * TODO
+         * TODO
 		 * 
 		 * figure out direction and choose an adjacent cell?
 		 * 

@@ -16,13 +16,13 @@ import java.util.List;
  */
 public class HintMaster {
 
-    private   VisionMaster master;
+    private VisionMaster master;
 
     public HintMaster(VisionMaster visionMaster) {
         master = visionMaster;
     }
 
-    private  List<OUTLINE_HINT> getHints(Unit unit, OUTLINE_IMAGE image) {
+    private List<OUTLINE_HINT> getHints(Unit unit, OUTLINE_IMAGE image) {
         List<OUTLINE_HINT> list = new LinkedList<>();
         if (unit.isSmall()) {
             list.add(OUTLINE_HINT.SMALL);
@@ -91,7 +91,7 @@ public class HintMaster {
 
     }
 
-    public  String getTooltip(DC_Obj target) {
+    public String getTooltip(DC_Obj target) {
         if (target.getOutlineType() == null) {
             return null;
         }
@@ -107,10 +107,10 @@ public class HintMaster {
         return null;
     }
 
-    public  String getTooltipForUnit(Unit unit) {
+    public String getTooltipForUnit(Unit unit) {
         String hintString = getHintsString(unit);
         String tooltip = StringMaster.getWellFormattedString(unit.getOutlineType().toString()) + " of something "
-         + hintString;
+                + hintString;
         Unit activeUnit = DC_Game.game.getManager().getActiveObj();
         if (unit.getOwner().equals(activeUnit.getOwner())) {
             return unit.getToolTip();
@@ -120,8 +120,8 @@ public class HintMaster {
 
     }
 
-    public  String getHintsString(Unit unit) {
-        List<OUTLINE_HINT> hints = getHints(unit,master.getOutlineMaster(). getImageDark(unit));
+    public String getHintsString(Unit unit) {
+        List<OUTLINE_HINT> hints = getHints(unit, master.getOutlineMaster().getImageDark(unit));
         String hintString = "";
         for (OUTLINE_HINT hint : hints) {
             hintString += StringMaster.getWellFormattedString(hint.toString()) + " ";

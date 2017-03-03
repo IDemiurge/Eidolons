@@ -5,7 +5,7 @@ package main.libgdx.bf.overlays;
  */
 public class OverlaysManager {
 
-    public enum OVERLAY{
+    public enum OVERLAY {
         SPOTTED,
         WATCH,
 

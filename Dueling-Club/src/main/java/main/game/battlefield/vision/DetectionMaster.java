@@ -7,7 +7,7 @@ import main.entity.obj.DC_Obj;
  * Created by JustMe on 2/22/2017.
  */
 public class DetectionMaster {
-    private   VisionMaster master;
+    private VisionMaster master;
 
     public DetectionMaster(VisionMaster visionManager) {
         master = visionManager;
@@ -29,6 +29,7 @@ public class DetectionMaster {
     public boolean checkDetected(DC_Obj obj) {
         return checkDetected(obj, false);
     }
+
     public boolean checkDetected(DC_Obj obj, boolean enemy) {
         if (obj == null) {
             return false;

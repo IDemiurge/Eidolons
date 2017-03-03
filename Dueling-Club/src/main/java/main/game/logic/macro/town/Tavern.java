@@ -6,9 +6,9 @@ import main.client.cc.logic.party.PartyObj;
 import main.client.dc.HC_SequenceMaster;
 import main.client.dc.Launcher;
 import main.client.dc.Launcher.VIEWS;
-import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
+import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;
@@ -22,10 +22,13 @@ import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.global.TimeMaster;
 import main.game.logic.macro.travel.MacroParty;
 import main.game.logic.macro.utils.HeroGenerator;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.Loop;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.entity.FilterMaster;
-import main.system.auxiliary.*;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.entity.FilterMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -37,6 +40,7 @@ public class Tavern extends TownPlace {
     private List<Unit> mercs;
     private List<PartyObj> stayingParties;
     private TAVERN_MODIFIER modifier;
+
     public Tavern(MacroGame game, ObjType type, Ref ref) {
         super(game, type, ref);
         if (!MacroManager.isEditMode()) {

@@ -82,7 +82,7 @@ public class ClassTreeBuilder extends HT_MapBuilder {
         int x = parentX;
         // need to preserve the same angle always, right?
         /*
-		 * double/tripple nodes or class variants (chaos/dark cultist/monk/priest ... ?)
+         * double/tripple nodes or class variants (chaos/dark cultist/monk/priest ... ?)
 		 * otherwise, always 2 angles and optionally a middle... 
 		 */
 

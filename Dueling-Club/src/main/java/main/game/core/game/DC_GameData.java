@@ -9,10 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DC_GameData {
-List<Player> players;
-
-
     private static int i = 0;
+    List<Player> players;
     List<ObjType> playerParty = new LinkedList<>();
     List<ObjType> enemyParty = new LinkedList<>();
     private String playerUnitData;

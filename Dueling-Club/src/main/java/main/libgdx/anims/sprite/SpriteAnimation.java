@@ -38,13 +38,13 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public SpriteAnimation(String path
-     , boolean singleSprite) {
+            , boolean singleSprite) {
         this(defaultFrameDuration, false, 1, path, null, singleSprite);
     }
 
     public SpriteAnimation(float frameDuration, boolean looping, int loops, String path,
                            Texture texture
-     , boolean singleSprite) {
+            , boolean singleSprite) {
         super(frameDuration, TextureManager.getSpriteSheetFrames(path, singleSprite, texture));
         if (path != null) {
             frameNumber = TextureManager.getFrameNumber(path);
@@ -111,8 +111,8 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
         sprite.setRotation(rotation);
         sprite.setPosition(x + offsetX - currentFrame.getRegionWidth() / 2, y
-         + offsetY
-         - currentFrame.getRegionHeight() / 2);
+                + offsetY
+                - currentFrame.getRegionHeight() / 2);
         sprite.draw(batch);
 
 
@@ -199,7 +199,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public TextureRegion getOffset(TextureRegion texture, int offset) {
         int index =
-         Arrays.asList(getKeyFrames()).indexOf(texture);
+                Arrays.asList(getKeyFrames()).indexOf(texture);
         index += offset;
         while (index < 0) {
             index = getKeyFrames().length - offset;

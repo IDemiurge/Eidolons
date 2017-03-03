@@ -1,8 +1,8 @@
 package main.content;
 
 import main.content.CONTENT_CONSTS.DEITY;
-import main.content.enums.entity.SkillEnums.MASTERY_RANK;
 import main.content.enums.entity.SkillEnums;
+import main.content.enums.entity.SkillEnums.MASTERY_RANK;
 import main.entity.obj.unit.Unit;
 import main.system.auxiliary.StringMaster;
 
@@ -38,7 +38,7 @@ public class DescriptionMaster {
                     return "You can shoot a bird in the beak, with your eyes shut and hanging down from a tree. Shooting backwards. With hands tied.";
                 }
                 /*
-				 * DETECTION
+                 * DETECTION
 				 * "Your eye is so sharp you have adopted a habit of keeping it close most of the time."
 				 * "Nothing can take you unawares, if you don't forget to stay awake"
 				 * "You start considering making a 

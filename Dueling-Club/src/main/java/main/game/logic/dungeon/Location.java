@@ -1,8 +1,8 @@
 package main.game.logic.dungeon;
 
-import main.content.enums.DungeonEnums.SUBDUNGEON_TYPE;
 import main.content.DC_TYPE;
 import main.content.PROPS;
+import main.content.enums.DungeonEnums.SUBDUNGEON_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
@@ -21,9 +21,9 @@ import main.game.logic.dungeon.building.DungeonPlan;
 import main.game.logic.dungeon.scenario.Scenario;
 import main.game.logic.macro.map.Place;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.secondary.BooleanMaster;
 
 import java.io.File;

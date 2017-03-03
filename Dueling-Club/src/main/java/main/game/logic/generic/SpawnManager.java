@@ -13,22 +13,22 @@ import main.entity.obj.MicroObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
-import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.ai.GroupAI;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.DC_ObjInitializer;
 import main.game.battlefield.FacingMaster;
+import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_MODES;
 import main.game.logic.arena.ArenaManager;
 import main.game.logic.arena.UnitGroupMaster;
 import main.game.logic.arena.Wave;
+import main.game.logic.battle.BattleOptions.ARENA_GAME_OPTIONS;
 import main.game.logic.battle.player.DC_Player;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.ai.DungeonCrawler;
 import main.game.logic.dungeon.building.DungeonBuilder.ROOM_TYPE;
 import main.game.logic.dungeon.building.MapBlock;
-import main.game.logic.battle.BattleOptions.ARENA_GAME_OPTIONS;
 import main.game.logic.macro.travel.EncounterMaster;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.RandomWizard;
@@ -62,10 +62,12 @@ public class SpawnManager {
     private boolean autoSpawnOn;
     private String enemyPartyData;
     private Map<Integer, FACING_DIRECTION> multiplayerFacingMap;
+
     public SpawnManager(DC_Game game, Positioner positioner) {
         this.game = game;
         this.positioner = positioner;
     }
+
     public SpawnManager(DC_Game game, ArenaManager arenaManager) {
         this.game = game;
         this.arenaManager = arenaManager;

@@ -1,10 +1,10 @@
 package main.content;
 
-import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.enums.entity.SkillEnums;
-import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;

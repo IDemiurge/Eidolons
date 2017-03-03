@@ -8,11 +8,11 @@ import main.client.cc.gui.neo.tree.logic.TreeLink;
 import main.client.cc.gui.neo.tree.logic.TreeMap;
 import main.client.cc.gui.neo.tree.logic.TreeMap.LINK_VARIANT;
 import main.client.dc.Launcher;
-import main.content.enums.entity.HeroEnums.CLASS_GROUP;
-import main.content.enums.entity.SkillEnums.SKILL_GROUP;
 import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
+import main.content.enums.entity.HeroEnums.CLASS_GROUP;
+import main.content.enums.entity.SkillEnums.SKILL_GROUP;
 import main.content.values.parameters.PARAMETER;
 import main.data.DataManager;
 import main.elements.conditions.Requirements;
@@ -22,13 +22,14 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.XLine;
 import main.swing.generic.components.G_Panel;
-import main.system.auxiliary.*;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.secondary.InfoMaster;
 import main.system.graphics.ColorManager;
 import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
-import main.system.auxiliary.data.MapMaster;
-import main.system.auxiliary.secondary.InfoMaster;
 import main.system.graphics.MigMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
@@ -73,7 +74,7 @@ public class HC_Tree {
 
     // so the tree itself is static, no dynamic node changes?
     /*
-	 * what's the point of making it so? performance for 3-tree view? for refreshes to be lightning fast... 
+     * what's the point of making it so? performance for 3-tree view? for refreshes to be lightning fast...
 	 * but that's not about buffer/no buffer - it's about how I manage overlays!  
 	 */
     private ObjType reqTextType;

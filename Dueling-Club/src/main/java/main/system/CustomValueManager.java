@@ -1,7 +1,7 @@
 package main.system;
 
-import main.content.enums.system.MetaEnums.CUSTOM_VALUE_TEMPLATE;
 import main.content.ContentManager;
+import main.content.enums.system.MetaEnums.CUSTOM_VALUE_TEMPLATE;
 import main.content.values.parameters.PARAMETER;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;

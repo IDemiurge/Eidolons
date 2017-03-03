@@ -8,7 +8,7 @@ public class DialogueView extends Builder {
 
     }
     /*
-	 * background 
+     * background
 	 * 
 	 * for tavern - add info panel? 
 	 * 

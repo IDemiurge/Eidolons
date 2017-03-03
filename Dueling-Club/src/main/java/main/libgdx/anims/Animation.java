@@ -24,9 +24,9 @@ public interface Animation {
 
     float getDelay();
 
-    boolean isRunning();
-
     void setDelay(float delay);
+
+    boolean isRunning();
 
     void onDone(EventCallback callback, EventCallbackParam param);
 }

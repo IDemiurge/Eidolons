@@ -1,9 +1,9 @@
 package main.game.battlefield.attack;
 
-import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
@@ -15,9 +15,9 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.rules.mechanics.DurabilityRule;
 import main.system.audio.DC_SoundMaster;
-import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.PhaseAnimation;
@@ -61,7 +61,7 @@ public class ArmorMaster {
                                    boolean average, Integer damage, Unit attacked, Unit attacker,
                                    boolean offhand, DAMAGE_TYPE dmg_type, DC_ActiveObj action) {
         /*
-		 * if blocks, apply armor's resistance values too
+         * if blocks, apply armor's resistance values too
 		 */
         if (!offhand) {
             offhand = action.isOffhand();
@@ -317,7 +317,7 @@ public class ArmorMaster {
                 try {
                     DC_QuickItemObj ammo = (DC_QuickItemObj) weapon.getRef().getObj(KEYS.AMMO);
                     if (ammo == null)
-                        // ammo = attacker.getAmmo(weapon); TODO
+                    // ammo = attacker.getAmmo(weapon); TODO
                     {
                         ammo = attacker.getQuickItems().get(0);
                     }

@@ -10,10 +10,10 @@ import main.swing.components.panels.page.info.DC_PagedInfoPanel;
 import main.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.generic.components.G_Panel;
 import main.swing.listeners.ListChooserSortOptionListener.SORT_TEMPLATE;
+import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.graphics.GuiManager;
-import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.MigMaster;
 
 import java.awt.*;

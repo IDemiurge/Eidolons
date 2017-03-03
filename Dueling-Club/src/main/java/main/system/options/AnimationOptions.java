@@ -22,14 +22,17 @@ public class AnimationOptions extends Options<ANIMATION_OPTION> {
         ANIMATION_OPTION() {
 
         }
+
         ANIMATION_OPTION(Integer defaultValue, Integer min, Integer max) {
             this.defaultValue = defaultValue;
             this.max = max;
             this.min = min;
         }
+
         ANIMATION_OPTION(Object[] options) {
             this.options = options;
         }
+
         ANIMATION_OPTION(Object defaultValue) {
             this.defaultValue = defaultValue;
         }

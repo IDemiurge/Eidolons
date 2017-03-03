@@ -1,10 +1,10 @@
 package main.game.ai.tools.priority;
 
-import main.content.enums.system.AiEnums.AI_TYPE;
-import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
-import main.content.enums.entity.UnitEnums.STD_COUNTERS;
 import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.STD_COUNTERS;
+import main.content.enums.system.AiEnums.AI_TYPE;
+import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.entity.active.DC_ActiveObj;

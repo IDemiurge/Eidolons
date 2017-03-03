@@ -4,9 +4,9 @@ import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
+import main.game.core.game.DC_Game;
 import main.game.logic.dungeon.Dungeon;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.Refreshable;
@@ -454,7 +454,7 @@ public class MiniGrid implements Refreshable {
     public DC_Obj getTopObj(Coordinates coordinates) {
 
         for (MiniObjComp comp : overlayingObjComps)
-            // if (obj.getObj().checkBool(TOP))
+        // if (obj.getObj().checkBool(TOP))
         {
             if (comp.getObj().getCoordinates().equals(coordinates)) {
                 return comp.getObj();

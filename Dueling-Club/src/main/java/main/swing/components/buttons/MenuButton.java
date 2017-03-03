@@ -45,7 +45,6 @@ public class MenuButton extends CustomButton implements Runnable {
     }
 
 
-
     protected void playClickSound() {
         SoundMaster.playStandardSound(STD_SOUNDS.TURN);
     }

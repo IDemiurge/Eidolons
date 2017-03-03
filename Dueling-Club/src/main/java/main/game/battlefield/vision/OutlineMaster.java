@@ -21,13 +21,13 @@ import main.test.debug.DebugMaster;
 public class OutlineMaster {
 
 
-    protected   VisionMaster master;
+    protected VisionMaster master;
 
     public OutlineMaster(VisionMaster visionMaster) {
         master = visionMaster;
     }
 
-    public  OUTLINE_TYPE getOutlineType(DC_Obj unit) {
+    public OUTLINE_TYPE getOutlineType(DC_Obj unit) {
         if (unit.getGame().isDebugMode()) {
             if (unit.isMine()) {
                 return null;
@@ -44,7 +44,7 @@ public class OutlineMaster {
         return getOutlineType(activeUnit, unit);
     }
 
-    public  OUTLINE_TYPE getOutlineType(Unit activeUnit, DC_Obj unit) {
+    public OUTLINE_TYPE getOutlineType(Unit activeUnit, DC_Obj unit) {
         // if (unit.getVisibilityLevel() == VISIBILITY_LEVEL.CLEAR_SIGHT)
         // return null;
         // if (unit.getPlayerVisionStatus() == UNIT_TO_PLAYER_VISION.DETECTED)
@@ -52,7 +52,7 @@ public class OutlineMaster {
         return getOutlineType(unit, activeUnit);
     }
 
-    public  OUTLINE_TYPE getOutlineType(DC_Obj unit, Unit activeUnit) {
+    public OUTLINE_TYPE getOutlineType(DC_Obj unit, Unit activeUnit) {
         if (DebugMaster.isOmnivisionOn()) {
             return null;
         }
@@ -75,7 +75,7 @@ public class OutlineMaster {
         ref.setMatch(unit.getId());
         // [quick fix]
 
-        int gamma =master.getGammaMaster().getGamma(true, activeUnit, unit);
+        int gamma = master.getGammaMaster().getGamma(true, activeUnit, unit);
         if (gamma == Integer.MIN_VALUE) {
             return OUTLINE_TYPE.VAGUE_LIGHT;
         } else if (gamma >= master.getGammaMaster().getGammaForBlindingLight()) {
@@ -127,7 +127,7 @@ public class OutlineMaster {
         return OUTLINE_TYPE.VAGUE_OUTLINE;
     }
 
-    protected  OUTLINE_IMAGE getImageVague(Unit unit) {
+    protected OUTLINE_IMAGE getImageVague(Unit unit) {
         // if (unit.isHuge()) {
         //
         // }
@@ -146,7 +146,7 @@ public class OutlineMaster {
         return OUTLINE_IMAGE.UNKNOWN;
     }
 
-    protected   OUTLINE_IMAGE getImageDark(Unit unit) {
+    protected OUTLINE_IMAGE getImageDark(Unit unit) {
         // TODO identify!
         if (unit.isWall()) {
             return OUTLINE_IMAGE.WALL;

@@ -18,7 +18,7 @@ public class Library extends TownPlace {
     public void initSpells() {
         // s
         /*
-		 * perhaps it should work like 'rent spellbook, learn the spell, return' (gold back)
+         * perhaps it should work like 'rent spellbook, learn the spell, return' (gold back)
 		 */
 
     }

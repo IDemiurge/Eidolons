@@ -6,13 +6,13 @@ import main.client.dc.Launcher;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.enums.rules.ArcadeEnums;
-import main.content.enums.rules.ArcadeEnums.ARCADE_REGION;
-import main.content.enums.rules.ArcadeEnums.ARCADE_ROUTE;
 import main.content.enums.DungeonEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
+import main.content.enums.rules.ArcadeEnums;
+import main.content.enums.rules.ArcadeEnums.ARCADE_REGION;
+import main.content.enums.rules.ArcadeEnums.ARCADE_ROUTE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.elements.conditions.Condition;
@@ -28,10 +28,10 @@ import main.game.logic.dungeon.Dungeon;
 import main.game.logic.generic.PartyManager;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.DC_Formulas;
-import main.system.entity.FilterMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.entity.FilterMaster;
 
 import java.util.List;
 
@@ -84,24 +84,25 @@ public class ArcadeManager {
     private static final ARCADE_REGION STARTING_REGION = ArcadeEnums.ARCADE_REGION.DUSK_DALE;
     private DC_Game game;
 
-	/*
-	 * Arcade.xml Current region Completed/remaining dungeons - or perhaps I can
-	 * store this in Party.xml? And have those as party's properties!
-	 * 
-	 * * If there are things that are only determined upon entering the dungeon
-	 * - loot, alt encounters - loading will be an option, but a costly one,
-	 * perhaps exponentially so!
-	 * 
-	 * Glory Rating
-	 * 
-	 * Persistence >> death >> durability
-	 */
+    /*
+     * Arcade.xml Current region Completed/remaining dungeons - or perhaps I can
+     * store this in Party.xml? And have those as party's properties!
+     *
+     * * If there are things that are only determined upon entering the dungeon
+     * - loot, alt encounters - loading will be an option, but a costly one,
+     * perhaps exponentially so!
+     *
+     * Glory Rating
+     *
+     * Persistence >> death >> durability
+     */
     private Arcade arcade;
     private PartyObj party;
     private Dungeon dungeon;
     private ARCADE_REGION region;
     private LootManager lootManager;
     private ARCADE_ROUTE route;
+
     public ArcadeManager(DC_Game game) {
         this.game = game;
         lootManager = new LootManager(game);

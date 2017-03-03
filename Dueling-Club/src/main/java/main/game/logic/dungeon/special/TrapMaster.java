@@ -39,7 +39,7 @@ public class TrapMaster {
         // this method can be run last... or I can init traps one at a time for
         // each of those
         int trapDangerPool = dungeon.getIntParam(PARAMS.BATTLE_SPIRIT);
-        for (MapBlock b : dungeon.getPlan() .getBlocks()) {
+        for (MapBlock b : dungeon.getPlan().getBlocks()) {
 
             if (b.getType() == BLOCK_TYPE.CORRIDOR) {
                 // at random point

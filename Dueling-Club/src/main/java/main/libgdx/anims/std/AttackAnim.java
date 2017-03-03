@@ -39,8 +39,9 @@ public class AttackAnim extends ActionAnim {
     protected DC_WeaponObj weapon;
     protected SequenceAction sequence;
     protected String imgPath;
+
     public AttackAnim(Entity active) {
-        this (active,ATK_ANIMS.HEAVY_SWING);
+        this(active, ATK_ANIMS.HEAVY_SWING);
     }
 
     public AttackAnim(Entity active, ATK_ANIMS... anims) {
@@ -48,13 +49,12 @@ public class AttackAnim extends ActionAnim {
         this.anims = anims;
 
 
-
         weapon = getActive().getActiveWeapon();
         debug();
     }
 
     protected static AnimData getWeaponAnimData(Entity active, ATK_ANIMS... anims) {
-        AnimData   data=new AnimData();
+        AnimData data = new AnimData();
         float base_speed = anims[0].startSpeed;
         if (base_speed != 0) {
             data.setValue(ANIM_VALUES.MISSILE_SPEED, String.valueOf(base_speed));
@@ -116,7 +116,7 @@ public class AttackAnim extends ActionAnim {
     @Override
     public void draw(Batch batch, float alpha) {
         act(Gdx.graphics.getDeltaTime());
-        super.draw(batch,alpha);
+        super.draw(batch, alpha);
 
     }
 
@@ -193,23 +193,24 @@ size - elongate
             for (float angle : anim.targetAngles) {
                 List<Pair<MoveByAction, RotateByAction>> swings = new LinkedList<>();
                 float duration =
-                 this.duration;
+                        this.duration;
                 if (duration <= 0) {
                     duration = 1;
                 }
-                 //anim.durations[i];
+                //anim.durations[i];
                 totalDuration += duration;
                 float x = anim.offsetsX[i];
                 float y = anim.offsetsY[i];
-                MoveByAction mainMove =null ;
-                try{        mainMove =     getMoveAction(x, y, duration);
-                }catch(Exception e){
+                MoveByAction mainMove = null;
+                try {
+                    mainMove = getMoveAction(x, y, duration);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 if (mainMove == null) {
                     return null;
                 }
-                    RotateByAction mainRotate = getRotateAction(angle, duration);
+                RotateByAction mainRotate = getRotateAction(angle, duration);
 
                 swings.add(new Pair<>(mainMove, mainRotate));
                 swings.forEach(swing -> {
@@ -287,6 +288,7 @@ size - elongate
     protected void initDuration() {
 
     }
+
     public enum ATK_ANIMS {
         THRUST_LANCE,
 

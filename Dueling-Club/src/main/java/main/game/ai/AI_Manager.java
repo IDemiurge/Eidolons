@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class AI_Manager extends AiHandler{
+public class AI_Manager extends AiHandler {
     static Set<Action> brokenActions = new HashSet<>();
     private static GroupAI customGroup;
     private static boolean running;
@@ -37,10 +37,10 @@ public class AI_Manager extends AiHandler{
     public AI_Manager(DC_Game game) {
 
         this.game = game;
-        priorityManager =  DC_PriorityManager.init();
+        priorityManager = DC_PriorityManager.init();
         taskManager = new TaskManager();
         executor = new AiExecutor(game);
-        actionSequenceConstructor= new ActionSequenceConstructor(this);
+        actionSequenceConstructor = new ActionSequenceConstructor(this);
     }
 
     public static boolean isRunning() {
@@ -140,7 +140,7 @@ public class AI_Manager extends AiHandler{
         return game;
     }
 
-    public  PriorityManager getPriorityManager() {
+    public PriorityManager getPriorityManager() {
         return priorityManager;
     }
 

@@ -121,7 +121,7 @@ public class MacroAction extends MacroObj implements ActiveObj {
     @Override
     public boolean canBeActivated(Ref ref) {
         if (MacroActionManager.isActionsBlocked()) // while activating
-            // perhaps...
+        // perhaps...
         {
             return false;
         }

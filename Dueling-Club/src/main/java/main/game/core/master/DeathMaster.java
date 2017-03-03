@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * Created by JustMe on 2/16/2017.
  */
-public class DeathMaster extends Master{
+public class DeathMaster extends Master {
 
     public DeathMaster(DC_Game game) {
         super(game);
@@ -94,10 +94,11 @@ public class DeathMaster extends Master{
             Ref REF = Ref.getCopy(killer.getRef());
             REF.setTarget(killed.getId());
             REF.setSource(killer.getId());
-if (killed instanceof Unit){
-            getGame().getBattleManager().unitDies((Unit) killed);
-            getGame().getRules().getMoraleKillingRule().unitDied((Unit) killed,
-             killer.getRef().getAnimationActive());}
+            if (killed instanceof Unit) {
+                getGame().getBattleManager().unitDies((Unit) killed);
+                getGame().getRules().getMoraleKillingRule().unitDied((Unit) killed,
+                        killer.getRef().getAnimationActive());
+            }
 
             LogEntryNode node = game.getLogManager().newLogEntryNode(ENTRY_TYPE.DEATH, killed);
 
@@ -123,7 +124,7 @@ if (killed instanceof Unit){
 
 
     public void checkForDeaths() {
-        for (DC_TYPE TYPE : C_OBJ_TYPE.BF_OBJ.getTypes()){
+        for (DC_TYPE TYPE : C_OBJ_TYPE.BF_OBJ.getTypes()) {
             for (Obj unit : getState().getObjMaps().get(TYPE).values()) {
                 if (!unit.isDead()) {
                     if (DamageMaster.checkDead((BattleFieldObject) unit)) {
@@ -139,7 +140,7 @@ if (killed instanceof Unit){
 
     public void killAllUnits(boolean retainPlayerParty) {
         killAllUnits(false, retainPlayerParty,
-         true);
+                true);
     }
 
     public void killAllUnits(boolean removeBfObjects, boolean retainPlayerParty, boolean quiet) {
@@ -161,7 +162,7 @@ if (killed instanceof Unit){
 //                    continue;
             }
             unit.kill(unit, false, quiet);
-         toRemove.add(unit);
+            toRemove.add(unit);
 
         }
         //if (remove)
@@ -180,15 +181,15 @@ if (killed instanceof Unit){
                     continue;
                 }
                 if (unit.getOwner().isMe()) {
-                    if ( getGameManager().getInfoObj().getOwner().isMe()) {
+                    if (getGameManager().getInfoObj().getOwner().isMe()) {
                         continue;
                     }
                 }
             }
             killUnitQuietly(unit);
         }
-      getGameManager().  reset();
-        getGameManager(). refreshAll();
+        getGameManager().reset();
+        getGameManager().refreshAll();
         WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_COMPLETE, true);
     }
 

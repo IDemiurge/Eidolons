@@ -109,9 +109,9 @@ public class SummonEffect extends MicroEffect {
         }
         setUnit((BattleFieldObject) game.createUnit(type, c.x, c.y, owner, ref.getCopy()));
         if (unit instanceof Unit) {
-             if (!((Unit) unit).isHero()) {
-            UnitTrainingMaster.train((Unit) unit);
-        }
+            if (!((Unit) unit).isHero()) {
+                UnitTrainingMaster.train((Unit) unit);
+            }
         }
 
         getUnit().getRef().setID(KEYS.SUMMONER, ref.getSource());
@@ -134,6 +134,7 @@ public class SummonEffect extends MicroEffect {
         SoundMaster.playEffectSound(SOUNDS.READY, unit);
         return true;
     }
+
     public STANDARD_EVENT_TYPE getEventTypeDone() {
         return STANDARD_EVENT_TYPE.UNIT_SUMMONED;
     }

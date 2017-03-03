@@ -16,9 +16,9 @@ import main.entity.obj.HeroItem;
 import main.entity.obj.Obj;
 import main.game.ai.tools.ParamAnalyzer;
 import main.game.ai.tools.target.EffectFinder;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
-import main.system.auxiliary.StringMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
@@ -395,7 +395,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             getGame().getAnimationManager().valueModified(Ref.getCopy(ref));
         }
 
-        lastModValue= String.valueOf(amount_modified);
+        lastModValue = String.valueOf(amount_modified);
         return true;
     }
 
@@ -410,7 +410,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             min_max_amount = getMin_max_formula().getInt(ref);
         }
         if (amount > 0) // maximum
-            // if (min_max_amount == Integer.MAX_VALUE)
+        // if (min_max_amount == Integer.MAX_VALUE)
         {
             if (getParam() != null) {
                 if (getParam().isDynamic()) {

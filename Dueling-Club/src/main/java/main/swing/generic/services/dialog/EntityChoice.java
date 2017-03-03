@@ -9,7 +9,7 @@ public class EntityChoice<T extends Entity> extends CustomDialog<T> {
 
     @Override
     protected G_Component createPanel() {
-        return  null;
+        return null;
 //        return new AttackChoicePanel(this, data);
     }
 

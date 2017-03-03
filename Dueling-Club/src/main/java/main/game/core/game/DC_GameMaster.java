@@ -24,7 +24,7 @@ public class DC_GameMaster extends GameMaster {
 
 
     public DC_GameMaster(DC_Game game) {
-       super(game);
+        super(game);
         structures = new DequeImpl<>();
 
         units = new DequeImpl<Unit>() {
@@ -182,6 +182,7 @@ public class DC_GameMaster extends GameMaster {
             getStructures().remove(obj);
         }
     }
+
     public DC_Cell getCellByCoordinate(Coordinates coordinates) {
         return (DC_Cell) getGame().getBattleField().getCell(coordinates);
     }
@@ -195,7 +196,7 @@ public class DC_GameMaster extends GameMaster {
     }
 
     public Unit getUnitByCoordinate(Coordinates coordinates) {
-        return (Unit)getGame().getBattleField().getObj(coordinates);
+        return (Unit) getGame().getBattleField().getObj(coordinates);
     }
 
     public Collection<Obj> getUnitsForCoordinates(Coordinates... coordinates) {
@@ -225,9 +226,11 @@ public class DC_GameMaster extends GameMaster {
         }
         return list;
     }
+
     public void removeUnit(Unit unit) {
         getUnits().remove(unit);
     }
+
     public void clear() {
         getUnits().clear();
         getStructures().clear();
@@ -236,6 +239,7 @@ public class DC_GameMaster extends GameMaster {
     public Set<Obj> getCells() {
         return new HashSet<>(getGame().getBattleField().getGrid().getCells());
     }
+
     public DequeImpl<Unit> getUnits() {
         return units;
     }
@@ -250,6 +254,7 @@ public class DC_GameMaster extends GameMaster {
         }
         return unitMap;
     }
+
     public Map<Coordinates, List<Unit>> getUnitCache() {
         return unitCache;
     }

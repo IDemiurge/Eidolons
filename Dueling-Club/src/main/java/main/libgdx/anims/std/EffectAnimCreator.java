@@ -44,8 +44,8 @@ public class EffectAnimCreator {
             destination = ((Anim) anim).getDestinationCoordinates();
         }
         Float distance =
-         GridMaster.getDistance(destination,
-                 e.getActiveObj().getOwnerObj().getCoordinates()); //TODO from parent anim's origin!
+                GridMaster.getDistance(destination,
+                        e.getActiveObj().getOwnerObj().getCoordinates()); //TODO from parent anim's origin!
         float delay = distance / subAnim.getPixelsPerSecond();
 
 
@@ -86,20 +86,20 @@ public class EffectAnimCreator {
                 ModifyValueEffect modEffect = (ModifyValueEffect) e;
                 return new HitAnim(
 
-                 active, getModValAnimData(modEffect)
-                 , false, GdxColorMaster.getParamColor(modEffect.getParam()),
-                 () -> modEffect.getLastModValue(),
-                 () -> ImageManager.getValueIconPath(modEffect.getParam())
+                        active, getModValAnimData(modEffect)
+                        , false, GdxColorMaster.getParamColor(modEffect.getParam()),
+                        () -> modEffect.getLastModValue(),
+                        () -> ImageManager.getValueIconPath(modEffect.getParam())
                 );
 
             case "Raise":
             case "Resurrect":
             case "Summon":
                 return new ActionAnim(active, new AnimData(),
-                 () -> active.getRef().getObj(KEYS.SUMMONED).getImagePath(),
-                 new ANIM_MOD[]{
-                  OBJ_ANIMS.FADE_IN,
-                 }
+                        () -> active.getRef().getObj(KEYS.SUMMONED).getImagePath(),
+                        new ANIM_MOD[]{
+                                OBJ_ANIMS.FADE_IN,
+                        }
                 );
             case "InstantDeath":
                 //flash

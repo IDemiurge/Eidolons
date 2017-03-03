@@ -31,7 +31,6 @@ public interface PriorityManager {
     int getPriority(ActionSequence sequence);
 
 
-
     //custom formula may be set for action/spell in AV!
     int evaluatePriorityFormula(Action action, String property);
 
@@ -147,8 +146,6 @@ public interface PriorityManager {
 
 
     int getCastingPriority(Unit unit);
-
-
 
 
     public enum AI_EFFECT_PRIORITIZING {

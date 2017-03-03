@@ -1,11 +1,11 @@
 package main.content;
 
-import main.content.values.parameters.PARAMETER;
 import main.content.text.Descriptions;
+import main.content.values.parameters.PARAMETER;
 import main.rules.round.UnconsciousRule;
 import main.system.DC_Formulas;
-import main.system.graphics.ColorManager;
 import main.system.auxiliary.StringMaster;
+import main.system.graphics.ColorManager;
 import main.system.math.DC_MathManager;
 import main.system.math.MathMaster;
 
@@ -93,7 +93,7 @@ public enum PARAMS implements PARAMETER {
     COST_MODIFIER(null, "", false, 100, "armor", "weapons"),
     QUICK_SLOTS(null, "", false, 0, "armor", "chars", "units"),
     C_QUICK_SLOTS(null, "", true, 2, "chars", "units"),
-    ITEM_COST_MOD(null, "", false, 0,   "chars", "units"),
+    ITEM_COST_MOD(null, "", false, 0, "chars", "units"),
 
     CHARGES(null, "", false, 1, "items"),
     C_CHARGES(null, "", true, 1, "items"),
@@ -780,8 +780,7 @@ public enum PARAMS implements PARAMETER {
     HT_CUSTOM_POS_X("", "", false, 0, "classes", "skills"),
     HT_CUSTOM_POS_Y("", "", false, 0, "classes", "skills"),
     ANIM_FRAME_DURATION("", "", false, 0, "spells", "actions"),
-    ANIM_SPEED("", "", false, 0, "spells", "actions"),
-    ;
+    ANIM_SPEED("", "", false, 0, "spells", "actions"),;
 
     static {
         COUNTER_MOD.addSpecialDefault(DC_TYPE.ACTIONS, 75);

@@ -16,7 +16,7 @@ import java.util.LinkedList;
 /**
  * Created by JustMe on 2/26/2017.
  */
-public class SpellInitializer extends ActiveInitializer{
+public class SpellInitializer extends ActiveInitializer {
 
 
     public SpellInitializer(DC_ActiveObj entity, EntityMaster<DC_ActiveObj> entityMaster) {
@@ -26,19 +26,19 @@ public class SpellInitializer extends ActiveInitializer{
     @Override
     public void initCosts() {
         Costs costs;
-        if (game.isDebugMode() &&getMaster(). getGame().getTestMaster().isActionFree(getName())) {
+        if (game.isDebugMode() && getMaster().getGame().getTestMaster().isActionFree(getName())) {
             costs = new Costs(new LinkedList<>());
         } else {
             costs = DC_CostsFactory.getCostsForSpell(getEntity(),
 //             isSpell()
-           true );
+                    true);
             costs.getRequirements().add(
-             new Requirement(new NotCondition(
-              new StatusCheckCondition(UnitEnums.STATUS.SILENCED)),
-              InfoMaster.SILENCE));
+                    new Requirement(new NotCondition(
+                            new StatusCheckCondition(UnitEnums.STATUS.SILENCED)),
+                            InfoMaster.SILENCE));
         }
         costs.setActive(getEntity());
-       getEntity(). getActivator().  setCanActivate(costs.canBePaid(getRef()));
+        getEntity().getActivator().setCanActivate(costs.canBePaid(getRef()));
         getEntity().setCosts(costs);
     }
 }

@@ -2,11 +2,11 @@ package main.swing.components.panels.page.info.element;
 
 import main.client.cc.CharacterCreator;
 import main.client.cc.logic.HeroCreator;
-import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.DC_ContentManager;
 import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.content.enums.entity.HeroEnums;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
@@ -16,8 +16,8 @@ import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.swing.components.panels.page.info.ValueInfoPage;
 import main.swing.components.panels.page.log.WrappedTextComp;
-import main.system.graphics.FontMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.graphics.FontMaster;
 import main.system.text.TextGenerator;
 import main.system.text.TextParser;
 

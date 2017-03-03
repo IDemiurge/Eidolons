@@ -24,9 +24,9 @@ import main.entity.obj.Attachment;
 import main.entity.obj.Obj;
 import main.game.battlefield.attack.Attack;
 import main.system.auxiliary.ClassMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.text.TextParser;
 
 import java.util.LinkedList;
@@ -252,7 +252,7 @@ public class EffectFinder {
     public static Effects initParamModEffects(String modString, Ref ref) {
         Effects modEffects = new Effects();
         Map<PARAMETER, String> map = new RandomWizard<PARAMETER>().constructStringWeightMap(
-         modString, PARAMETER.class);
+                modString, PARAMETER.class);
         initParamModEffects(modEffects, map, ref);
         return modEffects;
     }
@@ -260,7 +260,7 @@ public class EffectFinder {
     public static Effects initPropModEffects(String modString, Ref ref) {
         Effects modEffects = new Effects();
         Map<PROPERTY, String> map = new RandomWizard<PROPERTY>().constructStringWeightMap(
-         modString, PROPERTY.class);
+                modString, PROPERTY.class);
         initPropModEffects(modEffects, map, ref);
         return modEffects;
     }

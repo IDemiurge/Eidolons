@@ -12,8 +12,8 @@ import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
+import main.game.core.game.DC_Game;
 import main.game.logic.dungeon.building.DungeonBuilder;
 import main.game.logic.macro.map.Place;
 import main.game.logic.macro.travel.Encounter;
@@ -21,12 +21,12 @@ import main.libgdx.GameScreen;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
-import main.system.auxiliary.log.LogMaster;
-import main.system.entity.FilterMaster;
-import main.system.auxiliary.data.FileManager;
-import main.system.graphics.GuiManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.log.LogMaster;
+import main.system.entity.FilterMaster;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.test.frontend.FAST_DC;
@@ -438,6 +438,7 @@ public class DungeonMaster {
     public Dungeon getDungeonNeverInit() {
         return dungeon;
     }
+
     public Dungeon getDungeon() {
         if (dungeon == null) {
             initDungeon();
@@ -466,12 +467,12 @@ public class DungeonMaster {
                             " GameScreen is not ready! >> " + dungeon);
             return;
         }
-                try {
-                    GameScreen.getInstance().getBackground().setImagePath(dungeon.getMapBackground());
-                    LogMaster.log(1, dungeon.getMapBackground() + " bg set for " + dungeon);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        try {
+            GameScreen.getInstance().getBackground().setImagePath(dungeon.getMapBackground());
+            LogMaster.log(1, dungeon.getMapBackground() + " bg set for " + dungeon);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public G_Panel getMinimapComponent() {

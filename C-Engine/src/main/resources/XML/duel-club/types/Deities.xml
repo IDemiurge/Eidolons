@@ -1,1 +1,1264 @@
-<XML><Zgroup><World_Serpent><params><Peace_Identity>2</Peace_Identity><War_Identity>-2</War_Identity><Charity_Identity>2</Charity_Identity><Ambition_Identity>-2</Ambition_Identity><Tradition_Identity>1</Tradition_Identity><Progress_Identity>-1</Progress_Identity></params><props><Allied_Deities>Lord of Decay;Wild God;</Allied_Deities><Enemy_Deities>Wraith God;Annihilator;</Enemy_Deities><Name>World Serpent</Name><Prime_Mission>World Peace</Prime_Mission><Displayed_Name>World Serpent</Displayed_Name><Aspect>Life</Aspect><Image>mini\deities\New folder\World Serpent3.jpg</Image><Type>deities</Type><Favored_Spell_Groups>SYLVAN;ELEMENTAL;SAVAGE;AFFLICTION;SHADOW;NECROMANCY;DEMONOLOGY;</Favored_Spell_Groups><Id>32</Id><Emblem>UI\emblems\std\neutral\dragon.jpg</Emblem><Secondary_Mission>Submission</Secondary_Mission><Unique_Id>deities World Serpent9070873312881896102</Unique_Id><Group>Zgroup</Group><Principles>Peace(2);War(-2);Charity(2);Ambition(-2);Tradition(1);Progress(-1);</Principles><Friend_Deities>Allfather;Fey Queen;</Friend_Deities><Lore>Eternal foe of the Ocean Queen and the Shai'Kar</Lore></props></World_Serpent></Zgroup><Playable><Queen_of_Lust><params><Freedom_Identity>20</Freedom_Identity><Treachery_Identity>20</Treachery_Identity><Ambition_Identity>10</Ambition_Identity><Law_Identity>-20</Law_Identity><Honor_Identity>-20</Honor_Identity></params><props><Allied_Deities>Crimson Queen;Consumer of Worlds;</Allied_Deities><Name>Queen of Lust</Name><Prime_Mission>Barbarism</Prime_Mission><Displayed_Name>Queen of Lust</Displayed_Name><Aspect>Chaos</Aspect><Image>mini\deities\Queen of Lust.jpg</Image><Type>deities</Type><Passives>ParamBonus(Chaos Resistance, 6+2*{source_level});ParamBonus(Charisma, {source_level});ParamBonus(Spellpower, {Charisma}/5);SpellGroupParamMod(Spell_group,Warp,Warp Might,spellpower_mod,35);</Passives><Favored_Spell_Groups>Warp(6);Psychic(3);Enchantment(2);Demonology(2);</Favored_Spell_Groups><Id>63</Id><Emblem>UI\emblems\done\Queen of Lust.jpg</Emblem><Description>Grants followers additional Spellpower for all Mind-Affecting spells as well as resistance against them. Also provides +1 Charisma per level. </Description><Secondary_Mission>Submission</Secondary_Mission><Unique_Id>deities Queen of Lust-4158011112490589954</Unique_Id><Version>0.05</Version><Group>Playable</Group><Principles>Freedom(20);Treachery(20);Ambition(10);Law(-20);Honor(-20);</Principles><Friend_Deities>Annihilator;Night Lord;</Friend_Deities><Lore>A corrupt elven goddess, once known as the Queen of Beauty, she is now the most devious and pure servant of the Warp.</Lore></props></Queen_of_Lust><Warmaster><params><War_Identity>2</War_Identity><Peace_Identity>-2</Peace_Identity><Honor_Identity>2</Honor_Identity><Treachery_Identity>-2</Treachery_Identity><Freedom_Identity>1</Freedom_Identity><Law_Identity>-1</Law_Identity></params><props><Name>Warmaster</Name><Prime_Mission>Armageddon</Prime_Mission><Displayed_Name>Warmaster</Displayed_Name><Aspect>Chaos</Aspect><Image>mini\deities\Untitled-32.jpg</Image><Follower_Units>Hell Caller;Imp;Daemon Vindicator;Abyssal Overlord;Lesser Daemon;</Follower_Units><True_Name>Belregor</True_Name><Type>deities</Type><Passives>ParamMod(Blade Mastery Score|Blunt Mastery Score|Axe Mastery Score|Polearm Mastery Score, 16+2*{source_level});ParamBonus(Strength|Agility, {source_level});ParamBonus(Intelligence|Wisdom, -2);ParamBonus(Slashing Resistance|Bludgeoning Resistance|Piercing Resistance, 10);</Passives><Favored_Spell_Groups>Destruction(4);Savage(3);Blood Magic(2);</Favored_Spell_Groups><Id>64</Id><Emblem>UI\emblems\std\chaos\2chaos.jpg</Emblem><Description>Grants his followers +1 to all Weapon Mastery scores per level and +{1}% Attack. Adds a {2}% Essence cost penalty to all spells. </Description><Secondary_Mission>Barbarism</Secondary_Mission><Unique_Id>deities Warmaster5156348696691212002</Unique_Id><Version>0.05</Version><Group>Playable</Group><Principles>War(2);Peace(-2);Honor(2);Treachery(-2);Freedom(1);Law(-1);</Principles><Lore>Elder deity of glory, war and cruelty, sire of orcs and giants, and an eternal foe to all dwarf kin. Many a human warlord in the East turned to the Warmaster for strength to conquer.</Lore></props></Warmaster><Arachnia><params><Treachery_Identity>2</Treachery_Identity><Honor_Identity>-2</Honor_Identity><Ambition_Identity>2</Ambition_Identity><Charity_Identity>-2</Charity_Identity><Freedom_Identity>1</Freedom_Identity><Law_Identity>-1</Law_Identity></params><props><Name>Arachnia</Name><Prime_Mission>Armageddon</Prime_Mission><Displayed_Name>Arachnia</Displayed_Name><Aspect>Darkness</Aspect><Image>mini\deities\Arachnia.jpg</Image><Follower_Units>Hell Caller;Imp;Daemon Vindicator;Abyssal Overlord;Lesser Daemon;</Follower_Units><Type>deities</Type><Passives>Poison Attack(4+{level});ParamBonus(Poison Resistance, 20+{level}*2);ParamMod(Dexterity,6+2*{source_level});ParamBonus(Stealth,6+2*{source_level});AddProp(standard passives,darkvision);</Passives><Favored_Spell_Groups>Shadow(5);Affliction(4);Witchery(2);Demonology(1);Warp(1);</Favored_Spell_Groups><Id>24</Id><Emblem>UI\emblems\std\neutral\xp2_textures_bif-0000000208.jpg</Emblem><Description>A fallen high-elf arch priestess, Arachnia underwent a terrible transformation as a result of Witch King's sorcery and the terrible events of Fall of Sheoth, when the Warp nearly claimed Edalar for itself. Now she is a goddess of dark magic and treachery, hating both the Witch King and those who had let her fall into his hands. </Description><Secondary_Mission>Barbarism</Secondary_Mission><Unique_Id>deities Arachnia-664124998377007156</Unique_Id><Group>Playable</Group><Principles>Treachery(2);Honor(-2);Ambition(2);Charity(-2);Freedom(1);Law(-1);</Principles></props></Arachnia><Iron_God><params><Progress_Identity>2</Progress_Identity><Tradition_Identity>-2</Tradition_Identity><Ambition_Identity>2</Ambition_Identity><Charity_Identity>-2</Charity_Identity><Freedom_Identity>1</Freedom_Identity><Law_Identity>-1</Law_Identity></params><props><Allied_Deities>Allfather;Sky Queen;</Allied_Deities><Enemy_Deities>Consumer of Worlds;Annihilator;</Enemy_Deities><Name>Iron God</Name><Prime_Mission>Enlightenment</Prime_Mission><Displayed_Name>Iron God</Displayed_Name><Aspect>Arcanum</Aspect><Image>mini\deities\New folder\Iron God4.jpg</Image><Follower_Units>Living Armor;Trickster Raven;Onyx Golem;Aether Golem;Eldritch Strix;Sentinel;</Follower_Units><True_Name>Ersigrix</True_Name><Type>deities</Type><Passives>ParamMod(Toughness,10+2*{source_level});ParamMod(Armorer Mastery Score,20+5*{source_level});SpellGroupParamMod(spell_group,Conjuration,Iron God's Will,spellpower_mod,35);</Passives><Favored_Spell_Groups>Conjuration(7);Affliction(3);Elemental(3);Destruction(2);</Favored_Spell_Groups><Id>54</Id><Emblem>UI\emblems\std\arcanum\4aee.jpg</Emblem><Secondary_Mission>World Peace</Secondary_Mission><Unique_Id>deities Iron God-7639300029276487178</Unique_Id><Version>0.1002b</Version><Group>Playable</Group><Principles>Progress(2);Tradition(-2);Ambition(2);Charity(-2);Freedom(1);Law(-1);</Principles><Friend_Deities>Keeper of Twilight;Void Lord;</Friend_Deities><Lore>Last remnant of the Ancients' technology, </Lore></props></Iron_God><Void_Lord><params><Tradition_Identity>2</Tradition_Identity><Progress_Identity>-2</Progress_Identity><Law_Identity>2</Law_Identity><Freedom_Identity>-2</Freedom_Identity><Peace_Identity>1</Peace_Identity><War_Identity>-1</War_Identity></params><props><Allied_Deities>Wraith God;Masked God;</Allied_Deities><Enemy_Deities>Queen of Lust;Lord of Decay;</Enemy_Deities><Name>Void Lord</Name><Prime_Mission>Liberation</Prime_Mission><Displayed_Name>Void Lord</Displayed_Name><Aspect>Arcanum</Aspect><Image>mini\deities\Faceless God.jpg</Image><Follower_Units>Living Armor;Trickster Raven;Onyx Golem;Aether Golem;Eldritch Strix;Sentinel;</Follower_Units><True_Name>Urtheluir</True_Name><Type>deities</Type><Passives>ParamMod(Wisdom,10+3*{level});ParamBonus(Astral Resistances,15+{source_wisdom});SpellGroupParamMod(Spell type,Sorcery,Void Link,ess cost,-25);</Passives><Favored_Spell_Groups>Void(8);Necromancy(4);Redemption(2);</Favored_Spell_Groups><Id>52</Id><Emblem>UI\emblems\std\arcanum\0Void Lord.jpg</Emblem><Description>The Void Lord has only one mission - to wait until the last possible moment before enacting final Dissipation, while the lesser deities of Light and Death seek to show mortals the true path of Void. </Description><Secondary_Mission>Armageddon</Secondary_Mission><Unique_Id>deities Void Lord8011213290711570727</Unique_Id><Version>0.1003b</Version><Group>Playable</Group><Principles>Tradition(2);Progress(-2);Law(2);Freedom(-2);Peace(1);War(-1);</Principles><Friend_Deities>Annihilator;Fey Queen;</Friend_Deities><Lore>Unlike the unruly forces of the Warp, the creatures of Void are patient and only interfere when Dissolution is emminent. Otherwise, they wait for worlds to grow enough so there can be worthy minions to recruit among the millions of mortals to be sacrificed. </Lore><Variables>Those who follow him, </Variables></props></Void_Lord><Wild_God><params><War_Identity>2</War_Identity><Peace_Identity>-2</Peace_Identity><Honor_Identity>2</Honor_Identity><Treachery_Identity>-2</Treachery_Identity><Freedom_Identity>1</Freedom_Identity><Law_Identity>-1</Law_Identity></params><props><Allied_Deities>Allfather;World Tree;</Allied_Deities><Enemy_Deities>Wraith God;Masked God;</Enemy_Deities><Name>Wild God</Name><Prime_Mission>Barbarism</Prime_Mission><Displayed_Name>Wild God</Displayed_Name><Aspect>Life</Aspect><Image>mini\deities\Wild God.jpg</Image><Type>deities</Type><Passives>ParamBonus(Dexterity|Agility|Strength|Vitality,{source_level}/2);ParamMod(Detection,14+4*{source_level});ParamMod(Marksmanship Mastery Score,12+3*{source_level});SpellGroupParamMod(Spell group,Savage,Wild God's Blessing,spellpower_mod,35); </Passives><Favored_Spell_Groups>Savage(7);Sylvan(4);Shadow(1);Demonology(1);Blood Magic(1);</Favored_Spell_Groups><Id>33</Id><Emblem>UI\emblems\Wild God.jpg</Emblem><Secondary_Mission>Liberation</Secondary_Mission><Unique_Id>deities Wild God3069235936214555688</Unique_Id><Version>0.1003b</Version><Group>Playable</Group><Principles>War(2);Peace(-2);Honor(2);Treachery(-2);Freedom(1);Law(-1);</Principles><Friend_Deities>Consumer of Worlds;Night Lord;</Friend_Deities></props></Wild_God><Lord_of_Decay><params><Law_Identity>2</Law_Identity><Freedom_Identity>-2</Freedom_Identity><Tradition_Identity>2</Tradition_Identity><Progress_Identity>-2</Progress_Identity><Treachery_Identity>1</Treachery_Identity><Honor_Identity>-1</Honor_Identity></params><props><Allied_Deities>Dungeon Keeper;World Tree;</Allied_Deities><Enemy_Deities>Void Lord;Redeemer;</Enemy_Deities><Name>Lord of Decay</Name><Prime_Mission>Submission</Prime_Mission><Displayed_Name>Lord of Decay</Displayed_Name><Aspect>Death</Aspect><Image>mini\deities\Lord of Decay2.jpg</Image><True_Name>Kesarax</True_Name><Type>deities</Type><Passives>Immunity(Disease);</Passives><Favored_Spell_Groups>Affliction(6);Sylvan(3);Witchery(2);Shadow(1);</Favored_Spell_Groups><Id>42</Id><Emblem>UI\emblems\std\death\0Lord of Decay.jpg</Emblem><Description>An ancient god who feeds continuously on the rotting corpses of wars. In the East, he is regarded as one of the three Primordials, without whom Man could never tame the verdant wilderness.</Description><Secondary_Mission>Barbarism</Secondary_Mission><Unique_Id>deities Lord of Decay3319382558291640921</Unique_Id><Group>Playable</Group><Principles>Law(2);Freedom(-2);Tradition(2);Progress(-2);Treachery(1);Honor(-1);</Principles><Friend_Deities>Night Lord;Consumer of Worlds;</Friend_Deities></props></Lord_of_Decay><Wraith_God><params><Law_Identity>2</Law_Identity><Freedom_Identity>-2</Freedom_Identity><Tradition_Identity>2</Tradition_Identity><Progress_Identity>-2</Progress_Identity><Honor_Identity>1</Honor_Identity><Treachery_Identity>-1</Treachery_Identity></params><props><Allied_Deities>Void Lord;Keeper of Twilight;</Allied_Deities><Enemy_Deities>Consumer of Worlds;Wild God;</Enemy_Deities><Name>Wraith God</Name><Prime_Mission>Liberation</Prime_Mission><Displayed_Name>Wraith God</Displayed_Name><Aspect>Death</Aspect><Image>mini\deities\Wraith God2.jpg</Image><True_Name>Merthezar</True_Name><Type>deities</Type><Passives>SpellGroupParamMod(spell_tag,Ice,Deathly Frost,spellpower_mod,25);SpellGroupParamMod(spell_group,Necromancy,Wraith God's Will,spellpower_mod,35);Undying(1);ParamBonus(Death Resistance, 8+2*{source_level});ParamBonus(Willpower,{source_level});</Passives><Favored_Spell_Groups>Necromancy(7);Redemption(3);Celestial(2);Benediction(2);Shadow(2);</Favored_Spell_Groups><Id>43</Id><Emblem>UI\emblems\std\death\0Wraith God.jpg</Emblem><Secondary_Mission>World Peace</Secondary_Mission><Second_Favored_Aspect>Arcanum</Second_Favored_Aspect><Unique_Id>deities Wraith God3620582579955929840</Unique_Id><Group>Playable</Group><Principles>Law(2);Freedom(-2);Tradition(2);Progress(-2);Honor(1);Treachery(-1);</Principles><Friend_Deities>Masked God;Night Lord;</Friend_Deities></props></Wraith_God><Crimson_Queen><params><Ambition_Identity>2</Ambition_Identity><Charity_Identity>-2</Charity_Identity><Tradition_Identity>2</Tradition_Identity><Progress_Identity>-2</Progress_Identity><Freedom_Identity>1</Freedom_Identity><Law_Identity>-1</Law_Identity></params><props><Allied_Deities>Night Lord;Queen of Lust;</Allied_Deities><Enemy_Deities>Redeemer;Allfather;</Enemy_Deities><Name>Crimson Queen</Name><Prime_Mission>Barbarism</Prime_Mission><Displayed_Name>Crimson Queen</Displayed_Name><Aspect>Death</Aspect><Image>mini\deities\Red Queen.jpg</Image><True_Name>Sanguinia</True_Name><Type>deities</Type><Passives>Life Steal(8+2*{source_level});SpellGroupParamMod(spell_group,Blood Magic,Boon of the Crimson Queen,spellpower_mod,40);</Passives><Favored_Spell_Groups>Blood Magic(6);Shadow(3);Psychic(1);Savage(1);Warp(1);</Favored_Spell_Groups><Id>41</Id><Emblem>UI\emblems\std\death\0Crimson Queen.jpg</Emblem><Secondary_Mission>Armageddon</Secondary_Mission><Unique_Id>deities Crimson Queen-7781822352067781383</Unique_Id><Group>Playable</Group><Principles>Ambition(2);Charity(-2);Tradition(2);Progress(-2);Freedom(1);Law(-1);</Principles><Friend_Deities>Dungeon Keeper;Witch King;</Friend_Deities></props></Crimson_Queen><Consumer_of_Worlds><params><Treachery_Identity>2</Treachery_Identity><Honor_Identity>-2</Honor_Identity><War_Identity>2</War_Identity><Peace_Identity>-2</Peace_Identity><Ambition_Identity>1</Ambition_Identity><Charity_Identity>-1</Charity_Identity></params><props><Name>Consumer of Worlds</Name><Custom_Params>(15+2 per level)</Custom_Params><Prime_Mission>Dominion</Prime_Mission><Displayed_Name>Consumer of Worlds</Displayed_Name><Aspect>Chaos</Aspect><Favored_Aspect>Chaos</Favored_Aspect><Image>mini\deities\Consumer of Worlds.jpg</Image><True_Name>Azgmoloh</True_Name><Type>deities</Type><Third_Favored_Aspect>Death</Third_Favored_Aspect><Passives>ParamBonus(Chaos Resistance|Fire Resistance|Earth Resistance, 6+2*{source_level});ParamBonus(Vitality, {source_level});SpellGroupParamMod(Spell_group,Demonology,Chaos Might,spellpower_mod,35);</Passives><Favored_Spell_Groups>Demonology(6);Blood Magic(3);Affliction(2);Witchery(1);Warp(1);</Favored_Spell_Groups><Id>62</Id><Emblem>UI\emblems\std\chaos\0consumer.jpg</Emblem><Description>An archfiend that has been trapped in the Abyss below Edalar, Ashgaroth's followers lend him their soulpower in exchange for the services of his demonic minions. Heroes that follow him receive a {1}% Essence discount and Spellpower bonus for all Demonology spells. </Description><Secondary_Mission>Dissolution</Secondary_Mission><Second_Favored_Aspect>Darkness</Second_Favored_Aspect><Unique_Id>deities Consumer of Worlds-6225331511126782497</Unique_Id><Group>Playable</Group><Principles>TREACHERY(2);Honor(-2);WAR(2);Peace(-2);AMBITION(1);Charity(-1);</Principles><Variables>Custom Params;</Variables></props></Consumer_of_Worlds><Redeemer><params><Law_Identity>20</Law_Identity><Charity_Identity>15</Charity_Identity><Honor_Identity>10</Honor_Identity><Ambition_Identity>-25</Ambition_Identity><Treachery_Identity>-15</Treachery_Identity><Progress_Identity>-10</Progress_Identity></params><props><Allied_Deities>Sky Queen;Allfather;</Allied_Deities><Enemy_Deities>Night Lord;Witch King;</Enemy_Deities><Name>Redeemer</Name><Prime_Mission>Liberation</Prime_Mission><Displayed_Name>Redeemer</Displayed_Name><Aspect>Light</Aspect><Image>mini\deities\Redeemer.jpg</Image><Type>deities</Type><Passives>SpellGroupParamMod(Spell_group,Redemption,Holy Powers,spellpower_mod,40);ParamBonus(Spellpower, {charisma}/5);ParamMod(Willpower|Strength, 6+{level}*2);ParamBonus(Shadow Resistance, 16+{level}*2);</Passives><Favored_Spell_Groups>Redemption(7);Benediction(3);Celestial(2);Destruction(2);Blood Magic(1);Savage(1);</Favored_Spell_Groups><Id>11</Id><Dev_Notes>War;Honor;Law;Charity;</Dev_Notes><Emblem>UI\emblems\std\light\Redeemer.jpg</Emblem><Secondary_Mission>Armageddon</Secondary_Mission><Unique_Id>deities Redeemer2057210290013740868</Unique_Id><Version>0.05</Version><Group>Playable</Group><Principles>Law(20);Charity(15);Honor(10);Ambition(-25);Treachery(-15);Progress(-10);</Principles><Friend_Deities>Wild God;Annihilator;</Friend_Deities></props></Redeemer><World_Tree><params><Peace_Identity>2</Peace_Identity><War_Identity>-2</War_Identity><Charity_Identity>2</Charity_Identity><Ambition_Identity>-2</Ambition_Identity><Tradition_Identity>1</Tradition_Identity><Progress_Identity>-1</Progress_Identity></params><props><Allied_Deities>Lord of Decay;Wild God;</Allied_Deities><Enemy_Deities>Wraith God;Annihilator;</Enemy_Deities><Name>World Tree</Name><Prime_Mission>World Peace</Prime_Mission><Displayed_Name>World Tree</Displayed_Name><Aspect>Life</Aspect><Image>mini\deities\World Tree.jpg</Image><Type>deities</Type><Passives>ParamBonus(Wisdom|Vitality,{source_level});SpellGroupParamMod(Spell group,Sylvan, World Tree's Power,spellpower_mod,35); </Passives><Favored_Spell_Groups>Sylvan(8);Affliction(4);Shadow(2);Savage(1);Elemental(1);</Favored_Spell_Groups><Id>32</Id><Emblem>UI\emblems\std\life\1druid.jpg</Emblem><Secondary_Mission>Submission</Secondary_Mission><Unique_Id>deities World Tree4868562301512749972</Unique_Id><Version>0.1003b</Version><Group>Playable</Group><Principles>Peace(2);War(-2);Charity(2);Ambition(-2);Tradition(1);Progress(-1);</Principles><Friend_Deities>Allfather;Fey Queen;</Friend_Deities></props></World_Tree><Allfather><params><Honor_Identity>20</Honor_Identity><Tradition_Identity>20</Tradition_Identity><Law_Identity>10</Law_Identity><Treachery_Identity>-25</Treachery_Identity><Ambition_Identity>-15</Ambition_Identity></params><props><Allied_Deities>Sky Queen;World Tree;</Allied_Deities><Enemy_Deities>Annihilator;Dungeon Keeper;</Enemy_Deities><Name>Allfather</Name><Prime_Mission>World Peace</Prime_Mission><Displayed_Name>Allfather</Displayed_Name><Aspect>Light</Aspect><Image>mini\deities\Stonefather.jpg</Image><Type>deities</Type><Passives>ParamMod(Armorer, 16+2*{source_level});SpellGroupParamMod(Spell_group,Elemental|Benediction,Old Powers,spellpower_mod,30);ParamBonus(Strength|Willpower|Vitality, {source_level}/2);ParamBonus(Bludgeoning Resistance, 15);</Passives><Favored_Spell_Groups>Benediction(6);Conjuration(3);Elemental(2);Celestial(1);</Favored_Spell_Groups><Id>12</Id><Dev_Notes>Honor;Law;Tradition;Peace;</Dev_Notes><Emblem>UI\emblems\std\light\0Allfather3.jpg</Emblem><Secondary_Mission>Enlightenment</Secondary_Mission><Unique_Id>deities Allfather5343169031436402201</Unique_Id><Version>0.05</Version><Group>Playable</Group><Principles>Honor(20);Tradition(20);Law(10);Treachery(-25);Ambition(-15);</Principles><Friend_Deities>Keeper of Twilight;Masked God;</Friend_Deities></props></Allfather><Keeper_of_Twilight><params><Treachery_Identity>2</Treachery_Identity><Honor_Identity>-2</Honor_Identity></params><props><Allied_Deities>Night Lord;Sky Queen;</Allied_Deities><Enemy_Deities>Consumer of Worlds;Annihilator;</Enemy_Deities><Name>Keeper of Twilight</Name><Prime_Mission>World Peace</Prime_Mission><Displayed_Name>Keeper of Twilight</Displayed_Name><Aspect>Darkness</Aspect><Image>mini\deities\Keeper of Twilight2.jpg</Image><True_Name>Iltharion</True_Name><Type>deities</Type><Passives>ParamBonus(Shadow Resistance|Holy Resistance,8+2*{source_level});SpellGroupParamMod(Aspect,Darkness|Light,Twilight,spellpower_mod,35);ParamBonus(Shadow Mastery Score,{source_celestial_mastery}/2);ParamBonus(Celestial Mastery Score,{source_shadow_mastery}/2);</Passives><Favored_Spell_Groups>Shadow(4);Celestial(4);Benediction(1);Witchery(1);Psychic(1);Necromancy(1);</Favored_Spell_Groups><Id>21</Id><Emblem>UI\emblems\std\darkness\1arch.jpg</Emblem><Secondary_Mission>Submission</Secondary_Mission><Unique_Id>deities Keeper of Twilight-6747938231118220282</Unique_Id><Version>0.1002b</Version><Group>Playable</Group><Principles>Treachery(-1);Honor(1);Honor(-2);Treachery(2);</Principles><Friend_Deities>Allfather;Dungeon Keeper;</Friend_Deities></props></Keeper_of_Twilight><Night_Lord><params><Treachery_Identity>2</Treachery_Identity><Honor_Identity>-2</Honor_Identity><Freedom_Identity>2</Freedom_Identity><Law_Identity>-2</Law_Identity><Tradition_Identity>1</Tradition_Identity><Progress_Identity>-1</Progress_Identity></params><props><Allied_Deities>Dungeon Keeper;Crimson Queen;</Allied_Deities><Name>Night Lord</Name><Prime_Mission>Barbarism</Prime_Mission><Displayed_Name>Night Lord</Displayed_Name><Aspect>Darkness</Aspect><Image>mini\char\New2\Night Lord.jpg</Image><Follower_Units>Werewolf;Shadow Wolf;Dire Wolf;Vampire Bat;</Follower_Units><True_Name>Ashvaran</True_Name><Type>deities</Type><Passives>ParamBonus(Dexterity|Agility,{source_level}/2);ParamMod(Stealth,12+3*{source_level});SpellGroupParamMod(Aspect,Darkness,Night Lord's Boon,spellpower_mod,35);AddProp(standard passives,darkvision);</Passives><Favored_Spell_Groups>Psychic(7);Shadow(5);Blood Magic(3);Savage(2);</Favored_Spell_Groups><Id>23</Id><Emblem>UI\emblems\std\darkness\1night lord.jpg</Emblem><Description>Night Lord's followers are granted natural Darkvision and their Stealth will be increased by 5% per level.  All Shadow spells also receive 5% spellpower bonus.  </Description><Secondary_Mission>Submission</Secondary_Mission><Unique_Id>deities Night Lord-7025793403819315853</Unique_Id><Version>0.1002b</Version><Group>Playable</Group><Principles>Treachery(2);Honor(-2);Freedom(2);Law(-2);Tradition(1);Progress(-1);</Principles><Friend_Deities>Wraith God;Witch King;</Friend_Deities><Lore>Slain and reborn many times, the Lord of the Dark retains an unseen grip on all the land west of the White City. Patient and inexorable, he will not strike until a proper opportunity presents itself... His strongest minions are the dark elves, who had come as desperate refugees from the devastated lands of Sheoth across the Great Ocean, where the world meets its own tail and sunset becomes sunrise. Many of the Wolf Lords have fallen into his service as well, seduced by power and thrill of the night-time manhunt. On them he bestowed his highest blessing - the Wulfen Curse. </Lore></props></Night_Lord><Witch_King><params><Treachery_Identity>2</Treachery_Identity><Honor_Identity>-2</Honor_Identity><Ambition_Identity>2</Ambition_Identity><Charity_Identity>-2</Charity_Identity><Progress_Identity>1</Progress_Identity><Tradition_Identity>-1</Tradition_Identity></params><props><Allied_Deities>Queen of Lust;Night Lord;</Allied_Deities><Enemy_Deities>Redeemer;World Tree;</Enemy_Deities><Name>Witch King</Name><Prime_Mission>Submission</Prime_Mission><Displayed_Name>Witch King</Displayed_Name><Aspect>Arcanum</Aspect><Perks>Vile Sorcery({1});Sorcerous Might({2});Witch King's Boon({3});</Perks><Image>mini\deities\Witch King4.jpg</Image><Follower_Units>Dark Archon;Mutant;Void Walker;Gargantuan Beast;Void Wraith;Familiar;</Follower_Units><True_Name>Dorthaeruil</True_Name><Type>deities</Type><Passives>ParamBonus(Resistance Penetration, 8+2*{source_level});SpellGroupParamMod(Spell_group,Sorcery,Sorcerous Might,spellpower_mod,15);SpellGroupParamMod(Aspect,Chaos|Darkness|Arcanum,Witch King's Boon,spellpower_mod,25);</Passives><Favored_Spell_Groups>Sorcery(8);Witchery(4);Enchantment(3);Psychic(2);Destruction(1);Warp(1);Demonology(1);</Favored_Spell_Groups><Id>53</Id><Emblem>UI\emblems\std\arcanum\0Witch King.jpg</Emblem><Secondary_Mission>Enlightenment</Secondary_Mission><Unique_Id>deities Witch King286021452624192599</Unique_Id><Version>0.1002b</Version><Group>Playable</Group><Principles>Treachery(2);Honor(-2);Ambition(2);Charity(-2);Progress(1);Tradition(-1);</Principles><Friend_Deities>Crimson Queen;Dungeon Keeper;</Friend_Deities><Lore>ASCII_OPEN65533ASCII_CLOSEKnowledge is power. Keep it to yourself.ASCII_OPEN65533ASCII_CLOSE  ASCII_OPEN65533ASCII_CLOSEEnlightenmentASCII_OPEN65533ASCII_CLOSE what a folly to believe that mortals can ever achieve it.ASCII_OPEN65533ASCII_CLOSE  ASCII_OPEN65533ASCII_CLOSELet the Chaos ravage the world for a while, until it is ready to fall into our hands. Enemy of our enemies is ourASCII_OPEN65533ASCII_CLOSE tool.ASCII_OPEN65533ASCII_CLOSE  Not much is known about the Witch King, and less can be trusted for is one thing is certain is that he is a god of lies and treachery. But some in the Allkingdom still remember the days of his Reign of Sorcery, the tyranny or terror and atrocities of the Congregation led by Witch Lord Morkei.  Today, however, very few choose to serve the fallen godASCII_OPEN65533ASCII_CLOSEs ends, and only in utter secrecy. But who knows how far does the web stretch in the shadows of the ever conspiring Raven Realm and in the darker places of the world?  </Lore></props></Witch_King><Lord_of_Magic><params><Progress_Identity>2</Progress_Identity><Tradition_Identity>-2</Tradition_Identity><Ambition_Identity>2</Ambition_Identity><Charity_Identity>-2</Charity_Identity><Freedom_Identity>1</Freedom_Identity><Law_Identity>-1</Law_Identity></params><props><Allied_Deities>Allfather;Sky Queen;</Allied_Deities><Enemy_Deities>Consumer of Worlds;Annihilator;</Enemy_Deities><Name>Lord of Magic</Name><Prime_Mission>Enlightenment</Prime_Mission><Displayed_Name>Lord of Magic</Displayed_Name><Aspect>Arcanum</Aspect><Perks>Path of Wizardry({1});Arcane Link({2});Marvel of Magic({3});</Perks><Image>mini\deities\Architect3.jpg</Image><Follower_Units>Living Armor;Trickster Raven;Onyx Golem;Aether Golem;Eldritch Strix;Sentinel;</Follower_Units><True_Name>Kadophor</True_Name><Type>deities</Type><Passives>ParamMod(Wizardry,15+2*{source_level});SpellGroupParamMod(Aspect,Arcanum,Essence Link,ess cost,-25);SpellGroupParamMod(spell_group,Enchantment|Conjuration,Marvel of Magic,spellpower_mod,35);</Passives><Favored_Spell_Groups>Enchantment(8);Conjuration(5);Sorcery(3);Celestial(2);</Favored_Spell_Groups><Id>51</Id><Emblem>UI\emblems\std\arcanum\4aee.jpg</Emblem><Secondary_Mission>World Peace</Secondary_Mission><Unique_Id>deities Lord of Magic7422206819198532263</Unique_Id><Group>Playable</Group><Principles>Progress(2);Tradition(-2);Ambition(2);Charity(-2);Freedom(1);Law(-1);</Principles><Friend_Deities>Keeper of Twilight;Void Lord;</Friend_Deities></props></Lord_of_Magic><Faithless><params></params><props><Allied_Deities>Allfather;Sky Queen;</Allied_Deities><Enemy_Deities>Consumer of Worlds;Annihilator;</Enemy_Deities><Name>Faithless</Name><Prime_Mission>Enlightenment</Prime_Mission><Displayed_Name>Faithless</Displayed_Name><Aspect>Neutral</Aspect><Perks>Self-made Fortune: Grants 2 Mastery points, 50 Experience and 50 Gold;</Perks><Image>mini\deities\Lord of Sorcery.jpg</Image><Follower_Units>Living Armor;Trickster Raven;Onyx Golem;Aether Golem;Eldritch Strix;Sentinel;</Follower_Units><True_Name>Masked God, the Demiurge</True_Name><Type>deities</Type><Passives>ParamMod(mastery points per level, 1);ParamMod(xp mod, 10);ParamMod(gold mod, 10);ParamBonus(gold cost reduction, {charisma}/2);</Passives><Id>9102</Id><Emblem>mini\abils\New folder\empty emblem.jpg</Emblem><Secondary_Mission>World Peace</Secondary_Mission><Unique_Id>deities Faithless-5587022174908278077</Unique_Id><Actives>AddParam(Mastery Points,2);AddParam(Xp,50);AddParam(Gold,50);</Actives><Version>0.05</Version><Group>Playable</Group><Principles></Principles><Friend_Deities>Keeper of Twilight;Void Lord;</Friend_Deities></props></Faithless><Annihilator><params><War_Identity>2</War_Identity><Peace_Identity>-2</Peace_Identity><Honor_Identity>2</Honor_Identity><Treachery_Identity>-2</Treachery_Identity><Freedom_Identity>1</Freedom_Identity><Law_Identity>-1</Law_Identity></params><props><Name>Annihilator</Name><Prime_Mission>Armageddon</Prime_Mission><Displayed_Name>Annihilator</Displayed_Name><Aspect>Chaos</Aspect><Favored_Aspect>Chaos</Favored_Aspect><Image>mini\deities\Crimson King2.jpg</Image><Follower_Units>Hell Caller;Imp;Daemon Vindicator;Abyssal Overlord;Lesser Daemon;</Follower_Units><Type>deities</Type><Third_Favored_Aspect>Light</Third_Favored_Aspect><Passives>ParamBonus(Chaos Resistance|Fire Resistance|Air Resistance, 6+2*{source_level});ParamBonus(Spellpower, {source_level});SpellGroupParamMod(Spell_group,Destruction,Chaos Might,spellpower_mod,35);</Passives><Favored_Spell_Groups>Destruction(9);Redemption(4);Sorcery(3);Elemental(2);</Favored_Spell_Groups><Id>61</Id><Emblem>UI\emblems\std\chaos\1flame.jpg</Emblem><Secondary_Mission>Liberation</Secondary_Mission><Second_Favored_Aspect>Death</Second_Favored_Aspect><Unique_Id>deities Annihilator5578361940705915835</Unique_Id><Version>0.05</Version><Group>Playable</Group><Principles>War(2);Peace(-2);Honor(2);Treachery(-2);Freedom(1);Law(-1);</Principles></props></Annihilator><Sky_Queen><params></params><props><Allied_Deities>Fey Queen;Allfather;</Allied_Deities><Enemy_Deities>Dungeon Keeper;Consumer of Worlds;</Enemy_Deities><Name>Sky Queen</Name><Prime_Mission>Enlightenment</Prime_Mission><Displayed_Name>Sky Queen</Displayed_Name><Aspect>Light</Aspect><Image>mini\deities\Sky Queen.jpg</Image><Type>deities</Type><Passives>SpellGroupParamBonus(Spell_group,Celestial,Celestial Powers,spellpower_bonus,2+{level});ParamBonus(Spellpower, {charisma}/5);ParamMod(Intelligence|Wisdom, 6+{level}*2);ParamBonus(Arcane Resistance, 16+{level}*2);</Passives><Favored_Spell_Groups>Celestial(7);Enchantment(2);Benediction(2);Sorcery(2);Warp(1);Elemental(1);</Favored_Spell_Groups><Id>13</Id><Emblem>UI\emblems\std\light\0Sky Queen1.jpg</Emblem><Description>Grants a {1} Spellpower bonus for all Celestial spells, bonus to Intelligence and Wisdom, {2}% Arcane Resistance and additional Spellpower equal to 1/5 of heroASCII_OPEN65533ASCII_CLOSEs Charisma. </Description><Secondary_Mission>World Peace</Secondary_Mission><Unique_Id>deities Sky Queen2071761574525321140</Unique_Id><Group>Playable</Group><Principles></Principles><Friend_Deities>Masked God;Void Lord;</Friend_Deities></props></Sky_Queen><Fey_Queen><params><Peace_Identity>2</Peace_Identity><War_Identity>-2</War_Identity><Charity_Identity>2</Charity_Identity><Ambition_Identity>-2</Ambition_Identity><Freedom_Identity>1</Freedom_Identity><Law_Identity>-1</Law_Identity></params><props><Allied_Deities>Masked God;Sky Queen;</Allied_Deities><Name>Fey Queen</Name><Prime_Mission>Enlightenment</Prime_Mission><Displayed_Name>Fey Queen</Displayed_Name><Aspect>Life</Aspect><Image>mini\deities\Faerie Queen2.jpg</Image><Type>deities</Type><Passives>ParamBonus(Wisdom|Spellpower|Charisma,{source_level}/2);SpellGroupParamMod(Spell group,Elemental, Fey Queen's Blessing,spellpower_mod,35);</Passives><Favored_Spell_Groups>Elemental(9);Sylvan(4);Enchantment(4);Sorcery(2);Celestial(1);Warp(1);</Favored_Spell_Groups><Id>31</Id><Emblem>UI\emblems\Fey Queen.jpg</Emblem><Secondary_Mission>World Peace</Secondary_Mission><Unique_Id>deities Fey Queen4761217650151377684</Unique_Id><Group>Playable</Group><Principles>Peace(2);War(-2);Charity(2);Ambition(-2);Freedom(1);Law(-1);</Principles><Friend_Deities>World Tree;Queen of Lust;</Friend_Deities></props></Fey_Queen><Sun_God><params><Tradition_Identity>2</Tradition_Identity><Progress_Identity>-2</Progress_Identity><Law_Identity>2</Law_Identity><Freedom_Identity>-2</Freedom_Identity><Ambition_Identity>1</Ambition_Identity><Charity_Identity>-1</Charity_Identity></params><props><Allied_Deities>Sky Queen;Allfather;</Allied_Deities><Enemy_Deities>Night Lord;Witch King;</Enemy_Deities><Name>Sun God</Name><Prime_Mission>Liberation</Prime_Mission><Aspect>Light</Aspect><Image>mini\deities\New folder\sun god2.jpg</Image><True_Name>Arh'Aphez</True_Name><Type>deities</Type><Passives>ParamBonus(Divination Cap,5+2*{level});AddDmgPerc(Light, Fire, 10+{level});ParamBonus(Light Resistance|Fire Resistance,5+2*{level});ParamMod(Charisma,5+2*{level});</Passives><Favored_Spell_Groups>Redemption(6);Celestial(4);Destruction(3);Blood Magic(2);Elemental(1);</Favored_Spell_Groups><Id>14</Id><Emblem>UI\emblems\std\light\Redeemer.jpg</Emblem><Description>The greatest of the three Primordials of the Eastern pantheon, </Description><Secondary_Mission>Armageddon</Secondary_Mission><Unique_Id>deities Sun God9209673465993714481</Unique_Id><Version>0.1002</Version><Group>Playable</Group><Principles>Tradition(2);Progress(-2);Law(2);Freedom(-2);Ambition(1);Charity(-1);</Principles><Friend_Deities>Wild God;Annihilator;</Friend_Deities></props></Sun_God><Death_Gorger><params><Treachery_Identity>2</Treachery_Identity><Honor_Identity>-2</Honor_Identity><War_Identity>2</War_Identity><Peace_Identity>-2</Peace_Identity><Ambition_Identity>1</Ambition_Identity><Charity_Identity>-1</Charity_Identity></params><props><Allied_Deities>Dungeon Keeper;World Tree;</Allied_Deities><Enemy_Deities>Void Lord;Redeemer;</Enemy_Deities><Name>Death Gorger</Name><Prime_Mission>Submission</Prime_Mission><Displayed_Name>Death Gorger</Displayed_Name><Aspect>Death</Aspect><Image>mini\deities\New folder\lord of decay3.jpg</Image><True_Name>Aglorond</True_Name><Type>deities</Type><Passives>ParamBonus(Vitality,{source_necromancy_mastery}/5);ParamBonus(Strength,{source_blood_magic_mastery}/5);ParamBonus(Spellpower,{source_affliction_mastery}/5);SpellGroupParamMod(Aspect,Death,Death Mastery,spellpower_mod,25);</Passives><Favored_Spell_Groups>Affliction(5);Blood Magic(4);Necromancy(3);Demonology(2);Witchery(1);</Favored_Spell_Groups><Id>44</Id><Emblem>UI\emblems\std\death\0Lord of Decay.jpg</Emblem><Secondary_Mission>Barbarism</Secondary_Mission><Unique_Id>deities Death Gorger1977447294189266415</Unique_Id><Group>Playable</Group><Principles>Treachery(2);Honor(-2);War(2);Peace(-2);Ambition(1);Charity(-1);</Principles><Friend_Deities>Night Lord;Consumer of Worlds;</Friend_Deities></props></Death_Gorger><Underking><params><Tradition_Identity>2</Tradition_Identity><Progress_Identity>-2</Progress_Identity><Law_Identity>2</Law_Identity><Freedom_Identity>-2</Freedom_Identity><War_Identity>1</War_Identity><Peace_Identity>-1</Peace_Identity></params><props><Allied_Deities>Night Lord;Lord of Decay;</Allied_Deities><Enemy_Deities>Fey Queen;Sky Queen;</Enemy_Deities><Name>Underking</Name><Prime_Mission>Submission;</Prime_Mission><Displayed_Name>Underking</Displayed_Name><Aspect>Darkness</Aspect><Image>mini\deities\Dungeon Keeper.jpg</Image><Follower_Units>Black Dragon;Minos;Evil Eye;Stygian Guardian;Manticore;Hydra;</Follower_Units><True_Name>Dethregor</True_Name><Type>deities</Type><Passives>AddProp(standard passives,Infravision);ParamBonus(Behind Sight bonus,1);ParamMod(Detection,14+4*{source_level});ParamBonus(Shadow Resistance|Chaos Resistance|Earth Resistance,8+2*{source_level});SpellGroupParamMod(spell type,Summoning,Dungeon Master,spellpower_mod,35);SpellGroupParamMod(Aspect,Darkness,Dark Depths,spellpower_mod,35);AddProp(standard passives,darkvision);</Passives><Favored_Spell_Groups>Witchery(6);Shadow(4);Psychic(2);Demonology(2);Elemental(1);Destruction(1);</Favored_Spell_Groups><Id>22</Id><Emblem>UI\emblems\std\darkness\2Dungeon Keeper3.jpg</Emblem><Description>Followers of Dethregor the Underking may receive the gift of Darkvision or Behind Sight (1). They also receive resistance against Earth spells and additional Spellpower for those spells as well as all Darkness spells.  </Description><Secondary_Mission>Armageddon</Secondary_Mission><Unique_Id>deities Underking8689547802257873965</Unique_Id><Version>0.1002b</Version><Group>Playable</Group><Principles>Tradition(2);Progress(-2);Law(2);Freedom(-2);War(1);Peace(-1);</Principles><Friend_Deities>Keeper of Twilight;Witch King;</Friend_Deities><Lore>Once an ambitious son of the Allfather, the titan Dethregor underwent great and terrible transformation over time, becoming bound to the Underworld he had sought to conquer and rule...</Lore></props></Underking><Three_Divines><params><Freedom_Identity>-1</Freedom_Identity><Law_Identity>1</Law_Identity><Progress_Identity>2</Progress_Identity><Tradition_Identity>2</Tradition_Identity><Peace_Identity>1</Peace_Identity><Honor_Identity>1</Honor_Identity><Charity_Identity>1</Charity_Identity></params><props><Allied_Deities>Allfather;Sky Queen;Redeemer;Aspect of Light;</Allied_Deities><Enemy_Deities>Death Gorger;Witch King;Consumer of Worlds;</Enemy_Deities><Name>Three Divines</Name><Displayed_Name>Three Divines</Displayed_Name><Aspect>Light</Aspect><Image>mini\deities\New folder (3)\1three divines.jpg</Image><Type>deities</Type><Passives>SpellGroupParamBonus(Aspect,Light,Powers of Light,spellpower_mod,2+{level});ParamBonus(Shadow Resistance, 16+{level}*2);ParamBonus(Charisma|Willpower|Wisdom, {level}/3);</Passives><Favored_Spell_Groups>Celestial(3);Redemption(3);Benediction(3);Conjuration(1);Elemental(1);</Favored_Spell_Groups><Id>901</Id><Emblem>UI\emblems\std\light\1hh.jpg</Emblem><Description>Grants additional Charisma, Willpower and Wisdom, provides {1} Shadow resistance and +{2} Spellpower for all spells of Light Aspect. </Description><Unique_Id>deities Three Divines7946054121459098553</Unique_Id><Version>0.05</Version><Group>Playable</Group><Principles>Tradition(2);Law(1);Peace(1);Honor(1);Charity(1);</Principles><Friend_Deities>Allfather;Sky Queen;Redeemer;Aspect of Light;</Friend_Deities><Bonus_Hero_Traits>+{source_main_divination}</Bonus_Hero_Traits></props></Three_Divines><Old_Way><params></params><props><Allied_Deities>Allfather;World Tree;</Allied_Deities><Enemy_Deities>Wraith God;Masked God;</Enemy_Deities><Name>Old Way</Name><Prime_Mission>Barbarism</Prime_Mission><Displayed_Name>Old Way</Displayed_Name><Aspect>Life</Aspect><Image>mini\deities\New folder (3)\1Old Way.jpg</Image><Type>deities</Type><Passives>ParamBonus(Dexterity|Vitality|Wisdom,{source_level}/2);ParamMod(Detection,8+{source_level});ParamMod(Stealth,8+{source_level});SpellGroupParamBonus(Spell Group,Sylvan|Savage|Shadow,Old Way,spellpower_bonus,2+{level});ParamBonus(Natural Resistances,8+{level});</Passives><Favored_Spell_Groups>Savage(8);Sylvan(6);Elemental(4);Celestial(1);Shadow(1);Witchery(1);Destruction(1);</Favored_Spell_Groups><Id>8000</Id><Emblem>UI\emblems\std\life\Nature_Magic.png</Emblem><Description>Hero gains 0.5 Dexterity Vitality and Wisdom per level, {1} Detection and Stealth, +{2} to all Natural Resistances and +{3} Spellpower bonus for Sylvan, Savage and Shadow spells. </Description><Secondary_Mission>Liberation</Secondary_Mission><Unique_Id>deities Old Way-1797377605512261276</Unique_Id><Version>0.1003b</Version><Group>Playable</Group><Principles></Principles><Friend_Deities>Consumer of Worlds;Night Lord;</Friend_Deities></props></Old_Way><Fide_Arcanum><params></params><props><Allied_Deities>Allfather;World Tree;</Allied_Deities><Enemy_Deities>Wraith God;Masked God;</Enemy_Deities><Name>Fide Arcanum</Name><Prime_Mission>Barbarism</Prime_Mission><Displayed_Name>Fide Arcanum</Displayed_Name><Aspect>Arcanum</Aspect><Image>mini\deities\Masked God2.jpg</Image><Type>deities</Type><Passives></Passives><Favored_Spell_Groups></Favored_Spell_Groups><Id>8001</Id><Emblem>UI\emblems\Wild God.jpg</Emblem><Secondary_Mission>Liberation</Secondary_Mission><Unique_Id>deities Fide Arcanum5075196311049099764</Unique_Id><Version>0.05</Version><Group>Playable</Group><Principles></Principles><Friend_Deities>Consumer of Worlds;Night Lord;</Friend_Deities><Lore>In a world filled with both complex magic and misguided superstitions, faith in reason has become a force every mage is aware of. Knowing the Principles of the Multiverse, the Primordial Truth of Eidolons, and seeking the answers to the fate of the mortals - this is the Path of the Magi! </Lore></props></Fide_Arcanum><Dark_Gods><params></params><props><Allied_Deities>Dungeon Keeper;Crimson Queen;</Allied_Deities><Name>Dark Gods</Name><Prime_Mission>Barbarism</Prime_Mission><Displayed_Name>Dark Gods</Displayed_Name><Aspect>Darkness</Aspect><Image>mini\deities\New folder (3)\1arcanum2.jpg</Image><Follower_Units>Werewolf;Shadow Wolf;Dire Wolf;Vampire Bat;</Follower_Units><True_Name>Ashvaran</True_Name><Type>deities</Type><Passives>ParamBonus(Psionic resistance|Chaos resistance|Shadow resistance,4+{level}*3);  ParamBonus(Spellpower,{source_witchery_mastery}/5);  ParamBonus(Intelligence,{source_psychic_mastery}/5);ParamBonus(Dexterity,{source_shadow_mastery}/5);  SpellGroupParamMod(Aspect,Darkness,Dark Gods' Favor,spellpower_mod,35); SpellGroupParamBonus(Aspect,Darkness,Dark Gods' Favor,spellpower bonus,{level}); </Passives><Favored_Spell_Groups>Psychic(7);Witchery(7);Shadow(7);Blood Magic(1);Savage(1); </Favored_Spell_Groups><Id>8005</Id><Emblem>UI\emblems\std\darkness\textures_02_bif-0000002982.jpg</Emblem><Description>All spells of Darkness Aspect receive a {1}% Spellpower bonus. Psionic, Chaos and Shadow resistances are increased by {2}.   Followers also gain 1 Intelligence for every 5 points of Psychic Mastery, 1 Dexterity for every 5 points of Shadow Mastery and 1 Spellpower per 5 points of Witchery. </Description><Secondary_Mission>Submission</Secondary_Mission><Unique_Id>deities Dark Gods-2969557498145976351</Unique_Id><Version>0.1003b</Version><Group>Playable</Group><Principles></Principles><Friend_Deities>Wraith God;Witch King;</Friend_Deities><Lore>Slain and reborn many times, the Lord of the Dark retains an unseen grip on all the land west of the White City. Patient and inexorable, he will not strike until a proper opportunity presents itself... His strongest minions are the dark elves, who had come as desperate refugees from the devastated lands of Sheoth across the Great Ocean, where the world meets its own tail and sunset becomes sunrise. Many of the Wolf Lords have fallen into his service as well, seduced by power and thrill of the night-time manhunt. On them he bestowed his highest blessing - the Wulfen Curse. </Lore></props></Dark_Gods></Playable><Extended><Aspect_of_Light><params><Honor_Identity>2</Honor_Identity><Treachery_Identity>-2</Treachery_Identity><Law_Identity>2</Law_Identity><Freedom_Identity>-2</Freedom_Identity><Charity_Identity>1</Charity_Identity><Ambition_Identity>-1</Ambition_Identity></params><props><Name>Aspect of Light</Name><Displayed_Name>Aspect of Light</Displayed_Name><Aspect>Light</Aspect><Image>mini\deities\Sky Queen2.jpg</Image><Type>deities</Type><Passives>SpellGroupParamMod(Aspect,Light,Powers of Light,spellpower_mod,20);ParamBonus(Spellpower, {charisma}/5);ParamMod(Willpower|Charisma, 6+{level}*2);ParamBonus(Shadow Resistance, 16+{level}*2);</Passives><Favored_Spell_Groups>Celestial(3);Redemption(3);Benediction(3);Destruction(1);Necromancy(1);</Favored_Spell_Groups><Id>901</Id><Emblem>UI\emblems\std\light\1hh.jpg</Emblem><Unique_Id>deities Aspect of Light-4834702884390829159</Unique_Id><Group>Extended</Group><Principles>Honor(2);Treachery(-2);Law(2);Freedom(-2);Charity(1);Ambition(-1);</Principles><Bonus_Hero_Traits>+{source_main_divination}</Bonus_Hero_Traits></props></Aspect_of_Light><Aspect_of_Arcanum><params><Law_Identity>2</Law_Identity><Freedom_Identity>-2</Freedom_Identity><Ambition_Identity>2</Ambition_Identity><Charity_Identity>-2</Charity_Identity><Progress_Identity>1</Progress_Identity><Tradition_Identity>-1</Tradition_Identity></params><props><Name>Aspect of Arcanum</Name><Unique_Id>deities Aspect of Arcanum4241243689857579574</Unique_Id><Aspect>Arcanum</Aspect><Group>Extended</Group><Principles>Law(2);Freedom(-2);Ambition(2);Charity(-2);Progress(1);Tradition(-1);</Principles><Image>mini\deities\Architect.jpg</Image><Type>deities</Type><Passives>SpellGroupParamMod(Aspect,Arcanum,Powers of Arcanum,spellpower_mod,20);ParamBonus(Spellpower, {Knowledge}/5);ParamMod(Intelligence|Knowledge, 6+{level}*2);ParamBonus(Chaos Resistance, 16+{level}*2);</Passives><Favored_Spell_Groups>Sorcery(3);Conjuration(3);Enchantment(3);Warp(1);Elemental(1);</Favored_Spell_Groups><Id>904</Id><Emblem>UI\emblems\std\light\1hh.jpg</Emblem></props></Aspect_of_Arcanum><Aspect_of_Death><params><Law_Identity>2</Law_Identity><Freedom_Identity>-2</Freedom_Identity><Tradition_Identity>1</Tradition_Identity><Progress_Identity>-1</Progress_Identity></params><props><Name>Aspect of Death</Name><Unique_Id>deities Aspect of Death8440638320577784128</Unique_Id><Aspect>Death</Aspect><Group>Extended</Group><Principles>Law(2);Freedom(-2);Tradition(1);Progress(-1);</Principles><Image>mini\deities\Lord of Decay.jpg</Image><Type>deities</Type><Passives>SpellGroupParamMod(Aspect,Arcanum,Powers of Arcanum,spellpower_mod,20);ParamBonus(Spellpower, {Willpower}/5);ParamMod(Wisdom|Knowledge, 6+{level}*2);ParamBonus(Death Resistance, 16+{level}*2);</Passives><Favored_Spell_Groups>CONJURATION;ENCHANTMENT;SORCERY;VOID;ELEMENTAL;CELESTIAL;ENCHANTMENT;SORCERY;CONJURATION;</Favored_Spell_Groups><Id>903</Id><Emblem>UI\emblems\std\light\1hh.jpg</Emblem></props></Aspect_of_Death><Aspect_of_Darkness><params><Freedom_Identity>2</Freedom_Identity><Law_Identity>-2</Law_Identity><Treachery_Identity>2</Treachery_Identity><Honor_Identity>-2</Honor_Identity><Ambition_Identity>1</Ambition_Identity><Charity_Identity>-1</Charity_Identity></params><props><Name>Aspect of Darkness</Name><Unique_Id>deities Aspect of Darkness1996243535671903900</Unique_Id><Aspect>Darkness</Aspect><Group>Extended</Group><Principles>Freedom(2);Law(-2);Treachery(2);Honor(-2);Ambition(1);Charity(-1);</Principles><Image>mini\deities\Night Lord.jpg</Image><Type>deities</Type><Passives>SpellGroupParamMod(Aspect,Arcanum,Powers of Arcanum,spellpower_mod,20);ParamBonus(Spellpower, {Intelligence}/5);ParamMod(Intelligence|Dexterity, 6+{level}*2);ParamBonus(Light Resistance, -6-{level});AddProp(darkvision);</Passives><Favored_Spell_Groups>Shadow(4);Witchery(2);Psychic(3);Affliction(1);Blood Magic(1);Warp(1);</Favored_Spell_Groups><Id>902</Id><Emblem>UI\emblems\std\light\1hh.jpg</Emblem></props></Aspect_of_Darkness><Aspect_of_Chaos><params><Law_Identity>2</Law_Identity><Freedom_Identity>-2</Freedom_Identity><Ambition_Identity>2</Ambition_Identity><Charity_Identity>-2</Charity_Identity><Progress_Identity>1</Progress_Identity><Tradition_Identity>-1</Tradition_Identity></params><props><Name>Aspect of Chaos</Name><Unique_Id>deities Aspect of Chaos4789549052917868814</Unique_Id><Aspect>Chaos</Aspect><Group>Extended</Group><Principles>Law(2);Freedom(-2);Ambition(2);Charity(-2);Progress(1);Tradition(-1);</Principles><Image>mini\deities\New folder (2)\chaos.jpg</Image><Type>deities</Type><Passives>SpellGroupParamMod(Aspect,Arcanum,Powers of Arcanum,spellpower_mod,20);ParamBonus(Spellpower, {Knowledge}/5);ParamMod(Intelligence|Knowledge, 6+{level}*2);ParamBonus(Chaos Resistance, 16+{level}*2);</Passives><Favored_Spell_Groups>CONJURATION;ENCHANTMENT;SORCERY;VOID;ELEMENTAL;CELESTIAL;ENCHANTMENT;SORCERY;CONJURATION;</Favored_Spell_Groups><Id>905</Id><Emblem>UI\emblems\std\light\1hh.jpg</Emblem></props></Aspect_of_Chaos><Masked_God><params></params><props><Allied_Deities>Allfather;Sky Queen;</Allied_Deities><Enemy_Deities>Consumer of Worlds;Annihilator;</Enemy_Deities><Name>Masked God</Name><Prime_Mission>Enlightenment</Prime_Mission><Displayed_Name>Masked God</Displayed_Name><Aspect>Neutral</Aspect><Image>mini\deities\Masked God2.jpg</Image><Follower_Units>Living Armor;Trickster Raven;Onyx Golem;Aether Golem;Eldritch Strix;Sentinel;</Follower_Units><True_Name>Masked God, the Demiurge</True_Name><Type>deities</Type><Passives>ParamMod(mastery points per level, 1);ParamMod(xp mod, 10);ParamMod(gold mod, 10);ParamBonus(gold cost reduction, {charisma}/2);</Passives><Favored_Spell_Groups>Conjuration(5);Enchantment(3);Sorcery(3);</Favored_Spell_Groups><Id>9101</Id><Emblem>UI\emblems\std\neutral\1god.jpg</Emblem><Secondary_Mission>World Peace</Secondary_Mission><Unique_Id>deities Masked God9213225243879027011</Unique_Id><Actives>AddParam(Mastery Points,2);AddParam(Xp,50);AddParam(Gold,50);</Actives><Group>Extended</Group><Principles></Principles><Friend_Deities>Keeper of Twilight;Void Lord;</Friend_Deities></props></Masked_God><Aspect_of_Life><params><Peace_Identity>2</Peace_Identity><War_Identity>-2</War_Identity><Charity_Identity>2</Charity_Identity><Ambition_Identity>-2</Ambition_Identity><Tradition_Identity>1</Tradition_Identity><Progress_Identity>-1</Progress_Identity></params><props><Allied_Deities>Lord of Decay;Wild God;</Allied_Deities><Enemy_Deities>Wraith God;Annihilator;</Enemy_Deities><Name>Aspect of Life</Name><Prime_Mission>World Peace</Prime_Mission><Aspect>Life</Aspect><Image>mini\deities\Faerie Queen.jpg</Image><Type>deities</Type><Favored_Spell_Groups>SYLVAN;ELEMENTAL;SAVAGE;AFFLICTION;SHADOW;NECROMANCY;DEMONOLOGY;</Favored_Spell_Groups><Id>932</Id><Emblem>UI\emblems\World Tree.jpg</Emblem><Secondary_Mission>Submission</Secondary_Mission><Unique_Id>deities Aspect of Life4011042739637507710</Unique_Id><Group>Extended</Group><Principles>Peace(2);War(-2);Charity(2);Ambition(-2);Tradition(1);Progress(-1);</Principles><Friend_Deities>Allfather;Fey Queen;</Friend_Deities><Lore>Eternal foe of the Ocean Queen and the Shai'Kar</Lore></props></Aspect_of_Life></Extended><x><Ocean_Queen><params><Peace_Identity>2</Peace_Identity><War_Identity>-2</War_Identity><Charity_Identity>2</Charity_Identity><Ambition_Identity>-2</Ambition_Identity><Tradition_Identity>1</Tradition_Identity><Progress_Identity>-1</Progress_Identity></params><props><Allied_Deities>Lord of Decay;Wild God;</Allied_Deities><Enemy_Deities>Wraith God;Annihilator;</Enemy_Deities><Name>Ocean Queen</Name><Prime_Mission>World Peace</Prime_Mission><Aspect>Life</Aspect><Image>mini\deities\Faerie Queen.jpg</Image><Type>deities</Type><Favored_Spell_Groups>Elemental(7);Void(5);Shadow(3);Necromancy(2);Affliction(2);</Favored_Spell_Groups><Id>32</Id><Emblem>UI\emblems\World Tree.jpg</Emblem><Secondary_Mission>Submission</Secondary_Mission><Unique_Id>deities Ocean Queen1276291959617217478</Unique_Id><Version>0.1003b</Version><Group>x</Group><Principles>Peace(2);War(-2);Charity(2);Ambition(-2);Tradition(1);Progress(-1);</Principles><Friend_Deities>Allfather;Fey Queen;</Friend_Deities><Lore>Eternal foe of the Ocean Queen and the Shai'Kar</Lore></props></Ocean_Queen></x></XML>
+<XML>
+    <Zgroup>
+        <World_Serpent>
+            <params>
+                <Peace_Identity>2</Peace_Identity>
+                <War_Identity>-2</War_Identity>
+                <Charity_Identity>2</Charity_Identity>
+                <Ambition_Identity>-2</Ambition_Identity>
+                <Tradition_Identity>1</Tradition_Identity>
+                <Progress_Identity>-1</Progress_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Lord of Decay;Wild God;</Allied_Deities>
+                <Enemy_Deities>Wraith God;Annihilator;</Enemy_Deities>
+                <Name>World Serpent</Name>
+                <Prime_Mission>World Peace</Prime_Mission>
+                <Displayed_Name>World Serpent</Displayed_Name>
+                <Aspect>Life</Aspect>
+                <Image>mini\deities\New folder\World Serpent3.jpg</Image>
+                <Type>deities</Type>
+                <Favored_Spell_Groups>SYLVAN;ELEMENTAL;SAVAGE;AFFLICTION;SHADOW;NECROMANCY;DEMONOLOGY;
+                </Favored_Spell_Groups>
+                <Id>32</Id>
+                <Emblem>UI\emblems\std\neutral\dragon.jpg</Emblem>
+                <Secondary_Mission>Submission</Secondary_Mission>
+                <Unique_Id>deities World Serpent9070873312881896102</Unique_Id>
+                <Group>Zgroup</Group>
+                <Principles>Peace(2);War(-2);Charity(2);Ambition(-2);Tradition(1);Progress(-1);</Principles>
+                <Friend_Deities>Allfather;Fey Queen;</Friend_Deities>
+                <Lore>Eternal foe of the Ocean Queen and the Shai'Kar</Lore>
+            </props>
+        </World_Serpent>
+    </Zgroup>
+    <Playable>
+        <Queen_of_Lust>
+            <params>
+                <Freedom_Identity>20</Freedom_Identity>
+                <Treachery_Identity>20</Treachery_Identity>
+                <Ambition_Identity>10</Ambition_Identity>
+                <Law_Identity>-20</Law_Identity>
+                <Honor_Identity>-20</Honor_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Crimson Queen;Consumer of Worlds;</Allied_Deities>
+                <Name>Queen of Lust</Name>
+                <Prime_Mission>Barbarism</Prime_Mission>
+                <Displayed_Name>Queen of Lust</Displayed_Name>
+                <Aspect>Chaos</Aspect>
+                <Image>mini\deities\Queen of Lust.jpg</Image>
+                <Type>deities</Type>
+                <Passives>ParamBonus(Chaos Resistance, 6+2*{source_level});ParamBonus(Charisma,
+                    {source_level});ParamBonus(Spellpower, {Charisma}/5);SpellGroupParamMod(Spell_group,Warp,Warp
+                    Might,spellpower_mod,35);
+                </Passives>
+                <Favored_Spell_Groups>Warp(6);Psychic(3);Enchantment(2);Demonology(2);</Favored_Spell_Groups>
+                <Id>63</Id>
+                <Emblem>UI\emblems\done\Queen of Lust.jpg</Emblem>
+                <Description>Grants followers additional Spellpower for all Mind-Affecting spells as well as resistance
+                    against them. Also provides +1 Charisma per level.
+                </Description>
+                <Secondary_Mission>Submission</Secondary_Mission>
+                <Unique_Id>deities Queen of Lust-4158011112490589954</Unique_Id>
+                <Version>0.05</Version>
+                <Group>Playable</Group>
+                <Principles>Freedom(20);Treachery(20);Ambition(10);Law(-20);Honor(-20);</Principles>
+                <Friend_Deities>Annihilator;Night Lord;</Friend_Deities>
+                <Lore>A corrupt elven goddess, once known as the Queen of Beauty, she is now the most devious and pure
+                    servant of the Warp.
+                </Lore>
+            </props>
+        </Queen_of_Lust>
+        <Warmaster>
+            <params>
+                <War_Identity>2</War_Identity>
+                <Peace_Identity>-2</Peace_Identity>
+                <Honor_Identity>2</Honor_Identity>
+                <Treachery_Identity>-2</Treachery_Identity>
+                <Freedom_Identity>1</Freedom_Identity>
+                <Law_Identity>-1</Law_Identity>
+            </params>
+            <props>
+                <Name>Warmaster</Name>
+                <Prime_Mission>Armageddon</Prime_Mission>
+                <Displayed_Name>Warmaster</Displayed_Name>
+                <Aspect>Chaos</Aspect>
+                <Image>mini\deities\Untitled-32.jpg</Image>
+                <Follower_Units>Hell Caller;Imp;Daemon Vindicator;Abyssal Overlord;Lesser Daemon;</Follower_Units>
+                <True_Name>Belregor</True_Name>
+                <Type>deities</Type>
+                <Passives>ParamMod(Blade Mastery Score|Blunt Mastery Score|Axe Mastery Score|Polearm Mastery Score,
+                    16+2*{source_level});ParamBonus(Strength|Agility, {source_level});ParamBonus(Intelligence|Wisdom,
+                    -2);ParamBonus(Slashing Resistance|Bludgeoning Resistance|Piercing Resistance, 10);
+                </Passives>
+                <Favored_Spell_Groups>Destruction(4);Savage(3);Blood Magic(2);</Favored_Spell_Groups>
+                <Id>64</Id>
+                <Emblem>UI\emblems\std\chaos\2chaos.jpg</Emblem>
+                <Description>Grants his followers +1 to all Weapon Mastery scores per level and +{1}% Attack. Adds a
+                    {2}% Essence cost penalty to all spells.
+                </Description>
+                <Secondary_Mission>Barbarism</Secondary_Mission>
+                <Unique_Id>deities Warmaster5156348696691212002</Unique_Id>
+                <Version>0.05</Version>
+                <Group>Playable</Group>
+                <Principles>War(2);Peace(-2);Honor(2);Treachery(-2);Freedom(1);Law(-1);</Principles>
+                <Lore>Elder deity of glory, war and cruelty, sire of orcs and giants, and an eternal foe to all dwarf
+                    kin. Many a human warlord in the East turned to the Warmaster for strength to conquer.
+                </Lore>
+            </props>
+        </Warmaster>
+        <Arachnia>
+            <params>
+                <Treachery_Identity>2</Treachery_Identity>
+                <Honor_Identity>-2</Honor_Identity>
+                <Ambition_Identity>2</Ambition_Identity>
+                <Charity_Identity>-2</Charity_Identity>
+                <Freedom_Identity>1</Freedom_Identity>
+                <Law_Identity>-1</Law_Identity>
+            </params>
+            <props>
+                <Name>Arachnia</Name>
+                <Prime_Mission>Armageddon</Prime_Mission>
+                <Displayed_Name>Arachnia</Displayed_Name>
+                <Aspect>Darkness</Aspect>
+                <Image>mini\deities\Arachnia.jpg</Image>
+                <Follower_Units>Hell Caller;Imp;Daemon Vindicator;Abyssal Overlord;Lesser Daemon;</Follower_Units>
+                <Type>deities</Type>
+                <Passives>Poison Attack(4+{level});ParamBonus(Poison Resistance,
+                    20+{level}*2);ParamMod(Dexterity,6+2*{source_level});ParamBonus(Stealth,6+2*{source_level});AddProp(standard
+                    passives,darkvision);
+                </Passives>
+                <Favored_Spell_Groups>Shadow(5);Affliction(4);Witchery(2);Demonology(1);Warp(1);</Favored_Spell_Groups>
+                <Id>24</Id>
+                <Emblem>UI\emblems\std\neutral\xp2_textures_bif-0000000208.jpg</Emblem>
+                <Description>A fallen high-elf arch priestess, Arachnia underwent a terrible transformation as a result
+                    of Witch King's sorcery and the terrible events of Fall of Sheoth, when the Warp nearly claimed
+                    Edalar for itself. Now she is a goddess of dark magic and treachery, hating both the Witch King and
+                    those who had let her fall into his hands.
+                </Description>
+                <Secondary_Mission>Barbarism</Secondary_Mission>
+                <Unique_Id>deities Arachnia-664124998377007156</Unique_Id>
+                <Group>Playable</Group>
+                <Principles>Treachery(2);Honor(-2);Ambition(2);Charity(-2);Freedom(1);Law(-1);</Principles>
+            </props>
+        </Arachnia>
+        <Iron_God>
+            <params>
+                <Progress_Identity>2</Progress_Identity>
+                <Tradition_Identity>-2</Tradition_Identity>
+                <Ambition_Identity>2</Ambition_Identity>
+                <Charity_Identity>-2</Charity_Identity>
+                <Freedom_Identity>1</Freedom_Identity>
+                <Law_Identity>-1</Law_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Allfather;Sky Queen;</Allied_Deities>
+                <Enemy_Deities>Consumer of Worlds;Annihilator;</Enemy_Deities>
+                <Name>Iron God</Name>
+                <Prime_Mission>Enlightenment</Prime_Mission>
+                <Displayed_Name>Iron God</Displayed_Name>
+                <Aspect>Arcanum</Aspect>
+                <Image>mini\deities\New folder\Iron God4.jpg</Image>
+                <Follower_Units>Living Armor;Trickster Raven;Onyx Golem;Aether Golem;Eldritch Strix;Sentinel;
+                </Follower_Units>
+                <True_Name>Ersigrix</True_Name>
+                <Type>deities</Type>
+                <Passives>ParamMod(Toughness,10+2*{source_level});ParamMod(Armorer Mastery
+                    Score,20+5*{source_level});SpellGroupParamMod(spell_group,Conjuration,Iron God's
+                    Will,spellpower_mod,35);
+                </Passives>
+                <Favored_Spell_Groups>Conjuration(7);Affliction(3);Elemental(3);Destruction(2);</Favored_Spell_Groups>
+                <Id>54</Id>
+                <Emblem>UI\emblems\std\arcanum\4aee.jpg</Emblem>
+                <Secondary_Mission>World Peace</Secondary_Mission>
+                <Unique_Id>deities Iron God-7639300029276487178</Unique_Id>
+                <Version>0.1002b</Version>
+                <Group>Playable</Group>
+                <Principles>Progress(2);Tradition(-2);Ambition(2);Charity(-2);Freedom(1);Law(-1);</Principles>
+                <Friend_Deities>Keeper of Twilight;Void Lord;</Friend_Deities>
+                <Lore>Last remnant of the Ancients' technology,</Lore>
+            </props>
+        </Iron_God>
+        <Void_Lord>
+            <params>
+                <Tradition_Identity>2</Tradition_Identity>
+                <Progress_Identity>-2</Progress_Identity>
+                <Law_Identity>2</Law_Identity>
+                <Freedom_Identity>-2</Freedom_Identity>
+                <Peace_Identity>1</Peace_Identity>
+                <War_Identity>-1</War_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Wraith God;Masked God;</Allied_Deities>
+                <Enemy_Deities>Queen of Lust;Lord of Decay;</Enemy_Deities>
+                <Name>Void Lord</Name>
+                <Prime_Mission>Liberation</Prime_Mission>
+                <Displayed_Name>Void Lord</Displayed_Name>
+                <Aspect>Arcanum</Aspect>
+                <Image>mini\deities\Faceless God.jpg</Image>
+                <Follower_Units>Living Armor;Trickster Raven;Onyx Golem;Aether Golem;Eldritch Strix;Sentinel;
+                </Follower_Units>
+                <True_Name>Urtheluir</True_Name>
+                <Type>deities</Type>
+                <Passives>ParamMod(Wisdom,10+3*{level});ParamBonus(Astral
+                    Resistances,15+{source_wisdom});SpellGroupParamMod(Spell type,Sorcery,Void Link,ess cost,-25);
+                </Passives>
+                <Favored_Spell_Groups>Void(8);Necromancy(4);Redemption(2);</Favored_Spell_Groups>
+                <Id>52</Id>
+                <Emblem>UI\emblems\std\arcanum\0Void Lord.jpg</Emblem>
+                <Description>The Void Lord has only one mission - to wait until the last possible moment before enacting
+                    final Dissipation, while the lesser deities of Light and Death seek to show mortals the true path of
+                    Void.
+                </Description>
+                <Secondary_Mission>Armageddon</Secondary_Mission>
+                <Unique_Id>deities Void Lord8011213290711570727</Unique_Id>
+                <Version>0.1003b</Version>
+                <Group>Playable</Group>
+                <Principles>Tradition(2);Progress(-2);Law(2);Freedom(-2);Peace(1);War(-1);</Principles>
+                <Friend_Deities>Annihilator;Fey Queen;</Friend_Deities>
+                <Lore>Unlike the unruly forces of the Warp, the creatures of Void are patient and only interfere when
+                    Dissolution is emminent. Otherwise, they wait for worlds to grow enough so there can be worthy
+                    minions to recruit among the millions of mortals to be sacrificed.
+                </Lore>
+                <Variables>Those who follow him,</Variables>
+            </props>
+        </Void_Lord>
+        <Wild_God>
+            <params>
+                <War_Identity>2</War_Identity>
+                <Peace_Identity>-2</Peace_Identity>
+                <Honor_Identity>2</Honor_Identity>
+                <Treachery_Identity>-2</Treachery_Identity>
+                <Freedom_Identity>1</Freedom_Identity>
+                <Law_Identity>-1</Law_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Allfather;World Tree;</Allied_Deities>
+                <Enemy_Deities>Wraith God;Masked God;</Enemy_Deities>
+                <Name>Wild God</Name>
+                <Prime_Mission>Barbarism</Prime_Mission>
+                <Displayed_Name>Wild God</Displayed_Name>
+                <Aspect>Life</Aspect>
+                <Image>mini\deities\Wild God.jpg</Image>
+                <Type>deities</Type>
+                <Passives>
+                    ParamBonus(Dexterity|Agility|Strength|Vitality,{source_level}/2);ParamMod(Detection,14+4*{source_level});ParamMod(Marksmanship
+                    Mastery Score,12+3*{source_level});SpellGroupParamMod(Spell group,Savage,Wild God's
+                    Blessing,spellpower_mod,35);
+                </Passives>
+                <Favored_Spell_Groups>Savage(7);Sylvan(4);Shadow(1);Demonology(1);Blood Magic(1);</Favored_Spell_Groups>
+                <Id>33</Id>
+                <Emblem>UI\emblems\Wild God.jpg</Emblem>
+                <Secondary_Mission>Liberation</Secondary_Mission>
+                <Unique_Id>deities Wild God3069235936214555688</Unique_Id>
+                <Version>0.1003b</Version>
+                <Group>Playable</Group>
+                <Principles>War(2);Peace(-2);Honor(2);Treachery(-2);Freedom(1);Law(-1);</Principles>
+                <Friend_Deities>Consumer of Worlds;Night Lord;</Friend_Deities>
+            </props>
+        </Wild_God>
+        <Lord_of_Decay>
+            <params>
+                <Law_Identity>2</Law_Identity>
+                <Freedom_Identity>-2</Freedom_Identity>
+                <Tradition_Identity>2</Tradition_Identity>
+                <Progress_Identity>-2</Progress_Identity>
+                <Treachery_Identity>1</Treachery_Identity>
+                <Honor_Identity>-1</Honor_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Dungeon Keeper;World Tree;</Allied_Deities>
+                <Enemy_Deities>Void Lord;Redeemer;</Enemy_Deities>
+                <Name>Lord of Decay</Name>
+                <Prime_Mission>Submission</Prime_Mission>
+                <Displayed_Name>Lord of Decay</Displayed_Name>
+                <Aspect>Death</Aspect>
+                <Image>mini\deities\Lord of Decay2.jpg</Image>
+                <True_Name>Kesarax</True_Name>
+                <Type>deities</Type>
+                <Passives>Immunity(Disease);</Passives>
+                <Favored_Spell_Groups>Affliction(6);Sylvan(3);Witchery(2);Shadow(1);</Favored_Spell_Groups>
+                <Id>42</Id>
+                <Emblem>UI\emblems\std\death\0Lord of Decay.jpg</Emblem>
+                <Description>An ancient god who feeds continuously on the rotting corpses of wars. In the East, he is
+                    regarded as one of the three Primordials, without whom Man could never tame the verdant wilderness.
+                </Description>
+                <Secondary_Mission>Barbarism</Secondary_Mission>
+                <Unique_Id>deities Lord of Decay3319382558291640921</Unique_Id>
+                <Group>Playable</Group>
+                <Principles>Law(2);Freedom(-2);Tradition(2);Progress(-2);Treachery(1);Honor(-1);</Principles>
+                <Friend_Deities>Night Lord;Consumer of Worlds;</Friend_Deities>
+            </props>
+        </Lord_of_Decay>
+        <Wraith_God>
+            <params>
+                <Law_Identity>2</Law_Identity>
+                <Freedom_Identity>-2</Freedom_Identity>
+                <Tradition_Identity>2</Tradition_Identity>
+                <Progress_Identity>-2</Progress_Identity>
+                <Honor_Identity>1</Honor_Identity>
+                <Treachery_Identity>-1</Treachery_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Void Lord;Keeper of Twilight;</Allied_Deities>
+                <Enemy_Deities>Consumer of Worlds;Wild God;</Enemy_Deities>
+                <Name>Wraith God</Name>
+                <Prime_Mission>Liberation</Prime_Mission>
+                <Displayed_Name>Wraith God</Displayed_Name>
+                <Aspect>Death</Aspect>
+                <Image>mini\deities\Wraith God2.jpg</Image>
+                <True_Name>Merthezar</True_Name>
+                <Type>deities</Type>
+                <Passives>SpellGroupParamMod(spell_tag,Ice,Deathly
+                    Frost,spellpower_mod,25);SpellGroupParamMod(spell_group,Necromancy,Wraith God's
+                    Will,spellpower_mod,35);Undying(1);ParamBonus(Death Resistance,
+                    8+2*{source_level});ParamBonus(Willpower,{source_level});
+                </Passives>
+                <Favored_Spell_Groups>Necromancy(7);Redemption(3);Celestial(2);Benediction(2);Shadow(2);
+                </Favored_Spell_Groups>
+                <Id>43</Id>
+                <Emblem>UI\emblems\std\death\0Wraith God.jpg</Emblem>
+                <Secondary_Mission>World Peace</Secondary_Mission>
+                <Second_Favored_Aspect>Arcanum</Second_Favored_Aspect>
+                <Unique_Id>deities Wraith God3620582579955929840</Unique_Id>
+                <Group>Playable</Group>
+                <Principles>Law(2);Freedom(-2);Tradition(2);Progress(-2);Honor(1);Treachery(-1);</Principles>
+                <Friend_Deities>Masked God;Night Lord;</Friend_Deities>
+            </props>
+        </Wraith_God>
+        <Crimson_Queen>
+            <params>
+                <Ambition_Identity>2</Ambition_Identity>
+                <Charity_Identity>-2</Charity_Identity>
+                <Tradition_Identity>2</Tradition_Identity>
+                <Progress_Identity>-2</Progress_Identity>
+                <Freedom_Identity>1</Freedom_Identity>
+                <Law_Identity>-1</Law_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Night Lord;Queen of Lust;</Allied_Deities>
+                <Enemy_Deities>Redeemer;Allfather;</Enemy_Deities>
+                <Name>Crimson Queen</Name>
+                <Prime_Mission>Barbarism</Prime_Mission>
+                <Displayed_Name>Crimson Queen</Displayed_Name>
+                <Aspect>Death</Aspect>
+                <Image>mini\deities\Red Queen.jpg</Image>
+                <True_Name>Sanguinia</True_Name>
+                <Type>deities</Type>
+                <Passives>Life Steal(8+2*{source_level});SpellGroupParamMod(spell_group,Blood Magic,Boon of the Crimson
+                    Queen,spellpower_mod,40);
+                </Passives>
+                <Favored_Spell_Groups>Blood Magic(6);Shadow(3);Psychic(1);Savage(1);Warp(1);</Favored_Spell_Groups>
+                <Id>41</Id>
+                <Emblem>UI\emblems\std\death\0Crimson Queen.jpg</Emblem>
+                <Secondary_Mission>Armageddon</Secondary_Mission>
+                <Unique_Id>deities Crimson Queen-7781822352067781383</Unique_Id>
+                <Group>Playable</Group>
+                <Principles>Ambition(2);Charity(-2);Tradition(2);Progress(-2);Freedom(1);Law(-1);</Principles>
+                <Friend_Deities>Dungeon Keeper;Witch King;</Friend_Deities>
+            </props>
+        </Crimson_Queen>
+        <Consumer_of_Worlds>
+            <params>
+                <Treachery_Identity>2</Treachery_Identity>
+                <Honor_Identity>-2</Honor_Identity>
+                <War_Identity>2</War_Identity>
+                <Peace_Identity>-2</Peace_Identity>
+                <Ambition_Identity>1</Ambition_Identity>
+                <Charity_Identity>-1</Charity_Identity>
+            </params>
+            <props>
+                <Name>Consumer of Worlds</Name>
+                <Custom_Params>(15+2 per level)</Custom_Params>
+                <Prime_Mission>Dominion</Prime_Mission>
+                <Displayed_Name>Consumer of Worlds</Displayed_Name>
+                <Aspect>Chaos</Aspect>
+                <Favored_Aspect>Chaos</Favored_Aspect>
+                <Image>mini\deities\Consumer of Worlds.jpg</Image>
+                <True_Name>Azgmoloh</True_Name>
+                <Type>deities</Type>
+                <Third_Favored_Aspect>Death</Third_Favored_Aspect>
+                <Passives>ParamBonus(Chaos Resistance|Fire Resistance|Earth Resistance,
+                    6+2*{source_level});ParamBonus(Vitality,
+                    {source_level});SpellGroupParamMod(Spell_group,Demonology,Chaos Might,spellpower_mod,35);
+                </Passives>
+                <Favored_Spell_Groups>Demonology(6);Blood Magic(3);Affliction(2);Witchery(1);Warp(1);
+                </Favored_Spell_Groups>
+                <Id>62</Id>
+                <Emblem>UI\emblems\std\chaos\0consumer.jpg</Emblem>
+                <Description>An archfiend that has been trapped in the Abyss below Edalar, Ashgaroth's followers lend
+                    him their soulpower in exchange for the services of his demonic minions. Heroes that follow him
+                    receive a {1}% Essence discount and Spellpower bonus for all Demonology spells.
+                </Description>
+                <Secondary_Mission>Dissolution</Secondary_Mission>
+                <Second_Favored_Aspect>Darkness</Second_Favored_Aspect>
+                <Unique_Id>deities Consumer of Worlds-6225331511126782497</Unique_Id>
+                <Group>Playable</Group>
+                <Principles>TREACHERY(2);Honor(-2);WAR(2);Peace(-2);AMBITION(1);Charity(-1);</Principles>
+                <Variables>Custom Params;</Variables>
+            </props>
+        </Consumer_of_Worlds>
+        <Redeemer>
+            <params>
+                <Law_Identity>20</Law_Identity>
+                <Charity_Identity>15</Charity_Identity>
+                <Honor_Identity>10</Honor_Identity>
+                <Ambition_Identity>-25</Ambition_Identity>
+                <Treachery_Identity>-15</Treachery_Identity>
+                <Progress_Identity>-10</Progress_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Sky Queen;Allfather;</Allied_Deities>
+                <Enemy_Deities>Night Lord;Witch King;</Enemy_Deities>
+                <Name>Redeemer</Name>
+                <Prime_Mission>Liberation</Prime_Mission>
+                <Displayed_Name>Redeemer</Displayed_Name>
+                <Aspect>Light</Aspect>
+                <Image>mini\deities\Redeemer.jpg</Image>
+                <Type>deities</Type>
+                <Passives>SpellGroupParamMod(Spell_group,Redemption,Holy
+                    Powers,spellpower_mod,40);ParamBonus(Spellpower, {charisma}/5);ParamMod(Willpower|Strength,
+                    6+{level}*2);ParamBonus(Shadow Resistance, 16+{level}*2);
+                </Passives>
+                <Favored_Spell_Groups>Redemption(7);Benediction(3);Celestial(2);Destruction(2);Blood
+                    Magic(1);Savage(1);
+                </Favored_Spell_Groups>
+                <Id>11</Id>
+                <Dev_Notes>War;Honor;Law;Charity;</Dev_Notes>
+                <Emblem>UI\emblems\std\light\Redeemer.jpg</Emblem>
+                <Secondary_Mission>Armageddon</Secondary_Mission>
+                <Unique_Id>deities Redeemer2057210290013740868</Unique_Id>
+                <Version>0.05</Version>
+                <Group>Playable</Group>
+                <Principles>Law(20);Charity(15);Honor(10);Ambition(-25);Treachery(-15);Progress(-10);</Principles>
+                <Friend_Deities>Wild God;Annihilator;</Friend_Deities>
+            </props>
+        </Redeemer>
+        <World_Tree>
+            <params>
+                <Peace_Identity>2</Peace_Identity>
+                <War_Identity>-2</War_Identity>
+                <Charity_Identity>2</Charity_Identity>
+                <Ambition_Identity>-2</Ambition_Identity>
+                <Tradition_Identity>1</Tradition_Identity>
+                <Progress_Identity>-1</Progress_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Lord of Decay;Wild God;</Allied_Deities>
+                <Enemy_Deities>Wraith God;Annihilator;</Enemy_Deities>
+                <Name>World Tree</Name>
+                <Prime_Mission>World Peace</Prime_Mission>
+                <Displayed_Name>World Tree</Displayed_Name>
+                <Aspect>Life</Aspect>
+                <Image>mini\deities\World Tree.jpg</Image>
+                <Type>deities</Type>
+                <Passives>ParamBonus(Wisdom|Vitality,{source_level});SpellGroupParamMod(Spell group,Sylvan, World Tree's
+                    Power,spellpower_mod,35);
+                </Passives>
+                <Favored_Spell_Groups>Sylvan(8);Affliction(4);Shadow(2);Savage(1);Elemental(1);</Favored_Spell_Groups>
+                <Id>32</Id>
+                <Emblem>UI\emblems\std\life\1druid.jpg</Emblem>
+                <Secondary_Mission>Submission</Secondary_Mission>
+                <Unique_Id>deities World Tree4868562301512749972</Unique_Id>
+                <Version>0.1003b</Version>
+                <Group>Playable</Group>
+                <Principles>Peace(2);War(-2);Charity(2);Ambition(-2);Tradition(1);Progress(-1);</Principles>
+                <Friend_Deities>Allfather;Fey Queen;</Friend_Deities>
+            </props>
+        </World_Tree>
+        <Allfather>
+            <params>
+                <Honor_Identity>20</Honor_Identity>
+                <Tradition_Identity>20</Tradition_Identity>
+                <Law_Identity>10</Law_Identity>
+                <Treachery_Identity>-25</Treachery_Identity>
+                <Ambition_Identity>-15</Ambition_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Sky Queen;World Tree;</Allied_Deities>
+                <Enemy_Deities>Annihilator;Dungeon Keeper;</Enemy_Deities>
+                <Name>Allfather</Name>
+                <Prime_Mission>World Peace</Prime_Mission>
+                <Displayed_Name>Allfather</Displayed_Name>
+                <Aspect>Light</Aspect>
+                <Image>mini\deities\Stonefather.jpg</Image>
+                <Type>deities</Type>
+                <Passives>ParamMod(Armorer,
+                    16+2*{source_level});SpellGroupParamMod(Spell_group,Elemental|Benediction,Old
+                    Powers,spellpower_mod,30);ParamBonus(Strength|Willpower|Vitality,
+                    {source_level}/2);ParamBonus(Bludgeoning Resistance, 15);
+                </Passives>
+                <Favored_Spell_Groups>Benediction(6);Conjuration(3);Elemental(2);Celestial(1);</Favored_Spell_Groups>
+                <Id>12</Id>
+                <Dev_Notes>Honor;Law;Tradition;Peace;</Dev_Notes>
+                <Emblem>UI\emblems\std\light\0Allfather3.jpg</Emblem>
+                <Secondary_Mission>Enlightenment</Secondary_Mission>
+                <Unique_Id>deities Allfather5343169031436402201</Unique_Id>
+                <Version>0.05</Version>
+                <Group>Playable</Group>
+                <Principles>Honor(20);Tradition(20);Law(10);Treachery(-25);Ambition(-15);</Principles>
+                <Friend_Deities>Keeper of Twilight;Masked God;</Friend_Deities>
+            </props>
+        </Allfather>
+        <Keeper_of_Twilight>
+            <params>
+                <Treachery_Identity>2</Treachery_Identity>
+                <Honor_Identity>-2</Honor_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Night Lord;Sky Queen;</Allied_Deities>
+                <Enemy_Deities>Consumer of Worlds;Annihilator;</Enemy_Deities>
+                <Name>Keeper of Twilight</Name>
+                <Prime_Mission>World Peace</Prime_Mission>
+                <Displayed_Name>Keeper of Twilight</Displayed_Name>
+                <Aspect>Darkness</Aspect>
+                <Image>mini\deities\Keeper of Twilight2.jpg</Image>
+                <True_Name>Iltharion</True_Name>
+                <Type>deities</Type>
+                <Passives>ParamBonus(Shadow Resistance|Holy
+                    Resistance,8+2*{source_level});SpellGroupParamMod(Aspect,Darkness|Light,Twilight,spellpower_mod,35);ParamBonus(Shadow
+                    Mastery Score,{source_celestial_mastery}/2);ParamBonus(Celestial Mastery
+                    Score,{source_shadow_mastery}/2);
+                </Passives>
+                <Favored_Spell_Groups>Shadow(4);Celestial(4);Benediction(1);Witchery(1);Psychic(1);Necromancy(1);
+                </Favored_Spell_Groups>
+                <Id>21</Id>
+                <Emblem>UI\emblems\std\darkness\1arch.jpg</Emblem>
+                <Secondary_Mission>Submission</Secondary_Mission>
+                <Unique_Id>deities Keeper of Twilight-6747938231118220282</Unique_Id>
+                <Version>0.1002b</Version>
+                <Group>Playable</Group>
+                <Principles>Treachery(-1);Honor(1);Honor(-2);Treachery(2);</Principles>
+                <Friend_Deities>Allfather;Dungeon Keeper;</Friend_Deities>
+            </props>
+        </Keeper_of_Twilight>
+        <Night_Lord>
+            <params>
+                <Treachery_Identity>2</Treachery_Identity>
+                <Honor_Identity>-2</Honor_Identity>
+                <Freedom_Identity>2</Freedom_Identity>
+                <Law_Identity>-2</Law_Identity>
+                <Tradition_Identity>1</Tradition_Identity>
+                <Progress_Identity>-1</Progress_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Dungeon Keeper;Crimson Queen;</Allied_Deities>
+                <Name>Night Lord</Name>
+                <Prime_Mission>Barbarism</Prime_Mission>
+                <Displayed_Name>Night Lord</Displayed_Name>
+                <Aspect>Darkness</Aspect>
+                <Image>mini\char\New2\Night Lord.jpg</Image>
+                <Follower_Units>Werewolf;Shadow Wolf;Dire Wolf;Vampire Bat;</Follower_Units>
+                <True_Name>Ashvaran</True_Name>
+                <Type>deities</Type>
+                <Passives>
+                    ParamBonus(Dexterity|Agility,{source_level}/2);ParamMod(Stealth,12+3*{source_level});SpellGroupParamMod(Aspect,Darkness,Night
+                    Lord's Boon,spellpower_mod,35);AddProp(standard passives,darkvision);
+                </Passives>
+                <Favored_Spell_Groups>Psychic(7);Shadow(5);Blood Magic(3);Savage(2);</Favored_Spell_Groups>
+                <Id>23</Id>
+                <Emblem>UI\emblems\std\darkness\1night lord.jpg</Emblem>
+                <Description>Night Lord's followers are granted natural Darkvision and their Stealth will be increased
+                    by 5% per level. All Shadow spells also receive 5% spellpower bonus.
+                </Description>
+                <Secondary_Mission>Submission</Secondary_Mission>
+                <Unique_Id>deities Night Lord-7025793403819315853</Unique_Id>
+                <Version>0.1002b</Version>
+                <Group>Playable</Group>
+                <Principles>Treachery(2);Honor(-2);Freedom(2);Law(-2);Tradition(1);Progress(-1);</Principles>
+                <Friend_Deities>Wraith God;Witch King;</Friend_Deities>
+                <Lore>Slain and reborn many times, the Lord of the Dark retains an unseen grip on all the land west of
+                    the White City. Patient and inexorable, he will not strike until a proper opportunity presents
+                    itself... His strongest minions are the dark elves, who had come as desperate refugees from the
+                    devastated lands of Sheoth across the Great Ocean, where the world meets its own tail and sunset
+                    becomes sunrise. Many of the Wolf Lords have fallen into his service as well, seduced by power and
+                    thrill of the night-time manhunt. On them he bestowed his highest blessing - the Wulfen Curse.
+                </Lore>
+            </props>
+        </Night_Lord>
+        <Witch_King>
+            <params>
+                <Treachery_Identity>2</Treachery_Identity>
+                <Honor_Identity>-2</Honor_Identity>
+                <Ambition_Identity>2</Ambition_Identity>
+                <Charity_Identity>-2</Charity_Identity>
+                <Progress_Identity>1</Progress_Identity>
+                <Tradition_Identity>-1</Tradition_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Queen of Lust;Night Lord;</Allied_Deities>
+                <Enemy_Deities>Redeemer;World Tree;</Enemy_Deities>
+                <Name>Witch King</Name>
+                <Prime_Mission>Submission</Prime_Mission>
+                <Displayed_Name>Witch King</Displayed_Name>
+                <Aspect>Arcanum</Aspect>
+                <Perks>Vile Sorcery({1});Sorcerous Might({2});Witch King's Boon({3});</Perks>
+                <Image>mini\deities\Witch King4.jpg</Image>
+                <Follower_Units>Dark Archon;Mutant;Void Walker;Gargantuan Beast;Void Wraith;Familiar;</Follower_Units>
+                <True_Name>Dorthaeruil</True_Name>
+                <Type>deities</Type>
+                <Passives>ParamBonus(Resistance Penetration,
+                    8+2*{source_level});SpellGroupParamMod(Spell_group,Sorcery,Sorcerous
+                    Might,spellpower_mod,15);SpellGroupParamMod(Aspect,Chaos|Darkness|Arcanum,Witch King's
+                    Boon,spellpower_mod,25);
+                </Passives>
+                <Favored_Spell_Groups>
+                    Sorcery(8);Witchery(4);Enchantment(3);Psychic(2);Destruction(1);Warp(1);Demonology(1);
+                </Favored_Spell_Groups>
+                <Id>53</Id>
+                <Emblem>UI\emblems\std\arcanum\0Witch King.jpg</Emblem>
+                <Secondary_Mission>Enlightenment</Secondary_Mission>
+                <Unique_Id>deities Witch King286021452624192599</Unique_Id>
+                <Version>0.1002b</Version>
+                <Group>Playable</Group>
+                <Principles>Treachery(2);Honor(-2);Ambition(2);Charity(-2);Progress(1);Tradition(-1);</Principles>
+                <Friend_Deities>Crimson Queen;Dungeon Keeper;</Friend_Deities>
+                <Lore>ASCII_OPEN65533ASCII_CLOSEKnowledge is power. Keep it to yourself.ASCII_OPEN65533ASCII_CLOSE
+                    ASCII_OPEN65533ASCII_CLOSEEnlightenmentASCII_OPEN65533ASCII_CLOSE what a folly to believe that
+                    mortals can ever achieve it.ASCII_OPEN65533ASCII_CLOSE ASCII_OPEN65533ASCII_CLOSELet the Chaos
+                    ravage the world for a while, until it is ready to fall into our hands. Enemy of our enemies is
+                    ourASCII_OPEN65533ASCII_CLOSE tool.ASCII_OPEN65533ASCII_CLOSE Not much is known about the Witch
+                    King, and less can be trusted for is one thing is certain is that he is a god of lies and treachery.
+                    But some in the Allkingdom still remember the days of his Reign of Sorcery, the tyranny or terror
+                    and atrocities of the Congregation led by Witch Lord Morkei. Today, however, very few choose to
+                    serve the fallen godASCII_OPEN65533ASCII_CLOSEs ends, and only in utter secrecy. But who knows how
+                    far does the web stretch in the shadows of the ever conspiring Raven Realm and in the darker places
+                    of the world?
+                </Lore>
+            </props>
+        </Witch_King>
+        <Lord_of_Magic>
+            <params>
+                <Progress_Identity>2</Progress_Identity>
+                <Tradition_Identity>-2</Tradition_Identity>
+                <Ambition_Identity>2</Ambition_Identity>
+                <Charity_Identity>-2</Charity_Identity>
+                <Freedom_Identity>1</Freedom_Identity>
+                <Law_Identity>-1</Law_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Allfather;Sky Queen;</Allied_Deities>
+                <Enemy_Deities>Consumer of Worlds;Annihilator;</Enemy_Deities>
+                <Name>Lord of Magic</Name>
+                <Prime_Mission>Enlightenment</Prime_Mission>
+                <Displayed_Name>Lord of Magic</Displayed_Name>
+                <Aspect>Arcanum</Aspect>
+                <Perks>Path of Wizardry({1});Arcane Link({2});Marvel of Magic({3});</Perks>
+                <Image>mini\deities\Architect3.jpg</Image>
+                <Follower_Units>Living Armor;Trickster Raven;Onyx Golem;Aether Golem;Eldritch Strix;Sentinel;
+                </Follower_Units>
+                <True_Name>Kadophor</True_Name>
+                <Type>deities</Type>
+                <Passives>ParamMod(Wizardry,15+2*{source_level});SpellGroupParamMod(Aspect,Arcanum,Essence Link,ess
+                    cost,-25);SpellGroupParamMod(spell_group,Enchantment|Conjuration,Marvel of Magic,spellpower_mod,35);
+                </Passives>
+                <Favored_Spell_Groups>Enchantment(8);Conjuration(5);Sorcery(3);Celestial(2);</Favored_Spell_Groups>
+                <Id>51</Id>
+                <Emblem>UI\emblems\std\arcanum\4aee.jpg</Emblem>
+                <Secondary_Mission>World Peace</Secondary_Mission>
+                <Unique_Id>deities Lord of Magic7422206819198532263</Unique_Id>
+                <Group>Playable</Group>
+                <Principles>Progress(2);Tradition(-2);Ambition(2);Charity(-2);Freedom(1);Law(-1);</Principles>
+                <Friend_Deities>Keeper of Twilight;Void Lord;</Friend_Deities>
+            </props>
+        </Lord_of_Magic>
+        <Faithless>
+            <params></params>
+            <props>
+                <Allied_Deities>Allfather;Sky Queen;</Allied_Deities>
+                <Enemy_Deities>Consumer of Worlds;Annihilator;</Enemy_Deities>
+                <Name>Faithless</Name>
+                <Prime_Mission>Enlightenment</Prime_Mission>
+                <Displayed_Name>Faithless</Displayed_Name>
+                <Aspect>Neutral</Aspect>
+                <Perks>Self-made Fortune: Grants 2 Mastery points, 50 Experience and 50 Gold;</Perks>
+                <Image>mini\deities\Lord of Sorcery.jpg</Image>
+                <Follower_Units>Living Armor;Trickster Raven;Onyx Golem;Aether Golem;Eldritch Strix;Sentinel;
+                </Follower_Units>
+                <True_Name>Masked God, the Demiurge</True_Name>
+                <Type>deities</Type>
+                <Passives>ParamMod(mastery points per level, 1);ParamMod(xp mod, 10);ParamMod(gold mod,
+                    10);ParamBonus(gold cost reduction, {charisma}/2);
+                </Passives>
+                <Id>9102</Id>
+                <Emblem>mini\abils\New folder\empty emblem.jpg</Emblem>
+                <Secondary_Mission>World Peace</Secondary_Mission>
+                <Unique_Id>deities Faithless-5587022174908278077</Unique_Id>
+                <Actives>AddParam(Mastery Points,2);AddParam(Xp,50);AddParam(Gold,50);</Actives>
+                <Version>0.05</Version>
+                <Group>Playable</Group>
+                <Principles></Principles>
+                <Friend_Deities>Keeper of Twilight;Void Lord;</Friend_Deities>
+            </props>
+        </Faithless>
+        <Annihilator>
+            <params>
+                <War_Identity>2</War_Identity>
+                <Peace_Identity>-2</Peace_Identity>
+                <Honor_Identity>2</Honor_Identity>
+                <Treachery_Identity>-2</Treachery_Identity>
+                <Freedom_Identity>1</Freedom_Identity>
+                <Law_Identity>-1</Law_Identity>
+            </params>
+            <props>
+                <Name>Annihilator</Name>
+                <Prime_Mission>Armageddon</Prime_Mission>
+                <Displayed_Name>Annihilator</Displayed_Name>
+                <Aspect>Chaos</Aspect>
+                <Favored_Aspect>Chaos</Favored_Aspect>
+                <Image>mini\deities\Crimson King2.jpg</Image>
+                <Follower_Units>Hell Caller;Imp;Daemon Vindicator;Abyssal Overlord;Lesser Daemon;</Follower_Units>
+                <Type>deities</Type>
+                <Third_Favored_Aspect>Light</Third_Favored_Aspect>
+                <Passives>ParamBonus(Chaos Resistance|Fire Resistance|Air Resistance,
+                    6+2*{source_level});ParamBonus(Spellpower,
+                    {source_level});SpellGroupParamMod(Spell_group,Destruction,Chaos Might,spellpower_mod,35);
+                </Passives>
+                <Favored_Spell_Groups>Destruction(9);Redemption(4);Sorcery(3);Elemental(2);</Favored_Spell_Groups>
+                <Id>61</Id>
+                <Emblem>UI\emblems\std\chaos\1flame.jpg</Emblem>
+                <Secondary_Mission>Liberation</Secondary_Mission>
+                <Second_Favored_Aspect>Death</Second_Favored_Aspect>
+                <Unique_Id>deities Annihilator5578361940705915835</Unique_Id>
+                <Version>0.05</Version>
+                <Group>Playable</Group>
+                <Principles>War(2);Peace(-2);Honor(2);Treachery(-2);Freedom(1);Law(-1);</Principles>
+            </props>
+        </Annihilator>
+        <Sky_Queen>
+            <params></params>
+            <props>
+                <Allied_Deities>Fey Queen;Allfather;</Allied_Deities>
+                <Enemy_Deities>Dungeon Keeper;Consumer of Worlds;</Enemy_Deities>
+                <Name>Sky Queen</Name>
+                <Prime_Mission>Enlightenment</Prime_Mission>
+                <Displayed_Name>Sky Queen</Displayed_Name>
+                <Aspect>Light</Aspect>
+                <Image>mini\deities\Sky Queen.jpg</Image>
+                <Type>deities</Type>
+                <Passives>SpellGroupParamBonus(Spell_group,Celestial,Celestial
+                    Powers,spellpower_bonus,2+{level});ParamBonus(Spellpower,
+                    {charisma}/5);ParamMod(Intelligence|Wisdom, 6+{level}*2);ParamBonus(Arcane Resistance,
+                    16+{level}*2);
+                </Passives>
+                <Favored_Spell_Groups>Celestial(7);Enchantment(2);Benediction(2);Sorcery(2);Warp(1);Elemental(1);
+                </Favored_Spell_Groups>
+                <Id>13</Id>
+                <Emblem>UI\emblems\std\light\0Sky Queen1.jpg</Emblem>
+                <Description>Grants a {1} Spellpower bonus for all Celestial spells, bonus to Intelligence and Wisdom,
+                    {2}% Arcane Resistance and additional Spellpower equal to 1/5 of heroASCII_OPEN65533ASCII_CLOSEs
+                    Charisma.
+                </Description>
+                <Secondary_Mission>World Peace</Secondary_Mission>
+                <Unique_Id>deities Sky Queen2071761574525321140</Unique_Id>
+                <Group>Playable</Group>
+                <Principles></Principles>
+                <Friend_Deities>Masked God;Void Lord;</Friend_Deities>
+            </props>
+        </Sky_Queen>
+        <Fey_Queen>
+            <params>
+                <Peace_Identity>2</Peace_Identity>
+                <War_Identity>-2</War_Identity>
+                <Charity_Identity>2</Charity_Identity>
+                <Ambition_Identity>-2</Ambition_Identity>
+                <Freedom_Identity>1</Freedom_Identity>
+                <Law_Identity>-1</Law_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Masked God;Sky Queen;</Allied_Deities>
+                <Name>Fey Queen</Name>
+                <Prime_Mission>Enlightenment</Prime_Mission>
+                <Displayed_Name>Fey Queen</Displayed_Name>
+                <Aspect>Life</Aspect>
+                <Image>mini\deities\Faerie Queen2.jpg</Image>
+                <Type>deities</Type>
+                <Passives>ParamBonus(Wisdom|Spellpower|Charisma,{source_level}/2);SpellGroupParamMod(Spell
+                    group,Elemental, Fey Queen's Blessing,spellpower_mod,35);
+                </Passives>
+                <Favored_Spell_Groups>Elemental(9);Sylvan(4);Enchantment(4);Sorcery(2);Celestial(1);Warp(1);
+                </Favored_Spell_Groups>
+                <Id>31</Id>
+                <Emblem>UI\emblems\Fey Queen.jpg</Emblem>
+                <Secondary_Mission>World Peace</Secondary_Mission>
+                <Unique_Id>deities Fey Queen4761217650151377684</Unique_Id>
+                <Group>Playable</Group>
+                <Principles>Peace(2);War(-2);Charity(2);Ambition(-2);Freedom(1);Law(-1);</Principles>
+                <Friend_Deities>World Tree;Queen of Lust;</Friend_Deities>
+            </props>
+        </Fey_Queen>
+        <Sun_God>
+            <params>
+                <Tradition_Identity>2</Tradition_Identity>
+                <Progress_Identity>-2</Progress_Identity>
+                <Law_Identity>2</Law_Identity>
+                <Freedom_Identity>-2</Freedom_Identity>
+                <Ambition_Identity>1</Ambition_Identity>
+                <Charity_Identity>-1</Charity_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Sky Queen;Allfather;</Allied_Deities>
+                <Enemy_Deities>Night Lord;Witch King;</Enemy_Deities>
+                <Name>Sun God</Name>
+                <Prime_Mission>Liberation</Prime_Mission>
+                <Aspect>Light</Aspect>
+                <Image>mini\deities\New folder\sun god2.jpg</Image>
+                <True_Name>Arh'Aphez</True_Name>
+                <Type>deities</Type>
+                <Passives>ParamBonus(Divination Cap,5+2*{level});AddDmgPerc(Light, Fire, 10+{level});ParamBonus(Light
+                    Resistance|Fire Resistance,5+2*{level});ParamMod(Charisma,5+2*{level});
+                </Passives>
+                <Favored_Spell_Groups>Redemption(6);Celestial(4);Destruction(3);Blood Magic(2);Elemental(1);
+                </Favored_Spell_Groups>
+                <Id>14</Id>
+                <Emblem>UI\emblems\std\light\Redeemer.jpg</Emblem>
+                <Description>The greatest of the three Primordials of the Eastern pantheon,</Description>
+                <Secondary_Mission>Armageddon</Secondary_Mission>
+                <Unique_Id>deities Sun God9209673465993714481</Unique_Id>
+                <Version>0.1002</Version>
+                <Group>Playable</Group>
+                <Principles>Tradition(2);Progress(-2);Law(2);Freedom(-2);Ambition(1);Charity(-1);</Principles>
+                <Friend_Deities>Wild God;Annihilator;</Friend_Deities>
+            </props>
+        </Sun_God>
+        <Death_Gorger>
+            <params>
+                <Treachery_Identity>2</Treachery_Identity>
+                <Honor_Identity>-2</Honor_Identity>
+                <War_Identity>2</War_Identity>
+                <Peace_Identity>-2</Peace_Identity>
+                <Ambition_Identity>1</Ambition_Identity>
+                <Charity_Identity>-1</Charity_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Dungeon Keeper;World Tree;</Allied_Deities>
+                <Enemy_Deities>Void Lord;Redeemer;</Enemy_Deities>
+                <Name>Death Gorger</Name>
+                <Prime_Mission>Submission</Prime_Mission>
+                <Displayed_Name>Death Gorger</Displayed_Name>
+                <Aspect>Death</Aspect>
+                <Image>mini\deities\New folder\lord of decay3.jpg</Image>
+                <True_Name>Aglorond</True_Name>
+                <Type>deities</Type>
+                <Passives>
+                    ParamBonus(Vitality,{source_necromancy_mastery}/5);ParamBonus(Strength,{source_blood_magic_mastery}/5);ParamBonus(Spellpower,{source_affliction_mastery}/5);SpellGroupParamMod(Aspect,Death,Death
+                    Mastery,spellpower_mod,25);
+                </Passives>
+                <Favored_Spell_Groups>Affliction(5);Blood Magic(4);Necromancy(3);Demonology(2);Witchery(1);
+                </Favored_Spell_Groups>
+                <Id>44</Id>
+                <Emblem>UI\emblems\std\death\0Lord of Decay.jpg</Emblem>
+                <Secondary_Mission>Barbarism</Secondary_Mission>
+                <Unique_Id>deities Death Gorger1977447294189266415</Unique_Id>
+                <Group>Playable</Group>
+                <Principles>Treachery(2);Honor(-2);War(2);Peace(-2);Ambition(1);Charity(-1);</Principles>
+                <Friend_Deities>Night Lord;Consumer of Worlds;</Friend_Deities>
+            </props>
+        </Death_Gorger>
+        <Underking>
+            <params>
+                <Tradition_Identity>2</Tradition_Identity>
+                <Progress_Identity>-2</Progress_Identity>
+                <Law_Identity>2</Law_Identity>
+                <Freedom_Identity>-2</Freedom_Identity>
+                <War_Identity>1</War_Identity>
+                <Peace_Identity>-1</Peace_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Night Lord;Lord of Decay;</Allied_Deities>
+                <Enemy_Deities>Fey Queen;Sky Queen;</Enemy_Deities>
+                <Name>Underking</Name>
+                <Prime_Mission>Submission;</Prime_Mission>
+                <Displayed_Name>Underking</Displayed_Name>
+                <Aspect>Darkness</Aspect>
+                <Image>mini\deities\Dungeon Keeper.jpg</Image>
+                <Follower_Units>Black Dragon;Minos;Evil Eye;Stygian Guardian;Manticore;Hydra;</Follower_Units>
+                <True_Name>Dethregor</True_Name>
+                <Type>deities</Type>
+                <Passives>AddProp(standard passives,Infravision);ParamBonus(Behind Sight
+                    bonus,1);ParamMod(Detection,14+4*{source_level});ParamBonus(Shadow Resistance|Chaos Resistance|Earth
+                    Resistance,8+2*{source_level});SpellGroupParamMod(spell type,Summoning,Dungeon
+                    Master,spellpower_mod,35);SpellGroupParamMod(Aspect,Darkness,Dark
+                    Depths,spellpower_mod,35);AddProp(standard passives,darkvision);
+                </Passives>
+                <Favored_Spell_Groups>Witchery(6);Shadow(4);Psychic(2);Demonology(2);Elemental(1);Destruction(1);
+                </Favored_Spell_Groups>
+                <Id>22</Id>
+                <Emblem>UI\emblems\std\darkness\2Dungeon Keeper3.jpg</Emblem>
+                <Description>Followers of Dethregor the Underking may receive the gift of Darkvision or Behind Sight
+                    (1). They also receive resistance against Earth spells and additional Spellpower for those spells as
+                    well as all Darkness spells.
+                </Description>
+                <Secondary_Mission>Armageddon</Secondary_Mission>
+                <Unique_Id>deities Underking8689547802257873965</Unique_Id>
+                <Version>0.1002b</Version>
+                <Group>Playable</Group>
+                <Principles>Tradition(2);Progress(-2);Law(2);Freedom(-2);War(1);Peace(-1);</Principles>
+                <Friend_Deities>Keeper of Twilight;Witch King;</Friend_Deities>
+                <Lore>Once an ambitious son of the Allfather, the titan Dethregor underwent great and terrible
+                    transformation over time, becoming bound to the Underworld he had sought to conquer and rule...
+                </Lore>
+            </props>
+        </Underking>
+        <Three_Divines>
+            <params>
+                <Freedom_Identity>-1</Freedom_Identity>
+                <Law_Identity>1</Law_Identity>
+                <Progress_Identity>2</Progress_Identity>
+                <Tradition_Identity>2</Tradition_Identity>
+                <Peace_Identity>1</Peace_Identity>
+                <Honor_Identity>1</Honor_Identity>
+                <Charity_Identity>1</Charity_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Allfather;Sky Queen;Redeemer;Aspect of Light;</Allied_Deities>
+                <Enemy_Deities>Death Gorger;Witch King;Consumer of Worlds;</Enemy_Deities>
+                <Name>Three Divines</Name>
+                <Displayed_Name>Three Divines</Displayed_Name>
+                <Aspect>Light</Aspect>
+                <Image>mini\deities\New folder (3)\1three divines.jpg</Image>
+                <Type>deities</Type>
+                <Passives>SpellGroupParamBonus(Aspect,Light,Powers of Light,spellpower_mod,2+{level});ParamBonus(Shadow
+                    Resistance, 16+{level}*2);ParamBonus(Charisma|Willpower|Wisdom, {level}/3);
+                </Passives>
+                <Favored_Spell_Groups>Celestial(3);Redemption(3);Benediction(3);Conjuration(1);Elemental(1);
+                </Favored_Spell_Groups>
+                <Id>901</Id>
+                <Emblem>UI\emblems\std\light\1hh.jpg</Emblem>
+                <Description>Grants additional Charisma, Willpower and Wisdom, provides {1} Shadow resistance and +{2}
+                    Spellpower for all spells of Light Aspect.
+                </Description>
+                <Unique_Id>deities Three Divines7946054121459098553</Unique_Id>
+                <Version>0.05</Version>
+                <Group>Playable</Group>
+                <Principles>Tradition(2);Law(1);Peace(1);Honor(1);Charity(1);</Principles>
+                <Friend_Deities>Allfather;Sky Queen;Redeemer;Aspect of Light;</Friend_Deities>
+                <Bonus_Hero_Traits>+{source_main_divination}</Bonus_Hero_Traits>
+            </props>
+        </Three_Divines>
+        <Old_Way>
+            <params></params>
+            <props>
+                <Allied_Deities>Allfather;World Tree;</Allied_Deities>
+                <Enemy_Deities>Wraith God;Masked God;</Enemy_Deities>
+                <Name>Old Way</Name>
+                <Prime_Mission>Barbarism</Prime_Mission>
+                <Displayed_Name>Old Way</Displayed_Name>
+                <Aspect>Life</Aspect>
+                <Image>mini\deities\New folder (3)\1Old Way.jpg</Image>
+                <Type>deities</Type>
+                <Passives>
+                    ParamBonus(Dexterity|Vitality|Wisdom,{source_level}/2);ParamMod(Detection,8+{source_level});ParamMod(Stealth,8+{source_level});SpellGroupParamBonus(Spell
+                    Group,Sylvan|Savage|Shadow,Old Way,spellpower_bonus,2+{level});ParamBonus(Natural
+                    Resistances,8+{level});
+                </Passives>
+                <Favored_Spell_Groups>
+                    Savage(8);Sylvan(6);Elemental(4);Celestial(1);Shadow(1);Witchery(1);Destruction(1);
+                </Favored_Spell_Groups>
+                <Id>8000</Id>
+                <Emblem>UI\emblems\std\life\Nature_Magic.png</Emblem>
+                <Description>Hero gains 0.5 Dexterity Vitality and Wisdom per level, {1} Detection and Stealth, +{2} to
+                    all Natural Resistances and +{3} Spellpower bonus for Sylvan, Savage and Shadow spells.
+                </Description>
+                <Secondary_Mission>Liberation</Secondary_Mission>
+                <Unique_Id>deities Old Way-1797377605512261276</Unique_Id>
+                <Version>0.1003b</Version>
+                <Group>Playable</Group>
+                <Principles></Principles>
+                <Friend_Deities>Consumer of Worlds;Night Lord;</Friend_Deities>
+            </props>
+        </Old_Way>
+        <Fide_Arcanum>
+            <params></params>
+            <props>
+                <Allied_Deities>Allfather;World Tree;</Allied_Deities>
+                <Enemy_Deities>Wraith God;Masked God;</Enemy_Deities>
+                <Name>Fide Arcanum</Name>
+                <Prime_Mission>Barbarism</Prime_Mission>
+                <Displayed_Name>Fide Arcanum</Displayed_Name>
+                <Aspect>Arcanum</Aspect>
+                <Image>mini\deities\Masked God2.jpg</Image>
+                <Type>deities</Type>
+                <Passives></Passives>
+                <Favored_Spell_Groups></Favored_Spell_Groups>
+                <Id>8001</Id>
+                <Emblem>UI\emblems\Wild God.jpg</Emblem>
+                <Secondary_Mission>Liberation</Secondary_Mission>
+                <Unique_Id>deities Fide Arcanum5075196311049099764</Unique_Id>
+                <Version>0.05</Version>
+                <Group>Playable</Group>
+                <Principles></Principles>
+                <Friend_Deities>Consumer of Worlds;Night Lord;</Friend_Deities>
+                <Lore>In a world filled with both complex magic and misguided superstitions, faith in reason has become
+                    a force every mage is aware of. Knowing the Principles of the Multiverse, the Primordial Truth of
+                    Eidolons, and seeking the answers to the fate of the mortals - this is the Path of the Magi!
+                </Lore>
+            </props>
+        </Fide_Arcanum>
+        <Dark_Gods>
+            <params></params>
+            <props>
+                <Allied_Deities>Dungeon Keeper;Crimson Queen;</Allied_Deities>
+                <Name>Dark Gods</Name>
+                <Prime_Mission>Barbarism</Prime_Mission>
+                <Displayed_Name>Dark Gods</Displayed_Name>
+                <Aspect>Darkness</Aspect>
+                <Image>mini\deities\New folder (3)\1arcanum2.jpg</Image>
+                <Follower_Units>Werewolf;Shadow Wolf;Dire Wolf;Vampire Bat;</Follower_Units>
+                <True_Name>Ashvaran</True_Name>
+                <Type>deities</Type>
+                <Passives>ParamBonus(Psionic resistance|Chaos resistance|Shadow resistance,4+{level}*3);
+                    ParamBonus(Spellpower,{source_witchery_mastery}/5);
+                    ParamBonus(Intelligence,{source_psychic_mastery}/5);ParamBonus(Dexterity,{source_shadow_mastery}/5);
+                    SpellGroupParamMod(Aspect,Darkness,Dark Gods' Favor,spellpower_mod,35);
+                    SpellGroupParamBonus(Aspect,Darkness,Dark Gods' Favor,spellpower bonus,{level});
+                </Passives>
+                <Favored_Spell_Groups>Psychic(7);Witchery(7);Shadow(7);Blood Magic(1);Savage(1);</Favored_Spell_Groups>
+                <Id>8005</Id>
+                <Emblem>UI\emblems\std\darkness\textures_02_bif-0000002982.jpg</Emblem>
+                <Description>All spells of Darkness Aspect receive a {1}% Spellpower bonus. Psionic, Chaos and Shadow
+                    resistances are increased by {2}. Followers also gain 1 Intelligence for every 5 points of Psychic
+                    Mastery, 1 Dexterity for every 5 points of Shadow Mastery and 1 Spellpower per 5 points of Witchery.
+                </Description>
+                <Secondary_Mission>Submission</Secondary_Mission>
+                <Unique_Id>deities Dark Gods-2969557498145976351</Unique_Id>
+                <Version>0.1003b</Version>
+                <Group>Playable</Group>
+                <Principles></Principles>
+                <Friend_Deities>Wraith God;Witch King;</Friend_Deities>
+                <Lore>Slain and reborn many times, the Lord of the Dark retains an unseen grip on all the land west of
+                    the White City. Patient and inexorable, he will not strike until a proper opportunity presents
+                    itself... His strongest minions are the dark elves, who had come as desperate refugees from the
+                    devastated lands of Sheoth across the Great Ocean, where the world meets its own tail and sunset
+                    becomes sunrise. Many of the Wolf Lords have fallen into his service as well, seduced by power and
+                    thrill of the night-time manhunt. On them he bestowed his highest blessing - the Wulfen Curse.
+                </Lore>
+            </props>
+        </Dark_Gods>
+    </Playable>
+    <Extended>
+        <Aspect_of_Light>
+            <params>
+                <Honor_Identity>2</Honor_Identity>
+                <Treachery_Identity>-2</Treachery_Identity>
+                <Law_Identity>2</Law_Identity>
+                <Freedom_Identity>-2</Freedom_Identity>
+                <Charity_Identity>1</Charity_Identity>
+                <Ambition_Identity>-1</Ambition_Identity>
+            </params>
+            <props>
+                <Name>Aspect of Light</Name>
+                <Displayed_Name>Aspect of Light</Displayed_Name>
+                <Aspect>Light</Aspect>
+                <Image>mini\deities\Sky Queen2.jpg</Image>
+                <Type>deities</Type>
+                <Passives>SpellGroupParamMod(Aspect,Light,Powers of Light,spellpower_mod,20);ParamBonus(Spellpower,
+                    {charisma}/5);ParamMod(Willpower|Charisma, 6+{level}*2);ParamBonus(Shadow Resistance, 16+{level}*2);
+                </Passives>
+                <Favored_Spell_Groups>Celestial(3);Redemption(3);Benediction(3);Destruction(1);Necromancy(1);
+                </Favored_Spell_Groups>
+                <Id>901</Id>
+                <Emblem>UI\emblems\std\light\1hh.jpg</Emblem>
+                <Unique_Id>deities Aspect of Light-4834702884390829159</Unique_Id>
+                <Group>Extended</Group>
+                <Principles>Honor(2);Treachery(-2);Law(2);Freedom(-2);Charity(1);Ambition(-1);</Principles>
+                <Bonus_Hero_Traits>+{source_main_divination}</Bonus_Hero_Traits>
+            </props>
+        </Aspect_of_Light>
+        <Aspect_of_Arcanum>
+            <params>
+                <Law_Identity>2</Law_Identity>
+                <Freedom_Identity>-2</Freedom_Identity>
+                <Ambition_Identity>2</Ambition_Identity>
+                <Charity_Identity>-2</Charity_Identity>
+                <Progress_Identity>1</Progress_Identity>
+                <Tradition_Identity>-1</Tradition_Identity>
+            </params>
+            <props>
+                <Name>Aspect of Arcanum</Name>
+                <Unique_Id>deities Aspect of Arcanum4241243689857579574</Unique_Id>
+                <Aspect>Arcanum</Aspect>
+                <Group>Extended</Group>
+                <Principles>Law(2);Freedom(-2);Ambition(2);Charity(-2);Progress(1);Tradition(-1);</Principles>
+                <Image>mini\deities\Architect.jpg</Image>
+                <Type>deities</Type>
+                <Passives>SpellGroupParamMod(Aspect,Arcanum,Powers of Arcanum,spellpower_mod,20);ParamBonus(Spellpower,
+                    {Knowledge}/5);ParamMod(Intelligence|Knowledge, 6+{level}*2);ParamBonus(Chaos Resistance,
+                    16+{level}*2);
+                </Passives>
+                <Favored_Spell_Groups>Sorcery(3);Conjuration(3);Enchantment(3);Warp(1);Elemental(1);
+                </Favored_Spell_Groups>
+                <Id>904</Id>
+                <Emblem>UI\emblems\std\light\1hh.jpg</Emblem>
+            </props>
+        </Aspect_of_Arcanum>
+        <Aspect_of_Death>
+            <params>
+                <Law_Identity>2</Law_Identity>
+                <Freedom_Identity>-2</Freedom_Identity>
+                <Tradition_Identity>1</Tradition_Identity>
+                <Progress_Identity>-1</Progress_Identity>
+            </params>
+            <props>
+                <Name>Aspect of Death</Name>
+                <Unique_Id>deities Aspect of Death8440638320577784128</Unique_Id>
+                <Aspect>Death</Aspect>
+                <Group>Extended</Group>
+                <Principles>Law(2);Freedom(-2);Tradition(1);Progress(-1);</Principles>
+                <Image>mini\deities\Lord of Decay.jpg</Image>
+                <Type>deities</Type>
+                <Passives>SpellGroupParamMod(Aspect,Arcanum,Powers of Arcanum,spellpower_mod,20);ParamBonus(Spellpower,
+                    {Willpower}/5);ParamMod(Wisdom|Knowledge, 6+{level}*2);ParamBonus(Death Resistance, 16+{level}*2);
+                </Passives>
+                <Favored_Spell_Groups>
+                    CONJURATION;ENCHANTMENT;SORCERY;VOID;ELEMENTAL;CELESTIAL;ENCHANTMENT;SORCERY;CONJURATION;
+                </Favored_Spell_Groups>
+                <Id>903</Id>
+                <Emblem>UI\emblems\std\light\1hh.jpg</Emblem>
+            </props>
+        </Aspect_of_Death>
+        <Aspect_of_Darkness>
+            <params>
+                <Freedom_Identity>2</Freedom_Identity>
+                <Law_Identity>-2</Law_Identity>
+                <Treachery_Identity>2</Treachery_Identity>
+                <Honor_Identity>-2</Honor_Identity>
+                <Ambition_Identity>1</Ambition_Identity>
+                <Charity_Identity>-1</Charity_Identity>
+            </params>
+            <props>
+                <Name>Aspect of Darkness</Name>
+                <Unique_Id>deities Aspect of Darkness1996243535671903900</Unique_Id>
+                <Aspect>Darkness</Aspect>
+                <Group>Extended</Group>
+                <Principles>Freedom(2);Law(-2);Treachery(2);Honor(-2);Ambition(1);Charity(-1);</Principles>
+                <Image>mini\deities\Night Lord.jpg</Image>
+                <Type>deities</Type>
+                <Passives>SpellGroupParamMod(Aspect,Arcanum,Powers of Arcanum,spellpower_mod,20);ParamBonus(Spellpower,
+                    {Intelligence}/5);ParamMod(Intelligence|Dexterity, 6+{level}*2);ParamBonus(Light Resistance,
+                    -6-{level});AddProp(darkvision);
+                </Passives>
+                <Favored_Spell_Groups>Shadow(4);Witchery(2);Psychic(3);Affliction(1);Blood Magic(1);Warp(1);
+                </Favored_Spell_Groups>
+                <Id>902</Id>
+                <Emblem>UI\emblems\std\light\1hh.jpg</Emblem>
+            </props>
+        </Aspect_of_Darkness>
+        <Aspect_of_Chaos>
+            <params>
+                <Law_Identity>2</Law_Identity>
+                <Freedom_Identity>-2</Freedom_Identity>
+                <Ambition_Identity>2</Ambition_Identity>
+                <Charity_Identity>-2</Charity_Identity>
+                <Progress_Identity>1</Progress_Identity>
+                <Tradition_Identity>-1</Tradition_Identity>
+            </params>
+            <props>
+                <Name>Aspect of Chaos</Name>
+                <Unique_Id>deities Aspect of Chaos4789549052917868814</Unique_Id>
+                <Aspect>Chaos</Aspect>
+                <Group>Extended</Group>
+                <Principles>Law(2);Freedom(-2);Ambition(2);Charity(-2);Progress(1);Tradition(-1);</Principles>
+                <Image>mini\deities\New folder (2)\chaos.jpg</Image>
+                <Type>deities</Type>
+                <Passives>SpellGroupParamMod(Aspect,Arcanum,Powers of Arcanum,spellpower_mod,20);ParamBonus(Spellpower,
+                    {Knowledge}/5);ParamMod(Intelligence|Knowledge, 6+{level}*2);ParamBonus(Chaos Resistance,
+                    16+{level}*2);
+                </Passives>
+                <Favored_Spell_Groups>
+                    CONJURATION;ENCHANTMENT;SORCERY;VOID;ELEMENTAL;CELESTIAL;ENCHANTMENT;SORCERY;CONJURATION;
+                </Favored_Spell_Groups>
+                <Id>905</Id>
+                <Emblem>UI\emblems\std\light\1hh.jpg</Emblem>
+            </props>
+        </Aspect_of_Chaos>
+        <Masked_God>
+            <params></params>
+            <props>
+                <Allied_Deities>Allfather;Sky Queen;</Allied_Deities>
+                <Enemy_Deities>Consumer of Worlds;Annihilator;</Enemy_Deities>
+                <Name>Masked God</Name>
+                <Prime_Mission>Enlightenment</Prime_Mission>
+                <Displayed_Name>Masked God</Displayed_Name>
+                <Aspect>Neutral</Aspect>
+                <Image>mini\deities\Masked God2.jpg</Image>
+                <Follower_Units>Living Armor;Trickster Raven;Onyx Golem;Aether Golem;Eldritch Strix;Sentinel;
+                </Follower_Units>
+                <True_Name>Masked God, the Demiurge</True_Name>
+                <Type>deities</Type>
+                <Passives>ParamMod(mastery points per level, 1);ParamMod(xp mod, 10);ParamMod(gold mod,
+                    10);ParamBonus(gold cost reduction, {charisma}/2);
+                </Passives>
+                <Favored_Spell_Groups>Conjuration(5);Enchantment(3);Sorcery(3);</Favored_Spell_Groups>
+                <Id>9101</Id>
+                <Emblem>UI\emblems\std\neutral\1god.jpg</Emblem>
+                <Secondary_Mission>World Peace</Secondary_Mission>
+                <Unique_Id>deities Masked God9213225243879027011</Unique_Id>
+                <Actives>AddParam(Mastery Points,2);AddParam(Xp,50);AddParam(Gold,50);</Actives>
+                <Group>Extended</Group>
+                <Principles></Principles>
+                <Friend_Deities>Keeper of Twilight;Void Lord;</Friend_Deities>
+            </props>
+        </Masked_God>
+        <Aspect_of_Life>
+            <params>
+                <Peace_Identity>2</Peace_Identity>
+                <War_Identity>-2</War_Identity>
+                <Charity_Identity>2</Charity_Identity>
+                <Ambition_Identity>-2</Ambition_Identity>
+                <Tradition_Identity>1</Tradition_Identity>
+                <Progress_Identity>-1</Progress_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Lord of Decay;Wild God;</Allied_Deities>
+                <Enemy_Deities>Wraith God;Annihilator;</Enemy_Deities>
+                <Name>Aspect of Life</Name>
+                <Prime_Mission>World Peace</Prime_Mission>
+                <Aspect>Life</Aspect>
+                <Image>mini\deities\Faerie Queen.jpg</Image>
+                <Type>deities</Type>
+                <Favored_Spell_Groups>SYLVAN;ELEMENTAL;SAVAGE;AFFLICTION;SHADOW;NECROMANCY;DEMONOLOGY;
+                </Favored_Spell_Groups>
+                <Id>932</Id>
+                <Emblem>UI\emblems\World Tree.jpg</Emblem>
+                <Secondary_Mission>Submission</Secondary_Mission>
+                <Unique_Id>deities Aspect of Life4011042739637507710</Unique_Id>
+                <Group>Extended</Group>
+                <Principles>Peace(2);War(-2);Charity(2);Ambition(-2);Tradition(1);Progress(-1);</Principles>
+                <Friend_Deities>Allfather;Fey Queen;</Friend_Deities>
+                <Lore>Eternal foe of the Ocean Queen and the Shai'Kar</Lore>
+            </props>
+        </Aspect_of_Life>
+    </Extended>
+    <x>
+        <Ocean_Queen>
+            <params>
+                <Peace_Identity>2</Peace_Identity>
+                <War_Identity>-2</War_Identity>
+                <Charity_Identity>2</Charity_Identity>
+                <Ambition_Identity>-2</Ambition_Identity>
+                <Tradition_Identity>1</Tradition_Identity>
+                <Progress_Identity>-1</Progress_Identity>
+            </params>
+            <props>
+                <Allied_Deities>Lord of Decay;Wild God;</Allied_Deities>
+                <Enemy_Deities>Wraith God;Annihilator;</Enemy_Deities>
+                <Name>Ocean Queen</Name>
+                <Prime_Mission>World Peace</Prime_Mission>
+                <Aspect>Life</Aspect>
+                <Image>mini\deities\Faerie Queen.jpg</Image>
+                <Type>deities</Type>
+                <Favored_Spell_Groups>Elemental(7);Void(5);Shadow(3);Necromancy(2);Affliction(2);</Favored_Spell_Groups>
+                <Id>32</Id>
+                <Emblem>UI\emblems\World Tree.jpg</Emblem>
+                <Secondary_Mission>Submission</Secondary_Mission>
+                <Unique_Id>deities Ocean Queen1276291959617217478</Unique_Id>
+                <Version>0.1003b</Version>
+                <Group>x</Group>
+                <Principles>Peace(2);War(-2);Charity(2);Ambition(-2);Tradition(1);Progress(-1);</Principles>
+                <Friend_Deities>Allfather;Fey Queen;</Friend_Deities>
+                <Lore>Eternal foe of the Ocean Queen and the Shai'Kar</Lore>
+            </props>
+        </Ocean_Queen>
+    </x>
+</XML>

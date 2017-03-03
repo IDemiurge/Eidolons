@@ -10,7 +10,7 @@ import java.util.List;
 
 public class FleeRule {
     /*
-	 * check facing
+     * check facing
 	 * 
 	 * don't add to slain
 	 * 

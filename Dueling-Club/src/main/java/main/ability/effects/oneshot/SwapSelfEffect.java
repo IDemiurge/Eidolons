@@ -11,7 +11,7 @@ public class SwapSelfEffect extends SelfMoveEffect {
     @Override
     public boolean applyThis() {
         c = ref.getTargetObj().getCoordinates();
-        origin= c;
+        origin = c;
         try {
             game.getMovementManager().move(ref.getTargetObj(),
                     ref.getSourceObj().getCoordinates(), free,

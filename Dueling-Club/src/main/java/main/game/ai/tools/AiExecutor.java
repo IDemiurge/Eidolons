@@ -1,7 +1,7 @@
 package main.game.ai.tools;
 
-import main.game.core.game.DC_Game;
 import main.game.ai.elements.actions.Action;
+import main.game.core.game.DC_Game;
 
 public class AiExecutor {
 

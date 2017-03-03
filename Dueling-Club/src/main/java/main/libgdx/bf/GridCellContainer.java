@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
+import main.game.core.game.DC_Game;
 
 import java.util.List;
 import java.util.Map;

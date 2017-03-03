@@ -269,6 +269,7 @@ public class TreeMap {
         LINK_VARIANT(Boolean vertical_horizontal) {
             this.vertical_horizontal = vertical_horizontal;
         }
+
         LINK_VARIANT() {
 
             // this.offsetY = getYOffsetForLink(this);
@@ -276,6 +277,7 @@ public class TreeMap {
             // this.nodeOffsetY = getYOffsetForLink(this);
             // this.nodeOffsetX = getXOffsetForLink(this);
         }
+
         LINK_VARIANT(int offsetY, int offsetX, int nodeOffsetY, int nodeOffsetX) {
             this.offsetY = offsetY;
             this.offsetX = offsetX;

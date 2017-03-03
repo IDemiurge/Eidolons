@@ -96,6 +96,7 @@ public class DC_ActionManager implements ActionManager {
     private static LinkedList<ActionType> modeActionTypes;
     private MicroGame game;
     private HashMap<Entity, Map<String, ActiveObj>> actionsCache = new HashMap<>();
+
     public DC_ActionManager(MicroGame game) {
         this.game = game;
     }
@@ -547,9 +548,9 @@ public class DC_ActionManager implements ActionManager {
         if (obj == null) {
             return new LinkedList<>();
         }
-        List<DC_UnitAction> list =weapon.getAttackActions();
-        if (list!=null ) return list;
-            list =  new LinkedList<>();
+        List<DC_UnitAction> list = weapon.getAttackActions();
+        if (list != null) return list;
+        list = new LinkedList<>();
         for (String typeName : StringMaster.openContainer(weapon.getProperty(PROPS.WEAPON_ATTACKS))) {
             if (!weapon.isMainHand()) {
                 typeName = ActionGenerator.getOffhandActionName(typeName);
@@ -853,15 +854,15 @@ public class DC_ActionManager implements ActionManager {
 
     @Override
     public void resetCostsInNewThread() {
-        Weaver.inNewThread(()-> {
-            DC_Game game= (DC_Game) this.game;
+        Weaver.inNewThread(() -> {
+            DC_Game game = (DC_Game) this.game;
             if (game.getManager().getActiveObj() == null) {
                 return;
             }
             for (ACTION_TYPE key : game.getManager().getActiveObj().getActionMap()
-             .keySet()) {
+                    .keySet()) {
                 for (DC_ActiveObj active : game.getManager().getActiveObj()
-                 .getActionMap().get(key)) {
+                        .getActionMap().get(key)) {
                     active.initCosts();
                 }
             }
@@ -877,6 +878,7 @@ public class DC_ActionManager implements ActionManager {
             }
         });
     }
+
     public enum STD_MODE_ACTIONS {
         Defend, Concentrate, Rest, Meditate, On_Alert;
 

@@ -22,9 +22,9 @@ import main.rules.action.WatchRule;
 import main.rules.combat.ForceRule;
 import main.rules.perk.RangeRule;
 import main.system.DC_Formulas;
-import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
@@ -80,6 +80,7 @@ public class AttackCalculator {
     private boolean instant;
     private boolean disengage;
     private AttackAnimation anim;
+
     public AttackCalculator(Attack attack, boolean precalc) {
         this.attack = attack;
         this.action = attack.getAction();

@@ -12,7 +12,7 @@ import main.system.math.MathMaster;
 /**
  * Created by JustMe on 2/26/2017.
  */
-public class SpellExecutor extends Executor{
+public class SpellExecutor extends Executor {
 
     public SpellExecutor(DC_ActiveObj active, ActiveMaster entityMaster) {
         super(active, entityMaster);
@@ -22,20 +22,22 @@ public class SpellExecutor extends Executor{
     public DC_SpellObj getAction() {
         return (DC_SpellObj) super.getAction();
     }
+
     public DC_SpellObj getSpell() {
         return (DC_SpellObj) super.getAction();
     }
+
     @Override
     public void actionComplete() {
 
         super.actionComplete();
 
-        if (getSpell(). getSpellPool() == SpellEnums.SPELL_POOL.DIVINED) {
-            if (DivinationMaster.rollRemove(getSpell() )) {
+        if (getSpell().getSpellPool() == SpellEnums.SPELL_POOL.DIVINED) {
+            if (DivinationMaster.rollRemove(getSpell())) {
                 if (getSpell().getBuff(DivinationMaster.BUFF_FAVORED) != null) {
-                    getSpell(). removeBuff(DivinationMaster.BUFF_FAVORED);
+                    getSpell().removeBuff(DivinationMaster.BUFF_FAVORED);
                 } else {
-                    getSpell(). remove();
+                    getSpell().remove();
                 }
             }
         }
@@ -172,7 +174,7 @@ public class SpellExecutor extends Executor{
         Integer perc = getIntParam(PARAMS.SPELLPOWER_MOD);
         if (perc != 100) {
             ownerObj.multiplyParamByPercent(PARAMS.SPELLPOWER, MathMaster.getFullPercent(perc),
-             false);
+                    false);
         }
 
     }

@@ -22,32 +22,34 @@ public class ActorMaster {
         aa.setTarget(actor);
 
     }
+
     public static MoveByAction getMoveByAction(Vector2 origin, Vector2 destination,
                                                EmitterActor actor, int pixelsPerSecond) {
 
         MoveByAction action = new MoveByAction();
-        float x = destination.x-origin.x;
-        float y = destination.y-origin.y;
+        float x = destination.x - origin.x;
+        float y = destination.y - origin.y;
         action.setAmount(x, y);
-        Float duration = (float) (Math.sqrt( x *  x + y * y) / pixelsPerSecond);
+        Float duration = (float) (Math.sqrt(x * x + y * y) / pixelsPerSecond);
         action.setDuration(duration);
         actor.addAction(action);
         action.setTarget(actor);
         return action;
     }
-    public static  MoveToAction getMoveToAction(
-     Coordinates destination, EmitterActor actor, int pixelsPerSecond) {
+
+    public static MoveToAction getMoveToAction(
+            Coordinates destination, EmitterActor actor, int pixelsPerSecond) {
 
         MoveToAction action = new MoveToAction();
         Vector2 v = GridMaster.
-         getVectorForCoordinateWithOffset(destination);
-        action.setPosition(v.x,v.y);
+                getVectorForCoordinateWithOffset(destination);
+        action.setPosition(v.x, v.y);
         Float duration = (float) (Math.sqrt(v.x * v.x + v.y * v.y) / pixelsPerSecond);
         action.setDuration(
-         duration);
-LogMaster.log(1,"MoveTo " +
- v +
- " duration: " +duration);
+                duration);
+        LogMaster.log(1, "MoveTo " +
+                v +
+                " duration: " + duration);
         actor.addAction(action);
         action.setTarget(actor);
         return action;
@@ -56,18 +58,20 @@ LogMaster.log(1,"MoveTo " +
     public static AlphaAction addFadeInOrOut(Actor actor, float duration) {
         float alpha = actor.getColor().a;
         AlphaAction action = new AlphaAction();
-        action.setAlpha(1-alpha);
+        action.setAlpha(1 - alpha);
         action.setDuration(duration);
-        action.setTarget(actor   );
+        action.setTarget(actor);
         return action;
     }
-        public static AlphaAction getFadeAction(Actor actor) {
+
+    public static AlphaAction getFadeAction(Actor actor) {
         AlphaAction action = new AlphaAction();
         action.setAlpha(0);
         action.setDuration(3);
-        action.setTarget(actor   );
+        action.setTarget(actor);
         return action;
     }
+
     public static AlphaAction addFadeAction(Actor actor) {
         AlphaAction action = getFadeAction(actor);
         actor.addAction(action);

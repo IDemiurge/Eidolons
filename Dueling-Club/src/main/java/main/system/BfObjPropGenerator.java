@@ -1,6 +1,7 @@
 package main.system;
 
-import main.content.CONTENT_CONSTS.*;
+import main.content.CONTENT_CONSTS.DIMENSION;
+import main.content.CONTENT_CONSTS.OBJECT_ARMOR_TYPE;
 import main.content.PROPS;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.*;

@@ -85,8 +85,8 @@ public class TestMeshRender implements ApplicationListener {
 
         for (int i = 0; i < mx; i++) {
             for (int j = 0; j < my; j++) {
-                if (smap.containsKey(i+"-"+j)) {
-                    smap.get(i+"-"+j);
+                if (smap.containsKey(i + "-" + j)) {
+                    smap.get(i + "-" + j);
                 }
             }
         }

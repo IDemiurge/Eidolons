@@ -9,18 +9,19 @@ import java.util.ArrayList;
  * Created by PC on 22.10.2016.
  */
 public class Lightning_Animation {
-        private static ArrayList<Texture> list_of_lightnings;
+    private static ArrayList<Texture> list_of_lightnings;
 
-    public Lightning_Animation(){
+    public Lightning_Animation() {
         String path = PathFinder.getImagePath();
 
         list_of_lightnings = new ArrayList<>();
-        for (int i = 1;i<18;i++){
-            Texture local_Texture = new Texture(path + "mini\\sprites\\impact\\electro impact\\e"+i+".jpg");
+        for (int i = 1; i < 18; i++) {
+            Texture local_Texture = new Texture(path + "mini\\sprites\\impact\\electro impact\\e" + i + ".jpg");
             local_Texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
             list_of_lightnings.add(local_Texture);
         }
     }
+
     public Texture getTexture(float current_timing) {
         Texture local = null;
         if (current_timing >= 0 && current_timing <= 0.02) {

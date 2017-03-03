@@ -14,5 +14,4 @@ public class ThrowAnim extends AttackAnim {
     //looping rotation...
 
 
-
 }

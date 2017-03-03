@@ -9,9 +9,6 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
-import main.game.core.game.DC_Game.GAME_MODES;
-import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
@@ -19,10 +16,16 @@ import main.game.battlefield.CoordinatesMaster;
 import main.game.battlefield.DirectionMaster;
 import main.game.battlefield.FacingMaster;
 import main.game.battlefield.map.DungeonMapGenerator.MAP_ZONES;
+import main.game.core.game.DC_Game;
+import main.game.core.game.DC_Game.GAME_MODES;
+import main.game.core.game.DC_Game.GAME_TYPE;
 import main.game.logic.arena.Wave;
 import main.game.logic.dungeon.building.MapBlock;
 import main.rules.action.StackingRule;
-import main.system.auxiliary.*;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.Loop;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
@@ -391,7 +394,7 @@ public class Positioner {
             return adjacentCoordinate;
         }
         DIRECTION direction = spawnSide;
-         DirectionMaster.rotate90(spawnSide, false);
+        DirectionMaster.rotate90(spawnSide, false);
 //         = c.getAdjacentCoordinate(direction);
         Coordinates nextCoordinate;// orthogonal
         while (true) {

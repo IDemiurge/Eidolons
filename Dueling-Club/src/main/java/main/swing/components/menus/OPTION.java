@@ -1,13 +1,14 @@
 package main.swing.components.menus;
+
 public interface OPTION {
-		Integer getMin();
+    Integer getMin();
 
-		Integer getMax();
+    Integer getMax();
 
-		Object getDefaultValue();
+    Object getDefaultValue();
 
-		Boolean isExclusive();
+    Boolean isExclusive();
 
-		Object[] getOptions();
+    Object[] getOptions();
 
-	}
+}

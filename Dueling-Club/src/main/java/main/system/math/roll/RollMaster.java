@@ -1,10 +1,10 @@
 package main.system.math.roll;
 
 import main.ability.effects.containers.RollEffect;
-import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.content.ContentManager;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -31,7 +31,7 @@ import main.system.text.LogEntryNode;
 
 public class RollMaster {
     /*
-	 * define std rolls, and maybe var refs some rolls may want to define only
+     * define std rolls, and maybe var refs some rolls may want to define only
 	 * *one* of the refs!
 	 */
 

@@ -25,7 +25,9 @@ import main.game.logic.macro.MacroManager;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.windows.G_Frame;
-import main.system.auxiliary.*;
+import main.system.auxiliary.Loop;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.InfoMaster;
@@ -480,7 +482,7 @@ public class Launcher {
     }
 
     public static void launchHC(boolean arcadeMode, Unit... heroes) {
-Game.game.setSimulation(true);
+        Game.game.setSimulation(true);
         if (!isDataInitialized()) {
             initFullData();
             // simulationInit();
@@ -522,7 +524,7 @@ Game.game.setSimulation(true);
     public static void launchDC(String partyName, boolean forceBattleInit) {
         // initSave(Launcher.getLoadPath());
         /*
-		 * initObjectString buffs and dynamic params non-bf objects - items,
+         * initObjectString buffs and dynamic params non-bf objects - items,
 		 *
 		 *
 		 *
@@ -574,18 +576,18 @@ Game.game.setSimulation(true);
             game.start(first);
 
 
-            if (!CoreEngine.isSwingOn()){
+            if (!CoreEngine.isSwingOn()) {
                 //TODO INSERT NEW GUI HERE
-            }else {
-            DC_GameGUI GUI = new DC_GameGUI(game, fullscreen, false);
-            GUI.initGUI();
-            game.setGUI(GUI);
-            GUI.setWindow(frame);
-            frame.setLayout(new BorderLayout());
-            frame.setSize(GuiManager.getScreenSize());
-            frame.setLocationRelativeTo(null);
+            } else {
+                DC_GameGUI GUI = new DC_GameGUI(game, fullscreen, false);
+                GUI.initGUI();
+                game.setGUI(GUI);
+                GUI.setWindow(frame);
+                frame.setLayout(new BorderLayout());
+                frame.setSize(GuiManager.getScreenSize());
+                frame.setLocationRelativeTo(null);
                 //TODO remove SWING DEPENDENCY
-            setView(GUI.getPanel(), VIEWS.DC);
+                setView(GUI.getPanel(), VIEWS.DC);
             }
         } catch (Exception e) {
             e.printStackTrace();

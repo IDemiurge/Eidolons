@@ -1,8 +1,8 @@
 package main.rules.mechanics;
 
-import main.content.enums.entity.UnitEnums.STD_COUNTERS;
 import main.content.DC_ContentManager;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.STD_COUNTERS;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_ItemActiveObj;
@@ -14,7 +14,7 @@ import main.system.math.MathMaster;
 
 public class CoatingRule {
     /*
-	 * Manage counters! Alchemy mastery?
+     * Manage counters! Alchemy mastery?
 	 * 
 	 * Use up *some* of the charges
 	 * 

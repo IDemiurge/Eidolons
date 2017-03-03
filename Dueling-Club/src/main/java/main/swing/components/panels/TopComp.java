@@ -2,8 +2,8 @@ package main.swing.components.panels;
 
 import main.game.core.game.DC_Game;
 import main.swing.components.panels.page.log.WrappedTextComp;
-import main.system.graphics.FontMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.graphics.FontMaster;
 
 import java.awt.*;
 import java.util.Arrays;

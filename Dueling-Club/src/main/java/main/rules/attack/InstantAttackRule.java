@@ -1,9 +1,9 @@
 package main.rules.attack;
 
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.PARAMS;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.unit.Unit;
@@ -15,10 +15,10 @@ import main.game.battlefield.attack.DC_AttackMaster;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.RULE;
 import main.rules.perk.AlertRule;
-import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.math.PositionMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
@@ -249,9 +249,9 @@ public class InstantAttackRule {
         for (DC_UnitAction attack : attacks) {
 
             if (checkAttackCanBeInstant(attack))
-                // if (attack
-                // .checkProperty(G_PROPS.ACTION_TAGS,
-                // ACTION_TAGS.INSTANT_ATTACK.toString()))
+            // if (attack
+            // .checkProperty(G_PROPS.ACTION_TAGS,
+            // ACTION_TAGS.INSTANT_ATTACK.toString()))
             {
                 list.add(attack);
             }

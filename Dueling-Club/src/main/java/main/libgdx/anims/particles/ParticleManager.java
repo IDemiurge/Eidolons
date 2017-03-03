@@ -10,11 +10,10 @@ import main.system.GuiEventType;
  * Created by JustMe on 1/8/2017.
  */
 public class ParticleManager extends Actor {
+    private static boolean ambienceOn;
     public boolean debugMode;
     EmitterMap emitterMap;
     private Stage effects;
-    private static boolean ambienceOn;
-
 
 
     public ParticleManager(Stage effects) {
@@ -27,6 +26,14 @@ public class ParticleManager extends Actor {
             updateEmitters();
 //
         });
+    }
+
+    public static boolean isAmbienceOn() {
+        return ambienceOn;
+    }
+
+    public static void setAmbienceOn(boolean ambienceOn) {
+        ParticleManager.ambienceOn = ambienceOn;
     }
 
     @Override
@@ -49,13 +56,6 @@ public class ParticleManager extends Actor {
 //            else if (effects.getActors().contains(actor, true))
 //                effects.addActor(actor);
 //        }
-    }
-    public static boolean isAmbienceOn() {
-        return ambienceOn;
-    }
-
-    public static void setAmbienceOn(boolean ambienceOn) {
-        ParticleManager.ambienceOn = ambienceOn;
     }
 
 

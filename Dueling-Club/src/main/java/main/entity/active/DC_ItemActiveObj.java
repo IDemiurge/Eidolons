@@ -35,7 +35,7 @@ public class DC_ItemActiveObj extends DC_ActiveObj {
     @Override
     public boolean isRangedTouch() {
         return checkProperty(G_PROPS.SPELL_TAGS,
-         SpellEnums.SPELL_TAGS.RANGED_TOUCH.toString());
+                SpellEnums.SPELL_TAGS.RANGED_TOUCH.toString());
     }
 
     @Override

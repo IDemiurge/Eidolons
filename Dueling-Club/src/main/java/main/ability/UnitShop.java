@@ -1,12 +1,12 @@
 package main.ability;
 
 import main.client.cc.HeroManager;
-import main.content.enums.entity.ItemEnums.ITEM_SLOT;
-import main.content.enums.entity.ItemEnums.MATERIAL;
-import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
 import main.content.*;
 import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.ItemEnums.ITEM_SLOT;
+import main.content.enums.entity.ItemEnums.MATERIAL;
+import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
@@ -131,7 +131,7 @@ public class UnitShop {
     private static void generateArmorRepertoire(Unit hero) {
         // TODO
         /*
-		 * if has armorer... if isn't caster... check robe per mastery... check
+         * if has armorer... if isn't caster... check robe per mastery... check
 		 * strength...
 		 */
 
@@ -177,9 +177,9 @@ public class UnitShop {
             ObjType type = DataManager.findType(VariableManager.removeVarPart(trait),
                     DC_TYPE.JEWELRY);
             if (type != null)
-                // check what, exactly? quality range? proper match? (resistance
-                // could be resistance penetration... TODO check doesn't contain
-                // other trait
+            // check what, exactly? quality range? proper match? (resistance
+            // could be resistance penetration... TODO check doesn't contain
+            // other trait
             {
                 repertoire += VariableManager.removeVarPart(type.getName())
                         + VariableManager.getVarPart(trait) + ";";

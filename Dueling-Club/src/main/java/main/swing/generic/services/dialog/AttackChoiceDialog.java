@@ -32,7 +32,7 @@ public class AttackChoiceDialog extends EntityChoiceDialog<DC_ActiveObj> {
 
     @Override
     protected ChoicePanel<DC_ActiveObj> getChoicePanel() {
-        return  null;
+        return null;
 //        return new AttackChoicePanel(this, data);
     }
 

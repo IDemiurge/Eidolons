@@ -2,8 +2,8 @@ package main.rules.round;
 
 import main.content.PARAMS;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.ai.tools.ParamAnalyzer;
+import main.game.core.game.DC_Game;
 
 public class MoraleRule extends RoundRule {
 

@@ -1,16 +1,16 @@
 package main.game.battlefield.map;
 
+import main.content.DC_TYPE;
+import main.content.PROPS;
 import main.content.enums.DungeonEnums.DUNGEON_MAP_MODIFIER;
 import main.content.enums.DungeonEnums.DUNGEON_MAP_TEMPLATE;
 import main.content.enums.DungeonEnums.MAP_FILL_TEMPLATE;
-import main.content.DC_TYPE;
-import main.content.PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
+import main.game.core.game.DC_Game;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.Entrance;
 import main.game.logic.dungeon.building.BuildHelper.BuildParameters;
@@ -19,7 +19,10 @@ import main.game.logic.dungeon.building.DungeonBuilder.ROOM_TYPE;
 import main.game.logic.dungeon.building.DungeonPlan;
 import main.game.logic.dungeon.building.MapBlock;
 import main.game.logic.dungeon.building.MapZone;
-import main.system.auxiliary.*;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.Loop;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.graphics.GuiManager;
@@ -98,7 +101,7 @@ public class DungeonMapGenerator {
                 dungeon.getProperty(PROPS.DUNGEON_MAP_MODIFIER));
 
 		/*
-		 * mod should have a preset initComps option as well.
+         * mod should have a preset initComps option as well.
 		 */
 
         try {

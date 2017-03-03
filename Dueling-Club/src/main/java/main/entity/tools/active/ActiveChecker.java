@@ -51,7 +51,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
             }
         }
         return checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.THROW + "")
-         || checkProperty(G_PROPS.GROUP, ActionEnums.ACTION_TAGS.THROW + "");
+                || checkProperty(G_PROPS.GROUP, ActionEnums.ACTION_TAGS.THROW + "");
     }
 
     public boolean isBlocked() {
@@ -103,7 +103,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
 
     public boolean isAttack() {
         return getName().equals(DC_ActionManager.ATTACK)
-         || getName().equals(DC_ActionManager.OFFHAND_ATTACK);
+                || getName().equals(DC_ActionManager.OFFHAND_ATTACK);
     }
 
     public boolean isOffhand() {
@@ -116,7 +116,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
             return false;
         }
         return (checkProperty(G_PROPS.GROUP, ActionEnums.ACTION_TAGS.RANGED + "") || checkProperty(
-         G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.RANGED + ""));
+                G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.RANGED + ""));
         // return false;
         // return getIntParam(PARAMS.RANGE) > 1;
     }
@@ -164,7 +164,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
 
     public boolean isCancellable() {
         return checkProperty(G_PROPS.STD_BOOLS, STD_BOOLS.CANCELLABLE
-         .toString());
+                .toString());
     }
 
     public boolean isRangedTouch() {
@@ -195,6 +195,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
     public boolean isSpell() {
         return getEntity().getOBJ_TYPE_ENUM() == DC_TYPE.SPELLS;
     }
+
     public boolean isChanneling() {
         return false;
     }

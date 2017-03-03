@@ -11,13 +11,13 @@ import main.game.logic.generic.DC_ActionManager.ADDITIONAL_MOVE_ACTIONS;
 import main.game.logic.generic.DC_ActionManager.STD_ACTIONS;
 import main.game.logic.generic.DC_ActionManager.STD_MODE_ACTIONS;
 import main.libgdx.anims.controls.AnimController;
-import main.system.controls.Controller;
-import main.system.controls.Controller.CONTROLLER;
 import main.libgdx.anims.controls.EmitterController;
 import main.rules.RuleMaster;
 import main.swing.generic.components.panels.G_PagePanel;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.controls.Controller;
+import main.system.controls.Controller.CONTROLLER;
 import main.system.controls.GlobalController;
 import main.system.entity.ValueHelper;
 import main.test.debug.DebugController;
@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DC_KeyManager
 // extends KeyboardFocusManager
- implements KeyListener {
+        implements KeyListener {
 
     public static final int DEFAULT_MODE = JIntellitype.MOD_CONTROL;
     public static final int ALT_MODE = JIntellitype.MOD_ALT;
@@ -38,7 +38,7 @@ public class DC_KeyManager
     private static final int SPELL_MASK = KeyEvent.CTRL_DOWN_MASK;
     private static final int ACTION_MASK = KeyEvent.ALT_DOWN_MASK;
     private static final int ITEM_MASK = KeyEvent.ALT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK;
-    public static   CONTROLLER DEFAULT_CONTROLLER   ;
+    public static CONTROLLER DEFAULT_CONTROLLER;
     G_PagePanel<?> p;
     private Map<String, Integer> stdActionKeyMap;
     private Map<String, Integer> stdModeKeyMap;
@@ -54,9 +54,9 @@ public class DC_KeyManager
         stdActionKeyMap = new ConcurrentHashMap<>();
         stdModeKeyMap = new ConcurrentHashMap<>();
         addMoveActionKeyMap = new ConcurrentHashMap<>();
-controller=getControllerInstance(DEFAULT_CONTROLLER);
-if (controller==null )
-        controller = new GlobalController();
+        controller = getControllerInstance(DEFAULT_CONTROLLER);
+        if (controller == null)
+            controller = new GlobalController();
         if (EmitterController.overrideKeys) {
             controller = EmitterController.getInstance();
         }
@@ -76,7 +76,7 @@ if (controller==null )
         int i = 0;
         for (STD_MODE_ACTIONS action : STD_MODE_ACTIONS.values()) {
             String key = DataManager.getType(action.toString(), DC_TYPE.ACTIONS).getProperty(
-             G_PROPS.HOTKEY);
+                    G_PROPS.HOTKEY);
             stdModeKeyMap.put(key, i);
             LogMaster.log(LogMaster.CORE_DEBUG, ">> mode hotkey " + key);
             i++;
@@ -88,7 +88,7 @@ if (controller==null )
         int i = 0;
         for (STD_ACTIONS action : STD_ACTIONS.values()) {
             String key = DataManager.getType(action.toString(), DC_TYPE.ACTIONS).getProperty(
-             G_PROPS.HOTKEY);
+                    G_PROPS.HOTKEY);
             stdActionKeyMap.put(key, i);
             LogMaster.log(LogMaster.CORE_DEBUG, ">> std hotkey " + key);
             i++;
@@ -96,7 +96,7 @@ if (controller==null )
         i = 0;
         for (ADDITIONAL_MOVE_ACTIONS action : ADDITIONAL_MOVE_ACTIONS.values()) {
             String key = DataManager.getType(action.toString(), DC_TYPE.ACTIONS).getProperty(
-             G_PROPS.HOTKEY);
+                    G_PROPS.HOTKEY);
             addMoveActionKeyMap.put(key, i);
             LogMaster.log(LogMaster.CORE_DEBUG, ">> std hotkey " + key);
             i++;
@@ -182,30 +182,30 @@ if (controller==null )
 
     private void selectController() {
         CONTROLLER c =
-         new EnumMaster<CONTROLLER>().selectEnum(CONTROLLER.class);
-        if (c==null )
+                new EnumMaster<CONTROLLER>().selectEnum(CONTROLLER.class);
+        if (c == null)
             controller = new GlobalController();
         else controller = getControllerInstance(c);
     }
 
     private Controller getControllerInstance(CONTROLLER c) {
-        if (c==null ) return null ;
+        if (c == null) return null;
         switch (c) {
             case ACTION:
                 return null;
-                
+
             case ANIM:
                 return AnimController.getInstance();
-                
+
             case DEBUG:
                 return DebugController.getInstance();
-                
+
             case RULES:
                 return RuleMaster.getInstance();
-                
+
             case EMITTER:
                 return EmitterController.getInstance();
-                
+
         }
         return null;
     }

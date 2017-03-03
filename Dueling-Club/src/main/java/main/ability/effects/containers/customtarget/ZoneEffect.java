@@ -59,7 +59,7 @@ public class ZoneEffect extends SpecialTargetingEffect
             conditions.add(new NotCondition(ConditionMaster.getSelfFilterCondition()));
         }
         if (allyOrEnemyOnly != null) // TODO target filtering - targeting
-            // modifiers?
+        // modifiers?
         {
             conditions.add(allyOrEnemyOnly ? ConditionMaster.getAllyCondition() : ConditionMaster
                     .getEnemyCondition());

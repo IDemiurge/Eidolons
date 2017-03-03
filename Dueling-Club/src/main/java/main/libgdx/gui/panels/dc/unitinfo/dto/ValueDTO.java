@@ -13,7 +13,7 @@ public class ValueDTO {
         this.text = text;
     }
 
-    public ValueDTO(String name,String text) {
+    public ValueDTO(String name, String text) {
         this.name = name;
         this.text = text;
     }

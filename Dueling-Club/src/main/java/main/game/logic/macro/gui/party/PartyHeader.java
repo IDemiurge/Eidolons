@@ -28,6 +28,7 @@ public class PartyHeader extends G_Panel {
     List<ValueTextComp> propComps = new LinkedList<>();
     private MacroParty party;
     private WrappedTextComp locationComp;
+
     public PartyHeader(MacroParty party) {
         // visuals?
         super(VISUALS.PARTY_HEADER); // VISUALS.INFO_PANEL special size! TODO

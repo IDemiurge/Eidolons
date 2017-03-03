@@ -2,7 +2,7 @@ package main.rules.attack;
 
 import main.ability.conditions.VisibilityCondition;
 import main.content.PROPS;
-import main.content.enums.*;
+import main.content.enums.GenericEnums;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.UnitEnums;
@@ -25,8 +25,8 @@ import main.rules.RuleMaster;
 import main.rules.RuleMaster.RULE;
 import main.rules.action.WatchRule;
 import main.rules.mechanics.InterruptRule;
-import main.system.entity.ConditionMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.entity.ConditionMaster;
 import main.system.math.PositionMaster;
 import main.system.math.roll.RollMaster;
 
@@ -96,7 +96,7 @@ public class AttackOfOpportunityRule {
                 continue;
             }
             if (unit.canCounter())
-                // if (!free) {
+            // if (!free) {
             {
                 if (!WatchRule.checkWatched(unit, active.getOwnerObj())) {
                     continue;
@@ -459,8 +459,8 @@ public class AttackOfOpportunityRule {
         List<Unit> list = new LinkedList<>();
         for (Unit unit : action.getGame().getUnits()) {
             if (unit.isOwnedBy(action.getGame().getPlayer(!action.getOwner().isMe())))
-                // if (!VisionManager.checkVisibileForUnit(unit,
-                // action.getOwnerObj())) TODO
+            // if (!VisionManager.checkVisibileForUnit(unit,
+            // action.getOwnerObj())) TODO
             {
                 list.add(unit);
             }

@@ -15,8 +15,8 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.components.panels.page.log.WrappedTextComp;
 import main.system.DC_Formulas;
-import main.system.graphics.ColorManager;
 import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.graphics.ColorManager;
 import main.system.text.TextParser;
 import main.system.text.TextWrapper;
 

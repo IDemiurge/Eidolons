@@ -1,7 +1,7 @@
 package main.content;
 
-import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.enums.entity.HeroEnums;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.values.properties.PROPERTY;
 import main.system.auxiliary.StringMaster;
 

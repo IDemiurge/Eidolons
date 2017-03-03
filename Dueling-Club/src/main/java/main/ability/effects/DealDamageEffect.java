@@ -1,8 +1,8 @@
 package main.ability.effects;
 
+import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
-import main.content.enums.GenericEnums;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
@@ -11,8 +11,8 @@ import main.entity.obj.unit.Unit;
 import main.game.battlefield.attack.DamageMaster;
 import main.rules.combat.ForceRule;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.DamageSprite;
 import main.system.math.Formula;
 

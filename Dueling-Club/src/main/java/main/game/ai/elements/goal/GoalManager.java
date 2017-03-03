@@ -1,9 +1,9 @@
 package main.game.ai.elements.goal;
 
-import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
-import main.content.enums.system.AiEnums;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.system.AiEnums;
+import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
@@ -11,8 +11,8 @@ import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.tools.Analyzer;
 import main.game.ai.tools.priority.DC_PriorityManager;
 import main.game.ai.tools.target.AI_SpellMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -61,8 +61,9 @@ public class GoalManager {
 
     public static List<GOAL_TYPE> getDefaultGoals() {
         return new LinkedList<>(Arrays.asList(new GOAL_TYPE[]{GOAL_TYPE.PREPARE,
-         GOAL_TYPE.DEFEND, GOAL_TYPE.ATTACK, GOAL_TYPE.WAIT,}));
+                GOAL_TYPE.DEFEND, GOAL_TYPE.ATTACK, GOAL_TYPE.WAIT,}));
     }
+
     private static void addEnemyGoals(List<GOAL_TYPE> list) {
         list.add(GOAL_TYPE.DEBUFF);
         list.add(GOAL_TYPE.CUSTOM_HOSTILE);

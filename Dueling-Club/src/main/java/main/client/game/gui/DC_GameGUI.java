@@ -195,7 +195,7 @@ public class DC_GameGUI implements MouseListener {
             path = ImageManager.DEFAULT_BACKGROUND;
             try {
                 path = ((DC_Builder) game.getBattleField().getBuilder()).getGrid().getMap()
-                 .getBackground();
+                        .getBackground();
             } catch (Exception e) {
                 LogMaster.log(1, "failed to load background!");
             }
@@ -222,7 +222,7 @@ public class DC_GameGUI implements MouseListener {
         img = ImageManager.applyImage(img, backgroundOverlays, 0, 0, false, false);
 
         bgPic = (BufferedImage) ImageManager.applyImage(bgPic, img, ImageManager.CENTERED,
-         ImageManager.CENTERED, false, false);
+                ImageManager.CENTERED, false, false);
         return new ImageIcon(bgPic);
 
     }

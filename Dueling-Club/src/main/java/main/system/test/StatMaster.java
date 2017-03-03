@@ -2,7 +2,7 @@ package main.system.test;
 
 public class StatMaster {
     /*
-	 * combat stats - damage dealt, absorbed, ...
+     * combat stats - damage dealt, absorbed, ...
 	 * 
 	 * 
 	 * game stats - effects, triggers, 

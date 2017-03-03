@@ -10,9 +10,9 @@ import main.libgdx.bf.GridConst;
  * Created by JustMe on 1/19/2017.
  */
 public class ReloadAnim extends RangedAttackAnim {
-    public ReloadAnim(Entity active ) {
-        super(active );
-        data=new AnimData("missile speed=100;");
+    public ReloadAnim(Entity active) {
+        super(active);
+        data = new AnimData("missile speed=100;");
     }
 
     @Override
@@ -27,7 +27,7 @@ public class ReloadAnim extends RangedAttackAnim {
 
     protected MoveByAction getMoveAmmoAction() {
         MoveByAction mainMove = new MoveByAction();
-        mainMove.setAmount(destination.x-origin.x, destination.y-origin.y);
+        mainMove.setAmount(destination.x - origin.x, destination.y - origin.y);
         mainMove.setDuration(duration);
         return mainMove;
     }
@@ -36,8 +36,8 @@ public class ReloadAnim extends RangedAttackAnim {
     public void initPosition() {
         super.initPosition();
 //offsetX
-    initialAngle=0;
-        destination.set(destination.x-GridConst.CELL_W/8, destination.y-GridConst.CELL_H/2);
+        initialAngle = 0;
+        destination.set(destination.x - GridConst.CELL_W / 8, destination.y - GridConst.CELL_H / 2);
 
     }
 

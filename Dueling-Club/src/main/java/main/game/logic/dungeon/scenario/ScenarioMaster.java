@@ -20,15 +20,15 @@ import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.Location;
 import main.game.logic.generic.PartyManager;
 import main.game.meta.skirmish.SkirmishMaster;
-import main.system.entity.ConditionMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.entity.ConditionMaster;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class ScenarioMaster {
     /*
-	 * manage 'party's' data, much like with an Arcade
+     * manage 'party's' data, much like with an Arcade
 	 * 
 	 *  provide info 
 	 *  

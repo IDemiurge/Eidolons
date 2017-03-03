@@ -26,7 +26,7 @@ public class ForceEffect extends DC_Effect {
             }
         }
         /*
-		 * TODO 
+         * TODO
 		 * 
 		 * Reduce Stamina if push/knock 'resisted'!  
 		 * 

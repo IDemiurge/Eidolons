@@ -16,7 +16,7 @@ public class DebugGui extends G_Panel {
     public DebugGui() {
         init();
         /*
-		 * paged panel?
+         * paged panel?
 		 * custom controls? 
 		 * function lists ? 
 		 * split in two parts or made up of 2 panels? 

@@ -79,19 +79,19 @@ public class PrototypeScreen implements Screen {
         });
 
         regions = new ArrayList<>();
-        for (int i = 1;i<18;i++){
-            Texture local_Texture = new Texture(PathFinder.getImagePath() + "mini\\sprites\\impact\\electro impact\\e"+i+".jpg");
+        for (int i = 1; i < 18; i++) {
+            Texture local_Texture = new Texture(PathFinder.getImagePath() + "mini\\sprites\\impact\\electro impact\\e" + i + ".jpg");
             local_Texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
             regions.add(local_Texture);
         }
 //        anim = new PhaseAnimation(regions,regions.size()-1,0.85f);
-        sprite = new Sprite(new Texture(PathFinder.getImagePath() + "mini\\sprites\\impact\\electro impact\\e"+1+".jpg"));
-        sprite.setBounds(3,3,5,5);
+        sprite = new Sprite(new Texture(PathFinder.getImagePath() + "mini\\sprites\\impact\\electro impact\\e" + 1 + ".jpg"));
+        sprite.setBounds(3, 3, 5, 5);
         batch = new SpriteBatch();
 
         // TEMP END
         debugRenderer = new Box2DDebugRenderer();
-        world = new World(new Vector2(0,-10),false);
+        world = new World(new Vector2(0, -10), false);
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(Color.SKY);
         rayHandler.setAmbientLight(0.1f);
@@ -104,7 +104,7 @@ public class PrototypeScreen implements Screen {
 //       coneLight1 = new ConeLight(rayHandler,75,Color.RED,distance1,700,850,270,degree1);
 
         guiStage = new GUIStage();
-        stage = new Stage(new FitViewport(viewport_width,viewport_height));
+        stage = new Stage(new FitViewport(viewport_width, viewport_height));
         batch.setProjectionMatrix(stage.getCamera().combined);
         controller = new PrototypeController((OrthographicCamera) stage.getCamera());
 
@@ -129,7 +129,7 @@ public class PrototypeScreen implements Screen {
 
     @Override
     public void render(float v) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
         long now = System.nanoTime();
         long diff = now - timer;
         timer = now;
@@ -178,7 +178,7 @@ public class PrototypeScreen implements Screen {
 //                }
 //            }
 //        }
-        world.step(1/60f,4,4);
+        world.step(1 / 60f, 4, 4);
         stage.act(v);
         stage.draw();
 
@@ -285,7 +285,7 @@ public class PrototypeScreen implements Screen {
         batch.end();
         guiStage.act(v);
         guiStage.draw();
-        debugRenderer.render(world,stage.getCamera().combined);
+        debugRenderer.render(world, stage.getCamera().combined);
     }
 
 

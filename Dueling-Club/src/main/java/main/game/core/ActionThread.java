@@ -13,7 +13,7 @@ public class ActionThread extends Thread {
     public void run() {
 
         // TODO TO GAMELOOP!
-                    getExecutor().activate();
+        getExecutor().activate();
 
     }
 

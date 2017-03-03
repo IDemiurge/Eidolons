@@ -5,9 +5,9 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
+import main.game.logic.battle.player.Player;
 import main.game.meta.BattleLevel;
 import main.game.meta.Faction;
-import main.game.logic.battle.player.Player;
 
 import java.util.List;
 

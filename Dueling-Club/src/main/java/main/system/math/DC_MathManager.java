@@ -1,9 +1,9 @@
 package main.system.math;
 
 import main.client.cc.logic.PointMaster;
-import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.*;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -14,13 +14,13 @@ import main.entity.Ref;
 import main.entity.item.DC_HeroItemObj;
 import main.entity.obj.Obj;
 import main.entity.obj.attach.DC_FeatObj;
-import main.entity.obj.unit.Unit;
 import main.entity.obj.unit.DC_UnitModel;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
-import main.system.entity.ConditionMaster;
 import main.system.DC_Formulas;
 import main.system.auxiliary.StringMaster;
+import main.system.entity.ConditionMaster;
 
 import java.util.LinkedList;
 import java.util.List;

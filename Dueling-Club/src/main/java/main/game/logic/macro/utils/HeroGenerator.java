@@ -188,7 +188,7 @@ public class HeroGenerator {
 
     }
     /*
-	 * based on templates... changing base
+     * based on templates... changing base
 	 * 
 	 * Hero Level Up - "recommended" -
 	 */

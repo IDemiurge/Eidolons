@@ -4,8 +4,8 @@ import main.client.cc.CharacterCreator;
 import main.content.enums.GenericEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.obj.unit.Unit;
-import main.system.graphics.GuiManager;
 import main.system.auxiliary.secondary.InfoMaster;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 
 import java.util.LinkedList;

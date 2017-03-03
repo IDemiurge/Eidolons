@@ -1,7 +1,7 @@
 package main.swing.components.panels;
 
-import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
+import main.game.core.game.DC_Game;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.DungeonMaster;
 import main.swing.generic.components.G_Panel;

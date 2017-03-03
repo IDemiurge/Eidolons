@@ -684,7 +684,7 @@ public class Unit extends DC_UnitModel {
         }
         if (getGame().getTestMaster().isImmortal() != null) {
             return
-             getGame().getTestMaster().isImmortal();
+                    getGame().getTestMaster().isImmortal();
         }
         return getGame().isDummyPlus();
     }
@@ -813,7 +813,7 @@ public class Unit extends DC_UnitModel {
                 initUpgrades = true;
             }
         }
-        spells = getGame().getManager().getSpellMaster(). getSpells(this, reset);
+        spells = getGame().getManager().getSpellMaster().getSpells(this, reset);
         // TODO support spellbook changes!
         if (initUpgrades) {
             SpellUpgradeMaster.initSpellUpgrades(this);
@@ -1919,6 +1919,6 @@ public class Unit extends DC_UnitModel {
     }
 
     public List<DC_ActiveObj> getAttacks(boolean offhand) {
-        return getAction(offhand? DC_ActionManager.ATTACK : DC_ActionManager.OFFHAND_ATTACK).getSubActions();
+        return getAction(offhand ? DC_ActionManager.ATTACK : DC_ActionManager.OFFHAND_ATTACK).getSubActions();
     }
 }
