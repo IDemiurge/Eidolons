@@ -19,6 +19,8 @@ public class ActionFactory {
             DC_ItemActiveObj itemActiveObj = (DC_ItemActiveObj) action;
             return new QuickItemAction(itemActiveObj.getItem(), ref);
         }
+        // my change!
+
         return new Action(action, ref);
     }
 }
