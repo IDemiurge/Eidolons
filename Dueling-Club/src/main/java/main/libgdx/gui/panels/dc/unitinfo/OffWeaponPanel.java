@@ -14,5 +14,17 @@ public class OffWeaponPanel extends TablePanel {
         setHeight(textureRegion.getRegionHeight());
         maxWidth(getWidth());
         maxHeight(getHeight());
+
+        maxWidth(getWidth());
+        maxHeight(getHeight());
+
+        maxWidth(getWidth());
+        maxHeight(getHeight());
+
+        maxWidth(getWidth());
+        maxHeight(getHeight());
+
+        maxWidth(getWidth());
+        maxHeight(getHeight());
     }
 }
