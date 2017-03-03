@@ -51,6 +51,7 @@ public class TextureManager {
                             sheet.getHeight() / FRAME_ROWS);
         } catch (Exception e) {
             e.printStackTrace();
+            return new Array<>();
         }
 
         TextureRegion[] frames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
