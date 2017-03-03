@@ -7,7 +7,7 @@ import main.entity.obj.unit.Unit;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.actions.ActionManager;
 import main.game.ai.elements.actions.sequence.ActionSequenceConstructor;
-import main.game.ai.elements.generic.AiHandler;
+import main.game.ai.elements.generic.AiMaster;
 import main.game.ai.elements.goal.GoalManager;
 import main.game.ai.elements.task.TaskManager;
 import main.game.ai.tools.AiExecutor;
@@ -20,70 +20,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class AI_Manager extends AiHandler{
+public class AI_Manager extends AiMaster {
     static Set<Action> brokenActions = new HashSet<>();
     private static GroupAI customGroup;
     private static boolean running;
-    private ActionSequenceConstructor actionSequenceConstructor;
-    private DC_Game game;
-    private PriorityManager priorityManager;
-    private ActionManager actionManager;
-    private GoalManager goalManager;
-    private AiExecutor executor;
-    private TaskManager taskManager;
     private Map<Unit, UnitAI> aiMap = new XLinkedMap<>();
     private PLAYER_AI_TYPE type = AiEnums.PLAYER_AI_TYPE.BRUTE;
 
     public AI_Manager(DC_Game game) {
-
-        this.game = game;
-        priorityManager =  DC_PriorityManager.init();
-        taskManager = new TaskManager();
-        executor = new AiExecutor(game);
-        actionSequenceConstructor= new ActionSequenceConstructor(this);
-    }
-
-    public static boolean isRunning() {
-        return running;
-    }
-
-    public static Set<Action> getBrokenActions() {
-        return brokenActions;
-    }
-
-    public static Unit chooseEnemyToEngage(Unit obj, List<Unit> units) {
-        if (obj.getAiType() == AiEnums.AI_TYPE.CASTER) {
-            return null;
-        }
-        if (obj.getAiType() == AiEnums.AI_TYPE.ARCHER) {
-            return null;
-        }
-        if (obj.getAiType() == AiEnums.AI_TYPE.SNEAK) {
-            return null;
-        }
-        Unit topPriorityUnit = null;
-        int topPriority = -1;
-        for (Unit u : units) {
-            int priority = DC_PriorityManager.getUnitPriority(u, true);
-            if (priority > topPriority) {
-                topPriority = priority;
-                topPriorityUnit = u;
-            }
-        }
-        return topPriorityUnit;
-    }
-
-    public static GroupAI getCustomUnitGroup() {
-        if (customGroup == null) {
-            customGroup = new GroupAI(null);
-        }
-        return customGroup;
+        super(game);
+//        logic = initLogic();
+        priorityManager = DC_PriorityManager.init(this);
     }
 
     public void init() {
-        actionManager = new ActionManager(this);
         game.getPlayer(false).setPlayerAI(new PlayerAI(getType()));
     }
+
 
     public boolean makeAction(final Unit unit) {
         new Thread(new Runnable() {
@@ -132,6 +85,42 @@ public class AI_Manager extends AiHandler{
 
     }
 
+
+    public static Unit chooseEnemyToEngage(Unit obj, List<Unit> units) {
+        if (obj.getAiType() == AiEnums.AI_TYPE.CASTER) {
+            return null;
+        }
+        if (obj.getAiType() == AiEnums.AI_TYPE.ARCHER) {
+            return null;
+        }
+        if (obj.getAiType() == AiEnums.AI_TYPE.SNEAK) {
+            return null;
+        }
+        Unit topPriorityUnit = null;
+        int topPriority = -1;
+        for (Unit u : units) {
+            int priority = DC_PriorityManager.getUnitPriority(u, true);
+            if (priority > topPriority) {
+                topPriority = priority;
+                topPriorityUnit = u;
+            }
+        }
+        return topPriorityUnit;
+    }
+
+    public static GroupAI getCustomUnitGroup() {
+        if (customGroup == null) {
+            customGroup = new GroupAI(null);
+        }
+        return customGroup;
+    }
+    public static boolean isRunning() {
+        return running;
+    }
+
+    public static Set<Action> getBrokenActions() {
+        return brokenActions;
+    }
     public UnitAI getAI(Unit unit) {
         return unit.getUnitAI();
     }
@@ -140,7 +129,7 @@ public class AI_Manager extends AiHandler{
         return game;
     }
 
-    public  PriorityManager getPriorityManager() {
+    public PriorityManager getPriorityManager() {
         return priorityManager;
     }
 

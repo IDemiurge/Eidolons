@@ -6,7 +6,6 @@ import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.actions.AiUnitActionMaster;
 import main.game.ai.elements.generic.AiHandler;
 import main.game.ai.tools.path.ActionPath;
-import main.game.ai.tools.path.PathBuilder;
 import main.game.ai.tools.prune.PruneMaster;
 import main.game.ai.tools.target.TargetingMaster;
 import main.game.ai.tools.time.TimeLimitMaster;
@@ -26,9 +25,13 @@ import java.util.Map;
  * Created by JustMe on 3/3/2017.
  */
 public class PathSequenceConstructor extends AiHandler{
-    static Map<List<Coordinates>, List<ActionPath>> pathCache = new HashMap<>();
+      Map<List<Coordinates>, List<ActionPath>> pathCache = new HashMap<>();
 
-    public static void clearCache() {
+    public PathSequenceConstructor(AiHandler master) {
+        super(master);
+    }
+
+    public   void clearCache() {
 pathCache.clear();
 
     }
@@ -40,7 +43,7 @@ pathCache.clear();
                         .getCoordinates()));
     }
 
-    private static List<ActionPath> getPathSequences(List<DC_ActiveObj> moveActions, Action action,
+    private   List<ActionPath> getPathSequences(List<DC_ActiveObj> moveActions, Action action,
                                                      List<Coordinates> targetCells) {
         List<ActionPath> paths = pathCache.get(targetCells);
         if (!pathCache.containsKey(paths)) {
@@ -55,7 +58,7 @@ pathCache.clear();
             // paths = new ArrayList<>(set);
             //
             // else
-            paths = new PathBuilder(moveActions, action).build(targetCells);
+            paths = getPathBuilder().init(moveActions, action).build(targetCells);
             if (action != null) {
                 paths = filterPaths(action, paths);
             }
@@ -149,7 +152,7 @@ pathCache.clear();
         }
         return list;
     }
-    private static List<ActionPath> filterPaths(Action action, List<ActionPath> paths) {
+    private   List<ActionPath> filterPaths(Action action, List<ActionPath> paths) {
         // TODO by priority?
         return paths;
     }

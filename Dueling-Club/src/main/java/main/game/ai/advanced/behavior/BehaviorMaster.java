@@ -7,16 +7,16 @@ import main.game.ai.GroupAI;
 import main.game.ai.UnitAI;
 import main.game.ai.UnitAI.AI_BEHAVIOR_MODE;
 import main.game.ai.elements.actions.Action;
+import main.game.ai.elements.generic.AiHandler;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.tools.path.ActionPath;
-import main.game.ai.tools.path.PathBuilder;
 import main.game.battlefield.Coordinates;
 import main.game.logic.generic.DC_ActionManager.STD_ACTIONS;
 import main.system.auxiliary.data.ListMaster;
 
-public class BehaviorMaster {
+public class BehaviorMaster extends AiHandler {
     /*
-	 * 	No priority-ordering for Behaviors I suppose... 
+     * 	No priority-ordering for Behaviors I suppose...
 	 * Though I may want to pick optimal path for Stalking, e.g., based on some special factors like
 	 * proximity, path's illumination, ...
 	 * and for Search also, there will definitely be options to choose from, but for now, I can 
@@ -24,6 +24,10 @@ public class BehaviorMaster {
 	 */
 
     private boolean recursion;
+
+    public BehaviorMaster(AiHandler master) {
+        super(master);
+    }
 
     public static AI_BEHAVIOR_MODE initGroupPref(GroupAI groupAI) {
         if (groupAI.getCreepGroup() != null) {
@@ -107,7 +111,7 @@ public class BehaviorMaster {
                     // maybe go meet leader if blocked... or something like it
                     if (change) {
                         group.getWanderStepCoordinateStack().push(
-                                group.getLeader().getCoordinates());
+                         group.getLeader().getCoordinates());
                         WanderMaster.changeGroupMoveDirection(group, type);
                     }
                 }
@@ -124,10 +128,15 @@ public class BehaviorMaster {
                     action = STD_ACTIONS.Move.name();
                     // if (!unit.getAction(action).canBeActivated()) {
                     // }
-                    ActionPath path = new PathBuilder(new ListMaster<DC_ActiveObj>().getList(unit
-                            .getAction(action)), new Action(unit.getAction(action), new Ref(unit)))
-                            .getPathByPriority(new ListMaster<Coordinates>()
-                                    .getList(targetCoordinates));
+                    ActionPath path =
+                     getPathBuilder().init(
+                      new ListMaster<DC_ActiveObj>()
+                       .getList(unit.getAction(action)),
+                      new Action(unit.getAction(action),
+                       new Ref(unit))
+                     ).getPathByPriority(
+                      new ListMaster<Coordinates>()
+                       .getList(targetCoordinates));
                     if (path == null) {
 
                         ai.setPathBlocked(true); // TODO check if path
@@ -183,11 +192,11 @@ public class BehaviorMaster {
         return null;
     }
 
-    public enum TACTIC {
-        DELAY, STALK, AMBUSH, ENGAGE
-    }
-
     public enum LOGIC {
         AVOID_TRAPS,
+    }
+
+    public enum TACTIC {
+        DELAY, STALK, AMBUSH, ENGAGE
     }
 }

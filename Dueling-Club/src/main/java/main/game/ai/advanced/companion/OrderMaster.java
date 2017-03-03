@@ -10,7 +10,7 @@ import main.game.ai.GroupAI;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.actions.sequence.ActionSequence;
-import main.game.ai.elements.actions.sequence.ActionSequenceConstructor;
+import main.game.ai.elements.generic.AiHandler;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.elements.task.Task;
 import main.game.ai.tools.priority.DC_PriorityManager;
@@ -19,10 +19,13 @@ import main.system.auxiliary.EnumMaster;
 
 import java.util.List;
 
-public class OrderMaster {
+public class OrderMaster extends AiHandler{
+    public OrderMaster(AiHandler master) {
+        super(master);
+    }
     // also used in scripting enemies?
 
-    public static Action checkFollowOrder(UnitAI ai) {
+    public   Action checkFollowOrder(UnitAI ai) {
         Order order = ai.getCurrentOrder();
         if (order == null) {
 //            order = ai.getGroup().getOrder();
@@ -38,10 +41,10 @@ public class OrderMaster {
         // check re-build sequence
     }
 
-    private static void initOrderSequence(Order order) {
+    private   void initOrderSequence(Order order) {
         Action action = new Action(order.getAi().getUnit().getAction(order.getActionType()));
         Task task = new Task(order.getAi(), getGoalType(order.getType()), order.getArg());
-        List<ActionSequence> sequences = ActionSequenceConstructor.getSequences(action, order
+        List<ActionSequence> sequences =  getActionSequenceConstructor().getSequences(action, order
                 .getArg(), task);
         DC_PriorityManager.setPriorities(sequences);
         for (ActionSequence sequence : sequences) {
@@ -53,7 +56,7 @@ public class OrderMaster {
         // special prioritizing? companion ai...
     }
 
-    private static GOAL_TYPE getGoalType(ORDER_TYPE type) {
+    private   GOAL_TYPE getGoalType(ORDER_TYPE type) {
         switch (type) {
             case ATTACK:
                 return GOAL_TYPE.ATTACK;
@@ -82,7 +85,7 @@ public class OrderMaster {
         return null;
     }
 
-    private static boolean checkValid(Order order) {
+    private   boolean checkValid(Order order) {
         if (!order.getSequence().getNextAction().canBeActivated()) {
             // alt action
         }
@@ -92,7 +95,7 @@ public class OrderMaster {
         return true;
     }
 
-    public static void giveGlobalOrders(Unit leader) {
+    public   void giveGlobalOrders(Unit leader) {
         String type = ListChooser.chooseEnum(GLOBAL_ORDER_TYPE.class);
         if (type == null) {
             type = ListChooser.chooseEnum(ORDER_TYPE.class);
@@ -113,7 +116,7 @@ public class OrderMaster {
     // step-sequence: choose order type, select arg!
 
     // as Action/Effect?
-    public static void giveOrders(Unit unit, Unit leader) {
+    public   void giveOrders(Unit unit, Unit leader) {
         String type = ListChooser.chooseEnum(ORDER_TYPE.class);
         if (type == null) {
             return;

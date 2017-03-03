@@ -17,14 +17,12 @@ import main.game.ai.UnitAI;
 import main.game.ai.advanced.behavior.BehaviorMaster;
 import main.game.ai.elements.actions.sequence.ActionSequence;
 import main.game.ai.elements.actions.sequence.ActionSequenceConstructor;
-import main.game.ai.elements.actions.sequence.PathSequenceConstructor;
 import main.game.ai.elements.generic.AiHandler;
 import main.game.ai.elements.goal.Goal;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.logic.types.atomic.AtomicAi;
 import main.game.ai.tools.Analyzer;
 import main.game.ai.tools.ParamAnalyzer;
-import main.game.ai.tools.path.CellPrioritizer;
 import main.game.ai.tools.priority.DC_PriorityManager;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
@@ -47,7 +45,7 @@ public class ActionManager extends AiHandler{
 
     public ActionManager(AiHandler master) {
         super(master);
-        this.behaviorMaster = new BehaviorMaster();
+        this.behaviorMaster = new BehaviorMaster(master );
     }
    
     public Action chooseAction(UnitAI ai) {
@@ -55,9 +53,9 @@ public class ActionManager extends AiHandler{
             return ai.getStandingOrders().get(0);
         }
 
-        PathSequenceConstructor.clearCache(); // TODO try not to? :)
+        getPathSequenceConstructor().clearCache(); // TODO try not to? :)
         if (unit != ai.getUnit()) {
-            CellPrioritizer.reset();
+            getCellPrioritizer().reset();
         } else {
         }
         unit = ai.getUnit();
@@ -117,6 +115,7 @@ public class ActionManager extends AiHandler{
         ai.checkSetOrders(sequence);
         return sequence.getNextAction();
     }
+
 
 
 

@@ -70,9 +70,9 @@ public class GridCell extends Group implements Borderable {
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (GridMaster.isGammaOn()) {
-            backImage.setColor(gamma, gamma, gamma, 1 - gamma / 2);
-        }
+//        if (GridMaster.isGammaOn()) {
+//            backImage.setColor(gamma, gamma, gamma, 1 - gamma / 2);
+//        }
     }
 
     @Override

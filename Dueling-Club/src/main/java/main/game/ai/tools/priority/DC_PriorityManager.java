@@ -6,6 +6,7 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.sequence.ActionSequence;
+import main.game.ai.elements.generic.AiHandler;
 
 import java.util.List;
 
@@ -23,14 +24,14 @@ import java.util.List;
  * @author JustMe
  */
 
-public class DC_PriorityManager {
+public class DC_PriorityManager  {
 
 
     private static PriorityManager impl;
 
     public static PriorityManager
-    init() {
-        impl = new PriorityManagerImpl();
+    init(AiHandler handler) {
+        impl = new PriorityManagerImpl(handler);
         return impl;
     }
 

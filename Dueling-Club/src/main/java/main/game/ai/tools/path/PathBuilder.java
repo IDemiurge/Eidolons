@@ -4,10 +4,10 @@ import main.ability.conditions.special.SneakCondition;
 import main.ability.effects.ChangeFacingEffect;
 import main.ability.effects.Effect;
 import main.ability.effects.SelfMoveEffect;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.PARAMS;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.elements.costs.Costs;
 import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.Targeting;
@@ -20,30 +20,32 @@ import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.actions.ActionManager;
-import main.game.ai.elements.actions.sequence.ActionSequenceConstructor;
 import main.game.ai.elements.actions.AiUnitActionMaster;
-import main.game.ai.tools.time.TimeLimitMaster;
-import main.game.ai.tools.time.TimeLimitMaster.METRIC;
+import main.game.ai.elements.actions.sequence.TurnSequenceConstructor;
+import main.game.ai.elements.generic.AiHandler;
 import main.game.ai.tools.priority.DC_PriorityManager;
 import main.game.ai.tools.target.ReasonMaster;
 import main.game.ai.tools.target.ReasonMaster.FILTER_REASON;
+import main.game.ai.tools.time.TimeLimitMaster;
+import main.game.ai.tools.time.TimeLimitMaster.METRIC;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.FacingMaster;
 import main.game.logic.generic.DC_ActionManager;
-import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
-import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;
 
 import java.util.*;
 
-public class PathBuilder {
+public class PathBuilder extends AiHandler {
     private static final int FILTER_THRESHOLD = 10;
     private static final int MAX_PATH_SIZE = 15;
+    private static PathBuilder instance;
     private DC_UnitAction stdMove;
     private List<DC_ActiveObj> moveActions; // only special here?
     private Action targetAction;
@@ -68,12 +70,16 @@ public class PathBuilder {
     // should these be dynamic? stronger units should getOrCreate more!
     private Choice base_choice;
 
-    public PathBuilder(List<DC_ActiveObj> moveActions, Action targetAction) {
-        this.targetAction = targetAction;
-        this.moveActions = moveActions;
-        init();
+    public PathBuilder(AiHandler master) {
+        super(master);
+        instance = this;
     }
 
+    public PathBuilder init(List<DC_ActiveObj> moveActions, Action targetAction) {
+        this.targetAction = targetAction;
+        this.moveActions = moveActions;
+        return this;
+    }
     private void init() {
         unit = targetAction.getSource();
         stdMove = unit.getAction(DC_ActionManager.STD_ACTIONS.Move.name());
@@ -101,13 +107,81 @@ public class PathBuilder {
         unit.getGame().getRules().getStackingRule().clearCache();
     }
 
+    public List<ActionPath> build(List<Coordinates> targetCoordinates
+     , List<DC_ActiveObj> moveActions, Action targetAction) {
+        this.targetAction = targetAction;
+        this.moveActions = moveActions;
+        init();
+        return build(targetCoordinates);
+    }
+
+    public List<ActionPath> build(List<Coordinates> targetCoordinates) {
+        try {
+            paths = buildPaths(targetCoordinates);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            resetUnit();
+        }
+        try {
+            filterPaths();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return filteredPaths;
+    }
+
+    private List<ActionPath> buildPaths(List<Coordinates> targetCoordinates) { // List<ActionSequence>
+
+        Chronos.mark(getChronosPrefix() + targetAction); // getSequences
+        paths = new LinkedList<>();
+        sneakCells = new LinkedList<>();
+        nonSneakCells = new LinkedList<>();
+        bestResult = null;
+        targetCells = targetCoordinates;
+        // depth-first search
+
+        loop:
+        for (Coordinates dest : targetCells) {
+            Chronos.mark(getChronosPrefix() + dest);
+            targetCoordinate = dest;
+            reset();
+            firstStep = true;
+            path = new ActionPath(originalCoordinate); // TODO first step must
+            // be
+            // activateable!
+            List<Choice> choices = getChoices();
+            firstStep = false;
+            for (Choice choice : choices) {
+                base_choice = choice;
+                Chronos.mark(getChronosPrefix() + base_choice);
+                path = new ActionPath(targetCoordinate);
+                if (!step(choice)) {
+                    break;
+                }
+                if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_RESULTS) {
+                    Chronos.logTimeElapsedForMark(getChronosPrefix() + choice); // TODO
+                }
+                // mark
+                // removed???
+            }
+            if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_BASIC) {
+                Chronos.logTimeElapsedForMark(getChronosPrefix() + dest);
+            }
+        }
+        if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_BASIC) {
+            Chronos.logTimeElapsedForMark(getChronosPrefix() + targetAction);
+        }
+        return paths;
+    }
+
     private Action getMoveAction() {
         return new Action(stdMove);
     }
 
     private Choice constructStdMoveChoice(Coordinates targetCoordinate) {
         FACING_SINGLE facing = FacingMaster.getSingleFacing(c_facing, c_coordinate,
-                targetCoordinate);
+         targetCoordinate);
         Action moveAction = getMoveAction();
         if (facing == UnitEnums.FACING_SINGLE.IN_FRONT) {
             if (firstStep) {
@@ -118,12 +192,12 @@ public class PathBuilder {
             return new Choice(targetCoordinate, c_coordinate, moveAction);
         }
         adjustUnit();
-        Collection<Action> actions = ActionSequenceConstructor.getTurnSequence(
-                UnitEnums.FACING_SINGLE.IN_FRONT, unit, targetCoordinate);
+        Collection<Action> actions = TurnSequenceConstructor.getTurnSequence(
+         UnitEnums.FACING_SINGLE.IN_FRONT, unit, targetCoordinate);
         actions.add(moveAction);
         // resetUnit();// TODO is that right?
         Choice choice = new Choice(targetCoordinate, c_coordinate, actions
-                .toArray(new Action[actions.size()]));
+         .toArray(new Action[actions.size()]));
 
         return choice;
     }
@@ -149,7 +223,7 @@ public class PathBuilder {
                 if (!a.canBeActivated()) {
                     if (firstStep) {
                         if (!ReasonMaster.checkReasonCannotActivate(a, PARAMS.C_N_OF_ACTIONS
-                                .getName())) {
+                         .getName())) {
                             continue; // exception for AP TODO
                         }
                     }
@@ -173,7 +247,7 @@ public class PathBuilder {
                             Coordinates coordinates = ((SelfMoveEffect) e).getCoordinates();
                             if (coordinates != null) {
                                 objects = new LinkedList<>(Arrays.asList(unit
-                                        .getGame().getCellByCoordinate(coordinates)));
+                                 .getGame().getCellByCoordinate(coordinates)));
                             }
                         } catch (Exception ex) {
                             ex.printStackTrace();
@@ -189,12 +263,12 @@ public class PathBuilder {
                             Coordinates coordinates = ((DC_Cell) obj).getCoordinates();
                             // if (a.getName().equals("Clumsy Leap"))
                             if (PositionMaster.getDistance(coordinates, c_coordinate) > Math.max(1,
-                                    a.getIntParam(PARAMS.RANGE))) {
+                             a.getIntParam(PARAMS.RANGE))) {
                                 continue;
                             }
 
                             if (PositionMaster.getDistance(coordinates, targetCoordinate) > PositionMaster
-                                    .getDistance(c_coordinate, targetCoordinate)) {
+                             .getDistance(c_coordinate, targetCoordinate)) {
                                 continue; // TODO will this not eliminate good
                             }
                             // choices?
@@ -202,7 +276,7 @@ public class PathBuilder {
                             Ref ref = unit.getRef().getCopy();
                             ref.setTarget(((DC_Cell) obj).getId());
                             Choice choice = new Choice(coordinates, c_coordinate,
-                                    new Action(a, ref));
+                             new Action(a, ref));
                             choices.add(choice);
                         }
                     }
@@ -287,7 +361,7 @@ public class PathBuilder {
             {
                 filteredList.add(choice);
             } else if (PositionMaster.getDistance(coordinates, c) <= bestDistance_2
-                    || c.isAdjacent(targetAction.getTarget().getCoordinates())) {
+             || c.isAdjacent(targetAction.getTarget().getCoordinates())) {
                 if (PositionMaster.getDistance(c_coordinate, c) <= bestDistance_1) {
                     filteredList.add(choice);
                 }
@@ -307,7 +381,7 @@ public class PathBuilder {
         unit.setCoordinates(c); // change facing
         // check range
         if (PositionMaster.getDistance(targetAction.getTarget().getCoordinates(), c) > targetAction
-                .getActive().getIntParam(PARAMS.RANGE)) {
+         .getActive().getIntParam(PARAMS.RANGE)) {
             nonSneakCells.add(c);
             return false;
         }
@@ -390,11 +464,11 @@ public class PathBuilder {
             return true;
         }
         if (Chronos.getTimeElapsedForMark(getChronosPrefix() + targetAction) > TimeLimitMaster
-                .getTimeLimitForPathBuilding()
-                * TimeLimitMaster.CRITICAL_FAIL_FACTOR) {
+         .getTimeLimitForPathBuilding()
+         * TimeLimitMaster.CRITICAL_FAIL_FACTOR) {
             Chronos.logTimeElapsedForMark(getChronosPrefix() + targetAction);
             LogMaster.log(1, "*** CRITICAL_FAIL TimeLimitForPathBuilding "
-                    + targetAction);
+             + targetAction);
             return false;
         }
         if (paths.size() > 0) {
@@ -405,7 +479,7 @@ public class PathBuilder {
                 return false;
             }
             if (!TimeLimitMaster.checkTimeLimit(METRIC.PATH_CELL, getChronosPrefix()
-                    + targetCoordinate)) {
+             + targetCoordinate)) {
                 return false;
             }
             if (!TimeLimitMaster.checkTimeLimit(METRIC.ACTION, getChronosPrefix() + targetAction)) {
@@ -437,7 +511,7 @@ public class PathBuilder {
         unit.setFacing(c_facing);
         unit.setCoordinates(c_coordinate);
         if (ReasonMaster.checkReasonCannotTarget(FILTER_REASON.FACING, targetAction)) {
-            List<Action> sequence = ActionSequenceConstructor.getTurnSequence(targetAction);
+            List<Action> sequence = TurnSequenceConstructor.getTurnSequence(targetAction);
             for (Action a : sequence) {
                 path.add(new Choice(c_coordinate, a));
             }
@@ -490,7 +564,7 @@ public class PathBuilder {
 
     private void log(int result) {
         LogMaster.log(LOG_CHANNELS.PATHING_DEBUG, result
-                + " priority for path: " + path);
+         + " priority for path: " + path);
     }
 
     private boolean checkFailed() {
@@ -537,66 +611,6 @@ public class PathBuilder {
             return null;
         }
         return paths.get(0);
-    }
-
-    public List<ActionPath> build(List<Coordinates> targetCoordinates) {
-        try {
-            paths = buildPaths(targetCoordinates);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            resetUnit();
-        }
-        try {
-            filterPaths();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return filteredPaths;
-    }
-
-    private List<ActionPath> buildPaths(List<Coordinates> targetCoordinates) { // List<ActionSequence>
-
-        Chronos.mark(getChronosPrefix() + targetAction); // getSequences
-        paths = new LinkedList<>();
-        sneakCells = new LinkedList<>();
-        nonSneakCells = new LinkedList<>();
-        bestResult = null;
-        targetCells = targetCoordinates;
-        // depth-first search
-
-        loop:
-        for (Coordinates dest : targetCells) {
-            Chronos.mark(getChronosPrefix() + dest);
-            targetCoordinate = dest;
-            reset();
-            firstStep = true;
-            path = new ActionPath(originalCoordinate); // TODO first step must
-            // be
-            // activateable!
-            List<Choice> choices = getChoices();
-            firstStep = false;
-            for (Choice choice : choices) {
-                base_choice = choice;
-                Chronos.mark(getChronosPrefix() + base_choice);
-                path = new ActionPath(targetCoordinate);
-                if (!step(choice)) {
-                    break;
-                }
-                if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_RESULTS) {
-                    Chronos.logTimeElapsedForMark(getChronosPrefix() + choice); // TODO
-                }
-                // mark
-                // removed???
-            }
-            if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_BASIC) {
-                Chronos.logTimeElapsedForMark(getChronosPrefix() + dest);
-            }
-        }
-        if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_BASIC) {
-            Chronos.logTimeElapsedForMark(getChronosPrefix() + targetAction);
-        }
-        return paths;
     }
 
     private String getChronosPrefix() {
@@ -676,8 +690,8 @@ public class PathBuilder {
                 return actions.get(0).getActive().getName() + " to " + coordinates;
             }
             return StringMaster.joinStringList(StringMaster.convertToNameIntList(AiUnitActionMaster
-                    .getActionObjectList(actions)), ", ")
-                    + " to " + coordinates;
+             .getActionObjectList(actions)), ", ")
+             + " to " + coordinates;
         }
 
         public Coordinates getCoordinates() {
@@ -696,5 +710,9 @@ public class PathBuilder {
             this.prevCoordinates = prevCoordinates;
         }
 
+    }
+
+    public static PathBuilder getInstance() {
+        return instance;
     }
 }

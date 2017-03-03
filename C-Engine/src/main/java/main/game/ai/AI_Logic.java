@@ -38,9 +38,9 @@ public interface AI_Logic {
 
     void setAi(AI ai);
 
-    TargetingManager gettManager();
+    TargetingManager getTargetingManager();
 
-    void settManager(TargetingManager tManager);
+    void setTargetingManager(TargetingManager targetingManager);
 
     OldPriorityManager getpManager();
 

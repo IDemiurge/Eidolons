@@ -25,7 +25,7 @@ public abstract class DC_AI_Logic implements AI_Logic {
     protected MicroGame game;
     protected Player player;
     protected Player enemy;
-    protected TargetingManager tManager;
+    protected TargetingManager targetingManager;
     protected OldPriorityManager pManager;
     protected ActionTypeManager aManager;
     protected Analyzer analyzer;
@@ -71,7 +71,7 @@ public abstract class DC_AI_Logic implements AI_Logic {
 
     @Override
     public int initTargetId() {
-        return tManager.initTarget();
+        return targetingManager.initTarget();
     }
 
     public int getPriorityForUnit(Obj unit, Set<Obj> units) {
@@ -183,14 +183,12 @@ public abstract class DC_AI_Logic implements AI_Logic {
         this.player = player;
     }
 
-    @Override
-    public TargetingManager gettManager() {
-        return tManager;
+    public TargetingManager getTargetingManager() {
+        return targetingManager;
     }
 
-    @Override
-    public void settManager(TargetingManager tManager) {
-        this.tManager = tManager;
+    public void setTargetingManager(TargetingManager targetingManager) {
+        this.targetingManager = targetingManager;
     }
 
     @Override

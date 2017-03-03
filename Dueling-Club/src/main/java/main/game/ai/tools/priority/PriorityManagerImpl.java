@@ -48,18 +48,18 @@ import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;
 import main.game.ai.elements.actions.ActionManager;
 import main.game.ai.elements.actions.sequence.ActionSequence;
-import main.game.ai.elements.actions.sequence.ActionSequenceConstructor;
+import main.game.ai.elements.generic.AiHandler;
 import main.game.ai.elements.goal.Goal.GOAL_TYPE;
 import main.game.ai.tools.Analyzer;
 import main.game.ai.tools.ParamAnalyzer;
 import main.game.ai.tools.future.FutureBuilder;
+import main.game.ai.tools.target.AI_SpellMaster;
 import main.game.ai.tools.target.EffectFinder;
 import main.game.ai.tools.target.SpellAnalyzer;
-import main.game.ai.tools.target.AI_SpellMaster;
 import main.game.ai.tools.target.TargetingMaster;
-import main.game.core.master.BuffMaster;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.attack.DamageMaster;
+import main.game.core.master.BuffMaster;
 import main.game.logic.generic.DC_ActionManager;
 import main.game.logic.generic.DC_ActionManager.STD_MODE_ACTIONS;
 import main.rules.UnitAnalyzer;
@@ -80,7 +80,10 @@ import java.util.*;
 /**
  * Created by JustMe on 2/15/2017.
  */
-public class PriorityManagerImpl implements PriorityManager{
+public class PriorityManagerImpl  extends AiHandler implements PriorityManager{
+    public PriorityManagerImpl(AiHandler master) {
+        super(master);
+    }
     public  final int MAX_PRIORITY = 100000; // how to use a "limit"?
     public  final int DEFAULT_PRIORITY = 100;
     public  final int DEFAULT_ATTACK_PRIORITY = 100;

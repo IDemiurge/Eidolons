@@ -130,7 +130,8 @@ public class DC_MovementManager implements MovementManager {
 
     public List<ActionPath> buildPath(Unit unit, Coordinates coordinates) {
         List<DC_ActiveObj> moves = getMoves(unit);
-        PathBuilder builder = new PathBuilder(moves, new Action(unit.getAction("Move")));
+        PathBuilder builder =   PathBuilder.getInstance().init
+         (moves, new Action(unit.getAction("Move")));
         List<ActionPath> paths = builder.build(new ListMaster<Coordinates>().getList(coordinates));
         if (paths.isEmpty()) {
             return null;
