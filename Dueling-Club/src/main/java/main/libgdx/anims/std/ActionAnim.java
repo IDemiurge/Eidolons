@@ -38,7 +38,7 @@ public class ActionAnim extends Anim {
     }
 
     protected void add() {
-        action=getAction();
+        action = getAction();
         if (action == null) {
             return;
         }
@@ -47,6 +47,7 @@ public class ActionAnim extends Anim {
         AnimMaster.getInstance().addActor(this);
         LogMaster.log(1, this + " added to stage");
     }
+
     @Override
     protected void dispose() {
         super.dispose();
@@ -67,10 +68,10 @@ public class ActionAnim extends Anim {
 
     public Actor getActor() {
         return GameScreen.getInstance().getGridPanel().getUnitMap()
-         .get(getActive().getOwnerObj());
+                .get(getActive().getOwnerObj());
     }
 
-//for triggers!
+    //for triggers!
     public void addAbilityAnims(Ability ability) {
 
     }

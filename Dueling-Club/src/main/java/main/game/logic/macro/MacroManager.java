@@ -1,8 +1,8 @@
 package main.game.logic.macro;
 
 import main.client.dc.Launcher;
-import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.OBJ_TYPE;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
@@ -17,9 +17,9 @@ import main.game.logic.macro.gui.WorldEditorInterface;
 import main.game.logic.macro.gui.map.MapView;
 import main.game.logic.macro.map.Region;
 import main.game.logic.macro.travel.MacroParty;
-import main.system.entity.FilterMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.datatypes.DequeImpl;
+import main.system.entity.FilterMaster;
 
 import javax.swing.*;
 import java.io.File;
@@ -424,7 +424,7 @@ public class MacroManager {
     // }
     // newGame();
     /* SAVE
-		 * create a joint xml file with all necessary types...
+         * create a joint xml file with all necessary types...
 		 * 
 		 * some meta-data in the header perhaps...
 		 * 

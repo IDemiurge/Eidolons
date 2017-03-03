@@ -6,8 +6,8 @@ import main.content.CONTENT_CONSTS2.INJURY;
 import main.content.CONTENT_CONSTS2.INJURY_TYPE;
 import main.content.PROPS;
 import main.entity.Ref;
-import main.entity.obj.unit.Unit;
 import main.entity.active.DC_ActiveObj;
+import main.entity.obj.unit.Unit;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 

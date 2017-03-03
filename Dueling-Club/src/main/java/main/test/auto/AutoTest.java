@@ -28,6 +28,7 @@ public class AutoTest {
     private Map<TEST_ARGS, String> argMap = new XLinkedMap<>();
     private List<Assertion> assertions;
     private ObjType testType;
+
     public AutoTest(ObjType testType, String args, AUTO_TEST_TYPE type, AutoTestMaster master) {
         this.master = master;
         this.type = type;

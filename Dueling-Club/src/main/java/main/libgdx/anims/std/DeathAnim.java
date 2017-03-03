@@ -29,20 +29,20 @@ import static main.system.GuiEventType.DESTROY_UNIT_MODEL;
  * Created by JustMe on 1/16/2017.
  */
 public class DeathAnim extends ActionAnim {
-    private static boolean on=true;
+    private static boolean on = true;
     Unit unit;
     DEATH_ANIM template;
     private Image skull;
 
     public DeathAnim(Event e) {
         super(e.getRef().getObj(KEYS.ACTIVE), getDeathAnimData(e));
-       unit = (Unit) e.getRef().getTargetObj();
+        unit = (Unit) e.getRef().getTargetObj();
         template = getTemplate(getActive(), unit);
-        duration=2;
+        duration = 2;
     }
 
     private static AnimData getDeathAnimData(Event e) {
-        AnimData  data=new AnimData();
+        AnimData data = new AnimData();
         data.setValue(ANIM_VALUES.PARTICLE_EFFECTS, "impact\\Crimson Death");
         return data;
     }
@@ -61,12 +61,12 @@ public class DeathAnim extends ActionAnim {
 
     @Override
     public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnFinish() {
-        return Arrays.asList(new Pair<>( DESTROY_UNIT_MODEL, new EventCallbackParam<>(unit)));
+        return Arrays.asList(new Pair<>(DESTROY_UNIT_MODEL, new EventCallbackParam<>(unit)));
     }
 
     @Override
     protected Action getAction() {
-        return null ;
+        return null;
     }
 
     @Override
@@ -96,7 +96,7 @@ public class DeathAnim extends ActionAnim {
 
     @Override
     public Actor getActor() {
-        if (skull==null ){
+        if (skull == null) {
             skull = new Image(TextureCache.getOrCreate("UI\\Empty.png")) {
                 @Override
                 public void draw(Batch batch, float parentAlpha) {
@@ -106,7 +106,7 @@ public class DeathAnim extends ActionAnim {
             };
         }
 //        return skull;
-        return null ;
+        return null;
     }
 
     private DEATH_ANIM getTemplate(DC_ActiveObj active, Unit unit) {

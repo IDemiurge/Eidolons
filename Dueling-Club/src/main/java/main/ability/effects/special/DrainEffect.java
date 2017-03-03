@@ -37,7 +37,7 @@ public class DrainEffect extends ModifyValueEffect {
         formula = this.formula.getNegative();
         setMaxParam(null);
         if (resistanceApplies) // resistance rule (mod) should take care of
-            // this!
+        // this!
         {
             formula.addResistance();
         }

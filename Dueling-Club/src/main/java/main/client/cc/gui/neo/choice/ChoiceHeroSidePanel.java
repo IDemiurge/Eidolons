@@ -2,7 +2,7 @@ package main.client.cc.gui.neo.choice;
 
 public class ChoiceHeroSidePanel {
     /*
-	 * The idea is to let the player see what he's crafting :) So in essence,
+     * The idea is to let the player see what he's crafting :) So in essence,
 	 * how is it different from the final-view HeroPanel?
 	 * 
 	 * 1) Will be dealing with an incomplete HeroObject >> For TemplateView - we

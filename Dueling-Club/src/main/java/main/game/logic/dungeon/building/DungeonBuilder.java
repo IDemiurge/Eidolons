@@ -13,9 +13,12 @@ import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.battlefield.*;
+import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
+import main.game.battlefield.CoordinatesMaster;
+import main.game.battlefield.DC_ObjInitializer;
+import main.game.battlefield.FacingMaster;
 import main.game.battlefield.map.DungeonMapGenerator;
 import main.game.logic.battle.player.DC_Player;
 import main.game.logic.dungeon.Dungeon;
@@ -23,7 +26,10 @@ import main.game.logic.dungeon.DungeonMaster;
 import main.game.logic.dungeon.building.BuildHelper.BUILD_PARAMS;
 import main.game.logic.dungeon.building.BuildHelper.BuildParameters;
 import main.swing.XDimension;
-import main.system.auxiliary.*;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.Loop;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.launch.CoreEngine;
@@ -70,6 +76,7 @@ public class DungeonBuilder {
     private boolean flipX;
     private boolean flipY;
     private BuildParameters params;
+
     public DungeonBuilder() {
     }
 
@@ -479,7 +486,7 @@ public class DungeonBuilder {
         if (data.isEmpty()) {
             data = FileManager.readFile(
                     path.contains(PathFinder.getDungeonLevelFolder()) ? path
-                    : PathFinder.getDungeonLevelFolder() + path);
+                            : PathFinder.getDungeonLevelFolder() + path);
         }
         if (data.isEmpty()) {
             data = path;

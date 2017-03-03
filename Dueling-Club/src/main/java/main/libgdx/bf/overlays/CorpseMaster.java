@@ -5,7 +5,7 @@ package main.libgdx.bf.overlays;
  */
 public class CorpseMaster {
 
-    public void getCorpse(){
+    public void getCorpse() {
 
 
     }

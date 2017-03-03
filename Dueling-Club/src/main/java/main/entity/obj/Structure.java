@@ -2,15 +2,15 @@ package main.entity.obj;
 
 import main.entity.Ref;
 import main.entity.type.ObjType;
+import main.game.battlefield.Coordinates;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
-import main.game.battlefield.Coordinates;
 import main.game.logic.battle.player.Player;
 
 /**
  * Created by JustMe on 2/15/2017.
  */
-public class Structure extends  BattleFieldObject {
+public class Structure extends BattleFieldObject {
 
 
     public Structure(ObjType type, Player owner, Game game, Ref ref) {
@@ -25,6 +25,7 @@ public class Structure extends  BattleFieldObject {
     public boolean isBfObj() {
         return true;
     }
+
     public boolean canAct() {
         return false;
     }

@@ -38,15 +38,39 @@ import main.system.math.Formula;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ActionManager extends AiHandler{
+public class ActionManager extends AiHandler {
 
     BehaviorMaster behaviorMaster;
 
     public ActionManager(AiHandler master) {
         super(master);
-        this.behaviorMaster = new BehaviorMaster(master );
+        this.behaviorMaster = new BehaviorMaster(master);
     }
-   
+
+    public static Costs getTotalCost(List<Action> actions) {
+        XLinkedMap<PARAMETER, Formula> map = new XLinkedMap<>();
+        for (PARAMETER p : DC_ContentManager.PAY_PARAMS) {
+            map.put(p, new Formula(""));
+        }
+        for (Action a : actions) {
+            // a.getActive().getCosts().getRequirements().getFocusRequirement()
+            // !
+
+            if (a.getActive().isChanneling()) {
+
+            }
+
+            for (Cost c : a.getActive().getCosts().getCosts()) {
+                Formula formula = map.get(c.getPayment().getParamToPay());
+                if (formula != null) {
+                    formula.append("+" + c.getPayment().getAmountFormula().toString());
+                }
+
+            }
+        }
+        return new Costs(map);
+    }
+
     public Action chooseAction(UnitAI ai) {
         if (ai.checkStandingOrders()) {
             return ai.getStandingOrders().get(0);
@@ -79,7 +103,7 @@ public class ActionManager extends AiHandler{
         try {
             // actions = createActionSequences(ai);
             for (ActionSequence a : getActionSequenceConstructor().createActionSequences(
-             ai )) {
+                    ai)) {
                 if (a.get(0).canBeActivated()) {
                     if (checkNotBroken(a))
                     // if (a.getOrCreate(0).canBeTargeted())
@@ -109,14 +133,11 @@ public class ActionManager extends AiHandler{
         }
         if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_NONE) {
             LogMaster.log(LOG_CHANNELS.AI_DEBUG, "Action sequence chosen: "
-             + sequence + StringMaster.wrapInParenthesis(sequence.getPriority() + ""));
+                    + sequence + StringMaster.wrapInParenthesis(sequence.getPriority() + ""));
         }
         ai.checkSetOrders(sequence);
         return sequence.getNextAction();
     }
-
-
-
 
     private boolean checkNotBroken(ActionSequence as) {
         for (Action a : as.getActions()) {
@@ -145,7 +166,7 @@ public class ActionManager extends AiHandler{
             return new Action(ai.getUnit().getAction("Rage"));
         }
 
-        actions =getActionSequenceConstructor(). createActionSequences(new Goal(goal, ai, true), ai);
+        actions = getActionSequenceConstructor().createActionSequences(new Goal(goal, ai, true), ai);
         if (ai.checkMod(AI_MODIFIERS.TRUE_BRUTE)) {
             goal = GOAL_TYPE.ATTACK;
             actions.addAll(getActionSequenceConstructor().createActionSequences(new Goal(goal, ai, true), ai));
@@ -186,7 +207,7 @@ public class ActionManager extends AiHandler{
         Obj obj = unit.getGame().getObjectVisibleByCoordinate(c);
         if (obj instanceof Unit) {
             if (((Unit) obj).canActNow())
-                // if (!((DC_HeroObj) obj).checkStatus(STATUS.WAITING))
+            // if (!((DC_HeroObj) obj).checkStatus(STATUS.WAITING))
             {
                 return obj.getId();
             }
@@ -207,8 +228,6 @@ public class ActionManager extends AiHandler{
     private Action getAction(Unit unit, String name) {
         return new Action(ActionFactory.getUnitAction(unit, name));
     }
-
-
 
     private void checkDeactivate() {
         List<DC_UnitAction> list = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ACTION);
@@ -240,30 +259,6 @@ public class ActionManager extends AiHandler{
 
     }
 
-
-    public static Costs getTotalCost(List<Action> actions) {
-        XLinkedMap<PARAMETER, Formula> map = new XLinkedMap<>();
-        for (PARAMETER p : DC_ContentManager.PAY_PARAMS) {
-            map.put(p, new Formula(""));
-        }
-        for (Action a : actions) {
-            // a.getActive().getCosts().getRequirements().getFocusRequirement()
-            // !
-
-            if (a.getActive().isChanneling()) {
-
-            }
-
-            for (Cost c : a.getActive().getCosts().getCosts()) {
-                Formula formula = map.get(c.getPayment().getParamToPay());
-                if (formula != null) {
-                    formula.append("+" + c.getPayment().getAmountFormula().toString());
-                }
-
-            }
-        }
-        return new Costs(map);
-    }
     public ActionSequenceConstructor getActionSequenceConstructor() {
         return actionSequenceConstructor;
     }

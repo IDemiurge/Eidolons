@@ -14,8 +14,8 @@ import main.game.core.game.MicroGame;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.rules.DC_RuleImpl;
-import main.system.entity.ConditionMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.entity.ConditionMaster;
 
 /**
  * Add bleeding counters for every 1% below 25%. Lose 1% max endurance per turn

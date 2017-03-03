@@ -16,9 +16,9 @@ import main.entity.obj.HeroItem;
 import main.entity.obj.Obj;
 import main.game.ai.tools.ParamAnalyzer;
 import main.game.ai.tools.target.EffectFinder;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
-import main.system.auxiliary.StringMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
@@ -74,7 +74,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
 
     public ModifyValueEffect(String percOrConst, String sparam, String formula) {
         this(sparam, (checkPercentOrConst(percOrConst)) ? MOD.MODIFY_BY_PERCENT
-                : MOD.MODIFY_BY_CONST, formula);
+         : MOD.MODIFY_BY_CONST, formula);
     }
 
     public ModifyValueEffect(Boolean base, String sparam, MOD mod_type, String formula) {
@@ -127,8 +127,8 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             return getParamString() + " set to " + formula.getInt(ref);
         }
         return (mod_type == MOD.MODIFY_BY_PERCENT ? StringMaster.getModifierString(formula
-                .getInt(ref)) : StringMaster.getBonusString(formula.getInt(ref)))
-                + " " + getParamString();
+         .getInt(ref)) : StringMaster.getBonusString(formula.getInt(ref)))
+         + " " + getParamString();
         // return ((param != null) ? param : sparam) +
         // " modified by " + mod_type + " " + formula.getInt(ref) + "%";
     }
@@ -137,7 +137,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
     public String toString() {
         return " Param mod effect (" + getParamString() +
 
-                " " + mod_type + " " + formula + ")" + getTargetString();
+         " " + mod_type + " " + formula + ")" + getTargetString();
     }
 
     private String getTargetString() {
@@ -145,7 +145,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             return "";
         }
         return (ref.getTargetObj() == null) ? "" : " on " + ref.getTargetObj() + ", Layer ["
-                + getLayer() + "]";
+         + getLayer() + "]";
     }
 
     @Override
@@ -160,7 +160,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         if (ref.getTargetObj() instanceof HeroItem
             // && !(ref.getTargetObj().getOBJ_TYPE().equals(OBJ_TYPES.ARMOR
             // .getName()))
-                ) {
+         ) {
             setLayer(Effect.ZERO_LAYER);
         } else if (mod_type == MOD.MODIFY_BY_PERCENT) {
             if (getParam() != null) {
@@ -282,9 +282,14 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         Double amount;
 
         if (staticAmount == null) {
-            if (checkStaticallyParsed()) {
-                staticAmount = formula.getDouble();
+            try {
+                if (checkStaticallyParsed()) {
+                    staticAmount = formula.getDouble();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
         }
         if (staticAmount != null) {
             amount = staticAmount;
@@ -313,9 +318,9 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
 
             case MODIFY_BY_PERCENT: {
                 double mod =
-                        // = obj.getParam(param, ref.isBase()) + "*(" + amount
-                        // + "/100)";
-                        MathMaster.getFractionValueCentimalDouble(obj.getParamDouble(param, base), amount);
+                 // = obj.getParam(param, ref.isBase()) + "*(" + amount
+                 // + "/100)";
+                 MathMaster.getFractionValueCentimalDouble(obj.getParamDouble(param, base), amount);
                 ref.setAmount(mod + "");
 
                 if (param.isDynamic()) {
@@ -331,8 +336,8 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
                 // .getInt();
 
                 LogMaster.log(LOG_CHANNELS.EFFECT_DEBUG, getLayer() + " layer - " + obj.getName()
-                        + "'s " + param.getName() + " is modified by " + amount + "% ("
-                        + obj.getParam(param) + " + " + mod + " = " + final_amount + ")");
+                 + "'s " + param.getName() + " is modified by " + amount + "% ("
+                 + obj.getParam(param) + " + " + mod + " = " + final_amount + ")");
                 break;
             }
             case MODIFY_BY_CONST: {
@@ -348,7 +353,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
                 }
 
                 LogMaster.log(LogMaster.COMBAT_DEBUG, obj.getName() + "'s " + param.getName()
-                        + " is modified by " + amount);
+                 + " is modified by " + amount);
                 break;
             }
             case SET: {
@@ -372,12 +377,12 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         switch (mod_type) {
             case MODIFY_BY_PERCENT: {
                 map.put(param, StringMaster.getModifierString((int) final_amount
-                        - obj.getIntParam(param)));
+                 - obj.getIntParam(param)));
                 break;
             }
             case MODIFY_BY_CONST:
                 map.put(param, StringMaster.getBonusString((int) final_amount
-                        - obj.getIntParam(param)));
+                 - obj.getIntParam(param)));
                 break;
             case SET:
                 map.put(param, "=" + (int) (final_amount));
@@ -395,7 +400,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             getGame().getAnimationManager().valueModified(Ref.getCopy(ref));
         }
 
-        lastModValue= String.valueOf(amount_modified);
+        lastModValue = String.valueOf(amount_modified);
         return true;
     }
 
@@ -410,7 +415,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             min_max_amount = getMin_max_formula().getInt(ref);
         }
         if (amount > 0) // maximum
-            // if (min_max_amount == Integer.MAX_VALUE)
+        // if (min_max_amount == Integer.MAX_VALUE)
         {
             if (getParam() != null) {
                 if (getParam().isDynamic()) {
@@ -456,7 +461,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         if (ref.getActive() != null) {
             if (ref.getObj(KEYS.BUFF) != null || ref.getActive().getRef().getObj(KEYS.BUFF) != null) {
                 if (ref.getActive().equals(ref.getThisObj())
-                        || ref.getObj(KEYS.BUFF).equals(ref.getThisObj())) {
+                 || ref.getObj(KEYS.BUFF).equals(ref.getThisObj())) {
                     return true; // only if (?) it is a matter of spell-buff
                 }
             }

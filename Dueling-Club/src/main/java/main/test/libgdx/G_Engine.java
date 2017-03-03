@@ -9,15 +9,16 @@ import com.badlogic.gdx.Screen;
  */
 public class G_Engine extends Game {
 
-//    PathFinder path;
+    public G_Engine() {
+    }
+
+    //    PathFinder path;
     @Override
     public void create() {
 //        setScreen(new LessonBox2d());
         Gdx.graphics.setTitle("G_Engine");
 
         setScreen(new BattleFieldScreen(this));
-
-
 
 
     }
@@ -27,17 +28,14 @@ public class G_Engine extends Game {
         super.dispose();
     }
 
-    public G_Engine() {
-    }
-
     @Override
     public Screen getScreen() {
         return super.getScreen();
     }
 
     @Override
-    public void pause() {
-        super.pause();
+    public void setScreen(Screen screen) {
+        super.setScreen(screen);
     }
 
 //    @Override
@@ -47,6 +45,11 @@ public class G_Engine extends Game {
 //    }
 
     @Override
+    public void pause() {
+        super.pause();
+    }
+
+    @Override
     public void resize(int width, int height) {
         super.resize(width, height);
     }
@@ -54,10 +57,5 @@ public class G_Engine extends Game {
     @Override
     public void resume() {
         super.resume();
-    }
-
-    @Override
-    public void setScreen(Screen screen) {
-        super.setScreen(screen);
     }
 }

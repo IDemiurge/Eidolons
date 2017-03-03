@@ -9,8 +9,8 @@ import main.game.logic.macro.global.TimeMaster;
 import main.game.logic.macro.party.MacroPartyManager;
 import main.game.logic.macro.travel.MacroParty;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -61,7 +61,7 @@ public class TavernMaster {
 
     public static void buyDrinks(Tavern tavern, MacroParty party) {
         /*
-		 * 
+         *
 		 */
         Boolean result = DialogMaster.askAndWait("I'll buy a drink for...",
                 true, "all patrons!", "all of us", "myself");
@@ -102,7 +102,7 @@ public class TavernMaster {
         tavern.modifyParameter(MACRO_PARAMS.RENT_DURATION, rentDuration);
 
         // offer rented rooms when resting in this town?
-		/*
+        /*
          * note that while in town, not all members are 'together'... how to control this?
 		 * 
 		 * you still getOrCreate to choose what to *do* - study, rest and meditation are better in Rooms

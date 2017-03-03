@@ -153,13 +153,13 @@ public class GameLauncher {
     public DC_Game initDC_Game() {
 
         initData();
-if (DEBUG_MODE!=null ){
-    game.setDebugMode(DEBUG_MODE);
-}
+        if (DEBUG_MODE != null) {
+            game.setDebugMode(DEBUG_MODE);
+        }
         if (PresetMaster.getPreset() == null) {
 
-            if (DEBUG_MODE==null )
-            game.setDebugMode(Launcher.isDEBUG_MODE_DEFAULT());
+            if (DEBUG_MODE == null)
+                game.setDebugMode(Launcher.isDEBUG_MODE_DEFAULT());
             initPlayerParties();
             if (PARTY_CODE != CODE.NONE) {
                 game.setPlayerParty(PLAYER_PARTY);
@@ -200,7 +200,7 @@ if (DEBUG_MODE!=null ){
         if (game == null) {
             game = new DC_Game(false);
         }
-        
+
         game.setPlayerParty(PLAYER_PARTY);
         game.setEnemyParty(ENEMY_PARTY);
 
@@ -209,13 +209,13 @@ if (DEBUG_MODE!=null ){
             if (!VISION_HACK) {
                 VISION_HACK = PresetLauncher.getLaunch().visionHacked;
             }
-            DUMMY_MODE=            PresetLauncher.getLaunch().dummy;
-            DUMMY_MODE=            PresetLauncher.getLaunch().dummy_pp;
-            DEBUG_MODE=            PresetLauncher.getLaunch().debugMode;
-            FAST_MODE=            PresetLauncher.getLaunch().fast;
+            DUMMY_MODE = PresetLauncher.getLaunch().dummy;
+            DUMMY_MODE = PresetLauncher.getLaunch().dummy_pp;
+            DEBUG_MODE = PresetLauncher.getLaunch().debugMode;
+            FAST_MODE = PresetLauncher.getLaunch().fast;
 
             ItemGenerator.setGenerationOn(!PresetLauncher.getLaunch().itemGenerationOff);
-            TestMasterContent.setForceFree(  PresetLauncher.getLaunch().freeActions);
+            TestMasterContent.setForceFree(PresetLauncher.getLaunch().freeActions);
 
             TestMasterContent.setImmortal(PresetLauncher.getLaunch().immortal);
             DC_KeyManager.DEFAULT_CONTROLLER = PresetLauncher.getLaunch().controller;

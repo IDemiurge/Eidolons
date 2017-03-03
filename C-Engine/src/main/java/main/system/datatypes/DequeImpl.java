@@ -113,7 +113,8 @@ public class DequeImpl<E> extends ConcurrentLinkedDeque<E>
         addAll(e);
         return this;
     }
-        public DequeImpl<E> addChained(E e) {
+
+    public DequeImpl<E> addChained(E e) {
         add(e);
         return this;
     }

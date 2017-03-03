@@ -40,11 +40,11 @@ public class DtoMaster {
         return tabs;
     }
 
-    public static ValueDTO getValue(VALUE param, Entity unit  ) {
+    public static ValueDTO getValue(VALUE param, Entity unit) {
         return getValue(param, unit, null);
     }
 
-        public static ValueDTO getValue(VALUE param, Entity unit, Boolean showName) {
+    public static ValueDTO getValue(VALUE param, Entity unit, Boolean showName) {
         if (showName == null)
             showName = isShowName(param);
         String name = null;
@@ -55,8 +55,8 @@ public class DtoMaster {
 
 
         return new ValueDTO(icon,
-         name,
-         text);
+                name,
+                text);
 
     }
 

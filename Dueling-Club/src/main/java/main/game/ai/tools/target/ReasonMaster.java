@@ -10,9 +10,9 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.game.ai.elements.actions.Action;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.entity.ConditionMaster;
-import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedList;
 import java.util.List;

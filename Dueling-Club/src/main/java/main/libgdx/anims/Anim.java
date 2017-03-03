@@ -91,7 +91,7 @@ public class Anim extends Group implements Animation {
 
     @Override
     public void start() {
-        emittersWaitingDone=false;
+        emittersWaitingDone = false;
         initPosition();
         initDuration();
         initSpeed();
@@ -183,18 +183,18 @@ public class Anim extends Group implements Animation {
 
     private float getTimeToFinish() {
         float time = 0;
-        for (EmitterActor e: emitterList){
-            for (ParticleEmitter emitter: e.getEffect().getEmitters()){
-                float timeLeft = emitter.getDuration().getLowMax()/1000 *
-                 Math.max(0,                 emitter.getPercentComplete());
+        for (EmitterActor e : emitterList) {
+            for (ParticleEmitter emitter : e.getEffect().getEmitters()) {
+                float timeLeft = emitter.getDuration().getLowMax() / 1000 *
+                        Math.max(0, emitter.getPercentComplete());
                 if (timeLeft > time) {
                     time = timeLeft;
                 }
             }
         }
         float gracePeriod = 0.25f;
-time=time+time*gracePeriod;
-        LogMaster.log(LogMaster.ANIM_DEBUG, this+" adding TimeToFinish: " +time);
+        time = time + time * gracePeriod;
+        LogMaster.log(LogMaster.ANIM_DEBUG, this + " adding TimeToFinish: " + time);
         return time;
     }
 
@@ -213,9 +213,9 @@ time=time+time*gracePeriod;
         }
 
         batch.draw((texture), this.getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
-         this.getHeight(), this.getScaleX(), this.getScaleY(),
-         this.getRotation(), 0, 0,
-         texture.getWidth(), texture.getHeight(), flipX, flipY);
+                this.getHeight(), this.getScaleX(), this.getScaleY(),
+                this.getRotation(), 0, 0,
+                texture.getWidth(), texture.getHeight(), flipX, flipY);
 
     }
 
@@ -228,29 +228,31 @@ time=time+time*gracePeriod;
         alpha = 1f;
         initDuration();
         initSpeed();
-        floatingText=     new LinkedList<>() ;
+        floatingText = new LinkedList<>();
         resetEmitters();
     }
 
     protected void resetSprites() {
         //TODO
     }
+
     protected void initEmitters() {
-        if (emitterList==null ){
-            if (data.getValue(ANIM_VALUES.PARTICLE_EFFECTS)!=null ){
+        if (emitterList == null) {
+            if (data.getValue(ANIM_VALUES.PARTICLE_EFFECTS) != null) {
                 setEmitterList(EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS)));
             }
         }
     }
-        protected void resetEmitters() {
 
-            getEmitterList().forEach(e ->
-             {
-                 if (e.isGenerated()) {
-                     e.getEffect().dispose();
-                 }
-             }
-            );
+    protected void resetEmitters() {
+
+        getEmitterList().forEach(e ->
+                {
+                    if (e.isGenerated()) {
+                        e.getEffect().dispose();
+                    }
+                }
+        );
         emitterList = emitterCache;
         emitterCache = new LinkedList<>(emitterList);
         emitterList.forEach(e -> {
@@ -261,7 +263,7 @@ time=time+time*gracePeriod;
             }
         });
 
-        getEmitterList().forEach(e-> e.reset());
+        getEmitterList().forEach(e -> e.reset());
     }
 
     protected void initDuration() {
@@ -331,7 +333,7 @@ time=time+time*gracePeriod;
     protected Texture getTexture() {
         if (texture == null) {
             if (ImageManager.isImage(getTexturePath()))
-            texture = TextureCache.getOrCreate(getTexturePath());
+                texture = TextureCache.getOrCreate(getTexturePath());
         }
         return texture;
 
@@ -438,13 +440,13 @@ time=time+time*gracePeriod;
 
     public void initPosition() {
         origin = GridMaster
-         .getVectorForCoordinateWithOffset(getOriginCoordinates());
+                .getVectorForCoordinateWithOffset(getOriginCoordinates());
 
 //        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
 //         this + " origin: " + origin);
 
         destination = GridMaster
-         .getVectorForCoordinateWithOffset(getDestinationCoordinates());
+                .getVectorForCoordinateWithOffset(getDestinationCoordinates());
 
 //        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
 //         this + " destination: " + destination);
@@ -476,6 +478,7 @@ time=time+time*gracePeriod;
     public void setForcedDestination(Coordinates forcedDestination) {
         this.forcedDestination = forcedDestination;
     }
+
     public void setForcedDestinationForAll(Coordinates forcedDestination) {
         this.forcedDestination = forcedDestination;
         AnimMaster.getInstance().getParentAnim(getRef()).setForcedDestination(forcedDestination);
@@ -679,8 +682,8 @@ time=time+time*gracePeriod;
 
     @Override
     public void onDone(EventCallback callback, EventCallbackParam param) {
-       this.onDone=callback;
-        callbackParam=param;
+        this.onDone = callback;
+        callbackParam = param;
     }
 
     @Override
@@ -693,21 +696,20 @@ time=time+time*gracePeriod;
     }
 
 
-
     public boolean isEmittersWaitingDone() {
         return emittersWaitingDone;
     }
 
     public void checkAddFloatingText() {
-       getFloatingText().forEach(floatingText1 ->  {
-           if (time >= floatingText1.getDelay()) {
-               floatingText1.addToStage(GameScreen.getInstance().getAnimsStage());
-           }
+        getFloatingText().forEach(floatingText1 -> {
+            if (time >= floatingText1.getDelay()) {
+                floatingText1.addToStage(GameScreen.getInstance().getAnimsStage());
+            }
         });
     }
 
-        public void addFloatingText(FloatingText floatingText ) {
-            getFloatingText().add(floatingText);
+    public void addFloatingText(FloatingText floatingText) {
+        getFloatingText().add(floatingText);
 
 
     }

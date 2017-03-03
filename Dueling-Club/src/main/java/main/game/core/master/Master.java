@@ -14,7 +14,7 @@ public abstract class Master {
     protected DC_Game game;
     protected DC_GameManager gameManager;
     protected DC_GameMaster gameMaster;
-    protected DC_GameState state ;
+    protected DC_GameState state;
     protected DC_StateManager stateManager;
 
     public Master(DC_Game game) {

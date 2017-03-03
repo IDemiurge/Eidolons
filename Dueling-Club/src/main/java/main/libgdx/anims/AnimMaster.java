@@ -121,7 +121,7 @@ public class AnimMaster extends Group {
             }
             CompositeAnim animation = constructor.getOrCreate((DC_ActiveObj) p.get());
             if (animation == null) {
-                main.system.auxiliary.log.LogMaster.log(LogMaster.ANIM_DEBUG,"NULL ANIM FOR "+p.get() );
+                main.system.auxiliary.log.LogMaster.log(LogMaster.ANIM_DEBUG, "NULL ANIM FOR " + p.get());
                 return;
             }
             animation.reset();

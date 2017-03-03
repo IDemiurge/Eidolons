@@ -18,8 +18,8 @@ import main.entity.Ref.KEYS;
 import main.entity.active.DC_ItemActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.unit.Unit;
 import main.entity.obj.unit.DC_UnitModel;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
@@ -253,7 +253,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     public void equipped(Ref ref) {
         this.equipped = true;
-        setAttackActions(null );
+        setAttackActions(null);
         if (ref == null) {
             return;
         }
@@ -315,6 +315,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     protected PARAMETER getDurabilityParam() {
         return PARAMS.DAMAGE_BONUS;
     }
+
     public boolean isNatural() {
         return checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.NATURAL.toString(), true);
     }
@@ -323,9 +324,11 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         return checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.SHIELD.toString());
     }
 
-    public boolean isAmmo() { return checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO.toString());
+    public boolean isAmmo() {
+        return checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO.toString());
 
     }
+
     public boolean isMagical() {
         return checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.MAGICAL.toString());
     }

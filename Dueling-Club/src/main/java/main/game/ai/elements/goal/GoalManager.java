@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GoalManager  extends AiHandler {
+public class GoalManager extends AiHandler {
     public GoalManager(AiHandler master) {
         super(master);
     }
@@ -65,8 +65,9 @@ public class GoalManager  extends AiHandler {
 
     public static List<GOAL_TYPE> getDefaultGoals() {
         return new LinkedList<>(Arrays.asList(new GOAL_TYPE[]{GOAL_TYPE.PREPARE,
-         GOAL_TYPE.DEFEND, GOAL_TYPE.ATTACK, GOAL_TYPE.WAIT,}));
+                GOAL_TYPE.DEFEND, GOAL_TYPE.ATTACK, GOAL_TYPE.WAIT,}));
     }
+
     private static void addEnemyGoals(List<GOAL_TYPE> list) {
         list.add(GOAL_TYPE.DEBUFF);
         list.add(GOAL_TYPE.CUSTOM_HOSTILE);

@@ -1,9 +1,9 @@
 package main.client.cc.logic.spells;
 
-import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.ValuePages;
+import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.VariableManager;
@@ -12,9 +12,9 @@ import main.entity.active.DC_SpellObj;
 import main.entity.obj.unit.Unit;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
-import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 
 import javax.swing.*;
@@ -119,7 +119,7 @@ public class SpellUpgradeMaster {
     }
 
 	/*
-	 * generateUpgradedSpellIcon()
+     * generateUpgradedSpellIcon()
 	 * 
 	 * isUpgradeUnlocked()
 	 * 
@@ -251,11 +251,12 @@ public class SpellUpgradeMaster {
 
 
     public static void applyUpgrade(Entity type, SPELL_UPGRADE... ug) {
-for (SPELL_UPGRADE sub: ug){
-    applyUpgrade(type, sub);
-}
+        for (SPELL_UPGRADE sub : ug) {
+            applyUpgrade(type, sub);
+        }
     }
-        public static void applyUpgrade(Entity type, SPELL_UPGRADE ug) {
+
+    public static void applyUpgrade(Entity type, SPELL_UPGRADE ug) {
         if (ug.getAddPropMap() != null)
 
         {
@@ -263,23 +264,23 @@ for (SPELL_UPGRADE sub: ug){
                 type.addProperty(s, ug.getAddPropMap().get(s));
             }
         }
-            if (ug.getSetPropMap() != null) {
+        if (ug.getSetPropMap() != null) {
             for (String s : ug.getSetPropMap().keySet()) {
                 type.setProperty(s, ug.getSetPropMap().get(s));
             }
-            }
-            if (ug.getParamBonusMap() != null) {
+        }
+        if (ug.getParamBonusMap() != null) {
             for (String s : ug.getParamBonusMap().keySet()) {
                 type.setModifierKey(ug.getName());
                 type.modifyParameter(s, ug.getParamBonusMap().get(s));
             }
+        }
+        if (ug.getParamModMap() != null) {
+            for (String s : ug.getParamModMap().keySet()) {
+                type.setModifierKey(ug.getName());
+                type.modifyParamByPercent(s, ug.getParamModMap().get(s));
             }
-            if (ug.getParamModMap() != null) {
-                for (String s : ug.getParamModMap().keySet()) {
-                    type.setModifierKey(ug.getName());
-                    type.modifyParamByPercent(s, ug.getParamModMap().get(s));
-                }
-            }
+        }
 
         type.setModifierKey(ug.getName());
         type.modifyParamByPercent(PARAMS.SPELL_DIFFICULTY, ug.getSpellDifficultyMod());

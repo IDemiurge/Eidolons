@@ -8,8 +8,8 @@ import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.system.ObjUtilities;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.Collection;
 import java.util.LinkedList;

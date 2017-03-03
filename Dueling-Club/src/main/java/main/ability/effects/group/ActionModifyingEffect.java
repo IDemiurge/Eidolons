@@ -4,8 +4,8 @@ import main.content.DC_TYPE;
 import main.elements.conditions.Condition;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.LinkedList;
 import java.util.List;

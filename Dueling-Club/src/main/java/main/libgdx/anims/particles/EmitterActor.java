@@ -35,14 +35,14 @@ public class EmitterActor extends Actor implements ParticleInterface {
     }
 
     public EmitterActor(String path, boolean test) { //TODO refactor!
-       this(path);
+        this(path);
         this.test = test;
     }
 
     public EmitterActor(String path) {
 //        path =PathFinder.getSfxPath() + "templates\\sprite test";
         this.path = path;
-       effect= EmitterPools.getEffect(path);
+        effect = EmitterPools.getEffect(path);
     }
 
 

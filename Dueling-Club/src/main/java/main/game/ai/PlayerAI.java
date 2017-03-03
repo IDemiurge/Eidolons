@@ -1,7 +1,7 @@
 package main.game.ai;
 
-import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
 import main.content.enums.system.AiEnums;
+import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
 
 public class PlayerAI {
     private PLAYER_AI_TYPE type;

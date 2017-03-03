@@ -24,7 +24,7 @@ import java.util.List;
  * Created by JustMe on 3/3/2017.
  */
 public class AiUnitActionMaster {
-  public  static List<ActionSequence> splitRangedSequence(ActionSequence sequence) {
+    public static List<ActionSequence> splitRangedSequence(ActionSequence sequence) {
         ArrayList<ActionSequence> list = new ArrayList<>();
         for (Action a : sequence.getActions()) {
             if (a instanceof QuickItemAction) {

@@ -36,6 +36,7 @@ public class TablePanel extends Container<Table> {
 
         addCol();
     }
+
     public void addElement(Container el) {
         if (cols.size() == 0) {
             createNewCol();

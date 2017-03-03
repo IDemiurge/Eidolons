@@ -3,17 +3,17 @@ package main.ability.effects.oneshot.common;
 import main.ability.effects.ReducedEffect;
 import main.ability.effects.ResistibleEffect;
 import main.ability.effects.oneshot.MicroEffect;
-import main.content.enums.entity.UnitEnums.STD_COUNTERS;
 import main.content.DC_ContentManager;
+import main.content.enums.entity.UnitEnums.STD_COUNTERS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.item.DC_HeroItemObj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.entity.CounterMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
-import main.system.entity.CounterMaster;
 
 public class ModifyCounterEffect extends MicroEffect implements ResistibleEffect, ReducedEffect {
 

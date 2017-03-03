@@ -8,7 +8,7 @@ import main.game.ai.elements.generic.AiHandler;
 
 import java.util.List;
 
-public class ParamAnalyzer  extends AiHandler {
+public class ParamAnalyzer extends AiHandler {
     public ParamAnalyzer(AiHandler master) {
         super(master);
     }

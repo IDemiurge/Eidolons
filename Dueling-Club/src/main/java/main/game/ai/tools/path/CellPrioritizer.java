@@ -19,35 +19,31 @@ import main.system.auxiliary.log.LogMaster;
 
 import java.util.*;
 
-public class CellPrioritizer extends AiHandler{
-    public CellPrioritizer(AiHandler master) {
-        super(master);
-    }
-
+public class CellPrioritizer extends AiHandler {
     /*
          * precalculate priority for cells and prune paths by destination!
          *
          * alternatively, I could prioritize path's cells
          */
-    public   final int prune_threshold = 2; // increase if there aren't too
+    public final int prune_threshold = 2; // increase if there aren't too
+    protected Map<Obj, Integer> cellPriorityMap;
     // many actions?
+    protected Map<Obj, Integer> enemyPriorityMap;
+    private Action targetAction;
+    private List<DC_ActiveObj> moves;
+    private Map<Coordinates, List<ActionPath>> pathMap;
 
-    protected   Map<Obj, Integer> cellPriorityMap;
-    protected   Map<Obj, Integer> enemyPriorityMap;
+    public CellPrioritizer(AiHandler master) {
+        super(master);
+    }
 
-    private   Action targetAction;
-
-    private   List<DC_ActiveObj> moves;
-
-    private   Map<Coordinates, List<ActionPath>> pathMap;
-
-    public   int getMeleePriorityForCell(Unit unit, Obj cell) {
+    public int getMeleePriorityForCell(Unit unit, Obj cell) {
         return getPriorityForCell(unit, cell, null);
     }
 
-    public   List<? extends DC_Obj> getApproachCells(UnitAI ai) {
+    public List<? extends DC_Obj> getApproachCells(UnitAI ai) {
         /*
-		 * TODO
+         * TODO
 		 * 
 		 * figure out direction and choose an adjacent cell?
 		 * 
@@ -66,9 +62,9 @@ public class CellPrioritizer extends AiHandler{
     /*
      * Perhaps one could feed an action to this method!.. Or actions...
      */
-    public   int getPriorityForCell(Unit unit, Obj cell,
-                                         DC_ActiveObj targetAcsdftion) {
-		/*
+    public int getPriorityForCell(Unit unit, Obj cell,
+                                  DC_ActiveObj targetAcsdftion) {
+        /*
          * getOrCreate attack priority for each adjacent enemy...
 		 */
 
@@ -144,13 +140,13 @@ public class CellPrioritizer extends AiHandler{
         return priority;
     }
 
-    public   void reset() {
+    public void reset() {
         cellPriorityMap = new HashMap<>();
         enemyPriorityMap = new HashMap<>();
         pathMap = new HashMap<>();
     }
 
-    public   List<Coordinates> getMeleePriorityCellsForUnit(UnitAI ai) {
+    public List<Coordinates> getMeleePriorityCellsForUnit(UnitAI ai) {
 //        DC_PriorityManager.setUnit_ai(ai);
 
         List<Coordinates> list = new LinkedList<>();
@@ -183,7 +179,7 @@ public class CellPrioritizer extends AiHandler{
         return list;
     }
 
-    private   Comparator<? super Obj> getPrioritySorter(
+    private Comparator<? super Obj> getPrioritySorter(
             final Unit unit) {
         return new Comparator<Obj>() {
 
@@ -209,14 +205,14 @@ public class CellPrioritizer extends AiHandler{
         };
     }
 
-    public   List<Coordinates> getPriorityCellsForUnit(UnitAI unitAI,
-                                                            List<DC_ActiveObj> moveActions, Action action) {
+    public List<Coordinates> getPriorityCellsForUnit(UnitAI unitAI,
+                                                     List<DC_ActiveObj> moveActions, Action action) {
         moves = moveActions;
         targetAction = action;
         return getMeleePriorityCellsForUnit(unitAI);
     }
 
-    public   Map<Coordinates, List<ActionPath>> getPathMap() {
+    public Map<Coordinates, List<ActionPath>> getPathMap() {
         return pathMap;
     }
 

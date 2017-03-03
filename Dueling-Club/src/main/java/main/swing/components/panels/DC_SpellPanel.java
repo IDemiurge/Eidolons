@@ -3,8 +3,8 @@ package main.swing.components.panels;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_GameManager;
 import main.game.core.Eidolons;
+import main.game.core.game.DC_GameManager;
 import main.game.core.state.MicroGameState;
 import main.swing.components.obj.SpellListItem;
 import main.swing.generic.components.panels.G_ListPanel;
@@ -52,7 +52,7 @@ public class DC_SpellPanel extends G_ListPanel<DC_SpellObj> implements
         if (!(obj instanceof Unit)) {
             return getEmptyData();
         }
-        DC_GameManager manager =   Eidolons.gameManager;
+        DC_GameManager manager = Eidolons.gameManager;
         List<DC_SpellObj> spellbook = new LinkedList<>(
                 manager.getSpellMaster().getSpells((Unit) obj));
         // if (autosort)
@@ -73,12 +73,12 @@ public class DC_SpellPanel extends G_ListPanel<DC_SpellObj> implements
     }
 
     public int getPanelHeight() {
-        return  5+6*  GuiManager.getSmallObjSize();
+        return 5 + 6 * GuiManager.getSmallObjSize();
     }
 
     public int getPanelWidth() {
-        return GuiManager.getSmallObjSize()  +4+9/5*
-                + GuiManager.SCROLL_BAR_WIDTH;
+        return GuiManager.getSmallObjSize() + 4 + 9 / 5 *
+                +GuiManager.SCROLL_BAR_WIDTH;
     }
 
     public Collection<DC_SpellObj> getSpellObjs() {

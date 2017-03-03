@@ -10,11 +10,11 @@ import main.swing.components.buttons.DynamicButton;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.services.dialog.DialogPanel;
 import main.system.auxiliary.log.LogMaster;
-import main.system.graphics.GuiManager;
 import main.system.datatypes.DequeImpl;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.AnimationManager.MouseItem;
+import main.system.graphics.GuiManager;
 import main.system.graphics.PhaseAnimation;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
@@ -92,10 +92,10 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                 String text = ToolTipMaster.getObjTooltip(cellComp);
                 component.setToolTipText(text);
                 if (cellComp != prevComp)
-                    // main.system.auxiliary.LogMaster.log(1,
-                    // "tooltip updated - " +
-                    // text + ";point= "
-                    // + point + ";cellComp= " + cellComp);
+                // main.system.auxiliary.LogMaster.log(1,
+                // "tooltip updated - " +
+                // text + ";point= "
+                // + point + ";cellComp= " + cellComp);
                 {
                     prevComp = cellComp;
                 }
@@ -320,7 +320,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                             LogMaster.log(1, objClicked + "'s " + index
                                     + " vs " + object + "'s " + index2);
                             if (index > index2)
-                                // TODO so we need to keep this always sorted...
+                            // TODO so we need to keep this always sorted...
                             {
                                 continue;
                             }

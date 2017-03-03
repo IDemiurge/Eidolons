@@ -92,7 +92,7 @@ public class ExploreMaster {
 //        int speed = party.getTravelSpeed();
 //        return PositionMaster.getDistance(place, dest)
 //                * place.getRegion().getMilePerPixel();
-   return null;
+        return null;
     }
 
     public static void exploreRoute(MacroParty party, Route route) {
@@ -176,10 +176,8 @@ public class ExploreMaster {
         p.setVisibilityStatus(PLACE_VISIBILITY_STATUS.DISCOVERED);
 
 //        return promptToTravel(p);
-        return null ;
+        return null;
     }
-
-
 
 
     private static Boolean discovered(Place p) {
@@ -188,9 +186,8 @@ public class ExploreMaster {
         p.setVisibilityStatus(PLACE_VISIBILITY_STATUS.DISCOVERED);
 
 //        return promptToStay(p);
-        return null ;
+        return null;
     }
-
 
 
     // ++ from place explore

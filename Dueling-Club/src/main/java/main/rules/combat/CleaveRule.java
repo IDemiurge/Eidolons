@@ -5,14 +5,14 @@ import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.unit.Unit;
+import main.entity.active.DC_ActiveObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import main.entity.active.DC_ActiveObj;
-import main.game.core.game.DC_Game;
+import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;
 import main.game.battlefield.attack.Attack;
+import main.game.core.game.DC_Game;
 
 public class CleaveRule {
     private static final int DEFAULT_CRITICAL_JUMPS = 2;

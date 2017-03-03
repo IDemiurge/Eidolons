@@ -1,8 +1,8 @@
 package main.system.test;
 
-import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.*;
 import main.content.enums.system.MetaEnums;
+import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
@@ -105,6 +105,7 @@ public class TestMasterContent {
     // TODO also give them for free to all units!
     TestingConfigurations testConfig;
     private DC_Game game;
+
     public TestMasterContent(DC_Game game) {
         this.game = game;
         if (auto_test_list) {
@@ -143,7 +144,7 @@ public class TestMasterContent {
             return true;// TODO
         }
         /*
-		 * I want to make sure that all actives are given to somebody... I can
+         * I want to make sure that all actives are given to somebody... I can
 		 * keep a list of added actives and give all non-given to the last
 		 * hero...
 		 *

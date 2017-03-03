@@ -6,14 +6,14 @@ import main.data.xml.XML_Converter;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.CoordinatesMaster;
 import main.game.battlefield.ZCoordinates;
+import main.game.core.game.DC_Game;
 import main.game.logic.dungeon.building.DungeonBuilder.BLOCK_TYPE;
 import main.game.logic.dungeon.building.DungeonBuilder.ROOM_TYPE;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 

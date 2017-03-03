@@ -15,16 +15,21 @@ import java.awt.*;
 
 public class VisibilityMaster {
 
-    private  final String TARGET = " t";
-    private  final String INFO = " s";
-    private   VisionMaster master;
+    private final String TARGET = " t";
+    private final String INFO = " s";
+    private VisionMaster master;
+    private boolean outlinesOn;
 
-    public VisibilityMaster( VisionMaster visionManager) {
+    public VisibilityMaster(VisionMaster visionManager) {
         master = visionManager;
+        outlinesOn=!visionManager.getGame().isDummyPlus();
+
     }
+
     public VISIBILITY_LEVEL getVisibilityLevel(Unit source, DC_Obj target) {
         return getVisibilityLevel(source, target, null);
     }
+
     public VISIBILITY_LEVEL getVisibilityLevel(Unit source, DC_Obj target, Boolean status) {
 //        int value = getGamma(source, target, status);
         VISIBILITY_LEVEL vLevel = null;
@@ -37,12 +42,12 @@ public class VisibilityMaster {
     }
 
 
-
-    public  Image getDisplayImageForUnit(DC_Obj obj) {
+    public Image getDisplayImageForUnit(DC_Obj obj) {
 
         return null;
     }
-        public  String getDisplayImagePathForUnit(DC_Obj obj) {
+
+    public String getDisplayImagePathForUnit(DC_Obj obj) {
         // construct and cache an Outline obj per unit?
         OUTLINE_TYPE type = obj.getOutlineType();
 
@@ -61,9 +66,9 @@ public class VisibilityMaster {
         String outlinePath = "ui\\outlines\\" + type.toString();
         OUTLINE_IMAGE outlineImage;
         if (type == VisionEnums.OUTLINE_TYPE.VAGUE_OUTLINE) {
-            outlineImage =master.getOutlineMaster(). getImageVague((Unit) obj);
+            outlineImage = master.getOutlineMaster().getImageVague((Unit) obj);
         } else {
-            outlineImage = master.getOutlineMaster().getImageDark((Unit) obj); 
+            outlineImage = master.getOutlineMaster().getImageDark((Unit) obj);
         }
         if (outlineImage != OUTLINE_IMAGE.UNKNOWN) {
             outlinePath += "_" + outlineImage.toString();
@@ -76,12 +81,12 @@ public class VisibilityMaster {
                 outlinePath += INFO;
             }
         }
-        String image =  (outlinePath + ".jpg");
+        String image = (outlinePath + ".jpg");
         if (ImageManager.isImage(image)) {
             return image;
         }
 
-        image =  (outlinePath.replace("_" + outlineImage.toString(), "") + ".jpg");
+        image = (outlinePath.replace("_" + outlineImage.toString(), "") + ".jpg");
         if (ImageManager.isImage(image)) {
             return image;
         }
@@ -93,10 +98,11 @@ public class VisibilityMaster {
         // DIFFERENTIATE BETWEEN RANGE, CONCEALMENT, ILL AND STEALTH
     }
 
-    public  Image getImage(OUTLINE_TYPE type, DC_Obj unit) {
+    public Image getImage(OUTLINE_TYPE type, DC_Obj unit) {
         return ImageManager.getImage(getImagePath(type, unit));
     }
-        public  String getImagePath(OUTLINE_TYPE type, DC_Obj unit) {
+
+    public String getImagePath(OUTLINE_TYPE type, DC_Obj unit) {
         String outlinePath = "ui\\outlines\\" + type.toString();
         if (unit.isTargetHighlighted()) {
             outlinePath += TARGET;
@@ -105,7 +111,7 @@ public class VisibilityMaster {
                 outlinePath += INFO;
             }
         }
-        String image =  (outlinePath + ".jpg");
+        String image = (outlinePath + ".jpg");
         if (!ImageManager.isImage(image)) {
             image = ("ui\\outlines\\" + type.toString() + ".jpg");
         }
@@ -113,9 +119,8 @@ public class VisibilityMaster {
     }
 
 
-
-    public  void resetOutlineAndVisibilityLevel(DC_Obj unit) {
-        OUTLINE_TYPE type =master.getOutlineMaster().getOutlineType(unit);
+    public void resetOutlineAndVisibilityLevel(DC_Obj unit) {
+        OUTLINE_TYPE type = master.getOutlineMaster().getOutlineType(unit);
 
         unit.setOutlineType(type);
         unit.setVisibilityLevel(getVisibility(type));
@@ -124,7 +129,7 @@ public class VisibilityMaster {
         // return type;
     }
 
-    private  VISIBILITY_LEVEL getVisibility(OUTLINE_TYPE type) {
+    private VISIBILITY_LEVEL getVisibility(OUTLINE_TYPE type) {
         VISIBILITY_LEVEL visibilityLevel = VISIBILITY_LEVEL.CLEAR_SIGHT;
         if (type != null) {
             switch (type) {
@@ -149,7 +154,7 @@ public class VisibilityMaster {
         return visibilityLevel;
     }
 
-    public  void resetVisibilityLevels() {
+    public void resetVisibilityLevels() {
         for (Unit unit : DC_Game.game.getUnits()) {
             resetOutlineAndVisibilityLevel(unit);
         }
@@ -159,22 +164,27 @@ public class VisibilityMaster {
         }
     }
 
-    public  boolean isZeroVisibility(DC_Obj obj) {
+    public boolean isZeroVisibility(DC_Obj obj) {
         return isZeroVisibility(obj, false);
     }
 
-    public  boolean isZeroVisibility(DC_Obj obj, boolean active) {
+    public boolean isZeroVisibility(DC_Obj obj, boolean active) {
         return obj.getVisibilityLevel(active) == VISIBILITY_LEVEL.BLOCKED
                 || obj.getVisibilityLevel(active) == VISIBILITY_LEVEL.CONCEALED;
     }
 
 
-
-
     public VISIBILITY_LEVEL getUnitVisibilityLevel(DC_Obj target, Unit source) {
         VISIBILITY_LEVEL visibilityLevel = getVisibility(master.getOutlineMaster().
-         getOutlineType(target, source));
+                getOutlineType(target, source));
         return visibilityLevel;
     }
- 
+
+    public boolean isOutlinesOn() {
+        return outlinesOn;
+    }
+
+    public void setOutlinesOn(boolean outlinesOn) {
+        this.outlinesOn = outlinesOn;
+    }
 }

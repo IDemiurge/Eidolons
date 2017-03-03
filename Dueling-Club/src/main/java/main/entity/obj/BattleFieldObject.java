@@ -22,10 +22,10 @@ import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.DC_MovementManager;
 import main.game.battlefield.FacingMaster;
-import main.game.logic.event.Event;
-import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -90,11 +90,11 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
                     return false;
                 }
             }
-    ((BattleFieldObject) killer)
-     .applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_KILL, this, REF);
+            ((BattleFieldObject) killer)
+                    .applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_KILL, this, REF);
 
-    applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_DEATH,
-     ((BattleFieldObject) killer), REF);
+            applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_DEATH,
+                    ((BattleFieldObject) killer), REF);
             if (!ignoreInterrupt) {
                 if (ref.checkInterrupted()) {
                     return false;
@@ -114,6 +114,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         setParam(PARAMS.C_TOUGHNESS, Math.max(1, getIntParam(PARAMS.C_TOUGHNESS)));
 
     }
+
     public boolean isObstructing(Obj obj, DC_Obj target) {
 
         if (target == null) {
@@ -156,7 +157,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
                 return false;
             }
             if (source_height < height)
-                // if (!source.isFlying()) //add height TODO
+            // if (!source.isFlying()) //add height TODO
             {
                 return true;
             }
@@ -176,6 +177,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         return false;
 
     }
+
     public boolean isSmall() {
         if (checkProperty(G_PROPS.STANDARD_PASSIVES, "" + UnitEnums.STANDARD_PASSIVES.SMALL)) {
             return true;

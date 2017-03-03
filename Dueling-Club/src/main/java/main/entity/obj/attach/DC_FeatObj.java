@@ -15,13 +15,14 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
-import main.system.entity.ConditionMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.entity.ConditionMaster;
 import main.system.images.ImageManager.BORDER;
 import main.system.math.Formula;
 
 import java.util.HashMap;
 import java.util.Map;
+
 // Includes Skills and Classes
 public class DC_FeatObj extends DC_HeroAttachedObj {
 
@@ -224,7 +225,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
                     }
                     // some exceptions?
                     /*
-					 * how widely will this be used? 
+                     * how widely will this be used?
 					 * mostly on simple low-level skills...
 					 * but also on auras I guess...
 					 * the point is to make things flexible, deeply customizable, and viable for 

@@ -11,7 +11,7 @@ import java.util.Stack;
  */
 public class AnimController implements Controller {
     private static AnimController instance;
-    Stack<Animation> stack=new Stack<>();
+    Stack<Animation> stack = new Stack<>();
 
     public AnimController() {
         instance = this;

@@ -1,12 +1,12 @@
 package main.game.logic.arcade;
 
 import main.client.cc.logic.party.PartyObj;
-import main.content.enums.rules.ArcadeEnums.ARCADE_LOOT_TYPE;
-import main.content.enums.rules.ArcadeEnums.LOOT_GROUP;
 import main.content.DC_CONSTS.MAGICAL_ITEM_LEVEL;
 import main.content.DC_CONSTS.MAGIC_ITEM_PASSIVE_ENCHANTMENT;
 import main.content.DC_CONSTS.MAGIC_ITEM_PASSIVE_TRAIT;
 import main.content.PARAMS;
+import main.content.enums.rules.ArcadeEnums.ARCADE_LOOT_TYPE;
+import main.content.enums.rules.ArcadeEnums.LOOT_GROUP;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;

@@ -25,6 +25,7 @@ public class GameDate extends DataUnit<TIME_UNITS> {
     private int hour;
     private boolean day_or_night; // pm or am
     private boolean humanMonthsDisplayed = true;
+
     // midnight
     public GameDate(String era, int year, MONTH month, int day,
                     boolean day_or_night) {

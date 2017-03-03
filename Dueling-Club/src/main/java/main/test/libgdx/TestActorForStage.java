@@ -38,24 +38,24 @@ public class TestActorForStage extends Actor {
     InputListener listener;
 
 
-    public TestActorForStage(Sprite face,float width,float height,float X,float Y,boolean Unit_Graphic_Items_Needed){
+    public TestActorForStage(Sprite face, float width, float height, float X, float Y, boolean Unit_Graphic_Items_Needed) {
         unit = Unit_Graphic_Items_Needed;
         counterup = 0;
         counterdown = 0;
         Random random = new Random();
         ID = random.nextInt();
         setName("" + ID);
-        setBounds(X,Y,width,height);
+        setBounds(X, Y, width, height);
         String path = PathFinder.getImagePath();
         sprite = new Sprite(face);
-        sprite.setBounds(getX(),getY(),getWidth(),getHeight());
+        sprite.setBounds(getX(), getY(), getWidth(), getHeight());
         textureDirection = new Texture(path + "UI\\DIRECTION POINTER.png");
         spriteDirection = new Sprite(textureDirection);
-        spriteDirection.setBounds(getX()+45,getY()+5,10,10);
+        spriteDirection.setBounds(getX() + 45, getY() + 5, 10, 10);
         portraitFrame = new Sprite(new Texture(path + "UI\\Borders\\neo\\active enemy select.png"));
-        portraitFrame.setBounds(getX()-2,getY()+2,getWidth()+2,getHeight()+2);
+        portraitFrame.setBounds(getX() - 2, getY() + 2, getWidth() + 2, getHeight() + 2);
         listener = new InputListener();
-        addListener(new InputListener(){
+        addListener(new InputListener() {
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
                 System.out.println("drag");
@@ -114,8 +114,8 @@ public class TestActorForStage extends Actor {
                 System.out.println(event + " || " + x + " || " + y);
 
                 selected = true;
-                for (int i = 0;i < BattleFieldScreen.actorsArray.size();i++){
-                    if (!BattleFieldScreen.actorsArray.get(i).getName().equals(getName())){
+                for (int i = 0; i < BattleFieldScreen.actorsArray.size(); i++) {
+                    if (!BattleFieldScreen.actorsArray.get(i).getName().equals(getName())) {
                         BattleFieldScreen.actorsArray.get(i).setSelected(false);
                     }
                 }
@@ -144,14 +144,14 @@ public class TestActorForStage extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         sprite.draw(batch);
-        if (selected){
-            if (unit){
+        if (selected) {
+            if (unit) {
                 portraitFrame.draw(batch);
             }
 
             getStage().setKeyboardFocus(this);
         }
-        if (unit){
+        if (unit) {
             spriteDirection.draw(batch);
         }
 
@@ -160,17 +160,17 @@ public class TestActorForStage extends Actor {
     @Override
     public void act(float delta) {
         getStage().getCamera().update();
-        time_for_frame_alfa +=delta;
-        if (time_for_frame_alfa >=0.05){
-            if (frame_alfa_flag){
+        time_for_frame_alfa += delta;
+        if (time_for_frame_alfa >= 0.05) {
+            if (frame_alfa_flag) {
                 alpha1 += 0.02;
-                if (alpha1 >=1){
+                if (alpha1 >= 1) {
                     frame_alfa_flag = false;
                 }
             }
-            if (!frame_alfa_flag){
-                alpha1-=0.02;
-                if (alpha1 <=0.2f){
+            if (!frame_alfa_flag) {
+                alpha1 -= 0.02;
+                if (alpha1 <= 0.2f) {
                     frame_alfa_flag = true;
                 }
             }
@@ -180,52 +180,52 @@ public class TestActorForStage extends Actor {
         }
 //    boolean test  = BattleFieldScreen.controller.keyDown(Input.Keys.UP);
 //        System.out.println(test);
-        if (selected){
-            if (unit){
-                if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+        if (selected) {
+            if (unit) {
+                if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
 
-                    setPosition(getX()-1,getY());
+                    setPosition(getX() - 1, getY());
                 }
-                if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-                    setPosition(getX()+1,getY());
+                if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                    setPosition(getX() + 1, getY());
                 }
-                if (Gdx.input.isKeyPressed(Input.Keys.UP)){
-                    setPosition(getX(),getY()+1);
+                if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                    setPosition(getX(), getY() + 1);
                 }
-                if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-                    setPosition(getX(),getY()-1);
+                if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                    setPosition(getX(), getY() - 1);
                 }
-                if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                     timeTOChanceDirection = true;
                 }
             }
         }
-        if (timeTOChanceDirection){
-            if (first){
-                setOrigin(getWidth()/2,getHeight()/2);
-                setRotation(getRotation()+1);
+        if (timeTOChanceDirection) {
+            if (first) {
+                setOrigin(getWidth() / 2, getHeight() / 2);
+                setRotation(getRotation() + 1);
                 counterup++;
-                if (counterup == 95){
+                if (counterup == 95) {
                     first = false;
                     counterup = 0;
                 }
             }
-            if (!first){
-                setRotation(getRotation()-1);
+            if (!first) {
+                setRotation(getRotation() - 1);
                 counterdown++;
-                if (counterdown ==5){
-                    first=true;
+                if (counterdown == 5) {
+                    first = true;
                     timeTOChanceDirection = false;
                     counterdown = 0;
                 }
             }
         }
 
-        sprite.setBounds(getX(),getY(),getWidth(),getHeight());
-        spriteDirection.setBounds(getX()+45,getY()+5,10,10);
+        sprite.setBounds(getX(), getY(), getWidth(), getHeight());
+        spriteDirection.setBounds(getX() + 45, getY() + 5, 10, 10);
         spriteDirection.setRotation(getRotation());
-        spriteDirection.setOrigin(5,45);
-        portraitFrame.setBounds(getX(),getY(),getWidth(),getHeight());
+        spriteDirection.setOrigin(5, 45);
+        portraitFrame.setBounds(getX(), getY(), getWidth(), getHeight());
     }
 
     public boolean isSelected() {

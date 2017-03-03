@@ -81,9 +81,9 @@ public class FloatingTextMaster {
                 Cost cost = (Cost) arg;
                 return String.valueOf(-cost.getPayment().getLastPaid());
         }
-        if (arg!=null )
-        if (!StringMaster.isEmpty(arg.toString()))
-        return arg.toString();
+        if (arg != null)
+            if (!StringMaster.isEmpty(arg.toString()))
+                return arg.toString();
 
         return aCase.getText();
     }
@@ -94,7 +94,7 @@ public class FloatingTextMaster {
 
     private TEXT_CASES getCase(Event e) {
         TEXT_CASES CASE = new EnumMaster<TEXT_CASES>().retrieveEnumConst(TEXT_CASES.class, e.getType().toString());
-        if (CASE!=null )return CASE;
+        if (CASE != null) return CASE;
         if (e.getType() instanceof STANDARD_EVENT_TYPE) {
             switch ((STANDARD_EVENT_TYPE) e.getType()) {
                 case COSTS_HAVE_BEEN_PAID:
@@ -147,9 +147,9 @@ public class FloatingTextMaster {
     public FloatingText getFloatingText(Entity active, TEXT_CASES CASE, Object arg) {
 
         FloatingText floatingText =
-         new FloatingText(
-          () -> getText(active, CASE, arg), () -> getImage(active, CASE, arg)
-          , getColor(CASE, arg));
+                new FloatingText(
+                        () -> getText(active, CASE, arg), () -> getImage(active, CASE, arg)
+                        , getColor(CASE, arg));
 
 
 //        floatingText.setDisplacementX(x);
@@ -161,10 +161,10 @@ public class FloatingTextMaster {
     public enum TEXT_CASES {
         DEFAULT,
         REQUIREMENT,
-        
+
         ATTACK_CRITICAL,
         ATTACK_SNEAK,
-        
+
         ATTACK_DODGED,
         ATTACK_BLOCKED,
         ATTACK_PARRIED,
@@ -173,7 +173,7 @@ public class FloatingTextMaster {
         ATTACK_OF_OPPORTUNITY,
         ATTACK_COUNTER,
         ATTACK_INSTANT,
-        
+
         ROLL,
 
         COSTS(true, (e) -> {
@@ -185,18 +185,18 @@ public class FloatingTextMaster {
             return costs.toArray();
         }),
         STATUS(
-         false, (e) -> {
+                false, (e) -> {
             ModifyStatusEffect ef = (ModifyStatusEffect)
-             EffectFinder.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
+                    EffectFinder.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
 //                if (ef==null )
             return ef.getValue().split(";");
         }),
         MODE(
-         false, (e) -> {
+                false, (e) -> {
             ModeEffect ef = (ModeEffect)
-             EffectFinder.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
+                    EffectFinder.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
             return new Object[]{
-             ef.getMode()
+                    ef.getMode()
             };
         });
         public boolean atOrigin;
@@ -206,12 +206,13 @@ public class FloatingTextMaster {
 
         }
 
-        public String getText( ) {
-            return  StringMaster.getWellFormattedString(name());
-        }
         TEXT_CASES(boolean atOrigin, Producer<Event, Object[]> producer) {
             this.atOrigin = atOrigin;
             this.argProducer = producer;
+        }
+
+        public String getText() {
+            return StringMaster.getWellFormattedString(name());
         }
 
         public Object[] getArgs(Event e) {

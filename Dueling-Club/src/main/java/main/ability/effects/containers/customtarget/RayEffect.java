@@ -7,17 +7,18 @@ import main.data.DataManager;
 import main.elements.conditions.Conditions;
 import main.elements.targeting.AutoTargeting;
 import main.entity.Ref.KEYS;
-import main.system.entity.ConditionMaster;
 import main.system.DC_ConditionMaster;
+import main.system.entity.ConditionMaster;
 import main.system.math.PositionMaster;
 
 public class RayEffect extends SpecialTargetingEffect {
     private String distance;
 
     public RayEffect(Effect effects) {
-        this(effects,null);
+        this(effects, null);
     }
-    public RayEffect(Effect effects,String distance) {
+
+    public RayEffect(Effect effects, String distance) {
         this.effects = effects;
         this.distance = distance;
         effects.setReconstruct(true);
@@ -29,7 +30,7 @@ public class RayEffect extends SpecialTargetingEffect {
             conditions.add(ConditionMaster.getDistanceFilterCondition(
                     KEYS.SOURCE.toString(), distance));
         }
-        
+
         if (PositionMaster.inLine(ref.getTargetObj().getCoordinates(), ref
                 .getSourceObj().getCoordinates())) {
             conditions.add(ConditionMaster.getLineCondition(ref.getSourceObj(),

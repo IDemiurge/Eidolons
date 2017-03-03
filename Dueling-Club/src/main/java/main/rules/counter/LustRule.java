@@ -1,9 +1,9 @@
 package main.rules.counter;
 
 import main.ability.effects.Effect;
-import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.STATUS;
 import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 
@@ -47,7 +47,7 @@ public class LustRule extends DC_CounterRule {
         return null;
     }
     /*
-	 * reduce focus change ownership
+     * reduce focus change ownership
 	 * 
 	 * positive effect on Warp Demons - let them regenerate focus/morale for
 	 * each Lust counter on units on adjacent cells and on gain essence from

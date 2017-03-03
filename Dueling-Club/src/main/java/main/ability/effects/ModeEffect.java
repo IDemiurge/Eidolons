@@ -79,7 +79,8 @@ public class ModeEffect extends MicroEffect {
             initBuffEffect();
         }
         timeModifier = getGame().getTurnManager().getTimeModifier();
-        LogMaster.log(1, getActiveObj() + "'s timeModifier= " + timeModifier);
+        LogMaster.log( LogMaster.COMBAT_DEBUG,
+         getActiveObj() + "'s timeModifier= " + timeModifier);
         if (mode.isDispelOnHit()) {
             addDispelOnHitTrigger();
         }

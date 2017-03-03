@@ -1,7 +1,7 @@
 package main.game.ai.logic.types.atomic;
 
-import main.content.enums.system.AiEnums;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.system.AiEnums;
 import main.entity.obj.unit.Unit;
 import main.game.ai.UnitAI;
 import main.game.ai.elements.actions.Action;

@@ -3,14 +3,14 @@ package main.system.text;
 import main.content.enums.rules.VisionEnums;
 import main.entity.Ref;
 import main.entity.obj.DC_Obj;
-import main.game.core.game.Game;
 import main.game.battlefield.Coordinates;
+import main.game.core.game.Game;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
-import main.system.auxiliary.StringMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 public class DC_LogManager extends LogManager {

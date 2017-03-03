@@ -19,13 +19,13 @@ import main.system.auxiliary.EnumMaster;
 
 import java.util.List;
 
-public class OrderMaster extends AiHandler{
+public class OrderMaster extends AiHandler {
     public OrderMaster(AiHandler master) {
         super(master);
     }
     // also used in scripting enemies?
 
-    public   Action checkFollowOrder(UnitAI ai) {
+    public Action checkFollowOrder(UnitAI ai) {
         Order order = ai.getCurrentOrder();
         if (order == null) {
 //            order = ai.getGroup().getOrder();
@@ -41,10 +41,10 @@ public class OrderMaster extends AiHandler{
         // check re-build sequence
     }
 
-    private   void initOrderSequence(Order order) {
+    private void initOrderSequence(Order order) {
         Action action = new Action(order.getAi().getUnit().getAction(order.getActionType()));
         Task task = new Task(order.getAi(), getGoalType(order.getType()), order.getArg());
-        List<ActionSequence> sequences =  getActionSequenceConstructor().getSequences(action, order
+        List<ActionSequence> sequences = getActionSequenceConstructor().getSequences(action, order
                 .getArg(), task);
         DC_PriorityManager.setPriorities(sequences);
         for (ActionSequence sequence : sequences) {
@@ -56,7 +56,7 @@ public class OrderMaster extends AiHandler{
         // special prioritizing? companion ai...
     }
 
-    private   GOAL_TYPE getGoalType(ORDER_TYPE type) {
+    private GOAL_TYPE getGoalType(ORDER_TYPE type) {
         switch (type) {
             case ATTACK:
                 return GOAL_TYPE.ATTACK;
@@ -85,7 +85,7 @@ public class OrderMaster extends AiHandler{
         return null;
     }
 
-    private   boolean checkValid(Order order) {
+    private boolean checkValid(Order order) {
         if (!order.getSequence().getNextAction().canBeActivated()) {
             // alt action
         }
@@ -95,7 +95,7 @@ public class OrderMaster extends AiHandler{
         return true;
     }
 
-    public   void giveGlobalOrders(Unit leader) {
+    public void giveGlobalOrders(Unit leader) {
         String type = ListChooser.chooseEnum(GLOBAL_ORDER_TYPE.class);
         if (type == null) {
             type = ListChooser.chooseEnum(ORDER_TYPE.class);
@@ -116,7 +116,7 @@ public class OrderMaster extends AiHandler{
     // step-sequence: choose order type, select arg!
 
     // as Action/Effect?
-    public   void giveOrders(Unit unit, Unit leader) {
+    public void giveOrders(Unit unit, Unit leader) {
         String type = ListChooser.chooseEnum(ORDER_TYPE.class);
         if (type == null) {
             return;

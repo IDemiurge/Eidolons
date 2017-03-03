@@ -25,7 +25,7 @@ public class DC_BuffObj extends BuffObj {
 
     @Override
     protected EntityMaster initMaster() {
-        return new DC_ObjMaster(this) ;
+        return new DC_ObjMaster(this);
     }
 
     @Override

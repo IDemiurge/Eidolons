@@ -1,8 +1,8 @@
 package main.ability.effects.special;
 
 import main.ability.effects.oneshot.MicroEffect;
-import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref.KEYS;
 import main.entity.item.DC_HeroItemObj;

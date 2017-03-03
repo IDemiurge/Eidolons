@@ -8,8 +8,8 @@ import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.DirectionMaster;
-import main.swing.XLine;
 import main.game.core.Eidolons;
+import main.swing.XLine;
 import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
@@ -34,29 +34,28 @@ public class ClearShotCondition extends MicroCondition {
 
     }
 
-    public boolean  checkClearShotNew(DC_Obj source, DC_Obj target){
-        Coordinates[] toCheck= pavelsAlg(source.getX(), source.getY(),
+    public boolean checkClearShotNew(DC_Obj source, DC_Obj target) {
+        Coordinates[] toCheck = pavelsAlg(source.getX(), source.getY(),
                 target.getX(), target.getY());
-        for (Coordinates c: toCheck){
+        for (Coordinates c : toCheck) {
             if (isBlocking(source, target, c.x, c.y)) {
                 return false;
             }
         }
         return true;
     }
+
     private Coordinates[] pavelsAlg(int x, int y, int x1, int y1) {
-        Coordinates[ ]   arrayToCheck   =new Coordinates [10];
-        new Coordinates(x,y);
+        Coordinates[] arrayToCheck = new Coordinates[10];
+        new Coordinates(x, y);
 
         return arrayToCheck;
 
     }
 
 
-
-
     private boolean isBlocking(DC_Obj source, DC_Obj target,
-                               int x_, int y_ ) {
+                               int x_, int y_) {
 
         Coordinates coordinates = new Coordinates(x_, y_);
         List<Unit> units = Eidolons.gameMaster.getObjectsOnCoordinate(coordinates);
@@ -147,7 +146,7 @@ public class ClearShotCondition extends MicroCondition {
             return true;
 
         return checkClearShot(source, target);*/
-       return true;
+        return true;
     }
 
 	/*
@@ -247,7 +246,6 @@ public class ClearShotCondition extends MicroCondition {
                 + new ArrayMaster<Boolean>().get2dList(array));
         return checkClearShot(x, y, array);
     }
-
 
 
     private boolean checkWallObstruction(DC_Obj source, DC_Obj target, Coordinates coordinates) {
@@ -439,7 +437,8 @@ public class ClearShotCondition extends MicroCondition {
         return true;
 
     }
-//
+
+    //
     public boolean checkClearShot(int dX, int dY, Boolean obstructionArray[][]) {
 
         double slope = (double) dY / dX;

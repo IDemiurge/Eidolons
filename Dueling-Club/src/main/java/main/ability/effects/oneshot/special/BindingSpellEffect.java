@@ -27,7 +27,7 @@ public class BindingSpellEffect extends DC_Effect {
         // TODO Auto-generated method stub
 
 
-        Effects effects=null;
+        Effects effects = null;
         if (!shareOrRedirect) {
             effects = new Effects(new CustomTargetEffect(new FixedTargeting(
                     KEYS.TARGET2), new DuplicateEffect(true)),

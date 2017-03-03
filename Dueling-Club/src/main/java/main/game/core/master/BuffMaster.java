@@ -17,8 +17,8 @@ import main.entity.obj.attach.DC_BuffObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.BuffType;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
 import main.game.ai.tools.target.EffectFinder;
+import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
 import main.rules.round.UpkeepRule;
 import main.system.EventCallbackParam;
@@ -30,9 +30,58 @@ import java.util.List;
 
 import static main.system.GuiEventType.UPDATE_BUFFS;
 
-public class BuffMaster  extends Master{
+public class BuffMaster extends Master {
     public BuffMaster(DC_Game game) {
- super(game);
+        super(game);
+    }
+
+    public static void applyBuff(String name, Effect effect, Obj target) {
+        applyBuff(name, effect, target, null);
+    }
+
+    public static void applyBuff(Effect effect, Obj target, Integer duration) {
+        applyBuff(null, effect, target, duration);
+
+    }
+
+    public static void applyBuff(Effect effect, Obj target) {
+        applyBuff(null, effect, target, null);
+    }
+
+    public static void applyBuff(String buffName, Effect effect, Obj target,
+                                 Integer duration) {
+        AddBuffEffect addBuffEffect = new AddBuffEffect(buffName, effect);
+        if (duration != null) {
+            addBuffEffect.setDuration(duration);
+        }
+        addBuffEffect.apply(Ref.getSelfTargetingRefCopy(target));
+
+    }
+
+    public static boolean checkBuffDispelable(BuffObj buff) {
+        if (buff.getBuffType() == GenericEnums.BUFF_TYPE.SPELL) {
+            if (!buff.isPermanent()) {
+                if (!buff.checkBool(GenericEnums.STD_BOOLS.NON_DISPELABLE)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static List<ObjType> getBuffsFromSpell(DC_ActiveObj spell) {
+        List<ObjType> buffTypes = new LinkedList<>();
+        for (Effect e : EffectFinder.getEffectsOfClass(spell.getAbilities(),
+                AddBuffEffect.class)) {
+            ObjType buffType = ((AddBuffEffect) e).getBuffTypeLazily();
+
+            if (buffType != null) {
+                buffTypes.add(buffType);
+            }
+        }
+
+        return buffTypes;
     }
 
     public void checkForDispels() {
@@ -41,7 +90,6 @@ public class BuffMaster  extends Master{
         }
 
     }
-
 
     public void addAttachment(Attachment attachment, Obj basis) {
         List<Attachment> list = getState().getAttachmentsMap().get(basis);
@@ -119,7 +167,7 @@ public class BuffMaster  extends Master{
                         LogMaster.error("APPLY THRU ERROR: " + effect + " HAS NO CONSTRUCT");
                     } else {
                         createBuff(type, active, player, REF, copy, duration, retainCondition)
-                         .setAppliedThrough(true);
+                                .setAppliedThrough(true);
                     }
                 }
             }
@@ -127,10 +175,8 @@ public class BuffMaster  extends Master{
         return buff;
     }
 
-
-
     public void buffCreated(BuffObj buff, Obj basis) {
-       game. getState().addObject(buff);
+        game.getState().addObject(buff);
         addAttachment(buff, basis);
         UpkeepRule.addUpkeep(buff);
         GuiEventManager.trigger(UPDATE_BUFFS, new EventCallbackParam(buff));
@@ -141,57 +187,8 @@ public class BuffMaster  extends Master{
         REF.setBasis(obj.getId());
         REF.setTarget(obj.getId());
         createBuff(buff.getType(), buff.getActive(), buff.getOwner(), REF, buff.getEffect(), buff
-         .getDuration(), Conditions.join(buff.getRetainConditions(), retainCondition));
+                .getDuration(), Conditions.join(buff.getRetainConditions(), retainCondition));
 
-    }
-
-    public static void applyBuff(String name, Effect effect, Obj target) {
-        applyBuff(name, effect, target, null);
-    }
-
-    public static void applyBuff(Effect effect, Obj target, Integer duration) {
-        applyBuff(null, effect, target, duration);
-
-    }
-
-    public static void applyBuff(Effect effect, Obj target) {
-        applyBuff(null, effect, target, null);
-    }
-
-    public static void applyBuff(String buffName, Effect effect, Obj target,
-                                 Integer duration) {
-        AddBuffEffect addBuffEffect = new AddBuffEffect(buffName, effect);
-        if (duration != null) {
-            addBuffEffect.setDuration(duration);
-        }
-        addBuffEffect.apply(Ref.getSelfTargetingRefCopy(target));
-
-    }
-
-    public static boolean checkBuffDispelable(BuffObj buff) {
-        if (buff.getBuffType() == GenericEnums.BUFF_TYPE.SPELL) {
-            if (!buff.isPermanent()) {
-                if (!buff.checkBool(GenericEnums.STD_BOOLS.NON_DISPELABLE)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    public static List<ObjType> getBuffsFromSpell(DC_ActiveObj spell) {
-        List<ObjType> buffTypes = new LinkedList<>();
-        for (Effect e : EffectFinder.getEffectsOfClass(spell.getAbilities(),
-                AddBuffEffect.class)) {
-            ObjType buffType = ((AddBuffEffect) e).getBuffTypeLazily();
-
-            if (buffType != null) {
-                buffTypes.add(buffType);
-            }
-        }
-
-        return buffTypes;
     }
 
 }

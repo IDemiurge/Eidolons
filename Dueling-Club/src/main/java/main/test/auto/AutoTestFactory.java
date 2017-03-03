@@ -1,10 +1,10 @@
 package main.test.auto;
 
-import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
 import main.content.CONTENT_CONSTS2.AUTO_TEST_TYPE;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
+import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
 import main.content.enums.system.MetaEnums;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -15,11 +15,11 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.attach.DC_FeatObj;
 import main.entity.type.ObjType;
-import main.system.entity.FilterMaster;
 import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
+import main.system.entity.FilterMaster;
 import main.test.auto.AutoTest.TEST_ARGS;
 
 import java.util.Arrays;

@@ -1,11 +1,11 @@
 package main.client.cc.logic;
 
-import main.content.enums.entity.SkillEnums.MASTERY;
 import main.content.ContentManager;
 import main.content.DC_ContentManager.ATTRIBUTE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.ValuePages;
+import main.content.enums.entity.SkillEnums.MASTERY;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;

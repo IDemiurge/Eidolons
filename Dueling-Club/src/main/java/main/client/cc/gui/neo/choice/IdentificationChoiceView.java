@@ -2,9 +2,9 @@ package main.client.cc.gui.neo.choice;
 
 import main.client.cc.gui.misc.PoolComp;
 import main.client.cc.gui.neo.points.HC_PointComp;
-import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 

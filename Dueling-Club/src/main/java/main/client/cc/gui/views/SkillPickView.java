@@ -1,7 +1,7 @@
 package main.client.cc.gui.views;
 
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.values.parameters.PARAMETER;

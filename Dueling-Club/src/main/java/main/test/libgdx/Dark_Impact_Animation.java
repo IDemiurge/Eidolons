@@ -51,7 +51,7 @@ public class Dark_Impact_Animation {
         if (current_timing > 0.3 && current_timing <= 0.35) {
             local = list_of_dark_impacts.get(6);
         }
-        if (current_timing > 0.35 ) {
+        if (current_timing > 0.35) {
             local = list_of_dark_impacts.get(7);
 
         }

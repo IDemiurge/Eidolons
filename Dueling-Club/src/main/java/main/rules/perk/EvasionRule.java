@@ -39,13 +39,13 @@ public class EvasionRule {
 
     public static void logDodged(LogManager logManager, DC_ActiveObj activeObj) {
         logManager.log(StringMaster.getMessagePrefix(true,
-         activeObj.getOwnerObj().getOwner().isMe())
-         + StringMaster.getPossessive(activeObj.getOwnerObj().getName())
-         + " "
-         + activeObj.getDisplayedName()
-         + " has beed dodged"
-         + StringMaster.wrapInParenthesis(""
-         +  getMissChance(activeObj) + "%")) ;
+                activeObj.getOwnerObj().getOwner().isMe())
+                + StringMaster.getPossessive(activeObj.getOwnerObj().getName())
+                + " "
+                + activeObj.getDisplayedName()
+                + " has beed dodged"
+                + StringMaster.wrapInParenthesis(""
+                + getMissChance(activeObj) + "%"));
 
     }
 

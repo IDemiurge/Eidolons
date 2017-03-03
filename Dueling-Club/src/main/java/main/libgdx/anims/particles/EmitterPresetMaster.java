@@ -65,19 +65,19 @@ public class EmitterPresetMaster {
             suffix = " ";
             for (String substring : StringMaster.openContainer(buffer, value_separator)) {
                 suffix += StringMaster.cropFormat(
-                 StringMaster.getLastPathSegment(substring)) + " ";
+                        StringMaster.getLastPathSegment(substring)) + " ";
             }
         }
         String newName = (name != null) ? name :
-         FileManager.getUniqueVersion(new File(PathFinder.getSfxPath() + prefix +
-          "\\" + last.path + suffix));
+                FileManager.getUniqueVersion(new File(PathFinder.getSfxPath() + prefix +
+                        "\\" + last.path + suffix));
 
         String path = StringMaster.replace(true, last.path,
-         PathFinder.getSfxPath(), "").replace(prefix, "");
+                PathFinder.getSfxPath(), "").replace(prefix, "");
         String pathAndName = PathFinder.getSfxPath() + prefix +
-         "\\" +
-         StringMaster.cropLastPathSegment(path) +
-         newName;
+                "\\" +
+                StringMaster.cropLastPathSegment(path) +
+                newName;
         XML_Writer.write(c, pathAndName);
 
         return pathAndName;
@@ -132,8 +132,8 @@ public class EmitterPresetMaster {
         }
 
         imagePath =
-         PathFinder.removeSpecificPcPrefix(
-          EmitterPresetMaster.getInstance().getImagePath(path));
+                PathFinder.removeSpecificPcPrefix(
+                        EmitterPresetMaster.getInstance().getImagePath(path));
         file = Gdx.files.internal(imagePath);
         if (file.exists()) {
             return imagePath;
@@ -149,7 +149,7 @@ public class EmitterPresetMaster {
         if (spriteEmitterTest) {
 //            effect.getEmitters().forEach(e -> {
             String randomPath = FileManager.getRandomFile(PathFinder.getSpritesPath() +
-             "impact\\").getPath();
+                    "impact\\").getPath();
             return randomPath;
 //        ((Emitter) e).offset(20, "scale");
 //        e.setImagePath(randomPath);
@@ -171,7 +171,7 @@ public class EmitterPresetMaster {
     public String getImagePath(String path) {
 
         return
-         getValueFromGroup(path, EMITTER_VALUE_GROUP.Image_Path, null);
+                getValueFromGroup(path, EMITTER_VALUE_GROUP.Image_Path, null);
     }
 
     public String getValueFromGroup(String path, EMITTER_VALUE_GROUP group, String value) {
@@ -249,8 +249,8 @@ public class EmitterPresetMaster {
             if (lowHighMinMax.contains(p.getKey().toString())) {
                 double newValue = StringMaster.getDouble(p.getValue()) + offset;
                 text = text.replace(p.getKey() + value_separator + p.getValue(),
-                 p.getKey() + value_separator + String.valueOf(
-                  newValue));
+                        p.getKey() + value_separator + String.valueOf(
+                                newValue));
             }
         }
         data = data.replace(getGroupText(data, group), text);

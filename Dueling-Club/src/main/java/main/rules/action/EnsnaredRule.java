@@ -6,9 +6,9 @@ import main.ability.effects.Effects;
 import main.ability.effects.oneshot.common.ModifyValueEffect;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
-import main.content.enums.system.MetaEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
+import main.content.enums.system.MetaEnums;
 import main.entity.Ref;
 import main.entity.active.DC_UnitAction;
 import main.entity.item.DC_WeaponObj;
@@ -163,7 +163,7 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
         DC_UnitAction attack_action = unit.getAction(offhand ? "Offhand Attack"
                 : "Attack");
         if (!attack_action.canBeActivated(unit.getRef(), true)) // unit.getRef(),
-            // true
+        // true
         {
             return false; // TODO log " has no strength left to cut the bonds"
         }

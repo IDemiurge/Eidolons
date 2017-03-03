@@ -1,8 +1,8 @@
 package main.client.cc.gui.neo.choice;
 
 import main.client.cc.logic.party.PartyObj;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.PROPS;
 import main.content.VALUE;
 import main.content.values.properties.G_PROPS;
@@ -10,9 +10,9 @@ import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.swing.generic.components.CompVisuals;
-import main.system.graphics.GuiManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.InfoMaster;
+import main.system.graphics.GuiManager;
 
 /*
  * ideally, should display location on the map as well!

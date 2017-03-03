@@ -176,7 +176,7 @@ public class DC_ObjInitializer {
             if (mapBlockMode) {
                 if (item.contains("%")) {
                     Integer chance = StringMaster.getInteger(VariableManager.getVarPart(item)
-                     .replace("%", " "));
+                            .replace("%", " "));
                     if (chance < 0) {
                         chance = -chance;
                         excludeCoordinate = true;
@@ -197,7 +197,7 @@ public class DC_ObjInitializer {
                 int level = 0;
                 if (typeName.contains(UnitGroupMaster.TYPE_LEVEL_SEPARATOR)) {
                     level = StringMaster.getInteger(StringMaster.getLastPart(typeName,
-                     UnitGroupMaster.TYPE_LEVEL_SEPARATOR));
+                            UnitGroupMaster.TYPE_LEVEL_SEPARATOR));
 
                 }
                 ObjType type = DataManager.getType(typeName, C_OBJ_TYPE.BF_OBJ);
@@ -229,7 +229,7 @@ public class DC_ObjInitializer {
                 }
                 if (UnitGroupMaster.isMirror()) {
                     if (UnitGroupMaster.getFlip() == FLIP.CW90
-                     || UnitGroupMaster.getFlip() == FLIP.CCW90) {
+                            || UnitGroupMaster.getFlip() == FLIP.CCW90) {
                         c.setX(width - c.x);
                     } else {
 
@@ -256,13 +256,13 @@ public class DC_ObjInitializer {
                     if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
                         if (!game.isSimulation()) {
                             game.getArenaManager().getSpawnManager().addDungeonEncounter(c_dungeon,
-                             block, c, type);
+                                    block, c, type);
                         }
                         continue;
                     }
 
                     if (!CoreEngine.isLevelEditor()
-                     && C_OBJ_TYPE.UNITS_CHARS.equals(type.getOBJ_TYPE_ENUM())) {
+                            && C_OBJ_TYPE.UNITS_CHARS.equals(type.getOBJ_TYPE_ENUM())) {
                         owner = game.getPlayer(false);
                     } else {
                         owner = DC_Player.NEUTRAL;
@@ -299,7 +299,7 @@ public class DC_ObjInitializer {
                 if (!game.isOffline()) {
                     if (!game.isHost()) {
                         unit.setFacing(unit.getGame().getArenaManager().getSpawnManager()
-                         .getMultiplayerFacingForUnit(unit));
+                                .getMultiplayerFacingForUnit(unit));
                     }
                 } else if (FAST_DC.isRunning()) {
                     if (!owner.isMe()) {

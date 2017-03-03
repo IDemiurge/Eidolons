@@ -1,9 +1,9 @@
 package main.system.text;
 
-import main.content.enums.entity.HeroEnums.BACKGROUND;
-import main.content.enums.entity.HeroEnums.RACE;
 import main.content.OBJ_TYPE;
 import main.content.enums.entity.HeroEnums;
+import main.content.enums.entity.HeroEnums.BACKGROUND;
+import main.content.enums.entity.HeroEnums.RACE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
@@ -22,7 +22,7 @@ import java.util.List;
 
 public class NameMaster {
     /*
-	Feren Dauril 
+    Feren Dauril
 	Edrail Neref Raurim 
 	
 	

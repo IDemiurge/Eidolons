@@ -12,15 +12,14 @@ import main.rules.counter.DC_CounterRule;
 /**
  * Created by JustMe on 12/27/2016.
  */
-public class AbsorptionRule extends DC_CounterRule{
-
+public class AbsorptionRule extends DC_CounterRule {
 
 
     public AbsorptionRule(DC_Game game) {
         super(game);
     }
 
-    public void damageDealt(DAMAGE_TYPE type, int amount, Ref ref){
+    public void damageDealt(DAMAGE_TYPE type, int amount, Ref ref) {
 //        check
     }
 

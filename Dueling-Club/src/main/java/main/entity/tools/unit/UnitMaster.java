@@ -9,8 +9,8 @@ import main.entity.tools.EntityMaster;
 /**
  * Created by JustMe on 2/26/2017.
  */
-public class UnitMaster extends EntityMaster<Unit>  {
-    
+public class UnitMaster extends EntityMaster<Unit> {
+
     public UnitMaster(Unit entity) {
         super(entity);
     }
@@ -22,13 +22,13 @@ public class UnitMaster extends EntityMaster<Unit>  {
     @Override
     protected EntityAnimator<Unit> createEntityAnimator() {
 //        return new UnitAnimator(getUnit(), this);
-        return null ;
+        return null;
     }
 
     @Override
     protected EntityLogger createEntityLogger() {
 //        return new UnitLogger(getUnit(), this);
-        return null ;
+        return null;
     }
 
     @Override
@@ -54,6 +54,6 @@ public class UnitMaster extends EntityMaster<Unit>  {
     @Override
     protected EntityHandler createHandler() {
 //        return new UnitHandler(getUnit(), this);
-        return null ;
+        return null;
     }
 }

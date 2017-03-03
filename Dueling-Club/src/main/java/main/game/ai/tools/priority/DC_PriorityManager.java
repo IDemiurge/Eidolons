@@ -24,7 +24,7 @@ import java.util.List;
  * @author JustMe
  */
 
-public class DC_PriorityManager  {
+public class DC_PriorityManager {
 
 
     private static PriorityManager impl;
@@ -80,7 +80,6 @@ public class DC_PriorityManager  {
     public static ActionSequence chooseByPriority(List<ActionSequence> actions) {
         return impl.chooseByPriority(actions);
     }
-
 
 
     public static void setPriorities(List<ActionSequence> actions) {

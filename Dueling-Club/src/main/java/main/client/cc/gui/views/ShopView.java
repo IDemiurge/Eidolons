@@ -2,9 +2,9 @@ package main.client.cc.gui.views;
 
 import main.client.cc.gui.lists.ShopListsPanel;
 import main.client.cc.gui.lists.VendorListsPanel;
-import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.*;
 import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -12,8 +12,8 @@ import main.elements.conditions.*;
 import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.system.entity.ConditionMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.entity.ConditionMaster;
 import main.system.images.ImageManager.BORDER;
 
 import java.util.Comparator;

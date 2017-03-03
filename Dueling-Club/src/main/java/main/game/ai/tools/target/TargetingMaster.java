@@ -22,12 +22,12 @@ import main.system.auxiliary.ClassMaster;
 import java.util.List;
 import java.util.Set;
 
-public class TargetingMaster extends AiHandler{
+public class TargetingMaster extends AiHandler {
+    public static int pruneLimit = 5;
+
     public TargetingMaster(AiHandler master) {
         super(master);
     }
-
-    public static int pruneLimit = 5;
 
     public static Targeting findTargeting(ActiveObj active) {
         return findTargeting(active, null);
@@ -103,7 +103,7 @@ public class TargetingMaster extends AiHandler{
     public static boolean isValidTargetingCell(Action targetAction, Coordinates c, Unit unit) {
 
         return unit.getGame().getBattleFieldManager()
-         .canMoveOnto(targetAction.getSource(), c);
+                .canMoveOnto(targetAction.getSource(), c);
     }
 
     public static boolean canBeTargeted(Action action) {

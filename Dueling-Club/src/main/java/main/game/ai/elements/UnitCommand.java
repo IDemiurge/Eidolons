@@ -3,6 +3,7 @@ package main.game.ai.elements;
 public class UnitCommand {
     private COMMAND_TYPE commandType;
     private Object[] args;
+
     public UnitCommand(COMMAND_TYPE commandType, Object... args) {
         // communicator related...
         this.setCommandType(commandType);

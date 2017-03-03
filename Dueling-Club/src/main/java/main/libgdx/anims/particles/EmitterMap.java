@@ -5,8 +5,8 @@ import com.badlogic.gdx.utils.Pool;
 import main.content.CONTENT_CONSTS2.SFX;
 import main.content.PARAMS;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
+import main.game.core.game.DC_Game;
 import main.libgdx.GameScreen;
 import main.libgdx.bf.GridMaster;
 import main.system.GuiEventManager;
@@ -27,7 +27,7 @@ public class EmitterMap {
     private final Pool<Ambience> ambiencePool = new Pool<Ambience>() {
         @Override
         protected Ambience newObject() {
-            return new Ambience(getFogSfx() );
+            return new Ambience(getFogSfx());
         }
     };
     Map<Coordinates, Ambience> fogMap = new LinkedHashMap<>();
@@ -69,11 +69,11 @@ public class EmitterMap {
             //нужно оптимизировать!
             for (Unit unit : DC_Game.game.getUnits()) {
                 if ((unit.isActiveSelected() ||
-                 unit.checkParam(PARAMS.LIGHT_EMISSION)) &&
-                 PositionMaster.getDistance(unit.getCoordinates(), c) <
-                  MIN_DISTANCE_FROM_LIGHT
-                   + unit.getIntParam(PARAMS.LIGHT_EMISSION) / 25
-                 ) {
+                        unit.checkParam(PARAMS.LIGHT_EMISSION)) &&
+                        PositionMaster.getDistance(unit.getCoordinates(), c) <
+                                MIN_DISTANCE_FROM_LIGHT
+                                        + unit.getIntParam(PARAMS.LIGHT_EMISSION) / 25
+                        ) {
                     add = false;
                     remove = true;
                 }
@@ -124,7 +124,7 @@ public class EmitterMap {
 
 
     public boolean isAmbienceOn() {
-        return ParticleManager.isAmbienceOn() ;
+        return ParticleManager.isAmbienceOn();
     }
 
 }

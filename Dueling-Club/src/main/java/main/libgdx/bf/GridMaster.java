@@ -14,7 +14,7 @@ import main.libgdx.bf.mouse.InputController;
  */
 public class GridMaster {
 
-    private static boolean gammaOn=true;
+    private static boolean gammaOn = true;
 
     public static boolean isCoordinateVisible(Coordinates c) {
         Vector2 v = GridMaster.getVectorForCoordinateWithOffset(c);
@@ -51,7 +51,7 @@ public class GridMaster {
 
     public static Vector2 getMouseCoordinates() {
         return getStage().screenToStageCoordinates(
-         new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+                new Vector2(Gdx.input.getX(), Gdx.input.getY()));
     }
 
     public static int getCellWidth() {
@@ -73,7 +73,7 @@ public class GridMaster {
         float xDiff = (float) (ratio * v.x) - v.x;
         float yDiff = (float) (ratio * v.y) - v.y;
         v.set(v.x + xDiff, v.y +
-         yDiff
+                yDiff
         );
 
         /*

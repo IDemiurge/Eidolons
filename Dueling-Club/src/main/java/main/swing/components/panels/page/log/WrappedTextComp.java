@@ -2,8 +2,8 @@ package main.swing.components.panels.page.log;
 
 import main.entity.Ref;
 import main.swing.components.panels.page.info.element.TextCompDC;
-import main.system.graphics.FontMaster;
 import main.system.auxiliary.data.ListMaster;
+import main.system.graphics.FontMaster;
 import main.system.text.TextWrapper;
 
 import java.awt.*;

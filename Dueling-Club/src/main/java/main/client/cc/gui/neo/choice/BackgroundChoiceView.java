@@ -2,8 +2,8 @@ package main.client.cc.gui.neo.choice;
 
 import main.client.cc.CharacterCreator;
 import main.content.DC_ContentManager;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;

@@ -2,10 +2,10 @@ package main.client.cc.logic;
 
 import main.client.cc.gui.misc.HeroItemChooser;
 import main.client.dc.Simulation;
-import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.CONTENT_CONSTS.RANK;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;

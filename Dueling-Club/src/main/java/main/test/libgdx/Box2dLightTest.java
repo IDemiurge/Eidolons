@@ -45,20 +45,34 @@ public class Box2dLightTest extends InputAdapter implements ApplicationListener 
     BitmapFont font;
     TextureRegion textureRegion;
     Texture bg;
-    /** our box2D world **/
+    /**
+     * our box2D world
+     **/
     World world;
-    /** our boxes **/
+    /**
+     * our boxes
+     **/
     ArrayList<Body> balls = new ArrayList<>(BALLSNUM);
-    /** our ground box **/
+    /**
+     * our ground box
+     **/
     Body groundBody;
-    /** our mouse joint **/
+    /**
+     * our mouse joint
+     **/
     MouseJoint mouseJoint = null;
-    /** a hit body **/
+    /**
+     * a hit body
+     **/
     Body hitBody = null;
-    /** pixel perfect projection for font rendering */
+    /**
+     * pixel perfect projection for font rendering
+     */
     Matrix4 normalProjection = new Matrix4();
     boolean showText = true;
-    /** BOX2D LIGHT STUFF */
+    /**
+     * BOX2D LIGHT STUFF
+     */
     RayHandler rayHandler;
     ArrayList<Light> lights = new ArrayList<>(BALLSNUM);
     float sunDirection = -90f;
@@ -226,7 +240,7 @@ public class Box2dLightTest extends InputAdapter implements ApplicationListener 
                     Integer.toString(Gdx.graphics.getFramesPerSecond())
                             + "mouse at shadows: " + atShadow
                             + " time used for shadow calculation:"
-                            + aika / ++times + "ns" , 0, 20);
+                            + aika / ++times + "ns", 0, 20);
 
             batch.end();
         }
@@ -325,11 +339,11 @@ public class Box2dLightTest extends InputAdapter implements ApplicationListener 
 
         float halfWidth = viewportWidth / 2f;
         ChainShape chainShape = new ChainShape();
-        chainShape.createLoop(new Vector2[] {
+        chainShape.createLoop(new Vector2[]{
                 new Vector2(-halfWidth, 0f),
                 new Vector2(halfWidth, 0f),
                 new Vector2(halfWidth, viewportHeight),
-                new Vector2(-halfWidth, viewportHeight) });
+                new Vector2(-halfWidth, viewportHeight)});
         BodyDef chainBodyDef = new BodyDef();
         chainBodyDef.type = BodyDef.BodyType.StaticBody;
         groundBody = world.createBody(chainBodyDef);

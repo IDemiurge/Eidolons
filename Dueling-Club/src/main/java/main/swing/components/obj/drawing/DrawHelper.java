@@ -92,7 +92,7 @@ public class DrawHelper {
         int y = 0;
         if (p == PARAMS.TOUGHNESS) {
             x = (int) (compSize.getWidth() - FontMaster.getStringWidth(text.getFont(), text
-             .getText()));
+                    .getText()));
             y = FontMaster.getFontHeight(text.getFont());
         }
         if (p == PARAMS.ENDURANCE) {

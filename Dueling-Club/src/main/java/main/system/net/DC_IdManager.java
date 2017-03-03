@@ -20,6 +20,7 @@ public class DC_IdManager implements IdManager {
     public DC_IdManager() {
 
     }
+
     public DC_IdManager(GameConnector connector, MicroGame game) {
         super();
         this.connector = connector;

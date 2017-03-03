@@ -1,7 +1,7 @@
 package main.entity.item;
 
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;

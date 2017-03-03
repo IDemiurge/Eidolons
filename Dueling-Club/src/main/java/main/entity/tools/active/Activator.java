@@ -17,10 +17,10 @@ import main.system.auxiliary.secondary.BooleanMaster;
 /**
  * Created by JustMe on 2/25/2017.
  */
-public class Activator extends ActiveHandler{
+public class Activator extends ActiveHandler {
 
 
-    private Boolean canActivate ;
+    private Boolean canActivate;
     private boolean broken;
     private DC_ActiveObj lastSubaction;
 
@@ -30,8 +30,9 @@ public class Activator extends ActiveHandler{
 
     public String getStatusString() {
         return (BooleanMaster.isTrue(canActivate)) ? "Activate " : "" +
-         getAction().getCosts().getReasonsString() + " to activate ";
+                getAction().getCosts().getReasonsString() + " to activate ";
     }
+
     public boolean canBeActivated(Ref ref, boolean first) {
         if (!first || broken) {
             if (canActivate != null) {
@@ -39,15 +40,15 @@ public class Activator extends ActiveHandler{
                 return canActivate;
             }
         }
-        if (getChecker(). checkStatus(UnitEnums.STATUS.BLOCKED)) {
+        if (getChecker().checkStatus(UnitEnums.STATUS.BLOCKED)) {
             return false;
         }
         // toBase();
         boolean result = false;
         try {
-          getInitializer().  initCosts(); // TODO ++ check if there are any targets
+            getInitializer().initCosts(); // TODO ++ check if there are any targets
 
-            result =getAction(). getCosts().canBePaid(getRef());
+            result = getAction().getCosts().canBePaid(getRef());
             broken = false;
         } catch (Exception e) {
             if (!broken) {
@@ -55,7 +56,7 @@ public class Activator extends ActiveHandler{
             }
             broken = true;
         } finally {
-            canActivate=(result);
+            canActivate = (result);
         }
         return result;
     }
@@ -70,29 +71,32 @@ public class Activator extends ActiveHandler{
         return action.canBeActivated(getRef());
 
     }
+
     public boolean canBeManuallyActivated() {
-        if (getChecker(). isBlocked()) {
+        if (getChecker().isBlocked()) {
             return false;
         }
         Boolean checkSubActionMode =
-         checkSubActionModeActivation();
+                checkSubActionModeActivation();
         if (checkSubActionMode != null) {
             return checkSubActionMode;
         }
 
         return canBeActivated(getRef(), true);
     }
+
     public void cannotActivate() {
         main.system.auxiliary.log.LogMaster.log(1, "Cannot Activate " +
-         getEntity().getName() +
-         ": " + getEntity().getCosts().getReasonsString());
+                getEntity().getName() +
+                ": " + getEntity().getCosts().getReasonsString());
         FloatingText f = FloatingTextMaster.getInstance().getFloatingText(getEntity(),
-         TEXT_CASES.REQUIREMENT, getEntity().getCosts().getReasonsString());
+                TEXT_CASES.REQUIREMENT, getEntity().getCosts().getReasonsString());
         f.setDisplacementY(100);
         f.setDuration(3);
         f.addToStage(GameScreen.getInstance().getAnimsStage(),
-         GridMaster.getVectorForCoordinateWithOffset(getEntity().getOwnerObj().getCoordinates()));
+                GridMaster.getVectorForCoordinateWithOffset(getEntity().getOwnerObj().getCoordinates()));
     }
+
     public DC_UnitAction getModeAction() {
         String mode = ownerObj.getActionMode(getEntity());
         if (mode == null) {
@@ -106,14 +110,14 @@ public class Activator extends ActiveHandler{
 
 
     public boolean canBeActivatedAsExtraAttack(Boolean instant_counter_opportunity) {
-      getHandler().  setExtraAttackMode(instant_counter_opportunity, true);
+        getHandler().setExtraAttackMode(instant_counter_opportunity, true);
         boolean res = false;
         try {
             res = canBeActivated(getRef(), true);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            getHandler(). setExtraAttackMode(instant_counter_opportunity, false);
+            getHandler().setExtraAttackMode(instant_counter_opportunity, false);
         }
         return res;
     }
@@ -128,7 +132,7 @@ public class Activator extends ActiveHandler{
 
     public boolean canBeActivatedAsAttackOfOpportunity(boolean pending, Unit target) {
         boolean watch = getOwnerObj().getMode().equals(STD_MODES.ALERT)
-         || WatchRule.checkWatched(getOwnerObj(), target);
+                || WatchRule.checkWatched(getOwnerObj(), target);
 
         if (!watch) {
             if (pending) {
@@ -160,7 +164,7 @@ public class Activator extends ActiveHandler{
 
     public boolean tryExtraAttackActivation(DC_ActiveObj triggeringAction,
                                             Boolean instant_counter_opportunity) {
-       getHandler(). setExtraAttackMode(instant_counter_opportunity, true);
+        getHandler().setExtraAttackMode(instant_counter_opportunity, true);
         try {
             if (canBeActivated(getRef(), true)) {
                 getHandler().activateOn(triggeringAction.getOwnerObj());

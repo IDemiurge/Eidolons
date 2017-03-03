@@ -73,7 +73,6 @@ public class DC_SpellObj extends DC_ActiveObj {
     }
 
 
-
     public SPELL_TYPE getSpellType() {
         if (spellType == null) {
             spellType = new EnumMaster<SPELL_TYPE>().retrieveEnumConst(SPELL_TYPE.class,
@@ -103,9 +102,6 @@ public class DC_SpellObj extends DC_ActiveObj {
     }
 
 
-
-
-
     public boolean isBlocked() {
         // if (ownerObj.checkProperty(PROPS.STATUS, STATUS.SILENCED.toString()))
         // return true;
@@ -118,7 +114,6 @@ public class DC_SpellObj extends DC_ActiveObj {
         return true;
         // return checkProperty(PROPS.STATUS, PREPARED);
     }
-
 
 
     @Override
@@ -144,17 +139,6 @@ public class DC_SpellObj extends DC_ActiveObj {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
     public void remove() {
         ownerObj.getSpells().remove(this);
         ownerObj.removeProperty(getSpellProp(), getName());
@@ -173,7 +157,6 @@ public class DC_SpellObj extends DC_ActiveObj {
         }
         return null;
     }
-
 
 
     public boolean isInstant() {
@@ -222,7 +205,6 @@ public class DC_SpellObj extends DC_ActiveObj {
     }
 
 
-
     @Override
     public Sprite getSprite() {
         return null;
@@ -237,8 +219,6 @@ public class DC_SpellObj extends DC_ActiveObj {
     public Boolean isCancelled() {
         return null;
     }
-
-
 
 
     public enum CHANNELING_SOUND {

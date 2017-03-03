@@ -1,9 +1,9 @@
 package main.game.logic.dungeon.ai;
 
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.ai.UnitAI;
 import main.game.battlefield.vision.VisionManager;
+import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
 
 import java.util.LinkedList;

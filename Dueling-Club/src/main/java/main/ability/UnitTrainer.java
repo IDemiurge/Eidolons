@@ -10,18 +10,18 @@ import main.data.DataManager;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.datatypes.WeightMap;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.WorkspaceMaster;
+import main.system.datatypes.WeightMap;
 
 import java.util.List;
 import java.util.Map;
 
 public class UnitTrainer {
     /*
-	 * learn skills as per mastery will requirements work fine? managing xp
+     * learn skills as per mastery will requirements work fine? managing xp
 	 * prioritizing skills mastery priority vs "xp/skill plan" monsters should
 	 * have some other means of progression... perhaps var-passives like
 	 * Feral/Rage, but also level-blocked Actives! In xp plan then, and with xp
@@ -63,7 +63,7 @@ public class UnitTrainer {
     }
 
     private static void generateSkillPlan(Unit trainee) {
-		/*
+        /*
 		 * weights per mastery level and skill difficulty TODO
 		 */
         String plan = getPlan(trainee).replace(StringMaster.BASE_CHAR, "");

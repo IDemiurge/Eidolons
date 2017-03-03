@@ -36,7 +36,7 @@ public class BattleFieldScreen implements Screen {
     Texture img; // Image Class
     TextureRegion region; // generic image of Texture
     Sprite sprite; //simple sprite
-      Sprite spriteForBack; //simple sprite
+    Sprite spriteForBack; //simple sprite
     Sprite testSprite; //simple sprite
     Texture testTexture;
     float img_X = 200;
@@ -75,7 +75,7 @@ public class BattleFieldScreen implements Screen {
     Texture paralax1;
     Table table;
 
-    public BattleFieldScreen(Game game){
+    public BattleFieldScreen(Game game) {
         this.myGame = game;
     }
 
@@ -93,9 +93,9 @@ public class BattleFieldScreen implements Screen {
 //        shapeRenderer =new ShapeRenderer();
 //        shapeRenderer.setAutoShapeType(true);
 
-       String s = PathFinder.getImagePath();
+        String s = PathFinder.getImagePath();
 
-        img = new Texture(s+"mini\\item\\mage armor.jpg");
+        img = new Texture(s + "mini\\item\\mage armor.jpg");
         img.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
 //        lightning_animation = new Lightning_Animation();
@@ -105,37 +105,36 @@ public class BattleFieldScreen implements Screen {
 
         testTexture = new Texture(s + "UI\\DIRECTION POINTER.png");
 
-        pixmap = new Pixmap((int)background_Width+1,(int)background_Height+1, Pixmap.Format.RGBA8888);
+        pixmap = new Pixmap((int) background_Width + 1, (int) background_Height + 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(new Color(Color.RED));
-        pixmap.drawRectangle(0,0,(int)background_Width,(int)background_Height);
+        pixmap.drawRectangle(0, 0, (int) background_Width, (int) background_Height);
         back = new Texture(pixmap);
         spriteForBack = new Sprite(back);
         portraitFrame = new Sprite(new Texture(s + "UI\\Borders\\neo\\active enemy select.png"));
-        portraitFrame.setBounds(20,400,100,100);
+        portraitFrame.setBounds(20, 400, 100, 100);
 
         testSprite = new Sprite(testTexture);
-        testSprite.setBounds(20+45,400+10,10,10);
-        testSprite.flip(true,false);
+        testSprite.setBounds(20 + 45, 400 + 10, 10, 10);
+        testSprite.flip(true, false);
 
 //        sprite.setPosition(img_X,img_Y);
 //        sprite.setBounds(img_X,img_Y,300,300);
 //
 //        sprite1.setPosition(shape_X,shape_Y);
 //        sprite1.setBounds(shape_X,shape_Y,200,300);
-        spriteForBack.setPosition(0,0);
+        spriteForBack.setPosition(0, 0);
 
-        camera = new OrthographicCamera(camera_width,camera_height);
-        camera.position.set(x_for_camera+camera_width/2,y_for_camera+camera_height/2,z_for_camera);
+        camera = new OrthographicCamera(camera_width, camera_height);
+        camera.position.set(x_for_camera + camera_width / 2, y_for_camera + camera_height / 2, z_for_camera);
         paralax = new Texture(s + "big\\New2\\Underworld.jpg");
         paralax1 = new Texture(s + "big\\New2\\Underworld.jpg");
         Image image = new Image(paralax);
         Image image1 = new Image(paralax1);
-       image.setBounds(0,0,1000,1000);
-       image1.setBounds(1000,0,1000,1000);
+        image.setBounds(0, 0, 1000, 1000);
+        image1.setBounds(1000, 0, 1000, 1000);
         table = new Table();
         table.addActor(image);
         table.addActor(image1);
-
 
 
         face = new Texture(s + "mini\\unit\\Kingsguard.jpg");
@@ -148,17 +147,17 @@ public class BattleFieldScreen implements Screen {
         Sprite forFace2 = new Sprite(face2);
         Sprite forbackGround = new Sprite(backGround);
 
-        actor = new TestActorForStage(forFace1,100,100,400,200,true);
-        actor2 = new TestActorForStage(forFace2,100,100,400,350,true);
-        actorBackground = new TestActorForStage(forbackGround,1024,768,0,0,false);
+        actor = new TestActorForStage(forFace1, 100, 100, 400, 200, true);
+        actor2 = new TestActorForStage(forFace2, 100, 100, 400, 350, true);
+        actorBackground = new TestActorForStage(forbackGround, 1024, 768, 0, 0, false);
         camspr = new Sprite(testTexture);
 
 
-        stage = new Stage(new ExtendViewport(camera_width,camera_height,camera));
+        stage = new Stage(new ExtendViewport(camera_width, camera_height, camera));
         stage.getCamera().viewportWidth = 800;
         stage.getCamera().viewportHeight = 600;
 //        stage.getCamera().position.add(0,0,0);
-        camact = new TestActorForStage(camspr,10,10,stage.getCamera().viewportWidth/2,stage.getCamera().viewportHeight/2,false);
+        camact = new TestActorForStage(camspr, 10, 10, stage.getCamera().viewportWidth / 2, stage.getCamera().viewportHeight / 2, false);
         stage.addActor(table);
         actorsArray.add(actor);
         actorsArray.add(actor2);
@@ -203,7 +202,7 @@ public class BattleFieldScreen implements Screen {
     public void render(float v) {
 //        Gdx.gl.glClearColor(color1,color2,color3,color4); // color for cleaning the screen,as for now its black
 //        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT );// method that deletes previous scene and make all pixels getOrCreate Clear Color
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
 //        batch.setProjectionMatrix(stage.getCamera().combined);
         batch.setProjectionMatrix(camera.combined);
 
@@ -266,8 +265,8 @@ public class BattleFieldScreen implements Screen {
 //        shapeRenderer.setColor(Color.RED);
 //        shapeRenderer.rect(20,20,100,100);
 //        shapeRenderer.end();
-        for (Actor a : table.getChildren()){
-            if (a.getX() < stage.getCamera().position.x - 1500){
+        for (Actor a : table.getChildren()) {
+            if (a.getX() < stage.getCamera().position.x - 1500) {
                 a.setX(stage.getCamera().position.x + 500);
             }
         }

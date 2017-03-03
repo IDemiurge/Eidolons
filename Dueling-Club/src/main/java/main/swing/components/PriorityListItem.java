@@ -153,7 +153,7 @@ public class PriorityListItem extends G_Panel {
         String value;
         Color color;
 
-        if (unit. getGame().getVisionMaster().getDetectionMaster().checkDetectedEnemy(unit)) {
+        if (unit.getGame().getVisionMaster().getDetectionMaster().checkDetectedEnemy(unit)) {
             value = unit.getParam(PARAMS.C_N_OF_ACTIONS);
             color = SmartTextManager.getParamCase(PARAMS.C_N_OF_ACTIONS, unit).getColor();
         } else {
@@ -162,7 +162,7 @@ public class PriorityListItem extends G_Panel {
         }
         apText = new SmartText(value, color);
 
-        if (unit. getGame().getVisionMaster().getDetectionMaster().checkDetectedEnemy(unit)) {
+        if (unit.getGame().getVisionMaster().getDetectionMaster().checkDetectedEnemy(unit)) {
             value = unit.getParam(PARAMS.C_INITIATIVE);
             color = SmartTextManager.getParamCase(PARAMS.C_INITIATIVE, unit).getColor();
         } else {

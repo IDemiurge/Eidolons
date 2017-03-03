@@ -8,6 +8,7 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.MACRO_PROPS;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.game.logic.battle.player.Player;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.MacroRef;
@@ -19,7 +20,6 @@ import main.game.logic.macro.map.Place;
 import main.game.logic.macro.map.Region;
 import main.game.logic.macro.map.Route;
 import main.game.logic.macro.town.Town;
-import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.math.MathMaster;
 

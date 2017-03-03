@@ -5,28 +5,29 @@ import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
-import main.swing.PointX;
 import main.game.battlefield.attack.Attack;
 import main.game.battlefield.attack.AttackCalculator.MOD_IDENTIFIER;
+import main.game.core.game.DC_Game;
 import main.libgdx.anims.phased.PhaseAnim;
+import main.swing.PointX;
 import main.swing.components.battlefield.DC_BattleFieldGrid;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.*;
-import main.system.auxiliary.log.Chronos;
-import main.system.auxiliary.log.LogMaster;
-import main.system.graphics.FontMaster.FONT;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.GeometryMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.AnimationManager.ANIM_TYPE;
 import main.system.graphics.AnimationManager.MOUSE_ITEM;
 import main.system.graphics.AnimationManager.MouseItem;
+import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.ALIGNMENT;
 import main.system.images.ImageManager.BORDER;
@@ -281,8 +282,8 @@ public abstract class PhaseAnimation implements ANIM {
 
     public void donePhase() {
         if (isOnLastPhase())
-            // if set to false, always freeze
-            // if not, check defaul
+        // if set to false, always freeze
+        // if not, check defaul
 
         {
             if (!autoFinish || !isAutoFinishDefault()) {
@@ -497,7 +498,7 @@ public abstract class PhaseAnimation implements ANIM {
 
     protected boolean drawGenerics() {
         if (isGhostDrawn(true)) //
-            // TODO draw on origin cell for move anims
+        // TODO draw on origin cell for move anims
         {
             if (getTarget() instanceof Unit) {
                 if (!getTarget().getCoordinates().equals(getTargetCoordinates())

@@ -5,8 +5,8 @@ import main.client.cc.gui.pages.HC_PagedListPanel;
 import main.client.cc.gui.views.HeroItemView;
 import main.client.cc.logic.HeroCreator;
 import main.content.C_OBJ_TYPE;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.PROPS;
 import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
@@ -134,7 +134,7 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
             // if (hlp.isResponsive())
             // if (isHeroList(hlp))
             if (HeroCreator.getObjForType(hero, (ObjType) selected) != null)
-                // if (checkObjConversion(type.getOBJ_TYPE_ENUM()))
+            // if (checkObjConversion(type.getOBJ_TYPE_ENUM()))
             {
                 selected = HeroCreator.getObjForType(hero, (ObjType) selected);
             }

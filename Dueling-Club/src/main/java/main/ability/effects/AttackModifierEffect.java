@@ -10,7 +10,7 @@ import main.system.entity.ConditionMaster;
 
 public class AttackModifierEffect {
 
-//    private static final EVENT_TYPE EVENT = EVENT_TYPE.UNIT_ATTACKS;
+    //    private static final EVENT_TYPE EVENT = EVENT_TYPE.UNIT_ATTACKS;
 //    private static final EVENT_TYPE ALT_EVENT = EVENT_TYPE.UNIT_DEALS_COMBAT_DAMAGE;
 //    private static final EVENT_TYPE ALT_EVENT2 = EVENT_TYPE.UNIT_DEALS_DAMAGE;
     private static final Condition CONDITIONS = ConditionMaster

@@ -3,13 +3,13 @@ package main.client.cc.gui.neo.choice;
 import main.entity.obj.unit.Unit;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
-import main.game.logic.generic.Positioner;
 import main.game.logic.generic.PartyManager;
+import main.game.logic.generic.Positioner;
 import main.swing.generic.components.list.G_List;
 import main.swing.generic.components.panels.G_ListPanel;
-import main.system.graphics.GuiManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
+import main.system.graphics.GuiManager;
 import main.system.math.PositionMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -30,6 +30,7 @@ public class PositionChoiceView extends ChoiceView<Unit> implements MouseListene
     private int size;
     private int columnsCount;
     private int rowCount;
+
     public PositionChoiceView(ChoiceSequence sequence, Unit hero) {
         super(sequence, hero);
     }

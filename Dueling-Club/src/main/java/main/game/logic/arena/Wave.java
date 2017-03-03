@@ -1,19 +1,19 @@
 package main.game.logic.arena;
 
 import main.client.cc.logic.party.PartyObj;
-import main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
+import main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
 import main.game.ai.GroupAI;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
+import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.DC_Player;
 import main.game.logic.dungeon.building.MapBlock;
 import main.game.logic.macro.travel.EncounterMaster;

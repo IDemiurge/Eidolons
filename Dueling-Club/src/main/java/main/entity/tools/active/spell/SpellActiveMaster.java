@@ -7,7 +7,7 @@ import main.entity.tools.active.Executor;
 /**
  * Created by JustMe on 2/23/2017.
  */
-public class SpellActiveMaster extends ActiveMaster{
+public class SpellActiveMaster extends ActiveMaster {
     public SpellActiveMaster(DC_SpellObj entity) {
         super(entity);
     }
@@ -17,8 +17,8 @@ public class SpellActiveMaster extends ActiveMaster{
 
     @Override
     protected Executor createHandler() {
-        return new Executor(getEntity(), this){
+        return new Executor(getEntity(), this) {
 
-        } ;
+        };
     }
 }

@@ -103,7 +103,6 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         game.getActionManager().resetCostsInNewThread();
 
 
-
         resetDisplayedQueue();
         result &= activeUnit.turnStarted();
         if (!result) {
@@ -158,9 +157,9 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
     }
 
 
-
     private void resetInitiative(boolean first) {
-        for (Unit unit : game.getUnits()) {resetInitiative(unit, first);
+        for (Unit unit : game.getUnits()) {
+            resetInitiative(unit, first);
 //            int before = unit.getIntParam(PARAMS.C_INITIATIVE);
 //            int after = unit.getIntParam(PARAMS.C_INITIATIVE);
 //            if (before == after) return;
@@ -181,7 +180,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
             }
         }
         for (Unit unit : unitQueue) {
-            if (game.getVisionMaster() .checkDetectedEnemy(unit)) {
+            if (game.getVisionMaster().checkDetectedEnemy(unit)) {
                 displayedUnitQueue.add(unit);
             }
         }

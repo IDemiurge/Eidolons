@@ -6,8 +6,8 @@ import main.content.values.properties.PROPERTY;
 import main.data.ability.AE_ConstrArgs;
 import main.elements.conditions.Condition;
 import main.entity.obj.Obj;
-import main.system.entity.ConditionMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.entity.ConditionMaster;
 
 import java.util.List;
 

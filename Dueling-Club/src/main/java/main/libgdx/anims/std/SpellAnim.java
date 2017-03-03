@@ -37,26 +37,27 @@ public class SpellAnim extends ActionAnim {
         RETRACT,
 
     }
+
     public enum SPELL_ANIMS {
         RAY(activeObj -> 1),
         BLAST(active -> (active.getIntParam(G_PARAMS.RADIUS) == 0) ? 1 :
-         active.getRef().getTargetObj().getCoordinates().
-          getAdjacentCoordinates().size()),
-        SPRAY(300,0, active -> {
+                active.getRef().getTargetObj().getCoordinates().
+                        getAdjacentCoordinates().size()),
+        SPRAY(300, 0, active -> {
             List<Coordinates> list = active.getOwnerObj().getCoordinates().
-             getAdjacentCoordinates();
+                    getAdjacentCoordinates();
             list.removeIf(coordinates ->
-             FacingMaster.getSingleFacing(active.getOwnerObj().getFacing(),
-              active.getOwnerObj().getCoordinates(), coordinates) != UnitEnums.FACING_SINGLE.IN_FRONT);
+                    FacingMaster.getSingleFacing(active.getOwnerObj().getFacing(),
+                            active.getOwnerObj().getCoordinates(), coordinates) != UnitEnums.FACING_SINGLE.IN_FRONT);
             return list.size();
         }
-        ){
+        ) {
             @Override
             public int getAdditionalDistance(DC_ActiveObj active) {
                 if (active.getOwnerObj().getFacing().isVertical()) {
                     return GridConst.CELL_H;
                 }
-                return GridConst.CELL_W ;
+                return GridConst.CELL_W;
             }
         },
         WAVE(active -> active.getIntParam(G_PARAMS.RADIUS)),
@@ -65,7 +66,7 @@ public class SpellAnim extends ActionAnim {
 
         public int speed;
         private Producer<DC_ActiveObj, Integer> numberOfEmitters;
-        private boolean removeBaseEmitters=true;
+        private boolean removeBaseEmitters = true;
 
         //emitter placement templates
         SPELL_ANIMS() {
@@ -73,12 +74,14 @@ public class SpellAnim extends ActionAnim {
         }
 
         SPELL_ANIMS(int speed, int distance, Producer<DC_ActiveObj, Integer> numberOfEmittersSupplier) {
-           this.speed =speed;
+            this.speed = speed;
             numberOfEmitters = numberOfEmittersSupplier;
         }
+
         SPELL_ANIMS(Producer<DC_ActiveObj, Integer> numberOfEmittersSupplier) {
             this(300, 0, numberOfEmittersSupplier);
         }
+
         public int getAdditionalDistance(DC_ActiveObj active) {
 
             return 0;

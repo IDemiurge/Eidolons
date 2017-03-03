@@ -1,4 +1,5 @@
 package main.test.libgdx.prototype;
+
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import main.data.filesys.PathFinder;
@@ -13,7 +14,7 @@ import main.libgdx.old.TopPanel;
  */
 public class GUIStage extends Stage {
 
-   static float viewport_width = 1600;
+    static float viewport_width = 1600;
     static float viewport_height = 900;
     private Background background;
     private TopPanel topPanel;
@@ -25,11 +26,11 @@ public class GUIStage extends Stage {
 
     public GUIStage() {
 
-        super(new FitViewport(viewport_width,viewport_height));
+        super(new FitViewport(viewport_width, viewport_height));
         setDebugAll(true);
 //        background = new DC_GDX_Background(PathFinder.getImagePath()).init();
         topPanel = new TopPanel(PathFinder.getImagePath()).init();
-        topPanel.setX(viewport_width/2-topPanel.getWidth()/2);
+        topPanel.setX(viewport_width / 2 - topPanel.getWidth() / 2);
         topPanel.setY(viewport_height - topPanel.getHeight());
 
         unitInfoPanel = new TargetUnitInfoPanel(PathFinder.getImagePath()).init();
@@ -54,11 +55,6 @@ public class GUIStage extends Stage {
         super.draw();
 //        getBatch().setTransformMatrix(new Matrix4(new Quaternion(new Vector3(15,60,0),15)));
         getBatch().begin();
-
-
-
-
-
 
 
 //        background.draw(getBatch(),1);

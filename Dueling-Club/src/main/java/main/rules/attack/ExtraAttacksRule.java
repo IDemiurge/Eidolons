@@ -4,8 +4,8 @@ import main.content.enums.entity.ActionEnums;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.unit.Unit;
-import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 import java.util.LinkedList;
@@ -56,7 +56,7 @@ public class ExtraAttacksRule {
         for (DC_UnitAction a : unit.getActionMap().get(ActionEnums.ACTION_TYPE.STANDARD_ATTACK)) {
             // offhand?
             if (a.isMelee())
-                // auto-atk range?
+            // auto-atk range?
             {
                 list.add(a);
             }

@@ -1,9 +1,9 @@
 package main.client.cc.gui.neo.choice;
 
 import main.client.cc.CharacterCreator;
-import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.CONTENT_CONSTS.SOUNDSET;
 import main.content.enums.entity.HeroEnums;
+import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.values.properties.G_PROPS;
 import main.entity.obj.unit.Unit;
 import main.system.auxiliary.StringMaster;

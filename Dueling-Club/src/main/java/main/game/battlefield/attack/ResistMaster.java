@@ -1,10 +1,10 @@
 package main.game.battlefield.attack;
 
-import main.content.enums.GenericEnums.DAMAGE_TYPE;
-import main.content.enums.GenericEnums.RESIST_GRADE;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.GenericEnums.RESIST_GRADE;
 import main.content.values.parameters.PARAMETER;
 import main.entity.obj.unit.Unit;
 import main.system.auxiliary.EnumMaster;

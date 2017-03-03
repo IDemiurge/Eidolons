@@ -30,7 +30,7 @@ import static main.content.enums.system.MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_RED
 public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
 
 
-    public ActiveResetter(DC_ActiveObj entity, EntityMaster<  DC_ActiveObj> entityMaster) {
+    public ActiveResetter(DC_ActiveObj entity, EntityMaster<DC_ActiveObj> entityMaster) {
         super(entity, entityMaster);
     }
 
@@ -41,7 +41,7 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
 
     @Override
     public void toBase() {
-        for (DC_ActiveObj subaction :getEntity(). getSubActions()) {
+        for (DC_ActiveObj subaction : getEntity().getSubActions()) {
             subaction.toBase();
         }
         super.toBase();
@@ -49,10 +49,10 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
             return;
         }
         if (getOwnerObj().isAiControlled()) {
-           getHandler().getTargeter(). resetTargetingCache();
+            getHandler().getTargeter().resetTargetingCache();
         }
         addCostMods();
-        getHandler().getActivator().setCanActivate( null);
+        getHandler().getActivator().setCanActivate(null);
 
         initRange();
 
@@ -87,15 +87,15 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
 
 
     protected void addCustomMods() {
-        if ( getOwnerObj().getCustomParamMap() == null) {
+        if (getOwnerObj().getCustomParamMap() == null) {
             return;
         }
         for (PARAMETER param : DC_ContentManager.getCostParams()) {
             addCustomMod(
-             COST_REDUCTION_ACTIVE_NAME,
-             getName(), param, false);
+                    COST_REDUCTION_ACTIVE_NAME,
+                    getName(), param, false);
             addCustomMod(COST_MOD_ACTIVE_NAME,
-             getName(), param, true);
+                    getName(), param, true);
         }
     }
 
@@ -108,17 +108,18 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
             return;
         }
         if (percent) {
-            getEntity(). modifyParamByPercent(param, amount, true);
+            getEntity().modifyParamByPercent(param, amount, true);
         } else {
             if (amount > 0) {
-                getEntity(). modifyParameter(param, amount);
+                getEntity().modifyParameter(param, amount);
             } else {
-                getEntity(). modifyParameter(param, amount, 1);
+                getEntity().modifyParameter(param, amount, 1);
             }
         }
     }
+
     protected void applyPenalties() {
-        Unit ownerObj=getOwnerObj();
+        Unit ownerObj = getOwnerObj();
         Integer sta = ownerObj.getIntParam(PARAMS.STAMINA_PENALTY);
         Integer ap = ownerObj.getIntParam(PARAMS.AP_PENALTY);
         Integer ess = ownerObj.getIntParam(PARAMS.ESSENCE_PENALTY);
@@ -127,17 +128,17 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
         if (getHandler().isCounterMode()) {
             ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.COUNTER_CP_PENALTY));
             sta = MathMaster.applyModIfNotZero(sta, ownerObj
-             .getIntParam(PARAMS.COUNTER_STAMINA_PENALTY));
+                    .getIntParam(PARAMS.COUNTER_STAMINA_PENALTY));
         }
-        if (getHandler(). isInstantMode()) {
+        if (getHandler().isInstantMode()) {
             ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.INSTANT_CP_PENALTY));
             sta = MathMaster.applyModIfNotZero(sta, ownerObj
-             .getIntParam(PARAMS.INSTANT_STAMINA_PENALTY));
+                    .getIntParam(PARAMS.INSTANT_STAMINA_PENALTY));
         }
         if (getHandler().isAttackOfOpportunityMode()) {
             ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.AOO_CP_PENALTY));
             sta = MathMaster.applyModIfNotZero(sta, ownerObj
-             .getIntParam(PARAMS.AOO_STAMINA_PENALTY));
+                    .getIntParam(PARAMS.AOO_STAMINA_PENALTY));
         }
         switch (getEntity().getActionGroup()) {
             case ATTACK:
@@ -153,13 +154,13 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
                 }
                 if (getEntity().isThrow()) {
                     sta += 25 * (EnumMaster.getEnumConstIndex(WEAPON_SIZE.class, getOwnerObj()
-                     .getWeapon(getEntity().isOffhand()).getWeaponSize()) - 1);
+                            .getWeapon(getEntity().isOffhand()).getWeaponSize()) - 1);
                     // TODO
                 }
                 break;
             case MOVE:
                 FlyingRule.checkAddMoveCostReductions(ownerObj);
-                TerrainRule.addMoveCost(getEntity() );
+                TerrainRule.addMoveCost(getEntity());
                 sta += ownerObj.getIntParam(PARAMS.MOVE_STA_PENALTY, false);
                 ap += ownerObj.getIntParam(PARAMS.MOVE_AP_PENALTY, false);
                 break;
@@ -179,16 +180,16 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
                 break;
 
         }
-        getEntity().  modifyParamByPercent(PARAMS.CP_COST, cp, true);
-        getEntity().  modifyParamByPercent(PARAMS.STA_COST, sta, true);
-        getEntity().  modifyParamByPercent(PARAMS.AP_COST, ap, true);
-        getEntity().  modifyParamByPercent(PARAMS.ESS_COST, ess, true);
-        getEntity().  modifyParamByPercent(PARAMS.FOC_COST, foc, true);
-        getEntity().  modifyParamByPercent(PARAMS.FOC_REQ, foc, false);
+        getEntity().modifyParamByPercent(PARAMS.CP_COST, cp, true);
+        getEntity().modifyParamByPercent(PARAMS.STA_COST, sta, true);
+        getEntity().modifyParamByPercent(PARAMS.AP_COST, ap, true);
+        getEntity().modifyParamByPercent(PARAMS.ESS_COST, ess, true);
+        getEntity().modifyParamByPercent(PARAMS.FOC_COST, foc, true);
+        getEntity().modifyParamByPercent(PARAMS.FOC_REQ, foc, false);
     }
 
     private void initRange() {
-        if (!getEntity().isStandardAttack() &&getEntity(). getActionType() != ActionEnums.ACTION_TYPE.SPECIAL_ATTACK) {
+        if (!getEntity().isStandardAttack() && getEntity().getActionType() != ActionEnums.ACTION_TYPE.SPECIAL_ATTACK) {
             return;
         }
         Obj weapon = getRef().getObj(KEYS.RANGED);
@@ -206,7 +207,6 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
             getEntity().modifyParameter(PARAMS.RANGE, weapon.getIntParam(PARAMS.RANGE));
         }
     }
-
 
 
 }

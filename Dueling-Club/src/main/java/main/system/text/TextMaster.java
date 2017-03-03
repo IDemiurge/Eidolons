@@ -1,13 +1,13 @@
 package main.system.text;
 
 import main.client.DC_Engine;
-import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.DC_ContentManager.ATTRIBUTE;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.enums.entity.HeroEnums;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
@@ -15,9 +15,9 @@ import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
-import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
+import main.system.auxiliary.data.FileManager;
 
 import java.io.File;
 import java.util.LinkedList;

@@ -3,11 +3,11 @@ package main.game.logic.macro.entity;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.game.logic.battle.player.Player;
 import main.game.logic.macro.MacroGame;
 import main.game.logic.macro.MacroRef;
 import main.game.logic.macro.map.Region;
 import main.game.logic.macro.utils.MacroContentManager;
-import main.game.logic.battle.player.Player;
 
 public class MacroObj extends Obj {
 

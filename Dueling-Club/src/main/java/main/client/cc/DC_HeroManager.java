@@ -1,9 +1,9 @@
 package main.client.cc;
 
-import main.content.enums.GenericEnums;
-import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.OBJ_TYPE;
+import main.content.enums.GenericEnums;
 import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
 import main.entity.item.DC_HeroItemObj;

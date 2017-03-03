@@ -46,7 +46,7 @@ public class SelfMoveEffect extends MoveEffect {
     @Override
     public boolean applyThis() {
         BattleFieldObject obj = (BattleFieldObject) ref.getSourceObj();
-        origin=new Coordinates(obj.getCoordinates().getX(),obj.getCoordinates().getY());
+        origin = new Coordinates(obj.getCoordinates().getX(), obj.getCoordinates().getY());
         destination = getCoordinates();
         if (destination == null) // if selective?
         {
@@ -55,20 +55,21 @@ public class SelfMoveEffect extends MoveEffect {
         game.getMovementManager().move(obj, destination, free, mod, ref);
         return true;
     }
-@Override
+
+    @Override
     public Coordinates getCoordinates() {
-    BattleFieldObject obj = (BattleFieldObject) ref.getSourceObj();
-    if (template != null) {
+        BattleFieldObject obj = (BattleFieldObject) ref.getSourceObj();
+        if (template != null) {
             // ++ variables
-        destination = game.getMovementManager().getTemplateMoveCoordinate(template, obj.getFacing(), obj,
+            destination = game.getMovementManager().getTemplateMoveCoordinate(template, obj.getFacing(), obj,
                     ref);
-    } else if (direction != null) {
-        if (origin == null) {
-            origin = obj.getCoordinates();
-        }
-        destination = origin.getAdjacentCoordinate(DirectionMaster.getDirectionByFacing(obj.getFacing(),
-                direction));
-    } else {
+        } else if (direction != null) {
+            if (origin == null) {
+                origin = obj.getCoordinates();
+            }
+            destination = origin.getAdjacentCoordinate(DirectionMaster.getDirectionByFacing(obj.getFacing(),
+                    direction));
+        } else {
             if (formula == null) {
                 try {
                     return ref.getTargetObj().getCoordinates();
@@ -90,7 +91,7 @@ public class SelfMoveEffect extends MoveEffect {
                     .select(ref)) {
                 return null;
             }
-        destination = ref.getTargetObj().getCoordinates();
+            destination = ref.getTargetObj().getCoordinates();
         }
         return destination;
     }

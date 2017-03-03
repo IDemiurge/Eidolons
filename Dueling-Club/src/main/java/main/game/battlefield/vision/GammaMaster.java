@@ -15,11 +15,11 @@ public class GammaMaster {
 
     private static final Float CELL_GAMMA_MODIFIER = 5F;
     private static final Float UNIT_GAMMA_MODIFIER = 5F;
-    private    VisionMaster master;
+    private VisionMaster master;
     private Map<DC_Obj, Integer> cache = new HashMap<>();
 
-    public GammaMaster( VisionMaster visionManager) {
-        master=visionManager;
+    public GammaMaster(VisionMaster visionManager) {
+        master = visionManager;
     }
 
     public static int getGammaForThickDarkness() {
@@ -35,8 +35,8 @@ public class GammaMaster {
         if (source == null) {
             source = target.getGame().getManager().getActiveObj();
         }
-        Integer illumination =master.getIlluminationMaster().getIllumination(source, target);
-        Integer concealment =master.getIlluminationMaster().getConcealment(source, target);
+        Integer illumination = master.getIlluminationMaster().getIllumination(source, target);
+        Integer concealment = master.getIlluminationMaster().getConcealment(source, target);
 
 
         Integer gamma = illumination - concealment;
@@ -58,8 +58,8 @@ public class GammaMaster {
     }
 
     public float getGammaForCell(int x, int y) {
-        return CELL_GAMMA_MODIFIER*new Float( getGamma(false, Eidolons.game.getManager().getActiveObj(),
-        Eidolons.game.getCellByCoordinate(new Coordinates(x, y))))/100;
+        return CELL_GAMMA_MODIFIER * new Float(getGamma(false, Eidolons.game.getManager().getActiveObj(),
+                Eidolons.game.getCellByCoordinate(new Coordinates(x, y)))) / 100;
 //        return new Random().nextInt(50)/100 + 0.5f;
     }
 }

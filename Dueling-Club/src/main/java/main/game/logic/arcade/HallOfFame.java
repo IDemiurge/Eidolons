@@ -12,7 +12,7 @@ import java.util.List;
 
 public class HallOfFame {
     /*
-	 * where to store data? Perhaps each arcade-party should have its 'victory
+     * where to store data? Perhaps each arcade-party should have its 'victory
 	 * data' while here, we'll be creating component based on their data!
 	 * 
 	 * should be 'browsable' from main menu!

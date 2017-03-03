@@ -21,15 +21,15 @@ import java.util.function.Supplier;
  */
 public class FloatingText extends Group {
 
-int alphaLoops=1;
-boolean inverseAlpha;
-    float   displacementX;
-    float   displacementY;
+    int alphaLoops = 1;
+    boolean inverseAlpha;
+    float displacementX;
+    float displacementY;
     private String text;
     private Color c;
     private Supplier<String> textSupplier;
     private Supplier<String> imageSupplier;
-    private float   duration;
+    private float duration;
     private float delay;
 
     public FloatingText(String text, Color c) {
@@ -59,52 +59,54 @@ boolean inverseAlpha;
 
     @Override
     public String toString() {
-        return getClass().getSimpleName()+": " + getText()+"; delay: "+ delay;
+        return getClass().getSimpleName() + ": " + getText() + "; delay: " + delay;
     }
 
     public void addToStage(Stage animsStage) {
         addToStage(animsStage, new Vector2(getX(), getY()));
     }
+
     public void addToStage(Stage animsStage, Vector2 vector2) {
         init(animsStage, vector2, displacementX, displacementY, getDuration());
     }
+
     public FloatingText
     init(Stage stage, Vector2 origin, float x, float y, float duration) {
         SequenceAction alphaActionSequence = new SequenceAction();
-        for (int i = alphaLoops; i>0;i--){
+        for (int i = alphaLoops; i > 0; i--) {
             AlphaAction fadeOutAction = new AlphaAction();
-            fadeOutAction.setAlpha(  0.0f);
-            fadeOutAction.setDuration(duration/alphaLoops);
+            fadeOutAction.setAlpha(0.0f);
+            fadeOutAction.setDuration(duration / alphaLoops);
             alphaActionSequence.addAction(fadeOutAction);
             if (alphaLoops == 1) {
                 break;
             }
             i--; // twice
             AlphaAction fadeInAction = new AlphaAction();
-            fadeOutAction.setAlpha(  1);
-            fadeOutAction.setDuration(duration/alphaLoops);
+            fadeOutAction.setAlpha(1);
+            fadeOutAction.setDuration(duration / alphaLoops);
             alphaActionSequence.addAction(fadeInAction);
         }
         MoveByAction moveByAction = new MoveByAction();
-        moveByAction.setAmount(x  , y  );
+        moveByAction.setAmount(x, y);
         moveByAction.setDuration(duration);
 
         RemoveActorAction removeAction = new RemoveActorAction();
         AfterAction afterAction = new AfterAction();
         afterAction.setAction(removeAction);
 
-         Action parallelAction = null ;
-if (delay!=0){
-    parallelAction=new DelayAction();
-    ((DelayAction)parallelAction).setTime(delay);
-    ((DelayAction)parallelAction).setAction(new ParallelAction(alphaActionSequence, moveByAction));
-} else {
-    parallelAction = new ParallelAction(alphaActionSequence, moveByAction);
-}
+        Action parallelAction = null;
+        if (delay != 0) {
+            parallelAction = new DelayAction();
+            ((DelayAction) parallelAction).setTime(delay);
+            ((DelayAction) parallelAction).setAction(new ParallelAction(alphaActionSequence, moveByAction));
+        } else {
+            parallelAction = new ParallelAction(alphaActionSequence, moveByAction);
+        }
 
 
         if (imageSupplier != null) {
-            if (!StringMaster.isEmpty(imageSupplier.get())){
+            if (!StringMaster.isEmpty(imageSupplier.get())) {
                 Image image = new Image(TextureCache.getOrCreate(imageSupplier.get()));
                 addActor(image);
 //            image.setPosition(origin.x, origin.y);
@@ -125,6 +127,7 @@ if (delay!=0){
 
         return this;
     }
+
     public String getText() {
         if (textSupplier != null) {
             text = textSupplier.get();

@@ -31,19 +31,19 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
     }
 
     @Override
-    public ActiveMaster  getMaster() {
+    public ActiveMaster getMaster() {
         return (ActiveMaster) super.getMaster();
     }
 
     public void construct() {
-        if (! getEntity(). isConstructed()) {
-        try {
-            super.construct();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!getEntity().isConstructed()) {
+            try {
+                super.construct();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-    }
-    getMaster().getHandler().getTargeter().initTargetingMode();
+        getMaster().getHandler().getTargeter().initTargetingMode();
     }
 
     public void initCosts() {
@@ -51,13 +51,13 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
     }
 
     public void initCosts(boolean anim) {
-        Costs costs=null ;
-        if ( getEntity().isFree()) {
+        Costs costs = null;
+        if (getEntity().isFree()) {
             costs = new Costs(new LinkedList<>());
         } else {
             try {
                 costs = DC_CostsFactory.getCostsForSpell(getEntity(),
-                 getChecker(). isSpell());
+                        getChecker().isSpell());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -67,35 +67,35 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
             boolean noCounterCost = cp_cost == null;
             if (!noCounterCost) {
                 noCounterCost = cp_cost.getPayment().getAmountFormula().toString().isEmpty()
-                 || cp_cost.getPayment().getAmountFormula().toString().equals("0");
+                        || cp_cost.getPayment().getAmountFormula().toString().equals("0");
             }
             if (noCounterCost) { // if not specifically set...
-                if (  getHandler().   isExtraAttackMode()) {
+                if (getHandler().isExtraAttackMode()) {
                     cp_cost = new CostImpl(new Payment(PARAMS.C_N_OF_COUNTERS, ap_cost.getPayment()
-                     .getAmountFormula()));
+                            .getAmountFormula()));
                     cp_cost.getPayment().getAmountFormula().applyModifier(
-                   getEntity().  getOwnerObj().getIntParam(PARAMS.EXTRA_ATTACKS_POINT_COST_MOD));
+                            getEntity().getOwnerObj().getIntParam(PARAMS.EXTRA_ATTACKS_POINT_COST_MOD));
                     cp_cost.setCostParam(PARAMS.CP_COST);
 
                 }
             } else {
-                if (!(getHandler(). isExtraAttackMode())) {
+                if (!(getHandler().isExtraAttackMode())) {
                     costs.getCosts().remove(cp_cost);
                 }
             }
-            if (getHandler(). isAttackOfOpportunityMode()) { // TODO only if watched? better
+            if (getHandler().isAttackOfOpportunityMode()) { // TODO only if watched? better
                 // here perhaps!
                 cp_cost.addAltCost(ap_cost);
             }
-            costs.removeCost(getHandler(). isExtraAttackMode() ? PARAMS.C_N_OF_ACTIONS : PARAMS.C_N_OF_COUNTERS);
+            costs.removeCost(getHandler().isExtraAttackMode() ? PARAMS.C_N_OF_ACTIONS : PARAMS.C_N_OF_COUNTERS);
         }
         if (anim) {
 //          getAnimator().  addCostAnim();
 
         }
         costs.setActive(getEntity());
-        if (! getHandler(). isInstantMode() || getHandler().isCounterMode()) {
-            getHandler().getActivator(). setCanActivate(costs.canBePaid(getRef()));
+        if (!getHandler().isInstantMode() || getHandler().isCounterMode()) {
+            getHandler().getActivator().setCanActivate(costs.canBePaid(getRef()));
         }
 
         costs.setActiveId(getId());
@@ -104,9 +104,9 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
 
     public void initChannelingCosts() {
         Costs costs = getEntity().getCosts();
-        Costs   channelingResolveCosts = new Costs(costs.getRequirements(), costs.getCosts());
-        Costs   channelingActivateCosts = new Costs(costs.getRequirements(), costs
-         .getCost(PARAMS.C_N_OF_ACTIONS));
+        Costs channelingResolveCosts = new Costs(costs.getRequirements(), costs.getCosts());
+        Costs channelingActivateCosts = new Costs(costs.getRequirements(), costs
+                .getCost(PARAMS.C_N_OF_ACTIONS));
         channelingResolveCosts.removeCost(PARAMS.C_N_OF_ACTIONS);
         channelingResolveCosts.removeRequirement(InfoMaster.COOLDOWN_REASON);
 
@@ -115,16 +115,15 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
     }
 
 
-
     public ACTION_TYPE_GROUPS initActionTypeGroup() {
-        if (getChecker(). isStandardAttack()) {
+        if (getChecker().isStandardAttack()) {
             return ActionEnums.ACTION_TYPE_GROUPS.ATTACK;
         }
         if (StringMaster.isEmpty(getProperty(G_PROPS.ACTION_TYPE))) {
             return ActionEnums.ACTION_TYPE_GROUPS.SPELL;
         }
         ACTION_TYPE type = new EnumMaster<ACTION_TYPE>().retrieveEnumConst(ACTION_TYPE.class,
-         getProperty(G_PROPS.ACTION_TYPE));
+                getProperty(G_PROPS.ACTION_TYPE));
         if (type == null) {
             return ActionEnums.ACTION_TYPE_GROUPS.SPELL;
         }
@@ -147,6 +146,7 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
         }
         return ActionEnums.ACTION_TYPE_GROUPS.SPELL;
     }
+
     @Override
     protected void initDefaults() {
 
@@ -160,13 +160,14 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
     public void addDynamicValues() {
         Integer cooldown = getIntParam(PARAMS.COOLDOWN);
         if (cooldown < 0) {
-            getEntity().  setParam(PARAMS.C_COOLDOWN, cooldown);
+            getEntity().setParam(PARAMS.C_COOLDOWN, cooldown);
         } else {
             getEntity().setParam(PARAMS.C_COOLDOWN, 0);
         }
         // TODO adjust costs based on hero's skills
 
     }
+
     @Override
     public Executor getHandler() {
         return (Executor) super.getHandler();

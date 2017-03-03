@@ -1,9 +1,9 @@
 package main.ability;
 
-import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.DC_TYPE;
 import main.content.ValuePages;
 import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;

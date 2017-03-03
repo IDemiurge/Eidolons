@@ -12,9 +12,10 @@ import main.ability.conditions.special.GraveCondition;
 import main.ability.conditions.special.SneakCondition;
 import main.ability.conditions.special.SpellCondition;
 import main.ability.conditions.special.SpellCondition.SPELL_CHECK;
-import main.content.CONTENT_CONSTS.*;
+import main.content.CONTENT_CONSTS.RETAIN_CONDITIONS;
+import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
 import main.content.DC_TYPE;
-import main.content.enums.*;
+import main.content.enums.GenericEnums;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODIFIERS;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.HeroEnums;
@@ -108,11 +109,12 @@ public class DC_ConditionMaster extends ConditionMaster {
                 return new NotCondition(new OwnershipCondition(true, KEYS.MATCH + "", KEYS.SOURCE
                         + ""));
             case NO_WALLS:
-            return     new NotCondition(
-                        new PropCondition(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.WALL+""));
+                return new NotCondition(
+                        new PropCondition(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.WALL + ""));
 
-            case NO_WATER:  return   new NotCondition(
-                 new PropCondition(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.WATER+""));
+            case NO_WATER:
+                return new NotCondition(
+                        new PropCondition(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.WATER + ""));
 
             case NO_NEUTRALS:
                 return new NotCondition(new OwnershipCondition(KEYS.MATCH + "", true));

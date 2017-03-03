@@ -13,7 +13,7 @@ import main.system.datatypes.DequeImpl;
 
 public class MacroGameState extends GameState {
     /*
-	 * party effects? world effects?
+     * party effects? world effects?
 	 * 
 	 * but most of all - Places, Settlements
 	 */
@@ -24,6 +24,7 @@ public class MacroGameState extends GameState {
     DequeImpl<Region> regions = new DequeImpl<>();
     DequeImpl<Route> routes = new DequeImpl<>();
     DequeImpl<MacroParty> parties = new DequeImpl<>();
+
     public MacroGameState(Game game) {
         super(game);
     }

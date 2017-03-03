@@ -8,8 +8,8 @@ import main.content.values.properties.PROPERTY;
 import main.data.XLinkedMap;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 
 import java.util.List;

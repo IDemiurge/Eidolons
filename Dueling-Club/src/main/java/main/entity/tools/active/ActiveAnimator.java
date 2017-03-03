@@ -17,7 +17,7 @@ import main.system.threading.WaitMaster;
  */
 public class ActiveAnimator extends EntityAnimator<DC_ActiveObj> {
     private static final String[] ANIMATION_EXCEPTIONS = {"Turn Clockwise", "Move",
-     "Turn Anticlockwise",};
+            "Turn Anticlockwise",};
     PhaseAnimation anim;
     private boolean costAnimAdded;
     private String animationKey;
@@ -61,7 +61,7 @@ public class ActiveAnimator extends EntityAnimator<DC_ActiveObj> {
 
     public void animate(Ref ref) {
 
-       getMaster(). getGame().getAnimationManager().actionResolves(getEntity(), getRef());
+        getMaster().getGame().getAnimationManager().actionResolves(getEntity(), getRef());
 
         // phases? for generic actions - turn, modes, inventory etc - ?
 
@@ -88,8 +88,8 @@ public class ActiveAnimator extends EntityAnimator<DC_ActiveObj> {
 
     private void addCostAnim() {
         if (getAnimation() != null) {
-            if (!getEntity(). isSubActionOnly()) {
-                anim.addStaticPhase(new AnimPhase(PHASE_TYPE.COSTS_PAID,getEntity().getCosts()));
+            if (!getEntity().isSubActionOnly()) {
+                anim.addStaticPhase(new AnimPhase(PHASE_TYPE.COSTS_PAID, getEntity().getCosts()));
             }
         }
         setCostAnimAdded(true);
@@ -117,8 +117,8 @@ public class ActiveAnimator extends EntityAnimator<DC_ActiveObj> {
 
 
     public void initAnimation() {
-        getMaster().getGame().getAnimationManager().newAnimation(anim );
-        if (getEntity(). getParentAction() != null) // TODO ?
+        getMaster().getGame().getAnimationManager().newAnimation(anim);
+        if (getEntity().getParentAction() != null) // TODO ?
         {
             getEntity().getParentAction().setAnimation(anim);
         }

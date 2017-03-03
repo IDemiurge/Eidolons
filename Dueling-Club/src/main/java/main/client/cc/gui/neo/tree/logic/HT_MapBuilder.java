@@ -2,8 +2,8 @@ package main.client.cc.gui.neo.tree.logic;
 
 import main.client.cc.gui.neo.tree.HT_Node;
 import main.client.cc.gui.neo.tree.logic.TreeMap.LINK_VARIANT;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.data.DataManager;
@@ -333,7 +333,7 @@ public class HT_MapBuilder {
                 // c.getType(), variant);
 
 				/*
-				 * use the variant.getOffset()
+                 * use the variant.getOffset()
 				 *
 				 * what point is base?
 				 *
@@ -684,7 +684,7 @@ public class HT_MapBuilder {
             ObjType parent = DataManager.getParent(type);
             ObjType typeAltered = alteredTypeLinkMap.get(parent);
             if (typeAltered != null)
-                // return alteredLink;
+            // return alteredLink;
             {
                 for (StaticTreeLink s : map.getStaticLinkMap().keySet()) {
                     if (s.getChildren().contains(typeAltered)) {

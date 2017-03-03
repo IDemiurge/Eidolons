@@ -13,9 +13,9 @@ import main.swing.components.panels.page.small.SmallItem;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
 import main.system.auxiliary.EnumMaster;
-import main.system.graphics.GuiManager;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
+import main.system.graphics.GuiManager;
 import main.system.text.ToolTipMaster.TOOLTIP_TYPE;
 import main.system.text.TooltipMouseListener;
 

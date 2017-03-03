@@ -56,6 +56,7 @@ public class MainPanel implements TabChangeListener {
     private int index;
     private HERO_VIEWS view;
     private boolean principleView;
+
     public MainPanel(Unit hero) {
         this.setHero(hero);
         this.comp = createMainPanel();

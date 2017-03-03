@@ -9,6 +9,7 @@ import main.content.ContentManager;
 import main.entity.Ref;
 import main.entity.obj.Attachment;
 import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
 import main.system.math.Formula;
 
 public class ContinuousEffect extends MicroEffect {
@@ -34,7 +35,7 @@ public class ContinuousEffect extends MicroEffect {
                 if (!(e instanceof ContinuousEffect) && !(e instanceof AttachmentEffect)) {
                     {
                         ((Effects) effect).remove(e);
-                        LogMaster.log("effect wrapped " + e);
+                        LogMaster.log(LOG_CHANNELS.EFFECT_PASSIVE_DEBUG, "effect wrapped " + e);
                         e = transformEffect(e);
                         ((Effects) effect).add(e);
 

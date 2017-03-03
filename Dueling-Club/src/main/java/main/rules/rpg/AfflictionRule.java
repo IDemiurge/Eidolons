@@ -5,7 +5,7 @@ package main.rules.rpg;
  */
 public class AfflictionRule {
 
-    public enum AFFLICTION{
+    public enum AFFLICTION {
 
     }
 }

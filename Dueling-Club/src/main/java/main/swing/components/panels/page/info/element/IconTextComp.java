@@ -4,9 +4,9 @@ import main.game.battlefield.Coordinates.DIRECTION;
 import main.swing.generic.components.CompVisuals;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
+import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.graphics.ColorManager;
 import main.system.graphics.FontMaster.FONT;
-import main.system.auxiliary.secondary.BooleanMaster;
 
 import java.awt.*;
 

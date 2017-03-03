@@ -14,16 +14,17 @@ import main.entity.obj.unit.Unit;
  */
 public class AirborneRule {
 
-    private static final  int REACH_HEIGHT = 500;
+    private static final int REACH_HEIGHT = 500;
 
     public static void applyAirborne(Unit obj) {
         obj.setParameter(PARAMS.HEIGHT, REACH_HEIGHT);
 
     }
-        public static Condition getMeleeAttackCondition() {
-return new Conditions(new StatusCheckCondition("", UnitEnums.STATUS.AIRBORNE),
-        new NotCondition( new NumericCondition("{source_height}", ""+REACH_HEIGHT, false
-        ))
+
+    public static Condition getMeleeAttackCondition() {
+        return new Conditions(new StatusCheckCondition("", UnitEnums.STATUS.AIRBORNE),
+                new NotCondition(new NumericCondition("{source_height}", "" + REACH_HEIGHT, false
+                ))
         );
 
     }

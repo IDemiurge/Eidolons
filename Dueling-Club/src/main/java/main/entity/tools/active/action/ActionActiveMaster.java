@@ -24,26 +24,27 @@ public class ActionActiveMaster extends ActiveMaster {
     public DC_UnitAction getEntity() {
         return (DC_UnitAction) super.getEntity();
     }
+
     @Override
     protected EntityChecker<DC_ActiveObj> createEntityChecker() {
-        return new ActiveChecker(getEntity(), this){
+        return new ActiveChecker(getEntity(), this) {
 
         };
     }
 
     @Override
     protected EntityResetter<DC_ActiveObj> createResetter() {
-        return new ActiveResetter(getEntity(), this){
+        return new ActiveResetter(getEntity(), this) {
             @Override
             public void toBase() {
                 super.toBase();
-                if (getEntity(). getParentAction() != null) {
+                if (getEntity().getParentAction() != null) {
                     String tag = "";
                     if (getEntity().getParentAction().checkProperty(G_PROPS.ACTION_TAGS,
-                     ActionEnums.ACTION_TAGS.OFF_HAND.toString())) {
+                            ActionEnums.ACTION_TAGS.OFF_HAND.toString())) {
                         tag = ActionEnums.ACTION_TAGS.OFF_HAND.toString();
                     } else if (getEntity().getParentAction().checkProperty(G_PROPS.ACTION_TAGS,
-                     ActionEnums.ACTION_TAGS.MAIN_HAND.toString())) {
+                            ActionEnums.ACTION_TAGS.MAIN_HAND.toString())) {
                         tag = ActionEnums.ACTION_TAGS.MAIN_HAND.toString();
                     }
                     if (!tag.isEmpty()) {
@@ -53,7 +54,6 @@ public class ActionActiveMaster extends ActiveMaster {
             }
         };
     }
-
 
 
     @Override

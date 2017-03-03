@@ -1,14 +1,14 @@
 package main.game.logic.macro.travel;
 
 import main.client.cc.logic.party.PartyObj;
-import main.content.enums.entity.ItemEnums.ARMOR_TYPE;
-import main.content.enums.rules.ArcadeEnums.LOOT_GROUP;
-import main.content.enums.entity.ItemEnums.WEAPON_TYPE;
 import main.content.ContentManager;
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.PARAMS;
 import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.ItemEnums.ARMOR_TYPE;
+import main.content.enums.entity.ItemEnums.WEAPON_TYPE;
+import main.content.enums.rules.ArcadeEnums.LOOT_GROUP;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -23,10 +23,10 @@ import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.logic.dungeon.Dungeon;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.entity.FilterMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.DequeImpl;
+import main.system.entity.FilterMaster;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -10,10 +10,10 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.misc.PointComp;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
-import main.system.auxiliary.StringMaster;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

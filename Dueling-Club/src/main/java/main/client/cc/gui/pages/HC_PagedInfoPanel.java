@@ -9,7 +9,7 @@ public class HC_PagedInfoPanel extends DC_PagedInfoPanel {
     public boolean isDirty() {
         // for spell upgrades page re-init
         if (getEntity() != null)
-            // if (getCurrentIndex() > 2)
+        // if (getCurrentIndex() > 2)
         {
             if (getEntity().getOBJ_TYPE_ENUM() == DC_TYPE.SPELLS) {
                 return true;

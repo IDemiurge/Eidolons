@@ -14,6 +14,6 @@ public class SpellActivator extends Activator {
     }
 
     public String getStatusString() {
-        return (getCanActivate()) ? "Activate " : "" +getAction().getCosts() .getReasonsString() + " to activate ";
+        return (getCanActivate()) ? "Activate " : "" + getAction().getCosts().getReasonsString() + " to activate ";
     }
 }

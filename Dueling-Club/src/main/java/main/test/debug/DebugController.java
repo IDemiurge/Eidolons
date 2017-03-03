@@ -6,7 +6,7 @@ import main.system.controls.Controller;
 /**
  * Created by JustMe on 2/16/2017.
  */
-public class DebugController implements Controller{
+public class DebugController implements Controller {
 
     private static Controller instance;
 
@@ -21,9 +21,10 @@ public class DebugController implements Controller{
         DebugController.instance = instance;
     }
 
-    DebugMaster    getDebugMaster(){
+    DebugMaster getDebugMaster() {
         return Eidolons.game.getDebugMaster();
     }
+
     @Override
     public boolean charTyped(char c) {
         switch (c) {

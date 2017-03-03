@@ -1,8 +1,8 @@
 package main.client.cc.gui.neo.principles;
 
-import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.PARAMS;
 import main.content.enums.entity.HeroEnums;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
 import main.rules.rpg.IntegrityRule;

@@ -22,8 +22,8 @@ import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.rules.DC_RuleImpl;
 import main.rules.RuleMaster;
 import main.rules.RuleMaster.COMBAT_RULES;
-import main.system.entity.ConditionMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.entity.ConditionMaster;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.EffectAnimation;
@@ -132,7 +132,6 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     }
 
 
-
     protected boolean checkLogged(Obj obj) {
 
         // return false;
@@ -188,6 +187,8 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     // protected abstract String getLogText(Integer level);
     @Override
     public void apply(Ref ref) {
+        if (level<0)
+            return ;
         target = (Unit) ref.getTargetObj();
         getEffect().setAnimationActive(ref.getActive());
         if (checkAnimationDisplayed(ref)) {

@@ -13,7 +13,7 @@ public class PrototypeController implements InputProcessor {
     OrthographicCamera camera;
     boolean is_it_Left_Click = false;
 
-    public PrototypeController (OrthographicCamera camera){
+    public PrototypeController(OrthographicCamera camera) {
         this.camera = camera;
     }
 
@@ -41,12 +41,11 @@ public class PrototypeController implements InputProcessor {
     @Override
     public boolean touchDown(int i, int i1, int i2, int i3) {
         // Условно у меня на ширину приложения пикселей приходится ширина камеры абстрактрых едениц
-        if (i3 ==0){
+        if (i3 == 0) {
             x_cam_pos = i;
             y_cam_pos = i1;
             is_it_Left_Click = true;
         }
-
 
 
 //        System.out.println( i + " || " + i1 + " || " + i2 + " || " + i3);
@@ -64,9 +63,9 @@ public class PrototypeController implements InputProcessor {
     @Override
     public boolean touchDragged(int i, int i1, int i2) {
 //        System.out.println("i = " + i + " || i1 = " + i1 + " || i2 = "  + i2);
-        if (is_it_Left_Click){
-            camera.position.x +=((x_cam_pos- i))*camera.zoom;
-            camera.position.y -=((y_cam_pos- i1))*camera.zoom;
+        if (is_it_Left_Click) {
+            camera.position.x += ((x_cam_pos - i)) * camera.zoom;
+            camera.position.y -= ((y_cam_pos - i1)) * camera.zoom;
             x_cam_pos = i;
             y_cam_pos = i1;
         }
@@ -86,10 +85,10 @@ public class PrototypeController implements InputProcessor {
 
     @Override
     public boolean scrolled(int i) {
-        if (i == 1){
+        if (i == 1) {
             camera.zoom *= 2f;
         }
-        if (i == -1){
+        if (i == -1) {
             camera.zoom /= 2f;
         }
         System.out.println(camera.zoom);

@@ -1,7 +1,7 @@
 package main.system.graphics;
 
-import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.PARAMS;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.elements.costs.Cost;
@@ -10,13 +10,14 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.item.DC_HeroSlotItem;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.attack.ArmorMaster;
 import main.game.battlefield.attack.Attack;
 import main.game.battlefield.attack.AttackCalculator.MOD_IDENTIFIER;
-import main.system.auxiliary.*;
+import main.game.core.game.DC_Game;
+import main.system.auxiliary.Loop;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -58,7 +59,7 @@ public class ActionAnimation extends PhaseAnimation {
     }
 
     public Object generateKey() {
-        return action.getAnimator(). getAnimationKey();
+        return action.getAnimator().getAnimationKey();
     }
 
     @Override

@@ -23,10 +23,11 @@ import main.system.math.Formula;
 /**
  * Created by JustMe on 2/26/2017.
  */
-public class ActionExecutor extends Executor{
+public class ActionExecutor extends Executor {
     public ActionExecutor(DC_ActiveObj active, ActiveMaster entityMaster) {
         super(active, entityMaster);
     }
+
     @Override
     public boolean activate() {
         if (checkContinuousMode()) {
@@ -36,7 +37,7 @@ public class ActionExecutor extends Executor{
     }
 
     private boolean checkContinuousMode() {
-        ModeEffect effect =getAction(). getModeEffect();
+        ModeEffect effect = getAction().getModeEffect();
         if (effect == null) {
             return false;
         }
@@ -80,13 +81,13 @@ public class ActionExecutor extends Executor{
 
     @Override
     public void actionComplete() {
-        CadenceRule.checkDualAttackCadence(getAction(),   ownerObj);
+        CadenceRule.checkDualAttackCadence(getAction(), ownerObj);
         super.actionComplete();
     }
 
     @Override
     protected Targeter createTargeter(DC_ActiveObj active, ActiveMaster entityMaster) {
-        return new Targeter(active, entityMaster){
+        return new Targeter(active, entityMaster) {
 
             @Override
             public Targeting getTargeting() {
@@ -99,7 +100,7 @@ public class ActionExecutor extends Executor{
                 if (getAction().isAttack()) {
                     Conditions conditions = new OrConditions();
                     int maxRange = 0;
-                    for (DC_ActiveObj attack :getAction(). getSubActions()) {
+                    for (DC_ActiveObj attack : getAction().getSubActions()) {
                         if (attack.isThrow()) {
                             continue;
                         }
@@ -115,25 +116,26 @@ public class ActionExecutor extends Executor{
                     conditions = ConditionMaster.getFilteredConditions(conditions, DistanceCondition.class);
                     conditions.add(new DistanceCondition("" + maxRange));
                     SelectiveTargeting selectiveTargeting = new SelectiveTargeting(
-                     SELECTIVE_TARGETING_TEMPLATES.ATTACK, conditions, new Formula("1"));
+                            SELECTIVE_TARGETING_TEMPLATES.ATTACK, conditions, new Formula("1"));
                     return selectiveTargeting;
 
                 }
                 return super.getTargeting();
             }
-        }; }
+        };
+    }
 
     public boolean checkContinuousModeDeactivate() {
         if (getAction().getModeEffect() == null) {
             return false;
         }
-        return (getEntity().getOwnerObj().getBuff(getAction(). getModeBuffName()) != null);
+        return (getEntity().getOwnerObj().getBuff(getAction().getModeBuffName()) != null);
 
     }
 
     @Override
     protected Activator createActivator(DC_ActiveObj active, ActiveMaster entityMaster) {
-        return new Activator(active, entityMaster){
+        return new Activator(active, entityMaster) {
             @Override
             public DC_UnitAction getAction() {
                 return (DC_UnitAction) super.getAction();
@@ -141,15 +143,15 @@ public class ActionExecutor extends Executor{
 
             @Override
             public boolean canBeActivated(Ref ref, boolean first) {
-                if (getAction(). isAttack()) {
+                if (getAction().isAttack()) {
                     for (DC_ActiveObj attack : getAction().getSubActions()) {
                         if (attack.canBeActivated(ref, true)) {
                             return true;
                         }
                     }
                 }
-                if (getAction(). isContinuousMode()) {
-                    if ( checkContinuousModeDeactivate()) {
+                if (getAction().isContinuousMode()) {
+                    if (checkContinuousModeDeactivate()) {
                         return true;
                     }
                 }

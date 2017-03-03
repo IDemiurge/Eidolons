@@ -66,12 +66,12 @@ public class SpellMaster extends Master {
             }
 
             SPELL_POOL spellPool = new EnumMaster<SPELL_POOL>().retrieveEnumConst(SPELL_POOL.class,
-             PROP.getName());
+                    PROP.getName());
             if (spellPool != null) {
                 spell.setProperty(G_PROPS.SPELL_POOL, spellPool.toString());
             } else {
                 LogMaster.log(1, PROP.getName()
-                 + " spell pool not found for " + typeName);
+                        + " spell pool not found for " + typeName);
             }
 
             spells.add((DC_SpellObj) spell);
@@ -107,6 +107,6 @@ public class SpellMaster extends Master {
 
     private List<DC_SpellObj> getMySpells() {
         return ((Unit)
-         getGame().getPlayer(true).getHeroObj()).getSpells();
+                getGame().getPlayer(true).getHeroObj()).getSpells();
     }
 }

@@ -19,7 +19,7 @@ public class IlluminationMaster {
     private Integer globalIllumination = DEFAULT_GLOBAL_ILLUMINATION;
     private Integer globalConcealment = 0;
 
-    public IlluminationMaster( VisionMaster visionManager) {
+    public IlluminationMaster(VisionMaster visionManager) {
 
     }
 
@@ -43,7 +43,7 @@ public class IlluminationMaster {
         Dungeon dungeon = source.getGame().getDungeon();
 
         Integer illumination =
-         target.getIntParam(PARAMS.ILLUMINATION);
+                target.getIntParam(PARAMS.ILLUMINATION);
         illumination += target.getIntParam(PARAMS.LIGHT_EMISSION) / 2;
         if (dungeon != null) {
             illumination += dungeon.getGlobalIllumination();
@@ -62,10 +62,10 @@ public class IlluminationMaster {
         } else if (singleFacing == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
             sight -= source.getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
         }
-        int diff = sight-distance  ;
+        int diff = sight - distance;
 
         if (diff < 0) {
-            ilMod = 100 + (diff * 10 -diff * diff * 5);
+            ilMod = 100 + (diff * 10 - diff * diff * 5);
         } else {
             ilMod = (100 - (int) (diff * 5 + Math.sqrt(diff * 100)));
         }
@@ -74,7 +74,7 @@ public class IlluminationMaster {
         ilMod = Math.max(ilMod, 1);
 
         // TODO DISTANCE FACTOR?
-      return illumination * ilMod / 100;
+        return illumination * ilMod / 100;
     }
 
     public Integer getConcealment(Unit source, DC_Obj target) {

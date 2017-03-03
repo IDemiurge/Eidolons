@@ -30,23 +30,23 @@ public class T3UpperPanel extends G_Panel {
 
     // T3ClassComp c; // label?
 
-	/*
+    /*
      * New Design
-	 * 
-	 * No excess decor 
-	 * Vertical masteries - necessary? Is there a better way? 
-	 * 
-	 * Classes - maybe for ClassT3 only! 
-	 * 
-	 * Controls - all good 
-	 * 
-	 * Hero-Info - name/lvl sure 
-	 * 
-	 * Deity Panel - optional 
-	 * 
-	 * 
-	 * 
-	 */
+     *
+     * No excess decor
+     * Vertical masteries - necessary? Is there a better way?
+     *
+     * Classes - maybe for ClassT3 only!
+     *
+     * Controls - all good
+     *
+     * Hero-Info - name/lvl sure
+     *
+     * Deity Panel - optional
+     *
+     *
+     *
+     */
     PortraitComp heroPortrait;
     DeityComp dc;
     G_Panel controlPanel;

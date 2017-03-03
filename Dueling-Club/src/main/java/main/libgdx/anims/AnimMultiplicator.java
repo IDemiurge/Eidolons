@@ -87,9 +87,9 @@ public class AnimMultiplicator implements Runnable {
         emitterList.forEach(e -> {
             if (e.getTarget() != null) {
                 float offset = 1 * (float) GeometryMaster.getAngle(
-                 getActive().getOwnerObj().getCoordinates(),
+                        getActive().getOwnerObj().getCoordinates(),
 //             getRef().getTargetObj().getCoordinates()
-                 e.getTarget());
+                        e.getTarget());
                 offset += 90;
                 LogMaster.log(1, getActive() + " is offset by " + offset);
                 e.getEffect().offsetAngle(offset);
@@ -133,15 +133,15 @@ public class AnimMultiplicator implements Runnable {
         List<EmitterActor> list = new LinkedList<>();
 
         filterCoordinates(template, coordinates).forEach(c ->
-         {
-             for (EmitterActor e : emitterList) {
-                 if (e.isGenerated()) {
-                     continue;
-                 }
-                 EmitterActor actor = multiplicateEmitter(null, c, e);
-                 list.add(actor);
-             }
-         }
+                {
+                    for (EmitterActor e : emitterList) {
+                        if (e.isGenerated()) {
+                            continue;
+                        }
+                        EmitterActor actor = multiplicateEmitter(null, c, e);
+                        list.add(actor);
+                    }
+                }
         );
 
         list.forEach(a -> emitterList.add(a));
@@ -154,15 +154,15 @@ public class AnimMultiplicator implements Runnable {
             FACING_DIRECTION facing = getActive().getOwnerObj().getFacing();
             List<Coordinates> filtered = new LinkedList<>(coordinates);
             Coordinates farthest = CoordinatesMaster.getFarmostCoordinateInDirection
-             (facing.getDirection(),
-              new LinkedList<>(coordinates), null);
+                    (facing.getDirection(),
+                            new LinkedList<>(coordinates), null);
             switch (template) {
 //                template.getNumberOfEmitters(getActive())
                 case RAY:
                     anim.setForcedDestinationForAll(farthest);
 
                     return Arrays.asList(new Coordinates[]{
-                     farthest
+                            farthest
                     });
 
                 case BLAST:
@@ -170,20 +170,20 @@ public class AnimMultiplicator implements Runnable {
                 case SPRAY: {
                     boolean xOrY = !facing.isVertical();
                     filtered.removeIf(c ->
-                      farthest.getXorY(xOrY) != c.getXorY(xOrY)
+                                    farthest.getXorY(xOrY) != c.getXorY(xOrY)
 //                     PositionMaster.getDistance(farthest, anim.getOriginCoordinates()) 
 //                         > PositionMaster.getDistance(c, anim.getOriginCoordinates())
                     );
                     while (filtered.size() <
-                     template.getNumberOfEmitters(getActive())) {
+                            template.getNumberOfEmitters(getActive())) {
                         List<Coordinates> list = new LinkedList<>(coordinates);
                         list.removeAll(filtered);
                         list.removeIf(c ->
-                         farthest.getXorY(!xOrY) == c.getXorY(!xOrY)
+                                farthest.getXorY(!xOrY) == c.getXorY(!xOrY)
                         );
                         Coordinates c = CoordinatesMaster.getFarmostCoordinateInDirection(
-                         facing.getDirection(),
-                         list, null);
+                                facing.getDirection(),
+                                list, null);
                         filtered.add(c);
                     }
 
@@ -237,7 +237,7 @@ public class AnimMultiplicator implements Runnable {
         list.forEach(a -> emitterList.add(a));
     }
 
-    private void createAndAddEmitterActions(EmitterActor actor,ZONE_ANIM_MODS mod) {
+    private void createAndAddEmitterActions(EmitterActor actor, ZONE_ANIM_MODS mod) {
 //if (mod.isParallel()){
 //    ParallelAction a = new ParallelAction();
 //    actor.getActions().forEach(action ->  a .addAction(action));
@@ -247,23 +247,23 @@ public class AnimMultiplicator implements Runnable {
 //
 //        }
     }
-        private void createAndAddEmitterActions(EmitterActor actor, Coordinates c) {
+
+    private void createAndAddEmitterActions(EmitterActor actor, Coordinates c) {
 //        MoveToAction action = ActorMaster.getMoveToAction(c, actor, pixelsPerSecond);
         Vector2 v = GridMaster.
-         getVectorForCoordinateWithOffset(c);
+                getVectorForCoordinateWithOffset(c);
         int speed = getPixelsPerSecond();
-        if (template!=null )
-        {
-            GridMaster.offset(getOrigin(), v, template.getAdditionalDistance(getActive()),getOrigin().x>c.x, getOrigin().y>c.y);
-            speed =  template.speed;
+        if (template != null) {
+            GridMaster.offset(getOrigin(), v, template.getAdditionalDistance(getActive()), getOrigin().x > c.x, getOrigin().y > c.y);
+            speed = template.speed;
         }
         MoveByAction action = ActorMaster.getMoveByAction(getOrigin(),
-         v, actor,speed);
+                v, actor, speed);
 
 
-            if (action.getDuration() > this.duration) {
-                this.duration = action.getDuration();
-            }
+        if (action.getDuration() > this.duration) {
+            this.duration = action.getDuration();
+        }
 //        ActorMaster.addRemoveAfter(actor);
         actor.getEffect().setDuration((int) action.getDuration());
         anim.setDuration(duration);
@@ -296,7 +296,7 @@ public class AnimMultiplicator implements Runnable {
         action.setTarget(actor);
         Float duration = (float) (Math.sqrt(x * x + y * y) / getPixelsPerSecond());
         action.setDuration(
-         duration);
+                duration);
         if (duration > this.duration) {
             this.duration = duration;
         }
@@ -321,7 +321,7 @@ public class AnimMultiplicator implements Runnable {
 
     public int getPixelsPerSecond() {
         return
-         anim.getPixelsPerSecond();
+                anim.getPixelsPerSecond();
     }
 
     public Vector2 getOrigin() {

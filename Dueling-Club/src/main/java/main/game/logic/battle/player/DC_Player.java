@@ -5,9 +5,9 @@ import main.content.enums.system.AiEnums;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
-import main.game.core.game.DC_Game;
 import main.game.ai.PlayerAI;
 import main.game.battlefield.Coordinates;
+import main.game.core.game.DC_Game;
 
 import java.awt.*;
 import java.util.HashMap;

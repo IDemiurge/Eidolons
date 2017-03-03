@@ -30,8 +30,8 @@ public class Eidolons {
 
 
     public static ExecutorService getExecutorService() {
-if (executorService==null )
-         executorService = Executors.newSingleThreadExecutor();
-return executorService;
+        if (executorService == null)
+            executorService = Executors.newSingleThreadExecutor();
+        return executorService;
     }
 }

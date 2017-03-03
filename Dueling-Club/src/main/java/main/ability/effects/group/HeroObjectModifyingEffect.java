@@ -4,10 +4,10 @@ import main.ability.effects.AddBuffEffect;
 import main.ability.effects.DC_Effect;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
-import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
 import main.data.ConcurrentMap;
@@ -23,11 +23,11 @@ import main.entity.active.DC_UnitAction;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.ai.tools.target.EffectFinder;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.entity.ConditionMaster;
 import main.system.entity.FilterMaster;
-import main.system.auxiliary.data.ListMaster;
-import main.system.auxiliary.RandomWizard;
 import main.system.math.Formula;
 
 import java.util.LinkedList;
@@ -276,8 +276,8 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
                 break;
             case ITEMS:
                 for (Obj i : hero.getQuickItems())
-                    // if (i.getOBJ_TYPE_ENUM() != OBJ_TYPES.WEAPONS)
-                    // non-weapon QI???
+                // if (i.getOBJ_TYPE_ENUM() != OBJ_TYPES.WEAPONS)
+                // non-weapon QI???
                 {
                     list.add(i.getId());
                 }

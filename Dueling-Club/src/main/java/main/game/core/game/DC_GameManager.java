@@ -145,7 +145,7 @@ public class DC_GameManager extends GameManager {
         // SoundMaster.playEffectSound(SOUNDS.WHAT, obj);
 
         ColorManager.setCurrentColor(ColorManager.getDarkerColor(ColorManager.getAltAspectColor(obj
-         .getType()), 80));
+                .getType()), 80));
         return true;
     }
 
@@ -251,7 +251,7 @@ public class DC_GameManager extends GameManager {
         if (!selectionObj) {
             if (C_OBJ_TYPE.BF_OBJ.equals(obj.getOBJ_TYPE_ENUM())) {
                 selectionObj = selectingSet.contains(getGame().getCellByCoordinate(
-                 obj.getCoordinates()));
+                        obj.getCoordinates()));
             }
         }
         if (!selectionObj) {
@@ -336,7 +336,7 @@ public class DC_GameManager extends GameManager {
     public Integer select(Filter<Obj> filter, Ref ref) {
         if (ref.getActive() instanceof DC_ActiveObj) {
             if (getGame().getToolTipMaster()
-             .isTargetingTooltipShown((DC_ActiveObj) ref.getActive())) {
+                    .isTargetingTooltipShown((DC_ActiveObj) ref.getActive())) {
                 getGame().getToolTipMaster().initTargetingTooltip((DC_ActiveObj) ref.getActive());
             }
         }
@@ -372,7 +372,7 @@ public class DC_GameManager extends GameManager {
 
         if (selectingSet.isEmpty()) {
             getGame().getToolTipMaster().addTooltip(SCREEN_POSITION.ACTIVE_UNIT_BOTTOM,
-             "No targets available!");
+                    "No targets available!");
             SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
             return null;
         }
@@ -396,7 +396,7 @@ public class DC_GameManager extends GameManager {
         // add Cancel button? add hotkey listener?
         LogMaster.log(1, "***** awaiting selection from: " + selectingSet);
         Integer selectedId = (Integer) WaitMaster.waitForInput(
-         WAIT_OPERATIONS.SELECT_BF_OBJ);
+                WAIT_OPERATIONS.SELECT_BF_OBJ);
         // selecting = false;
         // cancelSelecting();
         return selectedId;
@@ -494,8 +494,8 @@ public class DC_GameManager extends GameManager {
     public boolean effectApplies(EffectImpl effect) {
         Ref ref = effect.getRef();
         if (!getGame().fireEvent(new
-         Event(STANDARD_EVENT_TYPE.EFFECT_IS_BEING_APPLIED,
-         ref))) {
+                Event(STANDARD_EVENT_TYPE.EFFECT_IS_BEING_APPLIED,
+                ref))) {
             return false;
         }
 

@@ -49,7 +49,7 @@ public class Targeter extends ActiveHandler {
                         getHandler().interrupted = true;
                     }
                 } else {
-                    if (getRef().getTargetObj()==null ){
+                    if (getRef().getTargetObj() == null) {
                         // what to do?
                     }
                 }
@@ -96,7 +96,7 @@ public class Targeter extends ActiveHandler {
     protected void initTargetingMode() {
         if (targetingMode == null) {
             targetingMode = new EnumMaster<TARGETING_MODE>().retrieveEnumConst(
-             TARGETING_MODE.class, getType().getProperty(G_PROPS.TARGETING_MODE));
+                    TARGETING_MODE.class, getType().getProperty(G_PROPS.TARGETING_MODE));
         }
 
         if (targetingMode == null) {
@@ -122,7 +122,7 @@ public class Targeter extends ActiveHandler {
             return true;
         }
         Map<FACING_DIRECTION, Boolean> map = getTargetingAnyCache().get(
-         getOwnerObj().getCoordinates());
+                getOwnerObj().getCoordinates());
         if (map == null) {
             map = new HashMap<>();
             targetingAnyCache.put(getOwnerObj().getCoordinates(), map);
@@ -140,7 +140,7 @@ public class Targeter extends ActiveHandler {
 
         Targeting targeting = getTargeting();
         Map<FACING_DIRECTION, Map<Integer, Boolean>> map = getTargetingCache().get(
-         getOwnerObj().getCoordinates());
+                getOwnerObj().getCoordinates());
         if (map == null) {
             map = new HashMap<>();
             getTargetingCache().put(getOwnerObj().getCoordinates(), map);

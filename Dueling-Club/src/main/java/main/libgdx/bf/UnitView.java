@@ -69,8 +69,8 @@ public class UnitView extends BaseView {
             this.clockTexture = clockTexture;
             initiativeStrVal = new Label("[#00FF00FF]" + String.valueOf(clockVal) + "[]", StyleHolder.getDefaultLabelStyle());
             initiativeStrVal.setPosition(
-             getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
-             clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
+                    getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
+                    clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
         }
 
         if (arrowTexture != null) {
@@ -149,11 +149,15 @@ public class UnitView extends BaseView {
 //                 GraveyardManager.GRAVE_ROWS;
 //                sp.draw(skullTexture, x, y, skullTexture.getWidth(), skullTexture.getHeight());
 //            }
-            Texture texture=portraitTexture;
-            if (outlineTexture!=null ){
+            Texture texture = portraitTexture;
+            float w = texture.getWidth();
+            float h = texture.getHeight();
+            if (outlineTexture != null) {
                 texture = outlineTexture;
+                w=GridConst.CELL_W;
+                h=GridConst.CELL_H;
             }
-            sp.draw(texture, 0, 0, GridConst.CELL_W, GridConst.CELL_H);
+            sp.draw(texture, 0, 0, w, h);
 
             if (border != null) {
                 border.draw(sp, 1);
@@ -221,8 +225,8 @@ public class UnitView extends BaseView {
 
         if (initiativeStrVal != null) {
             initiativeStrVal.setPosition(
-             portraitTexture.getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
-             clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
+                    portraitTexture.getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
+                    clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
         }
 
         if (imageContainer != null) {
@@ -253,8 +257,8 @@ public class UnitView extends BaseView {
             clockVal = val;
             initiativeStrVal.setText("[#00FF00FF]" + String.valueOf(val) + "[]");
             initiativeStrVal.setPosition(
-             portraitTexture.getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
-             clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
+                    portraitTexture.getWidth() - clockTexture.getWidth() / 2 - initiativeStrVal.getWidth() / 2,
+                    clockTexture.getHeight() / 2 - initiativeStrVal.getHeight() / 2);
 
             needRepaint = true;
         } else {

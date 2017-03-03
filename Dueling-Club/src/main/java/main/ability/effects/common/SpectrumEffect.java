@@ -12,9 +12,8 @@ import main.entity.obj.Obj;
 import main.game.ai.tools.target.EffectFinder;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
-import main.game.battlefield.vision.VisionManager;
-import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.Chronos;
 import main.system.datatypes.DequeImpl;
 import main.system.math.Formula;
 import main.system.math.PositionMaster;
@@ -79,9 +78,9 @@ public class SpectrumEffect extends DC_Effect {
         FACING_DIRECTION d = null;
         Chronos.mark(source + "'s " + toString());
         List<Coordinates> coordinates = new LinkedList<>(getGame().getVisionMaster().getSightMaster()
-         .getSpectrumCoordinates(
-                range, sidePenalty, backwardRange, (DC_Obj) ref.getObj(source),
-          vision, d));
+                .getSpectrumCoordinates(
+                        range, sidePenalty, backwardRange, (DC_Obj) ref.getObj(source),
+                        vision, d));
         Chronos.logTimeElapsedForMark(source + "'s " + toString());// TODO
         // boolean x-ray ++ tall/short/etc
         if (effects == null) {

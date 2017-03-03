@@ -1,10 +1,10 @@
 package main.rules;
 
-import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.ValuePages;
 import main.content.enums.system.AiEnums;
+import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;

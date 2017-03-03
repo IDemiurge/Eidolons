@@ -129,7 +129,7 @@ public class Analyzer extends AiHandler {
             }
         }
         return ListMaster.isNotEmpty(unit.getActionMap().get(
-         ACTION_DISPLAY_GROUP.SPEC_ACTIONS));
+                ACTION_DISPLAY_GROUP.SPEC_ACTIONS));
     }
 
     public static boolean hasQuickItems(Unit unit) {
@@ -178,7 +178,7 @@ public class Analyzer extends AiHandler {
         }
 
         Coordinates c = unit.getCoordinates().getAdjacentCoordinate(
-         unit.getFacing().getDirection());
+                unit.getFacing().getDirection());
         if (c == null) {
             return false;
         }
@@ -191,9 +191,9 @@ public class Analyzer extends AiHandler {
         for (DC_Obj obj : ai.getUnit().getOwner().getLastSeenCache().keySet()) {
             if (isEnemy(obj, ai.getUnit())) {
                 Coordinates coordinates = ai.getUnit().getOwner()
-                 .getLastSeenCache().get(obj);
+                        .getLastSeenCache().get(obj);
                 list.add(obj.getGame().getCellByCoordinate(
-                 coordinates));
+                        coordinates));
             }
         }
 
@@ -237,7 +237,7 @@ public class Analyzer extends AiHandler {
                                       boolean adjacentOnly) {
         List<Unit> list = new LinkedList<>();
         for (Coordinates coordinates : unit.getCoordinates()
-         .getAdjacentCoordinates()) {
+                .getAdjacentCoordinates()) {
             Obj obj = unit.getGame().getUnitByCoordinate(coordinates);
             if (obj == null) {
                 continue;
@@ -353,14 +353,14 @@ public class Analyzer extends AiHandler {
 
             if (adjacent) {
                 if (!obj.getCoordinates().isAdjacent(
-                 targetUnit.getCoordinates())) {
+                        targetUnit.getCoordinates())) {
                     continue;
                 }
             }
 
             if (free) {
                 Unit unit = targetUnit.getGame().getUnitByCoordinate(
-                 cell.getCoordinates());
+                        cell.getCoordinates());
                 if (unit != null) {
                     if (VisionManager.checkVisible(unit)) {
                         continue;
@@ -404,7 +404,7 @@ public class Analyzer extends AiHandler {
                 }
             }
             if (PositionMaster.getDistance(cell, ai.getUnit()) <= ai
-             .getMaxWanderDistance()) {
+                    .getMaxWanderDistance()) {
                 list.add(cell);
             }
         }
@@ -436,7 +436,7 @@ public class Analyzer extends AiHandler {
     private static List<DC_Cell> getCorpseCells(Unit unit) {
 
         return unit.getGame().getCellsForCoordinates(
-         unit.getGame().getGraveyardManager().getCorpseCells());
+                unit.getGame().getGraveyardManager().getCorpseCells());
     }
 
     public static List<? extends DC_Obj> getZoneDamageCells(Unit unit) {
@@ -463,16 +463,16 @@ public class Analyzer extends AiHandler {
         List<DC_Cell> cells = getLastSeenEnemyCells(ai);
         if (!cells.isEmpty()) {
             return new ListMaster<DC_Cell>()
-             .getList(new RandomWizard<DC_Cell>()
-              .getRandomListItem(cells));
+                    .getList(new RandomWizard<DC_Cell>()
+                            .getRandomListItem(cells));
         }
         return new ListMaster<DC_Cell>().getList(ai
-         .getUnit()
-         .getGame()
-         .getCellByCoordinate(
-          new RandomWizard<Coordinates>().getRandomListItem(ai
-           .getUnit().getCoordinates()
-           .getAdjacentCoordinates())));
+                .getUnit()
+                .getGame()
+                .getCellByCoordinate(
+                        new RandomWizard<Coordinates>().getRandomListItem(ai
+                                .getUnit().getCoordinates()
+                                .getAdjacentCoordinates())));
         // List<DC_Cell> list = new LinkedList<>();
         //
         // DC_HeroObj unit = ai.getUnit();

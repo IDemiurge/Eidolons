@@ -6,7 +6,7 @@ import main.system.math.Formula;
 
 public class AbsorbDamageEffect extends DC_Effect {
     /*
-	 * Yes, I suppose we could do this via counters or a parameter
+     * Yes, I suppose we could do this via counters or a parameter
 	 * DAMAGE_ABSORPTION ... The question is, how to control it? The type/source
 	 * of dmg it blocks...
 	 */
@@ -59,7 +59,7 @@ public class AbsorbDamageEffect extends DC_Effect {
         // new AddTriggerEffect(event_type, conditions, effects).apply(ref);
 
 		/*
-		 * Percentage Doesn't matter when or where, I must cut the damage by %
+         * Percentage Doesn't matter when or where, I must cut the damage by %
 		 * In fact it does - it should happen before events like
 		 * damage_being_dealt, otherwise...
 		 */

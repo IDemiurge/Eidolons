@@ -29,8 +29,8 @@ public class Emitter extends ParticleEmitter {
 
     public void toggle(String fieldName) {
         boolean value =
-         new ReflectionMaster<Boolean>().getFieldValue(fieldName,
-          this, ParticleEmitter.class);
+                new ReflectionMaster<Boolean>().getFieldValue(fieldName,
+                        this, ParticleEmitter.class);
         new ReflectionMaster().setValue(fieldName, !value, this, ParticleEmitter.class);
     }
 
@@ -53,7 +53,7 @@ public class Emitter extends ParticleEmitter {
     private Object getValue(String s) {
 
         return new ReflectionMaster<>().
-         getFieldValue(s, this, ParticleEmitter.class);
+                getFieldValue(s, this, ParticleEmitter.class);
 
     }
 
@@ -90,21 +90,21 @@ public class Emitter extends ParticleEmitter {
                 Vector2 v = new Vector2(Gdx.input.getX(), (Gdx.graphics.getHeight() - Gdx.input.getY()));
                 Vector2 pos = GameScreen.getInstance().getGridStage().screenToStageCoordinates(v);
                 float xDiff = pos.x
-                 - GameScreen.getInstance().getController().getX_cam_pos()
-                 - (getX() + p.getX());
+                        - GameScreen.getInstance().getController().getX_cam_pos()
+                        - (getX() + p.getX());
                 float yDiff = pos.y //fuck that shit
-                 - (getY() + p.getY())
-                 - GameScreen.getInstance().getController().getY_cam_pos();
+                        - (getY() + p.getY())
+                        - GameScreen.getInstance().getController().getY_cam_pos();
                 Float distance = (float) (Math.sqrt(xDiff * xDiff + yDiff * yDiff));
                 if (particleLogOn) {
                     LogMaster.log(1,
-                     " Mouse x: " + pos.x
-                      + " Mouse y: " + pos.y //fuck that shit
-                      + " Particle x: " + (getY() + p.getX())
-                      + " Particle y: " + (getY() + p.getY())
-                      + " cam x: " + (GameScreen.getInstance().getController().getX_cam_pos())
-                      + " cam y: " + (GameScreen.getInstance().getController().getY_cam_pos())
-                      + " distance: " + (distance)
+                            " Mouse x: " + pos.x
+                                    + " Mouse y: " + pos.y //fuck that shit
+                                    + " Particle x: " + (getY() + p.getX())
+                                    + " Particle y: " + (getY() + p.getY())
+                                    + " cam x: " + (GameScreen.getInstance().getController().getX_cam_pos())
+                                    + " cam y: " + (GameScreen.getInstance().getController().getY_cam_pos())
+                                    + " distance: " + (distance)
                     );
                 }
                 if (distance > 500) {
@@ -121,7 +121,7 @@ public class Emitter extends ParticleEmitter {
     public Particle[] getParticles() {
         try {
             return (Particle[]) new ReflectionMaster<>().getFieldValue("particles",
-             this, ParticleEmitter.class);
+                    this, ParticleEmitter.class);
         } catch (Exception e) {
             e.printStackTrace();
         }

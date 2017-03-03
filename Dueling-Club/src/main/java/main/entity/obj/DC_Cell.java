@@ -6,15 +6,15 @@ import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.PROPERTY;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.vision.VisionManager;
+import main.game.core.game.DC_Game;
+import main.game.logic.battle.player.Player;
 import main.game.logic.dungeon.Dungeon;
 import main.game.logic.dungeon.building.MapBlock;
-import main.game.logic.battle.player.Player;
-import main.system.graphics.GuiManager;
 import main.system.auxiliary.StringMaster;
+import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.test.debug.DebugMaster;
 

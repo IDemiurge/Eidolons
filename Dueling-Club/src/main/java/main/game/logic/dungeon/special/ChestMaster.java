@@ -29,7 +29,7 @@ public class ChestMaster {
 //        new Treasure(type, value);
 
 //        return map;
-        return null ;
+        return null;
     }
 
     public class Treasure {

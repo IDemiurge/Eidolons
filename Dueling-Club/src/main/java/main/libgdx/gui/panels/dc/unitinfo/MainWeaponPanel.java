@@ -16,7 +16,7 @@ public class MainWeaponPanel extends TablePanel {
         maxHeight(getHeight());
     }
 
-    public void addWeapon(){
+    public void addWeapon() {
 
     }
 }

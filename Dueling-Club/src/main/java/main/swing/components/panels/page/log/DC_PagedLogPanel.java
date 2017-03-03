@@ -2,15 +2,15 @@ package main.swing.components.panels.page.log;
 
 import main.content.values.properties.G_PROPS;
 import main.entity.obj.Obj;
-import main.game.core.game.DC_Game;
 import main.game.battlefield.Coordinates;
+import main.game.core.game.DC_Game;
 import main.swing.components.ImageButton;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
-import main.system.graphics.FontMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.ANIM;
+import main.system.graphics.FontMaster;
 import main.system.graphics.PhaseAnimation;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -55,7 +55,6 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
         descrWrapLength = getWrapLength();
 
     }
-
 
 
     private int getWrapLength() {

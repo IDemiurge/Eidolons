@@ -8,8 +8,8 @@ import main.swing.components.panels.page.info.element.ContainerTextElement;
 import main.swing.components.panels.page.info.element.EntityValueComponent;
 import main.swing.components.panels.page.info.element.PropertyElement;
 import main.swing.generic.components.misc.GraphicComponent;
-import main.system.graphics.FontMaster;
 import main.system.auxiliary.secondary.InfoMaster;
+import main.system.graphics.FontMaster;
 
 import java.awt.*;
 import java.util.List;

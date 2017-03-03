@@ -49,7 +49,7 @@ public class DC_UAP_Holder extends G_Panel {
     @Override
     public void refresh() {
 
-        Obj activeObj = null ;//state.getManager().getActiveObj();
+        Obj activeObj = null;//state.getManager().getActiveObj();
         if (activeObj != null) {
             if (activeObj.getOwner().isAi() || !activeObj.getOwner().isMe()) {
                 for (DC_PagedUnitActionPanel uap : uapMap.values()) {

@@ -90,8 +90,7 @@ public class Executor extends ActiveHandler {
     }
 
 
-
-        public boolean activate() {
+    public boolean activate() {
 
         reset();
 
@@ -118,7 +117,6 @@ public class Executor extends ActiveHandler {
 
         return result;
     }
-
 
 
     private void cancelled() {
@@ -186,7 +184,7 @@ public class Executor extends ActiveHandler {
 //        setResistanceChecked(false); ??
 
         GuiEventManager.trigger(GuiEventType.ACTION_BEING_RESOLVED,
-         new EventCallbackParam(getAction()));
+                new EventCallbackParam(getAction()));
         getMaster().getAnimator().addResolvesPhase();
 
         if (getAction().getAbilities() != null) {
@@ -235,7 +233,7 @@ public class Executor extends ActiveHandler {
         }
         if (!StringMaster.isEmpty(getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES))) {
             ownerObj.addProperty(G_PROPS.STANDARD_PASSIVES,
-             getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES));
+                    getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES));
         }
     }
 

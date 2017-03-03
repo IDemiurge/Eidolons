@@ -32,7 +32,7 @@ public class FactionMaster {
     }
 
     public static List<FACTIONS> getEnemyFactions(FACTIONS f) {
-return null ;
+        return null;
     }
 
     public enum FACTIONS {
