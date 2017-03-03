@@ -15,7 +15,7 @@ import java.util.Collection;
 /**
  * Created by JustMe on 3/1/2017.
  */
-public class UnitDtoMaster {
+public class UnitInfoDTOFactory {
     public static UnitInfoDTO createDTO(Unit unit) {
         UnitInfoDTO dto = new UnitInfoDTO();
         dto.setAvatar(getAvatar(unit));
