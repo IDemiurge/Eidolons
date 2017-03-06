@@ -1,7 +1,7 @@
 package tests;
 
-import java.init.JUnitDcInitializer;
-import java.tests.entity.CreateUnitTest;
+import init.JUnitDcInitializer;
+import tests.entity.CreateUnitTest;
 import java.util.LinkedList;
 import java.util.List;
 

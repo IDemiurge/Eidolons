@@ -20,6 +20,7 @@ public class JUnitDcInitializer {
     public static void main(String[] strings) {
 //        PathFinder.setJUnitMode(true); to find all test/resources
         DC_Engine.systemInit();
+        DC_Engine.dataInit(false);
         JUnitResources.init();
 
 //        LogMaster.setJUnit(true); //log everything* or nothing to speed up
