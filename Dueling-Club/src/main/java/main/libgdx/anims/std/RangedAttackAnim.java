@@ -11,6 +11,7 @@ import main.entity.item.DC_QuickItemObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.Obj;
 import main.libgdx.anims.sprite.SpriteAnimation;
+import main.libgdx.anims.sprite.SpriteAnimationFactory;
 import main.libgdx.texture.TextureCache;
 
 import java.util.LinkedList;
@@ -58,7 +59,7 @@ public class RangedAttackAnim extends AttackAnim {
     @Override
     public void start() {
         super.start();
-        weaponSprite = new SpriteAnimation(getRangedWeaponImage(getActive()));
+        weaponSprite = SpriteAnimationFactory.getSpriteAnimation(getRangedWeaponImage(getActive()));
         weaponSprite.setAttached(false);
         sprites.add(weaponSprite);
     }

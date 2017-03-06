@@ -85,6 +85,7 @@ public class TextureCache {
 
 
         path = StringMaster.removePreviousPathSegments(path, imagePath);
+        path = path.toLowerCase();
         if (!this.cache.containsKey(path)) {
             Path p = null;
             try {

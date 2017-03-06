@@ -170,7 +170,8 @@ public class RadialManager {
                 }
 
                 if (objects.size() > 0) {
-                    Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(objects, active1::activateOn);
+                    Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(objects,
+                     active1::activateOn);
                     RadialMenu.CreatorNode innn = new RadialMenu.CreatorNode();
                     innn.name = active1.getName();
                     innn.texture = TextureCache.getOrCreate(active1.getImagePath());

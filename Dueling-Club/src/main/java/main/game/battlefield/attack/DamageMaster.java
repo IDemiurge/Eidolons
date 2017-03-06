@@ -93,7 +93,8 @@ public class DamageMaster extends Manager {
 
         entry.addLinkedAnimations(animation);
         entry.setAnimPhasesToPlay(PHASE_TYPE.DAMAGE_DEALT);
-
+//active.getAnimator(). TODO
+        if (animation != null)
         animation.addPhaseArgs(true, PHASE_TYPE.REDUCTION_NATURAL, dmg_type);
         ref.setAmount(e_damage);
         // TODO separate event types?

@@ -367,14 +367,11 @@ public abstract class Entity extends DataModel implements OBJ {
     }
 
     public boolean isNeutral() {
-        return isOwnedBy(Player.NEUTRAL);
+        return getChecker().isNeutral();
     }
 
     public boolean isOwnedBy(Player player) {
-        if (owner == null) {
-            return player == null;
-        }
-        return owner.equals(player);
+        return getChecker().isOwnedBy(player);
     }
 
     public ASPECT getAspect() {

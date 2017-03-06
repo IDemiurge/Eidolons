@@ -24,8 +24,9 @@ import main.entity.Deity;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
-import main.entity.obj.ActiveObj;
 import main.entity.obj.BattleFieldObject;
+import main.entity.tools.bf.unit.UnitChecker;
+import main.entity.tools.bf.unit.UnitResetter;
 import main.entity.type.ObjType;
 import main.game.ai.UnitAI;
 import main.game.battlefield.Coordinates;
@@ -39,7 +40,6 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.generic.DC_ActionManager;
 import main.libgdx.bf.Rotatable;
-import main.system.DC_Constants;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
@@ -55,7 +55,6 @@ import main.test.debug.DebugMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import javax.swing.*;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -67,7 +66,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     protected DequeImpl<Coordinates> visibleCoordinates;
     protected MODE mode;
-    protected Map<ACTION_TYPE, List<DC_UnitAction>> actionMap;
+    protected Map<ACTION_TYPE, DequeImpl<DC_UnitAction>> actionMap;
 
     protected boolean standardActionsAdded;
     protected Deity deity;
@@ -210,6 +209,10 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         return false;
     }
 
+    public boolean isHero() {
+        return TYPE_ENUM == DC_TYPE.CHARS;
+    }
+
     protected void addDefaultValues() {
 
         super.addDefaultValues();
@@ -250,13 +253,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         }
         super.toBase();
 
-        // activatePassives();
         if (game.isSimulation()) {
             return;
         }
-        // resetActives();
-        // resetFacing();
-//        if (isActiveSelected())
         if (isMine()) {
             if (CoreEngine.isAnimationTestMode()) {
                 TestMasterContent.addANIM_TEST_Spells(this);
@@ -285,12 +284,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         setDirty(false);
     }
 
-    protected void resetActives() {
-        for (ActiveObj active : getActives()) {
-            active.setRef(ref);
-            active.toBase();
-        }
-    }
+
 
     @Override
     public void invokeClicked() {
@@ -304,20 +298,17 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         }
         // setMode(STD_MODES.NORMAL); just don't.
 
-        resetToughness();
+        getResetter().resetToughness();
         // resetPercentages(); => toBase()
-        resetActions();
+        getResetter().resetActions();
 
-        resetAttacksAndMovement();
+        getResetter().resetAttacksAndMovement();
 
         regen();
 
         new Event(STANDARD_EVENT_TYPE.UNIT_NEW_ROUND_STARTED, ref).fire();
     }
 
-    public boolean isHero() {
-        return TYPE_ENUM == DC_TYPE.CHARS;
-    }
 
     public void recalculateInitiative() {
         int before = getIntParam(PARAMS.C_INITIATIVE);
@@ -356,36 +347,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
                     new EventCallbackParam(new ImmutablePair<>(this, after)));
 
         }
-    }
-
-
-    protected void resetActions() {
-        if (checkPassive(UnitEnums.STANDARD_PASSIVES.AUTOMATA)) {
-            return;
-        }
-        if (checkStatus(UnitEnums.STATUS.IMMOBILE)) {
-            setParam(PARAMS.C_N_OF_ACTIONS, 0);
-            return;
-        }
-        int carryOverFactor = DC_Constants.CARRY_OVER_FACTOR;
-        if (getIntParam(PARAMS.C_N_OF_ACTIONS) < 0) {
-            carryOverFactor = DC_Constants.CARRY_OVER_FACTOR_NEGATIVE;
-        }
-
-        int actions = getIntParam(PARAMS.N_OF_ACTIONS) + getIntParam(PARAMS.C_N_OF_ACTIONS)
-                / carryOverFactor;
-
-        setParam(PARAMS.C_N_OF_ACTIONS, actions);
-
-    }
-
-    protected void resetAttacksAndMovement() {
-        if (checkStatus(UnitEnums.STATUS.IMMOBILE)) {
-            setParam(PARAMS.C_N_OF_ACTIONS, 0);
-            return;
-        }
-        setParam(PARAMS.C_N_OF_COUNTERS, getIntParam(PARAMS.N_OF_COUNTERS));
-
     }
 
     // melee/ranged separate!
@@ -789,14 +750,14 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         // getVisibleCoordinates().clear();
     }
 
-    public Map<ACTION_TYPE, List<DC_UnitAction>> getActionMap() {
+    public Map<ACTION_TYPE, DequeImpl<DC_UnitAction>> getActionMap() {
         if (actionMap == null) {
             actionMap = new ConcurrentHashMap<>();
         }
         return actionMap;
     }
 
-    public void setActionMap(Map<ACTION_TYPE, List<DC_UnitAction>> actionMap) {
+    public void setActionMap(Map<ACTION_TYPE, DequeImpl<DC_UnitAction>> actionMap) {
         this.actionMap = actionMap;
     }
 
@@ -898,24 +859,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         return action;
     }
 
-    public boolean isLiving() {
-        if (checkClassification(UnitEnums.CLASSIFICATIONS.UNDEAD)) {
-            return false;
-        }
-        if (checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH)) {
-            return false;
-        }
-        if (checkClassification(UnitEnums.CLASSIFICATIONS.ELEMENTAL)) {
-            return false;
-        }
-        if (checkClassification(UnitEnums.CLASSIFICATIONS.CONSTRUCT)) {
-            return false;
-        }
-        if (checkClassification(UnitEnums.CLASSIFICATIONS.STRUCTURE)) {
-            return false;
-        }
-        return !checkClassification(UnitEnums.CLASSIFICATIONS.MECHANICAL);
-    }
 
     public boolean isHidden() {
         return hidden;
@@ -925,4 +868,17 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         hidden = b;
     }
 
+    @Override
+    public UnitResetter getResetter() {
+        return (UnitResetter) super.getResetter();
+    }
+
+    @Override
+    public UnitChecker getChecker() {
+        return (UnitChecker) super.getChecker();
+    }
+
+    public boolean isLiving() {
+        return getChecker().isLiving();
+    }
 }

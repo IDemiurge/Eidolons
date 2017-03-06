@@ -95,11 +95,11 @@ public class LogMaster {
     public static boolean AI_DEBUG_ON2 = true;
     public static boolean MOVEMENT_DEBUG_ON = false;
     public static boolean GUI_DEBUG_ON = false;
-    public static boolean ANIM_DEBUG_ON = true;
+    public static boolean ANIM_DEBUG_ON = false;
     public static boolean EVENT_DEBUG_ON = false;
     public static boolean EFFECT_DEBUG_ON = false;
     public static boolean TRIGGER_DEBUG_ON = false;
-    public static boolean PATHING_DEBUG_ON = true;
+    public static boolean PATHING_DEBUG_ON = false;
     public static boolean COMBAT_DEBUG_ON = false;
     public static boolean MAP_GENERATION_DEBUG_ON = false;
     public static boolean CONDITION_DEBUG_ON = false;
@@ -413,6 +413,10 @@ public class LogMaster {
         GAME_INFO, HIDDEN_INFO, SYSTEM_INFO, DEBUG
     }
 
+    public enum LOGS {
+        COMBAT_LOG, SYS_LOG, CHAT_LOG
+    }
+
     public enum LOG_CHANNELS {
         EFFECT_ACTIVE_DEBUG(LogMaster.EFFECT_SPECIFIC_DEBUG_PREFIX, LogMaster.EFFECT_SPECIFIC_DEBUG_ON, LogMaster.EFFECT_SPECIFIC_DEBUG),
 
@@ -509,10 +513,6 @@ public class LogMaster {
         public void setLog(LOG log) {
             this.log = log;
         }
-    }
-
-    public enum LOGS {
-        COMBAT_LOG, SYS_LOG, CHAT_LOG
     }
 
 }

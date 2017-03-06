@@ -3,7 +3,6 @@ package main.test.frontend;
 import main.client.DC_Engine;
 import main.client.cc.logic.items.ItemGenerator;
 import main.client.dc.Launcher;
-import main.client.dc.Launcher.VIEWS;
 import main.client.game.NetGame;
 import main.client.game.TestMode;
 import main.client.game.gui.DC_GameGUI;
@@ -117,18 +116,6 @@ public class FAST_DC {
                 PresetLauncher.PRESET_OPTION = StringMaster.getInteger(args[0]);
             }
         }
-/*        ClassLoader classLoader = FAST_DC.class.getClassLoader();
-        File f = new File(classLoader.getResource("").getFile());
-        f = new File(f.getParentFile()+"/dependency/Font");
-        for (String s : f.list()) {
-            System.out.println(s);
-        }*/
-//        File f = new File(.getFile());
-//        f = f.getParentFile().getParentFile();
-//        System.out.println(f.getAbsolutePath());
-        //InputStream is = FAST_DC.class.getClassLoader().getResourceAsStream("Font");
-
-        CoreEngine.swingOn = false;
         CoreEngine.setExceptionTypes(exceptions);
         running = true;
         DC_Engine.systemInit();
@@ -224,7 +211,7 @@ public class FAST_DC {
         if (!CoreEngine.isSwingOn()) {
             DENIS_Launcher.main(new String[]{});
         }
-//        main.test.libgdx.prototype.Launcher.main(new String[]{});
+
         CoreEngine.setTEST_MODE(true);
         DC_Engine.init();
         Chronos.mark("GAME LAUNCHED");
@@ -249,21 +236,7 @@ public class FAST_DC {
         }
         initKeyManager();
 
-        if (MINIMAP_TEST_ON) {
-            try {
-                Launcher.setView(VIEWS.MINI_MAP);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
 
-        // if (BEHAVIOR_TEST_ON) {
-        // WaitMaster.WAIT(500);
-        // game.getManager().infoSelect(game.getPlayer(true).getHeroObj());
-        // game.getDebugMaster().executeDebugFunction(DEBUG_FUNCTIONS.KILL_UNIT);
-        // }
-
-        // CoreEngine.setWritingLogFilesOn(true);
     }
 
 

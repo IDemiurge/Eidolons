@@ -3,6 +3,7 @@ package main.libgdx.anims.particles;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.libgdx.anims.sprite.SpriteAnimation;
+import main.libgdx.anims.sprite.SpriteAnimationFactory;
 import main.system.auxiliary.RandomWizard;
 
 import java.io.BufferedReader;
@@ -31,7 +32,7 @@ public class SpriteEmitter extends Emitter {
     public void start() {
 //        if (animation==null )
         time = 0;
-        animation = new SpriteAnimation(getImagePath());
+        animation = SpriteAnimationFactory.getSpriteAnimation(getImagePath());
 
 //        animation.setFrameDuration(
 //         getDuration().getLowMax() / animation.getFrameNumber()/loops);

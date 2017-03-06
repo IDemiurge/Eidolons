@@ -51,8 +51,12 @@ public class PresetLauncher {
     }
 
     static {
+        LAUNCH.AI.graphicsTest = false;
+        LAUNCH.Logic.graphicsTest = false;
+
         LAUNCH.Gui.visionHacked = true;
         LAUNCH.Anims.visionHacked = true;
+        LAUNCH.AI.visionHacked = true;
         LAUNCH.Anims.logChannelsOn = new LogMaster.LOG_CHANNELS[]{
                 LOG_CHANNELS.ANIM_DEBUG
         };
@@ -338,6 +342,7 @@ public class PresetLauncher {
         public CONTROLLER controller;
         public String preset;
         public RULE_SCOPE ruleScope;
+        public boolean graphicsTest = true;
         public boolean debugMode;
         public boolean dummy;
         public boolean dummy_pp;

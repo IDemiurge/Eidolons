@@ -1,38 +1,29 @@
 package main.entity.obj.unit;
 
-import com.graphbuilder.math.ExpressionParseException;
 import main.ability.AbilityObj;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.client.cc.CharacterCreator;
 import main.client.cc.logic.party.PartyObj;
-import main.client.cc.logic.spells.LibraryManager;
-import main.client.cc.logic.spells.SpellUpgradeMaster;
 import main.client.dc.Launcher;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.*;
-import main.content.DC_ContentManager.ATTRIBUTE;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.enums.entity.HeroEnums.GENDER;
-import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.enums.entity.ItemEnums;
-import main.content.enums.entity.ItemEnums.ARMOR_TYPE;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
-import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
 import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.MetaEnums;
-import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.ability.construct.AbilityConstructor;
-import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -45,12 +36,11 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.attach.DC_FeatObj;
 import main.entity.tools.EntityMaster;
-import main.entity.tools.unit.UnitMaster;
+import main.entity.tools.bf.unit.UnitCalculator;
+import main.entity.tools.bf.unit.UnitInitializer;
+import main.entity.tools.bf.unit.UnitMaster;
 import main.entity.type.ObjType;
-import main.game.ai.tools.ParamAnalyzer;
 import main.game.battlefield.CoordinatesMaster;
-import main.game.battlefield.attack.DC_AttackMaster;
-import main.game.battlefield.attack.ResistMaster;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.DC_Player;
 import main.game.logic.battle.player.Player;
@@ -60,25 +50,20 @@ import main.game.logic.generic.hero.DC_Attributes;
 import main.game.logic.generic.hero.DC_Masteries;
 import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.entity.MacroActionManager.MACRO_MODES;
-import main.rules.action.EngagedRule;
-import main.rules.rpg.IntegrityRule;
 import main.system.DC_Constants;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
-import main.system.auxiliary.log.Chronos;
-import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
-import main.system.math.DC_MathManager;
-import main.system.math.MathMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import main.test.debug.GameLauncher;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class Unit extends DC_UnitModel {
     protected DC_WeaponObj offhandNaturalWeapon;
@@ -88,7 +73,7 @@ public class Unit extends DC_UnitModel {
     // private Footwear boots;
     // private Helmet helmet;
     // private Gloves gloves;
-    // private Cloak cloak;
+    // private Cloak cloak;]
     private DC_ArmorObj armor;
     private DequeImpl<DC_FeatObj> skills;
     private DequeImpl<DC_FeatObj> classes;
@@ -180,20 +165,6 @@ public class Unit extends DC_UnitModel {
         WaitMaster.receiveInput(WAIT_OPERATIONS.UNIT_OBJ_INIT, true);
     }
 
-    private void initIntegrityAlignments() {
-        Map<PRINCIPLES, Integer> map = new RandomWizard<PRINCIPLES>().constructWeightMap(
-                getProperty(G_PROPS.PRINCIPLES), PRINCIPLES.class);
-        for (PRINCIPLES principle : map.keySet()) {
-            Integer amount = map.get(principle);
-            if (amount == 0) {
-                continue;
-            }
-            PARAMETER alignmentParam = DC_ContentManager.getAlignmentForPrinciple(principle);
-            modifyParameter(alignmentParam, amount);
-
-        }
-    }
-
     public void saveRanks(boolean skills) {
         saveRanks(skills ? getSkills() : getClasses(), skills ? PROPS.SKILLS : PROPS.CLASSES);
     }
@@ -241,220 +212,21 @@ public class Unit extends DC_UnitModel {
         return null;// TODO
     }
 
-    public void resetRanks(DequeImpl<DC_FeatObj> container, PROPERTY property) {
-        List<DC_FeatObj> list = new LinkedList<>(container);
-        for (String feat : StringMaster.openContainer(getProperty(property))) {
-            Integer rank = StringMaster.getInteger(VariableManager.getVarPart(feat));
-            if (rank == 0) {
-                continue;
-            }
-            feat = (VariableManager.removeVarPart(feat));
-            for (DC_FeatObj featObj : container) {
-                if (!featObj.getName().equals(feat)) {
-                    continue;
-                }
-                featObj.setParam(PARAMS.RANK, rank);
-                list.remove(featObj);
-            }
-        }
-        for (DC_FeatObj featObj : list) {
-            featObj.setParam(PARAMS.RANK, 0);
-        }
-    }
 
-    // TODO reqs: save() ; modify() ; resetSkillRanks() for (s s : skills)
-    private void initFeatContainer(PROPERTY PROP, DC_TYPE TYPE, DequeImpl<DC_FeatObj> list) {
-        // TODO make it dynamic and clean!
-        List<String> feats = StringMaster.openContainer(getProperty(PROP));
-        for (String feat : feats) {
-            DC_FeatObj featObj = null;
-            int rank = 0;
-            // or special separator!
-            if (StringMaster.isInteger(StringMaster.cropParenthesises(VariableManager
-                    .getVarPart(feat)))) {
-                rank = StringMaster.getInteger(StringMaster.cropParenthesises(VariableManager
-                        .getVarPart(feat)));
-                feat = VariableManager.removeVarPart(feat);
-            }
-            ObjType featType = DataManager.getType(feat, TYPE);
-            if (game.isSimulation()) {
-                featObj = (DC_FeatObj) getGame().getSimulationObj(this, featType, PROP);
-            }
-            if (featObj == null) {
-                featObj = new DC_FeatObj(featType, getOriginalOwner(), getGame(), ref);
-                if (game.isSimulation()) {
-                    getGame().addSimulationObj(this, featType, featObj, PROP);
-                }
-
-            }
-            if (rank != 0) {
-                featObj.setParam(PARAMS.RANK, rank);
-            }
-            list.add(featObj);
-        }
-    }
-
-    public void initClasses() {
-        this.setClasses(new DequeImpl<>());
-        initFeatContainer(PROPS.CLASSES, DC_TYPE.CLASSES, getClasses());
-    }
-
-    public void initSkills() {
-        this.setSkills(new DequeImpl<>());
-        initFeatContainer(PROPS.SKILLS, DC_TYPE.SKILLS, getSkills());
-    }
-
-    private void initAttributes() {
-        this.setAttrs(new DC_Attributes(this));
-
-    }
-
-    private void initMasteries() {
-        this.setMasteries(new DC_Masteries(this));
-
-    }
-
-    private boolean checkItemChanged(DC_HeroItemObj item, G_PROPS prop, DC_TYPE TYPE) {
-        if (game.isSimulation()) {
-            if (CoreEngine.isArcaneVault())// TODO prevent from piling up?
-            {
-                if (item != null) {
-                    game.getState().removeObject(item.getId());
-                    return true;
-                }
-            }
-
-        }
-        //
-        String value = getProperty(prop);
-        if (DataManager.isTypeName(value, TYPE)) {
-            return true; // means it's not in id-form yet
-        }
-        if (item == null) {
-            return StringMaster.isEmpty(value);
-        }
-        return !item.getId().toString().equals(value);
-    }
-
-    private DC_HeroItemObj initItem(DC_HeroItemObj item, G_PROPS prop, DC_TYPE TYPE) {
-        if (game.isSimulation() || !isItemsInitialized()) {
-            if (checkItemChanged(item, prop, TYPE)) {
-                String property = getProperty(prop);
-                if (StringMaster.isEmpty(property)) {
-                    return null;
-                }
-                ObjType type = DataManager.getType(property, TYPE);
-
-                if (type != null) {
-                    if (game.isSimulation()) {
-                        item = (DC_HeroItemObj) getGame().getSimulationObj(this, type, prop);
-                    }
-                    if (item == null) {
-
-                        item = (prop != G_PROPS.ARMOR_ITEM) ? (new DC_WeaponObj(type,
-                                getOriginalOwner(), getGame(), ref,
-
-                                prop == G_PROPS.MAIN_HAND_ITEM)) : (new DC_ArmorObj(type,
-                                getOriginalOwner(), getGame(), ref));
-                        if (game.isSimulation()) {
-                            getGame().addSimulationObj(this, type, item, prop);
-                        }
-                    }
-                    if (!game.isSimulation()) {
-                        setProperty(prop, item.getId() + "");
-                    }
-                } else if (!game.isSimulation()) {
-                    int itemId = StringMaster.toInt(property);
-                    if (itemId != -1) {
-                        item = ((DC_HeroItemObj) game.getObjectById(itemId));
-                    }
-
-                }
-            }
-        }
-
-        return item;
-    }
-
-    private void initItems() {
-        try {
-            initInventory();
-        } catch (ExpressionParseException e) {
-            LogMaster.log(1, "failed to parse for initQuickItems "
-                    + e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            LogMaster.log(1, "failed to initInventory");
-        }
-        try {
-            initJewelry();
-        } catch (ExpressionParseException e) {
-            LogMaster.log(1, "failed to parse for initQuickItems "
-                    + e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            LogMaster.log(1, "failed to initJewelry");
-        }
-        try {
-            initQuickItems();
-        } catch (ExpressionParseException e) {
-            LogMaster.log(1, "failed to parse for initQuickItems "
-                    + e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            LogMaster.log(1, "failed to initQuickItems");
-        }
-
-        setWeapon((DC_WeaponObj) initItem(weapon, G_PROPS.MAIN_HAND_ITEM, DC_TYPE.WEAPONS));
-        if (getNaturalWeapon(false) == null) {
-            initNaturalWeapon(false);
-        } else if (!getNaturalWeapon(false).getType().getName().equalsIgnoreCase(
-                getProperty(PROPS.NATURAL_WEAPON))) {
-            initNaturalWeapon(false);
-        }
-
-        setSecondWeapon((DC_WeaponObj) initItem(secondWeapon, G_PROPS.OFF_HAND_ITEM,
-                DC_TYPE.WEAPONS));
-
-        if (getNaturalWeapon(true) == null) {
-            initNaturalWeapon(true);
-        } else if (!getNaturalWeapon(true).getType().getName().equalsIgnoreCase(
-                getProperty(PROPS.OFFHAND_NATURAL_WEAPON))) {
-            initNaturalWeapon(true);
-        }
-        setArmor((DC_ArmorObj) initItem(armor, G_PROPS.ARMOR_ITEM, DC_TYPE.ARMOR));
-
-        setItemsInitialized(true);
-    }
-
-    private void initNaturalWeapon(boolean offhand) {
-        if (getWeapon(offhand) != null) {
-            return;
-        }
-        if (offhand) {
-            if (StringMaster.isEmpty(getProperty(PROPS.OFFHAND_NATURAL_WEAPON))) {
-                return;
-            }
-        }
-        PROPS prop = (offhand) ? PROPS.OFFHAND_NATURAL_WEAPON : PROPS.NATURAL_WEAPON;
-        // if (game.isSimulation())
-        // return;
-
-        ObjType weaponType = DataManager.getType(getProperty(prop), DC_TYPE.WEAPONS);
-        if (weaponType == null) {
-            return;
-        }
-        DC_WeaponObj weapon = new DC_WeaponObj(weaponType, owner, getGame(), ref, !offhand);
-        setNaturalWeapon(offhand, weapon);
-
-    }
-
-    private void setNaturalWeapon(boolean offhand, DC_WeaponObj weapon) {
+    public void setNaturalWeapon(boolean offhand, DC_WeaponObj weapon) {
         if (offhand) {
             offhandNaturalWeapon = weapon;
         } else {
             naturalWeapon = weapon;
         }
+    }
+
+    public DC_WeaponObj getNaturalWeapon() {
+        return naturalWeapon;
+    }
+
+    public DC_WeaponObj getOffhandNaturalWeapon() {
+        return offhandNaturalWeapon;
     }
 
     public DC_WeaponObj getNaturalWeapon(boolean offhand) {
@@ -464,47 +236,6 @@ public class Unit extends DC_UnitModel {
         }
         weaponObj = (!offhand) ? naturalWeapon : offhandNaturalWeapon;
         return weaponObj;
-    }
-
-    private void initJewelry() {
-        DequeImpl<? extends DC_HeroItemObj> items = initContainedItems(PROPS.JEWELRY, getJewelry(),
-                false);
-        if (items == getJewelry()) {
-            return;
-        }
-
-        getJewelry().clear();
-        for (DC_HeroItemObj e : items) {
-            getJewelry().add(e);
-        }
-
-    }
-
-    private void initQuickItems() {
-
-        // setQuickItems(new DequeImpl<DC_QuickItemObj>(
-
-        DequeImpl<? extends DC_HeroItemObj> items = initContainedItems(PROPS.QUICK_ITEMS,
-                getQuickItems(), true)
-                // )) TODO
-                ;
-        if (items == getQuickItems()) {
-            return;
-        }
-        setQuickItems(new DequeImpl<>());
-        for (DC_HeroItemObj e : items) {
-            getQuickItems().add((DC_QuickItemObj) e);
-        }
-
-    }
-
-    public void resetQuickSlotsNumber() {
-        int size = 0;
-        if (getQuickItems() != null) {
-            size = getQuickItems().size();
-        }
-        int slotsRemaining = getIntParam(PARAMS.QUICK_SLOTS) - size;
-        setParam(PARAMS.C_QUICK_SLOTS, slotsRemaining);
     }
 
     public void removeJewelryItem(DC_HeroItemObj itemObj) {
@@ -517,12 +248,12 @@ public class Unit extends DC_UnitModel {
     public void addQuickItem(DC_QuickItemObj itemObj) {
         getQuickItems().add(itemObj);
         itemObj.setRef(ref);
-        resetQuickSlotsNumber();
+        getResetter().resetQuickSlotsNumber();
     }
 
     public void removeQuickItem(DC_QuickItemObj itemObj) {
         if (getQuickItems().remove(itemObj)) {
-            resetQuickSlotsNumber();
+            getResetter().resetQuickSlotsNumber();
         }
         // if (game.isArcade()
         if (CharacterCreator.isArcadeMode()) {
@@ -535,76 +266,6 @@ public class Unit extends DC_UnitModel {
         }
     }
 
-    private void initInventory() {
-        setInventory(new DequeImpl<>(initContainedItems(PROPS.INVENTORY, getInventory(), false)));
-    }
-
-    public void resetObjectContainers(boolean fromValues) {
-        if (fromValues) {
-            setItemsInitialized(false);
-        }
-    }
-
-    private DequeImpl<? extends DC_HeroItemObj> initContainedItems(PROPS prop,
-                                                                   DequeImpl<? extends DC_HeroItemObj> list, boolean quick) {
-        if (StringMaster.isEmpty(getProperty(prop))) {
-            if (list == null) {
-                return new DequeImpl<>();
-            }
-            if (list.isEmpty() || game.isSimulation()) {
-                return new DequeImpl<>();
-            }
-        }
-        if (list == null || (!game.isSimulation() && isItemsInitialized())) {
-            setProperty(prop, StringMaster.constructContainer(StringMaster.convertToIdList(list)));
-
-        } else {
-            List<String> idList = new LinkedList<>();
-            Collection<DC_HeroItemObj> items = new LinkedList<>();
-            for (String subString : StringMaster.openContainer(getProperty(prop))) {
-                ObjType type = DataManager.getType(subString, C_OBJ_TYPE.ITEMS);
-
-                DC_HeroItemObj item = null;
-                if (game.isSimulation()) {
-                    item = (DC_HeroItemObj) getGame().getSimulationObj(this, type, prop);
-                }
-                if (item == null) {
-                    if (type == null) {
-                        item = (DC_HeroItemObj) game.getObjectById(StringMaster
-                                .getInteger(subString));
-                    } else {
-                        item = ItemFactory.createItemObj(type, getOriginalOwner(), getGame(), ref,
-                                quick);
-                    }
-                    if (item != null) {
-                        if (!game.isSimulation()) {
-                            idList.add(item.getId() + "");
-                        } else {
-                            getGame().addSimulationObj(this, type, item, prop);
-                        }
-                    }
-                }
-                if (item == null) {
-                    LogMaster.log(1, getName()
-                            + " has null items in item container " + prop);
-                } else {
-                    items.add(item);
-                }
-
-            }
-            list = new DequeImpl<>(items);
-            if (!game.isSimulation())
-
-            {
-                setProperty(prop, StringMaster.constructContainer(idList));
-            }
-        }
-        if (list == null) {
-            return new DequeImpl<>();
-        }
-        return list;
-
-    }
 
     public String getDynamicInfo() {
         String info = "";
@@ -622,72 +283,8 @@ public class Unit extends DC_UnitModel {
         return info;
     }
 
-    @Override
-    public void toBase() {
-        this.mode = STD_MODES.NORMAL;
-        // Chronos.mark(toString() + "to base (values)");
-        super.toBase();
-        // Chronos.logTimeElapsedForMark(toString() + "to base (values)");
-
-        // Chronos.mark(toString() + "to base (init objects)");
-        if (!GameLauncher.getInstance().SUPER_FAST_MODE) {
-            initHeroObjects();
-        }
-        // Chronos.logTimeElapsedForMark(toString() + "to base (init objects)");
-        // if (mainHero)
-        if (!CoreEngine.isArcaneVault()) {
-            if (game.isSimulation()) {
-                resetObjects();
-                resetQuickSlotsNumber();
-                String value = "";
-                for (DC_SpellObj s : getSpells()) {
-                    if (!s.getProperty(PROPS.SPELL_UPGRADES).isEmpty()) {
-                        value += s.getName()
-                                + StringMaster.wrapInParenthesis(s
-                                .getProperty(PROPS.SPELL_UPGRADES).replace(";", ",")) + ";";
-                    }
-                }
-                if (!value.isEmpty()) {
-                    setProperty(PROPS.SPELL_UPGRADES, value, true);
-                }
-            }
-        }
-
-        if (!isBfObj()) {
-            if (!isNeutral()) {
-                if (isImmortalityOn()) {
-                    addPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE);
-                }
-                if (game.isDummyMode()) {
-                    if (getGame().isDummyPlus()) {
-                        resetParam(PARAMS.C_N_OF_COUNTERS);
-                        resetParam(PARAMS.C_STAMINA);
-                        resetParam(PARAMS.C_FOCUS);
-                        resetParam(PARAMS.C_ESSENCE);
-                        resetParam(PARAMS.C_FOCUS);
-                    }
-                    if (!getOwner().isMe()) {
-                        setParam(PARAMS.INITIATIVE_MODIFIER, 1);
-                    }
 
 
-                }
-            }
-        }
-    }
-
-    private boolean isImmortalityOn() {
-        if (isMine()) {
-            if (equals(getOwner().getHeroObj())) {
-                return game.isDummyMode();
-            }
-        }
-        if (getGame().getTestMaster().isImmortal() != null) {
-            return
-                    getGame().getTestMaster().isImmortal();
-        }
-        return getGame().isDummyPlus();
-    }
 
     public void addPassive(STANDARD_PASSIVES passive) {
         addPassive(passive.getName());
@@ -700,19 +297,6 @@ public class Unit extends DC_UnitModel {
         }
     }
 
-    public boolean checkDualWielding() {
-        if (getSecondWeapon() == null || getMainWeapon() == null) {
-            return false;
-        }
-        if (getMainWeapon().isRanged() || getMainWeapon().isMagical()) {
-            return false;
-        }
-        if (getSecondWeapon().isRanged() || getSecondWeapon().isMagical()) {
-            return false;
-        }
-        return (getSecondWeapon().isWeapon());
-
-    }
 
     public void addAction(String string) {
         ActiveObj action = game.getActionManager().getAction(string, this);
@@ -721,329 +305,24 @@ public class Unit extends DC_UnitModel {
         }
     }
 
-    private void applyBackground() {
-        if (backgroundType == null) {
-            backgroundType = DataManager.getType(getProperty(G_PROPS.BACKGROUND_TYPE),
-                    getOBJ_TYPE_ENUM());
-            if (backgroundType == null) {
-                backgroundType = DataManager.getType(getProperty(G_PROPS.BASE_TYPE),
-                        getOBJ_TYPE_ENUM());
-            }
-        }
-        if (backgroundType == null) {
-            return;
-        }
-        for (PARAMETER param : DC_ContentManager.getBackgroundDynamicParams()) {
-            Integer amount = backgroundType.getIntParam(param);
-            modifyParameter(param, amount);
-        }
-
-    }
-
-    @Override
-    public void resetObjects() {
-        Chronos.mark(toString() + " OBJECTS APPLY");
-
-        applyBackground();
-        resetAttributes();
-        resetMasteryScores();
-        if (getSkills() != null) {
-
-            resetRanks(getSkills(), PROPS.SKILLS);
-            for (DC_FeatObj feat : getSkills()) {
-                feat.apply();
-            }
-        }
-        if (getClasses() != null) {
-            resetRanks(getClasses(), PROPS.CLASSES);
-            for (DC_FeatObj feat : getClasses()) {
-                feat.apply();
-            }
-
-        }
-        if (weapon != null) {
-            weapon.apply();
-        } else if (naturalWeapon != null) {
-            naturalWeapon.apply();
-        }
-
-        if (secondWeapon != null) {
-            secondWeapon.apply();
-            // if (checkDualWielding())
-            // DC_Formulas.MAIN_HAND_DUAL_ATTACK_MOD
-        } else if (offhandNaturalWeapon != null) {
-            offhandNaturalWeapon.apply();
-        }
-
-        if (armor != null) {
-            armor.apply();
-        }
-        resetQuickSlotsNumber();
-        for (DC_HeroItemObj item : getQuickItems()) {
-            item.apply();
-        }
-        for (DC_HeroItemObj item : getJewelry()) {
-            item.apply();
-        }
-        // Chronos.logTimeElapsedForMark(toString() + " OBJECTS APPLY");
-
-        Chronos.mark(toString() + " activate PASSIVES");
-        initSpells(game.isSimulation());
-        activatePassives();
-
-        // Chronos.logTimeElapsedForMark(toString() + " activate PASSIVES");
-
-        setDirty(false);
-        if (game.isSimulation() || type.isModel()) {
-            // initSpellbook(); //in afterEffect()
-            return;
-        }
-        Chronos.mark(toString() + " init ACTIVES");
-        initActives();
-        // Chronos.logTimeElapsedForMark(toString() + " init ACTIVES");
-
-        resetFacing();
-
-    }
-
-    public void initSpells(boolean reset) {
-        boolean initUpgrades = false;
-        if (game.isSimulation()) {
-            if (!ListMaster.isNotEmpty(spells)) {
-                initUpgrades = true;
-            }
-        }
-        spells = getGame().getManager().getSpellMaster().getSpells(this, reset);
-        // TODO support spellbook changes!
-        if (initUpgrades) {
-            SpellUpgradeMaster.initSpellUpgrades(this);
-        }
-    }
-
-    public Integer calculateDamage(boolean offhand) {
-        int dmg = DC_AttackMaster.getUnitAttackDamage(this, offhand);
-        Integer mod;
-        mod = getIntParam((offhand) ? PARAMS.OFFHAND_DAMAGE_MOD : PARAMS.DAMAGE_MOD);
-        if (mod != 0) {
-            dmg = dmg * mod / 100;
-        }
-        PARAMS minDamage = (offhand) ? PARAMS.OFF_HAND_MIN_DAMAGE : PARAMS.MIN_DAMAGE;
-        setParam(minDamage, dmg);
-        PARAMS damage = (offhand) ? PARAMS.OFF_HAND_DAMAGE : PARAMS.DAMAGE;
-        DC_WeaponObj weapon = getWeapon(offhand);
-        if (weapon == null) {
-            weapon = getNaturalWeapon(offhand);
-        }
-        Integer dieSize = (weapon == null) ? getIntParam(PARAMS.DIE_SIZE) : weapon
-                .getIntParam(PARAMS.DIE_SIZE);
-
-        if (mod != 0) {
-            dieSize = dieSize * mod / 100;
-        }
-
-        setParam(damage, MathMaster.getAverage(dmg, dmg + dieSize));
-        PARAMS maxDamage = (offhand) ? PARAMS.OFF_HAND_MAX_DAMAGE : PARAMS.MAX_DAMAGE;
-        setParam(maxDamage, dmg + dieSize);
-        return MathMaster.getAverage(dmg, dmg + dieSize);
-    }
-
-    public void initSpellbook() {
-        LibraryManager.initSpellbook(this);
-        // init objects for all the known spells as well!
-    }
-
-    public int calculateRemainingMemory() {
-        int memory = getIntParam(PARAMS.MEMORIZATION_CAP) - calculateMemorizationPool();
-        setParam(PARAMS.MEMORY_REMAINING, memory);
-        return memory;
-    }
-
-    public int calculateMemorizationPool() {
-        int memory = 0;
-        for (ObjType type : DataManager.toTypeList(StringMaster
-                .openContainer(getProperty(PROPS.MEMORIZED_SPELLS)), DC_TYPE.SPELLS)) {
-            memory += type.getIntParam(PARAMS.SPELL_DIFFICULTY);
-        }
-        return memory;
-    }
-
-    // @Deprecated
-    public int calculatePower() {
-        if (isBfObj()) {
-            return 0; // TODO into new class!
-        }
-
-        int power = DC_MathManager.getUnitPower(this);
-        if (!isHero()) {
-            if (power != 0) {
-                return 0;
-            }
-        }
-        setParam(PARAMS.POWER, power);
-        // GetParam(PARAMS.UNIT_LEVEL, power);
-        return power;
-    }
-
-    public int calculateWeight() {
-        int weight = initCarryingWeight();
-        setParam(PARAMS.C_CARRYING_WEIGHT, weight);
-        int result = getIntParam(PARAMS.CARRYING_CAPACITY) - weight;
-        weight += getIntParam(PARAMS.WEIGHT);
-        setParam(PARAMS.TOTAL_WEIGHT, weight);
-        return result;
-
-    }
-
-    // Java 8 collections methods?
-    public int initCarryingWeight() {
-        int weight = 0;
-        if (getMainWeapon() != null) {
-            weight += getMainWeapon().getIntParam(PARAMS.WEIGHT);
-        }
-        if (getSecondWeapon() != null) {
-            weight += getSecondWeapon().getIntParam(PARAMS.WEIGHT);
-        }
-        if (getArmor() != null) {
-            weight += getArmor().getIntParam(PARAMS.WEIGHT);
-        }
-
-        if (game.isSimulation()) {
-            for (ObjType type : DataManager.toTypeList(StringMaster
-                    .openContainer(getProperty(PROPS.INVENTORY)), C_OBJ_TYPE.ITEMS)) {
-                weight += type.getIntParam(PARAMS.WEIGHT);
-            }
-            for (ObjType type : DataManager.toTypeList(StringMaster
-                    .openContainer(getProperty(PROPS.QUICK_ITEMS)), C_OBJ_TYPE.ITEMS)) {
-                weight += type.getIntParam(PARAMS.WEIGHT);
-            }
-        } else {
-
-            for (DC_HeroItemObj item : getInventory()) {
-                weight += item.getIntParam(PARAMS.WEIGHT);
-            }
-            for (DC_HeroItemObj item : getQuickItems()) {
-                weight += item.getIntParam(PARAMS.WEIGHT);
-            }
-        }
-        return weight;
-
-    }
-
-    private void resetMasteryScores() {
-        for (PARAMS mastery : DC_ContentManager.getMasteryParams()) {
-            PARAMETER score = ContentManager.getMasteryScore(mastery);
-            type.setParam(score, getIntParam(mastery));
-            setParam(score, getIntParam(mastery));
-        }
-    }
-
-    private void resetAttributes() {
-        for (ATTRIBUTE attr : DC_ContentManager.getAttributeEnums()) {
-            resetAttr(attr);
-        }
-
-    }
-
-    private void resetDefaultAttr(ATTRIBUTE attr) {
-        type.setParam(DC_ContentManager.getDefaultAttr(attr.getParameter()),
-                getIntParam(DC_ContentManager.getBaseAttr(attr.getParameter())));
-    }
-
-    /**
-     * only from Arcane Vault!
-     */
-    public void resetDefaultAttrs() {
-        for (ATTRIBUTE attr : DC_ContentManager.getAttributeEnums()) {
-            resetDefaultAttr(attr);
-        }
-    }
-
-    private void resetAttr(ATTRIBUTE attr) {
-        PARAMETER baseAttr = DC_ContentManager.getBaseAttr(attr);
-        type.setParam(attr.getParameter(), getIntParam(baseAttr));
-        setParam(attr.getParameter(), getIntParam(baseAttr));
-
-    }
-
-    private void initHeroObjects() {
-        if ((isHero() || checkPassive(UnitEnums.STANDARD_PASSIVES.FAVORED)) && getDeity() != null) {
-            addProperty(G_PROPS.PASSIVES, getDeity().getProperty(G_PROPS.PASSIVES));
-        }
-
-        initItems(); // replace type names with ids for weapon/armor
-
-        if (!initialized) {
-            initClasses();
-            initSkills();
-
-            initAttributes();
-            initMasteries();
-
-        } else if (game.isSimulation()) {
-            initClasses();
-            initSkills();
-        }
-        initialized = true;
-    }
-
-    private void resetSpells() {
-        if (spells != null) {
-            for (DC_SpellObj spell : spells) {
-                spell.toBase();
-            }
-        }
-    }
-
-    protected void applyMods() {
-        // if (getMainWeapon() != null) //
-        // getMainWeapon().applyMods();
-        // if (getArmor() != null)
-        // getArmor().applyMods();
-        // if (getSecondWeapon() != null)
-        // getSecondWeapon().applyMods();
-
-        if (engagementTarget != null) {
-            EngagedRule.applyMods(this);
-        } else {
-            removeStatus(UnitEnums.STATUS.ENGAGED);
-        }
-        int mod = getIntParam(PARAMS.ATTACK_MOD);
-        multiplyParamByPercent(PARAMS.ATTACK, mod, false);
-        mod = getIntParam(PARAMS.OFFHAND_ATTACK_MOD);
-        multiplyParamByPercent(PARAMS.OFF_HAND_ATTACK, mod, false);
-        mod = getIntParam(PARAMS.DEFENSE_MOD);
-        multiplyParamByPercent(PARAMS.DEFENSE, mod, false);
-
-        ResistMaster.initUnitResistances(this);
-    }
-
-    public void resetIntegrity() {
-        IntegrityRule.resetIntegrity(this);
-
-    }
-
-    public void applyIntegrity() {
-        IntegrityRule.applyIntegrity(this);
-
-    }
 
     @Override
     public void afterEffects() {
-        resetHeroValues();
+        getResetter().resetHeroValues();
         if (game.isSimulation()) {
             initSpellbook();
         }
 
-        resetMorale();
+        getResetter().resetMorale();
         if (!dynamicValuesReady && !game.isSimulation()) {
             addDynamicValues();
             dynamicValuesReady = true; // TODO recalc by percentage in wc3 style
             resetPercentages();
         }
 
-        calculatePower();
-        calculateWeight();
-        calculateRemainingMemory();
+        getCalculator().calculatePower();
+        getCalculator().calculateWeight();
+        getCalculator().calculateRemainingMemory();
 
         if (!game.isSimulation()) { // TODO perhaps I should apply and display
             // them!
@@ -1069,7 +348,7 @@ public class Unit extends DC_UnitModel {
         }
 
         if (game.isSimulation()) {
-            resetSpells();
+            getResetter().resetSpells();
             return;
         }
         if (getGame().getInventoryManager() != null) {
@@ -1077,17 +356,10 @@ public class Unit extends DC_UnitModel {
                 return;
             }
         }
-        resetSpells();
-        resetQuickItemActives();
-        resetActives();
+        getResetter().resetSpells();
+        getResetter().resetQuickItemActives();
+        getResetter().resetActives();
     }
-
-    private void resetQuickItemActives() {
-        for (DC_QuickItemObj q : getQuickItems()) {
-            q.afterEffects();
-        }
-    }
-
     public List<DC_ItemActiveObj> getQuickItemActives() {
         if (!ListMaster.isNotEmpty(getQuickItems())) {
             return new LinkedList<>();
@@ -1115,31 +387,15 @@ public class Unit extends DC_UnitModel {
             setParam(PARAMS.OFF_HAND_ATTACK, getIntParam(PARAMS.ATTACK));
             getNaturalWeapon(true).applyUnarmedMasteryBonus();
         }
-        calculateDamage(true);
+        getCalculator().calculateDamage(true, true);
         if (weapon != null) {
             weapon.applyMasteryBonus();
         } else if (getNaturalWeapon(false) != null) {
             getNaturalWeapon(false).applyUnarmedMasteryBonus();
         }
-        calculateDamage(false);
+        getCalculator().calculateDamage(false, true);
 
-        applyMods();
-    }
-
-    public void resetMorale() {
-        if (ParamAnalyzer.isMoraleIgnore(this)) {
-            return;
-        }
-        if (getIntParam(PARAMS.BATTLE_SPIRIT) == 0) {
-            if (getRef().getObj(KEYS.PARTY) == null) {
-                setParam(PARAMS.BATTLE_SPIRIT, 100);
-            }
-        }
-        setParam(PARAMS.MORALE, getIntParam(PARAMS.SPIRIT) * DC_Formulas.MORALE_PER_SPIRIT
-                * getIntParam(PARAMS.BATTLE_SPIRIT) / 100);
-        // the C_ value cannot be changed, but the PERCENTAGE
-        setParam(PARAMS.C_MORALE, getIntParam(PARAMS.C_MORALE), true);
-
+        getResetter().applyMods();
     }
 
     private void setInfiniteValue(PARAMS param, float mod) {
@@ -1157,45 +413,8 @@ public class Unit extends DC_UnitModel {
         return super.getParamRounded(param, base);
     }
 
-    private void resetHeroValues() {
-        if (isHero()) {
-            resetIntegrity();
-            applyIntegrity();
-        }
-        getMasteries().apply();
-        getAttrs().apply();
-    }
 
-    private void initActives() {
-        // if (!isActivesReady()) {
 
-        AbilityConstructor.constructActives(this);
-        // }
-        setActivesReady(true);
-    }
-
-    public boolean canUseItems() {
-        return canUseWeapons() || canUseArmor();
-    }
-
-    public boolean canUseArmor() {
-        return checkContainerProp(G_PROPS.CLASSIFICATIONS, UnitEnums.CLASSIFICATIONS.HUMANOID.toString());
-    }
-
-    public boolean canUseWeapons() {
-        return TYPE_ENUM == DC_TYPE.CHARS;
-        // return checkContainerProp(G_PROPS.CLASSIFICATIONS,
-        // CLASSIFICATIONS.HUMANOID
-        // .toString());
-    }
-
-    public boolean hasArmorProficiency(ARMOR_TYPE type) {
-        return false;
-    }
-
-    public boolean hasWeaponProficiency(WEAPON_SIZE size) {
-        return false;
-    }
 
     // isPassivesReady
     @Override
@@ -1711,6 +930,7 @@ public class Unit extends DC_UnitModel {
         return checkProperty(PROPS.AI_MODIFIERS, trueBrute.toString());
     }
 
+
     public DC_SpellObj getSpell(String actionName) {
         for (DC_SpellObj s : getSpells()) {
             if (s.getName().equalsIgnoreCase(actionName)) {
@@ -1766,20 +986,6 @@ public class Unit extends DC_UnitModel {
         }
         return gender;
     }
-
-    public boolean isLeader() {
-        Obj obj = ref.getObj(KEYS.PARTY);
-        if (obj instanceof PartyObj) {
-            PartyObj partyObj = (PartyObj) obj;
-            return partyObj.getLeader().equals(this);
-        }
-        return false;
-    }
-
-    public void setLeader(boolean leader) {
-        this.leader = leader;
-    }
-
 
     public Dungeon getDungeon() {
         if (dungeon == null) {
@@ -1841,6 +1047,19 @@ public class Unit extends DC_UnitModel {
 
     }
 
+    public boolean isLeader() {
+        Obj obj = ref.getObj(KEYS.PARTY);
+        if (obj instanceof PartyObj) {
+            PartyObj partyObj = (PartyObj) obj;
+            return partyObj.getLeader().equals(this);
+        }
+        return false;
+    }
+
+    public void setLeader(boolean leader) {
+        this.leader = leader;
+    }
+
     public boolean isHostileTo(DC_Player player) {
         if (getBehaviorMode() == AiEnums.BEHAVIOR_MODE.BERSERK) {
             return true;
@@ -1898,6 +1117,9 @@ public class Unit extends DC_UnitModel {
         return backgroundType;
     }
 
+    public void setBackgroundType(ObjType backgroundType) {
+        this.backgroundType = backgroundType;
+    }
     public Map<DC_ActiveObj, String> getActionModeMap() {
         if (actionModeMap == null) {
             actionModeMap = new HashMap<>();
@@ -1920,5 +1142,122 @@ public class Unit extends DC_UnitModel {
 
     public List<DC_ActiveObj> getAttacks(boolean offhand) {
         return getAction(offhand ? DC_ActionManager.ATTACK : DC_ActionManager.OFFHAND_ATTACK).getSubActions();
+    }
+
+    public void resetQuickSlotsNumber() {
+        getResetter().resetQuickSlotsNumber();
+    }
+
+    public void resetObjectContainers(boolean fromValues) {
+        getResetter().resetObjectContainers(fromValues);
+    }
+
+
+    public void resetDefaultAttrs() {
+        getResetter().resetDefaultAttrs();
+    }
+
+
+    public void resetMorale() {
+        getResetter().resetMorale();
+    }
+
+
+    @Override
+    public UnitCalculator getCalculator() {
+        return (UnitCalculator) super.getCalculator();
+    }
+
+    public int calculateRemainingMemory() {
+        return getCalculator().calculateRemainingMemory();
+    }
+
+    public int calculateMemorizationPool() {
+        return getCalculator().calculateMemorizationPool();
+    }
+
+    public int calculatePower() {
+        return getCalculator().calculatePower();
+    }
+
+    public int calculateWeight() {
+        return getCalculator().calculateWeight();
+    }
+
+    public Integer calculateAndSetDamage(boolean offhand) {
+        return getCalculator().calculateAndSetDamage(offhand);
+    }
+
+    public Integer calculateDamage(boolean offhand) {
+        return getCalculator().calculateDamage(offhand);
+    }
+
+    public Integer calculateDamage(boolean offhand, boolean set) {
+        return getCalculator().calculateDamage(offhand, set);
+    }
+
+    public int calculateCarryingWeight() {
+        return getCalculator().calculateCarryingWeight();
+    }
+
+    @Override
+    public UnitInitializer getInitializer() {
+        return (UnitInitializer) super.getInitializer();
+    }
+
+    public void initSpells(boolean reset) {
+        getInitializer().initSpells(reset);
+    }
+
+    public void initSpellbook() {
+        getInitializer().initSpellbook();
+    }
+
+
+    public void initSkills() {
+        getInitializer().initSkills();
+    }
+
+    public void initAttributes() {
+        getInitializer().initAttributes();
+    }
+
+    public void initMasteries() {
+        getInitializer().initMasteries();
+    }
+
+
+    public void initNaturalWeapon(boolean offhand) {
+        getInitializer().initNaturalWeapon(offhand);
+    }
+
+
+    public void initIntegrityAlignments() {
+        getInitializer().initIntegrityAlignments();
+    }
+
+
+    public boolean canUseItems() {
+        return getChecker().canUseItems();
+    }
+
+    public Unit getEntity() {
+        return getChecker().getEntity();
+    }
+
+    public boolean canUseArmor() {
+        return getChecker().canUseArmor();
+    }
+
+    public boolean canUseWeapons() {
+        return getChecker().canUseWeapons();
+    }
+
+    public boolean checkDualWielding() {
+        return getChecker().checkDualWielding();
+    }
+
+    public boolean isImmortalityOn() {
+        return getChecker().isImmortalityOn();
     }
 }

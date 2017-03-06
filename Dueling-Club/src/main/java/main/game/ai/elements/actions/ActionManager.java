@@ -33,6 +33,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNELS;
+import main.system.datatypes.DequeImpl;
 import main.system.math.Formula;
 
 import java.util.LinkedList;
@@ -230,7 +231,7 @@ public class ActionManager extends AiHandler {
     }
 
     private void checkDeactivate() {
-        List<DC_UnitAction> list = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ACTION);
+        DequeImpl<DC_UnitAction> list = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ACTION);
         if (list == null) {
             return;
         }

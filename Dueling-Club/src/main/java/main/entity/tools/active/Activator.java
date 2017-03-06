@@ -90,7 +90,8 @@ public class Activator extends ActiveHandler {
                 getEntity().getName() +
                 ": " + getEntity().getCosts().getReasonsString());
         FloatingText f = FloatingTextMaster.getInstance().getFloatingText(getEntity(),
-                TEXT_CASES.REQUIREMENT, getEntity().getCosts().getReasonsString());
+         TEXT_CASES.REQUIREMENT,
+         getEntity().getCosts().getReasonsString());
         f.setDisplacementY(100);
         f.setDuration(3);
         f.addToStage(GameScreen.getInstance().getAnimsStage(),

@@ -788,9 +788,9 @@ public class DC_ActionManager implements ActionManager {
             if (type == null) {
                 type = action.getActionType();
             }
-            List<DC_UnitAction> list = unit.getActionMap().get(type);
+            DequeImpl<DC_UnitAction> list = unit.getActionMap().get(type);
             if (list == null) {
-                list = new LinkedList<>();
+                list = new DequeImpl<>();
                 unit.getActionMap().put(type, list);
             }
             if (!list.contains(action)) {
@@ -808,7 +808,7 @@ public class DC_ActionManager implements ActionManager {
             init();
         }
         DC_TYPE TYPE = DC_TYPE.getType(unit.getOBJ_TYPE());
-        List<DC_UnitAction> actions = new LinkedList<>();
+        DequeImpl<DC_UnitAction> actions = new DequeImpl<>();
         switch (type) {
             case STANDARD_ATTACK:
                 // TODO
@@ -842,7 +842,7 @@ public class DC_ActionManager implements ActionManager {
 
     }
 
-    private void addActionTypes(List<ActionType> actionTypes, List<DC_UnitAction> list,
+    private void addActionTypes(List<ActionType> actionTypes, Collection<DC_UnitAction> list,
                                 DC_TYPE TYPE, Unit unit) {
         for (ActionType type : actionTypes) {
             // Ref ref = Ref.getCopy(unit.getRef());
@@ -879,8 +879,8 @@ public class DC_ActionManager implements ActionManager {
         });
     }
 
-    public enum STD_MODE_ACTIONS {
-        Defend, Concentrate, Rest, Meditate, On_Alert;
+    public enum ADDITIONAL_MOVE_ACTIONS {
+        MOVE_LEFT, MOVE_RIGHT, MOVE_BACK, CLUMSY_LEAP;
 
         public String toString() {
             return StringMaster.getWellFormattedString(name());
@@ -901,10 +901,6 @@ public class DC_ActionManager implements ActionManager {
         }
     }
 
-    public enum STD_SPEC_ACTIONS {
-        Use_Inventory, OFFHAND_ATTACK, DUAL_ATTACK, Search_Mode, Watch
-    }
-
     public enum STD_ACTIONS {
         Attack, Turn_Anticlockwise, Turn_Clockwise, Move, Wait,;
 
@@ -913,12 +909,16 @@ public class DC_ActionManager implements ActionManager {
         }
     }
 
-    public enum ADDITIONAL_MOVE_ACTIONS {
-        MOVE_LEFT, MOVE_RIGHT, MOVE_BACK, CLUMSY_LEAP;
+    public enum STD_MODE_ACTIONS {
+        Defend, Concentrate, Rest, Meditate, On_Alert;
 
         public String toString() {
             return StringMaster.getWellFormattedString(name());
         }
+    }
+
+    public enum STD_SPEC_ACTIONS {
+        Use_Inventory, OFFHAND_ATTACK, DUAL_ATTACK, Search_Mode, Watch
     }
 
     public enum WEAPON_ATTACKS {
