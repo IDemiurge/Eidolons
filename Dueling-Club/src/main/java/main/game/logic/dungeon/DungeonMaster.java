@@ -53,7 +53,7 @@ public class DungeonMaster {
     public static boolean RANDOM_DUNGEON = false;
     public static boolean CHOOSE_LEVEL = false;
     private static String DEFAULT_DUNGEON_LEVEL = "Forest.xml"; // "Arena.xml";
-    private static String DEFAULT_DUNGEON = "";// "Hidden Camp";//
+    private static String DEFAULT_DUNGEON = "Hidden Camp";// "Hidden Camp";//
     private static DC_Game game;
     private static List<Dungeon> dungeons;
     private static String DEFAULT_DUNGEON_PATH;
@@ -252,6 +252,8 @@ public class DungeonMaster {
     }
 
     public String getPresetDungeonType() {
+        if (presetDungeonType==null )
+           return  DEFAULT_DUNGEON;
         return presetDungeonType;
     }
 

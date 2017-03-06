@@ -371,6 +371,7 @@ public class XML_Reader {
             loadXml();
         } else {
             loadXml(false);
+            if (macro)
             loadXml(true);
         }
         if (!concurrentReadingOn) {

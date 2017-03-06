@@ -206,6 +206,9 @@ public class GameLauncher {
 
 
         if (PresetLauncher.getLaunch() != null) {
+            ENEMY_CODE = PresetLauncher.getLaunch().ENEMY_CODE ;
+            PARTY_CODE = PresetLauncher.getLaunch().PARTY_CODE ;
+
             if (!VISION_HACK) {
                 VISION_HACK = PresetLauncher.getLaunch().visionHacked;
             }
