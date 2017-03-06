@@ -14,6 +14,7 @@ public class JUnitTests implements Runnable {
      */
     @Override
     public void run() {
+        tests.forEach(test-> test.testUnitTest());
     }
 
 }
