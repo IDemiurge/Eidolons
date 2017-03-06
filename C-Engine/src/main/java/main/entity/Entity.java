@@ -66,10 +66,10 @@ public abstract class Entity extends DataModel implements OBJ {
         // initial party?
         if (type == null) {
             LogMaster.log(1, "null type!" + ref);
-            if (!CoreEngine.isTEST_MODE()) {
+//            if (!CoreEngine.isTEST_MODE()) {
                 RuntimeException e = new RuntimeException();
                 throw (e);
-            }
+//            }
         } else {
             this.game = game;
             getId(); // new id if null

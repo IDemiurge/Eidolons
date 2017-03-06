@@ -46,25 +46,6 @@ public class PresetLauncher {
     static LAUNCH launch;
     private static boolean isInitLaunch = true;
 
-    static {
-        //init options
-    }
-
-    static {
-        LAUNCH.AI.graphicsTest = false;
-        LAUNCH.Logic.graphicsTest = false;
-
-        LAUNCH.Gui.visionHacked = true;
-        LAUNCH.Anims.visionHacked = true;
-        LAUNCH.AI.visionHacked = true;
-        LAUNCH.Anims.logChannelsOn = new LogMaster.LOG_CHANNELS[]{
-                LOG_CHANNELS.ANIM_DEBUG
-        };
-        LAUNCH.AI.logChannelsOn = new LogMaster.LOG_CHANNELS[]{
-                LOG_CHANNELS.AI_DEBUG,
-                LOG_CHANNELS.AI_DEBUG2,
-        };
-    }
 
     public static Boolean chooseLaunchOption() {
         int i = PRESET_OPTION;
@@ -155,9 +136,9 @@ public class PresetLauncher {
         return launch;
     }
 
-    public static void initLaunch(String option) {
+    public static LAUNCH initLaunch(String option) {
         launch = new EnumMaster<LAUNCH>().retrieveEnumConst(LAUNCH.class, option);
-        if (launch==null )return ;
+        if (launch==null ) return null;
         if (launch.logChannelsOff!=null )
         Arrays.stream(launch.logChannelsOn).forEach(c->{
             c.setOn(true);
@@ -166,6 +147,7 @@ public class PresetLauncher {
         Arrays.stream(launch.logChannelsOff).forEach(c->{
             c.setOn(false);
         });
+        return launch;
     }
 
     public static Preset chooseRecentPreset() {
@@ -332,12 +314,33 @@ public class PresetLauncher {
 
     }
 
+
+    static {
+        LAUNCH.AI.graphicsTest = false;
+        LAUNCH.Logic.graphicsTest = false;
+
+        LAUNCH.Gui.visionHacked = true;
+        LAUNCH.Anims.visionHacked = true;
+        LAUNCH.AI.visionHacked = true;
+        LAUNCH.Anims.logChannelsOn = new LogMaster.LOG_CHANNELS[]{
+         LOG_CHANNELS.ANIM_DEBUG
+        };
+        LAUNCH.AI.logChannelsOn = new LogMaster.LOG_CHANNELS[]{
+         LOG_CHANNELS.AI_DEBUG,
+         LOG_CHANNELS.AI_DEBUG2,
+        };
+
+        LAUNCH.JUnit.graphicsOff=true;
+    }
+
     public enum LAUNCH {
         AI("ai.xml", RULE_SCOPE.FULL, false),
         Gui("graphics test.xml", RULE_SCOPE.BASIC, true),
         Logic("ai full.xml", RULE_SCOPE.FULL, true),
         Anims(true),
-        Emitters(true),;
+        Emitters(true),
+        JUnit(),
+        ;
         public Boolean immortal;
         public CONTROLLER controller;
         public String preset;
@@ -352,10 +355,13 @@ public class PresetLauncher {
         public boolean freeActions;
         public boolean itemGenerationOff;
         public boolean deterministicUnitTraining;
-        LOG_CHANNELS[] logChannelsOn;
-        LOG_CHANNELS[] logChannelsOff;
+        public LOG_CHANNELS[] logChannelsOn;
+        public LOG_CHANNELS[] logChannelsOff;
+        public boolean graphicsOff;
 
+        //test launches
         LAUNCH() {
+            deterministicUnitTraining=true;
 
         }
 
@@ -415,6 +421,7 @@ public class PresetLauncher {
             this.fast = true;
             ruleScope = RULE_SCOPE.TEST;
         }
+
 
     }
 

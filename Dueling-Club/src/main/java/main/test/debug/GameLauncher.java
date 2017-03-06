@@ -219,6 +219,7 @@ public class GameLauncher {
 
             TestMasterContent.setImmortal(PresetLauncher.getLaunch().immortal);
             CoreEngine.setGraphicTestMode(PresetLauncher.getLaunch().graphicsTest);
+UnitTrainingMaster.setRandom(!PresetLauncher.getLaunch().deterministicUnitTraining);
 
             DC_KeyManager.DEFAULT_CONTROLLER = PresetLauncher.getLaunch().controller;
         }
