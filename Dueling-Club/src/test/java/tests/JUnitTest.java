@@ -1,8 +1,8 @@
-package java.tests;
+package tests;
 
 import main.game.core.game.DC_Game;
 
-import java.init.JUnitDcInitializer;
+import init.JUnitDcInitializer;
 
 public abstract class JUnitTest {
     /*
@@ -15,7 +15,7 @@ public abstract class JUnitTest {
 
     public JUnitTest(JUnitDcInitializer initializer) {
         this.initializer = initializer;
-        this.game=initializer.game;
+        this.game= JUnitDcInitializer.game;
     }
 
     @org.junit.Before

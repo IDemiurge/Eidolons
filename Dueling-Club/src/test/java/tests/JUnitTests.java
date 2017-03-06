@@ -1,4 +1,4 @@
-package java.tests;
+package tests;
 
 import java.init.JUnitDcInitializer;
 import java.tests.entity.CreateUnitTest;

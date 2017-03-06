@@ -1,4 +1,4 @@
-package java.res;
+package res;
 
 import main.data.xml.XML_Reader;
 

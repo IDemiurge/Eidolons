@@ -1,17 +1,16 @@
-package java.tests.entity;
+package tests.entity;
 
+import init.JUnitDcInitializer;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 
-import java.init.JUnitDcInitializer;
-
 /**
  * Created by JustMe on 3/6/2017.
  */
-public class CreateUnitTest extends CreateEntityTest<Unit> {
+public class CreateUnitTest extends tests.entity.CreateEntityTest<Unit> {
 
     private static final String DEFAULT_TEST_UNIT = "Pirate";
     private   String typeName;
@@ -37,6 +36,7 @@ public class CreateUnitTest extends CreateEntityTest<Unit> {
 
     @Override
     public void testUnitTest() {
+        assert(false);
         assert (entity!=null );
         assert (entity.getName().equals(typeName));
 
