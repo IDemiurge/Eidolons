@@ -1,13 +1,13 @@
-package java.tests.entity;
+package tests.entity;
 
 import main.entity.Entity;
 
-import java.init.JUnitDcInitializer;
+import init.JUnitDcInitializer;
 
 /**
  * Created by JustMe on 3/6/2017.
  */
-public abstract class CreateEntityTest<T extends Entity> extends EntityTest<T>  {
+public abstract class CreateEntityTest<T extends Entity> extends tests.entity.EntityTest<T> {
     public CreateEntityTest(JUnitDcInitializer initializer) {
         super(initializer);
     }

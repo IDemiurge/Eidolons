@@ -1,9 +1,9 @@
-package java.tests.entity;
+package tests.entity;
 
 import main.entity.Entity;
 
-import java.init.JUnitDcInitializer;
-import java.tests.JUnitTest;
+import init.JUnitDcInitializer;
+import tests.JUnitTest;
 
 /**
  * Created by JustMe on 3/6/2017.

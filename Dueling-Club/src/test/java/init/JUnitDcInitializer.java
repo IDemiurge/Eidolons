@@ -1,4 +1,4 @@
-package java.init;
+package init;
 
 import main.client.DC_Engine;
 import main.game.core.game.DC_Game;
@@ -6,8 +6,8 @@ import main.test.PresetLauncher;
 import main.test.PresetLauncher.LAUNCH;
 import main.test.debug.GameLauncher;
 
-import java.res.JUnitResources;
-import java.tests.JUnitTests;
+import res.JUnitResources;
+import tests.JUnitTests;
 
 /**
  * Created by JustMe on 3/6/2017.
@@ -21,6 +21,7 @@ public class JUnitDcInitializer {
 //        PathFinder.setJUnitMode(true); to find all test/resources
         DC_Engine.systemInit();
         JUnitResources.init();
+
 //        LogMaster.setJUnit(true); //log everything* or nothing to speed up
         LAUNCH launch = PresetLauncher.initLaunch(LAUNCH.JUnit.name());
 //        if (JUnitTests.itemGenerationOff)
