@@ -113,8 +113,10 @@ public class GridCellContainer extends GridCell {
         if (overlays.size() == 0) {
             return;
         }
-        final int xOffset = getW() / 3;
-        final int yOffset = getH() / 3;
+//        final int xOffset = (int) (getW() *OverlayView.SCALE);
+//        final int yOffset = (int) (getH() *OverlayView.SCALE);
+        final int xOffset = (int) (getW() /3);
+        final int yOffset = (int) (getH()/3);
         Map<Coordinates, Map<Unit, Coordinates.DIRECTION>> directionMap = DC_Game.game.getDirectionMap();
         Map<Unit, Coordinates.DIRECTION> heroObjDIRECTIONMap = directionMap.get(new Coordinates(getGridX(), getGridY()));
         overlays.forEach(unitViewOptions -> {

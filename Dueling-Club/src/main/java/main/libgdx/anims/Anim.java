@@ -424,9 +424,7 @@ public class Anim extends Group implements Animation {
     }
 
     protected void dispose() {
-        if (texture != null) {
-            texture.dispose();
-        }
+
         texture = null;
 
         emitterList.forEach(e -> {
