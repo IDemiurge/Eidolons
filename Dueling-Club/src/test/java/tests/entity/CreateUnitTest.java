@@ -34,4 +34,11 @@ public class CreateUnitTest extends CreateEntityTest<Unit> {
     private ObjType getTestType() {
         return DataManager.getType(typeName, DC_TYPE.UNITS);
     }
+
+    @Override
+    public void testUnitTest() {
+        assert (entity!=null );
+        assert (entity.getName().equals(typeName));
+
+    }
 }

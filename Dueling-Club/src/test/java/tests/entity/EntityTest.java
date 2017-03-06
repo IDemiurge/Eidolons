@@ -16,13 +16,5 @@ public abstract class EntityTest<T extends Entity> extends JUnitTest {
         super(initializer);
     }
 
-    @Override
-    public void setUp() {
-    }
 
-
-    @Override
-    public void testUnitTest() {
-
-    }
 }
