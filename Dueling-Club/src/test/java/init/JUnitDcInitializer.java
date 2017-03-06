@@ -12,9 +12,9 @@ import java.tests.JUnitTests;
 /**
  * Created by JustMe on 3/6/2017.
  */
-public class JUnitBfInitializer {
+public class JUnitDcInitializer {
 
-    private static DC_Game game;
+    public static DC_Game game;
     private static JUnitTests tests;
 
     public static void main(String[] strings) {
