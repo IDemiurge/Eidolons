@@ -67,8 +67,10 @@ public class GridPanel extends Group {
 
     public void updateOutlines() {
         unitMap.keySet().forEach(obj -> {
+            if (!obj.isOverlaying()){
             OUTLINE_TYPE outline = obj.getOutlineType();
             UnitView uv = (UnitView) unitMap.get(obj);
+
             Texture texture = null;
             if (outline != null) {
                 texture = TextureCache.getOrCreate(
@@ -76,6 +78,7 @@ public class GridPanel extends Group {
             }
 
             uv.setOutlineTexture(texture);
+        }
         });
     }
 
