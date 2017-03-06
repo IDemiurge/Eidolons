@@ -21,6 +21,8 @@ import java.util.List;
 
 public class UnitInfoPanel extends Container<TablePanel> {
     private Actor outside;
+    private boolean updatePanel;
+    private MainParamPanel mainParamPanel;
 
     public UnitInfoPanel() {
         TextureRegion textureRegion = TextureCache.getOrCreateR("/UI/components/infopanel/background.png");
@@ -66,12 +68,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
         ResourcePanel resourcePanel = new ResourcePanel(resourceValues);
         addElement(resourcePanel.left().bottom());
 
-        List<ValueContainer> valueContainers = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            valueContainers.add(new ValueContainer(TextureCache.getOrCreateR("/UI/abils.jpg"), "param" + i, "146%"));
-        }
-
-        MainParamPanel mainParamPanel = new MainParamPanel(valueContainers);
+        mainParamPanel = new MainParamPanel();
 
         addElement(mainParamPanel.left().bottom());
 
@@ -203,9 +200,30 @@ public class UnitInfoPanel extends Container<TablePanel> {
         });
 
         GuiEventManager.bind(GuiEventType.SHOW_UNIT_INFO_PANEL, (obj) -> {
-            setVisible(true);
+            setUserObject(obj.get());
             outside.setTouchable(Touchable.enabled);
         });
+    }
+
+    @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+        mainParamPanel.setUserObject(userObject);
+        updatePanel = true;
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        if (updatePanel) {
+            if (getUserObject() == null) {
+                setVisible(false);
+            } else {
+                setVisible(true);
+
+            }
+            updatePanel = false;
+        }
     }
 
     private void addPanelSeparator() {

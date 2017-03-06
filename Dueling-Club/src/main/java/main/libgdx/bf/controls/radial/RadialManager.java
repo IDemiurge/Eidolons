@@ -15,6 +15,7 @@ import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.TargetRunnable;
+import main.libgdx.gui.panels.dc.unitinfo.UnitDataSource;
 import main.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -103,7 +104,8 @@ public class RadialManager {
         RadialMenu.CreatorNode examine = new RadialMenu.CreatorNode();
         examine.texture = examineTexture;
         examine.action = () -> {
-            GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL, new EventCallbackParam(null));
+
+            GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL, new EventCallbackParam(new UnitDataSource(source)));
         };
         examine.name = "examine";
         list.add(examine);

@@ -17,6 +17,7 @@ public class TablePanel extends Container<Table> {
     protected static final int DOWN_LEFT = 4;
     protected static final int DOWN_RIGHT = 5;
     protected int rowDirection = TOP_DOWN;
+    protected boolean updatePanel;
     private Table inner;
     private Table lastCol;
     private List<Table> cols;
@@ -35,6 +36,12 @@ public class TablePanel extends Container<Table> {
         addElement(new Container(a).fill().left().bottom());
 
         addCol();
+    }
+
+    @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+        updatePanel = true;
     }
 
     public void addElement(Container el) {
