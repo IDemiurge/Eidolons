@@ -46,7 +46,6 @@ import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.text.LogEntryNode;
-import main.system.threading.WaitMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -960,13 +959,13 @@ public class DC_AttackMaster {
     }
 
     private void waitForAttackAnimation(Attack attack) {
-        if (attack.getAnimation() != null) {
-            if (attack.getAnimation().isStarted()) {
-                while (!attack.getAnimation().isFinished()) { // TODO limit?
-                    WaitMaster.WAIT(80);
-                }
-            }
-        }
+//        if (attack.getAnimation() != null) { TODO is it required now??
+//            if (attack.getAnimation().isStarted()) {
+//                while (!attack.getAnimation().isFinished()) {
+//                    WaitMaster.WAIT(80);
+//                }
+//            }
+//        }
     }
 
 }

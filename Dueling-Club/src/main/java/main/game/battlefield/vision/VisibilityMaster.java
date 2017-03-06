@@ -20,9 +20,9 @@ public class VisibilityMaster {
     private VisionMaster master;
     private boolean outlinesOn;
 
-    public VisibilityMaster(VisionMaster visionManager) {
-        master = visionManager;
-        outlinesOn=!visionManager.getGame().isDummyPlus();
+    public VisibilityMaster(VisionMaster visionMaster) {
+        master = visionMaster;
+        outlinesOn = !visionMaster.getGame().isDummyPlus() && !VisionManager.isVisionHacked();
 
     }
 

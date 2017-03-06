@@ -269,6 +269,10 @@ public class AnimMaster extends Group {
 
     private CompositeAnim getTriggerParentAnim(Event event) {
         CompositeAnim root = constructor.getOrCreate(event.getRef().getActive());
+        if (root == null) {
+            main.system.auxiliary.log.LogMaster.log(LogMaster.ANIM_DEBUG, "getTriggerParentAnim failed for: " + event);
+            return null;
+        }
         ANIM_PART part = EventAnimCreator.getPartToAttachTo(event);
         List<Animation> list = new LinkedList<>();
         if (root.getAttached().get(part) != null) {

@@ -262,14 +262,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
 
     }
 
-    protected void resetToughness() {
-        Integer amount = getIntParam(PARAMS.TOUGHNESS_RECOVERY) * getIntParam(PARAMS.TOUGHNESS)
-                / 100;
-        // setParam(PARAMS.C_TOUGHNESS, amount);
-        if (amount > 0) {
-            modifyParameter(PARAMS.C_TOUGHNESS, amount, getIntParam(PARAMS.TOUGHNESS));
-        }
-    }
+
 
     public boolean removeStatus(STATUS status) {
         return removeProperty(G_PROPS.STATUS, status.name());
@@ -343,7 +336,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         return getIntParam(PARAMS.C_ENERGY) >= getIntParam(PARAMS.ENERGY);
     }
 
-    protected void resetFacing() {
+    public void resetFacing() {
         if (facing != null) {
             setProperty(PROPS.FACING_DIRECTION, facing.getName());
         } else {

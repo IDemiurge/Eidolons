@@ -218,6 +218,9 @@ public class GameLauncher {
             TestMasterContent.setForceFree(PresetLauncher.getLaunch().freeActions);
 
             TestMasterContent.setImmortal(PresetLauncher.getLaunch().immortal);
+            CoreEngine.setGraphicTestMode(PresetLauncher.getLaunch().graphicsTest);
+UnitTrainingMaster.setRandom(!PresetLauncher.getLaunch().deterministicUnitTraining);
+
             DC_KeyManager.DEFAULT_CONTROLLER = PresetLauncher.getLaunch().controller;
         }
         if (host_client != null) {

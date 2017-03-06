@@ -1317,11 +1317,6 @@ public class DebugMaster {
         this.arg = arg;
     }
 
-    public enum SIMULATION_FUNCTIONS {
-        REMAP,
-
-    }
-
     public enum AI_PARAM {
         LOG_LEVEL
     }
@@ -1336,36 +1331,36 @@ public class DebugMaster {
         ADD_UNIT(true),
         ADD_ENEMY_UNIT(true),
         ADD_GROUP(true),
-        PRESET,
         KILL_UNIT(true),
-        TOGGLE_DEBUG,
         RESTART,
         CLEAR(true),
         SPAWN_WAVE,
-        TOGGLE_OMNIVISION(true),
 
         PAUSE,
-        ADD_DUNGEON,
         ADD_SKILL(true),
         ADD_ACTIVE(true),
         ADD_SPELL(true),
         ADD_CHAR(true),
         ADD_OBJ(true),
+        ADD_ITEM(true),
         // MISC
 
-        CLEAR_WAVES,
         ACTIVATE_UNIT(true),
         TOGGLE_DUMMY(true),
         TOGGLE_DUMMY_PLUS(true),
+        TOGGLE_OMNIVISION(true),
+        TOGGLE_DEBUG,
 
+        PRESET,
+        KILL_ALL_UNITS,
         SPAWN_PARTY(true),
         SPAWN_CUSTOM_WAVE(true),
-        ADD_ITEM(true),
-        KILL_ALL_UNITS,
+        CLEAR_WAVES,
 
         SET_OPTION,
         EDIT_AI,
         LOAD_DUNGEON,
+        ADD_DUNGEON,
 
         SET_WAVE_POWER,
         WAITER_INPUT,
@@ -1434,6 +1429,11 @@ public class DebugMaster {
         WRITE_TYPE,
         WRITE_GROUP,
         WRITE,
+
+    }
+
+    public enum SIMULATION_FUNCTIONS {
+        REMAP,
 
     }
 

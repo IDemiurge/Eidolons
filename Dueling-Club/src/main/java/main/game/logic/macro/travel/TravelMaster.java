@@ -226,7 +226,7 @@ public class TravelMaster {
         // reset unit? for HC ... maybe that's why those valueIcons are base[]
         // sometimes
         int mod = 100 * unit.getIntParam(PARAMS.CARRYING_CAPACITY) / 2
-                / Math.max(1, unit.initCarryingWeight());
+         / Math.max(1, unit.getCalculator().calculateCarryingWeight());
         int dex_mod = Math.min(mod / 2, unit.getIntParam(PARAMS.DEXTERITY));
         return getTravelSpeed(unit, mod, dex_mod);
     }

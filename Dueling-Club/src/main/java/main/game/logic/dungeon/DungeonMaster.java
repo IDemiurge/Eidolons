@@ -154,6 +154,7 @@ public class DungeonMaster {
     }
 
     public static String getRawDungeonName(String levelFilePath) {
+        if (levelFilePath == null) return "null dungeon";
         String name = StringMaster.getLastPathSegment(levelFilePath);
         name = StringMaster.cropFormat(name);
         name = StringMaster.cropVersion(name);

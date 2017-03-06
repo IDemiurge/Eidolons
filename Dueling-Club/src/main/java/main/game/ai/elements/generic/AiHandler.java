@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Created by JustMe on 3/3/2017.
  */
-public class AiHandler {
+public abstract class AiHandler {
     protected TaskManager taskManager;
     protected  GoalManager goalManager;
     protected  ActionManager actionManager;
@@ -110,6 +110,10 @@ public class AiHandler {
         return master;
     }
 
+    public void setMaster(AiHandler master) {
+        this.master = master;
+    }
+
     public AiExecutor getExecutor() {
         return executor;
     }
@@ -124,10 +128,6 @@ public class AiHandler {
 
     public void setCellPrioritizer(CellPrioritizer cellPrioritizer) {
         this.cellPrioritizer = cellPrioritizer;
-    }
-
-    public void setMaster(AiHandler master) {
-        this.master = master;
     }
 
     public TaskManager getTaskManager() {
@@ -202,22 +202,20 @@ public class AiHandler {
         this.paramAnalyzer = paramAnalyzer;
     }
 
-
+    public PathSequenceConstructor getPathSequenceConstructor() {
+        return pathSequenceConstructor;
+    }
 
     public void setPathSequenceConstructor(PathSequenceConstructor pathSequenceConstructor) {
         this.pathSequenceConstructor = pathSequenceConstructor;
     }
 
-    public void setTurnSequenceConstructor(TurnSequenceConstructor turnSequenceConstructor) {
-        this.turnSequenceConstructor = turnSequenceConstructor;
-    }
-
-    public PathSequenceConstructor getPathSequenceConstructor() {
-        return pathSequenceConstructor;
-    }
-
     public TurnSequenceConstructor getTurnSequenceConstructor() {
         return turnSequenceConstructor;
+    }
+
+    public void setTurnSequenceConstructor(TurnSequenceConstructor turnSequenceConstructor) {
+        this.turnSequenceConstructor = turnSequenceConstructor;
     }
 
     public List<AiHandler> getHandlers() {

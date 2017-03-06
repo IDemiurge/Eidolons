@@ -18,7 +18,7 @@ import main.game.battlefield.Coordinates.FACING_DIRECTION;
 import main.game.battlefield.FacingMaster;
 import main.libgdx.anims.AnimData;
 import main.libgdx.anims.AnimData.ANIM_VALUES;
-import main.libgdx.anims.sprite.SpriteAnimation;
+import main.libgdx.anims.sprite.SpriteAnimationFactory;
 import main.libgdx.bf.GridConst;
 import main.system.auxiliary.data.FileManager;
 import main.system.math.PositionMaster;
@@ -129,7 +129,7 @@ public class AttackAnim extends ActionAnim {
     @Override
     public void start() {
         sprites.clear();
-        sprites.add(new SpriteAnimation(getTexturePath(), true));
+        sprites.add(SpriteAnimationFactory.getSpriteAnimation(getTexturePath(), true));
         super.start();
         add();
     }

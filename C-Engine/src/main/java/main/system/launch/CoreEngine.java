@@ -6,7 +6,8 @@ import main.data.ability.ARGS;
 import main.data.ability.Mapper;
 import main.data.filesys.ResourceManager;
 import main.data.xml.XML_Reader;
-import main.system.auxiliary.*;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
@@ -19,7 +20,7 @@ import java.util.Arrays;
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability"};
     public static final String VERSION = "0.01";
-    public static boolean swingOn = true;
+    public static boolean swingOn = false;
     public static boolean animationTestMode;
     private static boolean TEST_MODE = true;
     private static SoundMaster sm;
@@ -190,16 +191,17 @@ public class CoreEngine {
     public static boolean isGraphicTestMode() {
         return graphicTestMode;
     }
+
+    public static void setGraphicTestMode(boolean graphicTestMode) {
+        CoreEngine.graphicTestMode = graphicTestMode;
+    }
+
     public static boolean isGuiTestMode() {
         return guiTestMode;
     }
 
     public static void setGuiTestMode(boolean guiTestMode) {
         CoreEngine.guiTestMode = guiTestMode;
-    }
-
-    public static void setGraphicTestMode(boolean graphicTestMode) {
-        CoreEngine.graphicTestMode = graphicTestMode;
     }
 
     public static boolean isAnimationTestMode() {

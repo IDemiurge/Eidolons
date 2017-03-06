@@ -22,6 +22,7 @@ import main.libgdx.anims.AnimData.ANIM_VALUES;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.particles.EmitterPools;
 import main.libgdx.anims.sprite.SpriteAnimation;
+import main.libgdx.anims.sprite.SpriteAnimationFactory;
 import main.libgdx.anims.std.*;
 import main.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
 import main.system.auxiliary.EnumMaster;
@@ -210,7 +211,7 @@ public class AnimationConstructor {
         for (String path :
                 StringMaster.openContainer(data.getValue(ANIM_VALUES.SPRITES))) {
             if (path.isEmpty()) continue;
-            sprites.add(new SpriteAnimation(path));
+            sprites.add(SpriteAnimationFactory.getSpriteAnimation(path));
             exists = true;
         }
         List<EmitterActor> list = EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));

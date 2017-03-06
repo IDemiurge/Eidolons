@@ -175,7 +175,7 @@ public class DebugRadialManager {
         TYPE(),
         PICK_HIDDEN(),
         FUNCTION(FUNC_STANDARD, FUNC_ADD_BF, FUNC_ADD_NON_BF, FUNC_GLOBAL,
-                FUNC_OTHER,
+         FUNC_OTHER, FUNC_TOGGLE,
                 PICK, TYPE, PICK_HIDDEN) {
             @Override
             public boolean isRoot() {

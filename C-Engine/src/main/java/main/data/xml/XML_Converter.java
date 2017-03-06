@@ -1,15 +1,15 @@
 package main.data.xml;
 
-import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.data.DataManager;
 import main.data.ability.AE_Item;
 import main.data.ability.Argument;
 import main.data.ability.Mapper;
 import main.entity.type.ObjType;
-import main.system.auxiliary.log.Err;
 import main.system.auxiliary.TreeMaster;
+import main.system.auxiliary.log.Err;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.XMap;
 import org.w3c.dom.Document;
@@ -158,7 +158,7 @@ public class XML_Converter {
             document = builder.parse(new InputSource(new StringReader(myString)));
 
         } catch (Exception e) {
-            LogMaster.log(2,
+            LogMaster.log(LogMaster.DATA_DEBUG,
 
                     "failed to parse xml: " + myString);
             e.printStackTrace();

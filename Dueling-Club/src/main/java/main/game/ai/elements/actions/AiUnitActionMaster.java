@@ -14,6 +14,7 @@ import main.game.logic.generic.DC_ActionManager;
 import main.game.logic.generic.DC_ActionManager.STD_ACTIONS;
 import main.game.logic.generic.DC_ActionManager.STD_MODE_ACTIONS;
 import main.system.auxiliary.data.ListMaster;
+import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -152,7 +153,7 @@ public class AiUnitActionMaster {
     public static List<DC_ActiveObj> getMoveActions(Unit unit) {
         List<DC_ActiveObj> list = new LinkedList<>();
         list.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE));
-        List<DC_UnitAction> actionList = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_MOVE);
+        DequeImpl<DC_UnitAction> actionList = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_MOVE);
         if (ListMaster.isNotEmpty(actionList)) {
             list.addAll(actionList);
         }

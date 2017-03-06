@@ -31,6 +31,7 @@ import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class DC_BuffRule extends DC_RuleImpl {
     protected static final KEYS OBJ_REF = KEYS.SOURCE;
@@ -39,6 +40,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     protected Unit target;
     Map<Obj, Effect[]> effectCache = new XLinkedMap<>();
     private boolean animationQueued;
+    private Map<Obj, Integer> levelCache = new ConcurrentHashMap<>();
 
     public DC_BuffRule(MicroGame game) {
         super(game);
@@ -173,6 +175,10 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     }
 
     public int getBuffLevel(Unit unit) {
+        return levelCache.get(unit);
+    }
+
+    public int initBuffLevel(Unit unit) {
         Ref ref = unit.getRef().getCopy();
         ref.setMatch(unit.getId());
         ref.setTarget(unit.getId());
@@ -321,6 +327,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
                 // break;
             }
         }
+        levelCache.put(ref.getSourceObj(), level);
         return level;
     }
 

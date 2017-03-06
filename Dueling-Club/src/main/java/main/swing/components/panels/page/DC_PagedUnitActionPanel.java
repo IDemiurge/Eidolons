@@ -7,6 +7,7 @@ import main.swing.components.panels.DC_UnitActionPanel.ACTION_DISPLAY_GROUP;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagedListPanel;
 import main.system.auxiliary.data.ListMaster;
+import main.system.datatypes.DequeImpl;
 import main.system.graphics.GuiManager;
 
 import java.util.LinkedList;
@@ -40,7 +41,7 @@ public class DC_PagedUnitActionPanel extends G_PagedListPanel<DC_UnitAction> {
         if (getObj() == null) {
             return null;
         }
-        List<DC_UnitAction> actions = ((DC_UnitModel) getObj()).getActionMap().get(group.getType());
+        DequeImpl<DC_UnitAction> actions = ((DC_UnitModel) getObj()).getActionMap().get(group.getType());
         if (actions == null) {
             return null;
         }

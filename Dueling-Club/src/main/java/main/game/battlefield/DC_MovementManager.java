@@ -35,6 +35,7 @@ import main.system.CustomValueManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.datatypes.DequeImpl;
 import main.system.entity.ConditionMaster;
 import main.system.entity.FilterMaster;
 import main.system.math.PositionMaster;
@@ -78,7 +79,7 @@ public class DC_MovementManager implements MovementManager {
 
     public static List<DC_ActiveObj> getMoves(Unit unit) {
         List<DC_ActiveObj> moveActions = new ArrayList<>();
-        List<DC_UnitAction> actions = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_MOVE);
+        DequeImpl<DC_UnitAction> actions = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_MOVE);
         if (actions != null) {
             moveActions = new ArrayList<>(Arrays.asList(actions.toArray(new DC_ActiveObj[actions
                     .size()])));

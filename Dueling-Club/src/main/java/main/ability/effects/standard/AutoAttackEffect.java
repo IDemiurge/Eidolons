@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class AutoAttackEffect extends DC_Effect {
+    private boolean isManualOn;
 
     // boolean offhand; auto!
 
@@ -86,8 +87,11 @@ public class AutoAttackEffect extends DC_Effect {
     }
 
     private DC_ActiveObj pickManually(List<DC_ActiveObj> subActions) {
+        if (!isManualOn)
+            throw new RuntimeException();
         AttackChoicePanel dialog = new AttackChoicePanel(subActions, getTarget());
-        DC_ActiveObj action = dialog.chooseEntity();
+        DC_ActiveObj action =
+         dialog.chooseEntity();
         if (action != null) {
             if (!getGame().isOffline()) {
                 if (getGame().getConnection() != null) {

@@ -78,6 +78,12 @@ public class Executor extends ActiveHandler {
         return new Activator(active, entityMaster);
     }
 
+    public void activateOn(Ref ref) {
+        targeter.setForcePresetTarget(true);
+        getEntity().setRef(ref);
+        activateOnActionThread();
+    }
+
     public void activateOn(Obj t) {
         targeter.presetTarget = t;
         activateOnActionThread();

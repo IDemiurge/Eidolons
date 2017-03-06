@@ -26,6 +26,7 @@ import main.rules.RuleMaster.RULE;
 import main.rules.action.WatchRule;
 import main.rules.mechanics.InterruptRule;
 import main.system.auxiliary.log.LogMaster;
+import main.system.datatypes.DequeImpl;
 import main.system.entity.ConditionMaster;
 import main.system.math.PositionMaster;
 import main.system.math.roll.RollMaster;
@@ -417,14 +418,15 @@ public class AttackOfOpportunityRule {
 
     private static int getMaxAttackRange(DC_ActiveObj attack) {
 
-        return 0;
+        return 1; //TODO sometimes 0?
     }
 
     private static List<DC_ActiveObj> getAttacksOfOpportunity(Unit unit) {
         List<DC_ActiveObj> list = new LinkedList<>();
-        List<DC_UnitAction> attacks = unit.getActionMap().get(ActionEnums.ACTION_TYPE.STANDARD_ATTACK);
+        DequeImpl<DC_UnitAction> attacks = unit.getActionMap()
+         .get(ActionEnums.ACTION_TYPE.STANDARD_ATTACK);
         if (attacks == null) {
-            attacks = new LinkedList<>();
+            attacks = new DequeImpl<>();
         }
         if (unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK) != null) {
             attacks.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK));

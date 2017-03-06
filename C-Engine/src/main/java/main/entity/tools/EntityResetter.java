@@ -11,6 +11,7 @@ import main.system.math.Property;
 import main.system.text.TextParser;
 
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Created by JustMe on 2/15/2017.
@@ -103,6 +104,13 @@ public class EntityResetter<E extends Entity> extends EntityHandler<E> {
         getEntity().setDirty(false);
     }
 
+    public void resetParam(PARAMETER param) {
+        getEntity().resetParam(param);
+    }
+
+    public void resetPropertyFromList(PROPERTY prop, List<? extends Entity> list) {
+        getEntity().resetPropertyFromList(prop, list);
+    }
 
     protected void resetStatus() {
         entity.setProperty(G_PROPS.STATUS, "");
