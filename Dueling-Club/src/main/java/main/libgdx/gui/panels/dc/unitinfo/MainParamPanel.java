@@ -29,36 +29,36 @@ public class MainParamPanel extends TablePanel {
         setWidth(textureRegion.getRegionWidth());
         setHeight(textureRegion.getRegionHeight());
 
-        strength = new ValueContainer(getOrCreateR("UI/value icons/attributes/strength.png"), "strength", "");
+        strength = new ValueContainer(getOrCreateR("UI/value icons/attributes/strength.png"), "Strength", "");
         addElement(strength.fill().left().bottom().pad(0, 10, 10, 25));
 
-        vitality = new ValueContainer(getOrCreateR("UI/value icons/attributes/vitality.png"), "vitality", "");
+        vitality = new ValueContainer(getOrCreateR("UI/value icons/attributes/vitality.png"), "Vitality", "");
         addElement(vitality.fill().left().bottom().pad(0, 10, 10, 25));
 
-        agility = new ValueContainer(getOrCreateR("UI/value icons/attributes/agility.png"), "agility", "");
+        agility = new ValueContainer(getOrCreateR("UI/value icons/attributes/agility.png"), "Agility", "");
         addElement(agility.fill().left().bottom().pad(0, 10, 10, 25));
 
-        dexterity = new ValueContainer(getOrCreateR("UI/value icons/attributes/dexterity.png"), "dexterity", "");
+        dexterity = new ValueContainer(getOrCreateR("UI/value icons/attributes/dexterity.png"), "Dexterity", "");
         addElement(dexterity.fill().left().bottom().pad(0, 10, 10, 25));
 
-        willpower = new ValueContainer(getOrCreateR("UI/value icons/attributes/willpower.png"), "willpower", "");
+        willpower = new ValueContainer(getOrCreateR("UI/value icons/attributes/willpower.png"), "Willpower", "");
         addElement(willpower.fill().left().bottom().pad(0, 10, 10, 25));
 
         addCol();
 
-        spellpower = new ValueContainer(getOrCreateR("UI/value icons/attributes/spellpower.png"), "spellpower", "");
+        spellpower = new ValueContainer(getOrCreateR("UI/value icons/attributes/spellpower.png"), "Spellpower", "");
         addElement(spellpower.fill().left().bottom().pad(0, 10, 10, 25));
 
-        intelligence = new ValueContainer(getOrCreateR("UI/value icons/attributes/intelligence.png"), "intelligence", "");
+        intelligence = new ValueContainer(getOrCreateR("UI/value icons/attributes/intelligence.png"), "Intelligence", "");
         addElement(intelligence.fill().left().bottom().pad(0, 10, 10, 25));
 
-        knowledge = new ValueContainer(getOrCreateR("UI/value icons/attributes/knowledge.png"), "knowledge", "");
+        knowledge = new ValueContainer(getOrCreateR("UI/value icons/attributes/knowledge.png"), "Knowledge", "");
         addElement(knowledge.fill().left().bottom().pad(0, 10, 10, 25));
 
-        wisdom = new ValueContainer(getOrCreateR("UI/value icons/attributes/wisdom.png"), "wisdom", "");
+        wisdom = new ValueContainer(getOrCreateR("UI/value icons/attributes/wisdom.png"), "Wisdom", "");
         addElement(wisdom.fill().left().bottom().pad(0, 10, 10, 25));
 
-        charisma = new ValueContainer(getOrCreateR("UI/value icons/attributes/charisma.png"), "charisma", "");
+        charisma = new ValueContainer(getOrCreateR("UI/value icons/attributes/charisma.png"), "Charisma", "");
         addElement(charisma.fill().left().bottom().pad(0, 10, 10, 25));
     }
 

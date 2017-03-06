@@ -12,51 +12,51 @@ public class UnitDataSource implements UnitInfoMainParamSource {
 
     @Override
     public String getStrength() {
-        return unit.getParam(PARAMS.STRENGTH);
+        return String.valueOf(unit.getIntParam(PARAMS.STRENGTH));
     }
 
     @Override
     public String getVitality() {
-        return unit.getParam(PARAMS.VITALITY);
+        return String.valueOf(unit.getIntParam(PARAMS.VITALITY));
     }
 
     @Override
     public String getAgility() {
-        return unit.getParam(PARAMS.AGILITY);
+        return String.valueOf(unit.getIntParam(PARAMS.AGILITY));
     }
 
     @Override
     public String getDexterity() {
-        return unit.getParam(PARAMS.DEXTERITY);
+        return String.valueOf(unit.getIntParam(PARAMS.DEXTERITY));
     }
 
     @Override
     public String getWillpower() {
-        return unit.getParam(PARAMS.WILLPOWER);
+        return String.valueOf(unit.getIntParam(PARAMS.WILLPOWER));
     }
 
     @Override
     public String getSpellpower() {
-        return unit.getParam(PARAMS.SPELLPOWER);
+        return String.valueOf(unit.getIntParam(PARAMS.SPELLPOWER));
     }
 
     @Override
     public String getIntelligence() {
-        return unit.getParam(PARAMS.INTELLIGENCE);
+        return String.valueOf(unit.getIntParam(PARAMS.INTELLIGENCE));
     }
 
     @Override
     public String getKnowledge() {
-        return unit.getParam(PARAMS.KNOWLEDGE);
+        return String.valueOf(unit.getIntParam(PARAMS.KNOWLEDGE));
     }
 
     @Override
     public String getWisdom() {
-        return unit.getParam(PARAMS.WISDOM);
+        return String.valueOf(unit.getIntParam(PARAMS.WISDOM));
     }
 
     @Override
     public String getCharisma() {
-        return unit.getParam(PARAMS.CHARISMA);
+        return String.valueOf(unit.getIntParam(PARAMS.CHARISMA));
     }
 }
