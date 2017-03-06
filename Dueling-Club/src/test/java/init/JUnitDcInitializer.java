@@ -15,7 +15,7 @@ import java.tests.JUnitTests;
 public class JUnitDcInitializer {
 
     public static DC_Game game;
-    private static JUnitTests tests;
+    private  JUnitTests tests;
 
     public static void main(String[] strings) {
 //        PathFinder.setJUnitMode(true); to find all test/resources
@@ -29,8 +29,12 @@ public class JUnitDcInitializer {
         GameLauncher launcher = new GameLauncher(null , null);
         game = launcher.initDC_Game();
         game.start(true); //TODO
-        tests = new JUnitTests();
-        tests.run();
+        new JUnitDcInitializer();
 
+    }
+
+    public JUnitDcInitializer( ) {
+        tests = new JUnitTests(this);
+        tests.run();
     }
 }
