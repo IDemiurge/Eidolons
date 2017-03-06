@@ -2,6 +2,7 @@ package tests.entity;
 
 import init.JUnitDcInitializer;
 import main.content.DC_TYPE;
+import main.content.PARAMS;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
@@ -14,8 +15,8 @@ import org.junit.Test;
  */
 public class CreateUnitTest{
 
-    private static final String DEFAULT_TEST_UNIT = "Pirate";
-    private   String typeName = "Pirate";
+
+    private  String typeName = "Pirate";
     private JUnitDcInitializer judi;
     private Unit entity;
 
@@ -38,6 +39,10 @@ public class CreateUnitTest{
 
         assert (entity!=null );
         assert (entity.getName().equals(typeName));
+        entity.setParam(PARAMS.ACID_ARMOR, entity.getType().getParam(PARAMS.ACID_ARMOR)+5);
+        entity.toBase();
+        assert (entity.getParam(PARAMS.ACID_ARMOR) == entity.getType().getParam(PARAMS.ACID_ARMOR));
+
 
 
 
