@@ -1,7 +1,7 @@
 package tests;
 
 import init.JUnitDcInitializer;
-import tests.entity.CreateUnitTest;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class JUnitTests implements Runnable {
 
     public JUnitTests(JUnitDcInitializer initializer){
         tests = new LinkedList<>();
-        tests.add(new CreateUnitTest(initializer));
+        //tests.add(new CreateUnitTest(initializer));
     }
 
     @Override
