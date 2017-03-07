@@ -71,14 +71,13 @@ public class AiUnitActionMaster {
                 }
 
                 actions.remove(ActionFactory.getUnitAction(unit, DC_ActionManager.OFFHAND_ATTACK));
-
-
-                actions.remove(unit.getAction(
-                 DC_ActionManager.THROW_OFFHAND, false));
-                actions.remove(unit.getAction(
-                 "Throw", false));
-                actions.remove(unit.getAction(
-                 "Throw", false));
+                DC_UnitAction
+                 action = unit.getAction(
+                 "Throw", false);
+                actions.remove(action);
+                action = unit.getAction(
+                 "Throw", false);
+                actions.remove(action);
                 break;
 
             case DEFEND:
