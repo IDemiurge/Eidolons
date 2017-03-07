@@ -23,6 +23,8 @@ public class UnitInfoPanel extends Container<TablePanel> {
     private Actor outside;
     private boolean updatePanel;
     private MainParamPanel mainParamPanel;
+    private ResourcePanel resourcePanel;
+    private AvatarPanel avatarPanel;
 
     public UnitInfoPanel() {
         TextureRegion textureRegion = TextureCache.getOrCreateR("/UI/components/infopanel/background.png");
@@ -65,7 +67,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
             resourceValues.add(new VerticalValueContainer(TextureCache.getOrCreateR("UI/value icons/morale.png"), "param" + i, "146%"));
         }
 
-        ResourcePanel resourcePanel = new ResourcePanel(resourceValues);
+        resourcePanel = new ResourcePanel();
         addElement(resourcePanel.left().bottom());
 
         mainParamPanel = new MainParamPanel();
@@ -90,7 +92,7 @@ public class UnitInfoPanel extends Container<TablePanel> {
         addCol();
 
 
-        AvatarPanel avatarPanel = new AvatarPanel(TextureCache.getOrCreateR("/UI/Empty5.jpg"), "Elf", "level 80", "code name: \"Legolas\"");
+        avatarPanel = new AvatarPanel();
         addElement(avatarPanel);
 
         InitiativeAndActionPointsPanel pointsPanel = new InitiativeAndActionPointsPanel("50/50", "9999");
@@ -209,6 +211,8 @@ public class UnitInfoPanel extends Container<TablePanel> {
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
         mainParamPanel.setUserObject(userObject);
+        resourcePanel.setUserObject(userObject);
+        avatarPanel.setUserObject(userObject);
         updatePanel = true;
     }
 

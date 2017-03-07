@@ -1,6 +1,7 @@
 package main.libgdx.bf.controls.radial;
 
 import com.badlogic.gdx.graphics.Texture;
+import main.content.C_OBJ_TYPE;
 import main.elements.Filter;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
@@ -101,14 +102,17 @@ public class RadialManager {
 
         List<RadialMenu.CreatorNode> list = new LinkedList<>();
 
-        RadialMenu.CreatorNode examine = new RadialMenu.CreatorNode();
-        examine.texture = examineTexture;
-        examine.action = () -> {
-
-            GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL, new EventCallbackParam(new UnitDataSource(source)));
-        };
-        examine.name = "examine";
-        list.add(examine);
+        if (C_OBJ_TYPE.UNITS_CHARS.equals(target.getOBJ_TYPE_ENUM())) {
+            RadialMenu.CreatorNode examine = new RadialMenu.CreatorNode();
+            examine.texture = examineTexture;
+            examine.action = () -> {
+                GuiEventManager.trigger(
+                        GuiEventType.SHOW_UNIT_INFO_PANEL,
+                        new EventCallbackParam<>(new UnitDataSource(target)));
+            };
+            examine.name = "examine";
+            list.add(examine);
+        }
 
         RadialMenu.CreatorNode attM = new RadialMenu.CreatorNode();
         attM.texture = attacks.get(0).texture;
@@ -173,7 +177,7 @@ public class RadialManager {
 
                 if (objects.size() > 0) {
                     Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(objects,
-                     active1::activateOn);
+                            active1::activateOn);
                     RadialMenu.CreatorNode innn = new RadialMenu.CreatorNode();
                     innn.name = active1.getName();
                     innn.texture = TextureCache.getOrCreate(active1.getImagePath());
