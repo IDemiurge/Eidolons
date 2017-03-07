@@ -292,7 +292,8 @@ public class Ref extends DataUnit<KEYS> implements Cloneable, Serializable {
         Ref ref = checkForRefReplacement();
 
         if (id == null) {
-            ((ref == null) ? this : ref).setValue(getStr(), null);
+//            ((ref == null) ? this : ref).setValue(getStr(), null);
+            ((ref == null) ? this : ref).setValue(key, null);
         } else {
             ((ref == null) ? this : ref).setValue(getStr(), id.toString());
         }

@@ -411,6 +411,7 @@ public class Obj extends Entity {
     }
 
     public void resetObjects() {
+        getResetter().resetObjects();
     }
 
     public boolean isObstructing() {

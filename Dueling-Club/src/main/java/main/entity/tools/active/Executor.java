@@ -194,7 +194,11 @@ public class Executor extends ActiveHandler {
         getMaster().getAnimator().addResolvesPhase();
 
         if (getAction().getAbilities() != null) {
-            result = getAction().getAbilities().activatedOn(getRef());
+            try {
+                result = getAction().getAbilities().activatedOn(getRef());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else
         // for Multi-targeting when single-wrapped Abilities cannot be used
         {
@@ -275,7 +279,7 @@ public class Executor extends ActiveHandler {
 
     public void activationOver() {
         getGame().getManager().setActivatingAction(null);
-        if (result)
+//        if (result) TODO !!! always!
             actionComplete();
     }
 
