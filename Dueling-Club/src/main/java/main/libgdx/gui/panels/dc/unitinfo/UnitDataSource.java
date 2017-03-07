@@ -1,12 +1,14 @@
 package main.libgdx.gui.panels.dc.unitinfo;
 
+import com.badlogic.gdx.graphics.Texture;
 import main.content.PARAMS;
-import main.entity.obj.unit.Unit;
+import main.entity.obj.DC_Obj;
+import main.libgdx.texture.TextureCache;
 
-public class UnitDataSource implements UnitInfoMainParamSource {
-    private Unit unit;
+public class UnitDataSource implements UnitInfoMainParamSource, ResourceSource, AvatarDataSource {
+    private DC_Obj unit;
 
-    public UnitDataSource(Unit unit) {
+    public UnitDataSource(DC_Obj unit) {
         this.unit = unit;
     }
 
@@ -58,5 +60,67 @@ public class UnitDataSource implements UnitInfoMainParamSource {
     @Override
     public String getCharisma() {
         return String.valueOf(unit.getIntParam(PARAMS.CHARISMA));
+    }
+
+    @Override
+    public String getToughness() {
+        int c = unit.getIntParam(PARAMS.C_TOUGHNESS);
+        int m = unit.getIntParam(PARAMS.TOUGHNESS);
+        return c + "/" + m;
+    }
+
+    @Override
+    public String getEndurance() {
+        int c = unit.getIntParam(PARAMS.C_ENDURANCE);
+        int m = unit.getIntParam(PARAMS.ENDURANCE);
+        return c + "/" + m;
+    }
+
+    @Override
+    public String getStamina() {
+        int c = unit.getIntParam(PARAMS.C_TOUGHNESS);
+        int m = unit.getIntParam(PARAMS.TOUGHNESS);
+        return c + "/" + m;
+    }
+
+    @Override
+    public String getMorale() {
+        int c = unit.getIntParam(PARAMS.C_MORALE);
+        int m = unit.getIntParam(PARAMS.MORALE);
+        return c + "/" + m;
+    }
+
+    @Override
+    public String getEssence() {
+        int c = unit.getIntParam(PARAMS.C_ESSENCE);
+        int m = unit.getIntParam(PARAMS.ESSENCE);
+        return c + "/" + m;
+    }
+
+    @Override
+    public String getFocus() {
+        int c = unit.getIntParam(PARAMS.C_FOCUS);
+        int m = unit.getIntParam(PARAMS.FOCUS);
+        return c + "/" + m;
+    }
+
+    @Override
+    public Texture getAvatar() {
+        return TextureCache.getOrCreate(unit.getImagePath());
+    }
+
+    @Override
+    public String getName() {
+        return unit.getName();
+    }
+
+    @Override
+    public String getParam1() {
+        return unit.getValue("Race");
+    }
+
+    @Override
+    public String getParam2() {
+        return unit.getParam("Level");
     }
 }
