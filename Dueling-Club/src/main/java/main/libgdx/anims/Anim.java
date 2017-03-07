@@ -11,7 +11,6 @@ import javafx.util.Pair;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.game.battlefield.Coordinates;
-import main.game.core.game.DC_Game;
 import main.libgdx.GameScreen;
 import main.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import main.libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
@@ -76,10 +75,12 @@ public class Anim extends Group implements Animation {
     EventCallbackParam callbackParam;
     private boolean emittersWaitingDone;
     private List<FloatingText> floatingText;
+    protected Ref ref;
 
     public Anim(Entity active, AnimData params) {
         data = params;
         this.active = active;
+        this.ref = active.getRef().getCopy();
         textureSupplier = () -> getTexture();
         reset();
         if (data.getIntValue(ANIM_VALUES.FRAME_DURATION) > 0) {
@@ -663,11 +664,11 @@ public class Anim extends Group implements Animation {
     }
 
     public Ref getRef() {
-        if (active == null) {
-            return (DC_Game.game.getManager().getActiveObj().getRef());
-        }
-
-        return active.getRef();
+        return ref;
+//        if (active == null) {
+//            return (DC_Game.game.getManager().getActiveObj().getRef());
+//        }
+//        return active.getRef();
     }
 
     public float getDelay() {

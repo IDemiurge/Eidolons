@@ -206,6 +206,10 @@ public class GameLauncher {
 
 
         if (PresetLauncher.getLaunch() != null) {
+//            if (PresetLauncher.getLaunch().preset != null) {
+//                Preset p = PresetMaster.loadPreset(PresetLauncher.getLaunch().preset);
+//         PresetMaster.setPreset(p);
+//            } TODO move here from PResetLauncher
             ENEMY_CODE = PresetLauncher.getLaunch().ENEMY_CODE ;
             PARTY_CODE = PresetLauncher.getLaunch().PARTY_CODE ;
 

@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by JustMe on 3/6/2017.
  */
-public class Cleaner {
+public class DungeonXmlCleaner {
 
 
     public static void main(String[] args) {
