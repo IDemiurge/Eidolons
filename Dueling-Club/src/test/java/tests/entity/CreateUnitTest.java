@@ -1,44 +1,50 @@
-package java.tests.entity;
+package tests.entity;
 
+import init.JUnitDcInitializer;
 import main.content.DC_TYPE;
+import main.content.PARAMS;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-
-import java.init.JUnitDcInitializer;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Created by JustMe on 3/6/2017.
  */
-public class CreateUnitTest extends CreateEntityTest<Unit> {
+public class CreateUnitTest{
 
-    private static final String DEFAULT_TEST_UNIT = "Pirate";
-    private   String typeName;
 
-    public CreateUnitTest(JUnitDcInitializer initializer) {
-        this(initializer, DEFAULT_TEST_UNIT);
-    }
-    public CreateUnitTest(JUnitDcInitializer initializer, String typeName) {
-        super(initializer);
-        this.typeName=typeName;
-    }
+    private  String typeName = "Pirate";
+    private JUnitDcInitializer judi;
+    private Unit entity;
 
-    @Override
-    protected Unit createEntity() {
+
+
+    @Before
+    public void createEntity() {
+        judi = new JUnitDcInitializer();
         ObjType type= getTestType();
-        game.getManager().getObjCreator().createUnit(type, 0, 0, game.getPlayer(true), new Ref(game));
-        return null;
+        entity = (Unit) judi.game.getManager().getObjCreator().createUnit(type, 0, 0, judi.game.getPlayer(true), new Ref(judi.game));
+
     }
 
     private ObjType getTestType() {
         return DataManager.getType(typeName, DC_TYPE.UNITS);
     }
 
-    @Override
+    @Test
     public void testUnitTest() {
+
         assert (entity!=null );
         assert (entity.getName().equals(typeName));
+        entity.setParam(PARAMS.ACID_ARMOR, entity.getType().getParam(PARAMS.ACID_ARMOR)+5);
+        entity.toBase();
+        assert (entity.getParam(PARAMS.ACID_ARMOR) == entity.getType().getParam(PARAMS.ACID_ARMOR));
+
+
+
 
     }
 }

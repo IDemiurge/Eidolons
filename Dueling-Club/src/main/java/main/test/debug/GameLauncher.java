@@ -50,8 +50,8 @@ public class GameLauncher {
     public String PLAYER_PARTY = "Bandit Archer";//Zail Adelwyn v4
     public boolean DUMMY_MODE = false;
     public boolean DUMMY_PP = false;
-    public boolean FAST_MODE;
-    public boolean SUPER_FAST_MODE;
+    public Boolean FAST_MODE;
+    public Boolean SUPER_FAST_MODE;
     private Boolean DEBUG_MODE;
     private Integer PLAYER_CHOICE_OPTION = null;
     private Integer ENEMY_CHOICE_OPTION = 0;
@@ -72,8 +72,8 @@ public class GameLauncher {
                         Boolean host_client) {
         this.game = game;
         this.host_client = host_client;
-        this.FAST_MODE = FAST_MODE;
-        this.SUPER_FAST_MODE = SUPER_FAST_MODE;
+        this.FAST_MODE =BooleanMaster.isTrue( FAST_MODE);
+        this.SUPER_FAST_MODE = BooleanMaster.isTrue(SUPER_FAST_MODE);
         instance = this;
     }
 
@@ -206,6 +206,9 @@ public class GameLauncher {
 
 
         if (PresetLauncher.getLaunch() != null) {
+            ENEMY_CODE = PresetLauncher.getLaunch().ENEMY_CODE ;
+            PARTY_CODE = PresetLauncher.getLaunch().PARTY_CODE ;
+
             if (!VISION_HACK) {
                 VISION_HACK = PresetLauncher.getLaunch().visionHacked;
             }

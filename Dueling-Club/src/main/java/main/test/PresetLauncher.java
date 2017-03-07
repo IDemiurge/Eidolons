@@ -358,6 +358,8 @@ public class PresetLauncher {
         public LOG_CHANNELS[] logChannelsOn;
         public LOG_CHANNELS[] logChannelsOff;
         public boolean graphicsOff;
+        public int ENEMY_CODE;
+        public int PARTY_CODE;
 
         //test launches
         LAUNCH() {
