@@ -8,6 +8,7 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.logic.arena.UnitGroupMaster;
+import main.game.logic.dungeon.DungeonMaster;
 import main.libgdx.anims.controls.EmitterController;
 import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.anims.particles.lighting.LightingManager;
@@ -39,7 +40,7 @@ public class PresetLauncher {
     public final static String[] LAUNCH_OPTIONS = {
             "AI", "Gui", "Logic", "Recent", "New", "Anims",
             "Emitters",
-            "Last"
+            "Last", "Profiling"
 
     };
     public static int PRESET_OPTION = -1;
@@ -129,6 +130,7 @@ public class PresetLauncher {
                 break;
 
         }
+
         return null;
     }
 
@@ -147,6 +149,17 @@ public class PresetLauncher {
         Arrays.stream(launch.logChannelsOff).forEach(c->{
             c.setOn(false);
         });
+
+        if (launch.preset != null) {
+            Preset p = PresetMaster.loadPreset(launch.preset);
+            PresetMaster.setPreset(p);
+        }
+        if (launch.dungeonPath != null) {
+            DungeonMaster.setDEFAULT_DUNGEON_PATH(launch.dungeonPath);
+        }
+        if (launch.dungeonType != null) {
+            DungeonMaster.setDEFAULT_DUNGEON(launch.dungeonType);
+        }
         return launch;
     }
 
@@ -331,6 +344,7 @@ public class PresetLauncher {
         };
 
         LAUNCH.JUnit.graphicsOff=true;
+        LAUNCH.Profiling.dungeonPath="Test\\Broken Ravenguard Fort.xml";
     }
 
     public enum LAUNCH {
@@ -340,10 +354,13 @@ public class PresetLauncher {
         Anims(true),
         Emitters(true),
         JUnit(),
+        Profiling(true)
         ;
         public Boolean immortal;
         public CONTROLLER controller;
         public String preset;
+        public String dungeonType;
+        public String dungeonPath;
         public RULE_SCOPE ruleScope;
         public boolean graphicsTest = true;
         public boolean debugMode;
