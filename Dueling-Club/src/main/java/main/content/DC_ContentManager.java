@@ -120,15 +120,7 @@ public class DC_ContentManager extends ContentManager {
             PARAMS.INITIATIVE_BONUS,
 
     };
-    private static PARAMETER[] headerUnitParams3 = {PARAMS.PIERCING_RESISTANCE,
-            PARAMS.BLUDGEONING_RESISTANCE, PARAMS.SLASHING_RESISTANCE,
 
-            PARAMS.FIRE_RESISTANCE, PARAMS.WATER_RESISTANCE, PARAMS.AIR_RESISTANCE,
-            PARAMS.EARTH_RESISTANCE, PARAMS.CHAOS_RESISTANCE, PARAMS.HOLY_RESISTANCE,
-            PARAMS.SHADOW_RESISTANCE, PARAMS.ARCANE_RESISTANCE, PARAMS.PSIONIC_RESISTANCE,
-            PARAMS.DEATH_RESISTANCE, PARAMS.POISON_RESISTANCE,
-
-    };
     // next page => Masteries
     // another page => Modifiers (+sneak)
     private static PARAMETER[] headerCharParams = null;

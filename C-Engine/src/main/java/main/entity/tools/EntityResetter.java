@@ -118,4 +118,7 @@ public class EntityResetter<E extends Entity> extends EntityHandler<E> {
             entity.addStatus(UnitEnums.STATUS.DEAD.toString());
         }
     }
+
+    public void resetObjects() {
+    }
 }

@@ -1,9 +1,7 @@
 package main.data.xml;
 
-import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.*;
 import main.content.enums.GenericEnums;
-import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
@@ -12,7 +10,6 @@ import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.gui.components.controls.ModelManager;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.ValueHelper;
@@ -81,48 +78,48 @@ public class XML_Transformer {
         }
     }
 
-    public static void transformResistances() {
-        for (ObjType t : DataManager.getTypes()) {
-            DAMAGE_TYPE dmg_type = new EnumMaster<DAMAGE_TYPE>().retrieveEnumConst(
-                    DAMAGE_TYPE.class, t.getProperty(PROPS.DAMAGE_TYPE));
-            if (dmg_type != null) {
-                switch (dmg_type) {
-                    // case BLUDGEONING
-                }
-            }
-
-            int earth = t.getIntParam(PARAMS.EARTH_RESISTANCE);
-            int water = t.getIntParam(PARAMS.WATER_RESISTANCE);
-            int air = t.getIntParam(PARAMS.AIR_RESISTANCE);
-            int arcane = t.getIntParam(PARAMS.ARCANE_RESISTANCE);
-            int dark = t.getIntParam(PARAMS.SHADOW_RESISTANCE);
-            int chaos = t.getIntParam(PARAMS.CHAOS_RESISTANCE);
-            int holy = t.getIntParam(PARAMS.HOLY_RESISTANCE);
-            int acid = earth / 2 + water / 3;
-            int sonic = air / 3 + earth / 2;
-            int light = air / 3 + holy * 2 / 3; // ++ %5
-            int lightning = air * 2 / 3;
-            int cold = water * 2 / 3;
-            int psionic = chaos / 2 + dark / 2 + arcane / 2;
-            int death = dark / 2 + earth / 2;
-
-            if (t.checkProperty(G_PROPS.CLASSIFICATIONS, UnitEnums.CLASSIFICATIONS.CONSTRUCT.toString())) {
-                psionic = Math.min(100, psionic + 50);
-                death = Math.min(100, death + 50);
-                cold = Math.min(100, cold + 25);
-                lightning = Math.max(0, lightning - 25);
-                acid = Math.max(0, acid - 25);
-            }
-
-            t.setParam(PARAMS.ACID_RESISTANCE, acid);
-            t.setParam(PARAMS.SONIC_RESISTANCE, sonic);
-            t.setParam(PARAMS.LIGHT_RESISTANCE, light);
-            t.setParam(PARAMS.LIGHTNING_RESISTANCE, lightning);
-            t.setParam(PARAMS.COLD_RESISTANCE, cold);
-            t.setParam(PARAMS.PSIONIC_RESISTANCE, psionic);
-            t.setParam(PARAMS.DEATH_RESISTANCE, death);
-        }
-    }
+//    public static void transformResistances() {
+//        for (ObjType t : DataManager.getTypes()) {
+//            DAMAGE_TYPE dmg_type = new EnumMaster<DAMAGE_TYPE>().retrieveEnumConst(
+//                    DAMAGE_TYPE.class, t.getProperty(PROPS.DAMAGE_TYPE));
+//            if (dmg_type != null) {
+//                switch (dmg_type) {
+//                    // case BLUDGEONING
+//                }
+//            }
+//
+//            int earth = t.getIntParam(PARAMS.EARTH_RESISTANCE);
+//            int water = t.getIntParam(PARAMS.WATER_RESISTANCE);
+//            int air = t.getIntParam(PARAMS.AIR_RESISTANCE);
+//            int arcane = t.getIntParam(PARAMS.ARCANE_RESISTANCE);
+//            int dark = t.getIntParam(PARAMS.SHADOW_RESISTANCE);
+//            int chaos = t.getIntParam(PARAMS.CHAOS_RESISTANCE);
+//            int holy = t.getIntParam(PARAMS.HOLY_RESISTANCE);
+//            int acid = earth / 2 + water / 3;
+//            int sonic = air / 3 + earth / 2;
+//            int light = air / 3 + holy * 2 / 3; // ++ %5
+//            int lightning = air * 2 / 3;
+//            int cold = water * 2 / 3;
+//            int psionic = chaos / 2 + dark / 2 + arcane / 2;
+//            int death = dark / 2 + earth / 2;
+//
+//            if (t.checkProperty(G_PROPS.CLASSIFICATIONS, UnitEnums.CLASSIFICATIONS.CONSTRUCT.toString())) {
+//                psionic = Math.min(100, psionic + 50);
+//                death = Math.min(100, death + 50);
+//                cold = Math.min(100, cold + 25);
+//                lightning = Math.max(0, lightning - 25);
+//                acid = Math.max(0, acid - 25);
+//            }
+//
+//            t.setParam(PARAMS.ACID_RESISTANCE, acid);
+//            t.setParam(PARAMS.SONIC_RESISTANCE, sonic);
+//            t.setParam(PARAMS.LIGHT_RESISTANCE, light);
+//            t.setParam(PARAMS.LIGHTNING_RESISTANCE, lightning);
+//            t.setParam(PARAMS.COLD_RESISTANCE, cold);
+//            t.setParam(PARAMS.PSIONIC_RESISTANCE, psionic);
+//            t.setParam(PARAMS.DEATH_RESISTANCE, death);
+//        }
+//    }
 
     public static void renameValue(String oldString, String newString) {
 

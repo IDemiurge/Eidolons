@@ -48,15 +48,13 @@ public class DC_KeyManager
     private DC_GameManager mngr;
     private ACTION_TYPE action_group = ActionEnums.ACTION_TYPE.STANDARD;
     private Controller controller;
-
+    GlobalController globalController=  new GlobalController();
     public DC_KeyManager(DC_GameManager mngr) {
         this.mngr = mngr;
         stdActionKeyMap = new ConcurrentHashMap<>();
         stdModeKeyMap = new ConcurrentHashMap<>();
         addMoveActionKeyMap = new ConcurrentHashMap<>();
         controller = getControllerInstance(DEFAULT_CONTROLLER);
-        if (controller == null)
-            controller = new GlobalController();
         if (EmitterController.overrideKeys) {
             controller = EmitterController.getInstance();
         }
@@ -177,6 +175,10 @@ public class DC_KeyManager
             selectController();
             return true;
         }
+//        if (e == 'G') {
+//            toggleGlobalController();
+//            return true;
+//        }
         return false;
     }
 
@@ -214,9 +216,12 @@ public class DC_KeyManager
         if (checkControllerHotkey(keyMod, CHAR)) {
             return;
         }
-        if (controller != null) {
-            try {
-                if (controller.charTyped(CHAR)) {
+        if (globalController!=null )
+                if (globalController.charTyped(CHAR))
+                    return ;
+            if (controller != null) {
+                try {
+                    if (controller.charTyped(CHAR)) {
                     return;
                 }
             } catch (Exception e) {

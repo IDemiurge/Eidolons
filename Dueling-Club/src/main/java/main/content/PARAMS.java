@@ -294,11 +294,8 @@ public enum PARAMS implements PARAMETER {
     PIERCING_RESISTANCE("Piercing", "", false, 0, "units", "chars", "bf obj", "armor", "skills"),
     BLUDGEONING_RESISTANCE("Bludgeoning", "", false, 0, "units", "chars", "bf obj", "armor", "skills"),
     SLASHING_RESISTANCE("Slashing", "", false, 0, "units", "chars", "bf obj", "armor", "skills"),
-    FIRE_RESISTANCE("Fire", "", false, 0, "units", "chars", "bf obj", "armor", "skills"),
-    WATER_RESISTANCE("Water", "", false, 0, "units", "chars", "bf obj", "armor", "skills"),
-    AIR_RESISTANCE("Air", "", false, 0, "units", "chars", "bf obj", "armor", "skills"),
-    EARTH_RESISTANCE("Earth", "", false, 0, "units", "chars", "bf obj", "armor", "skills"),
 
+    FIRE_RESISTANCE("Fire", "", false, 0, "units", "chars", "bf obj", "armor", "skills"),
     COLD_RESISTANCE("Cold", "", false, 0, "units", "chars", "bf obj", "armor", "skills"),
     ACID_RESISTANCE("Acid", "", false, 0, "units", "chars", "bf obj", "armor", "skills"),
     LIGHTNING_RESISTANCE("Lightning", "", false, 0, "units", "chars", "bf obj", "armor", "skills"),

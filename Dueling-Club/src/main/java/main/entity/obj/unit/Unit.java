@@ -1260,4 +1260,8 @@ public class Unit extends DC_UnitModel {
     public boolean isImmortalityOn() {
         return getChecker().isImmortalityOn();
     }
+
+    public boolean isConstructAlways() {
+        return true;
+    }
 }

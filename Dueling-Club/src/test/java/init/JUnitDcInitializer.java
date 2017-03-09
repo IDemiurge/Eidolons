@@ -21,6 +21,7 @@ public class JUnitDcInitializer {
 
 
     public JUnitDcInitializer( ) {
+
         //        PathFinder.setJUnitMode(true); to find all test/resources
 
         LogMaster.setOff(true); //log everything* or nothing to speed up
