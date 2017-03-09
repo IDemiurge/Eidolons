@@ -71,11 +71,11 @@ public class Anim extends Group implements Animation {
     protected Coordinates forcedDestination;
     protected Texture texture;
     protected boolean running;
+    protected Ref ref;
     EventCallback onDone;
     EventCallbackParam callbackParam;
     private boolean emittersWaitingDone;
     private List<FloatingText> floatingText;
-    protected Ref ref;
 
     public Anim(Entity active, AnimData params) {
         data = params;

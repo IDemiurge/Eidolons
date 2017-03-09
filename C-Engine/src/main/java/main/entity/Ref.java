@@ -1,20 +1,20 @@
 package main.entity;
 
 import main.ability.effects.Effect;
-import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.VALUE;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
-import main.game.logic.event.Event;
 import main.game.logic.battle.player.Player;
+import main.game.logic.event.Event;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.SearchMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 import main.system.net.data.DataUnit;
 

@@ -47,6 +47,24 @@ public class PresetLauncher {
     static LAUNCH launch;
     private static boolean isInitLaunch = true;
 
+    static {
+        LAUNCH.AI.graphicsTest = false;
+        LAUNCH.Logic.graphicsTest = false;
+
+        LAUNCH.Gui.visionHacked = true;
+        LAUNCH.Anims.visionHacked = true;
+        LAUNCH.AI.visionHacked = true;
+        LAUNCH.Anims.logChannelsOn = new LogMaster.LOG_CHANNELS[]{
+                LOG_CHANNELS.ANIM_DEBUG
+        };
+        LAUNCH.AI.logChannelsOn = new LogMaster.LOG_CHANNELS[]{
+                LOG_CHANNELS.AI_DEBUG,
+                LOG_CHANNELS.AI_DEBUG2,
+        };
+
+        LAUNCH.JUnit.graphicsOff = true;
+        LAUNCH.Profiling.dungeonPath = "Test\\Broken Ravenguard Fort.xml";
+    }
 
     public static Boolean chooseLaunchOption() {
         int i = PRESET_OPTION;
@@ -325,26 +343,6 @@ public class PresetLauncher {
     private static void initContentScope(String value) {
         // TODO Auto-generated method stub
 
-    }
-
-
-    static {
-        LAUNCH.AI.graphicsTest = false;
-        LAUNCH.Logic.graphicsTest = false;
-
-        LAUNCH.Gui.visionHacked = true;
-        LAUNCH.Anims.visionHacked = true;
-        LAUNCH.AI.visionHacked = true;
-        LAUNCH.Anims.logChannelsOn = new LogMaster.LOG_CHANNELS[]{
-         LOG_CHANNELS.ANIM_DEBUG
-        };
-        LAUNCH.AI.logChannelsOn = new LogMaster.LOG_CHANNELS[]{
-         LOG_CHANNELS.AI_DEBUG,
-         LOG_CHANNELS.AI_DEBUG2,
-        };
-
-        LAUNCH.JUnit.graphicsOff=true;
-        LAUNCH.Profiling.dungeonPath="Test\\Broken Ravenguard Fort.xml";
     }
 
     public enum LAUNCH {
