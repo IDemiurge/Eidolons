@@ -524,13 +524,15 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     }
 
+    @Override
+    protected void addDefaultValues() {
+        super.addDefaultValues();
+    }
+
     public void initCosts() {
         getInitializer().initCosts();
     }
 
-    public void initCosts(boolean anim) {
-        getInitializer().initCosts(anim);
-    }
 
     //CHECK
 
@@ -547,25 +549,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return getChecker().isChanneling();
     }
 
-    public boolean isCancellable() {
-        return getChecker().isCancellable();
-    }
-
-    public boolean isRangedTouch() {
-        return getChecker().isRangedTouch();
-    }
 
     public boolean isAttackAny() {
         return getChecker().isAttackAny();
     }
 
-    public boolean isCancelDefault() {
-        return getChecker().isCancelDefault();
-    }
-
-    public boolean isResistible() {
-        return getChecker().isResistible();
-    }
 
     @Override
     public boolean isBlocked() {
@@ -712,14 +700,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public boolean tryInstantActivation(DC_ActiveObj triggeringAction) {
         return getActivator().tryInstantActivation(triggeringAction);
-    }
-
-    public boolean tryCounterActivation(DC_ActiveObj triggeringAction) {
-        return getActivator().tryCounterActivation(triggeringAction);
-    }
-
-    public boolean tryExtraAttackActivation(DC_ActiveObj triggeringAction, Boolean instant_counter_opportunity) {
-        return getActivator().tryExtraAttackActivation(triggeringAction, instant_counter_opportunity);
     }
 
     public DC_ActiveObj getLastSubaction() {

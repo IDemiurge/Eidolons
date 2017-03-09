@@ -5,7 +5,6 @@ import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
-import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
@@ -16,12 +15,9 @@ import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.unit.DC_UnitModel;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates.DIRECTION;
 import main.game.battlefield.Coordinates.FACING_DIRECTION;
-import main.game.battlefield.DC_MovementManager;
-import main.game.battlefield.FacingMaster;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
@@ -193,29 +189,9 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         return checkClassification(UnitEnums.CLASSIFICATIONS.TALL) || checkPassive(UnitEnums.STANDARD_PASSIVES.TALL);
     }
 
-    protected void addBfObjDefaults() {
-        if (checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BfObjEnums.BF_OBJECT_TAGS.INDESTRUCTIBLE)) {
-            type.addProperty(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.INDESTRUCTIBLE.toString());
-        }
-        if (checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BfObjEnums.BF_OBJECT_TAGS.PASSABLE)) {
-            type.addProperty(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.PASSABLE.toString());
-        }
 
-        type.addProperty(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.LEAVES_NO_CORPSE.toString());
 
-        setParam(PARAMS.C_MORALE, 0);
-        setParam(PARAMS.C_STAMINA, 0);
-        setParam(PARAMS.C_FOCUS, 0);
-        setParam(PARAMS.C_ESSENCE, 0);
-        // type.addProperty(G_PROPS.STANDARD_PASSIVES,
-        // STANDARD_PASSIVES.SNEAK_IMMUNE.toString());
 
-    }
-
-    protected void addDefaultFacing() {
-        facing = DC_MovementManager.getDefaultFacingDirection(owner.isMe());
-        resetFacing();
-    }
 
     @Override
     public void addDynamicValues() {
@@ -337,23 +313,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
     }
 
     public void resetFacing() {
-        if (facing != null) {
-            setProperty(PROPS.FACING_DIRECTION, facing.getName());
-        } else {
-            String name = getProperty(PROPS.FACING_DIRECTION);
-            facing = (new EnumMaster<FACING_DIRECTION>().retrieveEnumConst(FACING_DIRECTION.class,
-                    name));
-            if (facing == null) {
-                if (getDirection() != null) {
-                    FacingMaster.getFacingFromDirection(getDirection());
-                } else if (ref.getObj(KEYS.SUMMONER) != null) {
-                    facing = ((DC_UnitModel) ref.getObj(KEYS.SUMMONER)).getFacing();
-                } else {
-                    facing = FacingMaster.getRandomFacing();
-                }
-            }
 
-        }
     }
 
 
@@ -362,13 +322,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
             direction = new EnumMaster<DIRECTION>().retrieveEnumConst(DIRECTION.class,
                     getProperty(PROPS.DIRECTION));
         }
-        // if (direction == null)
-        // if (!isOverlaying())
-        // direction = facing.getDirection();
         return direction;
-        //
-        // TODO perhaps for stacked as well...
-        // return
     }
 
     public void setDirection(DIRECTION d) {

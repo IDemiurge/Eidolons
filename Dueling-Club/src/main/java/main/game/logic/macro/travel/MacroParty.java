@@ -70,7 +70,7 @@ public class MacroParty extends MacroObj {
 
     @Override
     public void init() {
-        add();
+        addToState();
     }
 
     @Override

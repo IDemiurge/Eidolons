@@ -2,7 +2,9 @@ package main.ability.effects.common;
 
 import main.ability.effects.DC_Effect;
 import main.entity.obj.unit.Unit;
+import main.test.Untested;
 
+@Untested
 public class OrderEffect extends DC_Effect {
 
     @Override

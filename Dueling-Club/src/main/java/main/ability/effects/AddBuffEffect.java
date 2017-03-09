@@ -33,7 +33,8 @@ import main.system.text.TextParser;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddBuffEffect extends MultiEffect implements ResistibleEffect, ReducedEffect,
+public class AddBuffEffect extends MultiEffect implements ResistibleEffect,
+ ReducedEffect,
         ContainerEffect {
 
     public static final String dummyBuffType = BuffObj.DUMMY_BUFF_TYPE;
@@ -127,7 +128,7 @@ public class AddBuffEffect extends MultiEffect implements ResistibleEffect, Redu
         }
         getBuffTypeLazily();
         // check if continuous wrapping required
-        effect = ContinuousEffect.transformEffect(effect);
+        effect = ContinuousEffect.transformEffectToContinuous(effect);
         if (forcedLayer != null) {
             effect.setForcedLayer(forcedLayer);
         }

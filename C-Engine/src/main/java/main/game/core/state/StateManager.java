@@ -45,10 +45,25 @@ public abstract class StateManager {
     }
 
     public void resetAll() {
-        // store();
         state.getTriggers().clear();
         getManager().checkForChanges(false);
-        //  state.getEffects().clear();
+        allToBase();
+        checkCounterRules();
+        applyEffects(Effect.ZERO_LAYER);
+        resetUnitObjects();
+        resetRawValues();
+        applyEffects(Effect.BASE_LAYER);
+        afterEffects();
+        applyEffects(Effect.SECOND_LAYER);
+        applyEffects(Effect.BUFF_RULE);
+        checkContinuousRules();
+        applyMods();
+        resetCurrentValues();
+    }
+
+    public void tryResetAll() {
+        state.getTriggers().clear();
+        getManager().checkForChanges(false);
         Chronos.mark("ALL TO BASE");
         try {
             allToBase();
@@ -121,6 +136,7 @@ public abstract class StateManager {
         resetCurrentValues();
     }
 
+
     protected abstract void applyMods();
 
     protected abstract void resetCurrentValues();
@@ -128,7 +144,7 @@ public abstract class StateManager {
     protected abstract void allToBase();
 
     private GameManager getManager() {
-      return   state.getGame().getManager();
+        return state.getGame().getManager();
     }
 
 
@@ -210,6 +226,7 @@ public abstract class StateManager {
             return null;
         }
     }
+
     public void applyEffects(int layer) {
         if (state.getEffects().size() == 0) {
             return;

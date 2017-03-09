@@ -1,14 +1,12 @@
 package main.entity.obj.unit;
 
 import main.content.DC_ContentManager;
-import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.HeroEnums.RACE;
-import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.IMMUNITIES;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.VISION_MODE;
@@ -25,7 +23,9 @@ import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.BattleFieldObject;
+import main.entity.tools.bf.unit.UnitCalculator;
 import main.entity.tools.bf.unit.UnitChecker;
+import main.entity.tools.bf.unit.UnitInitializer;
 import main.entity.tools.bf.unit.UnitResetter;
 import main.entity.type.ObjType;
 import main.game.ai.UnitAI;
@@ -44,12 +44,8 @@ import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
-import main.system.math.MathMaster;
-import main.system.test.TestMasterContent;
 import main.system.text.ToolTipMaster;
 import main.test.debug.DebugMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -68,7 +64,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     protected MODE mode;
     protected Map<ACTION_TYPE, DequeImpl<DC_UnitAction>> actionMap;
 
-    protected boolean standardActionsAdded;
     protected Deity deity;
     private boolean hidden;
     private ImageIcon emblem;
@@ -167,17 +162,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         return getName();
     }
 
-    @Override
-    public boolean isTransparent() {
-        if (super.isTransparent()) {
-            return true;
-        }
-        if (checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
-            return true;
-        }
-        return checkPassive(UnitEnums.STANDARD_PASSIVES.TRANSPARENT);
-
-    }
 
     public VISION_MODE getVisionMode() {
         if (vision_mode == null) {
@@ -195,95 +179,15 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     public void addDynamicValues() {
         super.addDynamicValues();
-        if (isHero()) {
-            setParam(PARAMS.IDENTITY_POINTS, getIntParam(PARAMS.STARTING_IDENTITY_POINTS));
-        } else if (!isBfObj()) {
-            int xp = MathMaster.getFractionValueCentimal(getIntParam(PARAMS.TOTAL_XP),
-                    getIntParam(PARAMS.XP_LEVEL_MOD));
-            // for training
-            setParam(PARAMS.XP, xp);
-        }
+        getInitializer().addDynamicValues();
     }
 
-    public boolean isBfObj() {
-        return false;
+
+
+
+    protected void initMode() {
+        getInitializer().initMode();
     }
-
-    public boolean isHero() {
-        return TYPE_ENUM == DC_TYPE.CHARS;
-    }
-
-    protected void addDefaultValues() {
-
-        super.addDefaultValues();
-
-        // for (VALUE value : DC_ContentManager
-        // .getHeaderValues(getOBJ_TYPE_ENUM())) {
-        // if (StringMaster.isEmpty(getValue(value))) {
-        // getType()
-        // .setValue(value, DC_ContentManager.getDefaultValue(value,
-        // getOBJ_TYPE_ENUM()));
-        // setValue(value, ContentManager.getValue(value)
-        // .getDefaultValue());
-        // }
-        // }
-
-        setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN);
-        addDefaultFacing();
-        if (isBfObj()) {
-            addBfObjDefaults();
-        }
-    }
-
-    @Override
-    public void init() {
-        super.init();
-        this.setGame(getGenericGame());
-
-        addDynamicValues();
-        // construct();
-
-    }
-
-    @Override
-    public void toBase() {
-        setMode(null);
-        if (getSpecialEffects() != null) {
-            getSpecialEffects().clear();
-        }
-        super.toBase();
-
-        if (game.isSimulation()) {
-            return;
-        }
-        if (isMine()) {
-            if (CoreEngine.isAnimationTestMode()) {
-                TestMasterContent.addANIM_TEST_Spells(this);
-            } else if (CoreEngine.isGraphicTestMode()) {
-                TestMasterContent.addGRAPHICS_TEST_Spells(this);
-            }
-        }
-
-        if (checkClassification(UnitEnums.CLASSIFICATIONS.TALL)) {
-            addProperty(G_PROPS.STANDARD_PASSIVES, "" + UnitEnums.CLASSIFICATIONS.TALL, true);
-        }
-        if (checkClassification(UnitEnums.CLASSIFICATIONS.SHORT)) {
-            addProperty(G_PROPS.STANDARD_PASSIVES, "" + UnitEnums.CLASSIFICATIONS.TALL, true);
-        } // INSTEAD, LET'S DISPLAY CLASSIFICATIONS - OR SOME OF THEM!
-
-        if (!isLiving()) {
-            // really for all? or should it be special?
-            // addProperty(G_PROPS.STANDARD_PASSIVES, "" +
-            // STANDARD_PASSIVES.CRITICAL_IMMUNE,
-            // true);
-            // addProperty(G_PROPS.STANDARD_PASSIVES, "" +
-            // STANDARD_PASSIVES.SNEAK_IMMUNE,
-            // true);
-
-        }
-        setDirty(false);
-    }
-
 
 
     @Override
@@ -311,29 +215,15 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
 
     public void recalculateInitiative() {
+
         int before = getIntParam(PARAMS.C_INITIATIVE);
-        int initiative = getIntParam(PARAMS.C_N_OF_ACTIONS)
-                * getIntParam(PARAMS.INITIATIVE_MODIFIER);
-
-        initiative += getIntParam(PARAMS.C_INITIATIVE_BONUS);
-        // game.getTurnManager().getPreviousActive() take turns
-
-        if (game.isDummyMode()) {
-            if (!isBfObj()) {
-                if (!isNeutral()) {
-                    if (!getOwner().isMe()) {
-                        initiative = Math.min(10, getGame().getRules().getTimeRule()
-                                .getTimeRemaining() + 1);
-                    }
-                }
-            }
-        }
+        int initiative = getCalculator().calculateInitiative(true);
 
         setParam(PARAMS.C_INITIATIVE, initiative, true);
 
-        int base_initiative = getIntParam(PARAMS.N_OF_ACTIONS)
-                * getIntParam(PARAMS.INITIATIVE_MODIFIER) + getIntParam(PARAMS.C_INITIATIVE_BONUS);
+        int base_initiative = getCalculator().calculateInitiative(false);
         setParam(PARAMS.INITIATIVE, base_initiative, true);
+
         resetPercentage(PARAMS.INITIATIVE);
 
         int after = getIntParam(PARAMS.C_INITIATIVE);
@@ -349,47 +239,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         }
     }
 
-    // melee/ranged separate!
-    public boolean canAttack(DC_UnitModel attacked) {
-        if (!canAttack()) {
-            return false;
-        }
-        // ConditionMaster.getAdjacent().check(ref);
-        int range = getIntParam(PARAMS.RANGE);
-        if (range == 1) {
-            return getGame().getMovementManager().isAdjacent(this, attacked);
-        }
-        return (range >= getGame().getMovementManager().getDistance(this, attacked));
-
-    }
-
-    @Override
-    public boolean canMove() {
-        if (isBfObj()) {
-            return false;
-        }
-        // if (isstructure)
-        return canActNow();
-    }
-
-    public boolean canCounter(DC_ActiveObj active) {
-        return canCounter(active, false);
-    }
-
-    public boolean canCounter(DC_ActiveObj active, boolean sneak) {
-        if (!canCounter()) {
-            return false;
-        }
-        if (active.checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION)) {
-            return false;
-        }
-        // if (!attacked.checkPassive(STANDARD_PASSIVES.VIGILANCE))
-        if (active.getOwnerObj().checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION)) {
-            return false;
-        }
-        // may still fail to activate any particular Attack Action!
-        return true;
-    }
 
     public DC_ActiveObj getPreferredInstantAttack() {
         String action = getProperty(PROPS.DEFAULT_INSTANT_ATTACK_ACTION);
@@ -439,167 +288,11 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         this.preferredAttackAction = preferredAttackAction;
     }
 
-    public boolean canCounter() {
-        if (isDisabled()) {
-            return false;
-        }
-        if (checkModeDisablesCounters()) {
-            return false;
-        }
-        if (checkStatusDisablesCounters()) {
-            return false;
-        }
-        // TODO getMinimumAttackCost
-        // if ( checkAlertCounter())
-        // return false;
-        // alternative cost
-        // if (getIntParam(PARAMS.C_N_OF_COUNTERS) <= 0) {
-        // }
-        return true;
-    }
-
-    public boolean isDisabled() {
-        if (isUnconscious()) {
-            return true;
-        }
-        return isDead();
-    }
-
-    public boolean checkStatusDisablesCounters() {
-        if (checkStatus(UnitEnums.STATUS.IMMOBILE)) {
-            return true;
-        }
-        if (checkStatus(UnitEnums.STATUS.CHARMED)) {
-            return true;
-        }
-        if (checkStatus(UnitEnums.STATUS.ENSNARED)) {
-            return true;
-        }
-        if (checkStatus(UnitEnums.STATUS.PRONE)) {
-            return true;
-        }
-        return checkStatus(UnitEnums.STATUS.EXHAUSTED);
-
-    }
-
-    public boolean isUnconscious() {
-        return checkStatus(UnitEnums.STATUS.UNCONSCIOUS);
-    }
-
-    protected boolean checkAlertCounter() {
-        if (!getMode().equals(STD_MODES.ALERT)) {
-            return false;
-        }
-        return checkActionCanBeActivated(DC_ActionManager.HIDDEN_ACTIONS.Counter_Attack.toString());
-
-    }
-
     public boolean turnStarted() {
         if (!game.fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_TURN_STARTED, ref))) {
             return false;
         }
         return canActNow();
-
-    }
-
-    public boolean canAct() {
-        if (owner == Player.NEUTRAL) {
-            return false;
-        }
-        if (checkStatusPreventsActions()) {
-            return false;
-        }
-        return !isImmobilized();
-    }
-
-    public boolean canActNow() {
-        if (getGame().isDummyPlus()) {
-            if (!isMine()) {
-                return false;
-            }
-        }
-        if (owner == Player.NEUTRAL) {
-            return false;
-        }
-        if (checkStatusPreventsActions()) {
-            return false;
-        }
-
-        // if (checkStatus(STATUS.DISCOMBOBULATED))
-        // return false;
-
-        if (checkStatus(UnitEnums.STATUS.ON_ALERT)) {
-            return false;
-        }
-        if (checkStatus(UnitEnums.STATUS.WAITING)) {
-            return false;
-        }
-        // if (checkStatus(STATUS.LATE))
-        // return false;
-        if (getIntParam(PARAMS.C_N_OF_ACTIONS) <= 0) {
-            return false;
-        }
-        return !isImmobilized();
-
-    }
-
-    public boolean checkUncontrollable() {
-        // if (checkBuffStatusPreventsActions())
-        // return true;
-        return getMode().isBehavior();
-
-    }
-
-    public boolean checkStatusPreventsActions() {
-        if (checkStatus(UnitEnums.STATUS.DEAD)) {
-            return true;
-        }
-        if (checkStatus(UnitEnums.STATUS.EXHAUSTED)) {
-            return true;
-        }
-        if (checkStatus(UnitEnums.STATUS.ASLEEP)) {
-            return true;
-        }
-        if (checkStatus(UnitEnums.STATUS.FROZEN)) {
-            return true;
-        }
-        return checkStatus(UnitEnums.STATUS.UNCONSCIOUS);
-    }
-
-    public boolean isIncapacitated() {
-        if (checkStatus(UnitEnums.STATUS.IMMOBILE)) {
-            return true;
-        }
-        if (checkStatus(UnitEnums.STATUS.CHARMED)) {
-            return true;
-        }
-        return checkStatusPreventsActions();
-    }
-
-    public boolean isImmobilized() {
-
-        if (checkStatus(UnitEnums.STATUS.IMMOBILE)) {
-            return true;
-        }
-
-        if (checkStatus(UnitEnums.STATUS.CHARMED)) {
-            return true;
-        }
-
-        return checkModeDisablesActions();
-
-    }
-
-    public boolean checkModeDisablesCounters() {
-        if (getBehaviorMode() != null) {
-            return getBehaviorMode().isDisableCounters();
-        }
-
-        return getMode().isDisableCounter();
-    }
-
-    public boolean checkModeDisablesActions() {
-        return getMode().isDisableActions();
 
     }
 
@@ -612,24 +305,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         return modeImpl.getBehaviorMode();
     }
 
-    protected void initMode() {
-        String name = getProperty(G_PROPS.MODE);
-        this.mode = (new EnumMaster<STD_MODES>().retrieveEnumConst(STD_MODES.class, name));
-        if (mode == null) {
-            BEHAVIOR_MODE behavior = new EnumMaster<BEHAVIOR_MODE>().retrieveEnumConst(
-                    BEHAVIOR_MODE.class, name);
-            if (behavior != null) {
-                this.mode = new ModeImpl(behavior);
-            }
-        }
-        if (mode == null) {
-            this.mode = (STD_MODES.NORMAL);
-        }
 
-        setMode(mode);
-        LogMaster.log(LogMaster.CORE_DEBUG, getName() + " has mode: " + mode);
-
-    }
 
     public MODE getMode() {
         if (mode == null || mode == STD_MODES.NORMAL) {
@@ -647,11 +323,8 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         }
     }
 
-    public boolean canAttack() {
-        return getAttack().canBeActivated(ref, true);
-    }
 
-    private DC_UnitAction getAttack() {
+    public DC_UnitAction getAttack() {
         return getAction(DC_ActionManager.ATTACK);
     }
 
@@ -802,14 +475,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         return new EnumMaster<RACE>().retrieveEnumConst(RACE.class, getProperty(G_PROPS.RACE));
     }
 
-    public AI_TYPE getAiType() {
-        AI_TYPE ai = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class,
-                getProperty(PROPS.AI_TYPE));
-        if (ai == null) {
-            return AiEnums.AI_TYPE.NORMAL;
-        }
-        return ai;
-    }
 
     public DAMAGE_TYPE getDamageType() {
         if (dmg_type == null) {
@@ -824,16 +489,128 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     }
 
     public boolean hasDoubleStrike() {
-        return checkPassive(UnitEnums.STANDARD_PASSIVES.DOUBLE_STRIKE);
+        return getChecker().hasDoubleStrike();
     }
 
-    public void setStandardActionsAdded(boolean standardActionsAdded) {
-        this.standardActionsAdded = standardActionsAdded;
+    public boolean isBfObj() {
+        return getChecker().isBfObj();
     }
 
+    public boolean isHero() {
+        return getChecker().isHero();
+    }
+
+    public boolean isLiving() {
+        return getChecker().isLiving();
+    }
 
     public boolean checkImmunity(IMMUNITIES type) {
-        return checkProperty(G_PROPS.IMMUNITIES, type.toString());
+        return getChecker().checkImmunity(type);
+    }
+
+    public Unit getEntity() {
+        return getChecker().getEntity();
+    }
+
+    public boolean canUseItems() {
+        return getChecker().canUseItems();
+    }
+
+    public boolean canAttack() {
+        return getChecker().canAttack();
+    }
+
+    public boolean canAttack(DC_UnitModel attacked) {
+        return getChecker().canAttack(attacked);
+    }
+
+    public boolean canCounter(DC_ActiveObj active) {
+        return getChecker().canCounter(active);
+    }
+
+    public boolean canCounter(DC_ActiveObj active, boolean sneak) {
+        return getChecker().canCounter(active, sneak);
+    }
+
+    public boolean canUseArmor() {
+        return getChecker().canUseArmor();
+    }
+
+    public boolean canUseWeapons() {
+        return getChecker().canUseWeapons();
+    }
+
+    public boolean checkDualWielding() {
+        return getChecker().checkDualWielding();
+    }
+
+    public boolean isImmortalityOn() {
+        return getChecker().isImmortalityOn();
+    }
+
+    public boolean canCounter() {
+        return getChecker().canCounter();
+    }
+
+    public boolean isDisabled() {
+        return getChecker().isDisabled();
+    }
+
+    public boolean checkStatusDisablesCounters() {
+        return getChecker().checkStatusDisablesCounters();
+    }
+
+    public boolean isUnconscious() {
+        return getChecker().isUnconscious();
+    }
+
+    public boolean canAct() {
+        return getChecker().canAct();
+    }
+
+    public boolean canActNow() {
+        return getChecker().canActNow();
+    }
+
+    public boolean checkUncontrollable() {
+        return getChecker().checkUncontrollable();
+    }
+
+    public boolean checkStatusPreventsActions() {
+        return getChecker().checkStatusPreventsActions();
+    }
+
+    public boolean isIncapacitated() {
+        return getChecker().isIncapacitated();
+    }
+
+    public boolean isImmobilized() {
+        return getChecker().isImmobilized();
+    }
+
+    public boolean checkModeDisablesCounters() {
+        return getChecker().checkModeDisablesCounters();
+    }
+
+    public boolean checkModeDisablesActions() {
+        return getChecker().checkModeDisablesActions();
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return getChecker().isTransparent();
+
+
+    }
+
+
+    public AI_TYPE getAiType() {
+        AI_TYPE ai = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class,
+         getProperty(PROPS.AI_TYPE));
+        if (ai == null) {
+            return AiEnums.AI_TYPE.NORMAL;
+        }
+        return ai;
     }
 
     public UnitAI getAI() {
@@ -847,9 +624,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         return unitAI;
     }
 
-    public void setUnitAI(UnitAI unitAI) {
-        this.unitAI = unitAI;
-    }
 
     public DC_ActiveObj getDummyAction() {
         DC_UnitAction action = getAction("Dummy Action");
@@ -859,13 +633,14 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         return action;
     }
 
-
-    public boolean isHidden() {
-        return hidden;
+    @Override
+    public UnitInitializer getInitializer() {
+        return (UnitInitializer) super.getInitializer();
     }
 
-    public void setHidden(boolean b) {
-        hidden = b;
+    @Override
+    public UnitCalculator getCalculator() {
+        return (UnitCalculator) super.getCalculator();
     }
 
     @Override
@@ -878,7 +653,11 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         return (UnitChecker) super.getChecker();
     }
 
-    public boolean isLiving() {
-        return getChecker().isLiving();
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean b) {
+        hidden = b;
     }
 }

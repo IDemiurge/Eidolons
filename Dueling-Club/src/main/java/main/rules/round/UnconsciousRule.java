@@ -62,7 +62,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         return false;
     }
 
-    private static void wakeUp(Unit unit) {
+    private static void unitRecovers(Unit unit) {
         // unit.removeBuff(BUFF_NAME);
         getWakeUpEffect(unit).apply(); // remove buff pretty much
         unit.getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.CONSCIOUS, unit);
@@ -173,7 +173,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     public void actionComplete(ActiveObj activeObj) {
         for (Unit unit : game.getUnits()) {
             if (checkStatusUpdate(unit)) {
-                wakeUp(unit);
+                unitRecovers(unit);
             }
         }
     }
@@ -190,7 +190,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 
     @Override
     public void apply(Unit unit) {
-        wakeUp(unit);
+        unitRecovers(unit);
     }
 
 }

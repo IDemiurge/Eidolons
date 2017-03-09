@@ -9,6 +9,7 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.entity.obj.ActiveObj;
+import main.entity.obj.Obj;
 import main.entity.tools.*;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
@@ -55,6 +56,7 @@ public abstract class Entity extends DataModel implements OBJ {
     protected boolean dead = false;
     protected Player originalOwner;
 
+    protected boolean added;
     EntityMaster master;
 
 
@@ -67,8 +69,8 @@ public abstract class Entity extends DataModel implements OBJ {
         if (type == null) {
             LogMaster.log(1, "null type!" + ref);
 //            if (!CoreEngine.isTEST_MODE()) {
-                RuntimeException e = new RuntimeException();
-                throw (e);
+            RuntimeException e = new RuntimeException();
+            throw (e);
 //            }
         } else {
             this.game = game;
@@ -126,6 +128,21 @@ public abstract class Entity extends DataModel implements OBJ {
         };
     }
 
+    public void addToState() {
+        if (added || !isMicroGameObj()) {
+            return;
+        }
+        if (this instanceof Obj) {
+            getGame().getState().addObject((Obj) this);
+            added = true;
+        }
+
+    }
+
+    protected boolean isMicroGameObj() {
+        return true;
+    }
+
     public EntityMaster getMaster() {
         return master;
     }
@@ -151,7 +168,7 @@ public abstract class Entity extends DataModel implements OBJ {
 
         if (this.owner != getOriginalOwner()) {
             LogMaster.log(LogMaster.CORE_DEBUG, getName()
-                    + ": original owner restored!");
+             + ": original owner restored!");
         }
 
         this.owner = getOriginalOwner();
@@ -376,7 +393,7 @@ public abstract class Entity extends DataModel implements OBJ {
 
     public ASPECT getAspect() {
         return new EnumMaster<ASPECT>()
-                .retrieveEnumConst(ASPECT.class, getProperty(G_PROPS.ASPECT));
+         .retrieveEnumConst(ASPECT.class, getProperty(G_PROPS.ASPECT));
     }
 
     public ImageIcon getDefaultIcon() {

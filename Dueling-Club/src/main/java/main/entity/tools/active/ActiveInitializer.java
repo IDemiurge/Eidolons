@@ -154,7 +154,7 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
 
     @Override
     public void init() {
-
+super.init();
     }
 
     public void addDynamicValues() {

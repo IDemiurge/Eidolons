@@ -45,7 +45,7 @@ public class MacroObj extends Obj {
 
     @Override
     public void init() {
-        add();
+        addToState();
         MacroContentManager.addDefaultValues(getType());
         toBase();
     }

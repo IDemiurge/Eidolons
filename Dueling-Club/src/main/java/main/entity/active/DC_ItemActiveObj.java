@@ -6,6 +6,7 @@ import main.content.enums.entity.SpellEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.item.DC_QuickItemObj;
+import main.entity.tools.EntityMaster;
 import main.entity.tools.active.item.ItemActiveMaster;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
@@ -28,7 +29,7 @@ public class DC_ItemActiveObj extends DC_ActiveObj {
     }
 
     @Override
-    public ItemActiveMaster initMaster() {
+    public EntityMaster initMaster() {
         return new ItemActiveMaster(this);
     }
 

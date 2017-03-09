@@ -357,6 +357,8 @@ public class ActivesConstructor {
                     try {
                         ((GraveCondition) tst.getConditions().get(0)).getConditions().add(c);
                     } catch (Exception e) {
+                        main.system.auxiliary.log.LogMaster.log(1,
+                         tst.getConditions().get(0)+ " in "+obj );
                         e.printStackTrace();
                     }
                 }

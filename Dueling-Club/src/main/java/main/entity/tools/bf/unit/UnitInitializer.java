@@ -4,8 +4,15 @@ import com.graphbuilder.math.ExpressionParseException;
 import main.client.cc.logic.spells.LibraryManager;
 import main.client.cc.logic.spells.SpellUpgradeMaster;
 import main.content.*;
+import main.content.enums.GenericEnums;
+import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.rules.VisionEnums;
+import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
+import main.content.mode.MODE;
+import main.content.mode.ModeImpl;
+import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -18,15 +25,18 @@ import main.entity.obj.unit.Unit;
 import main.entity.tools.EntityInitializer;
 import main.entity.tools.EntityMaster;
 import main.entity.type.ObjType;
+import main.game.battlefield.DC_MovementManager;
 import main.game.core.game.DC_Game;
 import main.game.logic.generic.hero.DC_Attributes;
 import main.game.logic.generic.hero.DC_Masteries;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
+import main.system.math.MathMaster;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -47,12 +57,6 @@ public class UnitInitializer extends EntityInitializer<Unit> {
     protected void initDefaults() {
 
     }
-
-    @Override
-    public void init() {
-
-    }
-
     @Override
     public UnitCalculator getCalculator() {
         return (UnitCalculator) super.getCalculator();
@@ -69,6 +73,79 @@ public class UnitInitializer extends EntityInitializer<Unit> {
         return (UnitResetter) super.getResetter();
     }
 
+
+    public void addDynamicValues() {
+
+        if (getChecker().isHero()) {
+            setParam(PARAMS.IDENTITY_POINTS, getIntParam(PARAMS.STARTING_IDENTITY_POINTS));
+        } else if (!getChecker().isBfObj()) {
+            int xp = MathMaster.getFractionValueCentimal(getIntParam(PARAMS.TOTAL_XP),
+             getIntParam(PARAMS.XP_LEVEL_MOD));
+            // for training
+            setParam(PARAMS.XP, xp);
+        }
+    }
+
+    @Override
+    public void init() {
+        super.init();
+
+        addDefaultValues();
+        addDynamicValues();
+        // construct();
+
+    }
+    protected void addDefaultFacing() {
+        getEntity().setFacing(
+         DC_MovementManager.getDefaultFacingDirection(getEntity(). getOwner().isMe()));
+        getEntity().resetFacing();
+    }
+
+
+
+    public void addDefaultValues() {
+getEntity().        setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN);
+          addDefaultFacing();
+        if (getChecker().isBfObj()) {
+            addBfObjDefaults();
+        }
+    }
+    protected void addBfObjDefaults() {
+        if (checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BfObjEnums.BF_OBJECT_TAGS.INDESTRUCTIBLE)) {
+            getType().addProperty(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.INDESTRUCTIBLE.toString());
+        }
+        if (checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BfObjEnums.BF_OBJECT_TAGS.PASSABLE)) {
+            getType().addProperty(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.PASSABLE.toString());
+        }
+
+        getType().addProperty(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.LEAVES_NO_CORPSE.toString());
+
+        setParam(PARAMS.C_MORALE, 0);
+        setParam(PARAMS.C_STAMINA, 0);
+        setParam(PARAMS.C_FOCUS, 0);
+        setParam(PARAMS.C_ESSENCE, 0);
+        // type.addProperty(G_PROPS.STANDARD_PASSIVES,
+        // STANDARD_PASSIVES.SNEAK_IMMUNE.toString());
+
+    }
+    public void initMode() {
+        String name = getProperty(G_PROPS.MODE);
+         MODE mode = (new EnumMaster<STD_MODES>().retrieveEnumConst(STD_MODES.class, name));
+        if (mode == null) {
+            BEHAVIOR_MODE behavior = new EnumMaster<BEHAVIOR_MODE>().retrieveEnumConst(
+             BEHAVIOR_MODE.class, name);
+            if (behavior != null) {
+                 mode = new ModeImpl(behavior);
+            }
+        }
+        if (mode == null) {
+             mode = (STD_MODES.NORMAL);
+        }
+
+       getEntity(). setMode(mode);
+        LogMaster.log(LogMaster.CORE_DEBUG, getName() + " has mode: " + mode);
+
+    }
     public void initHeroObjects() {
         if ((getChecker().isHero() || getChecker().checkPassive(UnitEnums.STANDARD_PASSIVES.FAVORED)) && getEntity().getDeity() != null) {
             addProperty(G_PROPS.PASSIVES, getEntity().getDeity().getProperty(G_PROPS.PASSIVES));

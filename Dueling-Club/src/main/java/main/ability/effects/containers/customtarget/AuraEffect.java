@@ -19,7 +19,9 @@ import main.entity.Ref.KEYS;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.entity.ConditionMaster;
 import main.system.math.Formula;
+import main.test.Untested;
 
+@Untested
 public class AuraEffect extends MicroEffect implements AttachmentEffect {
     STANDARD_EVENT_TYPE event_type; // ++ UNIT MOVES!!!!
     private Effect effect;
@@ -98,12 +100,14 @@ public class AuraEffect extends MicroEffect implements AttachmentEffect {
                 }
 
             }
-
+            //remove aura-bearer from targets list
             targeting.getConditions().add(
                     new NotCondition(new RefCondition(KEYS.MATCH, KEYS.SOURCE)));
             AddBuffEffect buffEffect = new AddBuffEffect(getBuffType(), effect, true);
-            Effects auraEffects = new Effects(new ConditionalEffect(ConditionMaster
-                    .getAliveCondition(KEYS.SOURCE), new CustomTargetEffect(targeting, buffEffect)));
+            Effects auraEffects = new Effects(
+             new ConditionalEffect(ConditionMaster
+                    .getAliveCondition(KEYS.SOURCE),
+              new CustomTargetEffect(targeting, buffEffect)));
             auraEffect = new AddBuffEffect(auraEffects);
             // auraEffect.setTransient(false);
             boolean results = auraEffect.apply(ref);

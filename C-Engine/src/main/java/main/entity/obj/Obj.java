@@ -31,7 +31,6 @@ import java.util.List;
  */
 public class Obj extends Entity {
     private HIGHLIGHT highlight;
-    private boolean added;
     private DequeImpl<BuffObj> buffs;
     private List<String> passiveAbils;
     private boolean infoSelected;
@@ -41,10 +40,10 @@ public class Obj extends Entity {
 
     public Obj(ObjType type, Player owner, Game game, Ref ref) {
         super(type
-                // new ObjType(type) TODO how can I ensure that each object's Type can
-                // be modified independently? Perhaps I should clone upon
-                // modification...
-                , owner, game, ref);
+         // new ObjType(type) TODO how can I ensure that each object's Type can
+         // be modified independently? Perhaps I should clone upon
+         // modification...
+         , owner, game, ref);
         // init();
     }
 
@@ -58,7 +57,12 @@ public class Obj extends Entity {
     }
 
     public void init() {
-        add();
+        if (getInitializer() == null) {
+            addToState();
+        }
+        else {
+            getInitializer().init();
+        }
 
     }
 
@@ -74,45 +78,11 @@ public class Obj extends Entity {
     @Override
     public void construct() {
         if (!added) {
-            add();
+            addToState();
         }
         super.construct();
     }
 
-    protected void add() {
-        if (added || !isMicroGameObj()) {
-            return;
-        }
-        getGame().getState().addObject(get());
-        added = true;
-        // if (!game.isOffline())
-        // construct();
-        // new Thread(new Runnable() {
-        //
-        // @Override
-        // public void run() {
-        //
-        // if (get() == null)
-        // WaitMaster.WAIT(100);
-        // if (get() != null) {
-        // getGame().getState().addObject(get());
-        // added = true;
-        // if (!game.isOffline())
-        // construct();
-        // }
-        // }
-        //
-        // }, "add obj " + toString()).start();
-
-    }
-
-    protected boolean isMicroGameObj() {
-        return true;
-    }
-
-    private Obj get() {
-        return this;
-    }
 
     public void activatePassives() {
         if (passives == null) {
@@ -301,7 +271,7 @@ public class Obj extends Entity {
     public BuffObj getBuff(String buffName, boolean strict) {
         if (buffs == null || buffName == null) {
             LogMaster.log(LogMaster.CORE_DEBUG_1, buffName
-                    + " buff was searched");
+             + " buff was searched");
             return null;
         }
 
@@ -318,7 +288,7 @@ public class Obj extends Entity {
             }
         }
         LogMaster.log(LogMaster.CORE_DEBUG_1, buffName
-                + " buff not found for " + buffs);
+         + " buff not found for " + buffs);
 
         return null;
     }

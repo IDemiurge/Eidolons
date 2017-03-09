@@ -1,6 +1,9 @@
 package main.entity.obj;
 
 import main.entity.Ref;
+import main.entity.tools.EntityMaster;
+import main.entity.tools.bf.BfObjMaster;
+import main.entity.tools.bf.BfObjResetter;
 import main.entity.type.ObjType;
 import main.game.battlefield.Coordinates;
 import main.game.core.game.DC_Game;
@@ -22,11 +25,25 @@ public class Structure extends BattleFieldObject {
         setCoordinates(new Coordinates(x, y));
     }
 
+    @Override
+    protected EntityMaster initMaster() {
+        return new BfObjMaster(this);
+    }
+
+    @Override
+    public BfObjResetter getResetter() {
+        return (BfObjResetter) super.getResetter();
+    }
+
     public boolean isBfObj() {
         return true;
     }
 
     public boolean canAct() {
         return false;
+    }
+
+    public void resetFacing() {
+        getResetter().resetFacing();
     }
 }

@@ -56,11 +56,6 @@ public class RefCondition extends ConditionImpl {
             }
             setTrue((id.toString().equals(id_.toString())));
         } catch (Exception e) {
-            // if (ref.getMatchObj() != null)
-            // try {
-            // isTrue = check(ref.getMatchObj().getRef());
-            // } catch (Exception ex) {
-            // }
             LogMaster.log(1, toString() + " failed on "
                     + ref);
         }

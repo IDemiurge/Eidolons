@@ -1,5 +1,6 @@
 package main.game.core.state;
 
+import main.ability.effects.Effect;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.elements.conditions.Condition;
@@ -46,6 +47,65 @@ public class DC_StateManager extends StateManager {
                 e.printStackTrace();
             }
         }
+    }
+//    public void resetUnit (Unit unit) {
+//        unit.toBase();
+//        checkCounterRules();
+//        applyEffects(Effect.ZERO_LAYER);
+//        unit. resetUnitObjects();
+//        unit. resetRawValues();
+//        applyEffects(Effect.BASE_LAYER);
+//
+//        afterEffects();
+//        applyEffects(Effect.SECOND_LAYER);
+//        applyEffects(Effect.BUFF_RULE);
+//
+//        unit.applyMods();
+//        unit. resetCurrentValues();
+//    }
+
+    public void reset (Unit unit) {
+        toBase(unit);
+        checkCounterRules(unit);
+        applyEffects(unit, Effect.ZERO_LAYER);
+        resetUnitObjects(unit);
+        resetRawValues(unit);
+        applyEffects(unit,Effect.BASE_LAYER);
+        afterEffects(unit);
+        applyEffects(unit,Effect.SECOND_LAYER);
+        applyEffects(unit,Effect.BUFF_RULE);
+        checkContinuousRules(unit);
+        applyMods(unit);
+        resetCurrentValues(unit);
+    }
+
+    private void resetCurrentValues(Unit unit) {
+    }
+
+    private void applyMods(Unit unit) {
+
+        unit.afterBuffRuleEffects();
+    }
+
+    private void checkContinuousRules(Unit unit) {
+    }
+
+    private void afterEffects(Unit unit) {
+    }
+
+    private void resetRawValues(Unit unit) {
+    }
+
+    private void resetUnitObjects(Unit unit) {
+    }
+
+    private void applyEffects(Unit unit, int zeroLayer) {
+    }
+
+    private void checkCounterRules(Unit unit) {
+    }
+
+    private void toBase(Unit unit) {
     }
 
     protected void applyMods() {

@@ -48,7 +48,6 @@ import main.game.logic.dungeon.Dungeon;
 import main.game.logic.generic.DC_ActionManager;
 import main.game.logic.generic.hero.DC_Attributes;
 import main.game.logic.generic.hero.DC_Masteries;
-import main.game.logic.macro.MacroManager;
 import main.game.logic.macro.entity.MacroActionManager.MACRO_MODES;
 import main.system.DC_Constants;
 import main.system.DC_Formulas;
@@ -127,12 +126,7 @@ public class Unit extends DC_UnitModel {
         this(type, 0, 0, DC_Player.NEUTRAL, game, new Ref(game));
     }
 
-    public void addDynamicValues() {
-        super.addDynamicValues();
-        if (MacroManager.isMacroGame()) {
-            // macro params? or maybe just out of 100
-        }
-    }
+
 
     @Override
     protected EntityMaster initMaster() {

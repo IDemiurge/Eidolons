@@ -10,7 +10,7 @@ public class PassiveAbility extends AbilityImpl {
         super(t, effects);
         effects.setIrresistible(true);
         // this.effects = new
-        // Effects(ContinuousEffect.transformEffect(effects));
+        // Effects(ContinuousEffect.transformEffectToContinuous(effects));
     }
 
     // @Override

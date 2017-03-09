@@ -28,7 +28,7 @@ public class ContinuousEffect extends MicroEffect {
         }
     }
 
-    public static Effect transformEffect(Effect effect) {
+    public static Effect transformEffectToContinuous(Effect effect) {
 
         if ((effect instanceof Effects)) {
             for (Effect e : ((Effects) effect)) {
@@ -36,7 +36,7 @@ public class ContinuousEffect extends MicroEffect {
                     {
                         ((Effects) effect).remove(e);
                         LogMaster.log(LOG_CHANNELS.EFFECT_PASSIVE_DEBUG, "effect wrapped " + e);
-                        e = transformEffect(e);
+                        e = transformEffectToContinuous(e);
                         ((Effects) effect).add(e);
 
                     }

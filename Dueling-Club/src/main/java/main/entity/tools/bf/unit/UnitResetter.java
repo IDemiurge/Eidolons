@@ -17,16 +17,20 @@ import main.entity.item.DC_HeroItemObj;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.attach.DC_FeatObj;
+import main.entity.obj.unit.DC_UnitModel;
 import main.entity.obj.unit.Unit;
 import main.entity.tools.EntityMaster;
 import main.entity.tools.EntityResetter;
 import main.game.ai.tools.ParamAnalyzer;
+import main.game.battlefield.Coordinates.FACING_DIRECTION;
+import main.game.battlefield.FacingMaster;
 import main.game.battlefield.attack.ResistMaster;
 import main.game.core.game.DC_Game;
 import main.rules.action.EngagedRule;
 import main.rules.rpg.IntegrityRule;
 import main.system.DC_Constants;
 import main.system.DC_Formulas;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.datatypes.DequeImpl;
@@ -65,6 +69,28 @@ public class UnitResetter extends EntityResetter<Unit> {
         return (DC_Game) super.getGame();
     }
 
+
+    public void resetFacing() {
+        FACING_DIRECTION facing = null;
+        if (facing != null) {
+            setProperty(PROPS.FACING_DIRECTION, facing.getName());
+        } else {
+            String name = getProperty(PROPS.FACING_DIRECTION);
+            facing = (new EnumMaster<FACING_DIRECTION>().retrieveEnumConst(FACING_DIRECTION.class,
+             name));
+            if (facing == null) {
+                if (getEntity(). getDirection() != null) {
+                    FacingMaster.getFacingFromDirection(getEntity().getDirection());
+                } else if (getRef().getObj(KEYS.SUMMONER) != null) {
+                    facing = ((DC_UnitModel) getRef().getObj(KEYS.SUMMONER)).getFacing();
+                } else {
+                    facing = FacingMaster.getRandomFacing();
+                }
+            }
+
+        }
+       getEntity(). setFacing(facing);
+    }
     @Override
     public void toBase() {
 //        getEntity().setMode(STD_MODES.NORMAL); ??

@@ -777,7 +777,6 @@ public class DC_ActionManager implements ActionManager {
         // checkDual(unit);
         // checkInv(unit);
 
-        unit.setStandardActionsAdded(true);
 
     }
 

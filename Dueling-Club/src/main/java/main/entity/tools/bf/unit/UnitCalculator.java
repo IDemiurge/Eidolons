@@ -1,9 +1,7 @@
 package main.entity.tools.bf.unit;
 
-import main.content.C_OBJ_TYPE;
-import main.content.DC_TYPE;
-import main.content.PARAMS;
-import main.content.PROPS;
+import main.content.*;
+import main.content.values.parameters.PARAMETER;
 import main.data.DataManager;
 import main.entity.item.DC_HeroItemObj;
 import main.entity.item.DC_WeaponObj;
@@ -12,6 +10,7 @@ import main.entity.tools.EntityCalculator;
 import main.entity.tools.EntityMaster;
 import main.entity.type.ObjType;
 import main.game.battlefield.attack.DC_AttackMaster;
+import main.game.core.game.DC_Game;
 import main.system.auxiliary.StringMaster;
 import main.system.math.DC_MathManager;
 import main.system.math.MathMaster;
@@ -153,5 +152,32 @@ public class UnitCalculator extends EntityCalculator<Unit> {
         }
         return weight;
 
+    }
+
+    public int calculateInitiative(boolean current) {
+        PARAMETER param=PARAMS.N_OF_ACTIONS;
+        if (current)
+            param = ContentManager.getCurrentParam(param);
+        int initiative =
+     getIntParam(param)
+      * getIntParam(PARAMS.INITIATIVE_MODIFIER);
+        initiative += getIntParam(PARAMS.C_INITIATIVE_BONUS);
+
+        if (game.isDummyMode()) {
+            if (!getChecker(). isBfObj()) {
+                if (!getChecker().isNeutral()) {
+                    if (!getEntity().getOwner().isMe()) {
+                        initiative = Math.min(10, getGame().getRules().getTimeRule()
+                         .getTimeRemaining() + 1);
+                    }
+                }
+            }
+        }
+        return initiative;
+    }
+
+    @Override
+    public DC_Game getGame() {
+        return (DC_Game) super.getGame();
     }
 }

@@ -9,7 +9,9 @@ import main.content.PROPS;
 import main.game.ai.tools.target.EffectFinder;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.test.Untested;
 
+@Untested
 public class InjuryEffect extends DC_Effect {
 
     private INJURY template;

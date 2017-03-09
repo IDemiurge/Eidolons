@@ -105,7 +105,11 @@ public abstract class DC_Obj extends MicroObj {
     public Integer getCounter(STD_COUNTERS c) {
         return getCounter(c.getName());
     }
-
+    @Override
+    public void init() {
+        super.init();
+        addDefaultValues();
+    }
     protected void addDefaultValues() {
         DC_ContentManager.addDefaultValues(this);
         // for (String value : DC_ContentManager
@@ -127,11 +131,7 @@ public abstract class DC_Obj extends MicroObj {
         return getGame().getVisionMaster().getUnitVisibilityStatus(this, unit) == VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT;
     }
 
-    @Override
-    public void init() {
-        super.init();
-        addDefaultValues();
-    }
+
 
     @Override
     public String getToolTip() {

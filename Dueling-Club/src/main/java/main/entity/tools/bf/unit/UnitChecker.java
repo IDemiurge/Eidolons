@@ -1,16 +1,22 @@
 package main.entity.tools.bf.unit;
 
+import main.content.DC_TYPE;
+import main.content.PARAMS;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
+import main.content.enums.entity.UnitEnums.IMMUNITIES;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.values.properties.G_PROPS;
+import main.entity.active.DC_ActiveObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
+import main.entity.obj.unit.DC_UnitModel;
 import main.entity.obj.unit.Unit;
 import main.entity.tools.EntityChecker;
 import main.entity.tools.EntityMaster;
 import main.game.core.game.DC_Game;
+import main.game.logic.battle.player.Player;
 
 /**
  * Created by JustMe on 2/26/2017.
@@ -136,7 +142,13 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean isTransparent() {
-        return getEntity().isTransparent();
+        if (getEntity(). isDead()) {
+        return true;
+    }
+        if (checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
+            return true;
+        }
+        return checkPassive(UnitEnums.STANDARD_PASSIVES.TRANSPARENT);
     }
 
     public boolean isTall() {
@@ -144,11 +156,11 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean isBfObj() {
-        return getEntity().isBfObj();
+        return getEntity().getOBJ_TYPE_ENUM()== DC_TYPE.BF_OBJ;
     }
 
     public boolean isHero() {
-        return getEntity().isHero();
+        return getEntity().getOBJ_TYPE_ENUM()== DC_TYPE.CHARS;
     }
 
     public boolean isDone() {
@@ -171,21 +183,202 @@ public class UnitChecker extends EntityChecker<Unit> {
         return getEntity().isTurnable();
     }
 
+
+    public boolean canCounter() {
+        if (isDisabled()) {
+            return false;
+        }
+        if (checkModeDisablesCounters()) {
+            return false;
+        }
+        if (checkStatusDisablesCounters()) {
+            return false;
+        }
+        // TODO getMinimumAttackCost
+        // if ( checkAlertCounter())
+        // return false;
+        // alternative cost
+        // if (getIntParam(PARAMS.C_N_OF_COUNTERS) <= 0) {
+        // }
+        return true;
+    }
+
     public boolean isDisabled() {
-        return getEntity().isDisabled();
+        if (isUnconscious()) {
+            return true;
+        }
+        return getEntity().isDead();
+    }
+
+    public boolean checkStatusDisablesCounters() {
+        if (checkStatus(UnitEnums.STATUS.IMMOBILE)) {
+            return true;
+        }
+        if (checkStatus(UnitEnums.STATUS.CHARMED)) {
+            return true;
+        }
+        if (checkStatus(UnitEnums.STATUS.ENSNARED)) {
+            return true;
+        }
+        if (checkStatus(UnitEnums.STATUS.PRONE)) {
+            return true;
+        }
+        return checkStatus(UnitEnums.STATUS.EXHAUSTED);
+
     }
 
     public boolean isUnconscious() {
-        return getEntity().isUnconscious();
+        return checkStatus(UnitEnums.STATUS.UNCONSCIOUS);
+    }
+
+    public boolean canAttack() {
+        return getEntity(). getAttack().canBeActivated(getRef(), true);
+    }
+
+    // melee/ranged separate!
+    public boolean canAttack(DC_UnitModel attacked) {
+        if (!canAttack()) {
+            return false;
+        }
+        // ConditionMaster.getAdjacent().check(ref);
+        int range = getIntParam(PARAMS.RANGE);
+        if (range == 1) {
+            return getGame().getMovementManager().isAdjacent(getEntity(), attacked);
+        }
+        return (range >= getGame().getMovementManager().getDistance(getEntity(), attacked));
+
+    }
+
+    public boolean canMove() {
+        if (isBfObj()) {
+            return false;
+        }
+        // if (isstructure)
+        return canActNow();
+    }
+
+    public boolean canCounter(DC_ActiveObj active) {
+        return canCounter(active, false);
+    }
+
+    public boolean canCounter(DC_ActiveObj active, boolean sneak) {
+        if (!canCounter()) {
+            return false;
+        }
+        if (active.checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION)) {
+            return false;
+        }
+        // if (!attacked.checkPassive(STANDARD_PASSIVES.VIGILANCE))
+        if (active.getOwnerObj().checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION)) {
+            return false;
+        }
+        // may still fail to activate any particular Attack Action!
+        return true;
+    }
+
+    public boolean canAct() {
+        if (getEntity().getOwner() == Player.NEUTRAL) {
+            return false;
+        }
+        if (checkStatusPreventsActions()) {
+            return false;
+        }
+        return !isImmobilized();
+    }
+
+    public boolean canActNow() {
+        if (getGame().isDummyPlus()) {
+            if (!isMine()) {
+                return false;
+            }
+        }
+        if (getEntity().getOwner() == Player.NEUTRAL) {
+            return false;
+        }
+        if (checkStatusPreventsActions()) {
+            return false;
+        }
+
+        // if (checkStatus(STATUS.DISCOMBOBULATED))
+        // return false;
+
+        if (checkStatus(UnitEnums.STATUS.ON_ALERT)) {
+            return false;
+        }
+        if (checkStatus(UnitEnums.STATUS.WAITING)) {
+            return false;
+        }
+        // if (checkStatus(STATUS.LATE))
+        // return false;
+        if (getIntParam(PARAMS.C_N_OF_ACTIONS) <= 0) {
+            return false;
+        }
+        return !isImmobilized();
+
+    }
+
+    public boolean checkUncontrollable() {
+        // if (checkBuffStatusPreventsActions())
+        // return true;
+        return getEntity().getMode().isBehavior();
+
+    }
+
+    public boolean checkStatusPreventsActions() {
+        if (checkStatus(UnitEnums.STATUS.DEAD)) {
+            return true;
+        }
+        if (checkStatus(UnitEnums.STATUS.EXHAUSTED)) {
+            return true;
+        }
+        if (checkStatus(UnitEnums.STATUS.ASLEEP)) {
+            return true;
+        }
+        if (checkStatus(UnitEnums.STATUS.FROZEN)) {
+            return true;
+        }
+        return checkStatus(UnitEnums.STATUS.UNCONSCIOUS);
     }
 
     public boolean isIncapacitated() {
-        return getEntity().isIncapacitated();
+        if (checkStatus(UnitEnums.STATUS.IMMOBILE)) {
+            return true;
+        }
+        if (checkStatus(UnitEnums.STATUS.CHARMED)) {
+            return true;
+        }
+        return checkStatusPreventsActions();
     }
 
     public boolean isImmobilized() {
-        return getEntity().isImmobilized();
+
+        if (checkStatus(UnitEnums.STATUS.IMMOBILE)) {
+            return true;
+        }
+
+        if (checkStatus(UnitEnums.STATUS.CHARMED)) {
+            return true;
+        }
+
+        return checkModeDisablesActions();
+
     }
+
+    public boolean checkModeDisablesCounters() {
+        if (getEntity(). getBehaviorMode() != null) {
+            return getEntity().getBehaviorMode().isDisableCounters();
+        }
+
+        return getEntity().getMode().isDisableCounter();
+    }
+
+    public boolean checkModeDisablesActions() {
+        return getEntity().getMode().isDisableActions();
+
+    }
+
+
+
 
     public boolean isLiving() {
         if (checkClassification(UnitEnums.CLASSIFICATIONS.UNDEAD)) {
@@ -213,6 +406,14 @@ public class UnitChecker extends EntityChecker<Unit> {
     @Override
     public DC_Game getGame() {
         return (DC_Game) super.getGame();
+    }
+
+    public boolean hasDoubleStrike() {
+        return
+         checkPassive(UnitEnums.STANDARD_PASSIVES.DOUBLE_STRIKE);
+    }
+    public boolean checkImmunity(IMMUNITIES type) {
+        return checkProperty(G_PROPS.IMMUNITIES, type.toString());
     }
 
 }

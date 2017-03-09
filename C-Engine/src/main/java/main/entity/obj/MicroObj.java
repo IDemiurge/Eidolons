@@ -31,9 +31,7 @@ public class MicroObj extends Obj {
     public void init() {
         super.init();
         this.game = getGenericGame();
-        cloneMaps(type);
-        addDynamicValues();
-        setParam(G_PARAMS.TURN_CREATED, game.getState().getRound());
+
 
     }
 

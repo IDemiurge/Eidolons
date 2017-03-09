@@ -4,6 +4,7 @@ import main.ability.Interruptable;
 import main.ability.PassiveAbilityObj;
 import main.ability.effects.Effect;
 import main.ability.effects.EffectImpl;
+import main.ability.effects.continuous.ContinuousEffect;
 import main.elements.Filter;
 import main.elements.conditions.Condition;
 import main.elements.triggers.Trigger;
@@ -166,10 +167,9 @@ public abstract class GameManager implements GenericGameManager {
 
     public void attachmentRemoved(Attachment attachment, Obj basis) {
         for (Effect e : attachment.getEffects()) {
-            // TODO
             e.remove();
             getState().removeEffect(e);
-            // when addTrigger effect is removed, so is the trigger
+            //TODO when addTrigger effect is removed, so is the trigger
         }
     }
 

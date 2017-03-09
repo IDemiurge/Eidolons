@@ -4,6 +4,7 @@ import main.ability.effects.Effect;
 import main.ability.effects.oneshot.common.SpecialTargetingEffect;
 import main.elements.conditions.Conditions;
 import main.system.math.Formula;
+import main.test.Unimplemented;
 
 public class ChainEffect extends SpecialTargetingEffect {
 
@@ -27,6 +28,7 @@ public class ChainEffect extends SpecialTargetingEffect {
         initTargeting();
     }
 
+    @Unimplemented
     @Override
     public void initTargeting() {
         // TODO Templates?
